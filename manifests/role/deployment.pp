@@ -116,7 +116,7 @@ class role::deployment::config {
         # TODO: cxserver/deploy ships the node_modules that cxserver needs,
         # amend this to only need one repo
         'cxserver/deploy'      => {
-            'upstream'     => 'https://gerrit.wikimedia.org/r/mediawiki/services/cxserver',
+            'upstream'     => 'https://gerrit.wikimedia.org/r/mediawiki/services/cxserver/deploy',
         },
     }
 }
