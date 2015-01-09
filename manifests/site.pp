@@ -2005,26 +2005,21 @@ node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
 
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
-
-    class {'::admin': groups => ['deployment']}
-    $cluster = 'jobrunner'
     if $::hostname =~ /^mw100[12]$/ {
         $ganglia_aggregator = true
     }
-
-    include role::mediawiki::jobrunner
+    role mediawiki::jobrunner
+    include admin
 }
 
 # mw1017-mw1025 are canary appservers
 node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
-    $cluster = 'appserver'
     role mediawiki::canary_appserver
     include ::admin
 }
 
 # mw1026-mw1113 are appservers
 node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
-    $cluster = 'appserver'
     if $::hostname =~ /^mw10(5[45])$/ {
         $ganglia_aggregator = true
     }
@@ -2035,7 +2030,6 @@ node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 
 # mw1114-mw1119 are canary api appservers
 node /^mw111[4-9]\.eqiad\.wmnet$/ {
-    $cluster = 'api_appserver'
     if $::hostname =~ /^mw111[45]$/ {
         $ganglia_aggregator = true
     }
@@ -2045,7 +2039,6 @@ node /^mw111[4-9]\.eqiad\.wmnet$/ {
 
 # mw1120-1148 are api apaches
 node /^mw11([23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
-    $cluster = 'api_appserver'
     role mediawiki::appserver::api
     include admin
 }
@@ -2053,14 +2046,12 @@ node /^mw11([23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
 
 # mw1149-1151 are apaches
 node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
-    $cluster = 'appserver'
     role mediawiki::appserver
     include admin
 }
 
 # mw1152 is (temporarily) the HAT imagescaler
 node 'mw1152.eqiad.wmnet' {
-    $cluster = 'imagescaler'
     role mediawiki::imagescaler
     include admin
 }
@@ -2068,7 +2059,6 @@ node 'mw1152.eqiad.wmnet' {
 
 # mw1153-1160 are imagescalers (precise)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
-    $cluster = 'imagescaler'
     if $::hostname =~ /^mw115[34]$/ {
         $ganglia_aggregator = true
     }
@@ -2079,35 +2069,30 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
 
 # mw1161-1188 are apaches
 node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
-    $cluster = 'appserver'
     role mediawiki::appserver
     include admin
 }
 
 # mw1189-1208 are api apaches
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
-    $cluster = 'api_appserver'
     role mediawiki::appserver::api
     include admin
 }
 
 # mw1209-1220 are apaches
 node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
-    $cluster = 'appserver'
     role mediawiki::appserver
     include admin
 }
 
 #mw1221-mw1235 are api apaches
 node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
-    $cluster = 'api_appserver'
     role mediawiki::appserver::api
     include admin
 }
 
 #mw1236-mw1258 are apaches
 node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
-    $cluster = 'appserver'
     role mediawiki::appserver
     include admin
 }
