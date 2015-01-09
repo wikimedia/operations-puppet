@@ -47,32 +47,19 @@ define install_certificate(
     require certificates::wmf_ca_2014_2017
     require certificates::rapidssl_sha256_ca_G3
 
-    # Public key
-    file { "/etc/ssl/localcerts/${name}.crt":
-        owner   => 'root',
-        group   => $group,
-        mode    => '0444',
-        source  => "puppet:///files/ssl/${name}.crt",
-        require => File['/etc/ssl/localcerts'],
+    sslcert::certificate { $name:
+        group  => $group,
+        source => "puppet:///files/ssl/${name}.crt",
+    }
+
+    if ( $privatekey == true ) {
+        Sslcert::Certificate[$name] {
+            private => file("puppet:///private/ssl/${name}.key"),
+        }
     }
 
     file { "/etc/ssl/certs/${name}.pem":
         ensure  => absent,
-    }
-
-    if ( $privatekey == true ) {
-        # Private key
-        file { "/etc/ssl/private/${name}.key":
-            owner  => 'root',
-            group  => $group,
-            mode   => '0440',
-            source => "puppet:///private/ssl/${name}.key",
-        }
-    } else {
-        # empty Private key
-        file { "/etc/ssl/private/${name}.key":
-            ensure => 'present',
-        }
     }
 
     # create_combined_cert/create_pkcs12 created those
