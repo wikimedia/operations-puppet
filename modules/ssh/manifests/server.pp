@@ -18,16 +18,10 @@ class ssh::server (
 
     if $authorized_keys_file {
         $ssh_authorized_keys_file = $authorized_keys_file
+    } elsif ($::realm == 'labs' and os_version('ubuntu <= precise')) {
+        $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u /public/keys/%u/.ssh/authorized_keys'
     } else {
-        if ($::realm == 'labs') {
-            if os_version('ubuntu <= precise') {
-                $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u /public/keys/%u/.ssh/authorized_keys'
-            } else {
-                $ssh_authorized_keys_file = '/etc/ssh/userkeys/%u'
-            }
-        } else {
-            $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u .ssh/authorized_keys .ssh/authorized_keys2'
-        }
+        $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u'
     }
 
     file { '/etc/ssh/userkeys':
