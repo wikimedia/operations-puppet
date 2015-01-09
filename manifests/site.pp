@@ -2243,8 +2243,7 @@ node /pc100[1-3]\.eqiad\.wmnet/ {
     include mysql_wmf::mysqluser
     include mysql_wmf::datadirs
     include mysql_wmf::pc::conf
-
-    class { 'mysql_wmf::packages': mariadb => true }
+    include mysql_wmf::packages
 
     system::role { 'mysql::pc::conf':
         description => 'parser cache mysql server',
