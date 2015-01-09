@@ -2050,11 +2050,6 @@ node /^mw11([23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
     include admin
 }
 
-# mw1152 is (temporarily) the HAT jobrunner
-node 'mw1152.eqiad.wmnet' {
-    include admin
-    role mediawiki::jobrunner
-}
 
 # mw1149-1151 are apaches
 node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
@@ -2062,6 +2057,14 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
     include admin
 }
+
+# mw1152 is (temporarily) the HAT imagescaler
+node 'mw1152.eqiad.wmnet' {
+    $cluster = 'imagescaler'
+    role mediawiki::imagescaler
+    include admin
+}
+
 
 # mw1153-1160 are imagescalers (precise)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
