@@ -126,76 +126,32 @@ class certificates::star_wmflabs {
 # TODO: define this
 # old lost CA, need to remove from all over
 class certificates::wmf_ca {
-
-    include certificates::base
-
-    file { '/usr/local/share/ca-certificates/wmf-ca.crt':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    sslcert::ca { 'wmf-ca':
         source  => 'puppet:///files/ssl/wmf-ca.crt',
-        require => Package['openssl'],
-        notify  => Exec['update-ca-certificates'],
     }
-
 }
 
 class certificates::wmf_ca_2014_2017 {
-
-    include certificates::base
-    $ca_name = 'wmf_ca_2014_2017'
-
-    file { "/usr/local/share/ca-certificates/${ca_name}.crt":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => "puppet:///files/ssl/${ca_name}.crt",
-        require => Package['openssl'],
-        notify  => Exec['update-ca-certificates'],
+    sslcert::ca { 'wmf_ca_2014_2017':
+        source  => "puppet:///files/ssl/wmf_ca_2014_2017.crt",
     }
-
 }
 
 class certificates::wmf_labs_ca {
-
-    include certificates::base
-
-    file { '/usr/local/share/ca-certificates/wmf-labs.crt':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    sslcert::ca { 'wmf-labs':
         source  => 'puppet:///files/ssl/wmf-labs.crt',
-        require => Package['openssl'],
-        notify  => Exec['update-ca-certificates'],
     }
-
 }
 
 class certificates::rapidssl_ca {
-
-    include certificates::base
-
-    file { '/usr/local/share/ca-certificates/RapidSSL_CA.crt':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => 'puppet:///files/ssl/RapidSSL_CA.crt',
-            require => Package['openssl'],
-            notify  => Exec['update-ca-certificates'],
+    sslcert::ca { 'RapidSSL_CA':
+        source  => 'puppet:///files/ssl/RapidSSL_CA.crt',
     }
 }
 
 class certificates::rapidssl_ca_2 {
-
-    include certificates::base
-
-    file { '/usr/local/share/ca-certificates/RapidSSL_CA_2.crt':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    sslcert::ca { 'RapidSSL_CA_2':
         source  => 'puppet:///files/ssl/RapidSSL_CA_2.crt',
-        require => Package['openssl'],
-        notify  => Exec['update-ca-certificates'],
     }
 }
 
@@ -214,29 +170,13 @@ class certificates::rapidssl_sha256_ca_G3 {
 }
 
 class certificates::digicert_ca {
-
-    include certificates::base
-
-    file { '/usr/local/share/ca-certificates/DigiCertHighAssuranceCA-3.crt':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    sslcert::ca { 'DigiCertHighAssuranceCA-3':
         source  => 'puppet:///files/ssl/DigiCertHighAssuranceCA-3.crt',
-        require => Package['openssl'],
-        notify  => Exec['update-ca-certificates'],
     }
 }
 
 class certificates::globalsign_ca {
-
-    include certificates::base
-
-    file { '/usr/local/share/ca-certificates/GlobalSign_CA.crt':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    sslcert::ca { 'GlobalSign_CA':
         source  => 'puppet:///files/ssl/GlobalSign_CA.crt',
-        require => Package['openssl'],
-        notify  => Exec['update-ca-certificates'],
     }
 }
