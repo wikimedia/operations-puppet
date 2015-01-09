@@ -20,5 +20,6 @@ class role::bugzilla {
         port  => '443',
     }
 
+    include ::bugzilla::static
 }
 
