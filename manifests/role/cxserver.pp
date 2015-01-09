@@ -8,7 +8,7 @@ class role::cxserver::production {
     class { '::cxserver':
         base_path => '/srv/deployment/cxserver/cxserver',
         node_path => '/srv/deployment/cxserver/deploy/node_modules',
-        conf_path => '/srv/deployment/cxserver/config.js',
+        conf_path => '/srv/deployment/cxserver/cxserver/config.js',
         log_dir   => '/var/log/cxserver',
         parsoid   => 'http://parsoid-lb.eqiad.wikimedia.org',
         apertium  => 'http://apertium.svc.eqiad.wmnet',
