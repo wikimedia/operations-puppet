@@ -44,10 +44,6 @@ class ocg (
     }
 
     require_package('nodejs')
-
-    # NOTE: If you change $nodebin you MUST also change the AppArmor
-    #       profile creation below and the maintenance sudo rules in
-    #       modules/admin/data/data.yaml
     $nodebin = '/usr/bin/nodejs-ocg'
     apparmor::hardlink { $nodebin:
         target => '/usr/bin/nodejs',
@@ -122,13 +118,21 @@ class ocg (
 
     # Change this if you change the value of $nodebin
     include apparmor
-    file { '/etc/apparmor.d/usr.bin.nodejs-pdf':
+    $nodebin_dots = regsubst($nodebin, '/', '.', 'G')
+
+    file { "/etc/apparmor.d/${nodebin_dots}":
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
         content => template('ocg/usr.bin.nodejs.apparmor.erb'),
         notify  => Service['apparmor', 'ocg'],
+    }
+
+    # FIXME: only for migration purposes, remove --2015-01-09
+    file { '/etc/apparmor.d/usr.bin.nodejs-pdf':
+        ensure  => absent,
+        require => File["/etc/apparmor.d/${nodebin_dots}"],
     }
 
     file { ['/srv/deployment','/srv/deployment/ocg']:
