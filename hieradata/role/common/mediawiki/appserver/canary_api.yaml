@@ -1,3 +1,4 @@
+cluster: api_appserver
 role::mediawiki::webserver::pool: api
 apache::mpm::mpm: worker
 mediawiki::web::mpm_config::mpm: worker
