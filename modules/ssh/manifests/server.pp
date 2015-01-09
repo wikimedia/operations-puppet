@@ -21,6 +21,8 @@ class ssh::server (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        recurse => true,
+        purge   => true,
     }
 
     file { '/etc/ssh/sshd_config':
