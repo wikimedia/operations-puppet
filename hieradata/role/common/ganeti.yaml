@@ -1,4 +1,4 @@
-ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/ganeti .ssh/authorized_keys
+ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/ganeti
 ganeti::ganeti01.svc.codfw.wmnet::nodes:
   - ganeti2001.codfw.wmnet
   - ganeti2002.codfw.wmnet
