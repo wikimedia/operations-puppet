@@ -4,9 +4,14 @@ class openstack::nova::compute($openstack_version=$::openstack::version, $novaco
     if ( $::realm == "production" ) {
         $certname = "virt-star.${site}.wmnet"
         install_certificate{ "${certname}": }
-        install_additional_key{ "${certname}": key_loc => "/var/lib/nova", owner => 'nova', group => "libvirtd", require => Package["nova-common"] }
 
         file {
+            "/var/lib/nova/${certname}.key":
+                owner   => 'nova'
+                group   => 'libvirtd',
+                mode    => '0440',
+                source  => "puppet:///private/ssl/${name}.key",
+                require => Package['nova-common'];
             "/var/lib/nova/clientkey.pem":
                 ensure  => link,
                 target  => "/var/lib/nova/${certname}.key",
