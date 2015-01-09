@@ -39,6 +39,7 @@ class toollabs::dev_environ {
     }
 
     package { [
+        'ant',
         'apt-file',
         'autoconf',
         'build-essential', # for dpkg
@@ -50,6 +51,7 @@ class toollabs::dev_environ {
         'emacs',
         'fakeroot', # for dpkg
         'gcj-jdk',                     # Bug 56995
+        'openjdk-7-jdk',
         'ipython',                     # Bug 56995
         'joe',                         # Bug 62236.
         'libdjvulibre-dev',            # Bug 56972
