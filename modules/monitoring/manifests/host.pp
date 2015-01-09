@@ -44,6 +44,7 @@ define monitoring::host (
     if $title == $::hostname {
         $image = $::operatingsystem ? {
             'Ubuntu'  => 'ubuntu',
+            'Debian'  => 'debian',
             default   => 'linux40'
         }
 
