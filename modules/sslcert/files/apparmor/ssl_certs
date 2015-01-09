@@ -9,8 +9,6 @@
 #
 # ------------------------------------------------------------------
 # THIS FILE IS MANAGED BY PUPPET
-# Source: files/ssl/ssl_cert
-# From  : certificates::base
 
   /etc/ssl/ r,
   /etc/ssl/certs/ r,
