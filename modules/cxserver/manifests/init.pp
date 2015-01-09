@@ -34,7 +34,10 @@ class cxserver(
     # dictd-* packages for dictionary server.
     require_package('nodejs')
 
-    package { 'cxserver/cxserver':
+    package { [
+             'cxserver/cxserver',
+             'cxserver/deploy',
+            ]:
         ensure   => present,
         provider => 'trebuchet',
     }
