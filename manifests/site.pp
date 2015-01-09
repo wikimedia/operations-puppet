@@ -919,12 +919,21 @@ node /^db20(09)\.codfw\.wmnet/ {
 }
 
 ## m1 shard
-node /^db10(01|16)\.eqiad\.wmnet/ {
+node /^db10(01)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::m1':
         mariadb => true,
+    }
+}
+
+node /^db10(16)\.eqiad\.wmnet/ {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 'm1',
     }
 }
 
