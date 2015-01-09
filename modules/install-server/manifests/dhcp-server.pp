@@ -13,18 +13,9 @@
 #   include install-server::dhcp-server
 
 class install-server::dhcp-server {
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
-        $confdir = '/etc/dhcp/'
-        $package_name = 'isc-dhcp-server'
-        $service_name = 'isc-dhcp-server'
-    } else {
-        $confdir = '/etc/dhcp3'
-        $package_name = 'dhcp3-server'
-        $service_name = 'dhcp3-server'
-    }
-    file { $confdir:
+    file { '/etc/dhcp':
         ensure      => directory,
-        require     => Package[$package_name],
+        require     => Package['isc-dhcp-server'],
         recurse     => true,
         owner       => 'root',
         group       => 'root',
@@ -32,16 +23,16 @@ class install-server::dhcp-server {
         source      => 'puppet:///modules/install-server/dhcpd',
     }
 
-    package { $package_name:
-        ensure => latest;
+    package { 'isc-dhcp-server':
+        ensure => present,
     }
 
-    service { $service_name:
+    service { 'isc-dhcp-server':
         ensure    => running,
         require   => [
-            Package[$package_name],
-            File[$confdir]
+            Package['isc-dhcp-server'],
+            File['/etc/dhcp']
         ],
-        subscribe => File[$confdir],
+        subscribe => File['/etc/dhcp'],
     }
 }
