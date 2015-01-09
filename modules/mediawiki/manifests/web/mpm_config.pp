@@ -11,6 +11,15 @@ class mediawiki::web::mpm_config($mpm = 'prefork', $server_limit = undef, $worke
                 $mem_per_worker  = to_bytes('85M')
                 $max_req_workers = min(floor($mem_available /$mem_per_worker), $apache_server_limit)
             }
+            # We also need to be sure the mpm prefork module isloaded, and that worker is not.
+            apache::mod_conf { 'mpm_worker':
+                ensure => absent,
+                before => Apache::Mod_conf['mpm_prefork']
+            }
+            apache::mod_conf { 'mpm_prefork':
+                ensure => present,
+            }
+
         }
         'worker': {
             # this can only be used on hhvm servers
@@ -25,6 +34,14 @@ class mediawiki::web::mpm_config($mpm = 'prefork', $server_limit = undef, $worke
             else {
                 # Default if no override has been defined
                 $max_req_workers = $max_workers
+            }
+            # We also need to be sure the mpm prefork module is not loaded, and that worker is.
+            apache::mod_conf { 'mpm_prefork':
+                ensure => absent,
+                before => Apache::Mod_conf['mpm_worker']
+            }
+            apache::mod_conf { 'mpm_worker':
+                ensure => present,
             }
         }
         default: { fail('Only prefork and worker mpms are supported at the moment') }
