@@ -93,9 +93,6 @@ define misc::logging::relay(
 
     # Configure and start the upstart job for
     # luanching the socat multicast relay daemon.
-    # Note: Not using generic::upstart_job define here since
-    # it doesn't support using ERb templates.
-
     if $multicast {
         $daemon_name = "${title}-multicast-relay"
     }
