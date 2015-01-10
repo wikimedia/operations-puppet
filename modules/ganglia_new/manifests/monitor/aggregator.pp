@@ -25,8 +25,6 @@ class ganglia_new::monitor::aggregator($sites) {
         before => Service['ganglia-monitor-aggregator'],
     }
 
-    generic::upstart_job { 'ganglia-monitor-aggregator-instance': }
-
     define site_instances() {
         # Instantiate aggregators for all clusters for this site ($title)
         $cluster_list = suffix(keys($ganglia_new::configuration::clusters), "_${title}")

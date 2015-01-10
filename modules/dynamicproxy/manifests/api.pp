@@ -13,10 +13,27 @@ class dynamicproxy::api {
         require => Package['python-flask'],
     }
 
-    generic::upstart_job{ 'dynamicproxy-api':
-        require => Package['python-invisible-unicorn', 'python-flask-sqlalchemy', 'redis-server', 'python-flask', 'uwsgi', 'uwsgi-plugin-python'],
-        install => true,
-        start   => true,
+    file { '/etc/init/dynamicproxy-api.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/dynamicproxy/upstart.conf',
+        before  => Service['dynamicproxy-api'],
+        notify  => Service['dynamicproxy-api'],
+    }
+
+    service { 'dynamicproxy-api':
+        ensure  => running,
+        enable  => true,
+        require => [
+            Package['python-invisible-unicorn'],
+            Package['python-flask-sqlalchemy'],
+            Package['redis-server'],
+            Package['python-flask'],
+            Package['uwsgi'],
+            Package['uwsgi-plugin-python'],
+        ],
     }
 
     file { '/etc/dynamicproxy-api':
