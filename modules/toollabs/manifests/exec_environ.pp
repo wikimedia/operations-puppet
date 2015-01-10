@@ -16,7 +16,7 @@
 # Sample Usage:
 #
 class toollabs::exec_environ {
-    include generic::locales::international
+    include locales::extended
     include identd
     include ::mediawiki::packages::fonts
     include ::redis::client::python

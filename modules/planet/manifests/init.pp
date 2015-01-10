@@ -21,8 +21,8 @@ class planet (
 
     # locales are essential for planet
     # if a new language is added check these too
-    include standard,
-    generic::locales::international
+    include standard
+    include locales::extended
 
     # things done once for all planets
     include planet::webserver,
