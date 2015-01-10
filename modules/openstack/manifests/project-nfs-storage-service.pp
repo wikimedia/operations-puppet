@@ -1,11 +1,16 @@
 class openstack::project-nfs-storage-service {
-    generic::upstart_job{ 'manage-nfs-volumes':
-        install => true,
+    file { '/etc/init/manage-nfs-volumes.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/openstack/manage-nfs-volumes.conf',
+        before  => Service['manage-nfs-volumes'],
+        notify  => Service['manage-nfs-volumes'],
     }
 
     service { 'manage-nfs-volumes':
         enable  => true,
-        require => Generic::Upstart_job['manage-nfs-volumes'];
     }
 
     $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
