@@ -161,7 +161,7 @@ class mailman {
         }
 
         # Install as many languages as possible
-        include generic::locales::international
+        include locales::extended
 
         generic::debconf::set { 'mailman/gate_news':
             value  => 'false',
@@ -179,7 +179,7 @@ class mailman {
         }
 
         exec { 'dpkg-reconfigure mailman':
-            require     => Class['generic::locales::international'],
+            require     => Class['locales::extended'],
             before      => Service['mailman'],
             command     => '/usr/sbin/dpkg-reconfigure -fnoninteractive mailman',
             refreshonly => true
