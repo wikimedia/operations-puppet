@@ -1,5 +1,0 @@
-This is an OK place for one-off classes that are used only at WMF.
-
-Still, it's kind of a hack to have a 'generic' module, so please try your
-best to fit your class into another better-organized module before dumping
-it here.
