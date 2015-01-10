@@ -9,7 +9,7 @@ class locales {
     }
 
     exec { 'locale-gen':
-        command     => '/usr/sbin/locale-gen',
+        command     => '/usr/sbin/locale-gen --purge',
         refreshonly => true,
         require     => Package['locales'],
     }
