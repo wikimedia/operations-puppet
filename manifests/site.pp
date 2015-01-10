@@ -2593,7 +2593,6 @@ node 'terbium.eqiad.wmnet' {
     include role::db::maintenance
     include role::peopleweb
     include misc::monitoring::jobqueue
-    include generic::wikidev-umask
     include misc::deployment::common_scripts
     include role::noc
     include role::mediawiki::searchmonitor
@@ -2691,7 +2690,6 @@ node 'tin.eqiad.wmnet' {
     ]
 
     include standard
-    include generic::wikidev-umask
     include role::deployment::deployment_servers::production
     include mediawiki
     include misc::deployment

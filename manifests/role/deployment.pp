@@ -153,6 +153,15 @@ class role::deployment::deployment_servers::common(
         deployer_groups => ['wikidev'],
     }
 
+    # set umask for wikidev users so that newly-created files are g+w
+    file { '/etc/profile.d/umask-wikidev.sh':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///files/deploy/umask-wikidev-profile-d.sh',
+    }
+
     include ::apache
     include ::apache::mod::dav
     include ::apache::mod::dav_fs
