@@ -7,7 +7,16 @@
 class locales::extended {
     include locales
 
-    file { '/var/lib/locales/supported.d/local':
+    # Ubuntu has a nice supported.d mechanism; Debian doesn't, so fall back
+    # into overwriting the systems config. For Debian systems, though,
+    # locales::all might be a better option, depending on the use case.
+    $localeconf = $::operatingsystem ? {
+        'Ubuntu' => '/var/lib/locales/supported.d/local',
+        'Debian' => '/etc/locale.gen',
+        default  => '/etc/locale.gen',
+    }
+
+    file { $localeconf:
         ensure => present,
         source => 'puppet:///modules/locales/locales-extended',
         owner  => 'root',
