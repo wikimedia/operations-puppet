@@ -340,18 +340,10 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
     }
 
     file { "$webrequest_filter_directory/vu.awk":
-        ensure => 'file',
-        source => 'puppet:///files/udp2log/vu.awk',
-        mode   => 0755,
-        owner  => 'udp2log',
-        group  => 'udp2log',
+        ensure => absent,
     }
     file { "$webrequest_filter_directory/minnesota.awk":
-        ensure => 'file',
-        source => 'puppet:///files/udp2log/minnesota.awk',
-        mode   => 0755,
-        owner  => 'udp2log',
-        group  => 'udp2log',
+        ensure => absent,
     }
 
     # oxygen run webstatscollector's filter process,
