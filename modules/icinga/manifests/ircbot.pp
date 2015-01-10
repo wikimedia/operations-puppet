@@ -6,10 +6,7 @@ class icinga::ircbot {
     $ircecho_logs   = {
         '/var/log/icinga/irc.log'          => '#wikimedia-operations',
         '/var/log/icinga/irc-wikidata.log' => '#wikidata',
-        '/var/log/icinga/irc-qa.log'       => [
-            '#wikimedia-qa',
-            '#wikimedia-releng',
-        ],
+        '/var/log/icinga/irc-releng.log'   => '#wikimedia-releng',
         '/var/log/icinga/irc-labs.log'     => '#wikimedia-labs',
     }
     $ircecho_nick   = 'icinga-wm'
