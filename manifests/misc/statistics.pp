@@ -516,6 +516,7 @@ class misc::statistics::rsync::jobs::webrequest {
         # files will be rsynced into /a/log.
         "${working_path}/log",
         "${working_path}/log/webrequest",
+        "${working_path}/log/webrequest/archive",
     ]:
         ensure  => directory,
         owner   => 'stats',
@@ -557,6 +558,13 @@ class misc::statistics::rsync::jobs::webrequest {
     misc::statistics::rsync_job { 'mobile':
         source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz',
         destination => "${working_path}/squid/archive/mobile",
+    }
+
+    # all webrequest archive logs from hdfs
+    misc::statistics::rsync_job { 'hdfs_webrequest_archive':
+        source      => 'stat1002.eqiad.wmnet::hdfs-archive/webrequest/*',
+        destination => "${working_path}/log/webrequest/archive",
+        retention_days => 90, # Pruning after 90 days as those logs contain private data.
     }
 }
 
