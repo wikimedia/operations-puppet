@@ -23,9 +23,9 @@
 # [*port*]
 #   Port where to run the cxserver service. Defaults to 8080.
 class cxserver(
-    $base_path = '/srv/deployment/cxserver/cxserver',
+    $base_path = '/srv/deployment/cxserver/deploy',
     $node_path = '/srv/deployment/cxserver/deploy/node_modules',
-    $conf_path = '/srv/deployment/cxserver/cxserver/config.js',
+    $conf_path = '/srv/deployment/cxserver/deploy/src/config.js',
     $log_dir = '/var/log/cxserver',
     $parsoid = 'http://parsoid-lb.eqiad.wikimedia.org',
     $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
@@ -34,7 +34,6 @@ class cxserver(
     require_package('nodejs')
 
     package { [
-             'cxserver/cxserver',
              'cxserver/deploy',
             ]:
         ensure   => present,

@@ -109,14 +109,10 @@ class role::deployment::config {
             'grain'    => 'iegreview',
             'upstream' => 'https://gerrit.wikimedia.org/r/wikimedia/iegreview',
         },
-        'cxserver/cxserver'      => {
-            'service_name' => 'cxserver',
-            'upstream'     => 'https://gerrit.wikimedia.org/r/mediawiki/services/cxserver',
-        },
-        # TODO: cxserver/deploy ships the node_modules that cxserver needs,
-        # amend this to only need one repo
-        'cxserver/deploy'      => {
-            'upstream'     => 'https://gerrit.wikimedia.org/r/mediawiki/services/cxserver/deploy',
+        'cxserver/deploy' => {
+            'service_name'        => 'cxserver',
+            'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/services/cxserver/deploy',
+            'checkout_submodules' => true,
         },
     }
 }
