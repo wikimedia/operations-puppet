@@ -11,15 +11,15 @@
 #                         Unused if $is_puppetmaster is false.
 # $puppet_client_subnet - Network from which to allow fileserver connections.
 #                         Unused if $is_puppetmaster is false.
-# $certname             - Name of the puppet CA certificate.  Default: "$ec2_instance_id.$domain", e.g. the labs instance name:  i-00000699.pmtpa.wmflabs.
+# $certname             - Name of the puppet CA certificate.  Default: "$ec2id.$domain", e.g. the labs instance name:  i-00000699.pmtpa.wmflabs.
 #
 class puppet::self::config(
     $server,
     $is_puppetmaster      = false,
     $bindaddress          = undef,
     $puppet_client_subnet = undef,
-    $certname             = "${::ec2_instance_id}.${::domain}"
-) inherits base::puppet {
+    $certname             = "${::ec2id}.${::domain}") inherits base::puppet
+{
     include ldap::role::config::labs
 
     $ldapconfig = $ldap::role::config::labs::ldapconfig
