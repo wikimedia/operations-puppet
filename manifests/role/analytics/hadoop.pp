@@ -67,10 +67,6 @@ class role::analytics::hadoop::config {
         $namenode_hosts           = [
             'analytics1010.eqiad.wmnet',
             'analytics1004.eqiad.wmnet',
-            # analytics1001 and 1002 are being
-            # provisioned as replacement namenodes.
-            'analytics1001.eqiad.wmnet',
-            'analytics1002.eqiad.wmnet',
         ]
         # JournalNodes are colocated on worker DataNodes.
         $journalnode_hosts        = [
