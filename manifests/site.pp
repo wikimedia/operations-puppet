@@ -2548,20 +2548,11 @@ node 'terbium.eqiad.wmnet' {
 }
 
 node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
-    # ganglia cluster name.
-    $cluster = 'elasticsearch'
     if $::hostname =~ /^elastic10(0[17]|13)/ {
         $ganglia_aggregator = true
     }
 
-    class { 'admin': groups => ['elasticsearch-roots'] }
-
-    include standard
-    include role::elasticsearch::server
-
-    class { 'lvs::realserver':
-        realserver_ips => '10.2.2.30',
-    }
+    role elasticsearch::server
 }
 
 node 'lead.wikimedia.org' {
