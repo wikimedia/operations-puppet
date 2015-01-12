@@ -512,11 +512,10 @@ class misc::statistics::rsync::jobs::webrequest {
         "${working_path}/squid",
         "${working_path}/squid/archive",
         # Moving away from "squid" nonmenclature for
-        # webrequest logs.  Kafkatee generated log
+        # webrequest logs.  New generated log
         # files will be rsynced into /a/log.
         "${working_path}/log",
         "${working_path}/log/webrequest",
-        "${working_path}/log/webrequest/archive",
     ]:
         ensure  => directory,
         owner   => 'stats',
