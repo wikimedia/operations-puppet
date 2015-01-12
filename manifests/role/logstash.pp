@@ -6,6 +6,10 @@
 # Provisions Logstash, Redis, and ElasticSearch.
 #
 class role::logstash {
+    include standard
+    if $::realm == 'production' {
+        include admin
+    }
     include ::elasticsearch::ganglia
     include ::elasticsearch::nagios::check
     include ::passwords::logstash
