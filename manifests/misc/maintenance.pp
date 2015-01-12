@@ -196,7 +196,7 @@ class misc::maintenance::wikidata( $ensure = present ) {
         minute  => [0,15,30,45],
     }
 
-    # Run the dispatcher script every 5 minutes
+    # Run the iispatcher script every 5 minutes
     # This handles inserting jobs into client job queue, which then process the changes
     cron { 'wikibase-dispatch-changes3':
         ensure  => $ensure,
@@ -212,6 +212,22 @@ class misc::maintenance::wikidata( $ensure = present ) {
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher4.log',
         user    => 'apache',
         minute  => '*/5',
+    }
+
+    cron { 'wikibase-dispatch-changes-test':
+        ensure  => $ensure,
+        # second dispatcher to inject wikidata changes  wikibase clients (e.g. wikipedia) to be processed as jobs there
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher-testwikidata.log',
+        user    => 'apache',
+        minute  => '*/5',
+    }
+
+    cron { 'wikibase-repo-prune-test':
+        ensure  => $ensure,
+        # prunes the wb_changes table in testwikidatawiki db
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune-testwikidata.log',
+        user    => 'apache',
+        minute  => [0,15,30,45],
     }
 
     cron { 'wikibase-rebuild-entityperpage':
