@@ -63,6 +63,9 @@ class role::elasticsearch::config {
         }
     } else {
         # Production
+        include standard
+        include admin
+        include lvs::realserver
         $multicast_group = $::site ? {
             'eqiad' => '224.2.2.5',
         }

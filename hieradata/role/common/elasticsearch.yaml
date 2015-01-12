@@ -1,0 +1,4 @@
+cluster: elasticsearch
+admin::groups:
+  - elasticsearch-roots
+lvs::realserver::realserver_ips: "10.2.2.30"
