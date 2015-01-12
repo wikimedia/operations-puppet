@@ -98,11 +98,6 @@ plugins:
         permissions: 755
         owner: root
       -
-        src: /etc/bootstrap-vz/install_sudo.sh
-        dst: /root/install_sudo.sh
-        permissions: 755
-        owner: root
-      -
         src: /etc/bootstrap-vz/access.conf
         dst: /etc/security/access.conf
       -
@@ -178,10 +173,13 @@ plugins:
         src: /etc/ssl/certs/GlobalSign_CA.pem
         dst: /etc/ssl/certs/GlobalSign_CA.pem
   image_commands:
+    # Current implementation does not specify an order between image_commands and
+    #  file_copy.  This section should not depend on anything existing from
+    #  file_copy; hence the touch below.
     commands:
       - ['chroot', '{root}', 'passwd', '-ld', 'root']
-      - ['chroot', '{root}', '/root/install_sudo.sh']
-      - ['chroot', '{root}', 'rm', '/root/install_sudo.sh']
+      - ['chroot', '{root}', '/bin/sh', '-c', 'echo "#" >> /etc/sudoers']
+      - ['chroot', '{root}', '/bin/sh', '-c', 'touch /etc/sudoers && SUDO_FORCE_REMOVE=yes apt-get --force-yes --assume-yes install sudo-ldap']
       - ['chroot', '{root}', 'rm', '-f', '/etc/ssh/ssh_host*key*']
       - ['chroot', '{root}', 'rm', '-f', '/etc/sudo-ldap.conf']
       - ['chroot', '{root}', 'ln', '-s', '/etc/ldap/ldap.conf', '/etc/sudo-ldap.conf']

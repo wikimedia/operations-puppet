@@ -46,12 +46,6 @@ class labs_bootstrapvz() {
         require => File["${bootstrap_filepath}/firstscripts"],
     }
 
-    file { "${bootstrap_filepath}/install_sudo.sh":
-        mode    => '0555',
-        source  => 'puppet:///modules/labs_bootstrapvz/install_sudo.sh',
-        require => File[$bootstrap_filepath],
-    }
-
     $projectregex = "s/${instanceproject}/_PROJECT_/g"
     $fqdnregex = "s/${::ec2_instance_id}.${::domain}/_FQDN_/g"
     $masterregex = "s/${servername}/_MASTER_/g"
