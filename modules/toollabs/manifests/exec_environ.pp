@@ -175,6 +175,10 @@ class toollabs::exec_environ {
         'python-svn',                  # Bug 56996
         'python-twisted',
         'python-twitter',
+        'python-unittest2',            # Bug T86015
+        'python-pycountry',            # Bug T86015
+        'python-flickrapi',            # Bug T86015
+        'python-pydot',                # Bug T86015
         'python-virtualenv',
         'python-wadllib',
         'python-webpy',
