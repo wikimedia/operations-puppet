@@ -7,6 +7,8 @@ class planet::webserver {
     # TODO to be replaced with new method in the future
     class { 'webserver::php5': ssl  => true; }
     include ::apache::mod::rewrite
+    # so we can vary on X-Forwarded-Proto when behind misc-web
+    include ::apache::mod::headers
 
     # we do this because NameVirtualHost *:443 isn't there by default
     file { '/etc/apache2/ports.conf':
