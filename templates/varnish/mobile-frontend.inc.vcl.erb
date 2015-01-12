@@ -133,12 +133,10 @@ sub vcl_fetch {
 		set beresp.ttl = 60 s;
 	}
 
-/*
 	if (beresp.ttl <= 0s) {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
-*/
 
 	return (deliver);
 }
