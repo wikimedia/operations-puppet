@@ -118,12 +118,7 @@ class role::mediawiki::videoscaler {
 
     include ::role::mediawiki::common
     include ::mediawiki::multimedia
-
-    class { '::mediawiki::jobrunner':
-        queue_servers     => ['rdb1001.eqiad.wmnet', 'rdb1003.eqiad.wmnet'],
-        statsd_server     => 'statsd.eqiad.wmnet:8125',
-        runners_transcode => 5,
-    }
+    include ::mediawiki::jobrunner
 }
 
 class role::mediawiki::jobrunner {
