@@ -124,6 +124,8 @@ node 'analytics1001.eqiad.wmnet' {
         ],
     }
     include standard
+
+    include role::analytics::hadoop::standby
 }
 
 
@@ -138,6 +140,8 @@ node 'analytics1002.eqiad.wmnet' {
         ],
     }
     include standard
+
+    include role::analytics::hadoop::standby
 }
 
 
