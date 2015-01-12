@@ -1876,7 +1876,6 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 
     class { 'lvs::realserver': realserver_ips => [ '10.2.2.27' ] }
 
-    include admin
     include role::diamond
 }
 
@@ -1888,7 +1887,6 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
                    ]
 
     role swift::eqiad_prod::storage
-    include admin
 
     swift::create_filesystem{ $all_drives: partition_nr => '1' }
     # these are already partitioned and xfs formatted by the installer
@@ -1900,7 +1898,6 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
     role swift::esams_prod::proxy
-    include admin
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
@@ -1912,8 +1909,6 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
     ]
 
     role swift::esams_prod::storage
-    include admin
-
 
     swift::create_filesystem{ $all_drives: partition_nr => '1' }
 
@@ -1935,12 +1930,10 @@ node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
 
     role swift::proxy
     include ::lvs::realserver
-    include admin
 }
 
 node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
     role swift::storage
-    include admin
 }
 
 # mw1001-1016 are jobrunners (precise)
