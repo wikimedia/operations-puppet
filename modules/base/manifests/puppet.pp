@@ -10,6 +10,11 @@ class base::puppet($server='puppet', $certname=undef) {
         ensure  => latest,
     }
 
+    # facter needs this for proper "virtual"/"is_virtual" resolution
+    package { 'virt-what':
+        ensure => present,
+    }
+
     file { '/etc/puppet/puppet.conf':
         ensure => 'file',
         owner  => 'root',
