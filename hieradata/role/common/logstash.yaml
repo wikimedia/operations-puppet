@@ -1,0 +1,3 @@
+cluster: logstash
+admin::groups:
+  - logstash-roots

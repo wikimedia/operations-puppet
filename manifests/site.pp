@@ -2462,16 +2462,10 @@ node 'lead.wikimedia.org' {
 }
 
 node /^logstash100[1-3]\.eqiad\.wmnet$/ {
-    $cluster = 'logstash'
     if $::hostname =~ /^logstash100[13]$/ {
         $ganglia_aggregator = true
     }
-
-    class { 'admin': groups => ['logstash-roots'] }
-
-    include standard
-    include role::logstash
-    include role::kibana
+    role logstash, kibana
 }
 
 node 'tin.eqiad.wmnet' {
