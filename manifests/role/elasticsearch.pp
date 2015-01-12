@@ -61,8 +61,12 @@ class role::elasticsearch::config {
             # Don't let random test instances spam statsd
             $statsd_host = undef
         }
-    } else {
+    }
+    else {
         # Production
+        include standard
+        include admin
+        include lvs::realserver
         $multicast_group = $::site ? {
             'eqiad' => '224.2.2.5',
         }
