@@ -8,7 +8,7 @@ class role::swift {
         include standard
     }
 
-    class eqiad-prod inherits role::swift::base {
+    class eqiad_prod inherits role::swift::base {
         system::role { 'role::swift::eqiad-prod':
             description => 'Swift eqiad production cluster',
         }
@@ -17,7 +17,7 @@ class role::swift {
             hash_path_suffix => '4f93c548a5903a13',
             cluster_name     => 'eqiad-prod',
         }
-        class ganglia_reporter inherits role::swift::eqiad-prod {
+        class ganglia_reporter inherits role::swift::eqiad_prod {
 
             require_package('python-statsd')
 
@@ -85,7 +85,7 @@ class role::swift {
                 minute  => '*/15',
             }
         }
-        class proxy inherits role::swift::eqiad-prod {
+        class proxy inherits role::swift::eqiad_prod {
             class { '::swift::proxy':
                 statsd_host          => 'localhost',
                 statsd_metric_prefix => "swift.eqiad-prod.${::hostname}",
@@ -129,7 +129,7 @@ class role::swift {
                 },
             }
         }
-        class storage inherits role::swift::eqiad-prod {
+        class storage inherits role::swift::eqiad_prod {
             include ::swift::storage
             include ::swift::storage::monitoring
             include role::swift::icehouse
@@ -152,7 +152,7 @@ class role::swift {
             }
         }
     }
-    class esams-prod inherits role::swift::base {
+    class esams_prod inherits role::swift::base {
         system::role { 'role::swift::esams-prod':
             description => 'Swift esams production cluster',
         }
@@ -161,7 +161,7 @@ class role::swift {
             hash_path_suffix => 'a0af6563d361f968',
             cluster_name     => 'esams-prod',
         }
-        class ganglia_reporter inherits role::swift::esams-prod {
+        class ganglia_reporter inherits role::swift::esams_prod {
             # one host per cluster should report global stats
             file { '/usr/local/bin/swift-ganglia-report-global-stats':
                 ensure => present,
@@ -226,7 +226,7 @@ class role::swift {
                 minute  => '*/15',
             }
         }
-        class proxy inherits role::swift::esams-prod {
+        class proxy inherits role::swift::esams_prod {
             class { '::swift::proxy':
                 statsd_host          => 'localhost',
                 statsd_metric_prefix => "swift.esams-prod.${::hostname}",
@@ -266,7 +266,7 @@ class role::swift {
                 },
             }
         }
-        class storage inherits role::swift::esams-prod {
+        class storage inherits role::swift::esams_prod {
             include ::swift::storage
             include ::swift::storage::monitoring
             include role::swift::icehouse
