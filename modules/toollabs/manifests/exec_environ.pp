@@ -179,6 +179,7 @@ class toollabs::exec_environ {
         'python-pycountry',            # Bug T86015
         'python-flickrapi',            # Bug T86015
         'python-pydot',                # Bug T86015
+        'python-unicodecsv',           # Bug T86015
         'python-virtualenv',
         'python-wadllib',
         'python-webpy',
