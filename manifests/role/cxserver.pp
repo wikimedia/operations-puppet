@@ -11,7 +11,7 @@ class role::cxserver::production {
         conf_path => '/srv/deployment/cxserver/cxserver/config.js',
         log_dir   => '/var/log/cxserver',
         parsoid   => 'http://parsoid-lb.eqiad.wikimedia.org',
-        apertium  => 'http://apertium.svc.eqiad.wmnet',
+        apertium  => 'http://apertium.svc.eqiad.wmnet:2737',
     }
 
     # Define cxserver port
