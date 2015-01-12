@@ -1462,8 +1462,8 @@ class role::cache {
             admin_port       => 6083,
             storage          => $storage_conf,
             directors        => {
-                'backend'  => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
-                'cxserver' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
+                'backend'          => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
+                'cxserver_backend' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
             },
             director_options => {
                 'retries' => 2,
@@ -1494,8 +1494,8 @@ class role::cache {
             port             => 80,
             admin_port       => 6082,
             directors        => {
-                'backend'  => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
-                'cxserver' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
+                'backend'          => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
+                'cxserver_backend' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
             },
             director_type    => 'chash',
             director_options => {
