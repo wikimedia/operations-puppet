@@ -1868,13 +1868,13 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
     if $::hostname == 'ms-fe1001' {
-        include role::swift::eqiad-prod::ganglia_reporter
+        include role::swift::eqiad_prod::ganglia_reporter
     }
 
     class { 'lvs::realserver': realserver_ips => [ '10.2.2.27' ] }
 
+    role swift::eqiad_prod::proxy
     include admin
-    include role::swift::eqiad-prod::proxy
     include role::diamond
 }
 
@@ -1883,10 +1883,10 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
         '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
         '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
-    ]
+                   ]
 
+    role swift::eqiad_prod::storage
     include admin
-    include role::swift::eqiad-prod::storage
 
     swift::create_filesystem{ $all_drives: partition_nr => '1' }
     # these are already partitioned and xfs formatted by the installer
@@ -1897,8 +1897,8 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
+    role swift::esams_prod::proxy
     include admin
-    include role::swift::esams-prod::proxy
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
@@ -1909,8 +1909,9 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
         '/dev/sdk', '/dev/sdl'
     ]
 
+    role swift::esams_prod::storage
     include admin
-    include role::swift::esams-prod::storage
+
 
     swift::create_filesystem{ $all_drives: partition_nr => '1' }
 
@@ -1922,8 +1923,6 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 }
 
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
-    include admin
-
     if $::hostname =~ /^ms-fe200[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1932,14 +1931,14 @@ node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
         include role::swift::stats_reporter
     }
 
+    role swift::proxy
     include ::lvs::realserver
-    include role::swift::proxy
+    include admin
 }
 
 node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
+    role swift::storage
     include admin
-
-    include role::swift::storage
 }
 
 # mw1001-1016 are jobrunners (precise)
