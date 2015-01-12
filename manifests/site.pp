@@ -2218,9 +2218,7 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
     }
 
     $ganglia_aggregator = ( $::hostname == 'rcs1001' )
-    include admin
-    include standard
-    include role::rcstream
+    role rcstream
 }
 
 # netflow machine (jkrauska)

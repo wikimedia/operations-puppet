@@ -19,10 +19,6 @@ lsearchd:
   cluster: search
   nagios_group: lucene
 
-rcs_eqiad:
-  __regex: !ruby/regexp /^rcs100[0-9]\.eqiad\.wmnet/
-  cluster: rcstream
-
 restbase_eqiad:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   mainrole: restbase
