@@ -5,10 +5,13 @@
 # Virtual resources for the monitoring server
 @monitoring::group { 'ocg_eqiad': description => 'offline content generator eqiad' }
 
-class role::ocg::production (
-    $tmpfs_size = '512M', # size of tmpfs filesystem e.g. 512M
-    ) {
+class role::ocg {
+    include base::firewall
+    include standard
+    include admin
 
+    # size of tmpfs filesystem
+    $tmpfs_size = hiera('role::ocg::tmpfs_size', '512M')
     system::role { 'ocg':
         description => 'offline content generator for MediaWiki Collection extension',
     }

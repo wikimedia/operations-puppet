@@ -2093,11 +2093,7 @@ node 'nitrogen.wikimedia.org' {
 node /^ocg100[123]\.eqiad\.wmnet$/ {
     # Mainrole: pdf!
     $ganglia_aggregator = hiera('ganglia_aggregator', false)
-
-    include base::firewall
-    include standard
-    include admin
-    include role::ocg::production
+    role ocg
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
