@@ -31,8 +31,6 @@ class base::standard-packages {
         'lldpd',
         'quickstack',
         'pv',
-        'mcelog',
-        'intel-microcode',
     ]
 
     package { $packages:
@@ -46,5 +44,11 @@ class base::standard-packages {
     # uninstall these packages
     package { [ 'mlocate', 'os-prober' ]:
         ensure => absent,
+    }
+
+    # real-hardware specific
+    unless $::is_virtual {
+        package { 'mcelog': ensure => latest }
+        package { 'intel-microcode': ensure => latest }
     }
 }
