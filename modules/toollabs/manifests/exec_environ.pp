@@ -139,6 +139,7 @@ class toollabs::exec_environ {
         'python-flask',
         'python-flask-login',
         'python-flask-oauth',
+        'python-flickrapi',            # Bug T86015
         'python-flup',
         'python-gdal',
         'python-gdbm',
@@ -164,6 +165,8 @@ class toollabs::exec_environ {
         'python-opencv',
         'python-oursql',               # For danilo et al.
         'python-problem-report',
+        'python-pycountry',            # Bug T86015
+        'python-pydot',                # Bug T86015
         'python-pyexiv2',              # Bug 59122.
         'python-pygments',             # Bug 69050
         'python-pyinotify',            # Bug 57003
@@ -175,11 +178,8 @@ class toollabs::exec_environ {
         'python-svn',                  # Bug 56996
         'python-twisted',
         'python-twitter',
-        'python-unittest2',            # Bug T86015
-        'python-pycountry',            # Bug T86015
-        'python-flickrapi',            # Bug T86015
-        'python-pydot',                # Bug T86015
         'python-unicodecsv',           # Bug T86015
+        'python-unittest2',            # Bug T86015
         'python-virtualenv',
         'python-wadllib',
         'python-webpy',
