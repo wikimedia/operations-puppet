@@ -14,10 +14,6 @@ statistics:
   __regex: !ruby/regexp /stat100[123].eqiad.wmnet/
   mainrole: statistics
 
-rcs_eqiad:
-  __regex: !ruby/regexp /^rcs100[0-9]\.eqiad\.wmnet/
-  cluster: rcstream
-
 restbase_eqiad:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   mainrole: restbase
