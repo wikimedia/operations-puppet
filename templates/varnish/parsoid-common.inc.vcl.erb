@@ -2,7 +2,7 @@
 
 sub vcl_recv {
 	if (req.http.Host ~ "cxserver" ) {
-		set req.backend = cxserver;
+		set req.backend = cxserver_backend;
 		return (pass);
 	}
 	/* Clamp the host header to 'parsoid' */
