@@ -39,7 +39,7 @@ director <%= default_backend %>_random random {
 }
 
 sub mobile_redirect {
-	if ( (req.request == "GET" || req.request == "HEAD")
+	if ((req.request == "GET" || req.request == "HEAD")
 		&& (req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"
 			|| req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-" || req.http.Accept ~ "vnd.wap.wml")
 		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
@@ -149,7 +149,7 @@ sub vcl_deliver {
 		&& req.url !~ "(?i)bcache=1") {
 		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
 	}
-<% if @cluster_options.fetch( "enable_geoiplookup", false ) -%>
+<% if @cluster_options.fetch("enable_geoiplookup", false) -%>
 	/* Perform GeoIP look-up and send the result as a session cookie */
 	if (req.http.Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
 		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {

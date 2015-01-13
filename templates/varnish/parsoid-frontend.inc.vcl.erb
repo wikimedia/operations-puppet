@@ -4,24 +4,22 @@
 include "parsoid-common.inc.vcl";
 
 sub vcl_miss {
-	// forward the Cache-Control header to the backend
-	if ( req.http.Cache-Control )
-	{
+	// Forward the Cache-Control header to the backend
+	if (req.http.Cache-Control) {
 		set bereq.http.Cache-Control = req.http.Cache-Control;
 	}
 }
 
 sub vcl_pass {
-	// forward the Cache-Control header to the backend
-	if ( req.http.Cache-Control )
-	{
+	// Forward the Cache-Control header to the backend
+	if (req.http.Cache-Control) {
 		set bereq.http.Cache-Control = req.http.Cache-Control;
 	}
 }
 
 sub vcl_fetch {
 	set beresp.ttl = 0s;
-	if ( req.http.Host ~ "cxserver" ) {
+	if (req.http.Host ~ "cxserver") {
 		return (hit_for_pass);
 	}
 }
