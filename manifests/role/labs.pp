@@ -106,20 +106,6 @@ class role::labs::instance {
         require => File['/public/dumps'],
     }
 
-    file { '/public/backups':
-        ensure  => directory,
-        require => File['/public'],
-    }
-    mount { '/public/backups':
-        ensure  => unmounted,
-        atboot  => true,
-        fstype  => 'nfs',
-        options => "ro,${nfs_opts}",
-        device  => "${nfs_server}:/backups",
-        require => File['/public/backups'],
-    }
-
-
     file { '/public/keys':
         ensure  => directory,
         require => File['/public'],
