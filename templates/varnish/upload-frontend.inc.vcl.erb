@@ -97,11 +97,11 @@ sub vcl_error {
 		set obj.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";
 		set obj.http.Access-Control-Max-Age = "86400";
 
-		return(deliver);
+		return (deliver);
 	}
 
 	call errorpage;
-	return(deliver);
+	return (deliver);
 }
 
 sub vcl_deliver {

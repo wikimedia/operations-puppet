@@ -105,24 +105,24 @@ sub vcl_error {
 		call geoip_lookup;
 		set obj.status = 200;
 		set obj.http.Connection = "keep-alive";
-		return(deliver);
+		return (deliver);
 	}
 <% end -%>
 	/* 204 responses shouldn't contain a body */
 	if (obj.status == 204) {
 		set obj.http.Connection = "keep-alive";
-		return(deliver);
+		return (deliver);
 	}
 	/* 301 redirects for https-only wikis */
 	if (obj.status == 301) {
 		set obj.http.Location = obj.response;
 		set obj.status = 301;
 		set obj.http.Connection = "keep-alive";
-		return(deliver);
+		return (deliver);
 	}
 
 	call errorpage;
-	return(deliver);
+	return (deliver);
 }
 
 <% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>

@@ -147,11 +147,11 @@ sub vcl_error {
 		set obj.http.Location = obj.response;
 		set obj.status = 302;
 		set obj.http.Connection = "keep-alive";
-		return(deliver);
+		return (deliver);
 	}
 
 	call errorpage;
-	return(deliver);
+	return (deliver);
 }
 
 sub vcl_deliver {

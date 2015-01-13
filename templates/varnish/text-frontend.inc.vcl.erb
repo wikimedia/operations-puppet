@@ -109,7 +109,7 @@ sub vcl_recv {
 
 	call evaluate_cookie;
 
-	return(lookup);
+	return (lookup);
 }
 
 sub vcl_pass {
@@ -136,11 +136,11 @@ sub vcl_error {
 		set obj.status = 302;
 		set obj.http.Connection = "keep-alive";
 		set obj.http.Content-Length = "0"; # BZ #62245
-		return(deliver);
+		return (deliver);
 	}
 
 	call errorpage;
-	return(deliver);
+	return (deliver);
 }
 
 sub vcl_deliver {
