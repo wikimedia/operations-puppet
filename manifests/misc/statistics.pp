@@ -1144,7 +1144,7 @@ class misc::statistics::aggregator {
 
     # Cron for basing monitoring of the aggregated data
     cron { 'aggregator projectcounts monitor':
-        monitor => "${script_path}/bin/check_validity_aggregated_projectcounts --data ${data_path}",
+        command => "${script_path}/bin/check_validity_aggregated_projectcounts --data ${data_path}",
         user    => $user,
         hour    => '13',
         minute  => '45',
