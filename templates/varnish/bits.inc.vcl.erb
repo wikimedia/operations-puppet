@@ -1,7 +1,6 @@
 # Varnish VCL include file for bits
 
 include "errorpage.inc.vcl";
-include "hhvm.inc.vcl";
 
 <% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
 sub mangle_request {

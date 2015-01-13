@@ -16,8 +16,6 @@ include "via.inc.vcl";
 // address) in X-Forwarded-For, even if it's the only value, as in
 // the example of traffic sourced directly by satellite or something.
 
-include "hhvm.inc.vcl";
-
 
 sub filter_noise {
 	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {

@@ -1,7 +1,6 @@
 # Varnish VCL include file for mobile backends
 
 include "errorpage.inc.vcl";
-include "hhvm.inc.vcl";
 
 sub vcl_recv {
 	call vcl_recv_purge;
