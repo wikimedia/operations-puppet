@@ -16,8 +16,6 @@ include "via.inc.vcl";
 // address) in X-Forwarded-For, even if it's the only value, as in
 // the example of traffic sourced directly by satellite or something.
 
-include "hhvm.inc.vcl";
-
 
 sub filter_noise {
 	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
@@ -188,7 +186,6 @@ sub vcl_deliver {
 		set resp.http.Cache-Control = "s-maxage=3600, max-age=3600";
 	}
 
-	call php_mark_engine;
         /* TODO: this block of VCL code is copypasta from text-frontend. Some consolidation is in order. */
         <% if @cluster_options.fetch( "enable_geoiplookup", false ) -%>
                 /* Perform GeoIP look-up and send the result as a session cookie */
