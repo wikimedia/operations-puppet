@@ -114,16 +114,11 @@ class role::logstash {
 
 }
 
-# == Class: role::logstash::beta
+# == Class: role::logstash::ircbot
 #
-# Provisions Logstash, Redis, and ElasticSearch for beta labs environment.
-#
-class role::logstash::beta {
+# Sets up an IRC Bot to log messages from certain IRC channels
+class role::logstash::ircbot {
     require ::role::logstash
-
-    if $::realm != 'labs' {
-        fail('role::logstash::beta may only be deployed to Labs.')
-    }
 
     $irc_name = $::logstash_irc_name ? {
         undef => "logstash-${::instanceproject}",
@@ -136,14 +131,26 @@ class role::logstash::beta {
         channels => ['#wikimedia-labs', '#wikimedia-releng'],
     }
 
-    logstash::input::tcp { 'tcp_json':
-        port  => 5229,
-        codec => 'json_lines',
-    }
-
     logstash::conf { 'filter_irc_banglog':
         source   => 'puppet:///files/logstash/filter-irc-banglog.conf',
         priority => 50,
+    }
+}
+
+# == Class: role::logstash::puppetreports
+#
+# Set up a TCP listener to listen for puppet failure reports.
+class role::logstash::puppetreports {
+    require ::role::logstash
+
+    if $::realm != 'labs' {
+        # Constrain to only labs, security issues in prod have not been worked out yet
+        fail('role::logstash::puppetreports may only be deployed to Labs.')
+    }
+
+    logstash::input::tcp { 'tcp_json':
+        port  => 5229,
+        codec => 'json_lines',
     }
 
     logstash::conf { 'filter_puppet':
