@@ -36,10 +36,7 @@ sub evaluate_cookie {
 	/* A session or token cookie will prevent caching if varied on,
 	 * move the Cookie header out of the way otherwise
 	 */
-	/* gettingStarted exclusion is to work around e.g. enwikigettingStartedUserToken=
-	 * FIXME: the gettingStarted exception can be removed after 2014-08-01
-	 */
-	if (req.http.Cookie ~ "([sS]ession|(?<!gettingStartedUser)Token)=") {
+	if (req.http.Cookie ~ "([sS]ession|Token)=") {
 		set req.hash_ignore_busy = true;
 	} else {
 		call cookie_munging;
