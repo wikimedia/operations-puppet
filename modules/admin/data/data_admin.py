@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-#2014 Chase Pettet
-#beginnings of a linter for data.yaml
+# 2014 Chase Pettet
+# beginnings of a linter for data.yaml
 
 import sys
 import yaml
@@ -25,7 +25,7 @@ def all_assigned_users(admins):
 
 
 def dict_sort(dictionary):
-    #dumping ordered dict to yaml causes issues, return normal dict
+    # dumping ordered dict to yaml causes issues, return normal dict
     return dict(collections.OrderedDict(sorted(dictionary.items())))
 
 
@@ -44,14 +44,14 @@ def main():
         all_users = admins['users'].keys()
         grouped_users = all_assigned_users(admins)
 
-        #ensure all assigned users exist
+        # ensure all assigned users exist
         non_existent_users = [u for u in grouped_users if u not in all_users]
         if non_existent_users:
             lint_error = True
             print "Users assigned that do not exist: %s" % (
                 non_existent_users,)
 
-        #ensure no two groups uses the same gid
+        # ensure no two groups uses the same gid
         gids = filter(None, [
             v.get('gid', None) for k, v in admins['groups'].iteritems()])
         dupes = [k for k, v in Counter(gids).items() if v > 1]
