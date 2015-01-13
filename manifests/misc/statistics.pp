@@ -1096,7 +1096,7 @@ class misc::statistics::aggregator {
     include misc::statistics::base
     include misc::statistics::user
 
-    Class['role::analytics::clients'] -> Class['misc::statistics::aggregator']
+    Class['cdh::hadoop::mount'] -> Class['misc::statistics::aggregator']
 
     $working_path     = "${misc::statistics::base::working_path}/aggregator"
 
@@ -1104,7 +1104,12 @@ class misc::statistics::aggregator {
     $data_repo_path   = "${working_path}/data"
     $data_path        = "${data_repo_path}/projectcounts"
     $log_path         = "${working_path}/log"
-    $hdfs_source_path = "${::role::analytics::clients::hdfs_mount_point}/wmf/data/archive/pagecounts-all-sites"
+    # This should not be hardcoded.  Instead, one should be able to use
+    # $::cdh::hadoop::mount::mount_point to reference the user supplied
+    # parameter when the cdh::hadoop::mount class is evaluated.
+    # I am not sure why this is not working.
+    $hdfs_mount_point = '/mnt/hdfs'
+    $hdfs_source_path = "${hdfs_mount_point}/wmf/data/archive/pagecounts-all-sites"
     $user             = $misc::statistics::user::username
     $group            = $misc::statistics::user::username
 
