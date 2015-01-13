@@ -85,10 +85,10 @@ sub vcl_recv {
 
 	/* FIXME: deploy X-Vary-Options support */
 	set req.http.X-Orig-Cookie = req.http.Cookie;
-	if( req.http.Cookie ~ "disable" ||
+	if (req.http.Cookie ~ "disable" ||
 		req.http.Cookie ~ "optin" ||
 		req.http.Cookie ~ "[Ss]ession" ||
-		req.http.Cookie ~ "forceHTTPS" ) {
+		req.http.Cookie ~ "forceHTTPS") {
 		/* Do nothing; these are the cookies we pass.
 		 * this is a hack in the absence of X-V-O support
 		 */
@@ -96,14 +96,14 @@ sub vcl_recv {
 		unset req.http.Cookie;
 	}
 
-	if ( req.http.host ~ "^test\." ) {
+	if (req.http.host ~ "^test\.") {
 		return (pass);
 	}
 
 	set req.hash_ignore_busy = true;
 
 	unset req.http.Surrogate-Capability;
-<% if @cluster_options.fetch( "enable_esi", false ) -%>
+<% if @cluster_options.fetch("enable_esi", false) -%>
 	if (req.http.X-CS == "-TEST") {
 		set req.http.Surrogate-Capability = "frontend=ESI/1.0";
 	}
@@ -122,7 +122,7 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-<% if @cluster_options.fetch( "enable_esi", false ) -%>
+<% if @cluster_options.fetch("enable_esi", false) -%>
 	if (beresp.http.Surrogate-Control ~ "ESI/1.0") {
 		set beresp.do_esi = true;
 	}
@@ -190,7 +190,7 @@ sub vcl_deliver {
 
 	call php_mark_engine;
         /* TODO: this block of VCL code is copypasta from text-frontend. Some consolidation is in order. */
-        <% if @cluster_options.fetch( "enable_geoiplookup", false ) -%>
+        <% if @cluster_options.fetch("enable_geoiplookup", false) -%>
                 /* Perform GeoIP look-up and send the result as a session cookie */
                 if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
                         && req.http.Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
