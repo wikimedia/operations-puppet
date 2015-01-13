@@ -167,11 +167,6 @@ class role::lucene {
                 description => 'Front end lucene search server',
             }
 
-            include lvs::configuration
-            class { 'lvs::realserver':
-                realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$search_pool][$::site] ],
-            }
-
             include standard
 
             $updloggingpool = $search_pool ? {
