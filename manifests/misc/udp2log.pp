@@ -395,4 +395,11 @@ class misc::udp2log::firewall {
         rule => 'proto !udp ACCEPT;',
         prio => 12,
     }
+
+    # let monitoring host connect via NRPE
+    ferm::rule { 'udp2log_accept_icinga_nrpe':
+        rule => 'proto tcp dport 5666 { saddr $INTERNAL ACCEPT; }'
+        prio => 13,
+    }
+
 }
