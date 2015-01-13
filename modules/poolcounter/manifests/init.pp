@@ -4,7 +4,7 @@
 class poolcounter {
 
     package { 'poolcounter':
-        ensure => 'latest',
+        ensure => 'installed',
     }
 
     service { 'poolcounter':
