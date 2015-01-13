@@ -1,19 +1,18 @@
-# Varnish VCL include file for bits
+// Varnish VCL include file for bits
 
 include "errorpage.inc.vcl";
 include "hhvm.inc.vcl";
 
 <% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
 sub mangle_request {
-	/* transform backend url: /<sitename>/load.php -> /w/load.php
-	   set host header for backend to <sitename>
-	*/
+	// transform backend url: /<sitename>/load.php -> /w/load.php
+	// set host header for backend to <sitename>
 	if ( req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.<%= Regexp.escape( @cluster_options.fetch( "top_domain", "org" ) ) %>/load\.php" ) {
 		set bereq.http.host = regsub( req.url, "^/([^/]+)/(.*)$", "\1" );
 		set bereq.url = regsub( req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2" );
 <% if @cluster_options.fetch( "test_hostname", false ) -%>
 
-		# Send test.wikipedia.org to the right backend server
+		// Send test.wikipedia.org to the right backend server
 		if ( req.url ~ "^/<%= Regexp.escape( @cluster_options.fetch( "test_hostname" ) ) %>/load\.php" ) {
 			set req.backend = test_wikipedia;
 		}
@@ -40,9 +39,9 @@ sub vcl_recv {
 	}
 
 	if (req.http.host == "<%= @cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>") {
-	/* For https-only wikis, the redirect from http to https for bits assets should occur
-		in varnish instead of apache, since the apache redirect and mediawiki doesn't
-		vary by protocol. This can result in a redirect loop and assets not loading. */
+		// For https-only wikis, the redirect from http to https for bits assets should occur
+		// in varnish instead of apache, since the apache redirect and mediawiki doesn't
+		// vary by protocol. This can result in a redirect loop and assets not loading.
 		if ( req.url ~ "^/(auditcom|boardgovcom|board|chair|chapcom|checkuser|collab|donate|exec|fdc|grants|internal|movementroles|nomcom|office|otrs-wiki|searchcom|spcom|steward|wikimaniateam)\.wikimedia\.org/" && req.http.X-Forwarded-Proto != "https" ) {
 			error 301 "https://<%= @cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>" + req.url;
 		}
@@ -68,16 +67,14 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-	/*
-	Do not serialize calls for non-cachable objects.
-	Removing this would break debug=true in mediawiki.
-	*/
+	// Do not serialize calls for non-cachable objects.
+	// Removing this would break debug=true in mediawiki.
 	if (beresp.ttl <= 0s) {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
 
-	/* Don't run the default vcl_fetch function */
+	// Don't run the default vcl_fetch function
 	return (deliver);
 }
 
@@ -88,11 +85,9 @@ sub vcl_miss {
 <% end -%>
 
 <% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
-/*
- vcl_pass gets called by hit_for_pass objects in place of vcl_miss, so
- we need to mangle the request object here as well. Actually, vcl_miss
- and vcl_pass should probably be identical for the time being.
-*/
+// vcl_pass gets called by hit_for_pass objects in place of vcl_miss, so
+// we need to mangle the request object here as well. Actually, vcl_miss
+// and vcl_pass should probably be identical for the time being.
 sub vcl_pass {
 	call mangle_request;
 }
@@ -100,7 +95,7 @@ sub vcl_pass {
 
 sub vcl_error {
 <% if @cluster_options.fetch( "enable_geoiplookup", false ) -%>
-	/* Support geoiplookup */
+	// Support geoiplookup
 	if (obj.status == 666) {
 		call geoip_lookup;
 		set obj.status = 200;
@@ -108,12 +103,12 @@ sub vcl_error {
 		return(deliver);
 	}
 <% end -%>
-	/* 204 responses shouldn't contain a body */
+	// 204 responses shouldn't contain a body
 	if (obj.status == 204) {
 		set obj.http.Connection = "keep-alive";
 		return(deliver);
 	}
-	/* 301 redirects for https-only wikis */
+	// 301 redirects for https-only wikis
 	if (obj.status == 301) {
 		set obj.http.Location = obj.response;
 		set obj.status = 301;

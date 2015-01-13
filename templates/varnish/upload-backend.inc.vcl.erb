@@ -1,4 +1,4 @@
-# Varnish VCL include file for upload backends
+// Varnish VCL include file for upload backends
 
 include "errorpage.inc.vcl";
 
@@ -67,7 +67,7 @@ sub radosgw_rewrite {
 			set bereq.http.host = regsub(req.url, "^/([^-/]+)/([^/]+)/thumb/.+$", "\2.\1.<%= Regexp.escape(@cluster_options.fetch('top_domain', 'org')) %>");
 			set bereq.http.X-Original-URI = req.url;
 
-			# Exceptions
+			// Exceptions
 			set bereq.http.host = regsub(bereq.http.host, "^(meta|commons|internal|grants)\.wikipedia\.org$", "\1.wikimedia.org");
 			set bereq.http.host = regsub(bereq.http.host, "^mediawiki\..+$", "www.mediawiki.org");
 			set bereq.http.host = regsub(bereq.http.host, "^sources\.wikipedia\.org$", "wikisource.org");
@@ -91,7 +91,7 @@ sub vcl_recv {
 		error 403 "Requested target domain not allowed.";
 	}
 
-	/* Make sure high range requests don't block on large objects being retrieved */
+	// Make sure high range requests don't block on large objects being retrieved
 	if (req.http.Range
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432
 			|| req.http.Range ~ "^bytes=([0-9]{9,})-")) {
@@ -102,17 +102,17 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-	# Cache media objects for 30 days by default
+	// Cache media objects for 30 days by default
 	if (beresp.status <= 400) {
 		set beresp.ttl = 30d;
 	}
 
-	# Stream large objects, >= 1 MB
+	// Stream large objects, >= 1 MB
 	if (std.integer(beresp.http.Content-Length, 0) >= 1048576 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
 	}
 
-	/* Select a random big object storage backend for objects >= 100 MB */
+	// Select a random big object storage backend for objects >= 100 MB
 	if (beresp.http.Content-Length ~ "^[0-9]{9}") {
 		call pick_large_object_stevedore;
 	} else {
@@ -120,13 +120,12 @@ sub vcl_fetch {
 	}
 	
 	if (beresp.http.Content-Range) {
-		/* Varnish itself doesn't ask for ranges, so this must have been
-		 * a passed range request
-		 */
+		// Varnish itself doesn't ask for ranges, so this must have been
+		// a passed range request
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
 	}
 
-	# Derive the corresponding original URL and store it with the object
+	// Derive the corresponding original URL and store it with the object
 	if (!beresp.http.X-MediaWiki-Original && req.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") {
 		set beresp.http.X-MediaWiki-Original = regsub(req.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
 	}
@@ -141,7 +140,7 @@ sub vcl_hit {
 }
 
 sub vcl_miss {
-	/* Convert range requests into pass when over a certain threshold */
+	// Convert range requests into pass when over a certain threshold
 	if (req.http.Range
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432
 			|| req.http.Range ~ "^bytes=([0-9]{9,})-")) {

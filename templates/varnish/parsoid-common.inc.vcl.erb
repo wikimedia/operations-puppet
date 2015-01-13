@@ -1,14 +1,14 @@
-# Varnish VCL include file shared between Parsoid front- and backends
+// Varnish VCL include file shared between Parsoid front- and backends
 
 sub vcl_recv {
 	if (req.http.Host ~ "cxserver" ) {
 		set req.backend = cxserver;
 		return (pass);
 	}
-	/* Clamp the host header to 'parsoid' */
+	// Clamp the host header to 'parsoid'
 	set req.http.host = "parsoid";
 
-	/* Support HTTP PURGE */
+	// Support HTTP PURGE
 	if (req.request == "PURGE") {
 		set req.hash_ignore_busy = true;
 		return (lookup);
@@ -19,12 +19,12 @@ sub vcl_recv {
 		set req.hash_always_miss = true;
 	}
 
-	# Do not wait on concurrent (possibly actually fetching) requests
-	#  for only-if-cached.  One would think this could be backend-only,
-	#  but it needs to happen in the frontend as well for the same
-	#  reason (frontend stalling an only-if-cached miss fetch from
-	#  the backend to coalesce with a non-only-if-cached miss fetch
-	#  from the backend)
+	// Do not wait on concurrent (possibly actually fetching) requests
+	//  for only-if-cached.  One would think this could be backend-only,
+	//  but it needs to happen in the frontend as well for the same
+	//  reason (frontend stalling an only-if-cached miss fetch from
+	//  the backend to coalesce with a non-only-if-cached miss fetch
+	//  from the backend)
 	if (req.http.Cache-Control ~ "only-if-cached") {
 		set req.hash_ignore_busy = true;
 		return (lookup); // skip default vcl_recv which can generate pass in some cases...

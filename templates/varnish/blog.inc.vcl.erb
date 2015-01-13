@@ -1,13 +1,13 @@
-# Varnish VCL include file for blog
-#
-# This is a terrible hack - W3 cache on our wordpress install is sending
-# varnish purge requests as:
-# GET /uri/to/purge HTTP/1.1
-# Host: 127.0.0.1
-#
-# this seems to be a problem with the http dispatcher being used 
-# (aka curl, etc.) 
-#
+// Varnish VCL include file for blog
+//
+// This is a terrible hack - W3 cache on our wordpress install is sending
+// varnish purge requests as:
+// GET /uri/to/purge HTTP/1.1
+// Host: 127.0.0.1
+//
+// this seems to be a problem with the http dispatcher being used
+// (aka curl, etc.)
+
 sub vcl_recv {
 	call device_detection;
 	call vcl_recv_purge;
@@ -24,10 +24,10 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-	set beresp.http.X-Mobile = req.http.X-Mobile; # for debugging
-	if (!beresp.http.Vary) { # no Vary at all
+	set beresp.http.X-Mobile = req.http.X-Mobile; // for debugging
+	if (!beresp.http.Vary) { // no Vary at all
 		set beresp.http.Vary = "X-Mobile";
-	} elseif (beresp.http.Vary !~ "X-Mobile") { # add to existing Vary
+	} elseif (beresp.http.Vary !~ "X-Mobile") { // add to existing Vary
 		set beresp.http.Vary = beresp.http.Vary + ", X-Mobile";
 	}
 }
