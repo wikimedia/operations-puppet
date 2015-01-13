@@ -157,7 +157,7 @@ sub vcl_miss {
 
 sub vcl_error {
 	call errorpage;
-	return(deliver);
+	return (deliver);
 }
 
 sub vcl_deliver {

@@ -49,7 +49,7 @@ sub vcl_recv {
 
 	call evaluate_cookie;
 
-	return(lookup);
+	return (lookup);
 }
 
 sub vcl_pass {
@@ -92,5 +92,5 @@ sub vcl_fetch {
 
 sub vcl_error {
 	call errorpage;
-	return(deliver);
+	return (deliver);
 }
