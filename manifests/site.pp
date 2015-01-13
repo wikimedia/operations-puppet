@@ -2954,7 +2954,7 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
 
     include role::mathoid::production
     include role::citoid::production
-    role apertium::production, cxserver::production
+    role apertium, cxserver::production
 
     class { 'admin':
         groups => [

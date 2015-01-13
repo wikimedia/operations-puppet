@@ -1,49 +1,33 @@
 # vim: set ts=4 et sw=4:
-
-class role::apertium::production {
-    system::role { 'role::apertium::production':
+class role::apertium(
+    $port = '2737',
+) {
+    system::role { 'role::apertium':
         description => 'Apertium APY server'
     }
-
-    # Define Apertium port
-    $apertium_port = hiera('role::apertium::apertium_port', '2737')
 
     include ::apertium
 
     # We have to explicitly open the apertium port (bug T47868)
     ferm::service { 'apertium_http':
         proto => 'tcp',
-        port  => $apertium_port,
+        port  => $port,
     }
 
     monitoring::service { 'apertium':
         description   => 'apertium apy',
-        check_command => "check_http_url_on_port!apertium.svc.eqiad.wmnet!${apertium_port}!/listPairs",
+        check_command => "check_http_url_on_port!apertium.svc.eqiad.wmnet!${port}!/listPairs",
     }
+
 }
 
-class role::apertium::beta {
-    system::role { 'role::apertium::beta':
-        description => 'Apertium APY server (on beta)'
-    }
-
-    # Define Apertium port
-    $apertium_port = hiera('role::apertium::apertium_port', '2737')
-
-    include ::apertium
-
+class role::apertium::jenkins_access {
     # Need to allow jenkins-deploy to reload apertium
     sudo::user { 'jenkins-deploy': privileges => [
         # Since the "root" user is local, we cant add the sudo policy in
         # OpenStack manager interface at wikitech
         'ALL = (root)  NOPASSWD:/usr/sbin/service apertium-apy restart',
     ] }
-
-    # We have to explicitly open the apertium port (bug T47868)
-    ferm::service { 'apertium_http':
-        proto => 'tcp',
-        port  => $apertium_port,
-    }
 
     # Allow ssh access from the Jenkins master to the server where apertium is
     # running
