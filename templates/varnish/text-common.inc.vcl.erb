@@ -1,4 +1,4 @@
-# Common functions for the Text Varnish cluster
+// Common functions for the Text Varnish cluster
 
 sub pass_requests {
 	if (req.request != "GET" && req.request != "HEAD") {
@@ -10,12 +10,12 @@ sub pass_requests {
 }
 
 sub cookie_munging {
-	/* This header is saved, and restored before sending it to MediaWiki */
+	// This header is saved, and restored before sending it to MediaWiki
 	if (req.restarts == 0) {
 		set req.http.Orig-Cookie = req.http.Cookie;
 		unset req.http.Cookie;
 
-		/* We need to vary on the forceHTTPS cookie */
+		// We need to vary on the forceHTTPS cookie
 		if (req.http.Orig-Cookie ~ "forceHTTPS=(1|true)") {
 			set req.http.Cookie = "forceHTTPS=1";
 		}
@@ -23,9 +23,8 @@ sub cookie_munging {
 }
 
 sub restore_cookie {
-	/* Restore the original Cookie header for upstream
-	 * Assumes client header Orig-Cookie has been filtered!
-	 */
+	// Restore the original Cookie header for upstream
+	// Assumes client header Orig-Cookie has been filtered!
 	if (bereq.http.Orig-Cookie) {
 		set bereq.http.Cookie = bereq.http.Orig-Cookie;
 		unset bereq.http.Orig-Cookie;
@@ -33,12 +32,11 @@ sub restore_cookie {
 }
 
 sub evaluate_cookie {
-	/* A session or token cookie will prevent caching if varied on,
-	 * move the Cookie header out of the way otherwise
-	 */
-	/* gettingStarted exclusion is to work around e.g. enwikigettingStartedUserToken=
-	 * FIXME: the gettingStarted exception can be removed after 2014-08-01
-	 */
+	// A session or token cookie will prevent caching if varied on,
+	// move the Cookie header out of the way otherwise
+	//
+	// gettingStarted exclusion is to work around e.g. enwikigettingStartedUserToken=
+	// FIXME: the gettingStarted exception can be removed after 2014-08-01
 	if (req.http.Cookie ~ "([sS]ession|(?<!gettingStartedUser)Token)=") {
 		set req.hash_ignore_busy = true;
 	} else {

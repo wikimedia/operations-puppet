@@ -1,8 +1,8 @@
-# Varnish VCL include file
+// Varnish VCL include file
 
-# Note: This requires "import header" in the including VCL
+// Note: This requires "import header" in the including VCL
 
-# init GeoIP code
+// init GeoIP code
 C{
 	#include <dlfcn.h>
 	#include <stdlib.h>
@@ -123,9 +123,9 @@ C{
 			}
 		}
 
-		/* If either the second- or top-level domain is less than three characters long,    */
-		/* assume that the domain uses a two-part public suffix (like '.co.uk') and include */
-		/* one additional level in the result.                                              */
+		// If either the second- or top-level domain is less than three characters long,
+		// assume that the domain uses a two-part public suffix (like '.co.uk') and include
+		// one additional level in the result.
 		if ((pos - last) <= 3 || (last - second_last) <= 3) {
 			top_cookie_domain = third_last;
 		} else {
@@ -206,7 +206,7 @@ sub geoip_cookie {
 
 		int snp_len;
 		if (record) {
-			/* Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/ */
+			// Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/
 			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%.4f:%.4f:%s",
 				record->country_code ? record->country_code : "",
 				record->city ? record->city : "",
@@ -219,12 +219,12 @@ sub geoip_cookie {
 			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=::::%s", (strchr(ip, ':') != NULL) ? "v6" : "v4");
 		}
 
-		/* don't use snprintf()-truncated output */
+		// don't use snprintf()-truncated output
 		if (snp_len < sizeof(cookie_buf)) {
 			geo_sanitize_for_cookie(cookie_buf);
 
-			/* Use libvmod-header to ensure the Set-Cookie header we are adding does not
-			   clobber or manipulate existing cookie headers (if any). */
+			// Use libvmod-header to ensure the Set-Cookie header we are adding does not
+			// clobber or manipulate existing cookie headers (if any).
 			Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:", cookie_buf, "; Path=/; Domain=.",
 				host_safe, vrt_magic_string_end);
 		}

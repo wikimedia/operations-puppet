@@ -1,11 +1,11 @@
-# Varnish VCL include file for text backends
+// Varnish VCL include file for text backends
 
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 include "hhvm.inc.vcl";
 
 <% if @vcl_config.fetch("cluster_tier", "1") != "1" -%>
-# A random director with the same backends as the default 'backend' (chash) director
+// A random director with the same backends as the default 'backend' (chash) director
 <%
 default_backend = @vcl_config.fetch("default_backend", "backend")
 -%>
@@ -61,8 +61,8 @@ sub vcl_miss {
 }
 
 sub vcl_fetch {
-	/* Make sure Set-Cookie responses are not cacheable, and log violations */
-	/* FIXME: exceptions are ugly; maybe get rid of the whole thing? */
+	// Make sure Set-Cookie responses are not cacheable, and log violations
+	// FIXME: exceptions are ugly; maybe get rid of the whole thing?
 	if (beresp.ttl > 0s && beresp.http.Set-Cookie &&
 		req.url !~ "^/wiki/Special:HideBanners") {
 		std.log("Cacheable object with Set-Cookie found. req.url: " + req.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
@@ -71,7 +71,7 @@ sub vcl_fetch {
 		return (hit_for_pass);
 	}
 
-	/* FIXME: Fix up missing Vary headers on Apache redirects */
+	// FIXME: Fix up missing Vary headers on Apache redirects
 	if ((beresp.status == 301 || beresp.status == 302)
 		&& beresp.http.Location ~ "^http"
 		&& beresp.http.Vary !~ "X-Forwarded-Proto") {

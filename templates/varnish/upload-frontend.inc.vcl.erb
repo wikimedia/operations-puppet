@@ -1,30 +1,30 @@
-# Varnish VCL include file for upload frontends
+// Varnish VCL include file for upload frontends
 
 include "errorpage.inc.vcl";
 
 sub vcl_recv {
 	call vcl_recv_purge;
 
-	/* CORS preflight requests */
+	// CORS preflight requests
 	if (req.request == "OPTIONS" && req.http.Origin) {
 		error 667 "CORS";
 	}
 
 	if (req.request != "GET" && req.request != "HEAD") {
-		/* We only deal with GET, HEAD at this point */
+		// We only deal with GET, HEAD at this point
 		error 403 "HTTP method not allowed";
 	}
 
-	/* Look for a "download" request parameter */
+	// Look for a "download" request parameter
 	if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
-		/* Pretend that the parameter wasn't there for caching purposes */
+		// Pretend that the parameter wasn't there for caching purposes
 		set req.url = regsub(req.url, "(?i)(\?|&)download(=[^&]+)?$", "");
 		set req.url = regsub(req.url, "(?i)(\?|&)download(=[^&]+)?&", "\1");
 		set req.http.X-Content-Disposition = "attachment";
 	}
 
 	if ( req.http.host == "<%= @cluster_options.fetch('upload_domain', 'upload.wikimedia.org') %>") {
-		# Replace double slashes
+		// Replace double slashes
 		set req.url = regsuball(req.url, "/{2,}", "/");
 		return (lookup);
 	} else {
@@ -39,43 +39,42 @@ sub vcl_hit {
 }
 
 sub vcl_miss {
-	/* Convert range requests into pass */
+	// Convert range requests into pass
 	if (req.http.Range) {
 		set bereq.http.Range = req.http.Range;
 		return (pass);
 	}
 
-	/* Make sure If-Cached requests won't pollute the cache */
+	// Make sure If-Cached requests won't pollute the cache
 	if (req.http.If-Cached) {
 		return (pass);
 	}
 }
 
 sub vcl_fetch {
-	# Cap media object cache TTLs to 1 hour
+	// Cap media object cache TTLs to 1 hour
 	if (beresp.ttl > 1h) {
 		set beresp.ttl = 1h;
 	}
 
 	if (beresp.http.Content-Range) {
-		/* Varnish itself doesn't ask for ranges, so this must have been
-		 * a passed range request
-		 */
+		// Varnish itself doesn't ask for ranges, so this must have been
+		// a passed range request
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
 
 		if (beresp.http.Content-Range ~ "\/[0-9]{8,}$") {
 			set beresp.do_stream = true;
-			/* don't attempt to cache these in the frontend */
+			// don't attempt to cache these in the frontend
 			return (hit_for_pass);
 		}
 	}
 
-	# Stream large objects, >= 1 or 32 MB
+	// Stream large objects, >= 1 or 32 MB
 <% stream_threshold = @vcl_config.fetch("cluster_tier", "1") == "1" ? 33554432 : 1048576 -%>
 	if (std.integer(beresp.http.Content-Length, 33554432) >= <%= stream_threshold %> || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
 		if (std.integer(beresp.http.Content-Length, 33554432) >= 33554432 || beresp.http.Content-Length ~ "^[0-9]{9}") {
-			/* don't attempt to cache these in the frontend */
+			// don't attempt to cache these in the frontend
 			return (hit_for_pass);
 		}
 	}
@@ -84,14 +83,14 @@ sub vcl_fetch {
 }
 
 sub vcl_error {
-	/* Handle CORS preflight requests */
+	// Handle CORS preflight requests
         if (obj.status == 667) {
 		set obj.status = 200;
 		set obj.response = "OK";
 		set obj.http.Connection = "keep-alive";
 		set obj.http.Content-Length = "0";
 
-		/* allow Range requests, used by ogv.js */
+		// allow Range requests, used by ogv.js
 		set obj.http.Access-Control-Allow-Origin = "*";
 		set obj.http.Access-Control-Allow-Headers = "Range";
 		set obj.http.Access-Control-Allow-Methods = "GET, HEAD, OPTIONS";

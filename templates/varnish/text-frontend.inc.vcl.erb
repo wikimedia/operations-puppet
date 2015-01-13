@@ -1,4 +1,4 @@
-# Varnish VCL include file for text frontends
+// Varnish VCL include file for text frontends
 
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
@@ -23,7 +23,7 @@ include "via.inc.vcl";
 
 include "hhvm.inc.vcl";
 
-# A random director with the same backends as the default 'backend' (chash) director
+// A random director with the same backends as the default 'backend' (chash) director
 <%
 default_backend = @vcl_config.fetch("default_backend", "backend")
 -%>
@@ -47,9 +47,9 @@ sub mobile_redirect {
 		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
 		&& req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]") {
 
-		# Separate regexps for clarity, but multiple regsubs instead of
-		# "if host ~"/regsub matches for efficiency. Be careful to not
-		# write overlapping/chaining regexps.
+		// Separate regexps for clarity, but multiple regsubs instead of
+		// "if host ~"/regsub matches for efficiency. Be careful to not
+		// write overlapping/chaining regexps.
 		set req.http.MobileHost = req.http.Host;
 		set req.http.MobileHost = regsub(req.http.MobileHost, "^(www\.)?(mediawiki|wikimediafoundation|wikisource)\.", "m.\2.");
 		set req.http.MobileHost = regsub(req.http.MobileHost, "^(commons|incubator|legalteam|meta|office|outreach|pl|species|strategy|wikimania201[2-5])\.(wikimedia)\.", "\1.m.\2.");
@@ -83,12 +83,11 @@ sub vcl_recv {
 	call filter_headers;
 	call filter_noise;
 
-	/* Allow purging */
+	// Allow purging
 	call vcl_recv_purge;
 
-	/* FIXME: we're seeing an issue with Range requests and gzip/gunzip.
-	 * Disable Range requests for now.
-	 */
+	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
+	// Disable Range requests for now.
 	unset req.http.Range;
 
 	call rewrite_proxy_urls;
@@ -101,8 +100,8 @@ sub vcl_recv {
 		set req.hash_ignore_busy = true;
 	}
 
-	/* Users that just logged out, should not get a 304 for their
-	 * (locally cached) logged in pages. */
+	// Users that just logged out, should not get a 304 for their
+	// (locally cached) logged in pages.
 	if (req.http.If-Modified-Since && req.http.Cookie ~ "LoggedOut") {
 		unset req.http.If-Modified-Since;
 	}
@@ -130,12 +129,12 @@ sub vcl_fetch {
 }
 
 sub vcl_error {
-	/* Support mobile redirects */
+	// Support mobile redirects
 	if (obj.status == 666) {
 		set obj.http.Location = req.http.Location;
 		set obj.status = 302;
 		set obj.http.Connection = "keep-alive";
-		set obj.http.Content-Length = "0"; # BZ #62245
+		set obj.http.Content-Length = "0"; // BZ #62245
 		return (deliver);
 	}
 
@@ -144,7 +143,7 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
-	/* Override the Cache-Control header for wiki content pages */
+	// Override the Cache-Control header for wiki content pages
 	if (req.url ~ "(?i)^/w(iki)?/.*"
 		&& req.url !~ "^/wiki/Special\:Banner(Controller|ListLoader)"
 		&& req.url !~ "(?i)^/w/(extensions/.*|api\.php)"
@@ -153,17 +152,16 @@ sub vcl_deliver {
 	}
 	call php_mark_engine;
 <% if @cluster_options.fetch( "enable_geoiplookup", false ) -%>
-	/* Perform GeoIP look-up and send the result as a session cookie */
+	// Perform GeoIP look-up and send the result as a session cookie
 	if (req.http.Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
 		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
 		call geoip_cookie;
 	}
 <% end -%>
 
-	/* Assemble X-Analytics header
-	   Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
-	   Note that vcl_deliver in other files may also modify X-Analytics.
-	*/
+	// Assemble X-Analytics header
+	// Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
+	// Note that vcl_deliver in other files may also modify X-Analytics.
 	if (req.http.X-Forwarded-Proto) {
 		if (resp.http.X-Analytics) {
 			set resp.http.X-Analytics = resp.http.X-Analytics + ";https=1";

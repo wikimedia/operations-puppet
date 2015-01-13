@@ -3,7 +3,7 @@ include "errorpage.inc.vcl";
 sub vcl_recv {
 	if (req.http.Host == "git.wikimedia.org") {
 		set req.backend = antimony;
-		/* gitblit requires the following request headers: */
+		// gitblit requires the following request headers:
 		set req.http.X-Forwarded-Proto = "https";
 		set req.http.X-Forwarded-Port = "443";
 	} elsif (req.http.Host == "doc.wikimedia.org" || req.http.Host == "integration.wikimedia.org") {
@@ -12,7 +12,7 @@ sub vcl_recv {
 		set req.backend = dataset1001;
 	} elsif (req.http.Host == "gerrit.wikimedia.org") {
 		set req.backend = ytterbium;
-		/* no caching */
+		// no caching
 		return (pass);
 	} elsif (req.http.Host == "gdash.wikimedia.org" || req.http.Host == "graphite.wikimedia.org" || req.http.Host == "performance.wikimedia.org") {
 		set req.backend = tungsten;
@@ -37,7 +37,7 @@ sub vcl_recv {
 		set req.backend = antimony;
 	} elsif (req.http.Host == "people.wikimedia.org") {
 		set req.backend = terbium;
-		/* no caching of public_html dirs */
+		// no caching of public_html dirs
 		return (pass);
 	} elsif (req.http.Host == "ishmael.wikimedia.org") {
 		set req.backend = neon;
@@ -47,7 +47,7 @@ sub vcl_recv {
 		set req.backend = stat1001;
 	} elsif (req.http.Host == "config-master.wikimedia.org") {
 		set req.backend = palladium;
-		/* no caching of configs; scripts may want to know when things change */
+		// no caching of configs; scripts may want to know when things change
 		return (pass);
 	} elsif (req.http.Host == "noc.wikimedia.org") {
 		set req.backend = terbium;
@@ -60,7 +60,7 @@ sub vcl_recv {
 	}
 
 	if (req.request != "GET" && req.request != "HEAD") {
-		/* We only deal with GET and HEAD */
+		// We only deal with GET and HEAD
 		return (pass);
 	}
 

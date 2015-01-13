@@ -1,11 +1,11 @@
-# Varnish VCL include file for mobile backends
+// Varnish VCL include file for mobile backends
 
 include "errorpage.inc.vcl";
 include "hhvm.inc.vcl";
 
 sub vcl_recv {
 	call vcl_recv_purge;
-	/* FIXME: restrict access */
+	// FIXME: restrict access
 
 	if ( req.http.host ~ "^test\." ) {
 <% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
@@ -19,13 +19,13 @@ sub vcl_recv {
 	}
 <% end -%>
 
-	/* Default (now modified) Varnish vcl_recv function */
+	// Default (now modified) Varnish vcl_recv function
 	if (req.request != "GET" && req.request != "HEAD") {
-		/* We only deal with GET and HEAD by default */
+		// We only deal with GET and HEAD by default
 		return (pass);
 	}
 	if (req.http.Authorization || req.http.Cookie) {
-		/* Not cacheable by default */
+		// Not cacheable by default
 		return (pass);
 	}
 	return (lookup);

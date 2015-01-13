@@ -1,6 +1,6 @@
-# Common functions for HHVM handling
+// Common functions for HHVM handling
 
-/* Manage X-Analytics token for HHVM/Zend tracking */
+// Manage X-Analytics token for HHVM/Zend tracking
 sub php_mark_engine {	
 	if (resp.http.X-Analytics) {
 		if (resp.http.X-Powered-By ~ "^HHVM") {

@@ -1,6 +1,6 @@
-# Varnish VCL include file for Wikipedia Zero
+// Varnish VCL include file for Wikipedia Zero
 
-# Note: This requires "import header" in the including VCL
+// Note: This requires "import header" in the including VCL
 
 import netmapper;
 
@@ -17,13 +17,13 @@ sub tag_carrier {
     // (the leading "..." in XFF is that sometimes there are other local
     //   proxies on 127.0.0.1 or whatever, according to some OperaMini docs...)
 
-    /*********************************************************
-    *    v> | client.ip | XFF                        | XFP
-    * direct| client    | (...,)? client             |
-    * ssl   | ssl       | (...,)? client, ssl        | https
-    * proxy | proxy     | (...,)? client, proxy      |
-    * both  | ssl       | (...,)? client, proxy, ssl | https
-    *********************************************************/
+    // *********************************************************
+    // *    v> | client.ip | XFF                        | XFP
+    // * direct| client    | (...,)? client             |
+    // * ssl   | ssl       | (...,)? client, ssl        | https
+    // * proxy | proxy     | (...,)? client, proxy      |
+    // * both  | ssl       | (...,)? client, proxy, ssl | https
+    // *********************************************************
 
     // first, strip the SSL entry from XFF if applicable
     if (req.http.X-Forwarded-Proto) {
@@ -32,11 +32,11 @@ sub tag_carrier {
         set req.http.XFF-NoSSL = req.http.X-Forwarded-For;
     }
 
-    /*****************************************************************************
-    *    v>      | XFF-NoSSL             | map("proxies") input from regsub below
-    * direct/ssl | (...,)? client        | client
-    * proxy/both | (...,)? client, proxy | proxy
-    *****************************************************************************/
+    // *****************************************************************************
+    // *    v>      | XFF-NoSSL             | map("proxies") input from regsub below
+    // * direct/ssl | (...,)? client        | client
+    // * proxy/both | (...,)? client, proxy | proxy
+    // *****************************************************************************
 
     // now get the trusted proxy into XFB, if any - the regsub grabs the final entry in the list
     set req.http.X-Forwarded-By = netmapper.map("proxies", regsub(req.http.XFF-NoSSL, "^([^,]+, ?)+", ""));
@@ -55,10 +55,10 @@ sub tag_carrier {
 
     unset req.http.XFF-NoSSL; // clean up temp var
 
-    /****************************************************************
-    *    v>  | XFF-CE         | map("carriers") input from regsub below
-    *   all  | (...,)? client | client
-    *****************************************************************/
+    // ****************************************************************
+    // *    v>  | XFF-CE         | map("carriers") input from regsub below
+    // *   all  | (...,)? client | client
+    // *****************************************************************
 
     // Grab client IP from the end of the XFF-CE list and feed to map("zero")
     set req.http.X-CS2 = netmapper.map("carriers", regsub(req.http.XFF-ClientEnd, "^([^,]+, ?)+", ""));
