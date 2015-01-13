@@ -1227,6 +1227,12 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
     # which sends logs over to the 'collector' (on gadolinium)
     # service, which writes dump files in /a/webstats/dumps.
     include role::logging::webstatscollector
+
+    # dataset1001 needs to be able to use ssh
+    # to rsync webstatscollector pagecount files from gadolinium.
+    ferm::rule { 'datasets-ssh':
+        rule   => 'proto tcp dport ssh saddr 208.80.154.11/32 ACCEPT;',
+    }
 }
 
 node 'gallium.wikimedia.org' {
