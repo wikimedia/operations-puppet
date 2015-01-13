@@ -23,13 +23,13 @@
 # [*port*]
 #   Port where to run the cxserver service. Defaults to 8080.
 class cxserver(
-    $base_path,
-    $node_path,
-    $conf_path,
-    $log_dir,
-    $parsoid,
-    $apertium,
-    $port=8080
+    $base_path = '/srv/deployment/cxserver/cxserver',
+    $node_path = '/srv/deployment/cxserver/deploy/node_modules',
+    $conf_path = '/srv/deployment/cxserver/cxserver/config.js',
+    $log_dir = '/var/log/cxserver',
+    $parsoid = 'http://parsoid-lb.eqiad.wikimedia.org',
+    $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
+    $port = 8080,
 ) {
     # dictd-* packages for dictionary server.
     require_package('nodejs')
