@@ -1153,7 +1153,6 @@ class misc::statistics::aggregator {
         require => [
             Git::Clone['aggregator_code'],
             Git::Clone['aggregator_data'],
-            File[$data_path],
             File[$log_path],
         ],
     }
