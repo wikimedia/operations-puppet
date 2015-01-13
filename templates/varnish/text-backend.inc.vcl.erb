@@ -39,7 +39,7 @@ sub vcl_recv {
 
 	call pass_requests;
 
-	if (req.request == "POST" || req.url ~ "^/wiki/Special:CentralAutoLogin/") {
+	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
 <% if @vcl_config.fetch("cluster_tier", "1") != "1" -%>
 		set req.backend = <%= @vcl_config.fetch("default_backend", "backend") %>_random;
 <% end -%>
