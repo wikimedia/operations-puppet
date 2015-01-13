@@ -29,7 +29,7 @@ class role::mediawiki::common {
             auto_eject_hosts     => true,
             distribution         => 'ketama',
             hash                 => 'md5',
-            listen               => '/var/run/nutcracker/nutcracker.sock',
+            listen               => '/var/run/nutcracker/nutcracker.sock 0666',
             preconnect           => true,
             server_connections   => 2,
             server_failure_limit => 3,
