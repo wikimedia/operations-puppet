@@ -69,7 +69,7 @@ class misc::udp2log::rsyncd(
     ferm::service { 'udp2log_rsyncd':
         proto  => 'tcp',
         port   => '873',
-        srange => inline_template('@hosts_allow.join(" ")')
+        srange => '10.64.5.102/32',
     }
 }
 
