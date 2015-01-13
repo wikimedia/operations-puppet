@@ -2583,11 +2583,7 @@ node 'terbium.eqiad.wmnet' {
     include misc::maintenance::update_special_pages
     include misc::maintenance::purge_abusefilter
     include misc::maintenance::purge_checkuser
-
-    # Revert of https://gerrit.wikimedia.org/r/74592 per request from James Alexander.
-    class { '::misc::maintenance::purge_securepoll':
-        ensure => absent,
-    }
+    include misc::maintenance::purge_securepoll
 
     # (bug 15434) Periodical run of currently disabled special pages
     # to be run against PMTPA slaves
