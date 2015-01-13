@@ -23,7 +23,7 @@ class misc::udp2log($monitor = true) {
     if $monitor {
     # TODO: Should probably include icincga package here.
         include misc::udp2log::monitoring
-        include misc::udp2log::iptables
+        include misc::udp2log::firewall
     }
 
     system::role { 'udp2log::logger':
@@ -316,7 +316,7 @@ class misc::udp2log::udp_filter {
 # includes scripts and iptables rules
 # needed for udp2log monitoring.
 class misc::udp2log::monitoring {
-    include misc::udp2log::iptables
+    include misc::udp2log::firewall
 
     package { 'ganglia-logtailer':
         ensure => latest,
@@ -377,66 +377,22 @@ class misc::udp2log::monitoring {
     include misc::monitoring::net::udp
 }
 
+class misc::udp2log::firewall {
+    include base::firewall
 
-class misc::udp2log::iptables_purges {
-    require iptables::tables
-    # The deny rule must always be purged,
-    # otherwise ACCEPTs can be placed below it
-    iptables_purge_service{ 'udp2log_drop_udp':
-        service => 'udp',
+    ferm::rule { 'udp2log_accept_all_wikimedia':
+        rule => 'saddr ($ALL_NETWORKS) proto udp ACCEPT;',
+        prio => 10,
     }
-    # When removing or modifying a rule, place the old rule here,
-    # otherwise it won't be purged, and will stay in the iptables forever
-}
 
-class misc::udp2log::iptables_accepts {
-    require misc::udp2log::iptables_purges
-    # Rememeber to place modified or removed rules into purges!
-    # common services for all hosts
-    iptables_add_service{ 'udp2log_accept_all_private':
-        service => 'all',
-        source  => '10.0.0.0/8',
-        jump    => 'ACCEPT',
+    # FIXME: this is purely for compatibility with pre-ferm rules
+    # and the difference in default policies
+    ferm::rule { 'udp2log_drop_rest':
+        rule => 'proto udp DROP;',
+        prio => 11,
     }
-    iptables_add_service{ 'udp2log_accept_all_US':
-        service => 'all',
-        source  => '208.80.152.0/22',
-        jump    => 'ACCEPT',
-    }
-    iptables_add_service{ 'udp2log_accept_all_AMS':
-        service => 'all',
-        source  => '91.198.174.0/24',
-        jump    => 'ACCEPT',
-    }
-    iptables_add_service{ 'udp2log_accept_all_localhost':
-        service => 'all',
-        source  => '127.0.0.1/32',
-        jump    => 'ACCEPT',
-    }
-}
-
-class misc::udp2log::iptables_drops {
-    require misc::udp2log::iptables_accepts
-    # Rememeber to place modified or removed rules into purges!
-    iptables_add_service{ 'udp2log_drop_udp':
-        service => 'udp',
-        source  => '0.0.0.0/0',
-        jump    => 'DROP',
-    }
-}
-
-class misc::udp2log::iptables  {
-# only allow UDP packets from our IP space into these machines
-# to prevent malicious information injections
-
-    # We use the following requirement chain:
-    # iptables -> iptables-drops -> iptables-accepts -> iptables-purges
-    #
-    # This ensures proper ordering of the rules
-    require misc::udp2log::iptables_drops
-    # This exec should always occur last in the requirement chain.
-    ## creating iptables rules but not enabling them to test.
-    iptables_add_exec{ 'udp2log':
-        service => 'udp2log',
+    ferm::rule { 'udp2log_accept_all_nonudp':
+        rule => 'proto !udp ACCEPT;',
+        prio => 12,
     }
 }
