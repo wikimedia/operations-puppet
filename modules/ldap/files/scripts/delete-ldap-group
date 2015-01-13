@@ -40,7 +40,7 @@ def main():
     # w00t We're in!
     try:
         groupname = args[0]
-        dn = 'cn=' + groupname + ',ou=group,' + base
+        dn = 'cn=' + groupname + ',ou=groups,' + base
         ds.delete_s(dn)
     except ldap.UNWILLING_TO_PERFORM, msg:
         sys.stderr.write("LDAP was unwilling to delete the group. Error was: %s\n" % msg[0]["info"])
