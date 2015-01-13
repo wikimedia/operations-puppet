@@ -1108,13 +1108,21 @@ class misc::statistics::aggregator {
     $user             = $misc::statistics::user::username
     $group            = $misc::statistics::user::username
 
+    file { $working_path:
+        ensure => 'directory',
+        owner  => $user,
+        group  => $group,
+        mode   => '0755'
+    }
+
     git::clone { 'aggregator_code':
         ensure    => 'latest',
         directory => $script_path,
         origin    => 'https://gerrit.wikimedia.org/r/p/analytics/aggregator.git',
         owner     => $user,
         group     => $group,
-        mode      => '0750',
+        mode      => '0755',
+        require  => File[$working_path],
     }
 
     git::clone { 'aggregator_data':
@@ -1123,23 +1131,31 @@ class misc::statistics::aggregator {
         origin    => 'https://gerrit.wikimedia.org/r/p/analytics/aggregator/data.git',
         owner     => $user,
         group     => $group,
-        mode      => '0750',
+        mode      => '0755',
+        require  => File[$working_path],
     }
 
     file { $log_path:
-        ensure => directory,
-        owner  => $user,
-        group  => $group,
-        mode   => '0750',
+        ensure  => 'directory',
+        owner   => $user,
+        group   => $group,
+        mode    => '0755',
+        require  => File[$working_path],
+
     }
 
     # Cron for doing the basic aggregation step itself
     cron { 'aggregator projectcounts aggregate':
         command => "${script_path}/bin/aggregate_projectcounts --source ${hdfs_source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --push-target --log ${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log",
-        require => File[$log_path],
         user    => $user,
         hour    => '13',
         minute  => '0',
+        require => [
+            Git::Clone['aggregator_code'],
+            Git::Clone['aggregator_data'],
+            File[$data_path],
+            File[$log_path],
+        ],
     }
 
     # Cron for basing monitoring of the aggregated data
@@ -1148,5 +1164,6 @@ class misc::statistics::aggregator {
         user    => $user,
         hour    => '13',
         minute  => '45',
+        require => Cron['aggregator projectcounts aggregate'],
     }
 }
