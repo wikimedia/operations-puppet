@@ -382,18 +382,6 @@ class misc::udp2log::firewall {
 
     ferm::rule { 'udp2log_accept_all_wikimedia':
         rule => 'saddr ($ALL_NETWORKS) proto udp ACCEPT;',
-        prio => 10,
-    }
-
-    # FIXME: this is purely for compatibility with pre-ferm rules
-    # and the difference in default policies
-    ferm::rule { 'udp2log_drop_rest':
-        rule => 'proto udp DROP;',
-        prio => 11,
-    }
-    ferm::rule { 'udp2log_accept_all_nonudp':
-        rule => 'proto !udp ACCEPT;',
-        prio => 12,
     }
 
     # let monitoring host connect via NRPE
