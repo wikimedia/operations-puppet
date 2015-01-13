@@ -1096,7 +1096,7 @@ class misc::statistics::aggregator {
     include misc::statistics::base
     include misc::statistics::user
 
-    Class['cdh::hadoop::mount'] -> Class['misc::statistics::aggregator']
+    Class['role::analytics::clients'] -> Class['misc::statistics::aggregator']
 
     $working_path     = "${misc::statistics::base::working_path}/aggregator"
 
@@ -1104,7 +1104,7 @@ class misc::statistics::aggregator {
     $data_repo_path   = "${working_path}/data"
     $data_path        = "${data_repo_path}/projectcounts"
     $log_path         = "${working_path}/log"
-    $hdfs_source_path = "${::cdh::hadoop::mount::mount_point}/wmf/data/archive/pagecounts-all-sites"
+    $hdfs_source_path = "${::role::analytics::clients::hdfs_mount_point}/wmf/data/archive/pagecounts-all-sites"
     $user             = $misc::statistics::user::username
     $group            = $misc::statistics::user::username
 

@@ -36,9 +36,12 @@ class role::analytics::clients {
     package { 'icedtea-7-jre-jamvm':
         ensure => 'absent'
     }
+
+    $hdfs_mount_point = '/mnt/hdfs'
     # Mount HDFS via Fuse on Analytics client nodes.
     # This will mount HDFS at /mnt/hdfs read only.
     class { 'cdh::hadoop::mount':
+        mount_point => $hdfs_mount_point,
         # Make sure this package is removed before
         # cdh::hadoop::mount evaluates.
         require => Package['icedtea-7-jre-jamvm'],
