@@ -21,11 +21,8 @@ class role::mediawiki::common {
             server_failure_limit => 3,
             timeout              => 250,
             servers              => hiera('mediawiki_memcached_servers'),
-        }
-    }
-    # Test having nutcracker listen on a UNIX domain socket. -- Ori, 2015-01-08
-    if $::hostname == 'mw1230' or $::hostname == 'mw1231' {
-        $nutcracker_pools['mc-unix'] = {
+        },
+        'mc-unix' => {
             auto_eject_hosts     => true,
             distribution         => 'ketama',
             hash                 => 'md5',
@@ -35,7 +32,7 @@ class role::mediawiki::common {
             server_failure_limit => 3,
             timeout              => 250,
             servers              => hiera('mediawiki_memcached_servers'),
-        }
+        },
     }
 
     class { '::nutcracker':
