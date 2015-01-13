@@ -111,7 +111,7 @@ class role::labs::instance {
         require => File['/public'],
     }
     mount { '/public/backups':
-        ensure  => mounted,
+        ensure  => unmounted,
         atboot  => true,
         fstype  => 'nfs',
         options => "ro,${nfs_opts}",
