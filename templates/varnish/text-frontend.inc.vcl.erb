@@ -21,8 +21,6 @@ include "via.inc.vcl";
 // mobile-frontend.inc.vcl.erb for (m|zero).wikipedia.org and its
 // subdomains.
 
-include "hhvm.inc.vcl";
-
 # A random director with the same backends as the default 'backend' (chash) director
 <%
 default_backend = @vcl_config.fetch("default_backend", "backend")
@@ -151,7 +149,6 @@ sub vcl_deliver {
 		&& req.url !~ "(?i)bcache=1") {
 		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
 	}
-	call php_mark_engine;
 <% if @cluster_options.fetch( "enable_geoiplookup", false ) -%>
 	/* Perform GeoIP look-up and send the result as a session cookie */
 	if (req.http.Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"

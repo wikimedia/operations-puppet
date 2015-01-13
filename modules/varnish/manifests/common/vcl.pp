@@ -26,10 +26,10 @@ class varnish::common::vcl {
     }
 
     file { '/etc/varnish/hhvm.inc.vcl':
+        ensure  => absent,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('varnish/hhvm.inc.vcl.erb'),
     }
 
     # VCL unit tests
