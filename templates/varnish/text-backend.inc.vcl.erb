@@ -39,14 +39,7 @@ sub vcl_recv {
 <% end -%>
 
 	call pass_requests;
-
-	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
-<% if @vcl_config.fetch("cluster_tier", "1") != "1" -%>
-		set req.backend = <%= @vcl_config.fetch("default_backend", "backend") %>_random;
-<% end -%>
-		set req.hash_ignore_busy = true;
-	}
-
+	call maybe_use_random_scheduler;
 	call evaluate_cookie;
 
 	return(lookup);

@@ -9,6 +9,20 @@ sub pass_requests {
 	}
 }
 
+/**
+ * Certain URLs are both popular and uncached. If handled by the
+ * consistent hash scheduler, all such requests are mapped to a single
+ * backend server, risking overload. So instead, use the backend_random
+ * director, which maps requests to the same set of backend servers,
+ * but which distributes requests randomly.
+ */
+sub maybe_use_random_scheduler {
+	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
+		set req.backend = <%= @vcl_config.fetch("default_backend", "backend") %>_random;
+		set req.hash_ignore_busy = true;
+	}
+}
+
 sub cookie_munging {
 	/* This header is saved, and restored before sending it to MediaWiki */
 	if (req.restarts == 0) {
