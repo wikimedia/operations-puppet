@@ -55,7 +55,7 @@ class role::phabricator::main {
     }
 
     #let's go jenkins
-    $current_tag = 'T77082'
+    $current_tag = 'release/2015-01-08/1'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
@@ -66,13 +66,13 @@ class role::phabricator::main {
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
         auth_type        => 'dual',
-        sprint_tag       => '0.6.1.4',
-        security_tag     => 'T518.1',
-        libraries        => ['/srv/phab/libext/Sprint/src'],
+        sprint_tag       => 'release/2015-01-08/1',
+        security_tag     => 'release/2015-01-13/1',
+        libraries        => ['/srv/phab/libext/Sprint/src',
+                             '/srv/phab/libext/security/src'],
         extension_tag    => 'HEAD',
         extensions       => [ 'MediaWikiUserpageCustomField.php',
-                              'LDAPUserpageCustomField.php',
-                              'SecurityPolicyEnforcerAction.php'],
+                              'LDAPUserpageCustomField.php'],
         settings         => {
             'search.elastic.host'                       => 'http://search.svc.eqiad.wmnet:9200',
             'search.elastic.namespace'                  => 'phabricatormain',
@@ -177,7 +177,7 @@ class role::phabricator::labs {
 
     #pass not sensitive but has to match phab and db
     $mysqlpass = 'labspass'
-    $current_tag = 'T77082'
+    $current_tag = 'release/2015-01-08/1'
     class { '::phabricator':
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
