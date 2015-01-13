@@ -291,6 +291,12 @@ class role::logging::webstatscollector {
         srange => '$ALL_NETWORKS',
     }
 
+    # dataset1001 needs to be able to use ssh
+    # to rsync webstatscollector pagecount files from gadolinium.
+    ferm::rule { 'dataset-ssh':
+        rule   => 'proto tcp dport ssh saddr 208.80.154.11/32 ACCEPT;',
+    }
+
     # install a nrpe check for the webstatscollector collector process
     nrpe::monitor_service { 'webstats-collector':
         description   => "webstats-collector process running",
