@@ -102,6 +102,7 @@ class role::mediawiki::appserver::api {
     sysctl::parameters { 'raise_port_range':
         values => {
             'net.ipv4.local_port_range' => '22500 65535',
+            'net.ipv4.tcp_tw_reuse'     => '1',
         },
         priority => 90,
     }
