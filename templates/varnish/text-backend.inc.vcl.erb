@@ -83,11 +83,7 @@ sub vcl_fetch {
 	if ((beresp.status == 301 || beresp.status == 302)
 		&& beresp.http.Location ~ "^http"
 		&& beresp.http.Vary !~ "X-Forwarded-Proto") {
-		if (beresp.http.Vary) {
-			set beresp.http.Vary = beresp.http.Vary + ",X-Forwarded-Proto";
-		} else {
-			set beresp.http.Vary = "X-Forwarded-Proto";
-		}
+		header.append(beresp.http.Vary, "X-Forwarded-Proto");
 	}
 
 	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1") {

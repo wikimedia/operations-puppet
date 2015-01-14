@@ -155,21 +155,12 @@ sub vcl_deliver {
         } else {
             set req.http.X-CS = "zero=" + req.http.X-CS;
         }
-
-        if (resp.http.X-Analytics) {
-            set resp.http.X-Analytics = resp.http.X-Analytics + ";" + req.http.X-CS;
-        } else {
-            set resp.http.X-Analytics = req.http.X-CS;
-        }
+        header.append(resp.http.X-Analytics, req.http.X-CS);
     } else {
         // Let's ensure no outbound X-CS if pre-analytics X-CS (as determined in corresponding if) was not set.
         unset resp.http.X-CS;
     }
     if (req.http.X-Forwarded-By2) {
-        if (resp.http.X-Analytics) {
-            set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=" + req.http.X-Forwarded-By2;
-        } else {
-            set resp.http.X-Analytics = "proxy=" + req.http.X-Forwarded-By2;
-        }
+        header.append(resp.http.X-Analytics, "proxy=" + req.http.X-Forwarded-By2);
     }
 }

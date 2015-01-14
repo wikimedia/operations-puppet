@@ -164,21 +164,13 @@ sub vcl_deliver {
 <% end -%>
 
 	// Assemble X-Analytics header
-	// Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
-	// Note that vcl_deliver in other files may also modify X-Analytics.
+	// Some of the headers used for X-Analytics are not varied on, so add
+	// them after the backend processing. Note that vcl_deliver in other
+	// files may also modify X-Analytics.
 	if (req.http.X-Forwarded-Proto) {
-		if (resp.http.X-Analytics) {
-			set resp.http.X-Analytics = resp.http.X-Analytics + ";https=1";
-		} else {
-			set resp.http.X-Analytics = "https=1";
-		}
+		header.append(resp.http.X-Analytics, "https=1");
 	}
-
 	if (req.http.X-WMF-UUID) {
-		if (resp.http.X-Analytics) {
-			set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuuid=" + req.http.X-WMF-UUID;
-		} else {
-			set resp.http.X-Analytics = "wmfuuid=" + req.http.X-WMF-UUID;
-		}
+		header.append(resp.http.X-Analytics, "wmfuuid=" + req.http.X-WMF-UUID);
 	}
 }
