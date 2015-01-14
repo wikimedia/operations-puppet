@@ -1869,13 +1869,13 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     if $::hostname =~ /^ms-fe100[12]$/ {
         $ganglia_aggregator = true
     }
+    role swift::eqiad_prod::proxy
     if $::hostname == 'ms-fe1001' {
         include role::swift::eqiad_prod::ganglia_reporter
     }
 
     class { 'lvs::realserver': realserver_ips => [ '10.2.2.27' ] }
 
-    role swift::eqiad_prod::proxy
     include admin
     include role::diamond
 }
