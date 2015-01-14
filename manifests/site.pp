@@ -2716,9 +2716,8 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
     $ganglia_aggregator = true
     include standard
 
-    include role::mathoid::production
     include role::citoid::production
-    role apertium, cxserver
+    role apertium, cxserver, mathoid
 
     class { 'admin':
         groups => [
