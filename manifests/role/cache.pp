@@ -1219,17 +1219,16 @@ class role::cache {
         # is verified to work in labs.
         if $::realm == 'production' {
 
-            # Temporarily disable esams bits production
+            # Temporarily disable bits production
             # while qchris and ottomata investigate
             # cross DC delivery error issues.
-            if ($::site != 'esams') {
-                # Install a varnishkafka producer to send
-                # varnish webrequest logs to Kafka.
-                class { 'role::cache::varnish::kafka::webrequest':
-                    topic        => 'webrequest_bits',
-                    varnish_name => $::hostname,
-                }
-            }
+
+            # # Install a varnishkafka producer to send
+            # # varnish webrequest logs to Kafka.
+            # class { 'role::cache::varnish::kafka::webrequest':
+            #     topic        => 'webrequest_bits',
+            #     varnish_name => $::hostname,
+            # }
 
             include role::cache::varnish::kafka::statsv
         }
