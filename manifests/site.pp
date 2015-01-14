@@ -2544,15 +2544,8 @@ node 'titanium.wikimedia.org' {
 
 # tmh1001/tmh1002 video encoding server (precise only)
 node /^tmh100[1-2]\.eqiad\.wmnet/ {
-    $cluster = 'videoscaler'
-    if $::hostname =~ /^tmh100[12]$/ {
-        $ganglia_aggregator = true
-    }
-    include role::mediawiki::videoscaler
-
-    class { 'admin':
-        groups => ['deployment']
-    }
+    $ganglia_aggregator = true
+    role mediawiki::videoscaler
 }
 
 # Receives log data from varnishes (udp 8422) and Apaches (udp 8421),

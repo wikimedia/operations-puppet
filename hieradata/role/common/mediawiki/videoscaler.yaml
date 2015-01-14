@@ -1,0 +1,3 @@
+cluster: videoscaler
+admin::groups:
+  - deployment
