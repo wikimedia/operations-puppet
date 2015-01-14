@@ -243,7 +243,8 @@ class phabricator (
     if ($phab_settings['repository.default-local-path']) {
         file { $phab_settings['repository.default-local-path']:
             ensure   => directory,
-            owner    => 'www-data',
+            mode     => '0755',
+            owner    => 'phd',
             group    => 'www-data',
             require  => Git::Install['phabricator/phabricator'],
         }
