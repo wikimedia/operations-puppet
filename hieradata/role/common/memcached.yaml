@@ -1,0 +1,4 @@
+cluster: memcached
+redis::maxmemory: "500Mb"
+redis::dir: "/a/redis"
+redis::password: "%{passwords::redis::main_password}"
