@@ -1,0 +1,64 @@
+[general]
+dbhost = m3-master.eqiad.wmnet
+file_upload_timeout = 360
+
+[phmanifest]
+user = phmanifest
+passwd = RH5dZFDCmg4F
+
+[phuser]
+user = phuser
+passwd = dDFhwdxbLrMr
+
+[fabmigrate]
+db = fab_migration
+user = fabmigrate
+passwd = ''
+multi = 10
+limit = 30
+
+[phab]
+host = https://phabricator.wikimedia.org/api/
+certificate = djp6pi45gnaiv6ihysotdipngftmkuplyxr6i35dxr7vo6k6y2gurzxa3rec3jm6kcf6y2uipixizkxtfzdhx5majr5m62ympax3jkljv77kyu4krosgbwilnojzrv5eo5kowjsiigntzlvd77qq5uu4xhie2hiraunthw6ucqpavpoog4qikow4gwhvemokmgyxd5zgdouk2ytpt4nnu7mokfjdivqppwybtewluq5plyc2ks47iwedlvpouhh
+username = bzimport
+
+#host = http://iridium.com/api/
+#certificate = 6xwfuzlm2anojm55oekhhsryrdjdcahxaj2kehig44w3sjfupnngnd3wz6b7do4yolfh2zqscjacx26ujth2figs5bga7bs5f4vbibwdyotpy7izgqzzbopzv2zuvsube7jg4cgocntlhx7ylhc4icegjiyr5hagp2bu3iffaa6if5ilmxlcrdo3drgi7nkgewyprhdrlcy7z6eeui3dcumzurl6dzg6f53kqb4nyx2b45qpkygwev4yoz32cim
+#username = rtimport
+
+[oldfab]
+cert = asdf
+host = ''
+user = ''
+
+[bz]
+url = https://bugzilla.wikimedia.org/xmlrpc.cgi
+Bugzilla_login =
+Bugzilla_password =
+
+[bzmigrate]
+db = bugzilla_migration
+user = bzmigrate
+passwd = 8huwMgNLdrl2
+fetch_multi = 50
+create_multi = 13
+update_limit = 400
+update_multi = 1
+populate_multi = 1
+security = true
+update_lookback = 86500
+
+[rtmigrate]
+db = rt_migration
+user = rtmigrate
+passwd = Vmwwq1PdGthB
+fetch_multi = 30
+create_multi = 10
+update_limit = 400
+update_multi = 10
+update_lookback = 86500
+
+[rt]
+url = https://rt.wikimedia.org/REST/1.0/
+login = cpettet
+passwd =
