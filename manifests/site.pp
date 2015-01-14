@@ -1486,9 +1486,9 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     if $::hostname =~ /^lvs100[25]$/ {
         $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
     }
-    $cluster = 'lvs'
+
+    role lvs::balancer
     include admin
-    include role::lvs::balancer
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1592,9 +1592,8 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
     if $::hostname =~ /^lvs200[25]$/ {
         $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.239' ]
     }
-    $cluster = 'lvs'
+    role lvs::balancer
     include admin
-    include role::lvs::balancer
 
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
 
@@ -1702,9 +1701,8 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
-    $cluster = 'lvs'
+    role lvs::balancer
     include admin
-    include role::lvs::balancer
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1736,15 +1734,13 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 
 # ULSFO lvs servers
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
-
-    $cluster = 'lvs'
     # lvs4001 and lvs4003 are in different racks
     if $::hostname =~ /^lvs400[13]$/ {
         $ganglia_aggregator = true
     }
 
+    role lvs::balancer
     include admin
-    include role::lvs::balancer
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
