@@ -198,6 +198,9 @@ class role::cache {
                 'cxserver' => {
                     'eqiad' => 'cxserver.svc.eqiad.wmnet',
                 },
+                'citoid' => {
+                    'eqiad' => 'citoid.svc.eqiad.wmnet',
+                },
             },
             'labs' => {
                 'api'    => {
@@ -220,6 +223,9 @@ class role::cache {
                 },
                 'cxserver' => {
                     'eqiad' => 'cxserver-beta.wmflabs.org',
+                },
+                'citoid' => {
+                    'eqiad' => 'citoid.wmflabs.org',
                 },
             },
         }
@@ -1485,6 +1491,7 @@ class role::cache {
             directors        => {
                 'backend'          => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
                 'cxserver_backend' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
+                'citoid_backend'   => $::role::cache::configuration::active_nodes[$::realm]['citoid'][$::site],
             },
             director_options => {
                 'retries' => 2,
@@ -1497,6 +1504,11 @@ class role::cache {
                 {
                     'backend_match'         => '^cxserver',
                     'port'                  => 8080,
+                    'probe'                 => false,
+                },
+                {
+                    'backend_match'         => '^citoid',
+                    'port'                  => 1970,
                     'probe'                 => false,
                 },
                 {
@@ -1517,6 +1529,7 @@ class role::cache {
             directors        => {
                 'backend'          => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
                 'cxserver_backend' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
+                'citoid_backend'   => $::role::cache::configuration::active_nodes[$::realm]['citoid'][$::site],
             },
             director_type    => 'chash',
             director_options => {
@@ -1530,6 +1543,11 @@ class role::cache {
                 {
                     'backend_match'         => '^cxserver',
                     'port'                  => 8080,
+                    'probe'                 => false,
+                },
+                {
+                    'backend_match'         => '^citoid',
+                    'port'                  => 1970,
                     'probe'                 => false,
                 },
                 {
