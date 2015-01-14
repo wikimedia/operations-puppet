@@ -420,7 +420,7 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     }
 
     # monitor disk statistics
-    if !defined(Ganglia::Plugin::Python['diskstat']) {
+    if defined(Service['ganglia-monitor']) and !defined(Ganglia::Plugin::Python['diskstat']) {
         ganglia::plugin::python { 'diskstat': }
     }
 
@@ -496,7 +496,7 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     }
 
     # monitor disk statistics
-    if !defined(Ganglia::Plugin::Python['diskstat']) {
+    if defined(Service['ganglia-monitor']) and !defined(Ganglia::Plugin::Python['diskstat']) {
         ganglia::plugin::python { 'diskstat': }
     }
 
@@ -558,7 +558,7 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
     }
 
     # monitor disk statistics
-    if !defined(Ganglia::Plugin::Python['diskstat']) {
+    if defined(Service['ganglia-monitor']) and !defined(Ganglia::Plugin::Python['diskstat']) {
         ganglia::plugin::python { 'diskstat': }
     }
 
