@@ -1,7 +1,10 @@
 # Scap proxy list
 #
 scap_proxies:
-# - "mw1010.eqiad.wmnet"
-  - "mw1070.eqiad.wmnet"
-  - "mw1161.eqiad.wmnet"
-  - "mw1201.eqiad.wmnet"
+#  - "mw1010.eqiad.wmnet" # A6
+  - "mw1033.eqiad.wmnet" # A7
+  - "mw1070.eqiad.wmnet" # B6
+  - "mw1097.eqiad.wmnet" # B7
+  - "mw1216.eqiad.wmnet" # B8
+  - "mw1161.eqiad.wmnet" # C6
+  - "mw1201.eqiad.wmnet" # D5
