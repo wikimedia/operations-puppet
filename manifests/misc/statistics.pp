@@ -1,4 +1,6 @@
 class misc::statistics::user {
+    include passwords::statistics::user
+
     $username = 'stats'
     $homedir  = "/var/lib/${username}"
 
@@ -16,11 +18,33 @@ class misc::statistics::user {
         system     => true
     }
 
-    # create a .gitconfig file for stats user
-    file { "${homedir}/.gitconfig":
-        mode    => '0664',
+    git::userconfig { 'stats':
+        homedir  => $homedir,
+        settings => {
+            'user' => {
+                'name'  => 'Statistics User',
+                # TODO: use a better email than this :(
+                'email' => 'otto@wikimedia.org',
+            }
+            # enable automated git/gerrit authentication via http
+            # by using .git-credential file store.
+            'credential' => {
+                'helper' => 'store',
+            }
+        },
+        require   => User[$username],
+    }
+
+    # Render the .git-credential file with the stats user's http password.
+    # This password is set from https://gerrit.wikimedia.org/r/#/settings/http-password.
+    # To log into gerrit as the stats user, check the /srv/password/stats-user file
+    # for LDAP login creds.
+    file { "${homedir}/.git-credentials":
+        mode    => '0600',
         owner   => $username,
-        content => "[user]\n\temail = otto@wikimedia.org\n\tname = Statistics User",
+        group   => $username,
+        content => "https://${username}:${passwords::statistics::user::gerrit_http_password}@gerrit.wikimedia.org",
+        require => User[$username],
     }
 }
 
