@@ -1799,31 +1799,15 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 }
 
 node /^rdb100[1-4]\.eqiad\.wmnet/ {
-
-    include admin
-
-    $cluster = 'redis'
     $ganglia_aggregator = true
-
-    $redis_replication = {
-        'rdb1002' => 'rdb1001',
-        'rdb1004' => 'rdb1003',
-    }
-
-    class { 'role::db::redis':
-        redis_replication => $redis_replication,
-        dir               => '/a/redis',
-    }
+    role db::redis
+    include admin
 }
 
 node /^rbf100[1-2]\.eqiad\.wmnet/ {
     $cluster = 'redis'
-
+    role db::redis
     include admin
-
-    class { 'role::db::redis':
-        redis_replication => { 'rbf1002' => 'rbf1001' },
-    }
 
     # Background save may fail under low memory condition unless
     # vm.overcommit_memory is 1.
