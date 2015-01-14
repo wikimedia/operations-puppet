@@ -14,10 +14,6 @@ statistics:
   __regex: !ruby/regexp /stat100[123].eqiad.wmnet/
   mainrole: statistics
 
-restbase_eqiad:
-  __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
-  mainrole: restbase
-
 orientdb_test:
   __regex: !ruby/regexp /^(haedus|capella)\.codfw\.wmnet$/
   admin::groups:
