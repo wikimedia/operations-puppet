@@ -105,6 +105,7 @@ class role::salt::minions {
         $client_id     = $::fqdn
     }
 
+
     class { '::salt::minion':
         id            => $client_id,
         master        => $master,
@@ -112,7 +113,7 @@ class role::salt::minions {
         grains         => {
             realm   => $::realm,
             site    => $::site,
-            cluster => $cluster,
+            cluster => hiera('cluster', $cluster),
         },
     }
 }
