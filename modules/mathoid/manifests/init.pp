@@ -17,10 +17,10 @@
 #   Port where to run the mathoid service. Defaults to 10042.
 #
 class mathoid(
-    $base_path,
-    $node_path,
-    $conf_path,
-    $log_dir,
+    $base_path = '/srv/deployment/mathoid/mathoid',
+    $node_path = '/srv/deployment/mathoid/mathoid/node_modules',
+    $conf_path = '/srv/deployment/mathoid/mathoid/mathoid.config.json',
+    $log_dir = '/var/log/mathoid',
     $port=10042
 ) {
     require_package('nodejs')
