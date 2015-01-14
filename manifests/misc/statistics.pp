@@ -1128,7 +1128,7 @@ class misc::statistics::aggregator {
     git::clone { 'aggregator_data':
         ensure    => 'latest',
         directory => $data_repo_path,
-        origin    => 'https://gerrit.wikimedia.org/r/p/analytics/aggregator/data.git',
+        origin    => 'ssh://gerrit.wikimedia.org:29418/analytics/aggregator/data.git',
         owner     => $user,
         group     => $group,
         mode      => '0755',
