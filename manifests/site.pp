@@ -1768,24 +1768,19 @@ node 'magnesium.wikimedia.org' {
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
-    $cluster = 'memcached'
     if $::hostname =~ /^mc100[12]$/ {
         $ganglia_aggregator = true
     }
 
+    role memcached
     include admin
-    include role::memcached
     include passwords::redis
 
     file { '/a':
         ensure => 'directory',
     }
 
-    class { 'redis':
-        maxmemory => '500Mb',
-        dir       => '/a/redis',
-        password  => $passwords::redis::main_password,
-    }
+    include redis
     include redis::ganglia
 }
 
