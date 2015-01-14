@@ -30,6 +30,13 @@ class beta::scap::master {
         hosts_allow => $::beta::config::rsync_networks,
     }
 
+    ferm::service {'rsync_deployment_bastion':
+        desc   => 'rsyncd on deployment-bastion, the equivalent to tin in prod',
+        proto  => 'tcp',
+        port   => '873',
+        srange => $::beta::config::rsync_networks,
+    }
+
     package { 'dsh':
         ensure => present
     }
