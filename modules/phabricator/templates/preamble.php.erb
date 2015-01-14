@@ -1,17 +1,15 @@
 <?php
-/* disabled until after migration because chase is using the
-   x-forwarded-for header for other purposes during migration.
-*/
 
-/*
+// use the real remote address reported to us by the front-end proxy:
 if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
   $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
 }
+// fake https if proxy reports it with forwarded_proto header:
 if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
     && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
   $_SERVER['HTTPS'] = true;
 }
-*/
+
 
 class redirector {
   protected $config;
