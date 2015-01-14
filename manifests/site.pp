@@ -464,10 +464,9 @@ node 'caesium.eqiad.wmnet' {
 
 # cerium, praseodymium and xenon are Cassandra test hosts
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
-    class { 'admin': groups => ['cassandra-roots'] }
+    role restbase, cassandra
     include standard
-    include role::cassandra
-    include role::restbase
+    include admin
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
