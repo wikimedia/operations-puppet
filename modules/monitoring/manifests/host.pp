@@ -3,7 +3,7 @@
 #
 define monitoring::host (
     $ip_address = $::ipaddress,
-    $group         = undef,
+    $group         = hiera('nagios_group', "${cluster}_${::site}"),
     $ensure        = present,
     $critical      = 'false',
     $contact_group = 'admins'
@@ -15,10 +15,11 @@ define monitoring::host (
     # Determine the hostgroup:
     # If defined in the declaration of resource, we use it;
     # If not, adopt the standard format
-    $cluster_name = hiera('cluster', $cluster)
     $hostgroup = $group ? {
         /.+/    => $group,
-        default => hiera('nagios_group',"${cluster_name}_${::site}")
+        default => $cluster ? {
+            default => "${cluster}_${::site}"
+        }
     }
 
     # Export the nagios host instance

@@ -41,7 +41,7 @@ class standard-noexim {
 
 # Default variables. this way, they work with an ENC (as in labs) as well.
 if $cluster == undef {
-    $cluster = 'misc'
+    $cluster = hiera('cluster', 'misc')
 }
 
 # Node definitions (alphabetic order)
