@@ -2398,14 +2398,7 @@ node 'terbium.eqiad.wmnet' {
         'eqiad.wmnet',
     ]
 
-    class { 'admin':
-        groups => [
-            'restricted',
-            'deployment',
-            'ldap-admins',
-        ],
-    }
-
+    include admin
     include ldap::role::client::labs
 
     include misc::maintenance::pagetriage

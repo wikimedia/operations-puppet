@@ -1,0 +1,4 @@
+admin::groups:
+  - restricted
+  - deployment
+  - ldap-admins
