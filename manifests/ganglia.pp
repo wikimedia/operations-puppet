@@ -28,7 +28,7 @@ class ganglia {
         # FIXME: ugly, but without it bad things happen with check_ganglia
         $cname = $ganglia_new::monitor::cname
     } else {
-        $cluster = hiera('cluster', $::cluster)
+        $cluster = hiera('cluster', $cluster)
         # aggregator should not be deaf (they should listen)
         # ganglia_aggregator for production are defined in site.pp;
         if $ganglia_aggregator {
