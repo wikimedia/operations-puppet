@@ -13,13 +13,14 @@ tempDir=`egrep "^temp=" "$configfile" | mawk -Ftemp= '{ print $2 }'`
 
 multiversionscript="${apacheDir}/multiversion/MWScript.php"
 
-targetFile=$targetDir/`date +'%Y%m%d'`.json.gz
+filename=`date +'%Y%m%d'`
+targetFile=$targetDir/$filename.json.gz
 
 i=0
 shards=4
 
 while [ $i -lt $shards ]; do
-	php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet 2>> /var/log/wikidatadump/dumpwikidatajson-$i.log | gzip > $tempDir/wikidataJson.$i.gz &
+	php $multiversionscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dumpJson.php --wiki wikidatawiki --shard $i --sharding-factor $shards --snippet 2>> /var/log/wikidatadump/dumpwikidatajson-$filename-$i.log | gzip > $tempDir/wikidataJson.$i.gz &
 	let i++
 done
 
@@ -27,6 +28,7 @@ wait
 
 i=0
 
+# Open the json list
 echo '[' | gzip -f > $targetFile
 
 while [ $i -lt $shards ]; do
@@ -39,10 +41,11 @@ while [ $i -lt $shards ]; do
 	fi
 done
 
+# Close the json list
 echo -e '\n]' | gzip -f >> $targetFile
 
-# Remove dumps we no longer need (keep 10)
-filesToDelete=`ls -r $targetDir/20*.gz | tail -n +11`
-if [ -n "$filesToDelete" ]; then
-	rm $filesToDelete
-fi
+# Remove dumps we no longer need (keep 10 => last 70 days)
+find $targetDir -name '20*.gz' -mtime -71 -delete
+
+# Remove old logs (keep 5 => last 35 days)
+find /var/log/wikidatadump/ -name 'dumpwikidatajson-*-*.log' -mtime -36 -delete
