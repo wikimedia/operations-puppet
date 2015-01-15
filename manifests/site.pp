@@ -2122,7 +2122,7 @@ node 'palladium.eqiad.wmnet' {
     include admin
     include role::ipmi
     include role::salt::masters::production
-    include role::deployment::salt_masters::production
+    include role::deployment::salt_masters
     include role::access_new_install
     include role::puppetmaster::frontend
     include role::pybal_config
@@ -2588,7 +2588,7 @@ node 'virt1000.wikimedia.org' {
     include role::nova::controller
     include role::nova::manager
     include role::salt::masters::labs
-    include role::deployment::salt_masters::labs
+    include role::deployment::salt_masters
     if $use_neutron == true {
         include role::neutron::controller
 
@@ -2612,7 +2612,7 @@ node 'labcontrol2001.wikimedia.org' {
     #include role::nova::controller
     #include role::nova::manager
     #include role::salt::masters::labs
-    #include role::deployment::salt_masters::labs
+    #include role::deployment::salt_masters
 }
 
 # Eqiad ldap server, aka ldap-eqiad

@@ -121,27 +121,6 @@ class role::deployment::config {
     }
 }
 
-class role::deployment::salt_masters::production {
-    $deployment_config = {
-        'parent_dir' => '/srv/deployment',
-        'servers'        => {
-            'eqiad' => 'tin.eqiad.wmnet',
-        },
-        'redis'          => {
-            'host' => 'tin.eqiad.wmnet',
-            'port' => '6379',
-            'db'   => '0',
-        },
-    }
-
-    class { '::role::deployment::config': }
-
-    class { 'deployment::salt_master':
-        repo_config       => $role::deployment::config::repo_config,
-        deployment_config => $deployment_config,
-    }
-}
-
 class role::deployment::deployment_servers::common(
     # Source of the key, change this if not in production, with hiera.
     $key_source = 'puppet:///private/ssh/tin/mwdeploy_rsa',
@@ -222,17 +201,15 @@ class role::deployment::deployment_servers::production {
     }
 }
 
-class role::deployment::salt_masters::labs {
-    # Enable multiple test environments within a single project
-    if ( $::deployment_server_override != undef ) {
-        $deployment_server = $::deployment_server_override
-    } else {
-        $deployment_server = "${::instanceproject}-deploy.eqiad.wmflabs"
-    }
+class role::deployment::salt_masters(
+    $deployment_server = 'tin.eqiad.wmnet',
+) {
 
     $deployment_config = {
         'parent_dir' => '/srv/deployment',
-        'servers'    => { 'eqiad'  => $deployment_server, },
+        'servers'    => {
+            'eqiad'  => $deployment_server,
+        },
         'redis'      => {
             'host'     => $deployment_server,
             'port'     => '6379',
