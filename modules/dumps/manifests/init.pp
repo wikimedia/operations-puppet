@@ -1,6 +1,4 @@
-class download::wikimedia {
-    system::role { 'download::wikimedia': description => 'download.wikimedia.org' }
-
+class dumps {
     package { 'lighttpd':
         ensure => latest,
     }
@@ -12,7 +10,7 @@ class download::wikimedia {
         owner  => 'root',
         group  => 'root',
         path   => '/etc/lighttpd/lighttpd.conf',
-        source => 'puppet:///modules/download/lighttpd.conf',
+        source => 'puppet:///modules/dumps/lighttpd.conf',
     }
 
     service { 'lighttpd':
@@ -20,9 +18,4 @@ class download::wikimedia {
     }
 
     include vm::higher_min_free_kbytes
-
-    monitoring::service { 'lighttpd http':
-        description   => 'LighttpdHTTP',
-        check_command => 'check_http'
-    }
 }
