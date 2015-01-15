@@ -1,21 +1,13 @@
 class dumps {
-    package { 'lighttpd':
-        ensure => latest,
-    }
-
     install_certificate{ 'dumps.wikimedia.org': ca => 'RapidSSL_CA.pem' }
 
-    file { '/etc/lighttpd/lighttpd.conf':
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        path   => '/etc/lighttpd/lighttpd.conf',
-        source => 'puppet:///modules/dumps/lighttpd.conf',
+    include ::nginx
+    nginx::site { 'dumps':
+        source  => 'puppet:///modules/dumps/nginx.dumps.conf',
+        notify  => Service['nginx'],
     }
-
-    service { 'lighttpd':
-        ensure => running,
+    nginx::site { 'download':
+        source  => 'puppet:///modules/dumps/nginx.download.conf',
+        notify  => Service['nginx'],
     }
-
-    include vm::higher_min_free_kbytes
 }
