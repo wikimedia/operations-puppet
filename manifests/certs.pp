@@ -71,11 +71,8 @@ define create_chained_cert(
         require => Exec["${name}_create_chained_cert"],
     }
 
-    # TODO: Remove once nothing references this anymore
     file { "/etc/ssl/certs/${certname}.chained.pem":
-        ensure  => link,
-        target  => "${location}/${certname}.chained.crt",
-        require => File["${location}/${certname}.chained.crt"],
+        ensure  => absent,
     }
 }
 
@@ -102,11 +99,8 @@ define install_certificate(
         require => File['/etc/ssl/localcerts'],
     }
 
-    # TODO: Remove once nothing references this anymore
     file { "/etc/ssl/certs/${name}.pem":
-        ensure  => link,
-        target  => "/etc/ssl/localcerts/${name}.crt",
-        require => File["/etc/ssl/localcerts/${name}.crt"],
+        ensure  => absent,
     }
 
     if ( $privatekey == true ) {
