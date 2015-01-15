@@ -2788,6 +2788,7 @@ node 'zirconium.wikimedia.org' {
     include role::transparency
     include role::grafana
     include role::iegreview
+    include role::annualreport
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
