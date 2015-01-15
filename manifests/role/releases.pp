@@ -29,6 +29,9 @@ class role::releases {
         proto => 'tcp',
         port  => '443',
     }
+
+    include role::backup::host
+    backup::set { 'srv-org-wikimedia': }
 }
 
 class role::releases::upload {
