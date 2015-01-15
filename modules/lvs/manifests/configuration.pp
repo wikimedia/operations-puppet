@@ -585,6 +585,19 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options,
             },
         },
+        'parsoidcache-https' => {
+            'description' => "nginx HTTPS terminators for Parsoid",
+            'class' => "high-traffic2",
+            'sites' => [ "eqiad" ],
+            'ip' => $service_ips['parsoidcache'][$::site],
+            'port' => 443,
+            'scheduler' => 'sh',
+            'bgp' => 'no',
+            'depool-threshold' => ".5",
+            'monitors' => {
+                'IdleConnection' => $idleconnection_monitor_options,
+            },
+        },
         "search" => {
             'description' => "Elasticsearch search for MediaWiki",
             'class' => "low-traffic",
