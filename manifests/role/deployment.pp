@@ -271,6 +271,13 @@ class role::deployment::deployment_servers::labs {
         require => File['/srv/deployment'],
     }
 
+    ferm::service { 'http_deployment_server':
+        desc   => 'http on trebuchet deployment servers, for serving actual files to deploy',
+        proto  => 'tcp',
+        port   => '80',
+        srange => $deployable_networks,
+    }
+
     class { 'redis':
         dir       => '/srv/redis',
         maxmemory => '500Mb',
