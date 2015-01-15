@@ -1,0 +1,74 @@
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@wikimedia.org
+    ServerName lists.wikimedia.org
+    RewriteEngine on
+    RewriteRule ^/(.*)$ https://lists.wikimedia.org/$1 [R=301]
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerAdmin webmaster@wikimedia.org
+    ServerName lists.wikimedia.org
+    SSLEngine On
+    SSLCertificateFile /etc/ssl/localcerts/lists.wikimedia.org.crt
+    SSLCertificateKeyFile /etc/ssl/private/lists.wikimedia.org.key
+    SSLCACertificatePath /etc/ssl/certs
+    <%= @ssl_settings.join("\n") %>
+    Header set Strict-Transport-Security "max-age=31536000"
+
+    # Does not obey robots.txt; causing operational issues, 2014-06-23
+    BrowserMatch "ArchiveTeam ArchiveBot" bad_browser
+    <Location />
+        Order allow,deny
+        Allow from env=!bad_browser
+    </Location>
+
+    DocumentRoot /srv/nonexistent
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Order Allow,Deny
+        Allow from All
+    </Directory>
+
+    ScriptAlias /mailman/ "/usr/lib/cgi-bin/mailman/"
+    <Directory "/usr/lib/cgi-bin/mailman/">
+        AllowOverride None
+        Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    Alias /pipermail/ "/var/lib/mailman/archives/public/"
+    Alias /images/    "/usr/share/images/"
+
+    RedirectMatch permanent ^/(index\.html?)?$ https://lists.wikimedia.org/mailman/listinfo
+    RedirectMatch permanent ^/mailman/$        https://lists.wikimedia.org/mailman/listinfo
+
+    # arbcom-l paranoia. Contact Tim Starling for details/rationale
+    <LocationMatch "^/mailman/(private|admin)/arbcom-l(/.*|$)">
+        AuthType Digest
+        AuthName "arbcom-l archive"
+        AuthDigestProvider file
+        AuthDigestDomain /mailman/private/arbcom-l /mailman/admin/arbcom-l
+        AuthUserFile /etc/apache2/arbcom-l.htdigest
+        Require valid-user
+    </LocationMatch>
+    <LocationMatch "^/mailman/private/arbcom-l/.*\.txt.gz">
+        Order deny,allow
+        Deny from all
+    </LocationMatch>
+
+    # list renames
+    Redirect permanent /mailman/listinfo/foundation-l       https://lists.wikimedia.org/mailman/listinfo/wikimedia-l
+    Redirect permanent /mailman/listinfo/museum-l           https://lists.wikimedia.org/mailman/listinfo/glam
+    Redirect permanent /mailman/listinfo/mediawiki-cvs      https://lists.wikimedia.org/mailman/listinfo/mediawiki-commits
+    Redirect permanent /mailman/listinfo/wsor               https://lists.wikimedia.org/mailman/listinfo/wmfresearch
+    Redirect permanent /mailman/listinfo/chaptercommittee-l https://lists.wikimedia.org/mailman/listinfo/affcom
+    Redirect permanent /mailman/listinfo/allhands           https://lists.wikimedia.org/mailman/listinfo/wmfreqs
+    Redirect permanent /mailman/listinfo/research-team      https://lists.wikimedia.org/mailman/listinfo/research-internal
+
+    ErrorLog /var/log/apache2/lists.wikimedia.org-error.log
+    CustomLog /var/log/apache2/lists.wikimedia.org-access.log combined
+</VirtualHost>
