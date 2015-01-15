@@ -211,6 +211,8 @@ class mailman {
             require => Class['apache'],
         }
 
+        $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
+
         apache::site { 'lists.wikimedia.org':
             content => template('apache/sites/lists.wikimedia.org.erb'),
         }

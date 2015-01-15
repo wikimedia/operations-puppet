@@ -15,7 +15,6 @@
     SSLCertificateKeyFile /etc/ssl/private/lists.wikimedia.org.key
     SSLCACertificatePath /etc/ssl/certs
     <%= @ssl_settings.join("\n") %>
-    Header set Strict-Transport-Security "max-age=31536000"
 
     # Does not obey robots.txt; causing operational issues, 2014-06-23
     BrowserMatch "ArchiveTeam ArchiveBot" bad_browser
