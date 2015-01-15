@@ -118,15 +118,15 @@ define install_certificate(
         }
     }
 
-    # create_combined_cert created those
+    # create_combined_cert/create_pkcs12 created those
     file { [
         "/etc/ssl/private/${name}.crt",
         "/etc/ssl/private/${name}.pem",
+        "/etc/ssl/private/${name}.p12",
     ]:
         ensure => absent,
     }
 
-    create_pkcs12{ $name: }
     if ( $ca ) {
         $cas = $ca
     } else {
