@@ -52,25 +52,27 @@ class txstatsd($settings) {
         managehome => false,
     }
 
-    if os_version('debian >= jessie') {
-        $init_provider = 'systemd'
-        $init_file = '/etc/systemd/system/txstatsd.service'
-        file { $init_file:
-            source => 'puppet:///modules/txstatsd/txstatsd.service'
+    case $::initsystem {
+        'systemd': {
+            $init_file = '/etc/systemd/system/txstatsd.service'
+            file { $init_file:
+                source => 'puppet:///modules/txstatsd/txstatsd.service'
+            }
         }
-    }
-    else {
-        $init_provider = 'upstart'
-        $init_file = '/etc/init/txstatsd.conf'
-        file { $init_file:
-            source => 'puppet:///modules/txstatsd/txstatsd.conf',
+        'upstart': {
+            $init_file = '/etc/init/txstatsd.conf'
+            file { $init_file:
+                source => 'puppet:///modules/txstatsd/txstatsd.conf',
+            }
+        }
+        default: {
+            fail('The txstatsd pupppet module does not like your init system!')
         }
     }
 
     service { 'txstatsd':
         ensure    => running,
         enable    => true,
-        provider  => $init_provider,
         subscribe => File['/etc/txstatsd/txstatsd.cfg'],
         require   => [
             File[$init_file],
