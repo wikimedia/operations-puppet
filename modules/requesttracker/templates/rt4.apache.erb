@@ -14,7 +14,7 @@
   ServerName <%=@apache_site%>
 
   SSLEngine on
-  SSLCertificateFile /etc/ssl/certs/rt.wikimedia.org.pem
+  SSLCertificateFile /etc/ssl/localcerts/rt.wikimedia.org.crt
   SSLCertificateKeyFile /etc/ssl/private/rt.wikimedia.org.key
   SSLCACertificatePath /etc/ssl/certs
   <%= @ssl_settings.join("\n") %>

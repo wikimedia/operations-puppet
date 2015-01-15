@@ -13,7 +13,7 @@ class openstack::nova::compute($openstack_version=$::openstack::version, $novaco
                 require => Install_additional_key["${certname}"];
             "/var/lib/nova/clientcert.pem":
                 ensure  => link,
-                target  => "/etc/ssl/certs/${certname}.pem",
+                target  => "/etc/ssl/localcerts/${certname}.crt",
                 require => Install_certificate["${certname}"];
             "/var/lib/nova/cacert.pem":
                 ensure  => link,
