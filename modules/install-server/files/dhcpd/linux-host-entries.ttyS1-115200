@@ -1669,6 +1669,11 @@ host gold {
 	fixed-address gold.wikimedia.org;
 }
 
+host graphite1001 {
+        hardware ethernet B0:83:FE:DF:2B:64;
+        fixed-address graphite1001.eqiad.wmnet;
+}
+
 host graphite1002 {
 	hardware ethernet 78:2b:cb:05:03:99;
 	fixed-address graphite1002.eqiad.wmnet;
