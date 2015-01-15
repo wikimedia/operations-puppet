@@ -20,6 +20,12 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 #Privilege Separation is turned on for security
 UsePrivilegeSeparation yes
 
+<% if scope.function_os_version(['debian >= jessie || ubuntu >= trusty']) %>
+KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+<% else %>
+KexAlgorithms diffie-hellman-group-exchange-sha256
+<% end %>
+
 # Lifetime and size of ephemeral version 1 server key
 KeyRegenerationInterval 3600
 ServerKeyBits 1024
