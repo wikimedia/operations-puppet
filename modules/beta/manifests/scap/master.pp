@@ -9,13 +9,13 @@ class beta::scap::master {
     include ::rsync::server
 
     # Install ssh private key for mwdeploy user
-    file { '/var/lib/mwdeploy/.ssh':
+    file { '/home/mwdeploy/.ssh':
         ensure => directory,
         owner  => 'mwdeploy',
         group  => 'mwdeploy',
         mode   => '0700',
     }
-    file { '/var/lib/mwdeploy/.ssh/id_rsa':
+    file { '/home/mwdeploy/.ssh/id_rsa':
         owner   => 'mwdeploy',
         group   => 'mwdeploy',
         mode    => '0600',
