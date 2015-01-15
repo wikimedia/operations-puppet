@@ -38,6 +38,13 @@ PermitRootLogin no
 
 StrictModes yes
 
+<% if scope.function_os_version(['debian >= jessie || ubuntu >= trusty']) %>
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+<% else %>
+Ciphers aes256-ctr,aes192-ctr,aes128-ctr
+<% end %>
+
+
 RSAAuthentication yes
 PubkeyAuthentication yes
 #AuthorizedKeysFile	%h/.ssh/authorized_keys
