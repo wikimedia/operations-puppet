@@ -1422,6 +1422,7 @@ class role::cache {
     class parsoid inherits role::cache::varnish::2layer {
 
         if ( $::realm == 'production' ) {
+            include role::cache::ssl::sni
             class { 'lvs::realserver':
                 realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site],
             }
