@@ -1419,9 +1419,30 @@ class role::cache {
         }
     }
 
+    class ssl::parsoid {
+        # Explicitly not adding wmf CA since it is not needed for now
+        include role::protoproxy::ssl::common
+
+        localssl { 'unified':
+            certname       => 'uni.wikimedia.org',
+            default_server => true,
+        }
+        localssl { 'wikimedia.org':
+            certname       => 'sni.wikimedia.org',
+            server_name    => 'wikimedia.org',
+            server_aliases => ['*.wikimedia.org'],
+        }
+        localssl { 'm.wikimedia.org':
+            certname       => 'sni.m.wikimedia.org',
+            server_name    => 'm.wikimedia.org',
+            server_aliases => ['*.m.wikimedia.org'],
+        }
+    }
+
     class parsoid inherits role::cache::varnish::2layer {
 
         if ( $::realm == 'production' ) {
+            include role::cache::ssl::parsoid
             class { 'lvs::realserver':
                 realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site],
             }
