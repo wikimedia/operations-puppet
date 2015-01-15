@@ -20,7 +20,7 @@ class beta::scap::master {
         group   => 'mwdeploy',
         mode    => '0600',
         source  => 'puppet:///private/scap/id_rsa',
-        require => File['/var/lib/mwdeploy/.ssh'],
+        require => File['/home/mwdeploy/.ssh'],
     }
 
     # Run an rsync server
