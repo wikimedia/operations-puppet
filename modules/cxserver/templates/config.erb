@@ -9,6 +9,10 @@ module.exports = {
 	logDir: '<%= @log_dir %>',
 	'parsoid.api': '<%= @parsoid %>',
 	'mt.apertium.api': '<%= @apertium %>',
+	// Use SSL
+	secure: true,
+	sslkey: null,
+	cert: null,
 	registry: {
 		ca: {
 			es: {
