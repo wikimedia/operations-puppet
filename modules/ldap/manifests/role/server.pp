@@ -38,15 +38,26 @@ class ldap::role::server::labs {
     }
 
     install_certificate{ $certificate: ca => $ca_name }
+
     # Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
     # Add it into the instance location, and ensure opendj can read it.
-    create_pkcs12{ "${certificate}.opendj":
-        certname => $certificate,
-        user     => 'opendj',
-        group    => 'opendj',
-        location => $certificate_location,
-        password => $cert_pass,
-        require  => Package['opendj'],
+    exec  { "${certificate}_pkcs12":
+        creates => "${certificate_location}/${certificate}.p12",
+        command => "/usr/bin/openssl pkcs12 -export -name \"${certificate}\" -passout pass:${cert_pass} -in /etc/ssl/localcerts/${certificate}.crt -inkey /etc/ssl/private/${certificate}.key -out ${certificate_location}/${certname}.p12",
+        onlyif  => "/usr/bin/test -s /etc/ssl/private/${certificate}.key",
+        require => [
+            Package['openssl'],
+            Package['opendj'],
+            File["/etc/ssl/localcerts/${certname}.crt"],
+            File["/etc/ssl/private/${certname}.key"],
+        ],
+    }
+    file { "${certificate_location}/${certificate}.p12":
+        ensure  => present,
+        mode    => '0440',
+        owner   => 'opendj',
+        group   => 'opendj',
+        require => Exec["${certificate}_pkcs12"],
     }
 
     include ldap::server::schema::sudo,
