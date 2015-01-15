@@ -25,10 +25,6 @@
 class txstatsd($settings) {
     require_package('python-txstatsd', 'python-twisted-web', 'graphite-carbon')
 
-    file { '/etc/init/txstatsd.conf':
-        source => 'puppet:///modules/txstatsd/txstatsd.conf',
-    }
-
     file { '/etc/txstatsd':
         ensure => directory,
         owner  => 'root',
@@ -56,12 +52,28 @@ class txstatsd($settings) {
         managehome => false,
     }
 
+    if os_version('debian >= jessie') {
+        $init_provider = 'systemd';
+        $init_file = '/etc/systemd/system/txstatsd.service';
+        file { $init_file:
+            source => 'puppet:///modules/txstatsd/txstatsd.service'
+        }
+    }
+    else {
+        $init_provider = 'upstart';
+        $init_file = '/etc/init/txstatsd.conf';
+        file { $init_file:
+            source => 'puppet:///modules/txstatsd/txstatsd.conf',
+        }
+    }
+
     service { 'txstatsd':
         ensure    => running,
-        provider  => upstart,
+        enable    => true,
+        provider  => $init_provider,
         subscribe => File['/etc/txstatsd/txstatsd.cfg'],
         require   => [
-            File['/etc/init/txstatsd.conf'],
+            File[$init_file],
             Class[
                   'packages::python_txstatsd',
                   'packages::python_twisted_web',
