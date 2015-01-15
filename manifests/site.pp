@@ -2045,7 +2045,6 @@ node 'nescio.esams.wikimedia.org' {
     include admin
     include standard
 
-    include dns::recursor::statistics
     include network::constants
 
     class { 'dns::recursor':

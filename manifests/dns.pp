@@ -124,38 +124,5 @@ class dns::recursor(
         }
     }
 
-    class statistics {
-        package { 'rrdtool':
-            ensure => 'latest',
-        }
-
-        file { '/usr/local/powerdnsstats':
-            source  => 'puppet:///files/powerdns/recursorstats/scripts',
-            recurse => remote,
-        }
-
-        file { '/var/www/pdns':
-            source  => 'puppet:///files/powerdns/recursorstats/www',
-            recurse => 'remote',
-        }
-
-        exec { '/usr/local/powerdnsstats/create':
-            require => [Package['rrdtool'],
-                        File['/usr/local/powerdnsstats']
-            ],
-            cwd     => '/var/www/pdns',
-            user    => 'root',
-            creates => '/var/www/pdns/pdns_recursor.rrd',
-        }
-
-        cron { 'pdnsstats':
-            command => 'cd /var/www/pdns && /usr/local/powerdnsstats/update && /usr/local/powerdnsstats/makegraphs >/dev/null',
-            user    => 'root',
-            minute  => '*/5',
-        }
-
-        # Install a static web server to serve this
-        include webserver::static
-    }
     include metrics
 }
