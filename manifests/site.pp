@@ -637,8 +637,7 @@ node 'dataset1001.wikimedia.org' {
     include role::diamond
     include role::dataset::systemusers
     include role::dataset::primary
-#    include role::download::secondary
-    include role::download::wikimedia
+    include role::dumps
 }
 
 # eqiad dbs
@@ -1845,7 +1844,7 @@ node 'ms1001.wikimedia.org' {
     include standard
     include role::dataset::systemusers
     include role::dataset::secondary
-    include role::download::wikimedia
+    include role::dumps
 }
 
 node 'ms1002.eqiad.wmnet' {
