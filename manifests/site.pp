@@ -2627,29 +2627,8 @@ node 'iodine.wikimedia.org' {
 }
 
 node /^sca100[12]\.eqiad\.wmnet$/ {
-    $cluster = 'sca'
     $ganglia_aggregator = true
-    include standard
-    include base::firewall
-
-    role apertium, citoid, cxserver, mathoid
-
-    class { 'admin':
-        groups => [
-            'mathoid-roots',
-            'mathoid-admin',
-            'citoid-roots',
-            'citoid-admin',
-            'cxserver-admin',
-        ]
-    }
-    class { 'lvs::realserver':
-        realserver_ips => [
-                    '10.2.2.18', # cxserver.svc.eqiad.wmnet
-                    '10.2.2.19', # citoid.svc.eqiad.wmnet
-                    '10.2.2.20', # mathoid.svc.eqiad.wmnet
-                    ],
-    }
+    role sca
 }
 
 node 'uranium.wikimedia.org' {
