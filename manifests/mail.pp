@@ -137,17 +137,10 @@ class exim {
 }
 
 class mailman {
-    class base {
-        # lighttpd needs to be installed first, or the mailman package will pull in apache2
-        require webserver::static
-
-        package { 'mailman':
-            ensure => latest,
-        }
-    }
-
     class listserve {
-        require mailman::base
+        package { 'mailman':
+            ensure => present,
+        }
 
         system::role { 'mailman::listserve':
             description => 'Mailman listserver',
@@ -194,7 +187,14 @@ class mailman {
     }
 
     class web-ui {
-        include webserver::static
+        include ::apache
+        apache::mod_conf { [
+            'ssl',
+            'rewrite',
+            'alias',
+            'setenvif',
+            'auth_digest',
+        ]: }
 
         if ( $::realm == 'production' ) {
             install_certificate{ 'lists.wikimedia.org':
@@ -203,25 +203,16 @@ class mailman {
         }
 
         # htdigest file for private list archives
-        file { '/etc/lighttpd/htdigest':
-            require => Class['webserver::static'],
-            source  => 'puppet:///private/lighttpd/htdigest',
+        file { '/etc/apache2/arbcom-l.htdigest':
+            source  => 'puppet:///private/mailman/arbcom-l.htdigest',
             owner   => 'root',
             group   => 'www-data',
             mode    => '0440',
+            require => Class['apache2'],
         }
 
-        # Enable CGI module
-        mailman_lighttpd_config { '10-cgi':
-            require => Class['webserver::static']
-        }
-
-        # Install Mailman specific Lighttpd config file
-        mailman_lighttpd_config { '50-mailman':
-            require => [ Class['webserver::static'],
-                        File['/etc/lighttpd/htdigest']
-                        ],
-            install => 'true',
+        apache::site { 'lists.wikimedia.org':
+            content => template('apache/sites/lists.wikimedia.org.erb'),
         }
 
         # Add files in /var/www (docroot)
@@ -261,37 +252,4 @@ class mailman {
 
     include listserve
     include web-ui
-}
-
-
-# Enables a certain Lighttpd config
-#
-# TODO:  ensure => false removes symlink.  ensure => purged removes available file.
-define mailman_lighttpd_config($install='false') {
-    # Reload lighttpd if the site config file changes.
-    # This subscribes to both the real file and the symlink.
-    exec { "lighttpd_reload_${title}":
-        command     => '/usr/sbin/service lighttpd reload',
-        refreshonly => true,
-    }
-
-    if $install == 'true' {
-        file { "/etc/lighttpd/conf-available/${title}.conf":
-            source => "puppet:///files/lighttpd/${title}.conf",
-            owner  => 'root',
-            group  => 'www-data',
-            mode   => '0444',
-            before => File["/etc/lighttpd/conf-enabled/${title}.conf"],
-            notify => Exec["lighttpd_reload_${title}"],
-        }
-    }
-
-    # Create a symlink to the available config file
-    # in the conf-enabled directory.  Notify
-    file { "/etc/lighttpd/conf-enabled/${title}.conf":
-        ensure => link,
-        target => "/etc/lighttpd/conf-available/${title}.conf",
-        notify => Exec["lighttpd_reload_${title}"],
-    }
-
 }
