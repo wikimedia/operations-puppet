@@ -147,6 +147,11 @@ class role::mail::lists {
         check_command => 'check_smtp',
     }
 
+    monitoring::service { 'https':
+        description   => 'HTTPS',
+        check_command => 'check_ssl_http!lists.wikimedia.org',
+    }
+
     nrpe::monitor_service { 'procs_mailmanctl':
         description  => 'mailman_ctl',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman/bin/mailmanctl\''
