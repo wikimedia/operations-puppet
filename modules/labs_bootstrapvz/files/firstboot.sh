@@ -60,7 +60,7 @@ then
 
   # Debian has an lvm bug that foils many a boot.  This hack should
   # work around that.
-  sed -i '/GRUB_CMDLINE_LINUX_DEFAULT.*/c\GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0 rootdelay=N"' /etc/default/grub
+  sed -i '/GRUB_CMDLINE_LINUX_DEFAULT.*/c\GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0 rootdelay=90"' /etc/default/grub
   /usr/sbin/update-grub
 fi
 # At this point, all (the rest of) our disk are belong to LVM.
