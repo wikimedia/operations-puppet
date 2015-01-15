@@ -4,20 +4,6 @@ class annualreport {
 
     include ::apache
 
-    file { '/srv/org':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755';
-    }
-
-    file { '/srv/org/wikimedia':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755';
-    }
-
     file { '/srv/org/wikimedia/annualreport':
             ensure => directory,
             owner  => 'root',
