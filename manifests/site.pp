@@ -642,7 +642,7 @@ node 'dataset1001.wikimedia.org' {
 }
 
 # eqiad dbs
-node /^db10(51|52)\.eqiad\.wmnet/ {
+node /^db10(52)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -674,7 +674,7 @@ node /^db10(19|38)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(40|53|56)\.eqiad\.wmnet/ {
+node /^db10(40|53)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -716,7 +716,7 @@ node /^db10(33|34|41)\.eqiad\.wmnet/ {
 
 # MariaDB 10
 
-node /^db10(55|57|65|66|72|73)\.eqiad\.wmnet/ {
+node /^db10(51|55|57|65|66|72|73)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
@@ -770,7 +770,7 @@ node /^db20(18|36)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(42|59|64|68|70)\.eqiad\.wmnet/ {
+node /^db10(42|56|59|64|68|70)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
