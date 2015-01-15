@@ -73,21 +73,15 @@ fi
 # If we don't have a /var, we create it and /var/log,
 # move everything to it, and forcibly reboot now to try
 # everything anew
-if ! /bin/egrep -q '^\S+\s+/var\s' /etc/fstab
+if ! /bin/egrep -q '^\S+\s+/var/log\s' /etc/fstab
 then
-  echo 'Creating /var and /var/log volumes'
-  /sbin/lvcreate -L 2G -n var vd
-  /sbin/mkfs -t ext4 /dev/mapper/vd-var
+  echo 'Creating /var/log volume'
   /sbin/lvcreate -L 2G -n log vd
   /sbin/mkfs -t ext4 /dev/mapper/vd-log
-  /bin/mkdir -p /tmp/var
-  /bin/mount /dev/mapper/vd-var /tmp/var
-  /bin/mkdir -p /tmp/var/log
-  /bin/mount /dev/mapper/vd-log /tmp/var/log
-  /bin/tar cf - -C / var | /bin/tar xf - -C /tmp
-  /bin/umount /tmp/var/log
-  /bin/umount /tmp/var
-  echo "/dev/mapper/vd-var /var ext4 defaults 0 0" >>/etc/fstab
+  /bin/mkdir -p /tmp/log
+  /bin/mount /dev/mapper/vd-log /tmp/log
+  /bin/tar cf - -C /var log | /bin/tar xf - -C /tmp
+  /bin/umount /tmp/log
   echo "/dev/mapper/vd-log /var/log ext4 defaults 0 0" >>/etc/fstab
 
   # We're all done.  Now all that's left is to reboot making sure
