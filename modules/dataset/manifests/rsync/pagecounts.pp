@@ -11,7 +11,7 @@ class dataset::rsync::pagecounts($enable=true) {
         description => 'mirror of pagecount stats'
     }
 
-    include role::mirror::common
+    include dataset::common
     include dataset::rsync::common
 
     file { '/etc/rsyncd.d/30-rsync-pagecounts.conf':

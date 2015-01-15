@@ -1,5 +1,5 @@
 class dataset::cron::rsync::labs($enable=true) {
-    include role::mirror::common
+    include dataset::common
 
     if ($enable) {
         $ensure = 'present'

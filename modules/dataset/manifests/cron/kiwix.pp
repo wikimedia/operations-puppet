@@ -12,7 +12,7 @@ class dataset::cron::kiwix($enable=true) {
         description => 'mirror of Kiwix files'
     }
 
-    include role::mirror::common
+    include dataset::common
 
     group { 'mirror':
         ensure => 'present',

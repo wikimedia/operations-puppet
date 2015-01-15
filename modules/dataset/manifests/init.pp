@@ -16,7 +16,7 @@ class dataset(
     $grabs   = {}
     ) {
 
-    include role::mirror::common
+    include dataset::common
 
     $rsync_public_enable = has_key($rsync,'public')
     class { 'dataset::rsync::public': enable => $rsync_public_enable }

@@ -11,7 +11,7 @@ class dataset::rsync::public($enable=true) {
         description => 'rsyncer to the public of dumps'
     }
 
-    include role::mirror::common
+    include dataset::common
     include dataset::rsync::common
     file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
         ensure => $ensure,

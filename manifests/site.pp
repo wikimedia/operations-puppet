@@ -1846,7 +1846,6 @@ node 'ms1001.wikimedia.org' {
     include role::dataset::systemusers
     include role::dataset::secondary
     include role::download::wikimedia
-#    include role::mirror::media
 }
 
 node 'ms1002.eqiad.wmnet' {

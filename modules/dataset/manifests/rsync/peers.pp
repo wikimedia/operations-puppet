@@ -11,7 +11,7 @@ class dataset::rsync::peers($enable=true) {
         description => 'rsyncer to internal peers of dumps'
     }
 
-    include role::mirror::common
+    include dataset::common
 
     include dataset::rsync::common
     file { '/etc/rsyncd.d/10-rsync-datasets_to_peers.conf':
