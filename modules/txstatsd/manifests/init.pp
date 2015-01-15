@@ -72,6 +72,7 @@ class txstatsd($settings) {
 
     service { 'txstatsd':
         ensure    => running,
+        provider  => $::initsystem,
         enable    => true,
         subscribe => File['/etc/txstatsd/txstatsd.cfg'],
         require   => [
