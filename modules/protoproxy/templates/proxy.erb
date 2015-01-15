@@ -46,7 +46,7 @@ end  # if
 	error_log   /var/log/nginx/<%= @name %>.error.log;
 	access_log   off;
 
-	ssl_certificate /etc/ssl/certs/<%= @proxy_server_cert_name %>.chained.pem;
+	ssl_certificate /etc/ssl/localcerts/<%= @proxy_server_cert_name %>.chained.crt;
 	ssl_certificate_key /etc/ssl/private/<%= @proxy_server_cert_name %>.key;
 	keepalive_timeout 60;
 

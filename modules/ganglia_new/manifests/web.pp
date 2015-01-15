@@ -12,7 +12,7 @@ class ganglia_new::web(
     $ganglia_servername = 'ganglia.wikimedia.org'
     $ganglia_serveralias = 'uranium.wikimedia.org'
     $ganglia_webdir = '/usr/share/ganglia-webfrontend'
-    $ganglia_ssl_cert = '/etc/ssl/certs/ganglia.wikimedia.org.pem'
+    $ganglia_ssl_cert = '/etc/ssl/localcerts/ganglia.wikimedia.org.crt'
     $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
     $ssl_settings = ssl_ciphersuite('apache-2.4', 'compat')
 
