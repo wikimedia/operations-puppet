@@ -190,6 +190,7 @@ class mailman {
         include ::apache
         apache::mod_conf { [
             'ssl',
+            'headers',
             'rewrite',
             'alias',
             'setenvif',
