@@ -7,7 +7,7 @@ NameVirtualHost *:443
 <VirtualHost *:443>
     ServerName <%= @site_name %>
     SSLEngine On
-    SSLCertificateFile /etc/ssl/private/tendril.wikimedia.org.pem
+    SSLCertificateFile /etc/ssl/localcerts/tendril.wikimedia.org.crt
     SSLCertificateKeyFile /etc/ssl/private/tendril.wikimedia.org.key
     SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
     <%= @ssl_settings.join("\n") %>
