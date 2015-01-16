@@ -129,7 +129,8 @@ class phabricator (
         'php5-curl',
         'php5-cli',
         'php5-json',
-        'php5-ldap']:
+        'php5-ldap',
+        'subversion']:
             ensure => present;
     }
 
