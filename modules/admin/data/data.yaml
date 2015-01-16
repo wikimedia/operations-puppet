@@ -119,7 +119,7 @@ groups:
   contint-admins:
     gid: 719
     description: users with some sudo permissions on jenkins hosts
-    members: [bd808, cscott, demon, krinkle, reedy, marktraceur, twentyafterfour]
+    members: [bd808, cmcmahon, cscott, demon, krinkle, reedy, marktraceur, twentyafterfour]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
             'ALL = (gerritslave) NOPASSWD: ALL',
@@ -509,8 +509,8 @@ users:
     gid: 500
     name: cmcmahon
     realname: Chris McMahon
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxI9s+xp5hVPgYCFoiA7fVZWHp+tpsk8zO+iv0xpoeC1HKu5plsyQ+IrJyZQ3AlXU8TdAregeCZ160scrVJcCLwaU+3JC9dgRKOVnvrOMieK3HFsNBAXgOpLTRqXwXi37OQElEw/+WmnUW6BPtE5laQXwiNZ9HmdKUnuSB7k469gtX8Zp67/NyypOJR4gEoBC5OU9xD99lkKhJMW2o/eDIX//vzjtInQVgVBpfSSp4iNjeB9Z1gx5E28Xc8y7DRe8ShyRL/wQkagZ+cexmo33JkoJ6+vwV3Md9JkKYFkj0WCUrLBfXRAM7zagcnY7vJyW3xu81+HVQxcQAONUxAAKB
-        cmcmahon@ubuntu]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAUChaRasX213XksA9xcPs7sqZqcSQBx22rlPPGFfdoxoCTCEgJTL1KU1pzZOaVROQoOPMgThWgKeYk2EtfYLR062HONt8ez+hgjtZ/uBVvR5hg5UJ8dNPSfxjmrgcAVpCkRFE9omABppxOmGj6phxJfujj8j3kTX/gEpadNSTAS5Pb3Az3WDowjRPOGzFjXLV2S5TuEF6ZJbbI7IY4Dc1XY02Lo/5p80mkTzaTo+Yoj6UDAueUDKOmRScWbcicrGSUiN1psnAdvzpHXjyzLrhpkkRHJn+deLffDSKhvg57Ea+T/9Bqo5m54/u9pGlVoyhpWjRKoe3fz4M2hqHCyaH
+        cmcmahon@wikimedia.org]
     uid: 2152
   csteipp:
     ensure: present
