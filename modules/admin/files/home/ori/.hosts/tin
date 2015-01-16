@@ -9,11 +9,13 @@ looksgood() {
     };
     dir=$(pwd);
     branch="origin/wmf/${dir#/srv/mediawiki-staging/php-}";
+    prev_head="$(git rev-parse head)"
+    git rebase "$branch"
     while read -r extension; do
         echo "$(tput setaf 4)Updating $(tput setaf 3; tput bold)${extension}$(tput sgr0)"
         git submodule update --init --recursive "$extension"
-    done < <(git log -p "HEAD..${branch}" | grep -Po '(?<= b/)extensions/.*' | sort | uniq)
-    git rebase "$branch"
+    done < <(git log -p "${prev_head}..HEAD" | grep -Po '(?<= b/)extensions/.*' | sort | uniq)
+    git log --no-merges --pretty=format:"%C(auto)%h: %s"
 }
 
 fetch() {
