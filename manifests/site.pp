@@ -2233,15 +2233,6 @@ node 'ruthenium.eqiad.wmnet' {
     include standard
 }
 
-node 'sanger.wikimedia.org' {
-    include base
-    include ganglia
-    include role::ntp
-    include ldap::role::server::corp
-    include ldap::role::client::corp
-    class { 'admin': groups => ['oit'] }
-}
-
 node 'sodium.wikimedia.org' {
     include admin
     include base
