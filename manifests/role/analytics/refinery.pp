@@ -92,7 +92,7 @@ class role::analytics::refinery::data::drop {
     }
 }
 
-# == Class role::analytics::refinery::data::check
+# == Class role::analytics::refinery::data::check::icinga
 # Configures passive/freshness icinga checks or data imports
 # in HDFS.
 #
@@ -107,7 +107,7 @@ class role::analytics::refinery::data::drop {
 # See: https://phabricator.wikimedia.org/T76414
 #      https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=670373
 #
-class role::analytics::refinery::data::check {
+class role::analytics::refinery::data::check::icinga {
     # We are monitoring hourly datasets.
     # Give Oozie a little time to finish running
     # the monitor_done_flag workflow for each hour.
@@ -152,5 +152,28 @@ class role::analytics::refinery::data::check {
         passive         => 'true',
         freshness       => $freshness_threshold,
         retries         => 1,
+    }
+}
+
+# == Class role::analytics::refinery::data::check::email
+# Configures cron jobs that send email about the faultyness of webrequest data
+#
+# These checks walk HDFS through the plain file system.
+#
+class role::analytics::refinery::data::check::email {
+    require role::analytics::refinery
+
+    # This should not be hardcoded.  Instead, one should be able to use
+    # $::cdh::hadoop::mount::mount_point to reference the user supplied
+    # parameter when the cdh::hadoop::mount class is evaluated.
+    # I am not sure why this is not working.
+    $hdfs_mount_point = '/mnt/hdfs'
+
+    cron { 'refinery data check hdfs_mount':
+        command     => "${::role::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point}",
+        environment => 'MAILTO=otto@wikimedia.org,jgage@wikimedia.org',
+        user        => 'stats',
+        hour        => 10,
+        minute      => 0,
     }
 }
