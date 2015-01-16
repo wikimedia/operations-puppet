@@ -155,8 +155,6 @@ node 'analytics1004.eqiad.wmnet' {
         ],
     }
     include standard
-
-    include role::analytics::hadoop::standby
 }
 
 # analytics1010 was previously the Hadoop master.
@@ -174,8 +172,6 @@ node 'analytics1010.eqiad.wmnet' {
         ],
     }
     include standard
-
-    # include role::analytics::hadoop::master
 }
 
 # analytics1011, analytics1013-analytics1017, analytics1019, analytics1020,
