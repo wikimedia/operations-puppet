@@ -5,6 +5,7 @@
 class beta::scap::target {
     include ::beta::config
     include ::mediawiki::scap
+    include ::mediawiki::users
 
     # Install authorized_keys for mwdeploy user
     file { '/etc/ssh/userkeys/mwdeploy':
