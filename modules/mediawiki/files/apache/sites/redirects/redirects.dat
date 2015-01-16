@@ -146,23 +146,6 @@ funnel	*wikiartpedia.mobi	//www.wikipedia.org
 funnel	*wikiartpedia.net	//www.wikipedia.org
 funnel	*wikiartpedia.org	//www.wikipedia.org
 
-# Redirect old URLs to en.wikibooks.org, to avoid breaking them
-rewrite	wikibooks.org	//en.wikibooks.org
-rewrite	wikibooks.com	//en.wikibooks.org
-rewrite	www.wikibooks.com	//en.wikibooks.org
-
-rewrite	wikibooks.de	//de.wikibooks.org
-rewrite	www.wikibooks.de	//de.wikibooks.org
-
-# *.wikibooks.com or *.wikibook.com -> org
-rewrite	*.wikibooks.com	//*.wikibooks.org
-rewrite	*.wikibook.com	//*.wikibooks.org
-rewrite	wikibook.com	//en.wikibooks.org
-rewrite	*.wikibook.org	//*.wikibooks.org
-rewrite	wikibook.org	//en.wikibooks.org
-
-rewrite	textbook.wikipedia.org	//www.wikibooks.org
-
 # Education program
 
 funnel	educacao.wikimedia.org	//pt.wikipedia.org/wiki/Wikip%C3%A9dia:WU
@@ -291,12 +274,26 @@ rewrite	wiktionary.com	//www.wiktionary.org
 rewrite	www.wiktionary.com	//www.wiktionary.org
 funnel	*wiktionary.eu	//www.wiktionary.org
 
+# Wikibooks - T87039
+
+rewrite	*.wikibook.org	//*.wikibooks.org
+rewrite	*.wikibook.com	//*.wikibooks.org
+rewrite	*.wikibooks.com	//*.wikibooks.org
+
+rewrite	wikibook.org	//www.wikibooks.org
+rewrite	wikibook.com	//www.wikibooks.org
+rewrite	wikibooks.com	//www.wikibooks.org
+
+rewrite	wikibooks.de	//de.wikibooks.org
+rewrite	www.wikibooks.de	//de.wikibooks.org
+
+rewrite	textbook.wikipedia.org	//www.wikibooks.org
+
 # Wikisource
 
 rewrite	sources.wikipedia.org	//wikisource.org
 rewrite	*.wikisource.com	//*.wikisource.org
 rewrite	wikisource.com	//wikisource.org
-
 
 # Wikiquote
 
