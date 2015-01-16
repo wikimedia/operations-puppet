@@ -1,6 +1,6 @@
 class icinga::gsbmonitoring {
     @monitoring::host { 'google':
-        ip_address => '74.125.225.84',
+        host_fqdn => 'google.com'
     }
 
     @monitoring::service { 'GSB_mediawiki':
