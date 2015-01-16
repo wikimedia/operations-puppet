@@ -2,14 +2,31 @@
 # Exports the resource that monitors hosts in icinga/shinken
 #
 define monitoring::host (
-    $ip_address = $::ipaddress,
+    $ip_address    = $::ipaddress,
+    $host_fqdn     = undef,
     $group         = undef,
     $ensure        = present,
     $critical      = 'false',
     $contact_group = 'admins'
     ) {
+
+    case $host_fqdn {
+        undef: {
+            if ! $ip_address {
+                fail("Parameter $ip_address not defined, and no hostname provided!")
+            }
+            $nagios_address = $ip_address
+        }
+        default: { $nagios_address = $host_fqdn }
+    }
+    # If no ip address has been provided, see if a fqdn was provided instead
     if ! $ip_address {
-        fail("Parameter $ip_address not defined!")
+        case $fqdn {
+            undef: {
+
+            }
+            default: { $ip_address = $fqdn }
+        }
     }
 
     # Determine the hostgroup:
@@ -26,7 +43,7 @@ define monitoring::host (
         ensure                => $ensure,
         target                => '/etc/nagios/puppet_hosts.cfg',
         host_name             => $title,
-        address               => $ip_address,
+        address               => $nagios_address,
         hostgroups            => $hostgroup,
         check_command         => 'check_ping!500,20%!2000,100%',
         check_period          => '24x7',
