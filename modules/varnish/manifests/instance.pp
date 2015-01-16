@@ -47,25 +47,6 @@ define varnish::instance(
         before => Service["varnish${instancesuffix}"]
     }
 
-    file { "/etc/init.d/varnish${instancesuffix}":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template("${module_name}/varnish.init.erb"),
-    }
-    file { "/etc/default/varnish${instancesuffix}":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/varnish-default.erb"),
-    }
-    file { "/etc/varnish/${vcl}.inc.vcl":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("varnish/${vcl}.inc.vcl.erb"),
-        notify  => Exec["load-new-vcl-file${instancesuffix}"],
-    }
     file { "/etc/varnish/wikimedia_${vcl}.vcl":
         owner   => 'root',
         group   => 'root',
@@ -74,19 +55,66 @@ define varnish::instance(
         content => template("${module_name}/vcl/wikimedia.vcl.erb"),
     }
 
-    service { "varnish${instancesuffix}":
-        ensure    => running,
-        require   => [
-                File["/etc/default/varnish${instancesuffix}"],
-                File["/etc/init.d/varnish${instancesuffix}"],
-                File["/etc/varnish/${vcl}.inc.vcl"],
-                File["/etc/varnish/wikimedia_${vcl}.vcl"],
-                Mount['/var/lib/varnish']
-            ],
-        hasstatus => false,
-        pattern   => "/var/run/varnishd${instancesuffix}.pid",
-        subscribe => Package['varnish'],
-        tag       => 'varnish_instance'
+    file { "/etc/varnish/${vcl}.inc.vcl":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("varnish/${vcl}.inc.vcl.erb"),
+        notify  => Exec["load-new-vcl-file${instancesuffix}"],
+    }
+
+    case $::initsystem {
+        'upstart': {
+            file { "/etc/init.d/varnish${instancesuffix}":
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0555',
+                content => template("${module_name}/varnish.init.erb"),
+            }
+            file { "/etc/default/varnish${instancesuffix}":
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                content => template("${module_name}/varnish-default.erb"),
+            }
+            service { "varnish${instancesuffix}":
+                ensure    => running,
+                require   => [
+                        File["/etc/default/varnish${instancesuffix}"],
+                        File["/etc/init.d/varnish${instancesuffix}"],
+                        File["/etc/varnish/${vcl}.inc.vcl"],
+                        File["/etc/varnish/wikimedia_${vcl}.vcl"],
+                        Mount['/var/lib/varnish']
+                    ],
+                hasstatus => false,
+                pattern   => "/var/run/varnishd${instancesuffix}.pid",
+                subscribe => Package['varnish'],
+                tag       => 'varnish_instance'
+            }
+        }
+        'systemd': {
+            file { "/etc/systemd/system/varnish${instancesuffix}.service":
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                content => template("${module_name}/varnish.service.erb"),
+            }
+            service { "varnish${instancesuffix}":
+                provider => 'systemd',
+                ensure    => running,
+                require   => [
+                        File["/etc/systemd/system/varnish${instancesuffix}.service"],
+                        File["/etc/varnish/${vcl}.inc.vcl"],
+                        File["/etc/varnish/wikimedia_${vcl}.vcl"],
+                        Mount['/var/lib/varnish']
+                    ],
+                subscribe => Package['varnish'],
+                tag       => 'varnish_instance'
+            }
+        }
+        default: {
+            fail('varnish::instance does not like your init system!')
+        }
     }
 
     # This mechanism with the touch/rm conditionals in the pair of execs
