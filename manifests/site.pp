@@ -1225,6 +1225,9 @@ node 'heze.codfw.wmnet' {
 # old blog server; currently left unpuppetized until it dies off
 node 'holmium.wikimedia.org' {
 
+    include backup::host
+    backup::set {'srv-org-wikimedia-blog':}
+
     include admin
     include base::firewall
 

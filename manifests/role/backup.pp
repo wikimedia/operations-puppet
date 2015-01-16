@@ -195,6 +195,9 @@ class role::backup::director {
     bacula::director::fileset { 'srv-ganglia':
         includes => [ '/srv/ganglia' ]
     }
+    bacula::director::fileset { 'srv-org-wikimedia-blog':
+        includes => [ '/srv/org/wikimedia/blog' ]
+    }
     # As all /a this will hopefully no longer be needed at some point and will
     # be killed with fire
     bacula::director::fileset { 'mysql-a-backups':
