@@ -106,7 +106,9 @@ node 'analytics1003.eqiad.wmnet' {
 }
 
 
-# analytics1001 will soon be the primary Hadoop NameNode
+# analytics1001 is the Hadoop master node:
+# - primary active NameNode
+# - YARN ResourceManager
 node 'analytics1001.eqiad.wmnet' {
     class { 'admin':
         groups => [
@@ -118,11 +120,11 @@ node 'analytics1001.eqiad.wmnet' {
     }
     include standard
 
-    include role::analytics::hadoop::standby
+    include role::analytics::hadoop::master
 }
 
 
-# analytics1002 will soon be the standby Hadoop NameNode
+# analytics1002 is the Hadoop standby NameNode.
 node 'analytics1002.eqiad.wmnet' {
     class { 'admin':
         groups => [
@@ -140,9 +142,8 @@ node 'analytics1002.eqiad.wmnet' {
 
 
 
-# analytics1004 is the Hadoop standby NameNode
-# TODO: either fix analytics1009, or move this
-# node to Row A.
+# analytics1004 was previously the Hadoop standby NameNode
+# It is being deprecated.
 node 'analytics1004.eqiad.wmnet' {
 
     class { 'admin':
@@ -158,8 +159,8 @@ node 'analytics1004.eqiad.wmnet' {
     include role::analytics::hadoop::standby
 }
 
-# analytics1010 is the Hadoop master node
-# (primary NameNode, ResourceManager, etc.)
+# analytics1010 was previously the Hadoop master.
+# It is being deprecated.
 node 'analytics1010.eqiad.wmnet' {
     # analytics1010 is analytics Ganglia aggregator for Row B
     $ganglia_aggregator = true
@@ -174,7 +175,7 @@ node 'analytics1010.eqiad.wmnet' {
     }
     include standard
 
-    include role::analytics::hadoop::master
+    # include role::analytics::hadoop::master
 }
 
 # analytics1011, analytics1013-analytics1017, analytics1019, analytics1020,

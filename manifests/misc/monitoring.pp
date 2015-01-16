@@ -87,7 +87,7 @@ class misc::monitoring::views {
     }
 
     class { 'misc::monitoring::view::hadoop':
-        master       => 'analytics1010.eqiad.wmnet',
+        master       => 'analytics1001.eqiad.wmnet',
         worker_regex => 'analytics10(11|[3-9]|20).eqiad.wmnet',
     }
 
