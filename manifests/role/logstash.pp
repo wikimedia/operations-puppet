@@ -88,8 +88,8 @@ class role::logstash {
         priority => 50,
     }
 
-    logstash::conf { 'filter_mw_via_udp2log':
-        source   => 'puppet:///files/logstash/filter-mw-via-udp2log.conf',
+    logstash::conf { 'filter-udp2log.conf':
+        source   => 'puppet:///files/logstash/filter-udp2log.conf',
         priority => 50,
     }
 
