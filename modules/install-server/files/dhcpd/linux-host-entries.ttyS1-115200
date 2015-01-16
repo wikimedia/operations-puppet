@@ -91,6 +91,8 @@ host amssq41 {
 host amssq42 {
 	hardware ethernet a4:ba:db:2b:77:0e;
 	fixed-address amssq42.esams.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host amssq43 {
