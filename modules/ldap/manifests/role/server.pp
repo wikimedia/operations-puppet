@@ -19,11 +19,6 @@ class ldap::role::server::labs {
         }
         'production': {
             case $::hostname {
-                'labcontrol2001': {
-                    # Remove this section once nembus is up and running
-                    $ca_name = 'GlobalSign_CA.pem'
-                    $certificate = 'ldap-codfw.wikimedia.org'
-                }
                 'nembus': {
                     $ca_name = 'GlobalSign_CA.pem'
                     $certificate = 'ldap-codfw.wikimedia.org'
@@ -92,86 +87,5 @@ class ldap::role::server::labs {
                         'virt1000.wikimedia.org',
                         'labcontrol2001.wikimedia.org',
                         'neptunium.wikimedia.org']
-    }
-}
-
-class ldap::role::server::production {
-    include ldap::role::config::production,
-        passwords::certs,
-        passwords::ldap::initial_setup
-
-    $certificate_location = '/var/opendj/instance'
-    $cert_pass = $passwords::certs::certs_default_pass
-    $initial_password = $passwords::ldap::initial_setup::initial_password
-
-    $base_dn = $ldap::role::config::production::ldapconfig['basedn']
-    $domain = $ldap::role::config::production::ldapconfig['domain']
-    $proxyagent = $ldap::role::config::production::ldapconfig['proxyagent']
-    $proxypass = $ldap::role::config::production::ldapconfig['proxypass']
-
-    $certificate = "${hostname}.pmtpa.wmnet"
-    $ca_name = 'wmf-ca.pem'
-    install_certificate{ $certificate: }
-    create_pkcs12{ "${certificate}.opendj":
-        certname => $certificate,
-        user     => 'opendj',
-        group    => 'opendj',
-        location => $certificate_location,
-        password => $cert_pass,
-    }
-
-    include ldap::server::schema::sudo,
-        ldap::server::schema::ssh,
-        ldap::server::schema::openstack,
-        ldap::server::schema::puppet
-
-    class { 'ldap::server':
-        certificate_location => $certificate_location,
-        certificate          => $certificate,
-        cert_pass            => $cert_pass,
-        base_dn              => $base_dn,
-        proxyagent           => $proxyagent,
-        proxyagent_pass      => $proxypass,
-        server_bind_ips      => "127.0.0.1 ${ipaddress_eth0}",
-        initial_password     => $initial_password,
-        first_master         => false,
-    }
-}
-
-class ldap::role::server::corp {
-    include ldap::role::config::corp,
-        passwords::certs,
-        passwords::ldap::initial_setup
-
-    $certificate_location = '/var/opendj/instance'
-    $cert_pass = $passwords::certs::certs_default_pass
-    $initial_password = $passwords::ldap::initial_setup::initial_password
-
-    $base_dn = $ldap::role::config::corp::ldapconfig['basedn']
-    $domain = $ldap::role::config::corp::ldapconfig['domain']
-    $proxyagent = $ldap::role::config::corp::ldapconfig['proxyagent']
-    $proxypass = $ldap::role::config::corp::ldapconfig['proxypass']
-
-    $certificate = $::fqdn
-    $ca_name = 'wmf-ca.pem'
-    install_certificate{ $certificate: }
-    create_pkcs12{ "${certificate}.opendj":
-        certname => $certificate,
-        user     => 'opendj',
-        group    => 'opendj',
-        location => $certificate_location,
-        password => $cert_pass,
-    }
-
-    class { 'ldap::server':
-        certificate_location => $certificate_location,
-        certificate          => $certificate,
-        cert_pass            => $cert_pass,
-        base_dn              => $base_dn,
-        proxyagent           => $proxyagent,
-        proxyagent_pass      => $proxypass,
-        server_bind_ips      => "127.0.0.1 ${ipaddress_eth0}",
-        initial_password     => $initial_password,
-        first_master         => false,
     }
 }
