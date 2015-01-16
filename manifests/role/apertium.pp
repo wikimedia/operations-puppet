@@ -8,12 +8,6 @@ class role::apertium(
 
     include ::apertium
 
-    # We have to explicitly open the apertium port (bug T47868)
-    ferm::service { 'apertium_http':
-        proto => 'tcp',
-        port  => $port,
-    }
-
     monitoring::service { 'apertium':
         description   => 'apertium apy',
         check_command => "check_http_url_on_port!apertium.svc.eqiad.wmnet!${port}!/listPairs",

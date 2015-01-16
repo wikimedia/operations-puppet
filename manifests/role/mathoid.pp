@@ -30,11 +30,6 @@ class role::mathoid{
       system        => true,
     }
 
-    ferm::service { 'mathoid':
-      proto => 'tcp',
-      port  => '10042'
-    }
-
     monitoring::service { 'mathoid':
       description => 'mathoid',
       check_command => 'check_http_on_port!10042',

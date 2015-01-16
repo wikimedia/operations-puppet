@@ -229,13 +229,6 @@ class role::parsoid::beta {
         ],
     }
 
-    # Beta parsoid server has some ferm DNAT rewriting rules (bug 45868) so we
-    # have to explicitly allow parsoid port 8000
-    ferm::service { 'http':
-        proto => 'tcp',
-        port  => '8000'
-    }
-
     # Instance got to be a Jenkins slave so we can update Parsoid whenever a
     # change is made on mediawiki/services/parsoid repository
     include role::ci::slave::labs::common
