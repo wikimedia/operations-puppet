@@ -31,7 +31,6 @@ class cxserver(
     $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
     $port = 8080,
 ) {
-    # dictd-* packages for dictionary server.
     require_package('nodejs')
 
     package { [
@@ -55,6 +54,7 @@ class cxserver(
         system     => true,
     }
 
+    # dictd-* packages for dictionary server.
     package { [ 'dictd',
                 'dict-freedict-eng-spa',
                 'dict-freedict-spa-eng',
