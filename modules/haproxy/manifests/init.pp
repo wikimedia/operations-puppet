@@ -43,7 +43,7 @@ class haproxy(
 
     nrpe::monitor_service { 'haproxy':
         description   => "haproxy process",
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C haproxy",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy",
     }
 
     nrpe::monitor_service { 'haproxy_alive':
