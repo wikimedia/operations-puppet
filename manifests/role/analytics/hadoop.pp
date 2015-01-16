@@ -390,6 +390,17 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
     # Some users want jq on Hadoop nodes to parse
     # JSON using Hadoop Streaming.
     require_package('jq')
+
+
+
+    # Temporarily hardode DNS CNAMES into /etc/hosts.
+    # jobs are failing around the cluster because these
+    # are cached in DNS.  I need to fix now.  Will remove
+    # this after new DNS has propogated.
+    file_line { 'hadoop_master_cname_dns_override':
+      path => '/etc/hosts',
+      line => '10.64.36.118    namenode.analytics.eqiad.wmnet resoucemanager.analytics.eqiad.wmnet',
+    }
 }
 
 
