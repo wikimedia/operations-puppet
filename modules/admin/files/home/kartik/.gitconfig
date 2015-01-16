@@ -1,0 +1,63 @@
+[user]
+	name = Kartik Mistry
+	email = kartik.mistry@gmail.com
+	signingkey = 783AA4DE
+
+[alias]
+	ad = add
+	br = branch
+	ci = commit -a
+	co = checkout
+	di = diff
+	ds = diff --staged
+	so = show
+	st = status
+	lg1 = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+	lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+	lg = !"git lg1"
+	rank = shortlog -sn --no-merges
+
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	grep = true
+	status = auto
+	ui = auto
+	pager = true
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+
+[core]
+	pager = less -FRSX
+	editor = vim
+
+[pack]
+	threads = 0
+
+[giggle]
+	main-window-maximized = false
+	main-window-geometry = 1278x384+0+14
+	file-view-vpane-position = 294
+	history-view-vpane-position = 154
+	main-window-view = FileView
+
+[push]
+	default = current
+
+[apply]
+	whitespace = strip
