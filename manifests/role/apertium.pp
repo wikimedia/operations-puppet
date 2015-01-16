@@ -8,7 +8,6 @@ class role::apertium(
 
     include ::apertium
 
-    # We have to explicitly open the apertium port (bug T47868)
     ferm::service { 'apertium_http':
         proto => 'tcp',
         port  => $port,

@@ -2703,6 +2703,7 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
     $cluster = 'sca'
     $ganglia_aggregator = true
     include standard
+    include base::firewall
 
     role apertium, citoid, cxserver, mathoid
 

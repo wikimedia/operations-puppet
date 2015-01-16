@@ -9,8 +9,6 @@ class role::citoid {
         check_command => 'check_http_on_port!1970',
     }
 
-    # Beta citoid server has some ferm DNAT rewriting rules (bug 45868) so we
-    # have to explicitly allow citoid port 1970
     ferm::service { 'citoid':
         proto => 'tcp',
         port  => '1970',

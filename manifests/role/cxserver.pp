@@ -9,7 +9,6 @@ class role::cxserver (
 
     include ::cxserver
 
-    # We have to explicitly open the cxserver port (bug T47868)
     ferm::service { 'cxserver_http':
         proto => 'tcp',
         port  => $port,
