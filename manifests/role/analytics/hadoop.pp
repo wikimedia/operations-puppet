@@ -64,19 +64,11 @@ class role::analytics::hadoop::config {
         # This is the logical name of the Analytics Hadoop cluster.
         $cluster_name             = 'analytics-hadoop'
 
-        # $namenode_hosts           = [
-        #     'analytics1010.eqiad.wmnet',
-        #     'analytics1004.eqiad.wmnet',
-        # ]
+        $namenode_hosts           = [
+            'analytics1001.eqiad.wmnet',
+            'analytics1002.eqiad.wmnet',
+        ]
 
-        # This temporarly puts analytics1001 and analytics1002 into unknown standby mode,
-        # in prep for hadoop namenode migration.
-        # https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hadoop/Administration#Migrating_to_new_HA_NameNodes
-        $namenode_hosts = $::hostname ? {
-            'analytics1001'   => ['analytics1010.eqiad.wmnet', 'analytics1001.eqiad.wmnet'],
-            'analytics1002'   => ['analytics1010.eqiad.wmnet', 'analytics1002.eqiad.wmnet'],
-            default           => ['analytics1010.eqiad.wmnet', 'analytics1004.eqiad.wmnet'],
-        }
         # JournalNodes are colocated on worker DataNodes.
         $journalnode_hosts        = [
             'analytics1011.eqiad.wmnet',  # Row A2
