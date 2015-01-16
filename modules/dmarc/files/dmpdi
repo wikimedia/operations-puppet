@@ -1,0 +1,555 @@
+#!/usr/bin/python
+#
+# Copyright (c) 2015 Jeff Green <jgreen@wikimedia.org>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+import MySQLdb
+import StringIO
+import argparse
+import email
+import gzip
+import logging
+import logging.handlers
+import mailbox
+import os
+import re
+import shutil
+import socket
+import sys
+import tempfile
+import time
+import zipfile
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
+
+
+_logger = None
+_mysql_connection = None
+
+
+def parse_arguments():
+    """parse command line arguments into various thresholds
+    :returns: dict containing validated arguments
+    """
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description='DMARC Parse and Database Inject',
+    )
+    parser.add_argument(
+        '-v',
+        default=False,
+        action='store_true',
+        help='verbose (debug)',
+    )
+    parser.add_argument(
+        '--log_level',
+        metavar='LEVEL',
+        default='info',
+        choices=['debug', 'info', 'warning', 'error', 'critical'],
+        help='syslog level (default=%(default)s)',
+    )
+    dbgroup = parser.add_argument_group('database')
+    dbgroup.add_argument(
+        '--mycnf',
+        default='~/.dmarc.my.cnf',
+        help='mysql client conf (default=%(default)s)',
+    )
+    dbgroup.add_argument(
+        '-r', '--reimport',
+        help='reimport records',
+        default=False,
+        action='store_true',
+    )
+    inboxgroup = parser.add_argument_group(
+        'inbox processing',
+    )
+    inboxgroup.add_argument(
+        '--mbox',
+        help='mbox file to process (e.g. ~/Mail/dmarc)',
+    )
+    inboxgroup.add_argument(
+        '-d',
+        '--discard',
+        help='discard messages after processing',
+        default=False,
+        action='store_true',
+    )
+    filegroup = parser.add_argument_group(
+        'file processing',
+    )
+    filegroup.add_argument(
+        'files',
+        help='XML files to process',
+        nargs='*',
+    )
+    outgroup = parser.add_argument_group(
+        'output handling',
+    )
+    outgroup.add_argument(
+        '--tmp_dir',
+        help='tmp dir (default=%(default)s)',
+        default='/tmp/dmpdi',
+        metavar='DIR',
+    )
+    outgroup.add_argument(
+        '--tmp_maxage',
+        type=int,
+        default=7,
+        metavar='DAYS',
+        help='tmp file max age in days (default=%(default)s, skip=0)',
+    )
+    outgroup.add_argument(
+        '--out_dir',
+        help='directory for storing processed reports (optional)',
+        metavar='DIR',
+    )
+    outgroup.add_argument(
+        '--out_maxage',
+        type=int,
+        default=365,
+        metavar='DAYS',
+        help='stored report max age in days(default=%(default)s, skip=0)',
+    )
+    try:
+        args = parser.parse_args()
+    except SystemExit:
+        sys.exit(1)
+    return args
+
+
+def purge_old_files(dir, maxage):
+    """check a directory for old files and purge as necessary
+    :param dir: directory on disk
+    :param maxage: max age in days
+    """
+    if maxage > 0:
+        _logger.debug("purging %s files older than %s days" % (dir, maxage))
+        path = re.sub(r'^~', os.path.expanduser("~"), dir)
+        for f in os.listdir(path):
+            f = os.path.join(path, f)
+            if os.path.isfile(f):
+                if os.stat(f).st_mtime < time.time() - maxage * 86400:
+                    print "rm %s" % f
+                    try:
+                        os.remove(f)
+                    except Exception as e:
+                        _logger.error("can't rm %s: %s" % (f, e))
+
+
+def setup_logging(args):
+    """set up console output and syslogging scheme
+    :param args: command line args from argparse
+    :returns: global log handler _logger
+    """
+    # set up main logger instance
+    global _logger
+    _logger = logging.getLogger('GlobalLogger')
+    _logger.setLevel(logging.DEBUG)
+    # set up console handler
+    console_log_level = logging.CRITICAL
+    if args.v is True:
+        console_log_level = logging.DEBUG
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(console_log_level)
+    console_handler.setFormatter(logging.Formatter("%(message)s"))
+    # set up syslog handler
+    syslog_handler = logging.handlers.SysLogHandler(address='/dev/log')
+    syslog_handler.setLevel(
+        getattr(logging, args.log_level.upper(), 'info')
+    )
+    syslog_handler.setFormatter(
+        logging.Formatter('%(pathname)s[%(process)d]: %(message)s'),
+    )
+    # attach handlers to main logger instance
+    _logger.addHandler(console_handler)
+    _logger.addHandler(syslog_handler)
+
+
+def db_connection(args):
+    """handle global db connection
+    :param args: command line args from argparse
+    :returns: global mysql connection _mysql_connection
+    """
+    global _mysql_connection
+    if not _mysql_connection:
+        _mysql_connection = MySQLdb.connect(read_default_file=args.mycnf)
+    return _mysql_connection
+
+
+def validate_ip(string):
+    """validate input as ipv4/6 address
+    :param string: text hopefully containing an ipv4/6 address
+    :returns: input string or nothing
+    """
+    try:
+        socket.inet_pton(socket.AF_INET, string)
+    except:
+        try:
+            socket.inet_pton(socket.AF_INET6, string)
+        except:
+            return None
+    return string
+
+
+def make_tmpfile(dir, suffix, data, text=False):
+    """create temp file to store data on disk
+    :param dir: directory to store the file in
+    :param suffix: filename suffix
+    :param data: data for file contents
+    :param text: boolean for binary|text file type
+    :returns: filename full path of file on disk
+    """
+    dir = re.sub(r'^~', os.path.expanduser("~"), dir)
+    f, filename = tempfile.mkstemp(dir=dir, suffix=suffix, text=text)
+    os.write(f, data)
+    os.close(f)
+    _logger.debug("create %s" % filename)
+    return filename
+
+
+def store_xml_report(args, source_file, report_id):
+    """store XML report on disk by renaming temp file to extracted report_id
+    :param args: command line args from argparse
+    :param source_file: full path of XML temp file already on disk
+    :param report_id: report_id string parsed from DMARC report
+    """
+    out_dir = re.sub(r'^~', os.path.expanduser("~"), args.out_dir)
+    dest_file = "%s/%s.xml" % (out_dir, re.sub(r'[^\w.]+', '-', report_id))
+    if dest_file != source_file:
+        if os.path.isfile(dest_file):
+            _logger.warning("store_xml_report %s skipped: dest_file exists"
+                            % dest_file)
+        else:
+            try:
+                shutil.move(source_file, dest_file)
+            except Exception as e:
+                _logger.warning("store_xml_report %s failed: %s"
+                                % (dest_file, e))
+            else:
+                _logger.info("store_xml_report %s success" % dest_file)
+
+
+def process_xml_file(args, xml_file):
+    """process XML attachment
+    :param args: command line args from argparse
+    :param file_name: full path of XML file
+    :returns: report_id, error (count)
+    """
+    error = 0
+    report_serial = None
+    report_id = None
+    _logger.info("loading %s" % xml_file)
+    # attempt to parse XML and extract report data
+    try:
+        tree = ET.parse(xml_file)
+    except Exception as e:
+        _logger.error("XML parser error: %" % e)
+        error += 1
+    else:
+        root = tree.getroot()
+        report_id = root.findtext('./report_metadata/report_id')
+        policy_adkim = root.findtext('./policy_published/adkim')
+        policy_aspf = root.findtext('./policy_published/aspf')
+        policy_domain = root.findtext('./policy_published/domain')
+        policy_p = root.findtext('./policy_published/p')
+        policy_pct = root.findtext('./policy_published/pct')
+        report_begin = root.findtext('./report_metadata/date_range/begin')
+        report_end = root.findtext('./report_metadata/date_range/end')
+        report_org = root.findtext('./report_metadata/org_name')
+    # insert report data, figure out whether this is a new report
+    # and decide whether to continue to process record data
+    if report_id is None:
+        _logger.error("no report_id found in %s" % xml_file)
+        error += 1
+    else:
+        try:
+            db = db_connection(args)
+            cursor = db.cursor()
+            cursor.execute(
+                "INSERT IGNORE INTO report (report_begin, report_end, "
+                "report_org, report_id, policy_domain, policy_adkim, "
+                "policy_aspf, policy_p, policy_pct) VALUES "
+                "(FROM_UNIXTIME(%s), FROM_UNIXTIME(%s), %s, %s, %s, %s, "
+                " %s, %s, %s)",
+                (report_begin, report_end, report_org, report_id,
+                 policy_domain, policy_adkim, policy_aspf, policy_p,
+                 policy_pct)
+            )
+            db.commit()
+        except Exception as e:
+            _logger.error("db error at report insert: %" % e)
+            error += 1
+        else:
+            # MySQLdb cursor returns an integer or None.
+            # nonzero integer indicates a new row, thus process records
+            if cursor.lastrowid > 0:
+                report_serial = cursor.lastrowid
+            # otherwise reimport records only if arg -r was set
+            elif args.reimport is True:
+                try:
+                    cursor.execute(
+                        "SELECT report_serial FROM report WHERE policy_domain "
+                        "= %s AND report_id = %s", (policy_domain, report_id)
+                    )
+                except Exception as e:
+                    _logger.error("db error at report select: %" % e)
+                    error += 1
+                else:
+                    report_serial = cursor.fetchone()[0]
+
+    # iterate through records and insert to the db
+    if report_serial is not None:
+        _logger.info("loading %s serial %s"
+                     % (report_id, report_serial))
+        # make sure there are no redundant records from previous run
+        cursor.execute("DELETE FROM record WHERE report_serial = %s",
+                       report_serial)
+        db.commit()
+        record_rowcount = 0
+        for record in root.findall('./record'):
+            dkim_domain = record.findtext('./auth_results/dkim/domain')
+            spf_domain = record.findtext('./auth_results/spf/domain')
+            envelope_from = record.findtext('./identifiers/envelope_from')
+            envelope_to = record.findtext('./identifiers/envelope_to')
+            header_from = record.findtext('./identifiers/header_from')
+            for row in record.findall('./row'):
+                count = row.findtext('./count')
+                disposition = row.findtext('./policy_evaluated/disposition')
+                dkim_result = row.findtext('./policy_evaluated/dkim')
+                reason = row.findtext('./policy_evaluated/reason/type')
+                spf_result = row.findtext('./policy_evaluated/spf')
+                source_ip = validate_ip(row.findtext('./source_ip'))
+                if source_ip is None:
+                    _logger.debug("invalid source_ip '%s'"
+                                  % row.findtext('./source_ip'))
+                    error += 1
+                else:
+                    try:
+                        cursor.execute(
+                            "INSERT INTO record (report_serial, "
+                            "source_ip, count, disposition, reason, "
+                            "dkim_domain, dkim_result, spf_domain, "
+                            "spf_result, envelope_from, envelope_to, "
+                            "header_from) VALUES (%s, %s, %s, %s, "
+                            "%s, %s, %s, %s, %s, %s, %s, %s)",
+                            (report_serial, source_ip, count, disposition,
+                             reason, dkim_domain, dkim_result, spf_domain,
+                             spf_result, envelope_from, envelope_to,
+                             header_from)
+                        )
+                    except Exception as e:
+                        _logger.error("db error at record insert: %" % e)
+                        error += 1
+                    else:
+                        record_rowcount += 1
+        if record_rowcount > 0:
+            _logger.info("%s row insert to record, commit" % record_rowcount)
+            db.commit()
+    cursor.close()
+    return report_id, error
+
+
+def extract_xml_to_temp_files(args, part):
+    """decompress zip/gzip attachment and write out XML temp files
+    :param args: command line args from argparse
+    :param part: reference to email message part
+    :returns: list of xml_files written, count of extract-time errors
+    """
+    extract_errors = 0
+    xml_files = []
+    if re.match("application/gzip$", str(part.get_content_type())):
+        compressed_data = part.get_payload(decode=True)
+        gz_tmpfile = make_tmpfile(
+            dir=args.tmp_dir,
+            suffix=".gz",
+            data=compressed_data,
+        )
+        try:
+            xml_report_data = gzip.GzipFile(
+                fileobj=StringIO.StringIO(compressed_data)
+            ).read()
+        except Exception as e:
+            _logger.error("can't extract gzip attachment: %s" % e)
+            extract_errors += 1
+        else:
+            xml_tmpfile = make_tmpfile(
+                dir=args.tmp_dir,
+                suffix=".xml",
+                data=xml_report_data,
+                text=True,
+            )
+            xml_files.append(xml_tmpfile)
+            os.remove(gz_tmpfile)
+    elif re.match("application/(zip|x-zip-compressed)$",
+                  str(part.get_content_type())):
+        compressed_data = part.get_payload(decode=True)
+        zip_tmpfile = make_tmpfile(
+            dir=args.tmp_dir,
+            suffix=".zip",
+            data=compressed_data,
+        )
+        try:
+            zd = zipfile.ZipFile(StringIO.StringIO(compressed_data), 'r')
+        except Exception as e:
+            _logger.error("can't extract zip attachment: %s" % e)
+            extract_errors += 1
+        else:
+            for filename in zd.namelist():
+                if re.match('.*\.xml$', filename, re.IGNORECASE):
+                    xml_tmpfile = make_tmpfile(
+                        dir=args.tmp_dir,
+                        suffix=".xml",
+                        data=zd.read(filename),
+                        text=True,
+                    )
+                    xml_files.append(xml_tmpfile)
+        zd.close()
+        os.remove(zip_tmpfile)
+    return xml_files, extract_errors
+
+
+def process_mbox(args):
+    """open mbox and iterate through messages
+    :param args: command line args from argparse
+    """
+    discard_messages = args.discard
+    inbox = mailbox.mbox(args.mbox)
+    xml_files = []
+    # try to open-exclusive the mbox, otherwise switch to read-only mode
+    try:
+        inbox.lock()
+    except mailbox.ExternalClashError:
+        discard_messages = False
+        _logger.warning("can't lock %s, treating it as read-only" % args.mbox)
+    except Exception as e:
+        _logger.error("can't open %s (%s), giving up" % (args.mbox, e))
+    for key, msg in inbox.iteritems():
+        msg_extract_errors = 0
+        _logger.debug("%s %s" % (msg.get('From'), msg.get('Date')))
+        for part in msg.walk():
+            part_xml_files, extract_errors = extract_xml_to_temp_files(
+                args, part
+            )
+            xml_files += part_xml_files
+            msg_extract_errors += extract_errors
+        if msg_extract_errors == 0 and discard_messages is True:
+            inbox.discard(key)
+            _logger.info("message deleted")
+    inbox.close()
+    return xml_files
+
+
+def process_stdin(args):
+    """read stdin and parse incoming message
+    :param args: command line args from argparse
+    """
+    xml_files = []
+    parser = email.FeedParser.FeedParser()
+    for line in sys.stdin.readlines():
+        parser.feed(line)
+    msg = parser.close()
+    _logger.debug("%s %s" % (msg.get('From'), msg.get('Date')))
+    for part in msg.walk():
+        part_xml_files, extract_errors = extract_xml_to_temp_files(args, part)
+        xml_files += part_xml_files
+    return xml_files
+
+
+def create_dir(dir):
+    """make directory if it doesn't exist
+    :param dir: directory name
+    """
+    dir = re.sub(r'^~', os.path.expanduser("~"), dir)
+    try:
+        os.makedirs(dir)
+    except OSError:
+        if not os.path.isdir(dir):
+            raise
+
+
+def main():
+    args = parse_arguments()
+    globals()['_logger'] = None
+    setup_logging(args)
+    _logger.info("start")
+    try:
+        create_dir(args.tmp_dir)
+        if args.out_dir is not None:
+            create_dir(args.out_dir)
+    except Exception as e:
+        _logger.error("can't make dir %s" % e)
+        sys.exit(75)
+    try:
+        globals()['_mysql_connection'] = None
+        db = db_connection(args)
+    except Exception as e:
+        _logger.error("database connection failed %s" % e)
+        sys.exit(75)
+    else:
+        # figure out input file source
+        xml_files = []
+        if args.files:
+            keep_xml_files = True
+            for f in args.files:
+                if re.search("\.xml$", str(f), re.I):
+                    xml_files.append(f)
+                else:
+                    _logger.warning("ignoring %s, probably not XML" % f)
+        elif args.mbox is not None:
+            keep_xml_files = False
+            xml_files = process_mbox(args)
+        else:
+            keep_xml_files = False
+            xml_files = process_stdin(args)
+        if len(xml_files) > 0:
+            for xml_file in xml_files:
+                report_id, error = process_xml_file(args=args,
+                                                    xml_file=xml_file)
+                # clean up working files as necessary
+                if report_id is None:
+                    _logger.info("no report_id, leaving: %s" % xml_file)
+                else:
+                    if args.out_dir is not None:
+                        _logger.debug("storing %s" % xml_file)
+                        store_xml_report(args=args, source_file=xml_file,
+                                         report_id=report_id)
+                    elif keep_xml_files is True:
+                        _logger.debug("keeping %s" % xml_file)
+                    elif error == 0:
+                        _logger.debug("removing %s" % xml_file)
+                        os.remove(xml_file)
+                    else:
+                        _logger.debug("leaving %s" % xml_file)
+        else:
+            _logger.info("no XML files found")
+        db.close()
+    # get rid of old temp files and reports
+    purge_old_files(args.tmp_dir, args.tmp_maxage)
+    if args.out_dir is not None:
+        purge_old_files(args.out_dir, args.out_maxage)
+    # goodbye!
+    _logger.info("done")
+    sys.exit(0)
+
+if __name__ == "__main__":
+    main()
