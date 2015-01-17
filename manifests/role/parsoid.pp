@@ -25,6 +25,10 @@ class role::parsoid::common {
         source => 'puppet:///files/misc/parsoid',
     }
 
+    ferm::service { 'parsoid':
+        proto => 'tcp',
+        port  => '8000',
+    }
 }
 
 class role::parsoid::production {
