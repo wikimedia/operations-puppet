@@ -207,6 +207,11 @@ class role::deployment::deployment_servers::production {
         monitor   => true,
     }
 
+    ferm::rule { 'deployment-redis':
+        proto => 'tcp',
+        port => '6379',
+    }
+
     package { 'percona-toolkit':
         ensure => latest,
     }
@@ -282,6 +287,11 @@ class role::deployment::deployment_servers::labs {
         dir       => '/srv/redis',
         maxmemory => '500Mb',
         monitor   => false,
+    }
+
+    ferm::rule { 'deployment-redis':
+        proto => 'tcp',
+        port => '6379',
     }
 
     sudo::group { "project_${::instanceproject}_deployment_server":
