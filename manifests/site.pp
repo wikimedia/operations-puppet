@@ -2747,6 +2747,7 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     class { 'admin': groups => ['parsoid-roots',
                                 'parsoid-admin'] }
     include standard
+    include base::firewall
     include role::parsoid::production
 
     class { 'lvs::realserver':
