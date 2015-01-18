@@ -90,7 +90,8 @@ class toollabs::dev_environ {
         'subversion',
         'tcl8.5-dev',
         'tig',
-        'tmux' ]:                      # Bug #65426.
+        'tmux',                        # Bug #65426.
+        'valgrind' ]:                  # Bug T87117.
         ensure => latest,
     }
 
