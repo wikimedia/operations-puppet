@@ -1,0 +1,4 @@
+mediawiki::jobrunner::queue_servers:
+  - rdb1001.eqiad.wmnet
+  - rdb1003.eqiad.wmnet
+mediawiki::jobrunner::statsd_server: statsd.eqiad.wmnet:8125
