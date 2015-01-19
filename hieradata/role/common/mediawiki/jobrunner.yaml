@@ -1,3 +1,7 @@
 cluster: jobrunner
 admin::groups:
   - deployment
+mediawiki::jobrunner::runners_basic: 14
+mediawiki::jobrunner::runners_parsoid: 4
+mediawiki::jobrunner::runners_upload: 7
+mediawiki::jobrunner::runners_gwt: 1
