@@ -3,7 +3,7 @@ define monitoring::service(
     $check_command,
     $host                  = $::hostname,
     $retries               = 3,
-    $group                 = hiera('nagios_group', "${cluster}_${::site}"),
+    $group                 = undef,
     $ensure                = present,
     $critical              = 'false',
     $passive               = 'false',
@@ -17,11 +17,10 @@ define monitoring::service(
     if ! $host {
         fail("Parameter $host not defined!")
     }
-
-    if $group {
-        $servicegroups = $group
-    } else {
-        $servicegroups = undef
+    $cluster_name = hiera('cluster', $cluster)
+    $servicegroups = $group ? {
+        /.+/    => $group,
+        default => hiera('nagios_group',"${cluster_name}_${::site}")
     }
 
     # Export the nagios service instance
