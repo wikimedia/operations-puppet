@@ -18,7 +18,7 @@ define monitoring::service(
         fail("Parameter $host not defined!")
     }
     $cluster_name = hiera('cluster', $cluster)
-    $servicegroup = $group ? {
+    $servicegroups = $group ? {
         /.+/    => $group,
         default => hiera('nagios_group',"${cluster_name}_${::site}")
     }
