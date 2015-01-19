@@ -10,13 +10,6 @@ class role::beta::bastion {
 
     # Bring scap related scripts such as mw-update-l10n
     include ::beta::scap::master
-
-    file { '/data/project/apache':
-        ensure => directory,
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
-        mode   => '0775',
-    }
 }
 
 # To be applied on deployment-upload.eqiad.wmflabs
@@ -62,7 +55,6 @@ class role::beta::scap_target {
     }
 
     require ::role::labs::lvm::srv
-    include ::beta::common
     include ::beta::scap::target
 
     # Allow ssh inbound from deployment-bastion.eqiad.wmflabs for scap
@@ -101,8 +93,6 @@ class role::beta::appserver {
     include ::mediawiki::multimedia
     include standard
     include geoip
-
-    include ::beta::common
 
     include ::mediawiki::web
     include ::mediawiki::web::beta_sites
@@ -145,7 +135,6 @@ class role::beta::videoscaler {
 
 class role::beta::jobrunner {
     include role::beta::scap_target
-    include ::beta::common
     include role::mediawiki::common
     include ::mediawiki
 
