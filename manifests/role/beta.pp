@@ -6,7 +6,6 @@ class role::beta::bastion {
     }
 
     include beta::autoupdater
-    include beta::fatalmonitor
     include beta::syncsiteresources
 
     # Bring scap related scripts such as mw-update-l10n
