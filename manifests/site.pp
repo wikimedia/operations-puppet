@@ -573,13 +573,8 @@ node 'dataset1001.wikimedia.org' {
 
 # eqiad dbs
 node /^db10(52)\.eqiad\.wmnet/ {
-
+    role coredb::s1
     include admin
-    $cluster = 'mysql'
-    class { 'role::coredb::s1':
-        innodb_file_per_table => true,
-        mariadb               => true,
-    }
 }
 
 node /^db10(18)\.eqiad\.wmnet/ {

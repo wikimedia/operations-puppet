@@ -1,0 +1,6 @@
+cluster: mysql
+role::coredb::common::shard: "s1"
+role::coredb::common::innodb_file_per_table: true
+role::coredb::common::mariadb: true
+role::coredb::common::slow_query_digest: false
+role::coredb::common::innodb_log_file_size: "2000M"
