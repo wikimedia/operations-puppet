@@ -45,7 +45,7 @@ done
 echo -e '\n]' | gzip -f >> $targetFile
 
 # Remove dumps we no longer need (keep 10 => last 70 days)
-find $targetDir -name '20*.gz' -mtime -71 -delete
+find $targetDir -name '20*.gz' -mtime +71 -delete
 
 # Remove old logs (keep 5 => last 35 days)
-find /var/log/wikidatadump/ -name 'dumpwikidatajson-*-*.log' -mtime -36 -delete
+find /var/log/wikidatadump/ -name 'dumpwikidatajson-*-*.log' -mtime +36 -delete
