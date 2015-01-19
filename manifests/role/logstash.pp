@@ -132,7 +132,7 @@ class role::logstash::ircbot {
     logstash::input::irc { 'freenode':
         user     => $irc_name,
         nick     => $irc_name,
-        channels => ['#wikimedia-labs', '#wikimedia-releng'],
+        channels => ['#wikimedia-labs', '#wikimedia-releng', '#wikimedia-operations'],
     }
 
     logstash::conf { 'filter_irc_banglog':
