@@ -56,7 +56,6 @@ $nameservers = $site ? {
     'esams' => [ '91.198.174.6',   '208.80.154.239' ], # esams -> esams (nescio, not LVS), eqiad
     default => [ '208.80.154.239', '208.80.153.254' ], #       -> eqiad, codfw
 }
-$domain_search = $domain
 
 # TODO: SMTP settings
 

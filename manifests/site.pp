@@ -332,34 +332,15 @@ node 'baham.wikimedia.org' {
 }
 
 node 'bast1001.wikimedia.org' {
-    $cluster = 'misc'
-    $domain_search = [
-        'wikimedia.org',
-        'eqiad.wmnet',
-        'codfw.wmnet',
-        'ulsfo.wmnet',
-        'esams.wikimedia.org'
-    ]
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    role bastionhost
 
+    include admin
     include standard
     include subversion::client
-
-    class { 'admin':
-        groups => [
-            'deployment',
-            'restricted',
-            'parsoid-admin',
-            'ocg-render-admins',
-            'bastiononly',
-        ],
-    }
-
-
-    include role::bastionhost
     include dsh
     include ssh::hostkeys-collect
     class { 'nfs::netapp::home':
@@ -371,41 +352,23 @@ node 'bast1001.wikimedia.org' {
 }
 
 node 'bast2001.wikimedia.org' {
-    $cluster = 'misc'
-    $domain_search = [
-        'wikimedia.org',
-        'codfw.wmnet',
-        'eqiad.wmnet',
-        'ulsfo.wmnet',
-        'esams.wikimedia.org'
-    ]
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-
+    role bastionhost
     include admin
     include standard
-    include role::bastionhost
+
 }
 
 node 'bast4001.wikimedia.org' {
-    $cluster = 'misc'
-    $domain_search = [
-        'wikimedia.org',
-        'ulsfo.wmnet',
-        'eqiad.wmnet',
-        'codfw.wmnet',
-        'esams.wikimedia.org'
-    ]
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
 
+    role bastionhost
     include admin
     include standard
-    include role::bastionhost
     include role::ipmi
     include role::installserver::tftp-server
 }
@@ -1238,25 +1201,14 @@ node 'holmium.wikimedia.org' {
 
 node 'hooft.esams.wikimedia.org' {
     $ganglia_aggregator = true
-    $domain_search = [
-        'esams.wikimedia.org',
-        'wikimedia.org',
-        'esams.wmnet'
-    ]
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    role bastionhost
 
-    class { 'admin':
-        groups => [
-            'deployment',
-            'restricted',
-        ],
-    }
-
+    include admin
     include standard
-    include role::bastionhost
     include role::installserver::tftp-server
 
     # TODO: 2013-12-13. rsync is an unpuppetized service on hooft. Ferm is
@@ -1305,26 +1257,15 @@ node 'iron.wikimedia.org' {
     system::role { 'misc':
         description => 'Operations Bastion',
     }
-    $cluster = 'misc'
-    $domain_search = [
-        'wikimedia.org',
-        'eqiad.wmnet',
-        'codfw.wmnet',
-        'ulsfo.wmnet',
-        'esams.wikimedia.org',
-        'esams.wmnet',
-    ]
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    role bastionhost
 
     include admin
     include standard
-    include role::bastionhost
     include role::ipmi
     include role::access_new_install
-
     include role::backup::host
     backup::set {'home': }
 }
@@ -1387,7 +1328,6 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
     $site = 'eqiad'
     $cluster = 'labsnfs'
-    $domain_search = ['wikimedia.org', 'eqiad.wmnet']
     $ldapincludes = ['openldap', 'nss', 'utils']
 
     $ganglia_aggregator = true
@@ -1435,8 +1375,6 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 node 'labstore1003.eqiad.wmnet' {
     $site = 'eqiad'
     $cluster = 'labsnfs'
-    $domain_search = ['wikimedia.org', 'eqiad.wmnet']
-
     $ganglia_aggregator = true
 
     include standard
@@ -1994,14 +1932,6 @@ node 'neon.wikimedia.org' {
 
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
 
-    $domain_search = [
-        'wikimedia.org',
-        'eqiad.wmnet',
-        'codfw.wmnet',
-        'ulsfo.wmnet',
-        'esams.wikimedia.org'
-    ]
-
     include standard
     include admin
     include role::icinga
@@ -2098,15 +2028,6 @@ node 'palladium.eqiad.wmnet' {
     include role::puppetmaster::frontend
     include role::pybal_config
     include misc::monitoring::ori_weekend_commits
-
-    $domain_search = [
-        'wikimedia.org',
-        'eqiad.wmnet',
-        'codfw.wmnet',
-        'ulsfo.wmnet',
-        'esams.wmnet',
-        'esams.wikimedia.org'
-    ]
 }
 
 node /pc100[1-3]\.eqiad\.wmnet/ {
@@ -2325,11 +2246,6 @@ node 'terbium.eqiad.wmnet' {
     include role::noc
     include role::mediawiki::searchmonitor
 
-    $domain_search = [
-        'wikimedia.org',
-        'eqiad.wmnet',
-    ]
-
     include admin
     include ldap::role::client::labs
 
@@ -2389,11 +2305,6 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
 
 node 'tin.eqiad.wmnet' {
     $cluster = 'misc'
-    $domain_search = [
-        'wikimedia.org',
-        'eqiad.wmnet',
-        'esams.wikimedia.org'
-    ]
 
     include standard
     include role::deployment::deployment_servers::production
