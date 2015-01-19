@@ -13,6 +13,7 @@ class role::logstash {
     include ::elasticsearch::ganglia
     include ::elasticsearch::nagios::check
     include ::passwords::logstash
+    include ::role::logstash::ircbot
 
     package { 'elasticsearch/plugins':
         provider => 'trebuchet',
@@ -121,7 +122,9 @@ class role::logstash {
 # == Class: role::logstash::ircbot
 #
 # Sets up an IRC Bot to log messages from certain IRC channels
-class role::logstash::ircbot {
+class role::logstash::ircbot(
+    $channels = ['#wikimedia-labs', '#wikimedia-releng', '#wikimedia-operations']
+) {
     require ::role::logstash
 
     $irc_name = $::logstash_irc_name ? {
@@ -132,7 +135,7 @@ class role::logstash::ircbot {
     logstash::input::irc { 'freenode':
         user     => $irc_name,
         nick     => $irc_name,
-        channels => ['#wikimedia-labs', '#wikimedia-releng'],
+        channels => $channels,
     }
 
     logstash::conf { 'filter_irc_banglog':
