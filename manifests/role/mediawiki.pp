@@ -68,6 +68,11 @@ class role::mediawiki::webserver($pool) {
         realserver_ips => $ips,
     }
 
+    ferm::service { 'http':
+        proto => 'tcp',
+        port => 'http',
+    }
+
     monitoring::service { 'appserver http':
         description   => 'Apache HTTP',
         check_command => 'check_http_wikipedia',
