@@ -123,14 +123,6 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
 
 }
 
-class role::beta::logging::mediawiki {
-
-    class { 'role::logging::mediawiki':
-        log_directory => '/data/project/logs';
-    }
-
-}
-
 # == Class role::logging::mediawiki::errors
 # fluorine's udp2log instance forwards MediaWiki exceptions and fatals
 # to vanadium, as configured in templates/udp2log/filters.mw.erb. This
