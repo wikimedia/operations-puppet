@@ -58,7 +58,6 @@ class role::mediawiki::common {
 class role::mediawiki::webserver($pool) {
     include ::role::mediawiki::common
     include ::apache::monitoring
-    include ::lvs::configuration
     include ::mediawiki::web
     # HACK: Fix to not be different classes!
     if $::realm == 'production' {
@@ -67,10 +66,13 @@ class role::mediawiki::webserver($pool) {
         include ::mediawiki::web::beta_sites
     }
 
-    $ips = $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site]
+    if hiera('has_lvs', true) {
+        include ::lvs::configuration
+        $ips = $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site]
 
-    class { 'lvs::realserver':
-        realserver_ips => $ips,
+        class { 'lvs::realserver':
+            realserver_ips => $ips,
+        }
     }
 
     ferm::service { 'mediawiki-http':
