@@ -3,19 +3,15 @@
   - nuyaml
 :nuyaml:
   :datadir: /etc/puppet/hieradata
-  :expand_path:
-    - common
-    - realm
 :mwyaml:
   :host: https://wikitech.wikimedia.org
   :cache_ttl: 120
 :private:
   :datadir: /etc/puppet/private/hieradata
 :hierarchy:
-  - "labs/host/%{::hostname}"
-  - "labs/%{::instanceproject}"
-  - "%{::realm}"
-  - "%{::site}"
+  - "labs/%{::instanceproject}/host/%{::hostname}"
+  - "labs/%{::instanceproject}/common"
+  - "labs"
   - "private/%{::instanceproject}"
   - common
   - "private/common"
