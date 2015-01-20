@@ -103,7 +103,7 @@ class role::deployment::config {
             'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/scap',
         },
         'servermon/servermon'            => {
-            'service_name' => 'servermon',
+            'service_name' => 'gunicorn',
         },
         'iegreview/iegreview'      => {
             'grain'    => 'iegreview',
