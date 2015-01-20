@@ -982,7 +982,6 @@ node 'dbstore1001.eqiad.wmnet' {
 node 'dbstore2001.codfw.wmnet' {
     include admin
     $cluster = 'mysql'
-    $ganglia_aggregator = true
     # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':
         lag_warn => 90000,
@@ -996,6 +995,7 @@ node 'dbstore2001.codfw.wmnet' {
 node 'dbstore1002.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
+    $ganglia_aggregator = true
     include role::mariadb::dbstore
 }
 
