@@ -3,7 +3,7 @@
 
 set -e
 
-APACHE_ROLE=role::beta::appserver
+APACHE_ROLE=role::mediawiki::appserver
 BATCH_SIZE="50%"
 ACTIONS=('start' 'stop' 'restart' 'graceful' 'graceful-stop' 'configtest')
 ACTION=
