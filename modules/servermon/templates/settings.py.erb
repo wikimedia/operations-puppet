@@ -44,6 +44,13 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
+# If you set this to False, Django will not format dates, numbers and
+# # calendars according to the current locale.
+USE_L10N = True
+
+# If you set this to False, Django will not use timezone-aware datetimes.
+USE_TZ = True
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = here('static')
@@ -74,7 +81,7 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
-    'servermon.djangobackends.context_processors.installed_apps',
+    'djangobackends.context_processors.installed_apps',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -82,13 +89,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'servermon.djangobackends.StripWhitespaceMiddleware.StripWhitespaceMiddleware',
+    'djangobackends.StripWhitespaceMiddleware.StripWhitespaceMiddleware',
 )
 
 ROOT_URLCONF = 'servermon.urls'
 
 AUTHENTICATION_BACKENDS = (
-#    'servermon.djangobackends.ldapBackend.ldapBackend',
+#    'djangobackends.ldapBackend.ldapBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -112,10 +119,10 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'servermon.projectwide',
-    'servermon.updates',
-    'servermon.puppet',
-    'servermon.hwdoc',
+    'projectwide',
+    'updates',
+    'puppet',
+    'hwdoc',
     'south',
     'keyvalue',
 )
@@ -131,6 +138,7 @@ TICKETING_SYSTEM = 'dummy' # dummy, comments, jira are possible values
 COMMENTS_TICKETING_URL = "http://ticketing.example.com/"
 JIRA_TICKETING = {
     'url': 'http://ticketing.example.com/',
+    'search_string': 'text ~ {}', # {} replaced by double-quoted serial number for search
     'projects': { # empty dict means "all projects"
         'project1': { 'closed_string': 'closed' },
         'project2': { 'closed_string': 'done' },

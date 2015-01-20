@@ -76,14 +76,6 @@ class servermon(
         content => template('servermon/settings.py.erb'),
     }
 
-    file { "$directory/urls.py":
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/servermon/urls.py',
-    }
-
     file { '/etc/gunicorn.d/servermon':
         ensure  => $ensure,
         owner   => 'root',
