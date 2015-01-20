@@ -963,14 +963,13 @@ node 'db1011.eqiad.wmnet' {
     include role::mariadb::tendril
 }
 
-node /^dbstore1001\.eqiad\.wmnet/ {
-
+node 'dbstore1001.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
     $mariadb_backups_folder = '/a/backups'
     include role::mariadb::backup
-    # 24h pt-slave-delay on all repl streams
+    # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':
         lag_warn => 90000,
         lag_crit => 180000,
@@ -980,15 +979,30 @@ node /^dbstore1001\.eqiad\.wmnet/ {
     }
 }
 
-node /^dbstore1002\.eqiad\.wmnet/ {
-
+node 'dbstore2001.codfw.wmnet' {
     include admin
     $cluster = 'mysql'
-    # Analytics traffic & eventlogging spikes
+    $ganglia_aggregator = true
+    # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':
-        lag_warn => 1800,
-        lag_crit => 3600,
+        lag_warn => 90000,
+        lag_crit => 180000,
+        # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
+        # don't spam Icinga with warnings. This will not block properly critical alerts.
+        warn_stopped => false,
     }
+}
+
+node 'dbstore1002.eqiad.wmnet' {
+    include admin
+    $cluster = 'mysql'
+    include role::mariadb::dbstore
+}
+
+node 'dbstore2002.codfw.wmnet' {
+    include admin
+    $cluster = 'mysql'
+    include role::mariadb::dbstore
 }
 
 node 'dbproxy1002.eqiad.wmnet' {
