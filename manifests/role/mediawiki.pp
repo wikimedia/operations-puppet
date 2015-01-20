@@ -55,7 +55,7 @@ class role::mediawiki::common {
     }
 }
 
-class role::mediawiki::webserver( $pool) {
+class role::mediawiki::webserver($pool) {
     include ::role::mediawiki::common
     include ::apache::monitoring
     include ::lvs::configuration
