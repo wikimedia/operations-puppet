@@ -128,21 +128,6 @@ class role::beta::appserver {
     }
 }
 
-class role::beta::jobrunner {
-    include role::beta::scap_target
-    include role::mediawiki::common
-    include ::mediawiki
-
-    class { '::mediawiki::jobrunner':
-        aggr_servers    => [ 'deployment-redis01' ],
-        queue_servers   => [ 'deployment-redis01' ],
-        runners_basic   => 5,
-        runners_parsoid => 5,
-        runners_upload  => 2,
-        runners_gwt     => 1,
-    }
-}
-
 # = Class: role::beta::puppetmaster
 # Add nice things to the beta puppetmaster.
 class role::beta::puppetmaster {
