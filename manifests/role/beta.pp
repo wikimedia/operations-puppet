@@ -128,11 +128,6 @@ class role::beta::appserver {
     }
 }
 
-class role::beta::videoscaler {
-    include role::beta::scap_target
-    include role::mediawiki::videoscaler
-}
-
 class role::beta::jobrunner {
     include role::beta::scap_target
     include role::mediawiki::common
