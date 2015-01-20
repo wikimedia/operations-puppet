@@ -8,7 +8,7 @@ LimitMEMLOCK=90000
 PIDFile=%t/%p.pid
 Restart=on-failure
 <% if @cluster_options.fetch("enable_geoiplookup", false) -%>
-Environment="CC_COMMAND=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lGeoIP"
+Environment="CC_COMMAND=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%s -lGeoIP"
 <% end -%>
 ExecReload=/usr/share/varnish/reload-vcl <%= @extraopts %> -q
 ExecStart=/usr/sbin/varnishd \
