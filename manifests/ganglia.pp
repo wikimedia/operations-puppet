@@ -19,7 +19,8 @@
 class ganglia {
 
     # FIXME: remove after the ganglia module migration
-    if ($::hostname in ['netmon1001'] or $::site == 'esams' or $::site == 'codfw') {
+    if ($::hostname in ['netmon1001'] or $::site == 'esams' or $::site ==
+'codfw' or $::site = 'ulsfo') {
         $ganglia_cluster = hiera('cluster', $cluster)
         class { 'ganglia_new::monitor':
             cluster => $ganglia_cluster,
