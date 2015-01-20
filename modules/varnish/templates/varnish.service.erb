@@ -5,11 +5,14 @@ Description=%p (Varnish HTTP Accelerator)
 Type=forking
 LimitNOFILE=500000
 LimitMEMLOCK=90000
-PIDFile=/run/varnishd<%= @instancesuffix -%>.pid
+PIDFile=%t/%p.pid
 Restart=on-failure
+<% if @cluster_options.fetch("enable_geoiplookup", false) -%>
+Environment="CC_COMMAND=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lGeoIP"
+<% end -%>
 ExecReload=/usr/share/varnish/reload-vcl <%= @extraopts %> -q
 ExecStart=/usr/sbin/varnishd \
--P /run/varnishd<%= @instancesuffix -%>.pid \
+-P %t/%p.pid \
 -a :<%= @varnish_port -%> \
 -T 127.0.0.1:<%= @varnish_admin_port -%> \
 -f /etc/varnish/wikimedia_<%= @vcl -%>.vcl \
@@ -21,7 +24,7 @@ ExecStart=/usr/sbin/varnishd \
 -p nuke_limit=300 -p shm_reclen=1024 \
 <%= @runtime_params -%> \
 <%= @extraopts -%> \
-<% if @cluster_options.fetch("enable_geoiplookup", false) -%>-p cc_command=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lGeoIP<% end %>
+<% if @cluster_options.fetch("enable_geoiplookup", false) -%>-p cc_command=${CC_COMMAND}<% end %>
 
 [Install]
 WantedBy=multi-user.target
