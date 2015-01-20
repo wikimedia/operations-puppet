@@ -59,8 +59,13 @@ class role::mediawiki::webserver($pool) {
     include ::role::mediawiki::common
     include ::apache::monitoring
     include ::lvs::configuration
-    include ::mediawiki::web::sites
     include ::mediawiki::web
+    # HACK: Fix to not be different classes!
+    if $::realm == 'labs' {
+        include ::mediawiki::web::beta_sites
+    } else {
+        include ::mediawiki::web::sites
+    }
 
     $ips = $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site]
 
