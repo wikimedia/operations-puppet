@@ -40,16 +40,6 @@ then
 fi
 # At this point, all (the rest of) our disk are belong to LVM.
 
-# If we don't have a swap partition, make one now
-if ! /bin/egrep -q '^\S+\s+\S+\s+swap\s' /etc/fstab
-then
-  echo 'Creating swap volume'
-  /sbin/lvcreate -L 2G -n swap vd
-  /sbin/mkswap /dev/mapper/vd-swap
-  echo "/dev/mapper/vd-swap none swap defaults 0 0" >>/etc/fstab
-  /sbin/swapon -a
-fi
-
 puppet agent --enable
 
 binddn=`grep 'binddn' /etc/ldap.conf | sed 's/.* //'`
