@@ -5,6 +5,7 @@ class role::bastionhost {
     }
 
     include ::bastionhost
+    include base::firewall
 
     ferm::service { 'ssh':
         desc  => 'SSH open from everywhere, this is a bastion host',
