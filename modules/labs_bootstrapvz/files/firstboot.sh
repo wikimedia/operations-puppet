@@ -65,41 +65,6 @@ then
 fi
 # At this point, all (the rest of) our disk are belong to LVM.
 
-# If we don't have a swap partition, make one now
-if ! /bin/egrep -q '^\S+\s+\S+\s+swap\s' /etc/fstab
-then
-  echo 'Creating swap volume'
-  /sbin/lvcreate -L 2G -n swap vd
-  /sbin/mkswap /dev/mapper/vd-swap
-  echo "/dev/mapper/vd-swap none swap defaults 0 0" >>/etc/fstab
-  /sbin/swapon -a
-fi
-
-# If we don't have a /var, we create it and /var/log,
-# move everything to it, and forcibly reboot now to try
-# everything anew
-if ! /bin/egrep -q '^\S+\s+/var/log\s' /etc/fstab
-then
-  echo 'Creating /var/log volume'
-  /sbin/lvcreate -L 2G -n log vd
-  /sbin/mkfs -t ext4 /dev/mapper/vd-log
-  /bin/mkdir -p /tmp/log
-  /bin/mount /dev/mapper/vd-log /tmp/log
-  /bin/tar cf - -C /var log | /bin/tar xf - -C /tmp
-  /bin/umount /tmp/log
-  echo "/dev/mapper/vd-log /var/log ext4 defaults 0 0" >>/etc/fstab
-
-  # We're all done.  Now all that's left is to reboot making sure
-  # that this script executes again.  This is done by remounting
-  # / readonly before a forcible reboot - this way the file
-  # used to tell rc.local to not execute firstboot.sh again can't
-  # be created.
-
-  /bin/sync
-  /bin/mount -oro,remount /
-  /sbin/reboot -f
-fi
-
 binddn=`grep 'binddn' /etc/ldap.conf | sed 's/.* //'`
 bindpw=`grep 'bindpw' /etc/ldap.conf | sed 's/.* //'`
 hostsou=`grep 'nss_base_hosts' /etc/ldap.conf | sed 's/.* //'`

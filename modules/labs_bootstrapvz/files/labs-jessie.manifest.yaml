@@ -19,7 +19,7 @@ volume:
     type: gpt
     root:
       filesystem: ext4
-      size: 10GiB
+      size: 20GiB
 packages:
   mirror: http://mirrors.wikimedia.org/debian
   install_standard: true
