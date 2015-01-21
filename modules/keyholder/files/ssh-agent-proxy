@@ -85,7 +85,8 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
         while 1:
             readable, *_ = select.select(self.sockets, (), (), 1)
             if self.proxy in readable:
-                self.request.sendall(self.proxy.recv(64 * 1024))
+                code, message = self.recv_message(self.proxy)
+                self.send_message(self.request, code, message)
             if self.request in readable:
                 code, message = self.recv_message(self.request)
                 if code is None:
