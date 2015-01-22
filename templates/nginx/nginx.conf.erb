@@ -16,7 +16,11 @@ worker_rlimit_nofile 30000;
 
 
 error_log  /var/log/nginx/error.log;
+<% if @initsystem == 'systemd' -%>
+pid        /run/nginx.pid;
+<% else -%>
 pid        /var/run/nginx.pid;
+<% end -%>
 
 events {
     worker_connections  <%= @nginx_worker_connections %>;
