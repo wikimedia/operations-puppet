@@ -242,11 +242,12 @@ class misc::statistics::wikistats {
     # generates the new mobile pageviews report
     # and syncs the file PageViewsPerMonthAll.csv to stat1002
     cron { 'new mobile pageviews report':
-        command  => "/bin/bash ${misc::statistics::base::working_path}/wikistats_git/pageviews_reports/bin/stat1-cron-script.sh",
-        user     => 'stats',
-        monthday => 1,
-        hour     => 7,
-        minute   => 20,
+        command     => "/bin/bash ${misc::statistics::base::working_path}/wikistats_git/pageviews_reports/bin/stat1-cron-script.sh",
+        user        => 'stats',
+        environment => 'MAILTO=""',
+        monthday    => 1,
+        hour        => 7,
+        minute      => 20,
     }
 }
 
@@ -645,10 +646,11 @@ define misc::statistics::rsync_job($source, $destination, $retention_days = unde
     # This requires that the $misc::statistics::user::username
     # user is installed on the source host.
     cron { "rsync_${name}_logs":
-        command => "/usr/bin/rsync -rt --perms --chmod=g-w ${source} ${destination}/",
-        user    => $misc::statistics::user::username,
-        hour    => 8,
-        minute  => 0,
+        command     => "/usr/bin/rsync -rt --perms --chmod=g-w ${source} ${destination}/",
+        user        => $misc::statistics::user::username,
+        environment => 'MAILTO=""',
+        hour        => 8,
+        minute      => 0,
     }
 
     $prune_old_logs_ensure = $retention_days ? {
@@ -657,11 +659,12 @@ define misc::statistics::rsync_job($source, $destination, $retention_days = unde
     }
 
     cron { "prune_old_${name}_logs":
-        ensure  => $prune_old_logs_ensure,
-        command => "/usr/bin/find ${destination} -ctime +${retention_days} -exec rm {} \\;",
-        user    => $misc::statistics::user::username,
-        minute  => 0,
-        hour    => 9,
+        ensure      => $prune_old_logs_ensure,
+        command     => "/usr/bin/find ${destination} -ctime +${retention_days} -exec rm {} \\;",
+        user        => $misc::statistics::user::username,
+        environment => 'MAILTO=""',
+        minute      => 0,
+        hour        => 9,
     }
 }
 
@@ -1175,11 +1178,12 @@ class misc::statistics::aggregator {
 
     # Cron for doing the basic aggregation step itself
     cron { 'aggregator projectcounts aggregate':
-        command => "${script_path}/bin/aggregate_projectcounts --source ${hdfs_source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --push-target --log ${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log",
-        user    => $user,
-        hour    => '13',
-        minute  => '0',
-        require => [
+        command     => "${script_path}/bin/aggregate_projectcounts --source ${hdfs_source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --push-target --log ${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log",
+        user        => $user,
+        environment => 'MAILTO=""',
+        hour        => '13',
+        minute      => '0',
+        require     => [
             Git::Clone['aggregator_code'],
             Git::Clone['aggregator_data'],
             File[$log_path],
@@ -1188,10 +1192,11 @@ class misc::statistics::aggregator {
 
     # Cron for basing monitoring of the aggregated data
     cron { 'aggregator projectcounts monitor':
-        command => "${script_path}/bin/check_validity_aggregated_projectcounts --data ${data_path}",
-        user    => $user,
-        hour    => '13',
-        minute  => '45',
-        require => Cron['aggregator projectcounts aggregate'],
+        command     => "${script_path}/bin/check_validity_aggregated_projectcounts --data ${data_path}",
+        user        => $user,
+        environment => 'MAILTO=""',
+        hour        => '13',
+        minute      => '45',
+        require     => Cron['aggregator projectcounts aggregate'],
     }
 }
