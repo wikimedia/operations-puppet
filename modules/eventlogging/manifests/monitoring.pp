@@ -75,4 +75,24 @@ class eventlogging::monitoring::graphite {
         contact_group   => 'analytics',
         under           => true
     }
+
+    # Warn/Alert if the difference between raw and valid EventLogging
+    # alerts gets too big.
+    # If the difference gets too big, either the validation step is
+    # overloaded, or high volume schemas are failing validation.
+    #
+    # Since diffed series are not fully synchronized, the plain diff
+    # would gives a trajectory that is flip/flopping above and below
+    # zero ~50 events/s. Hence, we average the diff over 10
+    # readings. That way, we dampen flip/flopping enough to get a
+    # characteristic that is worth alerting on.
+    monitoring::graphite_threshold { 'eventlogging_difference_raw_validated':
+        description   => 'Difference between raw and validated EventLogging overall message rates',
+        metric        => 'movingAverage(diffSeries(eventlogging.overall.raw.rate,eventlogging.overall.valid.rate),10)',
+        warning       => 20,
+        critical      => 30,
+        percentage    => 15, # At least 3 of the 15 readings
+        from          => '15min',
+        contact_group => 'analytics',
+    }
 }
