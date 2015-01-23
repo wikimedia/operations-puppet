@@ -52,6 +52,7 @@ mediawiki_memcached_servers:
     - 'nn'
     - 'no'
     - 'pt'
+    - 'ru'
   mt:
     Apertium:
       'ca':
@@ -75,6 +76,11 @@ mediawiki_memcached_servers:
       'pt':
         - 'es'
         - 'ca'
+    Yandex:
+      'en':
+        - 'ru'
+    defaults:
+      'en-ru': 'Yandex'
   dictionary:
     JsonDict:
       'ca':
