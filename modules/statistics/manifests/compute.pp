@@ -2,7 +2,10 @@
 # Class containing common stuff for a statisitics compute node.
 #
 class statistics::compute {
-    Class['::statistics'] -> Class['::statistics::compute']
+    Class['::statistics']       -> Class['::statistics::compute']
+    Class['::statistics::user'] -> Class['::statistics::compute']
+
+
 
     # include mysql module base class to install mysql client
     include mysql
