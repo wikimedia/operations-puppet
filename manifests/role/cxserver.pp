@@ -8,6 +8,7 @@ class role::cxserver (
     }
 
     include ::cxserver
+    include ::passwords::cxserver
 
     ferm::service { 'cxserver_http':
         proto => 'tcp',

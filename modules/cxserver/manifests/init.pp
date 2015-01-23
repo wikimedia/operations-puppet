@@ -20,6 +20,8 @@
 #   Url to parsoid service.
 # [*apertium*]
 #   Url to apertium service.
+# [*yandex*]
+#   Url to yandex service.
 # [*port*]
 #   Port where to run the cxserver service. Defaults to 8080.
 class cxserver(
@@ -29,6 +31,7 @@ class cxserver(
     $log_dir = '/var/log/cxserver',
     $parsoid = 'http://parsoid-lb.eqiad.wikimedia.org',
     $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
+    $yandex = 'https://translate.yandex.net',
     $port = 8080,
 ) {
     require_package('nodejs')
