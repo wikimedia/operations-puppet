@@ -2288,9 +2288,6 @@ node 'stat1003.eqiad.wmnet' {
     class { 'base::firewall': }
 
     include role::statistics::cruncher
-    # role::statistics::private will be replaced with the following role
-    include role::statistics::module::cruncher
-
 
     # TODO: Find out if we still need cron_blog_pageviews
     include misc::statistics::cron_blog_pageviews

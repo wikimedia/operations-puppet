@@ -12,34 +12,6 @@ class role::statistics {
     # backup::set { 'home' : }
 }
 
-class role::statistics::cruncher inherits role::statistics {
-    system::role { 'role::statistics':
-        description => 'statistics number crunching server',
-    }
-
-    # include classes needed for crunching data on stat1003.
-    # include geoip
-    # include misc::statistics::dataset_mount
-    # include misc::statistics::mediawiki
-    # include misc::statistics::plotting
-    # include misc::statistics::packages::utilities
-
-    # Aaron Halfaker (halfak) wants MongoDB for his project.
-    # include misc::statistics::db::mongo
-    # Aaron Halfaker (halfak) wants python{,3}-dev environments for module
-    # oursql
-    # include misc::statistics::dev
-    # include misc::udp2log::udp_filter
-
-    # include misc::statistics::rsync::jobs::eventlogging
-    # geowiki: bringing data from production slave db to research db
-    include misc::statistics::geowiki::jobs::data
-    # geowiki: generate limn files from research db and push them
-    include misc::statistics::geowiki::jobs::limn
-    # geowiki: monitors the geowiki files of http://gp.wmflabs.org/
-    include misc::statistics::geowiki::jobs::monitoring
-}
-
 class role::statistics::www inherits role::statistics {
     system::role { 'role::statistics':
         description => 'statistics web server',
@@ -133,7 +105,7 @@ class role::statistics::module {
     }
 }
 
-class role::statistics::module::cruncher inherits role::statistics::module {
+class role::statistics::cruncher inherits role::statistics::module {
     system::role { 'role::statistics::cruncher':
         description => 'Statistics general compute node (non private data)'
     }
@@ -152,14 +124,13 @@ class role::statistics::module::cruncher inherits role::statistics::module {
     # rsync logs from logging hosts
     include statistics::rsync::eventlogging
 
-
-    # # TODO:  Move geowiki into its own module:
-    # # geowiki: bringing data from production slave db to research db
-    # include misc::statistics::geowiki::jobs::data
-    # # geowiki: generate limn files from research db and push them
-    # include misc::statistics::geowiki::jobs::limn
-    # # geowiki: monitors the geowiki files of http://gp.wmflabs.org/
-    # include misc::statistics::geowiki::jobs::monitoring
+    # TODO:  Move geowiki into its own module:
+    # geowiki: bringing data from production slave db to research db
+    include misc::statistics::geowiki::jobs::data
+    # geowiki: generate limn files from research db and push them
+    include misc::statistics::geowiki::jobs::limn
+    # geowiki: monitors the geowiki files of http://gp.wmflabs.org/
+    include misc::statistics::geowiki::jobs::monitoring
 }
 
 class role::statistics::module::private inherits role::statistics::module {
