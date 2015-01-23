@@ -894,8 +894,9 @@ class misc::statistics::geowiki::jobs::data {
     require misc::statistics::geowiki,
         misc::statistics::geowiki::mysql::conf::research,
         passwords::mysql::globaldev,
-        misc::statistics::packages::python,
         geoip
+        # TODO: use require_packages
+        # misc::statistics::packages::python,
 
     $geowiki_user = $misc::statistics::geowiki::geowiki_user
     $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
@@ -944,8 +945,8 @@ password=${globaldev_mysql_pass}
 class misc::statistics::geowiki::jobs::limn {
     require misc::statistics::geowiki,
         misc::statistics::geowiki::mysql::conf::research,
-        misc::statistics::geowiki::data::private,
-        misc::statistics::packages::python
+        misc::statistics::geowiki::data::private
+        # misc::statistics::packages::python
 
     $geowiki_user = $misc::statistics::geowiki::geowiki_user
     $geowiki_base_path = $misc::statistics::geowiki::geowiki_base_path
