@@ -31,6 +31,8 @@ mediawiki_memcached_servers:
 "misc::syslog-server::basepath": /data/project/syslog
 "cxserver::log_dir": /data/project/cxserver/log
 "cxserver::apertium": http://apertium-beta.wmflabs.org
+"cxserver::proxy": http://deployment-urldownloader.eqiad.wmflabs:8080
+"cxserver::yandex_url": 'https://translate.yandex.net'
 "cxserver::registry":
   source:
     - 'ca'
@@ -52,6 +54,7 @@ mediawiki_memcached_servers:
     - 'nn'
     - 'no'
     - 'pt'
+    - 'ru'
   mt:
     Apertium:
       'ca':
@@ -75,6 +78,9 @@ mediawiki_memcached_servers:
       'pt':
         - 'es'
         - 'ca'
+    Yandex:
+      'en':
+        - 'ru'
   dictionary:
     JsonDict:
       'ca':
