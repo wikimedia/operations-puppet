@@ -31,38 +31,41 @@ mediawiki_memcached_servers:
 "misc::syslog-server::basepath": /data/project/syslog
 "cxserver::log_dir": /data/project/cxserver/log
 "cxserver::apertium": http://apertium-beta.wmflabs.org
+"cxserver::proxy": http://deployment-urldownloader.eqiad.wmflabs:8080
+"cxserver::yandex_api_key": '%{::passwords::cxserver::yandex_api_key}'
 "cxserver::registry":
   source:
-    - 'ca',
-    - 'en',
-    - 'es',
-    - 'id',
-    - 'ms',
-    - 'nn',
-    - 'no',
-    - 'pt',
+    - 'ca'
+    - 'en'
+    - 'es'
+    - 'id'
+    - 'ms'
+    - 'nn'
+    - 'no'
+    - 'pt'
     - 'sv'
   target:
-    - 'ca',
-    - 'da',
-    - 'eo',
-    - 'es',
-    - 'id',
-    - 'ms',
-    - 'nn',
-    - 'no',
+    - 'ca'
+    - 'da'
+    - 'eo'
+    - 'es'
+    - 'id'
+    - 'ms'
+    - 'nn'
+    - 'no'
     - 'pt'
+    - 'ru'
   mt:
     Apertium:
       'ca':
-        - 'es',
+        - 'es'
         - 'pt'
       'en':
-        - 'ca',
-        - 'eo',
-        - 'es',
+        - 'ca'
+        - 'eo'
+        - 'es'
       'es':
-        - 'ca',
+        - 'ca'
         - 'pt'
       'id':
         - 'ms'
@@ -73,8 +76,13 @@ mediawiki_memcached_servers:
       'no':
         - 'nn'
       'pt':
-        - 'es',
+        - 'es'
         - 'ca'
+    Yandex:
+      'en':
+        - 'ru'
+    defaults:
+      'en-ru': 'Yandex'
   dictionary:
     JsonDict:
       'ca':
