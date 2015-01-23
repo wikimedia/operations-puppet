@@ -170,8 +170,10 @@ class role::statistics::module::private inherits role::statistics::module {
     include role::backup::host
     backup::set { 'home' : }
 
-    # # include stuff common to statistics compute nodes
-    # include statistics::compute
+    # include stuff common to statistics compute nodes
+    include statistics::compute
+
+
     #
     # # wikistats code is run here to
     # # generate stats.wikimedia.org data

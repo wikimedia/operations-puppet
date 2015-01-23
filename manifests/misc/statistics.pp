@@ -633,7 +633,7 @@ class misc::statistics::cron_blog_pageviews {
 #
 class misc::statistics::limn::data {
     include misc::statistics::base
-    include misc::statistics::stats_researchdb_password
+    # include misc::statistics::stats_researchdb_password
 
     # Either '/a' or '/srv', depending on the server. :/
     $working_path      = $misc::statistics::base::working_path
@@ -1017,34 +1017,34 @@ class misc::statistics::geowiki::jobs::monitoring {
     }
 }
 
-# password to access the research database
-# 'researchers' group has read access
-class misc::statistics::researchdb_password {
-    include passwords::mysql::research
-
-    # This file will render at
-    # /etc/mysql/conf.d/research-client.cnf.
-    mysql::config::client { 'research':
-        user  => $::passwords::mysql::research::user,
-        pass  => $::passwords::mysql::research::pass,
-        group => 'researchers',
-        mode  => '0440',
-    }
-}
-
-# Same as above, but renders a file readable by the stats user.
-class misc::statistics::stats_researchdb_password {
-    include misc::statistics::user
-
-    # This file will render at
-    # /etc/mysql/conf.d/stats-research-client.cnf.
-    mysql::config::client { 'stats-research':
-        user  => $::passwords::mysql::research::user,
-        pass  => $::passwords::mysql::research::pass,
-        group => $misc::statistics::user::username,
-        mode  => '0440',
-    }
-}
+# # password to access the research database
+# # 'researchers' group has read access
+# class misc::statistics::researchdb_password {
+#     include passwords::mysql::research
+#
+#     # This file will render at
+#     # /etc/mysql/conf.d/research-client.cnf.
+#     mysql::config::client { 'research':
+#         user  => $::passwords::mysql::research::user,
+#         pass  => $::passwords::mysql::research::pass,
+#         group => 'researchers',
+#         mode  => '0440',
+#     }
+# }
+#
+# # Same as above, but renders a file readable by the stats user.
+# class misc::statistics::stats_researchdb_password {
+#     include misc::statistics::user
+#
+#     # This file will render at
+#     # /etc/mysql/conf.d/stats-research-client.cnf.
+#     mysql::config::client { 'stats-research':
+#         user  => $::passwords::mysql::research::user,
+#         pass  => $::passwords::mysql::research::pass,
+#         group => $misc::statistics::user::username,
+#         mode  => '0440',
+#     }
+# }
 
 # == Class misc::statistics::aggregator
 # Handles aggregation of pagecounts-all-sites projectcounts files
