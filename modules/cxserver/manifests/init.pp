@@ -17,9 +17,15 @@
 #   Place where cxserver can put log files. Assumed to be already existing and
 #   have write access to cxserver user.
 # [*parsoid*]
-#   Url to parsoid service.
+#   Url to Parsoid service.
 # [*apertium*]
-#   Url to apertium service.
+#   Url to Apertium service.
+# [*yandex*]
+#   Url to Yandex service.
+# [*yandex_api_key*]
+#   API key for Yandex service.
+# [*yandex_proxy*]
+#   Proxy URL for cxserver.
 # [*port*]
 #   Port where to run the cxserver service. Defaults to 8080.
 # [*registry*]
@@ -31,6 +37,9 @@ class cxserver(
     $log_dir = '/var/log/cxserver',
     $parsoid = 'http://parsoid-lb.eqiad.wikimedia.org',
     $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
+    $yandex_url = undef,
+    $yandex_api_key = undef,
+    $proxy = undef,
     $port = 8080,
     $registry = {},
 ) {
