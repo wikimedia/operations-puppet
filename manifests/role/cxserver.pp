@@ -8,6 +8,9 @@ class role::cxserver (
     }
 
     include ::cxserver
+    include ::passwords::cxserver
+
+    yandex_api_key = $::passwords::cxserver::yandex_api_key
 
     ferm::service { 'cxserver_http':
         proto => 'tcp',
