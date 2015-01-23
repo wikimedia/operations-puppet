@@ -2306,6 +2306,16 @@ node 'stat1003.eqiad.wmnet' {
             'researchers',
         ],
     }
+
+    include passwords::mysql::research
+    # This file will render at
+    # /etc/mysql/conf.d/research-client.cnf.
+    mysql::config::client { 'research':
+        user  => $::passwords::mysql::research::user,
+        pass  => $::passwords::mysql::research::pass,
+        group => 'researchers',
+        mode  => '0440',
+    }
 }
 
 node /^snapshot100[1-4]\.eqiad\.wmnet/ {

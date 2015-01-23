@@ -143,6 +143,7 @@ class role::statistics::module::cruncher inherits role::statistics::module {
 
     # include stuff common to statistics compute nodes
     include statistics::compute
+
     #
     # # Aaron Halfaker (halfak) wants MongoDB for his project.
     # class { 'mongodb':

@@ -106,14 +106,6 @@ class statistics::compute {
 
     include passwords::mysql::research
     # This file will render at
-    # /etc/mysql/conf.d/research-client.cnf.
-    mysql::config::client { 'research':
-        user  => $::passwords::mysql::research::user,
-        pass  => $::passwords::mysql::research::pass,
-        group => 'researchers',
-        mode  => '0440',
-    }
-    # This file will render at
     # /etc/mysql/conf.d/stats-research-client.cnf.
     mysql::config::client { 'stats-research':
         user  => $::passwords::mysql::research::user,
