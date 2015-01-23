@@ -3,14 +3,11 @@
 # They should just redirect to Wikimetrics
 #
 class statistics::sites::metrics {
-    Class['::statistics::web'] -> Class['::statistics::sites::datasets']
+    Class['::statistics::web'] -> Class['::statistics::sites::metrics']
     include ::apache::mod::alias
 
-    $site_name       = 'metrics.wikimedia.org'
-    $redirect_target = 'https://metrics.wmflabs.org/'
-
     # Set up the VirtualHost
-    apache::site { $site_name:
+    apache::site { 'metrics.wikimedia.org':
         content => template("statistics/metrics.wikimedia.org.erb"),
     }
 

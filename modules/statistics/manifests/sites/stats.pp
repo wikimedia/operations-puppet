@@ -1,14 +1,12 @@
 # ==Class statistics::sites::stats
 # stats.wikimedia.org
 class statistics::sites::stats {
-    Class['::statistics::web'] -> Class['::statistics::sites::datasets']
+    Class['::statistics::web'] -> Class['::statistics::sites::stats']
 
     # TODO!  geowiki module???
     # require misc::statistics::geowiki::data::private
 
-    $site_name                     = 'stats.wikimedia.org'
-    $docroot                       = "/srv/${site_name}/htdocs"
-    $geowiki_private_directory     = "${docroot}/geowiki-private"
+    $geowiki_private_directory     = "/srv/stats.wikimedia.org/geowiki-private"
     $geowiki_private_htpasswd_file = '/etc/apache2/htpasswd.stats-geowiki'
 
     # add htpasswd file for stats.wikimedia.org
@@ -37,7 +35,7 @@ class statistics::sites::stats {
     #     mode    => '0750',
     # }
 
-    apache::site { $site_name:
+    apache::site { 'stats.wikimedia.org'
         content => template("statistics/stats.wikimedia.org.erb"),
     }
 
