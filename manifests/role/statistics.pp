@@ -143,6 +143,17 @@ class role::statistics::module::cruncher inherits role::statistics::module {
 
     # include stuff common to statistics compute nodes
     include statistics::compute
+
+    include passwords::mysql::research
+    # This file will render at
+    # /etc/mysql/conf.d/research-client.cnf.
+    mysql::config::client { 'research':
+        user  => $::passwords::mysql::research::user,
+        pass  => $::passwords::mysql::research::pass,
+        group => 'researchers',
+        mode  => '0440',
+    }
+
     #
     # # Aaron Halfaker (halfak) wants MongoDB for his project.
     # class { 'mongodb':
