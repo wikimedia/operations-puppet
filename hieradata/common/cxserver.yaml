@@ -1,3 +1,4 @@
+proxy: http://url-downloader.wikimedia.org:8080
 registry:
   'ca':
     'es':
