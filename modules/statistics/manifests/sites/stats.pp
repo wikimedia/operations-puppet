@@ -1,7 +1,7 @@
 # ==Class statistics::sites::stats
 # stats.wikimedia.org
 class statistics::sites::stats {
-    Class['::statistics::web'] -> Class['::statistics::sites::stats']
+    require statistics::web
 
     # TODO!  geowiki module???
     # require misc::statistics::geowiki::data::private

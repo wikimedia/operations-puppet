@@ -7,7 +7,7 @@
 # dataset1001 datasets_mount.
 #
 class statistics::sites::datasets {
-    Class['::statistics::web'] -> Class['::statistics::sites::datasets']
+    require statistics::web
 
     $working_path = $::statistics::working_path
     file { [
