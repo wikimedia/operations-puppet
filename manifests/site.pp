@@ -2241,6 +2241,9 @@ node 'strontium.eqiad.wmnet' {
 node 'stat1001.eqiad.wmnet' {
     include standard
     include role::statistics::www
+    # role::statistics::www will be replaced with the following role
+    include role::statistics::module::web
+
     include role::abacist
     class { 'admin': groups => ['statistics-web-users'] }
 }
@@ -2265,6 +2268,8 @@ node 'stat1002.eqiad.wmnet' {
     # include classes needed for storing and crunching
     # private data on stat1002.
     include role::statistics::private
+    # role::statistics::private will be replaced with the following role
+    include role::statistics::module::private
 
     # Make sure refinery happens before analytics::clients,
     # so that the hive role can properly configure Hive's
@@ -2296,17 +2301,18 @@ node 'stat1002.eqiad.wmnet' {
 node 'stat1003.eqiad.wmnet' {
     include standard
 
-    # stat1003 has a public IP and should be pretty
-    # well firewalled off.  If it needs a specific
-    # service opened up, this will be done in
-    # statistics classes.
     # NOTE: This will be moved to another class
     # someday, probably standard.
     class { 'base::firewall': }
 
     include role::statistics::cruncher
+    # role::statistics::private will be replaced with the following role
+    include role::cruncher::module::cruncher
 
+
+    # TODO: Find out if we still need cron_blog_pageviews
     include misc::statistics::cron_blog_pageviews
+
     include misc::statistics::limn::data::jobs
     include misc::statistics::researchdb_password
 
