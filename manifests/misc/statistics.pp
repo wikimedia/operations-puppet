@@ -1,97 +1,9 @@
 class misc::statistics::user {
-    include passwords::statistics::user
-
-    $username = 'stats'
-    $homedir  = "/var/lib/${username}"
-
-    group { $username:
-        ensure => present,
-        name   => $username,
-        system => true,
-    }
-
-    user { $username:
-        home       => $homedir,
-        groups     => ['wikidev'],
-        shell      => '/bin/bash',
-        managehome => true,
-        system     => true
-    }
-
-    git::userconfig { 'stats':
-        homedir  => $homedir,
-        settings => {
-            'user' => {
-                'name'  => 'Statistics User',
-                # TODO: use a better email than this :(
-                'email' => 'otto@wikimedia.org',
-            },
-            # Enable automated git/gerrit authentication via http
-            # by using .git-credential file store.
-            'credential' => {
-                'helper' => 'store',
-            },
-        },
-        require   => User[$username],
-    }
-
-    # Render the .git-credentials file with the stats user's http password.
-    # This password is set from https://gerrit.wikimedia.org/r/#/settings/http-password.
-    # To log into gerrit as the stats user, check the /srv/password/stats-user file
-    # for LDAP login creds.
-    file { "${homedir}/.git-credentials":
-        mode    => '0600',
-        owner   => $username,
-        group   => $username,
-        content => "https://${username}:${passwords::statistics::user::gerrit_http_password}@gerrit.wikimedia.org",
-        require => User[$username],
-    }
+    include ::statistics::user
 }
 
 class misc::statistics::base {
-    system::role { 'misc::statistics::base':
-        description => 'statistics server',
-    }
-
-    include misc::statistics::packages
-
-    # we are attempting to stop using /a and to start using
-    # /srv instead.  stat1002 still use
-    # /a by default.  # stat1001 and stat1003 use /srv.
-    $working_path = $::hostname ? {
-        'stat1001' => '/srv',
-        'stat1003' => '/srv',
-        default    => '/a',
-    }
-    file { $working_path:
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'wikidev',
-        mode    => '0775',
-    }
-
-    if $working_path == '/srv' {
-        # symlink /a to /srv for backwards compatibility
-        file { '/a':
-            ensure => 'link',
-            target => '/srv',
-        }
-    }
-
-    # Manually set a list of statistics servers.
-    $servers = [
-        'stat1001.eqiad.wmnet',
-        'stat1002.eqiad.wmnet',
-        'stat1003.eqiad.wmnet',
-        'analytics1027.eqiad.wmnet',
-    ]
-
-    # set up rsync modules for copying files
-    # on statistic servers in $working_path
-    class { 'misc::statistics::rsyncd':
-        hosts_allow => $servers,
-        path        => $working_path,
-    }
+    include ::statistics
 }
 
 class misc::statistics::packages {
