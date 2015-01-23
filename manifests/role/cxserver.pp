@@ -2,12 +2,14 @@
 
 class role::cxserver (
     $port = 8080,
+    $yandex_api_key = '$::passwords::cxserver::yandex_api_key',
 ) {
     system::role { 'role::cxserver':
         description => 'content translation server'
     }
 
     include ::cxserver
+    include ::passwords::cxserver
 
     ferm::service { 'cxserver_http':
         proto => 'tcp',
