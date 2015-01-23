@@ -2222,9 +2222,7 @@ node 'strontium.eqiad.wmnet' {
 
 node 'stat1001.eqiad.wmnet' {
     include standard
-    include role::statistics::www
-    # role::statistics::www will be replaced with the following role
-    include role::statistics::module::web
+    include role::statistics::web
 
     include role::abacist
     class { 'admin': groups => ['statistics-web-users'] }
