@@ -13,5 +13,6 @@ class ganglia_new::monitor::service() {
 
     service { 'ganglia-monitor':
         ensure   => running,
+        provider => $::initsystem,
     }
 }
