@@ -1,9 +1,15 @@
 class misc::statistics::user {
     include ::statistics::user
+
+    $username = $::statistics::user::username
+    $homedir  = $::statistics::user::homedir
 }
 
 class misc::statistics::base {
     Class['::statistics'] -> Class['misc::statistics::base']
+
+    $working_path = $::statistics::working_path
+    $servers      = $::statistics::servers
 }
 
 class misc::statistics::packages {
