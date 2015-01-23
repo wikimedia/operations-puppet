@@ -4,3 +4,6 @@ apache::mpm::mpm: worker
 mediawiki::web::mpm_config::mpm: worker
 admin::groups:
   - deployment
+hhvm::extra::fcgi:
+    hhvm:
+      pcre_cache_type: lru
