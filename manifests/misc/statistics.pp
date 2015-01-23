@@ -22,7 +22,7 @@ class misc::statistics::cron_blog_pageviews {
     # user is installed on the source host.
     cron { 'blog_pageviews_email':
         command => $script,
-        user    => $misc::statistics::user::username,
+        user    => $::statistics::user::username,
         hour    => 2,
         minute  => 0,
     }
@@ -37,7 +37,7 @@ class misc::statistics::limn::data {
     # include misc::statistics::stats_researchdb_password
 
     # Either '/a' or '/srv', depending on the server. :/
-    $working_path      = $misc::statistics::base::working_path
+    $working_path      = $::statistics::base::working_path
 
     # Directory where the repository of the generate.py will be cloned.
     $source_dir        = "${working_path}/limn-mobile-data"
@@ -62,7 +62,7 @@ class misc::statistics::limn::data {
     $rsync_to          = "stat1001.eqiad.wmnet::www/limn-public-data/"
 
     # user to own files and run cron job as (stats).
-    $user              = $misc::statistics::user::username
+    $user              = $::statistics::user::username
 
     # This path is used in the limn-mobile-data config.
     # Symlink this until they change it.
@@ -172,17 +172,17 @@ class misc::statistics::limn::data::jobs {
 class misc::statistics::geowiki::params {
     include misc::statistics::base
 
-    $base_path              = "${misc::statistics::base::working_path}/geowiki"
+    $base_path              = "${::statistics::base::working_path}/geowiki"
     $private_data_bare_path = "${base_path}/data-private-bare"
 }
 
 # == Class misc::statistics::geowiki
 # Clones analytics/geowiki python scripts
 class misc::statistics::geowiki {
-    require misc::statistics::user,
+    require ::statistics::user,
         misc::statistics::geowiki::params
 
-    $geowiki_user         = $misc::statistics::user::username
+    $geowiki_user         = $::statistics::user::username
     $geowiki_base_path    = $misc::statistics::geowiki::params::base_path
     $geowiki_scripts_path = "${geowiki_base_path}/scripts"
 
