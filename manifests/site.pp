@@ -2247,11 +2247,9 @@ node 'stat1002.eqiad.wmnet' {
         ],
     }
 
-    # include classes needed for storing and crunching
+    # Include classes needed for storing and crunching
     # private data on stat1002.
     include role::statistics::private
-    # role::statistics::private will be replaced with the following role
-    include role::statistics::module::private
 
     # Make sure refinery happens before analytics::clients,
     # so that the hive role can properly configure Hive's

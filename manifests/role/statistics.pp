@@ -34,41 +34,6 @@ class role::statistics::www inherits role::statistics {
     include misc::statistics::public_datasets
 }
 
-class role::statistics::private inherits role::statistics {
-    system::role { 'role::statistics':
-        description => 'statistics private data host'
-    }
-
-    # include classes needed for crunching private data on stat1002
-    # include geoip
-    # include misc::statistics::dataset_mount
-    # include misc::statistics::mediawiki
-    # include misc::statistics::plotting
-    # include misc::statistics::packages::utilities
-    # include misc::udp2log::udp_filter
-    # rsync logs from logging hosts
-    # wikistats code is run here to
-    # generate stats.wikimedia.org data
-    include misc::statistics::wikistats
-    include misc::statistics::packages::java
-    include misc::statistics::rsync::jobs::webrequest
-    include misc::statistics::rsync::jobs::eventlogging
-
-    # kafkatee is useful here for adhoc processing of kafkadata
-    require_package('kafkatee')
-
-    # aggregating hourly webstatscollector project count files into
-    # daily per site csvs.
-    # Although it is in the “private” role, the dataset actually isn't
-    # private. We just keep it here to spare adding a separate role.
-    include misc::statistics::aggregator
-
-    # backup eventlogging logs
-    backup::set { 'a-eventlogging' : }
-}
-
-
-
 
 # ------------------------------------------------------------ #
 # The following role classes have commented out includes.
@@ -133,7 +98,7 @@ class role::statistics::cruncher inherits role::statistics::module {
     include misc::statistics::geowiki::jobs::monitoring
 }
 
-class role::statistics::module::private inherits role::statistics::module {
+class role::statistics::private inherits role::statistics::module {
     system::role { 'role::statistics::private':
         description => 'Statistics private data host and general compute node'
     }
@@ -144,30 +109,27 @@ class role::statistics::module::private inherits role::statistics::module {
     # include stuff common to statistics compute nodes
     include statistics::compute
 
+    # wikistats code is run here to
+    # generate stats.wikimedia.org data
+    include statistics::wikistats
 
-    #
-    # # wikistats code is run here to
-    # # generate stats.wikimedia.org data
-    # include statistics::wikistats
-    #
-    # # rsync logs from logging hosts
-    # include statistics::rsync::webrequest
-    #
-    # # eventlogging logs are not private, but they
-    # # are here for convenience
-    # include statistics::rsync::eventlogging
-    #
-    # # backup eventlogging logs
-    # backup::set { 'a-eventlogging' : }
-    #
-    # # kafkatee is useful here for adhoc processing of kafkadata
-    # require_package('kafkatee')
-    #
-    # # aggregating hourly webstatscollector project count files into
-    # # daily per site csvs.
-    # # Although it is in the “private” role, the dataset actually isn't
-    # # private. We just keep it here to spare adding a separate role.
-    # include misc::statistics::aggregator
+    # rsync logs from logging hosts
+    include statistics::rsync::webrequest
+
+    # eventlogging logs are not private, but they
+    # are here for convenience
+    include statistics::rsync::eventlogging
+    # backup eventlogging logs
+    backup::set { 'a-eventlogging' : }
+
+    # kafkatee is useful here for adhoc processing of kafkadata
+    require_package('kafkatee')
+
+    # aggregating hourly webstatscollector project count files into
+    # daily per site csvs.
+    # Although it is in the “private” role, the dataset actually isn't
+    # private. We just keep it here to spare adding a separate role.
+    include misc::statistics::aggregator
 }
 
 
