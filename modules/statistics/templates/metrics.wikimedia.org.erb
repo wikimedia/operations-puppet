@@ -1,25 +1,18 @@
 # Note: This file is managed by Puppet.
-<%
-# ERb template variables:
-#
-#   site_name
-#   redirect_target
-#
--%>
 
 <VirtualHost *:80>
-  # <%= @site_name %>, and metrics-api.wikimedia.org are
+  # metrics.wikimedia.org and metrics-api.wikimedia.org are
   # deprecated. The services it provided are now available through
   # Wikimetrics.
   #
   # We keep the domain around only because old documentation and
   # search engines still refer to it.
 
-  ServerName <%= @site_name %>
+  ServerName  metrics.wikimedia.org
   ServerAlias metrics-api.wikimedia.org
   ServerAdmin noc@wikimedia.org
 
-  Redirect permanent / <%= @redirect_target %>
+  Redirect permanent / https://metrics.wmflabs.org/
 
   ErrorLog /var/log/apache2/error.metrics.log
   LogLevel warn
