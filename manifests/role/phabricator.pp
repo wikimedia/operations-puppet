@@ -127,6 +127,12 @@ class role::phabricator::main {
             ops-requests => 'operations',
             testproj     => 'demoproject'
         },
+        direct_comments_allowed => {
+            ops-codfw => '*'
+            ops-eqiad => '*'
+            ops-esams => '*'
+            ops-ulsfo => '*'
+        }
         phab_bot        => {
             root_dir    => '/srv/phab/phabricator/',
             username    => 'emailbot',
