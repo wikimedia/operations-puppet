@@ -68,12 +68,12 @@ class role::statistics::private inherits role::statistics {
     }
 
     # include classes needed for crunching private data on stat1002
-    include geoip
-    include misc::statistics::dataset_mount
-    include misc::statistics::mediawiki
-    include misc::statistics::plotting
-    include misc::statistics::packages::utilities
-    include misc::udp2log::udp_filter
+    # include geoip
+    # include misc::statistics::dataset_mount
+    # include misc::statistics::mediawiki
+    # include misc::statistics::plotting
+    # include misc::statistics::packages::utilities
+    # include misc::udp2log::udp_filter
     # rsync logs from logging hosts
     # wikistats code is run here to
     # generate stats.wikimedia.org data
