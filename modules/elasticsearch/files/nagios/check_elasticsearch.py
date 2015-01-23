@@ -111,7 +111,7 @@ def check_shards_inactive(health, threshold):
         return EX_OK
 
     log_critical('inactive shards %s threshold %s breach: %r' % (
-                 inactive_shards, threshold, health))
+                 inactive_shards, threshold, _format_health(health)))
     return EX_CRITICAL
 
 
