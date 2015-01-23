@@ -62,6 +62,10 @@ mediawiki_memcached_servers:
         'ms':
         'no':
         'pt':
+        'ru':
+            mt:
+              providers:
+                -'Yandex'
     'es':
         'ca':
             dictionary:
