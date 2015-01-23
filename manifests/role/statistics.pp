@@ -13,13 +13,14 @@ class role::statistics {
 }
 
 class role::statistics::www inherits role::statistics {
-    system::role { 'role::statistics':
-        description => 'statistics web server',
-    }
+    # system::role { 'role::statistics':
+    #     description => 'statistics web server',
+    # }
+    #
+    # $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
+    #
+    # include misc::statistics::webserver
 
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
-
-    include misc::statistics::webserver
     # stats.wikimedia.org
     include misc::statistics::sites::stats
     # metrics.wikimedia,.org and metrics-api.wikimedia.org
@@ -138,9 +139,9 @@ class role::statistics::module::web inherits role::statistics::module {
         description => 'Statistics private data host and general compute node'
     }
 
-    # # include stuff common to statistics webserver nodes.
-    # include statistics::web
-    #
+    # include stuff common to statistics webserver nodes.
+    include statistics::web
+
     # # include statistics web sites
     # include statistics::sites::datasets
     # include statistics::sites::metrics
