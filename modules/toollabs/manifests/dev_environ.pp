@@ -85,6 +85,7 @@ class toollabs::dev_environ {
         'python-dev',
         'python3-dev',
         'qt4-qmake',
+        'rlwrap',                      # Bug T87368
         'sbt',
         'sqlite3',
         'subversion',
