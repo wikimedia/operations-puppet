@@ -2289,7 +2289,6 @@ node 'stat1003.eqiad.wmnet' {
     include misc::statistics::cron_blog_pageviews
 
     include misc::statistics::limn::data::jobs
-    # include misc::statistics::researchdb_password
 
     class { 'admin':
         groups => [
