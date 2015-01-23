@@ -38,7 +38,7 @@ class statistics::sites::stats {
     # }
 
     apache::site { $site_name:
-        content => template("apache/sites/${site_name}.erb"),
+        content => template("statistics/stats.wikimedia.org.erb"),
     }
 
     file { '/etc/apache2/ports.conf':

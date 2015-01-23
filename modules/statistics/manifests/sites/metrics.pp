@@ -11,7 +11,7 @@ class statistics::sites::metrics {
 
     # Set up the VirtualHost
     apache::site { $site_name:
-        content => template("modules/statistics/metrics.wikimedia.org.erb"),
+        content => template("statistics/metrics.wikimedia.org.erb"),
     }
 
     # make access and error log for metrics-api readable by wikidev group
