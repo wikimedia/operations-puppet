@@ -125,7 +125,7 @@ class role::statistics::module {
         default    => '/a',
     }
 
-    class { 'statistics':
+    class { '::statistics':
         servers      => $statistics_servers,
         working_path => $working_path,
     }
