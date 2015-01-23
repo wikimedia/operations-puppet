@@ -5,7 +5,14 @@ class role::cxserver {
         description => 'content translation server'
     }
 
-    include ::cxserver
+    include ::passwords::cxserver
+    $yandex_api_key = $::passwords::cxserver::yandex_api_key
+
+    class { 'cxserver':
+        yandex_url     => 'https://translate.yandex.net',
+        yandex_api_key => $yandex_api_key,
+        proxy          => 'http://url-downloader.wikimedia.org:8080',
+    }
 
     ferm::service { 'cxserver_http':
         proto => 'tcp',
