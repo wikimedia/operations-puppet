@@ -46,10 +46,17 @@ class role::statistics::cruncher inherits role::statistics {
     # TODO:  Move geowiki into its own module:
     # geowiki: bringing data from production slave db to research db
     include misc::statistics::geowiki::jobs::data
-    # geowiki: generate limn files from research db and push them
-    include misc::statistics::geowiki::jobs::limn
+
     # geowiki: monitors the geowiki files of http://gp.wmflabs.org/
     include misc::statistics::geowiki::jobs::monitoring
+
+    # Use the statistics::limn::data::generate define
+    # to set up cron jobs to generate and generate limn files
+    # from research db and push them
+    statistics::limn::data::generate { 'mobile':    }
+    statistics::limn::data::generate { 'flow':      }
+    statistics::limn::data::generate { 'edit':      }
+    statistics::limn::data::generate { 'language':  }
 }
 
 
