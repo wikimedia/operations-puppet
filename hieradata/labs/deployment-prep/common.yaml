@@ -31,6 +31,8 @@ mediawiki_memcached_servers:
 "misc::syslog-server::basepath": /data/project/syslog
 "cxserver::log_dir": /data/project/cxserver/log
 "cxserver::apertium": http://apertium-beta.wmflabs.org
+"cxserver::yandex": https://translate.yandex.net
+"cxserver::yandex_apy_key": '%{::passwords::cxserver::yandex_api_key}'
 "role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
 "hhvm::extra::fcgi":
     hhvm:
