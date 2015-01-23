@@ -3,7 +3,8 @@
 # They should just redirect to Wikimetrics
 #
 class statistics::sites::metrics {
-    Class['::statistics::web'] -> Class['::statistics::sites::metrics']
+    require statistics::web
+
     include ::apache::mod::alias
 
     # Set up the VirtualHost
