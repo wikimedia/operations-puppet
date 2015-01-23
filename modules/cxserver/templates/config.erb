@@ -9,6 +9,9 @@ module.exports = {
 	logDir: '<%= @log_dir %>',
 	'parsoid.api': '<%= @parsoid %>',
 	'mt.apertium.api': '<%= @apertium %>',
+	<% if @yandex %>
+		'mt.yandex.key': '<%= @yandex_api_key %>'
+	<% end %>
 	registry: {
 		ca: {
 			es: {
