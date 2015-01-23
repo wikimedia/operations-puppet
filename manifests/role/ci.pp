@@ -109,6 +109,17 @@ class role::ci::master {
         mode   => '0444',
         notify => Service['ganglia-monitor'],
     }
+
+    # private key for VE sync tasks (T84731)
+    file { '/var/lib/jenkins/.ssh/jenkins-mwext-sync_id_rsa':
+        ensure  => present,
+        owner   => 'jenkins',
+        group   => 'jenkins',
+        mode    => '0400',
+        source  => 'puppet:///private/ssh/ci/npmtravis_id_rsa',
+        require => User['jenkins'],
+    }
+
 }
 
 # Set up a Jenkins slave suitable for Continuous Integration jobs execution.
