@@ -2285,11 +2285,6 @@ node 'stat1003.eqiad.wmnet' {
 
     include role::statistics::cruncher
 
-    # TODO: Find out if we still need cron_blog_pageviews
-    include misc::statistics::cron_blog_pageviews
-
-    include misc::statistics::limn::data::jobs
-
     class { 'admin':
         groups => [
             'statistics-admins',
