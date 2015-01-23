@@ -2307,7 +2307,7 @@ node 'stat1003.eqiad.wmnet' {
 
     include role::statistics::cruncher
     # role::statistics::private will be replaced with the following role
-    include role::cruncher::module::cruncher
+    include role::statistics::module::cruncher
 
 
     # TODO: Find out if we still need cron_blog_pageviews
