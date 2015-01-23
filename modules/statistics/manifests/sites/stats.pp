@@ -6,7 +6,7 @@ class statistics::sites::stats {
     # TODO!  geowiki module???
     # require misc::statistics::geowiki::data::private
 
-    $geowiki_private_directory     = "/srv/stats.wikimedia.org/geowiki-private"
+    $geowiki_private_directory     = "/srv/stats.wikimedia.org/htdocs/geowiki-private"
     $geowiki_private_htpasswd_file = '/etc/apache2/htpasswd.stats-geowiki'
 
     # add htpasswd file for stats.wikimedia.org
