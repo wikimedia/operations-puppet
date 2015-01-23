@@ -6,8 +6,12 @@
 
 module.exports = {
 	port: <%= @port %>,
+	proxy: '<%= @yandex_proxy %>',
 	logDir: '<%= @log_dir %>',
 	'parsoid.api': '<%= @parsoid %>',
 	'mt.apertium.api': '<%= @apertium %>',
+	<% if @yandex %>
+		'mt.yandex.key': '<%= @yandex_api_key %>'
+	<% end %>
 	registry: <%= @ordered_registry %>
 };
