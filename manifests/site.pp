@@ -1232,24 +1232,6 @@ node 'heze.codfw.wmnet' {
     include role::backup::storage
 }
 
-# old blog server; currently left unpuppetized until it dies off
-node 'holmium.wikimedia.org' {
-
-    include role::backup::host
-    backup::set {'srv-org-wikimedia-blog':}
-
-    include admin
-    include base::firewall
-
-    # allow HTTP access to WMF OIT
-    ferm::rule { 'blog-http':
-        rule => 'proto tcp dport (http https) saddr 198.73.209.0/24 ACCEPT;'
-    }
-
-    include standard
-
-}
-
 node 'hooft.esams.wikimedia.org' {
     $ganglia_aggregator = true
     $domain_search = [
