@@ -25,13 +25,13 @@ class role::statistics::cruncher inherits role::statistics {
     # include misc::statistics::packages::utilities
 
     # Aaron Halfaker (halfak) wants MongoDB for his project.
-    include misc::statistics::db::mongo
+    # include misc::statistics::db::mongo
     # Aaron Halfaker (halfak) wants python{,3}-dev environments for module
     # oursql
     # include misc::statistics::dev
     # include misc::udp2log::udp_filter
 
-    include misc::statistics::rsync::jobs::eventlogging
+    # include misc::statistics::rsync::jobs::eventlogging
     # geowiki: bringing data from production slave db to research db
     include misc::statistics::geowiki::jobs::data
     # geowiki: generate limn files from research db and push them
@@ -144,16 +144,15 @@ class role::statistics::module::cruncher inherits role::statistics::module {
     # include stuff common to statistics compute nodes
     include statistics::compute
 
-    #
-    # # Aaron Halfaker (halfak) wants MongoDB for his project.
-    # class { 'mongodb':
-    #     dbpath  => "${::statistics::working_path}/mongodb",
-    # }
-    #
-    # # rsync logs from logging hosts
-    # include statistics::rsync::eventlogging
-    #
-    #
+    # Aaron Halfaker (halfak) wants MongoDB for his project.
+    class { 'mongodb':
+        dbpath  => "${::statistics::working_path}/mongodb",
+    }
+
+    # rsync logs from logging hosts
+    include statistics::rsync::eventlogging
+
+
     # # TODO:  Move geowiki into its own module:
     # # geowiki: bringing data from production slave db to research db
     # include misc::statistics::geowiki::jobs::data
