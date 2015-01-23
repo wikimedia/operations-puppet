@@ -4,7 +4,7 @@
 # logging hosts to a local destination for further processing.
 #
 class statistics::rsync::eventlogging {
-    Class['::statistics'] -> Class['::statistics::rsync::webrequest']
+    Class['::statistics'] -> Class['::statistics::rsync::eventlogging']
     $working_path = $::statistics::working_path
 
     # Any logs older than this will be pruned by
