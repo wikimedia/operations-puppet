@@ -8,8 +8,21 @@ class misc::statistics::user {
 class misc::statistics::base {
     Class['::statistics'] -> Class['misc::statistics::base']
 
-    $working_path = $::statistics::working_path
-    $servers      = $::statistics::servers
+    # we are attempting to stop using /a and to start using
+    # /srv instead.  stat1002 still use
+    # /a by default.  # stat1001 and stat1003 use /srv.
+    $working_path = $::hostname ? {
+        'stat1001' => '/srv',
+        'stat1003' => '/srv',
+        default    => '/a',
+    }
+
+    $servers = [
+        'stat1001.eqiad.wmnet',
+        'stat1002.eqiad.wmnet',
+        'stat1003.eqiad.wmnet',
+        'analytics1027.eqiad.wmnet',
+    ]
 }
 
 class misc::statistics::packages {
