@@ -3,7 +3,7 @@ class misc::statistics::user {
 }
 
 class misc::statistics::base {
-    include ::statistics
+    Class['::statistics'] -> Class['misc::statistics::base']
 }
 
 class misc::statistics::packages {
