@@ -2319,7 +2319,7 @@ node 'terbium.eqiad.wmnet' {
     include role::db::maintenance
     include role::peopleweb
     include misc::monitoring::jobqueue
-    include misc::deployment::common_scripts
+    include scap::scripts
     include role::noc
     include role::mediawiki::searchmonitor
 
