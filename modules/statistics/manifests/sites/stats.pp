@@ -1,10 +1,10 @@
-# ==Class statistics::sites::stats
+# == Class statistics::sites::stats
 # stats.wikimedia.org
 class statistics::sites::stats {
     require statistics::web
 
-    # TODO!  geowiki module???
-    # require misc::statistics::geowiki::data::private
+    require geowiki::private_data
+    include geowiki::params
 
     $geowiki_private_directory     = "/srv/stats.wikimedia.org/htdocs/geowiki-private"
     $geowiki_private_htpasswd_file = '/etc/apache2/htpasswd.stats-geowiki'
@@ -25,15 +25,14 @@ class statistics::sites::stats {
         source  => 'puppet:///private/apache/htpasswd.stats-geowiki',
     }
 
-    # TODO:
-    # # link geowiki checkout from docroot
-    # file { $geowiki_private_directory:
-    #     ensure  => 'link',
-    #     target  => "${misc::statistics::geowiki::data::private::geowiki_private_data_path}/datafiles",
-    #     owner   => 'root',
-    #     group   => 'www-data',
-    #     mode    => '0750',
-    # }
+    # link geowiki checkout from docroot
+    file { $geowiki_private_directory:
+        ensure  => 'link',
+        target  => "${::geowiki::params::private_data_path}/datafiles",
+        owner   => 'root',
+        group   => 'www-data',
+        mode    => '0750',
+    }
 
     apache::site { 'stats.wikimedia.org':
         content => template('statistics/stats.wikimedia.org.erb'),
