@@ -1,7 +1,7 @@
-# === Class deployment::scap_proxy
+# = class: scap::proxy
 #
-# Sets up a scap proxy server.
-class deployment::scap_proxy {
+# Sets up an rsync proxy for scap
+class scap::proxy {
     include rsync::server
     include network::constants
 
