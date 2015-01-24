@@ -2,16 +2,6 @@
 
 # deployment hosts
 
-class misc::deployment::fatalmonitor {
-    file {
-        '/usr/local/bin/fatalmonitor':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///files/misc/scripts/fatalmonitor';
-    }
-}
-
 class misc::deployment::passwordscripts {
     include passwords::misc::scripts
     $cachemgr_pass = $passwords::misc::scripts::cachemgr_pass

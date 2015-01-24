@@ -1128,7 +1128,6 @@ node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
     include standard
-    include misc::deployment::fatalmonitor
     include ::role::xenon
 
     class { 'admin':
