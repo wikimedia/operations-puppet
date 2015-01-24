@@ -89,6 +89,14 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         content => template('misc/exceptionmonitor.erb'),
     }
 
+    file {
+        '/usr/local/bin/fatalmonitor':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///files/misc/scripts/fatalmonitor';
+    }
+
     $cirrussearch_slow_log_check_interval = 5
     # Send CirrusSearch-slow.log entry rate to ganglia.
     logster::job { 'CirrusSearch-slow.log':
