@@ -63,6 +63,17 @@ define varnish::instance(
         notify  => Exec["load-new-vcl-file${instancesuffix}"],
     }
 
+    # The defaults file is also parsed by /usr/share/varnish/reload-vcl,
+    #   even under systemd where the init part itself does not.  This
+    #   situation should be cleaned up later after all varnishes are on
+    #   systemd.
+    file { "/etc/default/varnish${instancesuffix}":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("${module_name}/varnish-default.erb"),
+    }
+
     case $::initsystem {
         'upstart': {
             file { "/etc/init.d/varnish${instancesuffix}":
@@ -70,12 +81,6 @@ define varnish::instance(
                 group   => 'root',
                 mode    => '0555',
                 content => template("${module_name}/varnish.init.erb"),
-            }
-            file { "/etc/default/varnish${instancesuffix}":
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0444',
-                content => template("${module_name}/varnish-default.erb"),
             }
             service { "varnish${instancesuffix}":
                 ensure    => running,
