@@ -2396,8 +2396,7 @@ node 'tin.eqiad.wmnet' {
     include standard
     include role::deployment::deployment_servers::production
     include mediawiki
-    include misc::deployment
-    include misc::deployment::scap_scripts
+    include role::scap::master
     include misc::deployment::l10nupdate
     include mysql
     include role::labsdb::manager

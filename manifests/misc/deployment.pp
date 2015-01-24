@@ -2,18 +2,6 @@
 
 # deployment hosts
 
-class misc::deployment {
-    system::role { 'misc::deployment': description => 'Deployment host' }
-    include misc::deployment::scap_primary
-    include dsh
-}
-
-# Scripts for the old rsync-based deployment system
-class misc::deployment::scap_scripts {
-    include scap::scripts
-    include misc::deployment::vars
-}
-
 class misc::deployment::fatalmonitor {
     file {
         '/usr/local/bin/fatalmonitor':
@@ -86,7 +74,7 @@ class misc::deployment::passwordscripts {
 }
 
 class misc::deployment::l10nupdate {
-    require misc::deployment::scap_scripts
+    require scap::master
 
     cron { 'l10nupdate':
         ensure  => present,
@@ -141,38 +129,6 @@ class misc::deployment::l10nupdate {
         '/etc/logrotate.d/l10nupdate':
             source => 'puppet:///files/logrotate/l10nupdate',
             mode   => '0444';
-    }
-}
-
-class misc::deployment::vars {
-    $mw_common = '/srv/mediawiki'
-    $mw_common_source = '/srv/mediawiki-staging'
-
-    if $::realm == 'production' {
-        $mw_rsync_host = 'tin.eqiad.wmnet'
-        $mw_statsd_host = 'statsd.eqiad.wmnet'
-    } else {
-        $mw_rsync_host = "deployment-bastion.${::site}.wmflabs"
-        $mw_statsd_host = "deployment-graphite.${::site}.wmflabs"
-    }
-    $mw_statsd_port = 8125
-
-    file { '/usr/local/lib/mw-deployment-vars.sh':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('misc/mw-deployment-vars.erb');
-    }
-}
-
-class misc::deployment::scap_primary {
-    include rsync::server
-    include network::constants
-
-    rsync::server::module { 'common':
-        path        => '/srv/mediawiki-staging',
-        read_only   => 'yes',
-        hosts_allow => $::network::constants::mw_appserver_networks;
     }
 }
 
