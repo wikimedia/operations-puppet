@@ -51,7 +51,7 @@ class role::mediawiki::common {
 
     $scap_proxies = hiera('dsh::config::scap_proxies',[])
     if member($scap_proxies, $::fqdn) {
-        include deployment::scap_proxy
+        include scap::proxy
     }
 }
 
