@@ -50,7 +50,7 @@ class role::backup::director {
     include role::backup::host
     include role::backup::config
     include passwords::bacula
-    require misc::statistics::geowiki::params
+    require geowiki::params
     $pool = $role::backup::config::pool
     $offsite_pool = $role::backup::config::offsite_pool
     $onsite_sd = $role::backup::config::onsite_sd
@@ -130,7 +130,7 @@ class role::backup::director {
         includes => [ '/a/eventlogging' ]
     }
     bacula::director::fileset { 'a-geowiki-data-private-bare':
-        includes => [ $misc::statistics::geowiki::params::private_data_bare_path ]
+        includes => [ $::geowiki::params::private_data_bare_path ]
     }
     bacula::director::fileset { 'home':
         includes => [ '/home' ]
