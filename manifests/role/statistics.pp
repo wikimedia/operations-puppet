@@ -43,12 +43,14 @@ class role::statistics::cruncher inherits role::statistics {
     # rsync logs from logging hosts
     include statistics::rsync::eventlogging
 
-    # TODO:  Move geowiki into its own module:
-    # geowiki: bringing data from production slave db to research db
-    include misc::statistics::geowiki::jobs::data
 
+    # geowiki: bringing data from production slave db to research db
+    include geowiki::job::data
+     # geowiki: generate limn files from research db and push them
+    include geowiki::job::limn
     # geowiki: monitors the geowiki files of http://gp.wmflabs.org/
-    include misc::statistics::geowiki::jobs::monitoring
+    include geowiki::job::monitoring
+
 
     # Use the statistics::limn::data::generate define
     # to set up cron jobs to generate and generate limn files
