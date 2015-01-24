@@ -5,7 +5,7 @@
 # branches.
 class beta::autoupdater {
     include ::beta::config
-    require misc::deployment::common_scripts
+    require scap::scripts
 
     $stage_dir = $::beta::config::scap_stage_dir
 

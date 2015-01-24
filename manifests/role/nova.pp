@@ -255,7 +255,7 @@ class role::nova::controller {
 
     include ::nutcracker::monitoring
     include ::mediawiki::packages::php5
-    include ::misc::deployment::common_scripts
+    include ::scap::scripts
 
     class { '::nutcracker':
         mbuf_size => '64k',
