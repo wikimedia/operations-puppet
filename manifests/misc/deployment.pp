@@ -73,65 +73,6 @@ class misc::deployment::passwordscripts {
     }
 }
 
-class misc::deployment::l10nupdate {
-    require scap::master
-
-    cron { 'l10nupdate':
-        ensure  => present,
-        command => '/usr/local/bin/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1',
-        user    => 'l10nupdate',
-        hour    => 2,
-        minute  => 0;
-    }
-
-    file {
-        '/usr/local/bin/l10nupdate':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///files/misc/l10nupdate/l10nupdate';
-        '/usr/local/bin/l10nupdate-1':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///files/misc/l10nupdate/l10nupdate-1';
-        '/usr/local/bin/sync-l10nupdate':
-            ensure => 'absent';
-        '/usr/local/bin/sync-l10nupdate-1':
-            ensure => 'absent';
-        # add ssh keypair for l10nupdate user from fenari for RT-5187
-        '/home/l10nupdate/.ssh/id_rsa':
-            owner  => 'l10nupdate',
-            group  => 'l10nupdate',
-            mode   => '0400',
-            source => 'puppet:///private/ssh/tin/l10nupdate/id_rsa';
-        '/home/l10nupdate/.ssh/id_rsa.pub':
-            owner  => 'l10nupdate',
-            group  => 'l10nupdate',
-            mode   => '0444',
-            source => 'puppet:///private/ssh/tin/l10nupdate/id_rsa.pub';
-    }
-
-    # Make sure the log directory exists and has adequate permissions.
-    # It's called l10nupdatelog because /var/log/l10nupdate was used
-    # previously so it'll be an existing file on some systems.
-    # Also create the dir for the SVN checkouts, and set up log rotation
-    file { '/var/log/l10nupdatelog':
-            ensure => directory,
-            owner  => 'l10nupdate',
-            group  => 'wikidev',
-            mode   => '0664';
-        '/var/lib/l10nupdate':
-            ensure => directory,
-            owner  => 'l10nupdate',
-            group  => 'wikidev',
-            mode   => '0755';
-        '/etc/logrotate.d/l10nupdate':
-            source => 'puppet:///files/logrotate/l10nupdate',
-            mode   => '0444';
-    }
-}
-
 class misc::deployment::scap_proxy {
     include rsync::server
     include network::constants
