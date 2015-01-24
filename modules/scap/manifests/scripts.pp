@@ -11,9 +11,6 @@ class scap::scripts {
     package { ['libwww-perl', 'libnet-dns-perl']:
         ensure => present;
     }
-    package { 'php5-parsekit':
-        ensure => absent;
-    }
 
     file {
         '/usr/local/bin/clear-profile':
@@ -21,8 +18,6 @@ class scap::scripts {
             group  => 'root',
             mode   => '0555',
             source => 'puppet:///modules/scap/clear-profile';
-        '/usr/local/bin/configchange':
-            ensure => absent;
         '/usr/local/bin/dologmsg':
             owner  => 'root',
             group  => 'root',
@@ -48,10 +43,6 @@ class scap::scripts {
             group  => 'root',
             mode   => '0555',
             source => 'puppet:///modules/scap/foreachwikiindblist';
-        '/usr/local/bin/lint':
-            ensure => 'absent';
-        '/usr/local/bin/lint.php':
-            ensure => 'absent';
         '/usr/local/bin/mwscript':
             owner   => 'root',
             group   => 'root',
