@@ -57,12 +57,16 @@ class toollabs::bastion inherits toollabs {
         ensure => latest,
     }
 
-    file { '/usr/local/bin/xcrontab':
+    file { '/usr/local/bin/crontab':
         ensure => file,
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/toollabs/crontab',
+    }
+    # TODO: Remove after deployment.
+    file { '/usr/local/bin/xcrontab':
+        ensure => absent,
     }
 
 }
