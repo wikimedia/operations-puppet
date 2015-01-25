@@ -2067,10 +2067,12 @@ node /^osm-cp100[1-4]\.wikimedia\.org$/ {
     include standard-noexim
 }
 
-# Trusty app server / HHVM staging
+# VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
-    include standard
-    class {'::admin': groups => ['deployment']}
+    include ::standard
+    include ::mediawiki
+    include ::role::ve
+    class { '::admin': groups => ['deployment'] }
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
