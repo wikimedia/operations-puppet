@@ -127,6 +127,13 @@ class role::phabricator::main {
             ops-requests => 'operations',
             testproj     => 'demoproject'
         },
+# Enabling direct email to task for on-site queues per T87454
+        direct_comments_allowed => {
+            ops-codfw => '*',
+            ops-eqiad => '*',
+            ops-esams => '*',
+            ops-ulsfo => '*',
+        },
         phab_bot        => {
             root_dir    => '/srv/phab/phabricator/',
             username    => 'emailbot',
