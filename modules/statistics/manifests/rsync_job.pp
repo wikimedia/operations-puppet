@@ -26,10 +26,11 @@ define statistics::rsync_job($source, $destination, $retention_days = undef) {
     # This requires that the $misc::statistics::user::username
     # user is installed on the source host.
     cron { "rsync_${name}_logs":
-        command => "/usr/bin/rsync -rt --perms --chmod=g-w ${source} ${destination}/",
-        user    => $::statistics::user::username,
-        hour    => 8,
-        minute  => 0,
+        command     => "/usr/bin/rsync -rt --perms --chmod=g-w ${source} ${destination}/",
+        user        => $::statistics::user::username,
+        environment => 'MAILTO=""',
+        hour        => 8,
+        minute      => 0,
     }
 
     $prune_old_logs_ensure = $retention_days ? {
@@ -38,10 +39,11 @@ define statistics::rsync_job($source, $destination, $retention_days = undef) {
     }
 
     cron { "prune_old_${name}_logs":
-        ensure  => $prune_old_logs_ensure,
-        command => "/usr/bin/find ${destination} -ctime +${retention_days} -exec rm {} \\;",
-        user    => $::statistics::user::username,
-        minute  => 0,
-        hour    => 9,
+        ensure      => $prune_old_logs_ensure,
+        command     => "/usr/bin/find ${destination} -ctime +${retention_days} -exec rm {} \\;",
+        user        => $::statistics::user::username,
+        environment => 'MAILTO=""',
+        minute      => 0,
+        hour        => 9,
     }
 }

@@ -62,11 +62,12 @@ class statistics::aggregator {
 
     # Cron for doing the basic aggregation step itself
     cron { 'aggregator projectcounts aggregate':
-        command => "${script_path}/bin/aggregate_projectcounts --source ${hdfs_source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --push-target --log ${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log",
-        user    => $user,
-        hour    => '13',
-        minute  => '0',
-        require => [
+        command     => "${script_path}/bin/aggregate_projectcounts --source ${hdfs_source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --push-target --log ${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log",
+        user        => $user,
+        environment => 'MAILTO=""',
+        hour        => '13',
+        minute      => '0',
+        require     => [
             Git::Clone['aggregator_code'],
             Git::Clone['aggregator_data'],
             File[$log_path],
@@ -75,10 +76,11 @@ class statistics::aggregator {
 
     # Cron for basing monitoring of the aggregated data
     cron { 'aggregator projectcounts monitor':
-        command => "${script_path}/bin/check_validity_aggregated_projectcounts --data ${data_path}",
-        user    => $user,
-        hour    => '13',
-        minute  => '45',
-        require => Cron['aggregator projectcounts aggregate'],
+        command     => "${script_path}/bin/check_validity_aggregated_projectcounts --data ${data_path}",
+        user        => $user,
+        environment => 'MAILTO=""',
+        hour        => '13',
+        minute      => '45',
+        require     => Cron['aggregator projectcounts aggregate'],
     }
 }

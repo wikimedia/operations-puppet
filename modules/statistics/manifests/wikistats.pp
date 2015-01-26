@@ -24,9 +24,10 @@ class statistics::wikistats {
     # and syncs the file PageViewsPerMonthAll.csv to stat1002
     cron { 'new mobile pageviews report':
         command  => "/bin/bash ${::statistics::working_path}/wikistats_git/pageviews_reports/bin/stat1-cron-script.sh",
-        user     => 'stats',
-        monthday => 1,
-        hour     => 7,
-        minute   => 20,
+        user        => 'stats',
+        environment => 'MAILTO=""',
+        monthday    => 1,
+        hour        => 7,
+        minute      => 20,
     }
 }
