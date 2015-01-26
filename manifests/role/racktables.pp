@@ -8,6 +8,8 @@ class role::racktables {
 
     system::role { 'role::racktables': description => 'Racktables' }
 
+    include standard
+
     # be flexible about labs vs. prod
     case $::realm {
         'labs': {
