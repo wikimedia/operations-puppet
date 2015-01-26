@@ -63,6 +63,8 @@ class role::nova::config::eqiad inherits role::nova::config::common {
             default => $nova_controller_ip,
         }
     }
+    $primary_dns = $controller_address
+    $secondary_dns = '208.80.153.14' # That's labcontrol2001
 
     $eqiadnovaconfig = {
         db_host     => $controller_hostname,
