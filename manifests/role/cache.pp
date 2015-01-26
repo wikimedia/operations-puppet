@@ -776,13 +776,7 @@ class role::cache {
         $backend_weight = 100
         $storage_size_bigobj = 50
 
-        if $::memorysize_mb > 98304 { # 96GB
-            $memory_storage_size = 16
-        } elsif $::memorysize_mb > 32768 { # 32GB
-            $memory_storage_size = 8
-        } else {
-            $memory_storage_size = 1
-        }
+        $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5)
 
         # Ganglia monitoring
         if $::role::cache::configuration::has_ganglia{
@@ -1181,11 +1175,7 @@ class role::cache {
         }
         $cluster_options = merge($common_cluster_options, $realm_cluster_options)
 
-        if $::memorysize_mb > 98304 { # 96GB
-            $memory_storage_size = 32
-        } else {
-            $memory_storage_size = 2
-        }
+        $memory_storage_size = floor((0.5 * $::memorysize_mb / 1024.0) + 0.5)
 
         system::role { 'role::cache::bits':
             description => 'bits Varnish cache server',
