@@ -3,6 +3,12 @@
 # and using the analytics/refinery repository.
 #
 class role::analytics::refinery {
+    # Make this class depend on hadoop::client.  Refinery
+    # is intended to work with Hadoop, and many of the
+    # role classes here use the hdfs user, which is created
+    # by the CDH packages.
+    Class['role::analytics::hadoop::client'] -> Class['role::analytics::refinery']
+
     # Some refinery python scripts use docopt for CLI parsing.
     if !defined(Package['python-docopt']) {
         package { 'python-docopt':
@@ -34,27 +40,11 @@ class role::analytics::refinery {
     $log_dir = '/var/log/refinery'
     file { $log_dir:
         ensure => 'directory',
-        owner  => 'root',
+        owner  => 'hdfs',
         group  => 'analytics-admins',
         # setgid bit here to make refinery log files writeable
         # by users in the analytics-admins group.
         mode   => '2775',
-    }
-
-    # If hdfs user exists, then add it to the analytics-admins group.
-    # I don't want to use puppet types or the admin module to manage
-    # the hdfs user, since it is installed by the CDH packages.
-    # TODO: Move this to the admin module if/when it supports
-    # adding system users to groups.
-    exec { 'hdfs_user_in_stats_group':
-        command => 'usermod hdfs -a -G analytics-admins',
-        # Only run this command if the hdfs user exists
-        # and it is not already in the stats group
-        # This command returns true if hdfs user does not exist,
-        # or if hdfs user does exist and is in the stats group.
-        unless  => 'getent passwd hdfs > /dev/null; if [ $? != 0 ]; then true; else groups hdfs | grep -q analytics-admins; fi',
-        path    => '/usr/sbin:/usr/bin:/bin',
-        require => Group['analytics-admins'],
     }
 }
 
