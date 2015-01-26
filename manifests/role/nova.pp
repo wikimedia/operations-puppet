@@ -63,6 +63,13 @@ class role::nova::config::eqiad inherits role::nova::config::common {
             default => $nova_controller_ip,
         }
     }
+    $primary_dns = $controller_address
+
+    $secondary_dns = $::realm ? {
+        # in prod, the secondary is labcontrol2001.
+        'production' => '208.80.153.14', 
+        'labs'       => $primary_dns
+    }
 
     $eqiadnovaconfig = {
         db_host     => $controller_hostname,
