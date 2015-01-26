@@ -21,23 +21,21 @@ import 'stages.pp'
 # Base nodes
 
 # Class for *most* servers, standard includes
-class standard {
+class standard(
+    $has_default_mail_relay = true,
+) {
     include base
     include role::ntp
-    include role::mail::sender
     include role::diamond
     if $::realm == 'production' {
         include ganglia # No ganglia in labs
     }
+    # Some instances have their own exim definition that
+    # will conflict with this
+    if $has_default_mail_relay {
+        include role::mail::sender
+    }
 }
-
-class standard-noexim {
-    include base
-    include ganglia
-    include role::ntp
-    include role::diamond
-}
-
 
 # Default variables. this way, they work with an ENC (as in labs) as well.
 if $cluster == undef {
@@ -414,7 +412,9 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
 
 node 'beryllium.wikimedia.org' {
     include admin
-    include standard-noexim
+    class { 'standard':
+        has_default_mail_relay => false,
+    }
 }
 
 node 'calcium.wikimedia.org' {
@@ -1299,9 +1299,11 @@ node 'install2001.wikimedia.org' {
 
 node 'iridium.eqiad.wmnet' {
     class { 'base::firewall': }
+
+    role phabricator::main
+
     include admin
-    include standard-noexim
-    include role::phabricator::main
+    include standard
 }
 
 node 'iron.wikimedia.org' {
@@ -1760,14 +1762,13 @@ node 'magnesium.wikimedia.org' {
 
     class { 'base::firewall': }
 
+    role diamond, racktables, requesttracker
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
 
     include admin
-    include role::diamond
-    include role::racktables
-    include role::requesttracker
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
@@ -2136,8 +2137,9 @@ node /(plutonium|pollux)\.wikimedia\.org/ {
 
 node 'polonium.wikimedia.org' {
     class { 'admin': groups => ['oit'] }
-    include standard-noexim
-    include role::mail::mx
+    role mail::mx
+
+    include standard
 
     interface::add_ip6_mapped { 'main': }
 
@@ -2173,9 +2175,10 @@ node 'radium.wikimedia.org' {
 
 node 'radon.eqiad.wmnet' {
     class { 'base::firewall': }
+    role phabricator::legalpad
+
     include admin
-    include standard-noexim
-    include role::phabricator::legalpad
+    include standard
 }
 
 # Live Recent Changes WebSocket stream
@@ -2381,8 +2384,10 @@ node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
 
 node 'lead.wikimedia.org' {
     class { 'admin': groups => ['oit'] }
-    include standard-noexim
-    include role::mail::mx
+
+    role mail::mx
+
+    include standard
 
     interface::add_ip6_mapped { 'main': }
 }
@@ -2623,10 +2628,10 @@ node 'virt1012.eqiad.wmnet' {
 
 node 'iodine.wikimedia.org' {
     class { 'base::firewall': }
+    role otrs
 
     include admin
     include role::diamond
-    include role::otrs
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
