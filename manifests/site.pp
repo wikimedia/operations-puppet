@@ -21,13 +21,19 @@ import 'stages.pp'
 # Base nodes
 
 # Class for *most* servers, standard includes
-class standard {
+class standard(
+    $has_exim_sender = true,
+) {
     include base
     include role::ntp
-    include role::mail::sender
     include role::diamond
     if $::realm == 'production' {
         include ganglia # No ganglia in labs
+    }
+    # Some instances have their own exim definition that
+    # will conflict with this
+    if $has_exim_sender {
+        include role::mail::sender
     }
 }
 
