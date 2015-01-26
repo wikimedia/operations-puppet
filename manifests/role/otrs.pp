@@ -10,7 +10,6 @@ class role::otrs (
         description => 'OTRS Web Application Server',
     }
 
-    include standard-noexim
     include webserver::apache
     include network::constants
     include passwords::mysql::otrs

@@ -9,7 +9,6 @@ class racktables (
 ) {
 
     include mysql
-    include standard-noexim
     include passwords::racktables
     include ::apache::mod::rewrite
     include ::apache::mod::headers
