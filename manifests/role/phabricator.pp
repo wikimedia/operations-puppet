@@ -197,6 +197,7 @@ class role::phabricator::labs {
             'phabricator.base-uri'            => "https://${::hostname}.wmflabs.org",
             'mysql.pass'                      => $mysqlpass,
             'auth.require-email-verification' => false,
+            'metamta.mail-adapter'            => 'PhabricatorMailImplementationTestAdapter',
         },
     }
 
