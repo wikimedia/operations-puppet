@@ -48,6 +48,7 @@ class chromium(
         gid        => 'chromium',
         shell      => '/bin/false',
         home       => '/var/lib/chromium',
+        managehome => true,
     }
 
     package { [ 'chromium-browser', 'chromium-browser-l10n' ]:
