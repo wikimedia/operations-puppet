@@ -967,7 +967,6 @@ node 'dbstore1001.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
-    $mariadb_backups_folder = '/a/backups'
     include role::mariadb::backup
     # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':

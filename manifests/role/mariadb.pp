@@ -204,20 +204,9 @@ class role::mariadb::analytics {
     mariadb::monitor_replication { ['s1','s2','m2']: }
 }
 
-class role::mariadb::backup::config {
-    if $mariadb_backups_folder {
-        $folder = $mariadb_backups_folder
-    } else {
-        $folder = '/srv/backups'
-    }
-}
-
 class role::mariadb::backup {
     include role::backup::host
     include passwords::mysql::dump
-
-    include role::mariadb::backup::config
-    $backups_folder = $role::mariadb::backup::config::folder
 
     file { $backups_folder:
         ensure => directory,
@@ -238,7 +227,7 @@ class role::mariadb::backup {
         xtrabackup       => false,
         per_db           => true,
         innodb_only      => true,
-        local_dump_dir   => $backups_folder,
+        local_dump_dir   => '/srv/backups',
         password_file    => '/etc/mysql/conf.d/dumps.cnf',
         method           => 'predump',
         mysql_binary     => '/usr/local/bin/mysql',
