@@ -164,6 +164,7 @@ class role::elasticsearch::server inherits role::elasticsearch::config {
         bulk_thread_pool_executors => $bulk_thread_pool_executors,
         statsd_host                => $statsd_host,
         auto_create_index          => '+apifeatureusage-*,-*',
+        merge_threads              => 1,
     }
 
     if $use_ganglia {

@@ -56,6 +56,7 @@
 # - $bulk_thread_pool_executors: number of executors for bulk actions on each
 #       node.
 # - $statsd_host: host to send statsd data to
+# - $merge_threads: Number of merge threads to use. Default 3
 #
 # == Sample usage:
 #
@@ -82,7 +83,8 @@ class elasticsearch($cluster_name,
                     $filter_cache_size = '10%',
                     $bulk_thread_pool_executors = undef,
                     $bulk_thread_pool_capacity = undef,
-                    $statsd_host = undef) {
+                    $statsd_host = undef,
+                    $merge_threads = 3) {
 
     include ::elasticsearch::packages
 
