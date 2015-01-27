@@ -28,9 +28,8 @@ pipe 100 /bin/grep -P '<%= mobile_hosts_regex %>' >> <%= log_directory %>/mobile
 pipe 1 /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org"' >> <%= log_directory %>/5xx.tsv.log
 
 ### webstatscollector -- domas
-# NOTE!  The files that filter and collector (on gadolinium) generates
+# NOTE!  The files that filter and collector (on protactiniuym) generates
 # are rsynced over to dataset1001 by a cron maintained by
 # apergos running on snapshot1.
-# gadolinium.wikimedia.org:3815 should be the webstats collector process.
-pipe 1 /usr/local/bin/filter | /usr/bin/log2udp -h gadolinium.wikimedia.org -p 3815
-
+# protactinium.wikimedia.org:3815 should be the webstats collector process.
+pipe 1 /usr/local/bin/filter | /usr/bin/log2udp -h protactinium.wikimedia.org -p 3815

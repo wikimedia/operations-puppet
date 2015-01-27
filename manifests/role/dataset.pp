@@ -4,7 +4,7 @@ class role::dataset::pagecountsraw($enable=true) {
     class { '::dataset::cron::pagecountsraw':
         enable  => $enable,
         user    => 'datasets',
-        from    => 'gadolinium.wikimedia.org',
+        from    => 'protactinium.wikimedia.org',
         require =>  User['datasets'],
     }
 }
