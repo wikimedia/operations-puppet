@@ -162,8 +162,8 @@ class role::mariadb::dbstore(
         prompt   => 'DBSTORE',
         config   => 'mariadb/dbstore.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/a/sqldata',
-        tmpdir   => '/a/tmp',
+        datadir  => '/srv/sqldata',
+        tmpdir   => '/srv/tmp',
     }
 
     include mariadb::monitor_disk
