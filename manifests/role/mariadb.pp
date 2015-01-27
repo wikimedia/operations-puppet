@@ -208,7 +208,7 @@ class role::mariadb::backup {
     include role::backup::host
     include passwords::mysql::dump
 
-    file { $backups_folder:
+    file { '/srv/sqldata':
         ensure => directory,
         owner  => 'root',
         group  => 'root',
