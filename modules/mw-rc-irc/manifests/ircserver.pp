@@ -18,10 +18,16 @@ class mw-rc-irc::ircserver {
             content => template('mw-rc-irc/motd.erb');
     }
 
+
+    file { '/etc/init/ircd.conf':
+        source  => 'puppet:///modules/mw-rc-irc/upstart/ircd.conf',
+        require => File['/usr/bin/ircd'],
+    }
+
     service { 'ircd':
         ensure   => running,
-        provider => base,
-        binary   => '/usr/bin/ircd';
+        provider => 'upstart',
+        require  => File['/etc/init/ircd.conf'],
     }
 
     diamond::collector { 'IRCDStats':
