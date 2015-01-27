@@ -5,6 +5,9 @@
 #
 # Stig Sandbeck Mathisen <ssm@debian.org>
 
+# Explicit umask to avoid /var/lib/varnish/ perms issues
+umask 022
+
 # Settings
 defaults=/etc/default/varnish
 secret=/etc/varnish/secret

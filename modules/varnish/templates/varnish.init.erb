@@ -24,8 +24,9 @@ PIDFILE=/var/run/$NAME.pid
 
 test -x $DAEMON || exit 0
 
-# Workaround whatever keeps breaking perms for VCL compiles...
-/bin/chmod +rx /var/lib/varnish/* ||:
+# Explicit umask to avoid issues with VCL compilation under /var/lib/varnish/
+#  when the mask is more-strict than this...
+umask 022
 
 # Include varnish defaults if available
 if [ -f /etc/default/varnish<%= @instancesuffix %> ] ; then
