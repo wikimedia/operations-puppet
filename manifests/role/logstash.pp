@@ -38,6 +38,7 @@ class role::logstash {
         expected_nodes       => $expected_nodes,
         recover_after_nodes  => $minimum_master_nodes,
         recover_after_time   => '1m',
+        merge_threads        => 3,
     }
 
     class { '::redis':
