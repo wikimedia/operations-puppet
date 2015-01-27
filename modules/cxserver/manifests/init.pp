@@ -54,15 +54,6 @@ class cxserver(
         system     => true,
     }
 
-    # dictd-* packages for dictionary server.
-    package { [ 'dictd',
-                'dict-freedict-eng-spa',
-                'dict-freedict-spa-eng',
-                'dict-freedict-eng-hin',
-            ]:
-        ensure => present,
-    }
-
     $log_file = "${log_dir}/main.log"
 
     file { $log_dir:
