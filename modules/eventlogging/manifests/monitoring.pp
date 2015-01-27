@@ -41,15 +41,15 @@ class eventlogging::monitoring {
 # of incoming events.
 class eventlogging::monitoring::graphite {
 
-    # Warn if 1% of overall event throughput goes beyond 450 events/s
+    # Warn if 1% of overall event throughput goes beyond 500 events/s
     # in a 15 min period
     # These thresholds are somewhat arbtirary at this point, but it
-    # was seen that the current setup can handle 450 events/s.
+    # was seen that the current setup can handle 500 events/s.
     # Better thresholds are pending (see T86244).
     monitoring::graphite_threshold { 'eventlogging_throughput':
         description     => 'Throughput of event logging events',
         metric          => 'eventlogging.overall.raw.rate',
-        warning         => 450,
+        warning         => 500,
         critical        => 600,
         from            => '15min',
         contact_group   => 'analytics'
