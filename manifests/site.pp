@@ -1177,6 +1177,29 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
     include role::logging::webstatscollector
 }
 
+
+# protactinium is being used as an emergency gadolinium replacement
+# as of 2014-01-27
+node 'protactinium.wikimedia.org' inherits 'base_analytics_logging_node' {
+
+    class { 'admin': groups => ['udp2log-users'] }
+
+    # relay the incoming webrequest log stream to multicast
+    include role::logging::relay::webrequest-multicast
+    # relay EventLogging traffic over to vanadium
+    include role::logging::relay::eventlogging
+
+    # gadolinium hosts the separate nginx webrequest udp2log instance.
+    include role::logging::udp2log::nginx
+
+    # gadolinium runs Domas' webstatscollector.
+    # udp2log runs the 'filter' binary (on oxygen)
+    # which sends logs over to the 'collector' (on gadolinium)
+    # service, which writes dump files in /a/webstats/dumps.
+    include role::logging::webstatscollector
+}
+
+
 node 'gallium.wikimedia.org' {
 
     $cluster = 'misc'
