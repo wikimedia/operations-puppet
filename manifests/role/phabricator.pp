@@ -9,42 +9,6 @@ class role::phabricator::config {
     $mysql_maniphestuser = $passwords::mysql::phabricator::manifest_user
     $mysql_maniphestpass = $passwords::mysql::phabricator::manifest_pass
 }
-# phabricator instance for legalpad.wikimedia.org
-class role::phabricator::legalpad {
-    include role::phabricator::config
-
-    system::role { 'role::phabricator::legalpad':
-        description => 'Phabricator (Legalpad)'
-    }
-
-    $current_tag = 'fabT440'
-    class { '::phabricator':
-        git_tag                  => $current_tag,
-        lock_file                => '/var/run/phab_repo_lock',
-        mysql_admin_user         => $role::phabricator::config::mysql_adminuser,
-        mysql_admin_pass         => $role::phabricator::config::mysql_adminpass,
-        auth_type                => 'sul',
-        settings                 => {
-            'darkconsole.enabled'       => false,
-            'phabricator.base-uri'      => 'https://legalpad.wikimedia.org',
-            'mysql.user'                => $role::phabricator::config::mysql_appuser,
-            'mysql.pass'                => $role::phabricator::config::mysql_apppass,
-            'mysql.host'                => 'm3-master.eqiad.wmnet',
-            'storage.default-namespace' => 'phlegal',
-            'phpmailer.smtp-host'       =>
-                inline_template('<%= @mail_smarthost.join(";") %>'),
-            'metamta.default-address'   =>
-                'no-reply@legalpad.wikimedia.org',
-            'metamta.domain'            => 'legalpad.wikimedia.org',
-        },
-    }
-
-    # no 443 needed, we are behind misc. varnish
-    ferm::service { 'phablegal_http':
-        proto   => 'tcp',
-        port    => '80',
-    }
-}
 
 # production phabricator instance
 class role::phabricator::main {

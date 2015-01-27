@@ -2195,7 +2195,6 @@ node 'radon.eqiad.wmnet' {
     class { 'base::firewall': }
     include admin
     include standard-noexim
-    include role::phabricator::legalpad
 }
 
 # Live Recent Changes WebSocket stream
