@@ -49,7 +49,7 @@ class eventlogging::monitoring::graphite {
     monitoring::graphite_threshold { 'eventlogging_throughput':
         description     => 'Throughput of event logging events',
         metric          => 'eventlogging.overall.raw.rate',
-        warning         => 450,
+        warning         => 500,
         critical        => 600,
         from            => '15min',
         contact_group   => 'analytics'
