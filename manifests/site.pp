@@ -1005,7 +1005,7 @@ node 'dbstore2002.codfw.wmnet' {
     include role::mariadb::dbstore
 }
 
-node 'dbproxy1002.eqiad.wmnet' {
+node /^dbproxy100[12].eqiad.wmnet/ {
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::proxy::master':
