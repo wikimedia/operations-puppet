@@ -24,6 +24,9 @@ PIDFILE=/var/run/$NAME.pid
 
 test -x $DAEMON || exit 0
 
+# Workaround whatever keeps breaking perms for VCL compiles...
+/bin/chmod +rx /var/lib/varnish/* ||:
+
 # Include varnish defaults if available
 if [ -f /etc/default/varnish<%= @instancesuffix %> ] ; then
         . /etc/default/varnish<%= @instancesuffix %>
