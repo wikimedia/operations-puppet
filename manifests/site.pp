@@ -2076,8 +2076,6 @@ node 'radium.wikimedia.org' {
 
 node 'radon.eqiad.wmnet' {
     class { 'base::firewall': }
-    role phabricator::legalpad
-
     include admin
     include standard
 }
