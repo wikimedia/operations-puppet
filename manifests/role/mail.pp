@@ -28,10 +28,10 @@ class role::mail::mx {
     case $::realm {
         'labs': {
             $verp_domains   = [
-                    'mediawiki-verp.wmflabs.org'
+                    'wikimedia.org'
                 ]
-            $verp_post_connect_server = 'mediawiki-verp.wmflabs.org'
-            $verp_bounce_post_url     = 'http://mediawiki-verp.wmflabs.org/w/api.php'
+            $verp_post_connect_server = 'deployment.wikimedia.beta.wmflabs.org'
+            $verp_bounce_post_url     = 'http://deployment.wikimedia.beta.wmflabs.org/w/api.php'
         }
         'production': {
             $verp_domains   = [
