@@ -256,7 +256,6 @@ class ganglia::collector::config {
                 'Swift eqiad'                    => 'ms-fe1001.eqiad.wmnet ms-fe1002.eqiad.wmnet',
                 'Swift esams'                    => 'hooft.esams.wikimedia.org:11676',
                 'Swift codfw'                    => 'install2001.wikimedia.org:10676',
-                'Search eqiad'                   => 'search1001.eqiad.wmnet search1002.eqiad.wmnet',
                 'Bits caches esams'              => 'hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org',
                 'LVS loadbalancers esams'        => 'hooft.esams.wikimedia.org:11651 lvs3001.esams.wmnet lvs3002.esams.wmnet',
                 'Miscellaneous esams'            => 'hooft.esams.wikimedia.org:11657',
