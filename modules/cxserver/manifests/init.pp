@@ -58,7 +58,6 @@ class cxserver(
     package { [ 'dictd',
                 'dict-freedict-eng-spa',
                 'dict-freedict-spa-eng',
-                'dict-freedict-eng-hin',
             ]:
         ensure => present,
     }
