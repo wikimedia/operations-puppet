@@ -131,7 +131,7 @@ class role::ntp {
         monitoring::service { 'ntp':
             description   => 'NTP',
             check_command => 'check_ntp_time!0.5!1',
-            retries       => 15, # wait for resync, don't flap after restart
+            retries       => 20, # wait for resync, don't flap after restart
         }
     }
 }
