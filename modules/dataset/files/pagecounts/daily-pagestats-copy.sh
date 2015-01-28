@@ -23,43 +23,56 @@
 # finishes after this run and new hashes don't show up in the md5s file;
 # in that case the following run should fill them in
 
+
+# NOTE:  The rsync used by this script was modified when the source of this
+#        data was switched from webstatscollector to Hive.
+#        I believe that 'daily' in this script's name is not true;
+#        puppet runs this once an hour.
+#
+#        The pagecounts-raw files are stored in HDFS in the hierarchy
+#        that is expected on dumps.wikimedia.org.  This means that
+#        this script could be refactored to do a direct rsync from
+#        stat1002 into the $webdir.  However, I intend to change as
+#        little as possible here, so this script expects rsync_source
+#        to list out only files, not a hierarchy.  I.e. it should be
+#        Something like stat1002.eqiad.wmnet::hdfs-archive/pagecounts-raw/*/*/
+#        Note the /*/*/ here, which will wildcard out the year/year-month hierarchy
+#        during the initial rsync to the localdir (incoming dir).
+
+
 usage() {
     echo "This script copies pagecounts and projectcounts files from the host"
     echo "on which they are generated, to a directory on our datasets webserver."
     echo "These files contain page view information for all public Wikimedia projects."
     echo
-    echo "Usage: $0 username sshkeyfile remotehost remotedir localdir webdir"
+    echo "Usage: $0 username rsync_source localdir webdir"
     echo
-    echo "username   -- the name of the user to connect as to the remote host"
-    echo "sshkeyfile -- the name of the private key file to be used for rsync ssh"
-    echo "remotehost -- the fqnd of the remote host to retrieve from"
-    echo "remotedir  -- the remote directory in which the pagecount files are found"
-    echo "localdir   -- the local directory used as a staging area for retrieving files"
-    echo "webdir     -- the web directory under which directories for each year are"
+    echo "username     -- the name of the user to connect as to the remote host"
+    echo "rsync_source -- rsync source including hostname and remote path"
+    echo "localdir     -- the local directory used as a staging area for retrieving files"
+    echo "webdir       -- the web directory under which directories for each year are"
     echo "              created, containing directories per month with the pagecounts"
     echo
     echo "For example:"
-    echo -n "$0 datasets /home/datasets/.ssh/pagecounts_rsync_key locke.wikimedia.org "
-    echo "/a/webstats/dumps /mnt/data/pagecounts/incoming /mnt/data/xmldatadumps/public/other/pagestats-raw";
+    echo -n "$0 datasets stat1002.eqiad.wmnet::hdfs-archive/pagecounts-raw/*/*/ "
+    echo "/data/pagecounts/incoming/ /data/xmldatadumps/public/other/pagecounts-raw";
     exit 1
 }
 
-if [ $# -ne 6  ]; then
+if [ $# -ne 4  ]; then
     usage
 fi
 
 username="$1"
-sshkey="$2"
-sourcehost="$3"
-remotesrcdir="$4"
-localsrcdir="$5"
-webdir="$6"
+rsync_source="$2"
+localsrcdir="$3"
+webdir="$4"
 
 retries=0
 # don't run if there's a remote rsync already running, instead whine and quit
 # three retries, 5 minutes between retries, it's kinda arbitrary but whatever
 while [ 1 ]; do
-    isrunning=$( ssh -o StrictHostKeyChecking=no -i $2 -l ${username} ${sourcehost} ps -C rsync -ww --no-headers -o args | grep ${remotesrcdir} | grep server )
+    isrunning=$( ps -C rsync -ww --no-headers -o args | grep "${rsync_source}" )
     if [ ! -z "$isrunning" ]; then
     if [ $retries -gt 3 ]; then
         echo "Job failed, one or more rsyncs is already running, see:"
@@ -75,10 +88,9 @@ while [ 1 ]; do
 done
 
 # rsync the stuff over from host where the pagecounts are generated to local staging area
-
-/usr/bin/rsync -a --chmod=go-w --rsh="ssh -o StrictHostKeyChecking=no -i $2" --delete ${username}@${sourcehost}:${remotesrcdir}/ ${localsrcdir}/
+/usr/bin/rsync -rt --chmod=go-w ${rsync_source} ${localsrcdir}
 if [ $? -ne 0 ]; then
-    echo "Rsync from remote host $sourcehost${remotesrcdir}/ to local host directory ${localsrcdir}/ failed!"
+    echo "Rsync from remote host ${rsync_source} to local host directory ${localsrcdir} failed!"
     exit 1
 fi
 chmod 644 ${localsrcdir}/*

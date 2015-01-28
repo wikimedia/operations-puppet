@@ -1,9 +1,8 @@
 class dataset::cron::pagecountsraw(
     $enable = true,
-    $key    = 'pagecounts_rsync_key',
     $user   = undef,
-    $from   = undef,
-    ) {
+    $source = undef,
+) {
 
     if ($enable) {
         $ensure = 'present'
@@ -41,17 +40,9 @@ class dataset::cron::pagecountsraw(
         source => 'puppet:///modules/dataset/pagecounts/generate-pagecount-year-month-index.sh',
     }
 
-    file { "/home/${user}/.ssh/pagecounts_rsync_key":
-        mode    => '0400',
-        owner   => $user,
-        group   => 'root',
-        source  => 'puppet:///private/datasets/pagecounts_rsync_key',
-        require => User[$user],
-    }
-
     cron { 'pagestats-raw':
         ensure      => $ensure,
-        command     => "/usr/local/bin/daily-pagestats-copy.sh ${user} /home/${user}/.ssh/${key} ${from} /a/webstats/dumps /data/pagecounts/incoming /data/xmldatadumps/public/other/pagecounts-raw",
+        command     => "/usr/local/bin/daily-pagestats-copy.sh ${user} ${source} /data/pagecounts/incoming /data/xmldatadumps/public/other/pagecounts-raw",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '21',
@@ -60,7 +51,6 @@ class dataset::cron::pagecountsraw(
             File['/usr/local/bin/generate-pagecount-main-index.sh'],
             File['/usr/local/bin/generate-pagecount-year-index.sh'],
             File['/usr/local/bin/generate-pagecount-year-month-index.sh'],
-            File["/home/${user}/.ssh/pagecounts_rsync_key"],
             User[$user],
         ],
     }
