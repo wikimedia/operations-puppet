@@ -52,13 +52,13 @@ class role::wikimetrics {
     # Centralauth Database Creds
     $db_user_centralauth   = $::passwords::wikimetrics::db_user_labsdb
     $db_pass_centralauth   = $::passwords::wikimetrics::db_pass_labsdb
-    $db_host_centralauth   = 'labsdb1002.eqiad.wmnet'
+    $db_host_centralauth   = 'labsdb1001.eqiad.wmnet'
     $db_name_centralauth   = 'centralauth_p'
 
     # Use the LabsDB for editor cohort analysis
     $db_user_mediawiki     = $::passwords::wikimetrics::db_user_labsdb
     $db_pass_mediawiki     = $::passwords::wikimetrics::db_pass_labsdb
-    $db_host_mediawiki     = 'labsdb1002.eqiad.wmnet'
+    $db_host_mediawiki     = 'labsdb1001.eqiad.wmnet'
     $db_name_mediawiki     = '{0}_p'
 
     # OAuth and Google Auth
