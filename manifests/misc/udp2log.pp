@@ -6,7 +6,11 @@
 #
 # Parameters:
 #    $monitor  - If true, monitoring scripts will be installed.  Default: true
-class misc::udp2log($monitor = true) {
+#    $default_instance  - If false, remove init script for the default instance.  Default: true
+class misc::udp2log(
+    $monitor = true,
+    $default_instance = true
+) {
 
     include contacts::udp2log
     include misc::udp2log::udp_filter
@@ -41,6 +45,17 @@ class misc::udp2log($monitor = true) {
     # make sure the udplog package is installed
     package { 'udplog':
         ensure => present,
+    }
+
+    if !$default_instance {
+        file { '/etc/init.d/udp2log':
+            require => Package[udp2log],
+            ensure => absent
+        }
+        exec { '/usr/sbin/update-rc.d -f udp2log remove':
+            subscribe   => File['/etc/init.d/udp2log'],
+            refreshonly => true
+        }
     }
 }
 
