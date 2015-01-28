@@ -1,10 +1,10 @@
 # role classes for dataset servers
 
-class role::dataset::pagecountsraw($enable=true) {
+class role::dataset::pagecountsraw($enable = true) {
     class { '::dataset::cron::pagecountsraw':
         enable  => $enable,
         user    => 'datasets',
-        from    => 'protactinium.wikimedia.org',
+        source  => 'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-raw/*/*/',
         require =>  User['datasets'],
     }
 }
