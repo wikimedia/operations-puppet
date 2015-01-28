@@ -4,6 +4,9 @@
 # Chromium instance that supports remote debugging.
 #
 class role::ve {
+    include ::mediawiki
+    include ::mediawiki::web
+    include ::mediawiki::web::sites
 
     # 1366x768 is the most common display resolution, according
     # to http://gs.statcounter.com/.
