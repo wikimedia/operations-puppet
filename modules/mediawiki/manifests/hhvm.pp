@@ -20,8 +20,8 @@ class mediawiki::hhvm {
         $::processorcount*4)
 
     class { '::hhvm':
-        user          => 'apache',
-        group         => 'apache',
+        user          => $::mediawiki::users::web,
+        group         => $::mediawiki::users::web,
         fcgi_settings => {
             hhvm => {
                 xenon          => {

@@ -1,6 +1,6 @@
 # Options for the MediaWiki jobrunner
 JOBRUNNER_CONFIG="/etc/jobrunner/jobrunner.conf"
 JOBRUNNER_PID="/var/run/jobrunner/pid"
-JOBRUNNER_USER="apache"
-JOBRUNNER_GROUP="apache"
+JOBRUNNER_USER="<%= scope.lookupvar('::mediawiki::users::web') %>"
+JOBRUNNER_GROUP="<%= scope.lookupvar('::mediawiki::users::web') %>"
 DAEMON_OPTS=""

@@ -21,7 +21,7 @@
 #
 #  apache::env { 'apache_chuid':
 #    vars => {
-#      apache_run_user => 'apache',
+#      apache_run_user => 'www-data',
 #      apache_pid_file => '/var/run/apache2/apache2.pid',
 #    },
 #  }
