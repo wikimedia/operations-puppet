@@ -5,7 +5,7 @@ class geowiki::job {
     require ::geowiki
 
     include ::geowiki::params
-    include ::geowiki::mysql_conf,
+    include ::geowiki::mysql_conf
     include geoip
 
     # This is not a complete list of
