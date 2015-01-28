@@ -1,0 +1,197 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  vbench - VisualEditor benchmarking tool
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  usage: vbench [-h] [--host HOST] [--port PORT] [--reps N] [--write] url
+
+  positional arguments:
+    url          URL to load
+
+  optional arguments:
+    -h, --help   show this help message and exit
+    --host HOST  Chromium host
+    --port PORT  Chromium port
+    --reps N     repetitions
+    --write      save profiling data as .cpuprofile files.
+
+  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+"""
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+import argparse
+import itertools
+import json
+import logging
+import socket
+import time
+import urllib2
+
+from twisted.internet import reactor
+from twisted.python import log
+
+from autobahn.twisted.websocket import (WebSocketClientProtocol,
+                                        WebSocketClientFactory)
+
+
+JS = '''
+    mw.trackSubscribe('event.Edit', function (topic, event) {
+        if (event.action === 'init') { console.profile(); }
+        else if (event.action === 'ready') { console.profileEnd(); }
+    });
+    $('#ca-ve-edit').click();'''
+
+YELLOW, WHITE, RESET = '\033[93m', '\033[1;37m', '\033[0m'
+
+
+def highlight(*args):
+    return WHITE + ''.join(map(str, args)) + RESET
+
+
+def mean(data):
+    return sum(data) / len(data)
+
+
+def median(data):
+    data = list(data)
+    data.sort()
+    n = len(data)
+    i = n // 2
+    return data[i] if n % 2 == 1 else (data[i - 1] + data[i]) / 2
+
+
+logging.basicConfig(format='[%s%%(asctime)s%s] %%(message)s' % (YELLOW, RESET),
+                    datefmt='%I:%M:%S', level=logging.INFO)
+
+
+class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
+
+    def sendCommand(self, method, callback=None, **params):
+        id = next(self.message_ids)
+        if callback is not None:
+            self.callbacks[id] = callback
+        command = {'id': id, 'method': method, 'params': params}
+        self.sendMessage(json.dumps(command))
+
+    def onConnect(self, response):
+        self.message_ids = itertools.count()
+        self.callbacks = {}
+        self.durations = []
+
+    def onOpen(self):
+        logging.info('Loading %s', highlight(self.factory.target_url))
+        self.sendCommand('Page.enable')
+        self.sendCommand('Network.enable')
+        self.sendCommand('Network.setCacheDisabled', cacheDisabled=True)
+        self.sendCommand('Profiler.enable')
+        self.sendCommand('Profiler.setSamplingInterval',
+                         interval=100,
+                         callback=self.onProfilerReady)
+
+    def onProfilerReady(self, params=None):
+        self.sendCommand('Network.clearBrowserCache')
+        self.sendCommand('Page.navigate', url=self.factory.target_url)
+
+    def onPageFrameStoppedLoading(self, params=None):
+        self.sendCommand('Runtime.evaluate', expression=JS)
+
+    def writeProfilerData(self, data):
+        name = '%s.%d.cpuprofile' % (data.get('title', 'profile'), time.time())
+        with open(name, 'w') as f:
+            json.dump(data, f)
+
+    def onProfilerConsoleProfileFinished(self, params=None):
+        data = params['profile']
+
+        if self.factory.write:
+            self.writeProfilerData(data)
+
+        duration_ms = int(round(1000 * (data['endTime'] - data['startTime'])))
+        self.durations.append(duration_ms)
+        logging.info('%s of %s: %sms', len(self.durations),
+                     self.factory.reps, duration_ms)
+        if len(self.durations) < self.factory.reps:
+            self.onProfilerReady()
+        else:
+            for f in (min, max, mean, median):
+                value = f(self.durations)
+                logging.info(highlight('%s: %sms'), f.__name__, value)
+            reactor.stop()  # Shut down.
+
+    def getMethodHandler(self, method):
+        object, method = method.split('.')
+        # Munge strings with format 'Object.Event' to 'onObjectEvent'.
+        handler = 'on' + object + method[0].upper() + method[1:]
+        return getattr(self, handler, None)
+
+    def onMessage(self, payload, isBinary):
+        message = json.loads(payload.decode('utf-8'))
+
+        error = message.get('error')
+        if error is not None:
+            return self.onError(error)
+
+        id = message.get('id')
+        if id in self.callbacks:
+            callback = self.callbacks.pop(id)
+            return callback(message.get('response'))
+
+        method = message.get('method')
+        if method is not None:
+            handler = self.getMethodHandler(method)
+            if handler is not None:
+                return handler(message.get('params'))
+
+    def onError(self, error):
+        logging.error(error)
+
+
+class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
+
+    def __init__(self, url, host='localhost', port=9222, reps=1, write=False):
+        self.host = host
+        self.port = port
+        self.reps = reps
+        self.target_url = url
+        self.write = write
+        tab_url = next(tab['webSocketDebuggerUrl'] for tab in self.getTabs()
+                       if 'webSocketDebuggerUrl' in tab)
+        WebSocketClientFactory.__init__(self, tab_url)
+        self.protocol = ChromeRemoteDebuggingProtocol
+
+    def getTabs(self):
+        req = urllib2.urlopen('http://%s:%s/json' % (self.host, self.port))
+        return json.load(req)
+
+
+ap = argparse.ArgumentParser(fromfile_prefix_chars='@')
+ap.add_argument('--host', default='localhost', help='Chromium host')
+ap.add_argument('--port', default=9222, type=int, help='Chromium port')
+ap.add_argument('--reps', default=20, metavar='N', type=int,
+                help='repetitions')
+ap.add_argument('--write', action='store_true', default=False,
+                help='save profiling data as .cpuprofile files.')
+ap.add_argument('url', help='URL to load')
+args = ap.parse_args()
+
+
+if __name__ == '__main__':
+    factory = ChromeRemoteDebuggingFactory(**vars(args))
+    reactor.connectTCP(args.host, args.port, factory)
+    reactor.run()
