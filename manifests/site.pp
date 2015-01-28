@@ -1007,12 +1007,8 @@ node /^dbproxy100[12].eqiad.wmnet/ {
 }
 
 node 'dysprosium.eqiad.wmnet' {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-
-    include admin
-    include standard
+    interface::add_ip6_mapped { 'main': }
+    role cache::text
 }
 
 node 'eeden.esams.wikimedia.org' {
