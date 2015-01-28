@@ -127,6 +127,7 @@ define git::clone(
                 creates     => "${directory}/.git/config",
                 user        => $owner,
                 group       => $group,
+                mode        => $file_mode,
                 timeout     => $timeout,
                 require     => Package['git-core'],
             }
@@ -153,6 +154,7 @@ define git::clone(
                     unless    => "${git} fetch && /usr/bin/git diff --quiet remotes/origin/HEAD",
                     user      => $owner,
                     group     => $group,
+                    mode      => $file_mode,
                     require   => Exec["git_clone_${title}"],
                 }
                 # If we want submodules up to date, then we need
@@ -167,6 +169,7 @@ define git::clone(
                         refreshonly => true,
                         user        => $owner,
                         group       => $group,
+                        mode        => $file_mode,
                         subscribe   => Exec["git_pull_${title}"],
                     }
                 }
