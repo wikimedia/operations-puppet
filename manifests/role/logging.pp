@@ -35,7 +35,11 @@ class role::logging
 class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedia/logs' ) {
     system::role { "role::logging:mediawiki": description => "MediaWiki log collector" }
 
-    class { "misc::udp2log": monitor => $monitor }
+    class { "misc::udp2log":
+        monitor             => $monitor,
+        default_instance    => false
+    }
+
     include misc::udp2log::utilities,
         misc::udp2log::firewall
 
