@@ -53,8 +53,8 @@ Include conf-enabled/*.conf
 # This listens on port 80 by default and defines NameVirtualHost *:80
 Include ports.conf
 
-User apache
-Group apache
+User <%= scope.lookupvar('::mediawiki::users::web') %>
+Group <%= scope.lookupvar('::mediawiki::users::web') %>
 
 ServerAdmin root@wikimedia.org
 

@@ -40,7 +40,7 @@ class mediawiki (
     # and for various periodic jobs that are managed by cron.
     file { '/var/log/mediawiki':
         ensure => directory,
-        owner  => 'apache',
+        owner  => $::mediawiki::users::web,
         group  => 'wikidev',
         mode   => '0644',
     }
