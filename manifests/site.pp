@@ -58,16 +58,6 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
     }
 }
 
-# To be decommissioned/reused, not presently serving traffic
-node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
-    include admin
-    include standard
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 # amssq31-62 are text varnish (and the only nodes with this legacy prefix)
 node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
     sysctl::parameters { 'vm dirty page flushes':
