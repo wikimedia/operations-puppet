@@ -60,7 +60,7 @@ class cxserver(
                 'dict-freedict-spa-eng',
                 'dict-freedict-eng-hin',
             ]:
-        ensure => present,
+        ensure => absent,
     }
 
     $log_file = "${log_dir}/main.log"
