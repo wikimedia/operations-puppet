@@ -43,6 +43,7 @@ http {
     access_udplog 208.80.154.73:8419 squid_combined;
     client_max_body_size 100m;
     large_client_header_buffers 4 16k; 
+    client_body_buffer_size 64k;
     <% end %>
 
 
