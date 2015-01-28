@@ -4,8 +4,19 @@
 # Chromium instance that supports remote debugging.
 #
 class role::ve {
-    class { 'xvfb': resolution => '1366x768x24' }
-    class { 'chromium': }
+
+    # 1366x768 is the most common display resolution, according
+    # to http://gs.statcounter.com/.
+
+    class { 'xvfb':
+        resolution => '1366x768x24',
+    }
+
+    # Instruct Chromium to route all requests to localhost.
+
+    class { 'chromium':
+        extra_args => '--proxy-server=http://127.0.0.1',
+    }
 
     # vbench is a CLI tool for benchmarking VisualEditor.
     # It uses `autobahn` and `twisted` for WebSocket support, which
