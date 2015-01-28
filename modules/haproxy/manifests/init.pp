@@ -38,7 +38,7 @@ class haproxy(
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        source  => 'puppet:///files/icinga/check_haproxy',
+        source  => 'puppet:///modules/icinga/check_haproxy',
     }
 
     nrpe::monitor_service { 'haproxy':

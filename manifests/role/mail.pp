@@ -177,7 +177,7 @@ class role::mail::lists {
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///files/icinga/check_mailman_queue',
+        source => 'puppet:///modules/icinga/check_mailman_queue',
     }
 
     nrpe::monitor_service { 'mailman_queue':
