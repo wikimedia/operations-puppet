@@ -695,11 +695,15 @@ host cp3014 {
 host cp3015 {
 	hardware ethernet D4:AE:52:8C:7C:E9;
 	fixed-address cp3015.esams.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cp3016 {
 	hardware ethernet D4:AE:52:7A:C4:AB;
 	fixed-address cp3016.esams.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cp3017 {
