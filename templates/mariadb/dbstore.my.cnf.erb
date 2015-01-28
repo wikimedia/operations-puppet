@@ -10,6 +10,7 @@ socket = /tmp/mysql.sock
 
 skip-external-locking
 skip-name-resolve
+skip-slave-start
 temp-pool
 
 user      = mysql
@@ -40,7 +41,7 @@ character_set_filesystem = binary
 collation_server         = binary
 
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = 16G
+innodb_buffer_pool_size        = 32G
 innodb_log_file_size           = 4G
 innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
@@ -57,13 +58,19 @@ optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
 join_cache_level = 8
 
 plugin-load = ha_tokudb
-tokudb_cache_size = 64G
+tokudb_cache_size = 32G
 
 skip-slave-start
 slave_transaction_retries = 4294967295
 
-# Eventlogging from m2 master
-m2.replicate-wild-do-table = log.%
+s1.replicate-wild-do-table = %wik%.%
+s2.replicate-wild-do-table = %wik%.%
+s3.replicate-wild-do-table = %wik%.%
+s4.replicate-wild-do-table = %wik%.%
+s5.replicate-wild-do-table = %wik%.%
+s6.replicate-wild-do-table = %wik%.%
+s7.replicate-wild-do-table = %wik%.%
+m3.replicate-wild-do-table = phab%.%,phlegal%.%
 
 [mysqldump]
 
