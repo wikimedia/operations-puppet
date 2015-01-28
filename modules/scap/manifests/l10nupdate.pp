@@ -1,7 +1,7 @@
 # = class: scap::l10nupdate
 #
 # Sets up files and cron required to do l10nupdate
-class scasp::l10nupdate {
+class scap::l10nupdate {
     require scap::master
 
     cron { 'l10nupdate':
