@@ -49,7 +49,7 @@ class misc::udp2log(
 
     if !$default_instance {
         file { '/etc/init.d/udp2log':
-            require => Package[udp2log],
+            require => Package['udplog'],
             ensure  => absent
         }
         exec { '/usr/sbin/update-rc.d -f udp2log remove':
