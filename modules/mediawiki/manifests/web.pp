@@ -3,13 +3,14 @@ class mediawiki::web {
 
     include ::apache
     include ::mediawiki
+    include ::mediawiki::users
     include ::mediawiki::monitoring::webserver
     include ::mediawiki::web::modules
     include ::mediawiki::web::mpm_config
 
 
     file { '/etc/apache2/apache2.conf':
-        source  => 'puppet:///modules/mediawiki/apache/apache2.conf',
+        content => template('mediawiki/apache/apache2.conf.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -19,7 +20,7 @@ class mediawiki::web {
 
     file { '/var/lock/apache2':
         ensure  => directory,
-        owner   => 'apache',
+        owner   => $::mediawiki::users::web,
         group   => 'root',
         mode    => '0755',
         before  => File['/etc/apache2/apache2.conf'],
@@ -27,8 +28,8 @@ class mediawiki::web {
 
     apache::env { 'chuid_apache':
         vars => {
-            'APACHE_RUN_USER'  => 'apache',
-            'APACHE_RUN_GROUP' => 'apache',
+            'APACHE_RUN_USER'  => $::mediawiki::users::web,
+            'APACHE_RUN_GROUP' => $::mediawiki::users::web,
         },
     }
 

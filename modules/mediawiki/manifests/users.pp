@@ -3,29 +3,29 @@
 # Provisions system accounts for running, deploying and updating
 # MediaWiki.
 #
-class mediawiki::users {
+class mediawiki::users($web = 'apache') {
 
-    # For legacy reasons, we run Apache / MediaWiki using an 'apache' user
-    # rather than use the Debian default 'www-data'. The name, gid, home,
-    # and shell of the apache user are set to conform with the postinst
-    # script of the wikimedia-task-appserver package, which provisioned it
-    # historically. These values can and should be modernized.
+    if ($web == 'apache') {
+        # For legacy reasons, we used to run Apache / MediaWiki using an 'apache' user
+        # rather than use the Debian default 'www-data'. The name, gid, home,
+        # and shell of the apache user are set to conform with the postinst
+        # script of the wikimedia-task-appserver package, which provisioned it
+        # historically. These values can and should be modernized.
+        group { 'apache':
+            ensure => present,
+            gid    => 48,
+            system => true,
+        }
 
-    group { 'apache':
-        ensure => present,
-        gid    => 48,
-        system => true,
+        user { 'apache':
+            ensure     => present,
+            gid        => 48,
+            shell      => '/sbin/nologin',
+            home       => '/var/www',
+            system     => true,
+            managehome => false,
+        }
     }
-
-    user { 'apache':
-        ensure     => present,
-        gid        => 48,
-        shell      => '/sbin/nologin',
-        home       => '/var/www',
-        system     => true,
-        managehome => false,
-    }
-
 
     # The mwdeploy account is used by various scripts in the MediaWiki
     # deployment process to run rsync.
@@ -97,7 +97,7 @@ class mediawiki::users {
 
     sudo::group { 'wikidev':
         privileges => [
-            'ALL = (apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
+            "ALL = ($web,mwdeploy,l10nupdate) NOPASSWD: ALL",
             'ALL = (root) NOPASSWD: /sbin/restart hhvm',
             'ALL = (root) NOPASSWD: /sbin/start hhvm',
             'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -111,7 +111,7 @@ class mediawiki::users {
 
     sudo::user { 'mwdeploy':
         privileges => [
-            'ALL = (apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
+            "ALL = ($web,mwdeploy,l10nupdate) NOPASSWD: ALL",
             'ALL = (root) NOPASSWD: /sbin/restart hhvm',
             'ALL = (root) NOPASSWD: /sbin/start hhvm',
         ]
