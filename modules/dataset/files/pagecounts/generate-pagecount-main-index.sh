@@ -17,6 +17,8 @@ echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
   <body bgcolor="#ffffff">
   <h1>Page view statistics for Wikimedia projects</h1>
 
+  <p>(For up-to-date information (outages, ...) about this dataset, please consult the <a href="//wikitech.wikimedia.org/wiki/Analytics/Pagecounts-raw">dataset'\''s wiki page</a>.)</p>
+
   <h2>Pagecount files per year</h2>
 
   <p>
