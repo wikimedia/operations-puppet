@@ -613,7 +613,6 @@ node 'dataset1001.wikimedia.org' {
     class { 'admin': groups => [dataset-admins] }
 
     include standard
-    include role::diamond
     include role::dataset::systemusers
     include role::dataset::primary
     include role::dumps
@@ -1755,7 +1754,7 @@ node 'magnesium.wikimedia.org' {
 
     class { 'base::firewall': }
 
-    role diamond, racktables, requesttracker
+    role racktables, requesttracker
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2621,7 +2620,6 @@ node 'iodine.wikimedia.org' {
     role otrs
 
     include admin
-    include role::diamond
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
