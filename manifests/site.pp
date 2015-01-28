@@ -634,6 +634,10 @@ node 'dataset1001.wikimedia.org' {
     include role::dataset::systemusers
     include role::dataset::primary
     include role::dumps
+
+    interface::add_ip6_mapped { 'eth2':
+        interface => 'eth2',
+    }
 }
 
 # eqiad dbs
