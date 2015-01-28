@@ -42,7 +42,7 @@ class dataset::cron::pagecountsraw(
 
     cron { 'pagestats-raw':
         ensure      => $ensure,
-        command     => "/usr/local/bin/daily-pagestats-copy.sh ${user} ${source} /data/pagecounts/incoming /data/xmldatadumps/public/other/pagecounts-raw",
+        command     => "/usr/local/bin/daily-pagestats-copy.sh ${user} ${source} /data/pagecounts/incoming/ /data/xmldatadumps/public/other/pagecounts-raw",
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '21',
