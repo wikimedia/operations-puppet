@@ -168,7 +168,7 @@ class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
         self.host = host
         self.port = port
         self.reps = reps
-        self.target_url = url
+        self.target_url = url.replace('https://', 'http://', 1)  # force HTTP
         self.write = write
         tab_url = next(tab['webSocketDebuggerUrl'] for tab in self.getTabs()
                        if 'webSocketDebuggerUrl' in tab)
