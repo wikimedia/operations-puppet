@@ -2091,8 +2091,6 @@ node 'osmium.eqiad.wmnet' {
     include ::role::ve
 
     role mediawiki::appserver
-
-    class { '::admin': groups => ['deployment'] }
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
