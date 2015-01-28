@@ -6,6 +6,7 @@
 class mediawiki::multimedia {
     include ::mediawiki::packages::multimedia
     include ::mediawiki::packages::fonts
+    include ::mediawiki::users
 
     file { '/etc/fonts/conf.d/70-no-bitmaps.conf':
         ensure  => link,
@@ -15,7 +16,7 @@ class mediawiki::multimedia {
 
     file { '/tmp/magick-tmp':
         ensure => directory,
-        owner  => 'apache',
+        owner  => $::mediawiki::users::web,
         group  => 'root',
         mode   => '0755',
     }

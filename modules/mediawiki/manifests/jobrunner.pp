@@ -25,7 +25,7 @@ class mediawiki::jobrunner (
     $dispatcher = template("mediawiki/jobrunner/dispatchers/${lsbdistcodename}.erb")
 
     file { '/etc/default/jobrunner':
-        source => 'puppet:///modules/mediawiki/jobrunner.default',
+        content => template('mediawiki/jobrunner/jobrunner.default.erb'),
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
