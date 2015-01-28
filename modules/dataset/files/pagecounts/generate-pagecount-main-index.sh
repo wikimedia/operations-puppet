@@ -98,6 +98,9 @@ echo '  </p>
 
     thanks to <a href"http://lists.wikimedia.org/pipermail/toolserver-l/2011-August/004300.html">Federico Leva</a>.
   </p>
+  <p>The dataset is currently (2015) maintained by the <a href="//www.mediawiki.org/wiki/Analytics">Analytics team</a>.</p>
+  <p>Up to 2015, the dataset has been produced by <a href="//wikitech.wikimedia.org/wiki/Analytics/Webstatscollector">Webstatscollector</a>.</p>
+  <p>From 2015 onwards, the dataset is getting produced by stripping down extra-information from <a href="//wikitech.wikimedia.org/wiki/Analytics/Pagecounts-all-sites">Pagecounts-all-sites</a>.</p>
   <hr />
   <p><a href="../../index.html">Return to the main index of public data sets provided on this server.</a></p>
   <p><a href="../../backup-index.html">Return to the main index of project dumps in XML format.</a></p>
