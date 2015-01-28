@@ -2084,11 +2084,6 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
     role ocg
 }
 
-node /^osm-cp100[1-4]\.wikimedia\.org$/ {
-    include admin
-    include standard-noexim
-}
-
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
     include ::standard
