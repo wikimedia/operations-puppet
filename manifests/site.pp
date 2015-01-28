@@ -2089,7 +2089,8 @@ node 'osmium.eqiad.wmnet' {
     include ::standard
     include ::mediawiki
     include ::role::ve
-    include ::role::mediawiki::appserver
+
+    role mediawiki::appserver
 
     class { '::admin': groups => ['deployment'] }
 }
