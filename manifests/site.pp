@@ -2066,10 +2066,7 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
     include ::standard
-    include ::mediawiki
     include ::role::ve
-
-    role mediawiki::appserver
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
