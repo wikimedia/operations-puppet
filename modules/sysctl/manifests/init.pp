@@ -16,9 +16,7 @@ class sysctl {
         source  => 'puppet:///modules/sysctl/sysctl.d-empty',
     }
 
-    exec { 'update_sysctl':
-        command     => '/sbin/start procps',
-        onlyif      => '/usr/bin/test -r /etc/init/procps.conf',
+    service { 'procps':
         refreshonly => true,
     }
 }
