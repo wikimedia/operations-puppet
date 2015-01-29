@@ -217,118 +217,6 @@ class role::logging::udp2log::nginx inherits role::logging::udp2log {
     }
 }
 
-class role::logging::webstatscollector {
-    # datasets account is needed so that snapshot1
-    # can rsync webstats dumps to dataset1001 (dumps.wikimedia.org).
-    include role::dataset::systemusers
-
-    # webstatscollector package creates this directory.
-    # webstats-collector process writes dump files here.
-    $webstats_dumps_directory = '/a/webstats/dumps'
-    # collector creates temporary Berkeley DB files that have
-    # very high write IO.  Upstart will chdir into
-    # this temp directory before starting collector.
-    $webstats_temp_directory   = '/run/webstats'
-
-
-    # Mount the temp directory as a tmpfs in /run
-    mount { $webstats_temp_directory:
-        ensure  => 'unmounted',
-        device  => 'tmpfs',
-        fstype  => 'tmpfs',
-        options => 'uid=nobody,gid=nogroup,mode=0755,noatime,defaults,size=2000m',
-        pass    => 0,
-        dump    => 0,
-        before => File[$webstats_temp_directory],
-    }
-
-
-    file { $webstats_temp_directory:
-        ensure => 'absent',
-        owner  => 'nobody',
-        group  => 'nogroup',
-    }
-
-    # Create the dumps/ directory in which
-    # we want collector to output hourly dump files.
-    file { $webstats_dumps_directory:
-        ensure  => 'directory',
-        owner   => 'nobody',
-        group   => 'nogroup',
-        # require => Mount[$webstats_temp_directory],
-    }
-
-
-
-    package { 'webstatscollector':
-        ensure => 'absent',
-    }
-
-    # Install a custom webstats-collector init script to use
-    # custom temp directory.
-    file { '/etc/init/webstats-collector.conf':
-        content => template('webstatscollector/webstats-collector.init.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        # require => Package['webstatscollector'],
-        ensure => 'absent',
-    }
-
-    # service { 'webstats-collector':
-    #     ensure     => 'running',
-    #     hasstatus  => false,
-    #     hasrestart => true,
-    #     require    => [
-    #         File['/etc/init/webstats-collector.conf'],
-    #         File["${webstats_temp_directory}/dumps"],
-    #     ],
-    # }
-
-    ferm::service { 'webstats-collector':
-        proto  => 'tcp',
-        port   => '3815',
-        srange => '$ALL_NETWORKS',
-        ensure => 'absent',
-    }
-
-    # dataset1001 needs to be able to use ssh
-    # to rsync webstatscollector pagecount files from gadolinium.
-    ferm::rule { 'dataset-ssh':
-        rule   => 'proto tcp dport ssh saddr 208.80.154.11/32 ACCEPT;',
-        ensure => 'absent',
-    }
-
-    # install a nrpe check for the webstatscollector collector process
-    nrpe::monitor_service { 'webstats-collector':
-        description   => "webstats-collector process running",
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/collector -c 1:2',
-        contact_group => 'analytics',
-        retries       => 10,
-        # require       => Service['webstats-collector'],
-        ensure        => 'absent',
-    }
-
-    # Gzip pagecounts files hourly.
-    cron { 'webstats-dumps-gzip':
-        command => "/bin/gzip ${webstats_dumps_directory}/pagecounts-????????-?????? 2> /dev/null",
-        minute  => 2,
-        user    => 'nobody',
-        # require => Service['webstats-collector'],
-        ensure  => 'absent',
-    }
-
-    # Delete webstats dumps that are older than 10 days daily.
-    cron { 'webstats-dumps-delete':
-        command => "/usr/bin/find ${webstats_dumps_directory} -maxdepth 1 -type f -mtime +10 -delete",
-        minute  => 28,
-        hour    => 1,
-        user    => 'nobody',
-        # require => Service['webstats-collector'],
-        ensure  => 'absent',
-    }
-}
-
 # oxygen is a generic webrequests udp2log host
 # mostly running:
 # - Wikipedia zero filters
@@ -348,19 +236,6 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
         mode   => 0755,
         owner  => 'udp2log',
         group  => 'udp2log',
-    }
-
-    file { "$webrequest_filter_directory/vu.awk":
-        ensure => absent,
-    }
-    file { "$webrequest_filter_directory/minnesota.awk":
-        ensure => absent,
-    }
-
-    # oxygen run webstatscollector's filter process,
-    # sending filtered logs to gadolinium's collector process.
-    package { 'webstatscollector':
-        ensure => 'latest',
     }
 
     misc::udp2log::instance { 'oxygen':
@@ -420,6 +295,7 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
         contact_group => 'analytics',
         retries       => 10,
         require       => Misc::Udp2log::Instance['erbium'],
+        ensure        => 'absent',
     }
 }
 

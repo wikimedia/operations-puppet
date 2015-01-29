@@ -90,7 +90,6 @@ node 'analytics1003.eqiad.wmnet' {
     # include role::analytics::kafkatee::webrequest::5xx
     # include role::analytics::kafkatee::webrequest::api
     # include role::analytics::kafkatee::webrequest::glam_nara
-    # include role::analytics::kafkatee::webrequest::webstatscollector
 }
 
 
@@ -1145,12 +1144,6 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 
     # gadolinium hosts the separate nginx webrequest udp2log instance.
     include role::logging::udp2log::nginx
-
-    # gadolinium runs Domas' webstatscollector.
-    # udp2log runs the 'filter' binary (on oxygen)
-    # which sends logs over to the 'collector' (on gadolinium)
-    # service, which writes dump files in /a/webstats/dumps.
-    include role::logging::webstatscollector
 }
 
 
@@ -1167,12 +1160,6 @@ node 'protactinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 
     # gadolinium hosts the separate nginx webrequest udp2log instance.
     include role::logging::udp2log::nginx
-
-    # gadolinium runs Domas' webstatscollector.
-    # udp2log runs the 'filter' binary (on oxygen)
-    # which sends logs over to the 'collector' (on gadolinium)
-    # service, which writes dump files in /a/webstats/dumps.
-    include role::logging::webstatscollector
 }
 
 
