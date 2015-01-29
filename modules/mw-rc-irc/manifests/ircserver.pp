@@ -16,12 +16,8 @@ class mw-rc-irc::ircserver {
             owner   => 'irc',
             group   => 'irc',
             content => template('mw-rc-irc/motd.erb');
-    }
-
-
-    file { '/etc/init/ircd.conf':
-        source  => 'puppet:///modules/mw-rc-irc/upstart/ircd.conf',
-        require => File['/usr/bin/ircd'],
+        '/etc/init/ircd.conf':
+            source  => 'puppet:///modules/mw-rc-irc/upstart/ircd.conf',
     }
 
     service { 'ircd':
