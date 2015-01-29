@@ -115,6 +115,7 @@ class role::zuul::server {
         owner     => zuul,
         group     => zuul,
         mode      => '0775',
+        umask     => '002',
         origin    => 'https://gerrit.wikimedia.org/r/p/integration/config.git',
         branch    => $role::zuul::configuration::server[$::realm]['config_git_branch'],
     }
