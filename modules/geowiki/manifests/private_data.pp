@@ -38,6 +38,7 @@ class geowiki::private_data {
         owner     => $::geowiki::params::user,
         group     => 'www-data',
         mode      => 0750,
+        umask     => 027,
         require   => File[$::geowiki::params::private_data_bare_path],
     }
 }
