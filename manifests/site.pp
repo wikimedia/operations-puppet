@@ -492,14 +492,6 @@ node 'cp1008.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
-    if $::hostname =~ /^cp103[78]$/ {
-        $ganglia_aggregator = true
-    }
-    interface::add_ip6_mapped { 'main': }
-    role cache::text
-}
-
 node /^cp104[34]\.eqiad\.wmnet$/ {
     $ganglia_aggregator = true
     interface::add_ip6_mapped { 'main': }

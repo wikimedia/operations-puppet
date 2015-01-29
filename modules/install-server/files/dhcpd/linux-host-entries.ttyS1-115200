@@ -462,26 +462,6 @@ host cp1008 {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host cp1037 {
-	hardware ethernet 84:2b:2b:fd:bf:2a;
-	fixed-address cp1037.eqiad.wmnet;
-}
-
-host cp1038 {
-	hardware ethernet 84:2b:2b:fd:be:eb;
-	fixed-address cp1038.eqiad.wmnet;
-}
-
-host cp1039 {
-	hardware ethernet 84:2b:2b:fd:be:13;
-	fixed-address cp1039.eqiad.wmnet;
-}
-
-host cp1040 {
-	hardware ethernet 84:2b:2b:fd:be:fd;
-	fixed-address cp1040.eqiad.wmnet;
-}
-
 host cp1043 {
 	hardware ethernet 84:2b:2b:fd:c0:2f;
 	fixed-address cp1043.eqiad.wmnet;
