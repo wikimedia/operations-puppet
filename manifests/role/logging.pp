@@ -243,7 +243,6 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
         packet_loss_log => '/var/log/udp2log/packet-loss.log',
         log_directory   => $webrequest_log_directory,
         template_variables => { 'webrequest_filter_directory' => $webrequest_filter_directory },
-        require            => Package['webstatscollector'],
     }
 }
 
@@ -285,17 +284,6 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
             'fundraising_log_directory' => $fundraising_log_directory
         },
         require            => File["${fundraising_log_directory}/logs"],
-    }
-
-
-    # install a nrpe check for the webstatscollector filter process
-    nrpe::monitor_service { 'webstats-filter':
-        description   => "webstats-filter process running",
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/filter -c 1:3',
-        contact_group => 'analytics',
-        retries       => 10,
-        require       => Misc::Udp2log::Instance['erbium'],
-        ensure        => 'absent',
     }
 }
 
