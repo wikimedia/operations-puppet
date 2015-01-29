@@ -17,4 +17,4 @@ exec chromium-browser \
     <% if @incognito %>--incognito<% end %> \
     --remote-debugging-port=<%= @remote_debugging_port %> \
     --display=:<%= @display.to_s.sub(/\D/, '') %> \
-    <%= @extra_args %>
+    <%= Array(@extra_args).join(" \\\n    ") %>
