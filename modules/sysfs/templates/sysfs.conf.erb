@@ -1,0 +1,7 @@
+# sysfs parameters managed by Puppet.
+<%=
+    @values.sort.map { |k, v|
+        v = v.join(' ') if v.is_a?(Array)
+        [ k, v ].join(' = ')
+    }.join("\n")
+%>
