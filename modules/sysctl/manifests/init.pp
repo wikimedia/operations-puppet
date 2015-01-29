@@ -17,8 +17,7 @@ class sysctl {
     }
 
     exec { 'update_sysctl':
-        command     => '/sbin/start procps',
-        onlyif      => '/usr/bin/test -r /etc/init/procps.conf',
+        command     => 'service procps start',
         refreshonly => true,
     }
 }
