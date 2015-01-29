@@ -23,7 +23,7 @@ class geowiki::job::limn inherits geowiki::job {
             Git::Clone['geowiki-scripts'],
             Git::Clone['geowiki-data-public'],
             Git::Clone['geowiki-data-private'],
-            File[$::geowiki::params::mysql_conf::conf_file],
+            File[$::geowiki::mysql_conf::conf_file],
         ],
     }
 }
