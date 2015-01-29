@@ -22,6 +22,8 @@
 # $+recurse_submodules:: If true, git
 # $+shared+:: Enable git's core.sharedRepository=group setting for sharing the
 # repository between serveral users, default: false
+# $+umask+:: umask value that git operations should run under,
+#            default 002 if shared, 022 otherwise.
 # $+mode+:: Permission mode of $directory, default: 2755 if shared, 0755 otherwise
 # $+ssh+:: SSH command/wrapper to use when checking out, default: ''
 # $+timeout+:: Time out in seconds for the exec command, default: 300
@@ -54,6 +56,7 @@ define git::clone(
     $timeout='300',
     $depth='full',
     $recurse_submodules=false,
+    $umask=undef,
     $mode=undef) {
 
     $gerrit_url_format = 'https://gerrit.wikimedia.org/r/p/%s.git'
@@ -72,6 +75,17 @@ define git::clone(
         fail('Shared repositories must leave "mode" unspecified or set to 277?, specified as octal.')
     } else {
         $file_mode = $mode
+    }
+
+    if $umask == undef {
+        $git_umask = $shared ? {
+            true    => '002',
+            default => '022',
+        }
+    } elsif $shared and $mode !~ /^00\d$/ {
+        fail('Shared repositories must leave "mode" unspecified or set to 00?, specified as octal.')
+    } else {
+        $git_umask = $umask
     }
 
     case $ensure {
@@ -109,11 +123,11 @@ define git::clone(
 
             if $shared {
                 $shared_arg = '-c core.sharedRepository=group'
-                $git = 'umask 002; /usr/bin/git'
             } else {
                 $shared_arg = ''
-                $git = '/usr/bin/git'
             }
+
+            $git = '/usr/bin/git'
 
             # set PATH for following execs
             Exec { path => '/usr/bin:/bin' }
@@ -127,6 +141,7 @@ define git::clone(
                 creates     => "${directory}/.git/config",
                 user        => $owner,
                 group       => $group,
+                umask       => $git_umask,
                 timeout     => $timeout,
                 require     => Package['git-core'],
             }
@@ -153,6 +168,7 @@ define git::clone(
                     unless    => "${git} fetch && /usr/bin/git diff --quiet remotes/origin/HEAD",
                     user      => $owner,
                     group     => $group,
+                    umask     => $git_umask,
                     require   => Exec["git_clone_${title}"],
                 }
                 # If we want submodules up to date, then we need
@@ -167,6 +183,7 @@ define git::clone(
                         refreshonly => true,
                         user        => $owner,
                         group       => $group,
+                        umask       => $git_umask,
                         subscribe   => Exec["git_pull_${title}"],
                     }
                 }
