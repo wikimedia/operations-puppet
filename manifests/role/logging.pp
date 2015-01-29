@@ -230,20 +230,23 @@ class role::logging::webstatscollector {
     # this temp directory before starting collector.
     $webstats_temp_directory   = '/run/webstats'
 
-    file { $webstats_temp_directory:
-        ensure => 'directory',
-        owner  => 'nobody',
-        group  => 'nogroup',
-    }
+
     # Mount the temp directory as a tmpfs in /run
     mount { $webstats_temp_directory:
-        ensure  => 'mounted',
+        ensure  => 'unmounted',
         device  => 'tmpfs',
         fstype  => 'tmpfs',
         options => 'uid=nobody,gid=nogroup,mode=0755,noatime,defaults,size=2000m',
         pass    => 0,
         dump    => 0,
-        require => File[$webstats_temp_directory],
+        before => File[$webstats_temp_directory],
+    }
+
+
+    file { $webstats_temp_directory:
+        ensure => 'absent',
+        owner  => 'nobody',
+        group  => 'nogroup',
     }
 
     # Create the dumps/ directory in which
@@ -252,21 +255,13 @@ class role::logging::webstatscollector {
         ensure  => 'directory',
         owner   => 'nobody',
         group   => 'nogroup',
-        require => Mount[$webstats_temp_directory],
+        # require => Mount[$webstats_temp_directory],
     }
-    # collector writes dumps to $cwd/dumps.  We are going
-    # run collector in $webstats_temp_directory, but we want dumps to be
-    # on the normal filesystem.  Symlink $webstats_temp_directory/dumps
-    # to the dumps directory.
-    file { "${webstats_temp_directory}/dumps":
-        ensure  => 'link',
-        target  => $webstats_dumps_directory,
-        require => File[$webstats_dumps_directory],
-    }
+
 
 
     package { 'webstatscollector':
-        ensure => 'latest',
+        ensure => 'absent',
     }
 
     # Install a custom webstats-collector init script to use
@@ -276,29 +271,32 @@ class role::logging::webstatscollector {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package['webstatscollector'],
+        # require => Package['webstatscollector'],
+        ensure => 'absent',
     }
 
-    service { 'webstats-collector':
-        ensure     => 'running',
-        hasstatus  => false,
-        hasrestart => true,
-        require    => [
-            File['/etc/init/webstats-collector.conf'],
-            File["${webstats_temp_directory}/dumps"],
-        ],
-    }
+    # service { 'webstats-collector':
+    #     ensure     => 'running',
+    #     hasstatus  => false,
+    #     hasrestart => true,
+    #     require    => [
+    #         File['/etc/init/webstats-collector.conf'],
+    #         File["${webstats_temp_directory}/dumps"],
+    #     ],
+    # }
 
     ferm::service { 'webstats-collector':
         proto  => 'tcp',
         port   => '3815',
         srange => '$ALL_NETWORKS',
+        ensure => 'absent',
     }
 
     # dataset1001 needs to be able to use ssh
     # to rsync webstatscollector pagecount files from gadolinium.
     ferm::rule { 'dataset-ssh':
         rule   => 'proto tcp dport ssh saddr 208.80.154.11/32 ACCEPT;',
+        ensure => 'absent',
     }
 
     # install a nrpe check for the webstatscollector collector process
@@ -307,7 +305,8 @@ class role::logging::webstatscollector {
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/collector -c 1:2',
         contact_group => 'analytics',
         retries       => 10,
-        require       => Service['webstats-collector']
+        require       => Service['webstats-collector'],
+        ensure        => 'absent',
     }
 
     # Gzip pagecounts files hourly.
@@ -315,7 +314,8 @@ class role::logging::webstatscollector {
         command => "/bin/gzip ${webstats_dumps_directory}/pagecounts-????????-?????? 2> /dev/null",
         minute  => 2,
         user    => 'nobody',
-        require => Service['webstats-collector'],
+        # require => Service['webstats-collector'],
+        ensure  => 'absent',
     }
 
     # Delete webstats dumps that are older than 10 days daily.
@@ -324,7 +324,8 @@ class role::logging::webstatscollector {
         minute  => 28,
         hour    => 1,
         user    => 'nobody',
-        require => Service['webstats-collector'],
+        # require => Service['webstats-collector'],
+        ensure  => 'absent',
     }
 }
 
