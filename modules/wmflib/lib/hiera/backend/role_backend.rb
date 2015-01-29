@@ -145,7 +145,7 @@ class Hiera
             break if is_done
           end
           # skip parsing if no answer was found.
-          next unless answer
+          next if answer.nil?
 
           # Now we got one answer for this role, we can merge it with
           # what we got earlier.
