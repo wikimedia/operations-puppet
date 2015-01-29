@@ -32,7 +32,7 @@ class standard(
     }
     # Some instances have their own exim definition that
     # will conflict with this
-    if $has_default_mail_relay {
+    if $has_default_mail_relay == false or $has_default_mail_relay == 'false' {
         include role::mail::sender
     }
 }
