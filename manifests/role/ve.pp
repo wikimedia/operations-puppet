@@ -25,7 +25,7 @@ class role::ve {
     # It uses `autobahn` and `twisted` for WebSocket support, which
     # it needs so it can speak Chrome's remote debugging protocol.
 
-    require_package('python-autobahn', 'python-twisted')
+    require_package('python-autobahn', 'python-twisted', 'python-numpy')
 
     file { '/usr/local/bin/vbench':
         source => 'puppet:///files/ve/vbench',

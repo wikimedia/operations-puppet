@@ -10,11 +10,12 @@
     url          URL to load
 
   optional arguments:
-    -h, --help   show this help message and exit
-    --host HOST  Chromium host
-    --port PORT  Chromium port
-    --reps N     repetitions
-    --write      save profiling data as .cpuprofile files.
+    -h, --help    show this help message and exit
+    --host HOST   Chromium host (default: 'localhost')
+    --port PORT   Chromium port (default: 9222)
+    --reps N      repetitions (default: 20)
+    --warmups N   warm-up loops (default: 2)
+    --write       save profiling data as .cpuprofile files.
 
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
 
@@ -46,6 +47,8 @@ import urllib2
 from twisted.internet import reactor
 from twisted.python import log
 
+from numpy import mean, median, std
+
 from autobahn.twisted.websocket import (WebSocketClientProtocol,
                                         WebSocketClientFactory)
 
@@ -59,25 +62,12 @@ JS = '''
 
 YELLOW, WHITE, RESET = '\033[93m', '\033[1;37m', '\033[0m'
 
+logging.basicConfig(format='[%s%%(asctime)s%s] %%(message)s' % (YELLOW, RESET),
+                    datefmt='%I:%M:%S', level=logging.INFO)
+
 
 def highlight(*args):
     return WHITE + ''.join(map(str, args)) + RESET
-
-
-def mean(data):
-    return sum(data) / len(data)
-
-
-def median(data):
-    data = list(data)
-    data.sort()
-    n = len(data)
-    i = n // 2
-    return data[i] if n % 2 == 1 else (data[i - 1] + data[i]) / 2
-
-
-logging.basicConfig(format='[%s%%(asctime)s%s] %%(message)s' % (YELLOW, RESET),
-                    datefmt='%I:%M:%S', level=logging.INFO)
 
 
 class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
@@ -123,15 +113,19 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
             self.writeProfilerData(data)
 
         duration_ms = int(round(1000 * (data['endTime'] - data['startTime'])))
+        if self.factory.warmups:
+            self.factory.warmups -= 1
+            logging.info('(warm-up) %sms', duration_ms)
+            return self.onProfilerReady()
         self.durations.append(duration_ms)
         logging.info('%s of %s: %sms', len(self.durations),
                      self.factory.reps, duration_ms)
         if len(self.durations) < self.factory.reps:
             self.onProfilerReady()
         else:
-            for f in (min, max, mean, median):
-                value = f(self.durations)
-                logging.info(highlight('%s: %sms'), f.__name__, value)
+            for f in (min, max, mean, median, std):
+                value = round(f(self.durations))
+                logging.info(highlight('%s: %dms'), f.__name__.title(), value)
             reactor.stop()  # Shut down.
 
     def getMethodHandler(self, method):
@@ -164,10 +158,12 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
 
-    def __init__(self, url, host='localhost', port=9222, reps=1, write=False):
+    def __init__(self, url, host='localhost', port=9222, reps=20,
+                 warmups=0, write=False):
         self.host = host
         self.port = port
         self.reps = reps
+        self.warmups = warmups
         self.target_url = url.replace('https://', 'http://', 1)  # force HTTP
         self.write = write
         tab_url = next(tab['webSocketDebuggerUrl'] for tab in self.getTabs()
@@ -185,6 +181,8 @@ ap.add_argument('--host', default='localhost', help='Chromium host')
 ap.add_argument('--port', default=9222, type=int, help='Chromium port')
 ap.add_argument('--reps', default=20, metavar='N', type=int,
                 help='repetitions')
+ap.add_argument('--warmups', default=2, metavar='N', type=int,
+                help='warm-up loops')
 ap.add_argument('--write', action='store_true', default=False,
                 help='save profiling data as .cpuprofile files.')
 ap.add_argument('url', help='URL to load')
