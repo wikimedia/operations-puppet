@@ -305,7 +305,7 @@ class role::logging::webstatscollector {
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/collector -c 1:2',
         contact_group => 'analytics',
         retries       => 10,
-        require       => Service['webstats-collector'],
+        # require       => Service['webstats-collector'],
         ensure        => 'absent',
     }
 
