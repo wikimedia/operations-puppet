@@ -410,13 +410,6 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
     }
 }
 
-node 'beryllium.wikimedia.org' {
-    include admin
-    class { 'standard':
-        has_default_mail_relay => false,
-    }
-}
-
 node 'calcium.wikimedia.org' {
     $cluster = 'misc'
 
