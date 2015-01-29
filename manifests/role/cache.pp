@@ -500,9 +500,8 @@ class role::cache {
             require      => Class['::varnishkafka'],
         }
 
-        # Generate an alert if too many delivery report errors
-        # NOTE: This will soon be deprecated in favor of the
-        # graphite_threshold check below.
+        # This can be removed after it is applied everywhere
+        # and remvoed by ensure => absent.
         monitoring::ganglia { 'varnishkafka-drerr':
             description => 'Varnishkafka Delivery Errors',
             metric      => 'kafka.varnishkafka.kafka_drerr.per_second',
@@ -511,6 +510,8 @@ class role::cache {
             # Critical if greater than 30.
             critical    => '30.0',
             require     => Varnishkafka::Monitor['webrequest'],
+            # This is being replaced by monitoring::graphite_threshold
+            ensure      => 'absent'
         }
 
 
