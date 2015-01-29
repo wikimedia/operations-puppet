@@ -30,7 +30,7 @@ password=${globaldev_mysql_pass}
         minute  => 0,
         hour    => 12,
         user    => $::geowiki::params::user,
-        command => "/usr/bin/python ${::geowiki::params::scripts_path}/geowiki/process_data.py -o ${::geowiki::params::log_path} --wpfiles ${::geowiki::params::scripts_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_mysql_globaldev_conf_file} --dest_sql_cnf=${::geowiki::params::mysql_conf::conf_file} >${::geowiki::params::log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stdout 2>${::geowiki::params::log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stderr",
+        command => "/usr/bin/python ${::geowiki::params::scripts_path}/geowiki/process_data.py -o ${::geowiki::params::log_path} --wpfiles ${::geowiki::params::scripts_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-2 day' +\\%Y-\\%m-\\%d` --end=`date --date='0 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_mysql_globaldev_conf_file} --dest_sql_cnf=${::geowiki::mysql_conf::conf_file} >${::geowiki::params::log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stdout 2>${::geowiki::params::log_path}/process_data.py-cron-`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.stderr",
         require => File[$::geowiki::params::log_path],
     }
 }

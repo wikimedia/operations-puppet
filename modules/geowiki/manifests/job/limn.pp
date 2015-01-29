@@ -18,7 +18,7 @@ class geowiki::job::limn inherits geowiki::job {
         minute  => 0,
         hour    => 15,
         user    => $::geowiki::params::user,
-        command => "${::geowiki::params::scripts_path}/scripts/make_and_push_limn_files.sh --cron-mode --basedir_public=${::geowiki::params::public_data_path} --basedir_private=${::geowiki::params::private_data_path} --source_sql_cnf=${::geowiki::params::mysql_conf::conf_file}",
+        command => "${::geowiki::params::scripts_path}/scripts/make_and_push_limn_files.sh --cron-mode --basedir_public=${::geowiki::params::public_data_path} --basedir_private=${::geowiki::params::private_data_path} --source_sql_cnf=${::geowiki::mysql_conf::conf_file}",
         require => [
             Git::Clone['geowiki-scripts'],
             Git::Clone['geowiki-data-public'],
