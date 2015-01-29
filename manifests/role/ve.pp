@@ -15,15 +15,33 @@ class role::ve {
         resolution => '1366x768x24',
     }
 
-    # Instruct Chromium to route all requests to localhost.
+    # Instruct Chromium to route all requests to localhost, and to
+    # disable various features that add noise to profiling or that
+    # rely on user input.
 
     class { 'chromium':
-        extra_args => '--proxy-server=http://127.0.0.1',
+        extra_args => [
+            '--disable-background-networking',
+            '--disable-client-side-phishing-detection',
+            '--disable-component-update',
+            '--disable-default-apps',
+            '--disable-hang-monitor',
+            '--disable-prompt-on-repost',
+            '--disable-sync',
+            '--disable-web-resources',
+            '--no-default-browser-check',
+            '--no-first-run',
+            '--proxy-server=http://127.0.0.1',
+            '--safebrowsing-disable-auto-update',
+            '--safebrowsing-disable-download-protection',
+        ],
     }
+
 
     # vbench is a CLI tool for benchmarking VisualEditor.
     # It uses `autobahn` and `twisted` for WebSocket support, which
     # it needs so it can speak Chrome's remote debugging protocol.
+    # It uses `numpy` to calculate summary statistics.
 
     require_package('python-autobahn', 'python-twisted', 'python-numpy')
 
