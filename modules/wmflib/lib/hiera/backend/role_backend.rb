@@ -120,7 +120,12 @@ class Hiera
         return nil unless scope.include?topscope_var
         roles = scope[topscope_var]
         return nil if roles.nil?
-        hierarchy = Config.include?:role_hierarchy ? Config[:role_hierachy] : nil
+        if Config.include?(:role_hierarchy)
+          hierarchy = Config[:role_hierarchy]
+        else
+          hierarchy = nil
+        end
+
         roles.keys.each do |role|
           Hiera.debug("Looking in hierarchy for role #{role}")
           answer = nil
