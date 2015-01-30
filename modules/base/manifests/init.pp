@@ -145,6 +145,19 @@ class base::firewall($ensure = 'present') {
     }
 }
 
+class base::systemd {
+    # When setting up service definitions with custom unit files
+    #  in e.g. /etc/systemd/system/foo.service, the file definition
+    #  should have:
+    #     notify => Exec['systemctl-daemon-reload']
+    #  and the service definition should have:
+    #     require => Exec['systemctl-daemon-reload']
+    exec { 'systemctl-daemon-reload':
+        command => '/bin/systemctl daemon-reload',
+        refreshonly => 'true',
+    }
+}
+
 class base {
     include apt
 
@@ -208,6 +221,9 @@ class base {
     include role::trebuchet
     include nrpe
 
+    if $::initsystem == 'systemd' {
+        include base::systemd
+    }
 
     # include base::monitor::host.
     # if $nagios_contact_group is set, then use it
