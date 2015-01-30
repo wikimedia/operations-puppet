@@ -16,6 +16,15 @@ class graphite(
     ) {
     require_package('graphite-carbon', 'python-whisper')
 
+    # force installation of python-twisted-core separatedly, there seem to be a
+    # race condition with dropin.cache generation when apt-get installing
+    # graphite and twisted at the same time.
+    # https://bugs.launchpad.net/graphite/+bug/833196
+    package { 'python-twisted-core':
+        ensure => installed,
+        before => Class['packages::graphite_carbon'],
+    }
+
     $carbon_service_defaults = {
         log_updates              => false,
         log_cache_hits           => false,
