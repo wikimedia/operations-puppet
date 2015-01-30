@@ -1398,22 +1398,6 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
     class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
 
-    # The 'apache' user in the beta project would like to access
-    #  shared storage.  Since we definitely aren't going to install
-    #  apache on the labstores, we explicitly create the apache
-    #  user here so it has access.
-    group { 'apache':
-        ensure => present,
-        system => true,
-        gid    => 48,
-    }
-
-    user { 'apache':
-        managehome => false,
-        system     => true,
-        uid        => 48,
-        gid        => 48,
-    }
 }
 
 node 'labstore1003.eqiad.wmnet' {
