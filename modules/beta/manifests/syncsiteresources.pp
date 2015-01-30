@@ -1,4 +1,4 @@
-class beta::syncsiteresources {
+class beta::syncsiteresources ($user = 'apache'){
     file { '/usr/local/bin/sync-site-resources':
         ensure => 'present',
         owner  => 'root',
@@ -12,7 +12,6 @@ class beta::syncsiteresources {
         command => '/usr/local/bin/sync-site-resources >/dev/null 2>&1',
         require => File['/usr/local/bin/sync-site-resources'],
         hour    => '12',
-        user    => 'apache',
+        user    => $user,
     }
 }
-
