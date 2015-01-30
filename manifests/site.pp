@@ -2474,6 +2474,23 @@ node 'tungsten.eqiad.wmnet' {
     include role::performance
 }
 
+# Primary graphite machines, replacing tungsten
+node 'graphite1001.eqiad.wmnet' {
+    include admin
+    include standard
+    include role::graphite::production
+    include role::txstatsd
+    include role::gdash
+}
+
+node 'graphite2001.codfw.wmnet' {
+    include admin
+    include standard
+    include role::graphite::production
+    include role::txstatsd
+    include role::gdash
+}
+
 # graphite test machine, currently with SSD caching + spinning disks
 node 'graphite1002.eqiad.wmnet' {
     include admin
