@@ -684,6 +684,8 @@ host cp3019 {
 host cp3020 {
 	hardware ethernet D4:AE:52:8A:75:62;
 	fixed-address cp3020.esams.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cp3021 {
