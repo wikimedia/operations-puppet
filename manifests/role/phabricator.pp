@@ -122,7 +122,6 @@ class role::phabricator::main {
             pmtpa    => 'ops-pmtpa',
             esams    => 'ops-esams',
             eqiad    => 'ops-eqiad',
-            core-ops => 'ops-core',
             network  => 'ops-network',
             ops-requests => 'operations',
             testproj     => 'demoproject'
