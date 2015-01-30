@@ -170,7 +170,7 @@ class role::cache {
                 },
                 'mobile' => {
                     'eqiad' => ['cp1046.eqiad.wmnet',
-                                'cp1047.eqiad.wmnet',
+                                # 'cp1047.eqiad.wmnet', # hardware T88045
                                 'cp1059.eqiad.wmnet',
                                 'cp1060.eqiad.wmnet',
                     ],
