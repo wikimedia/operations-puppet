@@ -17,7 +17,7 @@ class misc::maintenance::refreshlinks( $ensure = present ) {
 
     file { [ '/var/log/mediawiki/refreshLinks' ]:
         ensure => ensure_directory($ensure),
-        owner  => 'apache',
+        owner  => $::mediawiki::users::web,
         group  => 'mwdeploy',
         mode   => '0664',
     }
@@ -29,7 +29,7 @@ class misc::maintenance::refreshlinks( $ensure = present ) {
         cron { "cron-refreshlinks-${name}":
             ensure   => $ensure,
             command  => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${db_cluster}.dblist --dfn-only > /var/log/mediawiki/refreshLinks/${name}.log 2>&1",
-            user     => 'apache',
+            user     => $::mediawiki::users::web,
             hour     => 0,
             minute   => 0,
             monthday => $monthday,
@@ -70,7 +70,7 @@ class misc::maintenance::translationnotifications( $ensure = present ) {
 
     cron { 'translationnotifications-metawiki':
         ensure  => $ensure,
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log',
         weekday => 1, # Monday
         hour    => 10,
@@ -79,7 +79,7 @@ class misc::maintenance::translationnotifications( $ensure = present ) {
 
     cron { 'translationnotifications-mediawikiwiki':
         ensure  => $ensure,
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log',
         weekday => 1, # Monday
         hour    => 10,
@@ -88,7 +88,7 @@ class misc::maintenance::translationnotifications( $ensure = present ) {
 
     file { '/var/log/translationnotifications':
         ensure => ensure_directory($ensure),
-        owner  => 'apache',
+        owner  => $::mediawiki::users::web,
         group  => 'wikidev',
         mode   => '0664',
     }
@@ -106,7 +106,7 @@ class misc::maintenance::tor_exit_node( $ensure = present ) {
     cron { 'tor_exit_node_update':
         ensure  => $ensure,
         command => '/usr/local/bin/mwscript extensions/TorBlock/loadExitNodes.php --wiki=aawiki --force > /dev/null',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => '*/20',
     }
 }
@@ -115,7 +115,7 @@ class misc::maintenance::echo_mail_batch( $ensure = present ) {
     cron { 'echo_mail_batch':
         ensure  => $ensure,
         command => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/echowikis.dblist extensions/Echo/maintenance/processEchoEmailBatch.php >/dev/null',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => 0,
         hour    => 0,
     }
@@ -125,7 +125,7 @@ class misc::maintenance::update_flaggedrev_stats( $ensure = present ) {
     file { '/srv/mediawiki/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh':
         ensure => $ensure,
         source => 'puppet:///files/misc/scripts/wikimedia-periodic-update.sh',
-        owner  => 'apache',
+        owner  => $::mediawiki::users::web,
         group  => 'wikidev',
         mode   => '0755',
     }
@@ -133,7 +133,7 @@ class misc::maintenance::update_flaggedrev_stats( $ensure = present ) {
     cron { 'update_flaggedrev_stats':
         ensure  => $ensure,
         command => '/srv/mediawiki/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         hour    => '*/2',
         minute  => '0',
     }
@@ -143,7 +143,7 @@ class misc::maintenance::cleanup_upload_stash( $ensure = present ) {
     cron { 'cleanup_upload_stash':
         ensure  => $ensure,
         command => '/usr/local/bin/foreachwiki maintenance/cleanupUploadStash.php > /dev/null',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         hour    => 1,
         minute  => 0,
     }
@@ -153,7 +153,7 @@ class misc::maintenance::update_special_pages( $ensure = present ) {
     cron { 'update_special_pages':
         ensure   => $ensure,
         command  => 'flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /var/log/mediawiki/updateSpecialPages.log 2>&1',
-        user     => 'apache',
+        user     => $::mediawiki::users::web,
         monthday => '*/3',
         hour     => 5,
         minute   => 0,
@@ -162,7 +162,7 @@ class misc::maintenance::update_special_pages( $ensure = present ) {
     file { '/usr/local/bin/update-special-pages':
         ensure => $ensure,
         source => 'puppet:///files/misc/scripts/update-special-pages',
-        owner  => 'apache',
+        owner  => $::mediawiki::users::web,
         group  => 'wikidev',
         mode   => '0755',
     }
@@ -172,7 +172,7 @@ class misc::maintenance::update_article_count( $ensure = present ) {
     cron { 'update_article_count':
         ensure   => $ensure,
         command  => 'flock -n /var/lock/update-article-count /usr/local/bin/update-article-count > /var/log/mediawiki/updateArticleCount.log 2>&1',
-        user     => 'apache',
+        user     => $::mediawiki::users::web,
         monthday => 29,
         hour     => 5,
         minute   => 0,
@@ -181,7 +181,7 @@ class misc::maintenance::update_article_count( $ensure = present ) {
     file { '/usr/local/bin/update-article-count':
         ensure => $ensure,
         source => 'puppet:///files/misc/scripts/update-article-count',
-        owner  => 'apache',
+        owner  => $::mediawiki::users::web,
         group  => 'wikidev',
         mode   => '0755',
     }
@@ -192,7 +192,7 @@ class misc::maintenance::wikidata( $ensure = present ) {
         ensure  => $ensure,
         # prunes the wb_changes table in wikidatawiki db
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune2.log',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
     }
 
@@ -202,7 +202,7 @@ class misc::maintenance::wikidata( $ensure = present ) {
         ensure  => $ensure,
         # dispatches changes data to wikibase clients (e.g. wikipedia) to be processed as jobs there
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher3.log',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => '*/5',
     }
 
@@ -210,14 +210,14 @@ class misc::maintenance::wikidata( $ensure = present ) {
         ensure  => $ensure,
         # second dispatcher to inject wikidata changes  wikibase clients (e.g. wikipedia) to be processed as jobs there
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher4.log',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => '*/5',
     }
 
     cron { 'wikibase-rebuild-entityperpage':
         ensure  => $ensure,
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildEntityPerPage.php --wiki wikidatawiki --force 2>&1 >> /var/log/wikidata/rebuildEpp.log',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => 30,
         hour    => 3,
         weekday => 0,
@@ -225,8 +225,8 @@ class misc::maintenance::wikidata( $ensure = present ) {
 
     file { '/var/log/wikidata':
         ensure => ensure_directory($ensure),
-        owner  => 'apache',
-        group  => 'apache',
+        owner  => $::mediawiki::users::web,
+        group  => $::mediawiki::users::web,
         mode   => '0664',
     }
 
@@ -245,7 +245,7 @@ class misc::maintenance::parsercachepurging( $ensure = present ) {
 
     cron { 'parser_cache_purging':
         ensure  => $ensure,
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => 0,
         hour    => 1,
         weekday => 0,
@@ -267,7 +267,7 @@ class misc::maintenance::updatetranslationstats( $ensure = present ) {
 
     cron { 'updatetranslationstats':
         ensure  => $ensure,
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => 0,
         hour    => 0,
         weekday => 1,
@@ -280,7 +280,7 @@ class misc::maintenance::updatequerypages( $ensure = present ) {
 
         file { '/var/log/mediawiki/updateSpecialPages':
                 ensure => directory,
-                owner  => 'apache',
+                owner  => $::mediawiki::users::web,
                 group  => 'mwdeploy',
                 mode   => '0664',
         }
@@ -292,7 +292,7 @@ class misc::maintenance::updatequerypages( $ensure = present ) {
 
                 Cron {
                     ensure => $ensure,
-                    user   => 'apache',
+                    user   => $::mediawiki::users::web,
                     hour   => 1,
                     minute => 0,
                     month  => absent,
@@ -334,7 +334,7 @@ class misc::maintenance::updatequerypages( $ensure = present ) {
 
             Cron {
                 ensure => $ensure,
-                user   => 'apache',
+                user   => $::mediawiki::users::web,
                 hour   => 1,
                 minute => 0,
             }
@@ -385,7 +385,7 @@ class misc::maintenance::purge_abusefilter( $ensure = present ) {
     cron { 'purge_abusefilteripdata':
         ensure  => $ensure,
         command => '/usr/local/bin/foreachwiki extensions/AbuseFilter/maintenance/purgeOldLogIPData.php >/dev/null 2>&1',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         hour    => '1',
     }
 }
@@ -393,7 +393,7 @@ class misc::maintenance::purge_abusefilter( $ensure = present ) {
 class misc::maintenance::purge_checkuser( $ensure = present ) {
     cron { 'purge-checkuser':
         ensure  => $ensure,
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => 0,
         hour    => 0,
         weekday => 0,
@@ -404,7 +404,7 @@ class misc::maintenance::purge_checkuser( $ensure = present ) {
 class misc::maintenance::purge_securepoll( $ensure = present ) {
     cron { 'purge_securepollvotedata':
         ensure  => $ensure,
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         hour    => '1',
         command => '/usr/local/bin/foreachwiki extensions/SecurePoll/cli/purgePrivateVoteData.php 2>&1 > /dev/null',
     }

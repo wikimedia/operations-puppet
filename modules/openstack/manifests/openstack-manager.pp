@@ -87,11 +87,11 @@ class openstack::openstack-manager(
     cron {
         'run-jobs':
             ensure  => present,
-            user    => 'apache',
+            user    => $::mediawiki::users::web,
             command => '/usr/local/bin/mwscript maintenance/runJobs.php --wiki=labswiki > /dev/null 2>&1';
         'send-echo-emails':
             ensure  => present,
-            user    => 'apache',
+            user    => $::mediawiki::users::web,
             command => '/usr/local/bin/mwscript extensions/Echo/maintenance/processEchoEmailBatch.php --wiki=labswiki > /dev/null 2>&1';
         'db-bak':
             ensure  => present,
