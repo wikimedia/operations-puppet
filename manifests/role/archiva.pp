@@ -33,7 +33,9 @@ class role::archiva {
         # Need large body size to allow for .jar deployment.
         'client_max_body_size 256M',
         # Archiva sometimes takes a long time to respond.
-        'proxy_read_timeout 600s'
+        'proxy_connect_timeout 600s',
+        'proxy_read_timeout 600s',
+        'proxy_send_timeout 600s',
     ]
     nginx::site { 'archiva':
         content => template('nginx/sites/simple-proxy.erb'),
