@@ -14,7 +14,7 @@ def get_queue_name(server):
     :param server: Type of server to get queue name for
     :return: String containing queue name to use for given server type
     """
-    if server in ('uwsgi-python', 'uwsgi-python3'):
+    if server in ('uwsgi-python', ):
         return 'webgrid-uwsgi'
     return 'webgrid-' + server
 
@@ -137,8 +137,7 @@ MEMLIMIT = read_file(
 
 parser = argparse.ArgumentParser()
 parser.add_argument('server', help='Type of server to start',
-                    choices=['lighttpd', 'tomcat', 'uwsgi-python', 'uwsgi-python3'],
-                    default='lighttpd', nargs='?')
+                    choices=['lighttpd', 'tomcat', 'uwsgi-python'], default='lighttpd', nargs='?')
 parser.add_argument('action', help='Action to perform',
                     choices=['stop', 'start', 'restart'])
 parser.add_argument('--release', help='Which Ubuntu release the node running the webservice sould be on',
@@ -151,7 +150,7 @@ job_name = '%s-%s' % (args.server, TOOL) # Format for job names. one tool can ha
 job_id = get_job_id(queue_name, job_name)
 
 # And no precise for uwsgi, so default to trusty
-if args.server in ('uwsgi-python', 'uwsgi-python3' ):
+if args.server in ('uwsgi-python', ):
     args.release = 'trusty'
 
 if args.action == 'start':
