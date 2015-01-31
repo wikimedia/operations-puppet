@@ -19,9 +19,3 @@ class role::apertium(
     }
 
 }
-
-class role::apertium::jenkins_access {
-    # Allow ssh access from the Jenkins master to the server where apertium is
-    # running
-    include contint::firewall::labs
-}
