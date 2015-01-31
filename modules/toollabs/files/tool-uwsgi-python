@@ -3,15 +3,22 @@ import re
 import socket
 import os
 import pwd
+import sys
 
 pwd_entry = pwd.getpwuid(os.getuid())  # Use uid as reserved port for eacht ool
 TOOL = re.sub(r'^tools.', '', pwd_entry.pw_name) # Tool users are of form tools.TOOLNAME
 
 PORT = os.getuid()
 
+# Depending on what name is used to call this tool, make it python2 or 3
+if os.path.basename(sys.argv[0]) == 'tool-uwsgi-python3':
+    PLUGIN = 'python3'
+else:
+    PLUGIN = 'python2'
+
 args = [
     '/usr/bin/uwsgi',
-    '--plugin', 'python',
+    '--plugin', PLUGIN,
     '--http-socket', ':' + str(PORT),
     '--wsgi-file', 'app.py',
     '--chdir', os.path.expanduser('~/www/python/src'),
