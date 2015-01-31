@@ -113,6 +113,14 @@ class toollabs::dev_environ {
         mode    => '0444',
     }
 
+    file { '/usr/local/bin/webservice2':
+        ensure => present,
+        source => 'puppet:///modules/toollabs/webservice2',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
     # TODO: deploy scripts
     # TODO: packager
 }

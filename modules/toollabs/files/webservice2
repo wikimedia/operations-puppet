@@ -1,0 +1,180 @@
+#!/usr/bin/python
+import os
+import pwd
+import re
+import subprocess
+import argparse
+import xml.etree.ElementTree as ET
+
+
+def get_queue_name(server):
+    """
+    Helper function that returns which queue to use for which server
+
+    :param server: Type of server to get queue name for
+    :return: String containing queue name to use for given server type
+    """
+    if server in ('uwsgi-python', ):
+        return 'webgrid-uwsgi'
+    return 'webgrid-' + server
+
+
+def read_file(path, default=None):
+    """
+    Helper function to return contents of file if it exists, or a default value.
+
+    :param path: Path to file to read from
+    :param default: Value to return if the file does not exist
+    :return: String containing either contents of the file, or default value
+    """
+    if os.path.exists(path):
+        with open(path) as f:
+            return f.read()
+    return default
+
+
+def start_web_job(server, release):
+    """
+    Submits a job to the grid, running a particular server, for current user
+
+    :param server: Server type to start job as. Current options are lighttpd and tomcat
+    """
+    command = ['qsub',
+               '-e', '%s/error.log' % HOME,
+               '-o', '%s/error.log' % HOME,
+               '-i', '/dev/null',
+               '-q', get_queue_name(server),
+               '-l', 'h_vmem=%s,release=%s' % (MEMLIMIT, release),
+               '-b', 'y',
+               '-N', '%s-%s' % (server, TOOL),
+               '/usr/local/bin/tool-%s' % server]
+    subprocess.check_call(command, stdout=open(os.devnull, 'wb'))
+
+
+def stop_job(job_id):
+    """
+    Deletes a job with given job id from the grid
+
+    :param job_id: Job id to delete
+    """
+    command = ['qdel', job_id]
+    subprocess.check_call(command, stdout=open(os.devnull, 'wb'))
+
+
+def qstat_xml(*args):
+    """
+    Executes a qstat call and returns the output in XML format
+
+    :param args: Arguments to the qstat call
+    :return: String response in XML form of the qstat output
+    """
+    qstat_args = ['qstat'] + list(args) + ['-xml']
+    output = subprocess.check_output(qstat_args)
+    return output
+
+
+def xpath_string(string, xpath):
+    """
+    Parses given string as XML, returns single string value
+    produced by the given xpath query
+
+    :param string: String to parse as XML
+    :param xpath: XPath query to run over the parsed XML
+    :return: Single string that is the result of the XPath query
+    """
+    xml = ET.fromstring(string)
+    return xml.findtext(xpath)
+
+def get_job_id(queue_name, job_name):
+    """
+    Gets job id of a particular job with a particular name in a particular queue
+
+    :param queue_name: Queue name to look in
+    :param job_name:  Job name to look for
+    :return: Job id if the job is found, None otherwise
+    """
+    output = qstat_xml('-q', queue_name, '-j', job_name)
+    # GE is stupid.
+    # Returns output like:
+    # <><ST_name>blah</ST_name></>
+    # If the job is not found.
+    if '<unknown_jobs' in output and '<>' in output:
+        return None
+    return xpath_string(output, './/JB_job_number')
+
+def wait_for_job(queue_name, job_name, up=True):
+    """
+    Waits for a job to be either up (or down), printing .s while waiting
+
+    :param queue_name: Queue name to look for the job in
+    :param job_name: Name of job to look for
+    :param up: True if we want to wait for the job to be up, false for down
+    :return returns the job id, if up=True
+    """
+    while True:
+        jid = get_job_id(queue_name, job_name)
+        if jid is None == up:
+            print '.',
+        else:
+            return jid
+
+# Setup constants that we would need later on
+PREFIX = read_file('/etc/wmflabs-project', 'tools').strip() # project name
+
+pwd_entry = pwd.getpwuid(os.getuid())
+USER = pwd_entry.pw_name
+HOME = pwd_entry.pw_dir
+TOOL = re.sub(r'^%s.' % PREFIX, '', USER) # Tool users are of form PREFIX.TOOLNAME
+
+# Read memlimit customizations for individual tools, set by
+# admins for tools that require more than usual memory limits.
+MEMLIMIT = read_file(
+    os.path.join(
+        '/data/project/.system/config/',
+        '%s.web-memlimit' % TOOL
+    ), '4g'
+).strip()
+
+parser = argparse.ArgumentParser()
+parser.add_argument('server', help='Type of server to start',
+                    choices=['lighttpd', 'tomcat', 'uwsgi-python'], default='lighttpd', nargs='?')
+parser.add_argument('action', help='Action to perform',
+                    choices=['stop', 'start', 'restart'])
+parser.add_argument('--release', help='Which Ubuntu release the node running the webservice sould be on',
+                    choices=['precise', 'trusty'], default='precise')
+args = parser.parse_args()
+
+queue_name = 'webgrid-%s' % args.server # Queues are named webgrid-{tomcat,lighttpd}
+job_name = '%s-%s' % (args.server, TOOL) # Format for job names. one tool can have only one job running on webgrid
+
+job_id = get_job_id(queue_name, job_name)
+
+# And no precise for uwsgi, so default to trusty
+if args.server in ('uwsgi-python', ):
+    args.release = 'trusty'
+
+if args.action == 'start':
+    if job_id is not None:
+        print 'Your webservice is already running'
+        exit()
+    start_web_job(args.server, args.release)
+    print 'Starting web service',
+    wait_for_job(queue_name, job_name, True)
+elif args.action == 'stop':
+    if job_id is None:
+        print 'Your webservice is not running'
+        exit()
+    stop_job(job_id)
+    print 'Stopping web service'
+    wait_for_job(queue_name, job_name, False)
+elif args.action == 'restart':
+    if job_id is not None:
+        print 'Restarting'
+        stop_job(job_id)
+        wait_for_job(queue_name, job_name, False)
+        start_web_job(args.server, args.release)
+        wait_for_job(queue_name, job_name, True)
+    else:
+        print 'Webservice not running, starting'
+        start_web_job(args.server)
+        wait_for_job(queue_name, job_name, True)
