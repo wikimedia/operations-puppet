@@ -540,6 +540,9 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     # to do this remotely.  Some oozie jobs use this,
     # and it must be present on all datanodes.
     include role::analytics::hadoop::monitor::nsca::client
+
+    # Install MaxMind databases for geocoding UDFs
+    include geoip
 }
 
 # == Class role::analytics::hadoop::monitor::nsca::client
