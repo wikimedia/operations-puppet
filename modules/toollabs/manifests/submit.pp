@@ -64,4 +64,12 @@ class toollabs::submit inherits toollabs {
         ensure  => running,
         require => File['/usr/local/sbin/bigbrother', '/etc/init/bigbrother.conf'],
     }
+
+    file { '/usr/local/bin/webservice2':
+        ensure => present,
+        source => 'puppet:///modules/toollabs/webservice2',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
