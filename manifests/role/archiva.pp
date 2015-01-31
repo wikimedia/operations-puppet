@@ -23,14 +23,18 @@ class role::archiva {
         require => Class['::archiva']
     }
 
-    # Set up simple Nginx reverse proxy port 80 to port $archiva_port
+    # Set up simple Nginx reverse proxy port 80 to port $archiva_port.
     class { '::nginx':
         require => Class['::archiva'],
     }
     $listen     = 80
     $proxy_pass = "http://127.0.0.1:${archiva_port}/"
-    # need large body size to allow for .jar deployment
-    $server_properties = ['client_max_body_size 256M']
+    $server_properties = [
+        # Need large body size to allow for .jar deployment.
+        'client_max_body_size 256M',
+        # Archiva sometimes takes a long time to respond.
+        'proxy_read_timeout 600s'
+    ]
     nginx::site { 'archiva':
         content => template('nginx/sites/simple-proxy.erb'),
         require => Class['::nginx'],
