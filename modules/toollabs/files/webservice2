@@ -142,7 +142,7 @@ parser.add_argument('server', help='Type of server to start',
 parser.add_argument('action', help='Action to perform',
                     choices=['stop', 'start', 'restart'])
 parser.add_argument('--release', help='Which Ubuntu release the node running the webservice sould be on',
-                    choices=['precise', 'trusty'], default='precise')
+                    choices=['precise', 'trusty'], default='trusty')
 args = parser.parse_args()
 
 queue_name = 'webgrid-%s' % args.server # Queues are named webgrid-{tomcat,lighttpd}
