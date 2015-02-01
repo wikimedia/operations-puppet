@@ -96,6 +96,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
     def onProfilerReady(self, params=None):
         self.sendCommand('Network.clearBrowserCache')
+        self.sendCommand('Network.clearBrowserCookies')
         self.sendCommand('Page.navigate', url=self.factory.target_url)
 
     def onPageFrameStoppedLoading(self, params=None):
