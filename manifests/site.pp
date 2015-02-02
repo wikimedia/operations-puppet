@@ -2420,7 +2420,6 @@ node 'silver.wikimedia.org' {
     include standard
     include admin
     include role::nova::manager
-    include openstack::database-server
 }
 
 node 'virt1000.wikimedia.org' {
