@@ -362,10 +362,10 @@ class role::swift::labs inherits role::swift::base {
         include ::swift::storage::monitoring
     }
     file { '/usr/local/bin/swift-labs-ring':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///files/swift/swift-labs-ring',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///files/swift/swift-labs-ring',
     }
 }
 
