@@ -1,4 +1,4 @@
-$: << "<%= @install_dir %>/lib"
+$LOAD_PATH.unshift("<%= @install_dir %>/lib")
 require 'gdash'
 
 set :run, false
