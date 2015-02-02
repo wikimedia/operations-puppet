@@ -33,7 +33,7 @@
 # ..and include the class:
 #
 #   class { 'puppet_statsd':
-#     statsd_host => 'tungsten.eqiad.wmnet',
+#     statsd_host => 'statsd.eqiad.wmnet',
 #   }
 #
 class puppet_statsd(
