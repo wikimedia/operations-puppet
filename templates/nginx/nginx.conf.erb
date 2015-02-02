@@ -9,6 +9,19 @@ realm =  @realm
 user www-data www-data;
 <% if has_variable?("nginx_use_ssl") then %>
 worker_processes  <%= @processorcount.to_i %>;
+<%
+# Adapted from https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
+affinity_mask = Array.new
+cpupos = 0
+ncpus = @processorcount.to_i
+(0...ncpus).each do |worker|
+  bitmask = (1 << cpupos).to_s(2)
+  bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s
+  affinity_mask << bitstring
+  cpupos += 1
+end
+-%>
+worker_cpu_affinity <%= affinity.join(" ") %>;
 <% else %>
 worker_processes  <%= @processorcount.to_i * 8 %>;
 <% end %>
@@ -24,6 +37,7 @@ events {
     # Setting multi_accept makes it much less likely that
     # the SSL server will throw SSL connection errors
     multi_accept on;
+    accept_mutex off; # better latencies at high connection rates
     <% end %>
 }
 
