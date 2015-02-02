@@ -6,8 +6,11 @@
 #
 # [*repo_path*]
 #   The path to the operations/puppet.git repository
+# [*statsd_host*]
+#   The host to send stats about cherry-picked commits to
 class puppetmaster::gitsync(
-    $repo_path = '/var/lib/git/operations/puppet'
+    $repo_path = '/var/lib/git/operations/puppet',
+    $statsd_host = 'labmon1001.eqiad.wmnet',
 ){
 
     file { '/usr/local/bin/git-sync-upstream':

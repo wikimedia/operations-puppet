@@ -73,5 +73,11 @@ echo "Local hacks:"
 git log --color --pretty=oneline --abbrev-commit origin/HEAD..HEAD |
 sed 's/^/  /'
 
+# Send stats on how many cherry-picked commits there are to statsd
+STATS_PREFIX="`cat /etc/wmflabs-project`.`cat /etc/wmflabs-instancename`"
+CHERRY_PICKED_COUNT=`git log --pretty=oneline --abbrev-commit origin/HEAD..HEAD | wc -l`
+echo -n "$STATS_PREFIX.puppetmaster.cherrypicked_commits:$CHERRY_PICKED_COUNT|g" |
+    nc -w 1 -u <%= @statsd_host %> 8125
+
 # Restore dirty files if present
 [[ ${HAVE_STASH} -ne 0 ]] && git stash pop
