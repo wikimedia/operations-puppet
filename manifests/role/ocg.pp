@@ -81,7 +81,7 @@ class role::ocg::test {
     }
 
     class { 'redis':
-        maxmemory       => '500Mb',
-        password        => $passwords::redis::ocg_test_password,
+        maxmemory => '500Mb',
+        password  => $passwords::redis::ocg_test_password,
     }
 }
