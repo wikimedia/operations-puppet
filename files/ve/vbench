@@ -90,6 +90,10 @@ def get_program_time_ms(profile):
     time_in_program = (percent_in_program * total_time) / 1000.0
     return time_in_program
 
+def get_total_time_ms(profile):
+    return 1000.0 * (profile['endTime'] - profile['startTime'])
+
+
 
 class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
@@ -134,14 +138,17 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         if self.factory.write:
             self.writeProfilerData(data)
 
+        total_duration_ms = get_total_time_ms(data)
         duration_ms = get_program_time_ms(data)
         if self.factory.warmups:
             self.factory.warmups -= 1
-            logging.info('(warm-up) %.2fms', duration_ms)
+            logging.info('(warm-up) Program: %.2fms Total: %.2fms',
+                         duration_ms, total_duration_ms)
             return self.onProfilerReady()
         self.durations.append(duration_ms)
-        logging.info('%s of %s: %.2fms', len(self.durations),
-                     self.factory.reps, duration_ms)
+        logging.info('%s of %s: Program: %.2fms Total: %.2fms',
+                     len(self.durations), self.factory.reps, duration_ms,
+                     total_duration_ms)
         if len(self.durations) < self.factory.reps:
             self.onProfilerReady()
         else:
