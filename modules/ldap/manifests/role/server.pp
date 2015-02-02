@@ -15,16 +15,13 @@ class ldap::role::server::labs {
     case $::realm {
         'labs': {
             $certificate = 'star.wmflabs'
-            $ca_name = 'wmf-labs.pem'
         }
         'production': {
             case $::hostname {
                 'nembus': {
-                    $ca_name = 'GlobalSign_CA.pem'
                     $certificate = 'ldap-codfw.wikimedia.org'
                 }
                 'neptunium': {
-                    $ca_name = 'GlobalSign_CA.pem'
                     $certificate = 'ldap-eqiad.wikimedia.org'
                 }
                 default: {
@@ -37,7 +34,7 @@ class ldap::role::server::labs {
         }
     }
 
-    install_certificate{ $certificate: ca => $ca_name }
+    install_certificate{ $certificate: }
 
     # Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
     # Add it into the instance location, and ensure opendj can read it.
