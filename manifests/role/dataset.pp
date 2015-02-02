@@ -51,6 +51,13 @@ class role::dataset::primary {
     class { 'role::dataset::pagecounts_all_sites':
         enable => true,
     }
+
+    ferm::service {'dumps-primary-rsync':
+        port   => '873',
+        proto  => 'tcp',
+        srange => $dumps_rsync_clients_all,
+    }
+
 }
 
 # a dumps secondary server may be a primary source of content for a small
