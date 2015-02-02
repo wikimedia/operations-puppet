@@ -92,6 +92,7 @@ class gdash(
                 'post-buffering' => 4096,  # required by the Rack specification.
                 'master'         => true,
                 'die-on-term'    => true,
+                'ruby-lib'       => "${install_dir}/lib",
             },
         },
     }
