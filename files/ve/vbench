@@ -70,6 +70,27 @@ def highlight(*args):
     return WHITE + ''.join(map(str, args)) + RESET
 
 
+def find_function(root, func='(program)'):
+    """Breadth-first search for a function."""
+    if root['functionName'] == func:
+        return root
+    for child in root['children']:
+        result = find_function(child, func)
+        if result is not None:
+            return result
+
+
+def get_program_time_ms(profile):
+    """Get time spent executing JavaScript, in ms."""
+    total_samples = len(profile['samples'])
+    program = find_function(profile['head'])
+    program_samples = program['hitCount']
+    percent_in_program = program_samples / float(total_samples)
+    total_time = profile['timestamps'][-1] - profile['timestamps'][0]
+    time_in_program = (percent_in_program * total_time) / 1000.0
+    return time_in_program
+
+
 class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
     def sendCommand(self, method, callback=None, **params):
@@ -113,13 +134,13 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         if self.factory.write:
             self.writeProfilerData(data)
 
-        duration_ms = int(round(1000 * (data['endTime'] - data['startTime'])))
+        duration_ms = get_program_time_ms(data)
         if self.factory.warmups:
             self.factory.warmups -= 1
-            logging.info('(warm-up) %sms', duration_ms)
+            logging.info('(warm-up) %.2fms', duration_ms)
             return self.onProfilerReady()
         self.durations.append(duration_ms)
-        logging.info('%s of %s: %sms', len(self.durations),
+        logging.info('%s of %s: %.2fms', len(self.durations),
                      self.factory.reps, duration_ms)
         if len(self.durations) < self.factory.reps:
             self.onProfilerReady()
