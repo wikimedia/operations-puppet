@@ -1,6 +1,5 @@
 define install_certificate(
     $group     = 'ssl-cert',
-    $ca        = '',
     $privatekey=true,
 ) {
 
@@ -24,28 +23,9 @@ define install_certificate(
         }
     }
 
-    if ( $ca ) {
-        $cas = $ca
-    } else {
-        # PEM files should be listed in order:
-        # intermediate -> intermediate -> ... -> root
-        # If this is out of order either servers will fail to start,
-        # or will not properly have SSL enabled.
-        $cas = $name ? {
-            # NOTE: Those use .pem filenames
-            /^sni\./                       => 'GlobalSign_CA.pem',
-            'uni.wikimedia.org'            => 'GlobalSign_CA.pem',
-            'star.wmflabs.org'             => 'RapidSSL_CA.pem GeoTrust_Global_CA.pem',
-            'star.wmflabs'                 => 'wmf-labs.pem',
-            'star.planet.wikimedia.org'    => 'DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem',
-            'star.wmfusercontent.org'      => 'GlobalSign_CA.pem',
-            default => 'wmf-ca.pem',
-        }
-    }
     sslcert::chainedcert { $name:
-        ca => $cas,
+        group => $group,
     }
-
 }
 
 class certificates::base {
@@ -64,8 +44,6 @@ class certificates::star_wmflabs {
 
 }
 
-# TODO: define this
-# old lost CA, need to remove from all over
 class certificates::wmf_ca {
     sslcert::ca { 'wmf-ca':
         source  => 'puppet:///files/ssl/wmf-ca.crt',
