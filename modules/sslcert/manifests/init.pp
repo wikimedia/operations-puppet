@@ -38,6 +38,15 @@ class sslcert {
         source  => 'puppet:///modules/sslcert/update-ocsp',
     }
 
+    # install our helper that automatically creates certificate chains
+    file { '/usr/local/sbin/x509-bundle':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/sslcert/x509-bundle',
+    }
+
     # Limit AppArmor support to just Ubuntu, for now
     if $::operatingsystem == 'Ubuntu' {
         include apparmor

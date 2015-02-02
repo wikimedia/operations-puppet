@@ -7,9 +7,7 @@ class role::subversion {
     }
     $svnhost = 'svn.wikimedia.org'
 
-    install_certificate{ 'svn.wikimedia.org':
-        ca => 'RapidSSL_CA.pem',
-    }
+    install_certificate{ 'svn.wikimedia.org': }
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
 
