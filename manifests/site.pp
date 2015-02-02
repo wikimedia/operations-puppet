@@ -2413,6 +2413,15 @@ node 'labmon1001.eqiad.wmnet' {
     include role::labmon
 }
 
+# Silver is the new home of the wikitech web server.
+node 'silver.wikimedia.org' {
+    $cluster               = 'virt'
+
+    include standard
+    include admin
+    include role::nova::manager
+}
+
 node 'virt1000.wikimedia.org' {
     $cluster               = 'virt'
     $ganglia_aggregator    = true
