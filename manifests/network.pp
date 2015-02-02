@@ -265,6 +265,29 @@ class network::constants {
             ],
     }
 
+    # clients connecting to rsynd on dumps hosts
+    $dumps_rsync_hosts = {
+        'peers' => [                # datasets to peers
+            '208.80.154.11',        # dataset1001.wikimedia.org
+            '208.80.154.16',        # ms1001.wikimedia.org
+            ],
+        'public' => [               # dumps to public
+            '200.236.31.1',         # sagres.c3sl.ufpr.br
+            '147.251.48.205',       # odysseus.fi.muni.cz, odysseus.linux.cz
+            '2001:718:801:230::cd', # odysseus.ip6.fi.muni.cz
+            '176.31.96.178',        # mirror.fr.wickedway.nl
+            '199.47.196.26',        # wikimedia.wansec.com
+            '204.9.55.82',          # ftpmirror.your.org
+            '174.129.186.231',      # ec2-174-129-186-231.compute-1.amazonaws.com
+            '69.31.98.2',           # ftpmirror-ae0-4.us.your.org
+            ],
+        'analytics' => [            # page counts to analytics
+            '10.64.5.102',          # stat1002.eqiad.wmnet
+            '10.64.36.103',         # stat1003.eqiad.wmnet
+            ],
+    }
+
+
 }
 
 class network::checks {
