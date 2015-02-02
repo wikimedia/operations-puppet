@@ -27,10 +27,6 @@ define create_chained_cert(
         group   => $group,
         require => Exec["${name}_create_chained_cert"],
     }
-
-    file { "/etc/ssl/certs/${certname}.chained.pem":
-        ensure  => absent,
-    }
 }
 
 define install_certificate(
@@ -57,19 +53,6 @@ define install_certificate(
             # private => file("puppet:///private/ssl/${name}.key"), # cf this commit in certificate.pp
             private => "puppet:///private/ssl/${name}.key",
         }
-    }
-
-    file { "/etc/ssl/certs/${name}.pem":
-        ensure  => absent,
-    }
-
-    # create_combined_cert/create_pkcs12 created those
-    file { [
-        "/etc/ssl/private/${name}.crt",
-        "/etc/ssl/private/${name}.pem",
-        "/etc/ssl/private/${name}.p12",
-    ]:
-        ensure => absent,
     }
 
     if ( $ca ) {
