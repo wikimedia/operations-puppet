@@ -3,11 +3,7 @@
 # https://integration.wikimedia.org/logs/
 class contint::publish-console {
 
-    # publish-console.py dependencies
-    if ! defined ( Package['python-requests'] ) {
-        package { 'python-requests':
-            ensure => present,
-        }
-    }
+    # publish-console.py dependency
+    require_package('python-requests')
 
 }
