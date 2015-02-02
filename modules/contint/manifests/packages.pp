@@ -22,12 +22,8 @@ class contint::packages {
     # applications.
     # (openjdk is the default distribution for the java define.
     # The java define is found in modules/java/manifests/init.pp )
-    if ! defined ( Package['openjdk-6-jdk'] ) {
-        package { 'openjdk-6-jdk': ensure => present }
-    }
-    if ! defined ( Package['openjdk-7-jdk'] ) {
-        package { 'openjdk-7-jdk': ensure => present }
-    }
+    require_package('openjdk-6-jdk')
+    require_package('openjdk-7-jdk')
 
     package { 'maven2':
         ensure => present,
@@ -94,11 +90,7 @@ class contint::packages {
     # For Doxygen based documentations
     require_package('graphviz')
 
-    if ! defined ( Package['python-requests'] ) {
-        package { 'python-requests':
-            ensure => present,
-        }
-    }
+    require_package('python-requests')
 
     # Node.js evolves quickly so we want to update automatically.
     require_package('nodejs')
