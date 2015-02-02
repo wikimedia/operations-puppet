@@ -4392,6 +4392,11 @@ host sca1002 {
 	fixed-address sca1002.eqiad.wmnet;
 }
 
+host silver {
+	hardware ethernet 18:03:73:f1:58:67;
+	fixed-address silver.wikimedia.org;
+}
+
 host snapshot1001 {
 	hardware ethernet d0:67:e5:f9:17:a3;
 	fixed-address snapshot1001.eqiad.wmnet;
