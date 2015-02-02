@@ -6,9 +6,17 @@
 # what's common advice out there (all CPUs to all queues), as experience has
 # shown a tremendous difference.
 #
-# Optionally sets up matching Receive Side Scaling (RSS) IRQ affinities if
-# given a second parameter for lookups in /proc/interrupts.  e.g. for
-# bnx2x, this would be "eth0-fp-%d".
+# The first param is the ethernet interfaces (e.g. 'eth0') and is required.
+#
+# The second param is an optional RSS (Receive Side Scaling) IRQ name
+# pattern for finding device IRQs in /proc/interrupts.  It must contain a
+# single '%d' to match the queue number in the IRQ name.  For example, for
+# bnx2x this is 'eth0-fp-%d', and for bnx2 and tg3 it is 'eth0-%d'.
+#
+# If the RSS IRQ name parameter is not specified, the code will try to
+# auto-detect the pattern by searching /proc/interrupts for the 0th RSS
+# IRQ based on the supplied device name, e.g. /eth0[^\s0-9]+0$/.  If
+# detection fails, RSS will not be set up.
 #
 # Sets up matching Transmit Packet Steering (XPS) queues if possible as
 # well.  There are only two XPS cases currently covered: generic support
@@ -29,7 +37,7 @@
 # need to be addressed individually when we encounter them.
 #
 # Authors: Faidon Liambotis and Brandon Black
-# Copyright (c) 2013-2014 Wikimedia Foundation, Inc.
+# Copyright (c) 2013-2015 Wikimedia Foundation, Inc.
 
 import os
 import glob
@@ -93,6 +101,18 @@ def get_bnx2x_cos_queue_map(tx_queues, rx_queues):
     for rxq in rx_queues:
         tx_qmap[rxq] = [rxq + (c * len(rx_queues)) for c in range(cos_bands)]
     return tx_qmap
+
+
+def detect_rss_pattern(device):
+    """Detect RSS IRQ Name pattern based on device, if possible"""
+
+    rss_patt_re = re.compile(r'^\s*[0-9]+:.*\s' + device + r'([^\s0-9]+)0\n$')
+    irq_file = open('/proc/interrupts', 'r')
+    for line in irq_file:
+        match = rss_patt_re.match(line)
+        if match:
+            return device + match.group(1) + '%d'
+    return None
 
 
 def get_rx_irqs(rss_pattern, rx_queues):
@@ -181,7 +201,7 @@ def main():
     try:
         rss_pattern = sys.argv[2]
     except IndexError:
-        rss_pattern = None
+        rss_pattern = detect_rss_pattern(device)
 
     cpu_list = get_cpu_list()
     rx_queues = get_queues(device, 'rx')
