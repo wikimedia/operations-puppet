@@ -17,23 +17,10 @@ class openstack::database-server(
     $keystone_db_user = $keystoneconfig['db_user']
     $keystone_db_pass = $keystoneconfig['db_pass']
 
-    require mysql::server::package
-
-    if !defined(Service['mysql']) {
-        service { 'mysql':
-            ensure  => running,
-            enable  => true,
-            require => Class['mysql::server::package'],
-        }
-    }
+    class {'openstack::database-server::mysql': controller_mysql_root_pass => $controller_mysql_root_pass}
 
     # TODO: This expects the services to be installed in the same location
     exec {
-        'set_root':
-            onlyif  => "/usr/bin/mysql -uroot --password=''",
-            command => "/usr/bin/mysql -uroot --password='' mysql < /etc/nova/mysql.sql",
-            require => [Class['mysql'], File['/etc/nova/mysql.sql']],
-            before  => Exec['create_nova_db'];
         'create_nova_db_user':
             unless  => "/usr/bin/mysql --defaults-file=/etc/nova/nova-user.cnf -e 'exit'",
             command => '/usr/bin/mysql -uroot < /etc/nova/nova-user.sql',
@@ -76,17 +63,6 @@ class openstack::database-server(
     }
 
     file {
-        '/root/.my.cnf':
-            content => template('openstack/common/controller/my.cnf.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0640';
-        '/etc/nova/mysql.sql':
-            content => template('openstack/common/controller/mysql.sql.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0640',
-            require => Package['nova-common'];
         '/etc/nova/nova-user.sql':
             content => template('openstack/common/controller/nova-user.sql.erb'),
             owner   => 'root',
@@ -137,5 +113,41 @@ class openstack::database-server(
             group   => 'root',
             mode    => '0640',
             require => Package['keystone'];
+    }
+}
+
+class openstack::database-server::mysql($controller_mysql_root_pass) {
+    require mysql::server::package
+
+    if !defined(Service['mysql']) {
+        service { 'mysql':
+            ensure  => running,
+            enable  => true,
+            require => Class['mysql::server::package'],
+        }
+    }
+
+    file {
+        '/root/.my.cnf':
+            content => template('openstack/common/controller/my.cnf.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640';
+        '/etc/nova':
+            ensure => directory,
+            mode    => '0640';
+        '/etc/nova/mysql.sql':
+            content => template('openstack/common/controller/mysql.sql.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0640',
+            require => [Package['nova-common'], File['/etc/nova']];
+    }
+
+    exec {
+        'set_root':
+            onlyif  => "/usr/bin/mysql -uroot --password=''",
+            command => "/usr/bin/mysql -uroot --password='' mysql < /etc/nova/mysql.sql",
+            require => [Class['mysql'], File['/etc/nova/mysql.sql']];
     }
 }
