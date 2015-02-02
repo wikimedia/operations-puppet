@@ -28,13 +28,7 @@ trap '{ rm -f "$TEMPFILE"; }' EXIT
 cd ${REPO}
 
 # Fetch new changes from origin
-git fetch --verbose origin 2>&1 |
-tee "${TEMPFILE}"
-
-if grep "${TRACK_BRANCH}" "${TEMPFILE}" | grep -q "up to date" ; then
-    echo "Already up to date" 1>&2
-    exit 0
-fi
+git fetch --verbose origin
 
 # Hide any dirty local files
 git stash save "rebase $(date +%Y-%m-%dT%H:%M)" 2>&1 |
