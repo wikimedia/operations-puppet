@@ -2238,6 +2238,7 @@ node 'terbium.eqiad.wmnet' {
     include misc::maintenance::update_flaggedrev_stats
     include misc::maintenance::refreshlinks
     include misc::maintenance::update_special_pages
+    include misc::maintenance::update_article_count
     include misc::maintenance::purge_abusefilter
     include misc::maintenance::purge_checkuser
 
