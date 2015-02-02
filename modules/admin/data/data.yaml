@@ -171,7 +171,7 @@ groups:
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, tbayer]
+              mlitn, tbayer, ananthrk]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
