@@ -12,6 +12,7 @@ class lvs::monitor {
     lvs::monitor_service_http { "rendering.svc.eqiad.wmnet": ip_address => "10.2.2.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
     lvs::monitor_service_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend" }
     lvs::monitor_service_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
+    lvs::monitor_service_http { "citoid.svc.eqiad.wmnet": ip_address => "10.2.2.19", check_command => "check_http_on_port!1970", contact_group => "admins,parsoid" }
     lvs::monitor_service_http { "search.svc.eqiad.wmnet": ip_address => "10.2.2.30", check_command => "check_http_on_port!9200", contact_group => "admins" }
     lvs::monitor_service_http { 'ocg.svc.eqiad.wmnet': ip_address => $ip['ocg']['eqiad'], check_command => "check_http_lvs_on_port!ocg.svc.eqiad.wmnet!8000!/?command=health" }
     lvs::monitor_service_http { 'mathoid.svc.eqiad.wmnet': ip_address => $ip['mathoid']['eqiad'], check_command => "check_http_lvs_on_port!mathoid.svc.eqiad.wmnet!10042!/" }
