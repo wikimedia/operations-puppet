@@ -24,8 +24,14 @@ class openstack::openstack-manager(
 
     $controller_hostname = $novaconfig['controller_hostname']
 
-    package { [ 'php5-ldap', 'php5-uuid', 'imagemagick', 'librsvg2-bin' ]:
-        ensure => present;
+    if ($::lsbdistcodename == 'precise') {
+        package { [ 'php5-ldap', 'php5-uuid', 'imagemagick', 'librsvg2-bin' ]:
+            ensure => present;
+        }
+    } else {
+        package { [ 'php5-ldap', 'imagemagick', 'librsvg2-bin' ]:
+            ensure => present;
+        }
     }
 
     $webserver_hostname = $::realm ? {
