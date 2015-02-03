@@ -36,7 +36,7 @@ Version: 14.04
 Architectures: source amd64 i386
 Components: main universe non-free thirdparty
 UDebComponents: main
-Update: hwraid cassandra elasticsearch logstash
+Update: hwraid cassandra elasticsearch logstash tor-trusty
 Description: Wikimedia specific packages for Ubuntu Trusty Tahr
 SignWith: default
 DebOverride: deb-override

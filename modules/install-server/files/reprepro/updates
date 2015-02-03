@@ -7,7 +7,6 @@ Architectures: all>amd64
 VerifyRelease: 9B7D32F2D50582E6
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
-# track the cloudera hadoop release
 Name: cloudera
 Method: http://archive.cloudera.com/cdh5/ubuntu/precise/amd64/cdh/
 Components: contrib>thirdparty
@@ -56,3 +55,12 @@ GetInRelease: no
 Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl -X -S logstash || [ $? -eq 1 ]
+
+Name: tor-trusty
+Method: http://deb.torproject.org/torproject.org/
+Components: main>thirdparty
+UDebComponents:
+Suite: trusty
+Architectures: amd64 source
+VerifyRelease: 74A941BA219EC810
+ListShellHook: grep-dctrl -X -S tor || [ $? -eq 1 ]
