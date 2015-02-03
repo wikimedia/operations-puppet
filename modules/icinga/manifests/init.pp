@@ -155,4 +155,19 @@ class icinga {
         group  => 'www-data',
         mode   => '0664',
     }
+
+    file { '/usr/lib/nagios/eventhandlers':
+        ensure => directory,
+        owner  => 'icinga',
+        group  => 'icinga',
+        mode   => '0664',
+    }
+
+    file { '/usr/lib/nagios/eventhandlers/restart-gitblit.sh':
+        ensure => present,
+        owner  => 'icinga',
+        group  => 'icinga',
+        mode   => '0750',
+        source => 'puppet:///modules/icinga/restart-gitblit.sh',
+    }
 }
