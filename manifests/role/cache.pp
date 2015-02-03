@@ -376,9 +376,7 @@ class role::cache {
 
     class varnish::logging {
         if $::realm == 'production' {
-            # gadolinium is down!  protactinium is being brought up as a replacement.
-            # $webrequest_multicast_relay_host = '208.80.154.73' # gadoinium
-            $webrequest_multicast_relay_host = '208.80.154.13' # protactinium
+            $webrequest_multicast_relay_host = '208.80.154.73' # gadoinium
 
             $cliargs = '-m RxRequest:^(?!PURGE$) -D'
             varnish::logging { 'multicast_relay':
