@@ -12,6 +12,7 @@ define monitoring::service(
     $retry_check_interval  = 1,
     $contact_group         = 'admins',
     $config_dir            = '/etc/nagios',
+    $event_handler         = '/bin/true',
 )
 {
     if ! $host {
@@ -35,6 +36,7 @@ define monitoring::service(
         normal_check_interval  => $normal_check_interval,
         retry_check_interval   => $retry_check_interval,
         check_period           => '24x7',
+        event_handler          => $event_handler,
         notification_interval  => $critical ? {
             'true'  => 240,
             default => 0,
