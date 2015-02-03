@@ -724,6 +724,8 @@ class role::cache {
 
         # Prod-specific performance tweaks
         if $::realm == 'production' {
+            include cpufrequtils # defaults to "performance"
+
             # Bump min_free_kbytes a bit to ensure network buffers are available quickly
             vm::min_free_kbytes { 'cache':
                 pct => 2,
