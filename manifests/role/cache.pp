@@ -1620,6 +1620,7 @@ class role::cache {
                 'logstash1001.eqiad.wmnet',
                 'logstash1002.eqiad.wmnet',
                 'logstash1003.eqiad.wmnet',
+                'netmon1001.wikimedia.org', # servermon
                 'radon.eqiad.wmnet', # phab instance for legal
                 'iridium.eqiad.wmnet', # main phab
                 'terbium.eqiad.wmnet', # public_html

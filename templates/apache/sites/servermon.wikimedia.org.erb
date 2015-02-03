@@ -4,36 +4,17 @@
 # vim: filetype=apache
 
 <VirtualHost *:80>
-
     ServerName servermon.wikimedia.org
-
-    RewriteEngine on
-    RewriteRule ^/(.*)$ https://servermon.wikimedia.org/$1 [R=301]
-
-</VirtualHost>
-
-<VirtualHost *:443>
-
-    ServerName servermon.wikimedia.org
-
-    SSLEngine On
-    # TODO: Abusing librenms cert+key for now
-    SSLCertificateFile /etc/ssl/certs/librenms.wikimedia.org.pem
-    SSLCertificateKeyFile /etc/ssl/private/librenms.wikimedia.org.key
-    SSLCACertificatePath /etc/ssl/certs
-    <%= @ssl_settings.join("\n") %>
 
     DocumentRoot /srv/nonexistent
     <Directory />
         Options FollowSymLinks
-        SSLRequireSSL
         AllowOverride None
         Order Allow,Deny
         Allow from All
     </Directory>
 
     <Location />
-        SSLRequireSSL
         AllowOverride None
         Order Allow,Deny
         Allow from All
