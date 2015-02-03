@@ -59,9 +59,8 @@ def is_sane(value):
 def handle_save_timing(meta):
     event = meta['event']
     duration = event['duration']
-    runtime = event['runtime']
     if is_sane(duration):
-        dispatch_stat('mw.performance.save', runtime, duration)
+        dispatch_stat('mw.performance.save', duration)
 
 
 @handles('NavigationTiming')
@@ -94,7 +93,6 @@ def handle_navigation_timing(meta):
     site = 'mobile' if 'mobileMode' in event else 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
     https = 'https' if event.get('isHttps') else 'http'
-    runtime = event.get('runtime')
 
     # Current unused:
     bits_cache = meta.get('recvFrom', '').split('.')[0]
@@ -110,12 +108,6 @@ def handle_navigation_timing(meta):
 
         if metric == 'connecting':
             dispatch_stat(prefix, metric, site, https, value)
-
-        if runtime:
-            # PHP5/HHVM-qualified metrics
-            dispatch_stat(prefix, runtime, metric, site, auth, value)
-            dispatch_stat(prefix, runtime, metric, site, 'overall', value)
-            dispatch_stat(prefix, runtime, metric, 'overall', value)
 
 
 for meta in iter(zsock.recv_json, ''):
