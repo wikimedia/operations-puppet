@@ -35,6 +35,8 @@ sub vcl_recv {
 		set req.backend = zirconium;
 	} elsif (req.http.Host == "svn.wikimedia.org") {
 		set req.backend = antimony;
+	} elsif (req.http.Host == "servermon.wikimedia.org") {
+		set req.backend = netmon1001;
 	} elsif (req.http.Host == "people.wikimedia.org") {
 		set req.backend = terbium;
 		// No caching of public_html dirs
