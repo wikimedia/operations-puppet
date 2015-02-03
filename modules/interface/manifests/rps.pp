@@ -12,6 +12,7 @@
 #   (on bnx2x, this would be "eth0-fp-%d")
 define interface::rps( $rss_pattern="" ) {
     require interface::rpstools
+    require interface::rps::modparams
 
     $interface = $title
     $cmd = "/usr/local/sbin/interface-rps $interface $rss_pattern"
@@ -32,5 +33,17 @@ define interface::rps( $rss_pattern="" ) {
         command   => $cmd,
         subscribe => Augeas["${interface}_rps-${interface}"],
         refreshonly => true,
+    }
+}
+
+class interface::rps::modparams {
+    file { "/etc/modprobe.d/rps.conf":
+        content => template("${module_name}/rps.conf.erb"),
+        notify => Exec["update-initramfs-rps"]
+    }
+
+    exec { "update-initramfs-rps":
+        command => "/usr/sbin/update-initramfs -u",
+        refreshonly => true
     }
 }

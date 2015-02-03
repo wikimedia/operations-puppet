@@ -31,10 +31,10 @@ class lvs::balancer(
 
     file { "/etc/modprobe.d/lvs.conf":
         content => template("${module_name}/lvs.conf.erb"),
-        notify => Exec["update-initramfs"]
+        notify => Exec["update-initramfs-lvs-balancer"]
     }
 
-    exec { "update-initramfs":
+    exec { "update-initramfs-lvs-balancer":
         command => "/usr/sbin/update-initramfs -u",
         refreshonly => true
     }
