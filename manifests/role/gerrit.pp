@@ -31,7 +31,7 @@ class role::gerrit {
         include role::backup::host
 
         install_certificate{ 'gerrit.wikimedia.org':
-            ca => 'RapidSSL_CA.pem',
+            ca => 'GlobalSign_CA.crt',
         }
 
         backup::set { 'var-lib-gerrit2-review_site-git': }
