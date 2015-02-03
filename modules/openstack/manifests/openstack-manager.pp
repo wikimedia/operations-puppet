@@ -106,20 +106,20 @@ class openstack::openstack-manager(
             minute  => 0,
             command => '/usr/local/sbin/db-bak.sh > /dev/null 2>&1',
             require => File['/a/backup'];
-        'mw-xml':
-            ensure  => present,
-            user    => 'root',
-            hour    => 1,
-            minute  => 30,
-            command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
-            require => File['/a/backup'];
-        'mw-files':
-            ensure  => present,
-            user    => 'root',
-            hour    => 2,
-            minute  => 0,
-            command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
-            require => File['/a/backup'];
+        #'mw-xml':
+            #ensure  => present,
+            #user    => 'root',
+            #hour    => 1,
+            #minute  => 30,
+            #command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
+            #require => File['/a/backup'];
+        #'mw-files':
+            #ensure  => present,
+            #user    => 'root',
+            #hour    => 2,
+            #minute  => 0,
+            #command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
+            #require => File['/a/backup'];
         'backup-cleanup':
             ensure  => present,
             user    => 'root',
