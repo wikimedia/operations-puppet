@@ -10,7 +10,8 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= packet_loss_log %>
 pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> <%= @template_variables['fundraising_log_directory'] %>/logs/landingpages.tsv.log
 
 ## Banner Impressions
-pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression >> <%= @template_variables['fundraising_log_directory'] %>/logs/bannerImpressions-sampled100.tsv.log
+## RecordImpression is now sampled 1:100 on the client side
+pipe 1 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression >> <%= @template_variables['fundraising_log_directory'] %>/logs/bannerImpressions-sampled100.tsv.log
 pipe 100 /usr/bin/udp-filter -F '\t' -p Special:BannerRandom >> <%= @template_variables['fundraising_log_directory'] %>/logs/bannerRequests-sampled100.tsv.log
 
 ### API Usage
