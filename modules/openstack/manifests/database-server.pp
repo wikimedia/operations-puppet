@@ -140,13 +140,13 @@ class openstack::database-server::mysql($controller_mysql_root_pass) {
             owner   => 'root',
             group   => 'root',
             mode    => '0640',
-            require => [Package['nova-common'], File['/etc/nova']];
+            require => File['/etc/nova'];
     }
 
     exec {
         'set_root':
             onlyif  => "/usr/bin/mysql -uroot --password=''",
             command => "/usr/bin/mysql -uroot --password='' mysql < /etc/nova/mysql.sql",
-            require => [Class['mysql'], File['/etc/nova/mysql.sql']];
+            require => [Class['mysql::server::package'], File['/etc/nova/mysql.sql']];
     }
 }
