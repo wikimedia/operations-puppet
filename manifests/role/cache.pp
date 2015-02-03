@@ -64,7 +64,7 @@ class role::cache {
                         'cp1053.eqiad.wmnet',
                         'cp1054.eqiad.wmnet',
                         'cp1055.eqiad.wmnet',
-                        'cp1065.eqiad.wmnet',
+                        # 'cp1065.eqiad.wmnet', # reinstalling...
                         'cp1066.eqiad.wmnet',
                         'cp1067.eqiad.wmnet',
                         'cp1068.eqiad.wmnet',
