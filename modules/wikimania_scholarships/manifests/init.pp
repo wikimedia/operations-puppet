@@ -29,7 +29,7 @@ class wikimania_scholarships(
     $deploy_dir   = '/srv/deployment/scholarships/scholarships',
     $cache_dir    = '/var/cache/scholarships',
     $udp2log_dest = '10.64.0.21:8420',
-    $serveradmin  = 'root@wikimedia.org',
+    $serveradmin  = 'noc@wikimedia.org',
     $mysql_host   = 'localhost',
     $mysql_db     = 'scholarships',
     $smtp_host    = 'localhost'

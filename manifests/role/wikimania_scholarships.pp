@@ -14,7 +14,7 @@ class role::wikimania_scholarships {
         cache_dir    => '/var/cache/scholarships',
         # Send logs to fluorine
         udp2log_dest => '10.64.0.21:8420',
-        serveradmin  => 'root@wikimedia.org',
+        serveradmin  => 'noc@wikimedia.org',
         # Misc MySQL shard
         mysql_host   => 'm2-master.eqiad.wmnet',
         mysql_db     => 'scholarships',
