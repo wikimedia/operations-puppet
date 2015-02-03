@@ -20,9 +20,15 @@ class role::gitblit {
         rule => 'proto tcp dport 8080 { saddr $INTERNAL ACCEPT; }'
     }
 
+    @@nagios_command { 'restart-gitblit':
+        command_name => 'restart-gitblit',
+        command_line => '/usr/lib/nagios/eventhandlers/restart-gitblit $SERVICESTATE$ $SERVICESTATETYPE$ $SERVICEATTEMPT$'
+    }
+
     monitoring::service { 'gitblit_web':
         description   => 'git.wikimedia.org',
         check_command => 'check_http_url!git.wikimedia.org!/tree/mediawiki%2Fcore.git',
+        event_handler => 'restart_gitblit',
     }
 
     nrpe::monitor_service { 'gitblit_process':
