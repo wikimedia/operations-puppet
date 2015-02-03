@@ -121,7 +121,7 @@ class role::cache {
                     'eqiad' => ['cp1056.eqiad.wmnet',
                                 'cp1057.eqiad.wmnet',
                                 'cp1069.eqiad.wmnet',
-                    #reinstalling            'cp1070.eqiad.wmnet',
+                                'cp1070.eqiad.wmnet',
                     ],
                     'esams' => ['cp3019.esams.wikimedia.org',
                                 'cp3020.esams.wikimedia.org',
@@ -172,7 +172,7 @@ class role::cache {
                     'eqiad' => ['cp1046.eqiad.wmnet',
                                 # 'cp1047.eqiad.wmnet', # hardware T88045
                                 'cp1059.eqiad.wmnet',
-                    #reinstalling            'cp1060.eqiad.wmnet',
+                                'cp1060.eqiad.wmnet',
                     ],
                     'esams' => ['cp3011.esams.wikimedia.org',
                                 'cp3012.esams.wikimedia.org',
