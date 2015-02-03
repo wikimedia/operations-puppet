@@ -12,6 +12,7 @@ define monitoring::service(
     $retry_check_interval  = 1,
     $contact_group         = 'admins',
     $config_dir            = '/etc/nagios',
+    $event_handler         = '/bin/true',
 )
 {
     if ! $host {
@@ -61,6 +62,8 @@ define monitoring::service(
         freshness_threshold    => $passive ? {
             'true'  => $freshness,
             default => undef,
+        },
+        event_handler => $event_handler,
         },
     }
 }
