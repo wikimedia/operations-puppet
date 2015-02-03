@@ -23,7 +23,7 @@ class role::xenon {
         source  => 'puppet:///files/xenon/theme',
         owner   => 'www-data',
         group   => 'www-data',
-        mode    => 0755,
+        mode    => '0755',
         recurse => true,
         before  => Apache::Site['xenon'],
     }

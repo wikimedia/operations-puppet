@@ -21,7 +21,7 @@ class role::ci::master {
 
     # .gitconfig file required for rare git write operations
     git::userconfig { '.gitconfig for jenkins user':
-        homedir => '/var/lib/jenkins',
+        homedir  => '/var/lib/jenkins',
         settings => {
             'user' => {
                 'name'  => 'Wikimedia Jenkins Bot',
@@ -32,7 +32,7 @@ class role::ci::master {
                 'packedGitLimit' => '2G',
             },  # end of [core] section
         },  # end of settings
-        require => User['jenkins'],
+        require  => User['jenkins'],
     }
 
     # Templates for Jenkins plugin Email-ext.  The templates are hosted in
@@ -158,14 +158,14 @@ class role::ci::slave {
 
     # .gitconfig file required for rare git write operations
     git::userconfig { '.gitconfig for jenkins-slave user':
-        homedir => '/var/lib/jenkins-slave',
+        homedir  => '/var/lib/jenkins-slave',
         settings => {
             'user' => {
                 'name'  => 'Wikimedia Jenkins Bot',
                 'email' => "jenkins-slave@${::fqdn}",
             },  # end of [user] section
         },  # end of settings
-        require => User['jenkins-slave'],
+        require  => User['jenkins-slave'],
     }
 
     # Maven requires a webproxy on production slaves
@@ -201,9 +201,9 @@ class role::ci::slave {
     }
 
     file { '/home/npmtravis/.ssh':
-        ensure => directory,
-        owner  => 'npmtravis',
-        mode   => '0500',
+        ensure  => directory,
+        owner   => 'npmtravis',
+        mode    => '0500',
         require => User['npmtravis'],
     }
 
@@ -278,10 +278,10 @@ class role::ci::slave::labs::common {
     # only LDAP and is not created by puppet
     # bug 61144
     file { '/mnt/home':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
         require => $slash_mnt_require,
     }
 
@@ -322,7 +322,7 @@ class role::ci::slave::labs::common {
                 'email' => "jenkins-deploy@${::instancename}.${::site}.wmflabs",
             },  # end of [user] section
         },  # end of settings
-        require => File['/mnt/home/jenkins-deploy'],
+        require  => File['/mnt/home/jenkins-deploy'],
     }
 
     # The slaves on labs use the `jenkins-deploy` user which is already
@@ -481,9 +481,9 @@ class role::ci::publisher::labs {
     }
 
     rsync::server::module { 'doc':
-        path        => '/srv/doc',
-        read_only   => 'no',
-        require => [
+        path      => '/srv/doc',
+        read_only => 'no',
+        require   => [
             File['/srv/doc'],
             Class['role::labs::lvm::srv'],
         ],
