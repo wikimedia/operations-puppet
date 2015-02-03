@@ -1,8 +1,8 @@
-@monitoring::group { 'appserver_eqiad':     description => 'eqiad application servers' }
-@monitoring::group { 'api_appserver_eqiad': description => 'eqiad API application servers' }
-@monitoring::group { 'imagescaler_eqiad':   description => 'eqiad image scalers' }
-@monitoring::group { 'jobrunner_eqiad':     description => 'eqiad jobrunner application servers' }
-@monitoring::group { 'videoscaler_eqiad':   description => 'eqiad video scaler' }
+@monitoring::group { 'appserver_${site}':     description => '${site} application servers' }
+@monitoring::group { 'api_appserver_${site}': description => '${site} API application servers' }
+@monitoring::group { 'imagescaler_${site}':   description => '${site} image scalers' }
+@monitoring::group { 'jobrunner_${site}':     description => '${site} jobrunner application servers' }
+@monitoring::group { 'videoscaler_${site}':   description => '${site} video scaler' }
 
 class role::mediawiki::common {
     include ::standard
