@@ -15,7 +15,12 @@ define interface::rps( $rss_pattern="" ) {
     require interface::rps::modparams
 
     $interface = $title
-    $cmd = "/usr/local/sbin/interface-rps $interface $rss_pattern"
+    if $rss_pattern != "" {
+        $cmd = "/usr/local/sbin/interface-rps $interface $rss_pattern"
+    }
+    else {
+        $cmd = "/usr/local/sbin/interface-rps $interface"
+    }
 
     # Disable irqbalance if RSS in use
     if $rss_pattern != "" {
