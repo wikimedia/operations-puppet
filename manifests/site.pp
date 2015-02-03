@@ -2427,10 +2427,14 @@ node 'labmon1001.eqiad.wmnet' {
 node 'silver.wikimedia.org' {
     $cluster               = 'virt'
 
+    # This is ugly but temporary.
+    include passwords::openstack::nova
+    controller_mysql_root_pass => $passwords::openstack::nova::controller_mysql_root_pass
+
     include standard
     include admin
     include role::nova::manager
-    include openstack::database-server
+    class {'openstack::database-server::mysql': controller_mysql_root_pass => $controller_mysql_root_pass}
 }
 
 node 'virt1000.wikimedia.org' {
