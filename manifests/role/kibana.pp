@@ -42,7 +42,7 @@ class role::kibana {
         # Production
         $hostname      = 'logstash.wikimedia.org'
         $deploy_dir    = '/srv/deployment/kibana/kibana'
-        $serveradmin   = 'root@wikimedia.org'
+        $serveradmin   = 'noc@wikimedia.org'
         $require_ssl   = true
 
         $ldap_authurl  = 'ldaps://ldap-eqiad.wikimedia.org ldap-codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn'
