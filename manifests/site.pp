@@ -1102,8 +1102,9 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 }
 
 
-# protactinium is being used as an emergency gadolinium replacement
-# as of 2014-01-27
+# protactinium was being used as an emergency gadolinium replacement.
+# Since gadolinium is back up, varnishncsa instances now send logs
+# to gadolinium again.  protactinium is not being used.
 node 'protactinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 
     class { 'admin': groups => ['udp2log-users'] }
