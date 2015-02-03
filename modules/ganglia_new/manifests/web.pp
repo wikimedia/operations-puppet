@@ -37,4 +37,14 @@ class ganglia_new::web(
         content => template('ganglia_new/conf_production.php.erb'),
         require => Package['ganglia-webfrontend'],
     }
+
+    ferm::service { 'ganglia_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'ganglia_https':
+        proto => 'tcp',
+        port  => '443',
+    }
 }
