@@ -2,8 +2,8 @@
 # db::redis
 
 # Virtual resource for the monitoring server
-@monitoring::group { 'redis_eqiad':
-    description => 'eqiad Redis',
+@monitoring::group { "redis_${site}":
+    description => '${site} Redis',
 }
 
 class role::db::redis (
