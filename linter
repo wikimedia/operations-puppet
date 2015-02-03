@@ -14,8 +14,8 @@ usage ()
 bold=`/usr/bin/tput -T xterm-256color setaf bold`
 normal=`/usr/bin/tput -T xterm-256color setaf sgr0`
 
-which puppet-lint 2>&1 >/dev/null || {
-  echo "puppet-lint not installed.";
+which 'bundle' 2>&1 >/dev/null || {
+  echo "bundle is not installed.";
   if [ "$1" = "-h" ]; then exit 0;
   else usage; exit 1; fi;
 }
@@ -44,7 +44,7 @@ linter () {
   tmp=`mktemp -u /tmp/%s.XXXX`
   for file in ${@}
     do
-      puppet-lint $file > $tmp
+      bundle exec puppet-lint $file > $tmp
       if [ -s $tmp ]
         then
           echo "${bold}${file}${normal}"

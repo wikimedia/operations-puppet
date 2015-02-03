@@ -13,3 +13,19 @@ and a vibrant community of volunteer contributors. Get involved!
 
 https://wikitech.wikimedia.org/wiki/Get_involved
 freenode: #wikimedia-operations
+
+== Linting ==
+
+We rely on puppet-lint for our Puppet manifests, you can run the linter locally
+using ruby bundler (http://bundler.io):
+
+    gem install bundler
+    bundle install
+
+Then:
+
+    bundle exec puppet-lint
+
+Or later on use the rake task:
+
+    rake lint
