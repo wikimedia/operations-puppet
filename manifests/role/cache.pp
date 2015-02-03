@@ -81,7 +81,7 @@ class role::cache {
                         'amssq39.esams.wmnet',
                         'amssq40.esams.wmnet',
                         'amssq41.esams.wmnet',
-                        'amssq42.esams.wmnet', # jessie test
+                        'amssq42.esams.wmnet',
                         'amssq43.esams.wmnet',
                         'amssq44.esams.wmnet',
                         'amssq45.esams.wmnet',
