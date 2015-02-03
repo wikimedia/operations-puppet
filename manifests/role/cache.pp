@@ -724,12 +724,18 @@ class role::cache {
 
         #class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
 
-        # Bump min_free_kbytes a bit to ensure network buffers are available quickly
+        # Prod-specific performance tweaks
         if $::realm == 'production' {
+            # Bump min_free_kbytes a bit to ensure network buffers are available quickly
             vm::min_free_kbytes { 'cache':
                 pct => 2,
                 min => 131072,
                 max => 262144,
+            }
+
+            # This needs newer-ish kernels, testing only on jessie+ hosts for now
+            if os_version('debian >= jessie') {
+                interface::rps { 'eth0': }
             }
         }
 
