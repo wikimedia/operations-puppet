@@ -204,7 +204,7 @@ class role::logstash::apifeatureusage {
 
     logstash::conf{ 'output-apifeatureusage':
         content  => template('logstash/apifeatureusage.erb'),
-        priority => 10,
+        priority => 95,
     }
 
     # Cron jobs to delete and optimize indexes
