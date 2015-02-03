@@ -6,6 +6,10 @@
     description => 'eqiad Redis',
 }
 
+@monitoring::group { 'redis_codfw':
+    description => 'codfw Redis',
+}
+
 class role::db::redis (
     $maxmemory         = inline_template("<%= (Float(memorysize.split[0]) * 0.82).round %>Gb"),
     $redis_replication = undef,
