@@ -42,7 +42,7 @@ fi
 
 linter () {
   tmp=`mktemp -u /tmp/%s.XXXX`
-  for file in $1
+  for file in ${@}
     do
       puppet-lint $file > $tmp
       if [ -s $tmp ]
