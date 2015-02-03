@@ -24,16 +24,6 @@ class base::instance-upstarts {
 
 }
 
-class base::screenconfig {
-    file { '/root/.screenrc':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/base/screenrc',
-    }
-}
-
 # handle syslog permissions (e.g. 'make common logs readable by normal users (RT-2712)')
 class base::syslogs (
     $readable = false,
