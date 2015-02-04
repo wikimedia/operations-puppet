@@ -58,7 +58,7 @@ def is_sane(value):
 @handles('SaveTiming')
 def handle_save_timing(meta):
     event = meta['event']
-    duration = event['duration']
+    duration = event.get('duration')
     if is_sane(duration):
         dispatch_stat('mw.performance.save', duration)
 
