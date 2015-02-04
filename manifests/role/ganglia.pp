@@ -101,6 +101,24 @@ class role::ganglia::web {
         port  => '443',
     }
 
+    ferm::service { 'gmond_udp':
+        proto  => 'udp',
+        port   => '8649',
+        srange => '$ALL_NETWORKS',
+    }
+
+    ferm::service { 'gmond_tcp':
+        proto  => 'tcp',
+        port   => '8649',
+        srange => '$ALL_NETWORKS',
+    }
+
+    ferm::service { 'gmetad':
+        proto  => 'tcp',
+        port   => '8654',
+        srange => '$ALL_NETWORKS',
+    }
+
     # Get better insight into how disks are faring
     ganglia::plugin::python { 'diskstat': }
 
