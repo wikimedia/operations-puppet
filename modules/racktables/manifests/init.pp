@@ -4,7 +4,7 @@
 ## the installation at this time & the actual tarball must be downloaded from
 ## http://racktables.org/ and unzipped into /srv/org/wikimedia/racktables
 class racktables (
-    $racktables_db_host = 'db1001.eqiad.wmnet',
+    $racktables_db_host = 'm1-master.eqiad.wmnet',
     $racktables_db      = 'racktables',
 ) {
 

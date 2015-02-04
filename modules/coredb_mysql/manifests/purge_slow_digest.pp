@@ -4,8 +4,8 @@ class coredb_mysql::purge_slow_digest {
     include passwords::mysql::querydigest
 
     $mysql_user = 'ops'
-    $digest_host = 'db1001.eqiad.wmnet'
-    $digest_slave = 'db1016.eqiad.wmnet'
+    $digest_host = 'm1-master.eqiad.wmnet'
+    $digest_slave = 'm1-slave.eqiad.wmnet'
     $digest_db = 'query_digests'
 
     file { '/usr/local/bin/purge_query_digest.sh':

@@ -34,7 +34,7 @@ class role::racktables {
     }
 
     class { '::racktables':
-        racktables_db_host => 'db1001.eqiad.wmnet',
+        racktables_db_host => 'm1-master.eqiad.wmnet',
         racktables_db      => 'racktables',
     }
 }

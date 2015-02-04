@@ -3,7 +3,7 @@ class coredb_mysql::slow_digest {
     include passwords::mysql::querydigest
 
     $mysql_user = 'ops'
-    $digest_host = 'db1001.eqiad.wmnet'
+    $digest_host = 'm1-master.eqiad.wmnet'
     $digest_db = 'query_digests'
 
     file { '/usr/local/bin/send_query_digest.sh':

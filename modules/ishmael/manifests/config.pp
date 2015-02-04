@@ -1,7 +1,7 @@
 # definition of an ishmael config
 
 define ishmael::config(
-    $db_central_host = 'db1001.eqiad.wmnet',
+    $db_central_host = 'm1-master.eqiad.wmnet',
     $review_table    = '%query_review',
     $history_table   = '%query_review_history',
 ) {
