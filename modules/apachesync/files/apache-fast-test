@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2014 Jeff Green <jgreen@wikimedia.org>
+# Copyright (c) 2014,2015 Jeff Green <jgreen@wikimedia.org>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -163,7 +163,7 @@ sub process_queue_task {
 				);
 				my $r = $ua->simple_request($request);
 				if ($r->is_success) {
-					$result{"$ip\t$url"} = $r->status_line . ' ' . length($r->content);
+					$result{"$ip\t$url"} = $r->status_line . ' ' . get_mw_response_size($r->content);
 				} elsif (($r->is_error) and ($r->status_line =~ /^500 can't connect/i)) { # simple timeout, drop the data
 					$timeouts{$ip}++;
 					print "$name dropped $ip, too many timeouts\n" if $timeouts{$ip} >= $timeout_limit;
@@ -175,6 +175,12 @@ sub process_queue_task {
 			}
 		}
 	}
+}
+
+sub get_mw_response_size {
+	my $body = shift;
+	$body =~ s/mw.config.set\([^()]+\);//mg; # remove transaction metadata
+	return length($body);
 }
 
 sub get_server_list_from_pybal_config {
