@@ -4341,7 +4341,7 @@ host rbf2001 {
 }
 
 host rbf2002 {
-	hardware ethernet 90:B1:1C:22:D4:C8;
+	hardware ethernet 90:B1:1C:2A:2F:0A;
 	fixed-address rbf2002.codfw.wmnet;
 }
 
