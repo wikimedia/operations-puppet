@@ -45,7 +45,8 @@ groups:
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
       nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
-      tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair]
+      tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair,
+      mobrovac]
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
@@ -1264,3 +1265,10 @@ users:
     realname: Andrew Green
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQD46lk/Jc4xkSRKu8z4Go5zzYuA0HRwyd9RqbtMGfC61EVY17oYx/lIEikVLBzhyL7PCCA/mBvElTeUr4S9gvmxqtOwczj2FTwIIEFE7nbvF6NJdf2n3f/kRAKOtc9FaOJJ7sbje6rrnJdxiMcUtf9MEo0m3k7Dw5CYU68xVJnowiWE0KBqMps4xkOfdBmk1L8bOfmC+pfe7LIVoX5MxU+sJ2f+QGErtPq/inIppsifW4aw2Lvamc11X/uyUBwzcQzgrE0nViOdSobW9hB56GnMHLN3OrjUbhbM2iDtvsEo00bcVSsUfsHPjiqf95Ugm3NFLLhY7odnWlo6tTvj0NJiU1PvxMRN4b+bgzuw/Angr6IdnpNDclAc8cAY5bkSnXacgzuCkBTz6vNKdFS8XfCEOAZaWSYf9Hc/u8rJzt9Lz4LieJXx5sB3ncQmRmUZNEHopYzZLF4KSNjGM+d5N4a8sJlAyCqeGCaE579yS+Q1ZnvtIIwakdNiuwiOYA0j+X+EzLp+0eYuRn9ZPGSbgarjWY/RsrAai93RVxFHq4+zHrPZ1eFw2g0WydEGNuHh+6JQdZfK6hUwCoOYjxX06xdjbbaFWNgeT3p1LrUH1sQ+Iht+zJp7cg5Hv8h2Xvq5Z8GA/hP9dU7h2esqErpu1Vk1Yyld0sdC/oYxW8JPsXuR55G++qGtyfBJNdVJo2f4+w6gjcuiaE7KrenuzxcC4IyKwiqwknqv1FiWINCjDADxol2YTEP8Ia7ZzDACwCoJ9YZMksX26lHLCC+UiTMoSDrAvtEUM930ZwnkxUAzu4m90qt4YaXZlrEeOiUru/ydaZ9dDHdqtCf6yT6QpNCQmJ/cQfqJ/E7fV7GmSt5VAbBfl0BuVJlirZQtZ9/FXG/z3UDqBkYaSnxuKsh9iB/tgr0Y9xXMK7AcSPQiR84SqDAn+0zYKoLP1ZO+2Zh7D2FNHmKDj7XQFVFdKp6i0kMDAT2Ro/7Z3W671t8+0lKua1zi7vm10ey4K4FS8/1gHuhhB/S7imncehsvWMdvakFhWoaA9gJc0HrTSibY4/A1HLV0KK+4CCN08R/Zei9DXJeIwbCD3i9VzXKoWTUqBmZAAV2IcXGswoHA4UJ/q7zJp5MRuvziKbXNgbBMJUsiezAERqZ35xMkcnTHjFS0DpnNXlDts0nPfsHUVUpW6wAvsSg+ZieGrSjkua8/d0WMgxlVlKICRb5XhDWAGMu+tEfhYjFD/c5UkzaHU4L49W4h7C16PRwJdfRRb8ULb7YBFcrEzOnyYAi0DQmpJPsBJ9tfhAZXMqXQ8hhNLHuCi7MuEwU9sHO7wk+/Pq9F5AD/pdi7pZ2/bZg6c5+2BigynwHy4z3l home@lap]
     uid: 3609
+  mobrovac:
+    ensure: present
+    gid: 500
+    name: mobrovac
+    realname: Marko Obrovac
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAr04C1g3grQJRwhOyrAic/xzW+2lxlxwjdTIY12HJs6aBvKTeUhwMLTxSMQ0nsFacnCcdTU1YcDYn0ypXxpd/v62uX4nbnw3goYSgKysmYlrHiQ+87GbQnBSe/j/0SvAF+oV9bB4EKGpGDK0hokfNKVzTpI2+0IbEAHK+Ag7+yIGYwWshLeoj1rTSzQCyFb1ELaXPt1OyAq37EYa+D9INA2aP4qHWHNSrAeG1FtJ3M4QDOIB/vB1UYE5i+XYeuugXlZzHXEkL5M1KbI5utPcBjpfncAmPGDLuiUKuBnDo85V75xpTmHQb485M4K1ZnqJ9XKnZT3NWDW2Fo+lvKU7VTw== doorman@istria-wifi.irisa.fr]
+    uid: 11187
