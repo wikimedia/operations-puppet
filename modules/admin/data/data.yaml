@@ -40,7 +40,7 @@ groups:
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
-    members: [aaron, dr0ptp4kt, werdna, anomie, aude, awight, awjrichards, bd808,
+    members: [aaron, dr0ptp4kt, werdna, anomie, aude, awight, awjrichards, bd808, jdouglas,
       brion, cmcmahon, cscott, csteipp, demon, ebernhardson, esanders, gilles,
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
@@ -1237,6 +1237,13 @@ users:
     realname: Stas Malyshev
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpDNpAh83SAftCCJtjnvyTkN8uag0OmMk/Wpn+iAtZz5THTocU7MLdggW5scut+lMfog6Mf7aECC5vPo2eGtGkCXbmsGMhHsuA4mxo4vhnI5PduLY6F9PU4YCRe477NTEFfffy/HxDQR9gHNnuLyoHGqEgCQmmEtQoD1ChEiVHbwM35m6OVZjraMyy5Hfcnr7txHjOnVBGFW3Nn+bT3S42YdJDy3l9SIOg7NGi1WHo+cZaKIpO+wTelDSem1o7m+ERk10XaDOakCpznjnxmzfoy0WKeJWAkG0uGiE7vVAKzOhNw4/v6vaSSXWNRMD7MBea6iDaFduA1ghnq8i6Xf7f smalyshev@wikimedia.org]
     uid: 10977
+  jdouglas:
+    ensure: present
+    gid: 500
+    name: jdouglas
+    realname: James Douglas
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDkf8FmZYJ48LRvKWNv93t582NN6ikgl586fsXnCptxignPYi+E8yRN8GPWVCCY+6qUBYjVlWrYzYTRhOD396A4nRgM+L1KXDHSPRbguqhoHwcWcM6qc9xBY8AZcipGgOHtp8WGlTWNnlPRldfmZfJQ6BSqJTZC72jrCOVF3VARUnkL0L4yLcOUMFnGe7dqILePtN9fWxlTrPys8uzxMmmVT4m9CASeWGf3yjM+r3WYxKtjOMvLOcDvGwkBSRWjRa+nZBD54xQPtweMmplZh07NcGTzBmDTzSiH8MF7Ps1reNMVHHYK4ZnC9ipOI7sVnpNVy2Fe46+B69N/39nQpf7F]
+    uid: 10973
   ananthrk:
     ensure: present
     gid: 500
