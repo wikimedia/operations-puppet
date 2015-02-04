@@ -64,7 +64,7 @@ groups:
   cassandra-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [gwicke, ssastry, smalyshev]
+    members: [gwicke, ssastry]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
