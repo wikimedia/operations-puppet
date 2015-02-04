@@ -6,9 +6,9 @@ from '-1month'
 vtitle 'milliseconds'
 
 field :q2, :color => 'blue',
-           :alias => 'Median',
-           :data  => 'frontend.navtiming.totalPageLoadTime.desktop.overall.median'
+           :alias => 'mean',
+           :data  => 'frontend.navtiming.totalPageLoadTime.desktop.overall.mean'
 
 field :q3, :color => 'red',
-           :alias => '75th percentile',
-           :data  => 'frontend.navtiming.totalPageLoadTime.desktop.overall.75percentile'
+           :alias => '99th percentile',
+           :data  => 'frontend.navtiming.totalPageLoadTime.desktop.overall.99percentile'
