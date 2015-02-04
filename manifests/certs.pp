@@ -307,6 +307,20 @@ class certificates::rapidssl_ca_2 {
     }
 }
 
+class certificates::rapidssl_sha256_ca_G3 {
+
+    include certificates::base
+
+    file { '/usr/local/share/ca-certificates/RapidSSL_SHA256_CA_-_G3.crt':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///files/ssl/RapidSSL_SHA256_CA_-_G3.crt',
+        require => Package['openssl'],
+        notify  => Exec['update-ca-certificates'],
+    }
+}
+
 class certificates::digicert_ca {
 
     include certificates::base
