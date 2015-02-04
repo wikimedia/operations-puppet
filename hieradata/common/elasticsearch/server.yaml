@@ -1,0 +1,12 @@
+minimum_master_nodes: 2
+# We should be able to run "OK" with 10 servers.
+recover_after_time: '20m'
+# But it'd save time if we just waited for all of them to come back so
+# lets give them plenty of time to restart.
+recover_after_nodes: 10
+heap_memory: '30G'
+expected_nodes: 31
+# Production can get a lot of use out of the filter cache.
+filter_cache_size: '20%'
+bulk_thread_pool_capacity: 1000
+bulk_thread_pool_executors: 6
