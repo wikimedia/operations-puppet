@@ -9,6 +9,27 @@ class role::mariadb {
     include mariadb
 }
 
+# root, repl, nagios, tendril
+class role::mariadb::grants {
+
+    include passwords::misc::scripts
+    include passwords::tendril
+
+    $root_pass    = $passwords::misc::scripts::mysql_root_pass
+    $repl_pass    = $passwords::misc::scripts::repl_sql_pass
+    $nagios_pass  = $passwords::misc::scripts::nagios_sql_pass
+    $tendril_user = $passwords::tendril::db_user
+    $tendril_pass = $passwords::tendril::db_pass
+
+    file { '/etc/mysql/production-grants.sql':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('mariadb/production-grants.sql.erb'),
+    }
+}
+
 # miscellaneous services clusters
 class role::mariadb::misc(
     $shard
@@ -19,6 +40,7 @@ class role::mariadb::misc(
     }
 
     include standard
+    include role::mariadb::grants
     include passwords::misc::scripts
 
     class { 'mariadb::packages_wmf':
@@ -57,6 +79,7 @@ class role::mariadb::misc::phabricator(
 
     include standard
     include mariadb::packages_wmf
+    include role::mariadb::grants
     include passwords::misc::scripts
 
     $read_only = $master ? {
@@ -126,6 +149,7 @@ class role::mariadb::tendril {
     }
 
     include standard
+    include role::mariadb::grants
     include passwords::misc::scripts
 
     class { 'mariadb::config':
@@ -156,6 +180,7 @@ class role::mariadb::dbstore(
     }
 
     include standard
+    include role::mariadb::grants
     include passwords::misc::scripts
 
     class { 'mariadb::config':
@@ -188,6 +213,7 @@ class role::mariadb::analytics {
     }
 
     include standard
+    include role::mariadb::grants
     include passwords::misc::scripts
 
     class { 'mariadb::config':
@@ -236,6 +262,23 @@ class role::mariadb::backup {
     }
 }
 
+# wikiadmin, wikiuser
+class role::mariadb::grants::core {
+
+    include passwords::misc::scripts
+
+    $wikiadmin_pass = $passwords::misc::scripts::wikiadmin_pass
+    $wikiuser_pass  = $passwords::misc::scripts::wikiuser_pass
+
+    file { '/etc/mysql/production-grants-core.sql':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('mariadb/production-grants-core.sql.erb'),
+    }
+}
+
 class role::mariadb::core(
     $shard
     ) {
@@ -245,6 +288,8 @@ class role::mariadb::core(
     }
 
     include standard
+    include role::mariadb::grants
+    include role::mariadb::grants::core
     include passwords::misc::scripts
 
     class { 'mariadb::packages_wmf':
@@ -274,6 +319,7 @@ class role::mariadb::sanitarium {
     }
 
     include standard
+    include role::mariadb::grants
     include passwords::misc::scripts
 
     class { 'mariadb::packages_wmf':
@@ -342,6 +388,7 @@ class role::mariadb::labs {
     }
 
     include standard
+    include role::mariadb::grants
 
     $server_id = inline_template(
         "<%= ia = @ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3]; server_id %>"
