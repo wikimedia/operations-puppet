@@ -1184,7 +1184,7 @@ class role::cache {
         }
         $cluster_options = merge($common_cluster_options, $realm_cluster_options)
 
-        $memory_storage_size = floor((0.5 * $::memorysize_mb / 1024.0) + 0.5)
+        $memory_storage_size = 2
 
         system::role { 'role::cache::bits':
             description => 'bits Varnish cache server',
