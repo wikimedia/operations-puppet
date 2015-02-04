@@ -27,7 +27,7 @@ class role::puppetmaster::frontend {
             'dbadapter'         => 'mysql',
             'dbuser'            => 'puppet',
             'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver'          => 'db1001.eqiad.wmnet',
+            'dbserver'          => 'm1-master.eqiad.wmnet',
         }
     }
 }
@@ -47,7 +47,7 @@ class role::puppetmaster::backend {
             'dbadapter'         => 'mysql',
             'dbuser'            => 'puppet',
             'dbpassword'        => $passwords::puppet::database::puppet_production_db_pass,
-            'dbserver'          => 'db1001.eqiad.wmnet',
+            'dbserver'          => 'm1-master.eqiad.wmnet',
             'dbconnections'     => '256',
         }
     }

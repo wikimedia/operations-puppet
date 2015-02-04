@@ -10,7 +10,7 @@ class role::requesttracker {
 
     class { '::requesttracker':
         apache_site   => 'rt.wikimedia.org',
-        dbhost        => 'db1001.eqiad.wmnet',
+        dbhost        => 'm1-master.eqiad.wmnet',
         dbport        => '',
         dbuser        => $passwords::misc::rt::rt_mysql_user,
         dbpass        => $passwords::misc::rt::rt_mysql_pass,

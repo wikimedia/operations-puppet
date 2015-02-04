@@ -7,7 +7,7 @@ class role::backup::config {
     # we don't want to rely on DNS in firewall rules
     $director    = 'helium.eqiad.wmnet'
     $director_ip = '10.64.0.179'
-    $database = 'db1001.eqiad.wmnet'
+    $database = 'm1-master.eqiad.wmnet'
     $days = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
     $pool = 'production'
     $offsite_pool = 'offsite'
