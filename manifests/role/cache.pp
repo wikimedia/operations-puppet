@@ -710,14 +710,12 @@ class role::cache {
             'labs'       => ['vdb'],
         }
 
-        unless os_version('debian >= jessie') { # testing whether we need this for jessie's 3.16 kernel
-            # This seems to prevent long term memory fragmentation issues that
-            #  result in XFS deadlock log spam + bad problems for varnish health
-            cron { 'varnish_vm_compact_cron':
-                command => 'echo 1 >/proc/sys/vm/compact_memory',
-                user    => 'root',
-                minute  => '*',
-            }
+        # This seems to prevent long term memory fragmentation issues that
+        #  result in XFS deadlock log spam + bad problems for varnish health
+        cron { 'varnish_vm_compact_cron':
+            command => 'echo 1 >/proc/sys/vm/compact_memory',
+            user    => 'root',
+            minute  => '*',
         }
 
         #class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
