@@ -85,12 +85,13 @@ define install_certificate(
     $privatekey=true,
 ) {
 
-    require certificates::base,
-        certificates::rapidssl_ca,
-        certificates::rapidssl_ca_2,
-        certificates::digicert_ca,
-        certificates::wmf_ca,
-        certificates::wmf_ca_2014_2017
+    require certificates::base
+    require certificates::rapidssl_ca
+    require certificates::rapidssl_ca_2
+    require certificates::digicert_ca
+    require certificates::wmf_ca
+    require certificates::wmf_ca_2014_2017
+    require certificates::rapidssl_sha256_ca_G3
 
     # Public key
     file { "/etc/ssl/localcerts/${name}.crt":
