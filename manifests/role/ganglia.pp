@@ -91,6 +91,16 @@ class role::ganglia::web {
         gmetad_root      => $gmetad_root,
     }
 
+    ferm::service { 'ganglia_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'ganglia_https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
     # Get better insight into how disks are faring
     ganglia::plugin::python { 'diskstat': }
 
