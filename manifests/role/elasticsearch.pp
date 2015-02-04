@@ -75,15 +75,7 @@ class role::elasticsearch::config {
             'elastic1013' => true,
             default       => false,
         }
-        $minimum_master_nodes = 2
         $cluster_name         = "production-search-${::site}"
-        $heap_memory          = '30G'
-        $expected_nodes       = 16
-        # We should be able to run "OK" with 10 servers.
-        $recover_after_nodes  = 10
-        # But it'd save time if we just waited for all of them to come back so
-        # lets give them plenty of time to restart.
-        $recover_after_time   = '20m'
         $rack = $::hostname ? {
             /^elastic100[0-6]/          => 'A3',
             /^elastic10(0[7-9]|1[0-2])/ => 'C5',
@@ -110,11 +102,6 @@ class role::elasticsearch::config {
         # to work properly.  This will keep elasticsearch from starting
         # if these plugins are  not available.
         $plugins_mandatory    = ['experimental highlighter', 'analysis-icu']
-
-        # Production can get a lot of use out of the filter cache.
-        $filter_cache_size          = '20%'
-        $bulk_thread_pool_capacity  = 1000
-        $bulk_thread_pool_executors = 6
 
         # only in production, no ganglia in beta
         $use_ganglia = true
