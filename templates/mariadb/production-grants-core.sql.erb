@@ -1,0 +1,17 @@
+-- wikiadmin 10.%
+
+GRANT PROCESS, REPLICATION CLIENT
+	ON *.* TO 'wikiadmin'@'10.%'
+    IDENTIFIED BY '<%= @wikiadmin_pass %>';
+
+GRANT ALL PRIVILEGES
+	ON `%wik%`.* TO 'wikiadmin'@'10.%';
+
+-- wikiuser 10.64.%
+
+GRANT PROCESS, REPLICATION CLIENT
+	ON *.* TO 'wikiuser'@'10.64.%'
+    IDENTIFIED BY '<%= @wikiuser_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE
+	ON `%wik%`.* TO 'wikiuser'@'10.64.%';
