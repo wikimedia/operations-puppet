@@ -2,24 +2,24 @@ title   "Memory"
 
 field :buffers,
                :alias => "buffers",
-               :data  => "servers.tungsten.memory.Buffers.value"
+               :data  => "servers.graphite1001.memory.Buffers.value"
 
 field :active,
                :alias => "active",
-               :data  => "servers.tungsten.memory.Active.value"
+               :data  => "servers.graphite1001.memory.Active.value"
 
 field :cached,
                :alias => "cached",
-               :data  => "servers.tungsten.memory.Cached.value"
+               :data  => "servers.graphite1001.memory.Cached.value"
 
 field :inactive,
                :alias => "inactive",
-               :data  => "servers.tungsten.memory.Inactive.value"
+               :data  => "servers.graphite1001.memory.Inactive.value"
 
 field :dirty,
                :alias => "dirty",
-               :data  => "servers.tungsten.memory.Dirty.value"
+               :data  => "servers.graphite1001.memory.Dirty.value"
 
 field :free,
                :alias => "free",
-               :data  => "servers.tungsten.memory.Free.value"
+               :data  => "servers.graphite1001.memory.Free.value"
