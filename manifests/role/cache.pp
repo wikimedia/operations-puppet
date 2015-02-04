@@ -337,31 +337,31 @@ class role::cache {
                 'appservers' => {
                     'eqiad' => [
                         '10.68.17.170',  # deployment-mediawiki01
-                        '10.68.17.208', # deployment-mediawiki02
+                        '10.68.16.127', # deployment-mediawiki02
                     ],
                 },
                 'api' => {
                     'eqiad' => [
                         '10.68.17.170',  # deployment-mediawiki01
-                        '10.68.17.208', # deployment-mediawiki02
+                        '10.68.16.127', # deployment-mediawiki02
                     ],
                 },
                 'bits' => {
                     'eqiad' => [
                         '10.68.17.170',  # deployment-mediawiki01
-                        '10.68.17.208', # deployment-mediawiki02
+                        '10.68.16.127', # deployment-mediawiki02
                     ],
                 },
                 'bits_appservers' => {
                     'eqiad' => [
                         '10.68.17.170',  # deployment-mediawiki01
-                        '10.68.17.208', # deployment-mediawiki02
+                        '10.68.16.127', # deployment-mediawiki02
                     ],
                 },
                 'rendering' => {
                     'eqiad' => [
                         '10.68.17.170',  # deployment-mediawiki01
-                        '10.68.17.208', # deployment-mediawiki02
+                        '10.68.16.127', # deployment-mediawiki02
                     ],
                 },
                 'test_appservers' => {
