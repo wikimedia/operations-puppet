@@ -101,6 +101,9 @@ def handle_navigation_timing(meta):
     metrics = {k: v for k, v in metrics.items() if is_sane(v)}
     prefix = 'frontend.navtiming'
 
+    if 'sslNegotiation' in metrics:
+        metrics = {'sslNegotiation': metrics['sslNegotiation']}
+
     for metric, value in metrics.items():
         dispatch_stat(prefix, metric, site, auth, value)
         dispatch_stat(prefix, metric, site, 'overall', value)
