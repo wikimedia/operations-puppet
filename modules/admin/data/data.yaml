@@ -61,10 +61,10 @@ groups:
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
       bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer]
-  cassandra-roots:
+  cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [gwicke, ssastry]
+    members: [gwicke, ssastry, jdouglas, mobrovac]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
