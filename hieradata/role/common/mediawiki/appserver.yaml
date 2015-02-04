@@ -2,3 +2,6 @@ cluster: appserver
 role::mediawiki::webserver::pool: apaches
 admin::groups:
   - deployment
+hhvm::extra::fcgi:
+    hhvm:
+      pcre_cache_type: lru
