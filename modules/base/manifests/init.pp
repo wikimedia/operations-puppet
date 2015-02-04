@@ -1,18 +1,3 @@
-class base::remote-syslog {
-    if ($::hostname != 'lithium') and ($::instancename != 'deployment-bastion') {
-
-        $syslog_host = $::realm ? {
-            'production' => 'syslog.eqiad.wmnet',
-            'labs'       => "deployment-bastion.${::site}.wmflabs",
-        }
-
-        rsyslog::conf { 'remote_syslog':
-            content  => "*.info;mail.none;authpriv.none;cron.none @${syslog_host}",
-            priority => 30,
-        }
-    }
-}
-
 class base::instance-upstarts {
 
     file { '/etc/init/ttyS0.conf':
@@ -23,25 +8,6 @@ class base::instance-upstarts {
     }
 
 }
-
-# handle syslog permissions (e.g. 'make common logs readable by normal users (RT-2712)')
-class base::syslogs (
-    $readable = false,
-    $logfiles = [ 'syslog', 'messages' ],
-    ) {
-
-    define syslogs::readable() {
-
-        file { "/var/log/${name}":
-            mode => '0644',
-        }
-    }
-
-    if $readable == true {
-        syslogs::readable { $logfiles: }
-    }
-}
-
 
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
