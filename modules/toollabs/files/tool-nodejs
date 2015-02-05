@@ -22,4 +22,4 @@ env = {
     'TOOL_WEB_PORT': str(PORT)
 }
 
-os.execle('/usr/bin/npm', 'start', env)
+os.execve('/usr/bin/npm', ['/usr/bin/npm', 'start'], env)
