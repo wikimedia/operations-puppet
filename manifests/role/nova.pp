@@ -171,6 +171,7 @@ class role::nova::common {
     include role::nova::wikiupdates
 }
 
+# This is the wikitech UI
 class role::nova::manager {
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
@@ -199,8 +200,32 @@ class role::nova::manager {
         novaconfig        => $novaconfig,
         certificate       => $certificate,
     }
+
+    include ::nutcracker::monitoring
+    include ::mediawiki::packages::php5
+    include ::scap::scripts
+
+    class { '::nutcracker':
+        mbuf_size => '64k',
+        pools     => {
+            'memcached' => {
+                auto_eject_hosts     => true,
+                distribution         => 'ketama',
+                hash                 => 'md5',
+                listen               => '127.0.0.1:11212',
+                preconnect           => true,
+                server_connections   => 2,
+                server_failure_limit => 3,
+                timeout              => 250,
+                servers              => [
+                    '127.0.0.1:11000:1',
+                ],
+            },
+        },
+    }
 }
 
+# This is nova controller stuff
 class role::nova::controller {
     require openstack
     include role::nova::config
@@ -247,29 +272,6 @@ class role::nova::controller {
     }
     class { 'role::keystone::server':
         glanceconfig => $glanceconfig,
-    }
-
-    include ::nutcracker::monitoring
-    include ::mediawiki::packages::php5
-    include ::scap::scripts
-
-    class { '::nutcracker':
-        mbuf_size => '64k',
-        pools     => {
-            'memcached' => {
-                auto_eject_hosts     => true,
-                distribution         => 'ketama',
-                hash                 => 'md5',
-                listen               => '127.0.0.1:11212',
-                preconnect           => true,
-                server_connections   => 2,
-                server_failure_limit => 3,
-                timeout              => 250,
-                servers              => [
-                    '127.0.0.1:11000:1',
-                ],
-            },
-        },
     }
 
     if $::realm == 'production' {
