@@ -22,6 +22,8 @@
 #   Url to apertium service.
 # [*port*]
 #   Port where to run the cxserver service. Defaults to 8080.
+# [*registry*]
+#   Registry to use for language pairs for Content Translation.
 class cxserver(
     $base_path = '/srv/deployment/cxserver/deploy',
     $node_path = '/srv/deployment/cxserver/deploy/node_modules',
@@ -30,6 +32,7 @@ class cxserver(
     $parsoid = 'http://parsoid-lb.eqiad.wikimedia.org',
     $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
     $port = 8080,
+    $registry,
 ) {
     require_package('nodejs')
 
