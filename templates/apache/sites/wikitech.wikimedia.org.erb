@@ -17,8 +17,12 @@
     <Directory /srv/mediawiki/docroot/wikimedia.org>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
+        <% if @is_trusty %>
+        Require all granted
+        <% else %>
         Order allow,deny
-        allow from all
+        Allow from all
+        <% end %>
     </Directory>
 
     RewriteEngine on
@@ -60,8 +64,12 @@
     <Directory /srv/mediawiki/docroot/wikimedia.org>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
+        <% if @is_trusty %>
+        Require all granted
+        <% else %>
         Order allow,deny
-        allow from all
+        Allow from all
+        <% end %>
     </Directory>
     <Directory /srv/org/wikimedia/controller/wikis/images>
         php_flag engine off
