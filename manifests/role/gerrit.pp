@@ -83,8 +83,11 @@ class role::gerrit {
                     'url'     => [
                         # Note: This is in single quotes on purpose. ${name} is not
                         # expected to be expanded by puppet but rather by gerrit
+                        #
+                        # lint:ignore:single_quote_string_with_variables
                         'gerritslave@gallium.wikimedia.org:/srv/ssd/gerrit/${name}.git',
                         'gerritslave@lanthanum.eqiad.wmnet:/srv/ssd/gerrit/${name}.git',
+                        # lint:endignore
                     ],
                     'threads' => '4',
                     'mirror'  => 'true',
@@ -92,7 +95,10 @@ class role::gerrit {
                 'gitblit'                 => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
+                    #
+                    # lint:ignore:single_quote_string_with_variables
                     'url'                   => 'gerritslave@antimony.wikimedia.org:/var/lib/git/${name}.git',
+                    # lint:endignore
                     'threads'               => '4',
                     'authGroup'             => 'mediawiki-replication',
                     'push'                  => '+refs/*:refs/*',
@@ -101,7 +107,10 @@ class role::gerrit {
                 'github'                  => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
+                    #
+                    # lint:ignore:single_quote_string_with_variables
                     'url'                  => 'git@github.com:wikimedia/${name}',
+                    # lint:endignore
                     'threads'              => '4',
                     'authGroup'            => 'mediawiki-replication',
                     'push'                 => $replication_basic_push_refs,
