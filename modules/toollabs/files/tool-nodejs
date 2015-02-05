@@ -16,10 +16,10 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect(('tools-webproxy', 8282))
 sock.send(".*\nhttp://%s:%s\n" % (socket.getfqdn(), PORT))
 
-os.chdir(os.path.expand('~/www/js'))
+os.chdir(os.path.expanduser('~/www/js'))
 
 env = {
-    'TOOL_WEB_PORT': PORT
+    'TOOL_WEB_PORT': str(PORT)
 }
 
 os.execle('/usr/bin/npm', 'start', env)
