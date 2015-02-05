@@ -435,6 +435,38 @@ class role::mariadb::labs {
     }
 }
 
+# wikitech instance (silver)
+class role::mariadb::wikitech {
+
+    system::role { 'role::mariadb::wikitech':
+        description => "Wikitech Database",
+    }
+
+    include standard
+    include role::mariadb::grants
+    include passwords::misc::scripts
+
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
+
+    class { 'mariadb::config':
+        prompt   => "WIKITECH ${shard}",
+        config   => 'mariadb/wikitech.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
+        datadir  => '/srv/sqldata',
+        tmpdir   => '/srv/tmp',
+    }
+
+    class { 'mariadb::monitor_disk':
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        contact_group => 'admins',
+    }
+}
+
 class role::mariadb::proxy(
     $shard
     ) {

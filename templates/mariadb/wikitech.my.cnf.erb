@@ -1,0 +1,67 @@
+# Wikitech instance
+
+[client]
+port   = 3306
+socket = /tmp/mysql.sock
+
+[mysqld]
+
+user       = mysql
+socket     = /tmp/mysql.sock
+port       = 3306
+extra_port = 3307
+datadir    = <%= @datadir %>
+tmpdir     = <%= @tmpdir %>
+server_id  = <%= @server_id %>
+sql-mode   = <%= @sql_mode %>
+read_only  = <%= @read_only %>
+
+log_bin
+log_slave_updates
+skip-external-locking
+skip-name-resolve
+temp-pool
+
+max_connections                = 250
+extra_max_connections          = 10
+max_connect_errors             = 1000000000
+max_allowed_packet             = 16M
+connect_timeout                = 3
+query_cache_size               = 0
+query_cache_type               = 0
+event_scheduler                = 1
+userstat                       = 1
+log-warnings                   = 0
+thread_stack                   = 192K
+thread_cache_size              = 100
+interactive_timeout            = 28800
+wait_timeout                   = 3600
+
+sync_binlog                    = 1
+binlog_cache_size              = 1M
+max_binlog_size                = 1000M
+binlog_format                  = MIXED
+expire_logs_days               = 7
+slave_transaction_retries      = 4294967295
+
+table_open_cache               = 500
+table_definition_cache         = 400
+character_set_server           = binary
+character_set_filesystem       = binary
+collation_server               = binary
+
+default-storage-engine         = InnoDB
+innodb_buffer_pool_size        = 4G
+innodb_buffer_pool_instances   = 1
+innodb_log_file_size           = 200M
+innodb_flush_log_at_trx_commit = 1
+innodb_flush_method            = O_DIRECT
+innodb_thread_concurrency      = 0
+aria_pagecache_buffer_size     = 128M
+
+[mysqldump]
+
+quick
+max_allowed_packet = 16M
+
+#!includedir /etc/mysql/conf.d/

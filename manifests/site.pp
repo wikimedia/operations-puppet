@@ -2440,7 +2440,7 @@ node 'silver.wikimedia.org' {
     include standard
     include admin
     include role::nova::manager
-    class {'openstack::database-server::mysql': controller_mysql_root_pass => $passwords::openstack::nova::controller_mysql_root_pass}
+    include role::mariadb::wikitech
 }
 
 node 'virt1000.wikimedia.org' {
