@@ -56,9 +56,9 @@ define monitoring::host (
             target          => '/etc/nagios/puppet_hostextinfo.cfg',
             host_name       => $title,
             notes           => $title,
-            icon_image      => "${image}.png",
-            vrml_image      => "${image}.png",
-            statusmap_image => "${image}.gd2",
+            icon_image      => "base/${image}.png",
+            vrml_image      => "base/${image}.png",
+            statusmap_image => "base/${image}.gd2",
         }
     }
 }
