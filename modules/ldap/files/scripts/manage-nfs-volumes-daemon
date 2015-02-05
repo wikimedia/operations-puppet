@@ -9,6 +9,7 @@ import datetime
 import ldapsupportlib
 from optparse import OptionParser
 import os
+import pwd
 import socket
 import subprocess
 import sys
@@ -341,6 +342,9 @@ class VolumeManager:
 
 
 def main():
+    if pwd.getpwuid(os.getuid())[0] != 'nfsmanager':
+        sys.stderr.write("This daemon should only be run as the 'nfsmanager' user.\n")
+        sys.exit(1)
     volume_manager = VolumeManager()
     volume_manager.run()
 
