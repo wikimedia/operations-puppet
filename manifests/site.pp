@@ -1721,6 +1721,7 @@ node /^rbf100[1-2]\.eqiad\.wmnet/ {
 
 node /^rbf200[1-2]\.codfw\.wmnet/ {
     include admin
+    include standard
 
     # Background save may fail under low memory condition unless
     # vm.overcommit_memory is 1.
