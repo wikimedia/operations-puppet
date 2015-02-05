@@ -29,8 +29,7 @@ class openstack::openstack-manager(
             ensure => present;
         }
     } else {
-        package { [ 'php5-ldap', 'imagemagick', 'librsvg2-bin', 'php5-memcached',
-                    'php5-redis', 'php5-intl', 'php5-mysql' ]:
+        package { [ 'php5-ldap', 'imagemagick', 'librsvg2-bin']:
             ensure => present;
         }
     }
