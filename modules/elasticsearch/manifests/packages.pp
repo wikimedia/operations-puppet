@@ -16,6 +16,12 @@ class elasticsearch::packages {
         require => Package['openjdk-7-jdk'],
     }
 
+    # jq is really useful, especially for parsing
+    # elasticsearch REST command JSON output.
+    package { 'jq':
+        ensure => present,
+    }
+
     if ! defined ( Package['curl'] ) {
         package { 'curl': ensure => present }
     }
