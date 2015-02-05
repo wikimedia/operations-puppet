@@ -1723,11 +1723,15 @@ node /^rbf200[1-2]\.codfw\.wmnet/ {
     include admin
     include standard
 
+    class { 'base::firewall': }
+
     # Background save may fail under low memory condition unless
     # vm.overcommit_memory is 1.
     sysctl::parameters { 'vm.overcommit_memory':
         values => { 'vm.overcommit_memory' => 1, },
     }
+
+    
 }
 
 node 'rubidium.wikimedia.org' {
