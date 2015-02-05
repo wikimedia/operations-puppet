@@ -165,10 +165,4 @@ class role::elasticsearch::server {
     }
     include ::elasticsearch::log::hot_threads
     include ::elasticsearch::nagios::check
-
-    # jq is really useful, especially for parsing
-    # elasticsearch REST command JSON output.
-    package { 'jq':
-        ensure => 'installed',
-    }
 }
