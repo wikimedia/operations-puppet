@@ -2,6 +2,8 @@
 
 . /etc/profile.d/mediawiki.sh
 
+export PRETTY_FORMAT="%C(yellow bold)%h%C(reset): %s"
+
 looksgood() {
     ( git remote -v | grep -q mediawiki-config ) && {
         git merge origin/master;
@@ -15,7 +17,7 @@ looksgood() {
         echo "$(tput setaf 4)Updating $(tput setaf 3; tput bold)${extension}$(tput sgr0)"
         git submodule update --init --recursive "$extension"
     done < <(git log -p "${prev_head}..HEAD" | grep -Po '(?<= b/)extensions/.*' | sort | uniq)
-    git log --no-merges --pretty=format:"%C(yellow bold)%h%C(reset): %s"
+    git log --name-only --no-merges --pretty=format:"$PRETTY_FORMAT" "${prev_head}..${branch}"
 }
 
 fetch() {
@@ -29,7 +31,7 @@ fetch() {
         branch="origin/wmf/${branch_dir#./php-}"
         cd "${branch_dir}"
         git fetch 2>&1 >/dev/null
-        git log --oneline HEAD..${branch}
+        git log --pretty=format:"$PRETTY_FORMAT" "HEAD..${branch}"
     fi
 }
 
@@ -45,10 +47,10 @@ bump() {
 
 deploy() {
     pushd /srv/deployment/$1/* &>/dev/null && (
-      git deploy finish
-      [ "$1" = "--no-update" ] || { git fetch; git checkout origin/master; }
-      git deploy start
+        git deploy finish
+        [ "$1" = "--no-update" ] || { git fetch; git checkout origin/master; }
+        git deploy start
     ) &>/dev/null && (
-      yes | git deploy sync 2>&1 | grep completed
+        yes | git deploy sync 2>&1 | grep completed
     ) && { popd &>/dev/null; notice "Ok."; } || warn "Failed."
 }
