@@ -1,8 +1,2 @@
-swift_storage_drives: [
-        '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
-        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
-        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
-# no trailing comma!
-]
-swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
-swift_check_http_host: 'ms-fe.svc.codfw.wmnet'
+mediawiki_memcached_servers: []
+
