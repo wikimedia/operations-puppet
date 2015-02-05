@@ -1,8 +1,6 @@
 # vim: set ts=4 et sw=4:
 
-class role::cxserver (
-    $port = 8080,
-) {
+class role::cxserver {
     system::role { 'role::cxserver':
         description => 'content translation server'
     }
@@ -11,12 +9,12 @@ class role::cxserver (
 
     ferm::service { 'cxserver_http':
         proto => 'tcp',
-        port  => $port,
+        port  => $::cxserver::port,
     }
 
     monitoring::service { 'cxserver':
         description   => 'cxserver',
-        check_command => "check_http_on_port!${port}",
+        check_command => "check_http_on_port!${::cxserver::port}",
     }
 }
 
