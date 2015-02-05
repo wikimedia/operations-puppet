@@ -2,6 +2,7 @@
 
 class role::cxserver (
     $port = 8080,
+    $registry
 ) {
     system::role { 'role::cxserver':
         description => 'content translation server'
