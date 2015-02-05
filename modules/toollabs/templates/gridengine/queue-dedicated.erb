@@ -15,6 +15,10 @@ terminate_method      /usr/local/bin/jobkill $job_pid
 notify                00:00:60
 user_list             <%= @node_dedicated_tool %>
 owner_list            <%= @node_dedicated_tool %>
+prolog                NONE
+epilog                NONE
+processors            UNDEFINED
+pe_list               NONE
 suspend_thresholds    NONE
 nsuspend              1
 suspend_interval      00:05:00
