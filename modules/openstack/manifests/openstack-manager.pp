@@ -88,6 +88,16 @@ class openstack::openstack-manager(
             owner  => 'root',
             group  => 'root',
             source => 'puppet:///modules/openstack/mw-xml.sh';
+        '/usr/local/apache':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root';
+        '/usr/local/apache/common':
+            ensure => link,
+            target => '/usr/local/apache/common-local';
+        '/usr/local/apache/common-local':
+            ensure => link,
+            target => '/srv/mediawiki';
     }
 
     cron {
