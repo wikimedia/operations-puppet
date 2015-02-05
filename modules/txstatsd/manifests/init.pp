@@ -23,7 +23,7 @@
 #  }
 #
 class txstatsd($settings) {
-    require_package('python-txstatsd', 'python-twisted-web', 'graphite-carbon')
+    package { 'python-txstatsd': }
 
     file { '/etc/txstatsd':
         ensure => directory,
@@ -77,11 +77,7 @@ class txstatsd($settings) {
         subscribe => File['/etc/txstatsd/txstatsd.cfg'],
         require   => [
             File[$init_file],
-            Class[
-                  'packages::python_txstatsd',
-                  'packages::python_twisted_web',
-                  'packages::graphite_carbon'
-                  ],
+            Package['python-txstatsd'],
             User['txstatsd'],
         ],
     }
