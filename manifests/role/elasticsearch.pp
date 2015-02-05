@@ -22,21 +22,7 @@ class role::elasticsearch::server {
         $bulk_thread_pool_capacity  = undef
         $bulk_thread_pool_executors = undef
         $use_ganglia                = false
-        if ($::hostname =~ /^deployment-/) {
-            # Beta
-            # Has four nodes all of which can be master
-            $minimum_master_nodes = 3
-            $cluster_name         = 'beta-search'
-            $heap_memory          = '4G'
-            $expected_nodes       = 4
-            # The cluster can limp along just fine with three nodes so we'll
-            # let it
-            $recover_after_nodes  = 3
-            $unicast_hosts        = ['deployment-elastic05',
-                'deployment-elastic06', 'deployment-elastic07',
-                'deployment-elastic08']
-            $statsd_host          = 'labmon1001.eqiad.wmnet'
-        } else {
+        if (! $::hostname =~ /^deployment-/) {
             # Regular labs instance
             # We don't know how many instances will be in each labs project so
             # we got with the lowest common denominator assuming that you can
