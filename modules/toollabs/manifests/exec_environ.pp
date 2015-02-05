@@ -51,7 +51,6 @@ class toollabs::exec_environ {
         'mono-fastcgi-server',         # Bug T85142
         'npm',                         # Bug T1102
         'nodejs',
-        'nodejs-legacy',               # Bug T1102
         'openjdk-7-jre-headless',
         'python3',
         'r-base',
@@ -384,6 +383,7 @@ class toollabs::exec_environ {
             'libmpc2',
             'libprotobuf7',                # Bug 56995
             'libvips15',
+            # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
             ]:
             ensure => latest,
         }
@@ -395,6 +395,7 @@ class toollabs::exec_environ {
             'libmpc3',
             'libprotobuf8',
             'libvips37',
+            'nodejs-legacy',               # Bug T1102
             ]:
             ensure => latest,
         }
