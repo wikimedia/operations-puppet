@@ -1,6 +1,6 @@
-# = Class: role::elasticsearch::config
+# = Class: role::elasticsearch::server
 #
-# This class sets up Elasticsearch configuration in a WMF-specific way.
+# This class sets up Elasticsearch in a WMF-specific way.
 #
 
 @monitoring::group { 'elasticsearch_eqiad': description => 'eqiad elasticsearch servers' }
@@ -8,7 +8,7 @@
 @monitoring::group { 'elasticsearch_esams': description => 'esams elasticsearch servers' }
 @monitoring::group { 'elasticsearch_ulsfo': description => 'ulsfo elasticsearch servers' }
 
-class role::elasticsearch::config {
+class role::elasticsearch::server {
     # Config
     if ($::realm == 'labs') {
         $multicast_group            = '224.2.2.4'
@@ -119,13 +119,6 @@ class role::elasticsearch::config {
         # only in production, no ganglia in beta
         $use_ganglia = true
     }
-}
-
-# = Class: role::elasticsearch::server
-#
-# This class sets up Elasticsearch in a WMF-specific way.
-#
-class role::elasticsearch::server inherits role::elasticsearch::config {
 
     system::role { 'role::elasticsearch::server':
         ensure      => 'present',
