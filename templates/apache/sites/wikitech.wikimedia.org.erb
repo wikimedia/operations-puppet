@@ -75,6 +75,9 @@
     </Directory>
     <Directory /srv/org/wikimedia/controller/wikis/images>
         php_flag engine off
+        <IfVersion >= 2.4>
+                Require all granted
+        </IfVersion>
     </Directory>
     <Location /server-status>
         SetHandler server-status
