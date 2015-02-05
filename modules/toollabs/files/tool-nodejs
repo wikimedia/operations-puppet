@@ -1,0 +1,25 @@
+#!/usr/bin/python
+"""
+NodeJS starter script for Wikimedia Tool Labs
+"""
+import re
+import socket
+import os
+import pwd
+
+pwd_entry = pwd.getpwuid(os.getuid())  # Use uid as reserved port for each tool
+TOOL = re.sub(r'^tools.', '', pwd_entry.pw_name) # Tool users are of form tools.TOOLNAME
+
+PORT = os.getuid()
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.connect(('tools-webproxy', 8282))
+sock.send(".*\nhttp://%s:%s\n" % (socket.getfqdn(), PORT))
+
+os.chdir(os.path.expand('~/www/js'))
+
+env = {
+    'TOOL_WEB_PORT': PORT
+}
+
+os.execle('/usr/bin/npm', 'start', env)
