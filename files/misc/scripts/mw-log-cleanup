@@ -22,3 +22,6 @@ find /a/mw-log -maxdepth 1 -name \*.log -mtime +7 -size 0c -delete
 # Remove log files with names that start with a dot, since logrotate ignores them
 find /a/mw-log \( -name .log -o -name .\*.log \) -mtime +7 -delete
 
+# Find any uncompressed files that have not been accessed in the last day and
+# compress them. This can happen if logrotate terminates abnormally.
+find /a/mw-log/archive -type f -atime +1 -not -name "*.gz" -exec nice /bin/gzip "{}" \;
