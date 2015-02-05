@@ -14,7 +14,7 @@ class graphite(
     $storage_aggregation = {},
     $storage_dir = '/var/lib/carbon',
     ) {
-    require_package('graphite-carbon', 'python-whisper')
+    package { ['graphite-carbon', 'python-whisper']: }
 
     # force installation of python-twisted-core separatedly, there seem to be a
     # race condition with dropin.cache generation when apt-get installing
@@ -22,7 +22,7 @@ class graphite(
     # https://bugs.launchpad.net/graphite/+bug/833196
     package { 'python-twisted-core':
         ensure => installed,
-        before => Class['packages::graphite_carbon'],
+        before => Package['graphite-carbon'],
     }
 
     $carbon_service_defaults = {
@@ -50,24 +50,24 @@ class graphite(
         group   => '_graphite',
         mode    => '0755',
         before  => Service['carbon'],
-        require => Class['packages::graphite_carbon'],
+        require => Package['graphite-carbon'],
     }
 
     file { '/etc/carbon/storage-schemas.conf':
         content => configparser_format($storage_schemas),
-        require => Class['packages::graphite_carbon'],
+        require => Package['graphite-carbon'],
         notify  => Service['carbon'],
     }
 
     file { '/etc/carbon/carbon.conf':
         content => configparser_format($carbon_defaults, $carbon_settings),
-        require => Class['packages::graphite_carbon'],
+        require => Package['graphite-carbon'],
         notify  => Service['carbon'],
     }
 
     file { '/etc/carbon/storage-aggregation.conf':
         content => configparser_format($storage_aggregation),
-        require => Class['packages::graphite_carbon'],
+        require => Package['graphite-carbon'],
         notify  => Service['carbon'],
     }
 
