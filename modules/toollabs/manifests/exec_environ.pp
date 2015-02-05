@@ -49,7 +49,9 @@ class toollabs::exec_environ {
         'luarocks',
         'mono-complete',
         'mono-fastcgi-server',         # Bug T85142
+        'npm',                         # Bug T1102
         'nodejs',
+        'nodejs-legacy',               # Bug T1102
         'openjdk-7-jre-headless',
         'python3',
         'r-base',
