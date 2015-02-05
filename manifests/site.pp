@@ -2385,7 +2385,6 @@ node 'tungsten.eqiad.wmnet' {
     include role::txstatsd
     include role::gdash
     include role::mwprof
-    include role::performance
 }
 
 # Primary graphite machines, replacing tungsten
@@ -2395,6 +2394,7 @@ node 'graphite1001.eqiad.wmnet' {
     include role::graphite::production
     include role::txstatsd
     include role::gdash
+    include role::performance
 }
 
 node 'graphite2001.codfw.wmnet' {
