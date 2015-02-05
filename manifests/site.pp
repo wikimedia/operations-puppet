@@ -2434,6 +2434,7 @@ node 'silver.wikimedia.org' {
 
     # This is ugly but temporary.
     include passwords::openstack::nova
+    include wikitech::wiki::passwords
 
     include standard
     include admin
