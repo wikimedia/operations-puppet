@@ -944,7 +944,19 @@ node 'dbstore2002.codfw.wmnet' {
     include role::mariadb::dbstore
 }
 
-node /^dbproxy100[12].eqiad.wmnet/ {
+node 'dbproxy1001.eqiad.wmnet' {
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::proxy::master':
+        shard          => 'm1',
+        primary_name   => 'db1001',
+        primary_addr   => '10.64.0.5',
+        secondary_name => 'db1016',
+        secondary_addr => '10.64.0.20',
+    }
+}
+
+node 'dbproxy1002.eqiad.wmnet' {
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::proxy::master':
