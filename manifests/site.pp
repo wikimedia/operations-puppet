@@ -2429,9 +2429,9 @@ node 'labmon1001.eqiad.wmnet' {
 node 'silver.wikimedia.org' {
     $cluster               = 'virt'
 
-    # This is ugly but temporary.
-    include passwords::openstack::nova
-    include wikitech::wiki::passwords
+    class { 'admin':
+        groups => ['deployment']
+    }
 
     include standard
     include admin
