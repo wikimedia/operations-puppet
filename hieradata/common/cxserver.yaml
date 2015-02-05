@@ -1,0 +1,59 @@
+registry:
+  'ca':
+      'es':
+          dictionary:
+            providers: 'JsonDict'
+          mt:
+            providers: 'Apertium'
+      'pt':
+          mt:
+            providers: 'Apertium'
+  'en':
+      'ca':
+          mt:
+            providers: 'Apertium'
+      'da':
+      'eo':
+          mt:
+            providers: 'Apertium'
+      'es':
+          mt:
+            providers: 'Apertium'
+      'id':
+      'ms':
+      'no':
+      'pt':
+  'es':
+      'ca':
+          dictionary:
+            providers: 'JsonDict'
+          mt:
+            providers: 'Apertium'
+      'pt':
+          mt:
+            providers: 'Apertium'
+  'id':
+      'ms':
+          mt:
+            providers: 'Apertium'
+  'ms':
+      'id':
+          mt:
+            providers: 'Apertium'
+  'nn':
+      'no':
+          mt:
+            providers: 'Apertium'
+  'no':
+      'nn':
+          mt:
+            providers: 'Apertium'
+  'pt':
+      'es':
+          mt:
+            providers: 'Apertium'
+      'ca':
+          mt:
+            providers: 'Apertium'
+  'sv':
+      'da':
