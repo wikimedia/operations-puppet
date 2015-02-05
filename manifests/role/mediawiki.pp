@@ -4,6 +4,12 @@
 @monitoring::group { 'jobrunner_eqiad':     description => 'eqiad jobrunner application servers' }
 @monitoring::group { 'videoscaler_eqiad':   description => 'eqiad video scaler' }
 
+@monitoring::group { 'appserver_codfw':     description => 'codfw application servers' }
+@monitoring::group { 'api_appserver_codfw': description => 'codfw API application servers' }
+@monitoring::group { 'imagescaler_codfw':   description => 'codfw image scalers' }
+@monitoring::group { 'jobrunner_codfw':     description => 'codfw jobrunner application servers' }
+@monitoring::group { 'videoscaler_codfw':   description => 'codfw video scaler' }
+
 class role::mediawiki::common {
     include ::standard
     if $::realm == 'production' {
