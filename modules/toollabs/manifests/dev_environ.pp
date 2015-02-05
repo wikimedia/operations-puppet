@@ -77,7 +77,6 @@ class toollabs::dev_environ {
         'maven',
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
-        'npm',
         'pastebinit',
         'pep8',                        # Bug 57863
         'pyflakes',                    # Bug 57863
