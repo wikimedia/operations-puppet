@@ -41,6 +41,7 @@ import itertools
 import json
 import logging
 import socket
+import string
 import time
 import urllib2
 
@@ -66,8 +67,20 @@ logging.basicConfig(format='[%s%%(asctime)s%s] %%(message)s' % (YELLOW, RESET),
                     datefmt='%I:%M:%S', level=logging.INFO)
 
 
+measures = (min, max, mean, median, std)
+
+
+def summarize(series):
+    return [(f.__name__, f(series)) for f in measures]
+
+
 def highlight(*args):
     return WHITE + ''.join(map(str, args)) + RESET
+
+
+def format_summary(summary):
+    items = ('%s: %s' % (k, highlight(round(v, 2), 'ms')) for k, v in summary)
+    return ''.join(string.ljust(item, 30) for item in items)
 
 
 def find_function(root, func='(program)'):
@@ -108,6 +121,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         self.message_ids = itertools.count()
         self.callbacks = {}
         self.durations = []
+        self.total_durations = []
 
     def onOpen(self):
         logging.info('Loading %s', highlight(self.factory.target_url))
@@ -146,15 +160,17 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
                          duration_ms, total_duration_ms)
             return self.onProfilerReady()
         self.durations.append(duration_ms)
+        self.total_durations.append(total_duration_ms)
         logging.info('%s of %s: Program: %.2fms Total: %.2fms',
                      len(self.durations), self.factory.reps, duration_ms,
                      total_duration_ms)
         if len(self.durations) < self.factory.reps:
             self.onProfilerReady()
         else:
-            for f in (min, max, mean, median, std):
-                value = round(f(self.durations))
-                logging.info(highlight('%s: %dms'), f.__name__.title(), value)
+            logging.info('Program: %s',
+                         format_summary(summarize(self.durations)))
+            logging.info('Total:   %s',
+                         format_summary(summarize(self.total_durations)))
             reactor.stop()  # Shut down.
 
     def getMethodHandler(self, method):
