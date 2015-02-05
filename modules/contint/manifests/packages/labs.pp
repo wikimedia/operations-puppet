@@ -15,7 +15,9 @@ class contint::packages::labs {
     apt::conf { 'unattended-upgrades-wikimedia':
         priority => '51',
         key      => 'Unattended-Upgrade::Allowed-Origins',
+        # lint:ignore:single_quote_string_with_variables
         value    => 'Wikimedia:${distro_codename}-wikimedia',
+        # lint:endignore
     }
     apt::conf { 'lower-periodic-randomsleep':
         priority => '51',
