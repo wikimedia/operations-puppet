@@ -10,7 +10,12 @@ class openstack::project-nfs-storage-service {
     }
 
     service { 'manage-nfs-volumes':
-        enable  => true,
+        ensure  => running,
+    }
+
+    nrpe::monitor_service { 'manage-nfs-volumes':
+        description  => 'manage_nfs_volumes_running',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/python /usr/local/sbin/manage-nfs-volumes'"
     }
 
     $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
