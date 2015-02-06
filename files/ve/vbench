@@ -104,18 +104,18 @@ def find_function(root, func='(program)'):
             return result
 
 
-def get_program_time_ms(profile):
+def get_cpu_time(profile):
     """Get time spent executing JavaScript, in ms."""
-    total_samples = len(profile['samples'])
-    program = find_function(profile['head'])
-    program_samples = program['hitCount']
-    percent_in_program = program_samples / float(total_samples)
-    total_time = profile['timestamps'][-1] - profile['timestamps'][0]
-    time_in_program = (percent_in_program * total_time) / 1000.0
-    return time_in_program
+    idle = find_function(profile['head'], '(idle)')
+    idle_samples = idle['hitCount']
+    all_samples = len(profile['samples'])
+    percent_active = 100.0 * (all_samples - idle_samples) / all_samples
+    wall_time = profile['timestamps'][-1] - profile['timestamps'][0]
+    cpu_time = (percent_active * wall_time) / 1e5
+    return cpu_time
 
 
-def get_total_time_ms(profile):
+def get_wall_time_ms(profile):
     return 1000.0 * (profile['endTime'] - profile['startTime'])
 
 
@@ -132,8 +132,8 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         self.message_ids = itertools.count()
         self.requests = {}
         self.callbacks = {}
-        self.durations = []
-        self.total_durations = []
+        self.cpu_times = []
+        self.wall_times = []
 
     def onOpen(self):
         logging.info('Loading %s', highlight(self.factory.target_url))
@@ -176,8 +176,8 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         if self.factory.write:
             self.writeProfilerData(data)
 
-        total_duration_ms = get_total_time_ms(data)
-        duration_ms = get_program_time_ms(data)
+        wall_time = get_wall_time_ms(data)
+        cpu_time = get_cpu_time(data)
 
         if self.factory.show_uncached_requests:
             for req in self.requests.values():
@@ -185,21 +185,21 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
         if self.factory.warmups:
             self.factory.warmups -= 1
-            logging.info('(warm-up) Program: %.2fms Total: %.2fms',
-                         duration_ms, total_duration_ms)
+            logging.info('(warm-up) CPU: %.2fms Wall: %.2fms',
+                         cpu_time, wall_time)
             return self.onProfilerReady()
-        self.durations.append(duration_ms)
-        self.total_durations.append(total_duration_ms)
-        logging.info('%s of %s: Program: %.2fms Total: %.2fms',
-                     len(self.durations), self.factory.reps, duration_ms,
-                     total_duration_ms)
-        if len(self.durations) < self.factory.reps:
+        self.cpu_times.append(cpu_time)
+        self.wall_times.append(wall_time)
+        logging.info('%s of %s: CPU: %.2fms Wall: %.2fms',
+                     len(self.cpu_times), self.factory.reps, cpu_time,
+                     wall_time)
+        if len(self.cpu_times) < self.factory.reps:
             self.onProfilerReady()
         else:
-            logging.info('Program: %s',
-                         format_summary(summarize(self.durations)))
-            logging.info('Total:   %s',
-                         format_summary(summarize(self.total_durations)))
+            logging.info('CPU  : %s',
+                         format_summary(summarize(self.cpu_times)))
+            logging.info('Wall : %s',
+                         format_summary(summarize(self.wall_times)))
             reactor.stop()  # Shut down.
 
     def getMethodHandler(self, method):
