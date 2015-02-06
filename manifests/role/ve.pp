@@ -37,7 +37,7 @@ class role::ve {
             '--disable-web-resources',
             '--no-default-browser-check',
             '--no-first-run',
-            '--proxy-server=http://127.0.0.1',
+            '--host-rules="MAP * localhost, EXCLUDE upload.wikimedia.org"',
             '--safebrowsing-disable-auto-update',
             '--safebrowsing-disable-download-protection',
         ],
