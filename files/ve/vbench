@@ -140,6 +140,16 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         self.sendCommand('Page.enable')
         self.sendCommand('Page.addScriptToEvaluateOnLoad', scriptSource=JS)
         self.sendCommand('Network.enable')
+        self.sendCommand('Network.emulateNetworkConditions', latency=15, downloadThroughput=100)
+
+        #  "name": "emulateNetworkConditions",
+        #  "description": "Activates emulation of network conditions.",
+        #  "parameters": [
+        #      { "name": "offline", "type": "boolean", "description": "True to emulate internet disconnection." },
+        #      { "name": "latency", "type": "number", "description": "Additional latency (ms)." },
+        #      { "name": "downloadThroughput", "type": "number", "description": "Maximal aggregated download throughput." },
+        #      { "name": "uploadThroughput", "type": "number", "description": "Maximal aggregated upload throughput." }
+
         self.sendCommand('Profiler.enable')
         self.sendCommand('Profiler.setSamplingInterval',
                          interval=100,
