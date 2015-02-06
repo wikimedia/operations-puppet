@@ -323,6 +323,9 @@ node 'bast1001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+
+    $cluster = 'misc'
+    $ganglia_aggregator = true
     role bastionhost
 
     include admin
@@ -1749,14 +1752,6 @@ node 'ms1001.wikimedia.org' {
 }
 
 node 'ms1002.eqiad.wmnet' {
-    include admin
-    include standard
-}
-
-node /ms100[4]\.eqiad\.wmnet/ {
-    $cluster = 'misc'
-    $ganglia_aggregator = true
-
     include admin
     include standard
 }
