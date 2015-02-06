@@ -731,9 +731,21 @@ class role::cache {
                 max => 262144,
             }
 
-            # This needs newer-ish kernels, testing only on jessie+ hosts for now
+            # These tweaks were only tested on and/or only work on jessie, may
+            #  as well not disturb the working precise setup
             if os_version('debian >= jessie') {
+                # RPS/RSS to spread network i/o evenly
                 interface::rps { 'eth0': }
+
+                # flush vm more steadily in the background. helps avoid large performance
+                #   spikes related to flushing out disk write cache.
+                sysctl::parameters { 'cache_role_vm_settings':
+                    values => {
+                        'vm.dirty_ratio'            => 40,  # default 20
+                        'vm.dirty_background_ratio' => 5,   # default 10
+                        'vm.dirty_expire_centisecs' => 150, # default 3000
+                    },
+                }
             }
         }
 
