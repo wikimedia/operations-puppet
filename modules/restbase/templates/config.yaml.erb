@@ -2,19 +2,6 @@
 
 port: <%= @port %>
 
-# System domain (used to store restbase metadata) in reverse DNS notation
-sysdomain: restbase.local
-
-storage:
-  default:
-    # module name
-    type: restbase-cassandra
-    hosts: [<%= Array(@seeds).join(',') %>]
-    keyspace: system
-    username: <%= @cassandra_user %>
-    password: <%= @cassandra_password %>
-    defaultConsistency: <%= @cassandra_defaultConsistency %>
-
 logging:
   name: restbase
   level: <%= @logging_level %>
@@ -26,3 +13,113 @@ logging:
 
 monitoring:
   statsdHost: <%= @statsd_host %>
+
+templates:
+
+  wmf-content-1.0.0: &wp/content/1.0.0
+    swagger: '2.0'
+    # swagger options, overriding the shared ones from the merged specs (?)
+    info:
+      version: 1.0.0-abcd
+      title: Standard Wikimedia content API
+      description: All the content for this domain.
+      termsOfService: http://wikimedia.org/terms/
+      contact:
+        name: The project maintainers
+        url: http://mediawiki.org/wiki/RESTBase
+      license:
+        name: Creative Commons 4.0 International
+        url: http://creativecommons.org/licenses/by/4.0/
+    security:
+      # ACLs for public *.wikipedia.org wikis
+      - mediaWikiAuth:
+        - user:read
+    x-subspecs:
+      - mediawiki/v1/content
+    # - mediawiki/v1/mobile
+    # - mediawiki/v1/revision-scoring
+
+  wmf-sys-1.0.0: &wp/sys/1.0.0
+    info:
+      title: Default MediaWiki sys API module
+      version: 1.0.0
+    paths:
+      /{module:table}: &wp/sys/table # Can use this anchor to share the table
+        x-modules:
+          # There can be multiple modules too per stanza, as long as the
+          # exported symbols don't conflict. The operationIds from the spec
+          # will be resolved against all of the modules.
+          - name: restbase-mod-table-cassandra
+            version: 1.0.0
+            type: npm
+            options: # Passed to the module constructor
+              conf:
+                hosts: [<%= Array(@seeds).join(',') %>]
+                keyspace: system
+                username: <%= @cassandra_user %>
+                password: <%= @cassandra_password %>
+                defaultConsistency: <%= @cassandra_defaultConsistency %>
+
+      /{module:page_revisions}: &wp-page-revisions
+        x-modules:
+            - name: page_revisions
+              version: 1.0.0
+              type: file
+
+      /{module:key_rev_value}: &wp/sys/key_rev_value
+        x-modules:
+          - name: key_rev_value
+            version: 1.0.0
+            type: file
+
+      /{module:parsoid}:
+        x-modules:
+          - name: parsoid
+            version: 1.0.0
+            type: file
+            options:
+              parsoidHost: http://parsoid-lb.eqiad.wikimedia.org
+
+      /{module:action}:
+        x-modules:
+          - name: action
+            type: file
+            options:
+              apiURI: http://{domain}/w/api.php
+
+#      /{module:revscore}:
+#        title: Simple revscore service wrapper
+#        x-modules:
+#          # Generic revision service interface; Expects requests of the form
+#          # /{title}/{revision}.
+#          # Specific interface documentation (content types etc) at public
+#          # entry point, although we might also want to enforce them
+#          # internally.
+#          - name: restbase-mod-service
+#            version: 1.0.0 # simple service module, to be shared
+#            options:
+#              storage:
+#                uri: /{domain}/sys/key_rev_value/revscore.scores/{title}/{revision}
+#              service:
+#                uri: http://revscore.wikimedia.org/{domain}/{title}/{revision}
+
+  wp-default-1.0.0: &wp/default/1.0.0
+    x-subspecs:
+      - paths:
+          /{api:v1}:
+            x-subspec: *wp/content/1.0.0
+      - paths:
+          /{api:sys}:
+            x-subspec: *wp/sys/1.0.0
+
+
+spec:
+  title: "The RESTBase root"
+  # Some more general RESTBase info
+  paths:
+    /{domain:en.wikipedia.org}: *wp/default/1.0.0
+#    /{domain:de.wikipedia.org}: *wp/default/1.0.0
+#    /{domain:es.wikipedia.org}: *wp/default/1.0.0
+#    /{domain:nl.wikipedia.org}: *wp/default/1.0.0
+#    /{domain:en.wikipedia.test.local}: *wp/default/1.0.0
+
