@@ -63,6 +63,7 @@ class xenon(
 
     file { '/srv/xenon':
         ensure => ensure_directory($ensure),
+        links  => 'follow',
         owner  => 'xenon',
         group  => 'xenon',
         mode   => '0755',
