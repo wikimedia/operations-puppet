@@ -178,5 +178,5 @@ elif args.action == 'restart':
         wait_for_job(queue_name, job_name, True)
     else:
         print 'Webservice not running, starting'
-        start_web_job(args.server)
+        start_web_job(args.server, args.release)
         wait_for_job(queue_name, job_name, True)
