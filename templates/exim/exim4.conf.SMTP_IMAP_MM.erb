@@ -640,7 +640,7 @@ rt_pipe:
 	command = /usr/bin/rt-mailgate --queue $local_part \
 		--action "${if eq{$local_part_suffix}{-comment}{comment}{correspond}}" \
 		--extension ticket --url https://rt.wikimedia.org
-	environment = $address_data
+	environment = $address_data : PERL_LWP_SSL_VERIFY_HOSTNAME=0
 	user = mail
 	group = mail
 	return_fail_output
