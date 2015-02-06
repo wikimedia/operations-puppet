@@ -130,6 +130,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
     def onConnect(self, response):
         self.message_ids = itertools.count()
+        self.requests = {}
         self.callbacks = {}
         self.durations = []
         self.total_durations = []
@@ -139,16 +140,23 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         self.sendCommand('Page.enable')
         self.sendCommand('Page.addScriptToEvaluateOnLoad', scriptSource=JS)
         self.sendCommand('Network.enable')
-
-        if self.factory.disable_cache:
-            self.sendCommand('Network.setCacheDisabled', cacheDisabled=True)
-
         self.sendCommand('Profiler.enable')
         self.sendCommand('Profiler.setSamplingInterval',
                          interval=100,
                          callback=self.onProfilerReady)
 
+    def onNetworkRequestServedFromCache(self, params=None):
+        del self.requests[params['requestId']]
+        # self.requests.pop(params['requestId'], None)
+
+    def onNetworkRequestWillBeSent(self, params=None):
+        self.requests[params['requestId']] = params['request']
+
+    def doReset(self):
+        self.requests.clear()
+
     def onProfilerReady(self, params=None):
+        self.capturing = False
         self.sendCommand('Network.clearBrowserCache')
         self.sendCommand('Page.navigate', url=self.factory.target_url)
 
@@ -157,7 +165,12 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         with open(name, 'w') as f:
             json.dump(data, f)
 
+    def onProfilerConsoleProfileStarted(self, params=None):
+        self.doReset()
+        self.capturing = True
+
     def onProfilerConsoleProfileFinished(self, params=None):
+        self.capturing = False
         data = params['profile']
 
         if self.factory.write:
@@ -165,6 +178,11 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
         total_duration_ms = get_total_time_ms(data)
         duration_ms = get_program_time_ms(data)
+
+        if self.factory.show_uncached_requests:
+            for req in self.requests.values():
+                logging.info('[%s] %s', highlight(req['method']), req['url'])
+
         if self.factory.warmups:
             self.factory.warmups -= 1
             logging.info('(warm-up) Program: %.2fms Total: %.2fms',
@@ -215,14 +233,14 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
 
     def __init__(self, url, host='localhost', port=9222, reps=20,
-                 warmups=0, write=False, disable_cache=False):
+                 warmups=0, write=False, show_uncached_requests=False):
         self.host = host
         self.port = port
         self.reps = reps
         self.warmups = warmups
         self.target_url = url.replace('https://', 'http://', 1)  # force HTTP
         self.write = write
-        self.disable_cache = disable_cache
+        self.show_uncached_requests = show_uncached_requests
         tab_url = next(tab['webSocketDebuggerUrl'] for tab in self.getTabs()
                        if 'webSocketDebuggerUrl' in tab)
         WebSocketClientFactory.__init__(self, tab_url)
@@ -240,8 +258,8 @@ ap.add_argument('--reps', default=20, metavar='N', type=int,
                 help='repetitions')
 ap.add_argument('--warmups', default=2, metavar='N', type=int,
                 help='warm-up loops')
-ap.add_argument('--disable-cache', action='store_true', default=False,
-                help='disable the network cache')
+ap.add_argument('--show-uncached-requests', action='store_true', default=False,
+                help='log uncached network requests')
 ap.add_argument('--write', action='store_true', default=False,
                 help='save profiling data as .cpuprofile files.')
 ap.add_argument('url', help='URL to load')
