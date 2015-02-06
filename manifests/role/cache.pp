@@ -743,9 +743,9 @@ class role::cache {
                 #   spikes related to flushing out disk write cache.
                 sysctl::parameters { 'cache_role_vm_settings':
                     values => {
-                        'vm.dirty_ratio'            => 40,  # default 20
-                        'vm.dirty_background_ratio' => 5,   # default 10
-                        'vm.dirty_expire_centisecs' => 150, # default 3000
+                        'vm.dirty_ratio'            => 75,  # default 20
+                        'vm.dirty_background_ratio' => 2,   # default 10
+                        'vm.dirty_expire_centisecs' => 100, # default 3000
                     },
                 }
             }
