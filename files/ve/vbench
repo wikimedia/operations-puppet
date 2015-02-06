@@ -55,11 +55,22 @@ from autobahn.twisted.websocket import (WebSocketClientProtocol,
 
 
 JS = '''
-    mw.trackSubscribe('event.Edit', function (topic, event) {
-        if (event.action === 'init') { console.profile(); }
-        else if (event.action === 'ready') { console.profileEnd(); }
-    });
-    $('#ca-ve-edit').click();'''
+    window.onload = function () {
+        mw.trackSubscribe( 'event.Edit', function ( topic, event ) {
+            switch ( event.action ) {
+            case 'init':
+                console.profile();
+                break;
+            case 'ready':
+                console.profileEnd();
+                break;
+            }
+        } );
+        setTimeout( function () {
+              $('#ca-ve-edit').click();
+        }, 0 );
+    };
+'''
 
 YELLOW, WHITE, RESET = '\033[93m', '\033[1;37m', '\033[0m'
 
@@ -126,8 +137,12 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
     def onOpen(self):
         logging.info('Loading %s', highlight(self.factory.target_url))
         self.sendCommand('Page.enable')
+        self.sendCommand('Page.addScriptToEvaluateOnLoad', scriptSource=JS)
         self.sendCommand('Network.enable')
-        self.sendCommand('Network.setCacheDisabled', cacheDisabled=True)
+
+        if self.factory.disable_cache:
+            self.sendCommand('Network.setCacheDisabled', cacheDisabled=True)
+
         self.sendCommand('Profiler.enable')
         self.sendCommand('Profiler.setSamplingInterval',
                          interval=100,
@@ -135,11 +150,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
     def onProfilerReady(self, params=None):
         self.sendCommand('Network.clearBrowserCache')
-        self.sendCommand('Network.clearBrowserCookies')
         self.sendCommand('Page.navigate', url=self.factory.target_url)
-
-    def onPageFrameStoppedLoading(self, params=None):
-        self.sendCommand('Runtime.evaluate', expression=JS)
 
     def writeProfilerData(self, data):
         name = '%s.%d.cpuprofile' % (data.get('title', 'profile'), time.time())
@@ -204,13 +215,14 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
 
     def __init__(self, url, host='localhost', port=9222, reps=20,
-                 warmups=0, write=False):
+                 warmups=0, write=False, disable_cache=False):
         self.host = host
         self.port = port
         self.reps = reps
         self.warmups = warmups
         self.target_url = url.replace('https://', 'http://', 1)  # force HTTP
         self.write = write
+        self.disable_cache = disable_cache
         tab_url = next(tab['webSocketDebuggerUrl'] for tab in self.getTabs()
                        if 'webSocketDebuggerUrl' in tab)
         WebSocketClientFactory.__init__(self, tab_url)
@@ -228,6 +240,8 @@ ap.add_argument('--reps', default=20, metavar='N', type=int,
                 help='repetitions')
 ap.add_argument('--warmups', default=2, metavar='N', type=int,
                 help='warm-up loops')
+ap.add_argument('--disable-cache', action='store_true', default=False,
+                help='disable the network cache')
 ap.add_argument('--write', action='store_true', default=False,
                 help='save profiling data as .cpuprofile files.')
 ap.add_argument('url', help='URL to load')
