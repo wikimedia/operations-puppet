@@ -18,8 +18,8 @@ sock.send(".*\nhttp://%s:%s\n" % (socket.getfqdn(), PORT))
 
 os.chdir(os.path.expanduser('~/www/js'))
 
-env = {
-    'TOOL_WEB_PORT': str(PORT)
-}
+# Pass in all of our parent environment too
+# npm doesn't like it too much if you give it an almost empty environment
+os.environ['TOOL_WEB_PORT'] = str(PORT)
 
-os.execve('/usr/bin/npm', ['/usr/bin/npm', 'start'], env)
+os.execv('/usr/bin/npm', ['/usr/bin/npm', 'start'])
