@@ -94,6 +94,7 @@ class role::phabricator::main {
             ops-eqiad => '*',
             ops-esams => '*',
             ops-ulsfo => '*',
+            domains   => 'markmonitor.com',
         },
         phab_bot        => {
             root_dir    => '/srv/phab/phabricator/',
