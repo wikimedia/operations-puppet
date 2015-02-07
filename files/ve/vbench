@@ -37,6 +37,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 import argparse
+import inspect
 import itertools
 import json
 import logging
@@ -75,7 +76,7 @@ JS = '''
 YELLOW, WHITE, RESET = '\033[93m', '\033[1;37m', '\033[0m'
 
 logging.basicConfig(format='[%s%%(asctime)s%s] %%(message)s' % (YELLOW, RESET),
-                    datefmt='%I:%M:%S', level=logging.INFO)
+                    datefmt='%I:%M:%S', level=logging.DEBUG)
 
 
 measures = (min, max, mean, median, std)
@@ -94,29 +95,48 @@ def format_summary(summary):
     return ''.join(string.ljust(item, 30) for item in items)
 
 
-def find_function(root, func='(program)'):
-    """Breadth-first search for a function."""
-    if root['functionName'] == func:
-        return root
-    for child in root['children']:
-        result = find_function(child, func)
-        if result is not None:
-            return result
+def apply_safe(f, kwargs):
+    """Apply a function with only those arguments that it would accept."""
+    # If the function takes a '**' arg, all keyword args are safe.
+    # If it doesn't, we have to remove any arguments that are not
+    # present in the function's signature.
+    sig = inspect.getargspec(f)
+    sig_args = sig.args[1:] if f.__self__ else sig.args
+    if sig.keywords is None:
+        kwargs = {k: v for k, v in kwargs.items() if k in sig_args}
+    if sig.defaults is not None:
+        args = [kwargs.pop(k) for k in sig_args[:-len(sig.defaults)]]
+    else:
+        args = [kwargs.pop(k) for k in sig_args]
+    return f(*args, **kwargs)
 
 
-def get_cpu_time(profile):
-    """Get time spent executing JavaScript, in ms."""
-    idle = find_function(profile['head'], '(idle)')
-    idle_samples = idle['hitCount']
-    all_samples = len(profile['samples'])
-    percent_active = 100.0 * (all_samples - idle_samples) / all_samples
-    wall_time = profile['timestamps'][-1] - profile['timestamps'][0]
-    cpu_time = (percent_active * wall_time) / 1e5
-    return cpu_time
+class ChromeCPUProfile(object):
 
+    def __init__(self, data):
+        self.data = data
+        self.cpu_time = self.get_cpu_time()
+        self.wall_time = self.get_wall_time()
 
-def get_wall_time_ms(profile):
-    return 1000.0 * (profile['endTime'] - profile['startTime'])
+    def grep(self, function_name, root=None):
+        matches = []
+        root = root or self.data['head']
+        if root.get('functionName') == function_name:
+            matches.append(root)
+        for child in root.get('children', ()):
+            matches.extend(self.grep(function_name, child))
+        return matches
+
+    def get_cpu_time(self):
+        idle = self.grep('(idle)')[0]
+        idle_samples = idle['hitCount']
+        all_samples = len(self.data['samples'])
+        percent_active = 100.0 * (all_samples - idle_samples) / all_samples
+        total_time = self.data['timestamps'][-1] - self.data['timestamps'][0]
+        return (percent_active * total_time) / 1e5
+
+    def get_wall_time(self):
+        return (self.data['endTime'] - self.data['startTime']) * 1e3
 
 
 class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
@@ -139,24 +159,28 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         logging.info('Loading %s', highlight(self.factory.target_url))
         self.sendCommand('Page.enable')
         self.sendCommand('Page.addScriptToEvaluateOnLoad', scriptSource=JS)
+        if self.factory.hidpi:
+            self.sendCommand('Page.setDeviceMetricsOverride', width=1280,
+                             height=800, deviceScaleFactor=2,
+                             emulateViewport=False, fitWindow=False,
+                             mobile=False)
         self.sendCommand('Network.enable')
+        if self.factory.latency:
+            self.sendCommand('Network.emulateNetworkConditions', offline=False,
+                             latency=100, downloadThroughput=262144,
+                             uploadThroughput=262144)
         self.sendCommand('Profiler.enable')
         self.sendCommand('Profiler.setSamplingInterval',
                          interval=100,
                          callback=self.onProfilerReady)
 
-    def onNetworkRequestServedFromCache(self, params=None):
-        del self.requests[params['requestId']]
-        # self.requests.pop(params['requestId'], None)
+    def onNetworkRequestServedFromCache(self, requestId):
+        del self.requests[requestId]
 
-    def onNetworkRequestWillBeSent(self, params=None):
-        self.requests[params['requestId']] = params['request']
+    def onNetworkRequestWillBeSent(self, requestId, request):
+        self.requests[requestId] = request
 
-    def doReset(self):
-        self.requests.clear()
-
-    def onProfilerReady(self, params=None):
-        self.capturing = False
+    def onProfilerReady(self):
         self.sendCommand('Network.clearBrowserCache')
         self.sendCommand('Page.navigate', url=self.factory.target_url)
 
@@ -165,19 +189,14 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         with open(name, 'w') as f:
             json.dump(data, f)
 
-    def onProfilerConsoleProfileStarted(self, params=None):
-        self.doReset()
-        self.capturing = True
+    def onProfilerConsoleProfileStarted(self):
+        self.requests.clear()
 
-    def onProfilerConsoleProfileFinished(self, params=None):
-        self.capturing = False
-        data = params['profile']
+    def onProfilerConsoleProfileFinished(self, profile):
+        profile = ChromeCPUProfile(profile)
 
         if self.factory.write:
             self.writeProfilerData(data)
-
-        wall_time = get_wall_time_ms(data)
-        cpu_time = get_cpu_time(data)
 
         if self.factory.show_uncached_requests:
             for req in self.requests.values():
@@ -185,22 +204,18 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
         if self.factory.warmups:
             self.factory.warmups -= 1
-            logging.info('(warm-up) CPU: %.2fms Wall: %.2fms',
-                         cpu_time, wall_time)
-            return self.onProfilerReady()
-        self.cpu_times.append(cpu_time)
-        self.wall_times.append(wall_time)
-        logging.info('%s of %s: CPU: %.2fms Wall: %.2fms',
-                     len(self.cpu_times), self.factory.reps, cpu_time,
-                     wall_time)
-        if len(self.cpu_times) < self.factory.reps:
+        else:
+            self.cpu_times.append(profile.cpu_time)
+            self.wall_times.append(profile.wall_time)
+
+        reps = len(self.cpu_times)
+        logging.info('{:02d}/{:02d}: CPU: {: >7.2f}  Wall: {: >7.2f}'.format(
+            reps, self.factory.reps, profile.cpu_time, profile.wall_time))
+        if reps < self.factory.reps:
             self.onProfilerReady()
         else:
-            logging.info('CPU  : %s',
-                         format_summary(summarize(self.cpu_times)))
-            logging.info('Wall : %s',
-                         format_summary(summarize(self.wall_times)))
-            reactor.stop()  # Shut down.
+            reactor.stop()
+            self.showSummary()
 
     def getMethodHandler(self, method):
         object, method = method.split('.')
@@ -218,13 +233,19 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         id = message.get('id')
         if id in self.callbacks:
             callback = self.callbacks.pop(id)
-            return callback(message.get('response'))
+            response = message.get('response', {})
+            return apply_safe(callback, response)
 
         method = message.get('method')
         if method is not None:
             handler = self.getMethodHandler(method)
             if handler is not None:
-                return handler(message.get('params'))
+                params = message.get('params', {})
+                return apply_safe(handler, params)
+
+    def showSummary(self):
+        logging.info('CPU:  %s', format_summary(summarize(self.cpu_times)))
+        logging.info('Wall: %s', format_summary(summarize(self.wall_times)))
 
     def onError(self, error):
         logging.error(error)
@@ -233,7 +254,8 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
 
     def __init__(self, url, host='localhost', port=9222, reps=20,
-                 warmups=0, write=False, show_uncached_requests=False):
+                 warmups=0, write=False, show_uncached_requests=False,
+                 hidpi=False, latency=False):
         self.host = host
         self.port = port
         self.reps = reps
@@ -241,6 +263,8 @@ class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
         self.target_url = url.replace('https://', 'http://', 1)  # force HTTP
         self.write = write
         self.show_uncached_requests = show_uncached_requests
+        self.hidpi = hidpi
+        self.latency = latency
         tab_url = next(tab['webSocketDebuggerUrl'] for tab in self.getTabs()
                        if 'webSocketDebuggerUrl' in tab)
         WebSocketClientFactory.__init__(self, tab_url)
@@ -262,11 +286,17 @@ ap.add_argument('--show-uncached-requests', action='store_true', default=False,
                 help='log uncached network requests')
 ap.add_argument('--write', action='store_true', default=False,
                 help='save profiling data as .cpuprofile files.')
+ap.add_argument('--hidpi', action='store_true', default=False,
+                help='force high DPI')
+ap.add_argument('--latency', action='store_true', default=False,
+                help='simulate realistic network conditions')
 ap.add_argument('url', help='URL to load')
 args = ap.parse_args()
 
 
 if __name__ == '__main__':
+    observer = log.PythonLoggingObserver()
+    observer.start()
     factory = ChromeRemoteDebuggingFactory(**vars(args))
     reactor.connectTCP(args.host, args.port, factory)
     reactor.run()
