@@ -31,7 +31,7 @@ Name: cassandra
 Method: http://www.apache.org/dist/cassandra/debian
 Components: main>thirdparty
 UDebComponents:
-Suite: 20x
+Suite: 21x
 Architectures: amd64 source
 VerifyRelease: 749D6EEC0353B12C
 ListShellHook: grep-dctrl -X -S cassandra || [ $? -eq 1 ]
