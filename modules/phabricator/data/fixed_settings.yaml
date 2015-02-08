@@ -175,6 +175,10 @@ translation.override:
   'Maniphest Task': 'Task'
   'Pholio Mock': 'Mockup'
   'Real Name': 'Also Known As'
+  # T33
+  'Edit Blocking Tasks': "Edit 'Blocked By' Tasks"
+  'Current Blocking Tasks': "Current 'Blocked By' Tasks"
+  'Save Blocking Tasks': "Save 'Blocked By' Tasks"
 
 # We don't host local docs or use the wiki :)
 phabricator.uninstalled-applications:
