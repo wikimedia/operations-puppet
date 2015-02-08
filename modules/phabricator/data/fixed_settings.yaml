@@ -179,6 +179,8 @@ translation.override:
   'Export to Excel': 'Export (disabled)'
   'Export Tasks to Excel': 'Export Tasks'
   'Do you want to export the query results to Excel?': 'Do you want to export the query results?'
+  # T865
+  'You can also create tasks by sending an email to: %s': 'You can also create tasks by sending an email to: %s (<a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Phabricator/Help#Using_e-mail">learn more</a>)'
 
 # We don't host local docs or use the wiki :)
 phabricator.uninstalled-applications:
