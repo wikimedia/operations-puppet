@@ -175,6 +175,8 @@ translation.override:
   'Maniphest Task': 'Task'
   'Pholio Mock': 'Mockup'
   'Real Name': 'Also Known As'
+  # T152, 257
+  'Export to Excel': 'Export (disabled)'
 
 # We don't host local docs or use the wiki :)
 phabricator.uninstalled-applications:
