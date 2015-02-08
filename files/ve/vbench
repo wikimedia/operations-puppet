@@ -41,12 +41,13 @@ import inspect
 import itertools
 import json
 import logging
+import re
 import socket
 import string
 import time
 import urllib2
 
-from twisted.internet import reactor
+from twisted.internet import defer, reactor
 from twisted.python import log
 
 from numpy import mean, median, std
@@ -78,8 +79,28 @@ YELLOW, WHITE, RESET = '\033[93m', '\033[1;37m', '\033[0m'
 logging.basicConfig(format='[%s%%(asctime)s%s] %%(message)s' % (YELLOW, RESET),
                     datefmt='%I:%M:%S', level=logging.DEBUG)
 
-
 measures = (min, max, mean, median, std)
+
+DISPLAY_RE = r'(?P<width>\d+)x(?P<height>\d+)(\*(?P<deviceScaleFactor>\d+))?'
+
+
+def parse_display_opts(opt_string):
+    opts = {
+        'deviceScaleFactor': 1,
+        'emulateViewport': False,
+        'fitWindow': False,
+        'mobile': False,
+    }
+    m = re.match(DISPLAY_RE, opt_string)
+    if m is None:
+        raise ValueError('"%s" is not a valid display specification. '
+                         'The format is WIDTHxHEIGHT*DEPTH' % opt_string)
+    opts.update(((k, int(v)) for k, v in m.groupdict().items()))
+    return opts
+
+
+def upper_first(s):
+    return s[0:1].upper() + s[1:]
 
 
 def summarize(series):
@@ -93,22 +114,6 @@ def highlight(*args):
 def format_summary(summary):
     items = ('%s: %s' % (k, highlight(round(v, 2), 'ms')) for k, v in summary)
     return ''.join(string.ljust(item, 30) for item in items)
-
-
-def apply_safe(f, kwargs):
-    """Apply a function with only those arguments that it would accept."""
-    # If the function takes a '**' arg, all keyword args are safe.
-    # If it doesn't, we have to remove any arguments that are not
-    # present in the function's signature.
-    sig = inspect.getargspec(f)
-    sig_args = sig.args[1:] if f.__self__ else sig.args
-    if sig.keywords is None:
-        kwargs = {k: v for k, v in kwargs.items() if k in sig_args}
-    if sig.defaults is not None:
-        args = [kwargs.pop(k) for k in sig_args[:-len(sig.defaults)]]
-    else:
-        args = [kwargs.pop(k) for k in sig_args]
-    return f(*args, **kwargs)
 
 
 class ChromeCPUProfile(object):
@@ -141,46 +146,50 @@ class ChromeCPUProfile(object):
 
 class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
-    def sendCommand(self, method, callback=None, **params):
+    def sendCommand(self, method, **params):
         id = next(self.message_ids)
-        if callback is not None:
-            self.callbacks[id] = callback
+        deferred = self.deferreds[id] = defer.Deferred()
         command = {'id': id, 'method': method, 'params': params}
         self.sendMessage(json.dumps(command))
+        return deferred
 
     def onConnect(self, response):
         self.message_ids = itertools.count()
         self.requests = {}
-        self.callbacks = {}
+        self.deferreds = {}
         self.cpu_times = []
         self.wall_times = []
 
     def onOpen(self):
-        logging.info('Loading %s', highlight(self.factory.target_url))
-        self.sendCommand('Page.enable')
-        self.sendCommand('Page.addScriptToEvaluateOnLoad', scriptSource=JS)
-        if self.factory.hidpi:
-            self.sendCommand('Page.setDeviceMetricsOverride', width=1280,
-                             height=800, deviceScaleFactor=2,
-                             emulateViewport=False, fitWindow=False,
-                             mobile=False)
-        self.sendCommand('Network.enable')
+        logging.info('Loading %s...', highlight(self.factory.target_url))
+
+        deferreds = defer.DeferredList((
+            self.sendCommand('Page.enable'),
+            self.sendCommand('Network.enable'),
+            self.sendCommand('Profiler.enable'),
+            self.sendCommand('Page.addScriptToEvaluateOnLoad',
+                             scriptSource=JS),
+            self.sendCommand('Profiler.setSamplingInterval', interval=100),
+        ))
+
+        if self.factory.display:
+            deferreds.chainDeferred(self.sendCommand(
+                'Page.setDeviceMetricsOverride', **self.factory.display))
+
         if self.factory.latency:
-            self.sendCommand('Network.emulateNetworkConditions', offline=False,
-                             latency=100, downloadThroughput=262144,
-                             uploadThroughput=262144)
-        self.sendCommand('Profiler.enable')
-        self.sendCommand('Profiler.setSamplingInterval',
-                         interval=100,
-                         callback=self.onProfilerReady)
+            deferreds.chainDeferred(self.sendCommand(
+                'Network.emulateNetworkConditions', offline=False, latency=100,
+                downloadThroughput=262144, uploadThroughput=262144))
 
-    def onNetworkRequestServedFromCache(self, requestId):
-        del self.requests[requestId]
+        return deferreds.addCallback(self.onProfilerReady)
 
-    def onNetworkRequestWillBeSent(self, requestId, request):
-        self.requests[requestId] = request
+    def onNetworkRequestServedFromCache(self, params=None):
+        del self.requests[params['requestId']]
 
-    def onProfilerReady(self):
+    def onNetworkRequestWillBeSent(self, params=None):
+        self.requests[params['requestId']] = params['request']
+
+    def onProfilerReady(self, params=None):
         self.sendCommand('Network.clearBrowserCache')
         self.sendCommand('Page.navigate', url=self.factory.target_url)
 
@@ -189,14 +198,16 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         with open(name, 'w') as f:
             json.dump(data, f)
 
-    def onProfilerConsoleProfileStarted(self):
+    def onProfilerConsoleProfileStarted(self, params=None):
         self.requests.clear()
 
-    def onProfilerConsoleProfileFinished(self, profile):
-        profile = ChromeCPUProfile(profile)
+    def onProfilerConsoleProfileFinished(self, params=None):
+        data = params['profile']
 
         if self.factory.write:
             self.writeProfilerData(data)
+
+        profile = ChromeCPUProfile(data)
 
         if self.factory.show_uncached_requests:
             for req in self.requests.values():
@@ -217,45 +228,43 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
             reactor.stop()
             self.showSummary()
 
-    def getMethodHandler(self, method):
-        object, method = method.split('.')
-        # Munge strings with format 'Object.Event' to 'onObjectEvent'.
-        handler = 'on' + object + method[0].upper() + method[1:]
+    def getHandler(self, method):
+        object, event = method.split('.')
+        handler = 'on' + object + upper_first(event)
         return getattr(self, handler, None)
 
     def onMessage(self, payload, isBinary):
         message = json.loads(payload.decode('utf-8'))
 
-        error = message.get('error')
-        if error is not None:
-            return self.onError(error)
-
         id = message.get('id')
-        if id in self.callbacks:
-            callback = self.callbacks.pop(id)
-            response = message.get('response', {})
-            return apply_safe(callback, response)
-
+        error = message.get('error')
         method = message.get('method')
-        if method is not None:
-            handler = self.getMethodHandler(method)
-            if handler is not None:
-                params = message.get('params', {})
-                return apply_safe(handler, params)
+        params = message.get('params')
+        response = message.get('response')
+        deferred = self.deferreds.get(id)
+
+        if deferred:
+            if error:
+                log.error(error)
+                return deferred.errback(error)
+            else:
+                return deferred.callback(response)
+
+        if method:
+            handler = self.getHandler(method)
+            if handler:
+                return handler(params)
 
     def showSummary(self):
         logging.info('CPU:  %s', format_summary(summarize(self.cpu_times)))
         logging.info('Wall: %s', format_summary(summarize(self.wall_times)))
-
-    def onError(self, error):
-        logging.error(error)
 
 
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
 
     def __init__(self, url, host='localhost', port=9222, reps=20,
                  warmups=0, write=False, show_uncached_requests=False,
-                 hidpi=False, latency=False):
+                 display=False, latency=False):
         self.host = host
         self.port = port
         self.reps = reps
@@ -263,11 +272,10 @@ class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
         self.target_url = url.replace('https://', 'http://', 1)  # force HTTP
         self.write = write
         self.show_uncached_requests = show_uncached_requests
-        self.hidpi = hidpi
+        self.display = display
         self.latency = latency
-        tab_url = next(tab['webSocketDebuggerUrl'] for tab in self.getTabs()
-                       if 'webSocketDebuggerUrl' in tab)
-        WebSocketClientFactory.__init__(self, tab_url)
+        tab = next(t for t in self.getTabs() if 'webSocketDebuggerUrl' in t)
+        WebSocketClientFactory.__init__(self, tab['webSocketDebuggerUrl'])
         self.protocol = ChromeRemoteDebuggingProtocol
 
     def getTabs(self):
@@ -286,8 +294,8 @@ ap.add_argument('--show-uncached-requests', action='store_true', default=False,
                 help='log uncached network requests')
 ap.add_argument('--write', action='store_true', default=False,
                 help='save profiling data as .cpuprofile files.')
-ap.add_argument('--hidpi', action='store_true', default=False,
-                help='force high DPI')
+ap.add_argument('--display', type=parse_display_opts,
+                help='set device display metrics to WIDTHxHEIGHT*FACTOR.')
 ap.add_argument('--latency', action='store_true', default=False,
                 help='simulate realistic network conditions')
 ap.add_argument('url', help='URL to load')
