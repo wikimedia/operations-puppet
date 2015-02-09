@@ -26,11 +26,16 @@ cluster_name: '<%= @cluster_name %>'
 # multiple tokens per node, see http://wiki.apache.org/cassandra/Operations
 num_tokens: <%= @num_tokens %>
 
+# initial_token allows you to specify tokens manually.  While you can use # it with
+# vnodes (num_tokens > 1, above) -- in which case you should provide a
+# comma-separated list -- it's primarily used when adding nodes # to legacy clusters
+# that do not have vnodes enabled.
+# initial_token:
 
+# See http://wiki.apache.org/cassandra/HintedHandoff
 # May either be "true" or "false" to enable globally, or contain a list
 # of data centers to enable per-datacenter.
 # hinted_handoff_enabled: DC1,DC2
-# See http://wiki.apache.org/cassandra/HintedHandoff
 hinted_handoff_enabled: true
 # this defines the maximum amount of time a dead host will have hints
 # generated.  After it has been dead this long, new hints for it will not be
@@ -104,6 +109,8 @@ data_file_directories:
 commitlog_directory: <%= @commitlog_directory %>
 
 # policy for data disk failures:
+# die: shut down gossip and Thrift and kill the JVM for any fs errors or
+#      single-sstable errors, so the node can be replaced.
 # stop_paranoid: shut down gossip and Thrift even for single-sstable errors.
 # stop: shut down gossip and Thrift, leaving the node effectively dead, but
 #       can still be inspected via JMX.
@@ -114,6 +121,7 @@ commitlog_directory: <%= @commitlog_directory %>
 disk_failure_policy: <%= @disk_failure_policy %>
 
 # policy for commit disk failures:
+# die: shut down gossip and Thrift and kill the JVM, so the node can be replaced.
 # stop: shut down gossip and Thrift, leaving the node effectively dead, but
 #       can still be inspected via JMX.
 # stop_commit: shutdown the commit log, letting writes collect but
@@ -154,7 +162,7 @@ key_cache_save_period: 14400
 # NOTE: if you reduce the size, you may not get you hottest keys loaded on startup.
 #
 # Default value is 0, to disable row caching.
-row_cache_size_in_mb: 0
+row_cache_size_in_mb: <%= @row_cache_size_in_mb %>
 
 # Duration in seconds after which Cassandra should
 # safe the row cache. Caches are saved to saved_caches_directory as specified
@@ -170,6 +178,32 @@ row_cache_save_period: 0
 # Number of keys from the row cache to save
 # Disabled by default, meaning all keys are going to be saved
 # row_cache_keys_to_save: 100
+
+# Maximum size of the counter cache in memory.
+#
+# Counter cache helps to reduce counter locks' contention for hot counter cells.
+# In case of RF = 1 a counter cache hit will cause Cassandra to skip the read before
+# write entirely. With RF > 1 a counter cache hit will still help to reduce the duration
+# of the lock hold, helping with hot counter cell updates, but will not allow skipping
+# the read entirely. Only the local (clock, count) tuple of a counter cell is kept
+# in memory, not the whole counter, so it's relatively cheap.
+#
+# NOTE: if you reduce the size, you may not get you hottest keys loaded on startup.
+#
+# Default value is empty to make it "auto" (min(2.5% of Heap (in MB), 50MB)). Set to 0 to disable counter cache.
+# NOTE: if you perform counter deletes and rely on low gcgs, you should disable the counter cache.
+counter_cache_size_in_mb:
+
+# Duration in seconds after which Cassandra should
+# save the counter cache (keys only). Caches are saved to saved_caches_directory as
+# specified in this configuration file.
+#
+# Default is 7200 or 2 hours.
+counter_cache_save_period: 7200
+
+# Number of keys from the counter cache to save
+# Disabled by default, meaning all keys are going to be saved
+# counter_cache_keys_to_save: 100
 
 # The off-heap memory allocator.  Affects storage engine metadata as
 # well as caches.  Experiments show that JEMAlloc saves some memory
@@ -234,22 +268,43 @@ seed_provider:
 # bottleneck will be reads that need to fetch data from
 # disk. "concurrent_reads" should be set to (16 * number_of_drives) in
 # order to allow the operations to enqueue low enough in the stack
-# that the OS and drives can reorder them.
+# that the OS and drives can reorder them. Same applies to
+# "concurrent_counter_writes", since counter writes read the current
+# values before incrementing and writing them back.
 #
 # On the other hand, since writes are almost never IO bound, the ideal
 # number of "concurrent_writes" is dependent on the number of cores in
 # your system; (8 * number_of_cores) is a good rule of thumb.
 concurrent_reads: <%= @concurrent_reads %>
 concurrent_writes: <%= @concurrent_writes %>
+concurrent_counter_writes: <%= @concurrent_counter_writes %>
 
 # Total memory to use for sstable-reading buffers.  Defaults to
 # the smaller of 1/4 of heap or 512MB.
 # file_cache_size_in_mb: 512
 
-# Total memory to use for memtables.  Cassandra will flush the largest
-# memtable when this much memory is used.
-# If omitted, Cassandra will set it to 1/4 of the heap.
-# memtable_total_space_in_mb: 2048
+# Total permitted memory to use for memtables. Cassandra will stop
+# accepting writes when the limit is exceeded until a flush completes,
+# and will trigger a flush based on memtable_cleanup_threshold
+# If omitted, Cassandra will set both to 1/4 the size of the heap.
+# memtable_heap_space_in_mb: 2048
+# memtable_offheap_space_in_mb: 2048
+
+# Ratio of occupied non-flushing memtable size to total permitted size
+# that will trigger a flush of the largest memtable.  Lager mct will
+# mean larger flushes and hence less compaction, but also less concurrent
+# flush activity which can make it difficult to keep your disks fed
+# under heavy write load.
+#
+# memtable_cleanup_threshold defaults to 1 / (memtable_flush_writers + 1)
+# memtable_cleanup_threshold: 0.11
+
+# Specify the way Cassandra allocates and manages memtable memory.
+# Options are:
+#   heap_buffers:    on heap nio buffers
+#   offheap_buffers: off heap (direct) nio buffers
+#   offheap_objects: native memory, eliminating nio buffer heap overhead
+memtable_allocation_type: offheap_objects
 
 # Total space to use for commitlogs.  Since commitlog segments are
 # mmapped, and hence use up address space, the default size is 32
@@ -263,15 +318,28 @@ concurrent_writes: <%= @concurrent_writes %>
 
 # This sets the amount of memtable flush writer threads.  These will
 # be blocked by disk io, and each one will hold a memtable in memory
-# while blocked. If you have a large heap and many data directories,
-# you can increase this value for better flush performance.
-# By default this will be set to the amount of data directories defined.
-#memtable_flush_writers: 1
+# while blocked.
+#
+# memtable_flush_writers defaults to the smaller of (number of disks,
+# number of cores), with a minimum of 2 and a maximum of 8.
+#
+# If your data directories are backed by SSD, you should increase this
+# to the number of cores.
+#memtable_flush_writers: 8
 
-# the number of full memtables to allow pending flush, that is,
-# waiting for a writer thread.  At a minimum, this should be set to
-# the maximum number of secondary indexes created on a single CF.
-memtable_flush_queue_size: 4
+# A fixed memory pool size in MB for for SSTable index summaries. If left
+# empty, this will default to 5% of the heap size. If the memory usage of
+# all index summaries exceeds this limit, SSTables with low read rates will
+# shrink their index summaries in order to meet this limit.  However, this
+# is a best-effort process. In extreme conditions Cassandra may need to use
+# more than this amount of memory.
+index_summary_capacity_in_mb:
+
+# How frequently index summaries should be resampled.  This is done
+# periodically to redistribute memory from the fixed-size pool to sstables
+# proportional their recent read rates.  Setting to -1 will disable this
+# process, leaving existing index summaries at their current sampling level.
+index_summary_resize_interval_in_minutes: 60
 
 # Whether to, when doing sequential writing, fsync() at intervals in
 # order to force the operating system to flush the dirty
@@ -288,9 +356,11 @@ storage_port: <%= @storage_port %>
 # encryption_options
 ssl_storage_port: 7001
 
-# Address to bind to and tell other Cassandra nodes to connect to. You
-# _must_ change this if you want multiple nodes to be able to
-# communicate!
+# Address or interface to bind to and tell other Cassandra nodes to connect to.
+# You _must_ change this if you want multiple nodes to be able to communicate!
+#
+# Set listen_address OR listen_interface, not both. Interfaces must correspond
+# to a single address, IP aliasing is not supported.
 #
 # Leaving it blank leaves it up to InetAddress.getLocalHost(). This
 # will always do the Right Thing _if_ the node is properly configured
@@ -327,8 +397,11 @@ native_transport_port: <%= @native_transport_port %>
 # Whether to start the thrift rpc server.
 start_rpc: <%= @start_rpc %>
 
-# The address to bind the Thrift RPC service and native transport
-# server -- clients connect here.
+# The address or interface to bind the Thrift RPC service and native transport
+# server to.
+#
+# Set rpc_address OR rpc_interface, not both. Interfaces must correspond
+# to a single address, IP aliasing is not supported.
 #
 # Leaving this blank has the same effect it does for ListenAddress,
 # (i.e. it will be based on the configured hostname of the node).
@@ -339,6 +412,12 @@ start_rpc: <%= @start_rpc %>
 rpc_address: <%= @rpc_address %>
 # port for Thrift to listen for clients on
 rpc_port: <%= @rpc_port %>
+
+# RPC address to broadcast to drivers and other Cassandra nodes. This cannot
+# be set to 0.0.0.0. If left blank, this will be set to the value of
+# rpc_address. If rpc_address is set to 0.0.0.0, broadcast_rpc_address must
+# be set.
+# broadcast_rpc_address: 1.2.3.4
 
 # enable or disable keepalive on rpc/native connections
 rpc_keepalive: true
@@ -353,7 +432,8 @@ rpc_keepalive: true
 # hsha  -> Stands for "half synchronous, half asynchronous." All thrift clients are handled
 #          asynchronously using a small number of threads that does not vary with the amount
 #          of thrift clients (and thus scales well to many clients). The rpc requests are still
-#          synchronous (one thread per active request).
+#          synchronous (one thread per active request). If hsha is selected then it is essential
+#          that rpc_max_threads is changed from the default value of unlimited.
 #
 # The default is sync because on Windows hsha is about 30% slower.  On Linux,
 # sync/hsha performance is about the same, with hsha of course using less memory.
@@ -440,11 +520,6 @@ column_index_size_in_kb: 64
 # Caution should be taken on increasing the size of this threshold as it can lead to node instability.
 batch_size_warn_threshold_in_kb: 5
 
-# Size limit for rows being compacted in memory.  Larger rows will spill
-# over to disk and use a slower two-pass compaction process.  A message
-# will be logged specifying the row key.
-in_memory_compaction_limit_in_mb: 64
-
 # Number of simultaneous compactions to allow, NOT including
 # validation "compactions" for anti-entropy repair.  Simultaneous
 # compactions can help preserve read performance in a mixed read/write
@@ -454,16 +529,12 @@ in_memory_compaction_limit_in_mb: 64
 # slowly or too fast, you should look at
 # compaction_throughput_mb_per_sec first.
 #
-# concurrent_compactors defaults to the number of cores.
-# Uncomment to make compaction mono-threaded, the pre-0.8 default.
+# concurrent_compactors defaults to the smaller of (number of disks,
+# number of cores), with a minimum of 2 and a maximum of 8.
+#
+# If your data directories are backed by SSD, you should increase this
+# to the number of cores.
 #concurrent_compactors: 1
-
-# Multi-threaded compaction. When enabled, each compaction will use
-# up to one thread per core, plus one thread per sstable being merged.
-# This is usually only useful for SSD-based hardware: otherwise,
-# your concern is usually to get compaction to do LESS i/o (see:
-# compaction_throughput_mb_per_sec), not more.
-multithreaded_compaction: false
 
 # Throttles compaction to the given total throughput across the entire
 # system. The faster you insert data, the faster you need to compact in
@@ -473,10 +544,11 @@ multithreaded_compaction: false
 # of compaction, including validation compaction.
 compaction_throughput_mb_per_sec: <%= @compaction_throughput_mb_per_sec %>
 
-# Track cached row keys during compaction, and re-cache their new
-# positions in the compacted sstable.  Disable if you use really large
-# key caches.
-compaction_preheat_key_cache: true
+# When compacting, the replacement sstable(s) can be opened before they
+# are completely written, and used in place of the prior sstables for
+# any range that has been written. This helps to smoothly transfer reads
+# between the sstables, reducing page cache churn and keeping hot rows hot
+sstable_preemptive_open_interval_in_mb: 50
 
 # Throttles all outbound streaming file transfers on this node to the
 # given total throughput in Mbps. This is necessary because Cassandra does
@@ -497,6 +569,8 @@ read_request_timeout_in_ms: 5000
 range_request_timeout_in_ms: 10000
 # How long the coordinator should wait for writes to complete
 write_request_timeout_in_ms: 2000
+# How long the coordinator should wait for counter writes to complete
+counter_write_request_timeout_in_ms: 5000
 # How long a coordinator should continue to retry a CAS operation
 # that contends with other proposals for the same row
 cas_contention_timeout_in_ms: 1000

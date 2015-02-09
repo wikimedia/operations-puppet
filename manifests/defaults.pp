@@ -7,10 +7,12 @@ class cassandra::defaults {
     $data_file_directories            = pick($::cassandra_data_file_directories,            ['/var/lib/cassandra/data'])
     $commitlog_directory              = pick($::cassandra_commitlog_directory,              '/var/lib/cassandra/commitlog')
     $disk_failure_policy              = pick($::cassandra_disk_failure_policy,              'stop')
+    $row_cache_size_in_mb             = pick($::cassandra_row_cache_size_in_mb,             200)
     $memory_allocator                 = pick($::cassandra_memory_allocator,                 'JEMallocAllocator')
     $saved_caches_directory           = pick($::cassandra_saved_caches_directory,           '/var/lib/cassandra/saved_caches')
     $concurrent_reads                 = pick($::cassandra_concurrent_reads,                 32)
-    $concurrent_writes                = pick($::cassandra_concurrent_writes,                $::processorcount * 8)
+    $concurrent_writes                = pick($::cassandra_concurrent_writes,                32)
+    $concurrent_counter_writes        = pick($::cassandra_concurrent_counter_writes,        32)
     $storage_port                     = pick($::cassandra_storage_port,                     7000)
     $listen_address                   = pick($::cassandra_listen_address,                   $::ipaddress)
 

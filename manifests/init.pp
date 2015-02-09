@@ -56,8 +56,12 @@
 #
 # [*disk_failure_policy*]
 #   Policy for data disk failure.  Should be one of:
-#   stop_paranoid, stop, best_effort, or ignore.
+#   stop_paranoid, die, stop, best_effort, or ignore.
 #   Default: stop
+#
+# [*row_cache_size_in_mb*]
+#   Enable a small cache by default.
+#   Default: 200
 #
 # [*memory_allocator*]
 #   The off-heap memory allocator.
@@ -68,14 +72,16 @@
 #   Default: /var/lib/cassandra/saved_caches
 #
 # [*concurrent_reads*]
-#   Number of allowed concurrent reads.  Should be set to
-#   (16 * number_of_drives) in your data_file_directories.
+#   Number of allowed concurrent reads.
 #   Default: 32
 #
 # [*concurrent_writes*]
-#   Number of allowed concurrent writes.  Should be set to
-#   about (8 * number_of_cores).  This is also the default.
-#   Default: $::processorcount * 8
+#   Number of allowed concurrent writes. Impacts peak memory usage.
+#   Default: 32
+#
+# [*concurrent_counter_writes*]
+#   Number of allowed concurrent counter writes.
+#   Default: 32
 #
 # [*storage_port*]
 #   TCP port, for commands and data.
@@ -133,11 +139,11 @@
 #   Default: all
 #
 # [*max_heap_size*]
-#   Value for -Xms and -Xmx to pass to the JVM.
+#   Value for -Xms and -Xmx to pass to the JVM. Example: '8g'
 #   Default: undef
 #
 # [*heap_newsize*]
-#   Value for -Xmn to pass to the JVM.
+#   Value for -Xmn to pass to the JVM. Example: '1200m'
 #   Default: undef
 #
 # [*additional_jvm_opts*]
