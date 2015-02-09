@@ -274,7 +274,18 @@ groups:
             'ALL = (root) NOPASSWD: /usr/sbin/service cxserver restart',
             'ALL = (root) NOPASSWD: /usr/sbin/service cxserver reload',
             'ALL = (cxserver) NOPASSWD: ALL']
-
+  chromium-admin:
+    gid: 742
+    description: people who run benchmarking tests with chromium (and xvfb)
+    members: [catrope]
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service chromium stop',
+            'ALL = (root) NOPASSWD: /usr/sbin/service chromium start',
+            'ALL = (root) NOPASSWD: /usr/sbin/service chromium restart',
+            'ALL = (root) NOPASSWD: /usr/sbin/service chromium reload',
+            'ALL = (root) NOPASSWD: /usr/sbin/service xvfb stop',
+            'ALL = (root) NOPASSWD: /usr/sbin/service xvfb start',
+            'ALL = (root) NOPASSWD: /usr/sbin/service xvfb restart',
+            'ALL = (root) NOPASSWD: /usr/sbin/service xvfb reload']
 users:
   rush:
     ensure: present
