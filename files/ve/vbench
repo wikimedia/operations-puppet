@@ -94,7 +94,7 @@ class HighlightingFormatter(logging.Formatter):
     RE = re.compile(r'(?P<markup>(\*)|(_))(?P<word>\S+)(?(2)\*)(?(3)_)')
     YELLOW, WHITE, RESET = '\033[93m', '\033[1;37m', '\033[0m'
 
-    def __init__(self, fmt='[_%(asctime)s_] %(message)s', date_fmt='%I:%M:%S',
+    def __init__(self, fmt='[_%(asctime)s_] %(message)s', date_fmt='%H:%M:%S',
                  use_color=False):
         if use_color:
             self.subs = {'*': self.WHITE, '_': self.YELLOW, 'end': self.RESET}
