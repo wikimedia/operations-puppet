@@ -1,8 +1,8 @@
 limit_conn_zone $binary_remote_addr zone=addr:10m;
 
 server {
-   listen 80 default;
-   listen 443 default ssl;
+   listen [::]:80 default;
+   listen [::]:443 default ssl;
    server_name dumps.wikimedia.org;
 
    ssl_certificate /etc/ssl/localcerts/dumps.wikimedia.org.chained.crt;
