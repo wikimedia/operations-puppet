@@ -1,3 +1,5 @@
+limit_conn_zone $binary_remote_addr zone=addr:10m;
+
 server {
    listen 80 default;
    listen 443 default ssl;
@@ -11,8 +13,6 @@ server {
    <%= @ssl_settings.join("\n") %>
 
    root /data/xmldatadumps/public;
-
-   limit_conn_zone $binary_remote_address zone=addr:10m;
 
    location / {
       index index.html index.htm;
