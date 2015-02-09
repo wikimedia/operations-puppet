@@ -43,6 +43,17 @@ class role::ve {
         ],
     }
 
+    sudo::group { 'wikidev':
+        privileges => [
+            'ALL = (root) NOPASSWD: /sbin/restart hhvm',
+            'ALL = (root) NOPASSWD: /sbin/start hhvm',
+            'ALL = (root) NOPASSWD: /sbin/restart chromium',
+            'ALL = (root) NOPASSWD: /sbin/start chromium',
+            'ALL = (root) NOPASSWD: /sbin/restart xvfb',
+            'ALL = (root) NOPASSWD: /sbin/start xvfb',
+        ],
+    }
+
 
     # vbench is a CLI tool for benchmarking VisualEditor.
     # It uses `autobahn` and `twisted` for WebSocket support, which
