@@ -35,6 +35,16 @@ class role::protoproxy::ssl::common {
         content => template('nginx/logrotate'),
     }
 
+    # reload protoproxies once a day for ticket keys
+    # on legacy cache boxes (to be removed when no matching
+    # hosts in the if clause here).
+    if ! os_version('debian >= jessie') {
+        cron { 'nginx_reload_daily':
+            command => '/usr/sbin/service nginx reload',
+            hour    => fqdn_rand(24),
+            minute  => fqdn_rand(60),
+        }
+    }
 }
 
 class role::protoproxy::ssl::beta::common {
