@@ -16,6 +16,9 @@ server {
       index index.html index.htm;
       autoindex on;
       charset utf-8;
+      limit_rate 256k;
+      limit_rate_after 1m;
+      limit_conn addr 3;
    }
 
    rewrite ^/other/(iOS|PlayBook|win8|android)(|/.*)$ $scheme://releases.wikimedia.org/mobile/$1$2  break;

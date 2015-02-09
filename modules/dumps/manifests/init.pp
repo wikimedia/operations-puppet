@@ -1,7 +1,9 @@
 class dumps {
     install_certificate{ 'dumps.wikimedia.org': ca => 'RapidSSL_SHA256_CA_-_G3.crt' }
 
-    include ::nginx
+    class { '::nginx':
+        variant => 'extras',
+    }
 
     $ssl_settings = ssl_ciphersuite('nginx', 'compat')
 
