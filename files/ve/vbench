@@ -218,30 +218,27 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         self.cpu_times = []
         self.wall_times = []
 
+    @defer.inlineCallbacks
     def onOpen(self):
         logging.info('Loading %s...', highlight(self.factory.target_url))
 
-        deferreds = defer.DeferredList((
-            self.page.enable(),
-            self.network.enable(),
-            self.profiler.enable(),
-            self.page.addScriptToEvaluateOnLoad(scriptSource=JS),
-            self.profiler.setSamplingInterval(interval=100),
-        ))
+        yield self.page.enable()
+        yield self.network.enable()
+        yield self.profiler.enable()
+        yield self.page.addScriptToEvaluateOnLoad(scriptSource=JS)
+        yield self.profiler.setSamplingInterval(interval=100)
 
         if self.factory.display:
-            dfd = self.page.setDeviceMetricsOverride(**self.factory.display)
-            deferreds.chainDeferred(dfd)
+            yield self.page.setDeviceMetricsOverride(**self.factory.display)
 
         if self.factory.latency:
             # FIXME: Make this configurable.
             throughput = 256 * 1024
-            dfd = self.network.emulateNetworkConditions(
+            yield self.network.emulateNetworkConditions(
                 offline=False, latency=100, downloadThroughput=throughput,
                 uploadThroughput=throughput)
-            deferreds.chainDeferred(dfd)
 
-        return deferreds.addCallback(self.onProfilerReady)
+        yield self.onProfilerReady()
 
     def onNetworkRequestServedFromCache(self, params=None):
         del self.requests[params['requestId']]
@@ -249,9 +246,10 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
     def onNetworkRequestWillBeSent(self, params=None):
         self.requests[params['requestId']] = params['request']
 
+    @defer.inlineCallbacks
     def onProfilerReady(self, params=None):
-        self.network.clearBrowserCache()
-        self.page.navigate(url=self.factory.target_url)
+        yield self.network.clearBrowserCache()
+        yield self.page.navigate(url=self.factory.target_url)
 
     def writeProfilerData(self, data):
         name = '%s.%d.cpuprofile' % (data.get('title', 'profile'), time.time())
