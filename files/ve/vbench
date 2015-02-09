@@ -316,9 +316,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
     def showSummary(self):
         logging.info('CPU:  %s', format_summary(summarize(self.cpu_times)))
-        logging.info('CPU:  %s', format_summary(x_summarize(self.cpu_times)))
         logging.info('Wall: %s', format_summary(summarize(self.wall_times)))
-        logging.info('Wall: %s', format_summary(x_summarize(self.wall_times)))
 
 
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
