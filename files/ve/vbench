@@ -112,7 +112,7 @@ def std(data):
     if n == 0:
         raise ValueError('cannot compute stdev of empty set')
     m = mean(data)
-    ss = sum((x - c) ** 2 for x in data)
+    ss = sum((x - m) ** 2 for x in data)
     return (ss / n) ** 0.5
 
 
