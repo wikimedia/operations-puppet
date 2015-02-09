@@ -55,7 +55,7 @@ import weakref
 
 try:
     from twisted.internet import defer, reactor
-    from twisted.python import log
+    from twisted.python.log import PythonLoggingObserver
 
     from autobahn.twisted.websocket import (WebSocketClientProtocol,
                                             WebSocketClientFactory)
@@ -84,10 +84,50 @@ JS = '''
     };
 '''
 
-YELLOW, WHITE, RESET = '\033[93m', '\033[1;37m', '\033[0m'
 
-logging.basicConfig(format='[%s%%(asctime)s%s] %%(message)s' % (YELLOW, RESET),
-                    datefmt='%I:%M:%S', level=logging.DEBUG)
+class ChromeException(Exception):
+    pass
+
+
+class HighlightingFormatter(logging.Formatter):
+
+    RE = re.compile(r'(?P<markup>(\*)|(_))(?P<word>\S+)(?(2)\*)(?(3)_)')
+    YELLOW, WHITE, RESET = '\033[93m', '\033[1;37m', '\033[0m'
+
+    def __init__(self, fmt='[_%(asctime)s_] %(message)s', date_fmt='%I:%M:%S',
+                 use_color=False):
+        if use_color:
+            self.subs = {'*': self.WHITE, '_': self.YELLOW, 'end': self.RESET}
+        else:
+            self.subs = {}
+        fmt = self.highlight(fmt)
+        super(HighlightingFormatter, self).__init__(fmt, '%I:%M:%S')
+
+    def repl(self, match):
+        start = self.subs.get(match.group('markup'), '')
+        end = self.subs.get('end', '')
+        return start + match.group('word') + end
+
+    def highlight(self, s):
+        return self.RE.sub(self.repl, s)
+        return super(HighlightingFormatter, self).format(record)
+
+    def format(self, record):
+        record.msg = self.highlight(record.msg)
+        return super(HighlightingFormatter, self).format(record)
+
+
+log = logging.getLogger('vbench')
+log.setLevel(logging.DEBUG)
+
+is_tty = sys.stdout.isatty()
+stdout_handler = logging.StreamHandler(stream=sys.stdout)
+stdout_handler.setFormatter(HighlightingFormatter(use_color=is_tty))
+log.addHandler(stdout_handler)
+if not is_tty:
+    stderr_handler = logging.StreamHandler(stream=sys.stderr)
+    stderr_handler.setFormatter(HighlightingFormatter(use_color=True))
+    log.addHandler(stderr_handler)
 
 
 def mean(data):
@@ -220,7 +260,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
     @defer.inlineCallbacks
     def onOpen(self):
-        logging.info('Loading %s...', highlight(self.factory.target_url))
+        log.info('Loading *%s*...', self.factory.target_url)
 
         yield self.page.enable()
         yield self.network.enable()
@@ -269,7 +309,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
         if self.factory.log_requests:
             for req in self.requests.values():
-                logging.info('[%s] %s', highlight(req['method']), req['url'])
+                log.info('[*%(method)s*] %(url)s', req)
 
         self.cpu_times.append(profile.cpu_time)
         self.wall_times.append(profile.wall_time)
@@ -277,12 +317,12 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         repeated = len(self.cpu_times)
         if self.factory.repetitions > 1:
             report_template = '{:02d}/{:02d}: CPU: {: >7.2f}  Wall: {: >7.2f}'
-            logging.info(report_template.format(repeated,
-                                                self.factory.repetitions,
-                                                profile.cpu_time,
-                                                profile.wall_time))
+            log.info(report_template.format(repeated,
+                                            self.factory.repetitions,
+                                            profile.cpu_time,
+                                            profile.wall_time))
         if repeated < self.factory.repetitions:
-            self.onProfilerReady()
+            return self.onProfilerReady()
         else:
             reactor.stop()
             self.showSummary()
@@ -315,8 +355,8 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
                 return handler(params)
 
     def showSummary(self):
-        logging.info('CPU:  %s', format_summary(summarize(self.cpu_times)))
-        logging.info('Wall: %s', format_summary(summarize(self.wall_times)))
+        log.info('CPU:  %s', format_summary(summarize(self.cpu_times)))
+        log.info('Wall: %s', format_summary(summarize(self.wall_times)))
 
 
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
@@ -332,7 +372,15 @@ class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
         self.log_requests = log_requests
         self.display = display
         self.latency = latency
-        tab = next(t for t in self.getTabs() if 'webSocketDebuggerUrl' in t)
+        try:
+            tabs = self.getTabs()
+        except IOError:
+            raise ChromeException('Could not connect to Chrome on %s:%s'
+                                  % (self.host, self.port))
+        try:
+            tab = next(t for t in tabs if 'webSocketDebuggerUrl' in t)
+        except StopIteration:
+            raise ChromeException('Chrome does not have any connectable tabs')
         WebSocketClientFactory.__init__(self, tab['webSocketDebuggerUrl'])
         self.protocol = ChromeRemoteDebuggingProtocol
 
@@ -362,7 +410,7 @@ args = ap.parse_args()
 
 
 if __name__ == '__main__':
-    observer = log.PythonLoggingObserver()
+    observer = PythonLoggingObserver()
     observer.start()
     factory = ChromeRemoteDebuggingFactory(**vars(args))
     reactor.connectTCP(args.host, args.port, factory)
