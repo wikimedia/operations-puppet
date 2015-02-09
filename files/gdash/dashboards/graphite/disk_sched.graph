@@ -1,14 +1,14 @@
-title   "Disk scheduling, sda"
+title   "Disk scheduling, md1"
 
 field :svctm, :color => "blue",
                :alias => "service time, ms",
-               :data  => "secondYAxis(servers.graphite1001.iostat.sda.service_time.value)"
+               :data  => "secondYAxis(servers.graphite1001.iostat.md1.service_time.value)"
 
 field :await, :color => "green",
                :alias => "wait, ms",
-               :data  => "servers.graphite1001.iostat.sda.await.value"
+               :data  => "servers.graphite1001.iostat.md1.await.value"
 
 field :queue, :color => "red",
                :alias => "queue length",
-               :data  => "servers.graphite1001.iostat.sda.average_queue_length.value"
+               :data  => "servers.graphite1001.iostat.md1.average_queue_length.value"
 
