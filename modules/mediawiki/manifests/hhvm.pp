@@ -38,7 +38,11 @@ class mediawiki::hhvm {
                     thread_count          => $max_threads,
                 },
                 pcre_cache_type => 'lru',
+                preg => {
+                    recursion_limit => 1000,
+                }
             },
+            max_execution_time => 180,
         },
     }
 
