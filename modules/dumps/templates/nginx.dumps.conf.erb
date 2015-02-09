@@ -12,6 +12,8 @@ server {
 
    root /data/xmldatadumps/public;
 
+   limit_conn_zone $binary_remote_address zone=addr:10m;
+
    location / {
       index index.html index.htm;
       autoindex on;
