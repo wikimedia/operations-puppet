@@ -43,6 +43,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 import argparse
+import functools
 import itertools
 import json
 import logging
@@ -50,6 +51,7 @@ import re
 import string
 import time
 import urllib2
+import weakref
 
 try:
     from twisted.internet import defer, reactor
@@ -63,6 +65,7 @@ except ImportError:
     sys.exit(1)
 
 
+# FIXME: Make this configurable.
 JS = '''
     window.onload = function () {
         mw.trackSubscribe( 'event.Edit', function ( topic, event ) {
@@ -87,8 +90,8 @@ logging.basicConfig(format='[%s%%(asctime)s%s] %%(message)s' % (YELLOW, RESET),
                     datefmt='%I:%M:%S', level=logging.DEBUG)
 
 
-
 def mean(data):
+    """Compute arithmetic mean ("average") of data."""
     data = list(data)
     n = len(data)
     if not n:
@@ -97,6 +100,7 @@ def mean(data):
 
 
 def median(data):
+    """Compute median (middle value) of data."""
     data = list(data)
     n = len(data)
     if not n:
@@ -107,6 +111,7 @@ def median(data):
 
 
 def std(data):
+    """Compute the population standard deviation."""
     data = list(data)
     n = len(data)
     if n == 0:
@@ -117,12 +122,9 @@ def std(data):
 
 
 def parse_display_opts(opt_string):
-    opts = {
-        'deviceScaleFactor': 1,
-        'emulateViewport': False,
-        'fitWindow': False,
-        'mobile': False,
-    }
+    """Parse display options in format WIDTHxHEIGHT or WIDTHxHEIGHT*FACTOR."""
+    opts = {'deviceScaleFactor': 1, 'emulateViewport': False,
+            'fitWindow': False, 'mobile': False}
     match = re.match(r'(?P<width>\d+)x(?P<height>\d+)(\*(?P<deviceScaleFactor'
                      r'>\d+))?', opt_string)
     if match is None:
@@ -132,10 +134,12 @@ def parse_display_opts(opt_string):
 
 
 def upper_first(s):
+    """Returns a copy of a string with the first letter capitalized."""
     return s[0:1].upper() + s[1:]
 
 
 def summarize(series):
+    """Calculate summary statistics for a population."""
     return [(f.__name__, f(series)) for f in (min, max, mean, median, std)]
 
 
@@ -144,11 +148,13 @@ def highlight(*args):
 
 
 def format_summary(summary):
+    """Pretty-print summary statistics."""
     items = ('%s: %s' % (k, highlight(round(v, 2), 'ms')) for k, v in summary)
     return ''.join(string.ljust(item, 30) for item in items)
 
 
 class ChromeCPUProfile(object):
+    """Represents the result of a Chrome CPU profiler run."""
 
     def __init__(self, data):
         self.data = data
@@ -156,6 +162,7 @@ class ChromeCPUProfile(object):
         self.wall_time = self.get_wall_time()
 
     def grep(self, function_name, root=None):
+        """Search the trace for a function by name."""
         matches = []
         root = root or self.data['head']
         if root.get('functionName') == function_name:
@@ -165,6 +172,7 @@ class ChromeCPUProfile(object):
         return matches
 
     def get_cpu_time(self):
+        """Get total CPU time for the trace."""
         idle = self.grep('(idle)')[0]
         idle_samples = idle['hitCount']
         all_samples = len(self.data['samples'])
@@ -173,10 +181,28 @@ class ChromeCPUProfile(object):
         return (percent_active * total_time) / 1e5
 
     def get_wall_time(self):
+        """Get total wall-clock time for the trace."""
         return (self.data['endTime'] - self.data['startTime']) * 1e3
 
 
+class ChromeRemoteDebuggingDomain(object):
+    """Represents a Chrome Remote Debugging API domain."""
+
+    def __init__(self, domain, proto):
+        self.domain = upper_first(domain)
+        self.proto = weakref.proxy(proto)
+
+    def __getattr__(self, name):
+        command = self.domain + '.' + name
+        return functools.partial(self.proto.sendCommand, command)
+
+
 class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
+    """Protocol for communicating with Chrome via the Remote Debugging API."""
+
+    def __init__(self):
+        for domain in ('page', 'network', 'profiler'):
+            self.__dict__[domain] = ChromeRemoteDebuggingDomain(domain, self)
 
     def sendCommand(self, method, **params):
         id = next(self.message_ids)
@@ -196,22 +222,24 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         logging.info('Loading %s...', highlight(self.factory.target_url))
 
         deferreds = defer.DeferredList((
-            self.sendCommand('Page.enable'),
-            self.sendCommand('Network.enable'),
-            self.sendCommand('Profiler.enable'),
-            self.sendCommand('Page.addScriptToEvaluateOnLoad',
-                             scriptSource=JS),
-            self.sendCommand('Profiler.setSamplingInterval', interval=100),
+            self.page.enable(),
+            self.network.enable(),
+            self.profiler.enable(),
+            self.page.addScriptToEvaluateOnLoad(scriptSource=JS),
+            self.profiler.setSamplingInterval(interval=100),
         ))
 
         if self.factory.display:
-            deferreds.chainDeferred(self.sendCommand(
-                'Page.setDeviceMetricsOverride', **self.factory.display))
+            dfd = self.page.setDeviceMetricsOverride(**self.factory.display)
+            deferreds.chainDeferred(dfd)
 
         if self.factory.latency:
-            deferreds.chainDeferred(self.sendCommand(
-                'Network.emulateNetworkConditions', offline=False, latency=100,
-                downloadThroughput=262144, uploadThroughput=262144))
+            # FIXME: Make this configurable.
+            throughput = 256 * 1024
+            dfd = self.network.emulateNetworkConditions(
+                offline=False, latency=100, downloadThroughput=throughput,
+                uploadThroughput=throughput)
+            deferreds.chainDeferred(dfd)
 
         return deferreds.addCallback(self.onProfilerReady)
 
@@ -222,8 +250,8 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         self.requests[params['requestId']] = params['request']
 
     def onProfilerReady(self, params=None):
-        self.sendCommand('Network.clearBrowserCache')
-        self.sendCommand('Page.navigate', url=self.factory.target_url)
+        self.network.clearBrowserCache()
+        self.page.navigate(url=self.factory.target_url)
 
     def writeProfilerData(self, data):
         name = '%s.%d.cpuprofile' % (data.get('title', 'profile'), time.time())
@@ -323,7 +351,7 @@ ap.add_argument('--host', default='localhost',
 ap.add_argument('--port', default=9222, type=int,
                 help='Chromium port (default: 9222)')
 ap.add_argument('--repeat', default=5, metavar='N', type=int,
-                dest='repetitions',help='times to repeat (default: 5)')
+                dest='repetitions', help='times to repeat (default: 5)')
 ap.add_argument('--log-requests', action='store_true', default=False,
                 help='log uncached network requests')
 ap.add_argument('--write', action='store_true', default=False,
