@@ -1,5 +1,5 @@
 class dumps {
-    install_certificate{ 'dumps.wikimedia.org': ca => 'RapidSSL_SHA256_CA_-_G3.crt' }
+    install_certificate{ 'dumps.wikimedia.org': ca => 'RapidSSL_SHA256_CA_-_G3.pem' }
 
     class { '::nginx':
         variant => 'extras',
