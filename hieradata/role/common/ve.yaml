@@ -1,0 +1,3 @@
+cluster: ve
+admin::groups:
+  - chromium-admin
