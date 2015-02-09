@@ -1,17 +1,17 @@
-title   "Disk IO, sda"
+title   "Disk IO, md1"
 
 field :write_s,
                :alias => "write/s",
-               :data  => "servers.graphite1001.iostat.sda.writes_per_second.value"
+               :data  => "servers.graphite1001.iostat.md1.writes_per_second.value"
 
 field :read_s,
                :alias => "read/s",
-               :data  => "servers.graphite1001.iostat.sda.reads_per_second.value"
+               :data  => "servers.graphite1001.iostat.md1.reads_per_second.value"
 
 field :read,
                :alias => "read B/s",
-               :data  => "secondYAxis(servers.graphite1001.iostat.sda.read_byte_per_second.value)"
+               :data  => "secondYAxis(servers.graphite1001.iostat.md1.read_byte_per_second.value)"
 
 field :write,
                :alias => "write B/s",
-               :data  => "secondYAxis(servers.graphite1001.iostat.sda.write_byte_per_second.value)"
+               :data  => "secondYAxis(servers.graphite1001.iostat.md1.write_byte_per_second.value)"
