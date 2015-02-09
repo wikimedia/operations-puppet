@@ -41,7 +41,7 @@ class eventlogging::monitoring {
 # of incoming events.
 class eventlogging::monitoring::graphite {
 
-    # Warn if 1% of overall event throughput goes beyond 500 events/s
+    # Warn if 15% of overall event throughput goes beyond 500 events/s
     # in a 15 min period
     # These thresholds are somewhat arbtirary at this point, but it
     # was seen that the current setup can handle 500 events/s.
@@ -51,26 +51,20 @@ class eventlogging::monitoring::graphite {
         metric          => 'eventlogging.overall.raw.rate',
         warning         => 500,
         critical        => 600,
+        percentage      => 15, # At least 3 of the 15 readings
         from            => '15min',
         contact_group   => 'analytics'
     }
 
-    # Alarms if 1% of Navigation Timing event throughput goes under 2 req/sec
+    # Alarms if 15% of Navigation Timing event throughput goes under 2 req/sec
     # in a 15 min period
     # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
-    # Note:
-    # you can test this via doing:
-    #  ./files/icinga/check_graphite
-    # --url http://graphite.wikimedia.org check_threshold
-    # eventlogging.schema.NavigationTiming.rate --from 15min -C 1 -W 2 --under
-    # it will report the following:
-    # OK: Less than 1.00% data above the threshold [2.0]
-    # but actually the check is correct is checking points below threshold
     monitoring::graphite_threshold { 'eventlogging_NavigationTiming_throughput':
         description     => 'Throughput of event logging NavigationTiming events',
         metric          => 'eventlogging.schema.NavigationTiming.rate',
         warning         => 2,
         critical        => 1,
+        percentage      => 15, # At least 3 of the 15 readings
         from            => '15min',
         contact_group   => 'analytics',
         under           => true
