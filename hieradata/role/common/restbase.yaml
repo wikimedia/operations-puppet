@@ -7,6 +7,8 @@ cassandra::seeds:
     - xenon.eqiad.wmnet
     - cerium.eqiad.wmnet
     - praseodymium.eqiad.wmnet
+cassandra::max_heap_size: 8g
+cassandra::heap_newsize: 1200m
 
 #
 # RESTBase
