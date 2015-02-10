@@ -183,14 +183,10 @@ def summarize(series):
     return [(f.__name__, f(series)) for f in (min, max, mean, median, std)]
 
 
-def highlight(*args):
-    return WHITE + ''.join(map(str, args)) + RESET
-
-
 def format_summary(summary):
     """Pretty-print summary statistics."""
-    items = ('%s: %s' % (k, highlight(round(v, 2), 'ms')) for k, v in summary)
-    return ''.join(string.ljust(item, 30) for item in items)
+    items = (string.ljust('%s: *%.2fms*' % (k, v), 30) for k, v in summary)
+    return ''.join(items)
 
 
 class ChromeCPUProfile(object):
@@ -355,8 +351,8 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
                 return handler(params)
 
     def showSummary(self):
-        log.info('CPU:  %s', format_summary(summarize(self.cpu_times)))
-        log.info('Wall: %s', format_summary(summarize(self.wall_times)))
+        log.info('CPU:  ' + format_summary(summarize(self.cpu_times)))
+        log.info('Wall: ' + format_summary(summarize(self.wall_times)))
 
 
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
@@ -372,15 +368,8 @@ class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
         self.log_requests = log_requests
         self.display = display
         self.latency = latency
-        try:
-            tabs = self.getTabs()
-        except IOError:
-            raise ChromeException('Could not connect to Chrome on %s:%s'
-                                  % (self.host, self.port))
-        try:
-            tab = next(t for t in tabs if 'webSocketDebuggerUrl' in t)
-        except StopIteration:
-            raise ChromeException('Chrome does not have any connectable tabs')
+        tabs = self.getTabs()
+        tab = next(t for t in tabs if 'webSocketDebuggerUrl' in t)
         WebSocketClientFactory.__init__(self, tab['webSocketDebuggerUrl'])
         self.protocol = ChromeRemoteDebuggingProtocol
 
