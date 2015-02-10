@@ -2,6 +2,7 @@ class openstack::firewall {
     include base::firewall
 
     $labs_private_net = '10.0.0.0/0'
+    $wikitech = '208.80.154.136'
     if ($::site == 'codfw') {
         # TODO!  codfw will need something
         # like this when the ip range is assigned.
@@ -31,6 +32,11 @@ class openstack::firewall {
     # Redis replication for keystone
     ferm::rule { 'redis_replication':
         rule => "saddr (${other_master}) proto tcp dport (6379) ACCEPT;",
+    }
+
+    # wikitech needs to be able to do things
+    ferm::rule { 'openstack-services':
+        rule => "saddr ${wikitech} proto tcp dport (5000 35357 9292) ACCEPT;",
     }
 
     # internal services to Labs virt servers
