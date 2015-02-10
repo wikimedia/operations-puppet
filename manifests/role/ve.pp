@@ -19,29 +19,29 @@ class role::ve {
     # disable various features that add noise to profiling or that
     # rely on user input.
 
-    class { 'chromium':
-        extra_args => [
-            '--disable-background-networking',
-            '--disable-client-side-phishing-detection',
-            '--disable-component-update',
-            '--disable-default-apps',
-            '--disable-extensions',
-            '--disable-hang-monitor',
-            '--disable-infobars',
-            '--disable-plugins-discovery',
-            '--disable-prompt-on-repost',
-            '--disable-suggestions-service',
-            '--disable-sync',
-            '--disable-translate',
-            '--disable-v8-idle-tasks',
-            '--disable-web-resources',
-            '--no-default-browser-check',
-            '--no-first-run',
-            '--host-rules="MAP * localhost, EXCLUDE upload.wikimedia.org"',
-            '--safebrowsing-disable-auto-update',
-            '--safebrowsing-disable-download-protection',
-        ],
-    }
+    # class { 'chromium':
+    #     extra_args => [
+    #         '--disable-background-networking',
+    #         '--disable-client-side-phishing-detection',
+    #         '--disable-component-update',
+    #         '--disable-default-apps',
+    #         '--disable-extensions',
+    #         '--disable-hang-monitor',
+    #         '--disable-infobars',
+    #         '--disable-plugins-discovery',
+    #         '--disable-prompt-on-repost',
+    #         '--disable-suggestions-service',
+    #         '--disable-sync',
+    #         '--disable-translate',
+    #         '--disable-v8-idle-tasks',
+    #         '--disable-web-resources',
+    #         '--no-default-browser-check',
+    #         '--no-first-run',
+    #         '--host-rules="MAP * localhost, EXCLUDE upload.wikimedia.org"',
+    #         '--safebrowsing-disable-auto-update',
+    #         '--safebrowsing-disable-download-protection',
+    #     ],
+    # }
 
 
     # vbench is a CLI tool for benchmarking VisualEditor.
@@ -53,6 +53,13 @@ class role::ve {
 
     file { '/usr/local/bin/vbench':
         source => 'puppet:///files/ve/vbench',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/usr/local/bin/vb':
+        source => 'puppet:///files/ve/vb',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',

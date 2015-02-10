@@ -85,10 +85,6 @@ JS = '''
 '''
 
 
-class ChromeException(Exception):
-    pass
-
-
 class HighlightingFormatter(logging.Formatter):
 
     RE = re.compile(r'(?P<markup>(\*)|(_))(?P<word>\S+)(?(2)\*)(?(3)_)')
@@ -100,7 +96,8 @@ class HighlightingFormatter(logging.Formatter):
             self.subs = {'*': self.WHITE, '_': self.YELLOW, 'end': self.RESET}
         else:
             self.subs = {}
-        fmt = self.highlight(fmt)
+        if fmt:
+            fmt = self.highlight(fmt)
         super(HighlightingFormatter, self).__init__(fmt, '%I:%M:%S')
 
     def repl(self, match):
@@ -110,10 +107,10 @@ class HighlightingFormatter(logging.Formatter):
 
     def highlight(self, s):
         return self.RE.sub(self.repl, s)
-        return super(HighlightingFormatter, self).format(record)
 
     def format(self, record):
-        record.msg = self.highlight(record.msg)
+        if isinstance(record.msg, basestring):
+            record.msg = self.highlight(record.msg)
         return super(HighlightingFormatter, self).format(record)
 
 
