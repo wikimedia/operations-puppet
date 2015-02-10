@@ -797,8 +797,6 @@ class role::cache {
         $backend_weight = 100
         $storage_size_bigobj = 50
 
-        $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5)
-
         # Ganglia monitoring
         if $::role::cache::configuration::has_ganglia{
             class { 'varnish::monitoring::ganglia':
@@ -808,6 +806,7 @@ class role::cache {
     }
 
     class text inherits role::cache::varnish::2layer {
+        $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
 
         system::role { 'role::cache::text':
             description => 'text Varnish cache server',
@@ -971,6 +970,7 @@ class role::cache {
     }
 
     class upload inherits role::cache::varnish::2layer {
+        $memory_storage_size = floor((0.083 * $::memorysize_mb / 1024.0) + 0.5) # 1/12 of total mem
 
         system::role { 'role::cache::upload':
             description => 'upload Varnish cache server',
@@ -1259,6 +1259,7 @@ class role::cache {
     }
 
     class mobile inherits role::cache::varnish::2layer {
+        $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
 
         if $::realm == 'production' {
             include role::cache::ssl::sni
