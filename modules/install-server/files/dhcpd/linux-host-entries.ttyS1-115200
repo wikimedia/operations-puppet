@@ -2001,12 +2001,12 @@ host mc1016 {
 }
 
 host mc1017 {
-        hardware ethernet 90:b1:1c:24:9c:9a;
+        hardware ethernet 00:10:18:ef:fe:10;
         fixed-address mc1017.eqiad.wmnet;
 }
 
 host mc1018 {
-        hardware ethernet 90:b1:1c:24:9c:c6;
+        hardware ethernet 00:10:18:ef:f6:d0;
         fixed-address mc1018.eqiad.wmnet;
 }
 
