@@ -9,6 +9,8 @@
         RewriteRule     ^/$                  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php    [P]
         RewriteRule     ^/robots\.txt$       fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/robots.php   [P]
         RewriteRule     ^/favicon\.ico$      fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/favicon.php  [P]
+        # /w/wiki.phtml is severely underperforming on HHVM
+        RewriteRule     ^/w/wiki.phtml$      /w/index.php [L,QSA,NE]
     </IfDefine>
 
 
