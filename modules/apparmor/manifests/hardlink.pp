@@ -4,7 +4,7 @@
 # scripts, that are run by the same interpreter we need to create a "new"
 # root application. Hard links are one way to accomplish that.
 
-define apparmor::hardlink ($source = $name, $target) {
+define apparmor::hardlink ($target, $source = $name ) {
     exec {
         "hardlink-${name}":
             command => "ln --force ${target} ${source}",
