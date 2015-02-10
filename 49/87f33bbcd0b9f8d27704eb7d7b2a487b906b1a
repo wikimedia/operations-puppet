@@ -1,0 +1,10 @@
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Aklapper <aklapper@wikimedia.org>
+Code-Review+1: Bartosz Dziewoński <matma.rex@gmail.com>
+Code-Review+1: 20after4 <mmodell@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Tue, 10 Feb 2015 19:15:38 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/189329
+Project: operations/puppet
+Branch: refs/heads/production
