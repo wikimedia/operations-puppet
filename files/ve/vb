@@ -23,5 +23,5 @@
     --safebrowsing-disable-auto-update \
     --safebrowsing-disable-download-protection >/dev/null 2>&1 &
 sleep 3
-vbench "$1"
+vbench "$@"
 kill %%
