@@ -114,6 +114,24 @@ class openstack::database-server(
             mode    => '0640',
             require => Package['keystone'];
     }
+
+    # Keep backups of our DB.  It's local, but better than nothing
+    cron {
+        'db-bak':
+            ensure  => present,
+            user    => 'root',
+            hour    => 1,
+            minute  => 0,
+            command => '/usr/local/sbin/db-bak.sh > /dev/null 2>&1',
+            require => File['/a/backup'];
+        'backup-cleanup':
+            ensure  => present,
+            user    => 'root',
+            hour    => 3,
+            minute  => 0,
+            command => 'find /a/backup -type f -mtime +4 -delete',
+            require => File['/a/backup'];
+    }
 }
 
 class openstack::database-server::mysql($controller_mysql_root_pass) {
