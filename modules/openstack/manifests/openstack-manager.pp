@@ -32,6 +32,20 @@ class openstack::openstack-manager(
         package { [ 'php5-ldap', 'imagemagick', 'librsvg2-bin']:
             ensure => present;
         }
+
+        # Since we aren't using hhvm, the apache classes we're using aren't
+        #  perfect and we need a little touch-up
+        file {
+            '/etc/php5/apache2/conf.d/fss.ini':
+                ensure => link,
+                target => '/etc/php5/conf.d/fss.ini';
+            '/etc/php5/apache2/conf.d/luasandbox.ini':
+                ensure => link,
+                target => '/etc/php5/conf.d/luasandbox.ini';
+            '/etc/php5/apache2/conf.d/wikidiff2.ini':
+                ensure => link,
+                target => '/etc/php5/conf.d/wikidiff2.ini';
+        }
     }
 
     $webserver_hostname = $::realm ? {
