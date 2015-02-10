@@ -99,6 +99,11 @@ class openstack::database-server(
             group   => 'root',
             mode    => '0640',
             require => Package['glance'];
+        '/a/backup':
+            ensure => directory,
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root';
     }
     file {
         '/etc/keystone/keystone-user.sql':
