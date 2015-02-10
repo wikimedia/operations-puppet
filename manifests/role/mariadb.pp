@@ -378,9 +378,6 @@ class role::mariadb::sanitarium {
 }
 
 # MariaDB 10 labsdb multiple-shards slave.
-# This role currently duplicates much of mariadb::config. This is necessary
-# while mysql_multi_instance is still applied to labsdb100[123], as there
-# are numerous clashes.
 class role::mariadb::labs {
 
     system::role { 'role::mariadb::labs':
@@ -389,36 +386,22 @@ class role::mariadb::labs {
 
     include standard
     include role::mariadb::grants
+    include passwords::misc::scripts
 
-    $server_id = inline_template(
-        "<%= ia = @ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3]; server_id %>"
-    )
-
-    file { '/etc/my.cnf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template('mariadb/labs.my.cnf.erb'),
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
     }
 
-    file { '/etc/mysql/my.cnf':
-        ensure => link,
-        target => '/etc/my.cnf',
+    class { 'mariadb::config':
+        prompt    => "LABS ${shard}",
+        config    => 'mariadb/labs.my.cnf.erb',
+        password  => $passwords::misc::scripts::mysql_root_pass,
+        datadir   => '/srv/sqldata',
+        tmpdir    => '/srv/tmp',
     }
 
-    file { '/srv/sqldata':
-        ensure  => directory,
-        owner   => 'mysql',
-        group   => 'mysql',
-        mode    => '0755',
-    }
-
-    file { '/srv/tmp':
-        ensure  => directory,
-        owner   => 'mysql',
-        group   => 'mysql',
-        mode    => '0755',
-    }
+    include mariadb::monitor_disk
+    include mariadb::monitor_process
 
     file { '/srv/innodb':
         ensure  => directory,
