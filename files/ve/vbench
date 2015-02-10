@@ -81,7 +81,6 @@ JS = '''
         setTimeout( function () {
               localStorage.setItem( 've-beta-welcome-dialog', 1 );
               mw.libs.ve.onEditTabClick( { preventDefault: $.noop } );
-              $('#ca-ve-edit').click();
         }, 0 );
     };
 '''
