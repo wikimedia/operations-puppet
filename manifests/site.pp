@@ -370,7 +370,7 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
     include admin
     interface::add_ip6_mapped { 'main': }
     rsyslog::conf { 'remote_logstash':
-        content  => "*.* @logstash1002.eqiad.wmnet:10514",
+        content  => '*.* @logstash1002.eqiad.wmnet:10514',
         priority => 32,
     }
 }
@@ -495,7 +495,7 @@ node /^cp300([1-2])\.esams\.(wikimedia\.org|wmnet)$/ {
     include admin
     interface::add_ip6_mapped { 'main': }
     rsyslog::conf { 'remote_logstash':
-        content  => "*.* @logstash1002.eqiad.wmnet:10514",
+        content  => '*.* @logstash1002.eqiad.wmnet:10514',
         priority => 32,
     }
 }
@@ -913,8 +913,8 @@ node 'dbstore1001.eqiad.wmnet' {
     include role::mariadb::backup
     # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':
-        lag_warn => 90000,
-        lag_crit => 180000,
+        lag_warn     => 90000,
+        lag_crit     => 180000,
         # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
         # don't spam Icinga with warnings. This will not block properly critical alerts.
         warn_stopped => false,
@@ -926,8 +926,8 @@ node 'dbstore2001.codfw.wmnet' {
     $cluster = 'mysql'
     # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':
-        lag_warn => 90000,
-        lag_crit => 180000,
+        lag_warn     => 90000,
+        lag_crit     => 180000,
         # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
         # don't spam Icinga with warnings. This will not block properly critical alerts.
         warn_stopped => false,
@@ -1775,7 +1775,7 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
         '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
         '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
-                   ]
+        ]
 
     role swift::eqiad_prod::storage
 
@@ -2444,6 +2444,7 @@ node 'virt1000.wikimedia.org' {
     include role::dns::ldap
     include ldap::role::client::labs
     include role::nova::controller
+    include role::nova::manager
     include role::salt::masters::labs
     include role::deployment::salt_masters
     if $use_neutron == true {
