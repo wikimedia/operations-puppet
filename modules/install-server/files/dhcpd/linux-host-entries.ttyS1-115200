@@ -2000,6 +2000,16 @@ host mc1016 {
 	fixed-address mc1016.eqiad.wmnet;
 }
 
+host mc1017 {
+        hardware ethernet 90:b1:1c:24:9c:9a;
+        fixed-address mc1017.eqiad.wmnet;
+}
+
+host mc1018 {
+        hardware ethernet 90:b1:1c:24:9c:c6;
+        fixed-address mc1018.eqiad.wmnet;
+}
+
 host ms1001 {
 	hardware ethernet 78:2b:cb:0a:13:f3;
 	fixed-address ms1001.wikimedia.org;
