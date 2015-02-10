@@ -2444,7 +2444,6 @@ node 'virt1000.wikimedia.org' {
     include role::dns::ldap
     include ldap::role::client::labs
     include role::nova::controller
-    include role::nova::manager
     include role::salt::masters::labs
     include role::deployment::salt_masters
     if $use_neutron == true {
