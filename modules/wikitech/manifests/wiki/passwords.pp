@@ -15,15 +15,15 @@ class wikitech::wiki::passwords {
         ensure  => present,
         content => template('wikitech/wikitech_private.php.erb'),
         mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'mwdeploy',
+        group   => 'mwdeploy',
     }
 
     file { '/srv/mediawiki/private/WikitechPrivateLdapSettings.php':
         ensure  => present,
         content => template('wikitech/wikitech_ldap.php.erb'),
         mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'mwdeploy',
+        group   => 'mwdeploy',
     }
 }
