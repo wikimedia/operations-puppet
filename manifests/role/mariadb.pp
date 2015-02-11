@@ -30,6 +30,25 @@ class role::mariadb::grants {
     }
 }
 
+# Annoy people in #wikimedia-operations
+class role::mariadb::monitor {
+
+    class { 'mariadb::monitor_disk':
+        contact_group => 'admins',
+    }
+
+    class { 'mariadb::monitor_process':
+        contact_group => 'admins',
+    }
+}
+
+# Annoy Sean
+class role::mariadb::monitor::dba {
+
+    include mariadb::monitor_disk
+    include mariadb::monitor_process
+}
+
 # miscellaneous services clusters
 class role::mariadb::misc(
     $shard
@@ -41,6 +60,7 @@ class role::mariadb::misc(
 
     include standard
     include role::mariadb::grants
+    include role::mariadb::monitor
     include passwords::misc::scripts
 
     class { 'mariadb::packages_wmf':
@@ -53,14 +73,6 @@ class role::mariadb::misc(
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => '/srv/sqldata',
         tmpdir   => '/srv/tmp',
-    }
-
-    class { 'mariadb::monitor_disk':
-        contact_group => 'admins',
-    }
-
-    class { 'mariadb::monitor_process':
-        contact_group => 'admins',
     }
 }
 
@@ -80,6 +92,7 @@ class role::mariadb::misc::phabricator(
     include standard
     include mariadb::packages_wmf
     include role::mariadb::grants
+    include role::mariadb::monitor
     include passwords::misc::scripts
 
     $read_only = $master ? {
@@ -99,14 +112,6 @@ class role::mariadb::misc::phabricator(
 
     if $snapshot {
         include coredb_mysql::snapshot
-    }
-
-    class { 'mariadb::monitor_disk':
-        contact_group => 'admins',
-    }
-
-    class { 'mariadb::monitor_process':
-        contact_group => 'admins',
     }
 
     unless $master {
@@ -150,6 +155,7 @@ class role::mariadb::tendril {
 
     include standard
     include role::mariadb::grants
+    include role::mariadb::monitor::dba
     include passwords::misc::scripts
 
     class { 'mariadb::config':
@@ -159,9 +165,6 @@ class role::mariadb::tendril {
         datadir  => '/a/sqldata',
         tmpdir   => '/a/tmp',
     }
-
-    include mariadb::monitor_disk
-    include mariadb::monitor_process
 }
 
 # MariaDB 10 slaves replicating all shards
@@ -181,6 +184,7 @@ class role::mariadb::dbstore(
 
     include standard
     include role::mariadb::grants
+    include role::mariadb::monitor::dba
     include passwords::misc::scripts
 
     class { 'mariadb::config':
@@ -190,9 +194,6 @@ class role::mariadb::dbstore(
         datadir  => '/srv/sqldata',
         tmpdir   => '/srv/tmp',
     }
-
-    include mariadb::monitor_disk
-    include mariadb::monitor_process
 
     mariadb::monitor_replication { ['s1','s2','s3','s4','s5','s6','s7','m2','m3']:
         lag_warn     => $lag_warn,
@@ -214,6 +215,7 @@ class role::mariadb::analytics {
 
     include standard
     include role::mariadb::grants
+    include role::mariadb::monitor
     include passwords::misc::scripts
 
     class { 'mariadb::config':
@@ -223,9 +225,6 @@ class role::mariadb::analytics {
         datadir  => '/a/sqldata',
         tmpdir   => '/a/tmp',
     }
-
-    include mariadb::monitor_disk
-    include mariadb::monitor_process
 
     mariadb::monitor_replication { ['s1','s2','m2']: }
 }
@@ -290,6 +289,7 @@ class role::mariadb::core(
     include standard
     include role::mariadb::grants
     include role::mariadb::grants::core
+    include role::mariadb::monitor
     include passwords::misc::scripts
 
     class { 'mariadb::packages_wmf':
@@ -303,9 +303,6 @@ class role::mariadb::core(
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
     }
-
-    include mariadb::monitor_disk
-    include mariadb::monitor_process
 
     mariadb::monitor_replication { [ $shard ]:
         multisource => false,
@@ -370,10 +367,13 @@ class role::mariadb::sanitarium {
         target => '/etc/init.d/mariadb',
     }
 
-    include mariadb::monitor_disk
+    class { 'mariadb::monitor_disk':
+        contact_group => 'admins',
+    }
 
     class { 'mariadb::monitor_process':
         process_count => 7,
+        contact_group => 'admins'
     }
 }
 
@@ -386,6 +386,7 @@ class role::mariadb::labs {
 
     include standard
     include role::mariadb::grants
+    include role::mariadb::monitor
     include passwords::misc::scripts
 
     class { 'mariadb::packages_wmf':
@@ -399,9 +400,6 @@ class role::mariadb::labs {
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
     }
-
-    include mariadb::monitor_disk
-    include mariadb::monitor_process
 
     file { '/srv/innodb':
         ensure  => directory,
@@ -427,6 +425,7 @@ class role::mariadb::wikitech {
 
     include standard
     include role::mariadb::grants
+    include role::mariadb::monitor
     include passwords::misc::scripts
 
     class { 'mariadb::packages_wmf':
@@ -439,14 +438,6 @@ class role::mariadb::wikitech {
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => '/srv/sqldata',
         tmpdir   => '/srv/tmp',
-    }
-
-    class { 'mariadb::monitor_disk':
-        contact_group => 'admins',
-    }
-
-    class { 'mariadb::monitor_process':
-        contact_group => 'admins',
     }
 }
 
