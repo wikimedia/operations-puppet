@@ -81,11 +81,23 @@
     </Directory>
     <Location /server-status>
         SetHandler server-status
-        Order deny,allow
-        Deny from all
-        Allow from 208.80.154.136
-        Allow from 208.80.152.32
+        <IfVersion >= 2.4>
+                Require host wikitech-static.wikimedia.org
+        </IfVersion>
+        <IfVersion < 2.4>
+                Order deny,allow
+                Deny from all
+                Allow from 208.80.154.136
+                Allow from 208.80.152.32
+        </IfVersion>
     </Location>
+    <Directory /a/backup/public>
+        php_flag engine off
+        <IfVersion >= 2.4>
+                Require host wikitech-static.wikimedia.org
+        </IfVersion>
+    </Directory>
+
 
     Alias /w/images /srv/org/wikimedia/controller/wikis/images
     Alias /w /srv/mediawiki/docroot/wikimedia.org/w
