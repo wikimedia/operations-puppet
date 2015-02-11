@@ -23,7 +23,7 @@
 #  This goes in /usr/local/bin to override the system crontab (which will
 #  have its permissions restricted).
 #
-#  Source: modules/toollabs/files/crontab
+#  Source: modules/toollabs/templates/crontab.erb
 #  From:   toollabs::submit
 
 use strict;
@@ -32,7 +32,7 @@ use Getopt::Std;
 use File::Temp qw(tempfile);
 
 sub submit(@) {
-  exec { '/usr/bin/ssh' } 'ssh', 'tools-submit', '/usr/bin/crontab', @_;
+  exec { '/usr/bin/ssh' } 'ssh', '<%= @cron_host %>', '/usr/bin/crontab', @_;
   die "$0: unable to execute remote crontab command\n";
 }
 
@@ -103,7 +103,7 @@ if($opts{'e'}) {
 
     my $crontab = '';
     die "$0: usage error: no arguments permitted after this option\n" unless $#ARGV<0;
-    if(open OLD, "/usr/bin/ssh tools-submit /usr/bin/crontab$dashu -l 2>/dev/null |") {
+    if(open OLD, "/usr/bin/ssh <%= @cron_host %> /usr/bin/crontab$dashu -l 2>/dev/null |") {
         $crontab = '';
         while(<OLD>) {
             $crontab .= $_;
@@ -148,7 +148,7 @@ if($opts{'e'}) {
 
 my $crlino = 0;
 my $modified = 0;
-if(open NEW, "| /usr/bin/ssh tools-submit /usr/bin/crontab$dashu -") {
+if(open NEW, "| /usr/bin/ssh <%= @cron_host %> /usr/bin/crontab$dashu -") {
     foreach my $line (@crontab) {
         if($line =~ m/^([^#][^=\t ]+\s+\S+\s+\S+\s+\S+\s+\S+\s+|\@\S+\s+)([^#\n]*)(#.*)?\n?$/) {
             $crlino++;
@@ -170,7 +170,7 @@ if(open NEW, "| /usr/bin/ssh tools-submit /usr/bin/crontab$dashu -") {
     }
     close NEW;
 } else {
-    die "$0: unable to install new crontab on tools-submit\n";
+    die "$0: unable to install new crontab on <%= @cron_host %>\n";
 }
 
 if($modified) {
