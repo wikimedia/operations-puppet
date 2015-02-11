@@ -1,8 +1,11 @@
 # == Class: phabricator::phd
 #
+# Setup PHD service to run securely
+#
+
 class phabricator::phd (
     $settings = {},
-    $basedir  = '',
+    $basedir  = '/',
 ) {
 
     file { '/etc/init.d/phd':

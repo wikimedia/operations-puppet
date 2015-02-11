@@ -1,5 +1,11 @@
-# setup the preamble.php and redirect_config.json to redirect bugzilla
+# == Class: phabricator::redirector
+#
+# Setup the preamble.php and redirect_config.json to redirect bugzilla
 # (and eventually RT) urls to phabricator
+#
+# [*field_index*]
+#   This is the index value for the ext_reference custom field
+
 define phabricator::redirector(
     $mysql_user,
     $mysql_pass,
