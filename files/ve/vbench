@@ -71,19 +71,15 @@ except ImportError:
 JS = '''
     window.onload = function () {
         mw.trackSubscribe( 'event.Edit', function ( topic, event ) {
-            switch ( event.action ) {
-            case 'init':
-                console.profile();
-                break;
-            case 'ready':
+            if ( event.action === 'ready' ) {
                 console.profileEnd();
-                break;
             }
         } );
         setTimeout( function () {
               localStorage.setItem( 've-beta-welcome-dialog', 1 );
+              console.profile();
               mw.libs.ve.onEditTabClick( { preventDefault: $.noop } );
-        }, 0 );
+        }, 500 );
     };
 '''
 
