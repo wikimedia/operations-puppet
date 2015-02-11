@@ -93,8 +93,8 @@ class role::logstash {
         priority => 50,
     }
 
-    logstash::conf { 'filter_mw_via_redis':
-        source   => 'puppet:///files/logstash/filter-mw-via-redis.conf',
+    logstash::conf { 'filter_mediawiki':
+        source   => 'puppet:///files/logstash/filter-mediawiki.conf',
         priority => 50,
     }
 
