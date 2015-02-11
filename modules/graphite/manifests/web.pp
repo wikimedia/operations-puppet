@@ -109,7 +109,7 @@ class graphite::web(
                 'master'      => true,
                 'processes'   => $uwsgi_processes,
                 'cgroup'      => '/sys/fs/cgroup/memory/graphite-web',
-                'cgroup-opt'  => "memory.limit_in_bytes=$max_memory",
+                'cgroup-opt'  => "memory.limit_in_bytes=${max_memory}",
             },
         },
         require  => File['/var/log/graphite-web'],

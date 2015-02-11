@@ -6,7 +6,7 @@ define shinken::config(
 ) {
     include shinken
 
-    file { "/etc/shinken/customconfig/$title.cfg":
+    file { "/etc/shinken/customconfig/${title}.cfg":
         ensure  => $ensure,
         source  => $source,
         owner   => 'shinken',

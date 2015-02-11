@@ -37,7 +37,7 @@ class nagios_common::check::ganglia(
     }
 
     nagios_common::check_command::config { 'check_ganglia':
-        require    => File["$config_dir/commands"],
+        require    => File["${config_dir}/commands"],
         config_dir => $config_dir,
         owner      => $owner,
         group      => $group

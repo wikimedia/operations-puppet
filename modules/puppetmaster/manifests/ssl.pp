@@ -42,7 +42,7 @@ class puppetmaster::ssl(
     }
 
     exec { 'setup crl dir':
-        require => File["$ssldir/crl"],
+        require => File["${ssldir}/crl"],
         path    => '/usr/sbin:/usr/bin:/sbin:/bin',
         command => "ln -s ${ssldir}/ca/ca_crl.pem ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0",
         onlyif  => "test ! -L ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0"

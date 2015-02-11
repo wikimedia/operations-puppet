@@ -14,7 +14,7 @@ class quarry::web {
         settings            => {
             uwsgi           => {
                 'socket'    => '/run/uwsgi/quarry-web.sock',
-                'wsgi-file' => "$clone_path/quarry.wsgi",
+                'wsgi-file' => "${clone_path}/quarry.wsgi",
                 'master'    => true,
                 'processes' => 8,
                 'chdir'     => $clone_path,

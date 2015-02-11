@@ -85,7 +85,7 @@ class quarry::querykiller {
     }
 
     cron { 'query-killer':
-        command => "$clone_path/quarry/web/killer.py",
+        command => "${clone_path}/quarry/web/killer.py",
         minute  => '*',
         user    => 'quarry',
     }

@@ -23,7 +23,7 @@ class nagios_common::timeperiods(
     $owner = 'icinga',
     $group = 'icinga',
 ) {
-    file { "$config_dir/timeperiods.cfg":
+    file { "${config_dir}/timeperiods.cfg":
         ensure => $ensure,
         source => 'puppet:///modules/nagios_common/timeperiods.cfg',
         owner  => $owner,

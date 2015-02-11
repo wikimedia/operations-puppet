@@ -33,7 +33,7 @@ class nagios_common::notification_commands(
     $lover_name = 'Icinga',
     $irc_dir_path = '/var/log/icinga',
 ) {
-    file { "$config_dir/notification_commands.cfg":
+    file { "${config_dir}/notification_commands.cfg":
         ensure  => $ensure,
         content => template('nagios_common/notification_commands.cfg.erb'),
         owner   => $owner,

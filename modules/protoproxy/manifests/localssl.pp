@@ -31,7 +31,7 @@ define protoproxy::localssl(
     # resource will conflict.
     if $default_server {
         notify { 'protoproxy localssl default_server':
-            message => "protoproxy::localssl instance $title with server name $server_name is the default server."
+            message => "protoproxy::localssl instance ${title} with server name ${server_name} is the default server."
         }
     }
 

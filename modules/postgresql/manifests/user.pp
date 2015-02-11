@@ -69,7 +69,7 @@ define postgresql::user(
         augeas { "hba_create-${name}":
             context => "/files/etc/postgresql/${pgversion}/main/pg_hba.conf/",
             changes => $changes,
-            onlyif  => "match /files/etc/postgresql/$pgversion/main/pg_hba.conf/*/user[. = \'${user}\'] size == 0",
+            onlyif  => "match /files/etc/postgresql/${pgversion}/main/pg_hba.conf/*/user[. = \'${user}\'] size == 0",
             notify  => Exec['pgreload'],
         }
     } elsif $ensure == 'absent' {
@@ -81,7 +81,7 @@ define postgresql::user(
 
         augeas { "hba_drop-${name}":
             context => "/files/etc/postgresql/${pgversion}/main/pg_hba.conf/",
-            changes => "rm /files/etc/postgresql/$pgversion/main/pg_hba.conf/*[user = \'${user}\' ] and [database = \'${database}\'] and [ address = \'${cidr}\']",
+            changes => "rm /files/etc/postgresql/${pgversion}/main/pg_hba.conf/*[user = \'${user}\' ] and [database = \'${database}\'] and [ address = \'${cidr}\']",
             # only if the user exists
             onlyif  => "match /files/etc/postgresql/${pgversion}/main/pg_hba.conf/*/user[. = \'${user}\'] size > 0",
             notify  => Exec['pgreload'],

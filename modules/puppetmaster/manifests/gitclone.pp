@@ -46,7 +46,7 @@ class puppetmaster::gitclone {
             owner   => 'root',
             group   => 'puppet',
             mode    => '0750';
-        "$puppetmaster::volatiledir/misc":
+        "${puppetmaster::volatiledir}/misc":
             ensure  => directory,
             owner   => 'root',
             group   => 'puppet',
