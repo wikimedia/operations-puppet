@@ -5,11 +5,14 @@ define planet::cronjob {
     $planet_config = "/usr/share/planet-venus/wikimedia/${title}/config.ini"
     $planet_logfile = "/var/log/planet/${title}-planet.log"
 
+    # randomize the minute crons run, using $title as seed
+    $minute = fqdn_rand(60, $title)
+
     cron { "update-${title}-planet":
         ensure  => 'present',
         command => "${planet_bin} -v ${planet_config} > ${planet_logfile} 2>&1",
         user    => 'planet',
-        minute  => '0',
+        minute  => $minute,
         require => [
             Class['planet::packages'],
             File['/var/log/planet'],
