@@ -4411,6 +4411,32 @@ host rdb1004 {
 	fixed-address rdb1004.eqiad.wmnet;
 }
 
+host restbase1001 {
+        hardware ethernet ;
+        fixed-address restbase1001.eqiad.wmnet;
+}
+
+host restbase1002 {
+        hardware ethernet ;
+        fixed-address restbase1002.eqiad.wmnet;
+}
+host restbase1003 {
+        hardware ethernet 8c:dc:d4:00:05:50;
+        fixed-address restbase1003.eqiad.wmnet;
+}
+host restbase1004 {
+        hardware ethernet 8c:dc:d4:01:e4:98;
+        fixed-address restbase1004.eqiad.wmnet;
+}
+host restbase1005 {
+        hardware ethernet ;
+        fixed-address restbase1005.eqiad.wmnet;
+}
+host restbase1006 {
+        hardware ethernet ;
+        fixed-address restbase1006.eqiad.wmnet;
+}
+
 host rhenium {
 	hardware ethernet 78:2b:cb:2f:df:2f;
 	fixed-address rhenium.wikimedia.org;
