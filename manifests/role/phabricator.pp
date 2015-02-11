@@ -141,10 +141,10 @@ class role::phabricator::main {
     }
 }
 
-# phabricator instance on wmflabs at phab-01.wmflabs.org
+# phabricator instance on wmflabs at phab-0[1-9].wmflabs.org
 class role::phabricator::labs {
 
-    #pass not sensitive but has to match phab and db
+    # pass not sensitive but has to match phab and db
     $mysqlpass = 'labspass'
     $current_tag = 'release/2015-01-08/1'
     class { '::phabricator':
@@ -159,8 +159,6 @@ class role::phabricator::labs {
         extensions       => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php'],
         settings         => {
-            'search.elastic.host'             => 'http://localhost:9200',
-            'search.elastic.namespace'        => 'phabricator',
             'darkconsole.enabled'             => true,
             'phabricator.base-uri'            => "https://${::hostname}.wmflabs.org",
             'mysql.pass'                      => $mysqlpass,
@@ -184,21 +182,6 @@ class role::phabricator::labs {
         hasstatus  => true,
         require    => Package['mysql-server'],
     }
-    package { 'openjdk-7-jre-headless':
-        ensure => present,
-    }
-
-    package { 'elasticsearch':
-        ensure         => present,
-        require        => Package['openjdk-7-jre-headless'],
-    }
-
-    service { 'elasticsearch':
-        ensure     => running,
-        hasrestart => true,
-        hasstatus  => true,
-        require    => Package['elasticsearch'],
-    }
 
     # dummy redirector to test out the redirect patterns for bugzilla
     phabricator::redirector { 'redirector.fab-01.wmflabs.org':
@@ -210,5 +193,4 @@ class role::phabricator::labs {
         phab_host     => 'phab-01.wmflabs.org',
         alt_host      => 'phab-01.wmflabs.org',
     }
-
 }
