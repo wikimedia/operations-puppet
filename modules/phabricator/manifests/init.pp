@@ -237,7 +237,7 @@ class phabricator (
     file { "${phabdir}/phabricator/conf/local/local.json":
         content => template('phabricator/local.json.erb'),
         require => Git::Install['phabricator/phabricator'],
-        notify  => Service[apache2],
+        notify  => Service[phd],
     }
 
     #default location for phabricator tracked repositories
@@ -278,15 +278,9 @@ class phabricator (
 
     # This needs to become Upstart managed
     # https://secure.phabricator.com/book/phabricator/article/managing_daemons/
-    $phd = "${phabdir}/phabricator/bin/phd"
     service { 'phd':
         ensure   => running,
-        provider => base,
-        binary   => $phd,
-        start    => "${phd} start",
-        stop     => "${phd} stop",
-        status   => "${phd} status",
+        provider => init,
         require  => Git::Install['phabricator/phabricator'],
     }
 }
-
