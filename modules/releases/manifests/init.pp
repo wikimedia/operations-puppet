@@ -48,7 +48,7 @@ class releases (
     include 'webserver::apache'
     include ::apache::mod::rewrite
     @webserver::apache::site { $sitename:
-        docroot      => "/srv/org/wikimedia/$docroot/",
+        docroot      => "/srv/org/wikimedia/${docroot}/",
         server_admin => $server_admin,
         require      => [
             Class['::apache::mod::rewrite'],

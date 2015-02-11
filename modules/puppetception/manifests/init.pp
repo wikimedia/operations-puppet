@@ -46,7 +46,7 @@ class puppetception(
     include ::role::labs::lvm::srv
 
     $base_dir = '/srv/puppetception'
-    $install_dir = "$base_dir/git"
+    $install_dir = "${base_dir}/git"
     $puppet_dir = "${install_dir}${puppet_subdir}"
     file { [$base_dir,
             $install_dir,

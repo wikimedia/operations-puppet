@@ -8,10 +8,10 @@ define lvs::interface-tweaks($bnx2x=false, $txqlen=false, $rss_pattern=false) {
     # Disable GRO (generically incompatible with LVS due to kernel issues, I believe this
     #   is now fixed upstream for both ipv4 and ipv6 as of kernel 3.7 or higher, but
     #   that idea needs testing!)
-    interface::offload { "$name gro": interface => $name, setting => 'gro', value => 'off' }
+    interface::offload { "${name} gro": interface => $name, setting => 'gro', value => 'off' }
     if $name != 'eth0' {
         # Make sure GRO is off for the non-primary interfaces...
-        interface::manual { $name: interface => $name, before => Interface::Offload["$name gro"] }
+        interface::manual { $name: interface => $name, before => Interface::Offload["${name} gro"] }
     }
 
     # RSS/RPS/XPS-type perf stuff ( https://www.kernel.org/doc/Documentation/networking/scaling.txt )
@@ -23,8 +23,8 @@ define lvs::interface-tweaks($bnx2x=false, $txqlen=false, $rss_pattern=false) {
     # bnx2x-specific stuff
     if $bnx2x {
         # bnx2x is buggy with TPA (LRO) + LVS
-        interface::offload { "$name lro": interface => $name, setting => 'lro', value => 'off' }
+        interface::offload { "${name} lro": interface => $name, setting => 'lro', value => 'off' }
         # Max for bnx2x/BCM57800, seems to eliminate the spurious rx drops under heavy traffic
-        interface::ring { "$name rxring": interface => $name, setting => 'rx', value => 4078 }
+        interface::ring { "${name} rxring": interface => $name, setting => 'rx', value => 4078 }
     }
 }

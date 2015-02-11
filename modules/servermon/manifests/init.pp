@@ -68,7 +68,7 @@ class servermon(
         ensure => ensure_service($ensure),
     }
 
-    file { "$directory/settings.py":
+    file { "${directory}/settings.py":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',

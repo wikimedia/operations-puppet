@@ -16,10 +16,10 @@ define interface::rps( $rss_pattern="" ) {
 
     $interface = $title
     if $rss_pattern != "" {
-        $cmd = "/usr/local/sbin/interface-rps $interface $rss_pattern"
+        $cmd = "/usr/local/sbin/interface-rps ${interface} ${rss_pattern}"
     }
     else {
-        $cmd = "/usr/local/sbin/interface-rps $interface"
+        $cmd = "/usr/local/sbin/interface-rps ${interface}"
     }
 
     # Disable irqbalance if RSS in use
@@ -28,13 +28,13 @@ define interface::rps( $rss_pattern="" ) {
     }
 
     # Add to ifup commands in /etc/network/interfaces
-    interface::up_command { "rps-$interface":
+    interface::up_command { "rps-${interface}":
         interface => $interface,
         command => $cmd,
     }
 
     # Exec immediately if newly-added
-    exec { "rps-$interface":
+    exec { "rps-${interface}":
         command   => $cmd,
         subscribe => Augeas["${interface}_rps-${interface}"],
         refreshonly => true,

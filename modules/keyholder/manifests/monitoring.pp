@@ -19,14 +19,14 @@ class keyholder::monitoring( $ensure = present ) {
     sudo::user { 'nagios_check_keyholder':
         ensure     => $ensure,
         user       => 'nagios',
-        privileges => [ "ALL = NOPASSWD: $plugin_path" ],
+        privileges => [ "ALL = NOPASSWD: ${plugin_path}" ],
         require    => File[$plugin_path],
     }
 
     nrpe::monitor_service { 'keyholder':
         ensure       => $ensure,
         description  => 'Keyholder SSH agent',
-        nrpe_command => "/usr/bin/sudo $plugin_path",
+        nrpe_command => "/usr/bin/sudo ${plugin_path}",
         require      => Sudo::User['nagios_check_keyholder'],
     }
 }

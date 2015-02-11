@@ -39,7 +39,7 @@ class mediawiki_singlenode(
 
     git::clone { 'vendor':
         ensure    => $ensure,
-        directory => "$install_path/vendor",
+        directory => "${install_path}/vendor",
         branch    => 'master',
         timeout   => 1800,
         origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/vendor.git',

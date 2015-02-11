@@ -10,7 +10,7 @@ class gridengine::shadow_master(
         require => Package['gridengine-common'],
     }
 
-    file { "$sgeroot/default":
+    file { "${sgeroot}/default":
         require => [ File[$sgeroot], Package['gridengine-common'] ],
         ensure  => directory,
         owner   => 'sgeadmin',
@@ -18,8 +18,8 @@ class gridengine::shadow_master(
         mode    => '02775',
     }
 
-    file { "$sgeroot/default/common":
-        require => File["$sgeroot/default"],
+    file { "${sgeroot}/default/common":
+        require => File["${sgeroot}/default"],
         ensure  => directory,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
@@ -44,8 +44,8 @@ class gridengine::shadow_master(
         source  => 'puppet:///modules/gridengine/gridengine-shadow.conf';
     }
 
-    file { "$sgeroot/default/common/shadow_masters":
-        require => File["$sgeroot/default/common"],
+    file { "${sgeroot}/default/common/shadow_masters":
+        require => File["${sgeroot}/default/common"],
         ensure  => present,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
@@ -54,7 +54,7 @@ class gridengine::shadow_master(
     }
 
     service { 'gridengine-shadow':
-        require => File['/etc/init/gridengine-shadow.conf', "$sgeroot/default/common/shadow_masters"],
+        require => File['/etc/init/gridengine-shadow.conf', "${sgeroot}/default/common/shadow_masters"],
         ensure  => running,
     }
 }

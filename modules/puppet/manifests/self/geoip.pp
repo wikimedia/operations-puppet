@@ -29,19 +29,19 @@ class puppet::self::geoip {
 
     # compatibility symlinks, so that users can use the stable paths
     # GeoIP.dat/GeoIPCity.dat between labs and production
-    file { "$geoip_destdir/GeoIP.dat":
+    file { "${geoip_destdir}/GeoIP.dat":
         ensure => link,
         target => 'GeoLiteCountry.dat',
     }
-    file { "$geoip_destdir/GeoIPCity.dat":
+    file { "${geoip_destdir}/GeoIPCity.dat":
         ensure => link,
         target => 'GeoLiteCity.dat',
     }
-    file { "$geoip_destdir/GeoIP2-Country.mmdb":
+    file { "${geoip_destdir}/GeoIP2-Country.mmdb":
         ensure => link,
         target => 'GeoLite2-Country.mmdb',
     }
-    file { "$geoip_destdir/GeoIP2-City.mmdb":
+    file { "${geoip_destdir}/GeoIP2-City.mmdb":
         ensure => link,
         target => 'GeoLite2-City.mmdb',
     }

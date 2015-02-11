@@ -23,7 +23,7 @@ class nagios_common::user_macros(
     $owner = 'icinga',
     $group = 'icinga',
 ){
-    file { "$config_dir/resource.cfg":
+    file { "${config_dir}/resource.cfg":
         ensure => $ensure,
         source => 'puppet:///modules/nagios_common/resource.cfg',
         owner  => $owner,

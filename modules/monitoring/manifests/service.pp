@@ -15,7 +15,7 @@ define monitoring::service(
 )
 {
     if ! $host {
-        fail("Parameter $host not defined!")
+        fail("Parameter ${host} not defined!")
     }
     $cluster_name = hiera('cluster', $cluster)
     $servicegroups = $group ? {

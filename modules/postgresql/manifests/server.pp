@@ -39,14 +39,14 @@ class postgresql::server(
     }
 
     exec { 'pgreload':
-        command     => "/usr/bin/pg_ctlcluster $pgversion main reload",
+        command     => "/usr/bin/pg_ctlcluster ${pgversion} main reload",
         user        => 'postgres',
         refreshonly => true,
     }
 
     service { 'postgresql':
         ensure  => ensure_service($ensure),
-        require => Package["postgresql-$pgversion"]
+        require => Package["postgresql-${pgversion}"]
     }
 
     file { "/etc/postgresql/${pgversion}/main/postgresql.conf":
