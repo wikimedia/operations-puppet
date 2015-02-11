@@ -108,7 +108,7 @@ class extdist(
     }
 
     cron { 'skindist-generate-tarballs':
-        command => "/usr/bin/python $clone_dir/nightly.py --all --skins",
+        command => "/usr/bin/python ${clone_dir}/nightly.py --all --skins",
         user    => 'extdist',
         minute  => '30',
         hour    => '*',

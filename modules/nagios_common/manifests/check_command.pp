@@ -33,7 +33,7 @@
 define nagios_common::check_command(
     $ensure = present,
     $config_dir = '/etc/icinga',
-    $plugin_source = "puppet:///modules/nagios_common/check_commands/$title",
+    $plugin_source = "puppet:///modules/nagios_common/check_commands/${title}",
     $config_source = undef,
     $config_content = undef,
     $owner = 'icinga',
@@ -41,7 +41,7 @@ define nagios_common::check_command(
 ) {
 
 
-    file { "/usr/lib/nagios/plugins/$title":
+    file { "/usr/lib/nagios/plugins/${title}":
         ensure => $ensure,
         source => $plugin_source,
         owner  => 'root',
@@ -50,7 +50,7 @@ define nagios_common::check_command(
     }
 
     if ($config_source == undef) and ($config_content == undef) {
-        $real_config_source =  "puppet:///modules/nagios_common/check_commands/$title.cfg"
+        $real_config_source =  "puppet:///modules/nagios_common/check_commands/${title}.cfg"
     } else {
         $real_config_source = $config_source
     }
@@ -103,12 +103,12 @@ define nagios_common::check_command::config(
     $group = 'icinga',
 ) {
     if ($source == undef) and ($content == undef) {
-        $real_source = "puppet:///modules/nagios_common/check_commands/$title.cfg"
+        $real_source = "puppet:///modules/nagios_common/check_commands/${title}.cfg"
     } else {
         $real_source = $source
     }
 
-    file { "$config_dir/commands/$title.cfg":
+    file { "${config_dir}/commands/${title}.cfg":
         ensure  => $ensure,
         source  => $real_source,
         content => $content,

@@ -6,7 +6,7 @@ class mysql_wmf::monitor::percona::files(
     include passwords::nagios::mysql
     $mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
-    file { "$icinga_config_dir/nrpe.d/nrpe_percona.cfg":
+    file { "${icinga_config_dir}/nrpe.d/nrpe_percona.cfg":
         owner   => 'root',
         group   => 'nagios',
         mode    => '0440',

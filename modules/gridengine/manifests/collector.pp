@@ -7,9 +7,9 @@ define gridengine::collector(
     $config  = undef )
 {
     $etcdir  = '/var/lib/gridengine/etc'
-    $conf    = "$etcdir/$dir/$rname"
-    $dotfile = "$etcdir/$dir/.$rname"
-    $tracker = "$etcdir/tracker/$dir/$rname"
+    $conf    = "${etcdir}/${dir}/${rname}"
+    $dotfile = "${etcdir}/${dir}/.${rname}"
+    $tracker = "${etcdir}/tracker/${dir}/${rname}"
 
     file { $dotfile:
         ensure  => file,
@@ -19,8 +19,8 @@ define gridengine::collector(
         content => template($config),
     }
 
-    exec { "collect-$rname-resource":
-        command => "$etcdir/bin/collector '$rname' '$sourcedir' '$dotfile' '$conf'",
+    exec { "collect-${rname}-resource":
+        command => "${etcdir}/bin/collector '${rname}' '${sourcedir}' '${dotfile}' '${conf}'",
         require => File[$dotfile],
     }
 

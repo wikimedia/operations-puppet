@@ -11,9 +11,9 @@ class swift_new::monitoring::graphite (
         nagios_critical => false
     }
 
-    monitoring::graphite_threshold { "swift_$swift_cluster_dispersion_container":
-        description     => "swift $swift_cluster container availability",
-        metric          => "swift.$swift_cluster.dispersion.container.pct_found.value",
+    monitoring::graphite_threshold { "swift_${swift_cluster_dispersion_container}":
+        description     => "swift ${swift_cluster} container availability",
+        metric          => "swift.${swift_cluster}.dispersion.container.pct_found.value",
         from            => '30min',
         warning         => 92,
         critical        => 88,
