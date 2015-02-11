@@ -7,7 +7,7 @@ class role::transparency {
     include ::apache
     include ::apache::mod::rewrite
 
-    $repo_dir = '/srv/TransparencyReport'
+    $repo_dir = '/srv/org/wikimedia/TransparencyReport'
     $docroot  = "${repo_dir}/build"
 
     git::clone { 'wikimedia/TransparencyReport':
