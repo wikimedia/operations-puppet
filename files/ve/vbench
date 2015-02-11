@@ -86,46 +86,35 @@ JS = '''
 '''
 
 
-class HighlightingFormatter(logging.Formatter):
+class Highlighter(object):
+    RED, GREEN, YELLOW, BLUE, WHITE = ('\x1b[1;3%sm' % n for n in '12347')
+    SUBS = {'^': RED, '@': GREEN, '_': YELLOW, '~': BLUE, '*': WHITE}
+    RE = re.compile(r'(?P<meta>[%s])\((?P<text>.+?)\)(?P=meta)'
+                    % ''.join(SUBS))
+    RESET = '\x1b[0m'
 
-    RE = re.compile(r'(?P<markup>(\*)|(_))(?P<word>\S+)(?(2)\*)(?(3)_)')
-    YELLOW, WHITE, RESET = '\033[93m', '\033[1;37m', '\033[0m'
-
-    def __init__(self, fmt='[_%(asctime)s_] %(message)s', date_fmt='%H:%M:%S',
-                 use_color=False):
-        if use_color:
-            self.subs = {'*': self.WHITE, '_': self.YELLOW, 'end': self.RESET}
-        else:
-            self.subs = {}
-        if fmt:
-            fmt = self.highlight(fmt)
-        super(HighlightingFormatter, self).__init__(fmt, '%I:%M:%S')
+    def __init__(self, use_color=True):
+        self.use_color = use_color
 
     def repl(self, match):
-        start = self.subs.get(match.group('markup'), '')
-        end = self.subs.get('end', '')
-        return start + match.group('word') + end
+        start = self.SUBS[match.group('meta')] if self.use_color else ''
+        end = self.RESET if self.use_color else ''
+        return start + match.group('text') + end
 
     def highlight(self, s):
         return self.RE.sub(self.repl, s)
+
+
+class HighlightingFormatter(logging.Formatter, Highlighter):
+    def __init__(self, use_color=False):
+        self.use_color = use_color
+        super(HighlightingFormatter, self).__init__(
+            self.highlight('[_(%(asctime)s)_] %(message)s'), '%H:%M:%S')
 
     def format(self, record):
         if isinstance(record.msg, basestring):
             record.msg = self.highlight(record.msg)
         return super(HighlightingFormatter, self).format(record)
-
-
-log = logging.getLogger('vbench')
-log.setLevel(logging.DEBUG)
-
-is_tty = sys.stdout.isatty()
-stdout_handler = logging.StreamHandler(stream=sys.stdout)
-stdout_handler.setFormatter(HighlightingFormatter(use_color=is_tty))
-log.addHandler(stdout_handler)
-if not is_tty:
-    stderr_handler = logging.StreamHandler(stream=sys.stderr)
-    stderr_handler.setFormatter(HighlightingFormatter(use_color=True))
-    log.addHandler(stderr_handler)
 
 
 def mean(data):
@@ -183,7 +172,7 @@ def summarize(series):
 
 def format_summary(summary):
     """Pretty-print summary statistics."""
-    items = (string.ljust('%s: *%.2fms*' % (k, v), 30) for k, v in summary)
+    items = (string.ljust('%s: *(%.2fms)*' % (k, v), 30) for k, v in summary)
     return ''.join(items)
 
 
@@ -234,9 +223,7 @@ class ChromeRemoteDebuggingDomain(object):
 class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
     """Protocol for communicating with Chrome via the Remote Debugging API."""
 
-    def __init__(self):
-        for domain in ('page', 'network', 'profiler'):
-            self.__dict__[domain] = ChromeRemoteDebuggingDomain(domain, self)
+    domain_names = ('page', 'network', 'profiler', 'console', 'inspector')
 
     def sendCommand(self, method, **params):
         id = next(self.message_ids)
@@ -252,13 +239,29 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         self.cpu_times = []
         self.wall_times = []
 
+    def onConsoleMessageAdded(self, params=None):
+        message = params['message']
+        level = message['level']
+        text = message.get('text', '')
+        meta = dict(log='~', error='^', warning='_', debug='@').get(level, '')
+        log_level = getattr(logging, level.upper(), logging.DEBUG)
+        log.log(log_level, '[%s(console.%s)%s] %s' % (meta, level, meta, text))
+
+    def onInspectorTargetCrashed(self, params=None):
+        log.critical('^(Aw, snap!)^ Target has crashed.')
+        reactor.stop()
+        if self.cpu_times:
+            self.showSummary()
+
     @defer.inlineCallbacks
     def onOpen(self):
-        log.info('Loading *%s*...', self.factory.target_url)
+        log.info('Loading *(%s)*...', self.factory.target_url)
 
-        yield self.page.enable()
-        yield self.network.enable()
-        yield self.profiler.enable()
+        for domain_name in self.domain_names:
+            domain = ChromeRemoteDebuggingDomain(domain_name, self)
+            self.__dict__[domain_name] = domain
+            yield domain.enable()
+
         yield self.page.addScriptToEvaluateOnLoad(scriptSource=JS)
         yield self.profiler.setSamplingInterval(interval=100)
 
@@ -303,7 +306,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
         if self.factory.log_requests:
             for req in self.requests.values():
-                log.info('[*%(method)s*] %(url)s', req)
+                log.info('[*(%(method)s)*] %(url)s', req)
 
         self.cpu_times.append(profile.cpu_time)
         self.wall_times.append(profile.wall_time)
@@ -387,6 +390,8 @@ ap.add_argument('--log-requests', action='store_true', default=False,
                 help='log uncached network requests')
 ap.add_argument('--write', action='store_true', default=False,
                 help='save profiling data as .cpuprofile files.')
+ap.add_argument('--verbose', action='store_const', const=logging.DEBUG,
+                default=logging.INFO, dest='log_level')
 ap.add_argument('--display', type=parse_display_opts,
                 help='set device display metrics to WIDTHxHEIGHT or '
                      'WIDTHxHEIGHT*SCALE_FACTOR.')
@@ -395,10 +400,22 @@ ap.add_argument('--latency', action='store_true', default=False,
 ap.add_argument('url', help='URL to load')
 args = ap.parse_args()
 
+log = logging.getLogger('vbench')
+log.setLevel(args.log_level)
+del args.log_level
 
-if __name__ == '__main__':
-    observer = PythonLoggingObserver()
-    observer.start()
-    factory = ChromeRemoteDebuggingFactory(**vars(args))
-    reactor.connectTCP(args.host, args.port, factory)
-    reactor.run()
+is_tty = sys.stdout.isatty()
+stdout_handler = logging.StreamHandler(stream=sys.stdout)
+stdout_handler.setFormatter(HighlightingFormatter(use_color=is_tty))
+log.addHandler(stdout_handler)
+if not is_tty:
+    stderr_handler = logging.StreamHandler(stream=sys.stderr)
+    stderr_handler.setFormatter(HighlightingFormatter(use_color=True))
+    log.addHandler(stderr_handler)
+
+observer = PythonLoggingObserver('vbench')
+observer.start()
+
+factory = ChromeRemoteDebuggingFactory(**vars(args))
+reactor.connectTCP(args.host, args.port, factory)
+reactor.run()
