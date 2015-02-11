@@ -17,7 +17,7 @@
 #
 # === Optional Parameters
 #
-# [*phab_tools*]
+# [*basedir*]
 #    path to the phabricator tools directory
 #
 # [*hour*]
@@ -34,13 +34,14 @@ define phabricator::logmail (
     $script_name,
     $sndr_address,
     $rcpt_address,
-    $phab_tools  = '/srv/phab/tools',
+    $basedir  = '/usr/local/bin',
     $hour        = '0',
     $minute      = '0',
     $monthday    = '1',
 ) {
 
-    file { "${phab_tools}/${script_name}":
+
+    file { "${basedir}/${script_name}":
         ensure  => present,
         owner   => 'root',
         group   => 'root',
@@ -50,7 +51,7 @@ define phabricator::logmail (
 
     cron { "phabstatscron_${title}":
         ensure   => present,
-        command  => "${phab_tools}/${script_name}",
+        command  => "${basedir}/${script_name}",
         user     => 'root',
         hour     => $hour,
         minute   => $minute,
