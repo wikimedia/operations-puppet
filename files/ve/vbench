@@ -5,7 +5,8 @@
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   usage: vbench [--host HOST] [--port PORT] [--repeat N] [--log-requests]
-                [--write] [--display DISPLAY] [--latency] URL
+                [--write-profiles] [--verbose] [--display DISPLAY_OPTIONS]
+                [--latency] URL
 
   positional arguments:
     URL                URL to load
@@ -16,8 +17,9 @@
     --port PORT        Chromium port (default: 9222)
     --repeat N         times to repeat (default: 5)
     --log-requests     log uncached network requests
-    --write            save profiling data as .cpuprofile files.
-    --display DISPLAY  set device display metrics to WIDTHxHEIGHT or
+    --write-profiles   save profiling data as .cpuprofile files.
+    --verbose          log verbosely
+    --display OPTIONS  set device display metrics to WIDTHxHEIGHT or
                        WIDTHxHEIGHT*SCALE_FACTOR.
     --latency          simulate realistic network conditions
 
@@ -223,7 +225,13 @@ class ChromeRemoteDebuggingDomain(object):
 class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
     """Protocol for communicating with Chrome via the Remote Debugging API."""
 
-    domain_names = ('page', 'network', 'profiler', 'console', 'inspector')
+    domain_names = (
+        'console',
+        'inspector',
+        'network',
+        'page',
+        'profiler',
+    )
 
     def sendCommand(self, method, **params):
         id = next(self.message_ids)
@@ -248,10 +256,8 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         log.log(log_level, '[%s(console.%s)%s] %s' % (meta, level, meta, text))
 
     def onInspectorTargetCrashed(self, params=None):
-        log.critical('^(Aw, snap!)^ Target has crashed.')
-        reactor.stop()
-        if self.cpu_times:
-            self.showSummary()
+        log.critical('^(Aw, snap!)^ Target has crashed. Trying to recover...')
+        return self.onProfilerReady()
 
     @defer.inlineCallbacks
     def onOpen(self):
@@ -299,7 +305,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
     def onProfilerConsoleProfileFinished(self, params=None):
         data = params['profile']
 
-        if self.factory.write:
+        if self.factory.write_profiles:
             self.writeProfilerData(data)
 
         profile = ChromeCPUProfile(data)
@@ -358,14 +364,14 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
 
-    def __init__(self, url, host='localhost', port=9222, write=False,
+    def __init__(self, url, host='localhost', port=9222, write_profiles=False,
                  repetitions=5, log_requests=False, display=False,
                  latency=False):
         self.host = host
         self.port = port
         self.repetitions = repetitions
         self.target_url = url.replace('https://', 'http://', 1)  # force HTTP
-        self.write = write
+        self.write_profiles = write_profiles
         self.log_requests = log_requests
         self.display = display
         self.latency = latency
@@ -388,10 +394,10 @@ ap.add_argument('--repeat', default=5, metavar='N', type=int,
                 dest='repetitions', help='times to repeat (default: 5)')
 ap.add_argument('--log-requests', action='store_true', default=False,
                 help='log uncached network requests')
-ap.add_argument('--write', action='store_true', default=False,
+ap.add_argument('--write-profiles', action='store_true', default=False,
                 help='save profiling data as .cpuprofile files.')
 ap.add_argument('--verbose', action='store_const', const=logging.DEBUG,
-                default=logging.INFO, dest='log_level')
+                default=logging.INFO, dest='log_level', help='log verbosely')
 ap.add_argument('--display', type=parse_display_opts,
                 help='set device display metrics to WIDTHxHEIGHT or '
                      'WIDTHxHEIGHT*SCALE_FACTOR.')
