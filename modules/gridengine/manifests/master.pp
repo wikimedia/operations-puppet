@@ -9,14 +9,14 @@ class gridengine::master
 
     $etcdir = '/var/lib/gridengine/etc'
 
-    file { "$etcdir/tracker":
+    file { "${etcdir}/tracker":
         ensure  => directory,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0775',
     }
 
-    file { "$etcdir/bin":
+    file { "${etcdir}/bin":
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
@@ -26,7 +26,7 @@ class gridengine::master
         purge   => true,
     }
 
-    file { "$etcdir/bin/mergeconf":
+    file { "${etcdir}/bin/mergeconf":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
@@ -34,7 +34,7 @@ class gridengine::master
         source  => 'puppet:///modules/gridengine/mergeconf',
     }
 
-    file { "$etcdir/bin/tracker":
+    file { "${etcdir}/bin/tracker":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
@@ -42,7 +42,7 @@ class gridengine::master
         source  => 'puppet:///modules/gridengine/tracker',
     }
 
-    file { "$etcdir/bin/collector":
+    file { "${etcdir}/bin/collector":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
@@ -87,7 +87,7 @@ class gridengine::master
         delcmd  => '/usr/bin/qconf -dh',
     }
 
-    file { "$etcdir/complex":
+    file { "${etcdir}/complex":
         ensure  => directory,
         force   => true,
         owner   => 'sgeadmin',
@@ -97,7 +97,7 @@ class gridengine::master
         purge   => true,
     }
 
-    file { "$etcdir/complex/99-default":
+    file { "${etcdir}/complex/99-default":
         ensure  => file,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
@@ -106,12 +106,12 @@ class gridengine::master
     }
 
     exec { "update-complex-conf":
-        onlyif  => "$etcdir/bin/mergeconf $etcdir/complex.conf $etcdir/complex/*",
-        command => "/bin/echo /usr/bin/qconf -Mc $etcdir/complex.conf'",
-        require => File[ "$etcdir/bin", "$etcdir/complex/99-default" ],
+        onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/complex.conf ${etcdir}/complex/*",
+        command => "/bin/echo /usr/bin/qconf -Mc ${etcdir}/complex.conf'",
+        require => File[ "${etcdir}/bin", "${etcdir}/complex/99-default" ],
     }
 
-    file { "$etcdir/config":
+    file { "${etcdir}/config":
         ensure  => directory,
         force   => true,
         owner   => 'sgeadmin',
@@ -121,7 +121,7 @@ class gridengine::master
         purge   => true,
     }
 
-    file { "$etcdir/config/99-default":
+    file { "${etcdir}/config/99-default":
         ensure  => file,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
@@ -130,9 +130,9 @@ class gridengine::master
     }
 
     exec { "update-config-conf":
-        onlyif  => "$etcdir/bin/mergeconf $etcdir/config.conf $etcdir/config/*",
-        command => "/bin/echo /usr/bin/qconf -Mconf $etcdir/config.conf",
-        require => File[ "$etcdir/bin", "$etcdir/complex/99-default" ],
+        onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/config.conf ${etcdir}/config/*",
+        command => "/bin/echo /usr/bin/qconf -Mconf ${etcdir}/config.conf",
+        require => File[ "${etcdir}/bin", "${etcdir}/complex/99-default" ],
     }
 
 }

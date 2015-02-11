@@ -47,13 +47,13 @@ define osm::planet_sync(
     $sync_planet_cmd = inline_template("<%- data=@memoryfree.split(' '); multi={'MB' => 1, 'GB' => 1000}[data[1]]-%>/usr/bin/osmosis --read-replication-interval workingDirectory=<%= @osmosis_dir %> --simplify-change --write-xml-change - 2>/dev/null | /usr/bin/osm2pgsql -k -s -C <%= data[0].to_i/10*multi %> --number-processes <%= @processorcount %> -e15 -o <%= @expire_dir %>/expire.list.$(date \"+\\%Y\\%m\\%d\\%H\\%M\") --append -")
     cron { "planet_sync-${name}":
         environment => "JAVACMD_OPTIONS='-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080'",
-        command => "$sync_planet_cmd > /tmp/osmosis.log 2>&1",
+        command => "${sync_planet_cmd} > /tmp/osmosis.log 2>&1",
         user    => 'postgres',
         hour    => $hour,
         minute  => $minute,
     }
     cron { "expire_old_planet_syncs-${name}":
-        command => "/usr/bin/find $expire_dir -mtime +5 -exec rm {} \;",
+        command => "/usr/bin/find ${expire_dir} -mtime +5 -exec rm {} \;",
         user    => 'postgres',
         hour    => $hour,
         minute  => $minute,

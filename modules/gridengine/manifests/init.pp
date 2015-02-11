@@ -48,14 +48,14 @@ class gridengine($gridmaster) {
         purge   => true,
     }
 
-    file { "$etcdir/hosts":
+    file { "${etcdir}/hosts":
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
     }
 
-    file { "$etcdir/hosts/${::fqdn}":
+    file { "${etcdir}/hosts/${::fqdn}":
         ensure  => directory,
         owner   => 'root',
         group   => 'root',

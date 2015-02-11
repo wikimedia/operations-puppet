@@ -6,7 +6,7 @@ define gridengine::resource(
     $config  = undef )
 {
     $etcdir  = '/var/lib/gridengine/etc'
-    $conf    = "$etcdir/$dir/$rname"
+    $conf    = "${etcdir}/${dir}/${rname}"
 
     if $config {
         file { $conf:

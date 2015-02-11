@@ -97,7 +97,7 @@ class mediawiki::users($web = 'apache') {
 
     sudo::group { 'wikidev':
         privileges => [
-            "ALL = ($web,mwdeploy,l10nupdate) NOPASSWD: ALL",
+            "ALL = (${web},mwdeploy,l10nupdate) NOPASSWD: ALL",
             'ALL = (root) NOPASSWD: /sbin/restart hhvm',
             'ALL = (root) NOPASSWD: /sbin/start hhvm',
             'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -111,7 +111,7 @@ class mediawiki::users($web = 'apache') {
 
     sudo::user { 'mwdeploy':
         privileges => [
-            "ALL = ($web,mwdeploy,l10nupdate) NOPASSWD: ALL",
+            "ALL = (${web},mwdeploy,l10nupdate) NOPASSWD: ALL",
             'ALL = (root) NOPASSWD: /sbin/restart hhvm',
             'ALL = (root) NOPASSWD: /sbin/start hhvm',
         ]

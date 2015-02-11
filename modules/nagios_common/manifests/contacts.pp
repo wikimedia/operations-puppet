@@ -37,7 +37,7 @@ class nagios_common::contacts(
     $contacts = [],
     ) {
     if ($source != undef) {
-        file { "$config_dir/contacts.cfg":
+        file { "${config_dir}/contacts.cfg":
             ensure => $ensure,
             source => $source,
             owner  => $owner,
@@ -45,7 +45,7 @@ class nagios_common::contacts(
             mode   => '0600', # Only $owner:$group can read/write
         }
     } else {
-        file { "$config_dir/contacts.cfg":
+        file { "${config_dir}/contacts.cfg":
             ensure  => $ensure,
             content => template($template),
             owner   => $owner,

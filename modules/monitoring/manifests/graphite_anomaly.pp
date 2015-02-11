@@ -89,7 +89,7 @@ define monitoring::graphite_anomaly(
     monitoring::service { $title:
         ensure                => $ensure,
         description           => $description,
-        check_command         => "check_graphite_anomaly!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${check_window}!$modifier",
+        check_command         => "check_graphite_anomaly!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${check_window}!${modifier}",
         retries               => $retries,
         group                 => $group,
         critical              => $nagios_critical,

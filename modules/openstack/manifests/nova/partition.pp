@@ -21,7 +21,7 @@ define openstack::nova::partition($partition_nr='1') {
     }
 
     exec { "mkfs-${dev}":
-        command => "mkfs -t xfs -L $fs_label -i size=512 ${dev}",
+        command => "mkfs -t xfs -L ${fs_label} -i size=512 ${dev}",
         path    => '/sbin/:/usr/sbin/',
         require => [Package['xfsprogs'], Exec["parted-${title}"]],
         unless  => "xfs_admin -l ${dev}",

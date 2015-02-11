@@ -29,7 +29,7 @@ class nagios_common::commands(
             ensure => present,
     }
 
-    file { "$config_dir/commands":
+    file { "${config_dir}/commands":
         ensure => directory,
         owner  => $owner,
         group  => $group,
@@ -47,7 +47,7 @@ class nagios_common::commands(
         'check_ifstatus_nomon',
         'check_bgp',
     ] :
-        require    => File["$config_dir/commands"],
+        require    => File["${config_dir}/commands"],
         config_dir => $config_dir,
         owner      => $owner,
         group      => $group,
@@ -87,13 +87,13 @@ class nagios_common::commands(
         'procs',
         'vsz',
     ] :
-        require    => File["$config_dir/commands"],
+        require    => File["${config_dir}/commands"],
         config_dir => $config_dir,
         owner      => $owner,
         group      => $group,
     }
 
-    file { "$config_dir/checkcommands.cfg":
+    file { "${config_dir}/checkcommands.cfg":
         source => 'puppet:///modules/nagios_common/checkcommands.cfg',
         owner  => $owner,
         group  => $group,
