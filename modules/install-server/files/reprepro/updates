@@ -8,7 +8,7 @@ VerifyRelease: 9B7D32F2D50582E6
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
 Name: cloudera
-Method: http://archive.cloudera.com/cdh5/ubuntu/precise/amd64/cdh/
+Method: http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/
 Components: contrib>thirdparty
 UDebComponents:
 GetInRelease: no
