@@ -1,24 +1,35 @@
-# sets up a cronjob and file to mail out
-# the results of statistic scripts
+# == Class: phabricator::logmail
 #
 # once used for admin audit log and community metrics
 # on Bugzilla, now for similar metrics on Phabricator
 # but can be flexible about the script it uses
 #
-# required parameters:
+# === Required Parameters
 #
-# script_name - script you want to execute
-# sndr_address - mail from: address
-# rcpt_address - mail to: address
+# [*scriptname*]
+#   script you want to execute
 #
-# optional parameters:
+# [*rcpt_address*]
+#   mail to: address
 #
-# phab_tools - path to the phabricator tools directory
-# hour - hour the script is executed
-# minute - minute the script is executed
-# monthday - day of the month script is executed
-# (use this to control how often you send mails)
-# f.e. * = daily, 1 = monthly, ..)
+# [*sndr_address*]
+#   mail from: address
+#
+# === Optional Parameters
+#
+# [*phab_tools*]
+#    path to the phabricator tools directory
+#
+# [*hour*]
+#    hour the script is executed
+#
+# [*minute*]
+#    minute the script is executed
+#
+# [*monthday*]
+#    day of the month script is executed
+#
+
 define phabricator::logmail (
     $script_name,
     $sndr_address,
@@ -46,4 +57,3 @@ define phabricator::logmail (
         monthday => $monthday,
     }
 }
-

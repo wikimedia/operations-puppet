@@ -2,6 +2,20 @@
 #
 # Installs libphutil library extensions
 #
+# === Parameters
+#
+# [*rootdir*]
+#    The path on disk to clone the needed repositories
+#
+# [*libext_tag*]
+#    Git tag to hold repo at
+#
+# [*libext_lock_path*]
+#    Path to local file that provides local settings lock
+#
+# [*libname*]
+#    Case sensitive extension name
+
 
 define phabricator::libext ($rootdir, $libext_tag, $libext_lock_path, $libname = $name) {
 
@@ -22,4 +36,3 @@ define phabricator::libext ($rootdir, $libext_tag, $libext_lock_path, $libname =
             path    => '/usr/bin:/bin',
         }
 }
-

@@ -1,3 +1,5 @@
+# == Class: phabricator::monitoring
+#
 class phabricator::monitoring {
 
     nrpe::monitor_service { 'check_phab_taskmaster':
