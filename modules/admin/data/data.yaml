@@ -228,6 +228,14 @@ groups:
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
             'ALL = (oozie) NOPASSWD: ALL',
             'ALL = (hive)  NOPASSWD: ALL']
+  apertium-admin:
+    gid: TODO
+    description: Admin access for apertium.
+    members: [kartik]
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service apertium-apy stop',
+            'ALL = (root) NOPASSWD: /usr/sbin/service apertium-apy start',
+            'ALL = (root) NOPASSWD: /usr/sbin/service apertium-apy restart',
+            'ALL = (root) NOPASSWD: /usr/sbin/service apertium-apy reload']
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging investigation
