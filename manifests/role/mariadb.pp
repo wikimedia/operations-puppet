@@ -393,7 +393,7 @@ class role::mariadb::labs {
     }
 
     class { 'mariadb::config':
-        prompt    => "LABS ${shard}",
+        prompt    => "LABS",
         config    => 'mariadb/labs.my.cnf.erb',
         password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/srv/sqldata',
@@ -434,7 +434,7 @@ class role::mariadb::wikitech {
     }
 
     class { 'mariadb::config':
-        prompt   => "WIKITECH ${shard}",
+        prompt   => "WIKITECH",
         config   => 'mariadb/wikitech.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => '/srv/sqldata',

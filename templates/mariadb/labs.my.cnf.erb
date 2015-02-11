@@ -9,8 +9,8 @@ socket = /tmp/mysql.sock
 user      = mysql
 socket    = /tmp/mysql.sock
 port      = 3306
-datadir   = /srv/sqldata
-tmpdir    = /srv/tmp
+datadir   = <%= @datadir %>
+tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
 read_only = 0
 
