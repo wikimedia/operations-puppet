@@ -271,6 +271,7 @@ class phabricator (
     }
 
     class { 'phabricator::phd':
+        basedir  => $phabdir,
         settings => $phab_settings,
         before   => Service['phd'],
     }
