@@ -78,9 +78,9 @@ maniphest.custom-field-definitions:
     type: select
     default: default
     options:
-      default: none
-      security-bug: 'Security or Sensitive Bug'
-      sensitive: 'Private Issue'
+      default: 'None'
+      security-bug: 'MediaWiki security bug'
+      sensitive: 'Other confidential issue'
 
 # Security/Operations Macro's for enabling
 # as we rollout to RT and bugzilla.
