@@ -2003,11 +2003,15 @@ host mc1016 {
 host mc1017 {
         hardware ethernet 00:10:18:ef:fe:10;
         fixed-address mc1017.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+	    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc1018 {
         hardware ethernet 00:10:18:ef:f6:d0;
         fixed-address mc1018.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+	    filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host ms1001 {
