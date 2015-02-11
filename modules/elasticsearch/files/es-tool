@@ -82,6 +82,11 @@ def es_health():
         return os.EX_OK
 
 
+def printu(string):
+    sys.stdout.write(string)
+    sys.stdout.flush()
+
+
 def es_restart_fast():
     # Sanity checks
     if os.getuid() != 0:
@@ -92,11 +97,11 @@ def es_restart_fast():
         return os.EX_UNAVAILABLE
 
     # Disable replication so we can make recovery easier
-    print "Disabling non-primary replication...",
+    printu("Disabling non-primary replication...")
     if not set_allocation_state("primaries"):
         print "failed!"
         return os.EX_UNAVAILABLE
-    print "ok"
+    printu("ok\n")
 
     # Actually restart the service
     try:
@@ -107,31 +112,31 @@ def es_restart_fast():
         return os.EX_UNAVAILABLE
 
     # Wait for it to come back alive
-    print "Waiting for Elasticsearch...",
+    printu("Waiting for Elasticsearch...")
     while True:
         try:
             if cluster_health():
-                print "ok"
+                printu("ok\n")
                 break
         except:
             pass
-        print ".",
+        printu(".")
         time.sleep(1)
 
     # Wait a sec
     time.sleep(1)
 
     # Turn replication back on so things will recover fully
-    print "Enabling all replication...",
+    printu("Enabling all replication...")
     if not set_allocation_state("all"):
         print "failed! -- You will still need to enable replication again",
         print "with `es-tool start-replication`"
         return os.EX_UNAVAILABLE
-    print "ok"
+    printu("ok\n")
 
     # Wait a bit
     time.sleep(5)
-    print "Waiting for green (you can ctrl+c here if you have to)...",
+    printu("Waiting for green (you can ctrl+c here if you have to)...")
     while cluster_health() != "green":
         time.sleep(1)
     print "ok"
