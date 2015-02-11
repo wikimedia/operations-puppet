@@ -1,6 +1,14 @@
 # == Class: phabricator::phd
 #
-class phabricator::phd($settings = {}) {
+class phabricator::phd (
+    $settings = {},
+    basedir   = '',
+) {
+
+    file { '/etc/init.d/phd':
+       ensure => 'link',
+       target => "${basedir}/phabricator/bin/phd",
+    }
 
     file { $settings['phd.pid-directory']:
         ensure => 'directory',
