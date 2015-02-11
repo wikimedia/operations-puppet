@@ -71,7 +71,7 @@ maniphest.custom-field-definitions:
     edit: false
     view: true
   security_topic:
-    instructions: <a href="https://www.mediawiki.org/wiki/Phabricator/Security">Security Settings</a> will override permissions and projects as needed.
+    instructions: Security settings will override permissions and projects as needed.
     name: Security
     description: Used for security oriented custom extensions
     search: true
