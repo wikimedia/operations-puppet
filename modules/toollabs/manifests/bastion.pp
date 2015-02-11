@@ -10,7 +10,9 @@
 #
 # Sample Usage:
 #
-class toollabs::bastion inherits toollabs {
+class toollabs::bastion(
+    $cron_host = 'tools-submit',
+) inherits toollabs {
 
     include gridengine::submit_host,
             gridengine::admin_host,
@@ -58,11 +60,11 @@ class toollabs::bastion inherits toollabs {
     }
 
     file { '/usr/local/bin/xcrontab':
-        ensure => file,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/toollabs/crontab',
+        ensure  => file,
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        content => template('toollabs/crontab.erb'),
     }
 
 }
