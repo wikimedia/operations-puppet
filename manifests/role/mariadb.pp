@@ -16,7 +16,7 @@ class role::mariadb::grants {
     include passwords::tendril
 
     $root_pass    = $passwords::misc::scripts::mysql_root_pass
-    $repl_pass    = $passwords::misc::scripts::repl_sql_pass
+    $repl_pass    = $passwords::misc::scripts::mysql_repl_pass
     $nagios_pass  = $passwords::misc::scripts::nagios_sql_pass
     $tendril_user = $passwords::tendril::db_user
     $tendril_pass = $passwords::tendril::db_pass
