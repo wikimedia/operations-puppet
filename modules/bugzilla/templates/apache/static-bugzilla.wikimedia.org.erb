@@ -6,6 +6,9 @@
     ServerName static-bugzilla.wikimedia.org
     DocumentRoot /srv/org/wikimedia/static-bugzilla
 
+    RewriteEngine On
+    RewriteRule ^/show_bug.cgi?id=([0-9]+)$ /bug$1.html [PT]
+
     <Directory />
         Options FollowSymLinks
         AllowOverride None
