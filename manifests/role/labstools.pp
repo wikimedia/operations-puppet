@@ -56,11 +56,13 @@ class role::labs::tools {
     class mailrelay inherits role::labs::tools::common {
         system::role { 'role::labs::tools::mailrelay': description => 'Tool Labs mail relay' }
 
+        $maildomain_project = $::instanceproject ? {
+            'toolsbeta' => 'tools-beta.wmflabs.org',
+            default     => 'tools.wmflabs.org',
+        }
+
         class { 'toollabs::mailrelay':
-            maildomain => $::instanceproject ? {
-                'toolsbeta' => 'tools-beta.wmflabs.org',
-                default     => 'tools.wmflabs.org',
-            },
+            maildomain => $maildomain_project
         }
     }
 
