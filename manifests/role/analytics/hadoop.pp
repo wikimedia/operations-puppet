@@ -346,7 +346,7 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
     }
     file { '/usr/local/bin/hadoop-yarn-logging-helper.sh':
         content => template('hadoop/hadoop-yarn-logging-helper.erb'),
-        mode => 744,
+        mode    => 0744,
     }
     if $gelf_logging_enabled {
         # library dependency
@@ -355,8 +355,8 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         }
         # symlink into hadoop classpath
         file { '/usr/lib/hadoop/lib/json_simple.jar':
-            ensure => 'link',
-            target => '/usr/share/java/json_simple.jar',
+            ensure  => 'link',
+            target  => '/usr/share/java/json_simple.jar',
             require => Package['libjson-simple-java'],
         }
         # the libary itself: logstash-gelf.jar
@@ -365,20 +365,20 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         }
         # symlink into hadoop classpath
         file { '/usr/lib/hadoop/lib/logstash-gelf.jar':
-            ensure => 'link',
-            target => '/usr/share/java/logstash-gelf.jar',
+            ensure  => 'link',
+            target  => '/usr/share/java/logstash-gelf.jar',
             require => Package['liblogstash-gelf-java'],
         }
         # Patch container-log4j.properties inside nodemanager jar
         # See script source for details
         exec { 'hadoop-yarn-logging-helper-set':
-            command => '/usr/local/bin/hadoop-yarn-logging-helper.sh set',
+            command    => '/usr/local/bin/hadoop-yarn-logging-helper.sh set',
             subscribe  => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
         }
     } else {
         # Revert to original unmodified jar
         exec { 'hadoop-yarn-logging-helper-reset':
-            command => '/usr/local/bin/hadoop-yarn-logging-helper.sh reset',
+            command    => '/usr/local/bin/hadoop-yarn-logging-helper.sh reset',
             subscribe  => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
         }
     }
@@ -471,7 +471,7 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
             metric      => 'Hadoop.NameNode.FSNamesystem.tag_HAState',
             warning     => '\!active',
             critical    => '\!active',
-            require      => Class['cdh::hadoop::master'],
+            require     => Class['cdh::hadoop::master'],
         }
     }
 
