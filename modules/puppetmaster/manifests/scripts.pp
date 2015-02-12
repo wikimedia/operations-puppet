@@ -52,6 +52,6 @@ class puppetmaster::scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0544',
-        source => 'puppet:///modules/puppetmaster/reimage.sh'
+        source => 'puppet:///modules/puppetmaster/wmf-reimage'
     }
 }
