@@ -102,15 +102,19 @@ function sign_salt {
 function set_pxe_and_reboot {
     mgmtname=${1}
     if [ -z "$IPMI_PASSWORD" ]; then
-	    echo "WARNING: IPMI_PASSWORD not found. Assuming bash, do: "
-	    echo "HISTCONTROL=ignoreboth<enter>"
-	    echo "<space>export IPMI_PASSWORD='supersecretpass'"
-	    echo "WARNING: Continuing without auto rebooting the box"
-	    return
+        echo "WARNING: IPMI_PASSWORD not found."
+        if ! tty -s; then
+            echo "Assuming bash, do: "
+            echo "HISTCONTROL=ignoreboth<enter>"
+            echo "<space>export IPMI_PASSWORD='supersecretpass'"
+            echo "WARNING: Continuing without auto rebooting the box"
+            return
+        fi
+        read -s -p "IPMI password: "
+        IPMI_PASSWORD=$REPLY
     fi
-    export IPMI_PASSWORD
-    ipmitool -I lanplus -H ${mgmtname} -U root -E chassis bootdev pxe
-    ipmitool -I lanplus -H ${mgmtname} -U root -E chassis power cycle
+    IPMI_PASSWORD=$IPMI_PASSWORD ipmitool -I lanplus -H ${mgmtname} -U root -E chassis bootdev pxe
+    IPMI_PASSWORD=$IPMI_PASSWORD ipmitool -I lanplus -H ${mgmtname} -U root -E chassis power cycle
 }
 
 function enable_and_run_puppet {
