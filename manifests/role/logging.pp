@@ -16,16 +16,17 @@ node "base_analytics_logging_node" {
     # the var down the chain, but that seems like too much
     # modification for just this.  Instead this overrides
     # the default contact_group of 'admins' set in class base.
-    $nagios_contact_group = "admins,analytics"
+    $nagios_contact_group = 'admins,analytics'
 
-    include
-        standard,
-        role::logging
+    include standard
+    include role::logging
 }
 
 class role::logging
 {
-    system::role { "role::logging": description => "log collector" }
+    system::role { 'role::logging':
+        description => 'log collector',
+    }
 
     include nrpe
     include geoip
@@ -33,15 +34,17 @@ class role::logging
 
 # mediawiki udp2log instance.  Does not use monitoring.
 class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedia/logs' ) {
-    system::role { "role::logging:mediawiki": description => "MediaWiki log collector" }
-
-    class { "misc::udp2log":
-        monitor             => $monitor,
-        default_instance    => false
+    system::role { 'role::logging:mediawiki':
+        description => 'MediaWiki log collector',
     }
 
-    include misc::udp2log::utilities,
-        misc::udp2log::firewall
+    class { 'misc::udp2log':
+        monitor          => $monitor,
+        default_instance => false,
+    }
+
+    include misc::udp2log::utilities
+    include misc::udp2log::firewall
 
     $error_processor_host = $::realm ? {
         production => 'vanadium.eqiad.wmnet',
@@ -57,33 +60,33 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
 
     $logstash_port = 8324
 
-    misc::udp2log::instance { "mw":
-        log_directory    =>    $log_directory,
-        monitor_log_age    =>    false,
-        monitor_processes    =>    false,
+    misc::udp2log::instance { 'mw':
+        log_directory          =>    $log_directory,
+        monitor_log_age        =>    false,
+        monitor_processes      =>    false,
         monitor_packet_loss    =>    false,
-        template_variables => {
+        template_variables     => {
             error_processor_host => $error_processor_host,
             error_processor_port => 8423,
 
             # forwarding to logstash
-            logstash_host => $logstash_host,
-            logstash_port => $logstash_port,
+            logstash_host        => $logstash_host,
+            logstash_port        => $logstash_port,
         },
     }
 
-    cron { "mw-log-cleanup":
-        command => "/usr/local/bin/mw-log-cleanup",
-        user => root,
-        hour => 2,
-        minute => 0
+    cron { 'mw-log-cleanup':
+        command => '/usr/local/bin/mw-log-cleanup',
+        user    => 'root',
+        hour    => 2,
+        minute  => 0
     }
 
-    file { "/usr/local/bin/mw-log-cleanup":
+    file { '/usr/local/bin/mw-log-cleanup':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => "puppet:///files/misc/scripts/mw-log-cleanup",
+        source => 'puppet:///files/misc/scripts/mw-log-cleanup',
     }
 
     file { '/usr/local/bin/exceptionmonitor':
@@ -93,12 +96,11 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         content => template('misc/exceptionmonitor.erb'),
     }
 
-    file {
-        '/usr/local/bin/fatalmonitor':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///files/misc/scripts/fatalmonitor';
+    file { '/usr/local/bin/fatalmonitor':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///files/misc/scripts/fatalmonitor',
     }
 
     $cirrussearch_slow_log_check_interval = 5
@@ -185,10 +187,10 @@ class role::logging::relay::eventlogging {
 
 # udp2log base role class
 class role::logging::udp2log {
-    include misc::udp2log,
-        misc::udp2log::utilities
+    include misc::udp2log
+    include misc::udp2log::utilities
 
-    $log_directory               = '/a/log'
+    $log_directory = '/a/log'
 
     file { $log_directory:
         ensure => 'directory',
@@ -213,7 +215,7 @@ class role::logging::udp2log::nginx inherits role::logging::udp2log {
         # don't monitor packet loss,
         # we aren't keeping packet loss log,
         # and nginx sequence numbers are messed up anyway.
-        monitor_packet_loss => false
+        monitor_packet_loss => false,
     }
 }
 
@@ -260,7 +262,7 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
     # keep fundraising logs in a subdir
     $fundraising_log_directory = "${log_directory}/fundraising"
 
-    file { "${fundraising_log_directory}":
+    file { $fundraising_log_directory:
         ensure  => 'directory',
         mode    => '0775',
         owner   => 'udp2log',
@@ -289,8 +291,8 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
 
 # misc udp2log instance, mainly for a post-udp2log era...one day :)
 class role::logging::udp2log::misc {
-    include misc::udp2log,
-        misc::udp2log::utilities
+    include misc::udp2log
+    include misc::udp2log::utilities
 
     misc::udp2log::instance { 'misc':
         multicast          => true,
@@ -318,24 +320,23 @@ class role::logging::systemusers {
 
     file { '/var/lib/file_mover':
         ensure => directory,
-        owner => 'file_mover',
-        group => 'file_mover',
-        mode => '0755',
+        owner  => 'file_mover',
+        group  => 'file_mover',
+        mode   => '0755',
     }
 
     file { '/var/lib/file_mover/.ssh':
         ensure => directory,
-        owner => 'file_mover',
-        group => 'file_mover',
-        mode => '0700',
+        owner  => 'file_mover',
+        group  => 'file_mover',
+        mode   => '0700',
     }
 
-    ssh_authorized_key {
-        "file_mover":
-            ensure => present,
-            user   => 'file_mover',
-            type   => 'ssh-rsa',
-            key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw==',
-            require => File['/var/lib/file_mover/.ssh'],
+    ssh_authorized_key { 'file_mover':
+        ensure  => present,
+        user    => 'file_mover',
+        type    => 'ssh-rsa',
+        key     => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw==',
+        require => File['/var/lib/file_mover/.ssh'],
     }
 }
