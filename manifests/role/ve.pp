@@ -65,4 +65,9 @@ class role::ve {
         group  => 'root',
         mode   => '0555',
     }
+
+    apache::site { 'devwiki':
+        source   => 'puppet:///files/ve/devwiki.conf',
+        priority => 4,
+    }
 }
