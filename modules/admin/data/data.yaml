@@ -122,7 +122,7 @@ groups:
   contint-admins:
     gid: 719
     description: users with some sudo permissions on jenkins hosts
-    members: [bd808, cmcmahon, cscott, dduvall, demon, krinkle, reedy, marktraceur, twentyafterfour]
+    members: [bd808, cmcmahon, cscott, dduvall, demon, krinkle, reedy, marktraceur, twentyafterfour, zfilipin]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
             'ALL = (gerritslave) NOPASSWD: ALL',
@@ -1296,3 +1296,10 @@ users:
     realname: Marko Obrovac
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAr04C1g3grQJRwhOyrAic/xzW+2lxlxwjdTIY12HJs6aBvKTeUhwMLTxSMQ0nsFacnCcdTU1YcDYn0ypXxpd/v62uX4nbnw3goYSgKysmYlrHiQ+87GbQnBSe/j/0SvAF+oV9bB4EKGpGDK0hokfNKVzTpI2+0IbEAHK+Ag7+yIGYwWshLeoj1rTSzQCyFb1ELaXPt1OyAq37EYa+D9INA2aP4qHWHNSrAeG1FtJ3M4QDOIB/vB1UYE5i+XYeuugXlZzHXEkL5M1KbI5utPcBjpfncAmPGDLuiUKuBnDo85V75xpTmHQb485M4K1ZnqJ9XKnZT3NWDW2Fo+lvKU7VTw== doorman@istria-wifi.irisa.fr]
     uid: 11187
+  zfilipin:
+    ensure: present
+    gid: 500
+    name: zfilipin
+    realname: Zeljko Filipin
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0EYlgOW63HKlQz7OduxiH1NM4NPxgjxci8qznJdlo75f54mFT308wFlI7DYL/JFkv6yoELEu/xzazRybWu7kpQdL6j95CUkQypOZ+dLMvBbtH1MZROyP/KO1ngwJH9KAmvwlFJ11JD2oCFqZIXtUNueAo5VJM0986JGAyEaIsUqaCNtXBaWKMreLv5nR347nZVKTp8/397buoFGwP3VnU6sbwZcsY8li9GyS6QKplxxe1TAKiOxfg9uaMgD1r6lGoAi6sxrislVZRBj+3PPyemyGraLKLmEaehQNZCp9spSv1rtjA5dl+I73g4v76lxExNJraDMyMdvxXxp6K6J5x zfilipin@wmf_prod]
+    uid: 2580
