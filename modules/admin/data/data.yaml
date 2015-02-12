@@ -60,7 +60,7 @@ groups:
     members: [howief, jforrester, jmorgan, maryana, msyed,
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
-      bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer]
+      bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
