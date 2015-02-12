@@ -20,6 +20,7 @@ class role::servermon {
     include ::apache::mod::ssl
     include ::apache::mod::auth_basic
     include ::apache::mod::authnz_ldap
+    include ::apache::mod::headers
 
     include passwords::servermon
     $db_user = $passwords::servermon::db_user
