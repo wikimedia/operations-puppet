@@ -400,6 +400,7 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
     file_line { 'hadoop_master_cname_dns_override':
       path => '/etc/hosts',
       line => '10.64.36.118    namenode.analytics.eqiad.wmnet resoucemanager.analytics.eqiad.wmnet',
+      ensure => 'absent'
     }
 }
 
