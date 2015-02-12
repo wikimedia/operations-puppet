@@ -4448,11 +4448,11 @@ host restbase1004 {
         fixed-address restbase1004.eqiad.wmnet;
 }
 host restbase1005 {
-        hardware ethernet ;
+        hardware ethernet 64:51:06:ef:8e:50;
         fixed-address restbase1005.eqiad.wmnet;
 }
 host restbase1006 {
-        hardware ethernet ;
+        hardware ethernet 8c:dc:d4:02:33:c0;
         fixed-address restbase1006.eqiad.wmnet;
 }
 
