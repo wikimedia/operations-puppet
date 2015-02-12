@@ -6,6 +6,7 @@
 <VirtualHost *:80>
     ServerName servermon.wikimedia.org
 
+    RewriteEngine on
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteCond %{REQUEST_URI} !^/status$
     RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
