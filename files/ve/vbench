@@ -4,24 +4,18 @@
   vbench - VisualEditor benchmarking tool
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  usage: vbench [--host HOST] [--port PORT] [--repeat N] [--log-requests]
-                [--write-profiles] [--verbose] [--display DISPLAY_OPTIONS]
-                [--latency] URL
-
-  positional arguments:
-    URL                URL to load
-
-  optional arguments:
-    -h, --help         show this help message and exit
-    --host HOST        Chromium host (default: localhost)
-    --port PORT        Chromium port (default: 9222)
-    --repeat N         times to repeat (default: 5)
-    --log-requests     log uncached network requests
-    --write-profiles   save profiling data as .cpuprofile files.
-    --verbose          log verbosely
-    --display OPTIONS  set device display metrics to WIDTHxHEIGHT or
-                       WIDTHxHEIGHT*SCALE_FACTOR.
-    --latency          simulate realistic network conditions
+  Usage: vbench [OPTIONS] URL
+   -h, --help            show this help message and exit
+   --host HOST           Chromium host (default: localhost)
+   --port PORT           Chromium port (default: 9222)
+   --repeat N            times to repeat (default: 5)
+   --log-requests        log uncached network requests
+   --write-profile-data  save profiling data as .cpuprofile files.
+   --verbose             log verbosely
+   --display DISPLAY     set device display metrics to WIDTHxHEIGHT or
+                         WIDTHxHEIGHT*SCALE_FACTOR
+   --extra-latency-ms N  simulate network conditions by adding N
+                         milliseconds of latency to network requests
 
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
 
@@ -86,10 +80,10 @@ JS = '''
 
 class Highlighter(object):
     RED, GREEN, YELLOW, BLUE, WHITE = ('\x1b[1;3%sm' % n for n in '12347')
+    RESET = '\x1b[0m'
     SUBS = {'^': RED, '@': GREEN, '_': YELLOW, '~': BLUE, '*': WHITE}
     RE = re.compile(r'(?P<meta>[%s])\((?P<text>.+?)\)(?P=meta)'
                     % ''.join(SUBS))
-    RESET = '\x1b[0m'
 
     def __init__(self, use_color=True):
         self.use_color = use_color
@@ -104,6 +98,9 @@ class Highlighter(object):
 
 
 class HighlightingFormatter(logging.Formatter, Highlighter):
+    """A formatter for the Python standard library's logging module
+    that uses `Highlighter` to colorize text."""
+
     def __init__(self, use_color=False):
         self.use_color = use_color
         super(HighlightingFormatter, self).__init__(
@@ -239,6 +236,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
     def onConnect(self, response):
         self.message_ids = itertools.count()
         self.requests = {}
+        self.cached_requests = set()
         self.deferreds = {}
         self.cpu_times = []
         self.wall_times = []
@@ -270,17 +268,15 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         if self.factory.display:
             yield self.page.setDeviceMetricsOverride(**self.factory.display)
 
-        if self.factory.latency:
-            # FIXME: Make this configurable.
-            throughput = 256 * 1024
+        if self.factory.extra_latency_ms:
             yield self.network.emulateNetworkConditions(
-                offline=False, latency=100, downloadThroughput=throughput,
-                uploadThroughput=throughput)
+                offline=False, latency=self.factory.extra_latency_ms,
+                downloadThroughput=0, uploadThroughput=0)
 
         yield self.onProfilerReady()
 
     def onNetworkRequestServedFromCache(self, params=None):
-        del self.requests[params['requestId']]
+        self.cached_requests.add(params['requestId'])
 
     def onNetworkRequestWillBeSent(self, params=None):
         self.requests[params['requestId']] = params['request']
@@ -297,18 +293,20 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
     def onProfilerConsoleProfileStarted(self, params=None):
         self.requests.clear()
+        self.cached_requests.clear()
 
     def onProfilerConsoleProfileFinished(self, params=None):
         data = params['profile']
 
-        if self.factory.write_profiles:
+        if self.factory.write_profile_data:
             self.writeProfilerData(data)
 
         profile = ChromeCPUProfile(data)
 
         if self.factory.log_requests:
-            for req in self.requests.values():
-                log.info('[*(%(method)s)*] %(url)s', req)
+            for id, req in self.requests.items():
+                if id not in self.cached_requests:
+                    log.info('[*(%(method)s)*] %(url)s', req)
 
         self.cpu_times.append(profile.cpu_time)
         self.wall_times.append(profile.wall_time)
@@ -360,21 +358,16 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
 
-    def __init__(self, url, host='localhost', port=9222, write_profiles=False,
-                 repetitions=5, log_requests=False, display=False,
-                 latency=False):
-        self.host = host
-        self.port = port
-        self.repetitions = repetitions
-        self.target_url = url.replace('https://', 'http://', 1)  # force HTTP
-        self.write_profiles = write_profiles
-        self.log_requests = log_requests
-        self.display = display
-        self.latency = latency
-        tabs = self.getTabs()
-        tab = next(t for t in tabs if 'webSocketDebuggerUrl' in t)
-        WebSocketClientFactory.__init__(self, tab['webSocketDebuggerUrl'])
+    def __init__(self, target_url, **kwargs):
+        self.__dict__.update(kwargs)
+        self.target_url = target_url.replace('https://', 'http://', 1)
+        WebSocketClientFactory.__init__(self, self.getConnectableTabUrl())
         self.protocol = ChromeRemoteDebuggingProtocol
+
+    def getConnectableTabUrl(self):
+        for tab in self.getTabs():
+            if 'webSocketDebuggerUrl' in tab:
+                return tab['webSocketDebuggerUrl']
 
     def getTabs(self):
         req = urllib2.urlopen('http://%s:%s/json' % (self.host, self.port))
@@ -382,29 +375,68 @@ class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
 
 
 ap = argparse.ArgumentParser(fromfile_prefix_chars='@')
-ap.add_argument('--host', default='localhost',
-                help='Chromium host (default: localhost)')
-ap.add_argument('--port', default=9222, type=int,
-                help='Chromium port (default: 9222)')
-ap.add_argument('--repeat', default=5, metavar='N', type=int,
-                dest='repetitions', help='times to repeat (default: 5)')
-ap.add_argument('--log-requests', action='store_true', default=False,
-                help='log uncached network requests')
-ap.add_argument('--write-profiles', action='store_true', default=False,
-                help='save profiling data as .cpuprofile files.')
-ap.add_argument('--verbose', action='store_const', const=logging.DEBUG,
-                default=logging.INFO, dest='log_level', help='log verbosely')
-ap.add_argument('--display', type=parse_display_opts,
-                help='set device display metrics to WIDTHxHEIGHT or '
-                     'WIDTHxHEIGHT*SCALE_FACTOR.')
-ap.add_argument('--latency', action='store_true', default=False,
-                help='simulate realistic network conditions')
-ap.add_argument('url', help='URL to load')
+ap.add_argument(
+    '--host',
+    default='localhost',
+    help='Chromium host (default: localhost)',
+)
+ap.add_argument(
+    '--port',
+    default=9222,
+    help='Chromium port (default: 9222)',
+    type=int,
+)
+ap.add_argument(
+    '--repeat',
+    default=5,
+    dest='repetitions',
+    help='times to repeat (default: 5)',
+    metavar='N',
+    type=int,
+)
+ap.add_argument(
+    '--log-requests',
+    action='store_true',
+    default=False,
+    help='log uncached network requests',
+)
+ap.add_argument(
+    '--write-profile-data',
+    action='store_true',
+    default=False,
+    help='save profiling data as .cpuprofile files',
+)
+ap.add_argument(
+    '--verbose',
+    action='store_const',
+    const=logging.DEBUG,
+    default=logging.INFO,
+    dest='log_level',
+    help='log verbosely',
+)
+ap.add_argument(
+    '--display',
+    type=parse_display_opts,
+    help='set device display metrics to WIDTHxHEIGHT or '
+         'WIDTHxHEIGHT*SCALE_FACTOR',
+)
+ap.add_argument(
+    '--extra-latency-ms',
+    metavar='N',
+    type=int,
+    default=0,
+    help='simulate network conditions by adding N milliseconds of latency '
+         'to network requests',
+)
+ap.add_argument(
+    'target_url',
+    metavar='URL',
+    help='URL to load',
+)
 args = ap.parse_args()
 
 log = logging.getLogger('vbench')
 log.setLevel(args.log_level)
-del args.log_level
 
 is_tty = sys.stdout.isatty()
 stdout_handler = logging.StreamHandler(stream=sys.stdout)
