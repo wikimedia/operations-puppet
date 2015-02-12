@@ -7,6 +7,10 @@
 	log-graph = log --graph --oneline --branches --all
 	rollback = reset --hard HEAD~1
 	amend = commit -a --amend
+	sub-up = submodule update --init --recursive
+	push-for-review-g = push gerrit HEAD:refs/for/master
+	praise = blame
+	set = reset --hard
 [core]
 	editor = vim
 [color]
