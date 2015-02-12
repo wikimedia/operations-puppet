@@ -154,18 +154,20 @@ class role::nova::common {
 
     include passwords::misc::scripts
 
-    class { 'openstack::common':
-        novaconfig                       => $novaconfig,
-        instance_status_wiki_host        => $::realm ? {
+    $status_wiki_host_master = $::realm ? {
             'production' => 'wikitech.wikimedia.org',
             'labs'       => $::osm_hostname,
-        },
+    }
+
+    class { 'openstack::common':
+        novaconfig                       => $novaconfig,
+        instance_status_wiki_host        => $status_wiki_host_master,
         instance_status_wiki_domain      => 'labs',
         instance_status_wiki_page_prefix => 'Nova_Resource:',
         instance_status_wiki_region      => $::site,
         instance_status_dns_domain       => "${::site}.wmflabs",
         instance_status_wiki_user        => $passwords::misc::scripts::wikinotifier_user,
-        instance_status_wiki_pass        => $passwords::misc::scripts::wikinotifier_pass
+        instance_status_wiki_pass        => $passwords::misc::scripts::wikinotifier_pass,
     }
 
     include role::nova::wikiupdates
