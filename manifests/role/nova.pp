@@ -198,6 +198,16 @@ class role::nova::manager {
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
+    ferm::service { 'wikitech_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'wikitech_https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
     class { 'openstack::openstack-manager':
         novaconfig        => $novaconfig,
         certificate       => $certificate,
