@@ -9,13 +9,11 @@
    --host HOST           Chromium host (default: localhost)
    --port PORT           Chromium port (default: 9222)
    --repeat N            times to repeat (default: 5)
-   --log-requests        log uncached network requests
+   --disable-cache       disable network cache
    --write-profile-data  save profiling data as .cpuprofile files.
    --verbose             log verbosely
    --display DISPLAY     set device display metrics to WIDTHxHEIGHT or
                          WIDTHxHEIGHT*SCALE_FACTOR
-   --extra-latency-ms N  simulate network conditions by adding N
-                         milliseconds of latency to network requests
 
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
 
@@ -64,16 +62,21 @@ except ImportError:
 # FIXME: Make this configurable.
 JS = '''
     window.onload = function () {
-        mw.trackSubscribe( 'event.Edit', function ( topic, event ) {
-            if ( event.action === 'ready' ) {
-                console.profileEnd();
-            }
+        // Bind a handler to VE's ready event that stops the profiler.
+        mw.trackSubscribe( 'event.Edit', function ( _, event ) {
+            if ( event.action === 'ready' )
+                console.profileEnd( 've' );
         } );
+
+        // Don't show the welcome dialog.
+        localStorage.clear()
+        localStorage.setItem( 've-beta-welcome-dialog', 1 );
+
+        // Wait 200ms for any load handlers to run, then start VE.
         setTimeout( function () {
-              localStorage.setItem( 've-beta-welcome-dialog', 1 );
-              console.profile();
+              console.profile( 've' );
               mw.libs.ve.onEditTabClick( { preventDefault: $.noop } );
-        }, 500 );
+        }, 200 );
     };
 '''
 
@@ -160,47 +163,49 @@ def upper_first(s):
     return s[0:1].upper() + s[1:]
 
 
-def summarize(series):
-    """Calculate summary statistics for a population."""
-    return [(f.__name__, f(series)) for f in (min, max, mean, median, std)]
-
-
-def format_summary(summary):
-    """Pretty-print summary statistics."""
-    items = (string.ljust('%s: *(%.2fms)*' % (k, v), 30) for k, v in summary)
-    return ''.join(items)
+def summarize(data):
+    data = list(data)
+    template = ('min: *({: >7.2f})* max: *({: >7.2f})* '
+                'avg: *({: >7.2f})* med: *({: >7.2f})* '
+                'std: *({: >7.2f})*')
+    return template.format(min(data), max(data), mean(data),
+                           median(data), std(data))
 
 
 class ChromeCPUProfile(object):
     """Represents the result of a Chrome CPU profiler run."""
 
-    def __init__(self, data):
-        self.data = data
-        self.cpu_time = self.get_cpu_time()
-        self.wall_time = self.get_wall_time()
+    def __init__(self, profile, title=None):
+        self.profile = profile
+        self.title = title
+        self.total_hit_count = self.get_hit_count(profile['head'])
+        self.wall_time = (profile['endTime'] - profile['startTime']) * 1000
+        self.sampling_interval = self.wall_time / self.total_hit_count
+        self.cpu_time = 0
+        self.gc_time = 0
+        self.idle_time = 0
 
-    def grep(self, function_name, root=None):
-        """Search the trace for a function by name."""
-        matches = []
-        root = root or self.data['head']
-        if root.get('functionName') == function_name:
-            matches.append(root)
-        for child in root.get('children', ()):
-            matches.extend(self.grep(function_name, child))
-        return matches
+        for node in profile['head']['children']:
+            if node['functionName'] == '(garbage collector)':
+                self.gc_time = self.get_time(node)
+            elif node['functionName'] == '(idle)':
+                self.idle_time = self.get_time(node)
+            else:
+                self.cpu_time += self.get_time(node)
 
-    def get_cpu_time(self):
-        """Get total CPU time for the trace."""
-        idle = self.grep('(idle)')[0]
-        idle_samples = idle['hitCount']
-        all_samples = len(self.data['samples'])
-        percent_active = 100.0 * (all_samples - idle_samples) / all_samples
-        total_time = self.data['timestamps'][-1] - self.data['timestamps'][0]
-        return (percent_active * total_time) / 1e5
+    def get_hit_count(self, node):
+        children = node.get('children', ())
+        return node['hitCount'] + sum(self.get_hit_count(x) for x in children)
 
-    def get_wall_time(self):
-        """Get total wall-clock time for the trace."""
-        return (self.data['endTime'] - self.data['startTime']) * 1e3
+    def get_time(self, node):
+        return self.get_hit_count(node) * self.sampling_interval
+
+    def write(self, file_name=None):
+        if file_name is None:
+            prefix = self.title or 'profile'
+            file_name = '%s.%d.cpuprofile' % (prefix, time.time())
+        with open(file_name, 'w') as f:
+            json.dump(self.profile, f, sort_keys=True, indent=2)
 
 
 class ChromeRemoteDebuggingDomain(object):
@@ -219,7 +224,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
     """Protocol for communicating with Chrome via the Remote Debugging API."""
 
     domain_names = (
-        'console',
+        'heapProfiler',
         'inspector',
         'network',
         'page',
@@ -235,21 +240,18 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
 
     def onConnect(self, response):
         self.message_ids = itertools.count()
-        self.requests = {}
-        self.cached_requests = set()
         self.deferreds = {}
-        self.cpu_times = []
-        self.wall_times = []
+        self.profiles = []
+        reactor.addSystemEventTrigger('after', 'shutdown', self.showSummary)
 
-    def onConsoleMessageAdded(self, params=None):
-        message = params['message']
+    def onConsoleMessageAdded(self, message):
         level = message['level']
         text = message.get('text', '')
         meta = dict(log='~', error='^', warning='_', debug='@').get(level, '')
         log_level = getattr(logging, level.upper(), logging.DEBUG)
         log.log(log_level, '[%s(console.%s)%s] %s' % (meta, level, meta, text))
 
-    def onInspectorTargetCrashed(self, params=None):
+    def onInspectorTargetCrashed(self):
         log.critical('^(Aw, snap!)^ Target has crashed. Trying to recover...')
         return self.onProfilerReady()
 
@@ -265,64 +267,37 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         yield self.page.addScriptToEvaluateOnLoad(scriptSource=JS)
         yield self.profiler.setSamplingInterval(interval=100)
 
+        if self.factory.disable_cache:
+            yield self.network.setCacheDisabled(cacheDisabled=True)
+
         if self.factory.display:
             yield self.page.setDeviceMetricsOverride(**self.factory.display)
 
-        if self.factory.extra_latency_ms:
-            yield self.network.emulateNetworkConditions(
-                offline=False, latency=self.factory.extra_latency_ms,
-                downloadThroughput=0, uploadThroughput=0)
-
         yield self.onProfilerReady()
 
-    def onNetworkRequestServedFromCache(self, params=None):
-        self.cached_requests.add(params['requestId'])
-
-    def onNetworkRequestWillBeSent(self, params=None):
-        self.requests[params['requestId']] = params['request']
-
     @defer.inlineCallbacks
-    def onProfilerReady(self, params=None):
+    def onProfilerReady(self):
         yield self.network.clearBrowserCache()
+        yield self.heapProfiler.collectGarbage()
         yield self.page.navigate(url=self.factory.target_url)
 
-    def writeProfilerData(self, data):
-        name = '%s.%d.cpuprofile' % (data.get('title', 'profile'), time.time())
-        with open(name, 'w') as f:
-            json.dump(data, f)
-
-    def onProfilerConsoleProfileStarted(self, params=None):
-        self.requests.clear()
-        self.cached_requests.clear()
-
-    def onProfilerConsoleProfileFinished(self, params=None):
-        data = params['profile']
+    def onProfilerConsoleProfileFinished(self, id, location, profile,
+                                         title=None):
+        profile = ChromeCPUProfile(profile, title)
+        self.profiles.append(profile)
 
         if self.factory.write_profile_data:
-            self.writeProfilerData(data)
+            profile.write()
 
-        profile = ChromeCPUProfile(data)
-
-        if self.factory.log_requests:
-            for id, req in self.requests.items():
-                if id not in self.cached_requests:
-                    log.info('[*(%(method)s)*] %(url)s', req)
-
-        self.cpu_times.append(profile.cpu_time)
-        self.wall_times.append(profile.wall_time)
-
-        repeated = len(self.cpu_times)
         if self.factory.repetitions > 1:
-            report_template = '{:02d}/{:02d}: CPU: {: >7.2f}  Wall: {: >7.2f}'
-            log.info(report_template.format(repeated,
-                                            self.factory.repetitions,
-                                            profile.cpu_time,
-                                            profile.wall_time))
-        if repeated < self.factory.repetitions:
+            t = '{:02d}/{:02d}: CPU: {: <7.2f}  Wall: {: >7.2f}  GC: {: >7.2f}'
+            log.info(t.format(len(self.profiles), self.factory.repetitions,
+                              profile.cpu_time, profile.wall_time,
+                              profile.gc_time))
+        if len(self.profiles) < self.factory.repetitions:
             return self.onProfilerReady()
         else:
             reactor.stop()
-            self.showSummary()
 
     def getHandler(self, method):
         object, event = method.split('.')
@@ -336,7 +311,7 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
         error = message.get('error')
         method = message.get('method')
         params = message.get('params')
-        response = message.get('response')
+        result = message.get('result')
         deferred = self.deferreds.get(id)
 
         if deferred:
@@ -344,16 +319,18 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
                 log.error(error)
                 return deferred.errback(error)
             else:
-                return deferred.callback(response)
+                return deferred.callback(result)
 
         if method:
             handler = self.getHandler(method)
             if handler:
-                return handler(params)
+                return handler(**params)
 
     def showSummary(self):
-        log.info('CPU:  ' + format_summary(summarize(self.cpu_times)))
-        log.info('Wall: ' + format_summary(summarize(self.wall_times)))
+        if not len(self.profiles):
+            return
+        log.info('CPU:  ' + summarize(p.cpu_time for p in self.profiles))
+        log.info('Wall: ' + summarize(p.wall_time for p in self.profiles))
 
 
 class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
@@ -395,12 +372,6 @@ ap.add_argument(
     type=int,
 )
 ap.add_argument(
-    '--log-requests',
-    action='store_true',
-    default=False,
-    help='log uncached network requests',
-)
-ap.add_argument(
     '--write-profile-data',
     action='store_true',
     default=False,
@@ -421,18 +392,17 @@ ap.add_argument(
          'WIDTHxHEIGHT*SCALE_FACTOR',
 )
 ap.add_argument(
-    '--extra-latency-ms',
-    metavar='N',
-    type=int,
-    default=0,
-    help='simulate network conditions by adding N milliseconds of latency '
-         'to network requests',
+    '--disable-cache',
+    action='store_true',
+    default=False,
+    help='disable network cache',
 )
 ap.add_argument(
     'target_url',
     metavar='URL',
     help='URL to load',
 )
+
 args = ap.parse_args()
 
 log = logging.getLogger('vbench')
