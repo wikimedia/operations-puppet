@@ -3,10 +3,18 @@
 class bugzilla::static {
 
     file { '/srv/org/wikimedia/static-bugzilla':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755';
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755';
+    }
+
+    file { '/srv/org/wikimedia/static-bugzilla/index.html':
+        ensure => present,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0400',
+        source => 'puppet:///modules/bugzilla/static-bz-index.html';
     }
 
     apache::site { 'static-bugzilla.wikimedia.org':
