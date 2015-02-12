@@ -6,6 +6,7 @@ class bugzilla::apache ($svc_name, $attach_svc_name, $docroot){
     include ::apache::mod::headers
     include ::apache::mod::expires
     include ::apache::mod::env
+    include ::apache::mod::rewrite
 
     # separate cert and ServerName for attachments for security
     install_certificate{ 'bugzilla.wikimedia.org': }
