@@ -14,6 +14,9 @@ class openstack::firewall {
         $other_master = '208.80.153.14'
     }
 
+    $iron = '208.80.154.151'
+    $tendril = '10.64.0.15'
+
     # Wikitech ssh
     ferm::rule { 'ssh_public':
         rule => 'saddr (0.0.0.0/0) proto tcp dport (ssh) ACCEPT;',
@@ -59,5 +62,15 @@ class openstack::firewall {
     }
     ferm::rule { 'salt':
         rule => "saddr ${labs_private_net} proto tcp dport (4505 4506) ACCEPT;",
+    }
+
+    # mysql access from iron
+    ferm::rule { 'mysql_iron':
+        rule => "saddr ${iron} proto tcp dport (3306) ACCEPT;",
+    }
+
+    # mysql monitoring access from tendril (db1011)
+    ferm::rule { 'mysql_tendril':
+        rule => "saddr ${tendril} proto tcp dport (3306) ACCEPT;",
     }
 }
