@@ -971,6 +971,18 @@ node 'dbproxy1002.eqiad.wmnet' {
     }
 }
 
+node 'dbproxy1003.eqiad.wmnet' {
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::proxy::master':
+        shard          => 'm3',
+        primary_name   => 'db1043',
+        primary_addr   => '10.64.16.32',
+        secondary_name => 'db1048',
+        secondary_addr => '10.64.16.37',
+    }
+}
+
 node 'dysprosium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
     role cache::text
