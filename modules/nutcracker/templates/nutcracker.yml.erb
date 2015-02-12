@@ -1,0 +1,14 @@
+<% @pools.keys.sort_by(&:to_s).each do |key| -%>
+<%= key %>:
+<% pool = @pools[key] -%>
+<% pool.keys.sort_by(&:to_s).each do |k| -%>
+<% if pool[k].is_a?Array -%>
+  <%= k %>:
+<% pool[k].sort_by(&:to_s).each do |v| -%>
+    - <%= v %>
+<% end -%>
+<% else -%>
+  <%= k %>: <%= pool[k] %>
+<% end -%>
+<% end -%>
+<% end -%>
