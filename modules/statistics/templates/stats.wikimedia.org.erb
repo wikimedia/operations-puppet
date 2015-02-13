@@ -63,8 +63,8 @@
     # Force https and use http auth for geowiki's private data
     <Directory "<%= scope.lookupvar('::statistics::sites::stats::geowiki_private_directory') %>">
         RewriteEngine On
-        RewriteCond %{HTTPS} !on
-        RewriteRule (.*) https://%{HTTP_HOST}/%{REQUEST_URI} [redirect=301,last]
+        RewriteCond %{HTTP:X-Forwarded-Proto} !https
+        RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
 
         AllowOverride None
         Order allow,deny
