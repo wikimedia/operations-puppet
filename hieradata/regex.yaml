@@ -19,3 +19,13 @@ orientdb_test:
   admin::groups:
     - wikidata-query-roots
 
+cassandra_test:
+  __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
+  cassandra::seeds:
+      - cerium.eqiad.wmnet
+      - praseodymium.eqiad.wmnet
+      - xenon.eqiad.wmnet
+  restbase::seeds:
+      - cerium.eqiad.wmnet
+      - praseodymium.eqiad.wmnet
+      - xenon.eqiad.wmnet
