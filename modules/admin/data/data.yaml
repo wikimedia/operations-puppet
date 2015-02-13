@@ -299,6 +299,10 @@ groups:
     description: people who have full root on restbase nodes
     members: [gwicke, mobrovac]
     privileges: ['ALL = NOPASSWD: ALL']
+  citoid-users:
+    gid: 745
+    description: Login rights for citoid in order to look at citoid logs
+    members: [mvolz]
 
 users:
   rush:
@@ -1339,3 +1343,10 @@ users:
     realname: Ashwin Pradeep Paranjape
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgV06472reSVOxOHVPGh9rCdt+pkJIePYxoBM6JyNAPic42XYu2dJMvTop4EVZpHV33rpdVNhELY4/JxOY7zU6dFx+yA1W+Ag7u8XrqkSk3WYmyWcUTocrgUrt0c6jAuScSFfHYAkGunyo3XP+l6iUYuej+Sv8v8Xtexq+ax+5YNjxdBH4AOxq8n4s4tso2vvaVEF91jxCGuZS3mSp77WTAO3BZNzJAwlZEF5LD5ufMF7EJgVSFhrfqkkMgbrzvqrSYV4O0mtvPYp4qzigedDpE+WU+DtIu3JRs3Jz/pk7wX3wiELuaZNvwyxPZWihh+gRhS6gYfDwrdd5z0rO1ART ashwin@ashwin-SVE15127CNB]
     uid: 11049
+  mvolz:
+    ensure: present
+    gid: 500
+    name: mvolz
+    realname: Marielle Volz
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUwZtM3gAMDybHgDpBkY/TAC2aglbx03BOGK81GKmLEttRPWhvRM2kqml4lh+v7yiDuajAPZ5cV4KkiP/qaa94WfY8J0osRq4Dedwv6Q0R4InuNSF4bJv5jxfm9+L6LRd88hU3aXO/FACs6I6V/4JbWpHnesTFcuunCY3ZtKTyTXlungfpTGNAm8jnOWnHDefBQk/4rwqFPg09IXk/cC7ThQqMf2O4pwwu4JOFyBFfkb3har/DxM+BMKUToB/IQEgNu4LkVa5oeKQNsVZCDGv4bntoQ/t+2PJKxii0h8tOoZYgxkpEzitf5lY0+aAueunFjuzB/R/DAN+fvUjeeEdB]
+    uid: 4724
