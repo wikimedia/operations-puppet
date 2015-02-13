@@ -61,7 +61,7 @@ groups:
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
       bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
-      joal]
+      joal, thcipriani]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -123,7 +123,7 @@ groups:
   contint-admins:
     gid: 719
     description: users with some sudo permissions on jenkins hosts
-    members: [bd808, cmcmahon, cscott, dduvall, demon, krinkle, reedy, marktraceur, twentyafterfour, zfilipin]
+    members: [bd808, cmcmahon, cscott, dduvall, demon, krinkle, reedy, marktraceur, twentyafterfour, zfilipin, thcipriani]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
             'ALL = (gerritslave) NOPASSWD: ALL',
@@ -1305,6 +1305,7 @@ users:
     realname: Zeljko Filipin
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0EYlgOW63HKlQz7OduxiH1NM4NPxgjxci8qznJdlo75f54mFT308wFlI7DYL/JFkv6yoELEu/xzazRybWu7kpQdL6j95CUkQypOZ+dLMvBbtH1MZROyP/KO1ngwJH9KAmvwlFJ11JD2oCFqZIXtUNueAo5VJM0986JGAyEaIsUqaCNtXBaWKMreLv5nR347nZVKTp8/397buoFGwP3VnU6sbwZcsY8li9GyS6QKplxxe1TAKiOxfg9uaMgD1r6lGoAi6sxrislVZRBj+3PPyemyGraLKLmEaehQNZCp9spSv1rtjA5dl+I73g4v76lxExNJraDMyMdvxXxp6K6J5x zfilipin@wmf_prod]
     uid: 2580
+<<<<<<< HEAD
   joal:
     ensure: present
     gid: 500
@@ -1312,3 +1313,12 @@ users:
     realname: Joseph Allemandou
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDm3GrTqoPRJv0pUaE/BJk9osJkVaRGQyR3RlNL4sGoap6oIwRhdJb6ThKm8hpDT2zSfUIGC0XjMG5Y0rx9pmeVByHzqpV5c7uAwNmRAtZQpb+PFHZbIXWMh46sx7bDq3ZUoypdMVVLFqrxALwpw1rlQI4pjWeGympwdvH1lKUPTC9p02RgCZgYLGxC15V412aJM2Z+oNk+5oHJBEL7bnKpePI6asoJLSBd4c9QxbhrMRIf0WDvq+hQgXVugCZIW3zHLkseQEyMtgqrys7RlWF3FkyDA2WDC/OwGgDCRRjzUI2O/FGhuA5oiJgk7Z5Aorx5VIxNESjoOLQEyD8Ur58SAr5z0e+EdZNpt3BtbobPJzIiB19cl7mBOFfCEWpwSCO9tSQrHiyd1Lid5BQ1JitdErYX/uLm82y3aQkKFLhcqHtA4mqu7o53mr5pP5d0LfoOtSlzNa4dvgXDSiGAts00GZd1Ce9JCz8pEe/tttyhFgb32RNYGEwGMyzpZ8bOy49m5gTtlN/rOCgqF2XXnWsiTg+eycHZgZwRonK8ORPa0irqqH2cdMA36mFbVC74F7h2lwArlbfF/uPQgwdDABJ9N83DXuyqhGs9aycPRn9zWi9mTLRnp4BoY/Ty1P5kH3TdF30Pl65uPuo2NItJj2wQSyMhdCrfisXnwaTtZfhpWw== joal@wikimedia.org]
     uid: 11654
+=======
+  thcipriani:
+    ensure: present
+    gid: 500
+    name: thcipriani
+    realname: Tyler Cipriani
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCiy95u6XMT41V+ISpDql7n26m/ENqbS6xmF8neK4LOTdHp8dE6jZN3+HgrbssDoTYibBmyZsIzH+nmqJXQtXz9l0uPs1q3jdzv2LQrW1TpbaMt5L3sQ6eW+eWD/F05/+OL00zIhhI7yWaBfptCYGfU9NGkTQJJIWVcTGBLb2qOGPedIwtQjt5E2Ng3dlYK0dX0+rSUi60QDI/WAisXVCpZSvofoULxd7hEXIbADFe0w8r+ZUtI4EnBFSAbM+ffQ4duyiqO3UNcFxjWicD8WUPvG6YOeLX/UwUw+USh9bQBuewnDp5TIRLCGBCdxKPvl0qBQfmwj1fCOjtxdm5PZ11d+/zVQBKe2kCXdyLeRQF+BE+HDLePcOLs5Gujx1e9UKIiNtN8BuKDZ5fFCfVdjSbE0CTeWzAYsWx+uzT1PzXw1j7lDYUVI3BExdkQp8UDfF81OW+3WmvsN+HbgKl3zB5hR4lJ2h1F1s+MWxrnrtjnn+UqheS9xWeSJgtwuN/2TY/N30u/s0hfGEv+M/djRUtSWlqK9APSe9o4/2iprIs7EQJFu8eV/dN3UyAf0jVfvemdcnNXWIKD4c18+8k6uQzbiPF8vcYn9N49vmPCzMUIYnJKUA847A/poxavzcW3wdtmup4k8VIYYciyqCA9yJTgG5ueqw97a31XRhk+CG+i8Q== thcipriani@wikimedia-prod]
+    uid: 11634
+>>>>>>> 5cfdc50... create shell account for Tyler Cipriani
