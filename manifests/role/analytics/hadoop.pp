@@ -195,6 +195,9 @@ class role::analytics::hadoop::config {
         # use net-topology.py.erb to map hostname to /datacenter/rack/row id.
         $net_topology_script_template             = 'hadoop/net-topology.py.erb'
         $hadoop_heapsize                          = undef
+        # Increase NameNode heapsize independent from other daemons
+        $hadoop_namenode_opts                     = '-Xmx4096m'
+
         $yarn_heapsize                            = undef
 
         # TODO: use variables from new ganglia module once it is finished.
@@ -244,6 +247,7 @@ class role::analytics::hadoop::config {
         $mapreduce_reduce_tasks_maximum           = 2
 
         # Labs sets these at undef, which lets the Hadoop defaults stick.
+        $hadoop_namenode_opts                     = undef
         $mapreduce_reduce_shuffle_parallelcopies  = undef
         $mapreduce_task_io_sort_mb                = undef
         $mapreduce_task_io_sort_factor            = undef
@@ -333,6 +337,8 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         gelf_logging_enabled                     => $gelf_logging_enabled,
         gelf_logging_host                        => $gelf_logging_host,
         gelf_logging_port                        => $gelf_logging_port,
+
+        hadoop_namenode_opts                     => $hadoop_namenode_opts,
     }
 
     # If in production AND the current node is a journalnode, then
