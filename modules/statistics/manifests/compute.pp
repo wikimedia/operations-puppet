@@ -78,6 +78,17 @@ class statistics::compute {
         ensure => 'installed',
     }
 
+    # FORTRAN packages (T89414)
+    package { [
+        'gfortran',        # GNU Fortran 95 compiler
+        'liblapack-dev',   # FORTRAN library of linear algebra routines
+        'libopenblas-dev', # Optimized BLAS (linear algebra) library
+    ]:
+        ensure => 'installed',
+    }
+
+}
+
     # Plotting packags
     package { [
         'ploticus',
