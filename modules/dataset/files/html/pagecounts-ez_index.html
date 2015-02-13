@@ -1,53 +1,80 @@
 <html>
 <!-- This file is maintained by puppet!! -->
-<!-- modules/dataset/files/html/pagestats-ez_index.html -->
-	<head>
-		<title>Various statistics files maintained by Erik Zachte</title>
-	</head>
-	<body bgcolor="#ffffff">
-		<h1>Stats files maintained by Erik Zachte</h1>
-		<p>Pagecount files repackaged and reformatted, one file per month:
-		<a href="monthly/">link</a>
-		</p>
-		<p>Projectcount files repackaged, one file per year:
-		<a href="projectcounts/">link</a>
-		</p>
-		<p>Raw data for reports at http://stats.wikimedia.org/:
-		<a href="wikistats/">link</a>
-		</p>
-		<hr />
-		<p>Notes about the format of the pagecount files</p>
-		<p>These are
-		derived from Domas' pagecount files but the format is not identical.
-		Each line contains four fields separated by spaces:
-		<ul>
-			<li>wiki code (subproject.project)</li>
-			<li>article title</li>
-			<li>monthly total (with interpolation when data is missing)</li>
-			<li>hourly counts</li>
-		</ul>
-		In the wiki code, the subproject is the language code (fr, el, ja, etc)
-		and the project is one of b,k,n,q,s,v,z, corresponding to the projects below:
-		<ul>
-			<li>b:wikibooks</li>
-			<li>k:wiktionary</li>
-			<li>n:wikinews</li>
-			<li>q:wikiquote</li>
-			<li>s:wikisource</li>
-			<li>v:wikiversity</li>
-			<li>z:wikipedia</li>
-		</ul>
-		Hourly counts can be deciphered as follows:
-		<dl>
-			<dt>Hour:</dt>
-			<dd>from 0 to 23, written as 0 = A, 1 = B ... 22 = W, 23 = X</dd>
-			<dt>Day:</dt>
-			<dd>from 1 to 31, written as 0 = A, 1 = B ... 25 = Y, 26 = Z, 27 = [, 28 = \, 29 = ], 30 = ^, 31 = _</dd>
-		</dl>
-		</p>
-		<p>
-		Source for this information is <a href="http://lists.wikimedia.org/pipermail/wikitech-l/2011-August/054644.html">http://lists.wikimedia.org/pipermail/wikitech-l/2011-August/054644.html</a>.
-		</p>
-	</body>
+<!-- modules/dataset/files/html/pagecounts-ez_index.html -->
+    <head>
+        <title>Wikistats files</title>
+    </head>
+    <body bgcolor="#ffffff">
+        <h1>Wikistats files</h1>
+        <b>Maintained by Erik Zachte</b>
+        <p>
+                  <a href="http://dumps.wikimedia.org/other/pagecounts-ez/merged/">
+                    Hourly page views per article</a>
+                  for around 30 million article titles
+                  (Sept 2013) in around 800+ Wikimedia wikis. Repackaged (with extreme
+                  shrinkage, without losing granularity), corrected, reformatted. Daily
+                  files and two monthly files (see notes below).
+                </p>
+        <p>
+                  <a href="http://dumps.wikimedia.org/other/pagecounts-ez/projectcounts/">
+                    Hourly page views per wiki</a>
+                  , corrected for site outages and underreporting. Also repackaged,
+                  as one tar file per year.
+                </p>
+        <p>
+                  <a href="http://dumps.wikimedia.org/other/pagecounts-ez/wikistats/">
+                    Raw data</a>
+                 for reports at <a href='http://stats.wikimedia.org/'>stats.wikimedia.org</a>.
+                </p>
+        <hr />
+        <p><b>Notes for hourly page views</b></p>
+        <p>
+                  Both sets of hourly files have been derived from Domas'
+                  <a href="http://dumps.wikimedia.org/other/pagecounts-raw/">
+                    pagecount/projectcount files</a>
+                  but the format is different.
+                </p>
+        <p>
+                  The huge hourly files for page views per article per wiki
+                  have been massively compressed by merging 720 files per month,
+          thus removing massive redundancy (80% of record space is article
+                  title, and a title can occur in all 720 files).
+          All of this shrinkage without losing hourly granularity.
+                </p>
+        <p>
+                  Line format:
+          <ul>
+            <li>wiki code (subproject.project)</li>
+            <li>article title</li>
+            <li>monthly total (with interpolation when data is missing)</li>
+            <li>hourly counts</li>
+          </ul>
+        </p>
+        <p>
+                  In the wiki code field, the subproject is the language code (fr, el, ja, etc)
+                  or meta, commons etc.
+        </p>
+                <p>
+          The project is one of b (wikibooks), k (wiktionary), n (wikinews), o (wikivoyage), q (wikiquote),
+          s (wikisource), v (wikiversity), z (wikipedia).
+                </p>
+        <p>
+                  Hourly counts can be deciphered as follows:
+                  <dl>
+            <dt>Hour:</dt>
+            <dd>from 0 to 23, written as 0 = A, 1 = B ... 22 = W, 23 = X</dd>
+            <dt>Day:</dt>
+            <dd>from 1 to 31, written as 1 = A, 2 = B ... 25 = Y, 26 = Z, 27 = [, 28 = \, 29 = ], 30 = ^, 31 = _</dd>
+          </dl>
+          Example: 33 views on day 2, hour 4, and 155 views on day 3, hour 7 are coded as 'BE33,CH155'
+                </p>
+        <p>
+                  Source for this information:
+                  <a href="http://lists.wikimedia.org/pipermail/wikitech-l/2011-August/054644.html">
+                    http://lists.wikimedia.org/pipermail/wikitech-l/2011-August/054591.html</a>.
+                </p>
+
+    </small>
+    </body>
 </html>
 
