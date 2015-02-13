@@ -287,6 +287,8 @@ sub vcl_recv {
 	if (client.ip !~ ssl_proxies) {
 		unset req.http.X-Forwarded-Proto;
 	}
+<% end -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call frontend_recv_hook;
 <% end -%>
 	call vcl_recv_append_xff;
@@ -364,7 +366,7 @@ sub vcl_deliver {
 		}
 	}
 
-<% if @vcl_config.fetch("layer", "frontend") == "frontend" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call frontend_deliver_hook;
 <% end -%>
 
@@ -372,7 +374,7 @@ sub vcl_deliver {
 }
 
 sub vcl_error {
-<% if @vcl_config.fetch("layer", "frontend") == "frontend" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call frontend_error_hook;
 <% end -%>
 
@@ -401,6 +403,6 @@ sub vcl_hash {
 
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
-<% if @vcl_config.fetch("layer", "frontend") == "frontend" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 include "frontend-hooks.inc.vcl";
 <% end -%>
