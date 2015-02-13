@@ -29,9 +29,9 @@ Puppet::Type.type(:package).provide(
 
   desc 'Puppet package provider for `Trebuchet`.'
 
-  commands :git_cmd    => '/usr/bin/git',
-           :salt_cmd   => '/usr/bin/salt-call',
-           :status_cmd => '/sbin/status'
+  commands :git_cmd     => '/usr/bin/git',
+           :salt_cmd    => '/usr/bin/salt-call',
+           :service_cmd => '/usr/sbin/service'
 
   has_feature :installable, :uninstallable, :upgradeable
 
@@ -75,7 +75,7 @@ Puppet::Type.type(:package).provide(
 
   # Make sure that the salt-minion service is running.
   def check_salt_minion_status
-    status = status_cmd('salt-minion')
+    status = service_cmd('salt-minion', 'status')
     fail Puppet::ExecutionFailure unless status.include? 'running'
   rescue Puppet::ExecutionFailure
     raise Puppet::ExecutionFailure, <<-END
