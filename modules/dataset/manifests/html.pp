@@ -9,7 +9,7 @@ class dataset::html(
     include dataset::dirs
 
     if ($other) {
-        file { "${datasets::dirs::otherdir}/index.html":
+        file { "${dataset::dirs::otherdir}/index.html":
             ensure => 'present',
             path   => "${datassets::dirs::otherdir}/index.html",
             mode   => '0644',
@@ -19,9 +19,9 @@ class dataset::html(
         }
     }
     if ($pagestats_ez) {
-        file { "${datasets::dirs::otherdir}/pagestats-ez/index.html":
+        file { "${dataset::dirs::otherdir}/pagestats-ez/index.html":
             ensure => 'present',
-            path   => "${datasets::dirs::otherdir}/pagestats-ez/index.html",
+            path   => "${dataset::dirs::otherdir}/pagestats-ez/index.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
@@ -29,9 +29,9 @@ class dataset::html(
         }
     }
     if ($poty) {
-       file { "${datasets::dirs::otherdir}/poty/index.html":
+       file { "${dataset::dirs::otherdir}/poty/index.html":
             ensure => 'present',
-            path   => "${datasets::dirs::otherdir}/poty/index.html",
+            path   => "${dataset::dirs::otherdir}/poty/index.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
@@ -39,9 +39,9 @@ class dataset::html(
         }
     }
     if ($archive) {
-        file { "${datasets::dirs::publicdir}/archive/index.html":
+        file { "${dataset::dirs::publicdir}/archive/index.html":
             ensure => 'present',
-            path   => "${datasets::dirs::publicdir}/archive/index.html",
+            path   => "${dataset::dirs::publicdir}/archive/index.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
@@ -49,18 +49,18 @@ class dataset::html(
         }
     }
     if ($public) {
-        file { "${datasets::dirs::publicdir}/index.html":
+        file { "${dataset::dirs::publicdir}/index.html":
             ensure => 'present',
-            path   => "${datasets::dirs::publicdir}/index.html",
+            path   => "${dataset::dirs::publicdir}/index.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
             source => 'puppet:///modules/dataset/html/public_index.html',
         }
 
-        file { "${datasets::dirs::publicdir}/mirrors.html":
+        file { "${dataset::dirs::publicdir}/mirrors.html":
             ensure => 'present',
-            path   => "${datasets::dirs::publicdir}/mirrors.html",
+            path   => "${dataset::dirs::publicdir}/mirrors.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
