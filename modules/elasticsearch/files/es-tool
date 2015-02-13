@@ -16,6 +16,20 @@ def cluster_health():
     return es.cluster.health()["status"]
 
 
+def cluster_status(columns=None):
+    es = Elasticsearch(args.server)
+    cluster_health = es.cluster.health()
+    if columns is None:
+        columns = sorted(cluster_health)
+    values = [cluster_health[x] for x in columns]
+
+    column_fmt = ' '.join('{:>}' for x in columns)
+    value_fmt = ' '.join('{:>%s}' % len(x) for x in columns)
+
+    yield column_fmt.format(*columns)
+    yield value_fmt.format(*values)
+
+
 def set_setting(setting, value, settingtype="transient"):
         es = Elasticsearch(args.server)
         res = es.cluster.put_settings(
@@ -136,9 +150,12 @@ def es_restart_fast():
 
     # Wait a bit
     time.sleep(5)
-    printu("Waiting for green (you can ctrl+c here if you have to)...")
+    print "Waiting for green (you can ctrl+c here if you have to)...\n"
     while cluster_health() != "green":
-        time.sleep(1)
+        print '\n'.join(cluster_status(columns=('status',
+                                                'initializing_shards',
+                                                'relocating_shards')))
+        time.sleep(60)
     print "ok"
 
     return os.EX_OK
@@ -188,6 +205,7 @@ commands = {
     "start-replication": es_start_replication,
     "stop-replication": es_stop_replication,
     "unban-node": es_unban_node,
+    "status": lambda: '\n'.join(cluster_status()),
 }
 
 # main()
