@@ -294,6 +294,11 @@ groups:
     description: People who can sudo into the datasets user on snapshot hosts.
     members: [hoo]
     privileges: ['ALL = (datasets) NOPASSWD: ALL']
+  restbase-roots:
+    gid: 744
+    description: people who have full root on restbase nodes
+    members: [gwicke, mobrovac]
+    privileges: ['ALL = NOPASSWD: ALL']
 
 users:
   rush:

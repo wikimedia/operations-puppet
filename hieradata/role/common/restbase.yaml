@@ -27,3 +27,7 @@ restbase::statsd_host: statsd.eqiad.wmnet
 
 lvs::realserver::realserver_ips:
   - '10.2.2.17' # restbase.svc.eqiad.wmnet
+
+# admins
+admin::groups:
+    - restbase-roots
