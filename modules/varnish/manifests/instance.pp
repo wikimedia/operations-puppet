@@ -68,7 +68,7 @@ define varnish::instance(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            source  => "puppet:///private/misc/frontend-hooks.inc.vcl"
+            source  => "puppet:///private/misc/frontend-hooks.inc.vcl",
             notify  => Exec["load-new-vcl-file${instancesuffix}"],
         }
     }
