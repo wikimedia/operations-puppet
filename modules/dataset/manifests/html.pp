@@ -66,5 +66,14 @@ class dataset::html(
             group  => 'root',
             source => 'puppet:///modules/dataset/html/public_mirrors.html',
         }
+
+        file { "${dataset::dirs::publicdir}/legal.html":
+            ensure => 'present',
+            path   => "${dataset::dirs::publicdir}/legal.html",
+            mode   => '0644',
+            owner  => 'root',
+            group  => 'root',
+            source => 'puppet:///modules/dataset/html/legal.html',
+        }
     }
 }
