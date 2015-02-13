@@ -116,55 +116,41 @@ dl {
             help to ensure that everyone can access the files with resonable download times.  Clients that try to evade these limits
             may be blocked.
             </p>
-            <h2>Data downloads</h2>
-            <div style="background:#ffeeee;border-width:1px;border-style:solid;border-color:red;padding:1em;font-size:large;">The Wikimedia Foundation is requesting help to ensure that as many copies as possible are available of all Wikimedia database dumps. Please <strong><a href="http://meta.wikimedia.org/wiki/Mirroring_Wikimedia_project_XML_dumps">volunteer to host a mirror</a></strong> if you have access to sufficient storage and bandwidth.</div>
+            <p>The following kinds of downloads are available:</p>
             <dl>
                 <dt><a href="backup-index.html">Database backup dumps</a></dt>
-                <dd>A complete copy of all Wikimedia wikis, in the form of wikitext source and metadata embedded in XML. A number of raw database tables in SQL form are also available. </dd> <dd> These snapshots are provided at the very least monthly and usually twice a month. If you are a regular user of these dumps, please consider subscribing to <a href="https://lists.wikimedia.org/mailman/listinfo/xmldatadumps-l">xmldatadumps-l</a> for regular updates.</dd>
-                <dt>Mirror Sites of the XML dumps provided above</dt>
-                <dd>Check the <a href="mirrors.html">complete list</a>.</dd>
-                <dt><a href="/other/static_html_dumps/">Static HTML dumps</a></dt>
+                <dd>A complete copy of all Wikimedia wikis, in the form of wikitext source and metadata embedded in XML. A number of raw database tab
+
+                <dt><a href="http://static.wikipedia.org/">Static HTML dumps</a></dt>
                 <dd>A copy of all pages from all Wikipedia wikis, in HTML form.</dd>
-                <dd>These are currently not running. </dd>
 
                 <dt><a href="dvd.html">DVD distributions</a></dt>
                 <dd>Available for some Wikipedia editions.</dd>
 
-                <dt><a href="backups-of-old-wikis.html">Backup dumps of wikis which no longer exist</a></dt>
-                <dd>A complete copy of selected Wikimedia wikis which no longer exist and so which are no longer available via the main database backup dump page.  This includes, in particular, the Sept. 11 wiki.</dd>
-
-                <dt><a href="other/">Other files</a></dt>
-                <dd>Pageview stats, image tarballs, survey data and other items.</dd>
-                <dt><a href="http://thedatahub.org/en/group/wikimedia">Dataset collection at the Data Hub</a> (off-site)</dt>
-                <dd>Many additional datasets that may be of interest to researchers, users and developers can be found in this collection.</dd>
-            </dl>
-            <h2>Software downloads</h2>
-            <dl>
-                <dt><a href="http://www.mediawiki.org/wiki/Download">MediaWiki</a></dt>
-                <dd>MediaWiki is a free software wiki package written in PHP, originally for
-                use on Wikipedia. It is now used by several other projects of the
-                non-profit Wikimedia Foundation and by many other wikis.
-                </dd>
+                <dt>Image tarballs</dt>
+                <dd>There are currently no image dumps available.</dd>
             </dl>
             <h2>Legal</h2>
             <dl>
-              <dt>Copyright licensing</dt>
-              <dd><a href="/legal.html">Copyright
+                <dt>Copyright licensing</dt>
+                <dd><a href="/legal.html">Copyright
                 licensing information</a> for these dumps.</dd>
-              <dt>Privacy</dt>
-              <dd>The <a
+                <dt>Privacy</dt>
+                <dd>The <a
                 href="https://meta.wikimedia.org/wiki/Privacy_policy">privacy
                 policy</a> for Wikimedia Foundation websites.</dd></dl>
-            <div class="visualClear"></div>
-            <div class="status">
-                %(status)s
-            </div>
-            <div class="otherindexlink">
-                %(otherIndexLink)s
-            </div>
-            <ul>
-                %(items)s
-            </ul>
+                <div class="visualClear"></div>
+                    <div class="status">
+                        %(status)s
+                    </div>
+                    <div class="otherindexlink">
+                       %(otherIndexLink)s
+                    </div>
+                    <ul>
+                       %(items)s
+                    </ul>
+                </div>
+            </dl>
         </div>
     </div>
 </body>
