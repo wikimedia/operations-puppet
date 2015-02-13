@@ -2188,6 +2188,9 @@ node 'stat1002.eqiad.wmnet' {
     # and only readable by users in the
     # analytics-privatedata-users group.
     include role::analytics::password::research
+
+    # things needed by researchers to compile libraries
+    include role::analytics::research
 }
 
 # stat1003 is a general purpose number cruncher for
@@ -2202,6 +2205,9 @@ node 'stat1003.eqiad.wmnet' {
     class { 'base::firewall': }
 
     include role::statistics::cruncher
+
+    # things needed by researchers to compile libraries
+    include role::analytics::research
 
     class { 'admin':
         groups => [
