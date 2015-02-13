@@ -1741,6 +1741,13 @@ node /^rbf200[1-2]\.codfw\.wmnet/ {
     }
 }
 
+# restbase eqiad cluster
+node /^restbase100[1-6]\.eqiad\.wmnet$/ {
+    role restbase, cassandra
+    include standard
+    include admin
+}
+
 node 'rubidium.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',

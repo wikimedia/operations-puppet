@@ -1,12 +1,13 @@
 # TODO: set up a cluster variable similar to MySQL clusters to share
 # cassandra cluster configs between cassandra & clients
 
-#
-# Cassandra test cluster for RESTBase
 cassandra::seeds:
-    - xenon.eqiad.wmnet
-    - cerium.eqiad.wmnet
-    - praseodymium.eqiad.wmnet
+    - restbase1001.eqiad.wmnet
+    - restbase1002.eqiad.wmnet
+    - restbase1003.eqiad.wmnet
+    - restbase1004.eqiad.wmnet
+    - restbase1005.eqiad.wmnet
+    - restbase1006.eqiad.wmnet
 cassandra::max_heap_size: 8g
 cassandra::heap_newsize: 1200m
 
@@ -14,9 +15,12 @@ cassandra::heap_newsize: 1200m
 # RESTBase
 #
 restbase::seeds:
-    - xenon.eqiad.wmnet
-    - cerium.eqiad.wmnet
-    - praseodymium.eqiad.wmnet
+    - restbase1001.eqiad.wmnet
+    - restbase1002.eqiad.wmnet
+    - restbase1003.eqiad.wmnet
+    - restbase1004.eqiad.wmnet
+    - restbase1005.eqiad.wmnet
+    - restbase1006.eqiad.wmnet
 restbase::logstash_host: logstash1002.eqiad.wmnet
 restbase::cassandra_defaultConsistency: localQuorum
 restbase::statsd_host: statsd.eqiad.wmnet
