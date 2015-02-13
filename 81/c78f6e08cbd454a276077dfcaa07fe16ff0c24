@@ -1,0 +1,8 @@
+Code-Review+2: ArielGlenn <ariel@wikimedia.org>
+Code-Review+1: Ottomata <otto@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: ArielGlenn <ariel@wikimedia.org>
+Submitted-at: Fri, 13 Feb 2015 12:13:55 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/168104
+Project: operations/puppet
+Branch: refs/heads/production
