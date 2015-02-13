@@ -1303,3 +1303,10 @@ users:
     realname: Zeljko Filipin
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0EYlgOW63HKlQz7OduxiH1NM4NPxgjxci8qznJdlo75f54mFT308wFlI7DYL/JFkv6yoELEu/xzazRybWu7kpQdL6j95CUkQypOZ+dLMvBbtH1MZROyP/KO1ngwJH9KAmvwlFJ11JD2oCFqZIXtUNueAo5VJM0986JGAyEaIsUqaCNtXBaWKMreLv5nR347nZVKTp8/397buoFGwP3VnU6sbwZcsY8li9GyS6QKplxxe1TAKiOxfg9uaMgD1r6lGoAi6sxrislVZRBj+3PPyemyGraLKLmEaehQNZCp9spSv1rtjA5dl+I73g4v76lxExNJraDMyMdvxXxp6K6J5x zfilipin@wmf_prod]
     uid: 2580
+  mvolz:
+    ensure: present
+    gid: 500
+    name: mvolz
+    realname: Marielle Volz
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUwZtM3gAMDybHgDpBkY/TAC2aglbx03BOGK81GKmLEttRPWhvRM2kqml4lh+v7yiDuajAPZ5cV4KkiP/qaa94WfY8J0osRq4Dedwv6Q0R4InuNSF4bJv5jxfm9+L6LRd88hU3aXO/FACs6I6V/4JbWpHnesTFcuunCY3ZtKTyTXlungfpTGNAm8jnOWnHDefBQk/4rwqFPg09IXk/cC7ThQqMf2O4pwwu4JOFyBFfkb3har/DxM+BMKUToB/IQEgNu4LkVa5oeKQNsVZCDGv4bntoQ/t+2PJKxii0h8tOoZYgxkpEzitf5lY0+aAueunFjuzB/R/DAN+fvUjeeEdB]
+    uid: 4724
