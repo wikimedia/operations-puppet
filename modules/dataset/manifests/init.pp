@@ -43,4 +43,6 @@ class dataset(
 
     $grabs_kiwix_enable = has_key($grabs,'kiwix')
     class { 'dataset::cron::kiwix': enable => $grabs_kiwix_enable }
+
+    include dataset::html
 }
