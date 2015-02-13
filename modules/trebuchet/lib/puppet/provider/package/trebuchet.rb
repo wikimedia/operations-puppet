@@ -30,8 +30,7 @@ Puppet::Type.type(:package).provide(
   desc 'Puppet package provider for `Trebuchet`.'
 
   commands :git_cmd     => '/usr/bin/git',
-           :salt_cmd    => '/usr/bin/salt-call',
-           :service_cmd => '/usr/sbin/service'
+           :salt_cmd    => '/usr/bin/salt-call'
 
   has_feature :installable, :uninstallable, :upgradeable
 
@@ -64,7 +63,7 @@ Puppet::Type.type(:package).provide(
 
   # Convenience wrapper for shelling out to `salt-call`.
   def salt(*args)
-    salt_cmd(*args.unshift('--out=json'))
+    salt_cmd(*args.unshift('--log-level=quiet', '--out=json'))
   end
 
   # Synchronize local state with Salt master.
@@ -75,8 +74,9 @@ Puppet::Type.type(:package).provide(
 
   # Make sure that the salt-minion service is running.
   def check_salt_minion_status
-    status = service_cmd('salt-minion', 'status')
-    fail Puppet::ExecutionFailure unless status.include? 'running'
+    raw = salt('--local', 'service.status', 'salt-minion')
+    minion_running = PSON.load(raw).fetch('local', false)
+    fail Puppet::ExecutionFailure unless minion_running
   rescue Puppet::ExecutionFailure
     raise Puppet::ExecutionFailure, <<-END
       The Trebuchet package provider requires that the salt-minion
