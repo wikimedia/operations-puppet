@@ -8,5 +8,5 @@ for log in /srv/xenon/**/*.log; do
     title="MediaWiki - ${period} - ${time/_/ }"
     mkdir -m0755 -p "$(dirname $svg)"
     [ ! -f "$svg" -o "$svg" -ot "$log" ] && \
-        /usr/local/bin/flamegraph.pl --minwidth=2 --title="$title" "$log" | gzip -9 > "$svg"
+        /usr/local/bin/flamegraph.pl --title="$title" "$log" | gzip -9 > "$svg"
 done
