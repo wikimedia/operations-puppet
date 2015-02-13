@@ -3,7 +3,7 @@ class dataset::html(
     $other        = true,
     $archive      = true,
     $poty         = true,
-    $pagestats_ez = true
+    $pagecounts_ez = true
     ) {
 
     include dataset::dirs
@@ -18,14 +18,14 @@ class dataset::html(
             source => 'puppet:///modules/dataset/html/other_index.html',
         }
     }
-    if ($pagestats_ez) {
-        file { "${dataset::dirs::otherdir}/pagestats-ez/index.html":
+    if ($pagecounts_ez) {
+        file { "${dataset::dirs::otherdir}/pagecounts-ez/index.html":
             ensure => 'present',
-            path   => "${dataset::dirs::otherdir}/pagestats-ez/index.html",
+            path   => "${dataset::dirs::otherdir}/pagecounts-ez/index.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
-            source => 'puppet:///modules/dataset/html/pagestats-ez_index.html',
+            source => 'puppet:///modules/dataset/html/pagecounts-ez_index.html',
         }
     }
     if ($poty) {
