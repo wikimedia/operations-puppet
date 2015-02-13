@@ -1699,7 +1699,7 @@ host graphite1002 {
 }
 
 host graphite2001 {
-	hardware ethernet 90:B1:1C:22:D4:C8;
+	hardware ethernet B0:83:FE:DF:24:CA;
 	fixed-address graphite2001.codfw.wmnet;
 }
 
