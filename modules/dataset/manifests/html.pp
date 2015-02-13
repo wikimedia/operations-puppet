@@ -1,4 +1,4 @@
-class html(
+class dataset::html(
     $public       = true,
     $other        = true,
     $archive      = true,
@@ -6,7 +6,7 @@ class html(
     $pagestats_ez = true
     ) {
 
-    include datasets::dirs
+    include dataset::dirs
 
     if ($other) {
         file { "${datasets::dirs::otherdir}/index.html":
