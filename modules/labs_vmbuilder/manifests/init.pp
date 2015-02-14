@@ -29,7 +29,7 @@ class labs_vmbuilder($vmbuilder_version) {
         require => Package['python-vm-builder'],
     }
 
-    file { "${vmbuilder_filepath}":
+    file { $vmbuilder_filepath:
         ensure => directory,
         mode   => '0555',
     }
@@ -38,7 +38,7 @@ class labs_vmbuilder($vmbuilder_version) {
         mode    => '0555',
         source  => 'puppet:///modules/labs_vmbuilder/install_sudo.sh',
         require => [Package['python-vm-builder'],
-                    File["${vmbuilder_filepath}"],
+                    File[$vmbuilder_filepath],
                     ],
     }
 
@@ -46,16 +46,16 @@ class labs_vmbuilder($vmbuilder_version) {
         mode    => '0555',
         source  => 'puppet:///modules/labs_vmbuilder/vmbuilder.partition',
         require => [Package['python-vm-builder'],
-                    File["${vmbuilder_filepath}"],
+                    File[$vmbuilder_filepath],
                     ],
     }
 
     file { 'vmbuilder_version':
         path    => '/etc/vmbuilder/files/vmbuilder_version',
         mode    => '0444',
-        content => "${vmbuilder_version}",
+        content => $vmbuilder_version,
         require => [Package['python-vm-builder'],
-                    File["${vmbuilder_filepath}"],
+                    File[$vmbuilder_filepath],
                     ],
     }
 
