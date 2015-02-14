@@ -1,8 +1,18 @@
 define varnish::setup_filesystem() {
-    $mount_options = $::realm ? {
-        'production' => 'noatime,nodiratime,nobarrier,logbufs=8',
-        'labs'       => 'noatime,nodiratime,nobarrier,comment=cloudconfig',
+    if $::realm == 'labs' {
+        $custom_mount_opts = ',comment=cloudconfig'
     }
+    elsif os_version('debian >= jessie') {
+        $custom_mount_opts = ',nobarrier,data=writeback'
+    }
+    else {
+        # nodiratime is redundant, but I'm hoping to avoid
+        #  pointless puppet-triggered remount attempts on
+        #  the legacy boxes here...
+        $custom_mount_opts = ',nodiratime,nobarrier,logbufs=8'
+    }
+
+    $mount_options = "noatime$custom_mount_opts"
 
     if $::realm == 'labs' and $::site == 'eqiad' {
       include labs_lvm
