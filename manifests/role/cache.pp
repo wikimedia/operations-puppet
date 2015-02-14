@@ -803,6 +803,17 @@ class role::cache {
                 varnish_instances => [ '', 'frontend' ],
             }
         }
+
+        if $::realm == 'production' and os_version('debian >= jessie') {
+            # set discard for ext4 rootfs on nodes using SSD backend storage
+            mount { '/':
+                ensure  => mounted,
+                #XXX? device  => '/dev/md0',
+                fstype  => 'ext4',
+                options => 'errors=remount-ro,discard',
+                remounts => true,
+            }
+        }
     }
 
     class text inherits role::cache::varnish::2layer {
