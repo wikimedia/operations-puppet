@@ -9,6 +9,8 @@
     RewriteEngine On
     RewriteCond %{QUERY_STRING} ^id=([0-9]+)$
     RewriteRule ^/show_bug.cgi$ /bug%1.html? [PT]
+    RewriteCond %{QUERY_STRING} ^id=([0-9]+)$
+    RewriteRule ^/show_activity.cgi$ /activity%1.html? [PT]
 
     <Directory />
         Options FollowSymLinks
