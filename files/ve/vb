@@ -37,5 +37,5 @@ cd /srv/profiles
     --safebrowsing-disable-download-protection >/dev/null 2>&1 &
 sleep 1
 taskset -p -c 15 "$(pgrep --newest chromium)" >/dev/null
-vbench --repeat=20 --write-profile-data "http://osmium/wiki/Barack_Obama"
+vbench --repeat=30 --write-profile-data "http://osmium/wiki/Barack_Obama"
 pkill -u "$(whoami)" chrom

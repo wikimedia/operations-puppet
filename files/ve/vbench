@@ -284,6 +284,14 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
     def onProfilerConsoleProfileFinished(self, id, location, profile,
                                          title=None):
         profile = ChromeCPUProfile(profile, title)
+
+        if self.factory.warmups > 0:
+            t = 'XX/{:02d}: CPU: {: <7.2f}  Wall: {: >7.2f}  GC: {: >7.2f}'
+            log.info(t.format(self.factory.repetitions, profile.cpu_time,
+                              profile.wall_time, profile.gc_time))
+            self.factory.warmups -= 1
+            return self.onProfilerReady()
+
         self.profiles.append(profile)
 
         if self.factory.write_profile_data:
@@ -368,6 +376,13 @@ ap.add_argument(
     default=5,
     dest='repetitions',
     help='times to repeat (default: 5)',
+    metavar='N',
+    type=int,
+)
+ap.add_argument(
+    '--warmups',
+    default=2,
+    help='number of warm-up runs (default: 3)',
     metavar='N',
     type=int,
 )
