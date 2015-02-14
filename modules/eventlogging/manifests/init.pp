@@ -49,7 +49,7 @@ class eventlogging {
     if !defined(File['/srv/log']) {
         file { '/srv/log':
             ensure  => 'directory',
-            mode    => '755',
+            mode    => '0755',
             owner   => 'root',
             group   => 'root',
         }
