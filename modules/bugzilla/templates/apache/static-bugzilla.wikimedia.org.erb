@@ -6,6 +6,10 @@
     ServerName static-bugzilla.wikimedia.org
     DocumentRoot /srv/org/wikimedia/static-bugzilla
 
+    RewriteEngine On
+    RewriteCond %{QUERY_STRING} ^id=([0-9]+)$
+    RewriteRule ^/show_bug.cgi$ /bug%1.html? [PT]
+
     <Directory />
         Options FollowSymLinks
         AllowOverride None
