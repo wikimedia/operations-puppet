@@ -11,7 +11,7 @@ class dataset::html(
     if ($other) {
         file { "${dataset::dirs::otherdir}/index.html":
             ensure => 'present',
-            path   => "${datassets::dirs::otherdir}/index.html",
+            path   => "${dataset::dirs::otherdir}/index.html",
             mode   => '0644',
             owner  => 'root',
             group  => 'root',
