@@ -421,12 +421,14 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     include role::dns::recursor
 
     if $::hostname == 'chromium' {
+        $url_downloader_ip = hiera('url_downloader_ip')
         interface::ip { 'url-downloader':
             interface => 'eth0',
-            address   => '208.80.154.156',
+            address   => $url_downloader_ip,
         }
-        $url_downloader_ip = '208.80.154.156'
-        include role::url_downloader
+        class { 'role::url_downloader':
+            url_downloader_ip => $url_downloader_ip
+        }
     }
 
     interface::add_ip6_mapped { 'main':
