@@ -12,6 +12,14 @@ server {
 
    <%= @ssl_settings.join("\n") %>
 
+   aio on;
+   directio 4k;
+   output_buffers 1 1m;
+
+   # Set 4k alignment for directio for xfs
+   # See http://nginx.org/en/docs/http/ngx_http_core_module.html#directio_alignment
+   directio_alignment 4k;
+
    root /data/xmldatadumps/public;
 
    location / {
