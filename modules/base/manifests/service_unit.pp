@@ -24,6 +24,12 @@
 #[*sysvinit*]
 # As the preceding param, but for traditional sysvinit scripts
 #
+#[*strict*]
+# Boolean - if true (default), only allows to have customized scripts
+# for all init systems; if false allows to use standard scripts from
+# the distro (e.g. memcached will need a custom systemd unit, but use
+# the standard init file on upstart).
+#
 #[*refresh*]
 # Boolean - tells puppet if a change in the config should notify the service directly
 #
@@ -50,6 +56,7 @@ define base::service_unit (
     $systemd          = false,
     $upstart          = false,
     $sysvinit         = false,
+    $strict           = true,
     $refresh          = true,
     $service_params   = {},
     ) {
@@ -57,7 +64,7 @@ define base::service_unit (
     validate_ensure($ensure)
     # Validates the service name, and picks the valid init script
     $initscript = pick_initscript(
-        $::initsystem, $systemd, $upstart, $sysvinit)
+        $::initsystem, $systemd, $upstart, $sysvinit, $strict)
     # we assume init scripts are templated
     if $initscript {
         if $caller_module_name {
