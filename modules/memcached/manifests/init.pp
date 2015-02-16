@@ -34,31 +34,39 @@ class memcached(
     $ip            = '0.0.0.0',
     $version       = 'present',
     $extra_options = {},
-) {
+    ) {
+
     package { 'memcached':
         ensure => $version,
         before => Service['memcached'],
     }
 
-    file { '/etc/memcached.conf':
-        content => template('memcached/memcached.conf.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        before  => Service['memcached'],
+    # Debian still installs both, but then simply ignores them.
+    if $::initsystem != 'systemd' {
+        file { '/etc/memcached.conf':
+            content => template('memcached/memcached.conf.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            before  => Service['memcached'],
+        }
+
+        file { '/etc/default/memcached':
+            source => 'puppet:///modules/memcached/memcached.default',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            before => Service['memcached'],
+        }
     }
 
-    file { '/etc/default/memcached':
-        source => 'puppet:///modules/memcached/memcached.default',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        before => Service['memcached'],
-    }
-
-    service { 'memcached':
-        enable  => true,
-        ensure  => running,
+    base::service_unit { 'memcached':
+        ensure         => present,
+        systemd        => true,
+        strict         => false,
+        service_params => {
+            enable => true
+        }
     }
 
     # Prefer a direct check if memcached is not running on localhost.
