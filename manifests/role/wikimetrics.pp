@@ -157,7 +157,7 @@ class role::wikimetrics {
     if !defined(File['/srv/var']) {
         file { '/srv/var':
             ensure  => 'directory',
-            mode    => '755',
+            mode    => '0755',
             owner   => 'root',
             group   => 'root',
             require => Labs_lvm::Volume['second-local-disk'],
