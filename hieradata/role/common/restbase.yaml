@@ -24,3 +24,6 @@ restbase::seeds:
 restbase::logstash_host: logstash1002.eqiad.wmnet
 restbase::cassandra_defaultConsistency: localQuorum
 restbase::statsd_host: statsd.eqiad.wmnet
+
+lvs::realserver::realserver_ips:
+  - '10.2.2.17' # restbase.svc.eqiad.wmnet
