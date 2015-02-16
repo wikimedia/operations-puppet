@@ -173,6 +173,9 @@ class lvs::configuration {
             'cxserver' => {
                 'eqiad' => "10.2.2.18",
             },
+            'restbase' => {
+                'eqiad' => "10.2.2.17",
+            },
         },
         'labs' => {
             'text' => {
@@ -204,6 +207,7 @@ class lvs::configuration {
             'parsoidcache' => {},
             'search' => {},
             'stream' => {},
+            'restbase' => {},
         }
     }
 
@@ -694,6 +698,19 @@ class lvs::configuration {
             'depool-threshold' => '.5',
             'monitors' => {
                 'ProxyFetch' => { 'url' => [ 'http://cxserver.svc.eqiad.wmnet' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
+            }
+        },
+        'restbase' => {
+            'description' => 'RESTBase, restbase.svc.eqiad.wmnet',
+            'class' => 'low-traffic',
+            'sites' => [ 'eqiad' ],
+            'ip' => $service_ips['restbase'][$::site],
+            'port' => 7231,
+            'bgp' => 'yes',
+            'depool-threshold' => '.5',
+            'monitors' => {
+                'ProxyFetch' => { 'url' => [ 'http://restbase.svc.eqiad.wmnet' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             }
         }
