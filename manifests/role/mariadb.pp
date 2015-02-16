@@ -102,12 +102,28 @@ class role::mariadb::misc::phabricator(
 
     class { 'mariadb::config':
         prompt    => "MISC ${shard}",
-        config    => 'mariadb/misc.my.cnf.erb',
+        config    => 'mariadb/phabricator.my.cnf.erb',
         password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/a/sqldata',
         tmpdir    => '/a/tmp',
         sql_mode  => 'STRICT_ALL_TABLES',
         read_only => $read_only,
+    }
+
+    file { '/etc/mysql/phabricator-init.sql':
+        ensure  => present,
+        owner   => 'mysql',
+        group   => 'mysql',
+        mode    => '0644',
+        content => template('mariadb/phabricator-init.sql.erb'),
+    }
+
+    file { '/etc/mysql/phabricator-stopwords.txt':
+        ensure  => present,
+        owner   => 'mysql',
+        group   => 'mysql',
+        mode    => '0644',
+        content => template('mariadb/phabricator-stopwords.txt.erb'),
     }
 
     if $snapshot {
