@@ -31,6 +31,7 @@ mediawiki_memcached_servers:
 "misc::syslog-server::basepath": /data/project/syslog
 "cxserver::log_dir": /data/project/cxserver/log
 "cxserver::apertium": http://apertium-beta.wmflabs.org
+"cxserver::parsoid": http://parsoid-beta.wmflabs.org
 "cxserver::registry":
     'ca':
         'es':
