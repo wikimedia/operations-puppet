@@ -114,6 +114,8 @@ class contint::packages::labs {
             # bundle/gem compile ruby modules:
             'ruby2.0-dev',
 
+            'hhvm-dev',
+
             ]: ensure => present,
         }
     }
