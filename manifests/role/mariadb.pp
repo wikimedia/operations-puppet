@@ -102,7 +102,7 @@ class role::mariadb::misc::phabricator(
 
     class { 'mariadb::config':
         prompt    => "MISC ${shard}",
-        config    => 'mariadb/misc.my.cnf.erb',
+        config    => 'mariadb/phabricator.my.cnf.erb',
         password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/a/sqldata',
         tmpdir    => '/a/tmp',
