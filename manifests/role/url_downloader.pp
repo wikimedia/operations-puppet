@@ -21,7 +21,7 @@
 #           $url_downlader_ip = '10.10.10.10' # A public IP really
 #           include role::url_downloader
 #       }
-class role::url_downloader {
+class role::url_downloader($url_downloader_ip) {
     system::role { 'url_downloader':
         description => 'Upload-by-URL proxy'
     }
