@@ -39,6 +39,6 @@ class dataset::cron::kiwix($enable=true) {
         ensure  => $ensure,
         command => 'rsync -vzrlptD --bwlimit=40000 download.kiwix.org::download.kiwix.org/zim/wikipedia/ /data/xmldatadumps/public/other/kiwix/zim/wikipedia/ >/dev/null 2>&1',
         user    => 'mirror',
-        minute  => '*/15',
+        minute  => '15',
     }
 }
