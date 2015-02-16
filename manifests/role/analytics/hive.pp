@@ -26,7 +26,7 @@ class role::analytics::hive::config {
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.
-    $hcatalog_jar = 'file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core-0.12.0-cdh5.0.2.jar'
+    $hcatalog_jar = 'file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core.jar'
 
     # If refinery is included on this node, then add
     # refinery-hive.jar to the auxpath as well
@@ -67,6 +67,8 @@ class role::analytics::hive::client inherits role::analytics::hive::config {
         zookeeper_hosts           => $zookeeper_hosts,
         variable_substitute_depth => $variable_substitute_depth,
         auxpath                   => $auxpath,
+        # default to using Snappy for parquet formatted tables
+        parquet_compression       => 'SNAPPY',
     }
 }
 
