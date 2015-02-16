@@ -70,7 +70,7 @@ class mediawiki::monitoring::webserver( $ensure = present ) {
         diamond::collector {"mw_${title}":
             ensure   => $ensure,
             source   => "puppet:///modules/mediawiki/monitoring/collectors/${title}.py",
-            settings => { host => $::fqdn, url => "${title}" }
+            settings => { host => $::fqdn, url => $title }
         }
 
     }
