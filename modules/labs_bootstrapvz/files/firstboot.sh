@@ -27,7 +27,7 @@ then
   # error if that is not the case (because then the
   # 'fix' parameter becomes an answer to a question
   # that is never asked.)
-  /sbin/parted /dev/vda print fix >/dev/null 2>&1
+  script -c "/sbin/parted /dev/vda print fix" /dev/null
 
   # the tail|sed|cut is just to get the start and
   # end of the last unpartitioned span on the disk
