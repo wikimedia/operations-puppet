@@ -19,9 +19,9 @@
 #   Exactly one instance should have this set to true.
 
 define protoproxy::localssl(
+    $proxy_server_cert_name,
     $server_name    = $::fqdn,
     $server_aliases = [],
-    $proxy_server_cert_name,
     $default_server = false,
     $upstream_port  = '80'
 ) {
