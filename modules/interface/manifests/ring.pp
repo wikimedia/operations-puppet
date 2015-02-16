@@ -12,7 +12,7 @@
 #
 # Note this doesn't check/set at runtime, because at least with
 #  some drivers that restarts the interface and causes some traffic loss
-define interface::ring($interface='eth0', $setting, $value) {
+define interface::ring($setting, $value, $interface='eth0') {
     # Set in /etc/network/interfaces
     interface::setting { $title: interface => $interface, setting => "hardware-dma-ring-${setting}", value => $value }
 
