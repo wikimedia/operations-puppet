@@ -120,9 +120,16 @@ class role::labs::instance {
         notify  => Service['ssh'],
     }
 
-    service { 'idmapd':
-        ensure    => running,
-        subscribe => File['/etc/idmapd.conf'],
+    if $::operatingsystem == 'Debian' {
+        service { 'nfs-common':
+            ensure    => running,
+            subscribe => File['/etc/idmapd.conf', '/etc/default/nfs-common'],
+        }
+    } else {
+        service { 'idmapd':
+            ensure    => running,
+            subscribe => File['/etc/idmapd.conf'],
+        }
     }
 
     file { '/etc/idmapd.conf':

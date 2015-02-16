@@ -42,6 +42,17 @@ class base {
             mode   => '0444',
             source => 'puppet:///modules/base/labs-acct.default',
         }
+
+        if $::operatingsystem == 'Debian' {
+            # Turn on idmapd by default
+            file { '/etc/default/nfs-common':
+                ensure => present,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0444',
+                source => 'puppet:///modules/base/labs/nfs-common.default',
+            }
+        }
     } else {
         $certname = undef
     }
