@@ -835,15 +835,6 @@ node /^db10(20)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(46)\.eqiad\.wmnet/ {
-
-    include admin
-    $cluster = 'mysql'
-    class { 'role::mariadb::misc':
-        shard => 'm2',
-    }
-}
-
 node /^db20(11)\.codfw\.wmnet/ {
 
     include admin
@@ -880,6 +871,17 @@ node /^db20(12)\.codfw\.wmnet/ {
     $cluster = 'mysql'
     class { 'role::mariadb::misc::phabricator':
         shard => 'm3',
+    }
+}
+
+# m4 shard
+node 'db1046.eqiad.wmnet' {
+
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::misc::eventlogging':
+        shard  => 'm4',
+        master => false,
     }
 }
 

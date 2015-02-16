@@ -121,6 +121,43 @@ class role::mariadb::misc::phabricator(
     }
 }
 
+# Eventlogging needs tobe sandboxed by itself. It can consume resources
+# unpredictably, especially during backfilling. It also benefits greatly
+# from a setup tuned for TokuDB.
+class role::mariadb::misc::eventlogging(
+    $shard  = 'm4',
+    $master = false,
+    ) {
+
+    system::role { 'role::mariadb::misc':
+        description => "Eventlogging Database",
+    }
+
+    include standard
+    include role::mariadb::grants
+    include role::mariadb::monitor::dba
+    include passwords::misc::scripts
+
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
+
+    $read_only = $master ? {
+        true  => 'off',
+        false => 'on',
+    }
+
+    class { 'mariadb::config':
+        prompt    => "EVENTLOGGING ${shard}",
+        config    => 'mariadb/eventlogging.my.cnf.erb',
+        password  => $passwords::misc::scripts::mysql_root_pass,
+        datadir   => '/srv/sqldata',
+        tmpdir    => '/srv/tmp',
+        sql_mode  => 'STRICT_ALL_TABLES',
+        read_only => $read_only,
+    }
+}
+
 # Beta Cluster Master
 # Should add separate role for slaves
 class role::mariadb::beta {
