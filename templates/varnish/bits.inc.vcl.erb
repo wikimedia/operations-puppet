@@ -21,15 +21,17 @@ sub mangle_request {
 <% end -%>
 
 sub vcl_recv {
-	if (req.url ~ "^/(event\.gif|statsv[/?])") {
-		// URLs that start with 'event.gif' or 'statsv' are logging beacon endpoints.
+	if (req.url ~ "^/(event\.gif|view\.gif|statsv[/?])") {
+		// URLs that start with 'event.gif', 'view.gif' or 'statsv' are logging beacon endpoints.
 		// They are handled by log tailers (varnishkafka and varnishncsa) that filter
 		// the Varnish shm log for reqs to these endpoints and forward them to log
 		// processors for storage and analysis.
 		//
 		// /event.gif is used by EventLogging <https://wikitech.wikimedia.org/wiki/EventLogging>
+		// /view.gif is used to record virtual media views.
 		// statsv is used by MediaWiki for statsd-like performance metrics.
-		// Ori is the contact person for both.
+		// The analytics team is responsible for EventLogging and processing media views data.
+		// Ori is the contact person for statsv.
 		error 204;
 	}
 
