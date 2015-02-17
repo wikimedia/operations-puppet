@@ -59,6 +59,8 @@ class toollabs::bastion(
         ensure => latest,
     }
 
+    $ldapconfig = $ldap::role::config::labs::ldapconfig
+
     file { '/usr/local/bin/xcrontab':
         ensure  => file,
         mode    => '0755',
