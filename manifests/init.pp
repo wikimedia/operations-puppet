@@ -198,6 +198,7 @@ class cassandra(
     $heap_newsize                     = undef,
     $jmx_port                         = 7199,
     $additional_jvm_opts              = [],
+    $extra_classpath                  = [],
     $dc                               = 'datacenter1',
     $rack                             = 'rack1',
 
@@ -226,6 +227,7 @@ class cassandra(
     validate_re($disk_failure_policy, '^(stop|best_effort|ignore)$')
 
     validate_array($additional_jvm_opts)
+    validate_array($extra_classpath)
 
     if (!is_integer($jmx_port)) {
         fail('jmx_port must be a port number between 1 and 65535')
@@ -303,6 +305,13 @@ class cassandra(
 
     file { '/etc/cassandra/cassandra.yaml':
         content => template("${module_name}/cassandra.yaml.erb"),
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        require => Package['cassandra'],
+    }
+
+    file { '/etc/default/cassandra':
+        content => template("${module_name}/cassandra.default.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
         require => Package['cassandra'],
