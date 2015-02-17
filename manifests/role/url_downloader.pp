@@ -26,8 +26,14 @@ class role::url_downloader($url_downloader_ip) {
         description => 'Upload-by-URL proxy'
     }
 
+    if os_version('ubuntu >= trusty') {
+        $config_content = template('url_downloader/squid.conf.erb')
+    } else {
+        $config_content = template('url_downloader/precise_acls_conf.erb', 'url_downloader/squid.conf.erb')
+    }
+
     class { 'squid3':
-        config_content => template('url_downloader/squid.conf.erb'),
+        config_content => $config_content,
     }
 
     # Firewall
