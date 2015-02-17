@@ -80,6 +80,8 @@ sub vcl_recv {
 
 	call rewrite_proxy_urls;
 
+	call normalize_path;
+
 	// FIXME: deploy X-Vary-Options support
 	set req.http.X-Orig-Cookie = req.http.Cookie;
 	if (req.http.Cookie ~ "disable" ||
