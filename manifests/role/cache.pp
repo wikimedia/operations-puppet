@@ -201,6 +201,9 @@ class role::cache {
                 'citoid' => {
                     'eqiad' => 'citoid.svc.eqiad.wmnet',
                 },
+                'restbase' => {
+                    'eqiad' => 'restbase.svc.eqiad.wmnet',
+                },
             },
             'labs' => {
                 'api'    => {
@@ -1506,6 +1509,7 @@ class role::cache {
                 'backend'          => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
                 'cxserver_backend' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
                 'citoid_backend'   => $::role::cache::configuration::active_nodes[$::realm]['citoid'][$::site],
+                'restbase_backend' => $::role::cache::configuration::active_nodes[$::realm]['restbase'][$::site],
             },
             director_options => {
                 'retries' => 2,
@@ -1526,6 +1530,11 @@ class role::cache {
                     'probe'                 => false,
                 },
                 {
+                    'backend_match'         => '^restbase',
+                    'port'                  => 7231,
+                    'probe'                 => false, # TODO: Need probe here
+                },
+                {
                     'port'                  => 8000,
                     'connect_timeout'       => '5s',
                     'first_byte_timeout'    => '5m',
@@ -1544,6 +1553,7 @@ class role::cache {
                 'backend'          => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
                 'cxserver_backend' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
                 'citoid_backend'   => $::role::cache::configuration::active_nodes[$::realm]['citoid'][$::site],
+                'restbase_backend' => $::role::cache::configuration::active_nodes[$::realm]['restbase'][$::site],
             },
             director_type    => 'chash',
             director_options => {
@@ -1563,6 +1573,11 @@ class role::cache {
                     'backend_match'         => '^citoid',
                     'port'                  => 1970,
                     'probe'                 => false,
+                },
+                {
+                    'backend_match'         => '^restbase',
+                    'port'                  => 7231,
+                    'probe'                 => false, # TODO: Need probe here
                 },
                 {
                 'port'                  => 3128,
