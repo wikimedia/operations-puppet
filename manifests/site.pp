@@ -2532,7 +2532,7 @@ node 'labnet1001.eqiad.wmnet' {
     }
 }
 
-node /virt100[1-9].eqiad.wmnet/ {
+node /virt100[1-4].eqiad.wmnet/ {
     $use_neutron = false
     role nova::compute
     include admin
@@ -2542,7 +2542,17 @@ node /virt100[1-9].eqiad.wmnet/ {
     }
 }
 
-node /virt101[0-1].eqiad.wmnet/ {
+node /virt100[6-9].eqiad.wmnet/ {
+    $use_neutron = false
+    role nova::compute
+    include admin
+    include standard
+    if $use_neutron == true {
+        include role::neutron::computenode
+    }
+}
+
+node /virt101[0-2].eqiad.wmnet/ {
     $use_neutron = false
     openstack::nova::partition{ '/dev/sdb': }
     role nova::compute
@@ -2552,16 +2562,6 @@ node /virt101[0-1].eqiad.wmnet/ {
     if $use_neutron == true {
         include role::neutron::computenode
     }
-}
-
-node 'virt1012.eqiad.wmnet' {
-    # virt1012 is a nova node, similar to virt1010-1011.
-    # Its nova-compute service is currently OFF to keep it in reserve
-    # as a lifeboat should we need to evacuate a different virt host.
-
-    openstack::nova::partition{ '/dev/sdb': }
-    include admin
-    include standard
 }
 
 node 'iodine.wikimedia.org' {
