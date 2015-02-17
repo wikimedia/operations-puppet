@@ -25,4 +25,7 @@ sub vcl_fetch {
 	if (req.http.Host ~ "citoid") {
 		return (hit_for_pass);
 	}
+	if (req.http.Host ~ "restbase") {
+		return (hit_for_pass);
+	}
 }
