@@ -2,3 +2,4 @@ cluster: appserver
 role::mediawiki::webserver::pool: apaches
 admin::groups:
   - deployment
+mediawiki::users::web: www-data
