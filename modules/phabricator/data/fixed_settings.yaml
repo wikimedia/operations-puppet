@@ -79,7 +79,7 @@ maniphest.custom-field-definitions:
     default: default
     options:
       default: 'None'
-      security-bug: 'MediaWiki security bug'
+      security-bug: 'Software security bug'
       sensitive: 'Other confidential issue'
 
 # Security/Operations Macro's for enabling
