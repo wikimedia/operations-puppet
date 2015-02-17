@@ -80,8 +80,8 @@ mediawiki_memcached_servers:
       'ca':
         'es'
       'es':
-        'ca
-'"role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
+        'ca'
+"role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
 "hhvm::extra::fcgi":
     hhvm:
         pcre_cache_type: lru
