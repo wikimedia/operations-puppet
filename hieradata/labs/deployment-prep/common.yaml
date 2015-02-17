@@ -33,36 +33,36 @@ mediawiki_memcached_servers:
 "cxserver::apertium": http://apertium-beta.wmflabs.org
 "cxserver::registry":
   source:
-    - 'ca',
-    - 'en',
-    - 'es',
-    - 'id',
-    - 'ms',
-    - 'nn',
-    - 'no',
-    - 'pt',
+    - 'ca'
+    - 'en'
+    - 'es'
+    - 'id'
+    - 'ms'
+    - 'nn'
+    - 'no'
+    - 'pt'
     - 'sv'
   target:
-    - 'ca',
-    - 'da',
-    - 'eo',
-    - 'es',
-    - 'id',
-    - 'ms',
-    - 'nn',
-    - 'no',
+    - 'ca'
+    - 'da'
+    - 'eo'
+    - 'es'
+    - 'id'
+    - 'ms'
+    - 'nn'
+    - 'no'
     - 'pt'
   mt:
     Apertium:
       'ca':
-        - 'es',
+        - 'es'
         - 'pt'
       'en':
-        - 'ca',
-        - 'eo',
-        - 'es',
+        - 'ca'
+        - 'eo'
+        - 'es'
       'es':
-        - 'ca',
+        - 'ca'
         - 'pt'
       'id':
         - 'ms'
@@ -73,7 +73,7 @@ mediawiki_memcached_servers:
       'no':
         - 'nn'
       'pt':
-        - 'es',
+        - 'es'
         - 'ca'
   dictionary:
     JsonDict:
