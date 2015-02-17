@@ -40,6 +40,12 @@ class role::analytics::hive::config {
     # Hive uses Zookeeper for table locking.
     $zookeeper_hosts = $role::analytics::zookeeper::config::hosts_array
 
+    # We set support concurrency to false by default.
+    # if someone needs to use it in their hive job, they
+    # may manually set it to true via
+    # set hive.support.concurrency = true;
+    $support_concurrency = false
+
     if $::realm == 'production' {
         include passwords::analytics
 
@@ -65,6 +71,7 @@ class role::analytics::hive::client inherits role::analytics::hive::config {
         metastore_host            => $metastore_host,
         jdbc_password             => $jdbc_password,
         zookeeper_hosts           => $zookeeper_hosts,
+        support_concurrency       => $support_concurrency,
         variable_substitute_depth => $variable_substitute_depth,
         auxpath                   => $auxpath,
         # default to using Snappy for parquet formatted tables
