@@ -2,3 +2,4 @@ base::resolving::domain_search:
   - wikimedia.org
   - eqiad.wmnet
   - esams.wikimedia.org
+mediawiki::users::web: www-data
