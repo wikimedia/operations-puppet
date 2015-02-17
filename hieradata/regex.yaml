@@ -20,7 +20,7 @@ orientdb_test:
     - wikidata-query-roots
 
 temp_mw_container:
-  __regex: !ruby/regexp /^mw10(18|2[0-8]\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^mw10(18|2[0-8])\.eqiad\.wmnet$/
   mediawiki::users::web: www-data
 
 cassandra_test:
