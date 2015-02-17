@@ -8,6 +8,11 @@ do
       sleep 1
 done
 
+# And, sleep some more.  This sucks but it helps avoid a race
+# with NFS volume creation.  This never happened with Ubuntu,
+# but Debian just boots too fast!
+sleep 60
+
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 systemctl restart rsyslog.service
