@@ -32,80 +32,56 @@ mediawiki_memcached_servers:
 "cxserver::log_dir": /data/project/cxserver/log
 "cxserver::apertium": http://apertium-beta.wmflabs.org
 "cxserver::registry":
-    'ca':
-        'es':
-            dictionary:
-              providers:
-                - 'JsonDict'
-            mt:
-              providers:
-                - 'Apertium'
-        'pt':
-            mt:
-              providers:
-                - 'Apertium'
-    'en':
-        'ca':
-            mt:
-              providers:
-                - 'Apertium'
-        'da':
-        'eo':
-            mt:
-              providers:
-                - 'Apertium'
-        'es':
-            mt:
-              providers:
-                - 'Apertium'
-        'id':
-        'ms':
-        'no':
-        'pt':
-    'es':
-        'ca':
-            dictionary:
-              providers:
-                - 'JsonDict'
-            mt:
-              providers:
-                - 'Apertium'
-        'pt':
-            mt:
-              providers:
-                - 'Apertium'
-    'id':
-        'ms':
-            mt:
-              providers:
-                - 'Apertium'
-    'ms':
-        'id':
-            mt:
-              providers:
-                - 'Apertium'
-    'nn':
-        'no':
-            mt:
-              providers:
-                - 'Apertium'
-    'no':
-        'nn':
-            mt:
-              providers:
-                - 'Apertium'
-    'pt':
-        'es':
-            mt:
-              providers:
-                - 'Apertium'
-        'ca':
-            mt:
-              providers:
-                - 'Apertium'
-    'sv':
-        'da':
-"role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
+  source:
+    - 'ca',
+    - 'en',
+    - 'es',
+    - 'id',
+    - 'ms',
+    - 'nn',
+    - 'no',
+    - 'pt',
+    - 'sv'
+  target:
+    - 'ca',
+    - 'da',
+    - 'eo',
+    - 'es',
+    - 'id',
+    - 'ms',
+    - 'nn',
+    - 'no',
+    - 'pt'
+  mt:
+    Apertium:
+     - 'ca':
+       - 'es',
+       - 'pt'
+     - 'en':
+       - 'ca',
+       - 'eo',
+       - 'es',
+     - 'es':
+       - 'ca',
+       - 'pt'
+     - 'id':
+       - 'ms'
+     - 'ms':
+       - 'id'
+     - 'nn':
+       - 'no'
+     - 'no':
+       - 'nn'
+     - 'pt':
+       - 'es',
+       - 'ca'
+  dictionary:
+    JsonDict:
+     'ca':
+       'es'
+     'es':
+       'ca
+'"role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
 "hhvm::extra::fcgi":
     hhvm:
         pcre_cache_type: lru
