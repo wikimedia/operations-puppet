@@ -42,11 +42,13 @@ class misc::maintenance::refreshlinks( $ensure = present ) {
 
 class misc::maintenance::pagetriage( $ensure = present ) {
 
+    require mediawiki
+
     system::role { 'misc::maintenance::pagetriage': description => 'Misc - Maintenance Server: pagetriage extension' }
 
     cron { 'pagetriage_cleanup_en':
         ensure   => $ensure,
-        user     => apache,
+        user     => $::mediawiki::users::web,
         minute   => 55,
         hour     => 20,
         monthday => '*/2',
@@ -55,7 +57,7 @@ class misc::maintenance::pagetriage( $ensure = present ) {
 
     cron { 'pagetriage_cleanup_testwiki':
         ensure   => $ensure,
-        user     => apache,
+        user     => $::mediawiki::users::web,
         minute   => 55,
         hour     => 14,
         monthday => '*/2',
@@ -188,6 +190,8 @@ class misc::maintenance::update_article_count( $ensure = present ) {
 }
 
 class misc::maintenance::wikidata( $ensure = present ) {
+    require mediawiki::users
+
     cron { 'wikibase-repo-prune2':
         ensure  => $ensure,
         # prunes the wb_changes table in wikidatawiki db
@@ -218,7 +222,7 @@ class misc::maintenance::wikidata( $ensure = present ) {
         ensure  => $ensure,
         # second dispatcher to inject wikidata changes  wikibase clients (e.g. wikipedia) to be processed as jobs there
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher-testwikidata.log',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => '*/5',
     }
 
@@ -226,7 +230,7 @@ class misc::maintenance::wikidata( $ensure = present ) {
         ensure  => $ensure,
         # prunes the wb_changes table in testwikidatawiki db
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune-testwikidata.log',
-        user    => 'apache',
+        user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
     }
 
