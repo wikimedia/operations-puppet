@@ -49,8 +49,11 @@ C{
 		const char *client_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
 		size_t len = 0;
 
-		if (client_ip != NULL && strnlen(client_ip, maxlen) < maxlen) {
-			len = strspn(client_ip, "1234567890.:");
+		if (client_ip != NULL) {
+			len = strspn(client_ip, "1234567890abcdef.:");
+			if (len >= maxlen) {
+				return -1;
+			}
 		}
 
 		if (len == 0) {
