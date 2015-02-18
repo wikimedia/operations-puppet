@@ -43,6 +43,7 @@ class toollabs::dev_environ {
         'apt-file',
         'autoconf',
         'build-essential', # for dpkg
+        'byobu',                       # Bug T88989.
         'cmake',
         'cvs',
         'cython',
