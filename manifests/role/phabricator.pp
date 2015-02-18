@@ -19,7 +19,7 @@ class role::phabricator::main {
     }
 
     #let's go jenkins
-    $current_tag = 'release/2015-01-08/1'
+    $current_tag = 'release/2015-02-18/1'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
@@ -30,7 +30,7 @@ class role::phabricator::main {
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
         auth_type        => 'dual',
-        sprint_tag       => 'release/2015-01-08/1',
+        sprint_tag       => 'release/2015-02-18',
         security_tag     => 'release/2015-01-13/1',
         libraries        => ['/srv/phab/libext/Sprint/src',
                              '/srv/phab/libext/security/src'],
