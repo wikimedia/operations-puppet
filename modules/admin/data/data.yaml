@@ -208,7 +208,7 @@ groups:
     description: Gives generic client access to the Analytics (Hadoop) cluster.
         This will grant shell access on Hadoop client nodes (stat1002) and on
         Hadoop NameNodes.
-    members: []
+    members: [ashwinpp]
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
@@ -1319,3 +1319,10 @@ users:
     realname: Tyler Cipriani
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCiy95u6XMT41V+ISpDql7n26m/ENqbS6xmF8neK4LOTdHp8dE6jZN3+HgrbssDoTYibBmyZsIzH+nmqJXQtXz9l0uPs1q3jdzv2LQrW1TpbaMt5L3sQ6eW+eWD/F05/+OL00zIhhI7yWaBfptCYGfU9NGkTQJJIWVcTGBLb2qOGPedIwtQjt5E2Ng3dlYK0dX0+rSUi60QDI/WAisXVCpZSvofoULxd7hEXIbADFe0w8r+ZUtI4EnBFSAbM+ffQ4duyiqO3UNcFxjWicD8WUPvG6YOeLX/UwUw+USh9bQBuewnDp5TIRLCGBCdxKPvl0qBQfmwj1fCOjtxdm5PZ11d+/zVQBKe2kCXdyLeRQF+BE+HDLePcOLs5Gujx1e9UKIiNtN8BuKDZ5fFCfVdjSbE0CTeWzAYsWx+uzT1PzXw1j7lDYUVI3BExdkQp8UDfF81OW+3WmvsN+HbgKl3zB5hR4lJ2h1F1s+MWxrnrtjnn+UqheS9xWeSJgtwuN/2TY/N30u/s0hfGEv+M/djRUtSWlqK9APSe9o4/2iprIs7EQJFu8eV/dN3UyAf0jVfvemdcnNXWIKD4c18+8k6uQzbiPF8vcYn9N49vmPCzMUIYnJKUA847A/poxavzcW3wdtmup4k8VIYYciyqCA9yJTgG5ueqw97a31XRhk+CG+i8Q== thcipriani@wikimedia-prod]
     uid: 11634
+  ashwinpp:
+    ensure: present
+    gid: 500
+    name: ashwinpp
+    realname: Ashwin Pradeep Paranjape
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA1fMQ9Qce9S/R+ACAWRBYKGCQxGC3HFZHpQP9zlgmcRRxksd+aa5+xwa7/pnU3sRKJJyNVo/wIzU3Pyf2YeM6q2ZMn7m0lWQg+/j5Jej67FHUhr55YFCwyKutSC4lozc3IG2KEZDb+oC2T0Jd9PWzICUISraLpJ4bTU5Hn3aNPjF24UsKBPOgdPP0Wl5f31UXZnJSZBCWyRmVYLw7J7joTGaCoElQYG9Ba+8sWfQGwagWRBMmM/yqOoVUJcEzZKI7l/bzaOZBON5z2moeymm4UDH+zbqKEgGYlsm47D7FcqlIm0wr50jdZNWHsG8El9BBPhe7+wsnuIP9WZNKJsfb8Q== ashwinp@madmax2.stanford.edu]
+    uid: 11049
