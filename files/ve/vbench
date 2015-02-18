@@ -62,10 +62,16 @@ except ImportError:
 # FIXME: Make this configurable.
 JS = '''
     window.onload = function () {
-        // Bind a handler to VE's ready event that stops the profiler.
-        mw.trackSubscribe( 'event.Edit', function ( _, event ) {
-            if ( event.action === 'ready' )
-                console.profileEnd( 've' );
+        var stage = "%s";
+        ve.trackSubscribe( 'trace.' + stage + '.', function ( topic ) {
+            switch ( topic.split( '.' ).pop() ) {
+            case 'enter':
+                console.profile( stage );
+                break;
+            case 'exit':
+                console.profileEnd( stage );
+                break;
+            }
         } );
 
         // Don't show the welcome dialog.
@@ -74,7 +80,6 @@ JS = '''
 
         // Wait 200ms for any load handlers to run, then start VE.
         setTimeout( function () {
-              console.profile( 've' );
               mw.libs.ve.onEditTabClick( { preventDefault: $.noop } );
         }, 200 );
     };
@@ -264,7 +269,8 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
             self.__dict__[domain_name] = domain
             yield domain.enable()
 
-        yield self.page.addScriptToEvaluateOnLoad(scriptSource=JS)
+        scriptSource = JS % self.factory.stage
+        yield self.page.addScriptToEvaluateOnLoad(scriptSource=scriptSource)
         yield self.profiler.setSamplingInterval(interval=100)
 
         if self.factory.disable_cache:
@@ -411,6 +417,11 @@ ap.add_argument(
     action='store_true',
     default=False,
     help='disable network cache',
+)
+ap.add_argument(
+    '--stage',
+    default='init',
+    help='Name of Specific stage to profile (default: "init")',
 )
 ap.add_argument(
     'target_url',
