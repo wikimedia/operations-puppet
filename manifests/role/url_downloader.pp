@@ -18,13 +18,16 @@
 #
 # Sample Usage:
 #       node /test.wikimedia.org/ {
-#           $url_downlader_ip = '10.10.10.10' # A public IP really
 #           include role::url_downloader
 #       }
-class role::url_downloader($url_downloader_ip) {
+# And hiera updated with url_downloader_ip as needed
+class role::url_downloader {
     system::role { 'url_downloader':
         description => 'Upload-by-URL proxy'
     }
+
+    $url_downloader_ip = hiera('url_downloader_ip')
+    $url_downloader_port = hiera('url_downloader_port', 8080)
 
     if os_version('ubuntu >= trusty') {
         $config_content = template('url_downloader/squid.conf.erb')
@@ -39,12 +42,12 @@ class role::url_downloader($url_downloader_ip) {
     # Firewall
     ferm::service { 'url_downloader':
         proto => 'tcp',
-        port  => '8080',
+        port  => $url_downloader_port,
     }
 
     # Monitoring
     monitoring::service { 'url_downloader':
         description   => 'url_downloader',
-        check_command => 'check_tcp_ip!url-downloader.wikimedia.org!8080',
+        check_command => "check_tcp_ip!url-downloader.wikimedia.org!${url_downloader_port}",
     }
 }
