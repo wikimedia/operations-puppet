@@ -29,3 +29,8 @@ cassandra_test:
       - cerium.eqiad.wmnet
       - praseodymium.eqiad.wmnet
       - xenon.eqiad.wmnet
+
+cassandra_eqiad:
+  __regex: !ruby/regexp /^restbase100[1-6]\.eqiad\.wmnet$/
+  cassandra::dc: eqiad
+  cassandra::cluster_name: eqiad
