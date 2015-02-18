@@ -33,18 +33,13 @@ acl Safe_ports port 21		# ftp
 acl purge method PURGE
 acl CONNECT method CONNECT
 
-acl wikimedia src 208.80.152.0/22
-acl wikimedia src 10.64.0.0/22
-acl wikimedia src 10.64.16.0/24
-acl wikimedia src 10.64.32.0/22
-acl wikimedia src 10.64.48.0/22
+<%- @wikimedia.each do |x| -%>
+acl wikimedia src <%= x %>
+<%- end -%>
 
-acl to-wikimedia dst 208.80.152.0/22
-acl to-wikimedia dst 91.198.174.0/24
-acl to-wikimedia dst 10.64.0.0/22
-acl to-wikimedia dst 10.64.16.0/24
-acl to-wikimedia dst 10.64.32.0/22
-acl to-wikimedia dst 10.64.48.0/22
+<%- @towikimedia.each do |x| -%>
+acl to-wikimedia src <%= x %>
+<%- end -%>
 
 http_access allow manager localhost
 http_access deny manager
