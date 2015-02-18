@@ -61,7 +61,7 @@ groups:
       haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
       bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
-      joal, thcipriani]
+      joal, thcipriani, daisy]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -96,7 +96,8 @@ groups:
       ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
       kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
       nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
-      mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal]
+      mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
+      daisy]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -1312,6 +1313,13 @@ users:
     realname: Joseph Allemandou
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDm3GrTqoPRJv0pUaE/BJk9osJkVaRGQyR3RlNL4sGoap6oIwRhdJb6ThKm8hpDT2zSfUIGC0XjMG5Y0rx9pmeVByHzqpV5c7uAwNmRAtZQpb+PFHZbIXWMh46sx7bDq3ZUoypdMVVLFqrxALwpw1rlQI4pjWeGympwdvH1lKUPTC9p02RgCZgYLGxC15V412aJM2Z+oNk+5oHJBEL7bnKpePI6asoJLSBd4c9QxbhrMRIf0WDvq+hQgXVugCZIW3zHLkseQEyMtgqrys7RlWF3FkyDA2WDC/OwGgDCRRjzUI2O/FGhuA5oiJgk7Z5Aorx5VIxNESjoOLQEyD8Ur58SAr5z0e+EdZNpt3BtbobPJzIiB19cl7mBOFfCEWpwSCO9tSQrHiyd1Lid5BQ1JitdErYX/uLm82y3aQkKFLhcqHtA4mqu7o53mr5pP5d0LfoOtSlzNa4dvgXDSiGAts00GZd1Ce9JCz8pEe/tttyhFgb32RNYGEwGMyzpZ8bOy49m5gTtlN/rOCgqF2XXnWsiTg+eycHZgZwRonK8ORPa0irqqH2cdMA36mFbVC74F7h2lwArlbfF/uPQgwdDABJ9N83DXuyqhGs9aycPRn9zWi9mTLRnp4BoY/Ty1P5kH3TdF30Pl65uPuo2NItJj2wQSyMhdCrfisXnwaTtZfhpWw== joal@wikimedia.org]
     uid: 11654
+  daisy:
+    ensure: present
+    gid: 500
+    name: daisy
+    realname: Daisy Chen
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUclfor3OQB2OESj9YTf5tyGY1y6gygSBFSWjpMP3rC2qxjQbmkRNnT0wrkBOywbB2e9gkBRiPr8rV/zUQbhs3frFba4CHDI8OQ6F5ymhEWQiXz7EaFLS+whCkZwyUwqmcurfGArZxZE/floe3+3GBxU0fNtAnzOFo1QaEX5W6uy1QhLXv1K/t5Ra8+Y0CU+doGKEuor/QyuMeCOIKeSV9G+3O/jgcxMSZDgMgLgIK21bye3Mnk7fprYP6aO5uPWyDiiwToniTCR2cy7vBpHUawRi6JHJ2qhfaJAFyNOkEIm8dKLTFLVmCa+NMi4cr60SpS8HLDd2v2tsRHQhLpqqh dchen@wikimedia.org]
+    uid: 11669
   thcipriani:
     ensure: present
     gid: 500
