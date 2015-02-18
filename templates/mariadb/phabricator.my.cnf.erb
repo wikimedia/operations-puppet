@@ -69,6 +69,7 @@ innodb_locks_unsafe_for_binlog = 1
 # Setting ft_boolean_syntax with a leading white space explodes and it isn't clear there was
 # ever a way to escape things or use set-variable here. For now, run a SET GLOBAL at startup:
 init_file                      = /etc/mysql/phabricator-init.sql
+ft_stopword_file               = /etc/mysql/phabricator-stopwords.txt
 ft_min_word_len                = 3
 aria_pagecache_buffer_size     = 4G
 
