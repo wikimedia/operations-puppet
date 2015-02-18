@@ -33,63 +33,7 @@ mediawiki_memcached_servers:
 "cxserver::apertium": http://apertium-beta.wmflabs.org
 "cxserver::proxy": http://deployment-urldownloader.eqiad.wmflabs:8080
 "cxserver::yandex_url": 'https://translate.yandex.net'
-"cxserver::registry":
-  source:
-    - 'ca'
-    - 'en'
-    - 'es'
-    - 'id'
-    - 'ms'
-    - 'nn'
-    - 'no'
-    - 'pt'
-    - 'ru'
-    - 'sv'
-  target:
-    - 'ca'
-    - 'da'
-    - 'eo'
-    - 'es'
-    - 'id'
-    - 'min'
-    - 'ms'
-    - 'nn'
-    - 'no'
-    - 'pt'
-    - 'ru'
-    - 'uz'
-  mt:
-    Apertium:
-      'ca':
-        - 'es'
-        - 'pt'
-      'en':
-        - 'ca'
-        - 'eo'
-        - 'es'
-      'es':
-        - 'ca'
-        - 'pt'
-      'id':
-        - 'ms'
-      'ms':
-        - 'id'
-      'nn':
-        - 'no'
-      'no':
-        - 'nn'
-      'pt':
-        - 'es'
-        - 'ca'
-    Yandex:
-      'en':
-        - 'ru'
-  dictionary:
-    JsonDict:
-      'ca':
-        - 'es'
-      'es':
-        - 'ca'
+"cxserver::registry": /srv/deployment/cxserver/cxserver/config.default.js
 "role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
 "hhvm::extra::fcgi":
     hhvm:
