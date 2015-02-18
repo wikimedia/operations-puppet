@@ -31,56 +31,6 @@ mediawiki_memcached_servers:
 "misc::syslog-server::basepath": /data/project/syslog
 "cxserver::log_dir": /data/project/cxserver/log
 "cxserver::apertium": http://apertium-beta.wmflabs.org
-"cxserver::registry":
-  source:
-    - 'ca'
-    - 'en'
-    - 'es'
-    - 'id'
-    - 'ms'
-    - 'nn'
-    - 'no'
-    - 'pt'
-    - 'sv'
-  target:
-    - 'ca'
-    - 'da'
-    - 'eo'
-    - 'es'
-    - 'id'
-    - 'ms'
-    - 'nn'
-    - 'no'
-    - 'pt'
-  mt:
-    Apertium:
-      'ca':
-        - 'es'
-        - 'pt'
-      'en':
-        - 'ca'
-        - 'eo'
-        - 'es'
-      'es':
-        - 'ca'
-        - 'pt'
-      'id':
-        - 'ms'
-      'ms':
-        - 'id'
-      'nn':
-        - 'no'
-      'no':
-        - 'nn'
-      'pt':
-        - 'es'
-        - 'ca'
-  dictionary:
-    JsonDict:
-      'ca':
-        'es'
-      'es':
-        'ca'
 "role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
 "hhvm::extra::fcgi":
     hhvm:
