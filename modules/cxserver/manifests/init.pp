@@ -41,7 +41,7 @@ class cxserver(
     $yandex_api_key = undef,
     $proxy = undef,
     $port = 8080,
-    $registry = {},
+    $registry = undef,
 ) {
     require_package('nodejs')
     $ordered_registry = ordered_json($registry)
