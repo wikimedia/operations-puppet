@@ -161,7 +161,8 @@ def es_restart_fast():
     while cluster_health() != "green":
         print '\n'.join(cluster_status(columns=('status',
                                                 'initializing_shards',
-                                                'relocating_shards')))
+                                                'relocating_shards',
+                                                'unassigned_shards')))
         time.sleep(60)
     print "ok"
 
