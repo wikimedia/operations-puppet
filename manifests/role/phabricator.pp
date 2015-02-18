@@ -31,7 +31,7 @@ class role::phabricator::main {
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
         auth_type        => 'dual',
         sprint_tag       => 'release/2015-02-18',
-        security_tag     => 'release/2015-01-13/1',
+        security_tag     => 'release/2015-02-18/2',
         libraries        => ['/srv/phab/libext/Sprint/src',
                              '/srv/phab/libext/security/src'],
         extension_tag    => 'HEAD',
