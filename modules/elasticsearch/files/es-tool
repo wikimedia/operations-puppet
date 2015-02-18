@@ -78,7 +78,11 @@ def es_ban_node():
         ipaddr.IPv4Address(args.node)
         node_type = "_ip"
     except ipaddr.AddressValueError:
-        node_type = "_host"
+        try:
+            ipaddr.IPv6Address(args.node)
+            node_type = "_ip"
+        except ipaddr.AddressValueError:
+            node_type = "_host"
 
     banned = get_banned_nodes(node_type)
     if args.node in banned:
@@ -196,7 +200,11 @@ def es_unban_node():
         ipaddr.IPv4Address(args.node)
         node_type = "_ip"
     except ipaddr.AddressValueError:
-        node_type = "_host"
+        try:
+            ipaddr.IPv6Address(args.node)
+            node_type = "_ip"
+        except ipaddr.AddressValueError:
+            node_type = "_host"
 
     banned = get_banned_nodes(node_type)
     if args.node not in banned:
