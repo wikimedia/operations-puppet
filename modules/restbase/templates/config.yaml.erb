@@ -1,6 +1,7 @@
 # RESTBase config
 
-port: <%= @port %>
+info:
+  name: restbase
 
 logging:
   name: restbase
@@ -11,9 +12,14 @@ logging:
     host: <%= @logstash_host %>
     port: <%= @logstash_port %>
 
-monitoring:
-  statsdHost: <%= @statsd_host %>
+# StatsD metrics collection
+metrics:
+  type: txstatsd
+  host: <%= @statsd_host %>
+  port: <%= @statsd_port %>
 
+# Swagger spec templates, referenced using yaml references in the spec section
+# below.
 templates:
 
   wmf-content-1.0.0: &wp/content/1.0.0
@@ -87,22 +93,6 @@ templates:
             options:
               apiURI: http://{domain}/w/api.php
 
-#      /{module:revscore}:
-#        title: Simple revscore service wrapper
-#        x-modules:
-#          # Generic revision service interface; Expects requests of the form
-#          # /{title}/{revision}.
-#          # Specific interface documentation (content types etc) at public
-#          # entry point, although we might also want to enforce them
-#          # internally.
-#          - name: restbase-mod-service
-#            version: 1.0.0 # simple service module, to be shared
-#            options:
-#              storage:
-#                uri: /{domain}/sys/key_rev_value/revscore.scores/{title}/{revision}
-#              service:
-#                uri: http://revscore.wikimedia.org/{domain}/{title}/{revision}
-
   wp-default-1.0.0: &wp/default/1.0.0
     x-subspecs:
       - paths:
@@ -113,13 +103,18 @@ templates:
             x-subspec: *wp/sys/1.0.0
 
 
+# Swagger spec root.
 spec:
   title: "The RESTBase root"
   # Some more general RESTBase info
   paths:
     /{domain:en.wikipedia.org}: *wp/default/1.0.0
-#    /{domain:de.wikipedia.org}: *wp/default/1.0.0
-#    /{domain:es.wikipedia.org}: *wp/default/1.0.0
-#    /{domain:nl.wikipedia.org}: *wp/default/1.0.0
-#    /{domain:en.wikipedia.test.local}: *wp/default/1.0.0
 
+# The main service setup. Each worker can offer one or more services.
+services:
+  - name: restbase
+    module: ./lib/server
+    conf:
+      port: <%= @port %>
+      port: 7231
+      spec: *spec
