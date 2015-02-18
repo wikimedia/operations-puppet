@@ -68,17 +68,25 @@ def get_banned_nodes(node_type):
     return []
 
 
+def get_node_type(node):
+    try:
+        ipaddr.IPv4Address(node)
+        return "_ip"
+    except ipaddr.AddressValueError:
+        try:
+            ipaddr.IPv6Address(node)
+            return "_ip"
+        except ipaddr.AddressValueError:
+            return "_host"
+
+
 # Add new command functions here
 def es_ban_node():
     if args.node == "":
         print "No node provided"
         return os.EX_UNAVAILABLE
 
-    try:
-        ipaddr.IPv4Address(args.node)
-        node_type = "_ip"
-    except ipaddr.AddressValueError:
-        node_type = "_host"
+    node_type = get_node_type(args.node)
 
     banned = get_banned_nodes(node_type)
     if args.node in banned:
@@ -192,11 +200,7 @@ def es_unban_node():
         print "No node provided"
         return os.EX_UNAVAILABLE
 
-    try:
-        ipaddr.IPv4Address(args.node)
-        node_type = "_ip"
-    except ipaddr.AddressValueError:
-        node_type = "_host"
+    node_type = get_node_type(args.node)
 
     banned = get_banned_nodes(node_type)
     if args.node not in banned:
