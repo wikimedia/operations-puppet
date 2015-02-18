@@ -9,7 +9,7 @@
 #   $docroot=undef    - defaults to: $title == 'stats.wikimedia.org', then /srv/stats.wikimedia.org
 #   $custom=[]        - custom Apache config strings to put into virtual host site file
 #   $includes=[]
-#   $server_admin="root@wikimedia.org",
+#   $server_admin="noc@wikimedia.org",
 #   $access_log       - path to access log, default: /var/log/apache2/access.log
 #   $error_log        - path to error log,  default: /var/log/apache2/error.log
 #   $ensure=present
@@ -24,7 +24,7 @@ define webserver::apache::site(
     $docroot      = undef,
     $custom       = [],
     $includes     = [],
-    $server_admin = 'root@wikimedia.org',
+    $server_admin = 'noc@wikimedia.org',
     $access_log   = "/var/log/apache2/${title}.access.log",
     $error_log    = "/var/log/apache2/${title}.error.log",
     $ensure       = 'present',
