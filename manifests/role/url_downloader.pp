@@ -25,6 +25,34 @@ class role::url_downloader($url_downloader_ip) {
     system::role { 'url_downloader':
         description => 'Upload-by-URL proxy'
     }
+    $url_downloader_port = hiera('url_downloader_port', 8080)
+    include network::constants
+
+    $wikimedia = [
+        # TODO: Add IPv6 as well
+        $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
+
+        $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv4'],
+        $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv4'],
+        $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv4'],
+        $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv4'],
+
+        $network::constants::all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['private']['private1-d-eqiad']['ipv4'],
+
+        $network::constants::all_network_subnets['production']['codfw']['private']['private1-a-codfw']['ipv4'],
+        $network::constants::all_network_subnets['production']['codfw']['private']['private1-b-codfw']['ipv4'],
+        $network::constants::all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv4'],
+        $network::constants::all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv4'],
+
+        $network::constants::all_network_subnets['production']['esams']['public']['public-services']['ipv4'], #TODO: Do we need this ?
+        ]
+    $towikimedia = $wikimedia
 
     if os_version('ubuntu >= trusty') {
         $config_content = template('url_downloader/squid.conf.erb')
