@@ -34,9 +34,12 @@
 ###       * Modified reads_per_sec to not calculate per second delta.
 ###         This enables us to generate a better graph by stacking
 ###         reads/writes with reads/writes merged.
+###    v1.0.3 - 2015-02-17
+###       * Add IO operations metric
 ###
 
 ###  Copyright Jamie Isaacs. 2010
+###  Copyright Alexandros Kosiaris. 2015
 ###  License to use, modify, and distribute under the GPL
 ###  http://www.gnu.org/licenses/gpl.txt
 
@@ -173,13 +176,13 @@ def get_partitions():
 		logging.debug(' DEVICES has already been set')
 		out = DEVICES
 
-	else:	
+	else:
 		# Load partitions
 		awk_cmd = "awk 'NR > 1 && $0 !~ /" + IGNORE_DEV + "/ && $4 !~ /[0-9]$/ {ORS=\" \"; print $4}' "
 		p = subprocess.Popen(awk_cmd + PARTITIONS_FILE, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		out, err = p.communicate()
 		logging.debug('  result: ' + out)
-		
+
 		if p.returncode:
 			logging.warning('failed getting partitions')
 			return p.returncode
@@ -188,7 +191,7 @@ def get_partitions():
 		if DEVICES is not None:
 			# Explicit device list has been set
 			PARTITIONS.append(dev)
-		else:		
+		else:
 			# Load disk block size
 			f = open('/sys/block/' + dev + '/size', 'r')
 			c = f.read()
@@ -233,7 +236,7 @@ def update_stats():
 	logging.debug('updating stats')
 	global last_update, stats, last_val, cur_time
 	global MAX_UPDATE_TIME
-	
+
 	cur_time = time.time()
 
 	if cur_time - last_update < MAX_UPDATE_TIME:
@@ -245,7 +248,7 @@ def update_stats():
 	stats = {}
 
 	if not PARTITIONS:
-		part = get_partitions()	
+		part = get_partitions()
 		if part:
 			# Fail if return is non-zero
 			logging.warning('error getting partitions')
@@ -269,7 +272,7 @@ def update_stats():
 		# Get values from diskstats file
 		p = subprocess.Popen("awk -v dev=" + dev + " '$3 == dev' " + DISKSTATS_FILE, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		out, err = p.communicate()
-		
+
 		vals = out.split()
 		logging.debug('  vals: ' + str(vals))
 
@@ -288,6 +291,8 @@ def update_stats():
 
 		get_delta(dev, 'read_time',  float(vals[6]), 0.001 )
 		get_delta(dev, 'write_time', float(vals[10]), 0.001 )
+
+		get_diff(dev, 'iops', int(vals[13]))
 
 		get_diff(dev, 'io_time', float(vals[12]), 0.001)
 		get_percent_time(dev, 'percent_io_time', float(stats[dev]['io_time']))
@@ -430,6 +435,10 @@ def metric_init(params):
 			'units': 's',
 			'description': 'The time in seconds spent in I/O operations'},
 
+		iops = {
+			'units': 'ops/s',
+			'description': 'I/O Operations'},
+
 		percent_io_time = {
 			'units': 'percent',
 			'value_type': 'float',
@@ -444,7 +453,7 @@ def metric_init(params):
 	update_stats()
 
 	for label in descriptions:
-		for dev in PARTITIONS: 
+		for dev in PARTITIONS:
 			if stats[dev].has_key(label):
 
 				d = {
@@ -460,7 +469,7 @@ def metric_init(params):
 				}
 
 				# Apply metric customizations from descriptions
-				d.update(descriptions[label])	
+				d.update(descriptions[label])
 
 				descriptors.append(d)
 			else:
@@ -507,17 +516,17 @@ if __name__ == '__main__':
 			v = d['call_back'](d['name'])
 			if not options.quiet:
 				print ' %s: %s %s [%s]' % (d['name'], v, d['units'], d['description'])
-	
+
 			if options.gmetric:
 				if d['value_type'] == 'uint':
 					value_type = 'uint32'
 				else:
 					value_type = d['value_type']
-	
+
 				cmd = "%s --conf=%s --value='%s' --units='%s' --type='%s' --name='%s' --slope='%s'" % \
 					(options.gmetric_bin, options.gmond_conf, v, d['units'], value_type, d['name'], d['slope'])
 				os.system(cmd)
-				
+
 		print 'Sleeping 15 seconds'
 		time.sleep(15)
 
