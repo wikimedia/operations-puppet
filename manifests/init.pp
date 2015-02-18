@@ -195,7 +195,7 @@ class cassandra(
     $max_heap_size                    = undef,
     $heap_newsize                     = undef,
     $jmx_port                         = 7199,
-    $additional_jvm_opts              = undef,
+    $additional_jvm_opts              = [],
     $dc                               = 'datacenter1',
     $rack                             = 'rack1',
 
