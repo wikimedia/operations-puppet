@@ -2,7 +2,7 @@
 ### THIS FILE IS MANAGED BY PUPPET
 ######################################################################
 
-http_port <%= @url_downloader_ip %>:8080
+http_port <%= @url_downloader_ip %>:<%= @url_downloader_port %>
 hierarchy_stoplist cgi-bin ?
 
 acl everything src all
