@@ -28,6 +28,7 @@ class role::url_downloader {
     include network::constants
 
     $url_downloader_ip = hiera('url_downloader_ip', $::ipaddress)
+    $url_downloader_port = hiera('url_downloader_port', 8080)
 
     if $::realm == 'production' {
         $wikimedia = [
@@ -66,7 +67,6 @@ class role::url_downloader {
     }
     $towikimedia = $wikimedia
 
-    # TODO: Evaluate if jessie's squid is fine with those rules
     if os_version('ubuntu >= trusty') or os_version('debian >= jessie') {
         $config_content = template('url_downloader/squid.conf.erb')
     } else {
@@ -81,6 +81,7 @@ class role::url_downloader {
     # macro
     ferm::service { 'url_downloader':
         proto  => 'tcp',
+        port   => $url_downloader_port,
         port   => '8080',
         srange => '$ALL_NETWORKS',
     }
@@ -88,6 +89,6 @@ class role::url_downloader {
     # Monitoring
     monitoring::service { 'url_downloader':
         description   => 'url_downloader',
-        check_command => 'check_tcp_ip!url-downloader.wikimedia.org!8080',
+        check_command => "check_tcp_ip!url-downloader.wikimedia.org!${url_downloader_port}",
     }
 }
