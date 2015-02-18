@@ -78,9 +78,9 @@ mediawiki_memcached_servers:
   dictionary:
     JsonDict:
       'ca':
-        'es'
+        - 'es'
       'es':
-        'ca'
+        - 'ca'
 "role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
 "hhvm::extra::fcgi":
     hhvm:
