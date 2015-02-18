@@ -1765,6 +1765,10 @@ node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
 
     class { 'admin': groups => [dataset-admins] }
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
     include standard
     include role::dataset::systemusers
     include role::dataset::secondary
