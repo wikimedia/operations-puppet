@@ -26,6 +26,8 @@
 #   Default: 'warn'
 # [*statsd_host*]
 #   statsd host name. Default: localhost
+# [*statsd_port*]
+#   statsd port. Default: 8125
 #
 class restbase(
     $cassandra_user = 'cassandra',
@@ -37,6 +39,7 @@ class restbase(
     $logstash_port  = 12201,
     $logging_level  = 'warn',
     $statsd_host    = 'localhost',
+    $statsd_port    = '8125',
 ) {
     ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
 
