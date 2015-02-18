@@ -113,8 +113,7 @@ spec: &spec
 # The main service setup. Each worker can offer one or more services.
 services:
   - name: restbase
-    module: ./lib/server
+    module: ./restbase/lib/server
     conf:
       port: <%= @port %>
-      port: 7231
       spec: *spec
