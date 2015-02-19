@@ -301,12 +301,14 @@ class cassandra(
         content => template("${module_name}/cassandra-env.sh.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
+        mode    => '0444',
     }
 
     file { '/etc/cassandra/cassandra.yaml':
         content => template("${module_name}/cassandra.yaml.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
+        mode    => '0444',
         require => Package['cassandra'],
     }
 
@@ -314,6 +316,7 @@ class cassandra(
         content => template("${module_name}/cassandra.default.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
+        mode    => '0444',
         require => Package['cassandra'],
     }
 
@@ -329,6 +332,7 @@ class cassandra(
         content => template("${module_name}/cassandra-rackdc.properties.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
+        mode    => '0444',
         require => Package['cassandra'],
     }
 
