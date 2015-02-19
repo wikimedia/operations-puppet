@@ -1717,6 +1717,15 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
     include redis::ganglia
 }
 
+
+node /^mc20[01][0-9]\.codfw\.wmnet/ {
+    role memcached
+    include admin
+    include password::redis
+    include redis
+    include redis::ganglia
+}
+
 node /^rdb100[1-4]\.eqiad\.wmnet/ {
     $ganglia_aggregator = true
     role db::redis
