@@ -15,7 +15,7 @@ class gridengine::shadow_master(
         ensure  => directory,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
-        mode    => '02775',
+        mode    => '2775',
     }
 
     file { "${sgeroot}/default/common":
@@ -23,7 +23,7 @@ class gridengine::shadow_master(
         ensure  => directory,
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
-        mode    => '02775',
+        mode    => '2775',
     }
 
     file { '/etc/default/gridengine':
