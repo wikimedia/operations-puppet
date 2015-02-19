@@ -13,6 +13,5 @@ class role::cassandra {
     nrpe::monitor_service { 'cassandra':
         description  => 'Cassandra database',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u cassandra -C java -a CassandraDaemon',
-        critical     => 'true',
     }
 }
