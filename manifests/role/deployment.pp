@@ -114,6 +114,10 @@ class role::deployment::config {
             'upstream'            => 'https://gerrit.wikimedia.org/r/mediawiki/services/cxserver/deploy',
             'checkout_submodules' => true,
         },
+        'dropwizard/metrics' => {
+            'gitfat_enabled' => 'true',
+            'upstream'       => 'https://gerrit.wikimedia.org/r/operations/software/dropwizard-metrics',
+        },
     }
 }
 
