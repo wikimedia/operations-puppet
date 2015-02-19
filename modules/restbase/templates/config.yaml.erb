@@ -62,6 +62,7 @@ templates:
               conf:
                 hosts: [<%= Array(@seeds).join(',') %>]
                 keyspace: system
+                localDc: <%= @cassandra_localDc %>
                 username: <%= @cassandra_user %>
                 password: <%= @cassandra_password %>
                 defaultConsistency: <%= @cassandra_defaultConsistency %>
