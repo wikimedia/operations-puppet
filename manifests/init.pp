@@ -148,7 +148,11 @@
 #
 # [*additional_jvm_opts*]
 #   Additional options to pass to the JVM.
-#   Default: undef
+#   Default: []
+#
+# [*extra_classpath*]
+#   Additional classpath to be appended to the default.
+#   Default: []
 #
 # [*jmx_port*]
 #   Port to listen for JMX queries.
