@@ -110,3 +110,6 @@ fi
 
 # Use liquidprompt!
 source $HOME/.liquidprompt/liquidprompt
+
+# add refinery/bin to my path
+export PATH=$PATH:/srv/deployment/analytics/refinery/bin
