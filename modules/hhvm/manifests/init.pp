@@ -90,12 +90,13 @@ class hhvm(
     # You can check TC memory usage stats via the /vm-tcspace end-point
     # of the admin server.
     #
-    # A ratio of 1 : 0.33 : 1 for a : a_cold : a_frozen is good general
-    # guidance.
+    # A ratio of 1 : 0.33 : 1 for a : a_cold : a_frozen is good
+    # general guidance. It has been raised to a larger value as cold
+    # TC was completely exhausted.
 
     $base_jit_size = to_bytes('100 Mb')
     $a_size        = $base_jit_size
-    $a_cold_size   = 0.33 * $base_jit_size
+    $a_cold_size   = 0.5 * $base_jit_size
     $a_frozen_size = $base_jit_size
 
 
