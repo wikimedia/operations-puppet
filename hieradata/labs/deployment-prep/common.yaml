@@ -43,6 +43,7 @@ mediawiki_memcached_servers:
     - 'nn'
     - 'no'
     - 'pt'
+    - 'ru'
     - 'sv'
   target:
     - 'ca'
@@ -55,6 +56,7 @@ mediawiki_memcached_servers:
     - 'no'
     - 'pt'
     - 'ru'
+    - 'uz'
   mt:
     Apertium:
       'ca':
