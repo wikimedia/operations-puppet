@@ -31,3 +31,5 @@ lvs::realserver::realserver_ips:
 cassandra::dc: "%{::site}"
 cassandra::cluster_name: "%{::site}"
 
+admin::groups:
+  - restbase-roots
