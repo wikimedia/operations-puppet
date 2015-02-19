@@ -15,6 +15,8 @@
 # [*cassandra_defaultConsistency*]
 #   Default cassandra query consistency level. Typically 'one' or
 #   'localQuorum'. Default: 'localQuorum'.
+# [*cassandra_localDc*]
+#   Which DC should be considered local. Default: 'datacenter1'.
 # [*port*]
 #   Port where to run the restbase service. Default: 7231
 # [*logstash_host*]
@@ -34,6 +36,7 @@ class restbase(
     $cassandra_password = 'cassandra',
     $seeds          = [$::ipaddress],
     $cassandra_defaultConsistency = 'localQuorum',
+    $cassandra_localDc = 'datacenter1',
     $port           = 7231,
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
