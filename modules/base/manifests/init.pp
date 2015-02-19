@@ -57,13 +57,13 @@ class base {
         $certname = undef
     }
 
+    $puppetmaster =  $::realm ? {
+        'labs'  => 'virt1000.wikimedia.org',
+        default => 'puppet',
+    }
+
     class { 'base::puppet':
-        server   => $::realm ? {
-            'labs'  => $::site ? {
-                'eqiad' => 'virt1000.wikimedia.org',
-            },
-            default => 'puppet',
-        },
+        server   => $puppetmaster,
         certname => $certname,
     }
 
@@ -87,11 +87,14 @@ class base {
     # include base::monitor::host.
     # if $nagios_contact_group is set, then use it
     # as the monitor host's contact group.
+
+    $group_contact = $::nagios_contact_group ? {
+        undef   => 'admins',
+        default => $::nagios_contact_group,
+    }
+
     class { 'base::monitoring::host':
-        contact_group => $::nagios_contact_group ? {
-            undef   => 'admins',
-            default => $::nagios_contact_group,
-        }
+        contact_group => $group_contact,
     }
 
     # CA for the new ldap-eqiad/ldap-codfw ldap servers, among
