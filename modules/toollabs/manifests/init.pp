@@ -154,4 +154,9 @@ class toollabs {
         force  => true,
         target => "${store}/mail",
     }
+
+    # Install at on all hosts for maintenance tasks.
+    package { 'at':
+        ensure => latest,
+    }
 }
