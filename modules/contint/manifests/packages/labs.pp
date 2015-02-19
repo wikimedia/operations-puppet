@@ -54,6 +54,12 @@ class contint::packages::labs {
     }
 
     package { [
+        # Let git-buidpackage find the Ubuntu/Debian release names
+        'libdistro-info-perl',
+        ]:
+        ensure => present,
+    }
+    package { [
         'jenkins-debian-glue',
         'jenkins-debian-glue-buildenv',
         'jenkins-debian-glue-buildenv-git',
