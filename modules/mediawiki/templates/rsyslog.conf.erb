@@ -29,7 +29,7 @@ if $programname == "hhvm" then {
     stop
 }
 
-if $syslogtag == "hhvm-fatal" then {
+if $syslogtag == "hhvm-fatal:" then {
     @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
 <% if scope['::mediawiki::forward_syslog'] -%>
     @<%= scope['::mediawiki::forward_syslog'] %>
