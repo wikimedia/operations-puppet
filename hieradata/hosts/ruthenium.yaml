@@ -1,0 +1,3 @@
+admin::groups:
+  - parsoid-roots
+  - parsoid-admin

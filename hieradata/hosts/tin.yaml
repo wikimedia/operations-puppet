@@ -3,3 +3,7 @@ base::resolving::domain_search:
   - eqiad.wmnet
   - esams.wikimedia.org
 mediawiki::users::web: www-data
+admin::groups:
+  - deployment
+  - parsoid-admin
+  - ocg-render-admins
