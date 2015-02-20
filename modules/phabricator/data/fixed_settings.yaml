@@ -81,7 +81,12 @@ maniphest.custom-field-definitions:
       default: 'None'
       security-bug: 'Software security bug'
       sensitive: 'Other confidential issue'
-      ops-access-request: 'Operations Access Request'
+
+# Security/Operations Macro's for enabling
+# as we rollout to RT and bugzilla.
+#ops-access-request: 'Operations Access Request'
+#ops-sensitive: 'Operations Sensitive'
+#sensitive: 'Another Private Issue'
 
 maniphest.statuses:
   open:
