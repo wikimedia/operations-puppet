@@ -2060,6 +2060,34 @@ host mc2002 {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host mc2003 {
+	hardware ethernet 90:e2:ba:19:54:11;
+	fixed-address mc2003.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host mc2004 {
+	hardware ethernet 90:e2:ba:19:56:51;
+	fixed-address mc2004.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host mc2005 {
+	hardware ethernet 90:e2:ba:19:56:f5;
+	fixed-address mc2005.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host mc2006 {
+	hardware ethernet 90:e2:ba:19:4e:31;
+	fixed-address mc2006.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host ms1001 {
 	hardware ethernet 78:2b:cb:0a:13:f3;
 	fixed-address ms1001.wikimedia.org;
