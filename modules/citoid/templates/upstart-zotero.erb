@@ -16,5 +16,6 @@ respawn
 # wait 60 seconds for a graceful restart before killing the master
 kill timeout 60
 
+env LD_LIBRARY_PATH="/srv/deployment/citoid/deploy/translation-server"
 chdir /srv/deployment/citoid/deploy/translation-server
-exec ./run_translation-server.sh >> /var/log/citoid/zotero.log 2>&1
+exec /srv/deployment/citoid/deploy/translation-server/xpcshell -v 180 -mn translation-server/init.js

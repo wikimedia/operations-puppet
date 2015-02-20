@@ -9,6 +9,7 @@
 #
 class citoid( $port = 1970 ) {
     require_package('nodejs')
+    require_package('firefox')
 
     package { 'citoid/deploy':
         provider => 'trebuchet',
