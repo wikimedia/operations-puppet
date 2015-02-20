@@ -6,9 +6,17 @@
 # instead.
 #
 class mediawiki::packages::php5 {
+    if os_version('ubuntu < trusty') {
+        require_package('php-apc')
+    }
+    else {
+        # We don't need php-apc on trusty
+        package { 'php-apc':
+            ensure => absent,
+        }
+    }
     # Run-time
     package { [
-        'php-apc',
         'php5-cli',
         'php5-common',
         'php5-dbg',
