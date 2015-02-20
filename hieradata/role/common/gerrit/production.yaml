@@ -1,0 +1,3 @@
+admin::groups:
+  - gerrit-roots
+  - gerrit-admin
