@@ -4466,14 +4466,14 @@ host rdb1004 {
 }
 
 host restbase1001 {
-        hardware ethernet ;
+        hardware ethernet 8c:dc:d4:00:0c:b0;
         fixed-address restbase1001.eqiad.wmnet;
         option pxelinux.pathprefix "jessie-installer/";
         filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host restbase1002 {
-        hardware ethernet ;
+        hardware ethernet 8c:dc:d4:00:11:78;
         fixed-address restbase1002.eqiad.wmnet;
         option pxelinux.pathprefix "jessie-installer/";
         filename "jessie-installer/debian-installer/amd64/pxelinux.0";
