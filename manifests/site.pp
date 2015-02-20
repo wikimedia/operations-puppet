@@ -147,7 +147,7 @@ node 'analytics1004.eqiad.wmnet' {
 # analytics1010 was previously the Hadoop master.
 # It is being deprecated.
 node 'analytics1010.eqiad.wmnet' {
-    # analytics1010 is analytics Ganglia aggregator for Row B
+    # analytics1010 is a Ganglia aggregator for Row B (Row B analytics nodes are not in production anymore (ciscos!))
     $ganglia_aggregator = true
 
     class { 'admin':
@@ -169,10 +169,13 @@ node 'analytics1010.eqiad.wmnet' {
 # hostname -> /datacenter/rack/row id is correct.  This is
 # used for Hadoop network topology awareness.
 node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
-    # analytics1014 is analytics Ganglia aggregator for Row C
-    if $::hostname == 'analytics1014' {
+    # analytics1013 is a Ganglia aggregator for Row A
+    # analytics1014 is a Ganglia aggregator for Row C
+    # analytics1019 is a Ganglia aggregator for Row D
+    if $::hostname =~ /^analytics101[349]$/ {
         $ganglia_aggregator = true
     }
+
     class { 'admin':
         groups => [
             'analytics-roots',

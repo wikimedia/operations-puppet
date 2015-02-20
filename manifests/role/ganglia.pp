@@ -28,7 +28,7 @@ class role::ganglia::config {
         'Bits caches esams'              => 'hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org',
         'LVS loadbalancers esams'        => 'hooft.esams.wikimedia.org:11651 lvs3001.esams.wmnet lvs3002.esams.wmnet',
         'Miscellaneous esams'            => 'hooft.esams.wikimedia.org:11657',
-        'Analytics cluster eqiad'        => 'analytics1009.eqiad.wmnet analytics1010.eqiad.wmnet analytics1014.eqiad.wmnet',
+        'Analytics cluster eqiad'        => 'analytics1010.eqiad.wmnet analytics1013.eqiad.wmnet analytics1014.eqiad.wmnet analytics1019.eqiad.wmnet',
         'Memcached eqiad'                => 'mc1001.eqiad.wmnet mc1002.eqiad.wmnet',
         'Text caches esams'              => 'hooft.esams.wikimedia.org:11669',
         'Upload caches esams'            => 'hooft.esams.wikimedia.org:11671 cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org',
