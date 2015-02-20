@@ -62,6 +62,7 @@ class role::url_downloader($url_downloader_ip) {
     } else {
         fail('Dont use this role outside of wikimedia')
     }
+
     $towikimedia = $wikimedia
 
     if os_version('ubuntu >= trusty') {
@@ -78,6 +79,7 @@ class role::url_downloader($url_downloader_ip) {
     ferm::service { 'url_downloader':
         proto => 'tcp',
         port  => '8080',
+        srange => '$ALL_NETWORKS',
     }
 
     # Monitoring
