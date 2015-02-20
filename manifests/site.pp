@@ -1357,11 +1357,9 @@ node 'labstore1003.eqiad.wmnet' {
 
 node 'lanthanum.eqiad.wmnet' {
 
-    class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
-
     include standard
-    include role::ci::slave  # RT #5074
-
+    include admin
+    include role::ci::slave
     # lanthanum received a SSD drive just like gallium (RT #5178) mount it
     file { '/srv/ssd':
         ensure => 'directory',
@@ -1379,7 +1377,6 @@ node 'lanthanum.eqiad.wmnet' {
 }
 
 node 'lithium.eqiad.wmnet' {
-    $cluster = 'misc'
 
     include admin
     include standard
@@ -2047,10 +2044,9 @@ node /(plutonium|pollux)\.wikimedia\.org/ {
 }
 
 node 'polonium.wikimedia.org' {
-    class { 'admin': groups => ['oit'] }
     role mail::mx
-
     include standard
+    include admin
 
     interface::add_ip6_mapped { 'main': }
 
@@ -2102,20 +2098,15 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
 
 # netflow machine (jkrauska)
 node 'rhenium.wikimedia.org' {
+    role pmacct
     include standard
-    include role::pmacct
-    class { 'admin': groups => ['pmacct-roots'] }
+    include admin
 }
 
 # ruthenium is a parsoid regression test server
 # https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
 node 'ruthenium.eqiad.wmnet' {
-    class { 'admin':
-        groups => [
-            'parsoid-roots',
-            'parsoid-admin',
-        ]
-    }
+    include admin
     include standard
 }
 
@@ -2288,12 +2279,9 @@ node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
 }
 
 node 'lead.wikimedia.org' {
-    class { 'admin': groups => ['oit'] }
-
     role mail::mx
-
     include standard
-
+    include admin
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -2316,14 +2304,7 @@ node 'tin.eqiad.wmnet' {
     include ssh::hostkeys-collect
     include role::apachesync
     include role::releases::upload
-
-    class { 'admin':
-        groups => [
-            'deployment',
-            'parsoid-admin',
-            'ocg-render-admins',
-        ]
-    }
+    include admin
 
     # for reedy RT #6322
     package { 'unzip':
@@ -2358,15 +2339,9 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
 # Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
 # processes it, and broadcasts to internal subscribers.
 node 'vanadium.eqiad.wmnet' {
-    class { 'admin':
-        groups => [
-            'eventlogging-admins',
-            'eventlogging-roots',
-        ],
-    }
-
+    role eventlogging
+    include admin
     include standard
-    include role::eventlogging
     include role::ipython_notebook
     include role::logging::mediawiki::errors
 }
@@ -2374,16 +2349,10 @@ node 'vanadium.eqiad.wmnet' {
 # Hosts visualization / monitoring of EventLogging event streams
 # and MediaWiki errors.
 node 'hafnium.wikimedia.org' {
+    role eventlogging::graphite
     include standard
-    class { 'admin':
-        groups => [
-            'eventlogging-admins',
-            'eventlogging-roots',
-        ],
-    }
-
+    include admin
     include base::firewall
-    include role::eventlogging::graphite
     include role::webperf
 }
 
