@@ -176,6 +176,10 @@ class lvs::configuration {
             'restbase' => {
                 'eqiad' => "10.2.2.17",
             },
+
+            'zotero' => {
+                'eqiad' => "10.2.2.16",
+            },
         },
         'labs' => {
             'text' => {
@@ -208,6 +212,7 @@ class lvs::configuration {
             'search' => {},
             'stream' => {},
             'restbase' => {},
+            'zotero' => {},
         }
     }
 
@@ -711,6 +716,19 @@ class lvs::configuration {
             'depool-threshold' => '.5',
             'monitors' => {
                 'ProxyFetch' => { 'url' => [ 'http://restbase.svc.eqiad.wmnet' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
+            }
+        },
+        'zotero' => {
+            'description' => 'Zotero, zotero.svc.eqiad.wmnet',
+            'class' => 'low-traffic',
+            'sites' => [ 'eqiad' ],
+            'ip' => $service_ips['zotero'][$::site],
+            'port' => 1969,
+            'bgp' => 'yes',
+            'depool-threshold' => '.5',
+            'monitors' => {
+                'ProxyFetch' => { 'url' => [ 'http://zotero.svc.eqiad.wmnet' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             }
         }
