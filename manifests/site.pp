@@ -293,13 +293,10 @@ node 'analytics1027.eqiad.wmnet' {
 
 # git.wikimedia.org
 node 'antimony.wikimedia.org' {
-
-    class { 'admin': groups => ['gerrit-root', 'gerrit-admin'] }
-
-    class { 'base::firewall': }
-
+    role gitblit
+    include admin
+    include base::firewall
     include standard
-    include role::gitblit
     include role::subversion
 }
 
@@ -397,14 +394,10 @@ node 'carbon.wikimedia.org' {
 
 node 'caesium.eqiad.wmnet' {
     $cluster = 'misc'
-
-    class { 'admin': groups => ['releasers-mediawiki',
-                                'releasers-mobile'] }
-    class { 'base::firewall': }
-
+    role releases
+    include base::firewall
     include admin
     include standard
-    include role::releases
 }
 
 # cerium, praseodymium and xenon are Cassandra test hosts
@@ -567,10 +560,8 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 }
 
 node 'dataset1001.wikimedia.org' {
-    $cluster = 'misc'
 
-    class { 'admin': groups => [dataset-admins] }
-
+    include admin
     include standard
     include role::dataset::systemusers
     include role::dataset::primary
@@ -1011,13 +1002,7 @@ node 'eisteinium.eqiad.wmnet' {
 node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
 
-    class { 'admin':
-        groups => [
-            'udp2log-users',
-            'restricted',
-        ],
-    }
-
+    include admin
     include role::logging::udp2log::erbium
 }
 
@@ -1104,15 +1089,9 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
 node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
+    include admin
     include standard
     include ::role::xenon
-
-    class { 'admin':
-        groups => [
-            'deployment',
-            'restricted',
-        ],
-    }
 
     class { 'role::logging::mediawiki':
         monitor       => false,
@@ -1124,8 +1103,7 @@ node 'fluorine.eqiad.wmnet' {
 # gadolinium is the webrequest socat multicast relay.
 # base_analytics_logging_node is defined in role/logging.pp
 node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
-
-    class { 'admin': groups => ['udp2log-users'] }
+    include admin
 
     # relay the incoming webrequest log stream to multicast
     include role::logging::relay::webrequest-multicast
@@ -1141,8 +1119,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 # Since gadolinium is back up, varnishncsa instances now send logs
 # to gadolinium again.  protactinium is not being used.
 node 'protactinium.wikimedia.org' inherits 'base_analytics_logging_node' {
-
-    class { 'admin': groups => ['udp2log-users'] }
+    include admin
 
     # relay the incoming webrequest log stream to multicast
     include role::logging::relay::webrequest-multicast
@@ -1158,7 +1135,7 @@ node 'gallium.wikimedia.org' {
 
     $cluster = 'misc'
 
-    class { 'admin': groups => ['contint-users', 'contint-admins', 'contint-roots'] }
+    include admin
 
     # Bug 49846, let us sync VisualEditor in mediawiki/extensions.git
     sudo::user { 'jenkins-slave':
@@ -1773,7 +1750,7 @@ node 'rubidium.wikimedia.org' {
 node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
 
-    class { 'admin': groups => [dataset-admins] }
+    include admin
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2023,7 +2000,7 @@ node 'osmium.eqiad.wmnet' {
 # base_analytics_logging_node is defined in role/logging.pp
 node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
 
-    class { 'admin': groups => ['udp2log-users'] }
+    include admin
     include role::dataset::systemusers
 
     # main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
@@ -2447,20 +2424,13 @@ node 'graphite1002.eqiad.wmnet' {
 
 # Labs Graphite and StatsD host
 node 'labmon1001.eqiad.wmnet' {
+    role labmon
     include standard
-
-    class { 'admin': groups => ['labmon-roots'] }
-
-    include role::labmon
+    include admin
 }
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
-    $cluster               = 'virt'
-
-    class { 'admin':
-        groups => ['deployment']
-    }
 
     include standard
     include admin
@@ -2614,14 +2584,11 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
 }
 
 node 'ytterbium.wikimedia.org' {
-
-    class { 'admin': groups => ['gerrit-root', 'gerrit-admin'] }
-
-    class { 'base::firewall': }
-
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::production
-    include role::gerrit::production
+    role gerrit::production
+    include admin
+    include base::firewall
 
 }
 
