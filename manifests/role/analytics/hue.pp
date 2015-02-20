@@ -17,18 +17,21 @@ class role::analytics::hue {
     if ($::realm == 'production') {
         include passwords::analytics
 
-        $secret_key       = $passwords::analytics::hue_secret_key
-        $hive_server_host = 'analytics1027.eqiad.wmnet'
-        $ssl_private_key  = '/etc/ssl/private/hue.key'
-        $ssl_certificate  = '/etc/ssl/certs/hue.cert'
+        $secret_key                 = $passwords::analytics::hue_secret_key
+        $hive_server_host           = 'analytics1027.eqiad.wmnet'
+
         # Disable automatic Hue user creation in production.
         $ldap_create_users_on_login = false
+
+        # We want to force https in production, but hue does not yet support this.
+        # So, we use apache to force redirect.
+        include role::analytics::hue::proxy
     }
     elsif ($::realm == 'labs') {
         $secret_key       = 'oVEAAG5dp02MAuIScIetX3NZlmBkhOpagK92wY0GhBbq6ooc0B3rosmcxDg2fJBM'
         # Assume that in Labs, Hue should run on the main master Hadoop NameNode.
         $hive_server_host = $role::analytics::hadoop::config::namenode_hosts[0]
-        # Disable ssl in labs.  Labs proxy handles SSL termination.
+
         $ssl_private_key            = false
         $ssl_certificate            = false
         $ldap_create_users_on_login = true
@@ -49,11 +52,38 @@ class role::analytics::hue {
         ldap_group_filter          => 'objectclass=posixgroup',
         ldap_group_member_attr     => 'member',
         ldap_create_users_on_login => $ldap_create_users_on_login,
-        # Disable ssl in labs.  Labs proxy handles SSL termination.
-        ssl_private_key            => $ssl_private_key,
-        ssl_certificate            => $ssl_certificate,
+        secure_proxy_ssl_header    => true,
     }
 }
 
-# TODO: Hue database backup.
+
+# == Class role::analytics::hue::proxy
+# Creates a transparent reverse proxy to hue
+# that force redirects to https.
+# This requires that something is serving
+# hue at https://hue.wikimedia.org, like the misc-web-lb nginxes.
+#
+class role::analytics::hue::proxy {
+    $server_name      = 'hue.wikimedia.org'
+    $listen_port      = 8887  # apache listens on 8887
+    $destination_port = 8888  # and proxies to hue on 8888
+    # default destiation host is localhost
+
+    # Create an apache site that will also proxy to hue, but force redirects
+    # to HTTPS.  Hue itself does not yet support this.
+    apache::conf { 'hue-force-https-proxy-port':
+        ensure   => $ensure,
+        content  => "Listen ${listen_port}\n",
+    }
+
+    # Use the generic force-https-proxy apache site.
+    apache::site { 'hue-force-https-proxy':
+        content => 'apache/sites/force-https-proxy.erb',
+        require => Apache::Conf['hue_apache_port'],
+    }
+}
+
+
+
+# TODO: Hue datafbase backup.
 # TODO: Make Hue use MySQL database. Maybe?

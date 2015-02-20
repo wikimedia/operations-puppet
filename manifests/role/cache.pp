@@ -1660,9 +1660,10 @@ class role::cache {
                 'probe'         => 'logstash',
             },
             {
-                # hue serves requests on port 8888
+                # hue's apache proxy serves requests on port 8887.
+                # See role::analytics::hue::proxy
                 'backend_match' => '^analytics1027',
-                'port'          => 8888,
+                'port'          => 8887,
             },
             {
                 'port'                  => 80,

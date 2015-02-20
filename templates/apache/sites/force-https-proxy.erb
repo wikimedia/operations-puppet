@@ -1,0 +1,37 @@
+# This file is managed by Puppet.
+#
+# Redirects any requests that does not have X-Forwarded-Proto=https set to its upstream https:// URI.
+# Anything that does have X-Forwarded-Proto=https set will be transparently proxied to its destination.
+#
+
+<%
+# == Template Parameters:
+# listen_port       - Port on which apache should listen for incoming requests.
+#                     Likely your upstream https proxy will send here.
+#                     Default: 80
+# server_name       - VirtualHost ServerName.  Default: fqdn
+# server_alias      - Array of VirtualHost ServerAliases. Default: undef
+# destination_host  - Downstream host where this request should be sent. Default: localhost
+# destination_port  - Downstream port where this request should be sent. Default: 81
+#
+
+proxy_destination_uri = "http://#{@destination_host ? @destination_host : 'localhost'}:#{@destination_port ? @destination_port : '81'}/"
+-%>
+<VirtualHost *:<%= @listen_port ? @listen_port : '80' %>>
+    ServerName <%= @server_name ? @server_name : @fqdn %>
+    <% if @server_alias -%>
+    ServerAlias <%= Array(@server_alias).join(' ') %>
+    <% end -%>
+
+    # Redirect requests that did not come via https to https.
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+
+    # Transparently proxy requests that came via https to their destination.
+    ProxyVia On
+    ProxyRequests Off
+    ProxyPass / <%= proxy_destination_uri %>
+    ProxyPassReverse / <%= proxy_destination_uri %>
+    ProxyPreserveHost On
+</VirtualHost>
