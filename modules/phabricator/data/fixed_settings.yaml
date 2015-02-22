@@ -57,7 +57,7 @@ maniphest.priorities:
     short: Low
     color: yellow
   '10':
-    name: 'Needs Volunteer'
+    name: Lowest
     short: Volunteer
     color: sky
 
