@@ -20,4 +20,11 @@ class toollabs::node::compute::general {
 
     class { 'toollabs::hostgroups': groups => [ '@general' ] }
 
+    file { '/usr/local/bin/jobkill':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/jobkill',
+    }
 }
