@@ -43,5 +43,12 @@ class toollabs::node::web inherits toollabs {
         mode   => '0444',
         source => 'puppet:///modules/toollabs/portgranter.conf',
     }
-}
 
+    file { '/usr/local/bin/jobkill':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/jobkill',
+    }
+}

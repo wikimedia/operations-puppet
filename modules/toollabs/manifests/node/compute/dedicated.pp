@@ -41,5 +41,11 @@ class toollabs::node::compute::dedicated {
         config => 'toollabs/gridengine/host-unrestricted.erb',
     }
 
+    file { '/usr/local/bin/jobkill':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/jobkill',
+    }
 }
-
