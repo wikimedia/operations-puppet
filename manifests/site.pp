@@ -147,9 +147,6 @@ node 'analytics1004.eqiad.wmnet' {
 # analytics1010 was previously the Hadoop master.
 # It is being deprecated.
 node 'analytics1010.eqiad.wmnet' {
-    # analytics1010 is a Ganglia aggregator for Row B (Row B analytics nodes are not in production anymore (ciscos!))
-    $ganglia_aggregator = true
-
     class { 'admin':
         groups => [
             'analytics-users',
