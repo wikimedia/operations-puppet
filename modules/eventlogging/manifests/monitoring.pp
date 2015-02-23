@@ -56,14 +56,14 @@ class eventlogging::monitoring::graphite {
         contact_group   => 'analytics'
     }
 
-    # Alarms if 15% of Navigation Timing event throughput goes under 2 req/sec
+    # Alarms if 15% of Navigation Timing event throughput goes under 1 req/sec
     # in a 15 min period
     # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
     monitoring::graphite_threshold { 'eventlogging_NavigationTiming_throughput':
         description     => 'Throughput of event logging NavigationTiming events',
         metric          => 'eventlogging.schema.NavigationTiming.rate',
-        warning         => 2,
-        critical        => 1,
+        warning         => 1,
+        critical        => 0,
         percentage      => 15, # At least 3 of the 15 readings
         from            => '15min',
         contact_group   => 'analytics',
