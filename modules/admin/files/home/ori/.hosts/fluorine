@@ -5,7 +5,7 @@ log-trend() {
 }
 
 log-trends() {
-  export -f log_trend
+  export -f log-trend
   ls -1 /a/mw-log/*.log             |\
     xargs -n1 -I{} basename {} .log |\
     xargs -P $(nproc) -n1 bash -c 'log-trend "$@"' _ | sort
