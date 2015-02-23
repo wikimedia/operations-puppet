@@ -52,7 +52,14 @@ sub vcl_recv {
 	} elsif (req.http.Host == "noc.wikimedia.org") {
 		set req.backend = terbium;
 	} elsif (req.http.Host == "hue.wikimedia.org") {
-		set req.backend = analytics1027;
+		// make sure all requests to Hue are via https proxy
+		if(req.http.X-Forwarded-Proto != "https") {
+			set req.http.Location = regsub(req.url, "(?i)^http:", "https:");
+			error 301 "Moved Permanently";
+		}
+		else {
+			set req.backend = analytics1027;
+		}
 	} elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org") {
 		set req.backend = zirconium;
 	} elsif (req.http.Host == "etherpad.wikimedia.org") {
