@@ -14,13 +14,16 @@ class role::analytics::hue {
     # LDAP Labs config is the same as LDAP in production.
     include ldap::role::config::labs
 
+    # Disable hue's SSL.  SSL terminiation is handled by an upstream proxy.
+    $ssl_private_key            = false
+    $ssl_certificate            = false
+    $secure_proxy_ssl_header    = true
+
     if ($::realm == 'production') {
         include passwords::analytics
 
         $secret_key       = $passwords::analytics::hue_secret_key
         $hive_server_host = 'analytics1027.eqiad.wmnet'
-        $ssl_private_key  = '/etc/ssl/private/hue.key'
-        $ssl_certificate  = '/etc/ssl/certs/hue.cert'
         # Disable automatic Hue user creation in production.
         $ldap_create_users_on_login = false
     }
@@ -28,9 +31,6 @@ class role::analytics::hue {
         $secret_key       = 'oVEAAG5dp02MAuIScIetX3NZlmBkhOpagK92wY0GhBbq6ooc0B3rosmcxDg2fJBM'
         # Assume that in Labs, Hue should run on the main master Hadoop NameNode.
         $hive_server_host = $role::analytics::hadoop::config::namenode_hosts[0]
-        # Disable ssl in labs.  Labs proxy handles SSL termination.
-        $ssl_private_key            = false
-        $ssl_certificate            = false
         $ldap_create_users_on_login = true
     }
 
@@ -52,6 +52,7 @@ class role::analytics::hue {
         # Disable ssl in labs.  Labs proxy handles SSL termination.
         ssl_private_key            => $ssl_private_key,
         ssl_certificate            => $ssl_certificate,
+        secure_proxy_ssl_header    => $secure_proxy_ssl_header,
     }
 }
 
