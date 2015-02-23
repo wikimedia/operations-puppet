@@ -7,6 +7,7 @@
 # FIXME: Why man pages for some but not all?
 class scap::scripts {
     require misc::deployment::passwordscripts
+    require mediawiki::users::web
 
     package { ['libwww-perl', 'libnet-dns-perl']:
         ensure => present;
@@ -39,15 +40,15 @@ class scap::scripts {
             mode   => '0555',
             source => 'puppet:///modules/scap/foreachwiki';
         '/usr/local/bin/foreachwikiindblist':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///modules/scap/foreachwikiindblist';
-        '/usr/local/bin/mwscript':
             owner   => 'root',
             group   => 'root',
             mode    => '0555',
-            source  => 'puppet:///modules/scap/mwscript';
+            content => template('scap/foreachwikiindblist');
+        '/usr/local/bin/mwscript':
+            owner    => 'root',
+            group    => 'root',
+            mode     => '0555',
+            content  => template('scap/mwscript.erb');
         '/usr/local/bin/mwscriptwikiset':
             owner   => 'root',
             group   => 'root',
