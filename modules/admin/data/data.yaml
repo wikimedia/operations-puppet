@@ -261,7 +261,7 @@ groups:
   eventlogging-roots:
     gid: 739
     description: Full root on EventLogging servers.
-    members: []
+    members: [nuria, milimetric]
     privileges: ['ALL = NOPASSWD: ALL']
   wikidata-query-roots:
     gid: 740
