@@ -52,7 +52,14 @@ sub vcl_recv {
 	} elsif (req.http.Host == "noc.wikimedia.org") {
 		set req.backend = terbium;
 	} elsif (req.http.Host == "hue.wikimedia.org") {
-		set req.backend = analytics1027;
+		// make sure all requests to Hue are via https proxy
+		if (req.http.X-Forwarded-Proto != "https") {
+			set req.http.Location = "https://" + req.http.Host + req.url;
+			error 755 "TLS Redirect";
+		}
+		else {
+			set req.backend = analytics1027;
+		}
 	} elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org") {
 		set req.backend = zirconium;
 	} elsif (req.http.Host == "etherpad.wikimedia.org") {
@@ -70,7 +77,16 @@ sub vcl_recv {
 	return (lookup);
 }
 
+sub misc_error_hook {
+	if (obj.status == 755) {
+		set obj.http.Location = req.http.Location;
+		set obj.status = 301;
+		return(deliver);
+	}
+}
+
 sub vcl_error {
+	call misc_error_hook;
 	call errorpage;
 	return (deliver);
 }
