@@ -12,7 +12,7 @@ else
 fi
 
 if groups | grep -Ewq 'sudo|wikidev|root'; then
-	sudo -u apache php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
+	sudo -u <%= scope.lookupvar('mediawiki::users::web') -%> php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
 else
 	php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
 fi
