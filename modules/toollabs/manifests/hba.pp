@@ -23,6 +23,7 @@ class toollabs::hba {
     exec { 'make-shosts':
         command => '/usr/local/sbin/project-make-shosts >/etc/ssh/shosts.equiv~',
         require => File['/usr/local/sbin/project-make-shosts'],
+        onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find /data/project/.system/store -maxdepth 1 \\( -type d -or -type f -name submithost-\\* \\) -newer /etc/ssh/shosts.equiv~)\"",
     }
 
     file { '/etc/ssh/shosts.equiv':
@@ -45,6 +46,7 @@ class toollabs::hba {
     exec { 'make-access':
         command => '/usr/local/sbin/project-make-access >/etc/security/access.conf~',
         require => File['/usr/local/sbin/project-make-access'],
+        onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find /data/project/.system/store -maxdepth 1 \\( -type d -or -type f -name submithost-\\* \\) -newer /etc/security/access.conf~)\"",
     }
 
     File <| title == '/etc/security/access.conf' |> {
