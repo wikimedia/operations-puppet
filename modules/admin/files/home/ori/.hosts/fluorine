@@ -1,0 +1,12 @@
+#!/bin/bash
+log-trend() {
+  sparkline=$(ls -t1 /a/mw-log/archive/"$1".log*.gz | head -30 | xargs gzip -ql | awk '{ print $2 }' | spark)
+  printf "%-30s\t%s\n" "$1" "$sparkline"
+}
+
+log-trends() {
+  export -f log_trend
+  ls -1 /a/mw-log/*.log             |\
+    xargs -n1 -I{} basename {} .log |\
+    xargs -P $(nproc) -n1 bash -c 'log-trend "$@"' _ | sort
+}
