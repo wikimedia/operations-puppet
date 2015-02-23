@@ -11,7 +11,7 @@ for x in $DBLIST; do
 	echo $x
 	echo -----------------------------------------------------------------
 	if groups | grep -Ewq 'sudo|wikidev|root'; then
-		sudo -u apache php -ddisplay_errors=On $MEDIAWIKI_DEPLOYMENT_DIR/multiversion/MWScript.php $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
+		sudo -u <%= scope.lookupvar('mediawiki::users::web') -%> php -ddisplay_errors=On $MEDIAWIKI_DEPLOYMENT_DIR/multiversion/MWScript.php $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
 	else
 		php -ddisplay_errors=On $MEDIAWIKI_DEPLOYMENT_DIR/multiversion/MWScript.php $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
 	fi
