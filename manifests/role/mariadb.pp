@@ -10,7 +10,9 @@ class role::mariadb {
 }
 
 # root, repl, nagios, tendril
-class role::mariadb::grants {
+class role::mariadb::grants(
+    $shard = false,
+    ) {
 
     include passwords::misc::scripts
     include passwords::tendril
@@ -27,6 +29,17 @@ class role::mariadb::grants {
         group   => 'root',
         mode    => '0400',
         content => template('mariadb/production-grants.sql.erb'),
+    }
+
+    if $shard {
+
+        file { "/etc/mysql/production-grants-shard.sql":
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
+            content => template("mariadb/production-grants-${shard}.sql.erb"),
+        }
     }
 }
 
@@ -65,7 +78,6 @@ class role::mariadb::misc(
     }
 
     include standard
-    include role::mariadb::grants
     include role::mariadb::monitor
     include passwords::misc::scripts
 
@@ -80,6 +92,10 @@ class role::mariadb::misc(
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         read_only => $read_only,
+    }
+
+    class { 'role::mariadb::grants':
+        shard => $shard,
     }
 }
 
@@ -98,7 +114,6 @@ class role::mariadb::misc::phabricator(
 
     include standard
     include mariadb::packages_wmf
-    include role::mariadb::grants
     include role::mariadb::monitor
     include passwords::misc::scripts
 
@@ -133,6 +148,10 @@ class role::mariadb::misc::phabricator(
         content => template('mariadb/phabricator-stopwords.txt.erb'),
     }
 
+    class { 'role::mariadb::grants':
+        shard => $shard,
+    }
+
     if $snapshot {
         include coredb_mysql::snapshot
     }
@@ -157,7 +176,6 @@ class role::mariadb::misc::eventlogging(
     }
 
     include standard
-    include role::mariadb::grants
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
 
@@ -178,6 +196,10 @@ class role::mariadb::misc::eventlogging(
         tmpdir    => '/srv/tmp',
         sql_mode  => 'STRICT_ALL_TABLES',
         read_only => $read_only,
+    }
+
+    class { 'role::mariadb::grants':
+        shard => $shard,
     }
 }
 
