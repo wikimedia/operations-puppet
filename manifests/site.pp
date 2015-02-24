@@ -1695,7 +1695,7 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 node /^mc20[01][0-9]\.codfw\.wmnet/ {
     role memcached
     include admin
-    include password::redis
+    include passwords::redis
     include redis
     include redis::ganglia
 }
