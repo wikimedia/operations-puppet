@@ -31,7 +31,7 @@ class cassandra::metrics(
         provider => 'trebuchet',
     }
 
-    file { '/usr/share/cassandra/metrics-graphite.jar':
+    file { '/usr/share/cassandra/lib/metrics-graphite.jar':
         ensure => 'link',
         target => '/srv/deployment/dropwizard/metrics/lib/metrics-graphite-2.2.0.jar',
         require => Package['dropwizard/metrics'],
