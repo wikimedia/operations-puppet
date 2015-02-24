@@ -115,7 +115,7 @@ class role::deployment::config {
             'checkout_submodules' => true,
         },
         'dropwizard/metrics' => {
-            'gitfat_enabled' => 'true',
+            'gitfat_enabled' => true,
             'upstream'       => 'https://gerrit.wikimedia.org/r/operations/software/dropwizard-metrics',
         },
     }
