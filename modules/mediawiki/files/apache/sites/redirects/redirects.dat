@@ -514,3 +514,7 @@ funnel	*w.wiki	//www.wikipedia.org
 
 # RT #8077
 override wikimedia.org/research https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
+
+# Redirect old techblog.wikimedia.org urls to blog.wikimedia.org T90638
+rewrite	techblog.wikimedia.org	//blog.wikimedia.org
+
