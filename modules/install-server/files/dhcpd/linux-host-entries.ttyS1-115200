@@ -2089,70 +2089,70 @@ host mc2006 {
 }
 
 host mc2007 {
-	hardware ethernet 90:e2:ba:19:51:d9;
+	hardware ethernet 90:e2:ba:19:51:d8;
 	fixed-address mc2007.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc2008 {
-	hardware ethernet 90:e2:ba:19:58:9d;
+	hardware ethernet 90:e2:ba:19:58:9c;
 	fixed-address mc2008.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc2009 {
-	hardware ethernet 90:e2:ba:19:56:71;
+	hardware ethernet 90:e2:ba:19:56:70;
 	fixed-address mc2009.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc2010 {
-	hardware ethernet 90:e2:ba:19:50:dd;
+	hardware ethernet 90:e2:ba:19:50:dc;
 	fixed-address mc2010.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc2011 {
-	hardware ethernet 90:e2:ba:19:53:fd;
+	hardware ethernet 90:e2:ba:19:53:fc;
 	fixed-address mc2011.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc2012 {
-	hardware ethernet 90:e2:ba:19:4f:b5;
+	hardware ethernet 90:e2:ba:19:4f:b4;
 	fixed-address mc2012.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc2013 {
-	hardware ethernet 90:e2:ba:19:50:b9;
+	hardware ethernet 90:e2:ba:19:50:b8;
 	fixed-address mc2013.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc2014 {
-	hardware ethernet 90:e2:ba:19:55:b9;
+	hardware ethernet 90:e2:ba:19:55:b8;
 	fixed-address mc2014.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc2015 {
-	hardware ethernet 90:e2:ba:1d:47:c1;
+	hardware ethernet 90:e2:ba:1d:47:c0;
 	fixed-address mc2015.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc2016 {
-	hardware ethernet 90:e2:ba:19:4e:49;
+	hardware ethernet 90:e2:ba:19:4e:48;
 	fixed-address mc2016.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
