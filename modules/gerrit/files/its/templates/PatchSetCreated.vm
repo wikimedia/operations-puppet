@@ -2,5 +2,3 @@ Change $change-number had a related patch set uploaded (by $uploader-name):
 $subject
 
 ${its.formatLink($change-url)}
-
-#patch-for-review
