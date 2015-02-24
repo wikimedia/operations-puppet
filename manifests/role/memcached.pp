@@ -5,6 +5,10 @@
     description => 'eqiad memcached',
 }
 
+@monitoring::group { 'memcached_codfw':
+    description => 'codfw memcached',
+}
+
 class role::memcached {
     system::role { 'role::memcached': }
 
