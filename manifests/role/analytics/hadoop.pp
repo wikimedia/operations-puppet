@@ -359,6 +359,7 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             description  => 'Hadoop JournalNode',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
             require      => Class['cdh::hadoop'],
+            critical     => 'true',
         }
     }
     file { '/usr/local/bin/hadoop-yarn-logging-helper.sh':
@@ -472,11 +473,13 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
             description  => 'Hadoop Namenode - Primary',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
             require      => Class['cdh::hadoop::master'],
+            critical     => 'true',
         }
         nrpe::monitor_service { 'hadoop-yarn-resourcemanager':
             description  => 'Hadoop ResourceManager',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
             require      => Class['cdh::hadoop::master'],
+            critical     => 'true',
         }
         nrpe::monitor_service { 'hadoop-mapreduce-historyserver':
             description  => 'Hadoop HistoryServer',
@@ -602,6 +605,7 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
             description  => 'Hadoop Namenode - Stand By',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
             require      => Class['cdh::hadoop::namenode::standby'],
+            critical     => 'true',
         }
     }
 }
