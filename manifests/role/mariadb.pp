@@ -51,11 +51,17 @@ class role::mariadb::monitor::dba {
 
 # miscellaneous services clusters
 class role::mariadb::misc(
-    $shard
+    $shard  = 'm1',
+    $master = false,
     ) {
 
     system::role { 'role::mariadb::misc':
         description => "Misc Services Database ${shard}",
+    }
+
+    $read_only = $master ? {
+        true  => 'off',
+        false => 'on',
     }
 
     include standard
@@ -68,11 +74,12 @@ class role::mariadb::misc(
     }
 
     class { 'mariadb::config':
-        prompt   => "MISC ${shard}",
-        config   => 'mariadb/misc.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/srv/sqldata',
-        tmpdir   => '/srv/tmp',
+        prompt    => "MISC ${shard}",
+        config    => 'mariadb/misc.my.cnf.erb',
+        password  => $passwords::misc::scripts::mysql_root_pass,
+        datadir   => '/srv/sqldata',
+        tmpdir    => '/srv/tmp',
+        read_only => $read_only,
     }
 }
 
