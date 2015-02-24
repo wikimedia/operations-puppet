@@ -20,10 +20,15 @@ class role::memcached {
         'labs'       => 3000,
     }
 
+    $version = os_version('debian >= jessie || ubuntu >= trusty') ? {
+        true    => 'present',
+        default => '1.4.15-0wmf1',
+    }
+
     class { '::memcached':
         size          => $memcached_size,
         port          => 11211,
-        version       => '1.4.15-0wmf1',
+        version       => $version,
         extra_options => {
             '-o' => 'slab_reassign',
             '-D' => ':',
