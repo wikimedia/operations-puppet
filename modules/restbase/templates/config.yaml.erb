@@ -3,6 +3,11 @@
 info:
   name: restbase
 
+
+# Log error messages and gracefully restart a worker if v8 reports using more
+# heap (note: not RSS).
+worker_heap_limit_mb: 500
+
 logging:
   name: restbase
   level: <%= @logging_level %>
