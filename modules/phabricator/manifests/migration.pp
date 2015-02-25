@@ -2,9 +2,25 @@
 #
 # Tools and such needed to migrate 3rd party content
 #
-class phabricator::migration {
-
+class phabricator::migration (
+    $dbhost                = 'localhost',
+    $manifest_user         = '',
+    $manifest_pass         = '',
+    $app_user              = '',
+    $app_pass              = '',
+    $bz_user               = '',
+    $bz_pass               = '',
+    $rt_user               = '',
+    $rt_pass               = '',
+    $phabtools_cert        = '',
+    $phabtools_user        = '',
+) {
     package { 'python-mysqldb': ensure => present }
+
+    file { '/etc/phabtools.conf':
+        content => template('phabricator/phabtools.conf.erb'),
+        require => Git::Install['phabricator/tools'],
+    }
 
     git::install { 'phabricator/tools':
         directory => '/srv/phab/tools',

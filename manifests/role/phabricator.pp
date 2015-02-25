@@ -2,23 +2,31 @@ class role::phabricator::config {
     #Both app and admin user are limited to the appropriate
     #database based on the connecting host.
     include passwords::mysql::phabricator
-    $mysql_adminuser = $passwords::mysql::phabricator::admin_user
-    $mysql_adminpass = $passwords::mysql::phabricator::admin_pass
-    $mysql_appuser = $passwords::mysql::phabricator::app_user
-    $mysql_apppass = $passwords::mysql::phabricator::app_pass
-    $mysql_maniphestuser = $passwords::mysql::phabricator::manifest_user
-    $mysql_maniphestpass = $passwords::mysql::phabricator::manifest_pass
+    $mysql_adminuser       = $passwords::mysql::phabricator::admin_user
+    $mysql_adminpass       = $passwords::mysql::phabricator::admin_pass
+    $mysql_appuser         = $passwords::mysql::phabricator::app_user
+    $mysql_apppass         = $passwords::mysql::phabricator::app_pass
+    $mysql_maniphestuser   = $passwords::mysql::phabricator::manifest_user
+    $mysql_maniphestpass   = $passwords::mysql::phabricator::manifest_pass
+    $bz_user               = $passwords::mysql::phabricator::bz_user
+    $bz_pass               = $passwords::mysql::phabricator::bz_pass
+    $rt_user               = $passwords::mysql::phabricator::rt_user
+    $rt_pass               = $passwords::mysql::phabricator::rt_pass
+    $phabtools_cert        = $passwords::mysql::phabricator::phabtools_cert
+    $phabtools_user        = $passwords::mysql::phabricator::phabtools_user
 }
 
 # production phabricator instance
 class role::phabricator::main {
-    include role::phabricator::config
 
     system::role { 'role::phabricator::main':
         description => 'Phabricator (Main)'
     }
 
-    #let's go jenkins
+    include passwords::phabricator
+    include role::phabricator::config
+    include phabricator::monitoring
+
     $current_tag = 'release/2015-02-18/1'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
@@ -57,21 +65,31 @@ class role::phabricator::main {
         },
     }
 
-    class { 'exim::roled':
-        local_domains           => [ '+system_domains', '+phab_domains' ],
-        enable_mail_relay       => false,
-        enable_external_mail    => false,
-        smart_route_list        => $::mail_smarthost,
-        enable_mailman          => false,
-        phab_relay              => true,
-        enable_spamassassin     => false,
+    class { '::phabricator::migration':
+        dbhost          => $mysql_host,
+        manifest_user   => $role::phabricator::config::mysql_maniphestuser,
+        manifest_pass   => $role::phabricator::config::mysql_maniphestpass,
+        app_user        => $role::phabricator::config::mysql_appuser,
+        app_pass        => $role::phabricator::config::mysql_apppass,
+        bz_user         => $role::phabricator::config::bz_user,
+        bz_pass         => $role::phabricator::config::bz_pass,
+        rt_user         => $role::phabricator::config::rt_user,
+        rt_pass         => $role::phabricator::config::rt_pass,
+        phabtools_cert  => $role::phabricator::config::phabtools_cert,
+        phabtools_user  => $role::phabricator::config::phabtools_user,
     }
 
-    include passwords::phabricator
+    class { 'exim::roled':
+        local_domains         => [ '+system_domains', '+phab_domains' ],
+        enable_mail_relay     => false,
+        enable_external_mail  => false,
+        smart_route_list      => $::mail_smarthost,
+        enable_mailman        => false,
+        phab_relay            => true,
+        enable_spamassassin   => false,
+    }
+
     $emailbotcert = $passwords::phabricator::emailbot_cert
-
-    include phabricator::monitoring
-
     class { '::phabricator::mailrelay':
         default          => {
             security     => 'users',
@@ -79,16 +97,15 @@ class role::phabricator::main {
             taskcreation => "task@${domain}",
         },
         address_routing => {
-            ulsfo    => 'ops-ulsfo',
-            codfw    => 'ops-codfw',
-            pmtpa    => 'ops-pmtpa',
-            esams    => 'ops-esams',
-            eqiad    => 'ops-eqiad',
-            network  => 'ops-network',
+            ulsfo        => 'ops-ulsfo',
+            codfw        => 'ops-codfw',
+            pmtpa        => 'ops-pmtpa',
+            esams        => 'ops-esams',
+            eqiad        => 'ops-eqiad',
+            network      => 'ops-network',
             ops-requests => 'operations',
             testproj     => 'demoproject'
         },
-# Enabling direct email to task for on-site queues per T87454
         direct_comments_allowed => {
             ops-codfw => '*',
             ops-eqiad => '*',
@@ -96,6 +113,7 @@ class role::phabricator::main {
             ops-ulsfo => '*',
             domains   => 'markmonitor.com,wikimedia.org',
         },
+
         phab_bot        => {
             root_dir    => '/srv/phab/phabricator/',
             username    => 'emailbot',
