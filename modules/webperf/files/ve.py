@@ -8,7 +8,7 @@ sys.setdefaultencoding("utf-8")
 import argparse
 import socket
 
-import zmq
+import eventlogging
 
 
 ap = argparse.ArgumentParser(description='PerfData StatsD module')
@@ -18,21 +18,26 @@ ap.add_argument('--statsd-host', default='localhost',
 ap.add_argument('--statsd-port', default=8125, type=int)
 args = ap.parse_args()
 
-ctx = zmq.Context()
-zsock = ctx.socket(zmq.SUB)
-zsock.hwm = 3000
-zsock.linger = 0
-zsock.connect(args.endpoint)
-zsock.subscribe = b''
-
 addr = args.statsd_host, args.statsd_port
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-for meta in iter(zsock.recv_json, ''):
-    if meta['revision'] == 7254808:
-        for point in meta['event']['points'].split(','):
-            metric, value = point.split('=')
-            stat = '%s:%s|ms' % (metric, value)
+events = eventlogging.connect(args.endpoint)
+
+for meta in events.filter(schema='Edit'):
+    event = meta['event']
+    if event['editor'] == 'visualeditor':
+        try:
+            action = event['action']
+            if action == 'saveSuccess':
+                metric = 'save'
+            elif action == 'ready':
+                metric = 'load'
+            else:
+                continue
+            timing = int(event['action.%s.timing' % action])
+            if timing < 100 or timing > 100000:
+                continue
+            stat = 'VisualEditor.%s:%s|ms' % (metric, timing)
             sock.sendto(stat.encode('utf-8'), addr)
-            stat = '%s:1|c' % metric
-            sock.sendto(stat.encode('utf-8'), addr)
+        except (ValueError, KeyError):
+            continue
