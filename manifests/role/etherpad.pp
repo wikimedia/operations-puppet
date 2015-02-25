@@ -57,10 +57,6 @@ class role::etherpad{
         description   => 'etherpad.wikimedia.org HTTP',
         check_command => 'check_http_url!etherpad.wikimedia.org!/',
     }
-    monitoring::service { 'etherpad-lite-https':
-        description   => 'etherpad.wikimedia.org HTTPS',
-        check_command => 'check_https_url_for_string!etherpad.wikimedia.org!//p/Etherpad!\'<title>Etherpad\'',
-    }
 
     ferm::service { 'etherpad_http':
         proto   => 'tcp',
