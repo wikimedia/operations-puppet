@@ -1,0 +1,13 @@
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Code-Review+1: Brion VIBBER <brion@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Nemo bis <federicoleva@tiscali.it>
+Code-Review+1: Bartosz Dziewoński <matma.rex@gmail.com>
+Code-Review+1: Legoktm <legoktm.wikipedia@gmail.com>
+Code-Review+1: Qgil <qgil@wikimedia.org>
+Code-Review+1: Deskana <dgarry@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Wed, 25 Feb 2015 18:04:37 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/192205
+Project: operations/puppet
+Branch: refs/heads/production
