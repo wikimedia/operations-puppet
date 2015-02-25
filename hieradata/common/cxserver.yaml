@@ -8,6 +8,7 @@ registry:
     - 'nn'
     - 'no'
     - 'pt'
+    - 'ru'
     - 'sv'
   target:
     - 'ca'
@@ -15,10 +16,12 @@ registry:
     - 'eo'
     - 'es'
     - 'id'
+    - 'min'
     - 'ms'
     - 'nn'
     - 'no'
     - 'pt'
+    - 'uz'
   mt:
     Apertium:
       'ca':
