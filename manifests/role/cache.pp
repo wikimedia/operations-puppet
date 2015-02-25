@@ -754,6 +754,9 @@ class role::cache {
                         'vm.dirty_expire_centisecs' => 500, # default 3000
                     },
                 }
+
+                # 3.18+ to get past some VM subsystem perf issues
+                package { "linux-image-3.19": ensure => installed }
             }
         }
 
