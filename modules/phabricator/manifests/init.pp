@@ -85,8 +85,6 @@ class phabricator (
     $auth_type        = '',
 ) {
 
-    include phabricator::migration
-
     #A combination of static and dynamic conf parameters must be merged
     $module_path = get_module_path($module_name)
     $fixed_settings = loadyaml("${module_path}/data/fixed_settings.yaml")

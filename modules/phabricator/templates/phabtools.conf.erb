@@ -1,0 +1,60 @@
+[general]
+dbhost = <%= @dbhost %>
+file_upload_timeout = 360
+
+[phmanifest]
+user = <%= @manifest_user %>
+passwd = <%= @manifest_pass %>
+
+[phuser]
+user = <%= @app_user %>
+passwd = <%= @app_pass %>
+
+[fabmigrate]
+db = fab_migration
+user = fabmigrate
+passwd = ''
+multi = 10
+limit = 30
+
+[phab]
+host = https://phabricator.wikimedia.org/api/
+certificate = <%= @phabtools_cert %>
+username = <%= @phabtools_user %>
+
+[oldfab]
+cert = asdf
+host = ''
+user = ''
+
+[bz]
+url = https://bugzilla.wikimedia.org/xmlrpc.cgi
+Bugzilla_login =
+Bugzilla_password =
+
+[bzmigrate]
+db = bugzilla_migration
+user = <%= @bz_user %>
+passwd = <%= @bz_pass %>
+fetch_multi = 50
+create_multi = 13
+update_limit = 400
+update_multi = 1
+populate_multi = 1
+security = true
+update_lookback = 86500
+
+[rtmigrate]
+db = rt_migration
+user = <%= @rt_user %>
+passwd = <%= @rt_pass %>
+fetch_multi = 30
+create_multi = 10
+update_limit = 400
+update_multi = 10
+update_lookback = 86500
+
+[rt]
+url = https://rt.wikimedia.org/REST/1.0/
+login =
+passwd =
