@@ -60,6 +60,17 @@ class role::graphite::base(
                 pattern           => '\.count$',
                 xFilesFactor      => 0,
                 aggregationMethod => 'sum',
+            }
+            # statsite extended counters
+            'lower' => {
+                pattern           => '\.lower$',
+                xFilesFactor      => 0.1,
+                aggregationMethod => 'min',
+            },
+            'upper' => {
+                pattern           => '\.upper$',
+                xFilesFactor      => 0.1,
+                aggregationMethod => 'max',
             },
         },
 
