@@ -1641,7 +1641,7 @@ class role::cache {
                 'ytterbium.wikimedia.org', # Gerrit
                 'tungsten.eqiad.wmnet',
                 'graphite1001.eqiad.wmnet',
-                'zirconium.wikimedia.org',
+                'zirconium.eqiad.wmnet',
                 'ruthenium.eqiad.wmnet', # parsoid rt test server
                 'logstash1001.eqiad.wmnet',
                 'logstash1002.eqiad.wmnet',

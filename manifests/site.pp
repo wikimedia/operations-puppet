@@ -2561,7 +2561,7 @@ node 'ytterbium.wikimedia.org' {
 
 }
 
-node 'zirconium.wikimedia.org' {
+node 'zirconium.eqiad.wmnet' {
     class { 'base::firewall': }
 
     include standard
@@ -2576,10 +2576,6 @@ node 'zirconium.wikimedia.org' {
     include role::iegreview
     include role::annualreport
     include role::devportal
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
 }
 
 node default {
