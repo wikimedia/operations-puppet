@@ -600,7 +600,10 @@ users:
     gid: 500
     name: hashar
     realname: Antoine Musso
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnt2jjOD9gZC0zH4N305VE9Z/9M5wNXt1qwW8lxshF4JZ/8ArOK6DbHMaWwEdQO773C3+LXtnoYvYvCr3rco/ZF2hw+5UPooN+cKinv5EtQJ11WIcDz1Tr2WqKbkJtPZ1ckcVGYlAUcmG9rGG/2snag0wX4ozv21NzGIBSEbO8E53slFcLCDAeadz1f+86ClLn+xGQdR4UVrZXWPvsX6jH0vCQQWvKg0nbe2YgPCXg6njtwBNNx3Q3v7Z5q4VIkHXle85R8ugDME+5Z/A8/BxCkOfNs0yI7LwTuezjJnF5C0ZxZsup54zVQ3nD130CAhDeAWAUomzdrMI9/9zOU44b
+        hashar@postwater_wmf,
+            ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAzNhpIeuPMLolSk17uv9edHPmPHrxSNEAT/TofxgFyDrebbiExixcT0+riF5kB1BKlpyIIpiIHA5FNgQI6v40QOJ8YA94n1KIxp9hXGNPBgEaoTs212LljrfH3Yx4/6FPGhiFCC29N5oHwwav1RGi6+YwaoW4lSDH+x6YVI21xQE=
+        hashar@zwinger.wikimedia.org]
     uid: 1010
   hoo:
     ensure: present
