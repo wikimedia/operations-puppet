@@ -57,8 +57,8 @@ maniphest.priorities:
     short: Low
     color: yellow
   '10':
-    name: 'Needs Volunteer'
-    short: Volunteer
+    name: Lowest
+    short: Lowest
     color: sky
 
 # DO NOT CHANGE THESE VALUES.  Must be updated to match in security extensions.
