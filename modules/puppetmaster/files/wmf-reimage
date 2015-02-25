@@ -165,6 +165,7 @@ if [ $NOCLEAN -eq 0 ]; then
 fi;
 test $NOREBOOT -eq 0 && set_pxe_and_reboot $mgmtname
 sign_puppet $nodename $FORCE
+enable_and_run_puppet $nodename
 sign_salt $nodename $FORCE
 
 log "Node ${nodename} is now signed and both puppet and salt should work."
