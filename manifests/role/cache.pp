@@ -713,14 +713,16 @@ class role::cache {
             'labs'       => ['vdb'],
         }
 
-        unless os_version('debian >= jessie') { # testing whether we need this for jessie's 3.16 kernel
-            # This seems to prevent long term memory fragmentation issues that
-            #  result in XFS deadlock log spam + bad problems for varnish health
-            cron { 'varnish_vm_compact_cron':
-                command => 'echo 1 >/proc/sys/vm/compact_memory',
-                user    => 'root',
-                minute  => '*',
-            }
+        # This seems to prevent long term memory fragmentation issues that
+        #  can cause VM perf issues.  This seems to be less necessary on jessie
+        #  with other assorted fixes in place, and we could experiment with
+        #  removing it entirely at a later time when things are more stable.
+        #  (watch for small but increasing sys% spikes on upload caches if so,
+        #  may take days to have real effect).
+        cron { 'varnish_vm_compact_cron':
+            command => 'echo 1 >/proc/sys/vm/compact_memory',
+            user    => 'root',
+            minute  => '*',
         }
 
         #class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
@@ -729,11 +731,12 @@ class role::cache {
         if $::realm == 'production' {
             include cpufrequtils # defaults to "performance"
 
-            # Bump min_free_kbytes a bit to ensure network buffers are available quickly
+            # Bump min_free_kbytes to ensure network buffers are available quickly
+            #   without having to evict cache on the spot
             vm::min_free_kbytes { 'cache':
                 pct => 2,
                 min => 131072,
-                max => 262144,
+                max => 1048576,
             }
 
             # These tweaks were only tested on and/or only work on jessie, may
