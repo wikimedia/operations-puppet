@@ -17,6 +17,22 @@ class bugzilla::static {
         source => 'puppet:///modules/bugzilla/static-bz-index.html';
     }
 
+    file { '/srv/org/wikimedia/static-bugzilla/all_activities.html':
+        ensure => present,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0400',
+        source => 'puppet:///modules/bugzilla/all_activities.html';
+    }
+
+    file { '/srv/org/wikimedia/static-bugzilla/all_bugs.html':
+        ensure => present,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0400',
+        source => 'puppet:///modules/bugzilla/all_bugs.html';
+    }
+
     apache::site { 'static-bugzilla.wikimedia.org':
         content  => template('bugzilla/apache/static-bugzilla.wikimedia.org.erb'),
         priority => 20,
