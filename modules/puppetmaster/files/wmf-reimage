@@ -8,7 +8,7 @@ SLEEPTIME=60
 FORCE=0
 NOCLEAN=0
 NOREBOOT=0
-
+RUNPUPPET=1
 function log  {
     echo "$@"
 }
@@ -128,7 +128,7 @@ function enable_and_run_puppet {
 
 
 function usage {
-    echo "Usage: $0 [-y][-r][-n][-s SECONDS] <nodename> <mgmtname>"; exit 1;
+    echo "Usage: $0 [-y][-r][-n][-p][-s SECONDS] <nodename> <mgmtname>"; exit 1;
 }
 
 ## Main script
@@ -146,6 +146,9 @@ while getopts "yrns:" option; do
             ;;
         s)
             SLEEPTIME=${OPTARG}
+            ;;
+        p)
+            RUNPUPPET=0
             ;;
         *)
             usage
@@ -165,6 +168,9 @@ if [ $NOCLEAN -eq 0 ]; then
 fi;
 test $NOREBOOT -eq 0 && set_pxe_and_reboot $mgmtname
 sign_puppet $nodename $FORCE
+if [ $RUPUPPET -eq 1 ]; then
+    enable_and_run_puppet $nodenzame
+fi;
 sign_salt $nodename $FORCE
 
 log "Node ${nodename} is now signed and both puppet and salt should work."
