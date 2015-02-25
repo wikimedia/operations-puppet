@@ -56,11 +56,6 @@ class role::graphite::base(
                 xFilesFactor      => 0.1,
                 aggregationMethod => 'max',
             },
-            'sum' => {
-                pattern           => '\.count$',
-                xFilesFactor      => 0,
-                aggregationMethod => 'sum',
-            },
         },
 
         # All metric data goes through a single carbon-relay instance, which
