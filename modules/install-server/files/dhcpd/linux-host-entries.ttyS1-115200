@@ -2054,7 +2054,7 @@ host mc1018 {
 }
 
 host mc2002 {
-	hardware ethernet 90:e2:ba:19:4e:c9;
+	hardware ethernet 90:e2:ba:19:4e:c8;
 	fixed-address mc2002.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
