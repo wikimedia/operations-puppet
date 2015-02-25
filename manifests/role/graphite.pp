@@ -56,6 +56,17 @@ class role::graphite::base(
                 xFilesFactor      => 0.1,
                 aggregationMethod => 'max',
             },
+            # statsite extended counters
+            'lower' => {
+                pattern           => '\.lower$',
+                xFilesFactor      => 0.1,
+                aggregationMethod => 'min',
+            },
+            'upper' => {
+                pattern           => '\.upper$',
+                xFilesFactor      => 0.1,
+                aggregationMethod => 'max',
+            },
         },
 
         # All metric data goes through a single carbon-relay instance, which
