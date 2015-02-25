@@ -25,6 +25,22 @@ class role::dataset::pagecounts_all_sites($enable = true) {
     }
 }
 
+# == Class role::dataset::mediacounts
+#
+# NOTE: this requires that an rsync server
+# module named 'hdfs-archive' is configured on stat1002.
+#
+# This will make these files available at
+# http://dumps.wikimedia.org/other/mediacounts/
+#
+class role::dataset::mediacounts($enable = true) {
+    class { '::dataset::cron::mediacounts':
+        source  =>  'stat1002.eqiad.wmnet::hdfs-archive/mediacounts',
+        enable  => $enable,
+        user    => 'datasets',
+    }
+}
+
 
 # a dumps primary server has dumps generated on this host; other directories
 # of content may or may not be generated here (but should all be eventually)
@@ -49,6 +65,10 @@ class role::dataset::primary {
     class { 'role::dataset::pagecountsraw': enable => true }
 
     class { 'role::dataset::pagecounts_all_sites':
+        enable => true,
+    }
+
+    class { 'role::dataset::mediacounts':
         enable => true,
     }
 }
