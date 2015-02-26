@@ -14,11 +14,11 @@ class Hiera
           # Small hack: - we don't want to search any datasource but the
           # labs/%{::instanceproject} hierarchy here; so we plainly exit
           # in any other case
-          if m = /labs\/([^\/]+)$/.match(source)
-            source = m[1].capitalize
-          else
-            next
-          end
+          next unless source[0,5] == 'labs/'
+          source_arr = source.split('/')
+          next if source_arr[1].nil?
+          source = source_arr[1].capitalize
+
           data = @cache.read(source, Hash, {}) do |content|
             YAML.load(content)
           end
