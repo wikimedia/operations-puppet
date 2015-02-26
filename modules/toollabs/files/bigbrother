@@ -86,7 +86,7 @@ sub readconfig($) {
                 }
                 $expect = "$name-$1";
                 $start = "/usr/bin/webservice -$name start";
-            } elseif(m/^webservice2(:?\s+-([a-z]+))?$/) {
+            } elsif(m/^webservice2(:?\s+-([a-z]+))?$/) {
                 my $name = $2 // "lighttpd";
                 unless($username =~ m/^tools\.(.*)$/) {
                     ulog $username, 'error', "$rcfile:$line: unable to figure out webgrid name! (not possible)";
