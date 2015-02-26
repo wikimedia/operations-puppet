@@ -28,11 +28,12 @@ class role::protoproxy::ssl::common {
 
     file { '/etc/nginx/nginx.conf':
         content => template('nginx/nginx.conf.erb'),
-        require => Class['nginx'],
+        tag     => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
     }
 
     file { '/etc/logrotate.d/nginx':
         content => template('nginx/logrotate'),
+        tag     => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
     }
 
     # reload protoproxies once a day for ticket keys
