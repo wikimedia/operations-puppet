@@ -1666,6 +1666,11 @@ host erbium {
 	fixed-address erbium.eqiad.wmnet;
 }
 
+host eventlog1001 {
+	hardware ethernet 90:B1:1C:2D:80:E4;
+	fixed-address eventlog1001.eqiad.wmnet;
+}
+
 host fluorine {
 	hardware ethernet 78:2b:cb:08:ba:a9;
 	fixed-address fluorine.eqiad.wmnet;
