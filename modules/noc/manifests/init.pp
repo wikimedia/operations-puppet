@@ -19,11 +19,4 @@ class noc {
     monitoring::service { 'http-noc':
         description   => 'HTTP-noc',
         check_command => 'check_http_url!noc.wikimedia.org!http://noc.wikimedia.org' }
-
-    # caches the ganglia xml data from gmetric used by dbtree every minute
-    cron { 'dbtree_cache_cron':
-        command => "/usr/bin/curl -s 'http://noc.wikimedia.org/dbtree/?recache=true' >/dev/null",
-        user    => 'www-data',
-        minute  => '*',
-    }
 }
