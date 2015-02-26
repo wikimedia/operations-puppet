@@ -14,7 +14,7 @@ class Hiera
           # Small hack: - we don't want to search any datasource but the
           # labs/%{::instanceproject} hierarchy here; so we plainly exit
           # in any other case
-          if m = /labs\/([^\/]+)$/.match(source)
+          if m = /labs\/([^\/]+)\//.match(source)
             source = m[1].capitalize
           else
             next
