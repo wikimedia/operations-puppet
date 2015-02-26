@@ -856,7 +856,10 @@ class role::cache {
         }
 
         if $::realm == 'production' {
-            $storage_size_main = 300
+            $storage_size_main = $::hostname ? {
+                'cp1008' => 110,
+                default => 300,
+            }
         }
         include standard
         include nrpe
