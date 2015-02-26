@@ -61,8 +61,8 @@ class toollabs::submit inherits toollabs {
     }
 
     service { 'bigbrother':
-        ensure  => running,
-        require => File['/usr/local/sbin/bigbrother', '/etc/init/bigbrother.conf'],
+        ensure    => running,
+        subscribe => File['/usr/local/sbin/bigbrother', '/etc/init/bigbrother.conf'],
     }
 
     file { '/usr/local/bin/webservice2':
