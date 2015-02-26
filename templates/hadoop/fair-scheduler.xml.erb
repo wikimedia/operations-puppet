@@ -3,15 +3,29 @@
   <fairSharePreemptionTimeout>30</fairSharePreemptionTimeout>
 
   <queue name="default">
+    <weight>1.0</weight>
     <maxRunningApps>50</maxRunningApps>
     <schedulingMode>fair</schedulingMode>
   </queue>
 
   <queue name="essential">
-    <weight>2.0</weight>
+    <!--
+    Use FIFO for essential queue.  We want jobs submitted
+    here to run in sequential order.
+    -->
+    <schedulingMode>fifo</schedulingMode>
     <aclSubmitApps>hdfs</aclSubmitApps>
+
+    <!--
+    The essential queue has a much higher priority than default,
+    and it will start killing (preempting) jobs in other queues,
+    first after 60 seconds if it can't get its minimum share,
+    and then more after 10 minutes if it can't get its fair share.
+     -->
+    <weight>10.0</weight>
+    <minSharePreemptionTimeout>60</minSharePreemptionTimeout>
+    <fairSharePreemptionThreshold>600</fairSharePreemptionThreshold>
     <maxRunningApps>50</maxRunningApps>
-    <schedulingMode>fair</schedulingMode>
   </queue>
 
 </allocations>
