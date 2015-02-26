@@ -118,18 +118,3 @@ mediawiki_memcached_servers:
 "mediawiki::users::web": www-data
 "beta::syncsiteresources::user": www-data
 "role::url_downloader::url_downloader_ip": 10.68.16.135
-"role::elasticsearch::server":
-    # Has four nodes all of which can be master
-    minimum_master_nodes: 3
-    recover_after_time: '1m'
-    cluster_name: 'beta-search'
-    heap_memory: '4G'
-    expected_nodes: 4
-    # The cluster can limp along just fine with three nodes so we'll let it
-    recover_after_nodes: 3
-    statsd_host: 'labmon1001.eqiad.wmnet'
-    unicast_hosts:
-        - deployment-elastic05
-        - deployment-elastic06
-        - deployment-elastic07
-        - deployment-elastic08
