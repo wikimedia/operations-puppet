@@ -320,6 +320,15 @@ class role::wikimetrics {
         group     => $wikimetrics_group,
     }
 
+    # Looks like we need 777 files for Apache to serve them
+    # on the static directory
+    file { "$aggregator_data_directory/projectcounts/daily"
+        ensure  =>'directory',
+        mode    => '0777',
+        recurse => true,
+
+    }
+
     file { "${public_directory}/datafiles":
         ensure  => 'directory',
         owner   => $wikimetrics_user,
@@ -334,4 +343,6 @@ class role::wikimetrics {
         group   => $wikimetrics_group,
         require => File["${public_directory}/datafiles"]
     }
+
+
 }
