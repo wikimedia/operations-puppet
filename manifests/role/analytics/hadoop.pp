@@ -334,6 +334,17 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         net_topology_script_template             => $net_topology_script_template,
         # Use fair-scheduler.xml.erb to define FairScheduler queues.
         fair_scheduler_template                  => $fair_scheduler_template,
+
+        yarn_site_extra_properties               => {
+            # Enable FairScheduler preemption. This will allow the essential queue
+            # to preempt non-essential jobs.
+            'yarn.scheduler.fair.preemption'                => true,
+            # Let YARN wait for at least 1/3 of nodes to present scheduling
+            # opportunties before scheduling a job for certain data
+            # on a node on which that data is not present.
+            'yarn.scheduler.fair.locality.threshold.node'   => '0.33',
+        }
+
         gelf_logging_enabled                     => $gelf_logging_enabled,
         gelf_logging_host                        => $gelf_logging_host,
         gelf_logging_port                        => $gelf_logging_port,
