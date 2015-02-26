@@ -78,17 +78,17 @@ class role::eventlogging {
 
     ## MySQL / MariaDB
 
-    # Log strictly valid events to the 'log' database on m2-master.
+    # Log strictly valid events to the 'log' database on m4-master.
 
     include passwords::mysql::eventlogging    # RT 4752
     $mysql_user = $passwords::mysql::eventlogging::user
     $mysql_pass = $passwords::mysql::eventlogging::password
     $mysql_db = $::realm ? {
-        production => 'm2-master.eqiad.wmnet/log',
+        production => 'm4-master.eqiad.wmnet/log',
         labs       => '127.0.0.1/log',
     }
 
-    eventlogging::service::consumer { 'mysql-m2-master':
+    eventlogging::service::consumer { 'mysql-m4-master':
         input  => "tcp://${processor}:8600",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8",
     }
