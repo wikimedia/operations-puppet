@@ -40,15 +40,3 @@ class role::mathoid{
       check_command => 'check_http_on_port!10042',
     }
 }
-
-class role::mathoid::jenkins_access {
-    # Allow ssh access from the Jenkins master to the server where mathoid is
-    # running
-    include contint::firewall::labs
-
-    # Instance got to be a Jenkins slave so we can update mathoid whenever a
-    # change is made on mediawiki/services/mathoid repository
-    include role::ci::slave::labs::common
-    # Also need the slave scripts for multi-git.sh
-    include contint::slave-scripts
-}
