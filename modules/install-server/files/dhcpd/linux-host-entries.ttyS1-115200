@@ -2247,6 +2247,20 @@ host ms-be1015 {
 	hardware ethernet C8:1F:66:E0:E9:B5;
 	fixed-address ms-be1015.eqiad.wmnet;
 }
+host ms-be1016 {
+        hardware ethernet c4:34:6b:b9:5a:e4;
+        fixed-address ms-be1016.eqiad.wmnet;
+}
+
+host ms-be1017 {
+        hardware ethernet c4:34:6b:b9:d9:e4;
+        fixed-address ms-be1017.eqiad.wmnet;
+}
+
+host ms-be1018 {
+        hardware ethernet c4:34:6b:b9:b9:3c;
+        fixed-address ms-be1018.eqiad.wmnet;
+}
 
 host ms-be2001 {
 	hardware ethernet 90:B1:1C:18:A7:74;
