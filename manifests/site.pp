@@ -2571,7 +2571,7 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     if $::hostname == 'wtp1001' or $::hostname == 'wtp1002' {
         $ganglia_aggregator = true
     }
-    role parsoid::production
+    role parsoid
 }
 
 node 'ytterbium.wikimedia.org' {
