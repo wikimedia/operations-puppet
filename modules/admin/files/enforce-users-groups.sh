@@ -9,10 +9,22 @@
 
 ID_BOUNDRY='999'
 ARCHIVE_DIR='/var/userarchive'
+EXCLUDE=("nobody" "l10nupdate" "gmetric" "mwdeploy");
 
 function log() {
     logger $1
     echo $1
+}
+
+in_array() {
+    local haystack=${1}[@]
+    local needle=${2}
+    for i in ${!haystack}; do
+        if [[ ${i} == ${needle} ]]; then
+            return 0
+        fi
+    done
+    return 1
 }
 
 if [ ! -d $ARCHIVE_DIR ]
@@ -38,9 +50,14 @@ for var in "${PASSWD_USERS[@]}"
 do
     username=`echo $var | cut -d ':' -f 1`
     uid=`echo $var | cut -d ':' -f 3`
+
+    # A few global accounts of dubious nature are ignored
+    if in_array EXCLUDE $username; then
+        continue
+    fi
+
     if [[ "$uid" -gt "$ID_BOUNDRY" ]]; then
         if [[ `/usr/bin/id $username` != *","* ]]; then
-
             #TEMP
             echo $var >> /var/log/admincleanup
 
