@@ -36,6 +36,7 @@ class mediawiki::hhvm {
                     error_document404     => '/srv/mediawiki/w/404.php',
                     request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
                     thread_count          => $max_threads,
+                    ip                    => '127.0.0.1',
                 },
                 pcre_cache_type => 'lru',
             },
