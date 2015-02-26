@@ -664,7 +664,7 @@ class role::cache {
         # ordering ensures nginx/varnish config/service-start are
         #  not intermingled during initial install where they could
         #  have temporary conflicts on binding port 80
-        Class['role::cache::ssl::sni'] -> Class['varnish::instance']
+        Service['nginx'] -> Service<| tag == 'varnish_instance' |>
     }
 
     # As above, but for misc instead of generic prod
