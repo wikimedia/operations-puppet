@@ -961,8 +961,8 @@ node 'dbproxy1002.eqiad.wmnet' {
         shard          => 'm2',
         primary_name   => 'db1020',
         primary_addr   => '10.64.16.9',
-        secondary_name => 'db1046',
-        secondary_addr => '10.64.16.35',
+        secondary_name => 'db2011',
+        secondary_addr => '10.192.0.14',
     }
 }
 
@@ -975,6 +975,18 @@ node 'dbproxy1003.eqiad.wmnet' {
         primary_addr   => '10.64.16.32',
         secondary_name => 'db1048',
         secondary_addr => '10.64.16.37',
+    }
+}
+
+node 'dbproxy1004.eqiad.wmnet' {
+    include admin
+    $cluster = 'mysql'
+    class { 'role::mariadb::proxy::master':
+        shard          => 'm4',
+        primary_name   => 'db1046',
+        primary_addr   => '10.64.16.35',
+        secondary_name => 'db1047',
+        secondary_addr => '10.64.16.36',
     }
 }
 
