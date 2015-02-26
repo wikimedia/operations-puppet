@@ -11,12 +11,16 @@
 #[*ensure*]
 # Is the usual metaparameter, defaults to present
 #
+#[*template_name*]
+# String, default $name.  Init file template pathnames are formed
+# using the pattern "$module/initscripts/$template_name.$initsystem.erb"
+#
 #[*systemd*]
 # Boolean - set it to true to make the resource include personalized
 # init file. As this is used to You are expected to put them in a
 # specific subdirectory of the current module, which is
-# $module/initscripts/$name.systemd.erb for systemd  (and similarly for
-# other init systems)
+# $module/initscripts/$template_name.systemd.erb for systemd  (and
+# similarly for other init systems)
 #
 #[*upstart*]
 # As the preceding param, but for upstart scripts
@@ -58,6 +62,7 @@ define base::service_unit (
     $sysvinit         = false,
     $strict           = true,
     $refresh          = true,
+    $template_name    = $name,
     $service_params   = {},
     ) {
 
@@ -68,10 +73,10 @@ define base::service_unit (
     # we assume init scripts are templated
     if $initscript {
         if $caller_module_name {
-            $template = "${caller_module_name}/initscripts/${name}.${initscript}.erb"
+            $template = "${caller_module_name}/initscripts/${template_name}.${initscript}.erb"
         }
         else {
-            $template = "initscripts/${name}.${initscript}.erb"
+            $template = "initscripts/${template_name}.${initscript}.erb"
         }
         $path = $initscript ? {
             'systemd'  => "/etc/systemd/system/${name}.service",
