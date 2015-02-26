@@ -2,7 +2,18 @@
 
 @monitoring::group { 'parsoid_eqiad': description => 'eqiad parsoid servers' }
 
-class role::parsoid::common {
+class role::parsoid {
+    system::role { 'role::parsoid':
+        description => 'Parsoid server'
+    }
+
+    include standard
+    if $::realm != 'labs' {
+        include admin
+    }
+    include lvs::realserver
+    include base::firewall
+
     package { [
         'nodejs',
         'npm',
@@ -29,18 +40,6 @@ class role::parsoid::common {
         proto => 'tcp',
         port  => '8000',
     }
-}
-
-class role::parsoid::production {
-    system::role { 'role::parsoid::production':
-        description => 'Parsoid server'
-    }
-
-    include role::parsoid::common
-    include standard
-    include admin
-    include lvs::realserver
-    include base::firewall
 
     package { 'parsoid/deploy':
         provider => 'trebuchet',
