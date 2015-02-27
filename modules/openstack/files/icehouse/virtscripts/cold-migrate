@@ -43,4 +43,4 @@ mysql -uroot nova -e "update instances set host=\"${TOHOST}\" where hostname=\"$
 echo ""
 echo "Rebooting the instance"
 echo ""
-OS_TENANT_NAME=${PROJECT} nova reboot ${INSTANCENAME}
+OS_TENANT_NAME=${PROJECT} nova reboot ${INSTANCE}
