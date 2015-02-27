@@ -11,4 +11,9 @@ class toollabs::node::web::generic inherits toollabs::node::web {
         source => 'puppet:///modules/toollabs/tool-nodejs',
         mode   => '0555',
     }
+
+    file { '/usr/local/bin/tool-tomcat':
+        source => 'puppet:///modules/toollabs/tool-tomcat',
+        mode   => '0555',
+    }
 }
