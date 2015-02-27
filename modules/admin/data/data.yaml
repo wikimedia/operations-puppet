@@ -1214,11 +1214,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbO6Vkqy7ojVxQwNIFn9n6afGHsVci0UF2izNId6/3qDD2qHEKqew9JfkqQyOiff2bZXDNFp4KE3jSmAuFq2nRJKE+YJXX4t6CfwhWY4cUdbVNtWugV+bb8MuOblWs5VbxENqPS8WuvT3lyib4q6Gvlg43QJaKy292D9yHmx9sz3k/JADgYcwK6+tA5Qtby6PTup9lgVzhXdl7hxS5TPcUmMk/k7CZNx1KD5kcbHIPtggMTC9izO4se/kQB/vdggwV2JRAycKStg7GD+kj7yUJhN/G8UDyMZTPgLZcAtRHAsMETL5pYEk9MqD5WLVrVhWr5cuUXTh4pYgHGuQSdJVD mforns@zenmote]
     uid: 10668
   edenhill:
-    ensure: present
+    ensure: absent
     gid: 500
     name: edenhill
     realname: Magnus Edenhill
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCoJZ07ZiN5tdIRqEhQeLsiz2a2KcMjH+Ei6Q/1Xp/Ozl7TmWlImnKNl0VeehCRZGTFbRNfd8qCyyA0zPzk8wEP6i1gw4nWiBk0mizuJwTQ4t5XWAwZ2dj8lUz3MfAZ4Vg198sPuaJJeL8ia4wJlxMlvPspPgVOq7rbKZxzCkpZWjtpGF08Pw3QVBXRY1ECXCT7elVJ9yvnDRHJNbm9bZCym/wU+kvJKp1+Go0qLXvWzADfUbZCOwfREHkupcTs9nAzxbcRfbaLWWPpAGVuH0p8hvsqtZCYrDf1HPhMrCgoT4MGXyfVs1guN8ncUyqiZHRaAncoy1p5xyoU2rhek8gl maglun@bib]
+    ssh_keys: []
     uid: 3092
   jsahleen:
     ensure: present
