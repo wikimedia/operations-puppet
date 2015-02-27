@@ -5,7 +5,7 @@ define varnish::setup_filesystem() {
     elsif os_version('debian >= jessie') {
         # setup_filesystem is only used on the non-bits caches,
         #  which are all set up as ext4-on-SSD...
-        $custom_mount_opts = ',nobarrier,data=writeback,discard'
+        $custom_mount_opts = ',nobarrier,data=writeback'
     }
     else {
         # nodiratime is redundant, but I'm hoping to avoid
