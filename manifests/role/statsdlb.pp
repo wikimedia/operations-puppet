@@ -6,7 +6,7 @@
 class role::statsdlb {
     class { '::statsdlb':
         server_port   => 8125,
-        backend_ports => range(8126, 8133),
+        backend_ports => range(8126, 8135),
     }
 
     package { 'python-txstatsd': }
