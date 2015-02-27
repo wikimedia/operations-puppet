@@ -1,7 +1,7 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [csalvia, rainman, mwalker, jgonera, swalling, bsitu]
+    members: [csalvia, rainman, mwalker, jgonera, swalling, bsitu, mah]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -1051,7 +1051,7 @@ users:
         hwsvn@84-16-252-165.local]
     uid: 1229
   mah:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mah
     realname: Mark Hershberger
