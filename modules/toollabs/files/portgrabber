@@ -33,5 +33,13 @@ socket(PROXY, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
     connect(PROXY, sockaddr_in(8282, inet_aton('tools-webproxy'))) and
     syswrite PROXY, ".*\nhttp://$host:$port\n";
 
+socket(PROXY, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
+    connect(PROXY, sockaddr_in(8282, inet_aton('tools-webproxy-01'))) and
+    syswrite PROXY, ".*\nhttp://$host:$port\n";
+
+socket(PROXY, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
+    connect(PROXY, sockaddr_in(8282, inet_aton('tools-webproxy-02'))) and
+    syswrite PROXY, ".*\nhttp://$host:$port\n";
+
 exec @ARGV, $port;
 
