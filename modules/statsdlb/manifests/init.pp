@@ -38,7 +38,7 @@ class statsdlb(
 
     file { '/etc/default/statsdlb':
         ensure  => $ensure,
-        content => sprintf("DAEMON_ARGS=%s %s\n", $server_port, join($backend_ports, ' ')),
+        content => sprintf("DAEMON_ARGS=\"%s %s\"\n", $server_port, join($backend_ports, ' ')),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
