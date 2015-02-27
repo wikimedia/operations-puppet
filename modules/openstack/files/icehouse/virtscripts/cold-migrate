@@ -9,11 +9,14 @@ then
 	echo "You must have a forwarded agent to use this script"
 	exit 1
 fi
-INSTANCENAME=$1
+if [ "$#" -ne 2 ]; then
+	echo "Usage:  $0 <instance-id> <destination-host>"
+	exit 1
+fi
+INSTANCE=$1
 TOHOST=$2
-PROJECT=$3
-FROMHOST=`OS_TENANT_NAME=${PROJECT} nova show ${INSTANCENAME} | grep 'OS-EXT-SRV-ATTR:host' | awk '{ print $4 }'`
-INSTANCE=`OS_TENANT_NAME=${PROJECT} nova show ${INSTANCENAME} | grep ' id ' | awk '{ print $4 }'`
+FROMHOST=`nova show ${INSTANCE} | grep 'OS-EXT-SRV-ATTR:host' | awk '{ print $4 }'`
+INSTANCENAME=`nova show ${INSTANCE} | grep ' name ' | awk '{ print $4 }'`
 echo "Migrating $INSTANCE from $FROMHOST to $TOHOST"
 echo ""
 echo "Destroying instance on $FROMHOST"
