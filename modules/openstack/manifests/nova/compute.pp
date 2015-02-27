@@ -102,17 +102,30 @@ class openstack::nova::compute($openstack_version=$::openstack::version, $novaco
         require   => Package['nova-compute'];
     }
 
-    file {
-        "/etc/libvirt/qemu/networks/autostart/default.xml":
+    file { "/etc/libvirt/qemu/networks/autostart/default.xml":
             ensure  => absent;
-        # Live hack to use qcow2 ephemeral base images. Need to upstream
-        # a config option for this.
-        "/usr/share/pyshared/nova/virt/libvirt/driver.py":
+    }
+
+    # Live hack to use qcow2 ephemeral base images. Need to upstream
+    # a config option for this.
+    if ($::lsbdistcodename == 'precise') {
+        file { '/usr/share/pyshared/nova/virt/libvirt/driver.py':
             source  => "puppet:///modules/openstack/${openstack_version}/nova/virt-libvirt-driver",
             notify  => Service['nova-compute'],
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
             require => Package["nova-common"];
+        }
+    }
+    if ($::lsbdistcodename == 'trusty') {
+        file { '/usr/lib/python2.7/dist-packages/nova/virt/libvirt/driver.py':
+            source  => "puppet:///modules/openstack/${openstack_version}/nova/virt-libvirt-driver",
+            notify  => Service['nova-compute'],
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            require => Package["nova-common"];
+        }
     }
 }
