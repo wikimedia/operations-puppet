@@ -1147,7 +1147,7 @@ users:
         dgarry@dan-garry.corp.wikimedia.org]
     uid: 3262
   ssmith:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ssmith
     realname: Sam Smith
