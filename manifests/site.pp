@@ -2381,7 +2381,7 @@ node 'graphite1001.eqiad.wmnet' {
     include admin
     include standard
     include role::graphite::production
-    include role::txstatsd
+    include role::statsdlb
     include role::gdash
     include role::performance
 }

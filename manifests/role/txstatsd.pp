@@ -19,5 +19,6 @@ class role::txstatsd {
             },
         },
     }
+
     diamond::collector { 'UDPCollector': }
 }
