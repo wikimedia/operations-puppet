@@ -58,7 +58,7 @@ groups:
     gid: 707
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed,
-      haithams, mhurd, dbrant, mglaser, mah, kleduc, bsitzmann, deskana,
+      haithams, mhurd, dbrant, mglaser, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
       bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
       joal, thcipriani, daisy, ashwinpp, mvolz]
@@ -79,7 +79,7 @@ groups:
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, csteipp, hashar, mah, mglaser, reedy]
+    members: [catrope, csteipp, hashar, mglaser, reedy]
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
@@ -1051,7 +1051,7 @@ users:
         hwsvn@84-16-252-165.local]
     uid: 1229
   mah:
-    ensure: absent
+    ensure: present
     gid: 500
     name: mah
     realname: Mark Hershberger
