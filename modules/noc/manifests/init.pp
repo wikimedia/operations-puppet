@@ -14,11 +14,10 @@ class noc {
     include ::apache::mod::cgi
     include ::apache::mod::ssl
 
-    # Monitoring
-    monitoring::service { 'http-noc':
-        description   => 'HTTP-noc',
-        check_command => 'check_http_url!noc.wikimedia.org!http://noc.wikimedia.org'
-    }
+    # dbtree config
+    include passwords::tendril
+    $tendril_user_web = $passwords::tendril::db_user_web
+    $tendril_pass_web = $passwords::tendril::db_pass_web
 
     file { '/srv/mediawiki/docroot/noc/dbtree':
         ensure => 'directory',
@@ -34,4 +33,18 @@ class noc {
         require   => File['/srv/mediawiki/docroot/noc/dbtree'],
     }
 
+    file { '/srv/mediawiki/docroot/noc/dbtree/inc/config.php':
+        ensure  => 'present',
+        owner   => 'mwdeploy',
+        group   => 'mwdeploy',
+        content => template('noc/dbtree.config.php.erb'),
+    }
+
+    # Monitoring
+    monitoring::service { 'http-noc':
+        description   => 'HTTP-noc',
+        check_command => 'check_http_url!noc.wikimedia.org!http://noc.wikimedia.org'
+    }
+
 }
+
