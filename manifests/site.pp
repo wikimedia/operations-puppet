@@ -874,7 +874,7 @@ node 'db1046.eqiad.wmnet' {
     $cluster = 'mysql'
     class { 'role::mariadb::misc::eventlogging':
         shard  => 'm4',
-        master => false,
+        master => true,
     }
 }
 

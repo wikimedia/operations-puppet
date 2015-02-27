@@ -194,7 +194,6 @@ class role::mariadb::misc::eventlogging(
         password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
-        sql_mode  => 'STRICT_ALL_TABLES',
         read_only => $read_only,
     }
 
