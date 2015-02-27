@@ -88,7 +88,7 @@ fi
 echo -n "Merge these changes? (yes/no)? "
 
 read answer
-if [ "x${answer}" = "xyes" ]; then
+if [ "x${answer}" = "xyes" ] || [ "x${answer}" = "xy" ]; then
     echo "Merging ${fetch_head_sha1}..."
     cmd="git merge --ff-only ${fetch_head_sha1}"
     echo "${cmd}"
