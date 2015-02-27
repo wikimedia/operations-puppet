@@ -97,6 +97,20 @@ class role::statistics::private inherits role::statistics {
     # Although it is in the “private” role, the dataset actually isn't
     # private. We just keep it here to spare adding a separate role.
     include statistics::aggregator
+
+    include passwords::mysql::research
+    # This file will render at
+    # /etc/mysql/conf.d/statistics-private-client.cnf.
+    # This is so that users in the statistics-privatedata-users
+    # group who want to access the research slave dbs do not
+    # have to be in the research group, which is not included
+    # in the private role (stat1002).
+    mysql::config::client { 'statistics-private':
+        user  => $::passwords::mysql::research::user,
+        pass  => $::passwords::mysql::research::pass,
+        group => 'statistics-privatedata-users',
+        mode  => '0440',
+    }
 }
 
 
