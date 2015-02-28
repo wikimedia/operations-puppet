@@ -52,33 +52,16 @@ class txstatsd($settings) {
         managehome => false,
     }
 
-    case $::initsystem {
-        'systemd': {
-            $init_file = '/etc/systemd/system/txstatsd.service'
-            file { $init_file:
-                source => 'puppet:///modules/txstatsd/txstatsd.service'
-            }
+    base::service_unit { 'txstatsd':
+        systemd => true,
+        upstart => true,
+        service_params => {
+            enable    => true,
+            subscribe => File['/etc/txstatsd/txstatsd.cfg'],
+            require   => [
+                Package['python-txstatsd'],
+                User['txstatsd'],
+            ],
         }
-        'upstart': {
-            $init_file = '/etc/init/txstatsd.conf'
-            file { $init_file:
-                source => 'puppet:///modules/txstatsd/txstatsd.conf',
-            }
-        }
-        default: {
-            fail('The txstatsd pupppet module does not like your init system!')
-        }
-    }
-
-    service { 'txstatsd':
-        ensure    => running,
-        provider  => $::initsystem,
-        enable    => true,
-        subscribe => File['/etc/txstatsd/txstatsd.cfg'],
-        require   => [
-            File[$init_file],
-            Package['python-txstatsd'],
-            User['txstatsd'],
-        ],
     }
 }
