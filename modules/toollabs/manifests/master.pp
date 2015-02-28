@@ -40,11 +40,6 @@ class toollabs::master inherits toollabs {
         config => 'toollabs/gridengine/queue-webgrid.erb',
     }
 
-    gridengine::collectors::queues { 'webgrid-tomcat':
-        store  => "${toollabs::collectors}/queues",
-        config => 'toollabs/gridengine/queue-webgrid.erb',
-    }
-
     gridengine::collectors::queues { 'webgrid-generic':
         store  => "${toollabs::collectors}/queues",
         config => 'toollabs/gridengine/queue-webgrid.erb',
