@@ -108,9 +108,4 @@ class role::labs::tools {
     class webnode inherits role::labs::tools::compute {
         include toollabs::node::web::lighttpd
     }
-
-    class tomcatnode inherits role::labs::tools::compute {
-        include toollabs::node::web::tomcat
-    }
-
 } # class role::labs::tools
