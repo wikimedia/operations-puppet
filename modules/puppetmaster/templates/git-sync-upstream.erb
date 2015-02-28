@@ -21,27 +21,41 @@ REBASE_OPTS=(
 )
 HAVE_STASH=0
 
+# Create a temp file for capturing command output
+TEMPFILE="$(mktemp -t gsu.XXXXXX)"
+trap '{ rm -f "$TEMPFILE"; }' EXIT
+
 cd ${REPO}
 
 # Fetch new changes from origin
 git fetch --verbose origin
 
-# Kill all local uncommited changes.
-# Local hacking on a puppetmaster is bad. Do not do that.
-git reset --hard
+# Hide any dirty local files
+git stash save "rebase $(date +%Y-%m-%dT%H:%M)" 2>&1 |
+tee "${TEMPFILE}"
+
+if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+    echo "Failed to save local changes; cowardly refusing to continue" 1>&2
+    exit 1
+fi
+
+grep -q "No local changes" "${TEMPFILE}" || HAVE_STASH=1
 
 # Rebase locally commited changes on top of tracked origin branch
-git rebase "${REBASE_OPTS[@]}" origin/${TRACK_BRANCH}
+git rebase "${REBASE_OPTS[@]}" origin/${TRACK_BRANCH} 2>&1 |
+tee "${TEMPFILE}"
 
-if [[ $? -ne 0 ]]; then
+if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
     echo "Rebase failed! See error messages above." 1>&2
     echo "Reverting rebase attempt" 1>&2
     git rebase --abort
+    [[ ${HAVE_STASH} -ne 0 ]] && git stash pop
     exit 2
 fi
 
 # Ensure that submodule changes are applied to the local checkout
-git submodule update --init --recursive
+git submodule update --init --recursive 2>&1 |
+tee "${TEMPFILE}"
 
 # Tag the local repo state for rollback and troubleshooting
 TAG="beta-$(date +%Y%m%dT%H%M)"
@@ -53,8 +67,5 @@ echo "Local hacks:"
 git log --color --pretty=oneline --abbrev-commit origin/HEAD..HEAD |
 sed 's/^/  /'
 
-# Send stats on how many cherry-picked commits there are to statsd
-STATS_PREFIX="`cat /etc/wmflabs-project`.`cat /etc/wmflabs-instancename`"
-CHERRY_PICKED_COUNT=`git log --pretty=oneline --abbrev-commit origin/HEAD..HEAD | wc -l`
-echo -n "$STATS_PREFIX.puppetmaster.cherrypicked_commits:$CHERRY_PICKED_COUNT|g" |
-    nc -w 1 -u <%= @statsd_host %> 8125
+# Restore dirty files if present
+[[ ${HAVE_STASH} -ne 0 ]] && git stash pop
