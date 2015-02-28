@@ -84,51 +84,26 @@ define varnish::instance(
         content => template("${module_name}/varnish-default.erb"),
     }
 
-    case $::initsystem {
-        'upstart': {
-            file { "/etc/init.d/varnish${instancesuffix}":
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0555',
-                content => template("${module_name}/varnish.init.erb"),
-            }
-            service { "varnish${instancesuffix}":
-                ensure    => running,
-                require   => [
-                        File["/etc/default/varnish${instancesuffix}"],
-                        File["/etc/init.d/varnish${instancesuffix}"],
-                        File["/etc/varnish/${vcl}.inc.vcl"],
-                        File["/etc/varnish/wikimedia_${vcl}.vcl"],
-                        Mount['/var/lib/varnish']
-                    ],
-                hasstatus => false,
-                pattern   => "/var/run/varnishd${instancesuffix}.pid",
-                subscribe => Package['varnish'],
-                tag       => 'varnish_instance'
-            }
-        }
-        'systemd': {
-            file { "/etc/systemd/system/varnish${instancesuffix}.service":
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0444',
-                content => template("${module_name}/varnish.service.erb"),
-            }
-            service { "varnish${instancesuffix}":
-                provider => 'systemd',
-                ensure    => running,
-                require   => [
-                        File["/etc/systemd/system/varnish${instancesuffix}.service"],
-                        File["/etc/varnish/${vcl}.inc.vcl"],
-                        File["/etc/varnish/wikimedia_${vcl}.vcl"],
-                        Mount['/var/lib/varnish']
-                    ],
-                subscribe => Package['varnish'],
-                tag       => 'varnish_instance'
-            }
-        }
-        default: {
-            fail('varnish::instance does not like your init system!')
+    service_unit { "varnish${instancesuffix}":
+        template_name => 'varnish',
+        systemd => true,
+        sysvinit => true,
+        refresh => false,
+        service_params => {
+            tag     => 'varnish_instance',
+            enable  => true,
+            require => [
+                Package['varnish'],
+                File["/etc/default/varnish${instancesuffix}"],
+                File["/etc/varnish/${vcl}.inc.vcl"],
+                File["/etc/varnish/wikimedia_${vcl}.vcl"],
+                Mount['/var/lib/varnish'],
+            ],
+            # The two below were for upstart only.  They seem
+            #  nonsensical vs fixing the initscript, but I suspect they're
+            #  harmless on systemd and can be removed later.
+            hasstatus => false,
+            pattern   => "/var/run/varnishd${instancesuffix}.pid",
         }
     }
 
