@@ -703,7 +703,6 @@ class role::cache {
 
         # Any changes here will affect all descendent Varnish clusters
         # unless they're overridden!
-        $storage_size_main = $::realm ? { 'labs' => 5, default => 100 }
         if $::site in ['eqiad'] {
             $cluster_tier = 1
             $default_backend = 'backend'
@@ -806,7 +805,30 @@ class role::cache {
         # Any changes here will affect all descendent Varnish clusters
         # unless they're overridden!
         $backend_weight = 100
-        $storage_size_bigobj = 50
+
+        if $::realm == 'production' {
+            if os_version('debian >= jessie') {
+                $storage_size_main = $::hostname ? {
+                    /^amssq/ => 117,
+                    'cp1008' => 117,
+                    # XXX
+                    # /^cp30/ => ??? wtf?
+                    # by-current-df-values:
+                    #  ~435: uploads: 3,5,6,7,8 mobile: 11,12
+                    #  ~455: mobile: 13,14
+                    #  ~545: uploads: 4,9,10
+                    #  ~225: uploads: 15,16,17,18
+                    #   will sort as reinstalled, and recheck storage controller bios setup...
+                    default => 300, # XXX update this for new S3700 partitioning results on jessie
+                }
+            }
+            else {
+                $storage_size_main = 300
+            }
+        }
+        else {
+            $storage_size_main = 5
+        }
 
         # Ganglia monitoring
         if $::role::cache::configuration::has_ganglia{
@@ -846,12 +868,6 @@ class role::cache {
             },
         }
 
-        if $::realm == 'production' {
-            $storage_size_main = $::hostname ? {
-                'cp1008' => 110,
-                default => 300,
-            }
-        }
         include standard
         include nrpe
 
@@ -874,14 +890,25 @@ class role::cache {
             default => ['default_ttl=2592000'],
         }
 
-        $storage_conf = $::realm ? {
-            'production' => $::hostname ? {
-                /^cp10[5-9][0-9]$/          => "-s main1=persistent,/srv/sda3/varnish.main1,100G,$mma0 -s main1b=persistent,/srv/sda3/varnish.main1b,200G,$mma1 -s main2=persistent,/srv/sdb3/varnish.main2,100G,$mma2 -s main2b=persistent,/srv/sdb3/varnish.main2b,200G,$mma3",
-                /^amssq(3[1-9]|4[0-6])$/    => "-s main1=persistent,/srv/sda3/varnish.main1,100G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,100G,$mma1", # both are SSD
-                /^amssq(4[7-9]|[56][0-9])$/ => "-s main2=persistent,/srv/sdb3/varnish.main2,100G,$mma0", # sda is an HDD, sdb is an SSD
-                default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1",
-            },
-            'labs'  => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1",
+        if os_version('debian >= jessie') {
+            $storage_conf = $::realm ? {
+                'production' => $::hostname ? {
+                    /^amssq(4[7-9]|[56][0-9])$/ => "-s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma0", # sda is an HDD, sdb is an SSD
+                    default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1",
+                },
+                'labs'  => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1",
+            }
+        }
+        else {
+            $storage_conf = $::realm ? {
+                'production' => $::hostname ? {
+                    /^cp10[5-9][0-9]$/          => "-s main1=persistent,/srv/sda3/varnish.main1,100G,$mma0 -s main1b=persistent,/srv/sda3/varnish.main1b,200G,$mma1 -s main2=persistent,/srv/sdb3/varnish.main2,100G,$mma2 -s main2b=persistent,/srv/sdb3/varnish.main2b,200G,$mma3",
+                    /^amssq(3[1-9]|4[0-6])$/    => "-s main1=persistent,/srv/sda3/varnish.main1,100G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,100G,$mma1", # both are SSD
+                    /^amssq(4[7-9]|[56][0-9])$/ => "-s main2=persistent,/srv/sdb3/varnish.main2,100G,$mma0", # sda is an HDD, sdb is an SSD
+                    default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1",
+                },
+                'labs'  => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1",
+            }
         }
 
         $director_type_cluster = $cluster_tier ? {
@@ -1013,15 +1040,16 @@ class role::cache {
             default => 'eqiad',
         }
 
-
-        if $::hostname =~ /^cp301[5-8]$/ {
-            $storage_size_main = 165
-        }
-        elsif $::hostname =~ /^cp30[0-9][0-9]$/ {
-            $storage_size_main = 300
-        }
-        else {
-            $storage_size_main = 250
+        if ! os_version('debian >= jessie') {
+            if $::hostname =~ /^cp301[5-8]$/ {
+                $storage_size_main = 165
+            }
+            elsif $::hostname =~ /^cp30[0-9][0-9]$/ {
+                $storage_size_main = 300
+            }
+            else {
+                $storage_size_main = 250
+            }
         }
 
         if $cluster_tier == 1 {
@@ -1069,9 +1097,20 @@ class role::cache {
             default  => ['default_ttl=2592000'],
         }
 
-        $storage_conf =  $::realm ? {
-            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1 -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
-            'labs'       => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1 -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
+        $storage_size_bigobj = 50
+
+        if os_version('debian >= jessie') {
+            $storage_size_up = $storage_size_main - $storage_size_bigobj
+            $storage_conf =  $::realm ? {
+                'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_up}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_up}G,$mma1 -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
+                'labs'       => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1 -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
+            }
+        }
+        else {
+            $storage_conf =  $::realm ? {
+                'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1 -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
+                'labs'       => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1 -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
+            }
         }
 
         $director_type_cluster = $cluster_tier ? {
@@ -1299,9 +1338,11 @@ class role::cache {
             }
         }
 
-        $storage_size_main = $::realm ? {
-            'labs'  => 5,
-            default => 300,
+        if ! os_version('debian >= jessie') {
+            $storage_size_main = $::realm ? {
+                'labs'  => 5,
+                default => 300,
+            }
         }
 
         if $cluster_tier == 1 {
@@ -1489,10 +1530,13 @@ class role::cache {
         include standard
         include nrpe
 
-        $storage_size_main = $::realm ? {
-            'labs'  => 5,
-            default => 300,
+        if ! os_version('debian >= jessie') {
+            $storage_size_main = $::realm ? {
+                'labs'  => 5,
+                default => 300,
+            }
         }
+
         $storage_partitions = $::realm ? {
             'production' => ['sda3', 'sdb3'],
             'labs'       => ['vdb'],
