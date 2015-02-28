@@ -24,9 +24,11 @@ if grep -qs '3\.6' /sys/module/ixgbe/version; then
 	apt-install ixgbe-dkms
 fi
 
-# kernel update + mkfs for all cache nodes
+# kernel update + optimized mkfs for all cache nodes
+# (the upgrade is to grab our updated firmware packages first for initramfs...)
 case `hostname` in \
-	amssq*|cp[1234]*)
+	amssq[0-9]*|cp[1234]*)
+		chroot /target apt-get -y upgrade
 		apt-install linux-image-3.19
 		mke2fs -F -F -t ext4 -T huge -O sparse_super2 -m 0 -L sda3-varnish /dev/sda3
 		mke2fs -F -F -t ext4 -T huge -O sparse_super2 -m 0 -L sdb3-varnish /dev/sdb3
