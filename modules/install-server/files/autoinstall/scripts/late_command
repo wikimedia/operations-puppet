@@ -27,7 +27,7 @@ fi
 # kernel update + optimized mkfs for all cache nodes
 # (the upgrade is to grab our updated firmware packages first for initramfs...)
 case `hostname` in \
-	amssq[0-9]*|cp[1234]*)
+	amssq[0-9]*|cp[1234]*|dysprosium)
 		chroot /target apt-get -y upgrade
 		apt-install linux-image-3.19
 		mke2fs -F -F -t ext4 -T huge -O sparse_super2 -m 0 -L sda3-varnish /dev/sda3
