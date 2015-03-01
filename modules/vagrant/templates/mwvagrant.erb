@@ -1,0 +1,8 @@
+#!/bin/sh
+# Execute vagrant using a shared user and configuration directory.
+# Helps manage a Vagrant install that is shared by multiple users.
+#
+# Adding `alias vagrant=/usr/local/bin/mwvagrant` to your shell will make
+# usage more natural.
+
+exec sudo -u vagrant -- env VAGRANT_HOME=<%= @vagrant_home %> /usr/bin/vagrant "$@"
