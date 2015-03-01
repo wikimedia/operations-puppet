@@ -1,0 +1,6 @@
+# IPsec testing
+hosts: ['berkelium.eqiad.wmnet',
+        'curium.eqiad.wmnet',
+        'cp3001.esams.wmnet',
+        'cp3002.esams.wmnet'
+]
