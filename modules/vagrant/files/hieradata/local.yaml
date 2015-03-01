@@ -1,0 +1,5 @@
+---
+classes: ['::role::labs_initial_content']
+
+role::mediawiki::hostname: "%{::hostname}.wmflabs.org"
+mediawiki::multiwiki::base_domain: "-%{::hostname}.wmflabs.org"
