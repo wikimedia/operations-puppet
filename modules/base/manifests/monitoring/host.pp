@@ -8,24 +8,33 @@
 #
 # Note that this class is probably already included for your node
 # by the class base.  If you want to change the contact_group, set
-# the variable $nagios_contact_group in your node definition.
+# the variable contactgroups in hiera.
 # class base will use this variable as the $contact_group argument
 # when it includes this class.
 #
 # == Parameters
-# $contact_group - Nagios contact_group to use for notifications. Defaults to
-# admins
+# $contact_group            - Nagios contact_group to use for notifications. Defaults to
+#                             admins
 #
-class base::monitoring::host($contact_group = 'admins') {
+# nrpe_check_disk_options   - Default options for checking disks.  Defaults to checking
+#                             all disks and warning at < 6% and critical at < 3% free.
+#
+# nrpe_check_disk_critical  - Make disk space alerts paging, defaults to not paging
+#
+class base::monitoring::host(
+    $contact_group = hiera('contactgroups', 'admins'),
+    # the -A -i ... part is a gross hack to workaround Varnish partitions
+    # that are purposefully at 99%. Better ideas are welcome.
+    $nrpe_check_disk_options = '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs',
+    $nrpe_check_disk_critical = false,
+) {
     include base::puppet::params # In order to be able to use some variables
 
-    monitoring::host { $::hostname:
-        contact_group => $contact_group
-    }
+    monitoring::host { $::hostname: }
+
     monitoring::service { 'ssh':
         description   => 'SSH',
         check_command => 'check_ssh',
-        contact_group => $contact_group
     }
 
     package { [ 'megacli', 'arcconf', 'mpt-status' ]:
@@ -37,17 +46,8 @@ class base::monitoring::host($contact_group = 'admins') {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => 'RUN_DAEMON=no',
-        require => Package['mpt-status'],
-    }
-
-    service { 'mpt-statusd':
-        ensure    => stopped,
-        enable    => false,
-        hasstatus => false,
-        stop      => '/usr/bin/pkill -9 -f mpt-statusd',
-        require   => Package['mpt-status'],
-        subscribe => File['/etc/default/mpt-statusd'],
+        content => "RUN_DAEMON=no\n",
+        before  => Package['mpt-status'],
     }
 
     file { '/usr/local/bin/check-raid.py':
@@ -79,6 +79,14 @@ class base::monitoring::host($contact_group = 'admins') {
         source => 'puppet:///modules/base/check_sysctl',
     }
 
+    file { '/usr/lib/nagios/plugins/check-fresh-files-in-dir.py':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py',
+    }
+
     sudo::user { 'nagios':
         privileges   => [
                         'ALL = NOPASSWD: /usr/local/bin/check-raid.py',
@@ -101,11 +109,10 @@ class base::monitoring::host($contact_group = 'admins') {
         }
     }
 
-    # the -A -i ... part is a gross hack to workaround Varnish partitions
-    # that are purposefully at 99%. Better ideas are welcome.
     nrpe::monitor_service { 'disk_space':
         description  => 'Disk space',
-        nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]"',
+        critical     => $nrpe_check_disk_critical,
+        nrpe_command => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
     }
 
     nrpe::monitor_service { 'dpkg':
