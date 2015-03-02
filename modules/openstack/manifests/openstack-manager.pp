@@ -17,7 +17,9 @@ class openstack::openstack-manager(
             before   => Package['memcached'],
         }
 
-        include memcached
+        class { 'memcached':
+            ip  => '127.0.0.1',
+        }
     }
 
     $controller_hostname = $novaconfig['controller_hostname']

@@ -2,5 +2,3 @@ mediawiki::users::web: www-data
 cluster: virt
 admin::groups:
   - deployment
-memcached::ip: "127.0.0.1"
-memcached::port: "11212"
