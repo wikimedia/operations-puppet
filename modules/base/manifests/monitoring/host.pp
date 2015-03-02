@@ -103,9 +103,10 @@ class base::monitoring::host($contact_group = 'admins') {
 
     # the -A -i ... part is a gross hack to workaround Varnish partitions
     # that are purposefully at 99%. Better ideas are welcome.
+    $check_diskspace_params = hiera('monitor_diskspace', '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]"')
     nrpe::monitor_service { 'disk_space':
         description  => 'Disk space',
-        nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]"',
+        nrpe_command => "/usr/lib/nagios/plugins/check_disk ${check_diskspace_params}",
     }
 
     nrpe::monitor_service { 'dpkg':

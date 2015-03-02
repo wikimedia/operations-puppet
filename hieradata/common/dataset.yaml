@@ -1,0 +1,1 @@
+monitor_diskspace: "-w 6% -c 3% -l -e -p /"
