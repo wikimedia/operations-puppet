@@ -1,0 +1,2 @@
+---
+"puppetmaster::scripts::keep_reports_minutes": 180
