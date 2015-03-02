@@ -217,7 +217,7 @@ class role::nova::manager {
     include ::scap::scripts
 
     service { 'nutcracker':
-        ensure => absent,
+        ensure => stopped,
         before => Service['memcached']
     }
 }
