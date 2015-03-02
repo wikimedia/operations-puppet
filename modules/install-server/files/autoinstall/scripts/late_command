@@ -26,8 +26,12 @@ fi
 
 # kernel update + optimized mkfs for all cache nodes
 # (the upgrade is to grab our updated firmware packages first for initramfs...)
+# (the crazy PHYS_CORES thing is to get the bnx2x option set before the first boot,
+#  otherwise we'd need a reboot after puppet sets up the same file on the first run)
 case `hostname` in \
 	amssq[0-9]*|cp[1234]*|dysprosium)
+		PHYS_CORES=$(ruby -e "require 'pathname'; print Pathname::glob('/sys/devices/system/cpu/cpu[0-9]*/topology/thread_siblings_list').map{|x| File.open(x,'r').read().split(',')[0] }.sort.uniq.count")
+		chroot /target /bin/sh -c "echo options bnx2x num_queues=$PHYS_CORES >/etc/modprobe.d/rps.conf"
 		chroot /target apt-get -y upgrade
 		apt-install linux-image-3.19
 		mke2fs -F -F -t ext4 -T huge -O sparse_super2 -m 0 -L sda3-varnish /dev/sda3
