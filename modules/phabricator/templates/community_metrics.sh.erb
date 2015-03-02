@@ -63,18 +63,6 @@ SELECT COUNT(DISTINCT objectPHID) FROM maniphest_transaction WHERE (transactionT
 END
 )
 
-#echo "result_shelltasksclosed"
-result_shelltasksclosed=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
-
-SELECT COUNT(DISTINCT objectPHID) FROM maniphest_transaction JOIN maniphest_nameindex JOIN edge WHERE
-    (maniphest_nameindex.indexedObjectName="shell" AND maniphest_nameindex.indexedObjectPHID=edge.dst
-    AND edge.src=maniphest_transaction.objectPHID) AND (transactionType="status" AND (oldValue="\"open\""
-    OR oldValue="\"stalled\"") AND newValue="\"resolved\"") AND
-    FROM_UNIXTIME(maniphest_transaction.dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
-
-END
-)
-
 #echo "result_tasksopen"
 result_tasksopen=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
 
@@ -146,7 +134,6 @@ authors=$(echo $result_authors | cut -d " " -f3)
 resolvers=$(echo $result_resolvers | cut -d " " -f3)
 taskscreated=$(echo $result_taskscreated | cut -d " " -f3)
 tasksclosed=$(echo $result_tasksclosed | cut -d " " -f3)
-shelltasksclosed=$(echo $result_shelltasksclosed | cut -d " " -f3)
 
 tasksopen=$(echo $result_tasksopen | cut -d " " -f3)
 
@@ -192,7 +179,6 @@ Number of task authors in (${lastmonth}): ${authors}
 Number of users who have closed tasks in (${lastmonth}): ${resolvers}
 Number of tasks created in (${lastmonth}): ${taskscreated}
 Number of tasks closed in (${lastmonth}): ${tasksclosed}
-Number of tasks in the shell project closed as resolved,fixed in (${lastmonth}): ${shelltasksclosed}
 
 Number of open and stalled tasks in total: ${tasksopen}
 
