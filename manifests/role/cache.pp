@@ -819,7 +819,7 @@ class role::cache {
                     #  ~545: uploads: 4,9,10
                     #  ~225: uploads: 15,16,17,18
                     #   will sort as reinstalled, and recheck storage controller bios setup...
-                    default => 300, # XXX update this for new S3700 partitioning results on jessie
+                    default => 360,
                 }
             }
             else {
