@@ -127,9 +127,7 @@ class misc::maintenance::update_flaggedrev_stats( $ensure = present ) {
     file { '/srv/mediawiki/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh':
         ensure => $ensure,
         source => 'puppet:///files/misc/scripts/wikimedia-periodic-update.sh',
-        owner  => $::mediawiki::users::web,
-        group  => 'wikidev',
-        mode   => '0755',
+        mode   => '0555',
     }
 
     cron { 'update_flaggedrev_stats':
@@ -164,9 +162,7 @@ class misc::maintenance::update_special_pages( $ensure = present ) {
     file { '/usr/local/bin/update-special-pages':
         ensure => $ensure,
         source => 'puppet:///files/misc/scripts/update-special-pages',
-        owner  => $::mediawiki::users::web,
-        group  => 'wikidev',
-        mode   => '0755',
+        mode   => '0555',
     }
 }
 
@@ -183,9 +179,7 @@ class misc::maintenance::update_article_count( $ensure = present ) {
     file { '/usr/local/bin/update-article-count':
         ensure => $ensure,
         source => 'puppet:///files/misc/scripts/update-article-count',
-        owner  => $::mediawiki::users::web,
-        group  => 'wikidev',
-        mode   => '0755',
+        mode   => '0555',
     }
 }
 
@@ -279,9 +273,7 @@ class misc::maintenance::updatetranslationstats( $ensure = present ) {
 
     file { '/usr/local/bin/characterEditStatsTranslate':
         ensure => $ensure,
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
-        mode   => '0775',
+        mode   => '0555',
         source => 'puppet:///files/misc/scripts/characterEditStatsTranslate',
     }
 
