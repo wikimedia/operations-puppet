@@ -8,22 +8,32 @@ realm =  @realm
 
 user www-data www-data;
 <% if has_variable?("nginx_use_ssl") then %>
-worker_processes  <%= @processorcount.to_i %>;
-<%
-# Adapted from https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
-affinity_mask = Array.new
-cpupos = 0
-ncpus = @processorcount.to_i
-(0...ncpus).each do |worker|
-  bitmask = (1 << cpupos).to_s(2)
-  bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s
-  affinity_mask << bitstring
-  cpupos += 1
-end
--%>
-worker_cpu_affinity <%= affinity_mask.join(" ") %>;
+    # Adapted from https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
+    # Hyperthread siblings assumed to be enumerated as 0+16, 1+17, 2+18, etc, and
+    #  if HT is detected, we map 1 process per physical core onto both siblings
+    worker_processes  <%= @physicalcorecount %>;
+    <%
+        ht_mode = false
+        if @processorcount.to_i == (2 * @physicalcorecount.to_i)
+            ht_mode = true
+        end
+        affinity_mask = Array.new
+        cpupos = 0
+        ncpus = @physicalcorecount.to_i
+        (0...ncpus).each do |worker|
+            bitmask = (1 << cpupos).to_s(2)
+            bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s
+            if ht_mode
+                affinity_mask << (bitstring + bitstring)
+            else
+                affinity_mask << bitstring
+            end
+            cpupos += 1
+        end
+    -%>
+    worker_cpu_affinity <%= affinity_mask.join(" ") %>;
 <% else %>
-worker_processes  <%= @processorcount.to_i * 8 %>;
+    worker_processes  <%= @processorcount.to_i * 8 %>;
 <% end %>
 worker_rlimit_nofile 30000;
 
