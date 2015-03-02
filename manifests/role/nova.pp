@@ -213,27 +213,12 @@ class role::nova::manager {
         certificate       => $certificate,
     }
 
-    include ::nutcracker::monitoring
     include ::mediawiki::packages::php5
     include ::scap::scripts
 
-    class { '::nutcracker':
-        mbuf_size => '64k',
-        pools     => {
-            'memcached' => {
-                auto_eject_hosts     => true,
-                distribution         => 'ketama',
-                hash                 => 'md5',
-                listen               => '127.0.0.1:11212',
-                preconnect           => true,
-                server_connections   => 2,
-                server_failure_limit => 3,
-                timeout              => 250,
-                servers              => [
-                    '127.0.0.1:11000:1',
-                ],
-            },
-        },
+    service { 'nutcracker':
+        ensure => absent,
+        before => Service['memcached']
     }
 }
 
