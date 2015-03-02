@@ -75,6 +75,7 @@ class zuul (
     environment => 'HTTP_PROXY=. HTTPS_PROXY=.',
     cwd         => $zuul_source_dir,
     path        => '/bin:/usr/bin',
+    umask       => 022,
     refreshonly => true,
     subscribe   => Git::Clone['integration/zuul'],
     require     => [
