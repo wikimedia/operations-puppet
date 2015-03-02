@@ -7,11 +7,27 @@ class toollabs::node::web::generic inherits toollabs::node::web {
         queues => [ 'webgrid-generic' ],
     }
 
+    # NodeJS support
     file { '/usr/local/bin/tool-nodejs':
         source => 'puppet:///modules/toollabs/tool-nodejs',
         mode   => '0555',
     }
 
+    # uwsgi python support
+    package {[
+        'uwsgi',
+        'uwsgi-plugin-python',
+        'uwsgi-plugin-python3',
+    ]:
+        ensure => latest,
+    }
+
+    file { '/usr/local/bin/tool-uwsgi-python':
+        source => 'puppet:///modules/toollabs/tool-uwsgi-python',
+        mode   => '0555',
+    }
+
+    # tomcat support
     package { [ 'tomcat7-user', 'xmlstarlet' ]:
         ensure => latest,
     }
