@@ -2163,6 +2163,20 @@ host mc2016 {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host mc2017 {
+	hardware ethernet 00:10:18:ef:fb:90;
+	fixed-address mc2017.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host mc2018 {
+	hardware ethernet 00:10:18:ef:fd:60;
+	fixed-address mc2018.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host ms1001 {
 	hardware ethernet 78:2b:cb:0a:13:f3;
 	fixed-address ms1001.wikimedia.org;
