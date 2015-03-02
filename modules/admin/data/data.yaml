@@ -159,7 +159,7 @@ groups:
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
-    members: [ezachte, qchris, joal]
+    members: [ezachte, qchris, joal, tnegrin]
   statistics-privatedata-users:
     gid: 725
     description: Have access to so that they can do analysis on webrequest logs
