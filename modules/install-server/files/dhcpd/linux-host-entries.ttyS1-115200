@@ -4389,6 +4389,11 @@ host mw2134 {
 	fixed-address mw2134.codfw.wmnet;
 }
 
+host mw2135 {
+	hardware ethernet B0:83:FE:DE:FA:62;
+	fixed-address mw2135.codfw.wmnet;
+
+
 host nembus {
 	hardware ethernet 90:B1:1C:00:AB:0D;
 	fixed-address nembus.wikimedia.org;
