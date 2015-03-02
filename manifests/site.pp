@@ -1851,7 +1851,7 @@ node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
     role swift::storage
 }
 
-# mw1001-1016 are jobrunners (precise)
+# mw1001-1016 are jobrunners
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
     if $::hostname =~ /^mw100[12]$/ {
         $ganglia_aggregator = true
@@ -1930,6 +1930,36 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
 #mw1236-mw1258 are apaches
 node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
+}
+
+#mw2001-mw2012 are jobrunners (codfw)
+node /^mw20(0[0-9]|1[0-2])\.codfw\.wmnet$/ {
+    role mediawiki::jobrunner
+}
+
+#mw2013-2020 are imagescalers (codfw)
+node /^mw20(1[3-9]|20)\.codfw\.wmnet$/ {
+    role mediawiki::imagescaler
+}
+
+#mw2021-22 are videoscalers (codfw)
+node /^mw202[12]\.codfw\.wmnet$/ {
+    role mediawiki::videoscaler
+}
+
+#mw2023-2099 are api appservers (codfw)
+node /^mw20(2[3-9]|[3-9][0-9])\.codfw\.wmnet$/ {
+    role mediawiki::appserver::api
+}
+
+#mw2100-2199 are appservers (codfw)
+node /^mw21[0-9][0-9]\.codfw\.wmnet$/ {
+    role mediawiki::appserver
+}
+
+#mw2200-2234 are api appserver (tentatively)
+node /^mw22([0-2][0-9]|3[0-4])\.codfw\.wmnet$/ {
+    role mediawiki::appserver::api
 }
 
 node 'neon.wikimedia.org' {
