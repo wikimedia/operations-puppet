@@ -14,15 +14,24 @@
 # Sample Usage:
 #
 class toollabs::redis (
-    $maxmemory = '1GB'
+    $maxmemory = '1GB',
+    $replicate_from = undef,
 ) inherits toollabs {
     include toollabs::infrastructure
     include ::redis::client::python
 
+    if $replicate_from {
+        $redis_replication = {
+            "${::hostname}" => $replicate_from,
+        }
+    } else {
+        $redis_replication = undef
+    }
+
     class { '::redis':
-        persist         => 'aof',
-        dir             => '/var/lib/redis',
-        maxmemory       => $maxmemory,
+        persist           => 'aof',
+        dir               => '/var/lib/redis',
+        maxmemory         => $maxmemory,
         # Disable the following commands, to try to limit people from
         # Trampling on each others' keys
         rename_commands => {
@@ -37,7 +46,8 @@ class toollabs::redis (
             'DEBUG'     => '',
             'MONITOR'   => ''
         },
-        monitor         => true
+        monitor           => true,
+        redis_replication => $redis_replication
     }
 
     diamond::collector { 'Redis':

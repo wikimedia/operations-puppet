@@ -74,6 +74,21 @@ class role::labs::tools {
         }
     }
 
+    class redis::slave(
+        $master = 'tools-redis',
+    ) inherits role::labs::tools::common {
+
+        system::role { 'role::labs::tools::redis::slave':
+            description => 'Server that hosts shared Redis instance'
+        }
+        class { 'toollabs::redis':
+            maxmemory      => $::redis_maxmemory,
+            replicate_from => $master,
+        }
+
+    }
+
+
     ##
     ## NOTE: Those roles are transitional, and should be removed
     ## from Wikitech entirely in favor of role::labs::tools::compute
