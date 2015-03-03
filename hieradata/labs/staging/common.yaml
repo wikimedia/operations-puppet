@@ -1,0 +1,8 @@
+---
+salt::master::salt_runner_dirs: [ '/srv/runners' ]
+salt::master::salt_peer_run: { '.*.eqiad.wmflabs': [ 'deploy.*' ] }
+salt::master::salt_state_roots: { base: [ '/srv/salt' ] }
+salt::master::salt_file_roots: { base: [ '/srv/salt' ] }
+salt::master::salt_pillar_roots: { base: [ '/srv/pillars' ] }
+salt::master::salt_module_roots: { base: [ '/srv/salt/_modules' ] }
+salt::master::salt_returner_roots: { base: [ '/srv/salt/_returners' ] }

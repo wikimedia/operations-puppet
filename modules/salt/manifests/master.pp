@@ -11,6 +11,9 @@ class salt::master(
     $salt_peer={},
     $salt_peer_run={},
     $salt_nodegroups={},
+    $salt_state_roots={'base'=>['/srv/salt']},
+    $salt_module_roots={'base'=>['/srv/salt/_modules']},
+    $salt_returner_roots={'base'=>['/srv/salt/_returners']},
 ){
     package { 'salt-master':
         ensure => $salt_version,
@@ -43,5 +46,13 @@ class salt::master(
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
+    }
+
+    salt::master_environment{ 'base':
+        salt_state_roots    => $salt_state_roots,
+        salt_file_roots     => $salt_file_roots,
+        salt_pillar_roots   => $salt_pillar_roots,
+        salt_module_roots   => $salt_module_roots,
+        salt_returner_roots => $salt_returner_roots,
     }
 }
