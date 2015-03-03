@@ -58,4 +58,13 @@ class redis (
             check_command => "check_tcp!${port}",
         }
     }
+
+    if member(['rdb', 'aof', 'both'], $persist) {
+        # Background save may fail under low memory condition unless
+        # vm.overcommit_memory is 1. This is enabled only if persistance
+        # is enabled
+        sysctl::parameters { 'vm.overcommit_memory':
+            values => { 'vm.overcommit_memory' => 1, },
+        }
+    }
 }

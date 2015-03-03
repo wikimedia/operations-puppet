@@ -1727,23 +1727,11 @@ node /^rdb100[1-4]\.eqiad\.wmnet/ {
 node /^rbf100[1-2]\.eqiad\.wmnet/ {
     role db::redis
     include admin
-
-    # Background save may fail under low memory condition unless
-    # vm.overcommit_memory is 1.
-    sysctl::parameters { 'vm.overcommit_memory':
-        values => { 'vm.overcommit_memory' => 1, },
-    }
 }
 
 node /^rbf200[1-2]\.codfw\.wmnet/ {
     include admin
     include standard
-
-    # Background save may fail under low memory condition unless
-    # vm.overcommit_memory is 1.
-    sysctl::parameters { 'vm.overcommit_memory':
-        values => { 'vm.overcommit_memory' => 1, },
-    }
 }
 
 # restbase eqiad cluster
