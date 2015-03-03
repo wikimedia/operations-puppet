@@ -84,10 +84,17 @@ define base::service_unit (
             default    => "/etc/init.d/${name}"
         }
 
+        # systemd complains if unit files are executable
+        if $initscript == 'systemd' {
+            $i_mode = '0444'
+        } else {
+            $i_mode = '0544'
+        }
+
         file {$path:
             ensure  => $ensure,
             content => template($template),
-            mode    => '0544',
+            mode    => $i_mode,
             owner   => root,
             group   => root,
         }
