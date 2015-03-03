@@ -1678,6 +1678,7 @@ class role::cache {
             backends        => [
                 'antimony.wikimedia.org',
                 'caesium.eqiad.wmnet',
+                'californium.eqiad.wmnet',
                 'dataset1001.wikimedia.org',
                 'gallium.wikimedia.org',  # CI server
                 'ytterbium.wikimedia.org', # Gerrit
