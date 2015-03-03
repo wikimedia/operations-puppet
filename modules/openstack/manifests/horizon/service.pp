@@ -19,7 +19,7 @@ class openstack::horizon::service($openstack_version='havana', $novaconfig) {
 
     if !defined(Class['memcached']) {
         class { 'memcached':
-            memcached_ip => '127.0.0.1',
+            ip => '127.0.0.1',
         }
     }
 
