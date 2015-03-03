@@ -15,7 +15,6 @@
 /etc/sudoers /etc/sudoers
 /etc/sudoers.d/ops /etc/sudoers.d/ops
 /etc/ssh/sshd_config /etc/ssh/sshd_config
-/etc/ssh/sshd_banner /etc/ssh/sshd_banner
 /etc/apt/trusted.gpg /etc/apt/trusted.gpg
 /etc/apt/sources.list.d/wikimedia.list /etc/apt/sources.list.d/wikimedia.list
 /etc/apt/preferences.d/wikimedia.pref /etc/apt/preferences.d/wikimedia.pref
