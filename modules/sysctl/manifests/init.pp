@@ -17,7 +17,10 @@ class sysctl {
     }
 
     exec { 'update_sysctl':
-        command     => '/usr/sbin/service procps start',
+        command     => $::initsystem ? {
+            systemd => '/bin/systemctl restart systemd-sysctl.service',
+            default => '/usr/sbin/service procps start',
+        },
         refreshonly => true,
     }
 }
