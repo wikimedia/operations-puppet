@@ -16,8 +16,18 @@ class sysctl {
         source  => 'puppet:///modules/sysctl/sysctl.d-empty',
     }
 
+    if $::initsystem == 'systemd' {
+        # there is a procps service alias; the primary difference here
+        #  is that under systemd "start" does not re-apply for new settings
+        #  files, only "restart" does so.
+        $update_cmd = '/bin/systemctl restart systemd-sysctl.service'
+    }
+    else {
+        $update_cmd = '/usr/sbin/service procps start'
+    }
+
     exec { 'update_sysctl':
-        command     => '/usr/sbin/service procps start',
+        command     => $update_cmd,
         refreshonly => true,
     }
 }
