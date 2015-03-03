@@ -508,21 +508,6 @@ class role::cache {
             require      => Class['::varnishkafka'],
         }
 
-        # This can be removed after it is applied everywhere
-        # and remvoed by ensure => absent.
-        monitoring::ganglia { 'varnishkafka-drerr':
-            description => 'Varnishkafka Delivery Errors',
-            metric      => 'kafka.varnishkafka.kafka_drerr.per_second',
-            # Warn if between more than 0 but less than 30
-            warning     => '0.1:29.9',
-            # Critical if greater than 30.
-            critical    => '30.0',
-            require     => Varnishkafka::Monitor['webrequest'],
-            # This is being replaced by monitoring::graphite_threshold
-            ensure      => 'absent'
-        }
-
-
         # Extract cache type name from topic for use in statsd prefix.
         # There is probably a better way to do this.
         $cache_type = regsubst($topic, '^webrequest_(.+)$', '\1')
