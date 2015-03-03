@@ -1107,7 +1107,7 @@ class role::cache {
             default  => ['default_ttl=2592000'],
         }
 
-        $storage_size_bigobj = 50
+        $storage_size_bigobj = floor($storage_size_main / 6)
 
         if os_version('debian >= jessie') {
             $storage_size_up = $storage_size_main - $storage_size_bigobj
