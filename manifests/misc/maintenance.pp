@@ -192,48 +192,38 @@ class misc::maintenance::update_article_count( $ensure = present ) {
 class misc::maintenance::wikidata( $ensure = present ) {
     require mediawiki::users
 
+    # Starts a dispatcher instance every 3 minutes
+    # This handles inserting jobs into client job queue, which then process the changes
+    cron { 'wikibase-dispatch-changes4':
+        ensure  => $ensure,
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 1200 --batch-size 250 --dispatch-interval 25 2>&1 >> /dev/null',
+        user    => $::mediawiki::users::web,
+        minute  => '*/3',
+    }
+
+    cron { 'wikibase-dispatch-changes-test':
+        ensure  => $ensure,
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher-testwikidata.log',
+        user    => $::mediawiki::users::web,
+        minute  => '*/15',
+    }
+
+    # Prune wb_changes entries no longer needed from (test)wikidata
     cron { 'wikibase-repo-prune2':
         ensure  => $ensure,
-        # prunes the wb_changes table in wikidatawiki db
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune2.log',
         user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
     }
 
-    # Run the dispatcher script every 5 minutes
-    # This handles inserting jobs into client job queue, which then process the changes
-    cron { 'wikibase-dispatch-changes3':
-        ensure  => $ensure,
-        # dispatches changes data to wikibase clients (e.g. wikipedia) to be processed as jobs there
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher3.log',
-        user    => $::mediawiki::users::web,
-        minute  => '*/5',
-    }
-
-    cron { 'wikibase-dispatch-changes4':
-        ensure  => $ensure,
-        # second dispatcher to inject wikidata changes  wikibase clients (e.g. wikipedia) to be processed as jobs there
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher4.log',
-        user    => $::mediawiki::users::web,
-        minute  => '*/5',
-    }
-
-    cron { 'wikibase-dispatch-changes-test':
-        ensure  => $ensure,
-        # second dispatcher to inject wikidata changes  wikibase clients (e.g. wikipedia) to be processed as jobs there
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher-testwikidata.log',
-        user    => $::mediawiki::users::web,
-        minute  => '*/5',
-    }
-
     cron { 'wikibase-repo-prune-test':
         ensure  => $ensure,
-        # prunes the wb_changes table in testwikidatawiki db
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune-testwikidata.log',
         user    => $::mediawiki::users::web,
         minute  => [0,15,30,45],
     }
 
+    # Run the rebuildEntityPerPage script once a week to fix broken wb_entity_per_page entries
     cron { 'wikibase-rebuild-entityperpage':
         ensure  => $ensure,
         command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/rebuildEntityPerPage.php --wiki wikidatawiki --force 2>&1 >> /var/log/wikidata/rebuildEpp.log',
@@ -256,6 +246,11 @@ class misc::maintenance::wikidata( $ensure = present ) {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
+    }
+
+    # Legacy... purge these from terbium
+    cron { 'wikibase-dispatch-changes3':
+        ensure  => absent,
     }
 }
 
