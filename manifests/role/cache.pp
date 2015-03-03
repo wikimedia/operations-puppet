@@ -64,7 +64,7 @@ class role::cache {
                         'cp1053.eqiad.wmnet',
                         'cp1054.eqiad.wmnet',
                         'cp1055.eqiad.wmnet',
-                        # 'cp1065.eqiad.wmnet', # reinstalling...
+                        'cp1065.eqiad.wmnet',
                         'cp1066.eqiad.wmnet',
                         'cp1067.eqiad.wmnet',
                         'cp1068.eqiad.wmnet',
@@ -81,7 +81,7 @@ class role::cache {
                         'amssq39.esams.wmnet',
                         'amssq40.esams.wmnet',
                         'amssq41.esams.wmnet',
-                        # 'amssq42.esams.wmnet', # reinstalling...
+                        'amssq42.esams.wmnet',
                         'amssq43.esams.wmnet',
                         'amssq44.esams.wmnet',
                         'amssq45.esams.wmnet',
@@ -121,7 +121,7 @@ class role::cache {
                     'eqiad' => ['cp1056.eqiad.wmnet',
                                 'cp1057.eqiad.wmnet',
                                 'cp1069.eqiad.wmnet',
-                                # 'cp1070.eqiad.wmnet', # reinstalling...
+                                'cp1070.eqiad.wmnet',
                     ],
                     'esams' => ['cp3019.esams.wikimedia.org',
                                 'cp3020.esams.wikimedia.org',
@@ -143,7 +143,7 @@ class role::cache {
                         'cp1061.eqiad.wmnet',
                         'cp1062.eqiad.wmnet',
                         'cp1063.eqiad.wmnet',
-                        # 'cp1064.eqiad.wmnet', # reinstalling...
+                        'cp1064.eqiad.wmnet',
                     ],
                     'esams' => [
                         'cp3003.esams.wikimedia.org',
@@ -172,7 +172,7 @@ class role::cache {
                     'eqiad' => ['cp1046.eqiad.wmnet',
                                 # 'cp1047.eqiad.wmnet', # hardware T88045
                                 'cp1059.eqiad.wmnet',
-                                # 'cp1060.eqiad.wmnet', # reinstalling...
+                                'cp1060.eqiad.wmnet',
                     ],
                     'esams' => ['cp3011.esams.wikimedia.org',
                                 'cp3012.esams.wikimedia.org',
