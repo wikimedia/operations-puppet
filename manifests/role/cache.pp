@@ -837,7 +837,8 @@ class role::cache {
             }
         }
         else {
-            $storage_size_main = 5
+            # for upload on jessie, bigobj is main/6, so 6 is functional minimum here.
+            $storage_size_main = 6
         }
 
         # Ganglia monitoring
