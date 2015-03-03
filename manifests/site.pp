@@ -2441,6 +2441,14 @@ node 'labmon1001.eqiad.wmnet' {
     include admin
 }
 
+# Californium hosts openstack-dashboard AKA horizon
+#  It's proxied by the misc-web varnishes
+node 'californium.eqiad.wmnet' {
+    include standard
+    include admin
+    include role::horizon
+}
+
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
 
