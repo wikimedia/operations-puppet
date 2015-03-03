@@ -28,6 +28,11 @@ class toollabs::redis (
         $redis_replication = undef
     }
 
+    # LVM for redis data!
+    labs_lvm::volume { 'redis-data':
+        mountat => '/var/lib/redis',
+    }
+
     class { '::redis':
         persist           => 'aof',
         dir               => '/var/lib/redis',
@@ -47,7 +52,8 @@ class toollabs::redis (
             'MONITOR'   => ''
         },
         monitor           => true,
-        redis_replication => $redis_replication
+        redis_replication => $redis_replication,
+        require           => Mount['/var/lib/redis'], # Provided by labs_lvm::volume
     }
 
     diamond::collector { 'Redis':
