@@ -51,7 +51,7 @@ class apache {
     exec { 'apache2_hard_restart':
         command     => '/usr/sbin/service apache2 restart',
         refreshonly => true,
-        before      => Service['apache'],
+        before      => Service['apache2'],
     }
 
     file { $available_dirs:
