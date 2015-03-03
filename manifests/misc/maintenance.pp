@@ -203,7 +203,7 @@ class misc::maintenance::wikidata( $ensure = present ) {
 
     cron { 'wikibase-dispatch-changes-test':
         ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher-testwikidata.log',
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /dev/null',
         user    => $::mediawiki::users::web,
         minute  => '*/15',
     }
@@ -246,11 +246,6 @@ class misc::maintenance::wikidata( $ensure = present ) {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-    }
-
-    # Legacy... purge these from terbium
-    cron { 'wikibase-dispatch-changes3':
-        ensure  => absent,
     }
 }
 
