@@ -1,6 +1,6 @@
 # == Class: role::zotero
 #
-# Zotero /zoʊˈtɛroʊ/ is free and open-source reference management
+# Zotero is free and open-source reference management
 # software to manage bibliographic data and related research materials.
 # https://en.wikipedia.org/wiki/Zotero
 #
