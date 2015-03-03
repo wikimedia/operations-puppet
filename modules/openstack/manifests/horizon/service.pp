@@ -1,4 +1,4 @@
-class openstack::horizon::service($openstack_version='havana', $novaconfig) {
+class openstack::horizon::service($openstack_version='icehouse', $novaconfig) {
 
     # basic horizon packages and config
     if ! defined(Class['openstack::repo']) {
