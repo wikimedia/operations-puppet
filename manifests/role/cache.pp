@@ -1107,9 +1107,9 @@ class role::cache {
             default  => ['default_ttl=2592000'],
         }
 
-        $storage_size_bigobj = 50
 
         if os_version('debian >= jessie') {
+            $storage_size_bigobj = floor($storage_size_main / 6)
             $storage_size_up = $storage_size_main - $storage_size_bigobj
             $storage_conf =  $::realm ? {
                 'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_up}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_up}G,$mma1 -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
@@ -1117,6 +1117,7 @@ class role::cache {
             }
         }
         else {
+            $storage_size_bigobj = 50
             $storage_conf =  $::realm ? {
                 'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1 -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
                 'labs'       => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1 -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
