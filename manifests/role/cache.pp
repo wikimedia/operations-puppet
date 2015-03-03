@@ -452,10 +452,12 @@ class role::cache {
     # == Parameters
     # $topic            - the name of kafka topic to which to send messages
     # $varnish_name - the name of the varnish instance to read shared logs from.  Default 'frontend'
+    # $varnish_svc_name - the name of the init unit for the above, default 'varnish-frontend'
     #
     class varnish::kafka::webrequest(
         $topic,
-        $varnish_name = 'frontend'
+        $varnish_name = 'frontend',
+        $varnish_svc_name = 'varnish-frontend'
     ) inherits role::cache::varnish::kafka
     {
         varnishkafka::instance { 'webrequest':
@@ -464,6 +466,7 @@ class role::cache {
             format_type                  => 'json',
             compression_codec            => 'snappy',
             varnish_name                 => $varnish_name,
+            varnish_svc_name             => $varnish_svc_name,
             # Note: fake_tag tricks varnishkafka into allowing hardcoded string into a JSON field.
             # Hardcoding the $fqdn into hostname rather than using %l to account for
             # possible slip ups where varnish only writes the short hostname for %l.
@@ -558,9 +561,11 @@ class role::cache {
     #
     # == Parameters
     # $varnish_name - the name of the varnish instance to read shared logs from.  Default $::hostname
+    # $varnish_svc_name - the name of the varnish init service to read shared logs from.  Default 'varnish'
     #
     class varnish::kafka::statsv(
         $varnish_name = $::hostname,
+        $varnish_svc_name = 'varnish',
     ) inherits role::cache::varnish::kafka
     {
         $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{@ip}h %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
@@ -571,6 +576,7 @@ class role::cache {
             format_type       => 'json',
             topic             => 'statsv',
             varnish_name      => $varnish_name,
+            varnish_svc_name  => $varnish_svc_name,
             varnish_opts      => { 'm' => 'RxURL:^/statsv[/?]', },
             # By requiring 2 ACKs per message batch, we survive a
             # single broker dropping out of its leader role,
@@ -1304,6 +1310,7 @@ class role::cache {
             class { 'role::cache::varnish::kafka::webrequest':
                 topic        => 'webrequest_bits',
                 varnish_name => $::hostname,
+                varnish_svc_name => 'varnish',
             }
 
             include role::cache::varnish::kafka::statsv
@@ -1747,6 +1754,7 @@ class role::cache {
             class { 'role::cache::varnish::kafka::webrequest':
                 topic => 'webrequest_misc',
                 varnish_name => $::hostname,
+                varnish_svc_name => 'varnish',
             }
         }
     }
