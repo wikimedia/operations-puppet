@@ -19,10 +19,6 @@ orientdb_test:
   admin::groups:
     - wikidata-query-roots
 
-mpm_worker_migration:
-  __regex: !ruby/regexp /^mw10(2[6-9]|[3-4][0-9])\.eqiad\.wmnet$/
-  apache::mpm::mpm: worker
-
 cassandra_test:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   cassandra::seeds:
