@@ -44,13 +44,14 @@ class apache {
     exec { 'apache2_test_config_and_restart':
         command     => '/usr/sbin/apache2ctl configtest',
         notify      => Exec['apache2_hard_restart'],
-        require     => Service['apache2'],
+        before      => Service['apache2'],
         refreshonly => true,
     }
 
     exec { 'apache2_hard_restart':
         command     => '/usr/sbin/service apache2 restart',
         refreshonly => true,
+        before      => Service['apache'],
     }
 
     file { $available_dirs:
