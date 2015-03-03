@@ -1,0 +1,12 @@
+Code-Review+2: Andrew Bogott <abogott@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Yuvipanda <yuvipanda@gmail.com>
+Code-Review+1: Tim Landscheidt <tim@tim-landscheidt.de>
+Code-Review+1: Legoktm <legoktm.wikipedia@gmail.com>
+Code-Review+1: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Code-Review+1: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Submitted-by: Andrew Bogott <abogott@wikimedia.org>
+Submitted-at: Tue, 03 Mar 2015 16:15:30 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/194048
+Project: operations/puppet
+Branch: refs/heads/production
