@@ -198,6 +198,12 @@ class role::deployment::deployment_servers::production {
         ensure => latest,
     }
 
+    # tig is a ncurses-based git utility which is useful for
+    # determining the state of git repos during deployments.
+    package { 'tig':
+        ensure => latest,
+    }
+
     sudo::group { 'wikidev_deployment_server':
         group      => 'wikidev',
         privileges => [
