@@ -1364,7 +1364,7 @@ node 'labstore1003.eqiad.wmnet' {
     $cluster = 'labsnfs'
     $ganglia_aggregator = true
 
-    include standard
+    include role::labs::nfs::dumps
 }
 
 node 'lanthanum.eqiad.wmnet' {
