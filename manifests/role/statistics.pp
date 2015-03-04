@@ -94,7 +94,7 @@ class role::statistics::private inherits role::statistics {
 
     # aggregating hourly pagecount-all-sites project count files into
     # daily per site csvs.
-    # Although it is in the “private” role, the dataset actually isn't
+    # Although it is in the "private" role, the dataset actually isn't
     # private. We just keep it here to spare adding a separate role.
     include statistics::aggregator
 
