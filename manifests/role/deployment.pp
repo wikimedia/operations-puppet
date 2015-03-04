@@ -217,6 +217,7 @@ class role::deployment::salt_masters(
         'parent_dir' => '/srv/deployment',
         'servers'    => {
             'eqiad'  => $deployment_server,
+            'codfw'  => $deployment_server,
         },
         'redis'      => {
             'host'     => $deployment_server,
