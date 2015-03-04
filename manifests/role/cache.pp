@@ -70,7 +70,7 @@ class role::cache {
                         'cp1068.eqiad.wmnet',
                     ],
                     'esams' => [
-                        'amssq31.esams.wmnet',
+                        # 'amssq31.esams.wmnet', # reinstalling...
                         'amssq32.esams.wmnet',
                         # 'amssq33.esams.wmnet', # powered down for now, RT # 7933
                         'amssq34.esams.wmnet',
