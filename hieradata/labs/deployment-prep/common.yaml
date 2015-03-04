@@ -40,6 +40,7 @@ mediawiki_memcached_servers:
     - 'en'
     - 'es'
     - 'fr'
+    - 'hy'
     - 'id'
     - 'kk'
     - 'ms'
@@ -95,6 +96,8 @@ mediawiki_memcached_servers:
     Yandex:
       'en':
         - 'ru'
+      'en':
+        - 'hy'
   dictionary:
     JsonDict:
       'ca':
