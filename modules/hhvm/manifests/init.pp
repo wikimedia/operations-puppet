@@ -6,8 +6,8 @@
 # The layout of configuration files in /etc/hhvm is as follows:
 #
 #   /etc/hhvm
-#   ├── php.ini      # Settings for CLI mode
-#   └── fcgi.ini     # Settings for FastCGI mode
+#   |__ php.ini      # Settings for CLI mode
+#   |__ fcgi.ini     # Settings for FastCGI mode
 #
 # The CLI configs are located in the paths HHVM automatically loads by
 # default. This makes it easy to invoke HHVM from the command line,
@@ -25,8 +25,8 @@
 # HHVM is also configured to write stack traces to the same directory.
 #
 #   /var/log/hhvm
-#   ├── error.log
-#   └── stacktrace.NNN.log.YYYYMMDD, ...
+#   |__ error.log
+#   |__ stacktrace.NNN.log.YYYYMMDD, ...
 #
 #
 # === Parameters
