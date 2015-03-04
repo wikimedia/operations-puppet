@@ -51,7 +51,7 @@ sub vcl_recv {
 		set req.backend = palladium;
 		// No caching of configs; scripts may want to know when things change
 		return (pass);
-	} elsif (req.http.Host == "noc.wikimedia.org") {
+	} elsif (req.http.Host == "noc.wikimedia.org" || req.http.Host == "dbtree.wikimedia.org") {
 		set req.backend = terbium;
 	} elsif (req.http.Host == "hue.wikimedia.org") {
 		// make sure all requests to Hue are via https proxy
