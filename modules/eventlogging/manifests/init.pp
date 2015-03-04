@@ -23,7 +23,7 @@
 #                 incoming events (valid and invalid) to a StatsD host.
 #
 # These services communicate with one another using a publisher /
-# subscriber model using ØMQ as the transport layer. Different
+# subscriber model using ZeroMQ as the transport layer. Different
 # event-processing patterns can be implemented by freely composing
 # multiple instances of each type, running locally or distributed across
 # several hosts.
