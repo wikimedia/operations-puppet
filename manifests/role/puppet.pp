@@ -49,18 +49,20 @@ class role::puppet::server::labs {
 # This allows puppet classes to be configured via LDAP
 # and wikitech instance configuration.
 #
-class role::puppet::self {
+class role::puppet::self(
+    $master = $::puppetmaster,
+) {
     # If $::puppetmaster is not set, assume
     # this is a self hosted puppetmaster, not allowed
     # to serve any other puppet clients.
-    $server = $::puppetmaster ? {
+    $server = $master ? {
           undef       => 'localhost',
           'localhost' => 'localhost',
           ''          => 'localhost',
           # if has . characters in in, assume fqdn.
-          /\./        => $::puppetmaster,
+          /\./        => $master,
           # else assume short hostname and append domain.
-          default     => "${::puppetmaster}.${::domain}",
+          default     => "${master}.${::domain}",
     }
 
     # If localhost or if $server matches this node's

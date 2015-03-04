@@ -73,12 +73,15 @@ class role::salt::masters::labs::project_master {
 
 }
 
-class role::salt::minions {
+class role::salt::minions(
+    $salt_master = $::salt_master_override,
+    $salt_finger = $::salt_master_finger_override,
+) {
     if $::realm == 'labs' {
         $labs_masters  = [ 'virt1000.wikimedia.org', 'labcontrol2001.wikimedia.org' ]
         $labs_finger   = 'c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd'
-        $master        = pick($::salt_master_override, $labs_masters)
-        $master_finger = pick($::salt_master_finger_override, $labs_finger)
+        $master        = pick($salt_master, $labs_masters)
+        $master_finger = pick($salt_finger, $labs_finger)
         $client_id     = "${::ec2id}.${::domain}"
 
         salt::grain { 'instanceproject':
