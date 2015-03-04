@@ -14,8 +14,8 @@
 # The two services bind domain sockets at these addresses:
 #
 #   /run/keyholder
-#   ├── agent.sock (0600)
-#   └── proxy.sock (0660)
+#   |__ agent.sock (0600)
+#   |__ proxy.sock (0660)
 #
 # Before the shared SSH agent can be used, it must be armed by a user
 # with access to the private key. This can be done by running:
