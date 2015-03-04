@@ -97,15 +97,10 @@ mediawiki_memcached_servers:
     Yandex:
       'en':
         - 'de'
-      'en':
         - 'hy'
-      'en':
         - 'id'
-      'en':
         - 'it'
-      'en':
         - 'ru'
-      'en':
         - 'pt'
       'ru':
         - 'hy'
