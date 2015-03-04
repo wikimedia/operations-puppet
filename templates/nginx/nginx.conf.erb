@@ -92,6 +92,14 @@ http {
 <% if scope.function_os_version(['debian >= jessie']) -%>
     # Disable RFC5077 tickets (may revisit later when client support is better)
     ssl_session_tickets off;
+
+    # ssl_buffer_size: 1300 is a good magic value for minimizing TTFB, at the
+    # expense of server overhead and total throughput.  We may have to back
+    # this off if it becomes a significant server performance issue, and we
+    # may want to set it higher (e.g. 4k) specifically for the upload caches
+    # to trade a little TTFB for throughput.  This is something that will have
+    # to be watched, experimented on, and tuned as more load comes in...
+    ssl_buffer_size 1300;
 <% end -%>
     <%= @nginx_ssl_conf.join("\n")  %>
     <% end %>
