@@ -1932,35 +1932,72 @@ node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
 }
 
-#mw2001-mw2012 are jobrunners (codfw)
-node /^mw20(0[0-9]|1[0-2])\.codfw\.wmnet$/ {
-    if $::hostname =~ /^mw200[1]$/ {
+# ROW A codfw appservers: mw2001-mw2079
+#mw2001-mw2006 are jobrunners
+node /^mw200[0-6]\.codfw\.wmnet$/ {
+    if $::hostname == 'mw2001' {
         $ganglia_aggregator = true
     }
     role mediawiki::jobrunner
 }
 
-#mw2013-2020 are imagescalers (codfw)
-node /^mw20(1[3-9]|20)\.codfw\.wmnet$/ {
-    role mediawiki::imagescaler
-}
-
-#mw2021-22 are videoscalers (codfw)
-node /^mw202[12]\.codfw\.wmnet$/ {
+#mw2007 is a videoscaler
+node 'mw2007.codfw.wmnet' {
     role mediawiki::videoscaler
 }
 
-#mw2023-2099 are api appservers (codfw)
-node /^mw20(2[3-9]|[3-9][0-9])\.codfw\.wmnet$/ {
-    role mediawiki::appserver::api
-}
-
-#mw2100-2199 are appservers (codfw)
-node /^mw21[0-9][0-9]\.codfw\.wmnet$/ {
+#mw2008-mw2049 are appservers
+node /^mw20(0[89]|[1-4][0-9])\.codfw\.wmnet$/ {
     role mediawiki::appserver
 }
 
-#mw2200-2234 are api appserver (tentatively)
+#mw2050-2079 are api appservers
+node /^mw20[5-7][0-9]\.codfw\.wmnet$/ {
+    role mediawiki::appserver::api
+}
+
+# ROW B codfw appservers: mw2080-mw2147
+#mw2080-mw2085 are jobrunners
+node /^mw208[0-5]\.codfw\.wmnet$/ {
+    if $::hostname == 'mw2080' {
+        $ganglia_aggregator = true
+    }
+    role mediawiki::jobrunner
+}
+
+#mw2086-mw2089 are imagescalers
+node /^mw208[6-9]\.codfw\.wmnet$/ {
+    role mediawiki::imagescaler
+}
+
+#mw2090-mw2119 are appservers
+node /^mw2(09[0-9]|1[0-1][0-9])\.codfw\.wmnet$/ {
+    role mediawiki::appserver
+}
+
+#mw2120-2147 are api appservers
+node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
+    role mediawiki::appserver::api
+}
+
+# ROW C codfw appservers: mw2148-mw2234
+
+#mw2148-mw2151 are imagescalers
+node /^mw21(4[89]|5[01])\.codfw\.wmnet$/ {
+    role mediawiki::imagescaler
+}
+
+#mw2152 is a videoscaler
+node 'mw2152.codfw.wmnet' {
+    role mediawiki::videoscaler
+}
+
+#mw2153-mw2199 are appservers
+node /^mw21(5[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
+    role mediawiki::appserver
+}
+
+#mw2200-2234 are api appservers
 node /^mw22([0-2][0-9]|3[0-4])\.codfw\.wmnet$/ {
     role mediawiki::appserver::api
 }
