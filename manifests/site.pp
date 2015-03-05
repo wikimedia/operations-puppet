@@ -511,7 +511,7 @@ node /^cp301[1234]\.esams\.(wikimedia\.org|wmnet)$/ {
     role cache::mobile
 }
 
-node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
+node /^cp(3019|302[0-2])\.esams\.(wikimedia\.org|wmnet)$/ {
     if $::hostname =~ /^cp(3019|3020)$/ {
         $ganglia_aggregator = true
     }
