@@ -806,14 +806,12 @@ class role::cache {
                 $storage_size_main = $::hostname ? {
                     /^amssq/ => 117,
                     'cp1008' => 117,
-                    # XXX
-                    # /^cp30/ => ??? wtf?
-                    # by-current-df-values:
-                    #  ~435: uploads: 3,5,6,7,8 mobile: 11,12
-                    #  ~455: mobile: 13,14
-                    #  ~545: uploads: 4,9,10
-                    #  ~225: uploads: 15,16,17,18
-                    #   will sort as reinstalled, and recheck storage controller bios setup...
+                    /^cp30(0[3-9]|1[0-4])$/ => 540,
+                    /^cp301[5-8]$/ => 220,
+                    # XXX ^ omreport puts these as Intel 320's in 600 and 300 capacities,
+                    #   still need to recheck/configure storage BIOS during reinstall,
+                    #   and update final formatted values above after the first two...
+                    # (also, I think 15-18 need to switch roles with 11-14...)
                     default => 360,
                 }
             }
