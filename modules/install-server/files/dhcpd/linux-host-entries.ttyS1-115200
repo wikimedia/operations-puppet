@@ -686,6 +686,8 @@ host cp3017 {
 host cp3018 {
 	hardware ethernet D4:AE:52:8C:86:31;
 	fixed-address cp3018.esams.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host cp3019 {

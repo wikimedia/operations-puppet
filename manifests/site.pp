@@ -496,7 +496,7 @@ node /^cp300([1-2])\.esams\.(wikimedia\.org|wmnet)$/ {
     role ipsec
 }
 
-node /^cp30(0[3-9]|10|1[4-8])\.esams\.(wikimedia\.org|wmnet)$/ {
+node /^cp30(0[3-9]|10|1[4-7])\.esams\.(wikimedia\.org|wmnet)$/ {
     if $::hostname =~ /^cp300[34]$/ {
         $ganglia_aggregator = true
     }
@@ -506,7 +506,7 @@ node /^cp30(0[3-9]|10|1[4-8])\.esams\.(wikimedia\.org|wmnet)$/ {
     role cache::upload
 }
 
-node /^cp301[1-3]\.esams\.(wikimedia\.org|wmnet)$/ {
+node /^cp301[1238]\.esams\.(wikimedia\.org|wmnet)$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::mobile
 }
