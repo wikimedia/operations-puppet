@@ -17,7 +17,6 @@ class noc {
     include ::apache::mod::php5
     include ::apache::mod::userdir
     include ::apache::mod::cgi
-    include ::apache::mod::ssl
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
