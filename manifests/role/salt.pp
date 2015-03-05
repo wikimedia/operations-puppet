@@ -98,7 +98,7 @@ class role::salt::minions(
         id            => $client_id,
         master        => $master,
         master_finger => $master_finger,
-        grains         => {
+        grains        => {
             realm   => $::realm,
             site    => $::site,
             cluster => hiera('cluster', $cluster),
