@@ -54,6 +54,13 @@ class role::deployment::config {
             'service_name'          => 'citoid',
             'checkout_submodules'   => true,
         },
+        'zotero/translation-server' => {
+            'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translation-server',
+            'service_name'          => 'zotero',
+        },
+        'zotero/translators' => {
+            'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators',
+        },
         'rcstream/rcstream' => {
             'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/rcstream',
             'service_name'          => 'rcstream',

@@ -57,19 +57,4 @@ class citoid( $port = 1970 ) {
         hasrestart => true,
         provider   => 'upstart',
     }
-
-    file { '/etc/init/zotero.conf':
-        content => template('citoid/upstart-zotero.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['zotero'],
-    }
-
-    service { 'zotero':
-        ensure     => running,
-        hasstatus  => true,
-        hasrestart => true,
-        provider   => 'upstart',
-    }
 }
