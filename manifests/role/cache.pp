@@ -157,7 +157,7 @@ class role::cache {
                         'cp3015.esams.wmnet',
                         'cp3016.esams.wmnet',
                         'cp3017.esams.wmnet',
-                        # 'cp3018.esams.wmnet', # reinstall/role-change
+                        'cp3014.esams.wmnet',
                     ],
                     'ulsfo' => [
                         'cp4005.ulsfo.wmnet',
@@ -177,7 +177,7 @@ class role::cache {
                     'esams' => ['cp3011.esams.wikimedia.org',
                                 'cp3012.esams.wikimedia.org',
                                 'cp3013.esams.wmnet',
-                                # 'cp3014.esams.wmnet', # reinstall/role-change
+                                'cp3018.esams.wmnet',
                     ],
                     'ulsfo' => ['cp4011.ulsfo.wmnet',
                                 'cp4012.ulsfo.wmnet',
