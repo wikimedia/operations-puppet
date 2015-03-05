@@ -56,7 +56,7 @@ define create_chained_cert(
 
     exec { "${name}_create_chained_cert":
         creates => "${location}/${certname}.chained.crt",
-        command => "/bin/cat /etc/ssl/localcerts/${certname}.crt ${ca} > ${location}/${certname}.chained.crt",
+        command => "/bin/echo >> /etc/ssl/localcerts/${certname}.crt && /bin/cat /etc/ssl/localcerts/${certname}.crt ${ca} > ${location}/${certname}.chained.crt",
         cwd     => '/etc/ssl/certs',
         require => [Package['openssl'],
                     File["/etc/ssl/localcerts/${certname}.crt"],
