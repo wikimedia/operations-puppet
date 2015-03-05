@@ -1,0 +1,11 @@
+# logrotate(8) config for zotero
+
+/var/log/zotero/* {
+    daily
+    copytruncate
+    missingok
+    compress
+    notifempty
+    rotate 15
+    size 256M
+}
