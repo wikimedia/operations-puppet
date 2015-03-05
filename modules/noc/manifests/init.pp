@@ -19,21 +19,21 @@ class noc {
     $tendril_user_web = $passwords::tendril::db_user_web
     $tendril_pass_web = $passwords::tendril::db_pass_web
 
-    file { '/srv/mediawiki/docroot/noc/dbtree':
+    file { '/srv/org/wikimedia/dbtree':
         ensure => 'directory',
         owner  => 'mwdeploy',
         group  => 'mwdeploy',
     }
 
     git::clone { 'operations/software/dbtree':
-        directory => '/srv/mediawiki/docroot/noc/dbtree',
+        directory => '/srv/org/wikimedia/dbtree',
         branch    => 'master',
         owner     => 'mwdeploy',
         group     => 'mwdeploy',
-        require   => File['/srv/mediawiki/docroot/noc/dbtree'],
+        require   => File['/srv/org/wikimedia/dbtree'],
     }
 
-    file { '/srv/mediawiki/docroot/noc/dbtree/inc/config.php':
+    file { '/srv/org/wikimedia/dbtree/inc/config.php':
         ensure  => 'present',
         owner   => 'mwdeploy',
         group   => 'mwdeploy',
