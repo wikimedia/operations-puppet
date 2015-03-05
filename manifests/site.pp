@@ -1934,6 +1934,9 @@ node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
 
 #mw2001-mw2012 are jobrunners (codfw)
 node /^mw20(0[0-9]|1[0-2])\.codfw\.wmnet$/ {
+    if $::hostname =~ /^mw200[1]$/ {
+        $ganglia_aggregator = true
+    }
     role mediawiki::jobrunner
 }
 

@@ -66,8 +66,9 @@ class ganglia_new::configuration {
             'name'      => 'Virtualization cluster',
             'id'    => 29 },
         'jobrunner' =>  {
-            'name'      => 'Jobrunners',
-            'id'    => 31 },
+            'name'  => 'Jobrunners',
+            'id'    => 31,
+            'sites' => ['eqiad', 'codfw'] },
         'analytics'     => {
             'name'      => 'Analytics cluster',
             'id'    => 32 },

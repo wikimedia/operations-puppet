@@ -239,6 +239,7 @@ class ganglia::collector::config {
                 'API application servers eqiad'  => 'mw1114.eqiad.wmnet mw1115.eqiad.wmnet',
                 'Application servers eqaid'      => 'mw1054.eqiad.wmnet mw1055.eqiad.wmnet',
                 'Jobrunners eqiad'               => 'mw1001.eqiad.wmnet mw1002.eqiad.wmnet',
+                'Jobrunners codfw'               => 'install2001.wikimedia.org:1080 mw2001.codfw.wmnet',
                 'MySQL'                          => 'db1050.eqiad.wmnet',
                 'PDF servers eqiad'              => 'ocg1001.eqiad.wmnet',
                 'Fundraising eqiad'              => 'pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet',
