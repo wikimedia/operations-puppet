@@ -13,6 +13,7 @@
 
     RewriteEngine On
     RewriteRule   ^/~(.+) https://people.wikimedia.org/~$1  [R=301,L]
+    RewriteRule   ^/dbtree(.*)$ https://dbtree.wikimedia.org [R=301,L]
 
     ErrorLog /var/log/apache2/error.log
 
