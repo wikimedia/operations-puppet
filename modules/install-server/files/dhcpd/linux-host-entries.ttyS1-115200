@@ -402,7 +402,7 @@ host calcium {
 
 host californium {
 	hardware ethernet 84:2b:2b:fd:b9:f6;
-	fixed-address californium.eqiad.wmnet;
+	fixed-address californium.wikimedia.org;
 }
 
 host capella {
