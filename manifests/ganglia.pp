@@ -238,6 +238,7 @@ class ganglia::collector::config {
                 'Image scalers eqiad'            => 'mw1153.eqiad.wmnet mw1154.eqiad.wmnet',
                 'API application servers eqiad'  => 'mw1114.eqiad.wmnet mw1115.eqiad.wmnet',
                 'Application servers eqaid'      => 'mw1054.eqiad.wmnet mw1055.eqiad.wmnet',
+                'Application servers codfw'      => 'install2001.wikimedia.org:10660',
                 'Jobrunners eqiad'               => 'mw1001.eqiad.wmnet mw1002.eqiad.wmnet',
                 'Jobrunners codfw'               => 'install2001.wikimedia.org:10680 mw2001.codfw.wmnet mw2080.codfw.wmnet',
                 'MySQL'                          => 'db1050.eqiad.wmnet',
