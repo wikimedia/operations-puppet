@@ -16,7 +16,7 @@ class wdq-mm {
     }
 
     service { 'monit':
-        ensure  => running,
+        ensure  => stopped,
         require => Package['monit'],
     }
 
