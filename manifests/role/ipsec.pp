@@ -5,7 +5,7 @@ class role::ipsec ($hosts = undef) {
             $puppet_certname = "${ec2id}.${domain}"
         }
         default: {
-            $puppet_certname = "${fqdn}"
+            $puppet_certname = $::fqdn
         }
     }
 
