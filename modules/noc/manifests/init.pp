@@ -1,4 +1,5 @@
 # https://noc.wikimedia.org/
+# https://dbtree.wikimedia.org/
 class noc {
 
     include ::apache
@@ -7,6 +8,10 @@ class noc {
 
     apache::site { 'noc.wikimedia.org':
         content => template('noc/noc.wikimedia.org.erb'),
+    }
+
+    apache::site { 'dbtree.wikimedia.org':
+        content => template('noc/dbtree.wikimedia.org.erb'),
     }
 
     include ::apache::mod::php5
