@@ -16,8 +16,6 @@ host achernar {
 host amssq31 {
 	hardware ethernet a4:ba:db:38:fb:1a;
 	fixed-address amssq31.esams.wmnet;
-	option pxelinux.pathprefix "jessie-installer/";
-	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host amssq32 {
@@ -73,8 +71,6 @@ host amssq41 {
 host amssq42 {
 	hardware ethernet a4:ba:db:2b:77:0e;
 	fixed-address amssq42.esams.wmnet;
-	option pxelinux.pathprefix "jessie-installer/";
-	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host amssq43 {
@@ -104,77 +100,77 @@ host amssq47 {
 
 host amssq48 {
 	hardware ethernet a4:ba:db:38:ff:da;
-	fixed-address amssq48.esams.wikimedia.org;
+	fixed-address amssq48.esams.wmnet;
 }
 
 host amssq49 {
 	hardware ethernet a4:ba:db:38:fa:e1;
-	fixed-address amssq49.esams.wikimedia.org;
+	fixed-address amssq49.esams.wmnet;
 }
 
 host amssq50 {
 	hardware ethernet a4:ba:db:38:db:56;
-	fixed-address amssq50.esams.wikimedia.org;
+	fixed-address amssq50.esams.wmnet;
 }
 
 host amssq51 {
 	hardware ethernet a4:ba:db:38:d7:5f;
-	fixed-address amssq51.esams.wikimedia.org;
+	fixed-address amssq51.esams.wmnet;
 }
 
 host amssq52 {
 	hardware ethernet a4:ba:db:38:db:c0;
-	fixed-address amssq52.esams.wikimedia.org;
+	fixed-address amssq52.esams.wmnet;
 }
 
 host amssq53 {
 	hardware ethernet a4:ba:db:30:d8:7d;
-	fixed-address amssq53.esams.wikimedia.org;
+	fixed-address amssq53.esams.wmnet;
 }
 
 host amssq54 {
 	hardware ethernet a4:ba:db:38:fa:e7;
-	fixed-address amssq54.esams.wikimedia.org;
+	fixed-address amssq54.esams.wmnet;
 }
 
 host amssq55 {
 	hardware ethernet a4:ba:db:38:e9:49;
-	fixed-address amssq55.esams.wikimedia.org;
+	fixed-address amssq55.esams.wmnet;
 }
 
 host amssq56 {
 	hardware ethernet a4:ba:db:38:fc:71;
-	fixed-address amssq56.esams.wikimedia.org;
+	fixed-address amssq56.esams.wmnet;
 }
 
 host amssq57 {
 	hardware ethernet a4:ba:db:38:db:9f;
-	fixed-address amssq57.esams.wikimedia.org;
+	fixed-address amssq57.esams.wmnet;
 }
 
 host amssq58 {
 	hardware ethernet a4:ba:db:30:d8:53;
-	fixed-address amssq58.esams.wikimedia.org;
+	fixed-address amssq58.esams.wmnet;
 }
 
 host amssq59 {
 	hardware ethernet a4:ba:db:30:d8:44;
-	fixed-address amssq59.esams.wikimedia.org;
+	fixed-address amssq59.esams.wmnet;
 }
 
 host amssq60 {
 	hardware ethernet a4:ba:db:38:ff:bf;
-	fixed-address amssq60.esams.wikimedia.org;
+	fixed-address amssq60.esams.wmnet;
 }
 
 host amssq61 {
 	hardware ethernet a4:ba:db:38:dc:22;
-	fixed-address amssq61.esams.wikimedia.org;
+	fixed-address amssq61.esams.wmnet;
 }
 
 host amssq62 {
 	hardware ethernet a4:ba:db:38:db:20;
-	fixed-address amssq62.esams.wikimedia.org;
+	fixed-address amssq62.esams.wmnet;
 }
 
 host analytics1001 {
@@ -604,52 +600,52 @@ host cp3002 {
 
 host cp3003 {
 	hardware ethernet D4:AE:52:8C:8B:7E;
-	fixed-address cp3003.esams.wikimedia.org;
+	fixed-address cp3003.esams.wmnet;
 }
 
 host cp3004 {
 	hardware ethernet D4:AE:52:8C:66:70;
-	fixed-address cp3004.esams.wikimedia.org;
+	fixed-address cp3004.esams.wmnet;
 }
 
 host cp3005 {
 	hardware ethernet D4:AE:52:8C:6A:18;
-	fixed-address cp3005.esams.wikimedia.org;
+	fixed-address cp3005.esams.wmnet;
 }
 
 host cp3006 {
 	hardware ethernet D4:AE:52:8A:6B:33;
-	fixed-address cp3006.esams.wikimedia.org;
+	fixed-address cp3006.esams.wmnet;
 }
 
 host cp3007 {
 	hardware ethernet D4:AE:52:88:66:2F;
-	fixed-address cp3007.esams.wikimedia.org;
+	fixed-address cp3007.esams.wmnet;
 }
 
 host cp3008 {
 	hardware ethernet D4:AE:52:8C:61:E3;
-	fixed-address cp3008.esams.wikimedia.org;
+	fixed-address cp3008.esams.wmnet;
 }
 
 host cp3009 {
 	hardware ethernet D4:AE:52:8A:70:FA;
-	fixed-address cp3009.esams.wikimedia.org;
+	fixed-address cp3009.esams.wmnet;
 }
 
 host cp3010 {
 	hardware ethernet D4:AE:52:8A:7E:6E;
-	fixed-address cp3010.esams.wikimedia.org;
+	fixed-address cp3010.esams.wmnet;
 }
 
 host cp3011 {
 	hardware ethernet 24:B6:FD:F5:B2:D4;
-	fixed-address cp3011.esams.wikimedia.org;
+	fixed-address cp3011.esams.wmnet;
 }
 
 host cp3012 {
 	hardware ethernet 24:B6:FD:F5:AB:B4;
-	fixed-address cp3012.esams.wikimedia.org;
+	fixed-address cp3012.esams.wmnet;
 }
 
 host cp3013 {
@@ -660,22 +656,16 @@ host cp3013 {
 host cp3014 {
 	hardware ethernet 24:B6:FD:F5:7C:38;
 	fixed-address cp3014.esams.wmnet;
-	option pxelinux.pathprefix "jessie-installer/";
-	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host cp3015 {
 	hardware ethernet D4:AE:52:8C:7C:E9;
 	fixed-address cp3015.esams.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cp3016 {
 	hardware ethernet D4:AE:52:7A:C4:AB;
 	fixed-address cp3016.esams.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cp3017 {
@@ -686,30 +676,26 @@ host cp3017 {
 host cp3018 {
 	hardware ethernet D4:AE:52:8C:86:31;
 	fixed-address cp3018.esams.wmnet;
-	option pxelinux.pathprefix "jessie-installer/";
-	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host cp3019 {
 	hardware ethernet D4:AE:52:8A:73:9A;
-	fixed-address cp3019.esams.wikimedia.org;
+	fixed-address cp3019.esams.wmnet;
 }
 
 host cp3020 {
 	hardware ethernet D4:AE:52:8A:75:62;
-	fixed-address cp3020.esams.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+	fixed-address cp3020.esams.wmnet;
 }
 
 host cp3021 {
 	hardware ethernet D4:AE:52:8A:70:82;
-	fixed-address cp3021.esams.wikimedia.org;
+	fixed-address cp3021.esams.wmnet;
 }
 
 host cp3022 {
 	hardware ethernet D4:AE:52:8A:6E:03;
-	fixed-address cp3022.esams.wikimedia.org;
+	fixed-address cp3022.esams.wmnet;
 }
 
 host cp4001 {
