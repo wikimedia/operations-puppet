@@ -804,17 +804,11 @@ class role::cache {
         if $::realm == 'production' {
             if os_version('debian >= jessie') {
                 $storage_size_main = $::hostname ? {
-                    /^amssq/ => 117,
                     'cp1008' => 117,
-                    # XXX
-                    # /^cp30/ => ??? wtf?
-                    # by-current-df-values:
-                    #  ~435: uploads: 3,5,6,7,8 mobile: 11,12
-                    #  ~455: mobile: 13,14
-                    #  ~545: uploads: 4,9,10
-                    #  ~225: uploads: 15,16,17,18
-                    #   will sort as reinstalled, and recheck storage controller bios setup...
-                    default => 360,
+                    /^amssq/ => 117,                # Intel X-25M 160G
+                    /^cp30(0[3-9]|1[0-4])$/ => 450, # Intel M320 600G via H710 # XXX size needs update
+                    /^cp301[5-8]$/ => 220,          # Intel M320 300G via H710 # XXX size needs update
+                    default => 360,                 # Intel S3700 400G
                 }
             }
             else {
