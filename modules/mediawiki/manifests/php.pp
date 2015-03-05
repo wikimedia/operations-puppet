@@ -17,7 +17,7 @@ class mediawiki::php {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package['libapache2-mod-php5'],
+        require => Package['php5-common'],
     }
 
     file { '/etc/php5/cli/php.ini':
