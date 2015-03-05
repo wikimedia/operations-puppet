@@ -18,6 +18,7 @@ class noc {
     include ::apache::mod::userdir
     include ::apache::mod::cgi
     include ::apache::mod::ssl
+    include ::apache::mod::headers
 
     # dbtree config
     include passwords::tendril
