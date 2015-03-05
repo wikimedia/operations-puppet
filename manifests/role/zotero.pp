@@ -11,9 +11,16 @@
 class role::zotero {
     system::role { 'zotero': description => "Zotero ${::realm}" }
 
-    # to be activated once we have the module ready
-    # include ::zotero
+    ferm::service {
+        proto => 'tcp',
+        port  => '1969',
+    }
+
+    monitoring::service {
+        description   => 'zotero',
+        check_command => 'check_http_on_port!1969',
+    }
+
+    include ::zotero
     # include lvs::realserver
-
 }
-
