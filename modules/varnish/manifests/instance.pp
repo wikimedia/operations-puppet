@@ -1,7 +1,8 @@
 define varnish::instance(
+    $vcl_config,
+    $backend_options,
     $name="",
     $vcl = "",
-    $vcl_config,
     $port="80",
     $admin_port="6083",
     $storage="-s malloc,1G",
@@ -11,7 +12,6 @@ define varnish::instance(
     $director_type="hash",
     $director_options={},
     $extra_vcl = [],
-    $backend_options,
     $cluster_options={},
     $wikimedia_networks=[],
     $xff_sources=[]
