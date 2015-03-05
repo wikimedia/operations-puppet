@@ -52,15 +52,17 @@ class apache::mpm( $mpm = 'prefork' ) {
     }
 
     file { $selected_cfg:
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        before => Apache::Mod_conf[$selected_mod],
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        before  => Apache::Mod_conf[$selected_mod],
+        require => Package['apache2'],
     }
 
     apache::mod_conf { $selected_mod:
-        ensure => present,
-        notify => Exec['apache2_test_config_and_restart'],
+        ensure  => present,
+        notify  => Exec['apache2_test_config_and_restart'],
+        require => Package['apache2'],
     }
 }
