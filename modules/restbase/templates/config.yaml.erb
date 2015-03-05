@@ -31,16 +31,32 @@ templates:
     swagger: '2.0'
     # swagger options, overriding the shared ones from the merged specs (?)
     info:
-      version: 1.0.0-abcd
+      version: 1.0.0-beta
       title: Wikimedia REST API
-      description: A REST content API, currently strongly focused on page content.
-      termsOfService: http://wikimedia.org/terms/
+      description: >
+          This API aims to provide straightforward and low-latency access to
+          Wikimedia content and services. It is currently in beta testing, so
+          things aren't completely locked down yet. Each entry point has
+          explicit stability markers to inform you about development status
+          and change policy, according to [our API version
+          policy](https://www.mediawiki.org/wiki/API_versioning).
+
+          ### High-volume access
+            - As a general rule, don't perform more than 200 requests/s to
+              this API.
+            - Set a unique `User-Agent` header that allows us to contact you
+              quickly. Email addresses or URLs of contact pages work well.
+            - Consider using our [HTML
+              dumps](https://phabricator.wikimedia.org/T17017) once they
+              become available.
+
+      termsOfService: https://wikimediafoundation.org/wiki/Terms_of_Use
       contact:
         name: the Wikimedia Services team
         url: http://mediawiki.org/wiki/RESTBase
       license:
-        name: Creative Commons 4.0 International
-        url: http://creativecommons.org/licenses/by/4.0/
+        name: Apache2
+        url: http://www.apache.org/licenses/LICENSE-2.0
     security:
       # ACLs for public *.wikipedia.org wikis
       - mediaWikiAuth:
@@ -55,7 +71,7 @@ templates:
       title: Default MediaWiki sys API module
       version: 1.0.0
     paths:
-      /{module:table}: &wp/sys/table # Can use this anchor to share the table
+      /{module:table}:
         x-modules:
           # There can be multiple modules too per stanza, as long as the
           # exported symbols don't conflict. The operationIds from the spec
@@ -81,13 +97,13 @@ templates:
                   - name: default.group.local
                     domains: /./
 
-      /{module:page_revisions}: &wp-page-revisions
+      /{module:page_revisions}:
         x-modules:
             - name: page_revisions
               version: 1.0.0
               type: file
 
-      /{module:key_rev_value}: &wp/sys/key_rev_value
+      /{module:key_rev_value}:
         x-modules:
           - name: key_rev_value
             version: 1.0.0
