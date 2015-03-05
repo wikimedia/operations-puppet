@@ -2483,7 +2483,7 @@ node 'labmon1001.eqiad.wmnet' {
 
 # Californium hosts openstack-dashboard AKA horizon
 #  It's proxied by the misc-web varnishes
-node 'californium.eqiad.wmnet' {
+node 'californium.wikimedia.org' {
     include standard
     include admin
     include role::horizon
