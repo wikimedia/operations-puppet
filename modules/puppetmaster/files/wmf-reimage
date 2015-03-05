@@ -128,7 +128,7 @@ function enable_and_run_puppet {
 
 
 function usage {
-    echo "Usage: $0 [-y][-r][-n][-p][-s SECONDS] <nodename> <mgmtname>"; exit 1;
+    echo "Usage: $0 [-y][-r][-n][-p][-s SECONDS] <nodename> <mgmtname> [<newnodename>]"; exit 1;
 }
 
 ## Main script
@@ -158,15 +158,25 @@ done
 shift $((OPTIND-1))
 nodename=${1:-}
 mgmtname=${2:-}
+newnodename=${3:-}
 test -z ${nodename} && usage
 test -z ${mgmtname} && usage
-log "Preparing reimaging of node ${nodename}"
+if [ -z ${newnodename} ]; then
+    log "Preparing reimaging of node ${nodename}"
+else
+    log "Preparing reimaging of node ${nodename} to new hostname ${newnodename} (interface should already be on new network if applicable)"
+fi
 
 if [ $NOCLEAN -eq 0 ]; then
     clean_puppet $nodename
     clean_salt $nodename $FORCE
 fi;
 test $NOREBOOT -eq 0 && set_pxe_and_reboot $mgmtname
+
+if [ -z ${newnodename} ]; then
+    nodename=$newnodename
+fi
+
 sign_puppet $nodename $FORCE
 if [ $RUNPUPPET -eq 1 ]; then
     enable_and_run_puppet $nodename
