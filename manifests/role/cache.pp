@@ -806,8 +806,8 @@ class role::cache {
                 $storage_size_main = $::hostname ? {
                     'cp1008' => 117,
                     /^amssq/ => 117,                # Intel X-25M 160G
-                    /^cp30(0[3-9]|1[0-4])$/ => 450, # Intel M320 600G via H710 # XXX size needs update
-                    /^cp301[5-8]$/ => 220,          # Intel M320 300G via H710 # XXX size needs update
+                    /^cp30(0[3-9]|1[0-4])$/ => 460, # Intel M320 600G via H710
+                    /^cp301[5-8]$/ => 225,          # Intel M320 300G via H710
                     default => 360,                 # Intel S3700 400G
                 }
             }
