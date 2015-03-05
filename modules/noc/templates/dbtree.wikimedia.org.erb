@@ -21,7 +21,12 @@
 
     <Directory />
         Order Deny,Allow
-        AllowOverride All
+        AllowOverride None
+    </Directory>
+
+    <Directory /srv/org/wikimedia/dbtree/inc>
+        Order Deny,Allow
+        Deny from all
     </Directory>
 
 </VirtualHost>
