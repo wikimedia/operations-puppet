@@ -107,7 +107,7 @@ case "$1" in
 	fi
 	db=$1
 	server=`echo "$1" | sed 's/_p//' | sed 's/$/.labsdb/'`
-	if [ `cat /etc/hosts | grep -cE "\s$server"` -gt 0 ]
+	if getent hosts -- "$server" > /dev/null
 	then
 		Log "Resolved to $server $db"
 	else
