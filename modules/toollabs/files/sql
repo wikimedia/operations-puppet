@@ -25,7 +25,7 @@ if [ "$1" = "-h" ] || [ "$1" == "--help" ];then
 	echo "Parameters:"
 	echo "  -v: verbose - produce various information about the resolution of db"
 	echo
-	echo "Report bugs to bugzilla at http://bugzilla.wikimedia.org"
+	echo "Report bugs to phabricator: https://phabricator.wikimedia.org"
 	exit 0
 fi
 
@@ -111,7 +111,7 @@ case "$1" in
 	then
 		Log "Resolved to $server $db"
 	else
-	        echo "This is unknown db to me, if you don't like that, blame petan on freenode"
+	        echo "Could not find requested database"
 	        exit 1
 	fi
    ;;
