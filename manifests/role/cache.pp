@@ -71,9 +71,9 @@ class role::cache {
                     ],
                     'esams' => [
                         'amssq31.esams.wmnet', # Jessie
-                        # 'amssq32.esams.wmnet', # Jessie
+                        'amssq32.esams.wmnet', # Jessie
                         # 'amssq33.esams.wmnet', # powered down for now, RT # 7933
-                        # 'amssq34.esams.wmnet', # Jessie
+                        'amssq34.esams.wmnet', # Jessie
                         'amssq35.esams.wmnet',
                         'amssq36.esams.wmnet',
                         'amssq37.esams.wmnet',
@@ -142,7 +142,7 @@ class role::cache {
                         'cp1051.eqiad.wmnet',
                         'cp1061.eqiad.wmnet',
                         'cp1062.eqiad.wmnet',
-                        'cp1063.eqiad.wmnet',
+                        'cp1063.eqiad.wmnet', # Jessie
                         'cp1064.eqiad.wmnet', # Jessie
                     ],
                     'esams' => [
