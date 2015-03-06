@@ -2047,6 +2047,8 @@ node 'netmon1001.wikimedia.org' {
     include role::servermon
     include role::torrus
 
+    class { 'base::firewall': }
+
     interface::add_ip6_mapped { 'main': }
 
     class { 'ganglia_new::monitor::aggregator':
