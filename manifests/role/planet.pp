@@ -203,10 +203,5 @@ class role::planet {
         port  => '80',
     }
 
-    ferm::service { 'planet-https':
-        proto => 'tcp',
-        port  => '443',
-    }
-
 }
 
