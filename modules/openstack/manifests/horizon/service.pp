@@ -47,7 +47,7 @@ class openstack::horizon::service($openstack_version='icehouse', $novaconfig) {
         owner   => 'horizon',
         group   => 'horizon',
         require => Package['openstack-dashboard'],
-        mode    => '0440',
+        mode    => '0444',
     }
 
     apache::conf { 'horizon':
