@@ -25,11 +25,6 @@ class role::releases {
         port  => '80',
     }
 
-    ferm::service { 'releases_https':
-        proto => 'tcp',
-        port  => '443',
-    }
-
     include role::backup::host
     backup::set { 'srv-org-wikimedia': }
 }
