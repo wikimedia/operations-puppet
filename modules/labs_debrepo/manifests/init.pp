@@ -1,6 +1,5 @@
 # Puppet configs to create a local deb repo and add it to your sources.list
-
-class misc::labsdebrepo {
+class labsdebrepo {
     # manage /data/project/repo:
     # make sure it's a directory and turn it into a deb repo
     file { '/data/project/repo':
