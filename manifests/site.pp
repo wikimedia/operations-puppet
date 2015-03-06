@@ -378,6 +378,8 @@ node 'calcium.wikimedia.org' {
 
     include admin
     include standard
+
+    include base::firewall
 }
 
 node 'carbon.wikimedia.org' {
