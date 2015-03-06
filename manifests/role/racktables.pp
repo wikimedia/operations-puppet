@@ -28,11 +28,6 @@ class role::racktables {
         port  => '80',
     }
 
-    ferm::service { 'racktables-https':
-        proto => 'tcp',
-        port  => '443',
-    }
-
     class { '::racktables':
         racktables_db_host => 'm1-master.eqiad.wmnet',
         racktables_db      => 'racktables',
