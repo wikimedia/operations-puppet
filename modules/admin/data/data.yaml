@@ -1345,3 +1345,11 @@ users:
     realname: Marielle Volz
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUwZtM3gAMDybHgDpBkY/TAC2aglbx03BOGK81GKmLEttRPWhvRM2kqml4lh+v7yiDuajAPZ5cV4KkiP/qaa94WfY8J0osRq4Dedwv6Q0R4InuNSF4bJv5jxfm9+L6LRd88hU3aXO/FACs6I6V/4JbWpHnesTFcuunCY3ZtKTyTXlungfpTGNAm8jnOWnHDefBQk/4rwqFPg09IXk/cC7ThQqMf2O4pwwu4JOFyBFfkb3har/DxM+BMKUToB/IQEgNu4LkVa5oeKQNsVZCDGv4bntoQ/t+2PJKxii0h8tOoZYgxkpEzitf5lY0+aAueunFjuzB/R/DAN+fvUjeeEdB]
     uid: 4724
+  jhobs:
+    ensure: present
+    gid: 500
+    name: jhobs
+    realname: Jeff Hobson
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1sw+mDWAPUMff1DaTRNVYAxhReV1bRLMEp32689l9dFHcyP+pjLuzJ5IeLQaHi5cd7iEWiQBQYvTtcwqOkar2ozapUbckT+HTDz6sSZqQcOhqc8ZpCm2BdMtXm+oR3bwjFodPhA3qvb/N7EwmoLUxQzmm2LK6/wlb34s3iOnmRF3nl4IN2FqvJlUBPRegJNycO3ntzpV5MN6cVATPkX88Sh05KtjMuNXb0W0gntn8hp1h5YazfDfHWavnAldncwNGG9xIBgF8ENb9lqPo7fcmBqZVZsrQAWuY09SqBfPrKeaP7uaXKIkIEG9sGZUPCUdFefsaw7WjDfZ0vwkwPzFX jhobson@wikimedia.org]
+    uid: 10542
+
