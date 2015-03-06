@@ -13,7 +13,7 @@ class dynamicproxy::api(
 
     package { 'python-flask':
         ensure  => latest,
-        require => Class['misc::labsdebrepo'],
+        require => Class['::labsdebrepo'],
     }
 
     package { ['python-invisible-unicorn', 'python-flask-sqlalchemy', 'uwsgi', 'uwsgi-plugin-python']:

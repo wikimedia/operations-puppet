@@ -34,7 +34,7 @@ Pin-Priority: 1500
     }
 }
 
-class misc::labsdebrepo {
+class labs_debrepo {
     labsdebrepo { '/data/project/repo':
     }
 }
