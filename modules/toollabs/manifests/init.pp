@@ -127,7 +127,7 @@ class toollabs (
     # /data/project/.system/deb-precise or
     # /data/project/.system/deb-trusty depending on the instance's OS
     # release.
-    labsdebrepo { $toollabs::repo:
+    labs_debrepo::labsdebrepo { $toollabs::repo:
         handle  => 'tools-project',
         require => File[$toollabs::sysdir],
     }

@@ -1,18 +1,18 @@
 class role::labs::quarry::web {
     include role::labs::lvm::srv
-    include misc::labsdebrepo
+    include ::labs_debrepo
 
     class { '::quarry::web':
-        require => [Mount['/srv'], Class['misc::labsdebrepo']],
+        require => [Mount['/srv'], Class['::labs_debrepo']],
     }
 }
 
 class role::labs::quarry::celeryrunner {
     include role::labs::lvm::srv
-    include misc::labsdebrepo
+    include ::labs_debrepo
 
     class { '::quarry::celeryrunner':
-        require => [Mount['/srv'], Class['misc::labsdebrepo']],
+        require => [Mount['/srv'], Class['::labs_debrepo']],
     }
 }
 
