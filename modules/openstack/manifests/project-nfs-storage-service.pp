@@ -9,14 +9,13 @@ class openstack::project-nfs-storage-service {
         notify  => Service['manage-nfs-volumes'],
     }
 
-    service { 'manage-nfs-volumes':
-        ensure  => running,
-    }
-
-    nrpe::monitor_service { 'manage-nfs-volumes':
-        description  => 'manage_nfs_volumes_running',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/python /usr/local/sbin/manage-nfs-volumes'"
-    }
+    # This will need to be rewritten to monitor that exactly one
+    # manage-nfs-volumes is running, not that they are running on
+    # both servers
+    # nrpe::monitor_service { 'manage-nfs-volumes':
+    #     description  => 'manage_nfs_volumes_running',
+    #     nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/python /usr/local/sbin/manage-nfs-volumes'"
+    # }
 
     $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
             'ALL = NOPASSWD: /bin/rmdir /srv/*',
