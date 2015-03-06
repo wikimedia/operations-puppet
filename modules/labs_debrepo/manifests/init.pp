@@ -1,7 +1,7 @@
 # Puppet configuration to create local deb repositories and add them
 # to your sources.list.
 
-define labsdebrepo ($dir = $title, $handle = 'labsdebrepo') {
+define labs_debrepo::labsdebrepo ($dir = $title, $handle = 'labsdebrepo') {
     # Manage $dir: Make sure it's a directory and turn it into a deb
     # repository.
     file { $dir:
@@ -34,7 +34,7 @@ Pin-Priority: 1500
     }
 }
 
-class misc::labsdebrepo {
+class labs_debrepo {
     labsdebrepo { '/data/project/repo':
     }
 }
