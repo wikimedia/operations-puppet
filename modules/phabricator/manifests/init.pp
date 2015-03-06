@@ -235,8 +235,11 @@ class phabricator (
     file { "${phabdir}/phabricator/conf/local/local.json":
         content => template('phabricator/local.json.erb'),
         require => Git::Install['phabricator/phabricator'],
-        notify  => Service[phd],
     }
+
+    # ^Disable PHD autorestart until:
+    # https://secure.phabricator.com/T7475
+    # notify  => Service[phd],
 
     #default location for phabricator tracked repositories
     if ($phab_settings['repository.default-local-path']) {
