@@ -6,4 +6,9 @@ class role::horizon {
         openstack_version => $::openstack_version,
         novaconfig        => $novaconfig,
     }
+
+    ferm::service { 'horizon_http':
+        proto => 'tcp',
+        port  => '80',
+    }
 }
