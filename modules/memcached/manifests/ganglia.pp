@@ -7,6 +7,12 @@ class memcached::ganglia {
     file { '/usr/lib/ganglia/python_modules/memcached.py':
         ensure => absent,
     }
+    file { '/usr/lib/ganglia/python_modules':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
     file { '/usr/lib/ganglia/python_modules/gmond_memcached.py':
         owner   => 'root',
         group   => 'root',
