@@ -17,6 +17,7 @@ class openstack::horizon::service($openstack_version='icehouse', $novaconfig) {
 
     include apache::mod::wsgi
     include ::apache::mod::rewrite
+    include ::apache::mod::headers
 
     if !defined(Class['memcached']) {
         class { 'memcached':
