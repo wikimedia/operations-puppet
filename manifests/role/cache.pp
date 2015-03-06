@@ -64,13 +64,13 @@ class role::cache {
                         'cp1053.eqiad.wmnet',
                         'cp1054.eqiad.wmnet',
                         'cp1055.eqiad.wmnet',
-                        'cp1065.eqiad.wmnet',
+                        'cp1065.eqiad.wmnet', # Jessie
                         'cp1066.eqiad.wmnet',
                         'cp1067.eqiad.wmnet',
                         'cp1068.eqiad.wmnet',
                     ],
                     'esams' => [
-                        'amssq31.esams.wmnet',
+                        'amssq31.esams.wmnet', # Jessie
                         'amssq32.esams.wmnet',
                         # 'amssq33.esams.wmnet', # powered down for now, RT # 7933
                         'amssq34.esams.wmnet',
@@ -81,7 +81,7 @@ class role::cache {
                         'amssq39.esams.wmnet',
                         'amssq40.esams.wmnet',
                         'amssq41.esams.wmnet',
-                        'amssq42.esams.wmnet',
+                        'amssq42.esams.wmnet', # Jessie
                         'amssq43.esams.wmnet',
                         'amssq44.esams.wmnet',
                         'amssq45.esams.wmnet',
@@ -121,12 +121,12 @@ class role::cache {
                     'eqiad' => ['cp1056.eqiad.wmnet',
                                 'cp1057.eqiad.wmnet',
                                 'cp1069.eqiad.wmnet',
-                                'cp1070.eqiad.wmnet',
+                                'cp1070.eqiad.wmnet', # Jessie
                     ],
                     'esams' => ['cp3019.esams.wikimedia.org',
                                 'cp3020.esams.wikimedia.org',
                                 'cp3021.esams.wikimedia.org',
-                                'cp3022.esams.wmnet',
+                                'cp3022.esams.wmnet', # Jessie
                     ],
                     'ulsfo' => ['cp4001.ulsfo.wmnet',
                                 'cp4002.ulsfo.wmnet',
@@ -143,7 +143,7 @@ class role::cache {
                         'cp1061.eqiad.wmnet',
                         'cp1062.eqiad.wmnet',
                         'cp1063.eqiad.wmnet',
-                        'cp1064.eqiad.wmnet',
+                        'cp1064.eqiad.wmnet', # Jessie
                     ],
                     'esams' => [
                         'cp3003.esams.wikimedia.org',
@@ -156,8 +156,8 @@ class role::cache {
                         'cp3010.esams.wikimedia.org',
                         'cp3015.esams.wmnet',
                         'cp3016.esams.wmnet',
-                        'cp3017.esams.wmnet',
-                        'cp3018.esams.wmnet',
+                        'cp3017.esams.wmnet', # Jessie
+                        'cp3018.esams.wmnet', # Jessie
                     ],
                     'ulsfo' => [
                         'cp4005.ulsfo.wmnet',
@@ -172,12 +172,12 @@ class role::cache {
                     'eqiad' => ['cp1046.eqiad.wmnet',
                                 # 'cp1047.eqiad.wmnet', # hardware T88045
                                 'cp1059.eqiad.wmnet',
-                                'cp1060.eqiad.wmnet',
+                                'cp1060.eqiad.wmnet', # Jessie
                     ],
                     'esams' => ['cp3011.esams.wikimedia.org',
                                 'cp3012.esams.wikimedia.org',
-                                'cp3013.esams.wmnet',
-                                'cp3014.esams.wmnet',
+                                'cp3013.esams.wmnet', # Jessie
+                                'cp3014.esams.wmnet', # Jessie
                     ],
                     'ulsfo' => ['cp4011.ulsfo.wmnet',
                                 'cp4012.ulsfo.wmnet',
