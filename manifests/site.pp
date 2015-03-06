@@ -226,7 +226,7 @@ node /analytics102[345].eqiad.wmnet/ {
     include role::analytics::zookeeper::server
 }
 
-# analytics1026 does not currently have a role
+# analytics1026 runs misc udp2log for sqstat
 node 'analytics1026.eqiad.wmnet' {
 
     class { 'admin':
@@ -237,8 +237,6 @@ node 'analytics1026.eqiad.wmnet' {
     }
     include standard
 
-
-    # run misc udp2log here for sqstat
     include role::logging::udp2log::misc
 }
 
@@ -300,6 +298,7 @@ node 'antimony.wikimedia.org' {
     include role::subversion
 }
 
+# irc.wikimedia.org
 node 'argon.wikimedia.org' {
     include admin
     include standard
@@ -373,6 +372,7 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
     role ipsec
 }
 
+# calcium doesn't do anything?
 node 'calcium.wikimedia.org' {
     $cluster = 'misc'
 
@@ -380,6 +380,7 @@ node 'calcium.wikimedia.org' {
     include standard
 }
 
+# DHCP / TFTP
 node 'carbon.wikimedia.org' {
     $cluster = 'misc'
     $ganglia_aggregator = true
@@ -393,6 +394,7 @@ node 'carbon.wikimedia.org' {
     include role::installserver
 }
 
+# http://releases.wikimedia.org
 node 'caesium.eqiad.wmnet' {
     role releases
     include base::firewall
