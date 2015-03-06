@@ -18,8 +18,8 @@
 # - the /srv/org/wikimedia/ subdir docroot
 #
 # Because this service is intended to live behind a
-# caching cluster which would handle ssh, it does not
-# install certs or configure apache for ssh
+# caching cluster which would handle ssl/tls, it does not
+# install certs or configure apache for ssl/tls
 
 class releases (
         $sitename = undef,
