@@ -2,7 +2,7 @@
 # Role class for setting up an instance of
 # Magnus' WDQ on labs
 class role::labs::wdq-mm {
-    include misc::labsdebrepo
+    include ::labsdebrepo
 
     include labs_lvm
     labs_lvm::volume { 'instance-storage':
@@ -12,7 +12,7 @@ class role::labs::wdq-mm {
 
     class { '::wdq-mm':
         require => [
-            Class['misc::labsdebrepo'],
+            Class['::labsdebrepo'],
             Labs_lvm::Volume['instance-storage'],
         ]
     }
