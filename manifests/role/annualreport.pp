@@ -7,5 +7,10 @@ class role::annualreport {
 
     include ::annualreport
 
+    ferm::service { 'annualreport_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
 }
 

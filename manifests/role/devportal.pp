@@ -6,5 +6,10 @@ class role::devportal {
 
     include ::devportal
 
+    ferm::service { 'devportal_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
 }
 
