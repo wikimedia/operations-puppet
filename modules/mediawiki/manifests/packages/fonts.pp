@@ -24,6 +24,7 @@ class mediawiki::packages::fonts {
         'fonts-takao-mincho',
         'fonts-thai-tlwg',
         'fonts-tibetan-machine',
+        'fonts-unfonts-core',
         'fonts-unfonts-extra',
         'texlive-fonts-recommended',
         'ttf-alee',
