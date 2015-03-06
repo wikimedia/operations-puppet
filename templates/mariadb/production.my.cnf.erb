@@ -77,6 +77,10 @@ innodb_stats_method            = nulls_unequal
 aria_pagecache_buffer_size     = 1G
 join_cache_level               = 8
 
+# Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
+# At least, I think so. For now we need to avoid the an assertion failure on Trusty w/ 3.13
+innodb_use_native_aio          = 0
+
 optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on'
 
 [mysqldump]
