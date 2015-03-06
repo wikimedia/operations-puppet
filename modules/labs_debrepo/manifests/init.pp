@@ -1,7 +1,7 @@
 # Puppet configuration to create local deb repositories and add them
 # to your sources.list.
 
-define labsdebrepo ($dir = $title, $handle = 'labsdebrepo') {
+define labs_debrepo::labsdebrepo ($dir = $title, $handle = 'labsdebrepo') {
     # Manage $dir: Make sure it's a directory and turn it into a deb
     # repository.
     file { $dir:
@@ -22,7 +22,7 @@ define labsdebrepo ($dir = $title, $handle = 'labsdebrepo') {
 
     # Add the directory-turned-repository to sources.list.
     file { "/etc/apt/sources.list.d/${handle}.list":
-        content => template('misc/labsdebrepo.erb'),
+        content => template('labs_debrepo/labsdebrepo.erb'),
         require => Exec["Turn ${dir} into deb repo"],
     }
     file { "/etc/apt/preferences.d/${handle}.pref":
@@ -34,7 +34,7 @@ Pin-Priority: 1500
     }
 }
 
-class misc::labsdebrepo {
+class labs_debrepo {
     labsdebrepo { '/data/project/repo':
     }
 }
