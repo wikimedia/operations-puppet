@@ -1,0 +1,36 @@
+#! /bin/bash
+
+cat <<EOM
+
+[1;31m      ^[0m
+[1;31m     / \[0m     Before you start the NFS service on this server you must be
+[1;31m    / [37m|[31m \[0m    [1;4mabsolutely[0m certain that the other server is completely stopped
+[1;31m   /  [37m*[31m  \[0m   and that none of the filesystems are mounted!
+[1;31m  /_______\[0m
+[1;33m   DANGER![0m
+
+The exportred filesystem between labstore1001 and labstore1002 are on a
+single directly attached storage array.  Having both run at the same time
+WILL break things!  Only start NFS here if the other server is powered
+down or in single-user mode *and* has not mounted any of the attached
+filesystems.
+
+To proceed, type: I am absolutely certain!
+EOM
+echo -n "                : "
+read sure
+if [ "x$sure" != "xI am absolutely certain!" ]; then
+  echo
+  echo "Bailing out.  Nothing was done."
+  echo
+  exit 1
+fi
+
+/usr/sbin/service nfs-kernel-server stop
+/bin/mount /srv/project
+/bin/mount /srv/scratch
+/bin/mount /srv/keys
+/usr/local/sbin/sync-exports
+/usr/sbin/service manage-nfs-volumes start
+/sbin/ip addr add dev bond0 10.64.37.10/24
+/usr/sbin/service nfs-kernel-server start

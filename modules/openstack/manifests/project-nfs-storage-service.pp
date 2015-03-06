@@ -5,17 +5,14 @@ class openstack::project-nfs-storage-service {
         group   => 'root',
         mode    => '0444',
         source  => 'puppet:///modules/openstack/manage-nfs-volumes.conf',
-        before  => Service['manage-nfs-volumes'],
-        notify  => Service['manage-nfs-volumes'],
     }
 
-    service { 'manage-nfs-volumes':
-        ensure  => running,
-    }
-
-    nrpe::monitor_service { 'manage-nfs-volumes':
-        description  => 'manage_nfs_volumes_running',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/python /usr/local/sbin/manage-nfs-volumes'"
+    file { '/usr/local/sbin/start-nfs':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+        source  => 'puppet:///modules/openstack/start-nfs',
     }
 
     $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
