@@ -54,7 +54,8 @@ class statistics::sites::datasets {
         minute  => '*/30',
     }
 
+    include apache::mod::headers
     apache::site { 'datasets':
-        source => 'puppet:///modules/statistics/datasets.wikimedia.org',
+        source  => 'puppet:///modules/statistics/datasets.wikimedia.org',
     }
 }

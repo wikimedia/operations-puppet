@@ -9,6 +9,9 @@ NameVirtualHost *:80
     AllowOverride None
     Order allow,deny
     allow from all
+
+    # enable CORS requests
+    Header set Access-Control-Allow-Origin "*"
   </Directory>
 
   LogLevel warn
