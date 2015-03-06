@@ -3,6 +3,7 @@ class openstack::firewall {
 
     $labs_private_net = '10.0.0.0/0'
     $wikitech = '208.80.154.136'
+    $horizon = '208.80.154.147'
     if ($::site == 'codfw') {
         # TODO!  codfw will need something
         # like this when the ip range is assigned.
@@ -40,6 +41,11 @@ class openstack::firewall {
     # wikitech needs to be able to do things
     ferm::rule { 'openstack-services':
         rule => "saddr ${wikitech} proto tcp dport (5000 35357 9292) ACCEPT;",
+    }
+
+    # wikitech needs to be able to do things
+    ferm::rule { 'openstack-services-horizon':
+        rule => "saddr ${horizon} proto tcp dport (5000 35357 9292) ACCEPT;",
     }
 
     # internal services to Labs virt servers
