@@ -173,7 +173,7 @@ if [ $NOCLEAN -eq 0 ]; then
 fi;
 test $NOREBOOT -eq 0 && set_pxe_and_reboot $mgmtname
 
-if [ -z ${newnodename} ]; then
+if [ ! -z ${newnodename} ]; then
     nodename=$newnodename
 fi
 
