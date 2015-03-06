@@ -15,11 +15,6 @@ class role::bugzilla {
         port  => '80',
     }
 
-    ferm::service { 'bugzilla_https':
-        proto => 'tcp',
-        port  => '443',
-    }
-
     include ::bugzilla::static
 }
 
