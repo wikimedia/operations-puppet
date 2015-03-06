@@ -1352,3 +1352,11 @@ users:
     realname: Eric Evans
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdE3SnW3e2DxOwJ9iclnbne01cjmoyp6irLeolPpMLcyKXx44eaK44qqhyfRnEoM3TYAeye/YBDB/CL33idRLT7iq1lbIQD7QY9pyf1dp2UBKhJv5FkjViveEe+g69XMcTQdoaPZySHJxHhPkVRVH1ZyfIEZYFWgCIWU1P7T6iiJ7aiBygKq7pKcCSSu6adm2Y+ATFZNqYW5+IryKAiJE87U+YOIY95FusKE4CxovIV363KqXsOQmJ+zr9kSDOlbfv9ILcrkHe8Dp5jeVLFye/dZPE8AEM7S6cXVQbkEvgb4ahpxZo5eEulVjLZdjaZEh/sDGK8++DQObaGKzeRmEP wmf]
     uid: 11774
+  jhobs:
+    ensure: present
+    gid: 500
+    name: jhobs
+    realname: Jeff Hobson
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1sw+mDWAPUMff1DaTRNVYAxhReV1bRLMEp32689l9dFHcyP+pjLuzJ5IeLQaHi5cd7iEWiQBQYvTtcwqOkar2ozapUbckT+HTDz6sSZqQcOhqc8ZpCm2BdMtXm+oR3bwjFodPhA3qvb/N7EwmoLUxQzmm2LK6/wlb34s3iOnmRF3nl4IN2FqvJlUBPRegJNycO3ntzpV5MN6cVATPkX88Sh05KtjMuNXb0W0gntn8hp1h5YazfDfHWavnAldncwNGG9xIBgF8ENb9lqPo7fcmBqZVZsrQAWuY09SqBfPrKeaP7uaXKIkIEG9sGZUPCUdFefsaw7WjDfZ0vwkwPzFX jhobson@wikimedia.org]
+    uid: 10542
+
