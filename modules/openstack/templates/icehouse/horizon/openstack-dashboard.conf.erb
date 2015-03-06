@@ -1,3 +1,7 @@
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+
 WSGIScriptAlias / /usr/share/openstack-dashboard/openstack_dashboard/wsgi/django.wsgi
 WSGIDaemonProcess horizon user=horizon group=horizon processes=3 threads=10
 WSGIProcessGroup horizon
