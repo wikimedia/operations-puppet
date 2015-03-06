@@ -165,7 +165,7 @@ class role::cache {
                         'cp4007.ulsfo.wmnet',
                         'cp4013.ulsfo.wmnet',
                         'cp4014.ulsfo.wmnet',
-                        # 'cp4015.ulsfo.wmnet', # Jessie
+                        'cp4015.ulsfo.wmnet', # Jessie
                     ],
                 },
                 'mobile' => {
