@@ -1,10 +1,13 @@
-# https://contacts.wikimedia.org | http://en.wikipedia.org/wiki/CiviCRM
+# manifests/role/contacts.pp
 class role::contacts {
 
-    system::role { 'role::contacts': description => 'contacts.wikimedia.org - Drupal/CiviCRM' }
+    system::role { 'role::contacts': description => 'Contacts server' }
 
-    apache::site { 'contacts.wikimedia.org':
-        content => template('apache/sites/contacts.wikimedia.org.erb'),
+    class { '::contacts':
+        db_host         => 'dbproxy1001.eqiad.wmnet',
+        db_name_civicrm => 'contacts_civicrm',
+        db_name_drupal  => 'contacts_drupal',
+        db_user         => 'contacts',
     }
 
     ferm::service { 'contacts_http':
@@ -13,3 +16,4 @@ class role::contacts {
     }
 
 }
+
