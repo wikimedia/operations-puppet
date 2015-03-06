@@ -63,8 +63,4 @@ class role::etherpad{
         port    => 'http',
     }
 
-    ferm::service { 'etherpad_https':
-        proto   => 'tcp',
-        port    => 'https',
-    }
 }
