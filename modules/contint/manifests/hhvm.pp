@@ -6,6 +6,9 @@ class contint::hhvm {
         # defined in the global Jenkins configuration and vary per build thanks
         # to $WORKSPACE.
         cli_settings => {
+            eval  => {
+                perfPidMap => false,
+            },
             hhvm => {
                 repo  => {
                     central => { path => '' },
