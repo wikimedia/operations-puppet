@@ -46,7 +46,7 @@ groups:
       maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
       nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
       tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair,
-      mobrovac, nuria, milimetric, thcipriani, joal]
+      mobrovac, nuria, milimetric, thcipriani, joal, eevans]
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
@@ -65,7 +65,7 @@ groups:
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [gwicke, ssastry, jdouglas, mobrovac]
+    members: [gwicke, ssastry, jdouglas, mobrovac, eevans]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
@@ -297,7 +297,7 @@ groups:
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
-    members: [gwicke, mobrovac]
+    members: [gwicke, mobrovac, eevans]
     privileges: ['ALL = NOPASSWD: ALL']
   citoid-users:
     gid: 745
