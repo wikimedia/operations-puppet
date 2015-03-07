@@ -1,6 +1,7 @@
 # IPsec testing
-role::ipsec::hosts: ['berkelium.eqiad.wmnet',
-                     'curium.eqiad.wmnet',
-                     'cp3001.esams.wmnet',
-                     'cp3002.esams.wmnet'
-]
+role::ipsec::hosts: [
+  'berkelium.eqiad.wmnet',
+  'curium.eqiad.wmnet',
+  'cp3001.esams.wmnet',
+  'cp3002.esams.wmnet'
+ ]
