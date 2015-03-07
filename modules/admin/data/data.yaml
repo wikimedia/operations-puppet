@@ -46,7 +46,7 @@ groups:
       maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
       nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
       tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair,
-      mobrovac, nuria, milimetric, thcipriani, joal]
+      mobrovac, nuria, milimetric, thcipriani, joal, eevans]
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
@@ -65,7 +65,7 @@ groups:
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [gwicke, ssastry, jdouglas, mobrovac]
+    members: [eevans, jdouglas, gwicke, mobrovac, ssastry]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
@@ -297,7 +297,7 @@ groups:
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
-    members: [gwicke, mobrovac]
+    members: [eevans, gwicke, mobrovac]
     privileges: ['ALL = NOPASSWD: ALL']
   citoid-users:
     gid: 745
@@ -1345,3 +1345,10 @@ users:
     realname: Marielle Volz
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUwZtM3gAMDybHgDpBkY/TAC2aglbx03BOGK81GKmLEttRPWhvRM2kqml4lh+v7yiDuajAPZ5cV4KkiP/qaa94WfY8J0osRq4Dedwv6Q0R4InuNSF4bJv5jxfm9+L6LRd88hU3aXO/FACs6I6V/4JbWpHnesTFcuunCY3ZtKTyTXlungfpTGNAm8jnOWnHDefBQk/4rwqFPg09IXk/cC7ThQqMf2O4pwwu4JOFyBFfkb3har/DxM+BMKUToB/IQEgNu4LkVa5oeKQNsVZCDGv4bntoQ/t+2PJKxii0h8tOoZYgxkpEzitf5lY0+aAueunFjuzB/R/DAN+fvUjeeEdB]
     uid: 4724
+  eevans:
+    ensure: present
+    gid: 500
+    name: eevans
+    realname: Eric Evans
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdE3SnW3e2DxOwJ9iclnbne01cjmoyp6irLeolPpMLcyKXx44eaK44qqhyfRnEoM3TYAeye/YBDB/CL33idRLT7iq1lbIQD7QY9pyf1dp2UBKhJv5FkjViveEe+g69XMcTQdoaPZySHJxHhPkVRVH1ZyfIEZYFWgCIWU1P7T6iiJ7aiBygKq7pKcCSSu6adm2Y+ATFZNqYW5+IryKAiJE87U+YOIY95FusKE4CxovIV363KqXsOQmJ+zr9kSDOlbfv9ILcrkHe8Dp5jeVLFye/dZPE8AEM7S6cXVQbkEvgb4ahpxZo5eEulVjLZdjaZEh/sDGK8++DQObaGKzeRmEP wmf]
+    uid: 11774
