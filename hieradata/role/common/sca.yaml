@@ -7,7 +7,11 @@ admin::groups:
   - citoid-users
   - cxserver-admin
 
+role::zotero:
+  - 'zotero::http_proxy': deployment-urldownloader.eqiad.wmflabs:8080
+
 lvs::realserver::realserver_ips:
+  - '10.2.2.16' # zotero.svc.eqiad.wmnet
   - '10.2.2.18' # cxserver.svc.eqiad.wmnet
   - '10.2.2.19' # citoid.svc.eqiad.wmnet
   - '10.2.2.20' # mathoid.svc.eqiad.wmnet
