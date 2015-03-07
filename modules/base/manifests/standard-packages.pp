@@ -29,12 +29,17 @@ class base::standard-packages {
         'debian-goodies',
         'ethtool',
         'lldpd',
-        'quickstack',
         'pv',
     ]
 
     package { $packages:
         ensure => latest,
+    }
+
+    # This should be in $packages, but moved here temporarily because it's
+    # currently broken on jessie hosts...
+    if ! os_version('debian >= jessie') {
+        package { 'quickstack': ensure => latest }
     }
 
     if $::network_zone == 'internal' {
