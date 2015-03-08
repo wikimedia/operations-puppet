@@ -4,7 +4,7 @@ define apt::pin (
     $package=$name,
     $ensure=present,
 ) {
-    file { "/etc/apt/preferences.d/${name}":
+    file { "/etc/apt/preferences.d/${name}.pref":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',

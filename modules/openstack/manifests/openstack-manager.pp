@@ -16,6 +16,12 @@ class openstack::openstack-manager(
             priority => '1001',
             before   => Package['memcached'],
         }
+        # TODO: Remove after applied everywhere.
+        file { '/etc/apt/preferences.d/memcached':
+            ensure  => absent,
+            require => Apt::Pin['memcached'],
+            notify  => Exec['apt-get update'],
+        }
 
         class { 'memcached':
             ip  => '127.0.0.1',

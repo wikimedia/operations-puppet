@@ -379,7 +379,7 @@ class role::swift::icehouse {
         keyfile    => 'puppet:///files/misc/ubuntu-cloud.key',
     }
 
-    apt::pin { 'swift-icehouse.pref':
+    apt::pin { 'swift-icehouse':
         package  => '*',
         pin      => 'release n=precise-updates/icehouse',
         priority => 1005,

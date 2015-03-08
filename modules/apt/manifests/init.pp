@@ -52,6 +52,12 @@ class apt {
         pin      => 'release o=Wikimedia',
         priority => 1001,
     }
+    # TODO: Remove after applied everywhere.
+    file { '/etc/apt/preferences.d/wikimedia':
+        ensure  => absent,
+        require => Apt::Pin['wikimedia'],
+        notify  => Exec['apt-get update'],
+    }
 
     $http_proxy = "http://webproxy.${::site}.wmnet:8080"
 
