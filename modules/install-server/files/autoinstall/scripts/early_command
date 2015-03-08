@@ -50,7 +50,7 @@ set -e
 APT_PREFDIR=/target/etc/apt/preferences.d
 [ ! -d "\$APT_PREFDIR" ] && mkdir -p "\$APT_PREFDIR"
 
-cat >\$APT_PREFDIR/wikimedia <<EOT
+cat >\$APT_PREFDIR/wikimedia.pref <<EOT
 Package: *
 Pin: release o=Wikimedia
 Pin-Priority: 1001
