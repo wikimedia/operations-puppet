@@ -4,7 +4,12 @@ define apt::pin (
     $package=$name,
     $ensure=present,
 ) {
-    file { "/etc/apt/preferences.d/${name}":
+    # Validate that $name does not already have a ".pref" suffix.
+    if $name =~ /\.pref$/ {
+        fail('$name must not have a ".pref" suffix.')
+    }
+
+    file { "/etc/apt/preferences.d/${name}.pref":
         ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
