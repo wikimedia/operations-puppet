@@ -17,7 +17,7 @@ class toollabs {
 
     $sysdir = '/data/project/.system'
     $store  = "${sysdir}/store"
-    $repo   = "${sysdir}/deb"
+    $repo   = "${sysdir}/deb-${::lsbdistcodename}"
 
     #
     # The $store is an incredibly horrid workaround the fact that we cannot
@@ -116,9 +116,14 @@ class toollabs {
         group  => 'root',
     }
 
-    # We keep a project-local apt repo where we stuff packages we build
-    # that are intended to be local to the project.  By keeping it on the
-    # shared storage, we have no need to set up a server to use it.
+    # We keep a project-local apt repo where we stuff packages we
+    # build that are intended to be local to the project.  By keeping
+    # it on the shared storage, we have no need to set up a server to
+    # use it.  The repo is located in
+    # /data/project/.system/deb-jessie,
+    # /data/project/.system/deb-precise or
+    # /data/project/.system/deb-trusty depending on the instance's OS
+    # release.
     labsdebrepo { $toollabs::repo:
         handle  => 'tools-project',
         require => File[$toollabs::sysdir],
