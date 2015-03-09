@@ -1694,7 +1694,7 @@ class role::cache {
                 'stat1001.eqiad.wmnet', # metrics and metrics-api
                 'palladium.eqiad.wmnet',
                 'analytics1027.eqiad.wmnet', # Hue (Hadoop GUI)
-
+                'analytics1001.eqiad.wmnet', # Hadoop Yarn ResourceManager GUI
             ],
             backend_options => [
             {
