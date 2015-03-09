@@ -4654,6 +4654,336 @@ host mw2148 {
 	fixed-address mw2148.codfw.wmnet;
 }
 
+host mw2149 {
+	hardware ethernet B0:83:FE:DF:10:A0;
+	fixed-address mw2149.codfw.wmnet;
+}
+
+host mw2150 {
+	hardware ethernet B0:83:FE:DB:C8:60;
+	fixed-address mw2150.codfw.wmnet;
+}
+
+host mw2151 {
+	hardware ethernet B0:83:FE:DB:B4:9B;
+	fixed-address mw2151.codfw.wmnet;
+}
+
+host mw2152 {
+	hardware ethernet B0:83:FE:DB:BF:AD;
+	fixed-address mw2152.codfw.wmnet;
+}
+
+host mw2153 {
+	hardware ethernet B0:83:FE:DB:DD:06;
+	fixed-address mw2153.codfw.wmnet;
+}
+
+host mw2154 {
+	hardware ethernet B0:83:FE:DB:D6:7E;
+	fixed-address mw2154.codfw.wmnet;
+}
+
+host mw2155 {
+	hardware ethernet B0:83:FE:DE:F6:67;
+	fixed-address mw2155.codfw.wmnet;
+}
+
+host mw2156 {
+	hardware ethernet B0:83:FE:DE:F3:B8;
+	fixed-address mw2156.codfw.wmnet;
+}
+
+host mw2157 {
+	hardware ethernet B0:83:FE:DB:D2:B1;
+	fixed-address mw2157.codfw.wmnet;
+}
+
+host mw2158 {
+	hardware ethernet B0:83:FE:DF:05:A1;
+	fixed-address mw2158.codfw.wmnet;
+}
+
+host mw2159 {
+	hardware ethernet B0:83:FE:DB:D4:DC;
+	fixed-address mw2159.codfw.wmnet;
+}
+
+host mw2160 {
+	hardware ethernet B0:83:FE:DF:07:A4;
+	fixed-address mw2160.codfw.wmnet;
+}
+
+host mw2161 {
+	hardware ethernet B0:83:FE:DF:05:24;
+	fixed-address mw2161.codfw.wmnet;
+}
+
+host mw2162 {
+	hardware ethernet B0:83:FE:DA:55:57;
+	fixed-address mw2162.codfw.wmnet;
+}
+
+host mw2163 {
+	hardware ethernet B0:83:FE:DB:DC:6A;
+	fixed-address mw2163.codfw.wmnet;
+}
+
+host mw2164 {
+	hardware ethernet B0:83:FE:DB:B2:5B;
+	fixed-address mw2164.codfw.wmnet;
+}
+
+host mw2165 {
+	hardware ethernet B0:83:FE:DB:DE:48;
+	fixed-address mw2165.codfw.wmnet;
+}
+
+host mw2166 {
+	hardware ethernet B0:83:FE:DB:C2:C2;
+	fixed-address mw2166.codfw.wmnet;
+}
+
+host mw2167 {
+	hardware ethernet B0:83:FE:DB:D1:41;
+	fixed-address mw2167.codfw.wmnet;
+}
+
+host mw2168 {
+	hardware ethernet B0:83:FE:DB:CF:EC;
+	fixed-address mw2168.codfw.wmnet;
+}
+
+host mw2169 {
+	hardware ethernet B0:83:FE:DB:D5:9D;
+	fixed-address mw2169.codfw.wmnet;
+}
+
+host mw2170 {
+	hardware ethernet B0:83:FE:DE:F7:C3;
+	fixed-address mw2170.codfw.wmnet;
+}
+
+host mw2171 {
+	hardware ethernet B0:83:FE:DB:DD:F0;
+	fixed-address mw2171.codfw.wmnet;
+}
+
+host mw2172 {
+	hardware ethernet B0:83:FE:DB:D3:7F;
+	fixed-address mw2172.codfw.wmnet;
+}
+
+host mw2173 {
+	hardware ethernet B0:83:FE:DF:0F:3B;
+	fixed-address mw2173.codfw.wmnet;
+}
+
+host mw2174 {
+	hardware ethernet B0:83:FE:DB:D3:9B;
+	fixed-address mw2174.codfw.wmnet;
+}
+
+host mw2175 {
+	hardware ethernet B0:83:FE:DB:D4:1F;
+	fixed-address mw2175.codfw.wmnet;
+}
+
+host mw2176 {
+	hardware ethernet B0:83:FE:E7:D4:38;
+	fixed-address mw2176.codfw.wmnet;
+}
+
+host mw2177 {
+	hardware ethernet B0:83:FE:DF:0F:FC;
+	fixed-address mw2177.codfw.wmnet;
+}
+
+host mw2178 {
+	hardware ethernet B0:83:FE:DA:7A:BE;
+	fixed-address mw2178.codfw.wmnet;
+}
+
+host mw2179 {
+	hardware ethernet B0:83:FE:DA:7A:BE;
+	fixed-address mw2179.codfw.wmnet;
+}
+
+host mw2180 {
+	hardware ethernet B0:83:FE:DB:DE:9C;
+	fixed-address mw2180.codfw.wmnet;
+}
+
+host mw2181 {
+	hardware ethernet B0:83:FE:DB:C2:9A;
+	fixed-address mw2181.codfw.wmnet;
+}
+
+host mw2182 {
+	hardware ethernet B0:83:FE:DF:0D:E6;
+	fixed-address mw2182.codfw.wmnet;
+}
+
+host mw2183 {
+	hardware ethernet B0:83:FE:DB:E6:7F;
+	fixed-address mw2183.codfw.wmnet;
+}
+
+host mw2184 {
+	hardware ethernet B0:83:FE:DB:E6:7F;
+	fixed-address mw2184.codfw.wmnet;
+}
+
+host mw2185 {
+	hardware ethernet B0:83:FE:DF:2A:5F;
+	fixed-address mw2185.codfw.wmnet;
+}
+
+host mw2186 {
+	hardware ethernet B0:83:FE:DF:05:4C;
+	fixed-address mw2186.codfw.wmnet;
+}
+
+host mw2187 {
+	hardware ethernet B0:83:FE:E7:E0:0B;
+	fixed-address mw2187.codfw.wmnet;
+}
+
+host mw2188 {
+	hardware ethernet B0:83:FE:E7:E0:2B;
+	fixed-address mw2188.codfw.wmnet;
+}
+
+host mw2189 {
+	hardware ethernet B0:83:FE:E7:DD:D9;
+	fixed-address mw2189.codfw.wmnet;
+}
+
+host mw2190 {
+	hardware ethernet B0:83:FE:E7:E8:7C;
+	fixed-address mw2190.codfw.wmnet;
+}
+
+host mw2191 {
+	hardware ethernet B0:83:FE:E7:DC:A8;
+	fixed-address mw2191.codfw.wmnet;
+}
+
+host mw2192 {
+	hardware ethernet B0:83:FE:DE:70:12;
+	fixed-address mw2192.codfw.wmnet;
+}
+
+host mw2193 {
+	hardware ethernet B0:83:FE:E7:D9:35;
+	fixed-address mw2193.codfw.wmnet;
+}
+
+host mw2194 {
+	hardware ethernet B0:83:FE:DB:D3:D7;
+	fixed-address mw2194.codfw.wmnet;
+}
+
+host mw2195 {
+	hardware ethernet B0:83:FE:DF:0E:27;
+	fixed-address mw21995.codfw.wmnet;
+}
+
+host mw2196 {
+	hardware ethernet B0:83:FE:DE:FF:05;
+	fixed-address mw2196.codfw.wmnet;
+}
+
+host mw2197 {
+	hardware ethernet B0:83:FE:DB:D8:43;
+	fixed-address mw2197.codfw.wmnet;
+}
+
+host mw2198 {
+	hardware ethernet B0:83:FE:E7:DC:D0;
+	fixed-address mw2198.codfw.wmnet;
+}
+
+host mw2199 {
+	hardware ethernet B0:83:FE:E7:EC:2F;
+	fixed-address mw2199.codfw.wmnet;
+}
+
+host mw2200 {
+	hardware ethernet B0:83:FE:E7:D9:81;
+	fixed-address mw2200.codfw.wmnet;
+}
+
+host mw2201 {
+	hardware ethernet B0:83:FE:DB:D6:22;
+	fixed-address mw2201.codfw.wmnet;
+}
+
+host mw2202 {
+	hardware ethernet B0:83:FE:DB:DE:7C;
+	fixed-address mw2202.codfw.wmnet;
+}
+
+host mw2203 {
+	hardware ethernet B0:83:FE:E7:D9:4D;
+	fixed-address mw2203.codfw.wmnet;
+}
+
+host mw2204 {
+	hardware ethernet B0:83:FE:DB:D2:A9;
+	fixed-address mw2204.codfw.wmnet;
+}
+
+host mw2205 {
+	hardware ethernet B0:83:FE:DB:BC:1F;
+	fixed-address mw2205.codfw.wmnet;
+}
+
+host mw2206 {
+	hardware ethernet B0:83:FE:DB:D5:34;
+	fixed-address mw2206.codfw.wmnet;
+}
+
+host mw2207 {
+	hardware ethernet B0:83:FE:E7:D5:5F;
+	fixed-address mw2207.codfw.wmnet;
+}
+
+host mw2208 {
+	hardware ethernet B0:83:FE:DB:DC:66;
+	fixed-address mw2208.codfw.wmnet;
+}
+
+host mw2209 {
+	hardware ethernet B0:83:FE:E7:D7:94;
+	fixed-address mw2209.codfw.wmnet;
+}
+
+host mw2210 {
+	hardware ethernet B0:83:FE:E7:DF:DB;
+	fixed-address mw2210.codfw.wmnet;
+}
+
+host mw2211 {
+	hardware ethernet B0:83:FE:DF:2A:6F;
+	fixed-address mw2211.codfw.wmnet;
+}
+
+host mw2212 {
+	hardware ethernet B0:83:FE:DF:01:3B;
+	fixed-address mw2212.codfw.wmnet;
+}
+
+host mw2213 {
+	hardware ethernet C8:1F:66:C0:BA:7C;
+	fixed-address mw2213.codfw.wmnet;
+}
+
+host mw2214 {
+	hardware ethernet B0:83:FE:DB:DD:7E;
+	fixed-address mw2214.codfw.wmnet;
+}
+
 host nembus {
 	hardware ethernet 90:B1:1C:00:AB:0D;
 	fixed-address nembus.wikimedia.org;
