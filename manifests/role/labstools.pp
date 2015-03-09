@@ -69,9 +69,7 @@ class role::labs::tools {
     class redis inherits role::labs::tools::common {
         system::role { 'role::labs::tools::redis': description => 'Server that hosts shared Redis instance' }
 
-        class { 'toollabs::redis':
-            maxmemory => $::redis_maxmemory
-        }
+        include toollabs::redis
     }
 
     class redis::slave(
@@ -82,7 +80,6 @@ class role::labs::tools {
             description => 'Server that hosts shared Redis instance'
         }
         class { 'toollabs::redis':
-            maxmemory      => $::redis_maxmemory,
             replicate_from => $master,
         }
 
