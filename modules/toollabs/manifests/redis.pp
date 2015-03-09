@@ -14,7 +14,7 @@
 # Sample Usage:
 #
 class toollabs::redis (
-    $maxmemory = '1GB',
+    $maxmemory = '15GB',
     $replicate_from = undef,
 ) inherits toollabs {
     include toollabs::infrastructure
@@ -46,8 +46,9 @@ class toollabs::redis (
             'DEBUG'     => '',
             'MONITOR'   => ''
         },
-        monitor           => true,
-        redis_replication => $redis_replication
+        monitor           => false,
+        redis_replication => $redis_replication,
+        maxmemory_policy  => 'allkeys-lru',
     }
 
     diamond::collector { 'Redis':
