@@ -6,3 +6,6 @@ salt::master::salt_file_roots: { base: [ '/srv/salt' ] }
 salt::master::salt_pillar_roots: { base: [ '/srv/pillars' ] }
 salt::master::salt_module_roots: { base: [ '/srv/salt/_modules' ] }
 salt::master::salt_returner_roots: { base: [ '/srv/salt/_returners' ] }
+role::deployment::server::deployment_group: 'project-staging'
+role::deployment::salt_masters::deployment_server: staging-tin.eqiad.wmflabs
+role::trebuchet::deployment_server: staging-tin.eqiad.wmflabs

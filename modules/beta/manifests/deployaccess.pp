@@ -1,17 +1,6 @@
-# == Class: beta::scap::target
-#
-# Provisions scap components for a scap target node.
-#
-class beta::scap::target {
-    include ::beta::config
-    include ::mediawiki::scap
-    include ::mediawiki::users
-
-    # Install authorized_keys for mwdeploy user
-    ssh::userkey { 'mwdeploy':
-        source  => 'puppet:///private/scap/id_rsa.pub',
-    }
-
+class beta::mwdeploy_access(
+    $bastion_ip = '10.68.16.58', # ip of deployment-bastion
+) {
     # Hack to replace /etc/security/access.conf (which is managed by the
     # ldap::client class) with a modified version that includes an access
     # grant for the mwdeploy user to authenticate from deployment-bastion.
@@ -27,4 +16,3 @@ class beta::scap::target {
         require => File['/etc/security/access.conf~'],
     }
 }
-
