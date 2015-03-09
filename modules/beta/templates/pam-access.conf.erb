@@ -3,5 +3,5 @@
 # users except for members of the nova project
 # that this instance is a member of:
 
-+ : mwdeploy : <%= scope.lookupvar('beta::config::bastion_ip') %>
++ : mwdeploy : <%= @bastion_ip %>
 -:ALL EXCEPT (project-deployment-prep) root:ALL
