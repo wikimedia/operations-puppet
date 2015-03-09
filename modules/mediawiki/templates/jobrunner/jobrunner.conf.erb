@@ -11,6 +11,8 @@
                 "AssembleUploadChunks",
                 "ParsoidCacheUpdateJobOnDependencyChange",
                 "ParsoidCacheUpdateJobOnEdit",
+                "RestbaseUpdateJobOnEdit",
+                "RestbaseUpdateJobOnDependencyChange",
                 "PublishStashedFile",
                 "gwtoolsetGWTFileBackendCleanupJob",
                 "gwtoolsetUploadMediafileJob",
@@ -39,6 +41,15 @@
             ],
             "low-priority": [
                 "ParsoidCacheUpdateJobOnDependencyChange"
+            ]
+        },
+        "restbase": {
+            "runners": <%= @runners_restbase %>,
+            "include": [
+                "RestbaseUpdateJobOnEdit"
+            ],
+            "low-priority": [
+                "RestbaseUpdateJobOnDependencyChange"
             ]
         },
         "transcode": {
