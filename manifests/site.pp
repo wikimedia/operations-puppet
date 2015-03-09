@@ -435,7 +435,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 
 # cp1008: prod-like SSL test host
 node 'cp1008.wikimedia.org' {
-    role cache::text
+    role cache::text, ipsec
     interface::add_ip6_mapped { 'main': }
 }
 
