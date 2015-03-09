@@ -33,6 +33,7 @@
 class salt::minion(
     $master,
     $master_finger,
+    $master_key = '',
     $id        = $::fqdn,
     $grains    = {},
 ) {
@@ -71,5 +72,14 @@ class salt::minion(
         owner  => 'root',
         group  => 'root',
         mode   => '0544',
+    }
+
+    if ($master_key != '') {
+        file { '/etc/salt/pki/minion/minion_master.pub':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => $master_key,
+        }
     }
 }
