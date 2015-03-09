@@ -87,10 +87,10 @@ class role::cache {
                         'amssq45.esams.wmnet',
                         'amssq46.esams.wmnet',
                         'amssq47.esams.wmnet',
-                        'amssq48.esams.wikimedia.org',
-                        'amssq49.esams.wikimedia.org',
-                        'amssq50.esams.wikimedia.org',
-                        'amssq51.esams.wikimedia.org',
+                        # 'amssq48.esams.wmnet', # Jessie
+                        # 'amssq49.esams.wmnet', # Jessie
+                        # 'amssq50.esams.wmnet', # Jessie
+                        # 'amssq51.esams.wmnet', # Jessie
                         'amssq52.esams.wikimedia.org',
                         'amssq53.esams.wikimedia.org',
                         'amssq54.esams.wikimedia.org',
