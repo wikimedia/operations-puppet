@@ -111,6 +111,11 @@ menu = csw2-esams
 title = csw2-esams.wikimedia.org
 host = csw2-esams.wikimedia.org
 
++++ asw-esams
+menu = asw-esams
+title = asw-esams.mgmt.esams.wmnet
+host = asw-esams.mgmt.esams.wmnet
+
 ++ Hosts
 menu = Hosts
 title = Sampled Hosts
