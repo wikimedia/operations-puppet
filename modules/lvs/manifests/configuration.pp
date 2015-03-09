@@ -728,7 +728,6 @@ class lvs::configuration {
             'bgp' => 'yes',
             'depool-threshold' => '.5',
             'monitors' => {
-                'ProxyFetch' => { 'url' => [ 'http://zotero.svc.eqiad.wmnet' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             }
         }
