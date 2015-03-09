@@ -12,6 +12,12 @@
 #   Fingerprint of the master public key to double verify the master
 #   is valid. Find the fingerprint by running 'salt-key -F master' on
 #   the salt master.
+
+# [*master_key*]
+#   Public key of the master server. Found at
+#   /etc/salt/pki/master/master.pub on salt master. Overwrites
+#   minion_master.pub on minion to avoid the need to remove that file
+#   manually.
 #
 # [*id*]
 #   Explicitly declare the ID for this minion to use.
@@ -33,6 +39,7 @@
 class salt::minion(
     $master,
     $master_finger,
+    $master_key = undef,
     $id        = $::fqdn,
     $grains    = {},
 ) {
@@ -71,5 +78,14 @@ class salt::minion(
         owner  => 'root',
         group  => 'root',
         mode   => '0544',
+    }
+
+    if ($master_key) {
+        file { '/etc/salt/pki/minion/minion_master.pub':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => $master_key,
+        }
     }
 }

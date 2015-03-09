@@ -74,8 +74,9 @@ class role::salt::masters::labs::project_master {
 }
 
 class role::salt::minions(
-    $salt_master = $::salt_master_override,
-    $salt_finger = $::salt_master_finger_override,
+    $salt_master     = $::salt_master_override,
+    $salt_finger     = $::salt_master_finger_override,
+    $salt_master_key = $::salt_master_key,
 ) {
     if $::realm == 'labs' {
         $labs_masters  = [ 'virt1000.wikimedia.org', 'labcontrol2001.wikimedia.org' ]
@@ -98,6 +99,7 @@ class role::salt::minions(
         id            => $client_id,
         master        => $master,
         master_finger => $master_finger,
+        master_key    => $salt_master_key,
         grains        => {
             realm   => $::realm,
             site    => $::site,
