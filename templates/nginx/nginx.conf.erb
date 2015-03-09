@@ -10,8 +10,8 @@ user www-data www-data;
 <% if has_variable?("nginx_use_ssl") then %>
     # Adapted from https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
     # Hyperthread siblings assumed to be enumerated as 0+16, 1+17, 2+18, etc, and
-    #  if HT is detected, we map 1 process per physical core onto both siblings
-    worker_processes  <%= @physicalcorecount %>;
+    #  if HT is detected, we map 2 process per physical core onto both siblings
+    worker_processes  <%= @processorcount %>;
     <%
         ht_mode = false
         if @processorcount.to_i == (2 * @physicalcorecount.to_i)
@@ -24,6 +24,7 @@ user www-data www-data;
             bitmask = (1 << cpupos).to_s(2)
             bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s
             if ht_mode
+                affinity_mask << (bitstring + bitstring)
                 affinity_mask << (bitstring + bitstring)
             else
                 affinity_mask << bitstring
