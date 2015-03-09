@@ -206,7 +206,6 @@ class toollabs::exec_environ {
 
         # Fonts for vCat tool.
         'fonts-ipafont-gothic',        # Japanese fonts.
-        'fonts-unfonts-core',          # Korean fonts.
         'ttf-indic-fonts',             # Many Indic languages.
 
         # tcl packages
