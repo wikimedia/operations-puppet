@@ -41,6 +41,15 @@
                 "ParsoidCacheUpdateJobOnDependencyChange"
             ]
         },
+        "restbase": {
+            "runners": <%= @runners_restbase %>,
+            "include": [
+                "RestbaseUpdateJobOnEdit"
+            ],
+            "low-priority": [
+                "RestbaseUpdateJobOnDependencyChange"
+            ]
+        },
         "transcode": {
             "runners": <%= @runners_transcode %>,
             "include": [
