@@ -30,7 +30,7 @@ if os.path.exists(os.path.expanduser('~/www/python/venv')):
 if os.path.exists(os.path.expanduser('~/www/python/uwsgi.ini')):
     args += ['--ini', os.path.expanduser('~/www/python/uwsgi.ini')]
 
-proxies = ('tools-webproxy', 'tools-webproxy-01', 'tools-webproxy-02')
+proxies = ('tools-webproxy-01', 'tools-webproxy-02')
 
 socks = []
 for proxy in proxies:
