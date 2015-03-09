@@ -12,7 +12,7 @@ TOOL = re.sub(r'^tools.', '', pwd_entry.pw_name) # Tool users are of form tools.
 
 PORT = os.getuid()
 
-proxies = ('tools-webproxy', 'tools-webproxy-01', 'tools-webproxy-02')
+proxies = ('tools-webproxy-01', 'tools-webproxy-02')
 
 socks = []
 for proxy in proxies:

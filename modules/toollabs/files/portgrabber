@@ -29,10 +29,6 @@ my $port = 0+<SOCK>;
 my $host = `hostname`;
 chomp $host;
 
-socket(PROXY, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
-    connect(PROXY, sockaddr_in(8282, inet_aton('tools-webproxy'))) and
-    syswrite PROXY, ".*\nhttp://$host:$port\n";
-
 socket(PROXY1, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
     connect(PROXY1, sockaddr_in(8282, inet_aton('tools-webproxy-01'))) and
     syswrite PROXY1, ".*\nhttp://$host:$port\n";
