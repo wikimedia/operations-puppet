@@ -10,7 +10,6 @@ class role::zuul::configuration {
     $shared = {
         'production' => {
             'gearman_server'    => '208.80.154.135',  # gallium.wikimedia.org
-            'git_source_branch' => 'master',
             'gerrit_server'     => 'ytterbium.wikimedia.org',
             'gerrit_user'       => 'jenkins-bot',
             'url_pattern'       => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
@@ -18,7 +17,6 @@ class role::zuul::configuration {
         },
         'labs' => {
             'gearman_server'       => '127.0.0.1',
-            'git_source_branch' => 'labs',
             'gerrit_server'     => '127.0.0.1',
             'gerrit_user'       => 'jenkins',
             'url_pattern'       => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
@@ -73,9 +71,7 @@ class role::zuul::install {
 
     include role::zuul::configuration
 
-    class { '::zuul':
-        git_source_branch => $role::zuul::configuration::shared[$::realm]['git_source_branch'],
-    }
+    class { '::zuul': }
 } # /role::zuul::install
 
 class role::zuul::server {
