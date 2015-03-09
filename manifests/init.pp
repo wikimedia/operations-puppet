@@ -266,8 +266,8 @@ class cassandra(
         fail('storage_port must be a port number between 1 and 65535')
     }
 
-    if (empty($seeds)) {
-        fail('seeds must not be empty')
+    if (!is_array($seeds) or empty($seeds)) {
+        fail('seeds must be an array and not be empty')
     }
 
     if (empty($data_file_directories)) {
