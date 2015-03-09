@@ -66,7 +66,7 @@ class role::cache {
                         'cp1055.eqiad.wmnet', # Jessie
                         'cp1065.eqiad.wmnet', # Jessie
                         'cp1066.eqiad.wmnet',
-                        'cp1067.eqiad.wmnet',
+                        # 'cp1067.eqiad.wmnet', # Jessie
                         'cp1068.eqiad.wmnet', # Jessie
                     ],
                     'esams' => [
@@ -109,7 +109,7 @@ class role::cache {
                         'cp4010.ulsfo.wmnet',
                         'cp4016.ulsfo.wmnet',
                         'cp4017.ulsfo.wmnet',
-                        'cp4018.ulsfo.wmnet',
+                        # 'cp4018.ulsfo.wmnet', # Jessie
                     ]
                 },
                 'api' => {
