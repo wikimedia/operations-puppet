@@ -1715,6 +1715,11 @@ class role::cache {
                 'port'          => 8888,
             },
             {
+                # Yarn ResourceManager UI serves requests on port 8088
+                'backend_match' => '^analytics1001',
+                'port'          => 8088,
+            },
+            {
                 'port'                  => 80,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '35s',
