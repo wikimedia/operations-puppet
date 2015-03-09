@@ -10,6 +10,7 @@ class mediawiki::jobrunner (
     $runners_upload    = 0,
     $runners_gwt       = 0,
     $runners_parsoid   = 0,
+    $runners_restbase  = 0,
     $runners_transcode = 0,
     $statsd_server     = undef,
     $port              = 9005,
