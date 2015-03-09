@@ -4,10 +4,12 @@
 # use to deploy software that we develop internally or that changes
 # rapidly enough to make Debianization impractical.
 #
-class role::trebuchet {
+class role::trebuchet(
+    $deployment_server = $::deployment_server_override
+) {
     $trebuchet_master = $::realm ? {
         production => 'tin.eqiad.wmnet',
-        labs       => pick($::deployment_server_override, "${::instanceproject}-deploy.eqiad.wmflabs"),
+        labs       => pick($deployment_server, "${::instanceproject}-deploy.eqiad.wmflabs"),
     }
 
     include ::trebuchet::packages
