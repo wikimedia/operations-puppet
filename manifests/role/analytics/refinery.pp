@@ -171,3 +171,43 @@ class role::analytics::refinery::data::check::email {
         minute      => 0,
     }
 }
+
+# == Class role::analytics::refinery::guard
+# Configures a cron job that runs analytics/refinery/source guards daily and
+# sends out an email upon issues
+#
+class role::analytics::refinery::guard {
+    require role::analytics::refinery
+
+    $refinery_source_path = '/a/refinery-source'
+
+    $user = 'hdfs'
+    $group = 'hdfs'
+
+    file { $refinery_source_path:
+        ensure => 'directory',
+        owner  => $user,
+        group  => $group,
+        mode   => '0755',
+    }
+
+    git::clone { 'refinery_source':
+        ensure    => 'latest',
+        directory => $refinery_source_path,
+        origin    => 'https://gerrit.wikimedia.org/r/p/analytics/refinery/source.git',
+        owner     => $user,
+        group     => $group,
+        mode      => '0755',
+        require   => File[$refinery_source_path],
+    }
+
+    include ::maven
+
+    cron { 'refinery source guard':
+        command     => "${refinery_source_path}/guard/run_all_guards.sh --rebuild-jar --quiet",
+        environment => 'MAILTO=otto@wikimedia.org',
+        user        => 'hdfs',
+        hour        => 15,
+        minute      => 35,
+    }
+}

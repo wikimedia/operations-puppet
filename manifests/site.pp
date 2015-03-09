@@ -2263,6 +2263,9 @@ node 'stat1002.eqiad.wmnet' {
     # webrequest partitions faultyness.
     include role::analytics::refinery::data::check::email
 
+    # Include analytics/refinery/source guard checks
+    include role::analytics::refinery::guard
+
     # Include the MySQL research password at
     # /etc/mysql/conf.d/analytics-research-client.cnf
     # and only readable by users in the
