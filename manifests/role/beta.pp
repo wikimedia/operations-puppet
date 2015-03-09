@@ -7,9 +7,6 @@ class role::beta::bastion {
 
     include beta::autoupdater
     include beta::syncsiteresources
-
-    # Bring scap related scripts such as mw-update-l10n
-    include ::beta::scap::master
 }
 
 # To be applied on deployment-upload.eqiad.wmflabs
@@ -25,48 +22,6 @@ class role::beta::uploadservice {
         rule => 'proto tcp dport http ACCEPT;'
     }
 
-}
-
-# Class: role::beta::rsync_slave
-#
-# Provision an rsync slave server for scap in beta
-#
-class role::beta::rsync_slave {
-    system::role { 'role::beta::rsync_slave':
-        description => 'Scap rsync fanout server'
-    }
-
-    require ::role::labs::lvm::srv
-    include ::beta::scap::rsync_slave
-
-    # FIXME: Each host that has this role applied must also be
-    # manually added to the dsh group file found in
-    # modules/beta/files/dsh/group/scap-proxies or scap will
-    # not communicate with that host.
-}
-
-# Class: role::beta::scap_target
-#
-# Provision a target host for scap in beta
-#
-class role::beta::scap_target {
-    system::role { 'role::beta::scap_target':
-        description => 'Scap deployment target'
-    }
-
-    require ::role::labs::lvm::srv
-    include ::beta::scap::target
-
-    # Allow ssh inbound from deployment-bastion.eqiad.wmflabs for scap
-    ferm::rule { 'deployment-bastion-scap-ssh':
-        ensure  => present,
-        rule    => "proto tcp dport ssh saddr ${::beta::config::bastion_ip} ACCEPT;",
-    }
-
-    # FIXME: Each host that has this role applied must also be
-    # manually added to the dsh group file found in
-    # modules/beta/files/dsh/group/mediawiki-installation or scap will
-    # not communicate with that host.
 }
 
 class role::beta::trebuchet_testing {
