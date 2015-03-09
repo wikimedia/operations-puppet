@@ -64,7 +64,20 @@ sub vcl_recv {
 		else {
 			set req.backend = analytics1027;
 		}
-	} elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org") {
+	}
+  elsif (req.http.Host == "yarn.wikimedia.org") {
+		// make sure all requests to Yarn ResourceManager UI are via https proxy
+		if (req.http.X-Forwarded-Proto != "https") {
+			set req.http.Location = "https://" + req.http.Host + req.url;
+			// Use a custom 755 error code to indicate internally
+			// that we are forcing a 301 redirect to https.
+			error 755 "TLS Redirect";
+		}
+		else {
+			set req.backend = analytics1001;
+		}
+	}
+  elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org") {
 		set req.backend = zirconium;
 	} elsif (req.http.Host == "etherpad.wikimedia.org") {
 		set req.backend = zirconium;
