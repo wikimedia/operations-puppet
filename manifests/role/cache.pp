@@ -182,7 +182,7 @@ class role::cache {
                     'ulsfo' => ['cp4011.ulsfo.wmnet',
                                 'cp4012.ulsfo.wmnet',
                                 'cp4019.ulsfo.wmnet',
-                                # 'cp4020.ulsfo.wmnet', # Jessie
+                                'cp4020.ulsfo.wmnet', # Jessie
                     ]
                 },
                 'parsoid' => {
