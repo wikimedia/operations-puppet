@@ -14,11 +14,9 @@
 # === Parameters
 #
 # $git_source_repo : git repository to clone from
-# $git_source_branch : branch on the repository to pull
 #
 class zuul (
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
-    $git_source_branch = 'master',
 ) {
 
   include zuul::user
@@ -66,7 +64,7 @@ class zuul (
     ensure    => present,
     directory => $zuul_source_dir,
     origin    => $git_source_repo,
-    branch    => $git_source_branch,
+    branch    => 'master',
   }
 
   exec { 'install_zuul':
