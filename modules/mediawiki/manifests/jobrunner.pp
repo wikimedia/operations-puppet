@@ -40,6 +40,14 @@ class mediawiki::jobrunner (
         notify => Service['jobrunner'],
     }
 
+    file { '/etc/init/jobchron.conf':
+        source => 'puppet:///modules/mediawiki/jobchron.conf',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        notify => Service['jobchron'],
+    }
+
     file { '/etc/jobrunner':
         ensure => directory,
         owner  => 'root',
@@ -57,6 +65,11 @@ class mediawiki::jobrunner (
     }
 
     service { 'jobrunner':
+        ensure   => running,
+        provider => 'upstart',
+    }
+
+    service { 'jobchron':
         ensure   => running,
         provider => 'upstart',
     }
