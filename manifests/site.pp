@@ -2387,9 +2387,8 @@ node 'tin.eqiad.wmnet' {
     $cluster = 'misc'
 
     include standard
-    include role::deployment::deployment_servers::production
+    include role::deployment::server
     include mediawiki
-    include role::scap::master
     include mysql
     include role::labsdb::manager
     include ssh::hostkeys-collect
