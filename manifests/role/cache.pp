@@ -74,7 +74,7 @@ class role::cache {
                         'amssq32.esams.wmnet', # Jessie
                         # 'amssq33.esams.wmnet', # powered down for now, RT # 7933
                         'amssq34.esams.wmnet', # Jessie
-                        #'amssq35.esams.wmnet', # Jessie
+                        'amssq35.esams.wmnet', # Jessie
                         #'amssq36.esams.wmnet', # Jessie
                         'amssq37.esams.wmnet',
                         'amssq38.esams.wmnet',
