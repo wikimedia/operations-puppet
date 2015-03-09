@@ -128,15 +128,18 @@ class role::deployment::config {
     }
 }
 
-class role::deployment::deployment_servers::common(
+class role::deployment::server(
     # Source of the key, change this if not in production, with hiera.
     $key_source = 'puppet:///private/ssh/tin/mwdeploy_rsa',
+    $apache_fqdn = $::fqdn,
+    $deployable_networks = $::network::constants::deployable_networks,
+    $deployment_group = 'wikidev',
 ) {
     # Can't include this while scap is present on tin:
     # include misc::deployment::scripts
 
     class { 'deployment::deployment_server':
-        deployer_groups => ['wikidev'],
+        deployer_groups => [$deployment_group],
     }
 
     # set umask for wikidev users so that newly-created files are g+w
@@ -151,8 +154,20 @@ class role::deployment::deployment_servers::common(
     include ::apache
     include ::apache::mod::dav
     include ::apache::mod::dav_fs
+    include ::apache::helper_scripts
+
+    include wikitech::wiki::passwords
+
+    include role::scap::master
 
     class { 'mediawiki::packages': }
+
+    ferm::service { 'http_deployment_server':
+        desc   => 'http on trebuchet deployment servers, for serving actual files to deploy',
+        proto  => 'tcp',
+        port   => '80',
+        srange => $deployable_networks,
+    }
 
     #RT 7427
     ::monitoring::icinga::git_merge { 'mediawiki_config':
@@ -166,24 +181,13 @@ class role::deployment::deployment_servers::common(
     keyholder::private_key { 'mwdeploy_rsa':
         source  => $key_source,
     }
-}
-
-class role::deployment::deployment_servers::production {
-    include role::deployment::deployment_servers::common
-    include network::constants
-    include wikitech::wiki::passwords
-    include apache::helper_scripts
-    include dsh
-    include rsync::server
 
     file { '/srv/deployment':
         ensure => directory,
         owner  => 'trebuchet',
-        group  => 'wikidev',
+        group  => $deployment_group,
     }
 
-    $deployable_networks = $::network::constants::deployable_networks
-    $apache_fqdn = $::fqdn
 
     apache::site { 'deployment':
         content => template('apache/sites/deployment.erb'),
@@ -201,6 +205,16 @@ class role::deployment::deployment_servers::production {
         port => '6379',
     }
 
+    sudo::group { "${deployment_group}_deployment_server":
+        group      => $deployment_group,
+        privileges => [
+            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json pillar.data',
+            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *',
+            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *',
+            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *',
+        ],
+    }
+
     package { 'percona-toolkit':
         ensure => latest,
     }
@@ -209,16 +223,6 @@ class role::deployment::deployment_servers::production {
     # determining the state of git repos during deployments.
     package { 'tig':
         ensure => latest,
-    }
-
-    sudo::group { 'wikidev_deployment_server':
-        group      => 'wikidev',
-        privileges => [
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json pillar.data',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *',
-        ],
     }
 }
 
@@ -244,58 +248,6 @@ class role::deployment::salt_masters(
     class { 'deployment::salt_master':
         repo_config       => $role::deployment::config::repo_config,
         deployment_config => $deployment_config,
-    }
-}
-
-class role::deployment::deployment_servers::labs {
-    include role::deployment::deployment_servers::common
-
-    # Enable multiple test environments within a single project
-    if ( $::deployment_server_override != undef ) {
-        $apache_fqdn = $::deployment_server_override
-    } else {
-        $apache_fqdn = "${::instanceproject}-deploy.eqiad.wmflabs"
-    }
-
-    $deployable_networks = '10.0.0.0/8'
-
-    file { '/srv/deployment':
-        ensure => directory,
-        owner  => 'trebuchet',
-        group  => "project-${::instanceproject}",
-    }
-
-    apache::site { 'deployment':
-        content => template('apache/sites/deployment.erb'),
-        require => File['/srv/deployment'],
-    }
-
-    ferm::service { 'http_deployment_server':
-        desc   => 'http on trebuchet deployment servers, for serving actual files to deploy',
-        proto  => 'tcp',
-        port   => '80',
-        srange => $deployable_networks,
-    }
-
-    class { 'redis':
-        dir       => '/srv/redis',
-        maxmemory => '500Mb',
-        monitor   => false,
-    }
-
-    ferm::service { 'deployment-redis':
-        proto => 'tcp',
-        port => '6379',
-    }
-
-    sudo::group { "project_${::instanceproject}_deployment_server":
-        group      => "project-${::instanceproject}",
-        privileges => [
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json pillar.data',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.fetch *',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *',
-            'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *',
-        ],
     }
 }
 
