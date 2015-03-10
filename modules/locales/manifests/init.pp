@@ -5,7 +5,7 @@
 
 class locales {
     package { 'locales':
-        ensure => present,
+        ensure => 'present',
     }
 
     exec { 'locale-gen':

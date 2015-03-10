@@ -17,7 +17,7 @@ class locales::extended {
     }
 
     file { $localeconf:
-        ensure => present,
+        ensure => 'present',
         source => 'puppet:///modules/locales/locales-extended',
         owner  => 'root',
         group  => 'root',
