@@ -72,7 +72,7 @@ class role::cache {
                     'esams' => [
                         # ipsec testing - 'amssq31.esams.wmnet', # Jessie
                         'amssq32.esams.wmnet', # Jessie
-                        # 'amssq33.esams.wmnet', # powered down for now, RT # 7933
+                        # T84133 'amssq33.esams.wmnet', # Jessie
                         'amssq34.esams.wmnet', # Jessie
                         'amssq35.esams.wmnet', # Jessie
                         'amssq36.esams.wmnet', # Jessie
@@ -155,7 +155,7 @@ class role::cache {
                         'cp3008.esams.wikimedia.org',
                         'cp3009.esams.wikimedia.org',
                         'cp3010.esams.wikimedia.org',
-                        # 'cp3015.esams.wmnet', # Jessie
+                        'cp3015.esams.wmnet', # Jessie
                         'cp3016.esams.wmnet', # Jessie
                         'cp3017.esams.wmnet', # Jessie
                         'cp3018.esams.wmnet', # Jessie
@@ -163,7 +163,7 @@ class role::cache {
                     'ulsfo' => [
                         'cp4005.ulsfo.wmnet',
                         'cp4006.ulsfo.wmnet',
-                        # 'cp4007.ulsfo.wmnet', # Jessie
+                        'cp4007.ulsfo.wmnet', # Jessie
                         'cp4013.ulsfo.wmnet', # Jessie
                         'cp4014.ulsfo.wmnet', # Jessie
                         'cp4015.ulsfo.wmnet', # Jessie
