@@ -6,7 +6,7 @@ define swift_new::mount_filesystem (
     $mount_point = "${mount_base}/${dev_suffix}"
 
     file { "mountpoint-${mount_point}":
-        ensure => 'directory',
+        ensure => directory,
         path   => $mount_point,
         owner  => 'swift',
         group  => 'swift',
@@ -19,7 +19,7 @@ define swift_new::mount_filesystem (
         # We don't want puppet to keep the FS mounted, otherwise
         # it would conflict with swift-drive-auditor trying to keep FS
         # unmounted.
-        ensure   => 'present',
+        ensure   => present,
         device   => "LABEL=swift-${dev_suffix}",
         name     => $mount_point,
         fstype   => 'xfs',
