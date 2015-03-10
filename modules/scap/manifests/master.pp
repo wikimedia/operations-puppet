@@ -2,11 +2,11 @@
 #
 # Sets up a scap master (currently tin). 
 class scap::master(
-    $common_path = '/srv/mediawiki',
+    $common_path        = '/srv/mediawiki',
     $common_source_path = '/srv/mediawiki-staging',
-    $rsync_host = 'tin.eqiad.wmnet',
-    $statsd_host = 'statsd.eqiad.wmnet',
-    $statsd_port = 8125,
+    $rsync_host         = 'tin.eqiad.wmnet',
+    $statsd_host        = 'statsd.eqiad.wmnet',
+    $statsd_port        = '8125',
 ) {
     include scap::scripts
     include rsync::server
