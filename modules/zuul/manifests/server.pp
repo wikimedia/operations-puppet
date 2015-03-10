@@ -28,18 +28,18 @@ class zuul::server (
     $jenkins_user,
     $jenkins_apikey,
     $url_pattern,
-    $statsd_host = '',
+    $statsd_host    = '',
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
-    $status_url = "https://${::fqdn}/zuul/status",
+    $status_url     = "https://${::fqdn}/zuul/status",
 ) {
 
     file { '/var/run/zuul':
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'zuul',
     }
 
     file { '/etc/init.d/zuul':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -47,7 +47,7 @@ class zuul::server (
     }
 
     file { '/etc/default/zuul':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -65,7 +65,7 @@ class zuul::server (
     }
 
     file { '/etc/zuul/gearman-logging.conf':
-        ensure => present,
+        ensure => 'present',
         owner  => 'zuul',
         group  => 'root',
         mode   => '0444',
@@ -78,13 +78,11 @@ class zuul::server (
         group     => 'root',
         mode      => '0400',
         notify    => Exec['craft public zuul conf'],
-        require   => [
-            File['/etc/zuul'],
-        ],
+        require   => File['/etc/zuul'],
     }
 
     file { '/usr/local/bin/zuul-gearman.py':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
@@ -105,7 +103,7 @@ class zuul::server (
     }
 
     file { '/etc/zuul/public.conf':
-        ensure  => absent,
+        ensure  => 'absent',
     }
 
     service { 'zuul':

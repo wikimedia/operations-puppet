@@ -1,7 +1,7 @@
 class zuul::user {
 
     group { 'zuul':
-        ensure => present,
+        ensure => 'present',
         name   => 'zuul',
         system => true,
     }

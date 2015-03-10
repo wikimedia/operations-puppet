@@ -21,15 +21,15 @@ class zuul::merger (
     $gerrit_user,
     $url_pattern,
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
-    $git_dir = '/var/lib/zuul/git',
-    $git_email = "zuul-merger@${::hostname}",
-    $git_name = 'Wikimedia Zuul Merger',
-    $status_url = "https://${::fqdn}/zuul/status",
-    $zuul_url = 'git://zuul.eqiad.wmnet',
+    $git_dir        = '/var/lib/zuul/git',
+    $git_email      = "zuul-merger@${::hostname}",
+    $git_name       = 'Wikimedia Zuul Merger',
+    $status_url     = "https://${::fqdn}/zuul/status",
+    $zuul_url       = 'git://zuul.eqiad.wmnet',
 ) {
 
     file { $git_dir:
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'zuul',
     }
 
@@ -39,14 +39,11 @@ class zuul::merger (
         owner     => 'root',
         group     => 'root',
         mode      => '0444',
-
-        require   => [
-            File['/etc/zuul'],
-        ],
+        require   => File['/etc/zuul'],
     }
 
     file { '/etc/default/zuul-merger':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -55,7 +52,7 @@ class zuul::merger (
     }
 
     file { '/etc/init.d/zuul-merger':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -63,12 +60,12 @@ class zuul::merger (
     }
 
     file { '/var/run/zuul-merger':
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'zuul',
     }
 
     file { '/etc/zuul/merger-logging.conf':
-        ensure => present,
+        ensure => 'present',
         source => 'puppet:///modules/zuul/merger-logging.conf',
     }
 
@@ -91,8 +88,6 @@ class zuul::merger (
         minute      => '7',
         command     => "MAILTO='jenkins-bot@wikimedia.org' find ${git_dir} -maxdepth 3 -type d -name '.git' -exec git --git-dir='{}' pack-refs --all \\;",
         environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin',
-        require     => [
-            File[$git_dir],
-        ],
+        require     => File[$git_dir],
     }
 }
