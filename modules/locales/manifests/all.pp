@@ -11,12 +11,12 @@ class locales::all {
     case $::operatingsystem {
         'Debian': {
             package { 'locales-all':
-                ensure => present,
+                ensure => 'present',
             }
         }
         'Ubuntu': {
             file { '/var/lib/locales/supported.d/all':
-                ensure => link,
+                ensure => 'link',
                 source => '/usr/share/i18n/SUPPORTED',
                 notify => Exec['locale-gen'],
             }
