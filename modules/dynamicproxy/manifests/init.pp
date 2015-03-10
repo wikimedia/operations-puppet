@@ -15,11 +15,11 @@
 class dynamicproxy (
     $ssl_settings,
     $resolver,
-    $redis_maxmemory='512MB',
-    $ssl_certificate_name=false,
-    $notfound_servers=[],
-    $luahandler='domainproxy',
-    $set_xff=false,
+    $redis_maxmemory      = '512MB',
+    $ssl_certificate_name = false,
+    $notfound_servers     = [],
+    $luahandler           = 'domainproxy',
+    $set_xff              = false,
 ) {
     class { '::redis':
         persist       => 'aof',
@@ -42,24 +42,24 @@ class dynamicproxy (
 
     file { '/etc/logrotate.d/nginx':
         ensure => present,
-        owner  => root,
-        group  => root,
+        owner  => 'root',
+        group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/dynamicproxy/logrotate',
     }
 
     file { '/etc/nginx/nginx.conf':
-        ensure  => 'file',
+        ensure  => file,
         content => template('dynamicproxy/nginx.conf'),
         require => Package['nginx-common'],
-        notify  => Service['nginx']
+        notify  => Service['nginx'],
     }
 
     file { '/etc/security/limits.conf':
-        ensure  => 'file',
+        ensure  => file,
         source  => 'puppet:///modules/dynamicproxy/limits.conf',
         require => Package['nginx-common'],
-        notify  => Service['nginx']
+        notify  => Service['nginx'],
     }
 
     nginx::site { 'proxy':
@@ -67,24 +67,24 @@ class dynamicproxy (
     }
 
     file { '/etc/nginx/lua':
-        ensure  => 'directory',
+        ensure  => directory,
         require => Package['nginx-extras'],
     }
 
     file { "/etc/nginx/lua/${luahandler}.lua":
-        ensure  => 'file',
+        ensure  => file,
         source  => "puppet:///modules/dynamicproxy/${luahandler}.lua",
         require => File['/etc/nginx/lua'],
         notify  => Service['nginx'],
     }
 
     file { '/etc/nginx/lua/resty':
-        ensure  => 'directory',
+        ensure  => directory,
         require => File['/etc/nginx/lua'],
     }
 
     file { '/etc/nginx/lua/resty/redis.lua':
-        ensure  => 'file',
+        ensure  => file,
         require => File['/etc/nginx/lua/resty'],
         source  => 'puppet:///modules/dynamicproxy/redis.lua',
     }
