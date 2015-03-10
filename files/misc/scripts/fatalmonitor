@@ -3,8 +3,10 @@
 # HHVM's logger appends a newline to each event it emits. This is encoded as
 # "#012" by rsyslog to preserve the single line semantics of a syslog line.
 # The `sed 's/#012//'` removes this unneeded visual noise.
+# The second sed command collapses repeated messages down to one line.
 cmd="tail -n 1000 /a/mw-log/hhvm.log |
     sed 's/#012//' |
+    sed 's/repeated [0-9]* times: //' |
     cut -d ' ' -f 7- |
     sort |
     uniq -c |
