@@ -17,7 +17,7 @@
 # None.
 class librenms::syslog {
     file { '/etc/librenms-rsyslog.conf':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -29,7 +29,7 @@ class librenms::syslog {
     }
 
     file { '/etc/init/librenms-syslog.conf':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -38,7 +38,7 @@ class librenms::syslog {
     }
 
     service { 'librenms-syslog':
-        ensure    => running,
+        ensure    => 'running',
         provider  => 'upstart',
         subscribe => File['/etc/init/librenms-syslog.conf'],
     }

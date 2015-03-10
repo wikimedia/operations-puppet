@@ -20,11 +20,11 @@ class librenms(
     $rrd_dir="${install_dir}/rrd",
 ) {
     group { 'librenms':
-        ensure => present,
+        ensure => 'present',
     }
 
     user { 'librenms':
-        ensure     => present,
+        ensure     => 'present',
         gid        => 'librenms',
         shell      => '/bin/false',
         home       => '/nonexistent',
@@ -33,7 +33,7 @@ class librenms(
     }
 
     file { $install_dir:
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'www-data',
         group   => 'librenms',
         mode    => '0555',
@@ -41,7 +41,7 @@ class librenms(
     }
 
     file { "${install_dir}/config.php":
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'www-data',
         group   => 'librenms',
         mode    => '0440',
@@ -50,7 +50,7 @@ class librenms(
     }
 
     file { '/etc/logrotate.d/librenms':
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/librenms/logrotate',
@@ -77,11 +77,11 @@ class librenms(
             'snmp-mibs-downloader',
             'whois',
         ]:
-        ensure => present,
+        ensure => 'present',
     }
 
     cron { 'librenms-discovery-all':
-        ensure  => present,
+        ensure  => 'present',
         user    => 'librenms',
         command => "${install_dir}/discovery.php -h all >/dev/null 2>&1",
         hour    => '*/6',
@@ -89,14 +89,14 @@ class librenms(
         require => User['librenms'],
     }
     cron { 'librenms-discovery-new':
-        ensure  => present,
+        ensure  => 'present',
         user    => 'librenms',
         command => "${install_dir}/discovery.php -h new >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
     cron { 'librenms-poller-all':
-        ensure  => present,
+        ensure  => 'present',
         user    => 'librenms',
         command => "python ${install_dir}/poller-wrapper.py 16 >/dev/null 2>&1",
         minute  => '*/5',
@@ -106,19 +106,19 @@ class librenms(
     # syslog script, in an install_dir-agnostic location
     # used by librenms::syslog or a custom alternative placed manually.
     file { '/usr/local/sbin/librenms-syslog':
-        ensure => link,
+        ensure => 'link',
         target => "${install_dir}/syslog.php",
     }
 
     file { "${install_dir}/purge.py":
-        ensure => present,
+        ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/librenms/purge.py',
     }
     cron { 'purge-syslog-eventlog':
-        ensure  => present,
+        ensure  => 'present',
         user    => 'librenms',
         command => "python ${install_dir}/purge.py --syslog --eventlog --perftimes '1 month' >/dev/null 2>&1",
         hour    => '0',
