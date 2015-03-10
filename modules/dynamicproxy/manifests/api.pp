@@ -14,7 +14,7 @@ class dynamicproxy::api {
     }
 
     file { '/etc/init/dynamicproxy-api.conf':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -24,7 +24,7 @@ class dynamicproxy::api {
     }
 
     service { 'dynamicproxy-api':
-        ensure  => running,
+        ensure  => 'running',
         enable  => true,
         require => [
             Package['python-invisible-unicorn'],
@@ -65,10 +65,10 @@ class dynamicproxy::api {
     }
 
     cron { 'proxydb-bak':
-            ensure  => present,
+            ensure  => 'present',
             user    => 'root',
-            hour    => 1,
-            minute  => 0,
+            hour    => '1',
+            minute  => '0',
             command => '/usr/local/sbin/proxydb-bak.sh > /dev/null 2>&1',
             require => File['/data/project/backup'],
     }

@@ -15,11 +15,11 @@
 class dynamicproxy (
     $ssl_settings,
     $resolver,
-    $redis_maxmemory='512MB',
-    $ssl_certificate_name=false,
-    $notfound_servers=[],
-    $luahandler='domainproxy',
-    $set_xff=false,
+    $redis_maxmemory      = '512MB',
+    $ssl_certificate_name = false,
+    $notfound_servers     = [],
+    $luahandler           = 'domainproxy',
+    $set_xff              = false,
 ) {
     class { '::redis':
         persist       => 'aof',
@@ -41,9 +41,9 @@ class dynamicproxy (
     }
 
     file { '/etc/logrotate.d/nginx':
-        ensure => present,
-        owner  => root,
-        group  => root,
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/dynamicproxy/logrotate',
     }
@@ -52,14 +52,14 @@ class dynamicproxy (
         ensure  => 'file',
         content => template('dynamicproxy/nginx.conf'),
         require => Package['nginx-common'],
-        notify  => Service['nginx']
+        notify  => Service['nginx'],
     }
 
     file { '/etc/security/limits.conf':
         ensure  => 'file',
         source  => 'puppet:///modules/dynamicproxy/limits.conf',
         require => Package['nginx-common'],
-        notify  => Service['nginx']
+        notify  => Service['nginx'],
     }
 
     nginx::site { 'proxy':
