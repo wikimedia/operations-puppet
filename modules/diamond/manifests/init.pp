@@ -57,7 +57,7 @@ class diamond(
     $interval      = '60',
     $path_prefix   = 'servers',
     $keep_logs_for = '5',
-    $service       = running,
+    $service       = 'running',
     $settings      = {
         host => 'localhost',
         port => '8125',
@@ -68,11 +68,11 @@ class diamond(
     }
 
     package { [ 'python-diamond', 'python-configobj' ]:
-        ensure  => present,
+        ensure  => 'present',
     }
 
     file { [ '/etc/diamond/collectors', '/etc/diamond/handlers' ]:
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
