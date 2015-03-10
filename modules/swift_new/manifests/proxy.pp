@@ -40,14 +40,14 @@ class swift_new::proxy (
     }
 
     file { '/etc/logrotate.d/swift-proxy':
-        ensure => present,
+        ensure => 'present',
         source => 'puppet:///modules/swift_new/swift-proxy.logrotate.conf',
         mode   => '0444',
     }
 
     rsyslog::conf { 'swift-proxy':
         source   => 'puppet:///modules/swift_new/swift-proxy.rsyslog.conf',
-        priority => 30,
+        priority => '30',
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/wmf/':

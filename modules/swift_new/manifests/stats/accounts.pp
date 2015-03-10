@@ -13,7 +13,7 @@ class swift_new::stats::accounts(
 
     # report account stats to graphite
     file { '/usr/local/bin/swift-account-stats':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',

@@ -21,7 +21,7 @@ define swift_new::stats::stats_account (
     }
 
     cron { "swift-account-stats_${user}":
-        ensure  => present,
+        ensure  => 'present',
         command => ". ${account_file} && /usr/local/bin/swift-account-stats --prefix ${account_statsd_prefix} --statsd-host ${statsd_host} 1>/dev/null",
         user    => 'root',
         hour    => '*',

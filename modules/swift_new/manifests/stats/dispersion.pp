@@ -10,7 +10,7 @@ class swift_new::stats::dispersion(
     ]
 
     file { '/usr/local/bin/swift-dispersion-stats':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
@@ -20,7 +20,7 @@ class swift_new::stats::dispersion(
 
     # XXX swift-dispersion-populate is not ran/initialized
     cron { 'swift-dispersion-stats':
-        ensure  => present,
+        ensure  => 'present',
         command => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix} --statsd-host ${statsd_host} 1>/dev/null",
         user    => 'root',
         hour    => '*',
