@@ -39,16 +39,16 @@ class reprepro (
 ) {
 
     package { 'reprepro':
-        ensure => present,
+        ensure => 'present',
     }
 
     group { 'reprepro':
-        ensure => present,
+        ensure => 'present',
         name   => $group,
     }
 
     user { 'reprepro':
-        ensure     => present,
+        ensure     => 'present',
         name       => $user,
         home       => $homedir,
         shell      => '/bin/sh',
@@ -59,7 +59,7 @@ class reprepro (
     }
 
     file { $basedir:
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => $user,
         group   => $group,
         mode    => '0755',
@@ -67,7 +67,7 @@ class reprepro (
     }
 
     file { "${basedir}/conf":
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => $user,
         group   => $group,
         mode    => '0555',
@@ -75,7 +75,7 @@ class reprepro (
     }
 
     file { "${basedir}/db":
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => $user,
         group   => $group,
         mode    => '0755',
@@ -83,7 +83,7 @@ class reprepro (
     }
 
     file { "${basedir}/logs":
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => $user,
         group   => $group,
         mode    => '0755',
@@ -91,7 +91,7 @@ class reprepro (
     }
 
     file { "${basedir}/tmp":
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => $user,
         group   => $group,
         mode    => '0755',
@@ -99,7 +99,7 @@ class reprepro (
     }
 
     file { "${basedir}/conf/options":
-        ensure  => file,
+        ensure  => 'file',
         owner   => $user,
         group   => $group,
         mode    => '0444',
@@ -107,7 +107,7 @@ class reprepro (
     }
 
     file { "${basedir}/conf/uploaders":
-        ensure  => file,
+        ensure  => 'file',
         owner   => $user,
         group   => $group,
         mode    => '0444',
@@ -115,23 +115,23 @@ class reprepro (
     }
 
     file { "${basedir}/conf/incoming":
-        ensure  => file,
+        ensure  => 'file',
         owner   => $user,
         group   => $group,
         mode    => '0444',
-        content => template("reprepro/incoming.erb"),
+        content => template('reprepro/incoming.erb'),
     }
 
     file { "${basedir}/conf/log":
-        ensure  => file,
+        ensure  => 'file',
         owner   => $user,
         group   => $group,
         mode    => '0755',
-        content => template("reprepro/log.erb"),
+        content => template('reprepro/log.erb'),
     }
 
     file { [ "${homedir}/.gnupg", "${homedir}/.ssh" ]:
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => $user,
         group   => $group,
         mode    => '0700',
@@ -139,16 +139,16 @@ class reprepro (
     }
 
     file { "${homedir}/.ssh/authorized_keys":
-        ensure  => file,
+        ensure  => 'file',
         owner   => $user,
         group   => $group,
         mode    => '0600',
         require => User['reprepro'],
-        content => template("reprepro/authorized_keys.erb"),
+        content => template('reprepro/authorized_keys.erb'),
     }
 
     file { "/usr/local/bin/reprepro-ssh-upload":
-        ensure  => file,
+        ensure  => 'file',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
@@ -158,7 +158,7 @@ class reprepro (
 
     if $gpg_secring != undef {
         file { "${homedir}/.gnupg/secring.gpg":
-            ensure  => file,
+            ensure  => 'file',
             owner   => $user,
             group   => $group,
             mode    => '0400',
@@ -169,7 +169,7 @@ class reprepro (
 
     if $gpg_pubring != undef {
         file { "${homedir}/.gnupg/pubring.gpg":
-            ensure  => file,
+            ensure  => 'file',
             owner   => $user,
             group   => $group,
             mode    => '0400',
