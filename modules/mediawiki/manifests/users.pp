@@ -3,7 +3,12 @@
 # Provisions system accounts for running, deploying and updating
 # MediaWiki.
 #
-class mediawiki::users($web = 'apache') {
+class mediawiki::users(
+    $web = 'apache',
+    $mwdeploy_pub_key = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/81k2eXC0lM00+kg+5+p3kAHoOwAcbBjktlM7DENrrWdvkSlJasPDtHsU0+7woyGz2hHpI0SA8eBAEngl1X7uX4w1HU/VcG6np/kVMVrXPtn+sy4JtYTEVLuGzUstoc8PNxEDKvEQS7WGNLZtrgY0xWYsd7grt5tI/8qvhHd7coT6EWOcisRVnGY20r+/IWgsREZarbiW+0CSdQS0UzBbKQX/Hv+1asfZ24Qmq+yvXc2GuP+ewAm5gh0+5dUBHt69Ocq3PwCvqEypOrwpaqTGJbjvGLyaRN+YBNwoVwwl3EICYOJVDnNr/UxmzBT9RAJMHcpj6XrYiCTL1P9MUXyP54nZGOeqodSVn/L62lCwlh92D+E9qa6QFk8ikjKUr34vSI5jmQnscfaVz0k96YZP9B3J6+FDZOC8E/3SGRONrf4Fd4EAZGLQnoSdmwDHGGiHs8cjKnj4SinMabFzE3ReMV5k+Kdp999ne/vC2aryDSgc+EIXz731FmjPFmG5mdb/obGWHtU58kAbTSxPGV38uh1xvOSaSshfhYqK14G57x0ieUxV3zSZmJ5BuN5JbthgVNkAlMEATT2S6Cw+bBY7xgsE/0Wv139y0ChmatFyNv3uVbnMMTtJTBQGz+9Qb4xWTw1mxCxR5PmNmEaNI9+o/uk8M7fNd1muQfOUQPQkBQ== Mediawiki deployment key',
+    $l10nupdate_pub_key = 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAzcA/wB0uoU+XgiYN/scGczrAGuN99O8L7m8TviqxgX9s+RexhPtn8FHss1GKi8oxVO1V+ssABVb2q0fGza4wqrHOlZadcFEGjQhZ4IIfUwKUo78mKhQsUyTd5RYMR0KlcjB4UyWSDX5tFHK6FE7/tySNTX7Tihau7KZ9R0Ax//KySCG0skKyI1BK4Ufb82S8wohrktBO6W7lag0O2urh9dKI0gM8EuP666DGnaNBFzycKLPqLaURCeCdB6IiogLHiR21dyeHIIAN0zD6SUyTGH2ZNlZkX05hcFUEWcsWE49+Ve/rdfu1wWTDnourH/Xm3IBkhVGqskB+yp3Jkz2D3Q== l10nupdate@fenari',
+
+) {
 
     if ($web == 'apache') {
         # For legacy reasons, we used to run Apache / MediaWiki using an 'apache' user
@@ -58,7 +63,7 @@ class mediawiki::users($web = 'apache') {
     }
 
     file { '/home/mwdeploy/.ssh/authorized_keys':
-        source  => 'puppet:///modules/mediawiki/authorized_keys.mwdeploy',
+        content => $mwdeploy_pub_key,
         owner   => 'mwdeploy',
         group   => 'mwdeploy',
         mode    => '0400',
@@ -89,7 +94,7 @@ class mediawiki::users($web = 'apache') {
     }
 
     file { '/home/l10nupdate/.ssh/authorized_keys':
-        source  => 'puppet:///modules/mediawiki/authorized_keys.l10nupdate',
+        content => $l10nupdate_pub_key,
         owner   => 'l10nupdate',
         group   => 'l10nupdate',
         mode    => '0400',
