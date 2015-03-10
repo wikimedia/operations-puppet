@@ -2,7 +2,7 @@
 
 class haproxy(
     $template  = 'haproxy/haproxy.cfg.erb',
-    ) {
+) {
 
     package { [
         'socat',
@@ -42,12 +42,12 @@ class haproxy(
     }
 
     nrpe::monitor_service { 'haproxy':
-        description   => "haproxy process",
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy",
+        description   => 'haproxy process',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy',
     }
 
     nrpe::monitor_service { 'haproxy_alive':
         description   => 'haproxy alive',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_haproxy --check=alive",
+        nrpe_command  => '/usr/lib/nagios/plugins/check_haproxy --check=alive',
     }
 }
