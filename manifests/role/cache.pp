@@ -154,7 +154,7 @@ class role::cache {
                         'cp3007.esams.wikimedia.org',
                         'cp3008.esams.wikimedia.org',
                         'cp3009.esams.wikimedia.org',
-                        'cp3010.esams.wikimedia.org',
+                        # 'cp3010.esams.wmnet', # Jessie
                         'cp3015.esams.wmnet', # Jessie
                         'cp3016.esams.wmnet', # Jessie
                         'cp3017.esams.wmnet', # Jessie
@@ -175,7 +175,8 @@ class role::cache {
                                 'cp1059.eqiad.wmnet',
                                 'cp1060.eqiad.wmnet', # Jessie
                     ],
-                    'esams' => ['cp3011.esams.wikimedia.org',
+                    'esams' => [
+                                # 'cp3011.esams.wmnet', # Jessie
                                 'cp3012.esams.wmnet', # Jessie
                                 'cp3013.esams.wmnet', # Jessie
                                 'cp3014.esams.wmnet', # Jessie
