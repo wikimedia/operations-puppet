@@ -97,15 +97,17 @@ class mysql::config(
       default: { $old_pw="-p'${old_root_password}'" }
     }
 
+    $should_restart = $restart ? {
+        true  => Exec['mysqld-restart'],
+        false => undef,
+    }
+
     exec { 'set_mysql_rootpw':
       command   => "mysqladmin -u root ${old_pw} password '${root_password}'",
       logoutput => true,
       unless    => "mysqladmin -u root -p'${root_password}' status > /dev/null",
       path      => '/usr/local/sbin:/usr/bin:/usr/local/bin',
-      notify    => $restart ? {
-        true  => Exec['mysqld-restart'],
-        false => undef,
-      },
+      notify    => $should_restart,
       require   => File['/etc/mysql/conf.d'],
     }
 
