@@ -1,13 +1,14 @@
 # gridengine/resourcedir.pp
 
 define gridengine::resourcedir(
+    $addcmd,
+    $modcmd,
+    $delcmd,
     $dir = $title,
-    $addcmd, $modcmd, $delcmd)
-{
+){
     $etcdir     = '/var/lib/gridengine/etc'
     $confdir    = "${etcdir}/${dir}"
     $trackerdir = "${etcdir}/tracker/${dir}"
-
 
     file { $confdir:
         ensure  => directory,
