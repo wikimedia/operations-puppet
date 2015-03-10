@@ -10,18 +10,18 @@ class motd {
     # https://lists.debian.org/debian-devel/2014/12/msg00368.html
     if os_version('debian <= jessie || ubuntu <= precise') {
         file { '/etc/motd':
-            ensure => link,
+            ensure => 'link',
             target => '/var/run/motd',
             force  => true,
         }
     } else {
         file { '/etc/motd':
-            ensure => absent,
+            ensure => 'absent',
         }
     }
 
     file { '/etc/update-motd.d':
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',

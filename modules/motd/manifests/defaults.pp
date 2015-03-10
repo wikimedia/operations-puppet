@@ -15,8 +15,8 @@ class motd::defaults {
     #   /etc/os-release. The script claims that lsb_release is too slow but this
     #   hasn't observed here so far.
     motd::script { 'header':
-        ensure   => present,
-        priority => 00,
+        ensure   => 'present',
+        priority => '00',
         content  => "#!/bin/sh\nuname -snrvm\nlsb_release -s -d\n\n",
     }
 
@@ -24,8 +24,8 @@ class motd::defaults {
     # - shipped with Ubuntu lucid/precise but not trusty
     # - Debian used to support motd.tail pre-wheezy
     motd::script { 'footer':
-        ensure   => present,
-        priority => 99,
+        ensure   => 'present',
+        priority => '99',
         content  => "#!/bin/sh\n[ -f /etc/motd.tail ] && cat /etc/motd.tail || true\n",
     }
 }
