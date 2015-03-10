@@ -5,13 +5,13 @@
 #
 class extdist(
     $base_dir = '/srv',
-    $log_path = '/var/log/extdist') {
-
-    $dist_dir = "${base_dir}/dist"
-    $clone_dir = "${base_dir}/extdist"
-    $src_path = "${base_dir}/src"
+    $log_path = '/var/log/extdist'
+) {
+    $dist_dir     = "${base_dir}/dist"
+    $clone_dir    = "${base_dir}/extdist"
+    $src_path     = "${base_dir}/src"
     $composer_dir = "${base_dir}/composer"
-    $pid_folder = '/run/extdist'
+    $pid_folder   = '/run/extdist'
 
     $ext_settings = {
         'API_URL'   => 'https://www.mediawiki.org/w/api.php',
@@ -34,32 +34,32 @@ class extdist(
     }
 
     user { 'extdist':
-        ensure => present,
+        ensure => 'present',
         system => true,
     }
 
     file { '/home/extdist':
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'extdist',
         require => User['extdist']
     }
 
     file { $log_path:
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'extdist',
         group   => 'www-data',
         require => User['extdist']
     }
 
     file { [$dist_dir, $clone_dir, $src_path, $pid_folder, $composer_dir]:
-        ensure => directory,
+        ensure => 'directory',
         owner  => 'extdist',
         group  => 'www-data',
         mode   => '0755',
     }
 
     git::clone {'labs/tools/extdist':
-        ensure    => latest,
+        ensure    => 'latest',
         directory => $clone_dir,
         branch    => 'master',
         require   => [File[$clone_dir], User['extdist']],
@@ -82,14 +82,14 @@ class extdist(
     }
 
     file { '/etc/extdist.conf':
-        ensure  => present,
+        ensure  => 'present',
         content => ordered_json($ext_settings),
         owner   => 'extdist',
         require => User['extdist']
     }
 
     file { '/etc/skindist.conf':
-        ensure  => present,
+        ensure  => 'present',
         content => ordered_json($skin_settings),
         owner   => 'extdist',
         require => User['extdist']
