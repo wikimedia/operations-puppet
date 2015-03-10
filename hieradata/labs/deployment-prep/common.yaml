@@ -130,3 +130,4 @@ mediawiki_memcached_servers:
 "beta::syncsiteresources::user": www-data
 "role::url_downloader::url_downloader_ip": 10.68.16.135
 "zotero::http_proxy": deployment-urldownloader.eqiad.wmflabs:8080
+"role::trebuchet::deployment_server": deployment-bastion.eqiad.wmflabs
