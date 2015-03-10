@@ -76,8 +76,8 @@ probe varnish {
 		"Host: varnishcheck"
 		"User-agent: Varnish backend check"
 		"Connection: close";
-	.timeout = 1s;
-	.interval = 1s;
+	.timeout = 500ms;
+	.interval = 100ms;
 	.window = 3;
 	.threshold = 2;
 }
