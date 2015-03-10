@@ -1,4 +1,3 @@
-deployment-bastion.eqiad.wmflabs
 deployment-jobrunner01.eqiad.wmflabs
 deployment-mediawiki01.eqiad.wmflabs
 deployment-mediawiki02.eqiad.wmflabs
