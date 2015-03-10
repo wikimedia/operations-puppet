@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#TOOL EDITED FOR AUDITING. NO INVASIVE ACTION.
-
 # This is a user garbage collection script that removes
 # users who do not have a supplementary group that also have
 # a UID above the ID_BOUNDARY. Removals are logged to syslog.
@@ -41,23 +39,18 @@ in_array() {
     return 1
 }
 
+# This is an intentional hard stop
+# as before T84032 this could do some
+# serious damage to a labstore host.
+if [[ `hostname -s` =~ ^labstore ]]; then
+        exit 1
+fi
+
 if [ ! -d $ARCHIVE_DIR ]
     then
         log "creating new user files archive ${ARCHIVE_DIR}"
         mkdir -p $ARCHIVE_DIR
 fi
-
-#TMP
-if [ "${1}" == "dryrun" ]
-    then
-        if [[ -e '/var/log/admincleanup' ]]
-            then
-                exit 0
-        fi
-fi
-
-#TEMP
-/bin/cat /dev/null > /var/log/admincleanup
 
 IFS=$'\r\n' PASSWD_USERS=($(/usr/bin/getent passwd))
 for var in "${PASSWD_USERS[@]}"
@@ -72,12 +65,14 @@ do
 
     if [[ "$uid" -gt "$ID_BOUNDRY" ]]; then
         if [[ `/usr/bin/id $username` != *","* ]]; then
-            #TEMP
-            echo $var >> /var/log/admincleanup
+            if [ "${1}" == "dryrun" ]
+                then
+                    exit 1
+            fi
 
-        #NOT TO BE PUT IN SERVICE
-        #log "${0} removing user/id: ${username}/${uid}"
-        #/usr/sbin/deluser --remove-home --backup-to=$ARCHIVE_DIR $username &> /dev/null
+        log "${0} removing user/id: ${username}/${uid}"
+        mv /etc/sudoers.d/$username /home/$username &> /dev/null
+        /usr/sbin/deluser --remove-home --backup-to=$ARCHIVE_DIR $username &> /dev/null
 
         fi
     fi
