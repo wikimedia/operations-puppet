@@ -26,10 +26,10 @@ class reprepro::distribution (
     $settings,
 ) {
     file { "${basedir}/conf/distributions":
+        ensure  => 'file',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        ensure  => file,
         content => template('reprepro/distributions.erb'),
     }
 }
