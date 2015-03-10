@@ -45,5 +45,14 @@ class admin(
 
     admin::groupmembers { $all_groups:
         phash  => $data,
+        before => Exec['enforce-users-groups-cleanup'],
+    }
+
+    # Declarative gotcha: non-defined users can get left behind
+    # Here we cleanup anyone not in a supplementary group above a certain UID
+    exec { 'enforce-users-groups-cleanup':
+        command   => '/usr/local/sbin/enforce-users-groups',
+        unless    => '/usr/local/sbin/enforce-users-groups dryrun',
+        logoutput => true,
     }
 }
