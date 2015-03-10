@@ -176,7 +176,7 @@ class role::cache {
                                 'cp1060.eqiad.wmnet', # Jessie
                     ],
                     'esams' => [
-                                # 'cp3011.esams.wmnet', # Jessie
+                                # T92306 'cp3011.esams.wmnet', # Jessie
                                 'cp3012.esams.wmnet', # Jessie
                                 'cp3013.esams.wmnet', # Jessie
                                 'cp3014.esams.wmnet', # Jessie
