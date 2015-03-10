@@ -16,11 +16,14 @@ class puppet::self::master(
     $server,
     $enc_script_path = undef,
 ) {
+
+    $server_desc = $server ? {
+        'localhost' => 'Puppetmaster for itself',
+        default     => 'Puppetmaster for project labs instances',
+    }
+
     system::role { 'puppetmaster':
-        description  => $server ? {
-            'localhost' => 'Puppetmaster for itself',
-            default     => 'Puppetmaster for project labs instances',
-        }
+        description  => $server_desc,
     }
 
     include puppet::self::geoip
