@@ -6,13 +6,12 @@
 class extdist(
     $base_dir = '/srv',
     $log_path = '/var/log/extdist'
-) {
-
-    $dist_dir = "${base_dir}/dist"
-    $clone_dir = "${base_dir}/extdist"
-    $src_path = "${base_dir}/src"
+){
+    $dist_dir     = "${base_dir}/dist"
+    $clone_dir    = "${base_dir}/extdist"
+    $src_path     = "${base_dir}/src"
     $composer_dir = "${base_dir}/composer"
-    $pid_folder = '/run/extdist'
+    $pid_folder   = '/run/extdist'
 
     $ext_settings = {
         'API_URL'   => 'https://www.mediawiki.org/w/api.php',
@@ -69,11 +68,11 @@ class extdist(
     }
 
     package { 'php5-cli':
-        ensure => 'present',
+        ensure => present,
     }
 
     git::clone { 'integration/composer':
-        ensure             => 'latest',
+        ensure             => latest,
         directory          => $composer_dir,
         branch             => 'master',
         require            => [File[$composer_dir], User['extdist'], Package['php5-cli']],
