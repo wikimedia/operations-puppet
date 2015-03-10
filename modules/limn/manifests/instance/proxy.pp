@@ -17,23 +17,23 @@
 # $site_template  - Template for Apache conf.  Default: limn/vhost-limn-proxy.conf.erb.
 #
 define limn::instance::proxy (
-  $port            = 80,
-  $limn_host       = '127.0.0.1',
-  $limn_port       = '8081',
-  $document_root   = '/usr/local/share/limn/var',
-  $server_name     = "${name}.${::domain}",
-  $server_aliases  = '',
-  $site_template   = 'limn/vhost-limn-proxy.conf.erb')
-{
-  # Configure the Apache Limn instance proxy VirtualHost.
-  $priority = 10
-  file { "${priority}-limn-${name}.conf":
-    path    => "/etc/apache2/sites-enabled/${priority}-limn-${name}.conf",
-    content => template($site_template),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    require => Package['apache2'],
-    notify  => Service['apache2'],
-  }
+    $port            = '80',
+    $limn_host       = '127.0.0.1',
+    $limn_port       = '8081',
+    $document_root   = '/usr/local/share/limn/var',
+    $server_name     = "${name}.${::domain}",
+    $server_aliases  = ''
+    $site_template   = 'limn/vhost-limn-proxy.conf.erb')
+){
+    # Configure the Apache Limn instance proxy VirtualHost.
+    $priority = 10
+    file { "${priority}-limn-${name}.conf":
+        path    => "/etc/apache2/sites-enabled/${priority}-limn-${name}.conf",
+        content => template($site_template),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['apache2'],
+        notify  => Service['apache2'],
+    }
 }
