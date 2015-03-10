@@ -24,6 +24,11 @@ define monitoring::host (
         default => hiera('nagios_group',"${cluster_name}_${::site}")
     }
 
+    $is_critical = $critical ? {
+        'true'  => 'admins,sms',
+        default => $contact_group,
+    }
+
     # Export the nagios host instance
     @@nagios_host { $title:
         ensure                => $ensure,
@@ -34,10 +39,7 @@ define monitoring::host (
         check_command         => 'check_ping!500,20%!2000,100%',
         check_period          => '24x7',
         max_check_attempts    => 2,
-        contact_groups        => $critical ? {
-            'true'  => 'admins,sms',
-            default => $contact_group,
-        },
+        contact_groups        => $is_critical,
         notification_interval => 0,
         notification_period   => '24x7',
         notification_options  => 'd,u,r,f',
