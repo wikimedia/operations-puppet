@@ -18,8 +18,8 @@
 #  }
 #
 define system::role(
-    $ensure      = present,
-    $description = undef,
+    $ensure      = 'present',
+    $description = 'undef',
 ) {
     $message = $description ? {
         undef   => "${::hostname} is ${title}",
