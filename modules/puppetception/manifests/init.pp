@@ -38,27 +38,27 @@
 
 class puppetception(
     $git_url,
-    $git_branch='master',
+    $git_branch    = 'master',
     $puppet_subdir = '',
-    $owner='root',
-    $group='root',
+    $owner         = 'root',
+    $group         = 'root',
 ) {
     include ::role::labs::lvm::srv
 
-    $base_dir = '/srv/puppetception'
+    $base_dir    = '/srv/puppetception'
     $install_dir = "${base_dir}/git"
-    $puppet_dir = "${install_dir}${puppet_subdir}"
+    $puppet_dir  = "${install_dir}${puppet_subdir}"
     file { [$base_dir,
             $install_dir,
     ]:
-        ensure  => directory,
+        ensure  => 'directory',
         require => Mount['/srv'],
         owner   => $owner,
         group   => $group,
     }
 
     git::clone { $install_dir:
-        ensure    => latest,
+        ensure    => 'latest',
         directory => $install_dir,
         origin    => $git_url,
         require   => File[$install_dir],
@@ -68,7 +68,7 @@ class puppetception(
     }
 
     file { '/sbin/puppetception':
-        ensure  => present,
+        ensure  => 'present',
         content => template('puppetception/puppetception.erb'),
         mode    => '0700',
         owner   => 'root',
