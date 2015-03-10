@@ -4,12 +4,12 @@ class dynamicproxy::api {
     }
 
     package { 'python-flask':
-        ensure  => 'latest',
+        ensure  => latest,
         require => Class['misc::labsdebrepo'],
     }
 
     package { ['python-invisible-unicorn', 'python-flask-sqlalchemy', 'uwsgi', 'uwsgi-plugin-python']:
-        ensure  => 'present',
+        ensure  => present,
         require => Package['python-flask'],
     }
 
@@ -37,13 +37,13 @@ class dynamicproxy::api {
     }
 
     file { '/etc/dynamicproxy-api':
-            ensure => 'directory',
+            ensure => directory,
             owner  => 'www-data',
             group  => 'www-data',
     }
 
     file { '/data/project/backup':
-            ensure => 'directory',
+            ensure => directory,
             owner  => 'root',
             group  => 'root',
             mode   => '0755',
@@ -67,15 +67,15 @@ class dynamicproxy::api {
     cron { 'proxydb-bak':
             ensure  => present,
             user    => 'root',
-            hour    => 1,
-            minute  => 0,
+            hour    => '1',
+            minute  => '0',
             command => '/usr/local/sbin/proxydb-bak.sh > /dev/null 2>&1',
             require => File['/data/project/backup'],
     }
 
     # Create initial db file if it doesn't exist, but don't clobber if it does.
     file { '/etc/dynamicproxy-api/data.db':
-        ensure  => 'file',
+        ensure  => file,
         source  => 'puppet:///modules/dynamicproxy/initial-data.db',
         replace => false,
         require => File['/etc/dynamicproxy-api'],
