@@ -28,9 +28,9 @@ class zuul::server (
     $jenkins_user,
     $jenkins_apikey,
     $url_pattern,
-    $statsd_host = '',
+    $statsd_host    = '',
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
-    $status_url = "https://${::fqdn}/zuul/status",
+    $status_url     = "https://${::fqdn}/zuul/status",
 ) {
 
     file { '/var/run/zuul':
@@ -59,7 +59,7 @@ class zuul::server (
     # reload via the `zuul-reload` exect provided by the `zuul`
     # puppet module..
     file { '/etc/zuul/logging.conf':
-        ensure => 'present',
+        ensure => present,
         source => 'puppet:///modules/zuul/logging.conf',
         notify => Exec['zuul-reload'],
     }
@@ -78,9 +78,7 @@ class zuul::server (
         group     => 'root',
         mode      => '0400',
         notify    => Exec['craft public zuul conf'],
-        require   => [
-            File['/etc/zuul'],
-        ],
+        require   => File['/etc/zuul'],
     }
 
     file { '/usr/local/bin/zuul-gearman.py':
