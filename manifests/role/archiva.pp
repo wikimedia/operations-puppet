@@ -39,7 +39,6 @@ class role::archiva {
     ]
     nginx::site { 'archiva':
         content => template('nginx/sites/simple-proxy.erb'),
-        require => Class['::nginx'],
     }
 
     # Bacula backups for /var/lib/archiva.
