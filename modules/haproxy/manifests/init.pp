@@ -2,24 +2,24 @@
 
 class haproxy(
     $template  = 'haproxy/haproxy.cfg.erb',
-    ) {
+) {
 
     package { [
         'socat',
         'haproxy',
     ]:
-        ensure => present,
+        ensure => 'present',
     }
 
     file { '/etc/haproxy/conf.d':
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
     }
 
     file { '/etc/default/haproxy':
-        ensure  => present,
+        ensure  => 'present',
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -27,7 +27,7 @@ class haproxy(
     }
 
     file { '/etc/haproxy/haproxy.cfg':
-        ensure  => present,
+        ensure  => 'present',
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -42,12 +42,12 @@ class haproxy(
     }
 
     nrpe::monitor_service { 'haproxy':
-        description   => "haproxy process",
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy",
+        description   => 'haproxy process',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy',
     }
 
     nrpe::monitor_service { 'haproxy_alive':
         description   => 'haproxy alive',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_haproxy --check=alive",
+        nrpe_command  => '/usr/lib/nagios/plugins/check_haproxy --check=alive',
     }
 }
