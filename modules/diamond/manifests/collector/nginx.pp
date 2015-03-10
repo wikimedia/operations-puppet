@@ -10,7 +10,9 @@
 # [*port*]
 #   Bind the Nginx status site to this port.
 #
-define diamond::collector::nginx( $port = 8080 ) {
+define diamond::collector::nginx(
+    $port = '8080'
+) {
     nginx::status_site { 'status':
         port => $port,
     }

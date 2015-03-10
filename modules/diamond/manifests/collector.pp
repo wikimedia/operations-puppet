@@ -48,9 +48,9 @@
 #  }
 #
 define diamond::collector(
-    $settings = undef,
-    $ensure   = present,
-    $source   = undef,
+    $settings = 'undef',
+    $ensure   = 'present',
+    $source   = 'undef',
 ) {
     validate_ensure($ensure)
 
