@@ -13,11 +13,14 @@
 # $server - hostname of the puppetmaster.
 #
 class puppet::self::master($server) {
+
+    $server_desc = $server ? {
+        'localhost' => 'Puppetmaster for itself',
+        default     => 'Puppetmaster for project labs instances',
+    }
+
     system::role { 'puppetmaster':
-        description  => $server ? {
-            'localhost' => 'Puppetmaster for itself',
-            default     => 'Puppetmaster for project labs instances',
-        }
+        description  => $server_desc,
     }
 
     include puppet::self::geoip
