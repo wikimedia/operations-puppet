@@ -97,11 +97,11 @@ class role::cache {
                         'amssq55.esams.wmnet', # Jessie
                         'amssq56.esams.wmnet', # Jessie
                         'amssq57.esams.wmnet', # Jessie
-                        'amssq58.esams.wikimedia.org',
-                        'amssq59.esams.wikimedia.org',
-                        'amssq60.esams.wikimedia.org',
-                        'amssq61.esams.wikimedia.org',
-                        'amssq62.esams.wikimedia.org',
+                        # 'amssq58.esams.wikimedia.org', # Jessie
+                        # 'amssq59.esams.wikimedia.org', # Jessie
+                        # 'amssq60.esams.wikimedia.org', # Jessie
+                        # 'amssq61.esams.wikimedia.org', # Jessie
+                        # 'amssq62.esams.wikimedia.org', # Jessie
                     ],
                     'ulsfo' => [
                         'cp4008.ulsfo.wmnet',
