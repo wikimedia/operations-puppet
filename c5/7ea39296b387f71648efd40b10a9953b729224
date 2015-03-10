@@ -1,0 +1,10 @@
+Code-Review+2: Andrew Bogott <abogott@wikimedia.org>
+Code-Review+1: MaxSem <maxsem.wiki@gmail.com>
+Verified+2: jenkins-bot
+Code-Review+1: Anomie <bjorsch@wikimedia.org>
+Code-Review+1: Ori.livneh <ori@wikimedia.org>
+Submitted-by: Andrew Bogott <abogott@wikimedia.org>
+Submitted-at: Tue, 10 Mar 2015 21:23:25 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/195677
+Project: operations/puppet
+Branch: refs/heads/production
