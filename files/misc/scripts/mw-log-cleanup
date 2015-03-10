@@ -7,9 +7,9 @@ export TERM=dumb
 # logrotate will miss archived logs which were deleted in the parent directory.
 find /a/mw-log/archive -mtime +180 -delete
 
-# Remove API logs after 30 days since they are particularly bulky and will fill
+# Remove API logs after 20 days since they are particularly bulky and will fill
 # fluorine's disk if left for 180 days
-find /a/mw-log/archive -name api.log-\* -mtime +30 -delete
+find /a/mw-log/archive -name api.log-\* -mtime +20 -delete
 
 # Remove XFF logs before the CheckUser expiry time
 find /a/mw-log/archive -name xff.log-\* -mtime +88 -delete
