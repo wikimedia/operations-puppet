@@ -8,7 +8,7 @@ class swift_new::monitoring::graphite (
         warning         => 95,
         critical        => 90,
         under           => true,
-        nagios_critical => false
+        nagios_critical => false,
     }
 
     monitoring::graphite_threshold { "swift_${swift_cluster_dispersion_container}":
@@ -18,6 +18,6 @@ class swift_new::monitoring::graphite (
         warning         => 92,
         critical        => 88,
         under           => true,
-        nagios_critical => false
+        nagios_critical => false,
     }
 }

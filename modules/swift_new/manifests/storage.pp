@@ -8,29 +8,30 @@ class swift_new::storage (
           'swift-container',
           'swift-object',
     ]:
-        ensure => 'present',
+        ensure => present,
     }
 
     class { 'rsync::server':
         log_file => '/var/log/rsyncd.log',
     }
 
-    rsync::server::module {
-    'account':
+    rsync::server::module { 'account':
         uid             => 'swift',
         gid             => 'swift',
         max_connections => '5',
         path            => '/srv/swift-storage/',
         read_only       => 'no',
-        lock_file       => '/var/lock/account.lock';
-    'container':
+        lock_file       => '/var/lock/account.lock',
+    }
+    rsync::server::module { 'container':
         uid             => 'swift',
         gid             => 'swift',
         max_connections => '5',
         path            => '/srv/swift-storage/',
         read_only       => 'no',
-        lock_file       => '/var/lock/container.lock';
-    'object':
+        lock_file       => '/var/lock/container.lock',
+    }
+    rsync::server::module { 'object':
         uid             => 'swift',
         gid             => 'swift',
         max_connections => '10',
@@ -59,7 +60,7 @@ class swift_new::storage (
     }
 
     file { '/srv/swift-storage':
-        ensure  => 'directory',
+        ensure  => directory,
         require => Package['swift'],
         owner   => 'swift',
         group   => 'swift',
@@ -81,7 +82,7 @@ class swift_new::storage (
         'swift-object-replicator',
         'swift-object-updater',
     ]:
-        ensure => 'running',
+        ensure => running,
     }
 
 
@@ -105,7 +106,7 @@ class swift_new::storage (
         source => 'puppet:///modules/swift_new/swift-drive-audit.conf',
     }
     cron { 'swift-drive-audit':
-        ensure  => 'present',
+        ensure  => present,
         command => '/usr/bin/swift-drive-audit /etc/swift/swift-drive-audit.conf',
         user    => 'root',
         minute  => '1',

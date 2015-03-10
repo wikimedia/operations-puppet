@@ -39,7 +39,7 @@ class swift_new (
         'python-swiftclient',
         'parted',
     ]:
-        ensure => 'present',
+        ensure => present,
     }
 
     require_package('python-statsd')
@@ -51,7 +51,7 @@ class swift_new (
     }
 
     file { '/etc/swift':
-        ensure  => 'directory',
+        ensure  => directory,
         require => Package['swift'],
         recurse => true,
     }
@@ -63,7 +63,7 @@ class swift_new (
     }
 
     file { '/var/cache/swift':
-        ensure  => 'directory',
+        ensure  => directory,
         require => Package['swift'],
         mode    => '0755',
     }

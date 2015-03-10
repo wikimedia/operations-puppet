@@ -18,7 +18,7 @@ class swift_new::proxy (
         'swift-proxy',
         'python-swauth',
     ]:
-        ensure => 'present',
+        ensure => present,
     }
 
     file { '/etc/swift/proxy-server.conf':
