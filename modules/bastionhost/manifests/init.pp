@@ -1,14 +1,14 @@
 # bastion hosts
 class bastionhost {
     package { [ 'irssi', 'traceroute-nanog' ]:
-        ensure => absent,
+        ensure => 'absent',
     }
 
     package { 'traceroute':
-        ensure =>latest,
+        ensure => 'latest',
     }
 
     package { 'mosh':
-        ensure => present,
+        ensure => 'present',
     }
 }
