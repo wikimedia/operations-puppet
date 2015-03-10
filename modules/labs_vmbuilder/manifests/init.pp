@@ -1,6 +1,6 @@
 class labs_vmbuilder($vmbuilder_version) {
     package { 'python-vm-builder':
-        ensure => present,
+        ensure => 'present',
     }
 
     $vmbuilder_filepath = '/etc/vmbuilder/files'
@@ -30,7 +30,7 @@ class labs_vmbuilder($vmbuilder_version) {
     }
 
     file { $vmbuilder_filepath:
-        ensure => directory,
+        ensure => 'directory',
         mode   => '0555',
     }
 
@@ -60,34 +60,34 @@ class labs_vmbuilder($vmbuilder_version) {
     }
 
     $projectregex = "s/${instanceproject}/_PROJECT_/g"
-    $fqdnregex = "s/${::ec2id}.${::domain}/_FQDN_/g"
-    $masterregex = "s/${servername}/_MASTER_/g"
+    $fqdnregex    = "s/${::ec2id}.${::domain}/_FQDN_/g"
+    $masterregex  = "s/${servername}/_MASTER_/g"
 
     Exec { path => '/bin' }
 
     exec { "cp /etc/security/access.conf ${vmbuilder_filepath}/access.conf":
-        subscribe   => File['vmbuilder_version'],
+        subscribe => File['vmbuilder_version'],
     } ~>
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/access.conf":
     }
 
     exec { "cp /etc/nslcd.conf ${vmbuilder_filepath}/nslcd.conf":
-        subscribe   => File['vmbuilder_version'],
+        subscribe => File['vmbuilder_version'],
     } ~>
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/nslcd.conf":
     }
 
     exec { "cp /etc/ldap/ldap.conf ${vmbuilder_filepath}/nss_ldap.conf":
-        subscribe   => File['vmbuilder_version'],
+        subscribe => File['vmbuilder_version'],
     } ~>
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/nss_ldap.conf":
     }
 
     exec { "cp /etc/puppet/puppet.conf ${vmbuilder_filepath}/puppet.conf":
-        subscribe   => File['vmbuilder_version'],
+        subscribe => File['vmbuilder_version'],
     } ~>
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/puppet.conf":
