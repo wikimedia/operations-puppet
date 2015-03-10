@@ -29,3 +29,5 @@ cassandra_test:
       - cerium.eqiad.wmnet
       - praseodymium.eqiad.wmnet
       - xenon.eqiad.wmnet
+  cassandra::max_heap_size: 4g
+  cassandra::heap_newsize: 1g
