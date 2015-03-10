@@ -7,7 +7,7 @@
 
 class clamav {
     package { 'clamav-daemon':
-        ensure => present,
+        ensure => 'present',
     }
 
     exec { 'add clamav to Debian-exim':
@@ -26,7 +26,7 @@ class clamav {
     }
 
     service { 'clamav-daemon':
-        ensure    => running,
+        ensure    => 'running',
         require   => File['/etc/clamav/clamd.conf'],
         subscribe => File['/etc/clamav/clamd.conf'],
     }
