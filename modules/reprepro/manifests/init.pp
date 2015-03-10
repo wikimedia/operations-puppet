@@ -119,7 +119,7 @@ class reprepro (
         owner   => $user,
         group   => $group,
         mode    => '0444',
-        content => template("reprepro/incoming.erb"),
+        content => template('reprepro/incoming.erb'),
     }
 
     file { "${basedir}/conf/log":
@@ -127,7 +127,7 @@ class reprepro (
         owner   => $user,
         group   => $group,
         mode    => '0755',
-        content => template("reprepro/log.erb"),
+        content => template('reprepro/log.erb'),
     }
 
     file { "${homedir}/.gnupg":
@@ -139,7 +139,7 @@ class reprepro (
     }
 
     ssh::userkey { 'reprepro':
-        content => template("reprepro/authorized_keys.erb"),
+        content => template('reprepro/authorized_keys.erb'),
     }
 
     file { "/usr/local/bin/reprepro-ssh-upload":
