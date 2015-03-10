@@ -94,6 +94,10 @@ def get_job_id(queue_name, job_name):
     :return: Job id if the job is found, None otherwise
     """
     output = qstat_xml('-q', queue_name, '-j', job_name)
+
+    # Fix XML.
+    output = re.sub('JATASK:[^>]*', 'jatask', output)
+
     # GE is stupid.
     # Returns output like:
     # <><ST_name>blah</ST_name></>
