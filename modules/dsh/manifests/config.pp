@@ -2,7 +2,10 @@
 #
 # Sets up dsh config files alone, without actually
 # setting up dsh. Useful primarily for monitoring
-class dsh::config ($scap_proxies = []){
+class dsh::config (
+    $group_source = 'puppet:///modules/dsh/group',
+    $scap_proxies = [],
+){
     file { '/etc/dsh':
         ensure => directory,
         owner  => 'root',
@@ -13,7 +16,7 @@ class dsh::config ($scap_proxies = []){
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/dsh/group',
+        source  => $group_source,
         recurse => true,
     }
 

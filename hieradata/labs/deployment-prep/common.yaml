@@ -131,3 +131,4 @@ mediawiki_memcached_servers:
 "role::url_downloader::url_downloader_ip": 10.68.16.135
 "zotero::http_proxy": deployment-urldownloader.eqiad.wmflabs:8080
 "role::trebuchet::deployment_server": deployment-bastion.eqiad.wmflabs
+"dsh::config::group_source": 'puppet:///modules/beta/dsh/group'
