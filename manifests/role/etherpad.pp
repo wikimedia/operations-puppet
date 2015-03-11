@@ -12,21 +12,14 @@ class role::etherpad{
     case $::realm {
         'labs': {
             $etherpad_host = $::fqdn
-            $etherpad_ssl_cert = '/etc/ssl/certs/ssl-cert-snakeoil.pem'
-            $etherpad_ssl_key = '/etc/ssl/private/ssl-cert-snakeoil.key'
         }
         'production': {
             $etherpad_host = 'etherpad.wikimedia.org'
-            install_certificate{ 'etherpad.wikimedia.org': }
-            $etherpad_ssl_cert = '/etc/ssl/certs/etherpad.wikimedia.org.pem'
-            $etherpad_ssl_key = '/etc/ssl/private/etherpad.wikimedia.org.key'
         }
         'default': {
             fail('unknown realm, should be labs or production')
         }
     }
-
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
 
     class { '::etherpad':
         etherpad_host    => $etherpad_host,
@@ -41,7 +34,6 @@ class role::etherpad{
     include ::apache::mod::rewrite
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
-    include ::apache::mod::ssl
 
     ::apache::site { 'etherpad.wikimedia.org':
         content => template('misc/etherpad.wikimedia.org.erb'),
