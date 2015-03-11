@@ -1,0 +1,49 @@
+// Varnish VCL include file for WMF-Last-Access Cookie
+// Please see what this cookie is trying to acomplish:
+// https://wikitech.wikimedia.org/wiki/Analytics/Unique_clients/Last_visit_solution
+
+// Note: This requires "import header" in the including VCL
+
+C{
+    #include<stdio.h>
+    #include <time.h>
+    #include <string.h>
+    /*
+    * Sets cookie on TOP DOMAIN in the form:
+    * WMF-Last-Access=Wed, 11 Mar 2015 02:55:51 GMT;Expires=Wed, Jan 01 3000 01:01:01 GMT;Path=/; HttpOnly
+    */
+    void set_last_access_cookie(const struct sess *sp) {
+        char *now = VRT_time_string(sp, VRT_r_now(sp));
+        char *lacookie[200];
+        strcpy(lacookie,  "WMF-Last-Access=");
+        strcat(lacookie, now);
+        strcat(lacookie, ";Expires=Wed, Jan 01 3000 01:01:01 GMT");
+        strcat(lacookie, ";Path=/;HttpOnly;");
+        /* by default cookies are set on the top domain */
+        /* TODO: add to Set-Cookie header, make sure to not override, How? */
+        VRT_SetHdr(sp, HDR_BERESP, "\013Set-Cookie:", lacookie, vrt_magic_string_end);
+    }
+}C
+
+sub vcl_deliver {
+
+        // Get value of Last-Access Cookie
+        // and pass it to X-Analytics header
+
+        if (req.http.Cookie~ "WMF-Last-Access=(.*)") {
+                // For CR: HOW do we make sure req.http.Cookie hasn't been cleaned up by the time we get here?
+                // Regex below is trying to grab "Wed, 11 Mar 2015 02:55:51 GMT" from Last-Access-Ccookie
+                if (resp.http.X-Analytics == "") {
+                    set resp.http.X-Analytics = resp.http.X-Analytics + ";"+regsub( regsuball(req.http.Cookie, "^(.*)WMF-Last-Access=" ,""),"GTM(.*)$","") ;
+                } else {
+                    set resp.http.X-Analytics = regsub( regsuball(req.http.Cookie, "^(.*)WMF-Last-Access=" ,""),"GTM(.*)$","") ;
+                }
+         }
+
+         // Update Last-Access Cookie to actual access date
+         // for every request for main document to text and mobile
+         C{
+             set_last_access_cookie(sp);
+         }C
+
+}
