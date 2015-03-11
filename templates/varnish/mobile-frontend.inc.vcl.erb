@@ -4,6 +4,7 @@ include "errorpage.inc.vcl";
 include "zero.inc.vcl";
 include "provenance.inc.vcl";
 include "via.inc.vcl";
+include "last-access.inc.vcl";
 
 // Note that via.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
@@ -83,6 +84,8 @@ sub vcl_recv {
 
 	call normalize_path;
 
+	call analytics_last_access_recv;
+
 	// FIXME: deploy X-Vary-Options support
 	set req.http.X-Orig-Cookie = req.http.Cookie;
 	if (req.http.Cookie ~ "disable" ||
@@ -160,6 +163,8 @@ sub vcl_deliver {
 			set resp.http.X-Analytics = "wmfuuid=" + req.http.X-WMF-UUID;
 		}
 	}
+
+	call analytics_last_access_deliver;
 
 	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
 		set resp.http.Cache-Control = "s-maxage=300, must-revalidate, max-age=0";

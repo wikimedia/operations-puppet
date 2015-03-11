@@ -4,6 +4,7 @@ include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 include "provenance.inc.vcl";
 include "via.inc.vcl";
+include "last-access.inc.vcl";
 
 // Note that via.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
@@ -122,6 +123,8 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
+	call analytics_last_access_recv;
+
 	call evaluate_cookie;
 
 	return (lookup);
@@ -192,4 +195,6 @@ sub vcl_deliver {
 			set resp.http.X-Analytics = "wmfuuid=" + req.http.X-WMF-UUID;
 		}
 	}
+
+	call analytics_last_access_deliver;
 }
