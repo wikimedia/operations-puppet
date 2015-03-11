@@ -60,7 +60,7 @@ class role::cache {
             'production' => {
                 'text' => {
                     'eqiad' => [
-                        'cp1052.eqiad.wmnet',
+                        #'cp1052.eqiad.wmnet',
                         'cp1053.eqiad.wmnet', # Jessie
                         'cp1054.eqiad.wmnet', # Jessie
                         'cp1055.eqiad.wmnet', # Jessie
