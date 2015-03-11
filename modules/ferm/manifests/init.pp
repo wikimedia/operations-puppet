@@ -1,6 +1,6 @@
 class ferm {
     package { 'ferm':
-        ensure => present,
+        ensure => 'present',
     }
 
     service { 'ferm':
@@ -10,9 +10,9 @@ class ferm {
     }
 
     file { '/etc/ferm/ferm.conf':
-        ensure  => present,
-        owner   => root,
-        group   => root,
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0400',
         source  => 'puppet:///modules/ferm/ferm.conf',
         require => Package['ferm'],
@@ -20,9 +20,9 @@ class ferm {
     }
 
     file { '/etc/ferm/functions.conf' :
-        ensure  => present,
-        owner   => root,
-        group   => root,
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0400',
         source  => 'puppet:///modules/ferm/functions.conf',
         require => Package['ferm'],
@@ -30,9 +30,9 @@ class ferm {
     }
 
     file { '/etc/ferm/conf.d' :
-        ensure  => directory,
-        owner   => root,
-        group   => adm,
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'adm',
         mode    => '0500',
         recurse => true,
         purge   => true,
@@ -41,9 +41,9 @@ class ferm {
     }
 
     file { '/etc/default/ferm' :
-        ensure  => present,
-        owner   => root,
-        group   => root,
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0400',
         source  => 'puppet:///modules/ferm/ferm.default',
         require => Package['ferm'],
