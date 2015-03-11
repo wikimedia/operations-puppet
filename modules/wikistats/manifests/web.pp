@@ -13,10 +13,10 @@ class wikistats::web (
 
     # document root
     file { '/var/www/wikistats':
-        ensure  => directory,
+        ensure  => 'directory',
         mode    => '0755',
         owner   => 'wikistatsuser',
-        group   => 'www-data';
+        group   => 'www-data',
     }
 
     include ::apache::mod::rewrite

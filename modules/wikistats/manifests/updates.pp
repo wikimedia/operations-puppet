@@ -5,11 +5,13 @@
 class wikistats::updates {
 
     # update scripts are PHP-cli
-    package { 'php5-cli': ensure => latest; }
+    package { 'php5-cli':
+        ensure => 'latest',
+    }
 
     # log dir for wikistats
     file { '/var/log/wikistats':
-        ensure => directory,
+        ensure => 'directory',
         mode   => '0664',
         owner  => 'wikistatsuser',
         group  => 'wikistatsuser',

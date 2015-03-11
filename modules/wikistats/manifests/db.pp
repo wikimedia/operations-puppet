@@ -2,10 +2,10 @@
 class wikistats::db {
 
     package { 'mariadb-server':
-        ensure => present,
+        ensure => 'present',
     }
 
     package { 'php5-mysql':
-        ensure => present,
+        ensure => 'present',
     }
 }

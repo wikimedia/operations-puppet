@@ -3,7 +3,7 @@
 define wikistats::cronjob() {
 
     $project = regsubst($name, '@.*', '\1')
-    $hour = regsubst($name, '.*@', '\1')
+    $hour    = regsubst($name, '.*@', '\1')
 
     cron { "cron-wikistats-update-${name}":
         ensure  => 'present',

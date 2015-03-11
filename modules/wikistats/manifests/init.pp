@@ -17,20 +17,20 @@ class wikistats (
 ) {
 
     group { 'wikistatsuser':
-        ensure => present,
+        ensure => 'present',
         name   => 'wikistatsuser',
         system => true,
     }
 
     user { 'wikistatsuser':
         home       => '/usr/lib/wikistats',
-        groups     => [ 'wikistatsuser' ],
+        groups     => 'wikistatsuser',
         managehome => true,
         system     => true,
     }
 
     package { 'wikistats':
-        ensure => present,
+        ensure => 'present',
     }
 
     # webserver setup for wikistats
