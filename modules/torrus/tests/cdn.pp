@@ -11,7 +11,7 @@ class role::cache::configuration {
                     ],
                     'esams' => [
                         'amssq31.esams.wmnet',
-                        'amssq62.esams.wikimedia.org',
+                        'amssq62.esams.wmnet',
                     ],
                     'ulsfo' => [
                         'cp4008.ulsfo.wmnet',
@@ -28,7 +28,7 @@ class role::cache::configuration {
                                 'cp1070.eqiad.wmnet',
                     ],
                     'esams' => ['cp3019.esams.wikimedia.org',
-                                'cp3022.esams.wikimedia.org',
+                                'cp3022.esams.wmnet',
                     ],
                     'ulsfo' => ['cp4001.ulsfo.wmnet',
                                 'cp4004.ulsfo.wmnet',
@@ -40,7 +40,7 @@ class role::cache::configuration {
                         'cp1064.eqiad.wmnet',
                     ],
                     'esams' => [
-                        'cp3003.esams.wikimedia.org',
+                        'cp3003.esams.wmnet',
                         'cp3018.esams.wmnet',
                     ],
                     'ulsfo' => [
@@ -52,7 +52,7 @@ class role::cache::configuration {
                     'eqiad' => ['cp1046.eqiad.wmnet',
                                 'cp1060.eqiad.wmnet',
                     ],
-                    'esams' => ['cp3011.esams.wikimedia.org',
+                    'esams' => ['cp3011.esams.wmnet',
                                 'cp3014.esams.wmnet',
                     ],
                     'ulsfo' => ['cp4011.ulsfo.wmnet',

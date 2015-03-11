@@ -33,7 +33,7 @@ class role::ganglia::config {
         'Analytics cluster eqiad'        => 'analytics1013.eqiad.wmnet analytics1014.eqiad.wmnet analytics1019.eqiad.wmnet',
         'Memcached eqiad'                => 'mc1001.eqiad.wmnet mc1002.eqiad.wmnet',
         'Text caches esams'              => 'hooft.esams.wikimedia.org:11669',
-        'Upload caches esams'            => 'hooft.esams.wikimedia.org:11671 cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org',
+        'Upload caches esams'            => 'hooft.esams.wikimedia.org:11671 cp3003.esams.wmnet cp3004.esams.wmnet',
         'Parsoid eqiad'                  => 'wtp1001.eqiad.wmnet wtp1002.eqiad.wmnet',
         'Parsoid Varnish eqiad'          => 'cp1045.eqiad.wmnet cp1058.eqiad.wmnet',
         'Redis eqiad'                    => 'rdb1001.eqiad.wmnet rdb1002.eqiad.wmnet',
