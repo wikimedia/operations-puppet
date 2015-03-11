@@ -42,7 +42,7 @@ in_array() {
 # This is an intentional hard stop
 # as before T84032 this could do some
 # serious damage to a labstore host.
-if [[ `hostname -s` =~ ^labstore ]]; then
+if [[ `hostname -s` =~ ^labstore100 ]]; then
         exit 1
 fi
 
