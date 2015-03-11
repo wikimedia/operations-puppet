@@ -242,13 +242,13 @@ groups:
     privileges: ['ALL = NOPASSWD: ALL']
   citoid-roots:
     gid: 735
-    description: root rights for citoid
-    members: [gwicke, catrope]
+    description: rights for debugging citoid
+    members: [gwicke, catrope, mobrovac]
     privileges: ['ALL = (citoid) NOPASSWD: ALL']
   citoid-admin:
     gid: 736
     description: group of citoid admins
-    members: [gwicke, catrope]
+    members: [gwicke, catrope, mobrovac]
     privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid stop',
             'ALL = (root) NOPASSWD: /usr/sbin/service citoid start',
             'ALL = (root) NOPASSWD: /usr/sbin/service citoid restart',
