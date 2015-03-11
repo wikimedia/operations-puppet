@@ -3,7 +3,7 @@
 # include this class on your OCG node.
 #
 class ocg::ganglia (
-    $tmp_filesystem = $::ocg::temp_dir,
+    $tmp_filesystem  = $::ocg::temp_dir,
     $data_filesystem = '/srv',
 ) {
     file { '/usr/lib/ganglia/python_modules/ocg.py':

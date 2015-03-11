@@ -5,14 +5,14 @@
 # and remove configuration data.
 #
 class ocg::decommission (
-    $temp_dir = '/srv/deployment/ocg/tmp',
-    $output_dir = '/srv/deployment/ocg/output',
+    $temp_dir       = '/srv/deployment/ocg/tmp',
+    $output_dir     = '/srv/deployment/ocg/output',
     $postmortem_dir = '/srv/deployment/ocg/postmortem',
-    $log_dir = '/srv/deployment/ocg/log'
+    $log_dir        = '/srv/deployment/ocg/log'
 ) {
     service { 'ocg':
-        ensure   => stopped,
-        provider => upstart,
+        ensure   => 'stopped',
+        provider => 'upstart',
         before   => File[
             '/etc/init/ocg.conf',
             $temp_dir
@@ -26,37 +26,37 @@ class ocg::decommission (
             '/etc/cron.hourly/logrotate.ocg',
             '/var/log/ocg',
         ]:
-        ensure  => absent,
+        ensure  => 'absent',
         purge   => true,
         force   => true,
     }
 
     file { $temp_dir:
-        ensure  => absent,
+        ensure  => 'absent',
         purge   => true,
         force   => true,
     }
 
     file { $output_dir:
-        ensure  => absent,
+        ensure  => 'absent',
         purge   => true,
         force   => true,
     }
 
     file { $postmortem_dir:
-        ensure  => absent,
+        ensure  => 'absent',
         purge   => true,
         force   => true,
     }
 
     file { $log_dir:
-        ensure  => absent,
+        ensure  => 'absent',
         purge   => true,
         force   => true,
     }
 
     package { 'ocg/ocg':
-        ensure   => absent,
+        ensure   => 'absent',
         provider => 'trebuchet',
         require  => Service['ocg'],
     }
