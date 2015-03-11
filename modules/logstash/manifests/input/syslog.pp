@@ -16,9 +16,9 @@
 #    }
 #
 define logstash::input::syslog(
-    $ensure   = present,
-    $port     = 514,
-    $priority = 10,
+    $ensure   = 'present',
+    $port     = '514',
+    $priority = '10',
 ) {
     logstash::conf { "input-syslog-${title}":
         ensure   => $ensure,

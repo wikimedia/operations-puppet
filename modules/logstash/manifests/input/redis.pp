@@ -22,13 +22,13 @@
 #   }
 #
 define logstash::input::redis(
-    $ensure     = present,
+    $ensure     = 'present',
     $host       = '127.0.0.1',
-    $port       = 6379,
+    $port       = '6379',
     $data_type  = 'list',
     $key        = 'logstash',
     $password   = undef,
-    $priority   = 10,
+    $priority   = '10',
 ) {
     logstash::conf { "input-redis-${title}":
         ensure   => $ensure,

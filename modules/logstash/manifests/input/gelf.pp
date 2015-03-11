@@ -16,9 +16,9 @@
 #   }
 #
 define logstash::input::gelf(
-    $ensure   = present,
-    $port     = 12201,
-    $priority = 10,
+    $ensure   = 'present',
+    $port     = '12201',
+    $priority = '10',
 ) {
     logstash::conf { "input-gelf-${title}":
         ensure   => $ensure,

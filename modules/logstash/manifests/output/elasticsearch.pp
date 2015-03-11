@@ -30,15 +30,15 @@
 #
 class logstash::output::elasticsearch(
     $host            = '127.0.0.1',
-    $flush_size      = 100,
-    $idle_flush_time = 1,
+    $flush_size      = '100',
+    $idle_flush_time = '1',
     $index           = 'logstash-%{+YYYY.MM.dd}',
-    $port            = 9200,
+    $port            = '9200',
     $replication     = 'sync',
     $require_tag     = undef,
     $manage_indices  = false,
-    $priority        = 10,
-    $ensure          = present,
+    $priority        = '10',
+    $ensure          = 'present',
 ) {
     $uri = "http://${host}:${port}"
 
@@ -75,8 +75,8 @@ class logstash::output::elasticsearch(
         ensure  => $ensure_cron,
         command => "/usr/local/bin/logstash_delete_index.sh ${uri}",
         user    => 'root',
-        hour    => 0,
-        minute  => 42,
+        hour    => '0',
+        minute  => '42',
         require => File['/usr/local/bin/logstash_delete_index.sh'],
     }
 
@@ -84,7 +84,7 @@ class logstash::output::elasticsearch(
         ensure  => $ensure_cron,
         command => "/usr/local/bin/logstash_optimize_index.sh ${uri}",
         user    => 'root',
-        hour    => 1,
+        hour    => '1',
         # Stagger execution on each node of cluster to avoid running in
         # parallel.
         minute  => 5 * fqdn_rand(12, 'logstash_optimize_index'),
