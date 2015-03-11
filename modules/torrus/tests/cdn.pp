@@ -27,7 +27,7 @@ class role::cache::configuration {
                     'eqiad' => ['cp1056.eqiad.wmnet',
                                 'cp1070.eqiad.wmnet',
                     ],
-                    'esams' => ['cp3019.esams.wikimedia.org',
+                    'esams' => ['cp3019.esams.wmnet',
                                 'cp3022.esams.wmnet',
                     ],
                     'ulsfo' => ['cp4001.ulsfo.wmnet',

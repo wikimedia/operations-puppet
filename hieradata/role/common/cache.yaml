@@ -54,8 +54,8 @@ bits_eqiad:
   - 'cp1069.eqiad.wmnet'
   - 'cp1070.eqiad.wmnet'
 bits_esams:
-  - 'cp3019.esams.wikimedia.org'
-  - 'cp3020.esams.wikimedia.org'
+  - 'cp3019.esams.wmnet'
+  - 'cp3020.esams.wmnet'
   - 'cp3021.esams.wmnet'
   - 'cp3022.esams.wmnet'
 bits_ulsfo:
@@ -75,12 +75,12 @@ upload_eqiad:
 upload_esams:
   - 'cp3003.esams.wmnet'
   - 'cp3004.esams.wmnet'
-  - 'cp3005.esams.wikimedia.org'
+  - 'cp3005.esams.wmnet'
   - 'cp3006.esams.wikimedia.org'
   - 'cp3007.esams.wikimedia.org'
   - 'cp3008.esams.wikimedia.org'
   - 'cp3009.esams.wikimedia.org'
-  - 'cp3010.esams.wikimedia.org'
+  - 'cp3010.esams.wmnet'
   - 'cp3015.esams.wmnet'
   - 'cp3016.esams.wmnet'
   - 'cp3017.esams.wmnet'
