@@ -8,6 +8,13 @@ class varnish::common::vcl {
         content => template('varnish/geoip.inc.vcl.erb'),
     }
 
+    file { '/etc/varnish/last-access.inc.vcl':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('varnish/last-access.inc.vcl.erb'),
+    }
+
     file { '/etc/varnish/provenance.inc.vcl':
         owner   => 'root',
         group   => 'root',
