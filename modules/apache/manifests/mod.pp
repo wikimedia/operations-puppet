@@ -35,16 +35,36 @@ class apache::mod::status          { apache::mod_conf { 'status':         } }
 class apache::mod::userdir         { apache::mod_conf { 'userdir':        } }
 
 # Modules that depend on additional packages
-class apache::mod::authz_svn       { apache::mod_conf { 'authz_svn':      } <- package { 'libapache2-svn':           } }
-class apache::mod::fastcgi         { apache::mod_conf { 'fastcgi':        } <- package { 'libapache2-mod-fastcgi':   } }
-class apache::mod::fcgid           { apache::mod_conf { 'fcgid':          } <- package { 'libapache2-mod-fcgid':     } }
-class apache::mod::passenger       { apache::mod_conf { 'passenger':      } <- package { 'libapache2-mod-passenger': } }
-class apache::mod::perl            { apache::mod_conf { 'perl':           } <- package { 'libapache2-mod-perl2':     } }
-class apache::mod::php5            { apache::mod_conf { 'php5':           } <- package { 'libapache2-mod-php5':      } }
-class apache::mod::python          { apache::mod_conf { 'python':         } <- package { 'libapache2-mod-python':    } }
-class apache::mod::rpaf            { apache::mod_conf { 'rpaf':           } <- package { 'libapache2-mod-rpaf':      } }
-class apache::mod::uwsgi           { apache::mod_conf { 'uwsgi':          } <- package { 'libapache2-mod-uwsgi':     } }
-class apache::mod::wsgi            { apache::mod_conf { 'wsgi':           } <- package { 'libapache2-mod-wsgi':      } }
+class apache::mod::authz_svn {
+    package { 'libapache2-svn' :} -> apache::mod_conf { 'authz_svn': }
+}
+class apache::mod::fastcgi {
+    package { 'libapache2-mod-fastcgi': } -> apache::mod_conf { 'fastcgi': }
+}
+class apache::mod::fcgid {
+    package { 'libapache2-mod-fcgid': } -> apache::mod_conf { 'fcgid': }
+}
+class apache::mod::passenger {
+    package { 'libapache2-mod-passenger': } -> apache::mod_conf { 'passenger': }
+}
+class apache::mod::perl {
+    package { 'libapache2-mod-perl2': } -> apache::mod_conf { 'perl':}
+}
+class apache::mod::php5 {
+    package { 'libapache2-mod-php5': } -> apache::mod_conf { 'php': }
+}
+class apache::mod::python {
+    package { 'libapache2-mod-python': } -> apache::mod_conf { 'python': }
+}
+class apache::mod::rpaf  {
+    package { 'libapache2-mod-rpaf': } -> apache::mod_conf { 'rpaf': }
+}
+class apache::mod::uwsgi {
+    package { 'libapache2-mod-uwsgi': } -> apache::mod_conf { 'uwsgi': }
+}
+class apache::mod::wsgi {
+     package { 'libapache2-mod-wsgi': } -> apache::mod_conf { 'wsgi': }
+}
 
 # Modules that target a specific distribution
 class apache::mod::access_compat { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'access_compat': } } }
