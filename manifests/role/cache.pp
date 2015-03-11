@@ -149,7 +149,7 @@ class role::cache {
                     'esams' => [
                         'cp3003.esams.wmnet', # Jessie
                         'cp3004.esams.wmnet', # Jessie
-                        'cp3005.esams.wikimedia.org',
+                        # 'cp3005.esams.wmnet', # Jessie
                         'cp3006.esams.wikimedia.org',
                         'cp3007.esams.wikimedia.org',
                         'cp3008.esams.wikimedia.org',
