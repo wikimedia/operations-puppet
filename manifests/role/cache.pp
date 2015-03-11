@@ -125,14 +125,14 @@ class role::cache {
                     ],
                     'esams' => ['cp3019.esams.wikimedia.org',
                                 'cp3020.esams.wikimedia.org',
-                                'cp3021.esams.wikimedia.org',
+                                # 'cp3021.esams.wmnet', # Jessie
                                 'cp3022.esams.wmnet', # Jessie
                     ],
                     'ulsfo' => [
                                 'cp4001.ulsfo.wmnet', # Jessie
                                 'cp4002.ulsfo.wmnet', # Jessie
                                 'cp4003.ulsfo.wmnet', # Jessie
-                                'cp4004.ulsfo.wmnet',
+                                # 'cp4004.ulsfo.wmnet', # Jessie
                     ],
                 },
                 'upload' => {
