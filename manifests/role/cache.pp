@@ -76,8 +76,8 @@ class role::cache {
                         'amssq34.esams.wmnet', # Jessie
                         'amssq35.esams.wmnet', # Jessie
                         'amssq36.esams.wmnet', # Jessie
-                        'amssq37.esams.wmnet',
-                        'amssq38.esams.wmnet',
+                        'amssq37.esams.wmnet', # Jessie
+                        'amssq38.esams.wmnet', # Jessie
                         'amssq39.esams.wmnet',
                         'amssq40.esams.wmnet',
                         'amssq41.esams.wmnet',
@@ -125,14 +125,14 @@ class role::cache {
                     ],
                     'esams' => ['cp3019.esams.wikimedia.org',
                                 'cp3020.esams.wikimedia.org',
-                                # 'cp3021.esams.wmnet', # Jessie
+                                'cp3021.esams.wmnet', # Jessie
                                 'cp3022.esams.wmnet', # Jessie
                     ],
                     'ulsfo' => [
                                 'cp4001.ulsfo.wmnet', # Jessie
                                 'cp4002.ulsfo.wmnet', # Jessie
                                 'cp4003.ulsfo.wmnet', # Jessie
-                                # 'cp4004.ulsfo.wmnet', # Jessie
+                                'cp4004.ulsfo.wmnet', # Jessie
                     ],
                 },
                 'upload' => {
