@@ -14,7 +14,7 @@
 # Sample Usage:
 #
 class toollabs::redis (
-    $maxmemory = '15GB',
+    $maxmemory = '12GB',
     $replicate_from = undef,
 ) inherits toollabs {
     include toollabs::infrastructure
@@ -28,9 +28,14 @@ class toollabs::redis (
         $redis_replication = undef
     }
 
+    include labs_lvm
+    labs_lvm::volume { 'redis-disk':
+        mountat => '/srv',
+        size    => '100%FREE',
+    }
+
     class { '::redis':
-        persist           => 'aof',
-        dir               => '/var/lib/redis',
+        dir               => '/srv/redis',
         maxmemory         => $maxmemory,
         # Disable the following commands, to try to limit people from
         # Trampling on each others' keys
@@ -49,6 +54,7 @@ class toollabs::redis (
         monitor           => false,
         redis_replication => $redis_replication,
         maxmemory_policy  => 'allkeys-lru',
+        require           => Labs_lvm::Volume['redis-disk'],
     }
 
     diamond::collector { 'Redis':
