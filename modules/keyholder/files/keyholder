@@ -52,7 +52,7 @@ case "$command" in
   arm)
     requires_root
     for key in /etc/keyholder.d/*; do
-      is_valid_private_key "$key" || echo "$key is not an acceptable key. Does it have a passphrase?" && continue
+      is_valid_private_key "$key" || ( echo "$key is not an acceptable key. Does it have a passphrase?"; continue)
       $0 add "$key"
     done
     ;;
