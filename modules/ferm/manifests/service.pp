@@ -15,8 +15,8 @@ define ferm::service(
 ) {
     @file { "/etc/ferm/conf.d/${prio}_${name}":
         ensure  => $ensure,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0400',
         content => template('ferm/service.erb'),
         require => File['/etc/ferm/conf.d'],

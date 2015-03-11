@@ -1,8 +1,8 @@
 define ferm::conf(
-    $source=undef,
-    $content=undef,
-    $ensure='present',
-    $prio='10',
+    $source  = undef,
+    $content = undef,
+    $ensure  = present,
+    $prio    = 10,
 ) {
     if $source == undef and $content == undef {
         fail('Either source or content attribute needs to be given')
