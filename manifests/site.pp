@@ -1724,6 +1724,11 @@ node /^rdb100[1-4]\.eqiad\.wmnet/ {
     include admin
 }
 
+node /^rdb200[1-4]\.codfw\.wmnet/ {
+    role db::redis
+    include admin
+}
+
 node /^rbf100[1-2]\.eqiad\.wmnet/ {
     role db::redis
     include admin
