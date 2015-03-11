@@ -14,6 +14,8 @@ class ssh::server (
 
     if ($::realm == 'labs') {
         $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u/.ssh/authorized_keys /public/keys/%u/.ssh/authorized_keys'
+    } else {
+        $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u/.ssh/authorized_keys /home/%u/.ssh/authorized_keys'
     }
 
     file { '/etc/ssh/sshd_config':
