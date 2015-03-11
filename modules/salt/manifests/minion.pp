@@ -62,7 +62,7 @@ class salt::minion(
 
     service { 'salt-minion':
         ensure    => running,
-        provider  => 'upstart',
+        provider  => $::initsystem,
         require   => Package['salt-minion'],
     }
 
