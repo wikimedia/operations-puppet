@@ -11,31 +11,31 @@
 #
 
 class ocg (
-    $host_name = $::hostname,
-    $service_port = 8000,
-    $redis_host = 'localhost',
-    $redis_port = 6379,
-    $redis_password = '',
-    $statsd_host = 'localhost',
-    $statsd_port = 8125,
-    $statsd_is_txstatsd = 0,
-    $graylog_host = 'localhost',
-    $graylog_port = 12201,
-    $temp_dir = '/srv/deployment/ocg/tmp',
-    $output_dir = '/srv/deployment/ocg/output',
-    $postmortem_dir = '/srv/deployment/ocg/postmortem',
-    $log_dir = '/srv/deployment/ocg/log'
+    $host_name          = $::hostname,
+    $service_port       = '8000',
+    $redis_host         = 'localhost',
+    $redis_port         = '6379',
+    $redis_password     = '',
+    $statsd_host        = 'localhost',
+    $statsd_port        = '8125',
+    $statsd_is_txstatsd = '0',
+    $graylog_host       = 'localhost',
+    $graylog_port       = '12201',
+    $temp_dir           = '/srv/deployment/ocg/tmp',
+    $output_dir         = '/srv/deployment/ocg/output',
+    $postmortem_dir     = '/srv/deployment/ocg/postmortem',
+    $log_dir            = '/srv/deployment/ocg/log'
 ) {
     package { 'ocg/ocg':
         provider => 'trebuchet',
     }
 
     group { 'ocg':
-        ensure => present,
+        ensure => 'present',
     }
 
     user { 'ocg':
-        ensure     => present,
+        ensure     => 'present',
         gid        => 'ocg',
         shell      => '/bin/false',
         home       => '/srv/deployment/ocg',
@@ -78,13 +78,13 @@ class ocg (
             'unzip',
             'zip',
         ]:
-        ensure => present,
+        ensure => 'present',
         before => Service['ocg']
     }
 
     service { 'ocg':
-        ensure     => running,
-        provider   => upstart,
+        ensure     => 'running',
+        provider   => 'upstart',
         hasstatus  => false,
         hasrestart => false,
         require    => [
@@ -94,11 +94,11 @@ class ocg (
     }
 
     file { '/etc/ocg':
-        ensure => directory,
+        ensure => 'directory',
     }
 
     file { '/etc/ocg/mw-ocg-service.js':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'ocg',
         group   => 'ocg',
         mode    => '0440',
@@ -107,7 +107,7 @@ class ocg (
     }
 
     file { '/etc/init/ocg.conf':
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -121,7 +121,7 @@ class ocg (
     $nodebin_dots = regsubst($nodebin, '/', '.', 'G')
 
     file { "/etc/apparmor.d/${nodebin_dots}":
-        ensure  => present,
+        ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
@@ -131,19 +131,19 @@ class ocg (
 
     # FIXME: only for migration purposes, remove --2015-01-09
     file { '/etc/apparmor.d/usr.bin.nodejs-pdf':
-        ensure  => absent,
+        ensure  => 'absent',
         require => File["/etc/apparmor.d/${nodebin_dots}"],
     }
 
     file { ['/srv/deployment','/srv/deployment/ocg']:
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'root',
         group   => 'root',
     }
 
     if $temp_dir == '/srv/deployment/ocg/tmp' {
         file { $temp_dir:
-            ensure  => directory,
+            ensure  => 'directory',
             owner   => 'ocg',
             group   => 'ocg',
         }
@@ -152,19 +152,19 @@ class ocg (
     }
 
     file { $output_dir:
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'ocg',
         group   => 'ocg',
     }
 
     file { $postmortem_dir:
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'ocg',
         group   => 'ocg',
     }
 
     file { $log_dir:
-        ensure  => directory,
+        ensure  => 'directory',
         # matches /var/log
         mode    => '0775',
         owner   => 'root',
@@ -173,7 +173,7 @@ class ocg (
 
     # help unfamiliar sysadmins find the logs
     file { '/var/log/ocg':
-        ensure  => link,
+        ensure  => 'link',
         target  => $log_dir,
     }
 
@@ -187,7 +187,7 @@ class ocg (
     }
 
     file { '/etc/logrotate.d/ocg':
-        ensure  => present,
+        ensure  => 'present',
         source  => 'puppet:///modules/ocg/logrotate',
         mode    => '0444',
         owner   => 'root',
@@ -197,12 +197,12 @@ class ocg (
     # run logrotate hourly, instead of daily, to ensure that log size
     # limits are enforced more-or-less accurately
     file { '/etc/cron.hourly/logrotate.ocg':
-        ensure  => link,
+        ensure  => 'link',
         target  => '/etc/cron.daily/logrotate',
     }
 
     rsyslog::conf { 'ocg':
         source   => 'puppet:///modules/ocg/ocg.rsyslog.conf',
-        priority => 20,
+        priority => '20',
     }
 }
