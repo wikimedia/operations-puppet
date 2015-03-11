@@ -50,13 +50,13 @@
 #
 
 define git::install(
-    $ensure='present',
     $directory,
     $git_tag,
     $lock_file='',
     $post_checkout=undef,
     $owner='root',
     $group='root',
+    $ensure='present',
     )
 {
     # Git clone runs once, then we perform a "forward-to-tag" operation
