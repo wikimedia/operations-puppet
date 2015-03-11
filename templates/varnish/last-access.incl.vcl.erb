@@ -1,0 +1,56 @@
+// Varnish VCL include file for WMF-Last-Access Cookie
+// Please see what this cookie is trying to acomplish:
+// https://wikitech.wikimedia.org/wiki/Analytics/Unique_clients/Last_visit_solution
+
+// Note: This requires "import header" in the including VCL
+
+C{
+    #include<stdio.h>
+    #include <time.h>
+    #include <string.h>
+
+  /*
+   * Sets cookie in the form:
+   * WMF-Last-Access=Wed, Mar 11 2015 UTC;Expires=Wed, Jan 01 3000 01:01:01 GMT;Path=/;HttpOnly
+   */
+    void set_last_access_cookie(const struct sess *sp) {
+        char *now[100];
+        time_t mytime;
+        mytime = time(NULL);
+        // note this would print two digits for the day, like Thu, Mar 01
+        strftime (now, 100, "%a, %d %b %Y UTC", localtime(&mytime));
+        char *lacookie[200];
+        strcpy(lacookie,  "WMF-Last-Access=");
+        strcat(lacookie, now);
+        strcat(lacookie, ";Expires=Wed, Jan 01 3000 01:01:01 GMT");
+        strcat(lacookie, ";Path=/;HttpOnly;");
+        /* by default cookies are set on the top domain */
+        Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:", lacookie, vrt_magic_string_end);
+}
+}C
+
+sub vcl_deliver {
+
+        // Get value of Last-Access Cookie if present and pass it to X-Analytics header
+        // Set cookie if not present
+        if (req.http.Cookie~ "WMF-Last-Access=(.*)") {
+                // For CR: How do we make sure req.http.Cookie hasn't been cleaned up?
+                // trying to grab "Wed, Mar 11 2015 UTC" from Last-Access Cookie
+                set resp.http.X-Analytics ="WMF-Last-Access="+ regsub( regsuball(req.http.Cookie, "^.*WMF-Last-Access=" ,""),"\sUTC.*$","")+" UTC;" ;
+
+                // see if cookie matches today's date, if so do not change it
+                // note that for this to work the day has to be printed with two digits
+                // like: Thu, Mar 01 2015 (does now print always that way?)
+                if (regsub(now," \d\d:\d\d:\d\d GMT","") != regsub( regsuball(resp.http.X-Analytics, "^.*WMF-Last-Access=" ,""),"\sUTC;.*$","") ) {
+
+                        C{
+                         set_last_access_cookie(sp);
+                        }C
+                }
+        } else {
+                C{
+                set_last_access_cookie(sp);
+                }C
+        }
+
+}
