@@ -1,0 +1,21 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+#
+#   Logrotate fragment for graphite-web
+#
+#   source: modules/graphite/files/graphite-web-logrotate
+#   from:   graphite::web
+#
+/var/log/graphite-web/*.log {
+    daily
+    compress
+    size 300M
+    rotate 0
+    missingok
+    nocreate
+    sharedscripts
+    postrotate
+        test ! -x /sbin/uwsgictl || /sbin/uwsgictl restart
+    endscript
+}
