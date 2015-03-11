@@ -82,7 +82,7 @@ class role::analytics::refinery::data::drop {
     }
 
     # keep this many days of refined data
-    $raw_retention_days = 62
+    $refined_retention_days = 62
     cron { 'refinery-drop-webrequest-refined-partitions':
         command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics::refinery::path}/python && ${role::analytics::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${refined_retention_days} -D wmf -l /wmf/data/wmf/webrequest -w refined >> ${log_file} 2>&1",
         user    => 'hdfs',
