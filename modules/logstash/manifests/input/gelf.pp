@@ -16,7 +16,7 @@
 #   }
 #
 define logstash::input::gelf(
-    $ensure   = present,
+    $ensure   = 'present',
     $port     = 12201,
     $priority = 10,
 ) {

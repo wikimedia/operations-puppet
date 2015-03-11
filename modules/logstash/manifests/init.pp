@@ -37,7 +37,7 @@ class logstash(
     }
 
     file { '/etc/logstash/conf.d':
-        ensure  => directory,
+        ensure  => 'directory',
         recurse => true,
         purge   => true,
         force   => true,
@@ -46,7 +46,7 @@ class logstash(
     }
 
     service { 'logstash':
-        ensure     => running,
+        ensure     => 'running',
         provider   => 'debian',
         enable     => true,
         hasstatus  => true,
@@ -54,12 +54,12 @@ class logstash(
     }
 
     file { '/etc/init/logstash.conf':
-        ensure => absent,
+        ensure => 'absent',
         require => Package['logstash'],
     }
 
     file { '/etc/init/logstash-web.conf':
-        ensure => absent,
+        ensure => 'absent',
         require => Package['logstash'],
     }
 }

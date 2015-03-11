@@ -24,15 +24,15 @@
 #
 define logstash::input::irc(
     $channels,
-    $ensure    = present,
+    $ensure    = 'present',
     $host      = 'chat.freenode.net',
-    $port      = 6697,
+    $port      = '6697',
     $secure    = true,
     $user      = 'logstash',
     $password  = undef,
     $nick      = 'logstash',
     $real      = 'logstash',
-    $priority  = 10,
+    $priority  = '10',
 ) {
     logstash::conf { "input-irc${title}":
         ensure   => $ensure,
