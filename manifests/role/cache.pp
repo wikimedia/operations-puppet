@@ -107,7 +107,7 @@ class role::cache {
                         'cp4008.ulsfo.wmnet',
                         'cp4009.ulsfo.wmnet',
                         'cp4010.ulsfo.wmnet',
-                        # 'cp4016.ulsfo.wmnet', # Jessie
+                        'cp4016.ulsfo.wmnet', # Jessie
                         'cp4017.ulsfo.wmnet', # Jessie
                         'cp4018.ulsfo.wmnet', # Jessie
                     ]
@@ -184,7 +184,7 @@ class role::cache {
                     'ulsfo' => [
                                 'cp4011.ulsfo.wmnet', # Jessie
                                 'cp4012.ulsfo.wmnet',
-                                # 'cp4019.ulsfo.wmnet', # Jessie
+                                'cp4019.ulsfo.wmnet', # Jessie
                                 'cp4020.ulsfo.wmnet', # Jessie
                     ]
                 },
