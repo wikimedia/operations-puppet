@@ -77,7 +77,7 @@ sub vcl_recv {
 			set req.backend = analytics1001;
 		}
 	}
-	elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org") {
+	elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org" || req.http.Host == "planet.wikimedia.org") {
 		set req.backend = zirconium;
 	} elsif (req.http.Host == "etherpad.wikimedia.org") {
 		set req.backend = zirconium;
