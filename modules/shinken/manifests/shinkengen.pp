@@ -29,7 +29,7 @@ class shinken::shinkengen(
         'python3-yaml',
         'python3-jinja2',
     ]:
-        ensure => present,
+        ensure => 'present',
     }
 
     file { '/etc/shinkengen.yaml':

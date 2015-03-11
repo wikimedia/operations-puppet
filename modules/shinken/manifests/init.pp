@@ -7,7 +7,7 @@ class shinken(
     include shinken::shinkengen
 
     package { 'shinken':
-        ensure  => present,
+        ensure  => 'present',
     }
 
     # This is required because default shinken package on trusty
@@ -18,19 +18,19 @@ class shinken(
     }
 
     service { 'shinken':
-        ensure  => running,
+        ensure  => 'running',
         require => File['/etc/init.d/shinken'],
     }
 
     file { '/etc/shinken/modules':
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'shinken',
         group   => 'shinken',
         require => Package['shinken'],
     }
 
     file { '/etc/shinken/modules/webui.cfg':
-        ensure  => present,
+        ensure  => 'present',
         content => template('shinken/webui.cfg.erb'),
         owner   => 'shinken',
         group   => 'shinken',
@@ -39,7 +39,7 @@ class shinken(
     }
 
     file { '/etc/shinken/shinken.cfg':
-        ensure  => present,
+        ensure  => 'present',
         source  => 'puppet:///modules/shinken/shinken.cfg',
         owner   => 'shinken',
         group   => 'shinken',
@@ -48,7 +48,7 @@ class shinken(
     }
 
     file { '/etc/shinken/templates.cfg':
-        ensure  => present,
+        ensure  => 'present',
         source  => 'puppet:///modules/shinken/templates.cfg',
         owner   => 'shinken',
         group   => 'shinken',
@@ -57,21 +57,21 @@ class shinken(
     }
 
     file { '/etc/shinken/generated':
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'shinken',
         group   => 'shinken',
         require => Package['shinken'],
     }
 
     file { '/etc/shinken/customconfig':
-        ensure  => directory,
+        ensure  => 'directory',
         owner   => 'shinken',
         group   => 'shinken',
         require => Package['shinken'],
     }
 
     file { '/etc/shinken/contactgroups.cfg':
-        ensure  => present,
+        ensure  => 'present',
         source  => 'puppet:///modules/shinken/contactgroups.cfg',
         owner   => 'shinken',
         group   => 'shinken',
@@ -111,7 +111,7 @@ class shinken(
 
     # Default localhost config, we do not need this
     file { '/etc/shinken/hosts/localhost.cfg':
-        ensure  => absent,
+        ensure  => 'absent',
         require => Package['shinken'],
         notify  => Service['shinken'],
     }
