@@ -50,6 +50,8 @@ class role::lvs::balancer {
 
         # codfw (should mirror eqiad above, eventually, and become merged with it via regex
         /^(lvs200[14])$/ => [
+            $sip['text'][$::site],
+            $sip['bits'][$::site],
             ],
         /^(lvs200[25])$/ => [
             $sip['dns_rec'][$::site],
