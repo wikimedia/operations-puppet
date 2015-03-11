@@ -61,7 +61,7 @@ class role::cache {
                 'text' => {
                     'eqiad' => [
                         'cp1052.eqiad.wmnet',
-                        #'cp1053.eqiad.wmnet', # Jessie
+                        'cp1053.eqiad.wmnet', # Jessie
                         'cp1054.eqiad.wmnet', # Jessie
                         'cp1055.eqiad.wmnet', # Jessie
                         'cp1065.eqiad.wmnet', # Jessie
