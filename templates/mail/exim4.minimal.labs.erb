@@ -1,0 +1,60 @@
+# Exim 4 configuration file for Wikimedia servers
+# Written on 2010-02-08 by Mark Bergsma <mark@wikimedia.org>
+
+# Main configuration options
+
+check_spool_space = 50M
+remote_max_parallel = 10
+
+# Allow the -f cli option to work
+untrusted_set_sender = *
+local_from_check = false
+
+# No frozen messages please
+ignore_bounce_errors_after = 0h
+
+# Logging
+log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error
+message_logs = false
+
+begin routers
+
+# Redirect using /etc/aliases if it exists, blackhole otherwise
+
+system_aliases:
+	driver = redirect
+	domains = @
+	data = ${lookup{$local_part}lsearch{/etc/aliases}{$value}{:blackhole:}}
+	qualify_domain = wmflabs.org
+	allow_fail
+	allow_defer
+	forbid_file
+
+# Send all mail via a set of mail relays ("smart hosts")
+
+smart_route:
+	driver = manualroute
+	transport = remote_smtp
+	route_list = *	<%= @mail_smarthost.join(':') %>
+
+
+begin transports
+
+# Generic remote SMTP transport
+
+remote_smtp:
+	driver = smtp
+	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+
+
+begin retry
+
+*	*	F,2h,5m; F,1d,15m
+
+
+begin rewrite
+
+# Rewrite the envelope From for mails from internal servers in *.wmnet,
+# as they are usually rejected by sender domain address verification.
+
+*@$primary_hostname	root@wmflabs.org      F
