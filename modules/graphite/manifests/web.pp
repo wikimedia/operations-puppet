@@ -139,4 +139,14 @@ class graphite::web(
         unless  => "/usr/local/sbin/graphite-auth check ${admin_user} ${admin_pass}",
         require => File['/usr/local/sbin/graphite-auth'],
     }
+
+    file { '/etc/logrotate.d/graphite-web':
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/graphite/graphite-web-logrotate',
+        require => File['/var/log/graphite-web'],
+    }
+
 }
