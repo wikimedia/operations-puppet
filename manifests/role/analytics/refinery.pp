@@ -74,7 +74,7 @@ class role::analytics::refinery::data::drop {
 
     # keep this many days of raw data
     $raw_retention_days = 31
-    cron { 'refinery-drop-webrequest-partitions':
+    cron { 'refinery-drop-webrequest-raw-partitions':
         command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics::refinery::path}/python && ${role::analytics::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${raw_retention_days} -D wmf_raw -l /wmf/data/raw/webrequest -w raw >> ${log_file} 2>&1",
         user    => 'hdfs',
         minute  => '15',
@@ -83,7 +83,7 @@ class role::analytics::refinery::data::drop {
 
     # keep this many days of refined data
     $raw_retention_days = 62
-    cron { 'refinery-drop-webrequest-partitions':
+    cron { 'refinery-drop-webrequest-refined-partitions':
         command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics::refinery::path}/python && ${role::analytics::refinery::path}/bin/refinery-drop-webrequest-partitions -d ${refined_retention_days} -D wmf -l /wmf/data/wmf/webrequest -w refined >> ${log_file} 2>&1",
         user    => 'hdfs',
         minute  => '45',
