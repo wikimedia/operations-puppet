@@ -16,7 +16,7 @@ class racktables (
     require_package('php5-mysql', 'php5-gd')
 
     file { '/srv/org/wikimedia/racktables/wwwroot/inc/secret.php':
-        ensure  => present,
+        ensure  => 'present',
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
