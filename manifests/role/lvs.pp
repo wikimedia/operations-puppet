@@ -55,6 +55,9 @@ class role::lvs::balancer {
             $sip['dns_rec'][$::site],
             ],
         /^(lvs200[36])$/ => [
+            $sip['apaches'][$::site],
+            $sip['api'][$::site],
+            $sip['rendering'][$::site],
             $sip['swift'][$::site],
             ],
 

@@ -123,12 +123,15 @@ class lvs::configuration {
             },
             'apaches' => {
                 'eqiad' => "10.2.2.1",
+                'codfw' => '10.2.1.1',
             },
             'rendering' => {
                 'eqiad' => "10.2.2.21",
+                'codfw' => "10.2.1.21",
             },
             'api' => {
                 'eqiad' => "10.2.2.22",
+                'codfw' => '10.2.1.22',
             },
             'mobile' => {
                 'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => '2620:0:861:ed1a::1:c', 'mobilesvc' => "10.2.2.26"},
@@ -508,7 +511,7 @@ class lvs::configuration {
         "apaches" => {
             'description' => "Main MediaWiki application server cluster, appservers.svc.eqiad.wmnet",
             'class' => "low-traffic",
-            'sites' => [ "eqiad" ],
+            'sites' => [ "eqiad", 'codfw' ],
             'ip' => $service_ips['apaches'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".9",
@@ -523,7 +526,7 @@ class lvs::configuration {
         "rendering" => {
             'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.eqiad.wmnet",
             'class' => "low-traffic",
-            'sites' => [ "eqiad" ],
+            'sites' => [ "eqiad", 'codfw' ],
             'ip' => $service_ips['rendering'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".74",
@@ -538,7 +541,7 @@ class lvs::configuration {
         "api" => {
             'description' => "MediaWiki API cluster, api.svc.eqiad.wmnet",
             'class' => "low-traffic",
-            'sites' => [ "eqiad" ],
+            'sites' => [ "eqiad", 'codfw' ],
             'ip' => $service_ips['api'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".6",
