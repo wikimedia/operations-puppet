@@ -5,7 +5,7 @@ class memcached::ganglia {
     # means there's actually a hidden dependency on ganglia.pp for
     # the memcache class to work.
     file { '/usr/lib/ganglia/python_modules/memcached.py':
-        ensure => absent,
+        ensure => 'absent',
     }
     file { '/usr/lib/ganglia/python_modules/gmond_memcached.py':
         owner   => 'root',
@@ -16,7 +16,7 @@ class memcached::ganglia {
         notify  => Service['ganglia-monitor'],
     }
     file { '/usr/lib/ganglia/python_modules/memcached.pyconf':
-        ensure => absent,
+        ensure => 'absent',
     }
     file { '/etc/ganglia/conf.d/gmond_memcached.pyconf':
         owner   => 'root',

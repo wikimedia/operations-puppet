@@ -29,8 +29,8 @@
 #  }
 #
 class memcached(
-    $size          = 2000,
-    $port          = 11000,
+    $size          = '2000',
+    $port          = '11000',
     $ip            = '0.0.0.0',
     $version       = 'present',
     $extra_options = {},
@@ -61,7 +61,7 @@ class memcached(
     }
 
     base::service_unit { 'memcached':
-        ensure         => present,
+        ensure         => 'present',
         systemd        => true,
         strict         => false,
         service_params => {
