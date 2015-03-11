@@ -20,4 +20,4 @@ respawn
 kill timeout 60
 
 chdir /srv/deployment/citoid/deploy
-exec /usr/bin/nodejs src/server.js -c localsettings.js >> /var/log/citoid/main.log 2>&1
+exec /usr/bin/nodejs src/server.js -c /etc/citoid/localsettings.js >> /var/log/citoid/main.log 2>&1

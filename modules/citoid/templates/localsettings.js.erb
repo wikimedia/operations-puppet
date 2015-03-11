@@ -1,0 +1,38 @@
+/*
+ * NOTE: This file is managed by puppet
+ *
+ * Citoud configuration file
+ */
+
+var CitoidConfig = {
+
+	// Allow cross-domain requests to the API (default '*')
+	// Sets Access-Control-Allow-Origin header
+	// enable:
+	allowCORS : '*',
+	// disable:
+	//allowCORS : false,
+	// restrict:
+	//allowCORS : 'some.domain.org',
+
+	// Set proxy for outgoing requests
+	proxy : <%= @http_proxy %>,
+
+	// Allow override of port/interface:
+	citoidPort : <%= @port %>,
+	citoidInterface : '0.0.0.0',
+
+	// userAgent string for lib/Scraper.js
+	userAgent : 'WikimediaBot',
+
+	// Settings for Zotero server
+	zoteroPort : <%= @zotero_port %>,
+	zoteroInterface : '<%= @zotero_host %>',
+	// Whether or not the outbound proxy should be used to access Zotero
+	zoteroUseProxy : false,
+};
+
+/*Exports*/
+module.exports = CitoidConfig;
+
+

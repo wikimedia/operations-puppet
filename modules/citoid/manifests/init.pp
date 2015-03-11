@@ -5,9 +5,24 @@
 # === Parameters
 #
 # [*port*]
-#   Port where to run the citoid service. Defaults to 1970.
+#   Port where to run the citoid service
 #
-class citoid( $port = 1970 ) {
+# [*http_proxy*]
+#   URL of the proxy to use, defaults to the one set for zotero
+#
+# [*zotero_host*]
+#   Host of the zotero service
+#
+# [*zotero_port*]
+#   Port of the zotero service
+#
+class citoid(
+    $port        = undef,
+    $http_proxy  = undef,
+    $zotero_host = undef,
+    $zotero_port = undef
+) {
+
     require_package('nodejs')
 
     package { 'citoid/deploy':
@@ -26,6 +41,26 @@ class citoid( $port = 1970 ) {
         shell  => '/bin/false',
         system => true,
         before => Service['citoid'],
+    }
+
+    file { '/etc/citoid':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { '/etc/citoid/localsettings.js':
+        ensure  => present,
+        content => template('citoid/localsettings.js.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => [
+            Package['citoid/deploy'],
+            File['/etc/citoid'],
+        ],
+        notify  => Service['citoid'],
     }
 
     file { '/var/log/citoid':
@@ -56,5 +91,7 @@ class citoid( $port = 1970 ) {
         hasstatus  => true,
         hasrestart => true,
         provider   => 'upstart',
+        require    => Package['nodejs', 'citoid/deploy'],
     }
+
 }
