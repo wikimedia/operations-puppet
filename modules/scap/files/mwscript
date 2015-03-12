@@ -11,8 +11,8 @@ else
 	MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE=$MEDIAWIKI_DEPLOYMENT_DIR
 fi
 
-if groups | grep -Ewq 'sudo|wikidev|root'; then
-	sudo -u <%= scope.lookupvar('mediawiki::users::web') -%> php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
+if "$USER" != "$MEDIAWIKI_WEB_USER" ; then
+	sudo -u "$MEDIAWIKI_WEB_USER" php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
 else
 	php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
 fi

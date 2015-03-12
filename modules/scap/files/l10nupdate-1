@@ -82,7 +82,7 @@ do
 	mwDbName=${i#*=}
 
 	if [ ! -d /var/lib/l10nupdate/cache-"$mwVerNum" ]; then
-		mkdir /var/lib/l10nupdate/cache-"$mwVerNum"
+		sudo -u www-data mkdir /var/lib/l10nupdate/cache-"$mwVerNum"
 	fi
 
 	echo "Running updates for $mwVerNum (on $mwDbName)"
