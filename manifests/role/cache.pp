@@ -65,7 +65,7 @@ class role::cache {
                         'cp1054.eqiad.wmnet', # Jessie
                         'cp1055.eqiad.wmnet', # Jessie
                         'cp1065.eqiad.wmnet', # Jessie
-                        'cp1066.eqiad.wmnet',
+                        #'cp1066.eqiad.wmnet',
                         'cp1067.eqiad.wmnet', # Jessie
                         'cp1068.eqiad.wmnet', # Jessie
                     ],
