@@ -20,18 +20,21 @@
 #  Source: modules/openstack/files/replica-addusers.pl
 #  From:   openstack::replica-management-service
 
+##
+##  This adds labs user credentials to the replica (and tools) databases
+##  and places the created auth tokens in the users' homes.  This is run
+##  on the NFS server because this is the only server that has the
+##  authorithy to write into every projects' file space.
+##
+
 
 use strict;
 use DBI();
 
 my %databases = (
-      's1'  => [ "labsdb1001", 3306 ],
-      's2'  => [ "labsdb1002", 3306 ],
-      's3'  => [ "labsdb1003", 3308 ],
-      's4'  => [ "labsdb1002", 3307 ],
-      's5'  => [ "labsdb1002", 3308 ],
-      's6'  => [ "labsdb1003", 3306 ],
-      's7'  => [ "labsdb1003", 3307 ],
+      'c1'  => [ "labsdb1001", 3306 ],
+      'c2'  => [ "labsdb1002", 3306 ],
+      'c3'  => [ "labsdb1003", 3306 ],
       'udb' => [ "labsdb1005", 3306 ],
 );
 
