@@ -104,7 +104,7 @@ class role::cache {
                         'amssq62.esams.wmnet', # Jessie
                     ],
                     'ulsfo' => [
-                        'cp4008.ulsfo.wmnet',
+                        'cp4008.ulsfo.wmnet', # Jessie
                         # Dead, T92476 'cp4009.ulsfo.wmnet', # Jessie
                         'cp4010.ulsfo.wmnet', # Jessie
                         'cp4016.ulsfo.wmnet', # Jessie
