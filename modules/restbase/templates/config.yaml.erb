@@ -115,7 +115,7 @@ templates:
             version: 1.0.0
             type: file
             options:
-              parsoidHost: http://parsoid-lb.eqiad.wikimedia.org
+              parsoidHost: <%= @parsoid_uri %>
 
       /{module:action}:
         x-modules:

@@ -19,6 +19,8 @@
 #   Which DC should be considered local. Default: 'datacenter1'.
 # [*port*]
 #   Port where to run the restbase service. Default: 7231
+# [*parsoid_uri*]
+#   URI to reach Parsoid. Default: http://parsoid-lb.eqiad.wikimedia.org
 # [*logstash_host*]
 #   GELF logging host. Default: localhost
 # [*logstash_port*]
@@ -38,6 +40,7 @@ class restbase(
     $cassandra_defaultConsistency = 'localQuorum',
     $cassandra_localDc = 'datacenter1',
     $port           = 7231,
+    $parsoid_uri    = 'http://parsoid-lb.eqiad.wikimedia.org',
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
     $logging_level  = 'warn',

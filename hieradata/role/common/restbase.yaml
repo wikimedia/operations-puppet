@@ -23,6 +23,7 @@ restbase::logstash_host: logstash1001.eqiad.wmnet
 restbase::cassandra_defaultConsistency: localQuorum
 restbase::cassandra_localDc: "%{::site}"
 restbase::statsd_host: statsd.eqiad.wmnet
+restbase::parsoid_uri: http://10.2.2.28:8000  # parsoid.svc.eqiad.wmnet
 
 lvs::realserver::realserver_ips:
   - '10.2.2.17' # restbase.svc.eqiad.wmnet
