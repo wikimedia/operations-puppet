@@ -5,7 +5,8 @@
 #
 class extdist(
     $base_dir = '/srv',
-    $log_path = '/var/log/extdist') {
+    $log_path = '/var/log/extdist'
+) {
 
     $dist_dir = "${base_dir}/dist"
     $clone_dir = "${base_dir}/extdist"
