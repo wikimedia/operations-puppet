@@ -2,9 +2,6 @@
 # Troubleshooting: https://wikitech.wikimedia.org/wiki/Trebuchet#Troubleshooting
 class role::deployment::config {
     $repo_config = {
-        'integration/kss' => {
-            'upstream' => 'https://gerrit.wikimedia.org/r/integration/kss',
-        },
         'integration/mediawiki-tools-codesniffer' => {
             'upstream' => 'https://gerrit.wikimedia.org/r/mediawiki/tools/codesniffer',
         },

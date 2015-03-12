@@ -145,7 +145,6 @@ class role::ci::slave {
 
     package {
         [
-            'integration/kss',
             'integration/mediawiki-tools-codesniffer',
             'integration/phpunit',
             'integration/phpcs',
