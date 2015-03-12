@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-# This file is managed by puppet.
-#
-# Run scap on the beta cluster.
-#
-/usr/local/bin/sudo-withagent mwdeploy /usr/local/bin/scap "$@"
