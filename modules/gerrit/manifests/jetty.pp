@@ -28,11 +28,9 @@ class gerrit::jetty ($ldap_hosts,
     }
 
     # TODO: Make this go away -- need to stop using gerrit2 for hook actions
-    ssh_authorized_key { $name:
+    ssh::userkey { 'gerrit2':
         ensure  => present,
-        key     => $ssh_key,
-        type    => 'ssh-rsa',
-        user    => 'gerrit2',
+        content => $ssh_key,
         require => Package['gerrit'],
     }
 
