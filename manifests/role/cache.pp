@@ -140,7 +140,7 @@ class role::cache {
                     'eqiad' => [
                         'cp1048.eqiad.wmnet',
                         'cp1049.eqiad.wmnet',
-                        'cp1050.eqiad.wmnet',
+                        #'cp1050.eqiad.wmnet',
                         'cp1051.eqiad.wmnet', # Jessie
                         'cp1061.eqiad.wmnet', # Jessie
                         'cp1062.eqiad.wmnet', # Jessie
