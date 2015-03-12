@@ -2258,6 +2258,13 @@ host mc1018 {
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host mc2001 {
+	hardware ethernet 90:e2:ba:19:55:f0;
+	fixed-address mc2002.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host mc2002 {
 	hardware ethernet 90:e2:ba:19:4e:c8;
 	fixed-address mc2002.codfw.wmnet;
