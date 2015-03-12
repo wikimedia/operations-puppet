@@ -5,7 +5,13 @@ class role::mail::sender {
     }
 }
 
-class role::mail::mx {
+class role::mail::mx(
+    $verp_domains = [
+        'wikimedia.org'
+    ],
+    $verp_post_connect_server = 'test2.wikipedia.org',
+    $verp_bounce_post_url = "api.svc.${::mw_primary}.wmnet/w/api.php",
+) {
     include network::constants
     include privateexim::aliases::private
 
@@ -22,27 +28,6 @@ class role::mail::mx {
         use_bayes        => '1',
         bayes_auto_learn => '1',
         trusted_networks => $network::constants::all_networks,
-    }
-
-    # MediaWiki VERP bounce processor config - labs vs. production
-    case $::realm {
-        'labs': {
-            $verp_domains   = [
-                    'beta.wmflabs.org'
-                ]
-            $verp_post_connect_server = 'deployment.wikimedia.beta.wmflabs.org'
-            $verp_bounce_post_url     = 'http://deployment.wikimedia.beta.wmflabs.org/w/api.php'
-        }
-        'production': {
-            $verp_domains   = [
-                    'wikimedia.org'
-                ]
-            $verp_post_connect_server = 'test2.wikipedia.org'
-            $verp_bounce_post_url     = "api.svc.${::mw_primary}.wmnet/w/api.php"
-        }
-        default: {
-            fail('unknown realm, should be labs or production')
-        }
     }
 
     class { 'exim::roled':
