@@ -18,11 +18,9 @@ class mha::node {
         source => 'puppet:///private/ssh/mysql/mysql.key',
     }
 
-    ssh_authorized_key { 'mha4mysql':
-            ensure => present,
-            user   => 'mysql',
-            type   => 'ssh-rsa',
-            key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDryVraiGfd0eQzV0QB/xXvgiPvpp8qt/BEqT9xWpohPNC1MevM+SMGmpimCLyvv35JDmz1DiJwJf72GKakDqWdbp/pBHitr0VV3eANpLyYiDTWir75SEF9F/WxkRTbEe/tErJc0tsksVGIm+36r3eHrrz68AkJJZVhcQMMXPx6Ye1NIy5qJ/i7cSSAxkanHlXiX+lnGMIxYUKuiVVl7kxrGDAvaLeszZKdYn8WkMH32MuL/M66ff9vBY7pGGM8MubjGMxL878hpimhTrLcmay7l4nuAMW6UUnkqufx6ArT80RWDWz5woFvyheBdVDnQZI06cJzj3WG6rWt8eG/A1SL',
+    ssh::userkey { 'mysql':
+        ensure  => present,
+        content => 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDryVraiGfd0eQzV0QB/xXvgiPvpp8qt/BEqT9xWpohPNC1MevM+SMGmpimCLyvv35JDmz1DiJwJf72GKakDqWdbp/pBHitr0VV3eANpLyYiDTWir75SEF9F/WxkRTbEe/tErJc0tsksVGIm+36r3eHrrz68AkJJZVhcQMMXPx6Ye1NIy5qJ/i7cSSAxkanHlXiX+lnGMIxYUKuiVVl7kxrGDAvaLeszZKdYn8WkMH32MuL/M66ff9vBY7pGGM8MubjGMxL878hpimhTrLcmay7l4nuAMW6UUnkqufx6ArT80RWDWz5woFvyheBdVDnQZI06cJzj3WG6rWt8eG/A1SL mha@production',
     }
 }
 
