@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# Tells the StrongSwan IKE daemon to start up or terminate all configured IPsec connections.
+# jgage@wikimedia.org 2015-03
+
+set -e  # immediately exit if any command has a non-zero exit status
+
+PATH="/usr/sbin:/usr/bin"
+CMDNAME=`basename $0`
+CONF=/etc/ipsec.conf
+
+HELP() {
+    echo "$CMDNAME: Tells the StrongSwan IKE daemon to start up or terminate all IPsec connections defined in $CONF"
+    echo "Usage: $CMDNAME [-v] [-n|-b] [action]"
+    echo "Where action is one of: up, down, status"
+    echo "-b: use blocking calls"
+    echo "-n: use non-blocking calls"
+    echo "-v: verbose output"
+    echo "default: 'up' and 'status' don't block, 'down' blocks"
+    exit
+}
+
+silent() {
+  if [[ $VERBOSE ]] ; then
+    "$@"
+  else
+    "$@ >/dev/null"
+  fi
+}
+
+# Defaults: avoid 'up' and 'status' blocking for multiple minutes as SAs are
+# established, but for 'down' don't return until the action completes
+CMD_UP="up-nb"
+CMD_DOWN="down"
+CMD_STATUS="statusall-nb"
+
+while getopts "bnvh" FLAG; do
+    case $FLAG in
+        b) # explicitly use blocking calls
+          CMD_UP="up"
+          CMD_DOWN="down"
+          CMD_STATUS="statusall"
+          ;;
+        n) # explicitly use non-blocking calls
+          CMD_UP="up-nb"
+          CMD_DOWN="down-nb"
+          CMD_STATUS="statusall-nb"
+          ;;
+        v) VERBOSE=1
+          ;;
+        h) HELP
+          ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ ! -r $CONF ] ; then
+    echo "ERROR: Cannot read $CONF"
+    echo "For usage info, run: $CMDNAME -h"
+    exit
+fi
+CONNLIST=`awk '/^conn [^%]/ {print $2}' $CONF`
+
+if [[ -z "$*" ]] ; then
+    echo "ERROR: no arguments"
+    echo "For usage info, run: $CMDNAME -h"
+    exit
+fi
+
+case "$1" in
+    up) if [ $CMD_UP = "up-nb" ] ; then
+            for c in $CONNLIST ; do silent ipsec stroke $CMD_UP $c & done
+            echo "Finished launching 'ipsec up' for all connections (async)"
+        else
+            for c in $CONNLIST ; do silent ipsec stroke $CMD_UP $c ; done
+            echo "Finished executing 'ipsec up' for all connections (sync)"
+        fi
+        ;;
+    down) if [ $CMD_DOWN = "down-nb" ] ; then
+            for c in $CONNLIST ; do silent ipsec stroke $CMD_DOWN $c & done
+            echo "Finished launching 'ipsec down' for all connections (async)"
+        else
+            for c in $CONNLIST ; do silent ipsec stroke $CMD_DOWN $c ; done
+            echo "Finished executing 'ipsec down' for all connections (sync)"
+        fi
+        ;;
+    status | statusall) if [[ $VERBOSE ]] ; then
+            ipsec stroke $CMD_STATUS
+        else
+            # there is no 'status-nb', so simulate with awk
+            ipsec stroke $CMD_STATUS | awk '/^Security/{f=1}f'
+        fi
+        ;;
+    *)  echo "ERROR: action not recognized"
+        echo "For usage info, run: $CMDNAME -h"
+        ;;
+esac
