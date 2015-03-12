@@ -3,7 +3,7 @@
 PATH=/usr/bin:/bin
 export PATH
 
-if [ "$USER" = "gitpuppet" ]; then
+if [ "`whoami`" = "gitpuppet" ]; then
 	touch /etc/puppet/manifests/site.pp
 
 	<%- if @server_type == 'frontend' -%>
@@ -11,7 +11,7 @@ if [ "$USER" = "gitpuppet" ]; then
 	#  on worker and ignore our command.
 		<%- @workers.each do |workerhash| -%>
 		<%- if workerhash['worker'] == @fqdn then next end -%>
-	ssh -t -t <%= workerhash['worker'] -%> 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init'
+	ssh -t -t <%= workerhash['worker'] -%> 'cd /var/lib/git/operations/puppet && git fetch --verbose --update-head-ok && git reset --hard origin/production'
 		<%- end -%>
 	<%- end -%>
 fi
