@@ -301,6 +301,7 @@ class role::logging::udp2log::misc {
     }
 }
 
+# FIXME: this clearly not a role.
 class role::logging::systemusers {
 
     group { 'file_mover':
@@ -325,18 +326,8 @@ class role::logging::systemusers {
         mode   => '0755',
     }
 
-    file { '/var/lib/file_mover/.ssh':
-        ensure => directory,
-        owner  => 'file_mover',
-        group  => 'file_mover',
-        mode   => '0700',
-    }
-
-    ssh_authorized_key { 'file_mover':
+    ssh::userkey { 'file_mover':
         ensure  => present,
-        user    => 'file_mover',
-        type    => 'ssh-rsa',
-        key     => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw==',
-        require => File['/var/lib/file_mover/.ssh'],
+        content => 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw== file_mover',
     }
 }
