@@ -57,4 +57,10 @@ class mediawiki::packages::fonts {
     ]:
         ensure => present,
     }
+    # Bug T84842
+    if os_version('ubuntu >= trusty || debian >= jessie') {
+        package { ['fonts-crosextra-carlito', 'fonts-crosextra-caladea']:
+            ensure => present,
+        }
+    }
 }
