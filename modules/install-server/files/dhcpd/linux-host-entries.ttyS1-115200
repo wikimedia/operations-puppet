@@ -5117,21 +5117,29 @@ host radon {
 host rdb2001 {
 	hardware ethernet B0:83:FE:E4:6A:74;
 	fixed-address rdb2001.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host rdb2002 {
 	hardware ethernet B0:83:FE:E4:37:66;
 	fixed-address rdb2002.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host rdb2003 {
 	hardware ethernet B0:83:FE:E4:38:49;
 	fixed-address rdb2003.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host rdb2004 {
 	hardware ethernet B0:83:FE:E4:5E:1A;
 	fixed-address rdb2004.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host rbf1001 {
