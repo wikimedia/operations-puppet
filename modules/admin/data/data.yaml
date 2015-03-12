@@ -303,7 +303,11 @@ groups:
     gid: 745
     description: Login rights for citoid in order to look at citoid logs
     members: [mvolz]
-
+  phab-roots:
+    gid: 746
+    description: people with full root on phabricator hosts
+    members: [demon]
+    privileges: ['ALL = NOPASSWD: ALL']
 users:
   rush:
     ensure: present
