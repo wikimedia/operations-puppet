@@ -7,9 +7,9 @@ hosts_eqiad:
   - 'cp1069.eqiad.wmnet'
   - 'cp1070.eqiad.wmnet'
 hosts_esams:
-  - 'cp3019.esams.wikimedia.org'
-  - 'cp3020.esams.wikimedia.org'
-  - 'cp3021.esams.wikimedia.org'
+  - 'cp3019.esams.wmnet'
+  - 'cp3020.esams.wmnet'
+  - 'cp3021.esams.wmnet'
   - 'cp3022.esams.wmnet'
 hosts_ulsfo:
   - 'cp4001.ulsfo.wmnet'

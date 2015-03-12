@@ -12,8 +12,8 @@ hosts_eqiad:
   - 'cp1064.eqiad.wmnet'
 hosts_esams:
   - 'cp3003.esams.wmnet'
-  - 'cp3004.esams.wikimedia.org'
-  - 'cp3005.esams.wikimedia.org'
+  - 'cp3004.esams.wmnet'
+  - 'cp3005.esams.wmnet'
   - 'cp3006.esams.wikimedia.org'
   - 'cp3007.esams.wikimedia.org'
   - 'cp3008.esams.wikimedia.org'
