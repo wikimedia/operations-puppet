@@ -124,7 +124,7 @@ class mediawiki::users(
 
     sudo::user { 'l10nupdate':
         require    => User['l10nupdate', 'mwdeploy'],
-        privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'],
+        privileges => ["ALL = (${web},mwdeploy) NOPASSWD: ALL"],
     }
 
 
