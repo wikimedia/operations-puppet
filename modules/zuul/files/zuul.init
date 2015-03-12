@@ -13,9 +13,9 @@
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="Zuul"
+DESC="Zuul Server"
 NAME=zuul
-DAEMON=/usr/local/bin/zuul-server
+DAEMON=/usr/local/bin/$NAME
 PIDFILE=/var/run/$NAME/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 USER=zuul
@@ -23,8 +23,7 @@ USER=zuul
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
 
-# Read configuration variable file if it is present
-[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+START_DAEMON=1
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
@@ -32,6 +31,21 @@ USER=zuul
 # Define LSB log_* functions.
 # Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
 . /lib/lsb/init-functions
+
+# Read configuration variable file if it is present
+if [ -r /etc/default/$NAME ] ; then
+   . /etc/default/$NAME
+else
+	log_daemon_msg "$DESC: /etc/default/$NAME not found: exiting"
+	log_end_msg 1
+	exit 0
+fi
+
+if ! [ "${START_DAEMON}" = "1" ] ; then
+	log_daemon_msg "$DESC: /etc/default/$NAME is not set to START_DAEMON=1: exiting"
+	log_end_msg 1
+	exit 0
+fi
 
 #
 # Function that starts the daemon/service
@@ -43,7 +57,7 @@ do_start()
 	#   1 if daemon was already running
 	#   2 if daemon could not be started
 
-        mkdir -p /var/run/$NAME
+	mkdir -p /var/run/$NAME
 	chown $USER /var/run/$NAME
 	start-stop-daemon --start --quiet --pidfile $PIDFILE -c $USER --exec $DAEMON --test > /dev/null \
 		|| return 1
