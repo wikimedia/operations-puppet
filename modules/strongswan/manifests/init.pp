@@ -73,6 +73,14 @@ class strongswan (
         require => Package['strongswan'],
     }
 
+    file { "/usr/local/sbin/ipsec-global":
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/strongswan/ipsec-global',
+    }
+
     $svcname = $::lsbdistcodename ? {
         # in Ubuntu/Trusty this service is /etc/init/strongswan.conf
         # in Ubuntu/Precise and Debian/Jessie it's /etc/init.d/ipsec
