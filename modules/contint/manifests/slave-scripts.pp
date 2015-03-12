@@ -26,13 +26,6 @@ class contint::slave-scripts {
         origin             => 'https://gerrit.wikimedia.org/r/p/integration/jenkins.git',
         recurse_submodules => true,
     }
-
-    git::clone { 'jenkins CI kss':
-        ensure             => 'latest',
-        directory          => '/srv/deployment/integration/kss',
-        origin             => 'https://gerrit.wikimedia.org/r/p/integration/kss.git',
-        recurse_submodules => true,
-    }
     git::clone { 'jenkins CI Composer':
         ensure             => 'latest',
         directory          => '/srv/deployment/integration/composer',
