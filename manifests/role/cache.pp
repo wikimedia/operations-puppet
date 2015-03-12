@@ -70,7 +70,7 @@ class role::cache {
                         'cp1068.eqiad.wmnet', # Jessie
                     ],
                     'esams' => [
-                        # ipsec testing - 'amssq31.esams.wmnet', # Jessie
+                        'amssq31.esams.wmnet', # Jessie
                         'amssq32.esams.wmnet', # Jessie
                         # T84133 'amssq33.esams.wmnet', # Jessie
                         'amssq34.esams.wmnet', # Jessie
