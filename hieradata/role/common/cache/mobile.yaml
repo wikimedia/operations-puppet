@@ -7,8 +7,8 @@ hosts_eqiad:
   - 'cp1059.eqiad.wmnet'
   - 'cp1060.eqiad.wmnet'
 hosts_esams:
-  # - 'cp3011.esams.wikimedia.org' # T92306
-  - 'cp3012.esams.wikimedia.org'
+  # - 'cp3011.esams.wmnet' # T92306
+  - 'cp3012.esams.wmnet'
   - 'cp3013.esams.wmnet'
   - 'cp3014.esams.wmnet'
 hosts_ulsfo:
