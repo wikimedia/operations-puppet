@@ -46,6 +46,7 @@ binddn=`grep 'binddn' /etc/ldap.conf | sed 's/.* //'`
 bindpw=`grep 'bindpw' /etc/ldap.conf | sed 's/.* //'`
 hostsou=`grep 'nss_base_hosts' /etc/ldap.conf | sed 's/.* //'`
 id=`curl http://169.254.169.254/1.0/meta-data/instance-id 2> /dev/null`
+ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
 hostname=`hostname`
 domain=`hostname -d`
 idfqdn=${id}.${domain}
@@ -81,6 +82,24 @@ echo -e "master:\n  - ${master}\n  - ${master_secondary}" > /etc/salt/minion
 echo "id: ${idfqdn}" >> /etc/salt/minion
 echo "master_finger: ${saltfinger}" >> /etc/salt/minion
 /etc/init.d/salt-minion restart
+
+# Sleep until the nfs volumes we need are available.
+#  Worst case, just time out after 3 minutes.
+tries=18
+for i in `seq 1 ${tries}`; do
+    prod_domain=`echo $domain | sed 's/wmflabs/wmnet/'`
+    nfs_server="labstore.svc.${prod_domain}"
+    echo $(showmount -e ${nfs_server} | egrep ^/exp/project/${project}\\s), | fgrep -q $ip,
+    echo $(showmount -e ${nfs_server} | egrep ^/exp/project/${project}\\s), | fgrep -q 10.255.255.255,
+    if [ $? -eq 0 ];  then
+        break
+    fi
+    sleep 10
+done
+
+if [ $i -eq $tries ]; then
+    echo "Warning:  Timed out trying to detect NFS mounts."
+fi
 
 # Force initial puppet run
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${idfqdn} --server=${master}
