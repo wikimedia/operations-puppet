@@ -50,6 +50,11 @@ class scap::l10nupdate {
             owner  => 'l10nupdate',
             group  => 'wikidev',
             mode   => '0755';
+        '/var/lib/l10nupdate/caches':
+            ensure => directory,
+            owner  => $::mediawiki::users::web,
+            group  => $::mediawiki::users::web,
+            mode   => '0755';
         '/etc/logrotate.d/l10nupdate':
             source => 'puppet:///modules/scap/l10nupdate.logrotate',
             mode   => '0444';
