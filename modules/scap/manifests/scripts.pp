@@ -48,7 +48,7 @@ class scap::scripts {
             owner    => 'root',
             group    => 'root',
             mode     => '0555',
-            content  => template('scap/mwscript.erb');
+            source   => 'puppet:///modules/scap/mwscript';
         '/usr/local/bin/mwscriptwikiset':
             owner   => 'root',
             group   => 'root',
