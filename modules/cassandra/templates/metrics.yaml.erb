@@ -1,0 +1,19 @@
+graphite:
+  -
+    period: 60
+    timeunit: 'SECONDS'
+    prefix: '<%= @graphite_prefix %>'
+    hosts:
+     - host: '<%= @graphite_host %>'
+       port: <%= @graphite_port %>
+    predicate:
+      color: "white"
+      useQualifiedName: true
+      patterns:
+        - "^org.apache.cassandra.metrics.Cache.+"
+        - "^org.apache.cassandra.metrics.ClientRequest.+"
+        - "^org.apache.cassandra.metrics.Storage.+"
+        - "^org.apache.cassandra.metrics.ThreadPools.+"
+        - "^org.apache.cassandra.metrics.Compaction.+"
+        - "^org.apache.cassandra.metrics.ReadRepair.+"
+        - "^org.apache.cassandra.metrics.CommitLog.+"
