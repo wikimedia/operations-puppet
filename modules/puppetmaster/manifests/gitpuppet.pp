@@ -25,11 +25,9 @@ class puppetmaster::gitpuppet {
             group   => 'gitpuppet',
             mode    => '0400',
             source  => 'puppet:///private/ssh/gitpuppet/gitpuppet-private.key';
-        '/home/gitpuppet/.ssh/authorized_keys':
-            owner   => 'gitpuppet',
-            group   => 'gitpuppet',
-            mode    => '0400',
-            source  => 'puppet:///modules/puppetmaster/git/gitpuppet_authorized_keys';
+    }
+    ssh::userkey { 'gitpuppet':
+        source  => 'puppet:///modules/puppetmaster/git/gitpuppet_authorized_keys',
     }
 }
 
