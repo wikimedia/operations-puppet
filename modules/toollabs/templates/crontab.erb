@@ -36,6 +36,10 @@ sub submit(@) {
   die "$0: unable to execute remote crontab command\n";
 }
 
+# Save original command line arguments as getopts() changes
+# @ARGV.
+my @SavedARGV = @ARGV;
+
 my %opts = ( e => 0, l => 0, r => 0, i => 0 );
 getopts('ielru:', \%opts);
 
@@ -56,6 +60,12 @@ if(defined $opts{'u'}) {
     die "must be privileged to use -u\n" unless $uid==0 or $uid == $target;
     push @args, '-u', $uname if $uid != $target;
     $dashu = " -u $uname" if $uid != $target;
+}
+
+# If the target user is not managed in LDAP and thus likely
+# a system user, invoke the original crontab instead.
+if ($target < <%= @ldapconfig["nss_min_uid"] %>) {
+    exec ('/usr/bin/crontab', @SavedARGV);
 }
 
 die "$0: only tools are allowed crontabs\n" unless $uid==0 or $target>39999;

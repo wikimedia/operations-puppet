@@ -59,12 +59,18 @@ class toollabs::bastion(
         ensure => latest,
     }
 
-    file { '/usr/local/bin/xcrontab':
+    $ldapconfig = $ldap::role::config::labs::ldapconfig
+
+    file { '/usr/local/bin/crontab':
         ensure  => file,
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
         content => template('toollabs/crontab.erb'),
+    }
+    # TODO: Remove after deployment.
+    file { '/usr/local/bin/xcrontab':
+        ensure => absent,
     }
 
 }
