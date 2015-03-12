@@ -105,7 +105,7 @@ class role::cache {
                     ],
                     'ulsfo' => [
                         'cp4008.ulsfo.wmnet',
-                        'cp4009.ulsfo.wmnet',
+                        # Dead, T92476 'cp4009.ulsfo.wmnet', # Jessie
                         'cp4010.ulsfo.wmnet', # Jessie
                         'cp4016.ulsfo.wmnet', # Jessie
                         'cp4017.ulsfo.wmnet', # Jessie
@@ -171,7 +171,8 @@ class role::cache {
                     ],
                 },
                 'mobile' => {
-                    'eqiad' => ['cp1046.eqiad.wmnet',
+                    'eqiad' => [
+                                'cp1046.eqiad.wmnet', # Jessie
                                 # 'cp1047.eqiad.wmnet', # hardware T88045
                                 'cp1059.eqiad.wmnet', # Jessie
                                 'cp1060.eqiad.wmnet', # Jessie
