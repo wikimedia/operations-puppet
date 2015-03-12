@@ -11,7 +11,7 @@ else
 	MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE=$MEDIAWIKI_DEPLOYMENT_DIR
 fi
 
-if [ "$USER" != "$MEDIAWIKI_WEB_USER" ] ; then
+if [ "`whoami`" != "$MEDIAWIKI_WEB_USER" ] ; then
 	sudo -u "$MEDIAWIKI_WEB_USER" php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
 else
 	php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
