@@ -69,7 +69,7 @@ class VolumeManager:
 
         while True:
             self.refresh_volumes()
-            time.sleep(180)
+            time.sleep(60)
 
     # Updates a member var:
     #
