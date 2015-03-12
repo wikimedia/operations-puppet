@@ -1,6 +1,6 @@
 # Setup the `gerritslave` account on any host that wants to receive
 # replication. See role::gerrit::production::replicationdest
-class gerrit::replicationdest( $sshkey, $extra_groups = [], $slaveuser = 'gerritslave' ) {
+class gerrit::replicationdest( $ssh_key, $extra_groups = [], $slaveuser = 'gerritslave' ) {
 
     group { $slaveuser:
         ensure => present,
@@ -16,11 +16,8 @@ class gerrit::replicationdest( $sshkey, $extra_groups = [], $slaveuser = 'gerrit
         system     => true,
     }
 
-    ssh_authorized_key { $slaveuser:
+    ssh::userkey { $slaveuser:
         ensure  => present,
-        key     => $sshkey,
-        type    => 'ssh-rsa',
-        user    => $slaveuser,
-        require => User[$slaveuser],
+        content => $ssh_key,
     }
 }
