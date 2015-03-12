@@ -51,7 +51,7 @@ define ssh::userkey(
         force   => true,
         owner   => 'root',
         group   => 'root',
-        mode    => '0400',
+        mode    => '0444', # sshd drops perms before trying to read public keys
         content => $content,
         source  => $source,
     }
