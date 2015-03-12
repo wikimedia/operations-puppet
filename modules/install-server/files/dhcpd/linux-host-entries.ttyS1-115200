@@ -5186,7 +5186,7 @@ host rbf1002 {
 }
 
 host rbf2001 {
-	hardware ethernet 90:B1:1C:2D:85:71;
+	hardware ethernet 90:B1:1C:2D:85:70;
 	fixed-address rbf2001.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
