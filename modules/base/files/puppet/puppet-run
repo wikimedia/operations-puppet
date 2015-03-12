@@ -13,6 +13,14 @@ set -e
 touch /var/log/puppet.log
 chmod 600 /var/log/puppet.log
 
+# Check this before apt-get update, so that our update doesn't screw up
+# package installs in a running (manual and/or initial install) puppet run
+PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
+if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
+    echo Skipping this run, puppet agent already running at pid `cat $PUPPETLOCK` >>/var/log/puppet.log
+    exit 0
+fi
+
 timeout $KILL_TIMEOUT 300 apt-get update -qq >> /var/log/puppet.log 2>&1
 
 timeout $KILL_TIMEOUT 1800 puppet agent \
