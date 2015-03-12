@@ -21,23 +21,18 @@ class role::ipsec ($hosts = undef) {
             'ulsfo.wmnet':         { $site = 'ulsfo' }
         }
 
-        # determine cache type based on whether it contains the local node
-        if $::fqdn in hiera("text_${site}", "")   { $cachetype = "text" }
-        if $::fqdn in hiera("bits_${site}", "")   { $cachetype = "bits" }
-        if $::fqdn in hiera("upload_${site}", "") { $cachetype = "upload" }
-        if $::fqdn in hiera("mobile_${site}", "") { $cachetype = "mobile" }
-
-        # enumerate hosts of the same cache type in other sites
+        # for 'left' nodes in cache sites, enumerate 'right' nodes in "main" sites
         if $site == 'esams' or $site == 'ulsfo' {
             $targets = concat(
-                hiera("${cachetype}_eqiad", []),
-                hiera("${cachetype}_codfw", [])
+                hiera('hosts_eqiad', []),
+                hiera('hosts_codfw', [])
             )
         }
+        # for 'left' nodes in "main" sites, enumerate 'right' nodes in cache sites
         if $site == 'eqiad' or $site == 'codfw' {
             $targets = concat(
-                hiera("${cachetype}_esams", []),
-                hiera("${cachetype}_ulsfo", [])
+                hiera('hosts_esams', []),
+                hiera('hosts_ulsfo', [])
             )
         }
     }

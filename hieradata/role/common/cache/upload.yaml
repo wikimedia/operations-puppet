@@ -1,1 +1,31 @@
 cluster: cache_upload
+# data synced from manifests/role/cache.pp on 2015-03-11
+hosts_codfw: []
+hosts_eqiad:
+  - 'cp1048.eqiad.wmnet'
+  - 'cp1049.eqiad.wmnet'
+  - 'cp1050.eqiad.wmnet'
+  - 'cp1051.eqiad.wmnet'
+  - 'cp1061.eqiad.wmnet'
+  - 'cp1062.eqiad.wmnet'
+  - 'cp1063.eqiad.wmnet'
+  - 'cp1064.eqiad.wmnet'
+hosts_esams:
+  - 'cp3003.esams.wmnet'
+  - 'cp3004.esams.wikimedia.org'
+  - 'cp3005.esams.wikimedia.org'
+  - 'cp3006.esams.wikimedia.org'
+  - 'cp3007.esams.wikimedia.org'
+  - 'cp3008.esams.wikimedia.org'
+  - 'cp3009.esams.wikimedia.org'
+  - 'cp3010.esams.wmnet'
+  - 'cp3015.esams.wmnet'
+  - 'cp3016.esams.wmnet'
+  - 'cp3017.esams.wmnet'
+  - 'cp3018.esams.wmnet'
+hosts_ulsfo:
+  - 'cp4005.ulsfo.wmnet'
+  - 'cp4006.ulsfo.wmnet'
+  - 'cp4007.ulsfo.wmnet'
+  - 'cp4013.ulsfo.wmnet'
+  - 'cp4014.ulsfo.wmnet'

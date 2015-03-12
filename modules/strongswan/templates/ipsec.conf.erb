@@ -8,9 +8,6 @@ def individual_node(node)
       right_ipv6 = scope.function_ipresolve([node, 6])
       if left_ipv4 != "" and right_ipv4 != ""
           result << "conn #{fqdn}-#{node}_by_ipv4"
-          result << "\ttype=transport"
-          result << "\tauto=start"
-          #result << "\tauto=route"
           result << "\tleft=#{left_ipv4} "
           result << "\tleftcert=#{puppet_certname}.pem"
           result << "\tright=#{right_ipv4}"
@@ -19,9 +16,6 @@ def individual_node(node)
       end
       if left_ipv6 != "" and right_ipv6 != ""
           result << "conn #{fqdn}-#{node}_by_ipv6"
-          result << "\ttype=transport"
-          result << "\tauto=start"
-          #result << "\tauto=route"
           result << "\tleft=#{left_ipv6} "
           result << "\tleftcert=#{puppet_certname}.pem"
           result << "\tright=#{right_ipv6}"
@@ -45,10 +39,12 @@ config setup
 conn %default
 	# https://wiki.strongswan.org/projects/strongswan/wiki/IKEv2CipherSuites
 	# https://wiki.strongswan.org/projects/strongswan/wiki/CipherSuiteExamples
-    # http://www.strongswan.org/uml/testresults/ikev2/alg-aes-gcm/
-    # modp2048 = DH group 14
+	# http://www.strongswan.org/uml/testresults/ikev2/alg-aes-gcm/
+	# modp2048 = DH group 14
 	ike=aes256gcm128-aesxcbc-modp2048!
 	esp=aes256gcm128-modp2048!
+	type=transport
+	auto=start
 
 # Connections
 <% hosts.each do |node| -%>

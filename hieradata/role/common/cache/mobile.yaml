@@ -1,2 +1,19 @@
 cluster: cache_mobile
+# data synced from manifests/role/cache.pp on 2015-03-11
+hosts_codfw: []
+hosts_eqiad:
+  - 'cp1046.eqiad.wmnet'
+  # - 'cp1047.eqiad.wmnet' # T88045
+  - 'cp1059.eqiad.wmnet'
+  - 'cp1060.eqiad.wmnet'
+hosts_esams:
+  # - 'cp3011.esams.wikimedia.org' # T92306
+  - 'cp3012.esams.wikimedia.org'
+  - 'cp3013.esams.wmnet'
+  - 'cp3014.esams.wmnet'
+hosts_ulsfo:
+  - 'cp4011.ulsfo.wmnet'
+  - 'cp4012.ulsfo.wmnet'
+  - 'cp4019.ulsfo.wmnet'
+  - 'cp4020.ulsfo.wmnet'
 
