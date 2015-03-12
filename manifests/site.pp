@@ -63,7 +63,7 @@ node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
             'vm.dirty_background_ratio' => 5,
         }
     }
-    role cache::text
+    role cache::text, ipsec
     interface::add_ip6_mapped { 'main': }
 }
 
