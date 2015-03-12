@@ -4,6 +4,11 @@ echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 restart rsyslog
 
+# And, sleep some more.  This sucks but it helps avoid a race
+# with NFS volume creation -- give NFS plenty of time
+# to notice the new instance and set up exports.
+sleep 60
+
 # If we don't have a LVM volume group, we'll create it,
 # and allocate the remainder of the disk to it,
 if ! /sbin/vgdisplay -c vd
