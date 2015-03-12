@@ -80,9 +80,10 @@ for i in ${mwVerDbSets[@]}
 do
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
+	tempCacheDir=/var/lib/l10nupdate/caches/cache-"$mwVerNum"
 
-	if [ ! -d /var/lib/l10nupdate/cache-"$mwVerNum" ]; then
-		sudo -u www-data mkdir /var/lib/l10nupdate/cache-"$mwVerNum"
+	if [ ! -d "$tempCacheDir" ]; then
+		sudo -u www-data mkdir "$tempCacheDir"
 	fi
 
 	echo "Running updates for $mwVerNum (on $mwDbName)"
@@ -92,10 +93,10 @@ do
 		echo "Rebuilding localization cache at `date --rfc-3339=seconds`"
 		/usr/local/bin/mwscript rebuildLocalisationCache.php \
 			--wiki="$mwDbName" \
-			--outdir=/var/lib/l10nupdate/cache-${mwVerNum} $QUIET
+			--outdir="$tempCacheDir" $QUIET
 		# Copy the LC files
 		echo "Completed at `date --rfc-3339=seconds`. Copying LC files to $MEDIAWIKI_STAGING_DIR"
-		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* $MEDIAWIKI_STAGING_DIR/php-"$mwVerNum"/cache/l10n
+		cp --preserve=timestamps --force "$tempCacheDir"/l10n_cache-* $MEDIAWIKI_STAGING_DIR/php-"$mwVerNum"/cache/l10n
 		# Include JSON versions of the CDB files and add MD5 files
 		refreshCdbJsonFiles --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
 
