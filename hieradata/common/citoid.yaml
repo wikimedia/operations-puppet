@@ -1,0 +1,4 @@
+port: 1970
+http_proxy: url-downloader.wikimedia.org:8080
+zotero_host: zotero.svc.eqiad.wmnet
+zotero_port: 1969
