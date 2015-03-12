@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Tells the StrongSwan IKE daemon to start up or terminate
+# all configured IPsec connections.
+# Uses internal non-blocking commands.
+# jgage@wikimedia.org 2015-03-12
+
+CONF=/etc/ipsec.conf
+CONNLIST=`/usr/bin/awk '/^conn [^%]/ {print $2}' $CONF`
+IPSEC=/usr/sbin/ipsec
+
+case "$1" in
+        up) for c in $CONNLIST ; do $IPSEC stroke up-nb $c & done
+        ;;
+        down) for c in $CONNLIST ; do $IPSEC stroke down-nb $c ; done
+        ;;
+        # Included for convenience; there is no status-nb:
+        status | statusall) $IPSEC stroke statusall-nb
+        ;;
+        *) echo "Please supply an argument: \"up\", \"down\", or \"status\""
+        ;;
+esac
