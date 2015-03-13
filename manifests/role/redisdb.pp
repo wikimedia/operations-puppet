@@ -29,28 +29,16 @@ class role::db::redis (
         srange  => '$ALL_NETWORKS',
     }
 
-    if $::realm == 'production' {
+    class { '::redis':
+        maxmemory         => $maxmemory,
+        dir               => $dir,
+        persist           => 'aof',
+        redis_replication => $redis_replication,
+        password          => $passwords::redis::main_password,
+    }
 
-        class { '::redis':
-            maxmemory         => $maxmemory,
-            dir               => $dir,
-            persist           => 'aof',
-            redis_replication => $redis_replication,
-            password          => $passwords::redis::main_password,
-        }
-
+    if hiera('has_ganglia', true) {
         include redis::ganglia
     }
 
-    if $::realm == 'labs' {
-
-        class { '::redis':
-            maxmemory                 => '500mb',
-            persist                   => 'aof',
-            redis_replication         => undef,
-            password                  => $::passwords::redis::main_password,
-            dir                       => $dir,
-            auto_aof_rewrite_min_size => '64mb',
-        }
-    }
 }
