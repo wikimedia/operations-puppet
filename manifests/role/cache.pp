@@ -196,7 +196,7 @@ class role::cache {
                 },
                 'parsoid' => {
                     'eqiad' => [
-                         # 'cp1045.eqiad.wmnet', # Jessie
+                         'cp1045.eqiad.wmnet', # Jessie
                          'cp1058.eqiad.wmnet',
                     ],
                     'esams' => [],
@@ -204,7 +204,7 @@ class role::cache {
                 },
                 'misc' => {
                     'eqiad' => [
-                        # 'cp1043.eqiad.wmnet', # Jessie
+                        'cp1043.eqiad.wmnet', # Jessie
                         'cp1044.eqiad.wmnet',
                     ],
                     'esams' => [],
