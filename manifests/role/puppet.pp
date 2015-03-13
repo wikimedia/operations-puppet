@@ -51,7 +51,7 @@ class role::puppet::server::labs {
 #
 class role::puppet::self(
     $master = $::puppetmaster,
-    $autoupdate_master = $::puppetmaster::autoupdate,
+    $autoupdate_master = $::puppetmaster_autoupdate,
 ) {
     # If $::puppetmaster is not set, assume
     # this is a self hosted puppetmaster, not allowed
