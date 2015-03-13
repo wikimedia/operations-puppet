@@ -17,26 +17,23 @@
 class role::analytics::kafka::config {
     require role::analytics::zookeeper::config
 
-    # This allows labs to set the $::kafka_cluster global,
-    # which will conditionally select labs hosts to include
-    # in a Kafka cluster.  This allows us to test cross datacenter
-    # broker mirroring with multiple clusters.
-    $kafka_cluster_name = $::kafka_cluster ? {
-        undef     => $::site,
-        default   => $::kafka_cluster,
-    }
-
     if ($::realm == 'labs') {
-        # TODO: Make hostnames configurable via labs global variables.
-        $cluster_config = {
-            'main'    => {
-                'kafka-main1.eqiad.wmflabs'     => { 'id' => 1 },
-                'kafka-main2.eqiad.wmflabs'     => { 'id' => 2 },
-            },
-            'external' => {
-                'kafka-external1.eqiad.wmflabs' => { 'id' => 10 },
-            },
-        }
+        # In labs, this can be set via hiera, or default to $::instanceproject
+        $kafka_cluster_name = hiera('role::analytics::kafka::config::kafka_cluster_name', $::instanceproject)
+
+        # Look up cluster config via hiera.
+        # This will default to configuring a kafka cluster named
+        # after $::instanceproject with a single kafka broker
+        # that is the current host
+        $cluster_config = hiera(
+            'role::analytics::kafka::config::cluster_config',
+            {
+                "${kafka_cluster_name}" => {
+                    "${::fqdn}" => { 'id' => 1 },
+                },
+            }
+        )
+
         # labs only uses a single log_dir
         $log_dirs = ['/var/spool/kafka']
         # TODO: use variables from new ganglia module once it is finished.
@@ -49,6 +46,8 @@ class role::analytics::kafka::config {
 
     # else Kafka cluster is based on $::site.
     else {
+        $kafka_cluster_name = $::site
+
         $cluster_config = {
             'eqiad'   => {
                 'analytics1012.eqiad.wmnet' => { 'id' => 12 },  # Row A
@@ -171,14 +170,6 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
     }
 
-    # Generate icinga alert if Kafka Server is not running.
-    nrpe::monitor_service { 'kafka':
-        description  => 'Kafka Broker Server',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "kafka.Kafka /etc/kafka/server.properties"',
-        require      => Class['::kafka::server'],
-        critical     => 'true',
-    }
-
     # Include Kafka Server Jmxtrans class
     # to send Kafka Broker metrics to Ganglia and statsd.
     class { '::kafka::server::jmxtrans':
@@ -186,77 +177,88 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         statsd   => "${statsd_host}:${statsd_port}",
     }
 
-    # Generate icinga alert if this jmxtrans instance is not running.
-    nrpe::monitor_service { 'jmxtrans':
-        description  => 'jmxtrans',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "-jar jmxtrans-all.jar"',
-        require      => Class['::kafka::server::jmxtrans'],
-    }
+    # Monitor kafka in production
+    if $::realm == 'production' {
+        # Generate icinga alert if Kafka Server is not running.
+        nrpe::monitor_service { 'kafka':
+            description  => 'Kafka Broker Server',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "kafka.Kafka /etc/kafka/server.properties"',
+            require      => Class['::kafka::server'],
+            critical     => 'true',
+        }
 
-    # Set up icinga monitoring of Kafka broker per second.
-    # If this drops too low, trigger an alert.
-    # These thresholds have to be manually set.
-    # adjust them if you add or remove data from Kafka topics.
-    $nagios_servicegroup = 'analytics_eqiad'
+        # Generate icinga alert if this jmxtrans instance is not running.
+        nrpe::monitor_service { 'jmxtrans':
+            description  => 'jmxtrans',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "-jar jmxtrans-all.jar"',
+            require      => Class['::kafka::server::jmxtrans'],
+        }
 
-    monitoring::ganglia { 'kafka-broker-MessagesIn':
-        description => 'Kafka Broker Messages In',
-        metric      => 'kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.FifteenMinuteRate',
-        warning     => ':1500.0',
-        critical    => ':1000.0',
-        require     => Class['::kafka::server::jmxtrans'],
-        group       => $nagios_servicegroup,
-    }
+        # Set up icinga monitoring of Kafka broker per second.
+        # If this drops too low, trigger an alert.
+        # These thresholds have to be manually set.
+        # adjust them if you add or remove data from Kafka topics.
+        $nagios_servicegroup = 'analytics_eqiad'
 
-    # Use graphite's anomaly detection support.
-    monitoring::graphite_anomaly { 'kafka-broker-MessagesIn-anomaly':
-        # moving this to role::graphite::production since it is not a node based metric.
-        ensure       => 'absent',
-        description  => 'Kafka Broker Messages In Per Second',
-        metric       => 'sumSeries(kafka.*.kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.OneMinuteRate.value)',
-        # check over the 60 data points (an hour?) and:
-        # - alert warn if more than 30 are under the confidence band
-        # - alert critical if more than 45 are under the confidecne band
-        check_window => 60,
-        warning      => 30,
-        critical     => 45,
-        under        => true,
-        require      => Class['::kafka::server::jmxtrans'],
-        group        => $nagios_servicegroup,
-    }
+        monitoring::ganglia { 'kafka-broker-MessagesIn':
+            description => 'Kafka Broker Messages In',
+            metric      => 'kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.FifteenMinuteRate',
+            warning     => ':1500.0',
+            critical    => ':1000.0',
+            require     => Class['::kafka::server::jmxtrans'],
+            group       => $nagios_servicegroup,
+        }
+
+        # Use graphite's anomaly detection support.
+        monitoring::graphite_anomaly { 'kafka-broker-MessagesIn-anomaly':
+            # moving this to role::graphite::production since it is not a node based metric.
+            ensure       => 'absent',
+            description  => 'Kafka Broker Messages In Per Second',
+            metric       => 'sumSeries(kafka.*.kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.OneMinuteRate.value)',
+            # check over the 60 data points (an hour?) and:
+            # - alert warn if more than 30 are under the confidence band
+            # - alert critical if more than 45 are under the confidecne band
+            check_window => 60,
+            warning      => 30,
+            critical     => 45,
+            under        => true,
+            require      => Class['::kafka::server::jmxtrans'],
+            group        => $nagios_servicegroup,
+        }
 
 
 
-    # Alert if any Kafka has under replicated partitions.
-    # If it does, this means a broker replica is falling behind
-    # and will be removed from the ISR.
-    monitoring::ganglia { 'kafka-broker-UnderReplicatedPartitions':
-        description => 'Kafka Broker Under Replicated Partitions',
-        metric      => 'kafka.server.ReplicaManager.UnderReplicatedPartitions.Value',
-        # Any under replicated partitions are bad.
-        # Over 10 means (probably) that at least an entire topic
-        # is under replicated.
-        warning     => '1',
-        critical    => '10',
-        require     => Class['::kafka::server::jmxtrans'],
-        group       => $nagios_servicegroup,
-    }
+        # Alert if any Kafka has under replicated partitions.
+        # If it does, this means a broker replica is falling behind
+        # and will be removed from the ISR.
+        monitoring::ganglia { 'kafka-broker-UnderReplicatedPartitions':
+            description => 'Kafka Broker Under Replicated Partitions',
+            metric      => 'kafka.server.ReplicaManager.UnderReplicatedPartitions.Value',
+            # Any under replicated partitions are bad.
+            # Over 10 means (probably) that at least an entire topic
+            # is under replicated.
+            warning     => '1',
+            critical    => '10',
+            require     => Class['::kafka::server::jmxtrans'],
+            group       => $nagios_servicegroup,
+        }
 
-    # Alert if any Kafka Broker replica lag is too high
-    monitoring::ganglia { 'kafka-broker-Replica-MaxLag':
-        description => 'Kafka Broker Replica Lag',
-        metric      => 'kafka.server.ReplicaFetcherManager.Replica-MaxLag.Value',
-        # As of 2014-02 replag could catch up at more than 1000 msgs / sec,
-        # (probably more like 2 or 3 K / second). At that rate, 1M messages
-        # behind should catch back up in at least 30 minutes.
-        warning     => '1000000',
-        critical    => '5000000',
-        require     => Class['::kafka::server::jmxtrans'],
-        group       => $nagios_servicegroup,
-    }
+        # Alert if any Kafka Broker replica lag is too high
+        monitoring::ganglia { 'kafka-broker-Replica-MaxLag':
+            description => 'Kafka Broker Replica Lag',
+            metric      => 'kafka.server.ReplicaFetcherManager.Replica-MaxLag.Value',
+            # As of 2014-02 replag could catch up at more than 1000 msgs / sec,
+            # (probably more like 2 or 3 K / second). At that rate, 1M messages
+            # behind should catch back up in at least 30 minutes.
+            warning     => '1000000',
+            critical    => '5000000',
+            require     => Class['::kafka::server::jmxtrans'],
+            group       => $nagios_servicegroup,
+        }
 
-    # monitor disk statistics
-    if !defined(Ganglia::Plugin::Python['diskstat']) {
-        ganglia::plugin::python { 'diskstat': }
+        # monitor disk statistics
+        if !defined(Ganglia::Plugin::Python['diskstat']) {
+            ganglia::plugin::python { 'diskstat': }
+        }
     }
 }
