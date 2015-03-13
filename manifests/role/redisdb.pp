@@ -29,28 +29,19 @@ class role::db::redis (
         srange  => '$ALL_NETWORKS',
     }
 
+    class { '::redis':
+        maxmemory         => $maxmemory,
+        dir               => $dir,
+        persist           => 'aof',
+        redis_replication => $redis_replication,
+        password          => $passwords::redis::main_password,
+        # previously, this was set on labs and not set on production:
+        # should move to hiera?  If so, where?
+        # auto_aof_rewrite_min_size => '64mb',
+    }
+
     if $::realm == 'production' {
-
-        class { '::redis':
-            maxmemory         => $maxmemory,
-            dir               => $dir,
-            persist           => 'aof',
-            redis_replication => $redis_replication,
-            password          => $passwords::redis::main_password,
-        }
-
         include redis::ganglia
     }
 
-    if $::realm == 'labs' {
-
-        class { '::redis':
-            maxmemory                 => '500mb',
-            persist                   => 'aof',
-            redis_replication         => undef,
-            password                  => $::passwords::redis::main_password,
-            dir                       => $dir,
-            auto_aof_rewrite_min_size => '64mb',
-        }
-    }
 }
