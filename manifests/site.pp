@@ -3,7 +3,6 @@
 
 import 'realm.pp' # These ones first
 import 'certs.pp'
-import 'dns.pp'
 import 'ganglia.pp'
 import 'mail.pp'
 import 'misc/*.pp'

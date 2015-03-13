@@ -5,7 +5,7 @@
 # - $dns_auth_soa_name:DNS SOA name of the server
 # - $dns_auth_master:Which DNS server to use as "master" to fetch zones from
 
-class dns::auth-server::ldap(
+class labs_ldap_dns(
     $dns_auth_ipaddress,
     $dns_auth_soa_name,
     $dns_auth_query_address = '',
@@ -30,7 +30,7 @@ class dns::auth-server::ldap(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('powerdns/pdns-ldap.conf.erb'),
+        content => template('labs_ldap_dns/pdns-ldap.conf.erb'),
     }
 
     service { 'pdns':
