@@ -813,11 +813,12 @@ class role::cache {
         if $::realm == 'production' {
             if os_version('debian >= jessie') {
                 $storage_size_main = $::hostname ? {
-                    'cp1008' => 117,
-                    /^amssq/ => 117,                # Intel X-25M 160G
+                    'cp1008'                => 117, # Intel X-25M 160G
+                    /^amssq/                => 117, # Intel X-25M 160G
+                    /^cp104[34]/            => 117, # Intel X-25M 160G
                     /^cp30(0[3-9]|1[0-4])$/ => 460, # Intel M320 600G via H710
-                    /^cp301[5-8]$/ => 225,          # Intel M320 300G via H710
-                    default => 360,                 # Intel S3700 400G
+                    /^cp301[5-8]$/          => 225, # Intel M320 300G via H710
+                    default                 => 360, # Intel S3700 400G
                 }
             }
             else {
