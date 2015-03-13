@@ -21,19 +21,14 @@
 #
 class role::analytics::zookeeper::config {
 
-    if $::realm == 'labs' {
-        # It is difficult to to build a parameterized hash from
-        # the labs wikitech console global variables.
-        # Labs only supports a single zookeeper node.
-        if $::zookeeper_host {
-            $hosts = {
-                "${::zookeeper_host}" => 1,
-            }
-        }
-        else {
-            $hosts = {}
-        }
+    $version = $::lsbdistcodename ? {
+        'trusty'  => '3.4.5+dfsg-1',
+        'precise' => '3.3.5+dfsg1-1ubuntu1',
     }
+
+    # Lookup labs zookeeper hosts from hiera.
+    if $::realm == 'labs' {
+        $hosts   = hiera('role::analytcs::zookeeper::config::hosts', { "${::fqdn}" => 1 } )
     # else production
     else {
         $hosts = {
@@ -58,7 +53,7 @@ class role::analytics::zookeeper::client {
 
     class { '::zookeeper':
         hosts   => $role::analytics::zookeeper::config::hosts,
-        version => '3.4.5+dfsg-1',
+        version => $version,
         # Default tick_time is 2000ms, this should allow a max
         # of 16 seconds of latency for Zookeeper client sessions.
         # See comments in role::analytics::kafka::server for more info.
@@ -109,9 +104,9 @@ class role::analytics::zookeeper::server inherits role::analytics::zookeeper::cl
             port   => "(2181 2182 2183 ${$::zookeeper::server::jmx_port})",
             srange => '($ANALYTICS_NETWORKS)',
         }
-    }
-    # Use jmxtrans for sending metrics to ganglia
-    class { 'zookeeper::jmxtrans':
-        ganglia => "${ganglia_host}:${ganglia_port}",
+        # Use jmxtrans for sending metrics to ganglia
+        class { 'zookeeper::jmxtrans':
+            ganglia => "${ganglia_host}:${ganglia_port}",
+        }
     }
 }
