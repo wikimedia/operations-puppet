@@ -7,8 +7,10 @@ swift_storage_drives: [
 swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
 swift_check_http_host: 'ms-fe.svc.codfw.wmnet'
 mediawiki_memcached_servers:
+  - '10.192.0.34:11211:1 "shard1"'
   - '10.192.0.35:11211:1 "shard2"'
   - '10.192.0.36:11211:1 "shard3"'
+  - '10.192.0.37:11211:1 "shard4"'
   - '10.192.0.38:11211:1 "shard5"'
   - '10.192.0.39:11211:1 "shard6"'
   - '10.192.16.37:11211:1 "shard7"'
