@@ -303,6 +303,16 @@ groups:
     gid: 745
     description: Login rights for citoid in order to look at citoid logs
     members: [mvolz]
+  phabricator-admin:
+    gid: 746
+    description: Users who can do sane CLI admin things
+                 * Remove repositories
+                 * Manage repositories, phd service, and workers
+    members: []
+    privileges: ['ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
+                 'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/repository',
+                 'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/phd']
+                 'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/worker']
 
 users:
   rush:
