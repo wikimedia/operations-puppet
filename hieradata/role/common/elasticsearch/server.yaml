@@ -1,4 +1,39 @@
+# General configs
 cluster: elasticsearch
 admin::groups:
   - elasticsearch-roots
 lvs::realserver::realserver_ips: "10.2.2.30"
+
+
+# ES-specific
+# Not default
+elasticsearch::multicast_group: 224.2.2.5
+# Nodes should not be master eligible by default in prod
+elasticsearch::master_eligible: false
+# Don't run if more than 1 master missing
+elasticsearch::minimum_master_nodes: 2
+# eqiad prod name
+elasticsearch::cluster_name: production-search-eqiad
+# More than 30G isn't very useful
+elasticsearch::heap_memory: '30G'
+# Production elasticsearch needs these plugins to be loaded in order
+# to work properly.  This will keep elasticsearch from starting
+# if these plugins are  not available.
+elasticsearch::plugins_mandatory:
+  - 'experimental highlighter'
+  - 'analysis-icu'
+# We expect 31 nodes total
+elasticsearch::expected_nodes: 31
+# We should be able to run "OK" with 11 servers.
+elasticsearch::recover_after_nodes: 11
+# But it'd save time if we just waited for all of them to come back so
+# lets give them plenty of time to restart.
+elasticsearch::recover_after_time: '20m'
+# Production can get a lot of use out of the filter cache.
+elasticsearch::filter_cache_size: "20%"
+elasticsearch::bulk_thread_pool_capacity: 1000
+elasticsearch::bulk_thread_pool_executors: 6
+
+
+
+
