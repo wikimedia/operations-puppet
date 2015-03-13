@@ -1,0 +1,7 @@
+# We expect 31 nodes total
+expected_nodes: 31
+# We should be able to run "OK" with 11 servers.
+recover_after_nodes: 11
+
+# Not default
+multicast_group: 224.2.2.5
