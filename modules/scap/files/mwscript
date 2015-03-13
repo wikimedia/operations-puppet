@@ -13,7 +13,7 @@ fi
 
 # PHP spits errors on unknown terminals before falling back to "dumb"
 if [ -z "$TERM" ] || [ "$TERM" = unknown ]; then
-	TERM=dumb
+	export TERM=dumb
 fi
 
 if [ "`whoami`" != "$MEDIAWIKI_WEB_USER" ] ; then
