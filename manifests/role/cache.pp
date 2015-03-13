@@ -139,7 +139,7 @@ class role::cache {
                 'upload' => {
                     'eqiad' => [
                         'cp1048.eqiad.wmnet', # Jessie
-                        'cp1049.eqiad.wmnet',
+                        #'cp1049.eqiad.wmnet',
                         'cp1050.eqiad.wmnet', # Jessie
                         'cp1051.eqiad.wmnet', # Jessie
                         'cp1061.eqiad.wmnet', # Jessie
