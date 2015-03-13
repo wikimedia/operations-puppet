@@ -17,26 +17,25 @@
 class role::analytics::kafka::config {
     require role::analytics::zookeeper::config
 
-    # This allows labs to set the $::kafka_cluster global,
-    # which will conditionally select labs hosts to include
-    # in a Kafka cluster.  This allows us to test cross datacenter
-    # broker mirroring with multiple clusters.
-    $kafka_cluster_name = $::kafka_cluster ? {
-        undef     => $::site,
-        default   => $::kafka_cluster,
+    # In production $::site is th cluster name.
+    # In labs, this can be set via hiera, or default to $::instanceproject
+    $kafka_cluster_name = $::realm ? {
+        'production' => $::site,
+        'labs'       => hiera('role::analytics::kafka::config::kafka_cluster_name', $::instanceproject),
     }
 
     if ($::realm == 'labs') {
-        # TODO: Make hostnames configurable via labs global variables.
-        $cluster_config = {
-            'main'    => {
-                'kafka-main1.eqiad.wmflabs'     => { 'id' => 1 },
-                'kafka-main2.eqiad.wmflabs'     => { 'id' => 2 },
-            },
-            'external' => {
-                'kafka-external1.eqiad.wmflabs' => { 'id' => 10 },
-            },
-        }
+        # Look up cluster config via hiera.
+        # This will default to configuring a kafka cluster named
+        # after $::instanceproject with a single kafka broker
+        # that is the current host
+        $cluster_config = hiera('kafka_cluster', {
+                $::instanceproject => {
+                    $::fqdn => { 'id' => 1 },
+                },
+            }
+        )
+
         # labs only uses a single log_dir
         $log_dirs = ['/var/spool/kafka']
         # TODO: use variables from new ganglia module once it is finished.
