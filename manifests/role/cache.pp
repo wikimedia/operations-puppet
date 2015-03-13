@@ -60,56 +60,56 @@ class role::cache {
             'production' => {
                 'text' => {
                     'eqiad' => [
-                        'cp1052.eqiad.wmnet', # Jessie
-                        'cp1053.eqiad.wmnet', # Jessie
-                        'cp1054.eqiad.wmnet', # Jessie
-                        'cp1055.eqiad.wmnet', # Jessie
-                        'cp1065.eqiad.wmnet', # Jessie
-                        'cp1066.eqiad.wmnet', # Jessie
-                        'cp1067.eqiad.wmnet', # Jessie
-                        'cp1068.eqiad.wmnet', # Jessie
+                        'cp1052.eqiad.wmnet',
+                        'cp1053.eqiad.wmnet',
+                        'cp1054.eqiad.wmnet',
+                        'cp1055.eqiad.wmnet',
+                        'cp1065.eqiad.wmnet',
+                        'cp1066.eqiad.wmnet',
+                        'cp1067.eqiad.wmnet',
+                        'cp1068.eqiad.wmnet',
                     ],
                     'esams' => [
-                        'amssq31.esams.wmnet', # Jessie
-                        'amssq32.esams.wmnet', # Jessie
-                        # T84133 'amssq33.esams.wmnet', # Jessie
-                        'amssq34.esams.wmnet', # Jessie
-                        'amssq35.esams.wmnet', # Jessie
-                        'amssq36.esams.wmnet', # Jessie
-                        'amssq37.esams.wmnet', # Jessie
-                        'amssq38.esams.wmnet', # Jessie
-                        'amssq39.esams.wmnet', # Jessie
-                        'amssq40.esams.wmnet', # Jessie
-                        'amssq41.esams.wmnet', # Jessie
-                        'amssq42.esams.wmnet', # Jessie
-                        'amssq43.esams.wmnet', # Jessie
-                        'amssq44.esams.wmnet', # Jessie
-                        'amssq45.esams.wmnet', # Jessie
-                        'amssq46.esams.wmnet', # Jessie
-                        'amssq47.esams.wmnet', # Jessie
-                        'amssq48.esams.wmnet', # Jessie
-                        'amssq49.esams.wmnet', # Jessie
-                        'amssq50.esams.wmnet', # Jessie
-                        'amssq51.esams.wmnet', # Jessie
-                        'amssq52.esams.wmnet', # Jessie
-                        'amssq53.esams.wmnet', # Jessie
-                        'amssq54.esams.wmnet', # Jessie
-                        'amssq55.esams.wmnet', # Jessie
-                        'amssq56.esams.wmnet', # Jessie
-                        'amssq57.esams.wmnet', # Jessie
-                        'amssq58.esams.wmnet', # Jessie
-                        'amssq59.esams.wmnet', # Jessie
-                        'amssq60.esams.wmnet', # Jessie
-                        'amssq61.esams.wmnet', # Jessie
-                        'amssq62.esams.wmnet', # Jessie
+                        'amssq31.esams.wmnet',
+                        'amssq32.esams.wmnet',
+                        # T84133 'amssq33.esams.wmnet',
+                        'amssq34.esams.wmnet',
+                        'amssq35.esams.wmnet',
+                        'amssq36.esams.wmnet',
+                        'amssq37.esams.wmnet',
+                        'amssq38.esams.wmnet',
+                        'amssq39.esams.wmnet',
+                        'amssq40.esams.wmnet',
+                        'amssq41.esams.wmnet',
+                        'amssq42.esams.wmnet',
+                        'amssq43.esams.wmnet',
+                        'amssq44.esams.wmnet',
+                        'amssq45.esams.wmnet',
+                        'amssq46.esams.wmnet',
+                        'amssq47.esams.wmnet',
+                        'amssq48.esams.wmnet',
+                        'amssq49.esams.wmnet',
+                        'amssq50.esams.wmnet',
+                        'amssq51.esams.wmnet',
+                        'amssq52.esams.wmnet',
+                        'amssq53.esams.wmnet',
+                        'amssq54.esams.wmnet',
+                        'amssq55.esams.wmnet',
+                        'amssq56.esams.wmnet',
+                        'amssq57.esams.wmnet',
+                        'amssq58.esams.wmnet',
+                        'amssq59.esams.wmnet',
+                        'amssq60.esams.wmnet',
+                        'amssq61.esams.wmnet',
+                        'amssq62.esams.wmnet',
                     ],
                     'ulsfo' => [
-                        'cp4008.ulsfo.wmnet', # Jessie
-                        # Dead, T92476 'cp4009.ulsfo.wmnet', # Jessie
-                        'cp4010.ulsfo.wmnet', # Jessie
-                        'cp4016.ulsfo.wmnet', # Jessie
-                        'cp4017.ulsfo.wmnet', # Jessie
-                        'cp4018.ulsfo.wmnet', # Jessie
+                        'cp4008.ulsfo.wmnet',
+                        # T92476 'cp4009.ulsfo.wmnet', # needs-jessie-install
+                        'cp4010.ulsfo.wmnet',
+                        'cp4016.ulsfo.wmnet',
+                        'cp4017.ulsfo.wmnet',
+                        'cp4018.ulsfo.wmnet',
                     ]
                 },
                 'api' => {
@@ -118,94 +118,94 @@ class role::cache {
                     'ulsfo' => [],
                 },
                 'bits' => {
-                    'eqiad' => ['cp1056.eqiad.wmnet', # Jessie
-                                'cp1057.eqiad.wmnet', # Jessie
-                                'cp1069.eqiad.wmnet', # Jessie
-                                'cp1070.eqiad.wmnet', # Jessie
+                    'eqiad' => ['cp1056.eqiad.wmnet',
+                                'cp1057.eqiad.wmnet',
+                                'cp1069.eqiad.wmnet',
+                                'cp1070.eqiad.wmnet',
                     ],
                     'esams' => [
-                                'cp3019.esams.wmnet', # Jessie
-                                'cp3020.esams.wmnet', # Jessie
-                                'cp3021.esams.wmnet', # Jessie
-                                'cp3022.esams.wmnet', # Jessie
+                                'cp3019.esams.wmnet',
+                                'cp3020.esams.wmnet',
+                                'cp3021.esams.wmnet',
+                                'cp3022.esams.wmnet',
                     ],
                     'ulsfo' => [
-                                'cp4001.ulsfo.wmnet', # Jessie
-                                'cp4002.ulsfo.wmnet', # Jessie
-                                'cp4003.ulsfo.wmnet', # Jessie
-                                'cp4004.ulsfo.wmnet', # Jessie
+                                'cp4001.ulsfo.wmnet',
+                                'cp4002.ulsfo.wmnet',
+                                'cp4003.ulsfo.wmnet',
+                                'cp4004.ulsfo.wmnet',
                     ],
                 },
                 'upload' => {
                     'eqiad' => [
-                        'cp1048.eqiad.wmnet', # Jessie
-                        'cp1049.eqiad.wmnet', # Jessie
-                        'cp1050.eqiad.wmnet', # Jessie
-                        'cp1051.eqiad.wmnet', # Jessie
-                        'cp1061.eqiad.wmnet', # Jessie
-                        'cp1062.eqiad.wmnet', # Jessie
-                        'cp1063.eqiad.wmnet', # Jessie
-                        'cp1064.eqiad.wmnet', # Jessie
-                        'cp1071.eqiad.wmnet', # Jessie
-                        'cp1072.eqiad.wmnet', # Jessie
-                        'cp1073.eqiad.wmnet', # Jessie
-                        'cp1074.eqiad.wmnet', # Jessie
+                        'cp1048.eqiad.wmnet',
+                        'cp1049.eqiad.wmnet',
+                        'cp1050.eqiad.wmnet',
+                        'cp1051.eqiad.wmnet',
+                        'cp1061.eqiad.wmnet',
+                        'cp1062.eqiad.wmnet',
+                        'cp1063.eqiad.wmnet',
+                        'cp1064.eqiad.wmnet',
+                        'cp1071.eqiad.wmnet',
+                        'cp1072.eqiad.wmnet',
+                        'cp1073.eqiad.wmnet',
+                        'cp1074.eqiad.wmnet',
                     ],
                     'esams' => [
-                        'cp3003.esams.wmnet', # Jessie
-                        'cp3004.esams.wmnet', # Jessie
-                        'cp3005.esams.wmnet', # Jessie
-                        'cp3006.esams.wmnet', # Jessie
-                        'cp3007.esams.wmnet', # Jessie
-                        # 'cp3008.esams.wmnet', # Jessie
-                        'cp3009.esams.wmnet', # Jessie
-                        'cp3010.esams.wmnet', # Jessie
-                        'cp3015.esams.wmnet', # Jessie
-                        'cp3016.esams.wmnet', # Jessie
-                        'cp3017.esams.wmnet', # Jessie
-                        'cp3018.esams.wmnet', # Jessie
+                        'cp3003.esams.wmnet',
+                        'cp3004.esams.wmnet',
+                        'cp3005.esams.wmnet',
+                        'cp3006.esams.wmnet',
+                        'cp3007.esams.wmnet',
+                        'cp3008.esams.wmnet',
+                        'cp3009.esams.wmnet',
+                        'cp3010.esams.wmnet',
+                        'cp3015.esams.wmnet',
+                        'cp3016.esams.wmnet',
+                        'cp3017.esams.wmnet',
+                        'cp3018.esams.wmnet',
                     ],
                     'ulsfo' => [
-                        'cp4005.ulsfo.wmnet', # Jessie
-                        'cp4006.ulsfo.wmnet', # Jessie
-                        'cp4007.ulsfo.wmnet', # Jessie
-                        'cp4013.ulsfo.wmnet', # Jessie
-                        'cp4014.ulsfo.wmnet', # Jessie
-                        'cp4015.ulsfo.wmnet', # Jessie
+                        'cp4005.ulsfo.wmnet',
+                        'cp4006.ulsfo.wmnet',
+                        'cp4007.ulsfo.wmnet',
+                        'cp4013.ulsfo.wmnet',
+                        'cp4014.ulsfo.wmnet',
+                        'cp4015.ulsfo.wmnet',
                     ],
                 },
                 'mobile' => {
                     'eqiad' => [
-                                'cp1046.eqiad.wmnet', # Jessie
-                                # 'cp1047.eqiad.wmnet', # hardware T88045
-                                'cp1059.eqiad.wmnet', # Jessie
-                                'cp1060.eqiad.wmnet', # Jessie
+                                'cp1046.eqiad.wmnet',
+                                # T88045 'cp1047.eqiad.wmnet', # needs-jessie-install
+                                'cp1059.eqiad.wmnet',
+                                'cp1060.eqiad.wmnet',
                     ],
                     'esams' => [
-                                # T92306 'cp3011.esams.wmnet', # Jessie
-                                'cp3012.esams.wmnet', # Jessie
-                                'cp3013.esams.wmnet', # Jessie
-                                'cp3014.esams.wmnet', # Jessie
+                                # T92306 'cp3011.esams.wmnet', # needs-jessie-install
+                                'cp3012.esams.wmnet',
+                                'cp3013.esams.wmnet',
+                                'cp3014.esams.wmnet',
                     ],
                     'ulsfo' => [
-                                'cp4011.ulsfo.wmnet', # Jessie
-                                'cp4012.ulsfo.wmnet', # Jessie
-                                'cp4019.ulsfo.wmnet', # Jessie
-                                'cp4020.ulsfo.wmnet', # Jessie
+                                'cp4011.ulsfo.wmnet',
+                                'cp4012.ulsfo.wmnet',
+                                'cp4019.ulsfo.wmnet',
+                                'cp4020.ulsfo.wmnet',
                     ]
                 },
                 'parsoid' => {
                     'eqiad' => [
-                         'cp1045.eqiad.wmnet', # Jessie
-                         'cp1058.eqiad.wmnet',
+                         'cp1045.eqiad.wmnet',
+                         'cp1058.eqiad.wmnet', # needs-jessie-install
                     ],
                     'esams' => [],
                     'ulsfo' => []
                 },
                 'misc' => {
                     'eqiad' => [
-                        'cp1043.eqiad.wmnet', # Jessie
-                        'cp1044.eqiad.wmnet', # Jessie
+                        'cp1043.eqiad.wmnet',
+                        'cp1044.eqiad.wmnet',
                     ],
                     'esams' => [],
                     'ulsfo' => [],
