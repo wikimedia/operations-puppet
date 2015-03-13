@@ -1,0 +1,6 @@
+elasticsearch::minimum_master_nodes: 1
+elasticsearch::recover_after_time: "1m"
+elasticsearch::multicast_group: "224.2.2.4"
+elasticsearch::heap_memory: '2G'
+elasticsearch::expected_nodes: 1
+elasticsearch::recover_after_nodes: 1

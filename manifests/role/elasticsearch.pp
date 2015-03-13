@@ -8,116 +8,22 @@
 @monitoring::group { 'elasticsearch_esams': description => 'esams elasticsearch servers' }
 @monitoring::group { 'elasticsearch_ulsfo': description => 'ulsfo elasticsearch servers' }
 
-class role::elasticsearch::server {
-    # Config
-    if ($::realm == 'labs') {
-        $multicast_group            = '224.2.2.4'
-        $master_eligible            = true
-        $recover_after_time         = '1m'
-        $awareness_attributes       = undef
-        $row                        = undef
-        $rack                       = undef
-        $plugins_mandatory          = undef
-        $filter_cache_size          = '10%'
-        $bulk_thread_pool_capacity  = undef
-        $bulk_thread_pool_executors = undef
-        $use_ganglia                = false
-        if ($::hostname =~ /^deployment-/) {
-            # Beta
-            # Has four nodes all of which can be master
-            $minimum_master_nodes = 3
-            $cluster_name         = 'beta-search'
-            $heap_memory          = '4G'
-            $expected_nodes       = 4
-            # The cluster can limp along just fine with three nodes so we'll
-            # let it
-            $recover_after_nodes  = 3
-            $unicast_hosts        = ['deployment-elastic05',
-                'deployment-elastic06', 'deployment-elastic07',
-                'deployment-elastic08']
-            $statsd_host          = 'labmon1001.eqiad.wmnet'
-        } else {
-            # Regular labs instance
-            # We don't know how many instances will be in each labs project so
-            # we got with the lowest common denominator assuming that you can
-            # recover from a split brain on your own.  It'd be good practice
-            # in case we have one in production.
-            $minimum_master_nodes = 1
-            # This should be configured per project
-            if $::elasticsearch_cluster_name == undef {
-                $message = 'must be set to something unique to the labs project'
-                fail("\$::elasticsearch_cluster_name $message")
-            }
-            $cluster_name         = $::elasticsearch_cluster_name
-            # This can be configured per project
-            $unicast_hosts        = $::elasticsearch_unicast_hosts
+class role::elasticsearch::server{
 
-            $heap_memory          = '2G'
-            # Leave recovery settings and let labs users deal with inefficient
-            # full cluster restarts rather than make them configure more stuff
-            $expected_nodes       = 1
-            $recover_after_nodes  = 1
+    if ($::realm == 'production' and hiera('elasticsearch::rack', undef) == undef) {
+        fail("Don't know rack for ${::hostname} and rack awareness should be turned on")
+    }
 
-            # Don't let random test instances spam statsd
-            $statsd_host = undef
-        }
-    } else {
-        # Production
-        include standard
-        include admin
+    if ($::realm == 'labs' and hiera('elasticsearch::cluster_name', undef) == undef) {
+        $msg = '\$::elasticsearch::cluster_name must be set to something unique to the labs project.'
+        $msg2 = 'You can set it in the hiera config of the project'
+        fail("${msg}\n${msg2}")
+    }
+    include standard
+    include admin
+
+    if hiera('has_lvs', true) {
         include lvs::realserver
-        $multicast_group = $::site ? {
-            'eqiad' => '224.2.2.5',
-        }
-        $master_eligible = $::hostname ? {
-            'elastic1001' => true,
-            'elastic1008' => true,
-            'elastic1013' => true,
-            default       => false,
-        }
-        $minimum_master_nodes = 2
-        $cluster_name         = "production-search-${::site}"
-        $heap_memory          = '30G'
-        $expected_nodes       = 16
-        # We should be able to run "OK" with 10 servers.
-        $recover_after_nodes  = 10
-        # But it'd save time if we just waited for all of them to come back so
-        # lets give them plenty of time to restart.
-        $recover_after_time   = '20m'
-        $rack = $::hostname ? {
-            /^elastic100[0-6]/          => 'A3',
-            /^elastic10(0[7-9]|1[0-2])/ => 'C5',
-            /^elastic101[3-9]/          => 'D3',
-            /^elastic10(1[3-9]|2[0-2])/ => 'D3',
-            /^elastic10(2[3-9]|3[01])/  => 'D4',
-            default                     => 'Unknown',
-        }
-
-        if ($rack == 'Unknown') {
-            fail("Don't know rack for $::host")
-        }
-
-        $row                  = regsubst($rack, '^(.).$', '\1' )
-        # We've temporarily turned off awareness because we believe it puts
-        # unbalanced load on the cluster.
-        $awareness_attributes = undef
-        $unicast_hosts        = undef
-
-        # Not enabled in production yet
-        $statsd_host = undef
-
-        # Production elasticsearch needs these plugins to be loaded in order
-        # to work properly.  This will keep elasticsearch from starting
-        # if these plugins are  not available.
-        $plugins_mandatory    = ['experimental highlighter', 'analysis-icu']
-
-        # Production can get a lot of use out of the filter cache.
-        $filter_cache_size          = '20%'
-        $bulk_thread_pool_capacity  = 1000
-        $bulk_thread_pool_executors = 6
-
-        # only in production, no ganglia in beta
-        $use_ganglia = true
     }
 
     system::role { 'role::elasticsearch::server':
@@ -131,38 +37,16 @@ class role::elasticsearch::server {
 
     # Install
     class { '::elasticsearch':
-        multicast_group            => $multicast_group,
-        master_eligible            => $master_eligible,
-        minimum_master_nodes       => $minimum_master_nodes,
-        cluster_name               => $cluster_name,
-        heap_memory                => $heap_memory,
-        plugins_dir                => '/srv/deployment/elasticsearch/plugins',
-        plugins_mandatory          => $plugins_mandatory,
-        expected_nodes             => $expected_nodes,
-        recover_after_nodes        => $recover_after_nodes,
-        recover_after_time         => $recover_after_time,
-        awareness_attributes       => $awareness_attributes,
-        row                        => $row,
-        rack                       => $rack,
-        unicast_hosts              => $unicast_hosts,
-        # This depends on the elasticsearchplugins deployment.
-        # A new elasticsearch server shouldn't join the cluster until
-        # the plugins are properly deployed in place.  Note that this
-        # means you will likely have to run puppet twice in order to
-        # get elasticsearch up and running.  Once for the initial
-        # node configuration (including salt), and then once again
-        # after you have signed this node's new salt key over on the salt master.
-        require                    => Package['elasticsearch/plugins'],
-        bulk_thread_pool_capacity  => $bulk_thread_pool_capacity,
-        bulk_thread_pool_executors => $bulk_thread_pool_executors,
-        statsd_host                => $statsd_host,
-        auto_create_index          => '+apifeatureusage-*,-*',
-        merge_threads              => 1,
+        plugins_dir       => '/srv/deployment/elasticsearch/plugins',
+        require           => Package['elasticsearch/plugins'],
+        auto_create_index => '+apifeatureusage-*,-*',
+        merge_threads     => 1,
     }
 
-    if $use_ganglia {
+    if hiera('has_ganglia', true) {
         include ::elasticsearch::ganglia
     }
+
     include ::elasticsearch::log::hot_threads
     include ::elasticsearch::nagios::check
 }
