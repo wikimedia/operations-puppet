@@ -65,15 +65,15 @@ class role::dns::ldap {
     }
 }
 
-class role::dns::recursor {
-    system::role { 'role::dns::recursor': description => 'Recursive DNS server' }
+class role::dnsrecursor {
+    system::role { 'role::dnsrecursor': description => 'Recursive DNS server' }
 
     include lvs::configuration, network::constants
 
     class {
         'lvs::realserver':
             realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site];
-        '::dns::recursor':
+        '::dnsrecursor':
             require             => Class['lvs::realserver'],
             listen_addresses    => [$::ipaddress,
                                     $::ipaddress6_eth0,
@@ -82,7 +82,7 @@ class role::dns::recursor {
             allow_from          => $network::constants::all_networks;
     }
 
-    ::dns::recursor::monitor { [ $::ipaddress, $::ipaddress6_eth0 ]: }
+    ::dnsrecursor::monitor { [ $::ipaddress, $::ipaddress6_eth0 ]: }
 
     ferm::service { 'udp_dns_rec':
         proto => 'udp',
