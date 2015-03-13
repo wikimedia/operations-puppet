@@ -1,0 +1,4 @@
+.*-tin:
+  - role::deployment::server
+.*:
+  - role::puppet::self
