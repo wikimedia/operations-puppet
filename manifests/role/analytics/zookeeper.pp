@@ -21,18 +21,9 @@
 #
 class role::analytics::zookeeper::config {
 
+    # Lookup labs zookeeper hosts from hiera.
     if $::realm == 'labs' {
-        # It is difficult to to build a parameterized hash from
-        # the labs wikitech console global variables.
-        # Labs only supports a single zookeeper node.
-        if $::zookeeper_host {
-            $hosts = {
-                "${::zookeeper_host}" => 1,
-            }
-        }
-        else {
-            $hosts = {}
-        }
+        $hosts = hiera('role::analytcs::zookeeper::config::hosts', { "${::fqdn}" => 1 } )
     }
     # else production
     else {
