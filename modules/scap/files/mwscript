@@ -11,6 +11,11 @@ else
 	MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE=$MEDIAWIKI_DEPLOYMENT_DIR
 fi
 
+# PHP spits error on unknown terminals before falling back to "dumb"
+if [ -z "$TERM" ] || [ "$TERM" = unknown ]; then
+	TERM=dumb
+fi
+
 if [ "`whoami`" != "$MEDIAWIKI_WEB_USER" ] ; then
 	sudo -u "$MEDIAWIKI_WEB_USER" php "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" "$@"
 else
