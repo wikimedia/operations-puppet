@@ -165,10 +165,10 @@ class phabricator (
         git_tag   => $git_tag,
         lock_file => $lock_file,
         notify    => Exec["ensure_lock_${lock_file}"],
-        before    => File["{phabdir}/phabricator/.git/config"],
+        before    => File["${phabdir}/phabricator/.git/config"],
     }
 
-    file { "{phabdir}/phabricator/.git/config":
+    file { "${phabdir}/phabricator/.git/config":
         source  => 'puppet:///modules/phabricator/phabricator.gitconfig',
         before    => File["${phabdir}/phabricator/scripts/"],
     }
