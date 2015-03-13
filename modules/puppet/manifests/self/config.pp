@@ -18,23 +18,32 @@ class puppet::self::config(
     $is_puppetmaster      = false,
     $bindaddress          = undef,
     $puppet_client_subnet = undef,
-    $certname             = "${::ec2id}.${::domain}") inherits base::puppet
-{
+    $certname             = "${::ec2id}.${::domain}",
+    $enc_script_path        = undef,
+) inherits base::puppet {
     include ldap::role::config::labs
 
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
 
-    $config = {
-        'dbadapter'     => 'sqlite3',
-        'node_terminus' => 'ldap',
-        'ldapserver'    => $ldapconfig['servernames'][0],
-        'ldapbase'      => "ou=hosts,${basedn}",
-        'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
-        'ldapuser'      => $ldapconfig['proxyagent'],
-        'ldappassword'  => $ldapconfig['proxypass'],
-        'ldaptls'       => true
+    if $enc_script_path {
+        $config = {
+            'node_terminus'  => 'exec',
+            'external_nodes' => $enc_script,
+        }
+    } else {
+        $config = {
+            'node_terminus' => 'ldap',
+            'ldapserver'    => $ldapconfig['servernames'][0],
+            'ldapbase'      => "ou=hosts,${basedn}",
+            'ldapstring'    => '(&(objectclass=puppetClient)(associatedDomain=%s))',
+            'ldapuser'      => $ldapconfig['proxyagent'],
+            'ldappassword'  => $ldapconfig['proxypass'],
+            'ldaptls'       => true,
+        }
     }
+
+    $config['dbadapter'] = 'sqlite3'
 
     # This is set to something different than the default
     # /var/lib/puppet/ssl to avoid conflicts with previously

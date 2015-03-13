@@ -1,0 +1,8 @@
+.*-mc\d\d:
+  - role::memcached
+.*-mediawiki\d\d:
+  - role::mediawiki::appserver
+.*-tin:
+  - role::deployment::server
+.*:
+  - role::self::puppet
