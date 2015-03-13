@@ -49,7 +49,7 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
     include base::firewall
     include standard
 
-    include role::dns::recursor
+    include role::dnsrecursor
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -415,7 +415,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     include admin
     include base::firewall
     include standard
-    include role::dns::recursor
+    include role::dnsrecursor
 
     if $::hostname == 'chromium' {
         $url_downloader_ip = hiera('url_downloader_ip')
@@ -2038,7 +2038,7 @@ node 'neon.wikimedia.org' {
 }
 
 node 'nescio.esams.wikimedia.org' {
-    interface::ip { 'dns::recursor':
+    interface::ip { 'dnsrecursor':
         interface => 'eth0',
         address   => '91.198.174.6',
     }
@@ -2048,12 +2048,12 @@ node 'nescio.esams.wikimedia.org' {
 
     include network::constants
 
-    class { 'dns::recursor':
+    class { 'dnsrecursor':
         listen_addresses => ['91.198.174.6'],
         allow_from       => $network::constants::all_networks,
     }
 
-    dns::recursor::monitor { '91.198.174.6': }
+    dnsrecursor::monitor { '91.198.174.6': }
 }
 
 node 'netmon1001.wikimedia.org' {
