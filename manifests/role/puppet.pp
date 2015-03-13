@@ -52,6 +52,7 @@ class role::puppet::server::labs {
 class role::puppet::self(
     $master = $::puppetmaster,
     $autoupdate_master = $::puppetmaster_autoupdate,
+    $enc = 'ldap', # 'ldap' or 'yaml+ldap'
 ) {
     # If $::puppetmaster is not set, assume
     # this is a self hosted puppetmaster, not allowed
@@ -69,8 +70,18 @@ class role::puppet::self(
     # If localhost or if $server matches this node's
     # $fqdn, then this is a puppetmaster.
     if ($server == 'localhost' or $server == $::fqdn) {
+        if $enc == 'yaml+ldap' {
+            $enc_script_path = '/usr/local/bin/ldap-yaml-enc.py'
+            file { $enc_script_path:
+                source => 'puppet:///modules/puppetmaster/ldap-yaml-enc.py',
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0555',
+            }
+        }
         class { 'puppet::self::master':
-            server => $server,
+            server          => $server,
+            enc_script_path => $enc_script_path,
         }
         # If this parameter / variable variable is set, then
         # run a cron job that automatically tries to update the local
