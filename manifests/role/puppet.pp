@@ -51,6 +51,7 @@ class role::puppet::server::labs {
 #
 class role::puppet::self(
     $master = $::puppetmaster,
+    $autoupdate_master = $::puppetmaster::autoupdate,
 ) {
     # If $::puppetmaster is not set, assume
     # this is a self hosted puppetmaster, not allowed
@@ -71,10 +72,10 @@ class role::puppet::self(
         class { 'puppet::self::master':
             server => $server,
         }
-        # If the puppetmaster_autoupdate variable is set, then
+        # If this parameter / variable variable is set, then
         # run a cron job that automatically tries to update the local
         # git repository, while trying to keep intact cherry picks
-        if $::puppetmaster_autoupdate {
+        if $autoupdate_master {
             include puppetmaster::gitsync
         }
     }
