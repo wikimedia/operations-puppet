@@ -49,10 +49,12 @@ class role::mediawiki::common {
         pools     => $nutcracker_pools,
     }
 
-    monitoring::service { 'mediawiki-installation DSH group':
-        description           => 'mediawiki-installation DSH group',
-        check_command         => 'check_dsh_groups!mediawiki-installation',
-        normal_check_interval => 60,
+    if $::site == 'eqiad' {
+        monitoring::service { 'mediawiki-installation DSH group':
+            description           => 'mediawiki-installation DSH group',
+            check_command         => 'check_dsh_groups!mediawiki-installation',
+            normal_check_interval => 60,
+        }
     }
 
     $scap_proxies = hiera('dsh::config::scap_proxies',[])
@@ -85,21 +87,22 @@ class role::mediawiki::webserver($pool) {
         proto => 'tcp',
         port => 'http',
     }
-
-    monitoring::service { 'appserver http':
-        description   => 'Apache HTTP',
-        check_command => 'check_http_wikipedia',
-    }
-
-    if os_version('ubuntu >= trusty') {
-        monitoring::service { 'appserver_http_hhvm':
-            description   => 'HHVM rendering',
-            check_command => 'check_http_wikipedia_main',
+    if $::site == 'eqiad' {
+        monitoring::service { 'appserver http':
+            description   => 'Apache HTTP',
+            check_command => 'check_http_wikipedia',
         }
 
-        nrpe::monitor_service { 'hhvm':
-            description   => 'HHVM processes',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
+        if os_version('ubuntu >= trusty') {
+            monitoring::service { 'appserver_http_hhvm':
+                description   => 'HHVM rendering',
+                check_command => 'check_http_wikipedia_main',
+            }
+
+            nrpe::monitor_service { 'hhvm':
+                description   => 'HHVM processes',
+                nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
+            }
         }
     }
 }

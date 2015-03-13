@@ -21,3 +21,4 @@ mediawiki_memcached_servers:
   - '10.192.32.21:11211:1 "shard14"'
   - '10.192.32.22:11211:1 "shard15"'
   - '10.192.32.23:11211:1 "shard16"'
+jobrunner_state: 'stopped'

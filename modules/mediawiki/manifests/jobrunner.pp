@@ -65,13 +65,14 @@ class mediawiki::jobrunner (
         notify  => Service['jobrunner'],
     }
 
+    $service_ensure = hiera('jobrunner_state', 'running')
     service { 'jobrunner':
-        ensure   => running,
+        ensure   => $service_ensure,
         provider => 'upstart',
     }
 
     service { 'jobchron':
-        ensure   => running,
+        ensure   => $service_ensure,
         provider => 'upstart',
     }
 
