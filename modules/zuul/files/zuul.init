@@ -15,7 +15,7 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="Zuul Server"
 NAME=zuul
-DAEMON=/usr/local/bin/$NAME
+DAEMON=/usr/local/bin/zuul-server
 PIDFILE=/var/run/$NAME/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 USER=zuul
