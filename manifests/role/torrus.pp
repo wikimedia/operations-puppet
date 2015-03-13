@@ -15,6 +15,7 @@ class role::torrus {
         'cr2-ulsfo.wikimedia.org',
         'cr2-codfw.wikimedia.org',
         'pfw1-eqiad.wikimedia.org',
+        'pfw1-codfw.wikimedia.org',
     ]
 
     $accessswitches = [

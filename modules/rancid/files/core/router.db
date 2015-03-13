@@ -17,6 +17,7 @@ mr1-eqiad.mgmt.eqiad.wmnet:juniper:up:
 lab-ex4200-1.mgmt.eqiad.wmnet:juniper:down:
 lab-ex4500-1.mgmt.eqiad.wmnet:juniper:down:
 pfw1-eqiad.wikimedia.org:juniper:up:
+pfw1-codfw.wikimedia.org:juniper:up:
 cr1-ulsfo.wikimedia.org:juniper:up:
 cr2-ulsfo.wikimedia.org:juniper:up:
 asw-ulsfo.mgmt.ulsfo.wmnet:juniper:up:
