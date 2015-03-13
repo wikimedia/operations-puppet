@@ -12,7 +12,10 @@
 # == Parameters
 # $server - hostname of the puppetmaster.
 #
-class puppet::self::master($server) {
+class puppet::self::master(
+    $server,
+    $enc_script_path = undef,
+) {
     system::role { 'puppetmaster':
         description  => $server ? {
             'localhost' => 'Puppetmaster for itself',
@@ -52,6 +55,7 @@ class puppet::self::master($server) {
         bindaddress          => $bindaddress,
         puppet_client_subnet => $puppet_client_subnet,
         certname             => $certname,
+        enc_script_path      => $enc_script_path,
         require              => File['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.conf'],
     }
     class { 'puppet::self::gitclone':
