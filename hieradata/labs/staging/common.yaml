@@ -9,3 +9,14 @@ salt::master::salt_returner_roots: { base: [ '/srv/salt/_returners' ] }
 role::deployment::server::deployment_group: 'project-staging'
 role::deployment::salt_masters::deployment_server: staging-tin.eqiad.wmflabs
 role::trebuchet::deployment_server: staging-tin.eqiad.wmflabs
+role::elasticsearch::server::expected_nodes: 3
+role::elasticsearch::server::minimum_master_nodes: 3
+role::elasticsearch::server::heap_memory: 4G
+role::elasticsearch::server::recover_after_nodes: 4
+role::elasticsearch::server::statsd_host: labmon1001.eqiad.wmnet
+role::elasticsearch::server::cluster_name: staging-search
+role::elasticsearch::server::unicast_hosts:
+    - staging-elastic01
+    - staging-elastic02
+    - staging-elastic03
+    - staging-elastic04
