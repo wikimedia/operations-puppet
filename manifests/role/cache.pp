@@ -205,7 +205,7 @@ class role::cache {
                 'misc' => {
                     'eqiad' => [
                         'cp1043.eqiad.wmnet', # Jessie
-                        # 'cp1044.eqiad.wmnet', # Jessie
+                        'cp1044.eqiad.wmnet', # Jessie
                     ],
                     'esams' => [],
                     'ulsfo' => [],
