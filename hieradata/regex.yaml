@@ -1,3 +1,23 @@
+es_rack_a3:
+  __regex: !ruby/regexp /^elastic100[0-6]\.eqiad\.wmnet$/
+  elasticsearch::rack: A3
+  elasticsearch::row:  A
+
+es_rack_c5:
+  __regex: !ruby/regexp /^elastic10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
+  elasticsearch::rack: C5
+  elasticsearch::row:  C
+
+es_rack_d3:
+  __regex: !ruby/regexp /^elastic10(1[3-9]|2[0-2])\.eqiad\.wmnet$/
+  elasticsearch::rack: D3
+  elasticsearch::row:  D
+
+es_rack_d4:
+  __regex: !ruby/regexp /^elastic10(2[3-9]|3[01])\.eqiad\.wmnet$/
+  elasticsearch::rack: D4
+  elasticsearch::row:  D
+
 hadoop_workers:
   __regex: !ruby/regexp /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/
   mainrole: analytics_hadoop_worker
