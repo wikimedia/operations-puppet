@@ -12,12 +12,19 @@ class mediawiki::php {
         $php_module_conf_dir = '/etc/php5/conf.d'
     }
 
+    file { '/etc/php5/apache2':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/etc/php5/apache2/php.ini':
         source  => 'puppet:///modules/mediawiki/php/php.ini',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package['php5-common'],
+        require => [Package['php5-common'], File['/etc/php5/apache2']],
     }
 
     file { '/etc/php5/cli/php.ini':
