@@ -119,8 +119,8 @@ function set_pxe_and_reboot {
 
 function enable_and_run_puppet {
     nodename=${1}
-    log "Enabling puppet"
-    ssh -4 -i /root/.ssh/new_install -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" ${nodename} "puppet agent --enable"
+    log "Stopping default puppet agent and enabling puppet"
+    ssh -4 -i /root/.ssh/new_install -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" ${nodename} "service puppet stop; puppet agent --enable"
     log "Spawning the first puppet run as well"
     ssh -4 -q -i /root/.ssh/new_install -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" ${nodename} "puppet agent -t" > ${nodename}.puppetrun.log 2>&1 &
     log "The first puppet run is ongoing, you can see what the result is in the file ${PWD}/${nodename}.puppetrun.log"
