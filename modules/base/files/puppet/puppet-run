@@ -17,8 +17,18 @@ chmod 600 /var/log/puppet.log
 # package installs in a running (manual and/or initial install) puppet run
 PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
 if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
-    echo Skipping this run, puppet agent already running at pid `cat $PUPPETLOCK` >>/var/log/puppet.log
-    exit 0
+    set +e
+    PUPPETPID=$(cat $PUPPETLOCK)
+    CMDLINE_FILE="/proc/$PUPPETPID/cmdline"
+    if [ -f $CMDLINE_FILE ]; then
+        grep -q puppet $CMDLINE_FILE
+        if [ $? -eq 0 ]; then
+            echo Skipping this run, puppet agent already running at pid `cat $PUPPETLOCK` >>/var/log/puppet.log
+            exit 0
+        fi
+    fi
+    set -e
+    echo Ignoring stale puppet agent lock for pid `cat $PUPPETLOCK` >>/var/log/puppet.log
 fi
 
 timeout $KILL_TIMEOUT 300 apt-get update -qq >> /var/log/puppet.log 2>&1
