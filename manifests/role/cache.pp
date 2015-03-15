@@ -148,8 +148,8 @@ class role::cache {
                         'cp1064.eqiad.wmnet',
                         #'cp1071.eqiad.wmnet',
                         #'cp1072.eqiad.wmnet',
-                        'cp1073.eqiad.wmnet',
-                        'cp1074.eqiad.wmnet',
+                        #'cp1073.eqiad.wmnet',
+                        #'cp1074.eqiad.wmnet',
                     ],
                     'esams' => [
                         'cp3003.esams.wmnet',
