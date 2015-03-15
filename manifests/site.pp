@@ -2501,6 +2501,7 @@ node 'californium.wikimedia.org' {
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
+    class { 'base::firewall': }
 
     include standard
     include admin
