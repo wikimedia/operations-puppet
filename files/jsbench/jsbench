@@ -1,19 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-  vbench - VisualEditor benchmarking tool
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  jsbench - Javascript performance benchmarking tool
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Usage: vbench [OPTIONS] URL
+  Usage: jsbench [OPTIONS] URL
    -h, --help            show this help message and exit
+   --verbose             log verbosely
+   --benchmark-file FILE benchmark file (default: standard input)
    --host HOST           Chromium host (default: localhost)
    --port PORT           Chromium port (default: 9222)
    --repeat N            times to repeat (default: 5)
-   --disable-cache       disable network cache
+   --warmups N           number of warm-up runs (default: 3)
    --write-profile-data  save profiling data as .cpuprofile files.
-   --verbose             log verbosely
    --display DISPLAY     set device display metrics to WIDTHxHEIGHT or
                          WIDTHxHEIGHT*SCALE_FACTOR
+   --disable-cache       disable network cache
+   --jsvar NAME VALUE    make VALUE available in the benchmark script as
+                         jsbench[NAME]; can be used multiple times
+
+  A benchmark must be specified via --benchmark or on the standard input.
+  jsbench will remote-control Chromium (which needs to be running and
+  listening for a remote debugger on the given host/port) to go to the
+  specified URL, execute the benchmark script, and return performance
+  profiling data.
+
 
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
 
@@ -54,36 +65,9 @@ try:
     from autobahn.twisted.websocket import (WebSocketClientProtocol,
                                             WebSocketClientFactory)
 except ImportError:
-    print('vbench requires autobahn (https://pypi.python.org/pypi/autobahn/) '
+    print('jsbench requires autobahn (https://pypi.python.org/pypi/autobahn/) '
           'and twisted (https://pypi.python.org/pypi/Twisted/).')
     sys.exit(1)
-
-
-# FIXME: Make this configurable.
-JS = '''
-    window.onload = function () {
-        var stage = "%s";
-        ve.trackSubscribe( 'trace.' + stage + '.', function ( topic ) {
-            switch ( topic.split( '.' ).pop() ) {
-            case 'enter':
-                console.profile( stage );
-                break;
-            case 'exit':
-                console.profileEnd( stage );
-                break;
-            }
-        } );
-
-        // Don't show the welcome dialog.
-        localStorage.clear()
-        localStorage.setItem( 've-beta-welcome-dialog', 1 );
-
-        // Wait 200ms for any load handlers to run, then start VE.
-        setTimeout( function () {
-              mw.libs.ve.onEditTabClick( { preventDefault: $.noop } );
-        }, 200 );
-    };
-'''
 
 
 class Highlighter(object):
@@ -269,7 +253,8 @@ class ChromeRemoteDebuggingProtocol(WebSocketClientProtocol):
             self.__dict__[domain_name] = domain
             yield domain.enable()
 
-        scriptSource = JS % self.factory.stage
+        scriptSource = 'var jsbench=%s;\n\n%s' % (json.dumps(dict(self.factory.jsvar)),
+            self.factory.benchmark_file.read())
         yield self.page.addScriptToEvaluateOnLoad(scriptSource=scriptSource)
         yield self.profiler.setSamplingInterval(interval=100)
 
@@ -365,7 +350,29 @@ class ChromeRemoteDebuggingFactory(WebSocketClientFactory):
         return json.load(req)
 
 
-ap = argparse.ArgumentParser(fromfile_prefix_chars='@')
+ap = argparse.ArgumentParser(fromfile_prefix_chars='@',
+    description='Javascript performance benchmarking tool',
+    epilog='A benchmark must be specified via --benchmark or on the standard input. '
+           'jsbench will remote-control Chromium (which needs to be running and '
+           'listening for a remote debugger on the given host/port) to go to the '
+           'specified URL, execute the benchmark script, and return performance '
+           'profiling data.')
+ap.add_argument(
+    '--verbose',
+    action='store_const',
+    const=logging.DEBUG,
+    default=logging.INFO,
+    dest='log_level',
+    help='log verbosely',
+)
+ap.add_argument(
+    '--benchmark-file',
+    action='store',
+    type=argparse.FileType('r'),
+    default=sys.stdin,
+    help='benchmark file (default: standard input)',
+    metavar='FILE',
+)
 ap.add_argument(
     '--host',
     default='localhost',
@@ -399,14 +406,6 @@ ap.add_argument(
     help='save profiling data as .cpuprofile files',
 )
 ap.add_argument(
-    '--verbose',
-    action='store_const',
-    const=logging.DEBUG,
-    default=logging.INFO,
-    dest='log_level',
-    help='log verbosely',
-)
-ap.add_argument(
     '--display',
     type=parse_display_opts,
     help='set device display metrics to WIDTHxHEIGHT or '
@@ -419,9 +418,12 @@ ap.add_argument(
     help='disable network cache',
 )
 ap.add_argument(
-    '--stage',
-    default='init',
-    help='Name of Specific stage to profile (default: "init")',
+    '--jsvar',
+    action='append',
+    nargs=2,
+    help='make VALUE available in the benchmark script as'
+         'jsbench[NAME]; can be used multiple times',
+    metavar=('NAME', 'VALUE'),
 )
 ap.add_argument(
     'target_url',
@@ -431,7 +433,7 @@ ap.add_argument(
 
 args = ap.parse_args()
 
-log = logging.getLogger('vbench')
+log = logging.getLogger('jsbench')
 log.setLevel(args.log_level)
 
 is_tty = sys.stdout.isatty()
@@ -443,7 +445,7 @@ if not is_tty:
     stderr_handler.setFormatter(HighlightingFormatter(use_color=True))
     log.addHandler(stderr_handler)
 
-observer = PythonLoggingObserver('vbench')
+observer = PythonLoggingObserver('jsbench')
 observer.start()
 
 factory = ChromeRemoteDebuggingFactory(**vars(args))
