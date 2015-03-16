@@ -4,6 +4,7 @@ class openstack::firewall {
     $labs_private_net = '10.0.0.0/0'
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
+    $designate = '208.80.154.12'
     if ($::site == 'codfw') {
         # TODO!  codfw will need something
         # like this when the ip range is assigned.
@@ -43,7 +44,7 @@ class openstack::firewall {
         rule => "saddr ${wikitech} proto tcp dport (5000 35357 9292) ACCEPT;",
     }
 
-    # wikitech needs to be able to do things
+    # horizon needs to be able to do things
     ferm::rule { 'openstack-services-horizon':
         rule => "saddr ${horizon} proto tcp dport (5000 35357 9292) ACCEPT;",
     }
@@ -57,6 +58,9 @@ class openstack::firewall {
     }
     ferm::rule { 'beam_nova':
         rule => "saddr ${labs_nodes} proto tcp dport (5672 56918) ACCEPT;",
+    }
+    ferm::rule { 'rabbit_for_designate':
+        rule => "saddr ${designate} proto tcp dport 5672 ACCEPT;",
     }
     ferm::rule { 'glance_api_nova':
         rule => "saddr ${labs_nodes} proto tcp dport 9292 ACCEPT;",
