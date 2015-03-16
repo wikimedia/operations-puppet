@@ -9,37 +9,31 @@ paste.app_factory = designate.api.versions:factory
 
 [composite:osapi_dns_v1]
 use = call:designate.api.middleware:auth_pipeline_factory
-noauth = request_id noauthcontext maintenance faultwrapper normalizeuri osapi_dns_app_v1
-keystone = request_id authtoken keystonecontext maintenance faultwrapper normalizeuri osapi_dns_app_v1
+noauth = noauthcontext maintenance faultwrapper osapi_dns_app_v1
+keystone = authtoken keystonecontext maintenance faultwrapper osapi_dns_app_v1
 
 [app:osapi_dns_app_v1]
 paste.app_factory = designate.api.v1:factory
 
 [composite:osapi_dns_v2]
 use = call:designate.api.middleware:auth_pipeline_factory
-noauth = request_id faultwrapper noauthcontext maintenance normalizeuri osapi_dns_app_v2
-keystone = request_id faultwrapper authtoken keystonecontext maintenance normalizeuri osapi_dns_app_v2
+noauth = noauthcontext maintenance faultwrapper osapi_dns_app_v2
+keystone = authtoken keystonecontext maintenance faultwrapper osapi_dns_app_v2
 
 [app:osapi_dns_app_v2]
 paste.app_factory = designate.api.v2:factory
 
-[filter:request_id]
-paste.filter_factory = oslo_middleware:RequestId.factory
+[filter:maintenance]
+paste.filter_factory = designate.api.middleware:MaintenanceMiddleware.factory
 
 [filter:noauthcontext]
 paste.filter_factory = designate.api.middleware:NoAuthContextMiddleware.factory
 
-[filter:authtoken]
-paste.filter_factory = keystonemiddleware.auth_token:filter_factory
-
 [filter:keystonecontext]
 paste.filter_factory = designate.api.middleware:KeystoneContextMiddleware.factory
 
-[filter:maintenance]
-paste.filter_factory = designate.api.middleware:MaintenanceMiddleware.factory
-
-[filter:normalizeuri]
-paste.filter_factory = designate.api.middleware:NormalizeURIMiddleware.factory
-
 [filter:faultwrapper]
 paste.filter_factory = designate.api.middleware:FaultWrapperMiddleware.factory
+
+[filter:authtoken]
+paste.filter_factory = keystoneclient.middleware.auth_token:filter_factory
