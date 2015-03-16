@@ -1,0 +1,3 @@
+role::db::redis::redis_replication:
+  rdf2002: rdf2001
+role::db::redis::dir: "/srv/redis"
