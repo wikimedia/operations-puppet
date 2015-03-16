@@ -83,4 +83,11 @@ class statistics::rsync::webrequest {
         destination    => "${working_path}/log/webrequest/archive",
         retention_days => 90, # Pruning after 90 days as those logs contain private data.
     }
+
+    # purge all files older than 90 days on a daily basis
+    cron { 'webrequest_purge_old_logs':
+        command => "find /a/log/webrequest/archive -mtime +90 -exec rm {} \\;",
+        user    => 'root',
+        hour    => 1,
+    }
 }
