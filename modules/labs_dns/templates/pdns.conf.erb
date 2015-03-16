@@ -1,0 +1,44 @@
+# This file is managed by puppet - don't edit it locally!
+#
+# PowerDNS configuration file
+# Written on 2011/04/20 by Ryan Lane <rlane@wikimedia.org>
+
+# Always bind to specific addresses - pdns complains when using INADDR_ANY.
+# Change this to the external interface address
+local-address=<%= @dns_auth_ipaddress %>
+query-local-address=<% if has_variable?("dns_auth_query_address") then %><%= @dns_auth_query_address %><% else %><%= @dns_auth_ipaddress %><% end %>
+
+# Change this to the actual SOA name:
+default-soa-name=<%= @dns_auth_soa_name %>
+
+# A backend like geobackend can't make use of caching, since returned
+# results will be different depending on "who's asking".
+#query-cache-ttl=0
+#cache-ttl=0
+#negquery-cache-ttl=300
+
+# If just geobackend is used, multithreading is unnecessary,
+# and may even impact performance.
+#distributor-threads=1
+
+# Master for allowing AXFRs
+master=yes
+slave=no
+
+# Running privileged is unnecessary
+setgid=pdns
+setuid=pdns
+
+# Logging
+logging-facility=6
+loglevel=6
+query-logging=no
+log-dns-details=no
+
+# Backends to load
+launch=gmysql
+gmysql-host=<%= @pdns_db_host %>
+gmysql-user=pdns
+gmysql-dbname=pdns
+gmysql-password=<%= @pdns_db_passwd %>
+
