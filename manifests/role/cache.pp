@@ -436,8 +436,18 @@ class role::cache {
     #
     class varnish::kafka {
         require role::analytics::kafka::config
-        # All producers currently produce to the (only) Kafka cluster in eqiad.
-        $kafka_brokers = keys($role::analytics::kafka::config::cluster_config['eqiad'])
+
+        # Get a list of kafka brokers for the currently configured $kafka_cluster_name.
+        # In production this will be 'eqiad' always, since we only have one Kafka cluster there.
+        # Even though $kafka_cluster_name should hardcoded to 'eqiad' in ...kafka::config,
+        # we hardcode it again here, just to be sure it doesn't accidentally get changed
+        # if we add new Kafka clusters later.
+        $kafka_cluster_name = $::realm ? {
+            'production' => 'eqiad',
+            'labs'       => $role::analytics::kafka::config::kafka_cluster_name,
+        }
+
+        $kafka_brokers = keys($role::analytics::kafka::config::cluster_config[$kafka_cluster_name])
 
         # varnishkafka will use a local statsd instance for
         # using logster to collect metrics.
@@ -582,6 +592,25 @@ class role::cache {
             # single broker dropping out of its leader role,
             # without seeing lost messages.
             topic_request_required_acks  => '2',
+        }
+
+        varnishkafka::monitor { 'statsv': }
+    }
+
+    class varnish::kafka::eventlogging(
+        $varnish_name = $::hostname,
+        $varnish_svc_name = 'varnish',
+    ) inherits role::cache::varnish::kafka
+    {
+        varnishkafka::instance { 'eventlogging':
+            brokers           => $kafka_brokers,
+            format            => '%q\t%l\t%n\t%t\t%h\t"%{User-agent}i"',
+            format_type       => 'string',
+            topic             => 'eventlogging',
+            varnish_name      => $varnish_name,
+            varnish_svc_name  => $varnish_svc_name,
+            varnish_opts      => { 'm' => 'RxURL:^/beacon/event.gif', },
+            topic_request_required_acks  => '-1',
         }
 
         varnishkafka::monitor { 'statsv': }
@@ -1297,7 +1326,13 @@ class role::cache {
         }
 
         include role::cache::varnish::logging::eventlistener
-
+        # Include a varnishkafka instance that will produce
+        # events to Kafka.  This conditional will be removed
+        # once this is well tested in labs and we are ready
+        # to enable this in production.
+        if $::realm == 'labs' {
+            include role::cache::varnish::kafka::eventlogging
+        }
 
         # ToDo: Remove production conditional once this works
         # is verified to work in labs.

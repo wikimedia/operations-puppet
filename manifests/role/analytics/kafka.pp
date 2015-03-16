@@ -44,10 +44,12 @@ class role::analytics::kafka::config {
         $nofiles_ulimit = 8192
     }
 
-    # else Kafka cluster is based on $::site.
     else {
-        $kafka_cluster_name = $::site
+        # Production only has one Kafka cluster in eqiad, so
+        # hardcode the cluster name to 'eqiad'.
+        $kafka_cluster_name = 'eqiad'
 
+        # Production Kafka clusters are named by $::site.
         $cluster_config = {
             'eqiad'   => {
                 'analytics1012.eqiad.wmnet' => { 'id' => 12 },  # Row A
