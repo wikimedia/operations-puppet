@@ -12,30 +12,10 @@ echo
 repo_status "/srv/mediawiki-local/extensions/VisualEditor"
 repo_status "/srv/mediawiki-local"
 
-cd /srv/profiles
-/usr/lib/chromium-browser/chromium-browser \
-    --incognito \
-    --remote-debugging-port=9222 \
-    --display=:99 \
-    --disable-background-networking \
-    --disable-client-side-phishing-detection \
-    --disable-component-update \
-    --disable-default-apps \
-    --disable-extensions \
-    --disable-hang-monitor \
-    --disable-infobars \
-    --disable-plugins-discovery \
-    --disable-prompt-on-repost \
-    --disable-suggestions-service \
-    --disable-sync \
-    --disable-translate \
-    --disable-v8-idle-tasks \
-    --disable-web-resources \
-    --no-default-browser-check \
-    --no-first-run \
-    --safebrowsing-disable-auto-update \
-    --safebrowsing-disable-download-protection >/dev/null 2>&1 &
+export JSBENCH_CPU=15
+
+sudo service jsbench-browser start
 sleep 1
-taskset -p -c 15 "$(pgrep --newest chromium)" >/dev/null
-vbench --repeat=30 --write-profile-data "http://osmium/wiki/Barack_Obama"
-pkill -u "$(whoami)" chrom
+jsbench --benchmark /usr/local/share/jsbench/ve.bench --repeat=30 --write-profile-data --jsvar stage activate "http://osmium/wiki/Barack_Obama"
+
+sudo service jsbench-browser start
