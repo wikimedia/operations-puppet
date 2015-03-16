@@ -83,7 +83,14 @@ class role::mediawiki::webserver($pool) {
 
     ferm::service { 'mediawiki-http':
         proto => 'tcp',
-        port => 'http',
+        port  => 'http',
+    }
+
+    # allow ssh from deployment hosts
+    ferm::service { 'deployment-ssh':
+        proto  => 'tcp',
+        port   => '22',
+        srange => $deployment_servers,
     }
 
     monitoring::service { 'appserver http':
