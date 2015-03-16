@@ -183,12 +183,12 @@ enabled_notification_handlers = nova_fixed
 [storage:sqlalchemy]
 # Database connection string - to configure options for a given implementation
 # like sqlalchemy or other see below
-connection = mysql://<%= designateconfig["db_user"] %>:<%= designateconfig["db_pass"] %>@<%= designateconfig["db_host"] %>/<%= designateconfig["db_name"] %>
-connection_debug = 100
-connection_trace = True
-idle_timeout = 3600
-max_retries = 10
-retry_interval = 10
+#connection = mysql://<%= designateconfig["db_user"] %>:<%= designateconfig["db_pass"] %>@<%= designateconfig["db_host"] %>/<%= designateconfig["db_name"] %>
+#connection_debug = 100
+#connection_trace = True
+#idle_timeout = 3600
+#max_retries = 10
+#retry_interval = 10
 
 ########################
 ## Handler Configuration
@@ -234,7 +234,7 @@ format = ‘%(display_name)s.%(domain)s’
 #############################
 
 [backend:powerdns]
-connection = mysql://<%= designateconfig["pdns_db_user"] %>:<%= designateconfig["pdns_db_pass"] %>@<%= designateconfig["db_host"] %>/<%= designateconfig["pdns_db_name"] %>
+database_connection = mysql://<%= designateconfig["pdns_db_user"] %>:<%= designateconfig["pdns_db_pass"] %>@<%= designateconfig["db_host"] %>/<%= designateconfig["pdns_db_name"] %>
 connection_debug = 100
 connection_trace = True
 sqlite_synchronous = True
