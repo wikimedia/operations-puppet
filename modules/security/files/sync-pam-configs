@@ -1,0 +1,25 @@
+#! /bin/bash
+
+cd /usr/local/share/pam-configs/.installed || exit 1
+for conf in *; do
+    if [ -r "$conf" -a ! -r "../$conf" ]; then
+        /usr/sbin/pam-auth-update --package --remove "$conf"
+        rm "/usr/share/pam-configs/$conf"
+        rm "$conf"
+    fi
+done
+
+need_update=false
+
+cd /usr/local/share/pam-configs || exit 1
+for conf in *; do
+    if [ -r "$conf" -a ! -r ".installed/$conf" ]; then
+        cp "$conf" ".installed/$conf"
+        ln -s "/usr/local/share/pam-configs/.installed/$conf" /usr/share/pam-configs/
+        need_update='true'
+    fi
+done
+
+if $need_update; then
+  /usr/sbin/pam-auth-update --package
+fi
