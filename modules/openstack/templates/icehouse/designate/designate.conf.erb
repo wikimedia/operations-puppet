@@ -104,11 +104,11 @@ enabled_extensions_v2 = diagnsotics, quotas, reports, sync
 #-----------------------
 [keystone_authtoken]
 auth_host = <%= designateconfig["keystone_auth_host"] %>
-#auth_port = 35357
-#auth_protocol = http
-#admin_tenant_name = service
-#admin_user = designate
-#admin_password = designate
+auth_port = <%= designateconfig["keystone_auth_port"] %>
+auth_protocol = <%= designateconfig["keystone_auth_protocol"] %>
+admin_token = ADMIN
+admin_token = <%= designateconfig["keystone_admin_token"] %>
+auth_uri = <%= designateconfig["auth_uri"] %>
 
 #-----------------------
 # Sink Service
