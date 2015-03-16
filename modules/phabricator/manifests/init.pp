@@ -176,6 +176,12 @@ class phabricator (
     file { "${phabdir}/phabricator/scripts/":
         mode    => '0754',
         recurse => true,
+        before    => File["${phabdir}/phabricator/scripts/mail/"],
+    }
+
+    file { "${phabdir}/phabricator/scripts/mail/":
+        mode    => '0755',
+        recurse => true,
     }
 
     if ($libraries) {
