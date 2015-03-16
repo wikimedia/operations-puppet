@@ -199,9 +199,10 @@ retry_interval = 10
 [handler:nova_fixed]
 # Domain ID of domain to create records in. Should be pre-created
 domain_id = <%= designateconfig["dhcp_domain"] %>.wmflabs
+notification_topics = monitor
 notification_topics = notifications
-control_exchange = 'nova'
-#format = '%(octet0)s-%(octet1)s-%(octet2)s-%(octet3)s.%(domain)s'
+control_exchange = nova
+format = ‘%(display_name)s.%(domain)s’
 
 #------------------------
 # Neutron Floating Handler
