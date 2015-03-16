@@ -28,6 +28,7 @@ def main():
     (options, args) = parser.parse_args()
     ldapSupportLib.setBindInfoByOptions(options, parser)
     ds = ldapSupportLib.connect()
+    basedn = ldapSupportLib.getLdapInfo('base')
     try:
         proc = subprocess.Popen('/usr/bin/puppet cert list', shell=True, stdout=subprocess.PIPE)
         hosts = proc.communicate()
@@ -36,7 +37,6 @@ def main():
             if host[0] == "(":
                 continue
             host = host.strip('"')
-            basedn = getPuppetInfo('ldapbase')
             query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
             PosixData = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
             if not PosixData:
@@ -52,7 +52,6 @@ def main():
         hosts = proc.communicate()
         hosts = json.loads(hosts[0])
         for host in hosts["minions_pre"]:
-            basedn = getPuppetInfo('ldapbase')
             query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
             PosixData = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
             if not PosixData:
