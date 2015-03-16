@@ -16,7 +16,7 @@ class role::releases {
     # ssh-based uploads from deployment servers
     ferm::rule { 'deployment_package_upload':
         ensure => present,
-        rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT',
+        rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
     }
 
     ferm::service { 'releases_http':
