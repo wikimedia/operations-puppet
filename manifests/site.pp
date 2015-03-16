@@ -2510,6 +2510,15 @@ node 'californium.wikimedia.org' {
     class { 'base::firewall': }
 }
 
+# Holmium hosts openstack-designate, the labs DNS service.
+node 'holmium.wikimedia.org' {
+    include standard
+    include admin
+
+    include role::labsdns
+    include role::designate::server
+}
+
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
     class { 'base::firewall': }
