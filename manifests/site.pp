@@ -1253,11 +1253,15 @@ node 'install2001.wikimedia.org' {
 
 node 'iridium.eqiad.wmnet' {
     class { 'base::firewall': }
+    include standard
 
     role phabricator::main
 
-    include admin
-    include standard
+    class { 'admin':
+        groups => [
+            'phabricator-admin',
+        ],
+    }
 }
 
 node 'iron.wikimedia.org' {
