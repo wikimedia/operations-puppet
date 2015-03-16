@@ -10,9 +10,11 @@ class openstack::firewall {
         # $labs_nodes = '10.4.16.0/24'
         # virt1000
         $other_master = '208.80.154.18'
+        $designate = '208.80.154.12'
     } elsif ($::site == 'eqiad') {
         $labs_nodes = '10.64.20.0/24'
         $other_master = '208.80.153.14'
+        $designate = '208.80.154.12'
     }
 
     $iron = '208.80.154.151'
@@ -43,7 +45,7 @@ class openstack::firewall {
         rule => "saddr ${wikitech} proto tcp dport (5000 35357 9292) ACCEPT;",
     }
 
-    # wikitech needs to be able to do things
+    # horizon needs to be able to do things
     ferm::rule { 'openstack-services-horizon':
         rule => "saddr ${horizon} proto tcp dport (5000 35357 9292) ACCEPT;",
     }
@@ -57,6 +59,9 @@ class openstack::firewall {
     }
     ferm::rule { 'beam_nova':
         rule => "saddr ${labs_nodes} proto tcp dport (5672 56918) ACCEPT;",
+    }
+    ferm::rule { 'rabbit_for_designate':
+        rule => "saddr ${designate} proto tcp dport 5672 ACCEPT;",
     }
     ferm::rule { 'glance_api_nova':
         rule => "saddr ${labs_nodes} proto tcp dport 9292 ACCEPT;",
