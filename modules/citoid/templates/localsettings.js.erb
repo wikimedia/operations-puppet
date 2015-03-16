@@ -30,6 +30,10 @@ var CitoidConfig = {
 	zoteroInterface : '<%= @zotero_host %>',
 	// Whether or not the outbound proxy should be used to access Zotero
 	zoteroUseProxy : false,
+
+	// StatsD endpoint to which metrics should be sent, or false
+	// to disable metric reporting.
+	statsd: <%= @statsd_config %>,
 };
 
 /*Exports*/
