@@ -2,3 +2,5 @@
   - role::deployment::server
 .*:
   - role::puppet::self
+.*-rdb[12]:
+  - role::db::redis
