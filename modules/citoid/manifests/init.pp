@@ -17,10 +17,10 @@
 #   Port of the zotero service
 #
 class citoid(
-    $port        = undef,
+    $port        = 1970,
     $http_proxy  = undef,
+    $zotero_port = 1969,
     $zotero_host = undef,
-    $zotero_port = undef
 ) {
 
     require_package('nodejs')
