@@ -604,12 +604,13 @@ class role::cache {
     {
         varnishkafka::instance { 'eventlogging':
             brokers           => $kafka_brokers,
-            format            => '%q\t%l\t%n\t%t\t%h\t"%{User-agent}i"',
+            # Note that this format uses literal tab characters.
+            format            => '%q	%l	%n	%t	%h	"%{User-agent}i"',
             format_type       => 'string',
             topic             => 'eventlogging',
             varnish_name      => $varnish_name,
             varnish_svc_name  => $varnish_svc_name,
-            varnish_opts      => { 'm' => 'RxURL:^/beacon/event.gif', },
+            varnish_opts      => { 'm' => 'RxURL:^/beacon/event\.gif\?.' },
             topic_request_required_acks  => '-1',
         }
     }
