@@ -334,4 +334,14 @@ class role::wikimetrics {
         group   => $wikimetrics_group,
         require => File["${public_directory}/datafiles"]
     }
+
+    # Test using logster to send wikimetrics stats to statsd -> graphite.
+    # hardcoded labs statsdhost: labmon1001.eqiad.wmnet
+    # TODO: this should only run on prod, not staging
+    logster::job { 'wikimetrics-apache-visits':
+        minute          => '*/1',
+        parser          => 'LineCountLogster ',
+        logfile 		=> '/var/log/apache2/access.wikimetrics.log',
+        logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix='wikimetrics' --parser-options '--regex=report|cohort|metrics|login|about|contact' ",
+    }
 }
