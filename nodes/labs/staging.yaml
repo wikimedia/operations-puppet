@@ -4,5 +4,7 @@
   - role::sca
 .*-ocg\d\d:
   - role::ocg
+.*-rdb\d\d?:
+  - role::db::redis
 .*:
   - role::puppet::self
