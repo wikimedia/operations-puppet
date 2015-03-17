@@ -6,3 +6,5 @@
   - role::ocg
 .*:
   - role::puppet::self
+.*-rdb[12]:
+  - role::db::redis
