@@ -1,0 +1,10 @@
+Code-Review+2: RobH <rob@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Ori.livneh <ori@wikimedia.org>
+Code-Review+1: John F. Lewis <johnflewis93@gmail.com>
+Code-Review+1: BBlack <bblack@wikimedia.org>
+Submitted-by: RobH <rob@wikimedia.org>
+Submitted-at: Tue, 17 Mar 2015 21:11:17 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/196321
+Project: operations/puppet
+Branch: refs/heads/production
