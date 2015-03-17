@@ -7,15 +7,27 @@ class scap::master(
     $rsync_host = 'tin.eqiad.wmnet',
     $statsd_host = 'statsd.eqiad.wmnet',
     $statsd_port = 8125,
+    $deployment_group = 'wikidev',
 ) {
     include scap::scripts
     include rsync::server
     include network::constants
     include dsh
 
+    git::clone { 'operations/mediawiki-config':
+        directory => $common_source_path,
+        ensure    => present,
+        group     => $deployment_group,
+        shared    => true,
+    }
+
     rsync::server::module { 'common':
         path        => $common_source_path,
         read_only   => 'yes',
         hosts_allow => $::network::constants::mw_appserver_networks;
+    }
+
+    class { 'scap::l10nupdate':
+        deployment_group => $deployment_group,
     }
 }
