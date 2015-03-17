@@ -470,6 +470,9 @@ funnel	*wikimedia.community	//www.wikimedia.org
 # wikimedia.us redirect
 funnel	*wikimedia.us	//www.wikimedia.org
 
+# wikimedia.xyz redirect
+funnel	*wikimedia.xyz	//www.wikimedia.org
+
 # tartupeedia.ee (WMEE-owned domain) - bug 44893
 funnel	*tartupeedia.ee	//et.wikipedia.org/wiki/Portaal:Tartupeedia
 
