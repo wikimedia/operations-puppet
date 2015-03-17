@@ -5,11 +5,13 @@ class role::designate::config {
 
     $commondesignateconfig = {
         db_name =>      'designate',
-        db_user =>      'designate',
+        db_user =>      $passwords::designate::db_user,
         db_pass =>      $passwords::designate::db_pass,
         pdns_db_name => 'pdns',
-        pdns_db_user => 'pdns',
+        pdns_db_user => $passwords::pdns::db_user,
         pdns_db_pass => $passwords::pdns::db_pass,
+        pdns_db_admin_user => $passwords::pdns::db_admin_user,
+        pdns_db_admin_pass => $passwords::pdns::db_admin_pass,
     }
 }
 

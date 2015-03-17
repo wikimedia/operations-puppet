@@ -234,10 +234,13 @@ format = ‘%(display_name)s.%(domain)s’
 #############################
 
 [backend:powerdns]
-database_connection = mysql://<%= designateconfig["pdns_db_user"] %>:<%= designateconfig["pdns_db_pass"] %>@<%= designateconfig["db_host"] %>/<%= designateconfig["pdns_db_name"] %>
 connection_debug = 100
 connection_trace = True
 sqlite_synchronous = True
 idle_timeout = 3600
 max_retries = 10
 retry_interval = 10
+database_connection = mysql://<%= designateconfig["pdns_db_user"] %>:<%= designateconfig["pdns_db_pass"] %>@<%= designateconfig["db_host"] %>/<%= designateconfig["pdns_db_name"] %>
+# This is an alternate db account with more rights -- this setting should
+#  be used when running the db-sync command and the like during upgrades.
+#database_connection = mysql://<%= designateconfig["pdns_db_admin_user"] %>:<%= designateconfig["pdns_db_admin_pass"] %>@<%= designateconfig["db_host"] %>/<%= designateconfig["pdns_db_name"] %>
