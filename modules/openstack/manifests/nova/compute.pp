@@ -10,7 +10,7 @@ class openstack::nova::compute($openstack_version=$::openstack::version, $novaco
                 owner   => 'nova',
                 group   => 'libvirtd',
                 mode    => '0440',
-                source  => "puppet:///private/ssl/${name}.key",
+                source  => "puppet:///private/ssl/${certname}.key",
                 require => Package['nova-common'];
             "/var/lib/nova/clientkey.pem":
                 ensure  => link,
