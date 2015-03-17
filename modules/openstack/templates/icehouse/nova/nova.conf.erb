@@ -94,6 +94,9 @@ dnsmasq_config_file=/etc/dnsmasq-nova.conf
 notification_driver=wikistatus
 notify_on_state_change=vm_state
 
+# And we need this driver for designate
+notification_driver = nova.openstack.common.notifier.rpc_notifier
+
 wiki_host=<%= instance_status_wiki_host %>
 wiki_domain=<%= instance_status_wiki_domain %>
 wiki_page_prefix=<%= instance_status_wiki_page_prefix %>
