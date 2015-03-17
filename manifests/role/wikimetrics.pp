@@ -334,4 +334,18 @@ class role::wikimetrics {
         group   => $wikimetrics_group,
         require => File["${public_directory}/datafiles"]
     }
+
+    # Using logster to send wikimetrics stats to statsd -> graphite.
+    # hardcoded labs statsdhost: labmon1001.eqiad.wmnet
+    # crontab should run once a day at 23 hours
+     if !$debug {
+        logster::job { 'wikimetrics-apache-requests':
+             minute          => '0',
+             hour            => '23',
+             parser          => 'LineCountLogster',
+             logfile         => '/var/log/apache2/access.wikimetrics.log',
+             logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix='analytics.wikimetrics.ui' --parser-options '--regex=.*(report|cohort|metrics|login|a
+bout|contact).*'"
+        }
+     }
 }
