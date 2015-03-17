@@ -132,7 +132,7 @@ class hhvm(
     $cli_cache = "${cache_dir}/cli.hhbc.sq3"
 
     $fcgi_defaults = {
-        memory_limit => '300M',
+        memory_limit => '500M',
         hhvm         => {
             jit               => true,
             jit_a_size        => $a_size,
