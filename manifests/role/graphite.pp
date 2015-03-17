@@ -146,6 +146,7 @@ class role::graphite::base(
                 udp_receiver_interface    => '0.0.0.0',
                 enable_udp_listener       => true,
                 relay_method              => 'consistent-hashing',
+                max_queue_size            => '500000',
                 destinations              => [
                     '127.0.0.1:2104:a',
                     '127.0.0.1:2204:b',
