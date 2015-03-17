@@ -1,4 +1,6 @@
 .*-tin:
   - role::deployment::server
+.*-sca\d\d:
+  - role::sca
 .*:
   - role::puppet::self
