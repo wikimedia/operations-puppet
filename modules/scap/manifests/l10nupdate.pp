@@ -2,7 +2,7 @@
 #
 # Sets up files and cron required to do l10nupdate
 class scap::l10nupdate {
-    require scap::master
+    include scap::master
 
     cron { 'l10nupdate':
         ensure  => present,
