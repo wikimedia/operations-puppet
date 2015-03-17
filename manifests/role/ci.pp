@@ -130,7 +130,7 @@ class role::ci::master {
     }
 
     # backups
-    include backup::host
+    include role::backup::host
     backup::set {'var-lib-jenkins-config': }
 
 }
