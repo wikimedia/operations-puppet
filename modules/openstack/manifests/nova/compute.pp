@@ -14,8 +14,7 @@ class openstack::nova::compute($openstack_version=$::openstack::version, $novaco
                 require => Package['nova-common'];
             "/var/lib/nova/clientkey.pem":
                 ensure  => link,
-                target  => "/var/lib/nova/${certname}.key",
-                require => Install_additional_key["${certname}"];
+                target  => "/var/lib/nova/${certname}.key";
             "/var/lib/nova/clientcert.pem":
                 ensure  => link,
                 target  => "/etc/ssl/localcerts/${certname}.crt",
