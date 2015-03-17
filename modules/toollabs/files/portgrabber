@@ -1,41 +1,40 @@
-#!/usr/bin/perl -w
-#
-#  Copyright © 2013 Marc-André Pelletier <mpelletier@wikimedia.org>
-#
-#  Permission to use, copy, modify, and/or distribute this software for any
-#  purpose with or without fee is hereby granted, provided that the above
-#  copyright notice and this permission notice appear in all copies.
-#
-#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-#
+#!/usr/bin/python
 
-use Socket;
+import os
+import socket
+import sys
 
-my $tool = shift;
-my $line;
+# Check that we are passed the tool name and an executable
+# to call.
+if len(sys.argv) <= 2:
+    sys.stderr.write('Usage: portgrabber TOOLNAME EXECUTABLE [ARGUMENTS...]\n')
+    sys.stderr.write('\n')
+    sys.stderr.write('portgrabber requests a free port number for TOOLNAME and then\n')
+    sys.stderr.write('calls EXECUTABLE [ARGUMENTS...] PORT.\n')
+    sys.exit(1)
 
-$^F = 8;
-socket(SOCK, PF_UNIX, SOCK_STREAM, 0)     || die "portgranter socket: $!\n";
-connect(SOCK, sockaddr_un("/tmp/sock.portgranter"))   || die "connect to portgranter: $!\n";
-$| = 1;
-syswrite SOCK, "$tool\n";
-my $port = 0+<SOCK>;
-my $host = `hostname`;
-chomp $host;
+# Set tool name.
+tool = sys.argv[1]
 
-socket(PROXY1, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
-    connect(PROXY1, sockaddr_in(8282, inet_aton('tools-webproxy-01'))) and
-    syswrite PROXY1, ".*\nhttp://$host:$port\n";
+# Connect to local portgranter instance and receive a (hopefully)
+# unallocated port number.
+s = socket.socket(socket.AF_UNIX)
+s.connect('/tmp/sock.portgranter')
+f = s.makefile('r+', 0)
+f.write(tool + '\n')
+port = f.readline().rstrip()
 
-socket(PROXY2, PF_INET, SOCK_STREAM, getprotobyname('tcp')) and
-    connect(PROXY2, sockaddr_in(8282, inet_aton('tools-webproxy-02'))) and
-    syswrite PROXY2, ".*\nhttp://$host:$port\n";
+# Connect to the proxylistener instances on the web proxies and notify
+# them where requests for the tool need to be routed to.
+proxies = ('tools-webproxy-01', 'tools-webproxy-02')
+socks = []
+for proxy in proxies:
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((proxy, 8282))
+    sock.sendall(".*\nhttp://%s:%s\n" % (socket.getfqdn(), port))
+    socks.append(sock)
 
-exec @ARGV, $port;
-
+# Execute the program with the optional arguments and the port number
+# appended.  The sockets are passed on to the program so that they are
+# closed when the program terminates.
+os.execvp(sys.argv[2], sys.argv[2:] + [port])
