@@ -160,7 +160,18 @@ my $crlino = 0;
 my $modified = 0;
 if(open NEW, "| /usr/bin/ssh <%= @cron_host %> /usr/bin/crontab$dashu -") {
     foreach my $line (@crontab) {
-        if($line =~ m/^([^#][^=\t ]+\s+\S+\s+\S+\s+\S+\s+\S+\s+|\@\S+\s+)([^#\n]*)(#.*)?\n?$/) {
+        # Skip comments
+        if($line =~ m/^\s*#/) {
+            print NEW $line;
+            next;
+        }
+        # Skip environment variables
+        if($lines =~ m/^\s*\S+\s*=/) {
+            print NEW $line;
+            next;
+        }
+
+        if($line =~ m/^\s*(\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+|\@\S+\s+)([^#\n]*)(#.*)?\n?$/) {
             $crlino++;
             my($sched, $cmd, $cmt) = ($1, $2, $3);
             my $prefix = '';
@@ -176,7 +187,7 @@ if(open NEW, "| /usr/bin/ssh <%= @cron_host %> /usr/bin/crontab$dashu -") {
                 $line .= "\n";
             }
         }
-        print NEW "$line";
+        print NEW $line;
     }
     close NEW;
 } else {
