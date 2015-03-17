@@ -143,10 +143,6 @@ class role::eventlogging {
     $kafka_topic_version = 0
     $kafka_topic = sprintf('%s-%02d', $kafka_topic_base_name, $kafka_topic_version)
 
-    package { 'python-kafka':
-        ensure => present,
-    }
-
     eventlogging::service::consumer { 'kafka':
         input  => "tcp://${processor}:8600",
         output => "kafka://${kafka_cluster}?brokers=${kafka_brokers}&topic=${kafka_topic}",
