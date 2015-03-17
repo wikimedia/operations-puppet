@@ -23,12 +23,12 @@
 #   StatsD port. Defaults to 8125.
 #
 class citoid(
-    $port        = undef,
+    $port        = 1970,
     $http_proxy  = undef,
+    $zotero_port = 1969,
     $zotero_host = undef,
-    $zotero_port = undef,
     $statsd_host = undef,
-    $statsd_port = 8125
+    $statsd_port = 8125,
 ) {
 
     require_package('nodejs')
