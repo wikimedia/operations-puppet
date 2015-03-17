@@ -6,8 +6,12 @@
 #
 # === Parameters
 #
+# [*input*]
+#   Input URI from which events should be forwarded.
+#   Defaults to  udp://0.0.0.0:$title (make sure $title is the port if you don't set this.)
+#
 # [*port*]
-#   Port which should be forwarded. Defaults to the resource title.
+#   Port which should be forwarded to. Defaults to the resource title.
 #
 # [*count*]
 #   If true, prepend an autoincrementing ID to each message that is
@@ -19,9 +23,14 @@
 #
 # === Examples
 #
-#  eventlogging::service::forwarder { '8600': ]
+#  eventlogging::service::forwarder { '8600': }
+#  eventlogging::service::forwarder { 'kafka-zmq_8601':
+#    input => 'kafka://?brokers=localhost:9092&topic=eventlogging',
+#    port  => '8601',
+#  }
 #
 define eventlogging::service::forwarder(
+    $input  = "udp://0.0.0.0:${title}",
     $port   = $title,
     $count  = false,
     $ensure = present,

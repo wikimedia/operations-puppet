@@ -9,9 +9,11 @@ class eventlogging::package {
 
     package { [
         'python-jsonschema',
+        'python-kafka',
         'python-mysqldb',
         'python-pygments',
         'python-pymongo',
+        'python-six',
         'python-sqlalchemy',
         'python-zmq',
     ]:
