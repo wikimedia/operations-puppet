@@ -16,14 +16,30 @@
 # [*zotero_port*]
 #   Port of the zotero service
 #
+# [*statsd_host*]
+#   StatsD host. Optional.
+#
+# [*statsd_port*]
+#   StatsD port. Defaults to 8125.
+#
 class citoid(
     $port        = undef,
     $http_proxy  = undef,
     $zotero_host = undef,
-    $zotero_port = undef
+    $zotero_port = undef,
+    $statsd_host = undef,
+    $statsd_port = 8125
 ) {
 
     require_package('nodejs')
+
+    $statsd_config = $statsd_host ? {
+        undef    => 'false',
+        default  => ordered_json({
+            host => $statsd_host,
+            port => $statsd_port
+        }),
+    }
 
     package { 'citoid/deploy':
         provider => 'trebuchet',
