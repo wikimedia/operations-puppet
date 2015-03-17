@@ -3,9 +3,9 @@
 class role::sca {
     include role::apertium, role::citoid, role::cxserver, role::mathoid, role::zotero
     include standard
-    include lvs::realserver
     include base::firewall
     if $::realm == 'production' {
+        include lvs::realserver
         include admin
     }
 }
