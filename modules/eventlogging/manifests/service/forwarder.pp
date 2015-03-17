@@ -6,8 +6,12 @@
 #
 # === Parameters
 #
+# [*input*]
+#   Input URI from which events should be forwarded.
+#   Defaults to  udp://0.0.0.0:$port
+#
 # [*port*]
-#   Port which should be forwarded. Defaults to the resource title.
+#   Port which should be forwarded to. Defaults to the resource title.
 #
 # [*count*]
 #   If true, prepend an autoincrementing ID to each message that is
@@ -22,6 +26,7 @@
 #  eventlogging::service::forwarder { '8600': ]
 #
 define eventlogging::service::forwarder(
+    $input  = "udp://0.0.0.0:${port}",
     $port   = $title,
     $count  = false,
     $ensure = present,
