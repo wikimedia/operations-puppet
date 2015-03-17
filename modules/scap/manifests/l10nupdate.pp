@@ -1,9 +1,9 @@
 # = class: scap::l10nupdate
 #
 # Sets up files and cron required to do l10nupdate
-class scap::l10nupdate {
-    require scap::master
-
+class scap::l10nupdate(
+    $deployment_group = 'wikidev',
+) {
     cron { 'l10nupdate':
         ensure  => present,
         command => '/usr/local/bin/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1',
@@ -43,12 +43,12 @@ class scap::l10nupdate {
     file { '/var/log/l10nupdatelog':
             ensure => directory,
             owner  => 'l10nupdate',
-            group  => 'wikidev',
+            group  => $deployment_group,
             mode   => '0664';
         '/var/lib/l10nupdate':
             ensure => directory,
             owner  => 'l10nupdate',
-            group  => 'wikidev',
+            group  => $deployment_group,
             mode   => '0755';
         '/var/lib/l10nupdate/caches':
             ensure => directory,
