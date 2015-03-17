@@ -2,8 +2,6 @@
 #
 # Sets up files and cron required to do l10nupdate
 class scap::l10nupdate {
-    require scap::master
-
     cron { 'l10nupdate':
         ensure  => present,
         command => '/usr/local/bin/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1',
