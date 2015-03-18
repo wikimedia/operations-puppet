@@ -1122,6 +1122,7 @@ class role::cache {
                 $cluster_options = {
                     'upload_domain' => 'upload.beta.wmflabs.org',
                     'top_domain'    => 'beta.wmflabs.org',
+                    'do_gzip'       => true,
                 }
             }
         }
