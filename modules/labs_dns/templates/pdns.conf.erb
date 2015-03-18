@@ -11,11 +11,9 @@ query-local-address=<% if has_variable?("dns_auth_query_address") then %><%= @dn
 # Change this to the actual SOA name:
 default-soa-name=<%= @dns_auth_soa_name %>
 
-# A backend like geobackend can't make use of caching, since returned
-# results will be different depending on "who's asking".
-#query-cache-ttl=0
-#cache-ttl=0
-#negquery-cache-ttl=300
+query-cache-ttl=3600
+cache-ttl=3600
+negquery-cache-ttl=3600
 
 # If just geobackend is used, multithreading is unnecessary,
 # and may even impact performance.
