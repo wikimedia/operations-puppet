@@ -1425,7 +1425,9 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     $ips = $lvs::configuration::subnet_ips
 
     # Set up tagged interfaces to all subnets with real servers in them
+    # lint:ignore:case_without_default
     case $::hostname {
+    # lint:endignore
         /^lvs100[1-3]$/: {
             # Row A subnets on eth0
             interface::tagged { 'eth0.1017':
@@ -1528,7 +1530,9 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
     $ips = $lvs::configuration::subnet_ips
 
     # Set up tagged interfaces to all subnets with real servers in them
+    # lint:ignore:case_without_default
     case $::hostname {
+    # lint:endignore
         /^lvs200[1-3]$/: {
             # Row A subnets on eth0
             interface::tagged { 'eth0.2001':

@@ -13,7 +13,9 @@ class role::ipsec ($hosts = undef) {
         $targets = $hosts
     } else {
         # determine site from domain name
+        # lint:ignore:case_without_default
         case $::domain {
+        # lint:endignore
             'eqiad.wmnet':         { $site = 'eqiad' }
             'codfw.wmnet':         { $site = 'codfw' }
             'esams.wmnet':         { $site = 'esams' }
