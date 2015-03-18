@@ -1815,7 +1815,7 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     include role::diamond
 }
 
-node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
+node /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/ {
     $all_drives = [
         '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
@@ -1830,6 +1830,24 @@ node /^ms-be10[0-9][0-9]\.eqiad\.wmnet$/ {
     swift::label_filesystem{ '/dev/sdn3': }
     swift::mount_filesystem{ '/dev/sdm3': }
     swift::mount_filesystem{ '/dev/sdn3': }
+}
+
+# HP machines have different disk ordering T90922
+node /^ms-be101[678]\.eqiad\.wmnet$/ {
+    $all_drives = [
+        '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
+        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
+        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+                   ]
+
+    role swift::eqiad_prod::storage
+
+    swift::create_filesystem{ $all_drives: partition_nr => '1' }
+    # these are already partitioned and xfs formatted by the installer
+    swift::label_filesystem{ '/dev/sda3': }
+    swift::label_filesystem{ '/dev/sdb3': }
+    swift::mount_filesystem{ '/dev/sda3': }
+    swift::mount_filesystem{ '/dev/sdb3': }
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
