@@ -16,7 +16,7 @@ class role::etherpad{
         'production': {
             $etherpad_host = 'etherpad.wikimedia.org'
         }
-        'default': {
+        default: {
             fail('unknown realm, should be labs or production')
         }
     }

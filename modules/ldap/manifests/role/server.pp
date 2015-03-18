@@ -27,12 +27,12 @@ class ldap::role::server::labs {
                     $ca_name = 'GlobalSign_CA.pem'
                     $certificate = 'ldap-eqiad.wikimedia.org'
                 }
-                'default': {
+                default: {
                     fail('Production realm ldap certificates for nembus/neptunium only!')
                 }
             }
         }
-        'default': {
+        default: {
             fail('unknown realm, should be labs or production')
         }
     }
