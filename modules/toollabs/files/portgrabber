@@ -4,6 +4,8 @@ import os
 import socket
 import sys
 
+import portgrabber
+
 # Check that we are passed the tool name and an executable
 # to call.
 if len(sys.argv) <= 2:
@@ -26,13 +28,7 @@ port = f.readline().rstrip()
 
 # Connect to the proxylistener instances on the web proxies and notify
 # them where requests for the tool need to be routed to.
-proxies = ('tools-webproxy-01', 'tools-webproxy-02')
-socks = []
-for proxy in proxies:
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((proxy, 8282))
-    sock.sendall(".*\nhttp://%s:%s\n" % (socket.getfqdn(), port))
-    socks.append(sock)
+portgrabber.register(port)
 
 # Execute the program with the optional arguments and the port number
 # appended.  The sockets are passed on to the program so that they are
