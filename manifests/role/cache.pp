@@ -607,7 +607,7 @@ class role::cache {
             # Note that this format uses literal tab characters.
             format            => '%q	%l	%n	%t	%h	"%{User-agent}i"',
             format_type       => 'string',
-            topic             => 'eventlogging',
+            topic             => 'eventlogging-client-side',
             varnish_name      => $varnish_name,
             varnish_svc_name  => $varnish_svc_name,
             varnish_opts      => { 'm' => 'RxURL:^/beacon/event\.gif\?.' },
@@ -1326,12 +1326,8 @@ class role::cache {
 
         include role::cache::varnish::logging::eventlistener
         # Include a varnishkafka instance that will produce
-        # events to Kafka.  This conditional will be removed
-        # once this is well tested in labs and we are ready
-        # to enable this in production.
-        if $::realm == 'labs' {
-            include role::cache::varnish::kafka::eventlogging
-        }
+        # eventlogging events to Kafka.
+        include role::cache::varnish::kafka::eventlogging
 
         # ToDo: Remove production conditional once this works
         # is verified to work in labs.
