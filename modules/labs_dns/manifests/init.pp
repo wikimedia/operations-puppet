@@ -44,9 +44,9 @@ class labs_dns(
     monitoring::host { $dns_auth_soa_name:
         ip_address => $dns_auth_ipaddress,
     }
-    monitoring::service { 'labs auth dns':
+    monitoring::service { 'labs auth dns (designate)':
         host          => $dns_auth_soa_name,
-        description   => 'Auth DNS',
-        check_command => 'check_dns!nagiostest.beta.wmflabs.org',
+        description   => 'Auth DNS for labs pdns',
+        check_command => 'check_dns!nagiostest.eqiad.wmflabs',
     }
 }
