@@ -158,8 +158,6 @@ class role::labs::instance {
     # icinga, so collect puppet freshness metrics via diamond/graphite
     diamond::collector::minimalpuppetagent { 'minimal-puppet-agent': }
 
-    hiera_include('classes', [])
-
     # The next two notifications are read in by the labsstatus.rb puppet report handler.
     #  It needs to know project/hostname for nova access.
     notify{"instanceproject: ${::instanceproject}":}
