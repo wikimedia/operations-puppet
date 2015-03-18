@@ -1,17 +1,17 @@
 # Install and manage Etherpad Lite
 
 class etherpad(
-            $etherpad_host,
-            $etherpad_ip,
-            $etherpad_port,
-            $etherpad_db_user,
-            $etherpad_db_host,
-            $etherpad_db_name,
-            $etherpad_db_pass,
-            ){
+    $etherpad_host,
+    $etherpad_ip,
+    $etherpad_port,
+    $etherpad_db_user,
+    $etherpad_db_host,
+    $etherpad_db_name,
+    $etherpad_db_pass,
+){
 
     package { 'etherpad-lite':
-        ensure => 'latest',
+        ensure => latest,
     }
 
     service { 'etherpad-lite':
