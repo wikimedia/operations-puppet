@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat /proc/$(pidof -s dd)/fdinfo/1|head -1|awk '{print $2/1024/1024/1024}'
