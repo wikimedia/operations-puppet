@@ -2,5 +2,7 @@
   - role::deployment::server
 .*-sca\d\d:
   - role::sca
+.*-ocg\d\d:
+  - role::ocg
 .*:
   - role::puppet::self
