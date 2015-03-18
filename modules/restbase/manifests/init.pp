@@ -19,6 +19,8 @@
 #   Which DC should be considered local. Default: 'datacenter1'.
 # [*port*]
 #   Port where to run the restbase service. Default: 7231
+# [*config_template*]
+#   File to use as the configuration file template. Default: restbase/config.yaml.erb
 # [*parsoid_uri*]
 #   URI to reach Parsoid. Default: http://parsoid-lb.eqiad.wikimedia.org
 # [*logstash_host*]
@@ -40,6 +42,7 @@ class restbase(
     $cassandra_defaultConsistency = 'localQuorum',
     $cassandra_localDc = 'datacenter1',
     $port           = 7231,
+    $config_template = 'restbase/config.yaml.erb',
     $parsoid_uri    = 'http://parsoid-lb.eqiad.wikimedia.org',
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
@@ -99,7 +102,7 @@ class restbase(
     }
 
     file { '/etc/restbase/config.yaml':
-        content => template('restbase/config.yaml.erb'),
+        content => template($config_template),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
