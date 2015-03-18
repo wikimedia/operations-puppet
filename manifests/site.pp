@@ -1784,14 +1784,8 @@ node 'ms1001.wikimedia.org' {
 
     include admin
 
-    interface::aggregate { 'bond0':
-        orig_interface => 'eth0',
-        members        => [ 'eth0', 'eth1' ],
-        lacp_rate      => 'fast'
-    }
     interface::add_ip6_mapped { 'main':
-        interface => 'bond0',
-        require   => Interface::Aggregate['bond0']
+        interface => 'eth0',
     }
     include standard
     include role::dataset::systemusers
