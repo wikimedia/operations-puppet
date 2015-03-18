@@ -64,6 +64,10 @@
     RewriteCond &%{QUERY_STRING} &pw(-conf)?= [NC]
     RewriteRule ^(.*)$ - [F]
 
+    # ban requests from mailbait, a mailbombing service
+    RewriteCond %{HTTP_REFERER} "mailbait.info" [NC]
+    RewriteRule ^(.*)$ - [F]
+
     # list renames
     Redirect permanent /mailman/listinfo/foundation-l       https://lists.wikimedia.org/mailman/listinfo/wikimedia-l
     Redirect permanent /mailman/listinfo/museum-l           https://lists.wikimedia.org/mailman/listinfo/glam
