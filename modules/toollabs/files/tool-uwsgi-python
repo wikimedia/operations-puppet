@@ -1,8 +1,9 @@
 #!/usr/bin/python
 import re
-import socket
 import os
 import pwd
+
+import portgrabber
 
 pwd_entry = pwd.getpwuid(os.getuid())  # Use uid as reserved port for eacht ool
 TOOL = re.sub(r'^tools.', '', pwd_entry.pw_name) # Tool users are of form tools.TOOLNAME
@@ -29,13 +30,8 @@ if os.path.exists(os.path.expanduser('~/www/python/venv')):
 if os.path.exists(os.path.expanduser('~/www/python/uwsgi.ini')):
     args += ['--ini', os.path.expanduser('~/www/python/uwsgi.ini')]
 
-proxies = ('tools-webproxy-01', 'tools-webproxy-02')
-
-socks = []
-for proxy in proxies:
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((proxy, 8282))
-    sock.send(".*\nhttp://%s:%s\n" % (socket.getfqdn(), PORT))
-    socks.append(sock)  # Keep this around, otherwise socket seems to get closed and collected
+# Connect to the proxylistener instances on the web proxies and notify
+# them where requests for the tool need to be routed to.
+portgrabber.register(PORT)
 
 os.execv('/usr/bin/uwsgi', args)

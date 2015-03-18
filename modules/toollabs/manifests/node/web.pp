@@ -20,12 +20,21 @@ class toollabs::node::web inherits toollabs {
         config => 'toollabs/gridengine/host-web.erb',
     }
 
-    file { '/usr/local/bin/portgrabber':
+    file { '/usr/local/lib/python2.7/dist-packages/portgrabber.py':
         ensure => file,
         owner  => 'root',
         group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/portgrabber',
+        mode   => '0444',
+        source => 'puppet:///modules/toollabs/portgrabber.py',
+    }
+
+    file { '/usr/local/bin/portgrabber':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/toollabs/portgrabber',
+        require => File['/usr/local/lib/python2.7/dist-packages/portgrabber.py'],
     }
 
     file { '/usr/local/sbin/portgranter':
