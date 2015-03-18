@@ -71,7 +71,7 @@ class role::mediawiki::webserver($pool) {
     if $::realm == 'labs' {
         include ::mediawiki::web::beta_sites
     } else {
-        include ::mediawiki::web::sites
+        include ::mediawiki::web::prod_sites
     }
 
     if hiera('has_lvs', true) {
