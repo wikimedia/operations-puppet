@@ -9,8 +9,9 @@ class toollabs::node::web::generic inherits toollabs::node::web {
 
     # NodeJS support
     file { '/usr/local/bin/tool-nodejs':
-        source => 'puppet:///modules/toollabs/tool-nodejs',
-        mode   => '0555',
+        source  => 'puppet:///modules/toollabs/tool-nodejs',
+        mode    => '0555',
+        require => File['/usr/local/lib/python2.7/dist-packages/portgrabber.py'],
     }
 
     # uwsgi python support
@@ -23,8 +24,9 @@ class toollabs::node::web::generic inherits toollabs::node::web {
     }
 
     file { '/usr/local/bin/tool-uwsgi-python':
-        source => 'puppet:///modules/toollabs/tool-uwsgi-python',
-        mode   => '0555',
+        source  => 'puppet:///modules/toollabs/tool-uwsgi-python',
+        mode    => '0555',
+        require => File['/usr/local/lib/python2.7/dist-packages/portgrabber.py'],
     }
 
     # tomcat support
