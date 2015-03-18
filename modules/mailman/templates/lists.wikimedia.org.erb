@@ -60,10 +60,10 @@
     </LocationMatch>
 
     # anti-subscription bot mitigation
-    <Location ~ "&pw(-conf)?=">
+    <LocationMatch "&pw(-conf)?=">
         Order deny,allow
         Deny from all
-    </Location>
+    </LocationMatch>
 
     # list renames
     Redirect permanent /mailman/listinfo/foundation-l       https://lists.wikimedia.org/mailman/listinfo/wikimedia-l
