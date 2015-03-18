@@ -18,7 +18,7 @@ class role::racktables {
         'production': {
             $racktables_host = 'racktables.wikimedia.org'
         }
-        'default': {
+        default: {
             fail('unknown realm, should be labs or production')
         }
     }
