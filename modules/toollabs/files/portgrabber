@@ -4,6 +4,8 @@ import os
 import socket
 import sys
 
+import portgrabber
+
 # Check that we are passed the tool name and an executable
 # to call.
 if len(sys.argv) <= 2:
@@ -22,19 +24,13 @@ s = socket.socket(socket.AF_UNIX)
 s.connect('/tmp/sock.portgranter')
 f = s.makefile('r+', 0)
 f.write(tool + '\n')
-port = f.readline().rstrip()
+port = int(f.readline().rstrip())
 
 # Connect to the proxylistener instances on the web proxies and notify
 # them where requests for the tool need to be routed to.
-proxies = ('tools-webproxy-01', 'tools-webproxy-02')
-socks = []
-for proxy in proxies:
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((proxy, 8282))
-    sock.sendall(".*\nhttp://%s:%s\n" % (socket.getfqdn(), port))
-    socks.append(sock)
+portgrabber.register(port)
 
 # Execute the program with the optional arguments and the port number
 # appended.  The sockets are passed on to the program so that they are
 # closed when the program terminates.
-os.execvp(sys.argv[2], sys.argv[2:] + [port])
+os.execvp(sys.argv[2], sys.argv[2:] + [str(port)])
