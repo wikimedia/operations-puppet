@@ -131,7 +131,9 @@ class nfs::netapp::home::othersite($ensure='mounted', $mountpoint=undef) {
 # Historical /home/wikipedia
 class nfs::home::wikipedia {
 
+    # lint:ignore:case_without_default
     case $::realm {
+    # lint:endignore
         'production': {
             require nfs::home
             file { '/home/wikipedia':

@@ -1111,7 +1111,9 @@ class role::cache {
             include varnish::monitoring::ganglia::vhtcpd
         }
 
+        # lint:ignore:case_without_default
         case $::realm {
+        # lint:endignore
             'production': {
                 $cluster_options = {
                     'upload_domain' => 'upload.wikimedia.org',
@@ -1405,7 +1407,9 @@ class role::cache {
             include varnish::monitoring::ganglia::vhtcpd
         }
 
+        # lint:ignore:case_without_default
         case $::realm {
+        # lint:endignore
             'production': {
                 $cluster_options = {
                     'enable_geoiplookup' => true,
