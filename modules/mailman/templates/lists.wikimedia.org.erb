@@ -60,10 +60,9 @@
     </LocationMatch>
 
     # anti-subscription bot mitigation
-    <Location ~ "&pw(-conf)?=">
-        Order deny,allow
-        Deny from all
-    </Location>
+    RewriteEngine on
+    RewriteCond &%{QUERY_STRING} &pw(-conf)?= [NC]
+    RewriteRule ^(.*)$ - [F]
 
     # list renames
     Redirect permanent /mailman/listinfo/foundation-l       https://lists.wikimedia.org/mailman/listinfo/wikimedia-l
