@@ -135,14 +135,3 @@ mediawiki_memcached_servers:
 "role::deployment::server::deployment_group": 'project-deployment-prep'
 "dsh::config::group_source": 'puppet:///modules/beta/dsh/group'
 "mediawiki::users::mwdeploy_pub_key": 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFwlmBBBJAr1GI+vuYjFh5vq0YIVa5fqE5DZdpzUZISlQ0Kt+9bIr2qNHIj+Jl5Bc6ZY1mkh8l693tAHVx+8tayoiFWYNs9IVsxR+iHgOOhAdDIBXaHaUattdiye5bQmdvJVXaVegckNX2gbmUCOc09jvZvlk3blKFTSEpZRU8dmpXQzKdZgaAq2VTajAegoFnuN9FbC7hzBPA+1NxFNKn94eIeFPSlo5rWr44OEb5Uy3O0B5c6WPM+IgfiygetP+yGL4cKv7qEjZ0Sxok/Rh1lBh1vP1YQ/Mc6tMV0s+kOv7Wz+P88bfU1/uWvy479OZdfh3NQqDTrLzqHwVW1vef root@deployment-salt'
-"role::elasticsearch::server::expected_nodes": 3
-"role::elasticsearch::server::minimum_master_nodes": 3
-"role::elasticsearch::server::heap_memory": 4G
-"role::elasticsearch::server::recover_after_nodes": 4
-"role::elasticsearch::server::statsd_host": labmon1001.eqiad.wmnet
-"role::elasticsearch::server::unicast_hosts":
-    - deployment-elastic05
-    - deployment-elastic06
-    - deployment-elastic07
-    - deployment-elastic08
-"role::elasticsearch::server::cluster_name": beta-search

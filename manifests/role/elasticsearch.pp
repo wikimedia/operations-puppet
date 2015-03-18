@@ -8,37 +8,82 @@
 @monitoring::group { 'elasticsearch_esams': description => 'esams elasticsearch servers' }
 @monitoring::group { 'elasticsearch_ulsfo': description => 'ulsfo elasticsearch servers' }
 
-class role::elasticsearch::server($cluster_name = 'elasticsearch',
-        $multicast_group = '224.2.2.4',
-        $master_eligible = true,
-        $minimum_master_nodes = 1,
-        $expected_nodes = 1,
-        $recover_after_time = '1m',
-        $recover_after_nodes = 1,
-        $awareness_attributes = undef,
-        $plugins_mandatory = undef,
-        $filter_cache_size = '10%',
-        $bulk_thread_pool_capacity = undef,
-        $bulk_thread_pool_executors = undef,
-        $use_ganglia = false,
-        $statsd_host = undef,
-        $unicast_hosts = undef,
-        $heap_memory = '2G') {
+class role::elasticsearch::server {
+    # Config
+    if ($::realm == 'labs') {
+        $multicast_group            = '224.2.2.4'
+        $master_eligible            = true
+        $recover_after_time         = '1m'
+        $awareness_attributes       = undef
+        $row                        = undef
+        $rack                       = undef
+        $plugins_mandatory          = undef
+        $filter_cache_size          = '10%'
+        $bulk_thread_pool_capacity  = undef
+        $bulk_thread_pool_executors = undef
+        $use_ganglia                = false
+        if ($::hostname =~ /^deployment-/) {
+            # Beta
+            # Has four nodes all of which can be master
+            $minimum_master_nodes = 3
+            $cluster_name         = 'beta-search'
+            $heap_memory          = '4G'
+            $expected_nodes       = 4
+            # The cluster can limp along just fine with three nodes so we'll
+            # let it
+            $recover_after_nodes  = 3
+            $unicast_hosts        = ['deployment-elastic05',
+                'deployment-elastic06', 'deployment-elastic07',
+                'deployment-elastic08']
+            $statsd_host          = 'labmon1001.eqiad.wmnet'
+        } else {
+            # Regular labs instance
+            # We don't know how many instances will be in each labs project so
+            # we got with the lowest common denominator assuming that you can
+            # recover from a split brain on your own.  It'd be good practice
+            # in case we have one in production.
+            $minimum_master_nodes = 1
+            # This should be configured per project
+            if $::elasticsearch_cluster_name == undef {
+                $message = 'must be set to something unique to the labs project'
+                fail("\$::elasticsearch_cluster_name $message")
+            }
+            $cluster_name         = $::elasticsearch_cluster_name
+            # This can be configured per project
+            $unicast_hosts        = $::elasticsearch_unicast_hosts
 
-    $row  = undef
-    $rack = undef
-    if ($::realm == 'production') {
+            $heap_memory          = '2G'
+            # Leave recovery settings and let labs users deal with inefficient
+            # full cluster restarts rather than make them configure more stuff
+            $expected_nodes       = 1
+            $recover_after_nodes  = 1
+
+            # Don't let random test instances spam statsd
+            $statsd_host = undef
+        }
+    } else {
+        # Production
         include standard
         include admin
         include lvs::realserver
-
+        $multicast_group = $::site ? {
+            'eqiad' => '224.2.2.5',
+        }
         $master_eligible = $::hostname ? {
             'elastic1001' => true,
             'elastic1008' => true,
             'elastic1013' => true,
             default       => false,
         }
-
+        $minimum_master_nodes = 2
+        $cluster_name         = "production-search-${::site}"
+        $heap_memory          = '30G'
+        $expected_nodes       = 16
+        # We should be able to run "OK" with 10 servers.
+        $recover_after_nodes  = 10
+        # But it'd save time if we just waited for all of them to come back so
+        # lets give them plenty of time to restart.
+        $recover_after_time   = '20m'
         $rack = $::hostname ? {
             /^elastic100[0-6]/          => 'A3',
             /^elastic10(0[7-9]|1[0-2])/ => 'C5',
@@ -47,10 +92,32 @@ class role::elasticsearch::server($cluster_name = 'elasticsearch',
             /^elastic10(2[3-9]|3[01])/  => 'D4',
             default                     => 'Unknown',
         }
+
         if ($rack == 'Unknown') {
             fail("Don't know rack for $::host")
         }
-        $row = regsubst($rack, '^(.).$', '\1' )
+
+        $row                  = regsubst($rack, '^(.).$', '\1' )
+        # We've temporarily turned off awareness because we believe it puts
+        # unbalanced load on the cluster.
+        $awareness_attributes = undef
+        $unicast_hosts        = undef
+
+        # Not enabled in production yet
+        $statsd_host = undef
+
+        # Production elasticsearch needs these plugins to be loaded in order
+        # to work properly.  This will keep elasticsearch from starting
+        # if these plugins are  not available.
+        $plugins_mandatory    = ['experimental highlighter', 'analysis-icu']
+
+        # Production can get a lot of use out of the filter cache.
+        $filter_cache_size          = '20%'
+        $bulk_thread_pool_capacity  = 1000
+        $bulk_thread_pool_executors = 6
+
+        # only in production, no ganglia in beta
+        $use_ganglia = true
     }
 
     system::role { 'role::elasticsearch::server':

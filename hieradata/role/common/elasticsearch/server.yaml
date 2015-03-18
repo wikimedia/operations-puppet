@@ -2,27 +2,3 @@ cluster: elasticsearch
 admin::groups:
   - elasticsearch-roots
 lvs::realserver::realserver_ips: "10.2.2.30"
-
-# Production elasticsearch needs these plugins to be loaded in order
-# to work properly.  This will keep elasticsearch from starting
-# if these plugins are  not available.
-plugins_mandatory:
-  - 'experimental highlighter'
-  - 'analysis-icu'
-
-# Production can get a lot of use out of the filter cache.
-filter_cache_size: "20%"
-bulk_thread_pool_capacity: 1000
-bulk_thread_pool_executors: 6
-
-# only in production, no ganglia in beta
-use_ganglia: true
-
-# Don't run if more than 1 master missing
-minimum_master_nodes: 2
-
-heap_memory: '30G'
-
-# But it'd save time if we just waited for all of them to come back so
-# lets give them plenty of time to restart.
-recover_after_time: '20m'
