@@ -54,7 +54,8 @@ define install_certificate(
 
     if ( $privatekey == true ) {
         Sslcert::Certificate[$name] {
-            private => file("puppet:///private/ssl/${name}.key"),
+            # private => file("puppet:///private/ssl/${name}.key"), # cf this comment in certificates.pp
+            private => "puppet:///private/ssl/${name}.key",
         }
     }
 

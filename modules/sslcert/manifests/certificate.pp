@@ -72,7 +72,8 @@ define sslcert::certificate(
             owner   => 'root',
             group   => $group,
             mode    => '0440',
-            content => $private,
+            # content => $private, # content variant is broken, fixing the easy way for now...
+            source => $private,
         }
     } else {
         file { "/etc/ssl/private/${name}.key":
