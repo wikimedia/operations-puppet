@@ -50,10 +50,10 @@ class scap::scripts {
         content => template('scap/foreachwikiindblist.erb'),
     }
     file { '/usr/local/bin/mwscript':
-        owner    => 'root',
-        group    => 'root',
-        mode     => '0555',
-        content  => template('scap/mwscript.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/scap/mwscript',
     }
     file { '/usr/local/bin/mwscriptwikiset':
         owner   => 'root',
