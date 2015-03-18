@@ -1,0 +1,5 @@
+nodes:
+  - ganeti1001.codfw.wmnet
+  - ganeti1002.codfw.wmnet
+  - ganeti1003.codfw.wmnet
+  - ganeti1004.codfw.wmnet
