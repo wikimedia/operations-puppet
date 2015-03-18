@@ -1126,25 +1126,14 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
     include role::logging::relay::webrequest-multicast
     # relay EventLogging traffic over to vanadium
     include role::logging::relay::eventlogging
-
-    # gadolinium hosts the separate nginx webrequest udp2log instance.
-    include role::logging::udp2log::nginx
 }
 
 
 # protactinium was being used as an emergency gadolinium replacement.
 # Since gadolinium is back up, varnishncsa instances now send logs
 # to gadolinium again.  protactinium is not being used.
-node 'protactinium.wikimedia.org' inherits 'base_analytics_logging_node' {
+node 'protactinium.wikimedia.org' {
     include admin
-
-    # relay the incoming webrequest log stream to multicast
-    include role::logging::relay::webrequest-multicast
-    # relay EventLogging traffic over to vanadium
-    include role::logging::relay::eventlogging
-
-    # gadolinium hosts the separate nginx webrequest udp2log instance.
-    include role::logging::udp2log::nginx
 }
 
 

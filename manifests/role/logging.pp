@@ -205,19 +205,6 @@ class role::logging::udp2log {
     }
 }
 
-# nginx machines are configured to log to port 8421.
-class role::logging::udp2log::nginx inherits role::logging::udp2log {
-    $nginx_log_directory = "$log_directory/nginx"
-
-    misc::udp2log::instance { 'nginx':
-        port                => '8421',
-        log_directory       => $nginx_log_directory,
-        # don't monitor packet loss,
-        # we aren't keeping packet loss log,
-        # and nginx sequence numbers are messed up anyway.
-        monitor_packet_loss => false,
-    }
-}
 
 # oxygen is a generic webrequests udp2log host
 # mostly running:

@@ -1,4 +1,0 @@
-# Note: This file is managed by Puppet.
-
-# Save logs from nginx.
-file 100 <%= scope.lookupvar('role::logging::udp2log::nginx::nginx_log_directory') %>/nginx-sampled-100.tsv.log
