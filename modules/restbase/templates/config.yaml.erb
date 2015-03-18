@@ -139,6 +139,7 @@ spec: &spec
   title: "The RESTBase root"
   # Some more general RESTBase info
   paths:
+  <% if @realm != 'labs' %>
     # phase 0 and test wikis
     /{domain:www.mediawiki.org}: *wp/default/1.0.0
     /{domain:test.wikipedia.org}: *wp/default/1.0.0
@@ -434,6 +435,38 @@ spec: &spec
     /{domain:zh-yue.wikipedia.org}: *wp/default/1.0.0
     /{domain:zu.wikipedia.org}: *wp/default/1.0.0
 
+  <% else %>
+    # list taken from Parsoid's beta config
+    /{domain:aa.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:commons.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:deployment.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:de.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en-rtl.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikibooks.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikinews.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikiquote.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikisource.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikitionary.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikiversity.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:eo.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:es.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:fa.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:he.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:hi.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:ja.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:ko.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:login.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:meta.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:ru.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:simple.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:sq.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:test.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:uk.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:wikidata.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:zero.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:zh.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+  <% end %>
 
 # The main service setup. Each worker can offer one or more services.
 services:

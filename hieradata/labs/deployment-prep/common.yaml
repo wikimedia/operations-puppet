@@ -9,13 +9,13 @@ has_ganglia: false
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 "cassandra::seeds":
-    - 10.68.16.234
-    - 10.68.16.235
-    - 10.68.16.240
+  - 10.68.17.227
+  - 10.68.17.189
 "restbase::seeds":
-    - 10.68.16.234
-    - 10.68.16.235
-    - 10.68.16.240
+  - 10.68.17.227
+  - 10.68.17.189
+"restbase::parsoid_uri": http://deployment-parsoid05.eqiad.wmflabs
+"restbase::statsd_host": labmon1001.eqiad.wmnet
 "restbase::logstash_host": deployment-logstash1.eqiad.wmflabs
 "restbase::cassandra_defaultConsistency": localQuorum
 "mediawiki::log_aggregator": deployment-bastion.eqiad.wmflabs:8420
