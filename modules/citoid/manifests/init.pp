@@ -24,11 +24,11 @@
 #
 class citoid(
     $port        = 1970,
-    $http_proxy  = undef,
-    $zotero_port = 1969,
-    $zotero_host = undef,
-    $statsd_host = undef,
     $statsd_port = 8125,
+    $zotero_port = 1969,
+    $http_proxy,
+    $zotero_host,
+    $statsd_host,
 ) {
 
     require_package('nodejs')
