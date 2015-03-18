@@ -1,0 +1,179 @@
+# RESTBase config
+
+info:
+  name: restbase
+
+
+# Log error messages and gracefully restart a worker if v8 reports using more
+# heap (note: not RSS).
+worker_heap_limit_mb: 300
+
+logging:
+  name: restbase
+  level: <%= @logging_level %>
+  streams:
+  # XXX: Use gelf-stream -> logstash
+  - type: gelf
+    host: <%= @logstash_host %>
+    port: <%= @logstash_port %>
+
+# StatsD metrics collection
+metrics:
+  type: txstatsd
+  host: <%= @statsd_host %>
+  port: <%= @statsd_port %>
+
+# Swagger spec templates, referenced using yaml references in the spec section
+# below.
+templates:
+
+  wmf-content-1.0.0: &wp/content/1.0.0
+    swagger: '2.0'
+    # swagger options, overriding the shared ones from the merged specs (?)
+    info:
+      version: 1.0.0-beta
+      title: Wikimedia REST API
+      description: >
+          This API aims to provide straightforward and low-latency access to
+          Wikimedia content and services. It is currently in beta testing, so
+          things aren't completely locked down yet. Each entry point has
+          explicit stability markers to inform you about development status
+          and change policy, according to [our API version
+          policy](https://www.mediawiki.org/wiki/API_versioning).
+
+          ### High-volume access
+            - As a general rule, don't perform more than 200 requests/s to
+              this API.
+            - Set a unique `User-Agent` header that allows us to contact you
+              quickly. Email addresses or URLs of contact pages work well.
+            - Consider using our [HTML
+              dumps](https://phabricator.wikimedia.org/T17017) once they
+              become available.
+
+      termsOfService: https://wikimediafoundation.org/wiki/Terms_of_Use
+      contact:
+        name: the Wikimedia Services team
+        url: http://mediawiki.org/wiki/RESTBase
+      license:
+        name: Apache2
+        url: http://www.apache.org/licenses/LICENSE-2.0
+    security:
+      # ACLs for public *.wikipedia.org wikis
+      - mediaWikiAuth:
+        - user:read
+    x-subspecs:
+      - mediawiki/v1/content
+    # - mediawiki/v1/mobile
+    # - mediawiki/v1/revision-scoring
+
+  wmf-sys-1.0.0: &wp/sys/1.0.0
+    info:
+      title: Default MediaWiki sys API module
+      version: 1.0.0
+    paths:
+      /{module:table}:
+        x-modules:
+          # There can be multiple modules too per stanza, as long as the
+          # exported symbols don't conflict. The operationIds from the spec
+          # will be resolved against all of the modules.
+          - name: restbase-mod-table-cassandra
+            version: 1.0.0
+            type: npm
+            options: # Passed to the module constructor
+              conf:
+                hosts: [<%= Array(@seeds).join(',') %>]
+                keyspace: system
+                localDc: <%= @cassandra_localDc %>
+                username: <%= @cassandra_user %>
+                password: <%= @cassandra_password %>
+                defaultConsistency: <%= @cassandra_defaultConsistency %>
+                storage_groups:
+                  - name: phase0.group.local
+                    domains:
+                      - /^(?:test.*\.wiki.*\.org|www.mediawiki.org)$/
+                  - name: wikipedia.group.local
+                    domains: /\.wikipedia.org$/
+                  # Catch-all group
+                  - name: default.group.local
+                    domains: /./
+
+      /{module:page_revisions}:
+        x-modules:
+            - name: page_revisions
+              version: 1.0.0
+              type: file
+
+      /{module:key_rev_value}:
+        x-modules:
+          - name: key_rev_value
+            version: 1.0.0
+            type: file
+
+      /{module:parsoid}:
+        x-modules:
+          - name: parsoid
+            version: 1.0.0
+            type: file
+            options:
+              parsoidHost: <%= @parsoid_uri %>
+
+      /{module:action}:
+        x-modules:
+          - name: action
+            type: file
+            options:
+              apiURI: http://{domain}/w/api.php
+
+  wp-default-1.0.0: &wp/default/1.0.0
+    x-subspecs:
+      - paths:
+          /{api:v1}:
+            x-subspec: *wp/content/1.0.0
+      - paths:
+          /{api:sys}:
+            x-subspec: *wp/sys/1.0.0
+
+
+# Swagger spec root.
+spec: &spec
+  title: "The RESTBase root"
+  # Some more general RESTBase info
+  paths:
+    # list taken from Parsoid's beta config
+    /{domain:aa.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:commons.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:deployment.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:de.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en-rtl.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikibooks.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikinews.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikiquote.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikisource.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikitionary.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:en.wikiversity.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:eo.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:es.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:fa.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:he.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:hi.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:ja.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:ko.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:login.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:meta.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:ru.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:simple.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:sq.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:test.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:uk.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:wikidata.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:zero.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
+    /{domain:zh.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
+
+# The main service setup. Each worker can offer one or more services.
+services:
+  - name: restbase
+    module: ./restbase/lib/server
+    conf:
+      port: <%= @port %>
+      spec: *spec
