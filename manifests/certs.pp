@@ -2,6 +2,7 @@ define install_certificate(
     $group     = 'ssl-cert',
     $ca        = '',
     $privatekey=true,
+    $do_ocsp=false,
 ) {
 
     require certificates::base
@@ -42,10 +43,14 @@ define install_certificate(
             default => 'wmf-ca.pem',
         }
     }
+
     sslcert::chainedcert { $name:
         ca => $cas,
     }
 
+    if $do_ocsp {
+        sslcert::ocsp { $name: }
+    }
 }
 
 class certificates::base {
