@@ -1,0 +1,66 @@
+# This file is managed by Puppet
+<VirtualHost *:80>
+  ServerName <%= @server_name %>
+<% if @server_aliases.is_a? Array -%>
+<% server_aliases.each do |name| %><%= "  ServerAlias #{name}\n" %><% end %>
+<% elsif @server_aliases != '' -%>
+<%= "  ServerAlias #{server_aliases}" %>
+<% end -%>
+
+  DocumentRoot <%= @document_root %>
+
+  LogLevel warn
+  ErrorLog /var/log/apache2/<%= @name %>_error.log
+  CustomLog /var/log/apache2/<%= @name %>_access.log combined
+
+  ProxyRequests Off
+  <Proxy *>
+    Order allow,deny
+    Allow from all
+  </Proxy>
+
+  # 410 - Gone for Wikipedia Zero
+  ErrorDocument 410 "<html><head><title>410 Gone</title></head><body><h1>Gone</h1><p>This Wikipedia Zero dashboard is no longer available. It has been replaced by a new system which requires a username and password. Please contact your partner manager, or write to <a href=\"mailto:wikipediazero@wikimedia.org\">wikipediazero@wikimedia.org</a> to learn more.</p></body></html>"
+
+  # Wikipedia Zero carrier redirects
+  RewriteRule "[/_-]aircel[_-]" - [G]
+  RewriteRule "[/_-]airtel[_-]" - [G]
+  RewriteRule "[/_-]babilon[_-]" - [G]
+  RewriteRule "[/_-]banglalink[_-]" - [G]
+  RewriteRule "[/_-]beeline[_-]" - [G]
+  RewriteRule "[/_-]celcom[_-]" - [G]
+  RewriteRule "[/_-]dialog[_-]sri" - [G]
+  RewriteRule "[/_-]digi[_-]malaysia" - [G]
+  RewriteRule "[/_-]dtac[_-]thailand" - [G]
+  RewriteRule "[/_-]g[_-]mobile[_-]mongolia" - [G]
+  RewriteRule "[/_-]grameenphone[_-]" - [G]
+  RewriteRule "[/_-]ipko[_-]kosovo" - [G]
+  RewriteRule "[/_-]mobilink[_-]" - [G]
+  RewriteRule "[/_-]mtn[_-]" - [G]
+  RewriteRule "[/_-]ncell[_-]" - [G]
+  RewriteRule "[/_-]orange[_-]" - [G]
+  RewriteRule "[/_-]safaricom[_-]" - [G]
+  RewriteRule "[/_-]saudi[_-]telecom" - [G]
+  RewriteRule "[/_-]smart[_-]philippines" - [G]
+  RewriteRule "[/_-]smart[_-]cambodia" - [G]
+  RewriteRule "[/_-]sun[_-]philippines" - [G]
+  RewriteRule "[/_-]tcell[_-]tajikistan" - [G]
+  RewriteRule "[/_-]telenor[_-]" - [G]
+  RewriteRule "[/_-]tigo[_-]ghana" - [G]
+  RewriteRule "[/_-]timor[_-]telecom" - [G]
+  RewriteRule "[/_-]t[_-]mobile[_-]" - [G]
+  RewriteRule "[/_-]umniah[_-]" - [G]
+  RewriteRule "[/_-]viva[_-]bahrain" - [G]
+  RewriteRule "[/_-]xl[_-]axiata" - [G]
+
+  # Wikipedia Zero generic redirects
+  RewriteRule "[/_-]free[_-]mobile[_-]traffic" - [G]
+  RewriteRule "[/_-]mobile[_-]page[_-]requests[_-]as[_-]percent[_-]of[_-]country" - [G]
+  RewriteRule "[_-]mobile[_-]wp[_-]views[_-]by[_-]country" - [G]
+
+  # If the file does not exist, assume this is a dynamic
+  # request and send it to the Limn instance.
+  RewriteEngine On
+  RewriteCond <%= @document_root %>/%{REQUEST_FILENAME} !-s
+  RewriteRule "^(.*)" "http://<%= @limn_host %>:<%= @limn_port %>$1" [P]
+</VirtualHost>
