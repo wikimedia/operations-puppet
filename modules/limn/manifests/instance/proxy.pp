@@ -14,6 +14,7 @@
 # $document_root  - Path to Apache document root.   This should be the limn::instance $var_directory.  Default: /usr/local/share/limn/var.
 # $server_name    - Named VirtualHost.    Default: "$name.$domain"
 # $server_aliases - Server name aliases.  Default: none.
+# $site_template  - Template for Apache conf.  Default: limn/vhost-limn-proxy.conf.erb.
 #
 define limn::instance::proxy (
   $port            = 80,
@@ -21,13 +22,14 @@ define limn::instance::proxy (
   $limn_port       = '8081',
   $document_root   = '/usr/local/share/limn/var',
   $server_name     = "${name}.${::domain}",
-  $server_aliases  = '')
+  $server_aliases  = '',
+  $site_template   = 'limn/vhost-limn-proxy.conf.erb')
 {
   # Configure the Apache Limn instance proxy VirtualHost.
   $priority = 10
   file { "${priority}-limn-${name}.conf":
     path    => "/etc/apache2/sites-enabled/${priority}-limn-${name}.conf",
-    content => template('limn/vhost-limn-proxy.conf.erb'),
+    content => template($site_template),
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
