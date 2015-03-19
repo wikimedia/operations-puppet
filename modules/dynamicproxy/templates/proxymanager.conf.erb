@@ -1,0 +1,15 @@
+server {
+    resolver <%= resolver %>;
+
+    listen 8081;
+
+    # The proxy services should only be available to Labs clients.
+    allow 10.0.0.0/8;
+    allow 127.0.0.0/0;
+    deny all;
+
+    # Provide a list of active proxy entries.
+    location = /list {
+        content_by_lua_file /etc/nginx/lua/list-proxy-entries.lua;
+    }
+}
