@@ -10,6 +10,8 @@ cassandra::seeds:
     - restbase1006.eqiad.wmnet
 cassandra::max_heap_size: 8g
 cassandra::heap_newsize: 1200m
+cassandra::compaction_throughput_mb_per_sec: 128
+cassandra::concurrent_compactors: 6
 
 #
 # RESTBase
