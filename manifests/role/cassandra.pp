@@ -22,22 +22,26 @@ class role::cassandra {
         check_command => 'check_tcp!9042',
     }
 
-    ferm::service { 'cassandra-cql-native-transport':
-        proto  => 'tcp',
-        port   => '9042',
-        srange => '$ALL_NETWORKS',
-    }
+    $cassandra_hosts = hiera('restbase::cassandra::seeds')
+    $cassandra_hosts_ferm = join($cassandra_hosts, ' ')
 
-    ferm::service { 'cassandra-internode-comms':
+    # Cassandra intra-node messaging
+    ferm::service { 'cassandra-intra-node':
         proto  => 'tcp',
         port   => '7000',
-        srange => '$ALL_NETWORKS',
+        srange => "@resolve(($cassandra_hosts_ferm))",
     }
-
-    ferm::service { 'cassandra-jmx-monitoring':
+    # Cassandra JMX/RMI
+    ferm::service { 'cassandra-jmx-rmi':
         proto  => 'tcp',
         port   => '7199',
-        srange => '$ALL_NETWORKS',
+        srange => "@resolve(($cassandra_hosts_ferm))",
+    }
+    # Cassandra CQL query interface
+    ferm::service { 'cassandra-cql':
+        proto  => 'tcp',
+        port   => '9042',
+        srange => "@resolve(($cassandra_hosts_ferm))",
     }
 
 }
