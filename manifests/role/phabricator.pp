@@ -12,8 +12,10 @@ class role::phabricator::config {
     $bz_pass               = $passwords::mysql::phabricator::bz_pass
     $rt_user               = $passwords::mysql::phabricator::rt_user
     $rt_pass               = $passwords::mysql::phabricator::rt_pass
-    $phabtools_cert        = $passwords::mysql::phabricator::phabtools_cert
-    $phabtools_user        = $passwords::mysql::phabricator::phabtools_user
+
+    include passwords::phabricator
+    $phabtools_cert        = $passwords::phabricator::phabtools_cert
+    $phabtools_user        = $passwords::phabricator::phabtools_user
 }
 
 # production phabricator instance
