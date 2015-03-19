@@ -5,23 +5,25 @@
 # default $server_name and $server_aliases.
 #
 # == Parameters:
-# $port            - limn port
-# $server_name     - ServerName for limn instance proxy.     Default it to infer from $name and $::realm.
-# $server_aliases  - ServerAliases for limn instance proxy.  Default is to infer from $name and $::realm.
-# $environment     - Node environment.  Default: production
-# $base_directory  - Limn install base directory.  Default: /usr/local/share/limn
-# $var_directory   - Limn instance var directory.  Limn datafiles live here.  Default: /var/lib/limn/$name
+# $port                - limn port
+# $server_name         - ServerName for limn instance proxy.     Default it to infer from $name and $::realm.
+# $server_aliases      - ServerAliases for limn instance proxy.  Default is to infer from $name and $::realm.
+# $environment         - Node environment.  Default: production
+# $base_directory      - Limn install base directory.  Default: /usr/local/share/limn
+# $var_directory       - Limn instance var directory.  Limn datafiles live here.  Default: /var/lib/limn/$name
+# $proxy_site_template - Template for proxy Apache conf Default: limn/vhost-limn-proxy.conf.erb.
 #
 # == Example
 # misc::limn::instance { 'reportcard': }
 #
 define misc::limn::instance(
-    $port           = 8081,
-    $environment    = 'production',
-    $base_directory = '/usr/local/share/limn',
-    $var_directory  = "/var/lib/limn/${name}",
-    $server_name    = undef,
-    $server_aliases = undef)
+    $port                = 8081,
+    $environment         = 'production',
+    $base_directory      = '/usr/local/share/limn',
+    $var_directory       = "/var/lib/limn/${name}",
+    $server_name         = undef,
+    $server_aliases      = undef,
+    $proxy_site_template = 'limn/vhost-limn-proxy.conf.erb')
 {
     ::limn::instance { $name:
         port           => $port,
@@ -59,5 +61,6 @@ define misc::limn::instance(
         server_name    => $servername,
         server_aliases => $serveraliases,
         require        => ::Limn::Instance[$name],
+        site_template  => $proxy_site_template,
     }
 }
