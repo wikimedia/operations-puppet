@@ -11,4 +11,11 @@ class role::restbase {
     include ::restbase
 
     include lvs::realserver
+
+
+    ferm::service {'restbase_web':
+        proto => 'tcp',
+        port  => '7231',
+    }
+
 }
