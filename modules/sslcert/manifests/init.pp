@@ -30,6 +30,14 @@ class sslcert {
         require => Package['ssl-cert'],
     }
 
+    # Script used by multiple instantiations of sslcert::ocsp
+    file { '/usr/local/sbin/update-ocsp.sh':
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/sslcert/update-ocsp.sh',
+    }
+
     # Limit AppArmor support to just Ubuntu, for now
     if $::operatingsystem == 'Ubuntu' {
         include apparmor
