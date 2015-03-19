@@ -170,10 +170,11 @@ mediawiki_memcached_servers:
     - deployment-redis01.eqiad.wmflabs
 "mediawiki::jobrunner::statsd_server": labmon1001.eqiad.wmnet
 "mediawiki::jobrunner::runners_basic": 5
+"mediawiki::jobrunner::runners_gwt": 1
 "mediawiki::jobrunner::runners_parsoid": 5
 "mediawiki::jobrunner::runners_restbase": 5
+"mediawiki::jobrunner::runners_translate": 1
 "mediawiki::jobrunner::runners_upload": 2
-"mediawiki::jobrunner::runners_gwt": 1
 "role::logging::mediawiki::log_directory": /data/project/logs
 "role::mediawiki::webserver::pool": one-pool-to-rule-them-all
 "mediawiki::users::web": www-data
