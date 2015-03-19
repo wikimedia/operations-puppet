@@ -631,11 +631,12 @@ class role::cache {
         }
     }
 
-    define localssl($certname, $server_name=$::fqdn, $server_aliases=[], $default_server=false) {
+    define localssl($certname, $do_ocsp=false, $server_name=$::fqdn, $server_aliases=[], $default_server=false) {
         # Assumes that LVS service IPs are setup elsewhere
 
         install_certificate { $certname:
             before => Protoproxy::Localssl[$name],
+            do_ocsp => $do_ocsp,
         }
 
         protoproxy::localssl { $name:
@@ -656,6 +657,7 @@ class role::cache {
         localssl { 'unified':
             certname => 'uni.wikimedia.org',
             default_server => true,
+            do_ocsp = true,
         }
 
         define sni_cert() {
@@ -663,6 +665,7 @@ class role::cache {
                 certname => "sni.${name}",
                 server_name => $name,
                 server_aliases => ["*.${name}"],
+                do_ocsp = true,
             }
         }
 
