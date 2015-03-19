@@ -35,6 +35,9 @@ def parse_options():
     parser.add_argument('--skip-root', '-s', dest="skip_root",
                         help="skip the final (root) certificate",
                         action='store_true')
+    parser.add_argument('--skip-self', '-s', dest="skip_self",
+                        help="skip own cert (only include signers)",
+                        action='store_true')
     parser.add_argument('--certificate', '-c', dest="cert",
                         type=file_exists,
                         help="certificate filename",
@@ -91,8 +94,11 @@ def traverse_tree(cert, cadir):
 def main():
     args = parse_options()
     certpath = traverse_tree(args.cert, args.cadir)
+
     if args.skip_root:
         certpath.pop()
+    if args.skip_self:
+        certpath.pop(0)
 
     pretty = [ certpath[0] ] + [ os.readlink(f) for f in certpath[1:] ]
     print(" -> ".join(pretty))

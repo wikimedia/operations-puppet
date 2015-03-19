@@ -23,8 +23,15 @@ define install_certificate(
         }
     }
 
-    sslcert::chainedcert { $name:
-        group => $group,
+    sslcert::chainedcert { "${name}-chained":
+        certname => $name,
+        group    => $group
+    }
+
+    sslcert::chainedcert { "${name}-ocsp":
+        certname => $name,
+        group    => $group,
+        ocsp     => true,
     }
 }
 
