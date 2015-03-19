@@ -82,6 +82,13 @@ sub vcl_fetch {
 		return (hit_for_pass);
 	}
 
+<% if @cluster_options.fetch("do_gzip", false) -%>
+	// Compress ico and SVG files
+	if (beresp.http.content-type ~ "^image/(x-icon|svg\+xml)$") {
+		set beresp.do_gzip = true;
+	}
+<% end -%>
+
 	// Don't run the default vcl_fetch function
 	return (deliver);
 }

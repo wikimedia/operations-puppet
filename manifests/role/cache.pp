@@ -1277,6 +1277,7 @@ class role::cache {
                 $realm_cluster_options = {
                     'top_domain'  => 'beta.wmflabs.org',
                     'bits_domain' => 'bits.beta.wmflabs.org',
+                    'do_gzip'     => true,
                 }
             }
             default: {
