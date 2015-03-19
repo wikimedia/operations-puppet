@@ -18,7 +18,9 @@ class install_server::tftp-server {
         # larger files like binary images in volatile
         source       => [
             'puppet:///modules/install_server/tftpboot',
+            # lint:ignore:puppet_url_without_modules
             'puppet:///volatile/tftpboot'
+            # lint:endignore
         ],
         sourceselect => all,
         mode         => '0444',

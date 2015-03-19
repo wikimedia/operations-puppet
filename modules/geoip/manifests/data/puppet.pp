@@ -6,7 +6,9 @@
 # $data_directory - Where the data files should live.
 #
 class geoip::data::puppet(
+  # lint:ignore:puppet_url_without_modules
   $source = 'puppet:///volatile/GeoIP',
+  # lint:endignore
   $data_directory = '/usr/share/GeoIP',
 )
 {
