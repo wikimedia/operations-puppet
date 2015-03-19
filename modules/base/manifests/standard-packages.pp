@@ -30,6 +30,7 @@ class base::standard-packages {
         'ethtool',
         'lldpd',
         'pv',
+        'tcpdump',
     ]
 
     package { $packages:
