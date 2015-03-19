@@ -39,13 +39,24 @@ class network::constants {
                     '2620:0:861:2:7a2b:cbff:fe09:d5c', # iron.wikimedia.org SLAAC
                     ],
             'monitoring_hosts' => [
-                        '208.80.154.14', # neon.wikimedia.org
-                        '2620:0:861:1:208:80:154:14', # neon.wikimedia.org
-                        '2620:0:861:1:7a2b:cbff:fe08:a42f', # neon.wikimedia.org SLAAC
-                        '208.80.154.53', # uranium.wikimedia.org (ganglia, gmetad needs it)
+                    '208.80.154.14', # neon.wikimedia.org
+                    '2620:0:861:1:208:80:154:14', # neon.wikimedia.org
+                    '2620:0:861:1:7a2b:cbff:fe08:a42f', # neon.wikimedia.org SLAAC
+                    '208.80.154.53', # uranium.wikimedia.org (ganglia, gmetad needs it)
                     ],
             'deployment_hosts' => [
-                        '10.64.0.196', # tin.eqiad.wmnet
+                    '10.64.0.196', # tin.eqiad.wmnet
+                    ],
+            'restbase_hosts' => [
+                    '10.64.0.220',  # restbase1001
+                    '10.64.0.221',  # restbase1002
+                    '10.64.32.159', # restbase1003
+                    '10.64.32.160', # restbase1004
+                    '10.64.48.99',  # restbase1005
+                    '10.64.48.100', # restbase1006
+                    '10.64.16.147', # cerium
+                    '10.64.0.200',  # xenon
+                    '10.64.16.149', # praseodymium
                     ],
         },
         'labs' => {
