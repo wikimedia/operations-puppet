@@ -13,6 +13,11 @@ server {
 
 	ssl_certificate /etc/ssl/localcerts/<%= @proxy_server_cert_name %>.chained.crt;
 	ssl_certificate_key /etc/ssl/private/<%= @proxy_server_cert_name %>.key;
+	<% if @do_ocsp -%>
+	ssl_stapling on;
+	ssl_stapling_file /var/ssl/ocsp/<%= @proxy_server_cert_name %>.ocsp;
+	<% end -%>
+
 	keepalive_timeout 60;
 
 	location / {

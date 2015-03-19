@@ -1,0 +1,188 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# update-ocsp - creates or updates an OCSP stapling file for an SSL cert
+#
+# Copyright 2015 Brandon Black
+# Copyright 2015 Wikimedia Foundation, Inc.
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import os
+import errno
+import argparse
+from subprocess import check_output
+import glob
+import tempfile
+import datetime
+
+
+def file_exists(fname):
+    """Helper for argparse to do check if a filename argument exists"""
+    if not os.path.exists(fname):
+        raise argparse.ArgumentTypeError("{0} does not exist".format(fname))
+    return fname
+
+
+def parse_options():
+    """Parse command-line options, return args hash"""
+    parser = argparse.ArgumentParser(description="OCSP Fetcher")
+    parser.add_argument('--certificate', '-c', dest="cert",
+                        type=file_exists,
+                        help="certificate filename",
+                        required=True)
+    parser.add_argument('--output', '-o', dest="output",
+                        help="output filename",
+                        required=True)
+    parser.add_argument('--proxy', '-p', dest="proxy",
+                        help="HTTP proxy server URL to use for OCSP request",
+                        default=None)
+    parser.add_argument('--ca-certs', '-d', dest="cadir",
+                        help="SSL CA certificates directory",
+                        default='/etc/ssl/certs')
+    parser.add_argument('--time-offset-start', '-s', dest="offset_start",
+                        help="validate thisUpdate <= X secs in the future",
+                        type=int, default=60)
+    parser.add_argument('--time-offset-end', '-e', dest="offset_end",
+                        help="validate nextUpdate >= X secs in the future",
+                        type=int, default=3600)
+
+    return parser.parse_args()
+
+
+def cert_x509_option(filename, attrib):
+    """Returns output of an openssl x509 cert option w/ noout"""
+    return check_output([
+        "openssl", "x509", "-noout",
+        "-in", filename,
+        "-" + attrib,
+    ]).rstrip()
+
+
+def cert_x509_option_kv(filename, attrib):
+    """As above, but returns the value when output is k=v"""
+    k, v = cert_x509_option(filename, attrib).split("=", 1)
+    assert k == attrib
+    return v
+
+
+def cert_get_issuer_filename(cert, cadir):
+    """Get the filename of the immediate issuer of the given cert"""
+
+    # Note, this uses the pre-0.9.6 algorithm - it can be confused if
+    #  there are 2+ distinct possible issuers in cadir with identical subjects!
+    #  (is there a way to resolve that ambiguity that isn't unreasonable?)
+
+    issuer_subject = cert_x509_option_kv(cert, "issuer")
+    issuer_hash = cert_x509_option(cert, "issuer_hash")
+    for issuer in glob.glob(os.path.join(cadir, issuer_hash + '.[0-9]')):
+        if cert_x509_option_kv(issuer, "subject") == issuer_subject:
+            return issuer
+    raise Exception("No matching issuer file found at %s for %s",
+                    (issuer_glob, cert))
+
+
+def cert_fetch_ocsp(cert, cadir, outfile, proxy):
+    """Fetch validated OCSP response for cert"""
+
+    issuer_path = cert_get_issuer_filename(cert, cadir)
+    ocsp_uri = cert_x509_option(cert, "ocsp_uri")
+
+    cmd = [
+        "openssl", "ocsp", "-nonce",
+        "-respout", outfile,
+        "-issuer", issuer_path,
+        "-cert", cert,
+    ]
+
+    if proxy:
+        cmd.extend([
+            "-path", ocsp_uri,
+            "-host", proxy,
+        ])
+    else:
+        cmd.extend([
+            "-url", ocsp_uri,
+        ])
+
+    return check_output(cmd)
+
+
+def ocsp_text_datetime_field(ocsp_text, field):
+    """Create datetime object from field:datetsring line in OCSP text"""
+    for line in ocsp_text.split("\n"):
+        if ":" in line:
+            k, v = line.strip().split(":", 1)
+            if k == field:
+                return datetime.datetime.strptime(v.lstrip(),
+                                                  "%b %d %H:%M:%S %Y %Z")
+    raise Exception("Did not find OCSP datetime field for '%s'" % field)
+
+
+def ocsp_validate_window(ocspfile, offset_start, offset_end):
+    """Validate the validity range of the OCSP response"""
+
+    ocsp_text = check_output([
+        "openssl", "ocsp", "-noverify",
+        "-respin", ocspfile,
+        "-resp_text",
+    ])
+
+    thisup_dt = ocsp_text_datetime_field(ocsp_text, "This Update")
+    nextup_dt = ocsp_text_datetime_field(ocsp_text, "Next Update")
+    now_dt = datetime.datetime.utcnow()
+
+    thisup_notafter = now_dt + datetime.timedelta(0, offset_start)
+    if thisup_dt > thisup_notafter:
+        raise Exception("OCSP thisUpdate more than %i secs in the future"
+                        % offset_start)
+
+    nextup_notbefore = now_dt + datetime.timedelta(0, offset_end)
+    if nextup_dt < nextup_notbefore:
+        raise Exception("OCSP thisUpdate less than %i secs in the future"
+                        % offset_end)
+
+    return 0
+
+
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
+
+
+def main():
+    args = parse_options()
+
+    os.umask(022)
+    out_fn = os.path.basename(args.output)
+    out_basedir = os.path.dirname(args.output)
+    mkdir_p(out_basedir)
+    out_tempdir = tempfile.mkdtemp(".tmp", "update-ocsp-", out_basedir)
+    out_tempfile = os.path.join(out_tempdir, out_fn)
+
+    cert_fetch_ocsp(args.cert, args.cadir, out_tempfile, args.proxy)
+    ocsp_validate_window(out_tempfile, args.offset_start, args.offset_end)
+
+    os.rename(out_tempfile, args.output)
+    os.rmdir(out_tempdir)
+
+
+if __name__ == '__main__':
+    main()
+
+# vim: set ts=4 sw=4 et:
