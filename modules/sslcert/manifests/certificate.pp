@@ -75,9 +75,5 @@ define sslcert::certificate(
             # content => $private, # content variant is broken, fixing the easy way for now...
             source => $private,
         }
-    } else {
-        file { "/etc/ssl/private/${name}.key":
-            ensure  => absent,
-        }
     }
 }
