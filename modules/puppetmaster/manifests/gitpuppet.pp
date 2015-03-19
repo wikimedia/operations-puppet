@@ -19,7 +19,9 @@ class puppetmaster::gitpuppet {
             owner   => 'gitpuppet',
             group   => 'gitpuppet',
             mode    => '0400',
+            # lint:ignore:puppet_url_without_modules
             source  => 'puppet:///private/ssh/gitpuppet/gitpuppet.key',
+            # lint:endignore
             require => File['/home/gitpuppet/.ssh'],
     }
     file { '/home/gitpuppet/.ssh/gitpuppet-private-repo':
@@ -27,7 +29,9 @@ class puppetmaster::gitpuppet {
             owner   => 'gitpuppet',
             group   => 'gitpuppet',
             mode    => '0400',
+            # lint:ignore:puppet_url_without_modules
             source  => 'puppet:///private/ssh/gitpuppet/gitpuppet-private.key',
+            # lint:endignore
             require => File['/home/gitpuppet/.ssh'],
     }
     ssh::userkey { 'gitpuppet':

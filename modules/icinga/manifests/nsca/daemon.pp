@@ -11,7 +11,9 @@ class icinga::nsca::daemon {
     }
 
     file { '/etc/nsca.cfg':
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///private/icinga/nsca.cfg',
+        # lint:endignore
         owner   => 'root',
         mode    => '0400',
         require => Package['nsca'],
