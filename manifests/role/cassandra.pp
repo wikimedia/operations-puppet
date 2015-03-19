@@ -15,4 +15,26 @@ class role::cassandra {
         description  => 'Cassandra database',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u cassandra -C java -a CassandraDaemon',
     }
+
+    $cassandra_hosts      = hiera('restbase::cassandra::seeds')
+    $cassandra_hosts_ferm = join($cassandra_hosts, ' ')
+
+    # Cassandra intra-node messaging
+    ferm::service { 'cassandra-intra-node':
+        proto  => 'tcp',
+        port   => '7000',
+        srange => "@resolve(($cassandra_hosts_ferm))",
+    }
+    # Cassandra JMX/RMI
+    ferm::service { 'cassandra-jmx-rmi':
+        proto  => 'tcp',
+        port   => '7199',
+        srange => "@resolve(($cassandra_hosts_ferm))",
+    }
+    # Cassandra CQL query interface
+    ferm::service { 'cassandra-cql':
+        proto  => 'tcp',
+        port   => '9042',
+        srange => "@resolve(($cassandra_hosts_ferm))",
+    }
 }
