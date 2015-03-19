@@ -60,7 +60,9 @@ class icinga {
     }
 
     file { '/etc/icinga/nsca_frack.cfg':
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///private/nagios/nsca_frack.cfg',
+        # lint:endignore
         owner   => 'icinga',
         group   => 'icinga',
         mode    => '0644',
@@ -78,7 +80,9 @@ class icinga {
     }
 
     class { 'nagios_common::contacts':
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///private/nagios/contacts.cfg',
+        # lint:endignore
         require => Package['icinga'],
         notify  => Service['icinga'],
     }

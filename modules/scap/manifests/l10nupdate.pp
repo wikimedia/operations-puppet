@@ -29,13 +29,17 @@ class scap::l10nupdate(
         owner  => 'l10nupdate',
         group  => 'l10nupdate',
         mode   => '0400',
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///private/ssh/tin/l10nupdate/id_rsa',
+        # lint:endignore
     }
     file { '/home/l10nupdate/.ssh/id_rsa.pub':
         owner  => 'l10nupdate',
         group  => 'l10nupdate',
         mode   => '0444',
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///private/ssh/tin/l10nupdate/id_rsa.pub',
+        # lint:endignore
     }
 
     # Make sure the log directory exists and has adequate permissions.

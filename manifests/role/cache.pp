@@ -1428,7 +1428,9 @@ class role::cache {
 
         class { 'varnish::zero_update':
             site     => $zero_site,
+            # lint:ignore:puppet_url_without_modules
             auth_src => 'puppet:///private/misc/zerofetcher.auth',
+            # lint:endignore
         }
 
         $storage_conf = $::realm ? {

@@ -16,7 +16,9 @@ class mailman::webui {
 
     # htdigest file for private list archives
     file { '/etc/apache2/arbcom-l.htdigest':
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///private/mailman/arbcom-l.htdigest',
+        # lint:endignore
         owner   => 'root',
         group   => 'www-data',
         mode    => '0440',

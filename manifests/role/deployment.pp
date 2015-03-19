@@ -127,7 +127,9 @@ class role::deployment::config {
 
 class role::deployment::server(
     # Source of the key, change this if not in production, with hiera.
+    # lint:ignore:puppet_url_without_modules
     $key_source = 'puppet:///private/ssh/tin/mwdeploy_rsa',
+    # lint:endignore
     $apache_fqdn = $::fqdn,
     $deployment_group = 'wikidev',
 ) {

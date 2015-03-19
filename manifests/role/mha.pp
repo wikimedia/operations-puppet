@@ -15,7 +15,9 @@ class mha::node {
         owner  => 'mysql',
         group  => 'mysql',
         mode   => '0400',
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///private/ssh/mysql/mysql.key',
+        # lint:endignore
     }
 
     ssh_authorized_key { 'mha4mysql':

@@ -62,7 +62,9 @@ class gerrit::jetty ($ldap_hosts,
         group   => 'gerrit2',
         mode    => '0600',
         require => File['/var/lib/gerrit2/.ssh'],
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///private/gerrit/id_rsa',
+        # lint:endignore
     }
 
     file { '/var/lib/gerrit2/review_site':

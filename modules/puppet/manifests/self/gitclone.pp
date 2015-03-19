@@ -37,7 +37,9 @@ class puppet::self::gitclone {
         owner   => 'root',
         group   => 'root',
         mode    => '0600',
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///private/ssh/labs-puppet-key',
+        # lint:endignore
     }
     file { $volatiledir:
         ensure  => directory,

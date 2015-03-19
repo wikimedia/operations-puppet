@@ -5,19 +5,24 @@
 
 class mw-rc-irc::ircserver {
 
-    file {
-        '/usr/etc/ircd.conf':
-            mode   => '0444',
-            owner  => 'irc',
-            group  => 'irc',
-            source => 'puppet:///private/misc/ircd.conf';
-        '/usr/etc/ircd.motd':
-            mode    => '0444',
-            owner   => 'irc',
-            group   => 'irc',
-            content => template('mw-rc-irc/motd.erb');
-        '/etc/init/ircd.conf':
-            source  => 'puppet:///modules/mw-rc-irc/upstart/ircd.conf',
+    file { '/usr/etc/ircd.conf':
+        mode   => '0444',
+        owner  => 'irc',
+        group  => 'irc',
+        # lint:ignore:puppet_url_without_modules
+        source => 'puppet:///private/misc/ircd.conf',
+        # lint:endignore
+    }
+
+    file { '/usr/etc/ircd.motd':
+        mode    => '0444',
+        owner   => 'irc',
+        group   => 'irc',
+        content => template('mw-rc-irc/motd.erb'),
+    }
+
+    file { '/etc/init/ircd.conf':
+        source  => 'puppet:///modules/mw-rc-irc/upstart/ircd.conf',
     }
 
     service { 'ircd':

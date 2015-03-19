@@ -14,7 +14,9 @@ class statistics::sites::stats {
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///private/apache/htpasswd.stats',
+        # lint:endignore
     }
 
     # add htpasswd file for private geowiki data
@@ -22,7 +24,9 @@ class statistics::sites::stats {
         owner   => 'root',
         group   => 'www-data',
         mode    => '0640',
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///private/apache/htpasswd.stats-geowiki',
+        # lint:endignore
     }
 
     # link geowiki checkout from docroot

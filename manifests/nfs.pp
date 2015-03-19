@@ -217,7 +217,9 @@ class misc::nfs-server::home {
             owner  => 'root',
             group  => 'root',
             mode   => '0400',
+            # lint:ignore:puppet_url_without_modules
             source => 'puppet:///private/backup/ssh-keys/home-rsync',
+            # lint:endignore
         }
     }
 

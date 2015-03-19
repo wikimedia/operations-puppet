@@ -10,7 +10,9 @@ class subversion::viewvc {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///private/svn/svn-authz',
+        # lint:endignore
     }
 
     file { '/etc/viewvc/viewvc.conf':
