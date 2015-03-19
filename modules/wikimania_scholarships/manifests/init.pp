@@ -64,23 +64,24 @@ class wikimania_scholarships(
         content => template('wikimania_scholarships/apache.conf.erb'),
     }
 
-    file {
-        $deploy_dir:
-            ensure  => directory;
+    file { $deploy_dir:
+        ensure  => directory,
+    }
 
-        "${deploy_dir}/.env":
-            ensure  => present,
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            notify  => Service['apache2'],
-            content => template('wikimania_scholarships/env.erb');
+    file { "${deploy_dir}/.env":
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        notify  => Service['apache2'],
+        content => template('wikimania_scholarships/env.erb'),
+    }
 
-        $cache_dir:
-            ensure => directory,
-            mode   => '0755',
-            owner  => 'www-data',
-            group  => 'root';
+    file { $cache_dir:
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'www-data',
+        group  => 'root',
     }
 
     include ::apache::mod::rewrite
