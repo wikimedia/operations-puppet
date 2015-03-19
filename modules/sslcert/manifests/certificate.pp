@@ -77,7 +77,7 @@ define sslcert::certificate(
         }
     } else {
         file { "/etc/ssl/private/${name}.key":
-            ensure  => absent,
+            ensure => present,
         }
     }
 }
