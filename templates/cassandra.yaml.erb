@@ -534,7 +534,7 @@ batch_size_warn_threshold_in_kb: 5
 #
 # If your data directories are backed by SSD, you should increase this
 # to the number of cores.
-#concurrent_compactors: 1
+concurrent_compactors: <%= @concurrent_compactors %>
 
 # Throttles compaction to the given total throughput across the entire
 # system. The faster you insert data, the faster you need to compact in

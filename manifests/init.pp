@@ -129,6 +129,10 @@
 #    the entire system.
 #    Default: 16
 #
+# [*concurrent_compactors*]
+#    Number of simultaneous compactions to allow.
+#    Default: 1
+#
 # [*endpoint_snitch*]
 #   Set this to a class that implements IEndpointSnitch.
 #   Default: GossipingPropertyFileSnitch
@@ -196,6 +200,7 @@ class cassandra(
     $snapshot_before_compaction       = 'false',
     $auto_snapshot                    = 'true',
     $compaction_throughput_mb_per_sec = 16,
+    $concurrent_compactors            = 1,
     $endpoint_snitch                  = 'GossipingPropertyFileSnitch',
     $internode_compression            = 'all',
     $max_heap_size                    = undef,
