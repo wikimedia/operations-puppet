@@ -1,3 +1,7 @@
+.*-elastic\d\d:
+  - role::elasticsearch::server
+.*-mc\d\d:
+  - role::memcached
 .*-tin:
   - role::deployment::server
 .*-sca\d\d:
