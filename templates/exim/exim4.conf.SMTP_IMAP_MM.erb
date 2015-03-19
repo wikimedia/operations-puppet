@@ -332,7 +332,7 @@ eat:
 system_aliases:
 	driver = redirect
 	domains = +system_domains
-	data = ${lookup{$local_part}lsearch{/etc/aliases}}
+	data = ${lookup{$local_part}lsearch{/etc/aliases}{$value}{root@wikimedia.org}}
 	pipe_transport = address_pipe
 	allow_fail
 	allow_defer
