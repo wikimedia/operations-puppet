@@ -407,6 +407,7 @@ node 'caesium.eqiad.wmnet' {
 # cerium, praseodymium and xenon are Cassandra test hosts
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     role restbase, cassandra
+    include base::firewall
     include standard
     include admin
 }
