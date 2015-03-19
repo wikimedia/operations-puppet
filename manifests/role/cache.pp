@@ -605,7 +605,7 @@ class role::cache {
         varnishkafka::instance { 'eventlogging':
             brokers           => $kafka_brokers,
             # Note that this format uses literal tab characters.
-            format            => '%q	%l	%n	%t	%h	"%{User-agent}i"',
+            format            => '%q	%l	%n	%{%FT%T}	%h	"%{User-agent}i"',
             format_type       => 'string',
             topic             => 'eventlogging-client-side',
             varnish_name      => $varnish_name,
