@@ -9,6 +9,7 @@
             ],
             "exclude": [
                 "AssembleUploadChunks",
+                "MessageIndexRebuildJob",
                 "ParsoidCacheUpdateJobOnDependencyChange",
                 "ParsoidCacheUpdateJobOnEdit",
                 "RestbaseUpdateJobOnEdit",
@@ -56,6 +57,12 @@
             "runners": <%= @runners_transcode %>,
             "include": [
                 "webVideoTranscode"
+            ]
+        },
+        "translate": {
+            "runners": <%= @runners_translate %>,
+            "include": [
+                "MessageIndexRebuildJob"
             ]
         },
         "upload": {
