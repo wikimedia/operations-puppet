@@ -45,7 +45,9 @@ class labstore {
         owner  => 'root',
         group  => 'root',
         mode   => '0400',
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///private/labstore/id_labstore',
+        # lint:endignore
     }
 
     file { '/etc/default/nfs-common':

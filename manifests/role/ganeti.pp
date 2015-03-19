@@ -17,7 +17,9 @@ class role::ganeti {
         owner  => 'root',
         group  => 'root',
         mode   => '0400',
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///private/ganeti/id_dsa',
+        # lint:endignore
     }
     # This is here for completeness
     file { '/root/.ssh/id_dsa.pub':

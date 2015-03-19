@@ -97,7 +97,9 @@ class exim {
             exim4::dkim { 'wikimedia.org':
                 domain   => 'wikimedia.org',
                 selector => 'wikimedia',
+                # lint:ignore:puppet_url_without_modules
                 source   => 'puppet:///private/dkim/wikimedia.org-wikimedia.key',
+                # lint:endignore
             }
         }
 
@@ -113,7 +115,9 @@ class exim {
             exim4::dkim { 'lists.wikimedia.org':
                 domain   => 'lists.wikimedia.org',
                 selector => 'wikimedia',
+                # lint:ignore:puppet_url_without_modules
                 source   => 'puppet:///private/dkim/lists.wikimedia.org-wikimedia.key',
+                # lint:endignore
             }
         }
 
@@ -121,7 +125,9 @@ class exim {
             exim4::dkim { 'wiki-mail':
                 domain   => 'wikimedia.org',
                 selector => 'wiki-mail',
+                # lint:ignore:puppet_url_without_modules
                 source   => 'puppet:///private/dkim/wikimedia.org-wiki-mail.key',
+                # lint:endignore
             }
         }
 

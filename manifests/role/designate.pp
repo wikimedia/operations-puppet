@@ -98,9 +98,11 @@ class role::designate::server {
     }
 
     file { '/var/lib/designate/.ssh/id_rsa':
-            owner  => 'designate',
-            group  => 'designate',
-            mode   => '0400',
-            source => 'puppet:///private/ssh/puppet_cert_manager/cert_manager'
+        owner  => 'designate',
+        group  => 'designate',
+        mode   => '0400',
+        # lint:ignore:puppet_url_without_modules
+        source => 'puppet:///private/ssh/puppet_cert_manager/cert_manager',
+        # lint:endignore
     }
 }

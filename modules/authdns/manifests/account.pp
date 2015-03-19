@@ -35,17 +35,23 @@ class authdns::account {
         owner  => $user,
         group  => $group,
         mode   => '0400',
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///private/authdns/id_ed25519',
+        # lint:endignore
     }
     file { "${home}/.ssh/id_ed25519.pub":
         ensure => 'present',
         owner  => $user,
         group  => $group,
         mode   => '0400',
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///private/authdns/id_ed25519.pub',
+        # lint:endignore
     }
     ssh::userkey { $user:
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///private/authdns/id_ed25519.pub',
+        # lint:endignore
     }
 
     file { "${home}/git-shell-commands":

@@ -43,14 +43,18 @@ class openstack::nova::compute(
             require => Package['nova-common'],
         }
         file { '/var/lib/nova/.ssh/id_rsa':
+            # lint:ignore:puppet_url_without_modules
             source  => 'puppet:///private/ssh/nova/nova.key',
+            # lint:endignore
             owner   => 'nova',
             group   => 'nova',
             mode    => '0600',
             require => File['/var/lib/nova/.ssh'],
         }
         file { '/var/lib/nova/.ssh/id_rsa.pub':
+            # lint:ignore:puppet_url_without_modules
             source  => 'puppet:///private/ssh/nova/nova.pub',
+            # lint:endignore
             owner   => 'nova',
             group   => 'nova',
             mode    => '0600',
@@ -83,7 +87,9 @@ class openstack::nova::compute(
     }
 
     ssh::userkey { 'nova':
+        # lint:ignore:puppet_url_without_modules
         source => 'puppet:///private/ssh/nova/nova.pub',
+        # lint:endignore
     }
 
     service { 'libvirt-bin':

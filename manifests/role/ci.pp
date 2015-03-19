@@ -104,7 +104,9 @@ class role::ci::master {
         owner   => 'jenkins',
         group   => 'jenkins',
         mode    => '0400',
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///private/ssh/ci/jenkins-mwext-sync_id_rsa',
+        # lint:endignore
         require => User['jenkins'],
     }
 
@@ -208,7 +210,9 @@ class role::ci::slave {
         ensure  => present,
         owner   => 'npmtravis',
         mode    => '0400',
+        # lint:ignore:puppet_url_without_modules
         source  => 'puppet:///private/ssh/ci/npmtravis_id_rsa',
+        # lint:endignore
         require => File['/home/npmtravis/.ssh'],
     }
 
