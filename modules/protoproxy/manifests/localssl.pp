@@ -17,13 +17,19 @@
 # [*default_server*]
 #   Boolean. Adds the 'default_server' option to the listen statement.
 #   Exactly one instance should have this set to true.
+#
+# [*do_ocsp*]
+#   Boolean. Sets up OCSP Stapling for this server.  This both enables the
+#   correct configuration directives in the site's nginx config file as well
+#   as sets up the certificate's stapling file via sslcert::ocsp_nginx
 
 define protoproxy::localssl(
     $proxy_server_cert_name,
     $server_name    = $::fqdn,
     $server_aliases = [],
     $default_server = false,
-    $upstream_port  = '80'
+    $upstream_port  = '80',
+    $do_ocsp        = false
 ) {
 
     # Ensure that exactly one definition exists with default_server = true
@@ -41,6 +47,12 @@ define protoproxy::localssl(
     }
     else {
         $ssl_protos = 'ssl'
+    }
+
+    if $do_ocsp {
+        sslcert::ocsp_nginx { $proxy_server_cert_name:
+            create_before => Service['nginx']
+        }
     }
 
     nginx::site { $name:
