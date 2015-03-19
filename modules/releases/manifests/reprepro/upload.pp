@@ -1,5 +1,7 @@
 class releases::reprepro::upload (
+    # lint:ignore:puppet_url_without_modules
     $private_key  = 'puppet:///private/releases/id_rsa.upload',
+    # lint:endignore
     $user         = 'releases',
     $group        = 'releases',
     $sudo_user    = '%wikidev',
