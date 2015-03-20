@@ -19,4 +19,9 @@ class openstack::nova::api($openstack_version=$::openstack::version, $novaconfig
         notify  => Service["nova-api"],
         require => Package["nova-api"];
     }
+
+    nrpe::monitor_service { 'check_nova_api_process':
+        description  => 'nova-api process',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-api'",
+    }
 }
