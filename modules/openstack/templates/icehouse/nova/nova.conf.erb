@@ -94,9 +94,6 @@ dnsmasq_config_file=/etc/dnsmasq-nova.conf
 notification_driver=wikistatus
 notify_on_state_change=vm_state
 
-# And we need this driver for designate
-notification_driver = nova.openstack.common.notifier.rpc_notifier
-
 wiki_host=<%= instance_status_wiki_host %>
 wiki_domain=<%= instance_status_wiki_domain %>
 wiki_page_prefix=<%= instance_status_wiki_page_prefix %>
@@ -105,6 +102,15 @@ wiki_login=<%= instance_status_wiki_user %>
 wiki_password=<%= instance_status_wiki_pass %>
 wiki_instance_dns_domain=<%= instance_status_dns_domain %>
 wiki_use_keystone=False
+
+# The auditing facility will send compute.instance.exists notifications,
+#  which wikistatus is already listening for.  This will force
+#  daily updates to the wiki pages when needed.
+instance_usage_audit=True
+instance_usage_audit_period=day
+
+# And we need this driver for designate
+notification_driver = nova.openstack.common.notifier.rpc_notifier
 
 # Overprovision settings
 
