@@ -654,9 +654,18 @@ class role::cache {
         include certificates::wmf_ca_2014_2017
         include role::protoproxy::ssl::common
 
+        # Test OCSP on cp1008 only initially
+        if $::hostname == 'cp1008' {
+            $ocsp_test = true
+        }
+        else {
+            $ocsp_test = false
+        }
+
         localssl { 'unified':
             certname => 'uni.wikimedia.org',
             default_server => true,
+            do_ocsp => $ocsp_test,
         }
 
         define sni_cert() {
@@ -664,6 +673,7 @@ class role::cache {
                 certname => "sni.${name}",
                 server_name => $name,
                 server_aliases => ["*.${name}"],
+                do_ocsp => $ocsp_test,
             }
         }
 
