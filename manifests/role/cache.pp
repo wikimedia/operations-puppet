@@ -1667,7 +1667,6 @@ class role::cache {
                 'dataset1001.wikimedia.org',
                 'gallium.wikimedia.org',  # CI server
                 'ytterbium.wikimedia.org', # Gerrit
-                'tungsten.eqiad.wmnet',
                 'graphite1001.eqiad.wmnet',
                 'zirconium.wikimedia.org',
                 'ruthenium.eqiad.wmnet', # parsoid rt test server
