@@ -19,6 +19,8 @@ class role::gdash {
 
     include ::apache
     include ::apache::mod::uwsgi
+    include ::apache::mod::rewrite
+    include ::apache::mod::headers
 
     apache::site { 'gdash.wikimedia.org':
         content => template('apache/sites/gdash.wikimedia.org.erb'),
