@@ -2108,7 +2108,6 @@ node 'palladium.eqiad.wmnet' {
     include role::access_new_install
     include role::puppetmaster::frontend
     include role::pybal_config
-    include misc::monitoring::ori_weekend_commits
 }
 
 node /pc100[1-3]\.eqiad\.wmnet/ {

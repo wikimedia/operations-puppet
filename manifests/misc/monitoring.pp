@@ -612,19 +612,3 @@ class misc::monitoring::view::analytics::data($hdfs_stat_host, $kafka_broker_hos
         ],
     }
 }
-
-
-class misc::monitoring::ori_weekend_commits {
-    file { '/usr/local/lib/nagios/plugins/check-ori-weekend-commits':
-        source => 'puppet:///files/icinga/check-ori-weekend-commits',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
-
-    nrpe::monitor_service { 'ori_weekend_commits':
-        description  => 'Ori committing changes on the weekend',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check-ori-weekend-commits',
-        require      => File['/usr/local/lib/nagios/plugins/check-ori-weekend-commits'],
-    }
-}
