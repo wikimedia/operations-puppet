@@ -469,6 +469,6 @@ define swift::label_filesystem() {
 
     $label = "swift-${dev_suffix}"
     exec { "/usr/sbin/xfs_admin -L ${label} ${device}":
-        onlyif => "/usr/bin/test $(/bin/mount | /bin/grep ${device} |/usr/bin/wc -l) -eq 0 && /usr/b in/test $(/usr/sbin/grub-probe -t fs -d ${device}) = 'xfs' && /usr/bin/test $(/usr/sbin/xfs_admin -l ${device} |/bin/grep swift | /usr/bin/wc -l) -eq 0"
+        onlyif => "/usr/bin/test $(/bin/mount | /bin/grep ${device} |/usr/bin/wc -l) -eq 0 && /usr/bin/test $(/usr/sbin/grub-probe -t fs -d ${device}) = 'xfs' && /usr/bin/test $(/usr/sbin/xfs_admin -l ${device} |/bin/grep swift | /usr/bin/wc -l) -eq 0"
     }
 }
