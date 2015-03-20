@@ -5016,7 +5016,7 @@ host mw2183 {
 }
 
 host mw2184 {
-	hardware ethernet B0:83:FE:DB:E6:7F;
+	hardware ethernet B0:83:FE:DE:FD:E5;
 	fixed-address mw2184.codfw.wmnet;
 }
 
