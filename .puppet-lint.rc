@@ -36,3 +36,6 @@
 
 # FIXME Following test cause a stacktrace ;-(
 --no-ensure_not_symlink_target-check
+
+# Test is only relevant for Puppet <= 2.6.2.
+--no-class_inherits_from_params_class-check
