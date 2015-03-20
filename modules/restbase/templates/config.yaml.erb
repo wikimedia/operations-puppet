@@ -93,6 +93,18 @@ templates:
                       - /^(?:test.*\.wiki.*\.org|www.mediawiki.org)$/
                   - name: wikipedia.group.local
                     domains: /\.wikipedia.org$/
+                  - name: wiktionary.group.local
+                    domains: /\.wiktionary.org$/
+                  - name: wikibooks.group.local
+                    domains: /\.wikibooks.org$/
+                  - name: wikiquote.group.local
+                    domains: /\.wikiquote.org$/
+                  - name: wikinews.group.local
+                    domains: /\.wikinews.org$/
+                  - name: wikiversity.group.local
+                    domains: /\.wikiversity.org$/
+                  - name: wikivoyage.group.local
+                    domains: /\.wikivoyage.org$/
                   # Catch-all group
                   - name: default.group.local
                     domains: /./
@@ -139,13 +151,13 @@ spec: &spec
   title: "The RESTBase root"
   # Some more general RESTBase info
   paths:
-    # phase 0 and test wikis
+    # Group 0 and test wikis
     /{domain:www.mediawiki.org}: *wp/default/1.0.0
     /{domain:test.wikipedia.org}: *wp/default/1.0.0
     /{domain:test2.wikipedia.org}: *wp/default/1.0.0
     /{domain:test.wikidata.org}: *wp/default/1.0.0
 
-    # wikipedias
+    # Wikipedia
     /{domain:ab.wikipedia.org}: *wp/default/1.0.0
     /{domain:ace.wikipedia.org}: *wp/default/1.0.0
     /{domain:af.wikipedia.org}: *wp/default/1.0.0
@@ -186,7 +198,6 @@ spec: &spec
     /{domain:ce.wikipedia.org}: *wp/default/1.0.0
     /{domain:ceb.wikipedia.org}: *wp/default/1.0.0
     /{domain:ch.wikipedia.org}: *wp/default/1.0.0
-    /{domain:cho.wikipedia.org}: *wp/default/1.0.0
     /{domain:chr.wikipedia.org}: *wp/default/1.0.0
     /{domain:chy.wikipedia.org}: *wp/default/1.0.0
     /{domain:ckb.wikipedia.org}: *wp/default/1.0.0
@@ -240,18 +251,15 @@ spec: &spec
     /{domain:he.wikipedia.org}: *wp/default/1.0.0
     /{domain:hi.wikipedia.org}: *wp/default/1.0.0
     /{domain:hif.wikipedia.org}: *wp/default/1.0.0
-    /{domain:ho.wikipedia.org}: *wp/default/1.0.0
     /{domain:hr.wikipedia.org}: *wp/default/1.0.0
     /{domain:hsb.wikipedia.org}: *wp/default/1.0.0
     /{domain:ht.wikipedia.org}: *wp/default/1.0.0
     /{domain:hu.wikipedia.org}: *wp/default/1.0.0
     /{domain:hy.wikipedia.org}: *wp/default/1.0.0
-    /{domain:hz.wikipedia.org}: *wp/default/1.0.0
     /{domain:ia.wikipedia.org}: *wp/default/1.0.0
     /{domain:id.wikipedia.org}: *wp/default/1.0.0
     /{domain:ie.wikipedia.org}: *wp/default/1.0.0
     /{domain:ig.wikipedia.org}: *wp/default/1.0.0
-    /{domain:ii.wikipedia.org}: *wp/default/1.0.0
     /{domain:ik.wikipedia.org}: *wp/default/1.0.0
     /{domain:ilo.wikipedia.org}: *wp/default/1.0.0
     /{domain:io.wikipedia.org}: *wp/default/1.0.0
@@ -267,14 +275,12 @@ spec: &spec
     /{domain:kbd.wikipedia.org}: *wp/default/1.0.0
     /{domain:kg.wikipedia.org}: *wp/default/1.0.0
     /{domain:ki.wikipedia.org}: *wp/default/1.0.0
-    /{domain:kj.wikipedia.org}: *wp/default/1.0.0
     /{domain:kk.wikipedia.org}: *wp/default/1.0.0
     /{domain:kl.wikipedia.org}: *wp/default/1.0.0
     /{domain:km.wikipedia.org}: *wp/default/1.0.0
     /{domain:kn.wikipedia.org}: *wp/default/1.0.0
     /{domain:ko.wikipedia.org}: *wp/default/1.0.0
     /{domain:koi.wikipedia.org}: *wp/default/1.0.0
-    /{domain:kr.wikipedia.org}: *wp/default/1.0.0
     /{domain:krc.wikipedia.org}: *wp/default/1.0.0
     /{domain:ks.wikipedia.org}: *wp/default/1.0.0
     /{domain:ksh.wikipedia.org}: *wp/default/1.0.0
@@ -300,19 +306,16 @@ spec: &spec
     /{domain:map-bms.wikipedia.org}: *wp/default/1.0.0
     /{domain:mdf.wikipedia.org}: *wp/default/1.0.0
     /{domain:mg.wikipedia.org}: *wp/default/1.0.0
-    /{domain:mh.wikipedia.org}: *wp/default/1.0.0
     /{domain:mhr.wikipedia.org}: *wp/default/1.0.0
     /{domain:mi.wikipedia.org}: *wp/default/1.0.0
     /{domain:min.wikipedia.org}: *wp/default/1.0.0
     /{domain:mk.wikipedia.org}: *wp/default/1.0.0
     /{domain:ml.wikipedia.org}: *wp/default/1.0.0
     /{domain:mn.wikipedia.org}: *wp/default/1.0.0
-    /{domain:mo.wikipedia.org}: *wp/default/1.0.0
     /{domain:mr.wikipedia.org}: *wp/default/1.0.0
     /{domain:mrj.wikipedia.org}: *wp/default/1.0.0
     /{domain:ms.wikipedia.org}: *wp/default/1.0.0
     /{domain:mt.wikipedia.org}: *wp/default/1.0.0
-    /{domain:mus.wikipedia.org}: *wp/default/1.0.0
     /{domain:mwl.wikipedia.org}: *wp/default/1.0.0
     /{domain:my.wikipedia.org}: *wp/default/1.0.0
     /{domain:myv.wikipedia.org}: *wp/default/1.0.0
@@ -324,7 +327,6 @@ spec: &spec
     /{domain:nds-nl.wikipedia.org}: *wp/default/1.0.0
     /{domain:ne.wikipedia.org}: *wp/default/1.0.0
     /{domain:new.wikipedia.org}: *wp/default/1.0.0
-    /{domain:ng.wikipedia.org}: *wp/default/1.0.0
     /{domain:nl.wikipedia.org}: *wp/default/1.0.0
     /{domain:nn.wikipedia.org}: *wp/default/1.0.0
     /{domain:no.wikipedia.org}: *wp/default/1.0.0
@@ -434,6 +436,430 @@ spec: &spec
     /{domain:zh-yue.wikipedia.org}: *wp/default/1.0.0
     /{domain:zu.wikipedia.org}: *wp/default/1.0.0
 
+    # Wiktionary
+    /{domain:af.wiktionary.org}: *wp/default/1.0.0
+    /{domain:am.wiktionary.org}: *wp/default/1.0.0
+    /{domain:an.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ang.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ar.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ast.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ay.wiktionary.org}: *wp/default/1.0.0
+    /{domain:az.wiktionary.org}: *wp/default/1.0.0
+    /{domain:be.wiktionary.org}: *wp/default/1.0.0
+    /{domain:bg.wiktionary.org}: *wp/default/1.0.0
+    /{domain:bn.wiktionary.org}: *wp/default/1.0.0
+    /{domain:br.wiktionary.org}: *wp/default/1.0.0
+    /{domain:bs.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ca.wiktionary.org}: *wp/default/1.0.0
+    /{domain:chr.wiktionary.org}: *wp/default/1.0.0
+    /{domain:co.wiktionary.org}: *wp/default/1.0.0
+    /{domain:cs.wiktionary.org}: *wp/default/1.0.0
+    /{domain:csb.wiktionary.org}: *wp/default/1.0.0
+    /{domain:cy.wiktionary.org}: *wp/default/1.0.0
+    /{domain:da.wiktionary.org}: *wp/default/1.0.0
+    /{domain:de.wiktionary.org}: *wp/default/1.0.0
+    /{domain:dv.wiktionary.org}: *wp/default/1.0.0
+    /{domain:el.wiktionary.org}: *wp/default/1.0.0
+    /{domain:en.wiktionary.org}: *wp/default/1.0.0
+    /{domain:eo.wiktionary.org}: *wp/default/1.0.0
+    /{domain:es.wiktionary.org}: *wp/default/1.0.0
+    /{domain:et.wiktionary.org}: *wp/default/1.0.0
+    /{domain:eu.wiktionary.org}: *wp/default/1.0.0
+    /{domain:fa.wiktionary.org}: *wp/default/1.0.0
+    /{domain:fi.wiktionary.org}: *wp/default/1.0.0
+    /{domain:fj.wiktionary.org}: *wp/default/1.0.0
+    /{domain:fo.wiktionary.org}: *wp/default/1.0.0
+    /{domain:fr.wiktionary.org}: *wp/default/1.0.0
+    /{domain:fy.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ga.wiktionary.org}: *wp/default/1.0.0
+    /{domain:gd.wiktionary.org}: *wp/default/1.0.0
+    /{domain:gl.wiktionary.org}: *wp/default/1.0.0
+    /{domain:gn.wiktionary.org}: *wp/default/1.0.0
+    /{domain:gu.wiktionary.org}: *wp/default/1.0.0
+    /{domain:gv.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ha.wiktionary.org}: *wp/default/1.0.0
+    /{domain:he.wiktionary.org}: *wp/default/1.0.0
+    /{domain:hi.wiktionary.org}: *wp/default/1.0.0
+    /{domain:hr.wiktionary.org}: *wp/default/1.0.0
+    /{domain:hsb.wiktionary.org}: *wp/default/1.0.0
+    /{domain:hu.wiktionary.org}: *wp/default/1.0.0
+    /{domain:hy.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ia.wiktionary.org}: *wp/default/1.0.0
+    /{domain:id.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ie.wiktionary.org}: *wp/default/1.0.0
+    /{domain:io.wiktionary.org}: *wp/default/1.0.0
+    /{domain:is.wiktionary.org}: *wp/default/1.0.0
+    /{domain:it.wiktionary.org}: *wp/default/1.0.0
+    /{domain:iu.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ja.wiktionary.org}: *wp/default/1.0.0
+    /{domain:jbo.wiktionary.org}: *wp/default/1.0.0
+    /{domain:jv.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ka.wiktionary.org}: *wp/default/1.0.0
+    /{domain:kk.wiktionary.org}: *wp/default/1.0.0
+    /{domain:kl.wiktionary.org}: *wp/default/1.0.0
+    /{domain:km.wiktionary.org}: *wp/default/1.0.0
+    /{domain:kn.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ko.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ks.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ku.wiktionary.org}: *wp/default/1.0.0
+    /{domain:kw.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ky.wiktionary.org}: *wp/default/1.0.0
+    /{domain:la.wiktionary.org}: *wp/default/1.0.0
+    /{domain:lb.wiktionary.org}: *wp/default/1.0.0
+    /{domain:li.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ln.wiktionary.org}: *wp/default/1.0.0
+    /{domain:lo.wiktionary.org}: *wp/default/1.0.0
+    /{domain:lt.wiktionary.org}: *wp/default/1.0.0
+    /{domain:lv.wiktionary.org}: *wp/default/1.0.0
+    /{domain:mg.wiktionary.org}: *wp/default/1.0.0
+    /{domain:mi.wiktionary.org}: *wp/default/1.0.0
+    /{domain:mk.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ml.wiktionary.org}: *wp/default/1.0.0
+    /{domain:mn.wiktionary.org}: *wp/default/1.0.0
+    /{domain:mr.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ms.wiktionary.org}: *wp/default/1.0.0
+    /{domain:mt.wiktionary.org}: *wp/default/1.0.0
+    /{domain:my.wiktionary.org}: *wp/default/1.0.0
+    /{domain:na.wiktionary.org}: *wp/default/1.0.0
+    /{domain:nah.wiktionary.org}: *wp/default/1.0.0
+    /{domain:nds.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ne.wiktionary.org}: *wp/default/1.0.0
+    /{domain:nl.wiktionary.org}: *wp/default/1.0.0
+    /{domain:nn.wiktionary.org}: *wp/default/1.0.0
+    /{domain:no.wiktionary.org}: *wp/default/1.0.0
+    /{domain:oc.wiktionary.org}: *wp/default/1.0.0
+    /{domain:om.wiktionary.org}: *wp/default/1.0.0
+    /{domain:or.wiktionary.org}: *wp/default/1.0.0
+    /{domain:pa.wiktionary.org}: *wp/default/1.0.0
+    /{domain:pl.wiktionary.org}: *wp/default/1.0.0
+    /{domain:pnb.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ps.wiktionary.org}: *wp/default/1.0.0
+    /{domain:pt.wiktionary.org}: *wp/default/1.0.0
+    /{domain:qu.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ro.wiktionary.org}: *wp/default/1.0.0
+    /{domain:roa-rup.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ru.wiktionary.org}: *wp/default/1.0.0
+    /{domain:rw.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sa.wiktionary.org}: *wp/default/1.0.0
+    /{domain:scn.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sd.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sg.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sh.wiktionary.org}: *wp/default/1.0.0
+    /{domain:si.wiktionary.org}: *wp/default/1.0.0
+    /{domain:simple.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sk.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sl.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sm.wiktionary.org}: *wp/default/1.0.0
+    /{domain:so.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sq.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sr.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ss.wiktionary.org}: *wp/default/1.0.0
+    /{domain:st.wiktionary.org}: *wp/default/1.0.0
+    /{domain:su.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sv.wiktionary.org}: *wp/default/1.0.0
+    /{domain:sw.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ta.wiktionary.org}: *wp/default/1.0.0
+    /{domain:te.wiktionary.org}: *wp/default/1.0.0
+    /{domain:tg.wiktionary.org}: *wp/default/1.0.0
+    /{domain:th.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ti.wiktionary.org}: *wp/default/1.0.0
+    /{domain:tk.wiktionary.org}: *wp/default/1.0.0
+    /{domain:tl.wiktionary.org}: *wp/default/1.0.0
+    /{domain:tn.wiktionary.org}: *wp/default/1.0.0
+    /{domain:tpi.wiktionary.org}: *wp/default/1.0.0
+    /{domain:tr.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ts.wiktionary.org}: *wp/default/1.0.0
+    /{domain:tt.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ug.wiktionary.org}: *wp/default/1.0.0
+    /{domain:uk.wiktionary.org}: *wp/default/1.0.0
+    /{domain:ur.wiktionary.org}: *wp/default/1.0.0
+    /{domain:uz.wiktionary.org}: *wp/default/1.0.0
+    /{domain:vec.wiktionary.org}: *wp/default/1.0.0
+    /{domain:vi.wiktionary.org}: *wp/default/1.0.0
+    /{domain:vo.wiktionary.org}: *wp/default/1.0.0
+    /{domain:wa.wiktionary.org}: *wp/default/1.0.0
+    /{domain:wo.wiktionary.org}: *wp/default/1.0.0
+    /{domain:yi.wiktionary.org}: *wp/default/1.0.0
+    /{domain:zh.wiktionary.org}: *wp/default/1.0.0
+    /{domain:zh-min-nan.wiktionary.org}: *wp/default/1.0.0
+    /{domain:zu.wiktionary.org}: *wp/default/1.0.0
+
+    # Wikiquote
+    /{domain:af.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ar.wikiquote.org}: *wp/default/1.0.0
+    /{domain:az.wikiquote.org}: *wp/default/1.0.0
+    /{domain:be.wikiquote.org}: *wp/default/1.0.0
+    /{domain:bg.wikiquote.org}: *wp/default/1.0.0
+    /{domain:br.wikiquote.org}: *wp/default/1.0.0
+    /{domain:bs.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ca.wikiquote.org}: *wp/default/1.0.0
+    /{domain:cs.wikiquote.org}: *wp/default/1.0.0
+    /{domain:cy.wikiquote.org}: *wp/default/1.0.0
+    /{domain:da.wikiquote.org}: *wp/default/1.0.0
+    /{domain:de.wikiquote.org}: *wp/default/1.0.0
+    /{domain:el.wikiquote.org}: *wp/default/1.0.0
+    /{domain:en.wikiquote.org}: *wp/default/1.0.0
+    /{domain:eo.wikiquote.org}: *wp/default/1.0.0
+    /{domain:es.wikiquote.org}: *wp/default/1.0.0
+    /{domain:et.wikiquote.org}: *wp/default/1.0.0
+    /{domain:eu.wikiquote.org}: *wp/default/1.0.0
+    /{domain:fa.wikiquote.org}: *wp/default/1.0.0
+    /{domain:fi.wikiquote.org}: *wp/default/1.0.0
+    /{domain:fr.wikiquote.org}: *wp/default/1.0.0
+    /{domain:gl.wikiquote.org}: *wp/default/1.0.0
+    /{domain:gu.wikiquote.org}: *wp/default/1.0.0
+    /{domain:he.wikiquote.org}: *wp/default/1.0.0
+    /{domain:hi.wikiquote.org}: *wp/default/1.0.0
+    /{domain:hr.wikiquote.org}: *wp/default/1.0.0
+    /{domain:hu.wikiquote.org}: *wp/default/1.0.0
+    /{domain:hy.wikiquote.org}: *wp/default/1.0.0
+    /{domain:id.wikiquote.org}: *wp/default/1.0.0
+    /{domain:is.wikiquote.org}: *wp/default/1.0.0
+    /{domain:it.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ja.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ka.wikiquote.org}: *wp/default/1.0.0
+    /{domain:kn.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ko.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ku.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ky.wikiquote.org}: *wp/default/1.0.0
+    /{domain:la.wikiquote.org}: *wp/default/1.0.0
+    /{domain:li.wikiquote.org}: *wp/default/1.0.0
+    /{domain:lt.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ml.wikiquote.org}: *wp/default/1.0.0
+    /{domain:mr.wikiquote.org}: *wp/default/1.0.0
+    /{domain:nl.wikiquote.org}: *wp/default/1.0.0
+    /{domain:nn.wikiquote.org}: *wp/default/1.0.0
+    /{domain:no.wikiquote.org}: *wp/default/1.0.0
+    /{domain:pl.wikiquote.org}: *wp/default/1.0.0
+    /{domain:pt.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ro.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ru.wikiquote.org}: *wp/default/1.0.0
+    /{domain:sa.wikiquote.org}: *wp/default/1.0.0
+    /{domain:sk.wikiquote.org}: *wp/default/1.0.0
+    /{domain:sl.wikiquote.org}: *wp/default/1.0.0
+    /{domain:sq.wikiquote.org}: *wp/default/1.0.0
+    /{domain:sr.wikiquote.org}: *wp/default/1.0.0
+    /{domain:su.wikiquote.org}: *wp/default/1.0.0
+    /{domain:sv.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ta.wikiquote.org}: *wp/default/1.0.0
+    /{domain:te.wikiquote.org}: *wp/default/1.0.0
+    /{domain:th.wikiquote.org}: *wp/default/1.0.0
+    /{domain:tr.wikiquote.org}: *wp/default/1.0.0
+    /{domain:uk.wikiquote.org}: *wp/default/1.0.0
+    /{domain:ur.wikiquote.org}: *wp/default/1.0.0
+    /{domain:uz.wikiquote.org}: *wp/default/1.0.0
+    /{domain:vi.wikiquote.org}: *wp/default/1.0.0
+    /{domain:wo.wikiquote.org}: *wp/default/1.0.0
+    /{domain:zh.wikiquote.org}: *wp/default/1.0.0
+
+    # Wikisource
+    /{domain:ar.wikisource.org}: *wp/default/1.0.0
+    /{domain:as.wikisource.org}: *wp/default/1.0.0
+    /{domain:az.wikisource.org}: *wp/default/1.0.0
+    /{domain:be.wikisource.org}: *wp/default/1.0.0
+    /{domain:bg.wikisource.org}: *wp/default/1.0.0
+    /{domain:bn.wikisource.org}: *wp/default/1.0.0
+    /{domain:br.wikisource.org}: *wp/default/1.0.0
+    /{domain:bs.wikisource.org}: *wp/default/1.0.0
+    /{domain:ca.wikisource.org}: *wp/default/1.0.0
+    /{domain:cs.wikisource.org}: *wp/default/1.0.0
+    /{domain:cy.wikisource.org}: *wp/default/1.0.0
+    /{domain:da.wikisource.org}: *wp/default/1.0.0
+    /{domain:de.wikisource.org}: *wp/default/1.0.0
+    /{domain:el.wikisource.org}: *wp/default/1.0.0
+    /{domain:en.wikisource.org}: *wp/default/1.0.0
+    /{domain:eo.wikisource.org}: *wp/default/1.0.0
+    /{domain:es.wikisource.org}: *wp/default/1.0.0
+    /{domain:et.wikisource.org}: *wp/default/1.0.0
+    /{domain:fa.wikisource.org}: *wp/default/1.0.0
+    /{domain:fi.wikisource.org}: *wp/default/1.0.0
+    /{domain:fo.wikisource.org}: *wp/default/1.0.0
+    /{domain:fr.wikisource.org}: *wp/default/1.0.0
+    /{domain:gl.wikisource.org}: *wp/default/1.0.0
+    /{domain:gu.wikisource.org}: *wp/default/1.0.0
+    /{domain:he.wikisource.org}: *wp/default/1.0.0
+    /{domain:hr.wikisource.org}: *wp/default/1.0.0
+    /{domain:hu.wikisource.org}: *wp/default/1.0.0
+    /{domain:hy.wikisource.org}: *wp/default/1.0.0
+    /{domain:id.wikisource.org}: *wp/default/1.0.0
+    /{domain:is.wikisource.org}: *wp/default/1.0.0
+    /{domain:it.wikisource.org}: *wp/default/1.0.0
+    /{domain:ja.wikisource.org}: *wp/default/1.0.0
+    /{domain:kn.wikisource.org}: *wp/default/1.0.0
+    /{domain:ko.wikisource.org}: *wp/default/1.0.0
+    /{domain:la.wikisource.org}: *wp/default/1.0.0
+    /{domain:li.wikisource.org}: *wp/default/1.0.0
+    /{domain:lt.wikisource.org}: *wp/default/1.0.0
+    /{domain:mk.wikisource.org}: *wp/default/1.0.0
+    /{domain:ml.wikisource.org}: *wp/default/1.0.0
+    /{domain:mr.wikisource.org}: *wp/default/1.0.0
+    /{domain:nl.wikisource.org}: *wp/default/1.0.0
+    /{domain:no.wikisource.org}: *wp/default/1.0.0
+    /{domain:or.wikisource.org}: *wp/default/1.0.0
+    /{domain:pl.wikisource.org}: *wp/default/1.0.0
+    /{domain:pt.wikisource.org}: *wp/default/1.0.0
+    /{domain:ro.wikisource.org}: *wp/default/1.0.0
+    /{domain:ru.wikisource.org}: *wp/default/1.0.0
+    /{domain:sa.wikisource.org}: *wp/default/1.0.0
+    /{domain:sah.wikisource.org}: *wp/default/1.0.0
+    /{domain:sk.wikisource.org}: *wp/default/1.0.0
+    /{domain:sl.wikisource.org}: *wp/default/1.0.0
+    /{domain:sr.wikisource.org}: *wp/default/1.0.0
+    /{domain:sv.wikisource.org}: *wp/default/1.0.0
+    /{domain:ta.wikisource.org}: *wp/default/1.0.0
+    /{domain:te.wikisource.org}: *wp/default/1.0.0
+    /{domain:th.wikisource.org}: *wp/default/1.0.0
+    /{domain:tr.wikisource.org}: *wp/default/1.0.0
+    /{domain:uk.wikisource.org}: *wp/default/1.0.0
+    /{domain:vec.wikisource.org}: *wp/default/1.0.0
+    /{domain:vi.wikisource.org}: *wp/default/1.0.0
+    /{domain:yi.wikisource.org}: *wp/default/1.0.0
+    /{domain:zh.wikisource.org}: *wp/default/1.0.0
+    /{domain:zh-min-nan.wikisource.org}: *wp/default/1.0.0
+
+    # Wikibooks
+    /{domain:af.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ar.wikibooks.org}: *wp/default/1.0.0
+    /{domain:az.wikibooks.org}: *wp/default/1.0.0
+    /{domain:be.wikibooks.org}: *wp/default/1.0.0
+    /{domain:bg.wikibooks.org}: *wp/default/1.0.0
+    /{domain:bn.wikibooks.org}: *wp/default/1.0.0
+    /{domain:bs.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ca.wikibooks.org}: *wp/default/1.0.0
+    /{domain:cs.wikibooks.org}: *wp/default/1.0.0
+    /{domain:cv.wikibooks.org}: *wp/default/1.0.0
+    /{domain:cy.wikibooks.org}: *wp/default/1.0.0
+    /{domain:da.wikibooks.org}: *wp/default/1.0.0
+    /{domain:de.wikibooks.org}: *wp/default/1.0.0
+    /{domain:el.wikibooks.org}: *wp/default/1.0.0
+    /{domain:en.wikibooks.org}: *wp/default/1.0.0
+    /{domain:eo.wikibooks.org}: *wp/default/1.0.0
+    /{domain:es.wikibooks.org}: *wp/default/1.0.0
+    /{domain:et.wikibooks.org}: *wp/default/1.0.0
+    /{domain:eu.wikibooks.org}: *wp/default/1.0.0
+    /{domain:fa.wikibooks.org}: *wp/default/1.0.0
+    /{domain:fi.wikibooks.org}: *wp/default/1.0.0
+    /{domain:fr.wikibooks.org}: *wp/default/1.0.0
+    /{domain:fy.wikibooks.org}: *wp/default/1.0.0
+    /{domain:gl.wikibooks.org}: *wp/default/1.0.0
+    /{domain:he.wikibooks.org}: *wp/default/1.0.0
+    /{domain:hi.wikibooks.org}: *wp/default/1.0.0
+    /{domain:hr.wikibooks.org}: *wp/default/1.0.0
+    /{domain:hu.wikibooks.org}: *wp/default/1.0.0
+    /{domain:hy.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ia.wikibooks.org}: *wp/default/1.0.0
+    /{domain:id.wikibooks.org}: *wp/default/1.0.0
+    /{domain:is.wikibooks.org}: *wp/default/1.0.0
+    /{domain:it.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ja.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ka.wikibooks.org}: *wp/default/1.0.0
+    /{domain:kk.wikibooks.org}: *wp/default/1.0.0
+    /{domain:km.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ko.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ku.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ky.wikibooks.org}: *wp/default/1.0.0
+    /{domain:la.wikibooks.org}: *wp/default/1.0.0
+    /{domain:li.wikibooks.org}: *wp/default/1.0.0
+    /{domain:lt.wikibooks.org}: *wp/default/1.0.0
+    /{domain:mg.wikibooks.org}: *wp/default/1.0.0
+    /{domain:mk.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ml.wikibooks.org}: *wp/default/1.0.0
+    /{domain:mr.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ms.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ne.wikibooks.org}: *wp/default/1.0.0
+    /{domain:nl.wikibooks.org}: *wp/default/1.0.0
+    /{domain:no.wikibooks.org}: *wp/default/1.0.0
+    /{domain:oc.wikibooks.org}: *wp/default/1.0.0
+    /{domain:pa.wikibooks.org}: *wp/default/1.0.0
+    /{domain:pl.wikibooks.org}: *wp/default/1.0.0
+    /{domain:pt.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ro.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ru.wikibooks.org}: *wp/default/1.0.0
+    /{domain:sa.wikibooks.org}: *wp/default/1.0.0
+    /{domain:si.wikibooks.org}: *wp/default/1.0.0
+    /{domain:sk.wikibooks.org}: *wp/default/1.0.0
+    /{domain:sl.wikibooks.org}: *wp/default/1.0.0
+    /{domain:sq.wikibooks.org}: *wp/default/1.0.0
+    /{domain:sr.wikibooks.org}: *wp/default/1.0.0
+    /{domain:sv.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ta.wikibooks.org}: *wp/default/1.0.0
+    /{domain:te.wikibooks.org}: *wp/default/1.0.0
+    /{domain:tg.wikibooks.org}: *wp/default/1.0.0
+    /{domain:th.wikibooks.org}: *wp/default/1.0.0
+    /{domain:tl.wikibooks.org}: *wp/default/1.0.0
+    /{domain:tr.wikibooks.org}: *wp/default/1.0.0
+    /{domain:tt.wikibooks.org}: *wp/default/1.0.0
+    /{domain:uk.wikibooks.org}: *wp/default/1.0.0
+    /{domain:ur.wikibooks.org}: *wp/default/1.0.0
+    /{domain:vi.wikibooks.org}: *wp/default/1.0.0
+    /{domain:zh.wikibooks.org}: *wp/default/1.0.0
+
+    # Wikinews
+    /{domain:ar.wikinews.org}: *wp/default/1.0.0
+    /{domain:bg.wikinews.org}: *wp/default/1.0.0
+    /{domain:bs.wikinews.org}: *wp/default/1.0.0
+    /{domain:ca.wikinews.org}: *wp/default/1.0.0
+    /{domain:cs.wikinews.org}: *wp/default/1.0.0
+    /{domain:de.wikinews.org}: *wp/default/1.0.0
+    /{domain:el.wikinews.org}: *wp/default/1.0.0
+    /{domain:en.wikinews.org}: *wp/default/1.0.0
+    /{domain:eo.wikinews.org}: *wp/default/1.0.0
+    /{domain:es.wikinews.org}: *wp/default/1.0.0
+    /{domain:fa.wikinews.org}: *wp/default/1.0.0
+    /{domain:fi.wikinews.org}: *wp/default/1.0.0
+    /{domain:fr.wikinews.org}: *wp/default/1.0.0
+    /{domain:he.wikinews.org}: *wp/default/1.0.0
+    /{domain:it.wikinews.org}: *wp/default/1.0.0
+    /{domain:ja.wikinews.org}: *wp/default/1.0.0
+    /{domain:ko.wikinews.org}: *wp/default/1.0.0
+    /{domain:no.wikinews.org}: *wp/default/1.0.0
+    /{domain:pl.wikinews.org}: *wp/default/1.0.0
+    /{domain:pt.wikinews.org}: *wp/default/1.0.0
+    /{domain:ro.wikinews.org}: *wp/default/1.0.0
+    /{domain:ru.wikinews.org}: *wp/default/1.0.0
+    /{domain:sq.wikinews.org}: *wp/default/1.0.0
+    /{domain:sr.wikinews.org}: *wp/default/1.0.0
+    /{domain:sv.wikinews.org}: *wp/default/1.0.0
+    /{domain:ta.wikinews.org}: *wp/default/1.0.0
+    /{domain:tr.wikinews.org}: *wp/default/1.0.0
+    /{domain:uk.wikinews.org}: *wp/default/1.0.0
+    /{domain:zh.wikinews.org}: *wp/default/1.0.0
+
+    # Wikiversity
+    /{domain:ar.wikiversity.org}: *wp/default/1.0.0
+    /{domain:cs.wikiversity.org}: *wp/default/1.0.0
+    /{domain:de.wikiversity.org}: *wp/default/1.0.0
+    /{domain:el.wikiversity.org}: *wp/default/1.0.0
+    /{domain:en.wikiversity.org}: *wp/default/1.0.0
+    /{domain:es.wikiversity.org}: *wp/default/1.0.0
+    /{domain:fi.wikiversity.org}: *wp/default/1.0.0
+    /{domain:fr.wikiversity.org}: *wp/default/1.0.0
+    /{domain:it.wikiversity.org}: *wp/default/1.0.0
+    /{domain:ja.wikiversity.org}: *wp/default/1.0.0
+    /{domain:ko.wikiversity.org}: *wp/default/1.0.0
+    /{domain:pt.wikiversity.org}: *wp/default/1.0.0
+    /{domain:ru.wikiversity.org}: *wp/default/1.0.0
+    /{domain:sl.wikiversity.org}: *wp/default/1.0.0
+    /{domain:sv.wikiversity.org}: *wp/default/1.0.0
+
+    # Wikivoyage
+    /{domain:de.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:el.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:en.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:es.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:fa.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:fr.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:he.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:it.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:nl.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:pl.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:pt.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:ro.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:ru.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:sv.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:uk.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:vi.wikivoyage.org}: *wp/default/1.0.0
+    /{domain:zh.wikivoyage.org}: *wp/default/1.0.0
 
 # The main service setup. Each worker can offer one or more services.
 services:
