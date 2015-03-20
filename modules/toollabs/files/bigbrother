@@ -150,8 +150,8 @@ sub start($$) {
         shift @{$job->{starts}};
     }
 
-    # Jobs are allowed 5 attempts to start in a 24h window
-    if($#{$job->{starts}} > 3) {
+    # Jobs are allowed 10 attempts to start in a 24h window
+    if($#{$job->{starts}} > 10) {
         ulog $username, 'warn', "Too many attempts to restart job '$job->{jname}'; throttling";
         $job->{state} = 'throttled';
         $job->{since} = $now;
