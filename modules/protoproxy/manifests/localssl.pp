@@ -36,12 +36,7 @@ define protoproxy::localssl(
     }
 
     # for localssl.erb below
-    if os_version('debian >= jessie') {
-        $ssl_protos = 'ssl spdy'
-    }
-    else {
-        $ssl_protos = 'ssl'
-    }
+    $ssl_protos = 'ssl spdy'
 
     nginx::site { $name:
         require => Notify['protoproxy localssl default_server'],    # Ensure a default_server has been defined
