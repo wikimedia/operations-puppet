@@ -4,8 +4,11 @@ class role::ganglia::config {
 
     $data_sources = {
         'Video scalers eqiad'            => 'tmh1001.eqiad.wmnet tmh1002.eqiad.wmnet',
+        'Video scalers codfw'            => 'install2001.wikimedia.org:10673',
         'Image scalers eqiad'            => 'mw1153.eqiad.wmnet mw1154.eqiad.wmnet',
+        'Image scalers codfw'            => 'install2001.wikimedia.org:10661',
         'API application servers eqiad'  => 'mw1114.eqiad.wmnet mw1115.eqiad.wmnet',
+        'API application servers codfw'  => 'install2001.wikimedia.org:10662',
         'Application servers eqaid'      => 'mw1054.eqiad.wmnet mw1055.eqiad.wmnet',
         'Application servers codfw'      => 'install2001.wikimedia.org:10660',
         'Jobrunners eqiad'               => 'mw1001.eqiad.wmnet mw1002.eqiad.wmnet',
