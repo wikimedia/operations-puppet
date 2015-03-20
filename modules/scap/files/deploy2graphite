@@ -1,28 +1,41 @@
-#! /bin/bash
+#!/bin/bash
+
+set -e
+set -u
 
 . /usr/local/lib/mw-deployment-vars.sh
 
+me=$(readlink -f "$0")
+deploy_type=${1:-}
+deploy_duration=${2:-}
+dry_run=${DOLOGMSGNOLOG:+no}
+
 usage() {
-	echo "Usage: $0 deploy_type [deploy_duration_seconds]"
-	echo "$0 will log an entry at graphite.wikimedia.org indicating that a"
-	echo " deploy event of the type indicated has occurred."
-	echo " Expected deploy events include sync-common, sync-file, scap, etc."
-	echo " These messages can be suppressed by setting an environment variable $DOLOGMSGNOLOG."
-	echo ""
-	echo "  IF YOU'RE RUNNING THIS BY HAND, PLEASE STOP."
-	echo ""
-	exit
+    echo "Usage: $me deploy_type [deploy_duration_seconds]"
+    echo "$me will log an entry at graphite.wikimedia.org indicating that a"
+    echo " deploy event of the type indicated has occurred."
+    echo " Expected deploy events include sync-common, sync-file, scap, etc."
+    echo " These messages can be suppressed by setting an environment variable \$DOLOGMSGNOLOG."
+    echo ""
+    echo "  IF YOU'RE RUNNING THIS BY HAND, PLEASE STOP."
+    echo ""
+    exit
 }
 
-[ "${1/-h}" != "$1" ] && usage
+statsd_send() {
+    echo "$1" | nc -w1 -q0 -u $MW_STATSD_HOST $MW_STATSD_PORT
+}
 
-if [ -z $DOLOGMSGNOLOG ]; then
-	if [ "$1" ] ; then
-		utime="$(date +%s)"
-		echo "deploy.${1}:1|c" | nc -w1 -q0 -u $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
-		echo "deploy.all:1|c" | nc -w1 -q0 -u $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
-		test -n "$2" && echo "deploy.${1}.timing:${2}000|ms" | nc -w1 -q0 -u $MW_STATSD_HOST $MW_STATSD_PORT || /bin/true
-	else
-		usage
-	fi
+if [ "$deploy_type" = "-h" ] || [ "$deploy_type" = "" ]; then
+    usage
+fi
+
+if [ "$dry_run" != "no" ]; then
+    exit 0
+fi
+
+statsd_send "deploy.${deploy_type}:1|c" || true
+statsd_send "deploy.all:1|c" || true
+if [ -n "$deploy_duration" ]; then
+    statsd_send "deploy.${deploy_type}.timing:${deploy_duration}000|ms" || true
 fi
