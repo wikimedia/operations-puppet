@@ -1,0 +1,2 @@
+[pep8]
+exclude = check-fresh-files-in-dir.py
