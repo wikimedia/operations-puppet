@@ -35,17 +35,6 @@ class role::protoproxy::ssl::common {
         content => template('nginx/logrotate'),
         tag     => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
     }
-
-    # reload protoproxies once a day for ticket keys
-    # on legacy cache boxes (to be removed when no matching
-    # hosts in the if clause here).
-    if ! os_version('debian >= jessie') {
-        cron { 'nginx_reload_daily':
-            command => '/usr/sbin/service nginx reload >/dev/null 2>/dev/null',
-            hour    => fqdn_rand(24),
-            minute  => fqdn_rand(60),
-        }
-    }
 }
 
 class role::protoproxy::ssl::beta::common {
