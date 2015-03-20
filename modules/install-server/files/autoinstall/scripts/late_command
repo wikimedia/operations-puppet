@@ -38,5 +38,14 @@ case `hostname` in \
 		apt-install linux-image-3.19
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sda3-varnish /dev/sda3
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sdb3-varnish /dev/sdb3
-		;; \
+		;;
+	# upgrade kernel on HP swift machines, raid controller is not recognized by
+	# trusty' stock kernel
+	ms-be101[678])
+		mount -t sysfs none /target/sys
+		mount -t proc none /target/proc
+		chroot /target apt-get -y install linux-image-generic
+		umount /target/sys
+		umount /target/proc
+		;;
 esac
