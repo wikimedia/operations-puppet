@@ -2,6 +2,13 @@
 # This file is managed by Puppet.
 <VirtualHost *:80>
     ServerName gdash.wikimedia.org
+    ServerAdmin noc@wikimedia.org
+
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{REQUEST_URI} !^/status$
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
 
     <Location />
         SetHandler uwsgi-handler
