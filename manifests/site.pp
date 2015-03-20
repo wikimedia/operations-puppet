@@ -2340,6 +2340,13 @@ node /^snapshot100[1-4]\.eqiad\.wmnet/ {
     }
 }
 
+# codfw poolcounters
+node /(subra|suhail)\.wikimedia\.org/ {
+    include admin
+    include standard
+    include role::poolcounter
+}
+
 node 'terbium.eqiad.wmnet' {
     include role::mediawiki::common
     include role::db::maintenance
