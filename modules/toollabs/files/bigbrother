@@ -93,7 +93,7 @@ sub readconfig($) {
                     next;
                 }
                 $expect = "$name-$1";
-                $start = "/usr/local/bin/webservice2 -$name start";
+                $start = "/usr/local/bin/webservice2 $name start";
             } elsif(m/^webservice(:?\s+(--release\s+[a-z]+))?(:?\s+([a-z]+))?$/) {
                 my $rel = $2 // '';
                 my $name = $3 // "lighttpd";
