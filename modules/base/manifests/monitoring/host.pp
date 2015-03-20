@@ -79,6 +79,14 @@ class base::monitoring::host($contact_group = 'admins') {
         source => 'puppet:///modules/base/check_sysctl',
     }
 
+    file { '/usr/lib/nagios/plugins/check-fresh-files-in-dir.py':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py',
+    }
+
     sudo::user { 'nagios':
         privileges   => [
                         'ALL = NOPASSWD: /usr/local/bin/check-raid.py',
