@@ -5491,6 +5491,16 @@ host strontium {
 	fixed-address strontium.eqiad.wmnet;
 }
 
+host subra {
+    hardware ethernet D4:AE:52:AD:62:75;
+    fixed-address subra.codfw.wmnet;
+}
+
+host suhail {
+    hardware ethernet 90:B1:1C:00:AE:28;
+    fixed-address suhail.codfw.wmnet;
+}
+
 host tellurium {
 	hardware ethernet 00:10:18:E4:1E:26;
 	fixed-address tellurium.eqiad.wmnet;
