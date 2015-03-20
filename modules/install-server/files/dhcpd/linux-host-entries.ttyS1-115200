@@ -4585,6 +4585,11 @@ host mw2097 {
 	fixed-address mw2097.codfw.wmnet;
 }
 
+host mw2098 {
+	hardware ethernet 90:B1:1C:28:DA:F6;
+	fixed-address mw2098.codfw.wmnet;
+}
+
 host mw2099 {
 	hardware ethernet 90:B1:1C:28:DF:3C;
 	fixed-address mw2099.codfw.wmnet;
