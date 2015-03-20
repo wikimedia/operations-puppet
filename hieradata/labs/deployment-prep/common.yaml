@@ -107,6 +107,8 @@ mediawiki_memcached_servers:
     - 'zh'
   mt:
     Apertium:
+      'bg':
+        - 'mk'
       'ca':
         - 'es'
         - 'pt'
@@ -114,6 +116,7 @@ mediawiki_memcached_servers:
         - 'ca'
         - 'eo'
         - 'es'
+        - 'sh'
       'es':
         - 'ca'
         - 'pt'
@@ -121,13 +124,21 @@ mediawiki_memcached_servers:
         - 'ms'
       'ms':
         - 'id'
+      'nl':
+        - 'af'
       'nn':
         - 'no'
       'no':
         - 'nn'
+      'mk':
+        - 'bg'
       'pt':
         - 'es'
         - 'ca'
+      'sh':
+        - 'sl'
+      'sl':
+        - 'sh'
     Yandex:
       'en':
         - 'de'
