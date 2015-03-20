@@ -5,8 +5,14 @@
 # scap is installed, that the shell environment is configured for
 # MediaWiki, and that the MediaWiki deployment directory exists and
 # contains a copy of MediaWiki.
+
+# === Parameters:
+# [*config*]
+#   optional hash - creates ini at /etc/scap.cfg to override scap config
 #
-class mediawiki::scap {
+class mediawiki::scap (
+    $config = undef,
+) {
     include ::mediawiki::users
 
     $mediawiki_deployment_dir = '/srv/mediawiki'
@@ -47,6 +53,17 @@ class mediawiki::scap {
 
     # If this is a new install, populate /srv/mediawiki by retrieving
     # the current MediaWiki deployment tree from the deployment server.
+
+    if $config {
+        $ini_header = "${::hostname}.${::domain}"
+        $ini_config = php_ini($config)
+        file { '/etc/scap.cfg':
+            content => template('mediawiki/scap.cfg.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
+    }
 
     exec { 'fetch_mediawiki':
         command => "${scap_bin_dir}/sync-common",
