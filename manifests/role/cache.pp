@@ -197,7 +197,7 @@ class role::cache {
                 'parsoid' => {
                     'eqiad' => [
                          'cp1045.eqiad.wmnet',
-                         'cp1058.eqiad.wmnet', # needs-jessie-install
+                         # 'cp1058.eqiad.wmnet', # needs-jessie-install
                     ],
                     'esams' => [],
                     'ulsfo' => []
