@@ -351,16 +351,6 @@ class cassandra(
         ensure => 'absent',
     }
 
-    # Cron for daily incremental repairs
-    # http://www.datastax.com/documentation/cassandra/2.1/cassandra/operations/ops_repair_nodes_c.html
-    cron { 'daily incremental repairs':
-        # Only keep last day's repair output for simplicity.
-        command => "/usr/bin/nodetool repair -par -inc > /var/log/cassandra/repair.log 2>&1",
-        user    => 'cassandra',
-        hour    => '04',
-        minute  => '45',
-    }
-
     service { 'cassandra':
         ensure     => 'running',
         enable     => true,
