@@ -5072,7 +5072,7 @@ host mw2194 {
 
 host mw2195 {
 	hardware ethernet B0:83:FE:DF:0E:27;
-	fixed-address mw21995.codfw.wmnet;
+	fixed-address mw2195.codfw.wmnet;
 }
 
 host mw2196 {
