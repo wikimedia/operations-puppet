@@ -20,6 +20,7 @@
     RewriteRule (.) https://integration.wikimedia.org%{REQUEST_URI} [R=301]
 
     Header always merge Vary X-Forwarded-Proto
+    Header set Strict-Transport-Security "max-age=604800"
 
     Include *_proxy
 
