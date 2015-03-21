@@ -2341,8 +2341,10 @@ node /^snapshot100[1-4]\.eqiad\.wmnet/ {
 
 # codfw poolcounters
 node /(subra|suhail)\.codfw\.wmnet/ {
+
     include admin
     include standard
+    include base::firewall
     include role::poolcounter
 }
 
