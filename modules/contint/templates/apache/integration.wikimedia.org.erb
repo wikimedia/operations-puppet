@@ -22,6 +22,7 @@
     Redirect 301 /monitoring/ https://tools.wmflabs.org/nagf/?project=integration
 
     Header always merge Vary X-Forwarded-Proto
+    Header always set Strict-Transport-Security "max-age=604800"
 
     Include *_proxy
 
