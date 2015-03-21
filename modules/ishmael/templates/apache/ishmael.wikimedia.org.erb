@@ -11,6 +11,7 @@ NameVirtualHost *:80
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
     Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+    Header set Strict-Transport-Security "max-age=604800"
 
     <Directory "<%= @docroot %>">
         Options FollowSymLinks
