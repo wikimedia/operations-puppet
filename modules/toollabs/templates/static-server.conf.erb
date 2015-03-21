@@ -57,6 +57,7 @@ server {
 
     location ~ ^/([^/]+)(/.*)?$ {
         autoindex on;
+        add_header Access-Control-Allow-Origin '*';
         alias /data/project/$1/www/static$2;
     }
 }
