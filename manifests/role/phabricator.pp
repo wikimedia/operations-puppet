@@ -204,15 +204,4 @@ class role::phabricator::labs {
         hasstatus  => true,
         require    => Package['mysql-server'],
     }
-
-    # dummy redirector to test out the redirect patterns for bugzilla
-    phabricator::redirector { 'redirector.fab-01.wmflabs.org':
-        mysql_user    => 'root',
-        mysql_pass    => $mysqlpass,
-        mysql_host    => 'localhost',
-        rootdir       => '/srv/phab',
-        field_index   => 'yERhvoZPNPtM',
-        phab_host     => 'phab-01.wmflabs.org',
-        alt_host      => 'phab-01.wmflabs.org',
-    }
 }
