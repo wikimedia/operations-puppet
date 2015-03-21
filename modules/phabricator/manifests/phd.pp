@@ -7,13 +7,20 @@ class phabricator::phd (
     $settings = {},
     $basedir  = '/',
 ) {
+    $run_dir = $settings['phd.run-directory']
 
     file { '/etc/init.d/phd':
        ensure => 'link',
        target => "${basedir}/phabricator/bin/phd",
     }
 
-    file { $settings['phd.pid-directory']:
+    file { $run_dir:
+        ensure => 'directory',
+        owner  => $settings['phd.user'],
+        group  => 'phd',
+    }
+    ->
+    file { "${run_dir}/pid":
         ensure => 'directory',
         owner  => $settings['phd.user'],
         group  => 'phd',
