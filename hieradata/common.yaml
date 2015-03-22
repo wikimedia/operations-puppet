@@ -1,0 +1,192 @@
+# NOTE: Do *not* add new clusters *per site* anymore,
+# the site name will automatically be appended now,
+# and a different IP prefix will be used.
+ganglia_clusters:
+  decommissioned:
+    name: "Decommissioned servers"
+    id: 1
+    sites: []
+  lvs:
+    name: "LVS loadbalancers"
+    id: 2
+    sites:
+      - eqiad
+      - codfw
+      - esams
+      - ulsfo
+  search:
+    name: "Search"
+    id: 4
+    sites: []
+  mysql:
+    name: "MySQL"
+    id: 5
+    sites:
+      - eqiad
+      - codfw
+  misc:
+    name: "Miscellaneous"
+    id: 8
+    sites:
+      - eqiad
+      - codfw
+  appserver:
+    name: "Application servers"
+    id: 11
+    sites:
+      - eqiad
+      - codfw
+  imagescaler:
+    name: "Image scalers"
+    id: 12
+    sites:
+      - eqiad
+      - codfw
+  api_appserver:
+    name: "API application servers"
+    id: 13
+    sites:
+      - eqiad
+      - codfw
+  pdf:
+    name: "PDF servers"
+    id: 15
+    sites:
+      - eqiad
+  cache_text:
+    name: "Text caches"
+    id: 20
+    sites:
+      - eqiad
+      - esams
+      - ulsfo
+  cache_bits:
+    name: "Bits caches"
+    id: 21
+    sites:
+      - eqiad
+      - esams
+      - ulsfo
+  cache_upload:
+    name: "Upload caches"
+    id: 22
+    sites:
+      - eqiad
+      - esams
+      - ulsfo
+  payments:
+    name: "Fundraiser payments"
+    id: 23
+    sites:
+      - eqiad
+      - codfw
+  swift:
+    name: "Swift"
+    id: 27
+    sites:
+      - eqiad
+      - codfw
+      - esams
+  cache_mobile:
+    name: "Mobile caches"
+    id: 28
+    sites:
+      - eqiad
+      - esams
+      - ulsfo
+  virt:
+    name: "Virtualization cluster"
+    id: 29
+    sites:
+      - eqiad
+  jobrunner:
+    name: "Jobrunners"
+    id: 31
+    sites:
+      - eqiad
+      - codfw
+  analytics:
+    name: "Analytics cluster"
+    id: 32
+    sites:
+      - eqiad
+  memcached:
+    name: "Memcached"
+    id: 33
+    sites:
+      - eqiad
+      - codfw
+  videoscaler:
+    name: "Video scalers"
+    id: 34
+    sites:
+      - eqiad
+      - codfw
+  fundraising:
+    name: "Fundraising"
+    id: 35
+    sites:
+      - eqiad
+      - codfw
+  ceph:           # Not used anymore
+    name: "Ceph"
+    id: 36
+    sites: []
+  parsoid:
+    name: "Parsoid"
+    id: 37
+    sites:
+      - eqiad
+  cache_parsoid:
+    name: "Parsoid Varnish"
+    id: 38
+    sites:
+      - eqiad
+      - esams
+      - ulsfo
+  redis:
+    name: "Redis"
+    id: 39
+    sites:
+      - eqiad
+      - codfw
+  labsnfs:
+    name: "Labs NFS cluster"
+    id: 40
+    sites:
+      - eqiad
+  cache_misc:
+    name: "Misc Web caching cluster"
+    id: 41
+    sites:
+      - eqiad
+  elasticsearch:
+    name: "Elasticsearch cluster"
+    id: 42
+    sites:
+      - eqiad
+  logstash:
+    name: "Logstash cluster"
+    id: 43
+    sites:
+      - eqiad
+  rcstream:
+    name: "RCStream cluster"
+    id: 44
+    sites:
+      - eqiad
+  analytics_kafka:
+    name: "Analytics Kafka cluster"
+    id: 45
+    sites:
+      - eqiad
+  sca:
+    name: "Service Cluster A"
+    id: 46
+    sites:
+      - eqiad
+  openldap_corp_mirror:
+    name: "Corp OIT LDAP mirror"
+    id: 47
+    sites:
+      - eqiad
