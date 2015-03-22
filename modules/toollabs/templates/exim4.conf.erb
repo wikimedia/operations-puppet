@@ -81,11 +81,17 @@ dnslookup:
   ignore_target_hosts = 0.0.0.0 : 127.0.0.0/8
   no_more
 
-# Send mail to root@ or postmaster@ to the Labs project admin
+# Send mail to root@ and other system aliases to the Labs project admins
+
+system_aliases:
+  driver = redirect
+  allow_fail
+  allow_defer
+  data = ${lookup{$local_part}lsearch{/etc/aliases}}
 
 postmaster_mail:
   driver = redirect
-  local_parts = root : postmaster
+  local_parts = root
   data = INSTANCEPROJECT.admin
 
 # Alias tools.<toolname>@ to <toolname>.maintainers@
@@ -172,12 +178,6 @@ tool_default:
   check_ancestor
   modemask = 002
   data = ${run{/usr/local/sbin/maintainers INSTANCEPROJECT.$local_part}{$value}fail}
-
-system_aliases:
-  driver = redirect
-  allow_fail
-  allow_defer
-  data = ${lookup{$local_part}lsearch{/etc/aliases}}
 
 ##############
 # Transports #
