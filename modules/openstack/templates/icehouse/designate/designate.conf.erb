@@ -97,7 +97,11 @@ enabled_extensions_v1 = diagnsotics, quotas, reports, sync
 
 # Enabled API Version 2 extensions
 # Can be one or more of : reports, quotas
-enabled_extensions_v2 = diagnsotics, quotas, reports, sync
+enabled_extensions_v2 = quotas, reports
+
+# we have a lot of instances, so raise quotas:
+quota-domain-records = 4000
+quota-recordset-records = 4000
 
 #-----------------------
 # Keystone Middleware
