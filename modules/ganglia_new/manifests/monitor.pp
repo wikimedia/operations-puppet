@@ -1,4 +1,5 @@
-class ganglia_new::monitor($cluster) {
+class ganglia_new::monitor {
+    $cluster = hiera('cluster', $cluster)
     include packages
     include service
     include ganglia_new::configuration
