@@ -19,12 +19,9 @@
 class ganglia {
 
     # FIXME: remove after the ganglia module migration
-    if ($::hostname in ['netmon1001'] or $::site == 'esams' or $::site == 'codfw') {
-        $ganglia_cluster = hiera('cluster', $cluster)
-        class { 'ganglia_new::monitor':
-            cluster => $ganglia_cluster,
-        }
+    if (hiera('ganglia_class') == 'new') {
 
+        include ganglia_new::monitor
         # FIXME: ugly, but without it bad things happen with check_ganglia
         $cname = $ganglia_new::monitor::cname
     } else {
@@ -54,113 +51,10 @@ class ganglia {
         # NOTE: Do *not* add new clusters *per site* anymore,
         # the site name will automatically be appended now,
         # and a different IP prefix will be used.
-        $ganglia_clusters = {
-            'decommissioned' => {
-                'name'      => 'Decommissioned servers',
-                'ip_oct'    => '1' },
-            'lvs' => {
-                'name'      => 'LVS loadbalancers',
-                'ip_oct'    => '2' },
-            'search'    =>  {
-                'name'      => 'Search',
-                'ip_oct'    => '4' },
-            'mysql'     =>  {
-                'name'      => 'MySQL',
-                'ip_oct'    => '5' },
-            'misc'      =>  {
-                'name'      => 'Miscellaneous',
-                'ip_oct'    => '8' },
-            'appserver' =>  {
-                'name'      => 'Application servers',
-                'ip_oct'    => '11' },
-            'imagescaler'   =>  {
-                'name'      => 'Image scalers',
-                'ip_oct'    => '12' },
-            'api_appserver' =>  {
-                'name'      => 'API application servers',
-                'ip_oct'    => '13' },
-            'pdf'       =>  {
-                'name'      => 'PDF servers',
-                'ip_oct'    => '15' },
-            'cache_text'    => {
-                'name'      => 'Text caches',
-                'ip_oct'    => '20' },
-            'cache_bits'    => {
-                'name'      => 'Bits caches',
-                'ip_oct'    => '21' },
-            'cache_upload'  => {
-                'name'      => 'Upload caches',
-                'ip_oct'    => '22' },
-            'payments'  => {
-                'name'      => 'Fundraiser payments',
-                'ip_oct'    => '23' },
-            'swift' => {
-                'name'      => 'Swift',
-                'ip_oct'    => '27' },
-            'cache_mobile'  => {
-                'name'      => 'Mobile caches',
-                'ip_oct'    => '28' },
-            'virt'  => {
-                'name'      => 'Virtualization cluster',
-                'ip_oct'    => '29' },
-            'jobrunner' =>  {
-                'name'      => 'Jobrunners',
-                'ip_oct'    => '31' },
-            'analytics'     => {
-                'name'      => 'Analytics cluster',
-                'ip_oct'    => '32' },
-            'memcached'     => {
-                'name'      => 'Memcached',
-                'ip_oct'    => '33' },
-            'videoscaler'       => {
-                'name'      => 'Video scalers',
-                'ip_oct'    => '34' },
-            'fundraising'   => {
-                'name'      => 'Fundraising',
-                'ip_oct'    => '35' },
-            'ceph'          => { # Not used anymore
-                'name'      => 'Ceph',
-                'ip_oct'    => '36' },
-            'parsoid'       => {
-                'name'      => 'Parsoid',
-                'ip_oct'    => '37' },
-            'cache_parsoid' => {
-                'name'      => 'Parsoid Varnish',
-                'ip_oct'    => '38' },
-            'redis'         => {
-                'name'      => 'Redis',
-                'ip_oct'    => '39' },
-            'labsnfs'   => {
-                'name'      => 'Labs NFS cluster',
-                'ip_oct'    => '40' },
-            'cache_misc'    => {
-                'name'      => 'Misc Web caching cluster',
-                'ip_oct'    => '41' },
-            'elasticsearch' => {
-                'name'      => 'Elasticsearch cluster',
-                'ip_oct'    => '42' },
-            'logstash'      => {
-                'name'      => 'Logstash cluster',
-                'ip_oct'    => '43' },
-            'rcstream'      => {
-                'name'      => 'RCStream cluster',
-                'ip_oct'    => '44' },
-            'analytics_kafka' => {
-                'name'      => 'Analytics Kafka cluster',
-                'ip_oct'    => '45' },
-            'sca'           => {
-                'name'      => 'Service Cluster A',
-                'ip_oct'    => '46' },
-            'openldap_corp_mirror'           => {
-                'name'      => 'Corp OIT LDAP mirror',
-                'ip_oct'    => '47' },
-        }
-        # NOTE: Do *not* add new clusters *per site* anymore,
-        # the site name will automatically be appended now,
-        # and a different IP prefix will be used.
+        $ganglia_clusters = hiera('ganglia_clusters')
 
         # gmond.conf template variables
-        $ipoct = $ganglia_clusters[$cluster]['ip_oct']
+        $ipoct = $ganglia_clusters[$cluster]['id']
         $mcast_address = "${ip_prefix}.${ipoct}"
         $clustername = $ganglia_clusters[$cluster][name]
         $cname = "${clustername}${name_suffix}"
