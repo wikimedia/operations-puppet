@@ -17,3 +17,4 @@ mediawiki_memcached_servers:
   - '10.64.48.104:11211:1 "shard16"'
   - '10.64.48.95:11211:1 "shard17"'
   - '10.64.48.96:11211:1 "shard18"'
+ganglia_class: "old"
