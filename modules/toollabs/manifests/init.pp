@@ -148,6 +148,19 @@ class toollabs {
         }
     }
 
+    # Users can choose their shell accounts names freely, and some
+    # choose ones that can be misleading to third parties inter alia
+    # when they are used to send and receive mail at
+    # "$user@tools.wmflabs.org".  The most common ones are already
+    # addressed by the default system aliases for "abuse",
+    # "postmaster", "webmaster", etc., so we only have to add aliases
+    # here that have not been standardized per se, but still bear a
+    # high risk of mimicry.
+    mailalias { [ 'admin', 'administrator' ]:
+        ensure => present,
+        recipient => 'root',
+    }
+
     File <| title == '/etc/exim4/exim4.conf' |> {
         content => undef,
         source  => ["${store}/mail-relay", 'puppet:///modules/toollabs/exim4-norelay.conf'],
