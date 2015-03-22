@@ -1,9 +1,10 @@
-class ganglia_new::monitor($cluster) {
+class ganglia_new::monitor {
+    $cluster = hiera('cluster', $cluster)
     include packages
     include service
     include ganglia_new::configuration
 
-    $id = $ganglia_new::configuration::clusters[$cluster]['id'] + $ganglia_new::configuration::id_prefix[$::site]
+    $id = $ganglia_new::configuration::clusters[$cluster]['ip_oct'] + $ganglia_new::configuration::id_prefix[$::site]
     $desc = $ganglia_new::configuration::clusters[$cluster]['name']
     $gmond_port = $ganglia_new::configuration::base_port + $id
 
