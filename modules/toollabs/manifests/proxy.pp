@@ -1,18 +1,23 @@
 # A dynamic HTTP routing proxy, based on the dynamicproxy module.
-class toollabs::proxy inherits toollabs {
+class toollabs::proxy(
+    $ssl_certificate_name = 'star.wmflabs.org',
+    $ssl_install_certificate = true,
+) inherits toollabs {
     include toollabs::infrastructure
     include ::redis::client::python
 
-    install_certificate { 'star.wmflabs.org':
-        privatekey => false
+    if $ssl_install_certificate {
+        install_certificate { $ssl_certificate_name:
+            privatekey => false,
+            before     => Class['::dynamicproxy'],
+        }
     }
 
     class { '::dynamicproxy':
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
         luahandler           => 'urlproxy',
         resolver             => '10.68.16.1', # eqiad DNS resolver
-        ssl_certificate_name => 'star.wmflabs.org',
-        require              => Install_certificate['star.wmflabs.org']
+        ssl_certificate_name => $ssl_certificate_name,
     }
 
     file { '/usr/local/sbin/proxylistener':
