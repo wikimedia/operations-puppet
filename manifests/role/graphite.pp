@@ -175,6 +175,8 @@ class role::graphite::base(
 
     include ::apache
     include ::apache::mod::uwsgi
+    include ::apache::mod::rewrite
+    include ::apache::mod::headers
 
     if $auth {
         # Production
