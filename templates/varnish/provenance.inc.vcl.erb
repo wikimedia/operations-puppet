@@ -1,0 +1,25 @@
+sub vcl_recv {
+	// Avoid cache fragmentation for well-formed provenance parameters
+	// Refer to discussion starting from
+	// https://lists.wikimedia.org/pipermail/analytics/2015-February/003426.html
+	// Look for wprov parameter with a value
+	if (req.url ~ "(?i)(?:\?|&)wprov=[^&]+") {
+		// ready a variable for later X-Analytics tagging in vcl_deliver
+		// See https://www.mediawiki.org/wiki/Provenance for reserved values
+		set req.http.X-WMF-WPROV = regsub(req.url, "(?i)(\?|&)wprov=([^&]+)", "\3");
+		// Pretend that the parameter wasn't there for caching purposes
+		set req.url = regsub(req.url, "(?i)(?:\?|&)wprov=[^&]+$", "");
+		set req.url = regsub(req.url, "(?i)(\?|&)wprov=[^&]+&", "\1");
+	}
+}
+
+sub vcl_deliver {
+	// In case there was a provenance parameter with a value, add it to X-Analytics
+	if (req.http.X-WMF-WPROV) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";wprov=" + req.http.X-WMF-WPROV;
+		} else {
+			set resp.http.X-Analytics = "wprov=" + req.http.X-WMF-WPROV;
+		}
+	}
+}
