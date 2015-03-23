@@ -196,8 +196,8 @@ class role::cache {
                 },
                 'parsoid' => {
                     'eqiad' => [
-                         'cp1045.eqiad.wmnet',
-                         'cp1058.eqiad.wmnet',
+                        'cp1045.eqiad.wmnet',
+                        'cp1058.eqiad.wmnet',
                     ],
                     'esams' => [],
                     'ulsfo' => []

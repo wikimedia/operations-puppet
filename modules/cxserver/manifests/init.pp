@@ -46,9 +46,7 @@ class cxserver(
     require_package('nodejs')
     $ordered_registry = ordered_json($registry)
 
-    package { [
-             'cxserver/deploy',
-            ]:
+    package { [ 'cxserver/deploy', ]:
         ensure   => present,
         provider => 'trebuchet',
     }
