@@ -10,10 +10,14 @@ ganglia_clusters:
     name: "LVS loadbalancers"
     ip_oct: "2"
     sites:
-      - eqiad
-      - codfw
-      - esams
-      - ulsfo
+      eqiad:
+        - lvs1001.wikimedia.org
+        - lvs1002.wikimedia.org
+      codfw: install2001.wikimedia.org:10649
+      esams: hooft.esams.wikimedia.org:11649
+      ulsfo:
+        - lvs4001.ulsfo.wmnet
+        - lvs4003.ulsfo.wmnet
   search:
     name: "Search"
     ip_oct: "3"
@@ -22,110 +26,151 @@ ganglia_clusters:
     name: "MySQL"
     ip_oct: "5"
     sites:
-      - eqiad
-      - codfw
+      eqiad:
+        - dbstore1001.eqiad.wmnet
+        - dbstore1002.eqiad.wmnet
+      codfw: install2001.wikimedia.org:10649
   misc:
     name: "Miscellaneous"
     ip_oct: "8"
     sites:
-      - eqiad
-      - codfw
+      eqiad:
+        - carbon.wikimedia.org
+        - ms1004.eqiad.wmnet
+      codfw: install2001.wikimedia.org:10649
   appserver:
     name: "Application servers"
     ip_oct: "11"
     sites:
-      - eqiad
-      - codfw
+      eqiad:
+        - mw1054.eqiad.wmnet
+        - mw1055.eqiad.wmnet
+      codfw: install2001.wikimedia.org:10649
   imagescaler:
     name: "Image scalers"
     ip_oct: "12"
     sites:
-      - eqiad
-      - codfw
+      eqiad:
+        - mw1153.eqiad.wmnet
+        - mw1154.eqiad.wmnet
+      codfw: install2001.wikimedia.org:10649
   api_appserver:
     name: "API application servers"
     ip_oct: "13"
     sites:
-      - eqiad
-      - codfw
-  pdf:    
+      eqiad:
+        - mw1114.eqiad.wmnet
+        - mw1115.eqiad.wmnet        
+      codfw: install2001.wikimedia.org:10649
+  pdf:
     name: "PDF servers"
     ip_oct: "15"
     sites:
-      - eqiad
+      eqiad:
+        - ocg1001.eqiad.wmnet
   cache_text:
     name: "Text caches"
     ip_oct: "20"
     sites:
-      - eqiad
-      - esams
-      - ulsfo
+      eqiad:
+        - cp1052.eqiad.wmnet
+        - cp1053.eqiad.wmnet
+      esams: hooft.esams.wikimedia.org:11649
+      ulsfo:
+        - cp4008.ulsfo.wmnet
+        - cp4016.ulsfo.wmnet
   cache_bits:
     name: "Bits caches"
     ip_oct: "21"
     sites:
-      - eqiad
-      - esams
-      - ulsfo
+      eqiad:
+        - cp1056.eqiad.wmnet
+        - cp1057.eqiad.wmnet
+      esams: hooft.esams.wikimedia.org:11649
+      ulsfo:
+        - cp4008.ulsfo.wmnet
+        - cp4016.ulsfo.wmnet
   cache_upload:
     name: "Upload caches"
     ip_oct: "22"
     sites:
-      - eqiad
-      - esams
-      - ulsfo
+      eqiad:
+        - cp1048.eqiad.wmnet
+        - cp1061.eqiad.wmnet
+      esams: hooft.esams.wikimedia.org:11649
+      ulsfo:
+        - cp4005.ulsfo.wmnet
+        - cp4013.ulsfo.wmnet
   payments:
     name: "Fundraiser payments"
     ip_oct: "23"
-    sites:
-      - eqiad 
+    sites: []
   swift: 
     name: "Swift"
     ip_oct: "27"
     sites:
-      - eqiad
-      - codfw
-      - esams
+      eqiad:
+        - ms-fe1001.eqiad.wmnet
+        - ms-fe1002.eqiad.wmnet
+      codfw: install2001.wikimedia.org:10649
+      esams: hooft.esams.wikimedia.org:11649
   cache_mobile:
     name: "Mobile caches"
     ip_oct: "28"
     sites:
-      - eqiad
-      - esams
-      - ulsfo
+      eqiad:
+        - cp1046.eqiad.wmnet
+        - cp1047.eqiad.wmnet
+      esams: hooft.esams.wikimedia.org:11649
+      ulsfo:
+        - cp4011.ulsfo.wmnet
+        - cp4019.ulsfo.wmnet
   virt: 
     name: "Virtualization cluster"
     ip_oct: "29"
     sites:
-      - eqiad
+      eqiad:
+        - labnet1001.eqiad.wmnet
+        - virt1000.wikimedia.org
   jobrunner:
     name: "Jobrunners"
     ip_oct: "31"
     sites:
-      - eqiad
-      - codfw
+      eqiad:
+        - mw1001.eqiad.wmnet
+        - mw1002.eqiad.wmnet
+      codfw: install2001.wikimedia.org:10649
   analytics:     
     name: "Analytics cluster"
     ip_oct: "32"
     sites:
-      - eqiad 
+      eqiad:
+        - analytics1013.eqiad.wmnet
+        - analytics1014.eqiad.wmnet
+        - analytics1019.eqiad.wmnet
   memcached:
     name: "Memcached"
     ip_oct: "33"
     sites:
-      - eqiad
-      - codfw
+      eqiad:
+        - mc1001.eqiad.wmnet
+        - mc1002.eqiad.wmnet
+      codfw: install2001.wikimedia.org:10649
   videoscaler:       
     name: "Video scalers"
     ip_oct: "34"
     sites:
-      - eqiad
-      - codfw
+      eqiad:
+        - tmh1001.eqiad.wmnet
+        - tmh1002.eqiad.wmnet
+      codfw: install2001.wikimedia.org:10649
   fundraising:
     name: "Fundraising"
     ip_oct: "35"
     sites:
-      - eqiad 
+      eqiad:
+        - pay-lvs1001.frack.eqiad.wmnet
+        - pay-lvs1002.frack.eqiad.wmnet
   ceph:           # Not used anymore
     name: "Ceph"
     ip_oct: "36"
@@ -134,57 +179,77 @@ ganglia_clusters:
     name: "Parsoid"
     ip_oct: "37"
     sites:
-      - eqiad 
+      eqiad:
+        - wtp1001.eqiad.wmnet
+        - wtp1002.eqiad.wmnet
   cache_parsoid: 
     name: "Parsoid Varnish"
     ip_oct: "38"
     sites:
-      - eqiad
-      - esams
-      - ulsfo
+      eqiad:
+        - cp1045.eqiad.wmnet
+        - cp1058.eqiad.wmnet
   redis:
     name:      "Redis"
     ip_oct:    "39"
     sites:
-      - eqiad
-      - codfw
+      eqiad:
+        - rdb1001.eqiad.wmnet
+        - rdb1002.eqiad.wmnet
+      codfw: install2001.wikimedia.org:10649
   labsnfs:   
     name: "Labs NFS cluster"
     ip_oct: "40"
     sites:
-      - eqiad
+      eqiad:
+        - labstore1001.eqiad.wmnet
+        - labstore1003.eqiad.wmnet
   cache_misc:
     name: "Misc Web caching cluster"
     ip_oct: "41"
     sites:
-      - eqiad 
+      eqiad:
+        - cp1043.eqiad.wmnet
+        - cp1044.eqiad.wmnet
   elasticsearch:
     name: "Elasticsearch cluster"
     ip_oct: "42"
     sites:
-      - eqiad 
-  logstash:      
+      eqiad:
+        - elastic1001.eqiad.wmnet
+        - elastic1007.eqiad.wmnet
+        - elastic1013.eqiad.wmnet
+  logstash:
     name: "Logstash cluster"
     ip_oct: "43"
     sites:
-      - eqiad 
+      eqiad:
+        - logstash1001.eqiad.wmnet
+        - logstash1003.eqiad.wmnet
   rcstream:      
     name: "RCStream cluster"
     ip_oct: "44"
     sites:
-      - eqiad 
+      eqiad:
+        - rcs1001.eqiad.wmnet
   analytics_kafka:
     name: "Analytics Kafka cluster"
     ip_oct: "45"
     sites:
-      - eqiad 
+      eqiad:
+        - analytics1012.eqiad.wmnet
+        - analytics1018.eqiad.wmnet
+        - analytics1022.eqiad.wmnet
   sca:
     name: "Service Cluster A"
     ip_oct: "46"
     sites:
-      - eqiad 
+      eqiad:
+        - sca1001.eqiad.wmnet
+        - sca1002.eqiad.wmnet
   openldap_corp_mirror:
     name: "Corp OIT LDAP mirror"
     ip_oct: "47"
     sites:
-      - eqiad 
+      eqiad:
+        - plutonium.wikimedia.org
