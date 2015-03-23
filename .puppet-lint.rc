@@ -8,10 +8,6 @@
 # Lot of long lines (ssh keys for example).
 --no-80chars-check
 
-# Anyone as a different indentation preference.
---no-hard_tabs-check
---no-2sp_soft_tabs-check
-
 # Misc rules, some of them might use to be enabled later.
 --no-autoloader_layout-check
 --no-inherits_across_namespaces-check
