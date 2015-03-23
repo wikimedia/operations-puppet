@@ -9,8 +9,8 @@ class phabricator::phd (
 ) {
 
     file { '/etc/init.d/phd':
-       ensure => 'link',
-       target => "${basedir}/phabricator/bin/phd",
+        ensure => 'link',
+        target => "${basedir}/phabricator/bin/phd",
     }
 
     file { $settings['phd.pid-directory']:
@@ -38,8 +38,8 @@ class phabricator::phd (
     }
 
     file { '/etc/logrotate.d/phd':
-        ensure  => file,
-        source  => 'puppet:///modules/phabricator/logrotate_phd',
-        mode    => '0644',
+        ensure => file,
+        source => 'puppet:///modules/phabricator/logrotate_phd',
+        mode   => '0644',
     }
 }
