@@ -1,0 +1,20 @@
+<VirtualHost *:80>
+  ServerName   edit-analysis.wmflabs.org
+
+  DocumentRoot /var/lib/limn/static/limn-edit-data
+  ServerAdmin  dandreescu@wikimedia.org
+
+  ErrorLog /var/log/apache2/error.edit-analysis.log
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel warn
+
+  CustomLog /var/log/apache2/access.edit-analysis.log combined
+
+  RewriteEngine on
+  # Redirect any non HTTPS request to HTTPS
+  # This HTTP Header is set by Yuvi's proxy-dammit instance
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteCond %{REMOTE_ADDR}%{REQUEST_URI} !127\.0\.0\.1/server-status
+  RewriteRule ^(.*)$ https://edit-analysis.wmflabs.org$1 [L,R]
+</VirtualHost>
