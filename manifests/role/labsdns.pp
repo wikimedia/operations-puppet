@@ -8,6 +8,6 @@ class role::labsdns {
         pdns_db_host            => 'm1-master.eqiad.wmnet',
         pdns_db_password        => $passwords::pdns::db_pass,
         pdns_recursor           => '208.80.154.239',
-        recursor_ip_range       => '10.68.0.0/20',
+        recursor_ip_range       => '10.68.16.0/21',
     }
 }
