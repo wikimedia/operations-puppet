@@ -9,7 +9,7 @@ define ganglia_new::monitor::aggregator::instance($monitored_site) {
 
     $cluster = regsubst($title, '^(.*)_[^_]+$', '\1')
     if has_key($ganglia_new::configuration::clusters[$cluster], 'sites') {
-        $sites = $ganglia_new::configuration::clusters[$cluster]['sites']
+        $sites = keys($ganglia_new::configuration::clusters[$cluster]['sites'])
     } else {
         $sites = $ganglia_new::configuration::default_sites
     }
