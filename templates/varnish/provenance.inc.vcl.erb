@@ -1,0 +1,52 @@
+sub vcl_recv {
+	// Avoid cache fragmentation for well-formed provenance parameters
+	// Refer to discussion starting from
+	// https://lists.wikimedia.org/pipermail/analytics/2015-February/003426.html
+	// Look for wprov parameter with a value
+	if (req.url ~ "(?i)(?:\?|&)wprov=[^&]+") {
+		// Ready a variable for later X-Analytics tagging in vcl_deliver.
+		// See https://www.mediawiki.org/wiki/Provenance for reserved values.
+
+		// Regex backreferences can be finicky  beyond \1 and so can
+		// $position $1, $2... Furthermore, remember that regsub only applies
+		// the the matched part of the target against which the regular expression
+		// matches.
+		// This first regular expression says:
+		// (1) I don't care about the casing of the values
+		// (2) For parenthesized groups starting with ?: don't be eligible for
+		// capturing into a backreference.
+		// (3) Get me the first *captured* backreference (the wprov parameter's
+		// value represented by the capturing group ([^&]+) ).
+		// Note, if you're trying this at the command line, such as with
+		// perl -ple 's/(?i)(?:)(?:.+)(?:\?|&)(?:wprov=)([^&]+)(?:.*)/\1/'
+		// remember that the enclosing if() guarantees that the string will
+		// contain the parameter of wprov with an actual value.
+		// So that perl one liner on something like /wiki/Foo?a=b would return
+		// /wiki/Foo?a=b instead of an empty string! And that's not surprising.
+		// /wiki/Foo?a=b isn't in scope for this if(), after all.
+
+		set req.http.X-WMF-WPROV = regsub(req.url, "(?i)(?:.+)(?:\?|&)(?:wprov=)([^&]+)(?:.*)", "\1");
+
+		// Pretend that the parameter wasn't there for caching purposes.
+		// This first one doesn't use backreferences. This is chopping off
+		// the wprov parameter if it was at the end of the URL.
+
+		set req.url = regsub(req.url, "(?i)(?:\?|&)wprov=[^&]+$", "");
+
+		// This next one uses the \1, which is safe and intended. It in
+		// effect says find me the wprov=value and remove it in the case
+		// that it wasn't the last parameter-value pair in the URL.
+		set req.url = regsub(req.url, "(?i)(\?|&)wprov=[^&]+&", "\1");
+	}
+}
+
+sub vcl_deliver {
+	// In case there was a provenance parameter with a value, add it to X-Analytics
+	if (req.http.X-WMF-WPROV) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";wprov=" + req.http.X-WMF-WPROV;
+		} else {
+			set resp.http.X-Analytics = "wprov=" + req.http.X-WMF-WPROV;
+		}
+	}
+}
