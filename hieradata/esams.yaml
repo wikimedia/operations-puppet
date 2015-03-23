@@ -1,1 +1,2 @@
 ganglia_class: "new"
+ganglia_aggregators: hooft.esams.wikimedia.org:11649
