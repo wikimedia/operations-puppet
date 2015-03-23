@@ -185,6 +185,7 @@ class role::phabricator::labs {
             'mysql.pass'                      => $mysqlpass,
             'auth.require-email-verification' => false,
             'metamta.mail-adapter'            => 'PhabricatorMailImplementationTestAdapter',
+            'repository.default-local-path'   => '/srv/phab/repos',
         },
     }
 
