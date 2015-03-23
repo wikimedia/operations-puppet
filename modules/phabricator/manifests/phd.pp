@@ -43,8 +43,8 @@ class phabricator::phd (
     }
 
     file { '/etc/logrotate.d/phd':
-        ensure  => file,
-        source  => 'puppet:///modules/phabricator/logrotate_phd',
-        mode    => '0644',
+        ensure => file,
+        source => 'puppet:///modules/phabricator/logrotate_phd',
+        mode   => '0644',
     }
 }
