@@ -41,6 +41,10 @@ class toollabs::bastion(
         content => "${::ipaddress}\n",
     }
 
+    # Because it rocks
+    package { 'mosh':
+        ensure => present,
+    }
     # Display tips.
     package { 'grep':
         ensure => present,
