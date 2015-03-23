@@ -256,7 +256,7 @@ class swift::storage {
         'object':
             uid             => 'swift',
             gid             => 'swift',
-            max_connections => '10',
+            max_connections => '13',
             path            => '/srv/swift-storage/',
             read_only       => 'no',
             lock_file       => '/var/lock/object.lock',
