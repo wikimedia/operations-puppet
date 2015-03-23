@@ -29,3 +29,6 @@
 # We use dash in class and variables.
 --no-names_containing_dash-check
 --no-variable_contains_dash-check
+
+# Disable URL without modules/ because of private puppet URLs
+--no-puppet_url_without_modules-check
