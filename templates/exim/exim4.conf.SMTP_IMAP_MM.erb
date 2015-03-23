@@ -554,12 +554,12 @@ otrs:
 <% end %>
 
 <% if !@smart_route_list.empty? then -%>
-# Send all mail not destined for the local machine via a set of
+# Send all mail //not destined for the local machine// via a set of
 # mail relays ("smart hosts")
 smart_route:
 	driver = manualroute
 	transport = remote_smtp
-	route_list = *  <%= @smart_route_list.join(":") %>
+	route_list = !+local_domains  <%= @smart_route_list.join(":") %>
 <% end %>
 
 ##############
