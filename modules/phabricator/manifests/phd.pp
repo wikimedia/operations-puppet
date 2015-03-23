@@ -8,9 +8,14 @@ class phabricator::phd (
     $basedir  = '/',
 ) {
 
+    file { "${basedir}/phabricator/scripts/daemon/":
+        owner   => $settings['phd.user'],
+        recurse => true,
+    }
+
     file { '/etc/init.d/phd':
-       ensure => 'link',
-       target => "${basedir}/phabricator/bin/phd",
+        ensure => 'link',
+        target => "${basedir}/phabricator/bin/phd",
     }
 
     file { $settings['phd.pid-directory']:
