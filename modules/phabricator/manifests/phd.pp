@@ -10,8 +10,8 @@ class phabricator::phd (
     $run_dir = $settings['phd.run-directory']
 
     file { '/etc/init.d/phd':
-       ensure => 'link',
-       target => "${basedir}/phabricator/bin/phd",
+        ensure => 'link',
+        target => "${basedir}/phabricator/bin/phd",
     }
 
     file { $run_dir:
@@ -46,8 +46,8 @@ class phabricator::phd (
     }
 
     file { '/etc/logrotate.d/phd':
-        ensure  => file,
-        source  => 'puppet:///modules/phabricator/logrotate_phd',
-        mode    => '0644',
+        ensure => file,
+        source => 'puppet:///modules/phabricator/logrotate_phd',
+        mode   => '0644',
     }
 }
