@@ -169,14 +169,14 @@ class phabricator (
     }
 
     file { "${phabdir}/phabricator/.git/config":
-        source  => 'puppet:///modules/phabricator/phabricator.gitconfig',
-        before    => File["${phabdir}/phabricator/scripts/"],
+        source => 'puppet:///modules/phabricator/phabricator.gitconfig',
+        before => File["${phabdir}/phabricator/scripts/"],
     }
 
     file { "${phabdir}/phabricator/scripts/":
         mode    => '0754',
         recurse => true,
-        before    => File["${phabdir}/phabricator/scripts/mail/"],
+        before  => File["${phabdir}/phabricator/scripts/mail/"],
     }
 
     file { "${phabdir}/phabricator/scripts/mail/":
@@ -244,7 +244,7 @@ class phabricator (
     }
 
     file { '/etc/php5/apache2/php.ini':
-        content => template("phabricator/php.ini.erb"),
+        content => template('phabricator/php.ini.erb'),
         notify  => Service['apache2'],
         require => Package['php5'],
     }
@@ -261,19 +261,19 @@ class phabricator (
     #default location for phabricator tracked repositories
     if ($phab_settings['repository.default-local-path']) {
         file { $phab_settings['repository.default-local-path']:
-            ensure   => directory,
-            mode     => '0755',
-            owner    => 'phd',
-            group    => 'www-data',
-            require  => Git::Install['phabricator/phabricator'],
+            ensure  => directory,
+            mode    => '0755',
+            owner   => 'phd',
+            group   => 'www-data',
+            require => Git::Install['phabricator/phabricator'],
         }
     }
 
     file { '/usr/local/sbin/phab_update_tag':
-        content   => template('phabricator/phab_update_tag.erb'),
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0500',
+        content => template('phabricator/phab_update_tag.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0500',
     }
 
     # Phabricator needs an initial index built and from there
@@ -281,10 +281,10 @@ class phabricator (
     if ($phab_settings['search.elastic.host']) {
         $create_index = "${phabdir}/phabricator/bin/search index --all"
         exec { 'elastic_search_setup':
-            command     => "${create_index} && touch ${phabdir}/needs_es_indexed_false",
-            creates     => "${phabdir}/needs_es_indexed_false",
-            logoutput   => true,
-            require     => File["${phabdir}/phabricator/conf/local/local.json"],
+            command   => "${create_index} && touch ${phabdir}/needs_es_indexed_false",
+            creates   => "${phabdir}/needs_es_indexed_false",
+            logoutput => true,
+            require   => File["${phabdir}/phabricator/conf/local/local.json"],
         }
     }
 
