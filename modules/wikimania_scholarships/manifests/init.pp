@@ -85,6 +85,7 @@ class wikimania_scholarships(
     }
 
     include ::apache::mod::rewrite
+    include ::apache::mod::headers
 
     file { '/etc/apache2/conf.d/namevirtualhost':
         source => 'puppet:///files/apache/conf.d/namevirtualhost',
