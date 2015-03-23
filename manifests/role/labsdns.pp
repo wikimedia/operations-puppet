@@ -7,5 +7,7 @@ class role::labsdns {
         dns_auth_soa_name       => 'labs-ns2.wikimedia.org',
         pdns_db_host            => 'm1-master.eqiad.wmnet',
         pdns_db_password        => $passwords::pdns::db_pass,
+        pdns_recursor           => '208.80.154.239',
+        labs_ip_range           => '10.68.0.0/20',
     }
 }
