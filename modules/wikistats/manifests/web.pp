@@ -16,7 +16,7 @@ class wikistats::web (
         ensure  => directory,
         mode    => '0755',
         owner   => 'wikistatsuser',
-        group   => 'www-data';
+        group   => 'www-data',
     }
 
     include ::apache::mod::rewrite

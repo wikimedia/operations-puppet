@@ -3,14 +3,14 @@
 define wikistats::cronjob() {
 
     $project = regsubst($name, '@.*', '\1')
-    $hour = regsubst($name, '.*@', '\1')
+    $hour    = regsubst($name, '.*@', '\1')
 
     cron { "cron-wikistats-update-${name}":
-        ensure  => 'present',
+        ensure  => present,
         command => "/usr/bin/php /usr/lib/wikistats/update.php ${project} > /var/log/wikistats/update_${name}.log 2>&1",
         user    => 'wikistatsuser',
         hour    => $hour,
-        minute  => '0',
+        minute  => 0,
     }
 }
 
