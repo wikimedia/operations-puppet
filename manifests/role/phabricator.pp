@@ -43,7 +43,7 @@ class role::phabricator::main {
         sprint_tag       => 'release/2015-02-18',
         security_tag     => 'release/2015-01-13/1',
         libraries        => ['/srv/phab/libext/Sprint/src',
-                             '/srv/phab/libext/security/src'],
+                            '/srv/phab/libext/security/src'],
         extension_tag    => 'HEAD',
         extensions       => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php'],

@@ -46,7 +46,7 @@ class role::statistics::cruncher inherits role::statistics {
 
     # geowiki: bringing data from production slave db to research db
     include geowiki::job::data
-     # geowiki: generate limn files from research db and push them
+    # geowiki: generate limn files from research db and push them
     include geowiki::job::limn
     # geowiki: monitors the geowiki files of http://gp.wmflabs.org/
     include geowiki::job::monitoring

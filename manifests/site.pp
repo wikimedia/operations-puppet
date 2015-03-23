@@ -1810,7 +1810,7 @@ node /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/ {
         '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
         '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
-                   ]
+    ]
 
     role swift::eqiad_prod::storage
 
@@ -1828,7 +1828,7 @@ node /^ms-be101[678]\.eqiad\.wmnet$/ {
         '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
         '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
-                   ]
+    ]
 
     role swift::eqiad_prod::storage
 
