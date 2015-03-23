@@ -37,6 +37,7 @@ mediawiki_memcached_servers:
 "cxserver::registry":
   source:
     - 'af'
+    - 'az'
     - 'bg'
     - 'ca'
     - 'da'
@@ -44,8 +45,8 @@ mediawiki_memcached_servers:
     - 'en'
     - 'eo'
     - 'es'
-    - 'hy'
     - 'fr'
+    - 'hy'
     - 'id'
     - 'it'
     - 'kk'
@@ -72,14 +73,15 @@ mediawiki_memcached_servers:
     - 'xh'
     - 'zh'
   target:
+    - 'af'
     - 'az'
     - 'bg'
     - 'ca'
     - 'da'
     - 'de'
-    - 'fr'
     - 'eo'
     - 'es'
+    - 'fr'
     - 'hy'
     - 'id'
     - 'it'
@@ -134,8 +136,8 @@ mediawiki_memcached_servers:
       'mk':
         - 'bg'
       'pt':
-        - 'es'
         - 'ca'
+        - 'es'
       'sh':
         - 'sl'
       'sl':
