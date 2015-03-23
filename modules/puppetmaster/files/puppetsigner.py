@@ -30,7 +30,7 @@ def main():
     ds = ldapSupportLib.connect()
     basedn = ldapSupportLib.getLdapInfo('base')
     try:
-        proc = subprocess.Popen('/usr/bin/puppet cert list', shell=True, stdout=subprocess.PIPE)
+        proc = subprocess.Popen(['/usr/bin/puppet', 'cert', 'list'], stdout=subprocess.PIPE)
         hosts = proc.communicate()
         hosts = hosts[0].split()
         for host in hosts:
@@ -46,18 +46,23 @@ def main():
                 except Exception:
                     sys.stderr.write('Failed to remove the certificate: ' + path + '\n')
             else:
-                subprocess.Popen(['/usr/bin/puppet cert sign ' + host], shell=True, stderr=subprocess.PIPE)
-                subprocess.Popen(['/usr/bin/php /srv/org/wikimedia/controller/wikis/w/extensions/OpenStackManager/maintenance/onInstanceActionCompletion.php --action=build --instance=' + host], shell=True, stderr=subprocess.PIPE)
-        proc = subprocess.Popen('/usr/bin/salt-key --list=unaccepted --out=json', shell=True, stdout=subprocess.PIPE)
+                subprocess.Popen(['/usr/bin/puppet', 'cert', 'sign', host], stderr=subprocess.PIPE)
+                subprocess.Popen(['/usr/bin/php',
+                                  '/srv/org/wikimedia/controller/wikis/w/extensions/OpenStackManager/maintenance/onInstanceActionCompletion.php',
+                                  '--action', 'build',
+                                  '--instance', host], stderr=subprocess.PIPE)
+        proc = subprocess.Popen(['/usr/bin/salt-key',
+                                 '--list', 'unaccepted',
+                                 '--out', 'json'], stdout=subprocess.PIPE)
         hosts = proc.communicate()
         hosts = json.loads(hosts[0])
         for host in hosts["minions_pre"]:
             query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
             PosixData = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
             if not PosixData:
-                subprocess.Popen(['/usr/bin/salt-key -y -d ' + host], shell=True, stdout=subprocess.PIPE)
+                subprocess.Popen(['/usr/bin/salt-key', '-y', '-d', host], stdout=subprocess.PIPE)
             else:
-                subprocess.Popen(['/usr/bin/salt-key -y -a ' + host], shell=True, stderr=subprocess.PIPE)
+                subprocess.Popen(['/usr/bin/salt-key', '-y', '-a', host], stderr=subprocess.PIPE)
     except ldap.PROTOCOL_ERROR:
         sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
         traceback.print_exc(file=sys.stderr)
