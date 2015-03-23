@@ -161,7 +161,10 @@ class Threshold(GraphiteCheck):
     '''
     parser_name = 'check_threshold'
     from_regex = re.compile('^-(\d+)(\w+)$')
-    _accepted_time_defs = ['hours', 'h', 'w', 'weeks', 'min', 'minutes']
+    _accepted_time_defs = ['hours', 'hour', 'h',
+                           'weeks', 'week', 'w',
+                           'days', 'day', 'd',
+                           'minutes', 'minute', 'min']
 
     @classmethod
     def create_parser(cls, parser):
