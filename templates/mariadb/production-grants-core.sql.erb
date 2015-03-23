@@ -15,3 +15,12 @@ GRANT PROCESS, REPLICATION CLIENT
 
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `%wik%`.* TO 'wikiuser'@'10.64.%';
+
+-- wikiuser 10.192.%
+
+GRANT PROCESS, REPLICATION CLIENT
+    ON *.* TO 'wikiuser'@'10.192.%'
+    IDENTIFIED BY '<%= @wikiuser_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE
+    ON `%wik%`.* TO 'wikiuser'@'10.192.%';
