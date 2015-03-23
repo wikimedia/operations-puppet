@@ -105,7 +105,7 @@ class role::cache {
                     ],
                     'ulsfo' => [
                         'cp4008.ulsfo.wmnet',
-                        # T92476 'cp4009.ulsfo.wmnet', # needs-jessie-install
+                        'cp4009.ulsfo.wmnet',
                         'cp4010.ulsfo.wmnet',
                         'cp4016.ulsfo.wmnet',
                         'cp4017.ulsfo.wmnet',
