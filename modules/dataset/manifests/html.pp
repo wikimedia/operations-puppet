@@ -29,14 +29,14 @@ class dataset::html(
         }
     }
     if ($poty) {
-       file { "${dataset::dirs::otherdir}/poty/index.html":
-           ensure => 'present',
-           path   => "${dataset::dirs::otherdir}/poty/index.html",
-           mode   => '0644',
-           owner  => 'root',
-           group  => 'root',
-           source => 'puppet:///modules/dataset/html/poty_index.html',
-       }
+        file { "${dataset::dirs::otherdir}/poty/index.html":
+            ensure => 'present',
+            path   => "${dataset::dirs::otherdir}/poty/index.html",
+            mode   => '0644',
+            owner  => 'root',
+            group  => 'root',
+            source => 'puppet:///modules/dataset/html/poty_index.html',
+        }
     }
     if ($archive) {
         file { "${dataset::dirs::publicdir}/archive/index.html":
