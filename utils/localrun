@@ -24,4 +24,4 @@ if [ "$1" == "lint" ]
   "$PWD""/linter"
 fi
 
-puppet apply --modulepath=modules $@ manifests/site.pp 2>&1 | grep  -v 'exported resources'
+puppet apply --modulepath=../modules $@ ../manifests/site.pp 2>&1 | grep  -v 'exported resources'
