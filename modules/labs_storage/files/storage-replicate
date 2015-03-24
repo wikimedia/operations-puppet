@@ -1,0 +1,129 @@
+#! /bin/bash
+# -*- coding: utf-8 -*-
+#
+#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+##
+## THIS FILE IS MANAGED BY PUPPET
+##
+## Source: modules/labs_storage/storage-replicate
+## From:   
+##
+
+##
+## storage-replicate
+##
+## usage: storage-replicate <mountpoint> <dest>
+##
+## Replicates the directory at <mountpoint> (which must be a thin
+## volume with avaliable snapshots) to the destination specified
+## by <dest>.  The actual copy is done with rsync, so any value
+## acceptable to rsync as destination can be used here.  The latest
+## snapshot will be used.
+##
+## This script provides for locking to avoid more than one
+## replication taking place at a time and making a mess of things.
+## The presence of a file named 'skipped' in the $lockdir means
+## that the replication is running late, with each line in the
+## file being a skipped attempt because a prior rsync was already
+## taking place.  It may be wise to make an icinga check for
+## the presence and number of lines in this file.
+##
+## This script is intended to be run (daily?) by cron, but it
+## it safe to invoke manually - it will do nothing if there is
+## already an rsync in progress.
+##
+
+
+if [ $# -ne 2 ]; then
+    echo "usage: $(basename $0) <mountpoint> <destination>" >&2
+    exit 1
+fi
+storage="$1"
+dest="$2"
+
+if [ ! -d "$storage" ]; then
+    echo "$storage: not a directory" >&2
+    exit 2
+fi
+if ! /bin/mountpoint -q "$storage"; then
+    echo "$storage: not a mountpoint" >&2
+    exit 2
+fi
+eval $(sed -n -f - /proc/mounts <<SED
+  /^\/dev\/mapper\/\(\S*\)-\(\S*\)\s${storage//\//\\/}\s.*/ {
+    s//vg=\1 vol=\2/
+    p
+  }
+SED
+)
+if [ "x$vg" = "x" -o "x$vol" = "x" ]; then
+    echo "$storage: not a mapped device"
+    exit 2
+fi
+if ! /sbin/lvs --noheadings -o attr "/dev/mapper/$vg-$vol" | /bin/grep -q 'V'; then
+    echo "$storage: not a thin volume"
+    exit 2
+fi
+
+lockdir="/var/lock/storage-replicate-$vol"
+snapshots="/var/cache/snapshots-$vol"
+
+if [ ! -r "$snapshots" ]; then
+    echo "$storage: no snapshot available to replicate"
+    exit 2
+fi
+
+function log {
+    prio=$1
+    shift
+    /usr/bin/logger -s -p local1.$prio -t "$(/usr/bin/basename $0)[$$]" "$@"
+}
+
+if /bin/mkdir "$lockdir" 2>/dev/null; then
+    trap "/bin/umount -fl '$lockdir/snapshot';/bin/rm -rf '$lockdir' ; log crit Replication did not complete" 0
+    date "+%Y-%m-%d %H:%M" >$lockdir/started
+    snapshot=$(/usr/bin/sort -n "$snapshots" | tail -n 1)
+    log info "Replicating snapshot $snapshot"
+    /bin/mkdir "$lockdir/snapshot"
+    if /bin/mount -oro,noload "/dev/mapper/$vg-$snapshot" "$lockdir/snapshot"; then
+        log info "Replication starting"
+        /usr/bin/ionice -c Idle /usr/bin/rsync \
+            -auHAXs --delete-during --inplace --append-verify \
+            -f ._/etc/replication-rsync.conf "$lockdir/snapshot/." "$dest"
+        /bin/umount -fl "$lockdir/snapshot"
+    else
+        log alert "Unable to mount snapshot $snapshot; not replicating"
+        exit 1
+    fi
+    /bin/rm -rf "$lockdir"
+    trap - 0
+    log info "Replication complete"
+else
+    if [ -d "$lockdir" ]; then
+        if [ -r "$lockdir/started" ]; then
+            date "+%Y-%m-%d %H:%M" >>$lockdir/skipped
+            read when <$lockdir/started
+            log warning "Skipping replication; already in progress since $when"
+            exit 0
+        fi
+        log alert "Lock directory exist but replication not started!"
+        exit 1
+    else
+        log crit "Unable to create lock directory ($lockdir)"
+        exit 1
+    fi
+fi
+

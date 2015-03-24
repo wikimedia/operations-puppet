@@ -1,0 +1,105 @@
+#! /bin/bash
+# -*- coding: utf-8 -*-
+#
+#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+##
+## THIS FILE IS MANAGED BY PUPPET
+##
+## Source: modules/labs_storage/storage-snapshot
+## From:   
+##
+
+##
+## storage-snapshot
+##
+## usage: storage-snapshot <mountpoint>
+##
+## This manages snapshots for the directory at <mountpoint> (which
+## must be a thin volume with avaliable snapshots).  It will
+## figure out the correct volume to snapshot, and invoke
+## manage-snapshots to (if needed) create a new hourly snapshot
+## as well as expire and discard old ones.
+##
+## At the end of the process, <mountpoint>/.snapshots will be
+## updated with the list of currently valid snapshots.
+##
+## This script provides for locking to avoid more than one
+## snapshot taking place at a time and making a mess of things.
+##
+## This script is intended to be run hourly by cron, but it
+## it safe to invoke manually - it will do nothing if there is
+## already a snapshot in progress or if one has already been
+## taken during the current hour.
+##
+
+
+if [ $# -ne 1 ]; then
+    echo "usage: $(basename $0) <mountpoint>" >&2
+    exit 1
+fi
+storage="$1"
+
+if [ ! -d "$storage" ]; then
+    echo "$storage: not a directory" >&2
+    exit 2
+fi
+if ! /bin/mountpoint -q "$storage"; then
+    echo "$storage: not a mountpoint" >&2
+    exit 2
+fi
+eval $(sed -n -f - /proc/mounts <<SED
+  /^\/dev\/mapper\/\(\S*\)-\(\S*\)\s${storage//\//\\/}\s.*/ {
+    s//vg=\1 vol=\2/
+    p
+  }
+SED
+)
+if [ "x$vg" = "x" -o "x$vol" = "x" ]; then
+    echo "$storage: not a mapped device"
+    exit 2
+fi
+if ! /sbin/lvs --noheadings -o attr "/dev/mapper/$vg-$vol" | /bin/grep -q 'V'; then
+    echo "$storage: not a thin volume"
+    exit 2
+fi
+
+lockdir="/var/lock/storage-snapshot-$vol"
+snapshots="/var/cache/snapshots-$vol"
+
+function log {
+    prio=$1
+    shift
+    /usr/bin/logger -s -p local2.$prio -t "$(/usr/bin/basename $0)[$$]" "$@"
+}
+
+if /bin/mkdir "$lockdir" 2>/dev/null; then
+    trap "/bin/rm -rf '$lockdir'" 0
+    /usr/local/sbin/manage-snapshots "$vg" "$vol"
+    if [ -r "$snapshots" ]; then
+        /bin/cp "$snapshots" "$storage/.snapshots~"
+        /bin/mv "$storage/.snapshots~" "$storage/.snapshots"
+    fi
+    /bin/rm -rf "$lockdir"
+    trap - 0
+else
+    if [ -d "$lockdir" ]; then
+        log alert "Unable to take snapshot: previous one stuck?"
+    else
+        log crit "Unable to create lock directory ($lockdir)"
+    fi
+    exit 1
+fi
+
