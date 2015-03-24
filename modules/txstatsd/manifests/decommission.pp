@@ -4,14 +4,8 @@
 # configuration files.
 #
 class txstatsd::decommission {
-    service { 'txstatsd':
-        ensure   => stopped,
-        provider => upstart,
-    }
-
     file { '/etc/init/txstatsd.conf':
         ensure  => absent,
-        require => Service['txstatsd'],
     }
 
     file { '/etc/txstatsd':
@@ -28,11 +22,9 @@ class txstatsd::decommission {
 
     user { 'txstatsd':
         ensure  => absent,
-        require => Service['txstatsd'],
     }
 
     package { 'python-txstatsd':
         ensure  => absent,
-        require => Service['txstatsd'],
     }
 }
