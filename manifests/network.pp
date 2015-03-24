@@ -166,7 +166,7 @@ class network::constants {
             },
             'esams' => {
                 'public' => {
-                    'public-services' => {
+                    'public1-esams' => {
                         'ipv4' => '91.198.174.0/25',
                         'ipv6' => '2620:0:862:1::/64'
                     },
