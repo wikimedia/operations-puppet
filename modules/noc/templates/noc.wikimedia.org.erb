@@ -15,6 +15,11 @@
     RewriteRule   ^/~(.+) https://people.wikimedia.org/~$1  [R=301,L]
     RewriteRule   ^/dbtree(.*)$ https://dbtree.wikimedia.org [R=301,L]
 
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+    Header always set Strict-Transport-Security "max-age=604800"
+
     ErrorLog /var/log/apache2/error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
