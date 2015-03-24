@@ -1010,7 +1010,7 @@ node 'eeden.esams.wikimedia.org' {
     include role::authdns::server
 }
 
-node 'eisteinium.eqiad.wmnet' {
+node 'einsteinium.eqiad.wmnet' {
     include standard
     include admin
     system::role { 'Titan test host': }
