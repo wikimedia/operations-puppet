@@ -1,0 +1,42 @@
+#!/bin/bash
+# statsitectl -- Manage statsite jobs
+# Usage: statsitectl {status|check|start|stop|restart}
+#
+command=$1
+shift
+case "$command" in
+    status)
+        status=0
+        for config in /etc/statsite/*.ini; do
+          instance="$(basename $config .ini)"
+          status statsite/instance NAME="$instance" || status=$?
+        done
+        exit $status
+        ;;
+    check)
+        $0 status >/dev/null 2>&1 || {
+            echo "CRITICAL: Not all configured statsite instances are running."
+            exit 2
+        }
+        echo "OK: All defined statsite jobs are runnning."
+        exit 0
+        ;;
+    start)
+        initctl start statsite/init
+        ;;
+    stop)
+        for config in /etc/statsite/*.ini; do
+          instance="$(basename $config .ini)"
+          initctl stop statsite/instance NAME="$instance"
+        done
+        ;;
+    restart)
+        for config in /etc/statsite/*.ini; do
+          instance="$(basename $config .ini)"
+          initctl restart statsite/instance NAME="$instance"
+        done
+        ;;
+    *)
+        echo >&2 "Usage: ${0##*/} {status|check|start|stop|restart}"
+        ;;
+esac
