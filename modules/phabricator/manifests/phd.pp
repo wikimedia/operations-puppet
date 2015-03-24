@@ -8,7 +8,14 @@ class phabricator::phd (
     $basedir  = '/',
 ) {
 
+    # PHD user needs perms to drop root perms on start
     file { "${basedir}/phabricator/scripts/daemon/":
+        owner   => $settings['phd.user'],
+        recurse => true,
+    }
+
+    # Managing repo's as the PHD user
+    file { "${basedir}/phabricator/scripts/repository/":
         owner   => $settings['phd.user'],
         recurse => true,
     }
