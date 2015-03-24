@@ -18,7 +18,7 @@ some_failed=0
 for existing in ${OCSP_DIR}/*.ocsp; do
     bn=$(basename $existing)
     certname=${bn%.ocsp}
-    /usr/local/sbin/update-ocsp -c ${LCERT_DIR}/${certname}.crt -o $existing -p $proxy
+    /usr/local/sbin/update-ocsp -c ${LCERT_DIR}/${certname}.crt -o $existing -p $PROXY >/dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo OCSP update failed for $certname
         some_failed=1
