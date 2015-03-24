@@ -1363,6 +1363,29 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
     class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
 
+    #
+    # This is all going in the labs_storage module once that one
+    # is ready.
+    #
+
+    monitoring::graphite_threshold { 'network_out_saturated':
+        description     => 'Outgoing network saturation',
+        metric          => "servers.${::hostname}.network.bond0.tx_byte.value",
+        from            => '30min',
+        warning         => '50000000', # roughly half of the 100Mbps
+        crirical        => '75000000', # roughly 75%
+        percentage      => '10',       # smooth over peaks
+    }
+
+    monitoring::graphite_threshold { 'network_in_saturated':
+        description     => 'Incoming network saturation',
+        metric          => "servers.${::hostname}.network.bond0.rx_byte.value",
+        from            => '30min',
+        warning         => '50000000', # roughly half of the 100Mbps
+        crirical        => '75000000', # roughly 75%
+        percentage      => '10',       # smooth over peaks
+    }
+
 }
 
 node 'labstore1003.eqiad.wmnet' {
