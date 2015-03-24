@@ -13,7 +13,6 @@ args = [
     '/usr/bin/uwsgi',
     '--plugin', 'python',
     '--http-socket', ':' + str(PORT),
-    '--wsgi-file', 'app.py',
     '--chdir', os.path.expanduser('~/www/python/src'),
     '--logto', os.path.expanduser('~/uwsgi.log'),
     '--callable', 'app',
