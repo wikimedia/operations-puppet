@@ -140,6 +140,46 @@ class role::labs::instance {
         source => 'puppet:///files/nfs/idmapd.conf',
     }
 
+    # On Ubuntu, resolvconf is installed by default; on Debian Jessie
+    # it needs to be installed explicitely.
+    package { 'resolvconf':
+        ensure => installed,
+    }
+
+    # "ndots:2" is necessary to resolve host aliases like
+    # "enwiki.labsdb".
+    file { '/etc/resolvconf/resolv.conf.d/tail':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "options timeout:5 ndots:2\n",
+        require => Package['resolvconf'],
+    }
+
+    # resolvconf creates this symbolic link at installation time, but
+    # does not overwrite it if it has been replaced for example by
+    # Puppet with a file in the mean time.
+    $resolvconftarget = $::lsbdistcodename ? {
+        'trusty'  => '../run/resolvconf/resolv.conf',
+        'precise' => '../run/resolvconf/resolv.conf',
+        'jessie'  => '/etc/resolvconf/run/resolv.conf',
+    }
+    file { '/etc/resolv.conf':
+        ensure  => link,
+        target  => $resolvconftarget,
+        require => Package['resolvconf'],
+    }
+
+    # Add search domain.
+    file { '/etc/dhcp/dhclient-enter-hooks.d/add-search-domain':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "new_domain_search=labs.${::site}.wmnet\n",
+    }
+
     # In production, we try to be punctilious about having Puppet manage
     # system state, and thus it's reasonable to purge Apache site configs
     # that have not been declared via Puppet. But on Labs we want to allow
