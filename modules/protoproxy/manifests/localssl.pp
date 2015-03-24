@@ -54,7 +54,7 @@ define protoproxy::localssl(
         $proxy = "webproxy.${::site}.wmnet:8080"
 
         exec { "${title}-create-ocsp":
-            command => "/usr/local/sbin/update-ocsp -c $cert -o $output -p $proxy",
+            command => "/usr/local/sbin/update-ocsp -c $certpath -o $output -p $proxy",
             creates => $output,
             require => Sslcert::Certificate[$proxy_server_cert_name],
             before  => Service['nginx']
