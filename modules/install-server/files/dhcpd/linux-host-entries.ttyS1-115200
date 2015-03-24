@@ -2331,6 +2331,13 @@ host lvs4004 {
 	fixed-address lvs4004.ulsfo.wmnet;
 }
 
+host maerlant {
+	hardware ethernet a4:ba:db:30:d1:12;
+	fixed-address maerlant.esams.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host magnesium {
 	hardware ethernet 78:2b:cb:09:0d:d1;
 	fixed-address magnesium.wikimedia.org;

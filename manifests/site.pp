@@ -1679,6 +1679,11 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     }
 }
 
+node 'maerlant.esams.wikimedia.org' {
+    include admin
+    include standard
+}
+
 node 'magnesium.wikimedia.org' {
 
     $cluster = 'misc'
