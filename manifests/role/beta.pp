@@ -47,3 +47,18 @@ class role::beta::puppetmaster {
         logstash_port => 5229,
     }
 }
+
+# = Class: role::beta::availability_collector
+# collect availability metrics for the beta / staging clusters
+class role::beta::availability_collector {
+    include ::diamond
+    diamond::collector { 'VarnishStatus':
+        source  => 'puppet:///modules/diamond/collector/varnishstatus.py',
+        settings => {
+          path_prefix => 'availability',
+          path => 'cluster',
+          hostname => $::instanceproject,
+          hostname_method => 'none',
+        }
+    }
+}
