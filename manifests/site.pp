@@ -1338,6 +1338,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     $cluster = 'labsnfs'
 
     role labs::nfs::fileserver
+
 }
 
 node 'labstore1003.eqiad.wmnet' {
