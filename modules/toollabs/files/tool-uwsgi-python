@@ -18,7 +18,7 @@ args = [
     '--logto', os.path.expanduser('~/uwsgi.log'),
     '--callable', 'app',
     '--manage-script-name',
-    '--mount', '/%s=%s' % (TOOL, 'app.py'),
+    '--mount', '/%s=%s' % (TOOL, os.path.expanduser('~/www/python/src/app.py')),
     '--die-on-term',
     '--strict',
     '--master'
