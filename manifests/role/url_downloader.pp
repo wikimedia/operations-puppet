@@ -50,7 +50,7 @@ class role::url_downloader($url_downloader_ip) {
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv4'],
             $network::constants::all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv4'],
 
-            $network::constants::all_network_subnets['production']['esams']['public']['public-services']['ipv4'], #TODO: Do we need this ?
+            $network::constants::all_network_subnets['production']['esams']['public']['public1-esams']['ipv4'], #TODO: Do we need this ?
             ]
     } elsif $::realm == 'labs' {
         $wikimedia = [
