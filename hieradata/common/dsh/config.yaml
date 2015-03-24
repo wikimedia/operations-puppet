@@ -12,5 +12,5 @@ scap_proxies:
   - "mw2041.codfw.wmnet" # A4 codfw
   - "mw2080.codfw.wmnet" # B3 codfw
   - "mw2119.codfw.wmnet" # B4 codfw
-  - "mw2148.codfw.wmnet" # C3 codfw
+#  - "mw2148.codfw.wmnet" # C3 codfw
   - "mw2187.codfw.wmnet" # C4 codfw
