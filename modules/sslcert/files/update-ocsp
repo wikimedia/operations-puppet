@@ -19,9 +19,10 @@
 # limitations under the License.
 
 import os
+import sys
 import errno
 import argparse
-from subprocess import check_output
+import subprocess
 import glob
 import tempfile
 import datetime
@@ -60,9 +61,19 @@ def parse_options():
     return parser.parse_args()
 
 
+def check_output_errtext(args):
+    """check_output w/ subp std* printed to stderr on fail"""
+    try:
+        return subprocess.check_output(args, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        sys.stderr.write("Command %s failed with exit code %i, output:\n%s" %
+                         (e.cmd, e.returncode, e.output))
+        raise
+
+
 def cert_x509_option(filename, attrib):
     """Returns output of an openssl x509 cert option w/ noout"""
-    return check_output([
+    return check_output_errtext([
         "openssl", "x509", "-noout",
         "-in", filename,
         "-" + attrib,
@@ -115,7 +126,7 @@ def cert_fetch_ocsp(cert, cadir, outfile, proxy):
             "-url", ocsp_uri,
         ])
 
-    return check_output(cmd)
+    return check_output_errtext(cmd)
 
 
 def ocsp_text_datetime_field(ocsp_text, field):
@@ -132,7 +143,7 @@ def ocsp_text_datetime_field(ocsp_text, field):
 def ocsp_validate_window(ocspfile, offset_start, offset_end):
     """Validate the validity range of the OCSP response"""
 
-    ocsp_text = check_output([
+    ocsp_text = check_output_errtext([
         "openssl", "ocsp", "-noverify",
         "-respin", ocspfile,
         "-resp_text",

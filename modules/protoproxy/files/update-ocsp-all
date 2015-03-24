@@ -18,13 +18,13 @@ some_failed=0
 for existing in ${OCSP_DIR}/*.ocsp; do
     bn=$(basename $existing)
     certname=${bn%.ocsp}
-    /usr/local/sbin/update-ocsp -c ${LCERT_DIR}/${certname}.crt -o $existing -p $PROXY >/dev/null 2>&1
+    /usr/local/sbin/update-ocsp -c ${LCERT_DIR}/${certname}.crt -o $existing -p $PROXY
     if [ $? -ne 0 ]; then
         echo OCSP update failed for $certname
         some_failed=1
     fi
 done
 
-/usr/sbin/service nginx reload
+/usr/sbin/service nginx reload >/dev/null 2>&1 || exit 99
 
 exit $some_failed
