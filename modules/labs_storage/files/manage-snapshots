@@ -1,0 +1,215 @@
+#! /usr/bin/python
+# -*- coding: utf-8 -*-
+#
+#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+##
+## THIS FILE IS MANAGED BY PUPPET
+##
+## Source: modules/labs_storage/manage-snapshots
+## From:   labs_storage::server
+##
+
+##
+## manage-snapshots
+##
+## usage: manage-snapshots <mountpoint>
+##
+## This script maintains the collection of readonly snapshots of the
+## thin volume mounted at <mountpoint>.  It will:
+##  - Create a new snapshot if one has not been made in the current hour;
+##  - discard obsolete snapshots; and
+##  - update a file containing the list of live snapshots available
+##
+## Snapshots are obsolete unless they are:
+##  - the snapshot that was just created, if any;
+##  - the three most recent existing snapshots;
+##  - the last snapshot of each of the three previous days;
+##  - the last snapshot of each of the three previous weeks; or
+##  - the last snapshot of each of the three previous months
+##
+## (The choice of three is arbitrary for each category.  That value
+##  is hardcoded but tunable in Snapshots.clean()
+##
+
+import argparse
+import re
+import datetime
+import subprocess
+import sys
+import logging
+import logging.handlers
+import os
+
+class Snapshot:
+    def __init__(self, volgroup, volname):
+        self.volname = volname
+        self.volgroup = volgroup
+
+        # There calculate which (rounded) hour, day, week and month
+        # the snapshot was taken in, as derived from the volume name
+        # which is a string in 'YYYYMMDDHHMM' format.
+        self.hour = datetime.datetime(
+            int(volname[0:4]), int(volname[4:6]),
+            int(volname[6:8]), int(volname[8:10]) )
+        self.day = self.hour.date()
+        self.week = self.day + datetime.timedelta(6-self.day.weekday())
+        self.month = self.day.replace(day=1)
+        self.keep = False
+
+class Snapshots:
+    def __init__(self):
+        self.snapshots = []
+        self.byday = {}
+        self.byweek = {}
+        self.bymonth = {}
+
+    def add(self, snap):
+        self.snapshots.append(snap)
+        if snap.day not in self.byday or snap.hour > self.byday[snap.day].hour:
+            self.byday[snap.day] = snap
+        if snap.week not in self.byweek or snap.hour > self.byweek[snap.week].hour:
+            self.byweek[snap.week] = snap
+        if snap.month not in self.bymonth or snap.hour > self.bymonth[snap.month].hour:
+            self.bymonth[snap.month] = snap
+
+    def clean(self):
+        self.snapshots.sort(cmp=lambda x,y: cmp(y.hour, x.hour))
+        for snap in self.snapshots[0:3]:
+            snap.keep = True
+        for day in sorted(self.byday.keys(), reverse=True)[0:3]:
+            self.byday[day].keep = True
+        for week in sorted(self.byweek.keys(), reverse=True)[0:3]:
+            self.byweek[week].keep = True
+        for month in sorted(self.bymonth.keys(), reverse=True)[0:3]:
+            self.bymonth[month].keep = True
+
+class Lockdir:
+    def __init__(self, path):
+        self.path = path
+        self.err  = None
+
+    def __enter__(self):
+        try:
+            os.mkdir(self.path, 0700)
+        except OSError as e:
+            self.err = "lock directory %s already exists" % self.path
+        return self
+
+    def __exit__(self, e1, e2, e3):
+        if not self.err:
+            os.rmdir(self.path)
+        return None
+
+def system(*cmd):
+    sub = subprocess.Popen(list(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (out, err) = sub.communicate()
+    if sub.returncode:
+        err = err.splitlines(False)[0].strip()
+        if not err or err=='':
+            if sub.returncode < 0:
+                err = "killed by signal %d" % -sub.returncode
+            else:
+                err = "exited with %d" % sub.returncode
+        return (None, err)
+    return (out, None)
+
+
+syslog = logging.getLogger('manage-snapshots')
+handler = logging.handlers.SysLogHandler(address = '/dev/log')
+handler.setFormatter(logging.Formatter('%(name)s: %(levelname)s: %(message)s'))
+syslog.addHandler(handler)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('path', help='Path to the mountpoint to snapshot')
+args = parser.parse_args()
+snapshots = Snapshots()
+
+# Find the specified path in /proc/mounts, matching only logical volumes
+# and extract the volume group and name from the device entry
+with open('/proc/mounts', 'r') as procmounts:
+    for line in procmounts:
+        match = re.match("/dev/mapper/([^-]+)-(\S+)\s+(\S+)\s", line)
+        if match and match.group(3) == args.path:
+            volgroup, volname = match.group(1, 2)
+
+if not (volgroup and volname):
+    syslog.error("%s is not a LVM volume mountpoint" % args.path)
+    sys.exit(2)
+
+# Now check that the specified volume has the correct attributes
+(out, err) = system('/sbin/lvs', '--noheadings', '-o', 'lv_attr', '/dev/mapper/%s-%s' % (volgroup, volname))
+if err:
+    syslog.error("/sbin/lvs: " + err)
+    sys.exit(2)
+
+# Must be: (V)olume, (-) not mirror, (a)ctive, and (t)hin
+if not re.match("V..-a.t.", out.strip()):
+    syslog.error("%s-%s is not a suitable thin volume for replication" % (volgroup, volname))
+    sys.exit(2)
+
+with Lockdir('/var/lock/manage-snapshots-%s-%s' % (volgroup, volname)) as lock:
+
+    if lock.err:
+        syslog.warning('A lock for %s-%s already exists' % (volgroup, volname))
+        syslog.critical("Snapshot maintenance not done!")
+        sys.exit(1)
+
+    # collect all extant snapshots of our volume
+    (out, err) = system('/sbin/lvs', '--noheadings', '--separator', ':', '-o', 'origin,vg_name,name')
+    if err:
+        syslog.error("/sbin/lvs: " + err)
+        syslog.critical("Snapshot maintenance not done!")
+        sys.exit(2)
+
+    for entry in out.split():
+        (origin, vg, volume) = entry.split(':')
+        if origin == volname and vg == volgroup:
+            snapshots.add(Snapshot(vg, volume))
+
+    snapshots.clean()
+
+    now = Snapshot(volgroup, datetime.datetime.utcnow().strftime("%Y%m%d%H%M"))
+    if not snapshots.snapshots or now.hour <> snapshots.snapshots[0].hour:
+        syslog.info("Creating new snapshot " + now.volname)
+
+        (out, err) = system('/sbin/lvcreate', '-s', '--name', now.volname, '%s/%s' % (volgroup, volname))
+        if err:
+            syslog.error("/sbin/lvcreate: " + err)
+            syslog.critical("Snapshot not created!")
+            sys.exit(2)
+
+        snapshots.add(now)
+        now.keep = True
+    else:
+	syslog.warning("Snapshot already exists for this hour, not making a new one")
+
+    keep = []
+    for snap in snapshots.snapshots:
+        if snap.keep:
+            keep.append(snap)
+        else:
+            (out, err) = system('/sbin/lvremove', '-f', '%s/%s' % (snap.volgroup, snap.volname))
+            if err:
+                syslog.warning("/sbin/lvremove (%s): %s" (snap.volname, err))
+            else:
+                syslog.info("Discarded snapshot " + snap.volname)
+
+    with open('%s/.snapshots~' % args.path, 'w+') as listfile:
+        for snap in keep:
+            listfile.write(snap.volname + "\n")
+
+    os.rename(('%s/.snapshots~' % args.path), ('%s/.snapshots' % args.path))
+

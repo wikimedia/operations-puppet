@@ -1,0 +1,174 @@
+#! /usr/bin/python
+# -*- coding: utf-8 -*-
+#
+#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+##
+## THIS FILE IS MANAGED BY PUPPET
+##
+## Source: modules/labs_storage/storage-replicate
+## From:   
+##
+
+##
+## storage-replicate
+##
+## usage: storage-replicate <mountpoint> <dest>
+##
+## Replicates the directory at <mountpoint> (which must be a thin
+## volume with avaliable snapshots) to the destination specified
+## by <dest>.  The actual copy is done with rsync, so any value
+## acceptable to rsync as destination can be used here.  The latest
+## snapshot will be used.
+##
+## This script provides for locking to avoid more than one
+## replication taking place at a time and making a mess of things.
+## The presence of a file named 'skipped' in the $lockdir means
+## that the replication is running late, with each line in the
+## file being a skipped attempt because a prior rsync was already
+## taking place.  It may be wise to make an icinga check for
+## the presence and number of lines in this file.
+##
+## This script is intended to be run (daily?) by cron, but it
+## it safe to invoke manually - it will do nothing if there is
+## already an rsync in progress.
+##
+
+import argparse
+import re
+import datetime
+import subprocess
+import sys
+import logging
+import logging.handlers
+import os
+
+def system(*cmd):
+    sub = subprocess.Popen(list(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (out, err) = sub.communicate()
+    if sub.returncode:
+        err = err.splitlines(False)[0].strip()
+        if not err or err=='':
+            if sub.returncode < 0:
+                err = "killed by signal %d" % -sub.returncode
+            else:
+                err = "exited with %d" % sub.returncode
+        return (None, err)
+    return (out, None)
+
+class Lockdir:
+    def __init__(self, path):
+        self.path = path
+        self.mountpoint = "%s/snapshot" % path
+        self.err  = None
+
+    def __enter__(self):
+        try:
+            os.mkdir(self.path, 0700)
+            os.mkdir(self.mountpoint, 0700)
+        except OSError as e:
+            self.err = "lock directory %s already exists" % self.path
+        return self
+
+    def __exit__(self, e1, e2, e3):
+        (out, err) = system('/bin/umount', '-fl', self.mountpoint)
+        (out, err) = system('/bin/rm', '-rf', self.path);
+        return None
+
+syslog = logging.getLogger('storage-replicate')
+handler = logging.handlers.SysLogHandler(address = '/dev/log')
+handler.setFormatter(logging.Formatter('%(name)s: %(levelname)s: %(message)s'))
+syslog.addHandler(handler)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('path', help='Path to the mountpoint to replicate')
+parser.add_argument('dest', help='rsync-syntax destination for the replica')
+args = parser.parse_args()
+
+# Find the specified path in /proc/mounts, matching only logical volumes
+# and extract the volume group and name from the device entry
+with open('/proc/mounts', 'r') as procmounts:
+    for line in procmounts:
+        match = re.match("/dev/mapper/([^-]+)-(\S+)\s+(\S+)\s", line)
+        if match and match.group(3) == args.path:
+            volgroup, volname = match.group(1, 2)
+
+if not (volgroup and volname):
+    syslog.error("%s is not a LVM volume mountpoint" % args.path)
+    sys.exit(2)
+
+# Now check that the specified volume has the correct attributes
+(out, err) = system('/sbin/lvs', '--noheadings', '-o', 'lv_attr', '/dev/mapper/%s-%s' % (volgroup, volname))
+if err:
+    syslog.error("/sbin/lvs: " + err)
+    sys.exit(2)
+
+# Must be: (V)olume, (-) not mirror, (a)ctive, and (t)hin
+if not re.match("V..-a.t.", out.strip()):
+    syslog.error("%s-%s is not a suitable thin volume for replication" % (volgroup, volname))
+    sys.exit(2)
+
+# Find the latest snapshot to copy, if any
+latest = None
+with open('%s/.snapshots' % args.path) as snapshots:
+    latest = sorted(list(snapshots), reverse=True)[0].strip()
+if not latest:
+    syslog.error("No snapshot to replicate for this filesystem")
+    sys.exit(1)
+
+lockdir = '/var/run/lock/storage-replicate-%s-%s' % (volgroup, volname)
+with Lockdir(lockdir) as lock:
+
+    if lock.err:
+        # The lock directory already exists, so the previous
+        # rsync is running long.  Log the event, and exit.
+        try:
+            with open('%s/started' % lockdir, 'r') as f:
+                when = f.readline().strip()
+        except IOError:
+            when = 'a few seconds ago'
+        syslog.warning("Skipping replication; already in progress since %s" % when)
+        sys.exit(0)
+
+    with open('%s/started' % lockdir, 'w+') as f:
+        f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d% H%:M\n"))
+
+    (out, err) = system(
+        '/sbin/lvchange', '-kn', '-ay', '%s/%s' % (volgroup, latest))
+    if err:
+        syslog.critical('unable to activate %s-%s: %s' % (volgroup, latest, err))
+        sys.exit(1)
+
+    (out, err) = system(
+        '/bin/mount', '-oro,noload',
+        '/dev/mapper/%s-%s' % (volgroup, latest),
+        lock.mountpoint)
+    if err:
+        syslog.critical('unable to mount %s-%s: %s' % (volgroup, latest, err))
+        sys.exit(1)
+
+    syslog.info("Replication of %s-%s starting" % (volgroup, latest))
+
+    (out, err) = system(
+            '/usr/bin/ionice', '-c', 'Idle',
+            '/usr/bin/rsync', '-auHAXs', '--delete-during',
+            '--inplace', '--append-verify', '-f', '._/etc/replication-rsync.conf',
+            '%s/.' % lock.mountpoint, args.dest)
+    if err:
+        syslog.critical('rsync failed: %s' % err)
+        exit(1)
+
+    syslog.info("Replication of %s-%s complete" % (volgroup, latest))
+
