@@ -2170,11 +2170,15 @@ host labstore1003 {
 host labstore2001 {
 	hardware ethernet 78:2b:cb:76:1c:d2;
 	fixed-address labstore2001.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labstore2002 {
 	hardware ethernet 78:2b:cb:75:8e:43;
 	fixed-address labstore2002.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labsdb1004 {
