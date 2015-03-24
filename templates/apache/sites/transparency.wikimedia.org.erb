@@ -1,5 +1,5 @@
 # vim:ft=apache: ts=4 sw=4
-# Apache configuration for <http://transparency.wikimedia.org>
+# Apache configuration for <https://transparency.wikimedia.org>
 # This file is managed by Puppet.
 <VirtualHost *:80>
     ServerName transparency.wikimedia.org
@@ -15,10 +15,9 @@
         allow from all
     </Directory>
 
-    # Serve 404s for all requests until the launch, at 2014-Aug-06 08:30 UTC.
-    # This code can be removed any time after that. --OL
     RewriteEngine on
-    RewriteCond %{ENV:REDIRECT_STATUS} !=404
-    RewriteCond %{TIME} <<%= Time.utc(2014, 'Aug', 6, 8, 30).strftime('%Y%m%d%H%M%S') %>
-    RewriteRule .* - [L,R=404]
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+    Header always set Strict-Transport-Security "max-age=604800"
 </VirtualHost>
