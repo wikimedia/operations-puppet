@@ -2338,7 +2338,7 @@ host lvs4004 {
 
 host maerlant {
 	hardware ethernet a4:ba:db:30:d1:12;
-	fixed-address maerlant.esams.wikimedia.org;
+	fixed-address maerlant.wikimedia.org;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
