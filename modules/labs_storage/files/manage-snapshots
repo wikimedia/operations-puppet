@@ -1,0 +1,166 @@
+#! /usr/bin/python
+# -*- coding: utf-8 -*-
+#
+#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+##
+## THIS FILE IS MANAGED BY PUPPET
+##
+## Source: modules/labs_storage/manage-snapshots
+## From:   labs_storage::server
+##
+
+##
+## manage-snapshots
+##
+## usage: manage-snapshots <volgroup> <volume>
+##
+## This script maintains the collection of readonly snapshots of the
+## specified thin volume.  It will:
+##  - Create a new snapshot if one has not been made in the current hour;
+##  - discard obsolete snapshots; and
+##  - update a file containing the list of live snapshots available
+##
+## Snapshots are obsolete unless they are:
+##  - the snapshot that was just created, if any;
+##  - the three most recent existing snapshots;
+##  - the last snapshot of each of the three previous days;
+##  - the last snapshot of each of the three previous weeks; or
+##  - the last snapshot of each of the three previous months
+##
+## (The choice of three is arbitrary for each category.  That value
+##  is hardcoded but tunable in Snapshots.clean()
+##
+
+import argparse
+import datetime
+import subprocess
+import sys
+import syslog
+import os
+
+class Snapshot:
+    def __init__(self, volgroup, volname):
+        self.volname = volname
+        self.volgroup = volgroup
+
+        # There calculate which (rounded) hour, day, week and month
+        # the snapshot was taken in, as derived from the volume name
+        # which is a string in 'YYYYMMDDHHMM' format.
+        self.hour = datetime.datetime(
+            int(volname[0:4]), int(volname[4:6]),
+            int(volname[6:8]), int(volname[8:10]) )
+        self.day = self.hour.date()
+        self.week = self.day + datetime.timedelta(6-self.day.weekday())
+        self.month = self.day.replace(day=1)
+        self.keep = False
+
+class Snapshots:
+    def __init__(self):
+        self.snapshots = []
+        self.byday = {}
+        self.byweek = {}
+        self.bymonth = {}
+
+    def add(self, snap):
+        self.snapshots.append(snap)
+        if snap.day not in self.byday or snap.hour > self.byday[snap.day].hour:
+            self.byday[snap.day] = snap
+        if snap.week not in self.byweek or snap.hour > self.byweek[snap.week].hour:
+            self.byweek[snap.week] = snap
+        if snap.month not in self.bymonth or snap.hour > self.bymonth[snap.month].hour:
+            self.bymonth[snap.month] = snap
+
+    def clean(self):
+        self.snapshots.sort(cmp=lambda x,y: cmp(y.hour, x.hour))
+        for snap in self.snapshots[0:3]:
+            snap.keep = True
+        for day in sorted(self.byday.keys(), reverse=True)[0:3]:
+            self.byday[day].keep = True
+        for week in sorted(self.byweek.keys(), reverse=True)[0:3]:
+            self.byweek[week].keep = True
+        for month in sorted(self.bymonth.keys(), reverse=True)[0:3]:
+            self.bymonth[month].keep = True
+
+def system(*cmd):
+    sub = subprocess.Popen(list(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (out, err) = sub.communicate()
+    if sub.returncode:
+        err = err.splitlines(False)[0].strip()
+        if not err or err=='':
+            if sub.returncode < 0:
+                err = "killed by signal %d" % -sub.returncode
+            else:
+                err = "exited with %d" % sub.returncode
+        return (None, err)
+    return (out, None)
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('volgroup', help='Volume group on which the volname lies')
+parser.add_argument('volname', help='Name of the volume to snapshot.')
+args = parser.parse_args()
+
+volgroup = args.volgroup
+volname = args.volname
+snapshots = Snapshots()
+
+syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_LOCAL2)
+
+(out, err) = system('/sbin/lvs', '--separator', ':', '-o', 'origin,vg_name,name')
+if err:
+    syslog.syslog(syslog.LOG_ERR, "/sbin/lvs: " + err)
+    syslog.syslog(syslog.LOG_ALERT, "Snapshot maintenance not done!")
+    sys.exit(2)
+
+for entry in out.split():
+    (origin, vg, volume) = entry.split(':')
+    if origin == volname and vg == volgroup:
+        snapshots.add(Snapshot(vg, volume))
+
+snapshots.clean()
+
+now = Snapshot(volgroup, datetime.datetime.utcnow().strftime("%Y%m%d%H%M"))
+if not snapshots.snapshots or now.hour <> snapshots.snapshots[0].hour:
+    syslog.syslog(syslog.LOG_NOTICE, "Creating new snapshot " + now.volname)
+
+    (out, err) = system('/sbin/lvcreate', '-s', '--name', now.volname, '%s/%s' % (volgroup, volname))
+    if err:
+        syslog.syslog(syslog.LOG_ERR, "/sbin/lvcreate: " + err)
+        syslog.syslog(syslog.LOG_ALERT, "Snapshot not created!")
+        sys.exit(2)
+
+    snapshots.add(now)
+    now.keep = True
+
+keep = []
+for snap in snapshots.snapshots:
+    if snap.keep:
+        keep.append(snap)
+    else:
+        (out, err) = system('/sbin/lvremove', '-f', '%s/%s' % (snap.volgroup, snap.volname))
+        if err:
+            syslog.syslog(syslog.LOG_WARNING, "/sbin/lvremove (%s): %s" (snap.volname, err))
+        else:
+            syslog.syslog(syslog.LOG_INFO, "Discarded snapshot " + snap.volname)
+
+with open('/var/cache/snapshots-%s~' % volname, 'w+') as listfile:
+    for snap in keep:
+        listfile.write(snap.volname + "\n")
+
+os.rename(
+    '/var/cache/snapshots-%s~' % volname,
+    '/var/cache/snapshots-%s' % volname)
+
