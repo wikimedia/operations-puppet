@@ -10,7 +10,7 @@
 #   The cron to remove these is run only every 8 hours, however,
 #   to prevent excess load on the prod puppetmasters.
 class puppetmaster::scripts(
-    $keep_reports_minutes = 2160, # 36 hours
+    $keep_reports_minutes = 960, # 16 hours
 ) {
 
     require puppetmaster::naggen2
