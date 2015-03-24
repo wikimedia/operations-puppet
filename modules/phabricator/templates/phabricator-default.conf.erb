@@ -17,7 +17,7 @@
   Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
 
   # enable HTTP Strict Transport Security
-  Header set Strict-Transport-Security "max-age=31536000"
+  Header always set Strict-Transport-Security "max-age=31536000"
 
   <Directory "<%= @docroot %>">
     Options Indexes FollowSymLinks MultiViews

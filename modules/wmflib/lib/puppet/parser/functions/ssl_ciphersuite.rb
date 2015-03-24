@@ -117,7 +117,7 @@ END
       output.push('SSLHonorCipherOrder On')
       unless hsts_days.nil?
         hsts_seconds = hsts_days * 86400
-        output.push("Header set Strict-Transport-Security \"max-age=#{hsts_seconds}\"")
+        output.push("Header always set Strict-Transport-Security \"max-age=#{hsts_seconds}\"")
       end
     else
       # nginx
