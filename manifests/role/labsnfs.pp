@@ -59,5 +59,23 @@ class role::labs::nfs::fileserver {
     include openstack::project-nfs-storage-service
     include openstack::replica_management_service
 
+    monitoring::graphite_threshold { 'network_out_saturated':
+        description => 'Outgoing network saturation',
+        metric      => "servers.${::hostname}.network.bond0.tx_byte.value",
+        from        => '30min',
+        warning     => '75000000',  # roughly 600Mbps / 1Gbps
+        critical    => '100000000', # roughly 800Mbps / 1Gbps
+        percentage  => '10',        # smooth over peaks
+    }
+
+    monitoring::graphite_threshold { 'network_in_saturated':
+        description => 'Incoming network saturation',
+        metric      => "servers.${::hostname}.network.bond0.rx_byte.value",
+        from        => '30min',
+        warning     => '75000000',  # roughly 600Mbps / 1Gbps
+        critical    => '100000000', # roughly 800Mbps / 1Gbps
+        percentage  => '10',        # smooth over peaks
+    }
+
 }
 
