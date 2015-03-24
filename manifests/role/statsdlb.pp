@@ -1,8 +1,8 @@
 # == Class: role::statsdlb
 #
 # Provisions a statsdlb instance that listens for StatsD metrics on
-# on UDP port 8125 and forwards to backends on UDP ports 8126-8133,
-# as well as the set of txstatsd backends that listen on these ports.
+# on UDP port 8125 and forwards to backends on UDP ports 8126-8128,
+# as well as the set of statsite backends that listen on these ports.
 #
 class role::statsdlb {
 
@@ -10,7 +10,7 @@ class role::statsdlb {
 
     class { '::statsdlb':
         server_port   => 8125,
-        backend_ports => range(8126, 8139),
+        backend_ports => range(8126, 8128),
     }
 
     nrpe::monitor_service { 'statsdlb':
@@ -18,67 +18,28 @@ class role::statsdlb {
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C statsdlb',
     }
 
+    class { '::statsite': }
 
-    # txstatsd back-ends
-
-    package { 'python-txstatsd': }
-
-    file { '/etc/txstatsd':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        recurse => true,
-        purge   => true,
-        force   => true,
-        source  => 'puppet:///files/txstatsd/backends',
+    # statsite backends
+    statsite::instance { '8126':
+        port          => 8126,
+        input_counter => "statsd.$::hostname-8126.received",
     }
 
-    file { '/etc/init/txstatsd':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        recurse => true,
-        purge   => true,
-        force   => true,
-        source  => 'puppet:///files/txstatsd/init',
+    statsite::instance { '8127':
+        port          => 8127,
+        input_counter => "statsd.$::hostname-8127.received",
     }
 
-    group { 'txstatsd':
-        ensure => present,
+    statsite::instance { '8128':
+        port          => 8128,
+        input_counter => "statsd.$::hostname-8127.received",
     }
 
-    user { 'txstatsd':
-        ensure     => present,
-        gid        => 'txstatsd',
-        shell      => '/bin/false',
-        home       => '/nonexistent',
-        system     => true,
-        managehome => false,
-    }
-
-    file { '/usr/local/sbin/txstatsdctl':
-        source => 'puppet:///files/txstatsd/txstatsdctl',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        before => Service['txstatsd'],
-    }
-
-    service { 'txstatsd':
-        ensure   => 'running',
-        provider => 'base',
-        restart  => '/usr/local/sbin/txstatsdctl restart',
-        start    => '/usr/local/sbin/txstatsdctl start',
-        status   => '/usr/local/sbin/txstatsdctl status',
-        stop     => '/usr/local/sbin/txstatsdctl stop',
-    }
-
-    nrpe::monitor_service { 'txstatsd_backends':
-        description  => 'txstatsd backend instances',
-        nrpe_command => '/usr/local/sbin/txstatsdctl check',
-        require      => Service['txstatsd'],
+    nrpe::monitor_service { 'statsite_backends':
+        description  => 'statsite backend instances',
+        nrpe_command => '/sbin/statsitectl check',
+        require      => Service['statsite'],
     }
 
     diamond::collector { 'UDPCollector': }
