@@ -10,4 +10,28 @@ class role::labsdns {
         pdns_recursor           => '208.80.154.239',
         recursor_ip_range       => '10.68.16.0/21',
     }
+
+    ferm::service { 'udp_dns_rec':
+        proto => 'udp',
+        port  => '53',
+    }
+
+    ferm::service { 'tcp_dns_rec':
+        proto => 'tcp',
+        port  => '53',
+    }
+
+    ferm::rule { 'skip_dns_conntrack-out':
+        desc  => 'Skip DNS outgoing connection tracking',
+        table => 'raw',
+        chain => 'OUTPUT',
+        rule  => 'proto udp sport 53 NOTRACK;',
+    }
+
+    ferm::rule { 'skip_dns_conntrack-in':
+        desc  => 'Skip DNS incoming connection tracking',
+        table => 'raw',
+        chain => 'PREROUTING',
+        rule  => 'proto udp dport 53 NOTRACK;',
+    }
 }

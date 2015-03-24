@@ -2532,6 +2532,7 @@ node 'holmium.wikimedia.org' {
     include standard
     include admin
 
+    include base::firewall
     include role::labsdns
     include role::designate::server
 }
