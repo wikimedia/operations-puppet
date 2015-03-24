@@ -2043,6 +2043,11 @@ host fluorine {
 	fixed-address fluorine.eqiad.wmnet;
 }
 
+host francium {
+	hardware ethernet C8:1F:66:BF:88:52;
+	fixed-address francium.eqiad.wmnet;
+}
+
 host gallium {
 	hardware ethernet 78:2b:cb:09:0e:5b;
 	fixed-address gallium.wikimedia.org;
