@@ -13,12 +13,11 @@ args = [
     '/usr/bin/uwsgi',
     '--plugin', 'python',
     '--http-socket', ':' + str(PORT),
-    '--wsgi-file', 'app.py',
     '--chdir', os.path.expanduser('~/www/python/src'),
     '--logto', os.path.expanduser('~/uwsgi.log'),
     '--callable', 'app',
     '--manage-script-name',
-    '--mount', '/%s=%s' % (TOOL, 'app.py'),
+    '--mount', '/%s=%s' % (TOOL, os.path.expanduser('~/www/python/src/app.py')),
     '--die-on-term',
     '--strict',
     '--master'
