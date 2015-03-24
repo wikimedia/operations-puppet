@@ -25,6 +25,6 @@ for existing in ${OCSP_DIR}/*.ocsp; do
     fi
 done
 
-service nginx reload
+/usr/sbin/service nginx reload
 
 exit $some_failed
