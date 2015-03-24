@@ -194,5 +194,6 @@ phabricator.uninstalled-applications:
 phd.pid-directory: "/var/run/phd/pid"
 phd.log-directory: "/var/log/phd"
 phd.user: 'phd'
+phd.group: 'phd'
 
 pygments.enabled: true

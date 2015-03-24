@@ -28,22 +28,22 @@ class phabricator::phd (
     file { $settings['phd.pid-directory']:
         ensure => 'directory',
         owner  => $settings['phd.user'],
-        group  => 'phd',
+        group  => $settings['phd.group'],
     }
 
     file { $settings['phd.log-directory']:
         ensure => 'directory',
         owner  => $settings['phd.user'],
-        group  => 'phd',
+        group  => $settings['phd.group'],
     }
 
-    group { 'phd':
+    group { $settings['phd.group']:
         ensure => present,
         system => true,
     }
 
     user { $settings['phd.user']:
-        gid        => 'phd',
+        gid        => $settings['phd.group'],
         shell      => '/bin/false',
         managehome => false,
         system     => true,
