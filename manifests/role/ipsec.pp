@@ -12,24 +12,15 @@ class role::ipsec ($hosts = undef) {
     if $hosts != undef {
         $targets = $hosts
     } else {
-        # determine site from domain name
-        case $::domain {
-            'eqiad.wmnet':         { $site = 'eqiad' }
-            'codfw.wmnet':         { $site = 'codfw' }
-            'esams.wmnet':         { $site = 'esams' }
-            'esams.wikimedia.org': { $site = 'esams' }
-            'ulsfo.wmnet':         { $site = 'ulsfo' }
-        }
-
         # for 'left' nodes in cache sites, enumerate 'right' nodes in "main" sites
-        if $site == 'esams' or $site == 'ulsfo' {
+        if $::site == 'esams' or $::site == 'ulsfo' {
             $targets = concat(
                 hiera('hosts_eqiad', []),
                 hiera('hosts_codfw', [])
             )
         }
         # for 'left' nodes in "main" sites, enumerate 'right' nodes in cache sites
-        if $site == 'eqiad' or $site == 'codfw' {
+        if $::site == 'eqiad' or $::site == 'codfw' {
             $targets = concat(
                 hiera('hosts_esams', []),
                 hiera('hosts_ulsfo', [])
