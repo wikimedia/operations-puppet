@@ -669,6 +669,14 @@ class role::cache {
         }
 
         define sni_cert() {
+            # Test OCSP on cp1008 only initially
+            if $::hostname == 'cp1008' {
+                $ocsp_test = true
+            }
+            else {
+                $ocsp_test = false
+            }
+
             localssl { $name:
                 certname => "sni.${name}",
                 server_name => $name,
