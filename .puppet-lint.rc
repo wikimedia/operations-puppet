@@ -29,3 +29,6 @@
 # We use dash in class and variables.
 --no-names_containing_dash-check
 --no-variable_contains_dash-check
+
+# Cases should have values
+--no-case_without_default-check
