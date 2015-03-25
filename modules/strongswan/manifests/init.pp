@@ -81,20 +81,8 @@ class strongswan (
         source => 'puppet:///modules/strongswan/ipsec-global',
     }
 
-    $svcname = $::lsbdistcodename ? {
-        # in Ubuntu/Trusty this service is /etc/init/strongswan.conf
-        # in Ubuntu/Precise and Debian/Jessie it's /etc/init.d/ipsec
-        'trusty'  => 'strongswan',
-        'precise' => 'ipsec',
-        'jessie'  => 'ipsec',
-        default   => 'ipsec',
-    }
     service { 'strongswan':
         ensure     => running,
-        enable     => true,
-        name       => $svcname,
-        pattern    => "charon",  # Strongswan IKEv2 daemon is called charon
-        hasstatus  => true,
         hasrestart => true,
     }
 }
