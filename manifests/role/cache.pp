@@ -876,7 +876,12 @@ class role::cache {
     }
 
     class text inherits role::cache::varnish::2layer {
-        $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
+        if $::realm == 'production' {
+            $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
+        }
+        else {
+            $memory_storage_size = 1
+        }
 
         system::role { 'role::cache::text':
             description => 'text Varnish cache server',
@@ -1035,7 +1040,12 @@ class role::cache {
     }
 
     class upload inherits role::cache::varnish::2layer {
-        $memory_storage_size = floor((0.083 * $::memorysize_mb / 1024.0) + 0.5) # 1/12 of total mem
+        if $::realm == 'production' {
+            $memory_storage_size = floor((0.083 * $::memorysize_mb / 1024.0) + 0.5) # 1/12 of total mem
+        }
+        else {
+            $memory_storage_size = 1
+        }
 
         system::role { 'role::cache::upload':
             description => 'upload Varnish cache server',
@@ -1115,7 +1125,7 @@ class role::cache {
         $storage_size_up = $storage_size_main - $storage_size_bigobj
         $storage_conf =  $::realm ? {
             'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_up}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_up}G,$mma1 -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
-            'labs'       => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1 -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
+            'labs'       => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_up}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_up}G,$mma1 -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
         }
 
         $director_type_cluster = $cluster_tier ? {
@@ -1255,7 +1265,12 @@ class role::cache {
         }
         $cluster_options = merge($common_cluster_options, $realm_cluster_options)
 
-        $memory_storage_size = 2
+        if $::realm == 'production' {
+            $memory_storage_size = 2
+        }
+        else {
+            $memory_storage_size = 1
+        }
 
         system::role { 'role::cache::bits':
             description => 'bits Varnish cache server',
@@ -1316,7 +1331,12 @@ class role::cache {
     }
 
     class mobile inherits role::cache::varnish::2layer {
-        $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
+        if $::realm == 'production' {
+            $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
+        }
+        else {
+            $memory_storage_size = 1
+        }
 
         if $::realm == 'production' {
             include role::cache::ssl::sni
