@@ -1373,6 +1373,20 @@ node 'labstore1003.eqiad.wmnet' {
     role labs::nfs::dumps
 }
 
+node /labstore200[12]\.codfw\.wmnet/ {
+
+    $site = 'codfw'
+    $cluster = 'labsnfs'
+
+    $ganglia_aggregator = true
+
+    include admin
+    include standard
+
+    # Won't configure beyond that point until labs_storage module
+    # (No services running on this server for now)
+}
+
 node 'lanthanum.eqiad.wmnet' {
 
     include standard
