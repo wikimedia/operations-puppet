@@ -181,6 +181,9 @@ class role::phabricator::labs {
             'auth.require-email-verification' => false,
             'metamta.mail-adapter'            => 'PhabricatorMailImplementationTestAdapter',
             'repository.default-local-path'   => '/srv/phab/repos',
+            'config.ignore-issues'            => '{
+                                                      "security.security.alternate-file-domain": true
+                                                  }',
         },
     }
 
