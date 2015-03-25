@@ -2826,6 +2826,13 @@ host ms-fe3002 {
 	fixed-address ms-fe3002.esams.wmnet;
 }
 
+host multatuli {
+	hardware ethernet a4:ba:db:30:d5:99;
+	fixed-address multatuli.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host mw1001 {
 	hardware ethernet 84:2b:2b:78:2c:b4;
 	fixed-address mw1001.eqiad.wmnet;

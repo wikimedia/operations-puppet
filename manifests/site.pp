@@ -1696,6 +1696,10 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 node 'maerlant.wikimedia.org' {
     include admin
     include standard
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 node 'magnesium.wikimedia.org' {
@@ -1737,6 +1741,15 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include passwords::redis
     include redis
     include redis::ganglia
+}
+
+node 'multatuli.wikimedia.org' {
+    include admin
+    include standard
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 node /^rdb100[1-4]\.eqiad\.wmnet/ {
