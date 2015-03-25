@@ -3,31 +3,50 @@
 #check_mailman_queue
 #~~~~~~~
 
-#:copyright: (c) 2014 Matanya Moses
+#:copyright: (c) 2014 Matanya Moses, 2015 Daniel Zahn
 #:license: Apache License 2.0.
 
 # Usage:
-# /files/icinga/check_mailman_queue $ARG
+# /files/icinga/check_mailman_queue <queue limit>
 
 mailman_base="/var/lib/mailman/qfiles"
-FILES="$mailman_base/in $mailman_base/out"
+FILES="$mailman_base/in $mailman_base/out $mailman_base/virgin"
+
+queue_limit=$1
+critqueues=0
+debug=true
+
+if [ -z "$1" ]; then echo "usage: ./check_mailman_queue <queue limit>"; exit 3; fi
 
 for f in $FILES
 do
     if [ -d $f ]
         then
         queue_size=$(ls $f|wc -l)
-        if [ $queue_size -gt $1 ]
+        if $debug; then echo "$f: $queue_size"; fi
+
+        if [ $queue_size -gt $queue_limit ]
             then
-            echo "CRITICAL: mailman ${f} queue is above ${queue_size}"
-            exit 2
-        else
-            echo "OK: mailman ${f} queue is at ${queue_size}"
-            exit 0
+            if $debug; then echo "CRIT: $f: $queue_size > $queue_limit"; fi
+            ((critqueues++))
+            if $debug; then echo "crit queues: $critqueues"; fi
         fi
     else
        echo "UNKNOWN : Unable to open ${f}"
        exit 3
     fi
 done
+
+
+if [ $critqueues -ge 1 ]
+    then
+        echo "CRITICAL: $critqueues mailman queue(s) above ${queue_limit}"
+        exit 2
+    else
+        echo "OK: mailman queues are below ${queue_limit}"
+        exit 0
+fi
+
+echo "UNKNOWN: check check_mailman_queue"
+exit 3
 
