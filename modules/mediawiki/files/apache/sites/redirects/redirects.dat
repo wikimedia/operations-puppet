@@ -48,26 +48,26 @@
 #
 
 # Shop redirects
-funnel	shop.wiktionary.org	//shop.wikimedia.org
-funnel	store.wiktionary.org	//shop.wikimedia.org
-funnel	shop.wikiquote.org	//shop.wikimedia.org
-funnel	store.wikiquote.org	//shop.wikimedia.org
-funnel	shop.wikibooks.org	//shop.wikimedia.org
-funnel	store.wikibooks.org	//shop.wikimedia.org
-funnel	shop.wikinews.org	//shop.wikimedia.org
-funnel	store.wikinews.org	//shop.wikimedia.org
-funnel	shop.wikisource.org	//shop.wikimedia.org
-funnel	store.wikisource.org	//shop.wikimedia.org
-funnel	shop.wikiversity.org	//shop.wikimedia.org
-funnel	store.wikiversity.org	//shop.wikimedia.org
-funnel	shop.mediawiki.org	//shop.wikimedia.org
-funnel	store.mediawiki.org	//shop.wikimedia.org
-funnel	shop.wikimediafoundation.org	//shop.wikimedia.org
-funnel	store.wikimediafoundation.org	//shop.wikimedia.org
-funnel	shop.wikipedia.org	//shop.wikimedia.org
-funnel	store.wikipedia.org	//shop.wikimedia.org
-funnel	shop.wikipedia.com	//shop.wikimedia.org
-funnel	store.wikipedia.com	//shop.wikimedia.org
+funnel	shop.wiktionary.org	//store.wikipedia.org
+funnel	store.wiktionary.org	//store.wikipedia.org
+funnel	shop.wikiquote.org	//store.wikipedia.org
+funnel	store.wikiquote.org	//store.wikipedia.org
+funnel	shop.wikibooks.org	//store.wikipedia.org
+funnel	store.wikibooks.org	//store.wikipedia.org
+funnel	shop.wikinews.org	//store.wikipedia.org
+funnel	store.wikinews.org	//store.wikipedia.org
+funnel	shop.wikisource.org	//store.wikipedia.org
+funnel	store.wikisource.org	//store.wikipedia.org
+funnel	shop.wikiversity.org	//store.wikipedia.org
+funnel	store.wikiversity.org	//store.wikipedia.org
+funnel	shop.mediawiki.org	//store.wikipedia.org
+funnel	store.mediawiki.org	//store.wikipedia.org
+funnel	shop.wikimediafoundation.org	//store.wikipedia.org
+funnel	store.wikimediafoundation.org	//store.wikipedia.org
+funnel	shop.wikipedia.org	//store.wikipedia.org
+funnel	shop.wikimedia.org	//store.wikipedia.org
+funnel	shop.wikipedia.com	//store.wikipedia.org
+funnel	store.wikipedia.com	//store.wikipedia.org
 
 # Donate wiki
 rewrite	donate.mediawiki.org	https://donate.wikimedia.org
