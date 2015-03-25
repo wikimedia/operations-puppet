@@ -1,0 +1,15 @@
+sentry::user: 'sentry'
+sentry::group: 'sentry'
+sentry::db_user: 'sentry'
+sentry::db_pass: 'sentry' #TODO make this private
+sentry::db_name: 'sentry'
+sentry::host_name: 'sentry.wikimedia.org'
+sentry::smtp_host: '' # TODO 
+sentry::smtp_user: '' # TODO 
+sentry::smtp_pass: '' # TODO make this private
+sentry::admin_email: '' # TODO 
+sentry::cfg_file: '/etc/sentry.conf.py'
+sentry::secret_key: '' # TODO make this private
+sentry::admin_user: 'admin'
+sentry::admin_pass: 'admin' # TODO make this private
+
