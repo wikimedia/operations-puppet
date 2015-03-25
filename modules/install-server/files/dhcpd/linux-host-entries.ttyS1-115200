@@ -5002,12 +5002,12 @@ host mw2177 {
 }
 
 host mw2178 {
-	hardware ethernet B0:83:FE:DF:26:F7;
+	hardware ethernet B0:83:FE:DA:7A:BE;
 	fixed-address mw2178.codfw.wmnet;
 }
 
 host mw2179 {
-	hardware ethernet B0:83:FE:DA:7A:BE;
+	hardware ethernet B0:83:FE:DF:26:F7;
 	fixed-address mw2179.codfw.wmnet;
 }
 
