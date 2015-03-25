@@ -440,6 +440,8 @@ host bast4001 {
 host berkelium {
 	hardware ethernet 84:2b:2b:fd:be:64;
 	fixed-address berkelium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host beryllium {
@@ -1166,6 +1168,8 @@ host cp4020 {
 host curium {
 	hardware ethernet 84:2b:2b:fd:be:6d;
 	fixed-address curium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host dataset1001 {
