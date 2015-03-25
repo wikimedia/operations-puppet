@@ -1323,39 +1323,14 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
     $site = 'eqiad'
     $cluster = 'labsnfs'
-    $ldapincludes = ['openldap', 'nss', 'utils']
 
-    $ganglia_aggregator = true
-
-    # Commented out pending some troubleshooting
-    # interface::aggregate { 'bond0':
-        # orig_interface => 'eth0',
-        # members        => [ 'eth0', 'eth1' ],
-    # }
-
-    # need to solve using admin on ldap boxes
-    # RT 7732
-    # include admin
-    include standard
-    include openstack::project-nfs-storage-service
-    include openstack::replica_management_service
-    include rsync::server
-
-    rsync::server::module {
-        'pagecounts':
-            path        => '/srv/dumps/pagecounts',
-            read_only   => 'no',
-            hosts_allow => ['208.80.154.11', '208.80.152.185'];
-    }
-
-    class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
-
+    role labs::nfs::fileserver
 }
 
 node 'labstore1003.eqiad.wmnet' {
+
     $site = 'eqiad'
     $cluster = 'labsnfs'
-    $ganglia_aggregator = true
 
     role labs::nfs::dumps
 }
@@ -1365,13 +1340,8 @@ node /labstore200[12]\.codfw\.wmnet/ {
     $site = 'codfw'
     $cluster = 'labsnfs'
 
-    $ganglia_aggregator = true
+    role labs::nfs::fileserver
 
-    include admin
-    include standard
-
-    # Won't configure beyond that point until labs_storage module
-    # (No services running on this server for now)
 }
 
 node 'lanthanum.eqiad.wmnet' {
