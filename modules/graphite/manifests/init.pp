@@ -13,6 +13,7 @@ class graphite(
     $storage_schemas,
     $storage_aggregation = {},
     $storage_dir = '/var/lib/carbon',
+    $whisper_lock_writes = false,
     ) {
     package { ['graphite-carbon', 'python-whisper']: }
 
@@ -30,6 +31,7 @@ class graphite(
         log_cache_hits           => false,
         log_cache_queue_sorts    => false,
         log_listener_connections => false,
+        whisper_lock_writes      => $whisper_lock_writes,
         user                     => undef,  # Don't suid; Upstart will do it for us.
         conf_dir                 => '/etc/carbon',
         log_dir                  => '/var/log/carbon',

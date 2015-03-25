@@ -161,6 +161,7 @@ class role::graphite::base(
         },
 
         storage_dir         => $carbon_storage_dir,
+        whisper_lock_writes => true,
     }
 
     class { '::graphite::web':
