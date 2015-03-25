@@ -25,10 +25,6 @@ class role::phabricator::main {
         description => 'Phabricator (Main)'
     }
 
-    mailalias { 'root':
-        recipient => 'root@wikimedia.org',
-    }
-
     include passwords::phabricator
     include role::phabricator::config
     include phabricator::monitoring
