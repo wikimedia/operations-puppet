@@ -1,0 +1,132 @@
+#!/usr/bin/perl
+
+# check_strongswan
+# jgage@wikimedia.org 2015
+#
+# Nagios/Icinga check script for Strongswan
+# Parses output of 'ipsec statusall': checks that each defined connection has
+# corresponding established Security Associations (IKE parent + ESP child).
+# Also checks that connections configured by Strongswan have
+# corresponding xfrm policies in place in the kernel, by parsing output of
+# 'ip xfrm state' for matching Security Parameter Index values.
+
+use strict;
+use warnings;
+
+my $OK    = "OK";
+my $EOK   = 0;
+my $WARN  = "WARNING";
+my $EWARN = 1;
+my $CRIT  = "CRITICAL";
+my $ECRIT = 2;
+my $UNKN  = "UNKNOWN";
+my $EUNKN = 3;
+
+# /usr/sbin/ipsec is a wrapper; save an exec by calling the
+# equivalent non-blocking internal command directly.
+my @ip_statusall = `/usr/lib/ipsec/stroke statusall-nb 2>&1`;
+if ($? != 0) {
+    print ("Strongswan $UNKN - ipsec statusall: @ip_statusall");
+    exit($EUNKN);
+}
+
+my @ip_xfrm_state = `/bin/ip xfrm state 2>&1`;
+if ($? != 0) {
+    print ("Strongswan $UNKN - ip xfrm state: @ip_xfrm_state");
+    exit($EUNKN);
+}
+
+# Parse 'ipsec statusall' output into a hash of connections
+my %conns;
+foreach my $line (@ip_statusall) {
+    # match Connections as well as Security Assocations, in order.
+    # when parsing Connections, a key is created for each one
+    # then when parsing Security Associations, the value is updated for ESTABLISHED IKE parent SAs
+    if ($line =~ m/\.\.\./) {
+        # Connection:
+        # berkelium.eqiad.wmnet-curium.eqiad.wmnet_by_ipv4:  10.64.0.169...10.64.0.170  IKEv1/2
+        # Security Assocation:
+        # berkelium.eqiad.wmnet-curium.eqiad.wmnet_by_ipv4[17]: ESTABLISHED 2 minutes ago, 10.64.0.169[CN=berkelium.eqiad.wmnet]...10.64.0.170[CN=curium.eqiad.wmnet]
+        (my $key, my $value) = split(/: /, $line, 2);
+        $key =~ s/\[\d+\]$//;
+        $conns{$key}{"IKE"}=$value;
+    }
+    # finally, key values are updated again for INSTALLED ESP TRANSPORTs
+    if ($line =~ m/INSTALLED/) {
+        # berkelium.eqiad.wmnet-curium.eqiad.wmnet_by_ipv6{23}:  INSTALLED, TRANSPORT, reqid 2, ESP SPIs: c471b24b_i c65454f9_o
+        (my $key, my $value, my $SPIs) = split(/: /, $line, 3);
+        $key =~ s/\{\d+\}$//;
+        $conns{$key}{"IKE"}=$value;
+        (my $in, my $out) = split(/ /, $SPIs, 2);
+        $in =~ s/_i//;
+        $out =~ s/_o\n//;
+        $conns{$key}{"SPI-in"} = $in;
+        $conns{$key}{"SPI-out"} = $out;
+    }
+}
+
+# Next, parse 'ip xfrm state' into a hash of SPIs
+my %state;
+foreach my $line (@ip_xfrm_state) {
+    if ($line =~ m/spi/) {
+        # proto esp spi 0xc65454f9 reqid 2 mode transport
+        my $spi = $line;
+        $spi =~ s/^.*spi 0x([0-9a-f]{8}).*\n/$1/;
+        $state{$spi} = $line;
+    }
+}
+
+# Finally, check the state of each connection in %conns and look for matching SPIs in %state
+my $installed=0;
+my $established=0;
+my $connecting=0;
+my $neither=0;
+my $kernelfail=0;
+foreach my $key (keys %conns) {
+    if ($conns{$key}{"IKE"} =~ m/INSTALLED/) {
+        if ($state{$conns{$key}{"SPI-in"}} && $state{$conns{$key}{"SPI-out"}}) {
+            # expected ESP transport SPIs described in 'ipsec statusall' found in 'ip xfrm state'
+            $installed++;
+        } else {
+            # Charon thinks connection is installed but the kernel doesn't agree
+            # this might happen if kernel modules fail to load
+            $kernelfail++;
+        }
+    } elsif ($conns{$key}{"IKE"} =~ m/ESTABLISHED/) {
+        # IKE parent SA established but there's no corresponding child SA for ESP transport installed
+        $established++;
+    } elsif ($conns{$key}{"IKE"} =~ m/CONNECTING/) {
+        # transitional state while IKE SA connection is attempted
+        # this state may be perpetual for failing connections if keyingtries=%forever
+        $connecting++;
+    } else {
+        # connection is defined but not established or connecting (failed)
+        $neither++;
+    }
+}
+
+# Return results
+my $problemcount = $established + $connecting + $neither + $kernelfail;
+if ($problemcount) {
+    my @problems;
+    if ($established) {
+        push @problems, "session-without-transport: $established";
+    }
+    if ($connecting) {
+        push @problems, "attempting-to-connect: $connecting";
+    }
+    if ($neither) {
+        push @problems, "not-connected: $neither";
+    }
+    if ($kernelfail) {
+        push @problems, "kernel-state-missing: $kernelfail";
+    }
+    print ("Strongswan $CRIT - $installed ESP transports installed, $problemcount problems (@problems)\n");
+    exit($ECRIT);
+} elsif ($installed == 0) {
+    print ("Strongswan $CRIT - No connections configured: check ipsec.conf\n");
+    exit($ECRIT);
+} else {
+    print ("Strongswan $OK - Security Associations: $installed ESP transports installed\n");
+    exit($EOK);
+}
