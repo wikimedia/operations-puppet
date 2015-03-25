@@ -122,6 +122,9 @@ class role::deployment::config {
             'gitfat_enabled' => true,
             'upstream'       => 'https://gerrit.wikimedia.org/r/operations/software/dropwizard-metrics',
         },
+        'sentry/sentry' => {
+            'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/sentry',
+        },
     }
 }
 
