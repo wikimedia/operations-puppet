@@ -91,24 +91,24 @@ class role::mediawiki::webserver($pool) {
         ensure => present,
         rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
     }
-    if $::site == 'eqiad' {
-        monitoring::service { 'appserver http':
-            description   => 'Apache HTTP',
-            check_command => 'check_http_wikipedia',
+
+    monitoring::service { 'appserver http':
+        description   => 'Apache HTTP',
+        check_command => 'check_http_wikipedia',
+    }
+
+    if os_version('ubuntu >= trusty') {
+        monitoring::service { 'appserver_http_hhvm':
+            description   => 'HHVM rendering',
+            check_command => 'check_http_wikipedia_main',
         }
 
-        if os_version('ubuntu >= trusty') {
-            monitoring::service { 'appserver_http_hhvm':
-                description   => 'HHVM rendering',
-                check_command => 'check_http_wikipedia_main',
-            }
-
-            nrpe::monitor_service { 'hhvm':
-                description   => 'HHVM processes',
-                nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
-            }
+        nrpe::monitor_service { 'hhvm':
+            description   => 'HHVM processes',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
         }
     }
+
 }
 
 class role::mediawiki::appserver {
