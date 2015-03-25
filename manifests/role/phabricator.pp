@@ -205,3 +205,11 @@ class role::phabricator::labs {
         require    => Package['mysql-server'],
     }
 }
+
+# phabricator instance on wmflabs with security extension (primarily phab-02)
+class role::phabricator::labs::security inherits role::phabricator::labs {
+    class { '::phabricator':
+        libraries        => ['/srv/phab/libext/Sprint/src',
+                            '/srv/phab/libext/security/src'],
+    },
+}
