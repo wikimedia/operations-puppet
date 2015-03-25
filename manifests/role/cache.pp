@@ -812,6 +812,15 @@ class role::cache {
                     'vm.dirty_expire_centisecs' => 500, # default 3000
                 },
             }
+
+            # Disable TCP SSR (slow-start restart). SSR resets the congestion
+            # window of connections that have gone idle, which means it has a
+            # tendency to reset the congestion window of HTTP keepalive and SPDY
+            # connections, which are characterized by short bursts of activity
+            # separated by long idle times.
+            sysctl::parameters { 'disable_ssr':
+                values => { 'net.ipv4.tcp_slow_start_after_idle' => 0 },
+            }
         }
 
         # mma: mmap addrseses for fixed persistent storage on x86_64 Linux:
