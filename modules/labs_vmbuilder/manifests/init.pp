@@ -1,6 +1,6 @@
 class labs_vmbuilder($vmbuilder_version) {
     package { 'python-vm-builder':
-        ensure => 'present',
+        ensure => present,
     }
 
     $vmbuilder_filepath = '/etc/vmbuilder/files'
@@ -30,7 +30,7 @@ class labs_vmbuilder($vmbuilder_version) {
     }
 
     file { $vmbuilder_filepath:
-        ensure => 'directory',
+        ensure => directory,
         mode   => '0555',
     }
 
