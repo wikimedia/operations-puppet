@@ -68,6 +68,9 @@ ChallengeResponseAuthentication no
 # Globally deny logon via password, only allow SSH-key login.  
 PasswordAuthentication no  
 
+# Don't allow people to forward their agents either.
+AllowAgentForwarding no
+
 # Kerberos options
 #KerberosAuthentication no
 #KerberosGetAFSToken no
