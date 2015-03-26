@@ -3,7 +3,7 @@ cluster: cache_mobile
 hosts_codfw: []
 hosts_eqiad:
   - 'cp1046.eqiad.wmnet'
-  # - 'cp1047.eqiad.wmnet' # T88045
+  - 'cp1047.eqiad.wmnet'
   - 'cp1059.eqiad.wmnet'
   - 'cp1060.eqiad.wmnet'
 hosts_esams:
