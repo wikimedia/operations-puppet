@@ -121,7 +121,7 @@ auth_uri = <%= designateconfig["auth_uri"] %>
 # List of notification handlers to enable, configuration of these needs to
 # correspond to a [handler:my_driver] section below or else in the config
 # Can be one or more of : nova_fixed, neutron_floatingip
-enabled_notification_handlers = nova_fixed
+enabled_notification_handlers = nova_fixed_multi
 
 #-----------------------
 # mDNS Service
@@ -198,15 +198,18 @@ retry_interval = 10
 ## Handler Configuration
 ########################
 #-----------------------
-# Nova Fixed Handler
+# Nova Fixed Multi Handler
 #-----------------------
-[handler:nova_fixed]
+[handler:nova_fixed_multi]
 # Domain ID of domain to create records in. For a pre-existing domain, in this case eqiad.wmflabs
 domain_id = '159d5d42-6848-4661-8524-8e571c4cfe31'
 notification_topics = monitor
 notification_topics = notifications
 control_exchange = nova
 format = '%(hostname)s.%(tenant_id)s.%(domain)s'
+format = '%(hostname)s.%(domain)s'
+reverse_domain_id = '3541a810-b68d-490c-a00e-6548647f13a9'
+reverse_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
 
 #------------------------
 # Neutron Floating Handler
