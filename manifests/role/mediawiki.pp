@@ -49,12 +49,13 @@ class role::mediawiki::common {
         pools     => $nutcracker_pools,
     }
 
-    monitoring::service { 'mediawiki-installation DSH group':
-        description           => 'mediawiki-installation DSH group',
-        check_command         => 'check_dsh_groups!mediawiki-installation',
-        normal_check_interval => 60,
+    if $::site == 'eqiad' {
+        monitoring::service { 'mediawiki-installation DSH group':
+            description           => 'mediawiki-installation DSH group',
+            check_command         => 'check_dsh_groups!mediawiki-installation',
+            normal_check_interval => 60,
+        }
     }
-
     $scap_proxies = hiera('dsh::config::scap_proxies',[])
     if member($scap_proxies, $::fqdn) {
         include scap::proxy
