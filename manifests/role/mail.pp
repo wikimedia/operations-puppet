@@ -170,4 +170,10 @@ class role::mail::lists {
         nrpe_command  => '/usr/local/lib/nagios/plugins/check_mailman_queue 42',
     }
 
+    # on list servers we monitor I/O with iostat, which comes from sysstat
+    # the icinga plugin needs bc to compare floating point numbers
+    package { [ 'sysstat', 'bc' ]:
+        ensure => present,
+    }
+
 }
