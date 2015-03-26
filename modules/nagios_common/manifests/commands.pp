@@ -93,6 +93,16 @@ class nagios_common::commands(
         group      => $group,
     }
 
+    # Check that the icinga config works
+    nagios_common::check_command { 'check_icinga_config':
+        ensure     => present,
+        config_content    => template('nagios_common/check_icinga_config.cfg.erb'),
+        config_dir => $config_dir,
+        owner      => $owner,
+        group      => $group,
+        require    => File["${config_dir}/commands"],
+    }
+
     file { "${config_dir}/checkcommands.cfg":
         source => 'puppet:///modules/nagios_common/checkcommands.cfg',
         owner  => $owner,

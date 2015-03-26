@@ -1,0 +1,11 @@
+#!/bin/bash
+set -u
+CONFIG_FILE=${1}
+/usr/sbin/icinga -v ${CONFIG_FILE} > /dev/null 2>&1
+RETVAL=$?
+if [ ${RETVAL} -eq 0 ]; then
+    echo "Icinga configuration is correct"
+    exit 0
+fi;
+echo "Icinga configuration contains errors, please check!"
+exit 2
