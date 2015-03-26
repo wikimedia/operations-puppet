@@ -176,4 +176,12 @@ class role::mail::lists {
         ensure => present,
     }
 
+    file { '/usr/local/lib/nagios/plugins/check_iostat':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///files/icinga/check_iostat',
+    }
+
 }
