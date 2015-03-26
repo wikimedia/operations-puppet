@@ -3,22 +3,33 @@ class strongswan (
     $hosts           = [],
 )
 {
-    package { [ 'strongswan', 'ipsec-tools' ]:
+    package { 'strongswan': ensure => present }
+    package { 'ipsec-tools':
         ensure => present,
+        require => Package['strongswan'];
     }
 
-    # On Jessie we need an extra package which is only "recommended"
-    # rather than being a strict dependency.
-    # If you don't install this, on startup strongswan will say:
-    #   loading certificate from 'i-00000894.eqiad.wmflabs.pem' failed
-    # and 'pki --verify --in /etc/ipsec.d/certs/i-00000894.eqiad.wmflabs.pem \
-    # --ca /etc/ipsec.d/cacerts/ca.pem' will say:
-    #  building CRED_CERTIFICATE - X509 failed, tried 3 builders
-    #  parsing certificate failed
-    if $operatingsystem == "Debian" and $operatingsystemmajrelease >= 8 {
+    if os_version('debian >= jessie') {
+        # On Jessie we need an extra package which is only "recommended"
+        # rather than being a strict dependency.
+        # If you don't install this, on startup strongswan will say:
+        #   loading certificate from 'i-00000894.eqiad.wmflabs.pem' failed
+        # and 'pki --verify --in /etc/ipsec.d/certs/i-00000894.eqiad.wmflabs.pem \
+        # --ca /etc/ipsec.d/cacerts/ca.pem' will say:
+        #  building CRED_CERTIFICATE - X509 failed, tried 3 builders
+        #  parsing certificate failed
         package { 'libstrongswan-standard-plugins':
             ensure => present,
-            before => Service['strongswan']
+            before => Service['strongswan'],
+            require => Package['strongswan'],
+        }
+
+        # Temporary hack to work around ugly strongswan systemd issue,
+        #   see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=781209
+        exec { 'strongswan-disable-sysvinit':
+            cmd => '/usr/sbin/dpkg-divert --divert /etc/init.d/ipsec-disabled /etc/init.d/ipsec',
+            unless => '/usr/bin/test -f /etc/init.d/ipsec.disabled',
+            before => Package['strongswan'],
         }
     }
 
