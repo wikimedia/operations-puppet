@@ -173,16 +173,6 @@ class ganglia::aggregator {
     }
 }
 
-# == Class ganglia::logtailer
-#
-# The class pulls in everything necessary to get a ganglia-logtailer instance
-# on a machine.
-class ganglia::logtailer {
-    package { 'ganglia-logtailer':
-        ensure => latest,
-    }
-}
-
 
 # == Define ganglia::plugin::python
 #
