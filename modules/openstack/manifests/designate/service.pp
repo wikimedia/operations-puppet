@@ -2,7 +2,15 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
 
     include openstack::repo
 
-    package { ['python-designateclient', 'designate-sink', 'designate-common', 'designate', 'designate-api', 'designate-doc', 'designate-agent', 'designate-central' ]:
+    package { ['python-designateclient',
+                'designate-sink',
+                'designate-common',
+                'designate',
+                'designate-api',
+                'designate-doc',
+                'designate-agent',
+                'designate-central',
+                'python-nova-fixed-multi' ]:
         ensure  => present,
         require => Class['openstack::repo'];
     }
