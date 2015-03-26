@@ -188,8 +188,8 @@ translation.override:
 
 # We don't host local docs or use the wiki :)
 phabricator.uninstalled-applications:
-  PhabricatorApplicationPhriction: true
-  PhabricatorApplicationDiviner: true
+  PhabricatorPhrictionApplication: true
+  PhabricatorDivinerApplication: true
 
 phd.pid-directory: "/var/run/phd/pid"
 phd.log-directory: "/var/log/phd"
