@@ -18,7 +18,6 @@ class ocg (
     $redis_password = '',
     $statsd_host = 'localhost',
     $statsd_port = 8125,
-    $statsd_is_txstatsd = 0,
     $graylog_host = 'localhost',
     $graylog_port = 12201,
     $temp_dir = '/srv/deployment/ocg/tmp',

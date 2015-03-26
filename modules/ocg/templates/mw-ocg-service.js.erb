@@ -21,7 +21,6 @@ module.exports = function (config) {
 
 	config.reporting.statsd_server = "<%= @statsd_host %>";
 	config.reporting.statsd_port = <%= @statsd_port %>;
-	config.reporting.is_txstatsd = <%= @statsd_is_txstatsd %>;
 
 	// File paths; there is a short term temp directory, a long term
 	// storage directory, and a medium term error directory

@@ -3,7 +3,6 @@
 "ocg::redis_host": deployment-redis01.eqiad.wmflabs
 "ocg::statsd_host": labmon1001.eqiad.wmnet
 "ocg::graylog_host": deployment-logstash1.eqiad.wmflabs
-"ocg::statsd_is_txstatsd": 1
 "ocg::redis_password": '%{::passwords::redis::main_password}'
 has_ganglia: false
 has_lvs: false
