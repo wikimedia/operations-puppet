@@ -202,13 +202,13 @@ retry_interval = 10
 #-----------------------
 [handler:nova_fixed_multi]
 # Domain ID of domain to create records in. For a pre-existing domain, in this case eqiad.wmflabs
-domain_id = '159d5d42-6848-4661-8524-8e571c4cfe31'
+domain_id = '114f1333-c2c1-44d3-beb4-ebed1a91742b'
 notification_topics = monitor
 notification_topics = notifications
 control_exchange = nova
 format = '%(hostname)s.%(tenant_id)s.%(domain)s'
 format = '%(hostname)s.%(domain)s'
-reverse_domain_id = '3541a810-b68d-490c-a00e-6548647f13a9'
+reverse_domain_id = '8d114f3c-815b-466c-bdd4-9b91f704ea60'
 reverse_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
 
 #------------------------
