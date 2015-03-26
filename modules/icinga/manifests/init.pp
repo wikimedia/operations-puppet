@@ -155,4 +155,10 @@ class icinga {
         group  => 'www-data',
         mode   => '0664',
     }
+
+    montoring::service { 'check_icinga_config':
+        description           => 'Check correctness of the icinga configuration',
+        check_command         => 'check_icinga_config',
+        normal_check_interval => 10,
+    }
 }
