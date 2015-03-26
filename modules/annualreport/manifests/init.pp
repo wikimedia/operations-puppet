@@ -3,6 +3,7 @@
 class annualreport {
 
     include ::apache
+    include ::apache::mod::headers
 
     file { '/srv/org/wikimedia/annualreport':
         ensure => directory,
