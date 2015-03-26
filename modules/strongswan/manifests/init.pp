@@ -27,7 +27,7 @@ class strongswan (
         # Temporary hack to work around ugly strongswan systemd issue,
         #   see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=781209
         exec { 'strongswan-disable-sysvinit':
-            cmd => '/usr/sbin/dpkg-divert --divert /etc/init.d/ipsec-disabled /etc/init.d/ipsec',
+            command => '/usr/sbin/dpkg-divert --divert /etc/init.d/ipsec-disabled /etc/init.d/ipsec',
             unless => '/usr/bin/test -f /etc/init.d/ipsec.disabled',
             before => Package['strongswan'],
         }
