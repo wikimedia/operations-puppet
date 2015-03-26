@@ -55,6 +55,8 @@ class iegreview(
     include ::apache
     include ::apache::mod::php5
     include ::apache::mod::rewrite
+    include ::apache::mod::headers
+
     include passwords::mysql::iegreview
 
     system::role { 'iegreview':
