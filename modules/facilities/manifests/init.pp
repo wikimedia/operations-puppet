@@ -89,5 +89,30 @@ class facilities {
     facilities::monitor_pdu_3phase { 'ps1-c8-eqiad':
         ip => '10.65.0.55',
     }
+    # D
+    facilities::monitor_pdu_3phase { 'ps1-d1-eqiad':
+        ip => '10.65.0.56',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-d2-eqiad':
+        ip => '10.65.0.57',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-d3-eqiad':
+        ip => '10.65.0.58',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-d4-eqiad':
+        ip => '10.65.0.59',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-d5-eqiad':
+        ip => '10.65.0.60',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-d6-eqiad':
+        ip => '10.65.0.61',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-d7-eqiad':
+        ip => '10.65.0.62',
+    }
+    facilities::monitor_pdu_3phase { 'ps1-d8-eqiad':
+        ip => '10.65.0.63',
+    }
 }
 
