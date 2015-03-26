@@ -12,7 +12,7 @@ graphite:
       patterns:
         - "^org.apache.cassandra.metrics.Cache.+"
         - "^org.apache.cassandra.metrics.ClientRequest.+"
-        - "^org.apache.cassandra.metrics.ColumnFamily.+"
+        - "^org.apache.cassandra.metrics.ColumnFamily.(?!system).+"
         - "^org.apache.cassandra.metrics.Connection.+"
         - "^org.apache.cassandra.metrics.CQL.+"
         - "^org.apache.cassandra.metrics.DroppedMessage.+"
