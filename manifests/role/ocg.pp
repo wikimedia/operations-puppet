@@ -70,7 +70,6 @@ class role::ocg::test {
         redis_password     => $passwords::redis::ocg_test_password,
         service_port       => $service_port,
         statsd_host        => 'statsd.eqiad.wmnet',
-        statsd_is_txstatsd => 1
     }
 
     ferm::service { 'ocg-http':

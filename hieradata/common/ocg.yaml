@@ -2,4 +2,3 @@ temp_dir: "/mnt/tmpfs"
 redis_host: "rdb1002.eqiad.wmnet"
 statsd_host: "statsd.eqiad.wmnet"
 graylog_host: "logstash1002.eqiad.wmnet"
-statsd_is_txstatsd: 1
