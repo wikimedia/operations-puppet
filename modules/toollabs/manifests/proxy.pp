@@ -26,11 +26,17 @@ class toollabs::proxy inherits toollabs {
     }
 
     file { '/etc/init/proxylistener.conf':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/toollabs/proxylistener.conf',
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/toollabs/proxylistener.conf',
+        require => File['/usr/local/sbin/proxylistener'],
+    }
+
+    service { 'proxylistener':
+        ensure  => running,
+        require => File['/etc/init/proxylistener.conf'],
     }
 
     # Deploy root web.
