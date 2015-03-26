@@ -2052,14 +2052,55 @@ host francium {
 	fixed-address francium.eqiad.wmnet;
 }
 
+host gadolinium {
+	hardware ethernet 90:B1:1C:17:1B:8A;
+	fixed-address gadolinium.wikimedia.org;
+}
+
 host gallium {
 	hardware ethernet 78:2b:cb:09:0e:5b;
 	fixed-address gallium.wikimedia.org;
 }
+host ganeti2001 {
+	hardware ethernet 44:A8:42:12:C8:FE;
+	fixed-address ganeti2001.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
 
-host gadolinium {
-	hardware ethernet 90:B1:1C:17:1B:8A;
-	fixed-address gadolinium.wikimedia.org;
+host ganeti2002 {
+	hardware ethernet 44:A8:42:12:CE:75;
+	fixed-address ganeti2002.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host ganeti2003 {
+	hardware ethernet 44:A8:42:12:DC:5A;
+	fixed-address ganeti2003.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host ganeti2004 {
+	hardware ethernet 44:A8:42:12:CD:2B;
+	fixed-address ganeti2004.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host ganeti2005 {
+	hardware ethernet 44:A8:42:12:CF:C5;
+	fixed-address ganeti2005.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host ganeti2006 {
+	hardware ethernet 44:A8:42:12:CC:E3;
+	fixed-address ganeti2006.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host gold {
