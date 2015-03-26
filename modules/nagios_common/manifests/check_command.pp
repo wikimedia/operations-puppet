@@ -82,7 +82,7 @@ define nagios_common::check_command(
 #   Path to source for the plugin configuration.
 #   Defaults to puppet:///modules/nagios_common/check_commands/$title.cfg
 #
-# [*source*]
+# [*content*]
 #   String content to use for the plugin configuration.
 #   Should not be used with the source parameter.
 #
