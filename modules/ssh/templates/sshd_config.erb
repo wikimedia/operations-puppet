@@ -92,6 +92,11 @@ ChallengeResponseAuthentication no
 # Globally deny logon via password, only allow SSH-key login.  
 PasswordAuthentication no  
 
+<% if @disable_agent_forwarding -%>
+# Don't allow people to forward their agents either.
+AllowAgentForwarding no
+<% end -%>
+
 # Kerberos options
 #KerberosAuthentication no
 #KerberosGetAFSToken no

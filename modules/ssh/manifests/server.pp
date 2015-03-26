@@ -6,6 +6,7 @@ class ssh::server (
     $disable_nist_kex = true, # Allow labs projects to temporarily opt out of nist kex disabling
     $explicit_macs = true, # Allow labs projects to temporarily opt out of more secure MACs
     $enable_hba = false,
+    $disable_agent_forwarding = true,
 ) {
     package { 'openssh-server':
         ensure => latest;

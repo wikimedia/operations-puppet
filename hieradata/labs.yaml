@@ -50,3 +50,4 @@ nfs_mounts:
   home: true
   scratch: true
   dumps: true
+ssh::server::disable_agent_forwarding: false
