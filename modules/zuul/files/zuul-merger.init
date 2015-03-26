@@ -23,7 +23,8 @@ USER=zuul
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
 
-START_DAEMON=1
+START_DAEMON=0
+DAEMON_ARGS=''
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
@@ -35,10 +36,6 @@ START_DAEMON=1
 # Read configuration variable file if it is present
 if [ -r /etc/default/$NAME ] ; then
 	. /etc/default/$NAME
-else
-	log_daemon_msg "$DESC: /etc/default/$NAME not found: exiting"
-	log_end_msg 1
-	exit 0
 fi
 
 if ! [ "${START_DAEMON}" = "1" ] ; then
