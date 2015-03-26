@@ -7,9 +7,18 @@ class varnish::common::vcl {
         mode    => '0444',
         content => template('varnish/geoip.inc.vcl.erb'),
     }
+
+    file { '/etc/varnish/provenance.inc.vcl':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('varnish/provenance.inc.vcl.erb'),
+    }
+
     file { '/etc/varnish/device-detection.inc.vcl':
         ensure  => absent,
     }
+
     file { '/etc/varnish/errorpage.inc.vcl':
         owner   => 'root',
         group   => 'root',
