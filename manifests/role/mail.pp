@@ -184,4 +184,9 @@ class role::mail::lists {
         source => 'puppet:///files/icinga/check_iostat',
     }
 
+    nrpe::monitor_service { 'mailman_iostat':
+        description   => 'mailman I/O stats',
+        nrpe_command  => '/usr/local/lib/nagios/plugins/check_iostat -i -c 100,100,100,2000,2000',
+    }
+
 }
