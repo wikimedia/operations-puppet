@@ -1,6 +1,6 @@
 # = class: scap::master
 #
-# Sets up a scap master (currently tin). 
+# Sets up a scap master (currently tin)
 class scap::master(
     $common_path        = '/srv/mediawiki',
     $common_source_path = '/srv/mediawiki-staging',
@@ -8,6 +8,7 @@ class scap::master(
     $statsd_host        = 'statsd.eqiad.wmnet',
     $statsd_port        = 8125,
     $deployment_group   = 'wikidev',
+    $staging_group      = 'mwdeploy',
 ) {
     include scap::scripts
     include rsync::server
@@ -17,7 +18,7 @@ class scap::master(
     git::clone { 'operations/mediawiki-config':
         directory => $common_source_path,
         ensure    => present,
-        group     => $deployment_group,
+        group     => $staging_group,
         shared    => true,
     }
 

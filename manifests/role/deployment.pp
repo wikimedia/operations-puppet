@@ -156,10 +156,7 @@ class role::deployment::server(
     $deployable_networks = $::network::constants::deployable_networks
 
     include mediawiki
-
-    class { 'scap::master':
-        deployment_group => $deployment_group,
-    }
+    include scap::master
 
     if $::realm != 'labs' {
         include wikitech::wiki::passwords
