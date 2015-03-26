@@ -38,16 +38,16 @@
 
 class puppetception(
     $git_url,
-    $git_branch='master',
+    $git_branch    = 'master',
     $puppet_subdir = '',
-    $owner='root',
-    $group='root',
+    $owner         = 'root',
+    $group         = 'root',
 ) {
     include ::role::labs::lvm::srv
 
-    $base_dir = '/srv/puppetception'
+    $base_dir    = '/srv/puppetception'
     $install_dir = "${base_dir}/git"
-    $puppet_dir = "${install_dir}${puppet_subdir}"
+    $puppet_dir  = "${install_dir}${puppet_subdir}"
     file { [$base_dir,
             $install_dir,
     ]:
