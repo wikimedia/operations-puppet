@@ -30,33 +30,18 @@ class beta::autoupdater {
         content => template('beta/wmf-beta-mwconfig-update.erb'),
     }
 
-    file { $stage_dir:
-        ensure => directory,
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
-        mode   => '0775',
-    }
-
-    git::clone { 'operations/mediawiki-config':
-        directory => $stage_dir,
-        branch    => 'master',
-        owner     => 'mwdeploy',
-        group     => 'mwdeploy',
-        require   => File[$stage_dir],
-    }
-
     git::clone { 'mediawiki/core':
         directory => "${stage_dir}/php-master",
         branch    => 'master',
-        owner     => 'mwdeploy',
-        group     => 'mwdeploy',
+        owner     => 'jenkins-deploy',
+        group     => 'wikidev',
         require   => Git::Clone['operations/mediawiki-config'],
     }
 
     file { "${stage_dir}/php-master/LocalSettings.php":
         ensure  => present,
-        owner   => 'mwdeploy',
-        group   => 'mwdeploy',
+        owner   => 'jenkins-deploy',
+        group   => 'wikidev',
         mode    => '0444',
         source  => 'puppet:///modules/beta/LocalSettings.php',
         require => Git::Clone['mediawiki/core'],
@@ -65,7 +50,7 @@ class beta::autoupdater {
     file { "${stage_dir}/php-master/cache/l10n":
         ensure  => directory,
         owner   => 'l10nupdate',
-        group   => 'l10nupdate',
+        group   => 'wikidev',
         mode    => '0755',
         require => Git::Clone['mediawiki/core'],
     }
@@ -81,8 +66,8 @@ class beta::autoupdater {
     git::clone { 'mediawiki/extensions':
         directory          => "${stage_dir}/php-master/extensions",
         branch             => 'master',
-        owner              => 'mwdeploy',
-        group              => 'mwdeploy',
+        owner              => 'jenkins-deploy',
+        group              => 'wikidev',
         recurse_submodules => true,
         timeout            => 1800,
         require            => Git::Clone['mediawiki/core'],
@@ -99,16 +84,16 @@ class beta::autoupdater {
 
     exec { 'beta_mediawiki_skins_git_init':
         command => "/usr/bin/git init ${mw_skins_dest}",
-        user    => 'mwdeploy',
-        group   => 'mwdeploy',
+        user    => 'jenkins-deploy',
+        group   => 'wikidev',
         creates => "${mw_skins_dest}/.git",
         require => Git::Clone['mediawiki/core'],
         notify  => Exec['beta_mediawiki_skins_git_remote_add'],
     }
     exec { 'beta_mediawiki_skins_git_remote_add':
         command     => "/usr/bin/git remote add origin ${mw_skins_git_url}",
-        user        => 'mwdeploy',
-        group       => 'mwdeploy',
+        user        => 'jenkins-deploy',
+        group       => 'wikidev',
         cwd         => $mw_skins_dest,
         refreshonly => true,
     }
@@ -116,8 +101,8 @@ class beta::autoupdater {
     git::clone { 'mediawiki/skins':
         directory          => $mw_skins_dest,
         branch             => 'master',
-        owner              => 'mwdeploy',
-        group              => 'mwdeploy',
+        owner              => 'jenkins-deploy',
+        group              => 'wikidev',
         recurse_submodules => true,
         # Needs to be initialized manually since skins dir exists
         require            => Exec['beta_mediawiki_skins_git_init'],
@@ -126,8 +111,8 @@ class beta::autoupdater {
     git::clone { 'mediawiki/vendor':
         directory => "${stage_dir}/php-master/vendor",
         branch    => 'master',
-        owner     => 'mwdeploy',
-        group     => 'mwdeploy',
+        owner     => 'jenkins-deploy',
+        group     => 'wikidev',
         require   => Git::Clone['mediawiki/core'],
     }
 }
