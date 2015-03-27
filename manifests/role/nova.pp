@@ -215,8 +215,8 @@ class role::nova::manager {
     }
 
     class { 'openstack::openstack-manager':
-        novaconfig        => $novaconfig,
-        certificate       => $certificate,
+        novaconfig  => $novaconfig,
+        certificate => $certificate,
     }
 
     include ::nutcracker::monitoring

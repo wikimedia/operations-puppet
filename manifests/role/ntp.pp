@@ -95,9 +95,9 @@ class role::ntp {
         system::role { 'ntp': description => 'NTP server' }
 
         ntp::daemon { 'server':
-            servers => $peer_upstreams[$::fqdn],
-            peers => delete($wmf_all_peers, $::fqdn),
-            time_acl => $our_networks_acl,
+            servers   => $peer_upstreams[$::fqdn],
+            peers     => delete($wmf_all_peers, $::fqdn),
+            time_acl  => $our_networks_acl,
             query_acl => $neon_acl,
         }
 
@@ -123,8 +123,8 @@ class role::ntp {
         }
 
         ntp::daemon { 'client':
-            servers => $client_upstreams[$::site],
-            query_acl => $neon_acl,
+            servers     => $client_upstreams[$::site],
+            query_acl   => $neon_acl,
             servers_opt => $s_opt,
         }
 

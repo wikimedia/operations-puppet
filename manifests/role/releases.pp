@@ -2,13 +2,13 @@ class role::releases {
     system::role { 'releases': description => 'Releases webserver' }
 
     monitoring::service { 'http':
-        description     => 'HTTP',
-        check_command   => 'check_http',
+        description   => 'HTTP',
+        check_command => 'check_http',
     }
 
     class { '::releases':
-        sitename     => 'releases.wikimedia.org',
-        docroot      => 'releases',
+        sitename => 'releases.wikimedia.org',
+        docroot  => 'releases',
     }
 
     class { '::releases::reprepro': }
