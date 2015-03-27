@@ -559,7 +559,14 @@ otrs:
 smart_route:
 	driver = manualroute
 	transport = remote_smtp
+        <% if @enable_otrs_server == true then -%>
+        # OTRS receives emails for project domains
+        # (such as info-en @ wikipedia.org), defined dynamically in its database.
 	route_list = *  <%= @smart_route_list.join(":") %>
+        <% else -%>
+        # Local mail is undeliverable and remote mail is forwarded
+        route_list = !+local_domains  <%= @smart_route_list.join(":") %>
+        <% end -%>
 <% end %>
 
 ##############
