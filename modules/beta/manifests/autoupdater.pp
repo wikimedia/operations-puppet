@@ -7,8 +7,6 @@ class beta::autoupdater {
     include ::beta::config
     require scap::scripts
 
-    $stage_dir = $::beta::config::scap_stage_dir
-
     # Parsoid JavaScript dependencies are updated on beta via npm
     package { 'npm':
         ensure => 'present',
@@ -28,21 +26,6 @@ class beta::autoupdater {
         mode    => '0555',
         require => Package['git-core'],
         content => template('beta/wmf-beta-mwconfig-update.erb'),
-    }
-
-    file { $stage_dir:
-        ensure => directory,
-        owner  => 'mwdeploy',
-        group  => 'mwdeploy',
-        mode   => '0775',
-    }
-
-    git::clone { 'operations/mediawiki-config':
-        directory => $stage_dir,
-        branch    => 'master',
-        owner     => 'mwdeploy',
-        group     => 'mwdeploy',
-        require   => File[$stage_dir],
     }
 
     git::clone { 'mediawiki/core':
