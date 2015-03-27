@@ -5,14 +5,8 @@
 #
 set -e
 
-# User that script should be run as
-RUN_AS=mwdeploy
-
 # Directory containing checkout to update
 TARGET_DIR="<%= @stage_dir %>"
-
-# Ensure that script is run as the correct user
-[[ $(whoami) = $RUN_AS ]] || exec sudo -H -E -u $RUN_AS -- "$0" "$@"
 
 set -x
 pwd
