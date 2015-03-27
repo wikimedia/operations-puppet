@@ -15,4 +15,10 @@ class role::cassandra {
         description  => 'Cassandra database',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u cassandra -C java -a CassandraDaemon',
     }
+
+    # CQL query interface monitoring (T93886)
+    monitoring::service { 'cassandra-cql':
+        description   => 'Cassanda CQL query interface',
+        check_command => 'check_tcp!9042',
+    }
 }
