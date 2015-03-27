@@ -49,8 +49,8 @@ rpc_backend = rabbit
 rabbit_host=<%= novaconfig["rabbit_host"] %>
 rabbit_port = 5672
 rabbit_use_ssl = false
-rabbit_userid = guest
-rabbit_password = guest
+rabbit_userid = <%= novaconfig["rabbit_user"] %>
+rabbit_password = <%= novaconfig["rabbit_pass"] %>
 
 <% if novaconfig["use_neutron"] -%>
 # network/neutron settings

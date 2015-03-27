@@ -35,8 +35,8 @@ root_helper = sudo designate-rootwrap /etc/designate/rootwrap.conf
 #network_api = neutron
 
 # RabbitMQ Config
-rabbit_userid = guest
-rabbit_password = guest
+rabbit_userid = <%= designateconfig["rabbit_user"] %>
+rabbit_password = <%= designateconfig["rabbit_pass"] %>
 rabbit_use_ssl = False
 rabbit_hosts = <%= designateconfig["rabbit_host"] %>
 rabbit_port = 5672

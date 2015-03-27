@@ -16,12 +16,15 @@ class role::nova::config::common {
     require openstack
     include passwords::openstack::nova
     include passwords::openstack::neutron
+    include passwords::labs::rabbitmq
 
     $commonnovaconfig = {
         db_name                    => 'nova',
         db_user                    => 'nova',
         db_pass                    => $passwords::openstack::nova::nova_db_pass,
         metadata_pass              => $passwords::openstack::nova::nova_metadata_pass,
+        rabbit_user                => $passwords::labs::rabbit_userid,
+        rabbit_pass                => $passwords::labs::rabbit_password,
         neutron_ldap_user_pass     => $passwords::openstack::neutron::neutron_ldap_user_pass,
         my_ip                      => $::ipaddress_eth0,
         use_neutron                => $use_neutron,

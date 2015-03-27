@@ -3,9 +3,11 @@ class role::neutron::config {
     include openstack
 
     $commonneutronconfig = {
-        db_name => 'neutron',
-        db_user => 'neutron',
-        db_pass => $passwords::openstack::neutron::neutron_db_pass,
+        db_name     => 'neutron',
+        db_user     => 'neutron',
+        db_pass     => $passwords::openstack::neutron::neutron_db_pass,
+        rabbit_user => $passwords::labs::rabbit_userid,
+        rabbit_pass => $passwords::labs::rabbit_password,
     }
 }
 
