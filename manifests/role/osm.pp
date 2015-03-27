@@ -7,10 +7,10 @@ class role::osm::common {
 
     file { '/etc/postgresql/9.1/main/tuning.conf':
         ensure => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///files/osm/tuning.conf',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///files/osm/tuning.conf',
     }
 
     sysctl::parameters { 'postgres_shmem':
@@ -52,8 +52,8 @@ class role::osm::master {
     postgresql::spatialdb { 'gis': }
     # Import planet.osm
     osm::planet_import { 'gis':
-        input_pbf_file   => '/srv/labsdb/planet-latest-osm.pbf',
-        require          => Postgresql::Spatialdb['gis']
+        input_pbf_file => '/srv/labsdb/planet-latest-osm.pbf',
+        require        => Postgresql::Spatialdb['gis']
     }
     osm::planet_sync { 'gis':
         period => 'day',

@@ -9,21 +9,21 @@ class role::requesttracker {
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
 
     class { '::requesttracker':
-        apache_site   => 'rt.wikimedia.org',
-        dbhost        => 'm1-master.eqiad.wmnet',
-        dbport        => '',
-        dbuser        => $passwords::misc::rt::rt_mysql_user,
-        dbpass        => $passwords::misc::rt::rt_mysql_pass,
+        apache_site => 'rt.wikimedia.org',
+        dbhost      => 'm1-master.eqiad.wmnet',
+        dbport      => '',
+        dbuser      => $passwords::misc::rt::rt_mysql_user,
+        dbpass      => $passwords::misc::rt::rt_mysql_pass,
     }
 
     class { 'exim::roled':
-        local_domains          => [ '+system_domains', '+rt_domains' ],
-        enable_mail_relay      => false,
-        enable_external_mail   => false,
-        smart_route_list       => $::mail_smarthost,
-        enable_mailman         => false,
-        rt_relay               => true,
-        enable_spamassassin    => false,
+        local_domains        => [ '+system_domains', '+rt_domains' ],
+        enable_mail_relay    => false,
+        enable_external_mail => false,
+        smart_route_list     => $::mail_smarthost,
+        enable_mailman       => false,
+        rt_relay             => true,
+        enable_spamassassin  => false,
     }
 
     # allow RT to receive mail from mail smarthosts
@@ -62,10 +62,10 @@ class role::rt::labs {
     $datadir = '/srv/mysql'
 
     class { '::requesttracker':
-        apache_site    => $::fqdn,
-        dbuser         => $passwords::misc::rt::rt_mysql_user,
-        dbpass         => $passwords::misc::rt::rt_mysql_pass,
-        datadir        => $datadir,
+        apache_site => $::fqdn,
+        dbuser      => $passwords::misc::rt::rt_mysql_user,
+        dbpass      => $passwords::misc::rt::rt_mysql_pass,
+        datadir     => $datadir,
     }
 
     class { 'mysql::server':

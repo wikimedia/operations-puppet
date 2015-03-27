@@ -53,10 +53,10 @@ class role::parsoid::production {
     }
 
     user { 'parsoid':
-        gid           => 'parsoid',
-        home          => '/var/lib/parsoid',
-        managehome    => true,
-        system        => true,
+        gid        => 'parsoid',
+        home       => '/var/lib/parsoid',
+        managehome => true,
+        system     => true,
     }
 
     file { '/var/lib/parsoid/deploy':
@@ -65,11 +65,11 @@ class role::parsoid::production {
     }
 
     file { '/etc/init/parsoid.conf':
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        source  => 'puppet:///files/misc/parsoid.upstart',
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0444',
+        source => 'puppet:///files/misc/parsoid.upstart',
     }
     file { '/var/log/parsoid':
         ensure => directory,
@@ -104,12 +104,12 @@ class role::parsoid::production {
     }
 
     cron { 'parsoid-hourly-logrot':
-        ensure   => present,
-        command  => '/usr/sbin/logrotate /etc/logrotate.d/parsoid',
-        user     => 'root',
-        hour     => '*',
-        minute   => '12',
-        require  => File['/etc/logrotate.d/parsoid'],
+        ensure  => present,
+        command => '/usr/sbin/logrotate /etc/logrotate.d/parsoid',
+        user    => 'root',
+        hour    => '*',
+        minute  => '12',
+        require => File['/etc/logrotate.d/parsoid'],
     }
 
     service { 'parsoid':
@@ -130,9 +130,9 @@ class role::parsoid::production {
     }
     # until logging is handled differently, rt 6851
     nrpe::monitor_service { 'parsoid_disk_space':
-        description   => 'parsoid disk space',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 40% -c 3% -l -e',
-        critical      => true,
+        description  => 'parsoid disk space',
+        nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 40% -c 3% -l -e',
+        critical     => true,
     }
 }
 
@@ -185,11 +185,11 @@ class role::parsoid::beta {
         target => '/lib/init/upstart-job',
     }
     file { '/etc/init/parsoid.conf':
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        source  => 'puppet:///files/misc/parsoid.upstart',
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0444',
+        source => 'puppet:///files/misc/parsoid.upstart',
     }
 
     $parsoid_log_file = '/data/project/parsoid/parsoid.log'
