@@ -15,4 +15,11 @@ class role::cassandra {
         description  => 'Cassandra database',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u cassandra -C java -a CassandraDaemon',
     }
+
+    ferm::service { 'cassandra-cql-native-transport':
+        proto  => 'tcp',
+        port   => '9042',
+        srange => '$ALL_NETWORKS',
+    }
+
 }
