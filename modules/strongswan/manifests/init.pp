@@ -1,11 +1,13 @@
+# sets up an IPsec implementation
+# https://en.wikipedia.org/wiki/StrongSwan
 class strongswan (
-    $puppet_certname = "",
+    $puppet_certname = '',
     $hosts           = [],
 )
 {
     package { 'strongswan': ensure => present }
     package { 'ipsec-tools':
-        ensure => present,
+        ensure  => present,
         require => Package['strongswan'];
     }
 
@@ -19,8 +21,8 @@ class strongswan (
         #  building CRED_CERTIFICATE - X509 failed, tried 3 builders
         #  parsing certificate failed
         package { 'libstrongswan-standard-plugins':
-            ensure => present,
-            before => Service['strongswan'],
+            ensure  => present,
+            before  => Service['strongswan'],
             require => Package['strongswan'],
         }
 
@@ -28,8 +30,8 @@ class strongswan (
         #   see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=781209
         exec { 'strongswan-disable-sysvinit':
             command => '/usr/sbin/dpkg-divert --divert /etc/init.d/ipsec-disabled /etc/init.d/ipsec',
-            unless => '/usr/bin/test -f /etc/init.d/ipsec.disabled',
-            before => Package['strongswan'],
+            unless  => '/usr/bin/test -f /etc/init.d/ipsec.disabled',
+            before  => Package['strongswan'],
         }
     }
 
@@ -54,37 +56,37 @@ class strongswan (
     # For SSL certs, reuse Puppet client's certs.
     # Strongswan won't accept symlinks, so make copies.
 
-    file { "/etc/ipsec.d/cacerts/ca.pem":
+    file { '/etc/ipsec.d/cacerts/ca.pem':
+        ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        ensure  => present,
-        source  => "/var/lib/puppet/ssl/certs/ca.pem",
+        source  => '/var/lib/puppet/ssl/certs/ca.pem',
         notify  => Service['strongswan'],
         require => Package['strongswan'],
     }
 
     file { "/etc/ipsec.d/certs/${puppet_certname}.pem":
+        ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        ensure  => present,
         source  => "/var/lib/puppet/ssl/certs/${puppet_certname}.pem",
         notify  => Service['strongswan'],
         require => Package['strongswan'],
     }
 
     file { "/etc/ipsec.d/private/${puppet_certname}.pem":
+        ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        ensure  => present,
         source  => "/var/lib/puppet/ssl/private_keys/${puppet_certname}.pem",
         notify  => Service['strongswan'],
         require => Package['strongswan'],
     }
 
-    file { "/usr/local/sbin/ipsec-global":
+    file { '/usr/local/sbin/ipsec-global':
         ensure => present,
         owner  => 'root',
         group  => 'root',
