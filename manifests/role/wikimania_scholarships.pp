@@ -18,8 +18,8 @@ class role::wikimania_scholarships {
     }
 
     ferm::service { 'scholarships_http':
-        proto   => 'tcp',
-        port    => '80',
+        proto => 'tcp',
+        port  => '80',
     }
 
 }

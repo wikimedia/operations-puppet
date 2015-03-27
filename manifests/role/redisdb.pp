@@ -24,9 +24,9 @@ class role::db::redis (
     include passwords::redis
 
     ferm::service { 'redis-server':
-        proto   => 'tcp',
-        port    => '6379',
-        srange  => '$ALL_NETWORKS',
+        proto  => 'tcp',
+        port   => '6379',
+        srange => '$ALL_NETWORKS',
     }
 
     class { '::redis':
