@@ -21,4 +21,11 @@ class role::cassandra {
         description   => 'Cassanda CQL query interface',
         check_command => 'check_tcp!9042',
     }
+
+    ferm::service { 'cassandra-cql-native-transport':
+        proto  => 'tcp',
+        port   => '9042',
+        srange => '$ALL_NETWORKS',
+    }
+
 }
