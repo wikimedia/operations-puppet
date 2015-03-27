@@ -122,14 +122,14 @@ auth_uri = <%= neutronconfig["auth_uri"] %>
 # IP address of the RabbitMQ installation
 rabbit_host = <%= neutronconfig["rabbit_host"] %>
 # Password of the RabbitMQ server
-# rabbit_password = guest
+# rabbit_password = <%= neutronconfig["rabbit_pass"] %>
 # Port where RabbitMQ server is running/listening
 # rabbit_port = 5672
 # RabbitMQ single or HA cluster (host:port pairs i.e: host1:5672, host2:5672)
 # rabbit_hosts is defaulted to '$rabbit_host:$rabbit_port'
 # rabbit_hosts = localhost:5672
 # User ID used for RabbitMQ connections
-# rabbit_userid = guest
+# rabbit_userid =  <%= neutronconfig["rabbit_user"] %>
 # Location of a virtual RabbitMQ installation.
 # rabbit_virtual_host = /
 # Maximum retries with trying to connect to RabbitMQ

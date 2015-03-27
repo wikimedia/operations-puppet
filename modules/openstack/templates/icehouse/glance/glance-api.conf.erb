@@ -140,8 +140,8 @@ rpc_backend = rabbit
 rabbit_host = localhost
 rabbit_port = 5672
 rabbit_use_ssl = false
-rabbit_userid = guest
-rabbit_password = guest
+rabbit_userid = <%= glanceconfig["rabbit_user"] %>
+rabbit_password = <%= glanceconfig["rabbit_pass"] %>
 rabbit_virtual_host = /
 rabbit_notification_exchange = glance
 rabbit_notification_topic = glance_notifications

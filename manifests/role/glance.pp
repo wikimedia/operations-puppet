@@ -2,9 +2,11 @@ class role::glance::config {
     include passwords::openstack::glance
 
     $commonglanceconfig = {
-        db_name => 'glance',
-        db_user => 'glance',
-        db_pass => $passwords::openstack::glance::glance_db_pass,
+        db_name     => 'glance',
+        db_user     => 'glance',
+        db_pass     => $passwords::openstack::glance::glance_db_pass,
+        rabbit_user => $passwords::labs::rabbit_userid,
+        rabbit_pass => $passwords::labs::rabbit_password,
     }
 }
 
