@@ -168,11 +168,11 @@ class role::wikimetrics {
 
     # Setup mysql, put data in /srv
     class { 'mysql::server':
-        config_hash   => {
+        config_hash => {
             'datadir' => '/srv/mysql'
         },
-        before  => Class['::wikimetrics::database'],
-        require => Labs_lvm::Volume['second-local-disk']
+        before      => Class['::wikimetrics::database'],
+        require     => Labs_lvm::Volume['second-local-disk']
     }
 
     class { '::wikimetrics':
@@ -234,7 +234,7 @@ class role::wikimetrics {
         var_directory                => $var_directory,
         public_subdirectory          => $public_subdirectory,
 
-        require => Labs_lvm::Volume['second-local-disk'],
+        require                      => Labs_lvm::Volume['second-local-disk'],
     }
 
     # Run the wikimetrics/scripts/install script
@@ -270,7 +270,7 @@ class role::wikimetrics {
     class { '::redis':
         dir                         => $redis_dir,
         dbfilename                  => $redis_dbfilename,
-        saves                       => [ "900 1", "300 10", "60 20" ],
+        saves                       => [ '900 1', '300 10', '60 20' ],
         stop_writes_on_bgsave_error => true,
     }
 
@@ -299,6 +299,7 @@ class role::wikimetrics {
       $backup_ensure = 'absent'
     }
     class { '::wikimetrics::backup':
+        ensure        => $backup_ensure,
         destination   => "/data/project/wikimetrics/backup/${::hostname}",
         db_user       => $db_user_wikimetrics,
         db_pass       => $db_pass_wikimetrics,
@@ -307,7 +308,6 @@ class role::wikimetrics {
         redis_db_file => "${redis_dir}/${redis_dbfilename}",
         public_files  => $public_directory,
         keep_days     => 10,
-        ensure        => $backup_ensure,
     }
 
     # Link aggregated projectcounts files to public directory
