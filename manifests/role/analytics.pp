@@ -52,6 +52,13 @@ class role::analytics::clients {
         }
     }
 
+    # ipython-notebook is very useful, install it.
+    if !defined(Package['ipython-notebook']) {
+        package { 'ipython-notebook':
+            ensure => 'installed',
+        }
+    }
+
     # include maven to build jars for Hadoop.
     include ::maven
 
