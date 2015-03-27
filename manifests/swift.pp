@@ -64,8 +64,9 @@ class swift::base($hash_path_suffix, $cluster_name) {
     }
 
     file { '/etc/swift/account.builder':
-        ensure => 'present',
-        source => "puppet:///volatile/swift/${cluster_name}/account.builder",
+        ensure    => 'present',
+        source    => "puppet:///volatile/swift/${cluster_name}/account.builder",
+        show_diff => false,
     }
 
     file { '/etc/swift/account.ring.gz':
@@ -74,8 +75,9 @@ class swift::base($hash_path_suffix, $cluster_name) {
     }
 
     file { '/etc/swift/container.builder':
-        ensure => 'present',
-        source => "puppet:///volatile/swift/${cluster_name}/container.builder",
+        ensure    => 'present',
+        source    => "puppet:///volatile/swift/${cluster_name}/container.builder",
+        show_diff => false,
     }
 
     file { '/etc/swift/container.ring.gz':
@@ -84,8 +86,9 @@ class swift::base($hash_path_suffix, $cluster_name) {
     }
 
     file { '/etc/swift/object.builder':
-        ensure => 'present',
-        source => "puppet:///volatile/swift/${cluster_name}/object.builder",
+        ensure    => 'present',
+        source    => "puppet:///volatile/swift/${cluster_name}/object.builder",
+        show_diff => false,
     }
 
     file { '/etc/swift/object.ring.gz':
