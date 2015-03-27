@@ -10,6 +10,10 @@ class role::otrs (
         description => 'OTRS Web Application Server',
     }
 
+    mailalias { 'root':
+        recipient => 'root@wikimedia.org',
+    }
+
     include standard
     include webserver::apache
     include network::constants
