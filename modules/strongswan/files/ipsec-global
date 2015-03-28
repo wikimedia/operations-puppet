@@ -5,7 +5,7 @@
 
 set -e  # immediately exit if any command has a non-zero exit status
 
-PATH="/usr/sbin:/usr/bin"
+PATH="/usr/sbin:/usr/bin:/bin"
 CMDNAME=`basename $0`
 CONF=/etc/ipsec.conf
 
