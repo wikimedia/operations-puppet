@@ -143,7 +143,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('server', help='Type of server to start',
                     choices=['lighttpd', 'tomcat', 'uwsgi-python', 'nodejs'], default='lighttpd', nargs='?')
 parser.add_argument('action', help='Action to perform',
-                    choices=['stop', 'start', 'restart'])
+                    choices=['stop', 'start', 'restart', 'status'])
 parser.add_argument('--release', help='Which Ubuntu release the node running the webservice sould be on',
                     choices=['precise', 'trusty'], default='trusty')
 args = parser.parse_args()
@@ -182,3 +182,8 @@ elif args.action == 'restart':
         print 'Webservice not running, starting'
         start_web_job(args.server, args.release)
         wait_for_job(queue_name, job_name, True)
+elif args.action == 'status':
+    if job_id is None:
+        print 'Your webservice is not running'
+    else:
+        print 'Your webservice is running'
