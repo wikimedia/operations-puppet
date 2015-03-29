@@ -22,24 +22,27 @@
 # [*statsd_port*]
 #   StatsD port. Defaults to 8125.
 #
+# [*logstash_host*]
+#   GELF logging host. Default: localhost
+#
+# [*logstash_port*]
+#   GELF logging port. Default: 12201
+#
 class citoid(
-    $port        = 1970,
-    $statsd_port = 8125,
-    $zotero_port = 1969,
-    $http_proxy,
-    $zotero_host,
-    $statsd_host,
+    $port           = 1970,
+    $statsd_port    = 8125,
+    $zotero_port    = 1969,
+    $http_proxy     = undef,
+    $zotero_host    = 'localhost',
+    $statsd_host    = 'localhost',
+    $logstash_host  = 'localhost',
+    $logstash_port  = 12201,
+    $local_logdir   = '/var/log/citoid',
 ) {
 
-    require_package('nodejs')
+    $local_logfile = "${local_logdir}/main.log"
 
-    $statsd_config = $statsd_host ? {
-        undef    => 'false',
-        default  => ordered_json({
-            host => $statsd_host,
-            port => $statsd_port
-        }),
-    }
+    require_package('nodejs')
 
     package { 'citoid/deploy':
         provider => 'trebuchet',
@@ -66,9 +69,9 @@ class citoid(
         mode   => '0755',
     }
 
-    file { '/etc/citoid/localsettings.js':
+    file { '/etc/citoid/config.yaml':
         ensure  => present,
-        content => template('citoid/localsettings.js.erb'),
+        content => template('citoid/config.yaml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -79,7 +82,7 @@ class citoid(
         notify  => Service['citoid'],
     }
 
-    file { '/var/log/citoid':
+    file { $local_logdir:
         ensure => directory,
         owner  => 'citoid',
         group  => 'citoid',

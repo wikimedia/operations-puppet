@@ -1,6 +1,6 @@
 # logrotate(8) config for Citoid
 
-/var/log/citoid/* {
+<%= @local_logdir %>/* {
     daily
     copytruncate
     missingok
