@@ -1,0 +1,57 @@
+# Number of worker processes to spawn.
+# Set to 0 to run everything in a single process without clustering.
+# Use 'ncpu' to run as many workers as there are CPU units
+num_workers: ncpu
+
+# Log error messages and gracefully restart a worker if v8 reports that it
+# uses more heap (note: not RSS) than this many mb.
+worker_heap_limit_mb: 300
+
+# Logger info
+logging:
+  name: citoid
+  level: warn
+  streams:
+  # Use gelf-stream -> logstash
+  - type: gelf
+    host: <%= @logstash_host %>
+    port: <%= @logstash_port %>
+
+# Statsd metrics reporter
+metrics:
+  type: txstatsd
+  host: <%= @statsd_host %>
+  port: <%= @statsd_port %>
+
+services:
+  - name: citoid
+    # a relative path or the name of an npm package, if different from name
+    module: ./src/app.js
+    # optionally, a version constraint of the npm package
+    # version: ^0.4.0
+    # per-service config
+    conf:
+      # the port to bind to
+      port: <%= @port %>
+      # IP address to bind to, all IPs by default
+      # interface: localhost # uncomment to only listen on localhost
+      # allow cross-domain requests to the API (default '*')
+      cors: '*'
+      # to disable use:
+      # cors: false
+      # to restrict to a particular domain, use:
+      # cors: restricted.domain.org
+      # URL of the outbound proxy to use (complete with protocol)
+      <% if @http_proxy %>
+      proxy: <%= @http_proxy %>
+      <% else %>
+      # proxy: http://my.proxy.org:8080
+      <% end %>
+      # User-Agent HTTP header to use for requests
+      userAgent: WikimediaBot
+      # URL where to contact Zotero
+      zoteroInterface: <%= @zotero_host %>
+      # zotero's server port
+      zoteroPort: <%= @zotero_port %>
+      # whether the proxy should be used to contact zotero
+      zoteroUseProxy: false
