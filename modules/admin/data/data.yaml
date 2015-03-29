@@ -1,7 +1,7 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [bsitu , csalvia, edenhill, jgonera, mah, mwalker, nimishg, rainman, ssmith, swalling]
+    members: [bsitu , cmcmahon, csalvia, edenhill, jgonera, mah, mwalker, nimishg, rainman, ssmith, swalling]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -41,7 +41,7 @@ groups:
     gid: 705
     description: replaces 'mortals' for software deployment
     members: [aaron, dr0ptp4kt, werdna, anomie, aude, awight, awjrichards, bd808, jdouglas,
-      brion, cmcmahon, cscott, csteipp, demon, ebernhardson, esanders, gilles,
+      brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
       gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
       maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
       nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
@@ -124,7 +124,7 @@ groups:
   contint-admins:
     gid: 719
     description: users with some sudo permissions on jenkins hosts
-    members: [bd808, cmcmahon, cscott, dduvall, demon, krinkle, reedy, marktraceur, twentyafterfour, zfilipin, thcipriani, legoktm]
+    members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur, twentyafterfour, zfilipin, thcipriani, legoktm]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
             'ALL = (jenkins-slave) NOPASSWD: ALL',
             'ALL = (gerritslave) NOPASSWD: ALL',
@@ -547,7 +547,7 @@ users:
         catrope@catrope-Lenovo-IdeaPad-U300s]
     uid: 546
   cmcmahon:
-    ensure: present
+    ensure: absent
     gid: 500
     name: cmcmahon
     realname: Chris McMahon
