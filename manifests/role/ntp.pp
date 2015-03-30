@@ -66,6 +66,12 @@ class role::ntp {
             'tick.jpunix.net',
             'ntp-1.zeroloop.net',
         ],
+        'maerlant.wikimedia.org' => [
+            'ntp2.proserve.nl',
+            'ntp2.stygium.net',
+            'tick.jpunix.net',
+            'ntp2.roethof.net',
+        ],
     }
 
     # This maps the servers that regular clients use
