@@ -102,16 +102,6 @@ class role::phabricator::main {
             maint        => false,
             taskcreation => "task@${domain}",
         },
-        address_routing => {
-            ulsfo        => 'ops-ulsfo',
-            codfw        => 'ops-codfw',
-            pmtpa        => 'ops-pmtpa',
-            esams        => 'ops-esams',
-            eqiad        => 'ops-eqiad',
-            network      => 'ops-network',
-            ops-requests => 'operations',
-            testproj     => 'demoproject'
-        },
         direct_comments_allowed => {
             ops-codfw => '*',
             ops-eqiad => '*',
