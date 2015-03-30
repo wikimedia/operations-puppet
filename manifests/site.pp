@@ -2066,22 +2066,14 @@ node 'neon.wikimedia.org' {
 }
 
 node 'nescio.wikimedia.org' {
-    interface::ip { 'dnsrecursor':
-        interface => 'eth0',
-        address   => '91.198.174.6',
-    }
-
     include admin
     include standard
+    include base::firewall
+    include role::dnsrecursor
 
-    include network::constants
-
-    class { 'dnsrecursor':
-        listen_addresses => ['91.198.174.6'],
-        allow_from       => $network::constants::all_networks,
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
     }
-
-    dnsrecursor::monitor { '91.198.174.6': }
 }
 
 node 'netmon1001.wikimedia.org' {
