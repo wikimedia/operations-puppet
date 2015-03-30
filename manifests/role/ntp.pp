@@ -12,6 +12,7 @@ class role::ntp {
         ],
         esams => [
             'nescio.esams.wikimedia.org', # esams recdns
+            'maerlant.wikimedia.org',     # esams recdns
         ],
         ulsfo => [],
     }
