@@ -63,8 +63,8 @@ mediawiki_memcached_servers:
     - 'pl'
     - 'pt'
     - 'ru'
-    - 'sl'
     - 'sh'
+    - 'sl'
     - 'sv'
     - 'tr'
     - 'uk'
@@ -100,8 +100,8 @@ mediawiki_memcached_servers:
     - 'pl'
     - 'pt'
     - 'ru'
-    - 'sl'
     - 'sh'
+    - 'sl'
     - 'sv'
     - 'tr'
     - 'uk'
@@ -136,6 +136,7 @@ mediawiki_memcached_servers:
         - 'nn'
       'mk':
         - 'bg'
+        - 'sh'
       'pt':
         - 'ca'
         - 'es'
