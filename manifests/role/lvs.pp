@@ -67,9 +67,12 @@ class role::lvs::balancer {
             $sip['bits'][$::site],
             $sip['mobile'][$::site],
             ],
-        /^(lvs[34]00[24])$/ => [
+        /^(lvs300[24])$/ => [
             $sip['upload'][$::site],
             $sip['dns_rec'][$::site],
+            ],
+        /^(lvs400[24])$/ => [
+            $sip['upload'][$::site],
             ],
     }
 
