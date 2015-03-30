@@ -459,7 +459,7 @@ class lvs::configuration {
         "dns_rec" => {
             'description' => "Recursive DNS",
             'class' => "high-traffic2",
-            'sites' => [ "eqiad", "codfw" ],
+            'sites' => [ "eqiad", "codfw", "esams" ],
             'protocol' => "udp",
             'ip' => $service_ips['dns_rec'][$::site],
             'port' => 53,

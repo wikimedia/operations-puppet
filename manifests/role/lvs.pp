@@ -69,6 +69,7 @@ class role::lvs::balancer {
             ],
         /^(lvs[34]00[24])$/ => [
             $sip['upload'][$::site],
+            $sip['dns_rec'][$::site],
             ],
     }
 
