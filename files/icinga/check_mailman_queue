@@ -10,7 +10,7 @@
 # /files/icinga/check_mailman_queue <queue limit>
 
 mailman_base="/var/lib/mailman/qfiles"
-FILES="$mailman_base/in $mailman_base/out $mailman_base/virgin"
+FILES="$mailman_base/in $mailman_base/out $mailman_base/virgin $mailman_base/shunt"
 
 queue_limit=$1
 critqueues=0
