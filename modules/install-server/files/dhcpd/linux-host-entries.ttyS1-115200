@@ -2061,6 +2061,35 @@ host gallium {
 	hardware ethernet 78:2b:cb:09:0e:5b;
 	fixed-address gallium.wikimedia.org;
 }
+
+host ganeti1001 {
+	hardware ethernet f0:1f:af:e8:c5:a3;
+	fixed-address ganeti1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host ganeti1002 {
+	hardware ethernet f0:1f:af:e8:c1:87;
+	fixed-address ganeti1002.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host ganeti1003 {
+	hardware ethernet f0:1f:af:e8:ab:4a;
+	fixed-address ganeti1003.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host ganeti1004 {
+	hardware ethernet f0:1f:af:e6:68:c7;
+	fixed-address ganeti1004.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host ganeti2001 {
 	hardware ethernet 44:A8:42:12:C8:FE;
 	fixed-address ganeti2001.codfw.wmnet;
@@ -2101,11 +2130,6 @@ host ganeti2006 {
 	fixed-address ganeti2006.codfw.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
-host gold {
-	hardware ethernet F0:1F:AF:E8:C1:87;
-	fixed-address gold.wikimedia.org;
 }
 
 host graphite1001 {
@@ -2391,11 +2415,6 @@ host maerlant {
 host magnesium {
 	hardware ethernet 78:2b:cb:09:0d:d1;
 	fixed-address magnesium.wikimedia.org;
-}
-
-host mercury {
-	hardware ethernet f0:1f:af:e8:ab:4a;
-	fixed-address mercury.wikimedia.org;
 }
 
 host mc1001 {
@@ -5325,11 +5344,6 @@ host palladium {
 	fixed-address palladium.eqiad.wmnet;
 }
 
-host platinum {
-	hardware ethernet F0:1F:AF:E8:C5:A3;
-	fixed-address platinum.wikimedia.org;
-}
-
 host plutonium {
 	hardware ethernet 84:2b:2b:fd:b9:ff;
 	fixed-address plutonium.wikimedia.org;
@@ -5580,11 +5594,6 @@ host terbium {
 	hardware ethernet 90:B1:1C:25:9D:72;
 	fixed-address terbium.eqiad.wmnet;
 	}
-
-host thallium {
-	hardware ethernet f0:1f:af:e6:68:c7;
-	fixed-address thallium.wikimedia.org;
-}
 
 host tin {
 	hardware ethernet 90:b1:1c:00:a4:1d;
