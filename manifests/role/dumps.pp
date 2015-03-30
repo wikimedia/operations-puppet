@@ -9,4 +9,14 @@ class role::dumps {
         description   => 'HTTP',
         check_command => 'check_http'
     }
+
 }
+
+# ZIM dumps - https://en.wikipedia.org/wiki/ZIM_%28file_format%29
+class role::dumps::zim }
+
+    system::role { 'dumps::zim': description => 'ZIM dumps' }
+
+    include ::dumps::zim
+}
+
