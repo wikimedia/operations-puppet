@@ -2409,7 +2409,11 @@ node /virt101[0-2].eqiad.wmnet/ {
 }
 
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
-    if $::hostname == 'wtp1001' or $::hostname == 'wtp1002' {
+    role parsoid::production
+}
+
+node /^wtp20(0[1-9]|1[0-9]|2[0])\.codfw\.wmnet$/ {
+    if $::hostname == 'wtp2001' or $::hostname == 'wtp2002' {
         $ganglia_aggregator = true
     }
     role parsoid::production
