@@ -1,11 +1,11 @@
 # Class: install-server::dhcp-server
 #
-# This class installs dhcp3-server and configures it
+# This class installs isc-dhcp-server and configures it
 #
 # Parameters:
 #
 # Actions:
-#       Install dhcp3-server and populate configuration directory
+#       Install isc-dhcp-server and populate configuration directory
 #
 # Requires:
 #
