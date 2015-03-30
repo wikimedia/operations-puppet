@@ -28,4 +28,10 @@ class role::cassandra {
         srange => '$ALL_NETWORKS',
     }
 
+    ferm::service { 'cassandra-internode-comms':
+        proto  => 'tcp',
+        prot   => '7000',
+        srange => '$ALL_NETWORKS',
+    }
+
 }
