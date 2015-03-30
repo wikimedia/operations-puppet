@@ -329,6 +329,7 @@ class role::nova::network {
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
+    include diamond::collector::conntrack
     include role::nova::common
     include role::nova::wikiupdates
 
