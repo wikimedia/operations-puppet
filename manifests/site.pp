@@ -1683,6 +1683,8 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 node 'maerlant.wikimedia.org' {
     include admin
     include standard
+    include base::firewall
+    include role::dnsrecursor
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
