@@ -38,11 +38,10 @@ config setup
 
 conn %default
 	# https://wiki.strongswan.org/projects/strongswan/wiki/IKEv2CipherSuites
-	# https://wiki.strongswan.org/projects/strongswan/wiki/CipherSuiteExamples
-	# http://www.strongswan.org/uml/testresults/ikev2/alg-aes-gcm/
-	# modp2048 = DH group 14
-	ike=aes128gcm128-aesxcbc-modp2048!
-	esp=aes128gcm128-modp2048!
+	# https://wikitech.wikimedia.org/wiki/IPsec#Cipher_selection
+	# https://wikitech.wikimedia.org/wiki/IPsec#Cipher_proposals
+	ike=aes128gcm16-null-prfsha384-ecp384bp!
+	esp=aes128gcm16-null-ecp384bp-esn!
 	type=transport
 	auto=start
 
