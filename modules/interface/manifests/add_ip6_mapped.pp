@@ -27,5 +27,43 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
             address   => $ipv6_address,
             prefixlen => '64'
         }
+
+        # XXX Temporary: testing on cp1008 first in a couple of different scenarios...
+        if $::hostname == 'cp1008' {
+
+        # The above sets up an "up" command to add the fixed IPv6 mapping of the v4
+        # address statically, and also executes the command to add the address
+        # in the present if not configured.
+        #
+        # Below sets "ip token" to the same on distros that support it.  The
+        # token command explicitly configures the lower 64 bits that will be
+        # used with any autoconf address, as opposed to one derived from the
+        # macaddr.  This aligns the autoconf-assigned address with the fixed
+        # one set above, and can do so as a pre-up command to avoid ever
+        # having another address even temporarily.  We could probably rely on
+        # this exclusively and drop the static address above, but the
+        # redundancy doesn't hurt (the autoconf simply won't end up appearing
+        # on the list at all when it duplicates the static address), and this
+        # allays any fears about relying on router advertisments.  As above,
+        # this also executes itself in the present when first configured.
+
+        if os_version('debian >= jessie || ubuntu >= trusty') {
+            $v6_token_cmd = "/sbin/ip token set $v6_mapped_lower64 dev ${intf}"
+            $v6_token_check_cmd = "/sbin/ip token get dev $intf | grep -qw $v6_mapped_lower64"
+            $v6_token_preup_cmd = "set iface[. = '${intf}']/pre-up '$v6_token_cmd'"
+
+            augeas { "${intf}_v6_token":
+                context => "/files/etc/network/interfaces/*[. = '${intf}' and ./family = 'inet']",
+                changes => "set up[last()+1] '${v6_token_preup_cmd}'",
+                onlyif  => "match up[. = '${v6_token_preup_cmd}'] size == 0";
+            }
+
+            exec { "${intf}_v6_token":
+                command => $v6_token_cmd,
+                unless  => $v6_token_check_cmd,
+            }
+        }
+
+        } # XXX end cp1008 testing block
     }
 }
