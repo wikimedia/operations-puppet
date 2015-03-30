@@ -1,3 +1,9 @@
+.*-ms-be\d\d:
+  - swift::base
+  - swift::storage
+.*-ms-fe\d\d:
+  - swift::base
+  - swift::proxy
 .*-elastic\d\d:
   - role::elasticsearch::server
 .*-mc\d\d:
