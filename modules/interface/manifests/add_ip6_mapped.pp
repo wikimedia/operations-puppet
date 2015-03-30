@@ -25,11 +25,5 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
             address   => $ipv6_address,
             prefixlen => '64'
         }
-
-        # temp hack to set back to default value
-        sysctl::parameters { "ip6_disable_auto_${intf}":
-            values => { "net.ipv6.conf.${intf}.autoconf" => 1 },
-            priority => 65,
-        }
     }
 }
