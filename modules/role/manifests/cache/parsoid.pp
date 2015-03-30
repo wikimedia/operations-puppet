@@ -50,6 +50,7 @@ class role::cache::parsoid inherits role::cache::2layer {
             'retries' => 2,
         },
         vcl_config       => {
+            'retry503'    => 4,
             'retry5xx'    => 1,
             'ssl_proxies' => $wikimedia_networks,
         },
