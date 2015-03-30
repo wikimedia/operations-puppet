@@ -1585,6 +1585,7 @@ class role::cache {
                 'retries' => 2,
             },
             vcl_config       => {
+                'retry503'    => 4,
                 'retry5xx'    => 1,
                 'ssl_proxies' => $wikimedia_networks,
             },
