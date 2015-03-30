@@ -1,9 +1,0 @@
-## THIS FILE IS MANAGED BY PUPPET
-##
-## source: modules/base/resolv.conf.labs.erb
-## from:   base::resolving
-
-domain <%= @site %>.wmflabs
-search <%= @site %>.wmflabs labs.<%= @site %>.wmnet
-options timeout:5 ndots:2
-nameserver 10.68.16.1

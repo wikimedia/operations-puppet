@@ -1,0 +1,17 @@
+##### THIS FILE IS MANAGED BY PUPPET
+#####  as template('base/interfaces.labs.erb')
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+iface eth0 inet dhcp
+<% if @use_dnsmasq -%>
+dns-nameservers 10.68.16.1
+dns-search <%= @site %>.wmflabs
+<% else -%>
+dns-nameservers 208.80.154.12
+dns-search <%= @instanceproject %>.<%= @site %>.wmflabs <%= @site %>.wmflabs
+<% end -%>
