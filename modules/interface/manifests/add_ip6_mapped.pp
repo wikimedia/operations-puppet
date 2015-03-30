@@ -12,13 +12,16 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
     }
     else {
         if ! $ipv4_address {
-            $ip4_address = "::${::ipaddress}"
+            $ip4_address = "${::ipaddress}"
         }
         else {
-            $ip4_address = "::${ipv4_address}"
+            $ip4_address = "${ipv4_address}"
         }
 
-        $ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${intf}\")).mask(64) | IPAddr.new(ip4_address.gsub('.', ':'))).to_s() %>")
+        $v6_mapped_lower64 = regsubst($ip4_address, '\.', ':', 'G')
+        $v6_mapped_addr = "::${v6_mapped_addr}"
+
+        $ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${intf}\")).mask(64) | IPAddr.new(v6_mapped_addr).to_s() %>")
 
         interface::ip { $title:
             interface => $intf,
