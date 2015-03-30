@@ -1601,6 +1601,13 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
+    # lvs300[24] are LVS balancers for the esams recursive DNS IP,
+    #   so they need to use the recursive DNS backends directly
+    #   (nescio and maerlant) with fallback to eqiad
+    if $::hostname =~ /^lvs300[24]$/ {
+        $nameservers_override = [ '91.198.174.106', '91.198.174.122', '208.80.154.239' ]
+    }
+
     role lvs::balancer
     include admin
 
