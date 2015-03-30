@@ -1,6 +1,4 @@
 <%
-require 'json'
-
 # If graphs was specified, convert it into
 # the items structure expected by ganglia-web.
 @graphs.each do |graph|
@@ -22,7 +20,7 @@ end
  "view_type":"<%= @view_type %>",
  "default_size":"<%= @default_size %>",
 
- "items":<%= JSON.pretty_generate(items) %>
+ "items":<%= scope.function_ordered_json([items]) %>
 }
 
 
