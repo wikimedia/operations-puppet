@@ -34,4 +34,10 @@ class role::cassandra {
         srange => '$ALL_NETWORKS',
     }
 
+    ferm::service { 'cassandra-jmx-monitoring':
+        proto  => 'tcp',
+        port   => '7199',
+        srange => '$ALL_NETWORKS',
+    }
+
 }
