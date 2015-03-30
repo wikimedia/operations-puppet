@@ -10,7 +10,7 @@ ID_BOUNDRY='999'
 ARCHIVE_DIR='/var/userarchive'
 EXCLUDE=("nobody" \
          "l10nupdate" \
-         "gmetric" \    # nescio.esams.wikimedia.org
+         "gmetric" \    # nescio.wikimedia.org
          "mwdeploy" \   # vanadium.eqiad.wmnet
          "gerrit2" \    # ytterbium.wikimedia.org
          "spamd" \      # sodium.wikimedia.org:

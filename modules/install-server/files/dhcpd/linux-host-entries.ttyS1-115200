@@ -5260,7 +5260,7 @@ host netmon1001 {
 
 host nescio {
 	hardware ethernet a4:ba:db:30:d0:df;
-	fixed-address nescio.esams.wikimedia.org;
+	fixed-address nescio.wikimedia.org;
 }
 
 host nickel {

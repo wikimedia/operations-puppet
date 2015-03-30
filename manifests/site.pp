@@ -2065,7 +2065,7 @@ node 'neon.wikimedia.org' {
     include role::tcpircbot
 }
 
-node 'nescio.esams.wikimedia.org' {
+node 'nescio.wikimedia.org' {
     interface::ip { 'dnsrecursor':
         interface => 'eth0',
         address   => '91.198.174.6',

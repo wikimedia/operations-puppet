@@ -11,7 +11,7 @@ class role::ntp {
             'achernar.wikimedia.org',     # codfw recdns
         ],
         esams => [
-            'nescio.esams.wikimedia.org', # esams recdns
+            'nescio.wikimedia.org',       # esams recdns
             'maerlant.wikimedia.org',     # esams recdns
         ],
         ulsfo => [],
@@ -60,7 +60,7 @@ class role::ntp {
             '68.108.190.192',
             'oxygen.neersighted.com',
         ],
-        'nescio.esams.wikimedia.org' => [
+        'nescio.wikimedia.org' => [
             'ntp2.proserve.nl',
             'ntp.systemtid.se',
             'tick.jpunix.net',
