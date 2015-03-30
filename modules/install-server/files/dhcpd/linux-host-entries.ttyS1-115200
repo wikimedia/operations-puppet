@@ -5261,6 +5261,8 @@ host netmon1001 {
 host nescio {
 	hardware ethernet a4:ba:db:30:d0:df;
 	fixed-address nescio.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host nickel {
