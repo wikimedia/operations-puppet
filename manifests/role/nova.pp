@@ -329,7 +329,6 @@ class role::nova::network {
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
-    include diamond::collector::conntrack
     include role::nova::common
     include role::nova::wikiupdates
 
@@ -355,6 +354,8 @@ class role::nova::network {
     class { 'openstack::nova::network':
         novaconfig        => $novaconfig,
     }
+
+    diamond::collector::conntrack { 'conntrack_collector': }
 }
 
 class role::nova::wikiupdates {
