@@ -144,7 +144,7 @@ class lvs::configuration {
             },
             'dns_rec' => {
                 'eqiad' => { 'dns_rec' => "208.80.154.239", 'dns_rec6' => "2620:0:861:ed1a::f" },
-                'codfw' => { 'dns_rec' => "208.80.153.254", 'dns_rec6' => "2620:0:861:ed1a::3:fe" },
+                'codfw' => { 'dns_rec' => "208.80.153.254", 'dns_rec6' => "2620:0:860:ed1a::3:fe" },
             },
             'osm' => {
                 'eqiad' => "208.80.154.244",
