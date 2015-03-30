@@ -1,16 +1,19 @@
 registry:
   source:
+    - 'bg'
     - 'ca'
     - 'da'
     - 'en'
     - 'eo'
     - 'es'
     - 'de'
+    - 'fr'
     - 'id'
     - 'kn'
     - 'ky'
     - 'kz'
     - 'min'
+    - 'mk'
     - 'ms'
     - 'nn'
     - 'no'
@@ -18,28 +21,37 @@ registry:
     - 'pl'
     - 'pt'
     - 'ru'
+    - 'sh'
+    - 'sl'
     - 'sv'
     - 'tr'
     - 'uk'
     - 'uz'
   target:
+    - 'bg'
     - 'ca'
     - 'da'
     - 'eo'
     - 'es'
     - 'id'
+    - 'fr'
     - 'kn'
     - 'ky'
     - 'min'
+    - 'mk'
     - 'ms'
     - 'nn'
     - 'no'
     - 'pa'
     - 'pt'
+    - 'sh'
+    - 'sl'
     - 'uk'
     - 'uz'
   mt:
     Apertium:
+      'bg':
+        - 'mk'
       'ca':
         - 'es'
         - 'pt'
@@ -47,11 +59,15 @@ registry:
         - 'ca'
         - 'eo'
         - 'es'
+        - 'sh'
       'es':
         - 'ca'
         - 'pt'
       'id':
         - 'ms'
+      'mk':
+        - 'bg'
+        - 'sh'
       'ms':
         - 'id'
       'nn':
@@ -61,6 +77,10 @@ registry:
       'pt':
         - 'es'
         - 'ca'
+      'sh':
+        - 'sl'
+      'sl':
+        - 'sh'
   dictionary:
     JsonDict:
       'ca':
