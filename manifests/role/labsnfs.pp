@@ -8,9 +8,6 @@
 # must be set at the node level or via hiera.
 #
 class role::labs::nfs::dumps($dump_servers_ips) {
-
-    $gangla_aggregator = true
-
     include standard
     include rsync::server
 
@@ -41,9 +38,6 @@ class role::labs::nfs::dumps($dump_servers_ips) {
 # services to Labs.
 #
 class role::labs::nfs::fileserver {
-
-    $gangla_aggregator = true
-
     include standard
 
     # eqiad still uses LDAP for now
@@ -78,4 +72,3 @@ class role::labs::nfs::fileserver {
     }
 
 }
-

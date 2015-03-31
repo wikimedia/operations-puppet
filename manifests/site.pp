@@ -1320,7 +1320,9 @@ node 'labsdb1007.eqiad.wmnet' {
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
-
+    if $::hostname == 'labstore1001' {
+        $ganglia_aggregator = true
+    }
     $site = 'eqiad'
     $cluster = 'labsnfs'
 
@@ -1329,7 +1331,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 }
 
 node 'labstore1003.eqiad.wmnet' {
-
+    $ganglia_aggregator = true
     $site = 'eqiad'
     $cluster = 'labsnfs'
 
