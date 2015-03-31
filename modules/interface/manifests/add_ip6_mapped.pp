@@ -50,7 +50,7 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
         if os_version('debian >= jessie || ubuntu >= trusty') {
             $v6_token_cmd = "/sbin/ip token set $v6_mapped_lower64 dev ${intf}"
             $v6_token_check_cmd = "/sbin/ip token get dev $intf | grep -qw $v6_mapped_lower64"
-            $v6_token_preup_cmd = "set iface[. = '${intf}']/pre-up '$v6_token_cmd'"
+            $v6_token_preup_cmd = "set iface[. = '${intf}']/pre-up ${v6_token_cmd}"
 
             augeas { "${intf}_v6_token":
                 context => "/files/etc/network/interfaces/*[. = '${intf}' and ./family = 'inet']",
