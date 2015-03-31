@@ -10,5 +10,18 @@
   - role::ocg
 .*-rdb\d\d?:
   - role::db::redis
+.*-cache-text\d\d:
+  - role::cache::text
+.*-cache-bits\d\d:
+  - role::cache::cache::bits
+.*-cache-mobile\d\d:
+  - role::cache::mobile
+.*-cache-upload\d\d:
+  - role::cache::upload
+.*-cache-parsoid\d\d:
+  - role::cache::parsoid
+.*-cache-.*:
+  - role::beta::availability_collector
+  - role::protoproxy::ssl::beta
 .*:
   - role::puppet::self
