@@ -61,7 +61,7 @@ groups:
       haithams, mhurd, dbrant, mglaser, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
       bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
-      joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz]
+      joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -221,7 +221,7 @@ groups:
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, ananthrk, awight,
-              joal, jamesur, akosiaris, jhobs]
+              joal, jamesur, akosiaris, jhobs, lpintscher]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -1370,4 +1370,10 @@ users:
     realname: Jeff Hobson
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1sw+mDWAPUMff1DaTRNVYAxhReV1bRLMEp32689l9dFHcyP+pjLuzJ5IeLQaHi5cd7iEWiQBQYvTtcwqOkar2ozapUbckT+HTDz6sSZqQcOhqc8ZpCm2BdMtXm+oR3bwjFodPhA3qvb/N7EwmoLUxQzmm2LK6/wlb34s3iOnmRF3nl4IN2FqvJlUBPRegJNycO3ntzpV5MN6cVATPkX88Sh05KtjMuNXb0W0gntn8hp1h5YazfDfHWavnAldncwNGG9xIBgF8ENb9lqPo7fcmBqZVZsrQAWuY09SqBfPrKeaP7uaXKIkIEG9sGZUPCUdFefsaw7WjDfZ0vwkwPzFX jhobson@wikimedia.org]
     uid: 10542
-
+  lpintscher:
+    ensure: present
+    gid: 500
+    name: lpintscher
+    realname: Lydia Pintscher
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA38VRVZ7vOG5Ltv8PdPWShwHb934pIWNav2cRc4qRiaU71YT5Rc9QGQV3t0Cs3fYJ+eh8O2Xr1K6t+2KKJLuDJE84MXq9G9ptGCis9vDb/JimZuaL3Jol16rB5wbzekoCNZyysIHQ4t+gNKnjUA3OXjeAoJy9m76tUvh+cp31LN5DPNJ29QuVO4aTP4IgAl/BYf+j6GBOpkTd4RicUnS9lGGckAcfETk4AYyYqMf4sw5RSyBQESV8Bb0MtTcNNHTSErSFhxT67ijfC1FA5eKTY5MgvHjItNI16lM+Z3SoASlyIIPz4cyQVnM7TswsuF6oYyE1JV4Rlywv6WvWWMm4/w== lydia@hel]
+    uid: 2222
