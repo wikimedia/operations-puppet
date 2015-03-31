@@ -28,6 +28,7 @@ class shinken::ircbot(
         '/var/log/ircecho/irc-releng.log'   => '#wikimedia-releng',
         '/var/log/ircecho/irc-labs.log'     => '#wikimedia-labs',
         '/var/log/ircecho/irc-cvn.log'      => '#countervandalism',
+        '/vat/log/ircecho/irc-wmt.log'      => '##wmt',
     }
 
     class { '::ircecho':
