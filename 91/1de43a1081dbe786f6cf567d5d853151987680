@@ -1,0 +1,9 @@
+Code-Review+1: Krinkle <krinklemail@gmail.com>
+Verified+2: jenkins-bot
+Code-Review+2: Yuvipanda <yuvipanda@gmail.com>
+Code-Review+1: Jforrester <jforrester@wikimedia.org>
+Submitted-by: Yuvipanda <yuvipanda@gmail.com>
+Submitted-at: Tue, 31 Mar 2015 18:57:42 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/200770
+Project: operations/puppet
+Branch: refs/heads/production
