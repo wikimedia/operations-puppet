@@ -104,9 +104,8 @@ ganglia_clusters:
         - cp4013.ulsfo.wmnet
   payments:
     name: "Fundraiser payments"
-    
     id: 23
-    sites: []
+    sites: {}
   ssl:
     name: "SSL cluster"
     id: 26
