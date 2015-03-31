@@ -1,1 +1,2 @@
 cassandra::metrics::graphite_host: 'graphite-in.eqiad.wmnet'
+cassandra::start_rpc: 'false'
