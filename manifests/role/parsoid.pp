@@ -2,7 +2,31 @@
 
 @monitoring::group { 'parsoid_eqiad': description => 'eqiad parsoid servers' }
 
-class role::parsoid::common {
+class role::parsoid (
+    $parsoid_log_dir = '/var/log/parsoid/',
+    $parsoid_log_file = '/var/log/parsoid/parsoid.log',
+    $parsoid_user = 'parsoid',
+    $parsoid_group = 'parsoid',
+    $parsoid_settings_file = '/srv/deployment/parsoid/deploy/conf/wmf/localsettings.js',
+    $parsoid_node_path = '/var/lib/parsoid/deploy/node_modules',
+    $parsoid_base_path = '/var/lib/parsoid/deploy/src'
+) {
+    system::role { 'role::parsoid::production':
+        description => 'Parsoid server'
+    }
+
+    include standard
+
+    if ($::realm == 'production') {
+        include admin
+    }
+
+    if hiera('has_lvs', true) {
+        include lvs::realserver
+    }
+
+    include base::firewall
+
     package { [
         'nodejs',
         'npm',
@@ -29,22 +53,6 @@ class role::parsoid::common {
         proto => 'tcp',
         port  => '8000',
     }
-}
-
-class role::parsoid::production {
-    system::role { 'role::parsoid::production':
-        description => 'Parsoid server'
-    }
-
-    include role::parsoid::common
-    include standard
-    include admin
-    include lvs::realserver
-    include base::firewall
-
-    package { 'parsoid/deploy':
-        provider => 'trebuchet',
-    }
 
     group { 'parsoid':
         ensure => present,
@@ -53,15 +61,25 @@ class role::parsoid::production {
     }
 
     user { 'parsoid':
-        gid           => 'parsoid',
-        home          => '/var/lib/parsoid',
-        managehome    => true,
-        system        => true,
+        gid        => 'parsoid',
+        home       => '/var/lib/parsoid',
+        managehome => true,
+        system     => true,
+        require    => Group['parsoid'],
     }
 
     file { '/var/lib/parsoid/deploy':
-        ensure => link,
-        target => '/srv/deployment/parsoid/deploy',
+        ensure  => link,
+        target  => '/srv/deployment/parsoid/deploy',
+        require => User['parsoid'],
+    }
+
+    file { $parsoid_log_dir:
+        ensure  => directory,
+        mode    => '0775',
+        owner   => $parsoid_user,
+        group   => $parsoid_group,
+        require => User['parsoid'],
     }
 
     file { '/etc/init/parsoid.conf':
@@ -71,28 +89,18 @@ class role::parsoid::production {
         mode    => '0444',
         source  => 'puppet:///files/misc/parsoid.upstart',
     }
-    file { '/var/log/parsoid':
-        ensure => directory,
-        owner  => parsoid,
-        group  => parsoid,
-        mode   => '0775',
-    }
 
-    $parsoid_log_file = '/var/log/parsoid/parsoid.log'
-    #TODO: Should we explicitly set this to '/srv/deployment/parsoid/deploy/node_modules'
-    #just like beta labs
-    $parsoid_node_path = '/var/lib/parsoid/deploy/node_modules'
-    $parsoid_settings_file = '/srv/deployment/parsoid/deploy/conf/wmf/localsettings.js'
-    $parsoid_base_path = '/var/lib/parsoid/deploy/src'
-
-    #TODO: Duplication of code from beta class, deduplicate somehow
     file { '/etc/default/parsoid':
         ensure  => present,
         owner   => root,
         group   => root,
         mode    => '0444',
         content => template('misc/parsoid.default.erb'),
-        require => File['/var/log/parsoid'],
+        require => File[$parsoid_log_dir],
+    }
+
+    package { 'parsoid/deploy':
+        provider => 'trebuchet',
     }
 
     file { '/etc/logrotate.d/parsoid':
@@ -101,15 +109,6 @@ class role::parsoid::production {
         group   => root,
         mode    => '0444',
         content => template('misc/parsoid.logrotate.erb'),
-    }
-
-    cron { 'parsoid-hourly-logrot':
-        ensure   => present,
-        command  => '/usr/sbin/logrotate /etc/logrotate.d/parsoid',
-        user     => 'root',
-        hour     => '*',
-        minute   => '12',
-        require  => File['/etc/logrotate.d/parsoid'],
     }
 
     service { 'parsoid':
@@ -124,6 +123,15 @@ class role::parsoid::production {
         require    => Package['parsoid/deploy'],
     }
 
+    cron { 'parsoid-hourly-logrot':
+        ensure   => present,
+        command  => '/usr/sbin/logrotate /etc/logrotate.d/parsoid',
+        user     => 'root',
+        hour     => '*',
+        minute   => '12',
+        require  => File['/etc/logrotate.d/parsoid'],
+    }
+
     monitoring::service { 'parsoid':
         description   => 'Parsoid',
         check_command => 'check_http_on_port!8000',
@@ -134,6 +142,7 @@ class role::parsoid::production {
         nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 40% -c 3% -l -e',
         critical      => true,
     }
+
 }
 
 class role::parsoid::beta {
@@ -141,7 +150,11 @@ class role::parsoid::beta {
         description => 'Parsoid server (on beta)'
     }
 
-    include role::parsoid::common
+    class { role::parsoid:
+        parsoid_log_dir       => '/data/project/parsoid',
+        parsoid_log_file      => '/data/project/parsoid/parsoid.log',
+        parsoid_settings_file => '/srv/deployment/parsoid/deploy/conf/wmf/betalabs.localsettings.js'
+    }
 
     sudo::user { 'jenkins-deploy': privileges => [
         # Need to allow jenkins-deploy to reload parsoid
@@ -151,90 +164,11 @@ class role::parsoid::beta {
         'ALL = (root) NOPASSWD:/etc/init.d/parsoid',
     ] }
 
-    file { '/var/lib/parsoid/Parsoid':
-        ensure => link,
-        target => '/srv/mediawiki/php-master/extensions/Parsoid',
-        owner  => parsoid,
-        group  => wikidev,
-        mode   => '2775',
-    }
-
-    # Jenkins copy repositories and config under /srv/deployment
-    file { '/srv/deployment':
-        ensure => directory,
-        owner  => root,
-        group  => root,
-        mode   => '0755',
-    }
-    file { '/srv/deployment/parsoid':
-        ensure => directory,
-        owner  => jenkins-deploy,
-        group  => wikidev,
-        mode   => '0755',
-    }
-
-    # Delete the puppet copy of this file
-    file { '/srv/deployment/parsoid/localsettings.js':
-        ensure => absent,
-    }
-
     # beta uses upstart:
     # FIXME: move users to upstart
     file { '/etc/init.d/parsoid':
         ensure => 'link',
         target => '/lib/init/upstart-job',
-    }
-    file { '/etc/init/parsoid.conf':
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        source  => 'puppet:///files/misc/parsoid.upstart',
-    }
-
-    $parsoid_log_file = '/data/project/parsoid/parsoid.log'
-    # Make sure the directory exists on beta
-    file { '/data/project/parsoid':
-        ensure => directory,
-        owner  => parsoid,
-        group  => parsoid,
-        mode   => '0775',
-    }
-
-    # For beta, override NODE_PATH:
-    $parsoid_node_path = '/srv/deployment/parsoid/deploy/node_modules'
-    # Also override PARSOID_SETTINGS_FILE
-    $parsoid_settings_file = '/srv/deployment/parsoid/deploy/conf/wmf/betalabs.localsettings.js'
-
-    # Checkout of mediawiki/services/parsoid
-    $parsoid_base_path = '/srv/deployment/parsoid/deploy/src'
-
-    file { '/etc/default/parsoid':
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        content => template('misc/parsoid.default.erb'),
-        require => File['/data/project/parsoid'],
-    }
-
-    file { '/etc/logrotate.d/parsoid':
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        content => template('misc/parsoid.logrotate.erb'),
-    }
-
-    service { 'parsoid':
-        ensure     => running,
-        hasstatus  => true,
-        hasrestart => true,
-        provider   => 'upstart',
-        subscribe  => [
-            File['/etc/default/parsoid'],
-            File['/etc/init/parsoid.conf'],
-        ],
     }
 
     # Instance got to be a Jenkins slave so we can update Parsoid whenever a
