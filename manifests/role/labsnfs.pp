@@ -8,9 +8,6 @@
 # must be set at the node level or via hiera.
 #
 class role::labs::nfs::dumps($dump_servers_ips) {
-
-    $gangla_aggregator = true
-
     include standard
     include rsync::server
 
@@ -42,7 +39,7 @@ class role::labs::nfs::dumps($dump_servers_ips) {
 #
 class role::labs::nfs::fileserver {
 
-    $gangla_aggregator = true
+    $ganglia_aggregator = true
 
     include standard
 
@@ -78,4 +75,3 @@ class role::labs::nfs::fileserver {
     }
 
 }
-
