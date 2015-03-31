@@ -25,8 +25,9 @@ class shinken::ircbot(
 
     $ircecho_logs   = {
         '/var/log/ircecho/irc.log'          => '#wikimedia-operations',
-        '/var/log/ircecho/irc-releng.log'       => '#wikimedia-releng',
+        '/var/log/ircecho/irc-releng.log'   => '#wikimedia-releng',
         '/var/log/ircecho/irc-labs.log'     => '#wikimedia-labs',
+        '/var/log/ircecho/irc-cvn.log'      => '#countervandalism',
     }
 
     class { '::ircecho':
