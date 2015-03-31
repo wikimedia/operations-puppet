@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# This is a dummy resolvconf, put in place to disable default
+#  resolvconf behavior.  It's installed by puppet along with
+#  the desired resolv.conf.
+echo "resolvconf disabled."
+exit 0
