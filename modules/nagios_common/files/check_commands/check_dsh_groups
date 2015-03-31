@@ -15,10 +15,7 @@ do
 		echo "dsh group $GROUP not found"
 		exit 3
 	fi
-	if [ "`grep $HOST $FILE`" != "$HOST" ] ; then
-		echo "Host $HOST is not in $GROUP dsh group"
-		exit 2
-	fi
+    grep -q "^${HOST}" ${FILE} || ( echo "Host $HOST is not in $GROUP dsh group" && exit 2)
 done;
 
 echo 'OK'
