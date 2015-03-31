@@ -103,11 +103,12 @@ class role::phabricator::main {
             taskcreation => "task@${domain}",
         },
         direct_comments_allowed => {
-            ops-codfw => '*',
-            ops-eqiad => '*',
-            ops-esams => '*',
-            ops-ulsfo => '*',
-            domains   => 'markmonitor.com,wikimedia.org',
+            ops-codfw   => '*',
+            ops-eqiad   => '*',
+            ops-esams   => '*',
+            ops-ulsfo   => '*',
+            domains     => 'markmonitor.com,wikimedia.org',
+            procurement => 'cdw.com,dasher.com,dell.com,fishnetsecurity.com,wikimedia.org',
         },
 
         phab_bot        => {
