@@ -44,7 +44,6 @@ class xenon(
             { period => 'hourly',  format => '%Y-%m-%d_%H', retain => 24 },
             { period => 'daily',   format => '%Y-%m-%d',    retain => 30 },
             { period => 'weekly',  format => '%Y-%W',       retain => 52 },
-            { period => 'monthly', format => '%Y-%m',       retain => 12 },
         ],
     }
 
