@@ -319,7 +319,7 @@ def _update_gitmodules(config, location, shadow=False):
             continue
         # Ensure we're working with an unmodified .gitmodules file
         cmd = '/usr/bin/git checkout .gitmodules'
-        status = __salt__['cmd.retcode'](cmd, gitmodules_dir)
+        status = __salt__['cmd.retcode'](cmd, gitmodules_dir, umask=002)
         if status != 0:
             return status
         # Get a list of the submodules
@@ -347,7 +347,7 @@ def _update_gitmodules(config, location, shadow=False):
             # this on a subpath of the repository since the deployment server
             # isn't a bare clone.
             cmd = '/usr/bin/git config remote.origin.url'
-            remote = __salt__['cmd.run'](cmd, gitmodules_dir)
+            remote = __salt__['cmd.run'](cmd, gitmodules_dir, umask=002)
             if not remote:
                 return 1
             f = open(gitmodules, 'w')
@@ -360,7 +360,7 @@ def _update_gitmodules(config, location, shadow=False):
         # Have git update its submodule configuration from the .gitmodules
         # file.
         cmd = '/usr/bin/git submodule sync'
-        status = __salt__['cmd.retcode'](cmd, gitmodules_dir)
+        status = __salt__['cmd.retcode'](cmd, gitmodules_dir, umask=002)
         if status != 0:
             return status
     return 0
@@ -379,7 +379,7 @@ def _init_gitfat(location):
     '''
     # if it isn't then initialize it now
     cmd = '/usr/bin/git fat init'
-    return __salt__['cmd.retcode'](cmd, location)
+    return __salt__['cmd.retcode'](cmd, location, umask=002)
 
 
 # TODO: git fat gc?
@@ -408,7 +408,7 @@ def _update_gitfat(location):
 
     # Run git fat pull.
     cmd = '/usr/bin/git fat pull'
-    return __salt__['cmd.retcode'](cmd, location)
+    return __salt__['cmd.retcode'](cmd, location, umask=002)
 
 
 def _clone(config, location, tag, shadow=False):
@@ -432,7 +432,7 @@ def _clone(config, location, tag, shadow=False):
         cmd = cmd.format(config['location'], config['url'], location)
     else:
         cmd = '/usr/bin/git clone {0}/.git {1}'.format(config['url'], location)
-    status = __salt__['cmd.retcode'](cmd)
+    status = __salt__['cmd.retcode'](cmd, umask=002)
     if status != 0:
         return status
     status = _fetch_location(config, location, shadow=shadow)
@@ -543,13 +543,13 @@ def _fetch_location(config, location, shadow=False):
     :rtype: int
     """
     cmd = '/usr/bin/git fetch'
-    status = __salt__['cmd.retcode'](cmd, location)
+    status = __salt__['cmd.retcode'](cmd, location, umask=002)
     if status != 0:
         return status
     # The deployment tags may not be linked to any branch, so it's safest
     # to fetch them explicitly.
     cmd = '/usr/bin/git fetch --tags'
-    status = __salt__['cmd.retcode'](cmd, location)
+    status = __salt__['cmd.retcode'](cmd, location, umask=002)
     if status != 0:
         return status
 
@@ -560,13 +560,13 @@ def _fetch_location(config, location, shadow=False):
 
         # fetch all submodules and tags for submodules
         cmd = '/usr/bin/git submodule foreach --recursive git fetch'
-        status = __salt__['cmd.retcode'](cmd, location)
+        status = __salt__['cmd.retcode'](cmd, location, umask=002)
         if status != 0:
             return status
         # The deployment tags will not be linked to any branch for submodules,
         # so it's required to fetch them explicitly.
         cmd = '/usr/bin/git submodule foreach --recursive git fetch --tags'
-        status = __salt__['cmd.retcode'](cmd, location)
+        status = __salt__['cmd.retcode'](cmd, location, umask=002)
         if status != 0:
             return status
     return 0
@@ -676,7 +676,7 @@ def _checkout_location(config, location, tag, reset=False, shadow=False):
     if reset:
         # User requested we hard reset the repo to the tag
         cmd = '/usr/bin/git reset --hard tags/%s' % (tag)
-        ret = __salt__['cmd.retcode'](cmd, location)
+        ret = __salt__['cmd.retcode'](cmd, location, umask=002)
         if ret != 0:
             return 20
     else:
@@ -690,7 +690,7 @@ def _checkout_location(config, location, tag, reset=False, shadow=False):
 
     # Checkout to the tag requested by the deployment.
     cmd = '/usr/bin/git checkout --force --quiet tags/%s' % (tag)
-    ret = __salt__['cmd.retcode'](cmd, location)
+    ret = __salt__['cmd.retcode'](cmd, location, umask=002)
     if ret != 0:
         return 30
 
@@ -701,7 +701,7 @@ def _checkout_location(config, location, tag, reset=False, shadow=False):
 
         # Update the submodules to match this tag
         cmd = '/usr/bin/git submodule update --recursive --init'
-        ret = __salt__['cmd.retcode'](cmd, location)
+        ret = __salt__['cmd.retcode'](cmd, location, umask=002)
         if ret != 0:
             return 50
 
