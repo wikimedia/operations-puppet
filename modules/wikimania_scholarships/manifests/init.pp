@@ -4,8 +4,6 @@
 # application.
 #
 # == Parameters:
-# - $open_date: date/time that applications will first be accepted
-# - $close_date: date/time after which applications will no longer be accepted
 # - $hostname: hostname for apache vhost
 # - $deploy_dir: directory application is deployed to
 # - $cache_dir: directory for caching twig templates
@@ -18,13 +16,9 @@
 # == Sample usage:
 #
 #   class { 'wikimania_scholarships':
-#       open_date => '2014-01-01T00:00:00Z',
-#       close_date => '2014-02-28T23:59:59Z'
 #   }
 #
 class wikimania_scholarships(
-    $open_date    = 'UNSET',
-    $close_date   = 'UNSET',
     $hostname     = 'scholarships.wikimedia.org',
     $deploy_dir   = '/srv/deployment/scholarships/scholarships',
     $cache_dir    = '/var/cache/scholarships',
@@ -43,14 +37,6 @@ class wikimania_scholarships(
     $mysql_user = $passwords::mysql::wikimania_scholarships::app_user
     $mysql_pass = $passwords::mysql::wikimania_scholarships::app_password
     $log_file   = "udp://${udp2log_dest}/scholarships"
-
-    # Check arguments
-    if $open_date == 'UNSET' {
-        fail('$open_date must be a date parsable by PHP\'s strtotime()')
-    }
-    if $close_date == 'UNSET' {
-        fail('$close_date must be a date parsable by PHP\'s strtotime()')
-    }
 
     system::role { 'wikimania_scholarships':
         description => 'Wikimania Scholarships server'
