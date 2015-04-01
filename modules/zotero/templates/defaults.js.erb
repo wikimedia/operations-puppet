@@ -9,6 +9,8 @@ pref("translation-server.debug.level", 3);
 pref("network.proxy.type", 1);
 pref("network.proxy.http", "<%= @http_proxy_host %>");
 pref("network.proxy.http_port", <%= @http_proxy_port %>);
+pref("network.proxy.https", "<%= @http_proxy_host %>");
+pref("network.proxy.https_port", <%= @http_proxy_port %>);
 <%- end -%>
 
 // Don't retrieve unrequested links when performing standalone translation
