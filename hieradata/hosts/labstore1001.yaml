@@ -1,3 +1,4 @@
 base::resolving::domain_search:
   - wikimedia.org
   - eqiad.wmnet
+role::labs::nfs::fileserver::monitor_iface: bond0
