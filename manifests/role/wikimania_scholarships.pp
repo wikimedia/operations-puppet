@@ -5,10 +5,6 @@
 class role::wikimania_scholarships {
 
     class { '::wikimania_scholarships':
-        # Opening date for 2014 application cycle
-        open_date    => '2014-01-06T00:00:00Z',
-        # Closing date for 2014 application cycle
-        close_date   => '2014-02-17T23:59:59Z',
         hostname     => 'scholarships.wikimedia.org',
         deploy_dir   => '/srv/deployment/scholarships/scholarships',
         cache_dir    => '/var/cache/scholarships',
