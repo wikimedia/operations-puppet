@@ -1,7 +1,9 @@
 #!/usr/bin/python
 import os
+import sys
 import pwd
 import re
+import time
 import subprocess
 import argparse
 import xml.etree.ElementTree as ET
@@ -51,49 +53,25 @@ def start_web_job(server, release):
     subprocess.check_call(command, stdout=open(os.devnull, 'wb'))
 
 
-def stop_job(job_id):
+def stop_job(job):
     """
     Deletes a job with given job id from the grid
 
     :param job_id: Job id to delete
     """
+    job_id = job.findtext('.//JB_job_number')
     command = ['qdel', job_id]
     subprocess.check_call(command, stdout=open(os.devnull, 'wb'))
 
 
-def qstat_xml(*args):
+def get_job_xml(job_name):
     """
-    Executes a qstat call and returns the output in XML format
+    Gets job status xml of a particular job with a particular name in a particular queue
 
-    :param args: Arguments to the qstat call
-    :return: String response in XML form of the qstat output
-    """
-    qstat_args = ['qstat'] + list(args) + ['-xml']
-    output = subprocess.check_output(qstat_args)
-    return output
-
-
-def xpath_string(string, xpath):
-    """
-    Parses given string as XML, returns single string value
-    produced by the given xpath query
-
-    :param string: String to parse as XML
-    :param xpath: XPath query to run over the parsed XML
-    :return: Single string that is the result of the XPath query
-    """
-    xml = ET.fromstring(string)
-    return xml.findtext(xpath)
-
-def get_job_id(queue_name, job_name):
-    """
-    Gets job id of a particular job with a particular name in a particular queue
-
-    :param queue_name: Queue name to look in
     :param job_name:  Job name to look for
-    :return: Job id if the job is found, None otherwise
+    :return: ET xml object if the job is found, None otherwise
     """
-    output = qstat_xml('-q', queue_name, '-j', job_name)
+    output = subprocess.check_output(['qstat', '-xml'])
 
     # Fix XML.
     output = re.sub('JATASK:[^>]*', 'jatask', output)
@@ -104,23 +82,42 @@ def get_job_id(queue_name, job_name):
     # If the job is not found.
     if '<unknown_jobs' in output and '<>' in output:
         return None
-    return xpath_string(output, './/JB_job_number')
+    xml = ET.fromstring(output)
+    job_name_node = xml.find('.//job_list[JB_name="%s"]' % job_name)
+    return job_name_node
 
-def wait_for_job(queue_name, job_name, up=True):
+
+def wait_for_job_running(job_name):
     """
-    Waits for a job to be either up (or down), printing .s while waiting
+    Waits for a job to be either up, printing .s while waiting
 
-    :param queue_name: Queue name to look for the job in
     :param job_name: Name of job to look for
-    :param up: True if we want to wait for the job to be up, false for down
-    :return returns the job id, if up=True
     """
     while True:
-        jid = get_job_id(queue_name, job_name)
-        if jid is None == up:
-            print '.',
+        job = get_job_xml(job_name)
+        state = job.findtext('.//state') if job is not None else None
+        if job is None or state != 'r':
+            sys.stdout.write('.')
+            sys.stdout.flush()
+            time.sleep(1)
         else:
-            return jid
+            break
+
+
+def wait_for_job_stopped(job_name):
+    """
+    Waits for a job to be either down, printing .s while waiting
+
+    :param job_name: Name of job to look for
+    """
+    while True:
+        job = get_job_xml(job_name)
+        if job is not None:
+            sys.stdout.write('.')
+            sys.stdout.flush()
+            time.sleep(1)
+        else:
+            break
 
 # Setup constants that we would need later on
 PREFIX = read_file('/etc/wmflabs-project', 'tools').strip() # project name
@@ -139,51 +136,57 @@ MEMLIMIT = read_file(
     ), '4g'
 ).strip()
 
-parser = argparse.ArgumentParser()
-parser.add_argument('server', help='Type of server to start',
-                    choices=['lighttpd', 'tomcat', 'uwsgi-python', 'nodejs'], default='lighttpd', nargs='?')
-parser.add_argument('action', help='Action to perform',
-                    choices=['stop', 'start', 'restart', 'status'])
-parser.add_argument('--release', help='Which Ubuntu release the node running the webservice sould be on',
-                    choices=['precise', 'trusty'], default='trusty')
-args = parser.parse_args()
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('server', help='Type of server to start',
+                        choices=['lighttpd', 'tomcat', 'uwsgi-python', 'nodejs'],
+                        default='lighttpd', nargs='?')
+    parser.add_argument('action', help='Action to perform',
+                        choices=['stop', 'start', 'restart', 'status'])
+    parser.add_argument('--release',
+                        help='Which Ubuntu release the node running the webservice sould be on',
+                        choices=['precise', 'trusty'], default='trusty')
+    args = parser.parse_args()
 
-queue_name = 'webgrid-%s' % args.server # Queues are named webgrid-{tomcat,lighttpd}
-job_name = '%s-%s' % (args.server, TOOL) # Format for job names. one tool can have only one job running on webgrid
+    job_name = '%s-%s' % (args.server, TOOL) # Format for job names. one tool can have only one job running on webgrid
 
-job_id = get_job_id(queue_name, job_name)
+    job = get_job_xml(job_name)
 
-# And no precise for these, so default to trusty
-if args.server in ('uwsgi-python', 'nodejs', 'tomcat'):
-    args.release = 'trusty'
+    # And no precise for these, so default to trusty
+    if args.server in ('uwsgi-python', 'nodejs', 'tomcat'):
+        args.release = 'trusty'
 
-if args.action == 'start':
-    if job_id is not None:
-        print 'Your webservice is already running'
-        exit()
-    start_web_job(args.server, args.release)
-    print 'Starting web service',
-    wait_for_job(queue_name, job_name, True)
-elif args.action == 'stop':
-    if job_id is None:
-        print 'Your webservice is not running'
-        exit()
-    stop_job(job_id)
-    print 'Stopping web service'
-    wait_for_job(queue_name, job_name, False)
-elif args.action == 'restart':
-    if job_id is not None:
-        print 'Restarting'
-        stop_job(job_id)
-        wait_for_job(queue_name, job_name, False)
+    if args.action == 'start':
+        if job is not None:
+            print 'Your webservice is already running'
+            exit()
         start_web_job(args.server, args.release)
-        wait_for_job(queue_name, job_name, True)
-    else:
-        print 'Webservice not running, starting'
-        start_web_job(args.server, args.release)
-        wait_for_job(queue_name, job_name, True)
-elif args.action == 'status':
-    if job_id is None:
-        print 'Your webservice is not running'
-    else:
-        print 'Your webservice is running'
+        print 'Starting web service',
+        wait_for_job_running(job_name)
+    elif args.action == 'stop':
+        if job is None:
+            print 'Your webservice is not running'
+            exit()
+        stop_job(job)
+        print 'Stopping web service',
+        wait_for_job_stopped(job_name)
+    elif args.action == 'restart':
+        if job is not None:
+            print 'Restarting',
+            stop_job(job)
+            wait_for_job_stopped(job_name)
+            start_web_job(args.server, args.release)
+            wait_for_job_running(job_name)
+        else:
+            print 'Webservice not running, starting',
+            start_web_job(args.server, args.release)
+            wait_for_job_running(job_name)
+    elif args.action == 'status':
+        if job is None:
+            print 'Your webservice is not running',
+        else:
+            print 'Your webservice is running',
+    print  # Extra newline at the end, since we're not outputting newlines by default elsewhere
+
+if __name__ == '__main__':
+    main()
