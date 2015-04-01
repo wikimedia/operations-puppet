@@ -61,7 +61,8 @@ groups:
       haithams, mhurd, dbrant, mglaser, kleduc, bsitzmann, deskana,
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
       bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
-      joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher]
+      joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
+      pcoombe]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -176,7 +177,7 @@ groups:
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit]
+              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -1384,4 +1385,10 @@ users:
     realname: Moritz Muehlenhoff
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZnM4K3crGB7rmCfrDbUgivp+lUlOTBQfW++9igVSbV1b7RYzzWri/LDLkfi4cstEccGIV+4s/V9P7UoV++EWH6+qoUZk6pkSwZS5sqjN1DE41kskzuA07G0w1xot/Wf4JzBSJRvZrQ/9VLTe2/OUaFTnZYzoMT+1gRSkEEt7SaEFPIQ2Vh0Hc0Y3vORfYj4IG6gC7qA4vqb/LqvhpfFIj9MlgMIgTfv94sqnAlXyrWydsrVdUvqiB2pdAyfX1XKa5Ysa4abbE2pzduy/UfQmxMbEJUQDfU+N5WhFzyfsVdtv0ZEHcZFkCaJSnEM7UeDBz623FTqhrop3pUMNg5r1v Moritz Muehlenhoff production key]
     uid: 11984
-
+  pcoombe:
+    ensure: present
+    gid: 500
+    name: pcoombe
+    realname: Peter Coombe
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmw1FPftHdsd15oLtKOEcqgZY/pHPvkb1UJQT5vwIRdBvEPOMHB/KNNHpx6YcSSXLWjptiI4BwrotavvFCWtLKSKm8Qx2b76aDpW52i0zjcItQsf+SY+nYwYOtRFmHAiMthBc4FnFK+d+T9HCM1w03nsYhYKuYE2Z/p3u754VyClBI/QxBMCBeaq1bkj4OtUmLnHW1bifcsGVW8pvQIFVEIFXoPg/rZQHM6IiiorDI3VHbZxQI5fUcdQtdLF+IE8xiU+1dNUa1p+rGAkoMo3viwVZVOtK0qAaN/+nsKvBb/dZt/srkWwcnzvkPNIn8SJXiDFV7OIfd33dSqUm9UmtX peter@Peters-MBP.home]
+    uid: 3428
