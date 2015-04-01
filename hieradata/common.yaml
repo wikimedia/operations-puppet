@@ -89,8 +89,8 @@ ganglia_clusters:
         - cp1057.eqiad.wmnet
       esams: []
       ulsfo:
-        - cp4008.ulsfo.wmnet
-        - cp4016.ulsfo.wmnet
+        - cp4001.ulsfo.wmnet
+        - cp4003.ulsfo.wmnet
   cache_upload:
     name: "Upload caches"
     id: 22
