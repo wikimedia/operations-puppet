@@ -6,7 +6,7 @@
 #
 define diamond::collector::conntrack {
 
-    diamond::collector { 'conntrack':
+    diamond::collector { 'Conntrack':
         source  => 'puppet:///modules/diamond/collector/conntrack.py',
     }
 
