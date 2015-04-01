@@ -136,6 +136,7 @@ MEMLIMIT = read_file(
     ), '4g'
 ).strip()
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('server', help='Type of server to start',
@@ -146,7 +147,13 @@ def main():
     parser.add_argument('--release',
                         help='Which Ubuntu release the node running the webservice sould be on',
                         choices=['precise', 'trusty'], default='trusty')
-    args = parser.parse_args()
+
+    # Compat with 'old style' webservice params, which were '-lighttpd' and '-tomcat'
+    # Only support lighttpd and tomcat because old webservice only supported those
+    # FIXME: Instrument this, get rid of old style callers, and get rid of this hack
+    hacked_args = [arg.strip('-') if arg in ('-lighttpd', '-tomcat') else arg
+                   for arg in sys.argv[1:]]
+    args = parser.parse_args(hacked_args)
 
     job_name = '%s-%s' % (args.server, TOOL) # Format for job names. one tool can have only one job running on webgrid
 
