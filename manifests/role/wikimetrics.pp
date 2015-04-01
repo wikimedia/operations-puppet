@@ -344,8 +344,7 @@ class role::wikimetrics {
             hour            => '23',
             parser          => 'LineCountLogster',
             logfile         => '/var/log/apache2/access.wikimetrics.log',
-            logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix='analytics.wikimetrics.requests.ui' --parser-options '--regex=.*(report|cohort|metrics|login|a
-bout|contact).*'"
+            logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix='analytics.wikimetrics.requests.ui' --parser-options '--regex=.*(report|cohort|metrics|login|about|contact).*'"
         }
     }
 }
