@@ -96,7 +96,7 @@ def wait_for_job_running(job_name):
     while True:
         job = get_job_xml(job_name)
         state = job.findtext('.//state') if job is not None else None
-        if job is None or state != 'r':
+        if job is None or 'r' not in state:
             sys.stdout.write('.')
             sys.stdout.flush()
             time.sleep(1)
