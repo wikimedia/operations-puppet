@@ -1,7 +1,7 @@
 csw1-esams.wikimedia.org:foundry:down:
 br1-knams.wikimedia.org:foundry:down:
 asw-esams.mgmt.esams.wmnet:juniper:up:
-csw2-esams.wikimedia.org:juniper:up:
+csw2-esams.mgmt.esams.wmnet:juniper:up:
 cr1-esams.wikimedia.org:juniper:up:
 cr2-knams.wikimedia.org:juniper:up:
 cr1-eqiad.wikimedia.org:juniper:up:

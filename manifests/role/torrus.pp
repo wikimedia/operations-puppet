@@ -29,7 +29,7 @@ class role::torrus {
         'asw-c-codfw.mgmt.codfw.wmnet',
         'asw-d-codfw.mgmt.codfw.wmnet',
         'asw-esams.mgmt.esams.wmnet',
-        'csw2-esams.wikimedia.org',
+        'csw2-esams.mgmt.esams.wmnet',
         'msw1-eqiad.mgmt.eqiad.wmnet',
         'psw1-eqiad.mgmt.eqiad.wmnet',
     ]

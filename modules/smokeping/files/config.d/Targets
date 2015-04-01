@@ -108,8 +108,8 @@ host = cr2-knams.wikimedia.org
 
 +++ csw2-esams
 menu = csw2-esams
-title = csw2-esams.wikimedia.org
-host = csw2-esams.wikimedia.org
+title = csw2-esams.mgmt.esams.wmnet
+host = csw2-esams.mgmt.esams.wmnet
 
 +++ asw-esams
 menu = asw-esams
