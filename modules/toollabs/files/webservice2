@@ -146,7 +146,7 @@ def main():
                         choices=['stop', 'start', 'restart', 'status'])
     parser.add_argument('--release',
                         help='Which Ubuntu release the node running the webservice sould be on',
-                        choices=['precise', 'trusty'], default='trusty')
+                        choices=['precise', 'trusty'])
 
     # Compat with 'old style' webservice params, which were '-lighttpd' and '-tomcat'
     # Only support lighttpd and tomcat because old webservice only supported those
@@ -159,9 +159,18 @@ def main():
 
     job = get_job_xml(job_name)
 
-    # And no precise for these, so default to trusty
-    if args.server in ('uwsgi-python', 'nodejs', 'tomcat'):
-        args.release = 'trusty'
+    # If called as 'webservice' then default to precise instead of trusty, only for lighttpd.
+    # This should change at some point as we force more tools to get on trusty
+    if args.release is None:
+        if sys.argv[0].endswith('webservice') and args.server == 'lighttpd':
+            args.release = 'precise'
+        else:
+            args.release = 'trusty'
+
+    # No precise support for anything other than lighttpd
+    if args.release == 'precise' and args.server != 'lighttpd':
+        print 'Running on Ubuntu Precise only available for lighttpd servers'
+        sys.exit(-1)
 
     if args.action == 'start':
         if job is not None:
