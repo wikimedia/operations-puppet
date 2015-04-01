@@ -6,8 +6,8 @@ routers but potentially valuable anywhere iptables are used to stateful
 filtering.
 
 Reports:
-    - nf_conntrack_max
-    - nf_conntrack_count
+    - network.netfilter.conntrack_max
+    - network.netfilter.conntrack_count
 
 Adapted from PuppetAgentCollector
 
@@ -44,8 +44,8 @@ class ConntrackCollector(diamond.collector.Collector):
 
         value = self._get_sysctl('net.netfilter.nf_conntrack_max')
         if value is not None:
-            self.publish('nf_conntrack_max', value)
+            self.publish('network.netfilter.conntrack_max', value)
 
         value = self._get_sysctl('net.netfilter.nf_conntrack_count')
         if value is not None:
-            self.publish('nf_conntrack_count', value)
+            self.publish('network.netfilter.conntrack_count', value)
