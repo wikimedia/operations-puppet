@@ -1,5 +1,6 @@
 class ferm {
-    package { 'ferm':
+    # @resolve requires libnet-dns-perl
+    package { ['ferm', 'libnet-dns-perl']:
         ensure => present,
     }
 
