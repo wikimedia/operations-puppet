@@ -37,7 +37,7 @@ class role::labs::nfs::dumps($dump_servers_ips) {
 # The role class for the NFS servers that provide general filesystem
 # services to Labs.
 #
-class role::labs::nfs::fileserver {
+class role::labs::nfs::fileserver($monitor_iface = 'eth0') {
     include standard
 
     # eqiad still uses LDAP for now
@@ -53,9 +53,10 @@ class role::labs::nfs::fileserver {
     include openstack::project-nfs-storage-service
     include openstack::replica_management_service
 
+    iface = 
     monitoring::graphite_threshold { 'network_out_saturated':
         description => 'Outgoing network saturation',
-        metric      => "servers.${::hostname}.network.bond0.tx_byte.value",
+        metric      => "servers.${::hostname}.network.${monitor_iface}.tx_byte.value",
         from        => '30min',
         warning     => '75000000',  # roughly 600Mbps / 1Gbps
         critical    => '100000000', # roughly 800Mbps / 1Gbps
@@ -64,7 +65,7 @@ class role::labs::nfs::fileserver {
 
     monitoring::graphite_threshold { 'network_in_saturated':
         description => 'Incoming network saturation',
-        metric      => "servers.${::hostname}.network.bond0.rx_byte.value",
+        metric      => "servers.${::hostname}.network.${monitor_iface}.rx_byte.value",
         from        => '30min',
         warning     => '75000000',  # roughly 600Mbps / 1Gbps
         critical    => '100000000', # roughly 800Mbps / 1Gbps
