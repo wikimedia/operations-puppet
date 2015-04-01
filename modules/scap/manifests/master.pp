@@ -19,6 +19,7 @@ class scap::master(
         ensure    => present,
         group     => $deployment_group,
         shared    => true,
+        before    => Exec['fetch_mediawiki'],
     }
 
     rsync::server::module { 'common':
