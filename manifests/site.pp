@@ -1762,6 +1762,7 @@ node /^rbf200[1-2]\.codfw\.wmnet/ {
 # restbase eqiad cluster
 node /^restbase100[1-6]\.eqiad\.wmnet$/ {
     role restbase, cassandra
+    include base::firewall
     include standard
     include admin
 }
