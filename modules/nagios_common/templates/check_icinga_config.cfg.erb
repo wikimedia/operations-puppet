@@ -1,5 +1,5 @@
 # Check icinga config command definition
 define command{
        command_name check_icinga_config
-       command_line /usr/lib/nagios/plugins/<%= @title -%> <%= @config_dir -%>/icinga.cfg
+       command_line /usr/lib/nagios/plugins/check_icinga_config <%= @config_dir -%>/icinga.cfg
 }
