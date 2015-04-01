@@ -30,7 +30,7 @@ class ConntrackCollector(diamond.collector.Collector):
 
     def _get_sysctl(self, name):
 
-        path = '/proc/sys/' + name.translate(str.maketrans('.', '/'))
+        path = '/proc/sys/' + name.translate(string.maketrans('.', '/'))
 
         try:
             with open(path) as f:
