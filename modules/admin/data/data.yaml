@@ -1377,3 +1377,11 @@ users:
     realname: Lydia Pintscher
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA38VRVZ7vOG5Ltv8PdPWShwHb934pIWNav2cRc4qRiaU71YT5Rc9QGQV3t0Cs3fYJ+eh8O2Xr1K6t+2KKJLuDJE84MXq9G9ptGCis9vDb/JimZuaL3Jol16rB5wbzekoCNZyysIHQ4t+gNKnjUA3OXjeAoJy9m76tUvh+cp31LN5DPNJ29QuVO4aTP4IgAl/BYf+j6GBOpkTd4RicUnS9lGGckAcfETk4AYyYqMf4sw5RSyBQESV8Bb0MtTcNNHTSErSFhxT67ijfC1FA5eKTY5MgvHjItNI16lM+Z3SoASlyIIPz4cyQVnM7TswsuF6oYyE1JV4Rlywv6WvWWMm4/w== lydia@hel]
     uid: 2222
+  jmm:
+    ensure: present
+    gid: 500
+    name: jmm
+    realname: Moritz Muehlenhoff
+    ssh_keys: []
+    uid: 11984
+
