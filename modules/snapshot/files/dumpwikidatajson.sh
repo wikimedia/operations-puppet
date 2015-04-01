@@ -2,18 +2,11 @@
 #
 # Generate a json dump for Wikidata and remove old ones.
 #
-# @author Marius Hoch < hoo@online.de >
+# Marius Hoch < hoo@online.de >
 
+. /usr/local/bin/wikidatadumps-shared.sh
 
-configfile="/srv/dumps/confs/wikidump.conf"
-
-apacheDir=`egrep "^dir=" "$configfile" | mawk -Fdir= '{ print $2 }'`
-targetDir=`egrep "^public=" "$configfile" | mawk -Fpublic= '{ print $2 }'`/other/wikidata
-tempDir=`egrep "^temp=" "$configfile" | mawk -Ftemp= '{ print $2 }'`
-
-multiversionscript="${apacheDir}/multiversion/MWScript.php"
-
-filename=`date +'%Y%m%d'`
+filename=wikidata-`date +'%Y%m%d'`-all
 targetFile=$targetDir/$filename.json.gz
 
 i=0
@@ -26,11 +19,10 @@ done
 
 wait
 
-i=0
-
 # Open the json list
 echo '[' | gzip -f > $targetFile
 
+i=0
 while [ $i -lt $shards ]; do
 	cat $tempDir/wikidataJson.$i.gz >> $targetFile
 	rm $tempDir/wikidataJson.$i.gz
@@ -44,8 +36,22 @@ done
 # Close the json list
 echo -e '\n]' | gzip -f >> $targetFile
 
-# Remove dumps we no longer need (keep 10 => last 70 days)
-find $targetDir -name '20*.gz' -mtime +71 -delete
+# Remove dump-folders we no longer need (keep $daysToKeep days)
+cutOff=$(expr `date +%s` - `expr $daysToKeep + 1` * 24 * 3600) # Keep folders younger than this (unix time)
+foldersToDelete=`ls -d -r $targetDirBase/*` # $targetDirBase is known to be non-empty
+for folder in $foldersToDelete; do
+	# Try to get the unix time from the folder name, if this fails we'll just
+	# keep the folder (as it's not a valid date).
+	creationTime=$(date --utc --date="$(basename $folder)" +%s 2>/dev/null)
+	if [ -n "$creationTime" ] && [ "$cutOff" -lt "$creationTime" ]; then
+		rm -rf $folder
+	fi
+done
 
-# Remove old logs (keep 5 => last 35 days)
-find /var/log/wikidatadump/ -name 'dumpwikidatajson-*-*.log' -mtime +36 -delete
+# Legacy directory (with legacy naming scheme), contains symlinks
+legacyDirectory=`awk -Fpublic= '/^public=/ { print $2 }' "$configfile"`/other/wikidata
+ln -s $targetFile "$legacyDirectory/`date +'%Y%m%d'`.json"
+find $legacyDirectory -name '*.json.gz' -mtime +`expr $daysToKeep + 1` -delete
+
+pruneOldDirectories
+pruneOldLogs
