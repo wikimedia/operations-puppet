@@ -1166,12 +1166,6 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     include role::ganeti
 }
 
-node /^(haedus|capella)\.codfw\.wmnet$/ {
-    include admin
-    include standard
-    system::role{ 'Orientdb test cluster': }
-}
-
 node 'helium.eqiad.wmnet' {
     include admin
     include standard
