@@ -32,25 +32,23 @@ class snapshot::wikidatadumps::json(
         description => 'producer of weekly wikidata json dumps'
     }
 
-    file { '/usr/local/bin/dumpwikidatajson.sh':
+    $scriptPath = '/usr/local/bin/dumpwikidatajson.sh'
+    file { $scriptPath:
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
         source  => 'puppet:///modules/snapshot/dumpwikidatajson.sh',
+        require => Class['snapshot::wikidatadumps::common'],
     }
 
     cron { 'wikidatajson-dump':
         ensure      => $ensure,
-        command     => "/usr/local/bin/dumpwikidatajson.sh",
+        command     => $scriptPath,
         user        => $user,
         minute      => '15',
         hour        => '3',
         weekday     => '1',
-    }
-
-    # Purge system::role with former class name
-    system::role { 'snapshot::wikidatajsondump':
-        ensure => 'absent'
+        require => File[$scriptPath],
     }
 }
 
@@ -72,19 +70,22 @@ class snapshot::wikidatadumps::ttl(
         description => 'producer of weekly wikidata ttl dumps'
     }
 
-    file { '/usr/local/bin/dumpwikidatattl.sh':
+    $scriptPath = '/usr/local/bin/dumpwikidatattl.sh'
+    file { $scriptPath:
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
         source  => 'puppet:///modules/snapshot/dumpwikidatattl.sh',
+        require => Class['snapshot::wikidatadumps::common'],
     }
 
     cron { 'wikidatattl-dump':
         ensure      => $ensure,
-        command     => "/usr/local/bin/dumpwikidatattl.sh",
+        command     => $scriptPath,
         user        => $user,
         minute      => '15',
         hour        => '3',
         weekday     => '3',
+        require => File[$scriptPath],
     }
 }
