@@ -1,5 +1,6 @@
-nagios_group: analytics_eqiad
-cluster: analytics
 admin::groups:
+  - analytics-users
+  - analytics-privatedata-users
   - analytics-roots
   - analytics-admins
+
