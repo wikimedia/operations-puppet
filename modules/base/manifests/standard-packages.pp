@@ -65,7 +65,7 @@ class base::standard-packages {
     }
 
     # real-hardware specific
-    unless $::is_virtual {
+    if $::is_virtual == 'false' {
         package { 'mcelog': ensure => latest }
         package { 'intel-microcode': ensure => latest }
     }
