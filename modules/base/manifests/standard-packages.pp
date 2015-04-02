@@ -22,7 +22,6 @@ class base::standard-packages {
         'ngrep',
         'httpry',
         'acct',
-        'git-core',
         'ack-grep',
         'tree',
         'debian-goodies',
@@ -40,6 +39,13 @@ class base::standard-packages {
     if ! defined ( Package['gdb'] ) {
         package { 'gdb':
             ensure => latest
+        }
+    }
+
+    # Can clash with authdns::scripts class
+    if ! defined(Package['git-core']){
+        package { 'git-core':
+            ensure => latest,
         }
     }
 
