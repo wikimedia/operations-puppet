@@ -1,14 +1,4 @@
-class snapshot::wikidatadumps::common(
-    $enable = true,
-    $user   = undef,
-) {
-    if ($enable == true) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
-
+class snapshot::wikidatadumps::common {
     file { '/usr/local/bin/wikidatadumps-shared.sh':
         mode    => '0755',
         owner   => 'root',
@@ -28,10 +18,7 @@ class snapshot::wikidatadumps::json(
     $enable = true,
     $user   = undef,
 ) {
-    class { 'snapshot::wikidatadumps::common':
-        enable => $enable,
-        user   => $user
-    }
+    include snapshot::wikidatadumps::common
 
     if ($enable == true) {
         $ensure = 'present'
@@ -71,10 +58,7 @@ class snapshot::wikidatadumps::ttl(
     $enable = true,
     $user   = undef,
 ) {
-    class { 'snapshot::wikidatadumps::common':
-        enable => $enable,
-        user   => $user
-    }
+    include snapshot::wikidatadumps::common
 
     if ($enable == true) {
         $ensure = 'present'
