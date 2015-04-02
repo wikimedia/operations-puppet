@@ -121,6 +121,15 @@ class toollabs::dev_environ {
         mode   => '0555',
     }
 
+    file { '/usr/local/bin/webservice':
+        ensure => link,
+        target => '/usr/local/bin/webservice2',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        require => File['/usr/local/bin/webservice2'],
+    }
+
     # TODO: deploy scripts
     # TODO: packager
 }
