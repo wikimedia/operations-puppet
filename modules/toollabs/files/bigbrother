@@ -102,7 +102,7 @@ sub readconfig($) {
                     next;
                 }
                 $expect = "$name-$1";
-                $start = "/usr/local/bin/webservice2 --release $rel $name start";
+                $start = "/usr/local/bin/webservice2 $rel $name start";
             } elsif(m/^jstart\s+-N\s+(\S+)\s+(.*)$/) {
                 $expect = $1;
                 $start = "/usr/bin/jstart -N '$expect' $2";
