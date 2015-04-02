@@ -6,6 +6,7 @@ import re
 import time
 import subprocess
 import argparse
+import errno
 import xml.etree.ElementTree as ET
 
 
@@ -29,10 +30,13 @@ def read_file(path, default=None):
     :param default: Value to return if the file does not exist
     :return: String containing either contents of the file, or default value
     """
-    if os.path.exists(path):
+    try:
         with open(path) as f:
             return f.read()
-    return default
+    except IOError as e:
+        if e.errno == errno.ENOENT:
+            return default
+        raise
 
 
 def start_web_job(server, release):
