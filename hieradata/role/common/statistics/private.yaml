@@ -1,0 +1,7 @@
+cluster: statistics
+admin::groups:
+  - statistics-privatedata-users
+  - statistics-admins
+  - analytics-privatedata-users
+  - analytics-roots
+  - analytics-admins
