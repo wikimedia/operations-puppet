@@ -65,8 +65,15 @@ class base::standard-packages {
     }
 
     # real-hardware specific
-    unless $::is_virtual {
-        package { 'mcelog': ensure => latest }
-        package { 'intel-microcode': ensure => latest }
+    # Note: False is quoted on purpose
+    # lint:ignore:quoted_booleans
+    if $::is_virtual == 'false' {
+    # lint:endignore
+        package { [
+            'mcelog',
+            'microcode',
+            ]:
+            ensure => latest,
+        }
     }
 }
