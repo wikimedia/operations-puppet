@@ -43,6 +43,13 @@ class base::standard-packages {
         }
     }
 
+    # Can clash with authdns::scripts class
+    if ! defined(Package['git-core']){
+        package { 'git-core':
+            ensure => latest,
+        }
+    }
+
     # This should be in $packages, but moved here temporarily because it's
     # currently broken on jessie hosts...
     if ! os_version('debian >= jessie') {
