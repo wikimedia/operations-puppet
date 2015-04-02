@@ -1,5 +1,5 @@
-nagios_group: analytics_eqiad
-cluster: analytics
 admin::groups:
   - analytics-roots
   - analytics-admins
+cluster: analytics_kafka
+nagios_group: analytics_eqiad

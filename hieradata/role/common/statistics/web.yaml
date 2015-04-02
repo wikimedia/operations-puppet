@@ -1,0 +1,3 @@
+cluster: statistics
+admin::groups:
+  - statistics-web-users
