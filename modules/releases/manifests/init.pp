@@ -55,4 +55,9 @@ class releases (
             File['/srv/org/wikimedia/releases']
         ],
     }
+
+    # T94486
+    package { 'phpunit':
+        ensure => present,
+    }
 }
