@@ -34,11 +34,6 @@ statistics:
   __regex: !ruby/regexp /stat100[123].eqiad.wmnet/
   mainrole: statistics
 
-orientdb_test:
-  __regex: !ruby/regexp /^(haedus|capella)\.codfw\.wmnet$/
-  admin::groups:
-    - wikidata-query-roots
-
 cassandra_test:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   cassandra::seeds:
