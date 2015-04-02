@@ -79,4 +79,15 @@ class role::labs::nfs::fileserver($monitor_iface = 'eth0') {
         critical    => '35',
         percentage  => '50', # Ignore small spikes
     }
+
+    # Monitor for high load consistently, is a 'catchall'
+    monitoring::graphite_threshold { 'high_load':
+        description => 'High load for whatever reason',
+        metric      => "servers.${::hostname}.cpu.total.iowait.value",
+        from        => '10min',
+        warning     => '16',
+        critical    => '24',
+        percentage  => '50', # Don't freak out on spikes
+    }
+
 }
