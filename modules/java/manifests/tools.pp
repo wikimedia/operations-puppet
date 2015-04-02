@@ -4,6 +4,8 @@
 # java (JRE or JDK) is installed.
 
 class java::tools {
+
+    # Can clash with base::standard-packages class
     if ! defined ( Package['gdb'] ) {
         package { 'gdb':
             ensure => present
