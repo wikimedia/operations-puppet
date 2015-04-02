@@ -469,11 +469,6 @@ host californium {
 	fixed-address californium.wikimedia.org;
 }
 
-host capella {
-	hardware ethernet 90:B1:1C:23:20:4D;
-	fixed-address capella.codfw.wmnet;
-}
-
 host carbon {
 	hardware ethernet 78:2b:cb:09:0e:a0;
 	fixed-address carbon.wikimedia.org;
@@ -2123,11 +2118,6 @@ host graphite1002 {
 host graphite2001 {
 	hardware ethernet B0:83:FE:DF:24:CA;
 	fixed-address graphite2001.codfw.wmnet;
-}
-
-host haedus {
-	hardware ethernet 90:B1:1C:23:31:85;
-	fixed-address haedus.codfw.wmnet;
 }
 
 host hafnium {
