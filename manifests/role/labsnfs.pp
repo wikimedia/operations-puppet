@@ -71,4 +71,13 @@ class role::labs::nfs::fileserver($monitor_iface = 'eth0') {
         percentage  => '10',        # smooth over peaks
     }
 
+    monitoring::graphite_threshold { 'high_iowait_stalling':
+        description => 'Persistent high iowait',
+        metric      => "servers.${::hostname}.cpu.total.iowait.value",
+        from        => '10min',
+        warning     => '40',
+        critical    => '50',
+        percentage  => '50', # Spikes shouldn't last long at all
+    }
+
 }
