@@ -1,0 +1,14 @@
+dumps::rsync_clients:
+  - dataset1001.wikimedia.org
+  - ms1001.wikimedia.org
+  - stat1002.eqiad.wmnet
+  - stat1003.eqiad.wmnet
+  - sagres.c3sl.ufpr.br
+  - odysseus.fi.muni.cz
+  - odysseus.linux.cz
+  - odysseus.ip6.fi.muni.cz
+  - mirror.fr.wickedway.nl
+  - wikimedia.wansec.com
+  - ftpmirror.your.org
+  - ec2-174-129-186-231.compute-1.amazonaws.com
+  - ftpmirror-ae0-4.us.your.org
