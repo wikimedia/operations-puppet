@@ -18,22 +18,6 @@ es_rack_d4:
   elasticsearch::rack: D4
   elasticsearch::row:  D
 
-hadoop_workers:
-  __regex: !ruby/regexp /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/
-  mainrole: analytics_hadoop_worker
-
-kafka_brokers:
-  __regex: !ruby/regexp /analytics10(12|18|21|22)\.eqiad\.wmnet/
-  mainrole: analytics_kafka
-
-zookeeper:
-  __regex: !ruby/regexp /analytics102[345].eqiad.wmnet/
-  mainrole: analytics_zookeeper
-
-statistics:
-  __regex: !ruby/regexp /stat100[123].eqiad.wmnet/
-  mainrole: statistics
-
 orientdb_test:
   __regex: !ruby/regexp /^(haedus|capella)\.codfw\.wmnet$/
   admin::groups:

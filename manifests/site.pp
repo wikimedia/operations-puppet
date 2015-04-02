@@ -70,15 +70,10 @@ node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
 # analytics1003 is being used for testing kafkatee
 # in preperation for replacing udp2log
 node 'analytics1003.eqiad.wmnet' {
-    class { 'admin':
-        groups => [
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
-    include standard
+    role analytics
 
-    include role::analytics
+    include standard
+    include admin
 
     # Disabling these for now.
     # analytics1003 is acting up since the Trusty upgrade. I halts with:
@@ -96,64 +91,33 @@ node 'analytics1003.eqiad.wmnet' {
 # - primary active NameNode
 # - YARN ResourceManager
 node 'analytics1001.eqiad.wmnet' {
-    class { 'admin':
-        groups => [
-            'analytics-users',
-            'analytics-privatedata-users',
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
-    include standard
+    role analytics::hadoop::master
 
-    include role::analytics::hadoop::master
+    include standard
+    include admin
 }
 
 
 # analytics1002 is the Hadoop standby NameNode.
 node 'analytics1002.eqiad.wmnet' {
-    class { 'admin':
-        groups => [
-            'analytics-users',
-            'analytics-privatedata-users',
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
+    role analytics::hadoop::standby
+
     include standard
-
-    include role::analytics::hadoop::standby
+    include admin
 }
-
-
 
 
 # analytics1004 was previously the Hadoop standby NameNode
 # It is being deprecated.
 node 'analytics1004.eqiad.wmnet' {
-
-    class { 'admin':
-        groups => [
-            'analytics-users',
-            'analytics-privatedata-users',
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
+    include admin
     include standard
 }
 
 # analytics1010 was previously the Hadoop master.
 # It is being deprecated.
 node 'analytics1010.eqiad.wmnet' {
-    class { 'admin':
-        groups => [
-            'analytics-users',
-            'analytics-privatedata-users',
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
+    include admin
     include standard
 }
 
@@ -171,16 +135,9 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
     if $::hostname =~ /^analytics101[349]$/ {
         $ganglia_aggregator = true
     }
-
-    class { 'admin':
-        groups => [
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
+    role analytics::hadoop::worker
+    include admin
     include standard
-
-    include role::analytics::hadoop::worker
 }
 
 # analytics1012, analytics1018, analytics1021 and analytics1022 are Kafka Brokers.
@@ -198,44 +155,26 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
     # addresses.
     interface::add_ip6_mapped { 'main': }
 
-    class { 'admin':
-        groups => [
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
-    include standard
-
+    role analytics::kafka::server
     include role::analytics
-    include role::analytics::kafka::server
+    include standard
+    include admin
+
 }
 
 # analytics1023-1025 are zookeeper server nodes
 node /analytics102[345].eqiad.wmnet/ {
-
-    class { 'admin':
-        groups => [
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
+    role analytics
     include standard
-
-    include role::analytics
+    include admin
     include role::analytics::zookeeper::server
 }
 
 # analytics1026 runs misc udp2log for sqstat
 node 'analytics1026.eqiad.wmnet' {
 
-    class { 'admin':
-        groups => [
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
     include standard
-
+    include admin
     include role::logging::udp2log::misc
 }
 
@@ -244,12 +183,7 @@ node 'analytics1026.eqiad.wmnet' {
 # batch Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
 
-    class { 'admin':
-        groups => [
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
+    include admin
     include standard
 
     include role::analytics::hive::server
@@ -2238,33 +2172,24 @@ node 'strontium.eqiad.wmnet' {
 }
 
 node 'stat1001.eqiad.wmnet' {
+    role statistics::web
+    include admin
     include standard
-    include role::statistics::web
-
     include role::abacist
-    class { 'admin': groups => ['statistics-web-users'] }
 }
 
 node 'stat1002.eqiad.wmnet' {
-    include standard
     # stat1002 is intended to be the private
     # webrequest access log storage host.
     # Users should not use it for app development.
     # Data processing on this machine is fine.
 
-    class { 'admin':
-        groups => [
-            'statistics-privatedata-users',
-            'statistics-admins',
-            'analytics-privatedata-users',
-            'analytics-roots',
-            'analytics-admins',
-        ],
-    }
-
     # Include classes needed for storing and crunching
     # private data on stat1002.
-    include role::statistics::private
+    role statistics::private
+
+    include standard
+    include admin
 
     # Make sure refinery happens before analytics::clients,
     # so that the hive role can properly configure Hive's
@@ -2301,22 +2226,14 @@ node 'stat1002.eqiad.wmnet' {
 # to connect to MySQL research databases and save
 # query results for further processing on this node.
 node 'stat1003.eqiad.wmnet' {
+    role statistics::cruncher
     include standard
+    include admin
 
     # NOTE: This will be moved to another class
     # someday, probably standard.
     class { 'base::firewall': }
 
-    include role::statistics::cruncher
-
-    class { 'admin':
-        groups => [
-            'statistics-admins',
-            'statistics-privatedata-users',
-            'statistics-users',
-            'researchers',
-        ],
-    }
 
     include passwords::mysql::research
     # This file will render at
