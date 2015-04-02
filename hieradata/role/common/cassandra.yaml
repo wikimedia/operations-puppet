@@ -1,2 +1,21 @@
 cassandra::metrics::graphite_host: 'graphite-in.eqiad.wmnet'
 cassandra::start_rpc: 'false'
+
+# TODO: set up a cluster variable similar to MySQL clusters to share
+# cassandra cluster configs between cassandra & clients
+
+cassandra::seeds:
+    - restbase1001.eqiad.wmnet
+    - restbase1002.eqiad.wmnet
+    - restbase1003.eqiad.wmnet
+    - restbase1004.eqiad.wmnet
+    - restbase1005.eqiad.wmnet
+    - restbase1006.eqiad.wmnet
+cassandra::max_heap_size: 8g
+cassandra::heap_newsize: 1200m
+cassandra::compaction_throughput_mb_per_sec: 160
+cassandra::concurrent_compactors: 10
+
+cassandra::dc: "%{::site}"
+cassandra::cluster_name: "%{::site}"
+

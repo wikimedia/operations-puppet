@@ -1,18 +1,3 @@
-# TODO: set up a cluster variable similar to MySQL clusters to share
-# cassandra cluster configs between cassandra & clients
-
-cassandra::seeds:
-    - restbase1001.eqiad.wmnet
-    - restbase1002.eqiad.wmnet
-    - restbase1003.eqiad.wmnet
-    - restbase1004.eqiad.wmnet
-    - restbase1005.eqiad.wmnet
-    - restbase1006.eqiad.wmnet
-cassandra::max_heap_size: 8g
-cassandra::heap_newsize: 1200m
-cassandra::compaction_throughput_mb_per_sec: 160
-cassandra::concurrent_compactors: 10
-
 #
 # RESTBase
 #
@@ -31,9 +16,6 @@ restbase::parsoid_uri: http://parsoid.svc.eqiad.wmnet:8000
 
 lvs::realserver::realserver_ips:
   - '10.2.2.17' # restbase.svc.eqiad.wmnet
-
-cassandra::dc: "%{::site}"
-cassandra::cluster_name: "%{::site}"
 
 admin::groups:
   - restbase-roots
