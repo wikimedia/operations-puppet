@@ -9,10 +9,6 @@ class scap::scripts {
     require misc::deployment::passwordscripts
     require mediawiki::users
 
-    package { ['libwww-perl', 'libnet-dns-perl']:
-        ensure => 'present',
-    }
-
     file { '/usr/local/bin/clear-profile':
         owner  => 'root',
         group  => 'root',
