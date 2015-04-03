@@ -31,7 +31,7 @@ class ircecho (
         source => 'puppet:///modules/ircecho/ircecho.init',
         owner  => 'root',
         group  => 'root',
-        mode   => '0444',
+        mode   => '0544',
     }
 
     file { '/etc/default/ircecho':
