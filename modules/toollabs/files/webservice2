@@ -8,6 +8,7 @@ import subprocess
 import argparse
 import errno
 import xml.etree.ElementTree as ET
+import yaml
 
 
 def get_queue_name(server):
@@ -141,6 +142,28 @@ MEMLIMIT = read_file(
 ).strip()
 
 
+def update_service_manifest(webservice_type):
+    """
+    Update the current tool's service manifest to specify the currently started / stopped web service type
+
+    :param webservice_type: string representing webservice type (lighttpd, lighttpd-precise, nodejs, uwsgi-python)
+                            or None to represent lack of a webservice (will result in web: being removed)
+    """
+    with open(os.path.expanduser('~/service.manifest'), 'wb+') as f:
+        manifest = yaml.load(f)
+        if manifest is None:
+            manifest = {}
+        if webservice_type is None:
+            if 'web' in manifest:
+                del manifest['web']
+        else:
+            manifest['web'] = webservice_type
+        if manifest == {}:
+            f.write('')
+        else:
+            yaml.dump(manifest, f, default_flow_style=False)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('server', help='Type of server to start',
@@ -176,6 +199,10 @@ def main():
         print 'Running on Ubuntu Precise only available for lighttpd servers'
         sys.exit(-1)
 
+    # Only lighttpd has precise support
+    # Start modifying service.manifest files!1!
+    webservice_type = args.server if args.release != 'precise' else 'lighttpd-precise'
+
     if args.action == 'start':
         if job is not None:
             print 'Your webservice is already running'
@@ -183,6 +210,7 @@ def main():
         start_web_job(args.server, args.release)
         print 'Starting web service',
         wait_for_job_running(job_name)
+        update_service_manifest(webservice_type)
     elif args.action == 'stop':
         if job is None:
             print 'Your webservice is not running'
@@ -190,6 +218,7 @@ def main():
         stop_job(job)
         print 'Stopping web service',
         wait_for_job_stopped(job_name)
+        update_service_manifest(None)
     elif args.action == 'restart':
         if job is not None:
             print 'Restarting',
