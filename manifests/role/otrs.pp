@@ -55,7 +55,6 @@ class role::otrs (
         'libgd-text-perl',
         'libio-socket-ssl-perl',
         'libjson-xs-perl',
-        'libnet-dns-perl',
         'libnet-ldap-perl',
         'libpdf-api2-perl',
         'libsoap-lite-perl',
@@ -67,6 +66,13 @@ class role::otrs (
 
     package { $packages:
         ensure => 'present',
+    }
+
+    # can conflict with ferm module
+    if ! defined(Package['libnet-dns-perl']){
+        package { 'libnet-dns-perl':
+            ensure => present,
+        }
     }
 
     file { '/opt/otrs/Kernel/Config.pm':
