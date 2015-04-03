@@ -14,20 +14,46 @@ class ircecho (
     $ircecho_server = 'chat.freenode.net',
 ) {
 
-    package { 'ircecho':
+    package { ['python-pyinotify', 'python-irclib']:
         ensure => present,
     }
 
-    service { 'ircecho':
-        require => Package['ircecho'],
-        ensure  => running,
+    file { '/usr/local/bin/ircecho':
+        ensure => present,
+        source => 'puppet:///modules/ircecho/ircecho',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { '/etc/init.d/ircecho':
+        ensure => present,
+        source => 'puppet:///modules/ircecho/ircecho.init',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     file { '/etc/default/ircecho':
-        require => Package['ircecho'],
         content => template('ircecho/default.erb'),
         owner   => 'root',
         mode    => '0755',
     }
+
+    service { 'ircecho':
+        ensure  => running,
+        require => [
+            File[
+                '/usr/local/bin/ircecho',
+                '/etc/init/ircecho.init',
+                '/etc/default/ircecho'
+            ],
+            Package[
+                'python-pyinotify',
+                'python-irclib'
+            ],
+        ],
+    }
+
 }
 
