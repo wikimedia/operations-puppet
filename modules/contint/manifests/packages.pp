@@ -22,7 +22,10 @@ class contint::packages {
     # applications.
     # (openjdk is the default distribution for the java define.
     # The java define is found in modules/java/manifests/init.pp )
-    require_package('openjdk-6-jdk')
+    if ! os_version( 'debian >= jessie' ) {
+        # No more available in Jessie
+        require_package('openjdk-6-jdk')
+    }
     require_package('openjdk-7-jdk')
 
     package { 'maven2':
