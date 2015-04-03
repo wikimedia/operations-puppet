@@ -113,13 +113,13 @@ class toollabs::dev_environ {
         mode    => '0444',
     }
 
-    # This requires pyyaml but that's installed on all labs machines for puppet diamond collector
     file { '/usr/local/bin/webservice2':
-        ensure => present,
-        source => 'puppet:///modules/toollabs/webservice2',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure  => present,
+        source  => 'puppet:///modules/toollabs/webservice2',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        require => Package['python-yaml'], # Present on all hosts, defined for puppet diamond collector
     }
 
     file { '/usr/local/bin/webservice':
