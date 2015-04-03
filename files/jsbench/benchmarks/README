@@ -1,0 +1,6 @@
+A benchmark is a piece of Javascript that can be run with the
+  jsbench --benchmark <benchmark> <url>
+command. The script will be executed when the browser opens the page.
+It needs to contain a console.profile and a console.profileEnd call;
+otherwise it can be arbitrary. The output of the profileEnd call will be
+returned by jsbench.
