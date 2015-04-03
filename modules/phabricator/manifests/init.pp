@@ -168,6 +168,10 @@ class phabricator (
         before    => File["${phabdir}/phabricator/.git/config"],
     }
 
+    files { "/var/run/phd":
+        ensure => directory,
+    }
+
     file { "${phabdir}/phabricator/.git/config":
         source => 'puppet:///modules/phabricator/phabricator.gitconfig',
         before => File["${phabdir}/phabricator/scripts/"],
@@ -186,7 +190,7 @@ class phabricator (
 
     if ($libraries) {
         file { "${phabdir}/libext":
-            ensure => 'directory',
+            ensure => directory,
         }
 
         $phab_settings['load-libraries'] = $libraries
@@ -292,6 +296,13 @@ class phabricator (
         basedir  => $phabdir,
         settings => $phab_settings,
         before   => Service['phd'],
+    }
+
+    # Run a storage upgrade
+    exec { "upgrade_storage":
+        command => "php ${phabdir}/phabricator/bin/storage upgrade -f",
+        path    => "/usr/bin",
+        before  => Service['phd'],
     }
 
     # This needs to become Upstart managed
