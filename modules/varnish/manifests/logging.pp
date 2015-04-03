@@ -24,22 +24,12 @@ define varnish::logging(
         default => $instance_name
     }
 
-    file { "/etc/init.d/varnishncsa-${name}":
-        content => template("${module_name}/varnishncsa.init.erb"),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        notify  => Service["varnishncsa-${name}"],
+    base::service_unit { "varnishncsa-${name}":
+        ensure        => $ensure,
+        template_name => 'varnishncsa',
+        sysvinit      => true,
     }
 
-    service { "varnishncsa-${name}":
-        ensure    => $ensure,
-        require   => [
-                File["/etc/init.d/varnishncsa-${name}"],
-                Service[$varnishservice]
-            ],
-        subscribe => File['/etc/default/varnishncsa'],
-        pattern   => "/var/run/varnishncsa/varnishncsa-${name}.pid",
-        hasstatus => false,
-    }
+    Service[$varnishservice] -> Service["varnishncsa-${name}"]
+    File['/etc/default/varnishncsa'] ~> Service["varnishncsa-${name}"]
 }
