@@ -1,0 +1,91 @@
+# Nodepool database backend
+dburi: 'mysql+pymysql://nodepool:nodepool@localhost/nodepool'
+
+# Directory providing additional diskimage-builder elements.
+# http://docs.openstack.org/infra/nodepool/configuration.html#elements-dir
+elements-dir: /etc/nodepool/elements
+
+# Directory where Nodepool / diskimage-builder stores created images.
+# http://docs.openstack.org/infra/nodepool/configuration.html#images-dir
+images-dir: '<%= $dib_images_dir -%>'
+
+# Utilities to prepare an image. Copied to the image while it is being created.
+# http://docs.openstack.org/infra/nodepool/configuration.html#script-dir
+script-dir: /etc/nodepool/scripts
+
+# Internal Nodepool recurring tasks
+# http://docs.openstack.org/infra/nodepool/configuration.html#cron
+cron:
+  # Deletes old images and servers
+  cleanup: '*/1 * * * *'
+
+  # Logs into waiting nodes to ensure they are still operationals
+  check: '*/15 * * * *'
+
+  # Creates new images, typically to refresh images build-in caches
+  image-update: '14 14 * * *'
+
+# Zuul / Gearman server
+gearman-servers:
+  - host: gallium.wikimedia.org
+    port: 4730
+
+# Jenkins masters emits jobs start/completion over zeromq
+zmq-publishers:
+  - tcp://gallium.wikimedia.org:8888
+
+# CI systems to attach instances to
+targets:
+  - name: gallium.wikimedia.org
+    jenkins:
+      url: 'https://integration.wikimedia.org/ci/'
+      user: '<%= @jenkins_api_user -%>'
+      apikey: '<%= @jenkins_api_key -%>'
+      credentials-id: '<%= @jenkins_credentials_id -%>'
+    hostname: '{label.name}-{node_id}.<%= @openstack_tenant_id -%>.eqiad.wmflabs'
+    subnode-hostname: '{label.name}-{node_id}-{subnode_id}.<%= @openstack_tenant_id -%>.eqiad.wmflabs'
+
+# Jenkins labels
+labels:
+  - name: ci-dib-jessie-wikimedia
+    image: ci-dib-jessie-wikimedia
+    #ready-script: ready.sh
+    min-ready: 2
+    providers:
+      - name: wmflabs-eqiad
+
+providers:
+  - name: wmflabs-eqiad
+    service-type: 'compute'
+    service-name: 'nova'
+    project-id: '<%= @openstack_tenant_id -%>'
+    region-name: 'eqiad'
+    username: '<%= @openstack_username -%>'
+    password: '<%= @openstack_password -%>'
+    auth-url: '<%= @openstack_auth_url -%>'
+    boot-timeout: 300  # seconds
+    max-servers: 5
+    rate: 10  # seconds
+    # 'eqiad.wmflabs' is magically added by wmflabs
+    template-hostname: '{image.name}-{timestamp}'
+    images:
+      - name: ci-dib-jessie-wikimedia
+        diskimage: ci-dib-jessie-wikimedia
+        min-ram: 0
+        name-filter: 'm1.medium'
+        #setup: setup.sh
+        username: jenkins
+        private-key: /var/lib/nodepool/.ssh/dib_jenkins_id_rsa
+
+# See doc at http://docs.openstack.org/developer/diskimage-builder/
+diskimages:
+  - name: ci-dib-jessie-wikimedia
+    elements:
+      - debian
+      - vm
+    release: jessie
+    env-vars:
+      DIB_IMAGE_CACHE: '<% $dib_cache_dir -%>'
+      DIB_RELEASE: jessie
+      DIB_DISTRIBUTION_MIRROR: http://mirrors.wikimedia.org/debian/
+      QEMU_IMG_OPTIONS: compat=0.10
