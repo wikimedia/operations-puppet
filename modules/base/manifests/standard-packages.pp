@@ -31,6 +31,7 @@ class base::standard-packages {
         'lldpd',
         'pv',
         'tcpdump',
+        'nmap',
     ]
 
     package { $packages:
