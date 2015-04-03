@@ -156,6 +156,9 @@ class role::eventlogging {
             hosts_allow => $backup_destinations,
         }
     }
+
+    # jq is very useful, install it on eventlogging servers
+    ensure_packages(['jq'])
 }
 
 
