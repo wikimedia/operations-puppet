@@ -1112,7 +1112,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
 
     # relay the incoming webrequest log stream to multicast
     include role::logging::relay::webrequest-multicast
-    # relay EventLogging traffic over to vanadium
+    # relay EventLogging traffic over to eventlog1001
     include role::logging::relay::eventlogging
 }
 
@@ -2458,8 +2458,7 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
     role mediawiki::videoscaler
 }
 
-# Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
-# processes it, and broadcasts to internal subscribers.
+# This node will soon be deprecated.
 node 'vanadium.eqiad.wmnet' {
     role eventlogging
     include admin
@@ -2468,6 +2467,8 @@ node 'vanadium.eqiad.wmnet' {
     include role::logging::mediawiki::errors
 }
 
+# Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
+# processes it, and broadcasts to internal subscribers.
 node 'eventlog1001.eqiad.wmnet' {
     role eventlogging
     include admin

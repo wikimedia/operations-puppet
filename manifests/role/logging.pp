@@ -47,7 +47,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
     include misc::udp2log::firewall
 
     $error_processor_host = $::realm ? {
-        production => 'vanadium.eqiad.wmnet',
+        production => 'eventlog1001.eqiad.wmnet',
         labs       => "deployment-fluoride.${::site}.wmflabs",
     }
 
@@ -139,7 +139,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
 
 # == Class role::logging::mediawiki::errors
 # fluorine's udp2log instance forwards MediaWiki exceptions and fatals
-# to vanadium, as configured in templates/udp2log/filters.mw.erb. This
+# to eventlog*, as configured in templates/udp2log/filters.mw.erb. This
 # role provisions a metric module that reports error counts to StatsD.
 #
 class role::logging::mediawiki::errors {
@@ -170,16 +170,16 @@ class role::logging::relay::webrequest-multicast {
 }
 
 # == Class role::logging::relay::eventlogging
-# Relays EventLogging traffic over to Vandadium.
+# Relays EventLogging traffic over to eventlog*.
 #
 class role::logging::relay::eventlogging {
     system::role { 'misc::logging::relay::eventlogging':
-        description => 'esams bits event logging to vanadium relay',
+        description => 'esams bits event logging to eventlog* relay',
     }
 
     misc::logging::relay { 'eventlogging':
         listen_port      => '8422',
-        destination_ip   => '10.64.21.123',
+        destination_ip   => '10.64.32.167', # eventlog1001
         destination_port => '8422',
     }
 }

@@ -1,6 +1,6 @@
 flush pipe 1 python /usr/local/bin/demux.py<% if has_variable?("log_directory") then %> --basedir <%= log_directory %><% end %>
 
-# Relay MediaWiki exceptions and fatals to vanadium for generating reports.
+# Relay MediaWiki exceptions and fatals to eventlog1001 for generating reports.
 # The trailing space in the egrep regex expression, make sure we only catch
 # groups explicitly. We dont want to double count exceptions via exception and
 # exception-json
