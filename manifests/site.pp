@@ -2468,6 +2468,14 @@ node 'vanadium.eqiad.wmnet' {
     include role::logging::mediawiki::errors
 }
 
+node 'eventlog1001.eqiad.wmnet' {
+    role eventlogging
+    include admin
+    include standard
+    include role::ipython_notebook
+    include role::logging::mediawiki::errors
+}
+
 # Hosts visualization / monitoring of EventLogging event streams
 # and MediaWiki errors.
 node 'hafnium.wikimedia.org' {
