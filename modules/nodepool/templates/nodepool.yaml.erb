@@ -1,0 +1,96 @@
+# Nodepool database backend
+dburi: 'mysql+pymysql://nodepool:nodepool@localhost/nodepool'
+
+# diskimage-builder recipes
+elements-dir: /etc/nodepool/elements
+# diskimage-builder created images
+images-dir: /srv/dib/images
+
+# ?????
+script-dir: /etc/nodepool/scripts
+
+# Internal Nodepool recurring tasks
+cron:
+  cleanup: '*/1 * * * *'
+  check: '*/15 * * * *'
+  image-update: '14 14 * * *'
+
+# Zuul / Gearman server
+gearman-servers:
+  - host: gallium.wikimedia.org
+    port: 4730
+
+# Jenkins masters emits jobs start/completion over zeromq
+zmq-publishers:
+  - tcp://gallium.wikimedia.org:8888
+
+# CI systems to attach instances to
+targets:
+  - name: jenkins01
+    jenkins:
+      url: 'https://integration.wikimedia.org/ci/'
+      user: '<%= jenkins_api_user %>'
+      apikey: '<%= jenkins_api_key %>'
+#      credentials-id: '<%= jenkins_credentials_id %>'
+    hostname: '{label.name}-{node_id}.contintcloud.eqiad.wmflabs'
+    subnode-hostname: '{label.name}-{node_id}-{subnode_id}.contintcloud.eqiad.wmflabs'
+
+# Jenkins labels
+labels:
+  - name: label-ci-trusty-medium
+    image: trusty-medium
+    #ready-script: ready.sh
+    min-ready: 0
+    providers:
+      - name: wmflabs-eqiad
+  - name: ci-jessie-wikimedia
+    image: ci-jessie-wikimedia
+    #ready-script: ready.sh
+    min-ready: 1
+    providers:
+      - name: wmflabs-eqiad
+
+providers:
+  - name: wmflabs-eqiad
+    service-type: 'compute'
+    service-name: 'nova'
+    project-id: 'contintcloud'
+    region-name: 'eqiad'
+    username: '<%= wmflabs_username %>'
+    password: '<%= wmflabs_password %>'
+    auth-url: 'http://<%= @nova_controller_hostname %>:35357/v2.0/'
+    boot-timeout: 120
+    max-servers: 1
+    rate: 5  # seconds
+    # 'eqiad.wmflabs' is magically added by wmflabs
+    template-hostname: '{image.name}-{timestamp}'
+    images:
+      - name: trusty-medium
+        base-image: 'ubuntu-14.04-trusty'
+        min-ram: 0
+        name-filter: 'm1.medium'
+        setup: setup.sh
+        username: nodepoolmanager
+        private-key: /var/lib/nodepool/.ssh/nodepoolmanager_id_rsa
+      - name: ci-jessie-wikimedia
+        diskimage: ci-jessie-wikimedia
+        min-ram: 0
+        name-filter: 'm1.medium'
+        #setup: setup.sh
+        username: nodepoolmanager
+        private-key: /var/lib/nodepool/.ssh/nodepoolmanager_id_rsa
+
+diskimages:
+  - name: ci-jessie-wikimedia
+    elements:
+      - debian
+      - vm
+    release: jessie
+    env-vars:
+      # Prevents grub-pc install :/
+      #TMPDIR: /srv/dib/tmp
+
+      DIB_IMAGE_CACHE: /srv/dib/cache
+      DIB_RELEASE: jessie
+      DIB_DISTRIBUTION_MIRROR: http://mirrors.wikimedia.org/debian/
+      QEMU_IMG_OPTIONS: compat=0.10
