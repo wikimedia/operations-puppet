@@ -1248,6 +1248,7 @@ node 'labnet1001.eqiad.wmnet' {
 node 'labnodepool1001.eqiad.wmnet' {
 
     include standard
+    include role::nodepool
 
 }
 
