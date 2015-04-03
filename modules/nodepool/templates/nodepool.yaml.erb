@@ -1,0 +1,74 @@
+script-dir: /etc/nodepool/scripts
+elements-dir: /etc/nodepool/elements
+images-dir: /opt/nodepool_dib
+dburi: 'mysql://nodepool:<%= mysql_password %>@localhost/nodepool'
+
+cron:
+  cleanup: '*/1 * * * *'
+  check: '*/15 * * * *'
+  image-update: '14 14 * * *'
+
+zmq-publishers:
+  - tcp://gallium.wikimedia.org:8888
+
+gearman-servers:
+  - host: gallium.wikimedia.org
+
+labels:
+  - name: devstack-trusty
+    image: devstack-trusty
+    ready-script: configure_mirror.sh
+    min-ready: 20
+    providers:
+      - name: wmflabs-eqiad
+
+providers:
+  - name: wmflabs-eqiad
+    region-name: 'eqiad'
+    service-type: 'compute'
+    service-name: 'cloudServersOpenStack'
+    username: '<%= wmflabs_username %>'
+    password: '<%= wmflabs_password %>'
+    project-id: 'contintcloud'
+    auth-url: 'http://<%= @nova_controller_hostname %>:35357/v2.0/'
+    boot-timeout: 120
+    max-servers: 40
+    rate: 0.001
+    images:
+      - name: trusty-medium
+        base-image: 'ubuntu-14.04-trusty'
+        min-ram: 0
+        name-filter: 'm1.medium'
+        setup: prepare_node_devstack.sh
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+      - name: jessie-medium
+        base-image: 'debian-8.0-jessie'
+        min-ram: 0
+        name-filter: 'm1.medium'
+        setup: prepare_node_devstack.sh
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+
+targets:
+  - name: jenkins01
+    jenkins:
+      url: 'https://jenkins01.openstack.org/'
+      user: '<%= jenkins_api_user %>'
+      apikey: '<%= jenkins_api_key %>'
+      credentials-id: '<%= jenkins_credentials_id %>'
+
+diskimages:
+  - name: jessie-wikimedia
+    elements:
+      - ubuntu
+      - vm
+      - openstack-repos
+      - puppet
+      - nodepool-base
+      - node-devstack
+    release: jessie
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      QEMU_IMG_OPTIONS: compat=0.10
