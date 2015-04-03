@@ -5,7 +5,7 @@ define varnish::logging(
     $log_fmt=false,
     $instance_name='frontend',
     $monitor=true,
-    $ensure='running',
+    $ensure='present',
 ) {
     require varnish::packages
     require varnish::logging::config
