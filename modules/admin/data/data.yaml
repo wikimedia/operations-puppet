@@ -791,8 +791,7 @@ users:
     gid: 500
     name: tomasz
     realname: Tomasz Finc
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOXgblcBarO8An5LNYfIBOjl+//EK6XhJu3agV8nQvmuaT2qnPtIiLl3W/X34bKHcRJbWsJRe7C3MqJqFWF6BWWtU9MZWj/s1TRtyA8Olgx4y7cXGXSUY/0woJnM6yIh6WitQEPX35iZyKaVapX5FCYlkkSbTEAbJwm/bFV5j2hOTyews7Cff1E0Zp0+E4hli39MvflkMOtllcZvFoLjve5AjETeabZEppvvSR8VPAK5bNMl7zo7fWcoExaNNlglLLRxP8y8Ne2PQlks5gTMrsh5e55BGVr/Nd6kD5OIB7s63InMbudYViWX66MjPgKMXXg8m7RKqkLB33nBifQrY5
-        tfinc@kumo]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYg99M+6cGbfoDwzd7KRFL2zGg8CPZHLqejuCwCijpHjqnMtOBOAjMDpfA8glqpqUL4xW22kgwcUI9H8bkd4X/DazJ0QvTxjJkGPocobfyCkd/yeZ/n5HjaEL/WWeNQZ/OfFW6yiTbWrQttl6+/7QELG2pHXgDqAxaCLEnghRXG+zGbVNkPgJGAZnUoSSPjZj1eZhG10U9I0foUp09qyMTXhWB9c2dbeZyaWJ7LA5I6slKPiVyYQWq+0Kc0zoCpaPGrwkR/sDrzqHBfiwKWR3IJEFn0WhDCE1fHiM31+tQ2YmbVrDCWxoUzdiUWkzbgydlIH88603LoegBLo9xTwrZ tfinc@kumo.local]
     uid: 1155
   yurik:
     ensure: present
