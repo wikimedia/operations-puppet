@@ -9,8 +9,14 @@ class scap::scripts {
     require misc::deployment::passwordscripts
     require mediawiki::users
 
-    package { ['libwww-perl', 'libnet-dns-perl']:
+    package { 'libwww-perl':
         ensure => 'present',
+    }
+
+    if ! defined(Package['libnet-dns-perl']){
+        package { 'libnet-dns-perl':
+            ensure => present,
+        }
     }
 
     file { '/usr/local/bin/clear-profile':
