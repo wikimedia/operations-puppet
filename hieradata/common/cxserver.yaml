@@ -8,6 +8,7 @@ registry:
     - 'es'
     - 'de'
     - 'fr'
+    - 'gu'
     - 'id'
     - 'kn'
     - 'ky'
@@ -27,14 +28,16 @@ registry:
     - 'tr'
     - 'uk'
     - 'uz'
+    - 'vi'
   target:
     - 'bg'
     - 'ca'
     - 'da'
     - 'eo'
     - 'es'
-    - 'id'
     - 'fr'
+    - 'id'
+    - 'gu'
     - 'kn'
     - 'ky'
     - 'min'
@@ -48,6 +51,7 @@ registry:
     - 'sl'
     - 'uk'
     - 'uz'
+    - 'vi'
   mt:
     Apertium:
       'bg':
