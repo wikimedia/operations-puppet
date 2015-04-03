@@ -167,7 +167,7 @@ class role::phabricator::labs {
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
         auth_type        => 'local',
-        sprint_tag       => 'release/2015-01-08/1',
+        sprint_tag       => 'release/2015-02-18/1',
         libraries        => {
               'sprint'   => '/srv/phab/libext/Sprint/src',
         },
