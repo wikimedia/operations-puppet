@@ -45,7 +45,7 @@ class ircecho (
         require => [
             File[
                 '/usr/local/bin/ircecho',
-                '/etc/init/ircecho.init',
+                '/etc/init.d/ircecho',
                 '/etc/default/ircecho',
             ],
             Package[
@@ -54,6 +54,5 @@ class ircecho (
             ],
         ],
     }
-
 }
 
