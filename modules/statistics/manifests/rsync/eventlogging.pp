@@ -18,9 +18,9 @@ class statistics::rsync::eventlogging {
         mode    => '0775',
     }
 
-    # eventlogging logs from vanadium
+    # eventlogging logs from eventlog1001
     statistics::rsync_job { 'eventlogging':
-        source         => 'vanadium.eqiad.wmnet::eventlogging/archive/*.gz',
+        source         => 'eventlog1001.eqiad.wmnet::eventlogging/archive/*.gz',
         destination    => "${working_path}/eventlogging/archive",
         retention_days => $retention_days,
 

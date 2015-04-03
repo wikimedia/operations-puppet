@@ -13,7 +13,7 @@
 #
 # [*input*]
 #   This parameter specifies the URI of the event stream the consumer
-#   should consume. Example: 'tcp://vanadium.eqiad.wmnet:8600'.
+#   should consume. Example: 'tcp://eventlog1001.eqiad.wmnet:8600'.
 #
 # [*output*]
 #   Bind the multiplexing publisher to this URI.
@@ -32,8 +32,8 @@
 # === Examples
 #
 #  eventlogging::service::consumer { 'all events':
-#    input  => 'tcp://vanadium.eqiad.wmnet:8600',
-#    output => 'mongodb://vanadium.eqiad.wmnet:27017/?w=1',
+#    input  => 'tcp://eventlog1001.eqiad.wmnet:8600',
+#    output => 'mongodb://eventlog1001.eqiad.wmnet:27017/?w=1',
 #  }
 #
 define eventlogging::service::consumer(

@@ -15,7 +15,7 @@ class role::tcpircbot {
         channels => '#wikimedia-operations',
         password => $passwords::logmsgbot::logmsgbot_password,
         cidr     => [
-            '::ffff:10.64.21.123/128',    # vanadium
+            '::ffff:10.64.32.167/128',    # eventlog1001
             '::ffff:10.64.0.196/128',     # tin
             '::ffff:127.0.0.1/128',       # loopback
             '2620:0:861:101:10:64:0:196/128', # tin
@@ -23,7 +23,7 @@ class role::tcpircbot {
     }
 
     ferm::rule { 'tcpircbot_allowed':
-        # Vanadium, tin(v4), localhost, tin (v6)
-        rule => 'proto tcp dport 9200 { saddr (10.64.21.123/32 10.64.0.196/32 127.0.0.1 2620:0:861:101:10:64:0:196/128) ACCEPT; }',
+        # Vanadium, eventlog1001, tin(v4), localhost, tin (v6)
+        rule => 'proto tcp dport 9200 { saddr (10.64.21.123/32 10.64.32.167/32 10.64.0.196/32 127.0.0.1 2620:0:861:101:10:64:0:196/128) ACCEPT; }',
     }
 }

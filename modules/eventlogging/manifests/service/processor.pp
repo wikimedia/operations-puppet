@@ -26,7 +26,7 @@
 #
 # [*input*]
 #   The URI of the raw log stream which the processor will take as its
-#   input. Example: 'tcp://vanadium.eqiad.wmnet:8421'.
+#   input. Example: 'tcp://eventlog1001.eqiad.wmnet:8421'.
 #
 # [*output*]
 #   A URI specifying the interface and port on which the processed event

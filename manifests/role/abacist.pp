@@ -9,7 +9,7 @@ class role::abacist {
     }
 
     class { '::abacist':
-        eventlogging_publisher => 'tcp://vanadium.eqiad.wmnet:8600',
+        eventlogging_publisher => 'tcp://eventlog1001.eqiad.wmnet:8600',
     }
 
     Service['redis-server'] ~> Service['abacist']

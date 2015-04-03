@@ -5,7 +5,7 @@
 # === Parameters
 #
 # [*eventlogging_publisher*]
-#   EventLogging endpoint. Example: 'tcp://vanadium.eqiad.wmnet:8600'.
+#   EventLogging endpoint. Example: 'tcp://eventlog1001.eqiad.wmnet:8600'.
 #
 # [*redis_server*]
 #   Address of redis server to use as a back-end. Default: 'localhost'.

@@ -11,7 +11,7 @@ ARCHIVE_DIR='/var/userarchive'
 EXCLUDE=("nobody" \
          "l10nupdate" \
          "gmetric" \    # nescio.wikimedia.org
-         "mwdeploy" \   # vanadium.eqiad.wmnet
+         "mwdeploy" \   # vanadium.eqiad.wmnet,eventlog*
          "gerrit2" \    # ytterbium.wikimedia.org
          "spamd" \      # sodium.wikimedia.org:
          "mwprof" \     # tungsten.eqiad.wmnet

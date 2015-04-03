@@ -6,26 +6,27 @@
 class role::webperf {
     include ::webperf::statsv
 
+    $eventlogging_host = 'eventlog1001.eqiad.wmnet'
     $statsd_host = 'statsd.eqiad.wmnet'
 
     # Aggregate client-side latency measurements collected via the
     # NavigationTiming MediaWiki extension and send them to Graphite.
     # See <https://www.mediawiki.org/wiki/Extension:NavigationTiming>
     class { '::webperf::navtiming':
-        endpoint    => 'tcp://vanadium.eqiad.wmnet:8600',
+        endpoint    => "tcp://${eventlogging_host}:8600",
         statsd_host => $statsd_host,
     }
 
     # Report VisualEditor performance measurements to Graphite.
     # See <https://meta.wikimedia.org/wiki/Schema:TimingData>
     class { '::webperf::ve':
-        endpoint    => 'tcp://vanadium.eqiad.wmnet:8600',
+        endpoint    => "tcp://${eventlogging_host}:8600",
         statsd_host => $statsd_host,
     }
 
     # See <https://meta.wikimedia.org/wiki/Schema:DeprecatedUsage>
     class { '::webperf::deprecate':
-        endpoint    => 'tcp://vanadium.eqiad.wmnet:8600',
+        endpoint    => "tcp://${eventlogging_host}:8600",
         statsd_host => $statsd_host,
     }
 
