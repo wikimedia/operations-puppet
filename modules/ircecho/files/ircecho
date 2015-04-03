@@ -130,6 +130,7 @@ class EventHandler(pyinotify.ProcessEvent):
 	def process_IN_MODIFY(self, event):
 		s = reader.readfile(event.pathname)
 		s = s.rstrip('\n')
+		s = re.sub(r'(\w+: )\1', r'\1', s)  # Dedupe severity ("CRITICAL: CRITICAL:")
 		if s:
 			chans = reader.getchannels(event.pathname)
 			try:
