@@ -854,13 +854,18 @@ class role::cache {
 
         if $::realm == 'production' {
             $storage_size_main = $::hostname ? {
-                'cp1008'                => 117, # Intel X-25M 160G
-                /^amssq/                => 117, # Intel X-25M 160G
-                /^cp104[34]/            => 117, # Intel X-25M 160G
-                /^cp30(0[3-9]|1[0-4])$/ => 460, # Intel M320 600G via H710
-                /^cp301[5-8]$/          => 225, # Intel M320 300G via H710
-                default                 => 360, # Intel S3700 400G
+                /^(amssq[0-9][0-9]|cp10(08|4[34]))$/ => 117, # Intel X-25M 160G
+                /^cp30(0[3-9]|1[0-4])$/              => 460, # Intel M320 600G via H710
+                /^cp301[5-8]$/                       => 225, # Intel M320 300G via H710
+                default                              => 360, # Intel S3700 400G
             }
+
+            $backend_scaled_weights = [
+                { backend_match => '^(amssq[0-9][0-9]|cp10(08|4[34]))$', weight => 32  },
+                { backend_match => '^cp30(0[3-9]|1[0-4])$',              weight => 128 },
+                { backend_match => '^cp301[5-8]$',                       weight => 63  },
+                { backend_match => '.',                                  weight => 100 },
+            ]
         }
         else {
             # for upload on jessie, bigobj is main/6, so 6 is functional minimum here.
@@ -965,7 +970,7 @@ class role::cache {
                 'layer'            => 'backend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options    => [
+            backend_options    => array_concat($backend_scaled_weights, [
                 {
                     'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
                     'port'          => 3128,
@@ -981,8 +986,7 @@ class role::cache {
                     'first_byte_timeout'    => '180s',
                     'between_bytes_timeout' => '4s',
                     'max_connections'       => 1000,
-                    'weight'                => $backend_weight,
-                }],
+                }]),
             wikimedia_networks => $wikimedia_networks,
         }
 
@@ -1006,7 +1010,7 @@ class role::cache {
                 'layer'            => 'frontend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options => [
+            backend_options    => array_concat($backend_scaled_weights, [
                 {
                     'port'                  => 3128,
                     'connect_timeout'       => '5s',
@@ -1014,8 +1018,7 @@ class role::cache {
                     'between_bytes_timeout' => '2s',
                     'max_connections'       => 100000,
                     'probe'                 => 'varnish',
-                    'weight'                => $backend_weight,
-                }],
+                }]),
             cluster_options => {
                 'enable_geoiplookup' => true,
             },
@@ -1156,7 +1159,7 @@ class role::cache {
                 'layer'            => 'backend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options    => [
+            backend_options    => array_concat($backend_scaled_weights, [
                 {
                     'backend_match' => '^cp[0-9]+\.eqiad.wmnet$',
                     'port'          => 3128,
@@ -1168,8 +1171,7 @@ class role::cache {
                     'first_byte_timeout'    => '35s',
                     'between_bytes_timeout' => '4s',
                     'max_connections'       => 1000,
-                    'weight'                => $backend_weight,
-                }],
+                }]),
             cluster_options    => $cluster_options,
             wikimedia_networks => $wikimedia_networks,
         }
@@ -1192,7 +1194,7 @@ class role::cache {
                 'layer'            => 'frontend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options => [
+            backend_options => array_concat($backend_scaled_weights, [
                 {
                     'port'                  => 3128,
                     'connect_timeout'       => '5s',
@@ -1200,8 +1202,7 @@ class role::cache {
                     'between_bytes_timeout' => '2s',
                     'max_connections'       => 100000,
                     'probe'                 => 'varnish',
-                    'weight'                => $backend_weight,
-                }],
+                }]),
             cluster_options => $cluster_options,
         }
 
@@ -1449,14 +1450,13 @@ class role::cache {
                 'layer'            => 'backend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options    => [
+            backend_options    => array_concat($backend_scaled_weights, [
                 {
                     'backend_match'   => '^mw1017\.eqiad\.wmnet$',
                     'max_connections' => 20,
                 },
                 {
                     'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
-                    'weight'        => $backend_weight,
                     'port'          => 3128,
                     'probe'         => 'varnish',
                 },
@@ -1466,7 +1466,7 @@ class role::cache {
                     'first_byte_timeout'    => '180s',
                     'between_bytes_timeout' => '4s',
                     'max_connections'       => 600,
-                }],
+                }]),
             cluster_options    => $cluster_options,
             wikimedia_networks => $wikimedia_networks,
         }
@@ -1492,16 +1492,15 @@ class role::cache {
                 'layer'            => 'frontend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options  => [
+            backend_options    => array_concat($backend_scaled_weights, [
             {
                 'port'                  => 3128,
-                'weight'                => $backend_weight,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '185s',
                 'between_bytes_timeout' => '2s',
                 'max_connections'       => 100000,
                 'probe'                 => 'varnish',
-            }],
+            }]),
             cluster_options  => $cluster_options,
         }
 
