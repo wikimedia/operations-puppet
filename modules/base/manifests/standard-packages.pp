@@ -14,7 +14,6 @@ class base::standard-packages {
         'zsh-beta',
         'xfsprogs',
         'screen',
-        'gdb',
         'iperf',
         'atop',
         'htop',
@@ -35,6 +34,13 @@ class base::standard-packages {
 
     package { $packages:
         ensure => latest,
+    }
+
+    # Can clash with java::tools class
+    if ! defined ( Package['gdb'] ) {
+        package { 'gdb':
+            ensure => latest
+        }
     }
 
     # This should be in $packages, but moved here temporarily because it's
