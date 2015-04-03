@@ -125,9 +125,6 @@ node 'analytics1002.eqiad.wmnet' {
     include role::analytics::hadoop::standby
 }
 
-
-
-
 # analytics1004 was previously the Hadoop standby NameNode
 # It is being deprecated.
 node 'analytics1004.eqiad.wmnet' {
@@ -371,6 +368,14 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
     role ipsec
 }
 
+# http://releases.wikimedia.org
+node 'caesium.eqiad.wmnet' {
+    role releases
+    include base::firewall
+    include admin
+    include standard
+}
+
 # T83044 cameras
 node 'calcium.wikimedia.org' {
     $cluster = 'misc'
@@ -379,6 +384,16 @@ node 'calcium.wikimedia.org' {
     include standard
 
     include base::firewall
+}
+
+# Californium hosts openstack-dashboard AKA horizon
+#  It's proxied by the misc-web varnishes
+node 'californium.wikimedia.org' {
+    include standard
+    include admin
+    include role::horizon
+
+    class { 'base::firewall': }
 }
 
 # DHCP / TFTP
@@ -393,14 +408,6 @@ node 'carbon.wikimedia.org' {
     include admin
     include standard
     include role::installserver
-}
-
-# http://releases.wikimedia.org
-node 'caesium.eqiad.wmnet' {
-    role releases
-    include base::firewall
-    include admin
-    include standard
 }
 
 # cerium, praseodymium and xenon are Cassandra test hosts
@@ -565,21 +572,12 @@ node 'dataset1001.wikimedia.org' {
 }
 
 # eqiad dbs
+
 node /^db10(52)\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
     class { 'role::coredb::s1':
-        innodb_file_per_table => true,
-        mariadb               => true,
-    }
-}
-
-node /^db10(18)\.eqiad\.wmnet/ {
-
-    include admin
-    $cluster = 'mysql'
-    class { 'role::coredb::s2':
         innodb_file_per_table => true,
         mariadb               => true,
     }
@@ -909,6 +907,13 @@ node 'dbstore1001.eqiad.wmnet' {
     }
 }
 
+node 'dbstore1002.eqiad.wmnet' {
+    include admin
+    $cluster = 'mysql'
+    $ganglia_aggregator = true
+    include role::mariadb::dbstore
+}
+
 node 'dbstore2001.codfw.wmnet' {
     include admin
     $cluster = 'mysql'
@@ -920,13 +925,6 @@ node 'dbstore2001.codfw.wmnet' {
         # don't spam Icinga with warnings. This will not block properly critical alerts.
         warn_stopped => false,
     }
-}
-
-node 'dbstore1002.eqiad.wmnet' {
-    include admin
-    $cluster = 'mysql'
-    $ganglia_aggregator = true
-    include role::mariadb::dbstore
 }
 
 node 'dbstore2002.codfw.wmnet' {
@@ -1003,6 +1001,14 @@ node 'einsteinium.eqiad.wmnet' {
     system::role { 'Titan test host': }
 }
 
+node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
+    if $::hostname =~ /^elastic10(0[17]|13)/ {
+        $ganglia_aggregator = true
+    }
+
+    role elasticsearch::server
+}
+
 # erbium is a webrequest udp2log host
 node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
@@ -1030,12 +1036,12 @@ node /es100[12]\.eqiad\.wmnet/ {
     }
 }
 
-node /es200[1234]\.codfw\.wmnet/ {
+node /es100[5]\.eqiad\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
-        shard => 'es1',
+        shard => 'es2',
     }
 }
 
@@ -1047,12 +1053,12 @@ node /es100[67]\.eqiad\.wmnet/ {
     }
 }
 
-node /es100[5]\.eqiad\.wmnet/ {
+node /es200[1234]\.codfw\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
-        shard => 'es2',
+        shard => 'es1',
     }
 }
 
@@ -1091,6 +1097,16 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
     }
 }
 
+# Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
+# processes it, and broadcasts to internal subscribers.
+node 'eventlog1001.eqiad.wmnet' {
+    role eventlogging
+    include admin
+    include standard
+    include role::ipython_notebook
+    include role::logging::mediawiki::errors
+}
+
 node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
@@ -1115,15 +1131,6 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
     # relay EventLogging traffic over to eventlog1001
     include role::logging::relay::eventlogging
 }
-
-
-# protactinium was being used as an emergency gadolinium replacement.
-# Since gadolinium is back up, varnishncsa instances now send logs
-# to gadolinium again.  protactinium is not being used.
-node 'protactinium.wikimedia.org' {
-    include admin
-}
-
 
 node 'gallium.wikimedia.org' {
 
@@ -1171,6 +1178,16 @@ node /^(haedus|capella)\.codfw\.wmnet$/ {
     include standard
 }
 
+# Hosts visualization / monitoring of EventLogging event streams
+# and MediaWiki errors.
+node 'hafnium.wikimedia.org' {
+    role eventlogging::graphite
+    include standard
+    include admin
+    include base::firewall
+    include role::webperf
+}
+
 node 'helium.eqiad.wmnet' {
     include admin
     include standard
@@ -1183,6 +1200,16 @@ node 'heze.codfw.wmnet' {
     include admin
     include standard
     include role::backup::storage
+}
+
+# Holmium hosts openstack-designate, the labs DNS service.
+node 'holmium.wikimedia.org' {
+    include standard
+    include admin
+
+    include base::firewall
+    include role::labsdns
+    include role::designate::server
 }
 
 node 'hooft.esams.wikimedia.org' {
@@ -1215,6 +1242,34 @@ node 'hooft.esams.wikimedia.org' {
     }
 }
 
+# Primary graphite machines, replacing tungsten
+node 'graphite1001.eqiad.wmnet' {
+    include admin
+    include standard
+    include role::graphite::production
+    include role::statsdlb
+    include role::gdash
+    include role::performance
+}
+
+# graphite test machine, currently with SSD caching + spinning disks
+node 'graphite1002.eqiad.wmnet' {
+    include admin
+    include standard
+    include role::graphite::production
+    include role::txstatsd
+    include role::gdash
+}
+
+# Primary graphite machines, replacing tungsten
+node 'graphite2001.codfw.wmnet' {
+    include admin
+    include standard
+    include role::graphite::production
+    include role::txstatsd
+    include role::gdash
+}
+
 node 'install2001.wikimedia.org' {
     $cluster = 'misc'
     $ganglia_aggregator = true
@@ -1229,6 +1284,17 @@ node 'install2001.wikimedia.org' {
 
     class { 'ganglia_new::monitor::aggregator':
         sites =>  'codfw',
+    }
+}
+
+node 'iodine.wikimedia.org' {
+    class { 'base::firewall': }
+    role otrs
+
+    include admin
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
     }
 }
 
@@ -1270,6 +1336,49 @@ node 'iron.wikimedia.org' {
     backup::set {'home': }
 }
 
+node 'labcontrol2001.wikimedia.org' {
+    $cluster               = 'virt'
+    $ganglia_aggregator    = true
+    #$is_puppet_master      = true
+    #$is_labs_puppet_master = true
+    #$use_neutron           = false
+
+    include standard
+    include admin
+    include base::firewall
+    include role::dns::ldap
+    include ldap::role::client::labs
+    include role::salt::masters::labs
+
+    #include role::nova::controller
+    #include role::nova::manager
+    #include role::salt::masters::labs
+    #include role::deployment::salt_masters
+}
+
+# Labs Graphite and StatsD host
+node 'labmon1001.eqiad.wmnet' {
+    role labmon
+    include standard
+    include admin
+}
+
+node 'labnet1001.eqiad.wmnet' {
+    $cluster = 'virt'
+    $use_neutron = false
+
+    $ganglia_aggregator = true
+
+    include standard
+    include admin
+    include role::nova::api
+
+    if $use_neutron == true {
+        include role::neutron::nethost
+    } else {
+        include role::nova::network
+    }
+}
 
 ## labsdb dbs
 node 'labsdb1001.eqiad.wmnet' {
@@ -1373,12 +1482,26 @@ node 'lanthanum.eqiad.wmnet' {
 
 }
 
+node 'lead.wikimedia.org' {
+    role mail::mx
+    include standard
+    include admin
+    interface::add_ip6_mapped { 'main': }
+}
+
 node 'lithium.eqiad.wmnet' {
 
     include admin
     include standard
     include role::backup::host
     include role::syslog::centralserver
+}
+
+node /^logstash100[1-3]\.eqiad\.wmnet$/ {
+    if $::hostname =~ /^logstash100[13]$/ {
+        $ganglia_aggregator = true
+    }
+    role logstash, kibana, logstash::apifeatureusage
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
@@ -1730,56 +1853,6 @@ node 'multatuli.wikimedia.org' {
     }
 }
 
-node /^rdb100[1-4]\.eqiad\.wmnet/ {
-    $ganglia_aggregator = true
-    role db::redis
-    include admin
-}
-
-node /^rdb200[1-4]\.codfw\.wmnet/ {
-    role db::redis
-    include admin
-}
-
-node /^rbf100[1-2]\.eqiad\.wmnet/ {
-    role db::redis
-    include admin
-
-    # Background save may fail under low memory condition unless
-    # vm.overcommit_memory is 1.
-    sysctl::parameters { 'vm.overcommit_memory':
-        values => { 'vm.overcommit_memory' => 1, },
-    }
-}
-
-node /^rbf200[1-2]\.codfw\.wmnet/ {
-    role db::redis
-    include admin
-
-    # Background save may fail under low memory condition unless
-    # vm.overcommit_memory is 1.
-    sysctl::parameters { 'vm.overcommit_memory':
-        values => { 'vm.overcommit_memory' => 1, },
-    }
-}
-
-# restbase eqiad cluster
-node /^restbase100[1-6]\.eqiad\.wmnet$/ {
-    role restbase, cassandra
-    include base::firewall
-    include standard
-    include admin
-}
-
-node 'rubidium.wikimedia.org' {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    include standard
-    include admin
-    include role::authdns::server
-}
-
 node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
 
@@ -2042,6 +2115,16 @@ node /^mw22([0-2][0-9]|3[0-4])\.codfw\.wmnet$/ {
     role mediawiki::appserver::api
 }
 
+# Codfw ldap server, aka ldap-codfw
+node 'nembus.wikimedia.org' {
+    $cluster               = 'virt'
+
+    include standard
+    include admin
+    include ldap::role::server::labs
+    include ldap::role::client::labs
+}
+
 node 'neon.wikimedia.org' {
     class { 'base::firewall': }
 
@@ -2053,6 +2136,16 @@ node 'neon.wikimedia.org' {
     include role::ishmael
     include role::tendril
     include role::tcpircbot
+}
+
+# Eqiad ldap server, aka ldap-eqiad
+node 'neptunium.wikimedia.org' {
+    $cluster               = 'virt'
+
+    include standard
+    include admin
+    include ldap::role::server::labs
+    include ldap::role::client::labs
 }
 
 node 'nescio.wikimedia.org' {
@@ -2182,6 +2275,63 @@ node 'potassium.eqiad.wmnet' {
     include role::poolcounter
 }
 
+# protactinium was being used as an emergency gadolinium replacement.
+# Since gadolinium is back up, varnishncsa instances now send logs
+# to gadolinium again.  protactinium is not being used.
+node 'protactinium.wikimedia.org' {
+    include admin
+}
+
+node /^rdb100[1-4]\.eqiad\.wmnet/ {
+    $ganglia_aggregator = true
+    role db::redis
+    include admin
+}
+
+node /^rdb200[1-4]\.codfw\.wmnet/ {
+    role db::redis
+    include admin
+}
+
+node /^rbf100[1-2]\.eqiad\.wmnet/ {
+    role db::redis
+    include admin
+
+    # Background save may fail under low memory condition unless
+    # vm.overcommit_memory is 1.
+    sysctl::parameters { 'vm.overcommit_memory':
+        values => { 'vm.overcommit_memory' => 1, },
+    }
+}
+
+node /^rbf200[1-2]\.codfw\.wmnet/ {
+    role db::redis
+    include admin
+
+    # Background save may fail under low memory condition unless
+    # vm.overcommit_memory is 1.
+    sysctl::parameters { 'vm.overcommit_memory':
+        values => { 'vm.overcommit_memory' => 1, },
+    }
+}
+
+# restbase eqiad cluster
+node /^restbase100[1-6]\.eqiad\.wmnet$/ {
+    role restbase, cassandra
+    include base::firewall
+    include standard
+    include admin
+}
+
+node 'rubidium.wikimedia.org' {
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+    include standard
+    include admin
+    include role::authdns::server
+}
+
 node 'radium.wikimedia.org' {
     class { 'base::firewall': }
     include admin
@@ -2221,6 +2371,21 @@ node 'rhenium.wikimedia.org' {
 node 'ruthenium.eqiad.wmnet' {
     include admin
     include standard
+}
+
+node /^sca100[12]\.eqiad\.wmnet$/ {
+    $ganglia_aggregator = true
+    role sca
+}
+
+# Silver is the new home of the wikitech web server.
+node 'silver.wikimedia.org' {
+    class { 'base::firewall': }
+
+    include standard
+    include admin
+    include role::nova::manager
+    include role::mariadb::wikitech
 }
 
 node 'sodium.wikimedia.org' {
@@ -2395,28 +2560,6 @@ node 'terbium.eqiad.wmnet' {
     backup::set {'home': }
 }
 
-node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
-    if $::hostname =~ /^elastic10(0[17]|13)/ {
-        $ganglia_aggregator = true
-    }
-
-    role elasticsearch::server
-}
-
-node 'lead.wikimedia.org' {
-    role mail::mx
-    include standard
-    include admin
-    interface::add_ip6_mapped { 'main': }
-}
-
-node /^logstash100[1-3]\.eqiad\.wmnet$/ {
-    if $::hostname =~ /^logstash100[13]$/ {
-        $ganglia_aggregator = true
-    }
-    role logstash, kibana, logstash::apifeatureusage
-}
-
 node 'tin.eqiad.wmnet' {
     $cluster = 'misc'
 
@@ -2458,35 +2601,6 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
     role mediawiki::videoscaler
 }
 
-# This node will soon be deprecated.
-node 'vanadium.eqiad.wmnet' {
-    role eventlogging
-    include admin
-    include standard
-    include role::ipython_notebook
-    include role::logging::mediawiki::errors
-}
-
-# Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
-# processes it, and broadcasts to internal subscribers.
-node 'eventlog1001.eqiad.wmnet' {
-    role eventlogging
-    include admin
-    include standard
-    include role::ipython_notebook
-    include role::logging::mediawiki::errors
-}
-
-# Hosts visualization / monitoring of EventLogging event streams
-# and MediaWiki errors.
-node 'hafnium.wikimedia.org' {
-    role eventlogging::graphite
-    include standard
-    include admin
-    include base::firewall
-    include role::webperf
-}
-
 # Primary Graphite, StatsD, and profiling data aggregation host.
 node 'tungsten.eqiad.wmnet' {
     include admin
@@ -2497,68 +2611,27 @@ node 'tungsten.eqiad.wmnet' {
     include role::mwprof
 }
 
-# Primary graphite machines, replacing tungsten
-node 'graphite1001.eqiad.wmnet' {
-    include admin
-    include standard
-    include role::graphite::production
-    include role::statsdlb
-    include role::gdash
-    include role::performance
-}
+node 'uranium.wikimedia.org' {
+    $ganglia_aggregator = true
 
-node 'graphite2001.codfw.wmnet' {
-    include admin
-    include standard
-    include role::graphite::production
-    include role::txstatsd
-    include role::gdash
-}
-
-# graphite test machine, currently with SSD caching + spinning disks
-node 'graphite1002.eqiad.wmnet' {
-    include admin
-    include standard
-    include role::graphite::production
-    include role::txstatsd
-    include role::gdash
-}
-
-# Labs Graphite and StatsD host
-node 'labmon1001.eqiad.wmnet' {
-    role labmon
     include standard
     include admin
-}
-
-# Californium hosts openstack-dashboard AKA horizon
-#  It's proxied by the misc-web varnishes
-node 'californium.wikimedia.org' {
-    include standard
-    include admin
-    include role::horizon
-
-    class { 'base::firewall': }
-}
-
-# Holmium hosts openstack-designate, the labs DNS service.
-node 'holmium.wikimedia.org' {
-    include standard
-    include admin
-
+    include role::ganglia::web
+    include misc::monitoring::views
     include base::firewall
-    include role::labsdns
-    include role::designate::server
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
-# Silver is the new home of the wikitech web server.
-node 'silver.wikimedia.org' {
-    class { 'base::firewall': }
-
-    include standard
+# This node will soon be deprecated.
+node 'vanadium.eqiad.wmnet' {
+    role eventlogging
     include admin
-    include role::nova::manager
-    include role::mariadb::wikitech
+    include standard
+    include role::ipython_notebook
+    include role::logging::mediawiki::errors
 }
 
 node 'virt1000.wikimedia.org' {
@@ -2578,63 +2651,6 @@ node 'virt1000.wikimedia.org' {
     if $use_neutron == true {
         include role::neutron::controller
 
-    }
-}
-
-node 'labcontrol2001.wikimedia.org' {
-    $cluster               = 'virt'
-    $ganglia_aggregator    = true
-    #$is_puppet_master      = true
-    #$is_labs_puppet_master = true
-    #$use_neutron           = false
-
-    include standard
-    include admin
-    include base::firewall
-    include role::dns::ldap
-    include ldap::role::client::labs
-    include role::salt::masters::labs
-
-    #include role::nova::controller
-    #include role::nova::manager
-    #include role::salt::masters::labs
-    #include role::deployment::salt_masters
-}
-
-# Eqiad ldap server, aka ldap-eqiad
-node 'neptunium.wikimedia.org' {
-    $cluster               = 'virt'
-
-    include standard
-    include admin
-    include ldap::role::server::labs
-    include ldap::role::client::labs
-}
-
-# Codfw ldap server, aka ldap-codfw
-node 'nembus.wikimedia.org' {
-    $cluster               = 'virt'
-
-    include standard
-    include admin
-    include ldap::role::server::labs
-    include ldap::role::client::labs
-}
-
-node 'labnet1001.eqiad.wmnet' {
-    $cluster = 'virt'
-    $use_neutron = false
-
-    $ganglia_aggregator = true
-
-    include standard
-    include admin
-    include role::nova::api
-
-    if $use_neutron == true {
-        include role::neutron::nethost
-    } else {
-        include role::nova::network
     }
 }
 
@@ -2667,36 +2683,6 @@ node /virt101[0-2].eqiad.wmnet/ {
 
     if $use_neutron == true {
         include role::neutron::computenode
-    }
-}
-
-node 'iodine.wikimedia.org' {
-    class { 'base::firewall': }
-    role otrs
-
-    include admin
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
-node /^sca100[12]\.eqiad\.wmnet$/ {
-    $ganglia_aggregator = true
-    role sca
-}
-
-node 'uranium.wikimedia.org' {
-    $ganglia_aggregator = true
-
-    include standard
-    include admin
-    include role::ganglia::web
-    include misc::monitoring::views
-    include base::firewall
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
     }
 }
 
