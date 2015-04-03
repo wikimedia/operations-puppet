@@ -852,7 +852,6 @@ class role::cache {
     class varnish::1layer inherits role::cache::varnish::base {
         # Any changes here will affect all descendent Varnish clusters
         # unless they're overridden!
-        $backend_weight = 10
 
         if $::role::cache::configuration::has_ganglia {
             include varnish::monitoring::ganglia
@@ -863,17 +862,52 @@ class role::cache {
     class varnish::2layer inherits role::cache::varnish::base {
         # Any changes here will affect all descendent Varnish clusters
         # unless they're overridden!
-        $backend_weight = 100
+
+        # This is now only used for director retries math, not for setting the
+        # actual backend weights.  The math itself has been left alone, as
+        # this will be close enough to approximate previous behavior before
+        # $backend_scaled_weights and we're not making things notably worse.
+        # It can be fixed later here and/or in the chash code.  See also:
+        # https://phabricator.wikimedia.org/P485
+        $backend_weight_avg = 100
 
         if $::realm == 'production' {
             $storage_size_main = $::hostname ? {
-                'cp1008'                => 117, # Intel X-25M 160G
-                /^amssq/                => 117, # Intel X-25M 160G
-                /^cp104[34]/            => 117, # Intel X-25M 160G
-                /^cp30(0[3-9]|1[0-4])$/ => 460, # Intel M320 600G via H710
-                /^cp301[5-8]$/          => 225, # Intel M320 300G via H710
-                default                 => 360, # Intel S3700 400G
+                /^(amssq[0-9][0-9]|cp10(08|4[34]))$/ => 117, # Intel X-25M 160G
+                /^cp30(0[3-9]|1[0-4])$/              => 460, # Intel M320 600G via H710
+                /^cp301[5-8]$/                       => 225, # Intel M320 300G via H710
+                default                              => 360, # Intel S3700 400G
             }
+
+            $backend_scaled_weights = [
+                { backend_match => '^(amssq[0-9][0-9]|cp10(08|4[34]))\.', weight => 32  },
+                { backend_match => '^cp30(0[3-9]|1[0-4])\.',              weight => 128 },
+                { backend_match => '^cp301[5-8]\.',                       weight => 63  },
+                { backend_match => '.',                                   weight => 100 },
+            ]
+
+            # These variables are unused, they just serve as documentation of
+            # manual things for now.  This is the equivalent of
+            # $backend_scaled_weights above for pybal frontend weighting.
+            #
+            # The eqiad/upload, esams/upload, and esams/text clusters need
+            # differential weighting in pybal due to variance in their nodes'
+            # class of CPU power for HTTPS.  This documents the necessary
+            # weight ratios, which are created from 'openssl speed aes-128-cbc'
+            # for 1K blocksize multiplied by CPU core count then GCD-scaled
+            # down within each datacenter to keep weight sums below ipvs sh
+            # limits (256 total).  (amssq would actually be 0.83 at esams
+            # scale; fudged it to keep abs values smaller, will decom soon
+            # anyways).
+            $pybal_weight_esams_upload_text = [
+                '^amssq'               => 1,
+                '^cp30[34][0-9]'       => 10, # newer esams cp30xx
+                '^cp30(0[3-9]|1[0-8])' => 3,  # older esams cp30xx
+            ]
+            $pybal_weight_eqiad_upload = [
+                '^cp107[1-4]'          => 9, # newer eqiad cp10xx
+                '^cp10..'              => 4, # older eqiad cp10xx
+            ]
         }
         else {
             # for upload on jessie, bigobj is main/6, so 6 is functional minimum here.
@@ -978,7 +1012,7 @@ class role::cache {
                 'layer'            => 'backend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options    => [
+            backend_options    => array_concat($backend_scaled_weights, [
                 {
                     'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
                     'port'          => 3128,
@@ -994,8 +1028,7 @@ class role::cache {
                     'first_byte_timeout'    => '180s',
                     'between_bytes_timeout' => '4s',
                     'max_connections'       => 1000,
-                    'weight'                => $backend_weight,
-                }],
+                }]),
             wikimedia_networks => $wikimedia_networks,
         }
 
@@ -1019,7 +1052,7 @@ class role::cache {
                 'layer'            => 'frontend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options => [
+            backend_options    => array_concat($backend_scaled_weights, [
                 {
                     'port'                  => 3128,
                     'connect_timeout'       => '5s',
@@ -1027,8 +1060,7 @@ class role::cache {
                     'between_bytes_timeout' => '2s',
                     'max_connections'       => 100000,
                     'probe'                 => 'varnish',
-                    'weight'                => $backend_weight,
-                }],
+                }]),
             cluster_options => {
                 'enable_geoiplookup' => true,
             },
@@ -1090,7 +1122,7 @@ class role::cache {
         if $cluster_tier == 1 {
             $director_retries = 2
         } else {
-            $director_retries = $backend_weight * 4
+            $director_retries = $backend_weight_avg * 4
         }
 
         include standard
@@ -1169,7 +1201,7 @@ class role::cache {
                 'layer'            => 'backend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options    => [
+            backend_options    => array_concat($backend_scaled_weights, [
                 {
                     'backend_match' => '^cp[0-9]+\.eqiad.wmnet$',
                     'port'          => 3128,
@@ -1181,8 +1213,7 @@ class role::cache {
                     'first_byte_timeout'    => '35s',
                     'between_bytes_timeout' => '4s',
                     'max_connections'       => 1000,
-                    'weight'                => $backend_weight,
-                }],
+                }]),
             cluster_options    => $cluster_options,
             wikimedia_networks => $wikimedia_networks,
         }
@@ -1205,7 +1236,7 @@ class role::cache {
                 'layer'            => 'frontend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options => [
+            backend_options => array_concat($backend_scaled_weights, [
                 {
                     'port'                  => 3128,
                     'connect_timeout'       => '5s',
@@ -1213,8 +1244,7 @@ class role::cache {
                     'between_bytes_timeout' => '2s',
                     'max_connections'       => 100000,
                     'probe'                 => 'varnish',
-                    'weight'                => $backend_weight,
-                }],
+                }]),
             cluster_options => $cluster_options,
         }
 
@@ -1385,7 +1415,7 @@ class role::cache {
         if $cluster_tier == 1 {
             $director_retries = 2
         } else {
-            $director_retries = $backend_weight * 4
+            $director_retries = $backend_weight_avg * 4
         }
 
         varnish::setup_filesystem{ $storage_partitions:
@@ -1462,14 +1492,13 @@ class role::cache {
                 'layer'            => 'backend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options    => [
+            backend_options    => array_concat($backend_scaled_weights, [
                 {
                     'backend_match'   => '^mw1017\.eqiad\.wmnet$',
                     'max_connections' => 20,
                 },
                 {
                     'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
-                    'weight'        => $backend_weight,
                     'port'          => 3128,
                     'probe'         => 'varnish',
                 },
@@ -1479,7 +1508,7 @@ class role::cache {
                     'first_byte_timeout'    => '180s',
                     'between_bytes_timeout' => '4s',
                     'max_connections'       => 600,
-                }],
+                }]),
             cluster_options    => $cluster_options,
             wikimedia_networks => $wikimedia_networks,
         }
@@ -1495,7 +1524,7 @@ class role::cache {
                 'backend' => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
             },
             director_options => {
-                'retries' => $backend_weight * size($::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site]),
+                'retries' => $backend_weight_avg * size($::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site]),
             },
             director_type    => 'chash',
             vcl_config       => {
@@ -1505,16 +1534,15 @@ class role::cache {
                 'layer'            => 'frontend',
                 'ssl_proxies'      => $wikimedia_networks,
             },
-            backend_options  => [
+            backend_options    => array_concat($backend_scaled_weights, [
             {
                 'port'                  => 3128,
-                'weight'                => $backend_weight,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '185s',
                 'between_bytes_timeout' => '2s',
                 'max_connections'       => 100000,
                 'probe'                 => 'varnish',
-            }],
+            }]),
             cluster_options  => $cluster_options,
         }
 
@@ -1644,13 +1672,13 @@ class role::cache {
             },
             director_type    => 'chash',
             director_options => {
-                'retries' => $backend_weight * size($::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site]),
+                'retries' => $backend_weight_avg * size($::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site]),
             },
             vcl_config       => {
                 'retry5xx'    => 0,
                 'ssl_proxies' => $wikimedia_networks,
             },
-            backend_options  => [
+            backend_options  => array_concat($backend_scaled_weights, [
                 {
                     'backend_match'         => '^cxserver',
                     'port'                  => 8080,
@@ -1668,13 +1696,12 @@ class role::cache {
                 },
                 {
                 'port'                  => 3128,
-                'weight'                => $backend_weight,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '6m',
                 'between_bytes_timeout' => '20s',
                 'max_connections'       => 100000,
                 'probe'                 => 'varnish',
-            }],
+            }]),
         }
     }
 
