@@ -3,7 +3,13 @@
 ## source: modules/base/resolv.conf.labs.erb
 ## from:   base::resolving
 
+<% if @use_dnsmasq == true then -%>
 domain <%= @site %>.wmflabs
 search <%= @site %>.wmflabs labs.<%= @site %>.wmnet
-options timeout:5 ndots:2
 nameserver 10.68.16.1
+<% else -%>
+domain <%= @instanceproject %>.<%= @site %>.wmflabs
+search <%= @instanceproject %>.<%= @site %>.wmflabs <%= @site %>.wmflabs
+nameserver 208.80.154.12
+<% end -%>
+options timeout:5 ndots:2
