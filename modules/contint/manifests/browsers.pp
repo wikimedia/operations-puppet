@@ -1,8 +1,6 @@
 class contint::browsers {
 
     package { [
-        'phantomjs',
-        'firefox',
         # Without xfonts-cyrillic Xvdb emits warning:
         # "[dix] Could not init font path element /usr/share/fonts/X11/cyrillic"
         'xfonts-cyrillic',
@@ -10,8 +8,26 @@ class contint::browsers {
         ensure => present,
     }
 
-    package { 'chromium-browser':
-        ensure => latest,
+    if os_version( 'debian >= jessie' ) {
+        # Debian
+        package { 'chromium':
+            ensure => latest,
+        }
+        package { 'iceweasel':  # rebranded firefox
+            ensure => present,
+        }
+        # phantomjs is not available on Jessie
+    } else {
+        # Ubuntu
+        package { 'chromium-browser':
+            ensure => latest,
+        }
+        package { [
+            'firefox',
+            'phantomjs',
+        ]:
+            ensure => present,
+        }
     }
 
     class { 'xvfb':
