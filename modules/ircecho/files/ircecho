@@ -1,0 +1,162 @@
+#! /usr/bin/env python
+#
+# stdin -> IRC echo bot, with optional file input support.
+#
+# Written by Kate Turner <kate.turner@gmail.com>, source is in the public
+# domain.
+# Modified by Ryan Lane <rlane@wikimedia.org> for watching and taking input
+# for files.  Changes are also public domain.
+# Modified by Ryan Anderson <ryan@michonline.com> to handle disconnections more
+# gracefully. Changes in the public domain.
+
+import pyinotify
+import threading
+import random
+import string
+import re
+import irclib  # for exceptions.
+from optparse import OptionParser
+from ircbot import SingleServerIRCBot
+
+
+class EchoNotifier(threading.Thread):
+	def __init__(self, notifier):
+		threading.Thread.__init__(self)
+		self.notifier = notifier
+
+	def run(self):
+		self.notifier.loop()
+
+
+class EchoReader(threading.Thread):
+	def __init__(self, infile='', associatedchannel=''):
+		threading.Thread.__init__(self)
+		self.infile = infile
+		self.associatedchannel = associatedchannel
+		self.uniques = {';': "UNIQ_" + self.get_unique_string() + "_QINU",
+				':': "UNIQ_" + self.get_unique_string() + "_QINU",
+				',': "UNIQ_" + self.get_unique_string() + "_QINU"}
+
+	def get_unique_string(self):
+		unique = ''
+		for i in range(15):
+			unique = unique + random.choice(string.letters)
+		return unique
+
+	def escape(self, string):
+		escaped_string = re.sub('\\\;', self.uniques[';'], string)
+		escaped_string = re.sub('\\\:', self.uniques[':'], escaped_string)
+		escaped_string = re.sub('\\\,', self.uniques[','], escaped_string)
+		return escaped_string
+
+	def unescape(self, string):
+		unescaped_string = re.sub(self.uniques[';'], ';', string)
+		unescaped_string = re.sub(self.uniques[':'], ':', unescaped_string)
+		unescaped_string = re.sub(self.uniques[','], ',', unescaped_string)
+		return unescaped_string
+
+	def run(self):
+		if self.infile:
+			print "Using infile"
+			self.notifiers = []
+			self.associations = {}
+			self.files = {}
+			infiles = self.escape(self.infile)
+			for filechan in infiles.split(';'):
+				temparr = filechan.split(':')
+				filename = self.unescape(temparr[0])
+				try:
+					print "Opening: " + filename
+					f = open(filename)
+					f.seek(0, 2)
+					self.files[filename] = f
+				except IOError:
+					print "Failed to open file: " + filename
+					self.files[filename] = None
+					pass
+				wm = pyinotify.WatchManager()
+				mask = pyinotify.IN_MODIFY | pyinotify.IN_CREATE
+				wm.watch_transient_file(filename, mask, EventHandler)
+				notifier = EchoNotifier(pyinotify.Notifier(wm))
+				self.notifiers.append(notifier)
+				# Does this file have channel associations?
+				if len(temparr) > 1:
+					chans = self.unescape(temparr[1])
+					self.associations[filename] = chans
+			for notifier in self.notifiers:
+				print "Starting notifier loop"
+				notifier.start()
+		else:
+			while True:
+				try:
+					s = raw_input()
+					# this throws an exception if not connected.
+					self.bot.connection.privmsg(self.chans, s)
+				except EOFError:
+					# Once the input is finished, the bot should exit
+					break
+				except Exception:
+					pass
+
+	def readfile(self, filename):
+		if self.files[filename]:
+			return self.files[filename].read()
+		else:
+			return
+
+	def getchannels(self, filename):
+		if filename in self.associations:
+			return self.associations[filename]
+		else:
+			return bot.chans
+
+
+class EchoBot(SingleServerIRCBot):
+	def __init__(self, chans, nickname, server):
+		print "*** Connecting to IRC server %s..." % server
+		SingleServerIRCBot.__init__(self, [(server, 6667)], nickname, "IRC echo bot")
+		self.chans = chans
+
+	def on_nicknameinuse(self, c, e):
+		c.nick(c.get_nickname() + "_")
+
+	def on_welcome(self, c, e):
+		print "*** Connected"
+		for chan in [self.chans]:
+			c.join(chan)
+
+
+class EventHandler(pyinotify.ProcessEvent):
+	def process_IN_MODIFY(self, event):
+		s = reader.readfile(event.pathname)
+		s = s.rstrip('\n')
+		if s:
+			chans = reader.getchannels(event.pathname)
+			try:
+				bot.connection.privmsg(chans, s)
+			except irclib.ServerNotConnectedError, e:
+				print ("Error writing: %s\n"
+					"Dropping this message: '%s'") % (e, s)
+
+	def process_IN_CREATE(self, event):
+		try:
+			print "Reopening file: " + event.pathname
+			reader.files[event.pathname] = open(event.pathname)
+		except IOError:
+			print "Failed to reopen file: " + event.pathname
+			pass
+
+parser = OptionParser(conflict_handler="resolve")
+parser.set_usage("ircecho [--infile=<filename>] <channel> <nickname> <server>")
+parser.add_option("--infile", dest="infile",
+	help="Read input from the specific file instead of from stdin")
+(options, args) = parser.parse_args()
+chans = args[0]
+nickname = args[1]
+server = args[2]
+global bot
+bot = EchoBot(chans, nickname, server)
+global reader
+reader = EchoReader(options.infile)
+reader.start()
+bot.start()
