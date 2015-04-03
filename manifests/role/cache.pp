@@ -631,7 +631,7 @@ class role::cache {
             cli_args         => '-m RxURL:^/event\.gif\?. -D',
             log_fmt          => '%q\t%l\t%n\t%t\t%h\t"%{User-agent}i"',
             monitor          => false,
-            ensure           => 'stopped',
+            ensure           => 'absent',
         }
 
         varnish::logging { 'eventlogging' :
