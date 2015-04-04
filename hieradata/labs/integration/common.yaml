@@ -1,0 +1,7 @@
+# Hosts running zuul-merger process
+#
+# Use ip addresses since the values are injected in iptables rules.
+#
+contint::zuul_merger_hosts:
+    - ::1
+    - 127.0.0.1
