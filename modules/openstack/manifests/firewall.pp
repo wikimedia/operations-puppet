@@ -10,15 +10,14 @@ class openstack::firewall {
         # $labs_nodes = '10.4.16.0/24'
         # virt1000
         $other_master = '208.80.154.18'
-        $designate = '208.80.154.12'
     } elsif ($::site == 'eqiad') {
         $labs_nodes = '10.64.20.0/24'
         $other_master = '208.80.153.14'
-        $designate = '208.80.154.12'
     }
 
     $iron = '208.80.154.151'
     $tendril = '10.64.0.15'
+    $designate_host = hiera('openstack::designate')
 
     # Wikitech ssh
     ferm::rule { 'ssh_public':
@@ -60,9 +59,13 @@ class openstack::firewall {
     ferm::rule { 'beam_nova':
         rule => "saddr ${labs_nodes} proto tcp dport (5672 56918) ACCEPT;",
     }
-    ferm::rule { 'rabbit_for_designate':
-        rule => "saddr ${designate} proto tcp dport 5672 ACCEPT;",
+
+    ferm::service { 'rabbit_for_designate':
+        proto  => 'tcp',
+        port   => '5672',
+        srange => "@resolve(($designate_host))",
     }
+
     ferm::rule { 'glance_api_nova':
         rule => "saddr ${labs_nodes} proto tcp dport 9292 ACCEPT;",
     }
