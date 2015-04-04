@@ -45,6 +45,7 @@ labs_keystone_host: "labcontrol2001.wikimedia.org"
 labs_ldap_dns_host: "labs-ns1.wikimedia.org"
 labs_ldap_dns_host_secondary: "labs-ns0.wikimedia.org"
 labs_certmanager_hostname: "holmium.wikimedia.org"
+labs_designate_hostname: "holmium.wikimedia.org"
 
 labs_nova_network_host: "labnet1002"
 labs_nova_network_ip: "10.64.20.25"
