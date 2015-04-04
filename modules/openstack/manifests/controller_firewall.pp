@@ -7,15 +7,14 @@ class openstack::controller_firewall {
     $api_host = ipresolve('labnet1001.eqiad.wmnet',4)
     $other_master = ipresolve(hiera('labs_nova_controller_other'),4)
     $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
+    $designate = ipresolve(hiera('labs_designate_hostname'),4)
     $monitoring = '208.80.154.14'
     if ($::site == 'codfw') {
         # TODO!  codfw will need something
         # like this when the ip range is assigned.
         # $labs_nodes = '10.4.16.0/24'
-        $designate = '208.80.154.12'
     } elsif ($::site == 'eqiad') {
         $labs_nodes = '10.64.20.0/24'
-        $designate = '208.80.154.12'
     }
 
 
