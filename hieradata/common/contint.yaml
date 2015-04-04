@@ -1,0 +1,3 @@
+contint::zuul_merger_hosts:
+    - gallium.wikimedia.org
+    - lanthanum.eqiad.wmnet
