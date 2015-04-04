@@ -267,16 +267,6 @@ class network::constants {
         $analytics_networks,
     ]
 
-    $contint_zuul_merger_hosts = {
-        'production' => [
-            '208.80.154.135',  # gallium.wikimedia.org
-            '10.64.0.161',     # lanthanum.eqiad.wmnet
-            ],
-        'labs' => [
-            '127.0.0.1',
-            ],
-    }
-
 }
 
 class network::checks {
