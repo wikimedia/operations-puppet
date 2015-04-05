@@ -4,7 +4,6 @@
 "ocg::statsd_host": labmon1001.eqiad.wmnet
 "ocg::graylog_host": deployment-logstash1.eqiad.wmflabs
 "ocg::redis_password": '%{::passwords::redis::main_password}'
-has_ganglia: false
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 #service::configuration::http_proxy:
