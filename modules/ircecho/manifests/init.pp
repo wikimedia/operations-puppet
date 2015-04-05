@@ -39,8 +39,8 @@ class ircecho (
     }
 
     service { 'ircecho':
-        ensure  => running,
-        require => File[
+        ensure    => running,
+        subscribe => File[
             '/usr/local/bin/ircecho',
             '/etc/init.d/ircecho',
             '/etc/default/ircecho'
