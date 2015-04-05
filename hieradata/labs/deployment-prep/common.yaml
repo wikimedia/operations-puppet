@@ -5,7 +5,6 @@
 "ocg::graylog_host": deployment-logstash1.eqiad.wmflabs
 "ocg::statsd_is_txstatsd": 1
 "ocg::redis_password": '%{::passwords::redis::main_password}'
-has_ganglia: false
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 "cassandra::seeds":
