@@ -5,3 +5,4 @@ elasticsearch::heap_memory: '2G'
 elasticsearch::expected_nodes: 1
 elasticsearch::recover_after_nodes: 1
 ganglia_class: old
+has_ganglia: false
