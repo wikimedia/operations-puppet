@@ -4,7 +4,8 @@
 #
 # Parameters:
 #   pgversion
-#       Defaults to 9.1. Valid values 8.4, 9.1 in Ubuntu Precise
+#       Defaults to 9.1. Valid values 8.4, 9.1 in Ubuntu Precise,
+#       9.3 in Ubuntu Trusty, and 9.4 in Debian Jessie.
 #   ensure
 #       Defaults to present
 #   includes
@@ -20,14 +21,17 @@
 #  include postgresql::server
 #
 class postgresql::server(
-    $pgversion='9.1',
+    $pgversion = $::lsbdistcodename ? {
+        jessie  => '9.4',
+        trusty  => '9.3',
+        default => '9.1',
+    },
     $ensure='present',
     $includes=[],
     $listen_addresses='*',
     $port='5432',
     $datadir=undef,
-    ) {
-
+) {
     package { [
             "postgresql-${pgversion}",
             "postgresql-${pgversion}-debversion",
