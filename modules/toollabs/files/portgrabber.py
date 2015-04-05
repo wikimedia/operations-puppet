@@ -1,5 +1,7 @@
 import socket
 
+import yaml
+
 # We need to pass the sockets to the proxies on to the child process,
 # so we must have a place to store them.
 socks = []
@@ -7,7 +9,9 @@ socks = []
 
 def getProxies():
     """Return the list of proxies to register with."""
-    return ['tools-webproxy-01', 'tools-webproxy-02']
+    with open('/etc/portgrabber.yaml', 'r') as f:
+        config = yaml.safe_load(f)
+        return config['proxies']
 
 
 def register(port):
