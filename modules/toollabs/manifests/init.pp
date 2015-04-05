@@ -11,7 +11,9 @@
 #
 # Sample Usage:
 #
-class toollabs {
+class toollabs (
+    $proxies = ['tools-webproxy-01', 'tools-webproxy-02'],
+) {
 
     include labs_lvm
 

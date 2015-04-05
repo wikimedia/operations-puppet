@@ -1,3 +1,4 @@
+import ConfigParser
 import socket
 
 # We need to pass the sockets to the proxies on to the child process,
@@ -7,7 +8,10 @@ socks = []
 
 def getProxies():
     """Return the list of proxies to register with."""
-    return ['tools-webproxy-01', 'tools-webproxy-02']
+    config = ConfigParser.RawConfigParser()
+    config.read('/etc/portgrabber.conf')
+
+    return config.get('portgrabber', 'proxies').split()
 
 
 def register(port):
