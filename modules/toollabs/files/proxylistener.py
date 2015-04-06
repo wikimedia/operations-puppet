@@ -41,6 +41,9 @@ LOG_FORMAT = "%(asctime)s %(message)s"
 
 logging.basicConfig(filename=LOG_FILE, format=LOG_FORMAT, level=logging.DEBUG)
 
+with open('/etc/wmflabs-project', 'r') as f:
+    projectprefix = f.read().strip() + '.'
+
 
 def get_remote_user(remote_host, remote_port, local_port):
     """
@@ -85,12 +88,12 @@ class RouteRequestHandler(SocketServer.StreamRequestHandler):
             return
 
         # Only tool accounts are allowed to ask for routes
-        if not user.startswith('tools.'):
+        if not user.startswith(projectprefix):
             self.request.send("This service available only to tool accounts")
             self.request.close()
             return
 
-        toolname = user.replace("tools.", "")
+        toolname = user[len(projectprefix):]
 
         redis_key = "prefix:%s" % toolname
 
