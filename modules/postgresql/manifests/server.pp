@@ -23,26 +23,25 @@
 #  include postgresql::server
 #
 class postgresql::server(
-    $pgversion = $::lsbdistcodename ? {
+    $pgversion        = $::lsbdistcodename ? {
         jessie  => '9.4',
         precise => '9.1',
         trusty  => '9.3',
     },
-    $ensure='present',
-    $includes=[],
-    $listen_addresses='*',
-    $port='5432',
-    $datadir=undef,
-    ) {
-
+    $ensure           = 'present',
+    $includes         = [],
+    $listen_addresses = '*',
+    $port             = '5432',
+    $datadir          = undef,
+) {
     package { [
-            "postgresql-${pgversion}",
-            "postgresql-${pgversion}-debversion",
-            "postgresql-client-${pgversion}",
-            'libdbi-perl',
-            'libdbd-pg-perl',
-        ]:
-        ensure    => $ensure,
+        "postgresql-${pgversion}",
+        "postgresql-${pgversion}-debversion",
+        "postgresql-client-${pgversion}",
+        'libdbi-perl',
+        'libdbd-pg-perl',
+    ]:
+        ensure => $ensure,
     }
 
     exec { 'pgreload':
@@ -58,10 +57,9 @@ class postgresql::server(
 
     file { "/etc/postgresql/${pgversion}/main/postgresql.conf":
         ensure  => $ensure,
+        content => template('postgresql/postgresql.conf.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('postgresql/postgresql.conf.erb'),
     }
-
 }
