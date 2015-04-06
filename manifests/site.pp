@@ -2298,28 +2298,6 @@ node 'radium.wikimedia.org' {
     }
 }
 
-node /^rbf100[1-2]\.eqiad\.wmnet/ {
-    role db::redis
-    include admin
-
-    # Background save may fail under low memory condition unless
-    # vm.overcommit_memory is 1.
-    sysctl::parameters { 'vm.overcommit_memory':
-        values => { 'vm.overcommit_memory' => 1, },
-    }
-}
-
-node /^rbf200[1-2]\.codfw\.wmnet/ {
-    role db::redis
-    include admin
-
-    # Background save may fail under low memory condition unless
-    # vm.overcommit_memory is 1.
-    sysctl::parameters { 'vm.overcommit_memory':
-        values => { 'vm.overcommit_memory' => 1, },
-    }
-}
-
 # Live Recent Changes WebSocket stream
 node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
