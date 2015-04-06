@@ -38,7 +38,7 @@ echo -e '\n]' | gzip -f >> $targetFile
 
 # Legacy directory (with legacy naming scheme)
 legacyDirectory=$publicDir/other/wikidata
-ln -s $targetFile "$legacyDirectory/$today.json"
+ln -s "../wikibase/wikidatawiki/$today/$filename.json.gz" "$legacyDirectory/$today.json.gz"
 find $legacyDirectory -name '*.json.gz' -mtime +`expr $daysToKeep + 1` -delete
 
 pruneOldDirectories
