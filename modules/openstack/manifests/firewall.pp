@@ -17,8 +17,6 @@ class openstack::firewall {
         $designate = '208.80.154.12'
     }
 
-    $iron = '208.80.154.151'
-    $tendril = '10.64.0.15'
 
     # Wikitech ssh
     ferm::rule { 'ssh_public':
@@ -76,12 +74,16 @@ class openstack::firewall {
     }
 
     # mysql access from iron
-    ferm::rule { 'mysql_iron':
-        rule => "saddr ${iron} proto tcp dport (3306) ACCEPT;",
+    ferm::service { 'mysql_iron':
+        proto => 'tcp',
+        port  => '3306',
+        srange => "@resolve(iron.wikimedia.org)",
     }
 
     # mysql monitoring access from tendril (db1011)
-    ferm::rule { 'mysql_tendril':
-        rule => "saddr ${tendril} proto tcp dport (3306) ACCEPT;",
+    ferm::service { 'mysql_tendril':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => "@resolve(tendril.wikimedia.org)",
     }
 }
