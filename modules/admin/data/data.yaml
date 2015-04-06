@@ -217,7 +217,7 @@ groups:
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, ananthrk, awight,
-              joal, jamesur, akosiaris, jhobs, lpintscher]
+              joal, jamesur, akosiaris, jhobs, lpintscher, jkatz]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
