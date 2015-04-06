@@ -1183,11 +1183,6 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     include role::ganeti
 }
 
-node /^(haedus|capella)\.codfw\.wmnet$/ {
-    include admin
-    include standard
-}
-
 # Hosts visualization / monitoring of EventLogging event streams
 # and MediaWiki errors.
 node 'hafnium.wikimedia.org' {
