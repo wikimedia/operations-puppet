@@ -2303,12 +2303,6 @@ node 'radium.wikimedia.org' {
     }
 }
 
-node 'radon.eqiad.wmnet' {
-    class { 'base::firewall': }
-    include admin
-    include standard
-}
-
 node /^rbf100[1-2]\.eqiad\.wmnet/ {
     role db::redis
     include admin
