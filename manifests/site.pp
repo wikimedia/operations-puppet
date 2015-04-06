@@ -2193,12 +2193,6 @@ node 'radium.wikimedia.org' {
     }
 }
 
-node 'radon.eqiad.wmnet' {
-    class { 'base::firewall': }
-    include admin
-    include standard
-}
-
 # Live Recent Changes WebSocket stream
 node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
