@@ -7,7 +7,6 @@
 # a convenience layer over the WebSockets protocol.
 #
 class role::rcstream {
-    include lvs::configuration
     include standard
     if $::realm == 'production' {
         include admin
@@ -42,8 +41,11 @@ class role::rcstream {
         backends => $backends,
     }
 
-    class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['stream'][$::site],
+    if hiera('has_lvs', true) {
+        include lvs::configuration
+        class { 'lvs::realserver':
+            realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['stream'][$::site],
+        }
     }
 
     nrpe::monitor_service { 'rcstream_backend':
