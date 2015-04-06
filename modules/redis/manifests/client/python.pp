@@ -3,7 +3,5 @@
 # This module declares the Python client library for redis.
 #
 class redis::client::python {
-    package { 'python-redis':
-        ensure => present,
-    }
+    require_package('python-redis')
 }
