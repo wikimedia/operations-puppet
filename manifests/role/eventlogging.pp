@@ -185,7 +185,6 @@ class role::eventlogging::monitoring {
     nrpe::monitor_service { 'eventlogging_root_disk_space':
         description   => 'Eventlogging / disk space',
         nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 1024M -c 512M -p /',
-        critical      => 'true',
         contact_group => 'analytics',
     }
 
@@ -195,8 +194,7 @@ class role::eventlogging::monitoring {
     # 50G gives us about 1 day.  Logrotate should keep enough disk space free.
     nrpe::monitor_service { 'eventlogging_srv_disk_space':
         description   => 'Eventlogging /srv disk space',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 100000M -c 50000M -p /',
-        critical      => 'true',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 100000M -c 50000M -p /srv',
         contact_group => 'analytics',
     }
 }
