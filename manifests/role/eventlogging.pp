@@ -214,8 +214,10 @@ class role::eventlogging::monitoring {
 class role::eventlogging::graphite {
     include ::eventlogging::monitoring
 
+    # Too bad this isn't in a hiera variable :(
+    $eventlogging_host = 'eventlog1001.eqiad.wmnet'
     eventlogging::service::consumer { 'graphite':
-        input  => "tcp://${::fqdn}:8600",
+        input  => "tcp://${eventlogging_host}:8600",
         output => 'statsd://statsd.eqiad.wmnet:8125',
     }
 
