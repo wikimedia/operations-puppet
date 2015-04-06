@@ -19,6 +19,16 @@ from optparse import OptionParser
 from ircbot import SingleServerIRCBot
 
 
+def beautify_message(m):
+    """Clean up formatting of alert messages."""
+    m = m.strip()                         # Strip trailing whitespace
+    m = re.sub(r'(\w+): \1:?', r'\1', m)  # Dedupe severity
+    m = re.sub(r' {2,}', ' ', m)          # Collapse whitespace
+    m = m.replace(': -', ':')             # Combine separators
+    m = m.strip(':-')                     # Strip trailing separators
+    return m
+
+
 class EchoNotifier(threading.Thread):
 	def __init__(self, notifier):
 		threading.Thread.__init__(self)
@@ -91,6 +101,7 @@ class EchoReader(threading.Thread):
 				try:
 					s = raw_input()
 					# this throws an exception if not connected.
+					s = beautify_message(s)
 					self.bot.connection.privmsg(self.chans, s)
 				except EOFError:
 					# Once the input is finished, the bot should exit
@@ -129,8 +140,7 @@ class EchoBot(SingleServerIRCBot):
 class EventHandler(pyinotify.ProcessEvent):
 	def process_IN_MODIFY(self, event):
 		s = reader.readfile(event.pathname)
-		s = s.rstrip('\n')
-		s = re.sub(r'(\w+: )\1', r'\1', s)  # Dedupe severity ("CRITICAL: CRITICAL:")
+		s = beautify_message(s)
 		if s:
 			chans = reader.getchannels(event.pathname)
 			try:
