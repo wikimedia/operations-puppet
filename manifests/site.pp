@@ -2384,6 +2384,7 @@ node 'stat1003.eqiad.wmnet' {
 
 node /^snapshot100[1-4]\.eqiad\.wmnet/ {
     role snapshot::common
+    include admin
     include snapshot
     include snapshot::dumps
     if $::fqdn == 'snapshot1003.eqiad.wmnet' {
