@@ -194,17 +194,4 @@ class role::otrs (
         check_command => 'check_ssl_http!ticket.wikimedia.org',
     }
 
-    monitoring::ganglia { 'exim_messages_in':
-        ensure                => 'present',
-        description           => 'exim incoming message rate',
-        metric                => 'exim_messages_in',
-        contact_group         => 'admins',
-        warning               => ':1',
-        critical              => ':0.9',
-        normal_check_interval => '30',
-        retry_check_interval  => '1',
-        retries               => '60',
-        require               => Class['exim4::ganglia'],
-    }
-
 }
