@@ -36,6 +36,27 @@ class YAMLRolesRules(object):
 
         return matched_roles
 
+def _guess_and_convert_type(value):
+    """
+    Guess at the type of value passed in and convert appropriately
+
+    This does a subset of the thing that LDAP's node terminator does,
+    in that it does not support floats, only integers.
+    See https://phabricator.wikimedia.org/T95240#1187339 for rationale
+
+    :param value: string value to convert
+    :return: string value converted to number or boolean as appropriate
+    """
+    if value == 'true':
+        return True
+    if value == 'false':
+        return False
+    if value.isdigit():
+        return int(value)
+    return value
+
+
+
 if __name__ == '__main__':
     with open('/etc/wmflabs-project') as f:
         path = os.path.join('/var/lib/git/operations/puppet/nodes/labs/',
@@ -63,7 +84,7 @@ if __name__ == '__main__':
         host_info = result[0][1]
         roles = host_info['puppetClass']
         puppetvars = {
-            var[0]: var[1]
+            var[0]: _guess_and_convert_type(var[1])
             for var in [pv.split("=") for pv in host_info['puppetVar']]
         }
         roles += rolesrules.roles_for(puppetvars['instancename'])
