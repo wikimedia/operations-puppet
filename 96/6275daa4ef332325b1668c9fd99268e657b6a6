@@ -1,0 +1,9 @@
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: John F. Lewis <johnflewis93@gmail.com>
+Code-Review+1: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Tue, 07 Apr 2015 04:42:43 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/188204
+Project: operations/puppet
+Branch: refs/heads/production
