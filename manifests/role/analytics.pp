@@ -69,9 +69,7 @@ class role::analytics::clients {
 #
 class role::analytics::monitor_disks {
     if hiera('has_ganglia', true) {
-        ganglia::plugin::python { 'diskstat':
-            require => Service['ganglia-monitor']
-        }
+        ganglia::plugin::python { 'diskstat': }
     }
 
 }
