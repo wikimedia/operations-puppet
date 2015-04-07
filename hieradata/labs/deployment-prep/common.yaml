@@ -144,6 +144,8 @@ mediawiki_memcached_servers:
         - 'sl'
       'sl':
         - 'sh'
+      'sv':
+        - 'da'
     Yandex:
       'en':
         - 'de'
