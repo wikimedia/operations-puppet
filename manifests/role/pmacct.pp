@@ -3,7 +3,7 @@ class role::pmacct {
         description => 'pmacct netflow accounting',
     }
 
-    include pmacct
+    include ::pmacct
 
     ferm::service { 'bgp':
         proto  => 'tcp',
