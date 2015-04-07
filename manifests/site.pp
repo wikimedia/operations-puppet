@@ -2486,14 +2486,10 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
     role mediawiki::videoscaler
 }
 
-# Primary Graphite, StatsD, and profiling data aggregation host.
+# old graphite host, waiting data backfill T90591
 node 'tungsten.eqiad.wmnet' {
     include admin
     include standard
-    include role::graphite::production
-    include role::txstatsd
-    include role::gdash
-    include role::mwprof
 }
 
 node 'uranium.wikimedia.org' {
