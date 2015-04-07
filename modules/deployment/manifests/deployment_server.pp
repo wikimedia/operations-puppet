@@ -33,6 +33,13 @@ class deployment::deployment_server($deployer_groups=[]) {
         require => Package['git-core'],
     }
 
+    file { '/srv/patches':
+      ensure   => 'directory',
+      owner    => 'root',
+      group    => $deployer_groups[0],
+      mode     => '0775',
+    }
+
     if $::realm != 'labs' {
 
       group { 'trebuchet':
