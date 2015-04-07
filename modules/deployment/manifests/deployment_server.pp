@@ -33,6 +33,14 @@ class deployment::deployment_server($deployer_groups=[]) {
         require => Package['git-core'],
     }
 
+    file { '/srv/patches':
+      ensure   => 'directory',
+      owner    => 'root',
+      group    => $deployer_groups[0],  # FIXME: why is this even an array?
+                                        # in practice it's always ['wikidev']
+      mode     => '0775',
+    }
+
     if $::realm != 'labs' {
 
       group { 'trebuchet':
