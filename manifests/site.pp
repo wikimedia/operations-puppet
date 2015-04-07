@@ -1233,18 +1233,12 @@ node 'iridium.eqiad.wmnet' {
     # https://phabricator.wikimedia.org/rOPUP2f5cde0ed76bd61229aefd12221a87ff40a1d7c8
     # Duplicate declaration: Class[Exim4]
     # include standard
-
+    role phabricator::main
     include base
+    include admin
     include ganglia
     include role::ntp
     include role::diamond
-    role phabricator::main
-
-    class { 'admin':
-        groups => [
-            'phabricator-admin',
-        ],
-    }
 }
 
 node 'iron.wikimedia.org' {
