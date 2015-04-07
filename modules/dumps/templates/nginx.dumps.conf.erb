@@ -24,5 +24,5 @@ server {
    }
 
    rewrite ^/other/(iOS|PlayBook|win8|android)(|/.*)$ $scheme://releases.wikimedia.org/mobile/$1$2  break;
-   rewrite ^/(other/)?mediawiki(|/.*)$                $scheme://releases.wikimedia.org/mediawiki/$2 break;
+   rewrite ^/(other/)?mediawiki(|/.*)$                $scheme://releases.wikimedia.org/mediawiki$2 break;
 }
