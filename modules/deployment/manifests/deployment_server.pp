@@ -25,6 +25,14 @@ class deployment::deployment_server($deployer_groups=[]) {
         require => [Package['git-core']],
     }
 
+    file { '/usr/local/bin/git-new-workdir':
+        source  => 'puppet:///modules/deployment/git-new-workdir',
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        require => [Package['git-core']],
+    }
+
     if $::realm != 'labs' {
 
       group { 'trebuchet':
