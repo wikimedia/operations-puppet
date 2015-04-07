@@ -1,22 +1,33 @@
-# Class: pmacct
+# == Class: pmacct
 #
-# This installs and mangages pmacct configuraiton
-# http://www.pmacct.net/
+# Install and manage pmacct, http://www.pmacct.net/
 #
-# Will initially be added to node 'netmon1001'
+# === Parameters
+#
+# === Examples
+#
+#  include pmacct
 
-class pmacct (
-        $pmacct_database,
-        $pmacct_agents
-) {
-    # Install package and make sure user and directories are set
-    include pmacct::install
+class pmacct {
+    require geoip
 
-    # Iterate over the device list to create new configs
-    # FIXME: Review daniel's different method for iterating over a hash..
-    create_resources(pmacct::configs, $pmacct_agents)
+    package { 'pmacct':
+        ensure => present,
+    }
 
-    service {'pmacct':
-        ensure => running;
+    file { '/etc/pmacct/nfacctd.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => template('pmacct/nfacctd.conf.erb'),
+        require => Package['pmacct'],
+        before  => Service['nfacctd'],
+        notify  => Service['nfacctd'],
+    }
+
+    service { 'nfacctd':
+        ensure => running,
+        enable => true,
     }
 }

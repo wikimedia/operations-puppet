@@ -1,0 +1,19 @@
+! This file is managed by Puppet
+
+daemonize: true
+pidfile: /var/run/nfacctd.pid
+syslog: daemon
+
+geoip_ipv4_file: /usr/share/GeoIP/GeoIP.dat
+
+aggregate: tag,dst_as,as_path,peer_dst_as
+
+! Disable some warnings due to JunOS bugs
+nfacctd_disable_checks: true
+
+nfacctd_ext_sampling_rate: 1000
+nfacctd_renormalize: true
+
+bgp_daemon: true
+bgp_daemon_max_peers: 20
+nfacctd_as_new: bgp
