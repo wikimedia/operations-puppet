@@ -1,4 +1,4 @@
-cluster: statistics
+cluster: analytics
 admin::groups:
   - statistics-privatedata-users
   - statistics-admins
