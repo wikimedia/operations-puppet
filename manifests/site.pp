@@ -2327,7 +2327,7 @@ node /^restbase100[1-6]\.eqiad\.wmnet$/ {
     include admin
 }
 
-# netflow machine (jkrauska)
+# network insights (netflow/pmacct, etc.)
 node 'rhenium.wikimedia.org' {
     role pmacct
     include standard

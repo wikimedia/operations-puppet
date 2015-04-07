@@ -152,11 +152,6 @@ groups:
     description: users with root access on logstash nodes (rt 6366, 6896)
     members: [aaron, bd808, manybubbles, demon, reedy]
     privileges: ['ALL = NOPASSWD: ALL']
-  pmacct-roots:
-    gid: 723
-    description: root on netflow machines
-    members: [jkrauska]
-    privileges: ['ALL = NOPASSWD: ALL']
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org

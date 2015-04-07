@@ -5503,6 +5503,8 @@ host restbase1006 {
 host rhenium {
 	hardware ethernet 78:2b:cb:2f:df:2f;
 	fixed-address rhenium.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host rubidium {
