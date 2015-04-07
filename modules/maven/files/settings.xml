@@ -12,13 +12,13 @@
       <id>system-wide-wmf-releases</id>
       <mirrorOf>wmf-releases</mirrorOf>
       <name>WMF Archiva. Released Artifacts</name>
-      <url>http://archiva.wikimedia.org/repository/releases/</url>
+      <url>https://archiva.wikimedia.org/repository/releases/</url>
     </mirror>
     <mirror>
       <id>system-wide-wmf-mirrored-default</id>
       <mirrorOf>*,!system-wide-wmf-releases</mirrorOf>
       <name>WMF Archiva. Mirrored Artifacts</name>
-      <url>http://archiva.wikimedia.org/repository/mirrored/</url>
+      <url>https://archiva.wikimedia.org/repository/mirrored/</url>
     </mirror>
   </mirrors>
 </settings>

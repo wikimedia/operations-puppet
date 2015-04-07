@@ -13,33 +13,14 @@ class role::archiva {
         }
     }
 
-    $archiva_port = 8080
     class { '::archiva':
-        port    => $archiva_port,
         require => Package['openjdk-7-jdk'],
     }
 
-    class { '::archiva::gitfat':
-        require => Class['::archiva']
-    }
+    # Set up a reverse proxy for the archiva service.
+    class { '::archiva::proxy': }
 
-    # Set up simple Nginx reverse proxy port 80 to port $archiva_port.
-    class { '::nginx':
-        require => Class['::archiva'],
-    }
-    $listen     = 80
-    $proxy_pass = "http://127.0.0.1:${archiva_port}/"
-    $server_properties = [
-        # Need large body size to allow for .jar deployment.
-        'client_max_body_size 256M',
-        # Archiva sometimes takes a long time to respond.
-        'proxy_connect_timeout 600s',
-        'proxy_read_timeout 600s',
-        'proxy_send_timeout 600s',
-    ]
-    nginx::site { 'archiva':
-        content => template('nginx/sites/simple-proxy.erb'),
-    }
+    class { '::archiva::gitfat': }
 
     # Bacula backups for /var/lib/archiva.
     if $::realm == 'production' {
@@ -49,14 +30,9 @@ class role::archiva {
         }
     }
 
-    ferm::service { 'http':
-        proto => 'tcp',
-        port  => '80',
-    }
-
     ferm::service { 'rsync':
         proto => 'tcp',
         port  => '873',
     }
-
 }
+
