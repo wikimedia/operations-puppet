@@ -592,7 +592,7 @@ node /^db10(51|55|57|65|66|72|73)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(16|34)\.codfw\.wmnet/ {
+node /^db20(16|34|42)\.codfw\.wmnet/ {
 
     include admin
     $cluster = 'mysql'
