@@ -2,6 +2,9 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
 
     include openstack::repo
 
+    include passwords::openstack::nova
+    $ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+
     package { ['python-designateclient',
                 'designate-sink',
                 'designate-common',
@@ -10,6 +13,7 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
                 'designate-doc',
                 'designate-agent',
                 'designate-central',
+                'python-nova-ldap',
                 'python-nova-fixed-multi' ]:
         ensure  => present,
         require => Class['openstack::repo'];
