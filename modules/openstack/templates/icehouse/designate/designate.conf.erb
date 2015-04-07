@@ -121,7 +121,7 @@ auth_uri = <%= designateconfig["auth_uri"] %>
 # List of notification handlers to enable, configuration of these needs to
 # correspond to a [handler:my_driver] section below or else in the config
 # Can be one or more of : nova_fixed, neutron_floatingip
-enabled_notification_handlers = nova_fixed_multi
+enabled_notification_handlers = nova_fixed_multi nova_ldap
 
 #-----------------------
 # mDNS Service
@@ -210,6 +210,29 @@ format = '%(hostname)s.%(tenant_id)s.%(domain)s'
 format = '%(hostname)s.%(domain)s'
 reverse_domain_id = '8d114f3c-815b-466c-bdd4-9b91f704ea60'
 reverse_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
+
+#-----------------------
+# Nova Fixed Ldap Handler
+#-----------------------
+[handler:nova_ldap]
+# Domain ID of domain to create records in. For a pre-existing domain, in this case eqiad.wmflabs
+domain_id = '114f1333-c2c1-44d3-beb4-ebed1a91742b'
+notification_topics = monitor
+notification_topics = notifications
+control_exchange = nova
+format = 'TESTING-%(hostname)s.%(tenant_id)s.%(domain)s'
+format = 'TESTING-%(hostname)s.%(domain)s'
+ldapusername = uid=novaadmin,ou=people,dc=wikimedia,dc=org
+ldappassword = <%= @ldap_user_pass %>
+puppetdefaultclasses = 'base'
+puppetdefaultclasses = 'role::labs::instance'
+puppetdefaultvars = 'realm=labs'
+puppetdefaultvars = 'use_dnsmasq=true'
+
+puppet_key_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
+puppet_master_host = "<%= designateconfig['controller_hostname'] %>"
+salt_key_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
+salt_master_host = "<%= designateconfig['controller_hostname'] %>"
 
 #------------------------
 # Neutron Floating Handler
