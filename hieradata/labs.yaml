@@ -5,3 +5,5 @@ elasticsearch::heap_memory: '2G'
 elasticsearch::expected_nodes: 1
 elasticsearch::recover_after_nodes: 1
 ganglia_class: old
+archiva::proxy::ssl_enabled: false
+archiva::proxy::certificate_name: ssl-cert-snakeoil
