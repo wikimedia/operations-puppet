@@ -64,6 +64,18 @@ class role::analytics::clients {
 
 }
 
+# == Class role::analytics::hadoop::monitor_disks
+# Installs monitoring plugins for disks
+#
+class role::analytics::monitor_disks {
+    if hiera('has_ganglia', true) {
+        ganglia::plugin::python { 'diskstat':
+            require => Service['ganglia-monitor']
+        }
+    }
+
+}
+
 # == Class role::analytics::password::research
 # Install the researcher MySQL username and password
 # into a file and make it readable by analytics-privatedata-users

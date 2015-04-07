@@ -259,8 +259,6 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         }
 
         # monitor disk statistics
-        if !defined(Ganglia::Plugin::Python['diskstat']) {
-            ganglia::plugin::python { 'diskstat': }
-        }
+        include role::analytics::monitor_disks
     }
 }
