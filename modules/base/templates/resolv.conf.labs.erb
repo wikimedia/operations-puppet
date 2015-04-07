@@ -3,7 +3,7 @@
 ## source: modules/base/resolv.conf.labs.erb
 ## from:   base::resolving
 
-<% if @use_dnsmasq_server == true then -%>
+<% if @use_dnsmasq == true then -%>
 domain <%= @site %>.wmflabs
 search <%= @site %>.wmflabs labs.<%= @site %>.wmnet
 nameserver 10.68.16.1
