@@ -46,8 +46,6 @@ class role::labs::nfs::fileserver($monitor_iface = 'eth0') {
         class { 'ldap::role::client::labs':
             ldapincludes => ['openldap', 'nss', 'utils'],
         }
-    } else {
-        include admin
     }
 
     include openstack::project-nfs-storage-service
