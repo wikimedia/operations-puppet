@@ -1228,13 +1228,8 @@ node 'iodine.wikimedia.org' {
 
 node 'iridium.eqiad.wmnet' {
     class { 'base::firewall': }
-
-    # Broken as dupe exim class T92879
-    # https://phabricator.wikimedia.org/rOPUP2f5cde0ed76bd61229aefd12221a87ff40a1d7c8
-    # Duplicate declaration: Class[Exim4]
-    # include standard
     role phabricator::main
-    include base
+    include standard
     include admin
     include ganglia
     include role::ntp
