@@ -22,6 +22,7 @@ import 'stages.pp'
 # Class for *most* servers, standard includes
 class standard(
     $has_default_mail_relay = true,
+    $has_admin = true,
 ) {
     include base
     include role::ntp
@@ -34,6 +35,11 @@ class standard(
     if $has_default_mail_relay {
         include role::mail::sender
     }
+    # Some instances in production (ideally none) and labs do not use
+    # the admin class
+    if $has_admin {
+        include ::admin
+    }
 }
 
 # Default variables. this way, they work with an ENC (as in labs) as well.
@@ -44,7 +50,6 @@ if $cluster == undef {
 # Node definitions (alphabetic order)
 
 node /^(acamar|achernar)\.wikimedia\.org$/ {
-    include admin
     include base::firewall
     include standard
 
@@ -73,7 +78,6 @@ node 'analytics1003.eqiad.wmnet' {
     role analytics
 
     include standard
-    include admin
 
     # Disabling these for now.
     # analytics1003 is acting up since the Trusty upgrade. I halts with:
@@ -94,7 +98,6 @@ node 'analytics1001.eqiad.wmnet' {
     role analytics::hadoop::master
 
     include standard
-    include admin
 }
 
 
@@ -103,20 +106,17 @@ node 'analytics1002.eqiad.wmnet' {
     role analytics::hadoop::standby
 
     include standard
-    include admin
 }
 
 # analytics1004 was previously the Hadoop standby NameNode
 # It is being deprecated.
 node 'analytics1004.eqiad.wmnet' {
-    include admin
     include standard
 }
 
 # analytics1010 was previously the Hadoop master.
 # It is being deprecated.
 node 'analytics1010.eqiad.wmnet' {
-    include admin
     include standard
 }
 
@@ -135,7 +135,6 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
         $ganglia_aggregator = true
     }
     role analytics::hadoop::worker
-    include admin
     include standard
 }
 
@@ -157,7 +156,6 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
     role analytics::kafka::server
     include role::analytics
     include standard
-    include admin
 
 }
 
@@ -165,7 +163,6 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
 node /analytics102[345].eqiad.wmnet/ {
     role analytics
     include standard
-    include admin
     include role::analytics::zookeeper::server
 }
 
@@ -173,7 +170,6 @@ node /analytics102[345].eqiad.wmnet/ {
 node 'analytics1026.eqiad.wmnet' {
 
     include standard
-    include admin
     include role::logging::udp2log::misc
 }
 
@@ -182,7 +178,6 @@ node 'analytics1026.eqiad.wmnet' {
 # batch Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
 
-    include admin
     include standard
 
     include role::analytics::hive::server
@@ -224,7 +219,6 @@ node 'analytics1027.eqiad.wmnet' {
 # git.wikimedia.org
 node 'antimony.wikimedia.org' {
     role gitblit
-    include admin
     include base::firewall
     include standard
     include role::subversion
@@ -232,7 +226,6 @@ node 'antimony.wikimedia.org' {
 
 # irc.wikimedia.org
 node 'argon.wikimedia.org' {
-    include admin
     include standard
     include role::mw-rc-irc
 }
@@ -242,7 +235,6 @@ node 'baham.wikimedia.org' {
         interface => 'eth0',
     }
     include standard
-    include admin
     include role::authdns::server
 }
 
@@ -256,7 +248,6 @@ node 'bast1001.wikimedia.org' {
     $ganglia_aggregator = true
     role bastionhost
 
-    include admin
     include standard
     include subversion::client
     include dsh
@@ -274,7 +265,6 @@ node 'bast2001.wikimedia.org' {
         interface => 'eth0',
     }
     role bastionhost
-    include admin
     include standard
 
 }
@@ -285,7 +275,6 @@ node 'bast4001.wikimedia.org' {
     }
 
     role bastionhost
-    include admin
     include standard
     include role::ipmi
     include role::installserver::tftp-server
@@ -295,7 +284,6 @@ node 'bast4001.wikimedia.org' {
 node /^(berkelium|curium)\.eqiad\.wmnet$/ {
     $cluster = 'misc'
     include standard
-    include admin
     interface::add_ip6_mapped { 'main': }
     rsyslog::conf { 'remote_logstash':
         content  => "*.* @logstash1002.eqiad.wmnet:10514",
@@ -308,7 +296,6 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
 node 'caesium.eqiad.wmnet' {
     role releases
     include base::firewall
-    include admin
     include standard
 }
 
@@ -316,7 +303,6 @@ node 'caesium.eqiad.wmnet' {
 node 'calcium.wikimedia.org' {
     $cluster = 'misc'
 
-    include admin
     include standard
 
     include base::firewall
@@ -326,7 +312,6 @@ node 'calcium.wikimedia.org' {
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
     include standard
-    include admin
     include role::horizon
 
     class { 'base::firewall': }
@@ -341,7 +326,6 @@ node 'carbon.wikimedia.org' {
         interface => 'eth0',
     }
 
-    include admin
     include standard
     include role::installserver
 }
@@ -351,11 +335,9 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     role restbase, cassandra
     include base::firewall
     include standard
-    include admin
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
-    include admin
     include base::firewall
     include standard
     include role::dnsrecursor
@@ -511,7 +493,6 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 
 node 'dataset1001.wikimedia.org' {
 
-    include admin
     include standard
     include role::dataset::systemusers
     include role::dataset::primary
@@ -526,7 +507,6 @@ node 'dataset1001.wikimedia.org' {
 
 node /^db10(18)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s2':
         innodb_file_per_table => true,
@@ -536,7 +516,6 @@ node /^db10(18)\.eqiad\.wmnet/ {
 
 node /^db10(52)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s1':
         innodb_file_per_table => true,
@@ -546,7 +525,6 @@ node /^db10(52)\.eqiad\.wmnet/ {
 
 node /^db10(19|38)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s3':
         # Many more tables than other shards.
@@ -558,7 +536,6 @@ node /^db10(19|38)\.eqiad\.wmnet/ {
 
 node /^db10(40|53)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s4':
         innodb_file_per_table => true,
@@ -568,7 +545,6 @@ node /^db10(40|53)\.eqiad\.wmnet/ {
 
 node /^db10(21|26|45|58)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s5':
         innodb_file_per_table => true,
@@ -578,7 +554,6 @@ node /^db10(21|26|45|58)\.eqiad\.wmnet/ {
 
 node /^db10(22|23|30)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s6':
         innodb_file_per_table => true,
@@ -588,7 +563,6 @@ node /^db10(22|23|30)\.eqiad\.wmnet/ {
 
 node /^db10(33|34|41)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::coredb::s7':
         innodb_file_per_table => true,
@@ -600,7 +574,6 @@ node /^db10(33|34|41)\.eqiad\.wmnet/ {
 
 node /^db10(51|55|57|65|66|72|73)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's1',
@@ -609,7 +582,6 @@ node /^db10(51|55|57|65|66|72|73)\.eqiad\.wmnet/ {
 
 node /^db20(16|34|42)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's1',
@@ -618,7 +590,6 @@ node /^db20(16|34|42)\.codfw\.wmnet/ {
 
 node /^db10(36|54|60|63|67)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's2',
@@ -627,7 +598,6 @@ node /^db10(36|54|60|63|67)\.eqiad\.wmnet/ {
 
 node /^db20(17|35|41)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's2',
@@ -636,7 +606,6 @@ node /^db20(17|35|41)\.codfw\.wmnet/ {
 
 node /^db10(15|27|35|44)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's3',
@@ -645,7 +614,6 @@ node /^db10(15|27|35|44)\.eqiad\.wmnet/ {
 
 node /^db20(18|36)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's3',
@@ -654,7 +622,6 @@ node /^db20(18|36)\.codfw\.wmnet/ {
 
 node /^db10(42|56|59|64|68|70)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's4',
@@ -663,7 +630,6 @@ node /^db10(42|56|59|64|68|70)\.eqiad\.wmnet/ {
 
 node /^db20(19|37)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's4',
@@ -672,7 +638,6 @@ node /^db20(19|37)\.codfw\.wmnet/ {
 
 node /^db10(49|71)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's5',
@@ -681,7 +646,6 @@ node /^db10(49|71)\.eqiad\.wmnet/ {
 
 node /^db20(23|38)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's5',
@@ -690,7 +654,6 @@ node /^db20(23|38)\.codfw\.wmnet/ {
 
 node /^db10(37|50|61)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's6',
@@ -699,7 +662,6 @@ node /^db10(37|50|61)\.eqiad\.wmnet/ {
 
 node /^db20(28|39)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's6',
@@ -708,7 +670,6 @@ node /^db20(28|39)\.codfw\.wmnet/ {
 
 node /^db10(28|39|62)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's7',
@@ -717,7 +678,6 @@ node /^db10(28|39|62)\.eqiad\.wmnet/ {
 
 node /^db20(29|40)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's7',
@@ -727,14 +687,12 @@ node /^db20(29|40)\.codfw\.wmnet/ {
 ## x1 shard
 node /^db10(29|31)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     include role::coredb::x1
 }
 
 node /^db20(09)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 'x1',
@@ -744,7 +702,6 @@ node /^db20(09)\.codfw\.wmnet/ {
 ## m1 shard
 node /^db10(01)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::coredb::m1':
         mariadb => true,
@@ -753,7 +710,6 @@ node /^db10(01)\.eqiad\.wmnet/ {
 
 node 'db1016.eqiad.wmnet' {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc':
         shard  => 'm1',
@@ -763,7 +719,6 @@ node 'db1016.eqiad.wmnet' {
 
 node /^db20(10|30)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc':
         shard => 'm1',
@@ -773,7 +728,6 @@ node /^db20(10|30)\.codfw\.wmnet/ {
 ## m2 shard
 node /^db10(20)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc':
         shard => 'm2',
@@ -782,7 +736,6 @@ node /^db10(20)\.eqiad\.wmnet/ {
 
 node /^db20(11)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc':
         shard => 'm2',
@@ -792,7 +745,6 @@ node /^db20(11)\.codfw\.wmnet/ {
 ## m3 shard
 node 'db1043.eqiad.wmnet' {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc::phabricator':
         shard  => 'm3',
@@ -802,7 +754,6 @@ node 'db1043.eqiad.wmnet' {
 
 node 'db1048.eqiad.wmnet' {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc::phabricator':
         shard    => 'm3',
@@ -812,7 +763,6 @@ node 'db1048.eqiad.wmnet' {
 
 node /^db20(12)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc::phabricator':
         shard => 'm3',
@@ -822,7 +772,6 @@ node /^db20(12)\.codfw\.wmnet/ {
 # m4 shard
 node 'db1046.eqiad.wmnet' {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::misc::eventlogging':
         shard  => 'm4',
@@ -833,14 +782,12 @@ node 'db1046.eqiad.wmnet' {
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
 
-    include admin
     $cluster = 'mysql'
     include role::mariadb::analytics
 }
 
 node 'db1069.eqiad.wmnet' {
 
-    include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
     include role::mariadb::sanitarium
@@ -848,13 +795,11 @@ node 'db1069.eqiad.wmnet' {
 
 node 'db1011.eqiad.wmnet' {
 
-    include admin
     $cluster = 'mysql'
     include role::mariadb::tendril
 }
 
 node 'dbstore1001.eqiad.wmnet' {
-    include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
     include role::mariadb::backup
@@ -869,14 +814,12 @@ node 'dbstore1001.eqiad.wmnet' {
 }
 
 node 'dbstore1002.eqiad.wmnet' {
-    include admin
     $cluster = 'mysql'
     $ganglia_aggregator = true
     include role::mariadb::dbstore
 }
 
 node 'dbstore2001.codfw.wmnet' {
-    include admin
     $cluster = 'mysql'
     # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':
@@ -889,13 +832,11 @@ node 'dbstore2001.codfw.wmnet' {
 }
 
 node 'dbstore2002.codfw.wmnet' {
-    include admin
     $cluster = 'mysql'
     include role::mariadb::dbstore
 }
 
 node 'dbproxy1001.eqiad.wmnet' {
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::proxy::master':
         shard          => 'm1',
@@ -907,7 +848,6 @@ node 'dbproxy1001.eqiad.wmnet' {
 }
 
 node 'dbproxy1002.eqiad.wmnet' {
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::proxy::master':
         shard          => 'm2',
@@ -919,7 +859,6 @@ node 'dbproxy1002.eqiad.wmnet' {
 }
 
 node 'dbproxy1003.eqiad.wmnet' {
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::proxy::master':
         shard          => 'm3',
@@ -931,7 +870,6 @@ node 'dbproxy1003.eqiad.wmnet' {
 }
 
 node 'dbproxy1004.eqiad.wmnet' {
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::proxy::master':
         shard          => 'm4',
@@ -952,13 +890,11 @@ node 'eeden.esams.wikimedia.org' {
         interface => 'eth0',
     }
     include standard
-    include admin
     include role::authdns::server
 }
 
 node 'einsteinium.eqiad.wmnet' {
     include standard
-    include admin
     system::role { 'Titan test host': }
 }
 
@@ -973,14 +909,11 @@ node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
 # erbium is a webrequest udp2log host
 node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
-
-    include admin
     include role::logging::udp2log::erbium
 }
 
 # es1 equad
 node /es100[34]\.eqiad\.wmnet/ {
-    include admin
 
     $cluster = 'mysql'
     class { 'role::coredb::es1':
@@ -990,7 +923,6 @@ node /es100[34]\.eqiad\.wmnet/ {
 
 node /es100[12]\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 'es1',
@@ -999,7 +931,6 @@ node /es100[12]\.eqiad\.wmnet/ {
 
 node /es100[5]\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 'es2',
@@ -1007,7 +938,6 @@ node /es100[5]\.eqiad\.wmnet/ {
 }
 
 node /es100[67]\.eqiad\.wmnet/ {
-    include admin
     $cluster = 'mysql'
     class { 'role::coredb::es2':
         mariadb => true,
@@ -1016,7 +946,6 @@ node /es100[67]\.eqiad\.wmnet/ {
 
 node /es200[1234]\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 'es1',
@@ -1025,7 +954,6 @@ node /es200[1234]\.codfw\.wmnet/ {
 
 node /es200[567]\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 'es2',
@@ -1033,7 +961,6 @@ node /es200[567]\.codfw\.wmnet/ {
 }
 
 node /es100[9]\.eqiad\.wmnet/ {
-    include admin
     $cluster = 'mysql'
     class { 'role::coredb::es3':
         mariadb => true,
@@ -1042,7 +969,6 @@ node /es100[9]\.eqiad\.wmnet/ {
 
 node /es10(08|10)\.eqiad\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 'es3',
@@ -1051,7 +977,6 @@ node /es10(08|10)\.eqiad\.wmnet/ {
 
 node /es20(08|09|10)\.codfw\.wmnet/ {
 
-    include admin
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 'es3',
@@ -1062,7 +987,6 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
 # processes it, and broadcasts to internal subscribers.
 node 'eventlog1001.eqiad.wmnet' {
     role eventlogging
-    include admin
     include standard
     include role::ipython_notebook
     include role::logging::mediawiki::errors
@@ -1071,7 +995,6 @@ node 'eventlog1001.eqiad.wmnet' {
 node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
-    include admin
     include standard
     include ::role::xenon
 
@@ -1085,7 +1008,6 @@ node 'fluorine.eqiad.wmnet' {
 # gadolinium is the webrequest socat multicast relay.
 # base_analytics_logging_node is defined in role/logging.pp
 node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
-    include admin
 
     # relay the incoming webrequest log stream to multicast
     include role::logging::relay::webrequest-multicast
@@ -1097,7 +1019,6 @@ node 'gallium.wikimedia.org' {
 
     $cluster = 'misc'
 
-    include admin
 
     # Bug 49846, let us sync VisualEditor in mediawiki/extensions.git
     sudo::user { 'jenkins-slave':
@@ -1130,7 +1051,6 @@ node 'gallium.wikimedia.org' {
 
 node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     include standard
-    include admin
     include role::ganeti
 }
 
@@ -1139,13 +1059,11 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 node 'hafnium.wikimedia.org' {
     role eventlogging::graphite
     include standard
-    include admin
     include base::firewall
     include role::webperf
 }
 
 node 'helium.eqiad.wmnet' {
-    include admin
     include standard
     include role::poolcounter
     include role::backup::director
@@ -1153,7 +1071,6 @@ node 'helium.eqiad.wmnet' {
 }
 
 node 'heze.codfw.wmnet' {
-    include admin
     include standard
     include role::backup::storage
 }
@@ -1161,7 +1078,6 @@ node 'heze.codfw.wmnet' {
 # Holmium hosts openstack-designate, the labs DNS service.
 node 'holmium.wikimedia.org' {
     include standard
-    include admin
 
     include base::firewall
     include role::labsdns
@@ -1178,7 +1094,6 @@ node 'hooft.esams.wikimedia.org' {
     }
     role bastionhost
 
-    include admin
     include standard
     include role::installserver::tftp-server
 
@@ -1189,7 +1104,6 @@ node 'hooft.esams.wikimedia.org' {
 
 # Primary graphite machines, replacing tungsten
 node 'graphite1001.eqiad.wmnet' {
-    include admin
     include standard
     include role::graphite::production
     include role::statsdlb
@@ -1199,7 +1113,6 @@ node 'graphite1001.eqiad.wmnet' {
 
 # graphite test machine, currently with SSD caching + spinning disks
 node 'graphite1002.eqiad.wmnet' {
-    include admin
     include standard
     include role::graphite::production
     include role::txstatsd
@@ -1208,7 +1121,6 @@ node 'graphite1002.eqiad.wmnet' {
 
 # Primary graphite machines, replacing tungsten
 node 'graphite2001.codfw.wmnet' {
-    include admin
     include standard
     include role::graphite::production
     include role::txstatsd
@@ -1223,7 +1135,6 @@ node 'install2001.wikimedia.org' {
         interface => 'eth0',
     }
 
-    include admin
     include standard
     include role::installserver::tftp-server
 
@@ -1236,8 +1147,6 @@ node 'iodine.wikimedia.org' {
     class { 'base::firewall': }
     role otrs
 
-    include admin
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -1247,7 +1156,6 @@ node 'iridium.eqiad.wmnet' {
     class { 'base::firewall': }
     role phabricator::main
     include standard
-    include admin
     include ganglia
     include role::ntp
     include role::diamond
@@ -1262,7 +1170,6 @@ node 'iron.wikimedia.org' {
     }
     role bastionhost
 
-    include admin
     include standard
     include role::ipmi
     include role::access_new_install
@@ -1278,7 +1185,6 @@ node 'labcontrol2001.wikimedia.org' {
     #$use_neutron           = false
 
     include standard
-    include admin
     include base::firewall
     include role::dns::ldap
     include ldap::role::client::labs
@@ -1294,7 +1200,6 @@ node 'labcontrol2001.wikimedia.org' {
 node 'labmon1001.eqiad.wmnet' {
     role labmon
     include standard
-    include admin
 }
 
 node 'labnet1001.eqiad.wmnet' {
@@ -1304,7 +1209,6 @@ node 'labnet1001.eqiad.wmnet' {
     $ganglia_aggregator = true
 
     include standard
-    include admin
     include role::nova::api
 
     if $use_neutron == true {
@@ -1316,25 +1220,21 @@ node 'labnet1001.eqiad.wmnet' {
 
 ## labsdb dbs
 node 'labsdb1001.eqiad.wmnet' {
-    include admin
     $cluster = 'mysql'
     include role::mariadb::labs
 }
 
 node 'labsdb1002.eqiad.wmnet' {
-    include admin
     $cluster = 'mysql'
     include role::mariadb::labs
 }
 
 node 'labsdb1003.eqiad.wmnet' {
-    include admin
     $cluster = 'mysql'
     include role::mariadb::labs
 }
 
 node 'labsdb1004.eqiad.wmnet' {
-    include admin
     $postgres_slave = 'labsdb1005.eqiad.wmnet'
     $postgres_slave_v4 = '10.64.37.9'
 
@@ -1343,7 +1243,6 @@ node 'labsdb1004.eqiad.wmnet' {
 }
 
 node 'labsdb1005.eqiad.wmnet' {
-    include admin
     $postgres_master = 'labsdb1004.eqiad.wmnet'
 
     include role::postgres::slave
@@ -1351,7 +1250,6 @@ node 'labsdb1005.eqiad.wmnet' {
 }
 
 node 'labsdb1006.eqiad.wmnet' {
-    include admin
     $osm_slave = 'labsdb1007.eqiad.wmnet'
     $osm_slave_v4 = '10.64.37.12'
 
@@ -1360,7 +1258,6 @@ node 'labsdb1006.eqiad.wmnet' {
 }
 
 node 'labsdb1007.eqiad.wmnet' {
-    include admin
     $osm_master = 'labsdb1006.eqiad.wmnet'
 
     include role::osm::slave
@@ -1371,8 +1268,6 @@ node /labstore100[12]\.eqiad\.wmnet/ {
     if $::hostname == 'labstore1001' {
         $ganglia_aggregator = true
     }
-    $site = 'eqiad'
-    $cluster = 'labsnfs'
 
     role labs::nfs::fileserver
 
@@ -1380,25 +1275,19 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 
 node 'labstore1003.eqiad.wmnet' {
     $ganglia_aggregator = true
-    $site = 'eqiad'
-    $cluster = 'labsnfs'
 
     role labs::nfs::dumps
 }
 
 node /labstore200[12]\.codfw\.wmnet/ {
-
-    $site = 'codfw'
     $cluster = 'labsnfs'
 
     role labs::nfs::fileserver
-
 }
 
 node 'lanthanum.eqiad.wmnet' {
 
     include standard
-    include admin
     include role::ci::slave
     # lanthanum received a SSD drive just like gallium (RT #5178) mount it
     file { '/srv/ssd':
@@ -1419,13 +1308,11 @@ node 'lanthanum.eqiad.wmnet' {
 node 'lead.wikimedia.org' {
     role mail::mx
     include standard
-    include admin
     interface::add_ip6_mapped { 'main': }
 }
 
 node 'lithium.eqiad.wmnet' {
 
-    include admin
     include standard
     include role::backup::host
     include role::syslog::centralserver
@@ -1452,7 +1339,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     }
 
     role lvs::balancer
-    include admin
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1559,7 +1445,6 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
         $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.239' ]
     }
     role lvs::balancer
-    include admin
 
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
 
@@ -1677,7 +1562,6 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
     }
 
     role lvs::balancer
-    include admin
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1715,7 +1599,6 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     }
 
     role lvs::balancer
-    include admin
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1727,7 +1610,6 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 }
 
 node 'maerlant.wikimedia.org' {
-    include admin
     include standard
     include base::firewall
     include role::dnsrecursor
@@ -1749,7 +1631,6 @@ node 'magnesium.wikimedia.org' {
         interface => 'eth0',
     }
 
-    include admin
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
@@ -1758,7 +1639,6 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
     }
 
     role memcached
-    include admin
     include passwords::redis
 
     file { '/a':
@@ -1772,14 +1652,12 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 
 node /^mc20[01][0-9]\.codfw\.wmnet/ {
     role memcached
-    include admin
     include passwords::redis
     include redis
     include redis::ganglia
 }
 
 node 'multatuli.wikimedia.org' {
-    include admin
     include standard
 
     interface::add_ip6_mapped { 'main':
@@ -1790,7 +1668,6 @@ node 'multatuli.wikimedia.org' {
 node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
 
-    include admin
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1802,7 +1679,6 @@ node 'ms1001.wikimedia.org' {
 }
 
 node 'ms1002.eqiad.wmnet' {
-    include admin
     include standard
 }
 
@@ -2054,7 +1930,6 @@ node 'nembus.wikimedia.org' {
     $cluster               = 'virt'
 
     include standard
-    include admin
     include ldap::role::server::labs
     include ldap::role::client::labs
 }
@@ -2065,7 +1940,6 @@ node 'neon.wikimedia.org' {
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
 
     include standard
-    include admin
     include role::icinga
     include role::ishmael
     include role::tendril
@@ -2077,13 +1951,11 @@ node 'neptunium.wikimedia.org' {
     $cluster               = 'virt'
 
     include standard
-    include admin
     include ldap::role::server::labs
     include ldap::role::client::labs
 }
 
 node 'nescio.wikimedia.org' {
-    include admin
     include standard
     include base::firewall
     include role::dnsrecursor
@@ -2094,7 +1966,6 @@ node 'nescio.wikimedia.org' {
 }
 
 node 'netmon1001.wikimedia.org' {
-    include admin
     include standard
     include webserver::apache
     include role::rancid
@@ -2117,7 +1988,6 @@ node 'netmon1001.wikimedia.org' {
 
 node 'nitrogen.wikimedia.org' {
     include standard
-    include admin
     include role::ipv6relay
 
     interface::add_ip6_mapped { 'main':
@@ -2126,21 +1996,19 @@ node 'nitrogen.wikimedia.org' {
 }
 
 node /^ocg100[123]\.eqiad\.wmnet$/ {
-    # Mainrole: pdf!
     $ganglia_aggregator = hiera('ganglia_aggregator', false)
     role ocg
 }
 
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
-    include ::standard
     role ve
+    include ::standard
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
 node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
 
-    include admin
     include role::dataset::systemusers
 
     # main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
@@ -2149,7 +2017,6 @@ node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
 
 node 'palladium.eqiad.wmnet' {
     include standard
-    include admin
     include role::ipmi
     include role::salt::masters::production
     include role::deployment::salt_masters
@@ -2160,7 +2027,6 @@ node 'palladium.eqiad.wmnet' {
 
 node /pc100[1-3]\.eqiad\.wmnet/ {
     $cluster = 'mysql'
-    include admin
     include role::db::core
     include mysql_wmf::mysqluser
     include mysql_wmf::datadirs
@@ -2176,7 +2042,6 @@ node /(plutonium|pollux)\.wikimedia\.org/ {
     $cluster = 'openldap_corp_mirror'
     $ganglia_aggregator = true
 
-    include admin
 
     include standard
     include role::openldap::corp
@@ -2186,7 +2051,6 @@ node /(plutonium|pollux)\.wikimedia\.org/ {
 node 'polonium.wikimedia.org' {
     role mail::mx
     include standard
-    include admin
 
     interface::add_ip6_mapped { 'main': }
 
@@ -2204,7 +2068,6 @@ node 'polonium.wikimedia.org' {
 }
 
 node 'potassium.eqiad.wmnet' {
-    include admin
     include standard
     include role::poolcounter
 }
@@ -2213,12 +2076,11 @@ node 'potassium.eqiad.wmnet' {
 # Since gadolinium is back up, varnishncsa instances now send logs
 # to gadolinium again.  protactinium is not being used.
 node 'protactinium.wikimedia.org' {
-    include admin
+    include standard
 }
 
 node 'radium.wikimedia.org' {
     class { 'base::firewall': }
-    include admin
     include standard
     include role::tor
 
@@ -2240,12 +2102,10 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
 node /^rdb100[1-4]\.eqiad\.wmnet/ {
     $ganglia_aggregator = true
     role db::redis
-    include admin
 }
 
 node /^rdb200[1-4]\.codfw\.wmnet/ {
     role db::redis
-    include admin
 }
 
 # restbase eqiad cluster
@@ -2253,14 +2113,12 @@ node /^restbase100[1-6]\.eqiad\.wmnet$/ {
     role restbase, cassandra
     include base::firewall
     include standard
-    include admin
 }
 
 # network insights (netflow/pmacct, etc.)
 node 'rhenium.wikimedia.org' {
     role pmacct
     include standard
-    include admin
 }
 
 node 'rubidium.wikimedia.org' {
@@ -2268,14 +2126,12 @@ node 'rubidium.wikimedia.org' {
         interface => 'eth0',
     }
     include standard
-    include admin
     include role::authdns::server
 }
 
 # ruthenium is a parsoid regression test server
 # https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
 node 'ruthenium.eqiad.wmnet' {
-    include admin
     include standard
 }
 
@@ -2289,17 +2145,13 @@ node 'silver.wikimedia.org' {
     class { 'base::firewall': }
 
     include standard
-    include admin
     include role::nova::manager
     include role::mariadb::wikitech
 }
 
 node 'sodium.wikimedia.org' {
-    include admin
-    include base
-    include ganglia
-    include role::ntp
-    include role::mail::lists
+    role mail::lists
+    include standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2308,13 +2160,11 @@ node 'sodium.wikimedia.org' {
 
 node 'strontium.eqiad.wmnet' {
     include standard
-    include admin
     include role::puppetmaster::backend
 }
 
 node 'stat1001.eqiad.wmnet' {
     role statistics::web
-    include admin
     include standard
     include role::abacist
 }
@@ -2330,7 +2180,6 @@ node 'stat1002.eqiad.wmnet' {
     role statistics::private
 
     include standard
-    include admin
 
     # Make sure refinery happens before analytics::clients,
     # so that the hive role can properly configure Hive's
@@ -2369,7 +2218,6 @@ node 'stat1002.eqiad.wmnet' {
 node 'stat1003.eqiad.wmnet' {
     role statistics::cruncher
     include standard
-    include admin
 
     # NOTE: This will be moved to another class
     # someday, probably standard.
@@ -2389,7 +2237,6 @@ node 'stat1003.eqiad.wmnet' {
 
 node /^snapshot100[1-4]\.eqiad\.wmnet/ {
     role snapshot::common
-    include admin
     include snapshot
     include snapshot::dumps
     if $::fqdn == 'snapshot1003.eqiad.wmnet' {
@@ -2400,7 +2247,6 @@ node /^snapshot100[1-4]\.eqiad\.wmnet/ {
 # codfw poolcounters
 node /(subra|suhail)\.codfw\.wmnet/ {
 
-    include admin
     include standard
     include base::firewall
     include role::poolcounter
@@ -2415,7 +2261,6 @@ node 'terbium.eqiad.wmnet' {
     include role::noc
     include role::mediawiki::searchmonitor
 
-    include admin
     include ldap::role::client::labs
 
     include misc::maintenance::pagetriage
@@ -2459,7 +2304,6 @@ node 'tin.eqiad.wmnet' {
     include role::labsdb::manager
     include ssh::hostkeys-collect
     include role::releases::upload
-    include admin
 
     # for reedy RT #6322
     package { 'unzip':
@@ -2480,7 +2324,6 @@ node 'titanium.wikimedia.org' {
     class { 'base::firewall': }
 
     include standard
-    include admin
 
     include role::archiva
 }
@@ -2493,7 +2336,6 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
 
 # old graphite host, waiting data backfill T90591
 node 'tungsten.eqiad.wmnet' {
-    include admin
     include standard
 }
 
@@ -2501,7 +2343,6 @@ node 'uranium.wikimedia.org' {
     $ganglia_aggregator = true
 
     include standard
-    include admin
     include role::ganglia::web
     include misc::monitoring::views
     include base::firewall
@@ -2514,7 +2355,6 @@ node 'uranium.wikimedia.org' {
 # This node will soon be deprecated.
 node 'vanadium.eqiad.wmnet' {
     role eventlogging
-    include admin
     include standard
     include role::ipython_notebook
     include role::logging::mediawiki::errors
@@ -2528,7 +2368,6 @@ node 'virt1000.wikimedia.org' {
     $use_neutron           = false
 
     include standard
-    include admin
     include role::dns::ldap
     include ldap::role::client::labs
     include role::nova::controller
@@ -2543,7 +2382,6 @@ node 'virt1000.wikimedia.org' {
 node /virt100[1-4].eqiad.wmnet/ {
     $use_neutron = false
     role nova::compute
-    include admin
     include standard
     if $use_neutron == true {
         include role::neutron::computenode
@@ -2553,7 +2391,6 @@ node /virt100[1-4].eqiad.wmnet/ {
 node /virt100[6-9].eqiad.wmnet/ {
     $use_neutron = false
     role nova::compute
-    include admin
     include standard
     if $use_neutron == true {
         include role::neutron::computenode
@@ -2564,7 +2401,6 @@ node /virt101[0-2].eqiad.wmnet/ {
     $use_neutron = false
     openstack::nova::partition{ '/dev/sdb': }
     role nova::compute
-    include admin
     include standard
 
     if $use_neutron == true {
@@ -2583,7 +2419,7 @@ node 'ytterbium.wikimedia.org' {
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::production
     role gerrit::production
-    include admin
+    include standard
     include base::firewall
 
 }
@@ -2592,7 +2428,6 @@ node 'zirconium.wikimedia.org' {
     class { 'base::firewall': }
 
     include standard
-    include admin
     include role::planet
     include role::contacts
     include role::etherpad
@@ -2613,7 +2448,6 @@ node default {
     # Labs nodes include a different set of defaults via ldap.
     if $::realm == 'production' {
         include standard
-        include admin
     }
 }
 

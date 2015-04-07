@@ -8,9 +8,6 @@
 class role::ocg {
     include base::firewall
     include standard
-    if $::realm == 'production' {
-        include admin
-    }
 
     # size of tmpfs filesystem
     $tmpfs_size = hiera('role::ocg::tmpfs_size', '512M')

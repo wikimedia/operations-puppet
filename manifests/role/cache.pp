@@ -731,10 +731,6 @@ class role::cache {
         include role::cache::configuration
         include network::constants
 
-        if $::realm == 'production' {
-            include ::admin
-        }
-
         # Any changes here will affect all descendent Varnish clusters
         # unless they're overridden!
         if $::site in ['eqiad'] {

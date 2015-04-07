@@ -38,7 +38,6 @@ class role::parsoid::production {
 
     include role::parsoid::common
     include standard
-    include admin
     include lvs::realserver
     include base::firewall
 

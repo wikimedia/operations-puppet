@@ -19,9 +19,7 @@ class role::elasticsearch::server{
         $msg2 = 'You can set it in the hiera config of the project'
         fail("${msg}\n${msg2}")
     }
-    if ($::realm == 'production') {
-        include admin
-    }
+
     include standard
 
     if hiera('has_lvs', true) {
