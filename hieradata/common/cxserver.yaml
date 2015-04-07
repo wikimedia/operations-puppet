@@ -49,6 +49,7 @@ registry:
     - 'pt'
     - 'sh'
     - 'sl'
+    - 'sv'
     - 'uk'
     - 'uz'
     - 'vi'
@@ -85,6 +86,8 @@ registry:
         - 'sl'
       'sl':
         - 'sh'
+      'sv':
+        - 'da'
   dictionary:
     JsonDict:
       'ca':
