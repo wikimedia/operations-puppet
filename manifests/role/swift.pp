@@ -9,7 +9,6 @@ class role::swift {
     }
 
     class eqiad_prod inherits role::swift::base {
-        include admin
         system::role { 'role::swift::eqiad-prod':
             description => 'Swift eqiad production cluster',
         }
@@ -130,7 +129,6 @@ class role::swift {
         }
     }
     class esams_prod inherits role::swift::base {
-        include admin
         system::role { 'role::swift::esams-prod':
             description => 'Swift esams production cluster',
         }
@@ -344,7 +342,6 @@ class role::swift::icehouse {
 
 class role::swift::stats_reporter {
     include role::swift::base
-    include admin
 
     system::role { 'role::swift::stats_reporter':
         description => 'swift statistics reporter',
@@ -357,7 +354,6 @@ class role::swift::stats_reporter {
 
 class role::swift::proxy {
     include role::swift::base
-    include admin
 
     system::role { 'role::swift::proxy':
         description => 'swift frontend proxy',
@@ -393,7 +389,6 @@ class role::swift::proxy {
 
 class role::swift::storage {
     include role::swift::base
-    include admin
 
     system::role { 'role::swift::storage':
         description => 'swift storage brick',

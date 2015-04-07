@@ -8,7 +8,6 @@ class role::ve {
     include ::mediawiki
     include ::mediawiki::web
     include ::mediawiki::web::sites
-    include ::admin
 
     file { '/usr/local/bin/vb':
         source => 'puppet:///files/ve/vb',

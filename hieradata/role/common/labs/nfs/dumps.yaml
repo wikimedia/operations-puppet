@@ -1,3 +1,5 @@
+cluster: labsnfs
+standard::has_admin: false
 role::labs::nfs::dumps::dump_servers_ips:
   - '208.80.154.11'
   - '208.80.152.185'
