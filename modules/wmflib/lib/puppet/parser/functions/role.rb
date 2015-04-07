@@ -21,8 +21,8 @@
 # === Example
 #
 # node /^www\d+/ {
-#     include ::admin
 #     role mediawiki::appserver  # this will load the role::mediawiki::appserver class
+#     include standard  #this class will use hiera lookups defined for the role.
 # }
 #
 # node monitoring.local {

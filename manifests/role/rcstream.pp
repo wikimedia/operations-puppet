@@ -9,9 +9,6 @@
 class role::rcstream {
     include lvs::configuration
     include standard
-    if $::realm == 'production' {
-        include admin
-    }
 
     system::role { 'role::rcstream':
         description => 'MediaWiki Recent Changes stream',

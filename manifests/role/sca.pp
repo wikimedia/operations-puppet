@@ -6,6 +6,5 @@ class role::sca {
     include base::firewall
     if $::realm == 'production' {
         include lvs::realserver
-        include admin
     }
 }

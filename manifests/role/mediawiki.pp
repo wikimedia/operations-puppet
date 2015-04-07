@@ -12,9 +12,6 @@
 
 class role::mediawiki::common {
     include ::standard
-    if $::realm == 'production' {
-        include ::admin # Doesn't work on labs yet
-    }
     include ::geoip
     include ::mediawiki
     include ::nutcracker::monitoring
