@@ -285,8 +285,6 @@ class role::analytics::hadoop::config {
     }
 }
 
-
-
 # == Class role::analytics::hadoop
 # Installs Hadoop client pacakges and configuration.
 #
@@ -451,9 +449,7 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     }
 
     # monitor disk statistics
-    if defined(Service['ganglia-monitor']) and !defined(Ganglia::Plugin::Python['diskstat']) {
-        ganglia::plugin::python { 'diskstat': }
-    }
+    include role::analytics::monitor_disks
 
     # FairScheduler is creating event logs in hadoop.log.dir/fairscheduler/
     # It rotates them but does not delete old ones.  Set up cronjob to
@@ -529,10 +525,7 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     }
 
     # monitor disk statistics
-    if defined(Service['ganglia-monitor']) and !defined(Ganglia::Plugin::Python['diskstat']) {
-        ganglia::plugin::python { 'diskstat': }
-    }
-
+    include role::analytics::monitor_disks
 
     # Include icinga alerts if production realm.
     if $::realm == 'production' {
@@ -594,9 +587,7 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
     }
 
     # monitor disk statistics
-    if defined(Service['ganglia-monitor']) and !defined(Ganglia::Plugin::Python['diskstat']) {
-        ganglia::plugin::python { 'diskstat': }
-    }
+    include role::analytics::monitor_disks
 
     # Include icinga alerts if production realm.
     if $::realm == 'production' {
