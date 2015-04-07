@@ -1711,11 +1711,11 @@ node 'mira.codfw.wmnet' {
 }
 
 node 'multatuli.wikimedia.org' {
-    include standard
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
+    include standard
+    include role::authdns::server
 }
 
 node 'ms1001.wikimedia.org' {
