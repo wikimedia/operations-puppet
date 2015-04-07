@@ -23,24 +23,6 @@ class role::archiva {
         require => Class['::archiva']
     }
 
-    # Set up simple Nginx reverse proxy port 80 to port $archiva_port.
-    class { '::nginx':
-        require => Class['::archiva'],
-    }
-    $listen     = 80
-    $proxy_pass = "http://127.0.0.1:${archiva_port}/"
-    $server_properties = [
-        # Need large body size to allow for .jar deployment.
-        'client_max_body_size 256M',
-        # Archiva sometimes takes a long time to respond.
-        'proxy_connect_timeout 600s',
-        'proxy_read_timeout 600s',
-        'proxy_send_timeout 600s',
-    ]
-    nginx::site { 'archiva':
-        content => template('nginx/sites/simple-proxy.erb'),
-    }
-
     # Bacula backups for /var/lib/archiva.
     if $::realm == 'production' {
         include role::backup::host
@@ -49,14 +31,101 @@ class role::archiva {
         }
     }
 
-    ferm::service { 'http':
-        proto => 'tcp',
-        port  => '80',
-    }
-
     ferm::service { 'rsync':
         proto => 'tcp',
         port  => '873',
     }
 
+    # Set up a reverse proxy for the archiva service.
+    class { 'role::archiva::proxy':
+        archiva_port => $archiva_port,
+    }
+}
+
+
+# == Class role::archiva::proxy
+# Sets up a simple nginx reverse proxy.
+# This must be included on the same node as the archiva server.
+#
+class role::archiva::proxy($archiva_port = 8080) {
+    # Set up simple Nginx reverse proxy to $archiva_port.
+    class { '::nginx': }
+
+    # Should we use and force SSL for this nginx archiva proxy?
+    $use_ssl = hiera('role::archiva::use_ssl', $::realm ? {
+        'production' => true,
+        default      => false,
+    })
+
+    # $archiva_server_properties and
+    # $ssl_server_properties will be concatenated together to form
+    # a single $server_properties array for the simple-proxy.erb
+    # nginx site template.
+    $archiva_server_properties = [
+        # Need large body size to allow for .jar deployment.
+        'client_max_body_size 256M;',
+        # Archiva sometimes takes a long time to respond.
+        'proxy_connect_timeout 600s;',
+        'proxy_read_timeout 600s;',
+        'proxy_send_timeout 600s;',
+    ]
+
+    if $use_ssl {
+        $ferm_service = 'https'
+
+        $listen_port  = 443
+        $listen       = "$listen_port ssl"
+
+        $certificate_name = hiera('role::archiva::certificate_name', $::realm ? {
+            'production' => 'archiva.wikimedia.org',
+            default      => 'ssl-cert-snakeoil',
+        })
+
+        # Install the certificate if it is not the snakeoil cert
+        if $certificate_name != 'ssl-cert-snakeoil' {
+            install_certificate{ $certificate_name: }
+        }
+
+        $ssl_certificate = $certificate_name ? {
+            'ssl-cert-snakeoil' => '/etc/ssl/certs/ssl-cert-snakeoil.pem',
+            default             => "/etc/ssl/localcerts/${certificate_name}.crt",
+        }
+        $ssl_private_key = "/etc/ssl/private/${certificate_name}.key"
+
+        $server_properties = [
+            $archiva_server_properties,
+            ssl_ciphersuite('nginx', 'compat'),
+            [
+                "ssl_certificate     ${ssl_certificate};",
+                "ssl_certificate_key ${ssl_private_key};",
+            ],
+        ]
+
+        $force_https_site_ensure = 'present'
+    }
+    else {
+        $ferm_service   = 'http'
+
+        $listen_port       = 80
+        $listen            = $listen_port
+        $server_properties = $archiva_server_properties
+
+        $force_https_site_ensure = 'absent'
+
+    }
+
+    $proxy_pass = "http://127.0.0.1:${archiva_port}/"
+
+    nginx::site { 'archiva':
+        content => template('nginx/sites/simple-proxy.erb'),
+    }
+    nginx::site { 'archiva-force-https':
+        content => template('nginx/sites/force-https.erb'),
+        ensure  => $force_https_site_ensure,
+    }
+
+    ferm::service { $ferm_service:
+        proto => 'tcp',
+        port  => $listen_port,
+    }
 }
