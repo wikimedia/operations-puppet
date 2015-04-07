@@ -1229,19 +1229,6 @@ node 'hooft.esams.wikimedia.org' {
     include standard
     include role::installserver::tftp-server
 
-    # TODO: 2013-12-13. rsync is an unpuppetized service on hooft. Ferm is
-    # applied through role::installserver::tftp-server and policy is DROP.
-    # Temporarily opening access. Must puppetize properly
-    ferm::service { 'rsync':
-        proto => 'tcp',
-        port  => '873',
-    }
-    # TODO: Same for udpmcast
-    ferm::service { 'udpmcast':
-        proto => 'udp',
-        port  => '4827',
-    }
-
     class { 'ganglia_new::monitor::aggregator':
         sites =>  'esams',
     }
