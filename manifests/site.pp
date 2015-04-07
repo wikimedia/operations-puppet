@@ -1151,6 +1151,8 @@ node 'holmium.wikimedia.org' {
     include base::firewall
     include role::labsdns
     include role::designate::server
+
+    include ldap::role::client::labs
 }
 
 node 'hooft.esams.wikimedia.org' {
