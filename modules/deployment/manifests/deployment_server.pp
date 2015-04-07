@@ -9,6 +9,7 @@ class deployment::deployment_server($deployer_groups=[]) {
     include ::redis::client::python
 
     ensure_packages([
+        'git',
         'python-gitdb',
         'python-git',
         ])
@@ -23,6 +24,14 @@ class deployment::deployment_server($deployer_groups=[]) {
         owner   => 'root',
         group   => 'root',
         require => [Package['git-core']],
+    }
+
+    file { '/usr/local/bin/git-new-workdir':
+        source  => 'puppet:///modules/deployment/git-new-workdir',
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        require => [Package['git']],
     }
 
     if $::realm != 'labs' {
