@@ -1,5 +1,4 @@
 class role::snapshot::common {
-    class { 'admin': groups => ['snapshot-admins'] }
     include role::dataset::systemusers
     # The snapshot nodes do not include standard, so this is needed.
     # It also includes some duplication with other modules, and should really go away.
