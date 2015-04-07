@@ -7,18 +7,27 @@
 #   @server_properties   - Example: ['client_max_body_size 256M', 'other_thing 123']
 #   @location_properties - Example: ['this_prop yes', 'one_more_prop 456']
 #
+
+
+# Returns an array of sorted properties ensuring that semicolons are
+# appended to each entry.  This will not add an extra semicolon
+# if one is already there.
+def propertize(property_array)
+  property_array.sort.map { |i| ( i[-1] == ';' && i || i + ';' ) }
+end
+
 -%>
 server {
   listen <%= @listen %>;
 
 <% if @server_properties -%>
-  <%= @server_properties.sort.join(";\n  ") -%>;
+  <%= propertize(@server_properties).join("\n  ") -%>;
 <% end -%>
 
   location / {
     proxy_pass <%= @proxy_pass %>;
 <% if @location_properties -%>
-    <%= @location_properties.sort.join(";\n    ") -%>;
+    <%= propertize(@location_properties).join("\n    ") -%>;
 <% end -%>
   }
 }
