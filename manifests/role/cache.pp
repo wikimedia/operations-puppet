@@ -407,20 +407,8 @@ class role::cache {
     # Installs a local statsd instance for aggregating and serializing
     # stats before sending them off to a remote statsd instance.
     class varnish::statsd {
-        class { '::txstatsd':
-            settings => {
-                statsd => {
-                    'carbon-cache-host'          => "graphite-in.eqiad.wmnet",
-                    'carbon-cache-port'          => 2004,
-                    'listen-port'                => 8125,
-                    'statsd-compliance'          => 0,
-                    'prefix'                     => '',
-                    'max-queue-size'             => 1000 * 1000,
-                    'max-datapoints-per-message' => 10 * 1000,
-                    'instance-name'              => "statsd.${::hostname}",
-                },
-            },
-        }
+        class { '::txstatsd::decomission': }
+        include role::statsite
     }
 
     # == Class varnish::kafka

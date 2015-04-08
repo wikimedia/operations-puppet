@@ -13,5 +13,6 @@ class role::labmon {
         require => Class['role::graphite::labmon']
     }
 
-    include role::txstatsd
+    class { '::txstatsd::decomission': }
+    include role::statsite
 }
