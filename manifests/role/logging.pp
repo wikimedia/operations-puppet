@@ -61,11 +61,11 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
     $logstash_port = 8324
 
     misc::udp2log::instance { 'mw':
-        log_directory          =>    $log_directory,
-        monitor_log_age        =>    false,
-        monitor_processes      =>    false,
-        monitor_packet_loss    =>    false,
-        template_variables     => {
+        log_directory       =>    $log_directory,
+        monitor_log_age     =>    false,
+        monitor_processes   =>    false,
+        monitor_packet_loss =>    false,
+        template_variables  => {
             error_processor_host => $error_processor_host,
             error_processor_port => 8423,
 
@@ -228,10 +228,12 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
     }
 
     misc::udp2log::instance { 'oxygen':
-        multicast       => true,
-        packet_loss_log => '/var/log/udp2log/packet-loss.log',
-        log_directory   => $webrequest_log_directory,
-        template_variables => { 'webrequest_filter_directory' => $webrequest_filter_directory },
+        multicast          => true,
+        packet_loss_log    => '/var/log/udp2log/packet-loss.log',
+        log_directory      => $webrequest_log_directory,
+        template_variables => {
+            'webrequest_filter_directory' => $webrequest_filter_directory
+        },
     }
 }
 
@@ -282,9 +284,9 @@ class role::logging::udp2log::misc {
     include misc::udp2log::utilities
 
     misc::udp2log::instance { 'misc':
-        multicast          => true,
-        packet_loss_log    => '/var/log/udp2log/packet-loss.log',
-        monitor_log_age    => false,
+        multicast       => true,
+        packet_loss_log => '/var/log/udp2log/packet-loss.log',
+        monitor_log_age => false,
     }
 }
 
