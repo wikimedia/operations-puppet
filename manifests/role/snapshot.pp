@@ -21,7 +21,7 @@ class role::snapshot::cron::primary {
         user   => 'datasets',
     }
     class { 'snapshot::wikidatadumps::ttl':
-        enable => false, # TEMP, until at least 2015-04-07
+        enable => true,
         user   => 'datasets',
     }
     class { 'snapshot::centralauthdump':
