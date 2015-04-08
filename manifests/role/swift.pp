@@ -115,20 +115,7 @@ class role::swift {
             include ::swift_new::params
             include ::swift_new::container_sync
 
-            class { '::txstatsd':
-                settings => {
-                    statsd => {
-                        'carbon-cache-host'          => 'graphite-in.eqiad.wmnet',
-                        'carbon-cache-port'          => 2004,
-                        'listen-port'                => 8125,
-                        'statsd-compliance'          => 0,
-                        'prefix'                     => '',
-                        'max-queue-size'             => 1000 * 1000,
-                        'max-datapoints-per-message' => 10 * 1000,
-                        'instance-name'              => "statsd.${::hostname}",
-                    },
-                },
-            }
+            include role::statsite
         }
         class storage inherits role::swift::eqiad_prod {
             include ::swift::storage
@@ -137,20 +124,7 @@ class role::swift {
             include ::swift_new::params
             include ::swift_new::container_sync
 
-            class { '::txstatsd':
-                settings => {
-                    statsd => {
-                        'carbon-cache-host'          => 'graphite-in.eqiad.wmnet',
-                        'carbon-cache-port'          => 2004,
-                        'listen-port'                => 8125,
-                        'statsd-compliance'          => 0,
-                        'prefix'                     => '',
-                        'max-queue-size'             => 1000 * 1000,
-                        'max-datapoints-per-message' => 10 * 1000,
-                        'instance-name'              => "statsd.${::hostname}",
-                    },
-                },
-            }
+            include role::statsite
         }
     }
     class esams_prod inherits role::swift::base {
@@ -253,40 +227,14 @@ class role::swift {
             }
             include role::swift::icehouse
 
-            class { '::txstatsd':
-                settings => {
-                    statsd => {
-                        'carbon-cache-host'          => 'graphite-in.eqiad.wmnet',
-                        'carbon-cache-port'          => 2004,
-                        'listen-port'                => 8125,
-                        'statsd-compliance'          => 0,
-                        'prefix'                     => '',
-                        'max-queue-size'             => 1000 * 1000,
-                        'max-datapoints-per-message' => 10 * 1000,
-                        'instance-name'              => "statsd.${::hostname}",
-                    },
-                },
-            }
+            include role::statsite
         }
         class storage inherits role::swift::esams_prod {
             include ::swift::storage
             include ::swift::storage::monitoring
             include role::swift::icehouse
 
-            class { '::txstatsd':
-                settings => {
-                    statsd => {
-                        'carbon-cache-host'          => 'graphite-in.eqiad.wmnet',
-                        'carbon-cache-port'          => 2004,
-                        'listen-port'                => 8125,
-                        'statsd-compliance'          => 0,
-                        'prefix'                     => '',
-                        'max-queue-size'             => 1000 * 1000,
-                        'max-datapoints-per-message' => 10 * 1000,
-                        'instance-name'              => "statsd.${::hostname}",
-                    },
-                },
-            }
+            include role::statsite
         }
     }
 
@@ -425,20 +373,7 @@ class role::swift::proxy {
         port => 11211,
     }
 
-    class { '::txstatsd':
-        settings => {
-            statsd => {
-                'carbon-cache-host'          => $::swift_new::params::graphite_host,
-                'carbon-cache-port'          => 2004,
-                'listen-port'                => 8125,
-                'statsd-compliance'          => 0,
-                'prefix'                     => '',
-                'max-queue-size'             => 1000 * 1000,
-                'max-datapoints-per-message' => 10 * 1000,
-                'instance-name'              => "statsd.${::hostname}",
-            },
-        },
-    }
+    include role::statsite
 
     monitoring::service { 'swift-http-frontend':
         description   => 'Swift HTTP frontend',
@@ -468,20 +403,7 @@ class role::swift::storage {
     include ::swift_new::container_sync
     include ::swift_new::storage::monitoring
 
-    class { '::txstatsd':
-        settings => {
-            statsd => {
-                'carbon-cache-host'          => $::swift_new::params::graphite_host,
-                'carbon-cache-port'          => 2004,
-                'listen-port'                => 8125,
-                'statsd-compliance'          => 0,
-                'prefix'                     => '',
-                'max-queue-size'             => 1000 * 1000,
-                'max-datapoints-per-message' => 10 * 1000,
-                'instance-name'              => "statsd.${::hostname}",
-            },
-        },
-    }
+    include role::statsite
 
     $all_drives = hiera('swift_storage_drives')
 
