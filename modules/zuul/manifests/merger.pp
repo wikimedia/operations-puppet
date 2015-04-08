@@ -28,9 +28,11 @@ class zuul::merger (
     $zuul_url       = 'git://zuul.eqiad.wmnet',
 ) {
 
+    require ::zuul
+
     file { $git_dir:
-        ensure  => directory,
-        owner   => 'zuul',
+        ensure => directory,
+        owner  => 'zuul',
     }
 
     # Configuration file for the zuul merger
@@ -39,7 +41,6 @@ class zuul::merger (
         owner     => 'root',
         group     => 'root',
         mode      => '0444',
-        require   => File['/etc/zuul'],
     }
 
     file { '/etc/default/zuul-merger':
@@ -49,19 +50,6 @@ class zuul::merger (
         mode    => '0444',
         content => template('zuul/zuul-merger.default.erb'),
         notify  => Service['zuul-merger'],
-    }
-
-    file { '/etc/init.d/zuul-merger':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/zuul/zuul-merger.init',
-    }
-
-    file { '/var/run/zuul-merger':
-        ensure  => directory,
-        owner   => 'zuul',
     }
 
     file { '/etc/zuul/merger-logging.conf':
@@ -75,8 +63,7 @@ class zuul::merger (
         hasrestart => true,
         subscribe  => File['/etc/zuul/zuul-merger.conf'],
         require    => [
-            File['/etc/init.d/zuul-merger'],
-            File['/var/run/zuul-merger'],
+            File['/etc/default/zuul-merger'],
             File['/etc/zuul/merger-logging.conf'],
             File['/etc/zuul/zuul-merger.conf'],
         ],
