@@ -40,7 +40,9 @@ class archiva::proxy(
 
         # Install the certificate if it is not the snakeoil cert
         if $certificate_name != 'ssl-cert-snakeoil' {
-            install_certificate{ $certificate_name: }
+            install_certificate{ $certificate_name:
+                before => Nginx::Site['archiva'],
+            }
         }
 
         $ssl_certificate = $certificate_name ? {
