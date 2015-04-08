@@ -458,8 +458,9 @@ rewrite	*wikimania.com	//wikimania2015.wikimedia.org
 rewrite	wikimania.wikimedia.org	//wikimania2015.wikimedia.org
 rewrite	*wikimania.asia	//wikimania2013.wikimedia.org
 
-# labs -> wikitech
+# Labs redirects -> wikitech
 funnel	labs.wikimedia.org	https://wikitech.wikimedia.org
+funnel	labsconsole.wikimedia.org      https://wikitech.wikimedia.org
 
 # wikimedia.com redirect
 funnel	*wikimedia.com	//www.wikimedia.org
