@@ -60,7 +60,7 @@ class labs_vmbuilder($vmbuilder_version) {
     }
 
     $projectregex = "s/${instanceproject}/_PROJECT_/g"
-    $fqdnregex    = "s/${::ec2id}.${::domain}/_FQDN_/g"
+    $fqdnregex    = "s/${::fqdn}/_FQDN_/g"
     $masterregex  = "s/${servername}/_MASTER_/g"
 
     Exec { path => '/bin' }
