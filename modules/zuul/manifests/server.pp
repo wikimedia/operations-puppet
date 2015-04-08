@@ -33,18 +33,7 @@ class zuul::server (
     $status_url     = "https://${::fqdn}/zuul/status",
 ) {
 
-    file { '/var/run/zuul':
-        ensure  => directory,
-        owner   => 'zuul',
-    }
-
-    file { '/etc/init.d/zuul':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/zuul/zuul.init',
-    }
+    require ::zuul
 
     file { '/etc/default/zuul':
         ensure  => present,
@@ -78,7 +67,6 @@ class zuul::server (
         group     => 'root',
         mode      => '0400',
         notify    => Exec['craft public zuul conf'],
-        require   => File['/etc/zuul'],
     }
 
     file { '/usr/local/bin/zuul-gearman.py':
@@ -86,7 +74,6 @@ class zuul::server (
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => Package['python-gear'],
         source  => 'puppet:///modules/zuul/zuul-gearman.py',
     }
 
@@ -97,9 +84,9 @@ class zuul::server (
         refreshonly => true,
     }
     file { '/etc/zuul/zuul.conf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        owner => 'root',
+        group => 'root',
+        mode  => '0444',
     }
 
     file { '/etc/zuul/public.conf':
@@ -111,8 +98,6 @@ class zuul::server (
         enable     => true,
         hasrestart => true,
         require    => [
-            File['/var/run/zuul'],
-            File['/etc/init.d/zuul'],
             File['/etc/default/zuul'],
             File['/etc/zuul/zuul-server.conf'],
             File['/etc/zuul/gearman-logging.conf'],
@@ -121,7 +106,6 @@ class zuul::server (
 
     exec { 'zuul-reload':
         command     => '/etc/init.d/zuul reload',
-        require     => File['/etc/init.d/zuul'],
         refreshonly => true,
     }
 }
