@@ -5,8 +5,6 @@
   :datadir: /etc/puppet/hieradata
 :nuyaml:
   :datadir: /etc/puppet/hieradata
-  :dynlookup:
-    - mainrole
   :expand_path:
     - common
     - "%{::site}"
@@ -17,7 +15,6 @@
   - "regex/%{::fqdn}"
   - "%{::site}"
   - "private/%{::site}"
-  - "mainrole"
   - "common"
   - "private/common"
 
