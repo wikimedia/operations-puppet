@@ -1,0 +1,17 @@
+# rrd-navtiming
+
+description "NavigationTiming RRD logger"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+
+setuid webperf
+setgid webperf
+
+respawn
+respawn limit unlimited
+
+chdir /srv/webperf
+exec /usr/bin/python /srv/webperf/rrd-navtiming.py \
+    --endpoint <%= @endpoint %> \
+    --rrd-path "/var/lib/rrd-navtiming" \
+    --log-path "/var/log/rrd-navtiming"
