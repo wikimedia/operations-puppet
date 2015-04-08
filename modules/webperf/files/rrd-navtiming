@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
   rrd-navtiming
@@ -65,6 +65,8 @@
   limitations under the License.
 
 """
+from __future__ import division
+
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -90,33 +92,32 @@ ap.add_argument(
 ap.add_argument(
     '--rrd-path',
     help='Path to use for RRD storage (default: CWD)',
-    default=os.getcwd()
+    default=os.getcwd(),
+    type=os.path.abspath
 )
 ap.add_argument(
     '--log-path',
     help='Path to use for log files (default: log to stderr only).',
+    type=os.path.abspath
 )
 args = ap.parse_args()
 
-log = logging.getLogger(__name__)
-formatter = logging.Formatter('%(asctime)s [%(funcName)s] %(message)s')
-log.setLevel(logging.INFO)
-
-stderr_handler = logging.StreamHandler(stream=sys.stderr)
-stderr_handler.setFormatter(formatter)
-log.addHandler(stderr_handler)
-
+# Setup logging
+log_handlers = [logging.StreamHandler(stream=sys.stderr)]
 if args.log_path:
-    # If the --log-path option was set, log to a file as well.
-    # The file is rotated when its size exceeds 50 MB.
-    # 10 archives are retained.
-    assert os.path.isdir(args.log_path)
-    log_file = os.path.join(args.log_path, 'rrd-navtiming.log')
-    file_handler = logging.handlers.RotatingFileHandler(
-        log_file, maxBytes=5e7, backupCount=10)
-    file_handler.setFormatter(formatter)
-    log.addHandler(file_handler)
+    log_handlers.append(logging.handlers.RotatingFileHandler(
+        os.path.join(args.log_path, 'rrd-navtiming.log'), backupCount=10,
+        maxBytes=(50 * 1000 * 1000)))  # Rotate when >50MB; retain 10 archives
 
+log = logging.getLogger('rrd-navtiming')
+formatter = logging.Formatter('[%(asctime)s] %(message)s')
+log.setLevel(logging.INFO)
+for log_handler in log_handlers:
+    log_handler.setFormatter(formatter)
+    log_handler.setLevel(logging.INFO)
+    log.addHandler(log_handler)
+
+log.info('Starting up...')
 
 # Lock for operations that access shared dynamic data (the `heap` list).
 # We could probably get by without locks, because only the main thread
@@ -158,6 +159,10 @@ ROWS = 120
 # We will push an aggregate value as often as we need in order to have
 # ROWS many values at the smallest INTERVAL.
 STEP = INTERVALS[0] / ROWS
+
+# STEP should be a whole number that divides each INTERVAL.
+assert STEP.is_integer()
+assert all((interval / STEP).is_integer() for interval in INTERVALS)
 
 # Set the maximum acceptable interval between samples ("heartbeat") to a
 # full day. This means RRD will record an estimate for missing samples as
@@ -204,7 +209,7 @@ def update_rrds(path):
         rrd_file = os.path.join(path, platform + '.rrd')
         # We have to output values in the order we declared them.
         update = 'N:' + ':'.join(str(samples[m]) for m in METRICS)
-        logging.info('%s: %s', rrd_file, update)
+        log.info('%s: %s', rrd_file, update)
         rrdtool.update(rrd_file, update)
 
 
@@ -235,7 +240,7 @@ def accumulate():
             try:
                 data[platform][metric] = median(values)
             except ValueError:
-                logging.warning('No values for %s on %s', metric, platform)
+                log.warning('No values for %s on %s', metric, platform)
                 raise
     return data
 
@@ -256,11 +261,11 @@ def create_rrds(path):
             if not e.message.endswith('File exists'):
                 raise
         else:
-            logging.info('Created %s', rrd_file)
+            log.info('Created %s', rrd_file)
 
 
 create_rrds(args.rrd_path)
-logging.info('Connecting to %s...', args.endpoint)
+log.info('Connecting to <%s>...', args.endpoint)
 events = eventlogging.connect(args.endpoint)
 
 worker = eventlogging.PeriodicThread(interval=STEP, target=update_rrds,
