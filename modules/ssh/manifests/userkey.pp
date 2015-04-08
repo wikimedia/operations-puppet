@@ -23,6 +23,10 @@
 #   Path to file containing configuration directives. Undefined by
 #   default. Mutually exclusive with 'content'.
 #
+# [*prefix*]
+#   If defined, it will prepend the prefix string to the filename of the key
+#   path allowing to populate specific purpose keys.
+#
 # === Examples
 #
 #  ssh::userkey { 'john'
@@ -34,6 +38,7 @@
 define ssh::userkey(
   $ensure  = present,
   $user    = $title,
+  $prefix  = undef,
   $source  = undef,
   $content = undef,
 
@@ -46,7 +51,13 @@ define ssh::userkey(
         fail('"source" and "content" are mutually exclusive')
     }
 
-    file { "/etc/ssh/userkeys/${user}":
+    if $prefix {
+        $path = "/etc/ssh/userkeys/${prefix}-${user}"
+    } else {
+        $path = "/etc/ssh/userkeys/${user}"
+    }
+
+    file { $path:
         ensure  => $ensure,
         force   => true,
         owner   => 'root',
