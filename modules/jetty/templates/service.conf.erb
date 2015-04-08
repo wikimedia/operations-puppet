@@ -1,0 +1,23 @@
+# This file is managed by Puppet
+description "Jetty runner executing <%= scope['war'] %> on port <%= scope['port'] %>"
+
+start on (runlevel [2345] and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+umask 022
+
+pre-start script
+  mkdir -p -m0755 /var/run/<%= scope['name'] %>
+end script
+
+script
+  exec start-stop-daemon --quiet --start --pidfile /var/run/<%= scope['name'] %>/pid \
+    --chuid <%= scope['user'] %> --make-pidfile \
+    --exec /usr/bin/java -- -Xms<%= scope['memory_limit'] %> -Xmx<%= scope['memory_limit'] %> \
+    <%= scope['java_options'] %> -jar /srv/deployment/jetty/jetty-runner.jar --port <%= scope['port'] %> \
+    <%= scope['war'] %> 2>&1 | logger -t <%= scope['log'] %>
+end script
+
+respawn
+
+# vim: set ft=upstart:
