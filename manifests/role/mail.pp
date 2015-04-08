@@ -184,9 +184,10 @@ class role::mail::lists {
         source => 'puppet:///files/icinga/check_iostat',
     }
 
+    # values chosen based on i/o averages for sodium
     nrpe::monitor_service { 'mailman_iostat':
         description   => 'mailman I/O stats',
-        nrpe_command  => '/usr/local/lib/nagios/plugins/check_iostat -i -w 150,10,200,100,5000 -c 300,20,400,200,10000',
+        nrpe_command  => '/usr/local/lib/nagios/plugins/check_iostat -i -w 250,40,300,200,5500 -c 500,80,600,400,11000',
         timeout       => '30',
     }
 
