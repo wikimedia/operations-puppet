@@ -180,7 +180,7 @@ class role::cache {
                                 'cp3012.esams.wmnet',
                                 'cp3013.esams.wmnet',
                                 'cp3014.esams.wmnet',
-                                # 'cp3015.esams.wmnet',
+                                'cp3015.esams.wmnet',
                     ],
                     'ulsfo' => [
                                 'cp4011.ulsfo.wmnet',
