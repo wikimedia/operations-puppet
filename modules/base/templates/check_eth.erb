@@ -25,4 +25,5 @@ for INTERFACE in <%= @interfaces.gsub(',', ' ').gsub(/\s\w+_\w+|vnet\d+|virbr\d|
 		fi
 	fi
 done
+echo "OK - interfaces up"
 exit $EXIT_CODE
