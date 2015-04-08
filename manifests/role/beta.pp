@@ -34,8 +34,8 @@ class role::beta::trebuchet_testing {
 
     # Allow ssh inbound from deployment-bastion.eqiad.wmflabs for testing
     ferm::rule { 'deployment-bastion-trebuchet-testing-ssh':
-        ensure  => present,
-        rule    => "proto tcp dport ssh saddr ${::beta::config::bastion_ip} ACCEPT;",
+        ensure => present,
+        rule   => "proto tcp dport ssh saddr ${::beta::config::bastion_ip} ACCEPT;",
     }
 }
 
@@ -53,10 +53,10 @@ class role::beta::puppetmaster {
 class role::beta::availability_collector {
     include ::diamond
     diamond::collector { 'VarnishStatus':
-        source  => 'puppet:///modules/diamond/collector/varnishstatus.py',
+        source   => 'puppet:///modules/diamond/collector/varnishstatus.py',
         settings => {
-          path_prefix => $::instanceproject,
-          path => 'availability',
+            path_prefix => $::instanceproject,
+            path        => 'availability',
         }
     }
 }
