@@ -121,6 +121,10 @@ class role::deployment::config {
             'gitfat_enabled' => true,
             'upstream'       => 'https://gerrit.wikimedia.org/r/operations/software/dropwizard-metrics',
         },
+        'hierator/hierator' => {
+            'gitfat_enabled' => true,
+            'upstream'       => 'https://gerrit.wikimedia.org/r/mediawiki/services/hierator/deployment',
+        },
     }
 }
 
