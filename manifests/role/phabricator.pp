@@ -52,52 +52,52 @@ class role::phabricator::main {
         extensions       => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php'],
         settings         => {
-            'storage.upload-size-limit'                 => '10M',
-            'darkconsole.enabled'                       => false,
-            'phabricator.base-uri'                      => "https://${domain}",
-            'security.alternate-file-domain'            => "https://${altdom}",
-            'mysql.user'                                => $role::phabricator::config::mysql_appuser,
-            'mysql.pass'                                => $role::phabricator::config::mysql_apppass,
-            'mysql.host'                                => $mysql_host,
-            'phpmailer.smtp-host'                       => inline_template('<%= @mail_smarthost.join(";") %>'),
-            'metamta.default-address'                   => "no-reply@${domain}",
-            'metamta.domain'                            => $domain,
-            'metamta.maniphest.reply-handler-domain'    => $domain,
-            'metamta.maniphest.public-create-email'     => "task@${domain}",
-            'metamta.reply-handler-domain'              => $domain,
-            'repository.default-local-path'             => '/srv/phab/repos',
-            'phd.start-taskmasters'                     => 10,
-            'events.listeners'                          => ['SecurityPolicyEventListener'],
+            'storage.upload-size-limit'              => '10M',
+            'darkconsole.enabled'                    => false,
+            'phabricator.base-uri'                   => "https://${domain}",
+            'security.alternate-file-domain'         => "https://${altdom}",
+            'mysql.user'                             => $role::phabricator::config::mysql_appuser,
+            'mysql.pass'                             => $role::phabricator::config::mysql_apppass,
+            'mysql.host'                             => $mysql_host,
+            'phpmailer.smtp-host'                    => inline_template('<%= @mail_smarthost.join(";") %>'),
+            'metamta.default-address'                => "no-reply@${domain}",
+            'metamta.domain'                         => $domain,
+            'metamta.maniphest.reply-handler-domain' => $domain,
+            'metamta.maniphest.public-create-email'  => "task@${domain}",
+            'metamta.reply-handler-domain'           => $domain,
+            'repository.default-local-path'          => '/srv/phab/repos',
+            'phd.start-taskmasters'                  => 10,
+            'events.listeners'                       => ['SecurityPolicyEventListener'],
         },
     }
 
     class { '::phabricator::migration':
-        dbhost          => $mysql_host,
-        manifest_user   => $role::phabricator::config::mysql_maniphestuser,
-        manifest_pass   => $role::phabricator::config::mysql_maniphestpass,
-        app_user        => $role::phabricator::config::mysql_appuser,
-        app_pass        => $role::phabricator::config::mysql_apppass,
-        bz_user         => $role::phabricator::config::bz_user,
-        bz_pass         => $role::phabricator::config::bz_pass,
-        rt_user         => $role::phabricator::config::rt_user,
-        rt_pass         => $role::phabricator::config::rt_pass,
-        phabtools_cert  => $role::phabricator::config::phabtools_cert,
-        phabtools_user  => $role::phabricator::config::phabtools_user,
+        dbhost         => $mysql_host,
+        manifest_user  => $role::phabricator::config::mysql_maniphestuser,
+        manifest_pass  => $role::phabricator::config::mysql_maniphestpass,
+        app_user       => $role::phabricator::config::mysql_appuser,
+        app_pass       => $role::phabricator::config::mysql_apppass,
+        bz_user        => $role::phabricator::config::bz_user,
+        bz_pass        => $role::phabricator::config::bz_pass,
+        rt_user        => $role::phabricator::config::rt_user,
+        rt_pass        => $role::phabricator::config::rt_pass,
+        phabtools_cert => $role::phabricator::config::phabtools_cert,
+        phabtools_user => $role::phabricator::config::phabtools_user,
     }
 
     class { 'exim::roled':
-        local_domains         => [ '+system_domains', '+phab_domains' ],
-        enable_mail_relay     => false,
-        enable_external_mail  => false,
-        smart_route_list      => $::mail_smarthost,
-        enable_mailman        => false,
-        phab_relay            => true,
-        enable_spamassassin   => false,
+        local_domains        => [ '+system_domains', '+phab_domains' ],
+        enable_mail_relay    => false,
+        enable_external_mail => false,
+        smart_route_list     => $::mail_smarthost,
+        enable_mailman       => false,
+        phab_relay           => true,
+        enable_spamassassin  => false,
     }
 
     $emailbotcert = $passwords::phabricator::emailbot_cert
     class { '::phabricator::mailrelay':
-        default          => {
+        default => {
             security     => 'users',
             maint        => false,
             taskcreation => "task@${domain}",
@@ -111,7 +111,7 @@ class role::phabricator::main {
             procurement => 'cdw.com,dasher.com,dell.com,fishnetsecurity.com,wikimedia.org',
         },
 
-        phab_bot        => {
+        phab_bot                => {
             root_dir    => '/srv/phab/phabricator/',
             username    => 'emailbot',
             host        => "https://${domain}/api/",
@@ -120,32 +120,32 @@ class role::phabricator::main {
     }
 
     ferm::service { 'phabmain_http':
-        proto    => 'tcp',
-        port     => '80',
+        proto => 'tcp',
+        port  => '80',
     }
 
     ferm::service { 'phabmain_https':
-        proto    => 'tcp',
-        port     => '443',
+        proto => 'tcp',
+        port  => '443',
     }
 
     # receive mail from mail smarthosts
     ferm::service { 'phabmain-smtp':
-        port     => '25',
-        proto    => 'tcp',
-        srange   => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
+        port   => '25',
+        proto  => 'tcp',
+        srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
     }
 
     # redirect bugzilla URL patterns to phabricator
     # handles translation of bug numbers to maniphest task ids
     phabricator::redirector { "redirector.${domain}":
-        mysql_user    => $role::phabricator::config::mysql_maniphestuser,
-        mysql_pass    => $role::phabricator::config::mysql_maniphestpass,
-        mysql_host    => $mysql_host,
-        rootdir       => '/srv/phab',
-        field_index   => '4rRUkCdImLQU',
-        phab_host     => $domain,
-        alt_host      => $altdom,
+        mysql_user  => $role::phabricator::config::mysql_maniphestuser,
+        mysql_pass  => $role::phabricator::config::mysql_maniphestpass,
+        mysql_host  => $mysql_host,
+        rootdir     => '/srv/phab',
+        field_index => '4rRUkCdImLQU',
+        phab_host   => $domain,
+        alt_host    => $altdom,
     }
 
     # community metrics mail (RT #3962, T1003)
@@ -164,17 +164,17 @@ class role::phabricator::labs {
     $mysqlpass = 'labspass'
     $current_tag = 'release/2015-02-18/1'
     class { '::phabricator':
-        git_tag          => $current_tag,
-        lock_file        => '/var/run/phab_repo_lock',
-        auth_type        => 'local',
-        sprint_tag       => 'release/2015-02-18',
-        libraries        => {
-              'sprint'   => '/srv/phab/libext/Sprint/src',
+        git_tag       => $current_tag,
+        lock_file     => '/var/run/phab_repo_lock',
+        auth_type     => 'local',
+        sprint_tag    => 'release/2015-02-18',
+        libraries     => {
+        'sprint' => '/srv/phab/libext/Sprint/src',
         },
-        extension_tag    => 'HEAD',
-        extensions       => [ 'MediaWikiUserpageCustomField.php',
+        extension_tag => 'HEAD',
+        extensions    => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php'],
-        settings         => {
+        settings      => {
             'darkconsole.enabled'             => true,
             'phabricator.base-uri'            => "https://${::hostname}.wmflabs.org",
             'mysql.pass'                      => $mysqlpass,
