@@ -2645,6 +2645,11 @@ host mc2018 {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host mira {
+	hardware ethernet D4:AE:52:AD:59:99;
+	fixed-address mira.codfw.wmnet;
+}
+
 host ms1001 {
 	hardware ethernet 78:2b:cb:0a:13:f3;
 	fixed-address ms1001.wikimedia.org;
