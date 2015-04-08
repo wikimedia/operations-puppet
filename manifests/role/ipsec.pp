@@ -1,8 +1,19 @@
 class role::ipsec ($hosts = undef) {
     case $::realm {
         'labs': {
-            # labs nodes use their EC2 ID as their puppet cert name
-            $puppet_certname = "${::ec2id}.${::domain}"
+            $use_dnsmasq_server = hiera('use_dnsmasq', $::use_dnsmasq)
+            if $use_dnsmasq_server {
+                # If using the dnsmasq naming, scheme, we need
+                # to use the unique ec2id rather than just the hostname.
+                if($::ec2id == '') {
+                    fail('Failed to fetch instance ID')
+                }
+                $puppet_certname = "${::ec2id}.${::domain}"
+            } else {
+                # With the new dns scheme, fqdn is unique and less
+                #  confusing.
+                $puppet_certname = $::fqdn
+            }
         }
         default: {
             $puppet_certname = $::fqdn
