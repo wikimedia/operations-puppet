@@ -14,7 +14,7 @@ class role::labs-mysql-server {
     class { 'mysql::server':
         config_hash => {
             # Move mysql data to a place where there's actually space.
-            'datadir' => $datadir,
+            'datadir'      => $datadir,
             'bind_address' => $bind_address,
         }
     }

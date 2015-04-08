@@ -37,9 +37,9 @@ class role::jsbench {
     }
 
     file { '/etc/init/jsbench-browser.conf':
-        ensure  => present,
-        source  => 'puppet:///files/jsbench/upstart',
-        mode    => '0444',
+        ensure => present,
+        source => 'puppet:///files/jsbench/upstart',
+        mode   => '0444',
     }
 
     file { '/usr/local/share/jsbench':

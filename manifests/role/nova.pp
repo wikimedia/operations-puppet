@@ -287,9 +287,9 @@ class role::nova::controller {
         novaconfig        => $novaconfig,
     }
     class { 'openstack::database-server':
-        novaconfig        => $novaconfig,
-        glanceconfig      => $glanceconfig,
-        keystoneconfig    => $keystoneconfig,
+        novaconfig     => $novaconfig,
+        glanceconfig   => $glanceconfig,
+        keystoneconfig => $keystoneconfig,
     }
     class { 'role::keystone::server':
         glanceconfig => $glanceconfig,
