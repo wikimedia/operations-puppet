@@ -19,7 +19,7 @@ class role::performance {
         purge   => true,
         recurse => true,
         force   => true,
-        source => 'puppet:///files/performance',
+        source  => 'puppet:///files/performance',
     }
 
     apache::site { 'performance.wikimedia.org':

@@ -102,8 +102,8 @@ class role::mediawiki::webserver($pool) {
         }
 
         nrpe::monitor_service { 'hhvm':
-            description   => 'HHVM processes',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
+            description  => 'HHVM processes',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C hhvm',
         }
     }
 
@@ -123,7 +123,7 @@ class role::mediawiki::appserver::api {
 
     # Using fastcgi we need more local ports
     sysctl::parameters { 'raise_port_range':
-        values => {
+        values   => {
             'net.ipv4.local_port_range' => '22500 65535',
             'net.ipv4.tcp_tw_reuse'     => '1',
         },

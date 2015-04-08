@@ -53,6 +53,8 @@ class role::rcstream {
 
     diamond::collector { 'RCStream':
         source   => 'puppet:///modules/rcstream/diamond_collector.py',
-        settings => { backends => $backends, },
+        settings => {
+            backends => $backends,
+        },
     }
 }

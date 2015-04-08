@@ -101,7 +101,9 @@ class role::keystone::redis::labs {
     class { '::redis':
         maxmemory                 => '250mb',
         persist                   => 'aof',
-        redis_replication         => { 'nova-precise3' => 'nova-precise2' },
+        redis_replication         => {
+            'nova-precise3' => 'nova-precise2'
+        },
         password                  => $passwords::openstack::keystone::keystone_db_pass,
         dir                       => '/var/lib/redis/',
         auto_aof_rewrite_min_size => '64mb',

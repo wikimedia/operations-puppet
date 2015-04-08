@@ -97,7 +97,7 @@ class role::phabricator::main {
 
     $emailbotcert = $passwords::phabricator::emailbot_cert
     class { '::phabricator::mailrelay':
-        default => {
+        default                 => {
             security     => 'users',
             maint        => false,
             taskcreation => "task@${domain}",

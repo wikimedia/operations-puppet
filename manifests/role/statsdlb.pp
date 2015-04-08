@@ -14,8 +14,8 @@ class role::statsdlb {
     }
 
     nrpe::monitor_service { 'statsdlb':
-        description   => 'statsdlb process',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C statsdlb',
+        description  => 'statsdlb process',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C statsdlb',
     }
 
     class { '::txstatsd::decommission': }

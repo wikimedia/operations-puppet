@@ -24,10 +24,10 @@ class role::mathoid{
     }
 
     user { 'mathoid':
-      gid           => 'mathoid',
-      home          => '/srv/deployment/mathoid/mathoid',
-      managehome    => true,
-      system        => true,
+      gid        => 'mathoid',
+      home       => '/srv/deployment/mathoid/mathoid',
+      managehome => true,
+      system     => true,
     }
 
     ferm::service { 'mathoid':
@@ -36,7 +36,7 @@ class role::mathoid{
     }
 
     monitoring::service { 'mathoid':
-      description => 'mathoid',
+      description   => 'mathoid',
       check_command => 'check_http_on_port!10042',
     }
 }
