@@ -109,11 +109,11 @@ class role::backup::director {
     }
 
     bacula::director::catalog { 'production':
-        dbname      => 'bacula',
-        dbuser      => 'bacula',
-        dbhost      => $role::backup::config::database,
-        dbport      => '3306',
-        dbpassword  => $passwords::bacula::database
+        dbname     => 'bacula',
+        dbuser     => 'bacula',
+        dbhost     => $role::backup::config::database,
+        dbport     => '3306',
+        dbpassword => $passwords::bacula::database
     }
 
     # This has been taken straight from old files/backup/disklist-*
@@ -250,7 +250,7 @@ class role::backup::director {
 
     nrpe::monitor_service { 'bacula_director':
         description  => 'bacula director process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-dir",
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-dir',
     }
 }
 
@@ -294,9 +294,9 @@ class role::backup::storage() {
     }
 
     class { 'bacula::storage':
-        director            => $role::backup::config::director,
-        sd_max_concur_jobs  => 5,
-        sqlvariant          => 'mysql',
+        director           => $role::backup::config::director,
+        sd_max_concur_jobs => 5,
+        sqlvariant         => 'mysql',
     }
 
     # We have two storage devices to overcome any limitations from backend
@@ -326,6 +326,6 @@ class role::backup::storage() {
 
     nrpe::monitor_service { 'bacula_sd':
         description  => 'bacula sd process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-sd",
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-sd',
     }
 }
