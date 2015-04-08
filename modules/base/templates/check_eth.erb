@@ -4,13 +4,13 @@ for INTERFACE in <%= @interfaces.gsub(',', ' ').gsub(/\s\w+_\w+|vnet\d+|virbr\d|
 	REQ_SPEED=1000 # The default for now
 	STATUS=`ip link show ${INTERFACE}`
 	if [ "$?" != "0" ]; then
-		echo "${INTERFACE} not found. This should never happen. Bailing out"
+		MESSAGE="${INTERFACE} not found. This should never happen. Bailing out"
 		EXIT_CODE=1
 		continue
 	fi
 	if echo ${STATUS} | grep -q "NO-CARRIER"
 	then
-		echo "${INTERFACE} reporting no carrier."
+		MESSAGE="${INTERFACE} reporting no carrier."
 		EXIT_CODE=2
 	fi
 	if echo ${STATUS} | grep -q "DOWN"
@@ -20,9 +20,15 @@ for INTERFACE in <%= @interfaces.gsub(',', ' ').gsub(/\s\w+_\w+|vnet\d+|virbr\d|
 	CONF_SPEED=$(/sbin/ethtool $INTERFACE | awk '/Speed:/ {gsub("Mb/s","",$2);print $2}')
 	if [ -n "$CONF_SPEED" ]; then
 		if [ $CONF_SPEED -lt $REQ_SPEED ]; then
-			echo "${INTERFACE} has different negotiated speed than requested"
+			MESSAGE="${INTERFACE} has different negotiated speed than requested"
 			EXIT_CODE=1
 		fi
 	fi
 done
+
+if [ "$EXIT_CODE" -eq "0" ]; then
+	MESSAGE="OK - interfaces up"
+fi
+
+echo $MESSAGE
 exit $EXIT_CODE
