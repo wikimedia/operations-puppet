@@ -179,7 +179,7 @@ ARCHIVES = ['RRA:AVERAGE:0.5:%d:%d' % (interval_length / ROWS, ROWS)
             for interval_length in INTERVALS]
 
 
-def update_rrds():
+def update_rrds(path):
     """Push updates to RRD."""
     # Prune old entries.
     cutoff = time.time() - WINDOW_SIZE
@@ -263,7 +263,8 @@ create_rrds(args.rrd_path)
 logging.info('Connecting to %s...', args.endpoint)
 events = eventlogging.connect(args.endpoint)
 
-worker = eventlogging.PeriodicThread(interval=STEP, target=update_rrds)
+worker = eventlogging.PeriodicThread(interval=STEP, target=update_rrds,
+                                     args=(args.rrd_path,))
 worker.daemon = True
 worker.start()
 
