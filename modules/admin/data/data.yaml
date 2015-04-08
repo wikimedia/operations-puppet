@@ -312,7 +312,7 @@ groups:
   zotero-admin:
     gid: 747
     description: group of zotero admins
-    members: []
+    members: [mobrovac]
     privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service zotero stop',
                  'ALL = (root) NOPASSWD: /usr/sbin/service zotero start',
                  'ALL = (root) NOPASSWD: /usr/sbin/service zotero restart',
