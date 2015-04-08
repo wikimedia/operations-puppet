@@ -1,14 +1,6 @@
 class role::ipsec ($hosts = undef) {
     include strongswan::monitoring::host
-
-    case $::realm {
-        'labs': {
-            # labs nodes use their EC2 ID as their puppet cert name
-            $puppet_certname = "${::ec2id}.${::domain}"
-        }
-        default: {
-            $puppet_certname = $::fqdn
-        }
+        $puppet_certname = $::fqdn
     }
 
     if $hosts != undef {

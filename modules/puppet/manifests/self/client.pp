@@ -10,6 +10,8 @@ class puppet::self::client($server) {
         description => "Puppet client of ${server}"
     }
 
+    $puppet_certname = $::fqdn
+
     # Most of the defaults in puppet::self::config
     # are good for setting up a puppet client.
     #
@@ -17,6 +19,7 @@ class puppet::self::client($server) {
     # before puppet goes to work, though.
     class { 'puppet::self::config':
         server  => $server,
+        certname => $puppet_certname,
         require => File['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.conf'],
     }
 }
