@@ -28,9 +28,6 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
             prefixlen => '64'
         }
 
-        # XXX Temporary: testing on cp1008 first in a couple of different scenarios...
-        if $::hostname == 'cp1008' {
-
         # The above sets up an "up" command to add the fixed IPv6 mapping of the v4
         # address statically, and also executes the command to add the address
         # in the present if not configured.
@@ -40,12 +37,20 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
         # used with any autoconf address, as opposed to one derived from the
         # macaddr.  This aligns the autoconf-assigned address with the fixed
         # one set above, and can do so as a pre-up command to avoid ever
-        # having another address even temporarily.  We could probably rely on
-        # this exclusively and drop the static address above, but the
-        # redundancy doesn't hurt (the autoconf simply won't end up appearing
-        # on the list at all when it duplicates the static address), and this
-        # allays any fears about relying on router advertisments.  As above,
-        # this also executes itself in the present when first configured.
+        # having another address even temporarily, when this is all set up
+        # before boot.
+        # We can't rely on the token part exclusively, though, or we'd face
+        # race conditions: daemons would expect to be able to bind this
+        # address for listening immediately after network-up, but the address
+        # wouldn't exist until the next RA arrives on the interface, which can
+        # be 1-2s in practice.
+        # By keeping both the static config from above and the token command,
+        # we get the best of all worlds: no race, and no conflicting
+        # macaddr-based assignment on the interface either.  When this is
+        # first applied at runtime it will execute the token command as well,
+        # but any previous macaddr-based address will linger while counting
+        # down its expiry timers.  It should have lower precedence and not be
+        # used for outbound traffic, though.
 
         if os_version('debian >= jessie || ubuntu >= trusty') {
             $v6_token_cmd = "/sbin/ip token set $v6_mapped_lower64 dev ${intf}"
@@ -62,7 +67,5 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
                 unless  => $v6_token_check_cmd,
             }
         }
-
-        } # XXX end cp1008 testing block
     }
 }
