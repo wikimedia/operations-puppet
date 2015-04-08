@@ -430,7 +430,7 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
     role cache::bits
 }
 
-node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
+node /^cp30(0[3-9]|10|1[5-8])\.esams\.wmnet$/ {
     if $::hostname =~ /^cp300[34]$/ {
         $ganglia_aggregator = true
     }
@@ -440,12 +440,12 @@ node /^cp30(0[3-9]|10|1[5-8])\.esams\.(wikimedia\.org|wmnet)$/ {
     role cache::upload
 }
 
-node /^cp301[1234]\.esams\.(wikimedia\.org|wmnet)$/ {
+node /^cp301[1234]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::mobile
 }
 
-node /^cp(3019|302[0-2])\.esams\.(wikimedia\.org|wmnet)$/ {
+node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
     if $::hostname =~ /^cp(3019|3020)$/ {
         $ganglia_aggregator = true
     }
