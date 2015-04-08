@@ -60,7 +60,8 @@ class labs_vmbuilder($vmbuilder_version) {
     }
 
     $projectregex = "s/${instanceproject}/_PROJECT_/g"
-    $fqdnregex    = "s/${::ec2id}.${::domain}/_FQDN_/g"
+    $oldfqdnregex = "s/${::ec2id}.${::domain}/_FQDN_/g"
+    $fqdnregex    = "s/${::fqdn}/_FQDN_/g"
     $masterregex  = "s/${servername}/_MASTER_/g"
 
     Exec { path => '/bin' }
@@ -91,6 +92,9 @@ class labs_vmbuilder($vmbuilder_version) {
     } ~>
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/puppet.conf":
+    } ~>
+
+    exec { "sed -i '${oldfqdnregex}' ${vmbuilder_filepath}/puppet.conf":
     } ~>
 
     exec { "sed -i '${fqdnregex}' ${vmbuilder_filepath}/puppet.conf":
