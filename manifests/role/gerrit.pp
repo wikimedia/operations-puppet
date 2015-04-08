@@ -48,18 +48,18 @@ class role::gerrit {
         }
 
         ferm::service { 'gerrit_ssh':
-            proto  => 'tcp',
-            port   => '29418',
+            proto => 'tcp',
+            port  => '29418',
         }
 
         ferm::service { 'gerrit_http':
-            proto  => 'tcp',
-            port   => 'http',
+            proto => 'tcp',
+            port  => 'http',
         }
 
         ferm::service { 'gerrit_https':
-            proto  => 'tcp',
-            port   => 'https',
+            proto => 'tcp',
+            port  => 'https',
         }
 
         $replication_basic_push_refs = [
@@ -92,30 +92,30 @@ class role::gerrit {
                     'threads' => '4',
                     'mirror'  => 'true',
                 },
-                'gitblit'                 => {
+                'gitblit'        => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
                     #
                     # lint:ignore:single_quote_string_with_variables
-                    'url'                   => 'gerritslave@antimony.wikimedia.org:/var/lib/git/${name}.git',
+                    'url'       => 'gerritslave@antimony.wikimedia.org:/var/lib/git/${name}.git',
                     # lint:endignore
-                    'threads'               => '4',
-                    'authGroup'             => 'mediawiki-replication',
-                    'push'                  => '+refs/*:refs/*',
-                    'mirror'                => 'true',
+                    'threads'   => '4',
+                    'authGroup' => 'mediawiki-replication',
+                    'push'      => '+refs/*:refs/*',
+                    'mirror'    => 'true',
                 },
-                'github'                  => {
+                'github'         => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
                     #
                     # lint:ignore:single_quote_string_with_variables
-                    'url'                  => 'git@github.com:wikimedia/${name}',
+                    'url'             => 'git@github.com:wikimedia/${name}',
                     # lint:endignore
-                    'threads'              => '4',
-                    'authGroup'            => 'mediawiki-replication',
-                    'push'                 => $replication_basic_push_refs,
-                    'remoteNameStyle'      => 'dash',
-                    'mirror'               => 'true',
+                    'threads'         => '4',
+                    'authGroup'       => 'mediawiki-replication',
+                    'push'            => $replication_basic_push_refs,
+                    'remoteNameStyle' => 'dash',
+                    'mirror'          => 'true',
                 },
                 # Do not add custom mirrors for GitHub here!
                 # Instead let the default replication happen and perform the rename
