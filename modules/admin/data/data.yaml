@@ -309,7 +309,14 @@ groups:
                  'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/repository',
                  'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/phd',
                  'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/worker']
-
+  zotero-admin:
+    gid: 747
+    description: group of zotero admins
+    members: []
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service zotero stop',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service zotero start',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service zotero restart',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service zotero reload']
 users:
   rush:
     ensure: present
