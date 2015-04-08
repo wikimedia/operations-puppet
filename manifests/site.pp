@@ -1026,8 +1026,9 @@ node 'gallium.wikimedia.org' {
 }
 
 node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
+    role ganeti
     include standard
-    include role::ganeti
+    include admin
 }
 
 # Hosts visualization / monitoring of EventLogging event streams

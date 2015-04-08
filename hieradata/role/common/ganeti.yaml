@@ -1,0 +1,1 @@
+ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/ganeti .ssh/authorized_keys
