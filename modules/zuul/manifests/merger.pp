@@ -29,8 +29,8 @@ class zuul::merger (
 ) {
 
     file { $git_dir:
-        ensure  => directory,
-        owner   => 'zuul',
+        ensure => directory,
+        owner  => 'zuul',
     }
 
     # Configuration file for the zuul merger
@@ -51,19 +51,6 @@ class zuul::merger (
         notify  => Service['zuul-merger'],
     }
 
-    file { '/etc/init.d/zuul-merger':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/zuul/zuul-merger.init',
-    }
-
-    file { '/var/run/zuul-merger':
-        ensure  => directory,
-        owner   => 'zuul',
-    }
-
     file { '/etc/zuul/merger-logging.conf':
         ensure => present,
         source => 'puppet:///modules/zuul/merger-logging.conf',
@@ -75,8 +62,8 @@ class zuul::merger (
         hasrestart => true,
         subscribe  => File['/etc/zuul/zuul-merger.conf'],
         require    => [
-            File['/etc/init.d/zuul-merger'],
-            File['/var/run/zuul-merger'],
+            Package['zuul'],
+            File['/etc/default/zuul-merger'],
             File['/etc/zuul/merger-logging.conf'],
             File['/etc/zuul/zuul-merger.conf'],
         ],
