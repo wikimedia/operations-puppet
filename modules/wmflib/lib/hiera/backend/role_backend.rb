@@ -66,6 +66,12 @@
 # in unexpected behaviour so I advice _against_ using multiple role
 # keywords in a single node, if both roles include conflicting
 # classes.
+#  === Debugging with hiera cli
+#  If you want to debug with hiera CLI, you need to pass the _roles argument to
+#  hiera but without the role:: prefix. The argument must be of valid YAML
+#  syntax (which means JSON is accepted too). For example:
+#
+#  hiera -d "::_roles={'myrole1': true, 'myrole2': true}"
 require 'yaml'
 class Hiera
   module Backend
@@ -119,6 +125,10 @@ class Hiera
         resultset = nil
         return nil unless scope.include?topscope_var
         roles = scope[topscope_var]
+        if roles.instance_of?(String)
+            Hiera.debug('Roles is a string, YAML parsing it')
+            roles = YAML.load(roles)
+        end
         return nil if roles.nil?
         if Config.include?(:role_hierarchy)
           hierarchy = Config[:role_hierarchy]
