@@ -175,7 +175,7 @@ SOURCES = ['DS:%s:GAUGE:%d:%d:%d' % (metric, HEARTBEAT, MIN, MAX)
            for metric in METRICS]
 
 # List of round-robin archive ('RRA') definitions in rrdcreate format.
-ARCHIVES = ['RRA:AVERAGE:0.5:%d:%d' % (interval / ROWS / step, ROWS)
+ARCHIVES = ['RRA:AVERAGE:0.5:%d:%d' % (interval / ROWS / STEP, ROWS)
             for interval in INTERVALS]
 
 
