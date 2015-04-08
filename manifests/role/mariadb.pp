@@ -378,11 +378,11 @@ class role::mariadb::core(
     }
 
     class { 'mariadb::config':
-        prompt    => "PRODUCTION ${shard}",
-        config    => 'mariadb/production.my.cnf.erb',
-        password  => $passwords::misc::scripts::mysql_root_pass,
-        datadir   => '/srv/sqldata',
-        tmpdir    => '/srv/tmp',
+        prompt   => "PRODUCTION ${shard}",
+        config   => 'mariadb/production.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
+        datadir  => '/srv/sqldata',
+        tmpdir   => '/srv/tmp',
     }
 
     mariadb::monitor_replication { [ $shard ]:
@@ -405,9 +405,9 @@ class role::mariadb::sanitarium {
     }
 
     class { 'mariadb::config':
-        prompt    => "SANITARIUM",
-        config    => 'mariadb/sanitarium.my.cnf.erb',
-        password  => $passwords::misc::scripts::mysql_root_pass,
+        prompt   => "SANITARIUM",
+        config   => 'mariadb/sanitarium.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
     }
 
     # One instance per shard using mysqld_multi.
@@ -475,25 +475,25 @@ class role::mariadb::labs {
     }
 
     class { 'mariadb::config':
-        prompt    => "LABS",
-        config    => 'mariadb/labs.my.cnf.erb',
-        password  => $passwords::misc::scripts::mysql_root_pass,
-        datadir   => '/srv/sqldata',
-        tmpdir    => '/srv/tmp',
+        prompt   => "LABS",
+        config   => 'mariadb/labs.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
+        datadir  => '/srv/sqldata',
+        tmpdir   => '/srv/tmp',
     }
 
     file { '/srv/innodb':
-        ensure  => directory,
-        owner   => 'mysql',
-        group   => 'mysql',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'mysql',
+        group  => 'mysql',
+        mode   => '0755',
     }
 
     file { '/srv/tokudb':
-        ensure  => directory,
-        owner   => 'mysql',
-        group   => 'mysql',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'mysql',
+        group  => 'mysql',
+        mode   => '0755',
     }
 }
 
@@ -569,8 +569,8 @@ class role::mariadb::proxy::master(
     }
 
     nrpe::monitor_service { 'haproxy_failover':
-        description   => 'haproxy failover',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_haproxy --check=failover",
+        description  => 'haproxy failover',
+        nrpe_command => "/usr/lib/nagios/plugins/check_haproxy --check=failover",
     }
 }
 
