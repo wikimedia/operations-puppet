@@ -175,8 +175,8 @@ SOURCES = ['DS:%s:GAUGE:%d:%d:%d' % (metric, HEARTBEAT, MIN, MAX)
            for metric in METRICS]
 
 # List of round-robin archive ('RRA') definitions in rrdcreate format.
-ARCHIVES = ['RRA:AVERAGE:0.5:%d:%d' % (interval_length / ROWS, ROWS)
-            for interval_length in INTERVALS]
+ARCHIVES = ['RRA:AVERAGE:0.5:%d:%d' % (interval / ROWS / step, ROWS)
+            for interval in INTERVALS]
 
 
 def update_rrds(path):
@@ -247,7 +247,7 @@ def create_rrds(path):
         args = [
             rrd_file,
             '--no-overwrite',
-            '--step', str(STEP),
+            '--step', '%d' % STEP,
             '--start', 'N'
         ] + SOURCES + ARCHIVES
         try:
