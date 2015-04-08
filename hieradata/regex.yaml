@@ -30,3 +30,7 @@ cassandra_test:
       - xenon.eqiad.wmnet
   cassandra::max_heap_size: 4g
   cassandra::heap_newsize: 1g
+
+ganeti:
+  __regex: !ruby/regexp /^ganeti[1-2][0-9]{3}\.(eqiad|codfw)\.wmnet$/
+  ssh::server::authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/ganeti-%u
