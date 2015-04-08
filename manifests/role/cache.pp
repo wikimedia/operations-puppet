@@ -71,6 +71,7 @@ class role::cache {
                     ],
                     'esams' => [
                         # T92306 'cp3011.esams.wmnet', # needs-jessie-install
+                        # 'cp3012.esams.wmnet',
                         'cp3030.esams.wmnet',
                         'cp3031.esams.wmnet',
                         'cp3040.esams.wmnet',
@@ -149,7 +150,6 @@ class role::cache {
                         'cp3008.esams.wmnet',
                         'cp3009.esams.wmnet',
                         'cp3010.esams.wmnet',
-                        # 'cp3016.esams.wmnet',
                         'cp3017.esams.wmnet',
                         'cp3018.esams.wmnet',
                         'cp3032.esams.wmnet',
@@ -176,10 +176,10 @@ class role::cache {
                                 'cp1060.eqiad.wmnet',
                     ],
                     'esams' => [
-                                # 'cp3012.esams.wmnet',
                                 'cp3013.esams.wmnet',
                                 'cp3014.esams.wmnet',
                                 'cp3015.esams.wmnet',
+                                # 'cp3016.esams.wmnet',
                     ],
                     'ulsfo' => [
                                 'cp4011.ulsfo.wmnet',
