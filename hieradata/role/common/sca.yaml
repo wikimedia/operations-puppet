@@ -6,6 +6,7 @@ admin::groups:
   - citoid-admin
   - citoid-users
   - cxserver-admin
+  - zotero-admin
 
 lvs::realserver::realserver_ips:
   - '10.2.2.16' # zotero.svc.eqiad.wmnet
