@@ -6,11 +6,13 @@
 # associated daemons do not merge changes to this file.
 
 ui.footer-items:
-  - {name: 'Text is available under the Creative Commons Attribution-ShareAlike 3.0 License; code is available under the GNU General Public License or other appropriate open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy.'}
+  - {name: 'Text is available under the Creative Commons Attribution-ShareAlike 3.0 License (CC-BY-SA); code is available under the GNU General Public License (GPL) or other appropriate open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy.'}
   - {href: 'https://www.wikimediafoundation.org/', name: Wikimedia Foundation}
   - {href: 'https://wikimediafoundation.org/wiki/Privacy_policy', name: Privacy Policy}
   - {href: 'https://wikimediafoundation.org/wiki/Terms_of_Use/Phabricator', name: Terms of Use}
   - {href: 'https://wikimediafoundation.org/wiki/Wikimedia:General_disclaimer', name: Disclaimer}
+  - {href: 'https://creativecommons.org/licenses/by-sa/3.0/', name: CC-BY-SA}
+  - {href: 'https://www.gnu.org/licenses/', name: GPL}
 
 # Due to issues with 'gd' rending thumbnails for
 # Mimetype image/x-icon and image/icon
