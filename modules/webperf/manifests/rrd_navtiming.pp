@@ -13,8 +13,8 @@
 class webperf::rrd_navtiming( $endpoint ) {
     include ::webperf
 
-    file { '/srv/webperf/rrd-navtiming.py':
-        source => 'puppet:///modules/webperf/rrd-navtiming.py',
+    file { '/srv/webperf/rrd-navtiming':
+        source => 'puppet:///modules/webperf/rrd-navtiming',
         owner  => 'webperf',
         group  => 'webperf',
         mode   => '0755',

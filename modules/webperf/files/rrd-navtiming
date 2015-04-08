@@ -1,3 +1,4 @@
+#!/usr/bin/python -u
 # -*- coding: utf-8 -*-
 """
   rrd-navtiming
@@ -15,9 +16,8 @@
 
   Usage:
 
-    rrd-navtiming.py [-h] [--endpoint _ENDPOINT]
-                          [--rrd-path RRD_PATH]
-                          [--log-path LOG_PATH]
+    rrd-navtiming [--endpoint ENDPOINT] [--rrd-path RRD_PATH]
+                  [--log-path LOG_PATH]
 
       --endpoint ENDPOINT   EventLogging endpoint URI
                             (default: tcp://eventlogging.eqiad.wmnet:8600)
@@ -201,7 +201,7 @@ def update_rrds():
         return
 
     for platform, samples in data.items():
-        rrd_file = platform + '.rrd'
+        rrd_file = os.path.join(path, platform + '.rrd')
         # We have to output values in the order we declared them.
         update = 'N:' + ':'.join(str(samples[m]) for m in METRICS)
         logging.info('%s: %s', rrd_file, update)

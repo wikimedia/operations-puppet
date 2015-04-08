@@ -10,8 +10,7 @@ setgid webperf
 respawn
 respawn limit unlimited
 
-chdir /srv/webperf
-exec /usr/bin/python /srv/webperf/rrd-navtiming.py \
-    --endpoint <%= @endpoint %> \
+exec /srv/webperf/rrd-navtiming         \
+    --endpoint "<%= @endpoint %>"       \
     --rrd-path "/var/lib/rrd-navtiming" \
     --log-path "/var/log/rrd-navtiming"
