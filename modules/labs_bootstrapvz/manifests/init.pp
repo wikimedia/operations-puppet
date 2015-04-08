@@ -47,7 +47,8 @@ class labs_bootstrapvz() {
     }
 
     $projectregex = "s/${instanceproject}/_PROJECT_/g"
-    $fqdnregex = "s/${::ec2id}.${::domain}/_FQDN_/g"
+    $oldfqdnregex = "s/${::ec2id}.${::domain}/_FQDN_/g"
+    $fqdnregex = "s/${::fqdn}/_FQDN_/g"
     $masterregex = "s/${servername}/_MASTER_/g"
 
     Exec { path => '/bin' }
@@ -78,6 +79,9 @@ class labs_bootstrapvz() {
     } ~>
 
     exec { "sed -i '${fqdnregex}' ${bootstrap_filepath}/puppet/puppet.conf":
+    } ~>
+
+    exec { "sed -i '${oldfqdnregex}' ${bootstrap_filepath}/puppet/puppet.conf":
     } ~>
 
     exec { "sed -i '${masterregex}' ${bootstrap_filepath}/puppet/puppet.conf":

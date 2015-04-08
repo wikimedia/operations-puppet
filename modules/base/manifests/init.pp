@@ -14,13 +14,19 @@ class base {
     }
 
     if ($::realm == 'labs') {
-        # For labs, use instanceid.domain rather than the fqdn
-        # to ensure we're always using a unique certname.
-        # $::ec2id is a fact that queries the instance metadata
-        if($::ec2id == '') {
-            fail('Failed to fetch instance ID')
+        $use_dnsmasq_server = hiera('use_dnsmasq', $::use_dnsmasq)
+        if $use_dnsmasq_server {
+            # If using the dnsmasq naming, scheme, we need 
+            # to use the unique ec2id rather than just the hostname.
+            if($::ec2id == '') {
+                fail('Failed to fetch instance ID')
+            }
+            $certname = "${::ec2id}.${::domain}"
+        } else {
+            # With the new dns scheme, fqdn is unique and less
+            #  confusing.
+            $certname = $::fqdn
         }
-        $certname = "${::ec2id}.${::domain}"
 
         # Labs instances /var is quite small, provide our own default
         # to keep less records (bug 69604).

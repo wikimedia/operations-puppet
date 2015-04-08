@@ -45,9 +45,22 @@ class puppet::self::master(
 
     # If localhost, then just name the cert 'localhost'.
     # Else certname should be the labs instanceid. ($::ec2id comes from instance metadata.)
-    $certname = $server ? {
-        'localhost' => 'localhost',
-        default     => "${::ec2id}.${::domain}"
+    if $server == 'localhost' {
+        $certname = 'localhost'
+    } else {
+        $use_dnsmasq_server = hiera('use_dnsmasq', $::use_dnsmasq)
+        if $use_dnsmasq_server {
+            # If using the dnsmasq naming, scheme, we need
+            # to use the unique ec2id rather than just the hostname.
+            if($::ec2id == '') {
+                fail('Failed to fetch instance ID')
+            }
+            $certname = "${::ec2id}.${::domain}"
+        } else {
+            # With the new dns scheme, fqdn is unique and less
+            #  confusing.
+            $certname = $::fqdn
+        }
     }
 
     # We'd best be sure that our ldap config is set up properly
