@@ -83,9 +83,9 @@ class snapshot::wikidatadumps::ttl(
         ensure      => $ensure,
         command     => $scriptPath,
         user        => $user,
-        minute      => '15',
-        hour        => '3',
-        weekday     => '3',
+        minute      => '0',
+        hour        => '23',
+        weekday     => '1',
         require     => File[$scriptPath],
     }
 }
