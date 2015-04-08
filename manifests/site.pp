@@ -453,6 +453,16 @@ node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
     role cache::bits
 }
 
+node /^cp30[34][01]\.esams\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role cache::text
+}
+
+node /^cp30[34][2-9]\.esams\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role cache::upload
+}
+
 #
 # ulsfo varnishes
 #
