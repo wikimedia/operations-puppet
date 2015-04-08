@@ -11,20 +11,36 @@
 #                         Unused if $is_puppetmaster is false.
 # $puppet_client_subnet - Network from which to allow fileserver connections.
 #                         Unused if $is_puppetmaster is false.
-# $certname             - Name of the puppet CA certificate.  Default: "$ec2id.$domain", e.g. the labs instance name:  i-00000699.pmtpa.wmflabs.
+# $certname             - Name of the puppet CA certificate.  Default: "$ec2id.$domain" or $fqdn on new systems
 #
 class puppet::self::config(
     $server,
     $is_puppetmaster      = false,
     $bindaddress          = undef,
     $puppet_client_subnet = undef,
-    $certname             = "${::ec2id}.${::domain}",
-    $enc_script_path        = undef,
+    $certname             = undef,
+    $enc_script_path      = undef,
 ) inherits base::puppet {
     include ldap::role::config::labs
 
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
+
+    if $certname == undef {
+        $use_dnsmasq_server = hiera('use_dnsmasq', $::use_dnsmasq)
+        if $use_dnsmasq_server {
+            # If using the dnsmasq naming, scheme, we need
+            # to use the unique ec2id rather than just the hostname.
+            if($::ec2id == '') {
+                fail('Failed to fetch instance ID')
+            }
+            $certname = "${::ec2id}.${::domain}"
+        } else {
+            # With the new dns scheme, fqdn is unique and less
+            #  confusing.
+            $certname = $::fqdn
+        }
+    }
 
     if $enc_script_path {
         $config = {
