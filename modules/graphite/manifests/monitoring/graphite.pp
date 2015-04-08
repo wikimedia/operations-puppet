@@ -10,7 +10,7 @@ class graphite::monitoring::graphite {
     # is carbon-relay queue full? (i.e. dropping data)
     monitoring::graphite_threshold { 'carbon-relay_queue_full':
         description     => 'carbon-relay queue full',
-        metric          => 'sumSeries(carbon.relays.graphite1001-*.destinations.*.fullQueueDrops)',
+        metric          => 'sumSeries(transformNull(carbon.relays.graphite1001-*.destinations.*.fullQueueDrops))',
         from            => '10minutes',
         warning         => 200,
         critical        => 1000,
