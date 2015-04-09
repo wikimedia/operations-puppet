@@ -33,12 +33,16 @@ class role::labs::tools {
         }
     }
 
-    class services inherits role::labs::tools::common {
+    class services(
+        $active_host = 'tools-services-01.eqiad.wmflabs',
+    ) inherits role::labs::tools::common {
         system::role { 'role::labs::tools::services':
             description => 'Tool Labs manifest based services',
         }
 
-        include toollabs::services
+        class { 'toollabs::services':
+            active => ($::fqdn == $active_host),
+        }
     }
 
     class submit inherits role::labs::tools::common {
