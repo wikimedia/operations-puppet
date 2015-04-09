@@ -1,5 +1,0 @@
-ganeti01.svc.eqiad.wmnet::nodes:
-  - ganeti1001.eqiad.wmnet
-  - ganeti1002.eqiad.wmnet
-  - ganeti1003.eqiad.wmnet
-  - ganeti1004.eqiad.wmnet
