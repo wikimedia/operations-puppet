@@ -601,19 +601,6 @@ class role::cache {
             'labs'       => '10.68.16.52',   # deployment-eventlogging02
         }
 
-        # I am renaming this varnishncsa instance to
-        # 'eventlogging'.  First ensuring that this is stopped,
-        # then I will remove configs.
-        varnish::logging { 'vanadium' :
-            listener_address => '10.64.21.123', # vanadium
-            port             => '8422',
-            instance_name    => '',
-            cli_args         => '-m RxURL:^/event\.gif\?. -D',
-            log_fmt          => '%q\t%l\t%n\t%t\t%h\t"%{User-agent}i"',
-            monitor          => false,
-            ensure           => 'absent',
-        }
-
         varnish::logging { 'eventlogging' :
             listener_address => $event_listener,
             port             => '8422',

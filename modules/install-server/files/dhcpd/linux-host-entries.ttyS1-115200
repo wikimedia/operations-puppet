@@ -5639,11 +5639,6 @@ host uranium {
 	fixed-address uranium.wikimedia.org;
 }
 
-host vanadium {
-	hardware ethernet 78:2b:cb:08:a4:3b;
-	fixed-address vanadium.eqiad.wmnet;
-}
-
 host virt1000 {
 	hardware ethernet 18:03:73:f5:2c:2b;
 	fixed-address virt1000.wikimedia.org;

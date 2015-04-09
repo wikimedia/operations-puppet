@@ -2352,14 +2352,6 @@ node 'uranium.wikimedia.org' {
     }
 }
 
-# This node will soon be deprecated.
-node 'vanadium.eqiad.wmnet' {
-    role eventlogging
-    include standard
-    include role::ipython_notebook
-    include role::logging::mediawiki::errors
-}
-
 node 'virt1000.wikimedia.org' {
     $cluster               = 'virt'
     $ganglia_aggregator    = true
