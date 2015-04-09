@@ -428,9 +428,6 @@ node /^cp301[5678]\.esams\.wmnet$/ {
 }
 
 node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
-    if $::hostname =~ /^cp(3019|3020)$/ {
-        $ganglia_aggregator = true
-    }
     interface::add_ip6_mapped { 'main': }
     role cache::bits
 }
