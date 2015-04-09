@@ -34,7 +34,7 @@ class role::statsdlb {
 
     statsite::instance { '8128':
         port          => 8128,
-        input_counter => "statsd.${::hostname}-8127.received",
+        input_counter => "statsd.${::hostname}-8128.received",
     }
 
     nrpe::monitor_service { 'statsite_backends':
