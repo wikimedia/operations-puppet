@@ -346,6 +346,13 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     }
 }
 
+# Debian package building host in production
+node 'copper.eqiad.wmnet' {
+    role package::builder
+    include standard
+    include admin
+}
+
 # cp1008: prod-like SSL test host
 node 'cp1008.wikimedia.org' {
     role cache::text, ipsec
