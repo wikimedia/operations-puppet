@@ -1,6 +1,6 @@
 # = Class: toollabs::services
 # Provides various services based off tools manifests
-class toollabs::services {
+class toollabs::services inherits toollabs {
 
     include gridengine::submit_host
 
