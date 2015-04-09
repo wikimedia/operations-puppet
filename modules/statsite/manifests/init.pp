@@ -32,31 +32,41 @@ class statsite {
         mode   => '0555',
     }
 
-    file { '/sbin/statsitectl':
-        source => 'puppet:///modules/statsite/statsitectl',
-        mode   => '0755',
+    if os_version('ubuntu >= precise') {
+        file { '/sbin/statsitectl':
+            source => 'puppet:///modules/statsite/statsitectl',
+            mode   => '0755',
+        }
+
+        file { '/etc/init/statsite':
+            source  => 'puppet:///modules/statsite/init',
+            recurse => true,
+            purge   => true,
+            force   => true,
+        }
+
+        # prevent the system-wide statsite from starting
+        file { '/etc/init/statsite.override':
+            content => 'manual',
+            before  => Package['statsite'],
+        }
+
+        service { 'statsite':
+            ensure   => 'running',
+            provider => 'base',
+            restart  => '/sbin/statsitectl restart',
+            start    => '/sbin/statsitectl start',
+            status   => '/sbin/statsitectl status',
+            stop     => '/sbin/statsitectl stop',
+            require  => Package['statsite'],
+        }
     }
 
-    file { '/etc/init/statsite':
-        source  => 'puppet:///modules/statsite/init',
-        recurse => true,
-        purge   => true,
-        force   => true,
-    }
-
-    # prevent the system-wide statsite from starting
-    file { '/etc/init/statsite.override':
-        content => 'manual',
-        before  => Package['statsite'],
-    }
-
-    service { 'statsite':
-        ensure   => 'running',
-        provider => 'base',
-        restart  => '/sbin/statsitectl restart',
-        start    => '/sbin/statsitectl start',
-        status   => '/sbin/statsitectl status',
-        stop     => '/sbin/statsitectl stop',
-        require  => Package['statsite'],
+    if os_version('debian >= jessie') {
+        service { 'statsite':
+            ensure   => 'running',
+            provider => 'systemd',
+            require  => Package['statsite'],
+        }
     }
 }

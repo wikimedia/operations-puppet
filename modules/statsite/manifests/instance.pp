@@ -28,9 +28,19 @@ define statsite::instance(
 ) {
     $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py $graphite_host $graphite_port"
 
-    file { "/etc/statsite/$port.ini":
-        content => template('statsite/statsite.ini.erb'),
-        require => Package['statsite'],
-        notify  => Service['statsite'],
+    if os_version('ubuntu >= precise') {
+        file { "/etc/statsite/$port.ini":
+            content => template('statsite/statsite.ini.erb'),
+            require => Package['statsite'],
+            notify  => Service['statsite'],
+        }
+    }
+
+    if os_version('debian >= jessie') {
+        file { "/etc/statsite.ini":
+            content => template('statsite/statsite.ini.erb'),
+            require => Package['statsite'],
+            notify  => Service['statsite'],
+        }
     }
 }
