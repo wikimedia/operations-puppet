@@ -33,6 +33,14 @@ class role::labs::tools {
         }
     }
 
+    class services inherits role::labs::tools::common {
+        system::role { 'role::labs::tools::services':
+            description => 'Tool Labs manifest based services',
+        }
+
+        include toollabs::services
+    }
+
     class submit inherits role::labs::tools::common {
         include toollabs::submit
 
