@@ -55,7 +55,7 @@ class role::labs::nfs::fileserver($monitor_iface = 'eth0') {
 
     monitoring::graphite_threshold { 'network_out_saturated':
         description => 'Outgoing network saturation',
-        metric      => "servers.${::hostname}.network.${monitor_iface}.tx_byte.value",
+        metric      => "servers.${::hostname}.network.${monitor_iface}.tx_byte",
         from        => '30min',
         warning     => '75000000',  # roughly 600Mbps / 1Gbps
         critical    => '100000000', # roughly 800Mbps / 1Gbps
@@ -64,7 +64,7 @@ class role::labs::nfs::fileserver($monitor_iface = 'eth0') {
 
     monitoring::graphite_threshold { 'network_in_saturated':
         description => 'Incoming network saturation',
-        metric      => "servers.${::hostname}.network.${monitor_iface}.rx_byte.value",
+        metric      => "servers.${::hostname}.network.${monitor_iface}.rx_byte",
         from        => '30min',
         warning     => '75000000',  # roughly 600Mbps / 1Gbps
         critical    => '100000000', # roughly 800Mbps / 1Gbps
@@ -73,7 +73,7 @@ class role::labs::nfs::fileserver($monitor_iface = 'eth0') {
 
     monitoring::graphite_threshold { 'high_iowait_stalling':
         description => 'Persistent high iowait',
-        metric      => "servers.${::hostname}.cpu.total.iowait.value",
+        metric      => "servers.${::hostname}.cpu.total.iowait",
         from        => '10min',
         warning     => '25', # Based off looking at history of metric
         critical    => '35',
@@ -83,7 +83,7 @@ class role::labs::nfs::fileserver($monitor_iface = 'eth0') {
     # Monitor for high load consistently, is a 'catchall'
     monitoring::graphite_threshold { 'high_load':
         description => 'High load for whatever reason',
-        metric      => "servers.${::hostname}.cpu.total.iowait.value",
+        metric      => "servers.${::hostname}.cpu.total.iowait",
         from        => '10min',
         warning     => '16',
         critical    => '24',

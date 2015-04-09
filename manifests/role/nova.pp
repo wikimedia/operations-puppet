@@ -362,7 +362,7 @@ class role::nova::network {
     # but graphite_threshold doesn't support that.
     monitoring::graphite_threshold { 'conntrack_saturated':
         description => 'Connection tracking saturation',
-        metric      => "servers.${::hostname}.ConntrackCollector.network.netfilter.conntrack_count.value",
+        metric      => "servers.${::hostname}.ConntrackCollector.network.netfilter.conntrack_count",
         from        => '5min',
         warning     => '241664', # (~90%)
         critical    => '258048', # (~98%)
