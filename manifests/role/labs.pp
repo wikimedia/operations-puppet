@@ -162,6 +162,10 @@ class role::labs::instance {
 
     # The next two notifications are read in by the labsstatus.rb puppet report handler.
     #  It needs to know project/hostname for nova access.
-    notify{"instanceproject: ${::instanceproject}":}
-    notify{"hostname: ${::instancename}":}
+    notify{ 'instanceproject'
+        message => "instanceproject: ${::instanceproject}",
+    }
+    notify{ 'instancehostname'
+        message => "hostname: ${::instancename}",
+    }
 }
