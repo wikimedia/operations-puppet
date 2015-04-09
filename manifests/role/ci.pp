@@ -417,6 +417,16 @@ class role::ci::slave::labs {
     system::role { 'role::ci::slave::labs':
         description => 'CI Jenkins slave on labs' }
 
+    # Debian slaves are used to build Debian packages for all our distributions
+    if os_version('debian >= jessie') {
+        class { 'role::package::builder':
+            basepath => '/mnt/pbuilder',
+            # Make sure pbuilder base dir ends up on labs extended disk
+            # See contint::packages::labs for the full dependency chain
+            require  => File['/mnt/pbuilder'],
+        }
+    }
+
     file { '/srv/localhost':
         ensure => directory,
         mode   => '0755',
