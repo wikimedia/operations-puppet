@@ -19,7 +19,7 @@ logging:
 
 # StatsD metrics collection
 metrics:
-  type: txstatsd
+  type: statsd # default, but lets be explicit
   host: <%= @statsd_host %>
   port: <%= @statsd_port %>
 
