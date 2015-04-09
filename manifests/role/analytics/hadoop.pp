@@ -365,20 +365,19 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         mode    => 0744,
     }
     if $gelf_logging_enabled {
-        # library dependency
-        package { 'libjson-simple-java':
-            ensure => 'installed',
-        }
+        ensure_packages([
+            # library dependency
+            'libjson-simple-java',
+            # the libary itself: logstash-gelf.jar
+            'liblogstash-gelf-java',
+        ])
         # symlink into hadoop classpath
         file { '/usr/lib/hadoop/lib/json_simple.jar':
             ensure  => 'link',
             target  => '/usr/share/java/json_simple.jar',
             require => Package['libjson-simple-java'],
         }
-        # the libary itself: logstash-gelf.jar
-        package { 'liblogstash-gelf-java':
-            ensure => 'installed',
-        }
+
         # symlink into hadoop classpath
         file { '/usr/lib/hadoop/lib/logstash-gelf.jar':
             ensure  => 'link',
