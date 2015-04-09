@@ -10,6 +10,16 @@ class role::dumps {
         check_command => 'check_http'
     }
 
+
+   $rsync_clients = hiera('dumps::rsync_clients')
+   $rsync_clients_ferm = join($rsync_clients, ' ')
+
+   ferm::service {'dumps-rsyncd':
+       port   => '873',
+       proto  => 'tcp',
+       srange => "@resolve(($rsync_clients_ferm))",
+   }
+
 }
 
 # ZIM dumps - https://en.wikipedia.org/wiki/ZIM_%28file_format%29
