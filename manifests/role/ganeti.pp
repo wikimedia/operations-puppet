@@ -33,7 +33,7 @@ class role::ganeti {
         include base::firewall
         # Interpolate the ganeti_cluster fact to get the list of nodes in a
         # cluster
-        $ganeti_nodes = hiera('ganeti::%{::ganeti_cluster}::nodes')
+        $ganeti_nodes = hiera("ganeti::${::ganeti_cluster}::nodes")
         $ganeti_ferm_nodes = join($ganeti_nodes, ' ')
 
         # Same ganeti actions require SSH
