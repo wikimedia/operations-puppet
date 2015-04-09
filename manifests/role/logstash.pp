@@ -109,11 +109,11 @@ class role::logstash {
     }
 
     class { '::logstash::output::elasticsearch':
-        host            => '127.0.0.1',
-        replication     => 'async',
-        require_tag     => 'es',
-        manage_indices  => true,
-        priority        => 90,
+        host           => '127.0.0.1',
+        replication    => 'async',
+        require_tag    => 'es',
+        manage_indices => true,
+        priority       => 90,
     }
 
 }
@@ -183,13 +183,13 @@ class role::logstash::apifeatureusage {
 
     # Add the index to ES
     file { '/etc/logstash/apifeatureusage-elasticsearch-template.json':
-        ensure  => present,
-        source  => 'puppet:///files/logstash/apifeatureusage-elasticsearch-template.json',
+        ensure => present,
+        source => 'puppet:///files/logstash/apifeatureusage-elasticsearch-template.json',
     }
 
     exec { 'Create apifeatureusage index template':
         command => template('logstash/create-apifeatureusage-index.erb'),
-        unless => template('logstash/check-apifeatureusage-index.erb'),
+        unless  => template('logstash/check-apifeatureusage-index.erb'),
         require => [
             Service['elasticsearch'],
             File['/etc/logstash/apifeatureusage-elasticsearch-template.json'],
