@@ -430,12 +430,12 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
     role cache::bits
 }
 
-node /^cp301[123]\.esams\.wmnet$/ {
+node /^cp301[1234]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::text
 }
 
-node /^cp30(0[3-9]|10|18)\.esams\.wmnet$/ {
+node /^cp30(0[3-9]|10)\.esams\.wmnet$/ {
     if $::hostname =~ /^cp300[34]$/ {
         $ganglia_aggregator = true
     }
@@ -445,7 +445,7 @@ node /^cp30(0[3-9]|10|18)\.esams\.wmnet$/ {
     role cache::upload
 }
 
-node /^cp301[4567]\.esams\.wmnet$/ {
+node /^cp301[5678]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::mobile
 }
