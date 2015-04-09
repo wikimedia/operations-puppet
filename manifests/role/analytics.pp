@@ -45,13 +45,6 @@ class role::analytics::clients {
         require => Package['icedtea-7-jre-jamvm'],
     }
 
-    # jq is very useful, install it.
-    if !defined(Package['jq']) {
-        package { 'jq':
-            ensure => 'installed',
-        }
-    }
-
     # ipython-notebook is very useful, install it.
     if !defined(Package['ipython-notebook']) {
         package { 'ipython-notebook':
@@ -62,6 +55,8 @@ class role::analytics::clients {
     # include maven to build jars for Hadoop.
     include ::maven
 
+    # install packages that should be on all hadoop worker nodes
+    include role::analytics::packages
 }
 
 # == Class role::analytics::hadoop::monitor_disks

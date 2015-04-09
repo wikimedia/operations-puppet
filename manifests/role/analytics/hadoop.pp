@@ -557,6 +557,9 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
 
     # Install MaxMind databases for geocoding UDFs
     include geoip
+
+    # install packages that should be on all hadoop worker nodes
+    include role::analytics::packages
 }
 
 # == Class role::analytics::hadoop::monitor::nsca::client
