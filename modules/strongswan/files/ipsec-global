@@ -21,10 +21,10 @@ HELP() {
 }
 
 silent() {
-  if [[ $VERBOSE ]] ; then
-    "$@"
-  else
-    "$@ >/dev/null"
+    if [[ $VERBOSE ]] ; then
+        "$*"
+    else
+        eval "$* >/dev/null"
   fi
 }
 
@@ -64,6 +64,11 @@ CONNLIST=`awk '/^conn [^%]/ {print $2}' $CONF`
 if [[ -z "$*" ]] ; then
     echo "ERROR: no arguments"
     echo "For usage info, run: $CMDNAME -h"
+    exit
+fi
+
+if [ "$EUID" -ne 0 ]
+    then echo "ERROR: command must be run as root"
     exit
 fi
 
