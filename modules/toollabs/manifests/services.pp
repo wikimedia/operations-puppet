@@ -1,6 +1,20 @@
 # = Class: toollabs::services
 # Provides various services based off tools manifests
-class toollabs::services inherits toollabs {
+#
+# = Parameters
+#
+# [*active_host*]
+#   fqdn of the host that's actively running the service monitors.
+#   This can be switched via hiera to do failover
+class toollabs::services(
+    $active_host = 'tools-services-01.eqiad.wmflabs',
+) inherits toollabs {
+
+    if $::fqdn == $active_host {
+        $service_ensure = running
+    } else {
+        $service_ensure = stopped
+    }
 
     include gridengine::submit_host
 
@@ -9,7 +23,7 @@ class toollabs::services inherits toollabs {
     }
 
     service { 'webservicemonitor':
-        ensure    => running,
+        ensure    => $service_ensure,
         subscribe => Package['tools-manifest'],
     }
 
