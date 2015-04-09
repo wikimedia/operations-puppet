@@ -15,6 +15,11 @@ class txstatsd::decommission {
         recurse => true,
     }
 
+    service { 'txstatsd':
+        ensure => stopped,
+        before => User['txstatsd'],
+    }
+
     group { 'txstatsd':
         ensure  => absent,
         require => User['txstatsd'],
