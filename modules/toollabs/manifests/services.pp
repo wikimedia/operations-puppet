@@ -1,6 +1,14 @@
 # = Class: toollabs::services
 # Provides various services based off tools manifests
-class toollabs::services inherits toollabs {
+#
+# = Parameters
+#
+# [*active*]
+#   true if all the current set of services should run actively,
+#   false if they should just be hot standby
+class toollabs::services(
+    $active = false,
+) inherits toollabs {
 
     include gridengine::submit_host
 
@@ -9,7 +17,7 @@ class toollabs::services inherits toollabs {
     }
 
     service { 'webservicemonitor':
-        ensure    => running,
+        ensure    => ensure_service($active),
         subscribe => Package['tools-manifest'],
     }
 
