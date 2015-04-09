@@ -26,7 +26,7 @@ define statsite::instance(
     $input_counter     = "statsd.${::hostname}.received",
     $extended_counters = 0,
 ) {
-    $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py $graphite_host $graphite_port"
+    $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py $graphite_host $graphite_port \"\""
 
     if os_version('ubuntu >= precise') {
         file { "/etc/statsite/$port.ini":
