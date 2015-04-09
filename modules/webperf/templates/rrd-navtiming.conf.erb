@@ -12,5 +12,5 @@ respawn limit unlimited
 
 exec /srv/webperf/rrd-navtiming         \
     --endpoint "<%= @endpoint %>"       \
-    --rrd-path "/var/lib/rrd-navtiming" \
-    --log-path "/var/log/rrd-navtiming"
+    --log-path "/var/log/rrd-navtiming" \
+    "/var/lib/rrd-navtiming/navtiming.rrd"

@@ -16,14 +16,10 @@
 
   Usage:
 
-    rrd-navtiming [--endpoint ENDPOINT] [--rrd-path RRD_PATH]
-                  [--log-path LOG_PATH]
+    rrd-navtiming [--endpoint ENDPOINT] [--log-path LOG_PATH] RRD_FILE
 
       --endpoint ENDPOINT   EventLogging endpoint URI
                             (default: tcp://eventlogging.eqiad.wmnet:8600)
-
-      --rrd-path RRD_PATH   Path to use for RRD storage
-                            (default: CWD)
 
       --log-path LOG_PATH   Path to use for log files
                             (default: log to stderr only)
@@ -31,7 +27,7 @@
   Example:
 
     rrd-navtiming --endpoint tcp://eventlog1001.eqiad.wmnet:8600 \
-                  --rrd-path /var/lib/rrd-navtiming
+                  /var/lib/rrd-navtiming/rrd-navtiming.rrd
 
 
   Requirements:
@@ -85,15 +81,14 @@ import rrdtool
 
 ap = argparse.ArgumentParser(description='Navigation Timing RRD logger')
 ap.add_argument(
+    'rrd',
+    help='RRD file path',
+    type=os.path.abspath
+)
+ap.add_argument(
     '--endpoint',
     help='Endpoint URI (default: tcp://eventlogging.eqiad.wmnet:8600)',
     default='tcp://eventlogging.eqiad.wmnet:8600'
-)
-ap.add_argument(
-    '--rrd-path',
-    help='Path to use for RRD storage (default: CWD)',
-    default=os.getcwd(),
-    type=os.path.abspath
 )
 ap.add_argument(
     '--log-path',
@@ -127,9 +122,6 @@ lock = threading.Lock()
 # A min-heap of of (timestamp, event) tuples.
 heap = []
 
-# Maintain a separate RRD file with a full set of metrics for each:
-PLATFORMS = ('desktop', 'mobile')
-
 METRICS = (
     'responseStart',  # Time to user agent receiving first byte
     'firstPaint',     # Time to initial render
@@ -162,7 +154,8 @@ STEP = INTERVALS[0] / ROWS
 
 # STEP should be a whole number that divides each INTERVAL.
 assert STEP.is_integer()
-assert all((interval / STEP).is_integer() for interval in INTERVALS)
+for interval in INTERVALS:
+    assert (interval / ROWS / STEP).is_integer()
 
 # Set the maximum acceptable interval between samples ("heartbeat") to a
 # full day. This means RRD will record an estimate for missing samples as
@@ -184,33 +177,37 @@ ARCHIVES = ['RRA:AVERAGE:0.5:%d:%d' % (interval / ROWS / STEP, ROWS)
             for interval in INTERVALS]
 
 
-def update_rrds(path):
-    """Push updates to RRD."""
+def prune_heap(event_heap):
     # Prune old entries.
     cutoff = time.time() - WINDOW_SIZE
     with lock:
         # Python's heapq is a min heap, meaning heap[0] is always
         # the oldest entry.
-        while heap and heap[0][0] < cutoff:
-            heapq.heappop(heap)
+        while event_heap and event_heap[0][0] < cutoff:
+            heapq.heappop(event_heap)
 
-    if len(heap) < SAMPLE_THRESHOLD:
+
+def update_rrd(rrd_file, event_heap):
+    """Push updates to RRD."""
+    prune_heap(event_heap)
+    if len(event_heap) < SAMPLE_THRESHOLD:
+        log.warn('Fewer than SAMPLE_THRESHOLD (%s) events; '
+                 'skipping update.', SAMPLE_THRESHOLD)
         return
 
-    try:
-        with lock:
-            data = accumulate()
-    except ValueError:
-        # We don't have any data for one or more metrics.
+    with lock:
+        data = accumulate(event_heap)
+
+    if not all(metric in data for metric in METRICS):
         # We have to give RRD a full update or nothing, so move on.
+        log.info('Skipping update due to empty metrics: %s',
+                 [m for m in METRICS if m not in data])
         return
 
-    for platform, samples in data.items():
-        rrd_file = os.path.join(path, platform + '.rrd')
-        # We have to output values in the order we declared them.
-        update = 'N:' + ':'.join(str(samples[m]) for m in METRICS)
-        log.info('%s: %s', rrd_file, update)
-        rrdtool.update(rrd_file, update)
+    # We have to output values in the order we declared them.
+    update = 'N:' + ':'.join(str(data[m]) for m in METRICS)
+    log.info('%s: %s', rrd_file, update)
+    rrdtool.update(rrd_file, update)
 
 
 def median(sorted_list):
@@ -225,51 +222,39 @@ def median(sorted_list):
     return sum_of_terms / 2.0
 
 
-def accumulate():
-    """Group samples by metric and platform and compute medians."""
-    data = {p: {m: [] for m in METRICS} for p in PLATFORMS}
-    for timestamp, event in heap:
-        platform = 'mobile' if 'mobileMode' in event else 'desktop'
+def accumulate(event_heap):
+    """Group samples by metric and compute medians."""
+    data = {metric: [] for metric in METRICS}
+    for timestamp, event in event_heap:
         for metric in METRICS:
             value = event.get(metric)
             if value:
-                bisect.insort(data[platform][metric], value)
-    for platform in PLATFORMS:
-        for metric in METRICS:
-            values = data[platform][metric]
-            try:
-                data[platform][metric] = median(values)
-            except ValueError:
-                log.warning('No values for %s on %s', metric, platform)
-                raise
-    return data
+                bisect.insort(data[metric], value)
+    return {m: median(vs) for m, vs in data.items() if vs}
 
 
-def create_rrds(path):
-    """Create RRD files."""
-    for platform in PLATFORMS:
-        rrd_file = os.path.join(path, platform + '.rrd')
-        args = [
-            rrd_file,
-            '--no-overwrite',
-            '--step', '%d' % STEP,
-            '--start', 'N'
-        ] + SOURCES + ARCHIVES
-        try:
-            rrdtool.create(*args)
-        except Exception as e:
-            if not e.message.endswith('File exists'):
-                raise
-        else:
-            log.info('Created %s', rrd_file)
+def create_rrd(rrd_file):
+    args = [
+        rrd_file,
+        '--no-overwrite',
+        '--step', '%d' % STEP,
+        '--start', 'N'
+    ] + SOURCES + ARCHIVES
+    try:
+        rrdtool.create(*args)
+        log.info('Created %s', rrd_file)
+    except Exception as e:
+        if 'File exists' not in e.message:
+            raise
+        log.info('RRD file %s already exists.', rrd_file)
 
 
-create_rrds(args.rrd_path)
+create_rrd(args.rrd)
 log.info('Connecting to <%s>...', args.endpoint)
 events = eventlogging.connect(args.endpoint)
 
-worker = eventlogging.PeriodicThread(interval=STEP, target=update_rrds,
-                                     args=(args.rrd_path,))
+worker = eventlogging.PeriodicThread(interval=STEP, target=update_rrd,
+                                     args=(args.rrd, heap))
 worker.daemon = True
 worker.start()
 
