@@ -2282,6 +2282,48 @@ host labsdb1007 {
 	fixed-address labsdb1007.eqiad.wmnet;
 }
 
+host labvirt1001 {
+        hardware ethernet 28:80:23:9a:d4:08;
+        fixed-address labvirt1001.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host labvirt1002 {
+        hardware ethernet 28:80:23:9a:cd:f4;
+        fixed-address labvirt1002.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host labvirt1003 {
+        hardware ethernet 28:80:23:9a:c7:f4;
+        fixed-address labvirt1003.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host labvirt1004 {
+        hardware ethernet 28:80:23:9a:d6:74;
+        fixed-address labvirt1004.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host labvirt1005 {
+        hardware ethernet 28:80:23:9a:d6:bc;
+        fixed-address labvirt1005.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host labvirt1006 {
+        hardware ethernet 28:80:23:9a:d4:cc;
+        fixed-address labvirt1006.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host lanthanum {
 	hardware ethernet 90:B1:1C:00:A2:67;
 	fixed-address lanthanum.eqiad.wmnet;
