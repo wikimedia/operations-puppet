@@ -290,11 +290,7 @@ class role::analytics::hadoop::config {
 #
 class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
     # need java before hadoop is installed
-    if (!defined(Package['openjdk-7-jdk'])) {
-        package { 'openjdk-7-jdk':
-            ensure => 'installed',
-        }
-    }
+    ensure_packages(['openjdk-7-jdk'])
 
     class { 'cdh::hadoop':
         cluster_name                             => $cluster_name,
