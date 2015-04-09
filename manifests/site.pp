@@ -418,12 +418,7 @@ node /^cp301[1234]\.esams\.wmnet$/ {
 }
 
 node /^cp30(0[3-9]|10)\.esams\.wmnet$/ {
-    if $::hostname =~ /^cp300[34]$/ {
-        $ganglia_aggregator = true
-    }
-    $cluster = 'cache_upload'
     interface::add_ip6_mapped { 'main': }
-
     role cache::upload
 }
 
@@ -433,9 +428,6 @@ node /^cp301[5678]\.esams\.wmnet$/ {
 }
 
 node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
-    if $::hostname =~ /^cp(3019|3020)$/ {
-        $ganglia_aggregator = true
-    }
     interface::add_ip6_mapped { 'main': }
     role cache::bits
 }
@@ -455,38 +447,21 @@ node /^cp30[34][2-9]\.esams\.wmnet$/ {
 #
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
-    # cp4001 and cp4003 are in different racks,
-    # make them each ganglia aggregators.
-    if $::hostname =~ /^cp(4001|4003)$/ {
-        $ganglia_aggregator = true
-    }
-
     interface::add_ip6_mapped { 'main': }
     role cache::bits
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
-    if $::hostname =~ /^cp(4005|4013)$/ {
-        $ganglia_aggregator = true
-    }
-
     interface::add_ip6_mapped { 'main': }
     role cache::upload
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
-    if $::hostname =~ /^cp(4008|4016)$/ {
-        $ganglia_aggregator = true
-    }
-
     interface::add_ip6_mapped { 'main': }
     role cache::text
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
-    if $::hostname =~ /^cp401[19]$/ {
-        $ganglia_aggregator = true
-    }
     interface::add_ip6_mapped { 'main': }
     role cache::mobile
 }
