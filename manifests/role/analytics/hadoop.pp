@@ -399,16 +399,6 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         }
     }
 
-    # Need python3 on Hadoop nodes in order to run
-    # Hadoop Streaming python jobs.
-    require_package('python3')
-
-    # Some users want jq on Hadoop nodes to parse
-    # JSON using Hadoop Streaming.
-    require_package('jq')
-
-
-
     # Temporarily hardode DNS CNAMES into /etc/hosts.
     # jobs are failing around the cluster because these
     # are cached in DNS.  I need to fix now.  Will remove
@@ -418,6 +408,23 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
       line => '10.64.36.118    namenode.analytics.eqiad.wmnet resoucemanager.analytics.eqiad.wmnet',
       ensure => 'absent'
     }
+
+    # Install packages that are useful for distributed
+    # computation in Hadoop, and thus should be available on
+    # any Hadoop nodes.
+    ensure_packages([
+        # Need python3 on Hadoop nodes in order to run
+        # Hadoop Streaming python jobs.
+        'python3',
+        'python-numpy',
+        'python-pandas',
+        'python-scipy',
+        'python-requests',
+        'python-matplotlib',
+        'python-dateutil',
+        'python-sympy',
+        'jq',
+    ])
 }
 
 
@@ -557,9 +564,6 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
 
     # Install MaxMind databases for geocoding UDFs
     include geoip
-
-    # install packages that should be on all hadoop worker nodes
-    include role::analytics::packages
 }
 
 # == Class role::analytics::hadoop::monitor::nsca::client
