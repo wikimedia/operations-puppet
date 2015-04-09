@@ -19,9 +19,9 @@ class role::dataset::pagecountsraw($enable = true) {
 #
 class role::dataset::pagecounts_all_sites($enable = true) {
     class { '::dataset::cron::pagecounts_all_sites':
-        source  =>  'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-all-sites',
-        enable  => $enable,
-        user    => 'datasets',
+        source =>  'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-all-sites',
+        enable => $enable,
+        user   => 'datasets',
     }
 }
 
@@ -35,9 +35,9 @@ class role::dataset::pagecounts_all_sites($enable = true) {
 #
 class role::dataset::mediacounts($enable = true) {
     class { '::dataset::cron::mediacounts':
-        source  =>  'stat1002.eqiad.wmnet::hdfs-archive/mediacounts',
-        enable  => $enable,
-        user    => 'datasets',
+        source =>  'stat1002.eqiad.wmnet::hdfs-archive/mediacounts',
+        enable => $enable,
+        user   => 'datasets',
     }
 }
 
@@ -58,9 +58,9 @@ class role::dataset::primary {
         'pagecounts' => true,
     }
     class { 'dataset':
-        rsync        => $rsync,
-        grabs        => $grabs,
-        uploads      => $uploads,
+        rsync   => $rsync,
+        grabs   => $grabs,
+        uploads => $uploads,
     }
     class { 'role::dataset::pagecountsraw': enable => true }
 
@@ -88,9 +88,9 @@ class role::dataset::secondary {
 #        'kiwix' => true,
     }
     class { 'dataset':
-        rsync        => $rsync,
-        grabs        => $grabs,
-        uploads      => $uploads,
+        rsync   => $rsync,
+        grabs   => $grabs,
+        uploads => $uploads,
     }
     class { 'role::dataset::pagecountsraw': enable => false }
 }
