@@ -2,13 +2,13 @@ title   "Disk scheduling, md1"
 
 field :svctm, :color => "blue",
                :alias => "service time, ms",
-               :data  => "secondYAxis(servers.graphite1001.iostat.md1.service_time.value)"
+               :data  => "secondYAxis(servers.graphite1001.iostat.md1.service_time)"
 
 field :await, :color => "green",
                :alias => "wait, ms",
-               :data  => "servers.graphite1001.iostat.md1.await.value"
+               :data  => "servers.graphite1001.iostat.md1.await"
 
 field :queue, :color => "red",
                :alias => "queue length",
-               :data  => "servers.graphite1001.iostat.md1.average_queue_length.value"
+               :data  => "servers.graphite1001.iostat.md1.average_queue_length"
 

@@ -2,12 +2,12 @@ title   "CPU"
 
 field :user,
                :alias => "user",
-               :data  => "servers.graphite1001.cpu.total.user.value"
+               :data  => "servers.graphite1001.cpu.total.user"
 
 field :iowait,
                :alias => "iowait",
-               :data  => "servers.graphite1001.cpu.total.iowait.value"
+               :data  => "servers.graphite1001.cpu.total.iowait"
 
 field :system,
                :alias => "system",
-               :data  => "servers.graphite1001.cpu.total.system.value"
+               :data  => "servers.graphite1001.cpu.total.system"

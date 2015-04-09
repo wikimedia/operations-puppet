@@ -2,8 +2,8 @@ title "top 3 load average 1min be/fe"
 
 field :load_be,
     :alias => "none",
-    :data  => "aliasByNode(movingAverage(highestMax(servers.ms-be1*.loadavg.01.value, 3),10),1)"
+    :data  => "aliasByNode(movingAverage(highestMax(servers.ms-be1*.loadavg.01, 3),10),1)"
 
 field :load_fe,
     :alias => "none",
-    :data  => "aliasByNode(movingAverage(highestMax(servers.ms-fe1*.loadavg.01.value, 3),10), 1)"
+    :data  => "aliasByNode(movingAverage(highestMax(servers.ms-fe1*.loadavg.01, 3),10), 1)"

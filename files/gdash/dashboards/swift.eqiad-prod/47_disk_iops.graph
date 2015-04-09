@@ -2,4 +2,4 @@ title "top 10 disks by iops"
 
 field :top_iops,
     :alias => "none",
-    :data  => "aliasByNode(highestAverage(servers.ms-be1*.iostat.sd[a-z].iops.value,10),1,3)"
+    :data  => "aliasByNode(highestAverage(servers.ms-be1*.iostat.sd[a-z].iops,10),1,3)"

@@ -2,8 +2,8 @@ title   "object and container availability (swift-dispersion)"
 
 field :container_avail,
     :alias => "container avail %",
-    :data  => "swift.eqiad-prod.dispersion.container.pct_found.value"
+    :data  => "swift.eqiad-prod.dispersion.container.pct_found"
 
 field :object_avail,
     :alias => "object avail %",
-    :data  => "swift.eqiad-prod.dispersion.object.pct_found.value"
+    :data  => "swift.eqiad-prod.dispersion.object.pct_found"

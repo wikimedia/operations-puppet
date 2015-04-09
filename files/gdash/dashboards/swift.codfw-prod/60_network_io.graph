@@ -3,19 +3,19 @@ vtitle  "bytes/s"
 
 field :tx_backend,
     :alias => "TX ms-be2*",
-    :data  => "scale(sumSeries(servers.ms-be2*.network.*.tx_byte.value), -1)"
+    :data  => "scale(sumSeries(servers.ms-be2*.network.*.tx_byte), -1)"
 
 field :rx_backend,
     :alias => "RX ms-be2*",
-    :data  => "sumSeries(servers.ms-be2*.network.*.rx_byte.value)"
+    :data  => "sumSeries(servers.ms-be2*.network.*.rx_byte)"
 
 field :tx_frontend,
     :alias => "TX ms-fe2*",
-    :data  => "scale(sumSeries(servers.ms-fe2*.network.*.tx_byte.value), -1)"
+    :data  => "scale(sumSeries(servers.ms-fe2*.network.*.tx_byte), -1)"
 
 field :rx_frontend,
     :alias => "RX ms-fe2*",
-    :data  => "sumSeries(servers.ms-fe2*.network.*.rx_byte.value)"
+    :data  => "sumSeries(servers.ms-fe2*.network.*.rx_byte)"
 
 field :zero_line, :color => "black",
     :alias => "",

@@ -4,8 +4,8 @@ area    :first
 
 field :tx, :color => "green",
                :alias => "tx",
-               :data  => "sumSeries(servers.graphite1001.network.*.tx_errors.value, servers.graphite1001.network.*.tx_drop.value)"
+               :data  => "sumSeries(servers.graphite1001.network.*.tx_errors, servers.graphite1001.network.*.tx_drop)"
 
 field :rx, :color => "blue",
                :alias => "rx",
-               :data  => "sumSeries(servers.graphite1001.network.*.rx_errors.value, servers.graphite1001.network.*.rx_drop.value)"
+               :data  => "sumSeries(servers.graphite1001.network.*.rx_errors, servers.graphite1001.network.*.rx_drop)"

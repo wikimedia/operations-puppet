@@ -3,8 +3,8 @@ vtitle  "packets/s"
 
 field :top_tx,
     :alias => "none",
-    :data  => "aliasByNode(highestMax(group(servers.ms-fe1*.network.*.tx_drop.value,servers.ms-fe1*.network.*.rx_drop.value,servers.ms-be1*.network.*.tx_drop.value,servers.ms-be1*.network.*.rx_drop.value),5),1)"
+    :data  => "aliasByNode(highestMax(group(servers.ms-fe1*.network.*.tx_drop,servers.ms-fe1*.network.*.rx_drop,servers.ms-be1*.network.*.tx_drop,servers.ms-be1*.network.*.rx_drop),5),1)"
 
 field :top_rx,
     :alias => "none",
-    :data  => "aliasByNode(highestMax(group(servers.ms-fe1*.network.*.tx_errors.value,servers.ms-fe1*.network.*.rx_errors.value,servers.ms-be1*.network.*.tx_errors.value,servers.ms-be1*.network.*.rx_errors.value),5),1)"
+    :data  => "aliasByNode(highestMax(group(servers.ms-fe1*.network.*.tx_errors,servers.ms-fe1*.network.*.rx_errors,servers.ms-be1*.network.*.tx_errors,servers.ms-be1*.network.*.rx_errors),5),1)"
