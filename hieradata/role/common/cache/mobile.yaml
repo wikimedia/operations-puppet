@@ -7,10 +7,10 @@ hosts_eqiad:
   - 'cp1059.eqiad.wmnet'
   - 'cp1060.eqiad.wmnet'
 hosts_esams:
-  # - 'cp3011.esams.wmnet' # T92306
-  - 'cp3012.esams.wmnet'
-  - 'cp3013.esams.wmnet'
-  - 'cp3014.esams.wmnet'
+  - 'cp3015.esams.wmnet'
+  - 'cp3016.esams.wmnet'
+  - 'cp3017.esams.wmnet'
+  - 'cp3018.esams.wmnet'
 hosts_ulsfo:
   - 'cp4011.ulsfo.wmnet'
   - 'cp4012.ulsfo.wmnet'
