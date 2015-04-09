@@ -11,4 +11,4 @@ field :q2, :color => 'blue',
 
 field :q3, :color => 'red',
            :alias => '99th percentile',
-           :data  => 'frontend.navtiming.totalPageLoadTime.mobile.overall.99percentile'
+           :data  => 'frontend.navtiming.totalPageLoadTime.mobile.overall.p99'
