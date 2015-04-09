@@ -417,6 +417,15 @@ class role::ci::slave::labs {
     system::role { 'role::ci::slave::labs':
         description => 'CI Jenkins slave on labs' }
 
+    # Debian slaves are used to build Debian packages for all our distributions
+    if os_version('debian >= jessie') {
+        class { 'role::package::builder':
+            # We need /var/cache/pbuilder to be a symlink to /mnt
+            # before cowbuilder/pbuilder is installed
+            require => Class['contint::packages::labs'],
+        }
+    }
+
     file { '/srv/localhost':
         ensure => directory,
         mode   => '0755',
