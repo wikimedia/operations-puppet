@@ -2371,7 +2371,7 @@ node 'virt1000.wikimedia.org' {
     }
 }
 
-node /virt100[1-4].eqiad.wmnet/ {
+node /^virt100[1-4].eqiad.wmnet/ {
     $use_neutron = false
     role nova::compute
     include standard
@@ -2380,7 +2380,7 @@ node /virt100[1-4].eqiad.wmnet/ {
     }
 }
 
-node /virt100[6-9].eqiad.wmnet/ {
+node /^virt100[6-9].eqiad.wmnet/ {
     $use_neutron = false
     role nova::compute
     include standard
@@ -2389,7 +2389,7 @@ node /virt100[6-9].eqiad.wmnet/ {
     }
 }
 
-node /virt101[0-2].eqiad.wmnet/ {
+node /^virt101[0-2].eqiad.wmnet/ {
     $use_neutron = false
     openstack::nova::partition{ '/dev/sdb': }
     role nova::compute
