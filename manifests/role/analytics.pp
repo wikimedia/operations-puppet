@@ -54,9 +54,6 @@ class role::analytics::clients {
 
     # include maven to build jars for Hadoop.
     include ::maven
-
-    # install packages that should be on all hadoop worker nodes
-    include role::analytics::packages
 }
 
 # == Class role::analytics::hadoop::monitor_disks
