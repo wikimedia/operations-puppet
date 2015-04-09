@@ -70,7 +70,7 @@ class role::cache {
                         'cp1068.eqiad.wmnet',
                     ],
                     'esams' => [
-                        # 'cp3003.esams.wmnet',
+                        'cp3003.esams.wmnet',
                         # T92306 'cp3011.esams.wmnet', # needs-jessie-install
                         'cp3012.esams.wmnet',
                         'cp3013.esams.wmnet',
