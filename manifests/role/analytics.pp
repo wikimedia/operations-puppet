@@ -8,11 +8,7 @@
 class role::analytics {
     system::role { 'role::analytics': description => 'analytics server' }
 
-    if !defined(Package['openjdk-7-jdk']) {
-        package { 'openjdk-7-jdk':
-            ensure => 'installed',
-        }
-    }
+    ensure_packages(['openjdk-7-jdk'])
 }
 
 # == Class role::analytics::clients
@@ -46,11 +42,7 @@ class role::analytics::clients {
     }
 
     # ipython-notebook is very useful, install it.
-    if !defined(Package['ipython-notebook']) {
-        package { 'ipython-notebook':
-            ensure => 'installed',
-        }
-    }
+    ensure_packages(['ipython-notebook'])
 
     # include maven to build jars for Hadoop.
     include ::maven

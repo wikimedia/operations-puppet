@@ -6,7 +6,6 @@ class statistics::compute {
     Class['::statistics::user'] -> Class['::statistics::compute']
 
 
-
     # include mysql module base class to install mysql client
     include mysql
     include geoip
@@ -14,10 +13,7 @@ class statistics::compute {
 
     include misc::udp2log::udp_filter
 
-    require_package('nodejs')
-    require_package('openjdk-7-jdk')
-
-    package { [
+    ensure_packages([
         'emacs23',
         'mc',
         'zip',
@@ -48,12 +44,12 @@ class statistics::compute {
         'libboost-iostreams-dev',
         'libmaxminddb-dev',
         'build-essential', # Requested by halfak to install SciPy
-    ]:
-        ensure => 'latest',
-    }
+        'nodejs',
+        'openjdk-7-jdk'
+    ])
 
     # Python packages
-    package { [
+    ensure_packages ([
         'python-geoip',
         'libapache2-mod-python',
         'python-django',
@@ -74,21 +70,17 @@ class statistics::compute {
         # Aaron Halfaker (halfak) wants python{,3}-dev environments for module oursql
         'python-dev',  # RT 6561
         'python3-dev', # RT 6561
-    ]:
-        ensure => 'installed',
-    }
+    ])
 
     # FORTRAN packages (T89414)
-    package { [
+    ensure_packages([
         'gfortran',        # GNU Fortran 95 compiler
         'liblapack-dev',   # FORTRAN library of linear algebra routines
         'libopenblas-dev', # Optimized BLAS (linear algebra) library
-    ]:
-        ensure => 'installed',
-    }
+    ])
 
     # Plotting packags
-    package { [
+    ensure_packages([
         'ploticus',
         'libploticus0',
         'r-base',
@@ -96,9 +88,7 @@ class statistics::compute {
         'libcairo2',
         'libcairo2-dev',
         'libxt-dev'
-    ]:
-        ensure => installed,
-    }
+    ])
 
     # clones mediawiki core at $working_path/mediawiki/core
     # and ensures that it is at the latest revision.
