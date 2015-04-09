@@ -11,4 +11,4 @@ field :q2, :color => 'blue',
 
 field :q3, :color => 'red',
            :alias => '99th percentile',
-           :data  => 've.mwtiming.performance.system.activation.99percentile'
+           :data  => 've.mwtiming.performance.system.activation.p99'
