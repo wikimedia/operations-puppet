@@ -21,5 +21,5 @@ define package_builder::pbuilder_hook(
     }
 
     # Dependency info
-    File["${basepath}/hooks/${distribution}/D01apt.wikimedia.org"] -> File["${basepath}/hooks/${distribution}"]
+    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D01apt.wikimedia.org"]
 }
