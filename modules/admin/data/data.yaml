@@ -62,7 +62,7 @@ groups:
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
       bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
       joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
-      pcoombe]
+      pcoombe, mholloway-shell]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -92,13 +92,13 @@ groups:
   researchers:
     gid: 714
     description: users with access to research db
-    members: [awight, bmansurov, catrope, dartar, declerambaul, deskana, dduvall,
-      ellery, ezachte, gage, gilles, haithams, halfak, handrade,
+    members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
+      dduvall, ellery, ezachte, gage, gilles, haithams, halfak, handrade,
       ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
       kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
       nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
       mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
-      daisy]
+      daisy, mholloway-shell]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -1392,3 +1392,10 @@ users:
     realname: Peter Coombe
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmw1FPftHdsd15oLtKOEcqgZY/pHPvkb1UJQT5vwIRdBvEPOMHB/KNNHpx6YcSSXLWjptiI4BwrotavvFCWtLKSKm8Qx2b76aDpW52i0zjcItQsf+SY+nYwYOtRFmHAiMthBc4FnFK+d+T9HCM1w03nsYhYKuYE2Z/p3u754VyClBI/QxBMCBeaq1bkj4OtUmLnHW1bifcsGVW8pvQIFVEIFXoPg/rZQHM6IiiorDI3VHbZxQI5fUcdQtdLF+IE8xiU+1dNUa1p+rGAkoMo3viwVZVOtK0qAaN/+nsKvBb/dZt/srkWwcnzvkPNIn8SJXiDFV7OIfd33dSqUm9UmtX peter@Peters-MBP.home]
     uid: 3428
+  mholloway-shell:
+    ensure: present
+    gid: 500
+    name: mholloway-shell
+    realname: Michael Holloway
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOCdcpNkkSNQqxsgVQ7qifuIbryp1sOqWRtTW+6VBnlqJFG6sBAk+w5AR/sreChsH1JScSPY0sMLzZDgrf4KfIA0EdHSXzsALmpJFyIrEc39KZXoMXMVVgfPT35MRz/GSALgBZzmLXCv+tlC34tBOZnjWTjBKyQutplzsMOdMfkGIvTEo3AlSsookOHzSwgB6kmKS5AV9eyTuWmCoTMos6tf2qCPUb8VJ9qzDKHuul7MO5rCmG/8ATGKjk7sKnMSPeOUMALfvNVe1cSyhBMi9BMDCgmWTgNMQDuGr3fo4Kb+L67F5RKgLUUgWEWMb2ekFvH+l8/KJGVk3Mx0/27oNH mholloway@wikimedia.org]
+    uid: 11963
