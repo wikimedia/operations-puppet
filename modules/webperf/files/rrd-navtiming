@@ -79,49 +79,6 @@ import eventlogging
 import rrdtool
 
 
-ap = argparse.ArgumentParser(description='Navigation Timing RRD logger')
-ap.add_argument(
-    'rrd',
-    help='RRD file path',
-    type=os.path.abspath
-)
-ap.add_argument(
-    '--endpoint',
-    help='Endpoint URI (default: tcp://eventlogging.eqiad.wmnet:8600)',
-    default='tcp://eventlogging.eqiad.wmnet:8600'
-)
-ap.add_argument(
-    '--log-path',
-    help='Path to use for log files (default: log to stderr only).',
-    type=os.path.abspath
-)
-args = ap.parse_args()
-
-# Setup logging
-log_handlers = [logging.StreamHandler(stream=sys.stderr)]
-if args.log_path:
-    log_handlers.append(logging.handlers.RotatingFileHandler(
-        os.path.join(args.log_path, 'rrd-navtiming.log'), backupCount=10,
-        maxBytes=(50 * 1000 * 1000)))  # Rotate when >50MB; retain 10 archives
-
-log = logging.getLogger('rrd-navtiming')
-formatter = logging.Formatter('[%(asctime)s] %(message)s')
-log.setLevel(logging.INFO)
-for log_handler in log_handlers:
-    log_handler.setFormatter(formatter)
-    log_handler.setLevel(logging.INFO)
-    log.addHandler(log_handler)
-
-log.info('Starting up...')
-
-# Lock for operations that access shared dynamic data (the `heap` list).
-# We could probably get by without locks, because only the main thread
-# mutates the sample heap -- the worker thread only reads it.
-lock = threading.Lock()
-
-# A min-heap of of (timestamp, event) tuples.
-heap = []
-
 METRICS = (
     'responseStart',  # Time to user agent receiving first byte
     'firstPaint',     # Time to initial render
@@ -130,10 +87,10 @@ METRICS = (
 )
 
 # Size of sliding window, in seconds.
-WINDOW_SIZE = 300
+WINDOW_SPAN = 300
 
 # Only push an update if we have at least this many samples.
-SAMPLE_THRESHOLD = 500
+SAMPLE_THRESHOLD = 200
 
 # Aggregation intervals.
 INTERVALS = (
@@ -177,71 +134,94 @@ ARCHIVES = ['RRA:AVERAGE:0.5:%d:%d' % (interval / ROWS / STEP, ROWS)
             for interval in INTERVALS]
 
 
-def prune_heap(event_heap):
-    # Prune old entries.
-    cutoff = time.time() - WINDOW_SIZE
-    with lock:
-        # Python's heapq is a min heap, meaning heap[0] is always
-        # the oldest entry.
-        while event_heap and event_heap[0][0] < cutoff:
-            heapq.heappop(event_heap)
+class SlidingWindow(object):
+    """Represents a sliding window of measurements."""
+
+    def __init__(self, span, initial=()):
+        """Initialize. `span` is the size of the window, in seconds."""
+        self.heap = []
+        self.span = span
+        self.lock = threading.Lock()
+
+    def add(self, timestamp, data):
+        """Add an item to the window."""
+        cutoff = time.time() - self.span
+        with self.lock:
+            heapq.heappush(self.heap, (timestamp, data))
+            while self.heap and self.heap[0][0] < cutoff:
+                heapq.heappop(self.heap)
+
+    def items(self):
+        """Returns a copy of the list of items in the window."""
+        cutoff = time.time() - self.span
+        items = list(self.heap)
+        while items and items[0][0] < cutoff:
+            heapq.heappop(items)
+        return items
 
 
-def update_rrd(rrd_file, event_heap):
+def setup_logging(log_path=None):
+    """Get the `rrd-navtiming` logger and add handlers for stdout
+    and (optionally) a file."""
+    log = logging.getLogger('rrd-navtiming')
+    if log.handlers:
+        return log
+    handlers = [logging.StreamHandler(stream=sys.stderr)]
+    if log_path:
+        # Create a log file. It will be rotated whenever its size
+        # exceeds 50MB, and 10 archives will be retained.
+        handlers.append(logging.handlers.RotatingFileHandler(
+            os.path.join(log_path, 'rrd-navtiming.log'), backupCount=10,
+            maxBytes=(50 * 1000 * 1000)))
+    formatter = logging.Formatter('[%(asctime)s] %(message)s')
+    log.setLevel(logging.INFO)
+    for log_handler in handlers:
+        log_handler.setFormatter(formatter)
+        log_handler.setLevel(logging.INFO)
+        log.addHandler(log_handler)
+    return log
+
+
+def update_rrd(rrd_file, window):
     """Push updates to RRD."""
-    prune_heap(event_heap)
-    if len(event_heap) < SAMPLE_THRESHOLD:
-        log.warn('Fewer than SAMPLE_THRESHOLD (%s) events; '
-                 'skipping update.', SAMPLE_THRESHOLD)
-        return
-
-    with lock:
-        data = accumulate(event_heap)
-
-    if not all(metric in data for metric in METRICS):
-        # We have to give RRD a full update or nothing, so move on.
-        log.info('Skipping update due to empty metrics: %s',
-                 [m for m in METRICS if m not in data])
-        return
-
-    # We have to output values in the order we declared them.
-    update = 'N:' + ':'.join(str(data[m]) for m in METRICS)
-    log.info('%s: %s', rrd_file, update)
-    rrdtool.update(rrd_file, update)
+    samples = accumulate(window.items(), SAMPLE_THRESHOLD)
+    try:
+        update = 'N:' + ':'.join(str(samples[metric]) for metric in METRICS)
+    except KeyError as e:
+        log.warning('No value for metric "%s"; update skipped.', e.args[0])
+    else:
+        rrdtool.update(rrd_file, update)
+        log.info(update)
 
 
-def median(sorted_list):
+def median(population):
     """Compute the median of a sorted list."""
-    if not sorted_list:
+    length = len(population)
+    if not length:
         raise ValueError('Cannot compute median of empty list.')
-    length = len(sorted_list)
     index = (length - 1) // 2
     if length % 2:
-        return sorted_list[index]
-    sum_of_terms = sorted_list[index] + sorted_list[index + 1]
-    return sum_of_terms / 2.0
+        return population[index]
+    return sum(population[index:index + 2]) / 2
 
 
-def accumulate(event_heap):
+def accumulate(window, threshold=0):
     """Group samples by metric and compute medians."""
     data = {metric: [] for metric in METRICS}
-    for timestamp, event in event_heap:
+    for _, event in window:
         for metric in METRICS:
             value = event.get(metric)
             if value:
                 bisect.insort(data[metric], value)
-    return {m: median(vs) for m, vs in data.items() if vs}
+    return {m: median(vs) for m, vs in data.items() if len(vs) > threshold}
 
 
-def create_rrd(rrd_file):
-    args = [
-        rrd_file,
-        '--no-overwrite',
-        '--step', '%d' % STEP,
-        '--start', 'N'
-    ] + SOURCES + ARCHIVES
+def create_rrd(rrd_file, step, sources, archives, start='N'):
+    args = [rrd_file, '--no-overwrite', '--step', step, '--start', start]
+    args.extend(sources)
+    args.extend(archives)
     try:
-        rrdtool.create(*args)
+        rrdtool.create(*map(str, args))
         log.info('Created %s', rrd_file)
     except Exception as e:
         if 'File exists' not in e.message:
@@ -249,16 +229,31 @@ def create_rrd(rrd_file):
         log.info('RRD file %s already exists.', rrd_file)
 
 
-create_rrd(args.rrd)
-log.info('Connecting to <%s>...', args.endpoint)
-events = eventlogging.connect(args.endpoint)
+if __name__ == '__main__':
+    ap = argparse.ArgumentParser(description='Navigation Timing RRD logger')
+    ap.add_argument('rrd', help='RRD file path', type=os.path.abspath)
+    ap.add_argument('--endpoint', help='Endpoint URI (default: '
+                    'tcp://eventlogging.eqiad.wmnet:8600)',
+                    default='tcp://eventlogging.eqiad.wmnet:8600')
+    ap.add_argument('--log-path', help='Path to use for log files (default: '
+                    'log to stderr only).', type=os.path.abspath)
+    args = ap.parse_args()
 
-worker = eventlogging.PeriodicThread(interval=STEP, target=update_rrd,
-                                     args=(args.rrd, heap))
-worker.daemon = True
-worker.start()
+    log = setup_logging(args.log_path)
+    log.info('Starting up...')
 
-for meta in events.filter(schema='NavigationTiming'):
-    sample = meta['timestamp'], meta['event']
-    with lock:
-        heapq.heappush(heap, sample)
+    window = SlidingWindow(WINDOW_SPAN)
+    create_rrd(args.rrd, step=STEP, sources=SOURCES, archives=ARCHIVES)
+
+    worker = eventlogging.PeriodicThread(interval=STEP, target=update_rrd,
+                                         args=(args.rrd, window))
+    worker.daemon = True
+    time_start = time.time()
+
+    log.info('Connecting to <%s>...', args.endpoint)
+    events = eventlogging.connect(args.endpoint)
+
+    for meta in events.filter(schema='NavigationTiming'):
+        window.add(meta['timestamp'], meta['event'])
+        if not worker.isAlive() and time.time() - time_start >= WINDOW_SPAN:
+            worker.start()
