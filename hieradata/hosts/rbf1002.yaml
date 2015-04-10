@@ -1,3 +1,0 @@
-role::db::redis::redis_replication:
-  rbf1002: rbf1001
-role::db::redis::dir: "/srv/redis"
