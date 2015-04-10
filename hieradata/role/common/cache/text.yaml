@@ -26,7 +26,6 @@ hosts_esams:
   - 'cp3031.esams.wmnet'
   - 'cp3040.esams.wmnet'
   - 'cp3041.esams.wmnet'
-  - 'amssq58.esams.wmnet'
 hosts_ulsfo:
   - 'cp4008.ulsfo.wmnet'
   - 'cp4009.ulsfo.wmnet'

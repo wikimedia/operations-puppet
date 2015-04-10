@@ -85,7 +85,6 @@ class role::cache {
                         'cp3031.esams.wmnet',
                         'cp3040.esams.wmnet',
                         'cp3041.esams.wmnet',
-                        'amssq58.esams.wmnet',
                     ],
                     'ulsfo' => [
                         'cp4008.ulsfo.wmnet',
@@ -136,7 +135,7 @@ class role::cache {
                         'cp1074.eqiad.wmnet',
                     ],
                     'esams' => [
-                        'cp3010.esams.wmnet',
+                        # 'cp3010.esams.wmnet',
                         'cp3032.esams.wmnet',
                         'cp3033.esams.wmnet',
                         'cp3034.esams.wmnet',
@@ -152,6 +151,7 @@ class role::cache {
                         'cp3046.esams.wmnet',
                         'cp3047.esams.wmnet',
                         'cp3048.esams.wmnet',
+                        'cp3049.esams.wmnet',
                     ],
                     'ulsfo' => [
                         'cp4005.ulsfo.wmnet',
