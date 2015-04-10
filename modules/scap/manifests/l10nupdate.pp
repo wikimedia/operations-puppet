@@ -3,6 +3,7 @@
 # Sets up files and cron required to do l10nupdate
 class scap::l10nupdate(
     $deployment_group = 'wikidev',
+    $lib_dir = '/var/lib/l10nupdate',
 ) {
     cron { 'l10nupdate':
         ensure  => present,
@@ -19,10 +20,10 @@ class scap::l10nupdate(
         source => 'puppet:///modules/scap/l10nupdate',
     }
     file { '/usr/local/bin/l10nupdate-1':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/scap/l10nupdate-1',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('scap/l10nupdate-1.erb'),
     }
         # add ssh keypair for l10nupdate user from fenari for RT-5187
     file { '/home/l10nupdate/.ssh/id_rsa':
@@ -48,13 +49,13 @@ class scap::l10nupdate(
         group  => $deployment_group,
         mode   => '0664',
     }
-    file { '/var/lib/l10nupdate':
+    file { $lib_dir:
         ensure => directory,
         owner  => 'l10nupdate',
         group  => $deployment_group,
         mode   => '0755',
     }
-    file { '/var/lib/l10nupdate/caches':
+    file { "${lib_dir}/caches":
         ensure => directory,
         owner  => $::mediawiki::users::web,
         group  => $::mediawiki::users::web,

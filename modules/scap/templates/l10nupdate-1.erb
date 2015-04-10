@@ -8,7 +8,8 @@ BINDIR=/usr/local/bin
 SCAPDIR=/srv/deployment/scap/scap/bin
 MWMULTIDIR=$MEDIAWIKI_STAGING_DIR/multiversion
 # The configuration in CommonSettings.php should match GITDIR and GITREPOS
-GITDIR=/var/lib/l10nupdate/mediawiki
+LIBDIR="<%=@lib_dir%>""
+GITDIR="$LIBDIR/mediawiki"
 GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
 GITREPOS="core extensions skins"
 QUIET=--quiet
@@ -80,7 +81,7 @@ for i in ${mwVerDbSets[@]}
 do
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
-	tempCacheDir=/var/lib/l10nupdate/caches/cache-"$mwVerNum"
+	tempCacheDir="$lib_dir/caches/cache-$mwVerNum"
 
 	if [ ! -d "$tempCacheDir" ]; then
 		sudo -u www-data mkdir "$tempCacheDir"
