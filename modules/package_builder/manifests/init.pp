@@ -15,7 +15,7 @@ class package_builder(
     include package_builder::hooks
     include package_builder::environments
 
-    package { [
+    ensure_packages([
         'cowbuilder',
         'build-essential',
         'fakeroot',
@@ -28,9 +28,7 @@ class package_builder(
         'unzip',
         'debian-archive-keyring',
         'ubuntu-archive-keyring',
-        ]:
-        ensure => present,
-    }
+    ])
 
     file { '/etc/pbuilderrc':
         ensure  => present,

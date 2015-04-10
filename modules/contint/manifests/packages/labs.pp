@@ -81,9 +81,6 @@ class contint::packages::labs {
         'python-dev',
         'libmysqlclient-dev',  # For python SQLAlchemy
 
-        # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
-        'zip',
-
         # For mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
         # Provided by openstack::common:
         #'unzip',
@@ -93,6 +90,9 @@ class contint::packages::labs {
 
         ]: ensure => present,
     }
+
+    # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
+    ensure_packages(['zip'])
 
     # Also provided by Zuul installation
     ensure_packages(['python-pip'])
