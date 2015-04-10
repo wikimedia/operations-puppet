@@ -730,20 +730,6 @@ host cp1074 {
         filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host cp3001 {
-	hardware ethernet 78:2b:cb:45:4a:31;
-	fixed-address cp3001.esams.wmnet;
-	option pxelinux.pathprefix "jessie-installer/";
-	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
-host cp3002 {
-	hardware ethernet 78:2b:cb:45:3a:7d;
-	fixed-address cp3002.esams.wmnet;
-	option pxelinux.pathprefix "jessie-installer/";
-	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
 host cp3003 {
 	hardware ethernet D4:AE:52:8C:8B:7E;
 	fixed-address cp3003.esams.wmnet;
