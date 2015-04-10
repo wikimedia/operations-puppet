@@ -392,7 +392,7 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $kafka_log_disks_
 
 # == Define misc::monitoring::view::varnishkafka
 #
-define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = '(amssq|cp).+', $topic_regex = '.+', $ensure = 'present') {
+define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $topic_regex = '.+', $ensure = 'present') {
     ganglia_new::web::view { "varnishkafka-${title}":
         ensure => $ensure,
         graphs => [

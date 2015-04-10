@@ -829,20 +829,20 @@ class role::cache {
 
         if $::realm == 'production' {
             $storage_size_main = $::hostname ? {
-                /^(amssq[0-9][0-9]|cp10(08|4[34]))$/ => 117, # Intel X-25M 160G
-                /^cp30(0[3-9]|1[0-4])$/              => 460, # Intel M320 600G via H710
-                /^cp301[5-8]$/                       => 225, # Intel M320 300G via H710
-                default                              => 360, # Intel S3700 400G
+                /^cp10(08|4[34])$/      => 117, # Intel X-25M 160G
+                /^cp30(0[3-9]|1[0-4])$/ => 460, # Intel M320 600G via H710
+                /^cp301[5-8]$/          => 225, # Intel M320 300G via H710
+                default                 => 360, # Intel S3700 400G
             }
 
-            # This scales backend weights proportional to node storage size, with the
-            # default value of 100 corresponding to the most common/current case
-            # of 360G storage size on Intel S3700's.
+            # This scales backend weights proportional to node storage size,
+            # with the default value of 100 corresponding to the most
+            # common/current case of 360G storage size on Intel S3700's.
             $backend_scaled_weights = [
-                { backend_match => '^(amssq[0-9][0-9]|cp10(08|4[34]))\.', weight => 32  },
-                { backend_match => '^cp30(0[3-9]|1[0-4])\.',              weight => 128 },
-                { backend_match => '^cp301[5-8]\.',                       weight => 63  },
-                { backend_match => '.',                                   weight => 100 },
+                { backend_match => '^cp10(08|4[34])\.',      weight => 32  },
+                { backend_match => '^cp30(0[3-9]|1[0-4])\.', weight => 128 },
+                { backend_match => '^cp301[5-8]\.',          weight => 63  },
+                { backend_match => '.',                      weight => 100 },
             ]
 
             # These variables are unused, they just serve as documentation of
@@ -855,11 +855,8 @@ class role::cache {
             # weight ratios, which are created from 'openssl speed aes-128-cbc'
             # for 1K blocksize multiplied by CPU core count then GCD-scaled
             # down within each datacenter to keep weight sums below ipvs sh
-            # limits (256 total).  (amssq would actually be 0.83 at esams
-            # scale; fudged it to keep abs values smaller, will decom soon
-            # anyways).
+            # limits (256 total).
             $pybal_weight_esams_upload_text = [
-                '^amssq'               => 1,
                 '^cp30[34][0-9]'       => 10, # newer esams cp30xx
                 '^cp30(0[3-9]|1[0-8])' => 3,  # older esams cp30xx
             ]
@@ -939,10 +936,7 @@ class role::cache {
         }
 
         $storage_conf = $::realm ? {
-            'production' => $::hostname ? {
-                /^amssq(4[7-9]|[56][0-9])$/ => "-s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma0", # sda is an HDD, sdb is an SSD
-                default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1",
-            },
+            'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1",
             'labs'  => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1",
         }
 

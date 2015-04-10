@@ -60,18 +60,6 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
     }
 }
 
-# amssq31-62 are text varnish (and the only nodes with this legacy prefix)
-node /^amssq[0-9]+\.esams\.(wmnet|wikimedia\.org)$/ {
-    sysctl::parameters { 'vm dirty page flushes':
-        values => {
-            'vm.dirty_background_ratio' => 5,
-        }
-    }
-    role cache::text
-    interface::add_ip6_mapped { 'main': }
-}
-
-
 # analytics1003 is being used for testing kafkatee
 # in preperation for replacing udp2log
 node 'analytics1003.eqiad.wmnet' {
