@@ -120,6 +120,21 @@ class role::labs::instance {
         notify  => Service['ssh'],
     }
 
+    # While the default on kernels >= 3.3 is to have idmap disabled,
+    # doing so explicitly does no harm and ensures it is everywhere.
+
+    file { '/etc/modprobe.d/nfs-no-idmap':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "options nfs nfs4_disable_idmapping=1\n",
+    }
+
+    # Actually disabling idmapd and ensure => absent on the config
+    # files needs to wait for T95556 to ensure no running instance
+    # gets a broken idmapd.
+
     if $::operatingsystem == 'Debian' {
         service { 'nfs-common':
             ensure    => running,
