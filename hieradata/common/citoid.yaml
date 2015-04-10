@@ -1,4 +1,2 @@
-http_proxy: http://url-downloader.wikimedia.org:8080
 zotero_host: zotero.svc.eqiad.wmnet
-statsd_host: statsd.eqiad.wmnet
-logstash_host: logstash1001.eqiad.wmnet
+zotero_port: 1969

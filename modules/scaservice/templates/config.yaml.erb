@@ -9,7 +9,7 @@ worker_heap_limit_mb: 300
 
 # Logger info
 logging:
-  name: citoid
+  name: <%= @title %>
   level: warn
   streams:
   # Use gelf-stream -> logstash
@@ -22,12 +22,12 @@ logging:
 
 # Statsd metrics reporter
 metrics:
-  type: txstatsd
+  type: statsd
   host: <%= @statsd_host %>
   port: <%= @statsd_port %>
 
 services:
-  - name: citoid
+  - name: <%= @title %>
     # a relative path or the name of an npm package, if different from name
     module: ./src/app.js
     # optionally, a version constraint of the npm package
@@ -50,11 +50,3 @@ services:
       <% else %>
       # proxy: http://my.proxy.org:8080
       <% end %>
-      # User-Agent HTTP header to use for requests
-      userAgent: WikimediaBot
-      # URL where to contact Zotero
-      zoteroInterface: <%= @zotero_host %>
-      # zotero's server port
-      zoteroPort: <%= @zotero_port %>
-      # whether the proxy should be used to contact zotero
-      zoteroUseProxy: false
