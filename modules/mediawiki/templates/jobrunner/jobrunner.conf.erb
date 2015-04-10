@@ -72,7 +72,14 @@
                 "PublishStashedFile",
                 "uploadFromUrl"
             ]
-        }
+        },
+        // SUL finalization renames: keep user account lock-outs as brief as possible
+        "centralauth": {
+            "runners": <%= @runners_centralauth %>,
+            "include": [
+                "LocalRenameUserJob"
+            ]
+        },
     },
 
     "limits": {
