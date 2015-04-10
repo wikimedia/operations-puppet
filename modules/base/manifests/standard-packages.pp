@@ -17,7 +17,7 @@ class base::standard-packages {
         'iperf',
         'atop',
         'htop',
-        'vim',
+        'vim-nox',
         'sysstat',
         'ngrep',
         'httpry',
