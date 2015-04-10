@@ -15,7 +15,7 @@ hosts_eqiad:
   - 'cp1073.eqiad.wmnet'
   - 'cp1074.eqiad.wmnet'
 hosts_esams:
-  - 'cp3005.esams.wmnet'
+  # - 'cp3005.esams.wmnet'
   - 'cp3006.esams.wmnet'
   - 'cp3009.esams.wmnet'
   - 'cp3010.esams.wmnet'
@@ -25,6 +25,7 @@ hosts_esams:
   - 'cp3035.esams.wmnet'
   - 'cp3036.esams.wmnet'
   - 'cp3037.esams.wmnet'
+  - 'cp3038.esams.wmnet'
   - 'cp3042.esams.wmnet'
   - 'cp3043.esams.wmnet'
   - 'cp3044.esams.wmnet'
