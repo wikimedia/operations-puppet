@@ -2,12 +2,12 @@ title   "proxy ops/s (state-changing)"
 
 field :put,
     :alias => "object PUT 2xx",
-    :data  => "movingAverage(sumSeries(swift.codfw-prod.*.proxy-server.object.PUT.2*.timing.rate),5)"
+    :data  => "movingAverage(sumSeries(swift.codfw-prod.*.proxy-server.object.PUT.2*.timing.sample_rate),5)"
 
 field :delete,
     :alias => "object DELETE 2xx",
-    :data  => "secondYAxis(movingAverage(sumSeries(swift.codfw-prod.*.proxy-server.object.DELETE.2*.timing.rate),5))"
+    :data  => "secondYAxis(movingAverage(sumSeries(swift.codfw-prod.*.proxy-server.object.DELETE.2*.timing.sample_rate),5))"
 
 field :post,
     :alias => "object POST 2xx",
-    :data  => "secondYAxis(movingAverage(sumSeries(swift.codfw-prod.*.proxy-server.object.POST.2*.timing.rate),5))"
+    :data  => "secondYAxis(movingAverage(sumSeries(swift.codfw-prod.*.proxy-server.object.POST.2*.timing.sample_rate),5))"

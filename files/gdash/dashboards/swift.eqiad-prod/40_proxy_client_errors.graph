@@ -2,23 +2,23 @@ title   "proxy client errors/s"
 
 field :proxy_object_errors_get,
     :alias => "object GET 4xx errors",
-    :data  => "sumSeries(swift.eqiad-prod.*.proxy-server.object.GET.4*.timing.rate)"
+    :data  => "sumSeries(swift.eqiad-prod.*.proxy-server.object.GET.4*.timing.sample_rate)"
 
 field :proxy_object_errors_delete,
     :alias => "object DELETE 4xx errors",
-    :data  => "sumSeries(swift.eqiad-prod.*.proxy-server.object.DELETE.4*.timing.rate)"
+    :data  => "sumSeries(swift.eqiad-prod.*.proxy-server.object.DELETE.4*.timing.sample_rate)"
 
 field :proxy_object_errors_head,
     :alias => "object HEAD 4xx errors",
-    :data  => "sumSeries(swift.eqiad-prod.*.proxy-server.object.HEAD.4*.timing.rate)"
+    :data  => "sumSeries(swift.eqiad-prod.*.proxy-server.object.HEAD.4*.timing.sample_rate)"
 
 field :proxy_object_errors_post,
     :alias => "object POST 4xx errors",
-    :data  => "sumSeries(swift.eqiad-prod.*.proxy-server.object.POST.4*.timing.rate)"
+    :data  => "sumSeries(swift.eqiad-prod.*.proxy-server.object.POST.4*.timing.sample_rate)"
 
 field :proxy_object_errors_put,
     :alias => "object PUT 4xx errors",
-    :data  => "sumSeries(swift.eqiad-prod.*.proxy-server.object.PUT.4*.timing.rate)"
+    :data  => "sumSeries(swift.eqiad-prod.*.proxy-server.object.PUT.4*.timing.sample_rate)"
 
 field :client_timeouts,
     :alias => "object client timeouts count",

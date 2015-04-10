@@ -2,24 +2,24 @@ title   "proxy misc stats"
 
 field :proxy_account_2xx,
     :alias => "account 2xx",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.account.*.2*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.account.*.2*.timing.sample_rate)"
 
 field :proxy_account_4xx,
     :alias => "account 4xx",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.account.*.4*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.account.*.4*.timing.sample_rate)"
 
 field :proxy_account_5xx,
     :alias => "account 5xx",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.account.*.5*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.account.*.5*.timing.sample_rate)"
 
 field :proxy_container_2xx,
     :alias => "container 2xx",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.container.*.2*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.container.*.2*.timing.sample_rate)"
 
 field :proxy_container_4xx,
     :alias => "container 4xx",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.container.*.4*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.container.*.4*.timing.sample_rate)"
 
 field :proxy_container_5xx,
     :alias => "container 5xx",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.container.*.5*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.container.*.5*.timing.sample_rate)"

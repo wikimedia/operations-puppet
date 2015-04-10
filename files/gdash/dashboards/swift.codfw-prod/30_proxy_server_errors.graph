@@ -2,23 +2,23 @@ title   "proxy server errors/s"
 
 field :proxy_object_errors_get,
     :alias => "object GET 5xx errors",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.object.GET.5*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.object.GET.5*.timing.sample_rate)"
 
 field :proxy_object_errors_delete,
     :alias => "object DELETE 5xx errors",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.object.DELETE.5*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.object.DELETE.5*.timing.sample_rate)"
 
 field :proxy_object_errors_head,
     :alias => "object HEAD 5xx errors",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.object.HEAD.5*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.object.HEAD.5*.timing.sample_rate)"
 
 field :proxy_object_errors_post,
     :alias => "object POST 5xx errors",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.object.POST.5*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.object.POST.5*.timing.sample_rate)"
 
 field :proxy_object_errors_put,
     :alias => "object PUT 5xx errors",
-    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.object.PUT.5*.timing.rate)"
+    :data  => "sumSeries(swift.codfw-prod.*.proxy-server.object.PUT.5*.timing.sample_rate)"
 
 field :proxy_errors,
     :alias => "proxy errors count",
