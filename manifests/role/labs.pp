@@ -160,8 +160,9 @@ class role::labs::instance {
 
     hiera_include('classes', [])
 
-    # The next two notifications are read in by the labsstatus.rb puppet report handler.
-    #  It needs to know project/hostname for nova access.
-    notify{"instanceproject: ${::instanceproject}":}
-    notify{"hostname: ${::instancename}":}
+    # These notifications are processed by the labsstatus.rb Puppet
+    # report handler.  It needs to know project/hostname to update the
+    # instance's Puppet status on wikitech.
+    notice("instanceproject: ${::instanceproject}")
+    notice("hostname: ${::instancename}")
 }
