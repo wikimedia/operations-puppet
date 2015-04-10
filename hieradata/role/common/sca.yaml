@@ -12,3 +12,7 @@ lvs::realserver::realserver_ips:
   - '10.2.2.18' # cxserver.svc.eqiad.wmnet
   - '10.2.2.19' # citoid.svc.eqiad.wmnet
   - '10.2.2.20' # mathoid.svc.eqiad.wmnet
+
+scaservice::http_proxy: http://url-downloader.wikimedia.org:8080
+scaservice::statsd_host: statsd.eqiad.wmnet
+scaservice::logstash_host: logstash1001.eqiad.wmnet
