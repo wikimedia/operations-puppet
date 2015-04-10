@@ -5454,26 +5454,6 @@ host rdb2004 {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host rbf1001 {
-	hardware ethernet 84:2b:2b:fd:bc:fc;
-	fixed-address rbf1001.eqiad.wmnet;
-}
-
-host rbf1002 {
-	hardware ethernet 84:2b:2b:fd:bd:5f;
-	fixed-address rbf1002.eqiad.wmnet;
-}
-
-host rbf2001 {
-	hardware ethernet 90:B1:1C:2D:85:70;
-	fixed-address rbf2001.codfw.wmnet;
-}
-
-host rbf2002 {
-	hardware ethernet 90:B1:1C:2A:2F:0A;
-	fixed-address rbf2002.codfw.wmnet;
-}
-
 host rcs1001 {
 	hardware ethernet 78:2B:CB:1F:18:B0;
 	fixed-address rcs1001.eqiad.wmnet;
