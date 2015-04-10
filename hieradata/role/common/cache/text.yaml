@@ -25,8 +25,6 @@ hosts_esams:
   - 'amssq56.esams.wmnet'
   - 'amssq57.esams.wmnet'
   - 'amssq58.esams.wmnet'
-  - 'amssq59.esams.wmnet'
-  - 'amssq60.esams.wmnet'
   - 'amssq61.esams.wmnet'
   - 'amssq62.esams.wmnet'
 hosts_ulsfo:
