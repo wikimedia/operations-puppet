@@ -9,25 +9,25 @@ worker_heap_limit_mb: 300
 
 # Logger info
 logging:
-  name: citoid
+  name: <%= @title %>
   level: warn
   streams:
   # Use gelf-stream -> logstash
   - type: gelf
-    host: <%= @logstash_host %>
-    port: <%= @logstash_port %>
+    host: <%= scope.lookupvar('service::configuration::logstash_host') %>
+    port: <%= scope.lookupvar('service::configuration::logstash_port') %>
   - type: file
     path: <%= @local_logfile %>
     level: info
 
 # Statsd metrics reporter
 metrics:
-  type: txstatsd
-  host: <%= @statsd_host %>
-  port: <%= @statsd_port %>
+  type: statsd
+  host: <%= scope.lookupvar('service::configuration::statsd_host') %>
+  port: <%= scope.lookupvar('service::configuration::statsd_port') %>
 
 services:
-  - name: citoid
+  - name: <%= @title %>
     # a relative path or the name of an npm package, if different from name
     module: ./src/app.js
     # optionally, a version constraint of the npm package
@@ -45,16 +45,8 @@ services:
       # to restrict to a particular domain, use:
       # cors: restricted.domain.org
       # URL of the outbound proxy to use (complete with protocol)
-      <% if @http_proxy %>
-      proxy: <%= @http_proxy %>
+      <% if scope.lookupvar('service::configuration::http_proxy') %>
+      proxy: <%= scope.lookupvar('service::configuration::http_proxy') %>
       <% else %>
       # proxy: http://my.proxy.org:8080
       <% end %>
-      # User-Agent HTTP header to use for requests
-      userAgent: WikimediaBot
-      # URL where to contact Zotero
-      zoteroInterface: <%= @zotero_host %>
-      # zotero's server port
-      zoteroPort: <%= @zotero_port %>
-      # whether the proxy should be used to contact zotero
-      zoteroUseProxy: false
