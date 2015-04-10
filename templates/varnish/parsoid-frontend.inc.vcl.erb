@@ -26,6 +26,10 @@ sub vcl_fetch {
 		return (hit_for_pass);
 	}
 	if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\.") {
+		// Dummy endpoint for eager DNS resolution / TLS handshake.
+		if (req.url ~ "^/preconnect") {
+			error 204;
+		}
 		return (hit_for_pass);
 	}
 }
