@@ -412,14 +412,9 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
     role cache::bits
 }
 
-node /^cp30(0[3-9]|1[1234])\.esams\.wmnet$/ {
+node /^cp30(0[3-9]|1[0-4])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::text
-}
-
-node /^cp3010\.esams\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role cache::upload
 }
 
 node /^cp301[5678]\.esams\.wmnet$/ {
