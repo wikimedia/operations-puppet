@@ -7,6 +7,7 @@
 has_ganglia: false
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
+citoid::zotero_host: deployment-zotero01.eqiad.wmflabs
 "cassandra::seeds":
   - 10.68.17.227
   - 10.68.17.189
