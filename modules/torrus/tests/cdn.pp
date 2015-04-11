@@ -92,55 +92,6 @@ class role::cache::configuration {
             },
         }
 
-        $decommissioned_nodes = {
-            'text' => {
-                'eqiad' => [
-
-                ],
-                'esams' => [
-                    'knsq30.knams.wikimedia.org',
-                ]
-            },
-            'api' => {
-                'eqiad' => [],
-                'esams' => [],
-            },
-            'bits' => {
-                'eqiad' => [],
-                'esams' => [
-                    'knsq1.esams.wikimedia.org',
-                    'knsq7.esams.wikimedia.org',
-                ],
-                'ulsfo' => [],
-            },
-            'upload' => {
-                'eqiad' => [
-                    'cp1021.eqiad.wmnet',
-                    'cp1036.eqiad.wmnet',
-                ],
-                'esams' => [
-                    'knsq8.knams.wikimedia.org',
-                    'knsq15.knams.wikimedia.org'
-                ],
-                'ulsfo' => [],
-            },
-            'mobile' => {
-                'eqiad' => ['cp1041.eqiad.wmnet', 'cp1042.eqiad.wmnet'],
-                'esams' => [],
-                'ulsfo' => [],
-            },
-            'parsoid' => {
-                'eqiad' => [],
-                'esams' => [],
-                'ulsfo' => [],
-            },
-            'misc' => {
-                'eqiad' => [],
-                'esams' => [],
-                'ulsfo' => [],
-            }
-        }
-
         $backends = {
             'production' => {
                 'appservers'        => ['1.1.1.1', '2.2.2.2',],
