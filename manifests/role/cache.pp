@@ -487,7 +487,7 @@ class role::cache::logging::eventlistener {
     }
 }
 
-define localssl($certname, $do_ocsp=false, $server_name=$::fqdn, $server_aliases=[], $default_server=false) {
+define role::cache::localssl($certname, $do_ocsp=false, $server_name=$::fqdn, $server_aliases=[], $default_server=false) {
     # Assumes that LVS service IPs are setup elsewhere
 
     install_certificate { $certname:
@@ -510,14 +510,14 @@ class role::cache::ssl_sni {
     include certificates::wmf_ca_2014_2017
     include role::protoproxy::ssl::common
 
-    localssl { 'unified':
+    role::cache::localssl { 'unified':
         certname => 'uni.wikimedia.org',
         default_server => true,
         do_ocsp => true,
     }
 
-    define sni_cert() {
-        localssl { $name:
+    define role::cache::ssl_sni::sni_cert() {
+        role::cache::localssl { $name:
             certname => "sni.${name}",
             server_name => $name,
             server_aliases => ["*.${name}"],
@@ -525,7 +525,7 @@ class role::cache::ssl_sni {
         }
     }
 
-    sni_cert {
+    role::cache::ssl_sni::sni_cert {
         'zero.wikipedia.org':;
         'm.wikipedia.org':;
         'wikipedia.org':;
@@ -571,7 +571,7 @@ class role::cache::ssl_misc {
     include certificates::wmf_ca_2014_2017
     include role::protoproxy::ssl::common
 
-    localssl {
+    role::cache::localssl {
         'wikimedia.org':
             certname => 'sni.wikimedia.org',
             server_name => 'wikimedia.org',
@@ -1401,16 +1401,16 @@ class role::cache::ssl_parsoid {
     # Explicitly not adding wmf CA since it is not needed for now
     include role::protoproxy::ssl::common
 
-    localssl { 'unified':
+    role::cache::localssl { 'unified':
         certname       => 'uni.wikimedia.org',
         default_server => true,
     }
-    localssl { 'wikimedia.org':
+    role::cache::localssl { 'wikimedia.org':
         certname       => 'sni.wikimedia.org',
         server_name    => 'wikimedia.org',
         server_aliases => ['*.wikimedia.org'],
     }
-    localssl { 'm.wikimedia.org':
+    role::cache::localssl { 'm.wikimedia.org':
         certname       => 'sni.m.wikimedia.org',
         server_name    => 'm.wikimedia.org',
         server_aliases => ['*.m.wikimedia.org'],
