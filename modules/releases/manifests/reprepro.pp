@@ -154,4 +154,9 @@ class releases::reprepro::upload (
         user       => $sudo_user,
         privileges => ["ALL = (${user}) NOPASSWD: /usr/bin/dput"],
     }
+
+    # T83213
+    package { 'unzip':
+        ensure => 'present',
+    }
 }
