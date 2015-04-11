@@ -527,33 +527,31 @@ class role::cache::ssl::sni {
         }
     }
 
-    sni_cert {
-        'zero.wikipedia.org':;
-        'm.wikipedia.org':;
-        'wikipedia.org':;
-        'm.wikimedia.org':;
-        'wikimedia.org':;
-        'm.wiktionary.org':;
-        'wiktionary.org':;
-        'm.wikiquote.org':;
-        'wikiquote.org':;
-        'm.wikibooks.org':;
-        'wikibooks.org':;
-        'm.wikisource.org':;
-        'wikisource.org':;
-        'm.wikinews.org':;
-        'wikinews.org':;
-        'm.wikiversity.org':;
-        'wikiversity.org':;
-        'm.wikidata.org':;
-        'wikidata.org':;
-        'm.wikivoyage.org':;
-        'wikivoyage.org':;
-        'm.wikimediafoundation.org':;
-        'wikimediafoundation.org':;
-        'm.mediawiki.org':;
-        'mediawiki.org':;
-    }
+    sni_cert { 'zero.wikipedia.org':; }
+    sni_cert { 'm.wikipedia.org':; }
+    sni_cert { 'wikipedia.org':; }
+    sni_cert { 'm.wikimedia.org':; }
+    sni_cert { 'wikimedia.org':; }
+    sni_cert { 'm.wiktionary.org':; }
+    sni_cert { 'wiktionary.org':; }
+    sni_cert { 'm.wikiquote.org':; }
+    sni_cert { 'wikiquote.org':; }
+    sni_cert { 'm.wikibooks.org':; }
+    sni_cert { 'wikibooks.org':; }
+    sni_cert { 'm.wikisource.org':; }
+    sni_cert { 'wikisource.org':; }
+    sni_cert { 'm.wikinews.org':; }
+    sni_cert { 'wikinews.org':; }
+    sni_cert { 'm.wikiversity.org':; }
+    sni_cert { 'wikiversity.org':; }
+    sni_cert { 'm.wikidata.org':; }
+    sni_cert { 'wikidata.org':; }
+    sni_cert { 'm.wikivoyage.org':; }
+    sni_cert { 'wikivoyage.org':; }
+    sni_cert { 'm.wikimediafoundation.org':; }
+    sni_cert { 'wikimediafoundation.org':; }
+    sni_cert { 'm.mediawiki.org':; }
+    sni_cert { 'mediawiki.org':; }
 
     monitoring::service { 'https':
         description   => 'HTTPS',
@@ -573,20 +571,23 @@ class role::cache::ssl::misc {
     include certificates::wmf_ca_2014_2017
     include role::protoproxy::ssl::common
 
-    role::cache::ssl::local {
-        'wikimedia.org':
-            certname => 'sni.wikimedia.org',
-            server_name => 'wikimedia.org',
-            server_aliases => ['*.wikimedia.org'],
-            default_server => true;
-        'wmfusercontent.org':
-            certname => 'star.wmfusercontent.org',
-            server_name => 'wmfusercontent.org',
-            server_aliases => ['*.wmfusercontent.org'];
-        'planet.wikimedia.org':
-            certname       => 'star.planet.wikimedia.org',
-            server_name    => 'planet.wikimedia.org',
-            server_aliases => ['*.planet.wikimedia.org'];
+    role::cache::ssl::local { 'wikimedia.org':
+        certname       => 'sni.wikimedia.org',
+        server_name    => 'wikimedia.org',
+        server_aliases => ['*.wikimedia.org'],
+        default_server => true;
+    }
+
+    role::cache::ssl::local { 'wmfusercontent.org':
+        certname       => 'star.wmfusercontent.org',
+        server_name    => 'wmfusercontent.org',
+        server_aliases => ['*.wmfusercontent.org'];
+    }
+
+    role::cache::ssl::local { 'planet.wikimedia.org':
+        certname       => 'star.planet.wikimedia.org',
+        server_name    => 'planet.wikimedia.org',
+        server_aliases => ['*.planet.wikimedia.org'];
     }
 }
 
