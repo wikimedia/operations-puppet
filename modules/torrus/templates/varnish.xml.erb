@@ -3,19 +3,12 @@
 <%
 def node_lists(role, site)
 	realm = @realm
-	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site], scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site]
+	return scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site]
 end
 
 def varnish_nodes(role, site, template="varnish-server")
-	decommissioned_nodes, active_nodes = node_lists(role, site)
+	active_nodes = node_lists(role, site)
 	result = []
-
-	decommissioned_nodes.each do |node|
-		result << "<subtree name=\"#{node}\">"
-		result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
-		result << "\t<apply-template name=\"decommissioned-#{template}\"/>"
-		result << "</subtree>"
-	end
 
 	active_nodes.each do |node|
 		result << "<subtree name=\"#{node}\">"
@@ -72,20 +65,6 @@ end
 				<apply-template name="varnish-workersgroup"/>
 				<apply-template name="varnish-overheadgroup"/>
 			</subtree>
-		</template>
-
-		<template name="decommissioned-varnish-server">
-			<param name="ds-type" value="rrd-file"/>
-			<param name="hidden" value="yes"/>
-			
-			<apply-template name="wikimedia-varnish-server"/>
-		</template>
-
-		<template name="decommissioned-dual-layer-varnish-server">
-			<param name="ds-type" value="rrd-file"/>
-			<param name="hidden" value="yes"/>
-			
-			<apply-template name="wikimedia-dual-layer-varnish-server"/>
 		</template>
 
 		<subtree name="Varnish">
