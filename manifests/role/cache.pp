@@ -50,8 +50,7 @@
     description => 'Misc caches eqiad',
 }
 
-class role::cache {
-    class configuration {
+    class role::cache::configuration {
         include lvs::configuration
 
         $has_ganglia = hiera('has_ganglia', true)
@@ -380,7 +379,7 @@ class role::cache {
         }
     }
 
-    class varnish::logging {
+    class role::cache::varnish::logging {
         if $::realm == 'production' {
             $webrequest_multicast_relay_host = '208.80.154.73' # gadoinium
 
@@ -399,18 +398,18 @@ class role::cache {
         }
     }
 
-    # == Class varnish::statsd
+    # == Class role::cache::varnish::statsd
     # Installs a local statsd instance for aggregating and serializing
     # stats before sending them off to a remote statsd instance.
-    class varnish::statsd {
+    class role::cache::varnish::statsd {
         class { '::txstatsd::decommission': }
         include role::statsite
     }
 
-    # == Class varnish::kafka
+    # == Class role::cache::varnish::kafka
     # Base class for instances of varnishkafka on cache servers.
     #
-    class varnish::kafka {
+    class role::cache::varnish::kafka {
         require role::analytics::kafka::config
 
         # Get a list of kafka brokers for the currently configured $kafka_cluster_name.
@@ -446,7 +445,7 @@ class role::cache {
         Service <| tag == 'varnish_instance' |> -> Varnishkafka::Instance <| |>
     }
 
-    # == Class varnish::kafka::webrequest
+    # == Class role::cache::varnish::kafka::webrequest
     # Sets up a varnishkafka instance producing varnish
     # webrequest logs to the analytics Kafka brokers in eqiad.
     #
@@ -455,7 +454,7 @@ class role::cache {
     # $varnish_name - the name of the varnish instance to read shared logs from.  Default 'frontend'
     # $varnish_svc_name - the name of the init unit for the above, default 'varnish-frontend'
     #
-    class varnish::kafka::webrequest(
+    class role::cache::varnish::kafka::webrequest(
         $topic,
         $varnish_name = 'frontend',
         $varnish_svc_name = 'varnish-frontend'
@@ -539,7 +538,7 @@ class role::cache {
         }
     }
 
-    # == Class varnish::kafka::statsv
+    # == Class role::cache::varnish::kafka::statsv
     # Sets up a varnishkafka logging endpoint for collecting
     # application level metrics. We are calling this system
     # statsv, as it is similar to statsd, but uses varnish
@@ -549,7 +548,7 @@ class role::cache {
     # $varnish_name - the name of the varnish instance to read shared logs from.  Default $::hostname
     # $varnish_svc_name - the name of the varnish init service to read shared logs from.  Default 'varnish'
     #
-    class varnish::kafka::statsv(
+    class role::cache::varnish::kafka::statsv(
         $varnish_name = $::hostname,
         $varnish_svc_name = 'varnish',
     ) inherits role::cache::varnish::kafka
@@ -573,7 +572,7 @@ class role::cache {
         varnishkafka::monitor { 'statsv': }
     }
 
-    class varnish::kafka::eventlogging(
+    class role::cache::varnish::kafka::eventlogging(
         $varnish_name = $::hostname,
         $varnish_svc_name = 'varnish',
     ) inherits role::cache::varnish::kafka
@@ -591,7 +590,7 @@ class role::cache {
         }
     }
 
-    class varnish::logging::eventlistener {
+    class role::cache::varnish::logging::eventlistener {
         $event_listener = $::realm ? {
             'production' => '10.64.32.167',  # eventlog1001
             'labs'       => '10.68.16.52',   # deployment-eventlogging02
@@ -624,7 +623,7 @@ class role::cache {
         }
     }
 
-    class ssl::sni {
+    class role::cache::ssl::sni {
         #TODO: kill the old wmf_ca
         include certificates::wmf_ca
         include certificates::wmf_ca_2014_2017
@@ -685,7 +684,7 @@ class role::cache {
     }
 
     # As above, but for misc instead of generic prod
-    class ssl::misc {
+    class role::cache::ssl::misc {
         #TODO: kill the old wmf_ca
         include certificates::wmf_ca
         include certificates::wmf_ca_2014_2017
@@ -709,7 +708,7 @@ class role::cache {
     }
 
     # Ancestor class for all Varnish clusters
-    class varnish::base {
+    class role::cache::varnish::base {
         include lvs::configuration
         include role::cache::configuration
         include network::constants
@@ -808,7 +807,7 @@ class role::cache {
     }
 
     # Ancestor class for common resources of 1-layer clusters
-    class varnish::1layer inherits role::cache::varnish::base {
+    class role::cache::varnish::1layer inherits role::cache::varnish::base {
         # Any changes here will affect all descendent Varnish clusters
         # unless they're overridden!
 
@@ -818,7 +817,7 @@ class role::cache {
     }
 
     # Ancestor class for common resources of 2-layer clusters
-    class varnish::2layer inherits role::cache::varnish::base {
+    class role::cache::varnish::2layer inherits role::cache::varnish::base {
         # Any changes here will affect all descendent Varnish clusters
         # unless they're overridden!
 
@@ -881,7 +880,7 @@ class role::cache {
         }
     }
 
-    class text inherits role::cache::varnish::2layer {
+    class role::cache::text inherits role::cache::varnish::2layer {
         if $::realm == 'production' {
             $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
         }
@@ -1040,7 +1039,7 @@ class role::cache {
         }
     }
 
-    class upload inherits role::cache::varnish::2layer {
+    class role::cache::upload inherits role::cache::varnish::2layer {
         if $::realm == 'production' {
             $memory_storage_size = floor((0.083 * $::memorysize_mb / 1024.0) + 0.5) # 1/12 of total mem
         }
@@ -1222,7 +1221,7 @@ class role::cache {
         }
     }
 
-    class bits inherits role::cache::varnish::1layer {
+    class role::cache::bits inherits role::cache::varnish::1layer {
 
         if $::realm == 'production' {
             include role::cache::ssl::sni
@@ -1331,7 +1330,7 @@ class role::cache {
         }
     }
 
-    class mobile inherits role::cache::varnish::2layer {
+    class role::cache::mobile inherits role::cache::varnish::2layer {
         if $::realm == 'production' {
             $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
         }
@@ -1517,7 +1516,7 @@ class role::cache {
         }
     }
 
-    class ssl::parsoid {
+    class role::cache::ssl::parsoid {
         # Explicitly not adding wmf CA since it is not needed for now
         include role::protoproxy::ssl::common
 
@@ -1537,7 +1536,7 @@ class role::cache {
         }
     }
 
-    class parsoid inherits role::cache::varnish::2layer {
+    class role::cache::parsoid inherits role::cache::varnish::2layer {
 
         if ( $::realm == 'production' ) {
             include role::cache::ssl::parsoid
@@ -1661,7 +1660,7 @@ class role::cache {
         }
     }
 
-    class misc inherits role::cache::varnish::1layer {
+    class role::cache::misc inherits role::cache::varnish::1layer {
 
         class { 'lvs::realserver':
             realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site],
@@ -1766,4 +1765,3 @@ class role::cache {
             }
         }
     }
-}
