@@ -179,7 +179,7 @@ if(open NEW, "| /usr/bin/ssh <%= @cron_host %> /usr/bin/crontab$dashu -") {
                 $prefix = "$1 $2 ";
                 $cmd = $3;
             }
-            unless($cmd =~ m[^\s*(/usr/(local/)?bin/)?(jsub|jstart|jmail|qsub)\s+]) {
+            unless($cmd =~ m[^\s*(/usr/(local/)?bin/)?(jsub|jstart|jmail|qsub|jlocal)\s+]) {
                 $cmd = "$prefix/usr/bin/jsub -N cron-$uname-$crlino -once -quiet $cmd";
                 $modified = 1;
                 $line = "$sched $cmd ";
