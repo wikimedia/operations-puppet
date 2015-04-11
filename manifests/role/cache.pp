@@ -865,7 +865,8 @@ class role::cache::text inherits role::cache::2layer {
                 'first_byte_timeout'    => '180s',
                 'between_bytes_timeout' => '4s',
                 'max_connections'       => 1000,
-            }]),
+            },
+        ]),
         wikimedia_networks => $wikimedia_networks,
     }
 
@@ -897,7 +898,8 @@ class role::cache::text inherits role::cache::2layer {
                 'between_bytes_timeout' => '2s',
                 'max_connections'       => 100000,
                 'probe'                 => 'varnish',
-            }]),
+            },
+        ]),
         cluster_options => {
             'enable_geoiplookup' => true,
         },
@@ -1050,7 +1052,8 @@ class role::cache::upload inherits role::cache::2layer {
                 'first_byte_timeout'    => '35s',
                 'between_bytes_timeout' => '4s',
                 'max_connections'       => 1000,
-            }]),
+            },
+        ]),
         cluster_options    => $cluster_options,
         wikimedia_networks => $wikimedia_networks,
     }
@@ -1081,7 +1084,8 @@ class role::cache::upload inherits role::cache::2layer {
                 'between_bytes_timeout' => '2s',
                 'max_connections'       => 100000,
                 'probe'                 => 'varnish',
-            }]),
+            },
+        ]),
         cluster_options => $cluster_options,
     }
 
@@ -1125,7 +1129,7 @@ class role::cache::bits inherits role::cache::1layer {
             'test_wikipedia' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
         },
         2 => {
-            'backend' => sort(flatten(values($role::cache::configuration::backends[$::realm]['bits'])))
+            'backend' => sort(flatten(values($role::cache::configuration::backends[$::realm]['bits']))),
         }
     }
 
@@ -1240,9 +1244,9 @@ class role::cache::mobile inherits role::cache::2layer {
 
     $varnish_be_directors = {
         1 => {
-            'backend'           => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-            'api'               => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-            'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+            'backend'        => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
+            'api'            => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+            'test_wikipedia' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
         },
         2 => {
             'eqiad' => $role::cache::configuration::active_nodes[$::realm]['mobile']['eqiad'],
@@ -1345,7 +1349,8 @@ class role::cache::mobile inherits role::cache::2layer {
                 'first_byte_timeout'    => '180s',
                 'between_bytes_timeout' => '4s',
                 'max_connections'       => 600,
-            }]),
+            },
+        ]),
         cluster_options    => $cluster_options,
         wikimedia_networks => $wikimedia_networks,
     }
@@ -1371,15 +1376,16 @@ class role::cache::mobile inherits role::cache::2layer {
             'layer'            => 'frontend',
             'ssl_proxies'      => $wikimedia_networks,
         },
-        backend_options    => array_concat($backend_scaled_weights, [
-        {
-            'port'                  => 3128,
-            'connect_timeout'       => '5s',
-            'first_byte_timeout'    => '185s',
-            'between_bytes_timeout' => '2s',
-            'max_connections'       => 100000,
-            'probe'                 => 'varnish',
-        }]),
+        backend_options  => array_concat($backend_scaled_weights, [
+            {
+                'port'                  => 3128,
+                'connect_timeout'       => '5s',
+                'first_byte_timeout'    => '185s',
+                'between_bytes_timeout' => '2s',
+                'max_connections'       => 100000,
+                'probe'                 => 'varnish',
+            },
+        ]),
         cluster_options  => $cluster_options,
     }
 
@@ -1392,9 +1398,7 @@ class role::cache::mobile inherits role::cache::2layer {
     if $::realm == 'production' {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
-        class { 'role::cache::kafka::webrequest':
-            topic => 'webrequest_mobile',
-        }
+        class { 'role::cache::kafka::webrequest': topic => 'webrequest_mobile' }
     }
 }
 
@@ -1492,30 +1496,31 @@ class role::cache::parsoid inherits role::cache::2layer {
                 'first_byte_timeout'    => '5m',
                 'between_bytes_timeout' => '20s',
                 'max_connections'       => 10000,
-            }],
+            },
+        ],
     }
 
     varnish::instance { 'parsoid-frontend':
-        name             => 'frontend',
-        vcl              => 'parsoid-frontend',
-        extra_vcl        => ['parsoid-common'],
-        port             => 80,
-        admin_port       => 6082,
-        directors        => {
+        name            => 'frontend',
+        vcl             => 'parsoid-frontend',
+        extra_vcl       => ['parsoid-common'],
+        port            => 80,
+        admin_port      => 6082,
+        directors       => {
             'backend'          => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
             'cxserver_backend' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
             'citoid_backend'   => $::role::cache::configuration::active_nodes[$::realm]['citoid'][$::site],
             'restbase_backend' => $::role::cache::configuration::active_nodes[$::realm]['restbase'][$::site],
         },
-        director_type    => 'chash',
+        director_type   => 'chash',
         director_options => {
             'retries' => $backend_weight_avg * size($::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site]),
         },
-        vcl_config       => {
+        vcl_config      => {
             'retry5xx'    => 0,
             'ssl_proxies' => $wikimedia_networks,
         },
-        backend_options  => array_concat($backend_scaled_weights, [
+        backend_options => array_concat($backend_scaled_weights, [
             {
                 'backend_match'         => '^cxserver',
                 'port'                  => 8080,
@@ -1532,13 +1537,14 @@ class role::cache::parsoid inherits role::cache::2layer {
                 'probe'                 => false, # TODO: Need probe here
             },
             {
-            'port'                  => 3128,
-            'connect_timeout'       => '5s',
-            'first_byte_timeout'    => '6m',
-            'between_bytes_timeout' => '20s',
-            'max_connections'       => 100000,
-            'probe'                 => 'varnish',
-        }]),
+                'port'                  => 3128,
+                'connect_timeout'       => '5s',
+                'first_byte_timeout'    => '6m',
+                'between_bytes_timeout' => '20s',
+                'max_connections'       => 100000,
+                'probe'                 => 'varnish',
+            },
+        ]),
     }
 }
 
