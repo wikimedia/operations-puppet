@@ -2297,11 +2297,6 @@ node 'tin.eqiad.wmnet' {
     include ssh::hostkeys-collect
     include role::releases::upload
 
-    # for reedy RT #6322
-    package { 'unzip':
-        ensure => 'present',
-    }
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
