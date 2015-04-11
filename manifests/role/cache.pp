@@ -347,7 +347,7 @@ class role::cache::configuration {
     }
 }
 
-class role::cache::varnish::logging {
+class role::cache::logging {
     if $::realm == 'production' {
         $webrequest_multicast_relay_host = '208.80.154.73' # gadoinium
 
@@ -366,18 +366,18 @@ class role::cache::varnish::logging {
     }
 }
 
-# == Class role::cache::varnish::statsd
+# == Class role::cache::statsd
 # Installs a local statsd instance for aggregating and serializing
 # stats before sending them off to a remote statsd instance.
-class role::cache::varnish::statsd {
+class role::cache::statsd {
     class { '::txstatsd::decommission': }
     include role::statsite
 }
 
-# == Class role::cache::varnish::kafka
+# == Class role::cache::kafka
 # Base class for instances of varnishkafka on cache servers.
 #
-class role::cache::varnish::kafka {
+class role::cache::kafka {
     require role::analytics::kafka::config
 
     # Get a list of kafka brokers for the currently configured $kafka_cluster_name.
@@ -394,7 +394,7 @@ class role::cache::varnish::kafka {
 
     # varnishkafka will use a local statsd instance for
     # using logster to collect metrics.
-    include role::cache::varnish::statsd
+    include role::cache::statsd
 
     # Make sure varnishkafka rsyslog file is in place properly.
     rsyslog::conf { 'varnishkafka':
@@ -413,7 +413,7 @@ class role::cache::varnish::kafka {
     Service <| tag == 'varnish_instance' |> -> Varnishkafka::Instance <| |>
 }
 
-# == Class role::cache::varnish::kafka::webrequest
+# == Class role::cache::kafka::webrequest
 # Sets up a varnishkafka instance producing varnish
 # webrequest logs to the analytics Kafka brokers in eqiad.
 #
@@ -422,11 +422,11 @@ class role::cache::varnish::kafka {
 # $varnish_name - the name of the varnish instance to read shared logs from.  Default 'frontend'
 # $varnish_svc_name - the name of the init unit for the above, default 'varnish-frontend'
 #
-class role::cache::varnish::kafka::webrequest(
+class role::cache::kafka::webrequest(
     $topic,
     $varnish_name = 'frontend',
     $varnish_svc_name = 'varnish-frontend'
-) inherits role::cache::varnish::kafka
+) inherits role::cache::kafka
 {
     varnishkafka::instance { 'webrequest':
         brokers                      => $kafka_brokers,
@@ -488,7 +488,7 @@ class role::cache::varnish::kafka::webrequest(
         parser          => 'JsonLogster',
         logfile         => "/var/cache/varnishkafka/webrequest.stats.json",
         logster_options => "-o statsd --statsd-host=localhost:8125 --metric-prefix=${graphite_metric_prefix}",
-        require         => Class['role::cache::varnish::statsd'],
+        require         => Class['role::cache::statsd'],
     }
 
     # Generate an alert if too many delivery report errors per minute
@@ -506,7 +506,7 @@ class role::cache::varnish::kafka::webrequest(
     }
 }
 
-# == Class role::cache::varnish::kafka::statsv
+# == Class role::cache::kafka::statsv
 # Sets up a varnishkafka logging endpoint for collecting
 # application level metrics. We are calling this system
 # statsv, as it is similar to statsd, but uses varnish
@@ -516,10 +516,10 @@ class role::cache::varnish::kafka::webrequest(
 # $varnish_name - the name of the varnish instance to read shared logs from.  Default $::hostname
 # $varnish_svc_name - the name of the varnish init service to read shared logs from.  Default 'varnish'
 #
-class role::cache::varnish::kafka::statsv(
+class role::cache::kafka::statsv(
     $varnish_name = $::hostname,
     $varnish_svc_name = 'varnish',
-) inherits role::cache::varnish::kafka
+) inherits role::cache::kafka
 {
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{@ip}h %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
 
@@ -540,10 +540,10 @@ class role::cache::varnish::kafka::statsv(
     varnishkafka::monitor { 'statsv': }
 }
 
-class role::cache::varnish::kafka::eventlogging(
+class role::cache::kafka::eventlogging(
     $varnish_name = $::hostname,
     $varnish_svc_name = 'varnish',
-) inherits role::cache::varnish::kafka
+) inherits role::cache::kafka
 {
     varnishkafka::instance { 'eventlogging':
         brokers           => $kafka_brokers,
@@ -558,7 +558,7 @@ class role::cache::varnish::kafka::eventlogging(
     }
 }
 
-class role::cache::varnish::logging::eventlistener {
+class role::cache::logging::eventlistener {
     $event_listener = $::realm ? {
         'production' => '10.64.32.167',  # eventlog1001
         'labs'       => '10.68.16.52',   # deployment-eventlogging02
@@ -676,7 +676,7 @@ class role::cache::ssl::misc {
 }
 
 # Ancestor class for all Varnish clusters
-class role::cache::varnish::base {
+class role::cache::base {
     include lvs::configuration
     include role::cache::configuration
     include network::constants
@@ -775,7 +775,7 @@ class role::cache::varnish::base {
 }
 
 # Ancestor class for common resources of 1-layer clusters
-class role::cache::varnish::1layer inherits role::cache::varnish::base {
+class role::cache::1layer inherits role::cache::base {
     # Any changes here will affect all descendent Varnish clusters
     # unless they're overridden!
 
@@ -785,7 +785,7 @@ class role::cache::varnish::1layer inherits role::cache::varnish::base {
 }
 
 # Ancestor class for common resources of 2-layer clusters
-class role::cache::varnish::2layer inherits role::cache::varnish::base {
+class role::cache::2layer inherits role::cache::base {
     # Any changes here will affect all descendent Varnish clusters
     # unless they're overridden!
 
@@ -848,7 +848,7 @@ class role::cache::varnish::2layer inherits role::cache::varnish::base {
     }
 }
 
-class role::cache::text inherits role::cache::varnish::2layer {
+class role::cache::text inherits role::cache::2layer {
     if $::realm == 'production' {
         $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
     }
@@ -989,7 +989,7 @@ class role::cache::text inherits role::cache::varnish::2layer {
         },
     }
 
-    include role::cache::varnish::logging
+    include role::cache::logging
 
     # HTCP packet loss monitoring on the ganglia aggregators
     if $ganglia_aggregator and $::site != 'esams' {
@@ -1001,13 +1001,13 @@ class role::cache::text inherits role::cache::varnish::2layer {
     if $::realm == 'production' {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
-        class { 'role::cache::varnish::kafka::webrequest':
+        class { 'role::cache::kafka::webrequest':
             topic => 'webrequest_text',
         }
     }
 }
 
-class role::cache::upload inherits role::cache::varnish::2layer {
+class role::cache::upload inherits role::cache::2layer {
     if $::realm == 'production' {
         $memory_storage_size = floor((0.083 * $::memorysize_mb / 1024.0) + 0.5) # 1/12 of total mem
     }
@@ -1171,7 +1171,7 @@ class role::cache::upload inherits role::cache::varnish::2layer {
         cluster_options => $cluster_options,
     }
 
-    include role::cache::varnish::logging
+    include role::cache::logging
 
     # HTCP packet loss monitoring on the ganglia aggregators
     if $ganglia_aggregator and $::site != 'esams' {
@@ -1183,13 +1183,13 @@ class role::cache::upload inherits role::cache::varnish::2layer {
     if $::realm == 'production' {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
-        class { 'role::cache::varnish::kafka::webrequest':
+        class { 'role::cache::kafka::webrequest':
             topic => 'webrequest_upload',
         }
     }
 }
 
-class role::cache::bits inherits role::cache::varnish::1layer {
+class role::cache::bits inherits role::cache::1layer {
 
     if $::realm == 'production' {
         include role::cache::ssl::sni
@@ -1278,27 +1278,27 @@ class role::cache::bits inherits role::cache::varnish::1layer {
         cluster_options => $cluster_options,
     }
 
-    include role::cache::varnish::logging::eventlistener
+    include role::cache::logging::eventlistener
     # Include a varnishkafka instance that will produce
     # eventlogging events to Kafka.
-    include role::cache::varnish::kafka::eventlogging
+    include role::cache::kafka::eventlogging
 
     # ToDo: Remove production conditional once this works
     # is verified to work in labs.
     if $::realm == 'production' {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
-        class { 'role::cache::varnish::kafka::webrequest':
+        class { 'role::cache::kafka::webrequest':
             topic        => 'webrequest_bits',
             varnish_name => $::hostname,
             varnish_svc_name => 'varnish',
         }
 
-        include role::cache::varnish::kafka::statsv
+        include role::cache::kafka::statsv
     }
 }
 
-class role::cache::mobile inherits role::cache::varnish::2layer {
+class role::cache::mobile inherits role::cache::2layer {
     if $::realm == 'production' {
         $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
     }
@@ -1471,14 +1471,14 @@ class role::cache::mobile inherits role::cache::varnish::2layer {
 
     # varnish::logging to be removed once
     # udp2log kafka consumer is implemented and deployed.
-    include role::cache::varnish::logging
+    include role::cache::logging
 
     # ToDo: Remove production conditional once this works
     # is verified to work in labs.
     if $::realm == 'production' {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
-        class { 'role::cache::varnish::kafka::webrequest':
+        class { 'role::cache::kafka::webrequest':
             topic => 'webrequest_mobile',
         }
     }
@@ -1504,7 +1504,7 @@ class role::cache::ssl::parsoid {
     }
 }
 
-class role::cache::parsoid inherits role::cache::varnish::2layer {
+class role::cache::parsoid inherits role::cache::2layer {
 
     if ( $::realm == 'production' ) {
         include role::cache::ssl::parsoid
@@ -1628,7 +1628,7 @@ class role::cache::parsoid inherits role::cache::varnish::2layer {
     }
 }
 
-class role::cache::misc inherits role::cache::varnish::1layer {
+class role::cache::misc inherits role::cache::1layer {
 
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site],
@@ -1726,7 +1726,7 @@ class role::cache::misc inherits role::cache::varnish::1layer {
     if $::realm == 'production' {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
-        class { 'role::cache::varnish::kafka::webrequest':
+        class { 'role::cache::kafka::webrequest':
             topic => 'webrequest_misc',
             varnish_name => $::hostname,
             varnish_svc_name => 'varnish',
