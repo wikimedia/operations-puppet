@@ -487,7 +487,8 @@ class role::cache::logging::eventlistener {
     }
 }
 
-define localssl($certname, $do_ocsp=false, $server_name=$::fqdn, $server_aliases=[], $default_server=false) {
+# Helper for install_certificate + protoproxy::localssl
+define role::cache::ssl::local($certname, $do_ocsp=false, $server_name=$::fqdn, $server_aliases=[], $default_server=false) {
     # Assumes that LVS service IPs are setup elsewhere
 
     install_certificate { $certname:
@@ -510,14 +511,15 @@ class role::cache::ssl::sni {
     include certificates::wmf_ca_2014_2017
     include role::protoproxy::ssl::common
 
-    localssl { 'unified':
+    role::cache::ssl::local { 'unified':
         certname => 'uni.wikimedia.org',
         default_server => true,
         do_ocsp => true,
     }
 
+    # local shorthand for use below only
     define sni_cert() {
-        localssl { $name:
+        role::cache::ssl::local { $name:
             certname => "sni.${name}",
             server_name => $name,
             server_aliases => ["*.${name}"],
@@ -571,7 +573,7 @@ class role::cache::ssl::misc {
     include certificates::wmf_ca_2014_2017
     include role::protoproxy::ssl::common
 
-    localssl {
+    role::cache::ssl::local {
         'wikimedia.org':
             certname => 'sni.wikimedia.org',
             server_name => 'wikimedia.org',
@@ -1401,16 +1403,16 @@ class role::cache::ssl::parsoid {
     # Explicitly not adding wmf CA since it is not needed for now
     include role::protoproxy::ssl::common
 
-    localssl { 'unified':
+    role::cache::ssl::local { 'unified':
         certname       => 'uni.wikimedia.org',
         default_server => true,
     }
-    localssl { 'wikimedia.org':
+    role::cache::ssl::local { 'wikimedia.org':
         certname       => 'sni.wikimedia.org',
         server_name    => 'wikimedia.org',
         server_aliases => ['*.wikimedia.org'],
     }
-    localssl { 'm.wikimedia.org':
+    role::cache::ssl::local { 'm.wikimedia.org':
         certname       => 'sni.m.wikimedia.org',
         server_name    => 'm.wikimedia.org',
         server_aliases => ['*.m.wikimedia.org'],
