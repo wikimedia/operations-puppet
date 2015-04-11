@@ -3,7 +3,7 @@
 <%
 def node_list(role, site)
 	realm = @realm
-	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site] + scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site]
+	return scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site]
 end
 
 def node_list_squid(role, site)
@@ -12,7 +12,7 @@ def node_list_squid(role, site)
 	if (active.nil?)
 		active = []
 	end
-	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site] + active
+	return active
 end
 
 def squid_rpn(role, site, list=nil)
