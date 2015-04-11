@@ -504,7 +504,7 @@ define localssl($certname, $do_ocsp=false, $server_name=$::fqdn, $server_aliases
     }
 }
 
-class role::cache::ssl::sni {
+class role::cache::ssl_sni {
     #TODO: kill the old wmf_ca
     include certificates::wmf_ca
     include certificates::wmf_ca_2014_2017
@@ -565,7 +565,7 @@ class role::cache::ssl::sni {
 }
 
 # As above, but for misc instead of generic prod
-class role::cache::ssl::misc {
+class role::cache::ssl_misc {
     #TODO: kill the old wmf_ca
     include certificates::wmf_ca
     include certificates::wmf_ca_2014_2017
@@ -774,7 +774,7 @@ class role::cache::text inherits role::cache::2layer {
     }
 
     if $::realm == 'production' {
-        include role::cache::ssl::sni
+        include role::cache::ssl_sni
     }
 
     require geoip
@@ -933,7 +933,7 @@ class role::cache::upload inherits role::cache::2layer {
     }
 
     if $::realm == 'production' {
-        include role::cache::ssl::sni
+        include role::cache::ssl_sni
     }
 
     class { 'lvs::realserver':
@@ -1105,7 +1105,7 @@ class role::cache::upload inherits role::cache::2layer {
 class role::cache::bits inherits role::cache::1layer {
 
     if $::realm == 'production' {
-        include role::cache::ssl::sni
+        include role::cache::ssl_sni
     }
 
     class { 'lvs::realserver':
@@ -1220,7 +1220,7 @@ class role::cache::mobile inherits role::cache::2layer {
     }
 
     if $::realm == 'production' {
-        include role::cache::ssl::sni
+        include role::cache::ssl_sni
     }
 
     class { 'lvs::realserver':
@@ -1397,7 +1397,7 @@ class role::cache::mobile inherits role::cache::2layer {
     }
 }
 
-class role::cache::ssl::parsoid {
+class role::cache::ssl_parsoid {
     # Explicitly not adding wmf CA since it is not needed for now
     include role::protoproxy::ssl::common
 
@@ -1420,7 +1420,7 @@ class role::cache::ssl::parsoid {
 class role::cache::parsoid inherits role::cache::2layer {
 
     if ( $::realm == 'production' ) {
-        include role::cache::ssl::parsoid
+        include role::cache::ssl_parsoid
         class { 'lvs::realserver':
             realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site],
         }
@@ -1553,7 +1553,7 @@ class role::cache::misc inherits role::cache::1layer {
 
     include standard
     include nrpe
-    include role::cache::ssl::misc
+    include role::cache::ssl_misc
 
     $memory_storage_size = 8
 
