@@ -98,7 +98,7 @@ def wait_for_job_running(job_name):
 
     :param job_name: Name of job to look for
     """
-    while True:
+    for i in xrange(30):
         job = get_job_xml(job_name)
         state = job.findtext('.//state') if job is not None else None
         if job is None or 'r' not in state:
@@ -107,6 +107,10 @@ def wait_for_job_running(job_name):
             time.sleep(1)
         else:
             break
+    else:
+        # The loop ended without job being started
+        sys.stderr.write('Timeout: could not start job in 30s')
+        sys.exit(1)
 
 
 def wait_for_job_stopped(job_name):
@@ -115,7 +119,7 @@ def wait_for_job_stopped(job_name):
 
     :param job_name: Name of job to look for
     """
-    while True:
+    for i in xrange(30):
         job = get_job_xml(job_name)
         if job is not None:
             sys.stdout.write('.')
@@ -123,6 +127,10 @@ def wait_for_job_stopped(job_name):
             time.sleep(1)
         else:
             break
+    else:
+        # The loop ended without job being stopped
+        sys.stderr.write('Timeout: could not stop job in 30s')
+        sys.exit(1)
 
 # Setup constants that we would need later on
 PREFIX = read_file('/etc/wmflabs-project', 'tools').strip()  # project name
