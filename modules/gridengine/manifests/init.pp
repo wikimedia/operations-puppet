@@ -62,5 +62,11 @@ class gridengine($gridmaster) {
         mode    => '0755',
     }
 
+    file { '/usr/local/bin/gridengine-mailer':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/gridengine/gridengine-mailer',
+    }
 }
-
