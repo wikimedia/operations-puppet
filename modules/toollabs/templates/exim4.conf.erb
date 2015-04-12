@@ -115,7 +115,7 @@ user_forward:
   expn = false
   check_ancestor
   modemask = 002
-  data = ${run{/usr/local/sbin/localuser $local_part}{$value}fail}
+  data = ${run{/usr/local/sbin/localuser INSTANCEPROJECT $local_part}{$value}fail}
 
 # Forward mail to <toolname>.<anything>@ using a specific .forward.<anything> file
 # if present in the tool's home directory
