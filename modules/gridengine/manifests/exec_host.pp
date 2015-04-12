@@ -15,5 +15,11 @@ class gridengine::exec_host(
         config  => $config,
     }
 
+    file { '/usr/local/bin/gridengine-mailer':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/gridengine/gridengine-mailer',
+    }
 }
-

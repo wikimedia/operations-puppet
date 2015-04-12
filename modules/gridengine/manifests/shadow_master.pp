@@ -57,5 +57,13 @@ class gridengine::shadow_master(
         require => File['/etc/init/gridengine-shadow.conf', "${sgeroot}/default/common/shadow_masters"],
         ensure  => running,
     }
+
+    file { '/usr/local/bin/gridengine-mailer':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/gridengine/gridengine-mailer',
+    }
 }
 

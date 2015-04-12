@@ -1,0 +1,2 @@
+#!/bin/bash
+sed "s/0"$'\b'"INFINITY/INFINITY/g" | mail "$@"
