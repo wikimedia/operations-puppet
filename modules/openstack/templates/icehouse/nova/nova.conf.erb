@@ -8,6 +8,7 @@ root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 instance_name_template=i-%08x
 daemonize=1
 scheduler_driver=nova.scheduler.filter_scheduler.FilterScheduler
+scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter
 
 # Don't allow duplicate instance names
 osapi_compute_unique_server_name_scope='global'
