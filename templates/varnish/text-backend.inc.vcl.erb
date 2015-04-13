@@ -35,6 +35,11 @@ sub vcl_recv {
 		set req.backend = api;
 	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
 		set req.backend = rendering;
+	} else if (req.url ~ "^/api/v1/") {
+		set req.url = "/" + req.http.host + regsub(req.url, "^/api/", "/");
+		set req.hash_ignore_busy = true;
+		set req.backend = restbase;
+		return (pass);
 	}
 <% end -%>
 
