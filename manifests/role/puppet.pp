@@ -34,6 +34,8 @@ class role::puppet::server::labs {
             'ldaptls'           => true
         };
     }
+
+    include puppetmaster::certmanager
 }
 
 
