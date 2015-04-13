@@ -181,6 +181,9 @@ class role::cache::configuration {
             'citoid' => {
                 'eqiad' => 'citoid.wmflabs.org',
             },
+            'restbase' => {
+                'eqiad' => 'restbase-beta.wmflabs.org',
+            },
         },
     }
 
