@@ -495,7 +495,7 @@ class role::cache::kafka::webrequest(
     # (logster only reports once a minute)
     monitoring::graphite_threshold { 'varnishkafka-kafka_drerr':
         description     => 'Varnishkafka Delivery Errors per minute',
-        metric          => "derivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr), 0)",
+        metric          => "derivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
         # warn if more than 0 errors per minute in the last 10 minutes
         warning         => 0,
         # critical if more than 20000 errors per minute in the last 10 minutes
