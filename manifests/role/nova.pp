@@ -59,6 +59,13 @@ class role::nova::config::eqiad inherits role::nova::config::common {
             default => $nova_controller_hostname,
         }
     }
+    $designate_hostname = $::realm ? {
+        'production' => 'holmium.wikimedia.org',
+        'labs'       => $nova_controller_hostname ? {
+            undef   => $::ipaddress_eth0,
+            default => $nova_controller_hostname,
+        }
+    }
     $controller_address = $::realm ? {
         'production' => '208.80.154.18',
         'labs'       => $nova_controller_ip ? {
