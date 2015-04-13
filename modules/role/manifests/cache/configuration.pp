@@ -152,9 +152,6 @@ class role::cache::configuration {
             'citoid' => {
                 'eqiad' => 'citoid.svc.eqiad.wmnet',
             },
-            'restbase' => {
-                'eqiad' => 'restbase.svc.eqiad.wmnet',
-            },
         },
         'labs' => {
             'api'    => {
@@ -285,7 +282,10 @@ class role::cache::configuration {
             'test_appservers' => {
                 'eqiad' => [ 'mw1017.eqiad.wmnet' ],
             },
-            'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid']
+            'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid'],
+            'restbase' => {
+                'eqiad' => 'restbase.svc.eqiad.wmnet',
+            },
         },
         'labs' => {
             'appservers' => {
@@ -323,7 +323,10 @@ class role::cache::configuration {
             },
             'parsoid' => {
                 'eqiad' => [ '10.68.16.120' ],  # deployment-parsoid05
-            }
+            },
+            'restbase' => {
+                'eqiad' => 'restbase-beta.wmflabs.org',
+            },
         }
     }
 }
