@@ -2373,6 +2373,17 @@ node /^virt101[0-2].eqiad.wmnet/ {
     }
 }
 
+node /^labvirt100[0-9].eqiad.wmnet/ {
+    $use_neutron = false
+    openstack::nova::partition{ '/dev/sdb': }
+    role nova::compute
+    include standard
+
+    if $use_neutron == true {
+        include role::neutron::computenode
+    }
+}
+
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     if $::hostname == 'wtp1001' or $::hostname == 'wtp1002' {
         $ganglia_aggregator = true
