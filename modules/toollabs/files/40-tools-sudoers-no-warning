@@ -1,0 +1,8 @@
+# By default, Ubuntu only sets mail_badpass
+Defaults	!mail_badpass
+
+# In case the defaults change, these are the other options that send e-mail
+Defaults        !mail_always
+Defaults        !mail_no_host
+Defaults        !mail_no_perms
+Defaults        !mail_no_user
