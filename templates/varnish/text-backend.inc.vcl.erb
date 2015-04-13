@@ -38,6 +38,15 @@ sub vcl_recv {
 	}
 <% end -%>
 
+	if (req.url ~ "^/api/v1/") {
+<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
+		set req.url = "/" + req.http.host + regsub(req.url, "^/api/", "/");
+		set req.backend = restbase;
+<% end -%>
+		set req.hash_ignore_busy = true;
+		return (pass);
+	}
+
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
 <% if @vcl_config.fetch("cluster_tier", "1") != "1" -%>
 		set req.backend = <%= @vcl_config.fetch("default_backend", "backend") %>_random;
