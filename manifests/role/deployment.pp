@@ -79,6 +79,9 @@ class role::deployment::config {
         'mwprof/mwprof'                  => {
             'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof',
         },
+        'brrd/brrd'                  => {
+            'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/brrd',
+        },
         'reporter/reporter'              => {
             'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof/reporter',
         },
