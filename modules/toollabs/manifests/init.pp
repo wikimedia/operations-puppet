@@ -177,4 +177,14 @@ class toollabs {
     package { 'at':
         ensure => latest,
     }
+
+    # Silence e-mails sent when regular users try to sudo (T95882)
+    file { '/etc/sudoers.d/40-tools-sudoers-no-warning':
+        ensure => file,
+        mode   => '0440',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning',
+    }
+
 }
