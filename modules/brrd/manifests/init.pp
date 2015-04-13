@@ -37,7 +37,7 @@ class brrd( $endpoint ) {
     }
 
     file { '/etc/init/brrd.conf':
-        content => template('webperf/brrd.conf.erb'),
+        content => template('brrd/brrd.conf.erb'),
         notify  => Service['brrd'],
     }
 
