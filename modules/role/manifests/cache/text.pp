@@ -115,6 +115,7 @@ class role::cache::text inherits role::cache::2layer {
         storage         => "-s malloc,${memory_storage_size}G",
         directors       => {
             'backend' => $role::cache::configuration::active_nodes[$::realm]['text'][$::site],
+            'restbase' => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
         },
         director_type   => 'chash',
         vcl_config      => {
