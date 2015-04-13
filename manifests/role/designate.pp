@@ -88,5 +88,7 @@ class role::designate::server {
         rule => "saddr (${wikitech} ${horizon} ${controller}) proto tcp dport (9001) ACCEPT;",
     }
 
-
+    ssh::userkey { 'puppet_private_cert':
+        source => 'puppet:///private/ssh/puppet_cert/puppet_cert'
+    }
 }

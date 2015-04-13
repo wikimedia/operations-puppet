@@ -64,5 +64,3 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
 
     # include rootwrap.d entries
 }
-
-
