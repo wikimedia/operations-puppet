@@ -1,4 +1,7 @@
-class openstack::nova::scheduler($novaconfig) {
+class openstack::nova::scheduler(
+    $openstack_version=$::openstack::version,
+    $novaconfig
+){
     include openstack::repo
 
     package { "nova-scheduler":
