@@ -31,6 +31,7 @@ dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
 dhcp_domain=<%= novaconfig["dhcp_domain"] %>
 node_availability_zone=<%= novaconfig["zone"] %>
+default_schedule_zone=<%= novaconfig["zone"] %>
 zone_name=<%= novaconfig["zone"] %>
 quota_floating_ips=<%= novaconfig["quota_floating_ips"] %>
 quota_fixed_ips=200
