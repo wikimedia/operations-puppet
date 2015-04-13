@@ -52,6 +52,7 @@ class role::cache::2layer inherits role::cache::base {
     else {
         # for upload on jessie, bigobj is main/6, so 6 is functional minimum here.
         $storage_size_main = 6
+        $backend_scaled_weights = [ { backend_match => '.', weight => 100 } ]
     }
 
     # Ganglia monitoring
