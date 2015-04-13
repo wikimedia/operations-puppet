@@ -44,6 +44,12 @@ class role::salt::masters::labs {
         salt_reactor_options => { 'puppet_server' => 'virt1000.wikimedia.org' },
     }
 
+    if ! defined(Ssh:userkey['labs_certs.pub']) {
+        # Allow remote execution for cert cleanup
+        ssh::userkey { 'labs_certs.pub':
+            source => 'puppet:///modules/openstack/labs_certs.pub'
+        }
+    }
 }
 
 # A salt master manages minions within a project

@@ -34,6 +34,13 @@ class role::puppet::server::labs {
             'ldaptls'           => true
         };
     }
+
+    if ! defined(Ssh:userkey['labs_certs.pub']) {
+        # Allow remote execution for cert cleanup
+        ssh::userkey { 'labs_certs.pub':
+            source => 'puppet:///modules/openstack/labs_certs.pub'
+        }
+    }
 }
 
 

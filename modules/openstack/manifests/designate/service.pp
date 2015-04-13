@@ -62,7 +62,9 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
             mode    => '0440';
     }
 
+    ssh::userkey { 'labs_certs':
+        source => 'puppet:///private/ssh/lab_certs/lab_certs'
+    }
+
     # include rootwrap.d entries
 }
-
-
