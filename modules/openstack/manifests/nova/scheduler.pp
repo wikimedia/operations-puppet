@@ -16,5 +16,14 @@ class openstack::nova::scheduler($novaconfig) {
         description  => 'nova-scheduler process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-scheduler'",
     }
+
+    file { '/usr/lib/python2.7/dist-packages/nova/scheduler/filters/scheduler_pool_filter.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/nova/scheduler_pool_filter.py",
+        notify  => Service['nova-scheduler'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['nova-scheduler'],
+    }
 }
 
