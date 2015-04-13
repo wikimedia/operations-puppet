@@ -44,6 +44,7 @@ class role::salt::masters::labs {
         salt_reactor_options => { 'puppet_server' => 'virt1000.wikimedia.org' },
     }
 
+    include puppetmaster::certmanager
 }
 
 # A salt master manages minions within a project
