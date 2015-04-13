@@ -1,3 +1,16 @@
+<%
+cvars = {
+  gelf_host => scope.lookupvar('service::configuration::logstash_host'),
+  gelf_port => scope.lookupvar('service::configuration::logstash_port'),
+  stat_host => scope.lookupvar('service::configuration::statsd_host'),
+  stat_port => scope.lookupvar('service::configuration::statsd_port'),
+  proxy     => scope.lookupvar('service::configuration::http_proxy')
+}
+
+cvars.keys.each do |k|
+  cvars[k] = '' if cvars[k].nil? or ['undef', ''].include? cvars[k].to_s
+end
+%>
 # Number of worker processes to spawn.
 # Set to 0 to run everything in a single process without clustering.
 # Use 'ncpu' to run as many workers as there are CPU units
@@ -14,8 +27,8 @@ logging:
   streams:
   # Use gelf-stream -> logstash
   - type: gelf
-    host: <%= scope.lookupvar('service::configuration::logstash_host') %>
-    port: <%= scope.lookupvar('service::configuration::logstash_port') %>
+    host: <%= cvars['gelf_host'] %>
+    port: <%= cvars['gel_port'] %>
   - type: file
     path: <%= @local_logfile %>
     level: info
@@ -23,8 +36,8 @@ logging:
 # Statsd metrics reporter
 metrics:
   type: statsd
-  host: <%= scope.lookupvar('service::configuration::statsd_host') %>
-  port: <%= scope.lookupvar('service::configuration::statsd_port') %>
+  host: <%= cvars['stat_host'] %>
+  port: <%= cvars['stat_port'] %>
 
 services:
   - name: <%= @title %>
@@ -45,8 +58,4 @@ services:
       # to restrict to a particular domain, use:
       # cors: restricted.domain.org
       # URL of the outbound proxy to use (complete with protocol)
-      <% if scope.lookupvar('service::configuration::http_proxy') %>
-      proxy: <%= scope.lookupvar('service::configuration::http_proxy') %>
-      <% else %>
-      # proxy: http://my.proxy.org:8080
-      <% end %>
+      proxy: <%= cvars['proxy'] %>
