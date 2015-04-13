@@ -1193,6 +1193,12 @@ node 'labnet1001.eqiad.wmnet' {
     }
 }
 
+node 'labnodepool1001.eqiad.wmnet' {
+
+    include standard
+
+}
+
 ## labsdb dbs
 node 'labsdb1001.eqiad.wmnet' {
     $cluster = 'mysql'
