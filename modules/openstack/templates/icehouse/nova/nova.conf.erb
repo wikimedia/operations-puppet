@@ -30,8 +30,6 @@ libvirt_type=<%= novaconfig["libvirt_type"] %>
 dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
 dhcp_domain=<%= novaconfig["dhcp_domain"] %>
-node_availability_zone=<%= novaconfig["zone"] %>
-zone_name=<%= novaconfig["zone"] %>
 quota_floating_ips=<%= novaconfig["quota_floating_ips"] %>
 quota_fixed_ips=200
 api_paste_config=/etc/nova/api-paste.ini
@@ -118,3 +116,10 @@ notification_driver = nova.openstack.common.notifier.rpc_notifier
 # Default ram overprovision ration is 1.5.  We just had a box OOM, so reducing
 #  that to 1.3.
 ram_allocation_ratio=1.3
+
+
+# Deprecated, remove in Kilo:
+node_availability_zone=<%= novaconfig["zone"] %>
+zone_name=<%= novaconfig["zone"] %>
+# Should be:
+#default_availability_zone = <%= novaconfig["zone"] %>
