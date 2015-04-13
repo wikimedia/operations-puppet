@@ -172,4 +172,14 @@ class openstack::database-server::mysql($controller_mysql_root_pass) {
             command => "/usr/bin/mysql -uroot --password='' mysql < /etc/nova/mysql.sql",
             require => [Class['mysql::server::package'], File['/etc/nova/mysql.sql']];
     }
+
+    # Clean up expired keystone tokens, because keystone seems to leak them
+    cron {
+        'run-jobs':
+            user    => 'root',
+            hour    => 8,
+            minute  => 0,
+            ensure  => present,
+            command => '/usr/bin/mysql $keystone_db_name -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOT DATE_SUB(CURDATE(),INTERVAL 2 DAY) <= expires;';
+    }
 }
