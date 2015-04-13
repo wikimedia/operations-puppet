@@ -34,6 +34,10 @@ class role::puppet::server::labs {
             'ldaptls'           => true
         };
     }
+
+    class { 'puppetmaster::certmanager':
+        remote_cert_cleaner => @resolve($novaconfig['designate_hostname']),
+    }
 }
 
 
