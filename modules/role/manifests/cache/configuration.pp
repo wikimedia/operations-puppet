@@ -71,6 +71,9 @@ class role::cache::configuration {
             'citoid' => {
                 'eqiad' => 'citoid.wmflabs.org',
             },
+            'restbase' => {
+                'eqiad' => 'deployment-restbase01.eqiad.wmflabs',
+            },
         }
     }
 }
