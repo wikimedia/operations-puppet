@@ -114,6 +114,10 @@ class role::eventlogging {
     eventlogging::service::consumer { 'mysql-m4-master':
         input  => "tcp://${processor}:8600",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8",
+        # Restrict permissions on this config file since it contains a password.
+        owner  => 'root',
+        group  => 'eventlogging',
+        mode   => '0640',
     }
 
 

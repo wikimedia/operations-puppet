@@ -29,6 +29,15 @@
 #   Value may be 'present' (provisions the resource; the default) or
 #   'absent' (destroys the resource).
 #
+# [*owner*]
+#   Owner of config file.  Default: root
+#
+# [*group*]
+#   Group owner of config file.  Default: root
+#
+# [*mode*]
+#   File permission mode of config file.  Default: 0644
+#
 # === Examples
 #
 #  eventlogging::service::consumer { 'all events':
@@ -41,6 +50,9 @@ define eventlogging::service::consumer(
     $output,
     $sid    = $title,
     $ensure = present,
+    $owner  = 'root',
+    $group  = 'root',
+    $mode   = '0644',
 ) {
     include ::eventlogging
 
@@ -49,5 +61,8 @@ define eventlogging::service::consumer(
         ensure  => $ensure,
         content => template('eventlogging/consumer.erb'),
         notify  => Service['eventlogging/init'],
+        owner   => $owner,
+        group   => $group,
+        mode    => $mode,
     }
 }
