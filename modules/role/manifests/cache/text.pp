@@ -31,6 +31,7 @@ class role::cache::text inherits role::cache::2layer {
             'api'               => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
             'rendering'         => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
             'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+            'restbase'          => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
         },
         2 => {
             'eqiad' => $text_nodes['eqiad'],
@@ -98,6 +99,11 @@ class role::cache::text inherits role::cache::2layer {
             {
                 'backend_match'   => '^mw1017\.eqiad\.wmnet$',
                 'max_connections' => 20,
+            },
+            {
+                'backend_match'   => '^restbase\.svc\.|^deployment-restbase',
+                'port'            => 7231,
+                'max_connections' => 5000,
             },
             {
                 'port'                  => 80,
