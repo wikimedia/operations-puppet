@@ -5,7 +5,11 @@ class openstack::nova::compute(
     include openstack::repo
 
     if ( $::realm == 'production' ) {
-        $certname = "virt-star.${site}.wmnet"
+        if ($::hostname =~ /^labvirt/) {
+            $certname = "labvirt-star.${site}.wmnet"
+        } else {
+            $certname = "virt-star.${site}.wmnet"
+        }
         install_certificate{ "${certname}": }
 
         file { "/var/lib/nova/${certname}.key":
