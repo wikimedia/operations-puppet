@@ -64,9 +64,7 @@ class role::labs::instance {
 
     file { '/data/project':
         ensure  => directory,
-        require => File['/data',
-                        '/etc/idmapd.conf'
-                    ],
+        require => File['/data'],
     }
 
     mount { '/data/project':
@@ -80,9 +78,7 @@ class role::labs::instance {
 
     file { '/data/scratch':
         ensure  => directory,
-        require => File['/data',
-                        '/etc/idmapd.conf'
-                    ],
+        require => File['/data'],
     }
     mount { '/data/scratch':
         ensure  => mounted,
@@ -131,28 +127,8 @@ class role::labs::instance {
         content => "options nfs nfs4_disable_idmapping=1\n",
     }
 
-    # Actually disabling idmapd and ensure => absent on the config
-    # files needs to wait for T95556 to ensure no running instance
-    # gets a broken idmapd.
-
-    if $::operatingsystem == 'Debian' {
-        service { 'nfs-common':
-            ensure    => running,
-            subscribe => File['/etc/idmapd.conf', '/etc/default/nfs-common'],
-        }
-    } else {
-        service { 'idmapd':
-            ensure    => running,
-            subscribe => File['/etc/idmapd.conf'],
-        }
-    }
-
     file { '/etc/idmapd.conf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///files/nfs/idmapd.conf',
+        ensure => absent,
     }
 
     # In production, we try to be punctilious about having Puppet manage
