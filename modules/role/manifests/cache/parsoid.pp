@@ -41,7 +41,7 @@ class role::cache::parsoid inherits role::cache::2layer {
             'backend'          => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
             'cxserver_backend' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
             'citoid_backend'   => $::role::cache::configuration::active_nodes[$::realm]['citoid'][$::site],
-            'restbase_backend' => $::role::cache::configuration::active_nodes[$::realm]['restbase'][$::site],
+            'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         director_options => {
             'retries' => 2,
