@@ -13,7 +13,7 @@ NEED_STATD=
 STATDOPTS="--port 32765 --outgoing-port 32766"
 
 # Do you want to start the idmapd daemon? It is only needed for NFSv4.
-NEED_IDMAPD=
+NEED_IDMAPD=no
 
 # Do you want to start the gssd daemon? It is required for Kerberos mounts.
 NEED_GSSD=
