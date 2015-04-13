@@ -1,0 +1,2 @@
+role::nova::compute::instance_dev: "/dev/sdb1"
+cluster: virt
