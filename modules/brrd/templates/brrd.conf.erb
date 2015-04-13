@@ -1,0 +1,17 @@
+# brrd
+
+description "NavigationTiming RRD logger"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+
+setuid brrd
+setgid brrd
+
+respawn
+respawn limit unlimited
+
+chdir /srv/deployment/brrd/brrd
+exec /srv/deployment/brrd/brrd/brrd-run \
+    --log-file "/var/log/brrd/brrd.log" \
+    "<%= @endpoint %>"                  \
+    "/var/lib/brrd/navtiming.rrd"

@@ -965,6 +965,7 @@ node 'eventlog1001.eqiad.wmnet' {
     include standard
     include role::ipython_notebook
     include role::logging::mediawiki::errors
+    include role::brrd
 }
 
 node 'fluorine.eqiad.wmnet' {
