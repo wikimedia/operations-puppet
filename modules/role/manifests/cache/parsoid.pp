@@ -39,9 +39,9 @@ class role::cache::parsoid inherits role::cache::2layer {
         storage          => $storage_conf,
         directors        => {
             'backend'          => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
-            'cxserver_backend' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
-            'citoid_backend'   => $::role::cache::configuration::active_nodes[$::realm]['citoid'][$::site],
-            'restbase_backend' => $::role::cache::configuration::active_nodes[$::realm]['restbase'][$::site],
+            'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
+            'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
+            'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         director_options => {
             'retries' => 2,
@@ -84,9 +84,9 @@ class role::cache::parsoid inherits role::cache::2layer {
         admin_port      => 6082,
         directors       => {
             'backend'          => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
-            'cxserver_backend' => $::role::cache::configuration::active_nodes[$::realm]['cxserver'][$::site],
-            'citoid_backend'   => $::role::cache::configuration::active_nodes[$::realm]['citoid'][$::site],
-            'restbase_backend' => $::role::cache::configuration::active_nodes[$::realm]['restbase'][$::site],
+            'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
+            'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
+            'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         director_type   => 'chash',
         director_options => {
