@@ -65,6 +65,7 @@ class role::cache::upload inherits role::cache::2layer {
             $cluster_options = {
                 'upload_domain' => 'upload.wikimedia.org',
                 'top_domain'    => 'org',
+                'do_gzip'       => ( $::hostname == 'cp1064' ),
             }
         }
         'labs': {
