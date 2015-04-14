@@ -18,13 +18,8 @@ if len(sys.argv) <= 2:
 # Set tool name.
 tool = sys.argv[1]
 
-# Connect to local portgranter instance and receive a (hopefully)
-# unallocated port number.
-s = socket.socket(socket.AF_UNIX)
-s.connect('/tmp/sock.portgranter')
-f = s.makefile('r+', 0)
-f.write(tool + '\n')
-port = int(f.readline().rstrip())
+# Attempt to get a local unused port
+port = portgrabber.get_open_port()
 
 # Connect to the proxylistener instances on the web proxies and notify
 # them where requests for the tool need to be routed to.
