@@ -1,6 +1,6 @@
 # OSM role classes
 
-class role::osm::common {
+class role::osm::db::common {
     include standard
 
     $datadir = '/srv/postgres/9.1/main'
@@ -24,10 +24,10 @@ class role::osm::common {
     ganglia::plugin::python { 'diskstat': }
 }
 
-class role::osm::master {
-    include role::osm::common
+class role::osm::db::master {
+    include role::osm::db::common
     include postgresql::postgis
-    include osm
+    include osm::db
     include passwords::osm
 
     class { 'postgresql::master':
@@ -43,7 +43,7 @@ class role::osm::master {
         state_path   => '/srv/osmosis/state.txt',
     }
 
-    system::role { 'role::osm::master':
+    system::role { 'role::osm::db::master':
         ensure      => 'present',
         description => 'openstreetmaps db master',
     }
@@ -164,15 +164,15 @@ class role::osm::master {
     }
 }
 
-class role::osm::slave {
-    include role::osm::common
+class role::osm::db::slave {
+    include role::osm::db::common
     include postgresql::postgis
     include passwords::osm
     # Note: This is here to illustrate the fact that the slave is expected to
     # have the same dbs as the master.
     #postgresql::spatialdb { 'gis': }
 
-    system::role { 'role::osm::slave':
+    system::role { 'role::osm::db::slave':
         ensure      => 'present',
         description => 'openstreetmaps db slave',
     }
@@ -181,7 +181,7 @@ class role::osm::slave {
         master_server    => $osm_master,
         replication_pass => $passwords::osm::replication_pass,
         includes         => 'tuning.conf',
-        datadir          => $role::osm::common::datadir,
+        datadir          => $role::osm::db::common::datadir,
     }
 
     class { 'postgresql::ganglia':
