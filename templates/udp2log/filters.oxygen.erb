@@ -18,10 +18,9 @@ pipe 1 /bin/grep -P 'zero=\d' >> <%= log_directory %>/zero.tsv.log
 pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> <%= log_directory %>/edits.tsv.log
 
 <%
-# pull in $role::cache::configuration::active_nodes
-# to find mobile host names and build a regex on which to grep.
-cache_configuration = scope.lookupvar('::role::cache::configuration::active_nodes')
-mobile_hosts_regex = '(' + cache_configuration['production']['mobile'].values.flatten.sort.join('|') + ')'
+# find mobile host names and build a regex on which to grep.
+cache_nodes_mobile = scope.lookupvar('::cache::nodes::mobile')
+mobile_hosts_regex = '(' + cache_nodes_mobile.values.flatten.sort.join('|') + ')'
 -%>
 
 ### Mobile traffic filter
