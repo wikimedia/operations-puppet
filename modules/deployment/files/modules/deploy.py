@@ -149,6 +149,10 @@ def get_config(repo):
     # for services without allowing end-users the ability to restart all
     # services on the targets.
     config.setdefault('service_name', None)
+    # deployment_repo_group is the group that will own the repository
+    # after deployment_server_init. This option overrides the
+    # deployment_repo_group grain set for all repositories
+    config.setdefault('deployment_repo_group', None)
     return config
 
 
@@ -167,6 +171,7 @@ def deployment_server_init():
     if not is_deployment_server:
         return ret_status
     deploy_user = __grains__.get('deployment_repo_user')
+    deploy_group = __grains__.get('deployment_repo_group')
     repo_config = __pillar__.get('repo_config')
     for repo in repo_config:
         config = get_config(repo)
@@ -251,6 +256,22 @@ def deployment_server_init():
                                              runas=deploy_user, umask=002)
             if status != 0:
                 ret_status = 1
+                continue
+
+            # Override deploy_group with repo specific value set
+            # in deployment_config pillar
+            if config['deployment_repo_group']:
+                deploy_group = config['deployment_repo_group']
+
+            if deploy_group is not None:
+                cmd = 'chown -R %s:%s %s' % (deploy_user,
+                                             deploy_group,
+                                             config['location'])
+                status = __salt__['cmd.retcode'](cmd,
+                                                 cwd=config['location'])
+                if status != 0:
+                    ret_status = 1
+
     return ret_status
 
 
