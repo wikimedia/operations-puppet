@@ -86,16 +86,6 @@ end
 <% end -%>
 				</subtree>
 			
-				<subtree name="api">
-					<param name="system-id" value="%hostname%"/>
-					<param name="varnishcluster" value="API caches eqiad"/>
-					<param name="site" value="eqiad"/>
-
-<% varnish_nodes('api', 'eqiad').each do |line| -%>
-					<%= line %>
-<% end -%>
-				</subtree>
-			
 				<subtree name="bits">
 					<param name="system-id" value="%hostname%"/>
 					<param name="varnishcluster" value="Bits caches eqiad"/>
@@ -154,16 +144,6 @@ end
 					<param name="site" value="esams"/>
 
 <% varnish_nodes('text', 'esams', 'dual-layer-varnish-server').each do |line| -%>
-					<%= line %>
-<% end -%>
-				</subtree>
-			
-				<subtree name="api">
-					<param name="system-id" value="%hostname%"/>
-					<param name="varnishcluster" value="API caches esams"/>
-					<param name="site" value="esams"/>
-
-<% varnish_nodes('api', 'esams').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
