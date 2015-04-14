@@ -1,4 +1,8 @@
 class role::cache::mobile inherits role::cache::2layer {
+
+    $mobile_nodes = hiera('::cache::mobile::nodes', {})
+    $local_mobile_nodes = $mobile_nodes[$::site]
+
     if $::realm == 'production' {
         $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
     }
@@ -31,7 +35,7 @@ class role::cache::mobile inherits role::cache::2layer {
             'test_wikipedia' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
         },
         2 => {
-            'eqiad' => $role::cache::configuration::active_nodes[$::realm]['mobile']['eqiad'],
+            'eqiad' => $mobile_nodes['eqiad'],
         }
     }
 
@@ -145,10 +149,10 @@ class role::cache::mobile inherits role::cache::2layer {
         admin_port       => 6082,
         storage          => "-s malloc,${memory_storage_size}G",
         directors        => {
-            'backend' => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
+            'backend' => $local_mobile_nodes
         },
         director_options => {
-            'retries' => $backend_weight_avg * size($::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site]),
+            'retries' => $backend_weight_avg * size($local_mobile_nodes),
         },
         director_type    => 'chash',
         vcl_config       => {

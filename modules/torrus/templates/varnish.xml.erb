@@ -2,8 +2,8 @@
 
 <%
 def node_lists(role, site)
-	realm = @realm
-	return scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site]
+        role_nodes = scope.function_hiera(["::cache::#{role}::nodes", {}])
+        return role_nodes[site]
 end
 
 def varnish_nodes(role, site, template="varnish-server")
@@ -174,26 +174,6 @@ end
 					<param name="site" value="esams"/>
 
 <% varnish_nodes('mobile', 'esams', 'dual-layer-varnish-server').each do |line| -%>
-					<%= line %>
-<% end -%>
-				</subtree>
-
-				<subtree name="parsoid">
-					<param name="system-id" value="%hostname%"/>
-					<param name="varnishcluster" value="Parsoid caches esams"/>
-					<param name="site" value="esams"/>
-
-<% varnish_nodes('parsoid', 'esams', 'dual-layer-varnish-server').each do |line| -%>
-					<%= line %>
-<% end -%>
-				</subtree>
-
-				<subtree name="misc">
-					<param name="system-id" value="%hostname%"/>
-					<param name="varnishcluster" value="Misc caches esams"/>
-					<param name="site" value="esams"/>
-
-<% varnish_nodes('misc', 'esams').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
