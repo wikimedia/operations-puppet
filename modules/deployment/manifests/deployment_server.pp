@@ -71,6 +71,12 @@ class deployment::deployment_server($deployer_groups=[]) {
         replace => true,
     }
 
+    salt::grain { 'deployment_repo_group':
+        grain   => 'deployment_repo_group',
+        value   => $deployer_groups[0],
+        replace => true,
+    }
+
     exec { 'deployment_server_sync_all':
         refreshonly => true,
         path        => ['/usr/bin'],
