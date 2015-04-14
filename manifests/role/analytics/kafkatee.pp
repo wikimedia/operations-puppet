@@ -78,7 +78,7 @@ class role::analytics::kafkatee::webrequest::mobile inherits role::analytics::ka
 
     # Include this to infer mobile varnish frontend hostnames on which to filter.
     include role::cache::configuration
-    $cache_configuration = $role::cache::configuration::active_nodes['production']['mobile']
+    $cache_nodes_mobile = hiera('::cache::nodes::mobile', {})
     $mobile_hosts_regex = inline_template('(<%= @cache_configuration.values.flatten.sort.join(\'|\') %>)')
 
     # 1/100 sampling of traffic from mobile varnishes
