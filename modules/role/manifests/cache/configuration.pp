@@ -184,15 +184,9 @@ class role::cache::configuration {
                 'eqiad' => [ 'mw1017.eqiad.wmnet' ],
             },
             'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid'],
-            'cxserver' => {
-                'eqiad' => 'cxserver.svc.eqiad.wmnet',
-            },
-            'citoid' => {
-                'eqiad' => 'citoid.svc.eqiad.wmnet',
-            },
-            'restbase' => {
-                'eqiad' => 'restbase.svc.eqiad.wmnet',
-            },
+            'cxserver' => $lvs::configuration::lvs_service_ips['production']['cxserver'],
+            'citoid' => $lvs::configuration::lvs_service_ips['production']['citoid'],
+            'restbase' => $lvs::configuration::lvs_service_ips['production']['restbase'],
         },
         'labs' => {
             'appservers' => {
