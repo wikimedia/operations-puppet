@@ -81,6 +81,9 @@ class contint::packages::labs {
         'python-dev',
         'libmysqlclient-dev',  # For python SQLAlchemy
 
+        'libxml2-dev',   # For python lxml
+        'libxslt1-dev',  # For python lxml
+
         # For mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
         # Provided by openstack::common:
         #'unzip',
