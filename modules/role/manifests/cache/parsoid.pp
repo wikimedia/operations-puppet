@@ -1,5 +1,8 @@
 class role::cache::parsoid inherits role::cache::2layer {
 
+    $parsoid_nodes = hiera('::cache::parsoid::nodes')
+    $site_parsoid_nodes = $parsoid_nodes[$::site]
+
     if ( $::realm == 'production' ) {
         include role::cache::ssl::parsoid
         class { 'lvs::realserver':
@@ -83,14 +86,14 @@ class role::cache::parsoid inherits role::cache::2layer {
         port            => 80,
         admin_port      => 6082,
         directors       => {
-            'backend'          => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
+            'backend'          => $site_parsoid_nodes,
             'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
             'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
             'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         director_type   => 'chash',
         director_options => {
-            'retries' => $backend_weight_avg * size($::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site]),
+            'retries' => $backend_weight_avg * size($site_parsoid_nodes),
         },
         vcl_config      => {
             'retry5xx'    => 0,
