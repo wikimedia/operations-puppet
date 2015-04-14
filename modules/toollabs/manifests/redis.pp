@@ -18,6 +18,7 @@ class toollabs::redis (
     $replicate_from = undef,
 ) inherits toollabs {
     include toollabs::infrastructure
+    include toollabs::exec_environ
     include ::redis::client::python
 
     if $replicate_from {
