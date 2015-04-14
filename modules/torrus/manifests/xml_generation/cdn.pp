@@ -5,8 +5,6 @@
 #
 # Uses role/cache/cache.pp
 class torrus::xml_generation::cdn {
-    require role::cache::configuration
-
     File {
         owner  => 'root',
         group  => 'root',
