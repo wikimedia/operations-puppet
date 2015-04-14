@@ -1,0 +1,15 @@
+text:
+  cluster: cache_text
+upload:
+  cluster: cache_upload
+mobile:
+  cluster: cache_mobile
+bits:
+  cluster: cache_bits
+misc:
+  cluster: cache_misc
+parsoid:
+  cluster: cache_parsoid
+  admin::groups:
+    - parsoid-roots
+    - parsoid-admin
