@@ -62,7 +62,7 @@ groups:
       jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
       bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
       joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
-      pcoombe, mholloway-shell]
+      pcoombe, mholloway-shell, madhuvishy]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -98,7 +98,7 @@ groups:
       kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
       nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
       mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
-      daisy, tomasz, mholloway-shell]
+      daisy, tomasz, mholloway-shell, madhuvishy]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -163,7 +163,7 @@ groups:
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
               howief, awight, dr0ptp4kt, qchris, tnegrin, nuria,
               leila, manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
-              spage, erik, bmansurov, rmoen, tbayer, joal, ashwinpp]
+              spage, erik, bmansurov, rmoen, tbayer, joal, ashwinpp, madhuvishy]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -172,7 +172,7 @@ groups:
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe]
+              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -217,7 +217,7 @@ groups:
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, ananthrk, awight,
-              joal, jamesur, akosiaris, jhobs, lpintscher, jkatz]
+              joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
