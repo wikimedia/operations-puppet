@@ -2198,8 +2198,6 @@ host iron {
 host labcontrol1001 {
 	hardware ethernet 84:2b:2b:77:cf:ca;
 	fixed-address labcontrol1001.wikimedia.org;
-	option pxelinux.pathprefix "jessie-installer/";
-	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labcontrol2001 {
