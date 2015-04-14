@@ -146,15 +146,6 @@ class role::cache::configuration {
                 'esams' => [],
                 'ulsfo' => [],
             },
-            'cxserver' => {
-                'eqiad' => 'cxserver.svc.eqiad.wmnet',
-            },
-            'citoid' => {
-                'eqiad' => 'citoid.svc.eqiad.wmnet',
-            },
-            'restbase' => {
-                'eqiad' => 'restbase.svc.eqiad.wmnet',
-            },
         },
         'labs' => {
             'api'    => {
@@ -174,12 +165,6 @@ class role::cache::configuration {
             },
             'parsoid' => {
                 'eqiad' => '127.0.0.1',
-            },
-            'cxserver' => {
-                'eqiad' => 'cxserver-beta.wmflabs.org',
-            },
-            'citoid' => {
-                'eqiad' => 'citoid.wmflabs.org',
             },
         },
     }
@@ -285,7 +270,16 @@ class role::cache::configuration {
             'test_appservers' => {
                 'eqiad' => [ 'mw1017.eqiad.wmnet' ],
             },
-            'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid']
+            'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid'],
+            'cxserver' => {
+                'eqiad' => 'cxserver.svc.eqiad.wmnet',
+            },
+            'citoid' => {
+                'eqiad' => 'citoid.svc.eqiad.wmnet',
+            },
+            'restbase' => {
+                'eqiad' => 'restbase.svc.eqiad.wmnet',
+            },
         },
         'labs' => {
             'appservers' => {
@@ -323,7 +317,13 @@ class role::cache::configuration {
             },
             'parsoid' => {
                 'eqiad' => [ '10.68.16.120' ],  # deployment-parsoid05
-            }
+            },
+            'cxserver' => {
+                'eqiad' => 'cxserver-beta.wmflabs.org',
+            },
+            'citoid' => {
+                'eqiad' => 'citoid.wmflabs.org',
+            },
         }
     }
 }
