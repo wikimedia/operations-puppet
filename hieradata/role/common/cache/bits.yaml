@@ -1,18 +1,1 @@
 cluster: cache_bits
-# data synced from manifests/role/cache.pp on 2015-04-08
-hosts_codfw: []
-hosts_eqiad:
-  - 'cp1056.eqiad.wmnet'
-  - 'cp1057.eqiad.wmnet'
-  - 'cp1069.eqiad.wmnet'
-  - 'cp1070.eqiad.wmnet'
-hosts_esams:
-  - 'cp3019.esams.wmnet'
-  - 'cp3020.esams.wmnet'
-  - 'cp3021.esams.wmnet'
-  - 'cp3022.esams.wmnet'
-hosts_ulsfo:
-  - 'cp4001.ulsfo.wmnet'
-  - 'cp4002.ulsfo.wmnet'
-  - 'cp4003.ulsfo.wmnet'
-  - 'cp4004.ulsfo.wmnet'

@@ -83,14 +83,14 @@ class role::cache::parsoid inherits role::cache::2layer {
         port            => 80,
         admin_port      => 6082,
         directors       => {
-            'backend'          => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
+            'backend'          => hiera("::cache::nodes::parsoid::${::site}", []),
             'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
             'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
             'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         director_type   => 'chash',
         director_options => {
-            'retries' => $backend_weight_avg * size($::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site]),
+            'retries' => $backend_weight_avg * size(hiera("::cache::nodes::parsoid::${::site}", [])),
         },
         vcl_config      => {
             'retry5xx'    => 0,
