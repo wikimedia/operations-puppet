@@ -293,7 +293,7 @@ host analytics1019 {
 }
 
 host analytics1020 {
-	hardware ethernet 90:b1:1c:12:98:d9;
+	hardware ethernet 90:B1:1C:12:98:D9;
 	fixed-address analytics1020.eqiad.wmnet;
 }
 
