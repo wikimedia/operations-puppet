@@ -1,0 +1,4 @@
+nodes:
+  eqiad:
+    - 'cp1043.eqiad.wmnet'
+    - 'cp1044.eqiad.wmnet'
