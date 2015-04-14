@@ -24,7 +24,7 @@ class role::cache::upload inherits role::cache::2layer {
             'rendering' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
         },
         2 => {
-            'eqiad' => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
+            'eqiad' => hiera('::cache::nodes::upload::eqiad', []),
         }
     }
 
@@ -141,7 +141,7 @@ class role::cache::upload inherits role::cache::2layer {
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         directors       => {
-            'backend' => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site],
+            'backend' => hiera("::cache::nodes::upload::${::site}", []),
         },
         director_type   => 'chash',
         vcl_config      => {
