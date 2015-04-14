@@ -2,6 +2,7 @@ class ssh::server (
     $listen_port = '22',
     $listen_address = undef,
     $permit_root = true,
+    $authorized_keys_file = undef,
 ) {
     package { 'openssh-server':
         ensure => latest;
@@ -12,12 +13,13 @@ class ssh::server (
         subscribe => File['/etc/ssh/sshd_config'],
     }
 
-    if ($::realm == 'labs') {
-        $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u /public/keys/%u/.ssh/authorized_keys'
+    if $authorized_keys_file {
+        $ssh_authorized_keys_file = $authorized_keys_file
     } else {
-        # Lucid doesn't seem to like this at all, ssh refuses to start
-        if os_version('ubuntu > lucid') {
-            $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u .ssh/authorized_keys .ssh/authorized_keys2'
+        if ($::realm == 'labs') {
+            $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u /public/keys/%u/.ssh/authorized_keys'
+        } else {
+                $ssh_authorized_keys_file ='/etc/ssh/userkeys/%u .ssh/authorized_keys .ssh/authorized_keys2'
         }
     }
 
