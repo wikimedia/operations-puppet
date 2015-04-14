@@ -187,7 +187,7 @@ class role::mail::lists {
     # values chosen based on i/o averages for sodium
     nrpe::monitor_service { 'mailman_iostat':
         description   => 'mailman I/O stats',
-        nrpe_command  => '/usr/local/lib/nagios/plugins/check_iostat -i -w 250,40,300,200,5500 -c 500,80,600,400,11000',
+        nrpe_command  => '/usr/local/lib/nagios/plugins/check_iostat -i -w 250,40,300,800,5500 -c 500,80,600,1200,11000',
         timeout       => '30',
     }
 
