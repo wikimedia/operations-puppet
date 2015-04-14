@@ -64,4 +64,8 @@ class toollabs::redis (
     diamond::collector { 'Redis':
         require => Class['::redis::client::python']
     }
+
+    package { 'python-virtualenv':
+        ensure => latest,
+    }
 }
