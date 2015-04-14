@@ -7,4 +7,5 @@ mediawiki::jobrunner::runners_parsoid: 3
 mediawiki::jobrunner::runners_restbase: 3
 mediawiki::jobrunner::runners_translate: 1
 mediawiki::jobrunner::runners_upload: 7
+mediawiki::jobrunner::runners_centralauth: 1
 mediawiki::users::web: www-data
