@@ -97,6 +97,7 @@
     RewriteRule ^/otrs$ /otrs/index.pl [R=301]
     RewriteRule ^/otrs/$ /otrs/index.pl [R=301]
     RewriteRule ^/$ /otrs/index.pl [R=301]
+    RewriteRule /customer.pl /otrs/index.pl [R=301,L]
 
     # Fix incorrect TicketID links (common on Wikipedia)
     RewriteCond %{QUERY_STRING} ^Action=AgentTicketZoom\&TicketID=(200[0-9]{13})$
