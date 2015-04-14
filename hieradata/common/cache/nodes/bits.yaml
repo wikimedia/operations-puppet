@@ -1,0 +1,16 @@
+codfw: []
+eqiad:
+  - 'cp1056.eqiad.wmnet'
+  - 'cp1057.eqiad.wmnet'
+  - 'cp1069.eqiad.wmnet'
+  - 'cp1070.eqiad.wmnet'
+esams:
+  - 'cp3019.esams.wmnet'
+  - 'cp3020.esams.wmnet'
+  - 'cp3021.esams.wmnet'
+  - 'cp3022.esams.wmnet'
+ulsfo:
+  - 'cp4001.ulsfo.wmnet'
+  - 'cp4002.ulsfo.wmnet'
+  - 'cp4003.ulsfo.wmnet'
+  - 'cp4004.ulsfo.wmnet'

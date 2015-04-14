@@ -12,18 +12,19 @@ class role::ipsec ($hosts = undef) {
     if $hosts != undef {
         $targets = $hosts
     } else {
+        $cluster_nodes = hiera("cache::nodes::${::cluster}", {})
         # for 'left' nodes in cache sites, enumerate 'right' nodes in "main" sites
         if $::site == 'esams' or $::site == 'ulsfo' {
             $targets = concat(
-                hiera('hosts_eqiad', []),
-                hiera('hosts_codfw', [])
+                $cluster_nodes['eqiad'],
+                $cluster_nodes['codfw']
             )
         }
         # for 'left' nodes in "main" sites, enumerate 'right' nodes in cache sites
         if $::site == 'eqiad' or $::site == 'codfw' {
             $targets = concat(
-                hiera('hosts_esams', []),
-                hiera('hosts_ulsfo', [])
+                $cluster_nodes['esams'],
+                $cluster_nodes['ulsfo']
             )
         }
     }
