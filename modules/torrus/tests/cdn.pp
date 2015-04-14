@@ -18,11 +18,6 @@ class role::cache::configuration {
                         'cp4018.ulsfo.wmnet',
                     ]
                 },
-                'api' => {
-                    'eqiad' => [],
-                    'esams' => [],
-                    'ulsfo' => [],
-                },
                 'bits' => {
                     'eqiad' => ['cp1056.eqiad.wmnet',
                                 'cp1070.eqiad.wmnet',
@@ -71,9 +66,6 @@ class role::cache::configuration {
                 }
             },
             'labs' => {
-                'api'    => {
-                    'eqiad' => '127.0.0.1',
-                },
                 'bits'   => {
                     'eqiad' => '127.0.0.1',
                 },
