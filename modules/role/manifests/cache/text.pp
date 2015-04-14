@@ -29,7 +29,7 @@ class role::cache::text inherits role::cache::2layer {
             'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
         },
         2 => {
-            'eqiad' => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
+            'eqiad' => hiera('::cache::text::nodes', {})['eqiad'],
         },
     }
 
@@ -114,7 +114,7 @@ class role::cache::text inherits role::cache::2layer {
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         directors       => {
-            'backend' => $role::cache::configuration::active_nodes[$::realm]['text'][$::site],
+            'backend' => hiera('::cache::text::nodes', {})[$::site],
         },
         director_type   => 'chash',
         vcl_config      => {

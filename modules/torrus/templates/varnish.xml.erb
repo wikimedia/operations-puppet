@@ -2,8 +2,7 @@
 
 <%
 def node_lists(role, site)
-	realm = @realm
-	return scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site]
+	return scope.function_hiera(["::cache::#{role}::nodes", {}])[site]
 end
 
 def varnish_nodes(role, site, template="varnish-server")

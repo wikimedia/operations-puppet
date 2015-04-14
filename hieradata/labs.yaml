@@ -9,3 +9,18 @@ ganglia_class: old
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
 statsite::instance::graphite_host: 'labmon1001.eqiad.wmnet'
+cache::text::nodes:
+    eqiad:
+      - '127.0.0.1'
+cache::upload::nodes:
+    eqiad:
+      - '127.0.0.1'
+cache::mobile::nodes:
+    eqiad:
+      - '127.0.0.1'
+cache::bits::nodes:
+    eqiad:
+      - '127.0.0.1'
+cache::parsoid::nodes:
+    eqiad:
+      - '127.0.0.1'
