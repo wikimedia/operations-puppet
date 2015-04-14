@@ -1,4 +1,8 @@
 class role::cache::text inherits role::cache::2layer {
+
+    $text_nodes = hiera('::cache::text::nodes', {})
+    $local_text_nodes = $text_nodes[$::site]
+
     if $::realm == 'production' {
         $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
     }
@@ -29,7 +33,7 @@ class role::cache::text inherits role::cache::2layer {
             'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
         },
         2 => {
-            'eqiad' => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
+            'eqiad' => $text_nodes['eqiad'],
         },
     }
 
@@ -114,7 +118,7 @@ class role::cache::text inherits role::cache::2layer {
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         directors       => {
-            'backend' => $role::cache::configuration::active_nodes[$::realm]['text'][$::site],
+            'backend' => $local_text_nodes,
         },
         director_type   => 'chash',
         vcl_config      => {
