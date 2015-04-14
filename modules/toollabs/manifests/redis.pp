@@ -64,4 +64,6 @@ class toollabs::redis (
     diamond::collector { 'Redis':
         require => Class['::redis::client::python']
     }
+
+    Package['python-virtualenv']
 }
