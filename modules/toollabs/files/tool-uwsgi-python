@@ -8,12 +8,13 @@ import portgrabber
 pwd_entry = pwd.getpwuid(os.getuid())  # Use uid as reserved port for eacht ool
 TOOL = re.sub(r'^tools.', '', pwd_entry.pw_name) # Tool users are of form tools.TOOLNAME
 
-PORT = os.getuid()
+# Attempt to get an open port
+port = portgrabber.get_open_port()
 
 args = [
     '/usr/bin/uwsgi',
     '--plugin', 'python',
-    '--http-socket', ':' + str(PORT),
+    '--http-socket', ':' + str(port),
     '--chdir', os.path.expanduser('~/www/python/src'),
     '--logto', os.path.expanduser('~/uwsgi.log'),
     '--callable', 'app',
@@ -32,6 +33,6 @@ if os.path.exists(os.path.expanduser('~/www/python/uwsgi.ini')):
 
 # Connect to the proxylistener instances on the web proxies and notify
 # them where requests for the tool need to be routed to.
-portgrabber.register(PORT)
+portgrabber.register(port)
 
 os.execv('/usr/bin/uwsgi', args)

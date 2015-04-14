@@ -8,19 +8,17 @@ import pwd
 
 import portgrabber
 
-pwd_entry = pwd.getpwuid(os.getuid())  # Use uid as reserved port for each tool
-TOOL = re.sub(r'^tools.', '', pwd_entry.pw_name) # Tool users are of form tools.TOOLNAME
-
-PORT = os.getuid()
+# Attempt to get an open port
+port = portgrabber.get_open_port()
 
 # Connect to the proxylistener instances on the web proxies and notify
 # them where requests for the tool need to be routed to.
-portgrabber.register(PORT)
+portgrabber.register(port)
 
 os.chdir(os.path.expanduser('~/www/js'))
 
 # Pass in all of our parent environment too
 # npm doesn't like it too much if you give it an almost empty environment
-os.environ['TOOL_WEB_PORT'] = str(PORT)
+os.environ['TOOL_WEB_PORT'] = str(port)
 
 os.execv('/usr/bin/npm', ['/usr/bin/npm', 'start'])
