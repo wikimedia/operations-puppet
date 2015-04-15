@@ -29,10 +29,6 @@ end
 <%= varnish_rpn('text', 'eqiad', dual=true) %>
 		</param>
 
-		<param name="expr-Varnish_api_eqiad">
-<%= varnish_rpn('api', 'eqiad') %>
-		</param>
-
 		<param name="expr-Varnish_bits_eqiad">
 <%= varnish_rpn('bits', 'eqiad') %>
 		</param>
@@ -47,10 +43,6 @@ end
 
 		<param name="expr-Varnish_text_esams">
 <%= varnish_rpn('text', 'esams', dual=true) %>
-		</param>
-
-		<param name="expr-Varnish_api_esams">
-<%= varnish_rpn('api', 'esams') %>
 		</param>
 
 		<param name="expr-Varnish_bits_esams">
@@ -293,7 +285,7 @@ end
 				<param name="vertical-label" value="requests/s"/>
 				<param name="graph-lower-limit" value="0"/>
 				
-				<param name="ds-expr-text-eqiad" value="%expr-Varnish_text_eqiad%,%expr-Varnish_api_eqiad%,-"/>
+				<param name="ds-expr-text-eqiad" value="%expr-Varnish_text_eqiad%"/>
 				<param name="graph-legend-text-eqiad" value="text.eqiad"/>
 				<param name="line-style-text-eqiad" value="LINE2"/>
 				<param name="line-color-text-eqiad" value="##text-eqiad"/>
