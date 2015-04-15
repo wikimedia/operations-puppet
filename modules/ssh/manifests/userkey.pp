@@ -55,7 +55,7 @@ define ssh::userkey(
     if $skey {
         if !defined(File["/etc/ssh/userkeys/${user}.d/"]) {
             file { "/etc/ssh/userkeys/${user}.d/":
-                ensure  => $directory,
+                ensure  => directory,
                 force   => true,
                 owner   => 'root',
                 group   => 'root',
