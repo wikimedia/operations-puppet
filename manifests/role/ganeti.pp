@@ -61,7 +61,7 @@ class role::ganeti {
         }
 
         # Ganeti confd provides a HA and fast way to query cluster configuration
-        ferm::service { 'ganeti_noded_cluster':
+        ferm::service { 'ganeti_confd_cluster':
             proto  => 'udp',
             port   => 1814,
             srange => "@resolv(($ganeti_ferm_nodes))",
@@ -72,7 +72,7 @@ class role::ganeti {
         }
 
         # Ganeti mond is the monitoring daemon. Data is available via port 1815
-        ferm::service { 'ganeti_noded_cluster':
+        ferm::service { 'ganeti_mond_cluster':
             proto  => 'tcp',
             port   => 1815,
             srange => "@resolv(($ganeti_ferm_nodes))",
