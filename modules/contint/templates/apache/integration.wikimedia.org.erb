@@ -19,6 +19,8 @@
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule (.) https://integration.wikimedia.org%{REQUEST_URI} [R=301]
 
+    Redirect 301 /monitoring/ https://tools.wmflabs.org/nagf/?project=integration
+
     Header always merge Vary X-Forwarded-Proto
 
     Include *_proxy
