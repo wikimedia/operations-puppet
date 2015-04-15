@@ -1,11 +1,10 @@
-title   "network errors/drops, all interfaces"
+title   "udp errors/drops, all interfaces"
 vtitle  "packets/s"
-area    :first
 
-field :tx, :color => "green",
-               :alias => "tx",
-               :data  => "sumSeries(servers.graphite1001.network.*.tx_errors, servers.graphite1001.network.*.tx_drop)"
+field :rx_err, :color => "green",
+               :alias => "rx errors",
+               :data  => "sumSeries(servers.graphite1001.udp.InErrors, servers.graphite1001.udp.NoPorts, servers.graphite1001.udp.RcvbufErrors)"
 
-field :rx, :color => "blue",
-               :alias => "rx",
-               :data  => "sumSeries(servers.graphite1001.network.*.rx_errors, servers.graphite1001.network.*.rx_drop)"
+field :rx_dgram, :color => "blue",
+               :alias => "rx datagrams",
+               :data  => "servers.graphite1001.udp.InDatagrams"
