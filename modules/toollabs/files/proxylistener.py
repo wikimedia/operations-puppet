@@ -97,12 +97,12 @@ class RouteRequestHandler(SocketServer.StreamRequestHandler):
 
         command = self.rfile.readline().strip()
         route = self.rfile.readline().strip()
+        red = redis.Redis()  # Always connect to localhost
 
         if command == 'register':
             destination = self.rfile.readline().strip()
             logging.log(logging.INFO, "Received request from %s for %s to %s", toolname, route, destination)
 
-            red = redis.Redis()  # Always connect to localhost
             red.hset(redis_key, route, destination)
             logging.log(logging.DEBUG, "Set redis key %s with key/value %s:%s", redis_key, route, destination)
             self.request.send('ok')
