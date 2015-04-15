@@ -2,8 +2,8 @@ class puppetmaster::certmanager(
     $remote_cert_cleaner=""
 ){
     user { 'certmanager':
-        home       => '/var/lib/puppet',
-        managehome => false,
+        home       => '/home/certmanager',
+        managehome => true,
         system     => true,
     }
 
