@@ -49,7 +49,7 @@ class role::salt::masters::labs {
 
     if ! defined(Class['puppetmaster::certmanager']) {
         class { 'puppetmaster::certmanager':
-            remote_cert_cleaner => $novaconfig['designate_hostname'],
+            remote_cert_cleaner => $novaconfig['designate_ip'],
         }
     }
 }
