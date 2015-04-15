@@ -19,7 +19,9 @@ class role::statsdlb {
     }
 
     class { '::txstatsd::decommission': }
-    class { '::statsite': }
+    class { '::statsite':
+        graphite_host => 'localhost',
+    }
 
     # statsite backends
     statsite::instance { '8126':
