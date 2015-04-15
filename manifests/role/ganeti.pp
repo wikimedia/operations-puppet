@@ -6,8 +6,9 @@ class role::ganeti {
     # Ganeti needs intracluster SSH root access
     ssh::userkey { 'root-ganeti':
         ensure => present,
+        user   => 'root',
         skey   => 'ganeti',
-        source => 'puppet:///ganeti/id_dsa.pub',
+        source => 'puppet:///files/ganeti/id_dsa.pub',
     }
 
     # And the private key
@@ -24,7 +25,7 @@ class role::ganeti {
         owner  => 'root',
         group  => 'root',
         mode   => '0400',
-        source => 'puppet:///ganeti/id_dsa.pub',
+        source => 'puppet:///files/ganeti/id_dsa.pub',
     }
 
     # If ganeti_cluster fact is not defined, the node has not been added to a
