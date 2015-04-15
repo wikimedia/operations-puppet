@@ -164,11 +164,11 @@ auth_tcp = "sasl"
 
 # Override the default server key file path
 #
-key_file = "/var/lib/nova/virt-star.<%= site %>.wmnet.key"
+key_file = "/var/lib/nova/<%= certname %>.key"
 
 # Override the default server certificate file path
 #
-cert_file = "/etc/ssl/localcerts/virt-star.<%= site %>.wmnet.crt"
+cert_file = "/etc/ssl/localcerts/<%= certname %>.crt"
 
 # Override the default CA certificate path
 #
