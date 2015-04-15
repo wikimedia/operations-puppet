@@ -88,10 +88,16 @@ class role::designate::server {
         rule => "saddr (${wikitech} ${horizon} ${controller}) proto tcp dport (9001) ACCEPT;",
     }
 
+    file { '/var/lib/designate/.ssh/':
+        ensure  => directory,
+        owner   => 'designate',
+        group   => 'designate',
+    }
+
     file { '/var/lib/designate/.ssh/id_rsa':
             owner   => 'designate',
             group   => 'designate',
             mode    => '0400',
-            source => 'puppet:///private/ssh/puppet_cert_manager/cert_manager'
+            source  => 'puppet:///private/ssh/puppet_cert_manager/cert_manager'
     }
 }
