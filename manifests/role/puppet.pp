@@ -37,7 +37,7 @@ class role::puppet::server::labs {
 
     if ! defined(Class['puppetmaster::certmanager']) {
         class { 'puppetmaster::certmanager':
-            remote_cert_cleaner => $novaconfig['designate_ip'],
+            remote_cert_cleaner => $novaconfig['designate_hostname'],
         }
     }
 }

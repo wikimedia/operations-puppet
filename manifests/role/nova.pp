@@ -59,11 +59,11 @@ class role::nova::config::eqiad inherits role::nova::config::common {
             default => $nova_controller_hostname,
         }
     }
-    $designate_ip = $::realm ? {
-        'production' => '208.80.154.12',
+    $designate_hostname = $::realm ? {
+        'production' => 'holmium.wikimedia.org',
         'labs'       => $nova_controller_hostname ? {
             undef   => $::ipaddress_eth0,
-            default => $nova_controller_ip,
+            default => $nova_controller_hostname,
         }
     }
     $controller_address = $::realm ? {
@@ -75,11 +75,12 @@ class role::nova::config::eqiad inherits role::nova::config::common {
     }
 
     $eqiadnovaconfig = {
-        db_host     => $controller_hostname,
-        dhcp_domain => 'eqiad.wmflabs',
-        glance_host => $controller_hostname,
-        rabbit_host => $controller_hostname,
-        cc_host     => $controller_hostname,
+        db_host            => $controller_hostname,
+        dhcp_domain        => 'eqiad.wmflabs',
+        glance_host        => $controller_hostname,
+        rabbit_host        => $controller_hostname,
+        cc_host            => $controller_hostname,
+        designate_hostname => $designate_hostname,
         network_flat_interface => $::realm ? {
             'production' => 'eth1.1102',
             'labs'       => 'eth0.1118',
