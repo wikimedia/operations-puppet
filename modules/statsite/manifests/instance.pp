@@ -21,7 +21,7 @@
 
 define statsite::instance(
     $port              = 8125,
-    $graphite_host     = hiera('statsite::instance::graphite_host','graphite-in.eqiad.wmnet'),
+    $graphite_host     = hiera('statsite::instance::graphite_host', 'localhost'),
     $graphite_port     = hiera('statsite::instance::graphite_port', 2003),
     $input_counter     = "statsd.${::hostname}.received",
     $extended_counters = hiera('statsite::instance::extended_counters', 1),
