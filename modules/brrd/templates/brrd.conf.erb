@@ -1,6 +1,5 @@
-# brrd
-
-description "NavigationTiming RRD logger"
+# Upstart job definition for brrd, an RRD metric logger.
+description "RRD metric logger"
 
 start on (local-filesystems and net-device-up IFACE!=lo)
 
@@ -11,7 +10,7 @@ respawn
 respawn limit unlimited
 
 chdir /srv/deployment/brrd/brrd
-exec /srv/deployment/brrd/brrd/brrd-run \
+exec /usr/bin/python -m brrd            \
     --log-file "/var/log/brrd/brrd.log" \
     "<%= @endpoint %>"                  \
     "/var/lib/brrd/navtiming.rrd"
