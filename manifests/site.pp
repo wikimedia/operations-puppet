@@ -1091,7 +1091,7 @@ node 'graphite1001.eqiad.wmnet' {
 node 'graphite1002.eqiad.wmnet' {
     include standard
     include role::graphite::production
-    include role::txstatsd
+    include role::statsdlb
     include role::gdash
 }
 
@@ -1099,7 +1099,7 @@ node 'graphite1002.eqiad.wmnet' {
 node 'graphite2001.codfw.wmnet' {
     include standard
     include role::graphite::production
-    include role::txstatsd
+    include role::statsdlb
     include role::gdash
 }
 
