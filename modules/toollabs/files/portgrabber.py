@@ -35,7 +35,6 @@ def register(port):
                 sys.stderr.write('port registration failed!')
                 sys.exit(-1)
         finally:
-            sock.shutdown()
             sock.close()
 
 
@@ -51,5 +50,4 @@ def unregister():
                 sys.stderr.write('port unregistration failed!')
                 sys.exit(-1)
         finally:
-            sock.shutdown()
             sock.close()
