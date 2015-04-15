@@ -1,6 +1,7 @@
 #
 # RESTBase
 #
+cluster: restbase
 restbase::seeds:
     - restbase1001.eqiad.wmnet
     - restbase1002.eqiad.wmnet
