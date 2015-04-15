@@ -5,6 +5,7 @@
 class dsh::config (
     $group_source = 'puppet:///modules/dsh/group',
     $scap_proxies = [],
+    $mediawiki_installation = [],
 ){
     file { '/etc/dsh':
         ensure => directory,
@@ -18,6 +19,13 @@ class dsh::config (
         mode    => '0444',
         source  => $group_source,
         recurse => true,
+    }
+
+    file { '/etc/dsh/group/mediawiki-installation':
+        content => join($mediawiki_installation, '\n') ,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     file { '/etc/dsh/group/scap-proxies':
