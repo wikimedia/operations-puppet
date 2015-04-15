@@ -76,10 +76,8 @@ class RouteRequestHandler(SocketServer.StreamRequestHandler):
     Handles incoming connections from clients asking for routes.
     """
     def handle(self):
-        route = self.rfile.readline().strip()
-        destination = self.rfile.readline().strip()
-        user = get_remote_user(self.client_address[0], self.client_address[1], PORT)
 
+        user = get_remote_user(self.client_address[0], self.client_address[1], PORT)
         # For some reason the identd response gave us an error, or failed otherwise
         # This should usually not happen, so we'll just ask folks to 'Contact an administrator'
         if user is None:
@@ -97,19 +95,27 @@ class RouteRequestHandler(SocketServer.StreamRequestHandler):
 
         redis_key = "prefix:%s" % toolname
 
-        logging.log(logging.INFO, "Received request from %s for %s to %s", toolname, route, destination)
+        command = self.rfile.readline().strip()
+        route = self.rfile.readline().strip()
 
-        red = redis.Redis()  # Always connect to localhost
-        red.hset(redis_key, route, destination)
-        logging.log(logging.DEBUG, "Set redis key %s with key/value %s:%s", redis_key, route, destination)
+        if command == 'register':
+            destination = self.rfile.readline().strip()
+            logging.log(logging.INFO, "Received request from %s for %s to %s", toolname, route, destination)
 
-        while self.request.recv(1) != '':
-            pass
+            red = redis.Redis()  # Always connect to localhost
+            red.hset(redis_key, route, destination)
+            logging.log(logging.DEBUG, "Set redis key %s with key/value %s:%s", redis_key, route, destination)
+            self.request.send('ok')
 
-        logging.log(logging.INFO, "Cleaning up request from %s for %s to %s", toolname, route, destination)
+        elif command == 'unregister':
+            logging.log(logging.INFO, "Cleaning up request from %s", toolname, route, destination)
 
-        red.hdel(redis_key, route)
-        logging.log(logging.DEBUG, "Removed redis key %s with key/value %s:%s", redis_key, route, destination)
+            red.hdel(redis_key, route)
+            logging.log(logging.DEBUG, "Removed redis key %s with key/value %s:%s", redis_key, route, destination)
+            self.request.send('ok')
+        else:
+            logging.log(logging.ERROR, "Unknown command received: %s", command)
+            self.request.send('fail')
 
         self.request.close()
 
