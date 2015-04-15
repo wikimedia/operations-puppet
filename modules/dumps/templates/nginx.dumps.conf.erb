@@ -25,4 +25,15 @@ server {
 
    rewrite ^/other/(iOS|PlayBook|win8|android)(|/.*)$ $scheme://releases.wikimedia.org/mobile/$1$2  break;
    rewrite ^/(other/)?mediawiki(|/.*)$                $scheme://releases.wikimedia.org/mediawiki$2 break;
+
+   # for now we proxy for html (openzim style) dumps
+   location /htmldumps {
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $remote_addr;
+      proxy_pass http://francium.eqiad.wmnet;
+      limit_rate 8192k;
+      limit_rate_after 1m;
+      limit_conn addr 5;
+   }
 }
