@@ -41,19 +41,19 @@ class role::ganeti {
         ferm::service { 'ganeti_ssh_cluster':
             proto  => 'tcp',
             port   => 'ssh',
-            srange => "@resolv(($ganeti_ferm_nodes))",
+            srange => "@resolve(($ganeti_ferm_nodes))",
         }
         # RAPI is the API of ganeti
         ferm::service { 'ganeti_rapi_cluster':
             proto  => 'tcp',
             port   => 5080,
-            srange => "@resolv($ganeti_ferm_nodes))",
+            srange => "@resolve(($ganeti_ferm_nodes))",
         }
         # Ganeti noded is responsible for all cluster/node actions
         ferm::service { 'ganeti_noded_cluster':
             proto  => 'tcp',
             port   => 1811,
-            srange => "@resolv(($ganeti_ferm_nodes))",
+            srange => "@resolve(($ganeti_ferm_nodes))",
         }
         nrpe::monitor_service{ 'ganeti-noded':
             description  => 'ganeti-noded running',
@@ -64,7 +64,7 @@ class role::ganeti {
         ferm::service { 'ganeti_confd_cluster':
             proto  => 'udp',
             port   => 1814,
-            srange => "@resolv(($ganeti_ferm_nodes))",
+            srange => "@resolve(($ganeti_ferm_nodes))",
         }
         nrpe::monitor_service{ 'ganeti-confd':
             description  => 'ganeti-confd running',
@@ -75,7 +75,7 @@ class role::ganeti {
         ferm::service { 'ganeti_mond_cluster':
             proto  => 'tcp',
             port   => 1815,
-            srange => "@resolv(($ganeti_ferm_nodes))",
+            srange => "@resolve(($ganeti_ferm_nodes))",
         }
         nrpe::monitor_service{ 'ganeti-mond':
             description  => 'ganeti-mond running',
