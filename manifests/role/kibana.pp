@@ -53,7 +53,7 @@ class role::kibana {
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ]
-        $auth_realm    = 'WMF Labs (use wiki login name not shell)'
+        $auth_realm    = 'WMF Labs (use wiki login name not shell) - nda/ops/wmf'
         $apache_auth   = template('kibana/apache-auth-ldap.erb')
     }
     $es_host = '127.0.0.1'
