@@ -12,7 +12,7 @@ class role::ishmael {
         ldap_binddn   => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
         ldap_authurl  => 'ldaps://ldap-eqiad.wikimedia.org ldap-codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn',
         ldap_groups   => [ 'cn=ops,ou=groups,dc=wikimedia,dc=org', 'cn=wmf,ou=groups,dc=wikimedia,dc=org', 'cn=nda,ou=groups,dc=wikimedia,dc=org' ],
-        auth_name     => 'WMF Labs (use wiki login name not shell)',
+        auth_name     => 'WMF Labs (use wiki login name not shell) - nda/ops/wmf',
     }
 
 }

@@ -18,7 +18,7 @@ class role::tendril {
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ],
-        auth_name    => 'WMF Labs (use wiki login name not shell)',
+        auth_name    => 'WMF Labs (use wiki login name not shell) - nda/ops/wmf',
     }
 
 }
