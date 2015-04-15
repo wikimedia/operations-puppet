@@ -44,6 +44,12 @@ class role::salt::masters::labs {
         salt_reactor_options => { 'puppet_server' => 'virt1000.wikimedia.org' },
     }
 
+    include role::nova::config
+    $novaconfig = $role::nova::config::novaconfig
+
+    class { 'puppetmaster::certmanager':
+        remote_cert_cleaner => $novaconfig['designate_hostname'],
+    }
 }
 
 # A salt master manages minions within a project
