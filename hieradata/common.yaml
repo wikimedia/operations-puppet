@@ -259,3 +259,10 @@ ganglia_clusters:
     sites:
       eqiad:
         - plutonium.wikimedia.org
+  restbase:
+    name: "Restbase"
+    id: 48
+    sites:
+      eqiad:
+        - restbase1001.eqiad.wmnet
+        - restbase1006.eqiad.wmnet
