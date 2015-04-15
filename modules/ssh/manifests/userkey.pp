@@ -23,6 +23,12 @@
 #   Path to file containing configuration directives. Undefined by
 #   default. Mutually exclusive with 'content'.
 #
+# [*skey*]
+#   If defined, a supplemental key for a user will be defined. The key will be
+#   stored in a file named ${user}.d/skey. ${user.d} will be created as well if
+#   it is not already defined. You probably don't want to use this for most
+#   cases.
+#
 # === Examples
 #
 #  ssh::userkey { 'john'
@@ -30,10 +36,10 @@
 #    source => 'puppet:///files/admin/ssh/john-rsa',
 #  }
 #
-
 define ssh::userkey(
   $ensure  = present,
   $user    = $title,
+  $skey    = undef,
   $source  = undef,
   $content = undef,
 
@@ -46,7 +52,22 @@ define ssh::userkey(
         fail('"source" and "content" are mutually exclusive')
     }
 
-    file { "/etc/ssh/userkeys/${user}":
+    if $skey {
+        if !defined(File["/etc/ssh/userkeys/${user}.d/"]) {
+            file { "/etc/ssh/userkeys/${user}.d/":
+                ensure  => $directory,
+                force   => true,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0755',
+            }
+        }
+        $path = "/etc/ssh/userkeys/${user}.d/${skey}"
+    } else {
+        $path = "/etc/ssh/userkeys/${user}"
+    }
+
+    file { $path:
         ensure  => $ensure,
         force   => true,
         owner   => 'root',
