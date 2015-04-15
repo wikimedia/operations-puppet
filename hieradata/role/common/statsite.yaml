@@ -1,0 +1,1 @@
+statsite::instance::graphite_host: 'graphite-in.eqiad.wmnet'
