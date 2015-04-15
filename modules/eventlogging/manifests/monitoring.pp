@@ -41,28 +41,28 @@ class eventlogging::monitoring {
 # of incoming events.
 class eventlogging::monitoring::graphite {
 
-    # Warn if 15% of overall event throughput goes beyond 500 events/s
+    # Warn if 15% of overall event throughput goes beyond 30000 events/min
     # in a 15 min period
     # These thresholds are somewhat arbtirary at this point, but it
-    # was seen that the current setup can handle 500 events/s.
+    # was seen that the current setup can handle 30000 events/min.
     # Better thresholds are pending (see T86244).
     monitoring::graphite_threshold { 'eventlogging_throughput':
         description     => 'Throughput of event logging events',
-        metric          => 'eventlogging.overall.raw.rate',
-        warning         => 500,
-        critical        => 600,
+        metric          => 'eventlogging.overall.raw',
+        warning         => 30000,
+        critical        => 36000,
         percentage      => 15, # At least 3 of the 15 readings
         from            => '15min',
         contact_group   => 'analytics'
     }
 
-    # Alarms if 15% of Navigation Timing event throughput goes under 1 req/sec
+    # Alarms if 15% of Navigation Timing event throughput goes under 60 req/min
     # in a 15 min period
     # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
     monitoring::graphite_threshold { 'eventlogging_NavigationTiming_throughput':
         description     => 'Throughput of event logging NavigationTiming events',
-        metric          => 'eventlogging.schema.NavigationTiming.rate',
-        warning         => 1,
+        metric          => 'eventlogging.schema.NavigationTiming',
+        warning         => 60,
         critical        => 0,
         percentage      => 15, # At least 3 of the 15 readings
         from            => '15min',
@@ -82,9 +82,9 @@ class eventlogging::monitoring::graphite {
     # characteristic that is worth alerting on.
     monitoring::graphite_threshold { 'eventlogging_difference_raw_validated':
         description   => 'Difference between raw and validated EventLogging overall message rates',
-        metric        => 'movingAverage(diffSeries(eventlogging.overall.raw.rate,eventlogging.overall.valid.rate),10)',
-        warning       => 20,
-        critical      => 30,
+        metric        => 'movingAverage(diffSeries(eventlogging.overall.raw,eventlogging.overall.valid),10)',
+        warning       => 1200,
+        critical      => 1800,
         percentage    => 15, # At least 3 of the 15 readings
         from          => '15min',
         contact_group => 'analytics',
