@@ -24,3 +24,10 @@ cache::bits::nodes:
 cache::parsoid::nodes:
     eqiad:
       - '127.0.0.1'
+role::cache::base::cluster_tier: 'one'
+role::cache::base::default_backend: 'backend'
+role::cache::base::purge_host_only_upload_re: '^upload\.beta\.wmflabs\.org$'
+role::cache::base::purge_host_not_upload_re: '^(?!upload\.beta\.wmflabs\.org)'
+role::cache::2layer::storage_parts:
+  - vdb
+  - vdb
