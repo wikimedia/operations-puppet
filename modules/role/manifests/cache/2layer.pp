@@ -1,5 +1,7 @@
 # Ancestor class for common resources of 2-layer clusters
-class role::cache::2layer inherits role::cache::base {
+class role::cache::2layer {
+    include role::cache::base
+
     # Any changes here will affect all descendent Varnish clusters
     # unless they're overridden!
 

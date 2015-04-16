@@ -32,12 +32,12 @@ class role::cache::upload inherits role::cache::2layer {
         }
     }
 
-    $default_backend = $cluster_tier ? {
+    $default_backend = $::role::cache::base::cluster_tier ? {
         1       => 'backend',
         default => 'eqiad',
     }
 
-    if $cluster_tier == 1 {
+    if $::role::cache::base::cluster_tier == 1 {
         $director_retries = 2
     } else {
         $director_retries = $backend_weight_avg * 4
@@ -46,11 +46,11 @@ class role::cache::upload inherits role::cache::2layer {
     include standard
     include nrpe
 
-    $storage_partitions = $::realm ? {
+    $::role::cache::base::storage_partitions = $::realm ? {
         'production' => ['sda3', 'sdb3'],
         'labs' => ['vdb']
     }
-    varnish::setup_filesystem{ $storage_partitions:
+    varnish::setup_filesystem{ $::role::cache::base::storage_partitions:
         before => Varnish::Instance['upload-backend'],
     }
 
@@ -94,7 +94,7 @@ class role::cache::upload inherits role::cache::2layer {
         'labs'       => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_up}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_up}G,$mma1 -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
     }
 
-    $director_type_cluster = $cluster_tier ? {
+    $director_type_cluster = $::role::cache::base::cluster_tier ? {
         1       => 'random',
         default => 'chash',
     }
@@ -106,7 +106,7 @@ class role::cache::upload inherits role::cache::2layer {
         admin_port         => 6083,
         runtime_parameters => $runtime_params,
         storage            => $storage_conf,
-        directors          => $varnish_be_directors[$cluster_tier],
+        directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
         director_type      => $director_type_cluster,
         director_options   => {
             'retries' => $director_retries,
@@ -115,10 +115,10 @@ class role::cache::upload inherits role::cache::2layer {
             'default_backend'  => $default_backend,
             'retry5xx'         => 0,
             'cache4xx'         => '1m',
-            'purge_host_regex' => $purge_host_only_upload_re,
-            'cluster_tier'     => $cluster_tier,
+            'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
+            'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'backend',
-            'ssl_proxies'      => $wikimedia_networks,
+            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options    => array_concat($backend_scaled_weights, [
             {
@@ -135,7 +135,7 @@ class role::cache::upload inherits role::cache::2layer {
             },
         ]),
         cluster_options    => $cluster_options,
-        wikimedia_networks => $wikimedia_networks,
+        wikimedia_networks => $::role::cache::base::wikimedia_networks,
     }
 
     varnish::instance { 'upload-frontend':
@@ -151,10 +151,10 @@ class role::cache::upload inherits role::cache::2layer {
         vcl_config      => {
             'retry5xx'         => 0,
             'cache4xx'         => '1m',
-            'purge_host_regex' => $purge_host_only_upload_re,
-            'cluster_tier'     => $cluster_tier,
+            'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
+            'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'frontend',
-            'ssl_proxies'      => $wikimedia_networks,
+            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options => array_concat($backend_scaled_weights, [
             {

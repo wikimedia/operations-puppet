@@ -17,11 +17,11 @@ class role::cache::parsoid inherits role::cache::2layer {
     include standard
     include nrpe
 
-    $storage_partitions = $::realm ? {
+    $::role::cache::base::storage_partitions = $::realm ? {
         'production' => ['sda3', 'sdb3'],
         'labs'       => ['vdb'],
     }
-    varnish::setup_filesystem{ $storage_partitions:
+    varnish::setup_filesystem{ $::role::cache::base::storage_partitions:
         before => Varnish::Instance['parsoid-backend'],
     }
 
@@ -51,7 +51,7 @@ class role::cache::parsoid inherits role::cache::2layer {
         },
         vcl_config       => {
             'retry5xx'    => 1,
-            'ssl_proxies' => $wikimedia_networks,
+            'ssl_proxies' => $::role::cache::base::wikimedia_networks,
         },
         backend_options  => [
             {
@@ -97,7 +97,7 @@ class role::cache::parsoid inherits role::cache::2layer {
         },
         vcl_config      => {
             'retry5xx'    => 0,
-            'ssl_proxies' => $wikimedia_networks,
+            'ssl_proxies' => $::role::cache::base::wikimedia_networks,
         },
         backend_options => array_concat($backend_scaled_weights, [
             {
