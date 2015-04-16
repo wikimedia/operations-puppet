@@ -471,6 +471,43 @@ class role::ci::slave::labs {
         ]
     }
 
+    # Put the mysql-server db on tmpfs
+
+    exec { 'create-var-lib-mysql-mountpoint':
+        creates => '/var/lib/mysql',
+        command => '/bin/mkdir -p /var/lib/mysql',
+    }
+
+    mount { '/var/lib/mysql':
+        ensure  => mounted,
+        atboot  => true,
+        device  => 'none',
+        fstype  => 'tmpfs',
+        options => 'defaults',
+        require => Exec['create-var-lib-mysql-mountpoint'],
+    }
+
+    file { '/var/lib/mysql':
+        ensure  => directory,
+        owner   => 'mysql',
+        group   => 'mysql',
+        mode    => '0775',
+        require => Mount['/var/lib/mysql'],
+    }
+
+    exec { 'create-mysql-datadir':
+        path    => '/bin:/usr/bin',
+        creates => '/var/lib/mysql/.created',
+        command => 'mysql_install_db --user=mysql --datadir=/var/lib/mysql && touch /var/lib/mysql/.created',
+        require => [ File['/var/lib/mysql'], Package['mysql-server'] ],
+    }
+
+    service { 'mysql-server':
+        ensure   => running,
+        enable   => manual,
+        requires => Exec['create-mysql-datadir'],
+    }
+
 }
 
 
