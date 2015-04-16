@@ -4856,7 +4856,7 @@ host mw2127 {
 }
 
 host mw2128 {
-	hardware ethernet 90:B1:1C:27:84:B8;
+	hardware ethernet F0:1F:AF:CF:FA:9E;
 	fixed-address mw2128.codfw.wmnet;
 }
 
