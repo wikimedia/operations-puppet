@@ -22,9 +22,9 @@ class role::diamond {
         keep_logs_for => $keep_logs_for,
         service       => $service,
         settings      => {
-            enabled     => 'true',
-            host        => $host,
-            port        => '8125',
+            enabled => 'true',
+            host    => $host,
+            port    => '8125',
         },
     }
 }

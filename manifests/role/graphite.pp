@@ -46,17 +46,17 @@ class role::graphite::base(
 
         # Aggregation methods for whisper files.
         storage_aggregation => {
-            'min' => {
+            'min'   => {
                 pattern           => '\.min$',
                 xFilesFactor      => 0.1,
                 aggregationMethod => 'min',
             },
-            'max' => {
+            'max'   => {
                 pattern           => '\.max$',
                 xFilesFactor      => 0.1,
                 aggregationMethod => 'max',
             },
-            'sum' => {
+            'sum'   => {
                 pattern           => '\.count$',
                 xFilesFactor      => 0,
                 aggregationMethod => 'sum',
@@ -218,7 +218,7 @@ class role::graphite::base(
 class role::graphite::production {
     class { 'role::graphite::base':
         storage_dir => '/var/lib/carbon',
-        auth => true,
+        auth        => true,
     }
 
     include role::backup::host
