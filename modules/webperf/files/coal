@@ -198,7 +198,8 @@ class SlidingWindow(object):
     def current_value(self):
         """Returns a copy of the list of items in the window."""
         self.prune()
-        return self.aggregate(value for timestamp, value in self.heap)
+        values = [value for timestamp, value in self.heap]
+        return self.aggregate(values)
 
 
 if __name__ == '__main__':
