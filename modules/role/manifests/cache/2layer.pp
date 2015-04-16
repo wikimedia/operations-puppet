@@ -1,5 +1,7 @@
 # To be included by all concrete 2layer cache roles
-class role::cache::2layer {
+class role::cache::2layer(
+    $storage_parts
+) {
     include role::cache::base
 
     # Ganglia monitoring
@@ -72,12 +74,6 @@ class role::cache::2layer {
         '0x580000000000',
         '0x5C0000000000',
     ]
-
-    # Everything else relies on length-two arrays here!
-    $storage_parts = $::realm ? {
-        production => [ 'sda3', 'sdb3' ],
-        labs => [ 'vdb', 'vdb' ],
-    }
 
     $filesystems = unique($storage_parts)
     varnish::setup_filesystem { $filesystems: }
