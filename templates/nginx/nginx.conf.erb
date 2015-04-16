@@ -56,7 +56,7 @@ http {
 <% if realm == 'labs' then -%>
     # On labs nginx find a CPU cache size of 32 bytes which is
     # not enough to hold the keys defined by mime types.
-    # See bug 48210
+    # See T50210
     types_hash_bucket_size 64;
     server_names_hash_bucket_size 64;
 <% end -%>

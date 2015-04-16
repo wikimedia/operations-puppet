@@ -114,13 +114,13 @@ sub Load {
     # Show a link to the plain text email with headers, from zoom
     $Self->{'Ticket::Frontend::PlainView'} = 1;
 
-    # Responses in a drop-down list (bug 17251)
+    # Responses in a drop-down list (T19251)
     $Self->{'Ticket::Frontend::StdResponsesMode'} = 'Form';
 
-    # Ticket watching (bug 17280)
+    # Ticket watching (T19280)
     $Self->{'Ticket::Watcher'} = 1;
 
-    # Per-agent statistics (bug 17820)
+    # Per-agent statistics (T19820)
     $Self->{'Stats::UseAgentElementInStats'} = 1;
 
     # added with 3.2.9 upgrade

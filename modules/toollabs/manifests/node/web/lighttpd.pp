@@ -18,7 +18,7 @@ class toollabs::node::web::lighttpd inherits toollabs::node::web {
 
     package { [
         'lighttpd',
-        'lighttpd-mod-magnet',        #Bug 68614
+        'lighttpd-mod-magnet',        #T70614
         ]:
         ensure  => latest,
         require => File['/var/run/lighttpd'],

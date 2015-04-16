@@ -121,7 +121,7 @@ class role::gerrit {
                 # Instead let the default replication happen and perform the rename
                 # on GitHub. This to avoid having duplicate repos on GitHub with
                 # their own Stars, Pull requests, Issues etc. as well as duplicate
-                # results in Code Search. See bug 68054.
+                # results in Code Search. See T70054.
             }
         }
     }

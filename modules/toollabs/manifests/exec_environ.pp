@@ -24,10 +24,10 @@ class toollabs::exec_environ {
     package { [
         # Please keep all packages in each group sorted in alphabetical order
 
-        # Locales (Bug 58500)
+        # Locales (T60500)
         'language-pack-ar',
         'language-pack-bn',
-        'language-pack-ca',            # Bugs #62269, #66721.
+        'language-pack-ca',            # T64269, T68721
         'language-pack-de',
         'language-pack-en',
         'language-pack-es',
@@ -39,17 +39,17 @@ class toollabs::exec_environ {
         'language-pack-pa',
         'language-pack-pt',
         'language-pack-ru',
-        'language-pack-uk',            # Bug 60730.
+        'language-pack-uk',            # T62730.
         'language-pack-zh-hans',
         'language-pack-zh-hant',
 
         # Language Runtimes
-        'gcj-jre',                     # Bug 56995
+        'gcj-jre',                     # T58995
         'golang',
         'luarocks',
         'mono-complete',
-        'mono-fastcgi-server',         # Bug T85142
-        'npm',                         # Bug T1102
+        'mono-fastcgi-server',         # T85142
+        'npm',                         # T1102
         'nodejs',
         'openjdk-7-jre-headless',
         'python3',
@@ -58,11 +58,11 @@ class toollabs::exec_environ {
         'tcl8.6',
 
         # Perl libraries
-        'libberkeleydb-perl',          # Bug 58785
+        'libberkeleydb-perl',          # T60785
         'libbot-basicbot-perl',
-        'libbsd-resource-perl',        # Bug 54690.
+        'libbsd-resource-perl',        # T56690.
         'libcache-memcached-fast-perl',
-        'libcgi-fast-perl',            # Bug 68269.
+        'libcgi-fast-perl',            # T70269.
         'libclass-data-inheritable-perl',
         'libcommon-sense-perl',
         'libcrypt-gcrypt-perl',
@@ -73,19 +73,19 @@ class toollabs::exec_environ {
         'libdatetime-format-duration-perl',
         'libdatetime-format-strptime-perl',
         'libdbd-mysql-perl',
-        'libdbd-sqlite2-perl',         # Bug 56995
+        'libdbd-sqlite2-perl',         # T58995
         'libdbd-sqlite3-perl',
         'libdbi-perl',
         'libdigest-crc-perl',
         'libdigest-hmac-perl',
         'libfile-nfslock-perl',
-        'libgd-gd2-perl',              # Bug 67199.
+        'libgd-gd2-perl',              # T69199.
         'libhtml-format-perl',
         'libhtml-html5-entities-perl',
         'libhtml-parser-perl',
-        'libhtml-template-perl',       # Bug 57123
+        'libhtml-template-perl',       # T59123
         'libhttp-message-perl',
-        'libimage-exiftool-perl',      # Bug #53868.
+        'libimage-exiftool-perl',      # T55868.
         'libio-socket-ssl-perl',
         'libipc-run-perl',
         'libirc-utils-perl',
@@ -100,7 +100,7 @@ class toollabs::exec_environ {
         'libnet-ssleay-perl',
         'libnetaddr-ip-perl',
         'libobject-pluggable-perl',
-        'libparse-mediawikidump-perl', #T76976
+        'libparse-mediawikidump-perl', # T76976
         'libpod-simple-wiki-perl',
         'libpoe-component-irc-perl',
         'libpoe-component-syndicator-perl',
@@ -114,14 +114,14 @@ class toollabs::exec_environ {
         'libstring-diff-perl',
         'libtask-weaken-perl',
         'libtest-exception-perl',      # For Checkwiki.
-        'libtext-diff-perl',           # Bug 58744
+        'libtext-diff-perl',           # T60744
         'libthreads-perl',
         'libthreads-shared-perl',
         'libtime-local-perl',
         'libtimedate-perl',
         'liburi-encode-perl',
         'liburi-perl',
-        'libwww-mechanize-perl',       # Bug 57118
+        'libwww-mechanize-perl',       # T59118
         'libwww-perl',
         'libxml-libxml-perl',
         'libxml-parser-perl',
@@ -130,9 +130,9 @@ class toollabs::exec_environ {
 
         # Python libraries
         'python-apport',
-        'python-babel',                # Bug 58220
+        'python-babel',                # T60220
         'python-beautifulsoup',        # For valhallasw.
-        'python-bottle',               # Bug 56995
+        'python-bottle',               # T58995
         'python-celery',
         'python-celery-with-redis',
         'python-egenix-mxdatetime',
@@ -140,13 +140,13 @@ class toollabs::exec_environ {
         'python-flask',
         'python-flask-login',
         'python-flask-oauth',
-        'python-flickrapi',            # Bug T86015
+        'python-flickrapi',            # T86015
         'python-flup',
         'python-gdal',
         'python-gdbm',
-        'python-genshi',               # Bug #48863.
-        'python-genshi-doc',           # Bug #48863.
-        'python-geoip',                # Bug 62649
+        'python-genshi',               # T50863.
+        'python-genshi-doc',           # T50863.
+        'python-geoip',                # T64649
         'python-gevent',
         'python-gi',
         'python-greenlet',
@@ -155,10 +155,10 @@ class toollabs::exec_environ {
         'python-irclib',
         'python-keyring',
         'python-launchpadlib',
-        'python-lxml',                 # Bug #59083.
-        'python-magic',                # Bug #60211.
-        'python-matplotlib',           # Bug #61445.
-        'python-mwparserfromhell',     # Bug #63539
+        'python-lxml',                 # T61083.
+        'python-magic',                # T62211.
+        'python-matplotlib',           # T63445.
+        'python-mwparserfromhell',     # T65539
         'python-mysql.connector',
         'python-mysqldb',
         'python-newt',
@@ -166,42 +166,42 @@ class toollabs::exec_environ {
         'python-opencv',
         'python-oursql',               # For danilo et al.
         'python-problem-report',
-        'python-pycountry',            # Bug T86015
-        'python-pydot',                # Bug T86015
-        'python-pyexiv2',              # Bug 59122.
-        'python-pygments',             # Bug 69050
-        'python-pyinotify',            # Bug 57003
+        'python-pycountry',            # T86015
+        'python-pydot',                # T86015
+        'python-pyexiv2',              # T61122.
+        'python-pygments',             # T71050
+        'python-pyinotify',            # T59003
         'python-requests',
-        'python-rsvg',                 # Bug 56996
+        'python-rsvg',                 # T58996
         'python-scipy',
         'python-sh',
-        'python-socketio-client',      # Bug T86015
+        'python-socketio-client',      # T86015
         'python-sqlalchemy',
-        'python-svn',                  # Bug 56996
+        'python-svn',                  # T58996
         'python-twisted',
         'python-twitter',
-        'python-unicodecsv',           # Bug T86015
-        'python-unittest2',            # Bug T86015
+        'python-unicodecsv',           # T86015
+        'python-unittest2',            # T86015
         'python-virtualenv',
         'python-wadllib',
         'python-webpy',
         'python-werkzeug',
         'python-wikitools',
-        'python-zbar',                 # Bug 56996
+        'python-zbar',                 # T58996
         'python-zmq',
 
         # PHP libraries
         'php5-cli',
         'php5-curl',
         'php5-gd',
-        'php5-imagick',                # Bug 69078.
-        'php5-intl',                   # Bug 55652
+        'php5-imagick',                # T71078.
+        'php5-intl',                   # T57652
         'php5-mcrypt',
         'php5-mysql',
         'php5-pgsql',                  # For access to OSM db
         'php5-redis',
         'php5-sqlite',
-        'php5-xdebug',                 # Bug 70313
+        'php5-xdebug',                 # T72313
         'php5-xsl',
 
         # Fonts for vCat tool.
@@ -210,14 +210,14 @@ class toollabs::exec_environ {
 
         # tcl packages
         'mysqltcl',
-        'tcl-tls',                     # Bug 56995
-        'tcl-trf',                     # Bug 56995
+        'tcl-tls',                     # T58995
+        'tcl-trf',                     # T58995
         'tclcurl',
         'tcllib',
         'tclthread',
-        'tdom',                        # Bug 56995
+        'tdom',                        # T58995
 
-        # Tesseract OCR (bug #65354).
+        # Tesseract OCR (T67354).
         'tesseract-ocr',
         'tesseract-ocr-afr',
         'tesseract-ocr-ara',
@@ -288,39 +288,39 @@ class toollabs::exec_environ {
 
         # Other packages
         'adminbot',
-        'bison',                       # Bug #65974.
+        'bison',                       # T67974.
         'csh',                        # common user request
-        'csvtool',                     # Bug 58649
+        'csvtool',                     # T60649
         'dc',
-        'djvulibre-bin',               # Bug 56972
-        'djvulibre-plugin',            # Bug 56972
-        'doxygen',                     # Bug 56326
-        'doxygen-latex',               # Bug 56326
+        'djvulibre-bin',               # T58972
+        'djvulibre-plugin',            # T58972
+        'doxygen',                     # T58326
+        'doxygen-latex',               # T58326
         'expect',
-        'fabric',                      # Bug #54135.
-        'gawk',                        # Bug #65974.
+        'fabric',                      # T56135.
+        'gawk',                        # T67974.
         'gdal-bin',
         'git',
-        'git-review',                  # Bug 62871.
+        'git-review',                  # T64871.
         'git-svn',
         'gnuplot-nox',
-        'graphicsmagick',              # Bug 56995
+        'graphicsmagick',              # T58995
         'graphviz',
-        'imagemagick',                 # Bug 63000
+        'imagemagick',                 # T65000
         'iotop',                       # useful for labs admins to monitor tools
-        'jq',                          # Bug #65049.
+        'jq',                          # T67049.
         'ksh',
-        'libaio1',                     # Bug 68615
-        'libav-tools',                 # Bug #53870.
-        'libdmtx0a',                   # Bug #53867.
-        'libfcgi0ldbl',                # Bug 56995
-        'libffi-dev',                  # Bug #65974.
+        'libaio1',                     # T70615
+        'libav-tools',                 # T55870.
+        'libdmtx0a',                   # T55867.
+        'libfcgi0ldbl',                # T58995
+        'libffi-dev',                  # T67974.
         'libfreetype6',
-        'libgdbm-dev',                 # Bug #65974.
-        'libgeoip1',                   # Bug 62649
-        'libjpeg-turbo-progs',         # Bug 59654.
+        'libgdbm-dev',                 # T67974.
+        'libgeoip1',                   # T64649
+        'libjpeg-turbo-progs',         # T61654.
         'libmpfr4',
-        'libncurses5-dev',             # Bug #65974.
+        'libncurses5-dev',             # T67974.
         'libneon27-gnutls',
         'libnfnetlink0',
         'libnspr4',
@@ -329,37 +329,37 @@ class toollabs::exec_environ {
         'libotf0',
         'libpcsclite1',
         'libpng3',
-        'libproj0',                    # Bug 56995
+        'libproj0',                    # T58995
         'libquadmath0',
-        'librsvg2-bin',                # Bug 58516
+        'librsvg2-bin',                # T60516
         'libsvn1',
         'libvips-tools',
-        'libxml2-utils',               # Bug 62944.
-        'libyaml-dev',                 # Bug #65974.
-        'libzbar0',                    # Bug 56996
+        'libxml2-utils',               # T64944.
+        'libyaml-dev',                 # T67974.
+        'libzbar0',                    # T58996
         'mariadb-client',              # For /usr/bin/mysql.
-        'mdbtools',                    # Bug #48805.
-        'melt',                        # Bug #69365
-        'openbabel',                   # Bug #66995
+        'mdbtools',                    # T50805.
+        'melt',                        # T71365
+        'openbabel',                   # T68995
         'p7zip-full',                  # requested by Betacommand and danilo to decompress 7z files
-        'pdf2svg',                     # Bug #68092.
-        'pdftk',                       # Bug #65048.
-        'phantomjs',                   # Bug #66928
+        'pdf2svg',                     # T70092.
+        'pdftk',                       # T67048.
+        'phantomjs',                   # T68928
         'phpunit',
-        'poppler-utils',               # Bug #53869.
-        'postgis',                     # Bug T76226
+        'poppler-utils',               # T55869.
+        'postgis',                     # T76226
         'postgresql-client',
-        'pstoedit',                    # Bug 57000
-        'rrdtool',                     # Bug 57004
-        'socat',                       # Bug 57005
-        'supybot',                     # Bug 61088.
-        'tabix',                       # Bug 61501
-        'texinfo',                     # Bug #56994
+        'pstoedit',                    # T59000
+        'rrdtool',                     # T59004
+        'socat',                       # T59005
+        'supybot',                     # T63088.
+        'tabix',                       # T63501
+        'texinfo',                     # T58994
         'texlive',
-        'ufraw-batch',                 # Bug 57008
-        'xsltproc',                    # Bug #66962.
-        'zbar-tools',                  # Bug 56996
-        'zsh',                         # Bug 56995
+        'ufraw-batch',                 # T59008
+        'xsltproc',                    # T68962.
+        'zbar-tools',                  # T58996
+        'zsh',                         # T58995
         ]:
         ensure => latest,
     }
@@ -378,9 +378,9 @@ class toollabs::exec_environ {
     if $::lsbdistcodename == 'precise' {
         package { [
             'libboost-python1.48.0',
-            'libgdal1-1.7.0',              # Bug 56995
+            'libgdal1-1.7.0',              # T58995
             'libmpc2',
-            'libprotobuf7',                # Bug 56995
+            'libprotobuf7',                # T58995
             'libvips15',
             # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
             ]:
@@ -389,12 +389,12 @@ class toollabs::exec_environ {
     } elsif $::lsbdistcodename == 'trusty' {
         # No obvious package available for libgdal
         package { [
-            'hhvm',                        # Bug T78783
+            'hhvm',                        # T78783
             'libboost-python1.54.0',
             'libmpc3',
             'libprotobuf8',
             'libvips37',
-            'nodejs-legacy',               # Bug T1102
+            'nodejs-legacy',               # T1102
             ]:
             ensure => latest,
         }
