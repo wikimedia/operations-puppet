@@ -10,6 +10,8 @@ class Hiera
         answer = nil
         Hiera.debug("Looking up #{key}")
 
+        key.gsub!(/^::/,'')
+
         Backend.datasources(scope, order_override) do |source|
           # Small hack: - we don't want to search any datasource but the
           # labs/%{::instanceproject} hierarchy here; so we plainly exit
