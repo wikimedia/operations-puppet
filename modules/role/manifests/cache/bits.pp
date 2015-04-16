@@ -1,4 +1,5 @@
-class role::cache::bits inherits role::cache::1layer {
+class role::cache::bits {
+    include role::cache::1layer
 
     if $::realm == 'production' {
         include role::cache::ssl::sni
@@ -25,7 +26,7 @@ class role::cache::bits inherits role::cache::1layer {
         }
     }
 
-    $probe = $cluster_tier ? {
+    $probe = $::role::cache::base::cluster_tier ? {
         1       => 'bits',
         default => 'varnish',
     }
@@ -65,16 +66,16 @@ class role::cache::bits inherits role::cache::1layer {
         port            => 80,
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
-        directors       => $varnish_directors[$cluster_tier],
+        directors       => $varnish_directors[$::role::cache::base::cluster_tier],
         director_type   => 'random',
         vcl_config      => {
             'default_backend' => $default_backend,
             'retry503'        => 4,
             'retry5xx'        => 1,
             'cache4xx'        => '1m',
-            'cluster_tier'    => $cluster_tier,
+            'cluster_tier'    => $::role::cache::base::cluster_tier,
             'layer'           => 'frontend',
-            'ssl_proxies'     => $wikimedia_networks,
+            'ssl_proxies'     => $::role::cache::base::wikimedia_networks,
         },
         backend_options => {
             'port'                  => 80,
