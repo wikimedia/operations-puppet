@@ -11,5 +11,5 @@
 ACCT_ENABLE="1"
 
 # Amount of days that the logs are kept.
-# Labs instances /var is quite small, keep less records (bug 69604).
+# Labs instances /var is quite small, keep less records (T71604).
 ACCT_LOGGING="7"

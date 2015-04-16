@@ -163,7 +163,7 @@ class _WMFRewriteContext(WSGIContext):
     def handle_request(self, env, start_response):
         req = webob.Request(env)
 
-        # Double (or triple, etc.) slashes in the URL should be ignored; collapse them. fixes bug 32864
+        # Double (or triple, etc.) slashes in the URL should be ignored; collapse them. fixes T34864
         req.path_info = re.sub(r'/{2,}', '/', req.path_info)
 
         # Keep a copy of the original request so we can ask the scalers for it
