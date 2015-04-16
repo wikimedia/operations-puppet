@@ -51,6 +51,7 @@ class role::designate::config::eqiad inherits role::designate::config {
         pdns_db_host           => $pdns_db_host,
         auth_uri               => $auth_uri,
         rabbit_host            => $controller_hostname,
+        controller_hostname    => $controller_hostname,
         keystone_admin_token   => $keystoneconfig['admin_token'],
         keystone_auth_host     => $keystoneconfig['bind_ip'],
         keystone_auth_protocol => $keystoneconfig['auth_protocol'],
