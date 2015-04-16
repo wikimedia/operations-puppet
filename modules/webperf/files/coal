@@ -77,13 +77,20 @@ class WhisperLogger(object):
 
         for signum in (signal.SIGALRM, signal.SIGINT):
             signal.signal(signum, self.handle_signal)
-        signal.setitimer(signal.ITIMER_REAL, 20, 20)
+
+        # Accumulate a full WINDOW_SPAN's worth of samples before the first
+        # update. After that, update every UPDATE_INTERVAL seconds.
+        signal.setitimer(signal.ITIMER_REAL, WINDOW_SPAN, UPDATE_INTERVAL)
 
         self.log.info('entering main loop')
         while 1:
             try:
                 meta = conn.recv_json()
             except KeyboardInterrupt:
+                # PyZMQ 13.0.x raises EINTR as KeyboardInterrupt.
+                # See <https://github.com/zeromq/pyzmq/pull/338>.
+                # To work around this, we set a flag in a SIGINT handler.
+                # The flag lets us distinguish "real" CTRL-C from EINTR.
                 if self.kill_switch.is_set():
                     self.log.info('terminating on ctrl-c')
                     sys.exit(0)
@@ -121,7 +128,7 @@ class WhisperLogger(object):
 
     def get_logger(self):
         """Get a logging.Logger instance for this application."""
-        logger = logging.getLogger('brrd')
+        logger = logging.getLogger('coal')
         handlers = [logging.StreamHandler(stream=sys.stderr)]
         if self.args.log_file:
             handlers.append(logging.handlers.RotatingFileHandler(
@@ -136,6 +143,9 @@ class WhisperLogger(object):
 
     def handle_signal(self, signum, frame):
         if signum == signal.SIGINT:
+            # Set the kill switch, so the try / except block in the main loop
+            # knows that the KeyboardInterrupt exception is real and not an
+            # EINTR from zmq (see <https://github.com/zeromq/pyzmq/pull/338>).
             self.kill_switch.set()
         elif signum == signal.SIGALRM:
             self.flush_data()
