@@ -16,6 +16,7 @@ class toollabs::bastion(
 
     include gridengine::submit_host,
             gridengine::admin_host,
+            ldap::role::config::labs,
             toollabs::exec_environ,
             toollabs::dev_environ
 
