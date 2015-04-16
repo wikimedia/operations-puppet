@@ -1,4 +1,5 @@
-class role::cache::misc inherits role::cache::1layer {
+class role::cache::misc {
+    include role::cache::1layer
 
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site],

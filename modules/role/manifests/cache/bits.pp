@@ -1,4 +1,5 @@
-class role::cache::bits inherits role::cache::1layer {
+class role::cache::bits {
+    include role::cache::1layer
 
     if $::realm == 'production' {
         include role::cache::ssl::sni
