@@ -48,10 +48,10 @@
 #
 
 # Shop redirects
-funnel	shop.wikipedia.org	//shop.wikimedia.org
-funnel	store.wikipedia.org	//shop.wikimedia.org
-funnel	shop.wikipedia.com	//shop.wikimedia.org
-funnel	store.wikipedia.com	//shop.wikimedia.org
+funnel	shop.wikimedia.org	//store.wikimedia.org
+funnel	shop.wikipedia.org	//store.wikimedia.org
+funnel	shop.wikipedia.com	//store.wikimedia.org
+funnel	store.wikipedia.com	//store.wikimedia.org
 
 # Donate wiki
 rewrite	donate.mediawiki.org	https://donate.wikimedia.org
