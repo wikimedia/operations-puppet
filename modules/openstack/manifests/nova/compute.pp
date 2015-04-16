@@ -7,8 +7,10 @@ class openstack::nova::compute(
     if ( $::realm == 'production' ) {
         if ($::hostname =~ /^labvirt/) {
             $certname = "labvirt-star.${site}.wmnet"
+            $ca_target = '/etc/ssl/certs/wmf_ca_2014_2017.pem',
         } else {
             $certname = "virt-star.${site}.wmnet"
+            $ca_target = '/etc/ssl/certs/wmf-ca.pem',
         }
         install_certificate{ "${certname}": }
 
@@ -30,7 +32,7 @@ class openstack::nova::compute(
         }
         file { '/var/lib/nova/cacert.pem':
             ensure  => link,
-            target  => '/etc/ssl/certs/wmf-ca.pem',
+            target  => $ca_target,
             require => Install_certificate["${certname}"],
         }
         file { '/var/lib/nova/.ssh':
