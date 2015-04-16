@@ -47,6 +47,7 @@ mediawiki_memcached_servers:
     - 'cv'
     - 'da'
     - 'de'
+    - 'el'
     - 'en'
     - 'eo'
     - 'es'
@@ -88,6 +89,7 @@ mediawiki_memcached_servers:
     - 'vi'
     - 'xh'
     - 'zh'
+    - 'zu'
   target:
     - 'af'
     - 'an'
@@ -99,6 +101,7 @@ mediawiki_memcached_servers:
     - 'cv'
     - 'da'
     - 'de'
+    - 'el'
     - 'eo'
     - 'es'
     - 'eu'
@@ -139,6 +142,7 @@ mediawiki_memcached_servers:
     - 'vi'
     - 'xh'
     - 'zh'
+    - 'zu'
   mt:
     Apertium:
       'bg':
