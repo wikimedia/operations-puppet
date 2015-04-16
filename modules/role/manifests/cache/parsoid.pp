@@ -1,4 +1,5 @@
-class role::cache::parsoid inherits role::cache::2layer {
+class role::cache::parsoid {
+    include role::cache::2layer
 
     $parsoid_nodes = hiera('cache::parsoid::nodes')
     $site_parsoid_nodes = $parsoid_nodes[$::site]
@@ -17,21 +18,8 @@ class role::cache::parsoid inherits role::cache::2layer {
     include standard
     include nrpe
 
-    $storage_partitions = $::realm ? {
-        'production' => ['sda3', 'sdb3'],
-        'labs'       => ['vdb'],
-    }
-    varnish::setup_filesystem{ $storage_partitions:
-        before => Varnish::Instance['parsoid-backend'],
-    }
-
     # No HTCP daemon for Parsoid; the MediaWiki extension sends PURGE requests itself
     #class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
-
-    $storage_conf = $::realm ? {
-        'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G,$mma1",
-        'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1",
-    }
 
     varnish::instance { 'parsoid-backend':
         name             => '',
@@ -39,7 +27,7 @@ class role::cache::parsoid inherits role::cache::2layer {
         extra_vcl        => ['parsoid-common'],
         port             => 3128,
         admin_port       => 6083,
-        storage          => $storage_conf,
+        storage          => $::role::cache::2layer::persistent_storage_args,
         directors        => {
             'backend'          => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
             'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
@@ -52,7 +40,7 @@ class role::cache::parsoid inherits role::cache::2layer {
         vcl_config       => {
             'retry503'    => 4,
             'retry5xx'    => 1,
-            'ssl_proxies' => $wikimedia_networks,
+            'ssl_proxies' => $::role::cache::base::wikimedia_networks,
         },
         backend_options  => [
             {
@@ -94,13 +82,13 @@ class role::cache::parsoid inherits role::cache::2layer {
         },
         director_type   => 'chash',
         director_options => {
-            'retries' => $backend_weight_avg * size($site_parsoid_nodes),
+            'retries' => $::role::cache::2layer::backend_weight_avg * size($site_parsoid_nodes),
         },
         vcl_config      => {
             'retry5xx'    => 0,
-            'ssl_proxies' => $wikimedia_networks,
+            'ssl_proxies' => $::role::cache::base::wikimedia_networks,
         },
-        backend_options => array_concat($backend_scaled_weights, [
+        backend_options => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'backend_match'         => '^cxserver',
                 'port'                  => 8080,
