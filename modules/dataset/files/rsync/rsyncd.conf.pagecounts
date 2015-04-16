@@ -3,7 +3,7 @@
 #####################################################################
 
 # write access from stat1002 and stat1003 to pagecounts-ez directory.
-# Erik Z uses this.  See RT 2162.
+# Erik Z uses this.  See T80444.
 [pagecounts-ez]
 uid = datasets
 gid = wikidev

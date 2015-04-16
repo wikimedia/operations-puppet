@@ -148,7 +148,7 @@ class role::phabricator::main {
         alt_host    => $altdom,
     }
 
-    # community metrics mail (RT #3962, T1003)
+    # community metrics mail (T81784, T1003)
     phabricator::logmail {'communitymetrics':
         script_name  => 'community_metrics.sh',
         rcpt_address => 'communitymetrics@wikimedia.org',

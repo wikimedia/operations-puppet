@@ -5,7 +5,7 @@
 # some misbehaved spiders out there that go _way_ too fast. If you're
 # irresponsible, your access to the site may be blocked.
 #
-# (RT 6689) - cleanup wikitech's robot.txt
+# (T83428) - cleanup wikitech's robot.txt
 # ! THIS IS THE LABS robots.txt and handled by puppet now !
 # see operations/puppet/modules/openstack/wikitech-robots.txt
 #

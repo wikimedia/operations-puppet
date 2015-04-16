@@ -43,7 +43,7 @@ class redis (
 
     if os_version('ubuntu >= trusty || debian >= jessie') {
         # Upon a config change, Redis will be restarted
-        # if it's listening on localhost only, see RT 7583
+        # if it's listening on localhost only, see T83956
         exec { 'Restart redis if needed':
             command     => '/usr/sbin/service redis-server restart',
             unless      => '/bin/netstat -lp | /bin/grep redis | /usr/bin/awk \'{print $4}\' | /bin/grep -v localhost 2> /dev/null',

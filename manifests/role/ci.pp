@@ -6,7 +6,7 @@
 # CI specific requirements such as having workspace on a SSD device and Jenkins
 # monitoring.
 #
-# CI test server as per RT #1204
+# CI test server as per T79623
 class role::ci::master {
 
     system::role { 'role::ci::master': description => 'CI Jenkins master' }

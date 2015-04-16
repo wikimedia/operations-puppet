@@ -44,7 +44,7 @@ class mediawiki::packages::fonts {
         'xfonts-base',
         'xfonts-mplus',
         'xfonts-scalable',
-        'fonts-sil-nuosusil',        # RT 6500
+        'fonts-sil-nuosusil',        # T83288
         'culmus',                    # Bug 38946
         'culmus-fancy',              # Bug 38946
         'fonts-lklug-sinhala',       # Bug 55462

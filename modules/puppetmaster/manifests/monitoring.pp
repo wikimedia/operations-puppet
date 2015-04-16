@@ -20,6 +20,6 @@ class puppetmaster::monitoring ($server_type = $::puppetmaster::server_type) {
     }
 
     # Check for unmerged changes that have been sitting for more than one minute.
-    # ref: RT #1658, #7427
+    # ref: T80100, T83854
     monitoring::icinga::git_merge { 'puppet': }
 }

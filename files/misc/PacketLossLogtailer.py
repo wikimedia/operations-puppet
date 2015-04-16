@@ -63,7 +63,7 @@ class PacketLossLogtailer(object):
                 role = self.determine_role(linebits['server'])
                 # store for 90th % and average calculations
                 # on ssl servers, sequence numbers are out of order.
-                # http://rt.wikimedia.org/Ticket/Display.html?id=1616
+                # T79967
                 if((margin <= 20) and (percentloss <= 98)):
                     self.percentloss_dict.setdefault(role, [])
                     self.percentloss_dict[role].append(percentloss)

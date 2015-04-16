@@ -35,7 +35,7 @@ class statistics::compute {
         'sqlite3', # For storing and interacting with intermediate results
         'libgdal1-dev', # Requested by lzia for rgdal
         'libproj-dev', # Requested by lzia for rgdal
-        'libbz2-dev', # for compiling some python libs.  RT 8278
+        'libbz2-dev', # for compiling some python libs. T84378
         'libboost-regex-dev',  # Ironholds wants these
         'libboost-system-dev',
         'libyaml-cpp0.3',
@@ -68,8 +68,8 @@ class statistics::compute {
         'python-netaddr',
         'python-virtualenv', # T84378
         # Aaron Halfaker (halfak) wants python{,3}-dev environments for module oursql
-        'python-dev',  # RT 6561
-        'python3-dev', # RT 6561
+        'python-dev',  # T83316
+        'python3-dev', # T83316
     ])
 
     # FORTRAN packages (T89414)
@@ -92,7 +92,7 @@ class statistics::compute {
 
     # clones mediawiki core at $working_path/mediawiki/core
     # and ensures that it is at the latest revision.
-    # RT 2162
+    # T80444
     $statistics_mediawiki_directory = "${::statistics::working_path}/mediawiki/core"
 
     git::clone { 'statistics_mediawiki':
