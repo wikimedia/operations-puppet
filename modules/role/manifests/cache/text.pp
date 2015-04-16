@@ -1,6 +1,6 @@
 class role::cache::text inherits role::cache::2layer {
 
-    $text_nodes = hiera('::cache::text::nodes')
+    $text_nodes = hiera('cache::text::nodes')
     $site_text_nodes = $text_nodes[$::site]
 
     if $::realm == 'production' {
