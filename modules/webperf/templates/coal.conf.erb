@@ -1,0 +1,16 @@
+# Upstart job definition for coal
+
+description "Navigation Timing Whisper logger"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+
+setuid webperf
+setgid webperf
+
+respawn
+respawn limit unlimited
+
+exec /srv/webperf/coal                  \
+    --log-file "/var/log/coal/coal.log" \
+    --whisper-path "/var/lib/coal"      \
+    "<%= @endpoint %>"
