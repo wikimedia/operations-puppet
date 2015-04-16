@@ -19,7 +19,7 @@ pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> <%= log_direc
 
 <%
 # find mobile host names and build a regex on which to grep.
-mobile_nodes = scope.function_hiera(['::cache::mobile::nodes'])
+mobile_nodes = scope.function_hiera(['cache::mobile::nodes'])
 mobile_nodes_regex = '(' + mobile_nodes.values.flatten.sort.join('|') + ')'
 -%>
 

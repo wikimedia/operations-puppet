@@ -2,7 +2,7 @@
 
 <%
 def node_list(role, site)
-        role_nodes = scope.function_hiera(["::cache::#{role}::nodes"])
+        role_nodes = scope.function_hiera(["cache::#{role}::nodes"])
         return role_nodes[site]
 end
 
@@ -22,9 +22,9 @@ end
 	<creator-info>
 		Puppet class torrus::xml_generation::cdn
 	</creator-info>
-	
+
 	<datasources>
-		
+
 		<param name="expr-Varnish_text_eqiad">
 <%= varnish_rpn('text', 'eqiad', dual=true) %>
 		</param>
@@ -60,23 +60,23 @@ end
 		<template name="varnish-cluster">
 			<param name="ds-type" value="rrd-file"/>
 			<param name="precedence" value="1000"/>
-			
+
 			<leaf name="Client_requests">
 				<param name="varnishmetric" value="Clients/client_req"/>
-		
+
 				<param name="leaf-type" value="rrd-cdef"/>
 				<param name="rpn-expr" value="%expr-Varnish%,0,1000000,LIMIT"/>
-		
+
 				<param name="line-style" value="AREA"/>
 				<param name="line-color" value="##%cluster%-%site%"/>
 			</leaf>
-			
+
 			<leaf name="Backend_requests">
 				<param name="varnishmetric" value="Backends/backend_req"/>
-				
+
 				<param name="leaf-type" value="rrd-cdef"/>
 				<param name="rpn-expr" value="%expr-Varnish%"/>
-				
+
 				<param name="line-style" value="LINE2"/>
 				<param name="line-color" value="##%cluster%-%site%"/>
 			</leaf>
@@ -85,7 +85,7 @@ end
 		<template name="varnish-dual-layer-cluster">
 			<param name="ds-type" value="rrd-file"/>
 			<param name="precedence" value="1000"/>
-			
+
 			<leaf name="Client_requests">
 				<param name="varnishmetric" value="Clients/client_req"/>
 				<param name="layer" value="frontend"/>
@@ -96,14 +96,14 @@ end
 				<param name="line-style" value="AREA"/>
 				<param name="line-color" value="##%cluster%-%site%"/>
 			</leaf>
-			
+
 			<leaf name="Backend_requests">
 				<param name="varnishmetric" value="Backends/backend_req"/>
 				<param name="layer" value="backend"/>
-				
+
 				<param name="leaf-type" value="rrd-cdef"/>
 				<param name="rpn-expr" value="%expr-Varnish%"/>
-				
+
 				<param name="line-style" value="LINE2"/>
 				<param name="line-color" value="##%cluster%-%site%"/>
 			</leaf>
@@ -112,16 +112,16 @@ end
 		<subtree name="Varnish">
 			<param name="sumfunc" value="ADDNAN"/>
 			<param name="sumsep" value=""/>
-			
+
 			<subtree name="eqiad">
 				<param name="site" value="eqiad"/>
-				
+
 				<subtree name="bits">
 					<param name="cluster" value="bits"/>
-					
+
 					<subtree name="Totals">
 						<param name="expr-Varnish" value="%expr-Varnish_bits_eqiad%"/>
-						
+
 						<apply-template name="varnish-cluster"/>
 					</subtree>
 				</subtree>
@@ -131,50 +131,50 @@ end
 
 					<subtree name="Totals">
 						<param name="expr-Varnish" value="%expr-Varnish_upload_eqiad%"/>
-						
+
 						<apply-template name="varnish-dual-layer-cluster"/>
 					</subtree>
 				</subtree>
 
 				<subtree name="mobile">
 					<param name="cluster" value="mobile"/>
-					
+
 					<subtree name="Totals">
 						<param name="expr-Varnish" value="%expr-Varnish_mobile_eqiad%"/>
-						
+
 						<apply-template name="varnish-dual-layer-cluster"/>
 					</subtree>
 				</subtree>
 
 			</subtree>
-			
+
 			<subtree name="esams">
 				<param name="site" value="esams"/>
-				
+
 				<subtree name="bits">
 					<param name="cluster" value="bits"/>
-					
+
 					<subtree name="Totals">
 						<param name="expr-Varnish" value="%expr-Varnish_bits_esams%"/>
-						
+
 						<apply-template name="varnish-cluster"/>
 					</subtree>
 				</subtree>
 			</subtree>
-			
+
 			<subtree name="Totals">
 				<param name="ds-type" value="rrd-file"/>
-		
+
 				<subtree name="bits">
 					<leaf name="Client_requests">
 						<param name="varnishmetric" value="Clients/client_req"/>
-			
+
 						<param name="ds-type" value="rrd-multigraph"/>
 						<param name="ds-names" value="eqiad,esams"/>
 						<param name="comment" value="Total client requests"/>
 						<param name="vertical-label" value="requests/s"/>
 						<param name="graph-lower-limit" value="0"/>
-				
+
 						<param name="ds-expr-eqiad" value="%expr-Varnish_bits_eqiad%,0,1000000,LIMIT"/>
 						<param name="graph-legend-eqiad" value="eqiad"/>
 						<param name="line-style-eqiad" value="AREA"/>
@@ -192,23 +192,23 @@ end
 				</subtree>
 			</subtree>
 		</subtree>
-		
+
 		<subtree name="Totals">
 			<param name="sumfunc" value="ADDNAN"/>
 			<param name="sumsep" value=""/>
 			<param name="ds-type" value="rrd-file"/>
-			
+
 			<param name="precedence" value="1000"/>
 			<param name="default-subtree-view" value="overview-dir-html"/>
 			<param name="rrdgraph-views">
 	                last24h-small,lasth24h,lastweek,lastmonth,lastyear
 	        </param>
-		
+
 			<leaf name="All_client_requests">
 				<param name="varnishmetric" value="Usage/HTTP_requests"/>
 				<param name="layer" value="frontend"/>
 				<param name="varnishmetric" value="Clients/client_req"/>
-				
+
 				<param name="ds-type" value="rrd-multigraph"/>
 				<param name="ds-names" value="text-eqiad,bits-eqiad,upload-eqiad,mobile-eqiad,text-esams,bits-esams,upload-esams,total"/>
 				<param name="comment" value="Total of all client requests"/>
@@ -278,13 +278,13 @@ end
 				<param name="varnishmetric" value="Usage/Server_side_HTTP_requests"/>
 				<param name="layer" value="backend"/>
 				<param name="varnishmetric" value="Backends/backend_req"/>
-				
+
 				<param name="ds-type" value="rrd-multigraph"/>
 				<param name="ds-names" value="text-eqiad,bits-eqiad,upload-eqiad,mobile-eqiad"/>
 				<param name="comment" value="All backend requests"/>
 				<param name="vertical-label" value="requests/s"/>
 				<param name="graph-lower-limit" value="0"/>
-				
+
 				<param name="ds-expr-text-eqiad" value="%expr-Varnish_text_eqiad%"/>
 				<param name="graph-legend-text-eqiad" value="text.eqiad"/>
 				<param name="line-style-text-eqiad" value="LINE2"/>
@@ -309,11 +309,11 @@ end
 				<param name="line-color-mobile-eqiad" value="##mobile-eqiad"/>
 				<param name="line-order-mobile-eqiad" value="8"/>
 
-				<param name="precedence" value="999"/>	
+				<param name="precedence" value="999"/>
 			</leaf>
 		</subtree>
 	</datasources>
-	
+
 	<views>
 	  	<view name="overview-dir-html">
 	    	<param name="view-type"     value="html" />
@@ -323,13 +323,13 @@ end
 			<param name="width" value="600" />
 			<param name="height" value="300" />
 	  	</view>
-		
+
 		<view name="default-rrgraph">
 			<param name="rrd-params" value="--slope-mode"/>
-			
+
 			<param name="width" value="600" />
 			<param name="height" value="300" />
-						
+
 			<!-- Daily graph, inherits parameters from the above -->
 			<view name="last24h">
 	        	<param name="start" value="-40h" />

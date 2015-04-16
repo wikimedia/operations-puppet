@@ -1,6 +1,6 @@
 class role::cache::parsoid inherits role::cache::2layer {
 
-    $parsoid_nodes = hiera('::cache::parsoid::nodes')
+    $parsoid_nodes = hiera('cache::parsoid::nodes')
     $site_parsoid_nodes = $parsoid_nodes[$::site]
 
     if ( $::realm == 'production' ) {

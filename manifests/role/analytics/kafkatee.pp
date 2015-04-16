@@ -78,7 +78,7 @@ class role::analytics::kafkatee::webrequest::mobile inherits role::analytics::ka
 
     # Include this to infer mobile varnish frontend hostnames on which to filter.
     include role::cache::configuration
-    $mobile_nodes = hiera('::cache::mobile::nodes')
+    $mobile_nodes = hiera('cache::mobile::nodes')
     $mobile_nodes_regex = inline_template('(<%= @mobile_nodes.values.flatten.sort.join(\'|\') %>)')
 
     # 1/100 sampling of traffic from mobile varnishes
@@ -231,5 +231,3 @@ class role::analytics::kafkatee::input::webrequest::upload {
         offset      => 'stored',
     }
 }
-
-

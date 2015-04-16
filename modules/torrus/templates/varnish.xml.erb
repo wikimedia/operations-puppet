@@ -2,7 +2,7 @@
 
 <%
 def node_lists(role, site)
-        role_nodes = scope.function_hiera(["::cache::#{role}::nodes"])
+        role_nodes = scope.function_hiera(["cache::#{role}::nodes"])
         return role_nodes[site]
 end
 
@@ -16,7 +16,7 @@ def varnish_nodes(role, site, template="varnish-server")
 		result << "\t<apply-template name=\"wikimedia-#{template}\"/>"
 		result << "</subtree>"
 	end
-	
+
 	return result
 end
 
@@ -85,7 +85,7 @@ end
 					<%= line %>
 <% end -%>
 				</subtree>
-			
+
 				<subtree name="bits">
 					<param name="system-id" value="%hostname%"/>
 					<param name="varnishcluster" value="Bits caches eqiad"/>
@@ -95,17 +95,17 @@ end
 					<%= line %>
 <% end -%>
 				</subtree>
-			
+
 				<subtree name="upload">
 					<param name="system-id" value="%hostname%"/>
 					<param name="varnishcluster" value="Upload caches eqiad"/>
 					<param name="site" value="eqiad"/>
-					
+
 <% varnish_nodes('upload', 'eqiad', 'dual-layer-varnish-server').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
-				
+
 				<subtree name="mobile">
 					<param name="system-id" value="%hostname%"/>
 					<param name="varnishcluster" value="Mobile caches eqiad"/>
@@ -136,7 +136,7 @@ end
 <% end -%>
 				</subtree>
 			</subtree>
-			
+
 			<subtree name="esams">
 				<subtree name="text">
 					<param name="system-id" value="%hostname%"/>
@@ -147,7 +147,7 @@ end
 					<%= line %>
 <% end -%>
 				</subtree>
-			
+
 				<subtree name="bits">
 					<param name="system-id" value="%hostname%"/>
 					<param name="varnishcluster" value="Bits caches esams"/>
@@ -157,17 +157,17 @@ end
 					<%= line %>
 <% end -%>
 				</subtree>
-			
+
 				<subtree name="upload">
 					<param name="system-id" value="%hostname%"/>
 					<param name="varnishcluster" value="Upload caches esams"/>
 					<param name="site" value="esams"/>
-					
+
 <% varnish_nodes('upload', 'esams', 'dual-layer-varnish-server').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
-				
+
 				<subtree name="mobile">
 					<param name="system-id" value="%hostname%"/>
 					<param name="varnishcluster" value="Mobile caches esams"/>

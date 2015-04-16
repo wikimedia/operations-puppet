@@ -1,6 +1,6 @@
 class role::cache::mobile inherits role::cache::2layer {
 
-    $mobile_nodes = hiera('::cache::mobile::nodes')
+    $mobile_nodes = hiera('cache::mobile::nodes')
     $site_mobile_nodes = $mobile_nodes[$::site]
 
     if $::realm == 'production' {

@@ -1,6 +1,6 @@
 class role::cache::upload inherits role::cache::2layer {
 
-    $upload_nodes = hiera('::cache::upload::nodes')
+    $upload_nodes = hiera('cache::upload::nodes')
     $site_upload_nodes = $upload_nodes[$::site]
 
     if $::realm == 'production' {
