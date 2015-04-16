@@ -17,7 +17,7 @@ class role::webperf {
         statsd_host => $statsd_host,
     }
 
-    class { '::webperf::rrd_navtiming':
+    class { '::webperf::coal':
         endpoint => "tcp://${eventlogging_host}:8600",
     }
 

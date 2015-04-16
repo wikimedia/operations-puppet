@@ -1,0 +1,195 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  coal
+  ~~~~
+  Coal logs Navigation Timing metrics to Whisper files.
+
+  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+"""
+from __future__ import division
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+import argparse
+import collections
+import heapq
+import logging
+import os.path
+import signal
+import sys
+import threading
+import time
+
+import numpy
+import whisper
+import zmq
+
+
+WINDOW_SPAN = 60 * 5  # Size of sliding window, in seconds.
+UPDATE_INTERVAL = 60  # How often we log values.
+RETENTION = 525949    # How many datapoints we retain. (One year's worth.)
+METRICS = (
+    'responseStart',  # Time to user agent receiving first byte
+    'firstPaint',     # Time to initial render
+    'domComplete',    # Time to DOM Comlete event
+    'loadEventEnd',   # Time to load event completion
+)
+
+
+class WhisperLogger(object):
+
+    def __init__(self, args=None):
+        self.args = self.get_argument_parser().parse_args(args)
+        self.log = self.get_logger()
+        self.kill_switch = threading.Event()
+        self.windows = collections.defaultdict(SlidingWindow)
+
+    def get_connection(self):
+        socket = zmq.Context().socket(zmq.SUB)
+        socket.connect(self.args.endpoint)
+        socket.linger = 0
+        socket.subscribe = b''
+        return socket
+
+    def run(self):
+        self.log.info('starting up')
+        self.log.info('creating whisper files')
+        self.create_whisper_files()
+
+        self.log.info('connecting to %s', self.args.endpoint)
+        conn = self.get_connection()
+
+        for signum in (signal.SIGALRM, signal.SIGINT):
+            signal.signal(signum, self.handle_signal)
+        signal.setitimer(signal.ITIMER_REAL, 20, 20)
+
+        self.log.info('entering main loop')
+        while 1:
+            try:
+                meta = conn.recv_json()
+            except KeyboardInterrupt:
+                if self.kill_switch.is_set():
+                    self.log.info('terminating on ctrl-c')
+                    sys.exit(0)
+            if meta['schema'] == 'NavigationTiming':
+                event = meta['event']
+                for metric in METRICS:
+                    value = event.get(metric)
+                    if value:
+                        self.windows[metric].push(value)
+
+    def get_argument_parser(self):
+        parser = argparse.ArgumentParser()
+        parser.add_argument(
+            '-v', '--verbose',
+            action='store_const',
+            const=logging.DEBUG,
+            default=logging.INFO,
+            dest='log_level',
+            help='Increase verbosity of output.'
+        )
+        parser.add_argument(
+            '--log-file',
+            default=None,
+            type=os.path.abspath,
+            help='Specify a file to log output. Disabled by default.'
+        )
+        parser.add_argument(
+            '--whisper-path',
+            default=os.getcwd(),
+            type=os.path.abspath,
+            help='Path for whisper files'
+        )
+        parser.add_argument('endpoint', help='EventLogging endpoint URL')
+        return parser
+
+    def get_logger(self):
+        """Get a logging.Logger instance for this application."""
+        logger = logging.getLogger('brrd')
+        handlers = [logging.StreamHandler(stream=sys.stderr)]
+        if self.args.log_file:
+            handlers.append(logging.handlers.RotatingFileHandler(
+                self.args.log_file, backupCount=10, maxBytes=5e7))
+        formatter = logging.Formatter('[%(asctime)s] %(message)s')
+        logger.setLevel(self.args.log_level)
+        for handler in handlers:
+            handler.setFormatter(formatter)
+            handler.setLevel(logging.INFO)
+            logger.addHandler(handler)
+        return logger
+
+    def handle_signal(self, signum, frame):
+        if signum == signal.SIGINT:
+            self.kill_switch.set()
+        elif signum == signal.SIGALRM:
+            self.flush_data()
+
+    def flush_data(self):
+        """Write updates to Whisper files."""
+        while self.windows:
+            metric, window = self.windows.popitem()
+            wsp = os.path.join(self.args.whisper_path, '%s.wsp' % metric)
+            value = window.current_value()
+            whisper.update(wsp, value)
+            self.log.info('%10s - %10s', metric, value)
+
+    def create_whisper_files(self):
+        """Create Whisper file for each metric. Do nothing if file exists."""
+        for metric in METRICS:
+            wsp = os.path.join(self.args.whisper_path, '%s.wsp' % metric)
+            try:
+                whisper.create(wsp, [(UPDATE_INTERVAL, RETENTION)])
+            except whisper.InvalidConfiguration as e:
+                if 'already exists' not in e.message:
+                    raise
+            else:
+                self.log.info('Initialized empty Whisper file %s', wsp)
+
+
+class SlidingWindow(object):
+
+    def __init__(self, span=300, aggregate_func=numpy.median):
+        """Initialize. `span` is the size of the window, in seconds."""
+        self.heap = []
+        self.span = span
+        self.last_update = 0
+        self.aggregate = aggregate_func
+
+    def prune(self):
+        while self.heap and self.last_update - self.heap[0][0] > self.span:
+            heapq.heappop(self.heap)
+
+    def push(self, value, timestamp=None):
+        """Add an item to the window."""
+        if timestamp is None:
+            timestamp = time.time()
+        if timestamp > self.last_update:
+            self.last_update = timestamp
+        heapq.heappush(self.heap, (timestamp, value))
+        self.prune()
+
+    def current_value(self):
+        """Returns a copy of the list of items in the window."""
+        self.prune()
+        return self.aggregate(value for timestamp, value in self.heap)
+
+
+if __name__ == '__main__':
+    app = WhisperLogger()
+    app.run()
