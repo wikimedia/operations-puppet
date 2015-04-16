@@ -32,8 +32,6 @@ class role::cache::base {
         minute  => '*',
     }
 
-    #class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
-
     # Prod-specific performance tweaks
     if $::realm == 'production' {
         include cpufrequtils # defaults to "performance"
