@@ -1,0 +1,6 @@
+# These regexes are for optimization of PURGE traffic by having
+#   non-upload sites ignore upload purges and having upload
+#   ignore everything but upload purges via purge_host_regex
+#   in child classes where warranted.
+purge_host_only_upload_re: '^upload\.wikimedia\.org$'
+purge_host_not_upload_re: '^(?!upload\.wikimedia\.org)'
