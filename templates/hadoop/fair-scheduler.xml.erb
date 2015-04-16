@@ -7,6 +7,17 @@
     <schedulingMode>fair</schedulingMode>
   </queue>
 
+  <queue name="oozie">
+    <!--
+    The oozie queue is for oozie:launcher jobs.  These jobs
+    run only one task, and don't need many resources.
+    Trying out DRF queue for this.
+     -->
+    <weight>1.0</weight>
+    <maxRunningApps>50</maxRunningApps>
+    <schedulingMode>drf</schedulingMode>
+  </queue>
+
   <queue name="priority">
     <!--
     The priority queue is for non-adhoc jobs that should get some priority.
