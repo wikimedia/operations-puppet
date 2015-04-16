@@ -142,10 +142,9 @@ class openstack::database-server(
     cron {
         'run-jobs':
             user    => 'root',
-            hour    => 8,
-            minute  => 0,
+            minute  => 20,
             ensure  => present,
-            command => "/usr/bin/mysql $keystone_db_name -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOT DATE_SUB(CURDATE(),INTERVAL 2 DAY) <= expires;'",
+            command => "/usr/bin/mysql $keystone_db_name -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOW() - INTERVAL 2 day > expires LIMIT 10000;'",
     }
 }
 
@@ -177,7 +176,7 @@ class openstack::database-server::mysql($controller_mysql_root_pass) {
     }
 
     exec {
-        'set_root':
+        'cleanup_expired_keystone_tokens':
             onlyif  => "/usr/bin/mysql -uroot --password=''",
             command => "/usr/bin/mysql -uroot --password='' mysql < /etc/nova/mysql.sql",
             require => [Class['mysql::server::package'], File['/etc/nova/mysql.sql']];
