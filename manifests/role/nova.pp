@@ -1,5 +1,6 @@
 class role::nova::config {
     include role::nova::config::eqiad
+    include role::nova::config::codfw
 
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $novaconfig = $::openstack_site_override ? {
@@ -51,6 +52,9 @@ class role::nova::config::common {
 }
 
 class role::nova::config::codfw inherits role::nova::config::common {
+    include role::keystone::config::eqiad
+
+    $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
     $controller_hostname = $::realm ? {
         'production' => 'labcontrol2001.wikimedia.org',
         'labs'       => $nova_controller_hostname ? {
