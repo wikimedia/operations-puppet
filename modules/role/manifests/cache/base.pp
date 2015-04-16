@@ -1,5 +1,7 @@
 # Ancestor class for all Varnish clusters
-class role::cache::base {
+class role::cache::base(
+    $storage_partitions = []
+    ) {
     include lvs::configuration
     include role::cache::configuration
     include network::constants
@@ -14,11 +16,6 @@ class role::cache::base {
         $default_backend = $::mw_primary
     }
     $wikimedia_networks = flatten([$network::constants::all_networks, '127.0.0.0/8', '::1/128'])
-
-    $storage_partitions = $::realm ? {
-        'production' => ['sda3', 'sdb3'],
-        'labs'       => ['vdb'],
-    }
 
     # This seems to prevent long term memory fragmentation issues that
     #  can cause VM perf issues.  This seems to be less necessary on jessie

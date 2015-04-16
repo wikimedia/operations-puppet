@@ -24,3 +24,4 @@ cache::bits::nodes:
 cache::parsoid::nodes:
     eqiad:
       - '127.0.0.1'
+role::cache::base::storage_partitions: ['vdb']

@@ -1,8 +1,8 @@
 # Ancestor class for common resources of 2-layer clusters
-class role::cache::2layer inherits role::cache::base {
+class role::cache::2layer {
     # Any changes here will affect all descendent Varnish clusters
     # unless they're overridden!
-
+    include role::cache::base
     # This is now only used for director retries math, not for setting the
     # actual backend weights.  The math itself has been left alone, as
     # this will be close enough to approximate previous behavior before
