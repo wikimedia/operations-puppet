@@ -14,7 +14,7 @@ define contint::tmpfs(
 
   mount { $mount_point:
     ensure  => mounted,
-    device  => 'tmpfs',
+    device  => 'none',
     fstype  => 'tmpfs',
     options => "noatime,defaults,size=${size},mode=1777",
     require => File[$mount_point],
