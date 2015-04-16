@@ -55,6 +55,20 @@ class role::cache::2layer inherits role::cache::base {
         $backend_scaled_weights = [ { backend_match => '.', weight => 100 } ]
     }
 
+    # mma: mmap addrseses for fixed persistent storage on x86_64 Linux:
+    #  This scheme fits 4x fixed memory mappings of up to 4TB each
+    #  into the range 0x500000000000 - 0x5FFFFFFFFFFF, which on
+    #  x86_64 Linux is in the middle of the user address space and thus
+    #  unlikely to ever be used by normal, auto-addressed allocations,
+    #  as those grow in from the edges (typically from the top, but
+    #  possibly from the bottom depending).  Regardless of which
+    #  direction heap grows from, there's 32TB or more for normal
+    #  allocations to chew through before they reach our fixed range.
+    $mma0 = 0x500000000000
+    $mma1 = 0x540000000000
+    $mma2 = 0x580000000000
+    $mma3 = 0x5C0000000000
+
     # Ganglia monitoring
     if $::role::cache::configuration::has_ganglia{
         class { 'varnish::monitoring::ganglia':
