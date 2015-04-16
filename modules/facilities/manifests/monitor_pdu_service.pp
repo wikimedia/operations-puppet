@@ -1,5 +1,5 @@
 # definition for monitoring PDUs via SNMP
-# RT #308
+# T79062
 # TODO: Monitor infeed status
 define facilities::monitor_pdu_service(
     $host,

@@ -172,7 +172,7 @@ class role::deployment::server(
         srange => $deployable_networks,
     }
 
-    #RT 7427
+    #T83854
     ::monitoring::icinga::git_merge { 'mediawiki_config':
         dir           => '/srv/mediawiki-staging/',
         user          => 'root',

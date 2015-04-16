@@ -18,7 +18,7 @@ pipe 100 /usr/bin/udp-filter -F '\t' -p Special:BannerRandom >> <%= @template_va
 # stat1002 at /a/log/webrequest/archive/api
 pipe 100 /usr/bin/udp-filter -F '\t' -p /w/api.php >> <%= scope.lookupvar('role::logging::udp2log::erbium::webrequest_log_directory') %>/api-usage.tsv.log
 
-### GLAM NARA / National Archives - RT 2212
+### GLAM NARA / National Archives - T80417
 # This filter has been migrated to Hive. It's output is available on
 # stat1002 at /a/log/webrequest/archive/glam_nara
 pipe 10 /usr/bin/udp-filter -F '\t' -p _NARA_ -g -b country >> <%=log_directory %>/glam_nara.tsv.log

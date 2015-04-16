@@ -164,7 +164,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         # pause for almost 12 seconds for a yet unknown reason.  Upping
         # the session timeout here should give the broker enough time
         # to get back in sync with Zookeeper before it is removed from the ISR.
-        # See: https://rt.wikimedia.org/Ticket/Display.html?id=6877 (near the bottom)
+        # See T83561 (near the bottom)
         # and: http://mail-archives.apache.org/mod_mbox/kafka-users/201407.mbox/%3CCAFbh0Q2f71qgs5JDNFxkm7SSdZyYMH=ZpEOxotuEQfKqeXQHfw@mail.gmail.com%3E
         zookeeper_connection_timeout_ms => 16000,
         zookeeper_session_timeout_ms    => 16000,

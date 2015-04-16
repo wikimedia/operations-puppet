@@ -1010,7 +1010,7 @@ node 'gallium.wikimedia.org' {
     include role::ci::website
     include role::zuul::production
 
-    # gallium received a SSD drive (RT #4916) mount it
+    # gallium received a SSD drive (T82401) mount it
     file { '/srv/ssd':
         ensure => 'directory',
         owner  => 'root',
@@ -1272,7 +1272,7 @@ node 'lanthanum.eqiad.wmnet' {
 
     include standard
     include role::ci::slave
-    # lanthanum received a SSD drive just like gallium (RT #5178) mount it
+    # lanthanum received a SSD drive just like gallium (T82587) mount it
     file { '/srv/ssd':
         ensure => 'directory',
         owner  => 'root',

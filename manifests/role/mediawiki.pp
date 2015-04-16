@@ -154,7 +154,7 @@ class role::mediawiki::jobrunner {
     include ::mediawiki::jobrunner
 }
 
-# monitor the Apple dictionary bridge (RT #6128)
+# monitor the Apple dictionary bridge (T83147)
 class role::mediawiki::searchmonitor {
 
     # https://search.wikimedia.org/?lang=en&site=wikipedia&search=Wikimedia_Foundation&limit=1

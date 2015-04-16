@@ -147,7 +147,7 @@ class role::analytics::kafkatee::webrequest::api inherits role::analytics::kafka
 }
 
 # == Class role::analytics::kafkatee::webrequest::glam_nara
-# Filter for GLAM NARA / National Archives - RT 2212, sampled 1 / 10 requests.
+# Filter for GLAM NARA / National Archives - T80417, sampled 1 / 10 requests.
 #
 class role::analytics::kafkatee::webrequest::glam_nara inherits role::analytics::kafkatee::webrequest {
     include role::analytics::kafkatee::input::webrequest

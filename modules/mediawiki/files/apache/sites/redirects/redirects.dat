@@ -397,7 +397,7 @@ rewrite	bugzilla.mediawiki.org	https://bugzilla.wikimedia.org
 rewrite	*mediawiki.com	//www.mediawiki.org
 rewrite	wiki.mediawiki.org	//www.mediawiki.org
 
-# Continuous Integration RT 6593, RT 6594
+# Continuous Integration T83381, T83399
 funnel	doc.mediawiki.org	https://doc.wikimedia.org
 funnel	integration.mediawiki.org	https://integration.wikimedia.org
 
@@ -482,10 +482,10 @@ funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
 # coffee - keep for historic reasons:)
 funnel	coffee.wikimedia.org	//en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol
 
-# wikipediazero.org - RT #5039
+# wikipediazero.org - T82495
 funnel	*wikipediazero.org	//wikimediafoundation.org/wiki/Wikipedia_Zero
 
-# wikimediastories.com/net/org - RT #4942
+# wikimediastories.com/net/org - T82390
 funnel	*wikimediastories.com	//wikimediafoundation.org/wiki/Thank_You_All
 funnel	*wikimediastories.net	//wikimediafoundation.org/wiki/Thank_You_All
 funnel	*wikimediastories.org	//wikimediafoundation.org/wiki/Thank_You_All
@@ -493,7 +493,7 @@ funnel	*wikipediastories.com	//wikimediafoundation.org/wiki/Thank_You_All
 funnel	*wikipediastories.net	//wikimediafoundation.org/wiki/Thank_You_All
 funnel	*wikipediastories.org	//wikimediafoundation.org/wiki/Thank_You_All
 
-# jobs/careers - RT #5709
+# jobs/careers - T82975
 rewrite	*careers.wikimedia.org	//wikimediafoundation.org/wiki/Job_openings
 rewrite	*careers.wikipedia.org	//wikimediafoundation.org/wiki/Job_openings
 rewrite	*jobs.wikimedia.org	//wikimediafoundation.org/wiki/Job_openings
@@ -514,7 +514,7 @@ funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
 # w.wiki - upcoming URL shortener
 funnel	*w.wiki	//www.wikipedia.org
 
-# RT #8077
+# T84277
 override wikimedia.org/research https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
 
 # Redirect old techblog.wikimedia.org urls to blog.wikimedia.org T90638

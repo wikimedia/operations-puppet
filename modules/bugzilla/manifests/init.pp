@@ -90,7 +90,7 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
         ]: ensure => present,
     }
 
-    # community metrics mail (RT #3962)
+    # community metrics mail (T81784)
     bugzilla::logmail {'communitymetrics':
         script_name  => 'bugzilla_community_metrics.sh',
         rcpt_address => 'communitymetrics@wikimedia.org',
@@ -98,7 +98,7 @@ class bugzilla ( $db_host, $db_name, $db_user ) {
         monthday     => '1',
     }
 
-    # audit log mail for admins (RT #4802)
+    # audit log mail for admins (T82310)
     bugzilla::logmail {'auditlog':
         script_name  => 'bugzilla_audit_log.sh',
         rcpt_address => 'bugzilla-admin@wikimedia.org',

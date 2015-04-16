@@ -103,7 +103,7 @@ class role::eventlogging {
 
     # Log strictly valid events to the 'log' database on m4-master.
 
-    include passwords::mysql::eventlogging    # RT 4752
+    include passwords::mysql::eventlogging    # T82265
     $mysql_user = $passwords::mysql::eventlogging::user
     $mysql_pass = $passwords::mysql::eventlogging::password
     $mysql_db = $::realm ? {
