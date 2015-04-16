@@ -1,10 +1,10 @@
 limit_conn_zone $binary_remote_addr zone=addr:10m;
 
 server {
-   listen [::]:80 default;
+   listen 80;
    server_name francium.eqiad.wmnet;
 
-   root /srv/www/htmldumps;
+   root /srv/www;
 
    location / {
       index index.html index.htm;
