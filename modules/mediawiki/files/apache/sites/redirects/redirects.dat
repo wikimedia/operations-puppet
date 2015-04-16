@@ -73,7 +73,7 @@ funnel	*wikijunior.org	//en.wikibooks.org/wiki/Wikijunior
 funnel	*wikijunior.net	//en.wikibooks.org/wiki/Wikijunior
 
 # Language aliases
-rewrite	be-x-old.wikisource.org	//be.wikisource.org # Bug 41755
+rewrite	be-x-old.wikisource.org	//be.wikisource.org # T43755
 rewrite	de-beta.wikipedia.org	//de.wikipedia.org
 rewrite	cz.wikipedia.org	//cs.wikipedia.org
 rewrite	cz.wikipedia.com	//cs.wikipedia.org
@@ -100,7 +100,7 @@ rewrite	jp.wikipedia.org	//ja.wikipedia.org
 rewrite	jp.wikipedia.com	//ja.wikipedia.org
 rewrite	nb.wikipedia.org	//no.wikipedia.org
 
-# renamed chapter wiki - bug 38763
+# renamed chapter wiki - T40763
 rewrite	pa.us.wikimedia.org	//pa-us.wikimedia.org
 
 # arbcom
@@ -409,7 +409,7 @@ rewrite	wikiversity.org	//www.wikiversity.org
 rewrite	wikivoyage.org	//www.wikivoyage.org
 rewrite	wikibooks.org	//www.wikibooks.org
 rewrite	wiktionary.org	//www.wiktionary.org
-rewrite	wikidata.org	//www.wikidata.org #bug 45005
+rewrite	wikidata.org	//www.wikidata.org #T47005
 
 rewrite	www.wikisource.org	//wikisource.org
 
@@ -424,7 +424,7 @@ rewrite	it.wikimedia.org	http://www.wikimedia.it
 
 funnel	kr.wikimedia.org	//meta.wikimedia.org/wiki/위키미디어_대한민국
 
-# pk.wikimedia.org (bug 54780)
+# pk.wikimedia.org (T56780)
 funnel	pk.wikimedia.org	//meta.wikimedia.org/wiki/Wikimedia_Community_User_Group_Pakistan
 
 # pt.wikimedia.org was migrated to wikimedia.pt
@@ -455,7 +455,7 @@ funnel	*wikimedia.us	//www.wikimedia.org
 # wikimedia.xyz redirect
 funnel	*wikimedia.xyz	//www.wikimedia.org
 
-# tartupeedia.ee (WMEE-owned domain) - bug 44893
+# tartupeedia.ee (WMEE-owned domain) - T46893
 funnel	*tartupeedia.ee	//et.wikipedia.org/wiki/Portaal:Tartupeedia
 
 # indiawikipedia.com - RT #1395
@@ -493,7 +493,7 @@ funnel	mobile.wikipedia.org	//m.wikipedia.org
 rewrite	*.mobile.wikipedia.org	//*.m.wikipedia.org
 rewrite	*.wap.wikipedia.org	//*.m.wikipedia.org
 
-# pywikipedia.org (bug #58803).
+# pywikipedia.org (T60803).
 funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
 
 # w.wiki - upcoming URL shortener

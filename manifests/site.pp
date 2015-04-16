@@ -1027,7 +1027,7 @@ node 'gallium.wikimedia.org' {
     $cluster = 'misc'
 
 
-    # Bug 49846, let us sync VisualEditor in mediawiki/extensions.git
+    # T51846, let us sync VisualEditor in mediawiki/extensions.git
     sudo::user { 'jenkins-slave':
         privileges => [
             'ALL = (jenkins) NOPASSWD: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh',
@@ -1696,7 +1696,7 @@ node 'ms1002.eqiad.wmnet' {
 
 # Whenever adding a new node there, you have to ask MediaWiki to recognize the
 # new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
-# rate limiting purposes (bug 64622)
+# rate limiting purposes (T66622)
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     if $::hostname =~ /^ms-fe100[12]$/ {
         $ganglia_aggregator = true
@@ -2298,7 +2298,7 @@ node 'terbium.eqiad.wmnet' {
         ensure => absent,
     }
 
-    # (bug 15434) Periodical run of currently disabled special pages
+    # (T17434) Periodical run of currently disabled special pages
     # to be run against PMTPA slaves
     include misc::maintenance::updatequerypages
 
