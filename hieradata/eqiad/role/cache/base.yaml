@@ -1,0 +1,2 @@
+cluster_tier: '1'
+default_backend: 'backend'
