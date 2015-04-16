@@ -42,7 +42,7 @@ class role::cache::text inherits role::cache::2layer {
 
     #class { "varnish::packages": version => "3.0.3plus~rc1-wm13" }
 
-    varnish::setup_filesystem{ $storage_partitions:
+    varnish::setup_filesystem{ ${::role::cache::base::storage_partitions}:
         before => Varnish::Instance['text-backend']
     }
 
@@ -64,7 +64,7 @@ class role::cache::text inherits role::cache::2layer {
         'labs'  => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G,$mma0 -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G,$mma1",
     }
 
-    $director_type_cluster = $cluster_tier ? {
+    $director_type_cluster = $::role::cache::base::cluster_tier ? {
         1       => 'random',
         default => 'chash',
     }
@@ -77,17 +77,17 @@ class role::cache::text inherits role::cache::2layer {
         admin_port         => 6083,
         runtime_parameters => $runtime_params,
         storage            => $storage_conf,
-        directors          => $varnish_be_directors[$cluster_tier],
+        directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
         director_type      => $director_type_cluster,
         vcl_config         => {
             'default_backend'  => $default_backend,
             'retry503'         => 1,
             'retry5xx'         => 0,
             'cache4xx'         => '1m',
-            'purge_host_regex' => $purge_host_not_upload_re,
-            'cluster_tier'     => $cluster_tier,
+            'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
+            'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'backend',
-            'ssl_proxies'      => $wikimedia_networks,
+            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options    => array_concat($backend_scaled_weights, [
             {
@@ -107,7 +107,7 @@ class role::cache::text inherits role::cache::2layer {
                 'max_connections'       => 1000,
             },
         ]),
-        wikimedia_networks => $wikimedia_networks,
+        wikimedia_networks => $::role::cache::base::wikimedia_networks,
     }
 
     varnish::instance { 'text-frontend':
@@ -125,10 +125,10 @@ class role::cache::text inherits role::cache::2layer {
             'retry503'         => 1,
             'retry5xx'         => 0,
             'cache4xx'         => '1m',
-            'purge_host_regex' => $purge_host_not_upload_re,
-            'cluster_tier'     => $cluster_tier,
+            'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
+            'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'frontend',
-            'ssl_proxies'      => $wikimedia_networks,
+            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options    => array_concat($backend_scaled_weights, [
             {

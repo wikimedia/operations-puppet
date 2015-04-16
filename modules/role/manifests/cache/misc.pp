@@ -25,7 +25,7 @@ class role::cache::misc inherits role::cache::1layer {
             'retry5xx'        => 1,
             'cache4xx'        => '1m',
             'layer'           => 'frontend',
-            'ssl_proxies'     => $wikimedia_networks,
+            'ssl_proxies'     => $::role::cache::base::wikimedia_networks,
             'default_backend' => 'antimony',    # FIXME
             'allowed_methods' => '^(GET|HEAD|POST|PURGE|PUT)$',
         },

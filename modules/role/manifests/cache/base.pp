@@ -1,4 +1,3 @@
-# Ancestor class for all Varnish clusters
 class role::cache::base {
     include lvs::configuration
     include role::cache::configuration

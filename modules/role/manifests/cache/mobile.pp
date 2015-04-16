@@ -39,13 +39,13 @@ class role::cache::mobile inherits role::cache::2layer {
         }
     }
 
-    if $cluster_tier == 1 {
+    if $::role::cache::base::cluster_tier == 1 {
         $director_retries = 2
     } else {
         $director_retries = $backend_weight_avg * 4
     }
 
-    varnish::setup_filesystem{ $storage_partitions:
+    varnish::setup_filesystem{ ${::role::cache::base::storage_partitions}:
         before => Varnish::Instance['mobile-backend']
     }
 
@@ -93,7 +93,7 @@ class role::cache::mobile inherits role::cache::2layer {
         default  => [],
     }
 
-    $director_type_cluster = $cluster_tier ? {
+    $director_type_cluster = $::role::cache::base::cluster_tier ? {
         1       => 'random',
         default => 'chash',
     }
@@ -105,7 +105,7 @@ class role::cache::mobile inherits role::cache::2layer {
         admin_port         => 6083,
         storage            => $storage_conf,
         runtime_parameters => $runtime_param,
-        directors          => $varnish_be_directors[$cluster_tier],
+        directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
         director_type      => $director_type_cluster,
         director_options   => {
             'retries' => $director_retries,
@@ -114,10 +114,10 @@ class role::cache::mobile inherits role::cache::2layer {
             'default_backend'  => $default_backend,
             'retry503'         => 4,
             'retry5xx'         => 1,
-            'purge_host_regex' => $purge_host_not_upload_re,
-            'cluster_tier'     => $cluster_tier,
+            'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
+            'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'backend',
-            'ssl_proxies'      => $wikimedia_networks,
+            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options    => array_concat($backend_scaled_weights, [
             {
@@ -138,7 +138,7 @@ class role::cache::mobile inherits role::cache::2layer {
             },
         ]),
         cluster_options    => $cluster_options,
-        wikimedia_networks => $wikimedia_networks,
+        wikimedia_networks => $::role::cache::base::wikimedia_networks,
     }
 
     varnish::instance { 'mobile-frontend':
@@ -157,10 +157,10 @@ class role::cache::mobile inherits role::cache::2layer {
         director_type    => 'chash',
         vcl_config       => {
             'retry5xx'         => 0,
-            'purge_host_regex' => $purge_host_not_upload_re,
-            'cluster_tier'     => $cluster_tier,
+            'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
+            'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'frontend',
-            'ssl_proxies'      => $wikimedia_networks,
+            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options  => array_concat($backend_scaled_weights, [
             {
