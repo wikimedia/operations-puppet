@@ -19,7 +19,7 @@ class role::ganglia::web {
         rrdpath       => $rrd_rootdir,
         gmetad_socket => $gmetad_socket,
         gweb_socket   => $gwebsocket,
-        journal_dir      => '/srv/rrdcached_journal',
+        journal_dir   => '/srv/rrdcached_journal',
     }
 
     # TODO: Automate the gmetad trusted hosts variable

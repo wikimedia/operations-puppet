@@ -13,13 +13,13 @@ class role::dns::ldap {
 
         # FIXME: turn these settings into a hash that can be included somewhere
         class { '::labs_ldap_dns':
-            dns_auth_ipaddress      => '208.80.154.19 208.80.154.18',
-            dns_auth_query_address  => '208.80.154.19',
-            dns_auth_soa_name       => 'labs-ns0.wikimedia.org',
-            ldap_hosts              => $ldapconfig['servernames'],
-            ldap_base_dn            => $ldapconfig['basedn'],
-            ldap_user_dn            => $ldapconfig['proxyagent'],
-            ldap_user_pass          => $ldapconfig['proxypass'],
+            dns_auth_ipaddress     => '208.80.154.19 208.80.154.18',
+            dns_auth_query_address => '208.80.154.19',
+            dns_auth_soa_name      => 'labs-ns0.wikimedia.org',
+            ldap_hosts             => $ldapconfig['servernames'],
+            ldap_base_dn           => $ldapconfig['basedn'],
+            ldap_user_dn           => $ldapconfig['proxyagent'],
+            ldap_user_pass         => $ldapconfig['proxypass'],
         }
     }
     if $::site == 'codfw' {
@@ -30,13 +30,13 @@ class role::dns::ldap {
 
         # FIXME: turn these settings into a hash that can be included somewhere
         class { '::labs_ldap_dns':
-            dns_auth_ipaddress      => '208.80.153.15 208.80.153.14',
-            dns_auth_query_address  => '208.80.153.15',
-            dns_auth_soa_name       => 'labs-ns1.wikimedia.org',
-            ldap_hosts              => $ldapconfig['servernames'],
-            ldap_base_dn            => $ldapconfig['basedn'],
-            ldap_user_dn            => $ldapconfig['proxyagent'],
-            ldap_user_pass          => $ldapconfig['proxypass'],
+            dns_auth_ipaddress     => '208.80.153.15 208.80.153.14',
+            dns_auth_query_address => '208.80.153.15',
+            dns_auth_soa_name      => 'labs-ns1.wikimedia.org',
+            ldap_hosts             => $ldapconfig['servernames'],
+            ldap_base_dn           => $ldapconfig['basedn'],
+            ldap_user_dn           => $ldapconfig['proxyagent'],
+            ldap_user_pass         => $ldapconfig['proxypass'],
         }
     }
 

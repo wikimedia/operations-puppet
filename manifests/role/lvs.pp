@@ -79,11 +79,11 @@ class role::lvs::balancer {
     include standard
 
     class { "::lvs::balancer":
-        service_ips => $lvs_balancer_ips,
-        lvs_services => $lvs::configuration::lvs_services,
-        lvs_class_hosts => $lvs::configuration::lvs_class_hosts,
+        service_ips          => $lvs_balancer_ips,
+        lvs_services         => $lvs::configuration::lvs_services,
+        lvs_class_hosts      => $lvs::configuration::lvs_class_hosts,
         pybal_global_options => $lvs::configuration::pybal,
-        site => $::site
+        site                 => $::site
     }
 
     if $::site in ['eqiad', 'codfw'] {

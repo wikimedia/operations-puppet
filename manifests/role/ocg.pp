@@ -63,10 +63,10 @@ class role::ocg::test {
     $service_port = 8000
 
     class { '::ocg':
-        redis_host         => 'localhost',
-        redis_password     => $passwords::redis::ocg_test_password,
-        service_port       => $service_port,
-        statsd_host        => 'statsd.eqiad.wmnet',
+        redis_host     => 'localhost',
+        redis_password => $passwords::redis::ocg_test_password,
+        service_port   => $service_port,
+        statsd_host    => 'statsd.eqiad.wmnet',
     }
 
     ferm::service { 'ocg-http':
