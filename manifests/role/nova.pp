@@ -4,10 +4,12 @@ class role::nova::config {
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $novaconfig = $::openstack_site_override ? {
             'eqiad' => $role::nova::config::eqiad::novaconfig,
+            'codfw' => $role::nova::config::codfw::novaconfig,
         }
     } else {
         $novaconfig = $::site ? {
             'eqiad' => $role::nova::config::eqiad::novaconfig,
+            'codfw' => $role::nova::config::codfw::novaconfig,
         }
     }
 }
@@ -46,6 +48,107 @@ class role::nova::config::common {
             'labs'       => 'qemu',
         },
     }
+}
+
+class role::nova::config::codfw inherits role::nova::config::common {
+    $controller_hostname = $::realm ? {
+        'production' => 'labcontrol2001.wikimedia.org',
+        'labs'       => $nova_controller_hostname ? {
+            undef   => $::ipaddress_eth0,
+            default => $nova_controller_hostname,
+        }
+    }
+    $controller_address = $::realm ? {
+        'production' => '208.80.153.14',
+        'labs'       => $nova_controller_ip ? {
+            undef   => $::ipaddress_eth0,
+            default => $nova_controller_ip,
+        }
+    }
+    $designate_hostname = $::realm ? {
+        'production' => 'holmium.wikimedia.org',
+        'labs'       => $nova_controller_hostname ? {
+            undef   => $::ipaddress_eth0,
+            default => $nova_controller_hostname,
+        }
+    }
+
+    $codfwnovaconfig = {
+        db_host            => $controller_hostname,
+        dhcp_domain        => 'codfw.wmflabs',
+        glance_host        => $controller_hostname,
+        rabbit_host        => $controller_hostname,
+        cc_host            => $controller_hostname,
+        designate_hostname => $designate_hostname,
+        network_flat_interface => $::realm ? {
+            'production' => 'eth1.1102',
+            'labs'       => 'eth0.1118',
+        },
+        network_flat_tagged_base_interface => $::realm ? {
+            'production' => 'eth1',
+            'labs'       => 'eth0',
+        },
+        network_flat_interface_vlan => '1102',
+        flat_network_bridge => 'br1102',
+        network_public_interface => 'eth0',
+        network_host => $::realm ? {
+            'production' => '10.64.20.13',
+            'labs'       => $nova_network_hostname ? {
+                undef   => $::ipaddress_eth0,
+                default => $nova_network_hostname,
+            }
+        },
+        api_host => $::realm ? {
+            'production' => 'labnet1001.eqiad.wmnet',
+            'labs'       => $nova_controller_hostname ? {
+                undef   => $::ipaddress_eth0,
+                default => $nova_controller_hostname,
+            }
+        },
+        api_ip => $::realm ? {
+            'production' => '10.64.20.13',
+            'labs'       => $nova_controller_ip ? {
+                undef   => $::ipaddress_eth0,
+                default => $nova_controller_ip,
+            }
+        },
+        fixed_range => $::realm ? {
+            'production' => '10.68.16.0/21',
+            'labs'       => '192.168.0.0/21',
+        },
+        dhcp_start => $::realm ? {
+            'production' => '10.68.16.4',
+            'labs'       => '192.168.0.4',
+        },
+        network_public_ip => $::realm ? {
+            'production' => '208.80.155.255',
+            'labs'       => $nova_network_ip ? {
+                undef   => $::ipaddress_eth0,
+                default => $nova_network_ip,
+            }
+        },
+        dmz_cidr => $::realm ? {
+            'production' => '208.80.155.0/22,10.0.0.0/8',
+            'labs'       => '10.4.0.0/21',
+        },
+        auth_uri => $::realm ? {
+            'production' => 'http://virt1000.wikimedia.org:5000',
+            'labs'       => 'http://localhost:5000',
+        },
+        controller_hostname    => $controller_hostname,
+        controller_address     => $controller_address,
+        ldap_host              => $controller_hostname,
+        puppet_host            => $controller_hostname,
+        puppet_db_host         => $controller_hostname,
+        live_migration_uri     => 'qemu://%s.codfw.wmnet/system?pkipath=/var/lib/nova',
+        zone                   => 'codfw',
+        keystone_admin_token   => $keystoneconfig['admin_token'],
+        keystone_auth_host     => $keystoneconfig['bind_ip'],
+        keystone_auth_protocol => $keystoneconfig['auth_protocol'],
+        keystone_auth_port     => $keystoneconfig['auth_port'],
+    }
+
+    $novaconfig = merge( $codfwnovaconfig, $commonnovaconfig )
 }
 
 class role::nova::config::eqiad inherits role::nova::config::common {
