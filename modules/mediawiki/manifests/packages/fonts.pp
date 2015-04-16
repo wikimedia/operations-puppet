@@ -45,19 +45,19 @@ class mediawiki::packages::fonts {
         'xfonts-mplus',
         'xfonts-scalable',
         'fonts-sil-nuosusil',        # T83288
-        'culmus',                    # Bug 38946
-        'culmus-fancy',              # Bug 38946
-        'fonts-lklug-sinhala',       # Bug 55462
-        'fonts-vlgothic',            # Bug 64002
-        'ttf-dejavu-core',           # Bug 63206
-        'ttf-dejavu-extra',          # Bug 63206
-        'ttf-kochi-gothic',          # Bug 64002
-        'ttf-kochi-mincho',          # Bug 64002
-        'ttf-lyx',                   # Bug 38299
+        'culmus',                    # T40946
+        'culmus-fancy',              # T40946
+        'fonts-lklug-sinhala',       # T57462
+        'fonts-vlgothic',            # T66002
+        'ttf-dejavu-core',           # T65206
+        'ttf-dejavu-extra',          # T65206
+        'ttf-kochi-gothic',          # T66002
+        'ttf-kochi-mincho',          # T66002
+        'ttf-lyx',                   # T40299
     ]:
         ensure => present,
     }
-    # Bug T84842
+    # T84842
     if os_version('ubuntu >= trusty || debian >= jessie') {
         package { ['fonts-crosextra-carlito', 'fonts-crosextra-caladea']:
             ensure => present,
