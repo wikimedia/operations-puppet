@@ -23,7 +23,7 @@ class base {
         $certname = "${::ec2id}.${::domain}"
 
         # Labs instances /var is quite small, provide our own default
-        # to keep less records (bug 69604).
+        # to keep less records (T71604).
         file { '/etc/default/acct':
             ensure => present,
             owner  => 'root',

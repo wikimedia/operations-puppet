@@ -160,7 +160,7 @@ sub normalize_path {
 	 * punctuation with the actual characters. The character list is from
 	 * MediaWiki's wfUrlencode(), so the URLs produced here will be the same as
 	 * the ones produced by MediaWiki in href attributes. Doing this reduces
-	 * cache fragmentation and fixes bug 27935, i.e. stale cache entries due to
+	 * cache fragmentation and fixes T29935, i.e. stale cache entries due to
 	 * MediaWiki purging only the wfUrlencode'd version of the URL.
 	 */
 	C{
