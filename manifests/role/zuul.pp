@@ -33,7 +33,7 @@ class role::zuul::configuration {
             'zuul_url'  => 'git://zuul.eqiad.wmnet',
         },
         'labs' => {
-            # FIXME migrate under /data/project whenever bug 64868 is solved
+            # FIXME migrate under /data/project whenever T66868 is solved
             #   'git_dir'       => '/data/project/zuul/git',
             'git_dir' => '/srv/zuul/git',
             'git_email' => "zuul-merger@${::hostname}",

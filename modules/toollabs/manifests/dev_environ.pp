@@ -43,7 +43,7 @@ class toollabs::dev_environ {
         'apt-file',
         'autoconf',
         'build-essential', # for dpkg
-        'byobu',                       # Bug T88989.
+        'byobu',                       # T88989.
         'cmake',
         'cvs',
         'cython',
@@ -51,27 +51,27 @@ class toollabs::dev_environ {
         'elinks',
         'emacs',
         'fakeroot', # for dpkg
-        'gcj-jdk',                     # Bug 56995
+        'gcj-jdk',                     # T58995
         'openjdk-7-jdk',
-        'ipython',                     # Bug 56995
-        'joe',                         # Bug 62236.
-        'libdjvulibre-dev',            # Bug 56972
-        'libdmtx-dev',                 # Bug #53867.
-        'libfcgi-dev',                 # Bug #52902.
+        'ipython',                     # T58995
+        'joe',                         # T64236.
+        'libdjvulibre-dev',            # T58972
+        'libdmtx-dev',                 # T55867.
+        'libfcgi-dev',                 # T54902.
         'libfreetype6-dev',
-        'libgdal1-dev',                # Bug 56995
-        'libgeoip-dev',                # Bug 62649
+        'libgdal1-dev',                # T58995
+        'libgeoip-dev',                # T64649
         'libpng12-dev',
-        'libproj-dev',                 # Bug 56995
-        'libprotobuf-dev',             # Bug 56995
-        'librsvg2-dev',                # Bug 58516
-        'libsparsehash-dev',           # Bug 56995
-        'libtiff4-dev', # bug 52717
+        'libproj-dev',                 # T58995
+        'libprotobuf-dev',             # T58995
+        'librsvg2-dev',                # T60516
+        'libsparsehash-dev',           # T58995
+        'libtiff4-dev', # T54717
         'libtool',
         'libvips-dev',
         'libxml2-dev',
         'libxslt1-dev',
-        'libzbar-dev',                 # Bug 56996
+        'libzbar-dev',                 # T58996
         'links',
         'lintian',
         'lynx',
@@ -79,20 +79,20 @@ class toollabs::dev_environ {
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
         'pastebinit',
-        'pep8',                        # Bug 57863
-        'pyflakes',                    # Bug 57863
-        'python-coverage',             # Bug 57002
+        'pep8',                        # T59863
+        'pyflakes',                    # T59863
+        'python-coverage',             # T59002
         'python-dev',
         'python3-dev',
         'qt4-qmake',
-        'rlwrap',                      # Bug T87368
+        'rlwrap',                      # T87368
         'sbt',
         'sqlite3',
         'subversion',
         'tcl8.5-dev',
         'tig',
-        'tmux',                        # Bug #65426.
-        'valgrind' ]:                  # Bug T87117.
+        'tmux',                        # T67426.
+        'valgrind' ]:                  # T87117.
         ensure => latest,
     }
 

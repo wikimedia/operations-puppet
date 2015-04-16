@@ -28,7 +28,7 @@ class role::ci::master {
                 'email' => 'jenkins@gallium.wikimedia.org',
             },  # end of [user] section
             'core' => {
-                # bug 56717: avoid eating all RAM when repacking
+                # T58717: avoid eating all RAM when repacking
                 'packedGitLimit' => '2G',
             },  # end of [core] section
         },  # end of settings
@@ -288,7 +288,7 @@ class role::ci::slave::labs::common {
     # Create a homedir for `jenkins-deploy` so it does not end up being created
     # on /home which is using GlusterFS on the integration project.  The user is
     # only LDAP and is not created by puppet
-    # bug 61144
+    # T63144
     file { '/mnt/home':
         ensure  => directory,
         owner   => 'root',

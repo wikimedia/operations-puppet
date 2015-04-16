@@ -8,7 +8,7 @@ class contint::website(
   require contint::publish-console
 
   # Need to send Vary: X-Forwarded-Proto since most sites are forced to HTTPS
-  # and behind a varnish cache. See also bug 60822
+  # and behind a varnish cache. See also T62822
   include ::apache::mod::headers
 
   # Static files in these docroots are in integration/docroot.git
