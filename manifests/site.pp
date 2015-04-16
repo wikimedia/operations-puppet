@@ -981,6 +981,10 @@ node 'fluorine.eqiad.wmnet' {
 
 }
 
+node 'francium.eqiad.wmnet' {
+    include standard
+}
+
 # gadolinium is the webrequest socat multicast relay.
 # base_analytics_logging_node is defined in role/logging.pp
 node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
