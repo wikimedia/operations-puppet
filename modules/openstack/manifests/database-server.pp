@@ -140,12 +140,11 @@ class openstack::database-server(
 
     # Clean up expired keystone tokens, because keystone seems to leak them
     cron {
-        'run-jobs':
+        'cleanup_expired_keystone_tokens':
             user    => 'root',
-            hour    => 8,
-            minute  => 0,
+            minute  => 20,
             ensure  => present,
-            command => "/usr/bin/mysql $keystone_db_name -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOT DATE_SUB(CURDATE(),INTERVAL 2 DAY) <= expires;'",
+            command => "/usr/bin/mysql $keystone_db_name -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOW() - INTERVAL 2 day > expires LIMIT 10000;'",
     }
 }
 
