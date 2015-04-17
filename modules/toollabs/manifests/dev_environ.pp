@@ -26,6 +26,7 @@ class toollabs::dev_environ {
             # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=759309
             'libmysqlclient-dev',
             'libboost-python1.54-dev',
+            'redis-tools',
         ]:
             ensure  => latest,
         }
