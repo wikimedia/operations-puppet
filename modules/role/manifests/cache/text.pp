@@ -4,7 +4,7 @@ class role::cache::text {
     $text_nodes = hiera('cache::text::nodes')
     $site_text_nodes = $text_nodes[$::site]
 
-    if $::realm == 'production' {
+    if $::memorysize_mb >= 16384 {
         $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
     }
     else {

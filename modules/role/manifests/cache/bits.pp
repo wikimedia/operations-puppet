@@ -43,7 +43,7 @@ class role::cache::bits {
     }
     $cluster_options = merge($common_cluster_options, $realm_cluster_options)
 
-    if $::realm == 'production' {
+    if $::memorysize_mb >= 16384 {
         $memory_storage_size = 2
     }
     else {
