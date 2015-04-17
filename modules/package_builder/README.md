@@ -13,10 +13,26 @@ ENC you have puppet working with but in Wikimedia Labs you should create a
 puppet group, then add the class in the puppet group and just configure your VM
 with that class
 
-After puppet is done you just either download a ready package and either:
+After puppet is done you will have 8 pristine cowbuilder environments. Those
+would be:
+
+ * precise-amd64
+ * trusty-amd64
+ * jessie-amd64
+ * sid-amd64
+ * precise-i386
+ * trusty-i386
+ * jessie-i386
+ * sid-i386
+
+See more below on how to use those
+
+You just either download a ready package and either of
 
     export DIST=jessie
     sudo -E pbuilder build dh-virtualenv_0.9-1.dsc
+
+The two commands above are equivalent
 
 or if you are developing a package and are in the package directory:
 
@@ -24,8 +40,11 @@ or if you are developing a package and are in the package directory:
 
 Feel free to change jessie for precise, trusty or sid
 
-Also ARCH=amd64, or ARCH=i386 is supported if you feel like building for
+ARCH=amd64, or ARCH=i386 is supported if you feel like building for
 different architecture versions.
+
+Aside from sid, the rest of the distributions allow for satisfying build time
+dependencies via the wikimedia repos.
 
 To use packages from the wikimedia repos to satisfy build dependencies during
 building you can use WIKIMEDIA=yes. There is also the approach of appending
@@ -46,3 +65,19 @@ git-pbuilder can be used by git-buildpackage to leverage all of the above. The
 trick is to use GIT\_PBUILDER\_AUTOCONF=no i.e.:
 
     GIT_PBUILDER_AUTOCONF=no DIST=trusty WIKIMEDIA=yes git-buildpackage -us -uc --git-builder=git-pbuilder
+
+Results
+=======
+
+The resulting deb files should be in /var/cache/pbuilder/result/${DIST}-${ARCH} like:
+
+    /var/cache/pbuilder/result/trusty-amd64/
+
+Notes
+=====
+
+If you are getting confused over the naming of pbuilder/cowbuilder, here's some
+info to help you. pbuilder is the actual base software, cowbuilder is an
+extension to allow pbuilder to use COW (copy on write) instead of slow .tar.gz
+base files. For all intents and purposes this should be transparent to you as
+cowbuilder is the default pbuilder builder.
