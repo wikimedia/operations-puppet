@@ -115,4 +115,16 @@ class dynamicproxy (
     diamond::collector { 'Redis':
         require => Class['::redis::client::python'],
     }
+
+    ferm::service{ 'http':
+        proto => 'tcp',
+        port  => '80',
+        desc  => 'HTTP webserver for the entire world',
+    }
+
+    ferm::service{ 'https':
+        proto => 'tcp',
+        port  => '443',
+        desc  => 'HTTPS webserver for the entire world',
+    }
 }
