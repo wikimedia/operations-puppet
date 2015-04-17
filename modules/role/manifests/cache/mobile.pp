@@ -1,4 +1,6 @@
-class role::cache::mobile {
+class role::cache::mobile (
+    $zero_site = 'https://zero.wikimedia.org'
+) {
     include role::cache::2layer
 
     $mobile_nodes = hiera('cache::mobile::nodes')
@@ -64,11 +66,6 @@ class role::cache::mobile {
                 'enable_esi'         => true,
             }
         }
-    }
-
-    $zero_site = $::realm ? {
-        'production' => 'https://zero.wikimedia.org',
-        'labs'       => 'http://zero.wikimedia.beta.wmflabs.org',
     }
 
     class { 'varnish::zero_update':
