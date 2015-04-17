@@ -27,13 +27,13 @@ class role::cache::text {
     }
 
     $varnish_be_directors = {
-        1 => {
+        '1' => {
             'backend'           => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
             'api'               => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
             'rendering'         => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
             'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
         },
-        2 => {
+        '2' => {
             'eqiad' => $text_nodes['eqiad'],
         },
     }
@@ -57,7 +57,7 @@ class role::cache::text {
     }
 
     $director_type_cluster = $::role::cache::base::cluster_tier ? {
-        1       => 'random',
+        '1'     => 'random',
         default => 'chash',
     }
 

@@ -11,10 +11,10 @@ class role::cache::base {
     # Any changes here will affect all descendent Varnish clusters
     # unless they're overridden!
     if $::site in ['eqiad'] {
-        $cluster_tier = 1
+        $cluster_tier = '1'
         $default_backend = 'backend'
     } else {
-        $cluster_tier = 2
+        $cluster_tier = '2'
         $default_backend = $::mw_primary
     }
     $wikimedia_networks = flatten([$network::constants::all_networks, '127.0.0.0/8', '::1/128'])

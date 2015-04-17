@@ -16,17 +16,17 @@ class role::cache::bits {
     }
 
     $varnish_directors = {
-        1 => {
+        '1' => {
             'backend' => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
             'test_wikipedia' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
         },
-        2 => {
+        '2' => {
             'backend' => sort(flatten(values($role::cache::configuration::backends[$::realm]['bits']))),
         }
     }
 
     $probe = $::role::cache::base::cluster_tier ? {
-        1       => 'bits',
+        '1'     => 'bits',
         default => 'varnish',
     }
     case $::realm {
