@@ -47,11 +47,20 @@ class archiva::proxy(
                 before => Nginx::Site['archiva'],
                 ca     => $ca_name,
             }
+            # Should the ssl_certificate use a chained cert?
+            $chained = $ca_name ? {
+                undef   => '',
+                default => '.chained'
+            }
+        }
+        else {
+            # Don't use a chained cert for snakeoil
+            $chained = ''
         }
 
         $ssl_certificate = $certificate_name ? {
             'ssl-cert-snakeoil' => '/etc/ssl/certs/ssl-cert-snakeoil.pem',
-            default             => "/etc/ssl/localcerts/${certificate_name}.crt",
+            default             => "/etc/ssl/localcerts/${certificate_name}${chained}.crt",
         }
         $ssl_certificate_key = "/etc/ssl/private/${certificate_name}.key"
 
