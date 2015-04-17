@@ -52,21 +52,7 @@ class role::cache::mobile (
         include varnish::monitoring::ganglia::vhtcpd
     }
 
-    # lint:ignore:case_without_default
-    case $::realm {
-    # lint:endignore
-        'production': {
-            $cluster_options = {
-                'enable_geoiplookup' => true,
-            }
-        }
-        'labs': {
-            $cluster_options = {
-                'enable_geoiplookup' => true,
-                'enable_esi'         => true,
-            }
-        }
-    }
+    $cluster_options = { 'enable_geoiplookup' => true }
 
     class { 'varnish::zero_update':
         site     => $zero_site,
