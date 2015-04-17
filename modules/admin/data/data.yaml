@@ -304,7 +304,7 @@ groups:
     description: Users who can do sane CLI admin things
                  * Remove repositories
                  * Manage repositories, phd service, and workers
-    members: [demon, twentyafterfour]
+    members: []
     privileges: ['ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
                  'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/repository',
                  'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/phd',
@@ -317,6 +317,12 @@ groups:
                  'ALL = (root) NOPASSWD: /usr/sbin/service zotero start',
                  'ALL = (root) NOPASSWD: /usr/sbin/service zotero restart',
                  'ALL = (root) NOPASSWD: /usr/sbin/service zotero reload']
+  phabricator-roots:
+    gid: 748
+    description: people who have full root on phabricator
+    members: [demon, twentyafterfour]
+    privileges: ['ALL = NOPASSWD: ALL']
+
 users:
   rush:
     ensure: present
