@@ -35,7 +35,7 @@ class dumps::zim {
     }
 
     nginx::site { 'zim':
-        content => template('dumps/nginx.zim.conf.erb'),
-        notify  => Service['nginx'],
+        source => 'puppet:///modules/dumps/nginx.zim.conf',
+        notify => Service['nginx'],
     }
 }
