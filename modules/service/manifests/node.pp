@@ -18,6 +18,9 @@
 #   node service configuration directives. If none is provided, we
 #   assume the config  can be built from a template in a standard location
 #
+# [*pkgs*]
+#   Array of extra packages that need to be installed. Default: []
+#
 # [*no_file*]
 #   Number of maximum allowed open files for the service, to be set by
 #   ulimit. Default: 10000
@@ -42,7 +45,16 @@
 #        },
 #    }
 #
-define service::node($port, $config = undef, $no_file = 10000) {
+# If the service needs extra system packages to function, provide their
+# names in an array:
+#
+#    service::node { 'myservice':
+#        port   => 8520,
+#        config => template('myservice/config.yaml.erb'),
+#        pkgs   => ['pkg1', 'pkg2', 'pkg3'],
+#    }
+#
+define service::node($port, $config = undef, $pkgs = [], $no_file = 10000) {
     # Import all common configuration
     include service::configuration
 
@@ -68,10 +80,18 @@ define service::node($port, $config = undef, $no_file = 10000) {
     $local_logfile = "${local_logdir}/main.log"
 
     # Software and the deployed code
-    require_package('nodejs', 'nodejs-legacy')
+    # assemble the list of needed packages
+    $req_pkgs = array_concat('nodejs', 'nodejs-legacy', $pkgs)
+    # schedule for install
+    require_package($req_pkgs)
     package { "${title}/deploy":
         provider => 'trebuchet',
     }
+    # create the service deps array
+    $deps = [
+        Package["${title}/deploy"],
+        Class[apply_format('packages::%s', $req_pkgs)],
+    ]
 
     # User/group
     group { $title:
@@ -139,7 +159,7 @@ define service::node($port, $config = undef, $no_file = 10000) {
         hasstatus  => true,
         hasrestart => true,
         provider   => 'upstart',
-        require    => [Package["${title}/deploy"], Class['packages::nodejs']],
+        require    => $deps,
     }
 
     # Basic monitoring
