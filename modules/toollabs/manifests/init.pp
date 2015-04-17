@@ -13,6 +13,7 @@
 #
 class toollabs (
     $proxies = ['tools-webproxy-01', 'tools-webproxy-02'],
+    $active_proxy = 'tools-webproxy-01',
 ) {
 
     include labs_lvm

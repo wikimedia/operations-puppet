@@ -1,14 +1,11 @@
 import sys
 import socket
 
-import yaml
 
-
-def get_proxies():
-    """Return the list of proxies to register with."""
-    with open('/etc/portgrabber.yaml', 'r') as f:
-        config = yaml.safe_load(f)
-        return config['proxies']
+def get_active_proxy():
+    """Return the active master proxy to register with"""
+    with open('/etc/portgrabber', 'r') as f:
+        return f.read().strip()
 
 
 def get_open_port():
@@ -25,30 +22,30 @@ def get_open_port():
 
 
 def register(port):
-    """Register with the proxies."""
-    for proxy in get_proxies():
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            sock.connect((proxy, 8282))
-            sock.sendall("register\n.*\nhttp://%s:%u\n" % (socket.getfqdn(), port))
-            res = sock.recv(1024)
-            if res != 'ok':
-                sys.stderr.write('port registration failed!')
-                sys.exit(-1)
-        finally:
-            sock.close()
+    """Register with the master proxy."""
+    proxy = get_active_proxy()
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        sock.connect((proxy, 8282))
+        sock.sendall("register\n.*\nhttp://%s:%u\n" % (socket.getfqdn(), port))
+        res = sock.recv(1024)
+        if res != 'ok':
+            sys.stderr.write('port registration failed!')
+            sys.exit(-1)
+    finally:
+        sock.close()
 
 
 def unregister():
-    """Unregister with the proxies."""
-    for proxy in get_proxies():
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.connect((proxy, 8282))
-            sock.sendall("unregister\n.*\n")
-            res = sock.recv(1024)
-            if res != 'ok':
-                sys.stderr.write('port unregistration failed!')
-                sys.exit(-1)
-        finally:
-            sock.close()
+    """Unregister with the master proxy."""
+    proxy = get_active_proxy()
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        sock.connect((proxy, 8282))
+        sock.sendall("unregister\n.*\n")
+        res = sock.recv(1024)
+        if res != 'ok':
+            sys.stderr.write('port unregistration failed!')
+            sys.exit(-1)
+    finally:
+        sock.close()

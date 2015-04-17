@@ -20,12 +20,12 @@ class toollabs::node::web inherits toollabs {
         config => 'toollabs/gridengine/host-web.erb',
     }
 
-    file { '/etc/portgrabber.yaml':
+    file { '/etc/portgrabber':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => inline_template("<%= { 'proxies' => @proxies }.to_yaml %>\n"),
+        content => $active_proxy,
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/portgrabber.py':
