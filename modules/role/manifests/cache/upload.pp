@@ -24,16 +24,16 @@ class role::cache::upload {
     }
 
     $varnish_be_directors = {
-        1 => {
+        'one' => {
             'backend'   => $lvs::configuration::lvs_service_ips[$::realm]['swift'][$::mw_primary],
             'rendering' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
         },
-        2 => {
+        'two' => {
             'eqiad' => $upload_nodes['eqiad'],
         }
     }
 
-    if $::role::cache::base::cluster_tier == 1 {
+    if $::role::cache::base::cluster_tier == 'one' {
         $director_retries = 2
     } else {
         $director_retries = $::role::cache::2layer::backend_weight_avg * 4
@@ -84,7 +84,7 @@ class role::cache::upload {
     ], ' ')
 
     $director_type_cluster = $::role::cache::base::cluster_tier ? {
-        1       => 'random',
+        'one'   => 'random',
         default => 'chash',
     }
 

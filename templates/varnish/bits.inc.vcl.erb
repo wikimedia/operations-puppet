@@ -2,7 +2,7 @@
 
 include "errorpage.inc.vcl";
 
-<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
+<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
 sub mangle_request {
 	// Transform backend url: /<sitename>/load.php -> /w/load.php
 	// Set host header for backend to <sitename>
@@ -42,7 +42,7 @@ sub vcl_recv {
 	}
 
 	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
-<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
+<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
 		if (req.http.X-Wikimedia-Debug == "1") {
 			set req.backend = test_wikipedia;
 		}
@@ -93,13 +93,13 @@ sub vcl_fetch {
 	return (deliver);
 }
 
-<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
+<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
 sub vcl_miss {
 	call mangle_request;
 }
 <% end -%>
 
-<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
+<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
 // vcl_pass gets called by hit_for_pass objects in place of vcl_miss, so
 // we need to mangle the request object here as well. Actually, vcl_miss
 // and vcl_pass should probably be identical for the time being.

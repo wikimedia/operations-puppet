@@ -70,7 +70,7 @@ sub vcl_fetch {
 	}
 
 	// Stream large objects, >= 1 or 32 MB
-<% stream_threshold = @vcl_config.fetch("cluster_tier", "1") == "1" ? 33554432 : 1048576 -%>
+<% stream_threshold = @vcl_config.fetch("cluster_tier", "one") == "one" ? 33554432 : 1048576 -%>
 	if (std.integer(beresp.http.Content-Length, 33554432) >= <%= stream_threshold %> || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
 		if (std.integer(beresp.http.Content-Length, 33554432) >= 33554432 || beresp.http.Content-Length ~ "^[0-9]{9}") {
