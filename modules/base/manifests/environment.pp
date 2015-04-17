@@ -38,14 +38,14 @@ class base::environment(
         } # /production
         'labs': {
             file { '/etc/bash.bashrc':
-                    content => template('base/environment/bash.bashrc'),
+                    content => template('base/environment/bash.bashrc.erb'),
                     owner   => 'root',
                     group   => 'root',
                     mode    => '0444',
             }
 
             file { '/etc/skel/.bashrc':
-                    content => template('base/environment/skel/bashrc'),
+                    content => template('base/environment/skel/bashrc.erb'),
                     owner   => 'root',
                     group   => 'root',
                     mode    => '0644',
