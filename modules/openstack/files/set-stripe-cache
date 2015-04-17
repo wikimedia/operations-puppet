@@ -1,0 +1,13 @@
+#! /bin/bash
+#
+# This simply sets the stripe_cache_size of every md block
+# device that has one and is currently active to the
+# parameter (specified in pages-per-drive; for instance
+# 4K pages on a 12-drive device will use 192M of ram
+# with a setting of 4096).
+
+for md in "/sys/block/md*/md/stripe_cache_size"; do
+    if [ -f "$md" ]; then
+        echo "$1" >$md
+    fi
+done
