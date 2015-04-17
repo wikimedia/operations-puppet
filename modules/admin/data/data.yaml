@@ -46,7 +46,7 @@ groups:
       maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
       nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
       tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair,
-      mobrovac, nuria, thcipriani, joal, eevans]
+      mobrovac, nuria, thcipriani, joal, eevans, mforns]
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
