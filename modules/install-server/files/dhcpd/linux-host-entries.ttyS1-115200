@@ -1663,6 +1663,147 @@ host db2042 {
 	fixed-address db2042.codfw.wmnet;
 }
 
+host db2043 {
+	hardware ethernet 40:a8:f0:35:08:00;
+	fixed-address db2043.codfw.wmnet;
+}
+
+host db2044 {
+	hardware ethernet 40:a8:f0:35:1c:c0;
+	fixed-address db2044.codfw.wmnet;
+}
+
+host db2045 {
+	hardware ethernet 40:a8:f0:35:61:dc;
+	fixed-address db2045.codfw.wmnet;
+}
+
+host db2046 {
+	hardware ethernet 40:a8:f0:35:41:c8;
+	fixed-address db2046.codfw.wmnet;
+}
+
+host db2047 {
+	hardware ethernet 40:a8:f0:35:1e:40;
+	fixed-address db2047.codfw.wmnet;
+}
+
+host db2048 {
+	hardware ethernet 40:a8:f0:35:22:8c;
+	fixed-address db2048.codfw.wmnet;
+}
+
+host db2049 {
+	hardware ethernet 40:a8:f0:35:1d:ec;
+	fixed-address db2049.codfw.wmnet;
+}
+
+host db2050 {
+	hardware ethernet 40:a8:f0:35:63:c8;
+	fixed-address db2050.codfw.wmnet;
+}
+
+host db2051 {
+	hardware ethernet 40:a8:f0:35:22:34;
+	fixed-address db2051.codfw.wmnet;
+}
+
+host db2052 {
+	hardware ethernet 40:a8:f0:35:59:70;
+	fixed-address db2052.codfw.wmnet;
+}
+
+host db2053 {
+	hardware ethernet 40:a8:f0:35:49:a4;
+	fixed-address db2053.codfw.wmnet;
+}
+
+host db2054 {
+	hardware ethernet 40:a8:f0:35:5a:5c;
+	fixed-address db2054.codfw.wmnet;
+}
+
+host db2055 {
+	hardware ethernet 40:a8:f0:35:4d:1c;
+	fixed-address db2055.codfw.wmnet;
+}
+
+host db2056 {
+	hardware ethernet 40:a8:f0:35:58:e8;
+	fixed-address db2056.codfw.wmnet;
+}
+
+host db2057 {
+	hardware ethernet 40:a8:f0:35:1e:1c;
+	fixed-address db2057.codfw.wmnet;
+}
+
+host db2058 {
+	hardware ethernet 40:a8:f0:35:57:fc;
+	fixed-address db2058.codfw.wmnet;
+}
+
+host db2059 {
+	hardware ethernet 40:a8:f0:35:65:0c;
+	fixed-address db2059.codfw.wmnet;
+}
+
+host db2060 {
+	hardware ethernet 40:a8:f0:35:06:f8;
+	fixed-address db2060.codfw.wmnet;
+}
+
+host db2061 {
+	hardware ethernet 40:a8:f0:35:56:14;
+	fixed-address db2061.codfw.wmnet;
+}
+
+host db2062 {
+	hardware ethernet 40:a8:f0:35:3b:a0;
+	fixed-address db2062.codfw.wmnet;
+}
+
+host db2063 {
+	hardware ethernet 40:a8:f0:35:0d:b0;
+	fixed-address db2063.codfw.wmnet;
+}
+
+host db2064 {
+	hardware ethernet 40:a8:f0:35:0a:9c;
+	fixed-address db2064.codfw.wmnet;
+}
+
+host db2065 {
+	hardware ethernet 40:a8:f0:35:1e:2c;
+	fixed-address db2065.codfw.wmnet;
+}
+
+host db2066 {
+	hardware ethernet 40:a8:f0:35:05:a4;
+	fixed-address db2066.codfw.wmnet;
+}
+
+host db2067 {
+	hardware ethernet 40:a8:f0:35:5b:f0;
+	fixed-address db2067.codfw.wmnet;
+}
+
+host db2068 {
+	hardware ethernet 40:a8:f0:35:30:d0;
+	fixed-address db2068.codfw.wmnet;
+}
+
+host db2069 {
+	hardware ethernet 40:a8:f0:35:27:f8;
+	fixed-address db2069.codfw.wmnet;
+}
+
+host db2070 {
+	hardware ethernet 40:a8:f0:35:08:e0;
+	fixed-address db2070.codfw.wmnet;
+}
+
+
 host dbproxy1001 {
 	hardware ethernet 84:2b:2b:fd:bd:56;
 	fixed-address dbproxy1001.eqiad.wmnet;
@@ -1676,11 +1817,6 @@ host dbproxy1002 {
 host dbproxy1003 {
 	hardware ethernet 84:2b:2b:fc:af:c2;
 	fixed-address dbproxy1003.eqiad.wmnet;
-}
-
-host dbproxy1004 {
-	hardware ethernet 84:2b:2b:fd:bf:18;
-	fixed-address dbproxy1004.eqiad.wmnet;
 }
 
 host dbproxy1005 {
