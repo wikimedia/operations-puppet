@@ -3,7 +3,7 @@
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 
-<% if @vcl_config.fetch("cluster_tier", "1") != "1" -%>
+<% if @vcl_config.fetch("cluster_tier", 1) != 1 -%>
 // A random director with the same backends as the default 'backend' (chash) director
 <%
 default_backend = @vcl_config.fetch("default_backend", "backend")
@@ -30,7 +30,7 @@ sub vcl_recv {
 		set req.http.X-Wikimedia-Debug = "1";
 	}
 
-<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
+<% if @vcl_config.fetch("cluster_tier", 1) == 1 -%>
 	if (req.url ~ "^/w/api\.php") {
 		set req.backend = api;
 	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
@@ -39,13 +39,13 @@ sub vcl_recv {
 <% end -%>
 
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
-<% if @vcl_config.fetch("cluster_tier", "1") != "1" -%>
+<% if @vcl_config.fetch("cluster_tier", 1) != 1 -%>
 		set req.backend = <%= @vcl_config.fetch("default_backend", "backend") %>_random;
 <% end -%>
 		set req.hash_ignore_busy = true;
 	}
 
-<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
+<% if @vcl_config.fetch("cluster_tier", 1) == 1 -%>
 	if (req.http.X-Wikimedia-Debug == "1") {
 		set req.backend = test_wikipedia;
 	}
