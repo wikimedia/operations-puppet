@@ -25,7 +25,6 @@ class dynamicproxy (
         persist       => 'aof',
         dir           => '/var/lib/redis',
         maxmemory     => $redis_maxmemory,
-        redis_options => ['bind 127.0.0.1'],
     }
 
     # The redis module intentionally does not restart the redis
