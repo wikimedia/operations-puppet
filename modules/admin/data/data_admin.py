@@ -32,7 +32,7 @@ def dict_sort(dictionary):
 def main():
 
     data = open('data.yaml', 'r')
-    admins = yaml.load(data)
+    admins = yaml.safe_load(data)
 
     if 'sort' in sys.argv:
         print yaml.dump({'groups': dict_sort(admins['groups'])})
