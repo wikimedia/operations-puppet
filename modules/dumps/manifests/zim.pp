@@ -1,11 +1,19 @@
 # ZIM dumps - https://en.wikipedia.org/wiki/ZIM_%28file_format%29
 class dumps::zim {
 
-    package { 'imagemagick':
+    # imagemagick for ZIM dumps
+    # pixz for multi-threaded lzma compression
+    package { [ 'imagemagick', 'pixz' ]:
         ensure => present,
     }
 
-    package { [ 'nodejs', 'nodejs-legacy', 'libsqlite3-0' ]:
+    # nodejs-legacy is a symlink to /usr/bin/node
+    package { [ 'nodejs', 'nodejs-legacy' ]:
+        ensure => present,
+    }
+
+    # SQLite 3 shared library and cmdline interface
+    package { [ 'sqlite3', 'libsqlite3-0' ]:
         ensure => present,
     }
 
