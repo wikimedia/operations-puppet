@@ -4,6 +4,8 @@ class role::dynamicproxy::eqiad {
         privatekey => false
     }
 
+    include base::firewall
+
     class { '::dynamicproxy':
         ssl_certificate_name => 'star.wmflabs.org',
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
