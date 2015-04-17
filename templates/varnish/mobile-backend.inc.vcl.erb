@@ -10,7 +10,7 @@ sub vcl_recv {
 		set req.http.X-Wikimedia-Debug = "1";
 	}
 
-<% if @vcl_config.fetch("cluster_tier", "1") == "1" -%>
+<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
 	if (req.http.X-Wikimedia-Debug == "1") {
 		set req.backend = test_wikipedia;
 	} else if (req.url ~ "^/w/api\.php") {
