@@ -218,7 +218,7 @@ ca_file = "<%= ca_target %>"
 # entirely rather than using empty list to disable these checks
 #
 # By default, no DN's are checked
-tls_allowed_dn_list = ["C=US,ST=California,L=San Francisco,O=Wikimedia Foundation,CN=virt*.<%= site %>.wmnet", "C=US,ST=California,L=San Francisco,O=Wikimedia Foundation,CN=labvirt*.<%= site %>.wmnet"]
+tls_allowed_dn_list = ["C=US,ST=California,O=Wikimedia Foundation,OU=Operations,CN=virt*.<%= site %>.wmnet", "C=US,ST=California,O=Wikimedia Foundation,OU=Operations,CN=labvirt*.<%= site %>.wmnet"]
 
 
 # A whitelist of allowed SASL usernames. The format for usernames
