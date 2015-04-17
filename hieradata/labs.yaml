@@ -31,3 +31,7 @@ role::cache::base::purge_host_not_upload_re: '^(?!upload\.beta\.wmflabs\.org)'
 role::cache::2layer::storage_parts:
   - vdb
   - vdb
+role::cache::upload::upload_domain: 'upload.beta.wmflabs.org'
+role::cache::upload::top_domain: 'beta.wmflabs.org'
+role::cache::bits::bits_domain: 'bits.beta.wmflabs.org'
+role::cache::bits::top_domain: 'beta.wmflabs.org'
