@@ -1,4 +1,5 @@
 class openstack::project-nfs-storage-service {
+
     file { '/etc/init/manage-nfs-volumes.conf':
         ensure  => present,
         owner   => 'root',
@@ -13,6 +14,19 @@ class openstack::project-nfs-storage-service {
         group   => 'root',
         mode    => '0550',
         source  => 'puppet:///modules/openstack/start-nfs',
+    }
+
+    file { '/usr/local/sbin/set-stripe-cache':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/openstack/set-stripe-cache',
+    }
+
+    exec { 'set-stripe-caches':
+        command => '/usr/local/sbin/set-stripe-cache 4096',
+        require => File['/usr/local/sbin/set-stripe-cache'],
     }
 
     $sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
