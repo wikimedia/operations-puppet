@@ -42,6 +42,8 @@ class archiva::proxy(
         if $certificate_name != 'ssl-cert-snakeoil' {
             install_certificate{ $certificate_name:
                 before => Nginx::Site['archiva'],
+                # make sure the cert includes GlobalSign in the chain
+                ca     => 'GlobalSign_CA.pem',
             }
         }
 
