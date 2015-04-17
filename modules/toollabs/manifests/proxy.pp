@@ -6,6 +6,8 @@ class toollabs::proxy(
     include toollabs::infrastructure
     include ::redis::client::python
 
+    include base::firewall
+
     if $ssl_install_certificate {
         install_certificate { $ssl_certificate_name:
             privatekey => false,
