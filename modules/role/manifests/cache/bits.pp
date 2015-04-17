@@ -1,4 +1,7 @@
-class role::cache::bits {
+class role::cache::bits (
+    $bits_domain = 'bits.wikimedia.org',
+    $top_domain = 'org'
+) {
     include role::cache::1layer
 
     if $::realm == 'production' {
@@ -9,10 +12,12 @@ class role::cache::bits {
         realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site],
     }
 
-    $common_cluster_options = {
+    $cluster_options = {
         'test_hostname'      => 'test.wikipedia.org',
         'enable_geoiplookup' => true,
         'do_gzip'            => true,
+        'bits_domain'        => $bits_domain,
+        'top_domain'         => $top_domain,
     }
 
     $varnish_directors = {
@@ -29,18 +34,6 @@ class role::cache::bits {
         1       => 'bits',
         default => 'varnish',
     }
-    case $::realm {
-        'labs': {
-            $realm_cluster_options = {
-                'top_domain'  => 'beta.wmflabs.org',
-                'bits_domain' => 'bits.beta.wmflabs.org',
-            }
-        }
-        default: {
-            $realm_cluster_options = {}
-        }
-    }
-    $cluster_options = merge($common_cluster_options, $realm_cluster_options)
 
     if $::memorysize_mb >= 16384 {
         $memory_storage_size = 2
