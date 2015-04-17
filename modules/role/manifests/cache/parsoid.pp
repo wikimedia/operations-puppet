@@ -6,9 +6,10 @@ class role::cache::parsoid {
 
     if ( $::realm == 'production' ) {
         include role::cache::ssl::parsoid
-        class { 'lvs::realserver':
-            realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site],
-        }
+    }
+
+    class { 'lvs::realserver':
+        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site],
     }
 
     system::role { 'role::cache::parsoid':
