@@ -4,8 +4,8 @@ class role::cache::upload {
     $upload_nodes = hiera('cache::upload::nodes')
     $site_upload_nodes = $upload_nodes[$::site]
 
-    if $::realm == 'production' {
-        $memory_storage_size = floor((0.083 * $::memorysize_mb / 1024.0) + 0.5) # 1/12 of total mem
+    if $::memorysize_mb >= 24576 {
+        $memory_storage_size = floor((0.08333 * $::memorysize_mb / 1024.0) + 0.5) # 1/12 of total mem
     }
     else {
         $memory_storage_size = 1
