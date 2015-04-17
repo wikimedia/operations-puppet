@@ -6,7 +6,6 @@ class dynamicproxy::api(
     }
 
     ferm::service { 'dynamicproxy-api-http':
-        srange => '$INTERNAL',  # Use security groups for actual access control
         port   => $port,
         proto  => 'tcp',
         desc   => 'API for adding / removing proxies from dynamicproxy domainproxy'
