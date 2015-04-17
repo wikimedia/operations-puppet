@@ -33,9 +33,9 @@ class txstatsd($settings) {
     }
 
     file { '/etc/txstatsd/txstatsd.cfg':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
         content => template('txstatsd/txstatsd.cfg.erb'),
     }
 

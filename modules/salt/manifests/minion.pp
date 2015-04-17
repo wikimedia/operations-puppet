@@ -61,9 +61,9 @@ class salt::minion(
     }
 
     service { 'salt-minion':
-        ensure    => running,
-        provider  => $::initsystem,
-        require   => Package['salt-minion'],
+        ensure   => running,
+        provider => $::initsystem,
+        require  => Package['salt-minion'],
     }
 
     file { '/etc/init/salt-minion.override':

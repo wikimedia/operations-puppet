@@ -29,8 +29,8 @@ class zuul::merger (
 ) {
 
     file { $git_dir:
-        ensure  => directory,
-        owner   => 'zuul',
+        ensure => directory,
+        owner  => 'zuul',
     }
 
     # Configuration file for the zuul merger
@@ -60,8 +60,8 @@ class zuul::merger (
     }
 
     file { '/var/run/zuul-merger':
-        ensure  => directory,
-        owner   => 'zuul',
+        ensure => directory,
+        owner  => 'zuul',
     }
 
     file { '/etc/zuul/merger-logging.conf':

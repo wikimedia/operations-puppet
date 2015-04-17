@@ -16,25 +16,25 @@ class puppetmaster::scripts(
     require puppetmaster::naggen2
 
     file {'/usr/local/bin/uuid-generator':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/puppetmaster/uuid-generator',
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/uuid-generator',
     }
     file {'/usr/local/sbin/puppetstoredconfigclean.rb':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/puppetmaster/puppetstoredconfigclean.rb'
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/puppetstoredconfigclean.rb'
     }
     file{'/usr/local/bin/puppet-merge':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/puppetmaster/puppet-merge'
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/puppet-merge'
     }
 
     # Clear out older reports

@@ -51,19 +51,19 @@ class logstash::output::elasticsearch(
     # TODO: add support for manage_template when we upgrade to v1.3.2+
 
     file { '/usr/local/bin/logstash_delete_index.sh':
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/logstash/logstash_delete_index.sh',
+        ensure => $ensure,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/logstash/logstash_delete_index.sh',
     }
 
     file { '/usr/local/bin/logstash_optimize_index.sh':
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/logstash/logstash_optimize_index.sh',
+        ensure => $ensure,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/logstash/logstash_optimize_index.sh',
     }
 
     $ensure_cron = $manage_indices ? {

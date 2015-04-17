@@ -63,10 +63,10 @@ class puppetmaster(
     backup::set { 'var-lib-puppet-volatile': }
 
     class { 'puppetmaster::passenger':
-        bind_address    => $bind_address,
-        verify_client   => $verify_client,
-        allow_from      => $allow_from,
-        deny_from       => $deny_from
+        bind_address  => $bind_address,
+        verify_client => $verify_client,
+        allow_from    => $allow_from,
+        deny_from     => $deny_from
     }
 
     class { 'puppetmaster::ssl':

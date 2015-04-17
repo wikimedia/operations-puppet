@@ -6,9 +6,9 @@ class labs_vmbuilder($vmbuilder_version) {
     $vmbuilder_filepath = '/etc/vmbuilder/files'
 
     file { '/etc/vmbuilder.cfg':
-        mode     => '0444',
-        content  => template('labs_vmbuilder/vmbuilder.cfg.erb'),
-        require  => Package['python-vm-builder'],
+        mode    => '0444',
+        content => template('labs_vmbuilder/vmbuilder.cfg.erb'),
+        require => Package['python-vm-builder'],
     }
 
     file { '/etc/vmbuilder/postinst/postinst.copy':

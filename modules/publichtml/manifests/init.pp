@@ -33,10 +33,10 @@ class publichtml(
     }
 
     file { $docroot:
-        ensure  => 'directory',
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
     }
 
     file { "${docroot}/index.html":

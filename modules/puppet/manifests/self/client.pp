@@ -16,7 +16,7 @@ class puppet::self::client($server) {
     # We'd best be sure that our ldap config is set up properly
     # before puppet goes to work, though.
     class { 'puppet::self::config':
-        server   => $server,
-        require  => File['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.conf'],
+        server  => $server,
+        require => File['/etc/ldap/ldap.conf', '/etc/ldap.conf', '/etc/nslcd.conf'],
     }
 }

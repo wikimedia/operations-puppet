@@ -59,8 +59,8 @@ class apt {
     # process (either labs vmbuilder or d-i). Given the ones below exist, it is
     # no longer needed after the installation is over
     file { '/etc/apt/apt.conf':
-        ensure  => absent,
-        notify  => Exec['apt-get update'],
+        ensure => absent,
+        notify => Exec['apt-get update'],
     }
 
     apt::conf { 'wikimedia-proxy':

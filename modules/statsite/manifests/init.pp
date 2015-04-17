@@ -64,8 +64,8 @@ class statsite {
 
     if os_version('debian >= jessie') {
         service { 'statsite':
-            ensure   => 'running',
-            require  => Package['statsite'],
+            ensure  => 'running',
+            require => Package['statsite'],
         }
     }
 }

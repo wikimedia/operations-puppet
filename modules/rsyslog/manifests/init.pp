@@ -23,7 +23,7 @@ class rsyslog {
     }
 
     service { 'rsyslog':
-        ensure    => running,
-        require   => Package['rsyslog'],
+        ensure  => running,
+        require => Package['rsyslog'],
     }
 }

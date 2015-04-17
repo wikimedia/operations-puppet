@@ -2,11 +2,11 @@
 define planet::config {
 
     file { "/usr/share/planet-venus/wikimedia/${title}":
-        ensure  => 'directory',
-        path    => "/usr/share/planet-venus/wikimedia/${title}",
-        mode    => '0755',
-        owner   => 'planet',
-        group   => 'planet',
+        ensure => 'directory',
+        path   => "/usr/share/planet-venus/wikimedia/${title}",
+        mode   => '0755',
+        owner  => 'planet',
+        group  => 'planet',
     }
 
     file { "/usr/share/planet-venus/wikimedia/${title}/config.ini":

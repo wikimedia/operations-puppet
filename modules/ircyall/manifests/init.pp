@@ -39,7 +39,7 @@ class ircyall(
                 'socket'    => '/run/uwsgi/ircyall-web.sock',
             }
         },
-        require => Package['python3-ircyall', 'uwsgi-plugin-python3'],
+        require  => Package['python3-ircyall', 'uwsgi-plugin-python3'],
     }
 
     nginx::site { 'ircyall-web-nginx':

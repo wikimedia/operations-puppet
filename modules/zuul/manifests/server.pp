@@ -34,8 +34,8 @@ class zuul::server (
 ) {
 
     file { '/var/run/zuul':
-        ensure  => directory,
-        owner   => 'zuul',
+        ensure => directory,
+        owner  => 'zuul',
     }
 
     file { '/etc/init.d/zuul':
@@ -97,9 +97,9 @@ class zuul::server (
         refreshonly => true,
     }
     file { '/etc/zuul/zuul.conf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        owner => 'root',
+        group => 'root',
+        mode  => '0444',
     }
 
     file { '/etc/zuul/public.conf':

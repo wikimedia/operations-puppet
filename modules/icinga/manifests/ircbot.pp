@@ -13,9 +13,9 @@ class icinga::ircbot {
     $ircecho_server = 'chat.freenode.net'
 
     class { '::ircecho':
-        ircecho_logs    => $ircecho_logs,
-        ircecho_nick    => $ircecho_nick,
-        ircecho_server  => $ircecho_server,
+        ircecho_logs   => $ircecho_logs,
+        ircecho_nick   => $ircecho_nick,
+        ircecho_server => $ircecho_server,
     }
 
     # bug 26784 - IRC bots process need nagios monitoring

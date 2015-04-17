@@ -71,17 +71,17 @@ class ipython::notebook(
     }
 
     file { $notebookdir:
-        ensure  => directory,
-        owner   => $user,
-        group   => $group,
-        mode    => '0775',
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0775',
     }
 
     file { $mplconfigdir:
-        ensure  => directory,
-        owner   => $user,
-        group   => $group,
-        mode    => '0775',
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0775',
     }
 
     file { "${profile} notebook config":

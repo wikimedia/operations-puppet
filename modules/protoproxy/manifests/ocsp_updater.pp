@@ -18,10 +18,10 @@ class protoproxy::ocsp_updater {
     require ::sslcert
 
     file { '/usr/local/sbin/update-ocsp-all':
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/protoproxy/update-ocsp-all',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/protoproxy/update-ocsp-all',
     }
 
     # This is "0" or "1" randomly by-host, used below with Linux crontab

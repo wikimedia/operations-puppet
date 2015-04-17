@@ -54,12 +54,12 @@ class logstash(
     }
 
     file { '/etc/init/logstash.conf':
-        ensure => absent,
+        ensure  => absent,
         require => Package['logstash'],
     }
 
     file { '/etc/init/logstash-web.conf':
-        ensure => absent,
+        ensure  => absent,
         require => Package['logstash'],
     }
 }

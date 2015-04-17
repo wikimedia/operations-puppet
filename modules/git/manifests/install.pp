@@ -95,9 +95,9 @@ define git::install(
             }
 
             exec { "${title}_alert_for_out_of_sync":
-                command => "/bin/echo ${directory} is out of sync with upstream tag ${git_tag}",
-                logoutput => true,
-                before  => Exec["git_update_${title}"],
+                command     => "/bin/echo ${directory} is out of sync with upstream tag ${git_tag}",
+                logoutput   => true,
+                before      => Exec["git_update_${title}"],
                 refreshonly => true,
             }
         }

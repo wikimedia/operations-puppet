@@ -27,10 +27,10 @@ class puppet_compiler(
 
     # This wrapper defines the env variables for running.
     file { 'run_wrapper':
-        ensure   => $ensure,
-        path     => '/usr/local/bin/puppet-compiler',
-        content  => template('puppet_compiler/run_wrapper.erb'),
-        mode     => '0555'
+        ensure  => $ensure,
+        path    => '/usr/local/bin/puppet-compiler',
+        content => template('puppet_compiler/run_wrapper.erb'),
+        mode    => '0555'
     }
 
 
@@ -51,11 +51,11 @@ class puppet_compiler(
         }
 
         git::install { 'operations/software':
-            ensure        => present,
-            directory     => $install_dir,
-            owner         => $user,
-            git_tag       => "compare-puppet-catalogs-${version}",
-            require       => Nginx::Site['puppet-compiler'],
+            ensure    => present,
+            directory => $install_dir,
+            owner     => $user,
+            git_tag   => "compare-puppet-catalogs-${version}",
+            require   => Nginx::Site['puppet-compiler'],
         }
 
         exec { 'install_puppet_compare_requirements':

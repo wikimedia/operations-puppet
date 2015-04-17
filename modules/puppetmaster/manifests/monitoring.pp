@@ -8,14 +8,14 @@ class puppetmaster::monitoring ($server_type = $::puppetmaster::server_type) {
     # both will be used
     if $server_type == 'frontend' or $server_type == 'standalone' {
         monitoring::service { 'puppetmaster_https':
-            description     => 'puppetmaster https',
-            check_command   => 'check_https_port_status!8140!400',
+            description   => 'puppetmaster https',
+            check_command => 'check_https_port_status!8140!400',
         }
     }
     if $server_type == 'frontend' or $server_type == 'backend' {
         monitoring::service { 'puppetmaster_backend_https':
-            description     => 'puppetmaster backend https',
-            check_command   => 'check_https_port_status!8141!400',
+            description   => 'puppetmaster backend https',
+            check_command => 'check_https_port_status!8141!400',
         }
     }
 

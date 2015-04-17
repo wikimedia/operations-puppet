@@ -84,13 +84,13 @@ class zuul (
     }
 
     file { '/var/log/zuul':
-        ensure  => directory,
-        owner   => 'zuul',
+        ensure => directory,
+        owner  => 'zuul',
     }
 
     file { '/var/lib/zuul':
-        ensure  => directory,
-        owner   => 'zuul',
+        ensure => directory,
+        owner  => 'zuul',
     }
 
 }

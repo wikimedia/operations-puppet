@@ -88,7 +88,7 @@ class spamassassin(
     }
 
     nrpe::monitor_service { 'spamd':
-        description   => 'spamassassin',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -w 1:20 -c 1:40 -a spamd',
+        description  => 'spamassassin',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:20 -c 1:40 -a spamd',
     }
 }
