@@ -1,3 +1,4 @@
 contint::zuul_merger_hosts:
     - gallium.wikimedia.org
     - lanthanum.eqiad.wmnet
+contint::nodepool_host: labnodepool1001.eqiad.wmnet
