@@ -3,6 +3,8 @@ require 'fileutils'
 
 require 'rspec/core/rake_task'
 
+extra_modules = [ 'wmflib', 'stdlib' ]
+
 modulename = File.basename(File.expand_path(File.dirname(__FILE__)))
 
 symlinks = { 'spec/fixtures/modules/%s/files' % modulename => '../../../../files',
@@ -13,8 +15,9 @@ symlinks = { 'spec/fixtures/modules/%s/files' % modulename => '../../../../files
 
 task :setup do
   FileUtils.mkdir_p('spec/fixtures/modules/%s' % modulename)
-  FileUtils.ln_s('../../../../stdlib', 'spec/fixtures/modules/stdlib')
-  FileUtils.ln_s('../../../../wmflib', 'spec/fixtures/modules/wmflib')
+  extra_modules.each do |x|
+      FileUtils.ln_s('../../../../%s' % x, 'spec/fixtures/modules/%s' % x)
+  end
   symlinks.each do |x|
     if !File.exist?(x[0])
       FileUtils.ln_s(x[1], x[0])
@@ -25,8 +28,9 @@ end
 task :teardown do
   symlinks.each { |x| FileUtils.rm(x[0], :force => true) }
   FileUtils.rmdir('spec/fixtures/modules/%s' % modulename)
-  FileUtils.rm('spec/fixtures/modules/stdlib', :force => true)
-  FileUtils.rm('spec/fixtures/modules/wmflib', :force => true)
+  extra_modules.each do |x|
+      FileUtils.rm('spec/fixtures/modules/%s' % x, :force => true)
+  end
   FileUtils.rmdir('spec/fixtures/modules')
 end
 
