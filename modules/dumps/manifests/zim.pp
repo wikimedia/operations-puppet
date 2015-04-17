@@ -5,7 +5,7 @@ class dumps::zim {
         ensure => present,
     }
 
-    package { [ 'nodejs', 'nodejs-legacy', 'libsqlite3-0' ]:
+    package { [ 'nodejs', 'nodejs-legacy', 'libsqlite3-0', 'sqlite3', 'pixz' ]:
         ensure => present,
     }
 
