@@ -29,14 +29,14 @@ fi
 # set a fancy prompt (non-color, overwrite the one in /etc/profile)
 
 <% if has_variable?("instancename") then %>
-export INSTANCENAME=<%= instancename %>
+export INSTANCENAME=<%= @instancename %>
 PS1='${debian_chroot:+($debian_chroot)}\u@${INSTANCENAME}:\w\$ '
 <% else %>
 PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 <% end %>
 
 <% if has_variable?("instanceproject") then %>
-export INSTANCEPROJECT=<%= instanceproject %>
+export INSTANCEPROJECT=<%= @instanceproject %>
 <% end %>
 
 # Commented out, don't overwrite xterm -T "title" -n "icontitle" by default.
