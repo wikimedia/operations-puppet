@@ -230,7 +230,7 @@ groups:
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging investigation
-    members: [nuria, milimetric, mforns]
+    members: [nuria, milimetric, mforns, joal]
   labmon-roots:
     gid: 734
     description: Full root access to labmon nodes
@@ -257,7 +257,7 @@ groups:
   eventlogging-roots:
     gid: 739
     description: Full root on EventLogging servers.
-    members: [nuria, milimetric, mforns]
+    members: [nuria, milimetric, mforns, joal]
     privileges: ['ALL = NOPASSWD: ALL']
   wikidata-query-roots:
     gid: 740
