@@ -1,4 +1,7 @@
-class role::cache::upload {
+class role::cache::upload(
+    $upload_domain = 'upload.wikimedia.org',
+    $top_domain = 'org'
+) {
     include role::cache::2layer
 
     $upload_nodes = hiera('cache::upload::nodes')
@@ -50,23 +53,10 @@ class role::cache::upload {
         include varnish::monitoring::ganglia::vhtcpd
     }
 
-    # lint:ignore:case_without_default
-    case $::realm {
-    # lint:endignore
-        'production': {
-            $cluster_options = {
-                'upload_domain' => 'upload.wikimedia.org',
-                'top_domain'    => 'org',
-                'do_gzip'       => true,
-            }
-        }
-        'labs': {
-            $cluster_options = {
-                'upload_domain' => 'upload.beta.wmflabs.org',
-                'top_domain'    => 'beta.wmflabs.org',
-                'do_gzip'       => true,
-            }
-        }
+    $cluster_options = {
+        'upload_domain' => $upload_domain,
+        'top_domain'    => $top_domain,
+        'do_gzip'       => true,
     }
 
     $runtime_params = $::site ? {
