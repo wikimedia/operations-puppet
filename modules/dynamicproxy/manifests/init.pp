@@ -91,7 +91,15 @@ class dynamicproxy (
 
         nginx::site { 'proxymanager':
             content => template("dynamicproxy/proxymanager.conf.erb"),
-            require => File['/etc/nginx/lua/list-proxy-entries.lua'],
+            require => [Ferm::Service['proxymanager'],
+                        File['/etc/nginx/lua/list-proxy-entries.lua']],
+        }
+
+        ferm::service { 'proxymanager':
+            proto  => 'tcp',
+            port   => '8081',
+            desc   => 'Proxymanager service for Labs instances',
+            srange => '$INTERNAL',
         }
     }
 
