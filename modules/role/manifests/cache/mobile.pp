@@ -4,7 +4,7 @@ class role::cache::mobile {
     $mobile_nodes = hiera('cache::mobile::nodes')
     $site_mobile_nodes = $mobile_nodes[$::site]
 
-    if $::realm == 'production' {
+    if $::memorysize_mb >= 16384 {
         $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
     }
     else {
