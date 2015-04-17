@@ -36,14 +36,14 @@ class package_builder::environments {
         distribution => 'precise',
         components   => 'main universe',
         architecture => 'i386',
-        mirror       => 'http://nova.clouds.archive.ubuntu.com/ubuntu/',
+        mirror       => 'http://mirrors.wikimedia.org/ubuntu',
         keyring      => '/usr/share/keyrings/ubuntu-archive-keyring.gpg',
     }
     package_builder::pbuilder_base { 'trusty-i386':
         distribution => 'trusty',
         components   => 'main universe',
         architecture => 'i386',
-        mirror       => 'http://nova.clouds.archive.ubuntu.com/ubuntu/',
+        mirror       => 'http://mirrors.wikimedia.org/ubuntu',
         keyring      => '/usr/share/keyrings/ubuntu-archive-keyring.gpg',
     }
     package_builder::pbuilder_base { 'jessie-i386':
