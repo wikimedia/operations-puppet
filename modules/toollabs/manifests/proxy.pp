@@ -44,6 +44,13 @@ class toollabs::proxy(
         require => File['/etc/init/proxylistener.conf'],
     }
 
+    ferm::service { 'proxylistener-port':
+        proto  => 'tcp',
+        port   => '8282',
+        srange => '$INTERNAL',
+        desc   => 'Proxylistener port, open to just labs'
+    }
+
     # Deploy root web.
     git::clone { 'labs/toollabs':
         ensure    => latest,
