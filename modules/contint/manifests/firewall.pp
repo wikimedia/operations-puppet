@@ -24,6 +24,19 @@ class contint::firewall {
         rule => "proto tcp dport 4730 { saddr (127.0.0.1 ::1 ${zuul_merger_hosts}) ACCEPT; }"
     }
 
+    # Nodepool related
+    $nodepool_host = hiera('contint::nodepool_host')
+    ferm::service { 'gearman_from_nodepool':
+        proto => 'tcp',
+        port  => '4730',
+        srange => $nodepool_host,
+    }
+    ferm::service { 'jenkins_zeromq_from_nodepool':
+        proto => 'tcp',
+        port  => '8888',
+        srange => $nodepool_host,
+    }
+
     # The master runs a git-daemon process used by slave to fetch changes from
     # the Zuul git repository. It is only meant to be used from slaves, so
     # reject outside calls.
