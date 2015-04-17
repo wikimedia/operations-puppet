@@ -41,14 +41,14 @@ class role::ocg {
         proto  => 'tcp',
         port   => $::ocg::service_port,
         desc   => 'HTTP frontend to submit jobs and get status from pdf rendering',
-        srange => $::INTERNAL
+        srange => '$INTERNAL',
     }
 
     ferm::service{ 'gmond':
         proto  => 'tcp',
         port   => 8649,
         desc   => 'Ganglia monitor port (OCG config)',
-        srange => $::INTERNAL
+        srange => '$INTERNAL',
     }
 
     include lvs::configuration
@@ -73,7 +73,7 @@ class role::ocg::test {
         proto  => 'tcp',
         port   => $service_port,
         desc   => 'HTTP frontend to submit jobs and get status from pdf rendering',
-        srange => $::INTERNAL
+        srange => '$INTERNAL',
     }
 
     class { 'redis':
