@@ -30,17 +30,17 @@ class role::cache::mobile {
     require geoip::dev # for VCL compilation using libGeoIP
 
     $varnish_be_directors = {
-        1 => {
+        'one' => {
             'backend'        => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
             'api'            => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
             'test_wikipedia' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
         },
-        2 => {
+        'two' => {
             'eqiad' => $mobile_nodes['eqiad'],
         }
     }
 
-    if $::role::cache::base::cluster_tier == 1 {
+    if $::role::cache::base::cluster_tier == 'one' {
         $director_retries = 2
     } else {
         $director_retries = $::role::cache::2layer::backend_weight_avg * 4
@@ -86,7 +86,7 @@ class role::cache::mobile {
     }
 
     $director_type_cluster = $::role::cache::base::cluster_tier ? {
-        1       => 'random',
+        'one'   => 'random',
         default => 'chash',
     }
 
