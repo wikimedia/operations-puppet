@@ -4,12 +4,8 @@ class role::cache::text {
     $text_nodes = hiera('cache::text::nodes')
     $site_text_nodes = $text_nodes[$::site]
 
-    if $::realm == 'production' {
-        $memory_storage_size = floor((0.125 * $::memorysize_mb / 1024.0) + 0.5) # 1/8 of total mem
-    }
-    else {
-        $memory_storage_size = 1
-    }
+    # 1/8 of total mem
+    $memory_storage_size = ceiling(0.125 * $::memorysize_mb / 1024.0)
 
     system::role { 'role::cache::text':
         description => 'text Varnish cache server',

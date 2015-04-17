@@ -42,7 +42,12 @@ class role::cache::bits {
     }
     $cluster_options = merge($common_cluster_options, $realm_cluster_options)
 
-    if $::realm == 'production' {
+    # The cutoff here is somewhat arbitrary.  Large-memory production hosts
+    # use 2GB currently, and small-memory virtual hosts (some as little as 4G
+    # total mem) use 1GB currently.  It seems ok for now as a general rule
+    # here: don't use the larger 2GB value unless it's a relatively-small
+    # fraction of available memory.
+    if $::memorysize_mb >= 16384 {
         $memory_storage_size = 2
     }
     else {
