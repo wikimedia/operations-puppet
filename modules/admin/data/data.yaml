@@ -304,11 +304,16 @@ groups:
     description: Users who can do sane CLI admin things
                  * Remove repositories
                  * Manage repositories, phd service, and workers
-    members: [demon, twentyafterfour]
+    members: []
     privileges: ['ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
                  'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/repository',
                  'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/phd',
                  'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/worker']
+  restbase-roots:
+    gid: 748
+    description: people who have full root on phabricator
+    members: [demon, twentyafterfour]
+    privileges: ['ALL = NOPASSWD: ALL']
   zotero-admin:
     gid: 747
     description: group of zotero admins
