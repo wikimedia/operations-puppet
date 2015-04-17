@@ -6,7 +6,7 @@ if [ "${WIKIMEDIA}" = "yes" ]; then
 	deb <%= @mirror %> <%= @distribution %>-wikimedia <%= @components %>
 	deb-src <%= @mirror %> <%= @distribution %>-wikimedia <%= @components %>
 EOF
-	cat > /etc/apt/preferences.d/wikimedia <<-'EOF'
+	cat > /etc/apt/preferences.d/wikimedia.pref <<-'EOF'
 	Package: *
 	Pin: release o=Wikimedia
 	Pin-Priority: 1001
