@@ -1,6 +1,15 @@
-class dynamicproxy::api {
+class dynamicproxy::api(
+    $port = 5668,
+) {
     nginx::site { 'api':
         content => template('dynamicproxy/api.conf'),
+    }
+
+    ferm::service { 'dynamicproxy-api-http':
+        srange => '$INTERNAL',  # Use security groups for actual access control
+        port   => $port,
+        proto  => 'tcp',
+        desc   => 'API for adding / removing proxies from dynamicproxy domainproxy'
     }
 
     package { 'python-flask':
