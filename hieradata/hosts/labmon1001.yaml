@@ -1,1 +1,2 @@
 statsite::instance::graphite_host: 'localhost'
+statsite::instance::extended_counters: 1
