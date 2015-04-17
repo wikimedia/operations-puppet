@@ -10,7 +10,7 @@ class openstack::nova::compute(
             $ca_target = '/etc/ssl/certs/wmf_ca_2014_2017.pem'
         } else {
             $certname = "virt-star.${site}.wmnet"
-            $ca_target = '/etc/ssl/certs/wmf-ca.pem'
+            $ca_target = '/etc/ssl/certs/wmf_ca_2014_2017.pem'
         }
         install_certificate{ "${certname}": }
 
