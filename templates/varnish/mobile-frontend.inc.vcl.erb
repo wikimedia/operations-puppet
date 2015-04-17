@@ -101,13 +101,6 @@ sub vcl_recv {
 
 	set req.hash_ignore_busy = true;
 
-	unset req.http.Surrogate-Capability;
-<% if @cluster_options.fetch("enable_esi", false) -%>
-	if (req.http.X-CS == "-TEST") {
-		set req.http.Surrogate-Capability = "frontend=ESI/1.0";
-	}
-<% end -%>
-
 	// Default (now modified) Varnish vcl_recv function
 	if (req.request != "GET" && req.request != "HEAD") {
 		// We only deal with GET and HEAD by default
@@ -121,13 +114,6 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-<% if @cluster_options.fetch("enable_esi", false) -%>
-	if (beresp.http.Surrogate-Control ~ "ESI/1.0") {
-		set beresp.do_esi = true;
-	}
-<% end -%>
-	unset beresp.http.Surrogate-Control;
-
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
 	}
