@@ -12,10 +12,13 @@
 #                       assumed to be in /etc/ssl/localcert.  If this is 'ssl-cert-snakeoil',
 #                       the snakeoil certificate will be used.  It is expected to be found at
 #                       /etc/ssl/certs/ssl-cert-snakeoil.pem.  Default: archiva.wikimedia.org
+# $ca_name            - Name of CA cert.  Default: GlobalSign_CA.pem.  This will only be used
+#                       if the $certificate_name is not 'ssl-cert-snakeoil'.
 #
 class archiva::proxy(
     $ssl_enabled      = true,
     $certificate_name = 'archiva.wikimedia.org',
+    $ca_name          = 'GlobalSign_CA.pem',
 ) {
     Class['::archiva'] -> Class['::archiva::proxy']
 
@@ -42,6 +45,8 @@ class archiva::proxy(
         if $certificate_name != 'ssl-cert-snakeoil' {
             install_certificate{ $certificate_name:
                 before => Nginx::Site['archiva'],
+                # make sure the cert includes GlobalSign in the chain
+                ca     => $ca_name,
             }
         }
 
