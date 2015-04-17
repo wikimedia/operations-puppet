@@ -22,9 +22,9 @@
 define statsite::instance(
     $port              = 8125,
     $graphite_host     = hiera('statsite::instance::graphite_host','graphite-in.eqiad.wmnet'),
-    $graphite_port     = 2003,
+    $graphite_port     = hiera('statsite::instance::graphite_port', 2003),
     $input_counter     = "statsd.${::hostname}.received",
-    $extended_counters = 0,
+    $extended_counters = hiera('statsite::instance::extended_counters', 0),
 ) {
     $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py $graphite_host $graphite_port \"\""
 
