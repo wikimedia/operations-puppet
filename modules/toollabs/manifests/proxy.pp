@@ -22,6 +22,14 @@ class toollabs::proxy(
         ssl_certificate_name => $ssl_certificate_name,
     }
 
+    $proxy_nodes = join($proxies, ' ') # $proxies comes from toollabs base class
+    # Open up redis to all proxies!
+    ferm::service { 'redis-replication':
+        proto  => 'tcp',
+        port   => '6379',
+        srange => "@resolve(($proxy_nodes))",
+    }
+
     file { '/usr/local/sbin/proxylistener':
         ensure  => file,
         owner   => 'root',
