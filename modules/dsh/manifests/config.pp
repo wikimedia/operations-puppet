@@ -3,8 +3,9 @@
 # Sets up dsh config files alone, without actually
 # setting up dsh. Useful primarily for monitoring
 class dsh::config (
-    $group_source = 'puppet:///modules/dsh/group',
     $scap_proxies = [],
+    $parsoid = [],
+    $mediawiki_install = [],
 ){
     file { '/etc/dsh':
         ensure => directory,
@@ -12,25 +13,31 @@ class dsh::config (
         group  => 'root',
         mode   => '0444',
     }
+
+    file { '/etc/dsh/dsh.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/dsh/dsh.conf',
+        require => File['/etc/dsh'],
+    }
+
     file { '/etc/dsh/group':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => $group_source,
-        recurse => true,
+        require => File['/etc/dsh'],
     }
 
-    file { '/etc/dsh/group/scap-proxies':
-        content => template('dsh/scap-proxies.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    dsh::group { 'scap-proxies':
+        entries => $scap_proxies,
     }
 
-    file { '/etc/dsh/dsh.conf':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/dsh/dsh.conf',
+    dsh::group { 'parsoid':
+        entries => $parsoid,
+    }
+
+    dsh::group { 'mediawiki-install':
+        entries => $mediawiki_install,
     }
 }
