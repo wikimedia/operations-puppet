@@ -316,6 +316,11 @@ node 'carbon.wikimedia.org' {
 
     include standard
     include role::installserver
+
+    class { 'ganglia_new::monitor::aggregator':
+        sites =>  'eqiad',
+    }
+
 }
 
 # cerium, praseodymium and xenon are Cassandra test hosts
