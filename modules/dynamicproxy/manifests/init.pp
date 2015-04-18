@@ -20,11 +20,13 @@ class dynamicproxy (
     $notfound_servers     = [],
     $luahandler           = 'domainproxy',
     $set_xff              = false,
+    $redis_replication    = undef,
 ) {
     class { '::redis':
-        persist       => 'aof',
-        dir           => '/var/lib/redis',
-        maxmemory     => $redis_maxmemory,
+        persist           => 'aof',
+        dir               => '/var/lib/redis',
+        maxmemory         => $redis_maxmemory,
+        redis_replication => $redis_replication,
     }
 
     # The redis module intentionally does not restart the redis
