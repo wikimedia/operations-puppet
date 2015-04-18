@@ -47,6 +47,7 @@ METRICS = (
     'domComplete',    # Time to DOM Comlete event
     'loadEventEnd',   # Time to load event completion
 )
+ARCHIVES = [(UPDATE_INTERVAL, RETENTION)]
 
 
 def median(population):
@@ -93,10 +94,9 @@ class WhisperLogger(object):
         return os.path.join(self.args.whisper_dir, metric + '.wsp')
 
     def create_whisper_files(self):
-        archives = [(WINDOW_SPAN, UPDATE_INTERVAL)]
         for metric in METRICS:
             try:
-                whisper.create(self.get_whisper_file(metric), archives)
+                whisper.create(self.get_whisper_file(metric), ARCHIVES)
             except whisper.InvalidConfiguration as e:
                 pass  # Already exists.
 

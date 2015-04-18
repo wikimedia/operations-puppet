@@ -10,4 +10,4 @@ setgid webperf
 respawn
 respawn limit unlimited
 
-exec /srv/webperf/coal --whisper-dir "/var/lib/coal" "<%= @endpoint %>"
+exec /usr/local/bin/coal --whisper-dir "/var/lib/coal" "<%= @endpoint %>"
