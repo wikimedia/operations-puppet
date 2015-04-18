@@ -173,7 +173,7 @@ class role::analytics::refinery::data::check::email {
     #   https://gerrit.wikimedia.org/r/#/c/186254
     # the cron runs as hdfs instead.
     cron { 'refinery data check hdfs_mount':
-        command     => "${::role::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets webrequest,raw_webrequest --quiet",
+        command     => "${::role::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets webrequest,raw_webrequest,pagecounts_all_sites,pagecounts_raw --quiet",
         environment => 'MAILTO=otto@wikimedia.org,jgage@wikimedia.org',
         user        => 'hdfs',
         hour        => 10,
