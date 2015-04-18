@@ -179,6 +179,14 @@ class role::analytics::refinery::data::check::email {
         hour        => 10,
         minute      => 0,
     }
+
+    cron { 'refinery data check pagecounts':
+        command     => "${::role::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pagecounts_all_sites,pagecounts_raw --quiet",
+        environment => 'MAILTO=otto@wikimedia.org,jgage@wikimedia.org',
+        user        => 'hdfs', # See comment in above cron
+        hour        => 10,
+        minute      => 5,
+    }
 }
 
 # == Class role::analytics::refinery::source
