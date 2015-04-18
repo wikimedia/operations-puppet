@@ -17,15 +17,15 @@ class webperf::coal( $endpoint ) {
     require_package('python-whisper')
     require_package('python-zmq')
 
-    file { '/srv/webperf/coal':
+    file { '/usr/local/bin/coal':
         source => 'puppet:///modules/webperf/coal',
-        owner  => 'webperf',
-        group  => 'webperf',
-        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
         notify => Service['coal'],
     }
 
-    file { [ '/var/lib/coal', '/var/log/coal' ]:
+    file { '/var/lib/coal':
         ensure => directory,
         owner  => 'webperf',
         group  => 'webperf',
