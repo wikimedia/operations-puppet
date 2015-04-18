@@ -15,11 +15,20 @@ class toollabs::proxy(
         }
     }
 
+    if $::hostname != $active_proxy {
+        $redis_replication = {
+            "${::hostname}" => $active_proxy
+        }
+    } else {
+        $redis_replication = undef
+    }
+
     class { '::dynamicproxy':
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
         luahandler           => 'urlproxy',
         resolver             => '10.68.16.1', # eqiad DNS resolver
         ssl_certificate_name => $ssl_certificate_name,
+        redis_replication    => $redis_replication,
     }
 
     $proxy_nodes = join($proxies, ' ') # $proxies comes from toollabs base class
