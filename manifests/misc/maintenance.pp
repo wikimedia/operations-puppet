@@ -175,7 +175,7 @@ class misc::maintenance::update_article_count( $ensure = present ) {
         ensure   => $ensure,
         command  => 'flock -n /var/lock/update-article-count /usr/local/bin/update-article-count > /var/log/mediawiki/updateArticleCount.log 2>&1',
         user     => $::mediawiki::users::web,
-        monthday => 29,
+        monthday => 21,
         hour     => 5,
         minute   => 0,
     }
