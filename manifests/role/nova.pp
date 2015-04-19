@@ -554,6 +554,17 @@ class role::nova::compute($instance_dev='/dev/md1') {
             require => Mount['/var/lib/nova/instances'],
         }
     }
+
+    if os_version('debian >= jessie || ubuntu >= trusty') {
+        # Some older VMs have a hardcoded path to the emulator
+        #  binary, /usr/bin/kvm.  Since the kvm/qemu reorg,
+        #  new distros don't create a kvm binary.  We can safely
+        #  alias kvm to qemu-system-x86_64 which does what we want.
+        file { '/usr/bin/kvm':
+            ensure  => link,
+            target  => '/usr/bin/qemu-system-x86_64',
+        }
+    }
 }
 
 # global icinga hostgroups for virt/labs hosts
