@@ -138,7 +138,12 @@ PREFIX = read_file('/etc/wmflabs-project', 'tools').strip()  # project name
 pwd_entry = pwd.getpwuid(os.getuid())
 USER = pwd_entry.pw_name
 HOME = pwd_entry.pw_dir
-TOOL = re.sub(r'^%s.' % PREFIX, '', USER) # Tool users are of form PREFIX.TOOLNAME
+
+# Ensure that we are indeed a tool.
+if not USER.startswith(PREFIX + '.'):
+    sys.stderr.write('Only tool accounts have web services.\n')
+    sys.exit(1)
+TOOL = USER[len(PREFIX) + 1:]
 
 # Read memlimit customizations for individual tools, set by
 # admins for tools that require more than usual memory limits.
