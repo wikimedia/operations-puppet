@@ -978,7 +978,6 @@ node 'eventlog1001.eqiad.wmnet' {
     include standard
     include role::ipython_notebook
     include role::logging::mediawiki::errors
-    include role::coal
 }
 
 node 'fluorine.eqiad.wmnet' {
@@ -1106,6 +1105,7 @@ node 'graphite1001.eqiad.wmnet' {
     include role::statsdlb
     include role::gdash
     include role::performance
+    include role::coal
 }
 
 # graphite test machine, currently with SSD caching + spinning disks
