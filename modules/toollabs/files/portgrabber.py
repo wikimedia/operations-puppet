@@ -4,7 +4,7 @@ import socket
 
 def get_active_proxy():
     """Return the active master proxy to register with"""
-    with open('/etc/portgrabber', 'r') as f:
+    with open('/etc/active-proxy', 'r') as f:
         return f.read().strip()
 
 
