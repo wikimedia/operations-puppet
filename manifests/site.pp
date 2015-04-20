@@ -974,10 +974,11 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
 # processes it, and broadcasts to internal subscribers.
 node 'eventlog1001.eqiad.wmnet' {
     role eventlogging
+
     include standard
     include role::ipython_notebook
     include role::logging::mediawiki::errors
-    include role::brrd
+    include role::coal
 }
 
 node 'fluorine.eqiad.wmnet' {

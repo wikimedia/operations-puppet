@@ -17,10 +17,6 @@ class role::webperf {
         statsd_host => $statsd_host,
     }
 
-    class { '::webperf::coal':
-        endpoint => "tcp://${eventlogging_host}:8600",
-    }
-
     # Report VisualEditor performance measurements to Graphite.
     # See <https://meta.wikimedia.org/wiki/Schema:TimingData>
     class { '::webperf::ve':

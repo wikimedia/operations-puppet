@@ -1,0 +1,129 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  coal-web
+  ~~~~~~~~
+  Simple Flask webapp for serving coal metrics.
+
+  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+"""
+from __future__ import division
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+import os.path
+import time
+import functools
+
+import flask
+import werkzeug.contrib.cache
+import whisper
+
+
+METRICS = (
+    'responseStart',  # Time to user agent receiving first byte
+    'firstPaint',     # Time to initial render
+    'domComplete',    # Time to DOM Comlete event
+    'loadEventEnd',   # Time to load event completion
+)
+
+PERIODS = {
+    'hour':  60 * 60,
+    'day':   60 * 60 * 24,
+    'week':  60 * 60 * 24 * 7,
+    'month': 60 * 60 * 24 * 30,
+    'year':  60 * 60 * 24 * 365.25,
+}
+
+WHISPER_DIR = '/var/lib/coal'
+
+app = flask.Flask(__name__)
+cache = werkzeug.contrib.cache.SimpleCache()
+
+
+@app.after_request
+def add_header(response):
+    """Add CORS and Cache-Control headers to the response."""
+    response.cache_control.max_age = 30
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET'
+    return response
+
+
+def chunks(items, chunk_size):
+    """Split `items` into sub-lists of size `chunk_size`."""
+    for index in range(0, len(items), chunk_size):
+        yield items[index:index + chunk_size]
+
+
+def median(population):
+    """Compute the median of an iterable of values."""
+    population = list(sorted(population))
+    length = len(population)
+    if length == 0:
+        return float('nan')
+    index = (length - 1) // 2
+    if length % 2:
+        return population[index]
+    middle_terms = population[index] + population[index + 1]
+    return middle_terms / 2
+
+
+def fetch_metric(metric, period):
+    now = int(time.time())
+    to_time = now - 60
+    from_time = to_time - period
+    wsp = os.path.join(WHISPER_DIR, metric + '.wsp')
+    (start, end, step), samples = whisper.fetch(wsp, from_time, to_time)
+    samples_per_point = len(samples) // 60
+    return {
+        'start': start,
+        'end': end,
+        'step': period // 60,
+        'points': [
+            median(sample for sample in chunk if sample)
+            for chunk in chunks(samples, samples_per_point)
+        ]
+    }
+
+
+@app.route('/v1/metrics')
+def get_metrics():
+    response = cache.get(flask.request.url)
+    if response is not None:
+        return response
+    period_name = flask.request.args.get('period', 'hour')
+    if period_name not in PERIODS:
+        return flask.jsonify(error='Invalid value for "period".'), 401
+    period = PERIODS.get(period_name)
+    points = {}
+    for metric in METRICS:
+        data = fetch_metric(metric, period)
+        points[metric] = data['points']
+    response = flask.jsonify(
+        start=data['start'],
+        end=data['end'],
+        step=period // 60,
+        points=points
+    )
+    cache.set(flask.request.url, response, timeout=30)
+    return response
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
