@@ -25,6 +25,9 @@ sub vcl_fetch {
 	if (req.http.Host ~ "citoid") {
 		return (hit_for_pass);
 	}
+	if (req.http.Host ~ "graphoid") {
+		return (hit_for_pass);
+	}
 	if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\.") {
 		// Dummy endpoint for eager DNS resolution / TLS handshake.
 		if (req.url ~ "^/_preconnect") {
