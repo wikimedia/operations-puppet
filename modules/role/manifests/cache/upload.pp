@@ -2,6 +2,16 @@ class role::cache::upload(
     $upload_domain = 'upload.wikimedia.org',
     $top_domain = 'org'
 ) {
+    system::role { 'role::cache::upload':
+        description => 'upload Varnish cache server',
+    }
+
+    class { 'lvs::realserver':
+        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site],
+    }
+
+    class { 'varnish::htcppurger': varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ] }
+
     include role::cache::2layer
 
     $upload_nodes = hiera('cache::upload::nodes')
@@ -10,16 +20,8 @@ class role::cache::upload(
     # 1/12 of total mem
     $memory_storage_size = ceiling(0.08333 * $::memorysize_mb / 1024.0)
 
-    system::role { 'role::cache::upload':
-        description => 'upload Varnish cache server',
-    }
-
     if $::realm == 'production' {
         include role::cache::ssl::sni
-    }
-
-    class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site],
     }
 
     $varnish_be_directors = {
@@ -36,13 +38,6 @@ class role::cache::upload(
         $director_retries = 2
     } else {
         $director_retries = $::role::cache::2layer::backend_weight_avg * 4
-    }
-
-    include standard
-    include nrpe
-
-    class { 'varnish::htcppurger':
-        varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ],
     }
 
     if $::role::cache::configuration::has_ganglia {
