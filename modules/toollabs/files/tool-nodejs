@@ -2,9 +2,7 @@
 """
 NodeJS starter script for Wikimedia Tool Labs
 """
-import re
 import os
-import pwd
 
 import portgrabber
 
