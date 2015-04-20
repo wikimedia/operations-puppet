@@ -88,7 +88,7 @@ maniphest.custom-field-definitions:
 #ops-sensitive: 'Operations Sensitive'
 #sensitive: 'Another Private Issue'
 
-maniphest.statuses:
+maniphest.statuses: !!omap
   open:
     name: Open
     special: default
