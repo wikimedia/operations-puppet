@@ -180,4 +180,14 @@ class toollabs (
     package { 'at':
         ensure => latest,
     }
+
+    # Link to currently active proxy
+    file { '/etc/active-proxy':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => $active_proxy,
+    }
+
 }
