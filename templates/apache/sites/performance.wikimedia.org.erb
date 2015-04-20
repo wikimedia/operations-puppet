@@ -5,6 +5,13 @@
 
     DocumentRoot /var/www/performance
 
+    <Location /coal>
+        Order allow,deny
+        Allow from all
+        uWSGIsocket /run/uwsgi/coal.sock
+        SetHandler uwsgi-handler
+    </Location>
+
     <Directory />
         AllowOverride None
     </Directory>

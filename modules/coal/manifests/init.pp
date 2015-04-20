@@ -34,7 +34,7 @@ class coal( $endpoint ) {
                 'plugins'     => 'python',
                 'socket'      => '/run/uwsgi/coal.sock',
                 'wsgi-file'   => '/usr/local/bin/coal-web',
-                'callable'    => 'coal',
+                'callable'    => 'app',
                 'die-on-term' => true,
                 'master'      => true,
                 'processes'   => 8,

@@ -6,9 +6,14 @@
 class role::performance {
     include ::apache
     include ::apache::mod::proxy
+    include ::apache::mod::uwsgi
 
     package { 'reporter/reporter':
         provider => 'trebuchet',
+    }
+
+    class { '::coal':
+        endpoint => 'tcp://eventlogging.eqiad.wmnet:8600',
     }
 
     file { '/var/www/performance':
