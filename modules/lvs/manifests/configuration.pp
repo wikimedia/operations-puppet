@@ -177,6 +177,10 @@ class lvs::configuration {
             'cxserver' => {
                 'eqiad' => "10.2.2.18",
             },
+            # uncomment once the XX have been defined
+            #'graphoid' => {
+            #    'eqiad' => "10.2.2.XX",
+            #},
             'restbase' => {
                 'eqiad' => "10.2.2.17",
             },
@@ -200,6 +204,7 @@ class lvs::configuration {
             'mathoid' => {},
             'citoid' => {},
             'cxserver' => {},
+            'graphoid' => {},
             'misc_web' => {},
             'mobile' => {},
             'ocg' => {},
@@ -707,6 +712,19 @@ class lvs::configuration {
             'depool-threshold' => '.5',
             'monitors' => {
                 'ProxyFetch' => { 'url' => [ 'http://cxserver.svc.eqiad.wmnet' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
+            }
+        },
+        'graphoid' => {
+            'description' => 'Graph-rendering service, graphoid.svc.eqiad.wmnet',
+            'class' => 'low-traffic',
+            'sites' => [ 'eqiad' ],
+            'ip' => $service_ips['graphoid'][$::site],
+            'port' => 19000,
+            'bgp' => 'yes',
+            'depool-threshold' => '.5',
+            'monitors' => {
+                'ProxyFetch' => { 'url' => [ 'http://graphoid.svc.eqiad.wmnet' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             }
         },
