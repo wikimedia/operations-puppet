@@ -58,6 +58,11 @@ class role::deployment::config {
         'zotero/translators' => {
             'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators',
         },
+        'graphoid/deploy' => {
+            'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/graphoid/deploy',
+            'service_name'          => 'graphoid',
+            'checkout_submodules'   => true,
+        },
         'rcstream/rcstream' => {
             'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/rcstream',
             'service_name'          => 'rcstream',

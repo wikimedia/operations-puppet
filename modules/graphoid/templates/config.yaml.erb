@@ -1,0 +1,23 @@
+# Graphoid-specific settings
+# List of domains the service is allowed to access (with their subdomains)
+domains:
+  - localhost
+  - 127.0.0.1
+<% unless @domains.empty? -%>
+<%= @domains.map { |dom| '  - ' + dom }.join "\n" %>
+<% end -%>
+# Additional list of allowed domains with their replacements
+# Even though the subdomains will also be allowed, the substitution
+# will be done only on fully matched hostname.
+# For example, it allows "graph.wmflabs.org" to be replaced with "localhost:12345"
+<% if @domain_map.empty? -%>
+domainMap: {}
+<% else -%>
+domainMap:
+<%= @domain_map.keys.map { |k| "  '#{k}': '#{@domain_map[k]}'" }.join "\n" %>
+<% end -%>
+# Which protocol should service use for protocol-relative URLs like //example.com/path
+defaultProtocol: https
+# Error if it takes longer than this to handle the request
+timeout: <%= @timeout %>
+
