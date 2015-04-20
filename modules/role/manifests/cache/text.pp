@@ -1,5 +1,15 @@
 class role::cache::text {
+    system::role { 'role::cache::text':
+        description => 'text Varnish cache server',
+    }
+
+    class { 'varnish::htcppurger': varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ] }
+
     include role::cache::2layer
+
+    class { 'lvs::realserver':
+        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site],
+    }
 
     $text_nodes = hiera('cache::text::nodes')
     $site_text_nodes = $text_nodes[$::site]
@@ -7,20 +17,12 @@ class role::cache::text {
     # 1/8 of total mem
     $memory_storage_size = ceiling(0.125 * $::memorysize_mb / 1024.0)
 
-    system::role { 'role::cache::text':
-        description => 'text Varnish cache server',
-    }
-
     if $::realm == 'production' {
         include role::cache::ssl::sni
     }
 
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
-
-    class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site],
-    }
 
     $varnish_be_directors = {
         'one' => {
@@ -32,15 +34,6 @@ class role::cache::text {
         'two' => {
             'eqiad' => $text_nodes['eqiad'],
         },
-    }
-
-    include standard
-    include nrpe
-
-    #class { "varnish::packages": version => "3.0.3plus~rc1-wm13" }
-
-    class { 'varnish::htcppurger':
-        varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ],
     }
 
     if $::role::cache::configuration::has_ganglia {

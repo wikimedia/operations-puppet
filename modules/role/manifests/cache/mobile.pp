@@ -1,7 +1,17 @@
 class role::cache::mobile (
     $zero_site = 'https://zero.wikimedia.org'
 ) {
+    system::role { 'role::cache::mobile':
+        description => 'mobile Varnish cache server',
+    }
+
+    class { 'varnish::htcppurger': varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ] }
+
     include role::cache::2layer
+
+    class { 'lvs::realserver':
+        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site],
+    }
 
     $mobile_nodes = hiera('cache::mobile::nodes')
     $site_mobile_nodes = $mobile_nodes[$::site]
@@ -12,17 +22,6 @@ class role::cache::mobile (
     if $::realm == 'production' {
         include role::cache::ssl::sni
     }
-
-    class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site],
-    }
-
-    system::role { 'role::cache::mobile':
-        description => 'mobile Varnish cache server',
-    }
-
-    include standard
-    include nrpe
 
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
@@ -42,10 +41,6 @@ class role::cache::mobile (
         $director_retries = 2
     } else {
         $director_retries = $::role::cache::2layer::backend_weight_avg * 4
-    }
-
-    class { 'varnish::htcppurger':
-        varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ],
     }
 
     if $::role::cache::configuration::has_ganglia {

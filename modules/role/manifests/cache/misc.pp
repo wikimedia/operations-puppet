@@ -1,16 +1,14 @@
 class role::cache::misc {
+    system::role { 'role::cache::misc':
+        description => 'misc Varnish cache server'
+    }
+
     include role::cache::1layer
 
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site],
     }
 
-    system::role { 'role::cache::misc':
-        description => 'misc Varnish cache server'
-    }
-
-    include standard
-    include nrpe
     include role::cache::ssl::misc
 
     $memory_storage_size = 8

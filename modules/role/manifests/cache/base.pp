@@ -4,6 +4,8 @@ class role::cache::base(
     $purge_host_only_upload_re = '/./',
     $purge_host_not_upload_re = '/./'
 ) {
+    include standard
+    include nrpe
     include lvs::configuration
     include role::cache::configuration
     include network::constants

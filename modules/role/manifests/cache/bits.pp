@@ -2,14 +2,18 @@ class role::cache::bits (
     $bits_domain = 'bits.wikimedia.org',
     $top_domain = 'org'
 ) {
-    include role::cache::1layer
-
-    if $::realm == 'production' {
-        include role::cache::ssl::sni
+    system::role { 'role::cache::bits':
+        description => 'bits Varnish cache server',
     }
+
+    include role::cache::1layer
 
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site],
+    }
+
+    if $::realm == 'production' {
+        include role::cache::ssl::sni
     }
 
     $cluster_options = {
@@ -47,15 +51,8 @@ class role::cache::bits (
         $memory_storage_size = 1
     }
 
-    system::role { 'role::cache::bits':
-        description => 'bits Varnish cache server',
-    }
-
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
-
-    include standard
-    include nrpe
 
     varnish::instance { 'bits':
         name            => '',
