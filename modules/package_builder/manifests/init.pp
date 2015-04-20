@@ -24,6 +24,7 @@ class package_builder(
         'dh-make',
         'dh-autoreconf',
         'git-buildpackage',
+        'quilt',
         'zip',
         'unzip',
         'debian-archive-keyring',
