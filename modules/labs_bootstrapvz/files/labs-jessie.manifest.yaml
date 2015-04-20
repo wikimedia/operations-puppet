@@ -76,6 +76,7 @@ packages:
     - debian-goodies
     - python-redis
     - atop
+    - virt-what
     - pv
 plugins:
   root_password:
