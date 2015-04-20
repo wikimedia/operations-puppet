@@ -19,12 +19,10 @@ class contint::firewall {
     # Gearman is used between Zuul and the Jenkin master, both on the same
     # server and communicating over localhost.
     # It is also used by Zuul merger daemons.
-    $zuul_merger_hosts = hiera('contint::zuul_merger_hosts')
-    $zuul_merger_hosts_ferm = join($zuul_merger_hosts, ' ')
     ferm::service { 'gearman_from_zuul_mergers':
         proto => 'tcp',
         port  => '4730',
-        srange => "@resolve(($zuul_merger_hosts_ferm))",
+        srange => hiera('contint::zuul_merger_hosts'),
     }
 
     # The master runs a git-daemon process used by slave to fetch changes from
