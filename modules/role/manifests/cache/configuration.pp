@@ -24,6 +24,9 @@ class role::cache::configuration {
             'citoid' => {
                 'eqiad' => 'citoid.svc.eqiad.wmnet',
             },
+            'graphoid' => {
+                'eqiad' => 'graphoid.svc.eqiad.wmnet',
+            },
             'restbase' => {
                 'eqiad' => 'restbase.svc.eqiad.wmnet',
             },
