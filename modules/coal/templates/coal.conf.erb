@@ -4,8 +4,8 @@ description "Navigation Timing Whisper logger"
 
 start on (local-filesystems and net-device-up IFACE!=lo)
 
-setuid webperf
-setgid webperf
+setuid coal
+setgid coal
 
 respawn
 respawn limit unlimited
