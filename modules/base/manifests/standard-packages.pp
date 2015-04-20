@@ -71,8 +71,9 @@ class base::standard-packages {
     # lint:endignore
         package { [
             'mcelog',
+            'intel-microcode',
             ]:
-            ensure => latest,
+            ensure => present,
         }
     }
 }
