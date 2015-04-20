@@ -34,7 +34,7 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
         'relic'                     => {public_ip  => '208.80.155.197',
                                         private_ip => '10.68.16.162' },
         'tools-webproxy'            => {public_ip  => '208.80.155.131',
-                                        private_ip => '10.68.17.145' },
+                                        private_ip => '10.68.17.139' },
         'udplog'                    => {public_ip  => '208.80.155.191',
                                         private_ip => '10.68.16.58' },
 
