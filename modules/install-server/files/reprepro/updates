@@ -15,7 +15,7 @@ GetInRelease: no
 Suite: trusty-cdh5.3.1
 Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
-ListShellHook: grep-dctrl -e -S '^zookeeper$|^hadoop$|^hadoop-0.20-mapreduce$|^bigtop-jsvc$|^bigtop-utils$|^sqoop$|^hbase$|^pig$|^pig-udf-datafu$|^hive$|^oozie$|^hue$|^bigtop-tomcat$|^spark$|^avro-libs$|^parquet$|^parquet-format$|^spark-core$|^spark-history-server$|^spark-master$|^spark-python$|^spark-worker$|^mahout$|^kite$|^solr$|^sentry$'  || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^zookeeper$|^hadoop$|^hadoop-0.20-mapreduce$|^bigtop-jsvc$|^bigtop-utils$|^sqoop$|^hbase$|^pig$|^pig-udf-datafu$|^hive$|^oozie$|^hue$|^bigtop-tomcat$|^spark$|^avro-libs$|^parquet$|^parquet-format$|^spark-core$|^spark-history-server$|^spark-master$|^spark-python$|^spark-worker$|^mahout$|^kite$|^solr$|^sentry$|^impala$|^impala-catalog$|^impala-server$|^impala-shell$|^impala-state-store$|^llama$|^llama-master$'  || [ $? -eq 1 ]
 
 Name: hwraid
 Method: http://hwraid.le-vert.net/ubuntu
