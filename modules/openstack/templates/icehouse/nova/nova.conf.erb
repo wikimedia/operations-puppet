@@ -20,6 +20,7 @@ state_path=/var/lib/nova
 lock_path=/var/lock/nova
 sql_connection=mysql://<%= novaconfig["db_user"] %>:<%= novaconfig["db_pass"] %>@<%= novaconfig["db_host"] %>/<%= novaconfig["db_name"] %>
 image_service=nova.image.glance.GlanceImageService
+remove_unused_base_images=False
 s3_host=<%= novaconfig["glance_host"] %>
 glance_api_servers=<%= novaconfig["glance_host"] %>:9292
 cc_host=<%= novaconfig["cc_host"] %>
