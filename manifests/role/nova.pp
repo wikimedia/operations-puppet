@@ -339,6 +339,7 @@ class role::nova::manager {
 
     include ::nutcracker::monitoring
     include ::mediawiki::packages::php5
+    include ::mediawiki::cgroup
     include ::scap::scripts
 
     class { '::nutcracker':
