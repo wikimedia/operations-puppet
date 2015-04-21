@@ -103,7 +103,7 @@ define git::install(
         }
 
         exec {"git_update_${title}":
-            command => '/usr/bin/git remote update',
+            command => '/usr/bin/git remote update && git fetch --tags',
             creates => $lock_file,
             cwd     => $directory,
             user    => $owner,
