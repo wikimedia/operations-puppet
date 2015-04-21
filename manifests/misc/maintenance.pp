@@ -194,18 +194,26 @@ class misc::maintenance::wikidata( $ensure = present ) {
 
     # Starts a dispatcher instance every 3 minutes
     # This handles inserting jobs into client job queue, which then process the changes
-    cron { 'wikibase-dispatch-changes4':
+    cron { 'wikibase-dispatch-changes5':
         ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 1400 --batch-size 250 --dispatch-interval 25 2>&1 >> /dev/null',
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 1400 --batch-size 250 --dispatch-interval 25 2>&1 >> /dev/null',
         user    => $::mediawiki::users::web,
         minute  => '*/3',
     }
 
-    cron { 'wikibase-dispatch-changes-test':
+    cron { 'wikibase-dispatch-changes-test2':
         ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /dev/null',
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /dev/null',
         user    => $::mediawiki::users::web,
         minute  => '*/15',
+    }
+
+    cron { 'wikibase-dispatch-changes4':
+        ensure => absent,
+    }
+
+    cron { 'wikibase-dispatch-changes-test':
+        ensure => absent,
     }
 
     # Prune wb_changes entries no longer needed from (test)wikidata
