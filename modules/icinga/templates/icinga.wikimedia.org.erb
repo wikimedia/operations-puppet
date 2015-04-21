@@ -33,8 +33,21 @@ Alias /icinga /usr/share/icinga/htdocs
         Options ExecCGI
         DirectoryIndex index.html
         AllowOverride None
-        Order Allow,Deny
-        Allow From All
+        Order Deny,Allow
+
+        # We monitor icinga externally allowing access
+        # to only the extinfo.cgi file.
+        <Files extinfo.cgi>
+            Deny from All
+            Allow from 81.25.198.18
+            Allow from 38.104.3.42
+            Allow from 4.31.195.94
+            Allow from 38.122.67.74
+            Allow from 85.17.12.81
+            Allow from 85.17.12.83
+         </Files>
+
+        Deny from All
         AuthName "WMF Labs (use wiki login name not shell) - nda/ops/wmf"
         AuthType Basic
         AuthBasicProvider ldap
@@ -44,7 +57,9 @@ Alias /icinga /usr/share/icinga/htdocs
         Require ldap-group cn=ops,ou=groups,dc=wikimedia,dc=org
         Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
         Require ldap-group cn=nda,ou=groups,dc=wikimedia,dc=org
+        Satisfy Any
     </DirectoryMatch>
+
     <IfModule !mod_alias.c>
         LoadModule alias_module modules/mod_alias.so
     </IfModule>
