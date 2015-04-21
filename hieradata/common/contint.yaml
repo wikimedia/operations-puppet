@@ -2,4 +2,4 @@
 #
 # Use ip address since the value is injected in an iptables rule and ferm
 # @resolve has undefined behavior.
-contint::nodepool_host: '10.64.20.18'  # labnodepool1001.eqiad.wmnet
+nodepool_host: '10.64.20.18'  # labnodepool1001.eqiad.wmnet
