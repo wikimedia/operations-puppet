@@ -1,3 +1,4 @@
+/*global d3, MG */
 function drawCharts( period ) {
     d3.json( '/coal/v1/metrics?period=' + period, function ( data ) {
         var metric, div, points;
@@ -32,11 +33,28 @@ function drawCharts( period ) {
     } );
 }
 
+function selectTab( tab ) {
+    d3.select( 'li.active' ).classed( 'active', false );
+    tab.className = 'active';
+    drawCharts( tab.id );
+}
+
 d3.selectAll( '.nav li:not(.active)' ).on( 'click', function () {
-  d3.select( 'li.active' ).classed( 'active', false );
-  this.className = 'active';
-  drawCharts( this.id );
-  d3.event.preventDefault();
+    selectTab( this );
 } );
 
-drawCharts( 'hour' );
+function init() {
+    if ( /^#!\/./.test( location.hash ) ) {
+        // Handle permalink
+        var id = location.hash.slice( 3 );
+        var navItem = document.getElementById( id );
+        if ( navItem ) {
+           selectTab( navItem );
+        }
+    } else {
+        // Default
+        drawCharts( 'hour' );
+    }
+}
+
+init();
