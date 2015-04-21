@@ -10,5 +10,5 @@ field :q2, :color => 'blue',
            :data  => 've.mwtiming.performance.system.activation.median'
 
 field :q3, :color => 'red',
-           :alias => '99th percentile',
-           :data  => 've.mwtiming.performance.system.activation.p99'
+           :alias => '95th percentile',
+           :data  => 've.mwtiming.performance.system.activation.p95'

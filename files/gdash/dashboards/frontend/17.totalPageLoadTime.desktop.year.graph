@@ -10,5 +10,5 @@ field :q2, :color => 'blue',
            :data  => 'frontend.navtiming.totalPageLoadTime.desktop.overall.median'
 
 field :q3, :color => 'red',
-           :alias => '99th percentile',
-           :data  => 'frontend.navtiming.totalPageLoadTime.desktop.overall.p99'
+           :alias => '95th percentile',
+           :data  => 'frontend.navtiming.totalPageLoadTime.desktop.overall.p95'
