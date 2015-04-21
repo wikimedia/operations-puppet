@@ -33,7 +33,7 @@ class role::phabricator::main {
     include role::phabricator::config
     include phabricator::monitoring
 
-    $current_tag = 'release/2015-02-18/1'
+    $current_tag = 'release/2015-04-22/1'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
@@ -44,7 +44,7 @@ class role::phabricator::main {
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
         auth_type        => 'dual',
-        sprint_tag       => 'release/2015-02-18',
+        sprint_tag       => 'release/2015-04-22',
         security_tag     => 'release/2015-01-13/1',
         libraries        => ['/srv/phab/libext/Sprint/src',
                             '/srv/phab/libext/security/src'],
@@ -162,12 +162,12 @@ class role::phabricator::labs {
 
     # pass not sensitive but has to match phab and db
     $mysqlpass = 'labspass'
-    $current_tag = 'release/2015-02-18/1'
+    $current_tag = 'release/2015-04-22/1'
     class { '::phabricator':
         git_tag       => $current_tag,
         lock_file     => '/var/run/phab_repo_lock',
         auth_type     => 'local',
-        sprint_tag    => 'release/2015-02-18',
+        sprint_tag    => 'release/2015-04-22',
         libraries     => {
         'sprint' => '/srv/phab/libext/Sprint/src',
         },
