@@ -2,7 +2,6 @@
 # mount point given in the $::lvm_mount_point global variable.
 # FIXME: Deprecate and kill with mild fire
 class role::labs::lvm::mnt {
-    include labs_lvm
     $mount_point = $::lvm_mount_point ? {
         undef   => '/mnt',
         default => $::lvm_mount_point,
@@ -12,7 +11,6 @@ class role::labs::lvm::mnt {
 
 # Allocate all of the instance's extra space as /srv
 class role::labs::lvm::srv {
-    include labs_lvm
     labs_lvm::volume { 'second-local-disk': mountat => '/srv' }
 }
 
@@ -21,8 +19,6 @@ class role::labs::lvm::volume(
     $mountat = '/srv',
     $size = '100%FREE',
 ) {
-    include labs_lvm
-
     labs_lvm::volume { 'second-local-disk':
         mountat => $mountat,
         size    => $size,
