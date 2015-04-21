@@ -20,4 +20,6 @@ os.chdir(os.path.expanduser('~/www/js'))
 os.environ['TOOL_WEB_PORT'] = str(port)
 os.environ['PORT'] = str(port) # Switch things to PORT, same as heroku
 
+os.environ['MYSQL_CREDS_PATH'] = os.path.expanduser('~/replica.my.cnf')
+
 os.execv('/usr/bin/npm', ['/usr/bin/npm', 'start'])
