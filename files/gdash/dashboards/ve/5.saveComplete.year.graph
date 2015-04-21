@@ -6,8 +6,8 @@ from '-1year'
 vtitle 'milliseconds'
 
 field :q2, :color => 'blue',
-           :alias => 'mean',
-           :data  => 've.mwtiming.performance.user.saveComplete.mean'
+           :alias => 'median',
+           :data  => 've.mwtiming.performance.user.saveComplete.median'
 
 field :q3, :color => 'red',
            :alias => '99th percentile',

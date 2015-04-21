@@ -6,8 +6,8 @@ from '-1day'
 vtitle 'milliseconds'
 
 field :q2, :color => 'blue',
-           :alias => 'mean',
-           :data  => 'frontend.navtiming.totalPageLoadTime.desktop.overall.mean'
+           :alias => 'median',
+           :data  => 'frontend.navtiming.totalPageLoadTime.desktop.overall.median'
 
 field :q3, :color => 'red',
            :alias => '99th percentile',
