@@ -37,6 +37,8 @@ define labs_lvm::volume(
     $mkfs_opt   = '',
     $options    = 'defaults',
 ) {
+    include labs_lvm
+
     exec { "create-vd-${volname}":
         creates     => "/dev/vd/${volname}",
         unless      => "/bin/mountpoint -q '${mountat}'",
