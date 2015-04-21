@@ -111,23 +111,19 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         logster_options => '--output ganglia --metric-prefix CirrusSearch-slow.log',
         minute          => "*/${cirrussearch_slow_log_check_interval}"
     }
-    # Alert if CirrusSearch-slow.log shows more than
-    # 10 slow searches within an hour.  The logster
-    # job runs every $cirrussearch_slow_log_check_interval
+    # The logster job runs every $cirrussearch_slow_log_check_interval
     # minutes.  We set retries to
     # 60 minutes / cirrussearch_slow_log_check_interval minutes)
-    # This should keep icinga from alerting
-    # us unless the alert thresholds are exceeded
-    # for more than an hour.
+    # This should keep icinga from alerting us unless the alert thresholds are
+    # exceeded for more than an hour.
     monitoring::ganglia { 'CirrusSearch-slow-queries':
         description           => 'Slow CirrusSearch query rate',
         # this metric is output to ganglia by logster
         metric                => 'CirrusSearch-slow.log_line_rate',
-        # line_rate metric is per second, so we need to alert if this
-        # metric goes over 0.000046296 / second.  Let's round
-        # down to warning on 0.00004, or critical on 0.00008.
-        warning               => '0.00004',
-        critical              => '0.00008',
+        # warning  ->  36 queries/h
+        # critical -> 360 queries/h
+        warning               => '0.01',
+        critical              => '0.1',
         normal_check_interval => $cirrussearch_slow_log_check_interval,
         retry_check_interval  => $cirrussearch_slow_log_check_interval,
         retries               => (60/$cirrussearch_slow_log_check_interval),
