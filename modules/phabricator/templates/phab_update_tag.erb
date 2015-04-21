@@ -37,17 +37,6 @@ function error() {
   $logger --stderr "${1}"
 }
 
-function ensure_stopped() {
-  $ps -ef | grep $1 > /dev/null
-  retcode=$?
-  if [ "$retcode" == "0" ]; then
-    error ">>>ERROR: ${1} processes still running!"
-    exit 1
-  else
-    log "${1} is stopped."
-  fi
-}
-
 function gitcmd() {
   log "${1} for repo ${2}"
   $git --git-dir=$2.git $1
@@ -93,13 +82,9 @@ if [ -e <%= @libext_lock_path %> ]
 fi
 <% end -%>
 
-/etc/init.d/puppet stop
-/etc/init.d/apache2 stop
+/usr/sbin/service puppet stop
+/usr/sbin/service apache2 stop
 <%= @phabdir %>/phabricator/bin/phd stop
-
-ensure_stopped '[P]habricator'
-ensure_stopped '[a]pache2'
-ensure_stopped '[p]uppet'
 
 log "HEAD pre move:"
 log_repo_head
@@ -128,8 +113,8 @@ fi
 
 log "Puppet should restore the lock file and associated services to normal state."
 
-/etc/init.d/puppet start
-/etc/init.d/apache2 start
+/usr/sbin/service puppet start
+/usr/sbin/service apache2 start
 <%= @phabdir %>/phabricator/bin/phd start
 
 log "Starting puppet for a full reset to baseline"
