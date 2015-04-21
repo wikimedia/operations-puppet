@@ -322,7 +322,10 @@ groups:
     description: people who have full root on phabricator
     members: [demon, twentyafterfour]
     privileges: ['ALL = NOPASSWD: ALL']
-
+  htmldumps-admin:
+    gid: 749
+    description: users who maintain HTML/ZIM dumps
+    members: []
 users:
   rush:
     ensure: present
