@@ -1,0 +1,25 @@
+#! /bin/bash
+#
+# This simply tries to create a test file in /home
+# and chown it to a numeric UID known to not exist
+# on the labstore - this is known to fail iff
+# idmap is currently enabled.
+#
+
+testfile="/home/._._testfile"
+
+if [ -e $testfile ]; then
+    echo "$testfile: already exists\n" >&2
+    exit 1
+fi
+
+trap "rm -f $testfile" 0
+
+if ! touch $testfile; then
+    exit 1
+fi
+
+if ! chown 456 $testfile 2>/dev/null; then
+    # UID 456 picked because known to not be on labstore
+    /sbin/reboot
+fi

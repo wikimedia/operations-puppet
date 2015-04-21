@@ -155,6 +155,17 @@ class role::labs::instance {
         source => 'puppet:///files/nfs/idmapd.conf',
     }
 
+    # This short script allows verifying whether an instance uses
+    # idmap and will reboot it if it does.  It's meant to be invoked
+    # by salt, not automatically.
+
+    file { '/usr/local/sbin/reboot-if-idmap':
+        ensure => present,
+        owner  => root,
+        mode   => '0555',
+        source => 'puppet:///files/nfs/reboot-if-idmap',
+    }
+
     # In production, we try to be punctilious about having Puppet manage
     # system state, and thus it's reasonable to purge Apache site configs
     # that have not been declared via Puppet. But on Labs we want to allow
