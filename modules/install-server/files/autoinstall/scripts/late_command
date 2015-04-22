@@ -29,7 +29,7 @@ fi
 # (the crazy PHYS_CORES thing is to get the bnx2x option set before the first boot,
 #  otherwise we'd need a reboot after puppet sets up the same file on the first run)
 case `hostname` in \
-	amssq[0-9]*|cp[1234]*|dysprosium)
+	cp[1234]*)
 		mount -t sysfs none /target/sys
 		PHYS_CORES=$(chroot /target /usr/bin/ruby -e "require 'pathname'; print Pathname::glob('/sys/devices/system/cpu/cpu[0-9]*/topology/thread_siblings_list').map{|x| File.open(x,'r').read().split(',')[0] }.sort.uniq.count")
 		umount /target/sys
