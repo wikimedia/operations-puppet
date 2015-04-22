@@ -23,6 +23,7 @@ class role::cache::2layer(
 
     $storage_size = $::hostname ? {
         /^cp10(08|4[34])$/      => 117, # Intel X-25M 160G
+        /^cp1099$/              => 720, # Intel S3700 800G (one-off)
         /^cp30(0[3-9]|1[0-4])$/ => 460, # Intel M320 600G via H710
         /^cp301[5-8]$/          => 225, # Intel M320 300G via H710
         /^cp[0-9]{4}$/          => 360, # Intel S3700 400G (prod default)
@@ -34,6 +35,7 @@ class role::cache::2layer(
     # common/current case of 360G storage size on Intel S3700's.
     $backend_scaled_weights = [
         { backend_match => '^cp10(08|4[34])\.',      weight => 32  },
+        { backend_match => '^cp1099\.',              weight => 200 },
         { backend_match => '^cp30(0[3-9]|1[0-4])\.', weight => 128 },
         { backend_match => '^cp301[5-8]\.',          weight => 63  },
         { backend_match => '.',                      weight => 100 },
