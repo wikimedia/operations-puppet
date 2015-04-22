@@ -127,6 +127,8 @@ zone_name=<%= novaconfig["zone"] %>
 #default_availability_zone = <%= novaconfig["zone"] %>
 
 [libvirt]
+virt_type=<%= novaconfig["libvirt_type"] %>
+use_virtio_for_bridges=True
 # live_migration_bandwidth is documented in the code, and nowhere else.
 # 'Maximum bandwidth to be used during migration, in Mbps'
 # Limit this to around a third of available 1Gbps connection so we don't
