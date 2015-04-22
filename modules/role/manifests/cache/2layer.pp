@@ -43,14 +43,13 @@ class role::cache::2layer(
     # manual things for now.  This is the equivalent of
     # $backend_scaled_weights above for pybal frontend weighting.
     #
-    # The eqiad/upload, esams/upload, and esams/text clusters need
-    # differential weighting in pybal due to variance in their nodes'
-    # class of CPU power for HTTPS.  This documents the necessary
-    # weight ratios, which are created from 'openssl speed aes-128-cbc'
-    # for 1K blocksize multiplied by CPU core count then GCD-scaled
-    # down within each datacenter to keep weight sums below ipvs sh
-    # limits (256 total).
-    $pybal_weight_esams_upload_text = [
+    # The eqiad/upload and esams/text clusters need differential weighting in
+    # pybal due to variance in their nodes' class of CPU power for HTTPS.
+    # This documents the necessary weight ratios, which are created from
+    # 'openssl speed aes-128-cbc' for 1K blocksize multiplied by CPU core
+    # count then GCD-scaled down within each datacenter to keep weight sums
+    # below ipvs sh limits (256 total).
+    $pybal_weight_esams_text = [
         '^cp30[34][0-9]'       => 10, # newer esams cp30xx
         '^cp30(0[3-9]|1[0-8])' => 3,  # older esams cp30xx
     ]
