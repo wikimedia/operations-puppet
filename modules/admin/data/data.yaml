@@ -80,7 +80,7 @@ groups:
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, csteipp, demon, hashar, mglaser, reedy]
+    members: [catrope, csteipp, demon, hashar, mglaser, mholloway-shell, reedy]
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
