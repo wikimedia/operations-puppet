@@ -9,7 +9,7 @@ begin routers
 smart_route:
 	driver = manualroute
 	transport = remote_smtp
-	route_list = *	<%= @fqdn %>
+	route_list = *	<%= @active_mail_relay %>
 
 begin transports
 
