@@ -123,6 +123,14 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
         $ganglia_aggregator = true
     }
     role analytics::hadoop::worker
+
+    # For now, I want to test this out on only one node, to be sure that configs
+    # are applied how I expect.  If this works, I will include this class via the
+    # role keyword on all workers here.
+    if $hostname == 'analytics1041' {
+        include role::analytics::impala::worker
+    }
+
     include standard
 }
 
@@ -154,11 +162,15 @@ node /analytics102[345].eqiad.wmnet/ {
     include role::analytics::zookeeper::server
 }
 
-# analytics1026 runs misc udp2log for sqstat
+# Analytics1026 is the Impala master
+# (llama, impala-state-store, impala-catalog)
+# analytics1026 also runs misc udp2log for sqstat
 node 'analytics1026.eqiad.wmnet' {
+    role analytics::impala::master
 
     include standard
     include role::logging::udp2log::misc
+
 }
 
 # analytics1027 hosts some frontend web interfaces to Hadoop

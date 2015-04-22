@@ -270,6 +270,9 @@ class role::analytics::hadoop::config {
         # created for everyone in the current labs project.
         $hadoop_users_posix_groups                 = $::instanceproject
 
+        # This needs to be set in order to use Impala
+        $dfs_datanode_hdfs_blocks_metadata_enabled = true
+
 
         # Hadoop directories in labs should be automatically created.
         # This conditional could be added to each of the main classes
@@ -323,6 +326,8 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         yarn_nodemanager_resource_memory_mb      => $yarn_nodemanager_resource_memory_mb,
         yarn_scheduler_minimum_allocation_mb     => $yarn_scheduler_minimum_allocation_mb,
         yarn_scheduler_maximum_allocation_mb     => $yarn_scheduler_maximum_allocation_mb,
+
+        dfs_datanode_hdfs_blocks_metadata_enabled => $dfs_datanode_hdfs_blocks_metadata_enabled,
 
         # Use net-topology.py.erb to map hostname to /datacenter/rack/row id.
         net_topology_script_template             => $net_topology_script_template,
