@@ -1338,6 +1338,12 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
     }
     role logstash, kibana, logstash::apifeatureusage
 }
+node /^logstash100[4-6]\.eqiad\.wmnet$/ {
+    if $::hostname =~ /^logstash100[46]$/ {
+        $ganglia_aggregator = true
+    }
+    role logstash::elasticsearch
+}
 
 node /lvs100[1-6]\.wikimedia\.org/ {
 
