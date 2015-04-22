@@ -33,32 +33,42 @@ ds = ldapSupportLib.connect()
 basedn = ldapSupportLib.getLdapInfo('base')
 
 try:
-    puppet_output = subprocess.check_output(['/usr/bin/puppet', 'cert', 'list'])
+    puppet_output = subprocess.check_output(['/usr/bin/puppet', 'cert', 'list', '--all'])
     hosts = puppet_output.split()
     for host in hosts:
         # check to make sure hostname is actual hostname, to prevent
         # ldap injection attacks
         if host[0] == "(":
             continue  # FIXME: WAT
-        host = host.strip('"')  # FIXME: WAT
-        if not re.match(r'^[a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
-            print 'Invalid hostname', host
+        if host[0] == '-':
+            # Already marked as invalid or revoked
+            continue
+        if host[0] == '+':
+            # Already signed
+            signed = True
+            hostname = host[1].strip('"')
+        else:
+            signed = False
+            hostname = host[0].strip('"')
+
+        if not re.match(r'^[a-zA-Z0-9_-]+\.eqiad\.wmflabs$', hostname):
+            print 'Invalid hostname', hostname
             sys.exit(-1)
-        query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
+        query = "(&(objectclass=puppetclient)(|(dc=" + hostname + ")(cnamerecord=" + hostname + ")(associateddomain=" + hostname + ")))"
         host_info = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
         if not host_info:
-            path = getPuppetInfo('ssldir') + '/ca/requests/' + host + '.pem'
+            path = getPuppetInfo('ssldir') + '/ca/requests/' + hostname + '.pem'
             try:
                 os.remove(path)
             except Exception:
                 # FIXME: WAT
                 sys.stderr.write('Failed to remove the certificate: ' + path + '\n')
-        else:
-            subprocess.check_call(['/usr/bin/puppet', 'cert', 'sign', host])
+        elif not signed:
+            subprocess.check_call(['/usr/bin/puppet', 'cert', 'sign', hostname])
             subprocess.check_call(['/usr/bin/php',
                                    '/srv/org/wikimedia/controller/wikis/w/extensions/OpenStackManager/maintenance/onInstanceActionCompletion.php',
                                    '--action', 'build',
-                                   '--instance', host])
+                                   '--instance', hostname])
     salt_output = subprocess.check_output(['/usr/bin/salt-key',
                                            '--list', 'unaccepted',
                                            '--out', 'json'])
