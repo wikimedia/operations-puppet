@@ -25,6 +25,12 @@ class phabricator::phd (
         target => "${basedir}/phabricator/bin/phd",
     }
 
+    file { "/var/run/phd":
+        ensure => directory,
+        owner  => $settings['phd.user'],
+        group  => 'phd',
+    }
+
     file { $settings['phd.pid-directory']:
         ensure => 'directory',
         owner  => $settings['phd.user'],
