@@ -480,10 +480,8 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 
 node 'dataset1001.wikimedia.org' {
 
+    role dataset::systemusers, dataset::primary, dumps
     include standard
-    include role::dataset::systemusers
-    include role::dataset::primary
-    include role::dumps
 
     interface::add_ip6_mapped { 'eth2':
         interface => 'eth2',
@@ -1671,14 +1669,12 @@ node 'multatuli.wikimedia.org' {
 node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
 
+    role dataset::systemusers, dataset::secondary, dumps
+    include standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    include standard
-    include role::dataset::systemusers
-    include role::dataset::secondary
-    include role::dumps
 }
 
 node 'ms1002.eqiad.wmnet' {
