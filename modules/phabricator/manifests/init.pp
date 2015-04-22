@@ -249,9 +249,26 @@ class phabricator (
         require => Package['php5'],
     }
 
+    #phab settings, depends on phab source tree:
+    file { "${phabdir}/phabricator/conf/custom/":
+        ensure  => 'directory',
+        require => Git::Install['phabricator/phabricator'],
+    }
+    # local settings override site defaults:
     file { "${phabdir}/phabricator/conf/local/local.json":
         content => template('phabricator/local.json.erb'),
-        require => Git::Install['phabricator/phabricator'],
+        require => Git::Install['phabricator/phabricator']
+    }
+    # site defaults which override phabricator defaults:
+    file { "${phabdir}/phabricator/conf/custom/wmf-defaults.conf.php":
+        source => 'puppet:///modules/phabricator/wmf-defaults.conf.php',
+        require => File["${phabdir}/phabricator/conf/custom/"]
+    }
+    # ENVIRONMENT file directs phab to load site defaults
+    # https://secure.phabricator.com/book/phabricator/article/advanced_configuration/#configuration-files
+    file { "${phabdir}/phabricator/conf/local/ENVIRONMENT":
+        content => "custom/wmf-defaults",
+        require => File["${phabdir}/phabricator/conf/custom/wmf-defaults.conf.php"]
     }
 
     # ^Disable PHD autorestart until:
