@@ -31,9 +31,9 @@ class dumps::zim {
 
     file { '/srv/www/htmldumps':
         ensure => directory,
-        mode   => '0755',
+        mode   => '0775',
         owner  => 'root',
-        group  => 'www-data',
+        group  => 'htmldumps-admin',
     }
 
     # don't know if we want bw limits etc so let's slap 'extras'
