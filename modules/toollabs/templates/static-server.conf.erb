@@ -51,14 +51,14 @@ server {
     # Default to utf-8 charset
     charset utf-8;
 
-    location /$ {
+    location = / {
         return 302 "https://tools.wmflabs.org";
     }
 
-    location /cdnjs/ {
+    location ^~ /cdnjs/ {
         autoindex on;
         add_header Access-Control-Allow-Origin '*';
-        root /srv/cdnjs;
+        root /srv/; # Is ok, nginx ensures that this is /cdnjs/* only
     }
 
     location ~ ^/([^/]+)(/.*)?$ {
