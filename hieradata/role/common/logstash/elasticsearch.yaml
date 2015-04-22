@@ -4,6 +4,8 @@ admin::groups:
   - logstash-roots
 
 # ES-specific
+# NOTE: multicast_group and cluster_name must be kept in sync with the backend
+# node config in hieradata/role/common/logstash.yaml
 # FIXME: should this be different than production ES?
 elasticsearch::multicast_group: 224.2.2.5
 elasticsearch::minimum_master_nodes: 2
