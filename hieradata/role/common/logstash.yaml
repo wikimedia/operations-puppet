@@ -3,10 +3,16 @@ admin::groups:
   - logstash-roots
 
 # ES-specific
+# NOTE: multicast_group and cluster_name must be kept in sync with the backend
+# node config in hieradata/role/common/logstash/elasticsearch.yaml
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: production-logstash-eqiad
 elasticsearch::expected_nodes: 3
-elasticsearch::heap_memory: '5G'
+elasticsearch::heap_memory: '2G'
+# The ES nodes that are run on the same box as Logstash+Kibana are only used
+# as client nodes to communicate with the backing cluster.
+elasticsearch::holds_data: false
+elasticsearch::master_eligible: false
 elasticsearch::minimum_master_nodes: 2
 # FIXME: should multicast_group be different than production ES?
 elasticsearch::multicast_group: 224.2.2.5
@@ -19,4 +25,4 @@ elasticsearch::recover_after_time: '1m'
 # current configuration isn't thread safe and can cause crashes or
 # garbled output when used with more than one thread worker.
 logstash::filter_workers: 1
-logstash::heap_memory_mb: 128
+logstash::heap_memory_mb: '1G'
