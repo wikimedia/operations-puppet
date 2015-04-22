@@ -7,29 +7,25 @@
 # Actions:
 #
 # Requires:
+#  - Hiera: toollabs::is_mail_relay: true
 #
 # Sample Usage:
 #
-class toollabs::mailrelay($maildomain) inherits toollabs
+class toollabs::mailrelay inherits toollabs
 {
     include gridengine::submit_host,
             toollabs::infrastructure
 
-    # FIXME: -ugly-, we need to have a better way for this
-    Package <| title == 'exim4-daemon-light' |> {
-        ensure => undef
-    }
-    package{ 'exim4-daemon-heavy':
-        ensure => present
+    class { 'exim4':
+        queuerunner => 'combined',
+        config      => template("toollabs/exim4.conf.erb"),
+        variant     => 'heavy',
+        require     => File['/usr/local/sbin/localuser',
+                            '/usr/local/sbin/maintainers'],
     }
 
     file { "${toollabs::store}/mail-relay":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File[$toollabs::store],
-        content => template('toollabs/mail-relay.erb'),
+        ensure  => absent,
     }
 
     file { '/usr/local/sbin/localuser':
@@ -46,20 +42,6 @@ class toollabs::mailrelay($maildomain) inherits toollabs
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/toollabs/maintainers',
-    }
-
-    File <| title == '/etc/exim4/exim4.conf' |> {
-        source  => undef,
-        content => template('toollabs/exim4.conf.erb'),
-        notify  => Service['exim4'],
-        require => File['/usr/local/sbin/localuser',
-                        '/usr/local/sbin/maintainers'],
-    }
-
-    File <| title == '/etc/default/exim4' |> {
-        content => undef,
-        source  =>  'puppet:///modules/toollabs/exim4.default.mailrelay',
-        notify  => Service['exim4'],
     }
 
     # Diamond user needs sudo to access exim
