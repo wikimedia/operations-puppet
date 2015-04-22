@@ -88,44 +88,6 @@ maniphest.custom-field-definitions:
 #ops-sensitive: 'Operations Sensitive'
 #sensitive: 'Another Private Issue'
 
-maniphest.statuses:
-  open:
-    name: Open
-    special: default
-  stalled:
-    name: 'Stalled'
-    name.full: 'Open, Stalled'
-    closed: false
-    prefixes: [stalled]
-    suffixes: ['as stalled']
-  resolved:
-    name: Resolved
-    name.full: 'Closed, Resolved'
-    closed: true
-    special: closed
-    prefixes: [closed, closes, close, fix, fixes, fixed, resolve, resolves, resolved]
-    suffixes: ['as resolved', 'as fixed']
-  invalid:
-    name: Invalid
-    name.full: "Closed, Invalid"
-    closed: true
-    prefixes: [invalidate, invalidates, invalidated]
-    suffixes: ['as invalid']
-  duplicate:
-    name: Duplicate
-    name.full: "Closed, Duplicate"
-    transaction.icon: fa-times
-    special: duplicate
-    closed: true
-  declined:
-    name: Declined
-    name.full: "Closed, Declined"
-    name.action: Declined
-    transaction.icon: fa-thumbs-o-down
-    closed: true
-    prefixes: [decline, declines, declined]
-    suffixes: ['as declined']
-
 user.custom-field-definitions:
   irc_nick:
     name: 'IRC Nick'
