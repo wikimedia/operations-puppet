@@ -1,0 +1,208 @@
+#
+# THIS FILE IS MAINTAINED BY PUPPET
+# source: modules/toollabs/templates/exim4.conf.erb
+# from:   toollabs::mailrelay
+#
+
+##########
+# Macros #
+##########
+
+INSTANCEPROJECT=<%= @instanceproject %>
+MAILDOMAIN=<%= @mail_domain %>
+
+###############################
+# Main configuration settings #
+###############################
+
+primary_hostname = <%= @external_hostname %>
+qualify_domain = MAILDOMAIN
+
+domainlist local_domains = MAILDOMAIN
+hostlist relay_from_hosts = 10.0.0.0/8
+
+acl_smtp_rcpt = acl_check_rcpt
+acl_smtp_data = acl_check_data
+
+never_users = root
+
+host_lookup = *
+ignore_bounce_errors_after = 2d
+timeout_frozen_after = 7d
+
+local_from_suffix = .*
+
+###############################
+# Access Control Lists (ACLs) #
+###############################
+
+begin acl
+
+acl_check_rcpt:
+  accept  hosts = :
+  deny    message       = Restricted characters in address
+          domains       = +local_domains
+          local_parts   = ^[.] : ^.*[@%!/|]
+
+  deny    message       = Restricted characters in address
+          domains       = !+local_domains
+          local_parts   = ^[./|] : ^.*[@%!] : ^.*/\\.\\./
+
+  accept  local_parts   = postmaster
+          domains       = +local_domains
+
+  accept  hosts         = +relay_from_hosts
+          control       = submission
+
+  accept  authenticated = *
+          control       = submission
+
+  require message = relay not permitted
+          domains = +local_domains
+
+  require verify = recipient
+
+  accept
+
+
+acl_check_data:
+  accept
+
+###########
+# Routers #
+###########
+
+begin routers
+
+dnslookup:
+  driver = dnslookup
+  domains = ! +local_domains
+  transport = remote_smtp
+  ignore_target_hosts = 0.0.0.0 : 127.0.0.0/8
+  no_more
+
+# Send mail to root@ and other system aliases to the Labs project admins
+
+system_aliases:
+  driver = redirect
+  allow_fail
+  allow_defer
+  data = ${lookup{$local_part}lsearch{/etc/aliases}}
+
+postmaster_mail:
+  driver = redirect
+  local_parts = root
+  data = INSTANCEPROJECT.admin
+
+# Alias tools.<toolname>@ to <toolname>.maintainers@
+
+tool_fallback:
+  driver = redirect
+  local_part_prefix = INSTANCEPROJECT.
+  not_local_part_prefix_optional
+  caseful_local_part
+  local_parts = passwd;INSTANCEPROJECT.$local_part
+  check_ancestor
+  modemask = 002
+  data = $local_part.maintainers
+
+# Forward mail to <user>@ to the mail address set in LDAP (wikitech preference)
+
+user_forward:
+  driver = redirect
+  caseful_local_part
+  check_local_user
+  expn = false
+  check_ancestor
+  modemask = 002
+  data = ${run{/usr/local/sbin/localuser $local_part}{$value}fail}
+
+# Forward mail to <toolname>.<anything>@ using a specific .forward.<anything> file
+# if present in the tool's home directory
+
+tool_forward_specific:
+  driver = redirect
+  local_part_suffix = .*
+  local_part_suffix_optional = false
+  caseful_local_part
+  local_parts = passwd;INSTANCEPROJECT.$local_part
+  require_files = INSTANCEPROJECT.$local_part:$home/.forward$local_part_suffix
+  router_home_directory = ${lookup passwd{INSTANCEPROJECT.$local_part}{${extract{5}{:}{$value}}}fail}
+  file = /data/project/$local_part/.forward$local_part_suffix
+  expn = false
+  check_ancestor
+  modemask = 002
+  pipe_transport = gridqueue
+  allow_filter = false
+  allow_defer = false
+  allow_fail
+  forbid_include
+  forbid_file
+  forbid_smtp_code
+  hide_child_in_errmsg
+
+# Forward mail to <toolname>.<anything>@ using the plain .forward file if
+# .forward.<anything> doesn't exist
+
+tool_forward_general:
+  driver = redirect
+  local_part_suffix = .*
+  local_part_suffix_optional = false
+  caseful_local_part
+  local_parts = passwd;INSTANCEPROJECT.$local_part
+  require_files = INSTANCEPROJECT.$local_part:$home/.forward
+  router_home_directory = ${lookup passwd{INSTANCEPROJECT.$local_part}{${extract{5}{:}{$value}}}fail}
+  file = /data/project/$local_part/.forward
+  expn = false
+  check_ancestor
+  modemask = 002
+  pipe_transport = gridqueue
+  allow_filter = false
+  allow_defer = false
+  allow_fail
+  forbid_include
+  forbid_file
+  forbid_smtp_code
+  hide_child_in_errmsg
+
+# Forward mail to <toolname>.<anything> to the tool's maintainers if no .forward file exists
+
+tool_default:
+  driver = redirect
+  local_part_suffix = .*
+  local_part_suffix_optional = false
+  caseful_local_part
+  local_parts = passwd;INSTANCEPROJECT.$local_part
+  router_home_directory = ${lookup passwd{INSTANCEPROJECT.$local_part}{${extract{5}{:}{$value}}}fail}
+  expn = false
+  check_ancestor
+  modemask = 002
+  data = ${run{/usr/local/sbin/maintainers INSTANCEPROJECT.$local_part}{$value}fail}
+
+##############
+# Transports #
+##############
+
+begin transports
+
+gridqueue:
+  driver = pipe
+  batch_max = 1
+  umask = 007
+  user = INSTANCEPROJECT.$local_part
+  group = INSTANCEPROJECT.$local_part
+  path = /bin:/usr/bin:/usr/local/bin
+  allow_commands = jmail
+  return_fail_output
+  temp_errors = 73:74:75
+
+remote_smtp:
+  driver = smtp
+
+###############
+# Retry rules #
+###############
+
+begin retry
+*   *   F,2h,15m; G,16h,1h,1.5; F,4d,6h
+
