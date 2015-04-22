@@ -1,1 +1,2 @@
 "base::environment::core_dump_pattern": core
+standard::has_default_mail_relay: false
