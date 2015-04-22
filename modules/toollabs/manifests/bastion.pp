@@ -63,6 +63,7 @@ class toollabs::bastion(
         ensure => latest,
     }
 
+    include ldap::role::config::labs
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 
     file { '/usr/local/bin/crontab':
