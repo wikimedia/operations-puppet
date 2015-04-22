@@ -58,6 +58,7 @@ server {
     location ^~ /cdnjs/ {
         autoindex on;
         add_header Access-Control-Allow-Origin '*';
+        expires 30d; # These are all immutable URLs
         root /srv/; # Is ok, nginx ensures that this is /cdnjs/* only
     }
 
