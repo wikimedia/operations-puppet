@@ -15,7 +15,9 @@ class toollabs (
     $proxies = ['tools-webproxy-01', 'tools-webproxy-02'],
     $active_proxy = 'tools-webproxy-01',
     $active_redis = 'tools-redis-01',
-    $active_redis_ip = '10.68.18.70'
+    $active_redis_ip = '10.68.18.70',
+    $is_mail_relay = false,
+    $active_mail_relay = 'tools-mail.eqiad.wmflabs',
 ) {
 
     include labs_lvm
@@ -166,10 +168,12 @@ class toollabs (
         recipient => 'root',
     }
 
-    File <| title == '/etc/exim4/exim4.conf' |> {
-        content => undef,
-        source  => ["${store}/mail-relay", 'puppet:///modules/toollabs/exim4-norelay.conf'],
-        notify  => Service['exim4'],
+    if !$is_mail_relay {
+        class { 'exim4':
+            queuerunner => 'queueonly',
+            config      => template('toollabs/mail-relay.erb'),
+            variant     => 'light',
+        }
     }
 
     file { '/var/mail':
