@@ -482,6 +482,8 @@ host carbon {
 host cerium {
 	hardware ethernet 90:B1:1C:00:A0:21;
 	fixed-address cerium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host chromium {
@@ -5543,6 +5545,8 @@ host potassium {
 host praseodymium {
 	hardware ethernet 90:B1:1C:00:9E:2B;
 	fixed-address praseodymium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host protactinium {
@@ -6032,6 +6036,8 @@ host wtp2020 {
 host xenon {
 	hardware ethernet 90:B1:1C:00:A3:08;
 	fixed-address xenon.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ytterbium {
