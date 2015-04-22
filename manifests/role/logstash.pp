@@ -3,13 +3,12 @@
 
 # == Class: role::logstash
 #
-# Provisions Logstash, Redis, and ElasticSearch.
+# Provisions Logstash and ElasticSearch.
 #
 class role::logstash {
     include standard
     include ::elasticsearch::ganglia
     include ::elasticsearch::nagios::check
-    include ::passwords::logstash
 
     package { 'elasticsearch/plugins':
         provider => 'trebuchet',
@@ -37,18 +36,6 @@ class role::logstash {
         recover_after_time   => '1m',
     }
 
-    class { '::redis':
-        maxmemory         => '1Gb',
-        dir               => '/var/run/redis',
-        persist           => undef,
-        redis_replication => undef,
-        password          => $passwords::logstash::redis,
-    }
-
-    # 'redis::ganglia' includes 'redis', and thus must be included below
-    # the parametrized class above.
-    include ::redis::ganglia
-
     class { '::logstash':
         heap_memory_mb => 128,
         # TODO: the multiline filter that is used in several places in the
@@ -63,12 +50,6 @@ class role::logstash {
 
     logstash::input::syslog { 'syslog':
         port => 10514,
-    }
-
-    logstash::input::redis { 'redis':
-        host     => '127.0.0.1',
-        key      => 'logstash',
-        password => $passwords::logstash::redis,
     }
 
     logstash::input::gelf { 'gelf':
