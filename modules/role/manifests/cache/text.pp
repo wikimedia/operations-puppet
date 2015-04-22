@@ -30,7 +30,7 @@ class role::cache::text {
             'api'               => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
             'rendering'         => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
             'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-            'restbase'          => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
+            'restbase_backend'  => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
         },
         'two' => {
             'eqiad' => $text_nodes['eqiad'],
