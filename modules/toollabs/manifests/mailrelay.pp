@@ -1,12 +1,13 @@
 # Class: toollabs::mailrelay
 #
 # This role sets up a mail relay in the Tool Labs model.
-#
+# 
 # Parameters:
 #
 # Actions:
 #
 # Requires:
+#  - exim4 to be configured with variant: 'heavy' in Hiera
 #
 # Sample Usage:
 #
@@ -14,14 +15,6 @@ class toollabs::mailrelay($maildomain) inherits toollabs
 {
     include gridengine::submit_host,
             toollabs::infrastructure
-
-    # FIXME: -ugly-, we need to have a better way for this
-    Package <| title == 'exim4-daemon-light' |> {
-        ensure => undef
-    }
-    package{ 'exim4-daemon-heavy':
-        ensure => present
-    }
 
     file { "${toollabs::store}/mail-relay":
         ensure  => file,
