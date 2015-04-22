@@ -995,9 +995,10 @@ node 'fluorine.eqiad.wmnet' {
 
 node 'francium.eqiad.wmnet' {
 
-    include standard
-    include base::firewall
     role dumps::zim
+    include standard
+    include admin
+    include base::firewall
 }
 
 # gadolinium is the webrequest socat multicast relay.
