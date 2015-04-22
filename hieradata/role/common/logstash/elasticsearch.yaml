@@ -1,0 +1,14 @@
+# General configs
+cluster: logstash
+admin::groups:
+  - logstash-roots
+
+# ES-specific
+# FIXME: should this be different than production ES?
+elasticsearch::multicast_group: 224.2.2.5
+elasticsearch::minimum_master_nodes: 2
+elasticsearch::cluster_name: production-logstash-eqiad
+elasticsearch::heap_memory: '30G'
+elasticsearch::expected_nodes: 3
+elasticsearch::recover_after_nodes: 2
+elasticsearch::recover_after_time: '1m'
