@@ -89,6 +89,7 @@ class LDAPSource(object):
                          ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
                          attributes=ldap3.ALL_ATTRIBUTES)
         hosts = []
+        hostnames = set()  # Temp fix for T96817
         for responseitem in self.conn.response:
             hostinfo = responseitem['attributes']
             ip = [a for a in hostinfo['aRecord'] if a.startswith('10.')][0]
@@ -96,6 +97,10 @@ class LDAPSource(object):
                 var[0]: var[1]
                 for var in [pv.split("=") for pv in hostinfo['puppetVar']]
             }
+            if puppetvars['instancename'] in hostnames:
+                continue
+            else:
+                hostnames.add(puppetvars['instancename'])
             hosts.append({
                 'ec2id': hostinfo['dc'][0],
                 'ip': ip,
