@@ -168,6 +168,10 @@ class phabricator (
         before    => File["${phabdir}/phabricator/.git/config"],
     }
 
+    file { "/var/run/phd":
+        ensure => directory,
+    }
+
     file { "${phabdir}/phabricator/.git/config":
         source => 'puppet:///modules/phabricator/phabricator.gitconfig',
         before => File["${phabdir}/phabricator/scripts/"],
