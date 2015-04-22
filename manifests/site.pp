@@ -166,9 +166,10 @@ node /analytics102[345].eqiad.wmnet/ {
 # (llama, impala-state-store, impala-catalog)
 # analytics1026 also runs misc udp2log for sqstat
 node 'analytics1026.eqiad.wmnet' {
-    role analytics::impala::master
 
     include standard
+    include role::analytics::clients
+    include role::analytics::impala::master
     include role::logging::udp2log::misc
 
 }
