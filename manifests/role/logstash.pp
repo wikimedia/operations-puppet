@@ -71,6 +71,24 @@ class role::logstash {
 
 }
 
+# == Class: role::logstash::elasticsearch
+#
+# Provisions Elasticsearch backend node for a Logstash cluster.
+#
+class role::logstash::elasticsearch {
+    include standard
+    include ::elasticsearch::ganglia
+    include ::elasticsearch::nagios::check
+
+    package { 'elasticsearch/plugins':
+        provider => 'trebuchet',
+    }
+
+    class { '::elasticsearch':
+        require => Package['elasticsearch/plugins'],
+    }
+}
+
 # == Class: role::logstash::ircbot
 #
 # Sets up an IRC Bot to log messages from certain IRC channels
