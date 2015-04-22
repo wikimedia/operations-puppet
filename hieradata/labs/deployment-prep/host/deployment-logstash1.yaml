@@ -1,0 +1,14 @@
+# ES-specific
+elasticsearch::auto_create_index: true
+elasticsearch::cluster_name: labs-logstash-eqiad
+elasticsearch::expected_nodes: 1
+elasticsearch::heap_memory: '5G'
+elasticsearch::minimum_master_nodes: 1
+elasticsearch::multicast_group: 224.2.2.5
+elasticsearch::plugins_dir: /srv/deployment/elasticsearch/plugins
+elasticsearch::recover_after_nodes: 1
+elasticsearch::recover_after_time: '1m'
+
+# Logstash specific
+logstash::filter_workers: 1
+logstash::heap_memory_mb: 128

@@ -9,39 +9,14 @@ class role::logstash {
     include standard
     include ::elasticsearch::ganglia
     include ::elasticsearch::nagios::check
+    include ::logstash
 
     package { 'elasticsearch/plugins':
         provider => 'trebuchet',
     }
 
-    $minimum_master_nodes = $::realm ? {
-        'production' => 2,
-        'labs'       => 1,
-    }
-    $expected_nodes = $::realm ? {
-        'production' => 2,
-        'labs'       => 1,
-    }
-
     class { '::elasticsearch':
-        multicast_group      => '224.2.2.5',
-        master_eligible      => true,
-        minimum_master_nodes => $minimum_master_nodes,
-        cluster_name         => "${::realm}-logstash-${::site}",
-        heap_memory          => '5G',
-        plugins_dir          => '/srv/deployment/elasticsearch/plugins',
-        auto_create_index    => true,
-        expected_nodes       => $expected_nodes,
-        recover_after_nodes  => $minimum_master_nodes,
-        recover_after_time   => '1m',
-    }
-
-    class { '::logstash':
-        heap_memory_mb => 128,
-        # TODO: the multiline filter that is used in several places in the
-        # current configuration isn't thread safe and can cause crashes or
-        # garbled output when used with more than one thread worker.
-        filter_workers => 1,
+        require => Package['elasticsearch/plugins'],
     }
 
     logstash::input::udp2log { 'mediawiki':
