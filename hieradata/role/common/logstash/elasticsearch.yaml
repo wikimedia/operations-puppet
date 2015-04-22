@@ -4,6 +4,8 @@ admin::groups:
   - logstash-roots
 
 # ES-specific
+# NOTE: multicast_group and cluster_name must be kept in sync with the backend
+# node config in hieradata/role/common/logstash.yaml
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: production-logstash-eqiad
 elasticsearch::expected_nodes: 3
