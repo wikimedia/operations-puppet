@@ -1,3 +1,21 @@
 cluster: logstash
 admin::groups:
   - logstash-roots
+
+# ES-specific
+elasticsearch::auto_create_index: true
+elasticsearch::cluster_name: production-logstash-eqiad
+elasticsearch::expected_nodes: 3
+elasticsearch::heap_memory: '5G'
+elasticsearch::minimum_master_nodes: 2
+elasticsearch::multicast_group: 224.2.2.6
+elasticsearch::plugins_dir: /srv/deployment/elasticsearch/plugins
+elasticsearch::recover_after_nodes: 2
+elasticsearch::recover_after_time: '1m'
+
+# Logstash specific
+# TODO: the multiline filter that is used in several places in the
+# current configuration isn't thread safe and can cause crashes or
+# garbled output when used with more than one thread worker.
+logstash::filter_workers: 1
+logstash::heap_memory_mb: 128
