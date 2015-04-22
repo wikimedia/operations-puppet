@@ -101,7 +101,7 @@ function sign_salt {
 
 function set_pxe_and_reboot {
     mgmtname=${1}
-    if [ -z "$IPMI_PASSWORD" ]; then
+    if [ -z "${IPMI_PASSWORD:-}" ]; then
         echo "WARNING: IPMI_PASSWORD not found."
         if ! tty -s; then
             echo "Assuming bash, do: "
