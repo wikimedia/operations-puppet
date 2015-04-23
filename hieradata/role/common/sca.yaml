@@ -9,6 +9,7 @@ admin::groups:
   - zotero-admin
 
 lvs::realserver::realserver_ips:
+  - '10.2.2.15' # graphoid.svc.eqiad.wmnet
   - '10.2.2.16' # zotero.svc.eqiad.wmnet
   - '10.2.2.18' # cxserver.svc.eqiad.wmnet
   - '10.2.2.19' # citoid.svc.eqiad.wmnet
