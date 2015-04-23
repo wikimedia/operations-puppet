@@ -139,7 +139,10 @@ define service::node($port, $config = undef, $no_file = 10000) {
         hasstatus  => true,
         hasrestart => true,
         provider   => 'upstart',
-        require    => [Package["${title}/deploy"], Class['packages::nodejs']],
+        require    => [
+            Package["${title}/deploy"],
+            Class['packages::nodejs_legacy']
+        ],
     }
 
     # Basic monitoring
