@@ -2,3 +2,4 @@ mediawiki::users::web: www-data
 cluster: virt
 admin::groups:
   - deployment
+ganglia_class: "new"
