@@ -275,10 +275,8 @@ node 'bast4001.wikimedia.org' {
         interface => 'eth0',
     }
 
-    role bastionhost
+    role bastionhost, ipmi, installserver::tftp-server
     include standard
-    include role::ipmi
-    include role::installserver::tftp-server
 }
 
 # IPsec testing
