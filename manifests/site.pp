@@ -984,11 +984,9 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
 # Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
 # processes it, and broadcasts to internal subscribers.
 node 'eventlog1001.eqiad.wmnet' {
-    role eventlogging
+    role eventlogging, ipython_notebook, mediawiki::errors
 
     include standard
-    include role::ipython_notebook
-    include role::logging::mediawiki::errors
 }
 
 node 'fluorine.eqiad.wmnet' {
