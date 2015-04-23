@@ -9,17 +9,38 @@
 testfile="/home/._._testfile"
 
 if [ -e $testfile ]; then
-    echo "$testfile: already exists\n" >&2
+    echo "$testfile: already exists\n"
     exit 1
 fi
 
 trap "rm -f $testfile" 0
 
-if ! touch $testfile; then
+if ! touch $testfile 2>/dev/null; then
+    echo "$testfile: unable to create\n"
     exit 1
 fi
 
 if ! chown 456 $testfile 2>/dev/null; then
     # UID 456 picked because known to not be on labstore
+
+    # Rather than reboot outright, try to unmount the NFS
+    # filesystems and unload the kernel module.  This will
+    # fail if anything is using NFS but will prevent a
+    # needless reboot for instances that aren't actually
+    # using it at this time.
+
+    if /bin/umount -a -t nfs 2>/dev/null; then
+        if /sbin/rmmod nfs 2>/dev/null; then
+            if /sbin/modprobe nfs 2>/dev/null; then
+                if /bin/mount -a -t nfs 2>/dev/null; then
+                    echo "skipped - was able to reload the module"
+                    exit 1
+                fi
+            fi
+        fi
+    fi
+
     /sbin/reboot
+    echo "rebooting"
+    exit 0
 fi
