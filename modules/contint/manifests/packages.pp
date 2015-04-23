@@ -54,6 +54,21 @@ class contint::packages {
         ensure => absent,
     }
 
+    # Similar to mediawiki::php
+    if os_version('ubuntu >= trusty || debian >= Jessie') {
+        $php_module_conf_dir = '/etc/php5/mods-available'
+        mediawiki::php_enmod { ['fss', 'mail']: }
+    } else {
+        $php_module_conf_dir = '/etc/php5/conf.d'
+    }
+    file { "${php_module_conf_dir}/disable-html_errors.ini":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/contint/php-disable-html_errors.ini',
+        require => Package['php5-xdebug'],
+    }
+
     # Database related
     package { [
         'mysql-server',
