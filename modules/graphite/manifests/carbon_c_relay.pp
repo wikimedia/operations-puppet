@@ -20,6 +20,19 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
         template_name => 'frontend-relay',
     }
 
+    # make sure the global carbon-c-relay doesn't run
+    file { '/etc/init/carbon-c-relay.override':
+        content => 'manual',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
+    service { 'carbon-c-relay':
+        provider => 'upstart',
+        ensure   => stopped,
+    }
+
     file { '/etc/carbon/frontend-relay.conf':
         content => template('graphite/frontend-relay.conf.erb'),
         owner   => 'root',
