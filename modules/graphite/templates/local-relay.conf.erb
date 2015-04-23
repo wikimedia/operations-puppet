@@ -2,7 +2,7 @@
 # load-balance metrics sending among all members of the local cluster.
 
 cluster carbon-cache
-  any_of
+  fnv1a_ch replication 1
   <% @c_relay_settings['carbon-cache'].each do |b| -%>
       <%= b %>
   <% end -%>
