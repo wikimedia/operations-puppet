@@ -1034,12 +1034,9 @@ node 'gallium.wikimedia.org' {
         ]
     }
 
+    role ci::master, ci::slave, ci::website, zuul::production
     include standard
     include contint::firewall
-    include role::ci::master
-    include role::ci::slave
-    include role::ci::website
-    include role::zuul::production
 
     # gallium received a SSD drive (T82401) mount it
     file { '/srv/ssd':
