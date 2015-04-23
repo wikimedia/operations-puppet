@@ -2466,17 +2466,32 @@ host lithium {
 host logstash1001 {
 	hardware ethernet 90:B1:1C:00:B1:4B;
 	fixed-address logstash1001.eqiad.wmnet;
-	}
+}
 
 host logstash1002 {
 	hardware ethernet D4:AE:52:AF:65:94;
 	fixed-address logstash1002.eqiad.wmnet;
-	}
+}
 
 host logstash1003 {
 	hardware ethernet D4:AE:52:AF:4B:AF;
 	fixed-address logstash1003.eqiad.wmnet;
-	}
+}
+
+host logstash1004 {
+        hardware ethernet 44:A8:42:11:68:6B;
+        fixed-address logstash1004.eqiad.wmnet;
+}
+
+host logstash1005 {
+        hardware ethernet 44:A8:42:11:5E:81;
+        fixed-address logstash1005.eqiad.wmnet;
+}
+
+host logstash1006 {
+        hardware ethernet 44:A8:42:11:74:B5;
+        fixed-address logstash1006.eqiad.wmnet;
+}
 
 host lvs1001 {
 	hardware ethernet 18:03:73:f0:89:69;
