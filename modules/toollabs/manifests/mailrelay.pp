@@ -68,7 +68,7 @@ class toollabs::mailrelay($maildomain) inherits toollabs
         privileges => ['ALL=(root) NOPASSWD: /usr/sbin/exim']
     }
 
-    diamond::collector { 'Exim':
+    diamond::collector::extendedexim { 'extended_exim_collector':
         settings     => {
             use_sudo => 'true', # used in a template, not a puppet bool
         }
