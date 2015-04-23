@@ -1,0 +1,27 @@
+#!/usr/bin/python3
+"""
+Simple helper for the cdnjs mirror
+Makes a packages.json that is just a list containing
+contents of all the packages.json found in the repository.
+"""
+import os
+import glob
+import argparse
+import json
+
+argparser = argparse.ArgumentParser()
+argparser.add_argument('cdnjspath', help='Path to CDNJS git checkout')
+argparser.add_argument('outputpath', help='Path to html output')
+args = argparser.parse_args()
+
+libs_path = os.path.join(args.cdnjspath, 'ajax', 'libs')
+
+files = glob.glob(os.path.join(libs_path, '*', 'package.json'))
+
+packages = []
+for file in files:
+    with open(file) as f:
+        packages.append(json.load(f))
+
+with open(args.outputpath, 'w') as f:
+    json.dump(packages, f)
