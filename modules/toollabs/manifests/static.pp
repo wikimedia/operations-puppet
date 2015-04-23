@@ -31,6 +31,18 @@ class toollabs::static(
         require   => Labs_lvm::Volume['cdnjs-disk'],
     }
 
+    file { '/usr/local/bin/cdnjs-packages-gen':
+        source => 'puppet:///modules/toollabs/cdnjs-packages-gen',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    exec { 'generate-cdnjs-packages-json':
+        command => '/usr/local/bin/cdnjs-packages-gen /srv/cdnjs /srv/cdnjs/packages.json',
+        require => [File['/usr/local/bin/cdnjs-packages-gen'], Git::Clone['cdnjs']],
+    }
+
     nginx::site { 'static-server':
         content => template('toollabs/static-server.conf.erb'),
         require => Git::Clone['cdnjs'],
