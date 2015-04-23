@@ -7,6 +7,9 @@
 has_ganglia: false
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
+service::configuration::http_proxy:
+service::configuration::statsd_host: labmon1001.eqiad.wmnet
+service::configuration::logstash_host: deployment-logstash1.eqiad.wmflabs
 citoid::zotero_host: deployment-zotero01.eqiad.wmflabs
 citoid::zotero_port: 1969
 "cassandra::seeds":
