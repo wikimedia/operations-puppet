@@ -190,4 +190,12 @@ class toollabs (
         content => $active_proxy,
     }
 
+    # puppetized until we can setup proper DNS for .labsdb entries
+    file { '/etc/hosts':
+        source => 'puppet:///modules/toollabs/hosts',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644'
+    }
+
 }

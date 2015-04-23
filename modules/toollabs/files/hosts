@@ -1,0 +1,247 @@
+# Temporarily puppetized until we can get DNS properly setup
+127.0.0.1 localhost
+127.0.1.1 ubuntu
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+
+# DO NOT EDIT BELOW THIS LINE @DBHOSTS@
+
+10.64.4.11 s1.labsdb
+10.64.37.4 s2.labsdb
+10.64.37.5 s3.labsdb
+10.64.37.4 s4.labsdb
+10.64.37.4 s5.labsdb
+10.64.37.5 s6.labsdb
+10.64.37.5 s7.labsdb
+
+10.64.4.11 c1.labsdb
+10.64.37.4 c2.labsdb
+10.64.37.5 c3.labsdb
+
+10.64.37.9 tools.labsdb tools-db
+
+10.64.37.5 zawiktionary.labsdb fywikibooks.labsdb liwiki.labsdb hewikivoyage.labsdb 
+10.64.37.5 thwiktionary.labsdb twwiktionary.labsdb huwikisource.labsdb cowiktionary.labsdb 
+10.64.37.5 bgwikinews.labsdb ruwiktionary.labsdb kshwiki.labsdb ugwiktionary.labsdb 
+10.64.37.5 ptwikisource.labsdb frwikibooks.labsdb rowiki.labsdb tlwiktionary.labsdb 
+10.64.37.5 tlwikibooks.labsdb stqwiki.labsdb thwikiquote.labsdb be_x_oldwiki.labsdb 
+10.64.37.5 orwiktionary.labsdb iewiktionary.labsdb etwiktionary.labsdb frwikiversity.labsdb 
+10.64.37.5 rnwiki.labsdb howiki.labsdb tywiki.labsdb orwikisource.labsdb 
+10.64.37.5 mxwikimedia.labsdb huwikibooks.labsdb cowikimedia.labsdb mdfwiki.labsdb 
+10.64.37.5 lmowiki.labsdb glwiktionary.labsdb enwikiversity.labsdb quwikibooks.labsdb 
+10.64.37.5 frwikinews.labsdb wawiki.labsdb svwiktionary.labsdb csbwiki.labsdb 
+10.64.37.5 gvwiki.labsdb cawikimedia.labsdb chowiki.labsdb frrwiki.labsdb 
+10.64.37.5 slwikiversity.labsdb viwikivoyage.labsdb ocwiktionary.labsdb xmfwiki.labsdb 
+10.64.37.5 nawikibooks.labsdb kowikiquote.labsdb nawiki.labsdb bgwikisource.labsdb 
+10.64.37.5 sqwiki.labsdb etwikiquote.labsdb alswiktionary.labsdb mlwiktionary.labsdb 
+10.64.37.5 bewikibooks.labsdb ukwikisource.labsdb urwiki.labsdb ptwikibooks.labsdb 
+10.64.37.5 jawikibooks.labsdb dzwiki.labsdb fawikisource.labsdb tkwiki.labsdb 
+10.64.37.5 qualitywiki.labsdb brwikimedia.labsdb ckbwiki.labsdb snwiki.labsdb 
+10.64.37.5 pagwiki.labsdb bgwikiquote.labsdb bmwikibooks.labsdb plwikiquote.labsdb 
+10.64.37.5 towiki.labsdb vewiki.labsdb mswikibooks.labsdb amwikiquote.labsdb 
+10.64.37.5 incubatorwiki.labsdb sqwikibooks.labsdb fjwiki.labsdb mtwiktionary.labsdb 
+10.64.37.5 mnwiktionary.labsdb sewiki.labsdb kuwiktionary.labsdb mlwikiquote.labsdb 
+10.64.37.5 enwikibooks.labsdb usabilitywiki.labsdb swwiki.labsdb novwiki.labsdb 
+10.64.37.5 nnwiki.labsdb jawikinews.labsdb tyvwiki.labsdb sourceswiki.labsdb 
+10.64.37.5 shwiki.labsdb papwiki.labsdb bnwikibooks.labsdb omwiktionary.labsdb 
+10.64.37.5 bhwiki.labsdb orwiki.labsdb idwikibooks.labsdb astwikibooks.labsdb 
+10.64.37.5 hiwikibooks.labsdb skwikisource.labsdb rmywiki.labsdb tnwiki.labsdb 
+10.64.37.5 lezwiki.labsdb mznwiki.labsdb nahwikibooks.labsdb fawikinews.labsdb 
+10.64.37.5 angwikiquote.labsdb bjnwiki.labsdb kuwikiquote.labsdb hewikinews.labsdb 
+10.64.37.5 kuwikibooks.labsdb kowikisource.labsdb mediawikiwiki.labsdb hiwiki.labsdb 
+10.64.37.5 fawiktionary.labsdb kswiki.labsdb gnwiktionary.labsdb kywikibooks.labsdb 
+10.64.37.5 hywiktionary.labsdb azwiki.labsdb furwiki.labsdb fiwikimedia.labsdb 
+10.64.37.5 sawikibooks.labsdb tnwiktionary.labsdb cswikiversity.labsdb bugwiki.labsdb 
+10.64.37.5 trwiktionary.labsdb biwiki.labsdb slwiktionary.labsdb eswikiquote.labsdb 
+10.64.37.5 tiwiki.labsdb hywikibooks.labsdb pcdwiki.labsdb ltwikiquote.labsdb 
+10.64.37.5 trwikimedia.labsdb kkwikiquote.labsdb skwikibooks.labsdb kiwiki.labsdb 
+10.64.37.5 lvwiktionary.labsdb zuwikibooks.labsdb lijwiki.labsdb afwikibooks.labsdb 
+10.64.37.5 cswikibooks.labsdb hrwikibooks.labsdb tewikisource.labsdb rmwiki.labsdb 
+10.64.37.5 rnwiktionary.labsdb kowiki.labsdb fjwiktionary.labsdb elwikiversity.labsdb 
+10.64.37.5 tswiki.labsdb eowikiquote.labsdb kswikibooks.labsdb kowikiversity.labsdb 
+10.64.37.5 kowiktionary.labsdb minwiki.labsdb mrwiki.labsdb wikimania2009wiki.labsdb 
+10.64.37.5 piwiki.labsdb dzwiktionary.labsdb ruwikimedia.labsdb rowikinews.labsdb 
+10.64.37.5 hewiktionary.labsdb viwiktionary.labsdb eswikivoyage.labsdb suwikibooks.labsdb 
+10.64.37.5 kmwiki.labsdb crwiki.labsdb simplewikibooks.labsdb vowiki.labsdb 
+10.64.37.5 smwiktionary.labsdb zuwiki.labsdb tpiwiktionary.labsdb dewikiquote.labsdb 
+10.64.37.5 vecwiki.labsdb roa_rupwiki.labsdb fiwikibooks.labsdb zh_min_nanwikibooks.labsdb 
+10.64.37.5 gawiktionary.labsdb glwikibooks.labsdb tswiktionary.labsdb lawiki.labsdb 
+10.64.37.5 uzwiktionary.labsdb cdowiki.labsdb mywiki.labsdb foundationwiki.labsdb 
+10.64.37.5 zhwikibooks.labsdb betawikiversity.labsdb srwiki.labsdb tgwiktionary.labsdb 
+10.64.37.5 piwiktionary.labsdb cywikisource.labsdb mtwiki.labsdb ugwiki.labsdb 
+10.64.37.5 hzwiki.labsdb shwiktionary.labsdb bewiki.labsdb ptwikiversity.labsdb 
+10.64.37.5 huwikiquote.labsdb swwiktionary.labsdb srwikibooks.labsdb kuwiki.labsdb 
+10.64.37.5 acewiki.labsdb lawiktionary.labsdb zawikiquote.labsdb kywiki.labsdb 
+10.64.37.5 arwikisource.labsdb zuwiktionary.labsdb bmwiktionary.labsdb siwiki.labsdb 
+10.64.37.5 sahwikisource.labsdb mrjwiki.labsdb hrwikisource.labsdb fiwikisource.labsdb 
+10.64.37.5 uzwikibooks.labsdb plwikinews.labsdb ltgwiki.labsdb svwikivoyage.labsdb 
+10.64.37.5 eswiki.labsdb gdwiki.labsdb xalwiki.labsdb arwikimedia.labsdb 
+10.64.37.5 mkwiki.labsdb abwiki.labsdb aswiki.labsdb frwiki.labsdb 
+10.64.37.5 ptwikivoyage.labsdb tiwiktionary.labsdb anwiktionary.labsdb wikimania2012wiki.labsdb 
+10.64.37.5 viwiki.labsdb gawikibooks.labsdb cawikisource.labsdb chwiki.labsdb 
+10.64.37.5 nostalgiawiki.labsdb myvwiki.labsdb liwiktionary.labsdb knwikiquote.labsdb 
+10.64.37.5 bewikisource.labsdb hiwikiquote.labsdb dsbwiki.labsdb strategywiki.labsdb 
+10.64.37.5 guwikibooks.labsdb glwikisource.labsdb eswikibooks.labsdb nzwikimedia.labsdb 
+10.64.37.5 bnwiki.labsdb crwikiquote.labsdb yiwikisource.labsdb chwiktionary.labsdb 
+10.64.37.5 nlwiktionary.labsdb ndswiktionary.labsdb bawikibooks.labsdb etwiki.labsdb 
+10.64.37.5 frpwiki.labsdb ruwikiquote.labsdb nvwiki.labsdb suwiki.labsdb 
+10.64.37.5 kawiki.labsdb iswikibooks.labsdb ttwikiquote.labsdb gotwikibooks.labsdb 
+10.64.37.5 iawiki.labsdb jawikiquote.labsdb newikibooks.labsdb ocwiki.labsdb 
+10.64.37.5 mywiktionary.labsdb frwikisource.labsdb cebwiki.labsdb newiki.labsdb 
+10.64.37.5 itwikinews.labsdb fowiki.labsdb ilowiki.labsdb mowiki.labsdb 
+10.64.37.5 quwiki.labsdb plwikivoyage.labsdb svwikinews.labsdb cewiki.labsdb 
+10.64.37.5 srnwiki.labsdb centralauth.labsdb vepwiki.labsdb bclwiki.labsdb 
+10.64.37.5 nlwikisource.labsdb gnwikibooks.labsdb bswikiquote.labsdb yowiktionary.labsdb 
+10.64.37.5 mlwikibooks.labsdb sqwikinews.labsdb wowiki.labsdb svwikibooks.labsdb 
+10.64.37.5 cswiktionary.labsdb uawikimedia.labsdb bnwiktionary.labsdb hsbwiktionary.labsdb 
+10.64.37.5 lowiktionary.labsdb lnwikibooks.labsdb astwiki.labsdb kowikinews.labsdb 
+10.64.37.5 arzwiki.labsdb nywiki.labsdb bowikibooks.labsdb zhwiktionary.labsdb 
+10.64.37.5 lawikiquote.labsdb bxrwiki.labsdb yowikibooks.labsdb cswikinews.labsdb 
+10.64.37.5 advisorywiki.labsdb fawikiquote.labsdb pntwiki.labsdb arwikiquote.labsdb 
+10.64.37.5 enwikivoyage.labsdb zhwikiquote.labsdb elwikiquote.labsdb xhwikibooks.labsdb 
+10.64.37.5 vecwikisource.labsdb mkwikimedia.labsdb tumwiki.labsdb yiwiktionary.labsdb 
+10.64.37.5 scowiki.labsdb chrwiktionary.labsdb omwiki.labsdb mrwikiquote.labsdb 
+10.64.37.5 itwikivoyage.labsdb etwikimedia.labsdb nlwikibooks.labsdb newiktionary.labsdb 
+10.64.37.5 igwiki.labsdb gnwiki.labsdb kgwiki.labsdb brwikiquote.labsdb 
+10.64.37.5 azwikiquote.labsdb ruwikivoyage.labsdb kswiktionary.labsdb guwiktionary.labsdb 
+10.64.37.5 bawiki.labsdb angwiki.labsdb yowiki.labsdb glkwiki.labsdb 
+10.64.37.5 frwikiquote.labsdb ngwiki.labsdb mgwikibooks.labsdb gotwiki.labsdb 
+10.64.37.5 nahwiki.labsdb cvwikibooks.labsdb fiwikinews.labsdb nlwikimedia.labsdb 
+10.64.37.5 ladwiki.labsdb dvwiktionary.labsdb ukwikivoyage.labsdb scnwiki.labsdb 
+10.64.37.5 idwiktionary.labsdb nowikibooks.labsdb kjwiki.labsdb iswiki.labsdb 
+10.64.37.5 wikimania2005wiki.labsdb wikimania2010wiki.labsdb pawiki.labsdb angwikisource.labsdb 
+10.64.37.5 xhwiktionary.labsdb idwikisource.labsdb angwiktionary.labsdb wawiktionary.labsdb 
+10.64.37.5 sqwiktionary.labsdb fywiki.labsdb vecwiktionary.labsdb elwikibooks.labsdb 
+10.64.37.5 knwikisource.labsdb kawikiquote.labsdb itwikibooks.labsdb miwikibooks.labsdb 
+10.64.37.5 svwikisource.labsdb bowiktionary.labsdb dewikinews.labsdb hakwiki.labsdb 
+10.64.37.5 afwikiquote.labsdb srwiktionary.labsdb cswikiquote.labsdb ukwiki.labsdb 
+10.64.37.5 vlswiki.labsdb nlwikinews.labsdb hawwiki.labsdb srwikinews.labsdb 
+10.64.37.5 kawiktionary.labsdb simplewiki.labsdb htwiki.labsdb suwiktionary.labsdb 
+10.64.37.5 brwikisource.labsdb zh_min_nanwiktionary.labsdb arwiki.labsdb plwiktionary.labsdb 
+10.64.37.5 knwikibooks.labsdb arwikibooks.labsdb eowikinews.labsdb rowikivoyage.labsdb 
+10.64.37.5 plwikibooks.labsdb vowikiquote.labsdb barwiki.labsdb bowiki.labsdb 
+10.64.37.5 fywiktionary.labsdb cowiki.labsdb zh_yuewiki.labsdb siwiktionary.labsdb 
+10.64.37.5 euwikiquote.labsdb hifwiki.labsdb elwikinews.labsdb jvwiki.labsdb 
+10.64.37.5 akwikibooks.labsdb aswikibooks.labsdb euwiki.labsdb fowiktionary.labsdb 
+10.64.37.5 tpiwiki.labsdb metawiki.labsdb eewiki.labsdb iewikibooks.labsdb 
+10.64.37.5 ruwikibooks.labsdb hrwiki.labsdb zhwikisource.labsdb huwiktionary.labsdb 
+10.64.37.5 iswikisource.labsdb iuwiktionary.labsdb hewiki.labsdb kwwiki.labsdb 
+10.64.37.5 ukwikibooks.labsdb ruwikisource.labsdb skwiktionary.labsdb pmswiki.labsdb 
+10.64.37.5 ltwikisource.labsdb avwiktionary.labsdb kbdwiki.labsdb sowiktionary.labsdb 
+10.64.37.5 sowiki.labsdb sawikisource.labsdb hawiki.labsdb huwiki.labsdb 
+10.64.37.5 iowiktionary.labsdb kwwiktionary.labsdb bewiktionary.labsdb htwikisource.labsdb 
+10.64.37.5 ukwikinews.labsdb aawikibooks.labsdb nowiktionary.labsdb euwiktionary.labsdb 
+10.64.37.5 ruwiki.labsdb mywikibooks.labsdb guwikisource.labsdb fiu_vrowiki.labsdb 
+10.64.37.5 trwikibooks.labsdb ttwiktionary.labsdb rwwiki.labsdb zawikibooks.labsdb 
+10.64.37.5 pnbwiki.labsdb jawikiversity.labsdb knwiki.labsdb skwikiquote.labsdb 
+10.64.37.5 ugwikiquote.labsdb abwiktionary.labsdb cawiki.labsdb wowikiquote.labsdb 
+10.64.37.5 extwiki.labsdb pa_uswikimedia.labsdb klwiktionary.labsdb brwiktionary.labsdb 
+10.64.37.5 crwiktionary.labsdb eswikiversity.labsdb sqwikiquote.labsdb iawikibooks.labsdb 
+10.64.37.5 koiwiki.labsdb zh_min_nanwiki.labsdb sawikiquote.labsdb pdcwiki.labsdb 
+10.64.37.5 hsbwiki.labsdb wawikibooks.labsdb iewiki.labsdb muswiki.labsdb 
+10.64.37.5 ikwiki.labsdb dawiktionary.labsdb mwlwiki.labsdb avwiki.labsdb 
+10.64.37.5 sawiktionary.labsdb azwikisource.labsdb gawikiquote.labsdb roa_rupwiktionary.labsdb 
+10.64.37.5 jbowiktionary.labsdb vowiktionary.labsdb idwikiquote.labsdb aawiktionary.labsdb 
+10.64.37.5 sewikimedia.labsdb bhwiktionary.labsdb kowikibooks.labsdb srwikisource.labsdb 
+10.64.37.5 uzwikiquote.labsdb ikwiktionary.labsdb slwiki.labsdb eowiktionary.labsdb 
+10.64.37.5 snwiktionary.labsdb kwwikiquote.labsdb dewikivoyage.labsdb kvwiki.labsdb 
+10.64.37.5 iswikiquote.labsdb sawiki.labsdb urwikiquote.labsdb fiwikiquote.labsdb 
+10.64.37.5 lbwikibooks.labsdb arwikinews.labsdb ganwiki.labsdb trwikisource.labsdb 
+10.64.37.5 sewikibooks.labsdb csbwiktionary.labsdb vowikibooks.labsdb krcwiki.labsdb 
+10.64.37.5 angwikibooks.labsdb itwikiversity.labsdb eowikibooks.labsdb bswiktionary.labsdb 
+10.64.37.5 cswikisource.labsdb wikimania2014wiki.labsdb mhwiktionary.labsdb pamwiki.labsdb 
+10.64.37.5 xhwiki.labsdb tewiktionary.labsdb dewikibooks.labsdb dkwikimedia.labsdb 
+10.64.37.5 kywikiquote.labsdb nsowiki.labsdb afwiki.labsdb ffwiki.labsdb 
+10.64.37.5 bat_smgwiki.labsdb zawiki.labsdb siwikibooks.labsdb smwiki.labsdb 
+10.64.37.5 nycwikimedia.labsdb emlwiki.labsdb mowiktionary.labsdb towiktionary.labsdb 
+10.64.37.5 gagwiki.labsdb plwikisource.labsdb etwikisource.labsdb rowikibooks.labsdb 
+10.64.37.5 bdwikimedia.labsdb votewiki.labsdb fawikibooks.labsdb dvwiki.labsdb 
+10.64.37.5 diqwiki.labsdb kkwiki.labsdb slwikibooks.labsdb liwikibooks.labsdb 
+10.64.37.5 dewikisource.labsdb lawikibooks.labsdb ukwiktionary.labsdb tgwiki.labsdb 
+10.64.37.5 ruwikinews.labsdb szlwiki.labsdb nahwiktionary.labsdb zh_min_nanwikiquote.labsdb 
+10.64.37.5 twwiki.labsdb simplewikiquote.labsdb huwikinews.labsdb jbowiki.labsdb 
+10.64.37.5 simplewiktionary.labsdb elwiki.labsdb kkwikibooks.labsdb azwikibooks.labsdb 
+10.64.37.5 hywiki.labsdb thwikibooks.labsdb knwiktionary.labsdb bewikiquote.labsdb 
+10.64.37.5 jawikisource.labsdb zh_min_nanwikisource.labsdb ptwikinews.labsdb maiwiki.labsdb 
+10.64.37.5 amwiktionary.labsdb slwikisource.labsdb zh_classicalwiki.labsdb svwikiquote.labsdb 
+10.64.37.5 bewikimedia.labsdb ttwiki.labsdb bpywiki.labsdb loginwiki.labsdb 
+10.64.37.5 srwikiquote.labsdb zhwikinews.labsdb wikimania2008wiki.labsdb pswikibooks.labsdb 
+10.64.37.5 svwikiversity.labsdb eswikinews.labsdb tawiktionary.labsdb ugwikibooks.labsdb 
+10.64.37.5 elwiktionary.labsdb fowikisource.labsdb mnwiki.labsdb gvwiktionary.labsdb 
+10.64.37.5 viwikiquote.labsdb stwiktionary.labsdb kawikibooks.labsdb nawikiquote.labsdb 
+10.64.37.5 ocwikibooks.labsdb nlwikiquote.labsdb bswikinews.labsdb chywiki.labsdb 
+10.64.37.5 lnwiki.labsdb outreachwiki.labsdb wowiktionary.labsdb tewikibooks.labsdb 
+10.64.37.5 quwiktionary.labsdb pawiktionary.labsdb wikimania2015wiki.labsdb nowikiquote.labsdb 
+10.64.37.5 iuwiki.labsdb bswikibooks.labsdb krwiki.labsdb rwwiktionary.labsdb 
+10.64.37.5 udmwiki.labsdb hywikisource.labsdb tetwiki.labsdb eowikisource.labsdb 
+10.64.37.5 alswiki.labsdb bgwikibooks.labsdb hewikibooks.labsdb klwiki.labsdb 
+10.64.37.5 pswiktionary.labsdb mrwikisource.labsdb mkwikibooks.labsdb itwikisource.labsdb 
+10.64.37.5 napwiki.labsdb skwiki.labsdb bmwikiquote.labsdb kabwiki.labsdb 
+10.64.37.5 gdwiktionary.labsdb trwikiquote.labsdb cuwiki.labsdb etwikibooks.labsdb 
+10.64.37.5 nnwikiquote.labsdb cowikiquote.labsdb jawiki.labsdb pnbwiktionary.labsdb 
+10.64.37.5 ruwikiversity.labsdb cawikinews.labsdb biwiktionary.labsdb sdwikinews.labsdb 
+10.64.37.5 nds_nlwiki.labsdb mgwiktionary.labsdb ptwiktionary.labsdb ltwiki.labsdb 
+10.64.37.5 wikimania2013wiki.labsdb zhwikivoyage.labsdb cvwiki.labsdb crhwiki.labsdb 
+10.64.37.5 arwikiversity.labsdb pflwiki.labsdb hywikiquote.labsdb mkwikisource.labsdb 
+10.64.37.5 nnwiktionary.labsdb wikimania2011wiki.labsdb aswiktionary.labsdb mrwikibooks.labsdb 
+10.64.37.5 tgwikibooks.labsdb hrwiktionary.labsdb lawikisource.labsdb gawiki.labsdb 
+10.64.37.5 lbwikiquote.labsdb tlwiki.labsdb kswikiquote.labsdb enwikinews.labsdb 
+10.64.37.5 mswiki.labsdb tkwikibooks.labsdb tawiki.labsdb urwiktionary.labsdb 
+10.64.37.5 jawiktionary.labsdb akwiktionary.labsdb sdwiktionary.labsdb hewikiquote.labsdb 
+10.64.37.5 nlwikivoyage.labsdb azwiktionary.labsdb testwikidatawiki.labsdb iawiktionary.labsdb 
+10.64.37.5 liwikiquote.labsdb ptwikiquote.labsdb lnwiktionary.labsdb lgwiki.labsdb 
+10.64.37.5 wikimania2007wiki.labsdb sdwiki.labsdb nowikimedia.labsdb kmwiktionary.labsdb 
+10.64.37.5 stwiki.labsdb nowikinews.labsdb alswikibooks.labsdb viwikibooks.labsdb 
+10.64.37.5 tenwiki.labsdb sswiktionary.labsdb scwiktionary.labsdb itwiktionary.labsdb 
+10.64.37.5 cywikibooks.labsdb arcwiki.labsdb mkwiktionary.labsdb roa_tarawiki.labsdb 
+10.64.37.5 fawikivoyage.labsdb iiwiki.labsdb cawikiquote.labsdb astwiktionary.labsdb 
+10.64.37.5 tewikiquote.labsdb cawiktionary.labsdb guwiki.labsdb rowikiquote.labsdb 
+10.64.37.5 bswikisource.labsdb tawikisource.labsdb akwiki.labsdb cawikibooks.labsdb 
+10.64.37.5 kkwiktionary.labsdb nowikisource.labsdb ukwikimedia.labsdb afwiktionary.labsdb 
+10.64.37.5 pihwiki.labsdb tkwiktionary.labsdb dawikisource.labsdb fawiki.labsdb 
+10.64.37.5 enwikisource.labsdb ndswiki.labsdb mlwikisource.labsdb kaawiki.labsdb 
+10.64.37.5 itwikiquote.labsdb iowiki.labsdb euwikibooks.labsdb chwikibooks.labsdb 
+10.64.37.5 kmwikibooks.labsdb warwiki.labsdb dewikiversity.labsdb cywiktionary.labsdb 
+10.64.37.5 cbk_zamwiki.labsdb ttwikibooks.labsdb scwiki.labsdb wuuwiki.labsdb 
+10.64.37.5 ltwiktionary.labsdb fiwiktionary.labsdb ltwikibooks.labsdb dawiki.labsdb 
+10.64.37.5 viwikisource.labsdb anwiki.labsdb krwikiquote.labsdb lbewiki.labsdb 
+10.64.37.5 tewiki.labsdb eswikisource.labsdb elwikivoyage.labsdb mgwiki.labsdb 
+10.64.37.5 iswiktionary.labsdb mlwiki.labsdb frwiktionary.labsdb jvwiktionary.labsdb 
+10.64.37.5 uzwiki.labsdb pawikibooks.labsdb test2wiki.labsdb newwiki.labsdb 
+10.64.37.5 alswikiquote.labsdb aawiki.labsdb zeawiki.labsdb amwiki.labsdb 
+10.64.37.5 rmwikibooks.labsdb eswiktionary.labsdb cywiki.labsdb scnwiktionary.labsdb 
+10.64.37.5 lbwiki.labsdb trwikinews.labsdb sgwiki.labsdb liwikisource.labsdb 
+10.64.37.5 nrmwiki.labsdb slwikiquote.labsdb rmwiktionary.labsdb aywikibooks.labsdb 
+10.64.37.5 sahwiki.labsdb rswikimedia.labsdb dewiktionary.labsdb tawikinews.labsdb 
+10.64.37.5 nawiktionary.labsdb lvwiki.labsdb aswikisource.labsdb mhwiki.labsdb 
+10.64.37.5 miwiki.labsdb mnwikibooks.labsdb bmwiki.labsdb wikimania2006wiki.labsdb 
+10.64.37.5 bnwikisource.labsdb lbwiktionary.labsdb aywiktionary.labsdb ndswikibooks.labsdb 
+10.64.37.5 frwikivoyage.labsdb mswiktionary.labsdb swwikibooks.labsdb pswiki.labsdb 
+10.64.37.5 elwikisource.labsdb astwikiquote.labsdb yiwiki.labsdb mhrwiki.labsdb 
+10.64.37.5 donatewiki.labsdb dawikibooks.labsdb cowikibooks.labsdb biwikibooks.labsdb 
+10.64.37.5 rowiktionary.labsdb testwiki.labsdb arwiktionary.labsdb ukwikiquote.labsdb 
+10.64.37.5 tawikibooks.labsdb fiwikiversity.labsdb ruewiki.labsdb hiwiktionary.labsdb 
+10.64.37.5 miwiktionary.labsdb urwikibooks.labsdb plwikimedia.labsdb lowiki.labsdb 
+10.64.37.5 aywiki.labsdb sgwiktionary.labsdb oswiki.labsdb mrwiktionary.labsdb 
+10.64.37.5 tkwikiquote.labsdb dawikiquote.labsdb hewikisource.labsdb tawikiquote.labsdb 
+10.64.37.5 ndswikiquote.labsdb cywikiquote.labsdb chrwiki.labsdb brwiki.labsdb 
+10.64.37.5 hawiktionary.labsdb specieswiki.labsdb vewikimedia.labsdb sswiki.labsdb 
+10.64.37.5 bswiki.labsdb glwiki.labsdb glwikiquote.labsdb thwikinews.labsdb 
+10.64.37.5 suwikiquote.labsdb quwikiquote.labsdb kywiktionary.labsdb rowikisource.labsdb 
+10.64.37.5 guwikiquote.labsdb lvwikibooks.labsdb map_bmswiki.labsdb thwikisource.labsdb 
+10.64.37.5 hrwikiquote.labsdb
+
+10.64.37.4 cswiki.labsdb svwiki.labsdb commonswiki.labsdb nowiki.labsdb 
+10.64.37.4 zhwiki.labsdb bgwiktionary.labsdb idwiki.labsdb eowiki.labsdb 
+10.64.37.4 enwikiquote.labsdb wikidatawiki.labsdb thwiki.labsdb nlwiki.labsdb 
+10.64.37.4 ptwiki.labsdb dewiki.labsdb plwiki.labsdb itwiki.labsdb 
+10.64.37.4 trwiki.labsdb bgwiki.labsdb enwiktionary.labsdb fiwiki.labsdb 
+
+10.64.4.11 enwiki.labsdb
+
