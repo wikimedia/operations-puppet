@@ -327,8 +327,8 @@ node 'carbon.wikimedia.org' {
         interface => 'eth0',
     }
 
+    role installserver
     include standard
-    include role::installserver
 
     class { 'ganglia_new::monitor::aggregator':
         sites =>  'eqiad',
