@@ -102,6 +102,17 @@ define command{
 	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$" >> <%= @irc_dir_path %>/irc-labs.log
 	}
 
+# IRC output for Analytics
+define command{
+	command_name	notify-host-by-irc-analytics
+	command_line	echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-analytics.log
+	}
+
+define command{
+	command_name	notify-service-by-irc-analytics
+	command_line	echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$" >> <%= @irc_dir_path %>/irc-analytics.log
+	}
+
 # IRC output for Countervandalism Network
 define command{
 	command_name	notify-host-by-irc-cvn
