@@ -2268,14 +2268,11 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 }
 
 node 'terbium.eqiad.wmnet' {
-    include role::mediawiki::common
-    include role::db::maintenance
-    include role::peopleweb
+
+    role mediawiki::common, mediawiki::searchmonitor, db::maintenance, peopleweb, noc
+
     include misc::monitoring::jobqueue
     include scap::scripts
-    include role::noc
-    include role::mediawiki::searchmonitor
-
     include ldap::role::client::labs
 
     include misc::maintenance::pagetriage
