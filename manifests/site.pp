@@ -2313,12 +2313,10 @@ node 'terbium.eqiad.wmnet' {
 node 'tin.eqiad.wmnet' {
     $cluster = 'misc'
 
+    role deployment::server, labsdb::manager, releases::upload
     include standard
-    include role::deployment::server
     include mysql
-    include role::labsdb::manager
     include ssh::hostkeys-collect
-    include role::releases::upload
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
