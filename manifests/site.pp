@@ -1112,27 +1112,23 @@ node 'hooft.esams.wikimedia.org' {
 
 # Primary graphite machines, replacing tungsten
 node 'graphite1001.eqiad.wmnet' {
+
+    role graphite::production, statsdlb, gdash, performance
     include standard
-    include role::graphite::production
-    include role::statsdlb
-    include role::gdash
-    include role::performance
 }
 
 # graphite test machine, currently with SSD caching + spinning disks
 node 'graphite1002.eqiad.wmnet' {
+
+    role graphite::production, statsdlb, gdash
     include standard
-    include role::graphite::production
-    include role::statsdlb
-    include role::gdash
 }
 
 # Primary graphite machines, replacing tungsten
 node 'graphite2001.codfw.wmnet' {
+
+    role graphite::produciton, statsdlb, gdash
     include standard
-    include role::graphite::production
-    include role::statsdlb
-    include role::gdash
 }
 
 node 'install2001.wikimedia.org' {
