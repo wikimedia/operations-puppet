@@ -1,2 +1,3 @@
 admin::groups:
   - htmldumps-admin
+ganglia_class: "new"
