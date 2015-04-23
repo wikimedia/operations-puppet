@@ -1072,10 +1072,9 @@ node 'hafnium.wikimedia.org' {
 }
 
 node 'helium.eqiad.wmnet' {
+
+    role poolcounter, backup::director, backup::storage
     include standard
-    include role::poolcounter
-    include role::backup::director
-    include role::backup::storage
 }
 
 node 'heze.codfw.wmnet' {
