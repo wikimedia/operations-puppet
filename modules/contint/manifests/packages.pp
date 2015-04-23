@@ -53,6 +53,13 @@ class contint::packages {
         ]:
         ensure => absent,
     }
+    file { '/etc/php5/conf.d/disable-html_errors.ini':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/contint/php-disable-html_errors.ini',
+        require => Package['php5-xdebug'],
+    }
 
     # Database related
     package { [
