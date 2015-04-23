@@ -27,6 +27,7 @@ class role::cache::parsoid {
             'backend'          => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
             'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
             'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
+            'graphoid_backend' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::site],
             'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         director_options => {
@@ -46,6 +47,11 @@ class role::cache::parsoid {
             {
                 'backend_match'         => '^citoid',
                 'port'                  => 1970,
+                'probe'                 => false,
+            },
+            {
+                'backend_match'         => '^graphoid',
+                'port'                  => 19000,
                 'probe'                 => false,
             },
             {
@@ -73,6 +79,7 @@ class role::cache::parsoid {
             'backend'          => $site_parsoid_nodes,
             'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
             'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
+            'graphoid_backend' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::site],
             'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         director_type   => 'chash',
@@ -92,6 +99,11 @@ class role::cache::parsoid {
             {
                 'backend_match'         => '^citoid',
                 'port'                  => 1970,
+                'probe'                 => false,
+            },
+            {
+                'backend_match'         => '^graphoid',
+                'port'                  => 19000,
                 'probe'                 => false,
             },
             {
