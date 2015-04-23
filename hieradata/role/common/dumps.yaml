@@ -12,3 +12,4 @@ dumps::rsync_clients:
   - ftpmirror.your.org
   - ec2-174-129-186-231.compute-1.amazonaws.com
   - ftpmirror-ae0-4.us.your.org
+ganglia_class: "new"
