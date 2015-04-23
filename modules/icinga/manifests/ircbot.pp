@@ -4,10 +4,11 @@
 class icinga::ircbot {
 
     $ircecho_logs   = {
-        '/var/log/icinga/irc.log'          => '#wikimedia-operations',
-        '/var/log/icinga/irc-wikidata.log' => '#wikidata',
-        '/var/log/icinga/irc-releng.log'   => '#wikimedia-releng',
-        '/var/log/icinga/irc-labs.log'     => '#wikimedia-labs',
+        '/var/log/icinga/irc.log'           => '#wikimedia-operations',
+        '/var/log/icinga/irc-wikidata.log'  => '#wikidata',
+        '/var/log/icinga/irc-releng.log'    => '#wikimedia-releng',
+        '/var/log/icinga/irc-labs.log'      => '#wikimedia-labs',
+        '/var/log/icinga/irc-analytics.log' => '#wikimedia-analytics',
     }
     $ircecho_nick   = 'icinga-wm'
     $ircecho_server = 'chat.freenode.net'
