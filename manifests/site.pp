@@ -219,10 +219,9 @@ node 'analytics1027.eqiad.wmnet' {
 
 # git.wikimedia.org
 node 'antimony.wikimedia.org' {
-    role gitblit
+    role gitblit, subversion
     include base::firewall
     include standard
-    include role::subversion
 }
 
 # irc.wikimedia.org
