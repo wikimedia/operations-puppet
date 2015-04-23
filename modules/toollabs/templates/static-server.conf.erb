@@ -55,6 +55,14 @@ server {
         return 302 "https://tools.wmflabs.org";
     }
 
+    location = /cdnjs {
+        return 302 "https://tools.wmflabs.org/cdnjs/";
+    }
+
+    location = /cdnjs/ {
+        return 302 "https://tools.wmflabs.org/cdnjs/";
+    }
+
     location ^~ /cdnjs/ {
         autoindex on;
         add_header Access-Control-Allow-Origin '*';
