@@ -8,3 +8,4 @@ admin::groups:
   - deployment
   - parsoid-admin
   - ocg-render-admins
+ganglia_class: "new"
