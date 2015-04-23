@@ -3,3 +3,4 @@ role::ipsec::hosts: ['berkelium.eqiad.wmnet',
                      'curium.eqiad.wmnet',
                      'cp1008.wikimedia.org'
 ]
+ganglia_class: "new"
