@@ -1,9 +1,0 @@
-title   "carbon relay"
-
-field :metrics_in,
-               :alias => "metrics received",
-               :data  => "sumSeries(carbon.relays.graphite1001-*.metricsReceived)"
-
-field :queue_drops,
-               :alias => "queue drops",
-               :data  => "secondYAxis(sumSeries(carbon.relays.graphite1001-*.destinations.*.fullQueueDrops))"

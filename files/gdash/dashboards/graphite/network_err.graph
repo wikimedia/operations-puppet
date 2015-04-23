@@ -7,4 +7,4 @@ field :rx_err, :color => "green",
 
 field :rx_dgram, :color => "blue",
                :alias => "rx datagrams",
-               :data  => "servers.graphite1001.udp.InDatagrams"
+               :data  => "secondYAxis(servers.graphite1001.udp.InDatagrams)"
