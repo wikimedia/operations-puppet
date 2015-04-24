@@ -611,3 +611,19 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
         }
     }
 }
+
+
+# == Class role::analytics::hadoop::balancer
+# Runs hdfs balancer periodically to keep data balanced across all DataNodes
+class role::analytics::hadoop::balancer {
+    Class['role::analytics::hadoop::client'] -> Class['role::analytics::hadoop::balancer']
+
+    cron {'hdfs-balancer':
+        command => 'ps a | grep -v grep | grep -q "hdfs balancer" || hdfs dfsadmin -setBalancerBandwidth $((40*1048576)) && /usr/bin/hdfs balancer 2>&1 > /var/log/hadoop-hdfs/balancer.log',
+        user    => 'hdfs',
+        # Start run at 0:00 every Saturday UTC.
+        minute  => 0,
+        hour    => 0,
+        weekday => 6,
+    }
+}
