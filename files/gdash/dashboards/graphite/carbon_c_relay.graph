@@ -10,8 +10,16 @@ field :metrics_in_local,
 
 field :queue_drops_frontend,
                :alias => "queue drops (frontend)",
-               :data  => "derivative(carbon.relays.graphite1001_frontend.metricsDropped)"
+               :data  => "secondYAxis(carbon.relays.graphite1001_frontend.metricsDropped)"
 
 field :queue_drops_local,
                :alias => "queue drops (local)",
-               :data  => "derivative(carbon.relays.graphite1001_local.metricsDropped)"
+               :data  => "secondYAxis(carbon.relays.graphite1001_local.metricsDropped)"
+
+field :metrics_queued_frontend,
+               :alias => "metrics queued (frontend)",
+               :data  => "carbon.relays.graphite1001_frontend.metricsQueued"
+
+field :metrics_queued_local,
+               :alias => "metrics queued (local)",
+               :data  => "carbon.relays.graphite1001_local.metricsQueued"
