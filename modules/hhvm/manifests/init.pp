@@ -112,6 +112,7 @@ class hhvm(
             enable_zend_compat       => true,
             pid_file                 => '',  # PID file managed by start-stop-daemon(8)
             resource_limit           => { core_file_size => to_bytes('8 Gb') },
+            timeouts_use_wall_time   => true,
             log                      => {
                 header             => true,
                 use_syslog         => true,
@@ -131,8 +132,14 @@ class hhvm(
     $fcgi_cache = "${cache_dir}/fcgi.hhbc.sq3"
     $cli_cache = "${cache_dir}/cli.hhbc.sq3"
 
+    # Specify a maximum execution time of 290 wall-clock seconds.
+    # This is scandalously high, but we must wean ourselves from
+    # bad habits in stages. -- Ori, 24-Apr-2015.
+    $max_execution_time = 290
+
     $fcgi_defaults = {
-        memory_limit => '500M',
+        memory_limit       => '500M',
+        max_execution_time => $max_execution_time,
         hhvm         => {
             jit               => true,
             jit_a_size        => $a_size,
