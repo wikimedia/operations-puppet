@@ -6,6 +6,7 @@ registry:
     - 'ba'
     - 'bg'
     - 'ca'
+    - 'ceb'
     - 'cv'
     - 'da'
     - 'en'
@@ -17,6 +18,7 @@ registry:
     - 'gl'
     - 'gu'
     - 'id'
+    - 'it'
     - 'kn'
     - 'koi'
     - 'kv'
@@ -46,6 +48,7 @@ registry:
     - 'uk'
     - 'uz'
     - 'vi'
+    - 'war'
     - 'xh'
   target:
     - 'af'
