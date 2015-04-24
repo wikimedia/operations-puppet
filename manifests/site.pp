@@ -2418,6 +2418,11 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     role parsoid::production
 }
 
+node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
+
+    include standard
+}
+
 node 'ytterbium.wikimedia.org' {
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::production
