@@ -141,7 +141,7 @@ define service::node($port, $config = undef, $no_file = 10000) {
         provider   => 'upstart',
         require    => [
             Package["${title}/deploy"],
-            Class['packages::nodejs_legacy']
+            Package['nodejs-legacy']
         ],
     }
 
