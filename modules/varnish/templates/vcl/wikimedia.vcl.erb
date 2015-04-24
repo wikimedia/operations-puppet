@@ -297,6 +297,15 @@ sub vcl_recv {
 		error 200 "OK"; 
 	}
 
+	if (req.url ~ "^/beacon\/[^/?]+") {
+		// Logging beacon endpoints
+		//
+		// They are handled by log tailers (varnishkafka and varnishncsa) that filter the
+		// Varnish shm log for reqs to these endpoints and forward them to log processors
+		// for storage and analysis.
+		error 204;
+	}
+
 	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
 }
 
