@@ -31,8 +31,6 @@ sub vcl_recv {
 	} elsif (req.http.Host == "old-bugzilla.wikimedia.org" || req.http.Host == "static-bugzilla.wikimedia.org" || req.http.Host == "bug-attachment.wikimedia.org" || req.http.Host =="dev.wikimedia.org") {
 		set req.backend = zirconium;
 		return (pass);
-	} elsif (req.http.Host == "contacts.wikimedia.org") {
-		set req.backend = zirconium;
 	} elsif (req.http.Host == "svn.wikimedia.org") {
 		set req.backend = antimony;
 	} elsif (req.http.Host == "servermon.wikimedia.org") {
