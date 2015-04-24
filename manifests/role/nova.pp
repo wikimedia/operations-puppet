@@ -518,6 +518,7 @@ class role::nova::compute($instance_dev='/dev/md1') {
     $novaconfig = $role::nova::config::novaconfig
 
     include role::nova::common
+    ganglia::plugin::python {'diskstat': }
 
     system::role { 'role::nova::compute':
         ensure      => 'present',
