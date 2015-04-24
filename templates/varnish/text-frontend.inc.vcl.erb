@@ -76,6 +76,9 @@ sub filter_noise {
 	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
 		error 403 "Noise";
 	}
+	if (req.url ~ "^/w/api.php\?srsearch=Sju\+svarta" && req.http.User-Agent ~ "wikipedia") {
+		error 403 "Stop doing this :p";
+	}
 }
 
 sub vcl_recv {
