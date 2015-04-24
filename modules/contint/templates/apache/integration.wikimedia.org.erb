@@ -14,10 +14,16 @@
     DocumentRoot /srv/org/wikimedia/integration
 
     RewriteEngine On
+
     RewriteRule ^/favicon\.ico$ /favicon.php [L]
     # Force any request to HTTPS if not passed via https (misc web varnish)
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule (.) https://integration.wikimedia.org%{REQUEST_URI} [R=301]
+
+    # T95164
+    DirectorySlash Off
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^(.+[^/])$ https://integration.wikimedia.org/$1/ [R=301,QSA]
 
     Redirect 301 /monitoring/ https://tools.wmflabs.org/nagf/?project=integration
 
