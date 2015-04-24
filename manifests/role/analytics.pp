@@ -9,6 +9,14 @@ class role::analytics {
     system::role { 'role::analytics': description => 'analytics server' }
 
     ensure_packages(['openjdk-7-jdk'])
+
+    # This packages conflicts with the hadoop-fuse-dfs
+    # and with impalad in that two libjvm.so files get added
+    # to LD_LIBRARY_PATH.  We dont't need this
+    # package anyway, so ensure it is absent.
+    package { 'icedtea-7-jre-jamvm':
+        ensure => 'absent'
+    }
 }
 
 # == Class role::analytics::clients
@@ -27,13 +35,6 @@ class role::analytics::clients {
         role::analytics::spark,
         role::analytics::impala
 
-    # This packages conflicts with the hadoop-fuse-dfs
-    # script in that two libjvm.so files get added
-    # to LD_LIBRARY_PATH.  We dont't need this
-    # package anyway, so ensure it is absent.
-    package { 'icedtea-7-jre-jamvm':
-        ensure => 'absent'
-    }
     # Mount HDFS via Fuse on Analytics client nodes.
     # This will mount HDFS at /mnt/hdfs read only.
     class { 'cdh::hadoop::mount':
