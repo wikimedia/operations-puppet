@@ -47,7 +47,10 @@ class role::cache::mobile (
         include varnish::monitoring::ganglia::vhtcpd
     }
 
-    $cluster_options = { 'enable_geoiplookup' => true }
+    $cluster_options = {
+        'enable_geoiplookup' => true,
+        'do_gzip'            => false,
+    }
 
     class { 'varnish::zero_update':
         site     => $zero_site,
