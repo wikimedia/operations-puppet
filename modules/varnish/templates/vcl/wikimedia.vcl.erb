@@ -387,8 +387,12 @@ sub vcl_error {
 		return(restart);
 	}
 <% end -%>
-	if (obj.status == 204 && req.request == "PURGE") {
-		set obj.http.Connection = "keep-alive";
+	if (obj.status == 204) {
+		if (req.request == "PURGE") {
+			set obj.http.Connection = "keep-alive";
+		} else {
+			return (deliver);  // 204 responses shouldn't contain a body
+		}
 	}
 	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
 }
