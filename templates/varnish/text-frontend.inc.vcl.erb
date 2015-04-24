@@ -121,6 +121,10 @@ sub vcl_recv {
 
 	call evaluate_cookie;
 
+	if (req.url ~ /Special:Export/) {
+		error 403 "Debugging Issues"
+	}
+
 	return (lookup);
 }
 
