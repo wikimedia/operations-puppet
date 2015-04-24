@@ -196,6 +196,9 @@ node 'analytics1027.eqiad.wmnet' {
     # icinga is not notified of a successful import
     # hourly, icinga should generate an alert.
     include role::analytics::refinery::data::check::icinga
+
+    # Include a weekly cron job to run hdfs balancer.
+    include role::analytics::hadoop::balancer
 }
 
 
