@@ -13,6 +13,8 @@
 
     DocumentRoot /srv/org/wikimedia/integration
 
+    DirectorySlash Off
+
     RewriteEngine On
     RewriteRule ^/favicon\.ico$ /favicon.php [L]
     # Force any request to HTTPS if not passed via https (misc web varnish)
