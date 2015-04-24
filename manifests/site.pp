@@ -2410,6 +2410,7 @@ node /^virt101[0-2].eqiad.wmnet/ {
 node /^labvirt100[0-9].eqiad.wmnet/ {
     $use_neutron = false
     openstack::nova::partition{ '/dev/sdb': }
+    ganglia::plugin::python {'diskstat': }
     role nova::compute
     include standard
 
