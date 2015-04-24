@@ -21,7 +21,7 @@ class role::analytics::impala::worker {
 
     ferm::service { 'impalad':
         proto  => 'tcp',
-        port   => '(22000 28000)',
+        port   => '(21000 21050 22000 23000 25000 28000)',
         srange => '$ANALYTICS_NETWORKS',
     }
 }
@@ -35,12 +35,12 @@ class role::analytics::impala::master {
 
     ferm::service { 'impala-state-store':
         proto  => 'tcp',
-        port   => '24000',
+        port   => '(24000 25010)',
         srange => '$ANALYTICS_NETWORKS',
     }
     ferm::service { 'impala-catalog':
         proto  => 'tcp',
-        port   => '25020',
+        port   => '(23020 25020 26000)',
         srange => '$ANALYTICS_NETWORKS',
     }
     ferm::service { 'impala-llama':

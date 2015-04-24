@@ -122,14 +122,7 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
     if $::hostname =~ /^analytics101[349]$/ {
         $ganglia_aggregator = true
     }
-    role analytics::hadoop::worker
-
-    # For now, I want to test this out on only one node, to be sure that configs
-    # are applied how I expect.  If this works, I will include this class via the
-    # role keyword on all workers here.
-    if $hostname == 'analytics1041' {
-        include role::analytics::impala::worker
-    }
+    role analytics::hadoop::worker, analytics::impala::worker
 
     include standard
 }
