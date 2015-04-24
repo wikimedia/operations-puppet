@@ -98,20 +98,17 @@ class openstack::nova::compute(
     #
     # see: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1346917
 
-    if os_version('ubuntu >= trusty') {
+    if( os_version('ubuntu >= trusty') && versioncmp($::kernelrelease, '3.13.0-46') < 0 ) {
 
-        if( versioncmp($::kernelrelease, '3.13.0-46') < 0 ) {
+        fail("nova-compute not installed on buggy kernels")
 
-            fail("nova-compute not installed on buggy kernels")
+    } else {
 
-        } else {
-
-            package { [ 'nova-compute', 'nova-compute-kvm' ]:
-                ensure  => present,
-                require => [Class['openstack::repo'], Package['qemu-system']],
-            }
-
+        package { [ 'nova-compute', 'nova-compute-kvm' ]:
+            ensure  => present,
+                    require => [Class['openstack::repo'], Package['qemu-system']],
         }
+
     }
 
     # Without qemu-system, apt will install qemu-kvm by default,
