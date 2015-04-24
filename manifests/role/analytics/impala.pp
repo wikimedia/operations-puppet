@@ -18,6 +18,12 @@ class role::analytics::impala {
 class role::analytics::impala::worker {
     include role::analytics::impala
     include cdh::impala::worker
+
+    ferm::service { 'impalad':
+        proto  => 'tcp',
+        port   => '(22000 28000)',
+        srange => '$ANALYTICS_NETWORKS',
+    }
 }
 
 # == Class role::analytics::impala::master
@@ -26,4 +32,20 @@ class role::analytics::impala::worker {
 class role::analytics::impala::master {
     include role::analytics::impala
     include cdh::impala::master
+
+    ferm::service { 'impala-state-store':
+        proto  => 'tcp',
+        port   => '24000',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+    ferm::service { 'impala-catalog':
+        proto  => 'tcp',
+        port   => '25020',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+    ferm::service { 'impala-llama':
+        proto  => 'tcp',
+        port   => '(15000 15001 15002)'
+        srange => '$ANALYTICS_NETWORKS',
+    }
 }
