@@ -297,6 +297,22 @@ sub vcl_recv {
 		error 200 "OK"; 
 	}
 
+        if (req.url ~ "^/(event\.gif|beacon\/[^/?]+|statsv[/?])") {
+                // Logging beacon endpoints
+                //
+                // They are handled by log tailers (varnishkafka and varnishncsa) that filter the
+                // Varnish shm log for reqs to these endpoints and forward them to log processors
+                // for storage and analysis.
+                //
+                // * /event.gif is used by EventLogging (owner: analytics)
+                // * /statsv is used by MediaWiki for statsd-like performance metrics (owner: Ori)
+                // * /beacon/ is used by all other applications.
+                //
+                // If you need a custom endpoint, don't modify this regex. Tack on a path component
+                // to /beacon to claim a namespace instead -- e.g.: /beacon/images?...
+                error 204;
+        }
+
 	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
 }
 
@@ -387,8 +403,11 @@ sub vcl_error {
 		return(restart);
 	}
 <% end -%>
-	if (obj.status == 204 && req.request == "PURGE") {
+	if (obj.status == 204) {
 		set obj.http.Connection = "keep-alive";
+		if (req.request != "PURGE") {
+			return (deliver);  // 204 responses shouldn't contain a body
+		}
 	}
 	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
 }
