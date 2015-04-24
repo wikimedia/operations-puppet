@@ -58,6 +58,8 @@ class role::analytics::hadoop::config {
     # setting this to false or undef interferes with defining it within a node
     $gelf_logging_enabled                     = false
 
+    # This needs to be set in order to use Impala
+    $dfs_datanode_hdfs_blocks_metadata_enabled = true
 
     # Configs specific to Production.
     if $::realm == 'production' {
@@ -269,10 +271,6 @@ class role::analytics::hadoop::config {
         # In labs, make sure that HDFS user directories are
         # created for everyone in the current labs project.
         $hadoop_users_posix_groups                 = $::instanceproject
-
-        # This needs to be set in order to use Impala
-        $dfs_datanode_hdfs_blocks_metadata_enabled = true
-
 
         # Hadoop directories in labs should be automatically created.
         # This conditional could be added to each of the main classes
