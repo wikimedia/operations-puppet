@@ -2419,7 +2419,7 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
 
 node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
 
-    include standard
+    role parsoid::production
 }
 
 node 'ytterbium.wikimedia.org' {
