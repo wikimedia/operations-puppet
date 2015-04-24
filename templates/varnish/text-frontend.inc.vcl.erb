@@ -90,7 +90,11 @@ sub vcl_recv {
 	unset req.http.Range;
 
 	call rewrite_proxy_urls;
-	call normalize_path;
+	
+	if (req.url !~ "^/api/rest_v1/") {
+		call normalize_path;
+	}
+
 	call mobile_redirect;
 
 	if (req.http.host ~ "^test\.") {
