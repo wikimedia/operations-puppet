@@ -64,7 +64,7 @@ server.follow-symlink = "enable"
 server.max-connections = 300
 server.stat-cache-engine = "fam"
 server.event-handler = "linux-sysepoll"
-ssl.engine = "enable" # Faux-enable, for https://phabricator.wikimedia.org/T66627
+ssl.engine = "disable"
 
 alias.url = ( "/$tool" => "$home/public_html/" )
 
