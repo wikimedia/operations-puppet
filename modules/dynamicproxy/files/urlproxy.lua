@@ -23,7 +23,27 @@ red:connect('127.0.0.1', 6379)
 local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?$")
 
 local prefix = captures[1]
-local rest = captures[2] or "/"
+local rest = captures[2] or nil
+
+if rest == nil then
+    -- A bare /toolname without the ending slash!
+    -- This causes lighttpd to fuck shit up and redirect to a
+    -- slash bearing URL but always as http, even if you came in
+    -- as https! So we silently strip some URLs of https, which
+    -- IS REALLY BAD. Since other solutions seem terrible, we
+    -- just redirect such things via lua to the slashed one
+    -- so lighttpd will not try to do its stupid redirection
+    -- This will still need to *not* happen for a certain set of URLs
+    -- because tools.wmflabs.org does some more fucked up rewriting as well,
+    -- and admin is served as /, so we have no clear way to do this.
+    -- So, we won't do it if there's any query string at all, or if it is
+    -- looking for robots.txt or favicon.ico. Not perfect, but close enough
+    if ngx.var.query_string ~= nil or prefix == 'robots.txt' or prefix == 'favicon.ico' then
+        rest = '/'
+    else
+        return ngx.redirect(ngx.var.uri .. '/')
+    end
+end
 local routes_arr = nil
 local route = nil
 
