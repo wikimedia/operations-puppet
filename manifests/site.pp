@@ -1178,6 +1178,13 @@ node 'iron.wikimedia.org' {
     backup::set {'home': }
 }
 
+node 'labcontrol1001.wikimedia.org' {
+    $cluster = 'virt'
+
+    include standard
+    include base::firewall
+}
+
 node 'labcontrol2001.wikimedia.org' {
     $cluster               = 'virt'
     $ganglia_aggregator    = true
