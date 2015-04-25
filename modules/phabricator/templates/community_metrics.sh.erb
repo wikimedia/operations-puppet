@@ -43,6 +43,14 @@ SELECT COUNT(DISTINCT authorPHID) FROM maniphest_transaction WHERE (transactionT
 END
 )
 
+#echo "result_projectsboardmove"
+result_projectsboardmove=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT COUNT(DISTINCT (edge.dst)) FROM phabricator_maniphest.edge INNER JOIN phabricator_maniphest.maniphest_transaction WHERE FROM_UNIXTIME(maniphest_transaction.dateModified,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m') AND maniphest_transaction.transactionType = "projectcolumn" AND edge.type = 41 AND edge.src = maniphest_transaction.objectPHID AND edge.dst = SUBSTR(maniphest_transaction.newValue, INSTR(maniphest_transaction.newValue, 'projectPHID')+14, 30);
+
+END
+)
+
 #echo "result_taskscreated"
 result_taskscreated=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
 
@@ -132,6 +140,9 @@ accountscreated=$(echo $result_accounts_created | tr -d '\n')
 activeusers=$(echo $result_activeusers | cut -d " " -f3)
 authors=$(echo $result_authors | cut -d " " -f3)
 resolvers=$(echo $result_resolvers | cut -d " " -f3)
+
+projectsboardmove=$(echo $result_projectsboardmove | cut -d " " -f3)
+
 taskscreated=$(echo $result_taskscreated | cut -d " " -f3)
 tasksclosed=$(echo $result_tasksclosed | cut -d " " -f3)
 
@@ -177,6 +188,10 @@ Number of accounts created in (${lastmonth}): ${accountscreated}
 Number of active users (any activity) in (${lastmonth}): ${activeusers}
 Number of task authors in (${lastmonth}): ${authors}
 Number of users who have closed tasks in (${lastmonth}): ${resolvers}
+
+Number of projects which had at least one task moved from one column
+ to another on their workboard in (${lastmonth}): ${projectsboardmove}
+
 Number of tasks created in (${lastmonth}): ${taskscreated}
 Number of tasks closed in (${lastmonth}): ${tasksclosed}
 
