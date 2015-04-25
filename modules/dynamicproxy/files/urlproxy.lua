@@ -23,7 +23,7 @@ red:connect('127.0.0.1', 6379)
 local captures = ngx.re.match(ngx.var.uri, "^/([^/]*)(/.*)?$")
 
 local prefix = captures[1]
-local rest = captures[2] or nil
+local rest = captures[2] or "/"
 local routes_arr = nil
 local route = nil
 
@@ -43,17 +43,6 @@ if routes_arr then
             break
         end
     end
-end
-
--- if a route is found and there was nothing (no trailing slash)
--- then the url is of form tools.wmflabs.org/tool. If we just let
--- that be, lighttpd will redirect it to a http://tools.wmflabs.org/tool
--- even if the original request was https. So let's do the redirect ourself
--- making sure it keeps the appropriate protocol. This doesn't cover all
--- the ways lighttpd can silently strip off https, but hey it covers the most
--- common one :) See https://phabricator.wikimedia.org/T66627
-if route and rest ~= nil then
-    return ngx.redirect(ngx.var.request_uri .. '/')
 end
 
 if not route then
