@@ -29,12 +29,12 @@
   /usr/share/mysql/** r,
   /var/log/mysql.log rw,
   /var/log/mysql.err rw,
-  <%= config_hash['datadir'] %>/ r,
-  <%= config_hash['datadir'] %>/** rwk,
+  <%= @config_hash['datadir'] %>/ r,
+  <%= @config_hash['datadir'] %>/** rwk,
   /var/log/mysql/ r,
   /var/log/mysql/* rw,
-  <%= pidfile %> w,
-  <%= socket %> w,
+  <%= @pidfile %> w,
+  <%= @socket %> w,
 
   /sys/devices/system/cpu/ r,
 }
