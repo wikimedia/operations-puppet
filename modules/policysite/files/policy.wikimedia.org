@@ -1,0 +1,29 @@
+# vim: filetype=apache
+# https://policy.wikimedia.org (T97329)
+
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+    ServerName policy.wikimedia.org
+
+    DocumentRoot /srv/org/wikimedia/policy
+
+    ErrorLog /var/log/apache2/error.log
+    LogLevel warn
+    CustomLog /var/log/apache2/access.log combined
+
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto
+    Header set Strict-Transport-Security "max-age=604800"
+
+    <Directory />
+        Order Deny,Allow
+        AllowOverride All
+    </Directory>
+
+    <Directory /srv/org/wikimedia/policy>
+        Allow from all
+    </Directory>
+
+</VirtualHost>
