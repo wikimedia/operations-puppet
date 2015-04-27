@@ -2017,8 +2017,8 @@ node 'osmium.eqiad.wmnet' {
     include ::standard
 }
 
-# base_analytics_logging_node is defined in role/logging.pp
-node 'oxygen.wikimedia.org'
+
+node 'oxygen.eqiad.wmnet'
 {
     include standard
 }

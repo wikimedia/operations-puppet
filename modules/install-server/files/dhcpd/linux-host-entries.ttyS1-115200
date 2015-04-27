@@ -5529,7 +5529,9 @@ host osmium {
 
 host oxygen {
 	hardware ethernet 78:2b:cb:08:a0:e7;
-	fixed-address oxygen.wikimedia.org;
+	fixed-address oxygen.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host palladium {
