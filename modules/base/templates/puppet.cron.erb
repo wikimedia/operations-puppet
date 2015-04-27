@@ -11,5 +11,5 @@ tmp = tmp.map { |x| if x < 60 then x  else x - 60 end }
 tmp = tmp.sort()
 times = tmp.join(',')
 -%>
-<%= times %> * * * * root /usr/local/sbin/puppet-run
-@reboot              root /usr/local/sbin/puppet-run
+<%= times %> * * * * root /usr/local/sbin/puppet-run > /dev/null 2>&1
+@reboot              root /usr/local/sbin/puppet-run > /dev/null 2>&1
