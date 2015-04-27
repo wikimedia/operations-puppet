@@ -28,7 +28,7 @@ class role::package::builder {
         port  => 873,
     }
     monitoring::service { 'package_builder_rsync':
-        description => 'package builder rsync',
-        command     => 'check_tcp!873',
+        description     => 'package builder rsync',
+        check_command   => 'check_tcp!873',
     }
 }
