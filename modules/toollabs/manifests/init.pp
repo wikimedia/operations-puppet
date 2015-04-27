@@ -198,4 +198,5 @@ class toollabs (
         mode   => '0644'
     }
 
+    diamond::collector::localcrontab { 'localcrontabcollector': }
 }
