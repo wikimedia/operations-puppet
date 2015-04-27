@@ -12,7 +12,7 @@ factpath = $vardir/lib/facter
 
 [agent]
 server = <%= @server %>
-<% if @certname %>certname = <%= certname %><% end %>
+<% if @certname %>certname = <%= @certname %><% end %>
 configtimeout = 960
 usecacheonfailure = false
 splay = true
