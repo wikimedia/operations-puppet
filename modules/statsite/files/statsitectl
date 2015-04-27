@@ -22,19 +22,14 @@ case "$command" in
         exit 0
         ;;
     start)
-        initctl start statsite/init
+        /sbin/initctl emit statsite.start
         ;;
     stop)
-        for config in /etc/statsite/*.ini; do
-          instance="$(basename $config .ini)"
-          initctl stop statsite/instance NAME="$instance"
-        done
+        /sbin/initctl emit statsite.stop
         ;;
     restart)
-        for config in /etc/statsite/*.ini; do
-          instance="$(basename $config .ini)"
-          initctl restart statsite/instance NAME="$instance"
-        done
+        /sbin/initctl emit statsite.stop
+        /sbin/initctl emit statsite.start
         ;;
     *)
         echo >&2 "Usage: ${0##*/} {status|check|start|stop|restart}"
