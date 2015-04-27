@@ -62,5 +62,15 @@ class toollabs::mailrelay($maildomain) inherits toollabs
         notify  => Service['exim4'],
     }
 
-    diamond::collector::extendedexim { 'extended_exim_collector': }
+    # Diamond user needs sudo to access exim
+    sudo::user { 'diamond_sudo_for_exim':
+        user       => 'diamond',
+        privileges => ['ALL=(root) NOPASSWD: /usr/sbin/exim']
+    }
+
+    diamond::collector { 'Exim':
+        settings     => {
+            use_sudo => 'true', # used in a template, not a puppet bool
+        }
+    }
 }
