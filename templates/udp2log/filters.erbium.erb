@@ -13,19 +13,10 @@ pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.o
 pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression >> <%= @template_variables['fundraising_log_directory'] %>/logs/bannerImpressions-sampled100.tsv.log
 pipe 100 /usr/bin/udp-filter -F '\t' -p Special:BannerRandom >> <%= @template_variables['fundraising_log_directory'] %>/logs/bannerRequests-sampled100.tsv.log
 
-### API Usage
-# This filter has been migrated to Hive. It's output is available on
-# stat1002 at /a/log/webrequest/archive/api
-pipe 100 /usr/bin/udp-filter -F '\t' -p /w/api.php >> <%= scope.lookupvar('role::logging::udp2log::erbium::webrequest_log_directory') %>/api-usage.tsv.log
 
-### GLAM NARA / National Archives - T80417
-# This filter has been migrated to Hive. It's output is available on
-# stat1002 at /a/log/webrequest/archive/glam_nara
-pipe 10 /usr/bin/udp-filter -F '\t' -p _NARA_ -g -b country >> <%=log_directory %>/glam_nara.tsv.log
-
-### 0.0001 of all udp2log messages
-## This log file is also on gadolinium for redundancy
+### All 5xx error responses -- domas (now using udp-filter instead of 5xx-filter).
+# pipe 1 <%= @template_variables['webrequest_filter_directory'] %>/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org"' >> <%= log_directory %>/5xx.tsv.log
 #
 # This filter has been migrated to Hive. It's output is available on
-# stat1002 at /a/log/webrequest/archive/sampled
-file 1000 <%= log_directory %>/sampled-1000.tsv.log
+# stat1002 at /a/log/webrequest/archive/5xx
+pipe 1 /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org"' >> <%= log_directory %>/5xx.tsv.log
