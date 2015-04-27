@@ -326,6 +326,13 @@ class role::ci::slave::labs::common {
         source => 'puppet:///modules/contint/pip-labs-slaves.conf',
     }
 
+    contint::tmpfs { 'tmpfs for jenkins CI labs slave':
+        # Jobs expect the tmpfs to be in $HOME/tmpfs
+        mount_point => '/mnt/home/jenkins-deploy/tmpfs',
+        size        => '512M',
+        require     => File['/mnt/home/jenkins-deploy'],
+    }
+
     git::userconfig { '.gitconfig for jenkins-deploy user':
         homedir  => '/mnt/home/jenkins-deploy',
         settings => {
@@ -342,6 +349,8 @@ class role::ci::slave::labs::common {
     # needed by the slave agent.
     include jenkins::slave::requisites
 
+    # Trebuchet replacement on labs
+    include contint::slave-scripts
 }
 
 class role::ci::slave::localbrowser {
@@ -442,16 +451,6 @@ class role::ci::slave::labs {
         require    => File['/srv/localhost/mediawiki'],
     }
     include contint::qunit_localhost
-
-    contint::tmpfs { 'tmpfs for jenkins CI labs slave':
-        # Jobs expect the tmpfs to be in $HOME/tmpfs
-        mount_point => '/mnt/home/jenkins-deploy/tmpfs',
-        size        => '512M',
-        require     => File['/mnt/home/jenkins-deploy'],
-    }
-
-    # Trebuchet replacement on labs
-    include contint::slave-scripts
 
     # Include package unsafe for production
     include contint::packages::labs
