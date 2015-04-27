@@ -20,7 +20,7 @@ sub vcl_recv {
 		set req.backend = logstash;
 	} elsif (req.http.Host == "releases.wikimedia.org") {
 		set req.backend = caesium;
-	} elsif (req.http.Host == "scholarships.wikimedia.org" || req.http.Host == "transparency.wikimedia.org" || req.http.Host == "grafana.wikimedia.org" || req.http.Host == "iegreview.wikimedia.org" || req.http.Host == "annual.wikimedia.org") {
+	} elsif (req.http.Host == "scholarships.wikimedia.org" || req.http.Host == "transparency.wikimedia.org" || req.http.Host == "grafana.wikimedia.org" || req.http.Host == "iegreview.wikimedia.org" || req.http.Host == "annual.wikimedia.org" || req.http.Host == "policy.wikimedia.org") {
 		set req.backend = zirconium;
 	} elsif (req.http.Host == "parsoid-tests.wikimedia.org") {
 		set req.backend = ruthenium;
