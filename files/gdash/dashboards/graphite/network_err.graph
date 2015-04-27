@@ -5,5 +5,5 @@ field :rx_dgram, :color => "green",
                :alias => "rx datagrams",
                :data  => "servers.graphite1001.udp.InDatagrams"
 
-field :rx_err, :alias => "rx errors",
+field :rx_err, :alias => "none",
                :data  => "secondYAxis(group(servers.graphite1001.udp.InErrors, servers.graphite1001.udp.NoPorts, servers.graphite1001.udp.RcvbufErrors))"
