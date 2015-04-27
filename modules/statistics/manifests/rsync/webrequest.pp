@@ -45,6 +45,7 @@ class statistics::rsync::webrequest {
     statistics::rsync_job { 'wikipedia_zero':
         source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/zero*.gz',
         destination => "${working_path}/squid/archive/zero",
+        ensure      => 'absent',
     }
 
     # API logs from erbium
@@ -69,12 +70,14 @@ class statistics::rsync::webrequest {
     statistics::rsync_job { 'edits':
         source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/edits*.gz',
         destination => "${working_path}/squid/archive/edits",
+        ensure      => 'absent',
     }
 
     # mobile logs from oxygen
     statistics::rsync_job { 'mobile':
         source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz',
         destination => "${working_path}/squid/archive/mobile",
+        ensure      => 'absent',
     }
 
     # all webrequest archive logs from hdfs
