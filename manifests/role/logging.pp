@@ -1,6 +1,6 @@
 # logging (udp2log) servers
 
-# base node definition from which logging nodes (erbium, oxygen, etc)
+# base node definition from which logging nodes (erbium, etc)
 # inherit. Note that there is no real node named "base_analytics_logging_node".
 # This is done as a base node primarily so that we can override the
 # $nagios_contact_group variable.
@@ -198,39 +198,6 @@ class role::logging::udp2log {
     class { 'misc::udp2log::rsyncd':
         path    => $log_directory,
         require => File[$log_directory],
-    }
-}
-
-
-# oxygen is a generic webrequests udp2log host
-# mostly running:
-# - Wikipedia zero filters
-# - Webstatscollector 'filter'
-class role::logging::udp2log::oxygen inherits role::logging::udp2log {
-    # include this to infer mobile varnish frontend hosts in
-    # udp2log filter template.
-    include role::cache::configuration
-
-    # udp2log::instance will ensure this is created
-    $webrequest_log_directory    = "$log_directory/webrequest"
-
-    # install custom filters here
-    $webrequest_filter_directory = "$webrequest_log_directory/bin"
-    file { $webrequest_filter_directory:
-        ensure => directory,
-        mode   => 0755,
-        owner  => 'udp2log',
-        group  => 'udp2log',
-    }
-
-    misc::udp2log::instance { 'oxygen':
-        ensure             => 'stopped',
-        multicast          => true,
-        packet_loss_log    => '/var/log/udp2log/packet-loss.log',
-        log_directory      => $webrequest_log_directory,
-        template_variables => {
-            'webrequest_filter_directory' => $webrequest_filter_directory
-        },
     }
 }
 
