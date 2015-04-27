@@ -2018,12 +2018,9 @@ node 'osmium.eqiad.wmnet' {
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
-node 'oxygen.wikimedia.org' inherits 'base_analytics_logging_node' {
-
-    include role::dataset::systemusers
-
-    # main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
-        include role::logging::udp2log::oxygen
+node 'oxygen.wikimedia.org'
+{
+    include standard
 }
 
 node 'palladium.eqiad.wmnet' {

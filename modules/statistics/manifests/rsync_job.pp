@@ -9,8 +9,9 @@
 #    source         - rsync source argument (including hostname)
 #    destination    - rsync destination argument
 #    retention_days - If set, a cron will be installed to remove files older than this many days from $destination.
+#    ensure
 #
-define statistics::rsync_job($source, $destination, $retention_days = undef) {
+define statistics::rsync_job($source, $destination, $retention_days = undef, $ensure = 'present') {
     Class['::statistics'] -> Statistics::Rsync_job[$name]
     require statistics::user
 
@@ -30,6 +31,7 @@ define statistics::rsync_job($source, $destination, $retention_days = undef) {
         user    => $::statistics::user::username,
         hour    => 8,
         minute  => 0,
+        ensure  => $ensure,
     }
 
     $prune_old_logs_ensure = $retention_days ? {
