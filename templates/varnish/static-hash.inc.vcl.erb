@@ -1,0 +1,18 @@
+
+# The only difference below from the varnish default vcl_hash implementaiton
+# is the !static regex wrapper around the host/ip part.  The point of this is
+# to avoid duplicate hashing of the /static- stuff for every (lang * proj)
+# pointlessly, which would waste a bunch of spaces (and a bunch of fetches on
+# new static asset versions).
+
+sub vcl_hash {
+	hash_data(req.url);
+	if (req.url !~ '^/static-') {
+		if (req.http.host) {
+			hash_data(req.http.host);
+		} else {
+			hash_data(server.ip);
+		}
+	}
+	return (hash);
+}

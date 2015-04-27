@@ -2,6 +2,7 @@
 
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
+include "static-hash.inc.vcl";
 
 <% if @vcl_config.fetch("cluster_tier", "one") != "one" -%>
 // A random director with the same backends as the default 'backend' (chash) director

@@ -15,6 +15,13 @@ class varnish::common::vcl {
         content => template('varnish/last-access.inc.vcl.erb'),
     }
 
+    file { '/etc/varnish/static-hash.inc.vcl':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('varnish/static-hash.inc.vcl.erb'),
+    }
+
     file { '/etc/varnish/provenance.inc.vcl':
         owner   => 'root',
         group   => 'root',
