@@ -11,6 +11,20 @@ service::configuration::statsd_host: labmon1001.eqiad.wmnet
 service::configuration::logstash_host: deployment-logstash1.eqiad.wmflabs
 citoid::zotero_host: deployment-zotero01.eqiad.wmflabs
 citoid::zotero_port: 1969
+graphoid::domains:
+  - wmflabs.org
+  - mediawiki.org
+  - wikibooks.org
+  - wikidata.org
+  - wikimedia.org
+  - wikimediafoundation.org
+  - wikinews.org
+  - wikipedia.org
+  - wikiquote.org
+  - wikisource.org
+  - wikiversity.org
+  - wikivoyage.org
+  - wiktionary.org
 "cassandra::seeds":
   - 10.68.17.227
   - 10.68.17.189
