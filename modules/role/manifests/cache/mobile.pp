@@ -49,7 +49,7 @@ class role::cache::mobile (
 
     $cluster_options = {
         'enable_geoiplookup' => true,
-        'do_gzip'            => false,
+        'do_gzip'            => ( $::realm == 'labs' ),
     }
 
     class { 'varnish::zero_update':
