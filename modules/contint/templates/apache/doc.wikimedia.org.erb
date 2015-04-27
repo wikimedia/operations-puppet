@@ -26,8 +26,12 @@
     RewriteEngine On
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule (.) https://doc.wikimedia.org%{REQUEST_URI} [R=301]
-
     Header always merge Vary X-Forwarded-Proto
+
+    # T95164
+    DirectorySlash Off
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^(.+[^/])$ https://doc.wikimedia.org/$1/ [R=301,QSA]
 
     # Enable HTTP Strict Transport Security
     Header always set Strict-Transport-Security "max-age=604800"
