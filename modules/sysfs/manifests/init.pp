@@ -20,6 +20,6 @@ class sysfs {
     }
 
     service { 'sysfsutils':
-        refreshonly => true,
+        ensure => running,
     }
 }
