@@ -27,4 +27,11 @@ class toollabs::node::compute::general {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/jobkill',
     }
+
+    labs_lvm::volume { 'separate-tmp':
+        size      => '10GB',
+        mountat   => '/tmp',
+        mountmode => '1777',
+        options   => 'nosuid,noexec,nodev,rw',
+    }
 }
