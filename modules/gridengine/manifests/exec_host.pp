@@ -4,6 +4,8 @@ class gridengine::exec_host(
     $config = undef,
 )
 {
+    include gridengine
+
     package { 'gridengine-exec':
         ensure  => latest,
         require => Package['gridengine-common'],
