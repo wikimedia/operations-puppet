@@ -15,7 +15,7 @@ class role::apertium(
 
     monitoring::service { 'apertium':
         description   => 'apertium apy',
-        check_command => "check_http_url_on_port!apertium.svc.eqiad.wmnet!${port}!/listPairs",
+        check_command => "check_http_hostheader_port_url!apertium.svc.eqiad.wmnet!${port}!/listPairs",
     }
 
 }
