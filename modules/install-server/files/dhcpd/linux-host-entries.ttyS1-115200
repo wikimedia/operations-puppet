@@ -2481,8 +2481,6 @@ host logstash1003 {
 host logstash1004 {
 		hardware ethernet 44:A8:42:11:68:6B;
 		fixed-address logstash1004.eqiad.wmnet;
-		option pxelinux.pathprefix "jessie-installer/";
-		filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host logstash1005 {
