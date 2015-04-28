@@ -93,6 +93,10 @@ class network::constants {
                         'ipv4' => '208.80.155.96/27',
                         'ipv6' => '2620:0:861:4::/64'
                     },
+                    'public1-lvs-eqiad' => {
+                        'ipv4' => '208.80.154.224/27',
+                        'ipv6' => '2620:0:861:ed1a::/64',
+                    }
                 },
                 'private' => {
                     'private1-a-eqiad' => {
@@ -166,6 +170,10 @@ class network::constants {
                         'ipv4' => '91.198.174.0/25',
                         'ipv6' => '2620:0:862:1::/64'
                     },
+                    'public1-lvs-esams' => {
+                        'ipv4' => '91.198.174.192/27',
+                        'ipv6' => '2620:0:862:ed1a::/64',
+                    },
                 },
                 'private' => {
                     'private1-esams' => {
@@ -179,6 +187,10 @@ class network::constants {
                     'public1-ulsfo' => {
                         'ipv4' => '198.35.26.0/28',
                         'ipv6' => '2620:0:863:1::/64'
+                    },
+                    'public1-lvs-ulsfo' => {
+                        'ipv4' => '198.35.26.96/27',
+                        'ipv6' => '2620:0:863:ed1a::/64',
                     },
                 },
                 'private' => {
@@ -206,6 +218,10 @@ class network::constants {
                         'ipv4' => '208.80.153.96/27',
                         'ipv6' => '2620:0:860:4::/64'
                     },
+                    'public1-lvs-codfw' => {
+                        'ipv4' => '208.80.153.224/27',
+                        'ipv6' => '2620:0:860:ed1a::/64',
+                    }
                 },
                 'private' => {
                     'private1-a-codfw' => {
