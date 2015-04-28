@@ -287,3 +287,4 @@ mediawiki_memcached_servers:
     - deployment-elastic07
     - deployment-elastic08
 "elasticsearch::cluster_name": beta-search
+"elasticsearch::auto_create_index": '+apifeatureusage-*,-*'
