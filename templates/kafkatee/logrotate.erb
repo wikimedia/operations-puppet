@@ -1,15 +1,11 @@
 # Note:  This file is managed by Puppet.
 #
 <%= @webrequest_log_directory %>/*.log {
-daily
-olddir <%= @webrequest_archive_directory %>
-notifempty
-nocreate
-maxage 180
-rotate 1000
-dateext
-compress
-postrotate
-	service kafkatee reload
-endscript
+  monthly
+  rotate 2
+  missingok
+  notifempty
+  postrotate
+    service kafkatee reload
+  endscript
 }
