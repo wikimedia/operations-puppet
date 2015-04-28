@@ -27,4 +27,15 @@ class toollabs::node::compute::general {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/jobkill',
     }
+
+    # We want to have the new LVM managed layout only for the newly created
+    # hosts, since the old ones have a wide variety of terrible-er layouts
+    if $tools_new_disk_layout_{
+        labs_lvm::volume { 'separate-tmp':
+            size      => '10GB',
+            mountat   => '/tmp',
+            mountmode => '1777',
+            options   => 'nosuid,noexec,nodev,rw',
+        }
+    }
 }
