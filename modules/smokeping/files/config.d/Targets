@@ -12,9 +12,9 @@ title = Network Latency Grapher
 remark = Smokeping installation for Wikimedia Foundation
 
 
-+ EQIAD
++ eqiad
 
-menu = EQIAD
+menu = eqiad
 title = Wikimedia Ashburn, Virginia network
 alerts = bigloss,someloss,startloss
 
@@ -46,6 +46,11 @@ host = asw-b-eqiad.mgmt.eqiad.wmnet
 menu = asw-c-eqiad
 title = asw-c-eqiad.mgmt.eqiad.wmnet
 host = asw-c-eqiad.mgmt.eqiad.wmnet
+
++++ asw-d-eqiad
+menu = asw-d-eqiad
+title = asw-d-eqiad.mgmt.eqiad.wmnet
+host = asw-d-eqiad.mgmt.eqiad.wmnet
 
 +++ mr1-eqiad
 menu = mr1-eqiad
@@ -86,9 +91,63 @@ menu = iron
 title = iron.wikimedia.org [B4-EQIAD]
 host = iron.wikimedia.org
 
-+ ESAMS
++ codfw
 
-menu = ESAMS
+menu = cofw
+title = Wikimedia Dallas, Texas network
+alerts = bigloss,someloss,startloss
+
+++ Core
+menu = Core
+title = Core Network Infrastructure
+
++++ cr1-codfw
+menu = cr1-codfw
+title = cr1-codfw.wikimedia.org
+host = cr1-codfw.wikimedia.org
+
++++ cr2-codfw
+menu = cr2-codfw
+title = cr2-codfw.wikimedia.org
+host = cr2-codfw.wikimedia.org
+
++++ asw-a-codfw
+menu = asw-a-codfw
+title = asw-a-codfw.mgmt.eqiad.wmnet
+host = asw-a-codfw.mgmt.eqiad.wmnet
+
++++ asw-b-codfw
+menu = asw-b-codfw
+title = asw-b-codfw.mgmt.eqiad.wmnet
+host = asw-b-codfw.mgmt.eqiad.wmnet
+
++++ asw-c-codfw
+menu = asw-c-codfw
+title = asw-c-codfw.mgmt.eqiad.wmnet
+host = asw-c-codfw.mgmt.eqiad.wmnet
+
++++ asw-d-codfw
+menu = asw-d-codfw
+title = asw-d-codfw.mgmt.eqiad.wmnet
+host = asw-d-codfw.mgmt.eqiad.wmnet
+
++++ mr1-codfw
+menu = mr1-codfw
+title = mr1-codfw.mgmt.eqiad.wmnet
+host = mr1-codfw.mgmt.eqiad.wmnet
+
+++ Hosts
+menu = Hosts
+title = Sampled Hosts
+
++++ bast2001
+menu = bast2001
+title = bast2001.wikimedia.org
+host = bast2001.wikimedia.org
+
++ esams
+
+menu = esams
 title = Wikimedia Amsterdam, The Netherlands network
 alerts = bigloss,someloss,startloss
 
@@ -125,9 +184,9 @@ menu = hooft
 title = hooft.esams.wikimedia.org
 host = hooft.esams.wikimedia.org
 
-+ ULSFO
++ ulsfo
 
-menu = ULSFO
+menu = ulsfo
 title = Wikimedia San Francisco, California network
 alerts = bigloss,someloss,startloss
 
