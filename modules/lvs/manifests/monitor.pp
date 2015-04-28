@@ -17,6 +17,7 @@ class lvs::monitor {
     lvs::monitor_service_http { 'mathoid.svc.eqiad.wmnet': ip_address => $ip['mathoid']['eqiad'], check_command => "check_http_lvs_on_port!mathoid.svc.eqiad.wmnet!10042!/" }
     lvs::monitor_service_http { 'citoid.svc.eqiad.wmnet': ip_address => $ip['citoid']['eqiad'], check_command => "check_http_lvs_on_port!citoid.svc.eqiad.wmnet!1970!/", contact_group => "admins,parsoid" }
     lvs::monitor_service_http { 'cxserver.svc.eqiad.wmnet': ip_address => $ip['cxserver']['eqiad'], check_command => "check_http_lvs_on_port!citoid.svc.eqiad.wmnet!8080!/" }
+    lvs::monitor_service_http { 'mobileapps.svc.eqiad.wmnet': ip_address => $ip['mobileapps']['eqiad'], check_command => "check_http_lvs_on_port!mobileapps.svc.eqiad.wmnet!6624!/robots.txt", contact_group => "admins,parsoid" }
     lvs::monitor_service_http { 'restbase.svc.eqiad.wmnet': ip_address => $ip['restbase']['eqiad'], check_command => "check_http_lvs_on_port!restbase.svc.eqiad.wmnet!7231!/" }
     lvs::monitor_service_http { 'zotero.svc.eqiad.wmnet': ip_address => $ip['zotero']['eqiad'], check_command => "check_http_zotero_lvs_on_port!zotero.svc.eqiad.wmnet!1969!/export?format=wikipedia" }
 
