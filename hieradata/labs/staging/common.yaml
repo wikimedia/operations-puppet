@@ -19,3 +19,4 @@ elasticsearch::unicast_hosts:
     - staging-elastic02
     - staging-elastic03
     - staging-elastic04
+elasticsearch::auto_create_index: '+apifeatureusage-*,-*'
