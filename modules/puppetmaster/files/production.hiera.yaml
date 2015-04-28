@@ -1,6 +1,10 @@
 :backends:
-  - nuyaml
-  - role
+  - proxy
+:proxy:
+  :plugins:
+    - nuyaml
+    - role
+  :default_plugin: nuyaml
 :role:
   :datadir: /etc/puppet/hieradata
 :nuyaml:
@@ -13,13 +17,11 @@
 :hierarchy:
   - "hosts/%{::hostname}"
   - "regex/%{::fqdn}"
+  - "role://%{::site}"
   - "%{::site}"
+  - "role://private/%{::site}"
   - "private/%{::site}"
+  - "role://common"
   - "common"
-  - "private/common"
-
-:role_hierarchy:
-  - "%{::site}"
-  - "common"
-  - "private/%{::site}"
+  - "role://private/common"
   - "private/common"
