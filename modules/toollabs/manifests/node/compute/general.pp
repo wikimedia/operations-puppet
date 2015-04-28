@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class toollabs::node::compute::general {
+class toollabs::node::compute::general inherits toollabs {
 
     system::role { 'toollabs::node::compute::general': description => 'General computation node' }
 
