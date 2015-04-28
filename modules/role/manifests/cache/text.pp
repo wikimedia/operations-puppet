@@ -129,7 +129,7 @@ class role::cache::text {
         ]),
         cluster_options => {
             'enable_geoiplookup' => true,
-            'do_gzip'            => ( $::realm == 'labs' ),
+            'do_gzip'            => true,
         },
     }
 
