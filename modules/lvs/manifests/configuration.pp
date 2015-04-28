@@ -180,6 +180,9 @@ class lvs::configuration {
             'graphoid' => {
                 'eqiad' => "10.2.2.15",
             },
+            #'mobileapps' => {
+            #    'eqiad' => "10.2.2.XX",
+            #},
             'restbase' => {
                 'eqiad' => "10.2.2.17",
             },
@@ -206,6 +209,7 @@ class lvs::configuration {
             'graphoid' => {},
             'misc_web' => {},
             'mobile' => {},
+            'mobileapps' => {},
             'ocg' => {},
             'osm' => {},
             'swift' => {
@@ -724,6 +728,19 @@ class lvs::configuration {
             'depool-threshold' => '.5',
             'monitors' => {
                 'ProxyFetch' => { 'url' => ['http://graphoid.svc.eqiad.wmnet/_info' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
+            }
+        },
+        'mobileapps' => {
+            'description' => 'mobileapps, mobileapps.svc.eqiad.wmnet',
+            'class' => 'low-traffic',
+            'sites' => [ 'eqiad' ],
+            'ip' => $service_ips['mobileapps'][$::site],
+            'port' => 6624,
+            'bgp' => 'yes',
+            'depool-threshold' => '.5',
+            'monitors' => {
+                'ProxyFetch' => { 'url' => [ 'http://mobileapps.svc.eqiad.wmnet/_info' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             }
         },
