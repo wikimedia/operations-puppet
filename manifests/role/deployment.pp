@@ -63,6 +63,11 @@ class role::deployment::config {
             'service_name'          => 'graphoid',
             'checkout_submodules'   => true,
         },
+        'mobileapps/deploy' => {
+            'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/mobileapps/deploy',
+            'service_name'          => 'mobileapps',
+            'checkout_submodules'   => true,
+        },
         'rcstream/rcstream' => {
             'upstream'              => 'https://gerrit.wikimedia.org/r/mediawiki/services/rcstream',
             'service_name'          => 'rcstream',
