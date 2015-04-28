@@ -93,12 +93,12 @@ groups:
     gid: 714
     description: users with access to research db
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
-      dduvall, ellery, ezachte, gage, gilles, haithams, halfak, handrade,
-      ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
-      kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
-      nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
-      mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
-      daisy, tomasz, mholloway-shell, madhuvishy]
+              dduvall, ellery, ezachte, gage, gilles, haithams, halfak, handrade,
+              ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
+              kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
+              nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
+              mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
+              daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson]
   ldap-admins:
     gid: 715
     description: ldap admins
