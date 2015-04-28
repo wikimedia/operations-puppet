@@ -35,3 +35,5 @@ elasticsearch::bulk_thread_pool_capacity: 1000
 elasticsearch::bulk_thread_pool_executors: 6
 # Enable dynamic scripting
 elasticsearch::script_disable_dynamic: false
+# Let apifeatureusage create their indices
+elasticsearch::auto_create_index: '+apifeatureusage-*,-*'

@@ -811,6 +811,7 @@ ssh::server::explicit_macs: false
     - deployment-elastic08
 "elasticsearch::cluster_name": beta-search
 "elasticsearch::script_disable_dynamic": false
+"elasticsearch::auto_create_index": '+apifeatureusage-*,-*'
 nfs_mounts:
   project: false
   home: false
