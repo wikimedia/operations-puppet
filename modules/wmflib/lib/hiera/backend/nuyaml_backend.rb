@@ -7,7 +7,7 @@
 #
 #
 # This backend allows some more flexibility over the vanilla yaml
-# backend, as path expansion in the lookup and even dynamic lookups.
+# backend, as path expansion in the lookup.
 #
 # == Private path
 #
@@ -64,33 +64,6 @@
 # This will make it so that "cluster" will assume the value "www"
 # given the regex matches the "webservices" stanza
 #
-# == Dynamic lookup
-#
-# Sometimes we want to search for data based on variables... that are
-# hosted within hiera! Dynamic lookup allows to define hierachies that
-# will determine the full path based on results from hiera
-# itself. Tricky? Let's see with an example
-#
-# === Example
-#
-# Say you have in your hiera config
-# :nuyaml:
-#   :dynamic_lookup:
-#      - role
-# :hierarchy:
-#   - "host/%{fqdn}"
-#   - role
-#
-# What will happen will be that any key we search (say $cluster) will
-# be first searched in the specific file for that host
-# (host/hostname.yaml), if not found, it will be searched as follows:
-# - if host/hostname.yaml contains a value for role, say
-#   'refrigerator', then lookup will continue in the
-#  'role/refrigerator.yaml' file
-# - else it will looked up in the 'role/default.yaml'
-#
-# Note that for added fun you may declare one part of the hierarchy to
-# be both dynamically looked up and expanded. It works!
 class Hiera
   module Backend
     class Nuyaml_backend
@@ -99,7 +72,6 @@ class Hiera
         require 'yaml'
         @cache = cache || Filecache.new
         config = Config[:nuyaml]
-        @dynlookup = config[:dynlookup] || []
         @expand_path = config[:expand_path] || []
       end
 
@@ -166,17 +138,6 @@ class Hiera
         Hiera.debug("Looking up #{key}")
 
         Backend.datasources(scope, order_override) do |source|
-          # Yes this is kind of hacky. We look it up again on hiera,
-          # and build a source based on the lookup.
-          if @dynlookup.include? source
-            Hiera.debug("Dynamic lookup for source #{source}")
-            if key == source
-              next
-            end
-            dynsource = lookup(source, scope, order_override, :priority)
-            dynsource ||= 'default'
-            source += "/#{dynsource}"
-          end
           Hiera.debug("Loading info from #{source} for #{key}")
 
           lookup_key, yamlfile = get_path(key, scope, source)
