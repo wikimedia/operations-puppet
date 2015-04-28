@@ -39,7 +39,6 @@ class role::elasticsearch::server{
     class { '::elasticsearch':
         plugins_dir       => '/srv/deployment/elasticsearch/plugins',
         require           => Package['elasticsearch/plugins'],
-        auto_create_index => '+apifeatureusage-*,-*',
         merge_threads     => 1,
     }
 
