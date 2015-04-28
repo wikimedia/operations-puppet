@@ -34,6 +34,5 @@ elasticsearch::filter_cache_size: "20%"
 elasticsearch::bulk_thread_pool_capacity: 1000
 elasticsearch::bulk_thread_pool_executors: 6
 
-
-
-
+# Let apifeatureusage create their indices
+elasticsearch::auto_create_index: '+apifeatureusage-*,-*'
