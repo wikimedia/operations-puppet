@@ -508,8 +508,8 @@ users:
     gid: 500
     name: aude
     realname: Katie Filbert
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+OiQ1ptiP6VqmiP8IOp0sKET9pQHOJxscK6bAvAmAP72DL9MgLIBaWpaL9iWsb/DMXI2CQpEnu88VMVXCSgiqw+Gy6Q93pAquAQWAzkMnDD+QvxTm23oFCxP795IEP3JMHuONNg2x3NU3jYaOADOGZX41nRhbkO4yl32jQCTF9i670KS+CFDHxRzmOMzNhlytWJYyVPS6iqUGykaFcebFNThMtRtQF+pWJNreCFxZoXp1TyzkiJE1rX98tj2yhVQmET6mENuGXuAES/Atzpxp8zvsckHn06Mm1RZZmIExEqn/JdK6nHs1UoSNpsI195ltzkKSEWdFdYKRLZNFuRBL
-        aude.wiki@gmail.com]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD0HaeEnjh8b2zJg0z7EmeAOqZrMlKRbxQD+oFDAEhy4L3hGU65rq+a9vtDIOMajSy5riazNJE/4mV1FRmIprocP8JaLewhAusJiAWYvhwOOOym1+avLmMbU8cpuhn4j/Z6bKSkrMU1HnBxZ6Qak1z4UtjYOZS8QeA3Ra/ra9GSRRqA/jHe2sTVGlzayjzJRWfpD1sIqjL5Szo+B/L8xzNNZVNYgE4yxRCT/QHJo5pq828JuB1HyknckPPHWcWlp2q/jNLzjcUJRPEzH5shLdp5sl1IWl8+yO0Zq6rBrwlaEgytr7Wt/9KfJxy3Wtt9TAb7vUVSn+DqsSKyTXAv3TfZ
+        katie@katie-UX303LNB]
     uid: 1185
   awight:
     ensure: present
