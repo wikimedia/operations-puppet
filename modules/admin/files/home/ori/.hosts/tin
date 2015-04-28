@@ -54,3 +54,20 @@ deploy() {
         yes | git deploy sync 2>&1 | grep completed
     ) && { popd &>/dev/null; notice "Ok."; } || warn "Failed."
 }
+
+sync() {
+    case "$1" in -q|--quiet) DOLOGMSGNOLOG=1 ; shift ;; esac
+    local target="$1" ; shift ; local message="$@"
+
+    if [ -z "$target" -o -z "$message" ]; then
+        echo >&2 "Usage: sync SYNC_TARGET LOG_MESSAGE"
+        return 1
+    elif [ ! -e "$target"  ]; then
+        echo >&2 "No such file: ${target}"
+        return 1
+    elif [ -d "$target" ]; then
+        sync-dir "$target" "$message"
+    else
+        sync-file "$target" "$message"
+    fi
+}
