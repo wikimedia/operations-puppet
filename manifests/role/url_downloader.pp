@@ -31,14 +31,14 @@ class role::url_downloader($url_downloader_ip) {
         $wikimedia = [
             # TODO: Add IPv6 as well
             $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
-            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-a-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-b-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-c-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['production']['eqiad']['public']['public1-d-eqiad']['ipv4'],
 
             $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv4'],
-            $network::constants::all_network_subnets['production']['codfw']['public']['public1-a-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['public']['public1-b-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['public']['public1-c-codfw']['ipv4'],
+            $network::constants::all_network_subnets['production']['codfw']['public']['public1-d-codfw']['ipv4'],
 
             $network::constants::all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv4'],
             $network::constants::all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv4'],
