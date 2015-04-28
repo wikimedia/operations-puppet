@@ -24,10 +24,11 @@ class role::cache::parsoid {
         admin_port       => 6083,
         storage          => $::role::cache::2layer::persistent_storage_args,
         directors        => {
-            'backend'          => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
-            'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
-            'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
-            'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
+            'backend'            => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
+            'cxserver_backend'   => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
+            'citoid_backend'     => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
+            'mobileapps_backend' => $::role::cache::configuration::backends[$::realm]['mobileapps'][$::site],
+            'restbase_backend'   => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         director_options => {
             'retries' => 2,
@@ -46,6 +47,11 @@ class role::cache::parsoid {
             {
                 'backend_match'         => '^citoid',
                 'port'                  => 1970,
+                'probe'                 => false,
+            },
+            {
+                'backend_match'         => '^mobileapps',
+                'port'                  => 6624,
                 'probe'                 => false,
             },
             {
@@ -70,10 +76,11 @@ class role::cache::parsoid {
         port            => 80,
         admin_port      => 6082,
         directors       => {
-            'backend'          => $site_parsoid_nodes,
-            'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
-            'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
-            'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
+            'backend'            => $site_parsoid_nodes,
+            'cxserver_backend'   => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
+            'citoid_backend'     => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
+            'mobileapps_backend' => $::role::cache::configuration::backends[$::realm]['mobileapps'][$::site],
+            'restbase_backend'   => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         director_type   => 'chash',
         director_options => {
@@ -92,6 +99,11 @@ class role::cache::parsoid {
             {
                 'backend_match'         => '^citoid',
                 'port'                  => 1970,
+                'probe'                 => false,
+            },
+            {
+                'backend_match'         => '^mobileapps',
+                'port'                  => 6624,
                 'probe'                 => false,
             },
             {
