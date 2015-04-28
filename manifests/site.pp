@@ -2444,7 +2444,7 @@ node 'zirconium.wikimedia.org' {
     include role::iegreview
     include role::annualreport
     include role::devportal
-    include role::policysite
+    include role::policy_www
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',

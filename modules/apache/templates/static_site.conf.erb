@@ -1,0 +1,34 @@
+# vim: filetype=apache.erb
+# Apache site configuration for <%= @servername %>.
+
+<VirtualHost *:80>
+    ServerName "<%= @servername %>"
+    DocumentRoot "<%= @docroot %>"
+
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto
+    Header set Strict-Transport-Security "max-age=604800"
+
+<%- if @ldap_groups.length -%>
+    AuthName "<%= @auth_realm %>"
+    AuthType Basic
+    AuthBasicProvider ldap
+    AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+    AuthLDAPBindPassword <%= scope.lookupvar('::passwords::ldap::production::proxypass') %>
+    AuthLDAPURL "ldaps://ldap-eqiad.wikimedia.org ldap-codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+    <%- @ldap_groups.each do |group| -%>
+    Require ldap-group "cn=<%= group %>,ou=groups,dc=wikimedia,dc=org"
+    <%- end -%>
+<%- end -%>
+
+    <Directory />
+        Order Deny,Allow
+        AllowOverride All
+    </Directory>
+
+    <Directory "<%= @docroot %>">
+        Allow from all
+    </Directory>
+</VirtualHost>
