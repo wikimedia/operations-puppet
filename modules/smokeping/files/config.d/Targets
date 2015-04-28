@@ -113,28 +113,28 @@ host = cr2-codfw.wikimedia.org
 
 +++ asw-a-codfw
 menu = asw-a-codfw
-title = asw-a-codfw.mgmt.eqiad.wmnet
-host = asw-a-codfw.mgmt.eqiad.wmnet
+title = asw-a-codfw.mgmt.codfw.wmnet
+host = asw-a-codfw.mgmt.codfw.wmnet
 
 +++ asw-b-codfw
 menu = asw-b-codfw
-title = asw-b-codfw.mgmt.eqiad.wmnet
-host = asw-b-codfw.mgmt.eqiad.wmnet
+title = asw-b-codfw.mgmt.codfw.wmnet
+host = asw-b-codfw.mgmt.codfw.wmnet
 
 +++ asw-c-codfw
 menu = asw-c-codfw
-title = asw-c-codfw.mgmt.eqiad.wmnet
-host = asw-c-codfw.mgmt.eqiad.wmnet
+title = asw-c-codfw.mgmt.codfw.wmnet
+host = asw-c-codfw.mgmt.codfw.wmnet
 
 +++ asw-d-codfw
 menu = asw-d-codfw
-title = asw-d-codfw.mgmt.eqiad.wmnet
-host = asw-d-codfw.mgmt.eqiad.wmnet
+title = asw-d-codfw.mgmt.codfw.wmnet
+host = asw-d-codfw.mgmt.codfw.wmnet
 
 +++ mr1-codfw
 menu = mr1-codfw
-title = mr1-codfw.mgmt.eqiad.wmnet
-host = mr1-codfw.mgmt.eqiad.wmnet
+title = mr1-codfw.mgmt.codfw.wmnet
+host = mr1-codfw.mgmt.codfw.wmnet
 
 ++ Hosts
 menu = Hosts
