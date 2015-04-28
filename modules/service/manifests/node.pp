@@ -22,6 +22,9 @@
 #   Number of maximum allowed open files for the service, to be set by
 #   ulimit. Default: 10000
 #
+# [*healthcheck_url*]
+#   The url to monitor the service at. 200 OK is the expected answer
+#
 # === Examples
 #
 # To set up a service named myservice on port 8520 and with a templated
@@ -42,7 +45,10 @@
 #        },
 #    }
 #
-define service::node($port, $config = undef, $no_file = 10000) {
+define service::node($port,
+                     $config = undef,
+                     $no_file = 10000,
+                     $healthcheck_url='/') {
     # Import all common configuration
     include service::configuration
 
@@ -145,9 +151,15 @@ define service::node($port, $config = undef, $no_file = 10000) {
         ],
     }
 
+    # Basic firewall
+    ferm::service { $title:
+        proto => 'tcp'
+        port  => $port,
+    }
+
     # Basic monitoring
     monitoring::service { $title:
         description   => $title,
-        check_command => "check_http_on_port!${port}",
+        check_command => "check_http_port_url!${port}!${healthcheck_url}",
     }
 }
