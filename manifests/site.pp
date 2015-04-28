@@ -66,16 +66,6 @@ node 'analytics1003.eqiad.wmnet' {
     role analytics
 
     include standard
-
-    # Disabling these for now.
-    # analytics1003 is acting up since the Trusty upgrade. I halts with:
-    #   BUG: unable to handle kernel NULL pointer dereference at 00000000000001be
-    #
-    # include role::analytics::kafkatee::webrequest::mobile
-    # include role::analytics::kafkatee::webrequest::edits
-    # include role::analytics::kafkatee::webrequest::5xx
-    # include role::analytics::kafkatee::webrequest::api
-    # include role::analytics::kafkatee::webrequest::glam_nara
 }
 
 
@@ -2032,8 +2022,12 @@ node 'osmium.eqiad.wmnet' {
 }
 
 
+# oxygen runs a kafkatee instance that consumes webrequest from Kafka
+# and writes to a couple of files for quick and easy ops debugging.,
 node 'oxygen.eqiad.wmnet'
 {
+    role logging::kafkatee::webrequest::ops
+
     include standard
 }
 

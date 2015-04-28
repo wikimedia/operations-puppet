@@ -293,3 +293,91 @@ class role::logging::systemusers {
         require => File['/var/lib/file_mover/.ssh'],
     }
 }
+
+# == Class role::logging::kafkatee::webrequest
+# TODO: This needs a not-stupid name.
+#
+# Uses kafkatee to consume webrequest logs from kafka.
+# This class does not configure any kafkatee outputs.
+# To do so, you should create a new class that inherits
+# from this class, and configure the outputs there.
+#
+class role::logging::kafkatee::webrequest {
+    require role::analytics::kafka::config
+
+    # Install kafkatee configured to consume from
+    # the Analytics Kafka cluster.  The webrequest logs are
+    # in json, so we output them in the format they are received.
+    class { '::kafkatee':
+        kafka_brokers           => $role::analytics::kafka::config::brokers_array,
+        output_encoding         => 'json',
+        output_format           => undef,
+    }
+    include kafkatee::monitoring
+
+    # Set defaults for all webrequest kafkatee inputs
+    ::Kafktee::Input {
+        partitions  => '0-11',
+        options     => { 'encoding' => 'json' },
+        offset      => 'stored',
+    }
+
+    # TODO: Do we need all topics for ops debugging of webrequest logs?
+
+    # include all webrequest topics
+    ::kafkatee::input { 'kafka-webrequest_bits':
+        topic       => 'webrequest_bits',
+    }
+    ::kafkatee::input { 'kafka-webrequest_misc':
+        topic       => 'webrequest_misc',
+    }
+    ::kafkatee::input { 'kafka-webrequest_mobile':
+        topic       => 'webrequest_mobile',
+    }
+    ::kafkatee::input { 'kafka-webrequest_text':
+        topic       => 'webrequest_text',
+    }
+    ::kafkatee::input { 'kafka-webrequest_upload':
+        topic       => 'webrequest_upload',
+    }
+
+    # Declare packaged rsyslog config to ensure it isn't purged.
+    file { '/etc/rsyslog.d/75-kafkatee.conf':
+        ensure  => file,
+        require => Class['::kafkatee'],
+    }
+
+    $log_directory              = '/srv/log'
+    $webrequest_log_directory   = "${log_directory}/webrequest"
+    file { [$log_directory, $webrequest_log_directory]:
+        ensure      => 'directory',
+        owner       => 'kafkatee',
+        group       => 'kafkatee',
+        require     => Class['::kafkatee'],
+    }
+
+    # if the logs in $log_directory should be rotated
+    # then configure a logrotate.d script to do so.
+    file { '/etc/logrotate.d/kafkatee-webrequest':
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('kafkatee/logrotate.erb'),
+    }
+
+}
+
+# == Class role::logging::kafkatee::webrequest::ops
+# Includes output filters useful for operational debugging.
+#
+class role::logging::kafkatee::webrequest::ops inherits role::logging::kafkatee::webrequest  {
+    ::kafkatee::output { 'sampled-1000':
+        destination => "${webrequest_log_directory}/sampled-1000.json",
+        sample      => 1000,
+    }
+
+    ::kafkatee::output { '5xx':
+        destination => "/bin/grep '\"http_status\":\"5'' >> ${webrequest_log_directory}/5xx.json",
+        type        => 'pipe',
+    }
+}
