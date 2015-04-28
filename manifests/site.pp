@@ -2340,11 +2340,6 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
     role mediawiki::videoscaler
 }
 
-# old graphite host, waiting data backfill T90591
-node 'tungsten.eqiad.wmnet' {
-    include standard
-}
-
 node 'uranium.wikimedia.org' {
     $ganglia_aggregator = true
 
