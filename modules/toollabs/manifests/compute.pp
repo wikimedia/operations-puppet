@@ -16,38 +16,12 @@
 #
 class toollabs::compute inherits toollabs {
 
-    system::role { 'toollabs::node::compute::general':
-        description => 'General computation node'
-    }
-
-    include toollabs::hba
+    include toollabs::exec_environ,
+            toollabs::hba
 
     motd::script { 'exechost-banner':
         ensure   => present,
         source   => "puppet:///modules/toollabs/40-${::instanceproject}-exechost-banner",
-    }
-
-    class { 'gridengine::exec_host':
-        config => 'toollabs/gridengine/host-vmem.erb',
-    }
-
-    class { 'toollabs::hostgroups': groups => [ '@general' ] }
-
-    file { '/usr/local/bin/jobkill':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/jobkill',
-    }
-
-    # We want to have the new LVM managed layout only for the newly created
-    # hosts, since the old ones have a wide variety of terrible-er layouts
-    labs_lvm::volume { 'separate-tmp':
-        size      => '16GB',
-        mountat   => '/tmp',
-        mountmode => '1777',
-        options   => 'nosuid,noexec,nodev,rw',
     }
 
     file { "${toollabs::store}/execnode-${::fqdn}":
