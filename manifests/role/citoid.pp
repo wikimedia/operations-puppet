@@ -3,9 +3,5 @@ class role::citoid {
 
     system::role { 'role::citoid': }
 
-    ferm::service { 'citoid':
-        proto => 'tcp',
-        port  => '1970',
-    }
     include ::citoid
 }

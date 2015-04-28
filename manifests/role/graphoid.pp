@@ -5,11 +5,5 @@ class role::graphoid {
         description => 'node.js service converting graph definitions into PNG'
     }
 
-    ferm::service { 'graphoid':
-        proto => 'tcp',
-        port  => 19000,
-    }
-
     include ::graphoid
-
 }
