@@ -1,0 +1,59 @@
+# /etc/nslcd.conf
+#
+# THIS FILE IS MANAGED BY PUPPET
+#
+# Source: modules/labs_storage/templates/nslcd.conf.erb
+# From:   labs_storage::server
+#
+
+# The user and group nslcd should run as.
+uid nslcd
+gid nslcd
+
+# The location at which the LDAP server(s) should be reachable.
+uri <% @ldapconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
+
+# The search base that will be used for all queries.
+base <%= @ldapconfig["basedn"] %>
+
+base passwd <%= @ldapconfig["users_rdn"] %>,<%= @ldapconfig["basedn"] %>
+base shadow <%= @ldapconfig["users_rdn"] %>,<%= @ldapconfig["basedn"] %>
+base group <%= @ldapconfig["groups_rdn"] %>,<%= @ldapconfig["basedn"] %>
+
+<% if @site == "eqiad" -%>
+base passwd <%= @ldapconfig["users_rdn"] %>,ou=servicegroups,<%= @ldapconfig["basedn"] %>
+base shadow <%= @ldapconfig["users_rdn"] %>,ou=servicegroups,<%= @ldapconfig["basedn"] %>
+base group ou=servicegroups,<%= @ldapconfig["basedn"] %>
+<% elsif @realm == "labs" -%>
+<% if has_variable?("instanceproject") then -%>
+base passwd <%= @ldapconfig["users_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= @ldapconfig["basedn"] %>
+base shadow <%= @ldapconfig["users_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= @ldapconfig["basedn"] %>
+base group <%= @ldapconfig["groups_rdn"] %>,cn=<%= instanceproject %>,ou=projects,<%= @ldapconfig["basedn"] %>
+<% end %><% end -%>
+
+# The DN to bind with for normal lookups.
+binddn cn=proxyagent,ou=profile,<%= @ldapconfig["basedn"] %>
+bindpw <%= @ldapconfig["proxypass"] %>
+
+# SSL options.
+ssl start_tls
+tls_reqcert demand
+tls_cacertdir /etc/ssl/certs
+tls_cacertfile /etc/ssl/certs/<%= @ldapconfig["ca"] %>
+
+validnames /^[0-9]+$/
+
+# This ugliness causes entries returned by getpw*() to have:
+#   (a) a username that is just the numeric uid as a string
+#   (b) a gecos field that is the original username (to help tracking)
+#   (c) no shell
+# Additionally, the numeric id trick is pulled on the groups as well
+# for the same reasons.
+
+map passwd uid uidNumber
+map passwd loginShell "/dev/null"
+map passwd gecos uid
+map group cn gidNumber
+
+pagesize <%= @ldapconfig["pagesize"] %>
+nss_min_uid <%= @ldapconfig["nss_min_uid"] %>
