@@ -28,12 +28,16 @@ class toollabs::node::compute::general {
         source => 'puppet:///modules/toollabs/jobkill',
     }
 
-    # We want to have the new LVM managed layout only for the newly created
-    # hosts, since the old ones have a wide variety of terrible-er layouts
+    # 16G /tmp for everyone! Note that we need new nodes to be at least a large (80G total space)
     labs_lvm::volume { 'separate-tmp':
         size      => '16GB',
         mountat   => '/tmp',
         mountmode => '1777',
         options   => 'nosuid,noexec,nodev,rw',
     }
+
+    labs_lvm::swap { 'big':
+        size => inline_template('<%= @memorysize_mb.to_i * 3 %>MB'),
+    }
+
 }
