@@ -11,9 +11,7 @@ define labs_lvm::swap(
 
     include labs_lvm
 
-    # Both these are symlinks to /dev/dm*, but swapon returns mapper and lvdisplay volume
     $volume_path = "/dev/vd/${name}"
-    $mapper_path = "/dev/mapper/vd-${name}"
 
     exec { "create-swap-${name}":
         require   => [
@@ -24,9 +22,19 @@ define labs_lvm::swap(
         unless    => "/sbin/lvdisplay -c | grep ${volume_path}",
     }
 
-    exec { "swapon-$name":
-        unless  => "/sbin/swapon -s | grep ${mapper_path}",
-        command => "/sbin/swapon ${mapper_path}",
+    mount { "mount-swap-${name}":
+        ensure  => present,
+        name    => '-',
+        atboot  => true,
+        device  => $volume_path,
+        options => 'defaults',
+        fstype  => 'swap',
         require => Exec["create-swap-${name}"],
+        notify  => Exec["swapon-${name}"]
+    }
+
+    exec { "swapon-$}name}":
+        refreshonly => true,
+        command     => "/sbin/swapon ${volume_path}",
     }
 }
