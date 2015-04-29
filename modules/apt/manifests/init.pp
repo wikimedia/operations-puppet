@@ -63,7 +63,7 @@ class apt {
         value    => $http_proxy,
     }
 
-    if downcase($::lsbdistid) == 'debian' {
+    if $::operatingsystem == 'Debian' {
         $components = 'main backports thirdparty'
 
         apt::conf { 'security-debian-proxy':
@@ -72,7 +72,7 @@ class apt {
             key      => 'Acquire::http::Proxy::security.debian.org',
             value    => $http_proxy,
         }
-    } elsif downcase($::lsbdistid) == 'ubuntu' {
+    } elsif $::operatingsystem == 'Ubuntu' {
         $components = 'main universe thirdparty'
 
         apt::conf { 'security-ubuntu-proxy':
@@ -96,7 +96,7 @@ class apt {
             value    => $http_proxy,
         }
     } else {
-        fail("Unknown operating system '$::lsbdistid'.")
+        fail("Unknown operating system '$::operatingsystem'.")
     }
 
     apt::repository { 'wikimedia':
