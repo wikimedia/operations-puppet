@@ -76,7 +76,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [manybubbles, demon]
+    members: [manybubbles, demon, jdouglas]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   dataset-admins:
     gid: 710
