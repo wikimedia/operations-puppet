@@ -20,3 +20,4 @@ elasticsearch::unicast_hosts:
     - staging-elastic03
     - staging-elastic04
 elasticsearch::auto_create_index: '+apifeatureusage-*,-*'
+elasticsearch::merge_threads: 1
