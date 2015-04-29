@@ -21,7 +21,7 @@ class dsh::config (
     }
 
     file { '/etc/dsh/group/scap-proxies':
-        content => join($scap_proxies, '\n'),
+        content => join($scap_proxies, "\n"),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
