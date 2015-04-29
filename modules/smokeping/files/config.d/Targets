@@ -93,7 +93,7 @@ host = iron.wikimedia.org
 
 + codfw
 
-menu = cofw
+menu = codfw
 title = Wikimedia Dallas, Texas network
 alerts = bigloss,someloss,startloss
 
@@ -130,11 +130,6 @@ host = asw-c-codfw.mgmt.codfw.wmnet
 menu = asw-d-codfw
 title = asw-d-codfw.mgmt.codfw.wmnet
 host = asw-d-codfw.mgmt.codfw.wmnet
-
-+++ mr1-codfw
-menu = mr1-codfw
-title = mr1-codfw.mgmt.codfw.wmnet
-host = mr1-codfw.mgmt.codfw.wmnet
 
 ++ Hosts
 menu = Hosts
