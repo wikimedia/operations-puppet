@@ -41,12 +41,6 @@ sub vcl_fetch {
 		// don't need it anymore as a hit-for-pass aid...
 		set beresp.ttl = 0s;
 	}
-	if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\.") {
-		// Dummy endpoint for eager DNS resolution / TLS handshake.
-		if (req.url ~ "^/_preconnect") {
-			error 204;
-		}
-	}
 }
 
 // Include common Parsoid config shared between front- and backend
