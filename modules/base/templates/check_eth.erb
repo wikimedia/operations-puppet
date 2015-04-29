@@ -1,6 +1,6 @@
 #!/bin/sh
 EXIT_CODE=0
-for INTERFACE in <%= @interfaces.gsub(',', ' ').gsub(/\s\w+_\w+|vnet\d+|virbr\d|teredo/,'') %> ; do
+for INTERFACE in <%= @interfaces.gsub(',', ' ').gsub(/\s\w+_\w+|tap\d+|vnet\d+|virbr\d|teredo/,'') %> ; do
 	REQ_SPEED=1000 # The default for now
 	STATUS=`ip link show ${INTERFACE}`
 	if [ "$?" != "0" ]; then
