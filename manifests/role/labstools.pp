@@ -14,8 +14,6 @@ class role::labs::tools {
     }
 
     class compute inherits role::labs::tools::common {
-        $::ssh_hba = 'yes' #  Yes, it requires this
-
         include toollabs::compute
 
         system::role { 'role::labs::tools::compute': description => 'Tool Labs compute node' }
