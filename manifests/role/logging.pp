@@ -316,7 +316,7 @@ class role::logging::kafkatee::webrequest {
     include kafkatee::monitoring
 
     # Set defaults for all webrequest kafkatee inputs
-    ::Kafktee::Input {
+    Kafktee::Input {
         partitions  => '0-11',
         options     => { 'encoding' => 'json' },
         offset      => 'stored',
