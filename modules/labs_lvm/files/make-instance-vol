@@ -10,7 +10,7 @@ if (echo "$size"|grep '%'); then
 fi
 
 if /sbin/lvcreate $sopt -n "$name" vd; then
-  makefs="/sbin/mkfs -t '$fstype'"
+  makefs="/sbin/mkfs -t $fstype"
   if [ "x$fstype" = "xswap" ]; then
     makefs="/sbin/mkswap"
   fi
