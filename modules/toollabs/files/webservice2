@@ -155,6 +155,29 @@ MEMLIMIT = read_file(
 ).strip()
 
 
+def get_service_defaults():
+    """
+    Return default webservice type.
+
+    If service.manifest exists, read from it.
+    Else, trusty lighttpd for you!
+    """
+    try:
+        with open(os.path.expanduser('~/service.manifest')) as f:
+            manifest = yaml.load(f)
+            if manifest is not None and 'web' in manifest:
+                web = manifest['web']
+                if web == 'lighttpd-precise':
+                    return 'lighttpd', 'precise'
+                else:
+                    return web, 'trusty'
+    except OSError as e:
+        if e.errno != errno.ENOENT:  # File not found
+            raise
+    return 'lighttpd', 'trusty'
+
+
+
 def update_service_manifest(webservice_type):
     """
     Update the current tool's service manifest to specify the currently started / stopped web service type
@@ -181,7 +204,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('server', help='Type of server to start',
                         choices=['lighttpd', 'tomcat', 'uwsgi-python', 'nodejs'],
-                        default='lighttpd', nargs='?')
+                        nargs='?')
     parser.add_argument('action', help='Action to perform',
                         choices=['stop', 'start', 'restart', 'status'])
     parser.add_argument('--release',
@@ -195,22 +218,19 @@ def main():
                    for arg in sys.argv[1:]]
     args = parser.parse_args(hacked_args)
 
-    job_name = '%s-%s' % (args.server, TOOL) # Format for job names. one tool can have only one job running on webgrid
-
-    job = get_job_xml(job_name)
-
-    # If called as 'webservice' then default to precise instead of trusty, only for lighttpd.
-    # This should change at some point as we force more tools to get on trusty
-    if args.release is None:
-        if sys.argv[0].endswith('webservice') and args.server == 'lighttpd':
-            args.release = 'precise'
-        else:
-            args.release = 'trusty'
+    if args.release is None or args.server is None:
+        server, release = get_service_defaults()
+        args.release = release if args.release is None else args.release
+        args.server = server if args.server is None else args.server
 
     # No precise support for anything other than lighttpd
     if args.release == 'precise' and args.server != 'lighttpd':
         print 'Running on Ubuntu Precise only available for lighttpd servers'
         sys.exit(-1)
+
+    job_name = '%s-%s' % (args.server, TOOL) # Format for job names. one tool can have only one job running on webgrid
+
+    job = get_job_xml(job_name)
 
     # Only lighttpd has precise support
     # Start modifying service.manifest files!1!
