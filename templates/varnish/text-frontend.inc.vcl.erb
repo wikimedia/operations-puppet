@@ -81,6 +81,10 @@ sub filter_noise {
 	if (req.url ~ "^/w/api.php\?srsearch=Sju\+svarta" && req.http.User-Agent ~ "wikipedia") {
 		error 403 "Stop doing this :p";
 	}
+	// Dummy endpoint for eager DNS resolution / TLS handshake.
+	if (req.url ~ "^/_preconnect") {
+		error 204;
+	}
 }
 
 sub vcl_recv {

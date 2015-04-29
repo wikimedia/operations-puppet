@@ -33,6 +33,10 @@ sub filter_noise {
 	if (req.http.referer && req.http.referer ~ "^http://(www\.(keeprefreshing|refreshthis|refresh-page|urlreload)\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.lazywebtools\.co\.uk)/") {
 		error 403 "Noise";
 	}
+	// Dummy endpoint for eager DNS resolution / TLS handshake.
+	if (req.url ~ "^/_preconnect") {
+		error 204;
+	}
 }
 
 sub vcl_recv {
