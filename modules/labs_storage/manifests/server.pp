@@ -37,5 +37,40 @@ class labs_storage::server {
         require => File['/etc/replication-rsync.conf'],
     }
 
+    # In order to have permissions work properly both when serving
+    # NFS and when replicating with rsync, the users and their group
+    # membership needs to be known to the server.  This requires
+    # grabbing the information from LDAP (which is the authoritative
+    # source) without conflicting with actual system users.  In order
+    # to do that we need to use nslcd but:
+    #  (a) do not configure PAM to auth against it;
+    #  (b) alter the entries so that the usernames are actually
+    #      user *ids* and thus cannot conflict with puppet-managed
+    #      users; and
+    #  (c) make sure that imported users have no valid shell
+
+    include ldap::role::config::labs
+
+    file { '/etc/nsswitch.conf':
+        source => 'puppet:///modules/labs_storage/nsswitch.conf',
+    }
+
+    package { 'nslcd':
+        ensure => present,
+    }
+
+    file { '/etc/nslcd.conf':
+        notify  => Service['nslcd'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => template('labs_storage/nslcd.conf.erb'),
+    }
+
+    service { 'nslcd':
+        ensure  => running,
+        require => [ Package['nslcd'], File['/etc/nslcd.conf'], ],
+    }
+
 }
 
