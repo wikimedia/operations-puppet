@@ -114,6 +114,11 @@ sub vcl_recv {
 		set req.backend = backend_random;
 	}
 
+	// Temporary hack for T97500
+	if (req.url ~ "^/_preconnect") {
+		error 204;
+	}
+
 	if (req.request != "GET" && req.request != "HEAD") {
 		return (pass);
 	}
