@@ -60,6 +60,7 @@ class role::labs::instance {
         fstype  => 'nfs',
         options => "rw,${nfs_opts}",
         device  => "${nfs_server}:/project/${instanceproject}/home",
+        require => File['/etc/modprobe.d/nfs-no-idmap'],
     }
 
     file { '/data/project':
@@ -73,7 +74,7 @@ class role::labs::instance {
         fstype  => 'nfs',
         options => "rw,${nfs_opts}",
         device  => "${nfs_server}:/project/${instanceproject}/project",
-        require => File['/data/project'],
+        require => File['/data/project', '/etc/modprobe.d/nfs-no-idmap'],
     }
 
     file { '/data/scratch':
@@ -86,7 +87,7 @@ class role::labs::instance {
         fstype  => 'nfs',
         options => "rw,${nfs_opts}",
         device  => "${nfs_server}:/scratch",
-        require => File['/data/scratch'],
+        require => File['/data/scratch', '/etc/modprobe.d/nfs-no-idmap'],
     }
 
     file { '/public/dumps':
@@ -99,7 +100,7 @@ class role::labs::instance {
         fstype  => 'nfs',
         options => "ro,${nfs_opts}",
         device  => "${dumps_server}:/dumps",
-        require => File['/public/dumps'],
+        require => File['/public/dumps', '/etc/modprobe.d/nfs-no-idmap'],
     }
 
     file { '/public/keys':
@@ -112,7 +113,7 @@ class role::labs::instance {
         fstype  => 'nfs',
         options => "ro,${nfs_opts}",
         device  => "${nfs_server}:/keys",
-        require => File['/public/keys'],
+        require => File['/public/keys', '/etc/modprobe.d/nfs-no-idmap'],
         notify  => Service['ssh'],
     }
 
