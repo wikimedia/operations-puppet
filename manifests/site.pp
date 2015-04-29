@@ -790,6 +790,13 @@ node 'db1011.eqiad.wmnet' {
     include role::mariadb::tendril
 }
 
+# codfw db
+node /^db20(4[3-9]|5[0-9]|6[0-9]|70)\.codfw\.wmnet$/ {
+
+    $cluster = 'mysql'
+    include standard
+}
+
 node 'dbstore1001.eqiad.wmnet' {
     $cluster = 'mysql'
     $ganglia_aggregator = true
