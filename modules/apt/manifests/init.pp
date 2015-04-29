@@ -33,19 +33,6 @@ class apt {
         require => Package['python-apt'],
     }
 
-    case $::lsbdistid {
-        'Debian': { $components = 'main backports thirdparty' }
-        'Ubuntu': { $components = 'main universe thirdparty'  }
-        default:  { fail('Unrecognized operating system')     }
-    }
-
-    apt::repository { 'wikimedia':
-        uri         => 'http://apt.wikimedia.org/wikimedia',
-        dist        => "${::lsbdistcodename}-wikimedia",
-        components  => $components,
-        comment_old => true,
-    }
-
     # prefer Wikimedia APT repository packages in all cases
     apt::pin { 'wikimedia':
         package  => '*',
@@ -76,14 +63,18 @@ class apt {
         value    => $http_proxy,
     }
 
-    if $::lsbdistid == 'Debian' {
+    if os_version('debian') {
+        $components = 'main backports thirdparty'
+
         apt::conf { 'security-debian-proxy':
             ensure   => present,
             priority => '80',
             key      => 'Acquire::http::Proxy::security.debian.org',
             value    => $http_proxy,
         }
-    } elsif $::lsbdistid == 'Ubuntu' {
+    } elsif os_version('ubuntu') {
+        $components = 'main universe thirdparty'
+
         apt::conf { 'security-ubuntu-proxy':
             ensure   => present,
             priority => '80',
@@ -104,6 +95,15 @@ class apt {
             key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
             value    => $http_proxy,
         }
+    } else {
+        fail("Unknown operating system '$::lsbdistid'.")
+    }
+
+    apt::repository { 'wikimedia':
+        uri         => 'http://apt.wikimedia.org/wikimedia',
+        dist        => "${::lsbdistcodename}-wikimedia",
+        components  => $components,
+        comment_old => true,
     }
 
     # apt-get should not install recommended packages
