@@ -6,7 +6,7 @@ class contint::packages::labs {
     Package['puppet-lint'] -> Class['contint::packages::labs']
 
     include contint::packages
-    # Fonts needed for browser tests screenshots (bug 69535)
+    # Fonts needed for browser tests screenshots (T71535)
     include mediawiki::packages::fonts
 
     # Self update the wikimedia packages (such as hhvm) on an hourly basis
@@ -100,7 +100,7 @@ class contint::packages::labs {
     # Also provided by Zuul installation
     ensure_packages(['python-pip'])
 
-    # Bring tox/virtualenv... from pip  bug 44443
+    # Bring tox/virtualenv... from pip  T46443
     # TODO: Reevaluate this once we switch to trusty. Maybe provider being apt
     # would be better then
     package { 'tox':

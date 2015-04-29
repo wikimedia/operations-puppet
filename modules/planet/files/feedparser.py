@@ -2158,7 +2158,7 @@ class _MicroformatsParser:
     
             if arLines:
                 arLines = ['BEGIN:vCard','VERSION:3.0'] + arLines + ['END:vCard']
-	      # line below commented as temp fix - dz - bug 45806
+	      # line below commented as temp fix - dz - T47806
               #  sVCards += u'\n'.join(arLines) + u'\n'
     
         return sVCards.strip()
