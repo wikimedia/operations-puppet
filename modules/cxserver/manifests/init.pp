@@ -18,6 +18,8 @@
 #   have write access to cxserver user.
 # [*parsoid*]
 #   Url to Parsoid service.
+# [*restbase*]
+#   Url to Restbase API.
 # [*apertium*]
 #   Url to Apertium service.
 # [*yandex_url*]
@@ -36,6 +38,7 @@ class cxserver(
     $conf_path = '/srv/deployment/cxserver/deploy/src/config.js',
     $log_dir = '/var/log/cxserver',
     $parsoid = 'http://parsoid-lb.eqiad.wikimedia.org',
+    $restbase = 'https://rest.wikimedia.org/$lang.wikipedia.org/v1/page/html/$title'
     $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
     $yandex_url = undef,
     $yandex_api_key = undef,
