@@ -135,6 +135,7 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 "elasticsearch::cluster_name": beta-search
 "elasticsearch::script_disable_dynamic": false
 "elasticsearch::auto_create_index": '+apifeatureusage-*,-*'
+"elasticsearch::merge_threads": 1
 role::logstash::statsd_host: labmon1001.eqiad.wmnet
 nfs_mounts:
   project: false

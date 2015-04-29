@@ -69,3 +69,7 @@ elasticsearch::bulk_thread_pool_executors: 6
 elasticsearch::script_disable_dynamic: false
 # Let apifeatureusage create their indices
 elasticsearch::auto_create_index: '+apifeatureusage-*,-*'
+
+# Use only 2 merge threads (instead of 3) to avoid updates interfering with
+# actual searches
+elasticsearch::merge_threads: 2
