@@ -1,10 +1,11 @@
 <%
 cvars = {
-  'gelf_host' => scope.lookupvar('service::configuration::logstash_host'),
-  'gelf_port' => scope.lookupvar('service::configuration::logstash_port'),
-  'stat_host' => scope.lookupvar('service::configuration::statsd_host'),
-  'stat_port' => scope.lookupvar('service::configuration::statsd_port'),
-  'proxy'     => scope.lookupvar('service::configuration::http_proxy')
+  'gelf_host'     => scope.lookupvar('service::configuration::logstash_host'),
+  'gelf_port'     => scope.lookupvar('service::configuration::logstash_port'),
+  'stat_host'     => scope.lookupvar('service::configuration::statsd_host'),
+  'stat_port'     => scope.lookupvar('service::configuration::statsd_port'),
+  'proxy'         => scope.lookupvar('service::configuration::http_proxy'),
+  'no_proxy_list' => scope.lookupvar('service::configuration::no_proxy_list')
 }
 
 cvars.keys.each do |k|
@@ -59,3 +60,8 @@ services:
       # cors: restricted.domain.org
       # URL of the outbound proxy to use (complete with protocol)
       proxy: <%= cvars['proxy'] %>
+      # the list of domains for which not to use the proxy defined above
+<% if cvars['no_proxy_list'].kind_of? Array and !cvars['no_proxy_list'].empty? -%>
+      no_proxy_list:
+<%= cvars['no_proxy_list'].map { |dom| "        - #{dom}" }.join "\n" %>
+<% end -%>
