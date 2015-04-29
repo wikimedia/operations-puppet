@@ -7,6 +7,9 @@
 # [*http_proxy*]
 #   Full URL of the proxy to use
 #
+# [*no_proxy_list*]
+#   List of domains fow which $http_proxy should not be used
+#
 # [*statsd_host*]
 #   StatsD host. Optional. Default: localhost
 #
@@ -25,6 +28,7 @@
 
 class service::configuration(
     $http_proxy    = undef,
+    $no_proxy_list = undef,
     $statsd_host   = 'localhost',
     $statsd_port   = 8125,
     $logstash_host = 'localhost',
