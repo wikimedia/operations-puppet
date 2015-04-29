@@ -281,6 +281,14 @@ class role::mariadb::dbstore(
         lag_crit     => $lag_crit,
         warn_stopped => $warn_stopped,
     }
+
+    file { '/usr/local/bin/dumps-misc.sh':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => template('mariadb/dumps-misc.sh.erb'),
+    }
 }
 
 # MariaDB 10 Analytics all-shards slave, with scratch space and TokuDB

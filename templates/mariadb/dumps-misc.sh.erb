@@ -1,0 +1,26 @@
+#!/bin/bash
+
+find /srv/backups -mtime +14 -type f -delete
+
+my="/usr/local/bin/mysql --skip-column-names -e"
+dump="/usr/local/bin/mysqldump --single-transaction --quick"
+
+$dump -h m1-slave --databases bacula etherpadlite librenms puppet racktables rt | \
+    pigz > /srv/backups/m1-$(date +%Y%m%d%H%M%S).sql.gz &
+
+$dump -h m2-slave --databases iegreview reviewdb scholarships | \
+    pigz > /srv/backups/m2-$(date +%Y%m%d%H%M%S).sql.gz &
+
+$dump -h m2-slave --max_allowed_packet=64M --databases otrs | \
+    pigz > /srv/backups/m2-otrs-$(date +%Y%m%d%H%M%S).sql.gz &
+
+sql="select schema_name from information_schema.schemata where schema_name regexp '^(phab|phlegal)'"
+
+$dump -h m3-slave --ignore-table=phabricator_search.search_documentfield \
+    --databases $($my "$sql" | tr '\n' ' ') | \
+    pigz > /srv/backups/m3-phabricator-phlegal-$(date +%Y%m%d%H%M%S).sql.gz
+
+sql="select schema_name from information_schema.schemata where schema_name regexp '^(wik|flowdb)'"
+
+$dump -h x1-slave --databases $($my "$sql" | tr '\n' ' ') | \
+    pigz > /srv/backups/x1-$(date +%Y%m%d%H%M%S).sql.gz
