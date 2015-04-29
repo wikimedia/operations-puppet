@@ -109,15 +109,6 @@ groups:
             'ALL = NOPASSWD: /usr/local/bin/svn-group',
             'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
             'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group']
-  search-roots:
-    gid: 716
-    description: non-ops admins for search
-    members: [manybubbles, demon]
-    privileges: ['ALL = NOPASSWD: ALL']
-  search-users:
-    gid: 717
-    description: elastic search testing
-    members: [manybubbles]
   contint-users:
     gid: 718
     description: users with accounts on jenkins hosts
