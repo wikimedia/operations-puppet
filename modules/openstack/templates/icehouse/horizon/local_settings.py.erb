@@ -280,7 +280,7 @@ POLICY_FILES = {
 #    'identity': 'keystone_policy.json',
     'compute': 'nova_policy.json',
 #    'volume': 'cinder_policy.json',
-#    'image': 'glance_policy.json',
+    'image': 'glance_policy.json',
 }
 
 # Trove user and database extension support. By default support for
@@ -514,5 +514,10 @@ FLAVOR_EXTRA_KEYS = {
     ]
 }
 
+# WMF-specific branding
 SITE_BRANDING = 'Manage Wikimedia Labs'
 SITE_BRANDING_LINK = 'https://wikitech.wikimedia.org/wiki/Help:FAQ'
+
+# WMF-specific security limits
+HORIZON_IMAGES_ALLOW_UPLOAD = False
+

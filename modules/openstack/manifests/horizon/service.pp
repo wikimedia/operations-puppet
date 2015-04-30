@@ -46,8 +46,16 @@ class openstack::horizon::service($openstack_version='icehouse', $novaconfig) {
     # In the perfect future, Horizon policies will be the same
     #  files that the respective services use.  In the meantime, though
     #  it's useful to be able to disable not-yet-supported horizon features.
-    file { '/etc/openstack-dashboard/nova_policy.py':
+    file { '/etc/openstack-dashboard/nova_policy.json':
         source  => "puppet:///modules/openstack/${openstack_version}/horizon/nova_policy.json",
+        owner   => 'horizon',
+        group   => 'horizon',
+        notify  => Service['apache2'],
+        require => Package['openstack-dashboard'],
+        mode    => '0440',
+    }
+    file { '/etc/openstack-dashboard/image_policy.json':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/image_policy.json",
         owner   => 'horizon',
         group   => 'horizon',
         notify  => Service['apache2'],
