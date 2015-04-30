@@ -68,6 +68,11 @@
     "compute_extension:volumes": [["role:projectadmin"]],
     "compute_extension:volumetypes": [["role:projectadmin"]],
 
+    "compute:volume_snapshot_create": "!",
+    "compute:volume_snapshot_delete": "!",
+    "compute:resize": "!",
+    "compute:confirm_resize": "!",
+    "compute:revert_resize": "!",
 
     "volume:create": [["role:projectadmin"]],
     "volume:get_all": [],
