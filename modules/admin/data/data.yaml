@@ -284,7 +284,7 @@ nimishg, rainman, ssmith, swalling, erik]
     description: Users who can do sane CLI admin things
                  * Remove repositories
                  * Manage repositories, phd service, and workers
-    members: []
+    members: [aklapper]
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/repository',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/phd',
