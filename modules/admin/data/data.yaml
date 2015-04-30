@@ -23,11 +23,11 @@ groups:
     description: RT 5934
     members: [ssastry, cscott, arlolra]
     privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload',
-            'ALL = (root) NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
-            'ALL = (parsoid-rt) NOPASSWD: /home/parsoid-rt/update-code.sh']
+                 'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
+                 'ALL = (parsoid-rt) NOPASSWD: /home/parsoid-rt/update-code.sh']
   gerrit-root:
     gid: 703
     description: manage gerrit server
@@ -41,28 +41,28 @@ groups:
     gid: 705
     description: replaces 'mortals' for software deployment
     members: [aaron, dr0ptp4kt, werdna, anomie, aude, awight, awjrichards, bd808, jdouglas,
-      brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
-      gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
-      maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
-      nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
-      tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair,
-      mobrovac, nuria, thcipriani, joal, eevans, mforns]
+              brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
+              gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
+              maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
+              nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
+              tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair,
+              mobrovac, nuria, thcipriani, joal, eevans, mforns]
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
     members: [avar, daniel, dartar, diederik,
-      erik, ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
-      tparscal, tnegrin, ssastry, ironholds, nuria, leila,
-      santhosh, amire80, legoktm, jsahleen]
+              erik, ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
+              tparscal, tnegrin, ssastry, ironholds, nuria, leila,
+              santhosh, amire80, legoktm, jsahleen]
   bastiononly:
     gid: 707
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed,
-      haithams, mhurd, dbrant, mglaser, kleduc, bsitzmann, deskana,
-      jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
-      bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
-      joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
-      pcoombe, mholloway-shell, madhuvishy]
+              haithams, mhurd, dbrant, mglaser, kleduc, bsitzmann, deskana,
+              jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
+              bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
+              joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
+              pcoombe, mholloway-shell, madhuvishy]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -93,22 +93,22 @@ groups:
     gid: 714
     description: users with access to research db
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
-      dduvall, ellery, ezachte, gage, gilles, haithams, halfak, handrade,
-      ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
-      kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
-      nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
-      mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
-      daisy, tomasz, mholloway-shell, madhuvishy]
+              dduvall, ellery, ezachte, gage, gilles, haithams, halfak, handrade,
+              ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
+              kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
+              nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
+              mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
+              daisy, tomasz, mholloway-shell, madhuvishy]
   ldap-admins:
     gid: 715
     description: ldap admins
     members: [robla, reedy, demon]
     privileges: ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
-            'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
-            'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
-            'ALL = NOPASSWD: /usr/local/bin/svn-group',
-            'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
-            'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group']
+                 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
+                 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
+                 'ALL = NOPASSWD: /usr/local/bin/svn-group',
+                 'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
+                 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group']
   contint-users:
     gid: 718
     description: users with accounts on jenkins hosts
@@ -116,14 +116,15 @@ groups:
   contint-admins:
     gid: 719
     description: users with some sudo permissions on jenkins hosts
-    members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur, twentyafterfour, zfilipin, thcipriani, legoktm]
+    members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
+              twentyafterfour, zfilipin, thcipriani, legoktm]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
-            'ALL = (jenkins-slave) NOPASSWD: ALL',
-            'ALL = (gerritslave) NOPASSWD: ALL',
-            'ALL = (zuul) NOPASSWD: ALL',
-            'ALL = NOPASSWD: /etc/init.d/jenkins',
-            'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
-            'ALL = (postgres) NOPASSWD: /usr/bin/psql']
+                 'ALL = (jenkins-slave) NOPASSWD: ALL',
+                 'ALL = (gerritslave) NOPASSWD: ALL',
+                 'ALL = (zuul) NOPASSWD: ALL',
+                 'ALL = NOPASSWD: /etc/init.d/jenkins',
+                 'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
+                 'ALL = (postgres) NOPASSWD: /usr/bin/psql']
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
@@ -134,10 +135,10 @@ groups:
     description: admins for pdf render (rt 6468)
     members: [cscott, ssastry, gwicke, arlolra]
     privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service ocg stop',
-            'ALL = (root) NOPASSWD: /usr/sbin/service ocg start',
-            'ALL = (root) NOPASSWD: /usr/sbin/service ocg restart',
-            'ALL = (root) NOPASSWD: /usr/sbin/service ocg reload',
-            'ALL = (ocg) NOPASSWD: ALL']
+                 'ALL = (root) NOPASSWD: /usr/sbin/service ocg start',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service ocg restart',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service ocg reload',
+                 'ALL = (ocg) NOPASSWD: ALL']
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
@@ -188,9 +189,9 @@ groups:
     description: group of mathoid admins
     members: [gwicke, catrope]
     privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid stop',
-            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
-            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',
-            'ALL = (root) NOPASSWD: /usr/sbin/service mathoid reload']
+                 'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service mathoid reload']
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics (Hadoop) cluster.
@@ -200,9 +201,9 @@ groups:
   analytics-privatedata-users:
     gid: 731
     description: Gives access to the Analytics (Hadoop) cluster as well as private data within.
-        This will grant shell access on Hadoop client nodes (stat1002) and on
-        Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
-        Those files are group readable by the analytics-privatedata-users group.
+                 This will grant shell access on Hadoop client nodes (stat1002) and on
+                 Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
+                 Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, erik, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds,
               kleduc, nuria, haithams, otto, deskana,
@@ -212,12 +213,12 @@ groups:
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
-        This will grant shell access on all Analytics Cluster nodes, as well
-        as the ability to sudo to certain Analytics Cluster system users.
+                 This will grant shell access on all Analytics Cluster nodes, as well
+                 as the ability to sudo to certain Analytics Cluster system users.
     members: [qchris, joal]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
-            'ALL = (oozie) NOPASSWD: ALL',
-            'ALL = (hive)  NOPASSWD: ALL']
+                 'ALL = (oozie) NOPASSWD: ALL',
+                 'ALL = (hive)  NOPASSWD: ALL']
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging investigation
@@ -232,9 +233,9 @@ groups:
     description: group of citoid admins
     members: [gwicke, catrope, mobrovac]
     privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid stop',
-            'ALL = (root) NOPASSWD: /usr/sbin/service citoid start',
-            'ALL = (root) NOPASSWD: /usr/sbin/service citoid restart',
-            'ALL = (root) NOPASSWD: /usr/sbin/service citoid reload']
+                 'ALL = (root) NOPASSWD: /usr/sbin/service citoid start',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service citoid restart',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service citoid reload']
   analytics-roots:
       gid: 738
       description: Full root access to Analytics Cluster nodes.
@@ -255,22 +256,22 @@ groups:
     description: group of cxserver admins
     members: [kartik, nikerabbit]
     privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service cxserver stop',
-            'ALL = (root) NOPASSWD: /usr/sbin/service cxserver start',
-            'ALL = (root) NOPASSWD: /usr/sbin/service cxserver restart',
-            'ALL = (root) NOPASSWD: /usr/sbin/service cxserver reload',
-            'ALL = (cxserver) NOPASSWD: ALL']
+                 'ALL = (root) NOPASSWD: /usr/sbin/service cxserver start',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service cxserver restart',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service cxserver reload',
+                 'ALL = (cxserver) NOPASSWD: ALL']
   chromium-admin:
     gid: 742
     description: people who run benchmarking tests with chromium (and xvfb)
     members: [catrope]
     privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service chromium stop',
-            'ALL = (root) NOPASSWD: /usr/sbin/service chromium start',
-            'ALL = (root) NOPASSWD: /usr/sbin/service chromium restart',
-            'ALL = (root) NOPASSWD: /usr/sbin/service chromium reload',
-            'ALL = (root) NOPASSWD: /usr/sbin/service xvfb stop',
-            'ALL = (root) NOPASSWD: /usr/sbin/service xvfb start',
-            'ALL = (root) NOPASSWD: /usr/sbin/service xvfb restart',
-            'ALL = (root) NOPASSWD: /usr/sbin/service xvfb reload']
+                 'ALL = (root) NOPASSWD: /usr/sbin/service chromium start',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service chromium restart',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service chromium reload',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service xvfb stop',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service xvfb start',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service xvfb restart',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service xvfb reload']
   snapshot-admins:
     gid: 743
     description: People who can sudo into the datasets user on snapshot hosts.
