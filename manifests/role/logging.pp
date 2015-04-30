@@ -389,7 +389,7 @@ class role::logging::kafkatee::webrequest::ops inherits role::logging::kafkatee:
     }
 
     ::kafkatee::output { '5xx':
-        destination => "/bin/grep '\"http_status\":\"5'' >> ${webrequest_log_directory}/5xx.json",
+        destination => "/bin/grep '\"http_status\":\"5' >> ${webrequest_log_directory}/5xx.json",
         type        => 'pipe',
     }
 }
