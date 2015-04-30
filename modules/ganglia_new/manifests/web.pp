@@ -37,4 +37,12 @@ class ganglia_new::web(
         content => template('ganglia_new/conf_production.php.erb'),
         require => Package['ganglia-webfrontend'],
     }
+
+    # sometimes webfrontend leaves files behind, T97637
+    cron { 'ganglia_webfrontend_cleanup':
+        ensure  => 'present',
+        command => 'find /tmp -type f -iname "ganglia-graph*" -mmin +60 -delete',
+        user    => 'www-data',
+        hour    => '*',
+    }
 }
