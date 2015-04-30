@@ -1,0 +1,8 @@
+Verified+2: jenkins-bot
+Code-Review+1: Alex Monk <krenair@gmail.com>
+Code-Review+2: Rush <rush@wikimedia.org>
+Submitted-by: Rush <rush@wikimedia.org>
+Submitted-at: Thu, 30 Apr 2015 23:03:45 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/208020
+Project: operations/puppet
+Branch: refs/heads/production
