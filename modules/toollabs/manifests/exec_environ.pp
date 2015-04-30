@@ -337,7 +337,6 @@ class toollabs::exec_environ {
         'libxml2-utils',               # T64944.
         'libyaml-dev',                 # T67974.
         'libzbar0',                    # T58996
-        'mariadb-client',              # For /usr/bin/mysql.
         'mdbtools',                    # T50805.
         'melt',                        # T71365
         'openbabel',                   # T68995
@@ -382,6 +381,7 @@ class toollabs::exec_environ {
             'libmpc2',
             'libprotobuf7',                # T58995
             'libvips15',
+            'mysql-client',                # mariadb-client just... doesn't work on precise. Apt failures
             # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
             ]:
             ensure => latest,
@@ -395,6 +395,7 @@ class toollabs::exec_environ {
             'libprotobuf8',
             'libvips37',
             'nodejs-legacy',               # T1102
+            'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
             ]:
             ensure => latest,
         }
