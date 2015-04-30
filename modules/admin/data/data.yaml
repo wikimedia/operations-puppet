@@ -176,13 +176,14 @@ groups:
   mathoid-roots:
     gid: 729
     description: root rights for mathoid
-    members: [gwicke, catrope]
-    privileges: ['ALL = (mathoid) NOPASSWD: ALL']
+    members: []
+    privileges: []
   mathoid-admin:
     gid: 730
     description: group of mathoid admins
     members: [gwicke, catrope]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid *']
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid *',
+                 'ALL = (mathoid) NOPASSWD: ALL']
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics (Hadoop) cluster.
@@ -217,13 +218,14 @@ groups:
   citoid-roots:
     gid: 735
     description: rights for debugging citoid
-    members: [gwicke, catrope, mobrovac]
-    privileges: ['ALL = (citoid) NOPASSWD: ALL']
+    members: []
+    privileges: []
   citoid-admin:
     gid: 736
     description: group of citoid admins
     members: [gwicke, catrope, mobrovac]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid *']
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid *',
+                 'ALL = (citoid) NOPASSWD: ALL']
   analytics-roots:
       gid: 738
       description: Full root access to Analytics Cluster nodes.
