@@ -72,7 +72,7 @@ class role::cache::kafka::webrequest(
         minute          => '*/1',
         parser          => 'JsonLogster',
         logfile         => "/var/cache/varnishkafka/webrequest.stats.json",
-        logster_options => "-o statsd --statsd-host=localhost:8125 --metric-prefix=${graphite_metric_prefix}",
+        logster_options => "-o statsd --statsd-host=statsd.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}",
         require         => Class['role::cache::statsd'],
     }
 
