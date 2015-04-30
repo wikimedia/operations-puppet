@@ -1,0 +1,4 @@
+---
+elasticsearch::auto_create_index: +raita,-*
+elasticsearch::cluster_name: integration-raita
+elasticsearch::heap_memory: 1G
