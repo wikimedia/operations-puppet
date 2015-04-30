@@ -3,9 +3,6 @@
     "admin_or_owner":  [["is_admin:True"], ["project_id:%(project_id)s"]],
     "default": [["rule:admin_or_owner"]],
 
-
-    # Only admins (that is, Ops) should be able to create instances, since it's broken
-    #  and only useful for test and development.
     "compute:create": "role:admin",
     "compute:delete": "role:admin",
     "compute:create:attach_network": "role:admin",
