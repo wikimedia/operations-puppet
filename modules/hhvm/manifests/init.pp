@@ -63,6 +63,7 @@ class hhvm(
     $fcgi_settings = {},
     $cli_settings  = {},
     $cache_dir     = '/run/hhvm/cache',
+    $base_jit_size = to_bytes('100 Mb'),
 ) {
     requires_os('ubuntu >= trusty')
 
@@ -94,7 +95,7 @@ class hhvm(
     # general guidance. It has been raised to a larger value as cold
     # TC was completely exhausted.
 
-    $base_jit_size = to_bytes('100 Mb')
+
     $a_size        = $base_jit_size
     $a_cold_size   = 0.5 * $base_jit_size
     $a_frozen_size = $base_jit_size
