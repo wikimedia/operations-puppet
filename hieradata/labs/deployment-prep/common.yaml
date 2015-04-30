@@ -266,7 +266,6 @@ mediawiki_memcached_servers:
 "mediawiki::jobrunner::runners_restbase": 5
 "mediawiki::jobrunner::runners_translate": 1
 "mediawiki::jobrunner::runners_upload": 2
-"mediawiki::jobrunner::runners_centralauth": 1
 "hhvm::base_jit_size": 183500800
 "role::logging::mediawiki::log_directory": /data/project/logs
 "role::mediawiki::webserver::pool": one-pool-to-rule-them-all
