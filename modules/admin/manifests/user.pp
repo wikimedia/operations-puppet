@@ -121,10 +121,16 @@ define admin::user (
         }
     }
 
-    if !empty($privileges) {
-        sudo::user { $name:
-            ensure     => $ensure,
-            privileges => $privileges,
-        }
+    # If specified privilege is empty we manage
+    # separately from the user as a whole and cleanup
+    if empty($privileges) {
+        $privileges_ensure = 'absent'
+    } else {
+        $privileges_ensure = $ensure
+    }
+
+    sudo::user { $name:
+        ensure     => $privileges_ensure,
+        privileges => $privileges,
     }
 }
