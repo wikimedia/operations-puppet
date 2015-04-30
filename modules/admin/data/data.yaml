@@ -22,8 +22,8 @@ groups:
     gid: 702
     description: RT 5934
     members: [ssastry, cscott, arlolra]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid *',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
+                 'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
                  'ALL = (parsoid-rt) NOPASSWD: /home/parsoid-rt/update-code.sh']
   gerrit-root:
     gid: 703
@@ -45,8 +45,8 @@ groups:
               tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair,
               mobrovac, nuria, thcipriani, joal, eevans, mforns]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
-                 'ALL = (root) NOPASSWD: /sbin/restart hhvm',
-                 'ALL = (root) NOPASSWD: /sbin/start hhvm',
+                 'ALL = NOPASSWD: /sbin/restart hhvm',
+                 'ALL = NOPASSWD: /sbin/start hhvm',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
                  'ALL = NOPASSWD: /usr/bin/renice']
@@ -137,7 +137,7 @@ groups:
     gid: 721
     description: admins for pdf render (rt 6468)
     members: [cscott, ssastry, gwicke, arlolra]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service ocg *',
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service ocg *',
                  'ALL = (ocg) NOPASSWD: ALL']
   logstash-roots:
     gid: 722
@@ -188,7 +188,7 @@ groups:
     gid: 730
     description: group of mathoid admins
     members: [gwicke, catrope]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid *',
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service mathoid *',
                  'ALL = (mathoid) NOPASSWD: ALL']
   analytics-users:
     gid: 7080
@@ -230,7 +230,7 @@ groups:
     gid: 736
     description: group of citoid admins
     members: [gwicke, catrope, mobrovac]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid *',
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service citoid *',
                  'ALL = (citoid) NOPASSWD: ALL']
   analytics-roots:
       gid: 738
@@ -251,14 +251,14 @@ groups:
     gid: 741
     description: group of cxserver admins
     members: [kartik, nikerabbit]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service cxserver *',
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service cxserver *',
                  'ALL = (cxserver) NOPASSWD: ALL']
   chromium-admin:
     gid: 742
     description: people who run benchmarking tests with chromium (and xvfb)
     members: [catrope]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service chromium *',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service xvfb *']
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service chromium *',
+                 'ALL = NOPASSWD: /usr/sbin/service xvfb *']
   snapshot-admins:
     gid: 743
     description: People who can sudo into the datasets user on snapshot hosts.
@@ -279,15 +279,15 @@ groups:
                  * Remove repositories
                  * Manage repositories, phd service, and workers
     members: []
-    privileges: ['ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
-                 'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/repository',
-                 'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/phd',
-                 'ALL=(root) NOPASSWD: /srv/phab/phabricator/bin/worker']
+    privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
+                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/repository',
+                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/phd',
+                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/worker']
   zotero-admin:
     gid: 747
     description: group of zotero admins
     members: [mobrovac]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service zotero *']
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service zotero *']
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
