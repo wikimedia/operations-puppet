@@ -325,19 +325,19 @@ class role::logging::kafkatee::webrequest {
     # TODO: Do we need all topics for ops debugging of webrequest logs?
 
     # include all webrequest topics
-    ::kafkatee::input { 'kafka-webrequest_bits':
+    kafkatee::input { 'kafka-webrequest_bits':
         topic       => 'webrequest_bits',
     }
-    ::kafkatee::input { 'kafka-webrequest_misc':
+    kafkatee::input { 'kafka-webrequest_misc':
         topic       => 'webrequest_misc',
     }
-    ::kafkatee::input { 'kafka-webrequest_mobile':
+    kafkatee::input { 'kafka-webrequest_mobile':
         topic       => 'webrequest_mobile',
     }
-    ::kafkatee::input { 'kafka-webrequest_text':
+    kafkatee::input { 'kafka-webrequest_text':
         topic       => 'webrequest_text',
     }
-    ::kafkatee::input { 'kafka-webrequest_upload':
+    kafkatee::input { 'kafka-webrequest_upload':
         topic       => 'webrequest_upload',
     }
 
