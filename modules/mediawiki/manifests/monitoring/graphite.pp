@@ -4,9 +4,9 @@
 class mediawiki::monitoring::graphite {
 
     # Also check that the metric is being collected
-    monitoring::graphite_threshold { 'mediawiki_jobs_queued_above_0':
-        description     => 'More than 0 jobs queued',
-        metric          => 'MediaWiki.stats.job-insert.count',
+    monitoring::graphite_threshold { 'mediawiki_job_insert_rate':
+        description     => 'MediaWiki jobs not being inserted',
+        metric          => 'MediaWiki.job-insert.rate',
         from            => '1hours',
         warning         => 1,
         critical        => 0,
@@ -16,9 +16,9 @@ class mediawiki::monitoring::graphite {
     }
 
     # Also check that the metric is being collected
-    monitoring::graphite_threshold { 'mediawiki_jobs_running_above_0':
-        description     => 'More than 0 jobs running',
-        metric          => 'MediaWiki.stats.job-pop.count',
+    monitoring::graphite_threshold { 'mediawiki_job_pop_rate':
+        description     => 'MediaWiki jobs not dequeued',
+        metric          => 'MediaWiki.job-pop.rate',
         from            => '1hours',
         warning         => 1,
         critical        => 0,
