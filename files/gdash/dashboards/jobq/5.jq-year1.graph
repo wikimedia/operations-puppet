@@ -7,24 +7,24 @@ area "first"
 
 field :push, :color => "green",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-pop.count, "1week"),"Jobs Run/week"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-pop.rate, "1week"),"Jobs Run/week"))'
 
 field :run, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-insert.count, "1week"),"Jobs Queued/week"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-insert.rate, "1week"),"Jobs Queued/week"))'
 
 field :pushdupl, :color => "red",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-insert-duplicate.count, "1week"),"Duplicate jobs Queued/week"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-insert-duplicate.rate, "1week"),"Duplicate jobs Queued/week"))'
 
 field :rundupl, :color => "purple",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-pop-duplicate.count, "1week"),"Duplicate jobs run/week"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-pop-duplicate.rate, "1week"),"Duplicate jobs run/week"))'
 
 field :recycle, :color => "orange",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-recycle.count, "1week"),"Jobs recycled/week"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-recycle.rate, "1week"),"Jobs recycled/week"))'
 
 field :abandon, :color => "brown",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.stats.job-abandon.count, "1week"),"Jobs abandoned/week"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-abandon.rate, "1week"),"Jobs abandoned/week"))'
