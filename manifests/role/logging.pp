@@ -315,30 +315,42 @@ class role::logging::kafkatee::webrequest {
     }
     include kafkatee::monitoring
 
-    # Set defaults for all webrequest kafkatee inputs
-    Kafktee::Input {
-        partitions  => '0-11',
-        options     => { 'encoding' => 'json' },
-        offset      => 'stored',
-    }
-
     # TODO: Do we need all topics for ops debugging of webrequest logs?
 
-    # include all webrequest topics
+    # Include all webrequest topics as inputs.
+    # Note:  we used offset => 'end' rather than 'stored'
+    # because we don't need to backfill these files from
+    # buffered kafka data if kafkatee goes down.
+    # These are just logs for ops debugging.
     kafkatee::input { 'kafka-webrequest_bits':
         topic       => 'webrequest_bits',
+        partitions  => '0-11',
+        options     => { 'encoding' => 'json' },
+        offset      => 'end',
     }
     kafkatee::input { 'kafka-webrequest_misc':
         topic       => 'webrequest_misc',
+        partitions  => '0-11',
+        options     => { 'encoding' => 'json' },
+        offset      => 'end',
     }
     kafkatee::input { 'kafka-webrequest_mobile':
         topic       => 'webrequest_mobile',
+        partitions  => '0-11',
+        options     => { 'encoding' => 'json' },
+        offset      => 'end',
     }
     kafkatee::input { 'kafka-webrequest_text':
         topic       => 'webrequest_text',
+        partitions  => '0-11',
+        options     => { 'encoding' => 'json' },
+        offset      => 'end',
     }
     kafkatee::input { 'kafka-webrequest_upload':
         topic       => 'webrequest_upload',
+        partitions  => '0-11',
+        options     => { 'encoding' => 'json' },
+        offset      => 'end',
     }
 
     # Declare packaged rsyslog config to ensure it isn't purged.
