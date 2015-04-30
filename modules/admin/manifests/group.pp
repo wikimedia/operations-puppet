@@ -32,16 +32,10 @@ define admin::group(
         }
     }
 
-    # If specified privilege is empty we manage
-    # separately from the group as a whole and cleanup
-    if empty($privileges) {
-        $privileges_ensure = 'absent'
-    } else {
-        $privileges_ensure = $ensure
-    }
-
-    sudo::group { $name:
-        ensure     => $privileges_ensure,
-        privileges => $privileges,
+    if !empty($privileges) {
+        sudo::group { $name:
+            ensure     => $ensure,
+            privileges => $privileges,
+        }
     }
 }
