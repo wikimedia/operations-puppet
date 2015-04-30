@@ -222,11 +222,6 @@ groups:
     gid: 733
     description: Login access for EventLogging investigation
     members: [nuria, milimetric, mforns, joal]
-  labmon-roots:
-    gid: 734
-    description: Full root access to labmon nodes
-    members: [yuvipanda]
-    privileges: ['ALL = NOPASSWD: ALL']
   citoid-roots:
     gid: 735
     description: rights for debugging citoid
