@@ -72,20 +72,8 @@ class mediawiki::users(
         content => $l10nupdate_pub_key,
     }
 
-    sudo::group { 'wikidev':
-        privileges => [
-            "ALL = (${web},mwdeploy,l10nupdate) NOPASSWD: ALL",
-            'ALL = (root) NOPASSWD: /sbin/restart hhvm',
-            'ALL = (root) NOPASSWD: /sbin/start hhvm',
-            'ALL = NOPASSWD: /usr/sbin/apache2ctl',
-            'ALL = NOPASSWD: /etc/init.d/apache2',
-            'ALL = NOPASSWD: /usr/bin/renice',
-        ],
-    }
-
     # Grant mwdeploy sudo rights to run anything as itself or apache.
     # This allows MediaWiki deployers to deploy as mwdeploy.
-
     sudo::user { 'mwdeploy':
         privileges => [
             "ALL = (${web},mwdeploy,l10nupdate) NOPASSWD: ALL",

@@ -44,6 +44,12 @@ groups:
               nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
               tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair,
               mobrovac, nuria, thcipriani, joal, eevans, mforns]
+    privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
+                 'ALL = (root) NOPASSWD: /sbin/restart hhvm',
+                 'ALL = (root) NOPASSWD: /sbin/start hhvm',
+                 'ALL = NOPASSWD: /usr/sbin/apache2ctl',
+                 'ALL = NOPASSWD: /etc/init.d/apache2',
+                 'ALL = NOPASSWD: /usr/bin/renice']
   restricted:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
