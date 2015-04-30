@@ -54,6 +54,14 @@ class openstack::horizon::service($openstack_version='icehouse', $novaconfig) {
         require => Package['openstack-dashboard'],
         mode    => '0440',
     }
+    file { '/etc/openstack-dashboard/image_policy.py':
+        source  => "puppet:///modules/openstack/${openstack_version}/horizon/image_policy.json",
+        owner   => 'horizon',
+        group   => 'horizon',
+        notify  => Service['apache2'],
+        require => Package['openstack-dashboard'],
+        mode    => '0440',
+    }
 
     file { ['/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo.png',
             '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo-splash.png']:
