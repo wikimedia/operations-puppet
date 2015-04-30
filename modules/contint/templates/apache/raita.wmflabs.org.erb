@@ -1,0 +1,42 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/contint/apache/raita.wmflabs.org.erb
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerName raita.wmflabs.org
+
+    LogLevel warn
+    ErrorLog /var/log/apache2/raita_error.log
+    CustomLog /var/log/apache2/raita_access.log vhost_combined
+
+    DocumentRoot /srv/raita/docroot
+
+    ProxyRequests off
+
+    # Allow proxying of search requests to Elasticsearch via POST
+    <LocationMatch "^/db/([^_].*)/_search">
+        <Limit PUT DELETE>
+            Order deny,allow
+            Deny from all
+        </Limit>
+
+        ProxyPassMatch "http://127.0.0.1:9200/raita/$1/_search"
+    </LocationMatch>
+
+    # All other requests should be for a specific document via GET
+    <LocationMatch "^/db/([^_].*)/([^_].*)">
+        <Limit POST PUT DELETE>
+            Order deny,allow
+            Deny from all
+        </Limit>
+
+        ProxyPassMatch "http://127.0.0.1:9200/raita/$1/$2"
+    </LocationMatch>
+
+    <Directory />
+        Order deny,allow
+        AllowOverride none
+    </Directory>
+</VirtualHost>
