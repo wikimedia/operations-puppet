@@ -29,7 +29,7 @@ groups:
     gid: 703
     description: manage gerrit server
     members: [demon, catrope]
-    privileges: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   gerrit-admin:
     gid: 704
     description: RT 6720 - assist in managing gerrit server
@@ -75,7 +75,7 @@ groups:
     gid: 709
     description: manage elasticsearch nodes
     members: [manybubbles, demon]
-    privileges: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   dataset-admins:
     gid: 710
     description: does work on dataset hosts
@@ -132,7 +132,7 @@ groups:
     gid: 720
     description: users who have full root on jenkins servers
     members: [hashar]
-    privileges: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ocg-render-admins:
     gid: 721
     description: admins for pdf render (rt 6468)
@@ -143,7 +143,7 @@ groups:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
     members: [aaron, bd808, manybubbles, demon, reedy]
-    privileges: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
@@ -236,17 +236,17 @@ groups:
       gid: 738
       description: Full root access to Analytics Cluster nodes.
       members: [qchris]
-      privileges: ['ALL = NOPASSWD: ALL']
+      privileges: ['ALL = (ALL) NOPASSWD: ALL']
   eventlogging-roots:
     gid: 739
     description: Full root on EventLogging servers.
     members: [nuria, milimetric, mforns, joal]
-    privileges: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   wikidata-query-roots:
     gid: 740
     description: Full root on the Wikidata Query Service nodes.
     members: [manybubbles, aaron, gwicke, smalyshev]
-    privileges: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   cxserver-admin:
     gid: 741
     description: group of cxserver admins
@@ -268,7 +268,7 @@ groups:
     gid: 744
     description: people who have full root on restbase nodes
     members: [eevans, gwicke, mobrovac]
-    privileges: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   citoid-users:
     gid: 745
     description: Login rights for citoid in order to look at citoid logs
@@ -292,7 +292,7 @@ groups:
     gid: 748
     description: people who have full root on phabricator
     members: [demon, twentyafterfour]
-    privileges: ['ALL = NOPASSWD: ALL']
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   htmldumps-admin:
     gid: 749
     description: users who maintain HTML/ZIM dumps
