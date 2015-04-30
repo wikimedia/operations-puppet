@@ -901,6 +901,10 @@ node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
 node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
     include role::logging::udp2log::erbium
+
+    # Include kafkatee fundraising outputs alongside of udp2log
+    # while FR techs verify that they can use this output.
+    include role::logging::kafkatee::webrequest::fundraising
 }
 
 # es1 equad
