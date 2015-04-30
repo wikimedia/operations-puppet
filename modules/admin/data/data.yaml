@@ -22,10 +22,7 @@ groups:
     gid: 702
     description: RT 5934
     members: [ssastry, cscott, arlolra]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid stop',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service parsoid start',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service parsoid restart',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service parsoid reload',
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service parsoid *',
                  'ALL = (root) NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
                  'ALL = (parsoid-rt) NOPASSWD: /home/parsoid-rt/update-code.sh']
   gerrit-root:
@@ -134,10 +131,7 @@ groups:
     gid: 721
     description: admins for pdf render (rt 6468)
     members: [cscott, ssastry, gwicke, arlolra]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service ocg stop',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service ocg start',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service ocg restart',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service ocg reload',
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service ocg *',
                  'ALL = (ocg) NOPASSWD: ALL']
   logstash-roots:
     gid: 722
@@ -188,10 +182,7 @@ groups:
     gid: 730
     description: group of mathoid admins
     members: [gwicke, catrope]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid stop',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service mathoid start',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service mathoid restart',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service mathoid reload']
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service mathoid *']
   analytics-users:
     gid: 7080
     description: Gives generic client access to the Analytics (Hadoop) cluster.
@@ -232,10 +223,7 @@ groups:
     gid: 736
     description: group of citoid admins
     members: [gwicke, catrope, mobrovac]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid stop',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service citoid start',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service citoid restart',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service citoid reload']
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service citoid *']
   analytics-roots:
       gid: 738
       description: Full root access to Analytics Cluster nodes.
@@ -255,23 +243,14 @@ groups:
     gid: 741
     description: group of cxserver admins
     members: [kartik, nikerabbit]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service cxserver stop',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service cxserver start',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service cxserver restart',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service cxserver reload',
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service cxserver *']
                  'ALL = (cxserver) NOPASSWD: ALL']
   chromium-admin:
     gid: 742
     description: people who run benchmarking tests with chromium (and xvfb)
     members: [catrope]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service chromium stop',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service chromium start',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service chromium restart',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service chromium reload',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service xvfb stop',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service xvfb start',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service xvfb restart',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service xvfb reload']
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service chromium *',
+                 'ALL = (root) NOPASSWD: /usr/sbin/service xvfb *']
   snapshot-admins:
     gid: 743
     description: People who can sudo into the datasets user on snapshot hosts.
@@ -300,10 +279,7 @@ groups:
     gid: 747
     description: group of zotero admins
     members: [mobrovac]
-    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service zotero stop',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service zotero start',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service zotero restart',
-                 'ALL = (root) NOPASSWD: /usr/sbin/service zotero reload']
+    privileges: ['ALL = (root) NOPASSWD: /usr/sbin/service zotero *']
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
