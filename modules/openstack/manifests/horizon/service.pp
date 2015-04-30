@@ -63,9 +63,22 @@ class openstack::horizon::service($openstack_version='icehouse', $novaconfig) {
         mode    => '0440',
     }
 
-    file { ['/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo.png',
-            '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo-splash.png']:
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo.png':
         source  => 'puppet:///modules/openstack/horizon/216px-Wikimedia_labs_dashboard_logo.png',
+        owner   => 'horizon',
+        group   => 'horizon',
+        require => Package['openstack-dashboard'],
+        mode    => '0444',
+    }
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo-splash.png':
+        source  => 'puppet:///modules/openstack/horizon/216px-Wikimedia_labs_dashboard_splash.png',
+        owner   => 'horizon',
+        group   => 'horizon',
+        require => Package['openstack-dashboard'],
+        mode    => '0444',
+    }
+    file { '/usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/favicon.ico':
+        source  => 'puppet:///modules/openstack/horizon/Wikimedia_labs.ico',
         owner   => 'horizon',
         group   => 'horizon',
         require => Package['openstack-dashboard'],
