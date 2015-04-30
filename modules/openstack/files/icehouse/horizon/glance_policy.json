@@ -3,50 +3,50 @@
     "admin_or_owner":  "is_admin:True or project_id:%(project_id)s",
     "default": "role:admin",
 
-    "add_image": "",
-    "delete_image": "",
+    "add_image": "role:admin",
+    "delete_image": "role:admin",
     "get_image": "rule:admin_or_owner",
     "get_images": "rule:admin_or_owner",
-    "modify_image": "",
-    "publicize_image": "",
-    "copy_from": "",
+    "modify_image": "role:admin",
+    "publicize_image": "role:admin",
+    "copy_from": "role:admin",
 
     "download_image": "rule:admin_or_owner",
-    "upload_image": "",
+    "upload_image": "role:admin",
 
-    "delete_image_location": "",
+    "delete_image_location": "role:admin",
     "get_image_location": "rule:admin_or_owner",
-    "set_image_location": "",
+    "set_image_location": "role:admin",
 
-    "add_member": "",
-    "delete_member": "",
+    "add_member": "role:admin",
+    "delete_member": "role:admin",
     "get_member": "rule:admin_or_owner",
     "get_members": "rule:admin_or_owner",
-    "modify_member": "",
+    "modify_member": "role:admin",
 
-    "manage_image_cache": "",
+    "manage_image_cache": "role:admin",
 
     "get_task": "rule:admin_or_owner",
     "get_tasks": "rule:admin_or_owner",
-    "add_task": "",
-    "modify_task": "",
+    "add_task": "role:admin",
+    "modify_task": "role:admin",
 
     "get_metadef_namespace": "rule:admin_or_owner",
     "get_metadef_namespaces":"rule:admin_or_owner",
-    "modify_metadef_namespace":"",
-    "add_metadef_namespace":"",
-    "delete_metadef_namespace":"",
+    "modify_metadef_namespace":"role:admin",
+    "add_metadef_namespace":"role:admin",
+    "delete_metadef_namespace":"role:admin",
 
     "get_metadef_object":"rule:admin_or_owner",
     "get_metadef_objects":"rule:admin_or_owner",
-    "modify_metadef_object":"",
-    "add_metadef_object":"",
+    "modify_metadef_object":"role:admin",
+    "add_metadef_object":"role:admin",
 
     "list_metadef_resource_types":"rule:admin_or_owner",
     "add_metadef_resource_type_association":"",
 
     "get_metadef_property":"rule:admin_or_owner",
     "get_metadef_properties":"rule:admin_or_owner",
-    "modify_metadef_property":"",
-    "add_metadef_property":""
+    "modify_metadef_property":"role:admin",
+    "add_metadef_property":"role:admin"
 }
