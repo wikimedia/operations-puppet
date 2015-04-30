@@ -135,6 +135,10 @@ class role::cache::text {
 
     include role::cache::logging
 
+    class { '::role::cache::logging::eventlistener':
+        instance_name => 'frontend',
+    }
+
     # HTCP packet loss monitoring on the ganglia aggregators
     if $ganglia_aggregator and $::site != 'esams' {
         include misc::monitoring::htcp-loss

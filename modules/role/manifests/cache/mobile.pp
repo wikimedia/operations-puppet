@@ -148,6 +148,10 @@ class role::cache::mobile (
     # udp2log kafka consumer is implemented and deployed.
     include role::cache::logging
 
+    class { '::role::cache::logging::eventlistener':
+        instance_name => 'frontend',
+    }
+
     # ToDo: Remove production conditional once this works
     # is verified to work in labs.
     if $::realm == 'production' {
