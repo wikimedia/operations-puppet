@@ -8,7 +8,7 @@ class role::cache::logging::eventlistener( $instance_name = '' ) {
         listener_address => $event_listener,
         port             => '8422',
         instance_name    => $instance_name,
-        cli_args         => '-m RxURL:^/\(beacon/\)?event\.gif\?. -D',
+        cli_args         => '-m RxURL:^/(beacon/)?event\.gif\?. -D',
         log_fmt          => '%q\t%l\t%n\t%t\t%h\t"%{User-agent}i"',
         monitor          => false,
     }
