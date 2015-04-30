@@ -77,8 +77,9 @@
     "volume:create": [["role:projectadmin"]],
     "volume:get_all": [],
     "volume:get_volume_metadata": [],
-    "volume:get_snapshot": [],
-    "volume:get_all_snapshots": [],
+    "volume:get_snapshot": "!",
+    "volume:get_all_snapshots": "!",
+    "volume:create_snapshot": "!",
 
 
     "volume_extension:types_manage": [["rule:admin_api"]],
