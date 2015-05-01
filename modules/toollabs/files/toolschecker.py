@@ -1,6 +1,5 @@
 import os
 import uuid
-import time
 import redis
 
 import flask
@@ -11,11 +10,14 @@ app = flask.Flask(__name__)
 def check(endpoint):
     def actual_decorator(func):
         def actual_check():
-            ret = func()
-            if ret:
-                return "OK", 200
-            else:
-                return "NOT OK", 503
+            try:
+                ret = func()
+                if ret:
+                    return "OK", 200
+                else:
+                    return "NOT OK", 503
+            except Exception as e:
+                return "Caught exception: %s" % str(e), 50
         # Fix for https://github.com/mitsuhiko/flask/issues/796
         actual_check.__name__ = func.__name__
         return app.route(endpoint)(actual_check)
