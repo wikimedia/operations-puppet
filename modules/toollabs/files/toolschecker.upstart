@@ -9,10 +9,11 @@ setgid www-data
 
 exec /usr/bin/uwsgi --plugin python \
                     --master \
+                    --workers 4 \
                     --wsgi-file /usr/local/lib/python2.7/dist-packages/toolschecker.py \
                     --callable app \
                     --socket /run/toolschecker/toolschecker.sock \
-                    --workers 4
+                    --chmod-socket 664
 
 respawn
 respawn limit 10 5
