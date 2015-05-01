@@ -29,7 +29,7 @@ class toollabs::checker {
                 'workers'   => 4,
                 'master'    => 'true',
                 'wsgi-file' => '/usr/local/lib/python2.7/dist-packages/toolschecker.py',
-                'user'      => 'tools.toolschecker',
+                'uid'       => 'tools.toolschecker',
             }
         }
     }
