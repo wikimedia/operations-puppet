@@ -9,7 +9,8 @@
 #    source         - rsync source argument (including hostname)
 #    destination    - rsync destination argument
 #    retention_days - If set, a cron will be installed to remove files older than this many days from $destination.
-#    ensure
+#    ensure         - Either 'absent' or 'present'.  If absent, the rsync cron job will not exist, but if
+#                     $retention_days is given, the cron to prune old logs will still exist.  Default: 'present'
 #
 define statistics::rsync_job($source, $destination, $retention_days = undef, $ensure = 'present') {
     Class['::statistics'] -> Statistics::Rsync_job[$name]

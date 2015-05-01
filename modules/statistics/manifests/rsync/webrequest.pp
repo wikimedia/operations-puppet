@@ -68,9 +68,10 @@ class statistics::rsync::webrequest {
 
     # edit logs from oxygen
     statistics::rsync_job { 'edits':
-        source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/edits*.gz',
-        destination => "${working_path}/squid/archive/edits",
-        ensure      => 'absent',
+        source         => 'oxygen.wikimedia.org::udp2log/webrequest/archive/edits*.gz',
+        destination    => "${working_path}/squid/archive/edits",
+        retention_days => 90,
+        ensure         => 'absent',
     }
 
     # mobile logs from oxygen
