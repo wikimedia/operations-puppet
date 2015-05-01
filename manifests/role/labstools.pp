@@ -45,6 +45,14 @@ class role::labs::tools {
         }
     }
 
+    class checker inherits role::labs::tools::common {
+        include toollabs::checker
+
+        system::role { 'role::labs::tools::checker':
+            description => 'Exposes end points for external monitoring of internal systems',
+        }
+    }
+
     class submit inherits role::labs::tools::common {
         include toollabs::submit
 
