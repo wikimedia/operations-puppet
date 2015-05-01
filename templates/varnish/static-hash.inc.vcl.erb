@@ -1,13 +1,13 @@
 
 // The only difference below from the varnish default vcl_hash implementation
 // is the early return for the static paths.  The point of this is to avoid
-// duplicate hashing of the /static- stuff for every (lang * proj), which
+// duplicate hashing of the /w/static- stuff for every (lang * proj), which
 // would waste a bunch of space (and a bunch of fetches on new static assets)
 sub vcl_hash {
 	hash_data(req.url);
 
 	// skip host/ip part for static assets
-	if (req.url ~ "^/static-") { return (hash); }
+	if (req.url ~ "^/w/static-") { return (hash); }
 
 	if (req.http.host) {
 		hash_data(req.http.host);
