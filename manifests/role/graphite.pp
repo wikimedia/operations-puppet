@@ -230,7 +230,15 @@ class role::graphite::production {
 
     include role::backup::host
     backup::set {'var-lib-carbon-whisper': }
+}
 
+# == Class: role::graphite::production::alerts
+#
+# Install icinga alerts on graphite metrics.
+# NOTE to be included only from one host, icinga will generate different alerts
+# for all hosts that include this class.
+#
+class role::graphite::production::alerts {
     include ::mediawiki::monitoring::graphite
     include ::eventlogging::monitoring::graphite
     include ::swift::monitoring::graphite
