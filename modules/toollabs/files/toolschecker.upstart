@@ -7,13 +7,14 @@ stop on runlevel [!2345]
 setuid tools.toolschecker
 setgid www-data
 
-exec /usr/bin/uwsgi --plugin python \
+# Needs the '=', otherwise doesn't work for chmod-socket. WTF?
+exec /usr/bin/uwsgi --plugin=python \
                     --master \
-                    --workers 4 \
-                    --wsgi-file /usr/local/lib/python2.7/dist-packages/toolschecker.py \
-                    --callable app \
-                    --socket /run/toolschecker/toolschecker.sock \
-                    --chmod-socket 664 \
+                    --workers=4 \
+                    --wsgi-file=/usr/local/lib/python2.7/dist-packages/toolschecker.py \
+                    --callable=app \
+                    --socket=/run/toolschecker/toolschecker.sock \
+                    --chmod-socket=664 \
                     --die-on-term
 
 respawn
