@@ -1122,6 +1122,7 @@ node 'graphite1001.eqiad.wmnet' {
     include role::statsdlb
     include role::gdash
     include role::performance
+    include role::graphite::production::alerts
 }
 
 # graphite test machine, currently with SSD caching + spinning disks
