@@ -13,7 +13,8 @@ exec /usr/bin/uwsgi --plugin python \
                     --wsgi-file /usr/local/lib/python2.7/dist-packages/toolschecker.py \
                     --callable app \
                     --socket /run/toolschecker/toolschecker.sock \
-                    --chmod-socket 664
+                    --chmod-socket 664 \
+                    --die-on-term
 
 respawn
 respawn limit 10 5
