@@ -637,3 +637,52 @@ class misc::monitoring::view::analytics::data($hdfs_stat_host, $kafka_broker_hos
         ],
     }
 }
+
+
+
+
+
+
+
+# == Class misc::monitoring::statsd_sender
+# Install script that formats integers per line on stdin
+# to stats format and send to statsd.
+class misc::monitoring::statsd_sender {
+    file { '/usr/local/bin/statsd_sender':
+        source => 'puppet:///misc/statsd_sender.sh',
+        mode   => '0755',
+    }
+}
+
+# == Define misc::monitoring::varnish::counter
+# == Parameters
+# $match - an array of match parameters to pass as -m flags to varnishncsa
+# #
+define misc::monitoring::varnish::counter(
+    $match,
+    $metric_name = $name,
+    $varnish_name = 'frontend',
+    $interval     = 60
+) {
+    include misc::monitoring::statsd_sender
+
+    base::service_unit { "varnish-statsd-counter-${name}":
+        systemd => true,
+        refresh => true,
+        require => Class['misc::monitoring::statsd_sender'],
+        template_name => 'varnish-statsd-counter',
+        service_params => {
+            enable     => true,
+            hasstatus  => true,
+            hasrestart => true,
+        }
+    }
+}
+
+
+class misc::monitoring::varnish::counts($cache_type) {
+    misc::monitoring::varnish::counter { "reqstats.${::site}.${cache_type}.${::hostname}.4xx":
+        match => ['TxStatus:^4..'],
+    }
+}
+

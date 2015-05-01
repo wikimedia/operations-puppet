@@ -1,0 +1,14 @@
+[Unit]
+Description=varnish statsd counter - <%= @name %>
+After=network.target local-fs.target
+
+[Service]
+Type=simple
+User=nobody
+
+ExecStart={ varnishncsa -n <%= @varnish_name %> <%= @match_parameters.map { |m| "-m #{m}"}.join(' ') %> | /usr/bin/pv --numeric --line-mode --interval <%= @interval %> > /dev/null; } 2>&1 | /usr/local/bin/statsd_sender <%= @metric_name %>
+
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
