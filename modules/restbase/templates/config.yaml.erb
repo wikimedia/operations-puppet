@@ -139,11 +139,14 @@ spec: &spec
   title: "The RESTBase root"
   # Some more general RESTBase info
   paths:
-    # phase 0 and test wikis
+    # group 0 and test wikis
     /{domain:www.mediawiki.org}: *wp/default/1.0.0
     /{domain:test.wikipedia.org}: *wp/default/1.0.0
     /{domain:test2.wikipedia.org}: *wp/default/1.0.0
     /{domain:test.wikidata.org}: *wp/default/1.0.0
+
+    # commons
+    /{domain:commons.wikimedia.org}: *wp/default/1.0.0
 
     # wikipedias
     /{domain:ab.wikipedia.org}: *wp/default/1.0.0
