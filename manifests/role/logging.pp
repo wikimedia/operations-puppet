@@ -389,7 +389,10 @@ class role::logging::kafkatee::webrequest::ops inherits role::logging::kafkatee:
     }
 
     kafkatee::output { '5xx':
-        destination => "/bin/grep '\"http_status\":\"5' >> ${webrequest_log_directory}/5xx.json",
+        # Adding --line-buffered here ensures that the output file will only have full lines written to it.
+        # Otherwise kafkatee buffers and sends to the pipe whenever it feels like, which causes grep to
+        # work on non-full lines.
+        destination => "/bin/grep --line-buffered '\"http_status\":\"5' >> ${webrequest_log_directory}/5xx.json",
         type        => 'pipe',
     }
 }
