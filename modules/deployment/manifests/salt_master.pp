@@ -88,12 +88,9 @@ class deployment::salt_master(
         require => [File[$returner_dir]],
     }
 
+    # deprecated in T97509
     file { "${module_dir}/mwprof.py":
-        source  => 'puppet:///modules/deployment/modules/mwprof.py',
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-        require => [File[$module_dir]],
+        ensure  => absent,
     }
 
     # If pillars or modules change, we need to sync them with the minions
@@ -115,8 +112,7 @@ class deployment::salt_master(
 
     exec { 'refresh_deployment_modules':
         command     => "/usr/bin/salt -C 'G@deployment_server:true or G@deployment_target:*' saltutil.sync_modules",
-        subscribe   => [File["${module_dir}/deploy.py"],
-                        File["${module_dir}/mwprof.py"]],
+        subscribe   => File["${module_dir}/deploy.py"],
         refreshonly => true,
         require     => [Package['salt-master']],
     }

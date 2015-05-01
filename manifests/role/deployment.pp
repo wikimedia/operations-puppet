@@ -81,12 +81,6 @@ class role::deployment::config {
         'abacist/abacist'                  => {
             'upstream' => 'https://gerrit.wikimedia.org/r/analytics/abacist',
         },
-        'mwprof/mwprof'                  => {
-            'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof',
-        },
-        'reporter/reporter'              => {
-            'upstream' => 'https://gerrit.wikimedia.org/r/operations/software/mwprof/reporter',
-        },
         'test/testrepo'                  => {
             'service_name'        => 'puppet',
             'checkout_submodules' => true,
