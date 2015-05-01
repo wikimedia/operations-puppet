@@ -27,7 +27,7 @@ class toollabs::checker {
         mode   => '0755',
     }
 
-    file { '/etc/init/toolschecker.upstart':
+    file { '/etc/init/toolschecker.conf':
         ensure => present,
         source => 'puppet:///modules/toollabs/toolschecker.upstart',
         owner  => 'root',
