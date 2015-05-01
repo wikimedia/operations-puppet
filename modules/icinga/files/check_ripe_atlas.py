@@ -16,13 +16,13 @@ ripeurl = 'https://atlas.ripe.net/api/v1/status-checks/'
 UDM_id = sys.argv[1]
 loss_allowed = sys.argv[2]
 allowed_failures = sys.argv[3]
-msg = "%s - failed %d probes of %d (CRITICALs on %s)"
+msg = "%s - failed %d probes of %d (alerts on %s)"
 
 
 def main():
 
     udm = '%s/' % (UDM_id,)
-    failures = '?permitted_total_CRITICALs=%s' % (allowed_failures,)
+    failures = '?permitted_total_alerts=%s' % (allowed_failures,)
     loss = '&max_packet_loss=%s' % (loss_allowed)
     url = ripeurl + udm + failures + loss
 
@@ -46,6 +46,7 @@ def main():
         exit(0)
 
     if jout['global_alert']:
+
         print msg % ('CRITICAL',
                      len(failed_probes),
                      total_probes,
