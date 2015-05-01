@@ -11,13 +11,11 @@ app = flask.Flask(__name__)
 def check(endpoint):
     def actual_decorator(func):
         def actual_check():
-            start_time = time.time()
             ret = func()
-            total_time = time.time() - start_time
-            return flask.jsonify(
-                status=ret,
-                time=total_time
-            )
+            if ret:
+                return "OK", 200
+            else:
+                return "NOT OK", 503
         # Fix for https://github.com/mitsuhiko/flask/issues/796
         actual_check.__name__ = func.__name__
         return app.route(endpoint)(actual_check)
