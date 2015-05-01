@@ -12,7 +12,8 @@ class toollabs::checker {
     file { '/usr/local/lib/python2.7/dist-packages/toolschecker.py':
         ensure => file,
         owner  => 'root',
-        mode   => 'root',
+        group  => 'root',
+        mode   => '0444',
         source => 'puppet:///modules/toollabs/toolschecker.py',
         require => Package['python-flask'],
     }
