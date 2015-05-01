@@ -17,22 +17,30 @@ class toollabs::checker {
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/toollabs/toolschecker.py',
+        notify => Service['toolschecker'],
     }
 
-    uwsgi::app { 'toolschecker':
-        require => File['/usr/local/lib/python2.7/dist-packages/toolschecker.py'],
-        settings => {
-            uwsgi => {
-                'socket'    => '/run/uwsgi/toolschecker.sock',
-                'plugin'    => 'python',
-                'callable'  => 'app',
-                'workers'   => 4,
-                'master'    => 'true',
-                'wsgi-file' => '/usr/local/lib/python2.7/dist-packages/toolschecker.py',
-                'uid'       => 'tools.toolschecker',
-            }
-        }
+    file { '/run/toolschecker':
+        ensure => directory,
+        owner  => 'tools.toolschecker',
+        group  => 'www-data',
+        mode   => '0755',
     }
+
+    file { '/etc/init/toolschecker.upstart':
+        ensure => present,
+        source => 'puppet:///modules/toollabs/toolschecker.upstart',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        notify => Service['toolscshecker'],
+    }
+
+    service { 'toolschecker':
+        ensure    => running,
+        require => File['/run/toolschecker'],
+    }
+
 
     nginx::site { 'toolschecker-nginx':
         require => Uwsgi::App['toolschecker'],
