@@ -9,6 +9,7 @@
     "compute:create:attach_volume": "role:admin",
     "compute:start": "rule:admin",
     "compute:stop": "rule:admin",
+    "compute:snapshot": "!",
     "compute:get_all": [],
 
 
