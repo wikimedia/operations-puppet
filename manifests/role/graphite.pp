@@ -230,7 +230,9 @@ class role::graphite::production {
 
     include role::backup::host
     backup::set {'var-lib-carbon-whisper': }
+}
 
+class role::graphite::production::alerts {
     include ::mediawiki::monitoring::graphite
     include ::eventlogging::monitoring::graphite
     include ::swift::monitoring::graphite
