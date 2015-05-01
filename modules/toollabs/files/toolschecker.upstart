@@ -1,0 +1,18 @@
+# This file is managed by Puppet
+description "toolchecker UWSGI application"
+
+start on (filesystem and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+setuid tools.toolschecker
+setgid www-data
+
+exec /usr/bin/uwsgi --plugin python --master \
+                    --wsgi-file /usr/local/lib/python2.7/dist-packages/toolschecker.py \
+                    --socket /run/toolschecker/toolschecker.sock --callable app \
+                    --workers 4
+
+respawn
+respawn limit 10 5
+
+# vim: set ft=upstart:
