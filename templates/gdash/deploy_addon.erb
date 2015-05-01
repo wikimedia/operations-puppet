@@ -6,13 +6,13 @@
   [
 
     # sync-common-file
-    'alias(color(dashed(drawAsInfinite(deploy.sync-common-file)),"gold"),"sync-common-file")',
+    'alias(color(dashed(drawAsInfinite(deploy.sync-file.count)),"gold"),"sync-file")',
 
     # sync-common-all
-    'alias(color(lineWidth(drawAsInfinite(deploy.sync-common-all),2),"gold"),"sync-common-all")',
+    'alias(color(lineWidth(drawAsInfinite(deploy.all.count),2),"gold"),"sync-all")',
 
     # scap
-    'alias(color(lineWidth(drawAsInfinite(deploy.scap),2),"black"),"scap deploy")',
+    'alias(color(lineWidth(drawAsInfinite(scap.scap),2),"black"),"scap deploy")',
 
   ].join('&')
 -%>
