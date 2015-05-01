@@ -9,13 +9,14 @@
 class toollabs::checker {
     include toollabs::infrastructure
 
+    require_package('python-flask', 'python-redis')
+
     file { '/usr/local/lib/python2.7/dist-packages/toolschecker.py':
         ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/toollabs/toolschecker.py',
-        require => Package['python-flask'],
     }
 
     uwsgi::app { 'toolschecker':
