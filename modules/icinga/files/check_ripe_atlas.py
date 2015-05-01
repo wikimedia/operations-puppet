@@ -29,7 +29,7 @@ def main():
     request = urllib2.Request(url)
     jout = json.load(urllib2.urlopen(request, timeout=120))
     total_probes = len(jout['probes'].keys())
-    failed_probes = [k for k, v in jout['probes'].iteritems() if v['CRITICAL']]
+    failed_probes = [k for k, v in jout['probes'].iteritems() if v['alert']]
 
     if '-v' in sys.argv:
         print "UDM ", UDM_id
@@ -45,7 +45,7 @@ def main():
         print jout
         exit(0)
 
-    if jout['global_CRITICAL']:
+    if jout['global_alert']:
         print msg % ('CRITICAL',
                      len(failed_probes),
                      total_probes,
