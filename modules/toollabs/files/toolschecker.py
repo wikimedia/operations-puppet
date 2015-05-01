@@ -17,7 +17,7 @@ def check(endpoint):
                 else:
                     return "NOT OK", 503
             except Exception as e:
-                return "Caught exception: %s" % str(e), 50
+                return "Caught exception: %s" % str(e), 503
         # Fix for https://github.com/mitsuhiko/flask/issues/796
         actual_check.__name__ = func.__name__
         return app.route(endpoint)(actual_check)
