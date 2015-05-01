@@ -23,7 +23,7 @@ class toollabs::checker {
         require => File['/usr/local/lib/python2.7/dist-packages/toolschecker.py'],
         settings => {
             uwsgi => {
-                'socket'    => '/run/uwsgi/tools-checker.sock',
+                'socket'    => '/run/uwsgi/toolschecker.sock',
                 'plugin'    => 'python',
                 'callable'  => 'app',
                 'workers'   => 4,
