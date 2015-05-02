@@ -57,6 +57,11 @@ templates:
       license:
         name: Apache2
         url: http://www.apache.org/licenses/LICENSE-2.0
+
+    # Override the base path for host-based (proxied) requests. In our case,
+    # we proxy https://{domain}/api/rest_v1/ to the API.
+    x-host-basePath: /api/rest_v1
+
     security:
       # ACLs for public *.wikipedia.org wikis
       - mediaWikiAuth:
