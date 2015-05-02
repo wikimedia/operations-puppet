@@ -14,6 +14,7 @@ class mediawiki::jobrunner (
     $runners_transcode   = 0,
     $runners_translate   = 0,
     $runners_centralauth = 0,
+    $runners_wikibase    = 0,
     $statsd_server       = undef,
     $port                = 9005,
 ) {

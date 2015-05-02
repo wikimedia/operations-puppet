@@ -79,6 +79,13 @@
             "include": [
                 "LocalRenameUserJob"
             ]
+        },
+        "wikibase": {
+            "runners": <%= @runners_wikibase %>,
+            "include": [
+                "UpdateRepoOnDelete",
+                "UpdateRepoOnMove"
+            ]
         }
     },
 
