@@ -1,0 +1,10 @@
+[Unit]
+Description=confd
+
+[Service]
+User=root
+Environment="CONFD_BACKEND=<%= @backend %>"
+Environment="CONFD_OPTS=-node <%= @node %> <% if @interval %>-interval <%= @interval %><% else %>-watch<% end %>"
+ExecStart=/usr/bin/confd -backend $CONFD_BACKEND $CONFD_OPTS
+Restart=on-failure
+RestartSec=10s
