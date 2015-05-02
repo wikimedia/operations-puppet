@@ -61,6 +61,13 @@
                 "PublishStashedFile",
                 "uploadFromUrl"
             ]
+        },
+        "wikibase": {
+            "runners": <%= @runners_wikibase %>,
+            "include": [
+                "UpdateRepoOnDelete",
+                "UpdateRepoOnMove"
+            ]
         }
     },
 

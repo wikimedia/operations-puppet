@@ -6,4 +6,5 @@ mediawiki::jobrunner::runners_gwt: 1
 mediawiki::jobrunner::runners_restbase: 5
 mediawiki::jobrunner::runners_translate: 1
 mediawiki::jobrunner::runners_upload: 7
+mediawiki::jobrunner::runners_wikibase: 1
 mediawiki::users::web: www-data
