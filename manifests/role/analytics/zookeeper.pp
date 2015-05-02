@@ -50,6 +50,7 @@ class role::analytics::zookeeper::client {
     $version = $::lsbdistcodename ? {
         'trusty'  => '3.4.5+dfsg-1',
         'precise' => '3.3.5+dfsg1-1ubuntu1',
+        default   => 'installed',
     }
 
     class { '::zookeeper':
