@@ -1,0 +1,8 @@
+[user]
+	name = Alex Monk
+[color]
+	ui = true
+[alias]
+	push-for-review = push origin HEAD:refs/for/master
+[gitreview]
+	username = krenair
