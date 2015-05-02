@@ -1,0 +1,11 @@
+# Confd config file for <%= @title %>
+# This file is managed by Puppet!
+[template]
+src = "<%= @name %>.tmpl"
+dest = "<%= @title %>"
+<% if @uid %>uid = <%= @uid %><% end %>
+<% if @gid %>gid = <%= @gid %><% end %>
+mode = "<%= @mode %>"
+keys = <%= @watch_keys %>
+<% if @check %>check_cmd = "<%= @check %> {{.src}}"<% end %>
+<% if @reload %>reload_cmd = "<%= reload %>"<% end %>
