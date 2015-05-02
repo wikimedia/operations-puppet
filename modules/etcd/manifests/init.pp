@@ -36,7 +36,7 @@
 #
 class etcd (
     $host      = '127.0.0.1',
-    $client_port      = 2739,
+    $client_port      = 2379,
     $peer_port        = 2380,
     $cluster_name     = $::domain,
     $cluster_state    = undef,
