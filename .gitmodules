@@ -28,3 +28,6 @@
 [submodule "modules/cassandra"]
 	path = modules/cassandra
 	url = https://gerrit.wikimedia.org/r/operations/puppet/cassandra
+[submodule "modules/mesos"]
+	path = modules/mesos
+	url = https://gerrit.wikimedia.org/r/operations/puppet/mesos
