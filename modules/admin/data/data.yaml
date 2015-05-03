@@ -1,7 +1,8 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [bsitu , cmcmahon, csalvia, edenhill, jgonera, mah, mwalker, nimishg, rainman, ssmith, swalling]
+    members: [bsitu , cmcmahon, csalvia, edenhill, jgonera, mah, mwalker,
+nimishg, rainman, ssmith, swalling, erik]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -55,7 +56,7 @@ groups:
     description: access to terbium, fluorine (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
     members: [avar, daniel, dartar, diederik,
-              erik, ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
+              ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
               tparscal, tnegrin, ssastry, ironholds, nuria, leila,
               santhosh, amire80, legoktm, jsahleen]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
@@ -102,7 +103,7 @@ groups:
               ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
               kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
               nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
-              mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
+              mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson]
   ldap-admins:
     gid: 715
@@ -157,7 +158,7 @@ groups:
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
               howief, awight, dr0ptp4kt, qchris, tnegrin, nuria,
               leila, manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
-              spage, erik, bmansurov, rmoen, tbayer, joal, ashwinpp, madhuvishy]
+              spage, bmansurov, rmoen, tbayer, joal, ashwinpp, madhuvishy]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -204,7 +205,7 @@ groups:
                  This will grant shell access on Hadoop client nodes (stat1002) and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, erik, milimetric, yurik, maryana,
+    members: [dartar, milimetric, yurik, maryana,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds,
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
@@ -847,12 +848,11 @@ users:
         diederik@Diederik-Van-Lieres-MacBook-Pro.local]
     uid: 1293
   erik:
-    ensure: present
+    ensure: absent
     gid: 500
     name: erik
     realname: Erik Moeller
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYiVifze8jetMrDIeZd8NRMKYofzT8fval1kdjAE2/3lAPpewZw8UxCM8Voz7jlJ2/NnGntNt99uGEp+6Z6VmUu15NUyeWSTdfe6BEQtLqtWaZ2qqdhoIS1bwdOEwZhSPGrP2Hp5LE0WRhAaCtVXQsCsKEFLwBjyXHQi3d1tR+qxFouKm2Yhq4atFksGfaJGCcUZ9k3qHJPheOM/0lIaOMm8cBkfacDFb7cZPHoNx8JrUcmKTHeqV8mYeIQQ4lfbwFSYnVy6F43psXWLIOYoHXmneu1840Of8Nxqd02ExEqZKBpwTZa/qPiLnVbexuPYzD3RcUE3g0NtL1smYZo6pr
-        erik@deep_thought]
+    ssh_keys: []
     uid: 503
   ezachte:
     ensure: present
