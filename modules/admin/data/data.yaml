@@ -177,10 +177,6 @@ groups:
     description: office it folk
     members: [jkrauska]
     privileges: ['ALL = (syslog) NOPASSWD: ALL']
-  pdf-qa-users:
-    gid: 728
-    description: developers on the PDF QA system
-    members: [maxsem, anomie, cscott]
   mathoid-roots:
     gid: 729
     description: root rights for mathoid
