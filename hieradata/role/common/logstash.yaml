@@ -12,6 +12,10 @@ elasticsearch::multicast_group: 224.2.2.6
 elasticsearch::plugins_dir: /srv/deployment/elasticsearch/plugins
 elasticsearch::recover_after_nodes: 2
 elasticsearch::recover_after_time: '1m'
+elasticsearch::unicast_hosts:
+  - logstash1004.eqiad.wmnet
+  - logstash1005.eqiad.wmnet
+  - logstash1006.eqiad.wmnet
 
 # Logstash specific
 # TODO: the multiline filter that is used in several places in the
