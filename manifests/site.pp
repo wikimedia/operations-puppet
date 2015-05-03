@@ -564,7 +564,7 @@ node /^db10(51|55|57|65|66|72|73)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(16|34|42)\.codfw\.wmnet/ {
+node /^db20(16|34|42|48)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -580,7 +580,7 @@ node /^db10(36|54|60|63|67)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(17|35|41)\.codfw\.wmnet/ {
+node /^db20(17|35|41|49)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -596,7 +596,7 @@ node /^db10(15|19|27|35|44)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(18|36|43)\.codfw\.wmnet/ {
+node /^db20(18|36|43|50)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -612,7 +612,7 @@ node /^db10(42|56|59|64|68|70)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(19|37|44)\.codfw\.wmnet/ {
+node /^db20(19|37|44|51)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -628,7 +628,7 @@ node /^db10(49|71)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(23|38|45)\.codfw\.wmnet/ {
+node /^db20(23|38|45|52)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -644,7 +644,7 @@ node /^db10(37|50|61)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(28|39|46)\.codfw\.wmnet/ {
+node /^db20(28|39|46|53)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -660,7 +660,7 @@ node /^db10(28|39|62)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(29|40|47)\.codfw\.wmnet/ {
+node /^db20(29|40|47|54)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -784,7 +784,7 @@ node 'db1011.eqiad.wmnet' {
 }
 
 # codfw db
-node /^db20(4[8-9]|5[0-9]|6[0-9]|70)\.codfw\.wmnet$/ {
+node /^db20(5[5-9]|6[0-9]|70)\.codfw\.wmnet$/ {
 
     $cluster = 'mysql'
     include standard
