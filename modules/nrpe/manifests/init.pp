@@ -16,23 +16,13 @@
 # Sample Usage:
 #   include nrpe
 #
-class nrpe($allowed_hosts=undef) {
+class nrpe($allowed_hosts='127.0.0.1') {
     package { [ 'nagios-nrpe-server',
                 'nagios-plugins',
                 'nagios-plugins-basic',
                 'nagios-plugins-standard',
             ]:
         ensure => present,
-    }
-
-    if $allowed_hosts == undef {
-        $nrpe_allowed_hosts = $::realm ? {
-            'production' => '127.0.0.1,208.80.152.185,208.80.152.161,208.80.154.14',
-            'labs'       => '10.68.16.195',
-            default      => '127.0.0.1',
-        }
-    } else {
-        $nrpe_allowed_hosts = $allowed_hosts
     }
 
     file { '/etc/nagios/nrpe_local.cfg':
