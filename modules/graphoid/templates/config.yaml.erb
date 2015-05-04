@@ -17,7 +17,7 @@ domainMap:
 <%= @domain_map.keys.map { |k| "  '#{k}': '#{@domain_map[k]}'" }.join "\n" %>
 <% end -%>
 # Which protocol should service use for protocol-relative URLs like //example.com/path
-defaultProtocol: https
+defaultProtocol: <%= @protocol %>
 # Error if it takes longer than this to handle the request
 timeout: <%= @timeout %>
 

@@ -25,6 +25,7 @@ graphoid::domains:
   - wikiversity.org
   - wikivoyage.org
   - wiktionary.org
+graphoid::protocol: http
 "cassandra::seeds":
   - 10.68.17.227
   - 10.68.17.189
