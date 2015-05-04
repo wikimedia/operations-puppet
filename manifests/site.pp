@@ -1681,6 +1681,19 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include redis::ganglia
 }
 
+node 'mira.codfw.wmnet' {
+    $cluster = 'misc'
+
+    include standard
+    include role::deployment::server
+    include mysql
+    include role::labsdb::manager
+    include role::releases:zupload
+
+    include role::backup::host
+    backup::set {'home': }
+}
+
 node 'multatuli.wikimedia.org' {
     include standard
 

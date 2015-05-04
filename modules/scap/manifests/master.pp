@@ -4,7 +4,7 @@
 class scap::master(
     $common_path        = '/srv/mediawiki',
     $common_source_path = '/srv/mediawiki-staging',
-    $rsync_host         = 'tin.eqiad.wmnet',
+    $rsync_host         = hiera('scap::master::rsync_host'),
     $statsd_host        = 'statsd.eqiad.wmnet',
     $statsd_port        = 8125,
     $deployment_group   = 'wikidev',
