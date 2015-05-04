@@ -67,7 +67,7 @@ groups:
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
-              pcoombe, mholloway-shell, madhuvishy]
+              pcoombe, mholloway-shell, madhuvishy, neilpquinn-wmf]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -103,7 +103,7 @@ groups:
               kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
               nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
               mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
-              daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson]
+              daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, neilpquinn-wmf]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -166,7 +166,8 @@ groups:
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy]
+              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
+              neilpquinn-wmf]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -1388,3 +1389,9 @@ users:
     realname: Madhu Viswanathan
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQChoG+v0UpbHyYfG0qYb2i0D2tSef5/JltA4wJu60wGbsqJyUhn4NEN3vFnjfhRPQI6jLYWguJhy1QXCjq/ZGMrdjEymxotOqKhY+G+5zyB6+j4AaNa5jNkgxBBJuAccqwXbuKcapAiDSXGQuGMaHe7OsGL/2VCt7Ek1VhYX20y7doI5Y4Ncb+57YhnjlthQ6PRhsFMegmq81wnT4LH2ZUwFkw4yFkzDdQZ0o/gS2xHX4EBtkx3ntytW3iHxPkiBOunWHFwzPDjgrxStPYGsxcWC4YgQc58Ifl5mgh2Ll5slXbdSuGJrt7ChCP9nSVniahtG3r5f3BglACf86Ko+nM5 mviswanathan@mviswanthansMBP.corp.wikimedia.org]
     uid: 11511
+  neilpquinn-wmf:
+    ensure: present
+    gid: 500
+    name: neilpquinn-wmf
+    realname: Neil P. Quinn
+    uid: 12049
