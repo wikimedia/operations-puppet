@@ -1681,6 +1681,11 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include redis::ganglia
 }
 
+# codfw deployment host (pending set up)
+node 'mira.codfw.wmnet' {
+    include standard
+}
+
 node 'multatuli.wikimedia.org' {
     include standard
 
