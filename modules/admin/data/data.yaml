@@ -1388,3 +1388,10 @@ users:
     realname: Madhu Viswanathan
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQChoG+v0UpbHyYfG0qYb2i0D2tSef5/JltA4wJu60wGbsqJyUhn4NEN3vFnjfhRPQI6jLYWguJhy1QXCjq/ZGMrdjEymxotOqKhY+G+5zyB6+j4AaNa5jNkgxBBJuAccqwXbuKcapAiDSXGQuGMaHe7OsGL/2VCt7Ek1VhYX20y7doI5Y4Ncb+57YhnjlthQ6PRhsFMegmq81wnT4LH2ZUwFkw4yFkzDdQZ0o/gS2xHX4EBtkx3ntytW3iHxPkiBOunWHFwzPDjgrxStPYGsxcWC4YgQc58Ifl5mgh2Ll5slXbdSuGJrt7ChCP9nSVniahtG3r5f3BglACf86Ko+nM5 mviswanathan@mviswanthansMBP.corp.wikimedia.org]
     uid: 11511
+  aklapper:
+    ensure: present
+    gid: 500
+    name: aklapper
+    realname: Andre Klapper
+    ssh_keys: []
+    uid: 2377
