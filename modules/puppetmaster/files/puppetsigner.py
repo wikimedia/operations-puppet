@@ -53,8 +53,9 @@ try:
             hostname = host[0].strip('"')
 
         # Skip pathological hostnames -- possible attack vector.
-        if not re.match(r'^[a-zA-Z0-9_-]+\.eqiad\.wmflabs$', hostname):
-            sys.stderr.write('Invalid hostname %s' % hostname)
+        if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', hostname):
+            sys.stderr.write('Invalid hostname %s\n' % hostname)
+            subprocess.check_call(['/usr/bin/puppet', 'cert', 'clean', hostname])
             continue
 
         # Erase keys that don't correspond to ldap; sign those that do
