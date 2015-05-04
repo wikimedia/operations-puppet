@@ -61,9 +61,8 @@ try:
         query = "(&(objectclass=puppetclient)(|(dc=" + hostname + ")(cnamerecord=" + hostname + ")(associateddomain=" + hostname + ")))"
         host_info = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
         if not host_info:
-            signed_key_path = getPuppetInfo('ssldir') + '/ca/signed/' + hostname + '.pem'
             sys.stderr.write('Removing stale cert %s' % hostname)
-            os.remove(signed_key_path)
+            subprocess.check_call(['/usr/bin/puppet', 'cert', 'clean', hostname])
         elif not signed:
             sys.stderr.write('Signing new cert %s' % hostname)
             subprocess.check_call(['/usr/bin/puppet', 'cert', 'sign', hostname])
