@@ -44,6 +44,14 @@ class puppetmaster::passenger(
             enable => false,
             before => Service['apache2'],
         }
+        # We also make sure puppet master can not be manually started
+        file { '/etc/default/puppetmaster':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/puppetmaster/default',
+        }
     }
 
     # Rotate apache logs
