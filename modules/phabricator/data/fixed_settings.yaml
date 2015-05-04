@@ -154,7 +154,6 @@ metamta.public-replies: true
 # Needs to match php.ini upload_max_filesize
 # Needs to match php.ini post_max_size for conduit
 storage.mysql-engine.max-size: 10000000
-storage.upload-size-limit: 10M
 
 phabricator.serious-business: true
 
@@ -166,9 +165,6 @@ metamta.mail-adapter: 'PhabricatorMailImplementationPHPMailerAdapter'
 phpmailer.mailer: 'smtp'
 
 phpmailer.smtp-port: '25'
-
-# Do not try to call out for external resouces such as avatars
-security.allow-outbound-http: false
 
 translation.override:
   'Execute Query': 'Search'
