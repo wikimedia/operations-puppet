@@ -266,3 +266,5 @@ ganglia_clusters:
       eqiad:
         - restbase1001.eqiad.wmnet
         - restbase1006.eqiad.wmnet
+
+nrpe::allowed_hosts: '127.0.0.1,208.80.152.185,208.80.152.161,208.80.154.14'
