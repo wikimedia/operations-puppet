@@ -7,5 +7,5 @@ if [ ${RETVAL} -eq 0 ]; then
     echo "Icinga configuration is correct"
     exit 0
 fi;
-echo "Icinga configuration contains errors, please check!"
+echo "Icinga configuration contains errors"
 exit 2

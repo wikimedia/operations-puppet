@@ -80,7 +80,7 @@ class role::labs::nfs::fileserver($monitor_iface = 'eth0') {
 
     # Monitor for high load consistently, is a 'catchall'
     monitoring::graphite_threshold { 'high_load':
-        description => 'High load for whatever reason',
+        description => 'High load average',
         metric      => "servers.${::hostname}.cpu.total.iowait",
         from        => '10min',
         warning     => '16',

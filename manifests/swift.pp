@@ -327,7 +327,7 @@ class swift::storage {
         }
         include nrpe
         nrpe::monitor_service { 'load_average':
-            description  => 'very high load average likely xfs',
+            description  => 'High load average',
             nrpe_command => '/usr/lib/nagios/plugins/check_load -w 80,80,80 -c 200,100,100',
         }
 
