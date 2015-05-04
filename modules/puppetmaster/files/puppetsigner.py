@@ -8,6 +8,7 @@
 import sys
 import re
 import ldapsupportlib
+import socket
 import subprocess
 import os
 import json
@@ -51,6 +52,10 @@ try:
         else:
             signed = False
             hostname = host[0].strip('"')
+
+        if hostname == socket.getfqdn():
+            # Ourselves!
+            continue
 
         # Skip pathological hostnames -- possible attack vector.
         if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', hostname):
