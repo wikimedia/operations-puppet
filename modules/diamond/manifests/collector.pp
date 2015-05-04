@@ -67,10 +67,11 @@ define diamond::collector(
 
     if $source {
         file { "/usr/share/diamond/collectors/${name}":
-            ensure => ensure_directory($ensure),
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
+            ensure  => ensure_directory($ensure),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            require => Package['python-diamond'],
         }
 
         file { "/usr/share/diamond/collectors/${name}/${name}.py":
