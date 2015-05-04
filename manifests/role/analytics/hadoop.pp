@@ -348,7 +348,7 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             # After upgrading to CDH 5.4.0, we are encountering this bug:
             # https://issues.apache.org/jira/browse/MAPREDUCE-5799
             # This should work around the problem.
-            'yarn.app.mapreduce.am.env'          => 'LD_LIBRARY_PATH=$HADOOP_COMMON_HOME/lib/native',
+            'yarn.app.mapreduce.am.env'          => 'LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native',
         },
 
         gelf_logging_enabled                     => $gelf_logging_enabled,
