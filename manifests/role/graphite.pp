@@ -224,6 +224,7 @@ class role::graphite::production {
         c_relay_settings => {
           backends => [
             'graphite1001.eqiad.wmnet:1903',
+            'graphite2001.codfw.wmnet:1903',
           ],
         }
     }
