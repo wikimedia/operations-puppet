@@ -82,7 +82,8 @@ class role::cache::bits (
         cluster_options => $cluster_options,
     }
 
-    include role::cache::logging::eventlistener
+    class { '::role::cache::logging': eventlistener => true }
+
     # Include a varnishkafka instance that will produce
     # eventlogging events to Kafka.
     include role::cache::kafka::eventlogging
