@@ -22,6 +22,7 @@ ExecStart=/usr/sbin/varnishd \
 -p user=varnish -p thread_pool_add_delay=1 -p thread_pool_stack=131072 \
 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off \
 -p nuke_limit=300 -p shm_reclen=1024 \
+-p http_req_size=24576 \
 <%= @runtime_params -%> \
 <%= @extraopts -%> \
 <% if @cluster_options.fetch("enable_geoiplookup", false) -%>-p cc_command=${CC_COMMAND}<% end %>
