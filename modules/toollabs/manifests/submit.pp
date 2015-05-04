@@ -72,4 +72,14 @@ class toollabs::submit inherits toollabs {
         group  => 'root',
         mode   => '0555',
     }
+
+    # Backup crontabs! See https://phabricator.wikimedia.org/T95798
+    file { "/data/project/.system/crontabs/${::fqdn}":
+        ensure  => directory,
+        source  => '/var/spool/cron/crontabs',
+        owner   => 'root',
+        group   => 'tools.admin',
+        mode    => '0440',
+        recurse => true,
+    }
 }
