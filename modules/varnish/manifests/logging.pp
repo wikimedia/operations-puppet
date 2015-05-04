@@ -4,15 +4,10 @@ define varnish::logging(
     $cli_args='',
     $log_fmt=false,
     $instance_name='frontend',
-    $monitor=true,
     $ensure='present',
 ) {
     require varnish::packages
     require varnish::logging::config
-
-    if $monitor {
-        require varnish::logging::monitor
-    }
 
     $varnishservice = $instance_name ? {
         ''      => 'varnish',
