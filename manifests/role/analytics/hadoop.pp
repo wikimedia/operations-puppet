@@ -191,8 +191,7 @@ class role::analytics::hadoop::config {
         $yarn_app_mapreduce_am_command_opts       = "-Xmx${mapreduce_am_heap_size}m"
 
         $yarn_nodemanager_resource_memory_mb      = floor($number_of_containers * $memory_per_container_mb)
-        # Setting minimum allocation mb to 0 to allow Impala to submit small reservation requests.
-        $yarn_scheduler_minimum_allocation_mb     = 0
+        $yarn_scheduler_minimum_allocation_mb     = floor($memory_per_container_mb)
         $yarn_scheduler_maximum_allocation_mb     = floor($number_of_containers * $memory_per_container_mb)
         # Setting minimum_allocation_vcores to 0 to allow Impala to submit small reservation requests.
         $yarn_scheduler_minimum_allocation_vcores = 0
