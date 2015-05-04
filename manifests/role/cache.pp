@@ -13,6 +13,7 @@
 @monitoring::group { 'cache_mobile_esams': description => 'esams mobile Varnish' }
 @monitoring::group { 'cache_mobile_ulsfo': description => 'ulsfo mobile Varnish' }
 @monitoring::group { 'cache_parsoid_eqiad': description => 'Parsoid caches eqiad' }
+@monitoring::group { 'cache_parsoid_codfw': description => 'Parsoid caches codfw' }
 @monitoring::group { 'cache_misc_eqiad': description => 'Misc caches eqiad' }
 
 # If you're looking for something that used to be here, check modules/role/manifests/cache/...
