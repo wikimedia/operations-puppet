@@ -77,6 +77,9 @@ class role::cache::configuration {
             'restbase' => {
                 'eqiad' => 'deployment-restbase01.eqiad.wmflabs',
             },
+            'graphoid' => {
+                'eqiad' => '10.68.16.145', # deployment-sca01
+            },
         }
     }
 }
