@@ -67,7 +67,7 @@ groups:
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
-              pcoombe, mholloway-shell, madhuvishy]
+              pcoombe, mholloway-shell, madhuvishy, neilpquinn-wmf]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -103,7 +103,7 @@ groups:
               kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
               nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
               mforns, erik, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
-              daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson]
+              daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, neilpquinn-wmf]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -166,7 +166,8 @@ groups:
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy]
+              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
+              neilpquinn-wmf]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
