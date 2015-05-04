@@ -133,10 +133,10 @@ class role::cache::text {
         },
     }
 
-    include role::cache::logging
-
-    class { '::role::cache::logging::eventlistener':
-        instance_name => 'frontend',
+    class { '::role::cache::logging':
+        udp2log => true,
+        eventlistener => true,
+        eventlistener_instance_name => 'frontend',
     }
 
     # HTCP packet loss monitoring on the ganglia aggregators

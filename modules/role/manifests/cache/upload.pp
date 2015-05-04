@@ -139,7 +139,7 @@ class role::cache::upload(
         cluster_options => $cluster_options,
     }
 
-    include role::cache::logging
+    class { '::role::cache::logging': udp2log => true }
 
     # HTCP packet loss monitoring on the ganglia aggregators
     if $ganglia_aggregator and $::site != 'esams' {

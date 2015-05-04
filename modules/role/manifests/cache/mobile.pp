@@ -144,12 +144,10 @@ class role::cache::mobile (
         cluster_options  => $cluster_options,
     }
 
-    # varnish::logging to be removed once
-    # udp2log kafka consumer is implemented and deployed.
-    include role::cache::logging
-
-    class { '::role::cache::logging::eventlistener':
-        instance_name => 'frontend',
+    class { '::role::cache::logging':
+        udp2log => true,
+        eventlistener => true,
+        eventlistener_instance_name => 'frontend',
     }
 
     # ToDo: Remove production conditional once this works
