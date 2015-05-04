@@ -299,6 +299,12 @@ groups:
     gid: 749
     description: users who maintain HTML/ZIM dumps
     members: [gwicke, mobrovac, eevans]
+  graphoid-admin:
+    gid: 750
+    description: group of graphoid admins
+    members: [yurik]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service graphoid *',
+                 'ALL = (graphoid) NOPASSWD: ALL']
 users:
   rush:
     ensure: present
