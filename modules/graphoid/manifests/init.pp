@@ -11,12 +11,16 @@
 # [*domain_map*]
 #   The domain-to-domain alias map. Default: {}
 #
+# [*protocol*]
+#   The default protocol to use when connecting to the MW api. Default: https
+#
 # [*timeout*]
 #   The timeout (in ms) for requests. Default: 5000
 #
 class graphoid(
     $domains    = [],
     $domain_map = {},
+    $protocol   = 'https',
     $timeout    = 5000,
 ) {
 
