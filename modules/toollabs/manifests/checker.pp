@@ -6,7 +6,7 @@
 #
 # This runs as an ldap user, toolschecker, so it can touch NFS without causing
 # idmapd related issues.
-class toollabs::checker {
+class toollabs::checker inherits toollabs {
     include toollabs::infrastructure
     include gridengine::submit_host
 
