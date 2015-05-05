@@ -1,0 +1,2 @@
+# There is no need to collect metrics on ephemeral instances
+standard::has_diamond: false

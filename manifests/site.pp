@@ -22,11 +22,18 @@ import 'stages.pp'
 # Class for *most* servers, standard includes
 class standard(
     $has_default_mail_relay = true,
+    $has_diamond = true,
     $has_admin = true,
 ) {
     include base
     include role::ntp
-    include role::diamond
+
+    # So we can disable diamond on the contintcloud labs project which spawns
+    # ephemeral instances
+    if $has_diamond {
+        include role::diamond
+    }
+
     if $::realm == 'production' {
         include ganglia # No ganglia in labs
     }
