@@ -2453,6 +2453,11 @@ host labvirt1007 {
         fixed-address labvirt1007.eqiad.wmnet;
 }
 
+host labvirt1008 {
+	hardware ethernet 40:a8:f0:38:35:88;
+	fixed-address labvirt1008.eqiad.wmnet;
+}
+
 host lanthanum {
 	hardware ethernet 90:B1:1C:00:A2:67;
 	fixed-address lanthanum.eqiad.wmnet;
@@ -5823,13 +5828,6 @@ host virt1000 {
 host virt1010 {
 	hardware ethernet 40:a8:f0:38:06:40;
 	fixed-address virt1010.eqiad.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
-host virt1012 {
-	hardware ethernet 40:a8:f0:38:35:88;
-	fixed-address virt1012.eqiad.wmnet;
 	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
