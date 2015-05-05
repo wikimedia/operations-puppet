@@ -222,6 +222,12 @@ class role::analytics::hadoop::config {
             undef   => [$::fqdn],
             default => split($::hadoop_namenodes, ','),
         }
+        if size($namenode_hosts) > 1 {
+            $resourcemanager_hosts = $namenode_hosts
+        }
+        else {
+            $resourcemanager_hosts = undef,
+        }
 
         $journalnode_hosts = $::hadoop_journalnodes ? {
             undef   => undef,
@@ -232,6 +238,8 @@ class role::analytics::hadoop::config {
             undef   => undef,
             default => $::hadoop_cluster_name,
         }
+
+        $zookeeper_hosts = keys(hiera('zookeeper_hosts'))
 
         # Allow labs users to configure their Hadoop daemon
         # Heapsize.  NOTE:  This will be applied to
@@ -301,6 +309,8 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         cluster_name                             => $cluster_name,
         namenode_hosts                           => $namenode_hosts,
         journalnode_hosts                        => $journalnode_hosts,
+        resoucemanager_hosts                     => $resourcemanager_hosts,
+        zookeeper_hosts                          => $zookeeper_hosts,
         datanode_mounts                          => $datanode_mounts,
         dfs_name_dir                             => [$hadoop_name_directory],
         dfs_journalnode_edits_dir                => $hadoop_journal_directory,
@@ -612,6 +622,14 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
             require      => Class['cdh::hadoop::namenode::standby'],
             critical     => 'true',
         }
+    }
+
+
+    # if resourcemanager_hosts is set, then go ahead
+    # and include a resourcemanager on all standby nodes as well
+    # as the master node.
+    if $resourcemanager_hosts {
+        include cdh::hadoop::resourcemanager
     }
 }
 
