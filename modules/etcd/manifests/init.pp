@@ -1,0 +1,87 @@
+# == Class: etcd
+#
+# Installs an etcd server and defines all its clustering
+#
+# SSL between peers is not supported at the moment as it's
+# broken upstream
+#
+# === Parameters
+# [*client_netloc*]
+#   host:port combination for the client connections
+#
+# [*peer:netloc*]
+#   host:port combination for the cluster traffic
+#
+# [*cluster_name*]
+#   Name of the cluster - defaults to the datacenter
+#
+# [*cluster_state*]
+#   State of the cluster at bootstrap, if any.
+#
+# [*srv_dns*]
+#   Domain to use for DNS-based cluster discovery.
+#
+# [*peers_list*]
+#   When DNS-based cluster discovery is not available, provide a peers list
+#
+# [*use_ssl*]
+#   set to true if you want to impose use of HTTPS to communicate with
+#   clients
+#
+# [*use_client_certs*]
+#   Whether to require use of SSL certificates to connect to etcd.
+#
+class etcd (
+    $client_netloc    = '127.0.0.1:2379',
+    $peer_netloc      = '127.0.0.1:2380',
+    $cluster_name     = $::domain,
+    $cluster_state    = undef,
+    $srv_dns          = undef,
+    $peers_list       = undef,
+    $use_ssl          = false,
+    $use_client_certs = false,
+    ) {
+    # This module is jessie only for now
+    requires_os('Debian >= jessie')
+
+    # Validation of parameters
+    if ($use_client_certs and ! $use_ssl) {
+        fail("Can't use SSL client certs if we don't use SSL")
+    }
+    unless $srv_dns or $peers_list {
+        fail("We need either the domain name for DNS discovery or an explicit peers list")
+    }
+
+    require etcd::logging
+
+    package { 'etcd':
+        ensure => present,
+    }
+
+    # SSL setup
+    if $use_ssl {
+        $scheme = 'https'
+        include etcd::ssl
+    } else {
+        $scheme = 'http'
+    }
+
+    $client_url = "${scheme}://${client_netloc}"
+    $peer_url = "http://${peer_netloc}" # Peer TLS is currently broken?
+    $etcd_data_dir = "/var/lib/etcd/${cluster_name}"
+
+    file { $etcd_data_dir:
+        ensure  => directory,
+        owner   => 'etcd',
+        group   => 'etcd',
+        mode    => '0700',
+        require => Package['etcd'],
+    }
+
+    base::service_unit{ 'etcd':
+        ensure  => present,
+        systemd => true,
+        refresh => true,
+        require => File[$etcd_data_dir],
+    }
+}
