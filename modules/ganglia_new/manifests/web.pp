@@ -37,4 +37,12 @@ class ganglia_new::web(
         content => template('ganglia_new/conf_production.php.erb'),
         require => Package['ganglia-webfrontend'],
     }
+
+    # Increase the default memory limit
+    augeas { 'php.ini-memory':
+      context => '/files/etc/php5/apache2/php.ini/PHP',
+      changes => [
+        'set memory_limit 256M',
+      ];
+    }
 }
