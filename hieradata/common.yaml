@@ -266,3 +266,7 @@ ganglia_clusters:
       eqiad:
         - restbase1001.eqiad.wmnet
         - restbase1006.eqiad.wmnet
+zookeeper_hosts:
+  analytics1023.eqiad.wmnet: '1023'
+  analytics1024.eqiad.wmnet: '1024'
+  analytics1025.eqiad.wmnet: '1025'

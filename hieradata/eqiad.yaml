@@ -18,7 +18,3 @@ mediawiki_memcached_servers:
   - '10.64.48.95:11211:1 "shard17"'
   - '10.64.48.96:11211:1 "shard18"'
 ganglia_class: "old"
-zookeeper_hosts:
-  analytics1023.eqiad.wmnet: '1023'
-  analytics1024.eqiad.wmnet: '1024'
-  analytics1025.eqiad.wmnet: '1025'
