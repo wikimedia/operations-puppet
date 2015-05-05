@@ -1,0 +1,34 @@
+[Unit]
+Description=etcd
+
+[Service]
+User=etcd
+PermissionsStartOnly=true
+Environment=ETCD_DATA_DIR=<%= @etcd_data_dir %>
+Environment=ETCD_NAME=<%= @hostname %>
+<% if @cluster_state -%>
+Environment=ETCD_INITIAL_CLUSTER_STATE=<%= @cluster_state %>
+<% end -%>
+<% if @peers_list -%>
+Environment="ETCD_INITIAL_CLUSTER=<%= @peers_list %>"
+<% end -%>
+<% if @srv_dns -%>
+Environment="ETCD_DISCOVERY_SRV=<%= @srv_dns %>"
+Environment=ETCD_DISCOVERY_FALLBACK=exit
+<% end -%>
+Environment=ETCD_INITIAL_ADVERTISE_PEER_URLS=<%= @peer_url %>
+Environment=ETCD_LISTEN_PEER_URLS=<%= @peer_url %>
+Environment=ETCD_LISTEN_CLIENT_URLS=<%= @client_url %>
+Environment=ETCD_ADVERTISE_CLIENT_URLS=<%= @client_url %>
+<% if @use_ssl -%>
+# TLS certs, see https://github.com/coreos/etcd/blob/v2.0.10/Documentation/security.md
+# Also note that peer auth is currently broken.
+Environment=ETCD_CERT_FILE=/var/lib/etcd/ssl/cert.pem
+Environment=ETCD_KEY_FILE=/var/lib/etcd/ssl/keys/server.pem
+<%- if @use_client_certs -%>
+Environment=ETCD_CA_FILE=/var/lib/etcd/ssl/ca.key
+<%- end -%>
+<% end -%>
+ExecStart=/usr/bin/etcd
+Restart=always
+RestartSec=10s
