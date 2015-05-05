@@ -8,6 +8,7 @@
 # idmapd related issues.
 class toollabs::checker {
     include toollabs::infrastructure
+    include gridengine::submit_host
 
     require_package('python-flask', 'python-redis')
 
