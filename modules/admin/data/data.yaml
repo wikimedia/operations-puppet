@@ -68,7 +68,7 @@ nimishg, rainman, ssmith, swalling, erik]
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
-              pcoombe, mholloway-shell, madhuvishy]
+              pcoombe, mholloway-shell, madhuvishy, niedzielski]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -1401,3 +1401,9 @@ users:
     realname: Guillaume Paumier
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxE/ZWep1KH3AEenFtT+8+RJIzbbQfMoTxFPpGhvXZcBijxj+SajDzzgF5lyv+j+pjFsty524R3rEK+Dxu8zpORsVLODuAHMcFDoPeC6IgQKCxnJlWMcNfhUX0VXcm+sjPPTlSKkPsvXypiErB/LWlMT5splo7debfRXRgr4Kh1fZAcrkaoZCW66Ipn7g6Mw2efS1WbJLtpwQDrhzHlL7XuoDJZWwpch1ZcKbBW8TSh3haPFpMhNow2Qtb7V0ZCk+f3dzT6D1vEL1aKQQwskR/GM9nrBgLIGB0ucgue3GcDnpI6W+nLRmamKMc1JX4HfP0J3RrkZgaK661XxHmHOq/ gpaumier@wikimedia.org]
     uid: 2047
+  niedzielski:
+    gid: 500
+    name: niedzielski
+    realname: Stephen Niedzielski
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvAn78DE2Wj3QZFQSYe19eAqcGWZXQZA/TPuDjFtSdBU9yqsdcWUzfpN8ZN+dpvvQyBLbKf2MxYD2ghoo0WdUdcRoxB/7XyP5xsHLW4BRYtEf0XlPP9uC1C0ph+8KSdDkwSM9qEgHWnqZJQQQoiQkVed2cgv3/EeKuIQ84d5MxUjViQxARN5RP8fH/4Gr7BuhXcBfs7P8r8ZkJKT7VeKcTXFdWcP4uluyxK9TswrKhtdY/MHTIJPJSjGIQALl1mPLxSgJIbFADGbYNGf3ykimkeVbAoNkIH6IDe9CevEWMaexapKN2+hT3XnwWujHETScxp3mAzEr4JmGR2mQaCO3b stephen@niedzielski.com]
+    uid: 11833
