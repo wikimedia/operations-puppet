@@ -52,6 +52,7 @@ class toollabs::exec_environ {
         'npm',                         # T1102
         'nodejs',
         'openjdk-7-jre-headless',
+        'icedtea-7-jre-jamvm',         # T98195
         'python3',
         'r-base',
         'ruby1.9.3',
