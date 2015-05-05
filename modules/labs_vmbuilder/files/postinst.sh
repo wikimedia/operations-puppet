@@ -11,7 +11,28 @@ if [ "$1" != "" ]; then
   echo ""
 
 else
+  if [ -n "$POSTINST_PUPPET" ]; then
+    echo "Bootstrapping chroot with puppet"
+    set -x
 
+    mkdir /postinst
+    git clone --depth 1 https://gerrit.wikimedia.org/r/p/operations/puppet.git /postinst/puppet
+    (cd /postinst/puppet && git submodule update --init --recursive --depth 1)
+
+    if [ ! -f /etc/apt/trusted.gpg.d/wikimedia-archive-keyring.gpg ]; then
+      wget -O /etc/apt/trusted.gpg.d/wikimedia-archive-keyring.gpg http://apt.wikimedia.org/autoinstall/keyring/wikimedia-archive-keyring.gpg
+    fi
+
+
+    apt-cache policy puppet
+    apt-get install puppet
+    facter --debug
+    FACTS="/usr/bin/env - FACTER_site='eqiad' FACTER_fqdn=fakehost.eqiad.wmflabs'"
+    PUPPET_APPLY="$FACTS puppet apply --logdest console --templatedir '/postinst/puppet/templates' --modulepath '/postinst/puppet/modules'"
+    $PUPPET_APPLY --execute 'include ::apt'
+    $PUPPET_APPLY --execute 'include base::standard-packages'
+    set +x
+  fi
   ##
   ## This part of this script is run inside the chroot
   ##
