@@ -1,4 +1,5 @@
 import os
+import subprocess
 import uuid
 import redis
 
@@ -51,6 +52,24 @@ def redis_check():
         return red.get(content) == content
     finally:
         red.delete(content)
+
+
+def job_running(name):
+    """Check if a job with given name is running"""
+    try:
+        subprocess.check_call(['/usr/bin/qstat', '-j', name])
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+@check('/continuous/precise')
+def continuous_job_precise():
+    return job_running('test-long-running-precise')
+
+
+@check('/continuous/trusty')
+def continuous_job_trusty():
+    return job_running('test-long-running-trusty')
 
 
 @check('/self')
