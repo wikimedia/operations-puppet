@@ -15,8 +15,6 @@
 #   include role::analytics::kafka::server
 #
 class role::analytics::kafka::config {
-    require role::analytics::zookeeper::config
-
     if ($::realm == 'labs') {
         # In labs, this can be set via hiera, or default to $::instanceproject
         $kafka_cluster_name = hiera('role::analytics::kafka::config::kafka_cluster_name', $::instanceproject)
@@ -108,7 +106,7 @@ class role::analytics::kafka::config {
     } else {
         $brokers_array = []
     }
-    $zookeeper_hosts  = $role::analytics::zookeeper::config::hosts_array
+    $zookeeper_hosts  = keys(hiera('zookeeper_hosts'))
     $zookeeper_chroot = "/kafka/${kafka_cluster_name}"
     $zookeeper_url    = inline_template("<%= zookeeper_hosts.sort.join(',') %><%= zookeeper_chroot %>")
 }
