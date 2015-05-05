@@ -1394,3 +1394,10 @@ users:
     realname: Madhu Viswanathan
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQChoG+v0UpbHyYfG0qYb2i0D2tSef5/JltA4wJu60wGbsqJyUhn4NEN3vFnjfhRPQI6jLYWguJhy1QXCjq/ZGMrdjEymxotOqKhY+G+5zyB6+j4AaNa5jNkgxBBJuAccqwXbuKcapAiDSXGQuGMaHe7OsGL/2VCt7Ek1VhYX20y7doI5Y4Ncb+57YhnjlthQ6PRhsFMegmq81wnT4LH2ZUwFkw4yFkzDdQZ0o/gS2xHX4EBtkx3ntytW3iHxPkiBOunWHFwzPDjgrxStPYGsxcWC4YgQc58Ifl5mgh2Ll5slXbdSuGJrt7ChCP9nSVniahtG3r5f3BglACf86Ko+nM5 mviswanathan@mviswanthansMBP.corp.wikimedia.org]
     uid: 11511
+  gpaumier:
+    ensure: present
+    gid: 500
+    name: gpaumier
+    realname: Guillaume Paumier
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxE/ZWep1KH3AEenFtT+8+RJIzbbQfMoTxFPpGhvXZcBijxj+SajDzzgF5lyv+j+pjFsty524R3rEK+Dxu8zpORsVLODuAHMcFDoPeC6IgQKCxnJlWMcNfhUX0VXcm+sjPPTlSKkPsvXypiErB/LWlMT5splo7debfRXRgr4Kh1fZAcrkaoZCW66Ipn7g6Mw2efS1WbJLtpwQDrhzHlL7XuoDJZWwpch1ZcKbBW8TSh3haPFpMhNow2Qtb7V0ZCk+f3dzT6D1vEL1aKQQwskR/GM9nrBgLIGB0ucgue3GcDnpI6W+nLRmamKMc1JX4HfP0J3RrkZgaK661XxHmHOq/ gpaumier@wikimedia.org]
+    uid: 2047
