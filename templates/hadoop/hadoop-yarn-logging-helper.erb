@@ -94,8 +94,8 @@ set)
 +# GELF appender
 +log4j.appender.gelf=biz.paluch.logging.gelf.log4j.GelfLogAppender
 +log4j.appender.gelf.Threshold=INFO
-+log4j.appender.gelf.Host=<%= gelf_logging_host %>
-+log4j.appender.gelf.Port=<%= gelf_logging_port %>
++log4j.appender.gelf.Host=<%= @gelf_logging_host %>
++log4j.appender.gelf.Port=<%= @gelf_logging_port %>
 +log4j.appender.gelf.Facility=Hadoop
 +log4j.appender.gelf.ExtractStackTrace=true
 +log4j.appender.gelf.FilterStackTrace=false
