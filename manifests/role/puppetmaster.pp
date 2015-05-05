@@ -18,8 +18,14 @@ class role::puppetmaster::frontend {
         allow_from  => $role::puppetmaster::config::allow_from,
         server_type => 'frontend',
         workers     =>  [
-                        { 'worker' => 'palladium.eqiad.wmnet', },
-                        { 'worker' => 'strontium.eqiad.wmnet', },
+                        {
+                            'worker' => 'palladium.eqiad.wmnet',
+                            'loadfactor' => 10,
+                        },
+                        {
+                            'worker' => 'strontium.eqiad.wmnet',
+                            'loadfactor' => 20,
+                        },
         ],
         config      => {
             'storeconfigs'      => true, # Required by thin_storeconfigs on puppet 3.x
