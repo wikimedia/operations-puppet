@@ -142,7 +142,7 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
 node /analytics102[345].eqiad.wmnet/ {
     role analytics
     include standard
-    include role::analytics::zookeeper::server
+    include role::zookeeper::server
 }
 
 # Analytics1026 is the Impala master

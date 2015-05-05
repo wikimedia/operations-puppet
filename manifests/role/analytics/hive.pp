@@ -17,7 +17,6 @@
 #
 class role::analytics::hive::config {
     # require zookeeper config to get zookeeper hosts array.
-    include role::analytics::zookeeper::config
     include role::analytics::hadoop::config
 
     # Set this pretty high, to avoid limiting the number
@@ -38,7 +37,7 @@ class role::analytics::hive::config {
     }
 
     # Hive uses Zookeeper for table locking.
-    $zookeeper_hosts = $role::analytics::zookeeper::config::hosts_array
+    $zookeeper_hosts = keys(hiera('zookeeper_hosts'))
 
     # We set support concurrency to false by default.
     # if someone needs to use it in their hive job, they
