@@ -1,0 +1,42 @@
+#!/usr/bin/perl
+
+# Copyright 2015 Giuseppe Lavagetto
+# Copyright 2015 Wikimedia Foundation, Inc.
+#
+# This nagios plugin is free software, and comes with ABSOLUTELY NO WARRANTY.
+# It may be used, redistributed and/or modified under the terms of the GNU
+# General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
+#
+# Example usage:
+#   etcd_cluster_health --url https://localhost:2379
+
+use strict;
+use Nagios::Plugin;
+
+my $np = Nagios::Plugin->new(usage => "Usage: %s --url <URL>");
+$np->add_arg(
+             spec     => 'url|u=s',
+             help     => '--url https://localhost:2379',
+             required => 1,
+            );
+$np->getopts;
+
+my $url = $np->opts->url;
+my $opts = "-C '$url'";
+
+if ($url =~ /^https:\/\//) {
+    $opts = "--ca-file /var/lib/etcd/ssl/ca.pem $opts";
+}
+
+open(CHECK, "/usr/bin/etcdctl $opts cluster-health |");
+
+my @members;
+
+while (<CHECK>) {
+    chomp;
+    next unless /^(cluster|member)/;
+    next if /is healthy$/;
+    $np->nagios_exit(CRITICAL, $_) if /^cluster/;
+    $np->nagios_exit(WARNING, $_) if /^member/;
+}
+$np->nagios_exit(OK, "The etcd cluster is healthy");
