@@ -10,7 +10,7 @@ class toollabs::checker inherits toollabs {
     include toollabs::infrastructure
     include gridengine::submit_host
 
-    require_package('python-flask', 'python-redis')
+    require_package('python-flask', 'python-redis', 'uwsgi', 'uwsgi-plugin-python')
 
     file { '/usr/local/lib/python2.7/dist-packages/toolschecker.py':
         ensure => file,
