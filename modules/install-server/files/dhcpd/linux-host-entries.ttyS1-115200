@@ -5700,6 +5700,14 @@ host rhenium {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host rhodium {
+	hardware ethernet 18:03:73:f1:56:d2;
+	fixed-address rhodium.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+
 host rubidium {
 	hardware ethernet 18:03:73:f1:4f:70;
 	fixed-address rubidium.wikimedia.org;
