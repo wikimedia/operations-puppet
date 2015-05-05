@@ -13,6 +13,12 @@
 # $hadoop_namenodes   - Comma separated list of FQDNs that should be NameNodes
 #                       for this cluster.  The first entry in the list
 #                       is assumed to be the preferred primary NameNode.  Required.
+#                       This list will also be used as $resourcemanager_hosts.
+#                       If hiera('zookeeper_hosts') is set, and this list has more
+#                       than one entry, and $journalnode_hosts is also set, then
+#                       HA YARN ResourceManager will be configured.
+#                       TODO: Change the name of this variable to hadoop_masters
+#                       When we make this work better with hiera.
 #
 # $journalnode_hosts  - Comma separated list of FQDNs that should be JournalNodes
 #                       for this cluster.  Optional.  If not specified, HA will not be configured.
@@ -61,6 +67,9 @@ class role::analytics::hadoop::config {
     # This needs to be set in order to use Impala
     $dfs_datanode_hdfs_blocks_metadata_enabled = true
 
+    # Look up zookeeper_hosts from hiera.
+    $zookeeper_hosts = keys(hiera('zookeeper_hosts', undef))
+
     # Configs specific to Production.
     if $::realm == 'production' {
         # This is the logical name of the Analytics Hadoop cluster.
@@ -70,6 +79,7 @@ class role::analytics::hadoop::config {
             'analytics1001.eqiad.wmnet',
             'analytics1002.eqiad.wmnet',
         ]
+        $resourcemanager_hosts = $namenode_hosts
 
         # JournalNodes are colocated on worker DataNodes.
         $journalnode_hosts        = [
@@ -222,6 +232,7 @@ class role::analytics::hadoop::config {
             undef   => [$::fqdn],
             default => split($::hadoop_namenodes, ','),
         }
+        $resourcemanager_hosts = $namenode_hosts
 
         $journalnode_hosts = $::hadoop_journalnodes ? {
             undef   => undef,
@@ -301,6 +312,8 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         cluster_name                             => $cluster_name,
         namenode_hosts                           => $namenode_hosts,
         journalnode_hosts                        => $journalnode_hosts,
+        resourcemanager_hosts                    => $resourcemanager_hosts,
+        zookeeper_hosts                          => $zookeeper_hosts,
         datanode_mounts                          => $datanode_mounts,
         dfs_name_dir                             => [$hadoop_name_directory],
         dfs_journalnode_edits_dir                => $hadoop_journal_directory,
@@ -612,6 +625,14 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
             require      => Class['cdh::hadoop::namenode::standby'],
             critical     => 'true',
         }
+    }
+
+
+    # If this is a resourcemanager host is set, then go ahead
+    # and include a resourcemanager on all standby nodes as well
+    # as the master node.
+    if $::fqdn in $resourcemanager_hosts {
+        include cdh::hadoop::resourcemanager
     }
 }
 
