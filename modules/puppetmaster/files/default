@@ -1,0 +1,7 @@
+# Defaults for puppetmaster - sourced by /etc/init.d/puppetmaster
+
+# Start puppetmaster on boot?
+START=no
+
+# Startup options.
+DAEMON_OPTS=""
