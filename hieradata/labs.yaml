@@ -39,3 +39,4 @@ role::cache::bits::top_domain: 'beta.wmflabs.org'
 role::cache::mobile::zero_site: 'http://zero.wikimedia.beta.wmflabs.org'
 zookeeper_hosts:
   "${::fqdn}": 1
+etcd::ssl::puppet_cert_name: "%{::ec2id}.%{::domain}"
