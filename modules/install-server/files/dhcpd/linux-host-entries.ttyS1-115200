@@ -5702,7 +5702,7 @@ host rhenium {
 
 host rhodium {
 	hardware ethernet 18:03:73:f1:56:d2;
-	fixed-address rhodium.wikimedia.org;
+	fixed-address rhodium.eqiad.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
