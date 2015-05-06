@@ -13,6 +13,7 @@
     Alias /latest <%= @ganglia_webdir %>
 
     RedirectMatch ^/$ http://<%= @ganglia_servername %>/latest
+    CustomLog /var/log/apache2/ganglia.wikimedia.org-access.log combined
     ErrorLog /var/log/apache2/ganglia.wikimedia.org-error.log
     LogLevel warn
 </VirtualHost>
@@ -37,6 +38,7 @@
     Alias /latest <%= @ganglia_webdir %>
 
     RedirectMatch ^/$ https://<%= @ganglia_servername %>/latest
+    CustomLog /var/log/apache2/ganglia.wikimedia.org-access.log combined
     ErrorLog /var/log/apache2/ganglia.wikimedia.org-error.log
     LogLevel warn
 </VirtualHost>
