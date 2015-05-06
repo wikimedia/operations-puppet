@@ -2407,17 +2407,6 @@ node /^virt100[1-9].eqiad.wmnet/ {
     }
 }
 
-node /^virt101[0-2].eqiad.wmnet/ {
-    $use_neutron = false
-    openstack::nova::partition{ '/dev/sdb': }
-    role nova::compute
-    include standard
-
-    if $use_neutron == true {
-        include role::neutron::computenode
-    }
-}
-
 node /^labvirt100[0-9].eqiad.wmnet/ {
     $use_neutron = false
     openstack::nova::partition{ '/dev/sdb': }
