@@ -68,7 +68,7 @@ nimishg, rainman, ssmith, swalling, erik]
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
-              pcoombe, mholloway-shell, madhuvishy, niedzielski]
+              pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -104,7 +104,8 @@ nimishg, rainman, ssmith, swalling, erik]
               kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
               nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
-              daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski]
+              daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
+              neilpquinn-wmf]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -167,7 +168,8 @@ nimishg, rainman, ssmith, swalling, erik]
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy]
+              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
+              neilpquinn-wmf]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -1407,3 +1409,10 @@ users:
     realname: Stephen Niedzielski
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvAn78DE2Wj3QZFQSYe19eAqcGWZXQZA/TPuDjFtSdBU9yqsdcWUzfpN8ZN+dpvvQyBLbKf2MxYD2ghoo0WdUdcRoxB/7XyP5xsHLW4BRYtEf0XlPP9uC1C0ph+8KSdDkwSM9qEgHWnqZJQQQoiQkVed2cgv3/EeKuIQ84d5MxUjViQxARN5RP8fH/4Gr7BuhXcBfs7P8r8ZkJKT7VeKcTXFdWcP4uluyxK9TswrKhtdY/MHTIJPJSjGIQALl1mPLxSgJIbFADGbYNGf3ykimkeVbAoNkIH6IDe9CevEWMaexapKN2+hT3XnwWujHETScxp3mAzEr4JmGR2mQaCO3b stephen@niedzielski.com]
     uid: 11833
+  neilpquinn-wmf:
+    ensure: present
+    gid: 500
+    name: neilpquinn-wmf
+    realname: Neil P. Quinn
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDA6j1BKp5iz7VLQ+yy/IOlwjSfpbdMHUjUgtUtN/CNYSsrlig9heWxR6vd0UURaLB1WgeFgsc0Co3339bpqAUA08oBwfCjdScqkE/qu74jYlFBaA3hqd0rS9/UbWR5uCbNZVsv9ckvMGv8iq0syarW/Vvk5KVM0DppxY/2Tvcj/HfDUXHXpHr8+0iSwsiknjOuRj8a89FcABS2ilHhLY1GkUpJAV0UkMMYt4Kz99PWVx5DSvcKO7oraT/bTiD3GKzKIXm76CBWoC7jsTrCpPF6Ow0kLs8bnvUE9MAjFxkxNDPW8PE3hssV3x02xc6yUanYHLrNC1F8xMRH2OJWOG3h nquinn@wikimedia.org]
+    uid: 12049
