@@ -308,6 +308,11 @@ nimishg, rainman, ssmith, swalling, erik]
     members: [yurik]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service graphoid *',
                  'ALL = (graphoid) NOPASSWD: ALL']
+  traceback-roots:
+    gid: 751
+    description: people who have full root on traceback hosts
+    members: [dkg]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 users:
   rush:
     ensure: present
