@@ -16,6 +16,8 @@ class puppetmaster::gitsync(
     file { '/usr/local/bin/git-sync-upstream':
         ensure  => present,
         content => template('puppetmaster/git-sync-upstream.erb'),
+        owner   => 'root',
+        group   => 'root',
         mode    => '0555',
     }
 
@@ -30,7 +32,8 @@ class puppetmaster::gitsync(
     file { '/etc/logrotate.d/git-sync-upstream':
         ensure  => present,
         source  => 'puppet:///modules/puppetmaster/git-sync-upstream.logrotate',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
-        require => Cron['rebase_operations_puppet'],
     }
 }
