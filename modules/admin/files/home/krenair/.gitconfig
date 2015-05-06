@@ -1,8 +1,7 @@
 [user]
 	name = Alex Monk
+	email = krenair@gmail.com
 [color]
 	ui = true
-[alias]
-	push-for-review = push origin HEAD:refs/for/master
-[gitreview]
-	username = krenair
+[core]
+	editor = nano
