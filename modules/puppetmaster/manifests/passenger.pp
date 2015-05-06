@@ -22,7 +22,7 @@ class puppetmaster::passenger(
     include ::apache::mod::passenger
 
     package { 'puppetmaster-passenger':
-        ensure => latest,
+        ensure => present,
     }
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')

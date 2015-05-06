@@ -47,7 +47,7 @@ class puppetmaster(
         'libmysql-ruby',
         'ruby-json'
         ]:
-        ensure  => latest,
+        ensure  => present,
     }
 
     if $server_type == 'frontend' {
