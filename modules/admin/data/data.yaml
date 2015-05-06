@@ -90,7 +90,7 @@ nimishg, rainman, ssmith, swalling, erik]
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [brion, bsitzmann, dbrant, mholloway-shell]
+    members: [brion, bsitzmann, dbrant, mholloway-shell, niedzielski]
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
