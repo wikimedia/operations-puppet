@@ -67,8 +67,7 @@ ganglia_clusters:
     name: "PDF servers"
     id: 15
     sites:
-      eqiad:
-        - ocg1001.eqiad.wmnet
+      eqiad: []
   cache_text:
     name: "Text caches"
     id: 20
