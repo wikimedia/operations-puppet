@@ -42,7 +42,7 @@ class role::beta::trebuchet_testing {
 # = Class: role::beta::puppetmaster
 # Add nice things to the beta puppetmaster.
 class role::beta::puppetmaster {
-    class { 'puppetmaster::reporter::logstash':
+    class { 'puppetmaster::logstash':
         logstash_host => 'deployment-logstash1.eqiad.wmflabs',
         logstash_port => 5229,
     }
