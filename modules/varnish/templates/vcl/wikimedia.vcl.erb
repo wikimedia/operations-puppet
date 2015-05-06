@@ -308,7 +308,7 @@ sub vcl_recv {
 
 <% if @cluster_options.fetch("enable_geoiplookup", false) -%>
 	if (req.url == "/geoiplookup" || req.http.host == "geoiplookup.wikimedia.org") {
-		error 666 "geoiplookup";
+		error 668 "geoiplookup";
 	}
 <% end -%>
 
@@ -408,7 +408,7 @@ sub vcl_error {
 
 <% if @cluster_options.fetch("enable_geoiplookup", false) -%>
 	// Support geoiplookup
-	if (obj.status == 666) {
+	if (obj.status == 668) {
 		call geoip_lookup;
 		set obj.status = 200;
 		set obj.http.Connection = "keep-alive";
