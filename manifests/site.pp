@@ -2195,7 +2195,7 @@ node 'sodium.wikimedia.org' {
     }
 }
 
-node 'strontium.eqiad.wmnet' {
+node /^(strontium|rhodium).eqiad.wmnet/ {
     include standard
     include role::puppetmaster::backend
 }
