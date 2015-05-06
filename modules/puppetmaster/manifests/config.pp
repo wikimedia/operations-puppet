@@ -10,8 +10,7 @@ class puppetmaster::config {
         group   => 'root',
         mode    => '0444',
         content => template('puppetmaster/20-master.conf.erb'),
-        require => File['/etc/puppet/puppet.conf.d'],
-        notify  => Exec['compile puppet.conf']
+        notify  => Class['base::puppet'],
     }
 
     # See https://tickets.puppetlabs.com/browse/PUP-1237
