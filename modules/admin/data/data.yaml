@@ -1416,3 +1416,10 @@ users:
     realname: Neil P. Quinn
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDA6j1BKp5iz7VLQ+yy/IOlwjSfpbdMHUjUgtUtN/CNYSsrlig9heWxR6vd0UURaLB1WgeFgsc0Co3339bpqAUA08oBwfCjdScqkE/qu74jYlFBaA3hqd0rS9/UbWR5uCbNZVsv9ckvMGv8iq0syarW/Vvk5KVM0DppxY/2Tvcj/HfDUXHXpHr8+0iSwsiknjOuRj8a89FcABS2ilHhLY1GkUpJAV0UkMMYt4Kz99PWVx5DSvcKO7oraT/bTiD3GKzKIXm76CBWoC7jsTrCpPF6Ow0kLs8bnvUE9MAjFxkxNDPW8PE3hssV3x02xc6yUanYHLrNC1F8xMRH2OJWOG3h nquinn@wikimedia.org]
     uid: 12049
+  dkg:
+    ensure: present
+    gid: 500
+    name: dkg
+    realname: Daniel Kahn Gillmor
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8NY6C8j5WYDAeXbs3C0L9Prr+cAuOgvkoeYwLpV3l+WuYTC6m0LpnaZ53d9o/r5zqKaIDC4F2FgP4cU52qikFqNorqvsZ3sFHAy5XWFtvSzsaRTGUKhs+Y14TKKpQ2Y+oynsuZFN8wm4N6U8ZepeFT+fDtPBPT9lrzooxGydnyw2246LRhx7jtrYwnAMi78+dPTBTNXVQm5oHHAwDpLnEgNe35ii78qZxSlS1qnfwXKfNrdRafCwHDetR8VEiZgsVkZ15GaKZ441rvXYsLkuzBqC1BseRfaPAYZ5hFq3ikP2zW6JNJ5IS8k8JfR9wMmuSB8J+U2op/qoCJQQ3HMAb dkg]
+    uid: 12138
