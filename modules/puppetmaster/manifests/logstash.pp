@@ -10,25 +10,26 @@
 # - logstash_host: Host to send log events to
 # - logstash_port: Port to send log events to
 # - timeout: Connection timeout for sending an event in seconds. Default is 5.
-class puppetmaster::reporter::logstash(
+class puppetmaster::logstash(
     $logstash_host,
     $logstash_port,
     $timeout = 5,
 ) {
     file { '/etc/puppet/logstash.yaml':
-        ensure  => file,
+        ensure  => present,
         owner   => 'puppet',
         group   => 'puppet',
         mode    => '0444',
-        content => template('puppetmaster/reporter/logstash.yaml.erb'),
+        content => template('puppetmaster/logstash.yaml.erb'),
     }
 
     file { '/etc/puppet/puppet.conf.d/30-logstash.conf':
-        require => File['/etc/puppet/puppet.conf.d'],
+        ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('puppetmaster/30-logstash.conf.erb'),
-        notify  => Exec['compile puppet.conf']
+        notify  => Exec['compile puppet.conf'],
+        require => File['/etc/puppet/puppet.conf.d'],
     }
 }
