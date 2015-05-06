@@ -28,4 +28,4 @@ elasticsearch::unicast_hosts:
 # current configuration isn't thread safe and can cause crashes or
 # garbled output when used with more than one thread worker.
 logstash::filter_workers: 1
-logstash::heap_memory_mb: 1024
+logstash::heap_memory_mb: 256
