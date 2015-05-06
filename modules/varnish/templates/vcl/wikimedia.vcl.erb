@@ -306,6 +306,12 @@ sub vcl_recv {
 		error 204;
 	}
 
+<% if @cluster_options.fetch("enable_geoiplookup", false) -%>
+	if (req.url == "/geoiplookup" || req.http.host == "geoiplookup.wikimedia.org") {
+		error 666 "geoiplookup";
+	}
+<% end -%>
+
 	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
 }
 
@@ -399,6 +405,17 @@ sub vcl_error {
 	if (obj.status == 204 && req.request == "PURGE") {
 		set obj.http.Connection = "keep-alive";
 	}
+
+<% if @cluster_options.fetch("enable_geoiplookup", false) -%>
+	// Support geoiplookup
+	if (obj.status == 666) {
+		call geoip_lookup;
+		set obj.status = 200;
+		set obj.http.Connection = "keep-alive";
+		return (deliver);
+	}
+<% end -%>
+
 	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
 }
 
