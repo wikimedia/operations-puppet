@@ -2398,7 +2398,16 @@ node 'virt1000.wikimedia.org' {
     }
 }
 
-node /^virt100[1-9].eqiad.wmnet/ {
+node /^virt100[1-4].eqiad.wmnet/ {
+    $use_neutron = false
+    role nova::compute
+    include standard
+    if $use_neutron == true {
+        include role::neutron::computenode
+    }
+}
+
+node /^virt100[7-9].eqiad.wmnet/ {
     $use_neutron = false
     role nova::compute
     include standard
