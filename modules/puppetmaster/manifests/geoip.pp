@@ -12,14 +12,6 @@ class puppetmaster::geoip {
     }
 
     if $is_labs_puppet_master {
-        # legacy; remove eventually
-        file { '/usr/local/bin/geoliteupdate':
-            ensure => absent,
-        }
-        cron { 'geoliteupdate':
-            ensure => absent,
-        }
-
         class { 'geoip::data::maxmind':
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
