@@ -48,7 +48,7 @@ class role::phabricator::main {
         security_tag     => 'release/2015-05-06/1',
         libraries        => ['/srv/phab/libext/Sprint/src',
                             '/srv/phab/libext/security/src'],
-        extension_tag    => 'release/2015-05-06/1',
+        extension_tag    => 'HEAD',
         extensions       => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php',
                               'PhabricatorMediaWikiAuthProvider.php',
@@ -68,7 +68,7 @@ class role::phabricator::main {
             'metamta.maniphest.public-create-email'  => "task@${domain}",
             'metamta.reply-handler-domain'           => $domain,
             'repository.default-local-path'          => '/srv/phab/repos',
-            'phd.start-taskmasters'                  => 10,
+            'phd.taskmasters'                        => 10,
             'events.listeners'                       => ['SecurityPolicyEventListener'],
         },
     }
