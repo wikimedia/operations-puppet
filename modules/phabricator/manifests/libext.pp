@@ -43,7 +43,7 @@ define phabricator::libext ($rootdir, $libext_tag, $libext_lock_path, $libname =
 
     # create the symlink, but only if the target of the link exists
     exec { "${libname}_static_dir_exists":
-        command     => "ln -s $static_dir $symlink_dir",
+        command     => "/bin/ln -s $static_dir $symlink_dir",
         onlyif      => "/usr/bin/test -e $static_dir",
         creates     => $symlink_dir,
         require     => Git::Install["phabricator/extensions/${libname}"],
