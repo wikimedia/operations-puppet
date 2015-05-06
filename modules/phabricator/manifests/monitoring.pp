@@ -4,7 +4,7 @@ class phabricator::monitoring {
 
     nrpe::monitor_service { 'check_phab_taskmaster':
         description  => 'check if phabricator taskmaster is running',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 10:30 -c 10:30 --ereg-argument-array PhabricatorTaskmasterDaemon',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:3 -c 1:5 --ereg-argument-array PhabricatorTaskmasterDaemon',
         contact_group => 'admins,phabricator,sms',
     }
 
