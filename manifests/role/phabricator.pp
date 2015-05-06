@@ -54,7 +54,6 @@ class role::phabricator::main {
                               'PhabricatorMediaWikiAuthProvider.php',
                               'PhutilMediaWikiAuthAdapter.php'],
         settings         => {
-            'storage.upload-size-limit'              => '10M',
             'darkconsole.enabled'                    => false,
             'phabricator.base-uri'                   => "https://${domain}",
             'security.alternate-file-domain'         => "https://${altdom}",
