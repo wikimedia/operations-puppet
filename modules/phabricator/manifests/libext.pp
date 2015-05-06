@@ -35,4 +35,9 @@ define phabricator::libext ($rootdir, $libext_tag, $libext_lock_path, $libname =
             unless  => "test -z ${libname_lock} || test -e ${libname_lock}",
             path    => '/usr/bin:/bin',
         }
+
+        file { "${rootdir}/phabricator/webroot/rsrc/libext":
+            ensure => 'link',
+            target => "${rootdir}/libext/Sprint/rsrc/webroot-static",
+        }
 }
