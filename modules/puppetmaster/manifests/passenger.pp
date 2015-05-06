@@ -35,6 +35,12 @@ class puppetmaster::passenger(
         content => template('puppetmaster/ports.conf.erb'),
     }
 
+    # Unfortunately priority does not allows to use apache::site for this
+    # Purging the package installed puppetmaster site
+    file { '/etc/apache2/site-enabled/puppetmaster':
+        ensure => absent,
+    }
+
     # Since we are running puppet via passenger, we need to ensure
     # the puppetmaster service is stopped, since they use the same port
     # and will conflict when both started.
@@ -46,11 +52,12 @@ class puppetmaster::passenger(
         }
         # We also make sure puppet master can not be manually started
         file { '/etc/default/puppetmaster':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/puppetmaster/default',
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => 'puppet:///modules/puppetmaster/default',
+            require => Package['puppetmaster-passenger'],
         }
     }
 
