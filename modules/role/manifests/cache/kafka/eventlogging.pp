@@ -11,7 +11,7 @@ class role::cache::kafka::eventlogging(
         topic             => 'eventlogging-client-side',
         varnish_name      => $varnish_name,
         varnish_svc_name  => $varnish_svc_name,
-        varnish_opts      => { 'm' => 'RxURL:^/beacon/event\.gif\?.' },
+        varnish_opts      => { 'm' => 'RxURL:^/beacon/event(\.gif)?\?.' },
         topic_request_required_acks  => '-1',
     }
 }
