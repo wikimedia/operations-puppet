@@ -233,9 +233,8 @@ class role::graphite::production {
 
     include ::mediawiki::monitoring::graphite
     include ::eventlogging::monitoring::graphite
-    include ::swift::monitoring::graphite
-    include ::swift_new::monitoring::graphite
     include ::graphite::monitoring::graphite
+    swift_new::monitoring::graphite { ['eqiad-prod', 'codfw-prod']: }
 
     # Monitor production 5xx rates
     monitoring::graphite_threshold { 'reqstats_5xx':
