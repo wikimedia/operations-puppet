@@ -2,7 +2,7 @@
 #
 # This class handles the Wikimedia Labs specific bits of a Puppetmaster
 class puppetmaster::labs {
-    package { 'libldap-ruby1.8': ensure => latest; }
+    package { 'libldap-ruby1.8': ensure => present; }
 
     include puppetmaster::autosigner
 
