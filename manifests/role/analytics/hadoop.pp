@@ -124,20 +124,61 @@ class role::analytics::hadoop::config {
             ]
         }
 
-        $mapreduce_map_tasks_maximum              = ($::processorcount - 2) / 2
-        $mapreduce_reduce_tasks_maximum           = ($::processorcount - 2) / 2
-
         $mapreduce_reduce_shuffle_parallelcopies  = 10
         $mapreduce_task_io_sort_mb                = 200
         $mapreduce_task_io_sort_factor            = 10
 
 
-        # Configure memory based on these recommendations:
+        # Configure memory based on these recommendations and then adjusted:
         # http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.0.6.0/bk_installing_manually_book/content/rpm-chap1-11.html
+
+        ### These Map/Reduce and YARN ApplicationMaster master settings are
+        # settable per job, and the defaults when clients submit them are often
+        # picked up from the local versions of the /etc/hadoop/conf/{mapred,yarn}-site.xml files.
+        # That means they should not be set relative to the local node facter variables, and as such
+        # use a hardcoded value of memory_per_container to work from.  Otherwise a job
+        # submitted from a relatively small client node will use bad job defaults.
+        #
+        # We currently run two different types of worker nodes in production.
+        # The older Dells have 48G of RAM, and the newer ones have 64G.
+        #
+        # Using + 0 here ensures that these variables are
+        # integers (Fixnums) and won't throw errors
+        # when used with min()/max() functions.
+
+        # Worker nodes are heterogenous, so I don't want to use a variable
+        # memory per container size across the cluster.  Larger nodes will just
+        # allocate a few more containers.  Setting this to 2G.
+        $memory_per_container_mb                  = 2048 + 0
+
+        # Map container size and JVM max heap size (-XmX)
+        $mapreduce_map_memory_mb                  = floor($memory_per_container_mb)
+        $mapreduce_reduce_memory_mb               = floor(2 * $memory_per_container_mb)
+        $map_jvm_heap_size                        = floor(0.8 * $memory_per_container_mb)
+        # Reduce container size and JVM max heap size (-Xmx)
+        $mapreduce_map_java_opts                  = "-Xmx${map_jvm_heap_size}m"
+        $reduce_jvm_heap_size                     = floor(0.8 * 2 * $memory_per_container_mb)
+        $mapreduce_reduce_java_opts               = "-Xmx${reduce_jvm_heap_size}m"
+
+        # Yarn ApplicationMaster container size and max heap size (-Xmx)
+        $yarn_app_mapreduce_am_resource_mb        = floor(2 * $memory_per_container_mb)
+        $mapreduce_am_heap_size                   = floor(0.8 * 2 * $memory_per_container_mb)
+        $yarn_app_mapreduce_am_command_opts       = "-Xmx${mapreduce_am_heap_size}m"
+
+        ### The amount of RAM for NodeManagers will only be be used by NodeManager
+        # processes running on the worker nodes themselves.  Client nodes that submit
+        # jobs will ignore these settings.  These are safe to set relative to the
+        # node currently evaluating puppet's facter variables.
 
         # Select a 'reserve' memory size for the
         # OS and other Hadoop processes.
-        if $::memorysize_mb <= 4096 {
+        if $::memorysize_mb <= 1024 {
+            $reserve_memory_mb = 256
+        }
+        elsif $::memorysize_mb <= 2048 {
+            $reserve_memory_mb = 512
+        }
+        elsif $::memorysize_mb <= 4096 {
             $reserve_memory_mb = 1024
         }
         elsif $::memorysize_mb <= 16384 {
@@ -168,41 +209,19 @@ class role::analytics::hadoop::config {
         # Memory available for use by Hadoop jobs.
         $available_memory_mb = $::memorysize_mb - $reserve_memory_mb
 
-        # Using + 0 here ensures that these variables are
-        # integers (Fixnums) and won't throw errors
-        # when used with min()/max() functions.
-        if $available_memory_mb <= 4096 {
-            $min_container_size_mb = 256 + 0
-        }
-        elsif $available_memory_mb <= 8192 {
-            $min_container_size_mb = 512 + 0
-        }
-        elsif $available_memory_mb <= 24576 {
-            $min_container_size_mb = 1024 + 0
-        }
-        else  {
-            $min_container_size_mb = 2048 + 0
-        }
+        # Since I have chosen a static $memory_per_container of 2048 across all
+        # node sizes, we should just choose to give NodeManagers
+        # $available_memory_mb to work with.
+        # This will give nodes with 48G of memory about 21 containers, and
+        # nodes with 64G memory about 28 containers.
+        #
+        # This is the total amount of memory that NodeManagers
+        # will use for allocation to containers.
+        $yarn_nodemanager_resource_memory_mb      = floor($available_memory_mb)
 
-        # number of containers = min (2*CORES, 1.8*DISKS, (Total available RAM) / MIN_CONTAINER_SIZE)
-        $number_of_containers                     = floor(min(2 * $::processorcount, 1.8 * size($datanode_mounts), $available_memory_mb / $min_container_size_mb))
-        # RAM-per-container = max(MIN_CONTAINER_SIZE, (Total Available RAM) / containers))
-        $memory_per_container_mb                  = max($min_container_size_mb, $available_memory_mb / $number_of_containers)
-
-        $mapreduce_map_memory_mb                  = floor($memory_per_container_mb)
-        $mapreduce_reduce_memory_mb               = floor(2 * $memory_per_container_mb)
-        $map_jvm_heap_size                        = floor(0.8 * $memory_per_container_mb)
-        $mapreduce_map_java_opts                  = "-Xmx${map_jvm_heap_size}m"
-        $reduce_jvm_heap_size                     = floor(0.8 * 2 * $memory_per_container_mb)
-        $mapreduce_reduce_java_opts               = "-Xmx${reduce_jvm_heap_size}m"
-
-        $yarn_app_mapreduce_am_resource_mb        = floor(2 * $memory_per_container_mb)
-        $mapreduce_am_heap_size                   = floor(0.8 * 2 * $memory_per_container_mb)
-        $yarn_app_mapreduce_am_command_opts       = "-Xmx${mapreduce_am_heap_size}m"
-
-        $yarn_nodemanager_resource_memory_mb      = floor($number_of_containers * $memory_per_container_mb)
-        $yarn_scheduler_minimum_allocation_mb     = floor($memory_per_container_mb)
-        $yarn_scheduler_maximum_allocation_mb     = floor($number_of_containers * $memory_per_container_mb)
+        # Setting _minimum_allocation_mb to 0 to allow Impala to submit small reservation requests.
+        $yarn_scheduler_minimum_allocation_mb     = 0
+        $yarn_scheduler_maximum_allocation_mb     = $yarn_nodemanager_resource_memory_mb
         # Setting minimum_allocation_vcores to 0 to allow Impala to submit small reservation requests.
         $yarn_scheduler_minimum_allocation_vcores = 0
 
@@ -257,10 +276,6 @@ class role::analytics::hadoop::config {
             "$hadoop_data_directory/b",
         ]
 
-        # Limit tasks in Labs.
-        $mapreduce_map_tasks_maximum              = 2
-        $mapreduce_reduce_tasks_maximum           = 2
-
         # Labs sets these at undef, which lets the Hadoop defaults stick.
         $hadoop_namenode_opts                     = undef
         $mapreduce_reduce_shuffle_parallelcopies  = undef
@@ -273,9 +288,9 @@ class role::analytics::hadoop::config {
         $yarn_app_mapreduce_am_resource_mb        = undef
         $yarn_app_mapreduce_am_command_opts       = undef
         $yarn_nodemanager_resource_memory_mb      = undef
-        $yarn_scheduler_minimum_allocation_mb     = undef
+        $yarn_scheduler_minimum_allocation_mb     = 0
         $yarn_scheduler_maximum_allocation_mb     = undef
-        $yarn_scheduler_minimum_allocation_vcores = undef
+        $yarn_scheduler_minimum_allocation_vcores = 0
 
         $net_topology_script_template             = undef
 
@@ -324,8 +339,6 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         mapreduce_output_compression_codec       => $mapreduce_output_compression_codec,
         mapreduce_output_compression_type        => $mapreduce_output_compression_type,
 
-        mapreduce_map_tasks_maximum              => $mapreduce_map_tasks_maximum,
-        mapreduce_reduce_tasks_maximum           => $mapreduce_reduce_tasks_maximum,
         mapreduce_job_reuse_jvm_num_tasks        => $mapreduce_job_reuse_jvm_num_tasks,
         mapreduce_reduce_shuffle_parallelcopies  => $mapreduce_reduce_shuffle_parallelcopies,
         mapreduce_task_io_sort_mb                => $mapreduce_task_io_sort_mb,
@@ -628,7 +641,7 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
     }
 
 
-    # If this is a resourcemanager host is set, then go ahead
+    # If this is a resourcemanager host, then go ahead
     # and include a resourcemanager on all standby nodes as well
     # as the master node.
     if $::fqdn in $resourcemanager_hosts {
