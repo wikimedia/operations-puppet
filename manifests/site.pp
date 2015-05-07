@@ -572,7 +572,7 @@ node /^db20(16|34|42|48)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(21|36|60|63|67)\.eqiad\.wmnet/ {
+node /^db10(21|36|54|60|63|67)\.eqiad\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -781,14 +781,6 @@ node 'db1011.eqiad.wmnet' {
 
     $cluster = 'mysql'
     include role::mariadb::tendril
-}
-
-# eqiad db hardware issues
-# db1054 T89801
-node /^db10(54)\.eqiad\.wmnet$/ {
-
-    $cluster = 'mysql'
-    include standard
 }
 
 # codfw db
