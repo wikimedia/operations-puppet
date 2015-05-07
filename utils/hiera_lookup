@@ -67,6 +67,7 @@ class Hiera
 end
 
 hiera = Hiera.new(:config => cfg)
-#We're not really interested in debug info, I guess
-Hiera.logger = "noop"
+if not get_scope().include?('::debug')
+    Hiera.logger = "noop"
+end
 puts hiera.lookup(key, nil, get_scope(), nil, :priority)
