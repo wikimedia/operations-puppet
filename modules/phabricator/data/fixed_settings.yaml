@@ -40,26 +40,32 @@ maniphest.priorities:
     name: 'Unbreak Now!'
     short: 'Unbreak!'
     color: indigo
+    keywords: ['unbreak']
   '90':
     name: 'Needs Triage'
     short: Triage
     color: violet
+    keywords: ['triage']
   '80':
     name: High
     short: High
     color: red
+    keywords: ['high']
   '50':
     name: Normal
     short: Normal
     color: orange
+    keywords: ['normal']
   '25':
     name: Low
     short: Low
     color: yellow
+    keywords: ['low']
   '10':
     name: Lowest
     short: Lowest
     color: sky
+    keywords: ['lowest']
 
 # DO NOT CHANGE THESE VALUES.  Must be updated to match in security extensions.
 maniphest.custom-field-definitions:
