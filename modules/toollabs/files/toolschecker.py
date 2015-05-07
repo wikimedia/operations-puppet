@@ -57,7 +57,7 @@ def redis_check():
 def job_running(name):
     """Check if a job with given name is running"""
     try:
-        subprocess.check_call(['/usr/bin/qstat', '-j', name])
+        subprocess.check_call(['/usr/bin/qstat', '-j', name], stdout=os.devnull)
         return True
     except subprocess.CalledProcessError:
         return False
