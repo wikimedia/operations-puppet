@@ -1,0 +1,7 @@
+description "Apply traffic control rules from /etc/tc"
+
+start on started networking
+
+task
+
+exec /bin/run-parts /etc/tc

@@ -1,0 +1,12 @@
+[Unit]
+Description="Apply traffic control rules from /etc/tc"
+Wants=network.target network-online.target
+After=network.target network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/run-parts /etc/tc
+
+[Install]
+WantedBy=multi-user.target
+
