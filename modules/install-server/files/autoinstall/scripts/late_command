@@ -35,7 +35,7 @@ case `hostname` in \
 		umount /target/sys
 		chroot /target /bin/sh -c "echo options bnx2x num_queues=$PHYS_CORES >/etc/modprobe.d/rps.conf"
 		chroot /target apt-get -y upgrade
-		apt-install linux-image-3.19
+		apt-install linux-meta
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sda3-varnish /dev/sda3
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sdb3-varnish /dev/sdb3
 		;; \
