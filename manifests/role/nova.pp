@@ -150,6 +150,7 @@ class role::nova::config::codfw inherits role::nova::config::common {
         keystone_auth_host     => $keystoneconfig['bind_ip'],
         keystone_auth_protocol => $keystoneconfig['auth_protocol'],
         keystone_auth_port     => $keystoneconfig['auth_port'],
+        floating_ip_pool       => [],
     }
 
     $novaconfig = merge( $codfwnovaconfig, $commonnovaconfig )
@@ -254,6 +255,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
         keystone_auth_host     => $keystoneconfig['bind_ip'],
         keystone_auth_protocol => $keystoneconfig['auth_protocol'],
         keystone_auth_port     => $keystoneconfig['auth_port'],
+        floating_ip_pool       => ['208.80.155.128/25'],
     }
     if ( $::hostname == 'labnet1001' ) {
         $networkconfig = {
