@@ -1,0 +1,14 @@
+#! /bin/bash
+#
+# This configures traffic shaping on the host by executing the
+# files in /etc/rc/$iface.d that are intended to contain actual
+# /sbin/tc invocations.
+#
+# the scripts are invoked with $1 as the interface name so that
+# they can be made generic.
+
+
+for dir in /etc/tc/*.d; do
+    iface=$(basename "$dir" .d)
+    /bin/run-parts "--arg=$iface" "$dir"
+done

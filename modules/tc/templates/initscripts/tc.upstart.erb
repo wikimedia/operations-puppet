@@ -1,0 +1,7 @@
+description "Apply traffic control rules from /etc/tc/*.d"
+
+start on started networking
+
+task
+
+exec /usr/local/sbin/apply-tc
