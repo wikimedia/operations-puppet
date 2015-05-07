@@ -135,7 +135,6 @@ class role::nova::config::codfw inherits role::nova::config::common {
             'production' => '208.80.155.0/22,10.0.0.0/8',
             'labs'       => '10.4.0.0/21',
         },
-        floating_ip_pool       => [],
         auth_uri => $::realm ? {
             'production' => 'http://virt1000.wikimedia.org:5000',
             'labs'       => 'http://localhost:5000',
@@ -240,7 +239,6 @@ class role::nova::config::eqiad inherits role::nova::config::common {
             'production' => '208.80.155.0/22,10.0.0.0/8',
             'labs'       => '10.4.0.0/21',
         },
-        floating_ip_pool       => ['208.80.155.128/25'],
         auth_uri => $::realm ? {
             'production' => 'http://virt1000.wikimedia.org:5000',
             'labs'       => 'http://localhost:5000',

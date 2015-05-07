@@ -46,12 +46,6 @@ dhcp_lease_time=86400
 fixed_ip_disassociate_timeout=172800
 iscsi_helper=tgtadm
 
-# set force_snat_range for floating IP pool.
-# This allows routing from private instances to floating ips.
-<% @novaconfig["floating_ip_pool"].each do |range| %>
-force_snat_range=<%= range %>
-<% end %>
-
 rpc_backend = rabbit
 rabbit_host=<%= novaconfig["rabbit_host"] %>
 rabbit_port = 5672
