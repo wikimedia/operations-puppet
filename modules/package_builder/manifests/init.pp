@@ -27,6 +27,7 @@ class package_builder(
         'dh-autoreconf',
         'git-buildpackage',
         'quilt',
+        'lintian',
         'zip',
         'unzip',
         'debian-archive-keyring',
