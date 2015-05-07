@@ -58,7 +58,7 @@ def job_running(name):
     """Check if a job with given name is running"""
     try:
         with open(os.devnull, 'w') as devnull:
-            subprocess.check_call(['/usr/bin/qstat', '-j', name], devnull)
+            subprocess.check_call(['/usr/bin/qstat', '-j', name], stderr=devnull)
         return True
     except subprocess.CalledProcessError:
         return False
