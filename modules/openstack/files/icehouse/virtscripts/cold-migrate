@@ -15,9 +15,58 @@ if [ "$#" -ne 2 ]; then
 fi
 INSTANCE=$1
 TOHOST=$2
+echo "testing that instance exists."
+nova show ${INSTANCE}
+if [ "$?" != "0" ]
+then
+    echo "Instance not found."
+    exit 1
+fi
 FROMHOST=`nova show ${INSTANCE} | grep 'OS-EXT-SRV-ATTR:host' | awk '{ print $4 }'`
 INSTANCENAME=`nova show ${INSTANCE} | grep ' name ' | awk '{ print $4 }'`
 echo "Migrating $INSTANCE from $FROMHOST to $TOHOST"
+echo ""
+echo "Testing host keys"
+echo ""
+ssh $FROMHOST.eqiad.wmnet "true"
+if [ "$?" != "0" ]
+then
+    echo "hostkey check failed for $FROMHOST"
+    exit 1
+fi
+ssh $TOHOST.eqiad.wmnet "true"
+if [ "$?" != "0" ]
+then
+    echo "hostkey check failed for $TOHOST"
+    exit 1
+fi
+ssh -A $FROMHOST.eqiad.wmnet "ssh ${TOHOST}.eqiad.wmnet true"
+if [ "$?" != "0" ]
+then
+    echo "hostkey check failed for connection from $FROMHOST to $TOHOST"
+    exit 1
+fi
+
+
+ssh $FROMHOST.eqiad.wmnet "test -f /var/lib/nova/instances/${INSTANCE}/disk"
+if [ $? -eq 0 ]
+then
+    echo "Verifying availability of backing file"
+    BACKINGFILE=`ssh ${FROMHOST}.eqiad.wmnet "qemu-img info /var/lib/nova/instances/${INSTANCE}/disk | grep 'backing file'" | awk '{ print $3 }'`
+    if [ -z $BACKINGFILE ]
+    then
+        echo "Backing file not found."
+        exit 1
+    fi
+    ssh $TOHOST.eqiad.wmnet "test -e ${BACKINGFILE}"
+    if [ "$?" != "0" ]
+    then
+        echo "Copying backing file ${BACKINGFILE} to ${TOHOST}"
+        echo ""
+        ssh -A $FROMHOST.eqiad.wmnet "rsync -S -av --bwlimit 40000 ${BACKINGFILE} ${TOHOST}.eqiad.wmnet:${BACKINGFILE}"
+    fi
+fi
+
 echo ""
 echo "Destroying instance on $FROMHOST"
 echo ""
@@ -26,7 +75,29 @@ echo ""
 echo "Rsyncing instance from $FROMHOST to $TOHOST"
 echo ""
 ssh -A $FROMHOST.eqiad.wmnet "rsync -S -av --bwlimit 40000 /var/lib/nova/instances/${INSTANCE} ${TOHOST}.eqiad.wmnet:/var/lib/nova/instances/"
-echo ""
+
+# optional shrinking logic, generally not useful
+#ssh $TOHOST.eqiad.wmnet "test -f /var/lib/nova/instances/${INSTANCE}/disk"
+#if [ $? -eq 0 ]
+#then
+    #echo ""
+    #echo "Shrinking the instance on $TOHOST"
+    #echo ""
+
+    #ssh $TOHOST.eqiad.wmnet "mv /var/lib/nova/instances/${INSTANCE}/disk /var/lib/nova/instances/${INSTANCE}/disk.bak"
+    #ssh $TOHOST.eqiad.wmnet "qemu-img convert -f qcow2 -O qcow2 /var/lib/nova/instances/${INSTANCE}/disk.bak /var/lib/nova/instances/${INSTANCE}/disk"
+
+    # If something went wrong, we still want there to be a 'disk' file.
+    #ssh $TOHOST.eqiad.wmnet "test -f /var/lib/nova/instances/${INSTANCE}/disk"
+    #if [ $? -ne 0 ]
+    #then
+        #echo ""
+        #echo "Shrink failed; restoring original disk image"
+        #echo ""
+        #ssh $TOHOST.eqiad.wmnet "mv /var/lib/nova/instances/${INSTANCE}/disk.bak /var/lib/nova/instances/${INSTANCE}/disk"
+    #fi
+#fi
+
 echo "Defining the instance on $TOHOST"
 echo ""
 ssh $TOHOST.eqiad.wmnet "virsh define /var/lib/nova/instances/${INSTANCE}/libvirt.xml"
@@ -43,4 +114,4 @@ mysql -uroot nova -e "update instances set host=\"${TOHOST}\" where hostname=\"$
 echo ""
 echo "Rebooting the instance"
 echo ""
-OS_TENANT_NAME=${PROJECT} nova reboot ${INSTANCE}
+nova start ${INSTANCE}
