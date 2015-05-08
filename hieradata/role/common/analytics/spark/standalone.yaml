@@ -1,0 +1,2 @@
+spark_master_host: analytics1003.eqiad.wmnet
+spark_worker_instances: 6
