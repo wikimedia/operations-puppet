@@ -91,9 +91,4 @@ class mediawiki::web::beta_sites {
         priority => 20,
     }
 
-    apache::conf { 'logging':
-        source   => 'puppet:///modules/mediawiki/apache/beta/logging.conf',
-        priority => 20,
-    }
-
 }
