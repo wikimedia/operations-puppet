@@ -87,24 +87,23 @@ node 'analytics1002.eqiad.wmnet' {
 # analytics1003 is being used for standalone Spark (Streaming).
 # It is the Spark Standalone Master and also a worker.
 node 'analytics1003.eqiad.wmnet' {
-    role analytics::spark::standalone, analytics::spark::standalone::master, analytics::spark::standalone::worker
+    role analytics::hadoop::client,
+        analytics::hive::client,
+        analytics::spark::standalone,
+        analytics::spark::standalone::master,
+        analytics::spark::standalone::worker
 
     include standard
-
-    # Include Analytics Cluster hadoop and hive clients
-    include role::analytics::hadoop::client
-    include role::analytics::hive::client
 }
 
 # analytics1003 and analytics1004 are Spark Standalone workers
 node /analytics10(04|10).eqiad.wmnet/ {
-    role analytics::spark::standalone, analytics::spark::standalone::worker
+    role analytics::hadoop::client,
+        analytics::hive::client,
+        analytics::spark::standalone,
+        analytics::spark::standalone::worker
 
     include standard
-
-    # Include Analytics Cluster hadoop and hive clients
-    include role::analytics::hadoop::client
-    include role::analytics::hive::client
 }
 
 # analytics1011, analytics1013-analytics1017, analytics1019, analytics1020,
