@@ -68,7 +68,8 @@ nimishg, rainman, ssmith, swalling, erik]
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
-              pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf]
+              pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
+              gpaumier]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -212,7 +213,7 @@ nimishg, rainman, ssmith, swalling, erik]
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, ananthrk, awight,
-              joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy]
+              joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
