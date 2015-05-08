@@ -2,4 +2,4 @@ spark_master_host: analytics1003.eqiad.wmnet
 # Ciscos have 24(ish) processors, use 6 workers each with 4 processes.
 spark_worker_instances: 6
 # Ciscos have a lot of memory.  Save 2560m for OS and daemons
-spark_worker_memory: 190825
+spark_worker_memory: 190825m
