@@ -2475,7 +2475,7 @@ class LibvirtDriver(driver.ComputeDriver):
         """Create a blank image of specified size."""
 
         # Puppet hack from raw to qcow2
-        if not CONF.libvirt_images_type == "lvm":
+        if not CONF.libvirt.images_type == "lvm":
             libvirt_utils.create_image('qcow2', target,
                                        '%d%c' % (local_size, unit))
         else:
