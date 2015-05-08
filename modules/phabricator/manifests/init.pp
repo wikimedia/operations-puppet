@@ -297,9 +297,13 @@ class phabricator (
 
     # This needs to become Upstart managed
     # https://secure.phabricator.com/book/phabricator/article/managing_daemons/
+    # Meanwhile upstream has a bug to make an LSB friendly wrapper
+    # https://secure.phabricator.com/T8129
     service { 'phd':
-        ensure   => running,
-        provider => init,
-        require  => Git::Install['phabricator/phabricator'],
+        ensure     => running,
+        start      => '/usr/sbin/service phd start --force'
+        status     => '/usr/bin/pgrep -f phd-daemon',
+        hasrestart => true,
+        require    => Git::Install['phabricator/phabricator'],
     }
 }
