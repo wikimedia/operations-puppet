@@ -229,21 +229,44 @@ mediawiki_memcached_servers:
     - 'zu'
   mt:
     Apertium:
+      'an':
+          'es'
+      'ast':
+          'es'
       'bg':
         - 'mk'
       'ca':
         - 'es'
         - 'pt'
+        - 'oc'
       'en':
         - 'ca'
         - 'eo'
         - 'es'
+        - 'eu'
+        - 'gl'
         - 'sh'
       'es':
+        - 'an'
+        - 'ast'
         - 'ca'
+        - 'eu'
+        - 'fr'
+        - 'gl'
+        - 'oc'
+        - 'pt'
+      'eu':
+        - 'en'
+        - 'es'
+      'fr':
+        - 'es'
+      'gl':
+        - 'es'
         - 'pt'
       'id':
         - 'ms'
+      'kk':
+        - 'tt'
       'ms':
         - 'id'
       'nl':
@@ -251,19 +274,26 @@ mediawiki_memcached_servers:
       'nn':
         - 'no'
       'no':
+        - 'da'
         - 'nn'
       'mk':
         - 'bg'
         - 'sh'
+      'oc':
+        - 'es'
+        - 'ca'
       'pt':
         - 'ca'
         - 'es'
+        - 'gl'
       'sh':
         - 'sl'
       'sl':
         - 'sh'
       'sv':
         - 'da'
+      'tt':
+        - 'kk'
     Yandex:
       'en':
         - 'de'
