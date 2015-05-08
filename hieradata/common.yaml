@@ -210,6 +210,8 @@ ganglia_clusters:
       eqiad:
         - labstore1001.eqiad.wmnet
         - labstore1003.eqiad.wmnet
+      codfw:
+        - labstore2001.codfw.wmnet
   cache_misc:
     name: "Misc Web caching cluster"
     id: 41
