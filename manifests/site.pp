@@ -60,13 +60,6 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
     }
 }
 
-# analytics1003 is being used for testing kafkatee
-# in preperation for replacing udp2log
-node 'analytics1003.eqiad.wmnet' {
-    role analytics
-
-    include standard
-}
 
 
 # analytics1001 is the Hadoop master node:
@@ -86,15 +79,23 @@ node 'analytics1002.eqiad.wmnet' {
     include standard
 }
 
-# analytics1004 was previously the Hadoop standby NameNode
-# It is being deprecated.
-node 'analytics1004.eqiad.wmnet' {
+
+
+# NOTE: analytics1003,1004 and 1010 are the remaining analytics Cicsos.
+# They are being used for testing some realtime streaming frameworks.
+
+# analytics1003 is being used for standalone Spark (Streaming).
+# It is the Spark Standalone Master and also a worker.
+node 'analytics1003.eqiad.wmnet' {
+    role analytics::spark::standalone, analytics::spark::standalone::master, analytics::spark::standalone::worker
+
     include standard
 }
 
-# analytics1010 was previously the Hadoop master.
-# It is being deprecated.
-node 'analytics1010.eqiad.wmnet' {
+# analytics1003 and analytics1004 are Spark Standalone workers
+node /analytics10(03|10)].eqiad.wmnet/ {
+    role analytics::spark::standalone, analytics::spark::standalone::worker
+
     include standard
 }
 
