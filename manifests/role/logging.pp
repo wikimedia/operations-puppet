@@ -107,7 +107,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
     # Send CirrusSearch-slow.log entry rate to ganglia.
     logster::job { 'CirrusSearch-slow.log':
         parser          => 'LineCountLogster',
-        logfile         => "${log_directory}/CirrusSearch-slow.log",
+        logfile         => "${log_directory}/CirrusSearchSlowRequests.log",
         logster_options => '--output ganglia --metric-prefix CirrusSearch-slow.log',
         minute          => "*/${cirrussearch_slow_log_check_interval}"
     }
