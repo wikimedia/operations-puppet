@@ -54,6 +54,14 @@ class statistics::sites::datasets {
         minute  => '*/30',
     }
 
+    # rsync from fluorine:/srv/aggregate-datasets to $working_path/aggregate-datasets
+    cron { 'rsync aggregate datasets from fluorine':
+        command => "/usr/bin/rsync -rt --delete fluorine.eqiad.wmnet::srv/public-datasets/* ${working_path}/public-datasets/",
+        require => File["${working_path}/public-datasets"],
+        user    => 'root',
+        minute  => '*/30',
+    }
+
     include apache::mod::headers
     apache::site { 'datasets':
         source  => 'puppet:///modules/statistics/datasets.wikimedia.org',
