@@ -357,6 +357,7 @@ class toollabs::exec_environ {
         'texinfo',                     # T58994
         'texlive',
         'ufraw-batch',                 # T59008
+        'whois',                       # T98555
         'xsltproc',                    # T68962.
         'zbar-tools',                  # T58996
         'zsh',                         # T58995
