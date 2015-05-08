@@ -97,7 +97,7 @@ node 'analytics1003.eqiad.wmnet' {
 }
 
 # analytics1003 and analytics1004 are Spark Standalone workers
-node /analytics10(03|10)].eqiad.wmnet/ {
+node /analytics10(03|10).eqiad.wmnet/ {
     role analytics::spark::standalone, analytics::spark::standalone::worker
 
     include standard
