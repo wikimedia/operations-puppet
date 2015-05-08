@@ -645,9 +645,8 @@ class role::analytics::hadoop::balancer {
     cron {'hdfs-balancer':
         command => '(lockfile-check /tmp/hdfs-balancer && echo "$(date \'+%y/%m/%d %H:%M:%S\') WARN Not starting hdfs balancer, it is already running (or the lockfile exists)." >> /var/log/hadoop-hdfs/balancer.log) || (lockfile-create /tmp/hdfs-balancer && hdfs dfsadmin -setBalancerBandwidth $((40*1048576)) && /usr/bin/hdfs balancer >> /var/log/hadoop-hdfs/balancer.log 2>&1; lockfile-remove /tmp/hdfs-balancer)',
         user    => 'hdfs',
-        # Start run at 0:00 every Saturday UTC.
+        # Every day at 6am UTC.
         minute  => 0,
-        hour    => 0,
-        weekday => 6,
+        hour    => 6,
     }
 }
