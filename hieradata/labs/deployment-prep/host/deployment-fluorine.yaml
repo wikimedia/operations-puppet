@@ -1,0 +1,2 @@
+role::logging::mediawiki::monitor: false
+role::logging::mediawiki::log_directory: /srv/mw-log
