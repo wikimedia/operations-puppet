@@ -1,0 +1,4 @@
+admin::groups:
+  - deployment
+  - parsoid-admin
+  - ocg-render-admins
