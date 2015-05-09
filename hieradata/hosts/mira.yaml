@@ -3,3 +3,7 @@ base::resolving::domain_search:
   - codfw.wmnet
   - eqiad.wmnet
   - esams.wikimedia.org
+admin::groups:
+  - deployment
+  - parsoid-admin
+  - ocg-render-admins
