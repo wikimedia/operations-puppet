@@ -1702,6 +1702,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
 node 'mira.codfw.wmnet' {
     include standard
     include base::firewall
+    include role::deployment::server
     include role::backup::host
     backup::set {'home': }
 
