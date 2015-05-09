@@ -1691,6 +1691,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
 # codfw deployment host (pending set up)
 node 'mira.codfw.wmnet' {
     include standard
+    include base::firewall
 }
 
 node 'multatuli.wikimedia.org' {
