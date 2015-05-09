@@ -47,6 +47,7 @@ class network::constants {
                     ],
             'deployment_hosts' => [
                         '10.64.0.196', # tin.eqiad.wmnet
+                        '10.192.16.132', # mira.codfw.wmnet
                     ],
         },
         'labs' => {
