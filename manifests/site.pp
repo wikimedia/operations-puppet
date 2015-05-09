@@ -1690,8 +1690,11 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
 
 # codfw deployment host (pending set up)
 node 'mira.codfw.wmnet' {
+    $cluster = 'misc'
+
     include standard
     include base::firewall
+    include role::deployment::server
     include role::backup::host
     backup::set {'home': }
 
