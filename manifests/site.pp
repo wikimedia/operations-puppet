@@ -1692,6 +1692,8 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
 node 'mira.codfw.wmnet' {
     include standard
     include base::firewall
+    include role::backup::host
+    backup::set {'home': }
 }
 
 node 'multatuli.wikimedia.org' {
