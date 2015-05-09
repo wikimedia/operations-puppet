@@ -1694,6 +1694,10 @@ node 'mira.codfw.wmnet' {
     include base::firewall
     include role::backup::host
     backup::set {'home': }
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 node 'multatuli.wikimedia.org' {
