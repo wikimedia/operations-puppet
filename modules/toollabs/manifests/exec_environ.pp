@@ -138,6 +138,8 @@ class toollabs::exec_environ {
         'python-celery-with-redis',
         'python-egenix-mxdatetime',
         'python-egenix-mxtools',
+        'python-flake8',
+        'python3-flake8',
         'python-flask',
         'python-flask-login',
         'python-flask-oauth',
