@@ -1,7 +1,7 @@
 # Exim filter
 
 if first_delivery then
-<% if enable_otrs_server == true then -%>
+<% if @enable_otrs_server == true then -%>
 	# Remove headers that control OTRS - we don't want these
 	headers remove X-OTRS-Priority:X-OTRS-Queue:X-OTRS-Lock:X-OTRS-Ignore:X-OTRS-State
 <% end -%>
@@ -12,7 +12,7 @@ if first_delivery then
 	if $acl_m0 is not "" and $acl_m0 is not "trusted relay" then
 		headers add "X-Spam-Score: $acl_m0"
 		headers add "X-Spam-Report: $acl_m1"
-<% if enable_otrs_server == true then -%>
+<% if @enable_otrs_server == true then -%>
 		# Add header for OTRS filters
 		if $acl_m1 is not "" and $acl_m1 begins "yes" then
 			headers add "X-Spam-Flag: YES"
