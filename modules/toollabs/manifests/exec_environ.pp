@@ -139,7 +139,6 @@ class toollabs::exec_environ {
         'python-egenix-mxdatetime',
         'python-egenix-mxtools',
         'python-flake8',
-        'python3-flake8',
         'python-flask',
         'python-flask-login',
         'python-flask-oauth',
@@ -386,6 +385,7 @@ class toollabs::exec_environ {
             'libprotobuf7',                # T58995
             'libvips15',
             'mysql-client',                # mariadb-client just... doesn't work on precise. Apt failures
+            'python3-flake8',
             # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
             ]:
             ensure => latest,
