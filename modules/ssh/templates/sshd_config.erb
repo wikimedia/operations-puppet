@@ -74,8 +74,8 @@ IgnoreRhosts yes
 # For this to work you will also need host keys in /etc/ssh_known_hosts
 RhostsRSAAuthentication no
 
-<% if has_variable?("ssh_hba") then %>
-HostbasedAuthentication <%= ssh_hba %>
+<% if @hba %>
+HostbasedAuthentication yes
 HostbasedUsesNameFromPacketOnly no
 <% else %>
 HostbasedAuthentication no
