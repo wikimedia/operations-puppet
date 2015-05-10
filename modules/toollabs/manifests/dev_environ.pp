@@ -84,6 +84,7 @@ class toollabs::dev_environ {
         'pyflakes',                    # T59863
         'python-coverage',             # T59002
         'python-dev',
+        'python-stdeb',
         'python3-dev',
         'qt4-qmake',
         'rlwrap',                      # T87368
