@@ -5,6 +5,7 @@ class ssh::server (
     $authorized_keys_file = undef,
     $disable_nist_kex = true, # Allow labs projects to temporarily opt out of nist kex disabling
     $explicit_macs = true, # Allow labs projects to temporarily opt out of more secure MACs
+    $enable_hba = false,
 ) {
     package { 'openssh-server':
         ensure => latest;
@@ -33,6 +34,9 @@ class ssh::server (
         recurse => true,
         purge   => true,
     }
+
+    # $::ssh_hba is an ldap variable that can be set via wikitech
+    $hba = $enable_hba or $::ssh_hba == 'yes'
 
     file { '/etc/ssh/sshd_config':
         ensure  => present,
