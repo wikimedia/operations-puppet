@@ -3,6 +3,7 @@ class ssh::server (
     $listen_address = undef,
     $permit_root = true,
     $authorized_keys_file = undef,
+    $enable_hba = false,
 ) {
     package { 'openssh-server':
         ensure => latest;
@@ -31,6 +32,8 @@ class ssh::server (
         recurse => true,
         purge   => true,
     }
+
+    $hba = $enable_hba or $::ssh_hba == 'yes'
 
     file { '/etc/ssh/sshd_config':
         ensure  => present,
