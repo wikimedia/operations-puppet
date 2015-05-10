@@ -138,8 +138,6 @@ class toollabs::exec_environ {
         'python-celery-with-redis',
         'python-egenix-mxdatetime',
         'python-egenix-mxtools',
-        'python-flake8',
-        'python3-flake8',
         'python-flask',
         'python-flask-login',
         'python-flask-oauth',
@@ -386,6 +384,7 @@ class toollabs::exec_environ {
             'libprotobuf7',                # T58995
             'libvips15',
             'mysql-client',                # mariadb-client just... doesn't work on precise. Apt failures
+            'pyflakes',
             # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
             ]:
             ensure => latest,
@@ -400,6 +399,8 @@ class toollabs::exec_environ {
             'libvips37',
             'nodejs-legacy',               # T1102
             'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
+            'python-flake8',
+            'python3-flake8',
             ]:
             ensure => latest,
         }
