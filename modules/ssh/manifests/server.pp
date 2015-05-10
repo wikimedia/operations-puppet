@@ -32,6 +32,8 @@ class ssh::server (
         purge   => true,
     }
 
+    $enable_hba = hiera('enable_hba', $::ssh_hba == 'yes')
+
     file { '/etc/ssh/sshd_config':
         ensure  => present,
         owner   => 'root',
