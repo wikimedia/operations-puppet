@@ -116,9 +116,6 @@ class toollabs::exec_environ {
         'libtask-weaken-perl',
         'libtest-exception-perl',      # For Checkwiki.
         'libtext-diff-perl',           # T60744
-        'libthreads-perl',
-        'libthreads-shared-perl',
-        'libtime-local-perl',
         'libtimedate-perl',
         'liburi-encode-perl',
         'liburi-perl',
@@ -128,6 +125,7 @@ class toollabs::exec_environ {
         'libxml-parser-perl',
         'libxml-simple-perl',
         'libxml-xpathengine-perl',     # For Checkwiki.
+        'perl-modules',
 
         # Python libraries
         'python-apport',
@@ -215,7 +213,6 @@ class toollabs::exec_environ {
         'tcl-trf',                     # T58995
         'tclcurl',
         'tcllib',
-        'tclthread',
         'tdom',                        # T58995
 
         # Tesseract OCR (T67354).
@@ -382,9 +379,13 @@ class toollabs::exec_environ {
             'libgdal1-1.7.0',              # T58995
             'libmpc2',
             'libprotobuf7',                # T58995
+            'libtime-local-perl',          # now part of perl-modules
+            'libthreads-shared-perl',      # now part of perl
+            'libthreads-perl',             # now part of perl
             'libvips15',
             'mysql-client',                # mariadb-client just... doesn't work on precise. Apt failures
             'pyflakes',
+            'tclthread',                   # now called tcl-thread
             # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
             ]:
             ensure => latest,
@@ -401,6 +402,7 @@ class toollabs::exec_environ {
             'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
             'python-flake8',
             'python3-flake8',
+            'tcl-thread',
             ]:
             ensure => latest,
         }
