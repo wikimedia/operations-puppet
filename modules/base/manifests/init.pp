@@ -59,7 +59,7 @@ class base {
     include passwords::root
     include base::grub
     include base::resolving
-    include base::remote-syslog
+    include base::remote_syslog
     include base::sysctl
     include ::motd
     include base::standard-packages
