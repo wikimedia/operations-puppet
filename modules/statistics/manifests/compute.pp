@@ -112,4 +112,13 @@ class statistics::compute {
         group => $::statistics::user::username,
         mode  => '0440',
     }
+
+    # Clean up R temporary files which have not been accessed in a week.
+    tidy { '/tmp':
+        matches => 'Rtmp*',
+        age     => '1w',
+        rmdirs  => true,
+        backup  => false,
+        recurse => 1,
+    }
 }
