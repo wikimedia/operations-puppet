@@ -1,0 +1,25 @@
+title   "carbon c relay"
+
+field :metrics_in_frontend,
+               :alias => "metrics received (frontend)",
+               :data  => "derivative(carbon.relays.graphite2001_frontend.metricsReceived)"
+
+field :metrics_in_local,
+               :alias => "metrics received (local)",
+               :data  => "derivative(carbon.relays.graphite2001_local.metricsReceived)"
+
+field :queue_drops_frontend,
+               :alias => "queue drops (frontend)",
+               :data  => "secondYAxis(carbon.relays.graphite2001_frontend.metricsDropped)"
+
+field :queue_drops_local,
+               :alias => "queue drops (local)",
+               :data  => "secondYAxis(carbon.relays.graphite2001_local.metricsDropped)"
+
+field :metrics_queued_frontend,
+               :alias => "metrics queued (frontend)",
+               :data  => "carbon.relays.graphite2001_frontend.metricsQueued"
+
+field :metrics_queued_local,
+               :alias => "metrics queued (local)",
+               :data  => "carbon.relays.graphite2001_local.metricsQueued"

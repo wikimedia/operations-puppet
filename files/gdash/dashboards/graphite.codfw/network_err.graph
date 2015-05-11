@@ -1,0 +1,9 @@
+title   "udp errors/drops, all interfaces"
+vtitle  "packets/s"
+
+field :rx_dgram, :color => "green",
+               :alias => "rx datagrams",
+               :data  => "servers.graphite2001.udp.InDatagrams"
+
+field :rx_err, :alias => "none",
+               :data  => "secondYAxis(group(servers.graphite2001.udp.InErrors, servers.graphite2001.udp.NoPorts, servers.graphite2001.udp.RcvbufErrors))"

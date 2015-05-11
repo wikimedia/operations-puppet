@@ -1,0 +1,25 @@
+title   "Memory"
+
+field :buffers,
+               :alias => "buffers",
+               :data  => "servers.graphite2001.memory.Buffers"
+
+field :active,
+               :alias => "active",
+               :data  => "servers.graphite2001.memory.Active"
+
+field :cached,
+               :alias => "cached",
+               :data  => "servers.graphite2001.memory.Cached"
+
+field :inactive,
+               :alias => "inactive",
+               :data  => "servers.graphite2001.memory.Inactive"
+
+field :dirty,
+               :alias => "dirty",
+               :data  => "servers.graphite2001.memory.Dirty"
+
+field :free,
+               :alias => "free",
+               :data  => "servers.graphite2001.memory.Free"
