@@ -24,7 +24,7 @@ class puppetmaster::gitsync(
     cron { 'rebase_operations_puppet':
         ensure  => present,
         user    => 'root',
-        minute  => fqdn_rand(59), # Stagger crons to not overload git server
+        minute  => '*/10',
         command => '/usr/local/bin/git-sync-upstream >>/var/log/git-sync-upstream.log 2>&1',
         require => File['/usr/local/bin/git-sync-upstream'],
     }
