@@ -57,8 +57,6 @@ host pc1003 {
 host virt1001 {
 	hardware ethernet 88:43:e1:c2:99:8e;
 	fixed-address virt1001.eqiad.wmnet;
-        option pxelinux.pathprefix "precise-installer/";
-        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host virt1002 {
