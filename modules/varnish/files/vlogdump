@@ -1,0 +1,420 @@
+#!/usr/bin/awk -f
+#
+# NAME
+#     vlogdump
+#
+# DESCRIPTION
+#   Tool to parse varnishlog output and keep track of transactions.
+#   Match those that we want to debug and show detailed information
+#   about them.
+#
+#   This tool is meant to help when setting up or troubleshooting
+#   a varnish configuration.
+#
+# OPTIONS
+#   This being an awk script, all options need to be supplied
+#   in the form '-v <option>=<value>'.
+#
+#   show_req_headers=0|1
+#       Turn on or off the output of HTTP request headers
+#
+#   show_resp_headers=0|1
+#       Turn on or off the output of HTTP response headers
+#
+#   client_match=<regexp>
+#       Show only the transactions coming from an IP address
+#       matching the given regular expression.
+#
+#   req_headers_match=<regexp>
+#       Shows only transactions with request headers
+#       (any header) matching the given regular expression.
+#
+#       Prepend '!' to the pattern to negate the meaning,
+#       to display only transactions that *do not* match the
+#       pattern.
+#
+#   resp_headers_match=<regexp>
+#       Shows only transactions with response headers
+#       (any header) matching the given regular expression.
+#
+#       Prepend '!' to the pattern to negate the meaning,
+#       to display only transactions that *do not* match the
+#       pattern.
+#
+#   only_hits=0|1
+#       Shows only cache hits
+#
+#   only_misses=0|1
+#       Shows only cache misses
+#
+#   only_status=<http_status_code_regexp>
+#       Show only requests for which the backend status
+#       matches the given regular expression
+#
+#   only_slow=1
+#   only_slow=<ms>
+#       Shows only requests that are considered slow.
+#       The time used is the backend response time.
+#       If you use "only_slow=1", the default threshold is 1s.
+#       You can also specify your own threshold, using
+#       for example "only_slow=500". Value is in milliseconds.
+#
+#   url_match=<regexp>
+#       Show only the transactions for URLs matching the
+#       given regular expression
+#
+#       Prepend '!' to the pattern to negate the meaning,
+#       to display only transactions that *do not* match the
+#       pattern.
+#
+# AUTHOR
+#   Cosimo Streppone <cosimo@opera.com>
+#
+
+BEGIN {
+
+    # All attributes we're using for a transaction
+    # No easy way to wipe all array elements like (xid, *)
+    _attr = "client.ip req.client req.proto req.request " \
+        "req.url debug hit beresp.status beresp.proto " \
+        "vcl_recv.hit vcl_recv vcl_hash vcl_fetch vcl_error " \
+        "vcl_deliver vcl_hit vcl_miss vcl_pipe"
+
+    split(_attr, TransactionAttributes, " ")
+
+    # Total number of requests
+    requests = 0
+
+    # '!' as start char negates the meaning
+    req_headers_match_positive = 1
+    if (req_headers_match && substr(req_headers_match, 1, 1) == "!") {
+        req_headers_match = substr(req_headers_match, 2)
+        req_headers_match_positive = 0
+    }
+
+    resp_headers_match_positive = 1
+    if (resp_headers_match && substr(resp_headers_match, 1, 1) == "!") {
+        resp_headers_match = substr(resp_headers_match, 2)
+        resp_headers_match_positive = 0
+    }
+
+    url_match_positive = 1
+    if (url_match && substr(url_match, 1, 1) == "!") {
+        url_match = substr(url_match, 2)
+        url_match_positive = 0
+    }
+
+}
+
+#
+# Given the current transaction logtags,
+# understand if it was a cache hit or miss
+#
+function request_was_a_hit (XID) {
+
+    vcl_recv = Transaction[XID, "vcl_recv"]
+    if (vcl_recv != "lookup")
+        return 0
+
+    # If there was a vcl_fetch at all, then response
+    # was fetched from the backend. Can't be a hit
+    if (Transaction[XID, "vcl_fetch"])
+        return 0
+
+    vcl_hit = Transaction[XID, "vcl_hit"]
+    if (vcl_hit != "deliver")
+        return 0
+
+    # There could have been an error or restart on deliver
+    vcl_deliver = Transaction[XID, "vcl_deliver"]
+    if (vcl_deliver != "deliver")
+        return 0
+
+    # We can assume it was a hit
+    return 1
+}
+
+#
+# Logic that determines whether a request is shown or hidden
+# 
+function show_request () {
+
+    if (client_match)
+        if (Transaction[xid, "client.ip"] !~ client_match)
+            return 0
+
+    if (req_headers_match) {
+        if (req_headers_match_positive == 1 && RxHeaders[xid] !~ req_headers_match)
+            return 0
+        if (req_headers_match_positive == 0 && RxHeaders[xid] ~ req_headers_match)
+            return 0
+    }
+
+    if (resp_headers_match) {
+        if (resp_headers_match_positive == 1 && TxHeaders[xid] !~ resp_headers_match)
+            return 0
+        if (resp_headers_match_positive == 0 && TxHeaders[xid] ~ resp_headers_match)
+            return 0
+    }
+
+    if (url_match) {
+        if (url_match_positive == 1 && Transaction[xid, "req.url"] !~ url_match)
+            return 0
+        if (url_match_positive == 0 && Transaction[xid, "req.url"] ~ url_match)
+            return 0
+    }
+
+    if (only_hits)
+        if (Transaction[xid, "vcl_recv.hit"] == 0)
+            return 0
+
+    if (only_misses)
+        if (Transaction[xid, "vcl_recv.hit"] != 0)
+            return 0
+
+    if (only_slow) {
+        slow_thr = only_slow == 1 ? 1000 : only_slow
+        if (backend_resp_time < slow_thr)
+            return 0
+    }
+
+    if (only_status)
+        if (Transaction[xid, "beresp.status"] !~ only_status)
+            return 0
+
+    return 1
+}
+
+function lookup_transaction (SESSION) {
+    return CurrentTransaction[SESSION]
+}
+
+function red (STRING) {
+    return "\033[1;31m" STRING "\033[0m"
+}
+
+function green (STRING) {
+    return "\033[1;32m" STRING "\033[0m"
+}
+
+function print_global_stats () {
+    printf "\n\nTotal number of requests: %d\n\n", requests
+    #printf "In-flight transactions: %d\n", length(Transaction)
+}
+
+#  292 Debug        - "herding"
+$2 == "Debug" {
+    xid = lookup_transaction($1)
+    Transaction[xid, "debug"] = Transaction[xid, "debug"] $4
+}
+
+$2 == "SessionOpen" {
+    session = $1
+    client = $4
+    #print "-> Connection from " $4
+    Session[session, "client"] = client
+}
+
+$2 == "SessionClose" {
+    session = $1
+    client = Session[session, "client"] ? Session[session, "client"] : "-"
+    delete Session[session, "client"]
+    #print "<- " client " disconnected"
+}
+
+# 205 ReqStart     c 10.195.15.91 56529 933976005
+$2 == "ReqStart" {
+    #print "REQSTART " $4
+    requests++
+    session = $1
+    client = $4
+    xid = $6
+    # Only one transaction at a time running over a session/thread
+    CurrentTransaction[session] = xid
+    Transaction[xid, "req.client"] = client ? client : (Session[session, "client"] ? Session[session, "client"] : "-")
+    Transaction[xid, "vcl_recv.hit"] = 0
+    Transaction[xid, "hit"] = 0
+}
+
+#  205 RxRequest    c GET
+$2 == "RxRequest" && $3 == "c" {
+    xid = lookup_transaction($1)
+    Transaction[xid, "req.request"] = $4
+}
+
+#  205 RxProtocol   c HTTP/1.1
+$2 == "RxProtocol" && $3 == "c" {
+    xid = lookup_transaction($1)
+    Transaction[xid, "req.proto"] = $4
+}
+
+#  205 RxURL        c /api/1.0/suggestions/list?count=200&category=te&country=zz&language=en
+$2 == "RxURL" && $3 == "c" {
+    xid = lookup_transaction($1)
+    Transaction[xid, "req.url"] = $4
+}
+
+#  205 RxHeader     c Host: api.recsys.opera.com
+$2 == "RxHeader" && $3 == "c" {
+    xid = lookup_transaction($1)
+
+    RxHeaders[xid] = RxHeaders[xid] \
+        "        req.http." substr($4, 0, length($4) - 1) \
+        " = " substr($0, 23 + length($4)) "\n"
+
+    # Our load balancer stores the real client IP
+    # in this HTTP header (if available)
+    if ($4 == "rlnclientipaddr:") {
+        Transaction[xid, "client.ip"] = $5
+    }
+    else {
+        Transaction[xid, "client.ip"] = Transaction[xid, "req.client"] \
+            ? Transaction[xid, "req.client"] \
+            : "-"
+    }
+}
+
+# When varnish logs a "Hit" entry (SLT_Hit), it means the
+# vcl_recv() function has given a go for serving the request
+# from cache *and* the object is available.
+#
+# This however doesn't guarantee that our request was served
+# from the cache. The default vcl_hit() code (`man vcl`)
+# checks that the object has to be cacheable too, at least
+# on varnish 2.1.
+#
+#     if (!obj.cacheable) {
+#         return(pass)
+#     }
+#
+# vcl_hit() could still return "pass", in which case
+# the request definitely results in a miss from the
+# client POV, even if varnish could have the object
+# in cache, which technically would make it a hit.
+# 
+#  205 Hit          c 933975905
+$2 == "Hit" {
+    xid = lookup_transaction($1)
+    # $4 is the original xid of the cached object
+    Transaction[xid, "vcl_recv.hit"] = $4
+}
+
+$2 == "TxStatus" && $3 == "c" {
+    xid = lookup_transaction($1)
+	Transaction[xid, "beresp.status"] = $4
+}
+
+$2 == "TxResponse" && $3 == "c" {
+    xid = lookup_transaction($1)
+	Transaction[xid, "beresp.status"] = Transaction[xid, "beresp.status"] \
+        " " substr($0, 22)
+}
+
+$2 == "TxProtocol" && $3 == "c" {
+    xid = lookup_transaction($1)
+	Transaction[xid, "beresp.proto"] = $4
+}
+
+$2 == "TxHeader" && $3 == "c" {
+    xid = lookup_transaction($1)
+
+    TxHeaders[xid] = TxHeaders[xid] \
+        "        beresp.http." substr($4, 0, length($4) - 1) \
+        " = " substr($0, 23 + length($4)) "\n"
+}
+
+#
+# VCL_call and VCL_return work in pairs in 2.x.
+# (This is not true anymore in 3.x)
+#
+# They will always be in order, one VCL_call then its
+# corresponding VCL_return logtag that gives you
+# the result of the VCL_call.
+#
+
+$2 == "VCL_call" && $3 == "c" {
+    xid = lookup_transaction($1)
+
+    # <nn> VCL_call c recv lookup
+    # <nn> VCL_call c hit deliver
+    if ($5) {
+        Transaction[xid, "vcl_" $4] = $5
+    }
+    # <nn> VCL_call   c recv
+    # <nn> VCL_return c lookup
+    else {
+        CurrentVclCall[xid] = $4
+    }
+}
+
+$2 == "VCL_return" && $3 == "c" {
+    xid = lookup_transaction($1)
+
+    curr_vcl_sub = "vcl_" CurrentVclCall[xid]
+    ret_value = $4
+
+    # Record the return value of the current VCL_call
+    Transaction[xid, curr_vcl_sub] = ret_value
+
+    # No vcl_call currently engaged anymore
+    delete CurrentVclCall[xid]
+}
+
+#                 xid    start_time    done_time    session_started  backend_resp_time
+#                  |        |              |             |            | 
+#                  |        |              |             |            |    delivery_time
+# 205 ReqEnd c 933976005 1365603497.937 1365603497.937 2.2056311 0.056505    |
+#  86 ReqEnd c 933984866 1365604497.837 1365604497.883 0.0000791 0.05228 0.000056
+$2 == "ReqEnd" {
+
+    #print "REQEND   " $4
+
+    xid = $4
+    #RequestsPerClient[Transaction[xid, "req.client"]]++
+
+    hit_or_miss = request_was_a_hit(xid) \
+        ? green("HIT") \
+        : red("MISS")
+
+    start_time = $5
+    end_time = $6
+    session_start = $7
+    backend_resp_time = $8 * 1000
+    time_to_serve = ((end_time - start_time) * 1000)
+
+    if (! show_request())
+        next
+
+    printf "%15s => %s %s %s %s\n", \
+        Transaction[xid, "req.client"], \
+        Transaction[xid, "req.request"], \
+        Transaction[xid, "req.url"], \
+        Transaction[xid, "req.proto"], \
+        hit_or_miss
+
+    CONVFMT="%10.3f"
+    tts_str = time_to_serve < 1000 ? green(time_to_serve) : red(time_to_serve)
+    printf "%15s <= %-59s %10s ms\n", "", \
+        Transaction[xid, "beresp.status"], \
+        tts_str
+
+    if (show_req_headers)
+        print RxHeaders[xid]
+
+    if (show_resp_headers)
+        print TxHeaders[xid]
+
+    # Don't need to track this transaction anymore
+    for (attr in TransactionAttributes)
+        delete Transaction[xid, attr]
+
+    delete RxHeaders[xid]
+    delete TxHeaders[xid]
+
+}
+
+END {
+    print_global_stats()
+}
+
+# vim: ts=4 sw=4 tw=78
