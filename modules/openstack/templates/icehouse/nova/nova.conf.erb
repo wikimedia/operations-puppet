@@ -3,6 +3,7 @@
 verbose=True
 auth_strategy=keystone
 compute_driver=nova.virt.libvirt.LibvirtDriver
+notification_topics=notifications,ceilometer_notifications
 connection_type=libvirt
 root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 instance_name_template=i-%08x
@@ -10,6 +11,9 @@ daemonize=1
 scheduler_driver=nova.scheduler.filter_scheduler.FilterScheduler
 wmf_scheduler_hosts_pool=labvirt1001,labvirt1002,labvirt1003,labvirt1004,labvirt1006,labvirt1007,labvirt1008,labvirt1009
 scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter
+
+# ceilometer things
+
 
 # Don't allow duplicate instance names
 osapi_compute_unique_server_name_scope='global'
@@ -104,14 +108,14 @@ wiki_password=<%= instance_status_wiki_pass %>
 wiki_instance_dns_domain=<%= instance_status_dns_domain %>
 wiki_use_keystone=False
 
-# The auditing facility will send compute.instance.exists notifications,
-#  which wikistatus is already listening for.  This will force
-#  daily updates to the wiki pages when needed.
-instance_usage_audit=True
-instance_usage_audit_period=day
-
-# And we need this driver for designate
+# Designate things:
 notification_driver = nova.openstack.common.notifier.rpc_notifier
+
+# Ceilometer things:
+instance_usage_audit = True
+instance_usage_audit_period = hour
+notify_on_state_change = vm_and_task_state
+notification_driver = ceilometer.compute.nova_notifier
 
 # Overprovision settings
 

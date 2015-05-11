@@ -18,6 +18,7 @@ class role::nova::config {
 class role::nova::config::common {
     require openstack
     include passwords::openstack::nova
+    include passwords::openstack::ceilometer
     include passwords::openstack::neutron
     include passwords::labs::rabbitmq
 
@@ -29,6 +30,10 @@ class role::nova::config::common {
         rabbit_user                => $passwords::labs::rabbitmq::rabbit_userid,
         rabbit_pass                => $passwords::labs::rabbitmq::rabbit_password,
         neutron_ldap_user_pass     => $passwords::openstack::neutron::neutron_ldap_user_pass,
+        ceilometer_user            => $passwords::openstack::ceilometer::db_user,
+        ceilometer_pass            => $passwords::openstack::ceilometer::db_pass,
+        ceilometer_secret_key      => $passwords::openstack::ceilometer::secret_key,
+        ceilometer_db_name         => 'ceilometer',
         my_ip                      => $::ipaddress_eth0,
         use_neutron                => $use_neutron,
         ldap_base_dn               => 'dc=wikimedia,dc=org',
