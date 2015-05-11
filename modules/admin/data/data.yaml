@@ -1429,3 +1429,10 @@ users:
     realname: Daniel Kahn Gillmor
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8NY6C8j5WYDAeXbs3C0L9Prr+cAuOgvkoeYwLpV3l+WuYTC6m0LpnaZ53d9o/r5zqKaIDC4F2FgP4cU52qikFqNorqvsZ3sFHAy5XWFtvSzsaRTGUKhs+Y14TKKpQ2Y+oynsuZFN8wm4N6U8ZepeFT+fDtPBPT9lrzooxGydnyw2246LRhx7jtrYwnAMi78+dPTBTNXVQm5oHHAwDpLnEgNe35ii78qZxSlS1qnfwXKfNrdRafCwHDetR8VEiZgsVkZ15GaKZ441rvXYsLkuzBqC1BseRfaPAYZ5hFq3ikP2zW6JNJ5IS8k8JfR9wMmuSB8J+U2op/qoCJQQ3HMAb dkg]
     uid: 12138
+  jynus:
+    ensure: present
+    gid: 500
+    name: jynus
+    realname: Jaime Crespo
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYXTjhdJPeTbKhlLn4c4iem8qOZ6EhHWiT3mKBhAJf9/hUnrIV9u5QTDo3Fdkz/d7ydiTYDx1Aem24sqg1mZtu16L3o9L7ixciuXAfxgHHBSQRKThO1Ts+qGHpPmDo0xBNLGPaKXxOhOogqw0+DN/NePfvW+iHk0kMBhQP+TZcLdV0zoylthwllavd/X3MQersYG+LyaBrLXxnjd3p1JcitDi/NKE6xtJG20zQ26115i95co8j9iuuGjHNF8bSSjICgUO3PU5/vWmTXNF4iL1SLAWCVwMchMynEn76XxKfG6l39tH3OaqyydTWICSWtzGgGOQREx5HC0dbdkPHWtix jynus@seul]
+    uid: 12161 
