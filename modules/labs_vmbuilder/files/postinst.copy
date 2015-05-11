@@ -16,11 +16,9 @@
 /etc/sudoers.d/ops /etc/sudoers.d/ops
 /etc/ssh/sshd_config /etc/ssh/sshd_config
 /etc/apt/trusted.gpg /etc/apt/trusted.gpg
-/etc/apt/sources.list.d/wikimedia.list /etc/apt/sources.list.d/wikimedia.list
-/etc/apt/preferences.d/wikimedia.pref /etc/apt/preferences.d/wikimedia.pref
-/etc/apt/apt.conf.d/80old-releases-proxy /etc/apt/apt.conf.d/80old-releases-proxy
-/etc/apt/apt.conf.d/80workaround-squid-issues /etc/apt/apt.conf.d/80workaround-squid-issues
-/etc/apt/apt.conf.d/80security-ubuntu-proxy /etc/apt/apt.conf.d/80security-ubuntu-proxy
+/etc/apt/sources.list.d/ /etc/apt/sources.list.d/
+/etc/apt/preferences.d/ /etc/apt/preferences.d/
+/etc/apt/apt.conf.d/ /etc/apt/apt.conf.d/
 /etc/vmbuilder/files/install_sudo.sh /root/install_sudo.sh
 /etc/cron.d/puppet /etc/cron.d/puppet
 /etc/default/puppet /etc/default/puppet.install
