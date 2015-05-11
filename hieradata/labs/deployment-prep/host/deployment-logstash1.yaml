@@ -1,3 +1,5 @@
+base::remote_syslog::enable: false
+
 # ES-specific
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: labs-logstash-eqiad
