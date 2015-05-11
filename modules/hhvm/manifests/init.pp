@@ -63,7 +63,7 @@ class hhvm(
     $fcgi_settings = {},
     $cli_settings  = {},
     $cache_dir     = '/run/hhvm/cache',
-    $base_jit_size = to_bytes('100 Mb'),
+    $base_jit_size = to_bytes('200 Mb'),
 ) {
     requires_os('ubuntu >= trusty')
 
