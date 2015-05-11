@@ -1,0 +1,5 @@
+# options for <https://github.com/philovivero/distribution>
+--color
+--size=large
+--char=pb
+--palette=0,32,34,35,37

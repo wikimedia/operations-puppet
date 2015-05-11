@@ -62,6 +62,8 @@ reqs()       { curl -s 127.0.0.1/server-status | grep -Po '\d+(?= requests curre
 perf()       { sudo perf "$@"; }
 gdbh()       { sudo gdb -p "$(pidof -s hhvm)"; }
 redis-cli()  { redis-cli -a "$(grep -Po '(?<=masterauth )\S+' /etc/redis/redis.conf)" "$@"; }
+fields()     { awk 'END { for (i = 1; i <= NF; i++) printf("%s : %s\n", i, $i) }' "$@"; }
+field()      { awk -v field="$1" '{print $(field)}'; }
 
 ptop()       {
   args=( top )
