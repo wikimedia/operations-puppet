@@ -384,7 +384,7 @@ class toollabs::exec_environ {
             'libthreads-perl',             # now part of perl
             'libvips15',
             'mysql-client',                # mariadb-client just... doesn't work on precise. Apt failures
-            'pyflakes',
+            'pyflakes',                    # T59863
             'tclthread',                   # now called tcl-thread
             # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
             ]:
