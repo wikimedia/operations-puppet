@@ -190,14 +190,6 @@ class toollabs (
         content => $active_proxy,
     }
 
-    # puppetized until we can setup proper DNS for .labsdb entries
-    file { '/etc/hosts':
-        source => 'puppet:///modules/toollabs/hosts',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644'
-    }
-
     # Silence e-mails sent when regular users try to sudo (T95882)
     file { '/etc/sudoers.d/40-tools-sudoers-no-warning':
         ensure => file,
@@ -205,6 +197,13 @@ class toollabs (
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning',
+    }
+
+    # Set up aliases for Tools database server.
+    host { 'tools.labsdb':
+        ensure       => present,
+        host_aliases => 'tools-db',
+        ip           => '10.64.37.9',
     }
 
     diamond::collector::localcrontab { 'localcrontabcollector': }
