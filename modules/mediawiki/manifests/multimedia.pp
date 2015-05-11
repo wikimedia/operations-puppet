@@ -22,7 +22,7 @@ class mediawiki::multimedia {
     }
 
     tidy { [ '/tmp', '/tmp/magick-tmp' ]:
-        matches => [ 'gs_*', 'magick-*', 'localcopy_*', 'transform_*', 'vips-*.v' ],
+        matches => [ '*.png', 'EasyTimeline.*', 'gs_*', 'localcopy_*', 'magick-*', 'transform_*', 'vips-*.v' ],
         age     => '15m',
         type    => 'ctime',
         backup  => false,
