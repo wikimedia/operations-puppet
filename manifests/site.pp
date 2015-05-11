@@ -2400,6 +2400,7 @@ node 'virt1000.wikimedia.org' {
     include role::nova::controller
     include role::salt::masters::labs
     include role::deployment::salt_masters
+    include role::ceilometer::controller
     if $use_neutron == true {
         include role::neutron::controller
 
