@@ -81,7 +81,6 @@ class toollabs::dev_environ {
         'mercurial',
         'pastebinit',
         'pep8',                        # T59863
-        'pyflakes',                    # T59863
         'python-coverage',             # T59002
         'python-dev',
         'python3-dev',
