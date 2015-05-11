@@ -5,3 +5,4 @@ mediawiki::web::mpm_config::mpm: worker
 admin::groups:
   - deployment
 mediawiki::users::web: www-data
+hhvm::base_jit_size: 183500800
