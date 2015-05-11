@@ -12,7 +12,7 @@ nimishg, rainman, ssmith, swalling, erik]
     description: include everywhere ops folks
     members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner, yuvipanda,
               dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling,
-              ori, midom, jmm]
+              ori, midom, jmm, jynus]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
