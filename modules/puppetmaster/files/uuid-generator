@@ -1,4 +1,0 @@
-#!/usr/bin/python
-import sys, uuid
-
-sys.stdout.write(str(uuid.uuid5(uuid.NAMESPACE_DNS, sys.argv[1])))

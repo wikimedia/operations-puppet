@@ -16,7 +16,7 @@ class puppetmaster::scripts(
     require puppetmaster::naggen2
 
     file {'/usr/local/bin/uuid-generator':
-        ensure  => 'present',
+        ensure  => absent,
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
