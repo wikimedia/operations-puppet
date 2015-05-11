@@ -1,0 +1,2 @@
+---
+base::remote_syslog::enable: false

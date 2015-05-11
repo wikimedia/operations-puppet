@@ -1,4 +1,5 @@
 standard::has_admin: false
+base::remote_syslog::enable: false
 elasticsearch::minimum_master_nodes: 1
 elasticsearch::recover_after_time: "1m"
 elasticsearch::multicast_group: "224.2.2.4"
