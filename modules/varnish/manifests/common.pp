@@ -21,6 +21,13 @@ class varnish::common {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => "puppet:///modules/${module_name}/reload-vcl",
+        source  => "puppet:///modules/varnish/reload-vcl",
+    }
+
+    file { '/usr/share/varnish/vlogdump':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/varnish/vlogdump',
     }
 }
