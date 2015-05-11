@@ -34,6 +34,12 @@ class labs_bootstrapvz() {
         require => File["${bootstrap_filepath}/manifests"],
     }
 
+    file { "${bootstrap_filepath}/firstscripts/firstboot.env":
+        ensure  => present,
+        mode    => '0775',
+        require => File["${bootstrap_filepath}/firstscripts"],
+    }
+
     file { "${bootstrap_filepath}/firstscripts/firstboot.sh":
         mode    => '0555',
         source  => 'puppet:///modules/labs_bootstrapvz/firstboot.sh',

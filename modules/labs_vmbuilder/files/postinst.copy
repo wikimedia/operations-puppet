@@ -25,3 +25,4 @@
 /etc/cron.d/puppet /etc/cron.d/puppet
 /etc/default/puppet /etc/default/puppet.install
 /etc/vmbuilder/files/puppet.conf /etc/puppet/puppet.conf.install
+/etc/vmbuilder/firstscripts/firstboot.env /root/firstboot.env
