@@ -1,0 +1,11 @@
+title   "network IO, all interfaces"
+vtitle  "bytes/s"
+area    :first
+
+field :tx, :color => "green",
+               :alias => "tx",
+               :data  => "sumSeries(servers.graphite2001.network.*.tx_byte)"
+
+field :rx, :color => "blue",
+               :alias => "rx",
+               :data  => "sumSeries(servers.graphite2001.network.*.rx_byte)"

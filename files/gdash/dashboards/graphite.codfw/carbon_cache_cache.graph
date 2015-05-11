@@ -1,0 +1,13 @@
+title   "carbon cache utilization"
+
+field :cache_size,
+               :alias => "cache size (bytes)",
+               :data  => "sumSeries(carbon.agents.graphite2001-*.cache.size)"
+
+field :queues,
+               :alias => "queues",
+               :data  => "sumSeries(carbon.agents.graphite2001-*.cache.queues)"
+
+field :overflow,
+               :alias => "overflow",
+               :data  => "secondYAxis(sumSeries(carbon.agents.graphite2001-*.cache.overflow))"

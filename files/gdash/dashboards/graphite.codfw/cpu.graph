@@ -1,0 +1,13 @@
+title   "CPU"
+
+field :user,
+               :alias => "user",
+               :data  => "servers.graphite2001.cpu.total.user"
+
+field :iowait,
+               :alias => "iowait",
+               :data  => "servers.graphite2001.cpu.total.iowait"
+
+field :system,
+               :alias => "system",
+               :data  => "servers.graphite2001.cpu.total.system"
