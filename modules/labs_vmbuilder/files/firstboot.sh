@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -f '/root/firstboot.env' ]; then
+    . /root/firstboot.env
+fi
+
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 restart rsyslog
@@ -52,7 +56,7 @@ domain=`hostname -d`
 idfqdn=${id}.${domain}
 fqdn=${hostname}.${domain}
 #TODO: get project a saner way
-project=`ldapsearch -x -D ${binddn} -w ${bindpw} -b ${hostsou} "dc=${idfqdn}" puppetvar | grep 'instanceproject' | sed 's/.*=//'`
+project=${project:-$(ldapsearch -x -D ${binddn} -w ${bindpw} -b ${hostsou} "dc=${idfqdn}" puppetvar | grep 'instanceproject' | sed 's/.*=//')}
 saltfinger="c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
 if [ "${domain}" == "eqiad.wmflabs" ]
 then
