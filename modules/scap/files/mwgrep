@@ -14,6 +14,7 @@
     --timeout N      abort search after this many seconds (default: 30)
     --user           search NS_USER rather than NS_MEDIAWIKI
     --module         search NS_MODULE rather than NS_MEDIAWIKI
+    --no-private     exclude private wikis from results
 
   mwgrep will grep the MediaWiki namespace across Wikimedia wikis. specify
   --user to search the user namespace instead.
@@ -84,6 +85,13 @@ ns_group.add_argument(
     help='search NS_MODULE rather than NS_MEDIAWIKI'
 )
 
+ns_group.add_argument(
+    '--no-private',
+    action='store_true',
+    dest='noprivate',
+    help='exclude private wikis from results'
+)
+
 args = ap.parse_args()
 
 filters = [
@@ -110,8 +118,15 @@ uri = BASE_URI + '?' + urllib.urlencode(query)
 req = urllib2.urlopen(uri, json.dumps(search))
 result = json.load(req)['hits']
 
+private_wikis = open('/srv/mediawiki/private.dblist').read().splitlines()
+hidden = 0
+
 for hit in result['hits']:
     db_name = hit['_index'].rsplit('_', 2)[0]
+    if db_name in private_wikis and args.noprivate:
+        hidden += 1
+        continue
+
     title = hit['_source']['title']
     page_name = '%s%s' % (PREFIX_NS[args.ns], title)
     bisect.insort(matches, (db_name, page_name))
@@ -119,4 +134,7 @@ for hit in result['hits']:
 for db_name, page_name in matches:
     print('{:<20}{}'.format(db_name, page_name))
 
-print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
+if args.noprivate:
+    print('(total: %s, shown: %s, private not shown: %s)' % (result['total'], len(result['hits']), hidden))
+else:
+    print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
