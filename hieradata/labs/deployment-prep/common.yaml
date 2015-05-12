@@ -238,21 +238,22 @@ mediawiki_memcached_servers:
       'bg':
         - 'mk'
       'ca':
+        - 'en'
         - 'es'
-        - 'pt'
         - 'oc'
+        - 'pt'
       'en':
         - 'ca'
         - 'eo'
-        - 'es'
-        - 'eu'
         - 'gl'
         - 'sh'
+      'eo':
+        - 'en'
       'es':
         - 'an'
         - 'ast'
         - 'ca'
-        - 'eu'
+        - 'en'
         - 'fr'
         - 'gl'
         - 'oc'
@@ -263,6 +264,7 @@ mediawiki_memcached_servers:
       'fr':
         - 'es'
       'gl':
+        - 'en'
         - 'es'
         - 'pt'
       'id':
@@ -282,8 +284,8 @@ mediawiki_memcached_servers:
         - 'bg'
         - 'sh'
       'oc':
-        - 'es'
         - 'ca'
+        - 'es'
       'pt':
         - 'ca'
         - 'es'
