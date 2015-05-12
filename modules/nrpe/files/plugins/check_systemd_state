@@ -1,0 +1,66 @@
+#!/usr/bin/perl
+
+# Copyright 2015 Giuseppe Lavagetto
+# Copyright 2015 Wikimedia Foundation, Inc.
+#
+# This nagios plugin is free software, and comes with ABSOLUTELY NO WARRANTY.
+# It may be used, redistributed and/or modified under the terms of the GNU
+# General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
+#
+# Example usage:
+#   check_systemd_state -s apache2
+
+use strict;
+use Nagios::Plugin;
+
+sub setup{
+    my $np = Nagios::Plugin->new(usage => "Usage: %s -s <service> -e <active|inactive>");
+    $np->add_arg(
+                 spec     => 'service|s=s',
+                 help     => '-s SERVICE',
+                 required => 1,
+    );
+    $np->add_arg(
+                 spec    => 'expect|e=s',
+                 help    => '-e active|inactive',
+                 default => 'active',
+    );
+    $np->getopts;
+    my @expected = ('active', 'inactive');
+
+    $np->nagios_exit(UNKNOWN, "Only 'active' and 'inactive' are valid expected states")
+            unless (grep {$_ eq $np->opts->expect} @expected);
+
+    return $np;
+}
+
+sub get_data {
+    my $service = shift;
+    open(STATUS, "/bin/systemctl show '$service' |");
+
+    my %service_data = {};
+
+    # Parse the systemctl output.
+    # Yes this is going to be crude.
+    while (<STATUS>) {
+        next if /^#/;
+        chomp;
+        my ($k, $v) = split /=/, $_, 2;
+        $service_data{$k} = $v;
+    }
+    return \%service_data;
+}
+
+my $plugin = setup();
+my $service = $plugin->opts->service;
+my $expect = $plugin->opts->expect;
+my %expected_substates = ( 'active' => 'running', 'inactive' => 'dead' );
+my $substate = $expected_substates{$expect};
+
+my $service_status = get_data($service);
+if ($service_status->{ActiveState} eq $expect) {
+    $plugin->nagios_exit(OK, "Service $service is in the desired state ($expect - $substate)") if ($service_status->{SubState} eq $substate);
+    $plugin->nagios_exit(CRITICAL, "Service $service is $service_status->{ActiveState}, but its last recorded state is: $service_status->{SubState}");
+} else {
+    $plugin->nagios_exit(CRITICAL, "Service is in state $service_status->{ActiveState}");
+}
