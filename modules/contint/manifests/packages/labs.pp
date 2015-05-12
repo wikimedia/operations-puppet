@@ -9,10 +9,12 @@ class contint::packages::labs {
     # Fonts needed for browser tests screenshots (T71535)
     include mediawiki::packages::fonts
 
-    # Self update the wikimedia packages (such as hhvm) on an hourly basis
-    include apt::unattendedupgrades
+    class { 'apt::unattendedupgrades':
+        ensure => absent,
+    }
 
     apt::conf { 'unattended-upgrades-wikimedia':
+        ensure   => absent,
         priority => '51',
         key      => 'Unattended-Upgrade::Allowed-Origins',
         # lint:ignore:single_quote_string_with_variables
@@ -20,15 +22,15 @@ class contint::packages::labs {
         # lint:endignore
     }
     apt::conf { 'lower-periodic-randomsleep':
+        ensure   => absent,
         priority => '51',
         key      => 'APT::Periodic::RandomSleep',
         value    => '300',
     }
 
+    # Not meant to run hourly :/
     file { '/etc/cron.hourly/apt':
-        ensure  => link,
-        target  => '/etc/cron.daily/apt',
-        require => Package['unattended-upgrades'],
+        ensure  => absent,
     }
 
     # Shell script wrappers to ease package building
