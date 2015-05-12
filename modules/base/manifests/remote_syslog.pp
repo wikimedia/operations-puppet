@@ -14,9 +14,13 @@
 #
 class base::remote_syslog (
     $enable,
-    $central_host,
+    $central_host = undef,
 ) {
     if $enable {
+        if $central_host == undef {
+            fail('::base::remote_syslog::central_host required')
+        }
+
         rsyslog::conf { 'remote_syslog':
             content  => "*.info;mail.none;authpriv.none;cron.none @${central_host}",
             priority => 30,
