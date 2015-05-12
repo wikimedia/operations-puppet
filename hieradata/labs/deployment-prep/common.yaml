@@ -232,9 +232,9 @@ mediawiki_memcached_servers:
   mt:
     Apertium:
       'an':
-          'es'
+        - 'es'
       'ast':
-          'es'
+        - 'es'
       'bg':
         - 'mk'
       'ca':
