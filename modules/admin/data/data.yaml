@@ -226,7 +226,7 @@ nimishg, rainman, ssmith, swalling, erik]
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging investigation
-    members: [nuria, milimetric, mforns, joal]
+    members: [nuria, milimetric, mforns, joal, jdouglas]
   citoid-roots:
     gid: 735
     description: rights for debugging citoid
