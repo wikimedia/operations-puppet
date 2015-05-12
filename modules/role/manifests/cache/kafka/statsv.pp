@@ -22,7 +22,7 @@ class role::cache::kafka::statsv(
         topic             => 'statsv',
         varnish_name      => $varnish_name,
         varnish_svc_name  => $varnish_svc_name,
-        varnish_opts      => { 'm' => 'RxURL:^/(beacon\/)?statsv[/?]', },
+        varnish_opts      => { 'm' => 'RxURL:^/beacon/statsv\?', },
         # By requiring 2 ACKs per message batch, we survive a
         # single broker dropping out of its leader role,
         # without seeing lost messages.
