@@ -134,6 +134,7 @@ class role::cache::text {
     }
 
     include role::cache::logging
+    include role::cache::kafka::statsv
 
     class { '::role::cache::logging::eventlistener':
         instance_name => 'frontend',
