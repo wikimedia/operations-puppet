@@ -314,6 +314,8 @@ mediawiki_memcached_servers:
         - 'es'
       'es':
         - 'ca'
+      'en':
+        - 'es'
 "role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
 "hhvm::extra::fcgi":
     hhvm:
