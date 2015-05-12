@@ -110,13 +110,22 @@ uri = BASE_URI + '?' + urllib.urlencode(query)
 req = urllib2.urlopen(uri, json.dumps(search))
 result = json.load(req)['hits']
 
+private_wikis = open('/srv/mediawiki/private.dblist').read().splitlines()
+
 for hit in result['hits']:
     db_name = hit['_index'].rsplit('_', 2)[0]
     title = hit['_source']['title']
     page_name = '%s%s' % (PREFIX_NS[args.ns], title)
     bisect.insort(matches, (db_name, page_name))
 
+print('PUBLIC WIKI RESULTS')
 for db_name, page_name in matches:
-    print('{:<20}{}'.format(db_name, page_name))
+    if db_name not in private_wikis:
+        print('{:<20}{}'.format(db_name, page_name))
+
+print('PRIVATE WIKI RESULTS')
+for db_name, page_name in matches:
+    if db_name in private_wikis:
+        print('{:<20}{}'.format(db_name, page_name))
 
 print('(total: %s, shown: %s)' % (result['total'], len(result['hits'])))
