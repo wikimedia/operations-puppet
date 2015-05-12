@@ -30,6 +30,13 @@ class beta::autoupdater {
         content => template('beta/wmf-beta-mwconfig-update.erb'),
     }
 
+    file { '/usr/local/bin/wmf-beta-update-databases.py':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/beta/wmf-beta-update-databases.py',
+    }
+
     git::clone { 'mediawiki/core':
         directory => "${stage_dir}/php-master",
         branch    => 'master',
