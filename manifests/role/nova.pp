@@ -136,8 +136,12 @@ class role::nova::config::codfw inherits role::nova::config::common {
                 default => $nova_network_ip,
             }
         },
+        # Traffic to IPs in the dmz_cidr will originate from the private IP of the instance.  Outside
+        #  the dmz range traffic will originate from a public IP if one is assigned.
         dmz_cidr => $::realm ? {
-            'production' => '208.80.155.0/22,10.0.0.0/8',
+            # This monstrosity is 10.0.0.0/8 - 10.68.16.0/21
+            #  Which is to say -- dmz everything /except/ other labs instances.
+            'production' => '208.80.155.0/22, 10.0.0.0/10, 10.64.0.0/14, 10.68.0.0/20, 10.68.24.0/21, 10.68.32.0/19, 10.68.64.0/18, 10.68.128.0/17, 10.69.0.0/16, 10.70.0.0/15, 10.72.0.0/13, 10.80.0.0/12, 10.96.0.0/11, 10.128.0.0/9',
             'labs'       => '10.4.0.0/21',
         },
         auth_uri => $::realm ? {
