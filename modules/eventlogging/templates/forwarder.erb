@@ -1,3 +1,3 @@
 <%= @input %>
-<%= @port %><% if @count %>
---count<% end %>
+<%= @outputs.sort.join('\n') %>
+<%= @count ? "--count\n" : '' -%>
