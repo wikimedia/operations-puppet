@@ -4,6 +4,7 @@
 #
 
 class nrpe::systemd_scripts {
+    require_package 'libnagios-plugin-perl'
 
     # This script allows monitoring of systemd services
     file { '/usr/local/bin/nrpe_check_systemd_state':
