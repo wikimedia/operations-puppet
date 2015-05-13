@@ -1,0 +1,49 @@
+#!/bin/bash
+# schedule a downtime on icinga
+# dzahn 20150513
+#
+#   usage: ./schedule_downtime -h <hostname> -d <duration> -r <reason>
+# example: ./schedule_downtime -h mw1021 -d 7200 -r "something happened"
+#
+# -h <hostname> should be the (short) name of a host as shown in the Icinga UI
+# -d <duration> how long should the downtime last, in seconds (2 hrs = 7200)
+# -r <reason>   a string with the reason for the downtime
+
+commandfile="/var/lib/nagios/rw/nagios.cmd"
+logfile="/var/log/icinga/icinga.log"
+user="marvin-bot" # because it's a _down_time bot, get it?:p
+
+while getopts "h:d:r:" opts; do
+case $opts in
+    h)
+        hostname=$OPTARG
+    ;;
+    d)
+        duration=$OPTARG
+    ;;
+    r)
+        reason=$OPTARG
+    ;;
+    \?)
+        echo "invalid option: '$OPTARG'"
+        exit 1
+    ;;
+    :)
+        echo "option '$OPTARG' requires an argument"
+        exit 1
+    ;;
+esac
+done
+
+if [ -z $hostname ] || [ -z $duration ] || [ -z $reason ]; then
+    echo "usage: $0 -h <hostname> -d <duration> -r <reason>"
+    exit
+fi
+
+start_time=$(date +%s) # now
+end_time=$(( $start_time + $duration ))
+
+printf "[%lu] SCHEDULE_HOST_DOWNTIME;${hostname};${start_time};${end_time};1;0;${duration};${user};${reason}\n" $(date +%s) > $commandfile
+
+tail -f $logfile | grep -m2 $hostname
+
