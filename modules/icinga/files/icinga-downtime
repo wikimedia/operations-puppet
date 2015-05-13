@@ -1,13 +1,14 @@
 #!/bin/bash
-# schedule a downtime on icinga
-# dzahn 20150513
+# schedule a host downtime in Icinga
+# Daniel Zahn (dzahn) 20150513 - T79842
 #
-#   usage: ./schedule_downtime -h <hostname> -d <duration> -r <reason>
-# example: ./schedule_downtime -h mw1021 -d 7200 -r "something happened"
+#   usage: ./icinga-downtime -h <hostname> -d <duration> -r <reason>
+# example: ./icinga-downtime -h mw1021 -d 7200 -r "something happened"
 #
 # -h <hostname> should be the (short) name of a host as shown in the Icinga UI
 # -d <duration> how long should the downtime last, in seconds (2 hrs = 7200)
 # -r <reason>   a string with the reason for the downtime
+#
 
 commandfile="/var/lib/nagios/rw/nagios.cmd"
 logfile="/var/log/icinga/icinga.log"
