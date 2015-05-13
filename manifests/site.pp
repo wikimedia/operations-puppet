@@ -2324,7 +2324,6 @@ node 'terbium.eqiad.wmnet' {
 }
 
 node 'tin.eqiad.wmnet' {
-    $cluster = 'misc'
 
     include standard
     include role::deployment::server
