@@ -337,6 +337,11 @@ class role::nova::manager {
         certificate => $certificate,
     }
 
+    monitoring::service { 'wikitech-static-sync':
+        description   => 'are wikitech and wt-static synced'
+        check_command => 'check_wikitech_static',
+    }
+
     include ::nutcracker::monitoring
     include ::mediawiki::packages::php5
     include ::scap::scripts
