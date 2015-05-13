@@ -7,7 +7,7 @@ WIKITECH="https://wikitech.wikimedia.org/w/api.php"
 WIKITECHSTATIC="https://wikitech-static.wikimedia.org/w/api.php"
 API_QUERY="action=query&titles=Server_Admin_Log&list=recentchanges&format=xml"
 
-LIMIT=90000
+AGE_LIMIT=90000 # seconds
 
 # MAIN
 TS_WIKITECH=$(curl $WIKITECH/?$API_QUERY 2> /dev/null | grep -o "timestamp.*" | cut -d\" -f2)
@@ -21,20 +21,20 @@ TS_DIFF=$(( $TS_WS - $TS_SS ))
 
 # echo "diff is ${TS_DIFF}"
 
-if [ $TS_DIFF -gt $LIMIT ]; then
+if [ $TS_DIFF -gt $AGE_LIMIT ]; then
 
-    echo "CRITICAL: WIKITECH <-> STATIC sync outdated. (${TS_DIFF}s > ${LIMIT}s)"
+    echo "WIKITECH CRIT - wikitech and wikitech-static out of sync (${TS_DIFF}s > ${AGE_LIMIT}s)"
     exit 2
 
 fi
 
-if [ $TS_DIFF -lt $LIMIT ]; then
+if [ $TS_DIFF -lt $AGE_LIMIT ]; then
 
-    echo "OK: WIKITECH <-> STATIC in sync. (${TS_DIFF} < ${LIMIT}s)"
+    echo "WIKITECH OK - wikitech and wikitech-static in sync (${TS_DIFF} < ${AGE_LIMIT}s)"
     exit 0
 
 fi
 
-echo "UKNOWN: check $0"
+echo "WIKITECH UKNOWN: please check $0"
 exit 3
 
