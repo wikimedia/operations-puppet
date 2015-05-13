@@ -1,22 +1,6 @@
 // Varnish VCL include file shared between Parsoid front- and backends
 
 sub vcl_recv {
-	if (req.http.Host ~ "cxserver" ) {
-		set req.backend = cxserver_backend;
-		return (pass);
-	}
-	if (req.http.Host ~ "citoid" ) {
-		set req.backend = citoid_backend;
-		return (pass);
-	}
-	if (req.http.Host ~ "graphoid" ) {
-		set req.backend = graphoid_backend;
-		return (pass);
-	}
-	if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\." ) {
-		set req.backend = restbase_backend;
-		return (pass);
-	}
 	// Clamp the host header to 'parsoid'
 	set req.http.host = "parsoid";
 
