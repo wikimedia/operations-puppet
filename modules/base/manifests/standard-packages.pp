@@ -70,7 +70,5 @@ class base::standard-packages {
     if $::is_virtual == 'false' {
     # lint:endignore
         package { 'mcelog': ensure => present }
-        # purging this due to buggy interactions with new kernels + initramfs -> low cpu freq
-        package { 'intel-microcode': ensure => purged }
     }
 }
