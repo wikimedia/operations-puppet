@@ -2,4 +2,6 @@
 <%= @sid %>
 <%= @format %>
 <%= @input %>
-<%= @output %>
+<%= @output %><% if @outputInvalid %>
+--output-invalid
+<%= @outputInvalid %><% end %>
