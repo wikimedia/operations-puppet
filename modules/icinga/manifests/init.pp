@@ -164,9 +164,9 @@ class icinga {
     }
 
     # script to schedule host downtimes
-    file { '/usr/local/bin/schedule-downtime':
+    file { '/usr/local/bin/icinga-downtime':
         ensure => present,
-        source => 'puppet:///modules/icinga/schedule-downtime',
+        source => 'puppet:///modules/icinga/icinga-downtime',
         owner  => 'root',
         group  => 'root',
         mode   => '0550',
