@@ -23,18 +23,18 @@ TS_DIFF=$(( $TS_WS - $TS_SS ))
 
 if [ $TS_DIFF -gt $AGE_LIMIT ]; then
 
-    echo "WIKITECH CRIT - wikitech and wikitech-static out of sync (${TS_DIFF}s > ${AGE_LIMIT}s)"
+    echo "wikitech-static CRIT - wikitech and wikitech-static out of sync (${TS_DIFF}s > ${AGE_LIMIT}s)"
     exit 2
 
 fi
 
 if [ $TS_DIFF -lt $AGE_LIMIT ]; then
 
-    echo "WIKITECH OK - wikitech and wikitech-static in sync (${TS_DIFF} < ${AGE_LIMIT}s)"
+    echo "wikitech-static OK - wikitech and wikitech-static in sync (${TS_DIFF} < ${AGE_LIMIT}s)"
     exit 0
 
 fi
 
-echo "WIKITECH UKNOWN - please check $0"
+echo "wikitech-static UNKNOWN - please check $0"
 exit 3
 

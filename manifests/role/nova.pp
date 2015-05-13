@@ -342,6 +342,12 @@ class role::nova::manager {
         certificate => $certificate,
     }
 
+    # T89323
+    monitoring::service { 'wikitech-static-sync':
+        description   => 'are wikitech and wt-static in sync?',
+        check_command => 'check_wikitech_static',
+    }
+
     include ::nutcracker::monitoring
     include ::mediawiki::packages::php5
     include ::mediawiki::cgroup
