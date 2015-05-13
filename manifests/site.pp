@@ -771,6 +771,16 @@ node 'db1046.eqiad.wmnet' {
     }
 }
 
+# m5 shard
+node 'db1009.eqiad.wmnet' {
+
+    $cluster = 'mysql'
+    class { 'role::mariadb::misc':
+        shard  => 'm5',
+        master => true,
+    }
+}
+
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
 
