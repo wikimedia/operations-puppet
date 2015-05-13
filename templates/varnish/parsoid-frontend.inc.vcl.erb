@@ -36,21 +36,11 @@ sub vcl_pass {
 
 sub vcl_fetch {
 	set beresp.ttl = 0s;
-	if (req.http.Host ~ "cxserver") {
-		return (hit_for_pass);
-	}
-	if (req.http.Host ~ "citoid") {
-		return (hit_for_pass);
-	}
-	if (req.http.Host ~ "graphoid") {
-		return (hit_for_pass);
-	}
 	if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\.") {
 		// Dummy endpoint for eager DNS resolution / TLS handshake.
 		if (req.url ~ "^/_preconnect") {
 			error 204;
 		}
-		return (hit_for_pass);
 	}
 }
 
