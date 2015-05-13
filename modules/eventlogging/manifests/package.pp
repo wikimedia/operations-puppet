@@ -7,7 +7,7 @@
 class eventlogging::package {
     $path = '/srv/deployment/eventlogging/EventLogging'
 
-    package { [
+    ensure_packages([
         'python-jsonschema',
         'python-kafka',
         'python-mysqldb',
@@ -16,9 +16,7 @@ class eventlogging::package {
         'python-six',
         'python-sqlalchemy',
         'python-zmq',
-    ]:
-        ensure => present,
-    }
+    ])
 
     package { 'eventlogging/EventLogging':
         provider => 'trebuchet',
