@@ -4,21 +4,19 @@ sub vcl_recv {
 	if (req.http.Host ~ "cxserver" ) {
 		set req.backend = cxserver_backend;
 		return (pass);
-	}
-	if (req.http.Host ~ "citoid" ) {
+	} else if (req.http.Host ~ "citoid" ) {
 		set req.backend = citoid_backend;
 		return (pass);
-	}
-	if (req.http.Host ~ "graphoid" ) {
+	} else if (req.http.Host ~ "graphoid" ) {
 		set req.backend = graphoid_backend;
-		return (pass);
-	}
-	if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\." ) {
+		// allow caching
+	} else if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\." ) {
 		set req.backend = restbase_backend;
 		return (pass);
+	} else {
+		// Clamp the host header to 'parsoid'
+		set req.http.host = "parsoid";
 	}
-	// Clamp the host header to 'parsoid'
-	set req.http.host = "parsoid";
 
 	// Support HTTP PURGE
 	if (req.request == "PURGE") {
