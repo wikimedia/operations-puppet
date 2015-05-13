@@ -344,7 +344,7 @@ class role::nova::manager {
 
     # T89323
     monitoring::service { 'wikitech-static-sync':
-        description   => 'are wikitech and wt-static in sync?',
+        description   => 'are wikitech and wt-static in sync',
         check_command => 'check_wikitech_static',
     }
 
