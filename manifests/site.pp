@@ -497,7 +497,7 @@ node 'dataset1001.wikimedia.org' {
 
 # eqiad dbs
 
-node /^db10(18)\.eqiad\.wmnet/ {
+node /^db10(24)\.eqiad\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::coredb::s2':
@@ -580,7 +580,7 @@ node /^db20(16|34|42|48)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(21|36|54|60|63|67)\.eqiad\.wmnet/ {
+node /^db10(18|21|36|54|60|63|67)\.eqiad\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
