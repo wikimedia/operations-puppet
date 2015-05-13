@@ -125,7 +125,7 @@ nimishg, rainman, ssmith, swalling, erik]
     gid: 719
     description: users with some sudo permissions on jenkins hosts
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
-              twentyafterfour, zfilipin, thcipriani, legoktm]
+              twentyafterfour, zfilipin, thcipriani, legoktm, jzerebecki]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
