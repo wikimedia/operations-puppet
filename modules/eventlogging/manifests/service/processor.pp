@@ -32,12 +32,17 @@
 #   A URI specifying the interface and port on which the processed event
 #   stream will be published. Example: 'tcp://*:8600'.
 #
+# [*output_invalid*]
+#   An optional URI specifying the interface and port on which the invalid
+#   event stream will be published. Example: 'tcp://*:8600'. Defaults to
+#   null.
+#
 # [*sid*]
 #   Specifies the socket ID the processor will use to identify itself
 #   when subscribing to input streams. Defaults to the resource title.
 #
 # [*ensure*]
-#   If 'present' (the default), sets up the multiplexer. If 'absent',
+#   If 'present' (the default), sets up the processor. If 'absent',
 #   destroys it.
 #
 # === Examples
@@ -52,8 +57,9 @@ define eventlogging::service::processor(
     $format,
     $input,
     $output,
-    $sid    = $title,
-    $ensure = present,
+    $output_invalid = undef,
+    $sid            = $title,
+    $ensure         = present,
 ) {
     include ::eventlogging
 
