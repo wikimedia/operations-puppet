@@ -31,8 +31,6 @@ class puppetmaster(
             $config={},
             ){
 
-    system::role { 'puppetmaster': description => 'Puppetmaster' }
-
     $gitdir = '/var/lib/git'
     $volatiledir = '/var/lib/puppet/volatile'
 

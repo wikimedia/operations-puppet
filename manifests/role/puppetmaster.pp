@@ -14,6 +14,10 @@ class role::puppetmaster::frontend {
     include role::puppetmaster::config
     include passwords::puppet::database
 
+    system::role { 'puppetmaster':
+        description => 'Puppetmaster backend'
+    }
+
     class { '::puppetmaster':
         allow_from  => $role::puppetmaster::config::allow_from,
         server_type => 'frontend',
@@ -41,6 +45,10 @@ class role::puppetmaster::frontend {
 class role::puppetmaster::backend {
     include role::puppetmaster::config
     include passwords::puppet::database
+
+    system::role { 'puppetmaster':
+        description => 'Puppetmaster backend'
+    }
 
     class { '::puppetmaster':
         allow_from  => $role::puppetmaster::config::allow_from,
