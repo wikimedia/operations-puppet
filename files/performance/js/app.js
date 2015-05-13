@@ -31,7 +31,7 @@
                     height: 200,
                     left: 60,
                     show_tooltips: false,
-                    show_rollover_text: false
+                    show_rollover_text: true
                 } );
             } );
         } );
