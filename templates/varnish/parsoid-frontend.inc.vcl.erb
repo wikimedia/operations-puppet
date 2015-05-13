@@ -35,7 +35,12 @@ sub vcl_pass {
 }
 
 sub vcl_fetch {
-	set beresp.ttl = 0s;
+	if (req.http.Host == "parsoid") {
+		// I'm not sure why parsoid needs this either, but leaving it
+		// as it was while eliminating this line from the others, who
+		// don't need it anymore as a hit-for-pass aid...
+		set beresp.ttl = 0s;
+	}
 	if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\.") {
 		// Dummy endpoint for eager DNS resolution / TLS handshake.
 		if (req.url ~ "^/_preconnect") {
