@@ -11,7 +11,7 @@ sub vcl_recv {
 	}
 	if (req.http.Host ~ "graphoid" ) {
 		set req.backend = graphoid_backend;
-		return (pass);
+		return (lookup);
 	}
 	if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\." ) {
 		set req.backend = restbase_backend;
