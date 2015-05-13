@@ -35,7 +35,7 @@ case $opts in
 esac
 done
 
-if [ -z $hostname ] || [ -z $duration ] || [ -z $reason ]; then
+if [ -z $hostname ] || [ -z $duration ] || [ -z "$reason" ]; then
     echo "usage: $0 -h <hostname> -d <duration> -r <reason>"
     exit
 fi
