@@ -125,6 +125,14 @@ class icinga::plugins {
         group      => 'icinga'
     }
 
+    nagios_common::check_command::config { 'check_wikitech_static.cfg':
+        ensure     => present,
+        content    => template('icinga/check_commands/check_wikitech_static.cfg.erb'),
+        config_dir => '/etc/icinga',
+        owner      => 'icinga',
+        group      => 'icinga'
+    }
+
     # Include check_elasticsearch from elasticsearch module
     include elasticsearch::nagios::plugin
 
