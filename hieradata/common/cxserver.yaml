@@ -169,21 +169,40 @@ registry:
     - 'zu'
   mt:
     Apertium:
+      'an':
+        - 'es'
+      'ast':
+        - 'es'
       'bg':
         - 'mk'
       'ca':
         - 'es'
+        - 'oc'
         - 'pt'
       'en':
         - 'ca'
         - 'eo'
+        - 'gl'
         - 'es'
         - 'sh'
       'es':
+        - 'an'
+        - 'ast'
         - 'ca'
+        - 'fr'
+        - 'gl'
+        - 'oc'
         - 'pt'
+      'eu':
+        - 'es'
+      'fr':
+        - 'es'
+      'gl':
+        - 'es'
       'id':
         - 'ms'
+      'kk':
+        - 'tt'
       'mk':
         - 'bg'
         - 'sh'
@@ -196,14 +215,16 @@ registry:
       'no':
         - 'nn'
       'pt':
-        - 'es'
         - 'ca'
+        - 'es'
       'sh':
         - 'sl'
       'sl':
         - 'sh'
       'sv':
         - 'da'
+      'tt':
+        - 'kk'
   dictionary:
     JsonDict:
       'ca':
