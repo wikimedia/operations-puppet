@@ -12,7 +12,7 @@ class dnsrecursor(
     $labs_forward     = '208.80.152.32'
 ) {
     package { 'pdns-recursor':
-        ensure => 'latest',
+        ensure => 'present',
     }
 
     system::role { 'dnsrecursor':
@@ -25,7 +25,7 @@ class dnsrecursor(
     $alias_script='/etc/powerdns/ip-alias.lua'
     if $ip_aliases {
         file { $alias_script:
-            ensure  => present,
+            ensure  => 'present',
             require => Package['pdns-recursor'],
             owner   => 'root',
             group   => 'root',
@@ -35,7 +35,7 @@ class dnsrecursor(
         }
     } else {
         file { $alias_script:
-            ensure  => absent,
+            ensure  => 'absent',
         }
     }
 
