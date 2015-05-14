@@ -894,7 +894,7 @@ node 'dysprosium.eqiad.wmnet' {
     role cache::text
 }
 
-node 'eeden.esams.wikimedia.org' {
+node 'eeden.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }

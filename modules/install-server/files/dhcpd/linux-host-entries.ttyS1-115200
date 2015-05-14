@@ -1896,7 +1896,9 @@ host dysprosium {
 
 host eeden {
 	hardware ethernet a4:ba:db:30:d8:80;
-	fixed-address eeden.esams.wikimedia.org;
+	fixed-address eeden.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host einsteinium {
