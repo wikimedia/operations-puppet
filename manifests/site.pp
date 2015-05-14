@@ -246,7 +246,6 @@ node 'bast1001.wikimedia.org' {
     include standard
     include subversion::client
     include dsh
-    include ssh::hostkeys-collect
     class { 'nfs::netapp::home':
         mountpoint => '/srv/home_pmtpa',
         mount_site => 'pmtpa',
@@ -2356,7 +2355,6 @@ node 'tin.eqiad.wmnet' {
     include role::deployment::server
     include mysql
     include role::labsdb::manager
-    include ssh::hostkeys-collect
     include role::releases::upload
 
     interface::add_ip6_mapped { 'main':
