@@ -22,9 +22,6 @@ trap cleanup EXIT
 WORKINGDIR=$1
 TESTDIR=$2
 
-# 1.x and 2.x have different path-related flags...
-(gdnsd -h 2>&1 | grep -q 'gdnsd version 2') || die "This script only supports gdnsd 2.x"
-
 if [ -z "$WORKINGDIR" ]; then
     die "no template dir specified"
 fi
