@@ -217,6 +217,7 @@ registry:
       'pt':
         - 'ca'
         - 'es'
+        - 'gl'
       'sh':
         - 'sl'
       'sl':
