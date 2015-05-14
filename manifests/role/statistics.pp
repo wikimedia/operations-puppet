@@ -35,6 +35,9 @@ class role::statistics::cruncher inherits role::statistics {
     # include stuff common to statistics compute nodes
     include statistics::compute
 
+    # include enchant and myspell packages (T99030)
+    include statistics::enchant
+
     # Aaron Halfaker (halfak) wants MongoDB for his project.
     class { 'mongodb':
         dbpath  => "${::statistics::working_path}/mongodb",
