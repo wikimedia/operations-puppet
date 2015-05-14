@@ -20,9 +20,6 @@ if [ "$(id -u)" -ne "0" ]; then
     die "this script needs root"
 fi
 
-# 1.x and 2.x have differences
-(gdnsd -h 2>&1 | grep -q 'gdnsd version 2') || die "This script only supports gdnsd 2.x"
-
 # setup locking; only one copy of this may be running at the same time
 LOCKFILE=/var/lock/authdns-local-update
 LOCKFD=9
@@ -105,6 +102,7 @@ if ! gdnsd checkconf >/dev/null; then
 fi
 
 echo "Copying admin_state into place; will take effect immediately"
+mkdir -p /var/lib/gdnsd
 cp -f $WORKINGDIR/admin_state /var/lib/gdnsd/
 
 ### reload
