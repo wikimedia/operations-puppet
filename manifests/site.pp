@@ -1715,7 +1715,6 @@ node 'multatuli.wikimedia.org' {
         interface => 'eth0',
     }
     include standard
-    include role::authdns::server
 }
 
 node 'ms1001.wikimedia.org' {

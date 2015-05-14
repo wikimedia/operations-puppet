@@ -13,7 +13,6 @@ class role::authdns::data {
             'rubidium.wikimedia.org',
             'baham.wikimedia.org',
             'eeden.wikimedia.org',
-            'multatuli.wikimedia.org',
     ]
 
     # These are all of the public addresses the Internet finds us at
