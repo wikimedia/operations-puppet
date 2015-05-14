@@ -33,6 +33,8 @@ def main():
                     help='The repo name that controls the service to restart.')
     ap.add_argument('--batch', dest='batch', action='store', default='10%',
                     help='The batch size of the restart. Default: 10%')
+    ap.add_argument('--timeout', dest='timeout', action='store', default='5',
+                    help='Timeout to the publish.runner command. Default: 5 seconds')
     args = ap.parse_args()
 
     if args.repo:
@@ -47,9 +49,9 @@ def main():
             LOG.warning('service-restart must be run within a repository or'
                         ' --repo must be provided')
             raise SystemExit(1)
-    cmd = ("sudo salt-call -l quiet --out json publish.runner "
-           "deploy.restart '{0}','{1}'")
-    p = subprocess.Popen(cmd.format(repo, args.batch),
+    cmd = ("sudo salt-call -l quiet --out json publish.runner --timeout {0} "
+           "deploy.restart '[{1},{2}]'")
+    p = subprocess.Popen(cmd.format(args.timeout, repo, args.batch),
                          shell=True,
                          stdout=subprocess.PIPE)
     out = p.communicate()[0]
