@@ -1,0 +1,58 @@
+-- This script comes from puppet: modules/dnsrecursor/templates/ip-alias.lua.erb.
+-- It hooks the 'postresolve' hook in the pdns recursor and maps public labs IPs
+--  to the corresponding internal private IPs.
+--
+-- If you're looking at the generated file, bear in mind that the upcoming table
+--  was generated via puppet and .erb.  If you're looking at the raw .erb
+--  script, here's what's happening:
+--
+-- From puppet we're getting a fancy data structure like this:
+--    {
+--        'deployment-cache-text02'   => {public_ip  => '208.80.155.135',
+--                                        private_ip => '10.68.16.16' },
+--        'deployment-cache-upload02' => {public_ip  => '208.80.155.136',
+--                                        private_ip => '10.68.17.51' },
+--    }
+-- The following .erb magic pulls that apart and reconstructs it into a
+--  lua table with entries like:
+--       aliastable['deployment-cache-text02']['public_ip'] = '208.80.155.135'
+--       aliastable['deployment-cache-text02']['private_ip'] = '10.68.16.16'
+--       aliastable['deployment-cache-upload02']['public_ip'] = '208.80.155.136'
+--       aliastable['deployment-cache-upload02']['private_ip'] = '10.68.17.51'
+--
+--  In both cases the actual instance name is unused, but it's nice to have around
+--   for debugging purposes.
+
+aliastable = {}
+
+<% @ip_aliases.each do |pair| -%>
+<%= "aliastable[\"#{pair[0]}\"] = {}\n" -%>
+<% pair[1].each do |address| -%>
+<%= "aliastable[\"#{pair[0]}\"][\"#{address[0]}\"] = \"#{address[1]}\"\n" -%>
+<% end -%>
+<% end -%>
+
+--  Flatten our table into a simple mapping with entries like this:
+--    aliasmapping['208.80.155.135'] = '10.68.16.16'
+--    aliasmapping['208.80.155.136'] = '10.68.17.51'
+aliasmapping = {}
+for name,entries in pairs(aliastable) do
+    aliasmapping[entries["public_ip"]] = entries["private_ip"]
+end
+
+
+-- Finally, apply that mapping to any matches that are thrown
+--  our way.
+function postresolve ( remoteip, domain, qtype, records, origrcode )
+    -- print ("postresolve called for: ", remoteip, getlocaladdress(), domain, qtype, origrcode)
+
+    for key,val in ipairs(records)
+    do
+            if (aliasmapping[val.content] and val.qtype == pdns.A)
+            then
+                    val.content = aliasmapping[val.content]
+                    setvariable()
+            end
+    end
+    return origrcode, records
+end
