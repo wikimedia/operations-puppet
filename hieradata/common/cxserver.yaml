@@ -208,5 +208,7 @@ registry:
     JsonDict:
       'ca':
         - 'es'
+      'en':
+        - 'es'
       'es':
         - 'ca'
