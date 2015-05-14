@@ -7,18 +7,37 @@
 #       Prefixes from which to allow recursive DNS queries
 class dnsrecursor(
     $listen_addresses = [$::ipaddress],
-    $allow_from       = []
+    $allow_from       = [],
+    $ip_aliases       = {}
 ) {
-    package { 'pdns-recursor':
-        ensure => 'latest',
-    }
-
     system::role { 'dnsrecursor':
         ensure      => 'absent',
         description => 'Recursive DNS server',
     }
 
+    $alias_script='/etc/powerdns/ip-alias.lua'
+
+    package { 'pdns-recursor':
+        ensure => 'latest',
+    }
+
     include network::constants
+
+    if $ip_aliases {
+        file { $alias_script:
+            ensure  => present,
+            require => Package['pdns-recursor'],
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            notify  => Service['pdns-recursor'],
+            content => template('dnsrecursor/ip-alias.lua.erb'),
+        }
+    } else {
+        file { $alias_script:
+            ensure  => absent,
+        }
+    }
 
     file { '/etc/powerdns/recursor.conf':
         ensure  => 'present',
@@ -26,8 +45,10 @@ class dnsrecursor(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        notify  => Service['pdns-recursor'],
         content => template('dnsrecursor/recursor.conf.erb'),
     }
+
 
     service { 'pdns-recursor':
         ensure    => 'running',
