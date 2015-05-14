@@ -12,7 +12,6 @@ class role::authdns::data {
     $nameservers = [
             'rubidium.wikimedia.org',
             'baham.wikimedia.org',
-            'eeden.esams.wikimedia.org',
             'multatuli.wikimedia.org',
     ]
 
