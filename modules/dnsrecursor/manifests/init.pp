@@ -11,7 +11,7 @@ class dnsrecursor(
     $ip_aliases       = {}
 ) {
     package { 'pdns-recursor':
-        ensure => 'latest',
+        ensure => present,
     }
 
     system::role { 'dnsrecursor':
