@@ -2237,6 +2237,9 @@ node 'stat1002.eqiad.wmnet' {
     # and only readable by users in the
     # analytics-privatedata-users group.
     include role::analytics::password::research
+
+    # Include spell checking libraries for research projects
+    include role::statistics::enchant
 }
 
 # stat1003 is a general purpose number cruncher for
@@ -2261,6 +2264,10 @@ node 'stat1003.eqiad.wmnet' {
         group => 'researchers',
         mode  => '0440',
     }
+
+    # Include spell checking libraries for research projects
+    include role::statistics::enchant
+
 }
 
 node /^snapshot100[1-4]\.eqiad\.wmnet/ {

@@ -129,3 +129,13 @@ class role::statistics::web inherits role::statistics {
     include statistics::sites::stats
 }
 
+# spell checkers for research (misspelled language features)
+class role::statistics::enchant {
+    system::role { 'role::statistics::enchant':
+        description => 'host with spell checking libraries'
+    }
+
+    # include enchant and myspell packages (T99030)
+    include statistics::enchant
+}
+
