@@ -79,7 +79,7 @@ class statistics::compute {
         'libopenblas-dev', # Optimized BLAS (linear algebra) library
     ])
 
-    # Plotting packags
+    # Plotting packages
     ensure_packages([
         'ploticus',
         'libploticus0',
@@ -89,6 +89,73 @@ class statistics::compute {
         'libcairo2-dev',
         'libxt-dev'
     ])
+
+    # spell checker/dictionary packages for research (halfak)
+    # T99030 - for machine learning and natural language processing
+    ensure_packages([
+        'enchant', # generic spell checking library (uses myspell as backend)
+        'myspell-af', # Afrikaans dictionary for myspell
+        'myspell-bg', # Bulgarian dictionary for myspell
+        'myspell-ca', # Catalan dictionary for myspell
+        'myspell-cs', # Czech dictionary for myspell
+        'myspell-da', # The Comprehensive Danish Dictionary (DSDO)
+        'myspell-de-at', # Austrian (German) dictionary for myspell
+        'myspell-de-ch', # Swiss (German) dictionary for myspell
+        'myspell-de-de', # German dictionary for myspell
+        'myspell-de-de-oldspell', # German dictionary for myspell (old orthography)
+        'myspell-el-gr', # Greek (el_GR) dictionary for myspell
+        'myspell-en-au', # English_australian dictionary for myspell
+        'myspell-en-gb', # English_british dictionary for myspell
+        'myspell-en-us', # English_american dictionary for myspell
+        'myspell-en-za', # English_southafrican dictionary for myspell
+        'myspell-eo', # Esperanto dictionary for myspell
+        'myspell-es', # Spanish dictionary for myspell
+        'myspell-et', # Estonian dictionary for MySpell
+        'myspell-fa', # Persian (Farsi) dictionary for myspell
+        'myspell-fo', # Faroese dictionary for myspell
+        'myspell-fr', # French dictionary for myspell (Hydro-Quebec version)
+        'myspell-fr-gut', # French dictionary for myspell (GUTenberg version)
+        'myspell-ga', # Irish (Gaeilge) dictionary for OpenOffice and Mozilla
+        'myspell-gd', # Scots Gaelic dictionary for myspell
+        'myspell-gv', # Manx Gaelic dictionary for myspell
+        'myspell-he', # Hebrew dictionary for myspell
+        'myspell-hr', # Croatian dictionary for myspell
+        'myspell-hu', # Hungarian dictionary for myspell
+        'myspell-hy', # Armenian dictionary for myspell
+        'myspell-it', # Italian dictionary for myspell
+        'myspell-ku', # Kurdish (Kurmanji) dictionary for myspell
+        'myspell-lt', # myspell dictionary for Lithuanian (LT)
+        'myspell-lv', # Latvian dictionary for Myspell
+        'myspell-nb', # Norwegian Bokmål dictionary for myspell
+        'myspell-nl', # Dutch dictionary for Hunspell
+        'myspell-nn', # Norwegian Nynorsk dictionary for myspell
+        'myspell-nr', # The Ndebele dictionary for myspell
+        'myspell-ns', # Northern Sotho dictionary for myspell
+        'myspell-pl', # Polish dictionary for myspell
+        'myspell-pt-br', # Brazilian Portuguese dictionary for myspell
+        'myspell-pt', # Portuguese dictionaries for myspell
+        'myspell-pt-pt', # European Portuguese dictionary for myspell
+        'myspell-ru', # Russian dictionary for MySpell
+        'myspell-sk', # Slovak dictionary for myspell
+        'myspell-sl', # Slovenian dictionary for myspell
+        'myspell-ss', # The Swazi dictionary for myspell
+        'myspell-st', # The Southern Sotho dictionary for myspell
+        'myspell-sv-se', # transitional dummy package
+        'myspell-sw', # Swahili dictionary for myspell
+        'myspell-th', # Thai dictionary for myspell
+        'myspell-tl', # Tagalog dictionary for myspell/hunspell
+        'myspell-tn', # The Tswana dictionary for myspell
+        'myspell-ts', # The Tsonga dictionary for myspell
+        'myspell-uk', # Ukrainian dictionary for myspell
+        'myspell-ve', # The Venda dictionary for myspell
+        'myspell-xh', # The Xhosa dictionary for myspell
+        'myspell-zu', # The Zulu dictionary for myspell
+    ]:
+        ensure => 'installed',
+    }
+
+}
+
 
     # clones mediawiki core at $working_path/mediawiki/core
     # and ensures that it is at the latest revision.
