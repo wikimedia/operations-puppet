@@ -7,6 +7,9 @@ GRANT PROCESS, REPLICATION CLIENT
 GRANT ALL PRIVILEGES
     ON `%wik%`.* TO 'wikiadmin'@'10.%';
 
+GRANT ALL PRIVILEGES
+    ON `centralauth`.* TO 'wikiadmin'@'10.%';
+
 -- wikiuser 10.64.%
 
 GRANT PROCESS, REPLICATION CLIENT
@@ -16,6 +19,9 @@ GRANT PROCESS, REPLICATION CLIENT
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `%wik%`.* TO 'wikiuser'@'10.64.%';
 
+GRANT SELECT, INSERT, UPDATE, DELETE
+    ON `centralauth`.* TO 'wikiuser'@'10.64.%';
+
 -- wikiuser 10.192.%
 
 GRANT PROCESS, REPLICATION CLIENT
@@ -24,3 +30,6 @@ GRANT PROCESS, REPLICATION CLIENT
 
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `%wik%`.* TO 'wikiuser'@'10.192.%';
+
+GRANT SELECT, INSERT, UPDATE, DELETE
+    ON `centralauth`.* TO 'wikiuser'@'10.192.%';
