@@ -10,8 +10,10 @@
 #   Input URI from which events should be forwarded.
 #   Defaults to  udp://0.0.0.0:$title (make sure $title is the port if you don't set this.)
 #
-# [*port*]
-#   Port which should be forwarded to. Defaults to the resource title.
+# [*outputs*]
+#   An array of URIs for various publishers that should be selected as output.
+#   Example: ['tcp://127.0.0.1:8521', 'kafka://?brokers=localhost:9092&topic=eventlogging'].
+#   Defaults to ['tcp://*:$title'] (make sure $title is the port if you don't set this.)
 #
 # [*count*]
 #   If true, prepend an autoincrementing ID to each message that is
@@ -30,10 +32,10 @@
 #  }
 #
 define eventlogging::service::forwarder(
-    $input  = "udp://0.0.0.0:${title}",
-    $port   = $title,
-    $count  = false,
-    $ensure = present,
+    $input    = "udp://0.0.0.0:${title}",
+    $outputs  = ["tcp://*:$title"],
+    $count    = false,
+    $ensure   = present,
 ) {
     include ::eventlogging
 
