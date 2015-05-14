@@ -129,6 +129,7 @@ class role::deployment::server(
     $key_source = 'puppet:///private/ssh/tin/mwdeploy_rsa',
     $apache_fqdn = $::fqdn,
     $deployment_group = 'wikidev',
+    $rsync_host = 'tin.eqiad.wmnet',
 ) {
     # Can't include this while scap is present on tin:
     # include misc::deployment::scripts
@@ -156,6 +157,10 @@ class role::deployment::server(
 
     include mediawiki
     include scap::master
+
+    class { 'scap::master':
+        rsync_host => $rsync_host,
+    }
 
     if $::realm != 'labs' {
         include wikitech::wiki::passwords
