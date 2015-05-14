@@ -1,0 +1,5 @@
+# If an instance has a public IP and accesses another instance, the
+# traffic does not appear to come from an "internal" network.  To work
+# around this, we define $INTERNAL to include the public IPs for Labs
+# instances (cf. https://phabricator.wikimedia.org/T96924).
+@def $INTERNAL = ($INTERNAL $PUBLIC_IP_RANGE);

@@ -71,6 +71,7 @@ class network::constants {
             'deployment_hosts' => [
                 '10.68.16.58', # deployment-bastion.eqiad.wmflabs
             ],
+            'public_ip_range' => '208.80.155.128/25',
         }
     }
 
