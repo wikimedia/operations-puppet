@@ -1,0 +1,27 @@
+aliastable = {}
+
+<% @ip_aliases.each do |pair| -%>
+<%= "aliastable[\"#{pair[0]}\"] = {}\n" -%>
+<% pair[1].each do |address| -%>
+<%= "aliastable[\"#{pair[0]}\"][\"#{address[0]}\"] = \"#{address[1]}\"\n" -%>
+<% end -%>
+<% end -%>
+
+aliasmapping = {}
+for name,entries in pairs(aliastable) do
+    aliasmapping[entries["public_ip"]] = entries["private_ip"]
+end
+
+function postresolve ( remoteip, domain, qtype, records, origrcode )
+    print ("postresolve called for: ", remoteip, getlocaladdress(), domain, qtype, origrcode)
+
+    for key,val in ipairs(records) 
+    do
+            if (aliasmapping[val.content] and val.qtype == pdns.A)
+            then
+                    val.content = aliasmapping[val.content]
+                    setvariable()
+            end
+    end
+    return origrcode, records
+end
