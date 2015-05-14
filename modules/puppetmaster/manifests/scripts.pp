@@ -13,7 +13,7 @@ class puppetmaster::scripts(
     $keep_reports_minutes = 960, # 16 hours
 ) {
 
-    require puppetmaster::naggen2
+    require puppetmaster::generators
 
     file {'/usr/local/bin/uuid-generator':
         ensure  => absent,

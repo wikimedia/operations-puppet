@@ -1,0 +1,115 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import os
+import sys
+# python 3 compatibility
+try:
+    import ConfigParser as configparser
+except ImportError:
+    import configparser
+
+import sqlalchemy
+from collections import defaultdict
+import argparse
+import logging
+from logging.handlers import SysLogHandler
+
+
+class SshKnownHostsGen(object):
+    query = """
+SELECT resources.title as title,
+  GROUP_CONCAT(CONCAT(param_names.name, "\t", param_values.value)
+  SEPARATOR "\n") AS service_content
+FROM param_values
+  JOIN param_names ON param_names.id = param_values.param_name_id
+  JOIN resources ON param_values.resource_id = resources.id
+WHERE restype = 'Sshkey'
+GROUP BY resources.id ORDER BY resources.title ASC"""
+
+    def load_config(self, configfile):
+        self.config = configparser.SafeConfigParser()
+        self.config.read(configfile)
+        self.dsn = "{}://{}:{}@{}:3306/puppet".format(
+            self.config.get('master', 'dbadapter'),
+            self.config.get('master', 'dbuser'),
+            self.config.get('master', 'dbpassword'),
+            self.config.get('master', 'dbserver')
+        )
+
+    def __init__(self, configfile, debug):
+        self.log = logging.getLogger('sshknowngen')
+        self.log.debug('Loading configfile %s', configfile)
+        self.load_config(configfile)
+        self.db_engine = sqlalchemy.create_engine(
+            self.dsn,
+            echo=debug
+        )
+
+    def _query(self):
+        connection = self.db_engine.connect()
+        connection.execute('set group_concat_max_len = @@max_allowed_packet')
+        res = connection.execute(self.query)
+        connection.close()
+        return res
+
+    def render(self):
+        try:
+            for entity in self._query():
+                self.log.debug('Working on resource %s', entity['title'])
+                attrs = defaultdict(list)
+                for restuple in entity['service_content'].split("\n"):
+                    (k, v) = restuple.split("\t")
+                    attrs[k].append(v)
+
+                if attrs['ensure'][0] != 'present':
+                    continue
+
+                hostname = entity['title']
+                aliases = [
+                    a
+                    for a in attrs['host_aliases']
+                    if not a.startswith('---')
+                ]
+                host_part = ",".join([hostname] + aliases)
+                (keytype, key) = (attrs['type'][0], attrs['key'][0])
+
+                line = '%s %s %s' % (host_part, keytype, key)
+                yield line
+        except Exception as e:
+            self.log.exception(
+                'Could not generate output for resource Sshkey')
+            sys.exit(30)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--configfile', '-c', dest='configfile', default='/etc/puppet/puppet.conf')
+    parser.add_argument('--debug', action='store_true', default=False)
+    args = parser.parse_args()
+
+    log_format='%(name)s: %(levelname)s - %(message)s'
+    log = logging.getLogger('sshknowngen')
+
+    if not args.debug:
+        #if normal mode, log to syslog
+        log.setLevel(logging.INFO)
+        log.propagate = False
+        handler = SysLogHandler(
+                address='/dev/log',
+                facility=SysLogHandler.LOG_LOCAL3)
+        formatter = logging.Formatter(fmt=log_format)
+        handler.setFormatter(formatter)
+        log.addHandler(handler)
+    else:
+        #if debug mode, print to stderr
+        logging.basicConfig(level=logging.DEBUG, format=log_format)
+
+    log.info('Generating output for resource Sshkey')
+    n = SshKnownHostsGen(args.configfile, args.debug)
+    for entity in n.render():
+        print(entity)
+    log.info('Run completed')
+
+if __name__ == '__main__':
+    main()
