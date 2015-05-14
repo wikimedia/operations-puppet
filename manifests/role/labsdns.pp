@@ -72,7 +72,8 @@ class role::labsdnsrecursor {
     class { ::dnsrecursor:
             listen_addresses    => $listen_addresses,
             allow_from          => ['10.68.16.0/21'],
-            ip_aliases          => $nova_dnsmasq_aliases
+            ip_aliases          => $nova_dnsmasq_aliases,
+            labs_forward        => '208.80.154.12'
     }
 
     ::dnsrecursor::monitor { [ $::ipaddress, $::ipaddress6_eth0 ]: }
