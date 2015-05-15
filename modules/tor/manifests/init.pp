@@ -38,21 +38,21 @@ class tor (
 
     # actual Tor port where clients connect, public
     ferm::service { 'tor_orport':
-        desc   => 'port for the actual Tor client connections',
-        proto  => 'tcp',
-        port   => $tor_orport,
+        desc  => 'port for the actual Tor client connections',
+        proto => 'tcp',
+        port  => $tor_orport,
     }
 
     # for serving directory updates, public
     ferm::service { 'tor_dirport':
-        desc   => 'port advertising the directory service',
-        proto  => 'tcp',
-        port   => $tor_dirport,
+        desc  => 'port advertising the directory service',
+        proto => 'tcp',
+        port  => $tor_dirport,
     }
 
     motd::script { 'tor_arm':
-        ensure   => present,
-        content  => "#!/bin/sh\necho '\nThis is a Tor relay. arm is a monitoring tool for it.\nusage: sudo -u debian-tor arm\nalso see: tail -f /var/log/tor/tor.log\n'",
+        ensure  => present,
+        content => "#!/bin/sh\necho '\nThis is a Tor relay. arm is a monitoring tool for it.\nusage: sudo -u debian-tor arm\nalso see: tail -f /var/log/tor/tor.log\n'",
     }
 
 }
