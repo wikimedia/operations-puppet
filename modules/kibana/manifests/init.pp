@@ -21,10 +21,10 @@ class kibana (
     }
 
     file { '/etc/kibana':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/etc/kibana/config.js':
