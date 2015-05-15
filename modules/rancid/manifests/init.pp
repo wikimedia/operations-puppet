@@ -54,8 +54,8 @@ class rancid {
     }
 
     file { '/var/log/rancid':
-        owner   => 'rancid',
-        group   => 'rancid',
-        mode    => '0750',
+        owner => 'rancid',
+        group => 'rancid',
+        mode  => '0750',
     }
 }

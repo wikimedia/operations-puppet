@@ -36,22 +36,22 @@ class ganeti(
 
         # Enable drbd
         exec { 'enable-module-drbd':
-            unless    => "/bin/grep -q '^drbd$' /etc/modules",
-            command   => '/bin/echo drbd >> /etc/modules',
+            unless  => "/bin/grep -q '^drbd$' /etc/modules",
+            command => '/bin/echo drbd >> /etc/modules',
         }
         exec { 'load-module-drbd' :
-            unless    => "/bin/lsmod | /bin/grep -q '^drbd'",
-            command   => '/sbin/modprobe drbd',
+            unless  => "/bin/lsmod | /bin/grep -q '^drbd'",
+            command => '/sbin/modprobe drbd',
         }
     }
     # Enable vhost_net
     exec { 'enable-module-vhost_net' :
-        unless    => "/bin/grep -q '^vhost_net$' /etc/modules",
-        command   => '/bin/echo vhost_net >> /etc/modules',
+        unless  => "/bin/grep -q '^vhost_net$' /etc/modules",
+        command => '/bin/echo vhost_net >> /etc/modules',
     }
     exec { 'load-module-vhost_net' :
-        unless    => "/bin/lsmod | /bin/grep -q '^vhost_net'",
-        command   => '/sbin/modprobe vhost_net',
+        unless  => "/bin/lsmod | /bin/grep -q '^vhost_net'",
+        command => '/sbin/modprobe vhost_net',
     }
 
     # lvm.conf
