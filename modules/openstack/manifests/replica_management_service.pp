@@ -15,6 +15,13 @@ class openstack::replica_management_service {
         require => File['/usr/local/sbin/replica-addusers.pl'],
     }
 
+    file { '/usr/local/sbin/postgres-userprovision.py':
+        source => 'puppet:///modules/openstack/postgres-userprovision.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+    }
+
     # There is no service {} stanza on purpose -- this service
     # must *only* be started by a manual operation because it must
     # run exactly once on whichever NFS server is the current
