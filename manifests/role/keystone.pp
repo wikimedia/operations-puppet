@@ -24,7 +24,7 @@ class role::keystone::config {
 class role::keystone::config::eqiad inherits role::keystone::config {
     $eqiadkeystoneconfig = {
         db_host      => $::realm ? {
-            'production' => 'virt1000.wikimedia.org',
+            'production' => 'm5-master.eqiad.wmnet',
             'labs'       => $nova_controller_hostname ? {
                 undef   => $::ipaddress_eth0,
                 default => $nova_controller_hostname,
