@@ -16,24 +16,24 @@ class install-server::tftp-server {
     file { '/srv/tftpboot':
         # config files in the puppet repository,
         # larger files like binary images in volatile
-        source          => [
+        source       => [
             'puppet:///modules/install-server/tftpboot',
             'puppet:///volatile/tftpboot'
         ],
-        sourceselect    => all,
-        mode            => '0444',
-        owner           => 'root',
-        group           => 'root',
-        recurse         => remote,
-        backup          => false,
+        sourceselect => all,
+        mode         => '0444',
+        owner        => 'root',
+        group        => 'root',
+        recurse      => remote,
+        backup       => false,
     }
 
     file { '/etc/default/atftpd':
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/install-server/atftpd-default',
-        notify  => Service['atftpd'],
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/install-server/atftpd-default',
+        notify => Service['atftpd'],
     }
 
     package { 'atftpd':
