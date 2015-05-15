@@ -1,5 +1,5 @@
 class role::ipsec ($hosts = undef) {
-    include strongswan::monitor::host
+    include strongswan::monitoring::host
 
     case $::realm {
         'labs': {
