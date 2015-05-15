@@ -26,6 +26,6 @@ class wdq-mm {
             Package['monit'],
             Package['wdq-mm'],
         ],
-        notify => Service['monit'],
+        notify  => Service['monit'],
     }
 }
