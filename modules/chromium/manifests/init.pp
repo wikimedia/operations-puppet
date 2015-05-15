@@ -64,7 +64,7 @@ class chromium(
     }
 
     service { 'chromium':
-        ensure    => ensure_service($ensure),
-        provider  => 'upstart',
+        ensure   => ensure_service($ensure),
+        provider => 'upstart',
     }
 }
