@@ -103,6 +103,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         source => 'puppet:///files/misc/scripts/fatalmonitor',
     }
 
+    include rsync::server
     # Allow rsyncing of mw-log files to other places for analysis.
     rsync::server::module { 'mw-log':
         path        => $log_directory,

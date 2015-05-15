@@ -11,7 +11,7 @@ class statistics::rsync::mediawiki {
     # the rsync_job define.
     $retention_days = 90
 
-    file { ["${working_path}/mw-log", "${working_path}/mw-log/archive"]:
+    file { "${working_path}/mw-log":
         ensure  => 'directory',
         owner   => 'stats',
         group   => 'wikidev',
