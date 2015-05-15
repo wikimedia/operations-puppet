@@ -70,11 +70,11 @@ class zuul::server (
     }
 
     file { '/usr/local/bin/zuul-gearman.py':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/zuul/zuul-gearman.py',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/zuul/zuul-gearman.py',
     }
 
     # Additionally provide a publicly readeable configuration file
