@@ -123,6 +123,7 @@ class hhvm(
             mysql                    => {
                 typed_results        => false,
                 slow_query_threshold => to_milliseconds('10s'),
+                connect_timeout      => to_milliseconds('3s'),
             },
             debug                    => {
                 core_dump_report_directory => '/var/log/hhvm',
