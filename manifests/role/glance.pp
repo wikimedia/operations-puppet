@@ -17,7 +17,7 @@ class role::glance::config::eqiad inherits role::glance::config {
     $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
 
     $db_host = $::realm ? {
-        'production' => 'm5-master.eqiad.wmnet',
+        'production' => 'virt1000.wikimedia.org',
         'labs'       => $::ipaddress_eth0,
     }
 
