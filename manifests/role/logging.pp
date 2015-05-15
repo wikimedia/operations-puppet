@@ -103,6 +103,17 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         source => 'puppet:///files/misc/scripts/fatalmonitor',
     }
 
+    # Allow rsyncing of mw-log files to other places for analysis.
+    rsync::server::module { 'mw-log':
+        path        => $log_directory,
+        read_only   => 'yes',
+        list        => 'yes',
+        # There is some private data in mw-log files, so
+        # only allow rsyncing to stat1002.eqiad.wmnet,
+        # the stat server with other private data.
+        hosts_allow => ['stat1002.eqiad.wmnet'],
+    }
+
     $cirrussearch_slow_log_check_interval = 5
     # Send CirrusSearch-slow.log entry rate to ganglia.
     logster::job { 'CirrusSearch-slow.log':
