@@ -20,7 +20,7 @@ class role::neutron::config::eqiad inherits role::neutron::config {
 
     $eqiadneutronconfig = {
         db_host => $::realm ? {
-            'production' => 'm5-master.eqiad.wmnet',
+            'production' => 'virt1000.wikimedia.org',
             'labs'       => 'localhost',
         },
         rabbit_host => $::realm ? {
