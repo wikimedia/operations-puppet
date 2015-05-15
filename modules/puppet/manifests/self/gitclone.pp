@@ -33,23 +33,23 @@ class puppet::self::gitclone {
         require => File["${gitdir}/labs-puppet-key"],
     }
     file { "${gitdir}/labs-puppet-key":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0600',
-        source  => 'puppet:///private/ssh/labs-puppet-key',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0600',
+        source => 'puppet:///private/ssh/labs-puppet-key',
     }
     file { $volatiledir:
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'puppet',
-        mode    => '0750',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'puppet',
+        mode   => '0750',
     }
     file { "${volatiledir}/misc":
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'puppet',
-        mode    => '0750',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'puppet',
+        mode   => '0750',
     }
     git::clone { 'operations/puppet':
         directory          => "${gitdir}/operations/puppet",
