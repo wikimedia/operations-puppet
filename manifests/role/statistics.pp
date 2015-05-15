@@ -80,8 +80,11 @@ class role::statistics::private inherits role::statistics {
     # generate stats.wikimedia.org data
     include statistics::wikistats
 
-    # rsync logs from logging hosts
+    # rsync webrequest logs from logging hosts
     include statistics::rsync::webrequest
+
+    # rsync mediawiki logs from logging hosts
+    include statistics::rsync::mediawiki
 
     # eventlogging logs are not private, but they
     # are here for convenience
