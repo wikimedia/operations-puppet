@@ -187,7 +187,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
     }
 
     $eqiadnovaconfig = {
-        db_host            => $controller_hostname,
+        db_host            => 'm5-master.eqiad.wmnet',
         dhcp_domain        => 'eqiad.wmflabs',
         glance_host        => $controller_hostname,
         rabbit_host        => $controller_hostname,
