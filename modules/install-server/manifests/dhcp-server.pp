@@ -14,13 +14,13 @@
 
 class install-server::dhcp-server {
     file { '/etc/dhcp':
-        ensure      => directory,
-        require     => Package['isc-dhcp-server'],
-        recurse     => true,
-        owner       => 'root',
-        group       => 'root',
-        mode        => '0444',
-        source      => 'puppet:///modules/install-server/dhcpd',
+        ensure  => directory,
+        require => Package['isc-dhcp-server'],
+        recurse => true,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/install-server/dhcpd',
     }
 
     package { 'isc-dhcp-server':
