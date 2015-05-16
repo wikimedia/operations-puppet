@@ -36,10 +36,10 @@ class nrpe($allowed_hosts='127.0.0.1') {
     }
 
     file { '/usr/local/lib/nagios/':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     # Have a directory with all our plugins.
