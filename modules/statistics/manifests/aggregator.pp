@@ -38,7 +38,7 @@ class statistics::aggregator {
         owner     => $user,
         group     => $group,
         mode      => '0755',
-        require  => File[$working_path],
+        require   => File[$working_path],
     }
 
     git::clone { 'aggregator_data':
@@ -48,7 +48,7 @@ class statistics::aggregator {
         owner     => $user,
         group     => $group,
         mode      => '0755',
-        require  => File[$working_path],
+        require   => File[$working_path],
     }
 
     file { $log_path:
@@ -56,7 +56,7 @@ class statistics::aggregator {
         owner   => $user,
         group   => $group,
         mode    => '0755',
-        require  => File[$working_path],
+        require => File[$working_path],
 
     }
 

@@ -12,10 +12,10 @@ class statistics::rsync::mediawiki {
     $retention_days = 90
 
     file { "${working_path}/mw-log":
-        ensure  => 'directory',
-        owner   => 'stats',
-        group   => 'wikidev',
-        mode    => '0775',
+        ensure => 'directory',
+        owner  => 'stats',
+        group  => 'wikidev',
+        mode   => '0775',
     }
 
     # Search request logs from fluorine

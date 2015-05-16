@@ -15,10 +15,10 @@ class statistics(
     include statistics::user
 
     file { $working_path:
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'wikidev',
-        mode    => '0775',
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'wikidev',
+        mode   => '0775',
     }
 
     if $working_path == '/srv' {
