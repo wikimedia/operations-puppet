@@ -81,6 +81,24 @@ class graphite(
         require => Package['graphite-carbon'],
     }
 
+    file { '/var/log/carbon':
+        ensure  => directory,
+        owner   => '_graphite',
+        group   => '_graphite',
+        mode    => '0755',
+        before  => Service['carbon'],
+        require => Package['graphite-carbon'],
+    }
+
+    file { '/var/run/carbon':
+        ensure  => directory,
+        owner   => '_graphite',
+        group   => '_graphite',
+        mode    => '0755',
+        before  => Service['carbon'],
+        require => Package['graphite-carbon'],
+    }
+
     file { '/etc/carbon/storage-schemas.conf':
         content => configparser_format($storage_schemas),
         require => Package['graphite-carbon'],
@@ -99,30 +117,72 @@ class graphite(
         notify  => Service['carbon'],
     }
 
-    file { '/etc/init/carbon':
-        source  => 'puppet:///modules/graphite/carbon-upstart',
-        recurse => true,
-        notify  => Service['carbon'],
+    if os_version('ubuntu >= trusty') {
+        file { '/etc/init/carbon':
+            source  => 'puppet:///modules/graphite/carbon-upstart',
+            recurse => true,
+            notify  => Service['carbon'],
+        }
+
+        file { '/sbin/carbonctl':
+            source => 'puppet:///modules/graphite/carbonctl',
+            mode   => '0755',
+            before => Service['carbon'],
+        }
+
+        file { '/etc/default/graphite-carbon':
+            source => 'puppet:///modules/graphite/graphite-carbon',
+            mode   => '0644',
+            before => Service['carbon'],
+        }
+
+        service { 'carbon':
+            ensure   => 'running',
+            provider => 'base',
+            restart  => '/sbin/carbonctl restart',
+            start    => '/sbin/carbonctl start',
+            status   => '/sbin/carbonctl status',
+            stop     => '/sbin/carbonctl stop',
+        }
     }
 
-    file { '/sbin/carbonctl':
-        source => 'puppet:///modules/graphite/carbonctl',
-        mode   => '0755',
-        before => Service['carbon'],
-    }
+    if os_version('debian >= jessie') {
+        # disable default carbon-cache via systemctl, previously done via
+        # /etc/default/graphite-carbon
+        exec { 'mask_carbon-cache':
+            command => '/bin/systemctl mask carbon-cache.service',
+            creates => '/etc/systemd/system/carbon-cache.service',
+            before  => Package['graphite-carbon'],
+        }
 
-    file { '/etc/default/graphite-carbon':
-        source => 'puppet:///modules/graphite/graphite-carbon',
-        mode   => '0644',
-        before => Service['carbon'],
-    }
+        # create required directory in /run at reboot, don't wait for a puppet
+        # run to fix it
+        file { '/usr/lib/tmpfiles.d/graphite.conf':
+            ensure  => present,
+            mode    => '0444',
+            content => "d ${pid_dir} 0755 _graphite _graphite",
+            owner   => 'root',
+            group   => 'root',
+        }
 
-    service { 'carbon':
-        ensure   => 'running',
-        provider => 'base',
-        restart  => '/sbin/carbonctl restart',
-        start    => '/sbin/carbonctl start',
-        status   => '/sbin/carbonctl status',
-        stop     => '/sbin/carbonctl stop',
+        base::service_unit { 'carbon-cache@':
+            ensure          => present,
+            systemd         => true,
+            declare_service => false,
+        }
+
+        base::service_unit { 'carbon':
+            ensure  => present,
+            systemd => true,
+        }
+
+        graphite::carbon_cache_instance { 'a': }
+        graphite::carbon_cache_instance { 'b': }
+        graphite::carbon_cache_instance { 'c': }
+        graphite::carbon_cache_instance { 'd': }
+        graphite::carbon_cache_instance { 'e': }
+        graphite::carbon_cache_instance { 'f': }
+        graphite::carbon_cache_instance { 'g': }
+        graphite::carbon_cache_instance { 'h': }
     }
 }
