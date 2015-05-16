@@ -1,10 +1,10 @@
 class varnish::monitoring::ganglia::vhtcpd {
     file { '/usr/lib/ganglia/python_modules/vhtcpd.py':
-            source  => "puppet:///modules/${module_name}/ganglia/ganglia-vhtcpd.py",
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            notify  => Service['ganglia-monitor'],
+            source => "puppet:///modules/${module_name}/ganglia/ganglia-vhtcpd.py",
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            notify => Service['ganglia-monitor'],
     }
     file { '/etc/ganglia/conf.d/vhtcpd.pyconf':
             owner   => 'root',
