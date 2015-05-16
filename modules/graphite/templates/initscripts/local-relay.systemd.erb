@@ -1,0 +1,9 @@
+[Unit]
+Description=carbon-c-relay local relay
+
+[Service]
+User=carbon-c-relay
+ExecStart=/usr/bin/carbon-c-relay -H <%= "#{hostname}_local" -%> -p 1903 -f /etc/carbon/local-relay.conf
+
+[Install]
+WantedBy=multi-user.target

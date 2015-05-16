@@ -17,6 +17,7 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
     base::service_unit { 'carbon/frontend-relay':
         ensure        => present,
         upstart       => true,
+        systemd       => true,
         template_name => 'frontend-relay',
     }
 
@@ -44,6 +45,7 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
     base::service_unit { 'carbon/local-relay':
         ensure        => present,
         upstart       => true,
+        systemd       => true,
         template_name => 'local-relay',
     }
 

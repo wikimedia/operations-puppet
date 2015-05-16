@@ -1,0 +1,9 @@
+[Unit]
+Description=carbon-c-relay frontend relay
+
+[Service]
+User=carbon-c-relay
+ExecStart=/usr/bin/carbon-c-relay -H <%= "#{hostname}_frontend" -%> -p 2003 -f /etc/carbon/frontend-relay.conf
+
+[Install]
+WantedBy=multi-user.target
