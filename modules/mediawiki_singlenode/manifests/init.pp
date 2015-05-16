@@ -54,7 +54,7 @@ class mediawiki_singlenode(
         origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
     }
 
-    mw-extension { [ 'Nuke', 'SpamBlacklist', 'ConfirmEdit' ]:
+    mwextension { [ 'Nuke', 'SpamBlacklist', 'ConfirmEdit' ]:
         ensure       => $ensure,
         install_path => $install_path,
     }

@@ -1,5 +1,5 @@
 # definition to clone mediawiki extensions
-define mediawiki_singlenode::mw-extension(
+define mediawiki_singlenode::mwextension(
     $ensure       = present,
     $branch       = 'master',
     $install_path = '/srv/mediawiki',
