@@ -14,17 +14,17 @@ class labs_bootstrapvz() {
     }
 
     file { "${bootstrap_filepath}/manifests":
-        ensure => directory,
+        ensure  => directory,
         require => File[$bootstrap_filepath],
     }
 
     file { "${bootstrap_filepath}/firstscripts":
-        ensure => directory,
+        ensure  => directory,
         require => File[$bootstrap_filepath],
     }
 
     file { "${bootstrap_filepath}/puppet":
-        ensure => directory,
+        ensure  => directory,
         require => File[$bootstrap_filepath],
     }
 

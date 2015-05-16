@@ -6,10 +6,10 @@ define package_builder::pbuilder_hook(
     $basepath='/var/cache/pbuilder',
 ) {
     file { "${basepath}/hooks/${distribution}":
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { "${basepath}/hooks/${distribution}/D01apt.wikimedia.org":
