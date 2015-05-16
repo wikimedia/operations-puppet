@@ -1,22 +1,22 @@
 class openstack::nova::network($openstack_version=$::openstack::version, $novaconfig) {
     include openstack::repo
 
-    package {  [ "nova-network", "dnsmasq" ]:
+    package {  [ 'nova-network', 'dnsmasq' ]:
         ensure  => present,
-        require => Class["openstack::repo"];
+        require => Class['openstack::repo'];
     }
 
-    service { "nova-network":
+    service { 'nova-network':
         ensure    => running,
         subscribe => File['/etc/nova/nova.conf'],
-        require   => Package["nova-network"];
+        require   => Package['nova-network'];
     }
 
     # dnsmasq is run manually by nova-network, we don't want the service running
-    service { "dnsmasq":
-        enable  => false,
+    service { 'dnsmasq':
         ensure  => stopped,
-        require => Package["dnsmasq"];
+        enable  => false,
+        require => Package['dnsmasq'];
     }
 
     $nova_dnsmasq_aliases = {

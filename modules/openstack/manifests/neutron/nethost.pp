@@ -37,39 +37,39 @@ class openstack::neutron::nethost(
     }
 
     service { 'openvswitch-switch':
-        ensure    => 'running',
-        require   => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
+        ensure  => 'running',
+        require => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
     }
 
     service { 'neutron-plugin-openvswitch-agent':
-        ensure    => 'running',
-        require   => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
+        ensure  => 'running',
+        require => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
     }
 
     service { 'neutron-dhcp-agent':
-        ensure    => 'running',
-        require   => Package['neutron-dhcp-agent'],
+        ensure  => 'running',
+        require => Package['neutron-dhcp-agent'],
     }
 
     service { 'neutron-l3-agent':
-        ensure    => 'running',
-        require   => Package['neutron-l3-agent'],
+        ensure  => 'running',
+        require => Package['neutron-l3-agent'],
     }
 
     service { 'neutron-metadata-agent':
-        ensure    => 'running',
-        require   => Package['neutron-metadata-agent'],
+        ensure  => 'running',
+        require => Package['neutron-metadata-agent'],
     }
 
     exec { 'create_br-int':
-            unless  => "/usr/bin/ovs-vsctl br-exists br-int",
-            command => "/usr/bin/ovs-vsctl add-br br-int",
+            unless  => '/usr/bin/ovs-vsctl br-exists br-int',
+            command => '/usr/bin/ovs-vsctl add-br br-int',
             require => Service['openvswitch-switch'],
     }
 
     exec { 'create_br-ex':
-            unless  => "/usr/bin/ovs-vsctl br-exists br-ex",
-            command => "/usr/bin/ovs-vsctl add-br br-ex",
+            unless  => '/usr/bin/ovs-vsctl br-exists br-ex',
+            command => '/usr/bin/ovs-vsctl add-br br-ex',
             require => Service['openvswitch-switch'],
             before  => Exec['add-port'],
     }
