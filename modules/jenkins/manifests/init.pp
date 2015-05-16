@@ -86,11 +86,11 @@ class jenkins {
     }
 
     file { '/etc/default/jenkins':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/jenkins/etc_default_jenkins',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/jenkins/etc_default_jenkins',
         require => Package['openjdk-7-jre-headless'],
     }
 
