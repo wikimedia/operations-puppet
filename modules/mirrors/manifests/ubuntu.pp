@@ -16,19 +16,19 @@ class mirrors::ubuntu {
     require mirrors
 
     file { '/srv/mirrors/ubuntu':
-        ensure  => directory,
-        owner   => 'mirror',
-        group   => 'mirror',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'mirror',
+        group  => 'mirror',
+        mode   => '0755',
     }
 
     # this is <https://wiki.ubuntu.com/Mirrors/Scripts>
     file { '/usr/local/sbin/update-ubuntu-mirror':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/mirrors/update-ubuntu-mirror',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/mirrors/update-ubuntu-mirror',
     }
 
     cron { 'update-ubuntu-mirror':
