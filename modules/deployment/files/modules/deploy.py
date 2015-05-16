@@ -240,38 +240,38 @@ def deployment_server_init():
                 continue
             # git clone does ignore umask and does explicit mkdir with 755
             __salt__['file.set_mode'](config['location'], 2775)
-            # Set the repo name in the repo's config
-            cmd = 'git config deploy.repo-name %s' % repo
-            status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
-                                             runas=deploy_user, umask=002)
+
+        # Set the repo name in the repo's config
+        cmd = 'git config deploy.repo-name %s' % repo
+        status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
+                                         runas=deploy_user, umask=002)
+        if status != 0:
+            ret_status = 1
+            continue
+        # Ensure checkout-submodules is also configured for trigger
+        if config['checkout_submodules']:
+            cmd = 'git config deploy.checkout-submodules true'
+        else:
+            cmd = 'git config deploy.checkout-submodules false'
+        status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
+                                         runas=deploy_user, umask=002)
+        if status != 0:
+            ret_status = 1
+            continue
+
+        # Override deploy_group with repo specific value set
+        # in deployment_config pillar
+        if config['deployment_repo_group']:
+            deploy_group = config['deployment_repo_group']
+
+        if deploy_group is not None:
+            cmd = 'chown -R %s:%s %s' % (deploy_user,
+                                         deploy_group,
+                                         config['location'])
+            status = __salt__['cmd.retcode'](cmd,
+                                             cwd=config['location'])
             if status != 0:
                 ret_status = 1
-                continue
-            # Ensure checkout-submodules is also configured for trigger
-            if config['checkout_submodules']:
-                cmd = 'git config deploy.checkout-submodules true'
-            else:
-                cmd = 'git config deploy.checkout-submodules false'
-            status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
-                                             runas=deploy_user, umask=002)
-            if status != 0:
-                ret_status = 1
-                continue
-
-            # Override deploy_group with repo specific value set
-            # in deployment_config pillar
-            if config['deployment_repo_group']:
-                deploy_group = config['deployment_repo_group']
-
-            if deploy_group is not None:
-                cmd = 'chown -R %s:%s %s' % (deploy_user,
-                                             deploy_group,
-                                             config['location'])
-                status = __salt__['cmd.retcode'](cmd,
-                                                 cwd=config['location'])
-                if status != 0:
-                    ret_status = 1
-
     return ret_status
 
 
