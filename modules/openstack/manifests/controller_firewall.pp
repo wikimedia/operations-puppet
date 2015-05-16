@@ -75,8 +75,8 @@ class openstack::controller_firewall {
 
     # mysql access from iron
     ferm::service { 'mysql_iron':
-        proto => 'tcp',
-        port  => '3306',
+        proto  => 'tcp',
+        port   => '3306',
         srange => "@resolve(iron.wikimedia.org)",
     }
 

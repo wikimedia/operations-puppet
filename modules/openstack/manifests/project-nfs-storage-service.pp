@@ -1,27 +1,27 @@
 class openstack::project-nfs-storage-service {
 
     file { '/etc/init/manage-nfs-volumes.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/openstack/manage-nfs-volumes.conf',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/openstack/manage-nfs-volumes.conf',
     }
 
     file { '/usr/local/sbin/start-nfs':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0550',
-        source  => 'puppet:///modules/openstack/start-nfs',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+        source => 'puppet:///modules/openstack/start-nfs',
     }
 
     file { '/usr/local/sbin/set-stripe-cache':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/openstack/set-stripe-cache',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/openstack/set-stripe-cache',
     }
 
     exec { 'set-stripe-caches':
