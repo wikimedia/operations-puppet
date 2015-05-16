@@ -17,10 +17,10 @@ class mirrors {
     }
 
     file { '/srv/mirrors':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     # monitoring for Debian/Ubuntu mirrors being in sync with upstream

@@ -7,10 +7,10 @@ class mirrors::serve {
     }
 
     file { '/srv/mirrors/index.html':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/mirrors/index.html',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/mirrors/index.html',
     }
 }
