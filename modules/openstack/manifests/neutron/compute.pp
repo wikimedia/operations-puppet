@@ -23,18 +23,18 @@ class openstack::neutron::compute(
     }
 
     service { 'openvswitch-switch':
-        ensure    => 'running',
-        require   => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
+        ensure  => 'running',
+        require => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
     }
 
     service { 'neutron-plugin-openvswitch-agent':
-        ensure    => 'running',
-        require   => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
+        ensure  => 'running',
+        require => Package['neutron-plugin-openvswitch-agent', 'openvswitch-datapath-dkms'],
     }
 
     exec { 'create_br-int':
-        unless  => "/usr/bin/ovs-vsctl br-exists br-int",
-        command => "/usr/bin/ovs-vsctl add-br br-int",
+        unless  => '/usr/bin/ovs-vsctl br-exists br-int',
+        command => '/usr/bin/ovs-vsctl add-br br-int',
         require => Service['openvswitch-switch'],
     }
 

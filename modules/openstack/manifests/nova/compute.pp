@@ -22,8 +22,8 @@ class openstack::nova::compute(
             require => Package['nova-common'],
         }
         file { '/var/lib/nova/clientkey.pem':
-            ensure  => link,
-            target  => "/var/lib/nova/${certname}.key",
+            ensure => link,
+            target => "/var/lib/nova/${certname}.key",
         }
         file { '/var/lib/nova/clientcert.pem':
             ensure  => link,
@@ -100,7 +100,7 @@ class openstack::nova::compute(
 
     if os_version('ubuntu >= trusty') and (versioncmp($::kernelrelease, '3.13.0-46') < 0) {
 
-        fail("nova-compute not installed on buggy kernels")
+        fail('nova-compute not installed on buggy kernels')
 
     } else {
 

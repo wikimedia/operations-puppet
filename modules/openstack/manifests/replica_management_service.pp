@@ -8,10 +8,10 @@ class openstack::replica_management_service {
     }
 
     file { '/etc/init/replica-addusers.conf':
-        source => 'puppet:///modules/openstack/replica-addusers.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        source  => 'puppet:///modules/openstack/replica-addusers.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
         require => File['/usr/local/sbin/replica-addusers.pl'],
     }
 

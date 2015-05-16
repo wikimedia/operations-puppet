@@ -1,23 +1,23 @@
 class openstack::nova::api($openstack_version=$::openstack::version, $novaconfig) {
     include openstack::repo
 
-    package {  [ "nova-api" ]:
+    package {  [ 'nova-api' ]:
         ensure  => present,
-        require => Class["openstack::repo"];
+        require => Class['openstack::repo'];
     }
 
-    service { "nova-api":
+    service { 'nova-api':
         ensure    => running,
         subscribe => File['/etc/nova/nova.conf'],
-        require   => Package["nova-api"];
+        require   => Package['nova-api'];
     }
-    file { "/etc/nova/policy.json":
+    file { '/etc/nova/policy.json':
         source  => "puppet:///modules/openstack/${openstack_version}/nova/policy.json",
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
-        notify  => Service["nova-api"],
-        require => Package["nova-api"];
+        notify  => Service['nova-api'],
+        require => Package['nova-api'];
     }
 
     nrpe::monitor_service { 'check_nova_api_process':
