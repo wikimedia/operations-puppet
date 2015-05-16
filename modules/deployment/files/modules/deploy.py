@@ -235,22 +235,22 @@ def deployment_server_init():
                 continue
             # git clone does ignore umask and does explicit mkdir with 755
             __salt__['file.set_mode'](config['location'], 2775)
-            # Set the repo name in the repo's config
-            cmd = 'git config deploy.repo-name %s' % repo
-            status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
+        # Set the repo name in the repo's config
+        cmd = 'git config deploy.repo-name %s' % repo
+        status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
                                              runas=deploy_user, umask=002)
-            if status != 0:
-                ret_status = 1
-                continue
-            # Ensure checkout-submodules is also configured for trigger
-            if config['checkout_submodules']:
-                cmd = 'git config deploy.checkout-submodules true'
-            else:
-                cmd = 'git config deploy.checkout-submodules false'
-            status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
+        if status != 0:
+            ret_status = 1
+            continue
+        # Ensure checkout-submodules is also configured for trigger
+        if config['checkout_submodules']:
+            cmd = 'git config deploy.checkout-submodules true'
+        else:
+            cmd = 'git config deploy.checkout-submodules false'
+        status = __salt__['cmd.retcode'](cmd, cwd=config['location'],
                                              runas=deploy_user, umask=002)
-            if status != 0:
-                ret_status = 1
+        if status != 0:
+            ret_status = 1
     return ret_status
 
 
