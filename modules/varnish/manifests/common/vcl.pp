@@ -42,10 +42,10 @@ class varnish::common::vcl {
     }
 
     file { '/etc/varnish/hhvm.inc.vcl':
-        ensure  => absent,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        ensure => absent,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     # VCL unit tests
