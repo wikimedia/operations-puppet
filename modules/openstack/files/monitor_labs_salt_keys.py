@@ -8,10 +8,6 @@ import salt.client
 import salt.key
 from novaclient.v1_1 import client
 
-# fixme sanity checking:
-# we want to make sure we don't get bogus results
-# for instance exists check (if it's broken what happens?)
-
 
 class Whiner(object):
     '''
@@ -41,6 +37,29 @@ class NovaClient(object):
     the nova openstack compute api
     '''
 
+    @staticmethod
+    def instance_display(server):
+        '''
+        given a nova server object (returned by listing
+        servers), display a few useful fields from it
+        '''
+
+        print 'Instance:', getattr(server, 'OS-EXT-SRV-ATTR:instance_name'),
+        print 'Status:', server.status,
+        print 'hostname:', server.name,
+        if 'public' in server.addresses and server.addresses['public']:
+            print 'IP:', server.addresses['public'][0]['addr'],
+        else:
+            print 'IP: seems to have none',
+        print 'Hypervisor:',
+        print getattr(server, 'OS-EXT-SRV-ATTR:hypervisor_hostname'),
+        if server.tenant_id == 'deployment-prep':
+            print 'Salt-master: deployment-salt'
+        else:
+            print
+        if hasattr(server, 'fault'):
+            print 'Fault:', server.fault
+
     def __init__(self, authfile, limit=300):
         '''
         authfile: full path to a file of auth creds, see
@@ -60,22 +79,22 @@ class NovaClient(object):
         (status is ACTIVE or ERROR or SHUTOFF)
         for all tenants
         '''
-        ec2ids = set()
+        instances = {}
         opts = {'all_tenants': True, 'limit': self.limit}
         while True:
             servers = self.client.servers.list(detailed=True, search_opts=opts)
             if not servers:
                 break
-            new_ec2ids = [getattr(instance, 'OS-EXT-SRV-ATTR:instance_name')
-                          for instance in servers]
-            ec2ids = ec2ids | set(new_ec2ids)
+            for instance in servers:
+                instances[getattr(instance,
+                                  'OS-EXT-SRV-ATTR:instance_name')] = instance
             opts['marker'] = servers[-1].id
             time.sleep(1)
 
-        if not ec2ids:
+        if not instances:
             Whiner.whine("no good nova instances found, something's wrong",
                          fatal=True)
-        return ec2ids
+        return instances
 
     def get_bad_instances(self):
         '''
@@ -84,19 +103,22 @@ class NovaClient(object):
         (status is DELETED only, not ERROR or BUILD)
         for all tenants
         '''
-        ec2ids = set()
+        instances = {}
         opts = {'all_tenants': True, 'deleted': True, 'limit': self.limit}
         while True:
             servers = self.client.servers.list(detailed=True, search_opts=opts)
             if not servers:
                 break
-            new_ec2ids = [getattr(instance, 'OS-EXT-SRV-ATTR:instance_name')
-                          for instance in servers if
-                          instance.status == 'DELETED']
-            ec2ids = ec2ids | set(new_ec2ids)
+            for instance in servers:
+                if instance.status == 'DELETED':
+                    instances[getattr(
+                        instance, 'OS-EXT-SRV-ATTR:instance_name')] = instance
             opts['marker'] = servers[-1].id
             time.sleep(1)
-        return ec2ids
+        if not instances:
+            Whiner.whine("no deleted nova instances found, very fishy...",
+                         fatal=True)
+        return instances
 
 
 class NovaAuth(object):
@@ -183,6 +205,7 @@ class SaltKeys(object):
         self.accepted_keys = []
         for dirname in dirnames:
             self.accepted_keys += accepted[dirname]
+        return self.accepted_keys
 
     def get_unresponsive_hosts(self):
         '''
@@ -210,18 +233,140 @@ class SaltKeys(object):
         self.key_manager.delete_key(host_name)
 
 
-def canonicalize(salt_hostname, region):
+class Runner(object):
     '''
-    convert the hostname we get back from a salt
-    command to the standard ec2 form
-    'region' should be eqiad/pmtpa/ etc depending
-    on the dc this script runs in
+    handle action requests for display of nova instances
+    or manipulation of their salt keys
     '''
-    domain = '.' + region + '.wmflabs'
-    truncate_by = -1 * len(domain)
-    if salt_hostname.endswith(domain):
-        salt_hostname = salt_hostname[:truncate_by]
-    return salt_hostname
+
+    @staticmethod
+    def canonicalize(hostname, region):
+        '''
+        convert fqdn to the short form by
+        dropping the domain, if there is one
+
+        'region' should be eqiad/pmtpa/ etc depending
+        on the dc this script runs in
+        '''
+        domain = '.' + region + '.wmflabs'
+        truncate_by = -1 * len(domain)
+        if hostname.endswith(domain):
+            hostname = hostname[:truncate_by]
+        return hostname
+
+    def __init__(self, actions, authfile, dryrun):
+        self.actions = actions
+        self.dryrun = dryrun
+        self.nova_client = NovaClient(authfile)
+        self.saltkeys = SaltKeys()
+        self.good_instances = None
+        self.bad_salt_hosts = None
+
+    def run(self):
+        '''
+        actually do the actions the caller requested
+        '''
+
+        if 'missingkey' in self.actions and self.actions['missingkey']:
+            self.do_missingkeys()
+        if 'unresponsive' in self.actions and self.actions['unresponsive']:
+            self.do_unresponsive()
+        if 'cleanup' in self.actions and self.actions['cleanup']:
+            self.do_cleanup()
+        if 'showall' in self.actions and self.actions['showall']:
+	    self.do_showall()
+
+    def do_unresponsive(self):
+        '''
+        display information about undeleted nova instances
+        which do not respond to salt ping but are known to salt
+        '''
+
+        if self.bad_salt_hosts is None:
+            self.bad_salt_hosts = self.saltkeys.get_unresponsive_hosts()
+        if not self.bad_salt_hosts:
+            # nothing to do
+            return
+
+        if self.good_instances is None:
+            self.good_instances = self.nova_client.get_good_instances()
+
+        print "instances unreponsive to salt test.ping"
+        print "======================================="
+        for bad_key in self.bad_salt_hosts:
+            canonical_name = Runner.canonicalize(
+                bad_key, self.nova_client.auth.get_region())
+            if canonical_name in self.good_instances:
+                NovaClient.instance_display(
+                    self.good_instances[canonical_name])
+            else:
+                print "Instance ", canonical_name, "seems to be deleted."
+        print
+
+    def do_missingkeys(self):
+        '''
+        display information about undeleted nova instances
+        which are unknown to salt (no salt key)
+        '''
+
+        known_to_salt = self.saltkeys.get_accepted_keys()
+        if not known_to_salt:
+            # nothing to do
+            return
+        salt_canonical_names = [Runner.canonicalize(
+            key, self.nova_client.auth.get_region())
+            for key in known_to_salt]
+
+        if self.good_instances is None:
+            self.good_instances = self.nova_client.get_good_instances()
+
+        print "instances with no salt key:"
+        print "==========================="
+        for ec2_id in self.good_instances:
+            if ec2_id not in salt_canonical_names:
+                NovaClient.instance_display(self.good_instances[ec2_id])
+        print
+
+    def do_showall(self):
+        '''
+        display information about all instances
+        '''
+
+        if self.good_instances is None:
+            self.good_instances = self.nova_client.get_good_instances()
+
+        print "all instances not deleted:"
+        print "=========================="
+        for ec2_id in self.good_instances:
+            NovaClient.instance_display(self.good_instances[ec2_id])
+
+
+    def do_cleanup(self):
+        '''
+        remove salt keys for deleted nova instances
+        '''
+
+        if self.bad_salt_hosts is None:
+            self.bad_salt_hosts = self.saltkeys.get_unresponsive_hosts()
+        if not self.bad_salt_hosts:
+            # nothing to do
+            return
+
+        if self.good_instances is None:
+            self.good_instances = self.nova_client.get_good_instances()
+
+        instance_ids = self.good_instances.keys()
+
+        log("Key deletion")
+        for bad_key in self.bad_salt_hosts:
+            if (Runner.canonicalize(bad_key,
+                                    self.nova_client.auth.get_region())
+                    not in instance_ids):
+                if not self.dryrun:
+                    log("About to delete key %s" % bad_key)
+                    self.saltkeys.delete_bad_key(bad_key)
+                else:
+                    print "would delete", bad_key
 
 
 def log(message):
@@ -242,14 +387,36 @@ def usage(message=None):
         sys.stderr.write(message)
         sys.stderr.write("\n")
     usage_message = """
-Usage: cleanup_labs_saltkeys.py [--authfile]
-       [--dryrun] [--help]
+Usage: monitor_labs_salt_keys.py <action>...
+                         [--authfile] [--dryrun] [--help]
 
-This script removes salt keys for deleted nova instances.
+where <action> is one of --cleanup --missing --no_ping --showall
 
-It relies on salt and on nova.  There should also be a file of
-nova authentication credentials ('authfile') someplace in the
-following format (order of lines does not matter):
+This script can, depending on the options specified, display
+information about labs instances with no salt key or labs instances
+unresponsive to salt, or it can delete saly keys of deleted labs
+instances.
+
+It relies on salt and on nova; it must be run on the salt master.
+
+Options:
+
+  --authfile (-a): path to a file of nova authentication credentials
+                   see 'Authfile Format' for the contents of the file
+                   default: /root/novaenv.sh
+  --cleanup (-c):  cleanup salt keys of deleted instances
+  --dryrun (-d):   don't delete anything, describe what would be done
+  --missing (-m):  show information about instances with missing salt keys
+  --no_ping (-n):  show information about instances unresponsive to salt
+  --showall (-s):  show information about all undeleted instances
+
+  --help (-h):     display this usage message
+
+Authfile Format
+
+The file of authentication credentials must be in the following
+format (order of lines does not matter but each line must occur
+someplace):
 
 export OS_USERNAME="some-name"
 export OS_PASSWORD="password-here"
@@ -258,9 +425,6 @@ export OS_REGION_NAME="..."
 export OS_TENANT_NAME="..."
 
 Lines with # or blank lines are skipped.
-
-If no authfile option is given, the file /root/novaenv.sh is
-used.
 """
     sys.stderr.write(usage_message)
     sys.exit(1)
@@ -269,45 +433,49 @@ used.
 def main():
     'main entry point, does all the work'
     authfile = '/root/novaenv.sh'
+    missingkey = False
+    unresponsive = False
+    cleanup = False
+    showall = False
     dryrun = False
 
     try:
         (options, remainder) = getopt.gnu_getopt(
-            sys.argv[1:], "a:dh",
-            ["auth=", "dryrun", "help"])
+            sys.argv[1:], "a:cdmnsh",
+            ["auth=", "showall", "cleanup", "missing",
+             "no_ping", "dryrun", "help"])
 
     except getopt.GetoptError as err:
         usage("Unknown option specified: " + str(err))
     for (opt, val) in options:
         if opt in ["-a", "--auth"]:
             authfile = val
-        elif opt in ["-h", "--help"]:
-            usage('Help for this script\n')
+        elif opt in ["-c", "--cleanup"]:
+            cleanup = True
         elif opt in ["-d", "--dryrun"]:
             dryrun = True
+        elif opt in ["-m", "--missing"]:
+            missingkey = True
+        elif opt in ["-n", "--no_ping"]:
+            unresponsive = True
+        elif opt in ["-s", "--showall"]:
+            showall = True
+        elif opt in ["-h", "--help"]:
+            usage('Help for this script\n')
         else:
             usage("Unknown option specified: <%s>" % opt)
 
     if len(remainder) > 0:
         usage("Unknown option(s) specified: <%s>" % remainder[0])
 
-    nova_client = NovaClient(authfile)
-    saltkeys = SaltKeys()
-    bad_hosts = saltkeys.get_unresponsive_hosts()
-    if not bad_hosts:
-        # nothing to do
-        return
+    if not cleanup and not missingkey and not unresponsive and not showall:
+        usage("One of the options 'cleanup', 'missing', 'showall' or"
+              "'no_ping' must be specified")
 
-    good_instances = nova_client.get_good_instances()
+    runner = Runner({'cleanup': cleanup, 'missingkey': missingkey,
+                     'unresponsive': unresponsive, 'showall': showall}, authfile, dryrun)
+    runner.run()
 
-    for bad_key in bad_hosts:
-        if (canonicalize(bad_key, nova_client.auth.get_region())
-                not in good_instances):
-            if not dryrun:
-                log("About to delete key %s" % bad_key)
-                saltkeys.delete_bad_key(bad_key)
-            else:
-                print "would delete", bad_key
 
 if __name__ == '__main__':
     main()
