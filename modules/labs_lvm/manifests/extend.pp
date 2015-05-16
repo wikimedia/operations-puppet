@@ -25,9 +25,9 @@ define labs_lvm::extend(
 ) {
 
     exec { "extend-vd-${mountat}":
-        logoutput   => 'on_failure',
-        require     => File['/usr/local/sbin/extend-instance-vol'],
-        command     => "/usr/local/sbin/extend-instance-vol '${mountat}' '${size}'",
+        logoutput => 'on_failure',
+        require   => File['/usr/local/sbin/extend-instance-vol'],
+        command   => "/usr/local/sbin/extend-instance-vol '${mountat}' '${size}'",
     }
 
 }
