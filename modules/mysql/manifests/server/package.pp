@@ -17,8 +17,8 @@ class mysql::server::package (
     }
 
     package { 'mysql-server':
-        ensure    => $package_ensure,
-        name      => $package_name,
-        require   => $package_source,
+        ensure  => $package_ensure,
+        name    => $package_name,
+        require => $package_source,
     }
 }
