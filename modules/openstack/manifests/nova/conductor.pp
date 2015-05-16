@@ -1,15 +1,15 @@
 class openstack::nova::conductor($novaconfig) {
     include openstack::repo
 
-    package { "nova-conductor":
+    package { 'nova-conductor':
         ensure  => present,
-        require => Class["openstack::repo"];
+        require => Class['openstack::repo'];
     }
 
-    service { "nova-conductor":
+    service { 'nova-conductor':
         ensure    => running,
         subscribe => File['/etc/nova/nova.conf'],
-        require   => Package["nova-conductor"];
+        require   => Package['nova-conductor'];
     }
 
     nrpe::monitor_service { 'check_nova_conductor_process':
