@@ -2,8 +2,8 @@
 #
 # Runs queries submitted via celery
 class quarry::celeryrunner {
-    $clone_path = "/srv/quarry"
-    $result_path = "/data/project/quarry/results"
+    $clone_path  = '/srv/quarry'
+    $result_path = '/data/project/quarry/results'
 
     include quarry::base
 
@@ -17,7 +17,7 @@ class quarry::celeryrunner {
     }
 
     service { 'celeryd':
+        ensure  => running,
         require => [File['/etc/init.d/celeryd'], File['/etc/default/celeryd'], User['quarry']],
-        ensure  => running
     }
 }
