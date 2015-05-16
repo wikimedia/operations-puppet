@@ -38,11 +38,11 @@ class phabricator::mailrelay(
 ) {
 
     file { '/usr/local/bin/phab_epipe.py':
-        ensure  => file,
-        source  => 'puppet:///modules/phabricator/phab_epipe.py',
-        mode    => '0555',
-        owner   => mail,
-        group   => mail,
+        ensure => file,
+        source => 'puppet:///modules/phabricator/phab_epipe.py',
+        mode   => '0555',
+        owner  => mail,
+        group  => mail,
     }
 
     file { '/etc/phab_epipe.conf':
