@@ -13,42 +13,42 @@
 class labs_lvm($disk = '/dev/vda') {
 
     package { 'lvm2':
-        ensure      => present,
+        ensure => present,
     }
 
     file { '/usr/local/sbin/make-instance-vg':
-        ensure      => file,
-        source      => 'puppet:///modules/labs_lvm/make-instance-vg',
-        require     => Package['lvm2'],
-        mode        => 0544,
-        owner       => 'root',
-        group       => 'root',
+        ensure  => file,
+        source  => 'puppet:///modules/labs_lvm/make-instance-vg',
+        require => Package['lvm2'],
+        mode    => '0544',
+        owner   => 'root',
+        group   => 'root',
     }
 
 
     file { '/usr/local/sbin/make-instance-vol':
-        ensure      => file,
-        source      => 'puppet:///modules/labs_lvm/make-instance-vol',
-        require     => Package['lvm2'],
-        mode        => 0544,
-        owner       => 'root',
-        group       => 'root',
+        ensure  => file,
+        source  => 'puppet:///modules/labs_lvm/make-instance-vol',
+        require => Package['lvm2'],
+        mode    => '0544',
+        owner   => 'root',
+        group   => 'root',
     }
 
     file { '/usr/local/sbin/extend-instance-vol':
-        ensure      => file,
-        source      => 'puppet:///modules/labs_lvm/extend-instance-vol',
-        require     => Package['lvm2'],
-        mode        => 0544,
-        owner       => 'root',
-        group       => 'root',
+        ensure  => file,
+        source  => 'puppet:///modules/labs_lvm/extend-instance-vol',
+        require => Package['lvm2'],
+        mode    => '0544',
+        owner   => 'root',
+        group   => 'root',
     }
 
     exec { 'create-volume-group':
-        logoutput   => 'on_failure',
-        unless      => '/sbin/vgdisplay -c vd',
-        require     => File['/usr/local/sbin/make-instance-vg'],
-        command     => "/usr/local/sbin/make-instance-vg '${disk}'",
+        logoutput => 'on_failure',
+        unless    => '/sbin/vgdisplay -c vd',
+        require   => File['/usr/local/sbin/make-instance-vg'],
+        command   => "/usr/local/sbin/make-instance-vg '${disk}'",
     }
 
 }
