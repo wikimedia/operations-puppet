@@ -9,22 +9,22 @@
 #       Array or hash (name => ip) of service IPs to answer on
 class lvs::realserver($realserver_ips=[]) {
 
-    file { "/etc/default/wikimedia-lvs-realserver":
-        mode => 0444,
-        owner => root,
-        group => root,
+    file { '/etc/default/wikimedia-lvs-realserver':
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
         content => template("${module_name}/wikimedia-lvs-realserver.erb");
     }
 
-    exec { "/usr/sbin/dpkg-reconfigure -p critical -f noninteractive wikimedia-lvs-realserver":
-        require => Package["wikimedia-lvs-realserver"],
-        path => "/bin:/sbin:/usr/bin:/usr/sbin",
-        subscribe => File["/etc/default/wikimedia-lvs-realserver"],
+    exec { '/usr/sbin/dpkg-reconfigure -p critical -f noninteractive wikimedia-lvs-realserver':
+        require     => Package['wikimedia-lvs-realserver'],
+        path        => '/bin:/sbin:/usr/bin:/usr/sbin',
+        subscribe   => File['/etc/default/wikimedia-lvs-realserver'],
         refreshonly => true;
     }
 
-    package { wikimedia-lvs-realserver:
-        ensure => latest,
-        require => File["/etc/default/wikimedia-lvs-realserver"];
+    package { 'wikimedia-lvs-realserver':
+        ensure  => latest,
+        require => File['/etc/default/wikimedia-lvs-realserver'];
     }
 }
