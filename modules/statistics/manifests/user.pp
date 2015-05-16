@@ -32,7 +32,7 @@ class statistics::user {
                 'helper' => 'store',
             },
         },
-        require   => User[$username],
+        require  => User[$username],
     }
 
     # Render the .git-credentials file with the stats user's http password.
