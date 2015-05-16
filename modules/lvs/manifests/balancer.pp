@@ -18,29 +18,29 @@ class lvs::balancer(
     include pybal
     include cpufrequtils # defaults to "performance", Ubuntu default is "ondemand"
 
-    system::role { "lvs::balancer": description => "LVS balancer", ensure => absent }
+    system::role { 'lvs::balancer': description => 'LVS balancer', ensure => absent }
 
     # ethtool is also a package needed but it is included from base
 
     class { 'pybal::configuration':
-        global_options => $pybal_global_options,
-        lvs_services => $lvs_services,
+        global_options  => $pybal_global_options,
+        lvs_services    => $lvs_services,
         lvs_class_hosts => $lvs_class_hosts,
-        site => $site
+        site            => $site
     }
 
-    file { "/etc/modprobe.d/lvs.conf":
+    file { '/etc/modprobe.d/lvs.conf':
         content => template("${module_name}/lvs.conf.erb"),
-        notify => Exec["update-initramfs-lvs-balancer"]
+        notify  => Exec['update-initramfs-lvs-balancer']
     }
 
-    exec { "update-initramfs-lvs-balancer":
-        command => "/usr/sbin/update-initramfs -u",
+    exec { 'update-initramfs-lvs-balancer':
+        command     => '/usr/sbin/update-initramfs -u',
         refreshonly => true
     }
 
     # Bind balancer IPs to the loopback interface
-    class { "lvs::realserver": realserver_ips => $service_ips }
+    class { 'lvs::realserver': realserver_ips => $service_ips }
 
     sysctl::parameters { 'lvs':
         values => {
