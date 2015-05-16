@@ -49,7 +49,7 @@ define mysql::config::client(
     }
 
     mysql::config::file { "${title}-client":
-        ensure     => $ensure,
+        ensure   => $ensure,
         settings => {
             'client' => {
                 'user'     => $user,
@@ -58,10 +58,10 @@ define mysql::config::client(
                 'port'     => $port,
             },
         },
-        path       => $path,
-        owner      => $owner,
-        group      => $group,
-        mode       => $mode,
-        template   => $template,
+        path     => $path,
+        owner    => $owner,
+        group    => $group,
+        mode     => $mode,
+        template => $template,
     }
 }
