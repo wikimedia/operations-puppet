@@ -14,12 +14,12 @@ define labs_lvm::swap(
     $volume_path = "/dev/vd/${name}"
 
     exec { "create-swap-${name}":
-        require   => [
+        require => [
             File['/usr/local/sbin/make-instance-vol'],
             Exec['create-volume-group']
         ],
-        command   => "/usr/local/sbin/make-instance-vol ${name} ${size} swap",
-        unless    => "/sbin/lvdisplay -c | grep ${volume_path}",
+        command => "/usr/local/sbin/make-instance-vol ${name} ${size} swap",
+        unless  => "/sbin/lvdisplay -c | grep ${volume_path}",
     }
 
     mount { "mount-swap-${name}":
