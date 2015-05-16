@@ -26,33 +26,33 @@ class ocg::decommission (
             '/etc/cron.hourly/logrotate.ocg',
             '/var/log/ocg',
         ]:
-        ensure  => absent,
-        purge   => true,
-        force   => true,
+        ensure => absent,
+        purge  => true,
+        force  => true,
     }
 
     file { $temp_dir:
-        ensure  => absent,
-        purge   => true,
-        force   => true,
+        ensure => absent,
+        purge  => true,
+        force  => true,
     }
 
     file { $output_dir:
-        ensure  => absent,
-        purge   => true,
-        force   => true,
+        ensure => absent,
+        purge  => true,
+        force  => true,
     }
 
     file { $postmortem_dir:
-        ensure  => absent,
-        purge   => true,
-        force   => true,
+        ensure => absent,
+        purge  => true,
+        force  => true,
     }
 
     file { $log_dir:
-        ensure  => absent,
-        purge   => true,
-        force   => true,
+        ensure => absent,
+        purge  => true,
+        force  => true,
     }
 
     package { 'ocg/ocg':
