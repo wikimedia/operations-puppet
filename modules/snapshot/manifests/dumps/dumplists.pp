@@ -25,12 +25,12 @@ class snapshot::dumps::dumplists(
         content => template('snapshot/list-last-good-dumps.sh.erb'),
     }
     file { '/usr/local/bin/list-last-n-good-dumps.py':
-        ensure  => 'present',
-        path    => '/usr/local/bin/list-last-n-good-dumps.py',
-        mode    => '0755',
-        owner   => $user,
-        group   => root,
-        source  => 'puppet:///modules/snapshot/dumps/list-last-n-good-dumps.py',
+        ensure => 'present',
+        path   => '/usr/local/bin/list-last-n-good-dumps.py',
+        mode   => '0755',
+        owner  => $user,
+        group  => root,
+        source => 'puppet:///modules/snapshot/dumps/list-last-n-good-dumps.py',
     }
 
     # fixme there is an implicit dependency on

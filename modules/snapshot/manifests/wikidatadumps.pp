@@ -1,16 +1,16 @@
 class snapshot::wikidatadumps::common {
     file { '/usr/local/bin/wikidatadumps-shared.sh':
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/snapshot/wikidatadumps-shared.sh',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/wikidatadumps-shared.sh',
     }
 
     file { '/var/log/wikidatadump':
-        mode    => '0755',
-        ensure  => 'directory',
-        owner   => 'datasets',
-        group   => 'apache',
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'datasets',
+        group  => 'apache',
     }
 }
 
@@ -28,7 +28,7 @@ class snapshot::wikidatadumps::json(
     }
 
     system::role { 'snapshot::wikidatadumps::json':
-        ensure => $ensure,
+        ensure      => $ensure,
         description => 'producer of weekly wikidata json dumps'
     }
 
@@ -42,13 +42,13 @@ class snapshot::wikidatadumps::json(
     }
 
     cron { 'wikidatajson-dump':
-        ensure      => $ensure,
-        command     => $scriptPath,
-        user        => $user,
-        minute      => '15',
-        hour        => '3',
-        weekday     => '1',
-        require     => File[$scriptPath],
+        ensure  => $ensure,
+        command => $scriptPath,
+        user    => $user,
+        minute  => '15',
+        hour    => '3',
+        weekday => '1',
+        require => File[$scriptPath],
     }
 }
 
@@ -66,7 +66,7 @@ class snapshot::wikidatadumps::ttl(
     }
 
     system::role { 'snapshot::wikidatadumps::ttl':
-        ensure => $ensure,
+        ensure      => $ensure,
         description => 'producer of weekly wikidata ttl dumps'
     }
 
@@ -80,12 +80,12 @@ class snapshot::wikidatadumps::ttl(
     }
 
     cron { 'wikidatattl-dump':
-        ensure      => $ensure,
-        command     => $scriptPath,
-        user        => $user,
-        minute      => '0',
-        hour        => '23',
-        weekday     => '1',
-        require     => File[$scriptPath],
+        ensure  => $ensure,
+        command => $scriptPath,
+        user    => $user,
+        minute  => '0',
+        hour    => '23',
+        weekday => '1',
+        require => File[$scriptPath],
     }
 }
