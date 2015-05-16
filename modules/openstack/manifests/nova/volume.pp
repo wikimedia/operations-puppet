@@ -1,9 +1,9 @@
 class openstack::nova::volume($novaconfig) {
     include openstack::repo
 
-    package { [ "nova-volume" ]:
+    package { 'nova-volume':
         ensure  => absent,
-        require => Class["openstack::repo"];
+        require => Class['openstack::repo'];
     }
 
     #service { "nova-volume":

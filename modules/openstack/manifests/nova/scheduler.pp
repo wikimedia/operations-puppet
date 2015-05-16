@@ -4,15 +4,15 @@ class openstack::nova::scheduler(
 ){
     include openstack::repo
 
-    package { "nova-scheduler":
+    package { 'nova-scheduler':
         ensure  => present,
-        require => Class["openstack::repo"];
+        require => Class['openstack::repo'];
     }
 
-    service { "nova-scheduler":
+    service { 'nova-scheduler':
         ensure    => running,
         subscribe => File['/etc/nova/nova.conf'],
-        require   => Package["nova-scheduler"];
+        require   => Package['nova-scheduler'];
     }
 
     nrpe::monitor_service { 'check_nova_scheduler_process':
