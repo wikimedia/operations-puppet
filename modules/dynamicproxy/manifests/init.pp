@@ -92,7 +92,7 @@ class dynamicproxy (
         }
 
         nginx::site { 'proxymanager':
-            content => template("dynamicproxy/proxymanager.conf.erb"),
+            content => template('dynamicproxy/proxymanager.conf.erb'),
             require => [Ferm::Service['proxymanager'],
                         File['/etc/nginx/lua/list-proxy-entries.lua']],
         }
