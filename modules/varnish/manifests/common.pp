@@ -18,19 +18,19 @@ class varnish::common {
     }
 
     file { '/usr/share/varnish/reload-vcl':
-        source  => 'puppet:///modules/varnish/reload-vcl',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+        source => 'puppet:///modules/varnish/reload-vcl',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     # `vlogdump` is a small tool to filter the output of varnishlog
     # See <https://github.com/cosimo/vlogdump> for more.
     file { '/usr/local/bin/vlogdump':
-        source  => 'puppet:///modules/varnish/vlogdump',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+        source => 'puppet:///modules/varnish/vlogdump',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':

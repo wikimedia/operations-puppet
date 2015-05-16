@@ -64,12 +64,12 @@ define varnish::instance(
     }
 
     if has_key($vcl_config,'layer') and $vcl_config['layer'] == 'frontend' {
-        file { "/etc/varnish/frontend-hooks.inc.vcl":
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => "puppet:///private/misc/frontend-hooks.inc.vcl",
-            notify  => Exec["load-new-vcl-file${instancesuffix}"],
+        file { '/etc/varnish/frontend-hooks.inc.vcl':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///private/misc/frontend-hooks.inc.vcl',
+            notify => Exec["load-new-vcl-file${instancesuffix}"],
         }
     }
 
@@ -85,10 +85,10 @@ define varnish::instance(
     }
 
     base::service_unit { "varnish${instancesuffix}":
-        template_name => 'varnish',
-        systemd => true,
-        sysvinit => true,
-        refresh => false,
+        template_name  => 'varnish',
+        systemd        => true,
+        sysvinit       => true,
+        refresh        => false,
         service_params => {
             tag     => 'varnish_instance',
             enable  => true,
@@ -129,10 +129,10 @@ define varnish::instance(
     }
 
     exec { "retry-load-new-vcl-file${instancesuffix}":
-        require     => Exec["load-new-vcl-file${instancesuffix}"],
-        command     => "/usr/share/varnish/reload-vcl ${extraopts} && (rm ${vcl_failed_file}; true)",
-        onlyif      => "test -f ${vcl_failed_file}",
-        path        => '/bin:/usr/bin',
+        require => Exec["load-new-vcl-file${instancesuffix}"],
+        command => "/usr/share/varnish/reload-vcl ${extraopts} && (rm ${vcl_failed_file}; true)",
+        onlyif  => "test -f ${vcl_failed_file}",
+        path    => '/bin:/usr/bin',
     }
 
     monitoring::service { "varnish http ${title}":
