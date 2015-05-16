@@ -10,13 +10,13 @@ class contint::slave-scripts {
     if ! defined(File['/srv/deployment']) {
         file { '/srv/deployment':
             ensure => 'directory',
-            mode => 0755,
+            mode   => '0755',
         }
     }
     if ! defined(File['/srv/deployment/integration']) {
         file { '/srv/deployment/integration':
             ensure => 'directory',
-            mode => 0755,
+            mode   => '0755',
         }
     }
 
