@@ -12,10 +12,10 @@ class statistics::rsync::eventlogging {
     $retention_days = 90
 
     file { "${working_path}/eventlogging":
-        ensure  => 'directory',
-        owner   => 'stats',
-        group   => 'wikidev',
-        mode    => '0775',
+        ensure => 'directory',
+        owner  => 'stats',
+        group  => 'wikidev',
+        mode   => '0775',
     }
 
     # eventlogging logs from eventlog1001

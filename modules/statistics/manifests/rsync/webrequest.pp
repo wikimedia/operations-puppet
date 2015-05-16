@@ -16,10 +16,10 @@ class statistics::rsync::webrequest {
         "${working_path}/aft/archive",
         "${working_path}/public-datasets",
     ]:
-        ensure  => 'directory',
-        owner   => 'stats',
-        group   => 'wikidev',
-        mode    => '0775',
+        ensure => 'directory',
+        owner  => 'stats',
+        group  => 'wikidev',
+        mode   => '0775',
     }
 
     # Make sure destination directories exist.
@@ -35,17 +35,17 @@ class statistics::rsync::webrequest {
         "${working_path}/log",
         "${working_path}/log/webrequest",
     ]:
-        ensure  => directory,
-        owner   => 'stats',
-        group   => 'wikidev',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'stats',
+        group  => 'wikidev',
+        mode   => '0755',
     }
 
     # wikipedia zero logs from oxygen
     statistics::rsync_job { 'wikipedia_zero':
+        ensure      => 'absent',
         source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/zero*.gz',
         destination => "${working_path}/squid/archive/zero",
-        ensure      => 'absent',
     }
 
     # API logs from erbium
@@ -68,17 +68,17 @@ class statistics::rsync::webrequest {
 
     # edit logs from oxygen
     statistics::rsync_job { 'edits':
+        ensure         => 'absent',
         source         => 'oxygen.wikimedia.org::udp2log/webrequest/archive/edits*.gz',
         destination    => "${working_path}/squid/archive/edits",
         retention_days => 90,
-        ensure         => 'absent',
     }
 
     # mobile logs from oxygen
     statistics::rsync_job { 'mobile':
+        ensure      => 'absent',
         source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz',
         destination => "${working_path}/squid/archive/mobile",
-        ensure      => 'absent',
     }
 
     # all webrequest archive logs from hdfs
