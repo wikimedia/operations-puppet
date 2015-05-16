@@ -23,12 +23,12 @@ class rsync::server(
   $rsync_pid       = '/var/run/rsync.pid'
 
   # rsync daemon defaults file
-  file { "/etc/default/rsync":
+  file { '/etc/default/rsync':
     ensure  => present,
-    mode    => 0444,
-    owner   => root,
-    group   => root,
-    content => template("rsync/rsync.default.erb"),
+    mode    => '0444',
+    owner   => 'root',
+    group   => 'root',
+    content => template('rsync/rsync.default.erb'),
   }
 
   # if($use_xinetd) {

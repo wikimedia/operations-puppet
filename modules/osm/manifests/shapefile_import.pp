@@ -31,9 +31,9 @@ define osm::shapefile_import(
     $shapeline_exists = "/usr/bin/psql -d ${database} --tuples-only -c \'SELECT table_name FROM information_schema.tables;\' | /bin/grep \'${shape_table}\'"
 
     exec { "create_shapelines-${name}":
-        command     => "/usr/bin/shp2pgsql -D -I ${input_shape_file} ${shape_table} > /tmp/${shape_table}.dump",
-        user        => 'postgres',
-        unless      => $shapeline_exists,
+        command => "/usr/bin/shp2pgsql -D -I ${input_shape_file} ${shape_table} > /tmp/${shape_table}.dump",
+        user    => 'postgres',
+        unless  => $shapeline_exists,
     }
     exec { "load_shapefiles-${name}":
         command     => "/usr/bin/psql -d ${database} -f /tmp/${shape_table}.dump",
