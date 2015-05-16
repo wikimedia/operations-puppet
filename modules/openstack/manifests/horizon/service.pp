@@ -29,9 +29,9 @@ class openstack::horizon::service($openstack_version='icehouse', $novaconfig) {
     #  package doesn't fret.
     file { ['/etc/apache2/conf-available/openstack-dashboard.conf',
             '/etc/apache2/conf-enabled/openstack-dashboard.conf']:
-        ensure   => file,
-        content  => '# This empty file is here to keep the openstack-dashboard package happy.',
-        require  => Package['openstack-dashboard'],
+        ensure  => file,
+        content => '# This empty file is here to keep the openstack-dashboard package happy.',
+        require => Package['openstack-dashboard'],
     }
 
     file { '/etc/openstack-dashboard/local_settings.py':
