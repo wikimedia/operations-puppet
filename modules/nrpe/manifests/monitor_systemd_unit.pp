@@ -12,7 +12,7 @@ define nrpe::monitor_systemd_unit(
     ){
 
     if $::initsystem != 'systemd' {
-        fail("nrpe::monitor_systemd_unit can only work on systemd-enabled systems")
+        fail('nrpe::monitor_systemd_unit can only work on systemd-enabled systems')
     }
     require nrpe::systemd_scripts
 
