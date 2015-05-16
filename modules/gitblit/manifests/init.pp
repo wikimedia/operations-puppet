@@ -32,24 +32,24 @@ class gitblit(
     }
 
     file { '/var/lib/git':
-        ensure  => directory,
-        mode    => '0644',
-        owner   => $git_repo_owner,
-        group   => $git_repo_owner,
+        ensure => directory,
+        mode   => '0644',
+        owner  => $git_repo_owner,
+        group  => $git_repo_owner,
     }
 
     file { '/var/lib/gitblit/data/gitblit.properties':
-        owner   => 'gitblit',
-        group   => 'gitblit',
-        mode    => '0444',
-        source  => 'puppet:///modules/gitblit/gitblit.properties',
+        owner  => 'gitblit',
+        group  => 'gitblit',
+        mode   => '0444',
+        source => 'puppet:///modules/gitblit/gitblit.properties',
     }
 
     file { '/var/lib/gitblit/data/header.md':
-        owner   => 'gitblit',
-        group   => 'gitblit',
-        mode    => '0444',
-        source  => 'puppet:///modules/gitblit/header.md',
+        owner  => 'gitblit',
+        group  => 'gitblit',
+        mode   => '0444',
+        source => 'puppet:///modules/gitblit/header.md',
     }
 
     file { '/etc/init/gitblit.conf':
