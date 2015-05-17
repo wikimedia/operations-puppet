@@ -207,5 +207,14 @@ class toollabs (
         source => 'puppet:///modules/toollabs/40-tools-sudoers-no-warning',
     }
 
+    file { '/etc/cron.daily/logrotate':
+        ensure  => file,
+        mode    => '0664',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/toollabs/logrotate.crondaily',
+        require => Package['logrotate']
+    }
+
     diamond::collector::localcrontab { 'localcrontabcollector': }
 }
