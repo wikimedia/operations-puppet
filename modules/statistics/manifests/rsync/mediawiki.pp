@@ -20,7 +20,7 @@ class statistics::rsync::mediawiki {
 
     # Search request logs from fluorine
     statistics::rsync_job { 'CirrusSearchRequests':
-        source         => 'fluorine.eqiad.wmnet::mw-log/archive/CirrusSearchRequests.*.gz',
+        source         => 'fluorine.eqiad.wmnet::udp2log/archive/CirrusSearchRequests.*.gz',
         destination    => "${working_path}/mw-log/archive",
         retention_days => $retention_days,
     }
