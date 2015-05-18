@@ -1,11 +1,12 @@
 cluster: sca
 admin::groups:
-  - mathoid-roots
-  - mathoid-admin
-  - citoid-roots
   - citoid-admin
+  - citoid-roots
   - citoid-users
   - cxserver-admin
+  - graphoid-admin
+  - mathoid-admin
+  - mathoid-roots
   - zotero-admin
 
 lvs::realserver::realserver_ips:
