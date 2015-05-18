@@ -1,0 +1,36 @@
+# This file comes from puppet; local changes will be overwritten.
+#
+# This file matches domain names to ips.  Each line should have 
+# exactly two fields, e.g.
+#
+#  beta.wmflabs.org 10.68.16.16
+#
+beta.wmflabs.org 10.68.16.16
+*.beta.wmflabs.org 10.68.16.16
+wikipedia.beta.wmflabs.org 10.68.16.16
+*.wikipedia.beta.wmflabs.org 10.68.16.16
+beta-hhvm.wmflabs.org 10.68.16.16
+*.beta-hhvm.wmflabs.org 10.68.16.16
+*.wikipedia.beta-hhvm.wmflabs.org 10.68.16.16
+
+upload.beta.wmflabs.org 10.68.17.51
+
+bits.beta.wmflabs.org 10.68.16.12
+
+stream.wmflabs.org 10.68.17.106
+
+m.wikipedia.beta.wmflabs.org 10.68.16.13
+*.m.wikipedia.beta.wmflabs.org 10.68.16.13
+zero.wikipedia.beta.wmflabs.org 10.68.16.13
+*.zero.wikipedia.beta.wmflabs.org 10.68.16.13
+m.wikidata.beta.wmflabs.org 10.68.16.13
+
+udplog.wmflabs.org 10.68.16.58
+
+mx.beta.wmflabs.org 10.68.17.78
+
+tools.wmflabs.org 10.68.17.139
+*.tools.wmflabs.org 10.68.17.139
+
+
+util-abogott.wmflabs.org 10.68.16.19
