@@ -68,7 +68,7 @@ templates:
         - user:read
     x-subspecs:
       - mediawiki/v1/content
-    # - mediawiki/v1/mobile
+      - mediawiki_v1_graphoid
     # - mediawiki/v1/revision-scoring
 
   wmf-sys-1.0.0: &wp/sys/1.0.0
@@ -130,6 +130,18 @@ templates:
             type: file
             options:
               apiURI: http://{domain}/w/api.php
+
+      /{module:graphoid}:
+        x-modules:
+          - name: simple_service
+            version: 1.0.0
+            type: file
+            options:
+              paths:
+                /v1/png/{title}/{revision}/{graph_id}:
+                  get:
+                    backend_request:
+                      uri: http://graphoid.svc.eqiad.wmnet:19000/{domain}/v1/png/{title}/{revision}/{graph_id}
 
   wp-default-1.0.0: &wp/default/1.0.0
     x-subspecs:
