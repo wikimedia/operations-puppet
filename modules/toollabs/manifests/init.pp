@@ -208,12 +208,11 @@ class toollabs (
     }
 
     file { '/etc/cron.daily/logrotate':
-        ensure  => file,
-        mode    => '0664',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/toollabs/logrotate.crondaily',
-        require => Package['logrotate']
+        ensure => file,
+        mode   => '0664',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/toollabs/logrotate.crondaily',
     }
 
     diamond::collector::localcrontab { 'localcrontabcollector': }
