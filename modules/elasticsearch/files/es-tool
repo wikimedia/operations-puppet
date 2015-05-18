@@ -152,8 +152,8 @@ def es_restart_fast():
         printu(".")
         time.sleep(1)
 
-    # Wait a sec
-    time.sleep(1)
+    # Let things settle a bit
+    time.sleep(10)
 
     # Turn replication back on so things will recover fully
     printu("Enabling all replication...")
