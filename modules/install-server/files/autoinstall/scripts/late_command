@@ -24,19 +24,28 @@ if grep -qs '3\.6' /sys/module/ixgbe/version; then
 	apt-install ixgbe-dkms
 fi
 
-# kernel update + optimized mkfs for all cache nodes
+# Use a more recent kernel based on 3.19 on jessie (the stock jessie kernel is experiencing
+# problems in the mm subsystem, see T88996 for details)
 # (the upgrade is to grab our updated firmware packages first for initramfs...)
+apt-install lsb-release
+if [ $(chroot /target /bin/sh -c 'lsb_release -c -s') = "jessie" ]; then
+	chroot /target apt-get -y upgrade
+	apt-install linux-meta
+fi
+
+# optimized mkfs for all cache nodes
 # (the crazy PHYS_CORES thing is to get the bnx2x option set before the first boot,
-#  otherwise we'd need a reboot after puppet sets up the same file on the first run)
+#  otherwise we'd need a reboot after puppet sets up the same file on the first run
 case `hostname` in \
 	cp[1234]*)
 		mount -t sysfs none /target/sys
 		PHYS_CORES=$(chroot /target /usr/bin/ruby -e "require 'pathname'; print Pathname::glob('/sys/devices/system/cpu/cpu[0-9]*/topology/thread_siblings_list').map{|x| File.open(x,'r').read().split(',')[0] }.sort.uniq.count")
 		umount /target/sys
 		chroot /target /bin/sh -c "echo options bnx2x num_queues=$PHYS_CORES >/etc/modprobe.d/rps.conf"
-		chroot /target apt-get -y upgrade
-		apt-install linux-meta
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sda3-varnish /dev/sda3
 		mke2fs -F -F -t ext4 -T huge -m 0 -L sdb3-varnish /dev/sdb3
 		;; \
 esac
+
+
+
