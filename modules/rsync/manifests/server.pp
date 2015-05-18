@@ -14,8 +14,9 @@ class rsync::server(
   $use_xinetd = false,  # this parameter should not be used.  xinetd is not available.
   $address    = '0.0.0.0',
   $motd_file  = 'UNSET',
-  $log_file  = 'UNSET',
-  $use_chroot = 'yes'
+  $log_file   = 'UNSET',
+  $use_chroot = 'yes',
+  $rsync_opts = [],
 ) inherits rsync {
 
   $rsync_fragments = '/etc/rsync.d'

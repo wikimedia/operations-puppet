@@ -73,7 +73,14 @@ class misc::udp2log::rsyncd(
         $path        = '/var/log/udp2log/archive',
         $hosts_allow = ['stat1002.eqiad.wmnet']
 ) {
-    include rsync::server
+
+
+    class { 'rsync::server':
+        # We don't want rsyncs to saturate udp2log host NICs.
+        # Limit to 500M / sec.
+        rsync_opts => ['--bwlimit 512000'],
+    }
+
     rsync::server::module { 'udp2log':
         comment     => 'udp2log log files',
         path        => $path,

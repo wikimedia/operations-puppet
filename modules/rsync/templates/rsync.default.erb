@@ -25,7 +25,7 @@ RSYNC_CONFIG_FILE=<%= @rsync_conf %>
 #  Possibilities are:
 #   --address=123.45.67.89		(bind to a specific IP address)
 #   --port=8730				(bind to specified port; default 873)
-RSYNC_OPTS=''
+RSYNC_OPTS='<%= @rsync_opts.sort.join(' ') %>'
 
 # run rsyncd at a nice level?
 #  the rsync daemon can impact performance due to much I/O and CPU usage,
