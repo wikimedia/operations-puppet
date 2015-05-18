@@ -34,7 +34,8 @@ query-logging=no
 log-dns-details=no
 
 # Backends to load
-launch=gmysql
+launch=pipe,gmysql
+pipe-command=/etc/powerdns/resolve_floating_domains.py
 gmysql-host=<%= @pdns_db_host %>
 gmysql-user=pdns
 gmysql-dbname=pdns

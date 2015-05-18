@@ -16,7 +16,8 @@ class labs_dns(
 ) {
 
     package { [ 'pdns-server',
-                'pdns-backend-mysql' ]:
+                'pdns-backend-mysql',
+                'pdns-backend-pipe' ]:
         ensure => 'present',
     }
 
@@ -33,12 +34,34 @@ class labs_dns(
         content => template('labs_dns/pdns.conf.erb'),
     }
 
+    # resolve_floating_domains.py is a hacked-together split-horizon
+    #  implementation.  pdns uses the pipe_backend to delegate requests
+    #  to resolve_floating_domains.py, which returns local IPs if it
+    #  finds a match in the floating_domains file.
+    file { '/etc/powerdns/resolve_floating_domains.py':
+        ensure  => 'present',
+        require => Package['pdns-server'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/labs_dns/resolve_floating_domains.py'
+    }
+    file { '/etc/powerdns/floating_domains':
+        ensure  => 'present',
+        require => Package['pdns-server'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/labs_dns/floating_domains'
+    }
+
+
     service { 'pdns':
         ensure     => 'running',
         require    => [ Package['pdns-server'],
                         File['/etc/powerdns/pdns.conf']
         ],
-        subscribe  => File['/etc/powerdns/pdns.conf'],
+        subscribe  => File['/etc/powerdns/pdns.conf', '/etc/powerdns/floating_domains', '/etc/powerdns/resolve_floating_domains.py'],
         hasrestart => false,
     }
 
