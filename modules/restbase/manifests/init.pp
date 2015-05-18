@@ -49,6 +49,7 @@ class restbase(
     $logging_level  = 'warn',
     $statsd_host    = 'localhost',
     $statsd_port    = '8125',
+    $graphoid_host_port = 'http://graphoid.svc.eqiad.wmnet:19000',
 ) {
     ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
 
