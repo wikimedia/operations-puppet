@@ -37,7 +37,7 @@ graphoid::protocol: http
 "restbase::config_template": restbase/config.labs.yaml.erb
 "restbase::parsoid_uri": http://deployment-parsoid05.eqiad.wmflabs:8000
 "restbase::statsd_host": labmon1001.eqiad.wmnet
-"restbase::logstash_host": deployment-logstash1.eqiad.wmflabs
+"restbase::logstash_host": 10.68.16.134 # deployment-logstash1.eqiad.wmflabs
 "restbase::cassandra_defaultConsistency": localQuorum
 "mediawiki::log_aggregator": deployment-fluorine.eqiad.wmflabs:8420
 "mediawiki::forward_syslog": deployment-logstash1.eqiad.wmflabs:10514
