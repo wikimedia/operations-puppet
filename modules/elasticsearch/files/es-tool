@@ -7,8 +7,12 @@ import subprocess
 import sys
 import time
 
-from elasticsearch import Elasticsearch, TransportError
+from elasticsearch import Elasticsearch, TransportError, ConnectionError
 from subprocess import CalledProcessError
+
+
+# How many times to try re-enabling allocation
+REPLICATION_ENABLE_ATTEMPTS = 10
 
 
 # Helper functions go here
@@ -152,12 +156,24 @@ def es_restart_fast():
         printu(".")
         time.sleep(1)
 
-    # Wait a sec
-    time.sleep(1)
+    # Let things settle a bit
+    time.sleep(3)
 
     # Turn replication back on so things will recover fully
     printu("Enabling all replication...")
-    if not set_allocation_state("all"):
+    for attempt in range(REPLICATION_ENABLE_ATTEMPTS):
+        try:
+            if not set_allocation_state("all"):
+                print "failed! -- You will still need to enable replication",
+                print "again with `es-tool start-replication`"
+                return os.EX_UNAVAILABLE
+            else:
+                break
+        except ConnectionError:
+            print "failed! -- retrying (%d/%d)" % (attempt,
+                                                   REPLICATION_ENABLE_ATTEMPTS)
+            time.sleep(3)
+    else:
         print "failed! -- You will still need to enable replication again",
         print "with `es-tool start-replication`"
         return os.EX_UNAVAILABLE
