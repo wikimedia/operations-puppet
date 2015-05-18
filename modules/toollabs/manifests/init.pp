@@ -209,7 +209,7 @@ class toollabs (
 
     file { '/etc/cron.daily/logrotate':
         ensure => file,
-        mode   => '0664',
+        mode   => '0555',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/toollabs/logrotate.crondaily',
