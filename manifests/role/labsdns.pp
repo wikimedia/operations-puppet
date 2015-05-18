@@ -3,8 +3,8 @@ class role::labsdns {
     include passwords::pdns
 
     class { '::labs_dns':
-        dns_auth_ipaddress     => '208.80.154.12',
-        dns_auth_query_address => '208.80.154.12',
+        dns_auth_ipaddress     => $::ipaddress_eth0,
+        dns_auth_query_address => $::ipaddress_eth0,
         dns_auth_soa_name      => 'labs-ns2.wikimedia.org',
         pdns_db_host           => 'm5-master.eqiad.wmnet',
         pdns_db_password       => $passwords::pdns::db_pass,
