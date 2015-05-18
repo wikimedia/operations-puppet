@@ -17,6 +17,7 @@ $dump -h m2-slave --max_allowed_packet=64M --databases otrs | \
 sql="select schema_name from information_schema.schemata where schema_name regexp '^(phab|phlegal)'"
 
 $dump -h m3-slave --ignore-table=phabricator_search.search_documentfield \
+    --max_allowed_packet=32M \
     --databases $($my "$sql" | tr '\n' ' ') | \
     pigz > /srv/backups/m3-phabricator-phlegal-$(date +%Y%m%d%H%M%S).sql.gz
 
