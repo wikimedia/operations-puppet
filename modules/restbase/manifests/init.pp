@@ -34,6 +34,8 @@
 #   statsd host name. Default: localhost
 # [*statsd_port*]
 #   statsd port. Default: 8125
+# [*graphoid_host_port*]
+#   graphoid host + port. Default: http://graphoid.svc.eqiad.wmnet:19000
 #
 class restbase(
     $cassandra_user = 'cassandra',
@@ -49,6 +51,7 @@ class restbase(
     $logging_level  = 'warn',
     $statsd_host    = 'localhost',
     $statsd_port    = '8125',
+    $graphoid_host_port = 'http://graphoid.svc.eqiad.wmnet:19000',
 ) {
     ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
 
