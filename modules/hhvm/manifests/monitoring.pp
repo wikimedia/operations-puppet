@@ -53,7 +53,7 @@ class hhvm::monitoring {
         mode   => '0555',
     }
 
-    nrpe::monitor_service { 'hhvm_tc_space':
+    nrpe::monitor_service { 'tc_space':
         ensure       => present,
         nrpe_command => '/usr/local/bin/check_tc_space -w 80 -c 90',
         description  => 'Translation cache space',
