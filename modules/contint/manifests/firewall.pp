@@ -27,13 +27,13 @@ class contint::firewall {
     # Nodepool related
     $nodepool_host = hiera('contint::nodepool_host')
     ferm::service { 'gearman_from_nodepool':
-        proto => 'tcp',
-        port  => '4730',
+        proto  => 'tcp',
+        port   => '4730',
         srange => $nodepool_host,
     }
     ferm::service { 'jenkins_zeromq_from_nodepool':
-        proto => 'tcp',
-        port  => '8888',
+        proto  => 'tcp',
+        port   => '8888',
         srange => $nodepool_host,
     }
 
