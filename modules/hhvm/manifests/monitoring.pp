@@ -47,7 +47,7 @@ class hhvm::monitoring {
     ## NRPE check for TC cache state
     file { '/usr/local/bin/check_tc_space':
         ensure => present,
-        source => 'puppet:///modules/hhvm/monitoring/check_tc_space.py',
+        source => 'puppet:///modules/hhvm/monitoring/hhvm_tc_space.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
