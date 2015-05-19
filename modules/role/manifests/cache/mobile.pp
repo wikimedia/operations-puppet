@@ -149,7 +149,7 @@ class role::cache::mobile (
     include role::cache::logging
 
     class { '::role::cache::kafka::statsv':
-        instance_name => 'frontend',
+        varnish_name => 'frontend',
     }
 
     class { '::role::cache::logging::eventlistener':
