@@ -81,11 +81,19 @@ host virt1004 {
         filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-host virt1007 {
+host cephtest1001 {
+	hardware ethernet 00:22:BD:D3:38:7E;
+	fixed-address cephtest1001.eqiad.wmnet;
+}
+
+host cephtest1002 {
+	hardware ethernet 88:43:E1:C2:5B:FA;
+	fixed-address cephtest1002.eqiad.wmnet;
+}
+
+host cephtest1003 {
 	hardware ethernet 88:43:E1:C2:91:AE;
-	fixed-address virt1007.eqiad.wmnet;
-        option pxelinux.pathprefix "precise-installer/";
-        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+	fixed-address cephtest1003.eqiad.wmnet;
 }
 
 host virt1008 {
