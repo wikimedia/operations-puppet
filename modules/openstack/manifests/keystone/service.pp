@@ -38,6 +38,6 @@ class openstack::keystone::service($openstack_version=$::openstack::version, $ke
             user    => 'root',
             minute  => 20,
             ensure  => present,
-            command => "/usr/bin/mysql $keystone_db_name -h{$keystone_db_host} -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOW() - INTERVAL 2 day > expires LIMIT 10000;'",
+            command => "/usr/bin/mysql $keystone_db_name -h${keystone_db_host} -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOW() - INTERVAL 2 day > expires LIMIT 10000;'",
     }
 }
