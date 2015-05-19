@@ -10,7 +10,7 @@
 # [*node_path*]
 #   Path to the node modules cxserver depends on.
 # [*conf_path*]
-#   Where to place the config file. Currently cxserver experts it to be next to
+#   Where to place the config file. Currently cxserver expects it to be next to
 #   Server.js, so you might want to place the config outside the repository and
 #   place symlink to this file.
 # [*log_dir*]
