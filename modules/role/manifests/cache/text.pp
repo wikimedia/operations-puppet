@@ -157,4 +157,15 @@ class role::cache::text {
             topic => 'webrequest_text',
         }
     }
+
+    # Install diamond collector to send varnish request stats.
+    diamond::collector { 'varnishstats':
+        source   => 'puppet:///modules/varnish/varnishstats-diamond-collector.py',
+        settings => {
+            'site'        => $::site,
+            'cachetype'   => 'text',
+            'varnishname' => 'frontend',
+        },
+    }
+
 }
