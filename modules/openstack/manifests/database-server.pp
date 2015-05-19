@@ -137,15 +137,6 @@ class openstack::database-server(
             command => 'find /a/backup -type f -mtime +4 -delete',
             require => File['/a/backup'];
     }
-
-    # Clean up expired keystone tokens, because keystone seems to leak them
-    cron {
-        'cleanup_expired_keystone_tokens':
-            user    => 'root',
-            minute  => 20,
-            ensure  => present,
-            command => "/usr/bin/mysql $keystone_db_name -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOW() - INTERVAL 2 day > expires LIMIT 10000;'",
-    }
 }
 
 class openstack::database-server::mysql($controller_mysql_root_pass) {
