@@ -31,34 +31,42 @@ class role::logstash {
         port => 12201,
     }
 
+    ## Global pre-processing (10)
+
     logstash::conf { 'filter_strip_ansi_color':
         source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
-        priority => 40,
+        priority => 10,
     }
+
+    ## Input specific processing (20)
 
     logstash::conf { 'filter_syslog':
         source   => 'puppet:///files/logstash/filter-syslog.conf',
-        priority => 50,
+        priority => 20,
     }
 
     logstash::conf { 'filter_udp2log':
         source   => 'puppet:///files/logstash/filter-udp2log.conf',
-        priority => 50,
+        priority => 20,
     }
+
+    logstash::conf { 'filter_gelf':
+        source   => 'puppet:///files/logstash/filter-gelf.conf',
+        priority => 20,
+    }
+
+    ## Application specific processing (50)
 
     logstash::conf { 'filter_mediawiki':
         source   => 'puppet:///files/logstash/filter-mediawiki.conf',
         priority => 50,
     }
 
-    logstash::conf { 'filter_gelf':
-        source   => 'puppet:///files/logstash/filter-gelf.conf',
-        priority => 50,
-    }
+    ## Global post-processing (70)
 
     logstash::conf { 'filter_add_normalized_message':
         source   => 'puppet:///files/logstash/filter-add-normalized-message.conf',
-        priority => 60,
+        priority => 70,
     }
 
     class { '::logstash::output::elasticsearch':
@@ -168,11 +176,13 @@ class role::logstash::apifeatureusage {
     }
 
     # Add configuration to logstash
+    # Needs to come after 'filter_mediawiki' (priority 50)
     logstash::conf { 'filter_apifeatureusage':
         source   => 'puppet:///files/logstash/filter-apifeatureusage.conf',
-        priority => 70,
+        priority => 55,
     }
 
+    # Output destined for separate Elasticsearch cluster from Logstash cluster
     logstash::conf{ 'output-apifeatureusage':
         content  => template('logstash/apifeatureusage.erb'),
         priority => 95,
