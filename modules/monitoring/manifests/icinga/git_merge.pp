@@ -17,8 +17,8 @@ define monitoring::icinga::git_merge (
     file { $file_resource:
         ensure  => present,
         path    => $filename,
-        owner   => root,
-        group   => root,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0555',
         content => template('monitoring/check_git-needs-merge.erb')
     }
@@ -32,9 +32,9 @@ define monitoring::icinga::git_merge (
 
     file { "sudo_nagios_${sane_title}":
         path    => "/etc/sudoers.d/${sane_title}_needs_merge",
-        owner   => root,
-        group   => root,
-        mode    => 0440,
-        content => template("monitoring/merge_sudoers.erb");
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => template('monitoring/merge_sudoers.erb');
     }
 }
