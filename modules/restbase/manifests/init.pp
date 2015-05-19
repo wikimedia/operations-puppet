@@ -82,7 +82,6 @@ class restbase(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service['restbase'],
     }
 
     file { '/etc/init.d/restbase':
@@ -90,7 +89,7 @@ class restbase(
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        notify  => Service['restbase'],
+        require => File['/etc/default/restbase'],
     }
 
     file { '/etc/restbase':
@@ -106,7 +105,7 @@ class restbase(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service['restbase'],
+        require => File['/etc/restbase'],
     }
 
     file { '/usr/lib/restbase':
@@ -129,5 +128,9 @@ class restbase(
         hasstatus  => true,
         hasrestart => true,
         provider   => 'init',
+        require    => File[
+            '/etc/restbase/config.yaml',
+            '/etc/init.d/restbase'
+        ],
     }
 }
