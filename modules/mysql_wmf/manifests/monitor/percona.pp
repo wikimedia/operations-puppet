@@ -3,9 +3,9 @@ class mysql_wmf::monitor::percona inherits mysql_wmf {
     require 'mysql_wmf::monitor::percona::files'
 
     nrpe::monitor_service { 'mysqld':
-        description   => 'mysqld processes',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
-        critical      => $crit,
+        description  => 'mysqld processes',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
+        critical     => $crit,
     }
     monitoring::service { 'mysql recent restart':
         description   => 'MySQL Recent Restart',
