@@ -75,13 +75,13 @@ class geoip::data::maxmind(
   # Set up a cron to run geoipupdate weekly. This will download .dat files for
   # the specified MaxMind Product IDs.
   cron { 'geoipupdate':
-    ensure      => present,
-    command     => "/bin/echo -e \"\$(/bin/date): geoipupdate downloading MaxMind .dat files into ${data_directory}\" >> ${geoipupdate_log} && ${geoipupdate_command} &>> /var/log/geoipupdate.log",
-    user        => root,
-    weekday     => 0,
-    hour        => 3,
-    minute      => 30,
-    require     => [
+    ensure  => present,
+    command => "/bin/echo -e \"\$(/bin/date): geoipupdate downloading MaxMind .dat files into ${data_directory}\" >> ${geoipupdate_log} && ${geoipupdate_command} &>> /var/log/geoipupdate.log",
+    user    => root,
+    weekday => 0,
+    hour    => 3,
+    minute  => 30,
+    require => [
         Package['geoipupdate'],
         File[$config_file],
         File[$data_directory]
