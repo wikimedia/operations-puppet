@@ -16,10 +16,10 @@ class mirrors::debian {
     require mirrors
 
     file { '/srv/mirrors/debian':
-        ensure  => directory,
-        owner   => 'mirror',
-        group   => 'mirror',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'mirror',
+        group  => 'mirror',
+        mode   => '0755',
     }
 
     # this is <https://ftp-master.debian.org/git/archvsync.git>
@@ -37,20 +37,20 @@ class mirrors::debian {
 
     # don't purge logs (you'd expect more from people that love the FHS...)
     file { "${mirrors::homedir}/archvsync/log":
-        ensure  => directory,
-        purge   => false,
-        owner   => 'mirror',
-        group   => 'mirror',
-        mode    => '0755',
+        ensure => directory,
+        purge  => false,
+        owner  => 'mirror',
+        group  => 'mirror',
+        mode   => '0755',
     }
 
     # this is our configuration for archvsync
     file { "${mirrors::homedir}/archvsync/etc/ftpsync.conf":
-        ensure  => present,
-        owner   => 'mirror',
-        group   => 'mirror',
-        mode    => '0555',
-        source  => 'puppet:///modules/mirrors/ftpsync.conf',
+        ensure => present,
+        owner  => 'mirror',
+        group  => 'mirror',
+        mode   => '0555',
+        source => 'puppet:///modules/mirrors/ftpsync.conf',
     }
 
     cron { 'update-debian-mirror':
