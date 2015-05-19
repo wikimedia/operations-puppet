@@ -1,0 +1,19 @@
+#!/bin/bash
+# Diff heap files in /tmp/heaps.
+# Author: Ori Livneh
+HEAP_DIR="/tmp/heaps"
+HHVM="$(/usr/bin/which hhvm)"
+
+[ "$(/usr/bin/find "$HEAP_DIR" -maxdepth 1 -name '*.heap' 2>/dev/null | /usr/bin/wc -l 2>/dev/null)" -ge "2" ] || {
+  echo 2>&1 "There must be at least two *.heap files in ${HEAP_DIR}."
+  exit 1
+}
+
+LAST=""
+while IFS= read -r DUMP; do
+  if [ -n "$LAST" ]; then
+    echo "-------------------- ${LAST} => ${DUMP} --------------------"
+    /usr/bin/google-pprof "$HHVM" --show_bytes --text --base="$LAST" "$DUMP" 2>/dev/null | /usr/bin/head -6
+  fi
+  LAST="$DUMP"
+done < <(/bin/ls -1rt "$HEAP_DIR"/*.heap)
