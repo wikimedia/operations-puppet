@@ -413,11 +413,6 @@ class role::nova::controller {
     class { 'openstack::queue-server':
         novaconfig        => $novaconfig,
     }
-    class { 'openstack::database-server':
-        novaconfig     => $novaconfig,
-        glanceconfig   => $glanceconfig,
-        keystoneconfig => $keystoneconfig,
-    }
     class { 'role::keystone::server':
         glanceconfig => $glanceconfig,
     }

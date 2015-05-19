@@ -1,3 +1,7 @@
+#  These classes are no longer used in production.  The manifests remain in puppet
+#  because they'll be useful for creating a DB for labs-on-labs.
+
+
 class openstack::database-server(
     $novaconfig,
     $keystoneconfig,
