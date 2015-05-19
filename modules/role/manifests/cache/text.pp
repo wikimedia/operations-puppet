@@ -157,4 +157,9 @@ class role::cache::text {
             topic => 'webrequest_text',
         }
     }
+
+    # Install diamond collector to send varnish request stats.
+    varnish::monitoring::varnishstats { 'frontend':
+        metric_path =>  "varnish.$::{site}.text.frontend.request",
+    }
 }
