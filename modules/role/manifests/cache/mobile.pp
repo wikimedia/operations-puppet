@@ -147,7 +147,10 @@ class role::cache::mobile (
     # varnish::logging to be removed once
     # udp2log kafka consumer is implemented and deployed.
     include role::cache::logging
-    include role::cache::kafka::statsv
+
+    class { '::role::cache::kafka::statsv':
+        instance_name => 'frontend',
+    }
 
     class { '::role::cache::logging::eventlistener':
         instance_name => 'frontend',
