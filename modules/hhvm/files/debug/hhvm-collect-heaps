@@ -1,0 +1,41 @@
+#!/bin/bash
+# Request a heap profile from HHVM once every ten minutes.
+# Profiles are written to /tmp/heaps.
+# Author: Ori Livneh
+
+HHVM_ADMIN_SERVER="${HHVM_ADMIN_SERVER:-http://localhost:9002}"
+HHVM_USER="$(/bin/ps -o user= -p "$(/bin/pidof -s hhvm)")"
+DUMP_INTERVAL_SECONDS=600
+
+hhvm-admin() {
+  /usr/bin/curl -qs "${HHVM_ADMIN_SERVER}/${1}" 2>/dev/null
+}
+
+echo "Ensuring that jemalloc heap profiling is available..."
+hhvm-admin jemalloc-stats-print | /bin/grep -q 'opt.prof: true' || {
+  echo >&2 "Error: jemalloc heap profiling is not active!"
+  echo >&2 "Run 'ln -sf \"prof:true\" /etc/malloc.conf' and restart HHVM."
+  exit 1
+}
+
+echo "Ensuring that /tmp/heaps is writable by ${HHVM_USER}..."
+/bin/mkdir -m0777 -p /tmp/heaps
+/usr/bin/sudo -u "$HHVM_USER" /bin/sh -c 'test -w /tmp/heaps' >/dev/null 2>&1 || {
+  echo >&2 "Error: /tmp/heaps is not writable by ${HHVM_USER}."
+  exit 1
+}
+
+echo "Enabling heap dumps..."
+{ hhvm-admin jemalloc-prof-activate | /bin/grep -q OK && hhvm-admin jemalloc-prof-status | /bin/grep -q ACTIVE; } || {
+    echo >&2 "Error: Could not activate jemalloc profiling."
+    exit 1
+}
+
+echo "Entering main loop..."
+for (( i=1; i <= 24; i++ )); do
+    DUMP_FILE="/tmp/heaps/${i}.heap"
+    echo -n "Writing ${DUMP_FILE}..."
+    hhvm-admin "jemalloc-prof-dump?file=${DUMP_FILE}"
+    echo "Sleeping for ${DUMP_INTERVAL_SECONDS} seconds..."
+    sleep "$DUMP_INTERVAL_SECONDS"
+done
