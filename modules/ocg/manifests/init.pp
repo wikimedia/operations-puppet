@@ -135,45 +135,45 @@ class ocg (
     }
 
     file { ['/srv/deployment','/srv/deployment/ocg']:
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
     }
 
     if $temp_dir == '/srv/deployment/ocg/tmp' {
         file { $temp_dir:
-            ensure  => directory,
-            owner   => 'ocg',
-            group   => 'ocg',
+            ensure => directory,
+            owner  => 'ocg',
+            group  => 'ocg',
         }
     } else {
         File[$temp_dir] -> Class['ocg']
     }
 
     file { $output_dir:
-        ensure  => directory,
-        owner   => 'ocg',
-        group   => 'ocg',
+        ensure => directory,
+        owner  => 'ocg',
+        group  => 'ocg',
     }
 
     file { $postmortem_dir:
-        ensure  => directory,
-        owner   => 'ocg',
-        group   => 'ocg',
+        ensure => directory,
+        owner  => 'ocg',
+        group  => 'ocg',
     }
 
     file { $log_dir:
-        ensure  => directory,
+        ensure => directory,
         # matches /var/log
-        mode    => '0775',
-        owner   => 'root',
-        group   => 'syslog',
+        mode   => '0775',
+        owner  => 'root',
+        group  => 'syslog',
     }
 
     # help unfamiliar sysadmins find the logs
     file { '/var/log/ocg':
-        ensure  => link,
-        target  => $log_dir,
+        ensure => link,
+        target => $log_dir,
     }
 
     # makes some basic logfiles readable for non-roots
@@ -186,18 +186,18 @@ class ocg (
     }
 
     file { '/etc/logrotate.d/ocg':
-        ensure  => present,
-        source  => 'puppet:///modules/ocg/logrotate',
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
+        ensure => present,
+        source => 'puppet:///modules/ocg/logrotate',
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
     }
 
     # run logrotate hourly, instead of daily, to ensure that log size
     # limits are enforced more-or-less accurately
     file { '/etc/cron.hourly/logrotate.ocg':
-        ensure  => link,
-        target  => '/etc/cron.daily/logrotate',
+        ensure => link,
+        target => '/etc/cron.daily/logrotate',
     }
 
     rsyslog::conf { 'ocg':
