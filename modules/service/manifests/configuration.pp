@@ -28,7 +28,7 @@ class service::configuration(
     $statsd_host   = 'localhost',
     $statsd_port   = 8125,
     $logstash_host = 'localhost',
-    $logstash_port = 11201,
+    $logstash_port = 12201,
     $log_dir   = '/var/log',
     ){
     # No op for now.
