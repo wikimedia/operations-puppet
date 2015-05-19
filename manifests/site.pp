@@ -2415,6 +2415,12 @@ node 'virt1000.wikimedia.org' {
     }
 }
 
+node /^virt100[5-7].eqiad.wmnet/ {
+    # We're doing some ceph testing on these
+    #  boxes.
+    include standard
+}
+
 node /^virt100[1-4].eqiad.wmnet/ {
     $use_neutron = false
     role nova::compute
@@ -2424,7 +2430,7 @@ node /^virt100[1-4].eqiad.wmnet/ {
     }
 }
 
-node /^virt100[7-9].eqiad.wmnet/ {
+node /^virt100[8-9].eqiad.wmnet/ {
     $use_neutron = false
     role nova::compute
     include standard
