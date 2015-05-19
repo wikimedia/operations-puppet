@@ -101,4 +101,35 @@ class hhvm::debug {
         source  => 'puppet:///modules/hhvm/debug/printers.py',
         require => Package['libstdc++6-4.8-dbg'],
     }
+
+
+    ## Memory leaks
+
+    # We provision two scripts that help isolate memory leaks.
+    # First, run `hhvm-collect-heaps` to enable jemalloc heap
+    # profiling and to write a heap dump for HHVM to /tmp/heaps
+    # once every ten minutes. Once you have several heaps, run
+    # `hhvm-diff-heaps` to subtract each heap from its successor
+    # and reveal where memory is being allocated.
+
+    file { '/usr/local/sbin/hhvm-collect-heaps':
+        source => 'puppet:///modules/hhvm/debug/hhvm-collect-heaps',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/usr/local/sbin/hhvm-diff-heaps':
+        source => 'puppet:///modules/hhvm/debug/hhvm-diff-heaps',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/tmp/heaps':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0775',
+    }
 }
