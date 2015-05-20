@@ -1,0 +1,77 @@
+# Wikimedia Puppet Vagrant
+# ========================
+#
+# Want to impress your friends and confound your enemies? Then setup a VM on
+# your laptop using the exact Puppet configuration used in the Wikimedia
+# Foundation's production cluster!
+#
+# Example
+# -------
+# OPS_HOSTNAME=logstash1001.eqiad.wmnet vagrant up precise
+#
+Vagrant.configure(2) do |config|
+
+  config.vm.hostname = ENV['OPS_HOSTNAME'] || 'opsvagrant.eqiad.wmnet'
+
+  config.vm.network 'private_network', type: 'dhcp'
+
+  config.vm.define :precise, autostart: false do |precise|
+    precise.vm.box = 'ubuntu/precise64'
+  end
+
+  config.vm.define :trusty, autostart: false do |trusty|
+    trusty.vm.box = 'ubuntu/trusty64'
+  end
+
+  config.vm.define :jessie, autostart: false do |jessie|
+    jessie.vm.box = 'deimosfr/debian-jessie'
+  end
+
+  config.vm.synced_folder '../..', '/vagrant'
+
+  config.vm.provision :puppet do |puppet|
+    puppet.module_path = []
+    puppet.manifests_path = [:guest, '/vagrant/manifests']
+    puppet.manifest_file = 'site.pp'
+    puppet.working_directory = '/vagrant'
+    puppet.options = [
+      '--modulepath', '/vagrant/modules:/vagrant/utils/vagrant/private/modules',
+      '--templatedir', '/vagrant/templates',
+      '--hiera_config', '/vagrant/utils/vagrant/hiera.yaml',
+      '--fileserverconfig', '/vagrant/utils/vagrant/fileserver.conf',
+      '--verbose',
+      '--logdest', 'console',
+    ]
+    puppet.facter = {
+      'fqdn'     => config.vm.hostname,
+      'hostname' => config.vm.hostname.split('.')[0],
+      'site'     => config.vm.hostname.split('.')[1],
+      'cluster'  => ENV['OPS_CLUSTER'] || 'misc'
+    }
+    puppet.options << '--debug' if ENV.include?('PUPPET_DEBUG')
+  end
+
+  config.vm.provider :virtualbox do |vb|
+    host = RbConfig::CONFIG['host_os']
+    if host =~ /mac|darwin/i
+      cpus = `sysctl -n hw.ncpu`.to_i
+      mem = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 4
+    elsif host =~ /linux/i
+      cpus = `nproc`.to_i
+      mem = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 4
+    elsif host =~ /mswin|mingw|cygwin/i
+      require 'win32ole'
+      wmi = WIN32OLE.connect('winmgmts://')
+      q = wmi.ExecQuery('select NumberOfCores from Win32_Processor')
+      cpus = q.to_enum.reduce(0) { |cores, processor| cores + processor.NumberOfCores }
+      mem = `wmic OS get TotalVisibleMemorySize | more +1`.to_i / 1024
+    else
+      cpus = 2
+      mem = 1024
+    end
+    vb.customize [ 'modifyvm', :id, '--memory', mem, '--cpus', cpus ]
+  end
+
+end
+# -*- mode: ruby -*-
+# vi: set ft=ruby :

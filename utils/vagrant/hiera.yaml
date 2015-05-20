@@ -1,0 +1,34 @@
+:backends:
+  - nuyaml
+  - role
+
+:role:
+  :datadir: /vagrant/hieradata
+
+:nuyaml:
+  :datadir: /vagrant/hieradata
+  :expand_path:
+    - common
+    - "%{::site}"
+
+:private:
+  :datadir: /vagrant/utils/vagrant/private/hieradata
+
+:vagrant:
+  :datadir: /vagrant/utils/vagrant/hieradata
+
+:hierarchy:
+  - vagrant/local
+  - vagrant/common
+  - "hosts/%{::hostname}"
+  - "regex/%{::fqdn}"
+  - "%{::site}"
+  - "private/%{::site}"
+  - common
+  - private/common
+
+:role_hierarchy:
+  - "%{::site}"
+  - common
+  - "private/%{::site}"
+  - private/common

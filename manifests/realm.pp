@@ -23,17 +23,19 @@ if $::ipaddress_eth0 != undef {
     $main_ipaddress = $ipaddress
 }
 
-$site = $main_ipaddress ? {
-    /^208\.80\.152\./                         => 'codfw',
-    /^208\.80\.153\./                         => 'codfw',
-    /^208\.80\.15[45]\./                      => 'eqiad',
-    /^10\.6[48]\./                            => 'eqiad',
-    /^10\.192\./                              => 'codfw',
-    /^91\.198\.174\./                         => 'esams',
-    /^198\.35\.26\.([0-9]|[1-5][0-9]|6[0-2])/ => 'ulsfo',
-    /^10\.128\./                              => 'ulsfo',
-    /^10\.20\.0\./                            => 'esams',
-    default                                   => '(undefined)'
+if $::site == undef {
+    $site = $main_ipaddress ? {
+        /^208\.80\.152\./                         => 'codfw',
+        /^208\.80\.153\./                         => 'codfw',
+        /^208\.80\.15[45]\./                      => 'eqiad',
+        /^10\.6[48]\./                            => 'eqiad',
+        /^10\.192\./                              => 'codfw',
+        /^91\.198\.174\./                         => 'esams',
+        /^198\.35\.26\.([0-9]|[1-5][0-9]|6[0-2])/ => 'ulsfo',
+        /^10\.128\./                              => 'ulsfo',
+        /^10\.20\.0\./                            => 'esams',
+        default                                   => '(undefined)'
+    }
 }
 
 $mw_primary = $::realm ? {

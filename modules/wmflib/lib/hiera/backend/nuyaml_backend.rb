@@ -15,6 +15,12 @@
 # in a data.yaml file in the data dir we've specified as the datadir
 # for a 'private' backend, or in the default datadir as a fallback.
 #
+# == Vagrant path
+#
+# If you define a 'vagrant' data source in hiera, we will look up
+# in a data.yaml file in the data dir we've specified as the datadir
+# for a 'vagrant' backend, or in the default datadir as a fallback.
+#
 # == Path expansion
 #
 # Any hierarchy named in the backend-configuration section
@@ -89,6 +95,15 @@ class Hiera
         # within the private datadir
         if m = /private\/(.*)/.match(source)
           config_section = :private
+          source = m[1]
+        end
+
+        # Special case: 'vagrant' repository.
+        # We use a different datadir in this case.
+        # Example: vagrant/common will search in the common source
+        # within the vagrant datadir
+        if m = /vagrant\/(.*)/.match(source)
+          config_section = :vagrant
           source = m[1]
         end
 
