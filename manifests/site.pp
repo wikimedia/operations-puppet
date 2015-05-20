@@ -281,7 +281,7 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
     include standard
     interface::add_ip6_mapped { 'main': }
     rsyslog::conf { 'remote_logstash':
-        content  => "*.* @logstash1002.eqiad.wmnet:10514",
+        content  => '*.* @logstash1002.eqiad.wmnet:10514',
         priority => 32,
     }
     role ipsec
@@ -814,8 +814,8 @@ node 'dbstore1001.eqiad.wmnet' {
     include role::mariadb::backup
     # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':
-        lag_warn => 90000,
-        lag_crit => 180000,
+        lag_warn     => 90000,
+        lag_crit     => 180000,
         # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
         # don't spam Icinga with warnings. This will not block properly critical alerts.
         warn_stopped => false,
@@ -832,8 +832,8 @@ node 'dbstore2001.codfw.wmnet' {
     $cluster = 'mysql'
     # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':
-        lag_warn => 90000,
-        lag_crit => 180000,
+        lag_warn     => 90000,
+        lag_crit     => 180000,
         # Delayed slaves legitimately and cleanly (errno = 0) stop the SQL thread, so
         # don't spam Icinga with warnings. This will not block properly critical alerts.
         warn_stopped => false,
