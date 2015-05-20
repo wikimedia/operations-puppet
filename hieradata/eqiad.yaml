@@ -18,3 +18,12 @@ mediawiki_memcached_servers:
   - '10.64.48.95:11211:1 "shard17"'
   - '10.64.48.96:11211:1 "shard18"'
 ganglia_class: "old"
+
+labs_nova_controller: "virt1000.wikimedia.org"
+labs_nova_controller_other: "labcontrol2001.wikimedia.org"
+labs_glance_controller: "virt1000.wikimedia.org"
+labs_puppet_master: "virt1000.wikimedia.org"
+labs_puppet_master_secondary: "labcontrol2001.wikimedia.org"
+labs_keystone_host: "virt1000.wikimedia.org"
+labs_ldap_dns_host: "labs-ns0.wikimedia.org"
+labs_ldap_dns_host_secondary: "labs-ns1.wikimedia.org"
