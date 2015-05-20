@@ -28,6 +28,9 @@ def merge(skel, stat):
     d.update(stat)
     return d
 
+# Maximum time to server stale stats
+LAST_FETCH_THRESHOLD = 600
+
 # Stat types
 GAUGE = {
     'slope': 'both',
@@ -475,6 +478,12 @@ def get_stat(data, stats, cache, name):
     update_result(data, cache)
 
     if data['stats'] is None:
+        return None
+
+    # Don't keep returning stale data forever
+    now = time.time()
+    diff = now - data['last_fetch']
+    if diff > LAST_FETCH_THRESHOLD:
         return None
 
     path = data['path_transformer'](data, stats[name]['path'])
