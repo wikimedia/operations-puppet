@@ -16,7 +16,7 @@ class role::puppet::server::labs {
     }
 
     class { 'puppetmaster':
-        server_name => $fqdn,
+        server_name => hiera('labs_puppet_master'),
         allow_from  => $puppet_passenger_allow_from,
         config      => {
             'thin_storeconfigs' => false,
