@@ -1,3 +1,13 @@
+# Ceph
+Name: ceph
+Method: http://ceph.com/debian/
+Components: main>main
+UDebComponents:
+Suite: precise
+Architectures: amd64 source
+VerifyRelease: 7EBFDD5D17ED316D
+ListShellHook: grep-dctrl -X -S ceph || [ $? -eq 1 ]
+
 Name: jenkins
 Method: http://pkg.jenkins-ci.org/debian-stable/
 Suite: binary
