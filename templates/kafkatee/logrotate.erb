@@ -3,8 +3,13 @@
 <%= @webrequest_log_directory %>/*.log {
   daily
   rotate 62
+  maxage 62
+  olddir <%= @log_directory %>/archive
   missingok
   notifempty
+  nocreate
+  dateext
+  compress
   postrotate
     service kafkatee reload
   endscript
