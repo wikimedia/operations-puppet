@@ -168,13 +168,15 @@ class role::analytics::refinery::data::check::email {
     # I am not sure why this is not working.
     $hdfs_mount_point = '/mnt/hdfs'
 
+    $mail_to = 'otto@wikimedia.org,jgage@wikimedia.org,joal@wikimedia.org'
+
     # Since the 'stats' user is not in ldap, it is unnecessarily hard
     # to grant it access to the private data in hdfs. As discussed in
     #   https://gerrit.wikimedia.org/r/#/c/186254
     # the cron runs as hdfs instead.
     cron { 'refinery data check hdfs_mount':
         command     => "${::role::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets webrequest,raw_webrequest --quiet",
-        environment => 'MAILTO=otto@wikimedia.org,jgage@wikimedia.org',
+        environment => "MAILTO=${$mail_to}",
         user        => 'hdfs',
         hour        => 10,
         minute      => 0,
@@ -182,7 +184,7 @@ class role::analytics::refinery::data::check::email {
 
     cron { 'refinery data check pagecounts':
         command     => "${::role::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pagecounts_all_sites,pagecounts_raw --quiet",
-        environment => 'MAILTO=otto@wikimedia.org,jgage@wikimedia.org',
+        environment => "MAILTO=${$mail_to}",
         user        => 'hdfs', # See comment in above cron
         hour        => 10,
         minute      => 5,
