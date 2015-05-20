@@ -79,6 +79,13 @@ class base::puppet($server='puppet', $certname=undef) {
         source  => 'puppet:///modules/base/puppet/puppet-run',
     }
 
+    file { '/usr/local/sbin/puppet-disable':
+        source  => 'puppet:///modules/base/puppet/puppet-run',
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+    }
+
     file { '/etc/cron.d/puppet':
         mode    => '0444',
         owner   => 'root',
