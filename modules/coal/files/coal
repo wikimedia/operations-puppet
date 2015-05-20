@@ -132,7 +132,7 @@ class WhisperLogger(object):
                     raise
 
     def handle_event(self, meta):
-        if meta['schema'] != 'NavigationTiming':
+        if meta['schema'] not in ('NavigationTiming', 'SaveTiming'):
             return
         timestamp = meta['timestamp']
         event = meta['event']
