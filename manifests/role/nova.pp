@@ -59,16 +59,18 @@ class role::nova::config::common {
 class role::nova::config::codfw inherits role::nova::config::common {
     include role::keystone::config::eqiad
 
+    $nova_controller = hiera('labs_nova_controller')
+
     $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
     $controller_hostname = $::realm ? {
-        'production' => 'labcontrol2001.wikimedia.org',
+        'production' => $nova_controller,
         'labs'       => $nova_controller_hostname ? {
             undef   => $::ipaddress_eth0,
             default => $nova_controller_hostname,
         }
     }
     $controller_address = $::realm ? {
-        'production' => '208.80.153.14',
+        'production' => ipresolve($nova_controller, 4),
         'labs'       => $nova_controller_ip ? {
             undef   => $::ipaddress_eth0,
             default => $nova_controller_ip,
@@ -141,7 +143,7 @@ class role::nova::config::codfw inherits role::nova::config::common {
             'labs'       => '10.4.0.0/21',
         },
         auth_uri => $::realm ? {
-            'production' => 'http://virt1000.wikimedia.org:5000',
+            'production' => "http://${nova_controller}:5000",
             'labs'       => 'http://localhost:5000',
         },
         controller_hostname    => $controller_hostname,
@@ -163,9 +165,11 @@ class role::nova::config::codfw inherits role::nova::config::common {
 class role::nova::config::eqiad inherits role::nova::config::common {
     include role::keystone::config::eqiad
 
+    $nova_controller = hiera('labs_nova_controller')
+
     $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
     $controller_hostname = $::realm ? {
-        'production' => 'virt1000.wikimedia.org',
+        'production' => $nova_controller,
         'labs'       => $nova_controller_hostname ? {
             undef   => $::ipaddress_eth0,
             default => $nova_controller_hostname,
@@ -179,7 +183,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
         }
     }
     $controller_address = $::realm ? {
-        'production' => '208.80.154.18',
+        'production' => ipresolve($nova_controller,4),
         'labs'       => $nova_controller_ip ? {
             undef   => $::ipaddress_eth0,
             default => $nova_controller_ip,
@@ -245,7 +249,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
             'labs'       => '10.4.0.0/21',
         },
         auth_uri => $::realm ? {
-            'production' => 'http://virt1000.wikimedia.org:5000',
+            'production' => "${nova_controller}:5000",
             'labs'       => 'http://localhost:5000',
         },
         controller_hostname    => $controller_hostname,
