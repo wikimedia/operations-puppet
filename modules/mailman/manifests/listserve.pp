@@ -39,5 +39,6 @@ class mailman::listserve {
         ensure    => running,
         hasstatus => false,
         pattern   => 'mailmanctl',
+        subscribe => File['/etc/mailman/mm_cfg.py'],
     }
 }
