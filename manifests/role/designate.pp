@@ -21,8 +21,10 @@ class role::designate::config {
 class role::designate::config::eqiad inherits role::designate::config {
     include role::keystone::config::eqiad
 
+    $nova_controller = hiera('labs_nova_controller')
+
     $controller_hostname = $::realm ? {
-        'production' => 'virt1000.wikimedia.org',
+        'production' => $nova_controller,
         'labs'       => $nova_controller_hostname ? {
             undef   => $::ipaddress_eth0,
             default => $nova_controller_hostname,
@@ -42,7 +44,7 @@ class role::designate::config::eqiad inherits role::designate::config {
     }
 
     $auth_uri = $::realm ? {
-        'production' => 'http://virt1000.wikimedia.org:5000',
+        'production' => "${nova_controller}:5000",
         'labs'       => "http://$::ipaddress_eth0:5000",
     }
 
@@ -82,7 +84,7 @@ class role::designate::server {
     # Firewall
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
-    $controller = '208.80.154.18'
+    $controller = ipresolve($nova_controller, 4)
 
     # Poke a firewall hole for the designate api
     ferm::rule { 'designate-api':
