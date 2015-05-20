@@ -94,9 +94,6 @@ class ldap::role::server::labs {
         #   playing a shell game with the service domains, best to have
         #   everything listed here.
         server_list => ['ldap-eqiad.wikimedia.org',
-                        'ldap-codfw.wikimedia.org',
-                        'virt1000.wikimedia.org',
-                        'labcontrol2001.wikimedia.org',
-                        'neptunium.wikimedia.org']
+                        'ldap-codfw.wikimedia.org']
     }
 }
