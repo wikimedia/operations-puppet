@@ -477,6 +477,12 @@ def get_stat(data, stats, cache, name):
     if data['stats'] is None:
         return None
 
+    # Don't keep returning stale data forever
+    now = time.time()
+    diff = now - data['last_fetch']
+    if diff > 600:
+        return None
+
     path = data['path_transformer'](data, stats[name]['path'])
     val = dig_it_up(data['stats'], path)
 
@@ -508,6 +514,7 @@ def metric_init(params):
 
     host = params.get('host', 'http://localhost:9200/')
     metric_group = params.get('metric_group', 'elasticsearch')
+    monitor_indicies = params.get('monitor_indicies', '').split()
 
     Desc_Skel = {
         'name': 'XXX',
