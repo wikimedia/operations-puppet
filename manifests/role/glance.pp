@@ -14,6 +14,8 @@ class role::glance::config {
 class role::glance::config::eqiad inherits role::glance::config {
     include role::keystone::config::eqiad
 
+    $glance_controller = hiera('labs_glance_controller')
+
     $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
 
     $db_host = $::realm ? {
@@ -22,12 +24,12 @@ class role::glance::config::eqiad inherits role::glance::config {
     }
 
     $bind_ip = $::realm ? {
-        'production' => '208.80.154.18',
+        'production' => ipresolve($glance_controller, 4),
         'labs'       => $::ipaddress_eth0,
     }
 
     $auth_uri = $::realm ? {
-        'production' => 'http://virt1000.wikimedia.org:5000',
+        'production' => "${glance_controller}:5000',
         'labs'       => "http://$::ipaddress_eth0:5000",
     }
 

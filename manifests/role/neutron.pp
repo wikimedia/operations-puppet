@@ -16,6 +16,8 @@ class role::neutron::config {
 class role::neutron::config::eqiad inherits role::neutron::config {
     include role::keystone::config::eqiad
 
+    $nova_controller = hiera('labs_nova_controller')
+
     $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
 
     $eqiadneutronconfig = {
@@ -24,15 +26,15 @@ class role::neutron::config::eqiad inherits role::neutron::config {
             'labs'       => 'localhost',
         },
         rabbit_host => $::realm ? {
-            'production' => 'virt1000.wikimedia.org',
+            'production' => $nova_controller,
             'labs'       => 'localhost',
         },
         auth_uri => $::realm ? {
-            'production' => 'http://virt1000.wikimedia.org:5000',
+            'production' => "${nova_controller}:5000",
             'labs'       => 'http://localhost:5000',
         },
         bind_ip => $::realm ? {
-            'production' => '208.80.154.18',
+            'production' => ipresolve($nova_controller,4)
             'labs'       => '127.0.0.1',
         },
         keystone_admin_token   => $keystoneconfig['admin_token'],
