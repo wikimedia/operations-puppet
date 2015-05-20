@@ -535,7 +535,7 @@ node /^db10(40)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(26|45|58)\.eqiad\.wmnet/ {
+node /^db10(26|58)\.eqiad\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::coredb::s5':
@@ -628,7 +628,7 @@ node /^db20(19|37|44|51)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(49|70|71)\.eqiad\.wmnet/ {
+node /^db10(45|49|70|71)\.eqiad\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
