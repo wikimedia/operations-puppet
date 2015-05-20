@@ -63,7 +63,7 @@ class hhvm(
     $fcgi_settings = {},
     $cli_settings  = {},
     $cache_dir     = '/run/hhvm/cache',
-    $base_jit_size = to_bytes('200 Mb'),
+    $base_jit_size = to_bytes('300 Mb'),
 ) {
     requires_os('ubuntu >= trusty')
 
@@ -91,14 +91,12 @@ class hhvm(
     # You can check TC memory usage stats via the /vm-tcspace end-point
     # of the admin server.
     #
-    # A ratio of 1 : 0.33 : 1 for a : a_cold : a_frozen is good
-    # general guidance. It has been raised to a larger value as cold
-    # TC was completely exhausted.
-
+    # A ratio of 1 : 0.5 : 0.5 for a : a_cold : a_frozen is good
+    # in our use-case.
 
     $a_size        = $base_jit_size
     $a_cold_size   = 0.5 * $base_jit_size
-    $a_frozen_size = $base_jit_size
+    $a_frozen_size = 0.5 * $base_jit_size
 
 
     $common_defaults = {
