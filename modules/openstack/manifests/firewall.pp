@@ -4,16 +4,14 @@ class openstack::firewall {
     $labs_private_net = '10.0.0.0/0'
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
+    $other_master = ipresolve(hiera('labs_nova_controller_other'),4)
     if ($::site == 'codfw') {
         # TODO!  codfw will need something
         # like this when the ip range is assigned.
         # $labs_nodes = '10.4.16.0/24'
-        # virt1000
-        $other_master = '208.80.154.18'
         $designate = '208.80.154.12'
     } elsif ($::site == 'eqiad') {
         $labs_nodes = '10.64.20.0/24'
-        $other_master = '208.80.153.14'
         $designate = '208.80.154.12'
     }
 
