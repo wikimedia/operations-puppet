@@ -24,6 +24,20 @@ def backend_option(backend, option, default)
 		return @varnish_backend_options.fetch(option, default)
 	end
 end
+
+# Calculates number of director-level retries necessary for chash to hit all
+# "n" backends with probability percentage "p", given they're randomly-mixed
+# into an array considerably larger in size than "n".  This is an
+# overestimation in that it assumes an infinite array, but the values still
+# come out reasonably small compared to doing anything based on our actual
+# weight*num_backends.
+# Blame _joe_ for the math! :)
+def chash_def_retries(p, n)
+	return (
+		(Math.log10(100 - p) - 2)
+		/ (Math.log10(n - 1) - Math.log10(n))
+	).ceil
+end
 -%>
 
 <% if @cluster_options.fetch( "enable_geoiplookup", false ) -%>
@@ -133,6 +147,9 @@ backend <%= name %> {
 director <%= director %> <%= @director_type %> {
 <% @director_options.each_pair do |option,value| -%>
 	.<%= option %> = <%= value %>;
+<% end -%>
+<% if @director_type == 'chash' && !@director_options.has_key?('retries') %>
+	.retries = <%= def_chash_retries(99, @varnish_directors[director].size)  %>
 <% end -%>
 <%
 	@varnish_directors[director].each do |backend|
