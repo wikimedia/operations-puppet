@@ -30,12 +30,9 @@ class base::puppet($server='puppet', $certname=undef) {
         mode   => '0550',
     }
 
-    file { '/etc/puppet/puppet.conf.d/10-main.conf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    base::puppet::config { 'main':
+        prio    => 10,
         content => template('base/puppet.conf.d/10-main.conf.erb'),
-        notify  => Exec['compile puppet.conf'],
     }
 
     if $::realm == 'labs' {
