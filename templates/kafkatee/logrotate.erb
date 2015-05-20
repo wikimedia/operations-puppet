@@ -1,8 +1,8 @@
 # Note:  This file is managed by Puppet.
 #
 <%= @webrequest_log_directory %>/*.log {
-  monthly
-  rotate 2
+  daily
+  rotate 62
   missingok
   notifempty
   postrotate
