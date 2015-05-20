@@ -26,3 +26,12 @@ mediawiki_memcached_servers:
 jobrunner_state: 'stopped'
 ganglia_class: "new"
 ganglia_aggregators: install2001.wikimedia.org:10649
+
+labs_nova_controller: "labcontrol2001.wikimedia.org"
+labs_nova_controller_other: "virt1000.wikimedia.org"
+labs_glance_controller: "labcontrol2001.wikimedia.org"
+labs_puppet_master: "labcontrol2001.wikimedia.org"
+labs_puppet_master_secondary: "virt1000.wikimedia.org"
+labs_keystone_host: "labcontrol2001.wikimedia.org"
+labs_ldap_dns_host: "labs-ns1.wikimedia.org"
+labs_ldap_dns_host_secondary: "labs-ns0.wikimedia.org"
