@@ -49,12 +49,18 @@ $network_zone = $main_ipaddress ? {
 # TODO: create hash of all LVS service IPs
 
 # Set some basic variables
-$nameservers = $site ? {
-    'eqiad' => [ '208.80.154.239', '208.80.153.254' ], # eqiad -> eqiad, codfw
-    'codfw' => [ '208.80.153.254', '208.80.154.239' ], # codfw -> codfw, eqiad
-    'ulsfo' => [ '208.80.154.239', '208.80.153.254' ], # ulsfo -> eqiad, codfw
-    'esams' => [ '91.198.174.216', '208.80.154.239' ], # esams -> esams, eqiad
-    default => [ '208.80.154.239', '208.80.153.254' ], #       -> eqiad, codfw
+
+# DNS
+if $::realm == 'labs' {
+    $nameservers = [ '10.68.16.1' ]
+} else {
+    $nameservers = $site ? {
+        'eqiad' => [ '208.80.154.239', '208.80.153.254' ], # eqiad -> eqiad, codfw
+        'codfw' => [ '208.80.153.254', '208.80.154.239' ], # codfw -> codfw, eqiad
+        'ulsfo' => [ '208.80.154.239', '208.80.153.254' ], # ulsfo -> eqiad, codfw
+        'esams' => [ '91.198.174.216', '208.80.154.239' ], # esams -> esams, eqiad
+        default => [ '208.80.154.239', '208.80.153.254' ], #       -> eqiad, codfw
+    }
 }
 
 # TODO: SMTP settings
