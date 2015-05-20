@@ -6,9 +6,9 @@ class dynamicproxy::api(
     }
 
     ferm::service { 'dynamicproxy-api-http':
-        port   => $port,
-        proto  => 'tcp',
-        desc   => 'API for adding / removing proxies from dynamicproxy domainproxy'
+        port  => $port,
+        proto => 'tcp',
+        desc  => 'API for adding / removing proxies from dynamicproxy domainproxy'
     }
 
     package { 'python-flask':
@@ -22,13 +22,13 @@ class dynamicproxy::api(
     }
 
     file { '/etc/init/dynamicproxy-api.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/dynamicproxy/upstart.conf',
-        before  => Service['dynamicproxy-api'],
-        notify  => Service['dynamicproxy-api'],
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/dynamicproxy/upstart.conf',
+        before => Service['dynamicproxy-api'],
+        notify => Service['dynamicproxy-api'],
     }
 
     service { 'dynamicproxy-api':
