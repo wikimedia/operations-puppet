@@ -47,7 +47,7 @@ class base {
     }
 
     $puppetmaster =  $::realm ? {
-        'labs'  => 'virt1000.wikimedia.org',
+        'labs'  => hiera('labs_puppet_master'),
         default => 'puppet',
     }
 
