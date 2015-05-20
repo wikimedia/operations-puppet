@@ -1,0 +1,58 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+#
+# disable-puppet - disable Puppet temporarily.
+#
+# Usage: disable-puppet [DURATION] [REASON]
+#
+#   DURATION - Disable Puppet for this much time. Defaults to 1h.
+#   REASON   - Reason for disabling Puppet. Defaults to a generic
+#              message.
+#
+# Examples:
+#
+#   Disable Puppet for a day, no reason given:
+#   $ disable-puppet 1d
+#
+#   Disable Puppet for 30 minutes, with reason:
+#   $ disable-puppet 30m "experimenting with HHVM config"
+#
+#
+case "$1" in
+  [0-9]*)
+    DURATION="$1"
+    shift
+    ;;
+  -h|--help)
+    SCRIPT="$(basename "$0")"
+    echo >&2 "${SCRIPT} - disable Puppet temporarily.                         "
+    echo >&2
+    echo >&2 "Usage: ${SCRIPT} [DURATION] [REASON]                            "
+    echo >&2
+    echo >&2 "  DURATION - Disable Puppet for this much time. Defaults to 1h. "
+    echo >&2 "  REASON   - Reason for disabling Puppet. Defaults to a generic "
+    echo >&2 "             message.                                           "
+    echo >&2
+    echo >&2 "Examples:                                                       "
+    echo >&2
+    echo >&2 "  Disable Puppet for a day, no reason given:                    "
+    echo >&2 "  $ ${SCRIPT} 1d                                                "
+    echo >&2 "                                                                "
+    echo >&2 "  Disable Puppet for 30 minutes, with reason:                   "
+    echo >&2 "  $ ${SCRIPT} 30m \"experimenting with HHVM config\"            "
+    echo >&2
+    exit 0
+    ;;
+esac
+
+test -f /var/lib/puppet/state/agent_disabled.lock && {
+  echo >&2 "puppet agent is already disabled!"
+  exit 1
+}
+
+TIMESTAMP="$(/bin/date --rfc-3339=seconds --utc)"
+DURATION="${DURATION:-1h}"
+REASON="${*:-Disabled by ${USER} for ${DURATION} at ${TIMESTAMP}}"
+echo "Disabling Puppet for ${DURATION} with reason: \"${REASON}\"."
+/usr/bin/sudo /usr/bin/puppet agent --verbose --disable "$REASON"
+/usr/bin/screen -d -m /usr/bin/sudo -n /bin/bash -c "/bin/sleep $DURATION ; /usr/bin/puppet agent --enable"

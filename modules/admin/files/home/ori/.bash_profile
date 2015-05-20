@@ -31,6 +31,8 @@ export DEBFULLNAME="Ori Livneh" DEBEMAIL="ori@wikimedia.org"
 export PYTHONSTARTUP="${HOME}/.pythonrc"
 export PROMPT_COMMAND="history -a; history -n"
 export HHVM="$(pidof -s /usr/bin/hhvm 2>/dev/null)"
+export LC_COLLATE="C"
+export LESS="FIKMNQRX"
 
 
 
@@ -59,11 +61,14 @@ repackage()  { sudo dpkg-buildpackage -b -uc; }
 psmem()      { sudo "$HOME/.bin/ps_mem.py" "${@}"; }
 where()      { find . -iname \*"$*"\* ; }
 reqs()       { curl -s 127.0.0.1/server-status | grep -Po '\d+(?= requests currently being processed)'; }
+service()    { sudo service "$@"; }
 perf()       { sudo perf "$@"; }
 gdbh()       { sudo gdb -p "$(pidof -s hhvm)"; }
-redis-cli()  { redis-cli -a "$(grep -Po '(?<=masterauth )\S+' /etc/redis/redis.conf)" "$@"; }
+redis-cli()  { command redis-cli -a "$(grep -Po '(?<=masterauth )\S+' /etc/redis/redis.conf)" "$@"; }
 fields()     { awk 'END { for (i = 1; i <= NF; i++) printf("%s : %s\n", i, $i) }' "$@"; }
 field()      { awk -v field="$1" '{print $(field)}'; }
+lat()        { ls -lat "$@" | head; }
+sudo()       { command sudo -E "$@"; }
 
 ptop()       {
   args=( top )
