@@ -27,6 +27,6 @@ class puppetmaster::logstash(
 
     base::puppet::config { 'logstash':
         prio    => 30,
-        content => template('puppetmaster/30-logstash.conf.erb'),
+        content => template('puppetmaster/logstash.conf.erb'),
     }
 }

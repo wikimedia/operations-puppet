@@ -5,7 +5,7 @@
 class puppetmaster::config {
     base::puppet::config { 'master':
         prio    => 20,
-        content => template('puppetmaster/20-master.conf.erb'),
+        content => template('puppetmaster/master.conf.erb'),
     }
 
     # See https://tickets.puppetlabs.com/browse/PUP-1237
