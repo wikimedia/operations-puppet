@@ -46,6 +46,7 @@ METRICS = (
     'firstPaint',     # Time to initial render
     'domComplete',    # Time to DOM Comlete event
     'loadEventEnd',   # Time to load event completion
+    'saveTiming',     # Time to first byte for page edits
 )
 ARCHIVES = [(UPDATE_INTERVAL, RETENTION)]
 
