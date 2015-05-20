@@ -213,9 +213,8 @@ class phabricator (
     }
 
     if ($extension_tag) {
-
-        $ext_lock_path = "${phabdir}/extension_lock_${extension_tag}"
-
+        $ext_lock_name = regsubst($extension_tag, '\W', '-', 'G')
+        $ext_lock_path = "${phabdir}/extension_lock_${ext_lock_name}"
         git::install { 'phabricator/extensions':
             directory => "${phabdir}/extensions",
             git_tag   => $extension_tag,
