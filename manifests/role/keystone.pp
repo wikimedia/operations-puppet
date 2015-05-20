@@ -22,6 +22,9 @@ class role::keystone::config {
 }
 
 class role::keystone::config::eqiad inherits role::keystone::config {
+
+    $keystone_host = hiera('labs_keystone_host')
+
     $eqiadkeystoneconfig = {
         db_host      => $::realm ? {
             'production' => 'm5-master.eqiad.wmnet',
@@ -38,7 +41,7 @@ class role::keystone::config::eqiad inherits role::keystone::config {
             }
         },
         bind_ip      => $::realm ? {
-            'production' => '208.80.154.18',
+            'production' => ip_resolve($keystone_host,4),
             'labs'       => $nova_controller_ip ? {
                 undef   => $::ipaddress_eth0,
                 default => $nova_controller_ip,
@@ -74,9 +77,11 @@ class role::keystone::server ($glanceconfig) {
 class role::keystone::redis {
     include passwords::openstack::keystone
 
+    $nova_controller = hiera('labs_nova_controller')
+
     if ($::realm == 'production') {
         $replication = {
-            'labcontrol2001' => 'virt1000.wikimedia.org'
+            'labcontrol2001' => $nova_controller
         }
     } else {
         $replication = {

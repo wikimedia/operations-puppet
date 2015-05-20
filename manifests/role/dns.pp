@@ -5,7 +5,11 @@ class role::dns::ldap {
 
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 
+    $primary_ldap_dns = ipresolve(hiera('labs_ldap_dns_host'),4)
+    $secondary_ldap_dns = ipresolve(hiera('labs_ldap_dns_host_secondary'),4)
+
     if $::site == 'eqiad' {
+
         interface::ip { 'role::dns::ldap':
             interface => 'eth0',
             address   => '208.80.154.19'
@@ -13,8 +17,8 @@ class role::dns::ldap {
 
         # FIXME: turn these settings into a hash that can be included somewhere
         class { '::labs_ldap_dns':
-            dns_auth_ipaddress     => '208.80.154.19 208.80.154.18',
-            dns_auth_query_address => '208.80.154.19',
+            dns_auth_ipaddress     => "{$primary_ldap_dns} ${secondary_ldap_dns}",
+            dns_auth_query_address => $primary_ldap_dns,
             dns_auth_soa_name      => 'labs-ns0.wikimedia.org',
             ldap_hosts             => $ldapconfig['servernames'],
             ldap_base_dn           => $ldapconfig['basedn'],
@@ -30,8 +34,8 @@ class role::dns::ldap {
 
         # FIXME: turn these settings into a hash that can be included somewhere
         class { '::labs_ldap_dns':
-            dns_auth_ipaddress     => '208.80.153.15 208.80.153.14',
-            dns_auth_query_address => '208.80.153.15',
+            dns_auth_ipaddress     => "{$primary_ldap_dns} ${secondary_ldap_dns}",
+            dns_auth_query_address => $primary_ldap_dns,
             dns_auth_soa_name      => 'labs-ns1.wikimedia.org',
             ldap_hosts             => $ldapconfig['servernames'],
             ldap_base_dn           => $ldapconfig['basedn'],
