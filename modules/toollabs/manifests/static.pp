@@ -3,7 +3,6 @@
 # A static http server, serving static files from NFS
 # Also serves an up-to-date mirror of cdnjs
 class toollabs::static(
-    $resolver = '10.68.16.1',
     $ssl_certificate_name = 'star.wmflabs.org',
     $ssl_settings = ssl_ciphersuite('nginx', 'compat'),
 ) inherits toollabs {
@@ -43,6 +42,7 @@ class toollabs::static(
         require => [File['/usr/local/bin/cdnjs-packages-gen'], Git::Clone['cdnjs']],
     }
 
+    $resolver = join($::nameservers, ' ')
     nginx::site { 'static-server':
         content => template('toollabs/static-server.conf.erb'),
         require => Git::Clone['cdnjs'],
