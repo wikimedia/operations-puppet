@@ -146,7 +146,7 @@ director <%= director %> <%= @director_type %> {
 	.<%= option %> = <%= value %>;
 <% end -%>
 <% if @director_type == 'chash' && !@director_options.has_key?('retries') %>
-	.retries = <%= def_chash_retries(99, @varnish_directors[director].size)  %>
+	.retries = <%= chash_def_retries(99, @varnish_directors[director].size)  %>
 <% end -%>
 <%
 	@varnish_directors[director].each do |backend|
