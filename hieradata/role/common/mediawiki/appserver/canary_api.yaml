@@ -5,3 +5,11 @@ mediawiki::web::mpm_config::mpm: worker
 admin::groups:
   - deployment
 mediawiki::users::web: www-data
+hhvm::fcgi_settings:
+  hhvm:
+    mysql:
+      connect_timeout: 3000
+hhvm::cli_settings:
+  hhvm:
+    mysql:
+      connect_timeout: 3000
