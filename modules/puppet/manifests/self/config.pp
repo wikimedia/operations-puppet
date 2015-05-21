@@ -75,7 +75,7 @@ class puppet::self::config(
         }
     }
 
-    File['/etc/puppet/puppet.conf.d/10-main.conf'] {
+    File <| title == '/etc/puppet/puppet.conf.d/10-main.conf' |> {
         ensure => absent,
     }
 
