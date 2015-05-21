@@ -30,6 +30,9 @@ class role::cache::parsoid {
             'graphoid_backend' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::site],
             'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
+        director_options => {
+            'retries' => 2,
+        },
         vcl_config       => {
             'retry503'    => 4,
             'retry5xx'    => 1,
@@ -80,6 +83,9 @@ class role::cache::parsoid {
             'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         director_type   => 'chash',
+        director_options => {
+            'retries' => $::role::cache::2layer::backend_weight_avg * size($site_parsoid_nodes),
+        },
         vcl_config      => {
             'retry5xx'    => 0,
             'ssl_proxies' => $::role::cache::base::wikimedia_networks,
