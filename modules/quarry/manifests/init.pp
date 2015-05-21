@@ -5,9 +5,9 @@
 class quarry::base {
     include ::redis::client::python
 
-    $clone_path = "/srv/quarry"
-    $result_path_parent = "/data/project/quarry"
-    $result_path = "/data/project/quarry/results"
+    $clone_path = '/srv/quarry'
+    $result_path_parent = '/data/project/quarry'
+    $result_path = '/data/project/quarry/results'
 
     package { [
         'python-flask',
@@ -47,13 +47,13 @@ class quarry::base {
 # Sets up a mysql database for use by Quarry web frontends
 # and Quarry query runners
 class quarry::database {
-    $data_path = "/srv/mysql/data"
+    $data_path = '/srv/mysql/data'
 
     class { 'mysql::server':
-        package_name          => 'mariadb-server',
-        config_hash           => {
-            'datadir'         => $data_path,
-            'bind_address'    => '0.0.0.0',
+        package_name => 'mariadb-server',
+        config_hash  => {
+            'datadir'      => $data_path,
+            'bind_address' => '0.0.0.0',
         }
     }
 }
