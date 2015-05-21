@@ -34,6 +34,12 @@ class role::cache::upload(
         }
     }
 
+    if $::role::cache::base::cluster_tier == 'one' {
+        $director_retries = 2
+    } else {
+        $director_retries = $::role::cache::2layer::backend_weight_avg * 4
+    }
+
     if $::role::cache::configuration::has_ganglia {
         include varnish::monitoring::ganglia::vhtcpd
     }
@@ -72,6 +78,9 @@ class role::cache::upload(
         storage            => $upload_storage_args,
         directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
         director_type      => $director_type_cluster,
+        director_options   => {
+            'retries' => $director_retries,
+        },
         vcl_config         => {
             'default_backend'  => $::role::cache::base::default_backend,
             'retry5xx'         => 0,

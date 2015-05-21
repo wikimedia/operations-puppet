@@ -13,6 +13,14 @@ class role::cache::2layer(
 
     # everything from here down is related to backend storage/weight config
 
+    # This is now only used for director retries math, not for setting the
+    # actual backend weights.  The math itself has been left alone, as
+    # this will be close enough to approximate previous behavior before
+    # $backend_scaled_weights and we're not making things notably worse.
+    # It can be fixed later here and/or in the chash code.  See also:
+    # https://phabricator.wikimedia.org/P485
+    $backend_weight_avg = 100
+
     $storage_size = $::hostname ? {
         /^cp10(08|4[34])$/      => 117, # Intel X-25M 160G
         /^cp30(0[3-9]|1[0-4])$/ => 460, # Intel M320 600G via H710

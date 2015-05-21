@@ -29,6 +29,7 @@ include "static-hash.inc.vcl";
 default_backend = @vcl_config.fetch("default_backend", "backend")
 -%>
 director <%= default_backend %>_random random {
+	.retries = 5;
 <%
 	@varnish_directors[default_backend].each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
