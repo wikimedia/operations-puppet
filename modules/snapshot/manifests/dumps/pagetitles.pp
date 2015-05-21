@@ -17,25 +17,25 @@ class snapshot::dumps::pagetitles(
     }
 
     file { "${snapshot::dirs::datadir}/public/other/pagetitles":
-        ensure  => 'directory',
-        path    => "${snapshot::dirs::datadir}/public/other/pagetitles",
-        mode    => '0755',
-        owner   => $user,
-        group   => root,
+        ensure => 'directory',
+        path   => "${snapshot::dirs::datadir}/public/other/pagetitles",
+        mode   => '0755',
+        owner  => $user,
+        group  => root,
     }
     file { "${snapshot::dirs::datadir}/public/other/mediatitles":
-        ensure  => 'directory',
-        path    => "${snapshot::dirs::datadir}/public/other/mediatitles",
-        mode    => '0755',
-        owner   => $user,
-        group   => root,
+        ensure => 'directory',
+        path   => "${snapshot::dirs::datadir}/public/other/mediatitles",
+        mode   => '0755',
+        owner  => $user,
+        group  => root,
     }
     file { "${snapshot::dirs::wikiqueriesdir}/confs":
-        ensure  => 'directory',
-        path    => "${snapshot::dirs::wikiqueriesdir}/confs",
-        mode    => '0755',
-        owner   => $user,
-        group   => root,
+        ensure => 'directory',
+        path   => "${snapshot::dirs::wikiqueriesdir}/confs",
+        mode   => '0755',
+        owner  => $user,
+        group  => root,
     }
     file { "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf":
         ensure  => 'present',

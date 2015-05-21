@@ -17,10 +17,10 @@ class snapshot::centralauthdump(
     }
 
     file { '/usr/local/bin/dumpcentralauth.sh':
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/snapshot/dumpcentralauth.sh',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/dumpcentralauth.sh',
     }
 
     # used by script to find the name of the corresponding db.php file
