@@ -5,7 +5,9 @@
 #
 class role::performance {
     include ::apache
+    include ::apache::mod::header
     include ::apache::mod::proxy
+    include ::apache::mod::rewrite
     include ::apache::mod::uwsgi
 
     class { '::coal':
