@@ -25,6 +25,13 @@ class scap::l10nupdate(
         source => 'puppet:///modules/scap/l10nupdate-1',
     }
         # add ssh keypair for l10nupdate user from fenari for RT-5187
+    file { '/home/l10nupdate/.ssh':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/home/l10nupdate/.ssh/id_rsa':
         owner  => 'l10nupdate',
         group  => 'l10nupdate',
