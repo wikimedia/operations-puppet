@@ -56,10 +56,6 @@ class puppetmaster(
         include ::apache::mod::proxy_balancer
     }
 
-    include role::backup::host
-    backup::set { 'var-lib-puppet-ssl': }
-    backup::set { 'var-lib-puppet-volatile': }
-
     class { 'puppetmaster::passenger':
         bind_address    => $bind_address,
         verify_client   => $verify_client,

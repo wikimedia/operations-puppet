@@ -14,6 +14,10 @@ class role::puppetmaster::frontend {
     include role::puppetmaster::config
     include passwords::puppet::database
 
+    include role::backup::host
+    backup::set { 'var-lib-puppet-ssl': }
+    backup::set { 'var-lib-puppet-volatile': }
+
     system::role { 'puppetmaster':
         description => 'Puppetmaster backend'
     }
