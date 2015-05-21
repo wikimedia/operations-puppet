@@ -15,6 +15,8 @@ class puppetmaster::logstash(
     $logstash_port,
     $timeout = 5,
 ) {
+    include base::puppet
+
     file { '/etc/puppet/logstash.yaml':
         ensure  => present,
         owner   => 'puppet',
@@ -23,13 +25,8 @@ class puppetmaster::logstash(
         content => template('puppetmaster/logstash.yaml.erb'),
     }
 
-    file { '/etc/puppet/puppet.conf.d/30-logstash.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    base::puppet::config { 'logstash':
+        prio    => 30,
         content => template('puppetmaster/30-logstash.conf.erb'),
-        notify  => Exec['compile puppet.conf'],
-        require => File['/etc/puppet/puppet.conf.d'],
     }
 }
