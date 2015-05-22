@@ -1277,6 +1277,7 @@ node 'labsdb1004.eqiad.wmnet' {
     $postgres_slave_v4 = '10.64.37.9'
 
     include role::postgres::master
+    include role::postgres::maps
     # role labs::db::slave
 }
 

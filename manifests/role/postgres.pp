@@ -27,7 +27,7 @@ class role::postgres::common {
 class role::postgres::master {
     include role::postgres::common
     include ::postgresql::postgis
-    include passwords::postgres
+    include ::passwords::postgres
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
@@ -79,25 +79,12 @@ class role::postgres::master {
             attrs    => 'CREATEROLE CREATEDB',
             database => 'template1',
     }
-
-    # TODO: An old user that requested to join early on. Should be migrated to
-    # the new schema
-    postgresql::spatialdb { 'wikimaps_atlas': }
-    postgresql::user { 'planemad@labs':
-            ensure   => 'present',
-            user     => 'planemad',
-            password => $passwords::postgres::planemad_password,
-            cidr     => '10.68.16.0/21',
-            type     => 'host',
-            method   => 'md5',
-            database => 'wikimaps_atlas',
-    }
 }
 
 class role::postgres::slave {
     include role::postgres::common
-    include postgresql::postgis
-    include passwords::postgres
+    include ::postgresql::postgis
+    include ::passwords::postgres
 
     system::role { 'role::postgres::slave':
         ensure      => 'present',
@@ -114,5 +101,15 @@ class role::postgres::slave {
     class { 'postgresql::ganglia':
         pgstats_user => $passwords::postgres::ganglia_user,
         pgstats_pass => $passwords::postgres::ganglia_pass,
+    }
+}
+
+class role::postgres::maps {
+    include osm
+    postgresql::spatialdb { 'gis': }
+    # Import planet.osm
+    osm::planet_import { 'gis':
+        input_pbf_file => '/srv/labsdb/planet-latest-osm.pbf',
+        require        => Postgresql::Spatialdb['gis']
     }
 }
