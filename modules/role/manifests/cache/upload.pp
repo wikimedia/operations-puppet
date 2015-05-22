@@ -110,6 +110,7 @@ class role::cache::upload(
         },
         director_type   => 'chash',
         vcl_config      => {
+            'retry503'         => 1,
             'retry5xx'         => 0,
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
