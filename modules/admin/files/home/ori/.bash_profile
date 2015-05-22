@@ -32,7 +32,7 @@ export PYTHONSTARTUP="${HOME}/.pythonrc"
 export PROMPT_COMMAND="history -a; history -n"
 export HHVM="$(pidof -s /usr/bin/hhvm 2>/dev/null)"
 export LC_COLLATE="C"
-export LESS="FIKMNQRX"
+export LESS="FIKMQRX"
 
 
 
