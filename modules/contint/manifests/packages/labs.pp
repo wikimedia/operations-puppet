@@ -125,6 +125,11 @@ class contint::packages::labs {
 
             'hhvm-dev',
 
+            # Android SDK
+            'gcc-multilib',
+            'lib32z1',
+            'lib32stdc++6',
+
             ]: ensure => present,
         }
     }
