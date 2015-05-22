@@ -14,6 +14,7 @@
 class toollabs (
     $proxies = ['tools-webproxy-01', 'tools-webproxy-02'],
     $active_proxy = 'tools-webproxy-01',
+    $active_redis = 'tools-redis-01',
 ) {
 
     include labs_lvm
@@ -212,6 +213,12 @@ class toollabs (
         ensure       => present,
         host_aliases => 'tools-db',
         ip           => '10.64.37.9',
+    }
+
+    host { 'tools-redis':
+        ensure       => present,
+        host_aliases => 'tools-redis.eqiad.wmflabs',
+        ip           => ipresolve($active_redis, $::nameservers[0]),
     }
 
     diamond::collector::localcrontab { 'localcrontabcollector': }

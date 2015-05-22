@@ -20,12 +20,8 @@ class toollabs::redis (
     include toollabs::infrastructure
     include ::redis::client::python
 
-    if $replicate_from {
-        $redis_replication = {
-            "${::hostname}" => $replicate_from,
-        }
-    } else {
-        $redis_replication = undef
+    $redis_replication = {
+        "${::hostname}" => $replicate_from,
     }
 
     include labs_lvm
@@ -56,7 +52,9 @@ class toollabs::redis (
             'MONITOR'   => ''
         },
         monitor           => false,
-        redis_replication => $redis_replication,
+        redis_replication => {
+            "${::hostname}" => $active_redis, # Defined in toollabs/init
+        },
         maxmemory_policy  => 'allkeys-lru',
         require           => Labs_lvm::Volume['redis-disk'],
     }
