@@ -3,4 +3,4 @@ seeds:
 logstash_port: 12201
 logstash_host: "deployment-logstash1.eqiad.wmflabs"
 # deployment-sca01
-graphoid_host_port: http://10.68.16.145:19000
+graphoid_host_port: http://10.68.17.54:19000
