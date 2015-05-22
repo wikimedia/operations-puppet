@@ -7,7 +7,8 @@
 #
 # Takes one or more names to resolve, and returns an array of all the
 # A or AAAA records found. The resolution is actually only done when
-# the ttl has expired.
+# the ttl has expired. A particular nameserver can also be specified
+# so only that is used, rather than the system default.
 #
 require 'resolv'
 
@@ -68,16 +69,20 @@ class DNSCached
   attr_accessor :dns
   def initialize(cache = nil, default_ttl = 300)
     @cache = cache || BasicTTLCache.new
-    @dns = Resolv::DNS.open()
     @default_ttl = default_ttl
   end
 
-  def get_resource(name, type)
-    cache_key = "#{name}_#{type}"
+  def get_resource(name, type, nameserver)
+    if nameserver.nil?
+        dns = Resolv::DNS.open()
+    else
+        dns = Resolv::DNS.open(:nameserver => [nameserver])
+    end
+    cache_key = "#{name}_#{type}_#{nameserver}"
     res = @cache.read(cache_key)
     if (res.nil?)
       begin
-        res = @dns.getresource(name, type)
+        res = dns.getresource(name, type)
         # Ruby < 1.9 returns nil as the ttl...
         if res.ttl
           ttl = res.ttl
@@ -100,7 +105,7 @@ end
 
 module Puppet::Parser::Functions
   dns = DNSCached.new
-  newfunction(:ipresolve, :type => :rvalue, :arity => 2) do |args|
+  newfunction(:ipresolve, :type => :rvalue, :arity => -2) do |args|
     name = args[0]
     type = args[1].to_i
     if type == 4
@@ -110,6 +115,7 @@ module Puppet::Parser::Functions
     else
       raise ArgumentError, 'Type must be 4 or 6'
     end
-    return dns.get_resource(name, source).to_s
+    nameserver = args[2] # Ruby returns nil if there's nothing there
+    return dns.get_resource(name, source, nameserver).to_s
   end
 end
