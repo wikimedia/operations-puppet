@@ -15,8 +15,6 @@ class puppetmaster::logstash(
     $logstash_port,
     $timeout = 5,
 ) {
-    include base::puppet
-
     file { '/etc/puppet/logstash.yaml':
         ensure  => present,
         owner   => 'puppet',
