@@ -1,8 +1,6 @@
 # == Class puppet::self::config
 # Configures variables and puppet config files
 # for either self puppetmasters or self puppet clients.
-# This inherits from base::puppet in order to override
-# default puppet config files.
 #
 # == Parameters
 # $server - hostname of the puppetmaster.
@@ -20,7 +18,8 @@ class puppet::self::config(
     $puppet_client_subnet = undef,
     $certname             = "${::ec2id}.${::domain}",
     $enc_script_path        = undef,
-) inherits base::puppet {
+) {
+    include base:puppet
     include ldap::role::config::labs
 
     $ldapconfig = $ldap::role::config::labs::ldapconfig
@@ -71,7 +70,7 @@ class puppet::self::config(
             owner   => 'puppet',
             group   => 'root',
             mode    => '0771',
-            require => Package['puppet'],
+            require => Class['base::puppet'],
         }
     }
 
@@ -79,14 +78,11 @@ class puppet::self::config(
         ensure => absent,
     }
 
-    file { '/etc/puppet/puppet.conf.d/10-self.conf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('puppet/puppet.conf.d/10-self.conf.erb'),
-        require => [File['/etc/puppet/puppet.conf.d'], File['/etc/puppet/puppet.conf.d/10-main.conf']],
-        notify  => Exec['compile puppet.conf'],
+    base::puppet::config { 'self':
+        prio  => 10,
+        content => template('puppet/self.conf.erb'),
     }
+
     $puppetmaster_status = $is_puppetmaster ? {
             true    => 'file',
             default => absent,
