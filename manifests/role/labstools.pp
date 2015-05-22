@@ -92,19 +92,6 @@ class role::labs::tools {
         include toollabs::redis
     }
 
-    class redis::slave(
-        $master = 'tools-redis',
-    ) inherits role::labs::tools::common {
-
-        system::role { 'role::labs::tools::redis::slave':
-            description => 'Server that hosts shared Redis instance'
-        }
-        class { 'toollabs::redis':
-            replicate_from => $master,
-        }
-
-    }
-
     class toolwatcher inherits role::labs::tools::common {
         system::role { 'role::labs::tools::toolwatcher':
             description => 'Tool Labs directory structure creator for new tools',
