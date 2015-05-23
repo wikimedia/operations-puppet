@@ -2,7 +2,7 @@ class mesos::slave(
     $zookeeper_url,
 ) {
 
-    require_package('mesos')
+    require_package('mesos', 'lxc-docker')
 
     file { '/etc/mesos/zk':
         content => $zookeeper_url,
@@ -26,10 +26,6 @@ class mesos::slave(
         group  => 'root',
         mode   => '0644',
         notify => Service['mesos-slave'],
-    }
-
-    package { 'lxc-docker':
-        ensure => present,
     }
 
     service { 'mesos-master':
