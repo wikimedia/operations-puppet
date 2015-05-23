@@ -20,11 +20,13 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 #Privilege Separation is turned on for security
 UsePrivilegeSeparation yes
 
+<%- if @disable_nist_kex -%>
 <% if scope.function_os_version(['debian >= jessie || ubuntu >= trusty']) %>
 KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 <% elsif scope.function_os_version(['ubuntu == precise'])%>
 KexAlgorithms diffie-hellman-group-exchange-sha256
 <% end %>
+<%- end -%>
 
 # Lifetime and size of ephemeral version 1 server key
 KeyRegenerationInterval 3600
@@ -42,12 +44,14 @@ PermitRootLogin yes
 PermitRootLogin no
 <% end %>
 
+<%- if @explicit_macs -%>
 # Message Authentication codes
 <% if scope.function_os_version(['debian >= jessie || ubuntu >= trusty']) %>
 MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
 <% elsif scope.function_os_version(['ubuntu == precise'])%>
 MACs hmac-sha2-512,hmac-sha2-256
 <% end %>
+<%- end -%>
 
 StrictModes yes
 
