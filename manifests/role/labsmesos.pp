@@ -8,6 +8,9 @@ class role::labs::mesos::master {
         zookeeper_url => $zookeeper_url,
         quorum       => hiera('quorum', 1),
     }
+
+    class { '::mesos::marathon::master':
+    }
 }
 
 class role::labs::mesos::slave {
