@@ -1,5 +1,6 @@
 class mesos::slave(
     $zookeeper_url,
+    $docker_registry,
 ) {
 
     require_package('mesos', 'lxc-docker')
@@ -26,6 +27,14 @@ class mesos::slave(
         group  => 'root',
         mode   => '0644',
         notify => Service['mesos-slave'],
+    }
+
+    file { '/etc/default/docker':
+        content => template('mesos/docker.default.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        notify  => Service['docker']
     }
 
     service { 'mesos-master':
