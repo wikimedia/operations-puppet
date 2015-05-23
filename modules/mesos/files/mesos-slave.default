@@ -1,2 +1,3 @@
 MASTER=`cat /etc/mesos/zk`
 ISOLATION='cgroups/cpu,cgroups/mem'
+CONTAINERIZERS='docker,mesos'
