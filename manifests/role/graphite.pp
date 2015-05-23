@@ -37,11 +37,11 @@ class role::graphite::base(
     class { '::graphite':
         storage_schemas     => {
             # Retain aggregated data at a one-minute resolution for one week; at
-            # five-minute resolution for one month; at 15-minute resolution for
-            # one year; and at one-hour resolution for five years.
+            # five-minute resolution for two weeks; at 15-minute resolution for
+            # one month; and at one-hour resolution for one year.
             'default' => {
                 pattern    => '.*',
-                retentions => '1m:7d,5m:30d,15m:1y,1h:5y',
+                retentions => '1m:7d,5m:14d,15m:30d,1h:1y',
             },
         },
 
