@@ -20,3 +20,9 @@ class role::labs::mesos::slave {
         zookeeper_url => $zookeeper_url,
     }
 }
+
+class role::labs::mesos::proxy {
+    class { '::dynamicproxy':
+        luahandler   => 'redundanturlproxy',
+    }
+}
