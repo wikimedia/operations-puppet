@@ -13,15 +13,18 @@
 #limitations under the License.
 
 class dynamicproxy (
-    $ssl_settings,
-    $resolver,
+    $luahandler,
+    $resolver             = $::nameservers,
     $redis_maxmemory      = '512MB',
+    $ssl_settings         = undef,
     $ssl_certificate_name = false,
     $notfound_servers     = [],
-    $luahandler           = 'domainproxy',
     $set_xff              = false,
     $redis_replication    = undef,
 ) {
+    if $ssl_certificate_name != false and $ssl_settings = undef {
+        fail('ssl_certificate_nme set but ssl_settings not set')
+    }
     class { '::redis':
         persist           => 'aof',
         dir               => '/var/lib/redis',
