@@ -69,7 +69,7 @@ nimishg, rainman, ssmith, swalling, erik]
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
-              gpaumier]
+              gpaumier, moushira]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -106,7 +106,7 @@ nimishg, rainman, ssmith, swalling, erik]
               nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
-              neilpquinn-wmf, tbayer, jdouglas]
+              neilpquinn-wmf, tbayer, jdouglas, moushira]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -1436,3 +1436,10 @@ users:
     realname: Jaime Crespo
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYXTjhdJPeTbKhlLn4c4iem8qOZ6EhHWiT3mKBhAJf9/hUnrIV9u5QTDo3Fdkz/d7ydiTYDx1Aem24sqg1mZtu16L3o9L7ixciuXAfxgHHBSQRKThO1Ts+qGHpPmDo0xBNLGPaKXxOhOogqw0+DN/NePfvW+iHk0kMBhQP+TZcLdV0zoylthwllavd/X3MQersYG+LyaBrLXxnjd3p1JcitDi/NKE6xtJG20zQ26115i95co8j9iuuGjHNF8bSSjICgUO3PU5/vWmTXNF4iL1SLAWCVwMchMynEn76XxKfG6l39tH3OaqyydTWICSWtzGgGOQREx5HC0dbdkPHWtix jynus@seul]
     uid: 12161
+  moushira:
+    ensure: present
+    gid: 500
+    name: moushira
+    realname: Moushira Elamrawy
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlLVCGLVRhQeS0w/xDYFsc53o0t0FV2Vi5MsTv9NlNIVAPvmQOPvLtp55qqb1ix7q2tOktTgFA1yVCW+CfQKoCRqAflAca1CJhNe4xve3FBX2E9zpwjm7ivfKDvfPTRh4ls4n2NdBXke8WKmAbggLE+uaP9G4eIVKy2RKrKZp7EM/25CqxWZe/cRQ9JegmkhVqb2s8s8kEB4aa9to4u4FulCuYyU5WrvCEa4T8oI/mtVQabRO4kjvL5TOdn2tzjnD+4YC9SL4JtcyllVbdpsYa7PpsV9/Ix1MLEqjucFDUVoGd9v5JCsSQclSCxbqn3R7O4bGlYC04WLGBPDpvjaOx melamrawy@wikimedia.org]
+    uid: 12239
