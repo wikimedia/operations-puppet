@@ -28,6 +28,10 @@ class mesos::slave(
         notify => Service['mesos-slave'],
     }
 
+    package { 'lxc-docker':
+        ensure => present,
+    }
+
     service { 'mesos-master':
         ensure => stopped,
     }
