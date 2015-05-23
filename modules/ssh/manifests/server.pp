@@ -3,6 +3,8 @@ class ssh::server (
     $listen_address = undef,
     $permit_root = true,
     $authorized_keys_file = undef,
+    $disable_nist_kex = false, # Allow labs projects to temporarily opt out of nist kex disabling
+    $explicit_macs = false, # Allow labs projects to temporarily opt out of more secure MACs
 ) {
     package { 'openssh-server':
         ensure => latest;
