@@ -1,0 +1,11 @@
+server {
+    resolver <%= @resolver %>;
+
+    listen 8081;
+
+    location /receive-hook {
+        lua_need_request_body on;
+        
+        content_by_lua_file /etc/nginx/lua/marathon-event-hook.lua;
+    }
+}
