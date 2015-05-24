@@ -1,6 +1,7 @@
 class mesos::master(
     $zookeeper_url,
     $quorum,
+    $proxy_hook_url,
 ) {
 
     require_package('mesos')
