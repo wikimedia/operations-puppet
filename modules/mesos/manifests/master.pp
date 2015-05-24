@@ -1,6 +1,7 @@
 class mesos::master(
     $zookeeper_url,
     $quorum,
+    $proxy_url,
 ) {
 
     require_package('mesos', 'marathon')
