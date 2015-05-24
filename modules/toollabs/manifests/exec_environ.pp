@@ -287,7 +287,8 @@ class toollabs::exec_environ {
         # Other packages
         'adminbot',
         'bison',                       # T67974.
-        'csh',                        # common user request
+        'calibre',                     # T100165
+        'csh',                         # common user request
         'csvtool',                     # T60649
         'dc',
         'djvulibre-bin',               # T58972
