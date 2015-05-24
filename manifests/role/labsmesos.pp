@@ -22,7 +22,5 @@ class role::labs::mesos::slave {
 }
 
 class role::labs::mesos::proxy {
-    class { '::dynamicproxy':
-        luahandler   => 'redundanturlproxy',
-    }
+    include ::mesos::proxy
 }
