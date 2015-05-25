@@ -93,7 +93,7 @@ sub vcl_recv {
 	call rewrite_proxy_urls;
 
 	// Don't decode percent-encoded slashes in paths for REST APIs
-	if (req.url !~ "^/api/rest_v1/") {
+	if (req.url !~ "^/api/rest_v1") {
 		call normalize_path;
 	}
 
@@ -106,7 +106,7 @@ sub vcl_recv {
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
 		set req.backend = backend_random;
 		set req.hash_ignore_busy = true;
-	} else if (req.url ~ "^/api/rest_v1/") {
+	} else if (req.url ~ "^/api/rest_v1") {
 		set req.backend = backend_random;
 	}
 
