@@ -28,6 +28,8 @@ graphoid::domains:
   - wikivoyage.org
   - wiktionary.org
 graphoid::protocol: http
+cassandra::listen_address: '%{::ipaddress_eth0}'
+cassandra::rpc_address: '%{::ipaddress_eth0}'
 "cassandra::seeds":
   - 10.68.17.227
   - 10.68.17.189
