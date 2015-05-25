@@ -1,0 +1,11 @@
+Verified+1: jenkins-bot
+Code-Review+1: JanZerebecki <jan.wikimedia@zerebecki.de>
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Verified+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Code-Review+1: Paladox <thomasmulhall410@yahoo.com>
+Code-Review+1: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Submitted-by: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-at: Mon, 25 May 2015 18:06:41 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/213216
+Project: operations/puppet
+Branch: refs/heads/production
