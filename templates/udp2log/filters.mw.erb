@@ -10,4 +10,4 @@ pipe 1 egrep '^(fatal|exception) ' | /usr/bin/log2udp -h <%= @template_variables
 # Udp2log messages that originate from rsyslog and MediaWiki are already
 # forwarded directly to logstash via other mechanisms, but some channels are
 # not yet directly connected to logstash and should be relayed here.
-pipe 1 egrep '^(scap|scholarships|iegreview) ' | /usr/bin/log2udp -h <%= @template_variables['logstash_host'] %> -p <%= @template_variables['logstash_port'] %>
+pipe 1 egrep '^(scap|scholarships|iegreview|limesurvey) ' | /usr/bin/log2udp -h <%= @template_variables['logstash_host'] %> -p <%= @template_variables['logstash_port'] %>

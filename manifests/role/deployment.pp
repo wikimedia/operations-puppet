@@ -121,6 +121,9 @@ class role::deployment::config {
             'gitfat_enabled' => true,
             'upstream'       => 'https://gerrit.wikimedia.org/r/operations/software/dropwizard-metrics',
         },
+        'limesurvey/limesurvey' => {
+            'upstream' => 'https://github.com/LimeSurvey/LimeSurvey.git',
+        },
     }
 }
 

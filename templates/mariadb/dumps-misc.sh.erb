@@ -8,7 +8,7 @@ dump="/usr/local/bin/mysqldump --single-transaction --quick"
 $dump -h m1-slave --databases bacula etherpadlite librenms puppet racktables rt | \
     pigz > /srv/backups/m1-$(date +%Y%m%d%H%M%S).sql.gz &
 
-$dump -h m2-slave --databases iegreview reviewdb scholarships | \
+$dump -h m2-slave --databases iegreview limesurvey reviewdb scholarships | \
     pigz > /srv/backups/m2-$(date +%Y%m%d%H%M%S).sql.gz &
 
 $dump -h m2-slave --max_allowed_packet=64M --databases otrs | \
