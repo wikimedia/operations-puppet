@@ -1,0 +1,32 @@
+<VirtualHost *:80>
+  ServerName <%= @hostname %>
+
+  RewriteEngine on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteCond %{REQUEST_URI} !^/status$
+  RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+  Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+  Header always set Strict-Transport-Security "max-age=31536000"
+
+  DocumentRoot "<%= @deploy_dir %>"
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Directory "<%= @deploy_dir %>/public">
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    allow from all
+  </Directory>
+
+  <Location />
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule .* index.php/$0 [L,PT]
+  </Location>
+
+</VirtualHost>
+# vim:sw=2 ts=2 sts=2 et ft=apache:
