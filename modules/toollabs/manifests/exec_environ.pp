@@ -133,7 +133,6 @@ class toollabs::exec_environ {
         'python-beautifulsoup',        # For valhallasw.
         'python-bottle',               # T58995
         'python-celery',
-        'python-celery-with-redis',
         'python-egenix-mxdatetime',
         'python-egenix-mxtools',
         'python-flask',
