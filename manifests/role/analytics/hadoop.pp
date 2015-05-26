@@ -375,6 +375,10 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             # https://issues.apache.org/jira/browse/MAPREDUCE-5799
             # This should work around the problem.
             'yarn.app.mapreduce.am.env'          => 'LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native',
+            # The default of 90.0 for this was marking older dells as unhealthy when they still
+            # had 2TB of space left.  99% will mark them at unhealthy with they still have
+            # > 200G free.
+            'yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage' => '99.0',
         },
 
         gelf_logging_enabled                     => $gelf_logging_enabled,
