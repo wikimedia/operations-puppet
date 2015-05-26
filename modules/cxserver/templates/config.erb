@@ -10,6 +10,24 @@ module.exports = {
 	proxy: '<%= @proxy %>',
 	<%- end -%>
 	logDir: '<%= @log_dir %>',
+	logging: {
+		name: 'cxserver',
+		streams: [
+			<%- if @logstash_host %>
+			{
+				type: 'gelf',
+				host: '<%= @logstash_host %>',
+				port: <%= @logstash_port %>,
+				level: 'warn'
+			},
+			<%- end -%>
+			{
+				type: file,
+				level: 'info',
+				path: <%= @log_file %>
+			}
+		]
+	},
 	'parsoid.api': '<%= @parsoid %>',
 	'restbase.url': '<%= @restbase %>',
 	'mt.apertium.api': '<%= @apertium %>',
