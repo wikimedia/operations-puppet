@@ -57,7 +57,8 @@ ssh::server::explicit_macs: false
 "role::apertium::apertium_port": 2737
 "role::cxserver::cxserver_port": 8080
 "misc::syslog-server::basepath": /data/project/syslog
-"cxserver::log_dir": /data/project/cxserver/log
+"cxserver::log_dir": /var/log/cxserver
+"cxserver::logstash_host": deployment-logstash1.eqiad.wmflabs
 "cxserver::apertium": http://apertium-beta.wmflabs.org
 "cxserver::proxy": http://deployment-urldownloader.eqiad.wmflabs:8080
 "cxserver::yandex_url": 'https://translate.yandex.net'
