@@ -172,7 +172,6 @@ class toollabs::exec_environ {
         'python-requests',
         'python-rsvg',                 # T58996
         'python-scipy',
-        'python-sh',
         'python-socketio-client',      # T86015
         'python-sqlalchemy',
         'python-svn',                  # T58996
