@@ -29,6 +29,7 @@ class base::standard-packages {
         'lldpd',
         'pv',
         'tcpdump',
+        'strace',
     ]
 
     package { $packages:
