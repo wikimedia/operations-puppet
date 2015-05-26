@@ -598,3 +598,33 @@ class role::mariadb::proxy::slaves(
         content => template('mariadb/haproxy-slaves.cfg.erb'),
     }
 }
+
+class role::mariadb::parsercache {
+
+    include standard
+    include role::mariadb::grants
+    include role::mariadb::grants::core
+    include role::mariadb::monitor
+    include passwords::misc::scripts
+
+    system::role { 'role::mariadb::parsercache':
+        description => 'Parser Cache DB Server',
+    }
+
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true,
+    }
+
+    class { 'mariadb::config':
+        prompt   => 'PARSERCACHE',
+        config   => 'mariadb/parsercache.my.cnf.erb',
+        password => $passwords::misc::scripts::mysql_root_pass,
+        datadir  => '/a/sqldata-cache',
+        tmpdir   => '/tmp',
+    }
+
+    # mysql monitoring access from tendril (db1011)
+    ferm::rule { 'mysql_tendril':
+        rule => 'saddr 10.64.0.15 proto tcp dport (3306) ACCEPT;',
+    }
+}
