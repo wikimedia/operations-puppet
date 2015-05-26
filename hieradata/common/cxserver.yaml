@@ -1,3 +1,4 @@
+logstash_host: logstash1001.eqiad.wmnet
 registry:
   source:
     - 'aa'
