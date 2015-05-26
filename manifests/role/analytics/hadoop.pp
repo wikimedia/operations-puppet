@@ -584,6 +584,14 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
             require      => Class['cdh::hadoop::worker'],
         }
+
+        # Alert on datanode mount disk space.  These mounts are ignored by the
+        # base module's check_disk via the base::monitoring::host::nrpe_check_disk_options
+        # override in worker.yaml hieradata.
+        nrpe::monitor_service { 'disk_space_hadoop_worker':
+            description  => 'Disk space on Hadoop worker',
+            nrpe_command => '/usr/lib/nagios/plugins/check_disk --units GB -w 32 -c 16 -e -l  -r "/var/lib/hadoop/data"',
+        }
     }
 
     # Install hive client on worker nodes to get
