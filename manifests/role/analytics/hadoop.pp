@@ -592,6 +592,14 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
             description  => 'Disk space on Hadoop worker',
             nrpe_command => '/usr/lib/nagios/plugins/check_disk --units GB -w 32 -c 16 -e -l  -r "/var/lib/hadoop/data"',
         }
+
+        # Make sure that this worker node has NodeManager running in a RUNNING state.
+        # Install a custom check command for NodeManager Node-State:
+        nagios_common::check_command { 'check_hadoop_yarn_node_state': }
+        nrpe::monitor_service { 'hadoop_yarn_node_state':
+            description  => 'YARN NodeManager Node-State',
+            nrpe_command => '/usr/lib/nagios/plugins/check_hadoop_yarn_node_state',
+        }
     }
 
     # Install hive client on worker nodes to get
