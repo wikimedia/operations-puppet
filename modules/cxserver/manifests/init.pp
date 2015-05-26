@@ -13,9 +13,10 @@
 #   Where to place the config file. Currently cxserver expects it to be next to
 #   Server.js, so you might want to place the config outside the repository and
 #   place symlink to this file.
-# [*log_dir*]
-#   Place where cxserver can put log files. Assumed to be already existing and
-#   have write access to cxserver user.
+# [*logstash_host*]
+#   GELF logging host. Default: localhost
+# [*logstash_port*]
+#   GELF logging port. Default: 12201
 # [*parsoid*]
 #   Url to Parsoid service.
 # [*restbase*]
@@ -36,7 +37,8 @@ class cxserver(
     $base_path = '/srv/deployment/cxserver/deploy',
     $node_path = '/srv/deployment/cxserver/deploy/node_modules',
     $conf_path = '/srv/deployment/cxserver/deploy/src/config.js',
-    $log_dir = '/var/log/cxserver',
+    $logstash_host  = 'localhost',
+    $logstash_port  = 12201,
     $parsoid = 'http://parsoid-lb.eqiad.wikimedia.org',
     $restbase = 'https://@lang.wikipedia.org/api/rest_v1/page/html/@title',
     $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
@@ -67,13 +69,12 @@ class cxserver(
         system     => true,
     }
 
-    $log_file = "${log_dir}/main.log"
-
-    file { $log_dir:
+    file { '/var/log/cxserver':
         ensure => directory,
         owner  => 'cxserver',
         group  => 'cxserver',
         mode   => '0775',
+        before => Service['cxserver'],
     }
 
     file { $conf_path:
