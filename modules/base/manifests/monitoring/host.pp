@@ -13,10 +13,18 @@
 # when it includes this class.
 #
 # == Parameters
-# $contact_group - Nagios contact_group to use for notifications. Defaults to
-# admins
+# $contact_group            - Nagios contact_group to use for notifications. Defaults to
+#                             admins
 #
-class base::monitoring::host($contact_group = 'admins') {
+# nrpe_check_disk_options   - Default options for checking disks.  Defaults to checking
+#                             all disks and warning at < 6% and critical at < 3% free.
+#
+class base::monitoring::host(
+    $contact_group = 'admins',
+    # the -A -i ... part is a gross hack to workaround Varnish partitions
+    # that are purposefully at 99%. Better ideas are welcome.
+    $nrpe_check_disk_options = '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]"',
+) {
     include base::puppet::params # In order to be able to use some variables
 
     monitoring::host { $::hostname:
@@ -109,11 +117,9 @@ class base::monitoring::host($contact_group = 'admins') {
         }
     }
 
-    # the -A -i ... part is a gross hack to workaround Varnish partitions
-    # that are purposefully at 99%. Better ideas are welcome.
     nrpe::monitor_service { 'disk_space':
         description  => 'Disk space',
-        nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]"',
+        nrpe_command => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
     }
 
     nrpe::monitor_service { 'dpkg':
