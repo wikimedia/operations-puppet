@@ -1,0 +1,99 @@
+# Parsercache (based on production)
+# Main changes are reduced durability and p_s
+
+[client]
+port   = 3306
+socket = /tmp/mysql.sock
+
+[mysqld]
+
+user       = mysql
+socket     = /tmp/mysql.sock
+port       = 3306
+extra_port = 3307
+datadir    = <%= @datadir %>
+tmpdir     = <%= @tmpdir %>
+server_id  = <%= @server_id %>
+
+# Always start in read_only mode.
+# Master selection will be handled by cluster control.
+read_only = on
+
+log_bin
+log_slave_updates
+skip-external-locking
+skip-name-resolve
+temp-pool
+
+thread_handling                = pool-of-threads
+thread_pool_stall_limit        = 100
+thread_pool_size               = 32
+max_connections                = 5000
+back_log                       = 500
+extra_max_connections          = 10
+max_connect_errors             = 1000000000
+max_allowed_packet             = 16M
+connect_timeout                = 3
+query_cache_size               = 0
+query_cache_type               = 0
+event_scheduler                = 1
+userstat                       = 1
+
+# we are testing impact of performance schema
+performance_schema             = 1
+
+log-warnings                   = 0
+thread_stack                   = 192K
+thread_cache_size              = 300
+interactive_timeout            = 28800
+wait_timeout                   = 3600
+transaction-isolation          = REPEATABLE-READ
+use_stat_tables                = preferably
+
+# do not sync binlog, allow group commit
+sync_binlog                    = 0
+binlog_cache_size              = 1M
+max_binlog_size                = 1000M
+binlog_format                  = MIXED
+expire_logs_days               = 7
+slave_transaction_retries      = 4294967295
+sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
+tmp_table_size                 = 64M
+max_heap_table_size            = 64M
+
+table_open_cache               = 50000
+table_definition_cache         = 40000
+open-files-limit               = 200000
+character_set_server           = binary
+character_set_filesystem       = binary
+collation_server               = binary
+
+default-storage-engine         = InnoDB
+# disable file-per-table to avoid multiple small objects
+innodb_file_per_table          = 0
+innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
+innodb_log_file_size           = 2G
+# reduce durability - this is a cache server
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method            = O_DIRECT
+innodb_thread_concurrency      = 0
+innodb_io_capacity             = 20000
+innodb_read_io_threads         = 16
+innodb_write_io_threads        = 8
+innodb_stats_sample_pages      = 16
+innodb_stats_method            = nulls_unequal
+aria_pagecache_buffer_size     = 1G
+join_cache_level               = 8
+
+# Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
+# At least, I think so. For now we need to avoid the an assertion failure on Trusty w/ 3.13
+innodb_use_native_aio          = 0
+
+optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on'
+
+[mysqldump]
+
+quick
+max_allowed_packet = 16M
+
+#!includedir /etc/mysql/conf.d/
