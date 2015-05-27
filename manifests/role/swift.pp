@@ -114,7 +114,6 @@ class role::swift {
             include ::swift_new::params
             include ::swift_new::container_sync
 
-            class { '::txstatsd::decommission': }
             include role::statsite
         }
         class storage inherits role::swift::eqiad_prod {
@@ -124,7 +123,6 @@ class role::swift {
             include ::swift_new::params
             include ::swift_new::container_sync
 
-            class { '::txstatsd::decommission': }
             include role::statsite
         }
     }
@@ -227,7 +225,6 @@ class role::swift {
             }
             include role::swift::icehouse
 
-            class { '::txstatsd::decommission': }
             include role::statsite
         }
         class storage inherits role::swift::esams_prod {
@@ -235,7 +232,6 @@ class role::swift {
             include ::swift::storage::monitoring
             include role::swift::icehouse
 
-            class { '::txstatsd::decommission': }
             include role::statsite
         }
     }
@@ -373,7 +369,6 @@ class role::swift::proxy {
         port => 11211,
     }
 
-    class { '::txstatsd::decommission': }
     include role::statsite
 
     monitoring::service { 'swift-http-frontend':
@@ -403,7 +398,6 @@ class role::swift::storage {
     include ::swift_new::container_sync
     include ::swift_new::storage::monitoring
 
-    class { '::txstatsd::decommission': }
     include role::statsite
 
     $all_drives = hiera('swift_storage_drives')

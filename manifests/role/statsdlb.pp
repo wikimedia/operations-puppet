@@ -18,7 +18,6 @@ class role::statsdlb {
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C statsdlb',
     }
 
-    class { '::txstatsd::decommission': }
     class { '::statsite': }
 
     # statsite backends
