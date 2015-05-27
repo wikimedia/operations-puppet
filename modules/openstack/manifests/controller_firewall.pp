@@ -1,12 +1,13 @@
 class openstack::controller_firewall {
     include base::firewall
 
-    $labs_private_net = '10.0.0.0/0'
+    $labs_vms = '10.68.16.0/21'
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
     $api_host = ipresolve('labnet1001.eqiad.wmnet',4)
     $other_master = ipresolve(hiera('labs_nova_controller_other'),4)
     $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
+    $monitoring = '208.80.154.14'
     if ($::site == 'codfw') {
         # TODO!  codfw will need something
         # like this when the ip range is assigned.
@@ -71,10 +72,10 @@ class openstack::controller_firewall {
 
     # services provided to Labs instances
     ferm::rule { 'puppetmaster':
-        rule => "saddr ${labs_private_net} proto tcp dport 8140 ACCEPT;",
+        rule => "saddr ${labs_vms} ${monitoring} proto tcp dport 8140 ACCEPT;",
     }
     ferm::rule { 'salt':
-        rule => "saddr ${labs_private_net} proto tcp dport (4505 4506) ACCEPT;",
+        rule => "saddr ${labs_vms} ${monitoring} proto tcp dport (4505 4506) ACCEPT;",
     }
 
     # mysql access from iron
