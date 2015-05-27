@@ -1,16 +1,18 @@
 #!/bin/bash
 
-# This is a user garbage collection script that removes
-# users who do not have a supplementary group that also have
-# a UID above the ID_BOUNDARY. Removals are logged to syslog.
-# with 'dryrun' as first arg exits 1 if cleanup is needed
+set -e
 
-# /etc/adduser.conf
-ID_BOUNDRY='999'
+# This is a user garbage collection script that removes users who do not have a
+# supplementary group that also have a UID above the LAST_SYSTEM_UID. Removals
+# are logged to syslog. With 'dryrun' as the first argument, it exits 1 if
+# cleanup is needed.
+
+# for $LAST_SYSTEM_UID
+. /etc/adduser.conf
+
 ARCHIVE_DIR='/var/userarchive'
 EXCLUDE=("nobody" \
          "l10nupdate" \
-         "gmetric" \    # nescio.wikimedia.org
          "mwdeploy" \   # eventlog*
          "gerrit2" \    # ytterbium.wikimedia.org
          "spamd" \      # sodium.wikimedia.org:
@@ -36,9 +38,7 @@ in_array() {
     return 1
 }
 
-# This is an intentional hard stop
-# as before T84032 this could do some
-# serious damage to a labstore host.
+# FIXME: this is an intentional hard stop as before T84032
 if [[ `hostname -s` =~ ^labstore100 ]]; then
         exit 1
 fi
@@ -60,7 +60,7 @@ do
         continue
     fi
 
-    if [[ "$uid" -gt "$ID_BOUNDRY" ]]; then
+    if [[ "$uid" -gt "$LAST_SYSTEM_UID" ]]; then
         if [[ `/usr/bin/id $username` != *","* ]]; then
             if [ "${1}" == "dryrun" ]
                 then
