@@ -85,6 +85,10 @@ innodb_stats_method            = nulls_unequal
 aria_pagecache_buffer_size     = 1G
 join_cache_level               = 8
 
+# dump and load innodb buffer at start and stop
+innodb_buffer_pool_load_at_startup  = 1
+innodb_buffer_pool_dump_at_shutdown = 1
+
 # Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
 # At least, I think so. For now we need to avoid the an assertion failure on Trusty w/ 3.13
 innodb_use_native_aio          = 0

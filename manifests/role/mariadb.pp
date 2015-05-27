@@ -599,6 +599,7 @@ class role::mariadb::proxy::slaves(
     }
 }
 
+# parsercache (pc) specific configuration
 class role::mariadb::parsercache {
 
     include standard
@@ -620,7 +621,7 @@ class role::mariadb::parsercache {
         config   => 'mariadb/parsercache.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => '/a/sqldata-cache',
-        tmpdir   => '/tmp',
+        tmpdir   => '/a/tmp',
     }
 
     # mysql monitoring access from tendril (db1011)
