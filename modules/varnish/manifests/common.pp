@@ -32,4 +32,11 @@ class varnish::common {
         group   => 'root',
         mode    => '0555',
     }
+
+    file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
+        source  => 'puppet:///modules/varnish/varnishlog.py',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
 }
