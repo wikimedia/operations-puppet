@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+try:
+    import sys
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+except:
+    pass
 
 import datetime
 import json

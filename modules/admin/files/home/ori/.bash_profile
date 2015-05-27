@@ -65,9 +65,9 @@ service()    { sudo service "$@"; }
 perf()       { sudo perf "$@"; }
 gdbh()       { sudo gdb -p "$(pidof -s hhvm)"; }
 redis-cli()  { command redis-cli -a "$(grep -Po '(?<=masterauth )\S+' /etc/redis/redis.conf)" "$@"; }
-fields()     { awk 'END { for (i = 1; i <= NF; i++) printf("%s : %s\n", i, $i) }' "$@"; }
+fields()     { tail -1 "${@:---}" | awk 'END { for (i = 1; i <= NF; i++) printf("%s : %s\n", i, $i) }' ; }
 field()      { awk -v field="$1" '{print $(field)}'; }
-lat()        { ls -lat "$@" | head; }
+lat()        { ls -lat *"${@:+.}${@}" | head; }
 sudo()       { command sudo -E "$@"; }
 
 ptop()       {
