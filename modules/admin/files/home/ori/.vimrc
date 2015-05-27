@@ -14,6 +14,8 @@ set backspace=indent,eol,start " allow backspacing over anything
 set showmatch                  " Briefly jump to a paren once it's balanced
 set matchtime=2                " (for only .2 seconds).
 set autochdir                  " vim's cwd follows editor
+set shortmess+=I               " no message on startup
+
 
 " Emacs keybidings for command mode
 cnoremap <C-A>      <Home>
@@ -23,6 +25,8 @@ cnoremap <C-K>      <C-U>
 " j/k navigate visual lines
 noremap j gj
 noremap k gk
+nnoremap Q <nop>
+
 
 " Tap space to clear highlighting
 nmap ,i :set list!<CR>
@@ -126,3 +130,15 @@ au FileType go set noet ts=8 sw=8 sts=0
 
 colorscheme ir_black
 highlight clear SignColumn
+
+if has("user_commands")
+    command! -bang -nargs=? -complete=file E e<bang> <args>
+    command! -bang -nargs=? -complete=file W w<bang> <args>
+    command! -bang -nargs=? -complete=file Wq wq<bang> <args>
+    command! -bang -nargs=? -complete=file WQ wq<bang> <args>
+    command! -bang Wa wa<bang>
+    command! -bang WA wa<bang>
+    command! -bang Q q<bang>
+    command! -bang QA qa<bang>
+    command! -bang Qa qa<bang>
+endif

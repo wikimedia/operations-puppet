@@ -10,10 +10,15 @@ rsync --delete --recursive --chmod=u+x ~/.binned/ ~/.bin >/dev/null 2>&1
 # Colors
 #
 
-RESET="$(tput sgr0)"
-BRIGHT="$(tput bold)"
-GREY="$(tput setaf 7)"
 BLACK="$(tput setaf 0)"
+BRIGHT="$(tput bold)"
+GREY58="$(tput setaf 246)"
+GREY="$(tput setaf 7)"
+LIGHTSTEELBLUE3="$(tput setaf 146)"
+RED="$(tput setaf 1)"
+RESET="$(tput sgr0)"
+SKYBLUE3="$(tput setaf 74)"
+UNDERLINE="$(tput smul)"
 HOSTCOLOR="$(tput setaf $(($(cksum<<<$HOSTNAME|cut -d' ' -f-1)%6+1)))"
 
 
@@ -22,7 +27,7 @@ HOSTCOLOR="$(tput setaf $(($(cksum<<<$HOSTNAME|cut -d' ' -f-1)%6+1)))"
 #
 
 export VISUAL="vim" EDITOR="vim" TERM="xterm-256color"
-export LC_ALL="en_US.UTF-8" LANG="en_US"
+export LC_ALL="en_US.UTF-8" LANG="en_US" LC_COLLATE="C"
 export HISTCONTROL="ignoreboth" HISTFILESIZE=2000 HISTSIZE=1000
 export BLOCKSIZE=1024 CLICOLOR=1
 export PS1='\[$BRIGHT\]\[$BLACK\][\[$HOSTCOLOR\]${HOSTNAME}\[$GREY\]:\[$RESET\]\[$GREY\]\w\[$BRIGHT\]\[$BLACK\]]\[$RESET\] $ '
@@ -31,8 +36,7 @@ export DEBFULLNAME="Ori Livneh" DEBEMAIL="ori@wikimedia.org"
 export PYTHONSTARTUP="${HOME}/.pythonrc"
 export PROMPT_COMMAND="history -a; history -n"
 export HHVM="$(pidof -s /usr/bin/hhvm 2>/dev/null)"
-export LC_COLLATE="C"
-export LESS="FIKMQRX"
+export LESS="FIKMQRX" GROFF_NO_SGR=1
 
 
 
@@ -51,7 +55,7 @@ shopt -s autocd cdable_vars cdspell checkwinsize \
 # Shortcuts
 #
 
-alias ls="ls --color" ....="cd ../.." ...="cd .." cd..="cd .." g="git"
+alias ls="ls --color" ....="cd ../.." ...="cd .." cd..="cd .." g="git" doh='sudo $(fc -ln -1)'
 =()          { py "$*"; }
 mkpass()     { head -c 32 /dev/urandom | base64 | tr -cd [:alnum:]; }
 puppet()     { sudo puppet "$@"; }
@@ -65,15 +69,26 @@ service()    { sudo service "$@"; }
 perf()       { sudo perf "$@"; }
 gdbh()       { sudo gdb -p "$(pidof -s hhvm)"; }
 redis-cli()  { command redis-cli -a "$(grep -Po '(?<=masterauth )\S+' /etc/redis/redis.conf)" "$@"; }
-fields()     { awk 'END { for (i = 1; i <= NF; i++) printf("%s : %s\n", i, $i) }' "$@"; }
+fields()     { tail -1 "${@:---}" | awk 'END { for (i = 1; i <= NF; i++) printf("%s : %s\n", i, $i) }' ; }
 field()      { awk -v field="$1" '{print $(field)}'; }
-lat()        { ls -lat "$@" | head; }
+lat()        { ls -lat *"${@:+.}${@}" | head; }
 sudo()       { command sudo -E "$@"; }
 
 ptop()       {
   args=( top )
   [[ -z $1 || $1 == -* ]] || { args+=( -p "$(pidof -s $1)" ); shift; }
   sudo perf "${args[@]}" "$@"
+}
+
+man() {
+    env LESS_TERMCAP_mb="${BRIGHT}${RED}"                \
+        LESS_TERMCAP_md="${BRIGHT}${SKYBLUE3}"           \
+        LESS_TERMCAP_me="${RESET}"                       \
+        LESS_TERMCAP_se="${RESET}"                       \
+        LESS_TERMCAP_so="${GREY58}"                      \
+        LESS_TERMCAP_ue="${RESET}"                       \
+        LESS_TERMCAP_us="${UNDERLINE}${LIGHTSTEELBLUE3}" \
+        man "$@"
 }
 
 
