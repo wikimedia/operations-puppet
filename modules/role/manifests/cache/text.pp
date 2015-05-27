@@ -133,6 +133,12 @@ class role::cache::text {
         },
     }
 
+
+    varnish::logging::statsd { 'text-frontend':
+        instance_name => 'frontend',
+        statsd_server => 'statsd.eqiad.wmnet:8125',
+    }
+
     include role::cache::logging
 
     class { '::role::cache::kafka::statsv':

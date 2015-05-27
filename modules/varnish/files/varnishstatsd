@@ -1,0 +1,173 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  varnishstatsd
+  ~~~~~~~~~~~~~
+  Report backend response times and request counts aggregated by status.
+
+  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+"""
+import argparse
+import collections
+import ctypes
+import ctypes.util
+import socket
+import urlparse
+
+
+varnishapi_so = ctypes.util.find_library('varnishapi')
+if not varnishapi_so:
+    raise SystemExit('Error: Unable to find varnishapi shared library.')
+varnishapi = ctypes.CDLL(varnishapi_so)
+
+# Index of Varnish log tags ('RxURL', 'ReqEnd', etc.)
+VSL_Tags = (ctypes.c_char_p * 256).in_dll(varnishapi, 'VSL_tags')
+
+# This flag indicates that the log record was generated as a result
+# of communication with a backend server. Defined in varnishapi.h.
+VSL_S_BACKEND = 2
+
+# Number of metrics to send with each update
+BATCH_SIZE = 100
+
+# VSL_handler_f is the type for callback functions accepted
+# by VSL_Dispatch.
+VSL_handler_f = ctypes.CFUNCTYPE(
+    ctypes.c_int,                   # return value
+    ctypes.c_void_p,                # void *priv
+    ctypes.c_uint,                  # enum VSL_tag_e tag
+    ctypes.c_uint,                  # unsigned fd
+    ctypes.c_uint,                  # unsigned len
+    ctypes.c_uint,                  # unsigned spec
+    ctypes.POINTER(ctypes.c_char),  # const char *ptr
+    ctypes.c_ulonglong,             # uint64_t bitmap
+)
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+
+def parse_statsd_server_string(server_string):
+    parsed = urlparse.urlparse('//' + server_string)
+    return parsed.hostname, parsed.port or 8125
+
+
+varnishapi.VSM_New.restype = ctypes.c_void_p
+vd = varnishapi.VSM_New()
+varnishapi.VSL_Setup(vd)
+
+ap = argparse.ArgumentParser(
+    description='Varnish backend response time metric logger',
+    epilog='If no statsd server is specified, prints stats to stdout instead.'
+)
+ap.add_argument('--varnish-name', help='varnish name')
+ap.add_argument('--statsd-server', help='statsd server',
+                type=parse_statsd_server_string)
+ap.add_argument('--key-prefix', help='metric key prefix',
+                default='varnish.backends')
+args = ap.parse_args()
+
+if args.varnish_name:
+    if varnishapi.VSL_Arg(vd, ord('n'), args.varnish_name) != 1:
+        raise OSError('VCL_Arg(vd, \'i\', "%s")' % args.varnish_name)
+
+for tag in ('Backend', 'BackendXID', 'ReqEnd', 'RxStatus', 'TxRequest'):
+    if varnishapi.VSL_Arg(vd, ord('i'), tag) != 1:
+        raise OSError('VCL_Arg(vd, \'i\', "%s")' % tag)
+
+if varnishapi.VSL_Open(vd, 1) != 0:
+    raise OSError('VCL_Open(vd, 1)')
+
+
+# Maximum number of log records to keep in memory.
+MAX_BACKLOG = 10
+
+# Map of transaction ID: request method ('GET', 'POST', etc.)
+tids = collections.OrderedDict()
+
+# Map of backend XID: transaction ID
+xids = collections.OrderedDict()
+
+# Map of transaction ID: backend name
+backends = collections.OrderedDict()
+
+# Map of transaction ID: response status code (200, 404, etc.)
+statuses = collections.OrderedDict()
+
+stats = []
+
+
+def vsl_handler(priv, tag_id, fd, length, spec, ptr, bitmap):
+    global stats
+
+    record = ctypes.string_at(ptr, length)
+    tag = VSL_Tags[tag_id]
+
+    if tag == 'Backend':
+        # Associate the transaction ID with the backend name.
+        tid, _, backend = record.split()
+        backends[int(tid)] = backend
+        if len(backends) > MAX_BACKLOG:
+            backends.popitem(last=False)
+
+    elif tag == 'BackendXID':
+        # Associate the backend XID with its transaction ID.
+        xids[record] = fd
+        if len(xids) > MAX_BACKLOG:
+            xids.popitem(last=False)
+
+    elif tag == 'TxRequest' and spec & VSL_S_BACKEND:
+        # Associate the transaction ID with the request method.
+        tids[fd] = record
+        if len(tids) > MAX_BACKLOG:
+            tids.popitem(last=False)
+
+    elif tag == 'RxStatus' and spec & VSL_S_BACKEND:
+        # Associate the transaction ID with the response status code.
+        statuses[fd] = record[0] + 'xx'
+        if len(statuses) > MAX_BACKLOG:
+            statuses.popitem(last=False)
+
+    elif tag == 'ReqEnd':
+        # Collate data and emit metric.
+        fields = record.split()
+        xid = fields[0]
+
+        try:
+            tid = xids.pop(xid)
+            method = tids.pop(tid)
+            backend = backends.pop(tid)
+            status = statuses.pop(tid)
+        except KeyError:
+            return 0
+
+        ttfb = round(1000 * float(fields[4]))
+        stats.extend((
+            '%s.%s.%s:%d|m' % (args.key_prefix, backend, method, ttfb),
+            '%s.%s.%s:1|c' % (args.key_prefix, backend, status),
+        ))
+
+        if not args.statsd_server:
+            while stats:
+                print(stats.pop())
+        elif len(stats) >= BATCH_SIZE:
+            stats_dgram = '\n'.join(stats).encode('utf-8')
+            sock.sendto(stats_dgram, args.statsd_server)
+            del stats[:]
+
+    return 0
+
+handler = VSL_handler_f(vsl_handler)
+varnishapi.VSL_Dispatch(vd, handler, None)

@@ -32,4 +32,11 @@ class varnish::common {
         group   => 'root',
         mode    => '0555',
     }
+
+    file { '/usr/local/bin/varnishstatsd':
+        source  => 'puppet:///modules/varnish/varnishstatsd',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+    }
 }
