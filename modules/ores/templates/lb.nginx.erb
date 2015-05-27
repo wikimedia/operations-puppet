@@ -1,0 +1,14 @@
+# THIS FILE IS MANAGED BY PUPPET
+upstream oresweb {
+    <% @realservers.each do |realserver| %>
+    server <%= realserver %>;
+    <% end %>
+}
+
+server {
+    listen 80;
+
+    location / {
+        uwsgi_pass oresweb;
+    }
+}
