@@ -81,5 +81,13 @@ class role::ganeti {
             description  => 'ganeti-mond running',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u root -C ganeti-mond'
         }
+
+        # DRBD is used for HA of disk images. Port range for ganeti is
+        # 11000-14999
+        ferm::service { 'ganeti_drbd':
+            proto  => 'tcp',
+            port   => '11000:14999',
+            srange => "@resolve(($ganeti_ferm_nodes))",
+        }
     }
 }
