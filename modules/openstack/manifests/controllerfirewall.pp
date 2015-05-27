@@ -1,7 +1,7 @@
-class openstack::firewall {
+class openstack::controllerfirewall {
     include base::firewall
 
-    $labs_private_net = '10.0.0.0/0'
+    $labs_vms = '10.68.16.0/21'
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
     if ($::site == 'codfw') {
@@ -11,10 +11,12 @@ class openstack::firewall {
         # virt1000
         $other_master = '208.80.154.18'
         $designate = '208.80.154.12'
+        $monitoring = '208.80.154.14'
     } elsif ($::site == 'eqiad') {
         $labs_nodes = '10.64.20.0/24'
         $other_master = '208.80.153.14'
         $designate = '208.80.154.12'
+        $monitoring = '208.80.154.14'
     }
 
 
@@ -67,10 +69,10 @@ class openstack::firewall {
 
     # services provided to Labs instances
     ferm::rule { 'puppetmaster':
-        rule => "saddr ${labs_private_net} proto tcp dport 8140 ACCEPT;",
+        rule => "saddr ${labs_vms} ${monitoring} proto tcp dport 8140 ACCEPT;",
     }
     ferm::rule { 'salt':
-        rule => "saddr ${labs_private_net} proto tcp dport (4505 4506) ACCEPT;",
+        rule => "saddr ${labs_vms} ${monitoring} proto tcp dport (4505 4506) ACCEPT;",
     }
 
     # mysql access from iron
