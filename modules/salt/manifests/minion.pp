@@ -44,11 +44,15 @@ class salt::minion(
     $grains    = {},
 ) {
     $config = {
-        id            => $id,
-        master        => $master,
-        master_finger => $master_finger,
-        grains        => $grains,
-        dns_check     => false,
+        id                  => $id,
+        master              => $master,
+        master_finger       => $master_finger,
+        grains              => $grains,
+        dns_check           => false,
+        random_reauth_delay => 270,
+        recon_default       => 1000,
+        recon_max           => 30000,
+        recon_randomize     => true,
     }
 
     # our config file must be in place before
