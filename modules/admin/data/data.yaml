@@ -33,8 +33,10 @@ nimishg, rainman, ssmith, swalling, erik]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   gerrit-admin:
     gid: 704
-    description: RT 6720 - assist in managing gerrit server
-    members: [qchris]
+    description: assist in managing gerrit server
+    # qchris is RT 6720
+    # Rest is the Release Engineering team
+    members: [qchris, dduvall, hashar, thcipriani, twentyafterfour, zfilipin]
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
