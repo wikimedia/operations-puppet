@@ -2075,12 +2075,12 @@ node 'palladium.eqiad.wmnet' {
 }
 
 # parser cache update to MariaDB 10
-node /pc100[1]\.eqiad\.wmnet/ {
+node /pc100[1-2]\.eqiad\.wmnet/ {
     $cluster = 'mysql'
     include role::mariadb::parsercache
 }
 
-node /pc100[2-3]\.eqiad\.wmnet/ {
+node /pc100[3]\.eqiad\.wmnet/ {
     $cluster = 'mysql'
     include role::db::core
     include mysql_wmf::mysqluser
