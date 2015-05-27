@@ -68,7 +68,7 @@ class ores::web {
                 'wsgi-file' => "${src_path}/ores.wsgi",
                 master      => true,
                 chdir       => $src_path,
-                socket      => '0.0.0.0:8080',
+                http-socket => '0.0.0.0:8080',
                 venv        => '/srv/ores/venv',
                 processes   => inline_template('<%= @processorcount.to_i * 2 %>'),
             }

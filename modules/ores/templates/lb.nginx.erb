@@ -9,8 +9,6 @@ server {
     listen 80;
 
     location / {
-        include uwsgi_params;
-
-        uwsgi_pass oresweb;
+        proxy_pass oresweb;
     }
 }
