@@ -1198,10 +1198,22 @@ node 'iron.wikimedia.org' {
 }
 
 node 'labcontrol1001.wikimedia.org' {
-    $cluster = 'virt'
+    $cluster               = 'virt'
+    $ganglia_aggregator    = true
+    $is_puppet_master      = true
+    $is_labs_puppet_master = true
+    $use_neutron           = false
 
     include standard
-    include base::firewall
+    include role::dns::ldap
+    include ldap::role::client::labs
+    include role::nova::controller
+    include role::salt::masters::labs
+    include role::deployment::salt_masters
+    if $use_neutron == true {
+        include role::neutron::controller
+
+    }
 }
 
 node 'labcontrol2001.wikimedia.org' {
