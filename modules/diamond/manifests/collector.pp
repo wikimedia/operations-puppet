@@ -65,21 +65,13 @@ define diamond::collector(
         notify  => Service['diamond'],
     }
 
+    # If this is a custom collector, use the collector_module class
+    # to install the custom python collector.
     if $source {
-        file { "/usr/share/diamond/collectors/${name}":
-            ensure => ensure_directory($ensure),
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-
-        file { "/usr/share/diamond/collectors/${name}/${name}.py":
+        class { '::diamond::collector_module':
             ensure => $ensure,
-            before => File["/etc/diamond/collectors/${collector}.conf"],
+            name   => $name,
             source => $source,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0644',
         }
     }
 }
