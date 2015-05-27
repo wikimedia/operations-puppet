@@ -36,7 +36,7 @@ BASEDIR=${BASEDIR:-"$(readlink -f $(dirname "$0")/..)"}
 # Script version. DO NOT CHANGE, *unless* you change the master copy maintained
 # by Joerg Jaspert and the Debian mirroradm group.
 # This is used to track which mirror is using which script version.
-VERSION="20140805"
+VERSION="20150425"
 
 # Source our common functions
 . "${BASEDIR}/etc/common"
