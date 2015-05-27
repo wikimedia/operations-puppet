@@ -1663,9 +1663,9 @@ host dickson {
 	filename "debian-installer/amd64/pxelinux.0";
 }
 
-host dysprosium {
+host cp1099 {
 	hardware ethernet 90:B1:1C:3B:C7:2C;
-	fixed-address dysprosium.eqiad.wmnet;
+	fixed-address cp1099.eqiad.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
