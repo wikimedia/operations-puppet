@@ -41,6 +41,7 @@ class chromium(
 
     group { 'chromium':
         ensure => $ensure,
+        system => true,
     }
 
     user { 'chromium':
@@ -48,6 +49,7 @@ class chromium(
         gid        => 'chromium',
         shell      => '/bin/false',
         home       => '/var/lib/chromium',
+        system     => true,
         managehome => true,
     }
 

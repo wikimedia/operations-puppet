@@ -25,6 +25,7 @@ class role::jsbench {
         ensure     => present,
         comment    => 'Chromium service user for jsbench',
         home       => '/srv/profile/jsbench',
+        system     => true,
         managehome => true,
         require    => File['/srv/profile'],
     }

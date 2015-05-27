@@ -18,8 +18,6 @@ EXCLUDE=("nobody" \
          "reprepro" \   # caesium.eqiad.wmnet
          "mysql" \      # pc1001.eqiad.wmnet
          "dbmon" \      # db1044.eqiad.wmnet
-         "txstatsd" \   # osmium.eqiad.wmnet
-         "chromium" \   # osmium.eqiad.wmnet
          "parsoid-rt"); # ruthenium.eqiad.wmnet T90966
 
 log() {
