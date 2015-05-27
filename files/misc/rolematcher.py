@@ -79,9 +79,7 @@ def manual_init():
         RoleMatcher('esams_upload_cp', 'cp(30[0-9]+)\.esams', 3003, 3010),
         RoleMatcher('esams_ssl-ip6_ssl', 'ssl(300[0-9]+)\.esams', 3001, 3004),
         RoleMatcher('esams_text_kns', 'knsq([0-9]+)\.esams', 23, 30),
-        RoleMatcher('esams_text_amssq', 'amssq([0-9]+)\.esams', 31, 46),
         RoleMatcher('esams_upload_knsq', 'knsq([0-9]+)\.esams', 16, 22),
-        RoleMatcher('esams_upload_amssq', 'amssq([0-9]+)\.esams', 47, 62),
     ]
     return matchers
 
