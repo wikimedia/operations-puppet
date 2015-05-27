@@ -1,5 +1,4 @@
 # = Class: puppetmaster::autosigner
-#
 # Automatically signs new puppet & salt certificate requests
 class puppetmaster::autosigner {
     file { '/usr/local/sbin/puppetsigner.py':
