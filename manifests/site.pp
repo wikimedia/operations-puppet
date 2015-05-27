@@ -1205,7 +1205,7 @@ node 'labcontrol1001.wikimedia.org' {
     $use_neutron           = false
 
     include standard
-    include role::dns::ldap
+    #include role::dns::ldap
     include ldap::role::client::labs
     include role::nova::controller
     include role::salt::masters::labs
