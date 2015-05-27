@@ -106,7 +106,7 @@ nimishg, rainman, ssmith, swalling, erik]
               nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
-              neilpquinn-wmf, tbayer, jdouglas, moushira]
+              neilpquinn-wmf, tbayer, jdouglas, moushira, dbrant]
   ldap-admins:
     gid: 715
     description: ldap admins
