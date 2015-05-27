@@ -50,6 +50,16 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
         mode    => '0444',
     }
 
+    # create an additional host lookup file (formatted like /etc/host) that
+    #  resolves the puppetmaster to an IP out of hiera.
+    $puppetmaster_ip = ipresolve($novaconfig['puppet_host'],4)
+    file { '/etc/puppethost':
+        content => template("openstack/${$openstack_version}/nova/puppethost.erb"),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
     sysctl::parameters { 'openstack':
         values => {
             # Turn off IP filter
