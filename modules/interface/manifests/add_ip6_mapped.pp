@@ -29,7 +29,7 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
         }
 
         # XXX Temporary: testing on cp1008 first in a couple of different scenarios...
-        if $::hostname == 'cp1008' {
+        if $::hostname == 'cp0000' {
 
         # The above sets up an "up" command to add the fixed IPv6 mapping of the v4
         # address statically, and also executes the command to add the address
