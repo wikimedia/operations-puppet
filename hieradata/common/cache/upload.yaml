@@ -13,6 +13,7 @@ nodes:
     - 'cp1072.eqiad.wmnet'
     - 'cp1073.eqiad.wmnet'
     - 'cp1074.eqiad.wmnet'
+    - 'cp1099.eqiad.wmnet'
   esams:
     - 'cp3032.esams.wmnet'
     - 'cp3033.esams.wmnet'
