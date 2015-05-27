@@ -43,8 +43,11 @@ class role::analytics::clients {
         require => Package['icedtea-7-jre-jamvm'],
     }
 
-    # ipython-notebook is very useful, install it.
-    ensure_packages(['ipython-notebook'])
+    # These packages are useful, install them.
+    ensure_packages([
+        'ipython-notebook',
+        'kafkacat',
+    ])
 
     # include maven to build jars for Hadoop.
     include ::maven
