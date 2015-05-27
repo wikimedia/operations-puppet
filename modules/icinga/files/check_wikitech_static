@@ -7,7 +7,7 @@ WIKITECH="https://wikitech.wikimedia.org/w/api.php"
 WIKITECHSTATIC="https://wikitech-static.wikimedia.org/w/api.php"
 API_QUERY="action=query&titles=Server_Admin_Log&list=recentchanges&format=xml"
 
-AGE_LIMIT=90000 # seconds
+AGE_LIMIT=100000 # seconds
 
 # MAIN
 TS_WIKITECH=$(curl $WIKITECH/?$API_QUERY 2> /dev/null | grep -o "timestamp.*" | cut -d\" -f2)
