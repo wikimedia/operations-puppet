@@ -10,8 +10,6 @@ class role::cache::configuration {
                         'cp1068.eqiad.wmnet',
                     ],
                     'esams' => [
-                        'amssq31.esams.wmnet',
-                        'amssq62.esams.wmnet',
                     ],
                     'ulsfo' => [
                         'cp4008.ulsfo.wmnet',
