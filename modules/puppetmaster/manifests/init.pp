@@ -1,4 +1,4 @@
-# Class: puppetmaster
+u Class: puppetmaster
 #
 # This class installs a Puppetmaster
 #
@@ -39,9 +39,11 @@ class puppetmaster(
     require puppetmaster::config
 
     if ($::lsbdistcodename == 'precise') {
-        package { [
-            'libmysql-ruby',
-            ]:
+        package { 'libmysql-ruby':
+            ensure  => present,
+        }
+    } else {
+        package { 'ruby-mysql':
             ensure  => present,
         }
     }
