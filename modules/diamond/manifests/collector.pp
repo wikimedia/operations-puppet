@@ -72,6 +72,7 @@ define diamond::collector(
             ensure => $ensure,
             name   => $name,
             source => $source,
+            before => File["/etc/diamond/collectors/${collector}.conf"],
         }
     }
 }

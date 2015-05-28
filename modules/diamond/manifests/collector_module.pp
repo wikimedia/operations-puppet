@@ -31,7 +31,6 @@ class diamond::collector_module(
 
     file { "/usr/share/diamond/collectors/${name}/${name}.py":
         ensure => $ensure,
-        before => File["/etc/diamond/collectors/${collector}.conf"],
         source => $source,
         owner  => 'root',
         group  => 'root',
