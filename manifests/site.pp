@@ -223,6 +223,8 @@ node 'antimony.wikimedia.org' {
 node 'argon.wikimedia.org' {
     include standard
     include role::mw-rc-irc
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'baham.wikimedia.org' {
