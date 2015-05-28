@@ -292,6 +292,8 @@ node 'caesium.eqiad.wmnet' {
     role releases
     include base::firewall
     include standard
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # T83044 cameras
