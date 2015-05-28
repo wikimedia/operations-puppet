@@ -28,9 +28,6 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
             prefixlen => '64'
         }
 
-        # XXX Temporary: testing on jessie/trusty hostnames ending in the digit 1
-        if $::hostname =~ /1$/ {
-
         # The above sets up an "up" command to add the fixed IPv6 mapping of the v4
         # address statically, and also executes the command to add the address
         # in the present if not configured.
@@ -69,7 +66,5 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
                 unless  => $v6_token_check_cmd,
             }
         }
-
-        } # XXX end cp1008 testing block
     }
 }
