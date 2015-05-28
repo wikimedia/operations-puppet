@@ -1,2 +1,2 @@
 #!/bin/bash
-watch "tail -n 1000 <%= @log_directory %>/exception.log | grep -P '^\d{4}-\d{2}-\d{2}' | grep -v '\bUsageException\b' | sed -r 's/^.*?\[\w\]\s+\S+\s+//g' | cut -d ' ' -f 7- | sort | uniq -c | sort -rn"
+watch "tail -n 1000 <%= @log_directory %>/exception.log | grep -P '^\d{4}-\d{2}-\d{2}' | grep -v '\bUsageException\b' | sed -r 's/^.*?\[\w+\]\s+\S+\s+//g' | cut -d ' ' -f 7- | sort | uniq -c | sort -rn"
