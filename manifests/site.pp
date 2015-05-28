@@ -215,6 +215,8 @@ node 'antimony.wikimedia.org' {
     role gitblit
     include base::firewall
     include standard
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # irc.wikimedia.org
