@@ -41,3 +41,6 @@ role::cache::mobile::zero_site: 'http://zero.wikimedia.beta.wmflabs.org'
 zookeeper_hosts:
   "${::fqdn}": 1
 nrpe::allowed_hosts: '10.68.16.195'
+
+labs_puppet_master: "virt1000.wikimedia.org"
+labs_puppet_master_secondary: "labcontrol2001.wikimedia.org"
