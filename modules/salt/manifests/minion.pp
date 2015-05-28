@@ -53,6 +53,7 @@ class salt::minion(
         recon_default       => 1000,
         recon_max           => 30000,
         recon_randomize     => true,
+        keysize             => 2048,
     }
 
     # our config file must be in place before
