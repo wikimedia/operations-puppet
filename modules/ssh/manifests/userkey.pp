@@ -44,14 +44,6 @@ define ssh::userkey(
   $content = undef,
 
 ) {
-    if $source == undef and $content == undef  {
-        fail('you must provide either "source" or "content"')
-    }
-
-    if $source != undef and $content != undef  {
-        fail('"source" and "content" are mutually exclusive')
-    }
-
     if $skey {
         if !defined(File["/etc/ssh/userkeys/${user}.d/"]) {
             file { "/etc/ssh/userkeys/${user}.d/":
