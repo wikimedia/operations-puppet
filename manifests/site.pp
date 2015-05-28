@@ -2222,6 +2222,8 @@ node 'silver.wikimedia.org' {
     include standard
     include role::nova::manager
     include role::mariadb::wikitech
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'sodium.wikimedia.org' {
