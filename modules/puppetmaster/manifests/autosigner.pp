@@ -1,12 +1,15 @@
 # = Class: puppetmaster::autosigner
 # Automatically signs new puppet & salt certificate requests
 class puppetmaster::autosigner {
+
+    $puppetmaster_service_name = hiera('labs_puppet_master')
+
     file { '/usr/local/sbin/puppetsigner.py':
-        ensure => present,
-        source => 'puppet:///modules/puppetmaster/puppetsigner.py',
-        mode   => '0550',
-        owner  => 'root',
-        group  => 'root'
+        ensure  => present,
+        content => template('puppetmaster/puppetsigner.py.erb'),
+        mode    => '0550',
+        owner   => 'root',
+        group   => 'root'
     }
 
     cron { 'puppet_certificate_signer':

@@ -57,6 +57,10 @@ try:
             # Ourselves!
             continue
 
+        if hostname == "<%= @puppetmaster_service_name %>"
+            # Ourselves!
+            continue
+
         # Skip pathological hostnames -- possible attack vector.
         if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', hostname):
             sys.stderr.write('Invalid hostname %s\n' % hostname)
