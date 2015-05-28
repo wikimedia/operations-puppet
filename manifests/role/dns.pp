@@ -6,7 +6,6 @@ class role::dns::ldap {
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 
     $primary_ldap_dns = ipresolve(hiera('labs_ldap_dns_host'),4)
-    $secondary_ldap_dns = ipresolve(hiera('labs_ldap_dns_host_secondary'),4)
 
     interface::ip { 'role::dns::ldap':
         interface => 'eth0',
@@ -15,7 +14,7 @@ class role::dns::ldap {
 
     # FIXME: turn these settings into a hash that can be included somewhere
     class { '::labs_ldap_dns':
-        dns_auth_ipaddress     => "${primary_ldap_dns} ${secondary_ldap_dns}",
+        dns_auth_ipaddress     => $primary_ldap_dns,
         dns_auth_query_address => $primary_ldap_dns,
         dns_auth_soa_name      => hiera('labs_ldap_dns_host'),
         ldap_hosts             => $ldapconfig['servernames'],
