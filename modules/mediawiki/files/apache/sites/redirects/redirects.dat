@@ -5,17 +5,17 @@
 # parameters. The first parameter is the command name, which may be funnel,
 # rewrite or override.
 #
-# funnel	<domain-wildcard>	<dest>
+# funnel    <domain-wildcard>   <dest>
 #
 #   Redirect a whole domain (or set of domains) to a single URL
 #
-# rewrite	<domain-wildcard>	<dest>
+# rewrite   <domain-wildcard>   <dest>
 #
 #   Rewrite the URLs in one domain (or set of domains) to URLs in another
 #   domain with an optional path prefix. A trailing slash in <dest> is ignored.
 #   A leading slash is implied in the source path.
 #
-# override	<domain-wildcard><path>	<dest>
+# override  <domain-wildcard><path> <dest>
 #
 #   Override a rewrite or funnel rule for a certain domain wildcard by sending
 #   a certain path to a specified destination URL.
@@ -48,467 +48,467 @@
 #
 
 # Shop redirects
-funnel	shop.wikimedia.org	//store.wikimedia.org
-funnel	shop.wikipedia.org	//store.wikimedia.org
-funnel	store.wikipedia.org	//store.wikimedia.org
-funnel	shop.wikipedia.com	//store.wikimedia.org
-funnel	store.wikipedia.com	//store.wikimedia.org
+funnel  shop.wikimedia.org  //store.wikimedia.org
+funnel  shop.wikipedia.org  //store.wikimedia.org
+funnel  store.wikipedia.org //store.wikimedia.org
+funnel  shop.wikipedia.com  //store.wikimedia.org
+funnel  store.wikipedia.com //store.wikimedia.org
 
 # Donate wiki
-rewrite	donate.mediawiki.org	https://donate.wikimedia.org
-rewrite	donate.wikibooks.org	https://donate.wikimedia.org
-rewrite	donate.wikimediafoundation.org	https://donate.wikimedia.org
-rewrite	donate.wikinews.org	https://donate.wikimedia.org
-rewrite	donate.wikipedia.com	https://donate.wikimedia.org
-rewrite	donate.wikiquote.org	https://donate.wikimedia.org
-rewrite	donate.wikisource.org	https://donate.wikimedia.org
-rewrite	donate.wikispecies.org	https://donate.wikimedia.org
-rewrite	donate.wikiversity.org	https://donate.wikimedia.org
-rewrite	donate.wiktionary.org	https://donate.wikimedia.org
+rewrite donate.mediawiki.org    https://donate.wikimedia.org
+rewrite donate.wikibooks.org    https://donate.wikimedia.org
+rewrite donate.wikimediafoundation.org  https://donate.wikimedia.org
+rewrite donate.wikinews.org https://donate.wikimedia.org
+rewrite donate.wikipedia.com    https://donate.wikimedia.org
+rewrite donate.wikiquote.org    https://donate.wikimedia.org
+rewrite donate.wikisource.org   https://donate.wikimedia.org
+rewrite donate.wikispecies.org  https://donate.wikimedia.org
+rewrite donate.wikiversity.org  https://donate.wikimedia.org
+rewrite donate.wiktionary.org   https://donate.wikimedia.org
 
-funnel	sep11.wikipedia.org	http://wayback.archive.org/web/20030315000000*/http://sep11.wikipedia.org/wiki/In_Memoriam
+funnel  sep11.wikipedia.org http://wayback.archive.org/web/20030315000000*/http://sep11.wikipedia.org/wiki/In_Memoriam
 
-funnel	*wikijunior.com	//en.wikibooks.org/wiki/Wikijunior
-funnel	*wikijunior.org	//en.wikibooks.org/wiki/Wikijunior
-funnel	*wikijunior.net	//en.wikibooks.org/wiki/Wikijunior
+funnel  *wikijunior.com //en.wikibooks.org/wiki/Wikijunior
+funnel  *wikijunior.org //en.wikibooks.org/wiki/Wikijunior
+funnel  *wikijunior.net //en.wikibooks.org/wiki/Wikijunior
 
 # Language aliases
-rewrite	be-x-old.wikisource.org	//be.wikisource.org # T43755
-rewrite	de-beta.wikipedia.org	//de.wikipedia.org
-rewrite	cz.wikipedia.org	//cs.wikipedia.org
-rewrite	cz.wikipedia.com	//cs.wikipedia.org
-rewrite	cz.wikibooks.org	//cs.wikibooks.org
-rewrite	cz.wikibooks.com	//cs.wikibooks.org
-rewrite	cz.wikiquote.org	//cs.wikiquote.org
-rewrite	cz.wikiquote.com	//cs.wikiquote.org
-rewrite	cz.wikisource.org	//cs.wikisource.org
-rewrite	cz.wikisource.com	//cs.wikisource.org
-rewrite	cz.wikiversity.org	//cs.wikiversity.org
-rewrite	cz.wikiversity.com	//cs.wikiversity.org
-rewrite	cz.wiktionary.org	//cs.wiktionary.org
-rewrite	cz.wiktionary.com	//cs.wiktionary.org
-rewrite	cz.wikinews.org	//cs.wikinews.org
-rewrite	cz.wikinews.com	//cs.wikinews.org
-rewrite	dk.wikipedia.org	//da.wikipedia.org
-rewrite	dk.wikipedia.com	//da.wikipedia.org
-rewrite	dk.wikibooks.org	//da.wikibooks.org
-rewrite	dk.wikibooks.com	//da.wikibooks.org
-rewrite	dk.wiktionary.org	//da.wiktionary.org
-rewrite	dk.wiktionary.com	//da.wiktionary.org
-rewrite	epo.wikipedia.org	//eo.wikipedia.org
-rewrite	jp.wikipedia.org	//ja.wikipedia.org
-rewrite	jp.wikipedia.com	//ja.wikipedia.org
-rewrite	nb.wikipedia.org	//no.wikipedia.org
+rewrite be-x-old.wikisource.org //be.wikisource.org # T43755
+rewrite de-beta.wikipedia.org   //de.wikipedia.org
+rewrite cz.wikipedia.org    //cs.wikipedia.org
+rewrite cz.wikipedia.com    //cs.wikipedia.org
+rewrite cz.wikibooks.org    //cs.wikibooks.org
+rewrite cz.wikibooks.com    //cs.wikibooks.org
+rewrite cz.wikiquote.org    //cs.wikiquote.org
+rewrite cz.wikiquote.com    //cs.wikiquote.org
+rewrite cz.wikisource.org   //cs.wikisource.org
+rewrite cz.wikisource.com   //cs.wikisource.org
+rewrite cz.wikiversity.org  //cs.wikiversity.org
+rewrite cz.wikiversity.com  //cs.wikiversity.org
+rewrite cz.wiktionary.org   //cs.wiktionary.org
+rewrite cz.wiktionary.com   //cs.wiktionary.org
+rewrite cz.wikinews.org //cs.wikinews.org
+rewrite cz.wikinews.com //cs.wikinews.org
+rewrite dk.wikipedia.org    //da.wikipedia.org
+rewrite dk.wikipedia.com    //da.wikipedia.org
+rewrite dk.wikibooks.org    //da.wikibooks.org
+rewrite dk.wikibooks.com    //da.wikibooks.org
+rewrite dk.wiktionary.org   //da.wiktionary.org
+rewrite dk.wiktionary.com   //da.wiktionary.org
+rewrite epo.wikipedia.org   //eo.wikipedia.org
+rewrite jp.wikipedia.org    //ja.wikipedia.org
+rewrite jp.wikipedia.com    //ja.wikipedia.org
+rewrite nb.wikipedia.org    //no.wikipedia.org
 
 # renamed chapter wiki - T40763
-rewrite	pa.us.wikimedia.org	//pa-us.wikimedia.org
+rewrite pa.us.wikimedia.org //pa-us.wikimedia.org
 
 # arbcom
-rewrite	arbcom.de.wikipedia.org	https://arbcom-de.wikipedia.org
-rewrite	arbcom.en.wikipedia.org	https://arbcom-en.wikipedia.org
-rewrite	arbcom.fi.wikipedia.org	https://arbcom-fi.wikipedia.org
-rewrite	arbcom.nl.wikipedia.org	https://arbcom-nl.wikipedia.org
+rewrite arbcom.de.wikipedia.org https://arbcom-de.wikipedia.org
+rewrite arbcom.en.wikipedia.org https://arbcom-en.wikipedia.org
+rewrite arbcom.fi.wikipedia.org https://arbcom-fi.wikipedia.org
+rewrite arbcom.nl.wikipedia.org https://arbcom-nl.wikipedia.org
 
-rewrite	noboard.chapters.wikimedia.org	//noboard-chapters.wikimedia.org
+rewrite noboard.chapters.wikimedia.org  //noboard-chapters.wikimedia.org
 
-rewrite	wg.en.wikipedia.org	//wg-en.wikipedia.org
+rewrite wg.en.wikipedia.org //wg-en.wikipedia.org
 
-rewrite	tp.wikipedia.org	//tokipona.wikipedia.org
+rewrite tp.wikipedia.org    //tokipona.wikipedia.org
 
-rewrite	zh-cfr.wikipedia.org	//zh-min-nan.wikipedia.org
-rewrite	minnan.wikipedia.org	//zh-min-nan.wikipedia.org
-rewrite	nan.wikipedia.org	//zh-min-nan.wikipedia.org
+rewrite zh-cfr.wikipedia.org    //zh-min-nan.wikipedia.org
+rewrite minnan.wikipedia.org    //zh-min-nan.wikipedia.org
+rewrite nan.wikipedia.org   //zh-min-nan.wikipedia.org
 
-rewrite	zh-cn.wikipedia.org	//zh.wikipedia.org
-rewrite	zh-tw.wikipedia.org	//zh.wikipedia.org
+rewrite zh-cn.wikipedia.org //zh.wikipedia.org
+rewrite zh-tw.wikipedia.org //zh.wikipedia.org
 
 # RT #4240
-funnel	*wikiartpedia.biz	//www.wikipedia.org
-funnel	*wikiartpedia.co	//www.wikipedia.org
-funnel	*wikiartpedia.info	//www.wikipedia.org
-funnel	*wikiartpedia.me	//www.wikipedia.org
-funnel	*wikiartpedia.mobi	//www.wikipedia.org
-funnel	*wikiartpedia.net	//www.wikipedia.org
-funnel	*wikiartpedia.org	//www.wikipedia.org
+funnel  *wikiartpedia.biz   //www.wikipedia.org
+funnel  *wikiartpedia.co    //www.wikipedia.org
+funnel  *wikiartpedia.info  //www.wikipedia.org
+funnel  *wikiartpedia.me    //www.wikipedia.org
+funnel  *wikiartpedia.mobi  //www.wikipedia.org
+funnel  *wikiartpedia.net   //www.wikipedia.org
+funnel  *wikiartpedia.org   //www.wikipedia.org
 
 # Education program
 
-funnel	educacao.wikimedia.org	//pt.wikipedia.org/wiki/Wikip%C3%A9dia:WU
+funnel  educacao.wikimedia.org  //pt.wikipedia.org/wiki/Wikip%C3%A9dia:WU
 
-override	education.wikimedia.org/evaluating	//commons.wikimedia.org/wiki/File:Evaluating_Wikipedia_brochure.pdf
-override	education.wikimedia.org/illustrating	//commons.wikimedia.org/wiki/File:Illustrating_Wikipedia_brochure.pdf
+override    education.wikimedia.org/evaluating  //commons.wikimedia.org/wiki/File:Evaluating_Wikipedia_brochure.pdf
+override    education.wikimedia.org/illustrating    //commons.wikimedia.org/wiki/File:Illustrating_Wikipedia_brochure.pdf
 
-override	education.wikimedia.org/casestudies	//outreach.wikimedia.org/wiki/Education/Case_Studies
+override    education.wikimedia.org/casestudies //outreach.wikimedia.org/wiki/Education/Case_Studies
 
-override	education.wikimedia.org/content	//outreach.wikimedia.org/wiki/Education/Case_Studies/content
-override	education.wikimedia.org/copyediting	//outreach.wikimedia.org/wiki/Education/Case_Studies/copyediting
-override	education.wikimedia.org/definitions	//outreach.wikimedia.org/wiki/Education/Case_Studies/definitions
-override	education.wikimedia.org/featuredarticle	//outreach.wikimedia.org/wiki/Education/Case_Studies/featuredarticle
-override	education.wikimedia.org/fivecriteria	//outreach.wikimedia.org/wiki/Education/Case_Studies/fivecriteria
-override	education.wikimedia.org/illustrations	//outreach.wikimedia.org/wiki/Education/Case_Studies/illustrations
-override	education.wikimedia.org/milestones	//outreach.wikimedia.org/wiki/Education/Case_Studies/milestones
-override	education.wikimedia.org/peerreviews	//outreach.wikimedia.org/wiki/Education/Case_Studies/peerreviews
-override	education.wikimedia.org/photos	//outreach.wikimedia.org/wiki/Education/Case_Studies/photos
-override	education.wikimedia.org/reflectivepapers	//outreach.wikimedia.org/wiki/Education/Case_Studies/reflectivepapers
-override	education.wikimedia.org/translationarabic	//outreach.wikimedia.org/wiki/Education/Case_Studies/translationarabic
-override	education.wikimedia.org/translationspanish	//outreach.wikimedia.org/wiki/Education/Case_Studies/translationspanish
-override	education.wikimedia.org/videos	//outreach.wikimedia.org/wiki/Education/Case_Studies/videos
-override	education.wikimedia.org/writearticle	//outreach.wikimedia.org/wiki/Education/Case_Studies/writearticle
+override    education.wikimedia.org/content //outreach.wikimedia.org/wiki/Education/Case_Studies/content
+override    education.wikimedia.org/copyediting //outreach.wikimedia.org/wiki/Education/Case_Studies/copyediting
+override    education.wikimedia.org/definitions //outreach.wikimedia.org/wiki/Education/Case_Studies/definitions
+override    education.wikimedia.org/featuredarticle //outreach.wikimedia.org/wiki/Education/Case_Studies/featuredarticle
+override    education.wikimedia.org/fivecriteria    //outreach.wikimedia.org/wiki/Education/Case_Studies/fivecriteria
+override    education.wikimedia.org/illustrations   //outreach.wikimedia.org/wiki/Education/Case_Studies/illustrations
+override    education.wikimedia.org/milestones  //outreach.wikimedia.org/wiki/Education/Case_Studies/milestones
+override    education.wikimedia.org/peerreviews //outreach.wikimedia.org/wiki/Education/Case_Studies/peerreviews
+override    education.wikimedia.org/photos  //outreach.wikimedia.org/wiki/Education/Case_Studies/photos
+override    education.wikimedia.org/reflectivepapers    //outreach.wikimedia.org/wiki/Education/Case_Studies/reflectivepapers
+override    education.wikimedia.org/translationarabic   //outreach.wikimedia.org/wiki/Education/Case_Studies/translationarabic
+override    education.wikimedia.org/translationspanish  //outreach.wikimedia.org/wiki/Education/Case_Studies/translationspanish
+override    education.wikimedia.org/videos  //outreach.wikimedia.org/wiki/Education/Case_Studies/videos
+override    education.wikimedia.org/writearticle    //outreach.wikimedia.org/wiki/Education/Case_Studies/writearticle
 
-override	education.wikimedia.org/syllabus	//outreach.wikimedia.org/wiki/Education/The_Syllabus
-override	education.wikimedia.org/welcometowikipedia	//commons.wikimedia.org/wiki/File:Welcome_to_Wikipedia_brochure_EN.pdf
-override	education.wikimedia.org/instructorbasics	//commons.wikimedia.org/wiki/File:Instructor_Basics_How_to_Use_Wikipedia_as_a_Teaching_Tool.pdf
+override    education.wikimedia.org/syllabus    //outreach.wikimedia.org/wiki/Education/The_Syllabus
+override    education.wikimedia.org/welcometowikipedia  //commons.wikimedia.org/wiki/File:Welcome_to_Wikipedia_brochure_EN.pdf
+override    education.wikimedia.org/instructorbasics    //commons.wikimedia.org/wiki/File:Instructor_Basics_How_to_Use_Wikipedia_as_a_Teaching_Tool.pdf
 
-funnel	education.wikimedia.org	//outreach.wikimedia.org/wiki/Education
+funnel  education.wikimedia.org //outreach.wikimedia.org/wiki/Education
 
 # Localised TLDs
 
-rewrite	*wikinews.de	//de.wikinews.org
-rewrite	*wicipediacymraeg.org	//cy.wikipedia.org
-rewrite	*wikipedia.org.il	//he.wikipedia.org
-rewrite	*wikipedia.co.il	//he.wikipedia.org
-rewrite	*vikimedija.org	//rs.wikimedia.org
-rewrite	*wikipedia.bg	//bg.wikipedia.org
-rewrite	*wikipedia.co.za	//af.wikipedia.org
-rewrite	*wikibooks.cz	//cs.wikibooks.org
-rewrite	*wikicitaty.cz	//cs.wikiquote.org
-rewrite	*wikidruhy.cz	//species.wikimedia.org
-rewrite	*wikiquote.cz	//cs.wikiquote.org
-rewrite	*wikisource.cz	//cs.wikisource.org
-rewrite	*wikispecies.cz	//species.wikimedia.org
-rewrite	*wikiversity.cz	//cs.wikiversity.org
-rewrite	*wikiverzita.cz	//cs.wikiversity.org
-rewrite	*wikizpravy.cz	//cs.wikinews.org
-rewrite	*wikizdroje.cz	//cs.wikisource.org
-rewrite	*wiktionary.cz	//cs.wiktionary.org
-rewrite	*wikislovnik.cz	//cs.wiktionary.org
-rewrite	*wikiknihy.cz	//cs.wikibooks.org
-rewrite	*wikisource.pl	//pl.wikisource.org
+rewrite *wikinews.de    //de.wikinews.org
+rewrite *wicipediacymraeg.org   //cy.wikipedia.org
+rewrite *wikipedia.org.il   //he.wikipedia.org
+rewrite *wikipedia.co.il    //he.wikipedia.org
+rewrite *vikimedija.org //rs.wikimedia.org
+rewrite *wikipedia.bg   //bg.wikipedia.org
+rewrite *wikipedia.co.za    //af.wikipedia.org
+rewrite *wikibooks.cz   //cs.wikibooks.org
+rewrite *wikicitaty.cz  //cs.wikiquote.org
+rewrite *wikidruhy.cz   //species.wikimedia.org
+rewrite *wikiquote.cz   //cs.wikiquote.org
+rewrite *wikisource.cz  //cs.wikisource.org
+rewrite *wikispecies.cz //species.wikimedia.org
+rewrite *wikiversity.cz //cs.wikiversity.org
+rewrite *wikiverzita.cz //cs.wikiversity.org
+rewrite *wikizpravy.cz  //cs.wikinews.org
+rewrite *wikizdroje.cz  //cs.wikisource.org
+rewrite *wiktionary.cz  //cs.wiktionary.org
+rewrite *wikislovnik.cz //cs.wiktionary.org
+rewrite *wikiknihy.cz   //cs.wikibooks.org
+rewrite *wikisource.pl  //pl.wikisource.org
 
 # RT-3244
-override	*wikipedie.cz/Experti_na_prirodu	//cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
-override	*wikipedie.cz/Experti-na-prirodu	//cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
-override	*wikipedie.cz/experti_na_prirodu	//cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
-override	*wikipedie.cz/experti-na-prirodu	//cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
+override    *wikipedie.cz/Experti_na_prirodu    //cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
+override    *wikipedie.cz/Experti-na-prirodu    //cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
+override    *wikipedie.cz/experti_na_prirodu    //cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
+override    *wikipedie.cz/experti-na-prirodu    //cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
 
-rewrite	*wikipedie.cz	//cs.wikipedia.org
-rewrite	*wikipedia.cz	//cs.wikipedia.org
+rewrite *wikipedie.cz   //cs.wikipedia.org
+rewrite *wikipedia.cz   //cs.wikipedia.org
 
 # wikimedia.ee / wikipedia.ee - RT #4566
-rewrite	*wikimedia.ee	//et.wikimedia.org
+rewrite *wikimedia.ee   //et.wikimedia.org
 
-rewrite	*wikipedia.ee	//et.wikipedia.org
+rewrite *wikipedia.ee   //et.wikipedia.org
 
-rewrite	*wikimedia.biz	//www.wikimedia.org
-rewrite	*wikimedia.jp.net	//www.wikimedia.org
+rewrite *wikimedia.biz  //www.wikimedia.org
+rewrite *wikimedia.jp.net   //www.wikimedia.org
 
-rewrite	*wikimedia.lt	//wikimediafoundation.org
-rewrite	*wikipedia.lt	//lt.wikipedia.org
+rewrite *wikimedia.lt   //wikimediafoundation.org
+rewrite *wikipedia.lt   //lt.wikipedia.org
 
-rewrite	*wikimemory.org	//www.wikimedia.org
+rewrite *wikimemory.org //www.wikimedia.org
 
 # Wikipedia
 
-rewrite	*en-wp.com	//en.wikipedia.org
-rewrite	*en-wp.org	//en.wikipedia.org
+rewrite *en-wp.com  //en.wikipedia.org
+rewrite *en-wp.org  //en.wikipedia.org
 
-rewrite	wikiipedia.org	//www.wikipedia.org
-rewrite	www.wikiipedia.org	//www.wikipedia.org
+rewrite wikiipedia.org  //www.wikipedia.org
+rewrite www.wikiipedia.org  //www.wikipedia.org
 
-rewrite	wikipedia.com	//www.wikipedia.org
-rewrite	wikipedia.net	//www.wikipedia.org
-rewrite	wikipedia.info	//www.wikipedia.org
-rewrite	www.wikipedia.com	//www.wikipedia.org
-rewrite	www.wikipedia.net	//www.wikipedia.org
+rewrite wikipedia.com   //www.wikipedia.org
+rewrite wikipedia.net   //www.wikipedia.org
+rewrite wikipedia.info  //www.wikipedia.org
+rewrite www.wikipedia.com   //www.wikipedia.org
+rewrite www.wikipedia.net   //www.wikipedia.org
 
-rewrite	en.wikipedia.com	//en.wikipedia.org
-rewrite	en2.wikipedia.org	//en.wikipedia.org
+rewrite en.wikipedia.com    //en.wikipedia.org
+rewrite en2.wikipedia.org   //en.wikipedia.org
 
-rewrite	*wikipedia.co.uk	//en.wikipedia.org
+rewrite *wikipedia.co.uk    //en.wikipedia.org
 
-rewrite	*.wikipedia.com	//*.wikipedia.org
-rewrite	*.wikipedia.net	//*.wikipedia.org
-rewrite	*.wikipedia.info	//*.wikipedia.org
-rewrite	www.*.wikipedia.com	//*.wikipedia.org
-rewrite	www.*.wikipedia.net	//*.wikipedia.org
-rewrite	www.*.wikipedia.info	//*.wikipedia.org
-rewrite	*.wiki-pedia.org	//*.wikipedia.org
-rewrite	*.wikipaedia.net	//*.wikipedia.org
+rewrite *.wikipedia.com //*.wikipedia.org
+rewrite *.wikipedia.net //*.wikipedia.org
+rewrite *.wikipedia.info    //*.wikipedia.org
+rewrite www.*.wikipedia.com //*.wikipedia.org
+rewrite www.*.wikipedia.net //*.wikipedia.org
+rewrite www.*.wikipedia.info    //*.wikipedia.org
+rewrite *.wiki-pedia.org    //*.wikipedia.org
+rewrite *.wikipaedia.net    //*.wikipedia.org
 
-rewrite	wikipaedia.net	//www.wikipedia.org
-rewrite	wiki-pedia.org	//www.wikipedia.org
+rewrite wikipaedia.net  //www.wikipedia.org
+rewrite wiki-pedia.org  //www.wikipedia.org
 
-funnel	*visualwikipedia.com	//www.wikipedia.org
-funnel	*visualwikipedia.net	//www.wikipedia.org
-funnel	*webhostingwikipedia.com	//www.wikipedia.org
-funnel	*wikifamily.com	//www.wikipedia.org
-funnel	*wikifamily.org	//www.wikipedia.org
+funnel  *visualwikipedia.com    //www.wikipedia.org
+funnel  *visualwikipedia.net    //www.wikipedia.org
+funnel  *webhostingwikipedia.com    //www.wikipedia.org
+funnel  *wikifamily.com //www.wikipedia.org
+funnel  *wikifamily.org //www.wikipedia.org
 
 # wikipedia typo domains to www. instead of en - RT #4679,#4681
-funnel	*wiikipedia.com	//www.wikipedia.org
-funnel	*wekipedia.com	//www.wikipedia.org
-funnel	*wikiepdia.com	//www.wikipedia.org
-funnel	*wikiepdia.org	//www.wikipedia.org
-funnel	*wikiipedia.org	//www.wikipedia.org
-funnel	*wikpedia.org	//www.wikipedia.org
+funnel  *wiikipedia.com //www.wikipedia.org
+funnel  *wekipedia.com  //www.wikipedia.org
+funnel  *wikiepdia.com  //www.wikipedia.org
+funnel  *wikiepdia.org  //www.wikipedia.org
+funnel  *wikiipedia.org //www.wikipedia.org
+funnel  *wikpedia.org   //www.wikipedia.org
 
 # Wiktionary
 
-rewrite	*.wiktionary.com	//*.wiktionary.org
-rewrite	wiktionary.com	//www.wiktionary.org
-rewrite	www.wiktionary.com	//www.wiktionary.org
-funnel	*wiktionary.eu	//www.wiktionary.org
+rewrite *.wiktionary.com    //*.wiktionary.org
+rewrite wiktionary.com  //www.wiktionary.org
+rewrite www.wiktionary.com  //www.wiktionary.org
+funnel  *wiktionary.eu  //www.wiktionary.org
 
 # Wikibooks - T87039
 
-rewrite	*.wikibook.org	//*.wikibooks.org
-rewrite	*.wikibook.com	//*.wikibooks.org
-rewrite	*.wikibooks.com	//*.wikibooks.org
+rewrite *.wikibook.org  //*.wikibooks.org
+rewrite *.wikibook.com  //*.wikibooks.org
+rewrite *.wikibooks.com //*.wikibooks.org
 
-rewrite	wikibook.org	//www.wikibooks.org
-rewrite	wikibook.com	//www.wikibooks.org
-rewrite	wikibooks.com	//www.wikibooks.org
+rewrite wikibook.org    //www.wikibooks.org
+rewrite wikibook.com    //www.wikibooks.org
+rewrite wikibooks.com   //www.wikibooks.org
 
-rewrite	wikibooks.de	//de.wikibooks.org
-rewrite	www.wikibooks.de	//de.wikibooks.org
+rewrite wikibooks.de    //de.wikibooks.org
+rewrite www.wikibooks.de    //de.wikibooks.org
 
-rewrite	textbook.wikipedia.org	//www.wikibooks.org
+rewrite textbook.wikipedia.org  //www.wikibooks.org
 
 # Wikisource
 
-rewrite	sources.wikipedia.org	//wikisource.org
-rewrite	*.wikisource.com	//*.wikisource.org
-rewrite	wikisource.com	//wikisource.org
+rewrite sources.wikipedia.org   //wikisource.org
+rewrite *.wikisource.com    //*.wikisource.org
+rewrite wikisource.com  //wikisource.org
 
 # Wikiquote
 
-rewrite	quote.wikipedia.org	//en.wikiquote.org
-rewrite	wikiquote.com	//www.wikiquote.org
-rewrite	*.wikiquote.com	//*.wikiquote.org
-rewrite	wikiquote.net	//www.wikiquote.org
-rewrite	*.wikiquote.net	//*.wikiquote.org
+rewrite quote.wikipedia.org //en.wikiquote.org
+rewrite wikiquote.com   //www.wikiquote.org
+rewrite *.wikiquote.com //*.wikiquote.org
+rewrite wikiquote.net   //www.wikiquote.org
+rewrite *.wikiquote.net //*.wikiquote.org
 
 # Wikinews
 
-rewrite	wikinews.com	//www.wikinews.org
-rewrite	*.wikinews.com	//*.wikinews.org
+rewrite wikinews.com    //www.wikinews.org
+rewrite *.wikinews.com  //*.wikinews.org
 
 # Wikispecies
 
 # Temporarily at species.wikipedia.org until DNS is sorted out
-rewrite	*wikispecies.com	//species.wikimedia.org
-rewrite	*wikispecies.org	//species.wikimedia.org
-rewrite	*wikispecies.net	//species.wikimedia.org
+rewrite *wikispecies.com    //species.wikimedia.org
+rewrite *wikispecies.org    //species.wikimedia.org
+rewrite *wikispecies.net    //species.wikimedia.org
 
-rewrite	species.wikipedia.org	//species.wikimedia.org
+rewrite species.wikipedia.org   //species.wikimedia.org
 
 # Wikiversity
 
-rewrite	*.wikiversity.com	//*.wikiversity.org
-rewrite	*.wikiversity.net	//*.wikiversity.org
-rewrite	*.wikiversity.info	//*.wikiversity.org
+rewrite *.wikiversity.com   //*.wikiversity.org
+rewrite *.wikiversity.net   //*.wikiversity.org
+rewrite *.wikiversity.info  //*.wikiversity.org
 
-rewrite	wikiversity.com	//www.wikiversity.org
-rewrite	wikiversity.net	//www.wikiversity.org
-rewrite	wikiversity.info	//www.wikiversity.org
+rewrite wikiversity.com //www.wikiversity.org
+rewrite wikiversity.net //www.wikiversity.org
+rewrite wikiversity.info    //www.wikiversity.org
 
 # Wikivoyage
-rewrite	*.wikivoyage.com	//*.wikivoyage.org
-rewrite	*.wikivoyage.de	//*.wikivoyage.org
-rewrite	*.wikivoyage.eu	//*.wikivoyage.org
-rewrite	*.wikivoyage.net	//*.wikivoyage.org
-rewrite	wikivoyage.com	//www.wikivoyage.org
-rewrite	wikivoyage.de	//www.wikivoyage.org
-rewrite	wikivoyage.eu	//www.wikivoyage.org
-rewrite	wikivoyage.net	//www.wikivoyage.org
+rewrite *.wikivoyage.com    //*.wikivoyage.org
+rewrite *.wikivoyage.de //*.wikivoyage.org
+rewrite *.wikivoyage.eu //*.wikivoyage.org
+rewrite *.wikivoyage.net    //*.wikivoyage.org
+rewrite wikivoyage.com  //www.wikivoyage.org
+rewrite wikivoyage.de   //www.wikivoyage.org
+rewrite wikivoyage.eu   //www.wikivoyage.org
+rewrite wikivoyage.net  //www.wikivoyage.org
 
 # Wikivoyager (RT-4333)
-rewrite	*.wikivoyager.org	//*.wikivoyage.org
-rewrite	*.wikivoyager.de	//*.wikivoyage.org
-rewrite	wikivoyager.org	//www.wikivoyage.org
-rewrite	wikivoyager.de	//www.wikivoyage.org
+rewrite *.wikivoyager.org   //*.wikivoyage.org
+rewrite *.wikivoyager.de    //*.wikivoyage.org
+rewrite wikivoyager.org //www.wikivoyage.org
+rewrite wikivoyager.de  //www.wikivoyage.org
 
 # Voyagewiki (RT-5539)
-rewrite	*.voyagewiki.com	//*.wikivoyage.org
-rewrite	*.voyagewiki.org	//*.wikivoyage.org
-rewrite	voyagewiki.com	//www.wikivoyage.org
-rewrite	voyagewiki.org	//www.wikivoyage.org
+rewrite *.voyagewiki.com    //*.wikivoyage.org
+rewrite *.voyagewiki.org    //*.wikivoyage.org
+rewrite voyagewiki.com  //www.wikivoyage.org
+rewrite voyagewiki.org  //www.wikivoyage.org
 
 # wikimediafoundation
-rewrite	*wikimediafoundation.com	//wikimediafoundation.org
-rewrite	*wikimediafoundation.net	//wikimediafoundation.org
-rewrite	*wikimediafoundation.info	//wikimediafoundation.org
-rewrite	*.wikimediafoundation.org	//wikimediafoundation.org
+rewrite *wikimediafoundation.com    //wikimediafoundation.org
+rewrite *wikimediafoundation.net    //wikimediafoundation.org
+rewrite *wikimediafoundation.info   //wikimediafoundation.org
+rewrite *.wikimediafoundation.org   //wikimediafoundation.org
 
 # Commons
 
-rewrite	*wikimediacommons.net	//commons.wikimedia.org
-rewrite	*wikimediacommons.info	//commons.wikimedia.org
-rewrite	*wikimediacommons.mobi	//commons.wikimedia.org
-rewrite	*wikimediacommons.eu	//commons.wikimedia.org
-rewrite	*wikimediacommons.org	//commons.wikimedia.org
-rewrite	*wikimediacommons.jp.net	//commons.wikimedia.org
-rewrite	*wikimediacommons.pt	//commons.wikimedia.org
-rewrite	*wikimediacommons.co.uk	//commons.wikimedia.org
+rewrite *wikimediacommons.net   //commons.wikimedia.org
+rewrite *wikimediacommons.info  //commons.wikimedia.org
+rewrite *wikimediacommons.mobi  //commons.wikimedia.org
+rewrite *wikimediacommons.eu    //commons.wikimedia.org
+rewrite *wikimediacommons.org   //commons.wikimedia.org
+rewrite *wikimediacommons.jp.net    //commons.wikimedia.org
+rewrite *wikimediacommons.pt    //commons.wikimedia.org
+rewrite *wikimediacommons.co.uk //commons.wikimedia.org
 
-rewrite	commons.wikipedia.org	//commons.wikimedia.org
-rewrite	www.commons.wikimedia.org	//commons.wikimedia.org
-rewrite	www.commons.wikipedia.org	//commons.wikimedia.org
+rewrite commons.wikipedia.org   //commons.wikimedia.org
+rewrite www.commons.wikimedia.org   //commons.wikimedia.org
+rewrite www.commons.wikipedia.org   //commons.wikimedia.org
 
 # Bookshelf Project
-rewrite	bookshelf.wikimedia.org	//outreach.wikimedia.org/wiki/Bookshelf/
+rewrite bookshelf.wikimedia.org //outreach.wikimedia.org/wiki/Bookshelf/
 
 # Random acquired cruft
-funnel	*wikidisclosure.com	//www.wikimedia.org
-funnel	*wikidisclosure.org	//www.wikimedia.org
-funnel	*wikimaps.com	//www.wikimedia.org
-funnel	*wikimaps.net	//www.wikimedia.org
-funnel	*wikimaps.org	//www.wikimedia.org
+funnel  *wikidisclosure.com //www.wikimedia.org
+funnel  *wikidisclosure.org //www.wikimedia.org
+funnel  *wikimaps.com   //www.wikimedia.org
+funnel  *wikimaps.net   //www.wikimedia.org
+funnel  *wikimaps.org   //www.wikimedia.org
 
 
 # Other projects
 
-rewrite	meta.wikipedia.org	//meta.wikimedia.org
-rewrite	www.meta.wikipedia.org	//meta.wikimedia.org
-rewrite	www.meta.wikimedia.org	//meta.wikimedia.org
+rewrite meta.wikipedia.org  //meta.wikimedia.org
+rewrite www.meta.wikipedia.org  //meta.wikimedia.org
+rewrite www.meta.wikimedia.org  //meta.wikimedia.org
 
-rewrite	quality.wikipedia.org	//quality.wikimedia.org
-rewrite	quality.wikipedia.com	//quality.wikimedia.org
+rewrite quality.wikipedia.org   //quality.wikimedia.org
+rewrite quality.wikipedia.com   //quality.wikimedia.org
 
-rewrite	bugzilla.wikipedia.org	https://bugzilla.wikimedia.org
-rewrite	bugs.mediawiki.org	https://bugzilla.wikimedia.org
-rewrite	bugzilla.mediawiki.org	https://bugzilla.wikimedia.org
+rewrite bugzilla.wikipedia.org  https://bugzilla.wikimedia.org
+rewrite bugs.mediawiki.org  https://bugzilla.wikimedia.org
+rewrite bugzilla.mediawiki.org  https://bugzilla.wikimedia.org
 
-rewrite	*mediawiki.com	//www.mediawiki.org
-rewrite	wiki.mediawiki.org	//www.mediawiki.org
+rewrite *mediawiki.com  //www.mediawiki.org
+rewrite wiki.mediawiki.org  //www.mediawiki.org
 
 # Continuous Integration T83381, T83399
-funnel	doc.mediawiki.org	https://doc.wikimedia.org
-funnel	integration.mediawiki.org	https://integration.wikimedia.org
+funnel  doc.mediawiki.org   https://doc.wikimedia.org
+funnel  integration.mediawiki.org   https://integration.wikimedia.org
 
 # CI docs -> doc (T100349)
-funnel	docs.mediawiki.org https://doc.wikimedia.org
-funnel	docs.wikimedia.org https://doc.wikimedia.org
+funnel  docs.mediawiki.org https://doc.wikimedia.org
+funnel  docs.wikimedia.org https://doc.wikimedia.org
 
-rewrite	*softwarewikipedia.com	//www.mediawiki.org
-rewrite	*softwarewikipedia.net	//www.mediawiki.org
-rewrite	*softwarewikipedia.org	//www.mediawiki.org
+rewrite *softwarewikipedia.com  //www.mediawiki.org
+rewrite *softwarewikipedia.net  //www.mediawiki.org
+rewrite *softwarewikipedia.org  //www.mediawiki.org
 
-rewrite	nostalgia.wikimedia.org	//nostalgia.wikipedia.org
+rewrite nostalgia.wikimedia.org //nostalgia.wikipedia.org
 
-rewrite	mail.wikipedia.org	https://lists.wikimedia.org
+rewrite mail.wikipedia.org  https://lists.wikimedia.org
 
-funnel	cs.wikimedia.org	http://www.wikimedia.cz
-funnel	cz.wikimedia.org	http://www.wikimedia.cz
+funnel  cs.wikimedia.org    http://www.wikimedia.cz
+funnel  cz.wikimedia.org    http://www.wikimedia.cz
 
 ###############
 ## projects
 ###############
 #wikipedia is in wwwportals.conf
-rewrite	mediawiki.org	//www.mediawiki.org
-rewrite	wikimedia.org	//www.wikimedia.org
-rewrite	wikinews.org	//www.wikinews.org
-rewrite	wikiquote.org	//www.wikiquote.org
-rewrite	wikiversity.org	//www.wikiversity.org
-rewrite	wikivoyage.org	//www.wikivoyage.org
-rewrite	wikibooks.org	//www.wikibooks.org
-rewrite	wiktionary.org	//www.wiktionary.org
-rewrite	wikidata.org	//www.wikidata.org #T47005
+rewrite mediawiki.org   //www.mediawiki.org
+rewrite wikimedia.org   //www.wikimedia.org
+rewrite wikinews.org    //www.wikinews.org
+rewrite wikiquote.org   //www.wikiquote.org
+rewrite wikiversity.org //www.wikiversity.org
+rewrite wikivoyage.org  //www.wikivoyage.org
+rewrite wikibooks.org   //www.wikibooks.org
+rewrite wiktionary.org  //www.wiktionary.org
+rewrite wikidata.org    //www.wikidata.org #T47005
 
-rewrite	www.wikisource.org	//wikisource.org
+rewrite www.wikisource.org  //wikisource.org
 
 ###############
 ## chapters
 ###############
-funnel	ch.wikimedia.org	//www.wikimedia.ch
+funnel  ch.wikimedia.org    //www.wikimedia.ch
 
-rewrite	hu.wikimedia.org	http://wiki.media.hu
+rewrite hu.wikimedia.org    http://wiki.media.hu
 
-rewrite	it.wikimedia.org	http://www.wikimedia.it
+rewrite it.wikimedia.org    http://www.wikimedia.it
 
-funnel	kr.wikimedia.org	//meta.wikimedia.org/wiki/위키미디어_대한민국
+funnel  kr.wikimedia.org    //meta.wikimedia.org/wiki/위키미디어_대한민국
 
 # pk.wikimedia.org (T56780)
-funnel	pk.wikimedia.org	//meta.wikimedia.org/wiki/Wikimedia_Community_User_Group_Pakistan
+funnel  pk.wikimedia.org    //meta.wikimedia.org/wiki/Wikimedia_Community_User_Group_Pakistan
 
 # pt.wikimedia.org was migrated to wikimedia.pt
-funnel	pt.wikimedia.org	http://wikimedia.pt
+funnel  pt.wikimedia.org    http://wikimedia.pt
 
-rewrite	uk.wikimedia.org	https://wikimedia.org.uk/
+rewrite uk.wikimedia.org    https://wikimedia.org.uk/
 
-rewrite	ve.wikimedia.org	http://wikimedia.org.ve
+rewrite ve.wikimedia.org    http://wikimedia.org.ve
 
 # Wikimania
-rewrite	*wikimania.org	//wikimania2015.wikimedia.org
-rewrite	*wikimania.com	//wikimania2015.wikimedia.org
-rewrite	wikimania.wikimedia.org	//wikimania2015.wikimedia.org
-rewrite	*wikimania.asia	//wikimania2013.wikimedia.org
+rewrite *wikimania.org  //wikimania2015.wikimedia.org
+rewrite *wikimania.com  //wikimania2015.wikimedia.org
+rewrite wikimania.wikimedia.org //wikimania2015.wikimedia.org
+rewrite *wikimania.asia //wikimania2013.wikimedia.org
 
 # labs -> wikitech
-funnel	labs.wikimedia.org	https://wikitech.wikimedia.org
+funnel  labs.wikimedia.org  https://wikitech.wikimedia.org
 
 # wikimedia.com redirect
-funnel	*wikimedia.com	//www.wikimedia.org
+funnel  *wikimedia.com  //www.wikimedia.org
 
 # wikimedia.community redirect
-funnel	*wikimedia.community	//www.wikimedia.org
+funnel  *wikimedia.community    //www.wikimedia.org
 
 # wikimedia.us redirect
-funnel	*wikimedia.us	//www.wikimedia.org
+funnel  *wikimedia.us   //www.wikimedia.org
 
 # wikimedia.xyz redirect
-funnel	*wikimedia.xyz	//www.wikimedia.org
+funnel  *wikimedia.xyz  //www.wikimedia.org
 
 # tartupeedia.ee (WMEE-owned domain) - T46893
-funnel	*tartupeedia.ee	//et.wikipedia.org/wiki/Portaal:Tartupeedia
+funnel  *tartupeedia.ee //et.wikipedia.org/wiki/Portaal:Tartupeedia
 
 # indiawikipedia.com - RT #1395
-funnel	*indiawikipedia.com	http://wikimedia.in/wikipedia.html
+funnel  *indiawikipedia.com http://wikimedia.in/wikipedia.html
 
 # wikipedia.in
-funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
+funnel  *wikipedia.in   http://wikimedia.in/wikipedia.html
 
 # coffee - keep for historic reasons:)
-funnel	coffee.wikimedia.org	//en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol
+funnel  coffee.wikimedia.org    //en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol
 
 # wikipediazero.org - T82495
-funnel	*wikipediazero.org	//wikimediafoundation.org/wiki/Wikipedia_Zero
+funnel  *wikipediazero.org  //wikimediafoundation.org/wiki/Wikipedia_Zero
 
 # wikimediastories.com/net/org - T82390
-funnel	*wikimediastories.com	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikimediastories.net	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikimediastories.org	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikipediastories.com	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikipediastories.net	//wikimediafoundation.org/wiki/Thank_You_All
-funnel	*wikipediastories.org	//wikimediafoundation.org/wiki/Thank_You_All
+funnel  *wikimediastories.com   //wikimediafoundation.org/wiki/Thank_You_All
+funnel  *wikimediastories.net   //wikimediafoundation.org/wiki/Thank_You_All
+funnel  *wikimediastories.org   //wikimediafoundation.org/wiki/Thank_You_All
+funnel  *wikipediastories.com   //wikimediafoundation.org/wiki/Thank_You_All
+funnel  *wikipediastories.net   //wikimediafoundation.org/wiki/Thank_You_All
+funnel  *wikipediastories.org   //wikimediafoundation.org/wiki/Thank_You_All
 
 # jobs/careers - T82975
-rewrite	*careers.wikimedia.org	//wikimediafoundation.org/wiki/Job_openings
-rewrite	*careers.wikipedia.org	//wikimediafoundation.org/wiki/Job_openings
-rewrite	*jobs.wikimedia.org	//wikimediafoundation.org/wiki/Job_openings
-rewrite	*jobs.wikipedia.org	//wikimediafoundation.org/wiki/Job_openings
-override	*careers.wikimedia.org/	//wikimediafoundation.org/wiki/Work_with_us
-override	*careers.wikipedia.org/	//wikimediafoundation.org/wiki/Work_with_us
-override	*jobs.wikimedia.org/	//wikimediafoundation.org/wiki/Work_with_us
-override	*jobs.wikipedia.org/	//wikimediafoundation.org/wiki/Work_with_us
+rewrite *careers.wikimedia.org  //wikimediafoundation.org/wiki/Job_openings
+rewrite *careers.wikipedia.org  //wikimediafoundation.org/wiki/Job_openings
+rewrite *jobs.wikimedia.org //wikimediafoundation.org/wiki/Job_openings
+rewrite *jobs.wikipedia.org //wikimediafoundation.org/wiki/Job_openings
+override    *careers.wikimedia.org/ //wikimediafoundation.org/wiki/Work_with_us
+override    *careers.wikipedia.org/ //wikimediafoundation.org/wiki/Work_with_us
+override    *jobs.wikimedia.org/    //wikimediafoundation.org/wiki/Work_with_us
+override    *jobs.wikipedia.org/    //wikimediafoundation.org/wiki/Work_with_us
 
 # mobile redirects for commonly-used domains
-funnel	mobile.wikipedia.org	//m.wikipedia.org
-rewrite	*.mobile.wikipedia.org	//*.m.wikipedia.org
-rewrite	*.wap.wikipedia.org	//*.m.wikipedia.org
+funnel  mobile.wikipedia.org    //m.wikipedia.org
+rewrite *.mobile.wikipedia.org  //*.m.wikipedia.org
+rewrite *.wap.wikipedia.org //*.m.wikipedia.org
 
 # pywikipedia.org (T60803).
-funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
+funnel  *pywikipedia.org    //tools.wmflabs.org/pywikibot/
 
 # w.wiki - upcoming URL shortener
-funnel	*w.wiki	//www.wikipedia.org
+funnel  *w.wiki //www.wikipedia.org
 
 # T84277
 override wikimedia.org/research https://wikimedia.qualtrics.com/SE/?SID=SV_6R04ammTX8uoJFP
 
 # Redirect old techblog.wikimedia.org urls to blog.wikimedia.org T90638
-rewrite	techblog.wikimedia.org	//blog.wikimedia.org
+rewrite techblog.wikimedia.org  //blog.wikimedia.org
 
 # dev.wikimedia.org - T372
-funnel	dev.wikimedia.org	//www.mediawiki.org/wiki/API:Data_and_developer_hub
+funnel  dev.wikimedia.org   //www.mediawiki.org/wiki/API:Data_and_developer_hub
 
