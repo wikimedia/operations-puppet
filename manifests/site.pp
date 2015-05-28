@@ -1507,7 +1507,6 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
                 vlan_id        => '2001',
                 address        => $ips['public1-a-codfw'][$::hostname],
                 netmask        => '255.255.255.224',
-                v6_token       => true,
             }
             # Row B subnets on eth1
             interface::tagged { 'eth1.2002':
@@ -1515,14 +1514,12 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
                 vlan_id        => '2002',
                 address        => $ips['public1-b-codfw'][$::hostname],
                 netmask        => '255.255.255.224',
-                v6_token       => true,
             }
             interface::tagged { 'eth1.2018':
                 base_interface => 'eth1',
                 vlan_id        => '2018',
                 address        => $ips['private1-b-codfw'][$::hostname],
                 netmask        => '255.255.252.0',
-                v6_token       => true,
             }
         }
         /^lvs200[4-6]$/: {
@@ -1532,7 +1529,6 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
                 vlan_id        => '2002',
                 address        => $ips['public1-b-codfw'][$::hostname],
                 netmask        => '255.255.255.224',
-                v6_token       => true,
             }
             # Row A subnets on eth1
             interface::tagged { 'eth1.2001':
@@ -1540,14 +1536,12 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
                 vlan_id        => '2001',
                 address        => $ips['public1-a-codfw'][$::hostname],
                 netmask        => '255.255.255.224',
-                v6_token       => true,
             }
             interface::tagged { 'eth1.2017':
                 base_interface => 'eth1',
                 vlan_id        => '2017',
                 address        => $ips['private1-a-codfw'][$::hostname],
                 netmask        => '255.255.252.0',
-                v6_token       => true,
             }
         }
     }
@@ -1558,14 +1552,12 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
         vlan_id        => '2003',
         address        => $ips['public1-c-codfw'][$::hostname],
         netmask        => '255.255.255.224',
-        v6_token       => true,
     }
     interface::tagged { 'eth2.2019':
         base_interface => 'eth2',
         vlan_id        => '2019',
         address        => $ips['private1-c-codfw'][$::hostname],
         netmask        => '255.255.252.0',
-        v6_token       => true,
     }
 
     # Row D subnets on eth3
@@ -1574,14 +1566,12 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
         vlan_id        => '2004',
         address        => $ips['public1-d-codfw'][$::hostname],
         netmask        => '255.255.255.224',
-        v6_token       => true,
     }
     interface::tagged { 'eth3.2020':
         base_interface => 'eth3',
         vlan_id        => '2020',
         address        => $ips['private1-d-codfw'][$::hostname],
         netmask        => '255.255.252.0',
-        v6_token       => true,
     }
 
     lvs::interface-tweaks {
