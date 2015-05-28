@@ -175,6 +175,9 @@ node 'antimony.wikimedia.org' {
 # irc.wikimedia.org
 node 'argon.wikimedia.org' {
     role mw_rc_irc
+    include standard
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 node 'baham.wikimedia.org' {
