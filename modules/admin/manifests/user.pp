@@ -91,16 +91,21 @@ define admin::user (
         fail("${name} is not a valid ssh_keys array: ${ssh_keys}")
     }
 
+    $ensure_ssh_keys = empty($ssh_keys) ?
+        true  => absent,
+        false => $ensure,
+    }
     ssh::userkey { $name:
-        ensure  => $ensure,
+        ensure  => $ensure_ssh_keys,
         content => join($ssh_keys, "\n"),
-        tag     => 'user-ssh',
     }
 
-    if !empty($privileges) {
-        sudo::user { $name:
-            ensure     => $ensure,
-            privileges => $privileges,
-        }
+    $ensure_privileges = empty($privileges) ?
+        true  => absent,
+        false => $ensure,
+    }
+    sudo::user { $name:
+        ensure     => $ensure_privileges,
+        privileges => $privileges,
     }
 }
