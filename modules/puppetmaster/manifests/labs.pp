@@ -4,6 +4,8 @@
 class puppetmaster::labs {
     if ($::lsbdistcodename == 'precise') {
         package { 'libldap-ruby1.8': ensure => present; }
+    } else {
+        package { 'libldap-2.4': ensure => present; }
     }
 
     include puppetmaster::autosigner
