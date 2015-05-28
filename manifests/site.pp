@@ -2485,23 +2485,3 @@ node default {
         include standard
     }
 }
-
-# as of 2014-08-12 these fundraising servers use frack puppet
-#
-# aluminium.frack.eqiad.wmnet
-# barium.frack.eqiad.wmnet
-# boron.frack.eqiad.wmnet
-# db1008.frack.eqiad.wmnet
-# db1025.frack.eqiad.wmnet
-# indium.frack.eqiad.wmnet
-# lutetium.frack.eqiad.wmnet
-# pay-lvs1001.frack.eqiad.wmnet
-# pay-lvs1002.frack.eqiad.wmnet
-# payments1001.frack.eqiad.wmnet
-# payments1002.frack.eqiad.wmnet
-# payments1003.frack.eqiad.wmnet
-# payments1004.frack.eqiad.wmnet
-# samarium.frack.eqiad.wmnet
-# silicon.frack.eqiad.wmnet
-# tellurium.frack.eqiad.wmnet
-# thulium.frack.eqiad.wmnet
