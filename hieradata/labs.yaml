@@ -42,5 +42,5 @@ zookeeper_hosts:
   "${::fqdn}": 1
 nrpe::allowed_hosts: '10.68.16.195'
 
-labs_puppet_master: "virt1000.wikimedia.org"
-labs_puppet_master_secondary: "labcontrol2001.wikimedia.org"
+labs_puppet_master: "labs-puppetmaster-eqiad.wikimedia.org"
+labs_puppet_master_secondary: "labs-puppetmaster-codfw.wikimedia.org"
