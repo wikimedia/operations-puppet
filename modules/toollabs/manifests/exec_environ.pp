@@ -21,6 +21,8 @@ class toollabs::exec_environ {
     include ::mediawiki::packages::fonts
     include ::redis::client::python
 
+    include role::labs::db::client
+
     package { [
         # Please keep all packages in each group sorted in alphabetical order
 
