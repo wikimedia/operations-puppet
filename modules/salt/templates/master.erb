@@ -93,6 +93,22 @@
 #
 #job_cache: True
 
+# By default, the master AES key rotates every 24 hours. The next command
+# following a key rotation will trigger a key refresh from the minion which may
+# result in minions which do not respond to the first command after a key refresh.
+#
+# To tell the master to ping all minions immediately after an AES key refresh, set
+# ping_on_rotate to True. This should mitigate the issue where a minion does not
+# appear to initially respond after a key is rotated.
+#
+# Note that ping_on_rotate may cause high load on the master immediately after
+# the key rotation event as minions reconnect. Consider this carefully if this
+# salt master is managing a large number of minions.
+#
+# If disabled, it is recommended to handle this event by listening for the
+# 'aes_key_rotate' event with the 'key' tag and acting appropriately.
+ping_on_rotate: True
+
 # Cache minion grains and pillar data in the cachedir.
 #minion_data_cache: True
 
