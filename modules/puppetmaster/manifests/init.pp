@@ -38,13 +38,20 @@ class puppetmaster(
     # so the postinst scripts do the right things.
     require puppetmaster::config
 
+    if ($::lsbdistcodename == 'precise') {
+        package { [
+            'libmysql-ruby',
+            ]:
+            ensure  => present,
+        }
+    }
+
     package { [
         'puppetmaster',
         'puppetmaster-common',
         'vim-puppet',
         'puppet-el',
         'rails',
-        'libmysql-ruby',
         'ruby-json'
         ]:
         ensure  => present,
