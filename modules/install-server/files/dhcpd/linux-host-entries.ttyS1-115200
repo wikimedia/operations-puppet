@@ -196,6 +196,8 @@ host backup4001 {
 host baham {
 	hardware ethernet D4:AE:52:B3:90:36;
 	fixed-address baham.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host bast1001 {
@@ -5494,6 +5496,8 @@ host rhodium {
 host rubidium {
 	hardware ethernet 18:03:73:f1:4f:70;
 	fixed-address rubidium.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ruthenium {
