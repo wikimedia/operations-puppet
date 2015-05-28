@@ -2612,6 +2612,7 @@ node 'ytterbium.wikimedia.org' {
     include standard
     include base::firewall
 
+    interface::add_ip6_mapped { 'main': }
 }
 
 node default {
