@@ -14,7 +14,7 @@ class role::salt::masters::production {
         },
         salt_file_roots     => $salt_file_roots,
         salt_pillar_roots   => $salt_pillar_roots,
-        salt_worker_threads => '25',
+        salt_worker_threads => '30',
         salt_state_roots    => $salt_state_roots,
         salt_module_roots   => $salt_module_roots,
         salt_returner_roots => $salt_returner_roots,
