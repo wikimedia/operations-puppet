@@ -217,6 +217,8 @@ node 'antimony.wikimedia.org' {
     include base::firewall
     include standard
     include role::subversion
+
+    interface::add_ip6_mapped { 'main': }
 }
 
 # irc.wikimedia.org
