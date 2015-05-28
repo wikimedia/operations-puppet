@@ -82,7 +82,6 @@ define admin::user (
             owner        => $name,
             group        => $gid,
             force        => true,
-            tag          => 'user-home',
             require      => User[$name],
         }
     }
@@ -91,10 +90,12 @@ define admin::user (
         fail("${name} is not a valid ssh_keys array: ${ssh_keys}")
     }
 
-    ssh::userkey { $name:
-        ensure  => $ensure,
-        content => join($ssh_keys, "\n"),
-        tag     => 'user-ssh',
+    # recursively-managed, automatically purges
+    if !empty($ssh_keys) {
+        ssh::userkey { $name:
+            ensure  => $ensure,
+            content => join($ssh_keys, "\n"),
+        }
     }
 
     if !empty($privileges) {
