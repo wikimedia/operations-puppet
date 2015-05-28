@@ -13,7 +13,6 @@
 class toollabs::master inherits toollabs {
     include gridengine::master,
             toollabs::infrastructure,
-            toollabs::exec_environ,
             toollabs::queue::task,
             toollabs::queue::continuous
 
