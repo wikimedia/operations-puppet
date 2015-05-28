@@ -2086,23 +2086,10 @@ node 'palladium.eqiad.wmnet' {
     include role::pybal_config
 }
 
-# parser cache update to MariaDB 10
-node /pc100[1-2]\.eqiad\.wmnet/ {
+# parser cache databases
+node /pc100[1-3]\.eqiad\.wmnet/ {
     $cluster = 'mysql'
     include role::mariadb::parsercache
-}
-
-node /pc100[3]\.eqiad\.wmnet/ {
-    $cluster = 'mysql'
-    include role::db::core
-    include mysql_wmf::mysqluser
-    include mysql_wmf::datadirs
-    include mysql_wmf::pc::conf
-    include mysql_wmf::packages
-
-    system::role { 'mysql::pc::conf':
-        description => 'parser cache mysql server',
-    }
 }
 
 node /(plutonium|pollux)\.wikimedia\.org/ {
