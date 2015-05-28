@@ -25,7 +25,11 @@ sub restore_cookie {
 sub evaluate_cookie {
 	// A session or token cookie will prevent caching if varied on,
 	// move the Cookie header out of the way otherwise
-	if (req.http.Cookie ~ "([sS]ession|Token)=") {
+        // The (?<!mwuser-) part unbreaks the bad cache effects of
+        // the temporary live deployment on large wikis of:
+        //   https://gerrit.wikimedia.org/r/#/c/176948
+        // Can be removed when most matching cookies have gone away...
+	if (req.http.Cookie ~ "((?<!mwuser-)[sS]ession|Token)=") {
 		set req.hash_ignore_busy = true;
 	} else {
 		call cookie_munging;
