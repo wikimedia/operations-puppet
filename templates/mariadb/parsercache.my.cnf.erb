@@ -15,9 +15,8 @@ datadir    = <%= @datadir %>
 tmpdir     = <%= @tmpdir %>
 server_id  = <%= @server_id %>
 
-# Always start in read_only mode.
-# Master selection will be handled by cluster control.
-read_only = on
+# Parsercache needs to be writeable (no masters).
+read_only = off
 
 log_bin
 log_slave_updates
