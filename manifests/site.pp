@@ -1133,9 +1133,6 @@ node 'graphite1001.eqiad.wmnet' {
 # graphite test machine, currently with SSD caching + spinning disks
 node 'graphite1002.eqiad.wmnet' {
     include standard
-    include role::graphite::production
-    include role::statsdlb
-    include role::gdash
 }
 
 # Primary graphite machines, replacing tungsten
