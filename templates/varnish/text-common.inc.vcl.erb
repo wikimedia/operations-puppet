@@ -25,7 +25,8 @@ sub restore_cookie {
 sub evaluate_cookie {
 	// A session or token cookie will prevent caching if varied on,
 	// move the Cookie header out of the way otherwise
-	if (req.http.Cookie ~ "([sS]ession|Token)=") {
+        // mwuser- negative lookahead can be removed after 30 days, see commitmsg
+	if (req.http.Cookie ~ "((?!mwuser-)[sS]ession|Token)=") {
 		set req.hash_ignore_busy = true;
 	} else {
 		call cookie_munging;
