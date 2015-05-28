@@ -39,6 +39,13 @@ host labsdb1003 {
 	fixed-address labsdb1003.eqiad.wmnet;
 }
 
+host etherpad1001 {
+	hardware ethernet AA:00:00:EE:AD:01;
+	fixed-address etherpad1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host pc1001 {
 	hardware ethernet 00:22:bd:d3:38:62;
 	fixed-address pc1001.eqiad.wmnet;
