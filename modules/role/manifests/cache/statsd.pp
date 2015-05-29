@@ -5,7 +5,7 @@ class role::cache::statsd {
     if $::hostname == 'cp1048' {
         ::varnish::logging::statsd { 'default':
             statsd_server => 'statsd.eqiad.wmnet',
-            metric_prefix => "varnish.${::site}.backends",
+            key_prefix    => "varnish.${::site}.backends",
         }
     }
 }

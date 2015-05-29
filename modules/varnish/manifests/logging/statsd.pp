@@ -13,7 +13,7 @@
 #   StatsD server address, in "host:port" format.
 #   Defaults to localhost:8125.
 #
-# [*metric_prefix*]
+# [*key_prefix*]
 #   A prefix to prepend to all metric names.
 #   Defaults to "varnish.backends".
 #
@@ -22,13 +22,13 @@
 #  varnish::logging::statsd { 'frontend':
 #    instance_name => 'frontend
 #    statsd_server => 'statsd.eqiad.wmnet:8125
-#    metric_prefix => 'varnish.backends',
+#    key_prefix    => 'varnish.backends',
 #  }
 #
 define varnish::logging::statsd(
     $instance_name = '',
     $statsd_server = 'statsd',
-    $metric_prefix = 'varnish.backends',
+    $key_prefix    = 'varnish.backends',
 ) {
     if $instance_name {
         $service_unit_name = "varnishstatsd-${instance_name}"
