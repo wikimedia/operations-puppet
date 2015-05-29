@@ -16,7 +16,7 @@ class role::puppet::server::labs {
         'labs' => [ '192.168.0.0/21' ],
     }
 
-    class { 'puppetmaster':
+    class { '::puppetmaster':
         server_name => hiera('labs_puppet_master'),
         allow_from  => $puppet_passenger_allow_from,
         config      => {
