@@ -1,6 +1,9 @@
-# TODO: At some point this should not be needed
-import "../../../manifests/nagios.pp"
-import "../../../manifests/backups.pp"
-import "../../../manifests/role/backup.pp"
+# TODO: Overriding this class to avoid a pretty big set of dependencies
+class apache::monitoring { }
 
-include puppetmaster::passenger
+class { 'puppetmaster::passenger':
+    bind_address  => '*',
+    verify_client => 'optional',
+    allow_from    => [],
+    deny_from     => [],
+}
