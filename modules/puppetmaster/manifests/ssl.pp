@@ -1,14 +1,8 @@
 class puppetmaster::ssl(
-            $server_name='puppet',
-            $ca='false') {
+            $server_name,
+            $ca
+) {
     $ssldir = '/var/lib/puppet/server/ssl'
-
-    # TODO: Hack to make class pass tests
-    if defined(Package['puppetmaster']) {
-        $before = Package['puppetmaster']
-    } else {
-        $before = undef
-    }
 
     # Move the puppetmaster's SSL files to a separate directory from the client
     file {
@@ -19,9 +13,9 @@ class puppetmaster::ssl(
             owner   => 'puppet',
             group   => 'root',
             mode    => '0771',
-            before  => $before;
+    }
+    file {
         [
-            '/var/lib/puppet',
             "${ssldir}/ca",
             "${ssldir}/certificate_requests",
             "${ssldir}/certs",
