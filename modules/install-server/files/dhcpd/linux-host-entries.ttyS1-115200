@@ -940,6 +940,14 @@ host curium {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+# temporary T100636
+host d-i-test {
+	hardware ethernet 90:B1:1C:2D:87:0C;
+	fixed-address d-i-test.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host dataset1001 {
 	hardware ethernet 78:2b:cb:76:42:ee;
 	fixed-address dataset1001.wikimedia.org;
