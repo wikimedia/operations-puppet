@@ -423,7 +423,7 @@ class role::nova::controller {
 
     if $::realm == 'production' {
         class { 'openstack::firewall': }
-        class { 'role::puppet::server::labs': }
+        include role::puppet::server::labs
     }
 
     class { 'openstack::adminscripts':
