@@ -1,0 +1,15 @@
+[Unit]
+Description=confd
+
+[Service]
+User=root
+Environment="CONFD_BACKEND=<%= @backend %>"
+<%- if @node -%>
+Environment="CONFD_DISCOVERY=-node <%= @node %>"
+<%- else -%>
+Environment="CONFD_DISCOVERY=-srv-domain <%= @srv_dns %> -scheme <%= @scheme %>"
+<%- end -%>
+Environment="CONFD_OPTS=<% if @interval %>-interval <%= @interval %><% else %>-watch<% end %>"
+ExecStart=/usr/bin/confd -backend $CONFD_BACKEND $CONFD_DISCOVERY $CONFD_OPTS
+Restart=on-failure
+RestartSec=10s
