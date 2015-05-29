@@ -67,6 +67,7 @@ class base {
     include base::environment
     include base::phaste
     include base::screenconfig
+    include base::certificates
     include ssh::client
     include ssh::server
     include role::salt::minions
