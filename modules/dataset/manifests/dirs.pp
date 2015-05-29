@@ -4,6 +4,7 @@ class dataset::dirs {
     $datadir = '/data/xmldatadumps'
     $publicdir = '/data/xmldatadumps/public'
     $otherdir = '/data/xmldatadumps/public/other'
+    $othermiscdir = '/data/xmldatadumps/public/other/misc'
     $otherdir_wikidata_legacy = '/data/xmldatadumps/public/other/wikidata'
     $otherdir_wikibase = '/data/xmldatadumps/public/other/wikibase/'
     $otherdir_wikibase_wikidatawiki = '/data/xmldatadumps/public/other/wikibase/wikidatawiki'
@@ -23,6 +24,13 @@ class dataset::dirs {
     }
 
     file { $otherdir:
+        mode   => '0755',
+        ensure => 'directory',
+        owner  => 'datasets',
+        group  => 'datasets',
+    }
+
+    file { $othermiscdir:
         mode   => '0755',
         ensure => 'directory',
         owner  => 'datasets',
