@@ -3,7 +3,7 @@ Description=Varnish StatsD reporter
 After=varnish<%= /\w/.match(@instance_name) ? "-#{@instance_name}" : '' -%>.service
 
 [Service]
-ExecStart=/usr/local/bin/varnishstatsd <%= /\w/.match(@instance_name) ? "--varnish-instance_name=#{@instance_name}" : ""  %> --statsd-server=<%= @statsd_server %> --key-prefix="<%= @key_prefix %>"
+ExecStart=/usr/local/bin/varnishstatsd <%= /\w/.match(@instance_name) ? "--varnish-instance_name=#{@instance_name}" : ""  %> --statsd-server=<%= @statsd_server %> --key-prefix=<%= @key_prefix %>
 
 [Install]
 WantedBy=multi-user.target
