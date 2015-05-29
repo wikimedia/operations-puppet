@@ -20,8 +20,12 @@ class toollabs::redis (
     include toollabs::infrastructure
     include ::redis::client::python
 
-    $redis_replication = {
-        "${::hostname}" => $replicate_from,
+    if $replicate_from != $::hostname {
+        $redis_replication = {
+            "${::hostname}" => $replicate_from,
+        }
+    } else {
+        $redis_replication = undef
     }
 
     include labs_lvm
