@@ -13,8 +13,6 @@ class puppetmaster::scripts(
     $keep_reports_minutes = 960, # 16 hours
 ) {
 
-    require puppetmaster::generators
-
     file {'/usr/local/sbin/puppetstoredconfigclean.rb':
         ensure  => 'present',
         owner   => 'root',

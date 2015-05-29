@@ -80,6 +80,7 @@ class puppetmaster(
     include puppetmaster::gitclone
     include puppetmaster::gitpuppet
     include puppetmaster::monitoring
+    include puppetmaster::generators
 
     if $is_labs_puppet_master {
         include puppetmaster::labs
