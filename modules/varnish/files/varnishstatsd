@@ -100,7 +100,8 @@ def vsl_callback(transaction_id, tag, record, remote_party):
 
     elif tag == 'BackendXID':
         # Associate the backend XID with its transaction ID.
-        xids[record] = transaction_id
+        xid = int(record) & 0xffffffff
+        xids[xid] = transaction_id
         if len(xids) > MAX_BACKLOG:
             xids.popitem(last=False)
 
@@ -119,7 +120,7 @@ def vsl_callback(transaction_id, tag, record, remote_party):
     elif tag == 'ReqEnd':
         # Collate data and emit metric.
         parts = record.split()
-        xid = parts[0]
+        xid = int(parts[0])
 
         try:
             tid = xids.pop(xid)
