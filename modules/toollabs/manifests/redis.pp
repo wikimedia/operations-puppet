@@ -15,14 +15,14 @@
 #
 class toollabs::redis (
     $maxmemory = '12GB',
-    $replicate_from = undef,
 ) inherits toollabs {
     include toollabs::infrastructure
     include ::redis::client::python
 
-    if $replicate_from != $::hostname {
+    # $active_redis inherited from toollabs
+    if $active_redis != $::hostname {
         $redis_replication = {
-            "${::hostname}" => $replicate_from,
+            "${::hostname}" => $active_redis,
         }
     } else {
         $redis_replication = undef
@@ -56,9 +56,7 @@ class toollabs::redis (
             'MONITOR'   => ''
         },
         monitor           => false,
-        redis_replication => {
-            "${::hostname}" => $active_redis, # Defined in toollabs/init
-        },
+        redis_replication => $redis_replication,
         maxmemory_policy  => 'allkeys-lru',
         require           => Labs_lvm::Volume['redis-disk'],
     }
