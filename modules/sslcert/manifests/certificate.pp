@@ -19,6 +19,10 @@
 #   If 'present', the certificate will be installed; if 'absent', it will be
 #   removed. The default is 'present'.
 #
+# [*chain*]
+#   If true, create also a chained version of the certificate, by calling into
+#   sslcert::chainedcert. The default is true.
+#
 # [*content*]
 #   If defined, will be used as the content of the X.509 certificate file.
 #   Undefined by default. Mutually exclusive with 'source'.
@@ -41,6 +45,7 @@
 define sslcert::certificate(
   $ensure=present,
   $group='ssl-cert',
+  $chain=true,
   $source=undef,
   $content=undef,
   $private=undef,
@@ -74,6 +79,13 @@ define sslcert::certificate(
             mode    => '0440',
             # content => $private, # content variant is broken, fixing the easy way for now...
             source => $private,
+        }
+    }
+
+    if $chain {
+        sslcert::chainedcert { $name:
+            ensure => $ensure,
+            group  => $group,
         }
     }
 }
