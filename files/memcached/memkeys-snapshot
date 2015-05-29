@@ -1,0 +1,8 @@
+#!/bin/bash
+# Log 20 seconds of memcached activity to a file.
+# Meant to be invoked by cron.
+set -e
+set -u
+TIMESTAMP="$(/bin/date +"%Y_%m_%d")"
+/usr/bin/timeout --kill-after=25s 20s \
+  /usr/bin/memkeys --interface=eth0 --report=csv 2>/dev/null >> "/var/log/memkeys/${TIMESTAMP}.csv"

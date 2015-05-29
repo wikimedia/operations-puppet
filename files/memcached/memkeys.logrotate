@@ -1,0 +1,15 @@
+# logrotate(8) configuration file for the memkeys cron job, which
+# writes memcached key usage stats to a CSV file in /var/log/memkeys
+# once a day.
+
+/var/log/memkeys/* {
+  rotate 90
+  compress
+  daily
+  missingok
+  nocopy
+  nocreate
+  nodateext
+  noolddir
+  notifempty
+}
