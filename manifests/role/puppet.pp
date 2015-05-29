@@ -1,4 +1,13 @@
 class role::puppet::server::labs {
+    include network::constants
+
+    $labs_ranges = [
+        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-a-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-b-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-c-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-d-eqiad']['ipv4'],
+    ]
+
     include role::nova::config
     $novaconfig = $role::nova::config::novaconfig
 
@@ -6,14 +15,16 @@ class role::puppet::server::labs {
     $basedn = $ldapconfig['basedn']
 
     # Only allow puppet access from the instances
-    $puppet_passenger_allow_from = $::realm ? {
-        'production' => [ '10.4.0.0/21', '10.68.16.0/21', '10.4.16.3', '10.64.20.8', '208.80.152.161', '208.80.154.14' ],
+
+
+    $allow_from = $::realm ? {
+        'production' => $labs_ranges,
         'labs' => [ '192.168.0.0/21' ],
     }
 
     class { 'puppetmaster':
         server_name => hiera('labs_puppet_master'),
-        allow_from  => $puppet_passenger_allow_from,
+        allow_from  => $allow_from,
         config      => {
             'thin_storeconfigs' => false,
             'reports'           => 'labsstatus',
