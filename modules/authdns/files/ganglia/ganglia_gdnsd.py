@@ -88,6 +88,9 @@ def fetch_metrics(url=CONF['stats_url']):
         # pass, i.e. just return {}.
         pass
 
+    # remove the services section, as we're not interested in it
+    metrics.pop('services', None)
+
     return metrics
 
 
