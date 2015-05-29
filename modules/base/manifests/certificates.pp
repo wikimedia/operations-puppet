@@ -25,4 +25,7 @@ class base::certificates {
     sslcert::ca { 'GlobalSign_CA':
         source  => 'puppet:///modules/base/ca/GlobalSign_CA.crt',
     }
+
+    # install all CAs before generating certificates
+    Sslcert::Ca <| |> -> Sslcert::Chainedcert<| |>
 }
