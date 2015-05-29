@@ -16,8 +16,4 @@ define install_certificate(
             private => "puppet:///private/ssl/${name}.key",
         }
     }
-
-    sslcert::chainedcert { $name:
-        group => $group,
-    }
 }
