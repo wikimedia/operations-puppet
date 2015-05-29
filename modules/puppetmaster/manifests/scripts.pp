@@ -15,9 +15,6 @@ class puppetmaster::scripts(
 
     require puppetmaster::generators
 
-    file {'/usr/local/bin/uuid-generator':
-        ensure  => absent,
-    }
     file {'/usr/local/sbin/puppetstoredconfigclean.rb':
         ensure => 'present',
         owner  => 'root',
