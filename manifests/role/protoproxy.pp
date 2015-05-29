@@ -39,9 +39,8 @@ class role::protoproxy::ssl::common {
 
 class role::protoproxy::ssl::beta::common {
 
-    include standard,
-        certificates::wmf_labs_ca,
-        role::protoproxy::ssl::common
+    include standard
+    include role::protoproxy::ssl::common
 
     install_certificate { 'star.wmflabs.org':
         privatekey => false,
