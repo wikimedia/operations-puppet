@@ -14,10 +14,10 @@
 #        Adds a Deny from statement (order Allow,Deny), limiting access
 #        to the passenger service.
 class puppetmaster::passenger(
-    $bind_address  = '*',
-    $verify_client = 'optional',
-    $allow_from    = [],
-    $deny_from     = []
+    $bind_address,
+    $verify_client,
+    $allow_from,
+    $deny_from,
 ) {
     include ::apache::mod::passenger
 
