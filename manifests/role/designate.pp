@@ -34,12 +34,12 @@ class role::designate::config::eqiad inherits role::designate::config {
     $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
 
     $db_host = $::realm ? {
-        'production' => 'm1-master.eqiad.wmnet',
+        'production' => 'm5-master.eqiad.wmnet',
         'labs'       => $::ipaddress_eth0,
     }
 
     $pdns_db_host = $::realm ? {
-        'production' => 'm1-master.eqiad.wmnet',
+        'production' => 'm5-master.eqiad.wmnet',
         'labs'       => $::ipaddress_eth0,
     }
 
