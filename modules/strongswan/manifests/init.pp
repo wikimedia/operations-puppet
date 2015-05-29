@@ -1,11 +1,11 @@
-# sets up an IPsec implementation
-# https://en.wikipedia.org/wiki/StrongSwan
 class strongswan (
     $puppet_certname = '',
     $hosts           = [],
 )
 {
-    package { 'strongswan': ensure => present }
+    package { 'strongswan':
+        ensure => present,
+    }
     package { 'ipsec-tools':
         ensure  => present,
         require => Package['strongswan'];
@@ -24,14 +24,6 @@ class strongswan (
             ensure  => present,
             before  => Service['strongswan'],
             require => Package['strongswan'],
-        }
-
-        # Temporary hack to work around ugly strongswan systemd issue,
-        #   see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=781209
-        exec { 'strongswan-disable-sysvinit':
-            command => '/usr/sbin/dpkg-divert --divert /etc/init.d/ipsec-disabled /etc/init.d/ipsec',
-            unless  => '/usr/bin/test -f /etc/init.d/ipsec.disabled',
-            before  => Package['strongswan'],
         }
     }
 
@@ -55,7 +47,6 @@ class strongswan (
 
     # For SSL certs, reuse Puppet client's certs.
     # Strongswan won't accept symlinks, so make copies.
-
     file { '/etc/ipsec.d/cacerts/ca.pem':
         ensure  => present,
         owner   => 'root',
