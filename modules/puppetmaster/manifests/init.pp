@@ -149,6 +149,7 @@ class puppetmaster(
     include puppetmaster::geoip
     include puppetmaster::gitpuppet
     include puppetmaster::monitoring
+    include puppetmaster::generators
 
     file { '/etc/puppet/auth.conf':
         owner   => 'root',
