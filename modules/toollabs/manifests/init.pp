@@ -218,7 +218,7 @@ class toollabs (
     host { 'tools-redis':
         ensure       => present,
         host_aliases => 'tools-redis.eqiad.wmflabs',
-        ip           => ipresolve($active_redis, $::nameservers[0]),
+        ip           => ipresolve($active_redis, 4, $::nameservers[0]),
     }
 
     diamond::collector::localcrontab { 'localcrontabcollector': }
