@@ -1697,7 +1697,6 @@ node 'mira.codfw.wmnet' {
     include standard
     include base::firewall
     include role::deployment::server
-    include ssh::hostkeys-collect
     include role::backup::host
     backup::set {'home': }
 
