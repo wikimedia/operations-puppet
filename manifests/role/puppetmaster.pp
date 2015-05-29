@@ -1,17 +1,6 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
-class role::puppetmaster::config {
-        $allow_from = [
-            '*.wikimedia.org',
-            '*.eqiad.wmnet',
-            '*.ulsfo.wmnet',
-            '*.esams.wmnet',
-            '*.codfw.wmnet',
-        ]
-}
-
 class role::puppetmaster::frontend {
-    include role::puppetmaster::config
     include passwords::puppet::database
 
     include role::backup::host
@@ -23,7 +12,6 @@ class role::puppetmaster::frontend {
     }
 
     class { '::puppetmaster':
-        allow_from  => $role::puppetmaster::config::allow_from,
         server_type => 'frontend',
         workers     =>  [
                         {
@@ -47,7 +35,6 @@ class role::puppetmaster::frontend {
 }
 
 class role::puppetmaster::backend {
-    include role::puppetmaster::config
     include passwords::puppet::database
 
     system::role { 'puppetmaster':
@@ -55,7 +42,6 @@ class role::puppetmaster::backend {
     }
 
     class { '::puppetmaster':
-        allow_from  => $role::puppetmaster::config::allow_from,
         server_type => 'backend',
         config      => {
             'storeconfigs'      => true, # Required by thin_storeconfigs on puppet 3.x

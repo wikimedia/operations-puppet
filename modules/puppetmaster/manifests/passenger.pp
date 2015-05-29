@@ -38,7 +38,8 @@ class puppetmaster::passenger(
     # Unfortunately priority does not allows to use apache::site for this
     # Purging the package installed puppetmaster site
     file { '/etc/apache2/site-enabled/puppetmaster':
-        ensure => absent,
+        ensure  => absent,
+        require => Package['puppetmaster-passenger'],
     }
 
     # Since we are running puppet via passenger, we need to ensure
