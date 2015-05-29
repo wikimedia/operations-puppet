@@ -9,6 +9,7 @@ class publichtml(
     include ::apache::mod::cgi
     include ::apache::mod::php5
     include ::apache::mod::rewrite
+    include ::apache::mod::headers
 
     system::role { 'publichtml':
         description => 'web server of public_html directories',
