@@ -39,7 +39,7 @@ define sslcert::chainedcert(
             creates => $chainfile,
             command => "/usr/local/sbin/x509-bundle --skip-root -c ${title}.crt -o $chainfile",
             cwd     => '/etc/ssl/localcerts',
-            require => Sslcert::Certificate[$title],
+            require => File["/etc/ssl/localcerts/${title}.crt"]
         }
 
         # set owner/group/permissions on the chained file
