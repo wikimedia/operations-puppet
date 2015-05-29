@@ -8,9 +8,6 @@ class role::puppet::server::labs {
         $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-d-eqiad']['ipv4'],
     ]
 
-    include role::nova::config
-    $novaconfig = $role::nova::config::novaconfig
-
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
 
@@ -40,7 +37,7 @@ class role::puppet::server::labs {
 
     if ! defined(Class['puppetmaster::certmanager']) {
         class { 'puppetmaster::certmanager':
-            remote_cert_cleaner => $novaconfig['designate_hostname'],
+            remote_cert_cleaner => hiera('certmanager_hostname'),
         }
     }
 }
