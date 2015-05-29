@@ -24,11 +24,17 @@ class puppetmaster(
             $server_name='puppet',
             $bind_address='*',
             $verify_client='optional',
-            $allow_from=[],
             $deny_from=[],
             $server_type='standalone',
             $workers=undef,
             $config={},
+            $allow_from = [
+                '*.wikimedia.org',
+                '*.eqiad.wmnet',
+                '*.ulsfo.wmnet',
+                '*.esams.wmnet',
+                '*.codfw.wmnet',
+            ]
             ){
 
     $gitdir = '/var/lib/git'
