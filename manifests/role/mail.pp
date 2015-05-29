@@ -91,6 +91,8 @@ class role::mail::lists {
         prefixlen => '128',
     }
 
+    install_certificate{ 'lists.wikimedia.org': }
+
     include mailman
 
     class { 'spamassassin':
