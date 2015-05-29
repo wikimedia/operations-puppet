@@ -35,7 +35,47 @@ class role::memcached {
         }
     }
 
+    # `memkeys` is a `top`-like tool for inspecting memcache key usage in real time.
+    # In addition to making it available for interactive use, we configure a cronjob
+    # to run once a day and log 20 seconds' worth of memcached usage stats to a CSV
+    # file. That way, if there is a spike in memcached usage, we can diff the logs
+    # and see which keys are suspect.
+
     package { 'memkeys':
         ensure => present,
+        before => Cron['memkeys'],
+    }
+
+    file { '/var/log/memkeys':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        before => Cron['memkeys'],
+    }
+
+    file { '/etc/logrotate.d/memkeys':
+        source  => 'puppet:///files/memcached/memkeys.logrotate',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        before  => Cron['memkeys'],
+        require => File['/var/log/memkeys'],
+    }
+
+	file { '/usr/local/sbin/memkeys-snapshot':
+		source  => 'puppet:///files/memcached/memkeys-snapshot',
+		owner   => 'root',
+		group   => 'root',
+		mode    => '0555',
+		before  => Cron['memkeys'],
+	}
+
+    cron { 'memkeys':
+        ensure  => present,
+        command => '/usr/local/sbin/memkeys-snapshot',
+        user    => 'root',
+        hour    => fqdn_rand(23, 'memkeys'),
+        minute  => fqdn_rand(59, 'memkeys'),
     }
 }

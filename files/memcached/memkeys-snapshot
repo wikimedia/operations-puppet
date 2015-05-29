@@ -1,0 +1,4 @@
+#!/bin/bash
+TIMESTAMP="$(/bin/date +"%m_%d_%Y")"
+/usr/bin/timeout --kill-after=25s 20s \
+  /usr/bin/memkeys --interface=eth0 --report=csv 2>/dev/null >> "/var/log/memkeys/${TIMESTAMP}.csv"
