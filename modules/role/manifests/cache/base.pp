@@ -8,6 +8,7 @@ class role::cache::base(
     include nrpe
     include lvs::configuration
     include role::cache::configuration
+    include role::cache::statsd
     include network::constants
 
     # Only production needs these system perf tweaks
