@@ -24,14 +24,10 @@ class protoproxy::ocsp_updater {
         source => 'puppet:///modules/protoproxy/update-ocsp-all',
     }
 
-    # This is "0" or "1" randomly by-host, used below with Linux crontab
-    # syntax to get every-two-hours timing with hosts splayed into even/odd hours
-    $fqr01 = fqdn_rand(2, '97e54956f8c8e861')
-
     cron { 'update-ocsp-all':
         command => "/usr/local/sbin/update-ocsp-all webproxy.${::site}.wmnet:8080",
         minute  => fqdn_rand(60, '1adf3dd699e51805'),
-        hour    => "${fqr01}-23/2",
+        hour    => '*',
         require => [
             File['/usr/local/sbin/update-ocsp-all'],
             Service['nginx'],
