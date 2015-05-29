@@ -72,7 +72,8 @@ class puppetmaster(
 
     class { 'puppetmaster::ssl':
         server_name => $server_name,
-        ca          => $config['ca']
+        ca          => $config['ca'],
+        require     => Package['puppetmaster'],
     }
 
     include puppetmaster::scripts

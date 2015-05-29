@@ -1,2 +1,4 @@
-#
-include puppetmaster::ssl
+class { 'puppetmaster::ssl':
+    server_name => 'puppet',
+    ca => 'false',
+}
