@@ -386,6 +386,10 @@ rewrite	wiki.mediawiki.org	//www.mediawiki.org
 funnel	doc.mediawiki.org	https://doc.wikimedia.org
 funnel	integration.mediawiki.org	https://integration.wikimedia.org
 
+# CI docs -> doc (T100349)
+funnel	docs.mediawiki.org https://doc.wikimedia.org
+funnel	docs.wikimedia.org https://doc.wikimedia.org
+
 rewrite	*softwarewikipedia.com	//www.mediawiki.org
 rewrite	*softwarewikipedia.net	//www.mediawiki.org
 rewrite	*softwarewikipedia.org	//www.mediawiki.org
