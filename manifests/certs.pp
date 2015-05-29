@@ -34,18 +34,6 @@ class certificates::base {
     include ::sslcert
 }
 
-class certificates::star_wmflabs_org {
-
-    install_certificate{ 'star.wmflabs.org': }
-
-}
-
-class certificates::star_wmflabs {
-
-    install_certificate{ 'star.wmflabs': }
-
-}
-
 class certificates::wmf_ca {
     sslcert::ca { 'wmf-ca':
         source  => 'puppet:///files/ssl/wmf-ca.crt',
@@ -55,12 +43,6 @@ class certificates::wmf_ca {
 class certificates::wmf_ca_2014_2017 {
     sslcert::ca { 'wmf_ca_2014_2017':
         source  => "puppet:///files/ssl/wmf_ca_2014_2017.crt",
-    }
-}
-
-class certificates::wmf_labs_ca {
-    sslcert::ca { 'wmf-labs':
-        source  => 'puppet:///files/ssl/wmf-labs.crt',
     }
 }
 
