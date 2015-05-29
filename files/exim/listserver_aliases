@@ -1,12 +1,15 @@
 # @lists.wikimedia.org aliases
-mailman-bounces:    :blackhole:
+mailman-bounces:      :blackhole:
 
-boardexec:          board-l
-foundation-l:       wikimedia-l
-museum-l:           glam
-mediawiki-cvs:      mediawiki-commits
-wsor:               wmfresearch
-chaptercommittee-l: affcom
-allhands:           wmfreqs
-research-team:      research-internal
-wikidata-l:         wikidata
+boardexec:            board-l
+foundation-l:         wikimedia-l
+museum-l:             glam
+mediawiki-cvs:        mediawiki-commits
+wsor:                 wmfresearch
+chaptercommittee-l:   affcom
+allhands:             wmfreqs
+research-team:        research-internal
+wikidata-l:           wikidata
+pywikipedia-l:        pywikibot
+pywikipedia-announce: pywikibot-announce
+pywikipedia-bugs:     pywikibot-bugs
