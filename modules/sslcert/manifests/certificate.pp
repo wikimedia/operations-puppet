@@ -23,13 +23,8 @@
 #   If true, create also a chained version of the certificate, by calling into
 #   sslcert::chainedcert. The default is true.
 #
-# [*content*]
-#   If defined, will be used as the content of the X.509 certificate file.
-#   Undefined by default. Mutually exclusive with 'source'.
-#
 # [*source*]
 #   Path to file containing the X.509 certificate file. Undefined by default.
-#   Mutually exclusive with 'content'.
 #
 # [*private*]
 #   The content of the private key to the certificate. Undefined by default.
@@ -43,41 +38,33 @@
 #
 
 define sslcert::certificate(
+  $source,
   $ensure=present,
   $group='ssl-cert',
   $chain=true,
-  $source=undef,
-  $content=undef,
   $private=undef,
 ) {
     require sslcert
 
-    if $source == undef and $content == undef  {
-        fail('you must provide either "source" or "content"')
-    }
-
-    if $source != undef and $content != undef  {
-        fail('"source" and "content" are mutually exclusive')
-    }
-
     file { "/etc/ssl/localcerts/${title}.crt":
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => $source,
-        content => $content,
+        ensure => $ensure,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => $source,
     }
 
     if $private {
-        # only support "content"; serving sensitive material over the puppet
-        # fileserver isn't a very good security practice
+        # Ideally, we'd pass "content", not "source", and use the file()
+        # function, as well as a deny all fileserver rule to not allow anyone
+        # to reach key material out of their scope via the fileserver. However,
+        # file() is not very sane before Puppet 3.7.0, requiring the full
+        # absolute path to files. We should revisit once we get to 3.7+.
         file { "/etc/ssl/private/${name}.key":
-            ensure  => $ensure,
-            owner   => 'root',
-            group   => $group,
-            mode    => '0440',
-            # content => $private, # content variant is broken, fixing the easy way for now...
+            ensure => $ensure,
+            owner  => 'root',
+            group  => $group,
+            mode   => '0440',
             source => $private,
         }
     }
