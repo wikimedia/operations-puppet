@@ -45,6 +45,6 @@ class icinga::web {
         ensure => absent,
     }
 
-    install_certificate{ 'icinga.wikimedia.org':       ca => 'RapidSSL_CA.pem' }
+    install_certificate{ 'icinga.wikimedia.org':       ca => 'RapidSSL_SHA256_CA_-_G3.pem' }
 
 }
