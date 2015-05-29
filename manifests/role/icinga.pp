@@ -25,7 +25,6 @@ class role::icinga(
     include mysql
     include icinga::gsbmonitoring
     include nrpe
-    include certificates::globalsign_ca
 
     if $ircbot {
         include icinga::ircbot
