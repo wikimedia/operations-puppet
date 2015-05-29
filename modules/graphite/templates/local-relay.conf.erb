@@ -8,6 +8,16 @@ cluster carbon-cache
   <% end -%>
   ;
 
+match sum_sq$
+  send to blackhole
+  stop
+  ;
+
+match stddev$
+  send to blackhole
+  stop
+  ;
+
 match *
   send to carbon-cache
   ;
