@@ -4,7 +4,7 @@ class puppetmaster::generators($ensure = 'present'){
     require_package($packages)
 
     file {'/usr/local/bin/naggen2':
-        ensure  => 'present',
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
@@ -13,7 +13,7 @@ class puppetmaster::generators($ensure = 'present'){
     }
 
     file {'/usr/local/bin/sshknowngen':
-        ensure  => 'present',
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
