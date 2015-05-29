@@ -1,7 +1,4 @@
 class role::cache::ssl::sni {
-    #TODO: kill the old wmf_ca
-    include certificates::wmf_ca
-    include certificates::wmf_ca_2014_2017
     include role::protoproxy::ssl::common
 
     role::cache::ssl::local { 'unified':

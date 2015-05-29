@@ -6,11 +6,12 @@ define install_certificate(
     require certificates::base
     require certificates::rapidssl_ca
     require certificates::rapidssl_ca_2
+    require certificates::rapidssl_sha256_ca_G3
     require certificates::digicert_ca
     require certificates::digicert_sha2_ca
+    require certificates::globalsign_ca
     require certificates::wmf_ca
     require certificates::wmf_ca_2014_2017
-    require certificates::rapidssl_sha256_ca_G3
 
     sslcert::certificate { $name:
         group  => $group,
