@@ -8,7 +8,8 @@
 class dnsrecursor(
     $listen_addresses = [$::ipaddress],
     $allow_from       = [],
-    $ip_aliases       = undef
+    $ip_aliases       = undef,
+    $forward_zones    = "wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239"
 ) {
     package { 'pdns-recursor':
         ensure => 'latest',
