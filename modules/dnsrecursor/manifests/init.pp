@@ -8,7 +8,7 @@
 class dnsrecursor(
     $listen_addresses = [$::ipaddress],
     $allow_from       = [],
-    $ip_aliases       = {}
+    $ip_aliases       = undef
 ) {
     package { 'pdns-recursor':
         ensure => 'latest',
