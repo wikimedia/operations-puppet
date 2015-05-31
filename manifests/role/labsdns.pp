@@ -100,7 +100,7 @@ class role::labsdnsrecursor {
         default => [$recursor_ip]
     }
 
-    $labs_auth_dns = ipresolve(heira('labs_dns_host'),4)
+    $labs_auth_dns = ipresolve(hiera('labs_dns_host'),4)
 
     class { ::dnsrecursor:
             listen_addresses         => $listen_addresses,
