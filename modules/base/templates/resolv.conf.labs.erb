@@ -12,6 +12,6 @@ nameserver <%= nsip %>
 <% else -%>
 domain <%= @instanceproject %>.<%= @site %>.wmflabs
 search <%= @instanceproject %>.<%= @site %>.wmflabs <%= @site %>.wmflabs
-nameserver 208.80.154.12
+nameserver <%= @labs_recursor %>
 <% end -%>
 options timeout:5 ndots:2
