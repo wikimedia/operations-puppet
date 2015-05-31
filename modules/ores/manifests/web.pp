@@ -70,7 +70,7 @@ class ores::web {
                 chdir       => $src_path,
                 http-socket => '0.0.0.0:8080',
                 venv        => '/srv/ores/venv',
-                processes   => inline_template('<%= @processorcount.to_i * 2 %>'),
+                processes   => inline_template('<%= @processorcount.to_i * 4 %>'),
             }
         }
     }
