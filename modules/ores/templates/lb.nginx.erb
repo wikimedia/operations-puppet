@@ -5,10 +5,13 @@ upstream oresweb {
     <% end %>
 }
 
+proxy_cache_path /srv/nginx/cache/ keys_zone=one:10m;
+proxy_temp_path /srv/nginx/tmp/;
 server {
     listen 80;
 
     location / {
+        proxy_cache one;
         proxy_pass oresweb;
     }
 }
