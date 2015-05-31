@@ -100,10 +100,13 @@ class role::labsdnsrecursor {
         default => [$recursor_ip]
     }
 
+    $labs_auth_dns = ipresolve(heira('labs_dns_host'),4)
+
     class { ::dnsrecursor:
-            listen_addresses    => $listen_addresses,
-            allow_from          => ['10.68.16.0/21'],
-            ip_aliases          => $nova_floating_ip_aliases,
+            listen_addresses         => $listen_addresses,
+            allow_from               => ['10.68.16.0/21'],
+            ip_aliases               => $nova_floating_ip_aliases,
+            additional_forward_zones => "wmflabs=${labs_auth_dns}"
     }
 
     ::dnsrecursor::monitor { $listen_addresses: }

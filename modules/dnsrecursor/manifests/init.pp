@@ -6,13 +6,16 @@
 # - $allow_from:
 #       Prefixes from which to allow recursive DNS queries
 class dnsrecursor(
-    $listen_addresses = [$::ipaddress],
-    $allow_from       = [],
-    $ip_aliases       = undef
+    $listen_addresses         = [$::ipaddress],
+    $allow_from               = [],
+    $ip_aliases               = undef,
+    $additional_forward_zones = ""
 ) {
     package { 'pdns-recursor':
         ensure => 'latest',
     }
+
+    $forward_zones    = "wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239"
 
     system::role { 'dnsrecursor':
         ensure      => 'absent',
