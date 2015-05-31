@@ -14,6 +14,6 @@ server {
 
     location / {
         proxy_cache ores;
-        proxy_pass oresweb;
+        proxy_pass http://oresweb;
     }
 }
