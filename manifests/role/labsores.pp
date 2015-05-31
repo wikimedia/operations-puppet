@@ -5,9 +5,12 @@ class role::labs::ores::web {
 class role::labs::ores::lb(
     $realservers,
 ) {
-    require role::labs::lvm::srv
+    labs_lvm::volume { 'srv':
+        mountat => '/srv',
+    }
 
     class { '::ores::lb':
         realservers => $realservers,
+        require     => Labs_lvm::Volume['srv'],
     }
 }
