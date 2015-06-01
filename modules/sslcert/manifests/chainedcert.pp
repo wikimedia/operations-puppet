@@ -34,6 +34,13 @@ define sslcert::chainedcert(
     validate_ensure($ensure)
 
     if $ensure == 'present' {
+        exec { "x509-bundle ${title}":
+            creates => "/tmp/${title}.chained.crt.x509b-test",
+            command => "/usr/local/sbin/x509-bundle --skip-root -c ${title}.crt -o /tmp/${title}.chained.crt.x509b-test",
+            cwd     => '/etc/ssl/localcerts',
+            require => Sslcert::Certificate[$title],
+        }
+
         exec { "${title}_create_chained_cert":
             creates => "/etc/ssl/localcerts/${title}.chained.crt",
             command => "/bin/cat /etc/ssl/localcerts/${title}.crt ${ca} > /etc/ssl/localcerts/${title}.chained.crt",
