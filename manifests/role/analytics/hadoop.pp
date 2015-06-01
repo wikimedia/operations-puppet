@@ -595,10 +595,15 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
 
         # Make sure that this worker node has NodeManager running in a RUNNING state.
         # Install a custom check command for NodeManager Node-State:
-        nagios_common::check_command { 'check_hadoop_yarn_node_state': }
+        file { '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state':
+            source => 'puppet:///hadoop/check_hadoop_yarn_node_state'
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
         nrpe::monitor_service { 'hadoop_yarn_node_state':
             description  => 'YARN NodeManager Node-State',
-            nrpe_command => '/usr/lib/nagios/plugins/check_hadoop_yarn_node_state',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state',
         }
     }
 
