@@ -128,6 +128,10 @@ class hhvm(
             debug                    => {
                 core_dump_report_directory => '/var/log/hhvm',
             },
+            server                   => {
+                light_process_count       => 5,
+                light_process_file_prefix => '/var/tmp/hhvm',
+            },
         },
     }
 
