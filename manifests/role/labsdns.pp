@@ -108,24 +108,24 @@ class role::labsdnsrecursor {
 
     ::dnsrecursor::monitor { $listen_addresses: }
 
-    ferm::service { 'udp_dns_rec':
+    ferm::service { 'recursor_udp_dns_rec':
         proto => 'udp',
         port  => '53',
     }
 
-    ferm::service { 'tcp_dns_rec':
+    ferm::service { 'recursor_tcp_dns_rec':
         proto => 'tcp',
         port  => '53',
     }
 
-    ferm::rule { 'skip_dns_conntrack-out':
+    ferm::rule { 'recursor_skip_dns_conntrack-out':
         desc  => 'Skip DNS outgoing connection tracking',
         table => 'raw',
         chain => 'OUTPUT',
         rule  => 'proto udp sport 53 NOTRACK;',
     }
 
-    ferm::rule { 'skip_dns_conntrack-in':
+    ferm::rule { 'recursor_skip_dns_conntrack-in':
         desc  => 'Skip DNS incoming connection tracking',
         table => 'raw',
         chain => 'PREROUTING',
