@@ -6,10 +6,6 @@ class strongswan (
     package { 'strongswan':
         ensure => present,
     }
-    package { 'ipsec-tools':
-        ensure  => present,
-        require => Package['strongswan'];
-    }
 
     if os_version('debian >= jessie') {
         # On Jessie we need an extra package which is only "recommended"
