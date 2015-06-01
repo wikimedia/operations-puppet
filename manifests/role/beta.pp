@@ -7,6 +7,9 @@ class role::beta::bastion {
 
     include beta::autoupdater
     include beta::syncsiteresources
+
+    # For debugging command-line scripts
+    require_package('php5-xdebug')
 }
 
 # To be applied on deployment-upload.eqiad.wmflabs
