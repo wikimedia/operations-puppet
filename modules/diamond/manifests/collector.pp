@@ -21,6 +21,14 @@
 #   A hash of configuration settings for the collector.
 #   The 'enabled' setting is set to true by default.
 #
+# [*custom_name*]
+#  The puppet name of a custom diamond collector to install.  This
+#  must be set if you plan on installing a custom collector via the
+#  source parameter.  This allows for multiple collector conf files
+#  to use the same custom collector python code.  If you plan on
+#  using the custom collector python code for multiple collectors,
+#  make sure they all set the same custom_name.  Default: $name
+#
 # [*source*]
 #   A Puppet file reference to the Python collector source file. This parameter
 #   may be omitted if the collector is part of the Diamond distribution. It
@@ -48,9 +56,10 @@
 #  }
 #
 define diamond::collector(
-    $settings = undef,
-    $ensure   = present,
-    $source   = undef,
+    $settings    = undef,
+    $ensure      = present,
+    $custom_name = $name,
+    $source      = undef,
 ) {
     validate_ensure($ensure)
 
@@ -65,25 +74,10 @@ define diamond::collector(
         notify  => Service['diamond'],
     }
 
-    # Install a custom python collector.
-    if $source {
-        if !defined(File["/usr/share/diamond/collectors/${name}"]) {
-            file { "/usr/share/diamond/collectors/${name}":
-                ensure => ensure_directory($ensure),
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0755',
-            }
-        }
-        if !defined(File["/usr/share/diamond/collectors/${name}/${name}.py"]) {
-            file { "/usr/share/diamond/collectors/${name}/${name}.py":
-                ensure => $ensure,
-                before => File["/etc/diamond/collectors/${collector}.conf"],
-                source => $source,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0644',
-            }
+    if $source and !defined(Diamond::Collector::Custom[$custom_name]) {
+        diamond::collector::custom { $custom_name:
+            ensure => $ensure,
+            source => $source,
         }
     }
 }
