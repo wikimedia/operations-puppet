@@ -135,4 +135,24 @@ class restbase(
             '/etc/init.d/restbase'
         ],
     }
+
+    monitoring::graphite_threshold { 'restbase_request_5xx_rate':
+        description     => 'RESTBase requests returning 5xx, in req/s',
+        metric          => 'restbase.v1_page_html_-title-_-revision--_tid-.GET.5xx.sample_rate',
+        from            => '10min',
+        warning         => '1', # 1 5xx/s
+        critical        => '3', # 5 5xx/s
+        percentage      => '20',
+        contact_group   => 'team-services',
+    }
+
+    monitoring::graphite_threshold { 'restbase_html_storage_hit_latency':
+        description     => 'RESTBase HTML storage load mean latency',
+        metric          => 'movingMedian(restbase.sys_key-rev-value_-bucket-_-key--_revision--_tid-.GET.2xx.mean, 15)',
+        from            => '10min',
+        warning         => '25', # 25ms
+        critical        => '50', # 50ms
+        percentage      => '50',
+        contact_group   => 'team-services',
+    }
 }
