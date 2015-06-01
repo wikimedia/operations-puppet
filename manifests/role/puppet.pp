@@ -61,6 +61,12 @@ class role::puppet::self(
     $autoupdate_master = $::puppetmaster_autoupdate,
     $enc = 'ldap', # 'ldap' or 'yaml+ldap'
 ) {
+    if $master != undef {
+        if $master =~ /\./ {
+            fail("$::puppetmaster must be a simple hostname.  The project-specific domain will be automatically appended.")
+        }
+    }
+
     # If $::puppetmaster is not set, assume
     # this is a self hosted puppetmaster, not allowed
     # to serve any other puppet clients.
@@ -68,8 +74,6 @@ class role::puppet::self(
           undef       => 'localhost',
           'localhost' => 'localhost',
           ''          => 'localhost',
-          # if has . characters in in, assume fqdn.
-          /\./        => $master,
           # else assume short hostname and append domain.
           default     => "${master}.${::domain}",
     }
