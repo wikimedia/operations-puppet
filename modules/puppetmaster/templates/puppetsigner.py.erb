@@ -76,10 +76,6 @@ try:
         elif not signed:
             sys.stderr.write('Signing new cert %s' % hostname)
             subprocess.check_call(['/usr/bin/puppet', 'cert', 'sign', hostname])
-            subprocess.check_call(['/usr/bin/php',
-                                   '/srv/org/wikimedia/controller/wikis/w/extensions/OpenStackManager/maintenance/onInstanceActionCompletion.php',
-                                   '--action', 'build',
-                                   '--instance', hostname])
 
     salt_output = subprocess.check_output(['/usr/bin/salt-key',
                                            '--list', 'unaccepted',
