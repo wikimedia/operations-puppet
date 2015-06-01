@@ -81,7 +81,7 @@ delegation-only=com,net
 # forward-zones	Zones for which we forward queries, comma separated domain=ip pairs
 #
 
-forward-zones= wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239
+forward-zones=<%= @forward_zones -%>, <%= @additional_forward_zones -%>
 
 #################################
 # hint-file	If set, load root hints from this file
