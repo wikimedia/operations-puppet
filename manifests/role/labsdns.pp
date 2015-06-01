@@ -106,7 +106,7 @@ class role::labsdnsrecursor {
             listen_addresses         => $listen_addresses,
             allow_from               => ['10.68.16.0/21'],
             ip_aliases               => $nova_floating_ip_aliases,
-            additional_forward_zones => "wmflabs=${labs_auth_dns}"
+            additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}"
     }
 
     ::dnsrecursor::monitor { $listen_addresses: }
