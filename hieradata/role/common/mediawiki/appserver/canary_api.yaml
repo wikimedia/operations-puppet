@@ -7,9 +7,11 @@ admin::groups:
 mediawiki::users::web: www-data
 hhvm::extra::fcgi:
   hhvm:
-    mysql:
-      connect_timeout: 3000
+    server:
+      light_process_count: 5
+      light_process_file_prefix: /tmp/hhvm
 hhvm::extra::cli:
   hhvm:
-    mysql:
-      connect_timeout: 3000
+    server:
+      light_process_count: 5
+      light_process_file_prefix: /tmp/hhvm
