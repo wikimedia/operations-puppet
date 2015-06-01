@@ -8,8 +8,6 @@ class role::labsdns {
         dns_auth_soa_name      => 'labs-ns2.wikimedia.org',
         pdns_db_host           => 'm5-master.eqiad.wmnet',
         pdns_db_password       => $passwords::pdns::db_pass,
-        pdns_recursor          => '208.80.154.239',
-        recursor_ip_range      => '10.68.16.0/21',
     }
 
     ferm::service { 'udp_dns_rec':
