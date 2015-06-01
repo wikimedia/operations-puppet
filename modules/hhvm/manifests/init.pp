@@ -112,6 +112,9 @@ class hhvm(
             pid_file                 => '',  # PID file managed by start-stop-daemon(8)
             resource_limit           => { core_file_size => to_bytes('8 Gb') },
             timeouts_use_wall_time   => true,
+            apc                      => {
+                expire_on_sets     => true,  # Purge on expiration
+            },
             log                      => {
                 header             => true,
                 use_syslog         => true,
