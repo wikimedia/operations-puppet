@@ -1,5 +1,6 @@
 class role::puppet::server::labs {
     include role::nova::config
+    include ldap::role::config::labs
     $novaconfig = $role::nova::config::novaconfig
 
     $puppet_db_name = $novaconfig['puppet_db_name']
