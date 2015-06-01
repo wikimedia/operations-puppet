@@ -87,7 +87,7 @@ try:
     # Sign or delete unaccepted keys
     hosts = json.loads(salt_output)
     for host in hosts["minions_pre"]:
-        if not re.match(r'^[a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
+        if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
             print 'Invalid hostname', host
             sys.exit(-1)
         query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
@@ -103,7 +103,7 @@ try:
                                            '--out', 'json'])
     hosts = json.loads(salt_output)
     for host in hosts["minions"]:
-        if not re.match(r'^[a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
+        if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
             print 'Invalid hostname', host
             sys.exit(-1)
         query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
