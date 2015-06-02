@@ -8,6 +8,7 @@ define install_certificate(
     require certificates::rapidssl_ca
     require certificates::rapidssl_ca_2
     require certificates::digicert_ca
+    require certificates::digicert_sha2_ca
     require certificates::wmf_ca
     require certificates::wmf_ca_2014_2017
     require certificates::rapidssl_sha256_ca_G3
@@ -105,6 +106,12 @@ class certificates::rapidssl_sha256_ca_G3 {
 class certificates::digicert_ca {
     sslcert::ca { 'DigiCertHighAssuranceCA-3':
         source  => 'puppet:///files/ssl/DigiCertHighAssuranceCA-3.crt',
+    }
+}
+
+class certificates::digicert_sha2_ca {
+    sslcert::ca { 'DigiCertSHA2HighAssuranceServerCA':
+        source => 'puppet://files/ssl/DigiCertSHA2HighAssuranceServerCA.crt',
     }
 }
 
