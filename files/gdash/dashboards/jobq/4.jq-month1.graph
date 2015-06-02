@@ -28,3 +28,7 @@ field :recycle, :color => "orange",
 field :abandon, :color => "brown",
                :alias => "none",
                :data  => 'cactiStyle(alias(summarize(MediaWiki.job-abandon.rate, "1day"),"Jobs abandoned/day"))'
+
+field :ack, :color => "teal",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-ack.rate, "1day"),"Jobs aknowledged/day"))'
