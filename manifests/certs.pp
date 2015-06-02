@@ -108,6 +108,12 @@ class certificates::digicert_ca {
     }
 }
 
+class certificates::digicert_ca {
+    sslcert::ca { 'DigiCertSHA2HighAssuranceServerCA':
+        source => 'puppet://files/ssl/DigiCertSHA2HighAssuranceServerCA.crt'
+    }
+}
+
 class certificates::globalsign_ca {
     sslcert::ca { 'GlobalSign_CA':
         source  => 'puppet:///files/ssl/GlobalSign_CA.crt',
