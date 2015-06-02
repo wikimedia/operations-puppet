@@ -111,7 +111,7 @@ class certificates::digicert_ca {
 
 class certificates::digicert_sha2_ca {
     sslcert::ca { 'DigiCertSHA2HighAssuranceServerCA':
-        source => 'puppet://files/ssl/DigiCertSHA2HighAssuranceServerCA.crt',
+        source => 'puppet:///files/ssl/DigiCertSHA2HighAssuranceServerCA.crt',
     }
 }
 
