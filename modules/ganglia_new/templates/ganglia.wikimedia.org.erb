@@ -26,6 +26,7 @@
 
     SSLEngine on
     SSLCertificateFile <%= @ganglia_ssl_cert %>
+    SSLCertificateChainFile /etc/ssl/localcerts/ganglia.wikimedia.org.chained.crt
     SSLCertificateKeyFile <%= @ganglia_ssl_key %>
     <%= @ssl_settings.join("\n") %>
 
