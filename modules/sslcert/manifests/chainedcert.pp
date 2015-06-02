@@ -25,7 +25,6 @@
 #
 
 define sslcert::chainedcert(
-  $ca,
   $ensure=present,
   $group='ssl-cert',
 ) {
@@ -36,15 +35,8 @@ define sslcert::chainedcert(
     if $ensure == 'present' {
         exec { "x509-bundle ${title}":
             creates => "/etc/ssl/localcerts/${title}.chained.x509b-test",
-            command => "/usr/local/sbin/x509-bundle --skip-root -c ${title}.crt -o /tmp/${title}.chained.crt.x509b-test",
+            command => "/usr/local/sbin/x509-bundle --skip-root -c ${title}.crt -o /etc/ssl/localcerts/${title}.chained.crt",
             cwd     => '/etc/ssl/localcerts',
-            require => Sslcert::Certificate[$title],
-        }
-
-        exec { "${title}_create_chained_cert":
-            creates => "/etc/ssl/localcerts/${title}.chained.crt",
-            command => "/bin/cat /etc/ssl/localcerts/${title}.crt ${ca} > /etc/ssl/localcerts/${title}.chained.crt",
-            cwd     => '/etc/ssl/certs',
             require => Sslcert::Certificate[$title],
         }
 
@@ -54,7 +46,7 @@ define sslcert::chainedcert(
             mode    => '0444',
             owner   => 'root',
             group   => $group,
-            require => Exec["${title}_create_chained_cert"],
+            require => Exec["x509-bundle ${title}"],
         }
     } else {
         file { "/etc/ssl/localcerts/${title}.chained.crt":
