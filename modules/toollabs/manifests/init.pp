@@ -221,5 +221,10 @@ class toollabs (
         ip           => ipresolve($active_redis, 4, $::nameservers[0]),
     }
 
+    host { "${::hostname}.eqiad.wmflabs":
+        ensure => present,
+        ip     => '127.0.0.1',
+    }
+
     diamond::collector::localcrontab { 'localcrontabcollector': }
 }
