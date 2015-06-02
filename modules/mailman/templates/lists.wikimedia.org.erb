@@ -69,14 +69,17 @@
     RewriteRule ^(.*)$ - [F]
 
     # list renames
-    Redirect permanent /mailman/listinfo/foundation-l       https://lists.wikimedia.org/mailman/listinfo/wikimedia-l
-    Redirect permanent /mailman/listinfo/museum-l           https://lists.wikimedia.org/mailman/listinfo/glam
-    Redirect permanent /mailman/listinfo/mediawiki-cvs      https://lists.wikimedia.org/mailman/listinfo/mediawiki-commits
-    Redirect permanent /mailman/listinfo/wsor               https://lists.wikimedia.org/mailman/listinfo/wmfresearch
-    Redirect permanent /mailman/listinfo/chaptercommittee-l https://lists.wikimedia.org/mailman/listinfo/affcom
-    Redirect permanent /mailman/listinfo/allhands           https://lists.wikimedia.org/mailman/listinfo/wmfreqs
-    Redirect permanent /mailman/listinfo/research-team      https://lists.wikimedia.org/mailman/listinfo/research-internal
-    Redirect permanent /mailman/listinfo/wikidata-l         https://lists.wikimedia.org/mailman/listinfo/wikidata
+    Redirect permanent /mailman/listinfo/foundation-l         https://lists.wikimedia.org/mailman/listinfo/wikimedia-l
+    Redirect permanent /mailman/listinfo/museum-l             https://lists.wikimedia.org/mailman/listinfo/glam
+    Redirect permanent /mailman/listinfo/mediawiki-cvs        https://lists.wikimedia.org/mailman/listinfo/mediawiki-commits
+    Redirect permanent /mailman/listinfo/wsor                 https://lists.wikimedia.org/mailman/listinfo/wmfresearch
+    Redirect permanent /mailman/listinfo/chaptercommittee-l   https://lists.wikimedia.org/mailman/listinfo/affcom
+    Redirect permanent /mailman/listinfo/allhands             https://lists.wikimedia.org/mailman/listinfo/wmfreqs
+    Redirect permanent /mailman/listinfo/research-team        https://lists.wikimedia.org/mailman/listinfo/research-internal
+    Redirect permanent /mailman/listinfo/wikidata-l           https://lists.wikimedia.org/mailman/listinfo/wikidata
+    Redirect permanent /mailman/listinfo/pywikipedia-l        https://lists.wikimedia.org/mailman/listinfo/pywikibot
+    Redirect permanent /mailman/listinfo/pywikipedia-announce https://lists.wikimedia.org/mailman/listinfo/pywikibot-announce
+    Redirect permanent /mailman/listinfo/pywikipedia-bugs     https://lists.wikimedia.org/mailman/listinfo/pywikibot-bugs
 
     ErrorLog /var/log/apache2/lists.wikimedia.org-error.log
     CustomLog /var/log/apache2/lists.wikimedia.org-access.log combined
