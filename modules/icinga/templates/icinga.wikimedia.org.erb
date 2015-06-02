@@ -20,6 +20,7 @@ Alias /icinga /usr/share/icinga/htdocs
     ServerAlias neon.wikimedia.org
     ServerAdmin noc@wikimedia.org
     SSLEngine On
+    SSLCertificateFile /etc/ssl/localcerts/icinga.wikimedia.org.crt
     SSLCertificateChainFile /etc/ssl/localcerts/icinga.wikimedia.org.chained.crt
     SSLCertificateKeyFile /etc/ssl/private/icinga.wikimedia.org.key
     <%= @ssl_settings.join("\n") %>
