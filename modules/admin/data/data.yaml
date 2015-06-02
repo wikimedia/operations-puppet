@@ -46,7 +46,7 @@ nimishg, rainman, ssmith, swalling, erik]
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
               tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair,
-              mobrovac, nuria, thcipriani, joal, eevans, mforns]
+              mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
@@ -1447,3 +1447,10 @@ users:
     realname: Moushira Elamrawy
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlLVCGLVRhQeS0w/xDYFsc53o0t0FV2Vi5MsTv9NlNIVAPvmQOPvLtp55qqb1ix7q2tOktTgFA1yVCW+CfQKoCRqAflAca1CJhNe4xve3FBX2E9zpwjm7ivfKDvfPTRh4ls4n2NdBXke8WKmAbggLE+uaP9G4eIVKy2RKrKZp7EM/25CqxWZe/cRQ9JegmkhVqb2s8s8kEB4aa9to4u4FulCuYyU5WrvCEa4T8oI/mtVQabRO4kjvL5TOdn2tzjnD+4YC9SL4JtcyllVbdpsYa7PpsV9/Ix1MLEqjucFDUVoGd9v5JCsSQclSCxbqn3R7O4bGlYC04WLGBPDpvjaOx melamrawy@wikimedia.org]
     uid: 12239
+  dpatrick:
+    ensure: present
+    gid: 500
+    name: dpatrck
+    realname: Darian Anthony Patrick
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3dtG8+VT7ldgcssl6OFgWbZThbShLay2LufVhVCmXEyOzoBGV3miwhyN1WGodp7aJ53txKPMDeakcyS9NtGL17avwJ/BccQrqxK8htqHvNJJOvvH8wrVSQpa0VwZ4MdGQXs+EJ9rTfb4ZWbi9uhg5DVSe/l6aeUR0w70rBvRjJS4XudJo71tvM8nqcYbusutkeJN97LLPBPCKq6mrhu1p80Lc3ZK3IYnyHceDxYDyfvbWVBfNDKEbRD64ogDvaG3tmMF1Fl0AL6Bujf1MOxlm8iykbog5kCFh74gECJ6B4OBLQ6i/sZ4U4uJa2Ucj4BRR7B8xX6RFGcfS03+m7KFN dpatrick_prod]
+    uid: 12203
