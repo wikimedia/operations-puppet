@@ -113,7 +113,8 @@ def vsl_callback(transaction_id, tag, record, remote_party):
 
     elif tag == 'RxStatus' and remote_party == 'backend':
         # Associate the transaction ID with the response status code.
-        statuses[transaction_id] = record[0] + 'xx'
+        if record[0] in '12345':
+            statuses[transaction_id] = record[0] + 'xx'
         if len(statuses) > MAX_BACKLOG:
             statuses.popitem(last=False)
 
