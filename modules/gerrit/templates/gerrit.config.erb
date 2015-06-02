@@ -78,6 +78,9 @@
 [commentlink "bugzilla"]
     match =  "\\b[bB][uU][gG]\\:?\\s+#?(\\d+)\\b"
     link = https://bugzilla.wikimedia.org/$1
+[commentlink "phabricator"]
+    match = "\\b[bB][uU][gG]\\:?\\s+#?(T\\d+)\\b"
+    link = https://phabricator.wikimedia.org/$1
 [commentlink "codereview"]
     match = \\br(\\d+)\\b
     link = https://phabricator.wikimedia.org/rSVN$1
@@ -138,6 +141,10 @@
     footer = Bug:
     match = "\\#?\\d{1,6}"
     system = Bugzilla
+[trackingid "phabricator"]
+    footer = Bug:
+    match = "\\#?\\d{1,6}"
+    system = Phabricator
 [changeMerge]
     test = true
     checkFrequency = 0
