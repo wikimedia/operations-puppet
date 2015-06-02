@@ -16,10 +16,6 @@ class role::cache::kafka {
 
     $kafka_brokers = keys($role::analytics::kafka::config::cluster_config[$kafka_cluster_name])
 
-    # varnishkafka will use a local statsd instance for
-    # using logster to collect metrics.
-    include role::cache::statsd
-
     # Make sure varnishkafka rsyslog file is in place properly.
     rsyslog::conf { 'varnishkafka':
         source   => 'puppet:///files/varnish/varnishkafka_rsyslog.conf',
