@@ -29,6 +29,6 @@ field :abandon, :color => "brown",
                :alias => "none",
                :data  => 'cactiStyle(alias(summarize(MediaWiki.job-abandon.rate, "1day"),"Jobs abandoned/day"))'
 
-field :ack, :color => "teal",
+field :ack, :color => "aqua",
                :alias => "none",
                :data  => 'cactiStyle(alias(summarize(MediaWiki.job-ack.rate, "1day"),"Jobs aknowledged/day"))'
