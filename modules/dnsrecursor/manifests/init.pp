@@ -12,7 +12,7 @@ class dnsrecursor(
     $additional_forward_zones = ""
 ) {
     package { 'pdns-recursor':
-        ensure => 'latest',
+        ensure => 'present',
     }
 
     $forward_zones    = "wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239"
