@@ -73,7 +73,6 @@ class role::cache::kafka::webrequest(
         parser          => 'JsonLogster',
         logfile         => "/var/cache/varnishkafka/webrequest.stats.json",
         logster_options => "-o statsd --statsd-host=statsd.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}",
-        require         => Class['role::cache::statsd'],
     }
 
     # Generate an alert if too many delivery report errors per minute
