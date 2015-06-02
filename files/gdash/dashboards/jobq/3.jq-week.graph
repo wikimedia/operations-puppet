@@ -28,6 +28,6 @@ field :abandon, :color => "brown",
                :alias => "none",
                :data  => 'cactiStyle(alias(MediaWiki.job-abandon.rate,"Jobs abandoned/s"))'
 
-field :ack, :color => "teal",
+field :ack, :color => "aqua",
                :alias => "none",
                :data  => 'cactiStyle(alias(MediaWiki.job-ack.rate,"Jobs aknowledged/s"))'
