@@ -308,20 +308,16 @@ class role::nova::manager {
     case $::realm {
         'labs': {
             $certificate = 'star.wmflabs'
-            $ca = ''
         }
         'production': {
             $certificate = 'wikitech.wikimedia.org'
-            $ca = 'RapidSSL_CA.pem GeoTrust_Global_CA.pem'
         }
         default: {
             fail('unknown realm, should be labs or production')
         }
     }
 
-    install_certificate { $certificate:
-        ca => $ca
-    }
+    install_certificate { $certificate: }
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 

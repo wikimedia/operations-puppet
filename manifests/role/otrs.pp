@@ -139,7 +139,7 @@ class role::otrs (
         target => '/opt/otrs/Kernel/Output/HTML/Standard',
     }
 
-    install_certificate{ 'ticket.wikimedia.org': ca => 'RapidSSL_CA.pem' }
+    install_certificate{ 'ticket.wikimedia.org': }
     include ::apache::mod::perl
     include ::apache::mod::rewrite
     include ::apache::mod::ssl
