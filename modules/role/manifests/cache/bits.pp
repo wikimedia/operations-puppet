@@ -7,6 +7,7 @@ class role::cache::bits (
     }
 
     include role::cache::1layer
+    include role::cache::statsd
 
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site],
