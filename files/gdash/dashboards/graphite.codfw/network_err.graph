@@ -1,7 +1,7 @@
 title   "udp errors/drops, all interfaces"
 vtitle  "packets/s"
 
-field :rx_dgram, :color => "green",
+field :rx_dgram,
                :alias => "rx datagrams",
                :data  => "servers.graphite2001.udp.InDatagrams"
 
