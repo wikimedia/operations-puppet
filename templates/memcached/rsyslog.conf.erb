@@ -1,0 +1,9 @@
+# rsyslog configuration for forwarding memcached usage data to the MediaWiki
+# log aggregator.
+
+# Emulate MediaWiki's wfDebugLog / wfErrorLog format
+template(name="MediaWiki" type="string" string="%programname% %timegenerated% %HOSTNAME%: %msg%\n")
+
+# Forward memkeys-snapshot data to fluorine
+:syslogtag, isequal, "memcached-keys:" @<%= scope['::mediawiki::log_aggregator'] %>;MediaWiki
+& ~
