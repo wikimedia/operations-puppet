@@ -25,7 +25,7 @@
 
 aliastable = {}
 
-<% @ip_aliases.each do |pair| -%>
+<% @ip_aliases.sort.each do |pair| -%>
 <%= "aliastable[\"#{pair[0]}\"] = {}\n" -%>
 <% pair[1].each do |address| -%>
 <%= "aliastable[\"#{pair[0]}\"][\"#{address[0]}\"] = \"#{address[1]}\"\n" -%>
