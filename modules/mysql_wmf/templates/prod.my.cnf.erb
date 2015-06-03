@@ -77,7 +77,7 @@ log_slow_extra
 innodb-thread-lifo=1
 <% end -%>
 
-<% ram = memorysize.split[0]; ram = Float(ram) * 0.75; 
+<% ram = @memorysize.split[0]; ram = Float(ram) * 0.75;
 ram = ram.round; ram = String(ram) + "G"; %>
 
 innodb-adaptive-flushing=1
