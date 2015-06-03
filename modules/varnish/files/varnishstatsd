@@ -5,6 +5,15 @@
   ~~~~~~~~~~~~~
   Report backend response times and request counts aggregated by status.
 
+  Usage: varnishstatsd [--varnish-name NAME] [--statsd-server SERVER]
+                       [--key-prefix PREFIX]
+
+    --varnish-name NAME     varnish name
+    --statsd-server SERVER  statsd server
+    --key-prefix PREFIX     metric key prefix
+
+  If no statsd server is specified, prints stats to stdout instead.
+
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");

@@ -43,6 +43,7 @@ define varnish::logging::statsd(
             group   => 'root',
             mode    => '0555',
             require => File['/usr/local/lib/python2.7/dist-packages/varnishlog.py'],
+            notify  => Service[$service_unit_name],
         }
     }
 
