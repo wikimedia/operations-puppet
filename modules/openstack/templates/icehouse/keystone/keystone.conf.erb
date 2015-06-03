@@ -1,6 +1,6 @@
 [DEFAULT]
 # A "shared secret" between keystone and other openstack services
-admin_token = <%= keystoneconfig["admin_token"] %>
+admin_token = <%= @keystoneconfig["admin_token"] %>
 
 # The IP address of the network interface to listen on
 # bind_host = 0.0.0.0
@@ -59,7 +59,7 @@ log_config = /etc/keystone/logging.conf
 
 [database]
 # The SQLAlchemy connection string used to connect to the database
-connection = mysql://<%= keystoneconfig["db_user"] %>:<%= keystoneconfig["db_pass"] %>@<%= keystoneconfig["db_host"] %>/<%= keystoneconfig["db_name"] %>
+connection = mysql://<%= @keystoneconfig["db_user"] %>:<%= @keystoneconfig["db_pass"] %>@<%= @keystoneconfig["db_host"] %>/<%= @keystoneconfig["db_name"] %>
 
 [identity]
 driver = keystone.identity.backends.ldap.Identity
@@ -74,7 +74,7 @@ driver = keystone.catalog.backends.sql.Catalog
 # template_file = default_catalog.templates
 
 [token]
-<% if keystoneconfig["token_driver"] == 'redis' %>
+<% if @keystoneconfig["token_driver"] == 'redis' %>
 driver = keystoneredis.token.Token
 <% else %>
 driver = keystone.token.backends.sql.Token
@@ -84,7 +84,7 @@ driver = keystone.token.backends.sql.Token
 # Using 7.1 days, as we'll set MediaWiki to 7 days
 expiration = 613440
 
-<% if keystoneconfig["token_driver"] == 'redis' %>
+<% if @keystoneconfig["token_driver"] == 'redis' %>
 [redis]
 password = <%= keystoneconfig["token_driver_password"] %>
 <% end -%>
@@ -113,16 +113,16 @@ driver = keystone.contrib.ec2.backends.sql.Ec2
 #token_format = PKI
 
 [ldap]
-url = ldap://<%= keystoneconfig["ldap_host"] %>
-tree_dn = <%= keystoneconfig["ldap_base_dn"] %>
-user_tree_dn = ou=people,<%= keystoneconfig["ldap_base_dn"] %>
-tenant_tree_dn = ou=projects,<%= keystoneconfig["ldap_base_dn"] %>
-user_id_attribute = <%= keystoneconfig["ldap_user_id_attribute"] %>
-tenant_id_attribute = <%= keystoneconfig["ldap_tenant_id_attribute"] %>
-user_name_attribute = <%= keystoneconfig["ldap_user_name_attribute"] %>
-tenant_name_attribute = <%= keystoneconfig["ldap_tenant_name_attribute"] %>
-user = <%= keystoneconfig["ldap_user_dn"] %>
-password = <%= keystoneconfig["ldap_user_pass"] %>
+url = ldap://<%= @keystoneconfig["ldap_host"] %>
+tree_dn = <%= @keystoneconfig["ldap_base_dn"] %>
+user_tree_dn = ou=people,<%= @keystoneconfig["ldap_base_dn"] %>
+tenant_tree_dn = ou=projects,<%= @keystoneconfig["ldap_base_dn"] %>
+user_id_attribute = <%= @keystoneconfig["ldap_user_id_attribute"] %>
+tenant_id_attribute = <%= @keystoneconfig["ldap_tenant_id_attribute"] %>
+user_name_attribute = <%= @keystoneconfig["ldap_user_name_attribute"] %>
+tenant_name_attribute = <%= @keystoneconfig["ldap_tenant_name_attribute"] %>
+user = <%= @keystoneconfig["ldap_user_dn"] %>
+password = <%= @keystoneconfig["ldap_user_pass"] %>
 # url = ldap://localhost
 # user = dc=Manager,dc=example,dc=com
 # password = None
@@ -140,7 +140,7 @@ password = <%= keystoneconfig["ldap_user_pass"] %>
 # tenant_member_attribute = member
 # tenant_name_attribute = ou
 
-role_tree_dn = ou=roles,<%= keystoneconfig["ldap_base_dn"] %>
+role_tree_dn = ou=roles,<%= @keystoneconfig["ldap_base_dn"] %>
 role_objectclass = organizationalRole
 role_id_attribute = cn
 role_name_attribute = cn
