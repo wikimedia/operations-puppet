@@ -108,7 +108,7 @@ class role::analytics::kafka::config {
     }
     $zookeeper_hosts  = keys(hiera('zookeeper_hosts'))
     $zookeeper_chroot = "/kafka/${kafka_cluster_name}"
-    $zookeeper_url    = inline_template("<%= zookeeper_hosts.sort.join(',') %><%= zookeeper_chroot %>")
+    $zookeeper_url    = inline_template("<%= @zookeeper_hosts.sort.join(',') %><%= zookeeper_chroot %>")
 }
 
 # == Class role::analytics::kafka::client
