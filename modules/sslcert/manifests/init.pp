@@ -32,10 +32,10 @@ class sslcert {
 
     # generic script for fetching the OCSP file for a given cert
     file { '/usr/local/sbin/update-ocsp':
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/sslcert/update-ocsp',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/sslcert/update-ocsp',
     }
 
     # install our helper that automatically creates certificate chains
