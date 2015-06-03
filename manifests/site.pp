@@ -2130,7 +2130,11 @@ node 'radium.wikimedia.org' {
 }
 
 node 'radon.wikimedia.org' {
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
     include standard
+    include role::authdns::server
 }
 
 # Live Recent Changes WebSocket stream

@@ -10,6 +10,7 @@ class role::authdns::data {
     # in this list and node definitions in manifests/site.pp
     # which "include role::authdns"
     $nameservers = [
+            'radon.wikimedia.org',
             'rubidium.wikimedia.org',
             'baham.wikimedia.org',
             'eeden.wikimedia.org',
