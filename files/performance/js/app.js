@@ -2,6 +2,8 @@
 ( function () {
     'use strict';
 
+    var defaultPeriod = 'hour';
+
     function identity( x ) {
         return x;
     }
@@ -51,17 +53,22 @@
     } );
 
     function init() {
+        // Handle permalink
         if ( /^#!\/./.test( location.hash ) ) {
-            // Handle permalink
             var id = location.hash.slice( 3 );
-            var navItem = document.getElementById( id );
-            if ( navItem ) {
-               selectTab( navItem );
+            // In case of default, call drawCharts() directly.
+            // Callling selectTab() would return early without drawing.
+            if ( id !== defaultPeriod ) {
+                var navItem = document.getElementById( id );
+                if ( navItem ) {
+                   selectTab( navItem );
+                   return;
+                }
             }
-        } else {
-            // Default
-            drawCharts( 'hour' );
         }
+
+        // Default
+        drawCharts( defaultPeriod );
     }
 
     init();
