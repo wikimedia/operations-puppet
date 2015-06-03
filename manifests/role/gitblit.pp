@@ -5,8 +5,6 @@ class role::gitblit {
 
     include role::gerrit::production::replicationdest
 
-    install_certificate{ 'git.wikimedia.org': }
-
     class { '::gitblit':
         host         => 'git.wikimedia.org',
         ssl_cert     => 'git.wikimedia.org',
