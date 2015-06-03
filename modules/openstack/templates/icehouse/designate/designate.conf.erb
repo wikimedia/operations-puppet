@@ -35,10 +35,10 @@ root_helper = sudo designate-rootwrap /etc/designate/rootwrap.conf
 #network_api = neutron
 
 # RabbitMQ Config
-rabbit_userid = <%= designateconfig["rabbit_user"] %>
-rabbit_password = <%= designateconfig["rabbit_pass"] %>
+rabbit_userid = <%= @designateconfig["rabbit_user"] %>
+rabbit_password = <%= @designateconfig["rabbit_pass"] %>
 rabbit_use_ssl = False
-rabbit_hosts = <%= designateconfig["rabbit_host"] %>
+rabbit_hosts = <%= @designateconfig["rabbit_host"] %>
 rabbit_port = 5672
 
 # we have a lot of instances, so raise quotas:
@@ -107,12 +107,12 @@ enabled_extensions_v2 = quotas, reports
 # Keystone Middleware
 #-----------------------
 [keystone_authtoken]
-auth_host = <%= designateconfig["keystone_auth_host"] %>
-auth_port = <%= designateconfig["keystone_auth_port"] %>
-auth_protocol = <%= designateconfig["keystone_auth_protocol"] %>
+auth_host = <%= @designateconfig["keystone_auth_host"] %>
+auth_port = <%= @designateconfig["keystone_auth_port"] %>
+auth_protocol = <%= @designateconfig["keystone_auth_protocol"] %>
 admin_token = ADMIN
-admin_token = <%= designateconfig["keystone_admin_token"] %>
-auth_uri = <%= designateconfig["auth_uri"] %>
+admin_token = <%= @designateconfig["keystone_admin_token"] %>
+auth_uri = <%= @designateconfig["auth_uri"] %>
 
 #-----------------------
 # Sink Service
@@ -187,7 +187,7 @@ enabled_notification_handlers = nova_fixed_multi, nova_ldap
 [storage:sqlalchemy]
 # Database connection string - to configure options for a given implementation
 # like sqlalchemy or other see below
-database_connection = mysql://<%= designateconfig["db_user"] %>:<%= designateconfig["db_pass"] %>@<%= designateconfig["db_host"] %>/<%= designateconfig["db_name"] %>
+database_connection = mysql://<%= @designateconfig["db_user"] %>:<%= @designateconfig["db_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["db_name"] %>
 connection_debug = 100
 connection_trace = True
 idle_timeout = 3600
@@ -228,9 +228,9 @@ puppetdefaultvars = realm=labs, use_dnsmasq=true
 
 certmanager_user = certmanager
 puppet_key_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
-puppet_master_host = "<%= designateconfig['controller_hostname'] %>"
+puppet_master_host = "<%= @designateconfig['controller_hostname'] %>"
 salt_key_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
-salt_master_host = "<%= designateconfig['controller_hostname'] %>"
+salt_master_host = "<%= @designateconfig['controller_hostname'] %>"
 
 #------------------------
 # Neutron Floating Handler
@@ -268,7 +268,7 @@ sqlite_synchronous = True
 idle_timeout = 3600
 max_retries = 10
 retry_interval = 10
-database_connection = mysql://<%= designateconfig["pdns_db_user"] %>:<%= designateconfig["pdns_db_pass"] %>@<%= designateconfig["db_host"] %>/<%= designateconfig["pdns_db_name"] %>
+database_connection = mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @designateconfig["pdns_db_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pdns_db_name"] %>
 # This is an alternate db account with more rights -- this setting should
 #  be used when running the db-sync command and the like during upgrades.
-#database_connection = mysql://<%= designateconfig["pdns_db_admin_user"] %>:<%= designateconfig["pdns_db_admin_pass"] %>@<%= designateconfig["db_host"] %>/<%= designateconfig["pdns_db_name"] %>
+#database_connection = mysql://<%= @designateconfig["pdns_db_admin_user"] %>:<%= @designateconfig["pdns_db_admin_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pdns_db_name"] %>
