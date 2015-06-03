@@ -193,10 +193,10 @@ class toollabs (
 
     # puppetized until we can setup proper DNS for .labsdb entries
     file { '/etc/hosts':
-        source => 'puppet:///modules/toollabs/hosts',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644'
+        content => template('toollabs/hosts.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644'
     }
 
     # Silence e-mails sent when regular users try to sudo (T95882)
