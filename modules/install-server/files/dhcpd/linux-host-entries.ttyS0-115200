@@ -117,9 +117,9 @@ host virt1009 {
         filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-# temporary VM used for d-i testing
+# ganeti VM used for d-i testing
 host d-i-test {
-	hardware ethernet 52:54:00:12:34:56;
+	hardware ethernet aa:00:00:3b:60:cb;
 	fixed-address d-i-test.eqiad.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
