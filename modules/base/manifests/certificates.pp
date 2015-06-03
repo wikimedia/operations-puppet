@@ -25,22 +25,4 @@ class base::certificates {
     sslcert::ca { 'GlobalSign_Organization_Validation_CA_-_SHA256_-_G2':
         source  => 'puppet:///modules/base/ca/GlobalSign_Organization_Validation_CA_-_SHA256_-_G2.crt',
     }
-
-    # FIXME: remove after a while
-    sslcert::ca { 'GlobalSign_CA':
-        ensure  => absent,
-        require => Sslcert::Ca['GlobalSign_Organization_Validation_CA_-_SHA256_-_G2'],
-    }
-    sslcert::ca { 'DigiCertHighAssuranceCA-3':
-        ensure  => absent,
-        require => Sslcert::Ca['DigiCert_High_Assurance_CA-3'],
-    }
-    sslcert::ca { 'DigiCertSHA2HighAssuranceServerCA':
-        ensure  => absent,
-        require => Sslcert::Ca['DigiCert_SHA2_High_Assurance_Server_CA'],
-    }
-    sslcert::ca { 'RapidSSL_CA_2':
-        ensure  => absent,
-        require => Sslcert::Ca['GeoTrust_Global_CA'],
-    }
 }
