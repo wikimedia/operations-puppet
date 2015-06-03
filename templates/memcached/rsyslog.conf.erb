@@ -2,7 +2,7 @@
 # log aggregator.
 
 # Emulate MediaWiki's wfDebugLog / wfErrorLog format
-template(name="MediaWiki" type="string" string="%programname% %timegenerated% %HOSTNAME%: %msg%\n")
+$template MediaWiki,"%programname% %timegenerated% %HOSTNAME%: %msg%\n"
 
 # Forward memkeys-snapshot data to the MediaWiki log aggregator.
 :syslogtag, isequal, "memcached-keys:" @udplog:8420;MediaWiki
