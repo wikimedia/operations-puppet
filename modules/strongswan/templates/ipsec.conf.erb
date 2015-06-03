@@ -1,13 +1,13 @@
 <%
 def individual_node(node)
     result = []
-    if fqdn != node
-      left_ipv4 = scope.function_ipresolve([fqdn, 4])
+    if @fqdn != node
+      left_ipv4 = scope.function_ipresolve([@fqdn, 4])
       right_ipv4 = scope.function_ipresolve([node, 4])
-      left_ipv6 = scope.function_ipresolve([fqdn, 6])
+      left_ipv6 = scope.function_ipresolve([@fqdn, 6])
       right_ipv6 = scope.function_ipresolve([node, 6])
       if left_ipv4 != "" and right_ipv4 != ""
-          result << "conn #{fqdn}-#{node}_by_ipv4"
+          result << "conn #{@fqdn}-#{node}_by_ipv4"
           result << "\tleft=#{left_ipv4} "
           result << "\tleftcert=#{puppet_certname}.pem"
           result << "\tright=#{right_ipv4}"
@@ -15,7 +15,7 @@ def individual_node(node)
           result << ""
       end
       if left_ipv6 != "" and right_ipv6 != ""
-          result << "conn #{fqdn}-#{node}_by_ipv6"
+          result << "conn #{@fqdn}-#{node}_by_ipv6"
           result << "\tleft=#{left_ipv6} "
           result << "\tleftcert=#{puppet_certname}.pem"
           result << "\tright=#{right_ipv6}"
