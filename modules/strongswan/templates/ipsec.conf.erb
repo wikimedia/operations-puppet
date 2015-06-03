@@ -46,6 +46,6 @@ conn %default
 	auto=start
 
 # Connections
-<% hosts.each do |node| -%>
+<% @hosts.each do |node| -%>
 <%= individual_node(node).join("\n") %>
 <% end -%>
