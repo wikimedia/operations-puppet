@@ -5,8 +5,6 @@ class role::labs::tools {
         $gridmaster = "${::instanceproject}-master.${::site}.wmflabs"
 
         class { 'gridengine': gridmaster => $gridmaster }
-
-        include role::labs::db::client
     }
 
     class bastion inherits role::labs::tools::common {
