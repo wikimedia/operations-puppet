@@ -23,9 +23,9 @@
 #
 # === Examples
 #
-#  sslcert::ca { 'GlobalSign_CA':
-#    ensure => present,
-#    source => 'puppet:///files/ssl/GlobalSign_CA.crt',
+#  sslcert::ca { 'RapidSSL_CA':
+#      ensure => present,
+#      source => 'puppet:///modules/base/ca/RapidSSL_CA.crt',
 #  }
 #
 
