@@ -10,6 +10,10 @@ if [ -d /mnt/dumps/lost+found ]; then
     if [ -z "$running" ]; then
         /usr/bin/rsync -rlpt /data/xmldatadumps/public/other/incr /mnt/dumps/
     fi
+    running=`pgrep -u root -f -x '/usr/bin/rsync -rlpt /data/xmldatadumps/public/other/wikidata /mnt/dumps/'`
+    if [ -z "$running" ]; then
+        /usr/bin/rsync -rlpt /data/xmldatadumps/public/other/wikidata /mnt/dumps/
+    fi
     running=`pgrep -u root -f -x '/usr/bin/rsync -rlpt /data/xmldatadumps/public/other/pagecounts-raw /mnt/dumps/'`
     if [ -z "$running" ]; then
         /usr/bin/rsync -rlpt /data/xmldatadumps/public/other/pagecounts-raw /mnt/dumps/
