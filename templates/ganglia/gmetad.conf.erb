@@ -1,4 +1,4 @@
-# Ganglia Meta Daemon for <%= gridname %>
+# Ganglia Meta Daemon for <%= @gridname %>
 #
 # This file is managed by Puppet!
 #
@@ -76,7 +76,7 @@ RRAs <%= rra_sizes %>
 # gridname "MyGrid"
 
 <% if has_variable?("gridname") then %>
-gridname "<%= gridname %>"
+gridname "<%= @gridname %>"
 <% end %>
 
 #
