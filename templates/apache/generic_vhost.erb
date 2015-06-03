@@ -1,6 +1,6 @@
 # This file is managed by Puppet!
 
-<% if ["true", "false"].include?(ssl) -%>
+<% if ["true", "false"].include?(@ssl) -%>
 <VirtualHost *:80>
     ServerName <%= @title %>
 <% if @aliases.length > 0 -%>
@@ -37,7 +37,7 @@
 </VirtualHost>
 <% end -%>
 
-<% if ssl == "redirected" -%>
+<% if @ssl == "redirected" -%>
 <VirtualHost *:80>
     ServerName <%= @title %>
 <% if @aliases.length > 0 -%>
@@ -49,7 +49,7 @@
 </VirtualHost>
 <% end -%>
 
-<% if ["true", "only", "redirected"].include?(ssl) -%>
+<% if ["true", "only", "redirected"].include?(@ssl) -%>
 <VirtualHost *:443>
     ServerName <%= @title %>
 <% if @aliases.length > 0 -%>
