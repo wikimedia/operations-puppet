@@ -3,7 +3,7 @@
 <% if ["true", "false"].include?(ssl) -%>
 <VirtualHost *:80>
     ServerName <%= @title %>
-<% if aliases.length > 0 -%>
+<% if @aliases.length > 0 -%>
     ServerAlias <%= @aliases.join(" ") %>
 <% end -%>
     ServerAdmin <%= @server_admin %>
@@ -40,7 +40,7 @@
 <% if ssl == "redirected" -%>
 <VirtualHost *:80>
     ServerName <%= @title %>
-<% if aliases.length > 0 -%>
+<% if @aliases.length > 0 -%>
     ServerAlias <%= @aliases.join(" ") %>
 <% end -%>
     ServerAdmin <%= @server_admin %>
@@ -52,7 +52,7 @@
 <% if ["true", "only", "redirected"].include?(ssl) -%>
 <VirtualHost *:443>
     ServerName <%= @title %>
-<% if aliases.length > 0 -%>
+<% if @aliases.length > 0 -%>
     ServerAlias <%= @aliases.join(" ") %>
 <% end -%>
     ServerAdmin <%= @server_admin %>
