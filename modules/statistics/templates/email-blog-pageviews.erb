@@ -4,7 +4,7 @@ OUTPUT=/tmp/blog_$DATE.tsv
 echo "Page view count for the 24 hour period starting at midnight, $DATE UTC" > $OUTPUT
 echo "" >> $OUTPUT
 
-mysql log -h <%= db_host %> -p<%= db_pass %> -u<%= db_user %> -e "
+mysql log -h <%= @db_host %> -p<%= @db_pass %> -u<%= @db_user %> -e "
 SELECT
 	COUNT(event_requestUrl) AS count,
 	DATE(timestamp),
@@ -24,5 +24,5 @@ ORDER BY
 
 
 
-cat $OUTPUT | mailx -s "Daily Blog Pageviews" <%= recipient_email %>
+cat $OUTPUT | mailx -s "Daily Blog Pageviews" <%= @recipient_email %>
 rm $OUTPUT
