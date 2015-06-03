@@ -7,7 +7,7 @@
         AuthLDAPURL "<%= @ldap_authurl %>"
 
         <LimitExcept OPTIONS>
-            <% ldap_groups.each do |group| -%>
+            <% @ldap_groups.each do |group| -%>
             Require ldap-group <%= group %>
             <% end -%>
         </LimitExcept>
