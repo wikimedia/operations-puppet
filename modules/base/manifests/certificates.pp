@@ -1,9 +1,6 @@
 class base::certificates {
     include ::sslcert
 
-    sslcert::ca { 'wmf-ca':
-        source  => 'puppet:///modules/base/ca/wmf-ca.crt',
-    }
     sslcert::ca { 'wmf_ca_2014_2017':
         source  => "puppet:///modules/base/ca/wmf_ca_2014_2017.crt",
     }
@@ -24,5 +21,10 @@ class base::certificates {
     }
     sslcert::ca { 'GlobalSign_Organization_Validation_CA_-_SHA256_-_G2':
         source  => 'puppet:///modules/base/ca/GlobalSign_Organization_Validation_CA_-_SHA256_-_G2.crt',
+    }
+
+    # FIXME: to be removed
+    sslcert::ca { 'wmf-ca':
+        ensure => absent,
     }
 }
