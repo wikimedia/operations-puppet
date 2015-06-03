@@ -88,7 +88,7 @@ class role::designate::server {
 
     # Poke a firewall hole for the designate api
     ferm::rule { 'designate-api':
-        rule => "saddr (${wikitech} ${horizon} ${controller}) proto tcp dport (9001) ACCEPT;",
+        rule => "saddr (${wikitech} ${horizon} resolve(${nova_controller})) proto tcp dport (9001) ACCEPT;",
     }
 
     file { '/var/lib/designate/.ssh/':
