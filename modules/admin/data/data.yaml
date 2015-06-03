@@ -69,7 +69,7 @@ nimishg, rainman, ssmith, swalling, erik]
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
-              gpaumier, moushira]
+              gpaumier, moushira, aklapper]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
