@@ -172,9 +172,6 @@ plugins:
       -
         src: /etc/cron.d/puppet
         dst: /etc/cron.d/puppet
-      -
-        src: /etc/ssl/certs/GlobalSign_CA.pem
-        dst: /etc/ssl/certs/GlobalSign_CA.pem
   image_commands:
     # Current implementation does not specify an order between image_commands and
     #  file_copy.  This section should not depend on anything existing from
