@@ -92,6 +92,17 @@ sub vcl_recv {
 
 	call rewrite_proxy_urls;
 
+	// BITS: legacy bits.wm.o domain support
+	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
+		if (req.url ~ "^/(event\.gif|beacon\/[^/?]+|statsv[/?])") {
+			error 204;
+		}
+		if (req.url ~ "^/(auditcom|boardgovcom|board|chair|chapcom|checkuser|collab|donate|exec|fdc|grants|internal|movementroles|nomcom|office|otrs-wiki|searchcom|spcom|steward|wikimaniateam)\.wikimedia\.org/" && req.http.X-Forwarded-Proto != "https") {
+			error 301 "https://<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>" + req.url;
+		}
+		return (lookup);
+	}
+
 	// Don't decode percent-encoded slashes in paths for REST APIs
 	if (req.url !~ "^/api/rest_v1/") {
 		call normalize_path;
@@ -151,6 +162,20 @@ sub vcl_fetch {
 }
 
 sub vcl_error {
+	// BITS: legacy bits.wm.o domain support
+	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
+		if (obj.status == 204) {
+			set obj.http.Connection = "keep-alive";
+			return (deliver);
+		}
+		if (obj.status == 301) {
+			set obj.http.Location = obj.response;
+			set obj.status = 301;
+			set obj.http.Connection = "keep-alive";
+			return (deliver);
+		}
+	}
+
 	// Support mobile redirects
 	if (obj.status == 666) {
 		set obj.http.Location = req.http.Location;
