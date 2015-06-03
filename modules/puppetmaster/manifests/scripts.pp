@@ -44,10 +44,20 @@ class puppetmaster::scripts(
 
     # Helper script to clean stored data about a server we're reimaging.
     file { '/usr/local/bin/wmf-reimage':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/puppetmaster/wmf-reimage'
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        source  => 'puppet:///modules/puppetmaster/wmf-reimage',
+        require => Class['role::access_new_install'],
+    }
+
+    file { '/usr/local/sbin/d-i-console':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        source  => 'puppet:///modules/puppetmaster/d-i-console',
+        require => Class['role::access_new_install'],
     }
 }
