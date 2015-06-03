@@ -40,7 +40,7 @@ class ldap::role::server::labs {
     # Add it into the instance location, and ensure opendj can read it.
     exec  { "${certificate}_pkcs12":
         creates => "${certificate_location}/${certificate}.p12",
-        command => "/usr/bin/openssl pkcs12 -export -name \"${certificate}\" -passout pass:${cert_pass} -in /etc/ssl/localcerts/${certificate}.crt -inkey /etc/ssl/private/${certificate}.key -out ${certificate_location}/${certificate}.p12",
+        command => "/usr/bin/openssl pkcs12 -export -name \"${certificate}\" -passout pass:${cert_pass} -in /etc/ssl/localcerts/${certificate}.crt -inkey /etc/ssl/private/${certificate}.key -chain -out ${certificate_location}/${certificate}.p12",
         onlyif  => "/usr/bin/test -s /etc/ssl/private/${certificate}.key",
         require => [
             Package['openssl'],
