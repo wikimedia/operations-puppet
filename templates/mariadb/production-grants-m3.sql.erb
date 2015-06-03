@@ -4,24 +4,6 @@
 GRANT USAGE
     ON *.* TO 'haproxy'@'10.64.0.198';
 
--- phadmin@radon
-
-GRANT USAGE
-    ON *.* TO 'phadmin'@'10.64.32.149'
-    IDENTIFIED BY PASSWORD '*4882BF5FB61F6C0D5935BFA407BB6B6086421A5F';
-
-GRANT ALL PRIVILEGES
-    ON `phlegal%`.* TO 'phadmin'@'10.64.32.149';
-
--- phuser@radon
-
-GRANT USAGE
-    ON *.* TO 'phuser'@'10.64.32.149'
-    IDENTIFIED BY PASSWORD '*986DF0EF210E895FAAA2D71A8AF0F4EEA4D93E2A';
-
-GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
-    ON `phlegal%`.* TO 'phuser'@'10.64.32.149';
-
 -- phadmin@iridium
 
 GRANT USAGE
