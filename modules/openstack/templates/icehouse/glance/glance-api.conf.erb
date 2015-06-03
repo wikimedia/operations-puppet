@@ -27,7 +27,7 @@ default_store = file
 #image_size_cap = 1099511627776
 
 # Address to bind the API server
-bind_host = <%= glanceconfig["bind_ip"] %>
+bind_host = <%= @glanceconfig["bind_ip"] %>
 
 # Port the bind the API server to
 bind_port = 9292
@@ -102,7 +102,7 @@ use_syslog = False
 # ============ Registry Options ===============================
 
 # Address to find the registry server
-registry_host = <%= glanceconfig["bind_ip"] %>
+registry_host = <%= @glanceconfig["bind_ip"] %>
 
 # Port the registry server is listening on
 registry_port = 9191
@@ -140,8 +140,8 @@ rpc_backend = rabbit
 rabbit_host = localhost
 rabbit_port = 5672
 rabbit_use_ssl = false
-rabbit_userid = <%= glanceconfig["rabbit_user"] %>
-rabbit_password = <%= glanceconfig["rabbit_pass"] %>
+rabbit_userid = <%= @glanceconfig["rabbit_user"] %>
+rabbit_password = <%= @glanceconfig["rabbit_pass"] %>
 rabbit_virtual_host = /
 rabbit_notification_exchange = glance
 rabbit_notification_topic = glance_notifications
@@ -304,15 +304,15 @@ scrubber_datadir = /var/lib/glance/scrubber
 image_cache_dir = /var/lib/glance/image-cache/
 
 [keystone_authtoken]
-service_protocol = <%= glanceconfig["keystone_auth_protocol"] %>
-service_host = <%= glanceconfig["keystone_auth_host"] %>
+service_protocol = <%= @glanceconfig["keystone_auth_protocol"] %>
+service_host = <%= @glanceconfig["keystone_auth_host"] %>
 service_port = 5000
-auth_host = <%= glanceconfig["keystone_auth_host"] %>
-auth_port = <%= glanceconfig["keystone_auth_port"] %>
-auth_protocol = <%= glanceconfig["keystone_auth_protocol"] %>
+auth_host = <%= @glanceconfig["keystone_auth_host"] %>
+auth_port = <%= @glanceconfig["keystone_auth_port"] %>
+auth_protocol = <%= @glanceconfig["keystone_auth_protocol"] %>
 admin_token = ADMIN
-admin_token = <%= glanceconfig["keystone_admin_token"] %>
-auth_uri = <%= glanceconfig["auth_uri"] %>
+admin_token = <%= @glanceconfig["keystone_admin_token"] %>
+auth_uri = <%= @glanceconfig["auth_uri"] %>
 
 [paste_deploy]
 # Name of the paste configuration file that defines the available pipelines
@@ -328,5 +328,5 @@ flavor=keystone
 # SQLAlchemy connection string for the reference implementation
 # registry server. Any valid SQLAlchemy connection string is fine.
 # See: http://www.sqlalchemy.org/docs/05/reference/sqlalchemy/connections.html#sqlalchemy.create_engine
-connection =  mysql://<%= glanceconfig["db_user"] %>:<%= glanceconfig["db_pass"] %>@<%= glanceconfig["db_host"] %>/<%= glanceconfig["db_name"] %>
+connection =  mysql://<%= @glanceconfig["db_user"] %>:<%= @glanceconfig["db_pass"] %>@<%= @glanceconfig["db_host"] %>/<%= @glanceconfig["db_name"] %>
 
