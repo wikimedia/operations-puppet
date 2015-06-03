@@ -71,11 +71,43 @@ sub vcl_recv {
 	return (lookup);
 }
 
+<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
+// BITS: legacy bits.wm.o domain support
+sub bitscompat_1be_mangle {
+	// Transform backend url: /<sitename>/load.php -> /w/load.php
+	// Set host header for backend to <sitename>
+	if (req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.<%= Regexp.escape(@cluster_options.fetch("top_domain", "org")) %>/load\.php") {
+		set bereq.http.host = regsub(req.url, "^/([^/]+)/(.*)$", "\1");
+		set bereq.url = regsub(req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2");
+		<% if @cluster_options.fetch("test_hostname", false) -%>
+			// Send test.wikipedia.org to the right backend server
+			if (req.url ~ "^/<%= Regexp.escape(@cluster_options.fetch("test_hostname")) %>/load\.php") {
+				set req.backend = test_wikipedia;
+			}
+		<% end -%>
+	}
+}
+<% end -%>
+
 sub vcl_pass {
+<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
+	// BITS: legacy bits.wm.o domain support
+	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
+		call bitscompat_1be_mangle;
+		return (pass);
+	}
+<% end -%>
 	call restore_cookie;
 }
 
 sub vcl_miss {
+<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
+	// BITS: legacy bits.wm.o domain support
+	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
+		call bitscompat_1be_mangle;
+		return (miss);
+	}
+<% end -%>
 	call restore_cookie;
 }
 

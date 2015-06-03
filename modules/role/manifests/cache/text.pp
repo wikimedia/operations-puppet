@@ -1,4 +1,7 @@
-class role::cache::text {
+class role::cache::text (
+    $bits_domain = 'bits.wikimedia.org',
+    $top_domain = 'org'
+) {
     system::role { 'role::cache::text':
         description => 'text Varnish cache server',
     }
@@ -92,6 +95,10 @@ class role::cache::text {
                 'max_connections'       => 1000,
             },
         ]),
+        cluster_options => {
+            'bits_domain'        => $bits_domain,
+            'top_domain'         => $top_domain,
+        },
         wikimedia_networks => $::role::cache::base::wikimedia_networks,
     }
 
@@ -125,6 +132,8 @@ class role::cache::text {
             },
         ]),
         cluster_options => {
+            'bits_domain'        => $bits_domain,
+            'top_domain'         => $top_domain,
             'enable_geoiplookup' => true,
             'do_gzip'            => true,
         },
