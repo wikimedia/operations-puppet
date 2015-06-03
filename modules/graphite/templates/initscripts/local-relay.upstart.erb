@@ -12,4 +12,4 @@ setgid carbon-c-relay
 
 # it is possible there's another carbon-c-relay running on the same host, so
 # change the hostname
-exec /usr/bin/carbon-c-relay -H <%= "#{@hostname}_local" -%> -p 1903 -f /etc/carbon/local-relay.conf
+exec /usr/bin/carbon-c-relay -H <%= "#{hostname}_local" -%> -p 1903 -f /etc/carbon/local-relay.conf
