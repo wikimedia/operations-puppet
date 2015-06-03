@@ -6,4 +6,4 @@ set -u
 TIMESTAMP="$(/bin/date +"%Y_%m_%d")"
 /usr/bin/timeout --kill-after=15s 10s /usr/bin/memkeys --interface=eth0 --report=csv \
     2>/dev/null | /usr/bin/tee -a "/var/log/memkeys/${TIMESTAMP}.csv" \
-    | /usr/bin/logger --tag memcached-keys --file
+    | /usr/bin/logger --tag memcached-keys
