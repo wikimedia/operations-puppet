@@ -164,15 +164,15 @@ auth_tcp = "sasl"
 
 # Override the default server key file path
 #
-key_file = "/var/lib/nova/<%= certname %>.key"
+key_file = "/var/lib/nova/<%= @certname %>.key"
 
 # Override the default server certificate file path
 #
-cert_file = "/etc/ssl/localcerts/<%= certname %>.crt"
+cert_file = "/etc/ssl/localcerts/<%= @certname %>.crt"
 
 # Override the default CA certificate path
 #
-ca_file = "<%= ca_target %>"
+ca_file = "<%= @ca_target %>"
 
 # Specify a certificate revocation list.
 #
