@@ -2177,7 +2177,6 @@ node 'rubidium.wikimedia.org' {
         interface => 'eth0',
     }
     include standard
-    include role::authdns::server
 }
 
 # ruthenium is a parsoid regression test server
