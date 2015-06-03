@@ -102,22 +102,6 @@ class ldap::server( $certificate_location, $certificate, $cert_pass, $base_dn, $
         refreshonly => true,
         command     => "/etc/init.d/opendj stop; su - opendj -c '/usr/opendj/bin/rebuild-index --rebuildAll -b ${base_dn}'; /etc/init.d/opendj start",
     }
-    # Add the wmf CA to the opendj admin connector's truststore
-    exec { 'add_ca_to_admintruststore':
-        subscribe   => Exec['start_opendj'],
-        refreshonly => true,
-        user        => 'opendj',
-        command     => '/usr/bin/keytool -importcert -trustcacerts -alias \'wmf-ca\' -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/admin-truststore -storepass `cat /var/opendj/instance/config/admin-keystore.pin` -noprompt',
-        require     => Package['ca-certificates'],
-    }
-    # Add the wmf CA to the opendj ssl truststore
-    exec { 'add_ca_to_truststore':
-        subscribe   => Exec['start_opendj'],
-        refreshonly => true,
-        user        => 'opendj',
-        command     => '/usr/bin/keytool -importcert -trustcacerts -alias \'wmf-ca\' -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/truststore -storepass `cat /var/opendj/instance/config/keystore.pin` -noprompt',
-        require     => Package['ca-certificates'],
-    }
     # Make the admin connector use the same pkcs12 file as ldaps config
     exec { 'fix_connector_cert_provider':
         subscribe   => Exec['start_opendj'],
