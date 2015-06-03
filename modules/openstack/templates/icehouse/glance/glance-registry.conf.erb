@@ -6,7 +6,7 @@ verbose = True
 debug = False
 
 # Address to bind the registry server
-bind_host = <%= glanceconfig["bind_ip"] %>
+bind_host = <%= @glanceconfig["bind_ip"] %>
 
 # Port the bind the registry server to
 bind_port = 9191
@@ -64,14 +64,14 @@ use_syslog = False
 #ca_file = /path/to/cafile
 
 [keystone_authtoken]
-service_protocol = <%= glanceconfig["keystone_auth_protocol"] %>
-service_host = <%= glanceconfig["keystone_auth_host"] %>
+service_protocol = <%= @glanceconfig["keystone_auth_protocol"] %>
+service_host = <%= @glanceconfig["keystone_auth_host"] %>
 service_port = 5000
-auth_host = <%= glanceconfig["keystone_auth_host"] %>
-auth_port = <%= glanceconfig["keystone_auth_port"] %>
-auth_protocol = <%= glanceconfig["keystone_auth_protocol"] %>
-admin_token = <%= glanceconfig["keystone_admin_token"] %>
-auth_uri = <%= glanceconfig["auth_uri"] %>
+auth_host = <%= @glanceconfig["keystone_auth_host"] %>
+auth_port = <%= @glanceconfig["keystone_auth_port"] %>
+auth_protocol = <%= @glanceconfig["keystone_auth_protocol"] %>
+admin_token = <%= @glanceconfig["keystone_admin_token"] %>
+auth_uri = <%= @glanceconfig["auth_uri"] %>
 
 [paste_deploy]
 # Name of the paste configuration file that defines the available pipelines
@@ -88,4 +88,4 @@ flavor=keystone
 # SQLAlchemy connection string for the reference implementation
 # registry server. Any valid SQLAlchemy connection string is fine.
 # See: http://www.sqlalchemy.org/docs/05/reference/sqlalchemy/connections.html#sqlalchemy.create_engine
-connection = mysql://<%= glanceconfig["db_user"] %>:<%= glanceconfig["db_pass"] %>@<%= glanceconfig["db_host"] %>/<%= glanceconfig["db_name"] %>
+connection = mysql://<%= @glanceconfig["db_user"] %>:<%= @glanceconfig["db_pass"] %>@<%= @glanceconfig["db_host"] %>/<%= @glanceconfig["db_name"] %>
