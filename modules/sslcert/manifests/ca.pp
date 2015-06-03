@@ -36,14 +36,6 @@ define sslcert::ca(
 ) {
     include sslcert
 
-    if $source == undef and $content == undef  {
-        fail('you must provide either "source" or "content"')
-    }
-
-    if $source != undef and $content != undef  {
-        fail('"source" and "content" are mutually exclusive')
-    }
-
     file { "/usr/local/share/ca-certificates/${title}.crt":
         ensure  => $ensure,
         owner   => 'root',
