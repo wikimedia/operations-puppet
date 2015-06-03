@@ -14,7 +14,7 @@ def run():
         info = json.loads(f.read())
         f.close()
         if info['key_accepted'] == '0':
-            return {'run_puppet': {'cmd.cmd.run': [{'tgt': data['id']}, {'arg': ['puppet agent --waitforcert 0 --no-daemonize --server <%= salt_reactor_options['puppet_server'] %> --test; salt-call event.fire_master "first_run" "puppet"']}]}}
+            return {'run_puppet': {'cmd.cmd.run': [{'tgt': data['id']}, {'arg': ['puppet agent --waitforcert 0 --no-daemonize --server <%= @salt_reactor_options['puppet_server'] %> --test; salt-call event.fire_master "first_run" "puppet"']}]}}
         else:
             return {'run_puppet': {'cmd.cmd.run': [{'tgt': data['id']}, {'arg': ['salt-call event.fire_master "first_run" "puppet"']}]}}
     return {}
