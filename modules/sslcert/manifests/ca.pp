@@ -46,4 +46,11 @@ define sslcert::ca(
         source  => $source,
         content => $content,
     }
+
+    if $ensure == 'absent' {
+        # clean up manually -- update-ca-certificates leaves stale symlinks
+        file { "/etc/ssl/certs/${title}.crt":
+            ensure  => $ensure,
+        }
+    }
 }
