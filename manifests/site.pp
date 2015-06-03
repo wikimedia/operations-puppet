@@ -418,6 +418,31 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
     role cache::bits
 }
 
+node /^cp20(0[147]|1[0369]|23)\.codfw\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role cache::text
+}
+
+node /^cp20(0[258]|1[147]|2[04])\.codfw\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role cache::upload
+}
+
+node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role cache::mobile
+}
+
+node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role cache::bits
+}
+
+node /^cp202[26]\.codfw\.wmnet$/ {
+    interface::add_ip6_mapped { 'main': }
+    role cache::parsoid
+}
+
 node /^cp30(0[3-9]|1[0-4])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::text
