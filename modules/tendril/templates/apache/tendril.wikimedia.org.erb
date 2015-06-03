@@ -27,7 +27,7 @@ NameVirtualHost *:443
         AuthLDAPBindDN <%= @ldap_binddn %>
         AuthLDAPBindPassword <%= @proxypass %>
         AuthLDAPURL "<%= @ldap_authurl %>"
-        <% ldap_groups.each do |group| -%>
+        <% @ldap_groups.each do |group| -%>
         Require ldap-group <%= group %>
         <% end -%>
     </Directory>
