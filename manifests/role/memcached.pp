@@ -78,4 +78,9 @@ class role::memcached {
         hour    => fqdn_rand(23, 'memkeys'),
         minute  => fqdn_rand(59, 'memkeys'),
     }
+
+    rsyslog::conf { 'memkeys':
+        content  => template('memcached/rsyslog.conf.erb'),
+        priority => 40,
+    }
 }
