@@ -56,7 +56,7 @@ data_source "<%= ds_key %>" <%= data_sources[ds_key] %>
 
 # Custom RRA sizes, see http://bugzilla.ganglia.info/cgi-bin/bugzilla/show_bug.cgi?id=119
 <% if has_variable?("rra_sizes") then %>
-RRAs <%= rra_sizes %>
+RRAs <%= @rra_sizes %>
 <% end %>
 
 #
