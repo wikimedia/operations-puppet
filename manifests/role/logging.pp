@@ -44,7 +44,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
     cron { 'rsync_slow_parse':
         command     => '/usr/bin/rsync -rt /a/mw-log/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/',
         hour        => 23,
-        minute      => 0,
+        minute      => 15,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => 'datasets',
     }
