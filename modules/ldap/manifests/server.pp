@@ -109,7 +109,6 @@ class ldap::server( $certificate_location, $certificate, $cert_pass, $base_dn, $
         user        => 'opendj',
         command     => "/usr/opendj/bin/dsconfig
 set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-cert-nickname:${certificate} --set trust-manager-provider:JKS --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \'cn=Directory Manager\' --bindPassword ${initial_password} --no-prompt",
-        require     => Exec['add_ca_to_truststore', 'add_ca_to_admintruststore'],
     }
     # Enable starttls for ldap, using same pkcs12 file as ldaps config
     exec { 'enable_starttls':
@@ -117,7 +116,6 @@ set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-ce
         refreshonly => true,
         user        => 'opendj',
         command     => "/usr/opendj/bin/dsconfig set-connection-handler-prop --handler-name \'LDAP Connection Handler\' --set allow-start-tls:true --set key-manager-provider:PKCS12 --set trust-manager-provider:JKS --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \'cn=Directory Manager\' --bindPassword ${initial_password} --no-prompt",
-        require     => Exec['add_ca_to_truststore', 'add_ca_to_admintruststore'],
     }
     # Enable the uid unique attribute plugin
     exec { 'enable_uid_uniqueness_plugin':
@@ -125,7 +123,6 @@ set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-ce
         refreshonly => true,
         user        => 'opendj',
         command     => "/usr/opendj/bin/dsconfig set-plugin-prop --plugin-name \'UID Unique Attribute\' --set enabled:true --add type:uidnumber --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \'cn=Directory Manager\' --bindPassword ${initial_password} --no-prompt",
-        require     => Exec['add_ca_to_truststore', 'add_ca_to_admintruststore'],
     }
     # Enable referential integrity
     exec { 'enable_referential_integrity':
@@ -133,7 +130,6 @@ set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-ce
         refreshonly => true,
         user        => 'opendj',
         command     => "/usr/opendj/bin/dsconfig set-plugin-prop --plugin-name \'Referential Integrity\' --set enabled:true --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \'cn=Directory Manager\' --bindPassword ${initial_password} --no-prompt",
-        require     => Exec['add_ca_to_truststore', 'add_ca_to_admintruststore'],
     }
     # Modify the default global aci to fix access controls
     exec { 'modify_default_global_aci':
