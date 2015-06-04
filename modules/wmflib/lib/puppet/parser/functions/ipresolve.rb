@@ -108,9 +108,13 @@ end
 
 module Puppet::Parser::Functions
   dns = DNSCached.new
-  newfunction(:ipresolve, :type => :rvalue, :arity => -2) do |args|
+  newfunction(:ipresolve, :type => :rvalue, :arity => -1) do |args|
     name = args[0]
-    type = args[1].to_i
+    if args[1].nil?
+        type = 4
+    else
+        type = args[1].to_i
+    end
     if type == 4
       source = Resolv::DNS::Resource::IN::A
     elsif type == 6
