@@ -180,6 +180,14 @@ sub vcl_deliver {
 	}
 <% end -%>
 
+	// Delete old/stale clicktracking-session cookies.
+	// We supposedly stopped setting these back in Apr-2013, but they were originally
+	// set with no expiry (permanent), and we're still seeing a fair number of them in the wild,
+	// and they accidentally match our global session-cookie regex.
+	if (req.http.Cookie ~ "clicktracking-session=") {
+		header.append(resp.http.Set-Cookie, "clicktracking-session=x; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT");
+	}
+
 	// Assemble X-Analytics header
 	// Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
 	// Note that vcl_deliver in other files may also modify X-Analytics.
