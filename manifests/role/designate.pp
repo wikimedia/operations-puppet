@@ -82,9 +82,9 @@ class role::designate::server {
 
 
     # Firewall
-    $wikitech = '208.80.154.136'
-    $horizon = '208.80.154.147'
-    $controller = '208.80.154.18'
+    $wikitech = ipresolve('wikitech.wikimedia.org',4)
+    $horizon = ipresolve('horizon.wikimedia.org',4)
+    $controller = ipresolve(hiera('labs_nova_controller',4)
 
     # Poke a firewall hole for the designate api
     ferm::rule { 'designate-api':
