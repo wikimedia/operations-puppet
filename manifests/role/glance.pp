@@ -24,7 +24,7 @@ class role::glance::config::eqiad inherits role::glance::config {
     $bind_ip = $::ipaddress_eth0
 
     $auth_uri = $::realm ? {
-        'production' => "http://${keystone_controller}:5000",
+        'production' => "http://${keystone_host}:5000",
         'labs'       => "http://$::ipaddress_eth0:5000",
     }
 
