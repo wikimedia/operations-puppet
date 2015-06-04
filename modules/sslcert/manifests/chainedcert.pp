@@ -41,7 +41,7 @@ define sslcert::chainedcert(
 
     if $ensure == 'present' {
         exec { "x509-bundle ${title}":
-            refreshonly => true,
+            creates     => $chainfile,
             command     => "/usr/local/sbin/x509-bundle --skip-root -c ${title}.crt -o ${chainfile}",
             cwd         => '/etc/ssl/localcerts',
             require     => File["/etc/ssl/localcerts/${title}.crt"],
