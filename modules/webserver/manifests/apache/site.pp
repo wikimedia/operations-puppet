@@ -6,6 +6,7 @@
 #   $ssl="false"      - if true, sets up an ssl certificate for $title
 #   $certfile=undef   - defaults to /etc/ssl/localcerts/${title}.crt
 #   $certkey=undef    - defaults to "/etc/ssl/private/${title}.key
+#   $certchain=undef  - defaults to "/etc/ssl/localcerts/${title}.chained.crt
 #   $docroot=undef    - defaults to: $title == 'stats.wikimedia.org', then /srv/stats.wikimedia.org
 #   $custom=[]        - custom Apache config strings to put into virtual host site file
 #   $includes=[]
@@ -21,6 +22,7 @@ define webserver::apache::site(
     $ssl          = 'false',
     $certfile     = "/etc/ssl/localcerts/${title}.crt",
     $certkey      = "/etc/ssl/private/${title}.key",
+    $certchain    = "/etc/ssl/localcerts/${title}.chained.crt",
     $docroot      = undef,
     $custom       = [],
     $includes     = [],
