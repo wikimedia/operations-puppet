@@ -45,17 +45,8 @@ class base::monitoring::host(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => 'RUN_DAEMON=no',
-        require => Package['mpt-status'],
-    }
-
-    service { 'mpt-statusd':
-        ensure    => stopped,
-        enable    => false,
-        hasstatus => false,
-        stop      => '/usr/bin/pkill -9 -f mpt-statusd',
-        require   => Package['mpt-status'],
-        subscribe => File['/etc/default/mpt-statusd'],
+        content => "RUN_DAEMON=no\n",
+        before  => Package['mpt-status'],
     }
 
     file { '/usr/local/bin/check-raid.py':
