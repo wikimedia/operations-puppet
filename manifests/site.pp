@@ -1028,6 +1028,11 @@ node /^etcd100\d\.eqiad\.wmnet$/ {
     role etcd
 }
 
+node 'etherpad1001.eqiad.wmnet' {
+    include base::firewall
+    include role::etherpad
+}
+
 # Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
 # processes it, and broadcasts to internal subscribers.
 node 'eventlog1001.eqiad.wmnet' {
