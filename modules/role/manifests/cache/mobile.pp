@@ -72,8 +72,6 @@ class role::cache::mobile (
         director_type      => $director_type_cluster,
         vcl_config         => {
             'default_backend'  => $::role::cache::base::default_backend,
-            'retry503'         => 4,
-            'retry5xx'         => 1,
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'backend',
@@ -113,7 +111,7 @@ class role::cache::mobile (
         },
         director_type    => 'chash',
         vcl_config       => {
-            'retry5xx'         => 0,
+            'retry503'         => 1,
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'frontend',
