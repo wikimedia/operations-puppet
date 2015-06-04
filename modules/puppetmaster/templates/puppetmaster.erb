@@ -51,28 +51,48 @@ PassengerUseGlobalQueue on
       <%- @workers.each do |workerhash| -%>
         BalancerMember https://<%= workerhash['worker'] %>:8141 connectiontimeout=1 retry=500 timeout=900 <%- if workerhash['loadfactor'] -%>loadfactor=<%= workerhash['loadfactor'] %><%- end %>
       <%- end -%>
-        Order allow,deny
-        Allow from all
+      <IfVersion >= 2.4>
+          Require all granted
+      </IfVersion>
+      <IfVersion < 2.4>
+          Order allow,deny
+          allow from all
+      </IfVersion>
     </Proxy>
     <%- else -%>
     RackBaseURI /
 
     <Location />
-        Order Allow,Deny
-        <%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
-        Allow from <%= entry.gsub(/^\*/, "") %>
-        <%- end -%>
-        <%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
-        Deny from <%= entry.gsub(/^\*/, "") %>
-        <%- end -%>
+        <IfVersion < 2.4>
+            Order Allow,Deny
+            <%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
+            Allow from <%= entry.gsub(/^\*/, "") %>
+            <%- end -%>
+            <%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
+            Deny from <%= entry.gsub(/^\*/, "") %>
+            <%- end -%>
+        </IfVersion>
+        <IfVersion >= 2.4>
+            <%- scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
+            Require ip <%= entry.gsub(/^\*/, "") %>
+            <%- end -%>
+            <%- scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
+            Require not ip <%= entry.gsub(/^\*/, "") %>
+            <%- end -%>
+        </IfVersion>
     </Location>
 
     DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
     <Directory /usr/share/puppet/rack/puppetmasterd/>
         Options None
         AllowOverride None
-        Order allow,deny
-        allow from all
+        <IfVersion >= 2.4>
+            Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+            Order allow,deny
+            allow from all
+        </IfVersion>
     </Directory>
     <%- end -%>
 
