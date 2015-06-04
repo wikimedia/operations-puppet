@@ -59,6 +59,7 @@
 
     SSLEngine on
     SSLCertificateFile <%= @certfile %>
+    SSLCertificateChainFile <%= @certchain %>
     SSLCertificateKeyFile <%= @certkey %>
     SSLCACertificatePath /etc/ssl/certs
     <%= @ssl_settings.join("\n") %>
