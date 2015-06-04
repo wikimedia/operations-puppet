@@ -1414,6 +1414,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxE/ZWep1KH3AEenFtT+8+RJIzbbQfMoTxFPpGhvXZcBijxj+SajDzzgF5lyv+j+pjFsty524R3rEK+Dxu8zpORsVLODuAHMcFDoPeC6IgQKCxnJlWMcNfhUX0VXcm+sjPPTlSKkPsvXypiErB/LWlMT5splo7debfRXRgr4Kh1fZAcrkaoZCW66Ipn7g6Mw2efS1WbJLtpwQDrhzHlL7XuoDJZWwpch1ZcKbBW8TSh3haPFpMhNow2Qtb7V0ZCk+f3dzT6D1vEL1aKQQwskR/GM9nrBgLIGB0ucgue3GcDnpI6W+nLRmamKMc1JX4HfP0J3RrkZgaK661XxHmHOq/ gpaumier@wikimedia.org]
     uid: 2047
   niedzielski:
+    ensure: present
     gid: 500
     name: niedzielski
     realname: Stephen Niedzielski
