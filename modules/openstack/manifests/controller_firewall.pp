@@ -40,7 +40,7 @@ class openstack::controller_firewall {
     # wikitech needs to be able to do things, and the spare master should be able
     #  to query during switch-overs
     ferm::rule { 'openstack-services':
-        rule => "saddr ${wikitech} ${spare_master} proto tcp dport (5000 35357 9292) ACCEPT;",
+        rule => "saddr (${wikitech} ${spare_master}) proto tcp dport (5000 35357 9292) ACCEPT;",
     }
 
     # horizon needs to be able to do things
