@@ -63,8 +63,6 @@ class role::cache::text {
         director_type      => $director_type_cluster,
         vcl_config         => {
             'default_backend'  => $::role::cache::base::default_backend,
-            'retry503'         => 0,
-            'retry5xx'         => 0,
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'cluster_tier'     => $::role::cache::base::cluster_tier,
@@ -110,7 +108,6 @@ class role::cache::text {
         director_type   => 'chash',
         vcl_config      => {
             'retry503'         => 1,
-            'retry5xx'         => 0,
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'cluster_tier'     => $::role::cache::base::cluster_tier,
