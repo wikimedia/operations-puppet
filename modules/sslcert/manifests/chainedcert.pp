@@ -47,7 +47,7 @@ define sslcert::chainedcert(
             cwd     => '/etc/ssl/localcerts',
             command => "$script --skip-root -c $inpath -o $chainfile",
             unless  => "[ $chainfile -nt $inpath -a $chainfile -nt $script ]",
-            require => [ $inpath, $script ],
+            require => [ File[$inpath], File[$script] ],
         }
 
         # set owner/group/permissions on the chained file
