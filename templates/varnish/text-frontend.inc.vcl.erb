@@ -77,6 +77,9 @@ sub filter_noise {
 	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
 		error 403 "Noise";
 	}
+	if (req.http.host == "zh.wikipedia.org" && req.http.User-Agent ~ "bingbot") {
+		error 403 "Temporary Operational Issues";
+	}
 }
 
 sub vcl_recv {
