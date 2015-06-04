@@ -1,0 +1,27 @@
+-- wikiadmin 10.%
+
+GRANT PROCESS, REPLICATION CLIENT
+    ON *.* TO 'wikiadmin'@'10.%'
+    IDENTIFIED BY '<%= @wikiadmin_pass %>';
+
+GRANT ALL PRIVILEGES
+    ON `parsercache`.* TO 'wikiadmin'@'10.%';
+
+-- wikiuser 10.64.%
+
+GRANT PROCESS, REPLICATION CLIENT
+    ON *.* TO 'wikiuser'@'10.64.%'
+    IDENTIFIED BY '<%= @wikiuser_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE
+    ON `parsercache`.* TO 'wikiuser'@'10.64.%';
+
+-- wikiuser 10.192.%
+
+GRANT PROCESS, REPLICATION CLIENT
+    ON *.* TO 'wikiuser'@'10.192.%'
+    IDENTIFIED BY '<%= @wikiuser_pass %>';
+
+GRANT SELECT, INSERT, UPDATE, DELETE
+    ON `parsercache`.* TO 'wikiuser'@'10.192.%';
+
