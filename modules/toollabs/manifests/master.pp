@@ -52,6 +52,18 @@ class toollabs::master inherits toollabs {
     # any singleton instance.
     #
 
+    # Make sure that old-style fqdn for nodes are still understood
+    # in this new-style fqnd environment by making aliases for the
+    # nodes that existed before the change:
+    file { '/var/lib/gridengine/default/common/host_aliases':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/toollabs/host_aliases',
+        require => Mount['/var/lib/gridengine'],
+    }
+
     # TODO: Remove after migration.
     file { "${toollabs::repo}/update-repo.sh":
         ensure => absent,
