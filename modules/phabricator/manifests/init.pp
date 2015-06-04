@@ -288,6 +288,10 @@ class phabricator (
         }
     }
 
+    class { 'phabricator::vcs':
+        settings => $phab_settings,
+    }
+
     class { 'phabricator::phd':
         basedir  => $phabdir,
         settings => $phab_settings,
