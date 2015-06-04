@@ -29,12 +29,7 @@ sub evaluate_cookie {
         // the temporary live deployment on large wikis of:
         //   https://gerrit.wikimedia.org/r/#/c/176948
         // Can be removed when most matching cookies have gone away...
-	// I've added another temporary exception here for the
-	// clicktracking-session= cookie I've been observing in our traffic
-	// lately.  I think we haven't set this in a long time, but it's still
-	// out there in browsers, possibly due to lack of expiry.  We may need
-	// to explicitly send out some cookie-deletes for it to fix....
-	if (req.http.Cookie ~ "((?<!(mwuser|clicktracking)-)[sS]ession|Token)=") {
+	if (req.http.Cookie ~ "((?<!mwuser-)[sS]ession|Token)=") {
 		set req.hash_ignore_busy = true;
 	} else {
 		call cookie_munging;
