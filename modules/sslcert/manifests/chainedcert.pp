@@ -40,16 +40,13 @@ define sslcert::chainedcert(
     $chainfile = "/etc/ssl/localcerts/${title}.chained.crt"
 
     if $ensure == 'present' {
+        $inpath = "/etc/ssl/localcerts/${title}.crt"
+        $script = "/usr/local/sbin/x509-bundle"
         exec { "x509-bundle ${title}":
-# HACK: always run for now...
-#            creates     => $chainfile,
-#            refreshonly => true,
-            command     => "/usr/local/sbin/x509-bundle --skip-root -c ${title}.crt -o ${chainfile}",
-            cwd         => '/etc/ssl/localcerts',
-            subscribe   => [
-                File["/etc/ssl/localcerts/${title}.crt"],
-                File['/usr/local/sbin/x509-bundle'],
-            ],
+            cwd     => '/etc/ssl/localcerts',
+            command => "$script --skip-root -c $inpath -o $chainfile",
+            unless  => "[ $chainfile -nt $inpath -a $chainfile -nt $script ]",
+            require => [ $inpath, $script ],
         }
 
         # set owner/group/permissions on the chained file
