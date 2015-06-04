@@ -603,7 +603,9 @@ class role::mariadb::proxy::slaves(
 class role::mariadb::parsercache {
 
     include standard
-    include role::mariadb::grants
+    include role::mariadb::grants {
+        shard => 'parsercache',
+    }
     include role::mariadb::grants::core
     include role::mariadb::monitor
     include passwords::misc::scripts
