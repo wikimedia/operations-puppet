@@ -6,9 +6,11 @@ PassengerMaxPoolSize <%= scope.lookupvar('::processorcount').to_i * 4 %>
 PassengerPoolIdleTime 1500
 PassengerMaxRequests 2000
 PassengerStatThrottleRate 120
-PassengerUseGlobalQueue on
+<% if scope.function_os_version(['debian < jessie || ubuntu < trusty']) %>
 RackAutoDetect Off
 RailsAutoDetect Off
+PassengerUseGlobalQueue on
+<% end %>
 
 <%- if @server_type == 'frontend' or @server_type == 'standalone' -%>
 <VirtualHost <%= scope.lookupvar('puppetmaster::passenger::bind_address') %>:8140>
