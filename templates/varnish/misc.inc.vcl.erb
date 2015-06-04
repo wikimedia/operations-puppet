@@ -41,7 +41,7 @@ sub vcl_recv {
 		return (pass);
 	} elsif (req.http.Host == "ishmael.wikimedia.org") {
 		set req.backend = neon;
-	} elsif (req.http.Host == "racktables.wikimedia.org") {
+	} elsif (req.http.Host == "racktables.wikimedia.org" || req.http.Host == "rt.wikimedia.org") {
 		set req.backend = magnesium;
 	} elsif (req.http.Host == "metrics.wikimedia.org" || req.http.Host == "datasets.wikimedia.org" || req.http.Host == "stats.wikimedia.org" || req.http.Host == "stat1001.wikimedia.org") {
 		set req.backend = stat1001;
