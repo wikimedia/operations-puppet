@@ -5,6 +5,7 @@ class openstack::firewall {
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
     $other_master = ipresolve(hiera('labs_nova_controller_other'),4)
+    $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
     if ($::site == 'codfw') {
         # TODO!  codfw will need something
         # like this when the ip range is assigned.
@@ -33,7 +34,7 @@ class openstack::firewall {
 
     # Redis replication for keystone
     ferm::rule { 'redis_replication':
-        rule => "saddr (${other_master}) proto tcp dport (6379) ACCEPT;",
+        rule => "saddr (${other_master} ${spare_master}) proto tcp dport (6379) ACCEPT;",
     }
 
     # wikitech needs to be able to do things
@@ -48,7 +49,7 @@ class openstack::firewall {
 
     # internal services to Labs virt servers
     ferm::rule { 'keystone':
-        rule => "saddr (${other_master} ${labs_nodes}) proto tcp dport (5000 35357) ACCEPT;",
+        rule => "saddr (${other_master} ${labs_nodes} ${spare_master}) proto tcp dport (5000 35357) ACCEPT;",
     }
     ferm::rule { 'mysql_nova':
         rule => "saddr ${labs_nodes} proto tcp dport (3306) ACCEPT;",
