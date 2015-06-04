@@ -5,11 +5,11 @@ admin::groups:
 mediawiki::users::web: www-data
 apache::mpm::mpm: worker
 mediawiki::web::mpm_config::mpm: worker
-hhvm::extra::fcgi_settings:
+hhvm::extra::fcgi:
   hhvm:
     mysql:
       connect_timeout: 3000
-hhvm::extra::cli_settings:
+hhvm::extra::cli:
   hhvm:
     mysql:
       connect_timeout: 3000
