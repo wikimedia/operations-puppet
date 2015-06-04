@@ -13,23 +13,18 @@ class role::glance::config {
 
 class role::glance::config::eqiad inherits role::glance::config {
     include role::keystone::config::eqiad
-
-    $glance_controller = hiera('labs_glance_controller')
-
     $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
+    $keystone_host = hiera('labs_keystone_host')
 
     $db_host = $::realm ? {
         'production' => 'm5-master.eqiad.wmnet',
         'labs'       => $::ipaddress_eth0,
     }
 
-    $bind_ip = $::realm ? {
-        'production' => ipresolve($glance_controller, 4),
-        'labs'       => $::ipaddress_eth0,
-    }
+    $bind_ip = $::ipaddress_eth0,
 
     $auth_uri = $::realm ? {
-        'production' => "http://${glance_controller}:5000",
+        'production' => "http://${keystone_controller}:5000",
         'labs'       => "http://$::ipaddress_eth0:5000",
     }
 
