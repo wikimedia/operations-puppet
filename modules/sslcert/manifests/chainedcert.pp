@@ -40,12 +40,23 @@ define sslcert::chainedcert(
     $chainfile = "/etc/ssl/localcerts/${title}.chained.crt"
 
     if $ensure == 'present' {
-        exec { "x509-bundle ${title}":
-# HACK: always run for now...
-#            creates     => $chainfile,
-#            refreshonly => true,
-            command     => "/usr/local/sbin/x509-bundle --skip-root -c ${title}.crt -o ${chainfile}",
+        # The basic problem here is we want the exec to run if the file doesn't exist,
+        #   and also if subcribed inputs change, but puppet provides no succint way
+        #   to specify that.  So instead, we'll use two copies of the exec...
+        $cmd = "/usr/local/sbin/x509-bundle --skip-root -c ${title}.crt -o ${chainfile}"
+        exec { "x509-bundle ${title} creates":
+            command     => $cmd,
             cwd         => '/etc/ssl/localcerts',
+            creates     => $chainfile,
+            require     => [
+                File["/etc/ssl/localcerts/${title}.crt"],
+                File['/usr/local/sbin/x509-bundle'],
+            ],
+        }
+        exec { "x509-bundle ${title} subscribes":
+            command     => $cmd,
+            cwd         => '/etc/ssl/localcerts',
+            refreshonly => true,
             subscribe   => [
                 File["/etc/ssl/localcerts/${title}.crt"],
                 File['/usr/local/sbin/x509-bundle'],
@@ -58,7 +69,10 @@ define sslcert::chainedcert(
             mode    => '0444',
             owner   => 'root',
             group   => $group,
-            require => Exec["x509-bundle ${title}"],
+            require => [
+                Exec["x509-bundle ${title} creates"],
+                Exec["x509-bundle ${title} subscribes"],
+            ],
         }
     } else {
         file { $chainfile:
