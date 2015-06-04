@@ -3,6 +3,8 @@ class openstack::glance::service(
     $glanceconfig) {
     include openstack::repo
 
+    $image_datadir = '/a/glance/images/'
+
     package { [ "glance" ]:
         ensure  => present,
         require => Class["openstack::repo"];
