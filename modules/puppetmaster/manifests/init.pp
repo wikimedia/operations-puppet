@@ -45,7 +45,8 @@ class puppetmaster(
         'puppet-el',
         'rails',
         'ruby-json',
-        'ruby-mysql'
+        'ruby-mysql',
+        'ruby-ldap'
         ]:
         ensure  => present,
     }
