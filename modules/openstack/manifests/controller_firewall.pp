@@ -1,4 +1,4 @@
-class openstack::firewall {
+class openstack::controller_firewall {
     include base::firewall
 
     $labs_private_net = '10.0.0.0/0'
