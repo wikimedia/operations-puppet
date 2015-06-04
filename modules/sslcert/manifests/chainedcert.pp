@@ -41,7 +41,9 @@ define sslcert::chainedcert(
 
     if $ensure == 'present' {
         exec { "x509-bundle ${title}":
-            creates     => $chainfile,
+# HACK: always run for now...
+#            creates     => $chainfile,
+#            refreshonly => true,
             command     => "/usr/local/sbin/x509-bundle --skip-root -c ${title}.crt -o ${chainfile}",
             cwd         => '/etc/ssl/localcerts',
             subscribe   => [
