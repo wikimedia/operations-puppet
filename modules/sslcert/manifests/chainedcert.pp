@@ -43,6 +43,7 @@ define sslcert::chainedcert(
         $inpath = "/etc/ssl/localcerts/${title}.crt"
         $script = "/usr/local/sbin/x509-bundle"
         exec { "x509-bundle ${title}":
+            path    => 'bin:/usr/bin',
             cwd     => '/etc/ssl/localcerts',
             command => "$script --skip-root -c $inpath -o $chainfile",
             unless  => "[ $chainfile -nt $inpath -a $chainfile -nt $script ]",
