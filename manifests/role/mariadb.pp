@@ -603,7 +603,7 @@ class role::mariadb::proxy::slaves(
 class role::mariadb::parsercache {
 
     include standard
-    include role::mariadb::grants
+
     include role::mariadb::grants::core
     include role::mariadb::monitor
     include passwords::misc::scripts
@@ -614,6 +614,10 @@ class role::mariadb::parsercache {
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
+    }
+
+    class { 'role::mariadb::grants':
+        shard => 'parsercache',
     }
 
     class { 'mariadb::config':
