@@ -140,6 +140,16 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         zookeeper_hosts                 => $zookeeper_hosts,
         zookeeper_chroot                => $zookeeper_chroot,
         nofiles_ulimit                  => $nofiles_ulimit,
+
+        # Enable auto creation of topics.
+        # This will be used for eventlogging-kafka
+        auto_create_topics_enable       => true,
+        default_replication_factor      => 3,
+        # Start with a low number of (auto created) partitions per
+        # topic.  This can be increased manually for high volume
+        # topics if necessary.
+        num_partitions                  => 1,
+
         # Bump this up to 4 to get a little more
         # parallelism between replicas.
         num_replica_fetchers            => 4,
