@@ -28,6 +28,15 @@ killall.sh || kill-all-dhcp; netcfg
 # which is useful for debugging (see also network-console settings)
 anna-install network-console
 
+# workaround silly d-i bug that makes it ignore the preseeded value of
+# tasksel/first, which in turn resulted in the default tasks being installed.
+cat > /usr/lib/pre-pkgsel.d/20tasksel-debconf <<EOF
+#!/bin/sh
+debconf-copydb -p "^tasksel/" configdb target_configdb
+EOF
+chmod +x /usr/lib/pre-pkgsel.d/20tasksel-debconf
+
+## set up apt
 # preseed the correct wikimedia repository location
 if [ -f /usr/share/keyrings/ubuntu-archive-keyring.gpg ]; then
 	SUITE=$(debconf-get mirror/suite)-wikimedia
