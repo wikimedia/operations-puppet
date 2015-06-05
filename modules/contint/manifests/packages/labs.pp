@@ -116,6 +116,20 @@ class contint::packages::labs {
             onlyif => '/usr/bin/apt-get -s build-dep hhvm | /bin/grep -Pq "will be (installed|upgraded)"',
         }
 
+        # Work around PIL 1.1.7 expecting libs in /usr/lib T101550
+        file { '/usr/lib/libjpeg.so':
+            ensure => link,
+            target => '/usr/lib/x86_64-linux-gnu/libjpeg.so',
+        }
+        file { '/usr/lib/libfreetype.so':
+            ensure => link,
+            target => '/usr/lib/x86_64-linux-gnu/libfreetype.so',
+        }
+        file { '/usr/lib/libz.so':
+            ensure => link,
+            target => '/usr/lib/x86_64-linux-gnu/libz.so',
+        }
+
         package { [
             'python3.4',
             # Let us compile python modules:
