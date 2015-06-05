@@ -39,6 +39,27 @@ host labsdb1003 {
 	fixed-address labsdb1003.eqiad.wmnet;
 }
 
+host etcd1001 {
+	hardware ethernet AA:00:00:69:8C:B4;
+	fixed-address etcd1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host etcd1002 {
+	hardware ethernet AA:00:00:69:8C:B5;
+	fixed-address etcd1002.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host etcd1003 {
+	hardware ethernet AA:00:00:69:8C:B6;
+	fixed-address etcd1003.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host etherpad1001 {
 	hardware ethernet AA:00:00:EE:AD:01;
 	fixed-address etherpad1001.eqiad.wmnet;

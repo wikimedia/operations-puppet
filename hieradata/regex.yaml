@@ -18,6 +18,10 @@ es_rack_d4:
   elasticsearch::rack: D4
   elasticsearch::row:  D
 
+etcd:
+  __regex: !ruby/regexp /^etcd100\d\.eqiad\.wmnet$/
+  ganglia_class: "new"
+  
 cassandra_test:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   cassandra::seeds:
