@@ -52,7 +52,7 @@ $network_zone = $main_ipaddress ? {
 
 # DNS
 if $::realm == 'labs' {
-    $nameservers = [ '10.68.16.1' ]
+    $nameservers = [ ipresolve(hiera('labs_recursor'),4) ]
 } else {
     $nameservers = $site ? {
         'eqiad' => [ '208.80.154.239', '208.80.153.254' ], # eqiad -> eqiad, codfw

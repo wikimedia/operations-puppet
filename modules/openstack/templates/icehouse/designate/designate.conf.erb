@@ -224,7 +224,7 @@ format = TESTING-%(hostname)s.%(tenant_id)s.%(domain)s, TESTING-%(hostname)s.%(d
 ldapusername = uid=novaadmin,ou=people,dc=wikimedia,dc=org
 ldappassword = <%= @ldap_user_pass %>
 puppetdefaultclasses = base, role::labs::instance
-puppetdefaultvars = realm=labs, use_dnsmasq=true
+puppetdefaultvars = realm=labs
 
 certmanager_user = certmanager
 puppet_key_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
