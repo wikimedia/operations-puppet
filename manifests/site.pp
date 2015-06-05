@@ -1247,7 +1247,7 @@ node 'labcontrol1001.wikimedia.org' {
     role nova::controller
 
     include standard
-    # include role::dns::ldap
+    include role::dns::ldap
     include ldap::role::client::labs
     include role::salt::masters::labs
     include role::deployment::salt_masters
@@ -2438,7 +2438,6 @@ node 'uranium.wikimedia.org' {
 
 node 'virt1000.wikimedia.org' {
     include standard
-    include role::dns::ldap
 }
 
 node /^virt100[5-7].eqiad.wmnet/ {
