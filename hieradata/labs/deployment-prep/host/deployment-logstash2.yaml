@@ -3,7 +3,7 @@ base::remote_syslog::enable: false
 # ES-specific
 elasticsearch::auto_create_index: true
 elasticsearch::cluster_name: labs-logstash-eqiad
-elasticsearch::expected_nodes: 2
+elasticsearch::expected_nodes: 1
 elasticsearch::heap_memory: '5G'
 elasticsearch::minimum_master_nodes: 1
 elasticsearch::multicast_group: 224.2.2.6
@@ -11,8 +11,8 @@ elasticsearch::plugins_dir: /srv/deployment/elasticsearch/plugins
 elasticsearch::recover_after_nodes: 1
 elasticsearch::recover_after_time: '1m'
 elasticsearch::unicast_hosts:
-  - deployment-logstash2.deployment-prep.eqiad.wmflabs
-elasticsearch::script_disable_dynamic: true
+  - deployment-logstash1.deployment-prep.eqiad.wmflabs
+elasticsearch::disable_dynamic: true
 
 # Logstash specific
 logstash::filter_workers: 1
