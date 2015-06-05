@@ -184,7 +184,7 @@ sub vcl_deliver {
 	// We supposedly stopped setting these back in Apr-2013, but they were originally
 	// set with no expiry (permanent), and we're still seeing a fair number of them in the wild,
 	// and they accidentally match our global session-cookie regex.
-	if (req.http.Cookie ~ "clicktracking-session=") {
+	if (req.http.Cookie ~ "clicktracking-session=" || req.http.Orig-Cookie ~ "clicktracking-session=") {
 		header.append(resp.http.Set-Cookie, "clicktracking-session=x; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT");
 	}
 
