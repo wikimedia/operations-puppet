@@ -5,6 +5,15 @@ class openstack::glance::service(
 
     $image_datadir = '/a/glance/images'
 
+    #  This is 775 so that the glancesync user can rsync to it.
+    file { $image_datadir:
+        ensure  => directory,
+        owner   => 'glance',
+        group   => 'glance',
+        require => Package['glance'],
+        mode    => '0775',
+    }
+
     package { [ "glance" ]:
         ensure  => present,
         require => Class["openstack::repo"];
