@@ -30,6 +30,11 @@ ganglia_clusters:
         - dbstore1001.eqiad.wmnet
         - dbstore1002.eqiad.wmnet
       codfw: []
+  etcd:
+    name: "Etcd"
+    id: 6
+    sites:
+      eqiad: []
   misc:
     name: "Miscellaneous"
     id: 8

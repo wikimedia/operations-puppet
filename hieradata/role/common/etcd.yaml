@@ -1,0 +1,2 @@
+cluster: etcd
+etcd::srv_dns: 'eqiad.wmnet'
