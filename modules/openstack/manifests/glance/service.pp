@@ -68,6 +68,7 @@ class openstack::glance::service(
         gid        => 'glance',
         managehome => true,
         require    => Package['glance'],
+        system     => true,
     }
 
     ssh::userkey { 'glancesync':
