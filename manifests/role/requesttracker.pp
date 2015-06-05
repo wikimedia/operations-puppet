@@ -4,8 +4,6 @@ class role::requesttracker {
 
     include passwords::misc::rt
 
-    install_certificate { 'rt.wikimedia.org': }
-
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
     class { '::requesttracker':
@@ -55,9 +53,6 @@ class role::rt::labs {
     system::role { 'role::rt::labs': description => 'RT (Labs)' }
 
     include passwords::misc::rt
-
-    # FIXME: needs to reference a wmflabs certificate?
-    install_certificate { 'rt.wikimedia.org': }
 
     $datadir = '/srv/mysql'
 
