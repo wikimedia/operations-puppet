@@ -15,7 +15,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 [ -f $CONFFILE ] && . $CONFFILE
 
 SSH_OPTIONS="-oCheckHostIP=no -oUserKnownHostsFile=/dev/null -oBatchMode=yes"
-SSH_USER="-l authdns -i /srv/authdns/.ssh/id_rsa"
+SSH_USER="-l authdns -i /srv/authdns/.ssh/id_ed25519"
 
 if [ -z "$NAMESERVERS" -o -z "$FQDN" ]; then
     echo "Missing config file options, system misconfigured"
