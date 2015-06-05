@@ -10,6 +10,7 @@ elasticsearch::multicast_group: 224.2.2.6
 elasticsearch::plugins_dir: /srv/deployment/elasticsearch/plugins
 elasticsearch::recover_after_nodes: 1
 elasticsearch::recover_after_time: '1m'
+elasticsearch::disable_dynamic: true
 
 # Logstash specific
 logstash::filter_workers: 1

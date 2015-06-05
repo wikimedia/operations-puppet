@@ -435,12 +435,12 @@ cluster.routing.allocation.balance:
 
 
 ##
-# Turn dynamic scripting back on
+# Control dynamic scripting engine
 ##
 # Elasticsearch 1.2.X turns dynamic scripting off by default.  Cirrus needs it on.
 # Elasticsearch 1.3.X will turn it back on using a new scripting language that is better sandboxed.
 # Cirrus will port to that when it is released, but for now, we use dynamic scripting.
-script.disable_dynamic: false
+script.disable_dynamic: <%= @disable_dynamic %>
 
 ##
 # Filter cache size
