@@ -33,7 +33,5 @@ elasticsearch::recover_after_time: '20m'
 elasticsearch::filter_cache_size: "20%"
 elasticsearch::bulk_thread_pool_capacity: 1000
 elasticsearch::bulk_thread_pool_executors: 6
-
-
-
-
+# Enable dynamic scripting
+elasticsearch::script_disable_dynamic: false
