@@ -3,15 +3,7 @@
 ## source: modules/base/resolv.conf.labs.erb
 ## from:   base::resolving
 
-<% if @use_dnsmasq_server == true then -%>
-domain <%= @site %>.wmflabs
-search <%= @site %>.wmflabs labs.<%= @site %>.wmnet
-<% scope.lookupvar('::nameservers').sort.each do |nsip| -%>
-nameserver <%= nsip %>
-<% end -%>
-<% else -%>
 domain <%= @instanceproject %>.<%= @site %>.wmflabs
 search <%= @instanceproject %>.<%= @site %>.wmflabs <%= @site %>.wmflabs
 nameserver <%= @labs_recursor %>
-<% end -%>
 options timeout:5 ndots:2

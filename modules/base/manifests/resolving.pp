@@ -27,7 +27,6 @@ class base::resolving (
                 require => File['/etc/dhcp/dhclient-enter-hooks.d'],
             }
 
-            $use_dnsmasq_server = hiera('use_dnsmasq', $::use_dnsmasq)
             $labs_recursor = ipresolve(hiera('labs_recursor'),4)
             # Now, finally, we can just puppetize the damn file
             file { '/etc/resolv.conf':
