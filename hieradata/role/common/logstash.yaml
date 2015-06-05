@@ -22,6 +22,7 @@ elasticsearch::unicast_hosts:
   - logstash1004.eqiad.wmnet
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet
+elasticsearch::disable_dynamic: true
 
 # Logstash specific
 # TODO: the multiline filter that is used in several places in the
