@@ -5,6 +5,14 @@ class openstack::glance::service(
 
     $image_datadir = '/a/glance/images'
 
+    file { $image_datadir:
+        ensure  => directory,
+        owner   => 'glance',
+        group   => 'glance',
+        require => Package['glance'],
+        mode    => '0775';
+    }
+
     package { [ "glance" ]:
         ensure  => present,
         require => Class["openstack::repo"];
