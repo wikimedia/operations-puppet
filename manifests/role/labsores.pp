@@ -14,3 +14,11 @@ class role::labs::ores::lb(
         require     => Labs_lvm::Volume['srv'],
     }
 }
+
+class role::labs::ores::staging {
+    include ::ores::web
+    class { '::ores::lb':
+        realservers => [ 'localhost:8080' ],
+        cached      => false,
+    }
+}
