@@ -19,6 +19,6 @@ class role::labs::ores::staging {
     include ::ores::web
     class { '::ores::lb':
         realservers => [ 'localhost:8080' ],
-        cached      => false,
+        cache       => false,
     }
 }
