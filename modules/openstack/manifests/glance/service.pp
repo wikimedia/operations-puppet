@@ -3,7 +3,7 @@ class openstack::glance::service(
     $glanceconfig) {
     include openstack::repo
 
-    $image_datadir = '/a/glance/images'
+    $image_datadir = '/a/glance/images/'
 
     package { [ "glance" ]:
         ensure  => present,
@@ -55,33 +55,5 @@ class openstack::glance::service(
                 require => Package["glance"],
                 mode    => '0440';
         }
-    }
-
-    $spare_glance_host = hiera('labs_nova_controller_spare')
-    # Set up a keypair and rsync image files between the main glance server
-    #  and the spare.
-    ssh::userkey { 'glance':
-        require => Package['glance'],
-        ensure  => present,
-        source  => 'puppet:///private/ssh/glance/glance.pub',
-    }
-    file { '/var/lib/glance/.ssh':
-        ensure  => directory,
-        owner   => 'glance',
-        group   => 'glance',
-        mode    => '0700',
-        require => Package['glance'],
-    }
-    file { '/var/lib/glance/.ssh/id_rsa':
-        source  => 'puppet:///private/ssh/glance/glance.key',
-        owner   => 'glance',
-        group   => 'glance',
-        mode    => '0600',
-        require => File['/var/lib/glance/.ssh'],
-    }
-    cron { 'rsync_glance_images':
-        command     => "/usr/bin/rsync -aS ${image_datadir} ${spare_glance_host}:${image_datadir}",
-        minute      => 15,
-        user        => 'glance',
     }
 }
