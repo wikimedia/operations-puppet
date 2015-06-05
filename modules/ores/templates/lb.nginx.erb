@@ -5,15 +5,17 @@ upstream oresweb {
     <% end %>
 }
 
+<% if @cache -%>
 proxy_cache_path /srv/nginx/cache/ keys_zone=ores:64m;
 proxy_cache_valid 7d;
+<% end %>
 
 proxy_temp_path /srv/nginx/tmp/;
 server {
     listen 80;
 
     location / {
-        proxy_cache ores;
+        <% if @cache %>proxy_cache ores;<% end %>
         proxy_pass http://oresweb;
     }
 }
