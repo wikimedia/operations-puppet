@@ -78,14 +78,14 @@ class openstack::glance::service(
     file { '/home/glancesync/.ssh':
         ensure  => directory,
         owner   => 'glancesync',
-        group   => 'glancesync',
+        group   => 'glance',
         mode    => '0700',
         require => user['glancesync'],
     }
     file { '/home/glancesync/.ssh/id_rsa':
         source  => 'puppet:///private/ssh/glancesync/glancesync.key',
         owner   => 'glancesync',
-        group   => 'glancesync',
+        group   => 'glance',
         mode    => '0600',
         require => File['/home/glancesync/.ssh'],
     }
