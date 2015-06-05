@@ -87,15 +87,21 @@ class role::eventlogging {
         format => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
         input  => "${kafka_input_uri}&group_id=eventlogging-client-side-processor",
         output => 'tcp://*:8523',
+        # NOTE: Otto is disabling this as we will be running a separate
+        # eventlogging instance along side of this one that will
+        # be responsible for Kafka stuff.  We don't want
+        # to accidentally duplicate events.  There is no traffic
+        # in this kafka topic right now anyway.
+        ensure => 'absent',
     }
 
 
-    # Parsed and validated client-side (varnishncsa and varnishkafka generated) and
+    # Parsed and validated client-side (varnishncsa generated) and
     # server-side (MediaWiki-generated) events are multiplexed into a
     # single output stream, published on TCP port 8600.
 
     eventlogging::service::multiplexer { 'all events':
-        inputs => [ "tcp://${processor}:8521", "tcp://${processor}:8522", "tcp://${processor}:8523" ],
+        inputs => [ "tcp://${processor}:8521", "tcp://${processor}:8522" ],
         output => 'tcp://*:8600',
     }
 
@@ -136,9 +142,6 @@ class role::eventlogging {
         'client-side-events.log':
             input  => "tcp://${processor}:8422?raw=1",
             output => "file://${log_dir}/client-side-events.log";
-        'client-side-events-kafka.log':
-            input  => "${kafka_input_uri}&group_id=eventlogging-client-side-raw-consumer",
-            output => "file://${log_dir}/client-side-events-kafka.log";
         'all-events.log':
             input  => "tcp://${processor}:8600",
             output => "file://${log_dir}/all-events.log";
