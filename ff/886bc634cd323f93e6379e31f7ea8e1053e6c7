@@ -1,0 +1,8 @@
+Verified+2: jenkins-bot
+Code-Review+2: Faidon Liambotis <faidon@wikimedia.org>
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Submitted-by: Faidon Liambotis <faidon@wikimedia.org>
+Submitted-at: Fri, 05 Jun 2015 08:09:31 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/215821
+Project: operations/puppet
+Branch: refs/heads/production
