@@ -95,7 +95,7 @@ class DNSCached
       # If resolution fails and we do have a cached stale value, use it
         res = @cache.read_stale(cache_key)
         if res.nil?
-            fail('DNS lookup failed')
+            fail("DNS lookup failed for #{name} #{type}")
         end
         res.to_s
       end
