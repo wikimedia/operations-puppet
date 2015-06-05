@@ -15,6 +15,7 @@ class toollabs (
     $proxies = ['tools-webproxy-01', 'tools-webproxy-02'],
     $active_proxy = 'tools-webproxy-01',
     $active_redis = 'tools-redis-01',
+    $active_redis_ip = '10.68.18.70'
 ) {
 
     include labs_lvm
@@ -215,9 +216,6 @@ class toollabs (
         group  => 'root',
         source => 'puppet:///modules/toollabs/logrotate.crondaily',
     }
-
-    # Used by generated /etc/hosts file
-    $active_redis_ip = ipresolve($active_redis, 4, $::nameservers[0])
 
     diamond::collector::localcrontab { 'localcrontabcollector': }
 }
