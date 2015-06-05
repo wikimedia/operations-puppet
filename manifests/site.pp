@@ -1247,7 +1247,7 @@ node 'labcontrol1001.wikimedia.org' {
     role nova::controller
 
     include standard
-    #include role::dns::ldap
+    # include role::dns::ldap
     include ldap::role::client::labs
     include role::salt::masters::labs
     include role::deployment::salt_masters
@@ -2437,23 +2437,8 @@ node 'uranium.wikimedia.org' {
 }
 
 node 'virt1000.wikimedia.org' {
-    $cluster               = 'virt'
-    $ganglia_aggregator    = true
-    $is_puppet_master      = true
-    $is_labs_puppet_master = true
-    $use_neutron           = false
-
-    role nova::controller
-
     include standard
     include role::dns::ldap
-    include ldap::role::client::labs
-    include role::salt::masters::labs
-    include role::deployment::salt_masters
-    if $use_neutron == true {
-        include role::neutron::controller
-
-    }
 }
 
 node /^virt100[5-7].eqiad.wmnet/ {

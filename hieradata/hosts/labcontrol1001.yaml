@@ -1,5 +1,0 @@
-labs_nova_controller: "labcontrol1001.wikimedia.org"
-labs_nova_controller_spare: "virt1000.wikimedia.org"
-labs_nova_controller_other: "labcontrol2001.wikimedia.org"
-labs_glance_controller: "labcontrol1001.wikimedia.org"
-labs_keystone_host: "labcontrol1001.wikimedia.org"
