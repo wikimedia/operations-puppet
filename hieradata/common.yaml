@@ -140,7 +140,7 @@ ganglia_clusters:
     sites:
       eqiad:
         - labnet1001.eqiad.wmnet
-        - virt1000.wikimedia.org
+        - labcontrol1001.wikimedia.org
   jobrunner:
     name: "Jobrunners"
     id: 31

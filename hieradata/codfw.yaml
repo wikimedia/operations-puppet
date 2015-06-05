@@ -28,7 +28,7 @@ ganglia_class: "new"
 ganglia_aggregators: install2001.wikimedia.org:10649
 
 labs_nova_controller: "labcontrol2001.wikimedia.org"
-labs_nova_controller_other: "virt1000.wikimedia.org"
+labs_nova_controller_other: "labcontrol1001.wikimedia.org"
 labs_glance_controller: "labcontrol2001.wikimedia.org"
 labs_puppet_master: "labs-puppetmaster-codfw.wikimedia.org"
 labs_puppet_master_secondary: "labs-puppetmaster-eqiad.wikimedia.org"
