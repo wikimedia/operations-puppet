@@ -47,7 +47,7 @@ class logstash(
 
     service { 'logstash':
         ensure     => running,
-        provider   => 'debian',
+        provider   => 'init',
         enable     => true,
         hasstatus  => true,
         hasrestart => true,
