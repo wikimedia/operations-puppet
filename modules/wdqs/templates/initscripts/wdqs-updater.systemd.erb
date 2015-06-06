@@ -1,0 +1,12 @@
+[Unit]
+Description=Wikidate Query Service Updater
+
+[Service]
+Type=simple
+WorkingDirectory=<%= @package_dir %>
+ExecStart=/bin/bash <%= @package_dir %>/runUpdate.sh <%= @updater_options %>
+User=<%= @username %>
+StandardOutput=journal+console
+Restart=always
+
+[Install]
