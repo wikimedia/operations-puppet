@@ -80,6 +80,15 @@ class role::mail::lists {
         prefixlen => '128',
     }
 
+    $outbound_ips = [
+            '208.80.154.61',
+            '2620:0:861:1:208:80:154:61'
+    ]
+    $list_outbound_ips = [
+            '208.80.154.4',
+            '2620:0:861:1::2'
+    ]
+
     install_certificate{ 'lists.wikimedia.org': }
 
     include mailman
@@ -91,23 +100,33 @@ class role::mail::lists {
         trusted_networks => $network::constants::all_networks,
     }
 
-    class { 'exim::roled':
-        outbound_ips           => [
-                '208.80.154.61',
-                '2620:0:861:1:208:80:154:61'
-            ],
-        list_outbound_ips      => [
-                '208.80.154.4',
-                '2620:0:861:1::2'
-            ],
-        enable_mailman         => true,
-        require                => [
+    include privateexim::listserve
+
+    class { 'exim4':
+        variant => 'heavy',
+        config  => template('exim/exim4.conf.mailman.erb'),
+        filter  => template('exim/system_filter.conf.mailman.erb'),
+        require => [
+            Class['spamassassin'],
             Interface::Ip['lists.wikimedia.org_v4'],
             Interface::Ip['lists.wikimedia.org_v6'],
         ],
     }
+    include exim4::ganglia
 
-    Class['spamassassin'] -> Class['exim::roled']
+    file { '/etc/exim4/aliases/lists.wikimedia.org':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///files/exim/listserver_aliases',
+        require => Class['exim4'],
+    }
+
+    exim4::dkim { 'lists.wikimedia.org':
+        domain   => 'lists.wikimedia.org',
+        selector => 'wikimedia',
+        source   => 'puppet:///private/dkim/lists.wikimedia.org-wikimedia.key',
+    }
 
     include role::backup::host
     backup::set { 'var-lib-mailman': }
