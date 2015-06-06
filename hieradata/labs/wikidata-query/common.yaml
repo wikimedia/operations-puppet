@@ -1,0 +1,6 @@
+"wdqs::gui::log_aggregator":  'deployment-logstash2.deployment-prep.eqiad.wmflabs'
+"wdqs::updater::options": '-n wdq -s -- -b 500 -t 5'
+"wdqs::service::use_git_deploy": false
+"wdqs::package_dir": '/srv/wdqs/blazegraph'
+"wdqs::data_dir": '/srv/wdqs/blazegraph'
+
