@@ -16,11 +16,11 @@ VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 ###############################
 
 # MySQL lookups (OTRS)
-hide mysql_servers =  m2-master.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : m2-slave.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
+hide mysql_servers =  m2-master.eqiad.wmnet/otrs/exim/<%= @otrs_mysql_password %> : m2-slave.eqiad.wmnet/otrs/exim/<%= @otrs_mysql_password %>
 
 # LDAP lookups (Office)
 ldap_default_servers = ldap-mirror.wikimedia.org
-LDAPPASSWORD=<%= scope.lookupvar('exim::smtp::smtp_ldap_password') %>
+LDAPPASSWORD=<%= @smtp_ldap_password %>
 
 domainlist system_domains = @
 domainlist local_domains = +system_domains : +wikimedia_domains : +legacy_mailman_domains : +verp_domains
