@@ -171,7 +171,6 @@ class role::otrs (
         enable_otrs_server   => true,
         enable_spamassassin  => true,
         enable_external_mail => false,
-        smart_route_list     => $::mail_smarthost,
     }
 
     Class['spamassassin'] -> Class['exim::roled']
