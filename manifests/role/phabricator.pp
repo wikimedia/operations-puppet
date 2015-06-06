@@ -86,11 +86,7 @@ class role::phabricator::main {
     }
 
     class { 'exim::roled':
-        enable_mail_relay    => false,
-        enable_external_mail => false,
-        enable_mailman       => false,
         phab_relay           => true,
-        enable_spamassassin  => false,
     }
 
     $emailbotcert = $passwords::phabricator::emailbot_cert

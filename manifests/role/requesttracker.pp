@@ -15,11 +15,7 @@ class role::requesttracker {
     }
 
     class { 'exim::roled':
-        enable_mail_relay    => false,
-        enable_external_mail => false,
-        enable_mailman       => false,
         rt_relay             => true,
-        enable_spamassassin  => false,
     }
 
     # allow RT to receive mail from mail smarthosts

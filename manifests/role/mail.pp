@@ -34,10 +34,7 @@ class role::mail::mx(
         verp_domains             => $verp_domains,
         verp_post_connect_server => $verp_post_connect_server,
         verp_bounce_post_url     => $verp_bounce_post_url,
-        enable_mail_relay        => 'primary',
-        enable_external_mail     => true,
-        mediawiki_relay          => true,
-        enable_spamassassin      => true,
+        enable_mail_relay        => true,
     }
 
     Class['spamassassin'] -> Class['exim::roled']
@@ -104,7 +101,6 @@ class role::mail::lists {
                 '2620:0:861:1::2'
             ],
         enable_mailman         => true,
-        enable_spamassassin    => true,
         require                => [
             Interface::Ip['lists.wikimedia.org_v4'],
             Interface::Ip['lists.wikimedia.org_v6'],
