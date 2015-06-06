@@ -167,15 +167,13 @@ rt:
 	local_part_suffix_optional
 	transport = rt_pipe
 
-<% if !@smart_route_list.empty? then -%>
 # Send all mail not destined for the local machine via a set of
 # mail relays ("smart hosts")
 smart_route:
 	driver = manualroute
 	transport = remote_smtp
 	# Local mail is undeliverable and remote mail is forwarded
-        route_list = !+local_domains  <%= @smart_route_list.join(":") %>
-<% end %>
+	route_list = !+local_domains  <%= @mail_smarthost.join(':') %>
 
 ##############
 # Transports #

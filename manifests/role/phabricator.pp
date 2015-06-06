@@ -89,7 +89,6 @@ class role::phabricator::main {
         local_domains        => [ '+system_domains', '+phab_domains' ],
         enable_mail_relay    => false,
         enable_external_mail => false,
-        smart_route_list     => $::mail_smarthost,
         enable_mailman       => false,
         phab_relay           => true,
         enable_spamassassin  => false,

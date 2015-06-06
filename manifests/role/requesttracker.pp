@@ -18,7 +18,6 @@ class role::requesttracker {
         local_domains        => [ '+system_domains', '+rt_domains' ],
         enable_mail_relay    => false,
         enable_external_mail => false,
-        smart_route_list     => $::mail_smarthost,
         enable_mailman       => false,
         rt_relay             => true,
         enable_spamassassin  => false,
