@@ -58,6 +58,13 @@ class mediawiki::packages {
         ensure => present,
     }
 
+    # Fonts
+    package { [
+        'fonts-wqy-zenhei', # T84777
+    ]:
+        ensure => presemt,
+    }
+
     # Score
     package { [
         'lilypond',
