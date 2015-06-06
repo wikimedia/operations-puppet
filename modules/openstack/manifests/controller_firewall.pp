@@ -4,6 +4,7 @@ class openstack::controller_firewall {
     $labs_private_net = '10.0.0.0/0'
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
+    $api_host = ipresolve('labnet1001.eqiad.wmnet',4)
     $other_master = ipresolve(hiera('labs_nova_controller_other'),4)
     $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
     if ($::site == 'codfw') {
@@ -50,7 +51,7 @@ class openstack::controller_firewall {
 
     # internal services to Labs virt servers
     ferm::rule { 'keystone':
-        rule => "saddr (${other_master} ${labs_nodes} ${spare_master}) proto tcp dport (5000 35357) ACCEPT;",
+        rule => "saddr (${other_master} ${labs_nodes} ${spare_master} ${api_host}) proto tcp dport (5000 35357) ACCEPT;",
     }
     ferm::rule { 'mysql_nova':
         rule => "saddr ${labs_nodes} proto tcp dport (3306) ACCEPT;",
@@ -60,6 +61,9 @@ class openstack::controller_firewall {
     }
     ferm::rule { 'rabbit_for_designate':
         rule => "saddr ${designate} proto tcp dport 5672 ACCEPT;",
+    }
+    ferm::rule { 'rabbit_for_nova_api':
+        rule => "saddr ${api_host} proto tcp dport 5672 ACCEPT;",
     }
     ferm::rule { 'glance_api_nova':
         rule => "saddr ${labs_nodes} proto tcp dport 9292 ACCEPT;",
