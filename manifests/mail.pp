@@ -61,8 +61,13 @@ class exim {
         include privateexim::listserve
         include exim4::ganglia
 
-        $config_template = template('exim/exim4.conf.SMTP_IMAP_MM.erb')
-        $filter_template = template('exim/system_filter.conf.erb')
+        if $phab_relay {
+            $config_template = template('exim/exim4.conf.phab.erb')
+            $filter_template = template('exim/system_filter.conf.erb')
+        } else {
+            $config_template = template('exim/exim4.conf.SMTP_IMAP_MM.erb')
+            $filter_template = template('exim/system_filter.conf.erb')
+        }
 
         class { 'exim4':
             variant => 'heavy',
