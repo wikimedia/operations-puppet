@@ -161,13 +161,36 @@ class role::otrs (
         debug_logging         => '--debug spf',
     }
 
-    # warning: don't unquote these booleans until exim::roled is fixed
-    class { 'exim::roled':
-        enable_otrs_server   => true,
+    include passwords::exim
+    $otrs_mysql_password = $passwords::exim::otrs_mysql_password
+
+    class { 'exim4':
+        variant => 'heavy',
+        config  => template('exim/exim4.conf.otrs.erb'),
+        filter  => template('exim/system_filter.conf.erb'),
+        require => [
+            Class['spamassassin'],
+            Class['clamav'],
+        ]
+    }
+    include exim4::ganglia
+
+    file { '/etc/exim4/defer_domains':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'Debian-exim',
+        mode    => '0444',
+        require => Class['exim4'],
     }
 
-    Class['spamassassin'] -> Class['exim::roled']
-    Class['clamav'] -> Class['exim::roled']
+    file { '/etc/exim4/wikimedia_domains':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///files/exim/wikimedia_domains',
+        require => Class['exim4'],
+    }
 
     cron { 'otrs_train_spamassassin':
         ensure  => 'present',
