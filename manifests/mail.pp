@@ -12,9 +12,6 @@ class exim {
     # This class installs a full featured Exim MTA
     #
     # Parameters:
-    #   - $local_domains:
-    #       List of domains Exim will treat as "local", i.e. be responsible
-    #       for
     #   - $enable_mail_relay:
     #       Values: primary, secondary
     #       Whether Exim will act as a primary or secondary mail relay for
@@ -46,7 +43,6 @@ class exim {
         $enable_spamassassin=false,
         $hold_domains=[],
         $list_outbound_ips=[],
-        $local_domains = [ '+system_domains' ],
         $mediawiki_relay=false,
         $outbound_ips=[ ],
         $rt_relay=false,

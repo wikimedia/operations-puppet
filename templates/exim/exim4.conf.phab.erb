@@ -11,7 +11,7 @@ CONFDIR=/etc/exim4
 ###############################
 
 domainlist system_domains = @
-domainlist local_domains = <%= @local_domains.join(" : ") %>
+domainlist local_domains = +system_domains : +phab_domains
 
 # a list of domains to always respond defer; used for emergencies or planned downtimes
 domainlist defer_domains = lsearch;CONFDIR/defer_domains

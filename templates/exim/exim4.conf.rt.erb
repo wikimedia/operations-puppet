@@ -11,12 +11,11 @@ CONFDIR=/etc/exim4
 ###############################
 
 domainlist system_domains = @
-domainlist local_domains = <%= @local_domains.join(" : ") %>
+domainlist local_domains = +system_domains : +rt_domains
 
 # a list of domains to always respond defer; used for emergencies or planned downtimes
 domainlist defer_domains = lsearch;CONFDIR/defer_domains
 
-# Standard lists
 domainlist rt_domains = rt.wikimedia.org
 
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>

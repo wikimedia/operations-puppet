@@ -23,7 +23,7 @@ ldap_default_servers = ldap-mirror.wikimedia.org
 LDAPPASSWORD=<%= scope.lookupvar('exim::smtp::smtp_ldap_password') %>
 
 domainlist system_domains = @
-domainlist local_domains = <%= @local_domains.join(" : ") %>
+domainlist local_domains = +system_domains : +wikimedia_domains : +legacy_mailman_domains : +verp_domains
 domainlist wikimedia_domains = lsearch;CONFDIR/wikimedia_domains
 domainlist verp_domains = <%= @verp_domains.join(" : ") %>
 domainlist relay_domains = +wikimedia_domains
