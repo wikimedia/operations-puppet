@@ -1,0 +1,2 @@
+"wdqs::logstash_host":  'deployment-logstash2.deployment-prep.eqiad.wmflabs'
+"wdqs::updater_options": '-n wdq -s -- -b 500 -t 5'
