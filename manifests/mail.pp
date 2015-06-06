@@ -18,7 +18,6 @@ class exim {
     #       Internal hostname of the wiki to which verp bounce emails are HTTP POST-ed and processed
     class roled(
         $enable_mail_relay=false,
-        $enable_otrs_server=false,
         $verp_domains=[],
         $verp_post_connect_server='',
         $verp_bounce_post_url='',
@@ -29,10 +28,7 @@ class exim {
         $otrs_mysql_password = $passwords::exim::otrs_mysql_password
         $smtp_ldap_password  = $passwords::exim::smtp_ldap_password
 
-        if $enable_otrs_server {
-            $config_template = template('exim/exim4.conf.otrs.erb')
-            $filter_template = template('exim/system_filter.conf.otrs.erb')
-        } elsif $enable_mail_relay {
+        if $enable_mail_relay {
             $config_template = template('exim/exim4.conf.mx.erb')
             $filter_template = template('exim/system_filter.conf.erb')
         } else {
