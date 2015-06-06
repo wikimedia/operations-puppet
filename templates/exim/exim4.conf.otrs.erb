@@ -21,7 +21,7 @@ OTRSQUERY=SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_p
 hide mysql_servers =  m2-master.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : m2-slave.eqiad.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
 
 domainlist system_domains = @
-domainlist local_domains = <%= @local_domains.join(" : ") %>
+domainlist local_domains = +system_domains : +wikimedia_domains
 domainlist wikimedia_domains = lsearch;CONFDIR/wikimedia_domains
 
 # a list of domains to always respond defer; used for emergencies or planned downtimes
