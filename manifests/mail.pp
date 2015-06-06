@@ -67,6 +67,9 @@ class exim {
         } elsif $rt_relay {
             $config_template = template('exim/exim4.conf.rt.erb')
             $filter_template = template('exim/system_filter.conf.erb')
+        } elsif $enable_otrs_server {
+            $config_template = template('exim/exim4.conf.otrs.erb')
+            $filter_template = template('exim/system_filter.conf.otrs.erb')
         } else {
             $config_template = template('exim/exim4.conf.SMTP_IMAP_MM.erb')
             $filter_template = template('exim/system_filter.conf.erb')
