@@ -70,6 +70,9 @@ class exim {
         } elsif $enable_otrs_server {
             $config_template = template('exim/exim4.conf.otrs.erb')
             $filter_template = template('exim/system_filter.conf.otrs.erb')
+        } elsif $enable_mailman {
+            $config_template = template('exim/exim4.conf.mailman.erb')
+            $filter_template = template('exim/system_filter.conf.mailman.erb')
         } else {
             $config_template = template('exim/exim4.conf.SMTP_IMAP_MM.erb')
             $filter_template = template('exim/system_filter.conf.erb')

@@ -1,0 +1,352 @@
+# This file is managed by puppet
+
+##########
+# Macros #
+##########
+
+CONFDIR=/etc/exim4
+
+# Mailman
+MAILMAN_HOME = /usr/lib/mailman
+MAILMAN_LISTS_HOME = /var/lib/mailman
+MAILMAN_WRAP = MAILMAN_HOME/mail/mailman
+MAILMAN_UID = list
+MAILMAN_GID = list
+
+VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
+
+###############################
+# Main configuration settings #
+###############################
+
+domainlist system_domains = @
+domainlist local_domains = <%= @local_domains.join(" : ") %>
+domainlist wikimedia_domains = lsearch;CONFDIR/wikimedia_domains
+domainlist verp_domains = <%= @verp_domains.join(" : ") %>
+<% if @enable_mail_relay != false %>
+domainlist relay_domains = +wikimedia_domains
+<% end -%>
+
+# a list of domains to always respond defer; used for emergencies or planned downtimes
+domainlist defer_domains = lsearch;CONFDIR/defer_domains
+
+# Standard lists
+domainlist legacy_mailman_domains = wikimedia.org : wikipedia.org
+domainlist mailman_domains = lists.wikimedia.org
+domainlist donate_domains = donate.wikimedia.org
+
+hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
+hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if @enable_mail_relay != false -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
+
+# Administration
+log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn
+message_logs = false
+
+# Policy control
+acl_smtp_connect = acl_check_connect
+acl_smtp_rcpt = acl_check_rcpt
+acl_smtp_data = acl_check_data
+
+<% if @enable_mail_relay != false then -%>
+helo_try_verify_hosts = *
+<% end -%>
+
+system_filter = CONFDIR/system_filter
+
+# Resource control
+check_spool_space = 50M
+smtp_reserve_hosts = <; 127.0.0.1 ; ::1 ; +wikimedia_nets
+smtp_accept_queue_per_connection = 500
+
+deliver_queue_load_max = 800.0
+queue_only_load = 100.0
+remote_max_parallel = 500
+
+smtp_connect_backlog = 128
+smtp_receive_timeout = 1m
+smtp_accept_max = 4000
+smtp_accept_max_per_host = ${if match_ip{$sender_host_address}{+wikimedia_nets}{50}{5}}
+smtp_accept_reserve = 100
+
+# Lookups
+host_lookup = *
+rfc1413_hosts =
+
+# Content filtering
+spamd_address = 127.0.0.1 783
+
+# Other
+never_users = root : daemon : bin
+ignore_bounce_errors_after = 0h
+
+# force Gmail over IPv4 due to reports of bad spam reputation over IPv6
+dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
+
+###############################
+# Access Control Lists (ACLs) #
+###############################
+
+begin acl
+
+acl_check_rcpt:
+
+<% if @enable_mail_relay != false then -%>
+	# If there have been ~4 times as many previous RCPT rejects than
+	# accepts, drop the connection
+	drop message = Too many ($rcpt_fail_count) rejected recipients, good bye
+		hosts = ! +wikimedia_nets
+		condition = ${if >={$rcpt_fail_count}{${eval:4*($recipients_count+1)}}}
+<% end -%>
+
+	# Accept if the source is local SMTP (a pipe)
+	accept hosts = :
+
+	# Deny if the local part contains @, %, /, | or !, or starts with a dot
+	deny local_parts = ^.*[@%!/|] : ^\\.
+
+	# Accept relaying from networks we control. Note: no address verification
+	# is done at this point, which is good for mail submission, but may render
+	# recipient callout verification by affected hosts useless.
+	accept domains = ! +local_domains
+		hosts = +relay_from_hosts
+		control = submission/sender_retain
+
+	# Require recipient domain to be local, or a domain we relay for
+	require message = Relay not permitted
+		domains = +local_domains : +relay_domains
+		set acl_m_relayed = yes
+
+	# use this only for emergencies or planned downtimes
+	defer	message = Administratively set to defer
+		domains = +defer_domains
+
+	# Accept mail for postmaster without further policy checking,
+	# for compliance with the RFCs
+	accept local_parts = postmaster : abuse
+		set acl_m2 = skip_spamd
+
+	# Verify the recipient address for local domains, or require the
+	# recipient domain to exist for remote domains
+	require verify = recipient
+
+<% if @enable_mail_relay != false then -%>
+	# If the destination domain is a domain we relay for,
+	# check if the local part exists at the destination,
+	# reject if it doesn't.
+	# Accept if the destination cannot be reached within 30s.
+	deny domains = +relay_domains
+		! verify = recipient/callout=10s,maxwait=30s,defer_ok
+
+	# Check whether the sender address domain exists
+	require verify = sender
+
+<% end -%>
+	accept
+
+acl_check_connect:
+	accept
+
+acl_check_data:
+	# Let's trust local senders to not send out spam
+	accept hosts = +wikimedia_nets
+		set acl_m0 = trusted relay
+
+	# Only run through SpamAssassin if requested for this domain and
+	# the message is not too large
+	accept condition = ${if >{$message_size}{400K}}
+
+	# Skip if so requested
+	accept condition = ${if eq{$acl_m2}{skip_spamd}}
+
+	# Add spam headers if score >= 1
+	warn spam = nonexistent:true
+		condition = ${if >{$spam_score_int}{10}{1}{0}}
+		set acl_m0 = $spam_score ($spam_bar)
+		set acl_m1 = $spam_report
+
+	# Reject spam at high scores (> 12)
+	deny message = This message scored $spam_score spam points.
+		spam = nonexistent/defer_ok
+		condition = ${if >{$spam_score_int}{120}{1}{0}}
+
+	accept
+
+###########
+# Routers #
+###########
+
+begin routers
+
+list_outbound:
+	driver = dnslookup
+	domains = ! +local_domains
+	senders = *@lists.wikimedia.org
+	condition = ${if match_ip{$sender_host_address}{@[]}}
+	transport = list_smtp
+	no_verify
+
+<% if @enable_mail_relay != false then -%>
+# Send donate.wikimedia.org mail to Fundraising CiviCRM server
+donate:
+	driver = manualroute
+	domains = +donate_domains
+	route_list = * barium.frack.eqiad.wmnet byname
+	transport = remote_smtp
+
+# Route non-local domains (including +relay_domains) via DNS MX and A records
+dnslookup:
+	driver = dnslookup
+	domains = ! +local_domains
+	transport = ${if eq {$acl_m_relayed}{yes}{remote_smtp}{remote_smtp_signed}}
+	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
+	cannot_route_message = Cannot route to remote domain $domain
+	no_more
+
+# Route bounce emails
+mw_verp_api:
+	driver = accept
+	domains = +verp_domains
+	condition = ${if match{$local_part}{VERP_BOUNCE_LOCALPART_REGEXP}{true}{false}}
+	transport = mwverpbounceprocessor
+
+eat:
+	driver = redirect
+	domains = +local_domains
+	local_parts = no-reply-notifications
+	data = :blackhole:
+<% end -%>
+
+# Use the system aliasfile /etc/aliases for system domains
+system_aliases:
+	driver = redirect
+	domains = +system_domains
+	data = ${lookup{$local_part}lsearch{/etc/aliases}}
+	pipe_transport = address_pipe
+	allow_fail
+	allow_defer
+	forbid_file
+
+# Mailman list handling
+list_aliases:
+	driver = redirect
+	domains = +local_domains
+	require_files = CONFDIR/aliases/$domain
+	data = ${lookup{$local_part}lsearch*{CONFDIR/aliases/$domain}}
+	qualify_preserve_domain
+	allow_fail
+	allow_defer
+	forbid_file
+	forbid_pipe
+	include_directory = CONFDIR
+
+# Test the mailing list address without suffix
+# first, as a mailing list like wikifi-admin is a valid list name.
+list:
+	driver = accept
+	domains = +mailman_domains
+	require_files = MAILMAN_LISTS_HOME/lists/$local_part/config.pck
+	transport = list
+
+list_suffix:
+	driver = accept
+	domains = +mailman_domains
+	require_files = MAILMAN_LISTS_HOME/lists/$local_part/config.pck
+	local_part_suffix = -bounces : -bounces+* : \
+				-confirm+* : -join : -leave : \
+				-owner : -request : -admin : \
+				-subscribe : -unsubscribe
+	transport = list
+<% if @enable_mail_relay != false then -%>
+
+# Redirect postmaster@$domain if it hasn't been accepted before
+postmaster:
+	driver = redirect
+	domains = +local_domains
+	local_parts = postmaster
+	data = postmaster@$primary_hostname
+<% end %>
+	cannot_route_message = Mailing list $local_part does not exist.
+
+##############
+# Transports #
+##############
+
+begin transports
+
+# Generic remote SMTP transport
+
+remote_smtp:
+	driver = smtp
+	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+<% if !@outbound_ips.empty? then -%>
+	interface = <; <%= @outbound_ips.join(" ; ") %>
+<% end -%>
+
+remote_smtp_signed:
+	driver = smtp
+	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+	dkim_domain = wikimedia.org
+	dkim_selector = wikimedia
+	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
+	dkim_canon = relaxed
+<% if !@outbound_ips.empty? then -%>
+	interface = <; <%= @outbound_ips.join(" ; ") %>
+<% end -%>
+
+list_smtp:
+	driver = smtp
+	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+	interface = <; <%= @list_outbound_ips.join(" ; ") %>
+	helo_data = lists.wikimedia.org
+	dkim_domain = lists.wikimedia.org
+	dkim_selector = wikimedia
+	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
+	dkim_canon = relaxed
+
+# Generic pipe local delivery transport (for use by alias/forward files)
+
+address_pipe:
+	driver = pipe
+	return_output
+
+# Mailman pipe transport
+# Rewrite body headers of old mailing list addresses to new ones
+list:
+	driver = pipe
+	command = MAILMAN_WRAP \
+		'${if def:local_part_suffix \
+			{${sg{$local_part_suffix}{-(\\w+)(\\+.*)?}{\$1}}} \
+			{post}}' \
+		$local_part
+	current_directory = MAILMAN_LISTS_HOME
+	home_directory = MAILMAN_LISTS_HOME
+	user = MAILMAN_UID
+	group = MAILMAN_GID
+	#headers_rewrite = \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
+
+###############
+# Retry rules #
+###############
+
+begin retry
+
+*	*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
+<% if ( @enable_mail_relay != false ) -%>
+
+#################
+# Rewrite rules #
+#################
+
+begin rewrite
+
+<% end %>
+\N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
+
+<% if ( @enable_mail_relay != false ) -%>
+# Rewrite the envelope From for mails from internal servers in *.site.wmnet,
+# as they are usually rejected by sender domain address verification.
+*@*.eqiad.wmnet		root@wikimedia.org	F
+*@*.codfw.wmnet		root@wikimedia.org	F
+*@*.esams.wmnet		root@wikimedia.org	F
+*@*.ulsfo.wmnet		root@wikimedia.org	F
+<% end -%>

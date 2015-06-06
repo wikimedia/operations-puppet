@@ -10,12 +10,3 @@ if first_delivery then
 		headers add "X-Spam-Report: $acl_m1"
 	endif
 endif
-
-<% if scope.lookupvar('exim::roled::enable_mailman') == true then -%>
-# Mailing list privacy protection
-if foranyaddress $h_To:,$h_Cc: ( $thisaddress matches "\\N^(<%= scope.lookupvar('privateexim::listserve::mailing_lists').join("|") %>)@(lists\.|mail\.)?wiki[mp]edia\.org$\\N" ) then
-	if foranyaddress $recipients ( $thisaddress matches "\\N@lists\.wikimedia\.org$\\N" and $thisaddress does not match "\\N^(<%= scope.lookupvar('privateexim::listserve::mailing_lists').join("|") %>)@\\N" ) then
-		fail text "Message rejected for privacy protection: The list of recipients contains both private and public mail lists"
-	endif
-endif
-<% end -%>
