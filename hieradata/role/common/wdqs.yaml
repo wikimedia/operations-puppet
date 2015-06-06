@@ -1,0 +1,2 @@
+wdqs::logstash_host:  'logstash1001.eqiad.wmnet'
+wdqs::updater_options: '-n wdq -- -b 500'
