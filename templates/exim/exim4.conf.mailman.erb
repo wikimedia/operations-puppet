@@ -20,9 +20,6 @@ MAILMAN_GID = list
 domainlist system_domains = @
 domainlist local_domains = +system_domains : +mailman_domains
 
-# a list of domains to always respond defer; used for emergencies or planned downtimes
-domainlist defer_domains = lsearch;CONFDIR/defer_domains
-
 # Standard lists
 domainlist mailman_domains = lists.wikimedia.org
 
@@ -102,10 +99,6 @@ acl_check_rcpt:
 	require message = Relay not permitted
 		domains = +local_domains : +relay_domains
 		set acl_m_relayed = yes
-
-	# use this only for emergencies or planned downtimes
-	defer	message = Administratively set to defer
-		domains = +defer_domains
 
 	# Accept mail for postmaster without further policy checking,
 	# for compliance with the RFCs
