@@ -14,9 +14,12 @@ class role::requesttracker {
         dbpass      => $passwords::misc::rt::rt_mysql_pass,
     }
 
-    class { 'exim::roled':
-        rt_relay             => true,
+    class { 'exim4':
+        variant => 'heavy',
+        config  => template('exim/exim4.conf.rt.erb'),
+        filter  => template('exim/system_filter.conf.erb'),
     }
+    include exim4::ganglia
 
     # allow RT to receive mail from mail smarthosts
     ferm::service { 'rt-smtp':

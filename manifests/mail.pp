@@ -28,8 +28,6 @@ class exim {
         $enable_otrs_server=false,
         $list_outbound_ips=[],
         $outbound_ips=[ ],
-        $rt_relay=false,
-        $phab_relay=false,
         $verp_domains=[],
         $verp_post_connect_server='',
         $verp_bounce_post_url='',
@@ -40,13 +38,7 @@ class exim {
         $otrs_mysql_password = $passwords::exim::otrs_mysql_password
         $smtp_ldap_password  = $passwords::exim::smtp_ldap_password
 
-        if $phab_relay {
-            $config_template = template('exim/exim4.conf.phab.erb')
-            $filter_template = template('exim/system_filter.conf.erb')
-        } elsif $rt_relay {
-            $config_template = template('exim/exim4.conf.rt.erb')
-            $filter_template = template('exim/system_filter.conf.erb')
-        } elsif $enable_otrs_server {
+        if $enable_otrs_server {
             $config_template = template('exim/exim4.conf.otrs.erb')
             $filter_template = template('exim/system_filter.conf.otrs.erb')
         } elsif $enable_mailman {

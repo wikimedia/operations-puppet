@@ -85,9 +85,12 @@ class role::phabricator::main {
         phabtools_user => $role::phabricator::config::phabtools_user,
     }
 
-    class { 'exim::roled':
-        phab_relay           => true,
+    class { 'exim4':
+        variant => 'heavy',
+        config  => template('exim/exim4.conf.phab.erb'),
+        filter  => template('exim/system_filter.conf.erb'),
     }
+    include exim4::ganglia
 
     $emailbotcert = $passwords::phabricator::emailbot_cert
     class { '::phabricator::mailrelay':
