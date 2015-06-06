@@ -30,14 +30,53 @@ class role::mail::mx(
         trusted_networks => $network::constants::all_networks,
     }
 
-    class { 'exim::roled':
-        verp_domains             => $verp_domains,
-        verp_post_connect_server => $verp_post_connect_server,
-        verp_bounce_post_url     => $verp_bounce_post_url,
-        enable_mail_relay        => true,
+    include passwords::exim
+    $otrs_mysql_password = $passwords::exim::otrs_mysql_password
+    $smtp_ldap_password  = $passwords::exim::smtp_ldap_password
+
+    class { 'exim4':
+        variant => 'heavy',
+        config  => template('exim/exim4.conf.mx.erb'),
+        filter  => template('exim/system_filter.conf.erb'),
+        require => Class['spamassassin'],
+    }
+    include exim4::ganglia
+
+    file { '/etc/exim4/defer_domains':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'Debian-exim',
+        mode    => '0444',
+        require => Class['exim4'],
     }
 
-    Class['spamassassin'] -> Class['exim::roled']
+    file { '/etc/exim4/wikimedia_domains':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///files/exim/wikimedia_domains',
+        require => Class['exim4'],
+    }
+
+    file { '/etc/exim4/legacy_mailing_lists':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///files/exim/legacy_mailing_lists',
+        require => Class['exim4'],
+    }
+    exim4::dkim { 'wikimedia.org':
+        domain   => 'wikimedia.org',
+        selector => 'wikimedia',
+        source   => 'puppet:///private/dkim/wikimedia.org-wikimedia.key',
+    }
+    exim4::dkim { 'wiki-mail':
+        domain   => 'wikimedia.org',
+        selector => 'wiki-mail',
+        source   => 'puppet:///private/dkim/wikimedia.org-wiki-mail.key',
+    }
 
     monitoring::service { 'smtp':
         description   => 'Exim SMTP',
