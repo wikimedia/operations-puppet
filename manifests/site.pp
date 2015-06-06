@@ -961,7 +961,7 @@ node /es100[12]\.eqiad\.wmnet/ {
     }
 }
 
-node /es100[5]\.eqiad\.wmnet/ {
+node /es100[57]\.eqiad\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -969,7 +969,7 @@ node /es100[5]\.eqiad\.wmnet/ {
     }
 }
 
-node /es100[67]\.eqiad\.wmnet/ {
+node /es100[6]\.eqiad\.wmnet/ {
     $cluster = 'mysql'
     class { 'role::coredb::es2':
         mariadb => true,
