@@ -2232,7 +2232,7 @@ node 'silver.wikimedia.org' {
 }
 
 node 'sodium.wikimedia.org' {
-    role mail::lists
+    role lists
     include standard
 
     interface::add_ip6_mapped { 'main':
