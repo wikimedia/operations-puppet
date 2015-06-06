@@ -61,10 +61,13 @@ class exim {
         include privateexim::listserve
         include exim4::ganglia
 
+        $config_template = template('exim/exim4.conf.SMTP_IMAP_MM.erb')
+        $filter_template = template('exim/system_filter.conf.erb')
+
         class { 'exim4':
             variant => 'heavy',
-            config  => template('exim/exim4.conf.SMTP_IMAP_MM.erb'),
-            filter  => template('exim/system_filter.conf.erb'),
+            config  => $config_template,
+            filter  => $filter_template,
         }
 
         file { '/etc/exim4/defer_domains':

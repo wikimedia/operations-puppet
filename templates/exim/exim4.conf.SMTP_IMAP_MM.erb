@@ -59,7 +59,6 @@ domainlist mailman_domains = lists.wikimedia.org
 domainlist rt_domains = rt.wikimedia.org
 domainlist phab_domains = phabricator.wikimedia.org
 domainlist donate_domains = donate.wikimedia.org
-domainlist spamassassin_domains = *
 
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if @enable_mail_relay != false -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
@@ -124,9 +123,6 @@ av_scanner = clamd:/var/run/clamav/clamd.ctl
 # Other
 never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
-
-# Hold mail for these domains (e.g. for testing/debugging)
-hold_domains = <%= @hold_domains.join(" : ") %>
 
 # force Gmail over IPv4 due to reports of bad spam reputation over IPv6
 dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
