@@ -1,12 +1,6 @@
 # mail.pp
 
 class exim {
-    class smtp {
-        include passwords::exim
-        $otrs_mysql_password = $passwords::exim::otrs_mysql_password
-        $smtp_ldap_password  = $passwords::exim::smtp_ldap_password
-    }
-
     # Class: exim::roled
     #
     # This class installs a full featured Exim MTA
@@ -40,10 +34,11 @@ class exim {
         $verp_post_connect_server='',
         $verp_bounce_post_url='',
 ) {
-
-        include exim::smtp
-        include privateexim::listserve
         include exim4::ganglia
+
+        include passwords::exim
+        $otrs_mysql_password = $passwords::exim::otrs_mysql_password
+        $smtp_ldap_password  = $passwords::exim::smtp_ldap_password
 
         if $phab_relay {
             $config_template = template('exim/exim4.conf.phab.erb')
@@ -87,24 +82,30 @@ class exim {
             require => Class['exim4'],
         }
 
-        file { '/etc/exim4/legacy_mailing_lists':
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => 'puppet:///files/exim/legacy_mailing_lists',
-            require => Class['exim4'],
-        }
-
-        class mail_relay {
+        if $enable_mail_relay {
+            file { '/etc/exim4/legacy_mailing_lists':
+                ensure  => present,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                source  => 'puppet:///files/exim/legacy_mailing_lists',
+                require => Class['exim4'],
+            }
             exim4::dkim { 'wikimedia.org':
                 domain   => 'wikimedia.org',
                 selector => 'wikimedia',
                 source   => 'puppet:///private/dkim/wikimedia.org-wikimedia.key',
             }
+            exim4::dkim { 'wiki-mail':
+                domain   => 'wikimedia.org',
+                selector => 'wiki-mail',
+                source   => 'puppet:///private/dkim/wikimedia.org-wiki-mail.key',
+            }
         }
 
-        class mailman {
+        if $enable_mailman {
+            include privateexim::listserve
+
             file { '/etc/exim4/aliases/lists.wikimedia.org':
                 owner   => 'root',
                 group   => 'root',
@@ -118,21 +119,6 @@ class exim {
                 selector => 'wikimedia',
                 source   => 'puppet:///private/dkim/lists.wikimedia.org-wikimedia.key',
             }
-        }
-
-        if ( $enable_mail_relay == true ) {
-            exim4::dkim { 'wiki-mail':
-                domain   => 'wikimedia.org',
-                selector => 'wiki-mail',
-                source   => 'puppet:///private/dkim/wikimedia.org-wiki-mail.key',
-            }
-        }
-
-        if ( $enable_mailman == true ) {
-            include mailman
-        }
-        if ( $enable_mail_relay == true ) {
-            include mail_relay
         }
     }
 }
