@@ -86,7 +86,6 @@ class role::phabricator::main {
     }
 
     class { 'exim::roled':
-        local_domains        => [ '+system_domains', '+phab_domains' ],
         enable_mail_relay    => false,
         enable_external_mail => false,
         enable_mailman       => false,

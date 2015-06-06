@@ -34,12 +34,6 @@ class role::mail::mx(
         verp_domains             => $verp_domains,
         verp_post_connect_server => $verp_post_connect_server,
         verp_bounce_post_url     => $verp_bounce_post_url,
-        local_domains            => [
-                '+system_domains',
-                '+wikimedia_domains',
-                '+legacy_mailman_domains',
-                '+verp_domains',
-            ],
         enable_mail_relay        => 'primary',
         enable_external_mail     => true,
         mediawiki_relay          => true,
@@ -108,10 +102,6 @@ class role::mail::lists {
         list_outbound_ips      => [
                 '208.80.154.4',
                 '2620:0:861:1::2'
-            ],
-        local_domains          => [
-                '+system_domains',
-                '+mailman_domains'
             ],
         enable_mailman         => true,
         enable_spamassassin    => true,

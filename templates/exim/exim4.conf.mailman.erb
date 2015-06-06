@@ -18,7 +18,7 @@ MAILMAN_GID = list
 ###############################
 
 domainlist system_domains = @
-domainlist local_domains = <%= @local_domains.join(" : ") %>
+domainlist local_domains = +system_domains : +mailman_domains
 
 # a list of domains to always respond defer; used for emergencies or planned downtimes
 domainlist defer_domains = lsearch;CONFDIR/defer_domains

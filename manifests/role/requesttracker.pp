@@ -15,7 +15,6 @@ class role::requesttracker {
     }
 
     class { 'exim::roled':
-        local_domains        => [ '+system_domains', '+rt_domains' ],
         enable_mail_relay    => false,
         enable_external_mail => false,
         enable_mailman       => false,
