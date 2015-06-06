@@ -8,9 +8,10 @@ upstream oresweb {
 <% if @cache -%>
 proxy_cache_path /srv/nginx/cache/ keys_zone=ores:64m;
 proxy_cache_valid 7d;
-<% end %>
 
 proxy_temp_path /srv/nginx/tmp/;
+<% end %>
+
 server {
     listen 80;
 
