@@ -1,0 +1,2 @@
+wdqs::gui::log_aggregator:  'logstash1001.eqiad.wmnet'
+wdqs::updater::options: '-n wdq -- -b 500'
