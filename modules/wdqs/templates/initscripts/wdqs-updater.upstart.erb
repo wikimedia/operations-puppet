@@ -1,0 +1,12 @@
+description "WDQS Updater service"
+
+stop on [!12345]
+manual
+
+setuid <%= @username %>
+console log
+chdir <%= @package_dir %>
+
+exec /bin/bash <%= @package_dir %>/runUpdate.sh <%= @options %>
+respawn
+respawn limit 10 60
