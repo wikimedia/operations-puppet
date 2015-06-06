@@ -64,6 +64,9 @@ class exim {
         if $phab_relay {
             $config_template = template('exim/exim4.conf.phab.erb')
             $filter_template = template('exim/system_filter.conf.erb')
+        } elsif $rt_relay {
+            $config_template = template('exim/exim4.conf.rt.erb')
+            $filter_template = template('exim/system_filter.conf.erb')
         } else {
             $config_template = template('exim/exim4.conf.SMTP_IMAP_MM.erb')
             $filter_template = template('exim/system_filter.conf.erb')

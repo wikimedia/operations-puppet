@@ -1,0 +1,232 @@
+# This file is managed by puppet
+
+##########
+# Macros #
+##########
+
+CONFDIR=/etc/exim4
+
+###############################
+# Main configuration settings #
+###############################
+
+domainlist system_domains = @
+domainlist local_domains = <%= @local_domains.join(" : ") %>
+
+# a list of domains to always respond defer; used for emergencies or planned downtimes
+domainlist defer_domains = lsearch;CONFDIR/defer_domains
+
+# Standard lists
+domainlist rt_domains = rt.wikimedia.org
+
+hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
+hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ;
+
+# Administration
+log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn
+message_logs = false
+
+# Policy control
+acl_smtp_connect = acl_check_connect
+acl_smtp_rcpt = acl_check_rcpt
+acl_smtp_data = acl_check_data
+
+# Allow Phab, RT, OTRS to use any sender address
+untrusted_set_sender = *
+local_from_check = false
+
+system_filter = CONFDIR/system_filter
+
+# Resource control
+check_spool_space = 50M
+smtp_reserve_hosts = <; 127.0.0.1 ; ::1 ; +wikimedia_nets
+smtp_accept_queue_per_connection = 500
+
+deliver_queue_load_max = 800.0
+queue_only_load = 100.0
+remote_max_parallel = 500
+
+smtp_connect_backlog = 128
+smtp_receive_timeout = 1m
+smtp_accept_max = 4000
+smtp_accept_max_per_host = ${if match_ip{$sender_host_address}{+wikimedia_nets}{50}{5}}
+smtp_accept_reserve = 100
+
+# Lookups
+host_lookup = *
+rfc1413_hosts =
+
+# Other
+never_users = root : daemon : bin
+ignore_bounce_errors_after = 0h
+
+# force Gmail over IPv4 due to reports of bad spam reputation over IPv6
+dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
+
+###############################
+# Access Control Lists (ACLs) #
+###############################
+
+begin acl
+
+acl_check_rcpt:
+
+	# Accept if the source is local SMTP (a pipe)
+	accept hosts = :
+
+	# Deny if the local part contains @, %, /, | or !, or starts with a dot
+	deny local_parts = ^.*[@%!/|] : ^\\.
+
+	# Accept relaying from networks we control. Note: no address verification
+	# is done at this point, which is good for mail submission, but may render
+	# recipient callout verification by affected hosts useless.
+	accept domains = ! +local_domains
+		hosts = +relay_from_hosts
+		control = submission/sender_retain
+
+	# Require recipient domain to be local, or a domain we relay for
+	require message = Relay not permitted
+		domains = +local_domains : +relay_domains
+		set acl_m_relayed = yes
+
+	# use this only for emergencies or planned downtimes
+	defer	message = Administratively set to defer
+		domains = +defer_domains
+
+	# Accept mail for postmaster without further policy checking,
+	# for compliance with the RFCs
+	accept local_parts = postmaster : abuse
+		set acl_m2 = skip_spamd
+
+	# Verify the recipient address for local domains, or require the
+	# recipient domain to exist for remote domains
+	require verify = recipient
+
+	accept
+
+acl_check_connect:
+	# We only accept mail from our own mail relays
+	require message = This server does not accept external mail
+		hosts = <; 127.0.0.0/8 ; ::1 ; +wikimedia_nets
+
+	accept
+
+acl_check_data:
+	accept
+
+###########
+# Routers #
+###########
+
+begin routers
+
+# Use the system aliasfile /etc/aliases for system domains
+system_aliases:
+	driver = redirect
+	domains = +system_domains
+	data = ${lookup{$local_part}lsearch{/etc/aliases}}
+	pipe_transport = address_pipe
+	allow_fail
+	allow_defer
+	forbid_file
+
+# Mail destined for RT
+
+# Special alias file for the RT domain
+rt_aliases:
+	driver = redirect
+	domains = +rt_domains
+	require_files = CONFDIR/aliases/rt
+	data = ${lookup{$local_part}lsearch*{CONFDIR/aliases/rt}}
+	qualify_preserve_domain
+	allow_fail
+	allow_defer
+	forbid_file
+	forbid_pipe
+	include_directory = CONFDIR
+
+# This router checks whether the local part consists of solely digits,
+# and assumes this is the ticket number of an existing ticket if this is
+# the case. It rewrites the address to the general queue, and puts the
+# ticket nr in $address_data, where the rt_pipe transport can access it.
+rt_ticket:
+	driver = redirect
+	domains = +rt_domains
+	local_part_suffix = -comment
+	local_part_suffix_optional
+	condition = ${if match{$local_part}{\N^\d+$\N}{yes}{no}}
+	address_data = EXTENSION=$local_part
+	data = general$local_part_suffix@$domain
+	redirect_router = rt
+	no_verify
+
+rt:
+	driver = accept
+	domains = +rt_domains
+	local_part_suffix = -comment
+	local_part_suffix_optional
+	transport = rt_pipe
+
+<% if !@smart_route_list.empty? then -%>
+# Send all mail not destined for the local machine via a set of
+# mail relays ("smart hosts")
+smart_route:
+	driver = manualroute
+	transport = remote_smtp
+	# Local mail is undeliverable and remote mail is forwarded
+        route_list = !+local_domains  <%= @smart_route_list.join(":") %>
+<% end %>
+
+##############
+# Transports #
+##############
+
+begin transports
+
+# Generic remote SMTP transport
+
+remote_smtp:
+	driver = smtp
+	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+
+remote_smtp_signed:
+	driver = smtp
+	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+	dkim_domain = wikimedia.org
+	dkim_selector = wikimedia
+	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
+	dkim_canon = relaxed
+
+# Generic pipe local delivery transport (for use by alias/forward files)
+
+address_pipe:
+	driver = pipe
+	return_output
+
+# RT transport
+rt_pipe:
+	driver = pipe
+	command = /usr/bin/rt-mailgate --queue $local_part \
+		--action "${if eq{$local_part_suffix}{-comment}{comment}{correspond}}" \
+		--extension ticket --url https://rt.wikimedia.org
+	environment = $address_data : PERL_LWP_SSL_VERIFY_HOSTNAME=0
+	user = mail
+	group = mail
+	return_fail_output
+
+###############
+# Retry rules #
+###############
+
+begin retry
+
+*	*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
+
+#################
+# Rewrite rules #
+#################
+
+begin rewrite
+
+# Rewrite RT
+www-data@$primary_hostname      general@rt.wikimedia.org        Fq
