@@ -73,6 +73,9 @@ class exim {
         } elsif $enable_mailman {
             $config_template = template('exim/exim4.conf.mailman.erb')
             $filter_template = template('exim/system_filter.conf.mailman.erb')
+        } elsif $enable_mail_relay == 'primary' {
+            $config_template = template('exim/exim4.conf.mx.erb')
+            $filter_template = template('exim/system_filter.conf.erb')
         } else {
             $config_template = template('exim/exim4.conf.SMTP_IMAP_MM.erb')
             $filter_template = template('exim/system_filter.conf.erb')
