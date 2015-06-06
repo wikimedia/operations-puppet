@@ -77,8 +77,7 @@ class exim {
             $config_template = template('exim/exim4.conf.mx.erb')
             $filter_template = template('exim/system_filter.conf.erb')
         } else {
-            $config_template = template('exim/exim4.conf.SMTP_IMAP_MM.erb')
-            $filter_template = template('exim/system_filter.conf.erb')
+            fail('Unrecognized exim role type')
         }
 
         class { 'exim4':
