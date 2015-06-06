@@ -163,10 +163,7 @@ class role::otrs (
 
     # warning: don't unquote these booleans until exim::roled is fixed
     class { 'exim::roled':
-        enable_clamav        => true,
         enable_otrs_server   => true,
-        enable_spamassassin  => true,
-        enable_external_mail => false,
     }
 
     Class['spamassassin'] -> Class['exim::roled']

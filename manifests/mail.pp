@@ -18,16 +18,10 @@ class exim {
     #       other mail servers
     #   - $enable_mailman:
     #       Whether Mailman delivery functionality is enabled (true/false)
-    #   - $mediawiki_relay:
-    #       Whether this MTA relays mail for MediaWiki (true/false)
-    #   - $enable_spamasssin:
-    #       Enable/disable SpamAssassin spam checking
     #   - $outbound_ips:
     #       IP addresses to use for sending outbound e-mail
     #   - $list_outbound_ips:
     #       IP addresses to use for sending outbound e-mail from Mailman
-    #   - $hold_domains:
-    #       List of domains to hold on the queue without processing
     #   - $verp_domains:
     #       List of domains for which VERP responses should be POST-ed to the MediaWiki 'bouncehandler' API for processing
     #   - $verp_post_connect_server:
@@ -35,15 +29,10 @@ class exim {
     #   - $verp_bounce_post_url:
     #       Internal hostname of the wiki to which verp bounce emails are HTTP POST-ed and processed
     class roled(
-        $enable_clamav=false,
-        $enable_external_mail=true,
         $enable_mail_relay=false,
         $enable_mailman=false,
         $enable_otrs_server=false,
-        $enable_spamassassin=false,
-        $hold_domains=[],
         $list_outbound_ips=[],
-        $mediawiki_relay=false,
         $outbound_ips=[ ],
         $rt_relay=false,
         $phab_relay=false,
@@ -68,7 +57,7 @@ class exim {
         } elsif $enable_mailman {
             $config_template = template('exim/exim4.conf.mailman.erb')
             $filter_template = template('exim/system_filter.conf.mailman.erb')
-        } elsif $enable_mail_relay == 'primary' {
+        } elsif $enable_mail_relay {
             $config_template = template('exim/exim4.conf.mx.erb')
             $filter_template = template('exim/system_filter.conf.erb')
         } else {
@@ -131,7 +120,7 @@ class exim {
             }
         }
 
-        if ( $mediawiki_relay == true ) {
+        if ( $enable_mail_relay == true ) {
             exim4::dkim { 'wiki-mail':
                 domain   => 'wikimedia.org',
                 selector => 'wiki-mail',
@@ -139,12 +128,10 @@ class exim {
             }
         }
 
-        include exim4::ganglia
-
         if ( $enable_mailman == true ) {
             include mailman
         }
-        if ( $enable_mail_relay == 'primary' ) or ( $enable_mail_relay == 'secondary' ) {
+        if ( $enable_mail_relay == true ) {
             include mail_relay
         }
     }
