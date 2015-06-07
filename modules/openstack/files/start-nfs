@@ -32,5 +32,5 @@ fi
 /bin/mount /srv/keys
 /usr/local/sbin/sync-exports
 /usr/sbin/service manage-nfs-volumes start
-/sbin/ip addr add dev bond0 10.64.37.10/24
+/sbin/ip addr add dev eth0 10.64.37.10/24
 /usr/sbin/service nfs-kernel-server start
