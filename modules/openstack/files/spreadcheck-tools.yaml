@@ -1,0 +1,11 @@
+project: tools
+classifier:
+  webproxy-: webproxy
+  checker-: checker
+  redis-: redis
+  services-: services
+  bastion-: bastion
+  master: master
+  shadow: master
+  mail: mail
+  static-: static
