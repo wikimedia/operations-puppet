@@ -18,15 +18,17 @@ class role::etcd {
 
 
     ferm::service{'etcd_clients':
-        proto  => 'tcp',
-        port   => $etcd::client_port,
-        srange => '$ALL_NETWORKS',
+        proto   => 'tcp',
+        port    => $etcd::client_port,
+        srange  => '$ALL_NETWORKS',
+        require => Class['etcd']
     }
 
     ferm::service{'etcd_peers':
-        proto  => 'tcp',
-        port   => $etcd::peer_port,
-        srange => '$ALL_NETWORKS',
+        proto   => 'tcp',
+        port    => $etcd::peer_port,
+        srange  => '$ALL_NETWORKS',
+        require => Class['etcd'],
     }
 
 
