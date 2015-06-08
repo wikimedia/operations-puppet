@@ -425,6 +425,10 @@ class role::nova::controller {
     class { 'openstack::adminscripts':
         novaconfig => $novaconfig
     }
+
+    class { 'openstack::spreadcheck':
+        novaconfig => $novaconfig
+    }
 }
 
 class role::nova::api {
