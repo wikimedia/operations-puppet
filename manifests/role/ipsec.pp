@@ -14,8 +14,15 @@ class role::ipsec ($hosts = undef) {
     if $hosts != undef {
         $targets = $hosts
     } else {
-        $cache_cluster = regsubst(hiera('cluster'), '_', '::')
-        $cluster_nodes = hiera("${cache_cluster}::nodes")
+        # if $cluster == 'cache_text', $ipsec_cluster = 'cache::ipsec::text'
+        # This duplication of nodelist data in the ::ipsec:: case in
+        # hieradata is so that we can depool cache nodes in the primary
+        # hieradata lists without de-configuring the ipsec associations,
+        # which could cause a traffic-leaking race.  This will go away once
+        # etcd replaces hieradata comments for varnish-level depooling.
+
+        $ipsec_cluster = regsubst(hiera('cluster'), '_', '::ipsec::')
+        $cluster_nodes = hiera("${ipsec_cluster}::nodes")
         # for 'left' nodes in cache sites, enumerate 'right' nodes in "main" sites
         if $::site == 'esams' or $::site == 'ulsfo' {
             $targets = concat(
