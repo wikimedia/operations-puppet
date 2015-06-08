@@ -1,5 +1,10 @@
 # === Class role::etcd
 #
+# Virtual resource for the monitoring server
+@monitoring::group { 'etcd_eqiad':
+    description => 'eqiad Etcd',
+}
+
 class role::etcd {
     system::role { 'role::etcd':
         description => 'Highly-consistent distributed k/v store'
@@ -8,12 +13,12 @@ class role::etcd {
     require standard
     include base::firewall
 
-    ferm::rule{'etcd_clients':
+    ferm::service{'etcd_clients':
         proto => 'tcp',
         port  => $etcd::client_port,
     }
 
-    ferm::rule{'etcd_peers':
+    ferm::service{'etcd_peers':
         proto => 'tcp',
         port  => $etcd::peer_port,
     }
