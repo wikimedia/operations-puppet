@@ -22,6 +22,10 @@ etcd:
   __regex: !ruby/regexp /^etcd100\d\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+etcd:
+  __regex: !ruby/regexp /^ocg100\d\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 cassandra_test:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   cassandra::seeds:

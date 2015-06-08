@@ -2072,7 +2072,6 @@ node 'nitrogen.wikimedia.org' {
 }
 
 node /^ocg100[123]\.eqiad\.wmnet$/ {
-    $ganglia_aggregator = hiera('ganglia_aggregator', false)
     role ocg
 }
 
