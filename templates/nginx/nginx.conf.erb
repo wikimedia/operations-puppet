@@ -102,6 +102,16 @@ http {
     # to be watched, experimented on, and tuned as more load comes in...
     ssl_buffer_size 1300;
 <% end -%>
+
+    # This is used to inject "Accept-Encoding: gzip" into all proxied SPDY requests
+    # The other half of the solution is in the per-server proxy configuration in the
+    # form of a line like: proxy_set_header Accept-Encoding $accept_encoding;
+    # This is based on: http://trac.nginx.org/nginx/ticket/542#comment:1
+    map $spdy $accept_encoding {
+        default gzip;
+        ''      $http_accept_encoding;
+    }
+
     <%= @nginx_ssl_conf.join("\n")  %>
     <% end %>
 
