@@ -14,7 +14,7 @@ class role::ipsec ($hosts = undef) {
     if $hosts != undef {
         $targets = $hosts
     } else {
-        $cache_cluster = regsubst(hiera('cluster'), '/_/', '::')
+        $cache_cluster = regsubst(hiera('cluster'), '_', '::')
         $cluster_nodes = hiera("${cache_cluster}::nodes")
         # for 'left' nodes in cache sites, enumerate 'right' nodes in "main" sites
         if $::site == 'esams' or $::site == 'ulsfo' {
