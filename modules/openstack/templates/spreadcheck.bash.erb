@@ -1,0 +1,5 @@
+#!/bin/bash
+export OS_USERNAME="novaadamin"
+export OS_PASSWORD="<%= @nova_password %>"
+export OS_AUTH_URL="http://<%= @nova_controller_hostname %>:35357/v2.0"
+/usr/local/bin/spreadcheck.py --config "$1"
