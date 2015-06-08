@@ -62,9 +62,6 @@ checkpointTime=<%= @config[@configtype]['checkpointTime'] %>
 [otherformats]
 multistream=1
 
-[pageslogging]
-batchsize=1000000
-
 <% if @config[@configtype].has_key?('wikis') %>
 <% @config[@configtype]['wikis'].keys.sort.each do |w| -%>
 [<%= [w] %>]
