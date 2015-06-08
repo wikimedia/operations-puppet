@@ -11,7 +11,7 @@ class etherpad(
 ){
 
     package { 'etherpad-lite':
-        ensure => latest,
+        ensure => present,
     }
 
     service { 'etherpad-lite':
