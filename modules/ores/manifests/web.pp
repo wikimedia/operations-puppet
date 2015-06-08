@@ -3,10 +3,14 @@
 class ores::web {
     # Let's use a virtualenv for maximum flexibility - we can convert
     # this to deb packages in the future if needed. We also install build tools
-    # because they are needed by pip to install numpy, scipy and scilearn.
+    # because they are needed by pip to install scikit.
     # FIXME: Use debian packages for all the packages needing compilation
     require_package('python-virtualenv', 'python3-dev', 'build-essential',
                     'gfortran', 'libopenblas-dev', 'liblapack-dev')
+
+    # Install scipy via debian package so we don't need to build it via pip
+    # takes forever and is quite buggy
+    require_package('python3-scipy')
 
     # ORES is a python3 application \o/
     require_package('uwsgi-plugin-python3')
@@ -49,14 +53,6 @@ class ores::web {
         ensure    => 'latest',
         owner     => 'www-data',
         group     => 'www-data',
-        require   => File['/srv/ores'],
-    }
-
-    exec { 'initial-setup-virtualenv':
-        command => "/bin/mkdir -p ${venv_path} && /usr/bin/virtualenv --python python3 ${venv_path}",
-        user    => 'www-data',
-        group   => 'www-data',
-        creates => $venv_path,
         require   => File['/srv/ores'],
     }
 
