@@ -1,2 +1,3 @@
 cluster: etcd
+etcd::host: "%{::fqdn}"
 etcd::srv_dns: 'eqiad.wmnet'

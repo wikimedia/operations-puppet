@@ -14,13 +14,15 @@ class role::etcd {
     include base::firewall
 
     ferm::service{'etcd_clients':
-        proto => 'tcp',
-        port  => $etcd::client_port,
+        proto  => 'tcp',
+        port   => $etcd::client_port,
+        srange => '$ALL_NETWORKS',
     }
 
     ferm::service{'etcd_peers':
-        proto => 'tcp',
-        port  => $etcd::peer_port,
+        proto  => 'tcp',
+        port   => $etcd::peer_port,
+        srange => '$ALL_NETWORKS',
     }
 
     include etcd
