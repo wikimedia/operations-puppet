@@ -228,9 +228,6 @@ class role::graphite::production {
           ],
         }
     }
-
-    include role::backup::host
-    backup::set {'var-lib-carbon-whisper': }
 }
 
 # == Class: role::graphite::production::alerts
