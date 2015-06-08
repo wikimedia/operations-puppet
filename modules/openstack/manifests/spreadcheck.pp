@@ -23,7 +23,7 @@ class openstack::spreadcheck(
     # Config file to check how spread out toollabs critical instances are
     file { '/usr/local/etc/spreadcheck-tools.yaml':
         ensure => present,
-        content => template('openstack/spreadcheck-tools.yaml'),
+        content => template('openstack/spreadcheck-tools.yaml.erb'),
         mode   => '0400',
         owner  => 'nagios',
         group  => 'nagios',
