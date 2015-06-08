@@ -20,7 +20,10 @@ module Puppet::Parser::Functions
         unless site_config.include? site
           site_config[site] = function_hiera(['ganglia_class', nil, site])
         end
-        if site_config[site] == 'old'
+        # We are moving away from the traditional cluster-dedicated aggregators
+        # To switch one cluster from ganglia to ganglia_new it will be enough to
+        # remove its aggregators list
+        if site_config[site] == 'old' and not aggregators.empty?
           aggregator = aggregators.join(' ')
         else
           unless site_wide_aggregators.include? site
