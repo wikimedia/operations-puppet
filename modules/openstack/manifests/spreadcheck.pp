@@ -31,7 +31,7 @@ class openstack::spreadcheck(
 
     nrpe::monitor_service { 'check-tools-spread':
         nrpe_command => '/usr/local/bin/spreadcheck.py --config /usr/local/etc/spreadcheck-tools.yaml',
-        description  => 'Check if Tool Labs instances are spread out enough on labvirt**** hosts',
+        description  => 'Tool Labs instance distribution',
         require      => File[
             '/usr/local/bin/spreadcheck.py',
             '/usr/local/etc/spreadcheck-tools.yaml'
