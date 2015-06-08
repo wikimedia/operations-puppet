@@ -5,7 +5,7 @@ nodes:
     - 'cp1053.eqiad.wmnet'
     - 'cp1054.eqiad.wmnet'
     - 'cp1055.eqiad.wmnet'
-    # - 'cp1065.eqiad.wmnet' # Depooled for ipsec test
+    - 'cp1065.eqiad.wmnet'
     - 'cp1066.eqiad.wmnet'
     - 'cp1067.eqiad.wmnet'
     - 'cp1068.eqiad.wmnet'
@@ -22,7 +22,7 @@ nodes:
     - 'cp3012.esams.wmnet'
     - 'cp3013.esams.wmnet'
     - 'cp3014.esams.wmnet'
-    # - 'cp3030.esams.wmnet' # Depooled for ipsec test
+    - 'cp3030.esams.wmnet'
     - 'cp3031.esams.wmnet'
     - 'cp3040.esams.wmnet'
     - 'cp3041.esams.wmnet'
