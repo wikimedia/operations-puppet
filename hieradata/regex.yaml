@@ -22,7 +22,7 @@ etcd:
   __regex: !ruby/regexp /^etcd100\d\.eqiad\.wmnet$/
   ganglia_class: "new"
 
-etcd:
+ocg:
   __regex: !ruby/regexp /^ocg100\d\.eqiad\.wmnet$/
   ganglia_class: "new"
 
