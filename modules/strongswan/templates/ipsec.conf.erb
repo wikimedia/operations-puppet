@@ -32,9 +32,7 @@ end
 
 # Basic configuration
 config setup
-	plutostart=no	# IKEv1 daemon
-	charonstart=yes	# IKEv2 daemon
-	charondebug="cfg 2, dmn 2"
+	charondebug="cfg 1, dmn 1"
 
 conn %default
 	# https://wiki.strongswan.org/projects/strongswan/wiki/IKEv2CipherSuites
@@ -43,7 +41,7 @@ conn %default
 	ike=aes128gcm16-prfsha384-ecp384bp!
 	esp=aes128gcm16-ecp384bp-noesn!
 	type=transport
-	auto=start
+	auto=route
 
 # Connections
 <% @hosts.each do |node| -%>
