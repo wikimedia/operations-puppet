@@ -13,6 +13,10 @@ class role::etcd {
     require standard
     include base::firewall
 
+    include etcd
+    include etcd::monitoring
+
+
     ferm::service{'etcd_clients':
         proto  => 'tcp',
         port   => $etcd::client_port,
@@ -25,7 +29,5 @@ class role::etcd {
         srange => '$ALL_NETWORKS',
     }
 
-    include etcd
-    include etcd::monitoring
 
 }
