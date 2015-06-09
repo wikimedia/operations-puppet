@@ -22,7 +22,7 @@ class role::restbase {
 
 class role::restbase::alerts {
     monitoring::graphite_threshold { 'restbase_request_5xx_rate':
-        description    => 'RESTBase requests returning 5xx, in req/s',
+        description    => 'RESTBase req/s returning 5xx',
         metric         => 'restbase.v1_page_html_-title-_-revision--_tid-.GET.5xx.sample_rate',
         from           => '10min',
         warning        => '1', # 1 5xx/s
@@ -32,7 +32,7 @@ class role::restbase::alerts {
     }
 
     monitoring::graphite_threshold { 'restbase_html_storage_hit_latency':
-        description    => 'RESTBase HTML storage load mean latency',
+        description    => 'RESTBase HTML storage load mean latency ms',
         metric         => 'movingMedian(restbase.sys_key-rev-value_-bucket-_-key--_revision--_tid-.GET.2xx.mean, 15)',
         from           => '10min',
         warning        => '25', # 25ms
