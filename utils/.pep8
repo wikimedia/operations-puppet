@@ -1,0 +1,5 @@
+[pep8]
+
+# Suppress warnings:
+# E501: line too long
+ignore = E501
