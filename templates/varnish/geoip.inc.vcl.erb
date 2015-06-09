@@ -157,9 +157,10 @@ sub geoip_lookup {
 		}
 
 		if (record) {
-			snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"lat\":\"%f\",\"lon\":\"%f\",\"IP\":\"%s\"}",
+			snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"region\":\"%s\",\"lat\":\"%f\",\"lon\":\"%f\",\"IP\":\"%s\"}",
 				record->city,
 				record->country_code,
+				record->region_code,
 				record->latitude,
 				record->longitude,
 				ip
@@ -207,8 +208,9 @@ sub geoip_cookie {
 		int snp_len;
 		if (record) {
 			// Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/
-			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%.4f:%.4f:%s",
+			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%s:%.4f:%.4f:%s",
 				record->country_code ? record->country_code : "",
+				record->region_code ? record->region_code : "",
 				record->city ? record->city : "",
 				record->latitude,
 				record->longitude,
@@ -216,7 +218,7 @@ sub geoip_cookie {
 			);
 			GeoIPRecord_delete(record);
 		} else {
-			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=::::%s", (strchr(ip, ':') != NULL) ? "v6" : "v4");
+			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=:::::%s", (strchr(ip, ':') != NULL) ? "v6" : "v4");
 		}
 
 		// don't use snprintf()-truncated output
