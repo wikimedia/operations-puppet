@@ -162,6 +162,66 @@ director <%= director %> <%= @director_type %> {
 
 # Functions
 
+// start frontend-only block for HTTPS
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+
+// *** HTTPS recv code - domain-based 301/302->HTTPS decisions happen here
+// if GET/HEAD filter is modified/removed later, keep in mind we need to not affect
+//   the PURGE traffic here, as purge is called after this.
+sub https_recv_redirect {
+	if(req.request == "GET" || req.request == "HEAD") {
+		if(req.http.X-Forwarded-Proto != "https") {
+			if(req.url ~ "(?i)^https?:") {
+				if(req.url ~ "(?i)^https?://ru\.") {
+					set req.http.Location = regsub(req.url, "(?i)^http:", "https:");
+					error 751 "TLS Redirect";
+				}
+			}
+			else {
+				if(req.http.Host ~ "(?i)^ru\.") {
+					set req.http.Location = "https://" + req.http.Host + req.url;
+					error 751 "TLS Redirect";
+				}
+			}
+		}
+	}
+}
+
+// *** HTTPS error code - implements 301/302 response for recv code
+sub https_error_redirect {
+	if (obj.status == 752) {
+		set obj.http.Location = req.http.Location;
+		set obj.status = 302;
+		set obj.http.Content-Length = "0"; // BZ #62245
+		return(deliver);
+	}
+	if (obj.status == 751) {
+		set obj.http.Location = req.http.Location;
+		set obj.status = 301;
+		set obj.http.Content-Length = "0"; // BZ #62245
+		return(deliver);
+	}
+}
+
+// *** HTTPS deliver code - domain-based HSTS headers
+sub https_deliver_hsts {
+	if(req.http.X-Forwarded-Proto == "https") {
+		if(req.url ~ "(?i)^https?:") {
+			if(req.url ~ "(?i)^https?://ru\.") {
+				set resp.http.Strict-Transport-Security = "max-age=15768000";
+			}
+		}
+		else {
+			if(req.http.Host ~ "(?i)^ru\.") {
+				set resp.http.Strict-Transport-Security = "max-age=15768000";
+			}
+		}
+	}
+}
+
+<% end -%>
+// ^ end frontend-only block for HTTPS
+
 sub rewrite_proxy_urls {
 	set req.url = regsub(req.url, "^http://[^/]+", "");
 }
@@ -303,8 +363,9 @@ sub vcl_recv {
 	}
 <% end -%>
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
-	call frontend_recv_hook;
+	call https_recv_redirect;
 <% end -%>
+
 	call vcl_recv_append_xff;
 
 	if ( req.http.host ~ "^varnishcheck" ) {
@@ -396,7 +457,7 @@ sub vcl_deliver {
 	}
 
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
-	call frontend_deliver_hook;
+	call https_deliver_hsts;
 <% end -%>
 
 	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
@@ -404,7 +465,7 @@ sub vcl_deliver {
 
 sub vcl_error {
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
-	call frontend_error_hook;
+	call https_error_redirect;
 <% end -%>
 
 	if (obj.status == 400 || obj.status == 413) {
@@ -443,6 +504,3 @@ sub vcl_hash {
 
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-include "frontend-hooks.inc.vcl";
-<% end -%>

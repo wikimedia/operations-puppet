@@ -63,16 +63,6 @@ define varnish::instance(
         notify  => Exec["load-new-vcl-file${instancesuffix}"],
     }
 
-    if has_key($vcl_config,'layer') and $vcl_config['layer'] == 'frontend' {
-        file { "/etc/varnish/frontend-hooks.inc.vcl":
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => "puppet:///private/misc/frontend-hooks.inc.vcl",
-            notify  => Exec["load-new-vcl-file${instancesuffix}"],
-        }
-    }
-
     # The defaults file is also parsed by /usr/share/varnish/reload-vcl,
     #   even under systemd where the init part itself does not.  This
     #   situation should be cleaned up later after all varnishes are on
