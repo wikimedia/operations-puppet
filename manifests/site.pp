@@ -1866,9 +1866,6 @@ node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
 
 # mw1001-1016 are jobrunners
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
-    if $::hostname =~ /^mw100[12]$/ {
-        $ganglia_aggregator = true
-    }
     role mediawiki::jobrunner
 }
 
