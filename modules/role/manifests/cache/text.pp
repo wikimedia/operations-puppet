@@ -158,8 +158,9 @@ class role::cache::text {
 
     # Test rollout of varnish reqstats diamond collector.
     if $::hostname == 'cp1052' {
-        varnish::monitoring::varnishreqstats { 'text.frontend':
+        varnish::monitoring::varnishreqstats { 'TextFrontend':
             instance_name => 'frontend',
+            $metric_path  => "varnish.${::site}.text.frontend.request",
         }
     }
 }
