@@ -26,6 +26,9 @@ class mediawiki (
     include ::mediawiki::syslog
     include ::mediawiki::php
 
+    include ::tmpreaper
+
+
     if os_version('ubuntu >= trusty') {
         include ::mediawiki::hhvm
     }
@@ -44,5 +47,4 @@ class mediawiki (
         group  => 'wikidev',
         mode   => '0644',
     }
-
 }
