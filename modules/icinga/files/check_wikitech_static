@@ -21,6 +21,19 @@ TS_DIFF=$(( $TS_WS - $TS_SS ))
 
 # echo "diff is ${TS_DIFF}"
 
+if [ -z $TS_WIKITECH ]; then
+
+    echo "wikitech-static CRIT - failed to fetch timestamp from wikitech"
+    exit 2
+fi
+
+
+if [ -z $TS_STATIC ]; then
+
+    echo "wikitech-static CRIT - failed to fetch timestamp from wikitech-static"
+    exit 2
+fi
+
 if [ $TS_DIFF -gt $AGE_LIMIT ]; then
 
     echo "wikitech-static CRIT - wikitech and wikitech-static out of sync (${TS_DIFF}s > ${AGE_LIMIT}s)"
