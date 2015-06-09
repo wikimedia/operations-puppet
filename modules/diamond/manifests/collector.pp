@@ -21,18 +21,19 @@
 #   A hash of configuration settings for the collector.
 #   The 'enabled' setting is set to true by default.
 #
-# [*custom_name*]
-#  The puppet name of a custom diamond collector to install.  This
-#  must be set if you plan on installing a custom collector via the
-#  source parameter.  This allows for multiple collector conf files
-#  to use the same custom collector python code.  If you plan on
-#  using the custom collector python code for multiple collectors,
-#  make sure they all set the same custom_name.  Default: $name
-#
 # [*source*]
 #   A Puppet file reference to the Python collector source file. This parameter
 #   may be omitted if the collector is part of the Diamond distribution. It
 #   should only be set for custom collectors. Unset by default.
+#
+# [*content*]
+#   Content to be rendered as a custom collector Python module.  You may
+#   use this instead of source if you need to render your Python code
+#   using an ERb template.  This is useful if you need to install
+#   multiple collectors that use the same Python code, since Diamond
+#   forces you to associate collector configuration with Python Collector
+#   subclasses by file name.  E.g.
+#       /etc/diamond/collectors/CPUCollector.conf <-> /usr/share/diamond/collectors/cpu/cpu.py (CPUCollector)
 #
 # === Examples
 #
@@ -58,8 +59,8 @@
 define diamond::collector(
     $settings    = undef,
     $ensure      = present,
-    $custom_name = $name,
     $source      = undef,
+    $content     = undef,
 ) {
     validate_ensure($ensure)
 
@@ -74,10 +75,29 @@ define diamond::collector(
         notify  => Service['diamond'],
     }
 
-    if $source and !defined(Diamond::Collector::Custom[$custom_name]) {
-        diamond::collector::custom { $custom_name:
+    # Install a custom diamond collector if $source or $content were provided.
+    if $source or $content {
+        file { "/usr/share/diamond/collectors/${name}":
+            ensure => ensure_directory($ensure),
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+        file { "/usr/share/diamond/collectors/${name}/${name}.py":
             ensure => $ensure,
-            source => $source,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+        }
+        if $source {
+            File["/usr/share/diamond/collectors/${name}/${name}.py"] {
+                source => $source,
+            }
+        }
+        else if $content {
+            File["/usr/share/diamond/collectors/${name}/${name}.py"] {
+                content => $content,
+            }
         }
     }
 }
