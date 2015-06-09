@@ -1,0 +1,9 @@
+dummyservice
+a dummy service for new_wmf_service tests
+Y
+8000
+dummmy1001.eqiad.wmnet,dummy1002.eqiad.wmnet
+http://gerrit.wikimedia.org/r/dummy
+low-traffic
+dummy.svc.eqiad.wmnet
+10.10.10.10
