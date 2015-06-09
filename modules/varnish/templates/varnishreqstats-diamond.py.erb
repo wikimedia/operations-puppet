@@ -182,10 +182,10 @@ def init_counter_process(extra_vsl_args=[]):
     return (counter_process, shared_counts)
 
 
-class VarnishstatsCollector(Collector):
+class <%= @collector_name %>Collector(Collector):
 
     def __init__(self, *args, **kwargs):
-        super(VarnishstatsCollector, self).__init__(*args, **kwargs)
+        super(VarnishreqstatsCollector, self).__init__(*args, **kwargs)
 
         # Initialize self.counter_process and self.counts.
         extra_vsl_args = []
@@ -201,7 +201,7 @@ class VarnishstatsCollector(Collector):
         """
         Returns the default collector settings.
         """
-        config = super(VarnishstatsCollector, self).get_default_config()
+        config = super(VarnishreqstatsCollector, self).get_default_config()
         config.update({
             'varnish_name': None,
             'path': 'varnish.request'
@@ -249,7 +249,7 @@ if __name__ == '__main__':
 # spread across 6 transactions.  It was collected from
 # a real text varnish server using the varnishlog utility.
 #
-class TestVarnishstats(unittest.TestCase):
+class TestVarnishreqstatsCollector(unittest.TestCase):
     varnishlog_test_data_file = 'varnishlog.test.data'
 
     def test_is_valid_http_method(self):
