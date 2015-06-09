@@ -44,5 +44,4 @@ class mediawiki (
         group  => 'wikidev',
         mode   => '0644',
     }
-
 }

@@ -15,6 +15,7 @@ class role::mediawiki::common {
     include ::geoip
     include ::mediawiki
     include ::nutcracker::monitoring
+    include ::tmpreaper
 
     $nutcracker_pools = {
         'memcached' => {
