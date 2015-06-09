@@ -45,14 +45,4 @@ class mediawiki (
         mode   => '0644',
     }
 
-
-    # Recursively delete from /tmp any files that haven't been accessed
-    # or modified in the last week.
-
-    tidy { '/tmp':
-        age     => '1w',
-        backup  => false,
-        recurse => true,
-        rmdirs  => true,
-    }
 }

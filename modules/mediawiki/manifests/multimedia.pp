@@ -21,7 +21,7 @@ class mediawiki::multimedia {
         mode   => '0755',
     }
 
-    tidy { '/tmp/magick-tmp':
+    tidy { ['/tmp', '/tmp/magick-tmp']:
         matches => [ '*.png', 'EasyTimeline.*', 'gs_*', 'localcopy_*', 'magick-*', 'transform_*', 'vips-*.v' ],
         age     => '15m',
         type    => 'ctime',
