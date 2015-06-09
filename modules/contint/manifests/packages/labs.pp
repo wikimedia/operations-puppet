@@ -86,6 +86,8 @@ class contint::packages::labs {
         'libxml2-dev',   # For python lxml
         'libxslt1-dev',  # For python lxml
 
+        'python3-tk',  # For pywikibot/core running tox-doc-trusty
+
         # For mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
         # Provided by openstack::common:
         #'unzip',
