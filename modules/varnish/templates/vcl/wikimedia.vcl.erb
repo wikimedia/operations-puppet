@@ -172,23 +172,15 @@ sub https_recv_redirect {
 	if (req.request == "GET" || req.request == "HEAD") {
 		if (req.http.X-Forwarded-Proto != "https") {
 			if (req.url ~ "(?i)^https?:") {
-				if (req.url ~ "(?i)^https?://ru\.") {
+				if (req.url ~ "(?i)^https?://(ru|zh|ug)\.") {
 					set req.http.Location = regsub(req.url, "(?i)^http:", "https:");
 					error 751 "TLS Redirect";
-				}
-				if(req.url ~ "(?i)^https?://(zh|ug)\.") {
-					set req.http.Location = regsub(req.url, "(?i)^http:", "https:");
-					error 752 "TLS Redirect";
 				}
 			}
 			else {
-				if (req.http.Host ~ "(?i)^ru\.") {
+				if(req.http.Host ~ "(?i)^(ru|zh|ug)\.") {
 					set req.http.Location = "https://" + req.http.Host + req.url;
 					error 751 "TLS Redirect";
-				}
-				if(req.http.Host ~ "(?i)^(zh|ug)\.") {
-					set req.http.Location = "https://" + req.http.Host + req.url;
-					error 752 "TLS Redirect";
 				}
 			}
 		}
