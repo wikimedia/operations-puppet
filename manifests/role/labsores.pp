@@ -27,7 +27,7 @@ class role::labs::ores::lb(
 
 class role::labs::ores::staging {
 
-    class { '::ores::lb':
+    class { '::ores::web':
         branch => 'staging',
     }
 
