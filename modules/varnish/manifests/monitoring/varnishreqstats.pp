@@ -17,9 +17,11 @@ define varnish::monitoring::varnishreqstats(
     $instance_name = $name,
     $metric_path   = "varnish.${::site}.${name}.request",
 ) {
-    diamond::collector { "varnishreqstats-${name}":
-        source   => 'puppet:///modules/varnish/varnishreqstats-diamond.py',
-        custom_name => 'varnishreqstats',
+    # ${collector_name}Collector will be used as the python diamond collector class name
+    # when varnishreqstats-diamond.py.erb is rendered.
+    $collector_name = "Varnishreqstats${name}"
+    diamond::collector { $collector_name:
+        content   => template('varnish/varnishreqstats-diamond.py.erb'),
         settings => {
             'varnish_name' => $instance_name,
             'path'         => $metric_path,
