@@ -9,8 +9,8 @@
 #
 # [*metric_path*]
 #   Prefix of the stats that will be sent to statsd/graphite.
-#   Default: varnish.$site.$instance_name.request.
-#   This will create graphite keys that look like:
+#   Default: varnish.$site.$name.request.
+#   If $name is text.frontend,  this will create graphite keys that look like:
 #   servers.cp1052.varnish.eqiad.text.frontend.request.client.status.2xx
 #
 define varnish::monitoring::varnishreqstats(
