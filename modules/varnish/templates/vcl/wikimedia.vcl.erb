@@ -228,8 +228,16 @@ sub https_deliver_hsts {
 <% end -%>
 // ^ end frontend-only block for HTTPS
 
+// We shouldn't even legally be receiving proxy-style requests, as we're not a
+// proxy from any client's point of view.  Just in case, we support it anyways
+// according to RFC7230 rules: we ignore any Host header sent along with it
+// and set a new Host header based on the host part we strip from the abs URI.
+// ref: http://tools.ietf.org/html/rfc7230#section-5.4
 sub rewrite_proxy_urls {
-	set req.url = regsub(req.url, "^http://[^/]+", "");
+	if(req.url ~ "(?i)^https?://[^/]+") {
+		set req.http.Host = regsub(req.url, "(?i)^https?://([^/]+).*$", "\1");
+		set req.url = regsub(req.url, "(?i)^https?://[^/]+", "");
+	}
 }
 
 C{
@@ -363,6 +371,8 @@ sub vcl_recv {
 	}
 	
 <% if @vcl_config.fetch("layer", "frontend") == "frontend" -%>
+	call rewrite_proxy_urls;
+
 	/* Ensure we only accept Forwarded-Proto headers from the SSL proxies */
 	if (client.ip !~ ssl_proxies) {
 		unset req.http.X-Forwarded-Proto;
