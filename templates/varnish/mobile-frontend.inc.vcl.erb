@@ -81,8 +81,6 @@ sub vcl_recv {
 	// Allow purging
 	call vcl_recv_purge;
 
-	call rewrite_proxy_urls;
-
 	call normalize_path;
 
 	call analytics_last_access_recv;
