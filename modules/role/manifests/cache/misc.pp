@@ -29,27 +29,27 @@ class role::cache::misc {
             'allowed_methods' => '^(GET|HEAD|POST|PURGE|PUT)$',
         },
         backends        => [
+            'analytics1001.eqiad.wmnet', # Hadoop Yarn ResourceManager GUI
+            'analytics1027.eqiad.wmnet', # Hue (Hadoop GUI)
             'antimony.wikimedia.org',
             'caesium.eqiad.wmnet',
             'californium.wikimedia.org',
             'dataset1001.wikimedia.org',
             'gallium.wikimedia.org',  # CI server
-            'ytterbium.wikimedia.org', # Gerrit
             'graphite1001.eqiad.wmnet',
-            'zirconium.wikimedia.org',
-            'ruthenium.eqiad.wmnet', # parsoid rt test server
+            'iridium.eqiad.wmnet', # main phab
             'logstash1001.eqiad.wmnet',
             'logstash1002.eqiad.wmnet',
             'logstash1003.eqiad.wmnet',
-            'netmon1001.wikimedia.org', # servermon
-            'iridium.eqiad.wmnet', # main phab
-            'terbium.eqiad.wmnet', # public_html
-            'neon.wikimedia.org', # monitoring tools (icinga et al)
             'magnesium.wikimedia.org', # RT and racktables
-            'stat1001.eqiad.wmnet', # metrics and metrics-api
+            'neon.wikimedia.org', # monitoring tools (icinga et al)
+            'netmon1001.wikimedia.org', # servermon
             'palladium.eqiad.wmnet',
-            'analytics1027.eqiad.wmnet', # Hue (Hadoop GUI)
-            'analytics1001.eqiad.wmnet', # Hadoop Yarn ResourceManager GUI
+            'ruthenium.eqiad.wmnet', # parsoid rt test server
+            'stat1001.eqiad.wmnet', # metrics and metrics-api
+            'terbium.eqiad.wmnet', # public_html
+            'ytterbium.wikimedia.org', # Gerrit
+            'zirconium.wikimedia.org',
         ],
         backend_options => [
         {
