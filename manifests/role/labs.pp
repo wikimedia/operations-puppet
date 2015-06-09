@@ -22,14 +22,6 @@ class role::labs::instance {
         readable => true,
     }
 
-    # Directory for data mounts
-    file { '/data':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
     file { '/etc/mailname':
         ensure  => present,
         content => "${::fqdn}\n",
@@ -54,33 +46,46 @@ class role::labs::instance {
     $nfs_server = 'labstore.svc.eqiad.wmnet'
     $dumps_server = 'labstore1003.eqiad.wmnet'
 
-    mount { '/home':
-        ensure  => mounted,
-        atboot  => true,
-        fstype  => 'nfs',
-        options => "rw,${nfs_opts}",
-        device  => "${nfs_server}:/project/${instanceproject}/home",
-        require => File['/etc/modprobe.d/nfs-no-idmap'],
+    if hiera('has_shared_home', true) {
+        mount { '/home':
+            ensure  => mounted,
+            atboot  => true,
+            fstype  => 'nfs',
+            options => "rw,${nfs_opts}",
+            device  => "${nfs_server}:/project/${instanceproject}/home",
+            require => File['/etc/modprobe.d/nfs-no-idmap'],
+        }
     }
 
-    file { '/data/project':
-        ensure  => directory,
-        require => File['/data'],
-    }
+    if hiera('has_shared_project_space', true) {
+        # Directory for data mounts
+        file { '/data':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
 
-    mount { '/data/project':
-        ensure  => mounted,
-        atboot  => true,
-        fstype  => 'nfs',
-        options => "rw,${nfs_opts}",
-        device  => "${nfs_server}:/project/${instanceproject}/project",
-        require => File['/data/project', '/etc/modprobe.d/nfs-no-idmap'],
+        file { '/data/project':
+            ensure  => directory,
+            require => File['/data'],
+        }
+
+        mount { '/data/project':
+            ensure  => mounted,
+            atboot  => true,
+            fstype  => 'nfs',
+            options => "rw,${nfs_opts}",
+            device  => "${nfs_server}:/project/${instanceproject}/project",
+            require => File['/data/project', '/etc/modprobe.d/nfs-no-idmap'],
+        }
     }
 
     file { '/data/scratch':
         ensure  => directory,
         require => File['/data'],
     }
+
     mount { '/data/scratch':
         ensure  => mounted,
         atboot  => true,
