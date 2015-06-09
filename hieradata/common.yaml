@@ -145,9 +145,7 @@ ganglia_clusters:
     name: "Jobrunners"
     id: 31
     sites:
-      eqiad:
-        - mw1001.eqiad.wmnet
-        - mw1002.eqiad.wmnet
+      eqiad: []
       codfw: []
   analytics:     
     name: "Analytics cluster"
