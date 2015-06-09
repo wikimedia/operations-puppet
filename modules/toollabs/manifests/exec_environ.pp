@@ -150,6 +150,7 @@ class toollabs::exec_environ {
         'python-greenlet',
         'python-httplib2',
         'python-imaging',
+        'python-ipaddr',               # T86015.
         'python-irclib',
         'python-keyring',
         'python-launchpadlib',
