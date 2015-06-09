@@ -35,6 +35,7 @@ class role::cache::misc {
             'caesium.eqiad.wmnet',
             'californium.wikimedia.org',
             'dataset1001.wikimedia.org',
+            'etherpad1001.eqiad.wmnet',
             'gallium.wikimedia.org',  # CI server
             'graphite1001.eqiad.wmnet',
             'iridium.eqiad.wmnet', # main phab
