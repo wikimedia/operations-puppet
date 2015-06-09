@@ -24,8 +24,10 @@ class openstack::project-nfs-storage-service {
         source  => 'puppet:///modules/openstack/set-stripe-cache',
     }
 
-    exec { 'set-stripe-caches':
+    cron { 'set-stripe-caches':
         command => '/usr/local/sbin/set-stripe-cache 4096',
+        user    => 'root',
+        minute  => '*/5',
         require => File['/usr/local/sbin/set-stripe-cache'],
     }
 
