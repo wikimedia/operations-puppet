@@ -157,9 +157,10 @@ sub geoip_lookup {
 		}
 
 		if (record) {
-			snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"lat\":\"%f\",\"lon\":\"%f\",\"IP\":\"%s\"}",
+			snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"region\":\"%s\",\"lat\":\"%f\",\"lon\":\"%f\",\"IP\":\"%s\"}",
 				record->city,
 				record->country_code,
+				record->region_code,
 				record->latitude,
 				record->longitude,
 				ip
