@@ -27,10 +27,11 @@ class etherpad(
     }
 
     file { '/usr/share/etherpad-lite/src/static/robots.txt':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/etherpad/etherpad-robots.txt',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/etherpad/etherpad-robots.txt',
+        require => Package['etherpad-lite'],
     }
 }
