@@ -16,7 +16,11 @@ class role::labs::ores::lb(
 }
 
 class role::labs::ores::staging {
-    include ::ores::web
+
+    class { '::ores::lb':
+        branch => 'staging',
+    }
+
     class { '::ores::lb':
         realservers => [ 'localhost:8080' ],
         cache       => false,

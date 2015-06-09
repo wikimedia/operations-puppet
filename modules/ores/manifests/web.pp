@@ -1,6 +1,8 @@
 # = Class: ores::web
 # Sets up a uwsgi based web server for ORES running python3
-class ores::web {
+class ores::web(
+    $branch = 'deploy',
+) {
     # Let's use a virtualenv for maximum flexibility - we can convert
     # this to deb packages in the future if needed. We also install build tools
     # because they are needed by pip to install scikit.
@@ -49,7 +51,7 @@ class ores::web {
     git::clone { 'ores-src':
         origin    => 'https://github.com/halfak/Objective-Revision-Evaluation-Service.git',
         directory => $src_path,
-        branch    => 'deploy',
+        branch    => $branch,
         ensure    => 'latest',
         owner     => 'www-data',
         group     => 'www-data',
