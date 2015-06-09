@@ -90,8 +90,6 @@ sub vcl_recv {
 	// Disable Range requests for now.
 	unset req.http.Range;
 
-	call rewrite_proxy_urls;
-
 	// Don't decode percent-encoded slashes in paths for REST APIs
 	if (req.url !~ "^/api/rest_v1/") {
 		call normalize_path;
