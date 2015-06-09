@@ -45,4 +45,12 @@ class mediawiki (
         mode   => '0644',
     }
 
+    # Recursively delete from /tmp any files that haven't been accessed
+    # or modified in the last week
+
+    cron{ 'tidy_tmp':
+        command => '/usr/bin/ionice -c 3 /usr/bin/find /tmp -ctime +7 -atime +7 -delete > /dev/null 2>&1',
+        hour    => fqdn_rand(23, 'tidy_tmp_atime_ctime'),
+        minute  => 30,
+    }
 }
