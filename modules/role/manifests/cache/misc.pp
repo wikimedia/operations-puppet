@@ -7,7 +7,7 @@ class role::cache::misc {
 
     include lvs::configuration
     class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site],
+        realserver_ips => $lvs::configuration::lvs_service_ips['misc_web'][$::site],
     }
 
     include role::cache::ssl::misc
