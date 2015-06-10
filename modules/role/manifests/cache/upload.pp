@@ -10,6 +10,7 @@ class role::cache::upload(
 
     include role::cache::2layer
 
+    include lvs::configuration
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::lvs_service_ips['upload'][$::site],
     }

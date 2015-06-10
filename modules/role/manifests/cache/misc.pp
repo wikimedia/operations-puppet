@@ -5,6 +5,7 @@ class role::cache::misc {
 
     include role::cache::1layer
 
+    include lvs::configuration
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::lvs_service_ips['misc_web'][$::site],
     }

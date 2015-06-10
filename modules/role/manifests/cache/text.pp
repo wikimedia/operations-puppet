@@ -7,6 +7,7 @@ class role::cache::text {
 
     include role::cache::2layer
 
+    include lvs::configuration
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::lvs_service_ips['text'][$::site],
     }
