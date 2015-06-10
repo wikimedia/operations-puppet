@@ -26,8 +26,8 @@ class Hiera
       read_file(path, expected_type, &block)
     rescue Hiera::MediawikiPageNotFoundError => detail
       # Any errors other than this will cause hiera to raise an error and puppet to fail.
-      @cache[path][:data] = default
       Hiera.debug("Page #{detail} is non-existent, setting defaults #{default}")
+      @cache[path][:data] = default
     rescue => detail
       # When failing to read data, we raise an exception, see https://phabricator.wikimedia.org/T78408
       error = "Reading data from #{path} failed: #{detail.class}: #{detail}"
