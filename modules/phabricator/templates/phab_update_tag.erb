@@ -90,7 +90,7 @@ log "HEAD pre move:"
 log_repo_head
 echo ""
 
-#Have puppet update and checkout tag specified in puppet
+# Have puppet update and checkout tag specified in puppet
 log "Running puppet with tags 'git' to manage repo tags"
 $puppet agent --test --tags git
 
@@ -98,8 +98,8 @@ log "HEAD post move:"
 log_repo_head
 echo ""
 
-#upgrades are idempotent so there is no concern for multiple passes
-#--force silences the 'please stop apache' warnings, etc
+# upgrades are idempotent so there is no concern for multiple passes
+# --force silences the 'please stop apache' warnings, etc
 <%= @phabdir %>/phabricator/bin/storage upgrade --force -u <%= @storage_user %> -p <%= @storage_pass %>
 #      --password password, -p password
 #      --user username, -u username
