@@ -2,7 +2,6 @@ cluster: appserver
 role::mediawiki::webserver::pool: apaches
 apache::mpm::mpm: worker
 mediawiki::web::mpm_config::mpm: worker
-mediawiki::users::web: www-data
 admin::groups:
   - deployment
 hhvm::extra::fcgi:
