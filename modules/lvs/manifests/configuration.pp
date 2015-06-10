@@ -208,11 +208,7 @@ class lvs::configuration {
             'mobile' => {},
             'ocg' => {},
             'osm' => {},
-            'swift' => {
-                # ms emulator set in July 2013. Beta does not have Swift yet.
-                # instance is an unpuppetized hack with nginx proxy.
-                'eqiad' => '10.68.16.189',  # deployment-upload.eqiad.wmflabs
-            },
+            'swift' => {},
             'upload' => {
             },
             'parsoid' => {},
