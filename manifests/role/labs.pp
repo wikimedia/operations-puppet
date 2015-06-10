@@ -79,20 +79,20 @@ class role::labs::instance {
             device  => "${nfs_server}:/project/${instanceproject}/project",
             require => File['/data/project', '/etc/modprobe.d/nfs-no-idmap'],
         }
-    }
 
-    file { '/data/scratch':
-        ensure  => directory,
-        require => File['/data'],
-    }
+        file { '/data/scratch':
+            ensure  => directory,
+            require => File['/data'],
+        }
 
-    mount { '/data/scratch':
-        ensure  => mounted,
-        atboot  => true,
-        fstype  => 'nfs',
-        options => "rw,${nfs_opts}",
-        device  => "${nfs_server}:/scratch",
-        require => File['/data/scratch', '/etc/modprobe.d/nfs-no-idmap'],
+        mount { '/data/scratch':
+            ensure  => mounted,
+            atboot  => true,
+            fstype  => 'nfs',
+            options => "rw,${nfs_opts}",
+            device  => "${nfs_server}:/scratch",
+            require => File['/data/scratch', '/etc/modprobe.d/nfs-no-idmap'],
+        }
     }
 
     file { '/public/dumps':
