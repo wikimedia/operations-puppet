@@ -128,7 +128,7 @@ UsePAM yes
 
 <% if @realm == "labs" then %>
 <% if scope.function_os_version(['debian >= jessie || ubuntu >= trusty']) %>
-AuthorizedKeysCommand /usr/local/sbin/ldapkeys
+AuthorizedKeysCommand /usr/sbin/ldapkeys
 AuthorizedKeysCommandUser ldapkeys
 <% end %>
 <% end %>
