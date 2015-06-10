@@ -6,7 +6,7 @@ class role::cache::parsoid {
     include role::cache::2layer
 
     class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site],
+        realserver_ips => $lvs::configuration::lvs_service_ips['parsoidcache'][$::site],
     }
 
     $parsoid_nodes = hiera('cache::parsoid::nodes')

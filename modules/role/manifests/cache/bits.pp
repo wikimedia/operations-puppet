@@ -9,7 +9,7 @@ class role::cache::bits (
     include role::cache::1layer
 
     class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site],
+        realserver_ips => $lvs::configuration::lvs_service_ips['bits'][$::site],
     }
 
     if $::realm == 'production' {

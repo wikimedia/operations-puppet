@@ -85,149 +85,117 @@ class lvs::configuration {
 
     # NOTE! This hash is referenced in many other manifests
     $lvs_service_ips = {
-        'production' => {
-            'text' => {
-                'codfw' => {
-                    'textlb' => '208.80.153.224',
-                    'loginlb' => '208.80.153.233',
-                    'textlb6' => '2620:0:860:ed1a::1',
-                    'loginlb6' => '2620:0:860:ed1a::1:9',
-                },
-                'eqiad' => {
-                    'textsvc' => '10.2.2.25',
-                    'textlb' => '208.80.154.224',
-                    'loginlb' => '208.80.154.233',
+        'text' => {
+            'codfw' => {
+                'textlb' => '208.80.153.224',
+                'loginlb' => '208.80.153.233',
+                'textlb6' => '2620:0:860:ed1a::1',
+                'loginlb6' => '2620:0:860:ed1a::1:9',
+            },
+            'eqiad' => {
+                'textsvc' => '10.2.2.25',
+                'textlb' => '208.80.154.224',
+                'loginlb' => '208.80.154.233',
 
-                    'textlb6' => '2620:0:861:ed1a::1',
-                    'loginlb6' => '2620:0:861:ed1a::1:9',
-                },
-                'esams' => {
-                    'textsvc'   => '10.2.3.25',
-                    'textlb'    => '91.198.174.192',
-                    'loginlb'   => '91.198.174.201',
+                'textlb6' => '2620:0:861:ed1a::1',
+                'loginlb6' => '2620:0:861:ed1a::1:9',
+            },
+            'esams' => {
+                'textsvc'   => '10.2.3.25',
+                'textlb'    => '91.198.174.192',
+                'loginlb'   => '91.198.174.201',
 
-                    'textlb6'   => '2620:0:862:ed1a::1',
-                    'loginlb6'  => '2620:0:862:ed1a::1:9',
-                },
-                'ulsfo' => {
-                    'textsvc'   => '10.2.4.25',
-                    'textlb'    => '198.35.26.96',
-                    'loginlb'   => '198.35.26.105',
+                'textlb6'   => '2620:0:862:ed1a::1',
+                'loginlb6'  => '2620:0:862:ed1a::1:9',
+            },
+            'ulsfo' => {
+                'textsvc'   => '10.2.4.25',
+                'textlb'    => '198.35.26.96',
+                'loginlb'   => '198.35.26.105',
 
-                    'textlb6'   => '2620:0:863:ed1a::1',
-                    'loginlb6'  => '2620:0:863:ed1a::1:9',
-                },
-            },
-            'bits' => {
-                'codfw' => { 'bitslb' => "208.80.153.234", 'bitslb6' => '2620:0:860:ed1a::1:a' },
-                'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6' => '2620:0:861:ed1a::1:a', 'bitssvc' => "10.2.2.23" },
-                'esams' => { 'bitslb' => '91.198.174.202', 'bitslb6' => '2620:0:862:ed1a::1:a', 'bitssvc' => "10.2.3.23" },
-                'ulsfo' => { 'bitslb' => "198.35.26.106", 'bitslb6' => '2620:0:863:ed1a::1:a', 'bitssvc' => "10.2.4.23" },
-            },
-            'upload' => {
-                'codfw' => { 'uploadlb' => '208.80.153.240', 'uploadlb6' => '2620:0:860:ed1a::2:b' },
-                'eqiad' => { 'uploadlb' => '208.80.154.240', 'uploadlb6' => '2620:0:861:ed1a::2:b', 'uploadsvc' => '10.2.2.24' },
-                'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
-                'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b', 'uploadsvc' => '10.2.4.24' },
-            },
-            'apaches' => {
-                'eqiad' => "10.2.2.1",
-                'codfw' => '10.2.1.1',
-            },
-            'rendering' => {
-                'eqiad' => "10.2.2.21",
-                'codfw' => "10.2.1.21",
-            },
-            'api' => {
-                'eqiad' => "10.2.2.22",
-                'codfw' => '10.2.1.22',
-            },
-            'mobile' => {
-                'codfw' => { 'mobilelb' => "208.80.153.236", 'mobilelb6' => '2620:0:860:ed1a::1:c' },
-                'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => '2620:0:861:ed1a::1:c', 'mobilesvc' => "10.2.2.26"},
-                'esams' => { 'mobilelb' => '91.198.174.204', 'mobilelb6' => '2620:0:862:ed1a::1:c', 'mobilesvc' => '10.2.3.26'},
-                'ulsfo' => { 'mobilelb' => '198.35.26.108', 'mobilelb6' => '2620:0:863:ed1a::1:c', 'mobilesvc' => '10.2.4.26'},
-            },
-            'swift' => {
-                'eqiad' => "10.2.2.27",
-                'codfw' => "10.2.1.27",
-            },
-            'dns_rec' => {
-                'eqiad' => { 'dns_rec' => "208.80.154.239", 'dns_rec6' => "2620:0:861:ed1a::3:fe" },
-                'codfw' => { 'dns_rec' => "208.80.153.254", 'dns_rec6' => "2620:0:860:ed1a::3:fe" },
-                'esams' => { 'dns_rec' => "91.198.174.216", 'dns_rec6' => "2620:0:862:ed1a::3:fe" },
-            },
-            'osm' => {
-                'eqiad' => "208.80.154.244",
-            },
-            'misc_web' => {
-                'eqiad' => { 'misc_web' => '208.80.154.241', 'misc_web6' => '2620:0:861:ed1a::11' },
-            },
-            'parsoid' => {
-                'eqiad' => "10.2.2.28",
-            },
-            'parsoidcache' => {
-                'eqiad' => { 'parsoidlb' => '208.80.154.248', 'parsoidlb6' => '2620:0:861:ed1a::3:14', 'parsoidsvc' => '10.2.2.29' },
-            },
-            'search' => {
-                'eqiad' => "10.2.2.30",
-            },
-            'stream' => {
-                'eqiad' => {'streamlb' => '208.80.154.249', 'streamlb6' => '2620:0:861:ed1a::3:15'}
-            },
-            'ocg' => {
-                'eqiad' => '10.2.2.31',
-            },
-            'mathoid' => {
-                'eqiad' => "10.2.2.20",
-            },
-            'citoid' => {
-                'eqiad' => "10.2.2.19",
-            },
-            'cxserver' => {
-                'eqiad' => "10.2.2.18",
-            },
-            'graphoid' => {
-                'eqiad' => "10.2.2.15",
-            },
-            'restbase' => {
-                'eqiad' => "10.2.2.17",
-            },
-
-            'zotero' => {
-                'eqiad' => "10.2.2.16",
+                'textlb6'   => '2620:0:863:ed1a::1',
+                'loginlb6'  => '2620:0:863:ed1a::1:9',
             },
         },
-        'labs' => {
-            'text' => {
-            },
-            'apaches' => {
-            },
-            'rendering' => {
-            },
-            'api' => {
-            },
-            'bits' => {
-            },
-            'dns_rec' => {},
-            'mathoid' => {},
-            'citoid' => {},
-            'cxserver' => {},
-            'graphoid' => {},
-            'misc_web' => {},
-            'mobile' => {},
-            'ocg' => {},
-            'osm' => {},
-            'swift' => {},
-            'upload' => {
-            },
-            'parsoid' => {},
-            'parsoidcache' => {},
-            'search' => {},
-            'stream' => {},
-            'restbase' => {},
-            'zotero' => {},
-        }
+        'bits' => {
+            'codfw' => { 'bitslb' => "208.80.153.234", 'bitslb6' => '2620:0:860:ed1a::1:a' },
+            'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6' => '2620:0:861:ed1a::1:a', 'bitssvc' => "10.2.2.23" },
+            'esams' => { 'bitslb' => '91.198.174.202', 'bitslb6' => '2620:0:862:ed1a::1:a', 'bitssvc' => "10.2.3.23" },
+            'ulsfo' => { 'bitslb' => "198.35.26.106", 'bitslb6' => '2620:0:863:ed1a::1:a', 'bitssvc' => "10.2.4.23" },
+        },
+        'upload' => {
+            'codfw' => { 'uploadlb' => '208.80.153.240', 'uploadlb6' => '2620:0:860:ed1a::2:b' },
+            'eqiad' => { 'uploadlb' => '208.80.154.240', 'uploadlb6' => '2620:0:861:ed1a::2:b', 'uploadsvc' => '10.2.2.24' },
+            'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
+            'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b', 'uploadsvc' => '10.2.4.24' },
+        },
+        'apaches' => {
+            'eqiad' => "10.2.2.1",
+            'codfw' => '10.2.1.1',
+        },
+        'rendering' => {
+            'eqiad' => "10.2.2.21",
+            'codfw' => "10.2.1.21",
+        },
+        'api' => {
+            'eqiad' => "10.2.2.22",
+            'codfw' => '10.2.1.22',
+        },
+        'mobile' => {
+            'codfw' => { 'mobilelb' => "208.80.153.236", 'mobilelb6' => '2620:0:860:ed1a::1:c' },
+            'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => '2620:0:861:ed1a::1:c', 'mobilesvc' => "10.2.2.26"},
+            'esams' => { 'mobilelb' => '91.198.174.204', 'mobilelb6' => '2620:0:862:ed1a::1:c', 'mobilesvc' => '10.2.3.26'},
+            'ulsfo' => { 'mobilelb' => '198.35.26.108', 'mobilelb6' => '2620:0:863:ed1a::1:c', 'mobilesvc' => '10.2.4.26'},
+        },
+        'swift' => {
+            'eqiad' => "10.2.2.27",
+            'codfw' => "10.2.1.27",
+        },
+        'dns_rec' => {
+            'eqiad' => { 'dns_rec' => "208.80.154.239", 'dns_rec6' => "2620:0:861:ed1a::3:fe" },
+            'codfw' => { 'dns_rec' => "208.80.153.254", 'dns_rec6' => "2620:0:860:ed1a::3:fe" },
+            'esams' => { 'dns_rec' => "91.198.174.216", 'dns_rec6' => "2620:0:862:ed1a::3:fe" },
+        },
+        'osm' => {
+            'eqiad' => "208.80.154.244",
+        },
+        'misc_web' => {
+            'eqiad' => { 'misc_web' => '208.80.154.241', 'misc_web6' => '2620:0:861:ed1a::11' },
+        },
+        'parsoid' => {
+            'eqiad' => "10.2.2.28",
+        },
+        'parsoidcache' => {
+            'eqiad' => { 'parsoidlb' => '208.80.154.248', 'parsoidlb6' => '2620:0:861:ed1a::3:14', 'parsoidsvc' => '10.2.2.29' },
+        },
+        'search' => {
+            'eqiad' => "10.2.2.30",
+        },
+        'stream' => {
+            'eqiad' => {'streamlb' => '208.80.154.249', 'streamlb6' => '2620:0:861:ed1a::3:15'}
+        },
+        'ocg' => {
+            'eqiad' => '10.2.2.31',
+        },
+        'mathoid' => {
+            'eqiad' => "10.2.2.20",
+        },
+        'citoid' => {
+            'eqiad' => "10.2.2.19",
+        },
+        'cxserver' => {
+            'eqiad' => "10.2.2.18",
+        },
+        'graphoid' => {
+            'eqiad' => "10.2.2.15",
+        },
+        'restbase' => {
+            'eqiad' => "10.2.2.17",
+        },
+
+        'zotero' => {
+            'eqiad' => "10.2.2.16",
+        },
     }
 
     $subnet_ips = {
