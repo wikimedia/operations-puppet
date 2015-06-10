@@ -34,6 +34,7 @@ class lvs::configuration {
                 'eqiad' => [ "lvs1003", "lvs1006" ],
                 'codfw' => [ "lvs2003", "lvs2006" ],
                 'esams' => [ ],
+                'ulsfo' => [ ],
                 default => undef,
             },
             'labs' => $::site ? {
