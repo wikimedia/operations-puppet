@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/ldapkeys
+### puppet:///modules/ldap/scripts/ssh-key-ldap-lookup
 #####################################################################
 
 import ldapsupportlib
