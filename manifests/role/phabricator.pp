@@ -33,7 +33,7 @@ class role::phabricator::main {
     include role::phabricator::config
     include phabricator::monitoring
 
-    $current_tag = 'release/2015-06-03/1'
+    $current_tag = 'release/2015-06-10/1'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
@@ -44,11 +44,11 @@ class role::phabricator::main {
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
         auth_type        => 'dual',
-        sprint_tag       => 'release/2015-05-08',
-        security_tag     => 'release/2015-05-06/1',
+        sprint_tag       => $current_tag,
+        security_tag     => $current_tag,
         libraries        => ['/srv/phab/libext/Sprint/src',
                             '/srv/phab/libext/security/src'],
-        extension_tag    => 'HEAD',
+        extension_tag    => $current_tag,
         extensions       => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php',
                               'PhabricatorMediaWikiAuthProvider.php',
@@ -162,16 +162,16 @@ class role::phabricator::labs {
 
     # pass not sensitive but has to match phab and db
     $mysqlpass = 'labspass'
-    $current_tag = 'release/2015-06-03/1'
+    $current_tag = 'release/2015-06-10/1'
     class { '::phabricator':
         git_tag       => $current_tag,
         lock_file     => '/var/run/phab_repo_lock',
         auth_type     => 'local',
-        sprint_tag    => 'release/2015-05-08',
+        sprint_tag    => $current_tag,
         libraries     => {
         'sprint' => '/srv/phab/libext/Sprint/src',
         },
-        extension_tag => 'release/2015-05-06/1',
+        extension_tag => $current_tag,
         extensions    => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php',
                               'PhabricatorMediaWikiAuthProvider.php',
