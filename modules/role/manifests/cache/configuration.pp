@@ -5,19 +5,19 @@ class role::cache::configuration {
 
     $backends = {
         'production' => {
-            'appservers'        => $lvs::configuration::lvs_service_ips['production']['apaches'],
-            'api'               => $lvs::configuration::lvs_service_ips['production']['api'],
-            'rendering'         => $lvs::configuration::lvs_service_ips['production']['rendering'],
+            'appservers'        => $lvs::configuration::lvs_service_ips['apaches'],
+            'api'               => $lvs::configuration::lvs_service_ips['api'],
+            'rendering'         => $lvs::configuration::lvs_service_ips['rendering'],
             'bits' => {
-                'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['bits']['eqiad']['bitslb']]),
+                'eqiad' => flatten([$lvs::configuration::lvs_service_ips['bits']['eqiad']['bitslb']]),
             },
             'bits_appservers' => {
-                'eqiad' => flatten([$lvs::configuration::lvs_service_ips['production']['apaches']['eqiad']]),
+                'eqiad' => flatten([$lvs::configuration::lvs_service_ips['apaches']['eqiad']]),
             },
             'test_appservers' => {
                 'eqiad' => [ 'mw1017.eqiad.wmnet' ],
             },
-            'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid'],
+            'parsoid' => $lvs::configuration::lvs_service_ips['parsoid'],
             'cxserver' => {
                 'eqiad' => 'cxserver.svc.eqiad.wmnet',
             },

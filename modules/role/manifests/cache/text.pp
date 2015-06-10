@@ -9,7 +9,7 @@ class role::cache::text {
 
     include lvs::configuration
     class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site],
+        realserver_ips => $lvs::configuration::lvs_service_ips['text'][$::site],
     }
 
     $text_nodes = hiera('cache::text::nodes')
