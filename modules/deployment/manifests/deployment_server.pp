@@ -86,7 +86,7 @@ class deployment::deployment_server($deployer_groups=[]) {
     }
 
     exec { 'eventual_consistency_deployment_server_init':
-        path    => ['/usr/bin'],
+        path    => ['/usr/bin', '/usr/sbin', '/sbin', '/bin'],
         command => 'salt-call deploy.deployment_server_init',
         require => [
             Package['salt-minion'],
