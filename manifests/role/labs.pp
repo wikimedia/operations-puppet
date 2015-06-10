@@ -30,14 +30,6 @@ class role::labs::instance {
         mode    => '0444',
     }
 
-    # Directory for public (readonly) mounts
-    file { '/public':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
     package { 'puppet-lint':
         ensure => present,
     }
@@ -101,6 +93,17 @@ class role::labs::instance {
         }
     }
 
+    # Only create if we need /public/dumps or /public/keys
+    if $nfs_mounts['dumps'] or os_version('ubuntu <= precise') {
+        # Directory for public (readonly) mounts
+        file { '/public':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+    }
+
     if $nfs_mounts['dumps'] {
         file { '/public/dumps':
             ensure  => directory,
@@ -116,18 +119,21 @@ class role::labs::instance {
         }
     }
 
-    file { '/public/keys':
-        ensure  => directory,
-        require => File['/public'],
-    }
-    mount { '/public/keys':
-        ensure  => mounted,
-        atboot  => true,
-        fstype  => 'nfs',
-        options => "ro,${nfs_opts}",
-        device  => "${nfs_server}:/keys",
-        require => File['/public/keys', '/etc/modprobe.d/nfs-no-idmap'],
-        notify  => Service['ssh'],
+    # Used by ssh for logging in, only on precise and lower
+    if os_version('ubuntu <= precise') {
+        file { '/public/keys':
+            ensure  => directory,
+            require => File['/public'],
+        }
+        mount { '/public/keys':
+            ensure  => mounted,
+            atboot  => true,
+            fstype  => 'nfs',
+            options => "ro,${nfs_opts}",
+            device  => "${nfs_server}:/keys",
+            require => File['/public/keys', '/etc/modprobe.d/nfs-no-idmap'],
+            notify  => Service['ssh'],
+        }
     }
 
     # While the default on kernels >= 3.3 is to have idmap disabled,
