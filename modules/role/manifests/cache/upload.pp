@@ -26,7 +26,7 @@ class role::cache::upload(
 
     $varnish_be_directors = {
         'one' => {
-            'backend'   => $lvs::configuration::lvs_service_ips[$::realm]['swift'][$::mw_primary],
+            'backend'   => $role::cache::configuration::backends[$::realm]['swift'][$::mw_primary],
             'rendering' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
         },
         'two' => {

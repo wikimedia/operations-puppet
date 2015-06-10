@@ -30,6 +30,7 @@ class role::cache::configuration {
             'restbase' => {
                 'eqiad' => 'restbase.svc.eqiad.wmnet',
             },
+            'swift' => $lvs::configuration::lvs_service_ips['production']['swift'],
         },
         'labs' => {
             'appservers' => {
@@ -79,6 +80,11 @@ class role::cache::configuration {
             },
             'graphoid' => {
                 'eqiad' => '10.68.16.145', # deployment-sca01
+            },
+            'swift' => {
+                # ms emulator set in July 2013. Beta does not have Swift yet.
+                # instance is an unpuppetized hack with nginx proxy.
+                'eqiad' => '10.68.16.189',  # deployment-upload.eqiad.wmflabs
             },
         }
     }
