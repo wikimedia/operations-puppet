@@ -70,6 +70,7 @@ class statistics::compute {
         # Aaron Halfaker (halfak) wants python{,3}-dev environments for module oursql
         'python-dev',  # T83316
         'python3-dev', # T83316
+        'python-kafka',
     ])
 
     # FORTRAN packages (T89414)
