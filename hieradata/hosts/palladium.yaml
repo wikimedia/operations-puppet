@@ -5,4 +5,4 @@ base::resolving::domain_search:
   - codfw.wmnet
   - ulsfo.wmnet
   - esams.wikimedia.org
-
+ganglia_class: "new"
