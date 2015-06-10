@@ -50,9 +50,9 @@ class ores::web(
 
     git::clone { 'ores-wm-config':
         origin    => 'https://github.com/wiki-ai/ores-wikimedia-config.git',
+        ensure    => present,
         directory => $config_path,
         branch    => $branch,
-        ensure    => 'latest',
         owner     => 'www-data',
         group     => 'www-data',
         require   => File['/srv/ores'],
