@@ -46,8 +46,10 @@ class network::constants {
                         '2620:0:861:1:208:80:154:53', # uranium.wikimedia.org
                     ],
             'deployment_hosts' => [
-                        '10.64.0.196', # tin.eqiad.wmnet
-                        '10.192.16.132', # mira.codfw.wmnet
+                        '10.64.0.196',                  # tin.eqiad.wmnet
+                        '2620:0:861:101:10:64:0:196',   # tin.eqiad.wmnet
+                        '10.192.16.132',                # mira.codfw.wmnet
+                        '2620:0:860:102:10:192:16:132', # mira.codfw.wmnet
                     ],
         },
         'labs' => {
