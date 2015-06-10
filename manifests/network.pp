@@ -255,13 +255,21 @@ class network::constants {
             [
                 '208.80.152.0/22',    # external
                 $all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv4'],
+                $all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv6'],
                 $all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv4'],
+                $all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv6'],
                 $all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv4'],
+                $all_network_subnets['production']['eqiad']['private']['private1-c-eqiad']['ipv6'],
                 $all_network_subnets['production']['eqiad']['private']['private1-d-eqiad']['ipv4'],
+                $all_network_subnets['production']['eqiad']['private']['private1-d-eqiad']['ipv6'],
                 $all_network_subnets['production']['codfw']['private']['private1-a-codfw']['ipv4'],
+                $all_network_subnets['production']['codfw']['private']['private1-a-codfw']['ipv6'],
                 $all_network_subnets['production']['codfw']['private']['private1-b-codfw']['ipv4'],
+                $all_network_subnets['production']['codfw']['private']['private1-b-codfw']['ipv6'],
                 $all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv4'],
+                $all_network_subnets['production']['codfw']['private']['private1-c-codfw']['ipv6'],
                 $all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv4'],
+                $all_network_subnets['production']['codfw']['private']['private1-d-codfw']['ipv6'],
             ]
     } elsif $::realm == 'labs' {
         # rely on security groups in labs to restrict this
@@ -271,9 +279,13 @@ class network::constants {
     # Analytics subnets
     $analytics_networks = [
         $all_network_subnets['production']['eqiad']['private']['analytics1-a-eqiad']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['analytics1-a-eqiad']['ipv6'],
         $all_network_subnets['production']['eqiad']['private']['analytics1-b-eqiad']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['analytics1-b-eqiad']['ipv6'],
         $all_network_subnets['production']['eqiad']['private']['analytics1-c-eqiad']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['analytics1-c-eqiad']['ipv6'],
         $all_network_subnets['production']['eqiad']['private']['analytics1-d-eqiad']['ipv4'],
+        $all_network_subnets['production']['eqiad']['private']['analytics1-d-eqiad']['ipv6'],
     ]
 
     # Networks that trebuchet/git-deploy
