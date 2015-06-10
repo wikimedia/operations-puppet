@@ -2,4 +2,4 @@
 role::ipsec::hosts:
   - 'berkelium.eqiad.wmnet'
   - 'curium.eqiad.wmnet'
-
+ganglia_class: "new"

@@ -4,3 +4,4 @@ admin::groups:
   - parsoid-admin
   - ocg-render-admins
   - bastiononly
+ganglia_class: "new"

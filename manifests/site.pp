@@ -307,7 +307,6 @@ node 'californium.wikimedia.org' {
 # DHCP / TFTP
 node 'carbon.wikimedia.org' {
     $cluster = 'misc'
-    $ganglia_aggregator = true
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',

@@ -1,3 +1,4 @@
 admin::groups:
   - parsoid-roots
   - parsoid-admin
+ganglia_class: "new"

@@ -1,3 +1,4 @@
 admin::groups:
   - udp2log-users
   - restricted
+ganglia_class: "new"
