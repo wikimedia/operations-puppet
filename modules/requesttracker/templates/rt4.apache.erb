@@ -4,12 +4,20 @@
 
   ServerName <%=@apache_site%>
 
-  RewriteEngine On
-  RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteCond %{REQUEST_URI} !^/status$
-  RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
-  Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
-  Header always set Strict-Transport-Security "max-age=604800"
+  RewriteEngine on
+  RewriteRule ^/(.*)$ https://<%=@apache_site%>/$1 [R=301]
+
+</VirtualHost>
+
+<VirtualHost *:443>
+
+  ServerName <%=@apache_site%>
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/localcerts/rt.wikimedia.org.crt
+  SSLCertificateKeyFile /etc/ssl/private/rt.wikimedia.org.key
+  SSLCACertificatePath /etc/ssl/certs
+  <%= @ssl_settings.join("\n") %>
 
   AddDefaultCharset UTF-8
 
