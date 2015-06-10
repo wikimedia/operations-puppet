@@ -11,7 +11,7 @@ class role::cache::mobile (
 
     include lvs::configuration
     class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site],
+        realserver_ips => $lvs::configuration::lvs_service_ips['mobile'][$::site],
     }
 
     $mobile_nodes = hiera('cache::mobile::nodes')
