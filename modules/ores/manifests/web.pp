@@ -25,7 +25,7 @@ class ores::web(
                     'myspell-en-gb', 'myspell-en-us',
                     'myspell-en-za', 'myspell-fr')
 
-    $src_path = '/srv/ores/src'
+    $config_path = '/srv/ores/config'
     $venv_path = '/srv/ores/venv'
     $data_path = '/srv/ores/data'
 
@@ -48,9 +48,9 @@ class ores::web(
         require => File['/srv'],
     }
 
-    git::clone { 'ores-src':
-        origin    => 'https://github.com/halfak/Objective-Revision-Evaluation-Service.git',
-        directory => $src_path,
+    git::clone { 'ores-wm-config':
+        origin    => 'https://github.com/wiki-ai/ores-wikimedia-config.git',
+        directory => $config_path,
         branch    => $branch,
         ensure    => 'latest',
         owner     => 'www-data',
@@ -62,12 +62,11 @@ class ores::web(
         settings => {
             uwsgi => {
                 plugins     => 'python3',
-                protocol    => 'uwsgi',
-                'wsgi-file' => "${src_path}/ores.wsgi",
+                'wsgi-file' => "${config_path}/ores.wmflabs.org.wsgi",
                 master      => true,
-                chdir       => $src_path,
+                chdir       => $config_path,
                 http-socket => '0.0.0.0:8080',
-                venv        => '/srv/ores/venv',
+                venv        => $venv_path,
                 processes   => inline_template('<%= @processorcount.to_i * 4 %>'),
             }
         }
