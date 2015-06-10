@@ -748,7 +748,6 @@ ssh::server::explicit_macs: false
 "hhvm::base_jit_size": 183500800
 "role::logging::mediawiki::log_directory": /data/project/logs
 "role::mediawiki::webserver::pool": one-pool-to-rule-them-all
-"mediawiki::users::web": www-data
 "beta::syncsiteresources::user": www-data
 "role::url_downloader::url_downloader_ip": 10.68.16.135
 "zotero::http_proxy": deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080

@@ -2,4 +2,4 @@ cluster: videoscaler
 admin::groups:
   - deployment
 mediawiki::jobrunner::runners_transcode: 5
-mediawiki::users::web: www-data
+

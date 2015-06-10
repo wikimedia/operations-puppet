@@ -3,7 +3,6 @@ base::resolving::domain_search:
   - eqiad.wmnet
   - esams.wikimedia.org
   - codfw.wmnet
-mediawiki::users::web: www-data
 admin::groups:
   - deployment
   - parsoid-admin

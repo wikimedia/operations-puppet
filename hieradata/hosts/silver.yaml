@@ -1,4 +1,3 @@
-mediawiki::users::web: www-data
 cluster: virt
 admin::groups:
   - deployment
