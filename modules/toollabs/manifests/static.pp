@@ -9,8 +9,8 @@ class toollabs::static(
     include toollabs::infrastructure
 
     if $ssl_certificate_name != false {
-        install_certificate { $ssl_certificate_name:
-            privatekey => false,
+        sslcert::certificate { $ssl_certificate_name:
+            source => "puppet:///files/ssl/$ssl_certificate_name.crt",
         }
     }
 

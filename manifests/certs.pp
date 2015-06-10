@@ -1,13 +1,6 @@
-define install_certificate(
-    $privatekey=true,
-) {
+define install_certificate {
     sslcert::certificate { $name:
-        source => "puppet:///files/ssl/${name}.crt",
-    }
-
-    if ( $privatekey == true ) {
-        Sslcert::Certificate[$name] {
-            private => "puppet:///private/ssl/${name}.key",
-        }
+        source  => "puppet:///files/ssl/${name}.crt",
+        private => "puppet:///private/ssl/${name}.key",
     }
 }

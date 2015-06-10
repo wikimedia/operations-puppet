@@ -9,9 +9,9 @@ class toollabs::proxy(
     include base::firewall
 
     if $ssl_install_certificate {
-        install_certificate { $ssl_certificate_name:
-            privatekey => false,
-            before     => Class['::dynamicproxy'],
+        sslcert::certificate { $ssl_certificate_name:
+            source => "puppet:///files/ssl/$ssl_certificate_name.crt",
+            before => Class['::dynamicproxy'],
         }
     }
 
