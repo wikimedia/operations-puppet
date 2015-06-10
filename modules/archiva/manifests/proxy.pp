@@ -43,20 +43,11 @@ class archiva::proxy(
             install_certificate{ $certificate_name:
                 before => Nginx::Site['archiva'],
             }
-            # Should the ssl_certificate use a chained cert?
-            $chained = $ca_name ? {
-                undef   => '',
-                default => '.chained'
-            }
-        }
-        else {
-            # Don't use a chained cert for snakeoil
-            $chained = ''
         }
 
-        $ssl_certificate = $certificate_name ? {
+        $ssl_certificate_chained = $certificate_name ? {
             'ssl-cert-snakeoil' => '/etc/ssl/certs/ssl-cert-snakeoil.pem',
-            default             => "/etc/ssl/localcerts/${certificate_name}${chained}.crt",
+            default             => "/etc/ssl/localcerts/${certificate_name}.chained.crt",
         }
         $ssl_certificate_key = "/etc/ssl/private/${certificate_name}.key"
 
@@ -65,7 +56,7 @@ class archiva::proxy(
             $archiva_server_properties,
             ssl_ciphersuite('nginx', 'compat'),
             [
-                "ssl_certificate     ${ssl_certificate};",
+                "ssl_certificate     ${ssl_certificate_chained};",
                 "ssl_certificate_key ${ssl_certificate_key};",
             ],
         ]
@@ -90,8 +81,8 @@ class archiva::proxy(
         content => template('nginx/sites/simple-proxy.erb'),
     }
     nginx::site { 'archiva-force-https':
-        content => template('nginx/sites/force-https.erb'),
         ensure  => $force_https_site_ensure,
+        content => template('nginx/sites/force-https.erb'),
     }
 
     ferm::service { 'http':
