@@ -65,6 +65,18 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
                 command => "$v6_token_cmd && $v6_flush_dyn_cmd",
                 unless  => $v6_token_check_cmd,
             }
+        } else {
+            file { '/etc/init/ipv6-autoconf.conf':
+                source  => 'puppet:///modules/interface/ipv6-autoconf.upstart',
+                require => Interface::Ip[$title],
+            }
+
+            # This actually disables autoconf for all interfaces but it should be OK.
+            service { 'ipv6-autoconf':
+                ensure   => running,
+                provider => 'upstart',
+                require  => File['/etc/init/ipv6-autoconf.conf'],
+            }
         }
     }
 }

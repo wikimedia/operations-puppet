@@ -1,0 +1,11 @@
+description "Disable IPv6 autoconfiguration"
+
+start on (starting network-interface
+          or starting network-manager
+          or starting networking)
+
+task
+script
+    for ifce in /proc/sys/net/ipv6/conf/*/autoconf; do echo 0 > $ifce; done
+    /bin/ip -6 address flush dynamic
+end script
