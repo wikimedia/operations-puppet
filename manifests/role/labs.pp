@@ -42,11 +42,13 @@ class role::labs::instance {
         ensure => present,
     }
 
+    $nfs_mounts = hiera('nfs_mounts')
+
     $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc'
     $nfs_server = 'labstore.svc.eqiad.wmnet'
     $dumps_server = 'labstore1003.eqiad.wmnet'
 
-    if hiera('has_shared_home', true) {
+    if $nfs_mounts['home'] {
         mount { '/home':
             ensure  => mounted,
             atboot  => true,
@@ -57,7 +59,7 @@ class role::labs::instance {
         }
     }
 
-    if hiera('has_shared_project_space', true) {
+    if $nfs_mounts['project'] or $nfs_mounts['scratch'] {
         # Directory for data mounts
         file { '/data':
             ensure => directory,
@@ -65,7 +67,9 @@ class role::labs::instance {
             group  => 'root',
             mode   => '0755',
         }
+    }
 
+    if $nfs_mounts['project'] {
         file { '/data/project':
             ensure  => directory,
             require => File['/data'],
@@ -79,7 +83,9 @@ class role::labs::instance {
             device  => "${nfs_server}:/project/${instanceproject}/project",
             require => File['/data/project', '/etc/modprobe.d/nfs-no-idmap'],
         }
+    }
 
+    if $nfs_mounts['scratch'] {
         file { '/data/scratch':
             ensure  => directory,
             require => File['/data'],
@@ -95,17 +101,19 @@ class role::labs::instance {
         }
     }
 
-    file { '/public/dumps':
-        ensure  => directory,
-        require => File['/public'],
-    }
-    mount { '/public/dumps':
-        ensure  => mounted,
-        atboot  => true,
-        fstype  => 'nfs',
-        options => "ro,${nfs_opts}",
-        device  => "${dumps_server}:/dumps",
-        require => File['/public/dumps', '/etc/modprobe.d/nfs-no-idmap'],
+    if $nfs_mounts['dumps'] {
+        file { '/public/dumps':
+            ensure  => directory,
+            require => File['/public'],
+        }
+        mount { '/public/dumps':
+            ensure  => mounted,
+            atboot  => true,
+            fstype  => 'nfs',
+            options => "ro,${nfs_opts}",
+            device  => "${dumps_server}:/dumps",
+            require => File['/public/dumps', '/etc/modprobe.d/nfs-no-idmap'],
+        }
     }
 
     file { '/public/keys':

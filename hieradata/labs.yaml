@@ -45,3 +45,8 @@ nrpe::allowed_hosts: '10.68.16.195'
 labs_puppet_master: "labs-puppetmaster-eqiad.wikimedia.org"
 labs_puppet_master_secondary: "labs-puppetmaster-codfw.wikimedia.org"
 labs_recursor: "labs-recursor0.wikimedia.org"
+nfs_mounts:
+  project: true
+  home: true
+  scratch: true
+  dumps: true
