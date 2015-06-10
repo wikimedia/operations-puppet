@@ -3,7 +3,7 @@
 class lvs::monitor {
     include lvs::configuration
 
-    $ip = $lvs::configuration::lvs_service_ips['production']
+    $ip = $lvs::configuration::lvs_service_ips
 
     # INTERNAL EQIAD
 

@@ -73,7 +73,7 @@ class role::mediawiki::webserver($pool) {
 
     if hiera('has_lvs', true) {
         include ::lvs::configuration
-        $ips = $lvs::configuration::lvs_service_ips[$::realm][$pool][$::site]
+        $ips = $lvs::configuration::lvs_service_ips[$pool][$::site]
 
         class { 'lvs::realserver':
             realserver_ips => $ips,
