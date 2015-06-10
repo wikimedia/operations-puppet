@@ -42,8 +42,8 @@ class role::protoproxy::ssl::beta::common {
     include standard
     include role::protoproxy::ssl::common
 
-    install_certificate { 'star.wmflabs.org':
-        privatekey => false,
+    sslcert::certificate { 'star.wmflabs.org':
+        source => 'puppet:///files/ssl/star.wmflabs.org.crt',
     }
 
 }
