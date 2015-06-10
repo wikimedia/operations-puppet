@@ -173,16 +173,8 @@ spec: &spec
   title: "The RESTBase root"
   # Some more general RESTBase info
   paths:
-    # Group 0 and test wikis
-    /{domain:www.mediawiki.org}: *wp/default/1.0.0
-    /{domain:test.wikipedia.org}: *wp/default/1.0.0
-    /{domain:test2.wikipedia.org}: *wp/default/1.0.0
-    /{domain:test.wikidata.org}: *wp/default/1.0.0
 
-    # Commons
-    /{domain:commons.wikimedia.org}: *wp/default/1.0.0
-
-    # Wikipedia
+    # wikipedia
     /{domain:ab.wikipedia.org}: *wp/default/1.0.0
     /{domain:ace.wikipedia.org}: *wp/default/1.0.0
     /{domain:af.wikipedia.org}: *wp/default/1.0.0
@@ -460,6 +452,9 @@ spec: &spec
     /{domain:zh-min-nan.wikipedia.org}: *wp/default/1.0.0
     /{domain:zh-yue.wikipedia.org}: *wp/default/1.0.0
     /{domain:zu.wikipedia.org}: *wp/default/1.0.0
+    /{domain:nostalgia.wikipedia.org}: *wp/default/1.0.0
+    /{domain:test.wikipedia.org}: *wp/default/1.0.0
+    /{domain:test2.wikipedia.org}: *wp/default/1.0.0
 
     # Wiktionary
     /{domain:af.wiktionary.org}: *wp/default/1.0.0
@@ -885,6 +880,49 @@ spec: &spec
     /{domain:uk.wikivoyage.org}: *wp/default/1.0.0
     /{domain:vi.wikivoyage.org}: *wp/default/1.0.0
     /{domain:zh.wikivoyage.org}: *wp/default/1.0.0
+
+    # wikimedia
+    /{domain:ar.wikimedia.org}: *wp/default/1.0.0
+    /{domain:bd.wikimedia.org}: *wp/default/1.0.0
+    /{domain:be.wikimedia.org}: *wp/default/1.0.0
+    /{domain:br.wikimedia.org}: *wp/default/1.0.0
+    /{domain:ca.wikimedia.org}: *wp/default/1.0.0
+    /{domain:cn.wikimedia.org}: *wp/default/1.0.0
+    /{domain:co.wikimedia.org}: *wp/default/1.0.0
+    /{domain:commons.wikimedia.org}: *wp/default/1.0.0
+    /{domain:dk.wikimedia.org}: *wp/default/1.0.0
+    /{domain:donate.wikimedia.org}: *wp/default/1.0.0
+    /{domain:et.wikimedia.org}: *wp/default/1.0.0
+    /{domain:fi.wikimedia.org}: *wp/default/1.0.0
+    /{domain:incubator.wikimedia.org}: *wp/default/1.0.0
+    /{domain:wikitech.wikimedia.org}: *wp/default/1.0.0
+    /{domain:login.wikimedia.org}: *wp/default/1.0.0
+    /{domain:meta.wikimedia.org}: *wp/default/1.0.0
+    /{domain:mk.wikimedia.org}: *wp/default/1.0.0
+    /{domain:mx.wikimedia.org}: *wp/default/1.0.0
+    /{domain:nl.wikimedia.org}: *wp/default/1.0.0
+    /{domain:no.wikimedia.org}: *wp/default/1.0.0
+    /{domain:nyc.wikimedia.org}: *wp/default/1.0.0
+    /{domain:outreach.wikimedia.org}: *wp/default/1.0.0
+    /{domain:pl.wikimedia.org}: *wp/default/1.0.0
+    /{domain:rs.wikimedia.org}: *wp/default/1.0.0
+    /{domain:ru.wikimedia.org}: *wp/default/1.0.0
+    /{domain:se.wikimedia.org}: *wp/default/1.0.0
+    /{domain:species.wikimedia.org}: *wp/default/1.0.0
+    /{domain:tr.wikimedia.org}: *wp/default/1.0.0
+    /{domain:ua.wikimedia.org}: *wp/default/1.0.0
+    /{domain:vote.wikimedia.org}: *wp/default/1.0.0
+    /{domain:wikimania2014.wikimedia.org}: *wp/default/1.0.0
+    /{domain:wikimania2015.wikimedia.org}: *wp/default/1.0.0
+    /{domain:wikimania2016.wikimedia.org}: *wp/default/1.0.0
+
+    # specials
+    /{domain:wikimediafoundation.org}: *wp/default/1.0.0
+    /{domain:www.mediawiki.org}: *wp/default/1.0.0
+    /{domain:wikisource.org}: *wp/default/1.0.0
+    /{domain:test.wikidata.org}: *wp/default/1.0.0
+    /{domain:www.wikidata.org}: *wp/default/1.0.0
+
 
 # The main service setup. Each worker can offer one or more services.
 services:
