@@ -1,0 +1,9 @@
+Verified+2: jenkins-bot
+Code-Review+2: Yuvipanda <yuvipanda@gmail.com>
+Code-Review+1: Merlijn van Deen <valhallasw@arctus.nl>
+Code-Review+1: BBlack <bblack@wikimedia.org>
+Submitted-by: Yuvipanda <yuvipanda@gmail.com>
+Submitted-at: Wed, 10 Jun 2015 12:12:12 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/214766
+Project: operations/puppet
+Branch: refs/heads/production
