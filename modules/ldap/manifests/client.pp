@@ -194,6 +194,15 @@ class ldap::client::utils($ldapconfig) {
                 ensure => present,
                 system => true,
             }
+
+            # Old names for the script and user ^
+            file { '/usr/local/sbin/ldapkeys':
+                ensure => absent,
+            }
+
+            user { 'ldapkeys':
+                ensure => absent,
+            }
         }
     }
 
