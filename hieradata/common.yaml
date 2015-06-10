@@ -39,9 +39,7 @@ ganglia_clusters:
     name: "Miscellaneous"
     id: 8
     sites:
-      eqiad:
-        - carbon.wikimedia.org
-        - ms1004.eqiad.wmnet
+      eqiad: []
       codfw: []
       esams: []
   appserver:
