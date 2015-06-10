@@ -23,7 +23,7 @@ class Hiera
             YAML.load(content)
           end
 
-          next if data.nil? or data.empty?
+          next if data.nil? || data.empty?
           next unless data.include?(key)
 
           new_answer = Backend.parse_answer(data[key], scope)
