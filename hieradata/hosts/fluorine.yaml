@@ -1,3 +1,4 @@
 admin::groups:
   - deployment
   - restricted
+ganglia_class: "new"
