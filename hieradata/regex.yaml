@@ -30,6 +30,10 @@ jobrunner:
   __regex: !ruby/regexp /^mw100[1-2]\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+misc:
+  __regex: !ruby/regexp /^ ????? $/
+  ganglia_class: "new"
+
 cassandra_test:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   cassandra::seeds:
