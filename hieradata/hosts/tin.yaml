@@ -9,3 +9,4 @@ admin::groups:
   - parsoid-admin
   - ocg-render-admins
 cluster: misc
+ganglia_class: "new"

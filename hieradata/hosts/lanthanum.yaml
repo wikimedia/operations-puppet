@@ -4,3 +4,4 @@ admin::groups:
   - contint-roots
 ssh::server::disable_nist_kex: false
 ssh::server::explicit_macs: false
+ganglia_class: "new"

@@ -4,6 +4,9 @@ api_appserver:
 
 appserver:
   __regex: !ruby/regexp /^mw1(01[7-9]|02[0-5]|02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3]|149|15[0-1]|16[1-9]|17[0-9]|18[0-8]|209|21[0-9]|220|23[6-9]|24[0-9]|25[0-8])\.eqiad\.wmnet$/
+
+conf:
+  __regex: !ruby/regexp /^conf100\d\.eqiad\.wmnet$/
   ganglia_class: "new"
 
 es_rack_a3:
@@ -54,6 +57,14 @@ cache_upload:
   __regex: !ruby/regexp /^cp10(4[89]|5[01]|6[1-4]|7[1-4]|99)\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+ganeti:
+  __regex: !ruby/regexp /^ganeti100\d\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
+graphite:
+  __regex: !ruby/regexp /^graphite100\d\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 ocg:
   __regex: !ruby/regexp /^ocg100\d\.eqiad\.wmnet$/
   ganglia_class: "new"
@@ -88,6 +99,9 @@ redis:
 
 service_cluster_a:
   __regex: !ruby/regexp /^sca100[12]\.eqiad\.wmnet$/
+
+snapshot:
+  __regex: !ruby/regexp /^snapshot100[1-4]\.eqiad\.wmnet$/
 
 swift:
   __regex: !ruby/regexp /^(ms-be|ms-fe)10[0-1][1-9]\.eqiad\.wmnet$/
