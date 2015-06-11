@@ -80,14 +80,14 @@ class labs_bootstrapvz() {
         require => File["${bootstrap_filepath}/puppet"],
     } ~>
 
-    exec { "sed -i '${projectregex}' ${bootstrap_filepath}/puppet/puppet.conf":
-    } ~>
-
     exec { "sed -i '${fqdnregex}' ${bootstrap_filepath}/puppet/puppet.conf":
     } ~>
 
     exec { "sed -i '${masterregex}' ${bootstrap_filepath}/puppet/puppet.conf":
     }
+
+    exec { "sed -i '${projectregex}' ${bootstrap_filepath}/puppet/puppet.conf":
+    } ~>
 
     # The bootstrap run tends to time out during apt
     apt::conf { 'bootstrap-timeout':
