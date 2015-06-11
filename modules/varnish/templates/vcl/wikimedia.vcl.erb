@@ -176,7 +176,7 @@ sub https_recv_redirect {
 					set req.http.Location = regsub(req.url, "(?i)^http:", "https:");
 					error 751 "TLS Redirect";
 				}
-				if (req.url ~ "(?i)^https?://(ca|el|he|it)\.wikipedia\.") {
+				if (req.url ~ "(?i)^https?://(ca|el|he|it)\.(m\.)?wikipedia\.") {
 					set req.http.Location = regsub(req.url, "(?i)^http:", "https:");
 					error 752 "TLS Redirect";
 				}
@@ -186,7 +186,7 @@ sub https_recv_redirect {
 					set req.http.Location = "https://" + req.http.Host + req.url;
 					error 751 "TLS Redirect";
 				}
-				if(req.http.Host ~ "(?i)^(ca|el|he|it)\.wikipedia\.") {
+				if(req.http.Host ~ "(?i)^(ca|el|he|it)\.(m\.)?wikipedia\.") {
 					set req.http.Location = "https://" + req.http.Host + req.url;
 					error 752 "TLS Redirect";
 				}
