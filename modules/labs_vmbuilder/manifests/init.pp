@@ -48,6 +48,14 @@ class labs_vmbuilder($vmbuilder_version) {
                     ],
     }
 
+    file { "${vmbuilder_filepath}/labs_profile.sh":
+        mode    => '0555',
+        source  => 'puppet:///modules/labs_vmbuilder/labs_profile.sh',
+        require => [Package['python-vm-builder'],
+                    File[$vmbuilder_filepath],
+                    ],
+    }
+
     file { "${vmbuilder_filepath}/vmbuilder.partition":
         mode    => '0555',
         source  => 'puppet:///modules/labs_vmbuilder/vmbuilder.partition',

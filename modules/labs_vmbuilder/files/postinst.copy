@@ -25,3 +25,4 @@
 /etc/vmbuilder/files/resolv.conf /etc/resolv.conf
 /etc/vmbuilder/files/vmbuilder_version /etc/wmflabs_imageversion
 /etc/vmbuilder/files/cloud.cfg /etc/cloud/cloud.cfg
+/etc/vmbuilder/files/labs_profile.sh /etc/profile.d/labs_profile.sh
