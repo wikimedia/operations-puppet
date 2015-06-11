@@ -36,6 +36,12 @@ class racktables (
         source => 'puppet:///files/apache/conf.d/namevirtualhost',
     }
 
-
+    # Increase the default memory limit
+    file_line { 'racktables_php_memory':
+        path    => '/etc/php5/apache2/php.ini',
+        line    => 'memory_limit = 256M',
+        match   => '^\s*memory_limit',
+        require => Class['::apache::mod::php5'],
+        notify  => Class['::apache'],
+    }
 }
-
