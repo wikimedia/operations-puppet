@@ -10,8 +10,6 @@
             "exclude": [
                 "AssembleUploadChunks",
                 "MessageIndexRebuildJob",
-                "ParsoidCacheUpdateJobOnDependencyChange",
-                "ParsoidCacheUpdateJobOnEdit",
                 "RestbaseUpdateJobOnEdit",
                 "RestbaseUpdateJobOnDependencyChange",
                 "PublishStashedFile",
@@ -33,15 +31,6 @@
                 "gwtoolsetUploadMetadataJob",
                 "gwtoolsetUploadMediafileJob",
                 "gwtoolsetGWTFileBackendCleanupJob"
-            ]
-        },
-        "parsoid": {
-            "runners": <%= @runners_parsoid %>,
-            "include": [
-                "ParsoidCacheUpdateJobOnEdit"
-            ],
-            "low-priority": [
-                "ParsoidCacheUpdateJobOnDependencyChange"
             ]
         },
         "restbase": {
