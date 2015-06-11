@@ -110,6 +110,12 @@ if [ $? -eq 0 ];  then
 else
     echo "domain ${project}.${domain}" >> /etc/resolv.conf
 fi
+grep search /etc/resolv.conf
+if [ $? -eq 0 ];  then
+    sed -i "s/^search .*$/domain ${project}.${domain}/g" /etc/resolv.conf
+else
+    echo "search ${project}.${domain}" >> /etc/resolv.conf
+fi
 
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
