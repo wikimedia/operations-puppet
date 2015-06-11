@@ -78,15 +78,12 @@ packages:
     - atop
     - virt-what
     - pv
-    - python-mwclient
     - ldapvi
     - ack-grep
     - ethtool
-    - megacli
     - debian-goodies
     - python-redis
     - python-apt
-    - quickstack
 plugins:
   root_password:
     password: test
