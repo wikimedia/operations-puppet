@@ -1,0 +1,2 @@
+/usr/bin/printf 'APP_KEY=' >> <%= @install_dir %>/.env
+php artisan key:generate | sed -e 's/.*\[\(.*\)\].*/\1/' >> <%= @install_dir %>/.env
