@@ -203,7 +203,6 @@ plugins:
       - ['chroot', '{root}', 'rm', '-f', '/etc/ssh/ssh_host*key*']
       - ['chroot', '{root}', 'rm', '-f', '/etc/sudo-ldap.conf']
       - ['chroot', '{root}', 'ln', '-s', '/etc/ldap/ldap.conf', '/etc/sudo-ldap.conf']
-      - ['chroot', '{root}', 'rm', '-f', '/etc/resolv.conf']
       - ['chroot', '{root}', 'rm', '-f', '/etc/resolvconf/resolv.conf.d/original']
 
   unattended_upgrades:
