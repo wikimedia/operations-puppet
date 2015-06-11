@@ -741,7 +741,6 @@ ssh::server::explicit_macs: false
 "mediawiki::jobrunner::statsd_server": labmon1001.eqiad.wmnet
 "mediawiki::jobrunner::runners_basic": 5
 "mediawiki::jobrunner::runners_gwt": 1
-"mediawiki::jobrunner::runners_parsoid": 5
 "mediawiki::jobrunner::runners_restbase": 5
 "mediawiki::jobrunner::runners_translate": 1
 "mediawiki::jobrunner::runners_upload": 2
