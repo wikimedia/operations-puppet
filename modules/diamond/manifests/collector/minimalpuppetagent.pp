@@ -16,6 +16,6 @@ define diamond::collector::minimalpuppetagent {
 
     diamond::collector { 'MinimalPuppetAgent':
         source  => 'puppet:///modules/diamond/collector/minimalpuppetagent.py',
-        require => Package['python-yaml'],
+        require => Package['python-yaml', 'python-diamond'],
     }
 }
