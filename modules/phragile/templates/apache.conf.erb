@@ -1,0 +1,12 @@
+ServerName <%= @vhost_name %>
+DocumentRoot <%= @install_dir %>/public
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ /index.php [L]
+
+<Directory />
+  AllowOverride All
+  Require all granted
+</Directory>
+
