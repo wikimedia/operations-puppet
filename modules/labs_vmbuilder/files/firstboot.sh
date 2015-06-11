@@ -72,7 +72,21 @@ sed -i "s/_PROJECT_/${project}/g" /etc/sudo-ldap.conf
 sed -i "s/_PROJECT_/${project}/g" /etc/nslcd.conf
 sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
-sed -i "s/_PROJECT_/${project}/g" /etc/resolv.conf
+
+
+# Set resolv.conf and stop anyone else from messing with it.
+echo "" > /sbin/resolvconf
+mkdir /etc/dhcp/dhclient-enter-hooks.d
+echo ":#!/bin/sh" > /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
+echo "make_resolv_conf() {" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
+echo "        :" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
+echo "}" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
+grep domain /etc/resolv.conf
+if [ $? -eq 0 ];  then
+    sed -i "s/^domain .*$/domain ${project}.${domain}/g" /etc/resolv.conf
+else
+    echo "domain ${project}.${domain}" >> /etc/resolv.conf
+fi
 
 /etc/init.d/nslcd restart
 /etc/init.d/nscd restart
