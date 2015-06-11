@@ -23,7 +23,7 @@ class role::restbase {
 class role::restbase::alerts {
     monitoring::graphite_threshold { 'restbase_request_5xx_rate':
         description    => 'RESTBase req/s returning 5xx',
-        metric         => 'restbase.v1_page_html_-title-_-revision--_tid-.GET.5xx.sample_rate',
+        metric         => 'transformNull(restbase.v1_page_html_-title-_-revision--_tid-.GET.5xx.sample_rate, 0)',
         from           => '10min',
         warning        => '1', # 1 5xx/s
         critical       => '3', # 5 5xx/s
