@@ -13,7 +13,7 @@ max connections = <%= @max_connections %>
 <% if @comment %>comment               = <%= @comment %><% end %>
 <% if @secrets_file %>secrets file = <%= @secrets_file %><% end %>
 <% if @auth_users %>auth users = <%= @auth_users.to_a.join(', ')%><% end %>
-<% if @hosts_allow %>hosts allow = <%= @hosts_allow.to_a.join(' ')%><% end %>
-<% if @hosts_deny %>hosts deny = <%= @hosts_deny.to_a.join(' ')%><% end %>
+<% if @hosts_allow %>hosts allow = <%= @hosts_allow.to_a.join(' ').gsub('::/64','::') %><% end %>
+<% if @hosts_deny %>hosts deny = <%= @hosts_deny.to_a.join(' ').gsub('::/64', '::') %><% end %>
 
 
