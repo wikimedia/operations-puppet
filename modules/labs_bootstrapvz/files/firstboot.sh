@@ -97,13 +97,13 @@ sed -i "s/_PROJECT_/${project}/g" /etc/nslcd.conf
 sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 sed -i "s/^domain .*$/domain ${fqdn}/g" /etc/resolv.conf
+nscd -i hosts
 
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
 # it isn't perfect
 mkdir /var/lib/puppet/client
 
-puppet agent --enable
 
 systemctl restart nslcd.service
 systemctl restart nscd.service
@@ -137,5 +137,6 @@ if [ $i -eq $tries ]; then
     echo "Warning:  Timed out trying to detect NFS mounts."
 fi
 
+puppet agent --enable
 # Force initial puppet run
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${idfqdn} --server=${master}

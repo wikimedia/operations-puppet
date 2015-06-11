@@ -41,8 +41,6 @@ then
 fi
 # At this point, all (the rest of) our disk are belong to LVM.
 
-puppet agent --enable
-
 binddn=`grep 'binddn' /etc/ldap.conf | sed 's/.* //'`
 bindpw=`grep 'bindpw' /etc/ldap.conf | sed 's/.* //'`
 hostsou=`grep 'nss_base_hosts' /etc/ldap.conf | sed 's/.* //'`
@@ -75,6 +73,7 @@ sed -i "s/_PROJECT_/${project}/g" /etc/nslcd.conf
 sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 sed -i "s/^domain .*$/domain ${fqdn}/g" /etc/resolv.conf
+nscd -i hosts
 
 /etc/init.d/nslcd restart
 /etc/init.d/nscd restart
@@ -109,5 +108,6 @@ if [ $i -eq $tries ]; then
     echo "Warning:  Timed out trying to detect NFS mounts."
 fi
 
+puppet agent --enable
 # Force initial puppet run
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${fqdn} --server=${master}
