@@ -1,0 +1,70 @@
+<%
+def backend_option(backend, option, default)
+	if @varnish_backend_options.kind_of?(Array)
+		# List of hashes of options, 'backend_match' key is a regexp against the FQDN
+		@varnish_backend_options.each do |be_options|
+			if Regexp.new(be_options.fetch("backend_match", "^.*$")).match(backend)
+				if be_options.has_key?(option)
+					return be_options[option]
+				end
+			end
+		end
+		return default
+	else
+		return @varnish_backend_options.fetch(option, default)
+	end
+end
+
+
+# Calculates number of director-level retries necessary for chash to hit all
+# "n" backends with probability percentage "p", given they're randomly-mixed
+# into an array considerably larger in size than "n".  This is an
+# overestimation in that it assumes an infinite array, but the values still
+# come out reasonably small compared to doing anything based on our actual
+# weight*num_backends.
+# Blame _joe_ for the math! :)
+def chash_def_retries(p, n)
+	return ((Math.log10(100 - p) - 2) / (Math.log10(n - 1) - Math.log10(n))).ceil
+end
+-%>
+# List of Puppet generated backends
+<%
+@varnish_backends.each do |backend|
+	name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+	probe = backend_option(backend, "probe", nil)
+-%>
+backend <%= name %> {
+	.host = "<%= backend %>";
+	.port = "<%= backend_option(backend, "port", "80") %>";
+	.connect_timeout = <%= backend_option(backend, "connect_timeout", "2s") %>;
+	.first_byte_timeout = <%= backend_option(backend, "first_byte_timeout", "35s") %>;
+	.between_bytes_timeout = <%= backend_option(backend, "between_bytes_timeout", "2s") %>;
+	.max_connections = <%= backend_option(backend, "max_connections", "100") %>;
+<% if probe -%>
+	.probe = <%= probe %>;
+<% end -%>
+}
+
+<% end -%>
+
+# Directors
+# Expected format: { "director name" => [ "backend1", "backend2" ] }
+<% @varnish_directors.keys.sort.each do |director| -%>
+director <%= director %> <%= @director_type %> {
+<% @director_options.each_pair do |option,value| -%>
+	.<%= option %> = <%= value %>;
+<% end -%>
+<% if @director_type == 'chash' && !@director_options.has_key?('retries') %>
+	.retries = <%= chash_def_retries(99, @varnish_directors[director].size) %>;
+<% end -%>
+<%
+	@varnish_directors[director].each do |backend|
+		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+-%>
+	{
+		.backend = <%= name %>;
+		.weight = <%= backend_option(backend, "weight", 10) %>;
+	}
+<% 	end -%>
+}
+<% end -%>

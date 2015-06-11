@@ -55,6 +55,17 @@ define varnish::instance(
         content => template("${module_name}/vcl/wikimedia.vcl.erb"),
     }
 
+    # Separate file for backends and directors.
+    file { "/etc/varnish/directors_${vcl}.vcl":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("${module_name}/vcl/directors.vcl.erb"),
+        require => File["/etc/varnish/${vcl}.inc.vcl"],
+        before  => File["/etc/varnish/wikimedia_${vcl}.vcl"],
+        notify  => Exec["load-new-vcl-file${instancesuffix}"],
+    }
+
     file { "/etc/varnish/${vcl}.inc.vcl":
         owner   => 'root',
         group   => 'root',
