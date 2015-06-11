@@ -35,7 +35,6 @@ else
   rm -f /etc/sudo-ldap.conf
   ln -s /etc/ldap/ldap.conf /etc/sudo-ldap.conf
   useradd -r -d /var/lib/icinga -s /bin/false icinga
-  rm -f /etc/resolv.conf
   rm -f /etc/resolvconf/resolv.conf.d/original
 
 fi
