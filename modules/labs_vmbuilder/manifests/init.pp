@@ -104,4 +104,11 @@ class labs_vmbuilder($vmbuilder_version) {
 
     exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/puppet.conf":
     }
+
+    exec { "cp /etc/resolv.conf ${vmbuilder_filepath}/resolv.conf":
+        subscribe => File['vmbuilder_version'],
+    } ~>
+
+    exec { "sed -i '${projectregex}' ${vmbuilder_filepath}/resolv.conf":
+    }
 }

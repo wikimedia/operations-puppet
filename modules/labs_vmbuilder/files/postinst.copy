@@ -22,6 +22,9 @@
 /etc/vmbuilder/files/nslcd.conf /etc/nslcd.conf
 /etc/vmbuilder/files/nss_ldap.conf /etc/ldap/ldap.conf
 /etc/vmbuilder/files/puppet.conf /etc/puppet/puppet.conf.install
+/etc/vmbuilder/files/resolv.conf /etc/resolv.conf
+/sbin/resolvconf /sbin/resolvconf
+/etc/dhcp/dhclient-enter-hooks.d/nodnsupdate /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
 /etc/vmbuilder/files/vmbuilder_version /etc/wmflabs_imageversion
 /etc/vmbuilder/files/cloud.cfg /etc/cloud/cloud.cfg
 /etc/vmbuilder/firstscripts/firstboot.sh /var/lib/cloud/scripts/per-instance/firstboot.sh
