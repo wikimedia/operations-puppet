@@ -1,0 +1,7 @@
+hosts:
+  - https://etcd1001.eqiad.wmnet:2379
+  - https://etcd1002.eqiad.wmnet:2379
+  - https://etcd1003.eqiad.wmnet:2379
+driver_options:
+  ca_cert: /etc/conftool/ca.pem
+
