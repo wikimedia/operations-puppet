@@ -18,8 +18,6 @@ class lvs::balancer(
     include pybal
     include cpufrequtils # defaults to "performance", Ubuntu default is "ondemand"
 
-    system::role { "lvs::balancer": description => "LVS balancer", ensure => absent }
-
     # ethtool is also a package needed but it is included from base
 
     class { 'pybal::configuration':
