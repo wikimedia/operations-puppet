@@ -99,11 +99,18 @@ class openstack::glance::service(
         mode    => '0600',
         require => File['/home/glancesync/.ssh'],
     }
-    cron { 'rsync_glance_images':
-        command     => "/usr/bin/rsync -aS ${image_datadir}/* ${spare_glance_host}:${image_datadir}/",
-        minute      => 15,
-        user        => 'glancesync',
-        require => user['glancesync'],
+    if $spare_glance_host != hiera('labs_nova_controller') {
+        cron { 'rsync_glance_images':
+            command     => "/usr/bin/rsync -aS ${image_datadir}/* ${spare_glance_host}:${image_datadir}/",
+            minute      => 15,
+            user        => 'glancesync',
+            require => user['glancesync'],
+        }
+    } else {
+        # If the primary and the spare are the same, it's not useful to sync
+        cron { 'rsync_glance_images':
+            ensure => absent,
+        }
     }
     cron { 'rsync_chown_images':
         command     => "chown -R glance ${image_datadir}/*",
