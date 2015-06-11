@@ -97,18 +97,17 @@ sed -i "s/_PROJECT_/${project}/g" /etc/nslcd.conf
 sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 sed -i "s/^domain .*$/domain ${fqdn}/g" /etc/resolv.conf
-nscd -i hosts
 
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
 # it isn't perfect
 mkdir /var/lib/puppet/client
 
-
 systemctl restart nslcd.service
 systemctl restart nscd.service
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 systemctl restart ssh.service
+nscd -i hosts
 
 # set mailname
 echo $fqdn > /etc/mailname

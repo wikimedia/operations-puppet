@@ -73,13 +73,13 @@ sed -i "s/_PROJECT_/${project}/g" /etc/nslcd.conf
 sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
 sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 sed -i "s/^domain .*$/domain ${fqdn}/g" /etc/resolv.conf
-nscd -i hosts
 
 /etc/init.d/nslcd restart
 /etc/init.d/nscd restart
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 /etc/init.d/ssh stop
 /etc/init.d/ssh start
+nscd -i hosts
 
 # set mailname
 echo $fqdn > /etc/mailname
