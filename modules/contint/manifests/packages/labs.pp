@@ -136,4 +136,8 @@ class contint::packages::labs {
         }
     }
 
+    if os_version( 'debian >= jessie') {
+        # Lint authdns templates & config
+        include authdns::lint
+    }
 }

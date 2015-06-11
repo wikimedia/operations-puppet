@@ -32,9 +32,6 @@ class contint::packages {
         ensure => present,
     }
 
-    # Lint authdns templates & config
-    include authdns::lint
-
     include subversion::client
 
     # PHP related packages
