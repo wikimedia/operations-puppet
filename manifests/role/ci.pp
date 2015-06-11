@@ -248,7 +248,6 @@ class role::ci::slave::labs::common {
 
     # Jenkins slaves need to access beta cluster for the browsertests
     include contint::firewall::labs
-    include role::zuul::install
 
     if $::site == 'eqiad' {
         # Does not come with /dev/vdb, we need to mount it using lvm
@@ -349,6 +348,7 @@ class role::ci::slave::localbrowser {
     }
 
     include role::ci::slave::labs::common
+    include role::zuul::install
     include contint::browsers
 }
 
@@ -360,6 +360,7 @@ class role::ci::slave::browsertests {
     }
 
     include role::ci::slave::labs::common
+    include role::zuul::install
 
     # We are in labs context, so use /mnt (== /dev/vdb)
     # Never EVER think about using GlusterFS.
@@ -470,6 +471,7 @@ class role::ci::slave::labs {
     }
 
     include role::ci::slave::labs::common
+    include role::zuul::install
 
     include role::ci::slave::localbrowser
 
