@@ -118,6 +118,9 @@ plugins:
         permissions: 755
         owner: root
       -
+        src: /etc/bootstrap-vz/cloud.cfg
+        dst: /etc/cloud/cloud.cfg
+      -
         src: /etc/bootstrap-vz/access.conf
         dst: /etc/security/access.conf
       -
