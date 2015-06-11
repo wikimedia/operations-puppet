@@ -36,6 +36,12 @@ class racktables (
         source => 'puppet:///files/apache/conf.d/namevirtualhost',
     }
 
-
+    # Increase the default memory limit
+    augeas { 'php.ini-memory':
+        context => '/files/etc/php5/apache2/php.ini/PHP',
+        changes => [
+            'set memory_limit 256M',
+        ],
+        notify  => Class['::apache']
+    }
 }
-
