@@ -501,6 +501,9 @@ class role::ci::slave::labs::light {
     include contint::slave-scripts
     include role::ci::slave::labs::common
 
+    # Production DNS migrated to Jessie T98003
+    include authdns::lint
+
 }
 
 # == Class role::ci::publisher::labs
