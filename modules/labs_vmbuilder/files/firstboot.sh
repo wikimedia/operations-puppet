@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -x
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 restart rsyslog
@@ -88,6 +89,7 @@ echo $fqdn > /etc/mailname
 echo -e "master:\n  - ${master}\n  - ${master_secondary}" > /etc/salt/minion
 echo "id: ${fqdn}" >> /etc/salt/minion
 echo "master_finger: ${saltfinger}" >> /etc/salt/minion
+echo ${fqdn}" >> /etc/salt/minion_id
 /etc/init.d/salt-minion restart
 
 # Sleep until the nfs volumes we need are available.
