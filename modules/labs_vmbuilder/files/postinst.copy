@@ -24,3 +24,4 @@
 /etc/vmbuilder/files/puppet.conf /etc/puppet/puppet.conf.install
 /etc/vmbuilder/files/vmbuilder_version /etc/wmflabs_imageversion
 /etc/vmbuilder/files/cloud.cfg /etc/cloud/cloud.cfg
+/etc/vmbuilder/firstscripts/firstboot.sh /var/lib/cloud/scripts/per-instance/firstboot.sh
