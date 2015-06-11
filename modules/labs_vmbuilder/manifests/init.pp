@@ -30,7 +30,7 @@ class labs_vmbuilder($vmbuilder_version) {
     }
 
     file { '/etc/vmbuilder/files/cloud.cfg':
-        mode    => '0555',
+        mode    => '0444',
         source  => 'puppet:///modules/labs_vmbuilder/cloud.cfg',
         require => Package['python-vm-builder'],
     }
