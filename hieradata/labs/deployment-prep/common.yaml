@@ -769,5 +769,5 @@ ssh::server::explicit_macs: false
 nfs_mounts:
   project: true
   home: true
-  scratch: true
+  scratch: false
   dumps: false
