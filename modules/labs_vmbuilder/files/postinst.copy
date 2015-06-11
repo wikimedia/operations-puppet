@@ -22,6 +22,5 @@
 /etc/vmbuilder/files/nslcd.conf /etc/nslcd.conf
 /etc/vmbuilder/files/nss_ldap.conf /etc/ldap/ldap.conf
 /etc/vmbuilder/files/puppet.conf /etc/puppet/puppet.conf.install
-/etc/vmbuilder/files/resolv.conf /etc/resolv.conf
 /etc/vmbuilder/files/vmbuilder_version /etc/wmflabs_imageversion
 /etc/vmbuilder/files/cloud.cfg /etc/cloud/cloud.cfg
