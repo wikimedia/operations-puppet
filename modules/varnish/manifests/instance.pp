@@ -50,18 +50,23 @@ define varnish::instance(
 
     # Write the dynamic directors configuration, if we need it
     if $dynamic_directors {
+        require role::cache::base
         if $name == '' {
             $inst = 'backend'
         } else {
             $inst = $name
         }
-        varnish::common::directors { $vcl:
-            instance      => $inst,
-            directors     => $directors,
-            director_type => $director_type,
-            options       => $director_options,
-            extraopts     => $extraopts,
-            before        => Service["varnish${instancesuffix}"],
+        $use_dynamic_directors = ( !defined(Class['Role::Cache::1layer'])
+            and !($inst == 'backend' and $::role::cache::base::cluster_tier) == 'one')
+        if $use_dynamic_directors {
+            varnish::common::directors { $vcl:
+                instance      => $inst,
+                directors     => $directors,
+                director_type => $director_type,
+                options       => $director_options,
+                extraopts     => $extraopts,
+                before        => Service["varnish${instancesuffix}"],
+            }
         }
     }
 
