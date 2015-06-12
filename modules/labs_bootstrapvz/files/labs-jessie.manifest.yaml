@@ -107,7 +107,12 @@ plugins:
     files:
       -
         src: /etc/bootstrap-vz/firstscripts/firstboot.sh
-        dst: /var/lib/cloud/scripts/per-instance/firstboot.sh
+        dst: /root/firstboot.sh
+        permissions: 755
+        owner: root
+      -
+        src: /etc/bootstrap-vz/firstscripts/firstbootrc
+        dst: /etc/rc.local
         permissions: 755
         owner: root
       -
