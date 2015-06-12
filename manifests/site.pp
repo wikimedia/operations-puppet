@@ -377,7 +377,6 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
-    $ganglia_aggregator = true
     interface::add_ip6_mapped { 'main': }
     role cache::parsoid
 }
