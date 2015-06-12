@@ -54,13 +54,12 @@ class network::constants {
         },
         'labs' => {
             'bastion_hosts' => [
-                    '208.80.155.129', # bastion1.wmflabs.org
-                    '208.80.155.153', # bastion2.wmflabs.org
-                    '208.80.155.154', # bastion3.wmflabs.org
                     '10.68.16.5',   # bastion1.eqiad.wmflabs
                     '10.68.16.66',  # bastion2.eqiad.wmflabs
-                    '10.68.16.67',  # bastion3.eqiad.wmflabs
-                    '10.68.16.68',  # bastion-restricted1.eqiad.wmflabs
+                    '10.68.17.232', # bastion-01.eqiad.wmflabs
+                    '10.68.18.65',  # bastion-02.eqiad.wmflabs
+                    '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
+                    '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
                     ],
             'monitoring_hosts' => [
                     '208.80.153.210',
