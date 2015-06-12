@@ -1,4 +1,4 @@
-title   "HTTP Requests/hour (excludes bits.wikimedia.org: css/js) -1year"
+title   "HTTP Requests/hour -1year"
 linewidth 1
 linemode "connected"
 hide_legend "false"
