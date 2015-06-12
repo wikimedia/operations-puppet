@@ -7,3 +7,6 @@ local-ttl=300
 # <%= k %>
 alias=<%= v['public_ip'] %>,<%= v['private_ip'] %>
 <% end -%>
+
+#Clients should use the designate-backed dns server rather than dnsmasq
+dhcp-option=option:dns-server,<%= @recursor_ip %>
