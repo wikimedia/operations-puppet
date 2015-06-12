@@ -63,6 +63,16 @@ define varnish::instance(
         notify  => Exec["load-new-vcl-file${instancesuffix}"],
     }
 
+    # Write the dynamic directors configuration, if we need it
+    if hiera('varnish::dynamic_directors', false) {
+        varnish::common::directors { $vcl:
+            instance      => $name,
+            directors     => $directors,
+            director_type => $director_type,
+            options       => $director_options,
+        }
+    }
+
     # The defaults file is also parsed by /usr/share/varnish/reload-vcl,
     #   even under systemd where the init part itself does not.  This
     #   situation should be cleaned up later after all varnishes are on
