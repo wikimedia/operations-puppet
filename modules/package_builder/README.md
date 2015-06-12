@@ -5,8 +5,8 @@ A module used to populate a Debian/Ubuntu package building environment. Meant to
 be used in the Wikimedia Labs environment but could be adapted for other
 environments as well.
 
-How to use
-==========
+Setting it up
+=============
 
 Include the package\_builder class in your machine. That can be done with whatever
 ENC you have puppet working with but in Wikimedia Labs you should create a
@@ -27,10 +27,13 @@ would be:
 
 See more below on how to use those
 
+Building packages
+=================
+
 You just either download a ready package and either of
 
     export DIST=jessie
-    sudo -E pbuilder build dh-virtualenv_0.9-1.dsc
+    sudo -E cowbuilder --build dh-virtualenv_0.9-1.dsc
 
 The two commands above are equivalent
 
