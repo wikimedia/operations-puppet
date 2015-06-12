@@ -2,12 +2,6 @@
 
 set -x
 
-# Don't do anything until cloud-init has finished.
-while [ ! -f /var/lib/cloud/instance/boot-finished ]
-do
-      sleep 1
-done
-
 echo 'Enabling console logging for puppet while it does the initial run'
 echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
 systemctl restart rsyslog.service
