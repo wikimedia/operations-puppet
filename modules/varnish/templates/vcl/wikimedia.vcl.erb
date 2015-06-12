@@ -144,6 +144,9 @@ backend <%= name %> {
 
 # Directors
 # Expected format: { "director name" => [ "backend1", "backend2" ] }
+<% if @use_dynamic_directors %>
+include "directors.<%= @inst %>.vcl"
+<% else -%>
 <% @varnish_directors.keys.sort.each do |director| -%>
 director <%= director %> <%= @director_type %> {
 <% @director_options.each_pair do |option,value| -%>
@@ -166,6 +169,7 @@ director <%= director %> <%= @director_type %> {
 	}
 <% 	end -%>
 }
+<% end -%>
 <% end -%>
 
 # Functions
