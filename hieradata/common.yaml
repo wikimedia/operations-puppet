@@ -223,12 +223,11 @@ ganglia_clusters:
       eqiad:
         - logstash1001.eqiad.wmnet
         - logstash1003.eqiad.wmnet
-  rcstream:      
+  rcstream:
     name: "RCStream cluster"
     id: 44
     sites:
-      eqiad:
-        - rcs1001.eqiad.wmnet
+      eqiad: []
   analytics_kafka:
     name: "Analytics Kafka cluster"
     id: 45

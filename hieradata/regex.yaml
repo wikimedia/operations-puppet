@@ -54,6 +54,10 @@ videoscaler:
   __regex: !ruby/regexp /^tmh100[1-2]\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+rcstream:
+  __regex: !ruby/regexp /^rcs100[1-2]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 cassandra_test:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   cassandra::seeds:
