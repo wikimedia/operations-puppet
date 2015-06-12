@@ -182,10 +182,8 @@ ganglia_clusters:
     name: "Parsoid"
     id: 37
     sites:
-      eqiad:
-        - wtp1001.eqiad.wmnet
-        - wtp1002.eqiad.wmnet
-  cache_parsoid: 
+      eqiad: []
+  cache_parsoid:
     name: "Parsoid Varnish"
     id: 38
     sites:
