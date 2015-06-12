@@ -167,9 +167,7 @@ ganglia_clusters:
     name: "Video scalers"
     id: 34
     sites:
-      eqiad:
-        - tmh1001.eqiad.wmnet
-        - tmh1002.eqiad.wmnet
+      eqiad: []
       codfw: []
   fundraising:
     name: "Fundraising"

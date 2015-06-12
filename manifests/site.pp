@@ -2415,7 +2415,6 @@ node 'titanium.wikimedia.org' {
 
 # tmh1001/tmh1002 video encoding server (precise only)
 node /^tmh100[1-2]\.eqiad\.wmnet/ {
-    $ganglia_aggregator = true
     role mediawiki::videoscaler
 }
 
