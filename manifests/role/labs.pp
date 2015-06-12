@@ -181,10 +181,4 @@ class role::labs::instance {
     diamond::collector::minimalpuppetagent { 'minimal-puppet-agent': }
 
     hiera_include('classes', [])
-
-    # These notifications are processed by the labsstatus.rb Puppet
-    # report handler.  It needs to know project/hostname to update the
-    # instance's Puppet status on wikitech.
-    notice("instanceproject: ${::instanceproject}")
-    notice("hostname: ${::instancename}")
 }
