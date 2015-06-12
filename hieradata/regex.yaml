@@ -58,6 +58,10 @@ rcstream:
   __regex: !ruby/regexp /^rcs100[1-2]\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+restbase:
+  __regex: !ruby/regexp /^(restbase100[1-9]|cerium|praseodymium|xenon)\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 cassandra_test:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   cassandra::seeds:
