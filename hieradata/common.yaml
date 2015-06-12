@@ -215,10 +215,7 @@ ganglia_clusters:
     name: "Elasticsearch cluster"
     id: 42
     sites:
-      eqiad:
-        - elastic1001.eqiad.wmnet
-        - elastic1007.eqiad.wmnet
-        - elastic1013.eqiad.wmnet
+      eqiad: []
   logstash:
     name: "Logstash cluster"
     id: 43

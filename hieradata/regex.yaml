@@ -18,6 +18,10 @@ es_rack_d4:
   elasticsearch::rack: D4
   elasticsearch::row:  D
 
+elasticsearch:
+  __regex: !ruby/regexp /^elastic10[0-3][0-9]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 etcd:
   __regex: !ruby/regexp /^etcd100\d\.eqiad\.wmnet$/
   ganglia_class: "new"

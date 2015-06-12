@@ -934,9 +934,6 @@ node 'einsteinium.eqiad.wmnet' {
 }
 
 node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
-    if $::hostname =~ /^elastic10(0[17]|13)/ {
-        $ganglia_aggregator = true
-    }
 
     role elasticsearch::server
 }
