@@ -31,7 +31,7 @@ jobrunner:
   ganglia_class: "new"
 
 memcached:
-  __regex: !ruby/regexp /^mc10(0[1-9]|1[1-9]\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^mc10(0[1-9]|1[1-9])\.eqiad\.wmnet$/
   ganglia_class: "new"
 
 videoscaler:
