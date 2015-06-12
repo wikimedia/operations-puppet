@@ -60,6 +60,11 @@ define varnish::instance(
         }
     }
 
+    # If varnish::common::directors declared the Confd resource,
+    # we need to use it.
+    $use_dynamic_directors = defined(Confd::File["/etc/varnish/directors.${name}.vcl"])
+
+
     file { "/etc/varnish/wikimedia_${vcl}.vcl":
         owner   => 'root',
         group   => 'root',
