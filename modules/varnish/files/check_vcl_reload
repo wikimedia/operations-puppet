@@ -1,0 +1,24 @@
+#!/bin/sh
+
+. /usr/lib/nagios/plugins/utils.sh
+
+STATE_FILE="/var/run/reload-vcl-state"
+
+# No reload-vcl has happened, apparently.
+# No reason to raise an alarm then
+test -f $STATE_FILE || exit $STATE_OK
+
+HOUR=3600 #seconds
+NOW=$(date +%s) # Unix time
+STATEAGE=$(( $NOW - $(stat -c %Y ${STATE_FILE}) ))
+STATEHOURS=$(( $STATEAGE / $HOUR ))
+
+
+STATE=$(cat STATE_FILE)
+if [ "x${STATE}" == "xOK" ]; then
+    echo "reload-vcl successfully ran ${STATEHOURS} ago"
+    exit $STATE_OK
+else
+    echo "reload-vcl failed to run since ${STATEHOURS}"
+    exit $STATE_CRITICAL
+fi
