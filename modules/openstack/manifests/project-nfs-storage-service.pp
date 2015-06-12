@@ -1,13 +1,4 @@
 class openstack::project-nfs-storage-service {
-
-    file { '/etc/init/manage-nfs-volumes.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/openstack/manage-nfs-volumes.conf',
-    }
-
     file { '/usr/local/sbin/start-nfs':
         ensure  => present,
         owner   => 'root',
@@ -63,4 +54,28 @@ class openstack::project-nfs-storage-service {
                 minute  => '*/5',
         }
     }
+
+    file { '/etc/manage-nfs-volumes.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('openstack/manage-nfs-volumes.cfg.erb'),
+    }
+
+    file { '/usr/local/sbin/manage-nfs-volumes-daemon':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/openstack/manage-nfs-volumes-daemon',
+        require => File['/etc/manage-nfs-volumes.cfg'],
+    }
+
+    file { '/etc/init/manage-nfs-volumes.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/openstack/manage-nfs-volumes.conf',
+    }
+
 }

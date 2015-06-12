@@ -1,0 +1,235 @@
+#! /usr/bin/python
+# -*- coding: utf-8 -*-
+#
+#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+#
+#  THIS FILE IS MANAGED BY PUPPET
+#
+#  Source: modules/ldap/scripts/manage-nfs-volumes
+#  From:   ldap::client::utils
+#
+
+from optparse import OptionParser
+
+import ConfigParser
+import ldap
+import ldapsupportlib
+import socket
+import re
+import os
+import pwd
+import time
+import logging
+import logging.handlers
+
+
+class Project(object):
+    def __init__(self, name):
+        self.name = name
+        self.hosts = []
+        self.volumes = []
+        self.gid = None
+
+
+class Volumes(object):
+    def __init__(self, name):
+        self.name = name
+        self.inuse = False
+
+
+class Exports(object):
+    def __init__(self, name):
+        self.name = name
+        self.exports = []
+        self.inuse = False
+
+
+def ldap_search(dn, scope, query, attrlist=None):
+    data = ds.search_s(dn, scope, query, attrlist)
+    if not data:
+        return None
+    return data
+
+
+def collect_projects():
+    """
+    Returns list of Project objects with associated Volumes attached
+    """
+    projects = []
+    with open('/etc/nfs-mounts-config.yaml') as f:
+        projects_config = yaml.load(f)
+    for project_name in projects_config:
+        project = Project(project_name)
+        for volume, mounted in projects[project_name].iteritems():
+            if mounted:
+                project.volumes.append(volume)
+        projects.append(project)
+    return project
+
+def update_project_groups(projects):
+    # Traverse groups in LDAP, finding matches to projects that actually
+    # request volumes, storing their group id.
+    for gentry in ldap_search('ou=groups,'+basedn, ldap.SCOPE_ONELEVEL, '(objectclass=groupofnames)'):
+        name = re.search('^project-([a-z0-9-]+)$', gentry[1]['cn'][0])
+        if name and name.group(1) in projects:
+            project = projects[name.group(1)]
+            if project.volumes and re.search('^\d+$', gentry[1]['gidNumber'][0]):
+                project.gid = gentry[1]['gidNumber'][0]
+    return
+
+def update_project_hosts(projects):
+    # Traverse hosts in LDAP, adding their IP to the matching
+    # project iff the project is valid and the IP is valid
+    for hentry in ldap_search('ou=hosts,'+basedn, ldap.SCOPE_SUBTREE, '(puppetvar=instanceproject=*)', ['puppetvar', 'aRecord']):
+        for puppet_var in hentry[1]['puppetvar']:
+            var = re.search('^instanceproject=(\S+)$', puppet_var)
+            if var:
+                pname = var.group(1)
+                if pname in projects and projects[pname].gid:
+                    try:
+                        ip = re.search('^([0-9.]+)$', hentry[1]['aRecord'][0]).group(1)
+                        socket.inet_aton(ip)
+                        if not ip in projects[pname].hosts:
+                            projects[pname].hosts.append(ip)
+                    except (TypeError, IndexError, KeyError, socket.error):
+                        log.critical('Invalid host IP in project ' + pname)
+                break
+    return
+
+def collect_volumes():
+    # Examine the storage filesystem to determine which volumes are present
+    volumes = {}
+    for name in os.listdir(storage_tree):
+        path = os.path.join(storage_tree, name)
+        if os.path.isdir(path):
+            volumes[name] = Volumes(name)
+    return volumes
+
+def collect_exports():
+    # Examine exports.d to determine which project export files are present
+    exports = {}
+    for name in os.listdir(exports_d):
+        pname = re.search('^([a-z0-9-]+)\.exports$', name)
+        path = os.path.join(exports_d, name)
+        if pname and os.path.isfile(path):
+            exports[pname] = Exports(pname.group(1))
+    return exports
+
+def update_projects(projects, volumes, exports):
+    # Iterate over valid project with active hosts and
+    #  - create directories as needed
+    #  - generate exports for that project
+    for project in projects.itervalues():
+        if project.hosts:
+            path = os.path.join(storage_tree, project.name)
+            if project.name in volumes:
+                vol = volumes[project.name]
+            else:
+                log.info("Creating volume(s) for project " + project.name)
+                vol = Volumes(project.name)
+                subprocess.call(['/usr/bin/sudo', '/bin/mkdir', path])
+            vol.inuse = True
+
+            for subdir in project.volumes:
+                subpath = os.path.join(path, subdir)
+                if not os.path.isdir(subpath):
+                    subprocess.call(['/usr/bin/sudo', '/bin/mkdir', subpath])
+
+            if project.name in exports:
+                exp = exports[project.name]
+            else:
+                exp = Exports(project.name)
+
+            xpath = os.path.join(export_tree, project.name)
+            xfsid = '00000000000000000-%s-0000000000' % project.gid.zfill(5)
+            xopts = '-rw,nohide,fsid=%s,subtree_check,async,no_root_squash' % xfsid
+            exp.exports.append(xpath + ' ' + xopts + ' ' + ' '.join(sorted(project.hosts)))
+            exp.inuse = True
+            exports[project.name] = exp
+    return
+
+def update_exports(exports):
+    # Iterate over /etc/exports.d, writing export files for
+    # the volumes that are in use, and removing those that
+    # no longer are.
+    for exp in exports.itervalues():
+        path = os.path.join(exports_d, "%s.exports" % exp.name)
+        if exp.inuse:
+            with open(path+'~', 'w+') as expfile:
+                for line in exp.exports:
+                    expfile.write(line + "\n")
+            os.rename(path+'~', path)
+        else:
+            os.remove(path)
+
+    # At this point, the storage_tree is set up, and we have
+    # updated all the exports files.
+    #
+    # invoke sync-exports so that /exp is populated with the
+    # bind mounts required for exporting by NFS4, and NFS is
+    # directed to refresh its export tables.
+    #
+    # It might be worthwhile to fold that operation into this
+    # script in the future.
+    # subprocess.call(['sudo', '/usr/local/sbin/sync-exports'])
+
+    return
+
+
+def manage_volumes():
+    prj = collect_projects()
+    vol = collect_volumes()
+    exp = collect_exports()
+    update_project_groups(prj)
+    update_project_hosts(prj)
+    update_projects(prj, vol, exp)
+    update_exports(exp)
+    return
+
+if __name__ == "__main__":
+    cfg = ConfigParser.RawConfigParser()
+    cfg.read('/etc/manage-nfs-volumes.cfg')
+
+    storage_tree = cfg.get('daemon', 'storage')
+    export_tree = cfg.get('daemon', 'export')
+    exports_d = cfg.get('daemon', 'exports_d')
+    runas = cfg.get('daemon', 'runas')
+
+    if pwd.getpwuid(os.getuid())[0] != runas:
+        sys.stderr.write("This daemon should only be run as the '%' user.\n" % cfg.runas)
+        sys.exit(1)
+
+    log = logging.getLogger('manage-nfs-volumes-daemon')
+    handler = logging.handlers.SysLogHandler(address = '/dev/log')
+    handler.setFormatter(logging.Formatter('%(name)s: %(levelname)s: %(message)s'))
+    log.addHandler(handler)
+
+    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+
+    parser = OptionParser(conflict_handler = 'resolve')
+    ldapSupportLib.addParserOptions(parser)
+    (options, args) = parser.parse_args()
+    ldapSupportLib.setBindInfoByOptions(options, parser)
+
+    basedn = ldapSupportLib.getBase()
+    ds = ldapSupportLib.connect()
+
+    log.info('Daemon starting')
+
+    while True:
+        manage_volumes()
+        time.sleep(60)
+
