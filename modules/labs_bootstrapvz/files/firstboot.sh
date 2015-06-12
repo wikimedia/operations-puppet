@@ -98,18 +98,12 @@ echo ":#!/bin/sh" > /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
 echo "make_resolv_conf() {" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
 echo "        :" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
 echo "}" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
-grep domain /etc/resolv.conf
-if [ $? -eq 0 ];  then
-    sed -i "s/^domain .*$/domain ${project}.${domain}/g" /etc/resolv.conf
-else
-    echo "domain ${project}.${domain}" >> /etc/resolv.conf
-fi
-grep search /etc/resolv.conf
-if [ $? -eq 0 ];  then
-    sed -i "s/^search .*$/search ${project}.${domain}/g" /etc/resolv.conf
-else
-    echo "search ${project}.${domain}" >> /etc/resolv.conf
-fi
+
+nameserver=`/usr/bin/dig +short labs-recursor0.wikimedia.org`
+echo "domain ${project}.${domain}" > /etc/resolv.conf
+echo "search ${project}.${domain} ${domain}" >> /etc/resolv.conf
+echo "nameserver ${nameserver}" >> /etc/resolv.conf
+echo "options timeout:5 ndots:2" >> /etc/resolv.conf
 
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
