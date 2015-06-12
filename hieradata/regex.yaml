@@ -42,6 +42,10 @@ parsoid_cache:
   __regex: !ruby/regexp /^(cp1045|cp1058)\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+redis:
+  __regex: !ruby/regexp /^rdb100[1-4]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 videoscaler:
   __regex: !ruby/regexp /^tmh100[1-2]\.eqiad\.wmnet$/
   ganglia_class: "new"
