@@ -34,6 +34,10 @@ memcached:
   __regex: !ruby/regexp /^mc10(0[1-9]|1[1-9])\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+parsoid:
+  __regex: !ruby/regexp /^wtp10(0[1-9]|1[1-9]|2[1-4])\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 videoscaler:
   __regex: !ruby/regexp /^tmh100[1-2]\.eqiad\.wmnet$/
   ganglia_class: "new"
