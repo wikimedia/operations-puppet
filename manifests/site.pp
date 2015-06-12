@@ -2188,9 +2188,6 @@ node /^rdb200[1-4]\.codfw\.wmnet/ {
 
 # restbase eqiad cluster
 node /^restbase100[1-9]\.eqiad\.wmnet$/ {
-    if $::hostname == 'restbase1001' or $::hostname == 'restbase1006' {
-        $ganglia_aggregator = true
-    }
     role restbase, cassandra
     include base::firewall
     include standard
