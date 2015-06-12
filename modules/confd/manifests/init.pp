@@ -43,8 +43,10 @@ class confd(
     # Any change to a service configuration or to a template should reload confd.
     Confd::File <| |> ~> Service['confd']
 
-    nrpe::monitor_systemd_unit { 'confd':
-        require => Service['confd'],
+    if os_version('ubuntu > precise') {
+        nrpe::monitor_systemd_unit { 'confd':
+            require => Service['confd'],
+        }
     }
 
     # Log to a dedicated file
@@ -55,12 +57,9 @@ class confd(
         mode   => '0444',
     }
 
-
     rsyslog::conf { 'confd':
         source   => 'puppet:///modules/confd/rsyslog.conf',
         priority => 20,
         require  => File['/etc/logrotate.d/confd'],
     }
-
-
 }
