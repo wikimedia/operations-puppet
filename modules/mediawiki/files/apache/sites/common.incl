@@ -1,0 +1,7 @@
+# Common includes for all sites
+
+    # Restrict access to hidden directories, which may e.g. reveal the content of .git directories (T94570)
+    <DirectoryMatch "^\.">
+        Order deny,allow
+        Deny from all
+    </DirectoryMatch>
