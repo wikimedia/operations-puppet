@@ -94,22 +94,20 @@ sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 # Set resolv.conf and stop anyone else from messing with it.
 echo "" > /sbin/resolvconf
 mkdir /etc/dhcp/dhclient-enter-hooks.d
-echo ":#!/bin/sh" > /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
-echo "make_resolv_conf() {" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
-echo "        :" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
-echo "}" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
-grep domain /etc/resolv.conf
-if [ $? -eq 0 ];  then
-    sed -i "s/^domain .*$/domain ${project}.${domain}/g" /etc/resolv.conf
-else
-    echo "domain ${project}.${domain}" >> /etc/resolv.conf
-fi
-grep search /etc/resolv.conf
-if [ $? -eq 0 ];  then
-    sed -i "s/^search .*$/search ${project}.${domain}/g" /etc/resolv.conf
-else
-    echo "search ${project}.${domain}" >> /etc/resolv.conf
-fi
+cat > /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate <<EOF
+:#!/bin/sh
+make_resolv_conf() {
+        :
+}
+EOF
+
+nameserver=`/usr/bin/dig +short labs-recursor0.wikimedia.org`
+cat > /etc/resolv.conf <<EOF
+domain ${project}.${domain}
+search ${project}.${domain} ${domain}
+nameserver ${nameserver}
+options timeout:5 ndots:2
+EOF
 
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
