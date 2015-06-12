@@ -376,11 +376,12 @@ sub vcl_recv {
 		unset req.http.X-Forwarded-Proto;
 	}
 <% end -%>
+
+	call vcl_recv_append_xff;
+
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call https_recv_redirect;
 <% end -%>
-
-	call vcl_recv_append_xff;
 
 	if ( req.http.host ~ "^varnishcheck" ) {
 		error 200 "OK"; 
