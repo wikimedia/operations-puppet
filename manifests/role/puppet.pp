@@ -21,8 +21,6 @@ class role::puppet::server::labs {
         allow_from  => $puppet_passenger_allow_from,
         config      => {
             'thin_storeconfigs' => false,
-            # temporarily disabled, --faidon 2015-06-11
-            #'reports'           => 'labsstatus',
             # 'dbadapter' => "mysql",
             # 'dbuser' => $novaconfig["puppet_db_user"],
             # 'dbpassword' => $novaconfig["puppet_db_pass"],

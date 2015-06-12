@@ -23,16 +23,4 @@ class puppetmaster::labs {
         environment => 'GIT_SSH=/var/lib/git/ssh',
         minute      => '*/1',
     }
-
-    include passwords::openstack::keystone
-    $labsstatus_password = $passwords::openstack::keystone::keystone_ldap_user_pass
-    $labsstatus_username = 'novaadmin'
-    $labsstatus_region = $::site
-    $keystone_host = hiera('labs_keystone_host')
-    $labsstatus_auth_url = "http://${keystone_host}:35357/v2.0"
-
-    file { '/etc/labsstatus.cfg':
-        ensure  => present,
-        content => template('puppetmaster/labsstatus.cfg.erb'),
-    }
 }
