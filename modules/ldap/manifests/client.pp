@@ -220,11 +220,19 @@ class ldap::client::utils($ldapconfig) {
         source => 'puppet:///modules/ldap/scripts/homedirectorymanager.py',
     }
 
+    file { '/etc/manage-nfs-volumes.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('ldap/manage-nfs-volumes.cfg.erb'),
+    }
+
     file { '/usr/local/sbin/manage-nfs-volumes-daemon':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/ldap/scripts/manage-nfs-volumes-daemon',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/ldap/scripts/manage-nfs-volumes-daemon',
+        require => File['/etc/manage-nfs-volumes.cfg'],
     }
 
     file { '/usr/local/sbin/sync-exports':

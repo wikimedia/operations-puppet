@@ -1,0 +1,12 @@
+##
+## THIS FILE IS MANAGED BY PUPPET
+##
+## Source: modules/modules/ldap/templates/manage-nfs-volumes.cfg.erb
+## From:   ldap::client::utils
+##
+
+[daemon]
+storage: /srv/project
+export: /exp/project
+exports_d: /etc/exports.d
+runas: nfsmanager
