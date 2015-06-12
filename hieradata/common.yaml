@@ -159,11 +159,9 @@ ganglia_clusters:
     name: "Memcached"
     id: 33
     sites:
-      eqiad:
-        - mc1001.eqiad.wmnet
-        - mc1002.eqiad.wmnet
+      eqiad: []
       codfw: []
-  videoscaler:       
+  videoscaler:
     name: "Video scalers"
     id: 34
     sites:

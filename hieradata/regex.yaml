@@ -30,6 +30,10 @@ jobrunner:
   __regex: !ruby/regexp /^mw10(0[1-9]|1[1-6])\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+memcached:
+  __regex: !ruby/regexp /^mc10(0[1-9]|1[1-9]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 videoscaler:
   __regex: !ruby/regexp /^tmh100[1-2]\.eqiad\.wmnet$/
   ganglia_class: "new"

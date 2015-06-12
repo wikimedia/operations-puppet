@@ -1714,9 +1714,6 @@ node 'magnesium.wikimedia.org' {
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
-    if $::hostname =~ /^mc100[12]$/ {
-        $ganglia_aggregator = true
-    }
 
     role memcached
     include passwords::redis
