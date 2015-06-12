@@ -81,12 +81,12 @@ echo ":#!/bin/sh" > /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
 echo "make_resolv_conf() {" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
 echo "        :" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
 echo "}" >> /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
-grep domain /etc/resolv.conf
-if [ $? -eq 0 ];  then
-    sed -i "s/^domain .*$/domain ${project}.${domain}/g" /etc/resolv.conf
-else
-    echo "domain ${project}.${domain}" >> /etc/resolv.conf
-fi
+
+nameserver=`dig +short labs-recursor0.wikimedia.org`
+echo "domain ${project}.${domain}" > /etc/resolv.conf
+echo "search ${project}.${domain} ${domain}" >> /etc/resolv.conf
+echo "nameserver ${nameserver}" >> /etc/resolv.conf
+echo "options timeout:5 ndots:2" >> /etc/resolv.conf
 
 /etc/init.d/nslcd restart
 /etc/init.d/nscd restart
