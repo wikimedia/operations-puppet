@@ -182,7 +182,7 @@ sub https_recv_redirect {
 				}
 				if (req.url ~ "(?i)^https?://en\.(m\.)?wikipedia\.") {
 					// XFF has trailing client.ip from vcl_recv_append_xff
-					if(req.http.X-Forwarded-For ~ "5$") { // only ~10% initially, based on IP digits
+					if(req.http.X-Forwarded-For ~ "[13579]$") { // ~half, based on IP digits
 						set req.http.Location = regsub(req.url, "(?i)^http:", "https:");
 						error 752 "TLS Redirect";
 					}
@@ -198,7 +198,7 @@ sub https_recv_redirect {
 					error 751 "TLS Redirect";
 				}
 				if(req.http.Host ~ "(?i)^en\.(m\.)?wikipedia\.") {
-					if(req.http.X-Forwarded-For ~ "5$") { // see similar above
+					if(req.http.X-Forwarded-For ~ "[13579]$") { // see similar above
 						set req.http.Location = "https://" + req.http.Host + req.url;
 						error 752 "TLS Redirect";
 					}
