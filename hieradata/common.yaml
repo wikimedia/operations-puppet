@@ -193,9 +193,7 @@ ganglia_clusters:
     name: "Redis"
     id: 39
     sites:
-      eqiad:
-        - rdb1001.eqiad.wmnet
-        - rdb1002.eqiad.wmnet
+      eqiad: []
       codfw: []
   labsnfs:   
     name: "Labs NFS cluster"
