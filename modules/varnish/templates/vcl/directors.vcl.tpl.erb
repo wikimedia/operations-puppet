@@ -1,0 +1,30 @@
+<%
+# Calculates number of director-level retries necessary for chash to hit all
+# "n" backends with probability percentage "p", given they're randomly-mixed
+# into an array considerably larger in size than "n".  This is an
+# overestimation in that it assumes an infinite array, but the values still
+# come out reasonably small compared to doing anything based on our actual
+# weight*num_backends.
+# Blame _joe_ for the math! :)
+def chash_def_retries(p, n)
+	return ((Math.log10(100 - p) - 2) / (Math.log10(n - 1) - Math.log10(n))).ceil
+end
+
+# this is a one-element hash atm
+director = @directors.keys[0]
+-%>
+
+director <%= director %> <%= @director_type %> {
+	<%- @director_options.each_pair do |option,value| -%>
+	.<%= option %> = <%= value %>;
+	<% end -%>
+	<%- if @director_type == 'chash' && !@options.has_key?('retries') %>
+	.retries = <%= chash_def_retries(99, @directors[director].size) %>;
+	<% end -%>
+	{{range $node := "<%= @keyspace %>"}}{{ $key := printf "<%= @keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
+	{
+		.backend = {{ $parts := split $node "." }}{{ index $parts 0 }};
+		.weight = {{ $data.weight }};
+	}{{end}}{{end}}
+}
+

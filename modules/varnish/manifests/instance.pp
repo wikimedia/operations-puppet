@@ -38,6 +38,7 @@ define varnish::instance(
     $varnish_directors = $directors
     $varnish_backend_options = $backend_options
     # $cluster_option is referenced directly
+    $dynamic_directors = hiera('varnish::dynamic_directors', false)
 
     # Install VCL include files shared by all instances
     require varnish::common::vcl
@@ -45,6 +46,23 @@ define varnish::instance(
     $extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, " ${instancesuffix}")
     extra_vcl{ $extra_vcl_variable_to_make_puppet_parser_happy:
         before => Service["varnish${instancesuffix}"]
+    }
+
+    # Write the dynamic directors configuration, if we need it
+    if $dynamic_directors {
+        if $name == '' {
+            $inst = 'backend'
+        } else {
+            $inst = $name
+        }
+        varnish::common::directors { $vcl:
+            instance      => $inst,
+            directors     => $directors,
+            director_type => $director_type,
+            options       => $director_options,
+            extraopts     => $extraopts,
+            before        => Service["varnish${instancesuffix}"],
+        }
     }
 
     file { "/etc/varnish/wikimedia_${vcl}.vcl":

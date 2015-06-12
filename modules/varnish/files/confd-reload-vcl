@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+set -u
+SERVICE=${1}
+OPTS=${@:2}
+STATE=$(systemctl show ${SERVICE})
+echo ${STATE} | grep -Fq 'ActiveState=active' || echo "${SERVICE} is not active" && exit 0
+echo ${STATE} | grep -Fq 'SubState=running' || echo "${SERVICE is active but not running}" && exit 0
+
+grep -q 'S'
+# We don't care who broke confd, do we?
+STATE_FILE="/var/run/reload-vcl-state"
+if /usr/share/varnish/reload-vcl ${OPTS}; then
+    echo 'OK' > ${STATE_FILE}
+else
+    echo 'KO' > ${STATE_FILE}
+fi
