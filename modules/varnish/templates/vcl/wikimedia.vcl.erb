@@ -210,7 +210,7 @@ sub https_deliver_hsts {
 			if (req.url ~ "(?i)^https?://ru\.") {
 				set resp.http.Strict-Transport-Security = "max-age=15768000";
 			}
-			if (req.url ~ "(?i)^https?://(zh|ug)\.") {
+			else if (req.url ~ "(?i)^https?://(ca|el|en|he|it|ug|zh)\.") {
 				set resp.http.Strict-Transport-Security = "max-age=86400";
 			}
 		}
@@ -218,7 +218,7 @@ sub https_deliver_hsts {
 			if (req.http.Host ~ "(?i)^ru\.") {
 				set resp.http.Strict-Transport-Security = "max-age=15768000";
 			}
-			if (req.http.Host ~ "(?i)^(zh|ug)\.") {
+			else if (req.http.Host ~ "(?i)^(ca|el|en|he|it|ug|zh)\.") {
 				set resp.http.Strict-Transport-Security = "max-age=86400";
 			}
 		}
