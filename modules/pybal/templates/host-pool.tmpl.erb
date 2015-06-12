@@ -1,0 +1,11 @@
+# This file is managed by puppet.
+# This is a golang template (http://golang.org/pkg/text/template/)
+# for creating an external node pool reference file
+
+<% @watch_keys.each do |key| -%>
+{{range $node := ls "<%= key %>"}}
+{{ $key := printf "<%= key %>%s" $node }}
+{{ $data := json (getv $key) }}
+{{ if ne $data.pooled "inactive" }}
+{'host':'{{ $node }}.eqiad.wmnet', 'enabled':{{if eq $data.pooled "yes"}}True{{else}}False{{end}}, 'weight':{{ $data.weight}} }{{end}}{{end}}
+<% end -%>
