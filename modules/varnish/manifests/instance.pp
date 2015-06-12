@@ -55,15 +55,24 @@ define varnish::instance(
         } else {
             $inst = $name
         }
-        varnish::common::directors { $vcl:
-            instance      => $inst,
-            directors     => $directors,
-            director_type => $director_type,
-            options       => $director_options,
-            extraopts     => $extraopts,
-            before        => Service["varnish${instancesuffix}"],
+        $use_dynamic_directors = !( defined(Class['Role::Cache::1layer'])
+            or ($instance == 'backend'and $tier == 'one'))
+        if $use_dynamic_directors {
+            varnish::common::directors { $vcl:
+                instance      => $inst,
+                directors     => $directors,
+                director_type => $director_type,
+                options       => $director_options,
+                extraopts     => $extraopts,
+                before        => Service["varnish${instancesuffix}"],
+            }
         }
     }
+
+    # If varnish::common::directors declared the Confd resource,
+    # we need to use it.
+    $use_dynamic_directors =
+
 
     file { "/etc/varnish/wikimedia_${vcl}.vcl":
         owner   => 'root',
