@@ -2175,8 +2175,6 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-
-    $ganglia_aggregator = ( $::hostname == 'rcs1001' )
     role rcstream
 }
 
