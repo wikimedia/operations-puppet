@@ -112,7 +112,7 @@ else
 fi
 grep search /etc/resolv.conf
 if [ $? -eq 0 ];  then
-    sed -i "s/^search .*$/domain ${project}.${domain}/g" /etc/resolv.conf
+    sed -i "s/^search .*$/search ${project}.${domain}/g" /etc/resolv.conf
 else
     echo "search ${project}.${domain}" >> /etc/resolv.conf
 fi
