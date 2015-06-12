@@ -202,6 +202,7 @@ plugins:
       - ['chroot', '{root}', 'rm', '-f', '/etc/sudo-ldap.conf']
       - ['chroot', '{root}', 'ln', '-s', '/etc/ldap/ldap.conf', '/etc/sudo-ldap.conf']
       - ['chroot', '{root}', 'rm', '-f', '/etc/resolvconf/resolv.conf.d/original']
+      - ['chroot', '{root}', 'puppet', 'agent', '--disable']
 
   unattended_upgrades:
     update_interval: 1

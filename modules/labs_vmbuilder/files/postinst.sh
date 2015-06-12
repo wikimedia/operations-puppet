@@ -24,6 +24,7 @@ else
   rm /root/install_sudo.sh
   apt-get install -y puppet puppet-common facter nfs-client salt-minion lvm2
   /etc/init.d/salt-minion stop
+  puppet agent --disable
   /etc/init.d/puppet stop
   /usr/bin/killall puppet
   mv /etc/puppet/puppet.conf.install /etc/puppet/puppet.conf
