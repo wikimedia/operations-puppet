@@ -6,28 +6,28 @@ from "-1day"
 
 field :push, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(MediaWiki.job-insert.rate,"Jobs Queued/s"))'
+               :data  => 'cactiStyle(alias(MediaWiki.jobqueue.job-insert.rate,"Jobs Queued/s"))'
 
 field :run, :color => "green",
                :alias => "none",
-               :data  => 'cactiStyle(alias(MediaWiki.job-pop.rate,"Jobs Run/s"))'
+               :data  => 'cactiStyle(alias(MediaWiki.jobqueue.job-pop.rate,"Jobs Run/s"))'
 
 field :pushdupl, :color => "red",
                :alias => "none",
-               :data  => 'cactiStyle(alias(MediaWiki.job-insert-duplicate.rate,"Duplicate jobs Queued/s"))'
+               :data  => 'cactiStyle(alias(MediaWiki.jobqueue.job-insert-duplicate.rate,"Duplicate jobs Queued/s"))'
 
 field :rundupl, :color => "purple",
                :alias => "none",
-               :data  => 'cactiStyle(alias(MediaWiki.job-pop-duplicate.rate,"Duplicate jobs run/s"))'
+               :data  => 'cactiStyle(alias(MediaWiki.jobqueue.job-pop-duplicate.rate,"Duplicate jobs run/s"))'
 
 field :recycle, :color => "orange",
                :alias => "none",
-               :data  => 'cactiStyle(alias(MediaWiki.job-recycle.rate,"Jobs recycled/s"))'
+               :data  => 'cactiStyle(alias(MediaWiki.jobqueue.job-recycle.rate,"Jobs recycled/s"))'
 
 field :abandon, :color => "brown",
                :alias => "none",
-               :data  => 'cactiStyle(alias(MediaWiki.job-abandon.rate,"Jobs abandoned/s"))'
+               :data  => 'cactiStyle(alias(MediaWiki.jobqueue.job-abandon.rate,"Jobs abandoned/s"))'
 
 field :ack, :color => "aqua",
                :alias => "none",
-               :data  => 'cactiStyle(alias(MediaWiki.job-ack.rate,"Jobs aknowledged/s"))'
+               :data  => 'cactiStyle(alias(MediaWiki.jobqueue.job-ack.rate,"Jobs aknowledged/s"))'

@@ -7,28 +7,28 @@ area "first"
 
 field :push, :color => "green",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-pop.rate, "1day"),"Jobs Run/day"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.jobqueue.job-pop.rate, "1day"),"Jobs Run/day"))'
 
 field :run, :color => "blue",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-insert.rate, "1day"),"Jobs Queued/day"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.jobqueue.job-insert.rate, "1day"),"Jobs Queued/day"))'
 
 field :pushdupl, :color => "red",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-insert-duplicate.rate, "1day"),"Duplicate jobs Queued/day"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.jobqueue.job-insert-duplicate.rate, "1day"),"Duplicate jobs Queued/day"))'
 
 field :rundupl, :color => "purple",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-pop-duplicate.rate, "1day"),"Duplicate jobs run/day"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.jobqueue.job-pop-duplicate.rate, "1day"),"Duplicate jobs run/day"))'
 
 field :recycle, :color => "orange",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-recycle.rate, "1day"),"Jobs recycled/day"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.jobqueue.job-recycle.rate, "1day"),"Jobs recycled/day"))'
 
 field :abandon, :color => "brown",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-abandon.rate, "1day"),"Jobs abandoned/day"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.jobqueue.job-abandon.rate, "1day"),"Jobs abandoned/day"))'
 
 field :ack, :color => "aqua",
                :alias => "none",
-               :data  => 'cactiStyle(alias(summarize(MediaWiki.job-ack.rate, "1day"),"Jobs aknowledged/day"))'
+               :data  => 'cactiStyle(alias(summarize(MediaWiki.jobqueue.job-ack.rate, "1day"),"Jobs aknowledged/day"))'
