@@ -2,7 +2,6 @@
 /etc/apt/preferences.d/ /etc/apt/preferences.d/
 /etc/apt/sources.list.d/ /etc/apt/sources.list.d/
 /etc/apt/trusted.gpg /etc/apt/trusted.gpg
-/etc/cron.d/puppet /etc/cron.d/puppet
 /etc/default/puppet /etc/default/puppet.install
 /etc/exim4/exim4.conf /etc/exim4/exim4.conf
 /etc/ldap.conf /etc/ldap.conf

@@ -90,7 +90,6 @@ packages:
     - nagios-plugins-standard
     - httpry
     - nagios-plugins
-    - puppet-lint
     - tree
     - nagios-plugins-basic
 plugins:
@@ -187,9 +186,6 @@ plugins:
       -
         src: /etc/apt/apt.conf.d/80security-ubuntu-proxy
         dst: /etc/apt/apt.conf.d/80security-ubuntu-proxy
-      -
-        src: /etc/cron.d/puppet
-        dst: /etc/cron.d/puppet
   image_commands:
     # Current implementation does not specify an order between image_commands and
     #  file_copy.  This section should not depend on anything existing from
