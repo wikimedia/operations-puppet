@@ -357,7 +357,7 @@ class lvs::configuration {
             'depool-threshold' => '.5',
             'monitors' => {
                 'ProxyFetch' => {
-                    'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
+                    'url' => [ 'http://de.wikipedia.org/wiki/Wikipedia:Hauptseite' ],
                 },
                 'IdleConnection' => $idleconnection_monitor_options
             },
