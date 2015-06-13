@@ -67,6 +67,12 @@ try:
             subprocess.check_call(['/usr/bin/puppet', 'cert', 'clean', hostname])
             continue
 
+        # Skip any new requests with old-school certs that don't specify the project
+        if not re.match(r'^[^.]*\.[^.]\.eqiad\.wmflabs$', hostname):
+            if not signed:
+                subprocess.check_call(['/usr/bin/puppet', 'cert', 'clean', hostname])
+                continue
+
         # Erase keys that don't correspond to ldap; sign those that do
         query = "(&(objectclass=puppetclient)(|(dc=" + hostname + ")(cnamerecord=" + hostname + ")(associateddomain=" + hostname + ")))"
         host_info = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
