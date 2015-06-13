@@ -438,7 +438,7 @@ class lvs::configuration {
             'depool-threshold' => ".6",
             'monitors' => {
                 'ProxyFetch' => {
-                    'url' => [ 'http://en.m.wikipedia.org/wiki/Angelsberg' ],
+                    'url' => [ 'http://de.m.wikipedia.org/wiki/Angelsberg' ],
                     },
                 'IdleConnection' => $idleconnection_monitor_options
             },
