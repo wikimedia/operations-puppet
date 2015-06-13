@@ -67,7 +67,11 @@ class labs_vmbuilder($vmbuilder_version) {
 
     $projectregex = "s/${instanceproject}/_PROJECT_/g"
     $fqdnregex    = "s/${::fqdn}/_FQDN_/g"
-    $masterregex  = "s/${servername}/_MASTER_/g"
+
+    # We can't just use $::servername here because the master
+    #  returns labcontrol1001 vs. the service name, labs-puppetmaster-eqiad
+    $puppetmaster = hiera('labs_puppet_master')
+    $masterregex = "s/${puppetmaster}/_MASTER_/g"
 
     Exec { path => '/bin' }
 
