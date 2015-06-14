@@ -132,6 +132,11 @@ class hhvm(
                 light_process_count       => 5,
                 light_process_file_prefix => '/var/tmp/hhvm',
             },
+            hack                     => {
+                lang => {
+                    iconv_ignore_correct => true,
+                },
+            },
         },
     }
 
