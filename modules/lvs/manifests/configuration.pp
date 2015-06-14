@@ -355,12 +355,7 @@ class lvs::configuration {
             'ip' => $service_ips['text'][$::site],
             'bgp' => 'yes',
             'depool-threshold' => '.5',
-            'monitors' => {
-                'ProxyFetch' => {
-                    'url' => [ 'http://de.wikipedia.org/wiki/Wikipedia:Hauptseite' ],
-                },
-                'IdleConnection' => $idleconnection_monitor_options
-            },
+            'monitors' => { 'IdleConnection' => $idleconnection_monitor_options },
         },
         'text-https' => {
             'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (nginx)",
@@ -372,7 +367,8 @@ class lvs::configuration {
             'bgp' => 'no',
             'depool-threshold' => '.5',
             'monitors' => {
-                'IdleConnection' => $idleconnection_monitor_options
+                'ProxyFetch' => { 'url' => [ 'https://en.wikipedia.org/wiki/Main_Page' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
             },
         },
         "bits" => {
@@ -382,12 +378,7 @@ class lvs::configuration {
             'ip' => $service_ips['bits'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".5",
-            'monitors' => {
-                'ProxyFetch' => {
-                    'url' => [ 'http://bits.wikimedia.org/pybal-test-file' ],
-                    },
-                'IdleConnection' => $idleconnection_monitor_options
-            },
+            'monitors' => { 'IdleConnection' => $idleconnection_monitor_options },
         },
         "bits-https" => {
             'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
@@ -399,7 +390,8 @@ class lvs::configuration {
             'bgp' => 'no',
             'depool-threshold' => '.5',
             'monitors' => {
-                'IdleConnection' => $idleconnection_monitor_options
+                'ProxyFetch' => { 'url' => [ 'https://bits.wikimedia.org/pybal-test-file' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
             },
         },
         "upload" => {
@@ -409,12 +401,7 @@ class lvs::configuration {
             'ip' => $service_ips['upload'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".5",
-            'monitors' => {
-                'ProxyFetch' => {
-                    'url' => [ 'http://upload.wikimedia.org/monitoring/backend' ],
-                    },
-                'IdleConnection' => $idleconnection_monitor_options
-            },
+            'monitors' => { 'IdleConnection' => $idleconnection_monitor_options },
         },
         "upload-https" => {
             'description' => "Images and other media, upload.${::site}.wikimedia.org",
@@ -426,7 +413,8 @@ class lvs::configuration {
             'bgp' => "no",
             'depool-threshold' => ".5",
             'monitors' => {
-                'IdleConnection' => $idleconnection_monitor_options
+                'ProxyFetch' => { 'url' => [ 'https://upload.wikimedia.org/monitoring/backend' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
             },
         },
         "mobile" => {
@@ -436,12 +424,7 @@ class lvs::configuration {
             'ip' => $service_ips['mobile'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".6",
-            'monitors' => {
-                'ProxyFetch' => {
-                    'url' => [ 'http://de.m.wikipedia.org/wiki/Angelsberg' ],
-                    },
-                'IdleConnection' => $idleconnection_monitor_options
-            },
+            'monitors' => { 'IdleConnection' => $idleconnection_monitor_options },
         },
         "mobile-https" => {
             'description' => "MediaWiki based mobile site",
@@ -453,7 +436,8 @@ class lvs::configuration {
             'bgp' => "no",
             'depool-threshold' => ".6",
             'monitors' => {
-                'IdleConnection' => $idleconnection_monitor_options
+                'ProxyFetch' => { 'url' => [ 'https://en.m.wikipedia.org/wiki/Angelsberg' ] },
+                'IdleConnection' => $idleconnection_monitor_options,
             },
         },
         "dns_rec" => {
