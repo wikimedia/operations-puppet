@@ -1,0 +1,29 @@
+inherit_from: .rubocop_todo.yml
+
+# Copied from
+# https://www.mediawiki.org/wiki/Manual:Coding_conventions/Ruby#Base_configuration
+
+AllCops:
+  # Only enforce rules that have an entry in the style guide
+  StyleGuideCopsOnly: true
+
+# Uncomment when lines are 100 characters or less
+# Metrics/LineLength:
+#   Max: 100
+
+Metrics/MethodLength:
+  Enabled: false
+
+Style/Alias:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+ 
+# Pick one and stay consistent
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+#  EnforcedStyle: double_quotes
+
+Style/TrivialAccessors:
+  ExactNameMatch: true
