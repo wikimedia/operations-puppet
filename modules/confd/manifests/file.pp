@@ -13,7 +13,7 @@ define confd::file (
     $source  = undef,
     $content = undef,
 ) {
-    $safe_name = regsubst('\/', '_', $title)
+    $safe_name = regsubst($title, '\/', '_')
 
     unless ($source or $content) {
         fail('We either need a source file or a content for the config file')
