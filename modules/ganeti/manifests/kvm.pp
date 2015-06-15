@@ -19,8 +19,8 @@ class ganeti::kvm {
 
     sysfs::parameters { 'ksm':
         values => {
-            'kernel.mm.ksm.run'             => '1',
-            'kernel.mm.ksm.sleep_millisecs' => '100',
+            'kernel/mm/ksm/run'             => '1',
+            'kernel/mm/ksm/sleep_millisecs' => '100',
         },
     }
 }

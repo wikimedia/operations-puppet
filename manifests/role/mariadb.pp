@@ -508,8 +508,8 @@ class role::mariadb::labs {
     # See https://mariadb.com/kb/en/mariadb/enabling-tokudb/#check-for-transparent-hugepage-support-on-linux
     sysfs::parameters { 'disable-transparent-hugepages':
         values  => {
-            'kernel.mm.transparent_hugepage.enabled' => 'never',
-            'kernel.mm.transparent_hugepage.defrag'  => 'never',
+            'kernel/mm/transparent_hugepage/enabled' => 'never',
+            'kernel/mm/transparent_hugepage/defrag'  => 'never',
         }
     }
 }
