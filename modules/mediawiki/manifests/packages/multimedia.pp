@@ -24,6 +24,7 @@ class mediawiki::packages::multimedia {
         'libvorbisenc2',
         'netpbm',
         'oggvideotools',
+        'libimage-exiftool-perl',
     ]:
         ensure => present,
     }
