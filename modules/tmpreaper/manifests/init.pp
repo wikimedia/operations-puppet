@@ -15,7 +15,7 @@ class tmpreaper {
     # understands the security implications of having tmpreaper run
     # automatically. See /usr/share/doc/tmpreaper/README.security.gz .
 
-    file_line { 'load_env_enabled':
+    file_line { 'enable_tmpreaper':
         ensure  => absent,
         line    => 'SHOWWARNING=true',
         path    => '/etc/tmpreaper.conf',
