@@ -30,7 +30,8 @@ class imagescaler::packages {
 			"libtheora0",
 			"oggvideotools",
 			"libvips15",
-			"libvips-tools"]:
+			"libvips-tools",
+			"libimage-exiftool-perl"]:
 		ensure => latest;
 	}
 
