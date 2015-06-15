@@ -90,46 +90,47 @@ try:
             except subprocess.CalledProcessError:
                 sys.stderr.write('Failed to sign new cert %s\n' % hostname)
 
-    salt_output = subprocess.check_output(['/usr/bin/salt-key',
-                                           '--list', 'unaccepted',
-                                           '--out', 'json'])
-    # Sign or delete unaccepted salt keys
-    hosts = json.loads(salt_output)
-    for host in hosts["minions_pre"]:
-        if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
-            print 'Invalid hostname', host
-            sys.exit(-1)
-        query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
-        host_result = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
-        try:
-            if not host_result:
-                # Deleting an unrejected and unsigned key seems to cause weird behavior...
-                #  just to be sure, reject before deleting.
-                subprocess.check_call(['/usr/bin/salt-key', '-y', '-r', host])
-                subprocess.check_call(['/usr/bin/salt-key', '-y', '-d', host])
-            else:
-                subprocess.check_call(['/usr/bin/salt-key', '-y', '-a', host])
-        except subprocess.CalledProcessError:
-            sys.stderr.write('Failed to update salt key %s\n' % host)
-
-    # Purge accepted but unused keys
-    salt_output = subprocess.check_output(['/usr/bin/salt-key',
-                                           '--list', 'accepted',
-                                           '--out', 'json'])
-    hosts = json.loads(salt_output)
-    for host in hosts["minions"]:
-        if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
-            print 'Invalid hostname', host
-            sys.exit(-1)
-        query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
-        host_result = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
-        if not host_result:
-            sys.stderr.write('Removing stale salt key %s' % host)
+    if os.path.exists('/usr/bin/salt-key'):
+        salt_output = subprocess.check_output(['/usr/bin/salt-key',
+                                               '--list', 'unaccepted',
+                                               '--out', 'json'])
+        # Sign or delete unaccepted salt keys
+        hosts = json.loads(salt_output)
+        for host in hosts["minions_pre"]:
+            if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
+                print 'Invalid hostname', host
+                sys.exit(-1)
+            query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
+            host_result = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
             try:
-                subprocess.check_call(['/usr/bin/salt-key', '-y', '-r', host])
-                subprocess.check_call(['/usr/bin/salt-key', '-y', '-d', host])
+                if not host_result:
+                    # Deleting an unrejected and unsigned key seems to cause weird behavior...
+                    #  just to be sure, reject before deleting.
+                    subprocess.check_call(['/usr/bin/salt-key', '-y', '-r', host])
+                    subprocess.check_call(['/usr/bin/salt-key', '-y', '-d', host])
+                else:
+                    subprocess.check_call(['/usr/bin/salt-key', '-y', '-a', host])
             except subprocess.CalledProcessError:
-                sys.stderr.write('Failed remove stale salt key %s\n' % host)
+                sys.stderr.write('Failed to update salt key %s\n' % host)
+
+        # Purge accepted but unused keys
+        salt_output = subprocess.check_output(['/usr/bin/salt-key',
+                                               '--list', 'accepted',
+                                               '--out', 'json'])
+        hosts = json.loads(salt_output)
+        for host in hosts["minions"]:
+            if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
+                print 'Invalid hostname', host
+                sys.exit(-1)
+            query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
+            host_result = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
+            if not host_result:
+                sys.stderr.write('Removing stale salt key %s' % host)
+                try:
+                    subprocess.check_call(['/usr/bin/salt-key', '-y', '-r', host])
+                    subprocess.check_call(['/usr/bin/salt-key', '-y', '-d', host])
+                except subprocess.CalledProcessError:
+                    sys.stderr.write('Failed remove stale salt key %s\n' % host)
 
 finally:
     ds.unbind()
