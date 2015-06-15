@@ -116,9 +116,7 @@ ganglia_clusters:
     name: "Swift"
     id: 27
     sites:
-      eqiad:
-        - ms-fe1001.eqiad.wmnet
-        - ms-fe1002.eqiad.wmnet
+      eqiad: []
       codfw: []
       esams: []
   cache_mobile:

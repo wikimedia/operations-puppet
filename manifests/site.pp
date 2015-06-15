@@ -1769,9 +1769,6 @@ node 'ms1002.eqiad.wmnet' {
 # new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
 # rate limiting purposes (T66622)
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
-    if $::hostname =~ /^ms-fe100[12]$/ {
-        $ganglia_aggregator = true
-    }
     role swift::eqiad_prod::proxy
     if $::hostname == 'ms-fe1001' {
         include role::swift::eqiad_prod::ganglia_reporter
