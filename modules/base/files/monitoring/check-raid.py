@@ -48,6 +48,8 @@ def main():
         print 'WARNING: check-raid.py encountered exception: ' + str(error)
         status = 1
 
+    if status == 0:
+        print 'OK'
     sys.exit(status)
 
 
