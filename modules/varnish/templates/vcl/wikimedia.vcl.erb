@@ -171,17 +171,9 @@ director <%= director %> <%= @director_type %> {
 sub https_recv_redirect {
 	if (req.request == "GET" || req.request == "HEAD") {
 		if (req.http.X-Forwarded-Proto != "https") {
-			if (req.url ~ "(?i)^https?:") {
-				if (req.url ~ "(?i)^https?://(ca|el|en|he|it|ru|ug|zh)\.") {
-					set req.http.Location = regsub(req.url, "(?i)^http:", "https:");
-					error 751 "TLS Redirect";
-				}
-			}
-			else {
-				if (req.http.Host ~ "(?i)^(ca|el|en|he|it|ru|ug|zh)\.") {
-					set req.http.Location = "https://" + req.http.Host + req.url;
-					error 751 "TLS Redirect";
-				}
+			if (req.http.Host ~ "(?i)^(ca|el|en|he|it|ru|ug|zh)\.") {
+				set req.http.Location = "https://" + req.http.Host + req.url;
+				error 751 "TLS Redirect";
 			}
 		}
 	}
@@ -206,21 +198,11 @@ sub https_error_redirect {
 // *** HTTPS deliver code - domain-based HSTS headers
 sub https_deliver_hsts {
 	if (req.http.X-Forwarded-Proto == "https") {
-		if (req.url ~ "(?i)^https?:") {
-			if (req.url ~ "(?i)^https?://ru\.") {
-				set resp.http.Strict-Transport-Security = "max-age=15768000";
-			}
-			else if (req.url ~ "(?i)^https?://(ca|el|en|he|it|ug|zh)\.") {
-				set resp.http.Strict-Transport-Security = "max-age=86400";
-			}
+		if (req.http.Host ~ "(?i)^ru\.") {
+			set resp.http.Strict-Transport-Security = "max-age=15768000";
 		}
-		else {
-			if (req.http.Host ~ "(?i)^ru\.") {
-				set resp.http.Strict-Transport-Security = "max-age=15768000";
-			}
-			else if (req.http.Host ~ "(?i)^(ca|el|en|he|it|ug|zh)\.") {
-				set resp.http.Strict-Transport-Security = "max-age=86400";
-			}
+		else if (req.http.Host ~ "(?i)^(ca|el|en|he|it|ug|zh)\.") {
+			set resp.http.Strict-Transport-Security = "max-age=86400";
 		}
 	}
 }
