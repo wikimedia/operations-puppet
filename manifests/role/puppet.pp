@@ -31,7 +31,8 @@ class role::puppet::server::labs {
             'ldapstring'        => '(&(objectclass=puppetClient)(associatedDomain=%s))',
             'ldapuser'          => $ldapconfig['proxyagent'],
             'ldappassword'      => $ldapconfig['proxypass'],
-            'ldaptls'           => true
+            'ldaptls'           => true,
+            'autosign'          => true,
         };
     }
 
