@@ -1904,10 +1904,6 @@ node 'mw1152.eqiad.wmnet' {
 
 # mw1153-1160 are imagescalers (precise)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
-    if $::hostname =~ /^mw115[34]$/ {
-        $ganglia_aggregator = true
-    }
-
     role mediawiki::imagescaler
 }
 
