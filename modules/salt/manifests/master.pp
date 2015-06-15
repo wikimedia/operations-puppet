@@ -14,6 +14,7 @@ class salt::master(
     $salt_state_roots={'base'=>['/srv/salt']},
     $salt_module_roots={'base'=>['/srv/salt/_modules']},
     $salt_returner_roots={'base'=>['/srv/salt/_returners']},
+    $auto_accept_keys = false,
 ){
     package { 'salt-master':
         ensure => $salt_version,

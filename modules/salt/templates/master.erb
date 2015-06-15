@@ -512,3 +512,8 @@ reactor:<% salt_reactor.sort.each do |salt_tag, salt_states| %>
   - '<%= salt_tag %>':<% salt_states.sort.each do |salt_state| %>
     - <%= salt_reactor_root %>/<%= salt_state %><% end %>
 <% end %><% end %>
+
+# Auto-accept client keys?
+<%- if @auto_accept_keys -%>
+auto_accept: true
+<%- end -%>
