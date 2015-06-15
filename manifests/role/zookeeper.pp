@@ -22,6 +22,7 @@
 class role::zookeeper::client {
 
     $version = $::lsbdistcodename ? {
+        'jessie'  => '3.4.5+dfsg-2',
         'trusty'  => '3.4.5+dfsg-1',
         'precise' => '3.3.5+dfsg1-1ubuntu1',
     }
