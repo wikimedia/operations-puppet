@@ -1247,6 +1247,7 @@ node 'labcontrol1001.wikimedia.org' {
     include ldap::role::client::labs
     include role::salt::masters::labs
     include role::deployment::salt_masters
+    include role::dns::ldap
     if $use_neutron == true {
         include role::neutron::controller
 
@@ -2415,7 +2416,6 @@ node 'uranium.wikimedia.org' {
 
 node 'virt1000.wikimedia.org' {
     include standard
-    include role::dns::ldap
 }
 
 node /^virt100[5-7].eqiad.wmnet/ {
