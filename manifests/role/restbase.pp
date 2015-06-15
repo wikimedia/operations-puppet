@@ -40,4 +40,24 @@ class role::restbase::alerts {
         percentage     => '50',
         contact_group  => 'team-services',
     }
+
+    monitoring::graphite_threshold { 'restbase_cassandra_storage_exceptions':
+        description    => 'RESTBase Cassandra storage exceptions',
+        metric         => 'sumSeries(nonNegativeDerivative(cassandra.*.org.apache.cassandra.metrics.Storage.Exceptions.count))',
+        from           => '10min',
+        warning        => '5',
+        critical       => '10',
+        percentage     => '50',
+        contact_group  => 'team-services',
+    }
+
+    monitoring::graphite_threshold { 'restbase_cassandra_storage_total_hints':
+        description    => 'RESTBase Cassandra storage total hints',
+        metric         => 'sumSeries(nonNegativeDerivative(cassandra.*.org.apache.cassandra.metrics.Storage.TotalHints.count))',
+        from           => '10min',
+        warning        => '1000',
+        critical       => '2000',
+        percentage     => '50',
+        contact_group  => 'team-services',
+    }
 }
