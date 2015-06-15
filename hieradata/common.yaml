@@ -238,9 +238,7 @@ ganglia_clusters:
     name: "Service Cluster A"
     id: 46
     sites:
-      eqiad:
-        - sca1001.eqiad.wmnet
-        - sca1002.eqiad.wmnet
+      eqiad: []
   openldap_corp_mirror:
     name: "Corp OIT LDAP mirror"
     id: 47

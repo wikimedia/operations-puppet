@@ -2210,7 +2210,6 @@ node 'ruthenium.eqiad.wmnet' {
 }
 
 node /^sca100[12]\.eqiad\.wmnet$/ {
-    $ganglia_aggregator = true
     role sca
 }
 
