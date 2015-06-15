@@ -1,1 +1,2 @@
 elasticsearch::master_eligible: true
+elasticsearch::holds_data: false
