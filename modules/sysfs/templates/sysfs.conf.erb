@@ -2,6 +2,7 @@
 <%=
     @values.sort.map { |k, v|
         v = v.join(' ') if v.is_a?(Array)
+        k = k.tr( '.', '/' )
         [ k, v ].join(' = ')
     }.join("\n")
 %>
