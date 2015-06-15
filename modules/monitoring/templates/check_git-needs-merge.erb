@@ -20,6 +20,9 @@ fi
 outstanding=$(git log HEAD..${refname} --oneline | wc -l)
 if [ $outstanding -eq 1 ]; then
     msg_start="There is one unmerged change"
+elif [ $outstanding -eq 0]; then
+    echo "No changes to merge."
+    exit 0
 else
     msg_start="There are ${outstanding} unmerged changes"
 fi;
