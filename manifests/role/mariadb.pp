@@ -503,6 +503,15 @@ class role::mariadb::labs {
         group  => 'mysql',
         mode   => '0755',
     }
+
+    # Required for TokuDB to start
+    # See https://mariadb.com/kb/en/mariadb/enabling-tokudb/#check-for-transparent-hugepage-support-on-linux
+    sysfs::parameters { 'disable-transparent-hugepages':
+        values  => {
+            'kernel.mm.transparent_hugepage.enabled' => 'never',
+            'kernel.mm.transparent_hugepage.defrag'  => 'never',
+        }
+    }
 }
 
 # wikitech instance (silver)
