@@ -176,7 +176,7 @@ nimishg, rainman, ssmith, swalling, erik]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
-    members: [ezachte, ironholds, qchris, milimetric, joal]
+    members: [ezachte, ironholds, qchris, milimetric, joal, mforns]
     privileges: ['ALL = (stats) NOPASSWD: ALL']
   oit:
     gid: 727
