@@ -19,7 +19,7 @@
 #
 #  sysfs::parameters { 'sda_deadline':
 #    values => {
-#      'block.sda.queue.scheduler' => 'deadline',
+#      'block/sda/queue/scheduler' => 'deadline',
 #    },
 #    priority => 90,
 #  }
