@@ -50,6 +50,10 @@ redis:
   __regex: !ruby/regexp /^rdb100[1-4]\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+imagescaler:
+  __regex: !ruby/regexp /^mw11(5[2-9]|60)\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 videoscaler:
   __regex: !ruby/regexp /^tmh100[1-2]\.eqiad\.wmnet$/
   ganglia_class: "new"
