@@ -41,6 +41,7 @@ class role::salt::masters::labs {
         salt_state_roots    => $salt_state_roots,
         salt_module_roots   => $salt_module_roots,
         salt_returner_roots => $salt_returner_roots,
+        auto_accept_keys    => true,
     }
 
     class { 'salt::reactors':
