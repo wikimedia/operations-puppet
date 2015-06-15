@@ -2461,7 +2461,6 @@ node 'zirconium.wikimedia.org' {
 
     include standard
     include role::planet
-    include role::etherpad
     include role::wikimania_scholarships
     include role::bugzilla
     include role::transparency
