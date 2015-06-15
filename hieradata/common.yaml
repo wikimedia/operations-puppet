@@ -247,8 +247,7 @@ ganglia_clusters:
     name: "Corp OIT LDAP mirror"
     id: 47
     sites:
-      eqiad:
-        - plutonium.wikimedia.org
+      eqiad: []
   restbase:
     name: "Restbase"
     id: 48
