@@ -35,7 +35,11 @@ basedn = ldapSupportLib.getLdapInfo('base')
 
 try:
     puppet_output = subprocess.check_output(['/usr/bin/puppet', 'cert', 'list', '--all'])
-    hosts = puppet_output.strip().split("\n")
+    if puppet_output == '':
+        hosts = []
+    else:
+        hosts = puppet_output.strip().split("\n")
+
     for host_string in hosts:
         host = host_string.split()
         # check to make sure hostname is actual hostname, to prevent
