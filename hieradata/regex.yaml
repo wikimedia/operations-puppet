@@ -52,6 +52,9 @@ redis:
 
 service_cluster_a:
   __regex: !ruby/regexp /^sca100[12]\.eqiad\.wmnet$/
+
+swift:
+  __regex: !ruby/regexp /^(ms-be|ms-fe)10[0-1][1-9]\.eqiad\.wmnet$/
   ganglia_class: "new"
 
 imagescaler:
