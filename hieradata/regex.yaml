@@ -39,7 +39,7 @@ memcached:
   ganglia_class: "new"
 
 parsoid:
-  __regex: !ruby/regexp /^wtp10(0[1-9]|1[1-9]|2[1-4])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/
   ganglia_class: "new"
 
 parsoid_cache:
