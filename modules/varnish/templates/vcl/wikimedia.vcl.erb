@@ -179,14 +179,8 @@ sub https_recv_redirect {
 	}
 }
 
-// *** HTTPS error code - implements 301/302 response for recv code
+// *** HTTPS error code - implements 301 response for recv code
 sub https_error_redirect {
-	if (obj.status == 752) {
-		set obj.http.Location = req.http.Location;
-		set obj.status = 302;
-		set obj.http.Content-Length = "0"; // T64245
-		return(deliver);
-	}
 	if (obj.status == 751) {
 		set obj.http.Location = req.http.Location;
 		set obj.status = 301;
