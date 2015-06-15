@@ -82,7 +82,10 @@ try:
             try:
                 subprocess.check_call(['/usr/bin/puppet', 'cert', 'clean', hostname])
             except subprocess.CalledProcessError:
-                sys.stderr.write('Failed to remove stale cert %s -- removing directly\n' % hostname)
+                if not signed:
+                    requestpath = '/var/lib/puppet/server/ssl/ca/requests/%s.pem' % hostname
+                    sys.stderr.write('Failed to remove stale cert %s -- directly removing %s\n' % (hostname, requestpath))
+                    subprocess.check_call(['rm', requestpath])
         elif not signed:
             sys.stderr.write('Signing new cert %s' % hostname)
             try:
