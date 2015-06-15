@@ -276,6 +276,15 @@ class phabricator (
         mode    => '0500',
     }
 
+    file { '/usr/local/bin/arc':
+        ensure  => 'link',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        target  => '/srv/phab/arcanist/bin/arc',
+        require => Git::Install['phabricator/arcanist'],
+    }
+
     # Phabricator needs an initial index built and from there
     # will update as appropriate.
     if ($phab_settings['search.elastic.host']) {
