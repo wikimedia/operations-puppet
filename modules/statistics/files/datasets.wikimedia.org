@@ -14,6 +14,21 @@ NameVirtualHost *:80
     Header set Access-Control-Allow-Origin "*"
   </Directory>
 
+   # Cache json, yaml, csv, and tsv files 1 day
+   # (could be all files but wanted to be more restrictive to start)
+   <IfModule mod_headers.c>
+      <FilesMatch "\.(json|yaml|csv|tsv)$">
+         Header set Cache-Control "max-age=86400, public, must-revalidate"
+     </FilesMatch>
+   </IfModule>
+
+   # M86400 -> issue conditional request 1 day after modification
+   <IfModule mod_expires.c>
+       ExpiresActive On
+       ExpiresDefault M86400
+   </IfModule>
+  </Directory>
+
   LogLevel warn
   ErrorLog /var/log/apache2/datasets_error.log
   CustomLog /var/log/apache2/datasets_access.log combined
