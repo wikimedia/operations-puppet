@@ -171,7 +171,7 @@ director <%= director %> <%= @director_type %> {
 sub https_recv_redirect {
 	if (req.request == "GET" || req.request == "HEAD") {
 		if (req.http.X-Forwarded-Proto != "https") {
-			if (req.http.Host ~ "(?i)^((www|commons|ca|de|el|en|fr|he|it|ja|ru|ug|zh)\.)?((m|zero)\.)?(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimedia|wikimediafoundation|wiktionary|mediawiki).org$") {
+			if (req.http.Host ~ "(?i)^((www|commons|bg|ca|cs|de|el|eo|en|fi|fr|he|id|it|ja|no|pl|pt|ru|sv|th|tr|ug|zh)\.)?((m|zero)\.)?(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimedia|wikimediafoundation|wiktionary|mediawiki).org$") {
 				set req.http.Location = "https://" + req.http.Host + req.url;
 				error 751 "TLS Redirect";
 			}
