@@ -44,6 +44,8 @@ class restbase(
     $cassandra_defaultConsistency = 'localQuorum',
     $cassandra_localDc = 'datacenter1',
     $port           = 7231,
+    $salt_key       = 'secretkey',
+    $page_size      = 250,
     $config_template = 'restbase/config.yaml.erb',
     $parsoid_uri    = 'http://parsoid-lb.eqiad.wikimedia.org',
     $logstash_host  = 'localhost',
