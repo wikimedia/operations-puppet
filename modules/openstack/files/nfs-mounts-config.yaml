@@ -1,0 +1,179 @@
+nfs-settings-templates:
+  alltrue: &alltrue
+    dumps: true
+    home: true
+    project: true
+    scratch: true
+  allfalse: &allfalse
+    dumps: false
+    home: false
+    project: false
+    scratch: false
+abusefilter-global: *alltrue
+account-creation-assistance: *alltrue
+akosiaristests: *alltrue
+analytics: *alltrue
+bastion: *allfalse
+bots: *alltrue
+butterfly: *alltrue
+catgraph: *alltrue
+cephtest: *alltrue
+chasetest: *alltrue
+collection-alt-renderer: *alltrue
+contintcloud: *alltrue
+contributors: *alltrue
+conventionextension: *alltrue
+crisiswiki: *alltrue
+cvn:
+  dumps: true
+  home: false
+  project: false
+  scratch: false
+cvresearch: *alltrue
+deployment-prep:
+  dumps: false
+  home: true
+  project: true
+  scratch: false
+design: *alltrue
+developer-doc: *alltrue
+dns: *alltrue
+dumps: *alltrue
+dwl: *alltrue
+editor-engagement: *alltrue
+embed-sandbox: *alltrue
+etcd: *alltrue
+extdist: *alltrue
+fastcci: *alltrue
+fatg: *alltrue
+full-text-reference-tool: *alltrue
+fundraising: *alltrue
+gather: *alltrue
+gerrit: *alltrue
+glam: *alltrue
+globaleducation: *alltrue
+grantreview: *alltrue
+graphite: *alltrue
+gsoc2014-fonttailor-demo: *alltrue
+hadoop: *alltrue
+hat-imagescalers: *alltrue
+hhvm: *alltrue
+huggle: *alltrue
+icinga: *alltrue
+importarticles: *alltrue
+integration: *alltrue
+irc-changes: *alltrue
+ircnotifier: *alltrue
+jawiki: *alltrue
+jupyter: *alltrue
+language: *alltrue
+logstash: *alltrue
+mailman: *alltrue
+maps: *alltrue
+maps-team: *alltrue
+marathon: *alltrue
+math: *alltrue
+mediahandler-tests: *alltrue
+mediawiki-api: *alltrue
+mediawiki-core-team: *alltrue
+mediawiki-dev: *alltrue
+mediawiki-verp: *alltrue
+megacron: *alltrue
+mobile: *alltrue
+mobile-smoketests: *alltrue
+monitoring: *alltrue
+multimedia: *alltrue
+mwoffliner: *alltrue
+mwreview: *alltrue
+netflow: *alltrue
+newsletter: *alltrue
+nginx: *alltrue
+oa-signalling: *alltrue
+ogvjs-integration: *alltrue
+opengrok: *alltrue
+openid: *alltrue
+openstack: *alltrue
+orgcharts: *alltrue
+osm4wiki: *alltrue
+osmit: *alltrue
+otrs: *alltrue
+oxygenguide: *alltrue
+packaging: *alltrue
+pagemigration: *alltrue
+patchtest: *alltrue
+pdbhandler: *alltrue
+performance: *alltrue
+persistence: *alltrue
+persona: *alltrue
+phabricator: *alltrue
+phabricator-test: *alltrue
+phragile: *alltrue
+piwik: *alltrue
+planet: *alltrue
+project-proxy: *alltrue
+propertysuggester: *alltrue
+pubsubhubbub: *alltrue
+puppet: *alltrue
+puppet-ca-replacement: *alltrue
+puppet-cleanup: *alltrue
+puppet3-diffs: *alltrue
+quality-assurance: *alltrue
+quarry: *alltrue
+rdfiodev: *alltrue
+reportcard: *alltrue
+revscoring: *allfalse
+safesandbox: *alltrue
+scrumbugz: *alltrue
+search: *alltrue
+security-tools: *alltrue
+sensu: *alltrue
+services: *alltrue
+services-testbed: *alltrue
+shinken: *alltrue
+shiny-r: *alltrue
+signwriting: *alltrue
+snuggle: *alltrue
+social-tools: *alltrue
+spam-honeypot: *alltrue
+staging: *allfalse
+structured-wikiquote: *alltrue
+sugarcrm: *alltrue
+swift: *alltrue
+test-twemproxy: *alltrue
+testlabs: *alltrue
+tools: *alltrue
+toolsbeta: *alltrue
+toolserver-legacy: *alltrue
+tor: *alltrue
+translatesvg: *alltrue
+trebuchet: *alltrue
+ttmserver: *alltrue
+uploadwizard-osm-embedding: *alltrue
+utrs: *alltrue
+varnish: *alltrue
+video: *alltrue
+visualeditor: *alltrue
+wdq-mm: *alltrue
+webplatform: *alltrue
+wikibrain: *alltrue
+wikidata-build: *alltrue
+wikidata-dev: *alltrue
+wikidata-page-banner: *alltrue
+wikidata-quality: *alltrue
+wikidata-query: *alltrue
+wikidata-topicmaps: *alltrue
+wikidumpparse: *alltrue
+wikimania-support: *alltrue
+wikisource-dev: *alltrue
+wikisource-tools: *alltrue
+wikispy: *alltrue
+wikistats: *alltrue
+wikistream: *alltrue
+wikiviajesve: *alltrue
+wikivoyage: *alltrue
+wildcat: *alltrue
+wlmjudging: *alltrue
+wlmjurytool: *alltrue
+wmt: *alltrue
+xtools: *alltrue
+zotero: *alltrue
