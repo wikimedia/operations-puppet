@@ -1,0 +1,1 @@
+/exp/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)
