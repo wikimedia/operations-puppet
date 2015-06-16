@@ -1,0 +1,800 @@
+abusefilter-global:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+account-creation-assistance:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+akosiaristests:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+analytics:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+bastion:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+bots:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+butterfly:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+catgraph:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+cephtest:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+chasetest:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+collection-alt-renderer:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+contintcloud:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+contributors:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+conventionextension:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+crisiswiki:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+cvn:
+  dumps: true
+  home: false
+  project: false
+  scratch: false
+cvresearch:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+deployment-prep:
+  dumps: false
+  home: true
+  project: true
+  scratch: false
+design:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+developer-doc:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+dns:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+dumps:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+dwl:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+editor-engagement:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+embed-sandbox:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+etcd:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+extdist:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+fastcci:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+fatg:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+full-text-reference-tool:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+fundraising:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+gather:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+gerrit:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+glam:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+globaleducation:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+grantreview:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+graphite:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+gsoc2014-fonttailor-demo:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+hadoop:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+hat-imagescalers:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+hhvm:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+huggle:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+icinga:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+importarticles:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+integration:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+irc-changes:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+ircnotifier:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+jawiki:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+jupyter:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+language:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+logstash:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mailman:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+maps:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+maps-team:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+marathon:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+math:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mediahandler-tests:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mediawiki-api:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mediawiki-core-team:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mediawiki-dev:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mediawiki-verp:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+megacron:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mobile:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mobile-smoketests:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+monitoring:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+multimedia:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mwoffliner:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mwreview:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+netflow:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+newsletter:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+nginx:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+oa-signalling:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+ogvjs-integration:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+opengrok:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+openid:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+openstack:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+orgcharts:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+osm4wiki:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+osmit:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+otrs:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+oxygenguide:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+packaging:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+pagemigration:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+patchtest:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+pdbhandler:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+performance:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+persistence:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+persona:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+phabricator:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+phabricator-test:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+phragile:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+piwik:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+planet:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+project-proxy:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+propertysuggester:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+pubsubhubbub:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+puppet:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+puppet-ca-replacement:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+puppet-cleanup:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+puppet3-diffs:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+quality-assurance:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+quarry:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+rdfiodev:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+reportcard:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+revscoring:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+safesandbox:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+scrumbugz:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+search:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+security-tools:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+sensu:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+services:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+services-testbed:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+shinken:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+shiny-r:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+signwriting:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+snuggle:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+social-tools:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+spam-honeypot:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+staging:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+structured-wikiquote:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+sugarcrm:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+swift:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+test-twemproxy:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+testlabs:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+tools:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+toolsbeta:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+toolserver-legacy:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+tor:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+translatesvg:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+trebuchet:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+ttmserver:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+uploadwizard-osm-embedding:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+utrs:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+varnish:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+video:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+visualeditor:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wdq-mm:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+webplatform:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikibrain:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikidata-build:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikidata-dev:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikidata-page-banner:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikidata-quality:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikidata-query:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikidata-topicmaps:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikidumpparse:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikimania-support:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikisource-dev:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikisource-tools:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikispy:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikistats:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikistream:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikiviajesve:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikivoyage:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wildcat:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wlmjudging:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wlmjurytool:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wmt:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+xtools:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+zotero:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
