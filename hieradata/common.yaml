@@ -204,9 +204,7 @@ ganglia_clusters:
     name: "Misc Web caching cluster"
     id: 41
     sites:
-      eqiad:
-        - cp1043.eqiad.wmnet
-        - cp1044.eqiad.wmnet
+      eqiad: []
   elasticsearch:
     name: "Elasticsearch cluster"
     id: 42

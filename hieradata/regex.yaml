@@ -26,6 +26,10 @@ etcd:
   __regex: !ruby/regexp /^etcd100\d\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+cache_misc:
+  __regex: !ruby/regexp /^cp104[34]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 ocg:
   __regex: !ruby/regexp /^ocg100\d\.eqiad\.wmnet$/
   ganglia_class: "new"

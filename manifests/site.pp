@@ -371,7 +371,6 @@ node 'cp1008.wikimedia.org' {
 }
 
 node /^cp104[34]\.eqiad\.wmnet$/ {
-    $ganglia_aggregator = true
     interface::add_ip6_mapped { 'main': }
     role cache::misc
 }
