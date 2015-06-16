@@ -27,18 +27,17 @@ class mediawiki::packages::fonts {
         'fonts-unfonts-core',
         'fonts-unfonts-extra',
         'texlive-fonts-recommended',
-        'ttf-alee',
-        'ttf-bengali-fonts',
-        'ttf-devanagari-fonts',
-        'ttf-gujarati-fonts',
-        'ttf-kannada-fonts',
-        'ttf-malayalam-fonts',
-        'ttf-oriya-fonts',
-        'ttf-punjabi-fonts',
-        'ttf-tamil-fonts',
-        'ttf-telugu-fonts',
-        'ttf-ubuntu-font-family',
-        'ttf-wqy-zenhei',
+        'fonts-alee',
+        'fonts-beng',
+        'fonts-deva',
+        'fonts-gujr',
+        'fonts-knda',
+        'fonts-mlym',
+        'fonts-orya',
+        'fonts-guru',
+        'fonts-taml',
+        'fonts-telu',
+        'fonts-wqy-zenhei',
         'xfonts-100dpi',
         'xfonts-75dpi',
         'xfonts-base',
@@ -49,11 +48,11 @@ class mediawiki::packages::fonts {
         'culmus-fancy',              # T40946
         'fonts-lklug-sinhala',       # T57462
         'fonts-vlgothic',            # T66002
-        'ttf-dejavu-core',           # T65206
-        'ttf-dejavu-extra',          # T65206
-        'ttf-kochi-gothic',          # T66002
-        'ttf-kochi-mincho',          # T66002
-        'ttf-lyx',                   # T40299
+        'fonts-dejavu-core',         # T65206
+        'fonts-dejavu-extra',        # T65206
+        'fonts-vlgothic',            # T102623
+        'fonts-ipafont-mincho',      # T66002
+        'fonts-lyx',                 # T40299
     ]:
         ensure => present,
     }
