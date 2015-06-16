@@ -56,23 +56,29 @@ class role::zookeeper::server {
         $ganglia_host = '239.192.1.32'
         $ganglia_port = 8649
 
-        # Only allow hosts in the Analytics Cluster to
-        # connect to the Zookeeper admin client port.
-        #
-        # We don't include base::firewall yet, but do
-        # want to restrict access to administrative
-        # services.  We need defs.erb to be rendered
-        # so we can reference defined networks in rules.
-        # NOTE:  This should be removed if we get a useable
-        # base::firewall class.
-        include ferm
-        include network::constants
-        ferm::conf { 'defs':
-            # defs can always be present.
-            # They don't actually do firewalling.
-            ensure  => 'present',
-            prio    => '00',
-            content => template('base/firewall/defs.erb')
+
+        # This will be removed after the Jessie reinstall and rename
+        # of these hosts, as they will then all include base::firewall
+        # by default.  https://phabricator.wikimedia.org/T101713
+        if $::hostname =~ /^analytics102[234]$/ {
+            # Only allow hosts in the Analytics Cluster to
+            # connect to the Zookeeper admin client port.
+            #
+            # We don't include base::firewall yet, but do
+            # want to restrict access to administrative
+            # services.  We need defs.erb to be rendered
+            # so we can reference defined networks in rules.
+            # NOTE:  This should be removed if we get a useable
+            # base::firewall class.
+            include ferm
+            include network::constants
+            ferm::conf { 'defs':
+                # defs can always be present.
+                # They don't actually do firewalling.
+                ensure  => 'present',
+                prio    => '00',
+                content => template('base/firewall/defs.erb')
+            }
         }
 
         ferm::service { 'zookeeper':
