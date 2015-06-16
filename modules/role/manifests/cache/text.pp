@@ -128,6 +128,7 @@ class role::cache::text {
         cluster_options => {
             'enable_geoiplookup' => true,
             'do_gzip'            => true,
+            'https_redirects'    => true,
         },
     }
 

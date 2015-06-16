@@ -163,7 +163,7 @@ director <%= director %> <%= @director_type %> {
 # Functions
 
 // start frontend-only block for HTTPS
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" && @cluster_options.fetch("https_redirects", false) -%>
 
 // *** HTTPS recv code - domain-based 301/302->HTTPS decisions happen here
 // if GET/HEAD filter is modified/removed later, keep in mind we need to not affect
@@ -211,7 +211,7 @@ sub https_deliver_hsts {
 }
 
 <% end -%>
-// ^ end frontend-only block for HTTPS
+// ^ end frontend + https_redirects block
 
 // We shouldn't even legally be receiving proxy-style requests, as we're not a
 // proxy from any client's point of view.  Just in case, we support it anyways
@@ -366,7 +366,7 @@ sub vcl_recv {
 
 	call vcl_recv_append_xff;
 
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" && @cluster_options.fetch("https_redirects", false) -%>
 	call https_recv_redirect;
 <% end -%>
 
@@ -458,7 +458,7 @@ sub vcl_deliver {
 		}
 	}
 
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" && @cluster_options.fetch("https_redirects", false) -%>
 	call https_deliver_hsts;
 <% end -%>
 
@@ -466,7 +466,7 @@ sub vcl_deliver {
 }
 
 sub vcl_error {
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" && @cluster_options.fetch("https_redirects", false) -%>
 	call https_error_redirect;
 <% end -%>
 
