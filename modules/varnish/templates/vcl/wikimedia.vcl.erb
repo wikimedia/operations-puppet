@@ -173,15 +173,12 @@ sub https_recv_redirect {
 		if (req.http.X-Forwarded-Proto != "https") {
 			// This filter should exactly match our set of SSL cert wildcards
 			if (req.http.Host ~ "(?i)^([^.]+\.)?(zero\.wikipedia|(m\.)?(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimedia|wikimediafoundation|wiktionary|mediawiki)).org$") {
-				// For now, don't transition upload.wm.o yet...
-				if (req.http.Host != 'upload.wikimedia.org') {
-					// For now, avoid matching these "special" wikis for MW UAs
-					// Ref: T102566 + https://gerrit.wikimedia.org/r/218539
-					if (req.http.Host !~ "^(commons|meta)\.wikimedia.org$" ||
-					    req.http.User-Agent !~ "^MediaWiki/") {
-						set req.http.Location = "https://" + req.http.Host + req.url;
-						error 751 "TLS Redirect";
-					}
+				// For now, avoid matching these "special" wikis for MW UAs
+				// Ref: T102566 + https://gerrit.wikimedia.org/r/218539
+				if (req.http.Host !~ "^(commons|upload|meta)\.wikimedia.org$" ||
+				    req.http.User-Agent !~ "^MediaWiki/") {
+					set req.http.Location = "https://" + req.http.Host + req.url;
+					error 751 "TLS Redirect";
 				}
 			}
 		}
