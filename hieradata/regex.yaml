@@ -77,6 +77,10 @@ restbase:
   __regex: !ruby/regexp /^(restbase100[1-9]|cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+virtualization:
+  __regex: !ruby/regexp /^(labnet|labmon|labcontrol|labnodepool|labvirt|labstore|labsdb|virt)100[1-9]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 cassandra_test:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   cassandra::seeds:
