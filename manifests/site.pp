@@ -357,6 +357,12 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     }
 }
 
+# conf100x are zookeeper and etcd discovery service nodes
+node /^conf100[123]\.eqiad\.wmnet$/ {
+    include base::firewall
+    include standard
+}
+
 # Debian package building host in production
 node 'copper.eqiad.wmnet' {
     role package::builder
