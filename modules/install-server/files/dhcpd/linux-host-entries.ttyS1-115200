@@ -83,21 +83,6 @@ host analytics1022 {
 	fixed-address analytics1022.eqiad.wmnet;
 }
 
-host analytics1023 {
-	hardware ethernet d4:ae:52:73:60:e6;
-	fixed-address analytics1023.eqiad.wmnet;
-}
-
-host analytics1024 {
-	hardware ethernet d4:ae:52:7c:c9:ec;
-	fixed-address analytics1024.eqiad.wmnet;
-}
-
-host analytics1025 {
-	hardware ethernet d4:ae:52:7c:b5:ed;
-	fixed-address analytics1025.eqiad.wmnet;
-}
-
 host analytics1026 {
 	hardware ethernet d4:ae:52:7c:c2:70;
 	fixed-address analytics1026.eqiad.wmnet;
@@ -272,6 +257,21 @@ host chromium {
 host cobalt {
 	hardware ethernet 78:2b:cb:08:a1:68;
 	fixed-address cobalt.wikimedia.org;
+}
+
+host conf1001 {
+	hardware ethernet d4:ae:52:73:60:e6;
+	fixed-address conf1001.eqiad.wmnet;
+}
+
+host conf1002 {
+	hardware ethernet d4:ae:52:7c:c9:ec;
+	fixed-address conf1002.eqiad.wmnet;
+}
+
+host conf1003 {
+	hardware ethernet d4:ae:52:7c:b5:ed;
+	fixed-address conf1003.eqiad.wmnet;
 }
 
 host copper {
