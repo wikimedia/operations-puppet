@@ -76,6 +76,26 @@ class labstore::fileserver($monitor_iface = 'eth0') {
         mode   => '2775',
     }
 
+    # Base exports for the file service: the root (/exp) fs
+    # unconditionnally as fsid 0 for the NFS4 export tree
+    file { '/etc/exports.d/ROOT.exports':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/labstore/ROOT.exports',
+    }
+
+    # This exports the global (non-project specific)
+    # file systems to everyone.
+    file { '/etc/exports.d/PUBLIC.exports':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/labstore/PUBLIC.exports',
+    }
+
     monitoring::graphite_threshold { 'network_out_saturated':
         description => 'Outgoing network saturation',
         metric      => "servers.${::hostname}.network.${monitor_iface}.tx_byte",
