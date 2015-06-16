@@ -197,12 +197,19 @@ sub https_error_redirect {
 
 // *** HTTPS deliver code - domain-based HSTS headers
 sub https_deliver_hsts {
+	// The reason we don't need the stricter domain restrictions here,
+	// like we do on the recv side for redirects, is that in order for
+	// HSTS to reach a client, the client implicitly has to have already
+	// successfully reached us over HTTPS for the given domainname.
 	if (req.http.X-Forwarded-Proto == "https") {
 		if (req.http.Host ~ "(?i)^ru\.") {
 			set resp.http.Strict-Transport-Security = "max-age=15768000";
 		}
 		else if (req.http.Host ~ "(?i)^(ca|el|en|he|it|ug|zh)\.") {
 			set resp.http.Strict-Transport-Security = "max-age=259200";
+		}
+		else if (!resp.http.Strict-Transport-Security) {
+			set resp.http.Strict-Transport-Security = "max-age=86400";
 		}
 	}
 }
