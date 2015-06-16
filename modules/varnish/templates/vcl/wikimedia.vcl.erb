@@ -175,6 +175,15 @@ sub https_recv_redirect {
 				set req.http.Location = "https://" + req.http.Host + req.url;
 				error 751 "TLS Redirect";
 			}
+
+			// Redirect Commons but make an exception for MediaWiki User-Agents,
+			// as these are usually the InstantCommons feature, which is buggy with
+			// redirects. See T102566 for context.
+			if (req.http.Host ~ "(?i)^commons\.wikimedia\.org$" &&
+			    req.http.User-Agent !~ "^MediaWiki/" ) {
+				set req.http.Location = "https://" + req.http.Host + req.url;
+				error 751 "TLS Redirect";
+			}
 		}
 	}
 }
