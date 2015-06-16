@@ -381,10 +381,6 @@ node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
-    if $::hostname =~ /^cp104[67]$/ {
-        $ganglia_aggregator = true
-    }
-
     interface::add_ip6_mapped { 'main': }
     role cache::mobile
 }

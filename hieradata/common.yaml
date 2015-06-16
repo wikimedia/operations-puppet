@@ -123,9 +123,7 @@ ganglia_clusters:
     name: "Mobile caches"
     id: 28
     sites:
-      eqiad:
-        - cp1046.eqiad.wmnet
-        - cp1047.eqiad.wmnet
+      eqiad: []
       esams: []
       ulsfo:
         - cp4011.ulsfo.wmnet
