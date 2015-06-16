@@ -1235,7 +1235,6 @@ node 'iron.wikimedia.org' {
 
 node 'labcontrol1001.wikimedia.org' {
     $cluster               = 'virt'
-    $ganglia_aggregator    = true
     $is_puppet_master      = true
     $is_labs_puppet_master = true
     $use_neutron           = false
@@ -1281,8 +1280,6 @@ node 'labmon1001.eqiad.wmnet' {
 node 'labnet1001.eqiad.wmnet' {
     $cluster = 'virt'
     $use_neutron = false
-
-    $ganglia_aggregator = true
 
     include standard
     include role::nova::api
@@ -1357,8 +1354,6 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 }
 
 node 'labstore1003.eqiad.wmnet' {
-    $ganglia_aggregator = true
-
     role labs::nfs::dumps
 }
 
