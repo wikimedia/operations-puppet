@@ -39,9 +39,10 @@ class role::cache::upload(
     }
 
     $cluster_options = {
-        'upload_domain' => $upload_domain,
-        'top_domain'    => $top_domain,
-        'do_gzip'       => true,
+        'upload_domain'   => $upload_domain,
+        'top_domain'      => $top_domain,
+        'do_gzip'         => true,
+        'https_redirects' => true,
     }
 
     $runtime_params = $::site ? {

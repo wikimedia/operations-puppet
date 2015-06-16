@@ -44,6 +44,7 @@ class role::cache::mobile (
     $cluster_options = {
         'enable_geoiplookup' => true,
         'do_gzip'            => true,
+        'https_redirects'    => true,
     }
 
     class { 'varnish::zero_update':
