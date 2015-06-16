@@ -1,0 +1,785 @@
+account-creation-assistance:
+  dumps: false
+  home: false
+  project: true
+  scratch: false
+akosiaristests:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+analytics:
+  dumps: false
+  home: false
+  project: true
+  scratch: false
+bastion:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+bots:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+butterfly:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+catgraph:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+cephtest:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+chasetest:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+collection-alt-renderer:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+commonsarchive:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+contintcloud:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+contributors:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+conventionextension:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+crisiswiki:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+cvn:
+  dumps: false
+  home: false
+  project: true
+  scratch: false
+cvresearch:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+deployment-prep:
+  dumps: false
+  home: false
+  project: true
+  scratch: false
+design:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+developer-doc:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+dns:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+dumps:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+dwl:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+editor-engagement:
+  dumps: false
+  home: false
+  project: true
+  scratch: false
+embed-sandbox:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+etcd:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+extdist:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+fastcci:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+fatg:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+full-text-reference-tool:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+fundraising:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+gather:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+gerrit:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+glam:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+globaleducation:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+grantreview:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+graphite:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+gsoc2014-fonttailor-demo:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+hat-imagescalers:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+hhvm:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+huggle:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+icinga:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+importarticles:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+integration:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+ircnotifier:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+jawiki:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+jupyter:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+language:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+logstash:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+mailman:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+maps:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+maps-team:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+marathon:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+math:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+mediahandler-tests:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+mediawiki-api:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+mediawiki-core-team:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+mediawiki-dev:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+mediawiki-verp:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+megacron:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+mobile:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+mobile-smoketests:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+monitoring:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+multimedia:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+mwoffliner:
+  dumps: false
+  home: false
+  project: false
+  scratch: true
+mwreview:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+netflow:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+newsletter:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+nginx:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+oa-signalling:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+ogvjs-integration:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+opengrok:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+openid:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+openstack:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+orgcharts:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+osm4wiki:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+osmit:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+otrs:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+oxygenguide:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+packaging:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+pagemigration:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+patchtest:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+pdbhandler:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+performance:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+persistence:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+persona:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+phabricator:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+phragile:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+piwik:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+planet:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+project-proxy:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+propertysuggester:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+pubsubhubbub:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+puppet:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+puppet-ca-replacement:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+puppet-cleanup:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+puppet3-diffs:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+quality-assurance:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+quarry:
+  dumps: false
+  home: false
+  project: true
+  scratch: false
+rdfiodev:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+reportcard:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+revscoring:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+safesandbox:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+scrumbugz:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+search:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+security-tools:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+sensu:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+services:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+services-testbed:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+shinken:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+shiny-r:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+signwriting:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+snuggle:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+social-tools:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+spam-honeypot:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+staging:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+structured-wikiquote:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+sugarcrm:
+  dumps: false
+  home: false
+  project: true
+  scratch: false
+swift:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+test-twemproxy:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+testlabs:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+tools:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+toolsbeta:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+toolserver-legacy:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+tor:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+translatesvg:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+trebuchet:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+ttmserver:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+uploadwizard-osm-embedding:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+utrs:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+varnish:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+ve-languagetool:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+video:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+visualeditor:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wdq-mm:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+webplatform:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wikibrain:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wikidata-build:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wikidata-dev:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikidata-page-banner:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wikidata-quality:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikidata-query:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wikidata-topicmaps:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikidumpparse:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikimania-support:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wikisource-dev:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wikisource-tools:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikispy:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikistats:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wikistream:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wikiviajesve:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wikivoyage:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wildcat:
+  dumps: true
+  home: true
+  project: true
+  scratch: true
+wlmjudging:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wlmjurytool:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
+wmt:
+  dumps: false
+  home: false
+  project: true
+  scratch: false
+xtools:
+  dumps: false
+  home: false
+  project: false
+  scratch: false
