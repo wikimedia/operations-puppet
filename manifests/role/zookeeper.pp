@@ -29,6 +29,7 @@ class role::zookeeper::client {
 
     $hosts = hiera('zookeeper_hosts')
 
+    ensure_packages(['openjdk-7-jdk'])
     class { '::zookeeper':
         hosts   => $hosts,
         version => $version,
