@@ -34,13 +34,11 @@ class role::labs::instance {
         ensure => present,
     }
 
-    $nfs_mounts = hiera('nfs_mounts')
-
     $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc'
     $nfs_server = 'labstore.svc.eqiad.wmnet'
     $dumps_server = 'labstore1003.eqiad.wmnet'
 
-    if $nfs_mounts['home'] {
+    if mount_nfs_volume($::instanceproject, 'home') {
         mount { '/home':
             ensure  => mounted,
             atboot  => true,
@@ -51,7 +49,7 @@ class role::labs::instance {
         }
     }
 
-    if $nfs_mounts['project'] or $nfs_mounts['scratch'] {
+    if mount_nfs_volume($::instanceproject, 'project') or mount_nfs_volume($::instanceproject, 'scratch') {
         # Directory for data mounts
         file { '/data':
             ensure => directory,
@@ -61,7 +59,7 @@ class role::labs::instance {
         }
     }
 
-    if $nfs_mounts['project'] {
+    if mount_nfs_volume($::instanceproject, 'project') {
         file { '/data/project':
             ensure  => directory,
             require => File['/data'],
@@ -77,7 +75,7 @@ class role::labs::instance {
         }
     }
 
-    if $nfs_mounts['scratch'] {
+    if mount_nfs_volume($::instanceproject, 'scratch') {
         file { '/data/scratch':
             ensure  => directory,
             require => File['/data'],
@@ -94,7 +92,7 @@ class role::labs::instance {
     }
 
     # Only create if we need /public/dumps or /public/keys
-    if $nfs_mounts['dumps'] or os_version('ubuntu <= precise') {
+    if mount_nfs_volume($::instanceproject, 'dumps') or os_version('ubuntu <= precise') {
         # Directory for public (readonly) mounts
         file { '/public':
             ensure => directory,
@@ -104,7 +102,7 @@ class role::labs::instance {
         }
     }
 
-    if $nfs_mounts['dumps'] {
+    if mount_nfs_volume($::instanceproject, 'dumps') {
         file { '/public/dumps':
             ensure  => directory,
             require => File['/public'],
