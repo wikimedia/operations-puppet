@@ -1,0 +1,1 @@
+/exp *(ro,fsid=0,sec=sys,sync,subtree_check,root_squash,nocrossmnt)
