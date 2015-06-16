@@ -171,18 +171,18 @@ director <%= director %> <%= @director_type %> {
 sub https_recv_redirect {
 	if (req.request == "GET" || req.request == "HEAD") {
 		if (req.http.X-Forwarded-Proto != "https") {
-			if (req.http.Host ~ "(?i)^((www|ar|bg|ca|cs|de|el|es|eo|en|fa|fi|fr|he|hu|id|it|ja|ko|no|pl|pt|ru|sv|th|tr|uk|ug|vi|zh)\.)?((m|zero)\.)?(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimedia|wikimediafoundation|wiktionary|mediawiki).org$") {
-				set req.http.Location = "https://" + req.http.Host + req.url;
-				error 751 "TLS Redirect";
-			}
-
-			// Redirect Commons but make an exception for MediaWiki User-Agents,
-			// as these are usually the InstantCommons feature, which is buggy with
-			// redirects. See T102566 for context.
-			if (req.http.Host ~ "(?i)^commons\.wikimedia\.org$" &&
-			    req.http.User-Agent !~ "^MediaWiki/" ) {
-				set req.http.Location = "https://" + req.http.Host + req.url;
-				error 751 "TLS Redirect";
+			// This filter should exactly match our set of SSL cert wildcards
+			if (req.http.Host ~ "(?i)^([^.]+\.)?(zero\.wikipedia|(m\.)?(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimedia|wikimediafoundation|wiktionary|mediawiki)).org$") {
+				// For now, don't transition upload.wm.o yet...
+				if (req.http.Host !~ "(?i)^upload\.wikimedia\.org$") {
+					// For now, avoid matching these "special" wikis for MW UAs
+					// Ref: T102566 + https://gerrit.wikimedia.org/r/218539
+					if (req.http.Host !~ "(?i)^(commons|meta)\.wikimedia.org$" ||
+					    req.http.User-Agent !~ "^MediaWiki/") {
+						set req.http.Location = "https://" + req.http.Host + req.url;
+						error 751 "TLS Redirect";
+					}
+				}
 			}
 		}
 	}
