@@ -204,6 +204,9 @@ sub https_deliver_hsts {
 		else if (req.http.Host ~ "(?i)^(ca|el|en|he|it|ug|zh)\.") {
 			set resp.http.Strict-Transport-Security = "max-age=259200";
 		}
+		else if (!resp.http.Strict-Transport-Security) {
+			set resp.http.Strict-Transport-Security = "max-age=86400";
+		}
 	}
 }
 
