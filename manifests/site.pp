@@ -1234,7 +1234,6 @@ node 'iron.wikimedia.org' {
 }
 
 node 'labcontrol1001.wikimedia.org' {
-    $cluster               = 'virt'
     $is_puppet_master      = true
     $is_labs_puppet_master = true
     $use_neutron           = false
@@ -1278,7 +1277,6 @@ node 'labmon1001.eqiad.wmnet' {
 }
 
 node 'labnet1001.eqiad.wmnet' {
-    $cluster = 'virt'
     $use_neutron = false
 
     include standard
