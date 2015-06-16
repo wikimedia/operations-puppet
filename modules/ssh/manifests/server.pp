@@ -8,8 +8,14 @@ class ssh::server (
     $enable_hba = false,
     $disable_agent_forwarding = true,
 ) {
-    package { 'openssh-server':
-        ensure => latest;
+    if $::realm == 'labs' and os_version('ubuntu <= precise') {
+        package { 'openssh-server':
+            ensure => '6.6p1-2ubuntu2~wmfprecise2',
+        }
+    } else {
+        package { 'openssh-server':
+            ensure => present,
+        }
     }
 
     service { 'ssh':
@@ -41,6 +47,7 @@ class ssh::server (
         group   => 'root',
         mode    => '0444',
         content => template('ssh/sshd_config.erb'),
+        require => Package['openssh-server'],
     }
 
     # publish this hosts's host key; prefer ECDSA -> RSA (no DSA)
