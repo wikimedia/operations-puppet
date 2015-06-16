@@ -130,13 +130,11 @@ ganglia_clusters:
       ulsfo:
         - cp4011.ulsfo.wmnet
         - cp4019.ulsfo.wmnet
-  virt: 
+  virt:
     name: "Virtualization cluster"
     id: 29
     sites:
-      eqiad:
-        - labnet1001.eqiad.wmnet
-        - labcontrol1001.wikimedia.org
+      eqiad: []
   jobrunner:
     name: "Jobrunners"
     id: 31
