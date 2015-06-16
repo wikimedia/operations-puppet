@@ -3,7 +3,10 @@
 # Provisions font packages used by MediaWiki.
 #
 class mediawiki::packages::fonts {
-    package { [
+
+        $font_pkgs_common = [
+        'culmus-fancy',              # T40946
+        'culmus',                    # T40946
         'fonts-arabeyes',
         'fonts-arphic-ukai',
         'fonts-arphic-uming',
@@ -13,11 +16,13 @@ class mediawiki::packages::fonts {
         'fonts-lao',
         'fonts-liberation',
         'fonts-linuxlibertine',
+        'fonts-lklug-sinhala',       # T57462
         'fonts-manchufont',
         'fonts-mgopen',
         'fonts-nafees',
         'fonts-sil-abyssinica',
         'fonts-sil-ezra',
+        'fonts-sil-nuosusil',        # T83288
         'fonts-sil-padauk',
         'fonts-sil-scheherazade',
         'fonts-takao-gothic',
@@ -26,12 +31,46 @@ class mediawiki::packages::fonts {
         'fonts-tibetan-machine',
         'fonts-unfonts-core',
         'fonts-unfonts-extra',
+        'fonts-vlgothic',            # T66002
         'texlive-fonts-recommended',
+        'xfonts-base',
+        'xfonts-75dpi',
+        'xfonts-100dpi',
+        'xfonts-mplus',
+        'xfonts-scalable',
+        ]
+
+        $fonts_pkgs_new = [
+        'fonts-alee',
+        'fonts-beng',
+        'fonts-crosextra-carlito', # T84842
+        'fonts-crosextra-caladea', # T84842
+        'fonts-dejavu-core',
+        'fonts-dejavu-extra',
+        'fonts-deva',
+        'fonts-gujr',
+        'fonts-guru',
+        'fonts-ipafont-mincho',
+        'fonts-knda',
+        'fonts-lyx',
+        'fonts-mlym',
+        'fonts-orya',
+        'fonts-taml',
+        'fonts-telu',
+        'fonts-wqy-zenhei',
+        ]
+
+        $font_pkgs_old = [
         'ttf-alee',
         'ttf-bengali-fonts',
+        'ttf-dejavu-core',
+        'ttf-dejavu-extra',
         'ttf-devanagari-fonts',
         'ttf-gujarati-fonts',
         'ttf-kannada-fonts',
+        'ttf-kochi-gothic',
+        'ttf-kochi-mincho',
+        'ttf-lyx',
         'ttf-malayalam-fonts',
         'ttf-oriya-fonts',
         'ttf-punjabi-fonts',
@@ -39,28 +78,14 @@ class mediawiki::packages::fonts {
         'ttf-telugu-fonts',
         'ttf-ubuntu-font-family',
         'ttf-wqy-zenhei',
-        'xfonts-100dpi',
-        'xfonts-75dpi',
-        'xfonts-base',
-        'xfonts-mplus',
-        'xfonts-scalable',
-        'fonts-sil-nuosusil',        # T83288
-        'culmus',                    # T40946
-        'culmus-fancy',              # T40946
-        'fonts-lklug-sinhala',       # T57462
-        'fonts-vlgothic',            # T66002
-        'ttf-dejavu-core',           # T65206
-        'ttf-dejavu-extra',          # T65206
-        'ttf-kochi-gothic',          # T66002
-        'ttf-kochi-mincho',          # T66002
-        'ttf-lyx',                   # T40299
-    ]:
-        ensure => present,
+        ]
+
+    ensure_packages($font_pkgs_common)
+
+    if os_version('debian >= jessie') {
+        ensure_packages($font_pkgs_new)
+    } else {
+        ensure_packages($font_pkgs_old)
     }
-    # T84842
-    if os_version('ubuntu >= trusty || debian >= jessie') {
-        package { ['fonts-crosextra-carlito', 'fonts-crosextra-caladea']:
-            ensure => present,
-        }
-    }
+
 }
