@@ -114,6 +114,12 @@ node /analytics10(04|10).eqiad.wmnet/ {
 # hostname -> /datacenter/rack/row id is correct.  This is
 # used for Hadoop network topology awareness.
 node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
+    # analytics1013 is a Ganglia aggregator for Row A
+    # analytics1014 is a Ganglia aggregator for Row C
+    # analytics1019 is a Ganglia aggregator for Row D
+    if $::hostname =~ /^analytics101[349]$/ {
+        $ganglia_aggregator = true
+    }
     role analytics::hadoop::worker, analytics::impala::worker
 
     include standard
@@ -121,6 +127,13 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
 
 # analytics1012, analytics1018, analytics1021 and analytics1022 are Kafka Brokers.
 node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
+    # one ganglia aggregator per ganglia 'cluster' per row.
+    if ($::hostname == 'analytics1012' or  # Row A
+        $::hostname == 'analytics1018' or  # Row D
+        $::hostname == 'analytics1022')    # Row C
+    {
+        $ganglia_aggregator = true
+    }
 
     # Kafka brokers are routed via IPv6 so that
     # other DCs can address without public IPv4
