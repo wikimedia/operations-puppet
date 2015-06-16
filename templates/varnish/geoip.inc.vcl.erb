@@ -160,7 +160,7 @@ sub geoip_lookup {
 			snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"region\":\"%s\",\"lat\":\"%f\",\"lon\":\"%f\",\"IP\":\"%s\"}",
 				record->city,
 				record->country_code,
-				record->region_code,
+				record->region,
 				record->latitude,
 				record->longitude,
 				ip
@@ -210,7 +210,7 @@ sub geoip_cookie {
 			// Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/
 			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%s:%.4f:%.4f:%s",
 				record->country_code ? record->country_code : "",
-				record->region_code ? record->region_code : "",
+				record->region ? record->region : "",
 				record->city ? record->city : "",
 				record->latitude,
 				record->longitude,
