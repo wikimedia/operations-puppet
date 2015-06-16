@@ -1,0 +1,5 @@
+tools: all
+deployment-prep:
+  - project
+cvn:
+  - project
