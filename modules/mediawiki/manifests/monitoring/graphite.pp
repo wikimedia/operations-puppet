@@ -6,7 +6,7 @@ class mediawiki::monitoring::graphite {
     # Also check that the metric is being collected
     monitoring::graphite_threshold { 'mediawiki_job_insert_rate':
         description     => 'MediaWiki jobs not being inserted',
-        metric          => 'MediaWiki.job-insert.rate',
+        metric          => 'MediaWiki.jobqueue.inserts.all.rate',
         from            => '1hours',
         warning         => 1,
         critical        => 0,
@@ -18,7 +18,7 @@ class mediawiki::monitoring::graphite {
     # Also check that the metric is being collected
     monitoring::graphite_threshold { 'mediawiki_job_pop_rate':
         description     => 'MediaWiki jobs not dequeued',
-        metric          => 'MediaWiki.job-pop.rate',
+        metric          => 'MediaWiki.jobqueue.job-pop.all.rate',
         from            => '1hours',
         warning         => 1,
         critical        => 0,
