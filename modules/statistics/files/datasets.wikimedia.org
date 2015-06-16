@@ -27,7 +27,6 @@ NameVirtualHost *:80
        ExpiresActive On
        ExpiresDefault M86400
    </IfModule>
-  </Directory>
 
   LogLevel warn
   ErrorLog /var/log/apache2/datasets_error.log
