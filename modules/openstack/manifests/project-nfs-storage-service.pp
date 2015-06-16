@@ -24,6 +24,22 @@ class openstack::project-nfs-storage-service {
         source  => 'puppet:///modules/openstack/set-stripe-cache',
     }
 
+    file { '/etc/default/nfs-common':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/openstack/nfs-common',
+    }
+
+    file { '/etc/default/nfs-kernel-server':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/openstack/nfs-kernel-server',
+    }
+
     # This is done unconditionally to all the md devices at
     # interval to guard against (a) puppet not applying for
     # any reason, and (b) the fact that the set of started
@@ -60,6 +76,22 @@ class openstack::project-nfs-storage-service {
         owner  => 'root',
         group  => 'nfsmanager',
         mode   => '2775',
+    }
+
+    file { '/etc/exports.d/ROOT.exports':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/openstack/ROOT.exports',
+    }
+
+    file { '/etc/exports.d/PUBLIC.exports':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/openstack/PUBLIC.exports',
     }
 
     if ($::site == 'eqiad') {

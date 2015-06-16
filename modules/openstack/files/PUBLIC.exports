@@ -1,0 +1,2 @@
+/exp/keys *(ro,sec=sys,sync,no_subtree_check,no_root_squash)
+/exp/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)
