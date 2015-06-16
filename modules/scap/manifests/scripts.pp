@@ -57,12 +57,6 @@ class scap::scripts {
         mode    => '0555',
         source  => 'puppet:///modules/scap/mwscriptwikiset',
     }
-    file { '/usr/local/bin/notifyNewProjects':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/notifyNewProjects',
-    }
     file { '/usr/local/bin/purge-varnish':
         owner   => 'root',
         group   => 'root',
