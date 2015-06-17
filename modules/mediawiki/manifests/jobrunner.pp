@@ -49,6 +49,13 @@ class mediawiki::jobrunner (
         notify => Service['jobchron'],
     }
 
+    file { '/etc/logrotate.d/mediawiki_jobchron':
+        source  => 'puppet:///modules/mediawiki/logrotate.d_mediawiki_jobchron',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
     file { '/etc/jobrunner':
         ensure => directory,
         owner  => 'root',
