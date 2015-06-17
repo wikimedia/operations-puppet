@@ -1160,7 +1160,6 @@ node 'labcontrol1001.wikimedia.org' {
 }
 
 node 'labcontrol2001.wikimedia.org' {
-    $cluster               = 'virt'
     $ganglia_aggregator    = true
     #$is_puppet_master      = true
     #$is_labs_puppet_master = true
@@ -1880,8 +1879,6 @@ node /^mw22([0-2][0-9]|3[0-4])\.codfw\.wmnet$/ {
 
 # Codfw ldap server, aka ldap-codfw
 node 'nembus.wikimedia.org' {
-    $cluster               = 'virt'
-
     include standard
     include ldap::role::server::labs
     include ldap::role::client::labs
@@ -1901,8 +1898,6 @@ node 'neon.wikimedia.org' {
 
 # Eqiad ldap server, aka ldap-eqiad
 node 'neptunium.wikimedia.org' {
-    $cluster               = 'virt'
-
     include standard
     include ldap::role::server::labs
     include ldap::role::client::labs
