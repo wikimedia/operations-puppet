@@ -36,6 +36,10 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
         require => Package['designate-central'];
     }
 
+    # The next few values are to allow designate to write to instance metadata
+    include passwords::openstack::nova
+    $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+    $nova_controller_hostname = $novaconfig['controller_hostname']
 
     file {
         '/etc/designate/designate.conf':
