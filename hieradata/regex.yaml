@@ -43,7 +43,7 @@ jobrunner:
   ganglia_class: "new"
 
 loadbalancer:
-  __regex: !ruby/regexp /^lvs100[1-6]\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^lvs100[1-6]\.wikimedia\.org$/
   ganglia_class: "new"
 
 memcached:
