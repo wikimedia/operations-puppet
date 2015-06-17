@@ -83,11 +83,6 @@ host analytics1022 {
 	fixed-address analytics1022.eqiad.wmnet;
 }
 
-host analytics1023 {
-        hardware ethernet d4:ae:52:73:60:e6;
-        fixed-address analytics1023.eqiad.wmnet;
-}
-
 host analytics1026 {
 	hardware ethernet d4:ae:52:7c:c2:70;
 	fixed-address analytics1026.eqiad.wmnet;
