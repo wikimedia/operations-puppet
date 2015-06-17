@@ -26,10 +26,8 @@ class mathoid(
     # Pending fix for <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742347>
     # require_package('node-jsdom')
 
-    $require = undef
     if $png_generation {
         require_package('openjdk-7-jre-headless')
-        $require = Package['openjdk-7-jre-headless']
     }
 
     service::node { 'mathoid':
@@ -41,6 +39,5 @@ class mathoid(
             speakText => $speakText_generation,
         },
         healthcheck_url => '/_info',
-        require         => $require,
     }
 }
