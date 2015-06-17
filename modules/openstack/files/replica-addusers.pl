@@ -138,14 +138,16 @@ for(;;) {
 
         foreach my $dir (@homes) {
             $pwfile = "$dir/replica.my.cnf";
-            if(open MYCNF, ">$pwfile") {
-                print "* creds for $username ($mysqlusr) added to $pwfile\n";
-                chown $uid, $gid, $pwfile;
-                chmod 0600, $pwfile;
+            $tmpfile = "/srv/project/.tmp.replica.my.cnf";
+            if(open MYCNF, ">$tmpfile") {
+                chown $uid, $gid, $tmpfile;
+                chmod 0600, $tmpfile;
                 print MYCNF "[client]\n";
                 print MYCNF "user='$mysqlusr'\n";
                 print MYCNF "password='$password'\n";
                 close MYCNF;
+                rename $tmpfile, $pwfile;
+                print "* creds for $username ($mysqlusr) added to $pwfile\n";
             }
         }
     }
