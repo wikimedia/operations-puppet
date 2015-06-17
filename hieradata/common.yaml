@@ -24,9 +24,7 @@ ganglia_clusters:
     name: "MySQL"
     id: 5
     sites:
-      eqiad:
-        - dbstore1001.eqiad.wmnet
-        - dbstore1002.eqiad.wmnet
+      eqiad: []
       codfw: []
   etcd:
     name: "Etcd"
