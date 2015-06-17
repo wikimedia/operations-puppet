@@ -30,6 +30,10 @@ etcd:
   __regex: !ruby/regexp /^etcd100\d\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+cache_bits:
+  __regex: !ruby/regexp /^cp10(56|57|69|70)\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 cache_misc:
   __regex: !ruby/regexp /^cp104[34]\.eqiad\.wmnet$/
   ganglia_class: "new"

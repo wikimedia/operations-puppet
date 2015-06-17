@@ -418,10 +418,6 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
 }
 
 node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
-    if $::hostname =~ /^cp105[67]$/ {
-        $ganglia_aggregator = true
-    }
-
     interface::add_ip6_mapped { 'main': }
     role cache::bits
 }
