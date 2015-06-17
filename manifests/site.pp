@@ -814,7 +814,6 @@ node 'db1047.eqiad.wmnet' {
 node 'db1069.eqiad.wmnet' {
 
     $cluster = 'mysql'
-    $ganglia_aggregator = true
     include role::mariadb::sanitarium
 }
 
@@ -833,7 +832,6 @@ node /^db20(5[5-9]|6[0-9]|70)\.codfw\.wmnet$/ {
 
 node 'dbstore1001.eqiad.wmnet' {
     $cluster = 'mysql'
-    $ganglia_aggregator = true
     include role::mariadb::backup
     # 24h delay on all repl streams
     class { 'role::mariadb::dbstore':
@@ -847,7 +845,6 @@ node 'dbstore1001.eqiad.wmnet' {
 
 node 'dbstore1002.eqiad.wmnet' {
     $cluster = 'mysql'
-    $ganglia_aggregator = true
     include role::mariadb::dbstore
 }
 
