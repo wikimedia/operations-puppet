@@ -62,7 +62,6 @@ class role::cache::text {
         directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
         director_type      => $director_type_cluster,
         vcl_config         => {
-            'retry503'         => 1,
             'cache4xx'         => '1m',
             'default_backend'  => $::role::cache::base::default_backend,
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
