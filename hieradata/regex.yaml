@@ -62,6 +62,10 @@ loadbalancer:
   __regex: !ruby/regexp /^lvs100[1-6]\.wikimedia\.org$/
   ganglia_class: "new"
 
+logstash:
+  __regex: !ruby/regexp /^logstash100[1-6]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 memcached:
   __regex: !ruby/regexp /^mc10(0[1-9]|1[1-9])\.eqiad\.wmnet$/
   ganglia_class: "new"
