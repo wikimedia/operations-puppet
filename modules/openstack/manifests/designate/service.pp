@@ -14,6 +14,7 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
                 'designate-agent',
                 'designate-central',
                 'python-nova-ldap',
+                'python-novaclient',
                 'python-paramiko',
                 'python-nova-fixed-multi' ]:
         ensure  => present,
