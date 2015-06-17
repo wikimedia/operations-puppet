@@ -65,8 +65,8 @@ then
 fi
 # At this point, all (the rest of) our disk are belong to LVM.
 
+project=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*project-id\": \"//'  | sed -r 's/\".*$//g'`
 ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
-project=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | jq -r '.meta.project-id'`
 hostname=`hostname`
 # domain is the last two domain sections, e.g. eqiad.wmflabs
 domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
