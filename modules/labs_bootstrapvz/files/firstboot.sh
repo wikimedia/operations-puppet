@@ -68,14 +68,11 @@ fi
 binddn=`grep 'binddn' /etc/ldap.conf | sed 's/.* //'`
 bindpw=`grep 'bindpw' /etc/ldap.conf | sed 's/.* //'`
 hostsou=`grep 'nss_base_hosts' /etc/ldap.conf | sed 's/.* //'`
-id=`curl http://169.254.169.254/1.0/meta-data/instance-id 2> /dev/null`
 ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
+project=`curl http://169.254.169.254/1.0/meta-data/project-id 2> /dev/null`
 hostname=`hostname`
 # domain is the last two domain sections, e.g. eqiad.wmflabs
 domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
-idfqdn=${id}.${domain}
-#TODO: get project a saner way
-project=`ldapsearch -x -D ${binddn} -w ${bindpw} -b ${hostsou} "dc=${idfqdn}" puppetvar | grep 'instanceproject' | sed 's/.*=//'`
 fqdn=${hostname}.${project}.${domain}
 saltfinger="c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
 if [ "${domain}" == "eqiad.wmflabs" ]
