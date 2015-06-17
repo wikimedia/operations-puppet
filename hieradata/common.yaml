@@ -149,9 +149,7 @@ ganglia_clusters:
     name: "Fundraising"
     id: 35
     sites:
-      eqiad:
-        - pay-lvs1001.frack.eqiad.wmnet
-        - pay-lvs1002.frack.eqiad.wmnet
+      eqiad: []
   ceph:           # Not used anymore
     name: "Ceph"
     id: 36
