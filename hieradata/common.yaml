@@ -82,9 +82,7 @@ ganglia_clusters:
     name: "Bits caches"
     id: 21
     sites:
-      eqiad:
-        - cp1056.eqiad.wmnet
-        - cp1057.eqiad.wmnet
+      eqiad: []
       esams: []
       ulsfo:
         - cp4001.ulsfo.wmnet
