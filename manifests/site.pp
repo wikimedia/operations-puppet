@@ -1313,7 +1313,7 @@ node 'labsdb1004.eqiad.wmnet' {
 
     include role::postgres::master
     include role::postgres::maps
-    # role labs::db::slave
+    role labs::db::slave
 }
 
 node 'labsdb1005.eqiad.wmnet' {
