@@ -92,6 +92,7 @@ packages:
     - nagios-plugins
     - tree
     - nagios-plugins-basic
+    - jq
 plugins:
   root_password:
     password: test
