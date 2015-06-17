@@ -129,10 +129,7 @@ ganglia_clusters:
     name: "Analytics cluster"
     id: 32
     sites:
-      eqiad:
-        - analytics1013.eqiad.wmnet
-        - analytics1014.eqiad.wmnet
-        - analytics1019.eqiad.wmnet
+      eqiad: []
   memcached:
     name: "Memcached"
     id: 33

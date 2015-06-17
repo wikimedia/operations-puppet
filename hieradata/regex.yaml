@@ -1,3 +1,7 @@
+analytics:
+  __regex: !ruby/regexp /^analytics10????\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 analytics_kafka:
   __regex: !ruby/regexp /^analytics10(12|18|21|22)\.eqiad\.wmnet$/
   ganglia_class: "new"
