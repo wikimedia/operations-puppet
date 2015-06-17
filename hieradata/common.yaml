@@ -206,10 +206,7 @@ ganglia_clusters:
     name: "Analytics Kafka cluster"
     id: 45
     sites:
-      eqiad:
-        - analytics1012.eqiad.wmnet
-        - analytics1018.eqiad.wmnet
-        - analytics1022.eqiad.wmnet
+      eqiad: []
   sca:
     name: "Service Cluster A"
     id: 46
