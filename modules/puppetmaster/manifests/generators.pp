@@ -1,7 +1,7 @@
 class puppetmaster::generators($ensure = 'present'){
 
     $packages = ['python-jinja2', 'python-mysqldb', 'python-sqlalchemy']
-    require_package($packages)
+    ensure_packages($packages)
 
     file {'/usr/local/bin/naggen2':
         ensure  => 'present',
