@@ -62,9 +62,7 @@ ganglia_clusters:
     name: "API application servers"
     id: 13
     sites:
-      eqiad:
-        - mw1114.eqiad.wmnet
-        - mw1115.eqiad.wmnet
+      eqiad: []
       codfw: []
   pdf:
     name: "PDF servers"
