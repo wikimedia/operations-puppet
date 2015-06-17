@@ -1414,10 +1414,6 @@ node /^logstash100[4-6]\.eqiad\.wmnet$/ {
 
 node /lvs100[1-6]\.wikimedia\.org/ {
 
-    if $::hostname =~ /^lvs100[12]$/ {
-        $ganglia_aggregator = true
-    }
-
     # lvs100[25] are LVS balancers for the eqiad recursive DNS IP,
     #   so they need to use the recursive DNS backends directly
     #   (chromium and hydrogen) with fallback to codfw

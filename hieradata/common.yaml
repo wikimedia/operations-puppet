@@ -10,9 +10,7 @@ ganglia_clusters:
     name: "LVS loadbalancers"
     id: 2
     sites:
-      eqiad:
-        - lvs1001.wikimedia.org
-        - lvs1002.wikimedia.org
+      eqiad: []
       codfw: []
       esams: []
       ulsfo:
