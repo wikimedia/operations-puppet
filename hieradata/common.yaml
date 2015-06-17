@@ -135,7 +135,7 @@ ganglia_clusters:
     sites:
       eqiad: []
       codfw: []
-  analytics:     
+  analytics:
     name: "Analytics cluster"
     id: 32
     sites:
@@ -183,7 +183,7 @@ ganglia_clusters:
     sites:
       eqiad: []
       codfw: []
-  labsnfs:   
+  labsnfs:
     name: "Labs NFS cluster"
     id: 40
     sites:
@@ -238,6 +238,6 @@ ganglia_clusters:
     sites:
       eqiad: []
 zookeeper_hosts:
-  analytics1023.eqiad.wmnet: '1023'
   analytics1024.eqiad.wmnet: '1024'
   analytics1025.eqiad.wmnet: '1025'
+  conf1001.eqiad.wmnet: '1001'

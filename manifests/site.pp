@@ -361,6 +361,10 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 node /^conf100[123]\.eqiad\.wmnet$/ {
     include base::firewall
     include standard
+
+    if $hostname == 'conf1001' {
+        include role::zookeeper::server
+    }
 }
 
 # Debian package building host in production
