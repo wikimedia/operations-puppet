@@ -198,9 +198,7 @@ ganglia_clusters:
     name: "Logstash cluster"
     id: 43
     sites:
-      eqiad:
-        - logstash1001.eqiad.wmnet
-        - logstash1003.eqiad.wmnet
+      eqiad: []
   rcstream:
     name: "RCStream cluster"
     id: 44
