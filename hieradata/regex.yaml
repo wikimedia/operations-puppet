@@ -10,6 +10,39 @@ appserver:
   __regex: !ruby/regexp /^mw1(01[7-9]|02[0-5]|02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+cache_misc:
+  __regex: !ruby/regexp /^cp104[34]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
+cache_mobile:
+  __regex: !ruby/regexp /^(cp104[67]|cp1059|cp1060)\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
+cache_text:
+  __regex: !ruby/regexp /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
+cache_upload:
+  __regex: !ruby/regexp /^cp10(4[89]|5[01]|6[1-4]|7[1-4]|99)\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
+cassandra_test:
+  __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
+  cassandra::seeds:
+      - cerium.eqiad.wmnet
+      - praseodymium.eqiad.wmnet
+      - xenon.eqiad.wmnet
+  restbase::seeds:
+      - cerium.eqiad.wmnet
+      - praseodymium.eqiad.wmnet
+      - xenon.eqiad.wmnet
+  cassandra::max_heap_size: 4g
+  cassandra::heap_newsize: 1g
+
+elasticsearch:
+  __regex: !ruby/regexp /^elastic10[0-3][0-9]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 es_rack_a3:
   __regex: !ruby/regexp /^elastic100[0-6]\.eqiad\.wmnet$/
   elasticsearch::rack: A3
@@ -29,10 +62,6 @@ es_rack_d4:
   __regex: !ruby/regexp /^elastic10(2[3-9]|3[01])\.eqiad\.wmnet$/
   elasticsearch::rack: D4
   elasticsearch::row:  D
-
-elasticsearch:
-  __regex: !ruby/regexp /^elastic10[0-3][0-9]\.eqiad\.wmnet$/
-  ganglia_class: "new"
 
 etcd:
   __regex: !ruby/regexp /^etcd100\d\.eqiad\.wmnet$/
@@ -62,6 +91,10 @@ ocg:
   __regex: !ruby/regexp /^ocg100\d\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+imagescaler:
+  __regex: !ruby/regexp /^mw11(5[2-9]|60)\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 jobrunner:
   __regex: !ruby/regexp /^mw10(0[1-9]|1[1-6])\.eqiad\.wmnet$/
   ganglia_class: "new"
@@ -87,6 +120,10 @@ mysql:
   ganglia_class: "new"
   cluster: "mysql"
 
+ocg:
+  __regex: !ruby/regexp /^ocg100\d\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 parsoid:
   __regex: !ruby/regexp /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/
   ganglia_class: "new"
@@ -95,8 +132,16 @@ parsoid_cache:
   __regex: !ruby/regexp /^(cp1045|cp1058)\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+rcstream:
+  __regex: !ruby/regexp /^rcs100[1-2]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 redis:
   __regex: !ruby/regexp /^rdb100[1-4]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
+restbase:
+  __regex: !ruby/regexp /^(restbase100[1-9]|cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   ganglia_class: "new"
 
 service_cluster_a:
@@ -106,35 +151,11 @@ swift:
   __regex: !ruby/regexp /^(ms-be|ms-fe)10[0-1][1-9]\.eqiad\.wmnet$/
   ganglia_class: "new"
 
-imagescaler:
-  __regex: !ruby/regexp /^mw11(5[2-9]|60)\.eqiad\.wmnet$/
-  ganglia_class: "new"
-
 videoscaler:
   __regex: !ruby/regexp /^tmh100[1-2]\.eqiad\.wmnet$/
-  ganglia_class: "new"
-
-rcstream:
-  __regex: !ruby/regexp /^rcs100[1-2]\.eqiad\.wmnet$/
-  ganglia_class: "new"
-
-restbase:
-  __regex: !ruby/regexp /^(restbase100[1-9]|cerium|praseodymium|xenon)\.eqiad\.wmnet$/
   ganglia_class: "new"
 
 virtualization:
   __regex: !ruby/regexp /^(labnet|labvirt|virt)100[1-9]\.eqiad\.wmnet$/
   ganglia_class: "new"
 
-cassandra_test:
-  __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
-  cassandra::seeds:
-      - cerium.eqiad.wmnet
-      - praseodymium.eqiad.wmnet
-      - xenon.eqiad.wmnet
-  restbase::seeds:
-      - cerium.eqiad.wmnet
-      - praseodymium.eqiad.wmnet
-      - xenon.eqiad.wmnet
-  cassandra::max_heap_size: 4g
-  cassandra::heap_newsize: 1g
