@@ -42,6 +42,10 @@ cache_mobile:
   __regex: !ruby/regexp /^(cp104[67]|cp1059|cp1060)\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+cache_text:
+  __regex: !ruby/regexp /^cp10(08|5[2-5]|6[5-8]\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 ocg:
   __regex: !ruby/regexp /^ocg100\d\.eqiad\.wmnet$/
   ganglia_class: "new"

@@ -71,9 +71,7 @@ ganglia_clusters:
     name: "Text caches"
     id: 20
     sites:
-      eqiad:
-        - cp1052.eqiad.wmnet
-        - cp1053.eqiad.wmnet
+      eqiad: []
       esams: []
       ulsfo:
         - cp4008.ulsfo.wmnet
