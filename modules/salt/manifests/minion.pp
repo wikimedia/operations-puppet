@@ -108,4 +108,12 @@ class salt::minion(
             content => $master_key,
         }
     }
+
+    file { '/etc/logrotate.d/saltminion':
+            source => 'puppet:///modules/salt/logrotate_minion.conf',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+    }
+
 }
