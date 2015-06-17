@@ -262,16 +262,22 @@ host cobalt {
 host conf1001 {
 	hardware ethernet d4:ae:52:73:60:e6;
 	fixed-address conf1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host conf1002 {
 	hardware ethernet d4:ae:52:7c:c9:ec;
 	fixed-address conf1002.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host conf1003 {
 	hardware ethernet d4:ae:52:7c:b5:ed;
 	fixed-address conf1003.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host copper {
