@@ -240,4 +240,4 @@ ganglia_clusters:
 zookeeper_hosts:
   analytics1024.eqiad.wmnet: '1024'
   analytics1025.eqiad.wmnet: '1025'
-  conf1001.eqiad.wmnet: '1001'
+  conf1001.eqiad.wmnet: '1101'
