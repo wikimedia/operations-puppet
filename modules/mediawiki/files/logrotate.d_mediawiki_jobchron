@@ -1,0 +1,14 @@
+# logrotate config for MediaWiki job queue chron loop logs
+# This file is managed by Puppet
+/var/log/mediawiki/jobchron.log {
+    daily
+    missingok
+    rotate 7
+    compress
+    delaycompress
+    notifempty
+    nocreate
+    postrotate
+        /usr/sbin/service jobchron restart > /dev/null 2>&1
+    endscript
+}
