@@ -1847,10 +1847,6 @@ node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
 
 # mw1026-mw1113 are appservers
 node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
-    if $::hostname =~ /^mw10(5[45])$/ {
-        $ganglia_aggregator = true
-    }
-
     role mediawiki::appserver
 }
 

@@ -44,9 +44,7 @@ ganglia_clusters:
     name: "Application servers"
     id: 11
     sites:
-      eqiad:
-        - mw1054.eqiad.wmnet
-        - mw1055.eqiad.wmnet
+      eqiad: []
       codfw: []
   imagescaler:
     name: "Image scalers"

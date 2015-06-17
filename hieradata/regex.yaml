@@ -2,6 +2,10 @@ api_appserver:
   __regex: !ruby/regexp /^mw(111[4-9]|11[2-3][0-9]|114[0-8]|1189|119[0-9]|120[0-8]|122[1-9]|123[0-5])\.eqiad\.wmnet$/
   ganglia_class: "new"
 
+appserver:
+  __regex: !ruby/regexp /^mw1(01[7-9]|02[0-5]|02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 es_rack_a3:
   __regex: !ruby/regexp /^elastic100[0-6]\.eqiad\.wmnet$/
   elasticsearch::rack: A3
