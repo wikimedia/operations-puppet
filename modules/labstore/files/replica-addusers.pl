@@ -29,6 +29,7 @@
 
 
 use strict;
+use File::Temp qw(tempfile);
 use DBI();
 
 my %databases = (
@@ -138,15 +139,17 @@ for(;;) {
 
         foreach my $dir (@homes) {
             $pwfile = "$dir/replica.my.cnf";
-            if(open MYCNF, ">$pwfile") {
-                print "* creds for $username ($mysqlusr) added to $pwfile\n";
-                chown $uid, $gid, $pwfile;
-                chmod 0600, $pwfile;
-                print MYCNF "[client]\n";
-                print MYCNF "user='$mysqlusr'\n";
-                print MYCNF "password='$password'\n";
-                close MYCNF;
-            }
+
+            # Must in $dir to ensure they are in same filesystem
+            my $tmpfile, $tmpfilepath = tempfile(DIR => $dir);
+            chown $uid, $gid, $tmpfile;
+            chmod 0600, $tmpfile;
+            print $tmpfile "[client]\n";
+            print $tmpfile "user='$mysqlusr'\n";
+            print $tmpfile "password='$password'\n";
+            close $tmpfile;
+            rename $tmpfilepath, $pwfile;
+            print "* creds for $username ($mysqlusr) added to $pwfile\n";
         }
     }
 
