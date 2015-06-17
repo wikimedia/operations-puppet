@@ -181,9 +181,7 @@ ganglia_clusters:
     name: "Labs NFS cluster"
     id: 40
     sites:
-      eqiad:
-        - labstore1001.eqiad.wmnet
-        - labstore1003.eqiad.wmnet
+      eqiad: []
       codfw:
         - labstore2001.codfw.wmnet
   cache_misc:

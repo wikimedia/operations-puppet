@@ -1338,17 +1338,11 @@ node 'labsdb1007.eqiad.wmnet' {
 }
 
 node /labstore100[12]\.eqiad\.wmnet/ {
-    if $::hostname == 'labstore1001' {
-        $ganglia_aggregator = true
-    }
-
     role labs::nfs::fileserver
 
 }
 
 node 'labstore1003.eqiad.wmnet' {
-    $ganglia_aggregator = true
-
     role labs::nfs::dumps
 }
 
