@@ -51,7 +51,7 @@ class openstack::controller_firewall {
 
     # internal services to Labs virt servers
     ferm::rule { 'keystone':
-        rule => "saddr (${other_master} ${labs_nodes} ${spare_master} ${api_host}) proto tcp dport (5000 35357) ACCEPT;",
+        rule => "saddr (${other_master} ${labs_nodes} ${spare_master} ${api_host} ${designate}) proto tcp dport (5000 35357) ACCEPT;",
     }
     ferm::rule { 'mysql_nova':
         rule => "saddr ${labs_nodes} proto tcp dport (3306) ACCEPT;",
