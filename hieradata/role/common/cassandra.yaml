@@ -11,9 +11,6 @@ cassandra::seeds:
     - restbase1004.eqiad.wmnet
     - restbase1005.eqiad.wmnet
     - restbase1006.eqiad.wmnet
-    - restbase1007.eqiad.wmnet
-    - restbase1008.eqiad.wmnet
-    - restbase1009.eqiad.wmnet
 cassandra::max_heap_size: 8g
 # 1/4 heap size, no more than 100m/thread
 cassandra::heap_newsize: 2048m
