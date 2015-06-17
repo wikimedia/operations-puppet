@@ -405,9 +405,6 @@ node /^cp10(4[89]|5[01]|6[1-4]|7[1-4]|99)\.eqiad\.wmnet$/ {
 }
 
 node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
-    if $::hostname =~ /^cp105[23]$/ {
-        $ganglia_aggregator = true
-    }
 
     interface::add_ip6_mapped { 'main': }
     if $::hostname == 'cp1065' {
