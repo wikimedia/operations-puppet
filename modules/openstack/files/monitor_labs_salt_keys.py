@@ -54,7 +54,34 @@ class NovaClient(object):
         self.token = None
         self.limit = limit
 
-    def get_good_instances(self):
+
+    def get_good_instance_hostnames(self):
+        '''
+        returns a list of hostnames of all good instances
+        (status is ACTIVE or ERROR or SHUTOFF)
+        for all tenants
+        hostnames are structured as name.tenant_id because
+        we use that elsewhere, *cough* salt *cough*
+        '''
+        hostnames = set()
+        opts = {'all_tenants': True, 'limit': self.limit}
+        while True:
+            servers = self.client.servers.list(detailed=True, search_opts=opts)
+            if not servers:
+                break
+            new_hostnames = [getattr(instance, 'name') + "." +
+                             getattr(instance, 'tenant_id')
+                             for instance in servers]
+            hostnames = hostnames | set(new_hostnames)
+            opts['marker'] = servers[-1].id
+            time.sleep(1)
+
+        if not hostnames:
+            Whiner.whine("no good nova instances found, something's wrong",
+                         fatal=True)
+        return hostnames
+
+    def get_good_instance_ec2id(self):
         '''
         returns a list of ec2 ids of all good instances
         (status is ACTIVE or ERROR or SHUTOFF)
@@ -77,7 +104,7 @@ class NovaClient(object):
                          fatal=True)
         return ec2ids
 
-    def get_bad_instances(self):
+    def get_bad_instance_ec2ids(self):
         '''
         # broken until openstack bug with marker + deleted is fixed
         returns a list of ec2 ids of all deleted instances
@@ -163,9 +190,9 @@ class SaltKeys(object):
     Manage minion salt key operations for a master
     '''
 
-    def __init__(self, timeout=120):
+    def __init__(self, timeout=10):
         '''
-        timeout is the nuymber of seconds the
+        timeout is the number of seconds the
         client will wait for the minion response
         '''
         self.client = salt.client.LocalClient()
@@ -193,8 +220,10 @@ class SaltKeys(object):
         if self.accepted_keys is None:
             self.get_accepted_keys()
 
-        result = self.client.cmd('*', 'test.ping', timeout=self.timeout)
-        responsive = result.keys()
+        responsive = []
+        results = self.client.cmd_batch('*', 'test.ping', bat='100', timeout=self.timeout)
+        for result in results:
+            responsive.append(result.keys())
         if not responsive:
             Whiner.whine("no responsive salt hosts, something's wrong",
                          fatal=True)
@@ -213,7 +242,8 @@ class SaltKeys(object):
 def canonicalize(salt_hostname, region):
     '''
     convert the hostname we get back from a salt
-    command to the standard ec2 form
+    command to the standard form, tossing the region
+    and the 'wmflabs' stuff on the end
     'region' should be eqiad/pmtpa/ etc depending
     on the dc this script runs in
     '''
@@ -298,7 +328,7 @@ def main():
         # nothing to do
         return
 
-    good_instances = nova_client.get_good_instances()
+    good_instances = nova_client.get_good_instance_hostnames()
 
     for bad_key in bad_hosts:
         if (canonicalize(bad_key, nova_client.auth.get_region())
