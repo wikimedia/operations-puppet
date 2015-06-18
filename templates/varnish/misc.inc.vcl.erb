@@ -31,8 +31,6 @@ sub vcl_recv {
 	} elsif (req.http.Host == "static-bugzilla.wikimedia.org" || req.http.Host =="dev.wikimedia.org") {
 		set req.backend = zirconium;
 		return (pass);
-	} elsif (req.http.Host == "svn.wikimedia.org") {
-		set req.backend = antimony;
 	} elsif (req.http.Host == "servermon.wikimedia.org") {
 		set req.backend = netmon1001;
 	} elsif (req.http.Host == "people.wikimedia.org") {
