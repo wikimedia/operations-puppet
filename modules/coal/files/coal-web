@@ -31,6 +31,7 @@ import time
 import functools
 
 import flask
+import numpy
 import werkzeug.contrib.cache
 import whisper
 
@@ -85,21 +86,46 @@ def median(population):
     return middle_terms / 2
 
 
+def interpolate_missing(sparse_list):
+    """Use linear interpolation to estimate values for missing samples."""
+    dense_list = list(sparse_list)
+    x_vals, y_vals, x_blanks = [], [], []
+    for x, y in enumerate(sparse_list):
+        if y is not None:
+            x_vals.append(x)
+            y_vals.append(y)
+        else:
+            x_blanks.append(x)
+    if x_blanks:
+        interpolants = numpy.interp(x_blanks, x_vals, y_vals)
+        for x, y in zip(x_blanks, interpolants):
+            dense_list[x] = y
+    return dense_list
+
+
 def fetch_metric(metric, period):
     now = int(time.time())
     to_time = now - 60
     from_time = to_time - period
     wsp = os.path.join(WHISPER_DIR, metric + '.wsp')
-    (start, end, step), samples = whisper.fetch(wsp, from_time, to_time)
-    samples_per_point = len(samples) // 60
+    (start, end, step), all_samples = whisper.fetch(wsp, from_time, to_time)
+    samples_per_point = len(all_samples) // 60
+    points = []
+    for chunk in chunks(all_samples, samples_per_point):
+        samples = [sample for sample in chunk if sample]
+        if samples:
+            points.append(median(samples))
+        else:
+            points.append(None)
+    if any(points):
+        points = interpolate_missing(points)
+    else:
+        points = []
     return {
         'start': start,
         'end': end,
         'step': period // 60,
-        'points': [
-            median(sample for sample in chunk if sample)
-            for chunk in chunks(samples, samples_per_point)
-        ]
+        'points': points,
     }
 
 
