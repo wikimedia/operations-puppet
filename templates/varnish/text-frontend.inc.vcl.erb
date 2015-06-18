@@ -164,11 +164,11 @@ sub vcl_error {
 
 sub vcl_deliver {
 	// Override the Cache-Control header for wiki content pages
-	if (req.url ~ "(?i)^/w(iki)?/.*"
-		&& req.url !~ "^/wiki/Special\:Banner(Controller|ListLoader)"
-		&& req.url !~ "(?i)^/w/(extensions/.*|api\.php)"
-		&& req.url !~ "(?i)bcache=1") {
-		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+	if (req.url ~ "^/wiki/" || req.url ~ "^/w/index.php" || req.url ~ "^/?title=") {
+		// ...but exempt CentralNotice banner special pages
+		if (req.url !~ "^/wiki/Special\:Banner") {
+			set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+		}
 	}
 <% if @cluster_options.fetch("enable_geoiplookup", false) -%>
 	// Perform GeoIP look-up and send the result as a session cookie
