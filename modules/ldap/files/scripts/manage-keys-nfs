@@ -42,6 +42,7 @@ class ExportManager:
 
         parser.add_option("--logfile", dest="logfile", help="Write output to the specified log file. (default: stdout)")
         parser.add_option("--loglevel", dest="loglevel", help="Change level of logging; NONE, INFO, DEBUG (default: INFO)")
+        parser.add_option("--dir", dest="keysdir", help="Output directory (default: /srv/keys)")
         (options, args) = parser.parse_args()
         ldapSupportLib.setBindInfoByOptions(options, parser)
 
@@ -49,6 +50,8 @@ class ExportManager:
             self.logfile = options.logfile
         if options.loglevel:
             self.loglevel = options.loglevel
+        if options.keysdir:
+            self.keysdir = options.keysdir
 
         base = ldapSupportLib.getBase()
         ds = ldapSupportLib.connect()
