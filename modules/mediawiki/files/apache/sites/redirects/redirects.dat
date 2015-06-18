@@ -514,3 +514,15 @@ funnel	dev.wikimedia.org	//www.mediawiki.org/wiki/API:Data_and_developer_hub
 
 # T97341
 override	wikimedia.org/stopsurveillance	https://blog.wikimedia.org/2015/03/10/wikimedia-v-nsa/
+
+# svn.wikimedia.org decomissioning
+override	svn.wikimedia.org/doc	https://doc.wikimedia.org/mediawiki-core/master/php/html
+override	svn.wikimedia.org/viewvc/mediawiki	https://phabricator.wikimedia.org/diffusion/SVN/
+override	svn.wikimedia.org/viewvc/mysql	https://phabricator.wikimedia.org/diffusion/SVNM/
+override	svn.wikimedia.org/viewvc/pywikipedia	https://phabricator.wikimedia.org/diffusion/SVNP/
+funnel	svn.wikimedia.org	https://phabricator.wikimedia.org/diffusion/
+override	svn.mediawiki.org/doc	https://doc.wikimedia.org/mediawiki-core/master/php/html
+override	svn.mediawiki.org/viewvc/mediawiki	https://phabricator.wikimedia.org/diffusion/SVN/
+override	svn.mediawiki.org/viewvc/mysql	https://phabricator.wikimedia.org/diffusion/SVNM/
+override	svn.mediawiki.org/viewvc/pywikipedia	https://phabricator.wikimedia.org/diffusion/SVNP/
+funnel	svn.mediawiki.org	https://phabricator.wikimedia.org/diffusion/
