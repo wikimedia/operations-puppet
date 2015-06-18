@@ -89,8 +89,7 @@ sub vcl_recv {
 	set req.http.X-Orig-Cookie = req.http.Cookie;
 	if (req.http.Cookie ~ "disable" ||
 		req.http.Cookie ~ "optin" ||
-		req.http.Cookie ~ "[Ss]ession" ||
-		req.http.Cookie ~ "forceHTTPS") {
+		req.http.Cookie ~ "[Ss]ession") {
 		// Do nothing; these are the cookies we pass.
 		// this is a hack in the absence of X-V-O support
 	} else {
