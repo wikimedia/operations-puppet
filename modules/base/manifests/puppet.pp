@@ -100,3 +100,4 @@ class base::puppet($server='puppet', $certname=undef) {
         source   => 'puppet:///modules/base/puppet/97-last-puppet-run',
     }
 }
+
