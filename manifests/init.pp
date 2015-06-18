@@ -329,6 +329,14 @@ class cassandra(
         require => Package['cassandra'],
     }
 
+    file { '/etc/cassandra/logback.xml':
+        content => template("${module_name}/logback.xml.erb"),
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0444',
+        require => Package['cassandra'],
+    }
+
     # cassandra-rackdc.properties is used by the
     # GossipingPropertyFileSnitch.  Only render
     # it if we are using that endpoint_snitch.
