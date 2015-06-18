@@ -769,7 +769,7 @@ ssh::server::explicit_macs: false
 "elasticsearch::cluster_name": beta-search
 "elasticsearch::script_disable_dynamic": false
 nfs_mounts:
-  project: true
-  home: true
+  project: false
+  home: false
   scratch: false
   dumps: false
