@@ -28,6 +28,13 @@ class toollabs::proxy(
         luahandler           => 'urlproxy',
         ssl_certificate_name => $ssl_certificate_name,
         redis_replication    => $redis_replication,
+        error_config         => {
+            title => "Wikimedia Tool Labs",
+            header => "<img src='/Tool_Labs_logo_thumb.png' alt='Wikimedia Tool Labs' /><br>Wikimedia Tool Labs",
+        },
+        error_description    => "The Wikimedia Tool Labs servers are currently experiencing a technical problem. We are currently working to resolve this. \
+                                 Please try again later.<br/>\
+                                 For more information, please join <a href='irc://irc.freenode.net/wikimedia-labs'>#wikimedia-labs</a> on Freenode",
     }
 
     $proxy_nodes = join($proxies, ' ') # $proxies comes from toollabs base class
@@ -84,4 +91,17 @@ class toollabs::proxy(
         target  => 'toollabs/www',
         require => Git::Clone['labs/toollabs'],
     }
+
+    file { '/var/www-error/favicon.ico':
+        ensure => file,
+        source => '/data/project/admin/toollabs/www/favicon.ico',
+        require => [File['/var/www-error'], Git::Clone['labs/toollabs']]
+    }
+
+    file { '/var/www-error/Tool_Labs_logo_thumb.png':
+        ensure => file,
+        source => '/data/project/admin/toollabs/www/Tool_Labs_logo_thumb.png',
+        require => [File['/var/www-error'], Git::Clone['labs/toollabs']]
+    }
+
 }

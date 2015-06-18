@@ -20,6 +20,13 @@ class dynamicproxy (
     $notfound_servers     = [],
     $set_xff              = false,
     $redis_replication    = undef,
+    $error_enabled        = false,
+    $error_config         = {
+        title => "Wikimedia Labs",
+        header => "Wikimedia Labs",
+    },
+    $error_description    = "Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.",
+    $error_details        = undef,
 ) {
     if $ssl_certificate_name != false and $ssl_settings == undef {
         fail('ssl_certificate_nme set but ssl_settings not set')
@@ -59,6 +66,16 @@ class dynamicproxy (
         content => template('dynamicproxy/nginx.conf'),
         require => Package['nginx-common'],
         notify  => Service['nginx'],
+    }
+
+    file { '/var/www-error':
+        ensure => directory,
+    }
+
+    file { '/var/www-error/errorpage.html':
+        ensure => file,
+        content => template('dynamicproxy/errorpage.erb'),
+        require => File['/var/www-error'],
     }
 
     file { '/etc/security/limits.conf':
