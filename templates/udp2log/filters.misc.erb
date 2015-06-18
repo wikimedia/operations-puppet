@@ -3,7 +3,7 @@
 ###
 
 ### udp2log packet loss monitoring
-pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= log_directory %>/packet-loss.log
+pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= @log_directory %>/packet-loss.log
 
 ### This feeds all http related graphs in graphite / gdash.wikimedia.org
 # We moved this to erbium on Jan 30, and recently have been noticing
