@@ -24,12 +24,17 @@ sub restore_cookie {
 
 sub evaluate_cookie {
 	// A session or token cookie will prevent caching if varied on,
-	// move the Cookie header out of the way otherwise
+	// move the Cookie header out of the way otherwise.
+	// Note static and load.php exceptions to the user/token
+	// exceptions, as these should be cacheable even when logged in.
+
         // The (?<!mwuser-) part unbreaks the bad cache effects of
         // the temporary live deployment on large wikis of:
         //   https://gerrit.wikimedia.org/r/#/c/176948
         // Can be removed when most matching cookies have gone away...
-	if (req.http.Cookie ~ "((?<!mwuser-)[sS]ession|Token)=") {
+	if (req.http.Cookie ~ "((?<!mwuser-)[sS]ession|Token)="
+	    && req.url !~ "^/static/"
+	    && req.url !~ "^/w/load\.php") {
 		set req.hash_ignore_busy = true;
 	} else {
 		call cookie_munging;
