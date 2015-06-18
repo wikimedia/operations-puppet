@@ -49,6 +49,7 @@ define service::node( $port,
                       $config = undef,
                       $no_file = 10000,
                       $healthcheck_url='/_info',
+                      $firejail = false,
 ) {
     # Import all common configuration
     include service::configuration
@@ -74,8 +75,8 @@ define service::node( $port,
     $local_logdir = "${service::configuration::log_dir}/${title}"
     $local_logfile = "${local_logdir}/main.log"
 
-    # Software and the deployed code
-    require_package('nodejs', 'nodejs-legacy')
+    # Software and the deployed code, firejail for containment
+    require_package('nodejs', 'nodejs-legacy', 'firejail')
     package { "${title}/deploy":
         provider => 'trebuchet',
     }
@@ -164,3 +165,4 @@ define service::node( $port,
         check_command => "check_http_port_url!${port}!${healthcheck_url}",
     }
 }
+

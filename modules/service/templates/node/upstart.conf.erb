@@ -21,4 +21,8 @@ respawn
 kill timeout 60
 
 chdir /srv/deployment/<%= @title %>/deploy
+<% if @firejail %>
 exec /usr/bin/nodejs src/server.js -c /etc/<%= @title %>/config.yaml
+<% else %>
+exec /usr/bin/firejail --caps.drop=all --seccomp /usr/bin/nodejs src/server.js -c /etc/<%= @title %>/config.yaml
+<% end %>
