@@ -57,10 +57,6 @@ class restbase(
 ) {
     ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
 
-    package { 'restbase/deploy':
-        provider => 'trebuchet',
-    }
-
     group { 'restbase':
         ensure => present,
         system => true,
@@ -114,6 +110,14 @@ class restbase(
 
     file { '/usr/lib/restbase':
         ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        before => Service['restbase'],
+    }
+
+    file { ['/srv/deployment', '/srv/deployment/restbase', '/srv/deployment/restbase/deploy']:
+        ensure  => directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
