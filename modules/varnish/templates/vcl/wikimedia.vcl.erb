@@ -181,6 +181,14 @@ sub https_recv_redirect {
 					error 751 "TLS Redirect";
 				}
 			}
+			// HTTP requests to domains we have no certs for, which are also by
+			// definition a subset of non-canonical domains for the given wikis.
+			// The right thing to do here is ensure that search engines aren't allowed
+			// to crawl these, because we don't want search indices sending users to
+			// insecure redirects.  We do this with a synthetic robots.txt.
+			else if(req.url == "/robots.txt") {
+				error 777 "Robots";
+			}
 		}
 	}
 }
@@ -191,6 +199,13 @@ sub https_error_redirect {
 		set obj.http.Location = req.http.Location;
 		set obj.status = 301;
 		set obj.http.Content-Length = "0"; // T64245
+		return(deliver);
+	}
+	if (obj.status == 777) {
+		set obj.status = 200;
+		set obj.response = "OK";
+		set obj.http.Content-Type = "text/plain; charset=utf-8";
+		synthetic {"User-agent: *\nDisallow: /\n"};
 		return(deliver);
 	}
 }
