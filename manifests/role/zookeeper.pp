@@ -85,7 +85,7 @@ class role::zookeeper::server {
             proto  => 'tcp',
             # Zookeeper client, protocol, and jmx listen ports.
             port   => "(2181 2182 2183 ${$::zookeeper::server::jmx_port})",
-            srange => '($ANALYTICS_NETWORKS)',
+            srange => '($INTERNAL)',
         }
         # Use jmxtrans for sending metrics to ganglia
         class { 'zookeeper::jmxtrans':
