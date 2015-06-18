@@ -1,0 +1,88 @@
+repo_config:
+  integration/mediawiki-tools-codesniffer:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/codesniffer
+  integration/phpunit:
+    upstream: https://gerrit.wikimedia.org/r/integration/phpunit
+  integration/phpcs:
+    upstream: https://gerrit.wikimedia.org/r/integration/phpcs
+  integration/php-coveralls:
+    upstream: https://gerrit.wikimedia.org/r/integration/php-coveralls
+  integration/slave-scripts:
+    upstream: https://gerrit.wikimedia.org/r/integration/jenkins
+    checkout_submodules: true
+  gdash/gdash:
+    upstream: https://gerrit.wikimedia.org/r/operations/software/gdash
+  jobrunner/jobrunner:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner
+    service_name: jobrunner
+  grafana/grafana:
+    upstream: https://gerrit.wikimedia.org/r/operations/software/grafana
+  parsoid/deploy:
+    upstream: https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy
+    checkout_submodules: true
+    service_name: parsoid
+  eventlogging/EventLogging:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging
+  ocg/ocg:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/ocg-collection
+    service_name: ocg
+    checkout_submodules: true
+  mathoid/deploy:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/mathoid/deploy
+    service_name: mathoid
+    checkout_submodules: true
+  citoid/deploy:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/citoid/deploy
+    service_name: citoid
+    checkout_submodules: true
+  zotero/translation-server:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translation-server
+    service_name: zotero
+  zotero/translators:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/zotero/translators
+  graphoid/deploy:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/graphoid/deploy
+    service_name: graphoid
+    checkout_submodules: true
+  rcstream/rcstream:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/rcstream
+    service_name: rcstream
+  restbase/deploy:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/restbase/deploy
+    service_name: restbase
+    checkout_submodules: true
+  fluoride/fluoride:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride
+  statsv/statsv:
+    upstream: https://gerrit.wikimedia.org/r/analytics/statsv
+  abacist/abacist:
+    upstream: https://gerrit.wikimedia.org/r/analytics/abacist
+  test/testrepo:
+    service_name: puppet
+    checkout_submodules: true
+  elasticsearch/plugins:
+    gitfat_enabled: true
+    upstream: https://gerrit.wikimedia.org/r/operations/software/elasticsearch/plugins
+  analytics/refinery:
+    gitfat_enabled: true
+    upstream: https://gerrit.wikimedia.org/r/analytics/refinery
+  scholarships/scholarships:
+    upstream: https://gerrit.wikimedia.org/r/wikimedia/wikimania-scholarships
+  librenms/librenms:
+    upstream: https://gerrit.wikimedia.org/r/operations/software/librenms
+  kibana/kibana:
+    upstream: https://gerrit.wikimedia.org/r/operations/software/kibana
+  scap/scap:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/scap
+  servermon/servermon:
+    service_name: gunicorn
+  iegreview/iegreview:
+    grain: iegreview
+    upstream: https://gerrit.wikimedia.org/r/wikimedia/iegreview
+  cxserver/deploy:
+    service_name: cxserver
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/cxserver/deploy
+    checkout_submodules: true
+  dropwizard/metrics:
+    gitfat_enabled: true
+    upstream: https://gerrit.wikimedia.org/r/operations/software/dropwizard-metrics
