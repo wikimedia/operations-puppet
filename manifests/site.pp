@@ -214,7 +214,6 @@ node 'antimony.wikimedia.org' {
     role gitblit
     include base::firewall
     include standard
-    include role::subversion
 }
 
 # irc.wikimedia.org
