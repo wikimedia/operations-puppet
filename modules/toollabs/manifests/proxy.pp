@@ -28,6 +28,13 @@ class toollabs::proxy(
         luahandler           => 'urlproxy',
         ssl_certificate_name => $ssl_certificate_name,
         redis_replication    => $redis_replication,
+        error_config         => {
+            title    => "Wikimedia Tool Labs Error",
+            logo     => "/tool-labs-logo.png",
+            logo_2x  => "/tool-labs-logo-2x.png",
+            logo_alt => "Wikimedia Tool Labs",
+            favicon  => "/favicon.ico",
+        },
     }
 
     $proxy_nodes = join($proxies, ' ') # $proxies comes from toollabs base class
@@ -84,4 +91,24 @@ class toollabs::proxy(
         target  => 'toollabs/www',
         require => Git::Clone['labs/toollabs'],
     }
+
+    file { '/var/www/error/favicon.ico':
+        ensure => file,
+        source => '/data/project/admin/toollabs/www/favicon.ico',
+        require => [File['/var/www/error'], Git::Clone['labs/toollabs']]
+    }
+
+    file { '/var/www/error/tool-labs-logo.png':
+        ensure => file,
+        source => 'puppet:///modules/toollabs/tool-labs-logo.png',
+        require => [File['/var/www/error']]
+    }
+
+    file { '/var/www/error/tool-labs-logo-2x.png':
+        ensure => file,
+        source => 'puppet:///modules/toollabs/tool-labs-logo-2x.png',
+        require => [File['/var/www/error']]
+    }
+
+
 }
