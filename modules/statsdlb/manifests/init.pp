@@ -29,7 +29,7 @@ class statsdlb(
 ) {
     validate_ensure($ensure)
     validate_array($backend_ports)
-    validate_re("${backend_ports}", '^\d+(\s\d+)*$', '$backend_ports must be an array of port numbers')
+    validate_re($backend_ports, '^\d+(\s\d+)*$', '$backend_ports must be an array of port numbers')
     validate_re($server_port, '^\d+$', '$server_port must be a port number')
 
     package { 'statsdlb':
