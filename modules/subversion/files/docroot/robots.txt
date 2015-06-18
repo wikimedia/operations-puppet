@@ -1,8 +1,0 @@
-# THIS FILE IS MANAGED BY PUPPET
-#
-# puppet:///modules/subversion/docroot/robots.txt
-# https://svn.wikimedia.org/robots.txt
-#
-User-Agent: *
-Allow: /doc/*
-Disallow: /
