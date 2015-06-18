@@ -1,0 +1,2 @@
+alias ack='ack-grep'
+
