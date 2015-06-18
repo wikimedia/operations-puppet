@@ -14,7 +14,7 @@ class role::kibana {
             $hostname    = 'logstash.beta.wmflabs.org'
             $deploy_dir  = '/srv/deployment/kibana/kibana'
             $auth_realm  = 'Logstash (ssh deployment-bastion.eqiad.wmflabs sudo cat /root/secrets.txt)'
-            $auth_file   = '/data/project/logstash/.htpasswd'
+            $auth_file   = '/etc/logstash/htpasswd'
             $require_ssl = true
         } else {
             # Regular labs instance
@@ -31,7 +31,7 @@ class role::kibana {
                 default => $::kibana_authrealm,
             }
             $auth_file = $::kibana_authfile ? {
-                undef   => '/data/project/logstash/.htpasswd',
+                undef   => '/etc/logstash/htpasswd',
                 default => $::kibana_authfile,
             }
             $require_ssl = false
