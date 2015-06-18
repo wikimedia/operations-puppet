@@ -149,7 +149,11 @@ director <%= director %> <%= @director_type %> {
 	.retries = <%= chash_def_retries(99, @varnish_directors[director].size) %>;
 <% end -%>
 <%
-	@varnish_directors[director].each do |backend|
+	backends = @varnish_directors[director]
+	if not backends.is_a?(Array)
+		backens = [backends]
+	end
+	backends.each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
 -%>
 	{
