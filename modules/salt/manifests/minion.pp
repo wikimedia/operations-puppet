@@ -54,6 +54,9 @@ class salt::minion(
         recon_max           => 10000,
         recon_randomize     => true,
         keysize             => 2048,
+        ping_interval       => 15,
+        auth_retries        => 5,
+        auth_safemode       => false,
     }
 
     # our config file must be in place before
