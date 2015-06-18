@@ -5,11 +5,6 @@ sub cookie_munging {
 	if (req.restarts == 0) {
 		set req.http.Orig-Cookie = req.http.Cookie;
 		unset req.http.Cookie;
-
-		// We need to vary on the forceHTTPS cookie
-		if (req.http.Orig-Cookie ~ "forceHTTPS=(1|true)") {
-			set req.http.Cookie = "forceHTTPS=1";
-		}
 	}
 }
 
