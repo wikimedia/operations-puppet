@@ -164,10 +164,7 @@ sub vcl_error {
 
 sub vcl_deliver {
 	// Override the Cache-Control header for wiki content pages
-	if (req.url ~ "(?i)^/w(iki)?/.*"
-		&& req.url !~ "^/wiki/Special\:Banner(Controller|ListLoader)"
-		&& req.url !~ "(?i)^/w/(extensions/.*|api\.php)"
-		&& req.url !~ "(?i)bcache=1") {
+	if (req.url ~ "(?i)^/wiki/.*" || req.url "(?i)^/w/index.php") {
 		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
 	}
 <% if @cluster_options.fetch("enable_geoiplookup", false) -%>
