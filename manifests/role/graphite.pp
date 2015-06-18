@@ -91,9 +91,13 @@ class role::graphite::base(
             'cache'   => {
                 line_receiver_interface            => '127.0.0.1',  # Only the relay binds to 0.0.0.0.
                 pickle_receiver_interface          => '127.0.0.1',
+                manhole_interface                  => '127.0.0.1',
                 max_cache_size                     => 'inf',
                 max_creates_per_minute             => '100',
                 max_updates_per_second_on_shutdown => '1000',
+                enable_manhole                     => true,
+                manhole_user                       => 'admin',
+                manhole_public_key                 => 'ssh-rsa REPLACE_ME',
             },
 
             ## Carbon caches ##
@@ -102,41 +106,49 @@ class role::graphite::base(
                 line_receiver_port   => 2103,
                 pickle_receiver_port => 2104,
                 cache_query_port     => 7102,
+                manhole_port         => 9102,
             },
             'cache:b' => {
                 line_receiver_port   => 2203,
                 pickle_receiver_port => 2204,
                 cache_query_port     => 7202,
+                manhole_port         => 9202,
             },
             'cache:c' => {
                 line_receiver_port   => 2303,
                 pickle_receiver_port => 2304,
                 cache_query_port     => 7302,
+                manhole_port         => 9302,
             },
             'cache:d' => {
                 line_receiver_port   => 2403,
                 pickle_receiver_port => 2404,
                 cache_query_port     => 7402,
+                manhole_port         => 9402,
             },
             'cache:e' => {
                 line_receiver_port   => 2503,
                 pickle_receiver_port => 2504,
                 cache_query_port     => 7502,
+                manhole_port         => 9502,
             },
             'cache:f' => {
                 line_receiver_port   => 2603,
                 pickle_receiver_port => 2604,
                 cache_query_port     => 7602,
+                manhole_port         => 9602,
             },
             'cache:g' => {
                 line_receiver_port   => 2703,
                 pickle_receiver_port => 2704,
                 cache_query_port     => 7702,
+                manhole_port         => 9702,
             },
             'cache:h' => {
                 line_receiver_port   => 2803,
                 pickle_receiver_port => 2804,
                 cache_query_port     => 7802,
+                manhole_port         => 9802,
             },
 
             ## Carbon relay ##
