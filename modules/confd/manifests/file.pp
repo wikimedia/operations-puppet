@@ -11,7 +11,7 @@ define confd::file (
     $mode       = '0444',
     $reload     = undef,
     $check      = undef,
-    $tmpl       = undef,
+    $content    = undef,
 ) {
 
     $safe_name = regsubst($name, '/', '_', 'G')
@@ -25,7 +25,7 @@ define confd::file (
     file { "/etc/confd/templates/${safe_name}.tmpl":
         ensure  => $ensure,
         mode    => '0400',
-        content => template($tmpl),
+        content => $content,
         notify  => Service['confd'],
     }
 }
