@@ -362,9 +362,7 @@ node /^conf100[123]\.eqiad\.wmnet$/ {
     include base::firewall
     include standard
 
-    if $hostname == 'conf1001' or $hostname == 'conf1002' {
-        include role::zookeeper::server
-    }
+    role zookeeper::server
 }
 
 # Debian package building host in production

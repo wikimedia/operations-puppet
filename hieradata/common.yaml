@@ -232,6 +232,6 @@ ganglia_clusters:
     sites:
       eqiad: []
 zookeeper_hosts:
-  analytics1025.eqiad.wmnet: '1025'
   conf1001.eqiad.wmnet: '1101'
   conf1002.eqiad.wmnet: '1102'
+  conf1003.eqiad.wmnet: '1103'
