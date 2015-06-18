@@ -125,14 +125,14 @@ class role::labs::instance {
             ensure  => directory,
             require => File['/public'],
         }
+
         mount { '/public/keys':
-            ensure  => mounted,
-            atboot  => true,
-            fstype  => 'nfs',
-            options => "ro,${nfs_opts}",
-            device  => "${nfs_server}:/keys",
-            require => File['/public/keys', '/etc/modprobe.d/nfs-no-idmap'],
-            notify  => Service['ssh'],
+            ensure  => absent,
+        }
+
+
+        exec { '/usr/local/sbin/manage-keys-nfs':
+            require => [File['/public/keys'], File['/usr/local/sbin/manage-keys-nfs']],
         }
     }
 

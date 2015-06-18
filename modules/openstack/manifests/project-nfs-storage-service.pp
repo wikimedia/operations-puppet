@@ -63,8 +63,9 @@ class openstack::project-nfs-storage-service {
     }
 
     if ($::site == 'eqiad') {
+        # Not needed anymore, keys are written locally to the host
         cron { 'Update labs ssh keys':
-                ensure  => present,
+                ensure  => absent,
                 user    => 'root',
                 command => '/usr/local/sbin/manage-keys-nfs --logfile=/var/log/manage-keys.log >/dev/null 2>&1',
                 hour    => '*',
