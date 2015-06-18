@@ -151,13 +151,15 @@ class role::backup::director {
         includes => [ '/srv/wikimedia' ]
     }
     bacula::director::fileset { 'svnroot':
-        includes => [ '/svnroot' ]
+        includes => [ '/svnroot' ],
+        ensure => absent
     }
     bacula::director::fileset { 'srv-org-wikimedia':
         includes => [ '/srv/org/wikimedia' ]
     }
     bacula::director::fileset { 'svnroot-bak':
-        includes => [ '/svnroot/bak' ]
+        includes => [ '/svnroot/bak' ],
+        ensure => absent
     }
     bacula::director::fileset { 'var-lib-archiva':
         includes     => [ '/var/lib/archiva' ],
