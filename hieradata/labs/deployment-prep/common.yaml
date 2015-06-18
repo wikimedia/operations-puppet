@@ -767,7 +767,7 @@ ssh::server::explicit_macs: false
     - deployment-elastic08
 "elasticsearch::cluster_name": beta-search
 nfs_mounts:
-  project: true
-  home: true
+  project: false
+  home: false
   scratch: false
   dumps: false
