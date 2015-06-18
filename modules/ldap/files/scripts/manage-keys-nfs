@@ -28,7 +28,7 @@ DEBUG = 20
 
 class ExportManager:
     def __init__(self):
-        self.keysdir = "/srv/keys/"
+        self.keysdir = "/public/keys/"
         self.loglevel = INFO
         self.logfile = None
         self.hostname = socket.gethostname()
