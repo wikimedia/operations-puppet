@@ -45,7 +45,11 @@ sub mobile_redirect {
 		&& (req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"
 			|| req.http.User-Agent ~ "^(?i)(lge?|sie|nec|sgh|pg)-" || req.http.Accept ~ "vnd.wap.wml")
 		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
-		&& req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]") {
+		&& (
+			req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]"
+			|| req.url ~ "^/w/index\.php"
+			|| req.url ~ "^/\?title="
+		) {
 
 		// Separate regexps for clarity, but multiple regsubs instead of
 		// "if host ~"/regsub matches for efficiency. Be careful to not
