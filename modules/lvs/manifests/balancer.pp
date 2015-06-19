@@ -27,6 +27,12 @@ class lvs::balancer(
         site => $site
     }
 
+    # XXX: Where to pull these node names from?
+    class { 'confd':
+        running => true,
+        node    => 'http://localhost:2379',
+    }
+
     file { '/etc/modprobe.d/lvs.conf':
         ensure  => present,
         owner   => 'root',
