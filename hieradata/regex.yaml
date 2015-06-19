@@ -126,6 +126,7 @@ restbase:
 virtualization:
   __regex: !ruby/regexp /^(labnet|labvirt|virt)100[1-9]\.eqiad\.wmnet$/
   ganglia_class: "new"
+  cluster: "virt"
 
 cassandra_test:
   __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
