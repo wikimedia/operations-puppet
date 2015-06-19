@@ -25,7 +25,7 @@ for dir in /srv/*; do
   exp=$(basename $dir)
   if [ ! -d /exp/$exp ]; then mkdir /exp/$exp; fi
   if [ "$exp" == "project" ]; then
-    for pdir in /srv/project/*; do
+    for pdir in /srv/project/* /srv/others/*; do
       proj=$(basename $pdir)
       if [ "$proj" != "lost+found" ]; then
         if [ ! -d /exp/project/$proj ]; then mkdir /exp/project/$proj; fi
@@ -38,7 +38,7 @@ for dir in /srv/*; do
 done
 
 for dir in /exp/project/*; do
-  if [ ! -d /srv/project/$(basename $dir) ]; then
+  if [ ! -d /srv/project/$(basename $dir) -a ! -d /srv/others/$(basename $dir) ]; then
     if /bin/mountpoint -q $dir; then /bin/umount $dir; fi
     /bin/rmdir $dir
   fi
