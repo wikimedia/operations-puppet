@@ -1,0 +1,28 @@
+appserver:
+  apache2:
+    port: 80
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
+api_appserver:
+  apache2:
+    port: 80
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
+imagescaler:
+  apache2:
+    port: 80
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
+  

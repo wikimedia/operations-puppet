@@ -1,0 +1,11 @@
+dns_rec:
+  pdns_recursor:
+    port: 53
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - codfw
+      - eqiad
+      - esams
+      - ulsfo
