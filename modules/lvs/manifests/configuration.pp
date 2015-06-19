@@ -365,6 +365,7 @@ class lvs::configuration {
             'ip' => $service_ips['text'][$::site],
             'bgp' => 'yes',
             'depool-threshold' => '.5',
+            'conftool' => {'cluster' => 'cache_text', 'service' => 'varnish-fe'},
             'monitors' => { 'IdleConnection' => $idleconnection_monitor_options },
         },
         'text-https' => {
@@ -376,6 +377,7 @@ class lvs::configuration {
             'scheduler' => 'sh',
             'bgp' => 'no',
             'depool-threshold' => '.5',
+            'conftool' => {'cluster' => 'cache_text', 'service' => 'nginx'},
             'monitors' => {
                 'ProxyFetch' => { 'url' => [ 'https://en.wikipedia.org/wiki/Main_Page' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
@@ -389,6 +391,7 @@ class lvs::configuration {
             'bgp' => "yes",
             'depool-threshold' => ".5",
             'monitors' => { 'IdleConnection' => $idleconnection_monitor_options },
+            'conftool' => {'cluster' => 'cache_bits', 'service' => 'varnish-fe'},
         },
         "bits-https" => {
             'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
@@ -403,6 +406,7 @@ class lvs::configuration {
                 'ProxyFetch' => { 'url' => [ 'https://bits.wikimedia.org/pybal-test-file' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'cache_bits', 'service' => 'nginx'},
         },
         "upload" => {
             'description' => "Images and other media, upload.${::site}.wikimedia.org",
@@ -412,6 +416,7 @@ class lvs::configuration {
             'bgp' => "yes",
             'depool-threshold' => ".5",
             'monitors' => { 'IdleConnection' => $idleconnection_monitor_options },
+            'conftool' => {'cluster' => 'cache_upload', 'service' => 'varnish-fe'},
         },
         "upload-https" => {
             'description' => "Images and other media, upload.${::site}.wikimedia.org",
@@ -426,6 +431,7 @@ class lvs::configuration {
                 'ProxyFetch' => { 'url' => [ 'https://upload.wikimedia.org/monitoring/backend' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'cache_upload', 'service' => 'nginx'},
         },
         "mobile" => {
             'description' => "MediaWiki based mobile site",
@@ -435,6 +441,7 @@ class lvs::configuration {
             'bgp' => "yes",
             'depool-threshold' => ".6",
             'monitors' => { 'IdleConnection' => $idleconnection_monitor_options },
+            'conftool' => {'cluster' => 'cache_mobile', 'service' => 'varnish-fe'},
         },
         "mobile-https" => {
             'description' => "MediaWiki based mobile site",
@@ -449,6 +456,7 @@ class lvs::configuration {
                 'ProxyFetch' => { 'url' => [ 'https://en.m.wikipedia.org/wiki/Angelsberg' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'cache_mobile', 'service' => 'nginx'},
         },
         "dns_rec" => {
             'description' => "Recursive DNS",
@@ -466,6 +474,7 @@ class lvs::configuration {
                 },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'dns_rec', 'service' => 'pdns_recursor'},
         },
         "osm" => {
             'description' => "OpenStreetMap tiles",
@@ -477,6 +486,7 @@ class lvs::configuration {
             'monitors' => {
                 'IdleConnection' => $idleconnection_monitor_options
             },
+            'conftool' => {},
         },
         "misc_web" => {
             'description' => "Miscellaneous web sites Varnish cluster",
@@ -488,6 +498,7 @@ class lvs::configuration {
             'monitors' => {
                 'IdleConnection' => $idleconnection_monitor_options
             },
+            'conftool' => {'cluster' => 'cache_misc', 'service' => 'varnish-fe'},
         },
         'misc_web-https' => {
             'description' => 'Miscellaneous web sites Varnish cluster (HTTPS)',
@@ -502,6 +513,7 @@ class lvs::configuration {
             'monitors' => {
                 'IdleConnection' => $idleconnection_monitor_options
             },
+            'conftool' => {'cluster' => 'cache_misc', 'service' => 'nginx'},
         },
         "apaches" => {
             'description' => "Main MediaWiki application server cluster, appservers.svc.eqiad.wmnet",
@@ -517,6 +529,7 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options,
                 'RunCommand' => $runcommand_monitor_options
             },
+            'conftool' => {'cluster' => 'appserver', 'service' => 'apache2'},
         },
         "rendering" => {
             'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.eqiad.wmnet",
@@ -532,6 +545,7 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options,
                 'RunCommand' => $runcommand_monitor_options
             },
+            'conftool' => {'cluster' => 'imagescaler', 'service' => 'apache2'},
         },
         "api" => {
             'description' => "MediaWiki API cluster, api.svc.eqiad.wmnet",
@@ -547,6 +561,7 @@ class lvs::configuration {
                 'IdleConnection' => $idleconnection_monitor_options,
                 'RunCommand' => $runcommand_monitor_options
             },
+            'conftool' => {'cluster' => 'api_appserver', 'service' => 'apache2'},
         },
         "swift" => {
             'description' => "Swift/Ceph media storage",
@@ -561,6 +576,7 @@ class lvs::configuration {
                     },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'swift', 'service' => 'swift-fe'},
         },
         "parsoid" => {
             'description' => "Parsoid wikitext parser for VisualEditor",
@@ -576,6 +592,7 @@ class lvs::configuration {
                 },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'parsoid', 'service' => 'parsoid'},
         },
         'parsoidcache' => {
             'description' => "Varnish caches in front of Parsoid",
@@ -591,6 +608,7 @@ class lvs::configuration {
                 },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'cache_parsoid', 'service' => 'varnish-fe'},
         },
         'parsoidcache-https' => {
             'description' => "nginx HTTPS terminators for Parsoid",
@@ -604,6 +622,7 @@ class lvs::configuration {
             'monitors' => {
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'cache_parsoid', 'service' => 'nginx'},
         },
         "search" => {
             'description' => "Elasticsearch search for MediaWiki",
@@ -619,6 +638,7 @@ class lvs::configuration {
                 },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'elasticsearch', 'service' => 'elasticsearch'},
         },
         'stream' => {
             'description' => "Websocket/streaming services",
@@ -635,6 +655,7 @@ class lvs::configuration {
                 },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'rcstream', 'service' => 'nginx'},
         },
         'stream-https' => {
             'description' => "Websocket/streaming services",
@@ -651,6 +672,7 @@ class lvs::configuration {
                 },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'rcstream', 'service' => 'nginx_ssl'},
         },
         'ocg' => {
             'description' => 'Offline Content Generator (e.g. PDF), ocg.svc.eqiad.wmnet',
@@ -664,6 +686,7 @@ class lvs::configuration {
                 'ProxyFetch' => { 'url' => [ 'http://ocg.svc.eqiad.wmnet/?command=health' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'pdf', 'service' => 'ocg'},
         },
         'mathoid' => {
             'description' => 'Mathematical rendering service, mathoid.svc.eqiad.wmnet',
@@ -677,6 +700,7 @@ class lvs::configuration {
                 'ProxyFetch' => { 'url' => [ 'http://mathoid.svc.eqiad.wmnet/_info' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
+            'conftool' => {'cluster' => 'sca', 'service' => 'mathoid'},
         },
         'citoid' => {
             'description' => 'Citation lookup service, citoid.svc.eqiad.wmnet',
@@ -689,7 +713,8 @@ class lvs::configuration {
             'monitors' => {
                 'ProxyFetch' => { 'url' => [ 'http://citoid.svc.eqiad.wmnet' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
-            }
+            },
+            'conftool' => {'cluster' => 'sca', 'service' => 'citoid'},
         },
         'cxserver' => {
             'description' => 'Content Translation service, cxserver.svc.eqiad.wmnet',
@@ -702,7 +727,8 @@ class lvs::configuration {
             'monitors' => {
                 'ProxyFetch' => { 'url' => [ 'http://cxserver.svc.eqiad.wmnet' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
-            }
+            },
+            'conftool' => {'cluster' => 'sca', 'service' => 'cxserver'},
         },
         'graphoid' => {
             'description' => 'Graph-rendering service, graphoid.svc.eqiad.wmnet',
@@ -715,7 +741,8 @@ class lvs::configuration {
             'monitors' => {
                 'ProxyFetch' => { 'url' => ['http://graphoid.svc.eqiad.wmnet/_info' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
-            }
+            },
+            'conftool' => {'cluster' => 'sca', 'service' => 'graphoid'},
         },
         'restbase' => {
             'description' => 'RESTBase, restbase.svc.eqiad.wmnet',
@@ -728,7 +755,8 @@ class lvs::configuration {
             'monitors' => {
                 'ProxyFetch' => { 'url' => [ 'http://restbase.svc.eqiad.wmnet' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
-            }
+            },
+            'conftool' => {'cluster' => 'restbase', 'service' => 'restbase'},
         },
         'zotero' => {
             'description' => 'Zotero, zotero.svc.eqiad.wmnet',
@@ -740,7 +768,8 @@ class lvs::configuration {
             'depool-threshold' => '.5',
             'monitors' => {
                 'IdleConnection' => $idleconnection_monitor_options,
-            }
+            },
+            'conftool' => {'cluster' => 'sca', 'service' => 'zotero'},
         }
     }
 }
