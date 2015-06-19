@@ -1,5 +1,9 @@
 nodes:
-  codfw: []
+  codfw:
+    - 'cp2003.codfw.wmnet'
+    - 'cp2009.codfw.wmnet'
+    - 'cp2015.codfw.wmnet'
+    - 'cp2021.codfw.wmnet'
   eqiad:
     - 'cp1046.eqiad.wmnet'
     - 'cp1047.eqiad.wmnet'
