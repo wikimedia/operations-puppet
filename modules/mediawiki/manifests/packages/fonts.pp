@@ -26,7 +26,6 @@ class mediawiki::packages::fonts {
         'fonts-tibetan-machine',
         'fonts-unfonts-core',
         'fonts-unfonts-extra',
-        'fonts-wqy-zenhei',
         'texlive-fonts-recommended',
         'ttf-alee',
         'ttf-bengali-fonts',
