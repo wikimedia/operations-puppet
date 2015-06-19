@@ -1,3 +1,4 @@
+
 # == Define confd::file
 #
 # Defines a service template to be monitored by confd,
@@ -17,16 +18,19 @@ define confd::file (
     include ::confd
     $safe_name = regsubst($name, '/', '_', 'G')
 
-    #TODO validate at least uid and guid
-    file { "/etc/confd/conf.d/${safe_name}.toml":
-        ensure  => $ensure,
-        content => template('confd/service_template.toml.erb'),
-    }
-
     file { "/etc/confd/templates/${safe_name}.tmpl":
         ensure  => $ensure,
         mode    => '0400',
         content => $content,
+        require => Package['confd'],
+        before  => File["/etc/confd/conf.d/${safe_name}.toml"],
+    }
+
+    #TODO validate at least uid and guid
+    file { "/etc/confd/conf.d/${safe_name}.toml":
+        ensure  => $ensure,
+        content => template('confd/service_template.toml.erb'),
         notify  => Service['confd'],
     }
+
 }
