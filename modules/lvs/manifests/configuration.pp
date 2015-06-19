@@ -360,7 +360,7 @@ class lvs::configuration {
         'text' => {
             'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (Varnish)",
             'class' => 'high-traffic1',
-            'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
+            'sites' => [ 'codfw', 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['text'][$::site],
             'bgp' => 'yes',
             'depool-threshold' => '.5',
@@ -369,7 +369,7 @@ class lvs::configuration {
         'text-https' => {
             'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (nginx)",
             'class' => 'high-traffic1',
-            'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
+            'sites' => [ 'codfw', 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['text'][$::site],
             'port' => 443,
             'scheduler' => 'sh',
@@ -383,7 +383,7 @@ class lvs::configuration {
         "bits" => {
             'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
             'class' => "high-traffic1",
-            'sites' => [ "eqiad", "esams", "ulsfo" ],
+            'sites' => [ 'codfw', "eqiad", "esams", "ulsfo" ],
             'ip' => $service_ips['bits'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".5",
@@ -392,7 +392,7 @@ class lvs::configuration {
         "bits-https" => {
             'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
             'class' => 'high-traffic1',
-            'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
+            'sites' => [ 'codfw', 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['bits'][$::site],
             'port' => 443,
             'scheduler' => 'sh',
@@ -406,7 +406,7 @@ class lvs::configuration {
         "upload" => {
             'description' => "Images and other media, upload.${::site}.wikimedia.org",
             'class' => "high-traffic2",
-            'sites' => [ "eqiad", "esams", "ulsfo" ],
+            'sites' => [ 'codfw', "eqiad", "esams", "ulsfo" ],
             'ip' => $service_ips['upload'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".5",
@@ -415,7 +415,7 @@ class lvs::configuration {
         "upload-https" => {
             'description' => "Images and other media, upload.${::site}.wikimedia.org",
             'class' => "high-traffic2",
-            'sites' => [ "eqiad", "esams", "ulsfo" ],
+            'sites' => [ 'codfw', "eqiad", "esams", "ulsfo" ],
             'ip' => $service_ips['upload'][$::site],
             'port' => 443,
             'scheduler' => 'sh',
@@ -429,7 +429,7 @@ class lvs::configuration {
         "mobile" => {
             'description' => "MediaWiki based mobile site",
             'class' => 'high-traffic1',
-            'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
+            'sites' => [ 'codfw', 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['mobile'][$::site],
             'bgp' => "yes",
             'depool-threshold' => ".6",
@@ -438,7 +438,7 @@ class lvs::configuration {
         "mobile-https" => {
             'description' => "MediaWiki based mobile site",
             'class' => 'high-traffic1',
-            'sites' => [ 'eqiad', 'esams', 'ulsfo' ],
+            'sites' => [ 'codfw', 'eqiad', 'esams', 'ulsfo' ],
             'ip' => $service_ips['mobile'][$::site],
             'port' => 443,
             'scheduler' => 'sh',
