@@ -93,9 +93,9 @@ class role::cache::kafka::webrequest(
         ensure          => 'absent',
     }
 
-    # Use graphite_anomoly to alert about anomolous deliver erros
-    monitoring::graphite_anomoly { 'varnishkafka-anomoly-kafka_drerr':
-        description     => 'Varnishkafka Delivery Errors per minute anomoly',
+    # Use graphite_anomaly to alert about anomolous deliver erros
+    monitoring::graphite_anomaly { 'varnishkafka-anomaly-kafka_drerr':
+        description     => 'Varnishkafka Delivery Errors per minute anomaly',
         metric          => "nonNegativeDerivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
         under           => over,
         # warn if more than 10 anomylous datapoints (last 10 minutes)
