@@ -127,6 +127,14 @@ node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[01]).eqiad.wmnet/ {
 
 # analytics1012, analytics1018, analytics1021 and analytics1022 are Kafka Brokers.
 node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
+    # one ganglia aggregator per ganglia 'cluster' per row.
+    if ($::hostname == 'analytics1012' or  # Row A
+        $::hostname == 'analytics1018' or  # Row D
+        $::hostname == 'analytics1022')    # Row C
+    {
+        $ganglia_aggregator = true
+    }
+
     # Kafka brokers are routed via IPv6 so that
     # other DCs can address without public IPv4
     # addresses.
