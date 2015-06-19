@@ -656,6 +656,7 @@ ssh::server::explicit_macs: false
         - 'es'
         - 'oc'
         - 'pt'
+        - 'simple'
       'en':
         - 'ca'
         - 'eo'
@@ -663,6 +664,7 @@ ssh::server::explicit_macs: false
         - 'sh'
       'eo':
         - 'en'
+        - 'simple'
       'es':
         - 'an'
         - 'ast'
@@ -672,15 +674,20 @@ ssh::server::explicit_macs: false
         - 'gl'
         - 'oc'
         - 'pt'
+        - 'simple'
       'eu':
         - 'en'
         - 'es'
+        - 'simple'
       'fr':
         - 'es'
       'gl':
         - 'en'
         - 'es'
         - 'pt'
+        - 'simple'
+      'hi':
+        - 'ur'
       'id':
         - 'ms'
       'kk':
@@ -705,13 +712,17 @@ ssh::server::explicit_macs: false
         - 'es'
         - 'gl'
       'sh':
+        - 'en'
         - 'sl'
+        - 'simple'
       'sl':
         - 'sh'
       'sv':
         - 'da'
       'tt':
         - 'kk'
+      'ur':
+        - 'hi'
     Yandex:
       'en':
         - 'de'
