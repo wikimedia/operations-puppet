@@ -649,6 +649,8 @@ ssh::server::explicit_macs: false
         - 'es'
       'ast':
         - 'es'
+      'cy':
+        - 'simple'
       'bg':
         - 'mk'
       'ca':

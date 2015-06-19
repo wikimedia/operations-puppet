@@ -8,6 +8,7 @@ class apertium(){
         'apertium',
         'apertium-af-nl',
         'apertium-apy',
+        'apertium-cy-en',
         'apertium-dan',
         'apertium-dan-nor',
         'apertium-en-ca',
