@@ -35,16 +35,20 @@ You just either download a ready package and either of
     export DIST=jessie
     sudo -E cowbuilder --build dh-virtualenv_0.9-1.dsc
 
-The two commands above are equivalent
-
 or if you are developing a package and are in the package directory:
 
     DIST=jessie pdebuild
 
 Feel free to change jessie for precise, trusty or sid
 
+Architectures
+=============
+
 ARCH=amd64, or ARCH=i386 is supported if you feel like building for
 different architecture versions.
+
+Wikimedia repos
+===============
 
 Aside from sid, the rest of the distributions allow for satisfying build time
 dependencies via the wikimedia repos.
