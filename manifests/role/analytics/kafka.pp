@@ -200,7 +200,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         # Generate icinga alert if this jmxtrans instance is not running.
         nrpe::monitor_service { 'jmxtrans':
             description  => 'jmxtrans',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "-jar jmxtrans-all.jar"',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java --ereg-argument-array "-jar.+jmxtrans-all.jar"',
             require      => Class['::kafka::server::jmxtrans'],
         }
 
