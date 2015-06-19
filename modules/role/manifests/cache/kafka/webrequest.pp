@@ -87,5 +87,22 @@ class role::cache::kafka::webrequest(
         from            => '10min',
         nagios_critical => 'false',
         require         => Logster::Job['varnishkafka-webrequest'],
+
+        # This alert is too noisy, as we get too many drerrs.
+        # Disabling until we solve that problem.
+        ensure          => 'absent',
+    }
+
+    # Use graphite_anomoly to alert about anomolous deliver erros
+    monitoring::graphite_anomoly { 'varnishkafka-anomoly-kafka_drerr':
+        description     => 'Varnishkafka Delivery Errors per minute anomoly',
+        metric          => "nonNegativeDerivative(sumSeries(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0)))",
+        under           => over,
+        # warn if more than 10 anomylous datapoints (last 10 minutes)
+        warning         => 5
+        # critical if more than 45 anomylous datapoints (last 45 minutes)
+        critical        => 45,
+        nagios_critical => 'false',
+        require         => Logster::Job['varnishkafka-webrequest'],
     }
 }
