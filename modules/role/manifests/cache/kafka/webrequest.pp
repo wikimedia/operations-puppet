@@ -80,20 +80,20 @@ class role::cache::kafka::webrequest(
     monitoring::graphite_threshold { 'varnishkafka-kafka_drerr':
         description     => 'Varnishkafka Delivery Errors per minute',
         metric          => "derivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
-        # warn if more than 0 errors per minute in the last 10 minutes
+        # More than 0 errors is warning threshold.
         warning         => 0,
-        # critical if more than 20000 errors per minute in the last 10 minutes
+        # More than 20000 errors is critical threshold.
         critical        => 20000,
+        # But only alert if a large percentage of the examined datapoints
+        # are over the threshold.
+        percentage      => 80,
         from            => '10min',
         nagios_critical => 'false',
         require         => Logster::Job['varnishkafka-webrequest'],
-
-        # This alert is too noisy, as we get too many drerrs.
-        # Disabling until we solve that problem.
-        ensure          => 'absent',
+        ensure          => 'present',
     }
 
-    # Use graphite_anomaly to alert about anomolous deliver erros
+    # Use graphite_anomaly to alert about anomolous deliver errors.
     monitoring::graphite_anomaly { 'varnishkafka-anomaly-kafka_drerr':
         description     => 'Varnishkafka Delivery Errors per minute anomaly',
         metric          => "nonNegativeDerivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
@@ -104,5 +104,7 @@ class role::cache::kafka::webrequest(
         critical        => 45,
         nagios_critical => 'false',
         require         => Logster::Job['varnishkafka-webrequest'],
+        # Disabling this.  It doesn't work like I wanted it to.
+        ensure          => 'absent',
     }
 }
