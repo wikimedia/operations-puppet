@@ -725,6 +725,11 @@ ssh::server::explicit_macs: false
         - 'kk'
       'ur':
         - 'hi'
+    defaults:
+      'hi-ur':
+        - 'no-mt'
+      'ur-hi':
+        - 'no-mt'
     Yandex:
       'en':
         - 'de'
