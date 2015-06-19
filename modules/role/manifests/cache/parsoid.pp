@@ -70,10 +70,10 @@ class role::cache::parsoid {
         admin_port      => 6082,
         directors       => {
             'backend'          => $site_parsoid_nodes,
-            'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::wm_primary],
-            'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::wm_primary],
-            'graphoid_backend' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::wm_primary],
-            'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::wm_primary],
+            'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::mw_primary],
+            'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::mw_primary],
+            'graphoid_backend' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::mw_primary],
+            'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
         },
         director_type   => 'chash',
         vcl_config      => {
