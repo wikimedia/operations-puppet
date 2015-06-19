@@ -20,12 +20,14 @@ define confd::file (
     file { "/etc/confd/conf.d/${safe_name}.toml":
         ensure  => $ensure,
         content => template('confd/service_template.toml.erb'),
+        require => Package['confd']
     }
 
     file { "/etc/confd/templates/${safe_name}.tmpl":
         ensure  => $ensure,
         mode    => '0400',
         content => $content,
+        before  => File["/etc/confd/conf.d/${safe_name}.toml"],
         notify  => Service['confd'],
     }
 }
