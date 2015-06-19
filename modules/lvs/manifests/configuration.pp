@@ -365,6 +365,7 @@ class lvs::configuration {
             'ip' => $service_ips['text'][$::site],
             'bgp' => 'yes',
             'depool-threshold' => '.5',
+            'conftool' => {'cluster' => 'cache_text', 'service' => 'varnish-fe'},
             'monitors' => { 'IdleConnection' => $idleconnection_monitor_options },
         },
         'text-https' => {
@@ -376,6 +377,7 @@ class lvs::configuration {
             'scheduler' => 'sh',
             'bgp' => 'no',
             'depool-threshold' => '.5',
+            'conftool' => {'cluster' => 'cache_text', 'service' => 'nginx'},
             'monitors' => {
                 'ProxyFetch' => { 'url' => [ 'https://en.wikipedia.org/wiki/Main_Page' ] },
                 'IdleConnection' => $idleconnection_monitor_options,
