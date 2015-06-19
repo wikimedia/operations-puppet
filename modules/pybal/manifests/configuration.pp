@@ -9,4 +9,8 @@ class pybal::configuration(
         require => Package['pybal'],
         content => template("${module_name}/pybal.conf.erb");
     }
+
+    # for every service cluster we need a matching pool
+    $service_keys = keys($lvs_services)
+    pybal::pool {$service_keys: lvs_services => $lvs_services}
 }
