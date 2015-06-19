@@ -51,17 +51,18 @@ class role::zookeeper::server {
 
     class { '::zookeeper::server': }
 
+    ferm::service { 'zookeeper':
+        proto  => 'tcp',
+        # Zookeeper client, protocol, and jmx listen ports.
+        port   => "(2181 2182 2183 ${$::zookeeper::server::jmx_port})",
+        srange => '($INTERNAL)',
+    }
+
     if hiera('has_ganglia', true) {
         # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host = '239.192.1.32'
-        $ganglia_port = 8649
+        $ganglia_host = '208.80.154.10'
+        $ganglia_port = 9690
 
-        ferm::service { 'zookeeper':
-            proto  => 'tcp',
-            # Zookeeper client, protocol, and jmx listen ports.
-            port   => "(2181 2182 2183 ${$::zookeeper::server::jmx_port})",
-            srange => '($INTERNAL)',
-        }
         # Use jmxtrans for sending metrics to ganglia
         class { 'zookeeper::jmxtrans':
             ganglia => "${ganglia_host}:${ganglia_port}",
