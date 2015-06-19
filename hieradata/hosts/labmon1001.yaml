@@ -1,2 +1,4 @@
 statsite::instance::graphite_host: 'localhost'
 statsite::instance::extended_counters: 1
+ganglia_class: "new"
+cluster: "virt"
