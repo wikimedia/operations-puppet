@@ -86,6 +86,12 @@ class lvs::configuration {
     $lvs_service_ips = {
         'production' => {
             'text' => {
+                'codfw' => {
+                    'textlb' => '208.80.153.224',
+                    'loginlb' => '208.80.153.233',
+                    'textlb6' => '2620:0:860:ed1a::1',
+                    'loginlb6' => '2620:0:860:ed1a::1:9',
+                },
                 'eqiad' => {
                     'textsvc' => '10.2.2.25',
                     'textlb' => '208.80.154.224',
@@ -112,11 +118,13 @@ class lvs::configuration {
                 },
             },
             'bits' => {
+                'codfw' => { 'bitslb' => "208.80.153.234", 'bitslb6' => '2620:0:860:ed1a::1:a' },
                 'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6' => '2620:0:861:ed1a::1:a', 'bitssvc' => "10.2.2.23" },
                 'esams' => { 'bitslb' => '91.198.174.202', 'bitslb6' => '2620:0:862:ed1a::1:a', 'bitssvc' => "10.2.3.23" },
                 'ulsfo' => { 'bitslb' => "198.35.26.106", 'bitslb6' => '2620:0:863:ed1a::1:a', 'bitssvc' => "10.2.4.23" },
             },
             'upload' => {
+                'cdofw' => { 'uploadlb' => '208.80.153.240', 'uploadlb6' => '2620:0:860:ed1a::2:b' },
                 'eqiad' => { 'uploadlb' => '208.80.154.240', 'uploadlb6' => '2620:0:861:ed1a::2:b', 'uploadsvc' => '10.2.2.24' },
                 'esams' => { 'uploadlb' => '91.198.174.208', 'uploadlb6' => '2620:0:862:ed1a::2:b', 'uploadsvc' => '10.2.3.24' },
                 'ulsfo' => { 'uploadlb' => '198.35.26.112', 'uploadlb6' => '2620:0:863:ed1a::2:b', 'uploadsvc' => '10.2.4.24' },
@@ -134,6 +142,7 @@ class lvs::configuration {
                 'codfw' => '10.2.1.22',
             },
             'mobile' => {
+                'codfw' => { 'mobilelb' => "208.80.153.236", 'mobilelb6' => '2620:0:860:ed1a::1:c' },
                 'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => '2620:0:861:ed1a::1:c', 'mobilesvc' => "10.2.2.26"},
                 'esams' => { 'mobilelb' => '91.198.174.204', 'mobilelb6' => '2620:0:862:ed1a::1:c', 'mobilesvc' => '10.2.3.26'},
                 'ulsfo' => { 'mobilelb' => '198.35.26.108', 'mobilelb6' => '2620:0:863:ed1a::1:c', 'mobilesvc' => '10.2.4.26'},
