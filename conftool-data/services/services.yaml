@@ -1,0 +1,93 @@
+swift:
+  swift-fe:
+    port: 80
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
+parsoid:
+  parsoid:
+    port: 8000
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+      - codfw
+elasticsearch:
+  elasticsearch:
+    port: 9200
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+rcstream:
+  nginx:
+    port: 80
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+  nginx_ssl:
+    port: 443
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+pdf:
+  ocg:
+    port: 8000
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+sca:
+  mathoid:
+    port: 10042
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+  citoid:
+    port: 1970
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+  cxserver:
+    port: 8080
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+  graphoid:
+    port: 19000
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+  zotero:
+    port: 7231
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
+restbase:
+  restbase:
+    port: 7231
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad
