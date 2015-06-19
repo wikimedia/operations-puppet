@@ -25,10 +25,6 @@ class role::cache::parsoid {
         storage          => $::role::cache::2layer::persistent_storage_args,
         directors        => {
             'backend'          => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
-            'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
-            'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
-            'graphoid_backend' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::site],
-            'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
         },
         vcl_config       => {
             'retry503'    => 4,
