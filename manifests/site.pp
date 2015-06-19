@@ -146,13 +146,6 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
 
 }
 
-# analytics1023-1025 are zookeeper server nodes
-node /analytics102[345].eqiad.wmnet/ {
-    role analytics
-    include standard
-    include role::zookeeper::server
-}
-
 # Analytics1026 is the Impala master
 # (llama, impala-state-store, impala-catalog)
 # analytics1026 also runs misc udp2log for sqstat
