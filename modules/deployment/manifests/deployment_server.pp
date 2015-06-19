@@ -85,13 +85,4 @@ class deployment::deployment_server($deployer_groups=[]) {
         timeout     => 1200,
     }
 
-    exec { 'eventual_consistency_deployment_server_init':
-        path    => ['/usr/bin', '/usr/sbin', '/sbin', '/bin'],
-        command => 'salt-call deploy.deployment_server_init',
-        require => [
-            Package['salt-minion'],
-            Salt::Grain['deployment_server'],
-            Salt::Grain['deployment_repo_user'],
-        ];
-    }
 }
