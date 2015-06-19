@@ -24,6 +24,7 @@ class apertium(){
         'apertium-eus',
         'apertium-fr-es',
         'apertium-hbs',
+        'apertium-hin',
         'apertium-hbs-eng',
         'apertium-hbs-mkd',
         'apertium-hbs-slv',
@@ -42,6 +43,8 @@ class apertium(){
         'apertium-pt-gl',
         'apertium-sv-da',
         'apertium-tat',
+        'apertium-urd',
+        'apertium-urd-hin',
         'cg3',
         'hfst',
         'lttoolbox'

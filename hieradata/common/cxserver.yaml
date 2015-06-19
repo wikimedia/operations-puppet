@@ -539,6 +539,8 @@ registry:
         - 'es'
       'gl':
         - 'es'
+      'hi':
+        - 'ur'
       'id':
         - 'ms'
       'kk':
@@ -566,6 +568,8 @@ registry:
         - 'da'
       'tt':
         - 'kk'
+      'ur':
+        - 'hi'
   dictionary:
     JsonDict:
       'ca':
