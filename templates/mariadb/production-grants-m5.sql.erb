@@ -23,3 +23,9 @@ GRANT USAGE
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY
 TABLES
     ON `designate`.* TO 'designate'@'208.80.154.12';
+
+-- backups to dbstore1001
+
+GRANT ALL PRIVILEGES
+    ON *.* TO 'root'@'10.64.48.17'
+    IDENTIFIED BY '<%= @root_pass %>';
