@@ -97,7 +97,7 @@ class role::cache::kafka::webrequest(
     monitoring::graphite_anomaly { 'varnishkafka-anomaly-kafka_drerr':
         description     => 'Varnishkafka Delivery Errors per minute anomaly',
         metric          => "nonNegativeDerivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
-        under           => over,
+        over            => true,
         # warn if more than 10 anomylous datapoints (last 10 minutes)
         warning         => 5,
         # critical if more than 45 anomylous datapoints (last 45 minutes)
