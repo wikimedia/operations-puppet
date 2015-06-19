@@ -17,12 +17,13 @@
 # that connect to this endpoint and read data into some storage medium.
 #
 class role::eventlogging {
-    include eventlogging
+    class { '::eventlogging': }
+
     # Infer Kafka cluster configuration from this class
-    include role::analytics::kafka::config
+    class { 'role::analytics::kafka::config': }
 
     if hiera('has_ganglia', true) {
-        include role::eventlogging::monitoring
+        class { 'role::eventlogging::monitoring': }
     }
 
     system::role { 'role::eventlogging':
@@ -109,7 +110,7 @@ class role::eventlogging {
 
     # Log strictly valid events to the 'log' database on m4-master.
 
-    include passwords::mysql::eventlogging    # T82265
+    class { 'passwords::mysql::eventlogging': }    # T82265
     $mysql_user = $passwords::mysql::eventlogging::user
     $mysql_pass = $passwords::mysql::eventlogging::password
     $mysql_db = $::realm ? {
@@ -153,7 +154,7 @@ class role::eventlogging {
     }
 
     if ( $backup_destinations ) {
-        include rsync::server
+        class { 'rsync::server': }
 
         rsync::server::module { 'eventlogging':
             path        => $log_dir,
@@ -174,7 +175,7 @@ class role::eventlogging {
 # Provisions scripts for reporting state to monitoring tools.
 #
 class role::eventlogging::monitoring {
-    include ::eventlogging::monitoring
+    class { '::eventlogging::monitoring': }
 
     eventlogging::service::reporter { 'statsd':
         host => 'statsd.eqiad.wmnet',
@@ -219,7 +220,7 @@ class role::eventlogging::monitoring {
 # Includes process nanny alarm for graphite consumer
 
 class role::eventlogging::graphite {
-    include ::eventlogging::monitoring
+    class { '::eventlogging::monitoring': }
 
     # Too bad this isn't in a hiera variable :(
     $eventlogging_host = 'eventlog1001.eqiad.wmnet'
