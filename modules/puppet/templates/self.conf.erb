@@ -27,7 +27,6 @@ certname = <%= certname %>
 <% if is_puppetmaster -%>
 [master]
 bindaddress = <%= bindaddress %>
-ca_md = sha1
 certname = <%= certname %>
 thin_storeconfigs = true
 templatedir = /etc/puppet/templates
