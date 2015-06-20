@@ -33,7 +33,11 @@ end
 # weight*num_backends.
 # Blame _joe_ for the math! :)
 def chash_def_retries(p, n)
-	return ((Math.log10(100 - p) - 2) / (Math.log10(n - 1) - Math.log10(n))).ceil
+	x = n - 1
+	if (x <= 0)
+		return n
+	end
+	return ((Math.log10(100 - p) - 2) / (Math.log10(x) - Math.log10(n))).ceil
 end
 -%>
 
