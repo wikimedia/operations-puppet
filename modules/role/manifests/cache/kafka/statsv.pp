@@ -29,5 +29,7 @@ class role::cache::kafka::statsv(
         topic_request_required_acks  => '2',
     }
 
-    varnishkafka::monitor { 'statsv': }
+    if hiera('has_ganglia', true) {
+        varnishkafka::monitor { 'statsv': }
+    }
 }
