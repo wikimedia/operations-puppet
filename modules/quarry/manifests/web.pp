@@ -7,6 +7,8 @@ class quarry::web {
     $clone_path = '/srv/quarry'
     $result_path = '/data/project/quarry/results'
 
+    require_package('python-flask', 'python-mwoauth')
+
     include quarry::base
 
     uwsgi::app { 'quarry-web':
