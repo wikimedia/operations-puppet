@@ -10,8 +10,6 @@ class quarry::base {
     $result_path = '/data/project/quarry/results'
 
     package { [
-        'python-flask',
-        'python-mwoauth',
         'python-celery',
         'python-sqlalchemy',
         'python-pymysql',
