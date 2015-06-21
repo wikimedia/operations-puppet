@@ -48,10 +48,12 @@ class role::cache::kafka::webrequest(
         log_statistics_interval      => 15,
     }
 
-    varnishkafka::monitor { 'webrequest':
-        # The primary webrequest varnishkafka instance was formerly the
-        # only one running, so we don't prefix its Ganglia metric keys.
-        key_prefix => '',
+    if hiera('has_ganglia', true) {
+        varnishkafka::monitor { 'webrequest':
+            # The primary webrequest varnishkafka instance was formerly the
+            # only one running, so we don't prefix its Ganglia metric keys.
+            key_prefix => '',
+        }
     }
 
     # Generate icinga alert if varnishkafka is not running.
