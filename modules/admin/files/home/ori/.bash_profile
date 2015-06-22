@@ -73,6 +73,8 @@ fields()     { tail -1 "${@:---}" | awk 'END { for (i = 1; i <= NF; i++) printf(
 field()      { awk -v field="$1" '{print $(field)}'; }
 lat()        { ls -lat *"${@:+.}${@}" | head; }
 sudo()       { command sudo -E "$@"; }
+hbnt()       { /usr/bin/comm -23 "$1" "$2"; } # Here but not there (lines in $1 that are not in $2)
+bhat()       { /usr/bin/comm -12 "$1" "$2"; } # Both here and there (lines common to both $1 and $2)
 
 ptop()       {
   args=( top )
