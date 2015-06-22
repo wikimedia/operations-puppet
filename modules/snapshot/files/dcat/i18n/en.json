@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": ["Lokal_Profil"]
+	},
+	"dcatap-dataset-live-title": "Live access",
+	"dcatap-dataset-live-description": "The live version of the data, includes entities and properties. Only non-deprecated formats are listed as distributions.",
+	"dcatap-dataset-dump-title": "Entity dump of $1",
+	"dcatap-dataset-dump-description": "A static dump of all entites for the given date.",
+	"dcatap-distribution-ld-description": "The Linked Data endpoint. Format is resolved through content negotiation.",
+	"dcatap-distribution-api-description": "The MediaWiki API endpoint. Format is given through the \"format\" parameter.",
+	"dcatap-distribution-dump-description": "A gziped $1 file."
+}
