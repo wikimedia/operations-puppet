@@ -36,7 +36,7 @@ class graphoid(
         port    => 19000,
         config  => template('graphoid/config.yaml.erb'),
         require => Package['libcairo2', 'libgif4', $libjpeg62, 'libpango1.0-0'],
+        firejail => true,
     }
 
 }
-
