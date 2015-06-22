@@ -208,3 +208,33 @@ class role::eventlogging::graphite {
     }
 
 }
+
+
+# Temporary class to test eventlogging kafka on host other than eventlog1001.
+class role::eventlogging::processor::kafka {
+    class { '::eventlogging': }
+
+    # Infer Kafka cluster configuration from this class
+    class { 'role::analytics::kafka::config': }
+
+    $forwarder_host       = hiera('eventlogging_forwarder_host', 'eventlog1001.eqiad.wmnet')
+    $kafka_brokers_array  = $role::analytics::kafka::config::brokers_array
+    # By default, the EL Kafka writer writes events to
+    # schema based topic names like eventlogging_SCHEMA,
+    # with each message keyed by SCHEMA_REVISION.
+    $kafka_ouput_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
+
+    # Read in server side and client side raw events from
+    # ZeroMQ, process them, and send events to schema
+    # based topics in Kafka.
+    eventlogging::service::processor { 'server-side-events-kafka':
+        format => '%{seqId}d EventLogging %j',
+        input  => "tcp://${forwarder_host}:8421",
+        output => $kafka_ouput_uri,
+    }
+    eventlogging::service::processor { 'client-side-events-kafka':
+        format => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
+        input  => "tcp://${forwarder_host}:8422",
+        output => $kafka_ouput_uri,
+    }
+}

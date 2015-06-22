@@ -96,12 +96,17 @@ node 'analytics1003.eqiad.wmnet' {
     include standard
 }
 
-# analytics1003 and analytics1004 are Spark Standalone workers
+# analytics1004 and analytics1010 are Spark Standalone workers
 node /analytics10(04|10).eqiad.wmnet/ {
     role analytics::hadoop::client,
         analytics::hive::client,
         analytics::spark::standalone,
         analytics::spark::standalone::worker
+
+    # Use analytics1010 for testing eventlogging kafka.
+    if $::hostname == 'analytics1010' {
+        include role::eventlogging::processor::kafka
+    }
 
     include standard
 }
