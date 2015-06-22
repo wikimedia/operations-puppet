@@ -2295,7 +2295,7 @@ node 'uranium.wikimedia.org' {
     }
 }
 
-node 'virt1000.wikimedia.org' {
+node 'labcontrol1002.wikimedia.org' {
     include standard
 }
 

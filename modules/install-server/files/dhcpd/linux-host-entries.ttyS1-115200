@@ -5832,9 +5832,9 @@ host uranium {
 	fixed-address uranium.wikimedia.org;
 }
 
-host virt1000 {
+host labcontrol1002 {
 	hardware ethernet 18:03:73:f5:2c:2b;
-	fixed-address virt1000.wikimedia.org;
+	fixed-address labcontrol1002.wikimedia.org;
 }
 
 host wtp1001 {
