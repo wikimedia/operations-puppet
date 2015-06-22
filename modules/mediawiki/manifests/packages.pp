@@ -4,7 +4,6 @@ class mediawiki::packages {
 
     package { [
         'imagemagick',
-        'libmemcached10', # TODO: remove this?
         'python-imaging',
         'python-pygments',
         'tidy',

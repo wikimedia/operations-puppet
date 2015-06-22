@@ -48,7 +48,6 @@ class mediawiki::packages::php5 {
 
     if os_version('ubuntu precise') {
         package { [
-            'libmemcached11',  # Formerly a dependency for php5-memcached
             'php5-igbinary',   # No longer in use
             'php5-wmerrors',   # Not packaged for Trusty
         ]:
