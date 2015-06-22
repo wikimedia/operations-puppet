@@ -214,7 +214,7 @@ sub https_deliver_hsts {
 			set resp.http.Strict-Transport-Security = "max-age=15768000";
 		}
 		else if (!resp.http.Strict-Transport-Security) {
-			set resp.http.Strict-Transport-Security = "max-age=259200";
+			set resp.http.Strict-Transport-Security = "max-age=1209600";
 		}
 	}
 }
