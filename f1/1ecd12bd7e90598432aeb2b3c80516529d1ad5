@@ -1,0 +1,9 @@
+Verified+2: jenkins-bot
+Code-Review+1: Ori.livneh <ori@wikimedia.org>
+Code-Review+2: BBlack <bblack@wikimedia.org>
+Verified+2: BBlack <bblack@wikimedia.org>
+Submitted-by: BBlack <bblack@wikimedia.org>
+Submitted-at: Mon, 22 Jun 2015 17:34:01 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/219833
+Project: operations/puppet
+Branch: refs/heads/production
