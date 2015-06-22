@@ -3,4 +3,10 @@
 <%= @format %>
 <%= @input %>
 <%= @output %>
-<%= @output_invalid ? "--output-invalid #{@output_invalid}\n" : '' -%>
+<% if @output_invalid -%>
+<% if @output_invalid == true or @output_invalid == 'true' -%>
+--output-invalid
+<% else -%>
+--output-invalid <%= @output_invalid %>
+<% end -%>
+<% end -%>

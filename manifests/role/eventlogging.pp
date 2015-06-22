@@ -229,13 +229,15 @@ class role::eventlogging::processor::kafka {
     # ZeroMQ, process them, and send events to schema
     # based topics in Kafka.
     eventlogging::service::processor { 'server-side-events-kafka':
-        format => '%{seqId}d EventLogging %j',
-        input  => "tcp://${forwarder_host}:8421",
-        output => $kafka_ouput_uri,
+        format         => '%{seqId}d EventLogging %j',
+        input          => "tcp://${forwarder_host}:8421",
+        output         => $kafka_ouput_uri,
+        output_invalid => true,
     }
     eventlogging::service::processor { 'client-side-events-kafka':
-        format => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
-        input  => "tcp://${forwarder_host}:8422",
-        output => $kafka_ouput_uri,
+        format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
+        input          => "tcp://${forwarder_host}:8422",
+        output         => $kafka_ouput_uri,
+        output_invalid => true,
     }
 }
