@@ -579,6 +579,9 @@ registry:
         - 'kk'
       'ur':
         - 'hi'
+  defaults:
+      'hi-ur': 'no-mt'
+      'ur-hi': 'no-mt'
   dictionary:
     JsonDict:
       'ca':
