@@ -44,6 +44,7 @@ class role::eventlogging {
     eventlogging::service::forwarder { 'server-side-raw':
         input   => 'udp://0.0.0.0:8421',
         outputs => ["tcp://${processor}:8421"],
+        count   => true,
     }
     eventlogging::service::processor { 'server-side events':
         format => '%{seqId}d EventLogging %j',
