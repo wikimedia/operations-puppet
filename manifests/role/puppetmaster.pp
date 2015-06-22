@@ -32,6 +32,8 @@ class role::puppetmaster::frontend {
             'dbserver'          => 'm1-master.eqiad.wmnet',
         }
     }
+
+    Class['role::access_new_install'] -> Class['::puppetmaster::scripts::frontend']
 }
 
 class role::puppetmaster::backend {
