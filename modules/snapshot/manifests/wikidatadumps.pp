@@ -12,6 +12,16 @@ class snapshot::wikidatadumps::common {
         owner  => 'datasets',
         group  => 'apache',
     }
+
+    file { '/usr/local/share/dcat':
+        ensure  => 'directory',
+        mode    => '0755',
+        owner   => 'datasets',
+        group   => 'apache',
+        recurse => true,
+        purge   => true,
+        source => 'puppet:///modules/snapshot/dcat',
+    }
 }
 
 class snapshot::wikidatadumps::json(
