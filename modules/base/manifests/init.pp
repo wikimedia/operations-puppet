@@ -62,6 +62,7 @@ class base {
     include role::salt::minions
     include role::trebuchet
     include nrpe
+    include base::kernel
 
     # include base::monitor::host.
     # if $nagios_contact_group is set, then use it
