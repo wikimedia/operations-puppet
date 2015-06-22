@@ -519,12 +519,17 @@ registry:
         - 'es'
         - 'oc'
         - 'pt'
+        - 'simple'
+      'cy':
+        - 'simple'
       'en':
         - 'ca'
         - 'eo'
         - 'gl'
         - 'es'
         - 'sh'
+      'eo':
+        - 'simple'
       'es':
         - 'an'
         - 'ast'
@@ -533,12 +538,15 @@ registry:
         - 'gl'
         - 'oc'
         - 'pt'
+        - 'simple'
       'eu':
         - 'es'
+        - 'simple'
       'fr':
         - 'es'
       'gl':
         - 'es'
+        - 'simple'
       'hi':
         - 'ur'
       'id':
@@ -561,6 +569,7 @@ registry:
         - 'es'
         - 'gl'
       'sh':
+        - 'simple'
         - 'sl'
       'sl':
         - 'sh'
