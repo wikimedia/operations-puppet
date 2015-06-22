@@ -2,7 +2,22 @@
 
 . /etc/profile.d/mediawiki.sh
 
-export PRETTY_FORMAT="%C(yellow bold)%h%C(reset): %s"
+export PRETTY_FORMAT="%C(yellow bold)%h%C(reset): %s%n"
+
+change_summary() {
+    local change_id subject sha1="$1"
+    change_id="$(git log -1 | grep -Po '(?<=Change-Id: )I[[:xdigit:]]{9}')"
+    subject="$(git log -1 --pretty=format:"%s" "$sha1" | tr -d '"'"'")"
+    echo "${change_id}: ${subject}"
+}
+
+change() {
+    change=$1
+    [[ $1 == https* ]] && change=$(grep -Po '\d{6}' <<<"$1")
+    subject="$(curl -s "https://gerrit.wikimedia.org/r/changes/${change}/detail" | tail -c +6 | jq -r '.subject' | tr '"' "'")"
+    subject="${subject/\$/\\$}"
+    echo "\"${change:0:10}: ${subject}\""
+}
 
 looksgood() {
     ( git remote -v | grep -q mediawiki-config ) && {
@@ -12,19 +27,22 @@ looksgood() {
     dir=$(pwd);
     branch="origin/wmf/${dir#/srv/mediawiki-staging/php-}";
     prev_head="$(git rev-parse HEAD)"
-    git rebase "$branch"
+    git rebase --quiet "$branch"
     while read -r extension; do
         echo "$(tput setaf 4)Updating $(tput setaf 3; tput bold)${extension}$(tput sgr0)"
-        git submodule update --init --recursive "$extension"
+        git submodule update --quiet --init --recursive "$extension"
     done < <(git log -p "${prev_head}..HEAD" | grep -Po '(?<= b/)extensions/.*' | sort | uniq)
-    git --no-pager log --name-only --no-merges --pretty=format:"$PRETTY_FORMAT" "${prev_head}..${branch}"
+    echo
+    while read -r commit; do
+        change_summary "$commit"
+    done < <(git --no-pager log --no-merges --grep="Change-Id:" -5 --pretty="%h" "${prev_head}..${branch}")
 }
 
 fetch() {
     cd "$MEDIAWIKI_STAGING_DIR"
     if [ "$1" = "config" ]; then
         cd wmf-config
-        git fetch origin
+        git fetch origin 2>&1 /dev/null
         git --no-pager diff HEAD origin
     else
         branch_dir=$(find . -maxdepth 1 -type d -iregex "./php-[0-9.]+wmf$1")
