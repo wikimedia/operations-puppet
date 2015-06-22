@@ -253,6 +253,7 @@ class network::constants {
         $mw_appserver_networks =
             [
                 '208.80.152.0/22',    # external
+                '2620:0:861:2::/64',     # silver
                 $all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv4'],
                 $all_network_subnets['production']['eqiad']['private']['private1-a-eqiad']['ipv6'],
                 $all_network_subnets['production']['eqiad']['private']['private1-b-eqiad']['ipv4'],
