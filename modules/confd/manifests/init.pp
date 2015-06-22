@@ -4,7 +4,7 @@
 
 class confd(
     $ensure=present,
-    $running=false,
+    $running=true,
     $backend='etcd',
     $node=undef,
     $srv_dns=$::domain,
@@ -13,7 +13,7 @@ class confd(
 ) {
 
     package { 'confd':
-        ensure => present,
+        ensure => $ensure,
     }
 
     if $running {

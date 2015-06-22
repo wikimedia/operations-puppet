@@ -14,6 +14,7 @@ define confd::file (
     $content    = undef,
 ) {
 
+    include ::confd
     $safe_name = regsubst($name, '/', '_', 'G')
 
     #TODO validate at least uid and guid
