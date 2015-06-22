@@ -52,6 +52,8 @@ if [ "${build_exit_value}" -eq "0" ] ; then
 
 	# Add all files to the commit and commit to gerrit!
 	cd /data/wdbuilder/wikidata
+	# remove .git directories so as not to use submodules instead of a deep copy
+	find -mindepth 2 -iname '.git' -exec 'rm' '-rf' '{}' '+'
 	git add .
 	git add --force composer.lock
 	git commit -m "New Wikidata Build - $now"
