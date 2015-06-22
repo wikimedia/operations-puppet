@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": ["Lokal_Profil"]
+	},
+	"dataset-live-title": "The title for the live access dataset",
+	"dataset-live-description": "The description of the live access dataset. For terminology see https://www.wikidata.org/wiki/Wikidata:Glossary. For deprecation see https://en.wikipedia.org/wiki/Deprecation.",
+	"dataset-dump-title": "The title for the entity dump where $1 is the date of the dump in the format YYYYMMDD",
+	"dataset-dump-description": "The description of the entity dump for the given date.",
+	"distribution-ld-description": "The description of the Linked Data endpoint. For content negotiation see https://en.wikipedia.org/wiki/Content_negotiation",
+	"distribution-api-description": "The description of the MediaWiki API endpoint. Leave \"format\" untranslated.",
+	"distribution-dump-description": "The description of a dump file where $1 is the file format."
+}
