@@ -61,6 +61,7 @@ class puppetmaster(
         include ::apache::mod::proxy
         include ::apache::mod::proxy_http
         include ::apache::mod::proxy_balancer
+        include puppetmaster::scripts::frontend
     }
 
     class { 'puppetmaster::passenger':

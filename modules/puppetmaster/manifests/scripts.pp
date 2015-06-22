@@ -41,23 +41,4 @@ class puppetmaster::scripts(
         hour    => [0, 8, 16], # Run every 8 hours, to prevent excess load
         minute  => 27, # Run at a time when hopefully no other cron jobs are
     }
-
-    # Helper script to clean stored data about a server we're reimaging.
-    file { '/usr/local/bin/wmf-reimage':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
-        source  => 'puppet:///modules/puppetmaster/wmf-reimage',
-        require => Class['role::access_new_install'],
-    }
-
-    file { '/usr/local/sbin/install-console':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
-        source  => 'puppet:///modules/puppetmaster/install-console',
-        require => Class['role::access_new_install'],
-    }
 }
