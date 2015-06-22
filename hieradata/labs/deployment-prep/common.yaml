@@ -48,12 +48,6 @@ mediawiki_memcached_servers:
 "varnish::packages::version": latest
 "keyholder::trusted_group": wikidev
 "base::environment::core_dump_pattern": '/data/project/cores/%{::instancename}-core.%h.%e.%p.%t'
-
-# T100509 Java7 on gallium does not support the hardned sshd MAC and KEX setup
-#         causing slaves to be unreacheable.
-ssh::server::disable_nist_kex: false
-ssh::server::explicit_macs: false
-
 "role::apertium::apertium_port": 2737
 "role::cxserver::cxserver_port": 8080
 "misc::syslog-server::basepath": /data/project/syslog
