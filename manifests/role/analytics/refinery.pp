@@ -61,6 +61,15 @@ class role::analytics::refinery::camus {
         user    => 'hdfs',  # we might want to use a different user for this, not sure.
         minute  => '*/10',
     }
+
+    $camus_eventlogging_properties = "${::role::analytics::refinery::path}/camus/camus.eventlogging.properties"
+    $camus_eventlogging_log_file   = "${::role::analytics::refinery::log_dir}/camus-eventlogging.log"
+    cron { 'refinery-camus-eventlogging-import':
+        command => "${::role::analytics::refinery::path}/bin/camus --job-name refinery-camus-eventlogging-import ${camus_eventlogging_properties} >> ${camus_eventlogging_log_file} 2>&1",
+        user    => 'hdfs',  # we might want to use a different user for this, not sure.
+        # import once an hour.
+        minute  => '5',
+    }
 }
 
 # == Class role::analytics::refinery::data::drop
