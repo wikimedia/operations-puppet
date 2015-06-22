@@ -21,6 +21,8 @@ class puppetmaster::passenger(
 ) {
     include ::apache::mod::passenger
 
+    require_package('cronolog')
+
     package { 'puppetmaster-passenger':
         ensure => present,
     }
