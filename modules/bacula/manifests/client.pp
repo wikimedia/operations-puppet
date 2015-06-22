@@ -61,8 +61,9 @@ class bacula::client(
     # managed one. Bacula needs the keypair in one single file though hence this
     # resource
     exec { 'concat-bacula-keypair':
-        command => "/bin/cat /var/lib/puppet/ssl/certs/${::fqdn}.pem \
+        command => "/bin/cat \
  /var/lib/puppet/ssl/private_keys/${::fqdn}.pem > \
+ /var/lib/puppet/ssl/certs/${::fqdn}.pem \
  /var/lib/puppet/ssl/private_keys/bacula-keypair-${::fqdn}.pem",
         creates => "/var/lib/puppet/ssl/private_keys/bacula-keypair-${::fqdn}.pem",
     }
