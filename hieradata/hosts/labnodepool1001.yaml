@@ -1,4 +1,2 @@
 admin::groups:
-  - contint-users
-  - contint-admins
-  - contint-roots
+  - nodepool-roots
