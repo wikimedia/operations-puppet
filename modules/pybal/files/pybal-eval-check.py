@@ -36,11 +36,12 @@ def drop_privileges(uid_name='nobody',
 
 def main():
 
-    file = open(sys.argv[1], 'r').read()
+    with open(sys.argv[1], 'r') as f:
+        clines = f.read()
     drop_privileges()
 
     eligible_servers = []
-    for l in file.splitlines():
+    for l in clines.splitlines():
 
         # this mimics internal pybal behavior
         l = l.rstrip('\n').strip()
