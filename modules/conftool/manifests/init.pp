@@ -6,7 +6,7 @@
 class conftool(
     $sync_dir_root = '/var/lib/operations/puppet/conftool-data',
     $config_file   = 'puppet:///modules/conftool/production.config.yaml',
-    $ssl_dir       = '/var/lib/puppet',
+    $ssl_dir       = '/var/lib/puppet/ssl',
     $use_ssl       = true,
     ) {
     require_package 'python-conftool'
