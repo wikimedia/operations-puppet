@@ -50,7 +50,6 @@ class puppetmaster::scripts(
             group   => 'root',
             mode    => '0544',
             source  => 'puppet:///modules/puppetmaster/wmf-reimage',
-            require => Class['role::access_new_install'],
         }
 
         file { '/usr/local/sbin/install-console':
@@ -59,7 +58,6 @@ class puppetmaster::scripts(
             group   => 'root',
             mode    => '0544',
             source  => 'puppet:///modules/puppetmaster/install-console',
-            require => Class['role::access_new_install'],
         }
     }
 }
