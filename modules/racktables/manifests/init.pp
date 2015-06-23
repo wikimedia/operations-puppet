@@ -42,6 +42,6 @@ class racktables (
         line    => 'memory_limit = 256M',
         match   => '^\s*memory_limit',
         require => Class['::apache::mod::php5'],
-        notify  => Class['::apache'],
+        notify  => Service['apache2'],
     }
 }
