@@ -42,6 +42,7 @@ class rcstream::proxy::ssl(
     $location    = '/'
 ) {
     $use_ssl = true
+    $ssl_settings = ssl_ciphersuite('nginx', 'compat')
 
     install_certificate { $server_name: }
 
