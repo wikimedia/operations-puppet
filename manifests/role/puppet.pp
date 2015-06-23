@@ -57,7 +57,7 @@ class role::puppet::server::labs {
 #
 class role::puppet::self(
     $master = $::puppetmaster,
-    $autoupdate_master = $::puppetmaster_autoupdate,
+    $autoupdate_master = true,
     $enc = 'ldap', # 'ldap' or 'yaml+ldap'
 ) {
     if $master != undef {
