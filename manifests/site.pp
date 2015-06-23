@@ -879,13 +879,13 @@ node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
 }
 
 # es1 equad
-node /es100[34]\.eqiad\.wmnet/ {
+node /es100[4]\.eqiad\.wmnet/ {
     class { 'role::coredb::es1':
         mariadb => true,
     }
 }
 
-node /es100[12]\.eqiad\.wmnet/ {
+node /es100[123]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es1',
     }
@@ -897,7 +897,7 @@ node /es100[57]\.eqiad\.wmnet/ {
     }
 }
 
-node /es100[6]\.eqiad\.wmnet/ {
+node /es1006\.eqiad\.wmnet/ {
     class { 'role::coredb::es2':
         mariadb => true,
     }
