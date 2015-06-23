@@ -45,6 +45,8 @@
     </Proxy>
     ErrorLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-error.log
     LogLevel warn
-    CustomLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-access.log combined
+    # Rely on X-Real-IP to log the actual IP of the request
+    LogFormat "%{X-Real-IP}i %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" proxied
+    CustomLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-access.log proxied
 
 </VirtualHost>
