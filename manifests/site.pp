@@ -1991,6 +1991,11 @@ node /pc100[1-3]\.eqiad\.wmnet/ {
     include role::mariadb::parsercache
 }
 
+node 'planet1001.eqiad.wmnet' {
+    include base::firewall
+    include role::planet
+}
+
 node /(plutonium|pollux)\.wikimedia\.org/ {
     $cluster = 'openldap_corp_mirror'
 
