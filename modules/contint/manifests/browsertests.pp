@@ -15,10 +15,17 @@ class contint::browsertests(
     # Provides phantomjs, firefox and xvfb
     include contint::browsers
 
-    package { [
-        'ruby1.9.1-dev', # for qa/browsertests.git (bundler compiles gems)
-    ]:
-        ensure => present
+    if os_version('ubuntu <= trusty') {
+        package { [
+            'ruby1.9.1-dev', # for qa/browsertests.git (bundler compiles gems)
+        ]:
+            ensure => present
+        }
+    }
+    if os_version('debian >= jessie') {
+        package { 'ruby2.1-dev':
+            ensure => present,
+        }
     }
 
     # Ruby gems is provided within ruby since Trusty
