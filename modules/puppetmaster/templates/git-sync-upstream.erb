@@ -23,12 +23,14 @@ HAVE_STASH=0
 
 cd ${REPO}
 
+DIFF=`git diff`
+if [ -n "$DIFF" ]; then
+    echo "Local diffs detected.  Commit your changes!"
+    exit 2
+fi
+
 # Fetch new changes from origin
 git fetch --verbose origin
-
-# Kill all local uncommited changes.
-# Local hacking on a puppetmaster is bad. Do not do that.
-git reset --hard
 
 # Rebase locally commited changes on top of tracked origin branch
 git rebase "${REBASE_OPTS[@]}" origin/${TRACK_BRANCH}
