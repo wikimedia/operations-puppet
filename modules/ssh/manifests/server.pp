@@ -52,6 +52,32 @@ class ssh::server (
         require => Package['openssh-server'],
     }
 
+    file { '/etc/ssh/shosts.equiv':
+        ensure => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444'
+    }
+
+    file_line { 'tools-bastion-01.tools.eqiad.wmflabs-shosts' :
+        path => '/etc/ssh/shosts.equiv',
+        line => 'tools-bastion-01.tools.eqiad.wmflabs',
+        require => File['/etc/ssh/shosts.equiv'],
+    }
+
+    file { '/etc/ssh/ssh_known_hosts':
+        ensure => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444'
+    }
+
+    file_line { 'tools-bastion-01.tools.eqiad.wmflabs-ecdsa-sha2-nistp256-known_hosts':
+        path => '/etc/ssh/ssh_known_hosts',
+        require => File['/etc/ssh/ssh_known_hosts'],
+        line => 'tools-bastion-01.tools.eqiad.wmflabs ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAA
+    }
+
     # publish this hosts's host key; prefer ECDSA -> RSA (no DSA)
     #
     # There's two issues that stop us from using ed25519 keys:
