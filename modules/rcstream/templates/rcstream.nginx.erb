@@ -12,7 +12,7 @@ upstream websockets {
 
 server {
     <%- Array(@listen).each do |bind| -%>
-    listen       <%= bind %>;
+    listen       <%= bind %><%= ' ssl' if @use_ssl %>;
     <%- end -%>
     server_name  <%= @server_name %>;
     access_log   /var/log/nginx/rcstream_<%= 'ssl_' if @use_ssl %>access.log;
@@ -21,6 +21,9 @@ server {
     <%- if @use_ssl -%>
     ssl_certificate      /etc/ssl/localcerts/<%= @server_name %>.crt;
     ssl_certificate_key  /etc/ssl/private/<%= @server_name %>.key;
+    ssl_session_cache    shared:SSL:50m;
+    ssl_session_timeout  5m;
+    <%= @ssl_settings.join("\n") %>
     <%- end -%>
 
     location <%= @location %> {
