@@ -4,20 +4,11 @@
 # a post-receive hook.
 
 class conftool(
-    $sync_dir    = '/var/lib/operations/puppet/conftool-data',
     $config_file = 'puppet:///modules/conftool/production.config.yaml',
     $ssl_dir     = '/var/lib/puppet/ssl',
     $use_ssl     = true,
     ) {
     require_package 'python-conftool'
-
-    file { '/usr/local/bin/conftool-merge':
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0500',
-        content => template('conftool/conftool-merge.erb')
-    }
 
     file { '/etc/conftool':
         ensure => directory,
@@ -32,7 +23,6 @@ class conftool(
         group  => root,
         mode   => '0444',
         source => $config_file,
-        before => File['/usr/local/bin/conftool-merge'],
     }
 
     if $use_ssl {
@@ -42,7 +32,7 @@ class conftool(
             group  => root,
             mode   => '0444',
             source => "${ssl_dir}/certs/ca.pem",
-            before => File['/usr/local/bin/conftool-merge'],
         }
     }
+
 }

@@ -8,8 +8,6 @@ class role::conftool::master {
         description => "Conftool master",
     }
 
-    require puppetmaster::gitclone
     require puppetmaster::scripts
-    include conftool
-
+    include conftool::master
 }
