@@ -173,7 +173,6 @@ class toollabs::exec_environ {
         'python-requests',
         'python-rsvg',                 # T58996
         'python-scipy',
-        'python3-scipy',               # T103136
         'python-socketio-client',      # T86015
         'python-sqlalchemy',
         'python-svn',                  # T58996
@@ -404,6 +403,7 @@ class toollabs::exec_environ {
             'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
             'python-flake8',
             'python3-flake8',
+            'python3-scipy',               # T103136
             'tcl-thread',
             ]:
             ensure => latest,
