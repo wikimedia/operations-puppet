@@ -2,7 +2,7 @@
 class role::etherpad{
     include standard
 
-    include passwords::etherpad_lite
+    include ::passwords::etherpad_lite
 
     system::role { 'etherpad':
         description => 'Etherpad-lite server'
