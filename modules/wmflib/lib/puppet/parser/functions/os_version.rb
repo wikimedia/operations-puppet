@@ -40,16 +40,8 @@ module Puppet::Parser::Functions
       'Utopic'   => '14.10'
     },
     'Debian' => {
-      'Jessie'  => '8.0',
-      'Wheezy'  => '7.0',
-      'Squeeze' => '6.0',
-      'Lenny'   => '5.0',
-      'Etch'    => '4.0',
-      'Sarge'   => '3.1',
-      'Woody'   => '3.0',
-      'Potato'  => '2.2',
-      'Slink'   => '2.1',
-      'Hamm'    => '2.0'
+      'Jessie'  => '8',
+      'Wheezy'  => '7',
     }
   }
 
@@ -74,12 +66,19 @@ module Puppet::Parser::Functions
 
       next unless self_id == other_id
 
+      if os_versions[other_id].has_key?(other_release)
+        other_was_codename = true
+
       other_release = os_versions[other_id][other_release] || other_release
 
       unless /^[\d.]+$/ =~ other_release
         fail(ArgumentError,
              "os_version(): unknown #{other_id} release '#{other_release}'")
       end
+
+      # special-case Debian point-releases, as e.g. jessie is all of 8.x
+      if other_id == "Debian" and other_was_codename
+        other_release = other_release.split(".")[0]
 
       cmp = Puppet::Util::Package.versioncmp(self_release, other_release)
       case operator
