@@ -10,6 +10,7 @@ define monitoring::service(
     $freshness             = 36000,
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
+    max_check_attempts     = 1,
     $contact_group         = 'admins',
     $config_dir            = '/etc/nagios',
 )
@@ -74,5 +75,6 @@ define monitoring::service(
         is_volatile            => $check_volatile,
         check_freshness        => $check_fresh,
         freshness_threshold    => $is_fresh,
+        max_check_attempts     => $max_check_attempts,
     }
 }
