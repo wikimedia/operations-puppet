@@ -18,14 +18,7 @@ class contint::packages {
             require => Package['php-apc'],
         }
     }
-    # Get several OpenJDK packages including the jdk to build mobile
-    # applications.
-    # (openjdk is the default distribution for the java define.
-    # The java define is found in modules/java/manifests/init.pp )
-    if ! os_version( 'debian >= jessie' ) {
-        # No more available in Jessie
-        require_package('openjdk-6-jdk')
-    }
+
     require_package('openjdk-7-jdk')
 
     package { 'maven2':
