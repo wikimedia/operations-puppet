@@ -8,7 +8,7 @@ class role::puppetmaster::frontend {
     backup::set { 'var-lib-puppet-volatile': }
 
     system::role { 'puppetmaster':
-        description => 'Puppetmaster backend'
+        description => 'Puppetmaster frontend'
     }
 
     class { '::puppetmaster':

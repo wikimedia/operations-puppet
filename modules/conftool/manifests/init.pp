@@ -4,7 +4,7 @@
 # a post-receive hook.
 
 class conftool(
-    $sync_dir_root = '/var/lib/operations/puppet/conftool',
+    $sync_dir_root = '/var/lib/operations/puppet/conftool-data',
     $config_file   = 'puppet:///modules/conftool/production.config.yaml',
     $ssl_dir       = '/var/lib/puppet',
     $use_ssl       = true,
