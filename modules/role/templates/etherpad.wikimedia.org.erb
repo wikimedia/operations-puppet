@@ -43,5 +43,8 @@
         Order allow,deny
         Allow from all
     </Proxy>
+    ErrorLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-access.log combined
 
 </VirtualHost>
