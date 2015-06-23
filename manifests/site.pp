@@ -878,28 +878,22 @@ node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     include role::logging::kafkatee::webrequest::fundraising
 }
 
-# es1 equad
-node /es100[4]\.eqiad\.wmnet/ {
-    class { 'role::coredb::es1':
-        mariadb => true,
-    }
-}
-
-node /es100[123]\.eqiad\.wmnet/ {
+# es1 eqiad
+node /es100[1234]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es1',
-    }
-}
-
-node /es100[57]\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard => 'es2',
     }
 }
 
 node /es1006\.eqiad\.wmnet/ {
     class { 'role::coredb::es2':
         mariadb => true,
+    }
+}
+
+node /es100[57]\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 'es2',
     }
 }
 
