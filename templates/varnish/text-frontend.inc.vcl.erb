@@ -47,8 +47,8 @@ sub mobile_redirect {
 		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
 		&& (
 			req.url ~ "^/(wiki|(gan|ike|iu|kk|ku|shi|sr|tg|uz|zh)(-[a-z]+)?)[/\?]"
-			|| req.url ~ "^/w/index\.php"
-			|| req.url ~ "^/\?title="
+			|| req.url ~ "^/w/index\.php\?title=[^&]*$"
+			|| req.url ~ "^/\?title=[^&]*$"
 		)) {
 
 		// Separate regexps for clarity, but multiple regsubs instead of
