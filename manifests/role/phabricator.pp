@@ -71,7 +71,7 @@ class role::phabricator::main {
         },
     }
 
-    class { '::phabricator::migration':
+    class { '::phabricator::tools':
         dbhost         => $mysql_host,
         manifest_user  => $role::phabricator::config::mysql_maniphestuser,
         manifest_pass  => $role::phabricator::config::mysql_maniphestpass,
@@ -83,6 +83,7 @@ class role::phabricator::main {
         rt_pass        => $role::phabricator::config::rt_pass,
         phabtools_cert => $role::phabricator::config::phabtools_cert,
         phabtools_user => $role::phabricator::config::phabtools_user,
+        dump           => true,
     }
 
     class { 'exim::roled':

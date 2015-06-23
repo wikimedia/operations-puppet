@@ -1,9 +1,11 @@
-# == Class: phabricator::migration
+# == Class: phabricator::tools
 #
 # Tools and such needed to migrate 3rd party content
+# and perform administrative tasks.
 #
-class phabricator::migration (
+class phabricator::tools (
     $dbhost                = 'localhost',
+    $directory             = '/srv/phab/tools',
     $manifest_user         = '',
     $manifest_pass         = '',
     $app_user              = '',
@@ -14,7 +16,9 @@ class phabricator::migration (
     $rt_pass               = '',
     $phabtools_cert        = '',
     $phabtools_user        = '',
+    $dump                  = false,
 ) {
+
     package { 'python-mysqldb': ensure => present }
 
     file { '/etc/phabtools.conf':
@@ -23,18 +27,26 @@ class phabricator::migration (
     }
 
     git::install { 'phabricator/tools':
-        directory => '/srv/phab/tools',
+        directory => $directory,
         git_tag   => 'HEAD',
         lock_file => '/srv/phab/tools.lock',
     }
 
-    $fab_lock = '/var/run/fab_update_user.flock'
-    cron { 'fab_user_update':
-        ensure  => absent,
-        command => "/usr/bin/flock -n ${fab_lock} -c '/srv/phab/tools/fab_update_user.py -a' >/dev/null 2>&1",
-        user    => root,
-        hour    => '*/1',
-        minute  => 0,
+    if ($dump) {
+        $dump_script = "${directory}/public_task_dump.py"
+
+        file { $dump_script:
+            mode  => '0555',
+            require => Git::Install['phabricator/tools'],
+        }
+
+        cron { $dump_script:
+            ensure  => present,
+            command => $dump_script,
+            user    => root,
+            hour    => '2',
+            require => Git::Install['phabricator/tools'],
+        }
     }
 
     $bz_header = '/var/run/bz_header.flock'
@@ -43,6 +55,7 @@ class phabricator::migration (
         command => "/usr/bin/flock -n ${bz_header} -c '/srv/phab/tools/bugzilla_update_user_header.py -a' >/dev/null 2>&1",
         user    => root,
         hour    => '0',
+        require => Git::Install['phabricator/tools'],
     }
 
     $bz_comments = '/var/run/bz_comments.flock'
@@ -51,6 +64,6 @@ class phabricator::migration (
         command => "/usr/bin/flock -n ${bz_comments} -c '/srv/phab/tools/bugzilla_update_user_comments.py -a' >/dev/null 2>&1",
         user    => root,
         hour    => '1',
+        require => Git::Install['phabricator/tools'],
     }
 }
-
