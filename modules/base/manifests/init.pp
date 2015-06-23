@@ -4,6 +4,8 @@ class base {
     if ($::realm == 'labs') {
         include apt::unattendedupgrades,
             apt::noupgrade
+
+        include role::labs::instance
     }
 
     file { '/usr/local/sbin':
