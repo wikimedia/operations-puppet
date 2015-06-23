@@ -79,7 +79,7 @@ module Puppet::Parser::Functions
 
       # special-case Debian point-releases, as e.g. jessie is all of 8.x
       if other_id == "Debian" and other_was_codename
-        other_release = other_release.split(".")[0]
+        self_release = self_release.split(".")[0]
       end
 
       cmp = Puppet::Util::Package.versioncmp(self_release, other_release)
