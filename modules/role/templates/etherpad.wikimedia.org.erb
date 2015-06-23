@@ -13,8 +13,9 @@
     ProxyRequests Off
     ProxyPass / http://<%= @etherpad_ip %>:<%= @etherpad_port %>/ retry=15
     ProxyPassReverse / http://<%= @etherpad_ip %>:<%= @etherpad_port %>/
-    Setenv proxy-initial-not-pooled
-
+    ProxyPreserveHost On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule /p/*$ https://<%= @etherpad_host %>/ [NC,L]
     RewriteCond %{REQUEST_URI} !^/locales/
     RewriteCond %{REQUEST_URI} !^/locales.json
     RewriteCond %{REQUEST_URI} !^/admin
@@ -36,22 +37,11 @@
     RewriteCond %{HTTP_HOST} !<%= @etherpad_host %>
     RewriteRule ^/+(.+)$ https://<%= @etherpad_host %>/$1 [R=301,L]
 
-    RewriteCond %{HTTP:X-Forwarded-Proto} !https
-    RewriteCond %{REQUEST_URI} !^/status$
-    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
-    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
-    Header always set Strict-Transport-Security "max-age=604800"
-
     <Proxy *>
         Options FollowSymLinks MultiViews
         AllowOverride All
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order allow,deny
-            Allow from all
-        </IfVersion>
+        Order allow,deny
+        Allow from all
     </Proxy>
     ErrorLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-error.log
     LogLevel warn
