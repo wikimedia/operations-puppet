@@ -9,5 +9,5 @@ class role::conftool::master {
     }
 
     require puppetmaster::scripts
-    include conftool::master
+    include ::conftool::master
 }
