@@ -928,6 +928,7 @@ node /^etcd100[1-3]\.eqiad\.wmnet$/ {
 }
 
 node 'etherpad1001.eqiad.wmnet' {
+    include standard
     include base::firewall
     include role::etherpad
 }
