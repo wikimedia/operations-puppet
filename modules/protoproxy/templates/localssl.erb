@@ -3,8 +3,8 @@
 
 # SSL proxying
 server {
-	listen [::]:443 <%= @default_server ? "default_server ipv6only=on " : "" %><%= @ssl_protos %>;
-	listen 443 <%= @default_server ? "default_server " : "" %><%= @ssl_protos %>;
+	listen [::]:443 reuseport <%= @default_server ? "default_server ipv6only=on " : "" %><%= @ssl_protos %>;
+	listen 443 reuseport <%= @default_server ? "default_server " : "" %><%= @ssl_protos %>;
 	ssl on;
 	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 
