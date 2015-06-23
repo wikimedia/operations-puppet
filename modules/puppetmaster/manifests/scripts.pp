@@ -43,21 +43,21 @@ class puppetmaster::scripts(
     }
 
     # Helper script to clean stored data about a server we're reimaging.
-    if $::realm == 'production' {
-        file { '/usr/local/bin/wmf-reimage':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0544',
-            source  => 'puppet:///modules/puppetmaster/wmf-reimage',
-        }
+    file { '/usr/local/bin/wmf-reimage':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        source  => 'puppet:///modules/puppetmaster/wmf-reimage',
+    }
 
-        file { '/usr/local/sbin/install-console':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0544',
-            source  => 'puppet:///modules/puppetmaster/install-console',
-        }
+    # Log in using SSH into a machine running debian-installer or before the
+    # first puppet run.
+    file { '/usr/local/sbin/install-console':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        source  => 'puppet:///modules/puppetmaster/install-console',
     }
 }
