@@ -91,15 +91,20 @@ class role::mediawiki::webserver($pool) {
         rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
     }
 
+    # If a service check happens to run while we are performing a
+    # graceful restart of Apache, we want to try again before declaring
+    # defeat. See T103008.
     monitoring::service { 'appserver http':
         description   => 'Apache HTTP',
         check_command => 'check_http_wikipedia',
+        retries       => 2,
     }
 
     if os_version('ubuntu >= trusty') {
         monitoring::service { 'appserver_http_hhvm':
             description   => 'HHVM rendering',
             check_command => 'check_http_wikipedia_main',
+            retries       => 2,
         }
 
         nrpe::monitor_service { 'hhvm':
