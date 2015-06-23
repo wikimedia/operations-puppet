@@ -8,6 +8,7 @@ class salt::master(
     $salt_ext_pillar={},
     $salt_reactor_root='/srv/reactors',
     $salt_reactor = {},
+    $salt_auto_accept = false,
     $salt_peer={},
     $salt_peer_run={},
     $salt_nodegroups={},
