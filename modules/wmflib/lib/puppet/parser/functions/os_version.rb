@@ -68,6 +68,7 @@ module Puppet::Parser::Functions
 
       if os_versions[other_id].has_key?(other_release)
         other_was_codename = true
+      end
 
       other_release = os_versions[other_id][other_release] || other_release
 
