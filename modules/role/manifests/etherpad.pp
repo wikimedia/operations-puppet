@@ -1,6 +1,5 @@
+# Role class for etherpad-lite
 class role::etherpad{
-    include standard
-
     include passwords::etherpad_lite
 
     system::role { 'etherpad':
@@ -37,7 +36,7 @@ class role::etherpad{
     include ::apache::mod::proxy_http
 
     ::apache::site { 'etherpad.wikimedia.org':
-        content => template('apache/sites/etherpad.wikimedia.org.erb'),
+        content => template('role/etherpad.wikimedia.org.erb'),
     }
 
     # Icinga process monitoring, T82936
@@ -55,5 +54,4 @@ class role::etherpad{
         proto => 'tcp',
         port  => 'http',
     }
-
 }
