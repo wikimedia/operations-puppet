@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 set -u
-test -d "<%= @sync_dir %> || exit 3
+test -d "<%= @sync_dir %>" || exit 3
 echo "Running conftool-sync on <%= @sync_dir %>"
 /usr/bin/conftool-sync --config /etc/conftool/config.yaml --directory <%= @sync_dir %>
+echo "Done."
