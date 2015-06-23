@@ -5832,11 +5832,6 @@ host uranium {
 	fixed-address uranium.wikimedia.org;
 }
 
-host virt1000 {
-	hardware ethernet 18:03:73:f5:2c:2b;
-	fixed-address virt1000.wikimedia.org;
-}
-
 host wtp1001 {
 	hardware ethernet 90:B1:1C:2D:85:30;
 	fixed-address wtp1001.eqiad.wmnet;

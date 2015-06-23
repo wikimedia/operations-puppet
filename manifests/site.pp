@@ -2402,10 +2402,6 @@ node 'uranium.wikimedia.org' {
     }
 }
 
-node 'virt1000.wikimedia.org' {
-    include standard
-}
-
 node /^virt100[5-7].eqiad.wmnet/ {
     # We're doing some ceph testing on these
     #  boxes.
