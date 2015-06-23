@@ -1,0 +1,258 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///templates/apache/sites/wikitech.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+    ServerName www.toolserver.org
+    ServerAlias toolserver.org
+
+    DocumentRoot /does/not/exist
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    RewriteEngine on
+    RewriteCond %{SERVER_PORT} !^443$
+    RewriteRule ^/(.*)$ https://www.toolserver.org/$1 [L,R]
+
+    ErrorLog /var/log/apache2/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature Off
+
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerAdmin noc@wikimedia.org
+    ServerName www.toolserver.org
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/localcerts/toolserver.org.crt
+    SSLCertificateKeyFile /etc/ssl/private/toolserver.org.key
+    SSLCACertificatePath /etc/ssl/certs/
+
+    DocumentRoot /var/www/html
+    
+    ErrorLog /var/log/apache2/error.log
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature Off
+
+    DocumentRoot /var/www/html
+
+    Redirect 301 /tiles http://a.tiles.wmflabs.org
+    Redirect 301 /~acc https://accounts.wmflabs.org
+    Redirect 301 /~alexxw/Denkmalliste https://tools.wmflabs.org/denkmalliste
+    Redirect 301 /~alexz/pop/config.php https://tools.wmflabs.org/popularpages/config.php
+    Redirect 301 /~alexz/pop/edit.php https://tools.wmflabs.org/popularpages/config.php
+    Redirect 301 /~alexz/pop/requests.php https://tools.wmflabs.org/popularpages/config.php
+    Redirect 301 /~alexz/pop/view.php https://tools.wmflabs.org/popularpages/view.php
+    Redirect 301 /~alexz/pop/graph.php https://tools.wmflabs.org/popularpages/graph.php
+    Redirect 301 /~alexz/pop/list.php https://tools.wmflabs.org/popularpages/list.php
+    Redirect 301 /~alexz/pop/index.php https://tools.wmflabs.org/popularpages/index.php
+    Redirect 301 /~alexz/amdb https://tools.wmflabs.org/amdb
+    Redirect 301 /~alexz/coord https://tools.wmflabs.org/geophotoreq
+    Redirect 301 /~apper/pd/person https://tools.wmflabs.org/persondata/p
+    Redirect 301 /~apper/pd https://tools.wmflabs.org/persondata
+    Redirect 301 /~apper/sc https://tools.wmflabs.org/spellcheck
+    Redirect 301 /~apper/ipp https://tools.wmflabs.org/ipp
+    Redirect 301 /~beta16 https://tools.wmflabs.org/betabot
+    Redirect 301 /~betacommand https://tools.wmflabs.org/betacommand-dev
+    Redirect 301 /~bryan/flickr https://tools.wmflabs.org/flickr/byebye.html
+    Redirect 301 /~chm/blockcalc https://tools.wmflabs.org/blockcalc
+    Redirect 301 /~chm/blockcalc.php https://tools.wmflabs.org/blockcalc
+    Redirect 301 /~dalba/gbcfarsi.fcgi https://tools.wmflabs.org/yadkard
+    Redirect 301 /~dalba/yadkard.fcgi https://tools.wmflabs.org/yadkard
+    Redirect 301 /~dalba https://wikitech.wikimedia.org/wiki/User:Dalba
+    Redirect 301 /~daniel/WikiSense/CatScan.php https://tools.wmflabs.org/catscan2/catscan2.php 
+    Redirect 301 /~daniel/potd https://tools.wmflabs.org/potd-feed/potd.php
+    Redirect 301 /~daniel/WikiSense/CategoryIntersect.php https://tools.wmflabs.org/catscan2/catscan2.php 
+    Redirect 301 /~daniel/WikiSense/Contributors.php https://tools.wmflabs.org/xtools/articleinfo
+    Redirect 301 /~daniel/WikiSense https://tools.wmflabs.org/wikisense
+    Redirect 301 /~dapete/ime https://tools.wmflabs.org/imagemapedit
+    Redirect 301 /~dapete/random/dewiki-exzellent.php https://tools.wmflabs.org/random-featured/redirect/dewiki
+    Redirect 301 /~dapete/random/dewiki-lesenswert.php https://tools.wmflabs.org/random-featured/redirect/dewiki-lesenswert
+    Redirect 301 /~dapete/random/enwiki-featured.php https://tools.wmflabs.org/random-featured/redirect/enwiki
+    Redirect 301 /~dapete/random/enwiki-good.php https://tools.wmflabs.org/random-featured/redirect/enwiki-good
+    Redirect 301 /~dapete/random/nowiki-utmerkede.php https://tools.wmflabs.org/random-featured/redirect/nowiki
+    Redirect 301 /~dapete/random/nowiki-anbefalte.php https://tools.wmflabs.org/random-featured/redirect/nowiki-anbefalte
+    Redirect 301 /~dapete/rss/dewikinews.php https://tools.wmflabs.org/dewikinews-rss
+    Redirect 301 /~dapete/wikinews-rss/rss-de-cat.php https://tools.wmflabs.org/dewikinews-rss/kategorie
+    Redirect 301 /~dapete/catgraph/graph.php https://tools.wmflabs.org/vcat/catgraphRedirect
+    Redirect 301 /~dapete/catgraph https://tools.wmflabs.org/vcat/catgraphConvert
+    Redirect 301 /~dcoetzee/duplicationdetector https://tools.wmflabs.org/dupdet
+    Redirect 301 /~dereckson/translate https://tools.wmflabs.org/translate
+    Redirect 301 /~dschwen/wma/iframe.html https://wma.wmflabs.org/iframe.html
+    Redirect 301 /~dschwen/wma https://wma.wmflabs.org
+    Redirect 301 /~dungodung https://tools.wmflabs.org/rightstool
+    Redirect 301 /~earwig/copyvios https://tools.wmflabs.org/copyvios
+    Redirect 301 /~earwig/settings https://tools.wmflabs.org/copyvios/settings
+    Redirect 301 /~earwig https://tools.wmflabs.org/copyvios
+    Redirect 301 /~eccenux/authors https://tools.wmflabs.org/authors
+    Redirect 301 /~eccenux https://tools.wmflabs.org/dna
+    Redirect 301 /~emijrp/wikimediacounter https://tools.wmflabs.org/wmcounter
+    Redirect 301 /~emijrp/wlm/stats.php https://tools.wmflabs.org/wlm-stats
+    Redirect 301 /~emijrp/wmcharts https://tools.wmflabs.org/wmcharts
+    Redirect 301 /~emijrp/wlm/spain https://tools.wmflabs.org/wlm-maps/ 
+    Redirect 301 /~erfgoed https://tools.wmflabs.org/heritage
+    Redirect 301 /~erwin85 https://tools.wmflabs.org/erwin85
+    Redirect 301 /~hoo https://tools.wmflabs.org/hoo
+    Redirect 301 /~jarry/svgtranslate/doc/index.html /~jarry/svgtranslate/doc/index.php
+    Redirect 301 /~jarry/svgcheck https://tools.wmflabs.org/svgcheck
+    Redirect 301 /~jarry/wikicup https://tools.wmflabs.org/wikicup
+    Redirect 301 /~jarry/grep https://tools.wmflabs.org/grep
+    Redirect 301 /~jarry/templatecount https://tools.wmflabs.org/templatecount
+    Redirect 301 /~jarry/yourpaintings/index.php https://tools.wmflabs.org/jarry-common/migration.php
+    Redirect 301 /~jarry/imagechecker https://tools.wmflabs.org/imagechecker
+    Redirect 301 /~jbarta/resize.html https://tools.wmflabs.org/image-resize-calc
+    Redirect 301 /~jimmy https://tools.wmflabs.org/jimmy
+    Redirect 301 /~jitse/tool.php https://tools.wmflabs.org/new/tool.php
+    Redirect 301 /~johang/wikitrends https://tools.wmflabs.org/wikitrends
+    Redirect 301 /~johang/2012.html https://tools.wmflabs.org/wikitrends/2012.html
+    Redirect 301 /~johang/2013.html https://tools.wmflabs.org/wikitrends/2013.html
+    Redirect 301 /~kolossos/openlayers/kml-on-ol.php https://tools.wmflabs.org/wiwosm/osm-on-ol/kml-on-ol.php
+    Redirect 301 /~kolossos/openlayers/kml-on-ol-json3.php https://tools.wmflabs.org/wiwosm/osm-on-ol/kml-on-ol.php
+    Redirect 301 /~kolossos/openlayers/embed.html https://tools.wmflabs.org/wiwosm/osm-on-ol/embed-labs.html
+    Redirect 301 /~kolossos/wp-world/umkreis.php https://tools.wmflabs.org/wp-world/umkreis.php
+    Redirect 301 /~kolossos/openlayers/commons-on-osm.php https://tools.wmflabs.org/wiwosm/osm-on-ol/commons-on-osm.php
+    Redirect 301 /~kolossos/templatetiger https://tools.wmflabs.org/templatetiger
+    Redirect 301 /~kolossos/earth.php https://tools.wmflabs.org/wp-world/earth.php
+    Redirect 301 /~kolossos/world-link.php https://tools.wmflabs.org/wp-world/world-link.php
+    Redirect 301 /~kolossos/geoworld https://tools.wmflabs.org/wp-world
+    Redirect 301 /~kolossos/qtm2 https://tools.wmflabs.org/query2map
+    Redirect 301 /~kolossos/image https://tools.wmflabs.org/zoomable-images
+    Redirect 301 /~kolossos/osm-add-tags https://tools.wmflabs.org/osm-add-tags
+    Redirect 301 /~krinkle https://tools.wmflabs.org/krinkle-redirect
+    Redirect 301 /~legoktm https://meta.wikimedia.org/wiki/User:Legoktm/Toolserver?from=
+    Redirect 301 /~liangent https://tools.wmflabs.org/liangent-toolserver
+    Redirect 301 /~locator https://tools.wmflabs.org/locator
+    Redirect 301 /~luxo/contributions/contributions.php https://tools.wmflabs.org/guc/index.php
+    Redirect 301 /~lvova https://tools.wmflabs.org/connectivity/ 
+    Redirect 301 /~magnus/commonsapi.php https://tools.wmflabs.org/magnus-toolserver/commonsapi.php
+    Redirect 301 /~magnus/ts2/geneawiki2 https://tools.wmflabs.org/reasonator/geneawiki2
+    Redirect 301 /~magnus/catscan_rewrite.php https://tools.wmflabs.org/catscan2/catscan2.php
+    Redirect 301 /~magnus/geograph_org2commons.php https://tools.wmflabs.org/geograph2commons
+    Redirect 301 /~magnus/catfood.php https://tools.wmflabs.org/catfood/catfood.php
+    Redirect 301 /~magnus/commonshelper.php https://tools.wmflabs.org/commonshelper
+    Redirect 301 /~magnus/templator.php https://tools.wmflabs.org/templator
+    Redirect 301 /~magnus/transparent.php https://tools.wmflabs.org/magnustools/transparent.php
+    Redirect 301 /~magnus/wd_terminator.php https://tools.wmflabs.org/wikidata-terminator/index.php
+    Redirect 301 /~magnus/commons_sumitup.php https://tools.wmflabs.org/multidesc
+    Redirect 301 /~magnus/whatisthat.php https://tools.wmflabs.org/multidesc
+    Redirect 301 /~magnus/isin.php https://tools.wmflabs.org/isin
+    Redirect 301 /~magnus/catnap.php https://tools.wmflabs.org/catnap
+    Redirect 301 /~magnus/flickr2commons.php https://tools.wmflabs.org/flickr2commons
+    Redirect 301 /~magnus/isbn2wiki.php https://tools.wmflabs.org/isbn2wiki
+    Redirect 301 /~magnus/dnb_link_finder.php https://tools.wmflabs.org/dnbtools/dnb_link_finder.php
+    Redirect 301 /~magnus/prepbio.php https://tools.wmflabs.org/magnustools/prepbio.php
+    Redirect 301 /~magnus/tab2wiki.php https://tools.wmflabs.org/magnustools/tab2wiki.php
+    Redirect 301 /~magnus/flickrfree.php https://tools.wmflabs.org/magnustools/flickrfree.php
+    Redirect 301 /~magnus/pages_in_cats.php https://tools.wmflabs.org/catscan2/pages_in_cats.php
+    Redirect 301 /~magnus/dnb_wikisource.php https://tools.wmflabs.org/dnbtools/dnb_wikisource.php
+    Redirect 301 /~magnus/dnb/map2wp.php https://tools.wmflabs.org/dnbtools/map2wp.php
+    Redirect 301 /~magnus/category_intersection.php https://tools.wmflabs.org/catscan2/quick_intersection.php
+    Redirect 301 /~magnus/get_article_intro.php https://tools.wmflabs.org/magnustools/get_article_intro.php
+    Redirect 301 /~magnus/get_distinct_authors.php https://tools.wmflabs.org/magnustools/get_distinct_authors.php
+    Redirect 301 /~magnus/update_article_counter.php https://tools.wmflabs.org/magnustools/update_article_counter.php
+    Redirect 301 /~magnus/most_wanted.php https://tools.wmflabs.org/most-wanted
+    Redirect 301 /~magnus/widget https://tools.wmflabs.org/glamtools/widget
+    Redirect 301 /~magnus/userdupes.php https://tools.wmflabs.org/filedupes
+    Redirect 301 /~magnus/commons_dupes.php https://tools.wmflabs.org/filedupes
+    Redirect 301 /~magnus/makeref.php https://tools.wmflabs.org/makeref
+    Redirect 301 /~magnus/wikitodo.php https://tools.wmflabs.org/wiki-todo
+    Redirect 301 /~magnus/wp_data_url.php https://tools.wmflabs.org/magnustools/wp_data_url.php
+    Redirect 301 /~magnus/wiki2playlist.php https://tools.wmflabs.org/magnustools/wiki2playlist.php
+    Redirect 301 /~magnus/iCommons.php https://tools.wmflabs.org/icommons
+    Redirect 301 /~magnus/glamorous.php https://tools.wmflabs.org/glamtools/glamorous.php
+    Redirect 301 /~magnus/baglama.php https://tools.wmflabs.org/glamtools/baglama.php
+    Redirect 301 /~magnus/file_reuse https://tools.wmflabs.org/magnustools/file_reuse
+    Redirect 301 /~magnus/all_no_information.php https://tools.wmflabs.org/add-information/no_information.php
+    Redirect 301 /~magnus/mynoinfo.php https://tools.wmflabs.org/add-information/no_information.php
+    Redirect 301 /~magnus/fist.php https://tools.wmflabs.org/fist/fist.php
+    Redirect 301 /~magnus/missingtopics.php https://tools.wmflabs.org/missingtopics/?
+    Redirect 301 /~magnus/book2scroll https://tools.wmflabs.org/book2scroll
+    Redirect 301 /~magnus/html2wiki.php https://tools.wmflabs.org/magnustools/html2wiki.php
+    Redirect 301 /~magnus/url2commons.php https://tools.wmflabs.org/url2commons
+    Redirect 301 /~magnus/file_siblings.php https://tools.wmflabs.org/file-siblings
+    Redirect 301 /~magnus/commons_image_feed.php https://tools.wmflabs.org/catfood/commons_image_feed.php
+    Redirect 301 /~magnus/bad_boys.php https://tools.wmflabs.org/usualsuspects
+    Redirect 301 /~magnus/bad_old_ones.php https://tools.wmflabs.org/usualsuspects
+    Redirect 301 /~magnus/cas.php https://tools.wmflabs.org/magnustools/cas.php
+    Redirect 301 /~magnus/add_information.php https://tools.wmflabs.org/add-information
+    Redirect 301 /~magnus/random_out_of_sight.php https://tools.wmflabs.org/sighting/random_out_of_sight.php
+    Redirect 301 /~magnus/outofsight.php https://tools.wmflabs.org/sighting/outofsight.php
+    Redirect 301 /~magnus/deep_insight.php https://tools.wmflabs.org/sighting/deep_insight.php
+    Redirect 301 /~magnus/deep_out_of_sight.php https://tools.wmflabs.org/sighting/deep_out_of_sight.php
+    Redirect 301 /~magnus/cgi-bin/flommons.pl https://tools.wmflabs.org/magnustools/flommons.pl
+    Redirect 301 /~magnus/wikishootme https://tools.wmflabs.org/wikishootme
+    Redirect 301 /~magnus/ts2/geneawiki https://tools.wmflabs.org/magnus-toolserver/ts2/geneawiki
+    Redirect 301 /~magnus/geohack https://tools.wmflabs.org/geohack
+    Redirect 301 /~magnus/geo https://tools.wmflabs.org/geohack
+    Redirect 301 /~magnus/joanjoc/sugart.php https://tools.wmflabs.org/joanjoc/sugart.php
+    Redirect 301 /~master https://tools.wmflabs.org/wiwosm
+    Redirect 301 /~multichill/coordinates.php https://tools.wmflabs.org/locator/coordinates.php
+    Redirect 301 /~multichill/coordinates2.php https://tools.wmflabs.org/locator/coordinates.php
+    Redirect 301 /~multichill/monapi/api.php https://tools.wmflabs.org/heritage/api/api.php
+    Redirect 301 /~multichill/temp/queries https://tools.wmflabs.org/multichill/queries
+    Redirect 301 /~multichill https://tools.wmflabs.org/multichill
+    Redirect 301 /~mxn https://tools.wmflabs.org/tilde
+    Redirect 301 /~mzmcbride https://tools.wmflabs.org/mzmcbride
+    Redirect 301 /~nlwikibots https://tools.wmflabs.org/nlwikibots
+    Redirect 301 /~para/region.php https://tools.wmflabs.org/para/geo/worldadmin98
+    Redirect 301 /~para/GeoCommons/kml.php https://tools.wmflabs.org/geocommons/kml
+    Redirect 301 /~para/GeoCommons/GeoCommons-simple.kml https://tools.wmflabs.org/geocommons/web.kml
+    Redirect 301 /~para/GeoCommons/GeoCommons.kml https://tools.wmflabs.org/geocommons/geocommons.kml
+    Redirect 301 /~para/cgi-bin/kmlexport https://tools.wmflabs.org/kmlexport
+    Redirect 301 /~para/Commons:Special:NewFiles https://tools.wmflabs.org/para/Commons:Special:NewFiles
+    Redirect 301 /~para/GeoCommons/earth.php https://tools.wmflabs.org/geocommons/earth.kml
+    Redirect 301 /~para/GeoCommons/info.php https://tools.wmflabs.org/geocommons/info.php
+    Redirect 301 /~para/GeoCommons/proximityrama https://tools.wmflabs.org/geocommons/proximityrama
+    Redirect 301 /~para/earth.php https://tools.wmflabs.org/geocommons/earth.kml
+    Redirect 301 /~para/GeoCommons/geocodingtodo.php https://tools.wmflabs.org/geocommons/geocodingtodo
+    Redirect 301 /~para/geoip.fcgi https://geoiplookup.wikimedia.org
+    Redirect 301 /~para/cgi-bin/wgs2tky https://tools.wmflabs.org/para/geo/convert/wgs2tky
+    Redirect 301 /~para/WGS84toRT90.php https://tools.wmflabs.org/para/geo/convert/WGS84toRT90
+    Redirect 301 /~para/kkj.php https://tools.wmflabs.org/para/geo/convert/kkj
+    Redirect 301 /~para/kkj2wiki.php https://tools.wmflabs.org/para/geo/convert/kkj2wiki
+    Redirect 301 /~para/geoportail.php https://tools.wmflabs.org/para/ripts/geoportail-changed-links.html
+    Redirect 301 /~para/geonotices.php https://tools.wmflabs.org/para/geo/geonotices
+    Redirect 301 /~para/coordmissing https://tools.wmflabs.org/para/ripts/coordmissing
+    Redirect 301 /~para https://tools.wmflabs.org/para/ripts
+    Redirect 301 /~pathoschild https://tools.wmflabs.org/pathoschild-contrib
+    Redirect 301 /~phe/statistics.php https://tools.wmflabs.org/phetools/statistics.php
+    Redirect 301 /~phe/stats.html https://tools.wmflabs.org/phetools/stats.html
+    Redirect 301 /~phe/transclusions.html https://tools.wmflabs.org/phetools/transclusions.html
+    Redirect 301 /~phe/ocr.php https://tools.wmflabs.org/phetools/ocr.php
+    Redirect 301 /~phe/robot.php https://tools.wmflabs.org/phetools/match_and_split.php
+    Redirect 301 /~phe https://tools.wmflabs.org/phetools
+    Redirect 301 /~quentinv57/tools https://tools.wmflabs.org/quentinv57-tools/tools
+    Redirect 301 /~robin https://tools.wmflabs.org/robin
+    Redirect 301 /~russell/cgi-bin/csd.py https://tools.wmflabs.org/russbot/csd.py
+    Redirect 301 /~russell/cgi-bin/long_disambig_pages.py https://tools.wmflabs.org/russbot/long_disambig_pages.py
+    Redirect 301 /~seth/grep_regexp_from_url.cgi https://tools.wmflabs.org/searchsbl
+    Redirect 301 /~seth/google_url_converter.cgi https://tools.wmflabs.org/url-converter
+    Redirect 301 /~sk/checkwiki https://tools.wmflabs.org/checkwiki/cgi-bin/checkwiki.cgi
+    Redirect 301 /~snottywong https://tools.wmflabs.org/jackbot/snottywong
+    Redirect 301 /~soxred93 https://tools.wmflabs.org/xtools
+    Redirect 301 /~timl/templatecheck.php https://tools.wmflabs.org/templatecheck
+    Redirect 301 /~timl/wikilint https://tools.wmflabs.org/wikilint
+    Redirect 301 /~timl https://de.wikipedia.org/wiki/Benutzer:Tim.landscheidt
+    Redirect 301 /~tparis https://tools.wmflabs.org/xtools
+    Redirect 301 /~verisimilus/Timeline https://tools.wmflabs.org/timescale/?Ma=
+    Redirect 301 /~vvv/adminstats.php https://tools.wmflabs.org/xtools/adminstats
+    Redirect 301 /~vvv https://tools.wmflabs.org/quentinv57-tools/tools
+    Redirect 301 /~webboy/wikirc https://tools.wmflabs.org/jeltebot
+    Redirect 301 /~webboy/stats.php https://tools.wmflabs.org/unpatrollededitstats/nlwiki
+    Redirect 301 /~webboy/nowiki/stats.php https://tools.wmflabs.org/unpatrollededitstats/nowiki
+    Redirect 301 /~webboy/commonswiki/stats.php https://tools.wmflabs.org/unpatrollededitstats/commonswiki
+
+</VirtualHost>
