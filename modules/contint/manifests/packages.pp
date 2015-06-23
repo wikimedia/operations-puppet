@@ -66,7 +66,6 @@ class contint::packages {
 
         'asciidoc',
         'rake',
-        'ruby1.9.3',  # To let us syntax check scripts using 1.9
 
         'pep8',
         'pyflakes',
@@ -120,6 +119,18 @@ class contint::packages {
         # already has a package called 'node'
         package { 'nodejs-legacy':
             ensure => latest,
+        }
+    }
+
+    # Ruby
+    if os_version('ubuntu <= trusty') {
+        package { 'ruby1.9.3':
+            ensure => present,
+        }
+    }
+    if os_version('debian >= jessie') {
+        package { 'ruby2.1':
+            ensure => present,
         }
     }
 
