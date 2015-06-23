@@ -81,6 +81,7 @@ class role::salt::masters::labs::project_master {
         salt_state_roots    => $salt_state_roots,
         salt_module_roots   => $salt_module_roots,
         salt_returner_roots => $salt_returner_roots,
+        salt_auto_accept    => true,
     }
 
 }
