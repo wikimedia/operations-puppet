@@ -6,7 +6,7 @@ class puppetmaster::labs {
         package { 'libldap-ruby1.8': ensure => present; }
     }
 
-    include puppetmaster::autosigner
+    include puppetmaster::certcleaner
 
     cron { 'update_public_puppet_repos':
         ensure      => present,
