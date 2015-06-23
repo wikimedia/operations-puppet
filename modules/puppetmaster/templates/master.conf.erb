@@ -4,6 +4,10 @@ certname = <%= scope.lookupvar('puppetmaster::server_name') %>
 templatedir = /etc/puppet/templates
 modulepath = /etc/puppet/private/modules:/etc/puppet/modules
 
+<% if @is_labs_puppet_master %>
+autosign = true
+<% end -%>
+
 # puppetmaster($config) settings
 <% scope.lookupvar('puppetmaster::config').sort.each do |setting, value| -%>
 <%= setting %> = <%= value %>

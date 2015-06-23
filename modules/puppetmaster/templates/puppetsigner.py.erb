@@ -74,7 +74,7 @@ try:
                 sys.stderr.write('Failed cleanup of %s\n' % hostname)
             continue
 
-        # Erase keys that don't correspond to ldap; sign those that do
+        # Erase keys that don't correspond to ldap.
         query = "(&(objectclass=puppetclient)(|(dc=" + hostname + ")(cnamerecord=" + hostname + ")(associateddomain=" + hostname + ")))"
         host_info = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
         if not host_info:
@@ -89,12 +89,6 @@ try:
                         subprocess.check_call(['rm', '-f', requestpath])
                     except subprocess.CalledProcessError:
                         sys.stderr.write('Failed to rm %s, out of ideas\n' % requestpath)
-        elif not signed:
-            sys.stderr.write('Signing new cert %s' % hostname)
-            try:
-                subprocess.check_call(['/usr/bin/puppet', 'cert', 'sign', hostname])
-            except subprocess.CalledProcessError:
-                sys.stderr.write('Failed to sign new cert %s\n' % hostname)
 
     if os.path.exists('/usr/bin/salt-key'):
         salt_output = subprocess.check_output(['/usr/bin/salt-key',
