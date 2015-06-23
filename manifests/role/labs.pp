@@ -1,6 +1,7 @@
 class role::labs::instance {
 
     include standard
+    include base
     include sudo
 
     if os_version('ubuntu > lucid') {

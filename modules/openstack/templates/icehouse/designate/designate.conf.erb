@@ -223,7 +223,7 @@ control_exchange = nova
 format = %(hostname)s.%(tenant_id)s.%(domain)s, %(hostname)s.%(domain)s
 ldapusername = uid=novaadmin,ou=people,dc=wikimedia,dc=org
 ldappassword = <%= @ldap_user_pass %>
-puppetdefaultclasses = base, role::labs::instance
+puppetdefaultclasses = role::labs::instance
 puppetdefaultvars = realm=labs
 nova_auth_name = "novaadmin"
 nova_auth_pass = "<%= @wikitech_nova_ldap_user_pass %>"
