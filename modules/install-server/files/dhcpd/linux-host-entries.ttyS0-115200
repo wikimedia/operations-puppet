@@ -82,6 +82,13 @@ host pc1003 {
 	fixed-address pc1003.eqiad.wmnet;
 }
 
+host planet1001 {
+	hardware ethernet aa:00:00:19:24:b9;
+	fixed-address planet1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host virt1001 {
 	hardware ethernet 88:43:e1:c2:99:8e;
 	fixed-address virt1001.eqiad.wmnet;
