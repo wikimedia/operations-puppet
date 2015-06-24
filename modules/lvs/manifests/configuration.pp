@@ -474,7 +474,7 @@ class lvs::configuration {
                 },
                 'IdleConnection' => $idleconnection_monitor_options,
             },
-            'conftool' => {'cluster' => 'dns_rec', 'service' => 'pdns_recursor'},
+            'conftool' => {'cluster' => 'dns', 'service' => 'pdns_recursor'},
         },
         "osm" => {
             'description' => "OpenStreetMap tiles",
