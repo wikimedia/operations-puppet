@@ -142,21 +142,32 @@ backend <%= name %> {
 
 <% end -%>
 
-# Directors
-# Expected format: { "director name" => [ "backend1", "backend2" ] }
+# Expected directors data format: (all keys required!)
+# @varnish_directors = {
+#     'director name' => {
+#         'dynamic' => 'yes', # or 'no'
+#         'type' => 'chash',
+#         'backends' => [ "backend1", "backend2" ],
+#     }
+# }
+
 <% if @use_dynamic_directors %>
 include "directors.<%= @inst %>.vcl";
-<% else -%>
-<% @varnish_directors.keys.sort.each do |director| -%>
-director <%= director %> <%= @director_type %> {
-<% if @director_type == 'chash' %>
-	.retries = <%= chash_def_retries(99, @varnish_directors[director].size) %>;
 <% end -%>
+
+<% @varnish_directors.keys.sort.each do |director| -%>
+<% if !@dynamic_directors or director['dynamic'] != 'yes' -%>
+director <%= director %> <%= director['type'] %> {
 <%
-	backends = @varnish_directors[director]
+	backends = director['backends']
 	if not backends.is_a?(Array)
 		backends = [backends]
 	end
+%>
+<% if director['type'] == 'chash' %>
+	.retries = <%= chash_def_retries(99, director['backends'].size) %>;
+<% end -%>
+<%
 	backends.each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
 -%>
@@ -166,8 +177,8 @@ director <%= director %> <%= @director_type %> {
 	}
 <% 	end -%>
 }
-<% end -%>
-<% end -%>
+<% end -%> // if !dynamic
+<% end -%> // director loop
 
 # Functions
 
