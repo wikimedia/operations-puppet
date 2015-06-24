@@ -8,14 +8,14 @@
 # for allow/deny does not matter, allow always takes precedence
 # over deny
 [files]
-    path <%= scope.lookupvar('puppetmaster::config').fetch('filesdir', "/etc/puppet/files") %>
+    path <%= @config.fetch('filesdir', "/etc/puppet/files") %>
     allow *
 
 [plugins]
     allow *
 
 [private]
-    path <%= scope.lookupvar('puppetmaster::config').fetch('privatefilesdir', "/etc/puppet/private/files") %>
+    path <%= @config.fetch('privatefilesdir', "/etc/puppet/private/files") %>
     allow *
 
 [facts]
