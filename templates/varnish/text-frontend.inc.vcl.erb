@@ -27,7 +27,11 @@ include "static-hash.inc.vcl";
 // A random director with the same backends as the default 'backend' (chash) director
 director backend_random random {
 <%
-	@varnish_directors["backend"].each do |backend|
+    backends = @varnish_directors["backend"]['backends']
+    if not backends.is_a?(Array)
+		backends = [backends]
+	end
+    backends.each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
 -%>
 	{
