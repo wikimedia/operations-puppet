@@ -10,13 +10,12 @@ def chash_def_retries(p, n)
     return n if n == 1
 	return ((Math.log10(100 - p) - 2) / (Math.log10(n - 1) - Math.log10(n))).ceil
 end
-
-# this is a one-element hash atm
-director = @directors.keys[0]
 -%>
 
-director <%= director %> <%= @director_type %> {
-	<%- if @director_type == 'chash' %>
+<% @directors.keys.sort.each do |director| -%>
+<% if @director['dynamic'] == 'yes' -%>
+director <%= director %> <%= @director['type'] %> {
+	<%- if @director['type'] == 'chash' %>
 	.retries = <%= chash_def_retries(99, @directors[director].size) %>;
 	<% end -%>
 	{{range $node := ls "<%= @keyspace %>"}}{{ $key := printf "<%= @keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
@@ -25,4 +24,5 @@ director <%= director %> <%= @director_type %> {
 		.weight = {{ $data.weight }};
 	}{{end}}{{end}}
 }
-
+<% end %>
+<% end %>

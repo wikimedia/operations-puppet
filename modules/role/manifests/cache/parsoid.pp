@@ -24,7 +24,11 @@ class role::cache::parsoid {
         admin_port       => 6083,
         storage          => $::role::cache::2layer::persistent_storage_args,
         directors        => {
-            'backend'          => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
+            'backend' => {
+                'dynamic'  => 'no',
+                'type'     => 'hash', # probably wrong, but current value before this commit! XXX
+                'backends' => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
+            }
         },
         vcl_config       => {
             'retry503'    => 4,
@@ -69,13 +73,32 @@ class role::cache::parsoid {
         port            => 80,
         admin_port      => 6082,
         directors       => {
-            'backend'          => $site_parsoid_nodes,
-            'cxserver_backend' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::mw_primary],
-            'citoid_backend'   => $::role::cache::configuration::backends[$::realm]['citoid'][$::mw_primary],
-            'graphoid_backend' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::mw_primary],
-            'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
+            'backend'          => {
+                'dynamic'  => 'yes',
+                'type'     => 'chash',
+                'backends' => $site_parsoid_nodes,
+            },
+            'cxserver_backend' => {
+                'dynamic'  => 'no',
+                'type'     => 'chash', # probably wrong, but current value before this commit! XXX
+                'backends' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::mw_primary],
+            },
+            'citoid_backend'   => {
+                'dynamic'  => 'no',
+                'type'     => 'chash', # probably wrong, but current value before this commit! XXX
+                'backends' => $::role::cache::configuration::backends[$::realm]['citoid'][$::mw_primary],
+            },
+            'graphoid_backend' => {
+                'dynamic'  => 'no',
+                'type'     => 'chash', # probably wrong, but current value before this commit! XXX
+                'backends' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::mw_primary],
+            },
+            'restbase_backend' => {
+                'dynamic'  => 'no',
+                'type'     => 'chash', # probably wrong, but current value before this commit! XXX
+                'backends' => $::role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
+            },
         },
-        director_type   => 'chash',
         vcl_config      => {
             'retry5xx'    => 0,
             'ssl_proxies' => $::role::cache::base::wikimedia_networks,
