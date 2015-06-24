@@ -97,7 +97,7 @@ PassengerUseGlobalQueue on
     <%- end -%>
 
     LogFormat "%h %l %u %{%Y-%m-%d %H:%M:%S}t \"%r\" %>s %O %D \"%{Referer}i\" \"%{User-Agent}i\"" puppetmaster
-    CustomLog "|/usr/bin/cronolog --once-only --period=\"1 minute\" /var/log/apache2/puppetmaster.log" puppetmaster
+    CustomLog "|/usr/bin/cronolog --once-only /var/log/apache2/puppetmaster.log" puppetmaster
 
 </VirtualHost>
 <%- end -%>
@@ -132,6 +132,6 @@ PassengerUseGlobalQueue on
     </Directory>
 
     LogFormat "%h %l %u %{%Y-%m-%d %H:%M:%S}t \"%r\" %>s %O %D \"%{Referer}i\" \"%{User-Agent}i\"" puppetmaster
-    CustomLog "|/usr/bin/cronolog --once-only --period=\"1 minute\" /var/log/apache2/puppetmaster-backend.log" puppetmaster
+    CustomLog "|/usr/bin/cronolog --once-only /var/log/apache2/puppetmaster-backend.log" puppetmaster
 </VirtualHost>
 <%- end -%>
