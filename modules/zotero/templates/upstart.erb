@@ -17,12 +17,11 @@ respawn limit 5 10
 # wait 60 seconds for a graceful restart before killing the master
 kill timeout 60
 
-env LD_LIBRARY_PATH=/usr/lib/xulrunner-24.0/
-
-exec /usr/lib/xulrunner-devel-24.0/sdk/bin/xpcshell                    \
-  -g /usr/lib/xulrunner-24.0/                                          \
-  -a /srv/deployment/zotero/translation-server                         \
-  -mn                                                                  \
-  -v 180                                                               \
-  /srv/deployment/zotero/translation-server/translation-server/init.js \
+exec /usr/bin/firejail --blacklist=/root/ --blacklist=/home/* --tmpfs=/tmp --caps --seccomp \
+  /usr/lib/xulrunner-devel-24.0/sdk/bin/xpcshell                                            \
+  -g /usr/lib/xulrunner-24.0/                                                               \
+  -a /srv/deployment/zotero/translation-server                                              \
+  -mn                                                                                       \
+  -v 180                                                                                    \
+  /srv/deployment/zotero/translation-server/translation-server/init.js                      \
   >> /var/log/zotero/zotero.log 2>&1
