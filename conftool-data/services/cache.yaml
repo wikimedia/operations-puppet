@@ -40,16 +40,6 @@ cache_bits:
       - eqiad
       - esams
       - ulsfo
-  varnish-be:
-    port: 3128
-    default_values:
-      "pooled": "no"
-      "weight": 100
-    datacenters:
-      - codfw
-      - eqiad
-      - esams
-      - ulsfo
   nginx:
     port: 443
     default_values:
@@ -144,6 +134,15 @@ cache_parsoid:
       "pooled": "no"
       "weight": 1
     datacenters:
+      - codfw
+      - eqiad
+  varnish-be:
+    port: 3128
+    default_values:
+      "pooled": "no"
+      "weight": 100
+    datacenters:
+      - codfw
       - eqiad
   nginx:
     port: 443
@@ -151,4 +150,5 @@ cache_parsoid:
       "pooled": "no"
       "weight": 1
     datacenters:
+      - codfw
       - eqiad
