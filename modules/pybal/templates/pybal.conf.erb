@@ -28,8 +28,18 @@ protocol = <%= service.fetch('protocol', "tcp") %>
 ip = <%= subserviceip %>
 port = <%= service.fetch('port', 80) %>
 scheduler = <%= service.fetch('scheduler', "wrr") %>
+
+<%# Temp logic strictly for switchover to Etcd %>
+<%# Opt in site and node combo to set to active for node pools %>
+<% $etcd_sites = ['codfw'] %>
+<% $etcd_nodes = ['lvs2001'] %>
+<% if $etcd_sites.include?(@site) and $etcd_nodes.include?(scope.lookupvar("::hostname"))  then -%>
+config = file:///etc/pybal/pools/<%= servicename %>
+<% else %>
 config = http://config-master.<%= @site %>.wmnet/pybal/<%= @site %>/<%= servicename %>
-# config = file:///etc/pybal/pools/<%= servicename %>
+<% end %>
+<%# End Temp logic but 'config =' reference will remain post (obviously) %>
+
 bgp = <%= service.fetch('bgp', "no") %>
 depool-threshold = <%= service.fetch('depool-threshold', ".5") %>
 monitors = <%= service['monitors'].keys.sort.inspect %>
