@@ -5,7 +5,6 @@
 define varnish::common::directors(
     $instance,
     $directors,
-    $director_type,
     $extraopts)
 {
     $conftool_namespace = '/conftool/v1/pools'
