@@ -9,7 +9,6 @@ define varnish::instance(
     $runtime_parameters=[],
     $backends=undef,
     $directors={},
-    $director_type="hash",
     $extra_vcl = [],
     $cluster_options={},
     $wikimedia_networks=[],
@@ -33,7 +32,10 @@ define varnish::instance(
     $varnish_port = $port
     $varnish_admin_port = $admin_port
     $varnish_storage = $storage
-    $varnish_backends = $backends ? { undef => sort(unique(flatten(values($directors)))), default => $backends }
+    $varnish_backends = $backends ? {
+        undef => sort(unique(flatten(values($directors)))), # XXX XXX XXX....... (need to map one level deeper!)
+        default => $backends
+    }
     $varnish_directors = $directors
     $varnish_backend_options = $backend_options
     # $cluster_option is referenced directly
