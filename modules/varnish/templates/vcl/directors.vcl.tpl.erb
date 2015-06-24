@@ -22,7 +22,7 @@ director <%= director %> <%= @director_type %> {
 	<%- if @director_type == 'chash' && !@options.has_key?('retries') %>
 	.retries = <%= chash_def_retries(99, @directors[director].size) %>;
 	<% end -%>
-	{{range $node := "<%= @keyspace %>"}}{{ $key := printf "<%= @keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
+	{{range $node := ls "<%= @keyspace %>"}}{{ $key := printf "<%= @keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
 	{
 		.backend = {{ $parts := split $node "." }}{{ index $parts 0 }};
 		.weight = {{ $data.weight }};
