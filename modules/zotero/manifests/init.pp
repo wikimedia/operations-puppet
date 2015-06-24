@@ -24,6 +24,11 @@ class zotero( $http_proxy = undef ) {
         before => Service['zotero'],
     }
 
+    package { 'firejail':
+        ensure => present,
+        before => Service['zotero'],
+    }
+
     package { [ 'zotero/translation-server', 'zotero/translators' ]:
         ensure   => present,
         provider => 'trebuchet',
@@ -76,6 +81,20 @@ class zotero( $http_proxy = undef ) {
         mode    => '0444',
         content => template('zotero/upstart.erb'),
         notify  => Service['zotero'],
+    }
+
+    file { '/etc/ld.so.conf.d/zotero.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('zotero/ldso.erb'),
+        notify  => Service['zotero'],
+    }
+
+    exec { 'run-ldconfig':
+        require => File["/etc/ld.so.conf.d/zotero.confl"],
+        command => '/sbin/ldconfig',
     }
 
     service { 'zotero':
