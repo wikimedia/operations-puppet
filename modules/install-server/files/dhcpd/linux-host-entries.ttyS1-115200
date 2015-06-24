@@ -2330,6 +2330,11 @@ host labnet1001 {
 	fixed-address labnet1001.eqiad.wmnet;
 }
 
+host labnet1002 {
+        hardware ethernet 00:0a:f7:72:c7:c4;
+        fixed-address labnet1002.eqiad.wmnet;
+}
+
 host labnodepool1001 {
 	hardware ethernet 84:2b:2b:fd:be:fd;
 	fixed-address labnodepool1001.eqiad.wmnet;
