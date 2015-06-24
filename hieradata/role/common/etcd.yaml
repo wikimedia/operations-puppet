@@ -2,3 +2,4 @@ cluster: etcd
 etcd::host: "%{::fqdn}"
 etcd::srv_dns: 'eqiad.wmnet'
 etcd::use_ssl: true
+confd::srv_dns: 'eqiad.wmnet'
