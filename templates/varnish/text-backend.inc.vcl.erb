@@ -7,7 +7,11 @@ include "static-hash.inc.vcl";
 <% if @vcl_config.fetch("cluster_tier", "one") != "one" -%>
 director backend_random random {
 <%
-	@varnish_directors["backend"].each do |backend|
+    backends = @varnish_directors["backend"]['backends']
+    if not backends.is_a?(Array)
+		backends = [backends]
+	end
+    backends.each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
 -%>
 	{

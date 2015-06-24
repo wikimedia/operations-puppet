@@ -28,12 +28,28 @@ class role::cache::mobile (
 
     $varnish_be_directors = {
         'one' => {
-            'backend'        => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-            'api'            => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-            'test_wikipedia' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+            'backend'        => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
+            },
+            'api'            => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+            },
+            'test_wikipedia' => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+            },
         },
         'two' => {
-            'backend' => $mobile_nodes['eqiad'],
+            'backend' => {
+                'dynamic'  => 'yes',
+                'type'     => 'chash',
+                'backends' => $mobile_nodes['eqiad'],
+            },
         }
     }
 
@@ -57,11 +73,6 @@ class role::cache::mobile (
         default  => [],
     }
 
-    $director_type_cluster = $::role::cache::base::cluster_tier ? {
-        'one'   => 'random',
-        default => 'chash',
-    }
-
     varnish::instance { 'mobile-backend':
         name               => '',
         vcl                => 'mobile-backend',
@@ -70,7 +81,6 @@ class role::cache::mobile (
         storage            => $::role::cache::2layer::persistent_storage_args,
         runtime_parameters => $runtime_param,
         directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
-        director_type      => $director_type_cluster,
         vcl_config         => {
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'cluster_tier'     => $::role::cache::base::cluster_tier,
@@ -107,9 +117,12 @@ class role::cache::mobile (
         admin_port       => 6082,
         storage          => "-s malloc,${memory_storage_size}G",
         directors        => {
-            'backend' => $site_mobile_nodes,
+            'backend' => {
+                'dynamic'  => 'yes',
+                'type'     => 'chash',
+                'backends' => $site_mobile_nodes,
+            },
         },
-        director_type    => 'chash',
         vcl_config       => {
             'retry503'         => 1,
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,

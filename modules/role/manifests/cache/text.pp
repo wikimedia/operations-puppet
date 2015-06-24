@@ -26,14 +26,38 @@ class role::cache::text {
 
     $varnish_be_directors = {
         'one' => {
-            'backend'           => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-            'api'               => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-            'rendering'         => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-            'test_wikipedia'    => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-            'restbase_backend'  => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
+            'backend'           => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
+            },
+            'api'               => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+            },
+            'rendering'         => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+            },
+            'test_wikipedia'    => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+            },
+            'restbase_backend'  => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
+            },
         },
         'two' => {
-            'backend' => $text_nodes['eqiad'],
+            'backend'           => {
+                'dynamic'  => 'yes',
+                'type'     => 'chash',
+                'backends' => $text_nodes['eqiad'],
+            },
         },
     }
 
@@ -46,11 +70,6 @@ class role::cache::text {
         default => ['default_ttl=2592000'],
     }
 
-    $director_type_cluster = $::role::cache::base::cluster_tier ? {
-        'one'   => 'random',
-        default => 'chash',
-    }
-
     varnish::instance { 'text-backend':
         name               => '',
         vcl                => 'text-backend',
@@ -60,7 +79,6 @@ class role::cache::text {
         runtime_parameters => $runtime_params,
         storage            => $::role::cache::2layer::persistent_storage_args,
         directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
-        director_type      => $director_type_cluster,
         vcl_config         => {
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
@@ -102,9 +120,12 @@ class role::cache::text {
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         directors       => {
-            'backend' => $site_text_nodes,
+            'backend' => {
+                'dynamic'  => 'yes',
+                'type'     => 'chash',
+                'backends' => $site_text_nodes,
+            },
         },
-        director_type   => 'chash',
         vcl_config      => {
             'retry503'         => 1,
             'cache4xx'         => '1m',
