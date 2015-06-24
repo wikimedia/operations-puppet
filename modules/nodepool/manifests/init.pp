@@ -79,6 +79,23 @@ class nodepool(
             require => Package['nodepool'],
     }
 
+    $nodepool_user_env = {
+        os_auth_uri  => $openstack_auth_uri,
+        os_username  => $openstack_username,
+        os_password  => $openstack_password,
+        os_tenant_id => $openstack_tenant_id,
+    }
+    validate_hash($nodepool_user_env)
+
+    file { '/var/lib/nodepool/.profile':
+        ensure  => present,
+        require => Package['nodepool'],  # provides nodepool user and homedir
+        owner   => 'nodepool',
+        group   => 'nodepool',
+        mode    => '0440',
+        content => shell_exports($nodepool_user_env),
+    }
+
     # OpenStack CLI
     package { 'python-openstackclient':
         ensure => present,
