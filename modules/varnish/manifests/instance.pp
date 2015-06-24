@@ -9,7 +9,6 @@ define varnish::instance(
     $runtime_parameters=[],
     $backends=undef,
     $directors={},
-    $director_type="hash",
     $extra_vcl = [],
     $cluster_options={},
     $wikimedia_networks=[],
@@ -33,7 +32,10 @@ define varnish::instance(
     $varnish_port = $port
     $varnish_admin_port = $admin_port
     $varnish_storage = $storage
-    $varnish_backends = $backends ? { undef => sort(unique(flatten(values($directors)))), default => $backends }
+    $varnish_backends = $backends ? {
+        undef => sort(unique(flatten(values($directors)))), # XXX XXX XXX....... (need to map one level deeper!)
+        default => $backends
+    }
     $varnish_directors = $directors
     $varnish_backend_options = $backend_options
     # $cluster_option is referenced directly
@@ -55,6 +57,7 @@ define varnish::instance(
         } else {
             $inst = $name
         }
+        # XXX $use_dynamic_directors = exists any $directors[x]['dynamic'] == yes
         $use_dynamic_directors = ( !defined(Class['Role::Cache::1layer'])
             and !($inst == 'backend' and $::role::cache::base::cluster_tier == 'one'))
         if $use_dynamic_directors {

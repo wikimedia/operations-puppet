@@ -142,18 +142,27 @@ backend <%= name %> {
 
 <% end -%>
 
-# Directors
-# Expected format: { "director name" => [ "backend1", "backend2" ] }
+# Expected directors data format:
+# @varnish_directors = {
+#     'director name' => {
+#         'dynamic' => 'yes', # default is no, optional
+#         'type' => 'chash',
+#         'backends' => [ "backend1", "backend2" ],
+#     }
+# }
+
 <% if @use_dynamic_directors %>
 include "directors.<%= @inst %>.vcl";
-<% else -%>
+<% end -%>
+
 <% @varnish_directors.keys.sort.each do |director| -%>
-director <%= director %> <%= @director_type %> {
-<% if @director_type == 'chash' %>
-	.retries = <%= chash_def_retries(99, @varnish_directors[director].size) %>;
+<% if !(@director.has_key?('dynamic') && @director['dynamic'] == 'yes') -%>
+director <%= director %> <%= @director['type'] %> {
+<% if @director['type'] == 'chash' %>
+	.retries = <%= chash_def_retries(99, @director['backends'].size) %>;
 <% end -%>
 <%
-	backends = @varnish_directors[director]
+	backends = @director['backends']
 	if not backends.is_a?(Array)
 		backends = [backends]
 	end
@@ -166,8 +175,8 @@ director <%= director %> <%= @director_type %> {
 	}
 <% 	end -%>
 }
-<% end -%>
-<% end -%>
+<% end -%> // if !dynamic
+<% end -%> // director loop
 
 # Functions
 
