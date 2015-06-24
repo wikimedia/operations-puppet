@@ -16,10 +16,7 @@ director = @directors.keys[0]
 -%>
 
 director <%= director %> <%= @director_type %> {
-	<%- @director_options.each_pair do |option,value| -%>
-	.<%= option %> = <%= value %>;
-	<% end -%>
-	<%- if @director_type == 'chash' && !@options.has_key?('retries') %>
+	<%- if @director_type == 'chash' %>
 	.retries = <%= chash_def_retries(99, @directors[director].size) %>;
 	<% end -%>
 	{{range $node := ls "<%= @keyspace %>"}}{{ $key := printf "<%= @keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}

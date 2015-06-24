@@ -10,7 +10,6 @@ define varnish::instance(
     $backends=undef,
     $directors={},
     $director_type="hash",
-    $director_options={},
     $extra_vcl = [],
     $cluster_options={},
     $wikimedia_networks=[],
@@ -63,7 +62,6 @@ define varnish::instance(
                 instance      => $inst,
                 directors     => $directors,
                 director_type => $director_type,
-                options       => $director_options,
                 extraopts     => $extraopts,
                 before        => [
                                   File["/etc/varnish/wikimedia_${vcl}.vcl"],
