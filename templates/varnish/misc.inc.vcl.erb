@@ -28,7 +28,7 @@ sub vcl_recv {
 		set req.backend = californium;
 	} elsif (req.http.Host == "phabricator.wikimedia.org" || req.http.Host == "phab.wmfusercontent.org" || req.http.Host == "bugzilla.wikimedia.org" || req.http.Host == "bugs.wikimedia.org") {
 		set req.backend = iridium;
-	} elsif (req.http.Host == "static-bugzilla.wikimedia.org" || req.http.Host =="dev.wikimedia.org") {
+	} elsif (req.http.Host == "static-bugzilla.wikimedia.org") {
 		set req.backend = zirconium;
 		return (pass);
 	} elsif (req.http.Host == "svn.wikimedia.org") {
