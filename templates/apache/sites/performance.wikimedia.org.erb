@@ -24,9 +24,7 @@
     </Directory>
 
     <Directory /srv/org/wikimedia/performance/public_html>
-        AllowOverride None
-        Order allow,deny
-        allow from all
+        Require all granted
     </Directory>
 
     ProxyPass /xenon http://fluorine.eqiad.wmnet/xenon
