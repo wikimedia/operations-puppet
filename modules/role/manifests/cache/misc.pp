@@ -83,11 +83,14 @@ class role::cache::misc {
             'max_connections'       => 100,
         }],
         directors       => {
-            'logstash' => [
-                'logstash1001.eqiad.wmnet',
-                'logstash1002.eqiad.wmnet',
-                'logstash1003.eqiad.wmnet',
-            ]
+            'logstash' => {
+                'type' => 'hash', # maybe-wrong? but current value before this commit! XXX
+                'backends' => [
+                    'logstash1001.eqiad.wmnet',
+                    'logstash1002.eqiad.wmnet',
+                    'logstash1003.eqiad.wmnet',
+                ],
+            }
         },
     }
 
