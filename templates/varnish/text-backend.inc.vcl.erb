@@ -4,20 +4,6 @@ include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 include "static-hash.inc.vcl";
 
-<% if @vcl_config.fetch("cluster_tier", "one") != "one" -%>
-director backend_random random {
-<%
-	@varnish_directors["backend"].each do |backend|
-		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
--%>
-	{
-		.backend = <%= name %>;
-		.weight = 10;
-	}
-<% 	end -%>
-}
-<% end -%>
-
 sub vcl_recv {
 	call vcl_recv_purge;
 	call restrict_access;
