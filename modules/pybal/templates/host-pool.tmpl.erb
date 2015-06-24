@@ -7,5 +7,5 @@
 {{ $key := printf "<%= key %>%s" $node }}
 {{ $data := json (getv $key) }}
 {{ if ne $data.pooled "inactive" }}
-{'host':'{{ $node }}', 'enabled':{{if eq $data.pooled "yes"}}True{{else}}False{{end}}, 'weight':{{ $data.weight}} }{{end}}{{end}}
+{ 'host': '{{ $node }}', 'weight':{{ $data.weight}}, 'enabled': {{if eq $data.pooled "yes"}}True{{else}}False{{end}} }{{end}}{{end}}
 <% end -%>
