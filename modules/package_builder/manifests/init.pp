@@ -22,6 +22,7 @@ class package_builder(
         'build-essential',
         'fakeroot',
         'debhelper',
+        'cdbs',
         'devscripts',
         'dh-make',
         'dh-autoreconf',
