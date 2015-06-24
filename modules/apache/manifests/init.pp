@@ -32,6 +32,10 @@ class apache {
         ensure => present,
     }
 
+    package { 'cronolog':
+        ensure => present,
+    }
+
     service { 'apache2':
         ensure     => running,
         enable     => true,
@@ -92,6 +96,7 @@ class apache {
 
     apache::conf { 'defaults':
         source   => 'puppet:///modules/apache/defaults.conf',
+        require  => Package['cronolog'],
         priority => 0,
     }
 

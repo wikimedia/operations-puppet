@@ -16,6 +16,6 @@
          AllowOverride None
      </Directory>
 
-     CustomLog ${APACHE_LOG_DIR}/pybal-access.log combined
-     ErrorLog ${APACHE_LOG_DIR}/pybal-error.log
+     CustomLog "|/usr/bin/cronolog --once-only --period=1minute /var/log/apache2/pybal-access.log" combined
+     ErrorLog "|/usr/bin/cronolog --once-only --period=1minute /var/log/apache2/pybal-error.log"
 </VirtualHost>
