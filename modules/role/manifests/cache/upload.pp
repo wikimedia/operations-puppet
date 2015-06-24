@@ -26,11 +26,23 @@ class role::cache::upload(
 
     $varnish_be_directors = {
         'one' => {
-            'backend'   => $role::cache::configuration::backends[$::realm]['swift'][$::mw_primary],
-            'rendering' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+            'backend'   => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['swift'][$::mw_primary],
+            },
+            'rendering'   => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+            },
         },
         'two' => {
-            'backend' => $upload_nodes['eqiad'],
+            'backend' => {
+                'dynamic'  => 'yes',
+                'type'     => 'chash',
+                'backends' => $upload_nodes['eqiad'],
+            },
         }
     }
 
@@ -59,11 +71,6 @@ class role::cache::upload(
         "-s bigobj2=file,/srv/${::role::cache::2layer::storage_parts[1]}/varnish.bigobj2,${storage_size_bigobj}G",
     ], ' ')
 
-    $director_type_cluster = $::role::cache::base::cluster_tier ? {
-        'one'   => 'random',
-        default => 'chash',
-    }
-
     varnish::instance { 'upload-backend':
         name               => '',
         vcl                => 'upload-backend',
@@ -72,7 +79,6 @@ class role::cache::upload(
         runtime_parameters => $runtime_params,
         storage            => $upload_storage_args,
         directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
-        director_type      => $director_type_cluster,
         vcl_config         => {
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
@@ -105,9 +111,12 @@ class role::cache::upload(
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         directors       => {
-            'backend' => $site_upload_nodes,
+            'backend' => {
+                'dynamic'  => 'yes',
+                'type'     => 'chash',
+                'backends' => $site_upload_nodes,
+            },
         },
-        director_type   => 'chash',
         vcl_config      => {
             'retry503'         => 1,
             'cache4xx'         => '1m',
