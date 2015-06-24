@@ -30,7 +30,7 @@ class role::cache::upload(
             'rendering' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
         },
         'two' => {
-            'eqiad' => $upload_nodes['eqiad'],
+            'backend' => $upload_nodes['eqiad'],
         }
     }
 
@@ -74,7 +74,6 @@ class role::cache::upload(
         directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
         director_type      => $director_type_cluster,
         vcl_config         => {
-            'default_backend'  => $::role::cache::base::default_backend,
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
             'cluster_tier'     => $::role::cache::base::cluster_tier,
