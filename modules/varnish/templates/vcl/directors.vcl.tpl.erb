@@ -11,8 +11,7 @@ def chash_def_retries(p, n)
 	return ((Math.log10(100 - p) - 2) / (Math.log10(n - 1) - Math.log10(n))).ceil
 end
 
-# this is a one-element hash atm
-director = @directors.keys[0]
+director = @dyn_director
 -%>
 
 director <%= director %> <%= @director_type %> {
