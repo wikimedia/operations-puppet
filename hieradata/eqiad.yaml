@@ -17,9 +17,13 @@ mediawiki_memcached_servers:
   - '10.64.48.104:11211:1 "shard16"'
   - '10.64.48.95:11211:1 "shard17"'
   - '10.64.48.96:11211:1 "shard18"'
-ganglia_class: "old"
 
+# Ganglia 
+ganglia_class: "new"
 ganglia_aggregators: carbon.wikimedia.org:9649
+#
+# Labs
+#
 labs_nova_controller: "labcontrol1001.wikimedia.org"
 # _spare is a duplicate/backup controller.  In theory it has the
 #  same state as the main controller
