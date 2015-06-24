@@ -9,7 +9,6 @@ define varnish::instance(
     $runtime_parameters=[],
     $backends=undef,
     $directors={},
-    $director_type="hash",
     $extra_vcl = [],
     $cluster_options={},
     $wikimedia_networks=[],
@@ -33,7 +32,14 @@ define varnish::instance(
     $varnish_port = $port
     $varnish_admin_port = $admin_port
     $varnish_storage = $storage
-    $varnish_backends = $backends ? { undef => sort(unique(flatten(values($directors)))), default => $backends }
+    if $backends {
+        $varnish_backends = $backends
+    } else {
+        # XXX I highly doubt this works, but it seems like it should!
+        $mapped_backends = $directors.map |$k,$v| { $v[backends] }
+        $varnish_backeds = sort(unique(flatten($mapped_backends)))
+    }
+
     $varnish_directors = $directors
     $varnish_backend_options = $backend_options
     # $cluster_option is referenced directly
@@ -55,13 +61,19 @@ define varnish::instance(
         } else {
             $inst = $name
         }
-        $use_dynamic_directors = ( !defined(Class['Role::Cache::1layer'])
-            and !($inst == 'backend' and $::role::cache::base::cluster_tier == 'one'))
+
+        # XXX really unsure about this construct too
+        $mapped_dynamics = $directors.map |$k,$v| { $v[dynamic] }
+        if 'yes' in $mapped_dynamics {
+            $use_dynamic_directors = true
+        } else {
+            $use_dynamic_directors = false
+        }
+
         if $use_dynamic_directors {
             varnish::common::directors { $vcl:
                 instance      => $inst,
                 directors     => $directors,
-                director_type => $director_type,
                 extraopts     => $extraopts,
                 before        => [
                                   File["/etc/varnish/wikimedia_${vcl}.vcl"],
