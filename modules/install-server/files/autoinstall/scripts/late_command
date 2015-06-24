@@ -41,7 +41,7 @@ esac
 # Use a more recent kernel on jessie
 # (the upgrade is to grab our updated firmware packages first for initramfs)
 apt-install lsb-release
-if [ $(in-target lsb_release -c -s) = "jessie" ]; then
+if [ "$(chroot /target /usr/bin/lsb_release --codename --short)" = "jessie" ]; then
 	in-target apt-get -y upgrade
 	apt-install linux-meta
 fi
