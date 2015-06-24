@@ -1,8 +1,8 @@
 cache_bits:
-  cp4001.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
-  cp4002.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
-  cp4003.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
-  cp4004.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+  cp4001.ulsfo.wmnet: [varnish-fe, nginx]
+  cp4002.ulsfo.wmnet: [varnish-fe, nginx]
+  cp4003.ulsfo.wmnet: [varnish-fe, nginx]
+  cp4004.ulsfo.wmnet: [varnish-fe, nginx]
 cache_mobile:
   cp4011.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
   cp4012.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
