@@ -65,7 +65,7 @@ class confd(
     } else {
         nrpe::monitor_service {'confd':
             description  => 'ensure confd service',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -a /usr/bin/confd -c 1:1',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -a /usr/bin/confd -c 1:2',
             require      => Service['confd'],
         }
     }
