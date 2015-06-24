@@ -42,7 +42,10 @@ class puppetmaster(
 
     # Require /etc/puppet.conf to be in place,
     # so the postinst scripts do the right things.
-    require puppetmaster::config
+    class { 'puppetmaster::config':
+        config      => $config,
+        server_type => $server_type,
+    }
 
     package { [
         'puppetmaster',
