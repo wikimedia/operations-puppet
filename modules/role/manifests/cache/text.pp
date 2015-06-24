@@ -53,6 +53,11 @@ class role::cache::text {
                 'type'     => 'chash',
                 'backends' => $text_nodes['eqiad'],
             },
+            'backend_random'    => {
+                'dynamic'  => 'yes',
+                'type'     => 'random',
+                'backends' => $text_nodes['eqiad'],
+            },
         },
     }
 
@@ -118,6 +123,11 @@ class role::cache::text {
             'backend' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
+                'backends' => $site_text_nodes,
+            },
+            'backend_random' => {
+                'dynamic'  => 'yes',
+                'type'     => 'random',
                 'backends' => $site_text_nodes,
             },
         },
