@@ -1,13 +1,9 @@
-varnish_directors:
-  __regex: !ruby/regexp /^cp200[1-5]\.codfw\.wmnet$/
-  varnish::dynamic_directors: true
-
 analytics:
-  __regex: !ruby/regexp /^analytics1\d+\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^analytics10[0-9][0-9]\.eqiad\.wmnet$/
   ganglia_class: "old"
 
 logstash:
-  __regex: !ruby/regexp /^logstash1\d+\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^logstash100[0-9]\.eqiad\.wmnet$/
   ganglia_class: "old"
 
 es_rack_a3:
