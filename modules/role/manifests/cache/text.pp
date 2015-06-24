@@ -51,6 +51,11 @@ class role::cache::text {
         default => 'chash',
     }
 
+    $be_dyn_director = $::role::cache::base::cluster_tier ? {
+        'two'   => 'eqiad',
+        default => undef,
+    }
+
     varnish::instance { 'text-backend':
         name               => '',
         vcl                => 'text-backend',
@@ -60,6 +65,7 @@ class role::cache::text {
         runtime_parameters => $runtime_params,
         storage            => $::role::cache::2layer::persistent_storage_args,
         directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
+        dyn_directors      => $be_dyn_director,
         director_type      => $director_type_cluster,
         vcl_config         => {
             'cache4xx'         => '1m',
@@ -106,6 +112,7 @@ class role::cache::text {
             'backend' => $site_text_nodes,
         },
         director_type   => 'chash',
+        dyn_director    => 'backend',
         vcl_config      => {
             'retry503'         => 1,
             'cache4xx'         => '1m',

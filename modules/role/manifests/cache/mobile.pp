@@ -62,6 +62,11 @@ class role::cache::mobile (
         default => 'chash',
     }
 
+    $be_dyn_director = $::role::cache::base::cluster_tier ? {
+        'two'   => 'eqiad',
+        default => undef,
+    }
+
     varnish::instance { 'mobile-backend':
         name               => '',
         vcl                => 'mobile-backend',
@@ -70,6 +75,7 @@ class role::cache::mobile (
         storage            => $::role::cache::2layer::persistent_storage_args,
         runtime_parameters => $runtime_param,
         directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
+        dyn_directors      => $be_dyn_director,
         director_type      => $director_type_cluster,
         vcl_config         => {
             'default_backend'  => $::role::cache::base::default_backend,
@@ -110,6 +116,7 @@ class role::cache::mobile (
         directors        => {
             'backend' => $site_mobile_nodes,
         },
+        dyn_director     => 'backend',
         director_type    => 'chash',
         vcl_config       => {
             'retry503'         => 1,

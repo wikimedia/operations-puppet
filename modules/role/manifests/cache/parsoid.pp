@@ -75,6 +75,7 @@ class role::cache::parsoid {
             'graphoid_backend' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::mw_primary],
             'restbase_backend' => $::role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
         },
+        dyn_director    => 'backend',
         director_type   => 'chash',
         vcl_config      => {
             'retry5xx'    => 0,

@@ -64,6 +64,11 @@ class role::cache::upload(
         default => 'chash',
     }
 
+    $be_dyn_director = $::role::cache::base::cluster_tier ? {
+        'two'   => 'eqiad',
+        default => undef,
+    }
+
     varnish::instance { 'upload-backend':
         name               => '',
         vcl                => 'upload-backend',
@@ -72,6 +77,7 @@ class role::cache::upload(
         runtime_parameters => $runtime_params,
         storage            => $upload_storage_args,
         directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
+        dyn_directors      => $be_dyn_director,
         director_type      => $director_type_cluster,
         vcl_config         => {
             'default_backend'  => $::role::cache::base::default_backend,
@@ -108,6 +114,7 @@ class role::cache::upload(
         directors       => {
             'backend' => $site_upload_nodes,
         },
+        dyn_directors   => 'backend',
         director_type   => 'chash',
         vcl_config      => {
             'retry503'         => 1,
