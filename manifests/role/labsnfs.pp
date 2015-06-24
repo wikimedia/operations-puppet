@@ -9,11 +9,12 @@
 #
 class role::labs::nfs::dumps($dump_servers_ips) {
     include standard
+    include ::labstore
     include rsync::server
 
-    package { 'nfs-kernel-server':
-        ensure => present,
-    }
+    # The dumps server has a simple, flat exports list
+    # because it only exports public data unconditionally
+    # and read-only
 
     file { '/etc/exports':
         ensure  => present,
@@ -37,55 +38,11 @@ class role::labs::nfs::dumps($dump_servers_ips) {
 # The role class for the NFS servers that provide general filesystem
 # services to Labs.
 #
-class role::labs::nfs::fileserver($monitor_iface = 'eth0') {
+class role::labs::nfs::fileserver($monitor = 'eth0') {
     include standard
 
-    # eqiad still uses LDAP for now
-    # T87870
-    if $::site == 'eqiad' {
-        class { 'ldap::role::client::labs':
-            ldapincludes => ['openldap', 'nss', 'utils'],
-        }
+    class { 'include ::labstore::fileserver':
+        monitor_iface => $monitor,
     }
-
-    include openstack::project-nfs-storage-service
-    include openstack::replica_management_service
-
-    monitoring::graphite_threshold { 'network_out_saturated':
-        description => 'Outgoing network saturation',
-        metric      => "servers.${::hostname}.network.${monitor_iface}.tx_byte",
-        from        => '30min',
-        warning     => '75000000',  # roughly 600Mbps / 1Gbps
-        critical    => '100000000', # roughly 800Mbps / 1Gbps
-        percentage  => '10',        # smooth over peaks
-    }
-
-    monitoring::graphite_threshold { 'network_in_saturated':
-        description => 'Incoming network saturation',
-        metric      => "servers.${::hostname}.network.${monitor_iface}.rx_byte",
-        from        => '30min',
-        warning     => '75000000',  # roughly 600Mbps / 1Gbps
-        critical    => '100000000', # roughly 800Mbps / 1Gbps
-        percentage  => '10',        # smooth over peaks
-    }
-
-    monitoring::graphite_threshold { 'high_iowait_stalling':
-        description => 'Persistent high iowait',
-        metric      => "servers.${::hostname}.cpu.total.iowait",
-        from        => '10min',
-        warning     => '25', # Based off looking at history of metric
-        critical    => '35',
-        percentage  => '50', # Ignore small spikes
-    }
-
-    # Monitor for high load consistently, is a 'catchall'
-    monitoring::graphite_threshold { 'high_load':
-        description => 'High load average',
-        metric      => "servers.${::hostname}.loadavg.01",
-        from        => '10min',
-        warning     => '16',
-        critical    => '24',
-        percentage  => '50', # Don't freak out on spikes
-    }
-
 }
+
