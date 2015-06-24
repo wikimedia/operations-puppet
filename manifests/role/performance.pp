@@ -16,6 +16,8 @@ class role::performance {
 
     git::clone { 'performance/docroot':
         ensure    => latest,
+        owner     => 'www-data',
+        group     => 'www-data',
         directory => '/srv/org/wikimedia/performance',
         notify    => Service['apache2']
     }
