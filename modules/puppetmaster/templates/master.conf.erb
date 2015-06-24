@@ -5,7 +5,7 @@ templatedir = /etc/puppet/templates
 modulepath = /etc/puppet/private/modules:/etc/puppet/modules
 
 # puppetmaster($config) settings
-<% scope.lookupvar('puppetmaster::config').sort.each do |setting, value| -%>
+<% @config.sort.each do |setting, value| -%>
 <%= setting %> = <%= value %>
 <% end -%>
 

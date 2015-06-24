@@ -2,7 +2,11 @@
 #
 # This class handles the master part of /etc/puppet.conf.
 # Do not include directly.
-class puppetmaster::config {
+class puppetmaster::config(
+           $config,
+           $server_type,
+) {
+
     base::puppet::config { 'master':
         prio    => 20,
         content => template('puppetmaster/master.conf.erb'),
