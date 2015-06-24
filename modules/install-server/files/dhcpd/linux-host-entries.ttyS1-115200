@@ -2315,6 +2315,11 @@ host labcontrol1001 {
 	fixed-address labcontrol1001.wikimedia.org;
 }
 
+host labcontrol1002 {
+	hardware ethernet 18:03:73:f5:2c:2b;
+	fixed-address labcontrol1002.wikimedia.org;
+}
+
 host labcontrol2001 {
 	hardware ethernet 90:B1:1C:2D:7F:19;
 	fixed-address labcontrol2001.wikimedia.org;
@@ -5832,11 +5837,6 @@ host tungsten {
 host uranium {
 	hardware ethernet 84:2b:2b:fb:a6:67;
 	fixed-address uranium.wikimedia.org;
-}
-
-host virt1000 {
-	hardware ethernet 18:03:73:f5:2c:2b;
-	fixed-address virt1000.wikimedia.org;
 }
 
 host wtp1001 {
