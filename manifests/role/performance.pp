@@ -14,19 +14,14 @@ class role::performance {
         endpoint => 'tcp://eventlogging.eqiad.wmnet:8600',
     }
 
-    file { '/var/www/performance':
-        ensure  => directory,
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => '0444',
-        purge   => true,
-        recurse => true,
-        force   => true,
-        source  => 'puppet:///files/performance',
+    git::clone { 'performance/docroot':
+        ensure    => latest,
+        directory => '/srv/org/wikimedia/performance',
+        notify    => Service['apache2']
     }
 
     apache::site { 'performance.wikimedia.org':
         content => template('apache/sites/performance.wikimedia.org.erb'),
-        require => File['/var/www/performance'],
+        require => Git::Clone['performance/docroot'],
     }
 }

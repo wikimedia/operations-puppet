@@ -3,7 +3,7 @@
 <VirtualHost *:80>
     ServerName performance.wikimedia.org
 
-    DocumentRoot /var/www/performance
+    DocumentRoot /srv/org/wikimedia/performance/public_html
 
     RewriteEngine On
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
@@ -23,7 +23,7 @@
         AllowOverride None
     </Directory>
 
-    <Directory /var/www/performance>
+    <Directory /srv/org/wikimedia/performance/public_html>
         AllowOverride None
         Order allow,deny
         allow from all
