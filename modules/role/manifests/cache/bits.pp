@@ -26,11 +26,23 @@ class role::cache::bits (
 
     $varnish_directors = {
         'one' => {
-            'backend' => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
-            'test_wikipedia' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+            'backend' => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
+            },
+            'test_wikipedia' => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+            },
         },
         'two' => {
-            'backend' => sort(flatten(values($role::cache::configuration::backends[$::realm]['bits']))),
+            'backend' => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => sort(flatten(values($role::cache::configuration::backends[$::realm]['bits']))),
+            },
         }
     }
 
@@ -61,7 +73,6 @@ class role::cache::bits (
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         directors       => $varnish_directors[$::role::cache::base::cluster_tier],
-        director_type   => 'random',
         vcl_config      => {
             'retry503'     => 4,
             'retry5xx'     => 1,
