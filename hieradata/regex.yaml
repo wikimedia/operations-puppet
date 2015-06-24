@@ -1,3 +1,7 @@
+varnish_directors:
+  __regex: !ruby/regexp /^cp200[1-5]\.codfw\.wmnet$/
+  varnish::dynamic_directors: true
+
 analytics:
   __regex: !ruby/regexp /^analytics1\d+\.eqiad\.wmnet$/
   ganglia_class: "old"
