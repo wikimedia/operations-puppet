@@ -1,0 +1,14 @@
+# Upstart job description for Pyglet, a syntax-highlighting web service.
+
+description "Pyglet, a syntax-highlighting microservice"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+
+setuid nobody
+setgid nogroup
+
+respawn
+
+exec /usr/bin/python /srv/pyglet/pyglet.py --listen-port <%= @listen_port %>
+
+# vim: set ft=upstart:
