@@ -2144,7 +2144,6 @@ node /^(strontium|rhodium).eqiad.wmnet/ {
 node 'stat1001.eqiad.wmnet' {
     role statistics::web
     include standard
-    include role::abacist
 }
 
 node 'stat1002.eqiad.wmnet' {

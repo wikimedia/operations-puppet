@@ -55,8 +55,8 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/fluoride
   statsv/statsv:
     upstream: https://gerrit.wikimedia.org/r/analytics/statsv
-  abacist/abacist:
-    upstream: https://gerrit.wikimedia.org/r/analytics/abacist
+  syntaxhighlight_geshi/syntaxhighlight_geshi:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/extensions/SyntaxHighlight_GeSHi
   test/testrepo:
     service_name: puppet
     checkout_submodules: true
