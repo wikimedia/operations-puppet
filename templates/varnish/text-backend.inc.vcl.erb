@@ -5,13 +5,9 @@ include "text-common.inc.vcl";
 include "static-hash.inc.vcl";
 
 <% if @vcl_config.fetch("cluster_tier", "one") != "one" -%>
-// A random director with the same backends as the default 'backend' (chash) director
+director backend_random random {
 <%
-default_backend = @vcl_config.fetch("default_backend", "backend")
--%>
-director <%= default_backend %>_random random {
-<%
-	@varnish_directors[default_backend].each do |backend|
+	@varnish_directors["backend"].each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
 -%>
 	{
@@ -43,7 +39,7 @@ sub vcl_recv {
 		set req.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
 		set req.backend = restbase_backend;
 <% else -%>
-		set req.backend = <%= @vcl_config.fetch("default_backend", "backend") %>_random;
+		set req.backend = backend_random;
 <% end -%>
 		set req.hash_ignore_busy = true;
 		return (pass);
@@ -51,7 +47,7 @@ sub vcl_recv {
 
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
 <% if @vcl_config.fetch("cluster_tier", "one") != "one" -%>
-		set req.backend = <%= @vcl_config.fetch("default_backend", "backend") %>_random;
+		set req.backend = backend_random;
 <% end -%>
 		set req.hash_ignore_busy = true;
 	}

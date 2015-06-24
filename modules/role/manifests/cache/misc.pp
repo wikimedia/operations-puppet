@@ -20,12 +20,12 @@ class role::cache::misc {
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         vcl_config      => {
+            'has_def_backend' => 'no',
             'retry503'        => 4,
             'retry5xx'        => 1,
             'cache4xx'        => '1m',
             'layer'           => 'frontend',
             'ssl_proxies'     => $::role::cache::base::wikimedia_networks,
-            'default_backend' => 'antimony',    # FIXME
             'allowed_methods' => '^(GET|HEAD|POST|PURGE|PUT)$',
         },
         backends        => [

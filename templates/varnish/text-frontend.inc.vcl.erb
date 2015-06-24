@@ -25,12 +25,9 @@ include "static-hash.inc.vcl";
 // subdomains.
 
 // A random director with the same backends as the default 'backend' (chash) director
+director backend_random random {
 <%
-default_backend = @vcl_config.fetch("default_backend", "backend")
--%>
-director <%= default_backend %>_random random {
-<%
-	@varnish_directors[default_backend].each do |backend|
+	@varnish_directors["backend"].each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
 -%>
 	{

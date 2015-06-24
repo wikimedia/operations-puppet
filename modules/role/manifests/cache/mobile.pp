@@ -33,7 +33,7 @@ class role::cache::mobile (
             'test_wikipedia' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
         },
         'two' => {
-            'eqiad' => $mobile_nodes['eqiad'],
+            'backend' => $mobile_nodes['eqiad'],
         }
     }
 
@@ -72,7 +72,6 @@ class role::cache::mobile (
         directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
         director_type      => $director_type_cluster,
         vcl_config         => {
-            'default_backend'  => $::role::cache::base::default_backend,
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'backend',

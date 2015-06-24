@@ -33,7 +33,7 @@ class role::cache::text {
             'restbase_backend'  => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
         },
         'two' => {
-            'eqiad' => $text_nodes['eqiad'],
+            'backend' => $text_nodes['eqiad'],
         },
     }
 
@@ -63,7 +63,6 @@ class role::cache::text {
         director_type      => $director_type_cluster,
         vcl_config         => {
             'cache4xx'         => '1m',
-            'default_backend'  => $::role::cache::base::default_backend,
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'backend',
