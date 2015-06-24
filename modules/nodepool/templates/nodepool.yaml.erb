@@ -54,11 +54,11 @@ providers:
   - name: wmflabs-eqiad
     service-type: 'compute'
     service-name: 'nova'
-    project-id: 'contintcloud'
+    project-id: '<%= @openstack_tenant_id %>'
     region-name: 'eqiad'
-    username: '<%= wmflabs_username %>'
-    password: '<%= wmflabs_password %>'
-    auth-url: 'http://<%= @nova_controller_hostname %>:35357/v2.0/'
+    username: '<%= @openstack_username %>'
+    password: '<%= @openstack_password %>'
+    auth-url: 'http://<%= @openstack_auth_url %>:35357/v2.0/'
     boot-timeout: 120
     max-servers: 1
     rate: 5  # seconds
