@@ -31,7 +31,7 @@ ganglia_aggregators: carbon.wikimedia.org:9649
 labs_nova_controller: "labcontrol1001.wikimedia.org"
 # _spare is a duplicate/backup controller.  In theory it has the
 #  same state as the main controller
-labs_nova_controller_spare: "labcontrol1001.wikimedia.org"
+labs_nova_controller_spare: "labcontrol1002.wikimedia.org"
 # _other is the controller in the other datacenter
 labs_nova_controller_other: "labcontrol2001.wikimedia.org"
 labs_glance_controller: "labcontrol1001.wikimedia.org"

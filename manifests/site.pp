@@ -1151,11 +1151,35 @@ node 'labcontrol1001.wikimedia.org' {
     role nova::controller
 
     include standard
-    # include role::dns::ldap
     include ldap::role::client::labs
     include role::salt::masters::labs
     include role::deployment::salt_masters
     include role::dns::ldap
+    if $use_neutron == true {
+        include role::neutron::controller
+
+    }
+}
+
+# labcontrol1002 is a hot spare for 1001.  Switching it on
+#  involves uncommenting the dns role, below, and also
+#  changing the keystone catalog to point to labcontrol1002:
+#  basically repeated use of 'keystone endpoint-list,' 
+#  'keystone endpoint-create' and 'keystone endpoint-delete.'
+# 
+node 'labcontrol1002.wikimedia.org' {
+    $is_puppet_master      = true
+    $is_labs_puppet_master = true
+    $use_neutron           = false
+    role nova::controller
+
+    include standard
+    include ldap::role::client::labs
+    include role::salt::masters::labs
+    include role::deployment::salt_masters
+    # The dns controller grabs an IP, so leave this disabled until/unless
+    #  this server is the primary labs controller.
+    #include role::dns::ldap
     if $use_neutron == true {
         include role::neutron::controller
 
@@ -2292,10 +2316,6 @@ node 'uranium.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-}
-
-node 'virt1000.wikimedia.org' {
-    include standard
 }
 
 node /^virt100[5-7].eqiad.wmnet/ {
