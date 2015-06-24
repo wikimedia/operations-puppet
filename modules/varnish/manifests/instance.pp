@@ -14,7 +14,8 @@ define varnish::instance(
     $extra_vcl = [],
     $cluster_options={},
     $wikimedia_networks=[],
-    $xff_sources=[]
+    $xff_sources=[],
+    $dyn_director=undef,
 ) {
 
     include varnish::common
@@ -50,14 +51,13 @@ define varnish::instance(
 
     # Write the dynamic directors configuration, if we need it
     if $dynamic_directors {
-        require role::cache::base
         if $name == '' {
             $inst = 'backend'
         } else {
             $inst = $name
         }
         $use_dynamic_directors = ( !defined(Class['Role::Cache::1layer'])
-            and !($inst == 'backend' and $::role::cache::base::cluster_tier == 'one'))
+            and $dyn_director != undef)
         if $use_dynamic_directors {
             varnish::common::directors { $vcl:
                 instance      => $inst,
@@ -71,6 +71,8 @@ define varnish::instance(
                                   ],
             }
         }
+    } else {
+        $use_dynamic_directors = false
     }
 
     file { "/etc/varnish/wikimedia_${vcl}.vcl":
