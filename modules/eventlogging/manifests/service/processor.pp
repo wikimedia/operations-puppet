@@ -56,7 +56,7 @@
 define eventlogging::service::processor(
     $format,
     $input,
-    $output,
+    $outputs,
     $output_invalid = undef,
     $sid            = $title,
     $ensure         = present,
