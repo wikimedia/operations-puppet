@@ -23,7 +23,11 @@ end -%>
 # Class: <%= service['class'] %>
 # Description: <%= service['description'] %>
 # LVS balancers: <%= @lvs_class_hosts[service['class']].join(" ") %>
+<% if service.fetch('protocol', 'tcp') != 'tcp' -%>
+[<%= subservicename %>_<%= service.fetch('port', 80) %>_<%= service.fetch('protocol') %>]
+<% else -%>
 [<%= subservicename %>_<%= service.fetch('port', 80) %>]
+<% end -%>
 protocol = <%= service.fetch('protocol', "tcp") %>
 ip = <%= subserviceip %>
 port = <%= service.fetch('port', 80) %>
