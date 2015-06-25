@@ -40,19 +40,23 @@ class confd(
     }
 
     file { '/etc/confd/conf.d':
-        ensure => directory,
-        owner  => root,
-        group  => root,
-        mode   => '0550',
-        before => Service['confd'],
+        ensure  => directory,
+        recurse => true,
+        purge   => true,
+        owner   => root,
+        group   => root,
+        mode    => '0550',
+        before  => Service['confd'],
     }
 
     file { '/etc/confd/templates':
-        ensure => directory,
-        owner  => root,
-        group  => root,
-        mode   => '0550',
-        before => Service['confd'],
+        ensure  => directory,
+        recurse => true,
+        purge   => true,
+        owner   => root,
+        group   => root,
+        mode    => '0550',
+        before  => Service['confd'],
     }
 
     # Any change to a service configuration or to a template should reload confd.
