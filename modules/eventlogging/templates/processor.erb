@@ -2,7 +2,7 @@
 <%= @sid %>
 <%= @format %>
 <%= @input %>
-<%= @output %>
+<%= @outputs.sort.join('\n') %>
 <% if @output_invalid -%>
 <% if @output_invalid == true or @output_invalid == 'true' -%>
 --output-invalid
