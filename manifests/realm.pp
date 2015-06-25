@@ -14,6 +14,10 @@ if $::projectgroup == undef {
     $projectgroup = "project-${instanceproject}"
 }
 
+if ($::realm == 'labs') and ($::labsproject == undef) {
+    fail('Failed to determined $::labsproject')
+}
+
 # Determine the site the server is in
 if $::ipaddress_eth0 != undef {
     $main_ipaddress = $ipaddress_eth0
