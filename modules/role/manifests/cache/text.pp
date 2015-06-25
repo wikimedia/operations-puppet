@@ -59,9 +59,10 @@ class role::cache::text {
                 'backends' => $text_nodes['eqiad'],
             },
             'backend_random'    => {
-                'dynamic'  => 'yes',
-                'type'     => 'random',
-                'backends' => $text_nodes['eqiad'],
+                'dynamic'      => 'yes',
+                'type'         => 'random',
+                'backends'     => $text_nodes['eqiad'],
+                'fixed_weight' => 10,
             },
         },
     }
@@ -131,9 +132,10 @@ class role::cache::text {
                 'backends' => $site_text_nodes,
             },
             'backend_random' => {
-                'dynamic'  => 'yes',
-                'type'     => 'random',
-                'backends' => $site_text_nodes,
+                'dynamic'      => 'yes',
+                'type'         => 'random',
+                'backends'     => $site_text_nodes,
+                'fixed_weight' => 10,
             },
         },
         vcl_config      => {

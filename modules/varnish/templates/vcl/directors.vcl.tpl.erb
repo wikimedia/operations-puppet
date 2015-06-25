@@ -22,7 +22,7 @@ director <%= director_name %> <%= director['type'] %> {
 	{{range $node := ls "<%= @keyspace %>"}}{{ $key := printf "<%= @keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
 	{
 		.backend = {{ $parts := split $node "." }}{{ index $parts 0 }};
-		.weight = {{ $data.weight }};
+		.weight = <% if director.include?'fixed_weight' %><%= director['fixed_weight'] %><% else %>{{ $data.weight }}<% end %>;
 	}{{end}}{{end}}
 }
 <% end %>
