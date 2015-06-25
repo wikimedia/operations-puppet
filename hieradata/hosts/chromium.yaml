@@ -1,2 +1,3 @@
 url_downloader_ip: 208.80.154.156
 ganglia_class: "new"
+ntp::daemon::ensure: present

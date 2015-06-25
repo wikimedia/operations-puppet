@@ -4,3 +4,4 @@ admin::groups:
   - analytics-roots
   - analytics-admins
 
+ntp::daemon::ensure: present
