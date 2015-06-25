@@ -1,0 +1,9 @@
+Code-Review+1: GWicke <gwicke@wikimedia.org>
+Code-Review+2: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Code-Review+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Verified+2: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-by: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Submitted-at: Tue, 24 Feb 2015 11:58:30 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/191652
+Project: operations/puppet
+Branch: refs/heads/master
