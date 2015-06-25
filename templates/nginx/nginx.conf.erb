@@ -112,6 +112,19 @@ http {
         ''      $http_accept_encoding;
     }
 
+    # When SPDY is not in use, '$spdy' is empty. Map that value to a zero.
+    map $spdy $spdy_version {
+        default $spdy;
+        '' '0';
+    }
+
+    # Nginx indicates session reuse with 'r' and '.', which is rather cryptic.
+    # Map this value to '1' and '0' instead.
+    map $ssl_session_reused $session_reused {
+        'r' '1';
+        '.' '0';
+    }
+
     <%= @nginx_ssl_conf.join("\n")  %>
     <% end %>
 
