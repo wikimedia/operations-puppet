@@ -131,7 +131,7 @@ class contint::packages {
     # need geoip to build udp-filter
     include geoip
 
-    # qunit tests depends on curl
+    # frontend tests use curl to make http requests to mediawiki
     package { [
         'curl',
         ]:
