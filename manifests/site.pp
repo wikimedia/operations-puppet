@@ -248,8 +248,6 @@ node 'bast1001.wikimedia.org' {
         mountpoint => '/srv/home_pmtpa',
         mount_site => 'pmtpa',
     }
-    include role::backup::host
-    backup::set {'home': }
 }
 
 node 'bast2001.wikimedia.org' {
@@ -1140,8 +1138,6 @@ node 'iron.wikimedia.org' {
     include standard
     include role::ipmi
     include role::access_new_install
-    include role::backup::host
-    backup::set {'home': }
 }
 
 node 'labcontrol1001.wikimedia.org' {
