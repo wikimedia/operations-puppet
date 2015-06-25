@@ -789,3 +789,4 @@ nfs_mounts:
   home: false
   scratch: false
   dumps: false
+eventlogging_host: deployment-eventlogging02.deploymnet-prep.eqiad.wmflabs

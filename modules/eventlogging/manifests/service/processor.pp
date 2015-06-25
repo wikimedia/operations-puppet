@@ -28,14 +28,17 @@
 #   The URI of the raw log stream which the processor will take as its
 #   input. Example: 'tcp://eventlog1001.eqiad.wmnet:8421'.
 #
-# [*output*]
-#   A URI specifying the interface and port on which the processed event
-#   stream will be published. Example: 'tcp://*:8600'.
+# [*outputs*]
+#   An array of URIs to output to. Example: [
+#       'tcp://eventlog1001.eqiad.wmnet:8521',
+#       'kafka:///localhost:9092?topic=eventlogging_%s(schema)s'
+#   ]
 #
 # [*output_invalid*]
 #   An optional URI specifying the interface and port on which the invalid
-#   event stream will be published. Example: 'tcp://*:8600'. Defaults to
-#   null.
+#   event stream will be published. Example: 'tcp://*:8601'. Defaults to
+#   null.  If set to true, then eventlogging will choose the first
+#   output URI in the outputs array.
 #
 # [*sid*]
 #   Specifies the socket ID the processor will use to identify itself
@@ -56,7 +59,7 @@
 define eventlogging::service::processor(
     $format,
     $input,
-    $output,
+    $outputs,
     $output_invalid = undef,
     $sid            = $title,
     $ensure         = present,
