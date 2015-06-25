@@ -60,7 +60,7 @@ nimishg, rainman, ssmith, swalling, erik]
     members: [avar, daniel, dartar, diederik,
               ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
               tparscal, tnegrin, ssastry, ironholds, nuria, leila,
-              santhosh, amire80, legoktm, jsahleen]
+              santhosh, amire80, legoktm, jsahleen, ellery]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   bastiononly:
     gid: 707
