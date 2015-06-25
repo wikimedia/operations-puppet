@@ -32,7 +32,7 @@ scheduler = <%= service.fetch('scheduler', "wrr") %>
 <%# Temp logic strictly for switchover to Etcd %>
 <%# Opt in site and node combo to set to active for node pools %>
 <% $etcd_sites = ['codfw'] %>
-<% $etcd_nodes = ['lvs2001'] %>
+<% $etcd_nodes = ['lvs2001', 'lvs2004'] %>
 <% if $etcd_sites.include?(@site) and $etcd_nodes.include?(scope.lookupvar("::hostname"))  then -%>
 config = file:///etc/pybal/pools/<%= servicename %>
 <% else %>
