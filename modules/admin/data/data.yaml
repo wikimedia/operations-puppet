@@ -58,7 +58,7 @@ groups:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [daniel, dartar,
+    members: [daniel, dartar, ellery,
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, tnegrin, ssastry,
               ironholds, nuria, leila, santhosh, amire80, legoktm, jsahleen]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
