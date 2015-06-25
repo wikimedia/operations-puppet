@@ -201,6 +201,12 @@ class role::backup::director {
     bacula::director::fileset { 'srv-org-wikimedia-blog':
         includes => [ '/srv/org/wikimedia/blog' ]
     }
+    bacula::director::fileset { 'bugzilla-static':
+        includes => [ '/srv/org/wikimedia/static-bugzilla' ]
+    }
+    bacula::director::fileset { 'bugzilla-backup':
+        includes => [ '/srv/org/wikimedia/bugzilla-backup' ]
+    }
     # As all /a this will hopefully no longer be needed at some point and will
     # be killed with fire
     bacula::director::fileset { 'mysql-a-backups':
