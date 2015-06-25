@@ -80,10 +80,10 @@ class lvs::configuration {
         'timeout' => 10,
     }
 
-    # Configuration of PyBal LVS services.
-    # NOTE! Double quotation may be needed for passing strings
-
     # NOTE! This hash is referenced in many other manifests
+    # TODO: This has is now hosting default values. It is being phased out as
+    # you read this, so please refrain from updating it and update the
+    # corresponding hiera configuration
     $lvs_service_ips = {
         'production' => {
             'text' => {
@@ -355,7 +355,7 @@ class lvs::configuration {
         },
     }
 
-    $service_ips = $lvs_service_ips[$::realm]
+    $service_ips = hiera('lvs::configuration::lvs_service_ips', $lvs_service_ips[$::realm])
 
     $lvs_services = {
         'text' => {
