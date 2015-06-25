@@ -476,6 +476,24 @@ class lvs::configuration {
             },
             'conftool' => {'cluster' => 'dns', 'service' => 'pdns_recursor'},
         },
+        "dns_rec_tcp" => {
+            'description' => "Recursive DNS - TCP",
+            'class' => "high-traffic2",
+            'sites' => [ "eqiad", "codfw", "esams" ],
+            'protocol' => "tcp",
+            'ip' => $service_ips['dns_rec'][$::site],
+            'port' => 53,
+            'bgp' => "no",
+            'depool-threshold' => ".5",
+            'monitors' => {
+                'DNSQuery' => {
+                    'hostnames' => [ 'en.wikipedia.org', 'www.google.com' ],
+                    'fail-on-nxdomain' => "no"
+                },
+                'IdleConnection' => $idleconnection_monitor_options,
+            },
+            'conftool' => {'cluster' => 'dns', 'service' => 'pdns_recursor'},
+        },
         "osm" => {
             'description' => "OpenStreetMap tiles",
             'class' => "high-traffic2",
