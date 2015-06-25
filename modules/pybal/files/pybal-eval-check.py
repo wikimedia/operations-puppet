@@ -7,7 +7,14 @@ import pwd
 import grp
 import sys
 import socket
+import syslog
 
+
+def die(msg):
+    error = "[error]: %s" % (msg,)
+    print error
+    syslog.syslog(error)
+    sys.exit(1)
 
 def drop_privileges(uid_name='nobody',
                     gid_name='nogroup',
@@ -56,13 +63,11 @@ def main():
             socket.gethostbyname_ex(server['host'])
             eligible_servers.append(server)
         except Exception as e:
-            print 'Error: ', l, e
-            sys.exit(1)
+            die('%s %s' % (l, e))
 
     # We assume empty pools are errant
     if not eligible_servers:
-        print "Error: server pool cannot be empty!"
-        sys.exit(1)
+        die("server pool cannot be empty!")
 
 if __name__ == '__main__':
     print main() or 'no issues'
