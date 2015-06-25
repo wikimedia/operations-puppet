@@ -32,6 +32,13 @@ class contint::slave-scripts {
         origin             => 'https://gerrit.wikimedia.org/r/p/integration/composer.git',
         recurse_submodules => true,
     }
+
+    # Create a symlink for the composer executable
+    file { '/usr/local/bin/composer':
+        ensure => 'link',
+        target => '/srv/deployment/integration/composer/vendor/bin/composer',
+    }
+
     git::clone { 'jenkins CI phpcs':
         ensure             => 'latest',
         directory          => '/srv/deployment/integration/phpcs',
