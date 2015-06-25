@@ -3,7 +3,7 @@ class openstack::glance::service(
     $glanceconfig) {
     include openstack::repo
 
-    $image_datadir = '/a/glance/images'
+    $image_datadir = '/srv/glance/images'
 
     #  This is 775 so that the glancesync user can rsync to it.
     file { $image_datadir:
