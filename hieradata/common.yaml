@@ -226,3 +226,4 @@ zookeeper_hosts:
   conf1001.eqiad.wmnet: '1101'
   conf1002.eqiad.wmnet: '1102'
   conf1003.eqiad.wmnet: '1103'
+ntp::daemon::ensure: absent
