@@ -9,7 +9,7 @@
 #
 # == Example:
 #
-# contint::localvhost { 'qunit:' }
+# contint::localvhost { 'qunit': }
 #
 # Creates a vhost listening on 127.0.0.1:9412 having a DocumentRoot at
 # /srv/localhost/qunit.
