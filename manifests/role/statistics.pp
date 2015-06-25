@@ -55,7 +55,7 @@ class role::statistics::cruncher inherits role::statistics {
     # Use the statistics::limn::data::generate define
     # to set up cron jobs to generate and generate limn files
     # from research db and push them
-    statistics::limn::data::generate { 'mobile':    }
+#    statistics::limn::data::generate { 'mobile':    }
     statistics::limn::data::generate { 'flow':      }
     statistics::limn::data::generate { 'edit':      }
     statistics::limn::data::generate { 'language':  }
