@@ -3,7 +3,7 @@
 class lvs::monitor {
     include lvs::configuration
 
-    $ip = $lvs::configuration::lvs_service_ips['production']
+    $ip = $lvs::configuration::service_ips
 
     # WARNING: Temporary, do not lint this, it is going in hiera anyway
     # lint:ignore:80chars
