@@ -43,7 +43,7 @@ sub vcl_recv {
 		set req.backend = neon;
 	} elsif (req.http.Host == "racktables.wikimedia.org" || req.http.Host == "rt.wikimedia.org") {
 		set req.backend = magnesium;
-	} elsif (req.http.Host == "metrics.wikimedia.org" || req.http.Host == "datasets.wikimedia.org" || req.http.Host == "stats.wikimedia.org" || req.http.Host == "stat1001.wikimedia.org") {
+	} elsif (req.http.Host == "metrics.wikimedia.org" || req.http.Host == "datasets.wikimedia.org" || req.http.Host == "stats.wikimedia.org") {
 		set req.backend = stat1001;
 	} elsif (req.http.Host == "config-master.wikimedia.org") {
 		set req.backend = palladium;
