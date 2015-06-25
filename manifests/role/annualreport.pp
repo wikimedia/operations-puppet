@@ -3,7 +3,7 @@
 # http://wikimediafoundation.org/wiki/Annual_Report
 class role::annualreport {
 
-    system::role { 'role::annualreport': description => 'annual.wikimedia.org' }
+    system::role { 'role::annualreport': description => 'WMF Annual Report server - annual.wikimedia.org' }
 
     include ::annualreport
 

@@ -60,7 +60,7 @@ class iegreview(
     include passwords::mysql::iegreview
 
     system::role { 'iegreview':
-        description => 'IEG grant review server',
+        description => 'Grants review application server - iegreview.wikimedia.org',
     }
 
     package { 'iegreview/iegreview':
