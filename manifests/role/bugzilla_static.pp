@@ -9,6 +9,9 @@ class role::bugzilla_static {
         port  => '80',
     }
 
+    backup::set { 'bugzilla-static' : }
+    backup::set { 'bugzilla-backup' : }
+
     include ::bugzilla_static
 }
 
