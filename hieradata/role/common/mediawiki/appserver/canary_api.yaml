@@ -7,6 +7,7 @@ admin::groups:
 mediawiki::users::web: www-data
 hhvm::extra::fcgi:
   hhvm:
+    jit_pseudomain: false
     mysql:
       connect_timeout: 3000
     server:
