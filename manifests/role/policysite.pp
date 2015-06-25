@@ -2,7 +2,7 @@
 # T97329
 class role::policysite {
 
-    system::role { 'role::policysite': description => 'policy.wikimedia.org' }
+    system::role { 'role::policysite': description => 'Upcoming WMF Policy Site - policy.wikimedia.org' }
 
     include ::policysite
 
