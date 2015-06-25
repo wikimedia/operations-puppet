@@ -1,4 +1,4 @@
-define ntp::daemon($servers=[], $peers=[], $query_acl=[], $time_acl=[], $servers_opt='') {
+define ntp::daemon($servers=[], $peers=[], $query_acl=[], $time_acl=[], $servers_opt='', $ensure='present') {
     package { 'ntp': ensure => latest }
 
     file { 'ntp.conf':
@@ -10,7 +10,7 @@ define ntp::daemon($servers=[], $peers=[], $query_acl=[], $time_acl=[], $servers
     }
 
     service { 'ntp':
-        ensure    => running,
+        ensure    => ensure_service($ensure),
         require   => [ File['ntp.conf'], Package['ntp'] ],
         subscribe => File['ntp.conf'],
     }
