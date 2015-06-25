@@ -26,42 +26,43 @@ class role::cache::text {
 
     $varnish_be_directors = {
         'one' => {
-            'backend'           => {
+            'backend'          => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
             },
-            'api'               => {
+            'api'              => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
             },
-            'rendering'         => {
+            'rendering'        => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
             },
-            'test_wikipedia'    => {
+            'test_wikipedia'   => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
             },
-            'restbase_backend'  => {
+            'restbase_backend' => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
             },
         },
         'two' => {
-            'backend'           => {
+            'backend'        => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $text_nodes['eqiad'],
             },
-            'backend_random'    => {
+            'backend_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
                 'backends' => $text_nodes['eqiad'],
+                'service'  => 'varnish-be-rand',
             },
         },
     }
@@ -134,6 +135,7 @@ class role::cache::text {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
                 'backends' => $site_text_nodes,
+                'service'  => 'varnish-be-rand',
             },
         },
         vcl_config      => {
