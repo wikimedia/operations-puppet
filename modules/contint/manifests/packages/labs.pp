@@ -85,6 +85,7 @@ class contint::packages::labs {
 
         'libxml2-dev',   # For python lxml
         'libxslt1-dev',  # For python lxml
+        'libffi-dev', # For python requests[security]
 
         # For mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
         # Provided by openstack::common:
