@@ -6,6 +6,9 @@ class role::bastionhost {
 
     include ::bastionhost
     include base::firewall
+    include role::backup::host
+
+    backup::set {'home': }
 
     ferm::service { 'ssh':
         desc  => 'SSH open from everywhere, this is a bastion host',
@@ -13,4 +16,5 @@ class role::bastionhost {
         proto => 'tcp',
         port  => 'ssh',
     }
+
 }
