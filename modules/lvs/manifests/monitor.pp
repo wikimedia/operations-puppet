@@ -9,12 +9,12 @@ class lvs::monitor {
     # lint:ignore:80chars
     # INTERNAL EQIAD
     $monitors_internal_eqiad = {
-        'appservers.svc.eqiad.wmnet' => { ip_address => '10.2.2.1', check_command => 'check_http_lvs!en.wikipedia.org!/wiki/Main_Page' },
-        'api.svc.eqiad.wmnet' => { ip_address => '10.2.2.22', check_command => 'check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo' },
-        'rendering.svc.eqiad.wmnet' => { ip_address => '10.2.2.21', check_command => 'check_http_lvs!en.wikipedia.org!/wiki/Main_Page' },
-        'ms-fe.eqiad.wmnet' => { ip_address => '10.2.2.27', check_command => 'check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend' },
-        'parsoid.svc.eqiad.wmnet' => { ip_address => '10.2.2.28', check_command => 'check_http_on_port!8000', contact_group => 'admins,parsoid' },
-        'search.svc.eqiad.wmnet' => { ip_address => '10.2.2.30', check_command => 'check_http_on_port!9200', contact_group => 'admins' },
+        'appservers.svc.eqiad.wmnet' => { ip_address => $ip['apaches']['eqiad'], check_command => 'check_http_lvs!en.wikipedia.org!/wiki/Main_Page' },
+        'api.svc.eqiad.wmnet' => { ip_address => $ip['api']['eqiad'], check_command => 'check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo' },
+        'rendering.svc.eqiad.wmnet' => { ip_address => $ip['rendering']['eqiad'], check_command => 'check_http_lvs!en.wikipedia.org!/wiki/Main_Page' },
+        'ms-fe.eqiad.wmnet' => { ip_address => $ip['swift']['eqiad'], check_command => 'check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend' },
+        'parsoid.svc.eqiad.wmnet' => { ip_address => $ip['parsoid']['eqiad'], check_command => 'check_http_on_port!8000', contact_group => 'admins,parsoid' },
+        'search.svc.eqiad.wmnet' => { ip_address => $ip['search']['eqiad'], check_command => 'check_http_on_port!9200', contact_group => 'admins' },
         'ocg.svc.eqiad.wmnet' => { ip_address => $ip['ocg']['eqiad'], check_command => 'check_http_lvs_on_port!ocg.svc.eqiad.wmnet!8000!/?command=health' },
         'mathoid.svc.eqiad.wmnet' => { ip_address => $ip['mathoid']['eqiad'], check_command => 'check_http_lvs_on_port!mathoid.svc.eqiad.wmnet!10042!/_info' },
         'citoid.svc.eqiad.wmnet' => { ip_address => $ip['citoid']['eqiad'], check_command => 'check_http_lvs_on_port!citoid.svc.eqiad.wmnet!1970!/', contact_group => 'admins,parsoid' },
@@ -32,7 +32,7 @@ class lvs::monitor {
 
     # INTERNAL CODFW
     $monitors_internal_codfw = {
-        'ms-fe.svc.codfw.wmnet' => { ip_address => '10.2.1.27', check_command => 'check_http_lvs!ms-fe.svc.codfw.wmnet!/monitoring/backend' },
+        'ms-fe.svc.codfw.wmnet' => { ip_address => $ip['swift']['codfw'], check_command => 'check_http_lvs!ms-fe.svc.codfw.wmnet!/monitoring/backend' },
     }
     create_resources(lvs::monitor_service_http, $monitors_internal_codfw)
 
