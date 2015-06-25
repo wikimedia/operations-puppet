@@ -13,4 +13,6 @@ class role::bastionhost {
         proto => 'tcp',
         port  => 'ssh',
     }
+
+    backup::set {'home': }
 }

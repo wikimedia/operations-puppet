@@ -1236,7 +1236,6 @@ node 'iron.wikimedia.org' {
     include role::ipmi
     include role::access_new_install
     include role::backup::host
-    backup::set {'home': }
 }
 
 node 'labcontrol1001.wikimedia.org' {
