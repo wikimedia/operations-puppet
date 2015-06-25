@@ -940,7 +940,11 @@ node 'etherpad1001.eqiad.wmnet' {
 # Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
 # processes it, and broadcasts to internal subscribers.
 node 'eventlog1001.eqiad.wmnet' {
-    role eventlogging
+    role eventlogging::forwader,
+        eventlogging::processor,
+        eventlogging::multiplexer,
+        eventlogging::consumer::mysql,
+        eventlogging::consumer::files
 
     include standard
     include role::ipython_notebook
