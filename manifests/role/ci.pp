@@ -230,13 +230,13 @@ class role::ci::slave {
         owner  => 'jenkins-slave',
         group  => 'jenkins-slave',
     }
-    file { '/srv/localhost/qunit':
+    file { '/srv/localhost/worker':
         ensure => directory,
         mode   => '0775',
         owner  => 'jenkins-slave',
         group  => 'jenkins-slave',
     }
-    include contint::qunit_localhost
+    include contint::worker_localhost
 
     # Ganglia diskstat plugin is being evaluated on contint production slaves
     # servers merely to evaluate it for the standard role. -- hashar, 23-Oct-2013
@@ -432,25 +432,13 @@ class role::ci::slave::labs {
         owner  => 'jenkins-deploy',
         group  => 'root',  # no jenkins-deploy group in labs
     }
-    file { '/srv/localhost/mediawiki':
-        ensure => directory,
-        mode   => '0775',
-        owner  => 'jenkins-deploy',
-        group  => 'root',  # no jenkins-deploy group in labs
-    }
-    file { '/srv/localhost/qunit':
+    file { '/srv/localhost/worker':
         ensure => directory,
         mode   => '0775',
         owner  => 'jenkins-deploy',
         group  => 'root',
     }
-    contint::localvhost { 'mediawiki':
-        port       => 9414,
-        docroot    => '/srv/localhost/mediawiki',
-        log_prefix => 'mediawiki',
-        require    => File['/srv/localhost/mediawiki'],
-    }
-    include contint::qunit_localhost
+    include contint::worker_localhost
 
     contint::tmpfs { 'tmpfs for jenkins CI labs slave':
         # Jobs expect the tmpfs to be in $HOME/tmpfs
