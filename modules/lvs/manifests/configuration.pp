@@ -458,8 +458,8 @@ class lvs::configuration {
             },
             'conftool' => {'cluster' => 'cache_mobile', 'service' => 'nginx'},
         },
-        "dns_rec" => {
-            'description' => "Recursive DNS",
+        "dns_rec_udp" => {
+            'description' => "Recursive DNS - UDP",
             'class' => "high-traffic2",
             'sites' => [ "eqiad", "codfw", "esams" ],
             'protocol' => "udp",
@@ -476,7 +476,7 @@ class lvs::configuration {
             },
             'conftool' => {'cluster' => 'dns', 'service' => 'pdns_recursor'},
         },
-        "dns_rec_tcp" => {
+        "dns_rec" => {
             'description' => "Recursive DNS - TCP",
             'class' => "high-traffic2",
             'sites' => [ "eqiad", "codfw", "esams" ],
