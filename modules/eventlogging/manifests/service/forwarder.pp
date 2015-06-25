@@ -12,7 +12,7 @@
 # [*outputs*]
 #   An array of URIs to output to.  Defaults to an empty array.  Example: [
 #       'tcp://eventlog1001.eqiad.wmnet:8421',
-#       'kafka://?brokers=localhost:9092&topic=eventlogging',
+#       'kafka:///localhost:9092?topic=eventlogging-server-side',
 #   ]
 #
 # [*count*]

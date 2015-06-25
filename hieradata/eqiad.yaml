@@ -44,3 +44,6 @@ labs_ldap_dns_host_secondary: "labs-ns1.wikimedia.org"
 # These are the up-and-coming, better dns servers:
 labs_dns_host: "labs-ns2.wikimedia.org"
 labs_recursor: "labs-recursor0.wikimedia.org"
+
+# Eventlogging
+eventlogging_host: eventlog1001.eqiad.wmnet
