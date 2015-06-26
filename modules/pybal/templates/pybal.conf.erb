@@ -13,12 +13,14 @@ bgp-nexthop-ipv6 = <%= @global_options['bgp-nexthop-ipv6'] %>
 # LVS service definitions
 #
 
-<% @lvs_services.sort.each do |servicename, service| -%>
-<% if service['sites'].include?(@site) and @lvs_class_hosts[service['class']].include?(scope.lookupvar("::hostname")) then -%>
-<% if service['ip'].class.eql?(String) then
-service['ip'] = { servicename => service['ip'] }
-end -%>
-<% service['ip'].sort.each do |subservicename, subserviceip| -%>
+<% @lvs_services.sort.each do |servicename, service|
+if service['sites'].include?(@site) and @lvs_class_hosts[service['class']].include?(scope.lookupvar("::hostname")) then
+    serviceip = service['ip'][@site]
+    if serviceip.class.eql?(String) then
+        serviceip = { servicename => service['ip'] }
+    end
+-%>
+<% serviceip.sort.each do |subservicename, subserviceip| -%>
 # SERVICE <%= subservicename %>
 # Class: <%= service['class'] %>
 # Description: <%= service['description'] %>
