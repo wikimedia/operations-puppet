@@ -4,7 +4,7 @@
 #####################################################################
 # Resolver configuration for site <%= @site %>
 search <%= Array(@domain_search).join(' ') %>
-options timeout:3
+options timeout:1 attempts:3
 <% if @nameservers_override.nil? -%>
 <% @nameservers.each do |nameserver| -%>
 nameserver <%= nameserver %>
