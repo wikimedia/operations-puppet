@@ -1,6 +1,6 @@
-/etc/apt/apt.conf.d/ /etc/apt/apt.conf.d/
-/etc/apt/preferences.d/ /etc/apt/preferences.d/
-/etc/apt/sources.list.d/ /etc/apt/sources.list.d/
+/etc/apt/apt.conf.d/ /etc/apt/
+/etc/apt/preferences.d/ /etc/apt/
+/etc/apt/sources.list.d/ /etc/apt/
 /etc/apt/trusted.gpg /etc/apt/trusted.gpg
 /etc/default/puppet /etc/default/puppet.install
 /etc/exim4/exim4.conf /etc/exim4/exim4.conf
