@@ -98,4 +98,12 @@ class confd(
             require  => File['/etc/logrotate.d/confd'],
         }
     }
+
+    file { '/usr/local/lib/nagios/plugins/check_confd_template':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/confd/check_confd_template';
+    }
 }
