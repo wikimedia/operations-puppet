@@ -7,4 +7,9 @@ class planet::packages {
         ensure => 'present',
     }
 
+    # XSLT 1.0 command line processor
+    package { 'xsltproc':
+        ensure => 'present',
+    }
+
 }
