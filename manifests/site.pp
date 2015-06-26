@@ -2369,7 +2369,6 @@ node 'zirconium.wikimedia.org' {
     class { 'base::firewall': }
 
     include standard
-    include role::planet
     include role::wikimania_scholarships
     include role::bugzilla_static
     include role::transparency
