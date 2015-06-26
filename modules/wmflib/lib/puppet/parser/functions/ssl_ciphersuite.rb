@@ -47,8 +47,55 @@ require 'puppet/util/package'
 
 module Puppet::Parser::Functions
   ciphersuites = {
-    'compat' => 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128:AES256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!DH',
-    'strong' => 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!DH'
+    'compat' => [
+      'ECDHE-RSA-AES128-GCM-SHA256',
+      'ECDHE-ECDSA-AES128-GCM-SHA256',
+      'ECDHE-RSA-AES256-GCM-SHA384',
+      'ECDHE-ECDSA-AES256-GCM-SHA384',
+      'ECDHE-RSA-AES128-SHA256',
+      'ECDHE-ECDSA-AES128-SHA256',
+      'ECDHE-RSA-AES128-SHA',
+      'ECDHE-ECDSA-AES128-SHA',
+      'ECDHE-RSA-AES256-SHA384',
+      'ECDHE-ECDSA-AES256-SHA384',
+      'ECDHE-RSA-AES256-SHA',
+      'ECDHE-ECDSA-AES256-SHA',
+      'AES128-GCM-SHA256',
+      'AES256-GCM-SHA384',
+      'AES128',
+      'AES256',
+      'HIGH',
+      '!aNULL',
+      '!eNULL',
+      '!EXPORT',
+      '!DES',
+      '!MD5',
+      '!PSK',
+      '!DH',
+    ],
+    'strong' => [
+      'ECDHE-RSA-AES128-GCM-SHA256',
+      'ECDHE-ECDSA-AES128-GCM-SHA256',
+      'ECDHE-RSA-AES256-GCM-SHA384',
+      'ECDHE-ECDSA-AES256-GCM-SHA384',
+      'ECDHE-RSA-AES128-SHA256',
+      'ECDHE-ECDSA-AES128-SHA256',
+      'ECDHE-RSA-AES128-SHA',
+      'ECDHE-ECDSA-AES128-SHA',
+      'ECDHE-RSA-AES256-SHA384',
+      'ECDHE-ECDSA-AES256-SHA384',
+      'ECDHE-RSA-AES256-SHA',
+      'ECDHE-ECDSA-AES256-SHA',
+      'HIGH',
+      '!aNULL',
+      '!eNULL',
+      '!EXPORT',
+      '!DES',
+      '!3DES',
+      '!MD5',
+      '!PSK',
+      '!DH',
+    ],
   }
   newfunction(
               :ssl_ciphersuite,
@@ -93,7 +140,7 @@ END
       fail(ArgumentError, "ssl_ciphersuite(): unknown ciphersuite '#{ciphersuite}'")
     end
 
-    cipherlist = ciphersuites[ciphersuite]
+    cipherlist = ciphersuites[ciphersuite].join(":")
 
     if ciphersuite == 'strong' && server == 'apache' && server_version < 24
       fail(ArgumentError, 'ssl_ciphersuite(): apache 2.2 cannot work in strong PFS mode')
