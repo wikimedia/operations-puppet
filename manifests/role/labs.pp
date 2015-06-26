@@ -35,18 +35,32 @@ class role::labs::instance {
         ensure => present,
     }
 
+    # This script will block until the NFS volume is available
+    file { '/usr/local/sbin/block-for-export':
+        ensure => present,
+        owner  => root,
+        mode   => '0555',
+        source => 'puppet:///files/nfs/block-for-export',
+    }
+
     $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc'
     $nfs_server = 'labstore.svc.eqiad.wmnet'
     $dumps_server = 'labstore1003.eqiad.wmnet'
 
     if mount_nfs_volume($::instanceproject, 'home') {
+        # Note that this is the same export as for /data/project
+        exec { 'block-for-home-export':
+            command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::instanceproject} 60",
+            require => File['/usr/local/sbin/block-for-export'],
+        }
+
         mount { '/home':
             ensure  => mounted,
             atboot  => true,
             fstype  => 'nfs',
             options => "rw,${nfs_opts}",
             device  => "${nfs_server}:/project/${instanceproject}/home",
-            require => File['/etc/modprobe.d/nfs-no-idmap'],
+            require => [File['/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-home-export']],
         }
     }
 
@@ -61,6 +75,11 @@ class role::labs::instance {
     }
 
     if mount_nfs_volume($::instanceproject, 'project') {
+        exec { 'block-for-project-export':
+            command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::instanceproject} 60",
+            require => File['/usr/local/sbin/block-for-export'],
+        }
+
         file { '/data/project':
             ensure  => directory,
             require => File['/data'],
@@ -72,11 +91,12 @@ class role::labs::instance {
             fstype  => 'nfs',
             options => "rw,${nfs_opts}",
             device  => "${nfs_server}:/project/${instanceproject}/project",
-            require => File['/data/project', '/etc/modprobe.d/nfs-no-idmap'],
+            require => [File['/data/project', '/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-project-export']],
         }
     }
 
     if mount_nfs_volume($::instanceproject, 'scratch') {
+        # We don't need to block for this one because it's always exported for everyone.
         file { '/data/scratch':
             ensure  => directory,
             require => File['/data'],
