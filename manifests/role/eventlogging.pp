@@ -224,7 +224,7 @@ class role::eventlogging::monitoring inherits role::eventlogging {
         host => 'statsd.eqiad.wmnet',
     }
 
-    nrpe::monitor_service { 'eventlogging':
+    nrpe::monitor_service { 'eventlogging-main':
         ensure        => 'present',
         description   => 'Check status of defined EventLogging jobs',
         nrpe_command  => '/usr/lib/nagios/plugins/check_eventlogging_jobs',
@@ -271,7 +271,7 @@ class role::eventlogging::graphite inherits role::eventlogging  {
     }
 
     # Generate icinga alert if the graphite consumer is not running.
-    nrpe::monitor_service { 'eventlogging':
+    nrpe::monitor_service { 'eventlogging-graphite':
         ensure        => 'present',
         description   => 'Check status of defined EventLogging jobs on graphite consumer',
         nrpe_command  => '/usr/lib/nagios/plugins/check_eventlogging_jobs',
