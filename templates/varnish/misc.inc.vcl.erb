@@ -74,7 +74,7 @@ sub vcl_recv {
 		}
 	}
 	elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org" || req.http.Host == "planet.wikimedia.org") {
-		set req.backend = zirconium;
+		set req.backend = planet1001;
 	} elsif (req.http.Host == "etherpad.wikimedia.org") {
 		set req.backend = etherpad1001;
 		return (pass);
