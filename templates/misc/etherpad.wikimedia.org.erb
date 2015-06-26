@@ -37,6 +37,10 @@
     RewriteCond %{HTTP_HOST} !<%= @etherpad_host %>
     RewriteRule ^/+(.+)$ https://<%= @etherpad_host %>/$1 [R=301,L]
 
+    <Location /static>
+        Header set Access-Control-Allow-Origin "*"
+    </Location>
+
     <Proxy *>
         Options FollowSymLinks MultiViews
         AllowOverride All
