@@ -1,0 +1,29 @@
+#!/bin/sh
+
+. /usr/lib/nagios/plugins/utils.sh
+
+TEMPLATE=${1}
+# If the file is not present, it's a problem probably.
+if ! -f "${TEMPLATE}"; then
+    echo "File not found: ${TEMPLATE}"
+    exit $STATE_CRITICAL
+fi;
+FILE_TS=$(stat -c "%Y" "${TEMPLATE}")
+GLOB="$( dirname \"${TEMPLATE}\")/.$(basename \"${TEMPLATE}\")*"
+for glob in $GLOB;
+do
+    # If the glob doesn't expand, it will report just one item
+    if [ "${glob}" == "${GLOB}"]; then
+        echo "No errors detected";
+        exit $STATE_OK;
+    fi;
+
+    TS=$(stat -c "%Y" ${glob})
+    if [ ${TS} -gt ${FILE_TS} ]; then
+       echo "Compilation of file '${TEMPLATE}' is broken";
+       exit $STATE_CRITICAL;
+    fi;
+done;
+#If we got here, we have errors that are now stale; still issue a warning
+echo "Stale template error files present for '${TEMPLATE}'"
+exit $STATE_WARNING
