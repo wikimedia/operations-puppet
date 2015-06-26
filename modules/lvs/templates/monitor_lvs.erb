@@ -1,0 +1,35 @@
+<%- require 'yaml'
+tmp = {}
+@lvs_services.keys.sort.each do |x|
+    if @lvs_services[x].has_key?('icinga')
+        service = @lvs_services[x]
+        sites = service['icinga']['sites']
+        sites.keys.each do |site|
+            begin
+                hostname = service['icinga']['sites'][site]['hostname']
+	    rescue
+                next
+	    end
+            tmp[hostname] = {}
+            # Lots of silly code to accomodate for the current situation. Needs fixing
+            if service['ip'][site].is_a?(Hash)
+                tmp[hostname]['ip_address'] = service['ip'][site][x+'lb']
+                tmp[hostname]['ip6_address'] = service['ip'][site][x+'lb6']
+            else
+                tmp[hostname]['ip_address'] = service['ip'][site]
+            end
+            if service['icinga']['uri']
+                tmp[hostname]['uri'] = service['icinga']['uri']
+            end
+            if service['icinga']['check_command']
+                tmp[hostname]['check_command'] = service['icinga']['check_command']
+            end
+            if service['icinga']['contact_group']
+                tmp[hostname]['contact_group'] = service['icinga']['contact_group']
+            end
+	    # End of lots of silly code
+        end
+    end
+end
+-%>
+<%= YAML.dump(tmp) %>
