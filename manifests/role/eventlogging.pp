@@ -69,7 +69,7 @@ class role::eventlogging {
 
 
 # == Class role::eventlogging::forwarder
-# Responsible for forwarding incoming raw events from UDP
+# Responsible for forwarding incoming raw events from UDP
 # into the eventlogging system.
 #
 class role::eventlogging::forwarder inherits role::eventlogging {
