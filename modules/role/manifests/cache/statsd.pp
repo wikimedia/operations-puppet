@@ -6,4 +6,10 @@ class role::cache::statsd {
         statsd_server => 'statsd.eqiad.wmnet',
         key_prefix    => "varnish.${::site}.backends",
     }
+
+    if $::hostname == 'cp1048' {
+        ::varnish::logging::xcps { 'xcps':
+            statsd_server => 'statsd.eqiad.wmnet',
+        }
+    }
 }
