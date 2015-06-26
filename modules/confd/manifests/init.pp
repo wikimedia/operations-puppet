@@ -74,17 +74,28 @@ class confd(
         }
     }
 
-    # Log to a dedicated file
-    file { '/etc/logrotate.d/confd':
-        source => 'puppet:///modules/confd/logrotate.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-    }
+    # Upstart will log confd output to a dedicated file in /var/log/upstart already
+    if $::initsystem == 'upstart' {
+        file { '/etc/logrotate.d/confd':
+            ensure => absent,
+        }
 
-    rsyslog::conf { 'confd':
-        source   => 'puppet:///modules/confd/rsyslog.conf',
-        priority => 20,
-        require  => File['/etc/logrotate.d/confd'],
+        rsyslog::conf { 'confd':
+            ensure => absent,
+        }
+    } else {
+        # Log to a dedicated file
+        file { '/etc/logrotate.d/confd':
+            source => 'puppet:///modules/confd/logrotate.conf',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+        }
+
+        rsyslog::conf { 'confd':
+            source   => 'puppet:///modules/confd/rsyslog.conf',
+            priority => 20,
+            require  => File['/etc/logrotate.d/confd'],
+        }
     }
 }
