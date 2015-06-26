@@ -52,7 +52,9 @@ class role::eventlogging {
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
     # with each message keyed by SCHEMA_REVISION.
-    $kafka_output_uri    = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
+    # If you want to write to a different topic, append topic=<TOPIC>
+    # to your query params.
+    $kafka_base_uri    = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
     # jq is very useful, install it on eventlogging servers
     ensure_packages(['jq'])
@@ -192,6 +194,22 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
     }
 }
 
+# == Class role::eventlogging::forwarder::kafka
+# Temporary class to test eventlogging kafka on host other than eventlog1001.
+#
+class role::eventlogging::forwarder::kafka inherits role::eventlogging {
+    eventlogging::service::forwarder { 'server-side-raw':
+        input   => "tcp://${forwarder_host}:8421?identity=server-side-raw-kafka",
+        outputs => ["${kafka_base_uri}?topic=eventlogging-server-side"],
+        count   => true,
+    }
+
+    eventlogging::service::forwarder { 'client-side-raw':
+        input   => "tcp://${forwarder_host}:8422?identity=server-side-raw-kafka",
+        outputs => ["${kafka_base_uri}?topic=eventlogging-client-side"],
+    }
+}
+
 # == Class role::eventlogging::processor::kafka
 # Temporary class to test eventlogging kafka on host other than eventlog1001.
 #
@@ -199,16 +217,31 @@ class role::eventlogging::processor::kafka inherits role::eventlogging {
     # Read in server side and client side raw events from
     # ZeroMQ, process them, and send events to schema
     # based topics in Kafka.
+    $kafka_schema_uri  = "${kafka_base_uri}?topic=eventlogging_%(schema)s"
+    # The downstream eventlogging MySQL consumer expects schemas to be
+    # all mixed up in a single stream.  We send processed events to a
+    # 'mixed' kafka topic in order to keep supporting it for now.
+    # NOTE:  This topic is named 'eventlogging-all', but may not
+    # have ALL events in it.  We plan to blacklist high volume
+    # events so they don't have to hit MySQL.
+    $kafka_mixed_uri   = "${kafka_base_uri}?topic=eventlogging-all"
+
     eventlogging::service::processor { 'server-side-events-kafka':
         format         => '%{seqId}d EventLogging %j',
-        input          => "tcp://${forwarder_host}:8421",
-        outputs         => [$kafka_output_uri],
+        input          => "${kafka_base_uri}?topic=eventlogging-server-side",
+        outputs        => [
+            $kafka_schema_uri,
+            $kafka_mixed_uri
+        ],
         output_invalid => true,
     }
     eventlogging::service::processor { 'client-side-events-kafka':
         format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
-        input          => "tcp://${forwarder_host}:8422",
-        outputs         => [$kafka_output_uri],
+        input          => "${kafka_base_uri}?topic=eventlogging-client-side",
+        outputs        => [
+            $kafka_schema_uri,
+            $kafka_mixed_uri
+        ],
         output_invalid => true,
     }
 }

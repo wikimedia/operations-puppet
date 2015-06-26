@@ -1,8 +1,10 @@
+<% if @sid -%>
 --sid
 <%= @sid %>
+<% end -%>
 <%= @format %>
 <%= @input %>
-<%= @outputs.sort.join('\n') %>
+<%= @outputs.join("\n") %>
 <% if @output_invalid -%>
 <% if @output_invalid == true or @output_invalid == 'true' -%>
 --output-invalid
