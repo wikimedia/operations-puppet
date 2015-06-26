@@ -1,7 +1,5 @@
 # tendril: MariaDB Analytics
-
-# NOTE: this does not install tendril.. it could be git deployed,
-# but it hasn't been moved to a wmf repo.
+# git clones from operations/software/tendril to /srv/tendril
 
 class tendril (
     $site_name,
@@ -19,5 +17,18 @@ class tendril (
         content => template("tendril/apache/${site_name}.erb");
     }
 
+    file { '/srv/tendril':
+        ensure => 'directory',
+        owner  => 'www-data',
+        group  => 'www-data',
+    }
+
+    git::clone { 'operations/software/tendril':
+        directory => '/srv/tendril',
+        branch    => 'master',
+        owner     => 'www-data',
+        group     => 'www-data',
+        require   => File['/srv/tendril'],
+    }
 
 }
