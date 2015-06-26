@@ -46,6 +46,7 @@ class role::cache::misc {
             'neon.wikimedia.org', # monitoring tools (icinga et al)
             'netmon1001.wikimedia.org', # servermon
             'palladium.eqiad.wmnet',
+            'planet1001.eqiad.wmnet',
             'ruthenium.eqiad.wmnet', # parsoid rt test server
             'stat1001.eqiad.wmnet', # metrics and metrics-api
             'terbium.eqiad.wmnet', # public_html
