@@ -218,7 +218,7 @@ class role::eventlogging::processor::kafka inherits role::eventlogging {
 # Provisions scripts for reporting state to monitoring tools.
 #
 class role::eventlogging::monitoring inherits role::eventlogging {
-    class { '::eventlogging::monitoring': }
+    include eventlogging::monitoring
 
     eventlogging::service::reporter { 'statsd':
         host => 'statsd.eqiad.wmnet',
@@ -263,7 +263,7 @@ class role::eventlogging::monitoring inherits role::eventlogging {
 # Includes process nanny alarm for graphite consumer
 
 class role::eventlogging::graphite inherits role::eventlogging  {
-    class { '::eventlogging::monitoring': }
+    include eventlogging::monitoring
 
     eventlogging::service::consumer { 'graphite':
         input  => "tcp://${processor_host}:8600",
