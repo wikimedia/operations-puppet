@@ -1338,9 +1338,8 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     # lvs100[25] are LVS balancers for the eqiad recursive DNS IP,
     #   so they need to use the recursive DNS backends directly
     #   (chromium and hydrogen) with fallback to codfw
-    if $::hostname =~ /^lvs100[25]$/ {
-        $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
-    }
+    # (doing this for all lvs for now, see T103921)
+    $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
 
     role lvs::balancer
 
@@ -1445,9 +1444,8 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
     # lvs200[25] are LVS balancers for the codfw recursive DNS IP,
     #   so they need to use the recursive DNS backends directly
     #   (acamar and achernar) with fallback to eqiad
-    if $::hostname =~ /^lvs200[25]$/ {
-        $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.239' ]
-    }
+    # (doing this for all lvs for now, see T103921)
+    $nameservers_override = [ '208.80.153.12', '208.80.153.42', '208.80.154.239' ]
     role lvs::balancer
 
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
@@ -1551,9 +1549,8 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
     # lvs300[24] are LVS balancers for the esams recursive DNS IP,
     #   so they need to use the recursive DNS backends directly
     #   (nescio and maerlant) with fallback to eqiad
-    if $::hostname =~ /^lvs300[24]$/ {
-        $nameservers_override = [ '91.198.174.106', '91.198.174.122', '208.80.154.239' ]
-    }
+    # (doing this for all lvs for now, see T103921)
+    $nameservers_override = [ '91.198.174.106', '91.198.174.122', '208.80.154.239' ]
 
     role lvs::balancer
 
@@ -1587,6 +1584,9 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
 
 # ULSFO lvs servers
 node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
+    # ns override for all lvs for now, see T103921
+    $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
+
     # lvs4001 and lvs4003 are in different racks
     if $::hostname =~ /^lvs400[13]$/ {
         $ganglia_aggregator = true
