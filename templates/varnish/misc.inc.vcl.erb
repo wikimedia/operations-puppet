@@ -43,7 +43,7 @@ sub vcl_recv {
 		set req.backend = magnesium;
 	} elsif (req.http.Host == "metrics.wikimedia.org" || req.http.Host == "stats.wikimedia.org") {
 		set req.backend = stat1001;
-	} elsif (req.http.Host == "datasets.wikimedia.org" {
+	} elsif (req.http.Host == "datasets.wikimedia.org") {
 		set req.backend = stat1001;
 		// No caching of datasets.  They can be larger than misc varnish can deal with.
 		return (pass);
