@@ -16,7 +16,8 @@
 class planet (
     $planet_domain_name,
     $planet_languages,
-    $planet_meta_link
+    $planet_meta_link,
+    $planet_http_proxy,
 ) {
 
     # locales are essential for planet

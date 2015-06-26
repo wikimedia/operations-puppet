@@ -191,11 +191,15 @@ class role::planet {
     # protocol-relative link to a meta or index page for all planets
     $planet_meta_link = "meta.wikimedia.org/wiki/Planet_Wikimedia"
 
+    # since we are on Ganeti now we need to proxy to fetch external URLs
+    $planet_http_proxy="http://url-downloader.wikimedia.org:8080"
+
     # the 'planet' class from modules/planet/init.pp does the setup
     class {'::planet':
         planet_domain_name => $planet_domain_name,
         planet_languages   => $planet_languages,
-        planet_meta_link   => $planet_meta_link
+        planet_meta_link   => $planet_meta_link,
+        planet_http_proxy  => $planet_http_proxy
     }
 
     ferm::service { 'planet-http':
