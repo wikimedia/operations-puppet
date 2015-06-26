@@ -51,9 +51,9 @@ define lvs::monitor_service_http_https (
         }
         if $check_command {
             @monitoring::service { $title:
-                host          => $title,
+                host          => "${title}_ipv6",
                 group         => 'lvs',
-                description   => 'LVS HTTP IPv4',
+                description   => 'LVS HTTP IPv6',
                 check_command => $check_command,
                 critical      => $critical,
                 contact_group => $contact_group,
