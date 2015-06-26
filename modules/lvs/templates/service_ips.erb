@@ -1,0 +1,7 @@
+<%- require 'yaml'
+tmp = {}
+@lvs_services.keys.sort.each do |x|
+	tmp[x] = lvs_services[x]['ip']
+end
+-%>
+<%= YAML.dump(tmp) %>
