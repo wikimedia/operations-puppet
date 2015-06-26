@@ -18,6 +18,7 @@ class base::standard-packages {
         'httpry',
         'iperf',
         'lldpd',
+        'molly-guard',
         'ngrep',
         'pv',
         'screen',
