@@ -192,7 +192,7 @@ class role::planet {
     $planet_meta_link = "meta.wikimedia.org/wiki/Planet_Wikimedia"
 
     # since we are on Ganeti now we need to proxy to fetch external URLs
-    $planet_http_proxy="http://url-downloader.wikimedia.org:8080"
+    $planet_http_proxy = "http://url-downloader.wikimedia.org:8080"
 
     # the 'planet' class from modules/planet/init.pp does the setup
     class {'::planet':

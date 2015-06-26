@@ -10,7 +10,7 @@ define planet::cronjob {
 
     cron { "update-${title}-planet":
         ensure  => 'present',
-        command => "http_proxy=\"${planet_http_proxy}\" ${planet_bin} -v ${planet_config} > ${planet_logfile} 2>&1",
+        command => "http_proxy=\"${planet::planet_http_proxy}\" ${planet_bin} -v ${planet_config} > ${planet_logfile} 2>&1",
         user    => 'planet',
         minute  => $minute,
         require => [
