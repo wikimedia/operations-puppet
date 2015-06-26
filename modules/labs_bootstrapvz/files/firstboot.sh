@@ -130,23 +130,6 @@ echo "master_finger: ${saltfinger}" >> /etc/salt/minion
 echo "${fqdn}" > /etc/salt/minion_id
 systemctl restart salt-minion.service
 
-# Sleep until the nfs volumes we need are available.
-#  Worst case, just time out after 3 minutes.
-tries=18
-for i in `seq 1 ${tries}`; do
-    prod_domain=`echo $domain | sed 's/wmflabs/wmnet/'`
-    nfs_server="labstore.svc.${prod_domain}"
-    echo $(showmount -e ${nfs_server} | egrep ^/exp/project/${project}\\s), | fgrep -q $ip,
-    if [ $? -eq 0 ];  then
-        break
-    fi
-    sleep 10
-done
-
-if [ $i -eq $tries ]; then
-    echo "Warning:  Timed out trying to detect NFS mounts."
-fi
-
 puppet agent --enable
 # Force initial puppet run
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${fqdn} --server=${master}
