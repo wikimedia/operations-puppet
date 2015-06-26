@@ -19,6 +19,16 @@ cache_text:
       - eqiad
       - esams
       - ulsfo
+  varnish-be-rand:
+    port: 3128
+    default_values:
+      "pooled": "yes"
+      "weight": 10
+    datacenters:
+      - codfw
+      - eqiad
+      - esams
+      - ulsfo
   nginx:
     port: 443
     default_values:
