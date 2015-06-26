@@ -266,7 +266,7 @@ class role::eventlogging::graphite inherits role::eventlogging  {
     require ::eventlogging::monitoring
 
     eventlogging::service::consumer { 'graphite':
-        input  => "tcp://${processor_host}:8600",
+        input  => "tcp://${multiplexer_host}:8600",
         output => 'statsd://statsd.eqiad.wmnet:8125',
     }
 
