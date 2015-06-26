@@ -947,7 +947,8 @@ node 'eventlog1001.eqiad.wmnet' {
         eventlogging::processor,
         eventlogging::multiplexer,
         eventlogging::consumer::mysql,
-        eventlogging::consumer::files
+        eventlogging::consumer::files,
+        eventlogging::reporter
 
     include standard
     include role::ipython_notebook
@@ -1029,7 +1030,9 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 # Hosts visualization / monitoring of EventLogging event streams
 # and MediaWiki errors.
 node 'hafnium.wikimedia.org' {
-    role eventlogging::graphite
+    role eventlogging::consumer::graphite,
+        eventlogging::reporter
+
     include standard
     include base::firewall
     include role::webperf

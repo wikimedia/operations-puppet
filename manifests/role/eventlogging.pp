@@ -23,18 +23,12 @@
 # This just installs eventlogging and sets up some configuration variables.
 #
 class role::eventlogging {
-    class { '::eventlogging': }
-
-    # Infer Kafka cluster configuration from this class
-    class { 'role::analytics::kafka::config': }
-
-    if hiera('has_ganglia', true) {
-        class { 'role::eventlogging::monitoring': }
-    }
-
     system::role { 'role::eventlogging':
         description => 'EventLogging',
     }
+
+    # Infer Kafka cluster configuration from this class
+    class { 'role::analytics::kafka::config': }
 
     # Event data flows through several processes that communicate with each
     # other via TCP/IP sockets. By default, all processing is performed
@@ -58,15 +52,42 @@ class role::eventlogging {
 
     # jq is very useful, install it on eventlogging servers
     ensure_packages(['jq'])
+
+
+    class { '::eventlogging': }
+
+    # make sure any defined eventlogging services are running
+    class { '::eventlogging::monitoring::jobs': }
+
+    if (hiera('has_ganglia', true) {
+        class { '::eventlogging::monitoring::ganglia': }
+    }
+
+    # This check was written for eventlog1001, so only include it there.,
+    if $::hostname == 'eventlog1001' {
+        # Alert when / gets low. (eventlog1001 has a 9.1G /)
+        nrpe::monitor_service { 'eventlogging_root_disk_space':
+            description   => 'Eventlogging / disk space',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 1024M -c 512M -p /',
+            contact_group => 'analytics',
+        }
+
+        # Alert when /srv gets low. (eventlog1001 has a 456G /srv)
+        # Currently, /srv/log/eventlogging grows at about 500kB / s.
+        # Which is almost 2G / hour.  100G gives us about 2 days to respond,
+        # 50G gives us about 1 day.  Logrotate should keep enough disk space free.
+        nrpe::monitor_service { 'eventlogging_srv_disk_space':
+            description   => 'Eventlogging /srv disk space',
+            nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 100000M -c 50000M -p /srv',
+            contact_group => 'analytics',
+        }
+    }
 }
 
 
-#### Data flow classes ####
-# udp://{client,server}-side-raw
-#   -> tcp://{client,server}-side-raw       (forwarders)
-#   -> tcp://{client,server}-side-processed (processors)
-#   -> tcp://all-processed                  (multiplexer)
-#       -> mysql://all, files://...         (consumer)
+
+#
+# ==== Data flow classes ====
 #
 
 
@@ -96,6 +117,7 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     }
 }
 
+
 # == Class role::eventlogging::processor
 # Reads raw events, parses and validates them, and then sends
 # them along for further consumption.
@@ -113,6 +135,7 @@ class role::eventlogging::processor inherits role::eventlogging {
     }
 }
 
+
 # == Class role::eventlogging::multiplexer
 # Reads multiple processed 0mq eventlogging streams and
 # concatentates them into a single strream.
@@ -126,6 +149,7 @@ class role::eventlogging::multiplexer inherits role::eventlogging {
         output => "tcp://${multiplexer_host}:8600",
     }
 }
+
 
 # == Class role::eventlogging::consumer::mysql
 # Consumes the stream of events and writes them to MySQL
@@ -153,11 +177,11 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
     }
 }
 
+
 # == Class role::eventlogging::consumer::files
 # Consumes streams of events and writes them to log files.
+#
 class role::eventlogging::consumer::files inherits role::eventlogging {
-    ## Flat files
-
     # Log all raw log records and decoded events to flat files in
     # $log_dir as a medium of last resort. These files are rotated
     # and rsynced to stat1003 & stat1002 for backup.
@@ -194,6 +218,36 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
     }
 }
 
+
+# == Class: role::eventlogging::consumer::graphite
+#
+# Keeps a running count of incoming events by schema in Graphite by
+# emitting 'eventlogging.SCHEMA_REVISION:1' on each event to a StatsD
+# instance.
+#
+# The consumer connects to the host in 'input' and outputs data to the
+# host in 'output'. The output host should normally be statsd
+#
+class role::eventlogging::consumer::graphite inherits role::eventlogging  {
+    eventlogging::service::consumer { 'graphite':
+        input  => "tcp://${multiplexer_host}:8600",
+        output => 'statsd://statsd.eqiad.wmnet:8125',
+    }
+}
+
+
+# == Class role::eventlogging::reporter
+#
+# Sends metrics about number of events flowing through
+# different parts of 0mq streams configured on this host.
+#
+class role::eventlogging::reporter inherits role::eventlogging {
+    eventlogging::service::reporter { 'statsd':
+        host => 'statsd.eqiad.wmnet',
+    }
+}
+
+
 # == Class role::eventlogging::forwarder::kafka
 # Temporary class to test eventlogging kafka on host other than eventlog1001.
 #
@@ -209,6 +263,7 @@ class role::eventlogging::forwarder::kafka inherits role::eventlogging {
         outputs => ["${kafka_base_uri}?topic=eventlogging-client-side"],
     }
 }
+
 
 # == Class role::eventlogging::processor::kafka
 # Temporary class to test eventlogging kafka on host other than eventlog1001.
@@ -243,72 +298,5 @@ class role::eventlogging::processor::kafka inherits role::eventlogging {
             $kafka_mixed_uri
         ],
         output_invalid => true,
-    }
-}
-
-# == Class: role::eventlogging::monitoring
-#
-# Provisions scripts for reporting state to monitoring tools.
-#
-class role::eventlogging::monitoring inherits role::eventlogging {
-    require ::eventlogging::monitoring
-
-    eventlogging::service::reporter { 'statsd':
-        host => 'statsd.eqiad.wmnet',
-    }
-
-    nrpe::monitor_service { 'eventlogging-main':
-        ensure        => 'present',
-        description   => 'Check status of defined EventLogging jobs',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_eventlogging_jobs',
-        require       => Class['::eventlogging::monitoring'],
-        contact_group => 'admins,analytics',
-    }
-
-    # Alert when / gets low. (eventlog1001 has a 9.1G /)
-    nrpe::monitor_service { 'eventlogging_root_disk_space':
-        description   => 'Eventlogging / disk space',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 1024M -c 512M -p /',
-        contact_group => 'analytics',
-    }
-
-    # Alert when /srv gets low. (eventlog1001 has a 456G /srv)
-    # Currently, /srv/log/eventlogging grows at about 500kB / s.
-    # Which is almost 2G / hour.  100G gives us about 2 days to respond,
-    # 50G gives us about 1 day.  Logrotate should keep enough disk space free.
-    nrpe::monitor_service { 'eventlogging_srv_disk_space':
-        description   => 'Eventlogging /srv disk space',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 100000M -c 50000M -p /srv',
-        contact_group => 'analytics',
-    }
-}
-
-
-# == Class: role::eventlogging::graphite
-#
-# Keeps a running count of incoming events by schema in Graphite by
-# emitting 'eventlogging.SCHEMA_REVISION:1' on each event to a StatsD
-# instance.
-
-# The consumer connects to the host in 'input' and outputs data to the
-# host in 'output'. The output host should normally be statsd
-#
-# Includes process nanny alarm for graphite consumer
-
-class role::eventlogging::graphite inherits role::eventlogging  {
-    require ::eventlogging::monitoring
-
-    eventlogging::service::consumer { 'graphite':
-        input  => "tcp://${multiplexer_host}:8600",
-        output => 'statsd://statsd.eqiad.wmnet:8125',
-    }
-
-    # Generate icinga alert if the graphite consumer is not running.
-    nrpe::monitor_service { 'eventlogging-graphite':
-        ensure        => 'present',
-        description   => 'Check status of defined EventLogging jobs on graphite consumer',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_eventlogging_jobs',
-        require       => Class['::eventlogging::monitoring'],
-        contact_group => 'admins,analytics',
     }
 }
