@@ -380,11 +380,10 @@ class DomainRedirectParser {
 			"# Do not edit it manually!\n" .
 			"\n" .
 			"<VirtualHost *:80>\n" .
-			"\tServerName redirector\n" .
-			"\tServerAlias \\\n" );
+			"\tServerName redirector\n\n" );
 
 		foreach ( $servers as $server => $unused ) {
-			fwrite( $f, "\t$server \\\n" );
+			fwrite( $f, "\tServerAlias $server\n" );
 		}
 		fwrite( $f, "\n" );
 		fwrite( $f, <<<EOT
