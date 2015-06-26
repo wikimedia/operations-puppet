@@ -353,10 +353,13 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 
 # conf100x are zookeeper and etcd discovery service nodes
 node /^conf100[123]\.eqiad\.wmnet$/ {
+    if $hostname == 'conf1001' {
+        role etcd
+    }
     include base::firewall
     include standard
 
-    role zookeeper::server
+    include role::zookeeper::server
 }
 
 # Debian package building host in production
