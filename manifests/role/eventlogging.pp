@@ -228,7 +228,7 @@ class role::eventlogging::monitoring inherits role::eventlogging {
         ensure        => 'present',
         description   => 'Check status of defined EventLogging jobs',
         nrpe_command  => '/usr/lib/nagios/plugins/check_eventlogging_jobs',
-        require       => File['/usr/lib/nagios/plugins/check_eventlogging_jobs'],
+        require       => Class['eventlogging::monitoring'],
         contact_group => 'admins,analytics',
     }
 
@@ -275,7 +275,7 @@ class role::eventlogging::graphite inherits role::eventlogging  {
         ensure        => 'present',
         description   => 'Check status of defined EventLogging jobs on graphite consumer',
         nrpe_command  => '/usr/lib/nagios/plugins/check_eventlogging_jobs',
-        require       => File['/usr/lib/nagios/plugins/check_eventlogging_jobs'],
+        require       => Class['eventlogging::monitoring'],
         contact_group => 'admins,analytics',
     }
 }
