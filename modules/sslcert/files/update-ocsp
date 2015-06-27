@@ -46,8 +46,8 @@ def parse_options():
                         help="output filename",
                         required=True)
     parser.add_argument('--proxy', '-p', dest="proxy",
-                        help="HTTP proxy server URL to use for OCSP request",
-                        default=None)
+                        help="HTTP proxy host:port to use for OCSP request",
+                        required=True)
     parser.add_argument('--ca-certs', '-d', dest="cadir",
                         help="SSL CA certificates directory",
                         default='/etc/ssl/certs')
