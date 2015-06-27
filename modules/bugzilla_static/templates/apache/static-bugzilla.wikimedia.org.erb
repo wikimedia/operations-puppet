@@ -15,8 +15,10 @@
     RewriteRule ^/show_bug.cgi$ /bug%1.html? [PT]
     RewriteCond %{QUERY_STRING} ^id=([0-9]+)$
     RewriteRule ^/show_activity.cgi$ /activity%1.html? [PT]
+    # T102579
     Redirect /buglist.cgi https://phabricator.wikimedia.org/maniphest/
     Redirect /index.cgi https://phabricator.wikimedia.org/maniphest/
+    # T103425
     RewriteRule ^/(\d+)$ /bug$1.html? [PT]
 
     <Directory />
