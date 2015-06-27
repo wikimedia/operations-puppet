@@ -4,11 +4,9 @@ class role::cache::2layer(
 ) {
     include role::cache::base
 
-    if $::hostname == 'cp1048' {
-        # Grab client connection stats from the 'X-Connection-Properties'
-        # header set by the SSL terminators and forward them to StatsD.
-        include role::cache::statsd::xcps
-    }
+    # Grab client connection stats from the 'X-Connection-Properties'
+    # header set by the SSL terminators and forward them to StatsD.
+    include role::cache::statsd::xcps
 
     # Ganglia monitoring
     if $::role::cache::configuration::has_ganglia {
