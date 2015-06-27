@@ -89,7 +89,7 @@ http {
     # it will be used for all virtual hosts. 1m = 4000 active sessions,
     # so we are allowing 200,000 active sessions.
     ssl_session_cache shared:SSL:50m;
-    ssl_session_timeout 5m;
+    ssl_session_timeout 15m;
 <% if scope.function_os_version(['debian >= jessie']) -%>
     # Disable RFC5077 tickets (may revisit later when client support is better)
     ssl_session_tickets off;
