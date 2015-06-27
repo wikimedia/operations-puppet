@@ -38,8 +38,9 @@ def file_exists(fname):
 def parse_options():
     """Parse command-line options, return args hash"""
     parser = argparse.ArgumentParser(description="OCSP Fetcher")
-    parser.add_argument('--certificate', '-c', dest="cert",
+    parser.add_argument('--certificate', '-c', dest="certs",
                         type=file_exists,
+                        action="append",
                         help="certificate filename",
                         required=True)
     parser.add_argument('--output', '-o', dest="output",
@@ -103,17 +104,27 @@ def cert_get_issuer_filename(cert, cadir):
                     (issuer_glob, cert))
 
 
-def cert_fetch_ocsp(cert, cadir, outfile, proxy):
+def certs_fetch_ocsp(certs, cadir, outfile, proxy):
     """Fetch validated OCSP response for cert"""
 
-    issuer_path = cert_get_issuer_filename(cert, cadir)
-    ocsp_uri = cert_x509_option(cert, "ocsp_uri")
+    issuer_path = cert_get_issuer_filename(certs[0], cadir)
+    ocsp_uri = cert_x509_option(certs[0], "ocsp_uri")
+
+    if len(certs) > 1:
+        for cert_idx in range(1, len(certs)):
+            this_issuer_path = cert_get_issuer_filename(certs[cert_idx], cadir)
+            this_ocsp_uri = cert_x509_option(certs[cert_idx], "ocsp_uri")
+            if issuer_path != this_issuer_path:
+                raise Exception("Certs must have same Issuer (%s vs %s)!",
+                    (issuer_path, this_issuer_path))
+            if ocsp_uri != this_ocsp_uri:
+                raise Exception("Certs must have same OCSP URI (%s vs %s)!",
+                    (ocsp_uri, this_ocsp_uri))
 
     cmd = [
         "openssl", "ocsp", "-nonce",
         "-respout", outfile,
         "-issuer", issuer_path,
-        "-cert", cert,
     ]
 
     if proxy:
@@ -125,6 +136,9 @@ def cert_fetch_ocsp(cert, cadir, outfile, proxy):
         cmd.extend([
             "-url", ocsp_uri,
         ])
+
+    for cert in certs:
+        cmd.extend(["-cert", cert])
 
     return check_output_errtext(cmd)
 
@@ -186,7 +200,7 @@ def main():
     out_tempdir = tempfile.mkdtemp(".tmp", "update-ocsp-", out_basedir)
     out_tempfile = os.path.join(out_tempdir, out_fn)
 
-    cert_fetch_ocsp(args.cert, args.cadir, out_tempfile, args.proxy)
+    certs_fetch_ocsp(args.certs, args.cadir, out_tempfile, args.proxy)
     ocsp_validate_window(out_tempfile, args.offset_start, args.offset_end)
 
     os.rename(out_tempfile, args.output)
