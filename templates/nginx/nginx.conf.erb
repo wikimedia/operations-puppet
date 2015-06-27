@@ -101,6 +101,9 @@ http {
     # to trade a little TTFB for throughput.  This is something that will have
     # to be watched, experimented on, and tuned as more load comes in...
     ssl_buffer_size 1300;
+
+    # default zlib compression level for SPDY response headers
+    spdy_headers_comp 6;
 <% end -%>
 
     # This is used to inject "Accept-Encoding: gzip" into all proxied SPDY requests
