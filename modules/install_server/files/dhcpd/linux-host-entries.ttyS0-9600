@@ -1,6 +1,6 @@
 #####################################################################
 #### THIS FILE IS MANAGED BY PUPPET
-#### puppet:///modules/install-server/dhcpd/linux-host-entries.ttyS0-9600
+#### puppet:///modules/install_server/dhcpd/linux-host-entries.ttyS0-9600
 ######################################################################
 
 host cam1-a-eqiad {
