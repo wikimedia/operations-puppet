@@ -5,7 +5,7 @@ class role::diamond {
         'labs': {
             $host          = '10.64.37.13' # labmon1001
             # Prefix labs metrics with project name
-            $path_prefix   = $::instanceproject
+            $path_prefix   = $::labsproject
             $keep_logs_for = '0' # Current day only
             $service       = true
         }

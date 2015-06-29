@@ -2,7 +2,7 @@
 class role::labs::tools {
 
     class common {
-        $gridmaster = "${::instanceproject}-master.${::site}.wmflabs"
+        $gridmaster = "${::labsproject}-master.${::site}.wmflabs"
 
         class { 'gridengine': gridmaster => $gridmaster }
     }

@@ -73,8 +73,8 @@ class toollabs::proxy(
     git::clone { 'labs/toollabs':
         ensure    => latest,
         directory => '/data/project/admin/toollabs',
-        owner     => "${instanceproject}.admin",
-        group     => "${instanceproject}.admin",
+        owner     => "${::labsproject}.admin",
+        group     => "${::labsproject}.admin",
         mode      => '2755',
     }
 

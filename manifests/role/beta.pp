@@ -54,7 +54,7 @@ class role::beta::availability_collector {
     diamond::collector { 'VarnishStatus':
         source   => 'puppet:///modules/diamond/collector/varnishstatus.py',
         settings => {
-            path_prefix => $::instanceproject,
+            path_prefix => $::labsproject,
             path        => 'availability',
         }
     }

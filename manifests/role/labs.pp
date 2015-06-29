@@ -60,7 +60,7 @@ class role::labs::instance {
             atboot  => true,
             fstype  => 'nfs',
             options => "rw,${nfs_opts}",
-            device  => "${nfs_server}:/project/${instanceproject}/home",
+            device  => "${nfs_server}:/project/${labsproject}/home",
             require => [File['/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-home-export']],
         }
     }
@@ -92,7 +92,7 @@ class role::labs::instance {
             atboot  => true,
             fstype  => 'nfs',
             options => "rw,${nfs_opts}",
-            device  => "${nfs_server}:/project/${instanceproject}/project",
+            device  => "${nfs_server}:/project/${labsproject}/project",
             require => [File['/data/project', '/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-project-export']],
         }
     }
