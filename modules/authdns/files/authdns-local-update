@@ -110,7 +110,7 @@ cp -f $WORKINGDIR/admin_state /var/lib/gdnsd/
 if ! cmp --quiet /etc/gdnsd/config-geo~ /etc/gdnsd/config-geo; then
     rm -f /etc/gdnsd/config-geo~
     echo "Restarting to update zones & config"
-    gdnsd restart >/dev/null
+    service gdnsd restart >/dev/null
 else
     rm -f /etc/gdnsd/config-geo~
     echo "Reloading zones"
