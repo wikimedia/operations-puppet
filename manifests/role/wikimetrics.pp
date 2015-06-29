@@ -310,16 +310,30 @@ class role::wikimetrics {
         keep_days     => 10,
     }
 
-    # Link aggregated projectcounts files to public directory
-    $aggregator_data_directory = '/srv/aggregator-data'
-    git::clone { 'aggregator_data':
+    # Get aggregated projectcounts files from git repo
+    # Note that this repo is for legacy projectcounts
+    # It should be analytics/aggregator/projectcounts/data.git
+    # but we keep it as is from legacy.
+    $aggregator_projectcounts_data_directory = '/srv/aggregator-projectcounts-data'
+    git::clone { 'aggregator_projectcounts_data':
         ensure    => 'latest',
-        directory => $aggregator_data_directory,
+        directory => $aggregator_projectcounts_data_directory,
         origin    => 'https://gerrit.wikimedia.org/r/p/analytics/aggregator/data.git',
         owner     => $wikimetrics_user,
         group     => $wikimetrics_group,
     }
 
+    # Get aggregated projectview files from git repo
+    $aggregator_projectview_data_directory = '/srv/aggregator-projectview-data'
+    git::clone { 'aggregator_projectview_data':
+        ensure    => 'latest',
+        directory => $aggregator_projectview_data_directory,
+        origin    => 'https://gerrit.wikimedia.org/r/p/analytics/aggregator/projectview/data.git',
+        owner     => $wikimetrics_user,
+        group     => $wikimetrics_group,
+    }
+
+    # Create public datafiles folder
     file { "${public_directory}/datafiles":
         ensure  => 'directory',
         owner   => $wikimetrics_user,
@@ -327,9 +341,19 @@ class role::wikimetrics {
         require => File[$public_directory],
     }
 
+    # Link public DailyPageviews_legacy folder to aggregator_projectcounts_data folder
     file { "${public_directory}/datafiles/DailyPageviews":
         ensure  => 'link',
-        target  => "${aggregator_data_directory}/projectcounts/daily",
+        target  => "${aggregator_projectcounts_data_directory}/projectcounts/daily",
+        owner   => $wikimetrics_user,
+        group   => $wikimetrics_group,
+        require => File["${public_directory}/datafiles"]
+    }
+
+    # Link public DailyPageviews folder to aggregator_projectview_data folder
+    file { "${public_directory}/datafiles/DailyProjectviews":
+        ensure  => 'link',
+        target  => "${aggregator_projectview_data_directory}/projectcounts/daily",
         owner   => $wikimetrics_user,
         group   => $wikimetrics_group,
         require => File["${public_directory}/datafiles"]
