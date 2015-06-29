@@ -354,7 +354,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 
 # conf100x are zookeeper and etcd discovery service nodes
 node /^conf100[123]\.eqiad\.wmnet$/ {
-    if $hostname == 'conf1001' {
+    if $hostname != 'conf1003' {
         role etcd
     }
     include base::firewall
