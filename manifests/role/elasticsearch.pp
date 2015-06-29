@@ -37,7 +37,6 @@ class role::elasticsearch::server{
 
     # Install
     class { '::elasticsearch':
-        plugins_dir       => '/srv/deployment/elasticsearch/plugins',
         require           => Package['elasticsearch/plugins'],
         merge_threads     => 1,
     }

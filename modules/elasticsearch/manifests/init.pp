@@ -68,7 +68,7 @@
 class elasticsearch($cluster_name,
                     $heap_memory = '2G',
                     $multicast_group = '224.2.2.4',
-                    $plugins_dir = '/usr/share/elasticsearch/plugins',
+                    $plugins_dir = '/srv/deployment/elasticsearch/plugins',
                     $plugins_mandatory = undef,
                     $minimum_master_nodes = 1,
                     $master_eligible = true,
