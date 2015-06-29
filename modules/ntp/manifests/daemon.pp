@@ -1,4 +1,5 @@
-define ntp::daemon($servers=[], $peers=[], $query_acl=[], $time_acl=[], $servers_opt='', $ensure='absent') {
+define ntp::daemon($servers=[], $peers=[], $query_acl=[], $time_acl=[], $servers_opt='',
+    $ensure=hiera('ntp::daemon::ensure', 'absent') {
     package { 'ntp': ensure => latest }
 
     file { 'ntp.conf':
