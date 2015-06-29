@@ -254,9 +254,9 @@ maps:
   project: true
   scratch: true
 maps-team:
-  dumps: true
-  home: true
-  project: true
+  dumps: false
+  home: false
+  project: false
   scratch: true
 marathon:
   dumps: false
