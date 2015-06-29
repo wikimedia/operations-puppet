@@ -46,7 +46,7 @@ groups:
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
               nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
-              tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, qchris, krenair,
+              tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, krenair,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
@@ -59,9 +59,8 @@ groups:
     description: access to terbium, fluorine (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar,
-              ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
-              tparscal, tnegrin, ssastry, ironholds, nuria, leila,
-              santhosh, amire80, legoktm, jsahleen]
+              ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, tnegrin, ssastry,
+              ironholds, nuria, leila, santhosh, amire80, legoktm, jsahleen]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   bastiononly:
     gid: 707
@@ -72,7 +71,7 @@ groups:
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
-              gpaumier, moushira, aklapper]
+              gpaumier, moushira, aklapper, qchris]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -106,7 +105,7 @@ groups:
               dduvall, ellery, ezachte, gage, gilles, haithams, halfak, handrade,
               ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
               kleduc, leila, mattflaschen, milimetric, nettrom,
-              nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
+              nuria, ori, otto, springle, tnegrin, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, jdouglas, moushira, dbrant]
@@ -155,13 +154,13 @@ groups:
   statistics-web-users:
     gid: 724
     description: access for stats.wikimedia.org
-    members: [ezachte, joal, milimetric, qchris, tomasz, tnegrin]
+    members: [ezachte, joal, milimetric, tomasz, tnegrin]
   statistics-privatedata-users:
     gid: 725
     description: Have access to so that they can do analysis on webrequest logs
                 and other private data.
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
-              awight, dr0ptp4kt, qchris, tnegrin, nuria,
+              awight, dr0ptp4kt, tnegrin, nuria,
               leila, manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, rmoen, tbayer, joal, ashwinpp, madhuvishy]
   statistics-users:
@@ -169,7 +168,7 @@ groups:
     description: Access hosts with a mysql client for research. NO PRIVS.
     members: [dartar, halfak, ironholds, jdlrobson, jmorgan,
               mattflaschen, mhurd, yurik, awight, jforrester,
-              qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
+              tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
@@ -177,7 +176,7 @@ groups:
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
-    members: [ezachte, ironholds, qchris, milimetric, joal, mforns]
+    members: [ezachte, ironholds, milimetric, joal, mforns]
     privileges: ['ALL = (stats) NOPASSWD: ALL']
   oit:
     gid: 727
@@ -212,7 +211,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, yurik,
-              halfak, dr0ptp4kt, qchris, tnegrin, ironholds,
+              halfak, dr0ptp4kt, tnegrin, ironholds,
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, ananthrk, awight,
@@ -223,7 +222,7 @@ groups:
     description: Admin access to analytics cluster.
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
-    members: [qchris, joal]
+    members: [joal]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (oozie) NOPASSWD: ALL',
                  'ALL = (hive)  NOPASSWD: ALL']
@@ -245,7 +244,7 @@ groups:
   analytics-roots:
       gid: 738
       description: Full root access to Analytics Cluster nodes.
-      members: [qchris]
+      members: []
       privileges: ['ALL = (ALL) NOPASSWD: ALL']
   eventlogging-roots:
     gid: 739
