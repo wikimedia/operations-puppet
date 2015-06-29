@@ -929,8 +929,15 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
 }
 
 # Etcd distributed kv store
-node /^etcd100\d\.eqiad\.wmnet$/ {
-    role etcd
+node /^etcd100[1-3]\.eqiad\.wmnet$/ {
+    if ($hostname != 'etcd1003') {
+        role etcd
+    } else {
+        include standard
+        base::service_unit{ 'etcd':
+            ensure  => absent,
+        }
+    }
 }
 
 node 'etherpad1001.eqiad.wmnet' {
