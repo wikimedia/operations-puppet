@@ -91,3 +91,14 @@ info to help you. pbuilder is the actual base software, cowbuilder is an
 extension to allow pbuilder to use COW (copy on write) instead of slow .tar.gz
 base files. For all intents and purposes this should be transparent to you as
 cowbuilder is the default pbuilder builder.
+
+Networking
+==========
+
+cowbuilder/pbuilder block networking using namespaces and unshare in the above
+environments. If your package requires internet access to build successfully, it
+will not work. First, try to fix the package. If that is impossible/undesirable,
+USENETWORK=yes in /etc/pbuilderrc or .pbuilderrc can be used to override that
+behaviour. Make sure that the building host has internet access though, or else
+your change will not be useful
+I
