@@ -255,7 +255,10 @@ class role::eventlogging::forwarder::kafka inherits role::eventlogging {
     eventlogging::service::forwarder { 'server-side-raw':
         input   => "tcp://${forwarder_host}:8421?identity=server-side-raw-kafka",
         outputs => ["${kafka_base_uri}?topic=eventlogging-server-side"],
-        count   => true,
+        # Don't need count on the forwarder consuming from a forwarder that generates
+        # a count.  If this replaces the main forwarder (by consuming from udp),
+        # make sure this is set to true.
+        count   => false,
     }
 
     eventlogging::service::forwarder { 'client-side-raw':
