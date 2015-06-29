@@ -72,12 +72,20 @@ class etcd (
     $peer_url = "http://${host}:${peer_port}" # Peer TLS is currently broken?
     $etcd_data_dir = "/var/lib/etcd/${cluster_name}"
 
-    file { $etcd_data_dir:
+    file { '/var/lib/etcd':
         ensure  => directory,
         owner   => 'etcd',
         group   => 'etcd',
         mode    => '0700',
+        before  => Service['etcd'],
         require => Package['etcd'],
+    }
+
+    file { $etcd_data_dir:
+        ensure => directory,
+        owner  => 'etcd',
+        group  => 'etcd',
+        mode   => '0700',
     }
 
     base::service_unit{ 'etcd':
