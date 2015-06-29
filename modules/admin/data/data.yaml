@@ -2,7 +2,7 @@ groups:
   absent:
     description: meta group for absented users
     members: [bsitu , cmcmahon, csalvia, edenhill, jgonera, mah, mwalker,
-nimishg, rainman, ssmith, swalling, erik]
+nimishg, rainman, ssmith, swalling, erik, diederik]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -57,7 +57,7 @@ nimishg, rainman, ssmith, swalling, erik]
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [avar, daniel, dartar, diederik,
+    members: [avar, daniel, dartar,
               ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
               tparscal, tnegrin, ssastry, ironholds, nuria, leila,
               santhosh, amire80, legoktm, jsahleen]
@@ -865,12 +865,11 @@ users:
         dartar]
     uid: 2117
   diederik:
-    ensure: present
+    ensure: absent
     gid: 500
     name: diederik
     realname: Diederik van Liere
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEAtpE5YKnKPgHmFG5a8x/1lfgRUIFhv8Vug/57XCMeuQMG8NNUuQAno1OWYT1ukla7DO/3KF+iWAkyLlUq3z+rO9WB8/BuxLOsNBd0dBF44yoVsjKkTCdkuhh/3a47uIGAKhGG5Cj+c1ggAnKGLMgfoaF2H5vifhSp0hJbRGMXxzC+OoVq0X34GnkEZK7YZAg2oYVOyLRbOYNDlXLdIUoQ0579/T8/ey8mZzbxuONZy7UuRiFxwOB3O88s5SBhGwKHR/3iJ63PE5KZ+OCBg6nTPM+4rYfQHIy8lwvna2OAgweoqQRmn1NFpZisqhWcAAABKTyJ6MYQu1J/6SdGI4QehWEinsPud/ZJ7EbrAWotLTnDaeQnPwdQnSNVTTm6FWKjkKAbzcIRpWqw32L5fMU/hwmJ9K2GQSYHxdiGIdlgXsI+Pel4dyhtbl/UT3Zj+BWg71rGF4SY7lHCfAm+3FbbBa4wHSQExa6k6cFUAv2mPnUuBeLKBPZnZc4kRBehiVV16ddiyYgDwhjO3s1CLcPLz4napVDviMj4QSC1Em1NsqKPNIwITC9rqFuxhjoT9Gz7FpA4OWkQaqECkO/L2NjP6vTlxfpof3tD9+aagCfI11JNNG06oFMjc+GhvObQmUA1ZtV4xNhYhFJDhvSmxNwF8Bux2dpPwaaemBZtgfUEszs=
-        diederik@Diederik-Van-Lieres-MacBook-Pro.local]
+    ssh_keys: []
     uid: 1293
   erik:
     ensure: absent
