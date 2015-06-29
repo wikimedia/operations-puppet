@@ -7,6 +7,7 @@ class dataset(
     #            'labs'   for rsync of some dumps to labs public fileshare
     #    $uploads: 'pagecounts' to allow the corresponding rsync
     #              to those directories from the appropriate hosts
+    #              'phab' for rsync of phabricator dump from hosts that have it
     #    $grabs: 'kiwix' to copy kiwix (offline wiki) tarballs from upstream
     #            to local filesystem
 
@@ -40,6 +41,10 @@ class dataset(
     $uploads_pagecounts_enable = has_key($uploads,'pagecounts')
     class { 'dataset::rsync::pagecounts':
         enable => $uploads_pagecounts_enable }
+
+    $uploads_phab_dump_enable = has_key($uploads,'phab')
+    class { 'dataset::rsync::phab_dump':
+        enable => $uploads_phab_dump_enable }
 
     $grabs_kiwix_enable = has_key($grabs,'kiwix')
     class { 'dataset::cron::kiwix': enable => $grabs_kiwix_enable }

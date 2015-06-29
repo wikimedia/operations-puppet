@@ -86,6 +86,14 @@ class role::phabricator::main {
         dump           => true,
     }
 
+    cron { 'phab_dump':
+        ensure  => present,
+        command => 'rsync -zpt --bwlimit=40000 /srv/dumps/phabricator_public.dump dataset1001.wikimedia.org::other_misc/ >/dev/null 2>&1',
+        user    => 'root',
+        minute  => '10',
+        hour    => '4',
+    }
+
     class { 'exim::roled':
         local_domains        => [ '+system_domains', '+phab_domains' ],
         enable_mail_relay    => false,
