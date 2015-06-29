@@ -1,4 +1,4 @@
-# Class: install-server::web-server
+# Class: install_server::web-server
 #
 # This class installs and configures nginx to act as a repository for new
 # installation enviroments
@@ -11,13 +11,13 @@
 # Requires:
 #
 # Sample Usage:
-#   include install-server::web-server
+#   include install_server::web-server
 
-class install-server::web-server {
+class install_server::web-server {
     include ::nginx
 
-    nginx::site { 'install-server':
-        source  => 'puppet:///modules/install-server/nginx.conf';
+    nginx::site { 'install_server':
+        source  => 'puppet:///modules/install_server/nginx.conf';
     }
 
     # prevent a /srv root autoindex; empty for now.

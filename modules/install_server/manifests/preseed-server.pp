@@ -1,4 +1,4 @@
-# Class: install-server::preseed-server
+# Class: install_server::preseed-server
 #
 # This class populated preseeding server's configuration
 #
@@ -10,15 +10,15 @@
 # Requires:
 #
 # Sample Usage:
-#   include install-server::preseed-server
+#   include install_server::preseed-server
 
-class install-server::preseed-server {
+class install_server::preseed-server {
     file { '/srv/autoinstall':
         ensure  => directory,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/install-server/autoinstall',
+        source  => 'puppet:///modules/install_server/autoinstall',
         recurse => true,
         links   => manage
     }
