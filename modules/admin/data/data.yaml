@@ -65,7 +65,7 @@ nimishg, rainman, ssmith, swalling, erik]
   bastiononly:
     gid: 707
     description: these folks are allowed bastion _only_ access
-    members: [howief, jforrester, jmorgan, maryana, msyed,
+    members: [jforrester, jmorgan, msyed,
               haithams, mhurd, dbrant, kleduc, bsitzmann, deskana,
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
@@ -104,7 +104,7 @@ nimishg, rainman, ssmith, swalling, erik]
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
               dduvall, ellery, ezachte, gage, gilles, haithams, halfak, handrade,
               ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
-              kleduc, leila, maryana, mattflaschen, milimetric, nettrom,
+              kleduc, leila, mattflaschen, milimetric, nettrom,
               nuria, ori, otto, qchris, springle, tnegrin, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
@@ -160,14 +160,14 @@ nimishg, rainman, ssmith, swalling, erik]
     description: Have access to so that they can do analysis on webrequest logs
                 and other private data.
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
-              howief, awight, dr0ptp4kt, qchris, tnegrin, nuria,
+              awight, dr0ptp4kt, qchris, tnegrin, nuria,
               leila, manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, rmoen, tbayer, joal, ashwinpp, madhuvishy]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
-    members: [dartar, halfak, howief, ironholds, jdlrobson, jmorgan,
-              maryana, mattflaschen, mhurd, yurik, awight, jforrester,
+    members: [dartar, halfak, ironholds, jdlrobson, jmorgan,
+              mattflaschen, mhurd, yurik, awight, jforrester,
               qchris, tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
@@ -210,7 +210,7 @@ nimishg, rainman, ssmith, swalling, erik]
                  This will grant shell access on Hadoop client nodes (stat1002) and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, yurik, maryana,
+    members: [dartar, milimetric, yurik,
               halfak, dr0ptp4kt, qchris, tnegrin, ironholds,
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
@@ -983,7 +983,7 @@ users:
         legoktm@wikimedia.org]
     uid: 2552
   howief:
-    ensure: present
+    ensure: absent
     gid: 500
     name: howief
     realname: Howie Fung
@@ -1007,7 +1007,7 @@ users:
         jmorgan@wikimedia.org]
     uid: 2402
   maryana:
-    ensure: present
+    ensure: absent
     gid: 500
     name: maryana
     realname: Maryana Pinchuk
