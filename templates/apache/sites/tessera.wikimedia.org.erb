@@ -1,0 +1,18 @@
+# Apache configuration for tessera.wikimedia.org
+# This file is managed by Puppet.
+<VirtualHost *:80>
+    ServerName tessera.wikimedia.org
+    ServerAdmin noc@wikimedia.org
+
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{REQUEST_URI} !^/status$
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+    Header always set Strict-Transport-Security "max-age=604800"
+
+    <Location />
+        SetHandler uwsgi-handler
+        uWSGIsocket /run/uwsgi/tessera.sock
+    </Location>
+</VirtualHost>
