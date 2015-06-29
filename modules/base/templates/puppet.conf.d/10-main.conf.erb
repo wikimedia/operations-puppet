@@ -1,6 +1,13 @@
 #####################################################################
 ##### THIS FILE IS MANAGED BY PUPPET
 #####  as template('base/puppet.conf.d/10-main.conf.erb')
+<% if @puppetbasics %>
+####
+#### This is a special labs puppet config that applies
+####  a minimal puppet config regardless of host-local
+####  changes or errors.
+####
+<% end %>
 ######################################################################
 
 [main]
@@ -12,10 +19,14 @@ factpath = $vardir/lib/facter
 
 [agent]
 server = <%= @server %>
+<% if @puppetbasics %>
+certname = <%= @puppetbasics %>
+<% else %>
 <% if @certname %>certname = <%= @certname %><% end %>
+splay = true
+<% end %>
 configtimeout = 960
 usecacheonfailure = false
-splay = true
 prerun_command = /etc/puppet/etckeeper-commit-pre
 postrun_command = /etc/puppet/etckeeper-commit-post
 pluginsync = true

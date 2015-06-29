@@ -44,6 +44,14 @@ class base::puppet($server='puppet', $certname=undef) {
             subscribe   => File['/etc/puppet/puppet.conf.d/10-main.conf'],
             refreshonly => true,
         }
+
+        $puppetbasics = "basic.puppet.node"
+        file { '/etc/puppet/puppetbasics.conf':
+            content => template('base/puppet.conf.d/10-main.conf.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
     }
 
     class { 'puppet_statsd':
