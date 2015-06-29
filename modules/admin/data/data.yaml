@@ -57,7 +57,7 @@ nimishg, rainman, ssmith, swalling, erik]
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [avar, daniel, dartar, diederik,
+    members: [daniel, dartar, diederik,
               ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
               tparscal, tnegrin, ssastry, ironholds, nuria, leila,
               santhosh, amire80, legoktm, jsahleen]
@@ -827,7 +827,7 @@ users:
         gtisza@wikimedia.org]
     uid: 2355
   avar:
-    ensure: present
+    ensure: absent
     gid: 500
     name: avar
     realname: Avar
