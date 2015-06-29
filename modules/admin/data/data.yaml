@@ -2,7 +2,8 @@ groups:
   absent:
     description: meta group for absented users
     members: [bsitu, cmcmahon, csalvia, diederik, edenhill, erik, howief, jgonera, mah,
-              maryana, mglaser, mwalker, nimishg, rainman, ssmith, swalling, sumanah]
+              maryana, mglaser, mwalker, nimishg, rainman, ssmith, swalling, sumanah,
+              werdna]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -40,7 +41,7 @@ groups:
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
-    members: [aaron, dr0ptp4kt, werdna, anomie, aude, awight, awjrichards, bd808, jdouglas,
+    members: [aaron, dr0ptp4kt, anomie, aude, awight, awjrichards, bd808, jdouglas,
               brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
@@ -485,12 +486,11 @@ users:
         abaso@wikimedia.org]
     uid: 2962
   werdna:
-    ensure: present
+    ensure: absent
     gid: 500
     name: werdna
     realname: Andrew Garrett
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA2Di7q/bc8OJ5HP4X2U19r8w/mIH6CDbZHkOv//5cNvE50udM7McwxRWSz5idIF2P2JyIU2tQhixM3vkWO2chcifIom60F2/vhKA+TuUr9l/IbnBv6CoCjeAxre0g3gVhcazHKKtjbpRMYRxMSrLs+SBzsQpTuB/MqJB/jy1rUDTLCwN8Dtz3nAR5vRtgM673kivDLvDsHrfgR1uScESawPe6c9iFLbnzptH4z86r98tj3s4U+3yVFaH9AG7YuovulyA6UEgXFL8swsrpp58s1+XIausfYAqjetIL0YS3vOwEeBw3Hg57c+bZ+dVODEV6wc+uOgtJFZs6zVHTFq5QoQ==
-        andrew@voltaire]
+    ssh_keys: []
     uid: 1039
   anomie:
     ensure: present
