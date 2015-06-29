@@ -948,7 +948,8 @@ node 'etherpad1001.eqiad.wmnet' {
 # Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
 # processes it, and broadcasts to internal subscribers.
 node 'eventlog1001.eqiad.wmnet' {
-    role eventlogging::forwarder,
+    role eventlogging,
+        eventlogging::forwarder,
         eventlogging::processor,
         eventlogging::multiplexer,
         eventlogging::consumer::mysql,
@@ -1035,7 +1036,8 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 # Hosts visualization / monitoring of EventLogging event streams
 # and MediaWiki errors.
 node 'hafnium.wikimedia.org' {
-    role eventlogging::consumer::graphite
+    role eventlogging,
+        eventlogging::consumer::graphite
 
     include standard
     include base::firewall
