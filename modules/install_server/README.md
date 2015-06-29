@@ -1,4 +1,4 @@
-#install-server
+#install_server
 
 ####Table of Contents
 
