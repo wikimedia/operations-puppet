@@ -13,7 +13,7 @@ class role::cache::bits (
     }
 
     if $::realm == 'production' {
-        include role::cache::ssl::sni
+        include role::cache::ssl::unified
     }
 
     $cluster_options = {
