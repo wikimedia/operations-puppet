@@ -66,7 +66,7 @@ nimishg, rainman, ssmith, swalling, erik]
     gid: 707
     description: these folks are allowed bastion _only_ access
     members: [howief, jforrester, jmorgan, maryana, msyed,
-              haithams, mhurd, dbrant, mglaser, kleduc, bsitzmann, deskana,
+              haithams, mhurd, dbrant, kleduc, bsitzmann, deskana,
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
@@ -89,7 +89,7 @@ nimishg, rainman, ssmith, swalling, erik]
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, csteipp, demon, hashar, mglaser, reedy]
+    members: [catrope, csteipp, demon, hashar, reedy]
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
@@ -1062,7 +1062,7 @@ users:
         dbrant@wikimedia.org]
     uid: 4910
   mglaser:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mglaser
     realname: Markus Glaser
@@ -1085,7 +1085,7 @@ users:
         kleduc@wikimedia.org]
     uid: 4906
   sumanah:
-    ensure: present
+    ensure: absent
     gid: 500
     name: sumanah
     realname: Sumana Harihareswara
