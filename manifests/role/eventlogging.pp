@@ -286,7 +286,7 @@ class role::eventlogging::processor::kafka inherits role::eventlogging {
 
     eventlogging::service::processor { 'server-side-events-kafka':
         format         => '%{seqId}d EventLogging %j',
-        input          => "${kafka_base_uri}?topic=eventlogging-server-side",
+        input          => "${kafka_base_uri}?topic=eventlogging-server-side&auto_commit_enable=True",
         outputs        => [
             $kafka_schema_uri,
             $kafka_mixed_uri
@@ -295,7 +295,7 @@ class role::eventlogging::processor::kafka inherits role::eventlogging {
     }
     eventlogging::service::processor { 'client-side-events-kafka':
         format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
-        input          => "${kafka_base_uri}?topic=eventlogging-client-side",
+        input          => "${kafka_base_uri}?topic=eventlogging-client-side&auto_commit_enable=True",
         outputs        => [
             $kafka_schema_uri,
             $kafka_mixed_uri
