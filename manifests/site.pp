@@ -553,7 +553,7 @@ node /^db10(58)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(22|23|30)\.eqiad\.wmnet/ {
+node /^db10(23|30)\.eqiad\.wmnet/ {
     class { 'role::coredb::s6':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -639,7 +639,7 @@ node /^db20(23|38|45|52)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(37|50|61)\.eqiad\.wmnet/ {
+node /^db10(22|37|50|61)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
     }
