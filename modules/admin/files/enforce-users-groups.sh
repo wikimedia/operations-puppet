@@ -68,7 +68,9 @@ do
             fi
 
         log "${0} removing user/id: ${username}/${uid}"
-        mv /etc/sudoers.d/$username /home/$username &> /dev/null
+        if [ -f /etc/sudoers.d/$username ]; then
+            mv /etc/sudoers.d/$username /home/$username
+        fi
         /usr/sbin/deluser --remove-home --backup-to=$ARCHIVE_DIR $username &> /dev/null
 
         fi
