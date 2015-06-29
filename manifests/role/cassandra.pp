@@ -5,6 +5,11 @@ class role::cassandra {
     class { '::cassandra': }
     class { '::cassandra::metrics': }
 
+    # temporary collector, T78514
+    diamond::collector { 'CassandraCollector':
+        source   => 'puppet:///modules/diamond/collector/cassandra.py',
+    }
+
     system::role { 'role::cassandra':
         description => 'Cassandra server',
     }
