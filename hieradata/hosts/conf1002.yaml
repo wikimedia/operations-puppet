@@ -1,0 +1,3 @@
+etcd::cluster_state: "existing"
+etcd::peers_list: "conf1002=http://conf1002.eqiad.wmnet:2380,conf1001=http://conf1001.eqiad.wmnet:2380,etcd1001=http://etcd1001.eqiad.wmnet:2380,etcd1002=http://etcd1002.eqiad.wmnet:2380,etcd1003=http://etcd1003.eqiad.wmnet:2380"
+etcd::srv_dns: false 
