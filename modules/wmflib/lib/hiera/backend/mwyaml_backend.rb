@@ -12,7 +12,7 @@ class Hiera
 
         Backend.datasources(scope, order_override) do |source|
           # Small hack: - we don't want to search any datasource but the
-          # labs/%{::instanceproject} hierarchy here; so we plainly exit
+          # labs/%{::labsproject} hierarchy here; so we plainly exit
           # in any other case
           next unless source[0,5] == 'labs/'
           source_arr = source.split('/')
