@@ -56,6 +56,7 @@ class role::dataset::primary {
     }
     $uploads = {
         'pagecounts' => true,
+        'phab'       => true,
     }
     class { 'dataset':
         rsync   => $rsync,
@@ -83,6 +84,7 @@ class role::dataset::secondary {
     }
     $uploads = {
 #        'pagecounts' => true,
+#        'phab'       => true,
     }
     $grabs = {
 #        'kiwix' => true,
