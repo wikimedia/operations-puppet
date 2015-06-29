@@ -104,7 +104,7 @@ class role::logstash::ircbot {
     require ::role::logstash
 
     $irc_name = $::logstash_irc_name ? {
-        undef => "logstash-${::instanceproject}",
+        undef => "logstash-${::labsproject}",
         default => $::logstash_irc_name,
     }
 
