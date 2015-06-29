@@ -58,12 +58,12 @@ class base::environment(
                     content => "${::instancename}\n",
                 }
             }
-            if( $::instanceproject ) {
+            if( $::labsproject ) {
                 file { '/etc/wmflabs-project':
                     owner   => 'root',
                     group   => 'root',
                     mode    => '0444',
-                    content => "${::instanceproject}\n",
+                    content => "${::labsproject}\n",
                 }
             }
         } # /labs

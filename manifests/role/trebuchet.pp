@@ -9,7 +9,7 @@ class role::trebuchet(
 ) {
     $trebuchet_master = $::realm ? {
         production => 'tin.eqiad.wmnet',
-        labs       => pick($deployment_server, "${::instanceproject}-deploy.eqiad.wmflabs"),
+        labs       => pick($deployment_server, "${::labsproject}-deploy.eqiad.wmflabs"),
     }
 
     include ::trebuchet::packages
