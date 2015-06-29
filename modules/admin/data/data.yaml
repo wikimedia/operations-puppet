@@ -1,8 +1,8 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [bsitu, cmcmahon, csalvia, diederik, edenhill, erik, howief, jgonera, mah,
-              maryana, mglaser, mwalker, nimishg, rainman, ssmith, swalling, sumanah,
+    members: [avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, howief, jgonera,
+              mah, maryana, mglaser, mwalker, nimishg, rainman, ssmith, swalling, sumanah,
               werdna]
   wikidev:
     gid: 500
@@ -58,7 +58,7 @@ groups:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [avar, daniel, dartar,
+    members: [daniel, dartar,
               ezachte, hoo, jamesur, jdlrobson, khorn, qchris,
               tparscal, tnegrin, ssastry, ironholds, nuria, leila,
               santhosh, amire80, legoktm, jsahleen]
@@ -827,7 +827,7 @@ users:
         gtisza@wikimedia.org]
     uid: 2355
   avar:
-    ensure: present
+    ensure: absent
     gid: 500
     name: avar
     realname: Avar
