@@ -29,7 +29,7 @@ class toollabs::bastion(
 
     motd::script { 'bastion-banner':
         ensure   => present,
-        source   => "puppet:///modules/toollabs/40-${::instanceproject}-bastion-banner",
+        source   => "puppet:///modules/toollabs/40-${::labsproject}-bastion-banner",
     }
 
     file { "${toollabs::store}/submithost-${::fqdn}":

@@ -2,7 +2,7 @@
 class role::labs::tools {
 
     class common {
-        $gridmaster = "${::instanceproject}-master.${::site}.wmflabs"
+        $gridmaster = "${::labsproject}-master.${::site}.wmflabs"
 
         class { 'gridengine': gridmaster => $gridmaster }
     }
@@ -76,7 +76,7 @@ class role::labs::tools {
     class mailrelay inherits role::labs::tools::common {
         system::role { 'role::labs::tools::mailrelay': description => 'Tool Labs mail relay' }
 
-        $maildomain_project = $::instanceproject ? {
+        $maildomain_project = $::labsproject ? {
             'toolsbeta' => 'tools-beta.wmflabs.org',
             default     => 'tools.wmflabs.org',
         }

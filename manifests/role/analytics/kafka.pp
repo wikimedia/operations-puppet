@@ -16,12 +16,12 @@
 #
 class role::analytics::kafka::config {
     if ($::realm == 'labs') {
-        # In labs, this can be set via hiera, or default to $::instanceproject
-        $kafka_cluster_name = hiera('role::analytics::kafka::config::kafka_cluster_name', $::instanceproject)
+        # In labs, this can be set via hiera, or default to $::labsproject
+        $kafka_cluster_name = hiera('role::analytics::kafka::config::kafka_cluster_name', $::labsproject)
 
         # Look up cluster config via hiera.
         # This will default to configuring a kafka cluster named
-        # after $::instanceproject with a single kafka broker
+        # after $::labsproject with a single kafka broker
         # that is the current host
         $cluster_config = hiera(
             'role::analytics::kafka::config::cluster_config',

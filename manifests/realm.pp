@@ -6,12 +6,8 @@ if $::realm == undef {
     $realm = 'production'
 }
 
-if $::instanceproject == undef {
-    $instanceproject = ''
-}
-
 if $::projectgroup == undef {
-    $projectgroup = "project-${instanceproject}"
+    $projectgroup = "project-${labsproject}"
 }
 
 if ($::realm == 'labs') and ($::labsproject == '') {
@@ -171,7 +167,7 @@ $private_tables = [
 # Route list for mail coming from MediaWiki mailer
 $wikimail_smarthost = $::realm ? {
     'production' => [ 'wiki-mail-eqiad.wikimedia.org' ],
-    'labs'       => $::instanceproject ? {
+    'labs'       => $::labsproject ? {
         'deployment-prep' => [ 'deployment-mx.eqiad.wmflabs' ],
         default           => [ 'polonium.wikimedia.org', 'lead.wikimedia.org' ],
     }

@@ -28,7 +28,7 @@ class toollabs::submit inherits toollabs {
 
     motd::script { 'submithost-banner':
         ensure   => present,
-        source   => "puppet:///modules/toollabs/40-${::instanceproject}-submithost-banner",
+        source   => "puppet:///modules/toollabs/40-${::labsproject}-submithost-banner",
     }
 
     file { "${toollabs::store}/submithost-${::fqdn}":

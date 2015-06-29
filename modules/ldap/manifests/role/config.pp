@@ -7,7 +7,7 @@ class ldap::role::config::labs {
         'codfw' => [ 'ldap-codfw.wikimedia.org', 'ldap-eqiad.wikimedia.org' ],
     }
     $sudobasedn = $::realm ? {
-        'labs'       => "ou=sudoers,cn=${instanceproject},ou=projects,${basedn}",
+        'labs'       => "ou=sudoers,cn=${labsproject},ou=projects,${basedn}",
         'production' => "ou=sudoers,${basedn}"
     }
     $ldapconfig = {
