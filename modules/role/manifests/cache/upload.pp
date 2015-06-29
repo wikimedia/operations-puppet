@@ -21,7 +21,7 @@ class role::cache::upload(
     $memory_storage_size = ceiling(0.08333 * $::memorysize_mb / 1024.0)
 
     if $::realm == 'production' {
-        include role::cache::ssl::sni
+        include role::cache::ssl::unified
     }
 
     $varnish_be_directors = {
