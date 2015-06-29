@@ -99,8 +99,8 @@ class role::salt::minions(
         $master        = pick($salt_master, $labs_masters)
         $master_finger = pick($salt_finger, $labs_finger)
 
-        salt::grain { 'instanceproject':
-            value => $::instanceproject,
+        salt::grain { 'labsproject':
+            value => $::labsproject,
         }
     } else {
         $master        = 'palladium.eqiad.wmnet'

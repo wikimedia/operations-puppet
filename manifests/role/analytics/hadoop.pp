@@ -300,7 +300,7 @@ class role::analytics::hadoop::config {
         $gelf_logging_port                        = 12201
         # In labs, make sure that HDFS user directories are
         # created for everyone in the current labs project.
-        $hadoop_users_posix_groups                 = $::instanceproject
+        $hadoop_users_posix_groups                 = $::labsproject
 
         # Hadoop directories in labs should be automatically created.
         # This conditional could be added to each of the main classes

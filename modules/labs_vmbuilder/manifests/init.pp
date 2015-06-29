@@ -65,7 +65,7 @@ class labs_vmbuilder($vmbuilder_version) {
                     ],
     }
 
-    $projectregex = "s/${instanceproject}/_PROJECT_/g"
+    $projectregex = "s/${labsproject}/_PROJECT_/g"
     $fqdnregex    = "s/${::fqdn}/_FQDN_/g"
 
     # We can't just use $::servername here because the master

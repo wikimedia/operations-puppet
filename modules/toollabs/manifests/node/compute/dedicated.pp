@@ -15,7 +15,7 @@ class toollabs::node::compute::dedicated {
     if $::node_dedicated_tool {
 
         system::role { 'toollabs::node::compute::dedicated':
-            description => "Computation node dedicated to ${::instanceproject}.${::node_dedicated_tool}",
+            description => "Computation node dedicated to ${::labsproject}.${::node_dedicated_tool}",
         }
 
         class { 'toollabs::queues': queues => [ $::node_dedicated_tool ] }
