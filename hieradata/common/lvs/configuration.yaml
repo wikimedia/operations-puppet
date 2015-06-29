@@ -97,8 +97,8 @@ lvs_service_ips:
     eqiad: 208.80.154.244
   misc_web:
     eqiad:
-      misc_web: 208.80.154.241
-      misc_web6: 2620:0:861:ed1a::11
+      misc_weblb: 208.80.154.241
+      misc_weblb6: 2620:0:861:ed1a::11
   parsoid:
     eqiad: 10.2.2.28
   parsoidcache:
