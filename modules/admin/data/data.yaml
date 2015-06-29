@@ -1,8 +1,8 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [bsitu , cmcmahon, csalvia, edenhill, jgonera, mah, mwalker,
-nimishg, rainman, ssmith, swalling, erik, diederik]
+    members: [bsitu , cmcmahon, csalvia, diederik, edenhill, erik, howief, jgonera, mah,
+              maryana, mglaser, mwalker, nimishg, rainman, ssmith, swalling, sumanah]
   wikidev:
     gid: 500
     description: container group for primary user groups.
