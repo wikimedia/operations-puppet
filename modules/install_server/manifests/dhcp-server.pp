@@ -1,4 +1,4 @@
-# Class: install-server::dhcp-server
+# Class: install_server::dhcp-server
 #
 # This class installs isc-dhcp-server and configures it
 #
@@ -10,9 +10,9 @@
 # Requires:
 #
 # Sample Usage:
-#   include install-server::dhcp-server
+#   include install_server::dhcp-server
 
-class install-server::dhcp-server {
+class install_server::dhcp-server {
     file { '/etc/dhcp':
         ensure  => directory,
         require => Package['isc-dhcp-server'],
@@ -20,7 +20,7 @@ class install-server::dhcp-server {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/install-server/dhcpd',
+        source  => 'puppet:///modules/install_server/dhcpd',
     }
 
     package { 'isc-dhcp-server':
