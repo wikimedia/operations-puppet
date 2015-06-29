@@ -1,0 +1,155 @@
+#####################################################################
+#### THIS FILE IS MANAGED BY PUPPET
+#### puppet:///modules/install_server/dhcpd/linux-host-entries.ttyS0-115200
+######################################################################
+
+
+host analytics1003 {
+	hardware ethernet 88:43:e1:c2:99:48;
+	fixed-address analytics1003.eqiad.wmnet;
+}
+
+host analytics1004 {
+	hardware ethernet 88:43:e1:c2:86:94;
+	fixed-address analytics1004.eqiad.wmnet;
+}
+
+host analytics1009 {
+	hardware ethernet 88:43:e1:c2:86:6a;
+	fixed-address analytics1009.eqiad.wmnet;
+}
+
+host analytics1010 {
+	hardware ethernet 88:43:e1:c2:94:e8;
+	fixed-address analytics1010.eqiad.wmnet;
+}
+
+host labsdb1001 {
+	hardware ethernet 00:22:BD:D3:61:8C;
+	fixed-address labsdb1001.eqiad.wmnet;
+}
+
+host labsdb1002 {
+	hardware ethernet 00:22:BD:D3:63:F4;
+	fixed-address labsdb1002.eqiad.wmnet;
+}
+
+host labsdb1003 {
+	hardware ethernet 88:43:E1:C2:54:98;
+	fixed-address labsdb1003.eqiad.wmnet;
+}
+
+host etcd1001 {
+	hardware ethernet AA:00:00:68:8C:B4;
+	fixed-address etcd1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host etcd1002 {
+	hardware ethernet AA:00:00:44:DD:FE;
+	fixed-address etcd1002.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host etcd1003 {
+	hardware ethernet AA:00:00:C9:3E:BD;
+	fixed-address etcd1003.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host etherpad1001 {
+	hardware ethernet AA:00:00:EE:AD:01;
+	fixed-address etherpad1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host pc1001 {
+	hardware ethernet 00:22:bd:d3:38:62;
+	fixed-address pc1001.eqiad.wmnet;
+}
+
+host pc1002 {
+	hardware ethernet 00:22:BD:D3:60:4A;
+	fixed-address pc1002.eqiad.wmnet;
+}
+
+host pc1003 {
+	hardware ethernet 88:43:E1:C2:51:50;
+	fixed-address pc1003.eqiad.wmnet;
+}
+
+host planet1001 {
+	hardware ethernet aa:00:00:19:24:b9;
+	fixed-address planet1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host virt1001 {
+	hardware ethernet 88:43:e1:c2:99:8e;
+	fixed-address virt1001.eqiad.wmnet;
+}
+
+host virt1002 {
+	hardware ethernet 00:22:bd:d3:60:58;
+	fixed-address virt1002.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host virt1003 {
+	hardware ethernet 88:43:e1:c2:53:9c;
+	fixed-address virt1003.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+
+host virt1004 {
+	hardware ethernet 88:43:E1:C2:79:12;
+	fixed-address virt1004.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host virt1005 {
+	hardware ethernet 00:22:BD:D3:38:7E;
+	fixed-address virt1005.eqiad.wmnet;
+}
+
+host virt1006 {
+	hardware ethernet 88:43:E1:C2:5B:FA;
+	fixed-address virt1006.eqiad.wmnet;
+}
+
+host virt1007 {
+	hardware ethernet 88:43:E1:C2:91:AE;
+	fixed-address virt1007.eqiad.wmnet;
+}
+
+host virt1008 {
+	hardware ethernet 88:43:e1:c2:85:b4;
+	fixed-address virt1008.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host virt1009 {
+	hardware ethernet 88:43:e1:c2:50:7e;
+	fixed-address virt1009.eqiad.wmnet;
+        option pxelinux.pathprefix "precise-installer/";
+        filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+# ganeti VM used for d-i testing
+host d-i-test {
+	hardware ethernet aa:00:00:3b:60:cb;
+	fixed-address d-i-test.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
