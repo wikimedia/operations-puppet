@@ -18,7 +18,7 @@ class role::cache::text {
     $memory_storage_size = ceiling(0.125 * $::memorysize_mb / 1024.0)
 
     if $::realm == 'production' {
-        include role::cache::ssl::sni
+        include role::cache::ssl::unified
     }
 
     require geoip
