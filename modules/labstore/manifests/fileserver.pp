@@ -9,15 +9,6 @@ class labstore::fileserver {
 
     include ::labstore
 
-    file { '/etc/init/manage-nfs-volumes.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/labstore/manage-nfs-volumes.conf',
-    }
-
-
     file { '/usr/local/sbin/replica-addusers.pl':
         source => 'puppet:///modules/labstore/replica-addusers.pl',
         owner  => 'root',
@@ -78,11 +69,11 @@ class labstore::fileserver {
         source => 'puppet:///modules/labstore/sync-exports',
     }
 
-    file { '/usr/local/sbin/manage-nfs-volumes-daemon':
+    file { '/usr/local/sbin/nfs-project-exports-daemon':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/labstore/manage-nfs-volumes-daemon',
+        source => 'puppet:///modules/labstore/nfs-project-exports-daemon',
     }
 
     file { '/usr/local/sbin/archive-project-volumes':
