@@ -115,6 +115,7 @@ http {
     }
 
     <%= @nginx_ssl_conf.join("\n")  %>
+    ssl_dhparam /etc/nginx/dhparam.pem;
 
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
