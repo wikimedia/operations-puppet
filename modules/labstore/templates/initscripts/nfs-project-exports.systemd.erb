@@ -1,0 +1,7 @@
+[Unit]
+Description=Daemon to do private NFS project exports
+
+[Service]
+ExecStart=/usr/local/bin/nfs-project-exports-daemon --exports-d-path /etc/exports.d/ --projects-config-path /etc/projects-nfs-config.yaml
+Restart=on-failure
+User=nfsmanager
