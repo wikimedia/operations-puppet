@@ -15,8 +15,8 @@ class tlsproxy::instance {
     }
 
     file { '/etc/logrotate.d/nginx':
-        content => template('nginx/logrotate'),
-        tag     => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
+        source => 'puppet:///modules/tlsproxy/logrotate',
+        tag    => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
     }
 }
 
