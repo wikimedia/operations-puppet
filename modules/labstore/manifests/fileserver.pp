@@ -76,6 +76,28 @@ class labstore::fileserver($monitor_iface = 'eth0') {
         mode   => '2775',
     }
 
+    file { '/usr/local/sbin/sync-exports':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/labstore/sync-exports',
+    }
+
+    file { '/usr/local/sbin/manage-nfs-volumes-daemon':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/labstore/manage-nfs-volumes-daemon',
+    }
+
+    file { '/usr/local/sbin/archive-project-volumes':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/labstore/archive-project-volumes',
+    }
+
+
     # Base exports for the file service: the root (/exp) fs
     # unconditionnally as fsid 0 for the NFS4 export tree
     file { '/etc/exports.d/ROOT.exports':
