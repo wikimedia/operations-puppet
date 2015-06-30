@@ -1,785 +1,276 @@
 account-creation-assistance:
-  dumps: false
-  home: false
-  project: true
-  scratch: false
-akosiaristests:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50088
+  mounts:
+    project: true
 analytics:
-  dumps: false
-  home: false
-  project: true
-  scratch: false
-bastion:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50090
+  mounts:
+    project: true
 bots:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-butterfly:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50064
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 catgraph:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
+  gid: 50588
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 cephtest:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-chasetest:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-collection-alt-renderer:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-commonsarchive:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-contintcloud:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52557
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 contributors:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-conventionextension:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-crisiswiki:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50408
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 cvn:
-  dumps: false
-  home: false
-  project: true
-  scratch: false
+  gid: 50116
+  mounts:
+    project: true
 cvresearch:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
+  gid: 50118
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 deployment-prep:
-  dumps: false
-  home: false
-  project: true
-  scratch: false
-design:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-developer-doc:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-dns:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50120
+  mounts:
+    project: true
 dumps:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
+  gid: 50124
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 dwl:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
+  gid: 50815
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 editor-engagement:
-  dumps: false
-  home: false
-  project: true
-  scratch: false
-embed-sandbox:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-etcd:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-extdist:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50068
+  mounts:
+    project: true
 fastcci:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
+  gid: 50983
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 fatg:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-full-text-reference-tool:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-fundraising:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-gather:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-gerrit:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-glam:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-globaleducation:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-grantreview:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-graphite:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52291
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 gsoc2014-fonttailor-demo:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-hat-imagescalers:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-hhvm:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52253
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 huggle:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-icinga:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-importarticles:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-integration:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50168
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 ircnotifier:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-jawiki:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-jupyter:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-language:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-logstash:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-mailman:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52361
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 maps:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
+  gid: 50196
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 maps-team:
-  dumps: false
-  home: false
-  project: false
-  scratch: true
-marathon:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52497
+  mounts:
+    scratch: true
 math:
-  dumps: false
-  home: false
-  project: true
-  scratch: true
-mediahandler-tests:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-mediawiki-api:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-mediawiki-core-team:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-mediawiki-dev:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-mediawiki-verp:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50398
+  mounts:
+    project: true
+    scratch: true
 megacron:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-mobile:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-mobile-smoketests:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-monitoring:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-multimedia:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 51769
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 mwoffliner:
-  dumps: false
-  home: false
-  project: false
-  scratch: true
-mwreview:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-netflow:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-newsletter:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-nginx:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-oa-signalling:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-ogvjs-integration:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-opengrok:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-openid:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52376
+  mounts:
+    scratch: true
 openstack:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
+  gid: 50076
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 orgcharts:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-osm4wiki:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-osmit:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-otrs:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-oxygenguide:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-packaging:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-pagemigration:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-patchtest:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50228
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 pdbhandler:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-performance:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-persistence:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-persona:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-phabricator:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-phragile:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-piwik:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-planet:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50240
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 project-proxy:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-propertysuggester:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-pubsubhubbub:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-puppet:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-puppet-ca-replacement:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-puppet-cleanup:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50254
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 puppet3-diffs:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-quality-assurance:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 51904
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 quarry:
-  dumps: false
-  home: false
-  project: true
-  scratch: false
-rdfiodev:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-reportcard:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-revscoring:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-safesandbox:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-scrumbugz:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-search:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-security-tools:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-sensu:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-services:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-services-testbed:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-shinken:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-shiny-r:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-signwriting:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52243
+  mounts:
+    project: true
 snuggle:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-social-tools:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-spam-honeypot:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-staging:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-structured-wikiquote:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50470
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 sugarcrm:
-  dumps: false
-  home: false
-  project: true
-  scratch: false
-swift:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-test-twemproxy:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50292
+  mounts:
+    project: true
 testlabs:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
+  gid: 50302
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 tools:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-toolsbeta:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50380
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 toolserver-legacy:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-tor:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-translatesvg:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-trebuchet:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-ttmserver:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-uploadwizard-osm-embedding:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52379
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 utrs:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-varnish:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-ve-languagetool:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50318
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 video:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-visualeditor:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-wdq-mm:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-webplatform:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-wikibrain:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-wikidata-build:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52318
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 wikidata-dev:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-wikidata-page-banner:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 50084
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 wikidata-quality:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-wikidata-query:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52377
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 wikidata-topicmaps:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
+  gid: 51980
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 wikidumpparse:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-wikimania-support:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-wikisource-dev:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 51824
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 wikisource-tools:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
+  gid: 50336
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 wikispy:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-wikistats:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-wikistream:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52518
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 wikiviajesve:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-wikivoyage:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52059
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 wildcat:
-  dumps: true
-  home: true
-  project: true
-  scratch: true
-wlmjudging:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
-wlmjurytool:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52045
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 wmt:
-  dumps: false
-  home: false
-  project: true
-  scratch: false
-xtools:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  gid: 52488
+  mounts:
+    project: true
