@@ -17,5 +17,10 @@ class tlsproxy::instance {
         source => 'puppet:///modules/tlsproxy/logrotate',
         tag    => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
     }
+
+    file { '/etc/nginx/dhparam.pem':
+        source => 'puppet:///modules/tlsproxy/dhparam.pem',
+        tag    => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
+    }
 }
 
