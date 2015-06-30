@@ -1,12 +1,12 @@
-# == Class: protoproxy::ocsp_updater
+# == Class: tlsproxy::ocsp_updater
 #
 # This class defines a machine-global cronjob which updates
 # any existing OCSP files in /var/cache/ocsp once every two
 # hours, randomly splayed per-machine.
 #
-# It is intended to be used as "include protoproxy::ocsp_updater"
+# It is intended to be used as "include tlsproxy::ocsp_updater"
 # any time an ocsp file is defined for creation on a given machine.
-# See protoproxy::localssl for example.
+# See tlsproxy::localssl for example.
 #
 # Note that everything about how we time/check this stuff today makes
 # assumptions based on GlobalSign's OCSP validity time windows.  In the
@@ -14,14 +14,14 @@
 # a bit more adaptive...
 #
 
-class protoproxy::ocsp_updater {
+class tlsproxy::ocsp_updater {
     require ::sslcert
 
     file { '/usr/local/sbin/update-ocsp-all':
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/protoproxy/update-ocsp-all',
+        source => 'puppet:///modules/tlsproxy/update-ocsp-all',
     }
 
     cron { 'update-ocsp-all':

@@ -1,6 +1,4 @@
 class role::cache::ssl::unified {
-    include role::protoproxy::ssl::common
-
     role::cache::ssl::local { 'unified':
         certname       => 'uni.wikimedia.org',
         default_server => true,

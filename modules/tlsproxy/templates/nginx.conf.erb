@@ -7,35 +7,31 @@ realm =  @realm
 # Thumbs server configuration file
 
 user www-data www-data;
-<% if has_variable?("nginx_use_ssl") then %>
-    # Adapted from https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
-    # Hyperthread siblings assumed to be enumerated as 0+16, 1+17, 2+18, etc, and
-    #  if HT is detected, we map 2 process per physical core onto both siblings
-    worker_processes  <%= @processorcount %>;
-    <%
-        ht_mode = false
-        if @processorcount.to_i == (2 * @physicalcorecount.to_i)
-            ht_mode = true
+# Adapted from https://github.com/priestjim/chef-openresty/blob/master/recipes/commons_conf.rb
+# Hyperthread siblings assumed to be enumerated as 0+16, 1+17, 2+18, etc, and
+#  if HT is detected, we map 2 process per physical core onto both siblings
+worker_processes  <%= @processorcount %>;
+<%
+    ht_mode = false
+    if @processorcount.to_i == (2 * @physicalcorecount.to_i)
+        ht_mode = true
+    end
+    affinity_mask = Array.new
+    cpupos = 0
+    ncpus = @physicalcorecount.to_i
+    (0...ncpus).each do |worker|
+        bitmask = (1 << cpupos).to_s(2)
+        bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s
+        if ht_mode
+            affinity_mask << (bitstring + bitstring)
+            affinity_mask << (bitstring + bitstring)
+        else
+            affinity_mask << bitstring
         end
-        affinity_mask = Array.new
-        cpupos = 0
-        ncpus = @physicalcorecount.to_i
-        (0...ncpus).each do |worker|
-            bitmask = (1 << cpupos).to_s(2)
-            bitstring = '0' * (ncpus - bitmask.size) + bitmask.to_s
-            if ht_mode
-                affinity_mask << (bitstring + bitstring)
-                affinity_mask << (bitstring + bitstring)
-            else
-                affinity_mask << bitstring
-            end
-            cpupos += 1
-        end
-    -%>
-    worker_cpu_affinity <%= affinity_mask.join(" ") %>;
-<% else %>
-    worker_processes  <%= @processorcount.to_i * 8 %>;
-<% end %>
+        cpupos += 1
+    end
+-%>
+worker_cpu_affinity <%= affinity_mask.join(" ") %>;
 worker_rlimit_nofile 30000;
 
 
@@ -44,12 +40,10 @@ pid        /run/nginx.pid;
 
 events {
     worker_connections  <%= @nginx_worker_connections %>;
-    <% if has_variable?("nginx_use_ssl") then %>
     # Setting multi_accept makes it much less likely that
     # the SSL server will throw SSL connection errors
     multi_accept on;
     accept_mutex off; # better latencies at high connection rates
-    <% end %>
 }
 
 http {
@@ -63,16 +57,10 @@ http {
     include       /etc/nginx/mime.types;
 
     access_log	/var/log/nginx/access.log;
-    <% if has_variable?("nginx_use_ssl") then %>
-    ## -- udplog disabled, to be removed later assuming no issues, cf T86656
-    ## log_format squid_combined '$hostname	$udplog_sequence	$udplog_time	$request_time	$remote_addr	-/$status	$bytes_sent	$request_method	$scheme://$host$request_uri	NONE/$proxy_host	$content_type	$http_referer	$http_x_forwarded_for	$http_user_agent	$http_accept_language	$sent_http_x_analytics';
-    ## access_udplog 208.80.154.73:8419 squid_combined;
-    ## -- end of udplog stuff
+
     client_max_body_size 100m;
     large_client_header_buffers 4 16k; 
     client_body_buffer_size 64k;
-    <% end %>
-
 
     sendfile        on;
     #tcp_nopush     on;
@@ -84,13 +72,12 @@ http {
     gzip  off;
     gzip_disable "MSIE [1-6]\.(?!.*SV1)";
 
-    <% if has_variable?("nginx_use_ssl") then %>
     # Enable a shared cache, since it is defined at this level
     # it will be used for all virtual hosts. 1m = 4000 active sessions,
     # so we are allowing 200,000 active sessions.
     ssl_session_cache shared:SSL:50m;
     ssl_session_timeout 15m;
-<% if scope.function_os_version(['debian >= jessie']) -%>
+
     # Disable RFC5077 tickets (may revisit later when client support is better)
     ssl_session_tickets off;
 
@@ -104,7 +91,6 @@ http {
 
     # default zlib compression level for SPDY response headers
     spdy_headers_comp 6;
-<% end -%>
 
     # This is used to inject "Accept-Encoding: gzip" into all proxied SPDY requests
     # The other half of the solution is in the per-server proxy configuration in the
@@ -129,7 +115,6 @@ http {
     }
 
     <%= @nginx_ssl_conf.join("\n")  %>
-    <% end %>
 
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;

@@ -1,6 +1,9 @@
 # vim:sw=4:ts=4:et:
 
-# == Definition: protoproxy
+# NOTE - this is only used by betalabs at this point, and due for further
+# refactor/integration with prod's tlsproxy::localssl
+
+# == Definition: tlsproxy::betassl
 #
 # This definition creates a nginx site. The parameters are merely expanded in
 # the templates which has all of the logic.
@@ -29,16 +32,12 @@
 # The TCP port to listen on.
 # Defaults to '80'
 #
-# [*ipV6_enabled*]
-# Whether to have the site listen on IPv6 addresses set via *proxy_addresses*
-# Defaults to false
-#
 # [*ssl_backend*]
 # Defaults to {}
 #
 # === Example:
 #
-#  protoproxy{ 'bits':
+#  tlsproxy{ 'bits':
 #    proxy_addresses => {
 #      'eqiad' => [ '208.80.154.234', '[2620:0:861:ed1a::1:a]' ],
 #      'esams' => [ '91.198.174.202', '[2620:0:862:ed1a::1:a]' ],
@@ -49,20 +48,19 @@
 #       'eqiad' => { 'primary' => '10.2.2.23' },
 #       'esams' => { 'primary' => '10.2.3.23', 'secondary' => '208.80.154.234' },
 #    },
-#    ipv6_enabled => true,
 #  }
 #
-define protoproxy(
+define tlsproxy::betassl(
     $proxy_server_name,
     $proxy_server_cert_name,
     $proxy_backend,
     $proxy_addresses={},
     $proxy_listen_flags='',
     $proxy_port='80',
-    $ipv6_enabled=false,
     $ssl_backend={},
 ) {
+    require tlsproxy::instance
     nginx::site { $name:
-        content  => template('protoproxy/proxy.erb')
+        content  => template('tlsproxy/betassl.erb')
     }
 }
