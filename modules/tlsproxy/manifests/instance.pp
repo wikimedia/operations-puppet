@@ -4,7 +4,6 @@ class tlsproxy::instance {
     include webserver::sysctl_settings
 
     $nginx_worker_connections = '32768'
-    $nginx_use_ssl = true
     $nginx_ssl_conf = ssl_ciphersuite('nginx', 'compat')
 
     class { 'nginx': managed => false, }
