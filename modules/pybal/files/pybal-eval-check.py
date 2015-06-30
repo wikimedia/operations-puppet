@@ -11,9 +11,8 @@ import syslog
 
 
 def die(msg):
-    error = "[error]: %s" % (msg,)
-    print error
-    syslog.syslog(error)
+    error = "[invalid]: %s" % (msg,)
+    print >>sys.stderr, error
     sys.exit(1)
 
 

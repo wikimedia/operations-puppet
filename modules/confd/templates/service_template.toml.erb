@@ -1,5 +1,6 @@
 # This file is managed by Puppet!
 # Confd config file for <%= @name %>
+
 [template]
 src = "<%= @safe_name %>.tmpl"
 dest = "<%= @name %>"
@@ -13,5 +14,5 @@ keys = [
     <% end -%>
 ]
 
-<% if @check %>check_cmd = "<%= @check %> {{.src}}"<% end %>
+<% if @check %>check_cmd = "/usr/local/bin/confd-lint-wrap <%= @check %> {{.src}}"<% end %>
 <% if @reload %>reload_cmd = "<%= reload %>"<% end %>
