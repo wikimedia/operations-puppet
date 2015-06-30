@@ -33,6 +33,7 @@ define tlsproxy::localssl(
     $do_ocsp        = false
 ) {
     require ::sslcert
+    require tlsproxy::instance
 
     # Ensure that exactly one definition exists with default_server = true
     # if multiple defines have default_server set to true, this

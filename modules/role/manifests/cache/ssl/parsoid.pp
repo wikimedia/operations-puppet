@@ -1,7 +1,4 @@
 class role::cache::ssl::parsoid {
-    # Explicitly not adding wmf CA since it is not needed for now
-    include role::tlsproxy::ssl::common
-
     role::cache::ssl::local { 'unified':
         certname       => 'uni.wikimedia.org',
         default_server => true,
