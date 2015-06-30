@@ -1,6 +1,9 @@
 # vim:sw=4:ts=4:et:
 
-# == Definition: tlsproxy
+# NOTE - this is only used by betalabs at this point, and due for further
+# refactor/integration with prod's tlsproxy::localssl
+
+# == Definition: tlsproxy::betassl
 #
 # This definition creates a nginx site. The parameters are merely expanded in
 # the templates which has all of the logic.
@@ -52,7 +55,7 @@
 #    ipv6_enabled => true,
 #  }
 #
-define tlsproxy(
+define tlsproxy::betassl(
     $proxy_server_name,
     $proxy_server_cert_name,
     $proxy_backend,
@@ -64,6 +67,6 @@ define tlsproxy(
 ) {
     require tlsproxy::instance
     nginx::site { $name:
-        content  => template('tlsproxy/proxy.erb')
+        content  => template('tlsproxy/betassl.erb')
     }
 }
