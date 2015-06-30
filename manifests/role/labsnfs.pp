@@ -10,6 +10,7 @@
 class role::labs::nfs::dumps($dump_servers_ips) {
     include standard
     include ::labstore
+    include ::labstore::monitoring
     include rsync::server
 
     # The dumps server has a simple, flat exports list
@@ -42,6 +43,10 @@ class role::labs::nfs::fileserver($monitor = 'eth0') {
     include standard
 
     class { '::labstore::fileserver':
+        monitor_iface => $monitor,
+    }
+
+    class { '::labstore::monitoring':
         monitor_iface => $monitor,
     }
 }
