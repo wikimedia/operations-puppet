@@ -62,6 +62,7 @@ define tlsproxy(
     $ipv6_enabled=false,
     $ssl_backend={},
 ) {
+    require tlsproxy::instance
     nginx::site { $name:
         content  => template('tlsproxy/proxy.erb')
     }
