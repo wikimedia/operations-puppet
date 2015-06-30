@@ -41,10 +41,7 @@ class role::labs::nfs::dumps($dump_servers_ips) {
 #
 class role::labs::nfs::fileserver($monitor = 'eth0') {
     include standard
-
-    class { '::labstore::fileserver':
-        monitor_iface => $monitor,
-    }
+    include ::labstore::fileserver
 
     class { '::labstore::monitoring':
         monitor_iface => $monitor,
