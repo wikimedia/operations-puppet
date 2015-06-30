@@ -1,5 +1,5 @@
 class role::cache::ssl::sni {
-    include role::protoproxy::ssl::common
+    include role::tlsproxy::ssl::common
 
     role::cache::ssl::local { 'unified':
         certname => 'uni.wikimedia.org',

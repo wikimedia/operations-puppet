@@ -15,7 +15,7 @@
 #
 # Requires:
 # - nginx package
-class role::protoproxy::ssl::common {
+class role::tlsproxy::ssl::common {
 
     # Tune kernel settings
     include webserver::sysctl_settings
@@ -37,10 +37,10 @@ class role::protoproxy::ssl::common {
     }
 }
 
-class role::protoproxy::ssl::beta::common {
+class role::tlsproxy::ssl::beta::common {
 
     include standard
-    include role::protoproxy::ssl::common
+    include role::tlsproxy::ssl::common
 
     sslcert::certificate { 'star.wmflabs.org':
         source => 'puppet:///files/ssl/star.wmflabs.org.crt',
@@ -52,17 +52,17 @@ class role::protoproxy::ssl::beta::common {
 # made to port 443, we have to setup a nginx proxy on each of the caches.
 # Nginx will listen on the real instance IP, proxy_addresses are not needed.
 #
-class role::protoproxy::ssl::beta {
+class role::tlsproxy::ssl::beta {
 
     # Don't run an ipv6 proxy on beta
-    class {'protoproxy::params': enable_ipv6_proxy => false}
+    class {'tlsproxy::params': enable_ipv6_proxy => false}
 
 
-    system::role { 'role::protoproxy::ssl:beta': description => 'SSL proxy on beta' }
+    system::role { 'role::tlsproxy::ssl:beta': description => 'SSL proxy on beta' }
 
-    include role::protoproxy::ssl::beta::common
+    include role::tlsproxy::ssl::beta::common
 
-    # protoproxy::instance parameters common to any beta instance
+    # tlsproxy::instance parameters common to any beta instance
     $defaults = {
         proxy_server_cert_name => 'star.wmflabs.org',
         proxy_backend => {
@@ -87,6 +87,6 @@ class role::protoproxy::ssl::beta {
         'wiktionary'  => { proxy_server_name => '*.wiktionary.beta.wmflabs.org' },
     }
 
-    create_resources( protoproxy, $instances, $defaults )
+    create_resources( tlsproxy, $instances, $defaults )
 
 }
