@@ -30,6 +30,11 @@
     RewriteCond %{SERVER_PORT} !^443$
     RewriteRule ^/(.*)$ https://<%= @webserver_hostname %>/$1 [L,R]
 
+    # Beacon requests that are normally handled by Varnish. We don't need these
+    # requests to do anything, but they shouldn't show up in the JavaScript
+    # error console as errors.
+    RedirectMatch 204 beacon/(.*)$
+
     ErrorLog /var/log/apache2/error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
