@@ -14,6 +14,10 @@ define monitoring::service(
     $config_dir            = '/etc/nagios',
 )
 {
+    # the list of characters is the default for illegal_object_name_chars
+    # nagios/icinga option
+    $description_safe = regsubst($description, '[`~!$%^&*"|\'<>?,()=]', '-', 'G')
+
     if ! $host {
         fail("Parameter ${host} not defined!")
     }
@@ -59,7 +63,7 @@ define monitoring::service(
         target                 => "${config_dir}/puppet_checks.d/${host}.cfg",
         host_name              => $host,
         servicegroups          => $servicegroups,
-        service_description    => $description,
+        service_description    => $description_safe,
         check_command          => $check_command,
         max_check_attempts     => $retries,
         normal_check_interval  => $normal_check_interval,
