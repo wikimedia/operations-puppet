@@ -26,12 +26,6 @@ server {
 # proxy_addresses is optional or migth be empty for the current site
 if @proxy_addresses.has_key?(@site) then
 	@proxy_addresses[@site].each do |proxy_address|
-		if proxy_address.start_with?('[') and
-            !(scope.lookupvar('tlsproxy::params::enable_ipv6_proxy') and @ipv6_enabled)
-        then
-			# Skip IPv6 address if ipv6 is not enabled.
-			next
-		end
 -%>
 	listen <%= proxy_address %>:443<% if proxy_address == @proxy_addresses[@site][0] -%> <%= @proxy_listen_flags %><% end -%>;
 <%
@@ -90,37 +84,3 @@ location @fallback {
 	<% end -%>
 
 }
-<% if @ipv6_enabled == true and scope.lookupvar('tlsproxy::params::enable_ipv6_proxy') == true then -%>
-
-# IPv6 proxying
-server {
-<% @proxy_addresses[@site].each do |proxy_address| -%>
-	<% if proxy_address[0].chr != '[' then next end %>
-	listen <%= proxy_address %>:80;
-<% end -%>
-	listen <%= @ipaddress %>:80;
-	server_name  <%= @proxy_server_name %>;
-
-	error_log   /var/log/nginx/<%= @name %>-ipv6.error.log;
-	access_log   off;
-
-	keepalive_timeout 60;
-
-	location / {
-		proxy_pass http://<%= @name %>;
-		proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
-
-		# this should be in sync with Varnish's first_byte_timeout
-		# and PHP's max_execution_time
-		proxy_read_timeout 180s;
-
-		proxy_set_header Host $host;
-		proxy_set_header X-Real-IP $remote_addr;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-		proxy_redirect off;
-		proxy_buffering off;
-	}
-
-}
-<% end -%>

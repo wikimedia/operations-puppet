@@ -17,10 +17,6 @@
 #
 class role::tlsproxy::ssl::beta {
 
-    # Don't run an ipv6 proxy on beta
-    class {'tlsproxy::params': enable_ipv6_proxy => false}
-
-
     system::role { 'role::tlsproxy::ssl:beta': description => 'SSL proxy on beta' }
 
     include standard
@@ -36,7 +32,6 @@ class role::tlsproxy::ssl::beta {
             # send all traffic to the local cache
             'eqiad' => { 'primary' => '127.0.0.1' }
         },
-        ipv6_enabled => false,
     }
 
     $instances = {
