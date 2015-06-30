@@ -169,6 +169,7 @@ rewrite	*wikipedia.org.il	//he.wikipedia.org
 rewrite	*wikipedia.co.il	//he.wikipedia.org
 rewrite	*vikimedija.org	//rs.wikimedia.org
 rewrite	*wikipedia.bg	//bg.wikipedia.org
+rewrite	*wikipedia.is	//is.wikipedia.org
 rewrite	*wikipedia.co.za	//af.wikipedia.org
 rewrite	*wikibooks.cz	//cs.wikibooks.org
 rewrite	*wikicitaty.cz	//cs.wikiquote.org
