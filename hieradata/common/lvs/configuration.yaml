@@ -370,8 +370,7 @@ lvs_services:
   osm:
     description: OpenStreetMap tiles
     class: high-traffic2
-    sites:
-    - eqiad
+    sites: []
     ip: *osm
     bgp: 'yes'
     depool-threshold: ".5"
