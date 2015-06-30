@@ -12,7 +12,12 @@
 #   are supported.
 # - The compatibility mode,indicating the degree of compatibility we
 #   want to retain with older browsers (basically, IE6, IE7 and
-#   Android prior to 3.0)
+#   Android prior to 3.0).  Current options are:
+#   - 'strong': PFS required, ECDHE+AES suites only, TLSv1.1+ only
+#   - 'compat': Supports most legacy devices (not IE6), TLSv1.0+
+#   - 'compat-dhe': Upgrades 'compat' to use DHE for PFS with certain older
+#      clients - breaks some Java6 clients, and requires the use of good DH
+#      parameters elsewhere in the server config.
 # - An optional argument, that if non-nil will set HSTS to max-age of
 #   N days
 #
@@ -46,31 +51,15 @@
 require 'puppet/util/package'
 
 module Puppet::Parser::Functions
-  ciphersuites = {
-    'compat' => [
-      '-ALL',
-      'ECDHE-ECDSA-AES128-GCM-SHA256',
-      'ECDHE-RSA-AES128-GCM-SHA256',
-      'ECDHE-ECDSA-AES256-GCM-SHA384',
-      'ECDHE-RSA-AES256-GCM-SHA384',
-      'ECDHE-ECDSA-AES128-SHA256',
-      'ECDHE-RSA-AES128-SHA256',
-      'ECDHE-ECDSA-AES128-SHA',
-      'ECDHE-RSA-AES128-SHA',
-      'ECDHE-ECDSA-AES256-SHA384',
-      'ECDHE-RSA-AES256-SHA384',
-      'ECDHE-ECDSA-AES256-SHA',
-      'ECDHE-RSA-AES256-SHA',
-      'AES128-GCM-SHA256',
-      'AES256-GCM-SHA384',
-      'AES128-SHA256',
-      'AES128-SHA',
-      'AES256-SHA256',
-      'AES256-SHA',
-      'CAMELLIA128-SHA',
-      'CAMELLIA256-SHA',
-      'DES-CBC3-SHA',
-    ],
+  # Basic list chunks, used to construct bigger lists
+  basic = {
+    # Only modern reasonably-secure browsers have these.
+    # They're all forward-secret, and our preference ordering is
+    # (higher trumps all lower considerations, if conflict):
+    # 1) GCM > CBC
+    # 2) AES128 > AES256
+    # 3) SHA-2 > SHA-1
+    # 4) ECDSA > RSA
     'strong' => [
       '-ALL',
       'ECDHE-ECDSA-AES128-GCM-SHA256',
@@ -86,7 +75,34 @@ module Puppet::Parser::Functions
       'ECDHE-ECDSA-AES256-SHA',
       'ECDHE-RSA-AES256-SHA',
     ],
+    # DHE-based forward-secret option to help e.g. Android 2 and OpenSSL 0.9.8
+    # Do not use on a server unless you're *sure* it's not using defaulted
+    # and/or weak DH parameters!
+    'compat-dhe' => [
+      'DHE-RSA-AES128-SHA',
+    ],
+    # not-forward-secret compat for ancient stuff
+    # pref rules same as 'strong' where applicable
+    'compat' => [
+      'AES128-GCM-SHA256',
+      'AES256-GCM-SHA384',
+      'AES128-SHA256',
+      'AES128-SHA',
+      'AES256-SHA256',
+      'AES256-SHA',
+      'CAMELLIA128-SHA',
+      'CAMELLIA256-SHA',
+      'DES-CBC3-SHA', # Only for IE8/XP at this point, I think
+    ],
   }
+
+  # Final lists exposed to callers
+  ciphersuites = {
+    'strong'     => basic['strong'],
+    'compat'     => basic['strong'] + basic['compat'],
+    'compat-dhe' => basic['strong'] + basic['compat-dhe'] + basic['compat'],
+  }
+
   newfunction(
               :ssl_ciphersuite,
               :type => :rvalue,
@@ -147,7 +163,7 @@ END
       case ciphersuite
       when 'strong' then
         output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1')
-      when 'compat' then
+      else
         output.push('SSLProtocol all -SSLv2 -SSLv3')
       end
       output.push("SSLCipherSuite #{cipherlist}")
@@ -161,7 +177,7 @@ END
       case ciphersuite
       when 'strong' then
         output.push('ssl_protocols TLSv1.1 TLSv1.2;')
-      when 'compat' then
+      else
         output.push('ssl_protocols TLSv1 TLSv1.1 TLSv1.2;')
       end
       output.push("ssl_ciphers #{cipherlist};")
