@@ -37,17 +37,6 @@ class role::tlsproxy::ssl::common {
     }
 }
 
-class role::tlsproxy::ssl::beta::common {
-
-    include standard
-    include role::tlsproxy::ssl::common
-
-    sslcert::certificate { 'star.wmflabs.org':
-        source => 'puppet:///files/ssl/star.wmflabs.org.crt',
-    }
-
-}
-
 # Because beta does not have a frontend LVS to redirect the requests
 # made to port 443, we have to setup a nginx proxy on each of the caches.
 # Nginx will listen on the real instance IP, proxy_addresses are not needed.
@@ -60,7 +49,12 @@ class role::tlsproxy::ssl::beta {
 
     system::role { 'role::tlsproxy::ssl:beta': description => 'SSL proxy on beta' }
 
-    include role::tlsproxy::ssl::beta::common
+    include standard
+    include role::tlsproxy::ssl::common
+
+    sslcert::certificate { 'star.wmflabs.org':
+        source => 'puppet:///files/ssl/star.wmflabs.org.crt',
+    }
 
     # tlsproxy::instance parameters common to any beta instance
     $defaults = {
