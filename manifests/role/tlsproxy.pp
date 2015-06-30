@@ -54,5 +54,5 @@ class role::tlsproxy::ssl::beta {
         'wiktionary'  => { proxy_server_name => '*.wiktionary.beta.wmflabs.org' },
     }
 
-    create_resources( tlsproxy, $instances, $defaults )
+    create_resources( tlsproxy::betassl, $instances, $defaults )
 }
