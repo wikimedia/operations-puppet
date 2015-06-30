@@ -11,11 +11,12 @@ cassandra::seeds:
     - restbase1004.eqiad.wmnet
     - restbase1005.eqiad.wmnet
     - restbase1006.eqiad.wmnet
-cassandra::max_heap_size: 8g
+cassandra::max_heap_size: 12g
 # 1/4 heap size, no more than 100m/thread
 cassandra::heap_newsize: 2048m
 cassandra::compaction_throughput_mb_per_sec: 160
 cassandra::concurrent_compactors: 10
+cassandra::concurrent_writes: 48
 
 cassandra::dc: "%{::site}"
 cassandra::cluster_name: "%{::site}"
