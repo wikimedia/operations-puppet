@@ -50,6 +50,8 @@ class openstack::openstack-manager(
         default      => "www.${controller_hostname}",
     }
 
+    include ::apache::mod::alias
+
     apache::site { $webserver_hostname:
         content => template("apache/sites/${webserver_hostname}.erb"),
     }
