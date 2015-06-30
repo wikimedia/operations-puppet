@@ -11,9 +11,9 @@ if [ -d /mnt/dumps/lost+found ]; then
         /usr/bin/rsync -rlpt /data/xmldatadumps/public/other/incr /mnt/dumps/
     fi
     mkdir -p /mnt/dumps/public/wikidatawiki/entities/
-    running=`pgrep -u root -f -x '/usr/bin/rsync -rlpt /data/xmldatadumps/public/other/wikibase/wikidatawiki /mnt/dumps/public/wikidatawiki/entities/'`
+    running=`pgrep -u root -f -x '/usr/bin/rsync -rlpt /data/xmldatadumps/public/other/wikibase/wikidatawiki/ /mnt/dumps/public/wikidatawiki/entities/'`
     if [ -z "$running" ]; then
-        /usr/bin/rsync -rlpt /data/xmldatadumps/public/other/wikibase/wikidatawiki /mnt/dumps/public/wikidatawiki/entities/
+        /usr/bin/rsync -rlpt /data/xmldatadumps/public/other/wikibase/wikidatawiki/ /mnt/dumps/public/wikidatawiki/entities/
     fi
     running=`pgrep -u root -f -x '/usr/bin/rsync -rlpt /data/xmldatadumps/public/other/pagecounts-raw /mnt/dumps/'`
     if [ -z "$running" ]; then
