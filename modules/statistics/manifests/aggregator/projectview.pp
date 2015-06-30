@@ -54,7 +54,7 @@ class statistics::aggregator::projectview {
 
     # Cron for doing the basic aggregation step itself
     cron { 'aggregator projectview aggregate':
-        command => "log_file=\"${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log\" && ${script_path}/bin/aggregate_projectcounts --source ${hdfs_source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --push-target --log \${log_file} 2> \${log_file}",
+        command => "log_file=\"${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log\" && ${script_path}/bin/aggregate_projectcounts --source ${hdfs_source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --push-target --log \${log_file} 2>> \${log_file}",
         user    => $user,
         hour    => '13',
         minute  => '0',
