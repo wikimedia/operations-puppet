@@ -72,10 +72,10 @@ class openstack::controller_firewall {
 
     # services provided to Labs instances
     ferm::rule { 'puppetmaster':
-        rule => "saddr ${labs_vms} ${monitoring} proto tcp dport 8140 ACCEPT;",
+        rule => "saddr (${labs_vms} ${monitoring}) proto tcp dport 8140 ACCEPT;",
     }
     ferm::rule { 'salt':
-        rule => "saddr ${labs_vms} ${monitoring} proto tcp dport (4505 4506) ACCEPT;",
+        rule => "saddr (${labs_vms} ${monitoring}) proto tcp dport (4505 4506) ACCEPT;",
     }
 
     # mysql access from iron
