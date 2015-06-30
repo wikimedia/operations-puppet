@@ -31,6 +31,6 @@ fi
 /bin/mount /srv/scratch
 /bin/mount /srv/keys
 /usr/local/sbin/sync-exports
-/usr/sbin/service manage-nfs-volumes start
+/usr/sbin/service nfs-project-exports-daemon start
 /sbin/ip addr add dev eth0 10.64.37.10/24
 /usr/sbin/service nfs-kernel-server start
