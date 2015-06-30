@@ -14,5 +14,17 @@
     <Location />
         SetHandler uwsgi-handler
         uWSGIsocket /run/uwsgi/tessera.sock
+
+        <Limit POST PUT DELETE>
+            AuthName "<%= @auth_ldap['name'] %>"
+            AuthType Basic
+            AuthBasicProvider ldap
+            AuthLDAPBindDN <%= @auth_ldap['bind_dn'] %>
+            AuthLDAPBindPassword <%= @auth_ldap['bind_password'] %>
+            AuthLDAPURL "<%= @auth_ldap['url'] %>"
+            <% @auth_ldap['groups'].each do |group| -%>
+            Require ldap-group <%= group %>
+            <% end -%>
+        </Limit>
     </Location>
 </VirtualHost>
