@@ -189,25 +189,35 @@ sub filter_noise {
 // start frontend-only block for HTTPS
 <% if @vcl_config.fetch("layer", "") == "frontend" && @cluster_options.fetch("https_redirects", false) -%>
 
-// *** HTTPS recv code - domain-based 301/302->HTTPS decisions happen here
-// if GET/HEAD filter is modified/removed later, keep in mind we need to not affect
+// *** HTTPS recv code - domain-based 301->HTTPS decisions happen here
+// if GET/HEAD/POST filter is modified/removed later, keep in mind we need to not affect
 //   the PURGE traffic here, as purge is called after this.
 sub https_recv_redirect {
-	if (req.request == "GET" || req.request == "HEAD") {
+	if (req.request == "GET" || req.request == "HEAD" || req.request == "POST") {
 		if (req.http.X-Forwarded-Proto != "https") {
 			// This is all of our unified cert wildcard domains which are TLS-clean (cert matches all extant hostnames within)
 			// The lone exception now is wikimedia.org, in the next block
 			if (req.http.Host ~ "(?i)(^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org$") {
-				set req.http.Location = "https://" + req.http.Host + req.url;
-				error 751 "TLS Redirect";
+				if (req.request == "POST") {
+					error 403 "Must use HTTPS - https://phabricator.wikimedia.org/T105794"
+				}
+				else {
+					set req.http.Location = "https://" + req.http.Host + req.url;
+					error 751 "TLS Redirect";
+				}
 			}
 			// wikimedia.org has multi-level subdomains used for HTTP for which we have no certs, so they must be avoided here:
 			// Ref: T102826 + T102827
 			else if(req.http.Host ~ "(?i)^([^.]+\.)?(m\.)?wikimedia\.org$") {
 				// For now, avoid matching commons for MW UAs. Ref: T102566
 				if (!(req.http.Host ~ "(?i)^commons\.wikimedia\.org$" && req.http.User-Agent ~ "^MediaWiki/")) {
-					set req.http.Location = "https://" + req.http.Host + req.url;
-					error 751 "TLS Redirect";
+					if (req.request == "POST") {
+						error 403 "Must use HTTPS - https://phabricator.wikimedia.org/T105794"
+					}
+					else {
+						set req.http.Location = "https://" + req.http.Host + req.url;
+						error 751 "TLS Redirect";
+					}
 				}
 			}
 		}
