@@ -91,7 +91,7 @@ class tessera(
 
     exec { 'tessera_create_db':
         command     => '/usr/bin/python -c "from tessera import db; db.create_all()"',
-        cwd         => '/srv/tessera/tessera',
+        cwd         => '/srv/deployment/tessera/tessera',
         environment => 'TESSERA_CONFIG=/etc/tessera/config.py',
         user        => 'www-data',
         refreshonly => true,
@@ -104,7 +104,7 @@ class tessera(
             uwsgi => {
                 'plugins'     => 'python',
                 'env'         => 'TESSERA_CONFIG=/etc/tessera/config.py',
-                'chdir'       => '/srv/tessera/tessera',
+                'chdir'       => '/srv/deployment/tessera/tessera',
                 'module'      => 'tessera',
                 'socket'      => '/run/uwsgi/tessera.sock',
                 'callable'    => 'app',
