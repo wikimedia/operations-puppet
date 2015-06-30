@@ -32,10 +32,6 @@
 # The TCP port to listen on.
 # Defaults to '80'
 #
-# [*ipV6_enabled*]
-# Whether to have the site listen on IPv6 addresses set via *proxy_addresses*
-# Defaults to false
-#
 # [*ssl_backend*]
 # Defaults to {}
 #
@@ -52,7 +48,6 @@
 #       'eqiad' => { 'primary' => '10.2.2.23' },
 #       'esams' => { 'primary' => '10.2.3.23', 'secondary' => '208.80.154.234' },
 #    },
-#    ipv6_enabled => true,
 #  }
 #
 define tlsproxy::betassl(
@@ -62,7 +57,6 @@ define tlsproxy::betassl(
     $proxy_addresses={},
     $proxy_listen_flags='',
     $proxy_port='80',
-    $ipv6_enabled=false,
     $ssl_backend={},
 ) {
     require tlsproxy::instance
