@@ -1,0 +1,133 @@
+#! /usr/bin/python
+# -*- coding: utf-8 -*-
+#
+#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
+#  Copyright © 2015 Yuvi Panda <yuvipanda@gmail.com>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+#
+#  THIS FILE IS MANAGED BY PUPPET
+#
+#  Source: modules/ldap/scripts/manage-nfs-volumes
+#  From:   ldap::client::utils
+#
+
+from urllib import urlopen
+import tempfile
+import argparse
+import yaml
+import json
+import os
+import pwd
+import time
+import logging
+import logging.handlers
+import sys
+
+
+class Project(object):
+    EXPORTS_TEMPLATE = '/exp/project/{name} ' + \
+        '-rw,nohide,fsid=00000000000000000-{gid}-0000000000' + \
+        ',subtree_check,async,no_root_squash' + \
+        '{instance_ips}'
+
+    def __init__(self, name, gid, instance_ips, volumes):
+        self.name = name
+        self.instance_ips = instance_ips
+        self.volumes = volumes
+        self.gid = gid
+
+    def get_exports(self):
+        return Project.EXPORTS_TEMPLATE.format(
+            name=self.name,
+            gid=self.gid,
+            instance_ips=' '.join(self.instance_ips)
+        )
+
+
+def get_instance_ips(project):
+    """
+    Return a list of Instance internal IPs for a given project
+
+    This uses the Wikitech API to fetch this data
+    """
+    url = "https://wikitech.wikimedia.org/w/api.php" + \
+        "?action=query&list=novainstances&niproject=%s" + \
+        "&niregion=eqiad&format=json" % project
+    data = json.load(urlopen(url))
+    ips = []
+    if 'query' in data and 'novainstances' in data['query']:
+        for instance in data['query']['novainstances']:
+            # Only provide internal IPs!
+            ips += [ip for ip in instance['ip'] if ip.startswith('10.')]
+    return ips
+
+
+def get_projects_with_nfs():
+    """
+    Returns list of populated Project objects that need NFS exports
+    """
+    projects = []
+    with open('/etc/nfs-mounts-config.yaml') as f:
+        projects_config = yaml.load(f)
+    for name, config in projects_config.items():
+        if 'mounts' in config:
+            mounts = [k for k, v in config['mounts'] if v]
+        else:
+            continue
+        project = Project(name, config['gid'], get_instance_ips(name), mounts)
+        projects.append(project)
+    return project
+
+
+def manage_exports(exports_d_base):
+    """
+    Collects projets that need exports, and then do the exports
+    """
+    projects = get_projects_with_nfs()
+    for project in projects:
+        tmpfile = tempfile.mkstemp(dir=exports_d_base)
+        tmpfile.write(project.get_exports())
+        tmpfile.close()
+        path = os.path.join(exports_d_base, '%s.exports' % project.name)
+        os.rename(tmpfile, path)
+
+
+if __name__ == "__main__":
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument(
+        'storage_base_path',
+        default='/srv/project'
+    )
+    argparser.add_argument(
+        'exports_base_path',
+        default='/exp/project'
+    )
+
+    if pwd.getpwuid(os.getuid())[0] != 0:
+        sys.stderr.write("This daemon should should not be run as root!'")
+        sys.exit(1)
+
+    log = logging.getLogger('manage-nfs-volumes-daemon')
+    handler = logging.handlers.SysLogHandler(address='/dev/log')
+    handler.setFormatter(logging.Formatter(
+        '%(name)s: %(levelname)s: %(message)s')
+    )
+    log.addHandler(handler)
+
+    log.info('Daemon starting')
+
+    while True:
+        manage_exports()
+        time.sleep(60)
