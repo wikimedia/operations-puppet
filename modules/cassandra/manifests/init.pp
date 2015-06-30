@@ -287,7 +287,7 @@ class cassandra(
         default => $authorizor,
     }
 
-    package { ['cassandra', 'openjdk-7-jdk']:
+    package { ['cassandra', 'openjdk-8-jdk']:
         ensure  => 'installed',
     }
 
