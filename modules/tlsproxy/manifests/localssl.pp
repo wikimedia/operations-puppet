@@ -32,8 +32,12 @@ define tlsproxy::localssl(
     $upstream_port  = '80',
     $do_ocsp        = false
 ) {
-    require ::sslcert
     require tlsproxy::instance
+
+    sslcert::certificate { $proxy_server_cert_name:
+        source  => "puppet:///files/ssl/${proxy_server_cert_name}.crt",
+        private => "puppet:///private/ssl/${proxy_server_cert_name}.key",
+    }
 
     # Ensure that exactly one definition exists with default_server = true
     # if multiple defines have default_server set to true, this
