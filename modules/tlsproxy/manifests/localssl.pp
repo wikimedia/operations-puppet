@@ -1,4 +1,4 @@
-# == Define: protoproxy::localssl
+# == Define: tlsproxy::localssl
 #
 # This definition creates a SSL proxy to localhost, using an Nginx site.
 #
@@ -24,7 +24,7 @@
 #   as creates the OCSP data file itself and ensures a cron is running to
 #   keep it up to date.
 
-define protoproxy::localssl(
+define tlsproxy::localssl(
     $proxy_server_cert_name,
     $server_name    = $::fqdn,
     $server_aliases = [],
@@ -38,8 +38,8 @@ define protoproxy::localssl(
     # if multiple defines have default_server set to true, this
     # resource will conflict.
     if $default_server {
-        notify { 'protoproxy localssl default_server':
-            message => "protoproxy::localssl instance ${title} with server name ${server_name} is the default server."
+        notify { 'tlsproxy localssl default_server':
+            message => "tlsproxy::localssl instance ${title} with server name ${server_name} is the default server."
         }
     }
 
@@ -47,7 +47,7 @@ define protoproxy::localssl(
     $ssl_protos = 'ssl spdy'
 
     if $do_ocsp {
-        include ::protoproxy::ocsp_updater
+        include ::tlsproxy::ocsp_updater
 
         $certpath = "/etc/ssl/localcerts/${proxy_server_cert_name}.crt"
         $output = "/var/cache/ocsp/${proxy_server_cert_name}.ocsp"
@@ -62,7 +62,7 @@ define protoproxy::localssl(
     }
 
     nginx::site { $name:
-        require => Notify['protoproxy localssl default_server'],    # Ensure a default_server has been defined
-        content => template('protoproxy/localssl.erb')
+        require => Notify['tlsproxy localssl default_server'],    # Ensure a default_server has been defined
+        content => template('tlsproxy/localssl.erb')
     }
 }

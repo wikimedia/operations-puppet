@@ -1,6 +1,6 @@
 # As above, but for misc instead of generic prod
 class role::cache::ssl::misc {
-    include role::protoproxy::ssl::common
+    include role::tlsproxy::ssl::common
 
     role::cache::ssl::local { 'wikimedia.org':
         do_ocsp        => true,

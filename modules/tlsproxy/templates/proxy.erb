@@ -27,7 +27,7 @@ server {
 if @proxy_addresses.has_key?(@site) then
 	@proxy_addresses[@site].each do |proxy_address|
 		if proxy_address.start_with?('[') and
-            !(scope.lookupvar('protoproxy::params::enable_ipv6_proxy') and @ipv6_enabled)
+            !(scope.lookupvar('tlsproxy::params::enable_ipv6_proxy') and @ipv6_enabled)
         then
 			# Skip IPv6 address if ipv6 is not enabled.
 			next
@@ -90,7 +90,7 @@ location @fallback {
 	<% end -%>
 
 }
-<% if @ipv6_enabled == true and scope.lookupvar('protoproxy::params::enable_ipv6_proxy') == true then -%>
+<% if @ipv6_enabled == true and scope.lookupvar('tlsproxy::params::enable_ipv6_proxy') == true then -%>
 
 # IPv6 proxying
 server {
