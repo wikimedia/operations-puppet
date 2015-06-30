@@ -1,0 +1,183 @@
+#! /usr/bin/python3
+#
+#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
+#  Copyright © 2015 Yuvi Panda <yuvipanda@gmail.com>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+#
+#  THIS FILE IS MANAGED BY PUPPET
+#
+#  Source: modules/labstore/nfs-project-exports-daemon
+#  From:   labstore::fileserver
+#
+
+from urllib.request import urlopen
+import ipaddress
+import tempfile
+import argparse
+import yaml
+import json
+import os
+import time
+import logging
+import sys
+
+
+# Volumes that need an entry in exports.d
+# /data/scratch and /public/dumps are available to anyone
+# who wants, and hence do not need a entry in exports.d.
+VOLUMES_NEEDING_EXPORTS = ['project', 'home']
+
+
+def is_valid_ipv4(ip):
+    """
+    Returns true if ip is a valid ipv4 address
+    """
+    try:
+        ipaddress.IPv4Address(ip)
+        return True
+    except ipaddress.AddressValueError:
+        return False
+
+
+class Project:
+    EXPORTS_TEMPLATE = '/exp/project/{name} ' + \
+        '-rw,nohide,fsid=00000000000000000-{gid}-0000000000' + \
+        ',subtree_check,async,no_root_squash ' + \
+        '{instance_ips}'
+
+    def __init__(self, name, gid, instance_ips, volumes):
+        self.name = name
+        self.instance_ips = instance_ips
+        self.volumes = volumes
+        self.gid = gid
+
+    def get_exports(self):
+        return Project.EXPORTS_TEMPLATE.format(
+            name=self.name,
+            gid=self.gid,
+            instance_ips=' '.join(self.instance_ips)
+        )
+
+
+def get_instance_ips(project):
+    """
+    Return a list of Instance internal IPs for a given project
+
+    This uses the Wikitech API to fetch this data
+    """
+    url = ("https://wikitech.wikimedia.org/w/api.php" +
+           "?action=query&list=novainstances&niproject=%s" +
+           "&niregion=eqiad&format=json") % project
+    try:
+        data = json.loads(urlopen(url).read().decode('utf-8'))
+    except:
+        logging.exception('Error fetching instance ip list for project %s', project)
+        sys.exit(-1)
+    ips = []
+    if 'query' in data and 'novainstances' in data['query']:
+        for instance in data['query']['novainstances']:
+            # Only provide internal IPs!
+            ips += [ip for ip in instance['ip']
+                    if is_valid_ipv4(ip) and ip.startswith('10.')]
+    return ips
+
+
+def get_projects_with_nfs(config_file_path):
+    """
+    Returns list of populated Project objects that need NFS exports
+    """
+    try:
+        with open(config_file_path) as f:
+            projects_config = yaml.load(f)
+    except:
+        logging.exception('Could not load projects config file from %s', config_file_path)
+        sys.exit(-1)
+
+    projects = []
+    for name, config in projects_config.items():
+        logging.debug('Fetching config for project %s', name)
+        if 'mounts' in config:
+            mounts = [k for k, v in config['mounts'].items()
+                      if k in VOLUMES_NEEDING_EXPORTS and v]
+            if len(mounts) == 0:
+                # Skip project if it has no private mounts
+                logging.info('Skipping exports for %s, no private mounts', name)
+                continue
+        else:
+            continue
+        project = Project(name, config['gid'], get_instance_ips(name), mounts)
+        projects.append(project)
+        logging.info('Fetched config for project %s, with %s instances',
+                     name, len(project.instance_ips))
+
+    return projects
+
+
+def manage_exports(exports_d_base, projects_config_path):
+    """
+    Collects projets that need exports, and then do the exports
+    """
+    projects = get_projects_with_nfs(projects_config_path)
+    logging.info("Found %s projects requiring private mounts", len(projects))
+
+    # Validate that there are no duplicate gids
+    gids = [project.gid for project in projects]
+    if len(set(gids)) != len(gids):
+        # OMG DUPLICATES
+        logging.error('Duplicate GIDs found in project config, aborting')
+        sys.exit(-1)
+    for project in projects:
+        logging.debug('Writing exports file for %s', project.name)
+        path = os.path.join(exports_d_base, '%s.exports' % project.name)
+        tmphandle, tmppath = tempfile.mkstemp(dir=exports_d_base)
+        tmpfile = os.fdopen(tmphandle, 'w')
+        tmpfile.write(project.get_exports())
+        tmpfile.close()
+        os.rename(tmppath, path)
+        logging.info('Wrote exports file for %s', project.name)
+
+
+if __name__ == "__main__":
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument(
+        '--exports-d-path',
+        help='Dir to write exports files to',
+    )
+    argparser.add_argument(
+        '--projects-config-path',
+        help='Path to YAML file with list of projects to enable NFS for',
+    )
+    argparser.add_argument(
+        '--debug',
+        help='Turn on debug logging',
+        action='store_true'
+    )
+
+    args = argparser.parse_args()
+
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)s %(message)s',
+        level=logging.DEBUG if args.debug else logging.INFO)
+
+    if os.getuid() == 0:
+        logging.error('Daemon started as root, exiting')
+        sys.stderr.write("This daemon should should not be run as root!\n")
+        sys.exit(1)
+
+    logging.info('Daemon starting')
+
+    while True:
+        manage_exports(args.exports_d_path, args.projects_config_path)
+        time.sleep(60)
