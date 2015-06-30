@@ -186,11 +186,11 @@ director <%= director_name %> <%= director['type'] %> {
 // start frontend-only block for HTTPS
 <% if @vcl_config.fetch("layer", "") == "frontend" && @cluster_options.fetch("https_redirects", false) -%>
 
-// *** HTTPS recv code - domain-based 301/302->HTTPS decisions happen here
-// if GET/HEAD filter is modified/removed later, keep in mind we need to not affect
+// *** HTTPS recv code - domain-based 301/307->HTTPS decisions happen here
+// if GET/HEAD/POST filter is modified/removed later, keep in mind we need to not affect
 //   the PURGE traffic here, as purge is called after this.
 sub https_recv_redirect {
-	if (req.request == "GET" || req.request == "HEAD") {
+	if (req.request == "GET" || req.request == "HEAD" || req.request == "POST") {
 		if (req.http.X-Forwarded-Proto != "https") {
 			// This filter should exactly match our set of SSL cert wildcards
 			if (req.http.Host ~ "(?i)^([^.]+\.)?(zero\.wikipedia|(m\.)?(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimedia|wikimediafoundation|wiktionary|mediawiki)).org$") {
@@ -206,11 +206,15 @@ sub https_recv_redirect {
 	}
 }
 
-// *** HTTPS error code - implements 301 response for recv code
+// *** HTTPS error code - implements 301/307 response for recv code
 sub https_error_redirect {
 	if (obj.status == 751) {
 		set obj.http.Location = req.http.Location;
-		set obj.status = 301;
+		if (req.request == "POST") {
+			set obj.status = 307;
+		} else {
+			set obj.status = 301;
+		}
 		set obj.http.Content-Length = "0"; // T64245
 		return(deliver);
 	}
