@@ -14,6 +14,9 @@ define monitoring::service(
     $config_dir            = '/etc/nagios',
 )
 {
+    # default value for illegal_object_name_chars nagios/icinga option
+    validate_re($description, '^[^`~!$%^&*"|\'<>?,()=]+$')
+
     if ! $host {
         fail("Parameter ${host} not defined!")
     }
