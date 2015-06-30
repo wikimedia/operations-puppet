@@ -59,6 +59,22 @@ class confd(
         before  => Service['confd'],
     }
 
+    file { '/usr/local/bin/confd-lint-wrap':
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0555',
+        source => 'puppet:///modules/confd/confd-lint-wrap.py',
+    }
+
+    file { '/usr/local/lib/nagios/plugins/check_confd_lint':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/confd/check_confd_lint.sh';
+    }
+
     # Any change to a service configuration or to a template should reload confd.
     Confd::File <| |> ~> Service['confd']
 
