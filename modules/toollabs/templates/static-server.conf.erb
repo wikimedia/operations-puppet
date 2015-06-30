@@ -24,7 +24,7 @@ server {
     ssl_certificate /etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt;
     ssl_certificate_key /etc/ssl/private/<%= @ssl_certificate_name %>.key;
 
-    # Copied from templates/nginx/nginx.conf.erb. Eugh
+    # Copied from modules/tlsproxy/templates/nginx.conf.erb. Eugh
     # Enable a shared cache, since it is defined at this level
     # it will be used for all virtual hosts. 1m = 4000 active sessions,
     # so we are allowing 200,000 active sessions.

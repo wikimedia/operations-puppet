@@ -10,7 +10,7 @@ class tlsproxy::instance {
     class { 'nginx': managed => false, }
 
     file { '/etc/nginx/nginx.conf':
-        content => template('nginx/nginx.conf.erb'),
+        content => template('tlsproxy/nginx.conf.erb'),
         tag     => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
     }
 
