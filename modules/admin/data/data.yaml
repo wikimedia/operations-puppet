@@ -1465,3 +1465,11 @@ users:
     realname: Darian Anthony Patrick
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3dtG8+VT7ldgcssl6OFgWbZThbShLay2LufVhVCmXEyOzoBGV3miwhyN1WGodp7aJ53txKPMDeakcyS9NtGL17avwJ/BccQrqxK8htqHvNJJOvvH8wrVSQpa0VwZ4MdGQXs+EJ9rTfb4ZWbi9uhg5DVSe/l6aeUR0w70rBvRjJS4XudJo71tvM8nqcYbusutkeJN97LLPBPCKq6mrhu1p80Lc3ZK3IYnyHceDxYDyfvbWVBfNDKEbRD64ogDvaG3tmMF1Fl0AL6Bujf1MOxlm8iykbog5kCFh74gECJ6B4OBLQ6i/sZ4U4uJa2Ucj4BRR7B8xX6RFGcfS03+m7KFN dpatrick_prod]
     uid: 12203
+  dcausse:
+    ensure: present
+    gid: 500
+    name: dcausse
+    realname: David Causse
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC95t2F3S61Za6Y+mZUs4abK95cXm9FedpnUJe2ii3byeFG5QPL9E8+zcZ70o2Mt0NjM5Nitla/Tb+U2BRjk3/YmWEkZxd9crUFRi3IVHjKhEOYhLSSjb2NJdNyWUoUgkQ8DspVDotsnIupdLuHY0Dyh+O4dFI7xnRKIUShm/B//BDCu03PXR4ikYkmtR/+LeKbMh3qSGgvfgv/G4hIiKjyiQt7Md+ROW0YqMp6yAtqIJ+2in1hU3mxy47vfVOFTcL5nNLOLoxJGVSsm0ancVbzrkqruk1o/iFxuz9AzxnX8EAozaNUH7PP3/ybD7ocK7v4SiYpibT2epWPkORgUV7h dcausse_prod@dizzy]
+    uid: 12338
+
