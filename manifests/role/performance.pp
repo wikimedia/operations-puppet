@@ -26,4 +26,10 @@ class role::performance {
         content => template('apache/sites/performance.wikimedia.org.erb'),
         require => Git::Clone['performance/docroot'],
     }
+
+    # Make Coal's whisper files accessible to Graphite front-ends.
+    file { '/var/lib/carbon/whisper/coal':
+        ensure => link,
+        target => '/var/lib/coal',
+    }
 }
