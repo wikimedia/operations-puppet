@@ -122,4 +122,11 @@ class confd(
         mode   => '0555',
         source => 'puppet:///modules/confd/check_confd_template';
     }
+
+    nrpe::monitor_service{ "check_confd_lint":
+        description  => "Confd Template Lint Health",
+        nrpe_command => "/usr/local/lib/nagios/plugins/check_confd_lint",
+        require      => File['/usr/local/lib/nagios/plugins/check_confd_lint'],
+    }
+
 }
