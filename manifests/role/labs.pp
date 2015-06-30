@@ -92,8 +92,7 @@ class role::labs::instance {
         }
     }
 
-    # Only create if we need /public/dumps or /public/keys
-    if mount_nfs_volume($::instanceproject, 'dumps') or os_version('ubuntu <= precise') {
+    if mount_nfs_volume($::instanceproject, 'dumps') {
         # Directory for public (readonly) mounts
         file { '/public':
             ensure => directory,
@@ -101,13 +100,12 @@ class role::labs::instance {
             group  => 'root',
             mode   => '0755',
         }
-    }
 
-    if mount_nfs_volume($::instanceproject, 'dumps') {
         file { '/public/dumps':
             ensure  => directory,
             require => File['/public'],
         }
+
         mount { '/public/dumps':
             ensure  => mounted,
             atboot  => true,
@@ -118,20 +116,17 @@ class role::labs::instance {
         }
     }
 
-    # Used by ssh for logging in, only on precise and lower
     if os_version('ubuntu <= precise') {
+        # Was used by ssh earlier, not any more
+        # Remove in a few weeks?
         file { '/public/keys':
-            ensure  => directory,
-            require => File['/public'],
+            ensure  => absent,
+            force   => true,
+            require => Mount['/public/keys'],
         }
 
         mount { '/public/keys':
             ensure  => absent,
-        }
-
-
-        exec { '/usr/local/sbin/manage-keys-nfs':
-            require => [File['/public/keys'], File['/usr/local/sbin/manage-keys-nfs']],
         }
     }
 

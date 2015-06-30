@@ -219,10 +219,7 @@ class ldap::client::utils($ldapconfig) {
     }
 
     file { '/usr/local/sbin/manage-keys-nfs':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/manage-keys-nfs',
+        ensure => absent,
     }
 
     file { ['/usr/local/bin/ldapsupportlib.py',
