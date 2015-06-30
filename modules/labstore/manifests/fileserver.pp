@@ -5,7 +5,7 @@
 # capable of serving this function, but neither activates nor
 # enables it to do so by itself (as this requires manual
 # intervention at this time because of the shared storage).
-class labstore::fileserve {
+class labstore::fileserver {
 
     include ::labstore
 
