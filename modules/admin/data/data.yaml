@@ -924,7 +924,7 @@ users:
         tnegrin@Administrators-MacBook-Air.local]
     uid: 3558
   ironholds:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ironholds
     realname: Oliver Keyes
