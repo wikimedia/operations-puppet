@@ -1,6 +1,6 @@
 class role::cache::ssl::unified {
     role::cache::ssl::local { 'unified':
-        certname       => 'uni.wikimedia.org',
+        certs          => ['uni.wikimedia.org'],
         default_server => true,
         do_ocsp        => true,
     }
