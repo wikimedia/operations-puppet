@@ -108,7 +108,7 @@ groups:
               nuria, ori, otto, springle, tnegrin, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
-              neilpquinn-wmf, tbayer, jdouglas, moushira, dbrant]
+              neilpquinn-wmf, tbayer, jdouglas, moushira, dbrant, maxsem]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -172,7 +172,7 @@ groups:
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
-              neilpquinn-wmf]
+              neilpquinn-wmf, maxsem]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -216,7 +216,7 @@ groups:
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, ananthrk, awight,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
-              andyrussg, niedzielski]
+              andyrussg, niedzielski, maxsem]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
