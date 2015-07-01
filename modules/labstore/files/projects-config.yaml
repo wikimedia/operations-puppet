@@ -266,8 +266,8 @@ marathon:
 math:
   dumps: false
   home: false
-  project: false
-  scratch: false
+  project: true
+  scratch: true
 mediahandler-tests:
   dumps: false
   home: false
