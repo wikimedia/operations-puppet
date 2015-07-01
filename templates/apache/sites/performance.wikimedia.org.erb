@@ -15,6 +15,7 @@
     <Location /coal>
         Order allow,deny
         Allow from all
+        uWSGIForceWSGIScheme https
         uWSGIsocket /run/uwsgi/coal.sock
         SetHandler uwsgi-handler
     </Location>
