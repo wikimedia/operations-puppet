@@ -353,7 +353,7 @@ class role::wikimetrics {
     # Link public DailyPageviews folder to aggregator_projectview_data folder
     file { "${public_directory}/datafiles/Pageviews":
         ensure  => 'link',
-        target  => "${aggregator_projectview_data_directory}/projectcounts/daily",
+        target  => "${aggregator_projectview_data_directory}/projectview/daily",
         owner   => $wikimetrics_user,
         group   => $wikimetrics_group,
         require => File["${public_directory}/datafiles"]
