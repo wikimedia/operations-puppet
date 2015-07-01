@@ -51,7 +51,7 @@ AlsoAcceptFor: jessie jessie-backports
 Version: 8
 Architectures: source amd64 i386
 Components: main backports thirdparty
-UDebComponents: main
+UDebComponents: main backports thirdparty
 Update: hwraid cassandra
 Description: Wikimedia packages for Debian Jessie
 SignWith: default
