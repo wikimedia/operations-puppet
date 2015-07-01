@@ -1,17 +1,17 @@
 class role::cache::ssl::sni {
     role::cache::ssl::local { 'unified':
-        certname => 'uni.wikimedia.org',
+        certs          => ['uni.wikimedia.org'],
         default_server => true,
-        do_ocsp => true,
+        do_ocsp        => true,
     }
 
     # local shorthand for use below only
     define sni_cert() {
         role::cache::ssl::local { $name:
-            certname => "sni.${name}",
-            server_name => $name,
+            certs          => ["sni.${name}"],
+            server_name    => $name,
             server_aliases => ["*.${name}"],
-            do_ocsp => true,
+            do_ocsp        => true,
         }
     }
 

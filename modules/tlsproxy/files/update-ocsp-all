@@ -1,26 +1,22 @@
 #!/bin/bash
 
-# Executes update-ocsp for all existing OCSP files,
-# continuing through the list even if some fail, and then
-# reloads nginx configuration to apply updates and exits
-# with a status that reflects whether any updates failed
-
 if [ $# != 1 ]; then
     echo One argument required: the proxy hostname:port
     exit 1
 fi
 
 PROXY=$1
+CFG_DIR=/etc/ocsp_updater
 OCSP_DIR=/var/cache/ocsp
 LCERT_DIR=/etc/ssl/localcerts
 
 some_failed=0
-for existing in ${OCSP_DIR}/*.ocsp; do
-    bn=$(basename $existing)
-    certname=${bn%.ocsp}
-    /usr/local/sbin/update-ocsp -c ${LCERT_DIR}/${certname}.crt -o $existing -p $PROXY
+
+for cfg_file in ${CFG_DIR}/*; do
+    ocsp_args=$(cat $cfg_file)
+    /usr/local/sbin/update-ocsp -p $PROXY $ocsp_args
     if [ $? -ne 0 ]; then
-        echo OCSP update failed for $certname
+        echo OCSP update failed for $cfg_file ($ocsp_args)
         some_failed=1
     fi
 done

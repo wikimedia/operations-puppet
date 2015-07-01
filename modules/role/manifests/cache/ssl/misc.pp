@@ -2,7 +2,7 @@
 class role::cache::ssl::misc {
     role::cache::ssl::local { 'wikimedia.org':
         do_ocsp        => true,
-        certname       => 'sni.wikimedia.org',
+        certs          => ['sni.wikimedia.org'],
         server_name    => 'wikimedia.org',
         server_aliases => ['*.wikimedia.org'],
         default_server => true;
@@ -10,14 +10,14 @@ class role::cache::ssl::misc {
 
     role::cache::ssl::local { 'wmfusercontent.org':
         do_ocsp        => true,
-        certname       => 'star.wmfusercontent.org',
+        certs          => ['star.wmfusercontent.org'],
         server_name    => 'wmfusercontent.org',
         server_aliases => ['*.wmfusercontent.org'];
     }
 
     role::cache::ssl::local { 'planet.wikimedia.org':
         do_ocsp        => true,
-        certname       => 'star.planet.wikimedia.org',
+        certs          => ['star.planet.wikimedia.org'],
         server_name    => 'planet.wikimedia.org',
         server_aliases => ['*.planet.wikimedia.org'];
     }
