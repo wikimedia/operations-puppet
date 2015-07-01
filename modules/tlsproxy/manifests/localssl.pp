@@ -48,9 +48,6 @@ define tlsproxy::localssl(
         }
     }
 
-    # for localssl.erb below
-    $ssl_protos = 'ssl spdy'
-
     if $do_ocsp {
         include ::tlsproxy::ocsp_updater
 
