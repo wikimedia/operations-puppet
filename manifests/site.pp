@@ -282,6 +282,12 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
     role ipsec
 }
 
+# virtual machine for static misc. services
+node 'bromine.eqiad.wmnet' {
+    include base::firewall
+    include role::bugzilla_static
+}
+
 # http://releases.wikimedia.org
 node 'caesium.eqiad.wmnet' {
     role releases
@@ -2388,7 +2394,6 @@ node 'zirconium.wikimedia.org' {
 
     include standard
     include role::wikimania_scholarships
-    include role::bugzilla_static
     include role::transparency
     include role::grafana
     include role::iegreview
