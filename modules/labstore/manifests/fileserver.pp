@@ -8,6 +8,7 @@
 class labstore::fileserver {
 
     include ::labstore
+    include ::labstore::replica_users
 
     file { '/etc/init/manage-nfs-volumes.conf':
         ensure  => present,
@@ -16,27 +17,6 @@ class labstore::fileserver {
         mode    => '0444',
         source  => 'puppet:///modules/labstore/manage-nfs-volumes.conf',
     }
-
-
-    file { '/usr/local/sbin/replica-addusers.pl':
-        source => 'puppet:///modules/labstore/replica-addusers.pl',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0550',
-    }
-
-    file { '/etc/init/replica-addusers.conf':
-        source => 'puppet:///modules/labstore/replica-addusers.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        require => File['/usr/local/sbin/replica-addusers.pl'],
-    }
-
-    # There is no service {} stanza on purpose -- this service
-    # must *only* be started by a manual operation because it must
-    # run exactly once on whichever NFS server is the current
-    # active one.
 
     file { '/usr/local/sbin/start-nfs':
         ensure  => present,
