@@ -127,10 +127,7 @@ ganglia_clusters:
     name: "Analytics cluster"
     id: 32
     sites:
-      eqiad:
-        - analytics1013.eqiad.wmnet
-        - analytics1014.eqiad.wmnet
-        - analytics1019.eqiad.wmnet
+      eqiad: []
   memcached:
     name: "Memcached"
     id: 33
@@ -203,10 +200,7 @@ ganglia_clusters:
     name: "Analytics Kafka cluster"
     id: 45
     sites:
-      eqiad:
-        - analytics1012.eqiad.wmnet
-        - analytics1018.eqiad.wmnet
-        - analytics1022.eqiad.wmnet
+      eqiad: []
   sca:
     name: "Service Cluster A"
     id: 46
