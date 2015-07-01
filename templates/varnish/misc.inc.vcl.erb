@@ -29,7 +29,7 @@ sub vcl_recv {
 	} elsif (req.http.Host == "phabricator.wikimedia.org" || req.http.Host == "phab.wmfusercontent.org" || req.http.Host == "bugzilla.wikimedia.org" || req.http.Host == "bugs.wikimedia.org") {
 		set req.backend = iridium;
 	} elsif (req.http.Host == "static-bugzilla.wikimedia.org") {
-		set req.backend = zirconium;
+		set req.backend = bromine;
 		return (pass);
 	} elsif (req.http.Host == "servermon.wikimedia.org") {
 		set req.backend = netmon1001;
