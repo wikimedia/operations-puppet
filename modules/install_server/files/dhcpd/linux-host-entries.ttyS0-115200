@@ -24,6 +24,13 @@ host analytics1010 {
 	fixed-address analytics1010.eqiad.wmnet;
 }
 
+host bromine.eqaid.wmnet {
+	hardware ethernet aa:00:00:f1:36:3a;
+	fixed-address bromine.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host labsdb1001 {
 	hardware ethernet 00:22:BD:D3:61:8C;
 	fixed-address labsdb1001.eqiad.wmnet;
