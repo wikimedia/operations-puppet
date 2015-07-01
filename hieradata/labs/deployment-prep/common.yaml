@@ -63,6 +63,7 @@ ssh::server::explicit_macs: false
 "cxserver::logstash_host": deployment-logstash1.deployment-prep.eqiad.wmflabs
 "cxserver::apertium": http://apertium-beta.wmflabs.org
 "cxserver::proxy": http://deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
+"cxserver::restbase": http://10.68.17.189/@lang.wikipedia.org/v1/page/html/@title
 "cxserver::yandex_url": 'https://translate.yandex.net'
 "cxserver::registry":
   source:
