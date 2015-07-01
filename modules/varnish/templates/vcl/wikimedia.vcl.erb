@@ -151,7 +151,7 @@ backend <%= name %> {
 #         'backends' => [ "backend1", "backend2" ],
 #     }
 # }
-if @use_dynamic_directors -%>
+if @use_dynamic_directors and @dynamic_directors -%>
 include "directors.<%= @inst %>.vcl";
 
 <% end -%>
