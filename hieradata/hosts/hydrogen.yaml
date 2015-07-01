@@ -1,2 +1,1 @@
 ganglia_class: "new"
-ntp::daemon::ensure: present
