@@ -16,7 +16,7 @@ class role::openldap::corp {
     $master = 'ldap1.corp.wikimedia.org'
     $sync_pass = $passwords::openldap::corp::sync_pass
 
-    install_certificate { 'ldap-mirror.wikimedia.org': }
+    sslcert::std_cert { 'ldap-mirror.wikimedia.org': }
 
     class { '::openldap':
         server_id   => 3, # 1 and 2 used in OIT

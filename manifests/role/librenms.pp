@@ -69,7 +69,7 @@ class role::librenms {
         require => Class['::librenms']
     }
 
-    install_certificate { $sitename: }
+    sslcert::std_cert { $sitename: }
 
     include ::apache::mod::php5
     include ::apache::mod::rewrite

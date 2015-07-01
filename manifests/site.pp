@@ -2,7 +2,6 @@
 # site.pp
 
 import 'realm.pp' # These ones first
-import 'certs.pp'
 import 'ganglia.pp'
 import 'mail.pp'
 import 'misc/*.pp'
