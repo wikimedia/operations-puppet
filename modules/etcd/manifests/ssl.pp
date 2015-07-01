@@ -34,7 +34,6 @@ class etcd::ssl($puppet_cert_name = $::fqdn, $ssldir = '/var/lib/puppet/ssl') {
         group  => 'etcd',
         mode   => '0400',
         source => "${ssldir}/certs/ca.pem",
-        notify => Service['etcd'],
     }
 
     file { '/var/lib/etcd/ssl/certs/cert.pem':
@@ -44,7 +43,6 @@ class etcd::ssl($puppet_cert_name = $::fqdn, $ssldir = '/var/lib/puppet/ssl') {
         mode    => '0400',
         source  => "${ssldir}/certs/${puppet_cert_name}.pem",
         require => File['/var/lib/etcd/ssl/certs/ca.pem'],
-        notify  => Service['etcd'],
     }
 
     file { '/var/lib/etcd/ssl/private_keys':
@@ -60,6 +58,5 @@ class etcd::ssl($puppet_cert_name = $::fqdn, $ssldir = '/var/lib/puppet/ssl') {
         group  => 'etcd',
         mode   => '0400',
         source => "${ssldir}/private_keys/${puppet_cert_name}.pem",
-        notify => Service['etcd'],
     }
 }
