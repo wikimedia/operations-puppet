@@ -14,8 +14,8 @@ define varnish::common::directors(
 
     $director_list = $instance ? {
         'frontend' => keys($directors),
-        'backend'  => $directors[$::mw_primary],
-        default    => undef
+        'backend'  => keys($directors),
+        default    => undef,
     }
 
     if $director_list == undef {
