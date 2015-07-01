@@ -223,6 +223,12 @@ node 'argon.wikimedia.org' {
     include role::mw-rc-irc
 }
 
+# virtual machine for static misc. services
+node 'bromine.eqiad.wmnet' {
+    include base::firewall
+    include role::bugzilla_static
+}
+
 node 'baham.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2388,7 +2394,6 @@ node 'zirconium.wikimedia.org' {
 
     include standard
     include role::wikimania_scholarships
-    include role::bugzilla_static
     include role::transparency
     include role::grafana
     include role::iegreview
