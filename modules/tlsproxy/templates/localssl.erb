@@ -11,11 +11,13 @@ server {
 	error_log   /var/log/nginx/<%= @name %>.error.log;
 	access_log   off;
 
-	ssl_certificate /etc/ssl/localcerts/<%= @proxy_server_cert_name %>.chained.crt;
-	ssl_certificate_key /etc/ssl/private/<%= @proxy_server_cert_name %>.key;
+	<% @certs.each do |cert| -%>
+	ssl_certificate /etc/ssl/localcerts/<%= cert %>.chained.crt;
+	ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
+	<% end -%>
 	<% if @do_ocsp -%>
 	ssl_stapling on;
-	ssl_stapling_file /var/cache/ocsp/<%= @proxy_server_cert_name %>.ocsp;
+	ssl_stapling_file /var/cache/ocsp/<%= @name %>.ocsp;
 	<% end -%>
 
 	keepalive_timeout 60;
