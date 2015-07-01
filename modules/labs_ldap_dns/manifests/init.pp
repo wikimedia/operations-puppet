@@ -29,7 +29,7 @@ class labs_ldap_dns(
         require => Package['pdns-server'],
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0440',
         content => template('labs_ldap_dns/pdns-ldap.conf.erb'),
     }
 
