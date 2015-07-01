@@ -12,7 +12,7 @@ class openstack::nova::compute(
             $certname = "virt-star.${site}.wmnet"
             $ca_target = '/etc/ssl/certs/wmf_ca_2014_2017.pem'
         }
-        install_certificate{ $certname: }
+        sslcert::std_cert{ $certname: }
 
         file { "/var/lib/nova/${certname}.key":
             owner   => 'nova',

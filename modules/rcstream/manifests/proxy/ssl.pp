@@ -44,7 +44,7 @@ class rcstream::proxy::ssl(
     $use_ssl = true
     $ssl_settings = ssl_ciphersuite('nginx', 'compat')
 
-    install_certificate { $server_name: }
+    sslcert::std_cert { $server_name: }
 
     nginx::site { 'rcstream-ssl':
         content => template('rcstream/rcstream.nginx.erb'),
