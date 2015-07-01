@@ -28,6 +28,33 @@ graphoid::domains:
   - wikivoyage.org
   - wiktionary.org
 graphoid::protocol: http
+lvs::configuration::lvs_services: dummy
+lvs::configuration::lvs_service_ips:
+  apaches:
+    eqiad: dummy
+  api: {}
+  bits:
+    eqiad:
+      bitslb: dummy
+  citoid: {}
+  cxserver: {}
+  dns_rec: {}
+  graphoid: {}
+  mathoid: {}
+  misc_web: {}
+  mobile: {}
+  ocg: {}
+  osm: {}
+  parsoid: {}
+  parsoidcache: {}
+  rendering: {}
+  restbase: {}
+  search: {}
+  stream: {}
+  swift: {}
+  text: {}
+  upload: {}
+  zotero: {}
 cassandra::listen_address: '%{::ipaddress_eth0}'
 cassandra::rpc_address: '%{::ipaddress_eth0}'
 "cassandra::seeds":
