@@ -172,6 +172,9 @@
 #   if $endpoint_snitch is GossipingPropertyFileSnitch.
 #   Default rack1
 #
+# [*key_cache_size_in_mb*]
+#   Maximum size of the key cache in memory.
+#   Default: empty (aka "auto" (min(5% of heap (in MB), 100MB)))
 class cassandra(
     $cluster_name                     = 'Test Cluster',
     $seeds                            = [$::ipaddress],
@@ -210,6 +213,7 @@ class cassandra(
     $extra_classpath                  = [],
     $dc                               = 'datacenter1',
     $rack                             = 'rack1',
+    $key_cache_size_in_mb             = 400,
 
     $yaml_template                    = "${module}/cassandra.yaml.erb",
     $env_template                     = "${module}/cassandra-env.sh.erb",
