@@ -1,2 +1,1 @@
 cassandra::rack: 'd'
-ntp::daemon::ensure: present

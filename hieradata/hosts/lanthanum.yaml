@@ -5,4 +5,3 @@ admin::groups:
 ssh::server::disable_nist_kex: false
 ssh::server::explicit_macs: false
 ganglia_class: "new"
-ntp::daemon::ensure: present
