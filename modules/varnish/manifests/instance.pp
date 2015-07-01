@@ -53,32 +53,30 @@ define varnish::instance(
     }
 
     # Write the dynamic directors configuration, if we need it
-    if $dynamic_directors {
-        require role::cache::base
-        if $name == '' {
-            $inst = 'backend'
-        } else {
-            $inst = $name
-        }
+    if $name == '' {
+        $inst = 'backend'
+    } else {
+        $inst = $name
+    }
 
-        if inline_template("<%= @directors.map{|k,v| v['dynamic'] }.include?('yes') %>") == "true" {
-            $use_dynamic_directors = true
-        } else {
-            $use_dynamic_directors = false
-        }
+    if inline_template("<%= @directors.map{|k,v| v['dynamic'] }.include?('yes') %>") == "true" {
+        $use_dynamic_directors = true
+    } else {
+        $use_dynamic_directors = false
+    }
 
-        if $use_dynamic_directors {
-            varnish::common::directors { $vcl:
-                instance      => $inst,
-                directors     => $directors,
-                extraopts     => $extraopts,
-                before        => [
-                                  File["/etc/varnish/wikimedia_${vcl}.vcl"],
-                                  Service["varnish${instancesuffix}"]
-                                  ],
-            }
+    if $use_dynamic_directors {
+        varnish::common::directors { $vcl:
+            instance      => $inst,
+            directors     => $directors,
+            extraopts     => $extraopts,
+            before        => [
+                              File["/etc/varnish/wikimedia_${vcl}.vcl"],
+                              Service["varnish${instancesuffix}"]
+                              ],
         }
     }
+
 
     file { "/etc/varnish/wikimedia_${vcl}.vcl":
         owner   => 'root',
