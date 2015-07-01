@@ -9,7 +9,11 @@
 # [*server_aliases*]
 #   List of server aliases, host names also served.
 #
-# [*proxy_server_cert_name*]
+# [*certs*]
+#   Required - Array of certs, normally just one.  If more than one, special
+#   patched nginx support is required, and the OCSP/Issuer/Subject/SAN info
+#   should be identical in all certs.  This is intended to support duplicate
+#   keys with differing crypto (e.g. ECDSA + RSA).
 #
 # [*upstream_port*]
 #   TCP port to proxy to. Defaults to '80'
@@ -25,7 +29,7 @@
 #   keep it up to date.
 
 define tlsproxy::localssl(
-    $proxy_server_cert_name,
+    $certs,
     $server_name    = $::fqdn,
     $server_aliases = [],
     $default_server = false,
@@ -34,10 +38,7 @@ define tlsproxy::localssl(
 ) {
     require tlsproxy::instance
 
-    sslcert::certificate { $proxy_server_cert_name:
-        source  => "puppet:///files/ssl/${proxy_server_cert_name}.crt",
-        private => "puppet:///private/ssl/${proxy_server_cert_name}.key",
-    }
+    sslcert::std_cert { $certs: }
 
     # Ensure that exactly one definition exists with default_server = true
     # if multiple defines have default_server set to true, this
@@ -49,18 +50,7 @@ define tlsproxy::localssl(
     }
 
     if $do_ocsp {
-        include ::tlsproxy::ocsp_updater
-
-        $certpath = "/etc/ssl/localcerts/${proxy_server_cert_name}.crt"
-        $output = "/var/cache/ocsp/${proxy_server_cert_name}.ocsp"
-        $proxy = "webproxy.${::site}.wmnet:8080"
-
-        exec { "${title}-create-ocsp":
-            command => "/usr/local/sbin/update-ocsp -c $certpath -o $output -p $proxy",
-            creates => $output,
-            require => Sslcert::Certificate[$proxy_server_cert_name],
-            before  => Service['nginx']
-        }
+        tlsproxy::ocsp_stapler { $name: certs => $certs }
     }
 
     nginx::site { $name:
