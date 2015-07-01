@@ -1,12 +1,7 @@
 # == Class: tlsproxy::ocsp_updater
 #
-# This class defines a machine-global cronjob which updates
-# any existing OCSP files in /var/cache/ocsp once every two
-# hours, randomly splayed per-machine.
-#
-# It is intended to be used as "include tlsproxy::ocsp_updater"
-# any time an ocsp file is defined for creation on a given machine.
-# See tlsproxy::localssl for example.
+# This class defines a machine-global cronjob which keeps the OCSP Stapling
+# files defined through tlsproxy::ocsp_stapler up to date at runtime.
 #
 # Note that everything about how we time/check this stuff today makes
 # assumptions based on GlobalSign's OCSP validity time windows.  In the
@@ -24,25 +19,37 @@ class tlsproxy::ocsp_updater {
         source => 'puppet:///modules/tlsproxy/update-ocsp-all',
     }
 
+    file { '/etc/ocsp_updater':
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        ensure => 'directory',
+    }
+
     cron { 'update-ocsp-all':
         command => "/usr/local/sbin/update-ocsp-all webproxy.${::site}.wmnet:8080",
         minute  => fqdn_rand(60, '1adf3dd699e51805'),
         hour    => '*',
         require => [
             File['/usr/local/sbin/update-ocsp-all'],
+            File['/etc/ocsp_updater'],
             Service['nginx'],
         ],
     }
 
     # Generate icinga alert if OCSP files falling out of date due to errors
     #
-    # The cron above attempts to get fresh data every 2 hours, and a good
-    # fresh fetch of data has a 12H lifetime with the windows we're seeing
-    # from GlobalSign today.
+    # Note this makes no provision for un-configured stapling at this time, so
+    # it will generate warnings if you don't clean up old /var/cache/ocsp/
+    # entries after removing a tlsproxy::ocsp_stapler cert from a server!
+    #
+    # The cron above attempts to get fresh data every hour, and a good fresh
+    # fetch of data has a 12H lifetime with the windows we're seeing from
+    # GlobalSign today.
     #
     # The crit/warn values of 29100 and 14700 correspond are "8h5m" and
-    # "4h5m", so those are basically warning if two updates in a row failed
-    # for a given cert, and critical if 4 updates in a row fail (at which
+    # "4h5m", so those are basically warning if 4 updates in a row failed
+    # for a given cert, and critical if 8 updates in a row failed (at which
     # point we have 4h left to fix the situation before the validity window
     # expires).
 
