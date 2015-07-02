@@ -12,16 +12,16 @@ class labstore::fileserver::exports::private {
         privileges => [
             'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
             'ALL = NOPASSWD: /bin/rmdir /srv/*',
-            'ALL = NOPASSWD: /usr/local/sbin/sync-exports'
+            'ALL = NOPASSWD: /usr/local/sbin/sync-nfs-exports'
         ],
         require => User['nfsmanager'],
     }
 
-    file { '/usr/local/sbin/sync-exports':
+    file { '/usr/local/sbin/sync-nfs-exports':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/labstore/sync-exports',
+        source => 'puppet:///modules/labstore/sync-nfs-exports',
     }
 
     file { '/etc/projects-nfs-config.yaml':

@@ -1,0 +1,72 @@
+#!/usr/bin/python3
+"""
+This script performs:
+  - bind mounts as appropriate for per-project private mounts
+  - calls exportfs to actually export the NFS shares
+"""
+import sys
+import os
+import argparse
+import logging
+import yaml
+import subprocess
+
+
+def get_projects_with_nfs(config_file_path):
+    try:
+        with open(config_file_path) as f:
+            projects_config = yaml.safe_load(f)
+    except:
+        logging.exception('Could not load projects config file from %s', config_file_path)
+        sys.exit(1)
+
+    projects = []
+    for name, config in projects_config.items():
+        if 'mounts' in config:
+            if not [k for k, v in config['mounts'].items()
+                    if k in ['home', 'project'] and v]:
+                continue
+        else:
+            continue
+        projects.append(name)
+
+    return projects
+
+if __name__ == "__main__":
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument(
+        '--projects-config-path',
+        help='Path to YAML file with list of projects to enable NFS for',
+    )
+    argparser.add_argument(
+        '--debug',
+        help='Turn on debug logging',
+        action='store_true'
+    )
+
+    args = argparser.parse_args()
+
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)s %(message)s',
+        level=logging.DEBUG if args.debug else logging.INFO)
+
+    if os.getuid() != 0:
+        logging.error('This can be run only as root')
+        sys.exit(1)
+
+    projects = get_projects_with_nfs(args.projects_config_path)
+
+    for project in projects:
+        if project == 'tools':
+            src_path = os.path.join('/srv', 'project', project)
+        else:
+            src_path = os.path.join('/srv', 'others', project)
+
+        mount_path = os.path.join('/exp', 'project', project)
+        if not os.path.ismount(mount_path):
+            subprocess.check_call([
+                '/bin/mount',
+                '--bind',
+                src_path, mount_path
+            ])
+            logging.info('Bind mounted %s to %s', src_path, mount_path)
