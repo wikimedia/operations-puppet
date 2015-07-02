@@ -26,21 +26,45 @@ class cassandra::metrics(
     validate_string($graphite_host)
     validate_string($graphite_port)
 
-    package { 'dropwizard/metrics':
+    package { 'cassandra/metrics-collector':
         ensure   => present,
         provider => 'trebuchet',
     }
 
-    file { '/usr/share/cassandra/lib/metrics-graphite.jar':
+    file { '/usr/local/lib/cassandra-metrics-collector':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        ensure => 'directory',
+    }
+
+    file { '/usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar':
         ensure => 'link',
-        target => '/srv/deployment/dropwizard/metrics/lib/metrics-graphite-2.2.0.jar',
-        require => Package['dropwizard/metrics'],
+        target => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-1.0.0-20150707.171846-4-jar-with-dependencies.jar',
+        require => Package['cassandra/metrics-collector'],
+    }
+
+    file { '/usr/local/bin/cassandra-metrics-collector':
+        source => "puppet:///modules/${module_name}/cassandra-metrics-collector",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+    }
+
+    cron { 'cassandra-metrics-collector':
+        ensure  => present,
+        user    => 'cassandra',
+        command => "flock --wait 2 /usr/local/bin/cassandra-metrics-collector --graphite-host ${graphite_host} --graphite-port ${graphite_port} --prefix ${graphite_prefix}",
+        minute  => '*',
+        require => Package['cassandra/metrics-collector'],
+    }
+
+    # built-in cassandra metrics reporter, T104208
+    file { '/usr/share/cassandra/lib/metrics-graphite.jar':
+        ensure => 'absent',
     }
 
     file { '/etc/cassandra/metrics.yaml':
-        content => template("${module_name}/metrics.yaml.erb"),
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0444',
+        ensure => 'absent',
     }
 }
