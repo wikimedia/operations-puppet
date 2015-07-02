@@ -1,2 +1,0 @@
-toollabs::is_mail_relay: true
-toollabs::external_hostname: "mailrelay-01.tools.wmflabs.org"
