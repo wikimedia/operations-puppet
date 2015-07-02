@@ -9,6 +9,7 @@ class role::restbase {
     system::role { 'restbase': description => "Restbase ${::realm}" }
 
     include ::restbase
+    include ::restbase::monitoring
 
     include lvs::realserver
 
