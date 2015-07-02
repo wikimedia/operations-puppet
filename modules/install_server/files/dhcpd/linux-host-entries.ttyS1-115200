@@ -2338,7 +2338,7 @@ host labnet1001 {
 }
 
 host labnet1002 {
-        hardware ethernet 00:0a:f7:72:c7:c4;
+        hardware ethernet 18:03:73:ed:d9:95;
         fixed-address labnet1002.eqiad.wmnet;
 }
 
