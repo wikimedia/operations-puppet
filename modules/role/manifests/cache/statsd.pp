@@ -19,10 +19,8 @@ class role::cache::statsd::frontend {
         statsd_server => 'statsd.eqiad.wmnet',
     }
 
-    if $::hostname == 'cp1066' {
-        # ResourceLoader browser cache hit rate and request volume stats.
-        ::varnish::logging::rls { 'rls':
-            statsd_server => 'statsd.eqiad.wmnet',
-        }
+    # ResourceLoader browser cache hit rate and request volume stats.
+    ::varnish::logging::rls { 'rls':
+        statsd_server => 'statsd.eqiad.wmnet',
     }
 }
