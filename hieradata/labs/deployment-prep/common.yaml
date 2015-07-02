@@ -91,6 +91,7 @@ ssh::server::explicit_macs: false
 "cxserver::apertium": http://apertium-beta.wmflabs.org
 "cxserver::proxy": http://deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
 "cxserver::yandex_url": 'https://translate.yandex.net'
+"cxserver::restbase": http://restbase-beta.wmflabs.org/@lang.wikipedia.beta.wmflabs.org/v1/page/html/@title
 "cxserver::registry":
   source:
     - 'aa'
