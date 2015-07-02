@@ -5,16 +5,6 @@
 # vim: filetype=apache
 
 <VirtualHost *:80>
-    ServerName doc.mediawiki.org
-
-    LogLevel warn
-    ErrorLog /var/log/apache2/doc_error.log
-    CustomLog /var/log/apache2/doc_access.log vhost_combined
-
-    Redirect permanent / https://doc.wikimedia.org/
-</VirtualHost>
-
-<VirtualHost *:80>
     ServerName doc.wikimedia.org
 
     LogLevel warn
