@@ -1,0 +1,9 @@
+[Unit]
+Description=ResourceLoader Browser Cache Hit Ratio StatsD Reporter
+After=varnish-frontend.service
+
+[Service]
+ExecStart=/usr/local/bin/varnishrls --statsd-server=<%= @statsd_server %>
+
+[Install]
+WantedBy=multi-user.target

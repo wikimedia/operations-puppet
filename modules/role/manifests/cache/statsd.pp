@@ -9,11 +9,20 @@ class role::cache::statsd {
 
 }
 
-# == Class role::cache::statsd::xcps
-# Installs a daemon that accumulates client connection stats
+# == Class role::cache::statsd::frontend
+# Installs daemons that accumulates frontend-role-specific stats
 # from the varnish SHM log and forwards them to StatsD.
-class role::cache::statsd::xcps {
+class role::cache::statsd::frontend {
+    # Client connection stats from the 'X-Connection-Properties'
+    # header set by the SSL terminators.
     ::varnish::logging::xcps { 'xcps':
         statsd_server => 'statsd.eqiad.wmnet',
+    }
+
+    if $::hostname == 'cp1066' {
+        # ResourceLoader browser cache hit rate and request volume stats.
+        ::varnish::logging::rls { 'rls':
+            statsd_server => 'statsd.eqiad.wmnet',
+        }
     }
 }
