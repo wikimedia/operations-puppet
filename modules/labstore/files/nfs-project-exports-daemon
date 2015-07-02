@@ -24,7 +24,6 @@
 
 from urllib.request import urlopen
 import ipaddress
-import tempfile
 import argparse
 import yaml
 import json
@@ -141,11 +140,8 @@ def manage_exports(exports_d_base, projects_config_path):
     for project in projects:
         logging.debug('Writing exports file for %s', project.name)
         path = os.path.join(exports_d_base, '%s.exports' % project.name)
-        tmphandle, tmppath = tempfile.mkstemp(dir=exports_d_base)
-        tmpfile = os.fdopen(tmphandle, 'w')
-        tmpfile.write(project.get_exports())
-        tmpfile.close()
-        os.rename(tmppath, path)
+        with open(path, 'w') as f:
+            f.write(project.get_exports())
         logging.info('Wrote exports file for %s', project.name)
 
 
