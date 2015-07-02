@@ -5,7 +5,6 @@ include "zero.inc.vcl";
 include "provenance.inc.vcl";
 include "via.inc.vcl";
 include "last-access.inc.vcl";
-include "static-hash.inc.vcl";
 
 // Note that via.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
@@ -82,6 +81,9 @@ sub vcl_recv {
 	call vcl_recv_purge;
 
 	call normalize_path;
+
+	# normalize all /static to the same hostname for caching
+	if (req.url ~ "^/static/") { set req.http.host = "www.wikimedia.org"; }
 
 	call analytics_last_access_recv;
 

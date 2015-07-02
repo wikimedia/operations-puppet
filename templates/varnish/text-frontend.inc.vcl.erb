@@ -5,7 +5,6 @@ include "text-common.inc.vcl";
 include "provenance.inc.vcl";
 include "via.inc.vcl";
 include "last-access.inc.vcl";
-include "static-hash.inc.vcl";
 
 // Note that via.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
@@ -83,6 +82,9 @@ sub vcl_recv {
 	}
 
 	call mobile_redirect;
+
+	# normalize all /static to the same hostname for caching
+	if (req.url ~ "^/static/") { set req.http.host = "www.wikimedia.org"; }
 
 	if (req.http.host ~ "^test\.") {
 		set req.http.X-Wikimedia-Debug = "1";
