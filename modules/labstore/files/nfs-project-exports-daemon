@@ -32,6 +32,7 @@ import os
 import time
 import logging
 import sys
+import subprocess
 
 
 # Volumes that need an entry in exports.d
@@ -138,6 +139,7 @@ def manage_exports(exports_d_base, projects_config_path):
         # OMG DUPLICATES
         logging.error('Duplicate GIDs found in project config, aborting')
         sys.exit(1)
+
     for project in projects:
         logging.debug('Writing exports file for %s', project.name)
         path = os.path.join(exports_d_base, '%s.exports' % project.name)
@@ -147,6 +149,17 @@ def manage_exports(exports_d_base, projects_config_path):
         tmpfile.close()
         os.rename(tmppath, path)
         logging.info('Wrote exports file for %s', project.name)
+
+    logging.debug('Attempting to exportfs')
+    try:
+        subprocess.check_call([
+            '/usr/bin/sudo',
+            '/usr/sbin/exportfs',
+            '-ra'
+        ])
+    except:
+        logging.exception('Failed running exportfs -ra')
+    logging.info('Successfully ran exportfs')
 
 
 if __name__ == "__main__":
