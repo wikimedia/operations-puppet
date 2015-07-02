@@ -27,6 +27,11 @@ class toollabs::bastion(
         source => 'puppet:///modules/toollabs/submithost-ssh_config',
     }
 
+    # webservice-new command
+    package { 'toollabs-webservice':
+        ensure => latest,
+    }
+
     motd::script { 'bastion-banner':
         ensure   => present,
         source   => "puppet:///modules/toollabs/40-${::instanceproject}-bastion-banner",
