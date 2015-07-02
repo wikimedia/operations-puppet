@@ -223,13 +223,11 @@ sub https_deliver_hsts {
 	// HSTS to reach a client, the client implicitly has to have already
 	// successfully reached us over HTTPS for the given domainname.
 	if (req.http.X-Forwarded-Proto == "https") {
-		if (!resp.http.Strict-Transport-Security) {
-			if (req.http.Host ~ "(?i)(^|\.)wikidata\.org$") {
-				set resp.http.Strict-Transport-Security = "max-age=15768000; includeSubDomains; preload";
-			}
-			else {
-				set resp.http.Strict-Transport-Security = "max-age=15768000";
-			}
+		if (req.http.Host ~ "(?i)(^|\.)wikidata\.org$") {
+			set resp.http.Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload";
+		}
+		else {
+			set resp.http.Strict-Transport-Security = "max-age=31536000";
 		}
 	}
 }
