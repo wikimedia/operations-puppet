@@ -90,7 +90,8 @@ def varnishlog(vsl_args, callback):
 
     # Initialize with provided vsl_args
     for (arg, value) in vsl_args:
-        if varnishapi.VSL_Arg(vd, ord(arg), value.encode('utf-8')) != 1:
+        arg_value = value.encode('utf-8') if value is not None else value
+        if varnishapi.VSL_Arg(vd, ord(arg), arg_value) != 1:
             raise OSError('VSL_Arg(vd, "%s", "%s")' % (arg, value))
 
     if varnishapi.VSL_Open(vd, 1) != 0:
