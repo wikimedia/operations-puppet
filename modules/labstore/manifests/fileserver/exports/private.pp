@@ -8,19 +8,6 @@ class labstore::fileserver::exports::private {
 
     require ::labstore::fileserver::exports
 
-    group { 'nfsmanager':
-        ensure => present,
-        name   => 'nfsmanager',
-        system => true,
-    }
-
-    user { 'nfsmanager':
-        home       => '/var/lib/nfsmanager',
-        shell      => '/bin/bash',
-        managehome => true,
-        system     => true,
-    }
-
     sudo::user { 'nfsmanager':
         privileges => [
             'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
