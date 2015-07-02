@@ -193,6 +193,13 @@ tools:
     home: true
     project: true
     scratch: true
+toolsbeta:
+  gid: 50610
+  mounts:
+    dumps: true
+    home: true
+    project: true
+    scratch: true
 toolserver-legacy:
   gid: 52379
   mounts:
