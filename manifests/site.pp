@@ -1122,6 +1122,9 @@ node 'iodine.wikimedia.org' {
 }
 
 node 'iridium.eqiad.wmnet' {
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
     class { 'base::firewall': }
     role phabricator::main
     include standard
