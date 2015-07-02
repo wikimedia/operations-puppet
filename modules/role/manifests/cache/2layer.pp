@@ -4,9 +4,7 @@ class role::cache::2layer(
 ) {
     include role::cache::base
 
-    # Grab client connection stats from the 'X-Connection-Properties'
-    # header set by the SSL terminators and forward them to StatsD.
-    include role::cache::statsd::xcps
+    include role::cache::statsd::frontend
 
     # Ganglia monitoring
     if $::role::cache::configuration::has_ganglia {
