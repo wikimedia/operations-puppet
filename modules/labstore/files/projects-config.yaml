@@ -609,10 +609,10 @@ tools:
   project: true
   scratch: true
 toolsbeta:
-  dumps: false
-  home: false
-  project: false
-  scratch: false
+  dumps: true
+  home: true
+  project: true
+  scratch: true
 toolserver-legacy:
   dumps: true
   home: true
