@@ -38,6 +38,10 @@ cvn:
   gid: 50116
   mounts:
     project: true
+wikidata-query:
+  gid: 52354
+  mounts:
+    home: true
 cvresearch:
   gid: 50118
   mounts:
