@@ -290,8 +290,7 @@ node 'calcium.wikimedia.org' {
 node 'californium.wikimedia.org' {
     include standard
     include role::horizon
-
-    class { 'base::firewall': }
+    include base::firewall
 }
 
 # DHCP / TFTP
@@ -1113,7 +1112,7 @@ node 'install2001.wikimedia.org' {
 }
 
 node 'iodine.wikimedia.org' {
-    class { 'base::firewall': }
+    include base::firewall
     role otrs
 
     interface::add_ip6_mapped { 'main':
@@ -1122,7 +1121,7 @@ node 'iodine.wikimedia.org' {
 }
 
 node 'iridium.eqiad.wmnet' {
-    class { 'base::firewall': }
+    include base::firewall
     role phabricator::main
     include standard
     include ganglia
@@ -1614,7 +1613,7 @@ node 'magnesium.wikimedia.org' {
 
     $cluster = 'misc'
 
-    class { 'base::firewall': }
+    include base::firewall
 
     role racktables, requesttracker
 
@@ -1914,7 +1913,7 @@ node 'nembus.wikimedia.org' {
 }
 
 node 'neon.wikimedia.org' {
-    class { 'base::firewall': }
+    include base::firewall
 
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
 
@@ -2053,7 +2052,7 @@ node 'protactinium.wikimedia.org' {
 }
 
 node 'radium.wikimedia.org' {
-    class { 'base::firewall': }
+    include base::firewall
     include standard
     include role::tor
 
@@ -2118,7 +2117,7 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
-    class { 'base::firewall': }
+    include base::firewall
 
     include standard
     include role::nova::manager
@@ -2196,11 +2195,7 @@ node 'stat1002.eqiad.wmnet' {
 node 'stat1003.eqiad.wmnet' {
     role statistics::cruncher
     include standard
-
-    # NOTE: This will be moved to another class
-    # someday, probably standard.
-    class { 'base::firewall': }
-
+    include base::firewall
 
     include passwords::mysql::research
     # This file will render at
@@ -2292,10 +2287,8 @@ node 'tin.eqiad.wmnet' {
 node 'titanium.wikimedia.org' {
     $cluster = 'misc'
     # include firewall here, until it is on all hosts
-    class { 'base::firewall': }
-
+    include base::firewall
     include standard
-
     include role::archiva
 }
 
@@ -2371,8 +2364,7 @@ node 'ytterbium.wikimedia.org' {
 }
 
 node 'zirconium.wikimedia.org' {
-    class { 'base::firewall': }
-
+    include base::firewall
     include standard
     include role::wikimania_scholarships
     include role::bugzilla_static
