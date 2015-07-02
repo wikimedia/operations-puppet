@@ -36,6 +36,7 @@ class labstore::fileserver::exports::private {
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/labstore/nfs-project-exports-daemon',
+        notify => Service['nfs-project-exports'],
     }
 
     base::service_unit { 'nfs-project-exports':
