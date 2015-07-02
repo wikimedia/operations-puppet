@@ -218,4 +218,9 @@ class toollabs (
     }
 
     diamond::collector::localcrontab { 'localcrontabcollector': }
+
+    toollabs::sshkey { 'marc': }
+    toollabs::sshkey { 'scfc': }
+    toollabs::sshkey { 'valhallasw': }
+    toollabs::sshkey { 'yuvimanda': }
 }

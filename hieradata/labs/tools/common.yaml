@@ -1,1 +1,3 @@
 "base::environment::core_dump_pattern": core
+"toollabs::sshkey": {}
+
