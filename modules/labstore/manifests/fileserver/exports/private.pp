@@ -12,7 +12,8 @@ class labstore::fileserver::exports::private {
         privileges => [
             'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
             'ALL = NOPASSWD: /bin/rmdir /srv/*',
-            'ALL = NOPASSWD: /usr/local/sbin/sync-exports'
+            'ALL = NOPASSWD: /usr/local/sbin/sync-exports',
+            'ALL = NOPASSWD: /usr/sbin/exportfs',
         ],
         require => User['nfsmanager'],
     }
