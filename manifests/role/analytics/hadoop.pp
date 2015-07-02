@@ -234,8 +234,8 @@ class role::analytics::hadoop::config {
         $yarn_heapsize                            = undef
 
         # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host                             = '239.192.1.32'
-        $ganglia_port                             = 8649
+        $ganglia_host                             = '208.80.154.10'
+        $ganglia_port                             = 9681
         $gelf_logging_host                        = 'logstash1002.eqiad.wmnet'
         $gelf_logging_port                        = 12201
         # In production, make sure that HDFS user directories are

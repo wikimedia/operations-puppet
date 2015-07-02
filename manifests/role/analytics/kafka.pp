@@ -89,8 +89,8 @@ class role::analytics::kafka::config {
                 ]
 
         # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host   = '239.192.1.45'
-        $ganglia_port   = 8649
+        $ganglia_host   = '208.80.154.10'
+        $ganglia_port   = 9694
         # TODO: use variables for graphite server from somewhere?
         $statsd_host  = 'statsd.eqiad.wmnet'
         $statsd_port  = 8125
