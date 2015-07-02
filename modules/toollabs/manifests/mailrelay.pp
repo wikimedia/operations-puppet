@@ -7,32 +7,29 @@
 # Actions:
 #
 # Requires:
-#  - Hiera: toollabs::is_mail_relay: true
-#  - Hiera: toollabs::external_hostname set
 #
 # Sample Usage:
 #
-class toollabs::mailrelay inherits toollabs
+class toollabs::mailrelay($maildomain) inherits toollabs
 {
     include gridengine::submit_host,
             toollabs::infrastructure
 
-    # Hiera sanity checks
-
-    if !$is_mail_relay {
-        fail('Mail relay hosts must have toollabs::is_mail_relay set in Hiera')
+    # FIXME: -ugly-, we need to have a better way for this
+    Package <| title == 'exim4-daemon-light' |> {
+        ensure => undef
+    }
+    package{ 'exim4-daemon-heavy':
+        ensure => present
     }
 
-    if $external_hostname == undef {
-        fail('Mail relay hosts must have an toollabs::external_hostname defined in Hiera')
-    }
-
-    class { 'exim4':
-        queuerunner => 'combined',
-        config      => template('toollabs/mail-relay.exim4.conf.erb'),
-        variant     => 'heavy',
-        require     => File['/usr/local/sbin/localuser',
-                            '/usr/local/sbin/maintainers'],
+    file { "${toollabs::store}/mail-relay":
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File[$toollabs::store],
+        content => template('toollabs/mail-relay.erb'),
     }
 
     file { '/usr/local/sbin/localuser':
@@ -49,6 +46,20 @@ class toollabs::mailrelay inherits toollabs
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/toollabs/maintainers',
+    }
+
+    File <| title == '/etc/exim4/exim4.conf' |> {
+        source  => undef,
+        content => template('toollabs/exim4.conf.erb'),
+        notify  => Service['exim4'],
+        require => File['/usr/local/sbin/localuser',
+                        '/usr/local/sbin/maintainers'],
+    }
+
+    File <| title == '/etc/default/exim4' |> {
+        content => undef,
+        source  =>  'puppet:///modules/toollabs/exim4.default.mailrelay',
+        notify  => Service['exim4'],
     }
 
     diamond::collector::extendedexim { 'extended_exim_collector': }

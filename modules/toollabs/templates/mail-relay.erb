@@ -1,6 +1,6 @@
 ## Managed by puppet
 
-qualify_domain = <%= @mail_domain %>
+qualify_domain = <%= @maildomain %>
 
 begin routers
 
@@ -9,7 +9,7 @@ begin routers
 smart_route:
 	driver = manualroute
 	transport = remote_smtp
-	route_list = *	<%= @active_mail_relay %>
+	route_list = *	<%= @fqdn %>
 
 begin transports
 

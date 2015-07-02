@@ -9,13 +9,13 @@
 ##########
 
 INSTANCEPROJECT=<%= @instanceproject %>
-MAILDOMAIN=<%= @mail_domain %>
+MAILDOMAIN=<%= @maildomain %>
 
 ###############################
 # Main configuration settings #
 ###############################
 
-primary_hostname = <%= @external_hostname %>
+primary_hostname = mail.MAILDOMAIN
 qualify_domain = MAILDOMAIN
 
 domainlist local_domains = MAILDOMAIN
