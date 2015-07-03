@@ -6,7 +6,7 @@ class bugzilla_static {
         ensure => directory,
         owner  => 'root',
         group  => 'root',
-        mode   => '0755';
+        mode   => '0755',
     }
 
     file { '/srv/org/wikimedia/static-bugzilla/index.html':
