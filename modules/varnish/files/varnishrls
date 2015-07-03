@@ -63,10 +63,16 @@ stats = {}
 
 
 def vsl_callback(transaction_id, tag, record, remote_party):
-    if tag == 'RxStatus':
+    keys = ()
+    if tag == 'TxStatus':
         keys = ('reqs.all', 'resps.%s' % record)
     elif tag == 'RxHeader':
-        keys = ('reqs.if_none_match',)
+        if not record.startswith('X-Cache'):
+            keys = ('reqs.if_none_match',)
+    elif tag == 'TxHeader':
+        if record.startswith('X-Cache'):
+            results = re.findall(r'(hit|miss)', record)
+            keys = ('x_cache.%s' % '_'.join(results),)
     for key in keys:
         stats[key] = stats.get(key, 0) + 1
 
@@ -86,11 +92,14 @@ def vsl_callback(transaction_id, tag, record, remote_party):
 
 
 varnishlog.varnishlog((
-    ('i', 'RxHeader'),                 # Get RxStatus
-    ('i', 'RxStatus'),                 # ...and RxHeader
-    ('m', 'RxURL:"/w/load.php"'),      # ...of ResourceLoader requests
-    ('n', 'frontend'),                 # ...on the frontend Varnish instance
-    ('I', '^(if-none-match|\d{3}$)'),  # ...that contain an HTTP status code
-                                       #    or an If-None-Match header
-    ('C', ''),                         # ...using case-insensitive matching.
+    ('n', 'frontend'),  # Consider the frontend Varnish instance
+    ('c', None),        # Only consider interactions with the client
+    ('i', 'TxStatus'),  # Get TxStatus for the HTTP status code
+    ('i', 'RxHeader'),  # Get RxHeader for If-None-Match header
+    ('i', 'TxHeader'),  # Get TxHeader for X-Cache header
+    ('C', ''),          # Use case-insensitive matching
+    ('m', 'RxURL:"/w/load.php"'),  # Only consider ResourceLoader requests
+    ('I', '^(x-cache'              # ...that contain an X-Cache header
+          '|if-none-match'         # ...or an If-None-Match header
+          '|\d{3}$)'),             # ...or an HTTP status code.
 ), vsl_callback)
