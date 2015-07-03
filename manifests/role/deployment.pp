@@ -93,6 +93,10 @@ class role::deployment::server(
         ],
     }
 
+    package { 'mysql-client':
+        ensure => present,
+    }
+
     package { 'percona-toolkit':
         ensure => latest,
     }
