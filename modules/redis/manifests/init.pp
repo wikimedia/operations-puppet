@@ -35,6 +35,11 @@ class redis (
         require => Package['redis-server'],
     }
 
+    ferm::service {'redis':
+        proto => 'tcp',
+        port  => $port,
+    }
+
     service { 'redis-server':
         ensure  => running,
         enable  => true,
