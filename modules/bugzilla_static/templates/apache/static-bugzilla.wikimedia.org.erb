@@ -29,9 +29,7 @@
     <Directory /srv/org/wikimedia/static-bugzilla>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
-        Order allow,deny
-        Deny from env=nobots
-        allow from all
+        Require all granted
     </Directory>
 
 ErrorLog /var/log/apache2/error.log
