@@ -98,13 +98,13 @@ class role::deployment::server(
     }
 
     package { 'percona-toolkit':
-        ensure => latest,
+        ensure => present,
     }
 
     # tig is a ncurses-based git utility which is useful for
     # determining the state of git repos during deployments.
     package { 'tig':
-        ensure => latest,
+        ensure => present,
     }
 }
 
