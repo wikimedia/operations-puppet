@@ -14,9 +14,14 @@
 #   Note that due to POODLE, SSLv3 is universally disabled and none of these
 #   options are compatible with SSLv3-only clients such as IE6/XP.
 #   Current options are:
-#   - strong:     PFS required, ECDHE+AES suites only, TLSv1.1+ only.
-#                 Only works for fairly modern browsers.  Definitely not
-#                 compatible with: Android 2.x, IE8/XP, OpenSSL 0.9.8, Java6.
+#   - strong:     Only TLSv1.2 with AEAD ciphers.  In practice this is a very
+#                 short list, and requires a very modern client.  No tradeoff
+#                 is made for compatibility.  Definitely does not work with:
+#                 IE<11, Android<4.4, Java<8, OpenSSL<1.0, Safari(OSX)<7
+#   - mid:        Supports TLSv1.0 and higher, and adds several forward-secret
+#                 options which are not AEAD.  This is compatible with many
+#                 more clients than "strong", but still not compatible with:
+#                 Android 2.x, IE8/XP, OpenSSL 0.9.8, Java6.
 #   - compat:     Supports most legacy clients, PFS optional, TLSv1.0+ only.
 #   - compat-dhe: Upgrades 'compat' to use DHE for PFS with certain older
 #                 clients.  Breaks some older/commercial Java6 clients, but
@@ -58,20 +63,21 @@ require 'puppet/util/package'
 
 module Puppet::Parser::Functions
   # Basic list chunks, used to construct bigger lists
+  # General preference ordering:
+  # 0) ECDHE > DHE > Kx=RSA
+  # 1) GCM > CBC
+  # 2) AES128 > AES256
+  # 3) SHA-2 > SHA-1
+  # 4) ECDSA > RSA
   basic = {
-    # Only modern reasonably-secure browsers have these.
-    # They're all forward-secret, and our preference ordering is
-    # (higher trumps all lower considerations, if conflict):
-    # 1) GCM > CBC
-    # 2) AES128 > AES256
-    # 3) SHA-2 > SHA-1
-    # 4) ECDSA > RSA
     'strong' => [
       '-ALL',
       'ECDHE-ECDSA-AES128-GCM-SHA256',
       'ECDHE-RSA-AES128-GCM-SHA256',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES256-GCM-SHA384',
+    ],
+    'mid' => [
       'ECDHE-ECDSA-AES128-SHA256',
       'ECDHE-RSA-AES128-SHA256',
       'ECDHE-ECDSA-AES128-SHA',
@@ -81,14 +87,12 @@ module Puppet::Parser::Functions
       'ECDHE-ECDSA-AES256-SHA',
       'ECDHE-RSA-AES256-SHA',
     ],
-    # DHE-based forward-secret option to help e.g. Android 2 and OpenSSL 0.9.8
     # Do not use on a server unless you're *sure* it's not using defaulted
     # and/or weak DH parameters!
     'compat-dhe' => [
       'DHE-RSA-AES128-SHA',
     ],
     # not-forward-secret compat for ancient stuff
-    # pref rules same as 'strong' where applicable
     'compat' => [
       'AES128-GCM-SHA256',
       'AES256-GCM-SHA384',
@@ -105,8 +109,9 @@ module Puppet::Parser::Functions
   # Final lists exposed to callers
   ciphersuites = {
     'strong'     => basic['strong'],
-    'compat'     => basic['strong'] + basic['compat'],
-    'compat-dhe' => basic['strong'] + basic['compat-dhe'] + basic['compat'],
+    'mid'        => basic['strong'] + basic['mid'],
+    'compat'     => basic['strong'] + basic['mid'] + basic['compat'],
+    'compat-dhe' => basic['strong'] + basic['mid'] + basic['compat-dhe'] + basic['compat'],
   }
 
   newfunction(
@@ -116,7 +121,7 @@ module Puppet::Parser::Functions
 Outputs the ssl configuration part of the webserver config.
 Function parameters are:
  servercode - either nginx, apache-2.2 or apache-2.4
- encryption_type - strong, compat, or compat-dhe (do not use compat-dhe unless
+ encryption_type - strong, mid, compat, or compat-dhe (do not use compat-dhe unless
                    you are sure of what you're doing, read the extended docs
                    in the source of this function!)
  hsts_days  - how many days should the STS header live. If not expressed, HSTS will
@@ -156,8 +161,8 @@ END
 
     cipherlist = ciphersuites[ciphersuite].join(":")
 
-    if ciphersuite == 'strong' && server == 'apache' && server_version < 24
-      fail(ArgumentError, 'ssl_ciphersuite(): apache 2.2 cannot work in strong PFS mode')
+    if ciphersuite != 'compat' && server == 'apache' && server_version < 24
+      fail(ArgumentError, 'ssl_ciphersuite(): apache 2.2 can only be used with "compat"')
     end
     if args.length == 1
       hsts_days = args.shift.to_i
@@ -170,7 +175,7 @@ END
     if server == 'apache'
       case ciphersuite
       when 'strong' then
-        output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1')
+        output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1')
       else
         output.push('SSLProtocol all -SSLv2 -SSLv3')
       end
@@ -184,7 +189,7 @@ END
       # nginx
       case ciphersuite
       when 'strong' then
-        output.push('ssl_protocols TLSv1.1 TLSv1.2;')
+        output.push('ssl_protocols TLSv1.2;')
       else
         output.push('ssl_protocols TLSv1 TLSv1.1 TLSv1.2;')
       end
