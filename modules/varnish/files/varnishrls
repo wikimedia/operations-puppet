@@ -29,6 +29,7 @@
 """
 import argparse
 import io
+import re
 import socket
 import urlparse
 
