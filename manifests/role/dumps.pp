@@ -29,8 +29,8 @@ class role::dumps::zim {
     include ::dumps::zim
 
     ferm::service { 'zim_dumps_http':
-        proto  => 'tcp',
-        port   => '80',
+        proto => 'tcp',
+        port  => '80',
     }
 
 }

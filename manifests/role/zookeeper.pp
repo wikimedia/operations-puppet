@@ -31,8 +31,8 @@ class role::zookeeper::client {
 
     ensure_packages(['openjdk-7-jdk'])
     class { '::zookeeper':
-        hosts   => $hosts,
-        version => $version,
+        hosts      => $hosts,
+        version    => $version,
         # Default tick_time is 2000ms, this should allow a max
         # of 16 seconds of latency for Zookeeper client sessions.
         # See comments in role::analytics::kafka::server for more info.
