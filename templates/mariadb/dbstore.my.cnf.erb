@@ -54,6 +54,10 @@ innodb_stats_method            = nulls_unequal
 innodb_locks_unsafe_for_binlog = 1
 aria_pagecache_buffer_size     = 16G
 
+# dump and load innodb buffer at start and stop
+innodb_buffer_pool_load_at_startup  = 1
+innodb_buffer_pool_dump_at_shutdown = 1
+
 optimizer_switch='engine_condition_pushdown=on,optimize_join_buffer_size=on'
 join_cache_level = 8
 
@@ -69,8 +73,10 @@ s3.replicate-wild-do-table = %wik%.%
 s4.replicate-wild-do-table = %wik%.%
 s5.replicate-wild-do-table = %wik%.%
 s6.replicate-wild-do-table = %wik%.%
-s7.replicate-wild-do-table = %wik%.%,centralauth.%
-m3.replicate-wild-do-table = phab%.%,phlegal%.%
+s7.replicate-wild-do-table = %wik%.%
+s7.replicate-wild-do-table = centralauth.%
+m3.replicate-wild-do-table = phab%.%
+m3.replicate-wild-do-table = phlegal%.%
 m4.replicate-wild-do-table = log.%
 
 [mysqldump]
