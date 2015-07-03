@@ -2,11 +2,11 @@
 # T85140
 class bugzilla_static {
 
-    file { '/srv/org/wikimedia/static-bugzilla':
+    file { [ '/srv/org', '/srv/org/wikimedia', '/srv/org/wikimedia/static-bugzilla' ]:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
-        mode   => '0755';
+        mode   => '0755',
     }
 
     file { '/srv/org/wikimedia/static-bugzilla/index.html':
