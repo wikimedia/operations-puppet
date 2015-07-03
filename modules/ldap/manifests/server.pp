@@ -18,11 +18,11 @@ class ldap::firewall( $server_list) {
     }
 
     ferm::rule { 'ldap_private_labs':
-        rule => 'saddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (ldap ldaps) ACCEPT;',
+        rule => 'saddr (10.0.0.0/8 208.80.152.0/22) daddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (ldap ldaps) ACCEPT;',
     }
 
     ferm::rule { 'ldap_backend_private_labs':
-        rule => 'saddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (1389 1636) ACCEPT;',
+        rule => 'saddr (10.0.0.0/8 208.80.152.0/22) daddr (10.0.0.0/8 208.80.152.0/22) proto tcp dport (1389 1636) ACCEPT;',
     }
 }
 
