@@ -574,8 +574,8 @@ class role::nova::compute($instance_dev='/dev/md1') {
         #  alias kvm to qemu-system-x86_64 which keeps those old
         #  instances happy.
         file { '/usr/bin/kvm':
-            ensure  => link,
-            target  => '/usr/bin/qemu-system-x86_64',
+            ensure => link,
+            target => '/usr/bin/qemu-system-x86_64',
         }
     }
 }
