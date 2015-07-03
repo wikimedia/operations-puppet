@@ -84,7 +84,6 @@ class role::gerrit {
                         #
                         # lint:ignore:single_quote_string_with_variables
                         'gerritslave@gallium.wikimedia.org:/srv/ssd/gerrit/${name}.git',
-                        'gerritslave@lanthanum.eqiad.wmnet:/srv/ssd/gerrit/${name}.git',
                         # lint:endignore
                     ],
                     'threads' => '4',
