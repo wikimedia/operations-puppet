@@ -16,7 +16,8 @@ sub vcl_recv {
 		return (pass);
 	} elsif (req.http.Host == "gdash.wikimedia.org" || req.http.Host == "tessera.wikimedia.org" || req.http.Host == "performance.wikimedia.org" || req.http.Host == "graphite.wikimedia.org") {
 		set req.backend = graphite1001;
-	} elsif (req.http.Host == "logstash.wikimedia.org"){
+                return (pass);
+	} elsif (req.http.Host == "logstash.wikimedia.org") {
 		set req.backend = logstash;
 	} elsif (req.http.Host == "releases.wikimedia.org") {
 		set req.backend = caesium;
