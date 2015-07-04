@@ -16,8 +16,11 @@
 #   Current options are:
 #   - strong:     Only TLSv1.2 with AEAD ciphers.  In practice this is a very
 #                 short list, and requires a very modern client.  No tradeoff
-#                 is made for compatibility.  Definitely does not work with:
-#                 IE<11, Android<4.4, Java<8, OpenSSL<1.0, Safari(OSX)<7
+#                 is made for compatibility.  Only known to work with:
+#                 Modern FF/Chrome, IE11, Java8, Android 4.4+, OpenSSL 1.0.x
+#                 Definitely broken with: All Safari (OSX/iOS).
+#                 IE11 support requires an ECDSA key as well, whereas others
+#                 can work with RSA.
 #   - mid:        Supports TLSv1.0 and higher, and adds several forward-secret
 #                 options which are not AEAD.  This is compatible with many
 #                 more clients than "strong", but still not compatible with:
