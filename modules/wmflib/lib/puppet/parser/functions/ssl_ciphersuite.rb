@@ -29,9 +29,8 @@
 #   - compat-dhe: Upgrades 'compat' to use DHE for PFS with certain older
 #                 clients.  Breaks some older/commercial Java6 clients, but
 #                 makes things more secure for Android 2 and OpenSSL 0.9.8.
-#                 *Critical* - Requires the use of good (non-default, not
-#                 weak, 2048-bit+) DH parameters elsewhere in the server
-#                 config, which is not enforced by this code.
+#                 Currently requires nginx or apache2.4-on-jessie, to set the
+#                 dh parameters to a custom 2048-bit file.
 # - An optional argument, that if non-nil will set HSTS to max-age of
 #   N days
 #
@@ -164,9 +163,30 @@ END
 
     cipherlist = ciphersuites[ciphersuite].join(":")
 
+    # Apache-2.2 has all kinds of problems with suites > compat, and should be eliminated
+    #  by upgrades to trusty/jessie.
     if ciphersuite != 'compat' && server == 'apache' && server_version < 24
       fail(ArgumentError, 'ssl_ciphersuite(): apache 2.2 can only be used with "compat"')
     end
+
+    # if the cipherlist has DHE-*, we need to configure the dhparam file
+    if cipherlist =~ /(^|:)DHE-/
+      need_dhparam = true
+    else
+      need_dhparam = false
+    end
+
+    # no DHE for apache unless jessie (2.4.10)
+    # trusty's apache-2.4.7 can technically do it as well, but only if we
+    # append dhe params to the server cert file, which would be difficult to
+    # factor in with sslcert puppetization and such.  Possible TODO if we're
+    # really stuck on this?
+    if need_dhparam && server == 'apache'
+      if lookupvar('lsbdistrelease').capitalize != 'Jessie'
+        fail(ArgumentError, 'ssl_ciphersuite(): Apache+DHE requires Jessie')
+      end
+    end
+
     if args.length == 1
       hsts_days = args.shift.to_i
     else
@@ -184,6 +204,9 @@ END
       end
       output.push("SSLCipherSuite #{cipherlist}")
       output.push('SSLHonorCipherOrder On')
+      if need_dhparam
+        output.push('SSLOpenSSLConfCmd DHParameters "/etc/ssl/dhparam.pem"')
+      end
       unless hsts_days.nil?
         hsts_seconds = hsts_days * 86400
         output.push("Header always set Strict-Transport-Security \"max-age=#{hsts_seconds}\"")
@@ -198,6 +221,9 @@ END
       end
       output.push("ssl_ciphers #{cipherlist};")
       output.push('ssl_prefer_server_ciphers on;')
+      if need_dhparam
+        output.push('ssl_dhparam /etc/ssl/dhparam.pem;')
+      end
       unless hsts_days.nil?
         hsts_seconds = hsts_days * 86400
         output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\";")

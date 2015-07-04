@@ -43,6 +43,7 @@ define sslcert::certificate(
   $private=undef,
 ) {
     require sslcert
+    require sslcert::dhparam
 
     file { "/etc/ssl/localcerts/${title}.crt":
         ensure => $ensure,
