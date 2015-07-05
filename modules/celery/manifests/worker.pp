@@ -3,7 +3,7 @@ class celery::worker(
     $working_dir,
     $user,
     $group,
-    $celery_bin_path = '/usr/bin/celery'
+    $celery_bin_path = '/usr/bin/celery',
 ) {
     base::service_unit { 'celery':
         systemd => true,
