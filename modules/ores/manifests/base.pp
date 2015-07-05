@@ -1,5 +1,8 @@
 class ores::base(
     $branch = 'deploy',
+    $config_path = '/srv/ores/config',
+    $venv_path = '/srv/ores/venv',
+    $data_path = '/srv/ores/data',
 ) {
     # Let's use a virtualenv for maximum flexibility - we can convert
     # this to deb packages in the future if needed. We also install build tools
@@ -22,10 +25,6 @@ class ores::base(
     require_package('myspell-pt', 'myspell-fa', 'myspell-en-au',
                     'myspell-en-gb', 'myspell-en-us',
                     'myspell-en-za', 'myspell-fr')
-
-    $config_path = '/srv/ores/config'
-    $venv_path = '/srv/ores/venv'
-    $data_path = '/srv/ores/data'
 
     file { '/srv':
         ensure => directory,
