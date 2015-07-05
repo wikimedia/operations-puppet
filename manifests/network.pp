@@ -54,8 +54,6 @@ class network::constants {
         },
         'labs' => {
             'bastion_hosts' => [
-                    '10.68.16.5',   # bastion1.eqiad.wmflabs
-                    '10.68.16.66',  # bastion2.eqiad.wmflabs
                     '10.68.17.232', # bastion-01.eqiad.wmflabs
                     '10.68.18.65',  # bastion-02.eqiad.wmflabs
                     '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
