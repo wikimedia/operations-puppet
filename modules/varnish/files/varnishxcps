@@ -68,6 +68,8 @@ def vsl_callback(transaction_id, tag, record, remote_party):
         if k == 'SSR':
             k = 'ssl_sessions'
             v = 'reused' if v == '1' else 'negotiated'
+        elif k == 'C':
+            k = 'ssl_cipher'
         v = v.replace('.', '_')
         s = '.'.join((args.key_prefix, k, v)).lower()
         stats[s] = stats.get(s, 0) + 1
