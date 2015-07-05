@@ -11,7 +11,7 @@ cassandra::seeds:
     - restbase1004.eqiad.wmnet
     - restbase1005.eqiad.wmnet
     - restbase1006.eqiad.wmnet
-cassandra::max_heap_size: 12g
+cassandra::max_heap_size: 16g
 # 1/4 heap size, no more than 100m/thread
 cassandra::heap_newsize: 2048m
 cassandra::compaction_throughput_mb_per_sec: 160
