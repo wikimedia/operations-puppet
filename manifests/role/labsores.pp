@@ -32,6 +32,10 @@ class role::labs::ores::staging {
         branch => 'staging',
     }
 
+    class { '::ores::worker':
+        branch => 'staging',
+    }
+
     class { '::ores::lb':
         realservers => [ 'localhost:8080' ],
         cache       => false,
