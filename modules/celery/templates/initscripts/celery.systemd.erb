@@ -1,0 +1,12 @@
+[Unit]
+Description=Celery workers
+After=network.target
+
+[Service]
+User=<%= @user %>
+Group=<%= @group %>
+ExecStart=<%= @celery_bin_path %> worker \
+    --app <%= @app %> --workingdir <%= @working_dir %>
+
+[Install]
+WantedBy=multi-user.target
