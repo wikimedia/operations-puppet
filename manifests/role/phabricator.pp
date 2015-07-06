@@ -68,6 +68,7 @@ class role::phabricator::main {
             'repository.default-local-path'          => '/srv/phab/repos',
             'phd.taskmasters'                        => 10,
             'events.listeners'                       => ['SecurityPolicyEventListener'],
+            'diffusion.allow-http-auth'              => true,
         },
     }
 
