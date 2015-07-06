@@ -201,7 +201,7 @@ if __name__ == "__main__":
     while True:
         try:
             with open(args.config_path) as f:
-                config = yaml.load(f)
+                config = yaml.safe_load(f)
         except:
             logging.exception('Could not load projects config file from %s', args.config_path)
             sys.exit(1)
