@@ -93,7 +93,14 @@ module Puppet::Parser::Functions
     # Do not use on a server unless you're *sure* it's not using defaulted
     # and/or weak DH parameters!
     'compat-dhe' => [
+      'DHE-RSA-AES128-GCM-SHA256',
+      'DHE-RSA-AES256-GCM-SHA384',
+      'DHE-RSA-AES128-SHA256',
       'DHE-RSA-AES128-SHA',
+      'DHE-RSA-AES256-SHA256',
+      'DHE-RSA-AES256-SHA',
+      'DHE-RSA-CAMELLIA128-SHA',
+      'DHE-RSA-CAMELLIA256-SHA',
     ],
     # not-forward-secret compat for ancient stuff
     'compat' => [
