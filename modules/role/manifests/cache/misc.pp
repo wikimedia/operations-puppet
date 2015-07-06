@@ -26,7 +26,7 @@ class role::cache::misc {
             'cache4xx'        => '1m',
             'layer'           => 'frontend',
             'ssl_proxies'     => $::role::cache::base::wikimedia_networks,
-            'allowed_methods' => '^(GET|HEAD|POST|PURGE|PUT)$',
+            'allowed_methods' => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
         },
         backends        => [
             'analytics1001.eqiad.wmnet', # Hadoop Yarn ResourceManager GUI
