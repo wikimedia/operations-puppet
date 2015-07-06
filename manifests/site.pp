@@ -1297,24 +1297,9 @@ node /labstore200[12]\.codfw\.wmnet/ {
     role labs::nfs::fileserver
 }
 
+# Used to be a CI slaves (T86658)
 node 'lanthanum.eqiad.wmnet' {
-
     include standard
-    include role::ci::slave
-    # lanthanum received a SSD drive just like gallium (T82587) mount it
-    file { '/srv/ssd':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-    }
-    mount { '/srv/ssd':
-        ensure  => 'mounted',
-        device  => '/dev/sdb1',
-        fstype  => 'xfs',
-        options => 'noatime,nodiratime,nobarrier,logbufs=8',
-        require => File['/srv/ssd'],
-    }
-
 }
 
 node 'lead.wikimedia.org' {
