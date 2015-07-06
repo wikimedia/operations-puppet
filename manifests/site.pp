@@ -2385,7 +2385,6 @@ node 'zirconium.wikimedia.org' {
 
     include standard
     include role::wikimania_scholarships
-    include role::bugzilla_static
     include role::transparency
     include role::grafana
     include role::iegreview
