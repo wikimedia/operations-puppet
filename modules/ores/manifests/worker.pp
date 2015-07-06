@@ -1,10 +1,5 @@
-class ores::worker(
-    $branch = 'deploy',
-) {
+class ores::worker {
 
-    class { 'ores::base':
-        branch => $branch,
-    }
 
     celery::worker { 'ores-worker':
         app             => 'ores_celery.application',

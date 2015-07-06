@@ -1,12 +1,6 @@
 # = Class: ores::web
 # Sets up a uwsgi based web server for ORES running python3
-class ores::web(
-    $branch = 'deploy',
-) {
-    class { 'ores::base':
-        branch => $branch,
-    }
-
+class ores::web {
     uwsgi::app { 'ores-web':
         settings => {
             uwsgi => {
