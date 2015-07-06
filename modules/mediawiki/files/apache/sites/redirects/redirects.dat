@@ -54,18 +54,6 @@ funnel	store.wikipedia.org	//store.wikimedia.org
 funnel	shop.wikipedia.com	//store.wikimedia.org
 funnel	store.wikipedia.com	//store.wikimedia.org
 
-# Donate wiki
-rewrite	donate.mediawiki.org	https://donate.wikimedia.org
-rewrite	donate.wikibooks.org	https://donate.wikimedia.org
-rewrite	donate.wikimediafoundation.org	https://donate.wikimedia.org
-rewrite	donate.wikinews.org	https://donate.wikimedia.org
-rewrite	donate.wikipedia.com	https://donate.wikimedia.org
-rewrite	donate.wikiquote.org	https://donate.wikimedia.org
-rewrite	donate.wikisource.org	https://donate.wikimedia.org
-rewrite	donate.wikispecies.org	https://donate.wikimedia.org
-rewrite	donate.wikiversity.org	https://donate.wikimedia.org
-rewrite	donate.wiktionary.org	https://donate.wikimedia.org
-
 funnel	sep11.wikipedia.org	http://wayback.archive.org/web/20030315000000*/http://sep11.wikipedia.org/wiki/In_Memoriam
 
 funnel	*wikijunior.com	//en.wikibooks.org/wiki/Wikijunior
