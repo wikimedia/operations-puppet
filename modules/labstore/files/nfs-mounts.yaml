@@ -24,13 +24,6 @@ private:
       home: true
       project: true
       scratch: true
-  cephtest:
-    gid: 52557
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   contributors:
     gid: 50408
     mounts:
