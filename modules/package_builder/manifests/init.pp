@@ -26,6 +26,7 @@ class package_builder(
         'devscripts',
         'dh-make',
         'dh-autoreconf',
+        'openstack-pkg-tools',
         'git-buildpackage',
         'quilt',
         'lintian',
