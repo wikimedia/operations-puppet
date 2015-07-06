@@ -9,100 +9,34 @@ sub synth_errorpage {
 	set obj.http.Content-Type = "text/html; charset=utf-8";
 	synthetic {"
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
+<html lang=en>
 <title>Wikimedia Error</title>
-<meta name="author" content="Mark Ryan"/>
-<meta name="copyright" content="(c) 2005-2007 Mark Ryan and others. Text licensed under the GNU Free Documentation License. http://www.gnu.org/licenses/fdl.txt"/>
-
-<style type="text/css"><!--
-body {
-background-color: #dbe5df;
-font: 100% "Gill Sans MT", "Gill Sans", "Trebuchet MS", Helvetica, sans-serif;
-margin: 0px;
-}
-.TechnicalStuff {
-font-size: 0.8em;
-font-style: italic;
-text-align: center;
-padding-bottom: 0.8em;
-}
-.Lines {
-width: 100%;
-height: 1px;
-overflow: hidden;
-font-size: 0.5px;
-}
-.ContentArea {
-background-color: white;
-padding: 0.8em 10% 0 10%;
-font-size: 1.0em;
-}
-a:hover {
-color: red;
-}
-h1, h2 {
-margin: 0px;
-font-size: 1.0em;
-}
-h2 {
-background: #9fbfd8;
-font-size: 1.2em;
-font-weight: bold;
-text-align: center;
-}
-h1 {
-background: #dbe5df;
-font: bold 1.5em "Gill Sans MT", "Gill Sans", Helvetica, Humanist, sans-serif;
-text-transform: uppercase;
-text-align: center;
-width: 100%;
-padding-top:0.8em;
-}
--->
+<style>
+* { margin: 0; padding: 0; }
+body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
+.content { margin: 7% auto 0; padding: 2em 1em 1em; max-width: 560px; }
+.footer { clear: both; margin-top: 14%; border-top: 1px solid #e5e5e5; background: #f9f9f9; padding: 2em 0; font-size: 0.8em; text-align: center; }
+img { float: left; margin: 0 2em 2em 0; }
+a img { border: 0; }
+h1 { margin-top: 1em; font-size: 1.2em; }
+p { margin: 0.7em 0 1em 0; }
+a { color: #0645AD; text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: sans-serif; }
+.text-muted { color: #777; }
 </style>
-<script>/*<![CDATA[*/
-	function lines(s) {
-		var c = s.split(' ');
-		for (var i = 0; i < c.length; i++) {
-			document.write('<div class="Lines" style="background-color:#' + c[i] + ';"></div>');
-		}
-	}
-//]]></script>
-</head>
-
-<body link="#24442E" text="#000000" vlink="#24442E" alink="#FF0000">
-<h1>Wikimedia Foundation</h1>
-<script>lines('ccd4cf bdc3bf adb1af 9ea09f dbe5df');</script>
-
-<h2>Error</h2>
-
-<script>lines('8f8f8f acacac c6c6c6 dbdbdb eaeaea f4f4f4');</script>
-
-<!-- BEGIN CONTENT AREA -->
-<div class="ContentArea">
-
-<div id="en" lang="en">
-<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please <a href=""} + regsuball(req.url, {"["`<]"}, "") + {"" onclick="window.location.reload(false); return false">try again</a> in a few minutes.</p>
-<hr noshade="noshade" size="1px" width="80%" />
-<div class="TechnicalStuff">
-If you report this error to the Wikimedia System Administrators, please include the details below.<br/>
+<div class="content" role="main">
+<a href="//www.wikimedia.org"><img src="//www.wikimedia.org/static/images/wmf.png" srcset="//www.wikimedia.org/static/images/wmf-2x.png 2x" alt=Wikimedia width=135 height=135></a>
+<h1>Error</h1>
+<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon.<br>Please <a href="" title="Reload this page" onclick="window.location.reload(false); return false">try again</a> in a few minutes.</p>
 </div>
-<div class="TechnicalStuff">
-<bdo dir="ltr">
-Request: "} + req.request + " http://" + req.http.host + regsuball(req.url, "<", "%3C") + ", from " + client.ip + " via " + server.hostname + " " + server.identity + " ([" + server.ip + "]:" + server.port + "), Varnish XID " + req.xid + "<br/>" +
-regsub(req.http.X-Forwarded-For, ".+", "Forwarded for: \0<br/>") + regsub(obj.http.X-Cache, ".+", "Upstream caches: \0<br/>") +
+<div class="footer">
+<p>If you report this error to the Wikimedia System Administrators, please include the details below.</p>
+<p class="text-muted"><code>
+Request: "} + req.request + " http://" + req.http.host + regsuball(req.url, "<", "%3C") + ", from " + client.ip + " via " + server.hostname + " " + server.identity + " ([" + server.ip + "]:" + server.port + "), Varnish XID " + req.xid + "<br>" +
+regsub(req.http.X-Forwarded-For, ".+", "Forwarded for: \0<br>") + regsub(obj.http.X-Cache, ".+", "Upstream caches: \0<br>") +
 "Error: " + obj.status + ", " + obj.response + " at " + now +
 {"
-</bdo>
-</div>
-</div>
-
-</div>
-
-<script>lines('9ea09f adb1af bdc3bf ccd4cf');</script>
-
-</body>
-</html>
+</code></p></div></html>
 "};
 }
