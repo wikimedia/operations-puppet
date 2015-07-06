@@ -116,8 +116,8 @@ def get_projects_with_nfs(mounts_config):
             continue
         project = Project(name, config['gid'], get_instance_ips(name), mounts)
         projects.append(project)
-        logging.info('Fetched config for project %s, with %s instances',
-                     name, len(project.instance_ips))
+        logging.debug('Fetched config for project %s, with %s instances',
+                      name, len(project.instance_ips))
 
     # Validate that there are no duplicate gids
     gids = [p.gid for p in projects]
@@ -148,7 +148,8 @@ def sync_exports_files(mounts_config, exports_d_base):
         path = os.path.join(exports_d_base, '%s.exports' % project.name)
         with open(path, 'w') as f:
             f.write(project.get_exports())
-        logging.info('Wrote exports file for %s', project.name)
+        logging.debug('Wrote exports file for %s', project.name)
+    logging.info('Wrote %s exports files', len(projects))
 
 
 def exportfs():
