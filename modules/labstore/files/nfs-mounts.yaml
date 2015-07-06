@@ -151,13 +151,6 @@ private:
       home: true
       project: true
       scratch: true
-  puppet3-diffs:
-    gid: 51904
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   quarry:
     gid: 52243
     mounts:
