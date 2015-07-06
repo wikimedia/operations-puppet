@@ -37,6 +37,5 @@ class labstore::fileserver {
         source  => 'puppet:///modules/labstore/start-nfs',
     }
 
-    include ::labstore::fileserver::exports::private
-    include ::labstore::fileserver::exports::public
+    include ::labstore::fileserver::exports
 }
