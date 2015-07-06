@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# This file is managed by Puppet!
+VCSUSER="<%= @vcsuser %>"
+ROOT="<%= @phabdir %>"
+
+if [ "$1" != "$VCSUSER" ];
+then
+  exit 1
+fi
+
+exec "$ROOT/bin/ssh-auth" $@
