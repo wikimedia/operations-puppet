@@ -352,6 +352,7 @@ registry:
     - 'ee'
     - 'el'
     - 'eml'
+    - 'en'
     - 'eo'
     - 'es'
     - 'et'
@@ -590,11 +591,13 @@ registry:
       'bg':
         - 'mk'
       'ca':
+        - 'en'
         - 'es'
         - 'oc'
         - 'pt'
         - 'simple'
       'cy':
+        - 'en'
         - 'simple'
       'en':
         - 'ca'
@@ -608,17 +611,20 @@ registry:
         - 'an'
         - 'ast'
         - 'ca'
+        - 'en'
         - 'fr'
         - 'gl'
         - 'oc'
         - 'pt'
         - 'simple'
       'eu':
+        - 'en'
         - 'es'
         - 'simple'
       'fr':
         - 'es'
       'gl':
+        - 'en'
         - 'es'
         - 'simple'
       'hi':
@@ -643,6 +649,7 @@ registry:
         - 'es'
         - 'gl'
       'sh':
+        - 'en'
         - 'simple'
         - 'sl'
       'simple':
