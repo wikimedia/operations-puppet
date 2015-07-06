@@ -57,13 +57,6 @@ private:
       home: true
       project: true
       scratch: true
-  dwl:
-    gid: 50815
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   editor-engagement:
     gid: 50068
     mounts:
