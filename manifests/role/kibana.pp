@@ -6,9 +6,11 @@
 #
 class role::kibana {
     include ::apache
-    include ::passwords::ldap::production
 
     if ($::realm == 'labs') {
+        include ::apache::mod::authz_groupfile
+        include ::apache::mod::authz_user
+
         if ($::hostname =~ /^deployment-/) {
             # Beta
             $hostname    = 'logstash.beta.wmflabs.org'
@@ -40,6 +42,9 @@ class role::kibana {
         $apache_auth   = template('kibana/apache-auth-local.erb')
     } else {
         # Production
+        include ::apache::mod::authnz_ldap
+        include ::passwords::ldap::production
+
         $hostname      = 'logstash.wikimedia.org'
         $deploy_dir    = '/srv/deployment/kibana/kibana'
         $serveradmin   = 'noc@wikimedia.org'
@@ -64,7 +69,6 @@ class role::kibana {
     }
 
     include ::apache::mod::alias
-    include ::apache::mod::authnz_ldap
     include ::apache::mod::headers
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http

@@ -11,6 +11,7 @@ class apache::mod::actions         { apache::mod_conf { 'actions':        } }
 class apache::mod::alias           { apache::mod_conf { 'alias':          } }
 class apache::mod::auth_basic      { apache::mod_conf { 'auth_basic':     } }
 class apache::mod::authn_file      { apache::mod_conf { 'authn_file':     } }
+class apache::mod::authz_groupfile { apache::mod_conf { 'authz_groupfile': } }
 class apache::mod::authz_host      { apache::mod_conf { 'authz_host':     } }
 class apache::mod::authnz_ldap     { apache::mod_conf { 'authnz_ldap':    } }
 class apache::mod::authz_user      { apache::mod_conf { 'authz_user':     } }
