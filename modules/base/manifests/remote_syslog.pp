@@ -9,7 +9,7 @@
 #
 # [*central_host*]
 #   Host (and optional port) to forward syslog events to.
-#   (e.g. "syslog.eqiad.wmnet" or "deployment-logstash1.eqiad.wmflabs:10514")
+#   (e.g. "syslog.eqiad.wmnet" or "deployment-logstash2.deployment-prep.eqiad.wmflabs:10514")
 #
 #
 class base::remote_syslog (

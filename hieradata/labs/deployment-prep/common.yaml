@@ -1,16 +1,16 @@
 ---
 base::remote_syslog::enable: true
-base::remote_syslog::central_host: "deployment-logstash1.eqiad.wmflabs:10514"
+base::remote_syslog::central_host: "deployment-logstash2.deployment-prep.eqiad.wmflabs:10514"
 "ocg::temp_dir": /mnt/tmpfs
 "ocg::redis_host": deployment-redis01.eqiad.wmflabs
 "ocg::statsd_host": labmon1001.eqiad.wmnet
-"ocg::graylog_host": deployment-logstash1.eqiad.wmflabs
+"ocg::graylog_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
 "ocg::redis_password": '%{::passwords::redis::main_password}'
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 #service::configuration::http_proxy:
 service::configuration::statsd_host: labmon1001.eqiad.wmnet
-service::configuration::logstash_host: deployment-logstash1.deployment-prep.eqiad.wmflabs
+service::configuration::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
 citoid::zotero_host: deployment-zotero01.deployment-prep.eqiad.wmflabs
 citoid::zotero_port: 1969
 graphoid::domains:
@@ -66,11 +66,11 @@ cassandra::rpc_address: '%{::ipaddress_eth0}'
 "restbase::config_template": restbase/config.labs.yaml.erb
 "restbase::parsoid_uri": http://deployment-parsoid05.deployment-prep.eqiad.wmflabs:8000
 "restbase::statsd_host": labmon1001.eqiad.wmnet
-"restbase::logstash_host": deployment-logstash1.deployment-prep.eqiad.wmflabs
+"restbase::logstash_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
 "restbase::cassandra_defaultConsistency": localQuorum
 restbase::graphoid_host_port: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
 "mediawiki::log_aggregator": deployment-fluorine.eqiad.wmflabs:8420
-"mediawiki::forward_syslog": deployment-logstash1.eqiad.wmflabs:10514
+"mediawiki::forward_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
 mediawiki_memcached_servers:
     - 10.68.16.14:11211:1
     - 10.68.16.15:11211:1
@@ -87,7 +87,7 @@ ssh::server::explicit_macs: false
 "role::cxserver::cxserver_port": 8080
 "misc::syslog-server::basepath": /data/project/syslog
 "cxserver::log_dir": /var/log/cxserver
-"cxserver::logstash_host": deployment-logstash1.deployment-prep.eqiad.wmflabs
+"cxserver::logstash_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
 "cxserver::apertium": http://apertium-beta.wmflabs.org
 "cxserver::proxy": http://deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
 "cxserver::yandex_url": 'https://translate.yandex.net'

@@ -66,7 +66,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         # TODO: Find a way to use multicast that doesn't cause duplicate
         # messages to be stored in logstash. This is a SPOF.
         production => 'logstash1001.eqiad.wmnet',
-        labs       => 'deployment-logstash1.eqiad.wmflabs',
+        labs       => 'deployment-logstash2.deployment-prep.eqiad.wmflabs',
     }
 
     $logstash_port = 8324
