@@ -1,11 +1,11 @@
-class celery::worker(
+define celery::worker(
     $app,
     $working_dir,
     $user,
     $group,
     $celery_bin_path = '/usr/bin/celery',
 ) {
-    base::service_unit { 'celery':
+    base::service_unit { "celery-${title}":
         systemd => true,
     }
 }
