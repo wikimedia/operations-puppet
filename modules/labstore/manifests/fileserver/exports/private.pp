@@ -25,22 +25,22 @@ class labstore::fileserver::exports::private {
         source => 'puppet:///modules/labstore/sync-exports',
     }
 
-    file { '/etc/projects-nfs-config.yaml':
+    file { '/etc/nfs-mounts.yaml':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/labstore/projects-nfs-config.yaml',
+        source => 'puppet:///modules/labstore/nfs-mounts.yaml',
     }
 
-    file { '/usr/local/bin/nfs-project-exports-daemon':
+    file { '/usr/local/bin/nfs-exports-daemon':
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/labstore/nfs-project-exports-daemon',
-        notify => Service['nfs-project-exports'],
+        source => 'puppet:///modules/labstore/nfs-exports-daemon',
+        notify => Service['nfs-exports'],
     }
 
-    base::service_unit { 'nfs-project-exports':
+    base::service_unit { 'nfs-exports':
         ensure  => present,
         systemd => true,
     }
