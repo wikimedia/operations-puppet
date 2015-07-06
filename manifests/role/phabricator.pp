@@ -213,3 +213,56 @@ class role::phabricator::labs {
         require    => Package['mysql-server'],
     }
 }
+
+# phabricator instance setup for differential hosted repositories
+class role::phabricator::labs::differential inherits role::phabricator::labs {
+    # this role requires "ssh::server::listen_port: 222" to be set in hiera
+    # restart sshd (to apply port 222 change) before applying
+    $vcsuser = 'vcs-user'
+
+    user { $vcsuser:
+        ensure  => present,
+        comment => 'VCS user for Phabricator git cloning',
+        uid     => 780
+    }
+
+    file { '/usr/sbin/sshd-phab':
+        ensure => link,
+        target => '/usr/sbin/sshd',
+    }
+
+    file { '/usr/libexec/':
+        ensure => directory,
+        owner  => root,
+        group  => root,
+    }
+
+    file { '/usr/libexec/phabricator-ssh-hook.sh':
+        content => template('phabricator/phabricator-ssh-hook.sh.erb'),
+        owner   => root,
+        group   => root,
+        mode    => 755,
+        require => File['/usr/libexec']
+    }
+
+    file { '/etc/ssh/sshd_config.phabricator':
+        content => template('phabricator/sshd_config.phabricator.erb'),
+        owner   => root,
+        group   => root,
+        mode    => 444,
+    }
+
+    file { '/etc/init.d/ssh-phab':
+        ensure => file,
+        source => 'puppet:///modules/phabricator/ssh-phab',
+        owner  => root,
+        group  => root,
+        mode   => 755,
+    }
+
+    service { 'ssh-phab':
+        ensure    => running,
+        subscribe => File['/etc/ssh/sshd_config.phabricator'],
+        require   => File['/etc/init.d/ssh-phab'],
+    }
+}
