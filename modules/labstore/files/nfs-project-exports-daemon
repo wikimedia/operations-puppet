@@ -196,6 +196,6 @@ if __name__ == "__main__":
     while True:
         projects = get_projects_with_nfs(args.projects_config_path)
         sync_exports_files(projects, args.exports_d_path)
-        if not args._dry_run:
+        if not args.dry_run:
             exportfs()
         time.sleep(60)
