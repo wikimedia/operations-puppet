@@ -34,7 +34,7 @@ class role::labs::ores::staging {
 
     include ::ores::web
     include ::ores::worker
-    w
+
     class { '::ores::lb':
         realservers => [ 'localhost:8080' ],
         cache       => false,
