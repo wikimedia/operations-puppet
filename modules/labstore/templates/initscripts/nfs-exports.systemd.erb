@@ -1,0 +1,7 @@
+[Unit]
+Description=NFS exports daemon
+
+[Service]
+ExecStart=/usr/local/bin/nfs-exports-daemon --exports-d-path /etc/exports.d/ --config-path /etc/nfs-mounts.yaml
+Restart=on-failure
+User=nfsmanager
