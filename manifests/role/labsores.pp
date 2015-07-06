@@ -1,4 +1,5 @@
 class role::labs::ores::web {
+    inlcude ::ores::base
     include ::ores::web
 
     class { '::ores::redisproxy':
@@ -27,15 +28,13 @@ class role::labs::ores::lb(
 }
 
 class role::labs::ores::staging {
-
-    class { '::ores::web':
+    class { 'ores::base':
         branch => 'staging',
     }
 
-    class { '::ores::worker':
-        branch => 'staging',
-    }
-
+    include ::ores::web
+    include ::ores::worker
+    w
     class { '::ores::lb':
         realservers => [ 'localhost:8080' ],
         cache       => false,
