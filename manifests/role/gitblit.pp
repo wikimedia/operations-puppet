@@ -6,9 +6,7 @@ class role::gitblit {
     include role::gerrit::production::replicationdest
 
     class { '::gitblit':
-        host         => 'git.wikimedia.org',
-        ssl_cert     => 'git.wikimedia.org',
-        ssl_cert_key => 'git.wikimedia.org'
+        host => 'git.wikimedia.org',
     }
 
     # Firewall GitBlit, it should be accessed from localhost or Varnish

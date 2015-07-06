@@ -5,8 +5,6 @@
 class gitblit(
     $host           = '',
     $git_repo_owner = 'gerritslave',
-    $ssl_cert       = '',
-    $ssl_cert_key   = '',
 ) {
     include ::apache::mod::headers
     include ::apache::mod::proxy
