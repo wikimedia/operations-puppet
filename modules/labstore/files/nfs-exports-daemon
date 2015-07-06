@@ -94,19 +94,16 @@ def get_instance_ips(project):
     return ips
 
 
-def get_projects_with_nfs(config_file_path):
+def get_public_exports(mounts_config):
+    return mounts_config['public']
+
+
+def get_projects_with_nfs(mounts_config):
     """
     Returns list of populated Project objects that need NFS exports
     """
-    try:
-        with open(config_file_path) as f:
-            projects_config = yaml.load(f)
-    except:
-        logging.exception('Could not load projects config file from %s', config_file_path)
-        sys.exit(1)
-
     projects = []
-    for name, config in projects_config.items():
+    for name, config in mounts_config['private'].items():
         logging.debug('Fetching config for project %s', name)
         if 'mounts' in config:
             mounts = [k for k, v in config['mounts'].items()
@@ -133,10 +130,19 @@ def get_projects_with_nfs(config_file_path):
     return projects
 
 
-def sync_exports_files(projects, exports_d_base):
+def sync_exports_files(mounts_config, exports_d_base):
     """
     Generate exports files for syncfs
     """
+    public_exports = get_public_exports(mounts_config)
+    for name, content in public_exports.items():
+        logging.debug('Writing exports file for public export %s', name)
+        path = os.path.join(exports_d_base, 'public_%s.exports' % name)
+        with open(path, 'w') as f:
+            f.write(content)
+        logging.info('Wrote exports file for public export %s', name)
+
+    projects = get_projects_with_nfs(mounts_config)
     for project in projects:
         logging.debug('Writing exports file for %s', project.name)
         path = os.path.join(exports_d_base, '%s.exports' % project.name)
@@ -194,7 +200,13 @@ if __name__ == "__main__":
     logging.info('Daemon starting')
 
     while True:
-        projects = get_projects_with_nfs(args.projects_config_path)
+        try:
+            with open(args.config_file_path) as f:
+                config = yaml.load(f)
+        except:
+            logging.exception('Could not load projects config file from %s', config_file_path)
+            sys.exit(1)
+        projects = get_projects_with_nfs(config)
         sync_exports_files(projects, args.exports_d_path)
         if not args.dry_run:
             exportfs()
