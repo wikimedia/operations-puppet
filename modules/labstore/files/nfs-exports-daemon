@@ -134,6 +134,10 @@ def sync_exports_files(mounts_config, exports_d_base):
     """
     Generate exports files for syncfs
     """
+    existing_exports = [
+        os.path.join(exports_d_base, filename)
+        for filename in os.listdir(exports_d_base)]
+
     public_exports = get_public_exports(mounts_config)
     for name, content in public_exports.items():
         logging.debug('Writing exports file for public export %s', name)
@@ -141,6 +145,8 @@ def sync_exports_files(mounts_config, exports_d_base):
         with open(path, 'w') as f:
             f.write(content)
         logging.info('Wrote exports file for public export %s', name)
+        if path in existing_exports:
+            existing_exports.remove(path)
 
     projects = get_projects_with_nfs(mounts_config)
     for project in projects:
@@ -149,6 +155,16 @@ def sync_exports_files(mounts_config, exports_d_base):
         with open(path, 'w') as f:
             f.write(project.get_exports())
         logging.info('Wrote exports file for %s', project.name)
+        if path in existing_exports:
+            existing_exports.remove(path)
+
+    if len(existing_exports) != 0:
+        logging.info('Extra exports.d files found, purging')
+        for existing_export in existing_exports:
+            with open(existing_export) as f:
+                logging.info('Deleting %s with contents %s', existing_export, f.read())
+            os.remove(existing_export)
+            logging.info('Deleted %s', existing_export)
 
 
 def exportfs():
