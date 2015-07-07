@@ -193,4 +193,18 @@ class role::mail::lists {
         timeout       => '30',
     }
 
+    ferm::service { 'mailman-smtp':
+        proto => 'tcp',
+        port  => '25',
+    }
+
+    ferm::service { 'mailman-http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'mailman-https':
+        proto => 'tcp',
+        port  => '443',
+    }
 }
