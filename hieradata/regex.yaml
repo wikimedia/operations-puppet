@@ -1,7 +1,3 @@
-logstash:
-  __regex: !ruby/regexp /^logstash100[0-9]\.eqiad\.wmnet$/
-  ganglia_class: "old"
-
 es_rack_a3:
   __regex: !ruby/regexp /^elastic100[0-6]\.eqiad\.wmnet$/
   elasticsearch::rack: A3
