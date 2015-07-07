@@ -23,7 +23,16 @@ if [ "$db" = "centralauth" ]; then
 else
     lookupdb="$db"
 fi
-host=`echo 'echo wfGetLB()->getServerName(0);' | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
+
+write=$1
+shift
+
+if [ "$write" = "--write" ]; then
+	hostcode="echo wfGetLB()->getServerName(0);"
+else
+	hostcode="\$lb = wfGetLB(); echo \$lb->getServerName(\$lb->getReaderIndex());"
+fi
+host=`echo $hostcode | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
 
 # MySQL user credentials.
 MU=wikiadmin
