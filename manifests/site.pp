@@ -1669,8 +1669,6 @@ node 'mira.codfw.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    include role::backup::host
-    backup::set {'home': }
 }
 
 node 'multatuli.wikimedia.org' {
@@ -2300,8 +2298,6 @@ node 'tin.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    include role::backup::host
-    backup::set {'home': }
 }
 
 # titanium hosts archiva.wikimedia.org
