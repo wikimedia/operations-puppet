@@ -1795,19 +1795,6 @@ node 'mendelevium.eqiad.wmnet' {
     role otrs
 }
 
-# codfw deployment host (pending set up)
-node 'mira.codfw.wmnet' {
-
-    role deployment::server
-    include standard
-    include base::firewall
-    include role::labsdb::manager
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 node 'multatuli.wikimedia.org' {
     role spare
 
@@ -2443,10 +2430,12 @@ node 'terbium.eqiad.wmnet' {
     include ::eventlogging::package
 }
 
-node 'tin.eqiad.wmnet' {
+# deployment servers
+node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
 
     role deployment::server
     include standard
+    include base::firewall
     include role::labsdb::manager
     include base::firewall
 
