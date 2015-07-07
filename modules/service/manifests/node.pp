@@ -23,7 +23,16 @@
 #   ulimit. Default: 10000
 #
 # [*healthcheck_url*]
-#   The url to monitor the service at. 200 OK is the expected answer
+#   The url to monitor the service at. 200 OK is the expected
+#   answer. If has_spec it true, this is supposed to be the base url
+#   for the spec request
+#
+# [*firejail*]
+#   Whether to use/enable firejail or not
+#
+# [*has_spec*]
+#   If the service specifies a swagger spec, use it to thoroughly
+#   monitor it
 #
 # === Examples
 #
@@ -50,6 +59,7 @@ define service::node( $port,
                       $no_file = 10000,
                       $healthcheck_url='/_info',
                       $firejail = false,
+                      $has_spec = false,
 ) {
     # Import all common configuration
     include service::configuration
@@ -159,10 +169,21 @@ define service::node( $port,
         port  => $port,
     }
 
-    # Basic monitoring
-    monitoring::service { $title:
-        description   => $title,
-        check_command => "check_http_port_url!${port}!${healthcheck_url}",
+    if $has_spec {
+        # Advanced monitoring
+        include service::monitoring
+
+        $monitor_url = "http://${::ipaddress}:${port}${healthcheck_url}"
+        nrpe::monitor_service{ "endpoints_${title}":
+            description  => "${title} endpoints health",
+            nrpe_command => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
+            subscribe    => File['/usr/local/lib/nagions/plugins/service_checker'],
+        }
+    } else {
+        # Basic monitoring
+        monitoring::service { $title:
+            description   => $title,
+            check_command => "check_http_port_url!${port}!${healthcheck_url}",
+        }
     }
 }
-
