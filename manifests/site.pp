@@ -1657,22 +1657,6 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include redis::ganglia
 }
 
-# codfw deployment host (pending set up)
-node 'mira.codfw.wmnet' {
-
-    include standard
-    include base::firewall
-    include role::deployment::server
-    include role::labsdb::manager
-    include role::releases::upload
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    include role::backup::host
-    backup::set {'home': }
-}
-
 node 'multatuli.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2290,12 +2274,17 @@ node 'terbium.eqiad.wmnet' {
     backup::set {'home': }
 }
 
-node 'tin.eqiad.wmnet' {
+node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
 
     include standard
     include role::deployment::server
     include role::labsdb::manager
     include role::releases::upload
+
+    if $::hostname == 'mira' {
+        # Test base::firewall for deployments on mira
+	include base::firewall
+    }
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
