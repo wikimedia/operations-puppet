@@ -19,8 +19,7 @@
 #                 tradeoff is made for compatibility.  Known to work with:
 #                 New FF/Chrome, IE11, Java8, Android 4.4+, OpenSSL 1.0.x
 #                 Definitely broken with: All Safari (OSX/iOS).
-#                 IE11 support requires an ECDSA key as well, whereas others
-#                 can work with RSA.
+#                 IE11 support requires either DHE support or an ECDSA key.
 #   - mid:        Supports TLSv1.0 and higher, and adds several forward-secret
 #                 options which are not AEAD.  This is compatible with many
 #                 more clients than "strong".  With a DHE-capable server,
