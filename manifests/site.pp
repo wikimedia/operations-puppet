@@ -2056,6 +2056,7 @@ node 'polonium.wikimedia.org' {
 
 node 'potassium.eqiad.wmnet' {
     include standard
+    include base::firewall
     include role::poolcounter
 }
 
