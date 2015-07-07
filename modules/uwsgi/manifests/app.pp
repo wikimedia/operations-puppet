@@ -37,11 +37,25 @@ define uwsgi::app(
         }
 
         if $enabled == true {
-            file { "/etc/uwsgi/apps-enabled/${basename}.ini":
+            $inipath =  "/etc/uwsgi/apps-enabled/${basename}.ini"
+            file { $inipath:
                 ensure => link,
                 target => "/etc/uwsgi/apps-available/${basename}.ini",
                 notify => Service['uwsgi'],
             }
+
+            base::service_unit { "uwsgi-${title}":
+                ensure        => present,
+                template_name => 'uwsgi',
+                systemd       => true,
+                upstart       => true,
+            }
+        }
+
+        nrpe::monitor_service { "uwsgi-${title}":
+            description  => "${title} uWSGI web app",
+            nrpe_command => "/usr/sbin/service uwsgi-${title} status",
+            require      => Service['uwsgi'],
         }
     }
 }
