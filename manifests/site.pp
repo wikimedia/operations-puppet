@@ -1940,6 +1940,7 @@ node 'neon.wikimedia.org' {
 # Eqiad ldap server, aka ldap-eqiad
 node 'neptunium.wikimedia.org' {
     include standard
+    include base::firewall
     include ldap::role::server::labs
     include ldap::role::client::labs
 }
