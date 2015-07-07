@@ -23,14 +23,13 @@ fi
 
 ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
 domain=`hostname -d | sed -r 's/.*\.([^.]+\.[^.]+)$/\1/'`
-tries=$(( $TIMEOUT / 5 ))
-for i in `seq 1 ${tries}`; do
+for i in `seq 1 ${TIMEOUT}`; do
     prod_domain=`echo $domain | sed 's/wmflabs/wmnet/'`
     echo $(showmount -e ${NFS_SERVER} | egrep ^/exp/${VOLUME}\\s), | fgrep -q $ip,
     if [ $? -eq 0 ];  then
         exit 0
     fi
-    sleep 5
+    sleep 1
 done
 
 exit 2
