@@ -15,5 +15,10 @@ class role::bugzilla_static {
     backup::set { 'bugzilla-backup' : }
 
     include ::bugzilla_static
+
+    monitoring::service { 'static-bugzilla-http':
+        description   => 'Static Bugzilla HTTP',
+        check_command => 'check_http_url!static-bugzilla.wikimedia.org!/',
+    }
 }
 
