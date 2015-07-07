@@ -14,25 +14,29 @@
 #   Note that due to POODLE, SSLv3 is universally disabled and none of these
 #   options are compatible with SSLv3-only clients such as IE6/XP.
 #   Current options are:
-#   - strong:     Only TLSv1.2 with AEAD ciphers.  In practice this is a very
-#                 short list, and requires a very modern client.  No tradeoff
-#                 is made for compatibility.  Only known to work with:
-#                 Modern FF/Chrome, IE11, Java8, Android 4.4+, OpenSSL 1.0.x
+#   - strong:     Only TLSv1.2 with PFS+AEAD ciphers.  In practice this is a
+#                 very short list, and requires a very modern client.  No
+#                 tradeoff is made for compatibility.  Known to work with:
+#                 New FF/Chrome, IE11, Java8, Android 4.4+, OpenSSL 1.0.x
 #                 Definitely broken with: All Safari (OSX/iOS).
 #                 IE11 support requires an ECDSA key as well, whereas others
 #                 can work with RSA.
 #   - mid:        Supports TLSv1.0 and higher, and adds several forward-secret
 #                 options which are not AEAD.  This is compatible with many
-#                 more clients than "strong", but still not compatible with:
-#                 Android 2.x, IE8/XP, OpenSSL 0.9.8, Java6.
-#   - compat:     Supports most legacy clients, PFS optional, TLSv1.0+ only.
-#   - compat-dhe: Upgrades 'compat' to use DHE for PFS with certain older
-#                 clients.  Breaks some older/commercial Java6 clients, but
-#                 makes things more secure for Android 2 and OpenSSL 0.9.8.
-#                 Currently requires nginx or apache2.4-on-jessie, to set the
-#                 dh parameters to a custom 2048-bit file.
+#                 more clients than "strong".  With a DHE-capable server,
+#                 should only be incompatible with IE8/XP, ancient/un-updated
+#                 Java6, and some small corner cases like Nokia feature
+#                 phones.  With a non-DHE server, compatibility is also lost
+#                 with Android 2.x, OpenSSL 0.9.8, and more Java6 clients.
+#   - compat:     Supports most legacy clients, PFS optional but preferred.
+#   - compat-dhe: Deprecated alias for "compat".
 # - An optional argument, that if non-nil will set HSTS to max-age of
 #   N days
+#
+# For servers which support it (nginx, or apache-2.4 on Jessie), DHE cipher
+# variants that are appropriate for the compatibility mode selected will be
+# enabled, generally increasing forward-secrecy and compatibility, but
+# sacrificing some rare/ancient/un-updated Java6 clients.
 #
 # Whenever called, this function will output a list of strings that
 # can be safely used in your configuration file as the ssl
@@ -65,46 +69,45 @@ require 'puppet/util/package'
 
 module Puppet::Parser::Functions
   # Basic list chunks, used to construct bigger lists
-  # General preference ordering:
-  # 0) ECDHE > DHE > Kx=RSA
-  # 1) GCM > CBC
-  # 2) AES128 > AES256
-  # 3) SHA-2 > SHA-1
-  # 4) ECDSA > RSA
+  # General preference ordering for fullest combined list:
+  # 0) Kx:   (EC)DHE > RSA    (Forward Secrecy)
+  # 1) Mac:  AEAD > ALL       (GCM > CBC)
+  # 2) Enc:  AES128 > AES256  (>CAMELLIA128 > CAMELLIA256)
+  # 3) Mac:  SHA-2 > SHA-1
+  # 4) Auth: ECDSA > RSA      (Server Performance)
+  # 5) Kx:   ECDHE > DHE      (Server Performance)
   basic = {
+    # Forward-Secret + AEAD
     'strong' => [
       '-ALL',
       'ECDHE-ECDSA-AES128-GCM-SHA256',
       'ECDHE-RSA-AES128-GCM-SHA256',
+      'DHE-RSA-AES128-GCM-SHA256',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES256-GCM-SHA384',
+      'DHE-RSA-AES256-GCM-SHA384',
     ],
+    # Forward-Secret, but not AEAD
     'mid' => [
       'ECDHE-ECDSA-AES128-SHA256',
       'ECDHE-RSA-AES128-SHA256',
+      'DHE-RSA-AES128-SHA256',
       'ECDHE-ECDSA-AES128-SHA',
       'ECDHE-RSA-AES128-SHA',
+      'DHE-RSA-AES128-SHA',
       'ECDHE-ECDSA-AES256-SHA384',
       'ECDHE-RSA-AES256-SHA384',
+      'DHE-RSA-AES256-SHA256',
       'ECDHE-ECDSA-AES256-SHA',
       'ECDHE-RSA-AES256-SHA',
-    ],
-    # Do not use on a server unless you're *sure* it's not using defaulted
-    # and/or weak DH parameters!
-    'compat-dhe' => [
-      'DHE-RSA-AES128-GCM-SHA256',
-      'DHE-RSA-AES256-GCM-SHA384',
-      'DHE-RSA-AES128-SHA256',
-      'DHE-RSA-AES128-SHA',
-      'DHE-RSA-AES256-SHA256',
       'DHE-RSA-AES256-SHA',
       'DHE-RSA-CAMELLIA128-SHA',
       'DHE-RSA-CAMELLIA256-SHA',
     ],
     # not-forward-secret compat for ancient stuff
     'compat' => [
-      'AES128-GCM-SHA256',
-      'AES256-GCM-SHA384',
+      'AES128-GCM-SHA256', # AEAD, but not forward-secret
+      'AES256-GCM-SHA384', # AEAD, but not forward-secret
       'AES128-SHA256',
       'AES128-SHA',
       'AES256-SHA256',
@@ -120,7 +123,6 @@ module Puppet::Parser::Functions
     'strong'     => basic['strong'],
     'mid'        => basic['strong'] + basic['mid'],
     'compat'     => basic['strong'] + basic['mid'] + basic['compat'],
-    'compat-dhe' => basic['strong'] + basic['mid'] + basic['compat-dhe'] + basic['compat'],
   }
 
   newfunction(
@@ -130,16 +132,15 @@ module Puppet::Parser::Functions
 Outputs the ssl configuration part of the webserver config.
 Function parameters are:
  servercode - either nginx, apache-2.2 or apache-2.4
- encryption_type - strong, mid, compat, or compat-dhe (do not use compat-dhe unless
-                   you are sure of what you're doing, read the extended docs
-                   in the source of this function!)
+ encryption_type - strong, mid, or compat
  hsts_days  - how many days should the STS header live. If not expressed, HSTS will
               be disabled
 
 Examples:
 
    ssl_ciphersuite('apache-2.4', 'compat') # Compatible config for apache 2.4
-   ssl_ciphersuite('nginx', 'strong', '365') # PFS-only, use HSTS for 365 days
+   ssl_ciphersuite('apache-2.4', 'mid') # PFS-only for apache2.4
+   ssl_ciphersuite('nginx', 'strong', '365') # PFS-only, AEAD-only, TLSv1.2-only
 END
               ) do |args|
 
@@ -164,11 +165,13 @@ END
     end
 
     ciphersuite = args.shift
+    # temporary backcompat for deprecated 'compat-dhe'
+    if ciphersuite == 'compat-dhe'
+        ciphersuite = 'compat'
+    end
     unless ciphersuites.has_key?(ciphersuite)
       fail(ArgumentError, "ssl_ciphersuite(): unknown ciphersuite '#{ciphersuite}'")
     end
-
-    cipherlist = ciphersuites[ciphersuite].join(":")
 
     # Apache-2.2 has all kinds of problems with suites > compat, and should be eliminated
     #  by upgrades to trusty/jessie.
@@ -176,22 +179,18 @@ END
       fail(ArgumentError, 'ssl_ciphersuite(): apache 2.2 can only be used with "compat"')
     end
 
-    # if the cipherlist has DHE-*, we need to configure the dhparam file
-    if cipherlist =~ /(^|:)DHE-/
-      need_dhparam = true
-    else
-      need_dhparam = false
-    end
-
     # no DHE for apache unless jessie (2.4.10)
     # trusty's apache-2.4.7 can technically do it as well, but only if we
     # append dhe params to the server cert file, which would be difficult to
     # factor in with sslcert puppetization and such.  Possible TODO if we're
     # really stuck on this?
-    if need_dhparam && server == 'apache'
-      if lookupvar('lsbdistrelease').capitalize != 'Jessie'
-        fail(ArgumentError, 'ssl_ciphersuite(): Apache+DHE requires Jessie')
-      end
+    if server == 'apache' && lookupvar('lsbdistrelease').capitalize != 'Jessie'
+      Puppet.warning('ssl_ciphersuite(): DHE ciphers disabled - upgrade to Jessie+Apache2.4!')
+      cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^DHE-/}.join(":")
+      set_dhparam = false
+    else
+      cipherlist = ciphersuites[ciphersuite].join(":")
+      set_dhparam = true
     end
 
     if args.length == 1
@@ -211,7 +210,7 @@ END
       end
       output.push("SSLCipherSuite #{cipherlist}")
       output.push('SSLHonorCipherOrder On')
-      if need_dhparam
+      if set_dhparam
         output.push('SSLOpenSSLConfCmd DHParameters "/etc/ssl/dhparam.pem"')
       end
       unless hsts_days.nil?
@@ -228,7 +227,7 @@ END
       end
       output.push("ssl_ciphers #{cipherlist};")
       output.push('ssl_prefer_server_ciphers on;')
-      if need_dhparam
+      if set_dhparam
         output.push('ssl_dhparam /etc/ssl/dhparam.pem;')
       end
       unless hsts_days.nil?
