@@ -2062,6 +2062,7 @@ node 'potassium.eqiad.wmnet' {
 # to gadolinium again.  protactinium is not being used.
 node 'protactinium.wikimedia.org' {
     include standard
+    include base::firewall
 }
 
 node 'radium.wikimedia.org' {
