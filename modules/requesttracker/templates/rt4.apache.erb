@@ -15,8 +15,8 @@
 
   SSLEngine on
   SSLCertificateFile /etc/ssl/localcerts/rt.wikimedia.org.crt
+  SSLCertificateChainFile /etc/ssl/localcerts/rt.wikimedia.org.chain.crt
   SSLCertificateKeyFile /etc/ssl/private/rt.wikimedia.org.key
-  SSLCACertificatePath /etc/ssl/certs
   <%= @ssl_settings.join("\n") %>
 
   AddDefaultCharset UTF-8

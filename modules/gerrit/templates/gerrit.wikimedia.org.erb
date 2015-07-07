@@ -48,8 +48,8 @@ NameVirtualHost *:443
 
     SSLEngine on
     SSLCertificateFile /etc/ssl/localcerts/<%= @ssl_cert %>.crt
+    SSLCertificateChainFile /etc/ssl/localcerts/<%= @ssl_cert %>.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/<%= @ssl_cert_key %>.key
-    SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 
     RedirectMatch ^/$ https://<%= @host %>/r/
