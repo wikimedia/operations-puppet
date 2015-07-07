@@ -50,6 +50,7 @@ define service::node( $port,
                       $no_file = 10000,
                       $healthcheck_url='/_info',
                       $firejail = false,
+                      $has_spec = false,
 ) {
     # Import all common configuration
     include service::configuration
@@ -164,5 +165,16 @@ define service::node( $port,
         description   => $title,
         check_command => "check_http_port_url!${port}!${healthcheck_url}",
     }
-}
 
+    # Advanced monitoring
+    if $has_spec {
+        include service::monitoring
+
+        $monitor_url = "http://localhost:${port}"
+        nrpe::monitor_service{ "endpoints_${title}":
+            description  => "${title} endpoints health",
+            nrpe_command => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
+            subscribe    => File['/usr/local/lib/nagions/plugins/service_checker'],
+        }
+    }
+}
