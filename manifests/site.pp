@@ -1812,8 +1812,8 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
 }
 
-# mw1152 is (temporarily) the HAT imagescaler
-node 'mw1152.eqiad.wmnet' {
+# mw1152-3 are (temporarily) the HAT imagescaler
+node /^mw115[23]\.eqiad\.wmnet$/ {
     role mediawiki::imagescaler
 }
 
