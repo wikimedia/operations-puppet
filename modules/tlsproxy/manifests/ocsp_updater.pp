@@ -33,7 +33,6 @@ class tlsproxy::ocsp_updater {
         require => [
             File['/usr/local/sbin/update-ocsp-all'],
             File['/etc/ocsp_updater'],
-            Service['nginx'],
         ],
     }
 
