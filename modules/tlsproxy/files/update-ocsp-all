@@ -16,7 +16,7 @@ for cfg_file in ${CFG_DIR}/*; do
     ocsp_args=$(cat $cfg_file)
     /usr/local/sbin/update-ocsp -p $PROXY $ocsp_args
     if [ $? -ne 0 ]; then
-        echo OCSP update failed for $cfg_file ($ocsp_args)
+        echo "OCSP update failed for $cfg_file ($ocsp_args)"
         some_failed=1
     fi
 done
