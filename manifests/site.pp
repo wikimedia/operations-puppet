@@ -361,6 +361,7 @@ node /^conf100[123]\.eqiad\.wmnet$/ {
 node 'copper.eqiad.wmnet' {
     role package::builder
     include standard
+    include base::firewall
     include admin
 }
 
