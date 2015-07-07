@@ -11,7 +11,7 @@ class base::certificates {
         source  => 'puppet:///modules/base/ca/RapidSSL_SHA256_CA_-_G3.crt',
     }
     sslcert::ca { 'GeoTrust_Global_CA':
-        source  => 'puppet:///modules/base/ca/GeoTrust_Global_CA.crt',
+        ensure  => 'absent',
     }
     sslcert::ca { 'DigiCert_High_Assurance_CA-3':
         source  => 'puppet:///modules/base/ca/DigiCert_High_Assurance_CA-3.crt',
