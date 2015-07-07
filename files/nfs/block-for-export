@@ -10,7 +10,6 @@
 #
 #     block-for-export labstore.svc.eqiad.wmnet project/testlabs 120
 #
-set -e
 set -u
 
 NFS_SERVER=$1
