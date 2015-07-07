@@ -16,6 +16,6 @@
     nocreate
     sharedscripts
     postrotate
-        test ! -x /sbin/uwsgictl || /sbin/uwsgictl restart
+        /usr/sbin/service uwsgi-graphite-web restart
     endscript
 }
