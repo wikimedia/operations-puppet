@@ -23,6 +23,8 @@
 #       Gunicorn's listening port
 #   $admins
 #       ('admin team', 'adminteam@example.com')
+#   $debug
+#       Boolean. The Django DEBUG setting
 #
 # Actions:
 #       Install/configure gunicorn
@@ -50,6 +52,7 @@ class servermon(
     $db_port='',
     $port=8090,
     $admins=undef,
+    $debug=false,
     $ensure='present',
 ) {
 

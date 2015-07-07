@@ -1,9 +1,14 @@
 # Django settings for servermon project.
 import os
 from django.conf import global_settings
+from django import VERSION as DJANGO_VERSION
 here = lambda x: os.path.join(os.path.abspath(os.path.dirname(__file__)), x)
 
+<%- if @debug -%>
+DEBUG = True
+<%- else -%>
 DEBUG = False
+<%- end -%>
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -60,6 +65,10 @@ MEDIA_ROOT = here('static')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/static/'
 
+# Abuse STATIC_URL for now without having collectstatic and by having already
+# provisioned an admin directory under static
+STATIC_URL = '/static/'
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
@@ -77,7 +86,7 @@ SECRET_KEY = '<%= @secret_key %>'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#   'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
@@ -95,12 +104,12 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'servermon.urls'
 
 AUTHENTICATION_BACKENDS = (
-#    'djangobackends.ldapBackend.ldapBackend',
+    # 'djangobackends.ldapBackend.ldapBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 LDAP_AUTH_SETTINGS = (
-    { 'url': 'ldap://ldap.example.org/', 'base': 'ou=People,dc=example,dc=org' },
+    {'url': 'ldap://ldap.example.org/', 'base': 'ou=People,dc=example,dc=org'},
 )
 
 LDAP_AUTH_GROUP = 'not-auth'
@@ -113,6 +122,7 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+# You probably want to uncomment pretty much everything here
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.admin',
@@ -123,9 +133,11 @@ INSTALLED_APPS = (
     'updates',
     'puppet',
     'hwdoc',
-    'south',
     'keyvalue',
 )
+
+if DJANGO_VERSION[:2] < (1, 7):
+    INSTALLED_APPS = INSTALLED_APPS + ('south',)
 
 SKIP_SOUTH_TESTS = True
 
@@ -134,32 +146,43 @@ DATETIME_FORMAT = "d/m/Y H:i"
 
 HOST_TIMEOUT = 1800
 
-TICKETING_SYSTEM = 'dummy' # dummy, comments, jira are possible values
-COMMENTS_TICKETING_URL = "http://ticketing.example.com/"
+TICKETING_SYSTEM = 'dummy'  # dummy, comments, jira are possible values
+COMMENTS_TICKETING_URL = 'http://ticketing.example.com/'
 JIRA_TICKETING = {
     'url': 'http://ticketing.example.com/',
-    'search_string': 'text ~ {}', # {} replaced by double-quoted serial number for search
-    'projects': { # empty dict means "all projects"
-        'project1': { 'closed_string': 'closed' },
-        'project2': { 'closed_string': 'done' },
-        'project3': { 'closed_string': 'pining_for_the_fjords' },
+    'search_string': 'text ~ {}',  # {} replaced by double-quoted serial number for search
+    'projects': {  # empty dict means "all projects"
+        'project1': {'closed_string': 'closed'},
+        'project2': {'closed_string': 'done'},
+        'project3': {'closed_string': 'pining_for_the_fjords'},
         'project4': {},
     },
-    'projects_defaults': { 'closed_string': 'closed' },
+    'projects_defaults': {'closed_string': 'closed'},
     'auth': {
-        'type': 'none', # none, basic, oauth are possible values
+        'type': 'none',  # none, basic, oauth are possible values
         'user': '',                             # only used for basic
         'password': '',                         # only used for basic
         'access_token': '',                     # only used for oauth
-        'access_token_secret': '',             # only used for oauth
-        'consumer_key': 'jira-oauth-consumer', # only used for oauth
-        'key_cert': '/path/to/file',           # only used for oauth
+        'access_token_secret': '',              # only used for oauth
+        'consumer_key': 'jira-oauth-consumer',  # only used for oauth
+        'key_cert': '/path/to/file',            # only used for oauth
     },
 }
 
+# Since Django 1.7 uses migrations for itself, move old South based migrations
+# to their own directory
+SOUTH_MIGRATION_MODULES = {
+    'hwdoc': 'hwdoc.south_migrations',
+    'updates': 'updates.south_migrations',
+}
+
+# Silence the erroneous 1_6.W001 check. It was removed in
+# https://code.djangoproject.com/ticket/23469 anyway
+SILENCED_SYSTEM_CHECKS = ['1_6.W001']
+
 # Django extensions (apt-get install python-django-extensions)
 try:
-    import django_extensions
+    import django_extensions  # noqa
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
 except ImportError:
     pass
