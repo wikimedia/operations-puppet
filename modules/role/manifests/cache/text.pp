@@ -42,6 +42,11 @@ class role::cache::text (
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
             },
+            'security_audit'   => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['security_audit'][$::mw_primary],
+            },
             'test_wikipedia'   => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
