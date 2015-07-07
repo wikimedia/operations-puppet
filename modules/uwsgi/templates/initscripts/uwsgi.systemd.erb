@@ -1,0 +1,10 @@
+[Unit]
+Description = <%= @title %> uWSGI daemon 
+
+[Service]
+ExecStart = /usr/bin/uwsgi --autoload --ini <%= @inipath %>
+User = www-data
+Group = www-data
+
+[Install]
+WantedBy = multi-user.target
