@@ -5,14 +5,8 @@
     ServerName transparency.wikimedia.org
     DocumentRoot <%= @docroot %>
 
-    <Directory />
-        AllowOverride None
-    </Directory>
-
     <Directory <%= @docroot %>>
-        AllowOverride None
-        Order allow,deny
-        allow from all
+        Require all granted
     </Directory>
 
     RewriteEngine on
