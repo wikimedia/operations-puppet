@@ -30,6 +30,7 @@ class role::deployment::server(
     include ::apache::mod::dav
     include ::apache::mod::dav_fs
     include ::apache::helper_scripts
+    include mysql
 
     include network::constants
     $deployable_networks = $::network::constants::deployable_networks
@@ -91,10 +92,6 @@ class role::deployment::server(
             'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet publish.runner deploy.checkout *',
             'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *',
         ],
-    }
-
-    package { 'mysql-client':
-        ensure => present,
     }
 
     package { 'percona-toolkit':
