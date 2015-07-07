@@ -1921,6 +1921,7 @@ node /^mw22([0-2][0-9]|3[0-4])\.codfw\.wmnet$/ {
 # Codfw ldap server, aka ldap-codfw
 node 'nembus.wikimedia.org' {
     include standard
+    include base::firewall
     include ldap::role::server::labs
     include ldap::role::client::labs
 }
