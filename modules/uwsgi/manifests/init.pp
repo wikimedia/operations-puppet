@@ -40,29 +40,37 @@ class uwsgi {
         require => Package['uwsgi'],
     }
 
-    file { '/sbin/uwsgictl':
-        source  => 'puppet:///modules/uwsgi/uwsgictl',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => File['/etc/init/uwsgi'],
-    }
+    if $::initsystem != 'systemd' {
+        # Crappy init script ships with ubuntu by default
+        file { '/sbin/uwsgictl':
+            source  => 'puppet:///modules/uwsgi/uwsgictl',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            require => File['/etc/init/uwsgi'],
+        }
 
-    service { 'uwsgi':
-        ensure   => 'running',
-        provider => 'base',
-        restart  => '/sbin/uwsgictl restart',
-        start    => '/sbin/uwsgictl start',
-        status   => '/sbin/uwsgictl status',
-        stop     => '/sbin/uwsgictl stop',
-        require  => File['/sbin/uwsgictl'],
-    }
+        service { 'uwsgi':
+            ensure   => 'running',
+            provider => 'base',
+            restart  => '/sbin/uwsgictl restart',
+            start    => '/sbin/uwsgictl start',
+            status   => '/sbin/uwsgictl status',
+            stop     => '/sbin/uwsgictl stop',
+            require  => File['/sbin/uwsgictl'],
+        }
 
-    if hiera('has_nrpe', true) {
-        nrpe::monitor_service { 'uwsgi':
-            description  => 'uWSGI web apps',
-            nrpe_command => '/sbin/uwsgictl check',
-            require      => Service['uwsgi'],
+        if hiera('has_nrpe', true) {
+            nrpe::monitor_service { 'uwsgi':
+                description  => 'uWSGI web apps',
+                nrpe_command => '/sbin/uwsgictl check',
+                require      => Service['uwsgi'],
+            }
+        }
+    } else {
+        # For jessie! Systemd has decent uwsgi startup script.
+        service { 'uwsgi':
+            ensure => running,
         }
     }
 }
