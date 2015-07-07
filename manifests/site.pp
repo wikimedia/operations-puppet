@@ -1663,7 +1663,6 @@ node 'mira.codfw.wmnet' {
     include standard
     include base::firewall
     include role::deployment::server
-    include mysql
     include role::labsdb::manager
     include role::releases::upload
 
@@ -2295,7 +2294,6 @@ node 'tin.eqiad.wmnet' {
 
     include standard
     include role::deployment::server
-    include mysql
     include role::labsdb::manager
     include role::releases::upload
 
