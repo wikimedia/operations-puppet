@@ -277,6 +277,7 @@ node 'bromine.eqiad.wmnet' {
     include base::firewall
     include role::bugzilla_static
     include role::annualreport
+    include role::transparency
 }
 
 # http://releases.wikimedia.org
