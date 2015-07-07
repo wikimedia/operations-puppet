@@ -103,6 +103,11 @@ class role::deployment::server(
     package { 'tig':
         ensure => latest,
     }
+
+    # backup /home dirs on deployment servers
+    include role::backup::host
+    backup::set {'home': }
+
 }
 
 class role::deployment::salt_masters(
