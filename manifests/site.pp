@@ -2300,7 +2300,6 @@ node 'tin.eqiad.wmnet' {
     include standard
     include role::deployment::server
     include role::labsdb::manager
-    include role::releases::upload
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
