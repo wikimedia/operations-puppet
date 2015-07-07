@@ -31,6 +31,7 @@ class role::deployment::server(
     include ::apache::mod::dav_fs
     include ::apache::helper_scripts
     include mysql
+    include role::releases::upload
 
     include network::constants
     $deployable_networks = $::network::constants::deployable_networks
