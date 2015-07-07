@@ -64,6 +64,9 @@ class role::cache::configuration {
                     '10.68.16.127', # deployment-mediawiki02
                 ],
             },
+            'security_audit' => {
+                'eqiad' => [ '10.68.17.55' ],  # deployment-mediawiki03
+            },
             'test_appservers' => {
                 'eqiad' => [ '10.68.17.170' ],  # deployment-mediawiki01
             },
