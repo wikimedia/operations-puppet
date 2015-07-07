@@ -19,9 +19,9 @@
     ServerAlias iodine.wikimedia.org
 
     SSLEngine On
-    SSLCertificateFile /etc/ssl/localcerts/ticket.wikimedia.org.chained.crt
+    SSLCertificateFile /etc/ssl/localcerts/ticket.wikimedia.org.crt
+    SSLCertificateChainFile /etc/ssl/localcerts/ticket.wikimedia.org.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/ticket.wikimedia.org.key
-    SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 
     # Make an access log, so we know when people abuse OTRS's insecure interface
