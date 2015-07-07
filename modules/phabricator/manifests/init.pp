@@ -118,7 +118,6 @@ class phabricator (
     package { [
         'python-pygments',
         'python-phabricator',
-        'php5',
         'php5-mysql',
         'php5-gd',
         'php-apc',
