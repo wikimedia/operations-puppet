@@ -16,7 +16,7 @@ cassandra::max_heap_size: 16g
 cassandra::heap_newsize: 2048m
 cassandra::compaction_throughput_mb_per_sec: 160
 cassandra::concurrent_compactors: 10
-cassandra::concurrent_writes: 48
+cassandra::concurrent_writes: 128
 
 cassandra::dc: "%{::site}"
 cassandra::cluster_name: "%{::site}"
