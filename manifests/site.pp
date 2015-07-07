@@ -2387,7 +2387,6 @@ node 'zirconium.wikimedia.org' {
     include role::transparency
     include role::grafana
     include role::iegreview
-    include role::annualreport
     include role::policysite
 
     interface::add_ip6_mapped { 'main':
