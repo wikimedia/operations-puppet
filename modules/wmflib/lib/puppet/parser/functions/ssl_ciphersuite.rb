@@ -29,7 +29,6 @@
 #                 phones.  With a non-DHE server, compatibility is also lost
 #                 with Android 2.x, OpenSSL 0.9.8, and more Java6 clients.
 #   - compat:     Supports most legacy clients, PFS optional but preferred.
-#   - compat-dhe: Deprecated alias for "compat".
 # - An optional argument, that if non-nil will set HSTS to max-age of
 #   N days
 #
@@ -165,10 +164,6 @@ END
     end
 
     ciphersuite = args.shift
-    # temporary backcompat for deprecated 'compat-dhe'
-    if ciphersuite == 'compat-dhe'
-        ciphersuite = 'compat'
-    end
     unless ciphersuites.has_key?(ciphersuite)
       fail(ArgumentError, "ssl_ciphersuite(): unknown ciphersuite '#{ciphersuite}'")
     end
