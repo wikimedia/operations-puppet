@@ -4,7 +4,11 @@ define tlsproxy::ocsp_stapler($certs) {
     $proxy     = "webproxy.${::site}.wmnet:8080"
     $output    = "/var/cache/ocsp/${name}.ocsp"
     $cpfx      = '-c /etc/ssl/localcerts/'
-    $ocsp_args = join([$cpfx, join($certs, " $cpfx"), " -o $output"], '')
+    $csfx      = '.crt'
+    $ocsp_args = join([$cpfx, join($certs, "$csfx $cpfx"), "$csfx -o $output"], '')
+    # sorry for the horrible join, we need map() :P
+    # for $name = 'x', $certs = ['C1', 'C2'], $ocsp_args should look like:
+    # -c /etc/ssl/localcerts/C1.crt -c /etc/ssl/localcerts/C2.crt -o /var/cache/ocsp/x.ocsp
 
     # Initial creation on puppet run (ocsp_updater takes care after)
     exec { "${title}-create-ocsp":
