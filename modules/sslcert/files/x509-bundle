@@ -35,6 +35,9 @@ def parse_options():
     parser.add_argument('--skip-root', '-s', dest="skip_root",
                         help="skip the final (root) certificate",
                         action='store_true')
+    parser.add_argument('--skip-first', '-f', dest="skip_first",
+                        help="skip the first (server) certificate",
+                        action='store_true')
     parser.add_argument('--certificate', '-c', dest="cert",
                         type=file_exists,
                         help="certificate filename",
@@ -93,9 +96,14 @@ def main():
     certpath = traverse_tree(args.cert, args.cadir)
     if args.skip_root:
         certpath.pop()
+    if args.skip_first:
+        certpath.pop(0)
 
-    pretty = [ certpath[0] ] + [ os.readlink(f) for f in certpath[1:] ]
-    print(" -> ".join(pretty))
+    if certpath.count():
+        pretty = [ certpath[0] ] + [ os.readlink(f) for f in certpath[1:] ]
+        print(" -> ".join(pretty))
+    else
+        print("empty chain (due to skipped root/first?)")
 
     # now that we have an issuer path, actually write the bundle
     with open(args.output, "wb") as outfile:
