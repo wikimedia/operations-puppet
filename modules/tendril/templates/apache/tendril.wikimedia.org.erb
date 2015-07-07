@@ -8,7 +8,7 @@ NameVirtualHost *:443
     ServerName <%= @site_name %>
     SSLEngine On
     SSLCertificateFile /etc/ssl/localcerts/tendril.wikimedia.org.crt
-    SSLCertificateChainFile /etc/ssl/localcerts/tendril.wikimedia.org.chained.crt
+    SSLCertificateChainFile /etc/ssl/localcerts/tendril.wikimedia.org.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/tendril.wikimedia.org.key
     <%= @ssl_settings.join("\n") %>
     DocumentRoot <%= @docroot %>

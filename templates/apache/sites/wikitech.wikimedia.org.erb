@@ -51,8 +51,8 @@
 
     SSLEngine on
     SSLCertificateFile /etc/ssl/localcerts/<%= @certificate %>.crt
+    SSLCertificateChainFile /etc/ssl/localcerts/<%= @certificate %>.chain.crt
     SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
-    SSLCACertificatePath /etc/ssl/certs/
     <%= @ssl_settings.join("\n") %>
 
     RedirectMatch ^/$ https://<%= @webserver_hostname %>/wiki/
