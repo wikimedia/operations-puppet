@@ -257,6 +257,10 @@ node 'bast4001.wikimedia.org' {
     include standard
     include role::ipmi
     include role::installserver::tftp-server
+
+    class { 'ganglia_new::monitor::aggregator':
+        sites =>  'ulsfo',
+    }
 }
 
 # IPsec testing
