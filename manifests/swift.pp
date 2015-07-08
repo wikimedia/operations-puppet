@@ -154,6 +154,23 @@ class swift::proxy(
         mode   => '0444',
     }
 
+    ferm::service { 'swift-proxy':
+        proto  => 'tcp',
+        notrack => true,
+        port   => '80',
+    }
+
+    $swift_frontends = hiera('cluster: swift')
+    $swift_frontends_ferm = join($swift_frontends, ' ')
+
+    # Access to memcached from swift frontends
+    ferm::service { 'swift-memcached':
+        proto   => 'tcp',
+        port    => '11211',
+        notrack => true,
+        srange  => "@resolve(($swift_frontends_ferm))",
+    }
+
     rsyslog::conf { 'swift-proxy':
         source   => 'puppet:///files/swift/swift-proxy.rsyslog.conf',
         priority => 30,
