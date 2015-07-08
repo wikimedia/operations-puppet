@@ -29,6 +29,5 @@ class uwsgi {
         purge   => true,
         force   => true,
         require => Package['uwsgi', $plugins],
-        notify  => Service['uwsgi'],
     }
 }

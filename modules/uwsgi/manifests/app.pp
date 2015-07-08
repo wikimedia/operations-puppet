@@ -41,7 +41,7 @@ define uwsgi::app(
             file { $inipath:
                 ensure => link,
                 target => "/etc/uwsgi/apps-available/${basename}.ini",
-                notify => Service['uwsgi'],
+                notify => Service["uwsgi-${title}"],
             }
 
             base::service_unit { "uwsgi-${title}":
@@ -50,12 +50,12 @@ define uwsgi::app(
                 systemd       => true,
                 upstart       => true,
             }
-        }
 
-        nrpe::monitor_service { "uwsgi-${title}":
-            description  => "${title} uWSGI web app",
-            nrpe_command => "/usr/sbin/service uwsgi-${title} status",
-            require      => Service['uwsgi'],
+            nrpe::monitor_service { "uwsgi-${title}":
+                description  => "${title} uWSGI web app",
+                nrpe_command => "/usr/sbin/service uwsgi-${title} status",
+                require      => Service["uwsgi-${title}"],
+            }
         }
     }
 }

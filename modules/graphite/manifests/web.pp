@@ -50,13 +50,13 @@ class graphite::web(
     file { '/etc/graphite/cors.py':
         source  => 'puppet:///modules/graphite/cors.py',
         require => Package['graphite-web'],
-        notify  => Service['uwsgi'],
+        notify  => Service['uwsgi-graphite-web'],
     }
 
     file { '/etc/graphite/local_settings.py':
         content => template('graphite/local_settings.py.erb'),
         require => Package['graphite-web'],
-        notify  => Service['uwsgi'],
+        notify  => Service['uwsgi-graphite-web'],
     }
 
 
