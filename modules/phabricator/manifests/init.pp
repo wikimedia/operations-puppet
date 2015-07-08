@@ -245,7 +245,7 @@ class phabricator (
     file { '/etc/php5/apache2/php.ini':
         content => template('phabricator/php.ini.erb'),
         notify  => Service['apache2'],
-        require => Package['php5'],
+        require => Package['libapache2-mod-php5'],
     }
 
     file { "${phabdir}/phabricator/conf/local/local.json":
