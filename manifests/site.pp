@@ -368,6 +368,12 @@ node 'copper.eqiad.wmnet' {
 node 'cp1008.wikimedia.org' {
     role cache::text, authdns::testns
     interface::add_ip6_mapped { 'main': }
+    file { '/tmp/secme':
+        owner => 'root',
+        group => 'root',
+        mode  => '0400',
+        content => secret('ssl/foo'),
+    }
 }
 
 node /^cp104[34]\.eqiad\.wmnet$/ {
