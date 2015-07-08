@@ -1,3 +1,11 @@
+# General variables that once would have been in realm.pp
+datacenters:
+  - eqiad
+  - codfw
+  - esams
+  - ulsfo
+
+
 # NOTE: Do *not* add new clusters *per site* anymore,
 # the site name will automatically be appended now,
 # and a different IP prefix will be used.
