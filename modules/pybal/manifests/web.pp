@@ -25,4 +25,29 @@ class pybal::web ($ensure = 'present', $vhostnames = ['pybal-config.eqiad.wmnet'
         mode   => '0755',
     }
 
+    $conftool_dir = '/srv/pybal-config/conftool'
+    $datacenters = hiera('datacenters')
+    $dc_dirs = prefix($conftool_dir, $datacenters)
+
+    file { $conftool_dir:
+        ensure => ensure_directory($ensure),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    # All the subdirectories
+    file { $dc_dirs:
+        ensure => ensure_directory($ensure),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    $services = hiera('lvs::configuration::lvs_services')
+    $service_names = keys($services)
+    pybal::web::service { $service_names:
+        config => $services
+    }
+
 }
