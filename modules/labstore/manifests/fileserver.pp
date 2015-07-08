@@ -38,4 +38,5 @@ class labstore::fileserver {
     }
 
     include ::labstore::fileserver::exports
+    include ::labstore::account_services
 }
