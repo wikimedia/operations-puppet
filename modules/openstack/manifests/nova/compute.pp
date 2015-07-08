@@ -28,12 +28,12 @@ class openstack::nova::compute(
         file { '/var/lib/nova/clientcert.pem':
             ensure  => link,
             target  => "/etc/ssl/localcerts/${certname}.crt",
-            require => Sslcert::Certificate[$certname],
+            require => Sslcert::Std_cert[$certname],
         }
         file { '/var/lib/nova/cacert.pem':
             ensure  => link,
             target  => $ca_target,
-            require => Sslcert::Certificate[$certname],
+            require => Sslcert::Std_cert[$certname],
         }
         file { '/var/lib/nova/.ssh':
             ensure  => directory,

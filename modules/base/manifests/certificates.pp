@@ -22,4 +22,5 @@ class base::certificates {
 
     # install all CAs before generating certificates
     Sslcert::Ca <| |> -> Sslcert::Certificate<| |>
+    Sslcert::Ca <| |> -> Sslcert::Std_cert<| |>
 }
