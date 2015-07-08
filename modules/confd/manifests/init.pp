@@ -10,6 +10,7 @@ class confd(
     $srv_dns=$::domain,
     $scheme='https',
     $interval=undef,
+    $monitor_files=true,
 ) {
 
     package { 'confd':

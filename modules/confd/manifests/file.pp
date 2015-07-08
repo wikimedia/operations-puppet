@@ -32,9 +32,12 @@ define confd::file (
         notify  => Service['confd'],
     }
 
-    nrpe::monitor_service{ "confd${safe_name}":
-        description  => "Confd template for ${name}",
-        nrpe_command => "/usr/local/lib/nagios/plugins/check_confd_template '${name}'",
-        require      => File['/usr/local/lib/nagios/plugins/check_confd_template'],
+    # In particular situations, we might not want monitoring
+    if $::confd::monitor_files {
+        nrpe::monitor_service{ "confd${safe_name}":
+            description  => "Confd template for ${name}",
+            nrpe_command => "/usr/local/lib/nagios/plugins/check_confd_template '${name}'",
+            require      => File['/usr/local/lib/nagios/plugins/check_confd_template'],
+        }
     }
 }
