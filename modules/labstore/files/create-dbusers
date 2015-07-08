@@ -1,0 +1,157 @@
+#!/usr/bin/python3
+"""
+This script does the following:
+
+  - Check if users / service groups in opted in projects have
+    a replica.my.cnf file with mysql credentials
+  - If they do not exist, create a mysql user, give them
+    appropriate grants and write the replica.my.cnf file
+"""
+import logging
+import argparse
+import ldap3
+import pymysql
+import yaml
+import re
+import os
+import string
+import random
+import configparser
+
+
+class User:
+    def __init__(self, project, name, uid, homedir):
+        self.project = project
+        self.name = name
+        self.uid = int(uid)
+        self.homedir = homedir
+
+    @property
+    def db_username(self):
+        """
+        The db username to use for this user.
+
+        Guaranteed to be of the form (s|u)\d+
+        """
+        return 's%s' % self.uid
+
+    def __repr__(self):
+        return "User(name=%s, uid=%s, homedir=%s)" % (
+            self.name, self.uid, self.homedir)
+
+    @classmethod
+    def from_ldap_servicegroups(cls, conn, projectname):
+        conn.search(
+            'ou=people,ou=servicegroups,dc=wikimedia,dc=org',
+            '(cn=%s.*)' % projectname,
+            ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
+            attributes=['uidNumber', 'homeDirectory', 'cn']
+        )
+        users = []
+        for resp in conn.response:
+            attrs = resp['attributes']
+            users.append(cls(projectname, attrs['cn'][0], attrs['uidNumber'][0], attrs['homeDirectory'][0]))
+
+        return users
+
+
+class CredentialCreator:
+    PASSWORD_LENGTH = 16
+    PASSWORD_CHARS = string.ascii_letters + string.digits
+    GRANT_SQL_TEMPLATE = """
+    CREATE USER '{user_name}'@'%' IDENTIFIED BY '{user_pass}';
+    GRANT SELECT, SHOW VIEW ON `%\_p`.* TO '{user_name}'@'%';
+    GRANT ALL PRIVILEGES ON `{user_name}\_\_%`.* TO '{user_name}'@'%';"""
+
+    def __init__(self, hosts, username, password):
+        self.conns = [
+            pymysql.connect(host, username, password)
+            for host in hosts
+        ]
+
+    @staticmethod
+    def _generate_pass():
+        sysrandom = random.SystemRandom()  # Uses /dev/urandom
+        return ''.join(sysrandom.sample(
+            CredentialCreator.PASSWORD_CHARS,
+            CredentialCreator.PASSWORD_LENGTH))
+
+    def check_user_exists(self, user):
+        exists = True
+        for conn in self.conns:
+            conn.ping(True)
+            cur = conn.cursor()
+            try:
+                cur.execute('SELECT * FROM mysql.user WHERE User = %s', user.db_username)
+                result = cur.fetchone()
+            finally:
+                cur.close()
+            exists = exists and (result is not None)
+        return exists
+
+    def create_user(self, user, password):
+        for conn in self.conns:
+            conn.ping(True)
+            cur = conn.cursor()
+            try:
+                # is ok, because password is guaranteed to never
+                # contain a quote (only alphanumeric) and username
+                # is guaranteed to be (u|s)\d+.
+                sql = CredentialCreator.GRANT_SQL_TEMPLATE.format(
+                    user_name=user.db_username,
+                    user_pass=password
+                )
+                cur.execute(sql)
+            finally:
+                cur.close()
+
+
+if __name__ == '__main__':
+    PROJECTS = ['tools']
+
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('--config', help='Path to YAML config file')
+    args = argparser.parse_args()
+
+    logging.basicConfig(format='%(levelname): %(message)s')
+
+    with open(args.config) as f:
+        config = yaml.safe_load(f)
+
+    server = ldap3.Server(config['ldap']['host'])
+    conn = ldap3.Connection(
+        server, read_only=True,
+        user=config['ldap']['username'],
+        auto_bind=True,
+        password=config['ldap']['password'])
+
+    servicegroups = User.from_ldap_servicegroups(conn, 'tools')
+    cgen = CredentialCreator(
+        config['mysql']['hosts'],
+        config['mysql']['username'],
+        config['mysql']['password']
+    )
+
+    for sg in servicegroups:
+        # FIXME: for non tools/maps projects this path is different
+        replica_path = os.path.join(
+            '/srv/project/', sg.project, 'project',
+            re.sub(r'^%s\.' % sg.project, '', sg.name),
+            'replica.my.cnf'
+        )
+        if not os.path.exists(replica_path):
+            if not cgen.check_user_exists(sg):
+                # No replica.my.cnf and no user in db
+                # Generate new creds and put them in there!
+                password = cgen._generate_pass()
+                replica_config = configparser.ConfigParser()
+                replica_config['client'] = {
+                    'user': sg.db_username,
+                    'password': password
+                }
+                cgen.create_user(sg, password)
+                with open(replica_path, 'w') as f:
+                    replica_config.write(f)
+                logging.info("Created replica.my.cnf for %s, with username %s", sg.name, sg.db_username)
+            else:
+                logging.info('Missing replica.my.cnf for user %s despite grants present in db', sg.name)
