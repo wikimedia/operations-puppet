@@ -1,14 +1,20 @@
+# General variables that once would have been in realm.pp
+datacenters: [eqiad]
+ganglia_class: old
+has_ganglia: false
+has_nrpe: false
+
+# Additional base overrides
 standard::has_admin: false
 base::remote_syslog::enable: false
+
+# Other overrides
 elasticsearch::minimum_master_nodes: 1
 elasticsearch::recover_after_time: "1m"
 elasticsearch::multicast_group: "224.2.2.4"
 elasticsearch::heap_memory: '2G'
 elasticsearch::expected_nodes: 1
 elasticsearch::recover_after_nodes: 1
-ganglia_class: old
-has_ganglia: false
-has_nrpe: false
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
 statsite::instance::graphite_host: 'labmon1001.eqiad.wmnet'

@@ -6,3 +6,4 @@ base::resolving::domain_search:
   - ulsfo.wmnet
   - esams.wikimedia.org
 ganglia_class: "new"
+confd::monitor_files: false
