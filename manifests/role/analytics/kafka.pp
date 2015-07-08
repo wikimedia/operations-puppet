@@ -268,5 +268,19 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
 
         # monitor disk statistics
         include role::analytics::monitor_disks
+
+        #firewall Kafka Broker
+        ferm::service { 'kafka-server':
+            proto  => 'tcp',
+            port   => '9092',
+            srange => '$ALL_NETWORKS',
+        }
+
+        ferm::service { 'kafka-jmx':
+            proto  => 'tcp',
+            port   => '9999',
+            srange => '$ALL_NETWORKS',
+
+        }
     }
 }
