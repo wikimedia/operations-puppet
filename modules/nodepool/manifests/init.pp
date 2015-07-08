@@ -63,6 +63,12 @@ class nodepool(
         ensure => present,
     }
 
+    # guest disk image management system - tools
+    # eg: virt-inspector, virt-ls ...
+    package { 'libguestfs-tools':
+        ensure => present,
+    }
+
     $dib_cache_dir  = "${dib_base_path}/cache"
     $dib_images_dir = "${dib_base_path}/images"
     $dib_tmp_dir    = "${dib_base_path}/tmp"
