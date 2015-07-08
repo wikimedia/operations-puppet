@@ -1,0 +1,110 @@
+#!/usr/bin/python3
+"""
+This script does the following:
+
+  - Check if users / service groups in opted in projects have
+    a replica.my.cnf file with mysql credentials
+  - If they do not exist, create a mysql user, give them
+    appropriate grants and write the replica.my.cnf file
+"""
+import ldap3
+import pymysql
+import yaml
+import re
+import os
+import string
+import random
+
+
+class User:
+    def __init__(self, project, name, uid, homedir):
+        self.project = project
+        self.name = name
+        self.uid = uid
+        self.homedir = homedir
+
+    @property
+    def db_username(self):
+        return 's%s' % self.uid
+
+    def __repr__(self):
+        return "User(name=%s, uid=%s, homedir=%s)" % (
+            self.name, self.uid, self.homedir)
+
+    @classmethod
+    def from_ldap_servicegroups(cls, conn, projectname):
+        conn.search(
+            'ou=people,ou=servicegroups,dc=wikimedia,dc=org',
+            '(cn=%s.*)' % projectname,
+            ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
+            attributes=['uidNumber', 'homeDirectory', 'cn']
+        )
+        users = []
+        for resp in conn.response:
+            attrs = resp['attributes']
+            users.append(cls(projectname, attrs['cn'][0], attrs['uidNumber'][0], attrs['homeDirectory'][0]))
+
+        return users
+
+
+class CredentialCreator:
+    PASSWORD_LENGTH = 16
+    PASSWORD_CHARS = string.ascii_letters + string.digits
+
+    def __init__(self, hosts, username, password):
+        self.conns = [
+            pymysql.connect(host, username, password)
+            for host in hosts
+        ]
+
+    @staticmethod
+    def _generate_pass():
+        sysrandom = random.SystemRandom()  # Uses /dev/urandom
+        return ''.join(sysrandom.sample(
+            CredentialCreator.PASSWORD_CHARS,
+            CredentialCreator.PASSWORD_LENGTH))
+
+    def check_user_exists(self, user):
+        exists = True
+        for conn in self.conns:
+            conn.ping(True)
+            cur = conn.cursor()
+            try:
+                cur.execute('SELECT * FROM mysql.user WHERE User = %s', user.db_username)
+                result = cur.fetchone()
+            finally:
+                cur.close()
+            exists = exists and (result is not None)
+        return exists
+
+
+PROJECTS = ['tools']
+
+config = yaml.safe_load(open('config.yaml'))
+
+server = ldap3.Server('neptunium.wikimedia.org')
+conn = ldap3.Connection(
+    server, read_only=True,
+    user='cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
+    auto_bind=True,
+    password='')
+
+servicegroups = User.from_ldap_servicegroups(conn, 'tools')
+cgen = CredentialCreator(
+    config['mysql']['hosts'],
+    config['mysql']['username'],
+    config['mysql']['password']
+)
+
+for sg in servicegroups:
+    replica_path = os.path.join(
+        '/srv/project/', sg.project, 'project',
+        re.sub(r'^%s\.' % sg.project, '', sg.name),
+        'replica.my.cnf'
+    )
+    exists = cgen.check_user_exists(sg)
+    if not exists:
+        if not os.path.exists(replica_path):
+            print("No replica.my.cnf for %s" % sg.name)
+        else:
+            print('wat' + sg.name)
