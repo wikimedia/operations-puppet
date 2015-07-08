@@ -60,11 +60,13 @@ define sslcert::certificate(
         # file() is not very sane before Puppet 3.7.0, requiring the full
         # absolute path to files. We should revisit once we get to 3.7+.
         file { "/etc/ssl/private/${name}.key":
-            ensure => $ensure,
-            owner  => 'root',
-            group  => $group,
-            mode   => '0440',
-            source => $private,
+            ensure    => $ensure,
+            owner     => 'root',
+            group     => $group,
+            mode      => '0440',
+            show_diff => false,
+            backup    => false,
+            source    => $private,
         }
     }
 
