@@ -1,0 +1,6 @@
+[Unit]
+Description=DB Accounts and Grants createor
+
+[Service]
+ExecStart=/usr/local/sbin/create-dbusers --config /etc/create-dbusers.yaml
+Restart=no
