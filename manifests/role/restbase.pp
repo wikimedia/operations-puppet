@@ -33,7 +33,7 @@ class role::restbase::alerts {
     }
 
     monitoring::graphite_threshold { 'restbase_html_storage_hit_latency':
-        descriptio    => 'RESTBase HTML storage load mean latency ms http://grafana.wikimedia.org/#/dashboard/db/restbase',
+        description   => 'RESTBase HTML storage load mean latency ms http://grafana.wikimedia.org/#/dashboard/db/restbase',
         metric        => 'movingMedian(restbase.sys_key-rev-value_-bucket-_-key--_revision--_tid-.GET.2xx.mean, 15)',
         from          => '10min',
         warning       => '25', # 25ms
@@ -43,7 +43,7 @@ class role::restbase::alerts {
     }
 
     monitoring::graphite_threshold { 'restbase_html_storage_hit_latency_99p':
-        descripion    => 'RESTBase HTML storage load 99p latency ms http://grafana.wikimedia.org/#/dashboard/db/restbase',
+        description   => 'RESTBase HTML storage load 99p latency ms http://grafana.wikimedia.org/#/dashboard/db/restbase',
         metric        => 'movingMedian(restbase.sys_key-rev-value_-bucket-_-key--_revision--_tid-.GET.2xx.p99, 15)',
         from          => '10min',
         warning       => '1500', # 1.5s
