@@ -33,7 +33,7 @@ class role::phabricator::main {
     include role::phabricator::config
     include phabricator::monitoring
 
-    $current_tag = 'release/2015-07-01/1'
+    $current_tag = 'release/2015-07-08/1'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
@@ -163,7 +163,7 @@ class role::phabricator::labs {
 
     # pass not sensitive but has to match phab and db
     $mysqlpass = 'labspass'
-    $current_tag = 'release/2015-07-01/1'
+    $current_tag = 'release/2015-07-08/1'
     class { '::phabricator':
         git_tag       => $current_tag,
         lock_file     => '/var/run/phab_repo_lock',
