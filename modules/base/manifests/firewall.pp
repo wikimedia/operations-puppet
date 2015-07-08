@@ -31,4 +31,17 @@ class base::firewall($ensure = 'present') {
         ensure => $ensure,
         rule   => 'saddr $MONITORING_HOSTS ACCEPT;',
     }
+
+    file { '/usr/lib/nagios/plugins/check_conntrack':
+        source => 'puppet:///modules/base/firewall/check_conntrack.py',
+        mode   => '0755',
+    }
+
+    nrpe::monitor_service { 'conntrack_table_size':
+        ensure        => 'present',
+        description   => 'Check size of conntrack table',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack -w 80 -c 90',
+        require       => File['/usr/lib/nagios/plugins/check_conntrack'],
+        contact_group => 'admins',
+    }
 }
