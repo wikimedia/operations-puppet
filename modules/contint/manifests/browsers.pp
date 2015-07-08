@@ -11,8 +11,16 @@ class contint::browsers {
     if $::operatingsystem == 'Debian' {
         $latest_packages = [
             'chromium',
+            'chromedriver',
             'iceweasel',  # rebranded firefox
             # phantomjs is not available on Jessie
+        ]
+    } elsif os_version('ubuntu >= trusty') {
+        $latest_packages = [
+            'chromium-browser',
+            'chromium-chromedriver',
+            'firefox',
+            'phantomjs',
         ]
     } else {
         $latest_packages = [
