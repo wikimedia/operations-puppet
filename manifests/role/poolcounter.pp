@@ -23,4 +23,20 @@ class role::poolcounter{
         port   => '7531',
         srange => '$ALL_NETWORKS',
     }
+
+    ferm::rule { 'skip_poolcounter_conntrack-out':
+        desc  => 'Skip poolcounter outgoing connection tracking',
+        table => 'raw',
+        chain => 'OUTPUT',
+        rule  => 'proto tcp sport 7531 NOTRACK;',
+    }
+
+    ferm::rule { 'skip_poolcounter_conntrack-in':
+        desc  => 'Skip poolcounter incoming connection tracking',
+        table => 'raw',
+        chain => 'PREROUTING',
+        rule  => 'proto tcp sport 7531 NOTRACK;',
+    }
+
+
 }
