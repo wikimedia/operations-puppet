@@ -54,7 +54,7 @@ class cassandra::metrics(
     cron { 'cassandra-metrics-collector':
         ensure  => present,
         user    => 'cassandra',
-        command => "flock --wait 2 /tmp/cassandra-metrics-collector.lock /usr/local/bin/cassandra-metrics-collector --graphite-host ${graphite_host} --graphite-port ${graphite_port} --prefix ${graphite_prefix}",
+        command => "flock --wait 2 /tmp/cassandra-metrics-collector.lock /usr/local/bin/cassandra-metrics-collector --graphite-host ${graphite_host} --graphite-port ${graphite_port} --prefix ${graphite_prefix} >/dev/null 2>&1",
         minute  => '*',
         require => Package['cassandra/metrics-collector'],
     }
