@@ -928,7 +928,8 @@ users:
     gid: 500
     name: ironholds
     realname: Oliver Keyes
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0xcNFDy6ewrEloABYeO5FQGpHNGkPA5KajTFMv4r85xGeICZwQPUojxedyOHpbleTfhwTAtZdLEozMeDYwXSmkaK2UL5g8ZhljgAF9dUkWhwBY7MXvz8rpfOP6oZPIbdd3AfdWNbAfi9TRqJnVFwUJc3vKgQBxKAKuYCCx0Q0pERE8n5phBYuam2KVvygk0Er/rR2nBnk3i3K8mHss5IHQbWbgWZGjZ/HODTvBKX47/S/J2WY+06omxY0c3C7qBjybXkGSHKcoiDJH9Ha73lAS1/7WY9t8IUyR9ogtw3L3KEkxuvLQIw3IGzjIChNaa+Zk8SUycaNwIxGtGD4+0nP
+        ironholds@MargretWander]
     uid: 5004
   nuria:
     ensure: present
