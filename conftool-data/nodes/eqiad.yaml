@@ -306,6 +306,7 @@ parsoid:
   wtp1023.eqiad.wmnet: [parsoid]
   wtp1024.eqiad.wmnet: [parsoid]
 imagescaler:
+  mw1152.eqiad.wmnet: [apache2]
   mw1153.eqiad.wmnet: [apache2]
   mw1154.eqiad.wmnet: [apache2]
   mw1155.eqiad.wmnet: [apache2]
