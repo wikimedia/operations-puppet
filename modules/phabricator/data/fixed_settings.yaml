@@ -7,9 +7,9 @@
 
 ui.footer-items:
   - {name: 'Text is available under the Creative Commons Attribution-ShareAlike 3.0 License (CC-BY-SA); code is available under the GNU General Public License (GPL) or other appropriate open source licenses. By using this site, you agree to the Terms of Use and Privacy Policy.'}
-  - {href: 'https://www.wikimediafoundation.org/', name: Wikimedia&nbsp;Foundation}
-  - {href: 'https://wikimediafoundation.org/wiki/Privacy_policy', name: Privacy&nbsp;Policy}
-  - {href: 'https://wikimediafoundation.org/wiki/Terms_of_Use/Phabricator', name: Terms&nbsp;of&nbsp;Use}
+  - {href: 'https://www.wikimediafoundation.org/', name: Wikimedia Foundation}
+  - {href: 'https://wikimediafoundation.org/wiki/Privacy_policy', name: Privacy Policy}
+  - {href: 'https://wikimediafoundation.org/wiki/Terms_of_Use/Phabricator', name: Terms of Use}
   - {href: 'https://wikimediafoundation.org/wiki/Wikimedia:General_disclaimer', name: Disclaimer}
   - {href: 'https://creativecommons.org/licenses/by-sa/3.0/', name: CC-BY-SA}
   - {href: 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.html', name: GPL}
