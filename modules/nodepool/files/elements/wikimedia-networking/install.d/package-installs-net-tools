@@ -1,0 +1,2 @@
+# Provides ifconfig for cloud-init
+net-tools
