@@ -252,6 +252,26 @@ class role::backup::director {
         description  => 'bacula director process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-dir',
     }
+
+    ferm::service { 'bacula-dir':
+        proto  => 'tcp',
+        port   => '9101',
+        srange => '$INTERNAL',
+    }
+
+    ferm::service { 'bacula-fd':
+        proto  => 'tcp',
+        port   => '9102',
+        srange => '$INTERNAL',
+    }
+
+    ferm::service { 'bacula-sd':
+        proto  => 'tcp',
+        port   => '9103',
+        srange => '$INTERNAL',
+    }
+
+
 }
 
 class role::backup::storage() {
