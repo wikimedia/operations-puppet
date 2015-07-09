@@ -129,7 +129,6 @@ for(;;) {
                 $dbc{$dbn}->do("grant usage on *.* to $mysqlusr\@'\%' identified by '$password';");
                 $dbc{$dbn}->do("grant select, show view on `\%\_p`.* to $mysqlusr\@'\%';");
                 $dbc{$dbn}->do("grant show view on *.* to $mysqlusr\@'\%';");
-                $dbc{$dbn}->do("grant all privileges on `${mysqlusr}\_\_\%`.* to $mysqlusr\@'\%' with grant option;");
             }
             print "\n";
             open GRANTS, ">$grants" and close GRANTS;
