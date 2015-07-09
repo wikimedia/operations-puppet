@@ -47,6 +47,21 @@ class role::mediawiki::common {
         pools     => $nutcracker_pools,
     }
 
+    # Nutcracker/Redis only listens on localhost, but exempt it from connection tracking
+    ferm::rule { 'skip_nutcracker_redis_conntrack_out':
+        desc  => 'Skip outgoing connection tracking for Nutcracker',
+        table => 'raw',
+        chain => 'OUTPUT',
+        rule  => 'proto tcp sport (6379 6380 11212) NOTRACK;',
+    }
+
+    ferm::rule { 'skip_nutcracker_redis_conntrack_in':
+        desc  => 'Skip incoming connection tracking for Nutcracker',
+        table => 'raw',
+        chain => 'PREROUTING',
+        rule  => 'proto tcp dport (6379 6380 11212) NOTRACK;',
+    }
+
     if $::site == 'eqiad' {
         monitoring::service { 'mediawiki-installation DSH group':
             description           => 'mediawiki-installation DSH group',
