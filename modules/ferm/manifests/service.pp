@@ -8,10 +8,11 @@
 define ferm::service(
     $proto,
     $port,
-    $ensure = present,
-    $desc   = '',
-    $prio   = '10',
-    $srange = undef,
+    $ensure  = present,
+    $desc    = '',
+    $prio    = '10',
+    $srange  = undef,
+    $notrack = false,
 ) {
     @file { "/etc/ferm/conf.d/${prio}_${name}":
         ensure  => $ensure,

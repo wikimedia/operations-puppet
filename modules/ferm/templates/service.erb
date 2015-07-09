@@ -6,3 +6,7 @@
 <% else -%>
 &SERVICE(<%= @proto %>, <%= @port %>);
 <% end -%>
+
+<% if @notrack == true %>
+&NO_TRACK(<%= @proto %>, <%= @port %>);
+<% end -%>
