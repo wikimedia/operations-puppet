@@ -348,4 +348,10 @@ class role::backup::storage() {
         description  => 'bacula sd process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-sd',
     }
+
+    ferm::service { 'bacula-sd-standalone':
+        proto  => 'tcp',
+        port   => '9103',
+        srange => '$INTERNAL',
+    }
 }
