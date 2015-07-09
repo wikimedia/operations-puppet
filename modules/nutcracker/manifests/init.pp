@@ -70,4 +70,10 @@ class nutcracker(
     service { 'nutcracker':
         ensure   => ensure_service($ensure),
     }
+
+    ferm::service { 'nutcracker-stats':
+        proto  => 'tcp',
+        port   => '22222',
+        srange => '$INTERNAL',
+    }
 }
