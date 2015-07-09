@@ -44,6 +44,12 @@ class pybal::web ($ensure = 'present', $vhostnames = ['pybal-config.eqiad.wmnet'
         mode   => '0755',
     }
 
+    file { '/usr/local/bin/pybal-eval-check':
+        ensure => file,
+        mode   => '0555',
+        source => 'puppet:///modules/pybal/pybal-eval-check.py',
+    }
+
     pybal::web::dc_pools { $datacenters: }
 
 }
