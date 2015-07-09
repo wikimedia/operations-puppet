@@ -336,6 +336,13 @@ groups:
     members: [yurik, maxsem]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
                  'ALL = (kartotherian) NOPASSWD: ALL']
+  wdqs-admins:
+    gid: 753
+    description: deployers for the WikiData Query Service project
+    members: [smalyshev, jdouglas]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
+                 'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
+                 'ALL = NOPASSWD: /bin/journalctl *']
 
 users:
   rush:
