@@ -2372,7 +2372,6 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
 
 # Wikidata query service
 node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
-    $cluster = 'wdqs'
     role wdqs
     include standard
 }
