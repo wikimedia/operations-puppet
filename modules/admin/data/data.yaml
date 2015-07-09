@@ -322,6 +322,13 @@ groups:
     description: TEMP (T95303) roots for nodepool setup
     members: [hashar, dduvall]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  wdqs-admins:
+    gid: 753
+    description: deployers for the WikiData Query Service project
+    members: [smalyshev, jdouglas]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
+                 'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
+                 'ALL = NOPASSWD: /bin/journalctl *']
 
 users:
   rush:
