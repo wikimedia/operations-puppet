@@ -113,6 +113,8 @@ class role::deployment::server(
         backup::set {'home': }
     }
 
+    # jq is a cli program for manipulating json (from api endpoints and such)
+    ensure_packages(['jq'])
 }
 
 class role::deployment::salt_masters(
