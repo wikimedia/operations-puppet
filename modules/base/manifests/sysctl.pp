@@ -59,6 +59,10 @@ class base::sysctl {
             'net.ipv4.tcp_keepalive_time'   => 300,
             'net.ipv4.tcp_keepalive_intvl'  => 1,
             'net.ipv4.tcp_keepalive_probes' => 2,
+
+            # Increase nf_conntrack_max, so the table doesn't saturate when
+            # enabling firewall - see T105307
+            'net.netfilter.nf_conntrack_max' => 262144,
         },
         priority => 60,
     }
