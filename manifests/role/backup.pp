@@ -41,7 +41,7 @@ class role::backup::host {
     File <| tag == 'backup-motd' |>
 
     # If the machine includes base::firewall then let director connect to us
-    ferm::rule { 'bacula_director':
+    ferm::rule { 'bacula_director_to_fd':
         rule => "proto tcp dport 9102 { saddr ${role::backup::config::director_ip} ACCEPT; }"
     }
 }
@@ -252,6 +252,13 @@ class role::backup::director {
         description  => 'bacula director process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-dir',
     }
+
+    ferm::service { 'bacula-dir':
+        proto  => 'tcp',
+        port   => '9101',
+        srange => '$INTERNAL',
+    }
+
 }
 
 class role::backup::storage() {
@@ -327,5 +334,11 @@ class role::backup::storage() {
     nrpe::monitor_service { 'bacula_sd':
         description  => 'bacula sd process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-sd',
+    }
+
+    ferm::service { 'bacula-sd':
+        proto  => 'tcp',
+        port   => '9103',
+        srange => '$INTERNAL',
     }
 }
