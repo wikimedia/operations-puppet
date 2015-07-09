@@ -4,7 +4,7 @@
 # https://wikitech.wikimedia.org/wiki/Nodepool
 # http://docs.openstack.org/infra/nodepool/
 #
-class role::nodepool {
+class role::nodepool::server {
 
     system::role { 'role::nodepool': description => 'CI Nodepool' }
 
