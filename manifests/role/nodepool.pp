@@ -11,6 +11,8 @@ class role::nodepool {
     include role::nova::config
     include passwords::nodepool
 
+    $novaconfig = $role::nova::config::novaconfig
+
     class { '::nodepool':
         jenkins_api_user               => 'nodepoolmanager',
         jenkins_api_key                => $passwords::nodepool::jenkins_api_key,
