@@ -70,4 +70,25 @@ class nutcracker(
     service { 'nutcracker':
         ensure   => ensure_service($ensure),
     }
+
+    # Nutcracker only listens on localhost, but exempt it from connection tracking
+    ferm::rule { 'skip_nutcracker_conntrack_out':
+        desc  => 'Skip outgoing connection tracking for Nutcracker',
+        table => 'raw',
+        chain => 'OUTPUT',
+        rule  => 'proto tcp sport 11212 NOTRACK;',
+    }
+
+    ferm::rule { 'skip_nutcracker_conntrack_in':
+        desc  => 'Skip incoming connection tracking for Nutcracker',
+        table => 'raw',
+        chain => 'PREROUTING',
+        rule  => 'proto tcp dport 11212 NOTRACK;',
+    }
+
+    ferm::service { 'nutcracker-stats':
+        proto  => 'tcp',
+        port   => '22222',
+        srange => '$INTERNAL',
+    }
 }
