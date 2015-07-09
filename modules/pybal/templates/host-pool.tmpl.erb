@@ -1,11 +1,11 @@
 # This file is managed by puppet.
 # This is a golang template (http://golang.org/pkg/text/template/)
 # for creating an external node pool reference file
+#
+# This file is generated from the etcd directories:
+#  <%= @watch_keys %>
 
 <% @watch_keys.each do |key| -%>
-{{range $node := ls "<%= key %>"}}
-{{ $key := printf "<%= key %>%s" $node }}
-{{ $data := json (getv $key) }}
-{{ if ne $data.pooled "inactive" }}
-{ 'host': '{{ $node }}', 'weight':{{ $data.weight}}, 'enabled': {{if eq $data.pooled "yes"}}True{{else}}False{{end}} }{{end}}{{end}}
+{{range $node := ls "<%= key %>"}}{{ $key := printf "<%= key %>%s" $node }}{{ $data := json (getv $key) }}
+{{ if ne $data.pooled "inactive" }}{ 'host': '{{ $node }}', 'weight':{{ $data.weight}}, 'enabled': {{if eq $data.pooled "yes"}}True{{else}}False{{end}} }{{end}}{{end}}
 <% end -%>
