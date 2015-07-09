@@ -267,6 +267,7 @@ cache_bits:
 pdf:
   ocg1001.eqiad.wmnet: [ocg]
   ocg1002.eqiad.wmnet: [ocg]
+  ocg1003.eqiad.wmnet: [ocg]
 sca:
   sca1001.eqiad.wmnet: [citoid, cxserver, graphoid, mathoid, zotero]
   sca1002.eqiad.wmnet: [citoid, cxserver, graphoid, mathoid, zotero]
