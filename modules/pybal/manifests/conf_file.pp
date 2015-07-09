@@ -22,6 +22,5 @@ define pybal::conf_file (
         watch_keys => $watch_keys,
         content    => template('pybal/host-pool.tmpl.erb'),
         check      => '/usr/local/bin/pybal-eval-check',
-        require    => File['/etc/pybal/pools'],
     }
 }
