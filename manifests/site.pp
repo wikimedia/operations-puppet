@@ -504,9 +504,7 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
-    if $::hostname =~ /^cp401[19]$/ {
-        $ganglia_aggregator = true
-    }
+
     interface::add_ip6_mapped { 'main': }
     role cache::mobile
 }

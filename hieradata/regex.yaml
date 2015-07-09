@@ -22,6 +22,10 @@ mysql:
   __regex: !ruby/regexp /^(db10[0-9][0-9]|dbstore100[1-2]|dbproxy100[1-4]|es10[0-1][1-9]|labsdb100[1-4]|pc100[1-3])\.eqiad\.wmnet$/
   cluster: mysql
 
+ulsfo_mobile_caches:
+  __regex: !ruby/regexp /^cp40(1[129]|20)\.eqiad\.wmnet$/
+  ganglia_class: "new"
+
 virtualization:
   __regex: !ruby/regexp /^(labnet|labvirt|virt)100[1-9]\.eqiad\.wmnet$/
   cluster: "virt"
