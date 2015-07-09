@@ -13,6 +13,7 @@ class ganglia_new::configuration {
         'eqiad' => [ ipresolve('carbon.wikimedia.org') ],
         'esams' => [ '91.198.174.113' ],
         'codfw' => [ '208.80.153.4' ],
+        'ulsfo' => [ ipresolve('bast4001.wikimedia.org') ],
     }
     $base_port = 8649
     $id_prefix = {
