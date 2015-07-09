@@ -11,4 +11,5 @@ class role::mw-rc-irc {
 
     include mw-rc-irc::ircserver
     include mw-rc-irc::apache
+
 }

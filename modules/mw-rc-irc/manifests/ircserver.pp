@@ -37,4 +37,8 @@ class mw-rc-irc::ircserver {
         description   => 'ircd',
         check_command => 'check_ircd',
     }
+
+    ferm::rule {'ircd_public':
+        rule => 'saddr (0.0.0.0/0) proto tcp dport (6664 6665 6666 6667 6668 6669 8001) ACCEPT;',
+    }
 }
