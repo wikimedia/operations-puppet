@@ -12,6 +12,9 @@ nss_base_netgroup     ou=netgroup,<%= @ldapconfig["basedn"] %>
 nss_schema      rfc2307bis
 nss_map_attribute   uniquemember member
 nss_map_objectclass groupofuniquenames groupofnames
+<%- if @shell_override %>
+nss_override_attribute_value loginshell <%= @shell_override %>
+<%- end %>
 tls_checkpeer   yes
 tls_cacertfile  /etc/ssl/certs/<%= @ldapconfig["ca"] %>
 tls_cacertdir   /etc/ssl/certs

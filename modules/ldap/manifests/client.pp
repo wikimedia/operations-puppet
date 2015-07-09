@@ -75,6 +75,8 @@ class ldap::client::nss($ldapconfig) {
         source => 'puppet:///modules/ldap/nsswitch.conf',
     }
 
+    # Allow labs projects to give people custom shells
+    $shell_override = hiera('user_login_shell', false)
     file { '/etc/ldap.conf':
         notify  => Service['nscd'],
         content => template('ldap/nss_ldap.erb'),
