@@ -4,9 +4,6 @@ class base::certificates {
     sslcert::ca { 'wmf_ca_2014_2017':
         source  => "puppet:///modules/base/ca/wmf_ca_2014_2017.crt",
     }
-    sslcert::ca { 'RapidSSL_CA':
-        source  => 'puppet:///modules/base/ca/RapidSSL_CA.crt',
-    }
     sslcert::ca { 'RapidSSL_SHA256_CA_-_G3':
         source  => 'puppet:///modules/base/ca/RapidSSL_SHA256_CA_-_G3.crt',
     }
