@@ -17,13 +17,8 @@
     Header always merge Vary X-Forwarded-Proto
     Header set Strict-Transport-Security "max-age=604800"
 
-    <Directory />
-        Order Deny,Allow
-        AllowOverride All
-    </Directory>
-
     <Directory /srv/org/wikimedia/policy>
-        Allow from all
+        Require all granted
     </Directory>
 
 </VirtualHost>
