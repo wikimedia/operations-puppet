@@ -59,7 +59,7 @@ define sslcert::certificate(
         # to reach key material out of their scope via the fileserver. However,
         # file() is not very sane before Puppet 3.7.0, requiring the full
         # absolute path to files. We should revisit once we get to 3.7+.
-        file { "/etc/ssl/private/${name}.key":
+        file { "/etc/ssl/private/${title}.key":
             ensure    => $ensure,
             owner     => 'root',
             group     => $group,
@@ -72,7 +72,7 @@ define sslcert::certificate(
     }
 
     if $chain {
-        sslcert::chainedcert { $name:
+        sslcert::chainedcert { $title:
             ensure => $ensure,
             group  => $group,
         }
