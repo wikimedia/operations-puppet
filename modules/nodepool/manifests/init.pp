@@ -116,7 +116,7 @@ class nodepool(
     # Private SSH key
     file { '/var/lib/nodepool/.ssh/dib_jenkins_id_rsa':
         ensure => present,
-        source => $jenkins_ssh_private_key,
+        source => $jenkins_ssh_private_key_source,
         owner  => 'nodepool',
         group  => 'nodepool',
         mode   => '0600',
