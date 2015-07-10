@@ -60,6 +60,7 @@ cassandra::rpc_address: '%{::ipaddress_eth0}'
 "cassandra::seeds":
   - 10.68.17.227
   - 10.68.17.189
+cassandra::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
 "restbase::seeds":
   - 10.68.17.227
   - 10.68.17.189
