@@ -69,6 +69,15 @@ class nodepool(
         ensure => present,
     }
 
+    base::service_unit { 'nodepool':
+        ensure         => present,
+        refresh        => true,
+        systemd        => true,
+        upstart        => true,
+        service_params => {},
+        require        => Package['nodepool'],
+    }
+
     # Recursively create $dib_base_path since Puppet does not support that
     exec { 'create_dib_base_path':
         command => "/bin/mkdir -p ${dib_base_path}",
@@ -166,4 +175,13 @@ class nodepool(
             File['/etc/nodepool/elements'],
         ]
     }
+
+    # Will be created by the Debian package (T105501)
+    file { '/var/run/nodepool':
+        ensure => directory,
+        owner  => 'nodepool',
+        group  => 'nodepool',
+        mode   => '0755',
+    }
+
 }
