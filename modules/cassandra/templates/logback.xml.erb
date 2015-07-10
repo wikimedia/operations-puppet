@@ -38,6 +38,12 @@
     </encoder>
   </appender>
 
+  <appender name="UDP" class="net.logstash.logback.appender.LogstashSocketAppender">
+    <host><%= @logstash_host %></host>
+    <port><%= @logstash_port %></port>
+    <customFields>{"program":"cassandra"}</customFields>
+  </appender>
+
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%-5level %date{HH:mm:ss,SSS} %msg%n</pattern>
@@ -47,6 +53,7 @@
   <root level="INFO">
     <appender-ref ref="FILE" />
     <appender-ref ref="STDOUT" />
+    <appender-ref ref="UDP" />
   </root>
 
   <logger name="com.thinkaurelius.thrift" level="ERROR"/>
