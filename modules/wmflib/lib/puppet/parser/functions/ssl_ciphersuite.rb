@@ -110,8 +110,6 @@ module Puppet::Parser::Functions
       'AES128-SHA',
       'AES256-SHA256',
       'AES256-SHA',
-      'CAMELLIA128-SHA',
-      'CAMELLIA256-SHA',
       'DES-CBC3-SHA', # Only for IE8/XP at this point, I think
     ],
   }
