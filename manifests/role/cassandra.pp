@@ -4,6 +4,7 @@ class role::cassandra {
     # Parameters to be set by Hiera
     class { '::cassandra': }
     class { '::cassandra::metrics': }
+    class { '::cassandra::logging': }
 
     # temporary collector, T78514
     diamond::collector { 'CassandraCollector':
