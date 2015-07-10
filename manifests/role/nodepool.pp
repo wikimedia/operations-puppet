@@ -17,6 +17,7 @@ class role::nodepool {
         jenkins_api_user               => 'nodepoolmanager',
         jenkins_api_key                => $passwords::nodepool::jenkins_api_key,
         jenkins_credentials_id         => 'nodepool-dib-jenkins',
+        jenkins_ssh_public_key_source  => secret('nodepool/dib_jenkins_id_rsa.pub'),
         jenkins_ssh_private_key_source => secret('nodepool/dib_jenkins_id_rsa'),
         openstack_auth_uri             => $novaconfig['auth_uri'],
         openstack_username             => 'nodepoolmanager',
