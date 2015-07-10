@@ -1,0 +1,17 @@
+<?php
+
+error_reporting(E_WARNING);
+date_default_timezone_set('UTC');
+
+$_ENV['debug'] = false;
+
+$_ENV['db_host'] = '127.0.0.1';
+$_ENV['db_user'] = '<%= @tendril_user_web %>';
+$_ENV['db_pass'] = '<%= @tendril_pass_web %>';
+$_ENV['db_name'] = 'tendril';
+$_ENV['db_port'] = 3306;
+
+$_ENV['mc_host'] = '127.0.0.1';
+$_ENV['mc_port'] = 11211;
+
+$_ENV['pkg_default'] = 'host';
