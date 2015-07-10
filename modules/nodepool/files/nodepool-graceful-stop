@@ -1,0 +1,20 @@
+#!/bin/sh
+
+PID=`cat /var/run/nodepool/nodepool.pid`
+kill -USR1 $PID
+
+if [ -n "${PID:-}" ]; then
+    i=0
+    while kill -0 "${PID:-}" 2> /dev/null;  do
+        if [ $i -eq '0' ]; then
+            echo -n " ... waiting for tasks to complete "
+        else
+            echo -n "."
+        fi
+        i=$(($i+1))
+        sleep 1
+    done
+fi
+
+rm -f /var/run/nodepool/*
+
