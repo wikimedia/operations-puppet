@@ -68,6 +68,26 @@ class nodepool(
         ensure => present,
     }
 
+    # Script to nicely stop Nodepool scheduler from systemd
+    file { '/usr/bin/nodepool-graceful-stop':
+        ensure => present,
+        source => 'puppet:///modules/nodepool/nodepool-graceful-stop',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    base::service_unit { 'nodepool':
+        ensure         => present,
+        refresh        => true,
+        systemd        => true,
+        service_params => {},
+        require        => [
+            Package['nodepool'],
+            File['/usr/bin/nodepool-graceful-stop'],
+        ],
+    }
+
     # Recursively create $dib_base_path since Puppet does not support that
     exec { 'create_dib_base_path':
         command => "/bin/mkdir -p ${dib_base_path}",
@@ -165,4 +185,5 @@ class nodepool(
             File['/etc/nodepool/elements'],
         ]
     }
+
 }
