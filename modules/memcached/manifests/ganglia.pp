@@ -1,9 +1,6 @@
 # memcached/ganglia.pp
 
 class memcached::ganglia {
-    # on lucid, /usr/lib/ganglia/python_modules file comes from the ganglia.pp stuff, which
-    # means there's actually a hidden dependency on ganglia.pp for
-    # the memcache class to work.
     file { '/usr/lib/ganglia/python_modules/memcached.py':
         ensure => absent,
     }
