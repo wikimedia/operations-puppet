@@ -31,6 +31,11 @@ class role::logstash {
         port => 12201,
     }
 
+    logstash::input::udp { 'logback':
+        port  => 11514,
+        codec => 'json',
+    }
+
     ## Global pre-processing (10)
 
     logstash::conf { 'filter_strip_ansi_color':
@@ -52,6 +57,11 @@ class role::logstash {
 
     logstash::conf { 'filter_gelf':
         source   => 'puppet:///files/logstash/filter-gelf.conf',
+        priority => 20,
+    }
+
+    logstash::conf { 'filter_logback':
+        source   => 'puppet:///files/logstash/filter-logback.conf',
         priority => 20,
     }
 
