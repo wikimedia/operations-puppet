@@ -1,11 +1,9 @@
 # As above, but for misc instead of generic prod
 class role::cache::ssl::misc {
-    role::cache::ssl::local { 'wikimedia.org':
+    role::cache::ssl::local { 'unified':
+        certs          => ['uni.wikimedia.org'],
+        default_server => true,
         do_ocsp        => true,
-        certs          => ['sni.wikimedia.org'],
-        server_name    => 'wikimedia.org',
-        server_aliases => ['*.wikimedia.org'],
-        default_server => true;
     }
 
     role::cache::ssl::local { 'wmfusercontent.org':
