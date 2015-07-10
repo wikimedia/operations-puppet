@@ -69,6 +69,22 @@ class nodepool(
         ensure => present,
     }
 
+    # Recursively create $dib_base_path since Puppet does not support that
+    exec { 'create_dib_base_path':
+        command => "/bin/mkdir -p ${dib_base_path}",
+        creates => $dib_base_path,
+    }
+
+    file { $dib_base_path:
+        owner   => 'nodepool',
+        group   => 'nodepool',
+        mode    => '0775',
+        require => [
+            Exec['create_dib_base_path'],
+            Package['nodepool'],
+        ],
+    }
+
     $dib_cache_dir  = "${dib_base_path}/cache"
     $dib_images_dir = "${dib_base_path}/images"
     $dib_tmp_dir    = "${dib_base_path}/tmp"
@@ -82,7 +98,10 @@ class nodepool(
             owner   => 'nodepool',
             group   => 'nodepool',
             mode    => '0775',
-            require => Package['nodepool'],
+            require => [
+                Package['nodepool'],
+                File[$dib_base_path],
+            ],
     }
 
     $nodepool_user_env = {
