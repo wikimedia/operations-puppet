@@ -48,7 +48,7 @@ define sslcert::certificate(
     file { "/etc/ssl/localcerts/${title}.crt":
         ensure => $ensure,
         owner  => 'root',
-        group  => 'root',
+        group  => $group,
         mode   => '0444',
         source => $source,
     }
