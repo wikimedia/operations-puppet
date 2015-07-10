@@ -512,8 +512,8 @@ users:
     gid: 500
     name: awight
     realname: Adam Wight
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCVYUIFsCWN5odLFNGGMUJ/dgC2BB/EJ14srHC61BIWouLlahZdCOT5F2Zeuhs+aTigaTWtaFrYAOIfiChcPNSffVEMI+RTbMSZ9gXJxY294aDVe3xdd+XAZUVY0VKyPwIQbrNgTHDyKRbi5w+YmA26H02FjtcPrbYYojYI3uxNoLc/6cVJRBaKu1L+ZHqbZn4JesNlFUeEDo5Urv5TEI9K7qlfXbCdT/CMg6j9GyKlolJbAReay8+nUL4WwUMDmocy+mT1rWc+O2E7VfJw41A6GxM+TUVK+WP7dvzlHXDlatXy4PR7RvoUlxtZKjb7phSPOXvJjv5Gt6mrl6/qrwH
-        adamw@lytho]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUufKplYyhM0XXNnIljJdFO2SX/YbAltqDxcrQnjTIqY1aaspEjc0c1cEPBjnP7iheRcw8oEDYSjYf7Vlw2n00rFeA+dgz8XAADwwrYZ21Adsipqo80ngaQVvDiEDvvHHU6GXb3b16vFJVOn9oin+rx747Xd5gNxeAZPYr+tEy0WyPj2UYSsEZS4m2ZUhpbxY7OU1eDupAxpClsmMqW6reXdTJsVJCulCLs2nHndeE0NJkKtSuH2JDCB/7MfBT/DEhKo45G5b36f1lhJNwyzLQhZ5/ak/tAuw9nv/NmEB9G9m/xzgGBTGfWQUrjBNsT1isY7XbXvJ0bJ4/Gyu6ZJl/
+        adamw]
     uid: 4974
   awjrichards:
     ensure: present
