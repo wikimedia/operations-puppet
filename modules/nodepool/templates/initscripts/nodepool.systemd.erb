@@ -1,0 +1,11 @@
+[Unit]
+Description=Nodepool daemon
+
+[Service]
+Type=simple
+PIDFile=/var/run/nodepool/nodepool.pid
+User=nodepool
+Group=nodepool
+ExecStart=/usr/bin/nodepoold -p /var/run/nodepool/nodepool.pid
+# gracefull stop
+KillSignal=SIGUSR1
