@@ -12,7 +12,7 @@
 # [*config*]
 #   A hash of Grafana configuration options.
 #   For an annotated example of possible configuration values, see
-#   <https://github.com/grafana/grafana/blob/master/src/config.sample.js>
+#   <https://github.com/grafana/grafana/blob/v1.8.1/src/config.sample.js>
 #
 # === Examples
 #
