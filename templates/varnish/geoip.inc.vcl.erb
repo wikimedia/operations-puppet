@@ -228,7 +228,7 @@ sub geoip_cookie {
 			// Use libvmod-header to ensure the Set-Cookie header we are adding does not
 			// clobber or manipulate existing cookie headers (if any).
 			Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:", cookie_buf, "; Path=/; Domain=.",
-				host_safe, vrt_magic_string_end);
+				host_safe, "; Secure", vrt_magic_string_end);
 		}
 	}C
 }
