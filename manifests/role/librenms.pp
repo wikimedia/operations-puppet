@@ -79,7 +79,7 @@ class role::librenms {
         ssl     => 'redirected',
         require => [
             Class['::apache::mod::php5', '::apache::mod::ssl'],
-            Sslcert::Std_cert[$sitename],
+            Sslcert::Certificate[$sitename],
             Class['::librenms'],
         ],
     }

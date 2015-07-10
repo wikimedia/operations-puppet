@@ -26,5 +26,5 @@ define tlsproxy::ocsp_stapler($certs) {
     }
 
     # This should ideally only be for the ones in $certs, but that's a PITA...
-    Sslcert::Std_cert<| |> -> Exec["${title}-create-ocsp"]
+    Sslcert::Certificate<| |> -> Exec["${title}-create-ocsp"]
 }

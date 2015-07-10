@@ -50,7 +50,7 @@ class rcstream::proxy::ssl(
         content => template('rcstream/rcstream.nginx.erb'),
         notify  => Service['nginx'],
         require => [
-            Sslcert::Std_cert[$server_name],
+            Sslcert::Certificate[$server_name],
             Class['nginx::ssl'],
             Class['rcstream::proxy'],
         ],
