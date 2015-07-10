@@ -64,14 +64,6 @@ class base::puppet($server='puppet', $certname=undef) {
         enable => false,
     }
 
-    if os_version('ubuntu <= lucid') {
-        # folded into coreutils in newer distros
-        package {'timeout':
-            ensure => present,
-            before => File['/usr/local/sbin/puppet-run'],
-        }
-    }
-
     file { '/usr/local/sbin/puppet-run':
         mode    => '0555',
         owner   => 'root',
