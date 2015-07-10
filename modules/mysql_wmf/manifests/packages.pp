@@ -4,7 +4,7 @@
 # a general-purpose DB server or client, best look elsewhere.
 
 class mysql_wmf::packages {
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
+    if $::lsbdistid == 'Ubuntu' {
         apt::repository { 'wikimedia-mariadb':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'precise-wikimedia',

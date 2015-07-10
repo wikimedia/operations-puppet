@@ -1,20 +1,5 @@
 Origin: Wikimedia
 Label: Wikimedia
-Suite: lucid-wikimedia
-Codename: lucid-wikimedia
-Version: 10.04
-Architectures: source amd64
-Components: main universe non-free thirdparty
-UDebComponents: main
-Update: hwraid
-Description: Wikimedia specific packages for Ubuntu Lucid
-SignWith: default
-DebOverride: deb-override
-Log:
- log
-
-Origin: Wikimedia
-Label: Wikimedia
 Suite: precise-wikimedia
 Codename: precise-wikimedia
 Version: 12.04

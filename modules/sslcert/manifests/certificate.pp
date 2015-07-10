@@ -62,8 +62,7 @@ define sslcert::certificate(
             owner     => 'root',
             group     => $group,
             mode      => '0440',
-            # show_diff broken on Lucid's puppet-2.7 (sodium) :/
-            # show_diff => false,
+            show_diff => false,
             backup    => false,
             content   => secret("ssl/${title}.key"),
         }
