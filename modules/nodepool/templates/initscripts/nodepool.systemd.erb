@@ -1,0 +1,21 @@
+[Unit]
+Description=Nodepool daemon
+
+[Service]
+Type=forking
+PIDFile=/var/run/nodepool/nodepool.pid
+User=nodepool
+Group=nodepool
+
+# Use root, except for ExecStart
+PermissionsStartOnly=true
+
+ExecStartPre=/bin/mkdir -p -m0755 /var/run/nodepool
+ExecStartPre=/bin/chown -R nodepool:nodepool /var/run/nodepool
+
+ExecStart=/usr/bin/nodepoold -p /var/run/nodepool/nodepool.pid -l /etc/nodepool/logging.conf
+
+ExecStop=/usr/bin/nodepool-graceful-stop
+
+StandardOutput=syslog
+StandardError=syslog
