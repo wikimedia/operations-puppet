@@ -31,6 +31,10 @@ class role::logstash {
         port => 12201,
     }
 
+    logstash::input::logback { 'logback':
+        port => 11514,
+    }
+
     ## Global pre-processing (10)
 
     logstash::conf { 'filter_strip_ansi_color':
