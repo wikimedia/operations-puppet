@@ -113,9 +113,6 @@ class hhvm(
             resource_limit           => { core_file_size => to_bytes('8 Gb') },
             timeouts_use_wall_time   => true,
             jit_pseudomain           => false,  # Don't JIT file scope. See commit message of e8c4175221.
-            apc                      => {
-                expire_on_sets     => true,  # Purge on expiration
-            },
             log                      => {
                 header             => true,
                 use_syslog         => true,
@@ -132,6 +129,9 @@ class hhvm(
             server                   => {
                 light_process_count       => 5,
                 light_process_file_prefix => '/var/tmp/hhvm',
+                apc                      => {
+                    expire_on_sets     => true,  # Purge on expiration
+                },
             },
             hack                     => {
                 lang => {
