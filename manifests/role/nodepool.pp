@@ -14,6 +14,7 @@ class role::nodepool {
     $novaconfig = $role::nova::config::novaconfig
 
     class { '::nodepool':
+        dib_base_path                  => '/srv/dib',
         jenkins_api_user               => 'nodepoolmanager',
         jenkins_api_key                => $passwords::nodepool::jenkins_api_key,
         jenkins_credentials_id         => 'nodepool-dib-jenkins',
