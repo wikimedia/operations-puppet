@@ -40,7 +40,7 @@ class cassandra::metrics(
 
     file { '/usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar':
         ensure => 'link',
-        target => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-1.0.0-20150707.171846-4-jar-with-dependencies.jar',
+        target => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-1.0.0-20150710.142750-5-jar-with-dependencies.jar',
         require => Package['cassandra/metrics-collector'],
     }
 
