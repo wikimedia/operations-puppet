@@ -220,6 +220,7 @@ node 'baham.wikimedia.org' {
     include role::authdns::server
 }
 
+# Bastion in Virginia
 node 'bast1001.wikimedia.org' {
 
     interface::add_ip6_mapped { 'main':
@@ -239,6 +240,7 @@ node 'bast1001.wikimedia.org' {
     }
 }
 
+# Bastion in Texas
 node 'bast2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -248,6 +250,7 @@ node 'bast2001.wikimedia.org' {
 
 }
 
+# Bastion in California
 node 'bast4001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -947,6 +950,7 @@ node /^etcd100[1-3]\.eqiad\.wmnet$/ {
     }
 }
 
+# Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
     include base::firewall
     include role::etherpad
@@ -982,6 +986,7 @@ node 'fluorine.eqiad.wmnet' {
 
 }
 
+# ZIM dumps (https://en.wikipedia.org/wiki/ZIM_%28file_format%29)
 node 'francium.eqiad.wmnet' {
 
     role dumps::zim
@@ -1000,6 +1005,7 @@ node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
     include role::logging::relay::eventlogging
 }
 
+# Continuous Integration
 node 'gallium.wikimedia.org' {
 
     $cluster = 'misc'
@@ -1034,6 +1040,7 @@ node 'gallium.wikimedia.org' {
     }
 }
 
+# Virtualization hosts
 node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
     role ganeti
     include standard
@@ -1051,6 +1058,7 @@ node 'hafnium.wikimedia.org' {
     include role::webperf
 }
 
+# poolcounter - careful
 node 'helium.eqiad.wmnet' {
     include standard
     include role::poolcounter
@@ -1058,6 +1066,7 @@ node 'helium.eqiad.wmnet' {
     include role::backup::storage
 }
 
+# Bacula storage
 node 'heze.codfw.wmnet' {
     include standard
     include role::backup::storage
@@ -1075,6 +1084,7 @@ node 'holmium.wikimedia.org' {
     include ldap::role::client::labs
 }
 
+# bastion in the Netherlands
 node 'hooft.esams.wikimedia.org' {
     $ganglia_aggregator = true
 
@@ -1132,6 +1142,7 @@ node 'install2001.wikimedia.org' {
     }
 }
 
+# ticket.wikimedia.org
 node 'iodine.wikimedia.org' {
     include base::firewall
     role otrs
@@ -1141,6 +1152,7 @@ node 'iodine.wikimedia.org' {
     }
 }
 
+# Phabricator
 node 'iridium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -1330,6 +1342,7 @@ node 'lanthanum.eqiad.wmnet' {
 
 }
 
+# secondary mailserver
 node 'lead.wikimedia.org' {
     role mail::mx
     include standard
@@ -1630,6 +1643,7 @@ node 'maerlant.wikimedia.org' {
     }
 }
 
+# RT and the other RT
 node 'magnesium.wikimedia.org' {
 
     $cluster = 'misc'
@@ -1686,6 +1700,7 @@ node 'multatuli.wikimedia.org' {
     include standard
 }
 
+# also see dataset1001
 node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
 
@@ -1935,6 +1950,7 @@ node 'nembus.wikimedia.org' {
     include ldap::role::client::labs
 }
 
+# Icinga
 node 'neon.wikimedia.org' {
     include base::firewall
 
@@ -1965,6 +1981,7 @@ node 'nescio.wikimedia.org' {
     }
 }
 
+# network monitoring tool server
 node 'netmon1001.wikimedia.org' {
     include standard
     include webserver::apache
@@ -1995,6 +2012,7 @@ node 'nitrogen.wikimedia.org' {
     }
 }
 
+# Offline Content Generator
 node /^ocg100[123]\.eqiad\.wmnet$/ {
     role ocg
 }
@@ -2015,6 +2033,7 @@ node 'oxygen.eqiad.wmnet'
     include standard
 }
 
+# primary puppet master
 node 'palladium.eqiad.wmnet' {
     include standard
     include role::ipmi
@@ -2031,11 +2050,13 @@ node /pc100[1-3]\.eqiad\.wmnet/ {
     include role::mariadb::parsercache
 }
 
+# virtual machine hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
 node 'planet1001.eqiad.wmnet' {
     include base::firewall
     include role::planet
 }
 
+# LDAP servers relied on by OIT for mail
 node /(plutonium|pollux)\.wikimedia\.org/ {
     $cluster = 'openldap_corp_mirror'
 
@@ -2044,6 +2065,7 @@ node /(plutonium|pollux)\.wikimedia\.org/ {
     include base::firewall
 }
 
+# primary mail server
 node 'polonium.wikimedia.org' {
     role mail::mx
     include standard
@@ -2063,6 +2085,7 @@ node 'polonium.wikimedia.org' {
     }
 }
 
+# careful when moving poolcounters
 node 'potassium.eqiad.wmnet' {
     include standard
     include role::poolcounter
@@ -2076,6 +2099,7 @@ node 'protactinium.wikimedia.org' {
     include base::firewall
 }
 
+# Tor relay
 node 'radium.wikimedia.org' {
     include base::firewall
     include standard
@@ -2250,6 +2274,7 @@ node /(subra|suhail)\.codfw\.wmnet/ {
     include role::poolcounter
 }
 
+# https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
     include role::mediawiki::common
     include role::db::maintenance
@@ -2367,15 +2392,18 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
     }
 }
 
+# https://www.mediawiki.org/wiki/Parsoid
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     role parsoid::production
 }
 
+# https://www.mediawiki.org/wiki/Parsoid
 node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role parsoid::production
     include standard
 }
 
+# https://www.mediawiki.org/wiki/Gerrit
 node 'ytterbium.wikimedia.org' {
     # Note: whenever moving Gerrit out of ytterbium, you will need
     # to update the role::zuul::production
@@ -2385,6 +2413,7 @@ node 'ytterbium.wikimedia.org' {
 
 }
 
+# https://wikitech.wikimedia.org/wiki/Zirconium
 node 'zirconium.wikimedia.org' {
     include base::firewall
     include standard
