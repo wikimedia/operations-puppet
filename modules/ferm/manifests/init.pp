@@ -1,6 +1,6 @@
 class ferm {
     # @resolve requires libnet-dns-perl
-    package { ['ferm', 'libnet-dns-perl']:
+    package { ['ferm', 'libnet-dns-perl', 'conntrack']:
         ensure => present,
     }
 
