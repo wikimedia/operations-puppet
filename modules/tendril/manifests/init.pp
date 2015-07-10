@@ -24,6 +24,7 @@ class tendril (
     }
 
     git::clone { 'operations/software/tendril':
+        ensure    => 'latest',
         directory => '/srv/tendril',
         branch    => 'master',
         owner     => 'www-data',
