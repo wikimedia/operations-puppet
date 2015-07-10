@@ -11,7 +11,10 @@ class tendril (
 ) {
 
     include passwords::ldap::wmf_cluster
+    include passwords::tendril
     $proxypass = $passwords::ldap::wmf_cluster::proxypass
+    $tendril_user_web = $passwords::tendril::db_user_web
+    $tendril_pass_web = $passwords::tendril::db_pass_web
 
     apache::site { $site_name:
         content => template("tendril/apache/${site_name}.erb");
@@ -32,4 +35,11 @@ class tendril (
         require   => File['/srv/tendril'],
     }
 
+    file { '/srv/tendril/lib/config.php':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        content => template('tendril/config.php.erb'),
+    }
 }
