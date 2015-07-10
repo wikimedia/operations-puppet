@@ -38,7 +38,7 @@ define tlsproxy::localssl(
 ) {
     require tlsproxy::instance
 
-    sslcert::std_cert { $certs: }
+    sslcert::certificate { $certs: }
 
     # Ensure that exactly one definition exists with default_server = true
     # if multiple defines have default_server set to true, this

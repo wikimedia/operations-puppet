@@ -8,7 +8,7 @@ class role::ganglia::config {
 class role::ganglia::web {
     include role::ganglia::config
 
-    sslcert::std_cert{ 'ganglia.wikimedia.org': }
+    sslcert::certificate { 'ganglia.wikimedia.org': }
 
     $gmetad_root = '/srv/ganglia'
     $rrd_rootdir = "${gmetad_root}/rrds"

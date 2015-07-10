@@ -10,7 +10,7 @@ class toollabs::proxy(
 
     if $ssl_install_certificate {
         sslcert::certificate { $ssl_certificate_name:
-            source => "puppet:///files/ssl/$ssl_certificate_name.crt",
+            skip_private => true,
             before => Class['::dynamicproxy'],
         }
     }
