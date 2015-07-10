@@ -35,3 +35,29 @@ sub evaluate_cookie {
 		call cookie_munging;
 	}
 }
+
+sub pass_authorization {
+	// As a general rule, per the RFCs, shared caches shouldn't use cached
+	// responses for requests with Authorization headers (with a few
+	// notable exceptions aside).  The default vcl_recv (which text
+	// doesn't use) in varnish does this alongside its pass for Cookie.
+	// We deal with Cookies properly elsewhere.
+	//
+	// By letting Authorization reqs cache, we're breaking our own OAuth
+	// in some corner cases: https://phabricator.wikimedia.org/T105387
+	// Any browser/curl fetch of an OAuth URL without the header can
+	// cause a redirect to be cached, which then affects real fetches that
+	// have the Authorization header set, which is Bad.
+	//
+	// It's *probably* best to just pass all Authorization-headered
+	// requests in general, but on the other hand, I see a lot of random
+	// Authorization headers in our traffic that don't look like stuff
+	// we're using or want to pay attention to, and we've otherwise seemed
+	// ok on this stuff.  So for now, only (pass) on ones that seem to
+	// have OAuth data, with the same header-matching as in:
+	// http://git.wikimedia.org/blob/mediawiki%2Fextensions%2FOAuth.git/b1b824cb3c98b478694417adc90bcbc1189e06eb/backend%2FMWOAuthUtils.php#L83
+	if (req.http.Authorization ~ "^OAuth ") {
+		set req.hash_ignore_busy = true;
+		return (pass);
+	}
+}
