@@ -6,6 +6,6 @@ Type=simple
 PIDFile=/var/run/nodepool/nodepool.pid
 User=nodepool
 Group=nodepool
-ExecStart=/usr/bin/nodepoold -p /var/run/nodepool/nodepool.pid
+ExecStart=/usr/bin/nodepoold -p /var/run/nodepool/nodepool.pid -l /etc/nodepool/logging.conf
 # gracefull stop
 KillSignal=SIGUSR1
