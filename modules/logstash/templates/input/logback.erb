@@ -1,0 +1,6 @@
+input {
+  syslog {
+    codec => "json"
+    port  => <%= @port %>
+  }
+}
