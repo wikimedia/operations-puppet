@@ -26,6 +26,21 @@ class role::elasticsearch::server{
         include lvs::realserver
     }
 
+    ferm::service { 'elastic-http':
+        proto => 'tcp',
+        port  => '9200',
+        srange => '$INTERNAL',
+    }
+
+    $elastic_nodes = hiera('cluster: elasticsearch')
+    $elastic_nodes_ferm = join($elastic_nodes, ' ')
+
+    ferm::service { 'elastic-inter-node':
+        proto => 'tcp',
+        port  => '9300',
+        srange  => "@resolve(($elastic_nodes_ferm))",
+    }
+
     system::role { 'role::elasticsearch::server':
         ensure      => 'present',
         description => 'elasticsearch server',
