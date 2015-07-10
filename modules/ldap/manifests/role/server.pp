@@ -34,7 +34,7 @@ class ldap::role::server::labs {
         }
     }
 
-    sslcert::std_cert{ $certificate: }
+    sslcert::certificate { $certificate: }
 
     # Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
     # Add it into the instance location, and ensure opendj can read it.

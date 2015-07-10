@@ -91,7 +91,7 @@ class role::mail::lists {
         prefixlen => '128',
     }
 
-    sslcert::std_cert{ 'lists.wikimedia.org': }
+    sslcert::certificate { 'lists.wikimedia.org': }
 
     include mailman
 

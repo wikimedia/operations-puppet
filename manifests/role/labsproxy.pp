@@ -2,9 +2,7 @@
 class role::dynamicproxy::eqiad {
     include base::firewall
 
-    sslcert::certificate { 'star.wmflabs.org':
-        source => 'puppet:///files/ssl/star.wmflabs.org.crt',
-    }
+    sslcert::certificate { 'star.wmflabs.org': skip_private => true }
 
     class { '::dynamicproxy':
         ssl_certificate_name => 'star.wmflabs.org',

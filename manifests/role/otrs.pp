@@ -139,7 +139,7 @@ class role::otrs (
         target => '/opt/otrs/Kernel/Output/HTML/Standard',
     }
 
-    sslcert::std_cert{ 'ticket.wikimedia.org': }
+    sslcert::certificate { 'ticket.wikimedia.org': }
     include ::apache::mod::perl
     include ::apache::mod::rewrite
     include ::apache::mod::ssl

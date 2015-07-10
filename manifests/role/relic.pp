@@ -13,9 +13,7 @@ class role::relic {
 
     system::role { 'relic': description => 'Toolserver legacy server' }
 
-    sslcert::certificate { 'toolserver.org':
-        source => 'puppet:///files/ssl/toolserver.org.crt',
-    }
+    sslcert::certificate { 'toolserver.org': skip_private => true }
 
     apache::site { 'www.toolserver.org':
         content => template('apache/sites/www.toolserver.org.erb'),

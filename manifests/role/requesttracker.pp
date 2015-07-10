@@ -4,7 +4,7 @@ class role::requesttracker {
 
     include passwords::misc::rt
 
-    sslcert::std_cert { 'rt.wikimedia.org': }
+    sslcert::certificate { 'rt.wikimedia.org': }
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
@@ -57,7 +57,7 @@ class role::rt::labs {
     include passwords::misc::rt
 
     # FIXME: needs to reference a wmflabs certificate?
-    sslcert::std_cert { 'rt.wikimedia.org': }
+    sslcert::certificate { 'rt.wikimedia.org': }
 
     $datadir = '/srv/mysql'
 

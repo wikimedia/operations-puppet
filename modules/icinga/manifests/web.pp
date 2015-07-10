@@ -45,6 +45,6 @@ class icinga::web {
         ensure => absent,
     }
 
-    sslcert::std_cert{ 'icinga.wikimedia.org': }
+    sslcert::certificate { 'icinga.wikimedia.org': }
 
 }
