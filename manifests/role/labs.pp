@@ -3,10 +3,7 @@ class role::labs::instance {
     include standard
     include base
     include sudo
-
-    if os_version('ubuntu > lucid') {
-        include base::instance-upstarts
-    }
+    include base::instance-upstarts
 
     sudo::group { 'ops':
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],

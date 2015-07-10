@@ -1,6 +1,6 @@
 # coredb_mysql required packages
 class coredb_mysql::packages {
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
+    if $::lsbdistid == 'Ubuntu' {
         apt::repository { 'wikimedia-mariadb':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'precise-wikimedia',

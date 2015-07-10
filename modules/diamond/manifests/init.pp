@@ -63,9 +63,7 @@ class diamond(
         port => '8125',
     },
 ) {
-    if os_version('debian >= jessie || ubuntu >= precise') {
-        require_package('python-statsd')
-    }
+    require_package('python-statsd')
 
     package { [ 'python-diamond', 'python-configobj' ]:
         ensure  => present,
