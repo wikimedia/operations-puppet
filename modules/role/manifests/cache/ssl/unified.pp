@@ -16,9 +16,4 @@ class role::cache::ssl::unified {
         description   => 'HTTPS',
         check_command => 'check_sslxNN',
     }
-
-    # ordering ensures nginx/varnish config/service-start are
-    #  not intermingled during initial install where they could
-    #  have temporary conflicts on binding port 80
-    Service['nginx'] -> Service<| tag == 'varnish_instance' |>
 }
