@@ -317,7 +317,7 @@ class role::nova::manager {
         }
     }
 
-    sslcert::std_cert { $certificate: }
+    sslcert::certificate { $certificate: }
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 

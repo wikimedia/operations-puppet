@@ -7,10 +7,13 @@
 # rather than /etc/ssl/certs, as the latter is used often as the CA path in
 # many default configurations and examples on the web.
 #
-# === Parameters
+# The input pathnames for the cert and the private key are fixed at our
+# standard locations and based on the resource's title.  For example, if the
+# resource title is "foo", the cert source will be "files/ssl/foo.crt", and the
+# private key should be located at "modules/secret/secrets/ssl/foo.key" in the
+# private repository.
 #
-# [*source*]
-#   Path to file containing the X.509 certificate file.
+# === Parameters
 #
 # [*ensure*]
 #   If 'present', the certificate will be installed; if 'absent', it will be
@@ -24,8 +27,9 @@
 #   If true, create also a chained version of the certificate, by calling into
 #   sslcert::chainedcert. The default is true.
 #
-# [*private*]
-#   The content of the private key to the certificate. Optional.
+# [*skip_private*]
+#   If true, no private key is installed by standard means/paths.  The default
+#   is false.
 #
 # === Examples
 #
@@ -36,11 +40,10 @@
 #
 
 define sslcert::certificate(
-  $source,
   $ensure=present,
   $group='ssl-cert',
   $chain=true,
-  $private=undef,
+  $skip_private=false,
 ) {
     require sslcert
     require sslcert::dhparam
@@ -50,15 +53,10 @@ define sslcert::certificate(
         owner  => 'root',
         group  => $group,
         mode   => '0444',
-        source => $source,
+        source => "puppet:///files/ssl/${title}.crt",
     }
 
-    if $private {
-        # Ideally, we'd pass "content", not "source", and use the file()
-        # function, as well as a deny all fileserver rule to not allow anyone
-        # to reach key material out of their scope via the fileserver. However,
-        # file() is not very sane before Puppet 3.7.0, requiring the full
-        # absolute path to files. We should revisit once we get to 3.7+.
+    if !$skip_private {
         file { "/etc/ssl/private/${title}.key":
             ensure    => $ensure,
             owner     => 'root',
@@ -67,7 +65,7 @@ define sslcert::certificate(
             # show_diff broken on Lucid's puppet-2.7 (sodium) :/
             # show_diff => false,
             backup    => false,
-            source    => $private,
+            content   => secret("ssl/${title}.key"),
         }
     }
 

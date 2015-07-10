@@ -30,7 +30,7 @@ class role::gerrit {
         system::role { 'role::gerrit::production': description => 'Gerrit master' }
         include role::backup::host
 
-        sslcert::std_cert{ 'gerrit.wikimedia.org': }
+        sslcert::certificate { 'gerrit.wikimedia.org': }
 
         backup::set { 'var-lib-gerrit2-review_site-git': }
 

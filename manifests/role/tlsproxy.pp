@@ -21,9 +21,7 @@ class role::tlsproxy::ssl::beta {
 
     include standard
 
-    sslcert::certificate { 'star.wmflabs.org':
-        source => 'puppet:///files/ssl/star.wmflabs.org.crt',
-    }
+    sslcert::certificate { 'star.wmflabs.org': skip_private => true }
 
     # tlsproxy::instance parameters common to any beta instance
     $defaults = {

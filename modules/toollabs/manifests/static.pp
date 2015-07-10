@@ -9,9 +9,7 @@ class toollabs::static(
     include toollabs::infrastructure
 
     if $ssl_certificate_name != false {
-        sslcert::certificate { $ssl_certificate_name:
-            source => "puppet:///files/ssl/$ssl_certificate_name.crt",
-        }
+        sslcert::certificate { $ssl_certificate_name: skip_private => true }
     }
 
     labs_lvm::volume { 'cdnjs-disk':
