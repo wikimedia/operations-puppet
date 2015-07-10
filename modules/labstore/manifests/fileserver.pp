@@ -17,11 +17,26 @@ class labstore::fileserver {
     }
 
     file { '/etc/init/replica-addusers.conf':
-        source => 'puppet:///modules/labstore/replica-addusers.conf',
+        source  => 'puppet:///modules/labstore/replica-addusers.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/usr/local/sbin/replica-addusers.pl'],
+    }
+
+    file { '/etc/replication-rsync.conf':
+        source => 'puppet:///modules/labstore/replication-rsync.conf',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        require => File['/usr/local/sbin/replica-addusers.pl'],
+    }
+
+    file { '/usr/local/sbin/storage-replicate':
+        source  => 'puppet:///modules/labstore/storage-replicate',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/etc/replication-rsync.conf'],
     }
 
     # There is no service {} stanza on purpose -- this service
