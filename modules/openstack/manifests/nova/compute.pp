@@ -18,7 +18,7 @@ class openstack::nova::compute(
             owner   => 'nova',
             group   => 'libvirtd',
             mode    => '0440',
-            source  => "puppet:///private/ssl/${certname}.key",
+            content => secret("ssl/${certname}.key"),
             require => Package['nova-common'],
         }
         file { '/var/lib/nova/clientkey.pem':
