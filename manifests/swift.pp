@@ -221,6 +221,30 @@ class swift::storage {
         description => 'swift backend storage brick',
     }
 
+    $swift_frontends = hiera('cluster: swift')
+    $swift_frontends_ferm = join($swift_frontends, ' ')
+
+    ferm::service { 'swift-object-server':
+        proto   => 'tcp',
+        port    => '6000',
+        notrack => true,
+        srange  => "@resolve(($swift_frontends_ferm))",
+    }
+
+    ferm::service { 'swift-container-server':
+        proto   => 'tcp',
+        port    => '6001',
+        notrack => true,
+        srange  => "@resolve(($swift_frontends_ferm))",
+    }
+
+    ferm::service { 'swift-account-server':
+        proto   => 'tcp',
+        port    => '6002',
+        notrack => true,
+        srange  => "@resolve(($swift_frontends_ferm))",
+    }
+
     class packages {
         package {
             [ 'swift-account',
