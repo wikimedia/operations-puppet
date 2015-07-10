@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# older versions of timeout (before coreutils) didn't support -k
-# remove the coditional after the last lucid host goes
-if timeout -k 10 10 true >/dev/null 2>&1; then
-	KILL_TIMEOUT="-k 60"
-fi
-
 set -e
 
 # We pass show-diff, show the log may be sensitive,
@@ -31,9 +25,9 @@ if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
     echo Ignoring stale puppet agent lock for pid `cat $PUPPETLOCK` >>/var/log/puppet.log
 fi
 
-timeout $KILL_TIMEOUT 300 apt-get update -qq >> /var/log/puppet.log 2>&1
+timeout -k 60 300 apt-get update -qq >> /var/log/puppet.log 2>&1
 
-timeout $KILL_TIMEOUT 1800 puppet agent \
+timeout -k 60 1800 puppet agent \
   --onetime \
   --no-daemonize \
   --verbose \
