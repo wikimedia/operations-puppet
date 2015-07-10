@@ -1,6 +1,13 @@
 class role::cache::ssl::unified {
+
+    if $::hostname == 'cp1008' {
+        $certs = ['ecc-uni.wikimedia.org', 'uni.wikimedia.org'],
+    } else {
+        $certs = ['uni.wikimedia.org'],
+    }
+
     role::cache::ssl::local { 'unified':
-        certs          => ['uni.wikimedia.org'],
+        certs          => $certs,
         default_server => true,
         do_ocsp        => true,
     }
