@@ -179,6 +179,15 @@ class nodepool(
         require => Package['nodepool'],
     }
 
+    file { '/etc/nodepool/logging.conf':
+        ensure  => present,
+        owner   => 'nodepool',
+        group   => 'nodepool',
+        mode    => '0444',
+        source  => 'pupet:///modules/nodepool/logging.conf',
+        require => Package['nodepool'],
+    }
+
     file { '/etc/nodepool/nodepool.yaml':
         content => template('nodepool/nodepool.yaml.erb'),
         require => [
