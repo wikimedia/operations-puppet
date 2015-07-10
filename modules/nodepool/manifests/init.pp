@@ -154,7 +154,7 @@ class nodepool(
         owner   => 'nodepool',
         group   => 'nodepool',
         recurse => true,
-        pruge   => true,
+        purge   => true,
         source  => 'puppet:///modules/nodepool/elements',
         require => Package['nodepool'],
     }
