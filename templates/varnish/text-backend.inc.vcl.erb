@@ -49,6 +49,8 @@ sub vcl_recv {
 
 	call evaluate_cookie;
 
+	call pass_authorization;
+
 	return (lookup);
 }
 
