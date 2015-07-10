@@ -24,6 +24,7 @@ class role::grafana {
                     grafanaDB => true,
                 },
             },
+            default_route => '/dashboard/db/grafana',
         },
     }
 
