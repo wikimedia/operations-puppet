@@ -55,7 +55,7 @@ sub set_last_access_cookie__ { C{
 	Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:",
 		"WMF-Last-Access=",
 		VRT_GetHdr(sp, HDR_REQ, "\011X-NowDay:"),
-		";Path=/;HttpOnly;Expires=",
+		";Path=/;HttpOnly;Secure;Expires=",
 		VRT_time_string(sp, (double)(
 			((time_t)VRT_r_now(sp) + 2764800) / 43200 * 43200
 		)),
