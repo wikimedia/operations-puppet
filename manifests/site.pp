@@ -282,6 +282,7 @@ node 'bromine.eqiad.wmnet' {
     include role::bugzilla_static
     include role::annualreport
     include role::transparency
+    include role::policysite
 }
 
 # http://releases.wikimedia.org
@@ -2392,7 +2393,6 @@ node 'zirconium.wikimedia.org' {
     include role::wikimania_scholarships
     include role::grafana
     include role::iegreview
-    include role::policysite
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
