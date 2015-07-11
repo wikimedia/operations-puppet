@@ -35,17 +35,17 @@ class authdns::account {
         owner  => $user,
         group  => $group,
         mode   => '0400',
-        source => 'puppet:///private/authdns/id_ed25519',
+        content => secret('authdns/id_ed25519'),
     }
     file { "${home}/.ssh/id_ed25519.pub":
         ensure => 'present',
         owner  => $user,
         group  => $group,
         mode   => '0400',
-        source => 'puppet:///private/authdns/id_ed25519.pub',
+        content => secret('authdns/id_ed25519.pub'),
     }
     ssh::userkey { $user:
-        source => 'puppet:///private/authdns/id_ed25519.pub',
+        content => secret('authdns/id_ed25519.pub'),
     }
 
     file { "${home}/git-shell-commands":

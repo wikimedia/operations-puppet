@@ -104,7 +104,7 @@ class role::ci::master {
         owner   => 'jenkins',
         group   => 'jenkins',
         mode    => '0400',
-        source  => 'puppet:///private/ssh/ci/jenkins-mwext-sync_id_rsa',
+        content => secret('ssh/ci/jenkins-mwext-sync_id_rsa'),
         require => User['jenkins'],
     }
 
@@ -208,7 +208,7 @@ class role::ci::slave {
         ensure  => present,
         owner   => 'npmtravis',
         mode    => '0400',
-        source  => 'puppet:///private/ssh/ci/npmtravis_id_rsa',
+        content => secret('ssh/ci/npmtravis_id_rsa'),
         require => File['/home/npmtravis/.ssh'],
     }
 

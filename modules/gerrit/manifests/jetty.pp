@@ -60,7 +60,7 @@ class gerrit::jetty ($ldap_hosts,
         group   => 'gerrit2',
         mode    => '0600',
         require => File['/var/lib/gerrit2/.ssh'],
-        source  => 'puppet:///private/gerrit/id_rsa',
+        content => secret('gerrit/id_rsa'),
     }
 
     file { '/var/lib/gerrit2/review_site':

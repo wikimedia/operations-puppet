@@ -17,7 +17,7 @@ class role::ganeti {
         owner  => 'root',
         group  => 'root',
         mode   => '0400',
-        source => 'puppet:///private/ganeti/id_dsa',
+        content => secret('ganeti/id_dsa'),
     }
     # This is here for completeness
     file { '/root/.ssh/id_dsa.pub':
