@@ -213,3 +213,116 @@ class role::phabricator::labs {
         require    => Package['mysql-server'],
     }
 }
+
+# phabricator instance setup for differential hosted repositories
+class role::phabricator::labs::differential {
+    # this role requires "ssh::server::listen_port: 222" to be set in hiera
+
+    $vcsuser = 'vcs-user'
+    $phabdir = '/srv/phab'
+
+    # from role::phabricator::labs because of puppet bug
+    # (overriding class inside class)
+
+    # pass not sensitive but has to match phab and db
+    $mysqlpass = 'labspass'
+    $current_tag = 'release/2015-07-08/1'
+    class { '::phabricator':
+        git_tag       => $current_tag,
+        lock_file     => '/var/run/phab_repo_lock',
+        auth_type     => 'local',
+        sprint_tag    => 'release/2015-07-01',
+        libraries     => ['/srv/phab/libext/Sprint/src',
+                          '/srv/phab/libext/security/src'],
+        extension_tag => 'release/2015-06-10/1',
+        extensions    => [ 'MediaWikiUserpageCustomField.php',
+                              'LDAPUserpageCustomField.php',
+                              'PhabricatorMediaWikiAuthProvider.php',
+                              'PhutilMediaWikiAuthAdapter.php'],
+        settings      => {
+            'darkconsole.enabled'             => true,
+            'phabricator.base-uri'            => "https://${::hostname}.wmflabs.org",
+            'mysql.pass'                      => $mysqlpass,
+            'auth.require-email-verification' => false,
+            'metamta.mail-adapter'            => 'PhabricatorMailImplementationTestAdapter',
+            'repository.default-local-path'   => '/srv/phab/repos',
+            'config.ignore-issues'            => '{
+                                                      "security.security.alternate-file-domain": true
+                                                  }',
+            'diffusion.ssh-user'              => $vcsuser,
+        },
+    }
+
+    package { 'mysql-server': ensure => present }
+
+    class { 'mysql::config':
+        root_password => $mysqlpass,
+        sql_mode      => 'STRICT_ALL_TABLES',
+        restart       => true,
+        require       => Package['mysql-server'],
+    }
+
+    service { 'mysql':
+        ensure     => running,
+        hasrestart => true,
+        hasstatus  => true,
+        require    => Package['mysql-server'],
+    }
+    # end role::phabricator::labs
+
+    user { $vcsuser:
+        ensure   => present,
+        comment  => 'Phabricator VCS user',
+        home     => '/var/lib/phab-vcsuser',
+        password => 'NP',
+        shell    => '/bin/sh',
+        system   => true,
+    }
+
+    file { '/etc/sudoers.d/phab-vcs-user':
+        content => template('phabricator/phab-vcs-user.erb'),
+        owner   => root,
+        group   => root,
+        mode    => 400,
+    }
+
+    file { '/usr/sbin/sshd-phab':
+        ensure => link,
+        target => '/usr/sbin/sshd',
+    }
+
+    file { '/usr/libexec/':
+        ensure => directory,
+        owner  => root,
+        group  => root,
+    }
+
+    file { '/usr/libexec/phabricator-ssh-hook.sh':
+        content => template('phabricator/phabricator-ssh-hook.sh.erb'),
+        owner   => root,
+        group   => root,
+        mode    => 755,
+        require => File['/usr/libexec']
+    }
+
+    file { '/etc/ssh/sshd_config.phabricator':
+        content => template('phabricator/sshd_config.phabricator.erb'),
+        owner   => root,
+        group   => root,
+        mode    => 444,
+    }
+
+    file { '/etc/init.d/ssh-phab':
+        ensure => file,
+        source => 'puppet:///modules/phabricator/ssh-phab',
+        owner  => root,
+        group  => root,
+        mode   => 755,
+    }
+
+    service { 'ssh-phab':
+        ensure    => running,
+        subscribe => File['/etc/ssh/sshd_config.phabricator'],
+        require   => File['/etc/init.d/ssh-phab'],
+    }
+}
