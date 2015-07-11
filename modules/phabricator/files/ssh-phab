@@ -1,0 +1,82 @@
+#!/bin/sh
+test -x /usr/sbin/sshd-phab || exit 0
+( /usr/sbin/sshd-phab -\? 2>&1 | grep -q OpenSSH ) 2> /dev/null || exit 0
+
+. /lib/lsb/init-functions
+
+SSH_NAME="sshd-phab"
+SSH_CMD="/usr/sbin/sshd-phab"
+SSH_ARGS="-f /etc/ssh/sshd_config.phabricator $SSHD_OPTS"
+SSH_PID="/var/run/sshd-phab.pid"
+
+check_for_no_start() {
+    if [ -e /etc/ssh/sshd-phab_not_to_be_run ]; then
+        if ! run_by_init; then
+            log_action_msg "Phabricator SSH server not in use (/etc/ssh/sshd-phab_not_to_be_run)"
+        fi
+    fi
+}
+
+check_privsep_dir() {
+    if [ ! -d /var/run/sshd-phab ]; then
+    mkdir /var/run/sshd-phab
+    chmod 0755 /var/run/sshd-phab
+    fi
+}
+
+check_config() {
+    if [ ! -e /etc/ssh/sshd-phab_not_to_be_run ]; then
+    /usr/sbin/sshd-phab $SSHD_OPTS -t || exit 1
+    fi
+}
+
+case "$1" in
+  start)
+    if start-stop-daemon --start --quiet --oknodo --name $SSH_NAME --pidfile $SSH_PID --exec $SSH_CMD -- $SSH_ARGS; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+    ;;
+  stop)
+    if start-stop-daemon --stop --quiet --oknodo --name $SSH_NAME --pidfile $SSH_PID; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+    ;;
+
+  reload|force-reload)
+    if start-stop-daemon --stop --signal 1 --quiet --oknodo --name $SSH_NAME --pidfile $SSH_PID --exec $SSH_CMD -- $SSH_ARGS; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+    ;;
+
+  restart)
+    start-stop-daemon --stop --quiet --oknodo --retry 30 --name $SSH_NAME
+    if start-stop-daemon --start --quiet --oknodo --name $SSH_NAME --pidfile $SSH_PID --exec $SSH_CMD -- $SSH_ARGS; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+    ;;
+
+  try-restart)
+    start-stop-daemon --stop --quiet --retry 30 --name $SSH_NAME
+    if start-stop-daemon --start --quiet --oknodo --name $SSH_NAME --pidfile $SSH_PID --exec $SSH_CMD -- $SSH_ARGS; then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+    ;;
+
+  status)
+    status_of_proc -p $SSH_PID $SSH_CMD $SSH_NAME && exit 0 || exit $?
+    ;;
+
+  *)
+    log_action_msg "Usage: /etc/init.d/ssh-phab {start|stop|reload|force-reload|restart|try-restart|status}"
+    exit 1
+esac
