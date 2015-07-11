@@ -11,7 +11,7 @@ class icinga::nsca::daemon {
     }
 
     file { '/etc/nsca.cfg':
-        source  => 'puppet:///private/icinga/nsca.cfg',
+        content => secret('icinga/nsca.cfg'),
         owner   => 'root',
         mode    => '0400',
         require => Package['nsca'],

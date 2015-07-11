@@ -83,7 +83,7 @@ class openstack::glance::service(
     ssh::userkey { 'glancesync':
         require => user['glancesync'],
         ensure  => present,
-        source  => 'puppet:///private/ssh/glancesync/glancesync.pub',
+        content => secret('ssh/glancesync/glancesync.pub'),
     }
     file { '/home/glancesync/.ssh':
         ensure  => directory,
@@ -93,7 +93,7 @@ class openstack::glance::service(
         require => user['glancesync'],
     }
     file { '/home/glancesync/.ssh/id_rsa':
-        source  => 'puppet:///private/ssh/glancesync/glancesync.key',
+        content => secret('ssh/glancesync/glancesync.key'),
         owner   => 'glancesync',
         group   => 'glance',
         mode    => '0600',
