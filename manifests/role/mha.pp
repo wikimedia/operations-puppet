@@ -15,7 +15,7 @@ class mha::node {
         owner  => 'mysql',
         group  => 'mysql',
         mode   => '0400',
-        source => 'puppet:///private/ssh/mysql/mysql.key',
+        content => secret('ssh/mysql/mysql.key'),
     }
 
     ssh::userkey { 'mysql':

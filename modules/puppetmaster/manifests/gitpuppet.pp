@@ -19,7 +19,7 @@ class puppetmaster::gitpuppet {
             owner   => 'gitpuppet',
             group   => 'gitpuppet',
             mode    => '0400',
-            source  => 'puppet:///private/ssh/gitpuppet/gitpuppet.key',
+            content => secret('ssh/gitpuppet/gitpuppet.key'),
             require => File['/home/gitpuppet/.ssh'],
     }
     file { '/home/gitpuppet/.ssh/gitpuppet-private-repo':
@@ -27,7 +27,7 @@ class puppetmaster::gitpuppet {
             owner   => 'gitpuppet',
             group   => 'gitpuppet',
             mode    => '0400',
-            source  => 'puppet:///private/ssh/gitpuppet/gitpuppet-private.key',
+            content => secret('ssh/gitpuppet/gitpuppet-private.key'),
             require => File['/home/gitpuppet/.ssh'],
     }
     ssh::userkey { 'gitpuppet':

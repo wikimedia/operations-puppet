@@ -6,12 +6,12 @@ class role::access_new_install {
         owner  => 'root',
         group  => 'root',
         mode   => '0400',
-        source => 'puppet:///private/ssh/new_install/new_install',
+        content => secret('ssh/new_install/new_install'),
     }
     file { '/root/.ssh/new_install.pub':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///private/ssh/new_install/new_install.pub',
+        content => secret('ssh/new_install/new_install.pub'),
     }
 }

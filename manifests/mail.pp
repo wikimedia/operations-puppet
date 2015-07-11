@@ -97,7 +97,7 @@ class exim {
             exim4::dkim { 'wikimedia.org':
                 domain   => 'wikimedia.org',
                 selector => 'wikimedia',
-                source   => 'puppet:///private/dkim/wikimedia.org-wikimedia.key',
+                content  => secret('dkim/wikimedia.org-wikimedia.key'),
             }
         }
 
@@ -113,7 +113,7 @@ class exim {
             exim4::dkim { 'lists.wikimedia.org':
                 domain   => 'lists.wikimedia.org',
                 selector => 'wikimedia',
-                source   => 'puppet:///private/dkim/lists.wikimedia.org-wikimedia.key',
+                content  => secret('dkim/lists.wikimedia.org-wikimedia.key'),
             }
         }
 
@@ -121,7 +121,7 @@ class exim {
             exim4::dkim { 'wiki-mail':
                 domain   => 'wikimedia.org',
                 selector => 'wiki-mail',
-                source   => 'puppet:///private/dkim/wikimedia.org-wiki-mail.key',
+                content  => secret('dkim/wikimedia.org-wiki-mail.key'),
             }
         }
 

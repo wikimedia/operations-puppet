@@ -45,7 +45,7 @@ class labstore {
         owner  => 'root',
         group  => 'root',
         mode   => '0400',
-        source => 'puppet:///private/labstore/id_labstore',
+        content => secret('labstore/id_labstore'),
     }
 
     file { '/etc/default/nfs-common':

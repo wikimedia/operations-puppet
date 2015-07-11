@@ -10,7 +10,7 @@ class mw-rc-irc::ircserver {
             mode   => '0444',
             owner  => 'irc',
             group  => 'irc',
-            source => 'puppet:///private/misc/ircd.conf';
+            content => secret('misc/ircd.conf');
         '/usr/etc/ircd.motd':
             mode    => '0444',
             owner   => 'irc',

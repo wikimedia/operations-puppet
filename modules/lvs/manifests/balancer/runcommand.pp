@@ -19,6 +19,6 @@ class lvs::balancer::runcommand {
             owner => root,
             group => root,
             mode => '0600',
-            source => "puppet:///private/pybal/pybal-check";
+            content => secret('pybal/pybal-check');
     }
 }
