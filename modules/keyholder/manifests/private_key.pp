@@ -20,7 +20,7 @@
 #
 #  keyholder::private_key { 'mwdeploy_rsa':
 #    ensure => present,
-#    source => 'puppet:///private/ssh/tin/mwdeploy_rsa',
+#    content => secret('ssh/tin/mwdeploy_rsa'),
 #  }
 #
 define keyholder::private_key(

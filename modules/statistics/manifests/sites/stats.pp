@@ -14,7 +14,7 @@ class statistics::sites::stats {
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        source => 'puppet:///private/apache/htpasswd.stats',
+        content => secret('apache/htpasswd.stats'),
     }
 
     # add htpasswd file for private geowiki data
@@ -22,7 +22,7 @@ class statistics::sites::stats {
         owner  => 'root',
         group  => 'www-data',
         mode   => '0640',
-        source => 'puppet:///private/apache/htpasswd.stats-geowiki',
+        content => secret('apache/htpasswd.stats-geowiki'),
     }
 
     # link geowiki checkout from docroot

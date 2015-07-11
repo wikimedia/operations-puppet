@@ -37,7 +37,7 @@ class puppet::self::gitclone {
         owner  => 'root',
         group  => 'root',
         mode   => '0600',
-        source => 'puppet:///private/ssh/labs-puppet-key',
+        content => secret('ssh/labs-puppet-key'),
     }
     file { $volatiledir:
         ensure => directory,

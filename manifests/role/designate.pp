@@ -101,6 +101,6 @@ class role::designate::server {
             owner  => 'designate',
             group  => 'designate',
             mode   => '0400',
-            source => 'puppet:///private/ssh/puppet_cert_manager/cert_manager'
+            content => secret('ssh/puppet_cert_manager/cert_manager')
     }
 }

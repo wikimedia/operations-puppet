@@ -60,7 +60,7 @@ class icinga {
     }
 
     file { '/etc/icinga/nsca_frack.cfg':
-        source  => 'puppet:///private/nagios/nsca_frack.cfg',
+        content => secret('nagios/nsca_frack.cfg'),
         owner   => 'icinga',
         group   => 'icinga',
         mode    => '0644',

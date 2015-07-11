@@ -36,13 +36,13 @@ class scap::l10nupdate(
         owner  => 'l10nupdate',
         group  => 'l10nupdate',
         mode   => '0400',
-        source => 'puppet:///private/ssh/tin/l10nupdate/id_rsa',
+        content => secret('ssh/tin/l10nupdate/id_rsa'),
     }
     file { '/home/l10nupdate/.ssh/id_rsa.pub':
         owner  => 'l10nupdate',
         group  => 'l10nupdate',
         mode   => '0444',
-        source => 'puppet:///private/ssh/tin/l10nupdate/id_rsa.pub',
+        content => secret('ssh/tin/l10nupdate/id_rsa.pub'),
     }
 
     # Make sure the log directory exists and has adequate permissions.
