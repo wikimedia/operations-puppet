@@ -15,6 +15,23 @@
     RewriteRule   ^/~(.+) https://people.wikimedia.org/~$1  [R=301,L]
     RewriteRule   ^/dbtree(.*)$ https://dbtree.wikimedia.org [R=301,L]
 
+    RewriteCond %{QUERY_STRING} ^file=(.*)\.php$
+    RewriteRule ^/conf/highlight\.php$ https://git.wikimedia.org/blob/operations\%2Fmediawiki-config.git/HEAD/wmf-config\%2F%1.php? [R=301,L,NE]
+
+    RewriteCond %{QUERY_STRING} ^file=(.*)\.dblist$
+    RewriteRule ^/conf/highlight\.php$ https://git.wikimedia.org/blob/operations\%2Fmediawiki-config.git/HEAD/%1.dblist? [R=301,L,NE]
+
+    RewriteCond %{QUERY_STRING} ^file=extension-list(-labs|-wikitech)?$
+    RewriteRule ^/conf/highlight\.php$ https://git.wikimedia.org/blob/operations\%2Fmediawiki-config.git/HEAD/extension-list%1? [R=301,L,NE]
+
+    RewriteCond %{QUERY_STRING} ^file=(fc-list|langlist|wikiversions(-labs)?\.json)$
+    RewriteRule ^/conf/highlight\.php$ https://git.wikimedia.org/blob/operations\%2Fmediawiki-config.git/HEAD/%1? [R=301,L,NE]
+
+    RewriteRule ^/conf/(.*)\.txt$ https://git.wikimedia.org/raw/operations\%2Fmediawiki-config.git/HEAD/wmf-config\%2F$1 [R=301,L,NE]
+    RewriteRule ^/conf/(.*)\.dblist$ https://git.wikimedia.org/raw/operations\%2Fmediawiki-config.git/HEAD/$1.dblist [R=301,L,NE]
+    RewriteRule ^/conf/extension-list(-labs|-wikitech)?$ https://git.wikimedia.org/raw/operations\%2Fmediawiki-config.git/HEAD/extension-list$1 [R=301,L,NE]
+    RewriteRule ^/conf/(fc-list|langlist|wikiversions(-labs)?\.json)$ https://git.wikimedia.org/raw/operations\%2Fmediawiki-config.git/HEAD/$1 [R=301,L,NE]
+
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
     Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
