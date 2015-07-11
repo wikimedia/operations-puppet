@@ -14,12 +14,12 @@
 #   Note that due to POODLE, SSLv3 is universally disabled and none of these
 #   options are compatible with SSLv3-only clients such as IE6/XP.
 #   Current options are:
-#   - strong:     Only TLSv1.2 with PFS+AEAD ciphers.  In practice this is a
+#   - strong:     Only TLSv1.2 with ECDHE+AEAD ciphers.  In practice this is a
 #                 very short list, and requires a very modern client.  No
 #                 tradeoff is made for compatibility.  Known to work with:
-#                 New FF/Chrome, IE11, Java8, Android 4.4+, OpenSSL 1.0.x
+#                 New FF/Chrome, Java8, Android 4.4+, OpenSSL 1.0.x
 #                 Definitely broken with: All Safari (OSX/iOS).
-#                 IE11 support requires either DHE support or an ECDSA key.
+#                 IE11 support requires an ECDSA key.
 #   - mid:        Supports TLSv1.0 and higher, and adds several forward-secret
 #                 options which are not AEAD.  This is compatible with many
 #                 more clients than "strong".  With a DHE-capable server,
@@ -75,29 +75,29 @@ module Puppet::Parser::Functions
   # 4) Auth: ECDSA > RSA      (Server Performance)
   # 5) Kx:   ECDHE > DHE      (Server Performance)
   basic = {
-    # Forward-Secret + AEAD
+    # ECHDE + AEAD
     'strong' => [
       '-ALL',
       'ECDHE-ECDSA-AES128-GCM-SHA256',
       'ECDHE-RSA-AES128-GCM-SHA256',
-      'DHE-RSA-AES128-GCM-SHA256',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES256-GCM-SHA384',
-      'DHE-RSA-AES256-GCM-SHA384',
     ],
-    # Forward-Secret, but not AEAD
+    # ECDHE + non-AEAD, and DHE
     'mid' => [
       'ECDHE-ECDSA-AES128-SHA256',
       'ECDHE-RSA-AES128-SHA256',
-      'DHE-RSA-AES128-SHA256',
       'ECDHE-ECDSA-AES128-SHA',
       'ECDHE-RSA-AES128-SHA',
-      'DHE-RSA-AES128-SHA',
       'ECDHE-ECDSA-AES256-SHA384',
       'ECDHE-RSA-AES256-SHA384',
-      'DHE-RSA-AES256-SHA256',
       'ECDHE-ECDSA-AES256-SHA',
       'ECDHE-RSA-AES256-SHA',
+      'DHE-RSA-AES128-GCM-SHA256',
+      'DHE-RSA-AES256-GCM-SHA384',
+      'DHE-RSA-AES128-SHA256',
+      'DHE-RSA-AES128-SHA',
+      'DHE-RSA-AES256-SHA256',
       'DHE-RSA-AES256-SHA',
       'DHE-RSA-CAMELLIA128-SHA',
       'DHE-RSA-CAMELLIA256-SHA',
