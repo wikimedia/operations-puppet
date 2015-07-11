@@ -15,6 +15,23 @@
     RewriteRule   ^/~(.+) https://people.wikimedia.org/~$1  [R=301,L]
     RewriteRule   ^/dbtree(.*)$ https://dbtree.wikimedia.org [R=301,L]
 
+    RewriteCond %{QUERY_STRING} ^file=(.*)\.php$
+    RewriteRule ^/conf/highlight\.php$ https://phabricator.wikimedia.org/diffusion/OMWC/browse/master/wmf-config/%1.php? [R=301,L,NE]
+
+    RewriteCond %{QUERY_STRING} ^file=(.*)\.dblist$
+    RewriteRule ^/conf/highlight\.php$ https://phabricator.wikimedia.org/diffusion/OMWC/browse/master/%1.dblist? [R=301,L,NE]
+
+    RewriteCond %{QUERY_STRING} ^file=extension-list(-labs|-wikitech)?$
+    RewriteRule ^/conf/highlight\.php$ https://phabricator.wikimedia.org/diffusion/OMWC/browse/master/extension-list%1? [R=301,L,NE]
+
+    RewriteCond %{QUERY_STRING} ^file=(fc-list|langlist|wikiversions(-labs)?\.json)$
+    RewriteRule ^/conf/highlight\.php$ https://phabricator.wikimedia.org/diffusion/OMWC/browse/master/%1? [R=301,L,NE]
+
+    RewriteRule ^/conf/(.*)\.txt$ https://phabricator.wikimedia.org/diffusion/OMWC/browse/master/$1 [R=301,L,NE]
+    RewriteRule ^/conf/(.*)\.dblist$ https://phabricator.wikimedia.org/diffusion/OMWC/browse/master/$1.dblist [R=301,L,NE]
+    RewriteRule ^/conf/extension-list(-labs|-wikitech)?$ https://phabricator.wikimedia.org/diffusion/OMWC/browse/master/extension-list$1 [R=301,L,NE]
+    RewriteRule ^/conf/(fc-list|langlist|wikiversions(-labs)?\.json)$ https://phabricator.wikimedia.org/diffusion/OMWC/browse/master/$1 [R=301,L,NE]
+
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
     Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
