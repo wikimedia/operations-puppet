@@ -27,6 +27,8 @@
   limitations under the License.
 
 """
+from __future__ import division
+
 import argparse
 import io
 import re
@@ -48,14 +50,13 @@ class ResourceLoaderVarnishLogProcessor:
 
     def handle_log_record(self, transaction_id, tag, record, remote_party):
         """VSL_handler_f callback function."""
-        if transaction_id not in self.transactions:
-            if tag == 'RxURL':
-                self.transactions[transaction_id] = {tag: record}
-        elif tag == 'ReqEnd':
-            transaction = self.transactions.pop(transaction_id)
+        transaction = self.transactions.setdefault(transaction_id, {})
+        if tag == 'RxURL' and transaction:
+            transaction.clear()
+        transaction[tag] = record
+        if tag == 'ReqEnd':
+            del self.transactions[transaction_id]
             self.process_transaction(transaction)
-        else:
-            self.transactions[transaction_id][tag] = record
         return 0
 
     def process_transaction(self, transaction):
@@ -67,13 +68,15 @@ class ResourceLoaderVarnishLogProcessor:
             metric_keys.append('reqs.if_none_match')
 
         cache_control_header = transaction.get('TxHeader', '')
-        if cache_control_header:
-            match = re.search(r'(?<=max-age=)\d+', cache_control_header)
+        match = re.search(r'(?<=max-age=)\d+', cache_control_header)
+        if match:
             cache_control = 'short' if match.group() == '300' else 'long'
         else:
             cache_control = 'no'
         metric_keys.append('responses.%s_cache_control.%s' %
                            (cache_control, status_code))
+
+        # backend_resp_time = transaction['ReqEnd'].split()[4]
 
         for key in metric_keys:
             self.stats[key] = self.stats.get(key, 0) + 1
