@@ -36,6 +36,82 @@ import urlparse
 import varnishlog
 
 
+class ResourceLoaderVarnishLogProcessor:
+
+    def __init__(self, key_prefix='ResourceLoader', statsd_server=None):
+        self.key_prefix = key_prefix
+        self.statsd_server = statsd_server
+        if statsd_server:
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.stats = {}
+        self.transactions = {}
+
+    def handle_log_record(self, transaction_id, tag, record, remote_party):
+        """VSL_handler_f callback function."""
+        if transaction_id not in self.transactions:
+            if tag == 'RxURL':
+                self.transactions[transaction_id] = {tag: record}
+        elif tag == 'ReqEnd':
+            transaction = self.transactions.pop(transaction_id)
+            self.process_transaction(transaction)
+        else:
+            self.transactions[transaction_id][tag] = record
+        return 0
+
+    def process_transaction(self, transaction):
+        """Process a single completed transaction."""
+        status_code = transaction['TxStatus']
+        metric_keys = ['reqs.all', 'resps.' + status_code]
+
+        if 'RxHeader' in transaction:
+            metric_keys.append('reqs.if_none_match')
+
+        cache_control_header = transaction.get('TxHeader', '')
+        if cache_control_header:
+            match = re.search(r'(?<=max-age=)\d+', cache_control_header)
+            cache_control = 'short' if match.group() == '300' else 'long'
+        else:
+            cache_control = 'no'
+        metric_keys.append('responses.%s_cache_control.%s' %
+                           (cache_control, status_code))
+
+        for key in metric_keys:
+            self.stats[key] = self.stats.get(key, 0) + 1
+
+        if self.stats['reqs.all'] > 10000:
+            self.flush_stats()
+
+    def flush_stats(self):
+        """Flush metrics to standard out or statsd server."""
+        buf = io.BytesIO()
+        while self.stats:
+            key, value = self.stats.popitem()
+            metric = '%s.%s:%s|c\n' % (self.key_prefix, key, value)
+            buf.write(metric.encode('utf-8'))
+        buf.seek(io.SEEK_SET)
+        if self.statsd_server:
+            self.sock.sendto(buf.read(), self.statsd_server)
+        else:
+            print(buf.read().decode('utf-8').rstrip())
+
+    def start(self):
+        varnishlog.varnishlog((
+            ('n', 'frontend'),  # Consider the frontend Varnish instance
+            ('c', None),        # Only consider interactions with the client
+            ('i', 'TxStatus'),  # Get TxStatus for the HTTP status code
+            ('i', 'RxHeader'),  # Get RxHeader for If-None-Match header
+            ('i', 'TxHeader'),  # Get TxHeader for Cache-control header
+            ('i', 'RxURL'),     # Get RxURL to match /w/load.php
+            ('i', 'ReqEnd'),    # Get ReqEnd to delimit requests
+            ('C', ''),          # Use case-insensitive matching
+            ('I', '^(/w/load\.php'   # ...to match ResourceLoader RxURLs
+                  '|if-none-match:'  # ...or If-None-Match RxHeaders
+                  '|cache-control:'  # ...or Cache-control TxHeaders
+                  '|([\d.]+ ?){6}$'  # ...or ReqEnd lines
+                  '|[1-5]\d{2}$)'),  # ...or RxStatus codes
+        ), self.handle_log_record)
+
+
 def parse_statsd_server_string(server_string):
     parsed = urlparse.urlparse('//' + server_string)
     return parsed.hostname, parsed.port or 8125
@@ -52,113 +128,11 @@ ap = argparse.ArgumentParser(
     description='ResourceLoader Browser Cache Hit Ratio StatsD Reporter',
     epilog='If no statsd server is specified, prints stats to stdout instead.'
 )
-
-ap.add_argument('--statsd-server', help='statsd server',
-                type=parse_statsd_server_string, default=None)
 ap.add_argument('--key-prefix', help='metric key prefix',
                 type=parse_prefix_string, default='ResourceLoader')
+ap.add_argument('--statsd-server', help='statsd server',
+                type=parse_statsd_server_string, default=None)
 args = ap.parse_args()
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-
-class ResourceLoaderLogger(object):
-
-    def __init__(self):
-        self.stats = {}
-        self.status = None
-        self.reset()
-
-    def reset(self):
-        if self.status is not None:
-            self.commit()
-        self.tid = None
-        self.has_version = False
-        self.next_states = ('RxURL',)
-        self.status = None
-        self.cache_control = False
-        self.if_none_match = False
-
-    def commit(self):
-        keys = [
-            'reqs.all',
-            'resps.%s' % self.status,
-            'responses.%s_cache_control.%s' % (
-                self.cache_control or 'no', self.status),
-        ]
-        if self.if_none_match:
-            keys.append('reqs.if_none_match')
-
-        for key in keys:
-            self.stats[key] = self.stats.get(key, 0) + 1
-
-        if sum(self.stats.values()) > 1e4:
-            buf = io.BytesIO()
-            while self.stats:
-                key, value = self.stats.popitem()
-                metric = '%s.%s:%s|c\n' % (args.key_prefix, key, value)
-                buf.write(metric.encode('utf-8'))
-            buf.seek(io.SEEK_SET)
-            if args.statsd_server:
-                sock.sendto(buf.read(), args.statsd_server)
-            else:
-                print(buf.read().decode('utf-8').rstrip())
-
-    def vsl_callback(self, tid, tag, record, remote_party):
-        if tag == 'RxURL':
-            self.on_RxURL(tid, record)
-        elif (tag not in self.next_states or
-                (self.tid is not None and tid != self.tid)):
-            # Out-of-sequence log record.
-            self.reset()
-        elif tag == 'RxHeader':
-            self.on_RxHeader(tid, record)
-        elif tag == 'TxHeader':
-            self.on_TxHeader(tid, record)
-        elif tag == 'TxStatus':
-            self.on_TxStatus(tid, record)
-        return 0
-
-    def on_RxURL(self, tid, url):
-        self.reset()
-        if url.startswith('/w/load.php'):
-            self.tid = tid
-            self.has_version = '&version=' in url
-            self.next_states = ('RxHeader', 'TxStatus')
-
-    def on_TxStatus(self, tid, status):
-        self.status = status
-        self.next_states = ('TxHeader',)
-
-    def on_RxHeader(self, tid, header):
-        if re.match(r'if-none-match', header, re.I):
-            self.if_none_match = True
-            self.next_states = ('TxStatus',)
-
-    def on_TxHeader(self, tid, header):
-        match = re.match(r'cache-control:.*max-age=(\d+)', header, re.I)
-        if match:
-            max_age = match.group(1)
-            if max_age == '2592000':
-                self.cache_control = 'long'
-            elif max_age == '300':
-                self.cache_control = 'short'
-            else:
-                self.cache_control = 'other'
-            self.next_states = ()
-
-
-logger = ResourceLoaderLogger()
-varnishlog.varnishlog((
-    ('n', 'frontend'),  # Consider the frontend Varnish instance
-    ('c', None),        # Only consider interactions with the client
-    ('i', 'TxStatus'),  # Get TxStatus for the HTTP status code
-    ('i', 'RxHeader'),  # Get RxHeader for If-None-Match header
-    ('i', 'TxHeader'),  # Cache-control: public, max-age=300, s-maxage=300'
-    ('i', 'RxURL'),     # Get RxURL to match /w/load.php
-    ('C', ''),          # Use case-insensitive matching
-    ('I', '^(/w/load\.php'   # ...to match ResourceLoader RxURLs
-          '|if-none-match'   # ...or If-None-Match RxHeaders
-          '|cache-control'   # ...or Cache-Control TxHeaders
-          '|[1-5]\d{2}$)'),  # ...or RxStatus codes
-), logger.vsl_callback)
+lp = ResourceLoaderVarnishLogProcessor(args.key_prefix, args.statsd_server)
+lp.start()
