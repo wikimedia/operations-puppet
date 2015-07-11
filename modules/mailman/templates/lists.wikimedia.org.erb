@@ -2,14 +2,14 @@
 
 <VirtualHost *:80>
     ServerAdmin webmaster@wikimedia.org
-    ServerName lists.wikimedia.org
+    ServerName <%= @lists_servername %>
     RewriteEngine on
-    RewriteRule ^/(.*)$ https://lists.wikimedia.org/$1 [R=301]
+    RewriteRule ^/(.*)$ https://<%= @lists_servername %>/$1 [R=301]
 </VirtualHost>
 
 <VirtualHost *:443>
     ServerAdmin webmaster@wikimedia.org
-    ServerName lists.wikimedia.org
+    ServerName <%= @lists_servername %>
     SSLEngine On
     SSLCertificateFile /etc/ssl/localcerts/lists.wikimedia.org.crt
     SSLCertificateChainFile /etc/ssl/localcerts/lists.wikimedia.org.chain.crt
@@ -42,8 +42,8 @@
     Alias /pipermail/ "/var/lib/mailman/archives/public/"
     Alias /images/    "/usr/share/images/"
 
-    RedirectMatch permanent ^/(index\.html?)?$ https://lists.wikimedia.org/mailman/listinfo
-    RedirectMatch permanent ^/mailman/$        https://lists.wikimedia.org/mailman/listinfo
+    RedirectMatch permanent ^/(index\.html?)?$ https://<%= @lists_servername %>/mailman/listinfo
+    RedirectMatch permanent ^/mailman/$        https://<%= @lists_servername %>/mailman/listinfo
 
     # arbcom-l paranoia. Contact Tim Starling for details/rationale
     <LocationMatch "^/mailman/(private|admin)/arbcom-l(/.*|$)">
@@ -69,18 +69,18 @@
     RewriteRule ^(.*)$ - [F]
 
     # list renames
-    Redirect permanent /mailman/listinfo/foundation-l         https://lists.wikimedia.org/mailman/listinfo/wikimedia-l
-    Redirect permanent /mailman/listinfo/museum-l             https://lists.wikimedia.org/mailman/listinfo/glam
-    Redirect permanent /mailman/listinfo/mediawiki-cvs        https://lists.wikimedia.org/mailman/listinfo/mediawiki-commits
-    Redirect permanent /mailman/listinfo/wsor                 https://lists.wikimedia.org/mailman/listinfo/wmfresearch
-    Redirect permanent /mailman/listinfo/chaptercommittee-l   https://lists.wikimedia.org/mailman/listinfo/affcom
-    Redirect permanent /mailman/listinfo/allhands             https://lists.wikimedia.org/mailman/listinfo/wmfreqs
-    Redirect permanent /mailman/listinfo/research-team        https://lists.wikimedia.org/mailman/listinfo/research-internal
-    Redirect permanent /mailman/listinfo/wikidata-l           https://lists.wikimedia.org/mailman/listinfo/wikidata
-    Redirect permanent /mailman/listinfo/pywikipedia-l        https://lists.wikimedia.org/mailman/listinfo/pywikibot
-    Redirect permanent /mailman/listinfo/pywikipedia-announce https://lists.wikimedia.org/mailman/listinfo/pywikibot-announce
-    Redirect permanent /mailman/listinfo/pywikipedia-bugs     https://lists.wikimedia.org/mailman/listinfo/pywikibot-bugs
+    Redirect permanent /mailman/listinfo/foundation-l         https://<%= @lists_servername %>/mailman/listinfo/wikimedia-l
+    Redirect permanent /mailman/listinfo/museum-l             https://<%= @lists_servername %>/mailman/listinfo/glam
+    Redirect permanent /mailman/listinfo/mediawiki-cvs        https://<%= @lists_servername %>/mailman/listinfo/mediawiki-commits
+    Redirect permanent /mailman/listinfo/wsor                 https://<%= @lists_servername %>/mailman/listinfo/wmfresearch
+    Redirect permanent /mailman/listinfo/chaptercommittee-l   https://<%= @lists_servername %>/mailman/listinfo/affcom
+    Redirect permanent /mailman/listinfo/allhands             https://<%= @lists_servername %>/mailman/listinfo/wmfreqs
+    Redirect permanent /mailman/listinfo/research-team        https://<%= @lists_servername %>/mailman/listinfo/research-internal
+    Redirect permanent /mailman/listinfo/wikidata-l           https://<%= @lists_servername %>/mailman/listinfo/wikidata
+    Redirect permanent /mailman/listinfo/pywikipedia-l        https://<%= @lists_servername %>/mailman/listinfo/pywikibot
+    Redirect permanent /mailman/listinfo/pywikipedia-announce https://<%= @lists_servername %>/mailman/listinfo/pywikibot-announce
+    Redirect permanent /mailman/listinfo/pywikipedia-bugs     https://<%= @lists_servername %>/mailman/listinfo/pywikibot-bugs
 
-    ErrorLog /var/log/apache2/lists.wikimedia.org-error.log
-    CustomLog /var/log/apache2/lists.wikimedia.org-access.log combined
+    ErrorLog /var/log/apache2/<%= @lists_servername %>-error.log
+    CustomLog /var/log/apache2/<%= @lists_servername %>-access.log combined
 </VirtualHost>
