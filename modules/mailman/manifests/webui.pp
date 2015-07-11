@@ -9,6 +9,7 @@ class mailman::webui {
         'auth_digest',
     ]: }
 
+    $lists_servername = hiera('mailman::lists_servername')
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
     apache::site { 'lists.wikimedia.org':
         content => template('mailman/lists.wikimedia.org.erb'),
