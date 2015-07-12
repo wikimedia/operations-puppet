@@ -50,13 +50,22 @@ class ResourceLoaderVarnishLogProcessor:
 
     def handle_log_record(self, transaction_id, tag, record, remote_party):
         """VSL_handler_f callback function."""
-        transaction = self.transactions.setdefault(transaction_id, {})
-        if tag == 'RxURL' and transaction:
-            transaction.clear()
-        transaction[tag] = record
-        if tag == 'ReqEnd':
-            del self.transactions[transaction_id]
-            self.process_transaction(transaction)
+        if tag == 'RxURL':
+            # RxURL is the first tag we expect. If there are any existing
+            # records for this transaction ID, we clear them away.
+            self.transactions[transaction_id] = {tag: record}
+        elif tag == 'ReqEnd':
+            # ReqEnd is the last tag we expect. We pop the transaction's
+            # records from the buffer and process it.
+            transaction = self.transactions.pop(transaction_id, None)
+            if transaction is not None:
+                transaction[tag] = record
+                self.process_transaction(transaction)
+        else:
+            # All other tags are buffered.
+            transaction = self.transactions.get(transaction_id)
+            if transaction is not None:
+                transaction[tag] = record
         return 0
 
     def process_transaction(self, transaction):
@@ -67,16 +76,14 @@ class ResourceLoaderVarnishLogProcessor:
         if 'RxHeader' in transaction:
             metric_keys.append('reqs.if_none_match')
 
-        cache_control_header = transaction.get('TxHeader', '')
-        match = re.search(r'(?<=max-age=)\d+', cache_control_header)
-        if match:
-            cache_control = 'short' if match.group() == '300' else 'long'
-        else:
-            cache_control = 'no'
+        cache_control_header = transaction.get('TxHeader')
+        cache_control = 'no'
+        if cache_control_header:
+            match = re.search(r'(?<=max-age=)\d+', cache_control_header)
+            if match:
+                cache_control = 'short' if match.group() == '300' else 'long'
         metric_keys.append('responses.%s_cache_control.%s' %
                            (cache_control, status_code))
-
-        # backend_resp_time = transaction['ReqEnd'].split()[4]
 
         for key in metric_keys:
             self.stats[key] = self.stats.get(key, 0) + 1
