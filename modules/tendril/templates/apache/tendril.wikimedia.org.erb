@@ -30,6 +30,10 @@ NameVirtualHost *:443
         <% @ldap_groups.each do |group| -%>
         Require ldap-group <%= group %>
         <% end -%>
+        RewriteEngine on
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^.*$ /index.php [NC,L,QSA]
     </Directory>
 </VirtualHost>
 
