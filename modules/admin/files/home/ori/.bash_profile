@@ -75,6 +75,10 @@ lat()        { ls -lat *"${@:+.}${@}" | head; }
 sudo()       { command sudo -E "$@"; }
 hbnt()       { /usr/bin/comm -23 "$1" "$2"; } # Here but not there (lines in $1 that are not in $2)
 bhat()       { /usr/bin/comm -12 "$1" "$2"; } # Both here and there (lines common to both $1 and $2)
+cleanup()    {
+  mkdir -p ~/old
+  find ~ -type f \( ! -iname ".*" \) -maxdepth 1 -exec mv {} ~/old \;
+}
 
 ptop()       {
   args=( top )

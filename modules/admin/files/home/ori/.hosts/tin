@@ -42,7 +42,7 @@ fetch() {
     cd "$MEDIAWIKI_STAGING_DIR"
     if [ "$1" = "config" ]; then
         cd wmf-config
-        git fetch origin 2>&1 /dev/null
+        git fetch origin 2>&1 >/dev/null
         git --no-pager diff HEAD origin
     else
         branch_dir=$(find . -maxdepth 1 -type d -iregex "./php-[0-9.]+wmf$1")
