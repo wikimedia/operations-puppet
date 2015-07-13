@@ -51,7 +51,6 @@ class role::beta::puppetmaster {
 # = Class: role::beta::availability_collector
 # collect availability metrics for the beta / staging clusters
 class role::beta::availability_collector {
-    include ::diamond
     diamond::collector { 'VarnishStatus':
         source   => 'puppet:///modules/diamond/collector/varnishstatus.py',
         settings => {
