@@ -21,9 +21,8 @@
 # Reference to a SSH user/private key hold in the Jenkins credential stores.
 # Used by Jenkins to ssh to instances.
 #
-# [*jenkins_ssh_private_key_source*]
-# Puppet resource providing a private SSH key. Used by Jenkins and Nodepool to
-# ssh to instances.
+# [*jenkins_ssh_private_key*]
+# The private SSH key. Used by Jenkins and Nodepool to ssh to instances.
 #
 # [*jenkins_ssh_public_key*]
 # Public SSH key for above private key. Used by Jenkins and Nodepool to ssh to
@@ -46,7 +45,7 @@ class nodepool(
     $jenkins_api_user,
     $jenkins_api_key,
     $jenkins_credentials_id,
-    $jenkins_ssh_private_key_source,
+    $jenkins_ssh_private_key,
     $jenkins_ssh_public_key,
     $openstack_auth_uri,
     $openstack_username,
@@ -134,11 +133,11 @@ class nodepool(
     }
     # Private SSH key
     file { '/var/lib/nodepool/.ssh/dib_jenkins_id_rsa':
-        ensure => present,
-        source => $jenkins_ssh_private_key_source,
-        owner  => 'nodepool',
-        group  => 'nodepool',
-        mode   => '0600',
+        ensure  => present,
+        content => $jenkins_ssh_private_key,
+        owner   => 'nodepool',
+        group   => 'nodepool',
+        mode    => '0600',
     }
     # Matching public SSH key
     file { '/var/lib/nodepool/.ssh/dib_jenkins_id_rsa.pub':
