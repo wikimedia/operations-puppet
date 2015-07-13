@@ -1,39 +1,11 @@
 class base {
     include apt
 
-    if ($::realm == 'labs') {
-        include apt::unattendedupgrades,
-            apt::noupgrade
-    }
-
     file { '/usr/local/sbin':
         ensure => directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-    }
-
-    if ($::realm == 'labs') {
-        # Labs instances /var is quite small, provide our own default
-        # to keep less records (T71604).
-        file { '/etc/default/acct':
-            ensure => present,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/base/labs-acct.default',
-        }
-
-        if $::operatingsystem == 'Debian' {
-            # Turn on idmapd by default
-            file { '/etc/default/nfs-common':
-                ensure => present,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0444',
-                source => 'puppet:///modules/base/labs/nfs-common.default',
-            }
-        }
     }
 
     $puppetmaster =  hiera('puppetmaster')
