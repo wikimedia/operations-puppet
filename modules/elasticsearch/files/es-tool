@@ -180,6 +180,14 @@ def es_restart_fast():
         return os.EX_UNAVAILABLE
     printu("ok\n")
 
+    # gmond sometimes (lots of times) doesn't pick up stats after a restart
+    printu("Restarting gmond...")
+    try:
+        subprocess.check_call(["service", "ganglia-monitor", "restart"])
+    except CalledProcessError:
+        print "failed! -- You may wish to restart ganglia yourself",
+        print "with `service ganglia-monitor restart`"
+
     # Wait a bit
     time.sleep(5)
     print "Waiting for green (you can ctrl+c here if you have to)...\n"
