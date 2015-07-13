@@ -81,13 +81,13 @@ class role::mail::lists {
 
     interface::ip { 'lists.wikimedia.org_v4':
         interface => 'eth0',
-        address   => hiera('mailman::lists_ipv4'),
+        address   => '208.80.154.4',
         prefixlen => '32',
     }
 
     interface::ip { 'lists.wikimedia.org_v6':
         interface => 'eth0',
-        address   => hiera('mailman::lists_ipv6'),
+        address   => '2620:0:861:1::2',
         prefixlen => '128',
     }
 
