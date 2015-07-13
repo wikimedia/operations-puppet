@@ -48,7 +48,7 @@ class role::cache::2layer(
         '^cp30(0[3-9]|1[0-8])' => 3,  # older esams cp30xx
     ]
     $pybal_weight_eqiad_upload = [
-        '^cp107[1-4]'          => 9, # newer eqiad cp10xx
+        '^cp107[1-4]'          => 8, # newer eqiad cp10xx
         '^cp10..'              => 4, # older eqiad cp10xx
     ]
 
