@@ -14,7 +14,6 @@ class role::cache::ssl::misc {
     }
 
     role::cache::ssl::local { 'planet.wikimedia.org':
-        do_ocsp        => true,
         certs          => ['star.planet.wikimedia.org'],
         server_name    => 'planet.wikimedia.org',
         server_aliases => ['*.planet.wikimedia.org'];
