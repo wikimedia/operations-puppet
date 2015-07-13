@@ -78,7 +78,7 @@ class role::puppetmaster::labs {
     }
 
     class { '::puppetmaster':
-        server_name => hiera('labs_puppet_master'),
+        server_name => hiera('puppetmaster'),
         allow_from  => $allow_from,
         config      => {
             'thin_storeconfigs' => false,

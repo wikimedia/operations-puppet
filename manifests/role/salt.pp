@@ -25,7 +25,8 @@ class role::salt::masters::production {
 # A salt master that manages all labs minions
 class role::salt::masters::labs {
 
-    $puppet_master = hiera('labs_puppet_master')
+    $salt_master = hiera('labs_salt_master')
+    $puppet_master = hiera('puppetmaster')
 
     $salt_state_roots    = { 'base' =>['/srv/salt']}
     $salt_file_roots     = { 'base' =>['/srv/salt']}
@@ -93,10 +94,10 @@ class role::salt::minions(
     $salt_master_key = $::salt_master_key,
 ) {
     if $::realm == 'labs' {
-        $puppet_master = hiera('labs_puppet_master')
-        $puppet_master_secondary = hiera('labs_puppet_master_secondary')
+        $labs_salt_master = hiera('labs_salt_master')
+        $labs_salt_master_secondary = hiera('labs_salt_master_secondary')
 
-        $labs_masters  = [ $puppet_master, $puppet_master_secondary ]
+        $labs_masters  = [ $labs_salt_master, $labs_salt_master_secondary ]
         $labs_finger   = 'c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd'
         $master        = pick($salt_master, $labs_masters)
         $master_finger = pick($salt_finger, $labs_finger)
