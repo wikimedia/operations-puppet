@@ -91,25 +91,16 @@ module Puppet::Parser::Functions
       'ECDHE-RSA-AES128-SHA256',
       'ECDHE-ECDSA-AES128-SHA',
       'ECDHE-RSA-AES128-SHA',
-      'ECDHE-ECDSA-AES256-SHA384',
-      'ECDHE-RSA-AES256-SHA384',
-      'ECDHE-ECDSA-AES256-SHA',
-      'ECDHE-RSA-AES256-SHA',
       'DHE-RSA-AES128-SHA256',
       'DHE-RSA-AES128-SHA',
-      'DHE-RSA-AES256-SHA256',
-      'DHE-RSA-AES256-SHA',
       'DHE-RSA-CAMELLIA128-SHA',
       'DHE-RSA-CAMELLIA256-SHA',
     ],
     # not-forward-secret compat for ancient stuff
     'compat' => [
       'AES128-GCM-SHA256', # AEAD, but not forward-secret
-      'AES256-GCM-SHA384', # AEAD, but not forward-secret
       'AES128-SHA256',
       'AES128-SHA',
-      'AES256-SHA256',
-      'AES256-SHA',
       'DES-CBC3-SHA', # Only for IE8/XP at this point, I think
     ],
   }
