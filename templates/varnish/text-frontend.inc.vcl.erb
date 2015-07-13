@@ -87,7 +87,7 @@ sub vcl_recv {
 	call mobile_redirect;
 
 	# normalize all /static to the same hostname for caching
-	if (req.url ~ "^/static/") { set req.http.host = "www.wikimedia.org"; }
+	if (req.url ~ "^/static/") { set req.http.host = "<%= scope['role::cache::configuration::static_host'] %>"; }
 
 	if (req.http.host ~ "^test\.") {
 		set req.http.X-Wikimedia-Debug = "1";
