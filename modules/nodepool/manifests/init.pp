@@ -28,8 +28,8 @@
 # Public SSH key for above private key. Used by Jenkins and Nodepool to ssh to
 # instances.
 #
-# [*openstack_auth_uri*]
-# URI to the OpenStack authentication service.
+# [*openstack_auth_url*]
+# URI to the OpenStack authentication entry point.
 #
 # [*openstack_username*]
 # User for the OpenStack API, must be able to upload/delete images and
@@ -47,7 +47,7 @@ class nodepool(
     $jenkins_credentials_id,
     $jenkins_ssh_private_key,
     $jenkins_ssh_public_key,
-    $openstack_auth_uri,
+    $openstack_auth_url,
     $openstack_username,
     $openstack_password,
     $openstack_tenant_id,
@@ -104,7 +104,7 @@ class nodepool(
     }
 
     $nodepool_user_env = {
-        os_auth_uri  => $openstack_auth_uri,
+        os_auth_url  => $openstack_auth_url,
         os_username  => $openstack_username,
         os_password  => $openstack_password,
         os_tenant_id => $openstack_tenant_id,
