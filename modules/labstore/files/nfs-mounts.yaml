@@ -137,13 +137,6 @@ private:
       home: true
       project: true
       scratch: true
-  pdbhandler:
-    gid: 50240
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   project-proxy:
     gid: 50254
     mounts:
