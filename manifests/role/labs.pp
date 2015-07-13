@@ -52,6 +52,7 @@ class role::labs::instance {
         exec { 'block-for-home-export':
             command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::instanceproject} 180",
             require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
+            unless  => '/bin/mountpoint -q /home',
         }
 
         mount { '/home':
@@ -78,6 +79,7 @@ class role::labs::instance {
         exec { 'block-for-project-export':
             command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::instanceproject} 180",
             require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
+            unless  => '/bin/mountpoint -q /data/project',
         }
 
         file { '/data/project':
