@@ -10,6 +10,7 @@
 #   The host to send stats about cherry-picked commits to
 class puppetmaster::gitsync(
     $repo_path = '/var/lib/git/operations/puppet',
+    $private_repo_path = '/var/lib/git/labs/private',
     $statsd_host = 'labmon1001.eqiad.wmnet',
 ){
 
