@@ -70,3 +70,4 @@ function rebase_repo() {
 }
 
 rebase_repo ops-puppet /var/lib/git/operations/puppet production
+rebase_repo labs-private /var/lib/git/labs/private master
