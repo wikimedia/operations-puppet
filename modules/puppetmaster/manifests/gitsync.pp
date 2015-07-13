@@ -4,18 +4,15 @@
 # Meant for use with local puppetmasters.
 # == Parameters
 #
-# [*repo_path*]
-#   The path to the operations/puppet.git repository
 # [*statsd_host*]
 #   The host to send stats about cherry-picked commits to
 class puppetmaster::gitsync(
-    $repo_path = '/var/lib/git/operations/puppet',
     $statsd_host = 'labmon1001.eqiad.wmnet',
 ){
 
     file { '/usr/local/bin/git-sync-upstream':
         ensure  => present,
-        content => template('puppetmaster/git-sync-upstream.erb'),
+        source  => 'puppet:///modules/puppetmaster/git-sync-upstream',
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
