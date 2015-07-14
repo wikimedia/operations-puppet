@@ -36,10 +36,7 @@ class base {
         }
     }
 
-    $puppetmaster =  $::realm ? {
-        'labs'  => hiera('labs_puppet_master'),
-        default => 'puppet',
-    }
+    $puppetmaster = hiera('puppetmaster')
 
     class { 'base::puppet':
         server   => $puppetmaster,
