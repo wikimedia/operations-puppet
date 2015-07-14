@@ -29,7 +29,7 @@ class icinga::nsca::firewall {
           $ESAMS_PRIVATE_PRIVATE1_ESAMS \
           $ESAMS_PUBLIC_PUBLIC1_ESAMS \
           $ULSFO_PRIVATE_PRIVATE1_ULSFO \
-          $ULSFO_PUBLIC_PUBLIC1_ULSFO \
+          $ULSFO_PUBLIC_PUBLIC1_ULSFO) \
           proto tcp dport 5667 ACCEPT;'
     }
 }
