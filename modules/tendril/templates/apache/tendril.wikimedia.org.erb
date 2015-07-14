@@ -16,7 +16,7 @@ NameVirtualHost *:443
     <Directory "<%= @docroot %>">
         Options FollowSymLinks
         SSLRequireSSL
-        Options ExecCGI
+        Options +ExecCGI +FollowSymLinks
         DirectoryIndex index.php
         AllowOverride All
         Order Allow,Deny
