@@ -6,7 +6,7 @@ class icinga::nsca::firewall {
     # NSCA on port 5667
     ferm::rule { 'ncsa_allowed':
         rule => 'saddr (127.0.0.1 \
-          $CODFW_PRIVATE_PUBLIC_FRACK_CODFW \
+          $CODFW_PRIVATE_PRIVATE_FRACK_CODFW \
           $CODFW_PUBLIC_PUBLIC_FRACK_CODFW \
           $EQIAD_PRIVATE_ANALYTICS1_A_EQIAD \
           $EQIAD_PRIVATE_ANALYTICS1_B_EQIAD \
@@ -29,7 +29,7 @@ class icinga::nsca::firewall {
           $ESAMS_PRIVATE_PRIVATE1_ESAMS \
           $ESAMS_PUBLIC_PUBLIC1_ESAMS \
           $ULSFO_PRIVATE_PRIVATE1_ULSFO \
-          $ULSFO_PUBLIC_PUBLIC1_ULSFO \
+          $ULSFO_PUBLIC_PUBLIC1_ULSFO) \
           proto tcp dport 5667 ACCEPT;'
     }
 }
