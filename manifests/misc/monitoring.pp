@@ -115,8 +115,8 @@ class misc::monitoring::views {
 }
 
 class misc::monitoring::views::dns {
-    $auth_dns_host_regex = '^(radon|baham|eeden).wikimedia.org$'
-    $rec_dns_host_regex = '^(chromium|hydrogen).wikimedia.org$'
+    $auth_dns_host_regex = '^(radon|baham|eeden)\.'
+    $rec_dns_host_regex = '^(chromium|hydrogen|acamar|achernar|maerlant|nescio)\.'
 
     ganglia_new::web::view { 'authoritative_dns':
         ensure      => 'present',
