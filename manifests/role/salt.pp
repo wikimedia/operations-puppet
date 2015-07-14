@@ -25,7 +25,7 @@ class role::salt::masters::production {
 # A salt master that manages all labs minions
 class role::salt::masters::labs {
 
-    $puppet_master = hiera('labs_puppet_master')
+    $puppet_master = hiera('puppetmaster')
 
     $salt_state_roots    = { 'base' =>['/srv/salt']}
     $salt_file_roots     = { 'base' =>['/srv/salt']}
@@ -93,7 +93,7 @@ class role::salt::minions(
     $salt_master_key = $::salt_master_key,
 ) {
     if $::realm == 'labs' {
-        $puppet_master = hiera('labs_puppet_master')
+        $puppet_master = hiera('puppetmaster')
         $puppet_master_secondary = hiera('labs_puppet_master_secondary')
 
         $labs_masters  = [ $puppet_master, $puppet_master_secondary ]
@@ -105,7 +105,7 @@ class role::salt::minions(
             value => $::instanceproject,
         }
     } else {
-        $master        = 'palladium.eqiad.wmnet'
+        $master = 'palladium.eqiad.wmnet'
         $master_finger = 'f6:1d:a7:1f:7e:12:10:40:75:d5:73:af:0c:be:7d:7c'
     }
     $client_id     = $::fqdn
