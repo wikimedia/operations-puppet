@@ -42,7 +42,7 @@ define varnish::instance(
     $varnish_directors = $directors
     $varnish_backend_options = $backend_options
     # $cluster_option is referenced directly
-    $dynamic_directors = hiera('varnish::dynamic_directors', false)
+    $dynamic_directors = hiera('varnish::dynamic_directors', true)
 
     # Install VCL include files shared by all instances
     require varnish::common::vcl
