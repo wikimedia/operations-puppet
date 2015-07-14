@@ -12,7 +12,6 @@ elasticsearch::recover_after_time: '1m'
 # Needed to keep from trying to join cirrussearch cluster
 elasticsearch::unicast_hosts:
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
-elasticsearch::script_disable_dynamic: true
 elasticsearch::auto_create_index: '+logstash-*,-*'
 
 # Logstash specific
