@@ -21,6 +21,11 @@ class statistics::web {
         require => Class['webserver::apache'],
     }
 
+    ferm::service { 'statistics-web':
+        proto   => 'tcp',
+        port    => '(80 443)'
+    }
+
     include ::apache::mod::rewrite
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
