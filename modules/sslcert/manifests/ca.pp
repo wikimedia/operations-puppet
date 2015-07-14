@@ -51,6 +51,8 @@ define sslcert::ca(
         # clean up manually -- update-ca-certificates leaves stale symlinks
         file { "/etc/ssl/certs/${title}.crt":
             ensure  => $ensure,
+            require => Package['ca-certificates'],
+            notify  => Exec['update-ca-certificates'],
         }
     }
 }
