@@ -57,7 +57,7 @@ class labs_bootstrapvz() {
 
     # We can't just use $::servername here because the master
     #  returns labcontrol1001 vs. the service name, labs-puppetmaster-eqiad
-    $puppetmaster = hiera('labs_puppet_master')
+    $puppetmaster = hiera('puppetmaster')
     $masterregex = "s/${puppetmaster}/_MASTER_/g"
 
     Exec { path => '/bin' }

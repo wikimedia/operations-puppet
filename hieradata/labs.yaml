@@ -58,3 +58,4 @@ nfs_mounts:
   scratch: true
   dumps: true
 ssh::server::disable_agent_forwarding: false
+puppetmaster: "labs-puppetmaster-eqiad.wikimedia.org"
