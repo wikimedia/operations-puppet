@@ -1065,6 +1065,7 @@ node 'helium.eqiad.wmnet' {
 node 'heze.codfw.wmnet' {
     include standard
     include role::backup::storage
+    include base::firewall
 }
 
 # Holmium hosts openstack-designate, the labs DNS service.
