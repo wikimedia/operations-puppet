@@ -132,5 +132,11 @@ class role::statistics::web inherits role::statistics {
     include statistics::sites::datasets
     include statistics::sites::metrics
     include statistics::sites::stats
+
+    ferm::service {'statistics-web':
+        proto => 'tcp',
+        port  => '80',
+    }
+
 }
 
