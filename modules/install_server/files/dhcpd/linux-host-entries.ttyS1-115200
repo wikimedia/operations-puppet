@@ -1140,36 +1140,6 @@ host db1001 {
 	fixed-address db1001.eqiad.wmnet;
 }
 
-host db1002 {
-	hardware ethernet 78:2b:cb:03:63:4b;
-	fixed-address db1002.eqiad.wmnet;
-}
-
-host db1003 {
-	hardware ethernet 78:2b:cb:05:02:e3;
-	fixed-address db1003.eqiad.wmnet;
-}
-
-host db1004 {
-	hardware ethernet 78:2b:cb:03:cc:bc;
-	fixed-address db1004.eqiad.wmnet;
-}
-
-host db1005 {
-	hardware ethernet 78:2b:cb:03:60:f9;
-	fixed-address db1005.eqiad.wmnet;
-}
-
-host db1006 {
-	hardware ethernet 78:2b:cb:03:64:8f;
-	fixed-address db1006.eqiad.wmnet;
-}
-
-host db1007 {
-	hardware ethernet 78:2b:cb:04:da:0b;
-	fixed-address db1007.eqiad.wmnet;
-}
-
 host db1009 {
 	hardware ethernet 78:2b:cb:0a:04:1b;
 	fixed-address db1009.eqiad.wmnet;
