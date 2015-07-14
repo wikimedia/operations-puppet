@@ -2169,6 +2169,7 @@ node /^(strontium|rhodium).eqiad.wmnet/ {
 node 'stat1001.eqiad.wmnet' {
     role statistics::web
     include standard
+    include base::firewall
     include role::abacist
 }
 
