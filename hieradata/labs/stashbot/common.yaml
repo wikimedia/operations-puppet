@@ -1,7 +1,6 @@
 ---
 # Elasticsearch
 elasticsearch::auto_create_index: true
-elasticsearch::script_disable_dynamic: true
 elasticsearch::cluster_name: stashbot
 elasticsearch::expected_nodes: 2
 elasticsearch::heap_memory: '8G'

@@ -23,9 +23,6 @@ elasticsearch::plugins_mandatory:
 # lets give them plenty of time to restart.
 elasticsearch::recover_after_time: '20m'
 
-# Enable dynamic scripting
-elasticsearch::script_disable_dynamic: false
-
 # Let apifeatureusage create their indices
 elasticsearch::auto_create_index: '+apifeatureusage-*,-*'
 
