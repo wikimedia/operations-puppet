@@ -1972,6 +1972,7 @@ node 'netmon1001.wikimedia.org' {
     include ganglia::collector
     include role::servermon
     include role::torrus
+    include role::grafana
 
     interface::add_ip6_mapped { 'main': }
 
@@ -2384,7 +2385,6 @@ node 'zirconium.wikimedia.org' {
     include base::firewall
     include standard
     include role::wikimania_scholarships
-    include role::grafana
     include role::iegreview
 
     interface::add_ip6_mapped { 'main':
