@@ -8,7 +8,7 @@ class role::cache::ssl::misc {
 
     role::cache::ssl::local { 'wmfusercontent.org':
         do_ocsp        => true,
-        certs          => ['star.wmfusercontent.org'],
+        certs          => ['ecc-star.wmfusercontent.org', 'star.wmfusercontent.org'],
         server_name    => 'wmfusercontent.org',
         server_aliases => ['*.wmfusercontent.org'];
     }
