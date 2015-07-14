@@ -70,10 +70,10 @@ module Puppet::Parser::Functions
   # General preference ordering for fullest combined list:
   # 0) Kx:   (EC)DHE > RSA    (Forward Secrecy)
   # 1) Mac:  AEAD > ALL       (GCM > CBC)
-  # 2) Enc:  AES128 > AES256  (>CAMELLIA128 > CAMELLIA256)
-  # 3) Mac:  SHA-2 > SHA-1
-  # 4) Auth: ECDSA > RSA      (Server Performance)
-  # 5) Kx:   ECDHE > DHE      (Server Performance)
+  # 2) Kx:   ECDHE > DHE      (Server Perf, may help with DH>1024 compat)
+  # 3) Enc:  AES128 > AES256  (>CAMELLIA128 > CAMELLIA256)
+  # 4) Mac:  SHA-2 > SHA-1
+  # 5) Auth: ECDSA > RSA      (Server Performance)
   basic = {
     # Forward-Secret + AEAD
     'strong' => [
