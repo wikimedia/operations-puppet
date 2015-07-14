@@ -57,7 +57,6 @@
 #       node.
 # - $statsd_host: host to send statsd data to
 # - $merge_threads: Number of merge threads to use. Default 3
-# - $script_disable_dynamic: Disable dynamic scripting. Default true.
 #
 # == Sample usage:
 #
@@ -85,8 +84,7 @@ class elasticsearch($cluster_name,
                     $bulk_thread_pool_executors = undef,
                     $bulk_thread_pool_capacity = undef,
                     $statsd_host = undef,
-                    $merge_threads = 3,
-                    $script_disable_dynamic = true) {
+                    $merge_threads = 3) {
 
     include ::elasticsearch::packages
 
