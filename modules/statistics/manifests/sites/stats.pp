@@ -37,12 +37,4 @@ class statistics::sites::stats {
     apache::site { 'stats.wikimedia.org':
         content => template('statistics/stats.wikimedia.org.erb'),
     }
-
-    file { '/etc/apache2/ports.conf':
-        ensure => 'present',
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///files/apache/ports.conf.ssl',
-    }
 }
