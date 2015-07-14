@@ -19,8 +19,9 @@ class role::poolcounter{
 
     # firewalling
     ferm::service { 'poolcounterd':
-        proto  => 'tcp',
-        port   => '7531',
-        srange => '$ALL_NETWORKS',
+        proto   => 'tcp',
+        port    => '7531',
+        srange  => '$ALL_NETWORKS',
+        notrack => true,
     }
 }
