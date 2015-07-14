@@ -15,46 +15,46 @@ class role::coredb::config {
             'no_master'    => [ 'db1050', 'db1055' ]
         },
         's2' => {
-            'hosts' => { 'eqiad' => [ 'db1002', 'db1009', 'db1018', 'db1024', 'db1036', 'db1060', 'db1063', 'db1067' ] },
+            'hosts' => { 'eqiad' => [ 'db1009', 'db1018', 'db1024', 'db1036', 'db1060', 'db1063', 'db1067' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'eqiad' => 'db1024' },
             'snapshot'     => [ 'db1018' ],
-            'no_master'    => [ 'db1002', 'db1018' ]
+            'no_master'    => [ 'db1018' ]
         },
         's3' => {
-            'hosts' => { 'eqiad' => [ 'db1003', 'db1019', 'db1027', 'db1035', 'db1038' ] },
+            'hosts' => { 'eqiad' => [ 'db1019', 'db1027', 'db1035', 'db1038' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'eqiad' => 'db1038' },
             'snapshot'     => [ 'db1035' ],
-            'no_master'    => [ 'db1003', 'db1035' ]
+            'no_master'    => [ 'db1035' ]
         },
         's4' => {
-            'hosts' => { 'eqiad' => [ 'db1004', 'db1040', 'db1042', 'db1056', 'db1059', 'db1064', 'db1068' ] },
+            'hosts' => { 'eqiad' => [ 'db1040', 'db1042', 'db1056', 'db1059', 'db1064', 'db1068' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'eqiad' => 'db1040' },
             'snapshot'     => [ 'db1042' ],
-            'no_master'    => [ 'db1004', 'db1042' ]
+            'no_master'    => [ 'db1042' ]
         },
         's5' => {
-            'hosts' => { 'eqiad' => [ 'db1005', 'db1021', 'db1026', 'db1037', 'db1045', 'db1049', 'db1058' ] },
+            'hosts' => { 'eqiad' => [ 'db1021', 'db1026', 'db1037', 'db1045', 'db1049', 'db1058' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'eqiad' => 'db1058' },
-            'snapshot'     => [ 'db1005' ],
-            'no_master'    => [ 'db1005', 'db1026' ]
+            'snapshot'     => [ ],
+            'no_master'    => [ 'db1026' ]
         },
         's6' => {
-            'hosts' => { 'eqiad' => [ 'db1006', 'db1010', 'db1015', 'db1022', 'db1023', 'db1030' ] },
+            'hosts' => { 'eqiad' => [ 'db1010', 'db1015', 'db1022', 'db1023', 'db1030' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'eqiad' => 'db1023' },
             'snapshot'     => [ 'db1022' ],
             'no_master'    => [ 'db1022', 'db1010' ]
         },
         's7' => {
-            'hosts' => { 'eqiad' => [ 'db1007', 'db1028', 'db1033', 'db1034', 'db1039', 'db1041' ] },
+            'hosts' => { 'eqiad' => [ 'db1028', 'db1033', 'db1034', 'db1039', 'db1041' ] },
             'primary_site' => $::mw_primary,
             'masters'      => { 'eqiad' => 'db1033' },
-            'snapshot'     => [ 'db1007' ],
-            'no_master'    => [ 'db1007', 'db1041' ]
+            'snapshot'     => [ ],
+            'no_master'    => [ 'db1041' ]
         },
         'x1' => {
             'hosts' => {
