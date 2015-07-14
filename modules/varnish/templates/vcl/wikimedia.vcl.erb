@@ -214,11 +214,8 @@ sub https_recv_redirect {
 			// wikimedia.org has multi-level subdomains used for HTTP for which we have no certs, so they must be avoided here:
 			// Ref: T102826 + T102827
 			else if(req.http.Host ~ "(?i)^([^.]+\.)?(m\.)?wikimedia\.org$") {
-				// For now, avoid matching commons for MW UAs. Ref: T102566
-				if (!(req.http.Host ~ "(?i)^commons\.wikimedia\.org$" && req.http.User-Agent ~ "^MediaWiki/")) {
-					set req.http.Location = "https://" + req.http.Host + req.url;
-					error 751 "TLS Redirect";
-				}
+				set req.http.Location = "https://" + req.http.Host + req.url;
+				error 751 "TLS Redirect";
 			}
 		}
 <% if @vcl_config.fetch("secure_post", true) -%>
