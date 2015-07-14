@@ -22,6 +22,7 @@ class mediawiki::hhvm {
     class { '::hhvm':
         user          => $::mediawiki::users::web,
         group         => $::mediawiki::users::web,
+        cache_dir     => '/var/cache/hhvm',
         fcgi_settings => {
             hhvm => {
                 xenon          => {
