@@ -3,6 +3,8 @@
 import argparse
 import ipaddr
 import os
+import logging
+import re
 import subprocess
 import sys
 import time
@@ -14,6 +16,13 @@ from subprocess import CalledProcessError
 
 # How many times to try re-enabling allocation
 REPLICATION_ENABLE_ATTEMPTS = 10
+
+
+# We pipe things here....
+DEV_NULL = open(os.devnull, 'w')
+
+# Lets use a basic logging configuration so it doesn't blow up
+logging.basicConfig(level=logging.ERROR)
 
 
 # Helper functions go here
@@ -121,7 +130,7 @@ def printu(string):
     sys.stdout.flush()
 
 
-def es_restart_fast():
+def es_restart_fast(while_down):
     # Sanity checks
     if os.getuid() != 0:
         print "Must be run as root"
@@ -137,13 +146,56 @@ def es_restart_fast():
         return os.EX_UNAVAILABLE
     printu("ok\n")
 
-    # Actually restart the service
+    printu("Stopping elasticsearch...")
     try:
-        subprocess.check_call(["service", "elasticsearch", "restart"])
+        process_args = ["service", "elasticsearch", "stop"]
+        subprocess.check_call(process_args, stdout=DEV_NULL)
     except CalledProcessError:
-        print "failed! -- You will still need to enable replication again",
-        print "with `es-tool start-replication`"
+        print "failed! Elasticserch is probably not stopped but you will ",
+        print "need to enable replication again with",
+        print "`es-tool start-replication`"
         return os.EX_UNAVAILABLE
+    printu("ok\n")
+
+    printu("Double checking elasticsearch is stopped...")
+    end = time.time()
+    contains_re = re.compile("java.*elasticsearch-\\d+\\.\\d+\\.\\d\\.jar")
+    while True:
+        try:
+            ps = subprocess.Popen(["ps", "auxww"], stdout=subprocess.PIPE)
+            ps_out, _ = ps.communicate()
+            if contains_re.search(ps_out):
+                if time.time() > end + 240:
+                    print "betrayal! Elasticserch never stopped! You will",
+                    print "need to enable replication again with",
+                    print "`es-tool start-replication`"
+                    return os.EX_UNAVAILABLE
+                else:
+                    printu(".")
+                    time.sleep(1)
+                continue
+            break
+        except CalledProcessError:
+            print "failed to read processes! Elasticserch is probably stopped",
+            print "and you will need to enable replication again with",
+            print "`es-tool start-replication`"
+            return os.EX_UNAVAILABLE
+    printu("ok\n")
+
+    error = while_down()
+    if error:
+        return error
+
+    printu("Starting elasticsearch...")
+    try:
+        process_args = ["service", "elasticsearch", "start"]
+        subprocess.check_call(process_args, stdout=DEV_NULL)
+    except CalledProcessError:
+        print "failed! Elasticsearch is probably still stopped so you will",
+        print "to start it again and then reenable replication with",
+        print "`es-tool start-replication`"
+        return os.EX_UNAVAILABLE
+    printu("ok\n")
 
     # Wait for it to come back alive
     printu("Waiting for Elasticsearch...")
@@ -194,6 +246,36 @@ def es_restart_fast():
     return os.EX_OK
 
 
+def es_upgrade_fast():
+    def upgrade_commands():
+        printu("Updating apt...")
+        try:
+            subprocess.check_call(["apt-get", "update"], stdout=DEV_NULL)
+        except CalledProcessError:
+            print "failed! Elasticsearch is probably still stopped so you",
+            print "will have to start it again and then reenable replication",
+            print "with `es-tool start-replication`"
+            return os.EX_UNAVAILABLE
+        printu("ok\n")
+
+        printu("Installing Elasticsearch...")
+        try:
+            process_args = [
+                "apt-get",
+                "-o", 'Dpkg::Options::="--force-confdef"',
+                "-o", 'Dpkg::Options::="--force-confold"',
+                "install", "elasticsearch"]
+            subprocess.check_call(process_args, stdout=DEV_NULL)
+        except CalledProcessError:
+            print "failed! Elasticsearch is probably still stopped so you",
+            print "will have to start it again and then reenable replication",
+            print "with `es-tool start-replication`"
+            return os.EX_UNAVAILABLE
+        printu("ok\n")
+
+    es_restart_fast(upgrade_commands)
+
+
 def es_start_replication():
     if set_allocation_state("all"):
         print "All replication enabled"
@@ -236,7 +318,8 @@ def es_unban_node():
 commands = {
     "ban-node": es_ban_node,
     "health": es_health,
-    "restart-fast": es_restart_fast,
+    "restart-fast": (lambda: es_restart_fast(lambda: 0)),
+    "upgrade-fast": es_upgrade_fast,
     "start-replication": es_start_replication,
     "stop-replication": es_stop_replication,
     "unban-node": es_unban_node,
