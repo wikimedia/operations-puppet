@@ -11,7 +11,7 @@ class role::maps::master {
 
     $postgres_slaves = hiera('postgresql::master::postgres_slaves', undef)
     if $postgres_slaves {
-        create_resources(postgresql::user, postgresql::master::postgres_slaves)
+        create_resources(postgresql::user, $postgres_slaves)
     }
 }
 
