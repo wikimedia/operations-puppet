@@ -1,0 +1,15 @@
+[Unit]
+Description=Sentry error logging and aggregation service
+Documentation=http://sentry.readthedocs.org/en/latest/
+
+[Service]
+Type=simple
+ExecStart=<%= @sentry_cli %> start
+User=<%= @user %>
+Group=<%= @group %>
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+
