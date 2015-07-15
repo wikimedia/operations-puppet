@@ -5,8 +5,9 @@ After=network.target
 [Service]
 User=<%= @user %>
 Group=<%= @group %>
+WorkingDirectory=<%= @working_dir %>
 ExecStart=<%= @celery_bin_path %> worker \
-    --app <%= @app %> --workingdir <%= @working_dir %>
+    --app <%= @app %>
 
 [Install]
 WantedBy=multi-user.target
