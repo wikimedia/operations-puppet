@@ -606,6 +606,7 @@ registry:
         - 'gl'
         - 'sh'
       'eo':
+        - 'en'
         - 'simple'
       'es':
         - 'an'
