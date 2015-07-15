@@ -8,7 +8,7 @@ class ores::base(
     # this to deb packages in the future if needed. We also install build tools
     # because they are needed by pip to install scikit.
     # FIXME: Use debian packages for all the packages needing compilation
-    require_package('python-virtualenv', 'python3-dev', 'build-essential',
+    require_package('virtualenv', 'python3-dev', 'build-essential',
                     'gfortran', 'libopenblas-dev', 'liblapack-dev')
 
     # Install scipy via debian package so we don't need to build it via pip
