@@ -2,6 +2,7 @@ class role::maps::master {
     include standard
     include ::postgresql::master
     include ::postgresql::postgis
+    include ::cassandra
     postgresql::spatialdb { 'gis': }
 
     system::role { 'role::maps::master':
@@ -19,6 +20,7 @@ class role::maps::slave {
     include standard
     include ::postgresql::slave
     include ::postgresql::postgis
+    include ::cassandra
 
     system::role { 'role::maps::slave':
         ensure      => 'present',

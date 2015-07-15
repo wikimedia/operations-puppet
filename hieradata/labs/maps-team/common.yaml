@@ -17,3 +17,7 @@ postgresql::master::postgres_slaves:
     attrs: 'REPLICATION'
     database: 'replication'
     pgversion: 9.4
+cassandra::cluster_name: Test cluster
+cassandra::seeds: [ '10.68.18.8', '10.68.18.9', '10.68.17.13', ]
+cassandra::dc: mydc
+cassandra::rack: myrack
