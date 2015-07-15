@@ -22,6 +22,7 @@ class role::maps::slave {
     include standard
     include ::postgresql::slave
     include ::postgresql::postgis
+    include ::cassandra
 
     system::role { 'role::maps::slave':
         ensure      => 'present',
