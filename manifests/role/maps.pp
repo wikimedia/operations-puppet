@@ -2,7 +2,10 @@ class role::maps::master {
     include standard
     include ::postgresql::master
     include ::postgresql::postgis
-    postgresql::spatialdb { 'gis': }
+    include ::cassandra
+    postgresql::spatialdb { 'gis':
+        require => Class['::postgresql::postgis'],
+    }
 
     system::role { 'role::maps::master':
         ensure      => 'present',

@@ -60,7 +60,10 @@ class postgresql::slave(
         group   => 'root',
         mode    => '0444',
         content => template('postgresql/recovery.conf.erb'),
-        require => Class['postgresql::server'],
+        require => [
+                    Class['postgresql::server'],
+                    Exec["pg_basebackup-${master_server}"],
+                ]
     }
 
     # Let's sync once all our content from the master
