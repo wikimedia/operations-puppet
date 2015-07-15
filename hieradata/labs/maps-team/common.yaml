@@ -5,8 +5,15 @@ postgresql::slave::master_server: mapsmaster01.eqiad.wmflabs
 postgresql::slave::replication_pass: justapass
 postgresql::master::postgres_slaves:
   replication@mapsslave01-v4:
+    user: replication
     password: justapass
     cidr: 10.68.18.8/32
+    attrs: 'REPLICATION'
+    database: 'replication'
+    pgversion: 9.4
   replication@mapsslave02-v4:
     password: justapass
-    cidr: 10.68.18.9/32
+    cidr: 10.68.18.8/32
+    attrs: 'REPLICATION'
+    database: 'replication'
+    pgversion: 9.4
