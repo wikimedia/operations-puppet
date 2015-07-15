@@ -49,10 +49,9 @@ define sslcert::ca(
 
     if $ensure == 'absent' {
         # clean up manually -- update-ca-certificates leaves stale symlinks
-        file { "/etc/ssl/certs/${title}.crt":
-            ensure  => $ensure,
-            require => Package['ca-certificates'],
-            notify  => Exec['update-ca-certificates'],
+        file { "/etc/ssl/certs/${title}.pem":
+            ensure => $ensure,
+            before => File["/usr/local/share/ca-certificates/${title}.crt"],
         }
     }
 }
