@@ -13,6 +13,7 @@ postgresql::master::postgres_slaves:
     database: 'replication'
     pgversion: 9.4
   replication@mapsslave02-v4:
+    user: replication
     password: justapass
     cidr: 10.68.18.8/32
     attrs: 'REPLICATION'
