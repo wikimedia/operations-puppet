@@ -1,0 +1,37 @@
+# based on https://sentry.readthedocs.org/en/latest/nginx.html
+# but we have another proxy at front which is the end point for HTTPS
+# so X-Forwarded-For / X-Forwarded-Proto headers should not be clobbered here
+
+map $http_x_forwarded_proto $is_insecure {
+  default 1;
+ 'https' 0;
+}
+
+server {
+  listen 80;
+
+  proxy_redirect     off;
+  proxy_set_header   Host              $host;
+
+  # keepalive + raven.js is a disaster
+  keepalive_timeout 0;
+
+  # use very aggressive timeouts
+  proxy_read_timeout 5s;
+  proxy_send_timeout 5s;
+  send_timeout 5s;
+  resolver_timeout 5s;
+  client_body_timeout 5s;
+
+  # buffer larger messages
+  client_max_body_size 5m;
+  client_body_buffer_size 100k;
+
+  location / {
+    if ( $is_insecure ) {
+      return 301 https://$host$request_uri;
+    }
+
+    proxy_pass         http://localhost:9000;
+  }
+}
