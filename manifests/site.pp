@@ -2401,7 +2401,6 @@ node 'ytterbium.wikimedia.org' {
 node 'zirconium.wikimedia.org' {
     include base::firewall
     include standard
-    include role::wikimania_scholarships
     include role::grafana
     include role::iegreview
 
