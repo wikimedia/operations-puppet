@@ -57,3 +57,4 @@ nfs_mounts:
   dumps: true
 ssh::server::disable_agent_forwarding: false
 puppetmaster: "labs-puppetmaster-eqiad.wikimedia.org"
+postgresql::db::enabled: true

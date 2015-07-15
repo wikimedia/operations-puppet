@@ -1,0 +1,13 @@
+sentry::user: 'sentry'
+sentry::group: 'sentry'
+sentry::db_user: 'sentry'
+sentry::db_name: 'sentry'
+sentry::host_name: 'sentry.wikimedia.org'
+sentry::smtp_host: 'polonium.wikimedia.org'
+sentry::smtp_user: ''
+sentry::smtp_pass: ''
+sentry::sentry_branch: 'master'
+sentry::sentry_dir: '/srv/sentry'
+sentry::cfg_file: '/etc/sentry.conf.py'
+sentry::admin_email: 'gtisza@wikimedia.org'
+

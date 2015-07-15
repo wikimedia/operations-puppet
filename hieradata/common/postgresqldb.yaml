@@ -1,0 +1,2 @@
+# manual DB setup is preferred in production
+enabled: false
