@@ -17,6 +17,7 @@
 define postgresql::spatialdb(
     $ensure = 'present',
     $pg_version = '9.1',
+    $postgis_version = '1.5',
     ) {
 
     # Check if our db exists and store it
@@ -32,50 +33,57 @@ define postgresql::spatialdb(
             user    => 'postgres',
             unless  => $db_exists,
         }
-        exec { "create_plpgsql_lang-${name}":
-            command => "/usr/bin/createlang plpgsql ${name}",
-            user    => 'postgres',
-            unless  => $plpgsql_exists,
-        }
-        exec { "create_postgis-${name}":
-            command => "/usr/bin/psql -d ${name} -f /usr/share/postgresql/${pg_version}/contrib/postgis-1.5/postgis.sql",
-            user    => 'postgres',
-            unless  => $postgis_exists,
-        }
-        # Create spatial_ref_sys
-        exec { "create_spatial_ref_sys-${name}":
-            command     => "/usr/bin/psql -d ${name} -f /usr/share/postgresql/${pg_version}/contrib/postgis-1.5/spatial_ref_sys.sql",
-            user        => 'postgres',
-            refreshonly => true,
-            subscribe   => Exec["create_postgis-${name}"],
-        }
-        exec { "grant_ref_sys_cmd-${name}":
-            command     => "/usr/bin/psql -d ${name} -c \"GRANT SELECT ON spatial_ref_sys TO PUBLIC;\"",
-            user        => 'postgres',
-            refreshonly => true,
-            subscribe   => Exec["create_spatial_ref_sys-${name}"],
-        }
-        # Create comments
-        exec { "create_comments-${name}":
-            command     => "/usr/bin/psql -d ${name} -f /usr/share/postgresql/${pg_version}/contrib/postgis_comments.sql",
-            user        => 'postgres',
-            refreshonly => true,
-            subscribe   => Exec["create_spatial_ref_sys-${name}"],
-        }
-        exec { "grant_comments_cmd-${name}":
-            command     => "/usr/bin/psql -d ${name} -c \"GRANT ALL ON geometry_columns TO PUBLIC;\"",
-            user        => 'postgres',
-            refreshonly => true,
-            subscribe   => Exec["create_comments-${name}"],
+        if $postgis_version == '1.5' {
+            exec { "create_plpgsql_lang-${name}":
+                command => "/usr/bin/createlang plpgsql ${name}",
+                user    => 'postgres',
+                unless  => $plpgsql_exists,
+            }
+            exec { "create_postgis-${name}":
+                command => "/usr/bin/psql -d ${name} -f /usr/share/postgresql/${pg_version}/contrib/postgis-${postgis_version}/postgis.sql",
+                user    => 'postgres',
+                unless  => $postgis_exists,
+            }
+            # Create spatial_ref_sys
+            exec { "create_spatial_ref_sys-${name}":
+                command     => "/usr/bin/psql -d ${name} -f /usr/share/postgresql/${pg_version}/contrib/postgis-1.5/spatial_ref_sys.sql",
+                user        => 'postgres',
+                refreshonly => true,
+                subscribe   => Exec["create_postgis-${name}"],
+            }
+            exec { "grant_ref_sys_cmd-${name}":
+                command     => "/usr/bin/psql -d ${name} -c \"GRANT SELECT ON spatial_ref_sys TO PUBLIC;\"",
+                user        => 'postgres',
+                refreshonly => true,
+                subscribe   => Exec["create_spatial_ref_sys-${name}"],
+            }
+            exec { "create_comments-${name}":
+                command     => "/usr/bin/psql -d ${name} -f /usr/share/postgresql/${pg_version}/contrib/postgis_comments.sql",
+                user        => 'postgres',
+                refreshonly => true,
+                subscribe   => Exec["create_spatial_ref_sys-${name}"],
+            }
+            # Create comments
+            exec { "grant_comments_cmd-${name}":
+                command     => "/usr/bin/psql -d ${name} -c \"GRANT ALL ON geometry_columns TO PUBLIC;\"",
+                user        => 'postgres',
+                refreshonly => true,
+                subscribe   => Exec["create_comments-${name}"],
+            }
+        } else {
+            exec { "create_postgis-${name}":
+                command     => "/usr/bin/psql -d ${name} -c \"CREATE EXTENSION postgis;\"",
+                user        => 'postgres',
+                refreshonly => true,
+                subscribe   => Exec["create_db-${name}"],
+            }
         }
         exec { "create_extension_hstore-${name}":
             command     => "/usr/bin/psql -d ${name} -c \"CREATE EXTENSION hstore;\"",
             user        => 'postgres',
             refreshonly => true,
-            subscribe   => Exec["create_comments-${name}"],
+            subscribe   => Exec["create_db-${name}"],
         }
-        Exec["create_db-${name}"] -> Exec["create_plpgsql_lang-${name}"]
-        Exec["create_plpgsql_lang-${name}"] -> Exec["create_postgis-${name}"]
     } elsif $ensure == 'absent' {
         exec { "drop_db-${name}":
             command => "/usr/bin/dropdb ${name}",
