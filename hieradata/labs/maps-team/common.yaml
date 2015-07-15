@@ -3,7 +3,7 @@ postgresql::slave::pgversion: 9.4
 postgresql::slave::master_server: mapsmaster01.eqiad.wmflabs
 postgresql::slave::replication_pass: justapass
 postgresql::postgis::pgversion: 9.4
-postgresql::spatialdb: 2.1
+postgresql::spatialdb::postgis_version: 2.1
 postgresql::master::pgversion: 9.4
 postgresql::master::postgres_slaves:
   replication@mapsslave01-v4:
