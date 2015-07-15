@@ -644,13 +644,13 @@ node /^db20(23|38|45|52)\.codfw\.wmnet/ {
     }
 }
 
-node /^db10(22|37|50|61)\.eqiad\.wmnet/ {
+node /^db10(22|30|37|50|61)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
     }
 }
 
-node /^db20(28|30|39|46|53)\.codfw\.wmnet/ {
+node /^db20(28|39|46|53)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
