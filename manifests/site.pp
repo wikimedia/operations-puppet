@@ -1179,6 +1179,7 @@ node 'iron.wikimedia.org' {
 node 'krypton.eqiad.wmnet' {
     include standard
     include base::firewall
+    include role::wikimania_scholarships
 }
 
 node 'labcontrol1001.wikimedia.org' {
