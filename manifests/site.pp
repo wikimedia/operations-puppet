@@ -1175,6 +1175,12 @@ node 'iron.wikimedia.org' {
     include role::access_new_install
 }
 
+# virtual machine for misc. PHP apps
+node 'krypton.eqiad.wmnet' {
+    include standard
+    include base::firewall
+}
+
 node 'labcontrol1001.wikimedia.org' {
     $is_puppet_master      = true
     $is_labs_puppet_master = true
