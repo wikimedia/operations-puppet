@@ -558,7 +558,7 @@ node /^db10(58)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db10(23|30)\.eqiad\.wmnet/ {
+node /^db10(23)\.eqiad\.wmnet/ {
     class { 'role::coredb::s6':
         innodb_file_per_table => true,
         mariadb               => true,
@@ -650,7 +650,7 @@ node /^db10(22|37|50|61)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(28|39|46|53)\.codfw\.wmnet/ {
+node /^db20(28|30|39|46|53)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
