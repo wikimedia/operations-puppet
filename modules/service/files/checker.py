@@ -1,3 +1,4 @@
+#!/usr/bin/python
 try:
     import urlparse
 except ImportError:
