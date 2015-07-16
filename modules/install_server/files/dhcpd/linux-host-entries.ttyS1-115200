@@ -2605,6 +2605,34 @@ host maerlant {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host maps-test2001 {
+	hardware ethernet d4:be:d9:f0:20:c5;
+	fixed-address maps-test2001.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host maps-test2002 {
+	hardware ethernet d4:be:d9:f3:ec:d4;
+	fixed-address maps-test2002.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host maps-test2003 {
+	hardware ethernet d4:be:d9:f0:0c:07;
+	fixed-address maps-test2003.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host maps-test2004 {
+	hardware ethernet d4:be:d9:f0:87:c7;
+	fixed-address maps-test2004.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host magnesium {
 	hardware ethernet 78:2b:cb:09:0d:d1;
 	fixed-address magnesium.wikimedia.org;
