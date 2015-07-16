@@ -29,7 +29,7 @@ class role::labs::ores::lb(
 
 class role::labs::ores::staging {
     class { 'ores::base':
-        branch => 'staging',
+        branch => 'master',
     }
 
     include ::ores::web
