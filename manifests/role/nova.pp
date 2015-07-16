@@ -429,6 +429,10 @@ class role::nova::controller {
     class { 'openstack::spreadcheck':
         novaconfig => $novaconfig
     }
+
+    class { ' openstack::nova::migrate':
+        is_controller => true,
+    }
 }
 
 class role::nova::api {
@@ -578,6 +582,8 @@ class role::nova::compute($instance_dev='/dev/md1') {
             target => '/usr/bin/qemu-system-x86_64',
         }
     }
+
+    include openstack::nova::migrate
 }
 
 # global icinga hostgroups for virt/labs hosts
