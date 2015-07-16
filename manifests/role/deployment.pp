@@ -31,7 +31,6 @@ class role::deployment::server(
     include ::apache::mod::dav_fs
     include ::apache::helper_scripts
     include mysql
-    include role::releases::upload
 
     include network::constants
     $deployable_networks = $::network::constants::deployable_networks
@@ -40,6 +39,7 @@ class role::deployment::server(
     include scap::master
 
     if $::realm != 'labs' {
+        include role::releases::upload
         include wikitech::wiki::passwords
     }
 
