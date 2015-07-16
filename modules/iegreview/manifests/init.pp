@@ -68,6 +68,7 @@ class iegreview(
     }
 
     require_package('php5-mysql')
+    require_package('php5-curl')
 
     apache::site { $hostname:
         content => template('iegreview/apache.conf.erb'),
