@@ -73,10 +73,7 @@ class wikimania_scholarships(
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
-    file { '/etc/apache2/conf.d/namevirtualhost':
-        source => 'puppet:///files/apache/conf.d/namevirtualhost',
-        mode   => '0444',
-        notify => Service['apache2'],
-    }
 }
+
+
 # vim:sw=4 ts=4 sts=4 et:
