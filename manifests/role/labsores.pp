@@ -7,6 +7,15 @@ class role::labs::ores::web {
     }
 }
 
+class role::labs::ores::worker {
+    inlcude ::ores::base
+    include ::ores::worker
+
+    class { '::ores::redisproxy':
+        server => hiera('redis_server'),
+    }
+}
+
 class role::labs::ores::redis {
     class { '::ores::redis':
         maxmemory => '3G',
