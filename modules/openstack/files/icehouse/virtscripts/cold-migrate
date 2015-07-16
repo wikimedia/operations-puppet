@@ -1,10 +1,31 @@
 #!/usr/bin/python
+#####################################################################
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///modules/openstack/icehouse/virtscripts/cold-migrate
+#####################################################################
+"""
+ cold-migrate is a not-very-smart wrapper around the standard
+ 'nova migrate' feature.  As documented, nova migration requires
+ several steps, each of which includes 'wait until status is...'
+ so it's not especially useful for batch applications.  This
+ script should be reliable for running multiple migrations
+ in sequence.
+
+ cold-migrate performs the following steps, polling for a proper
+ instance status after each:
+
+  - Stop instance
+  - Migrate instance
+  - Confirm migration (oddly called 'confirm resize' in nova parlance)
+  - Restart instance (optional)
+"""
 
 import argparse
-from novaclient.v1_1 import client
 import time
 
-class novaInstance:
+from novaclient.v1_1 import client
+
+class NovaInstance(object):
     def __init__(self, novaclient, instance_id):
         self.novaclient = novaclient
         self.instance_id = instance_id
@@ -15,9 +36,9 @@ class novaInstance:
 
 
     def wait_for_status(self, desiredstatus):
-        oldstatus=""
+        oldstatus = ""
 
-        while (self.instance.status != desiredstatus):
+        while self.instance.status != desiredstatus:
             if self.instance.status != oldstatus:
                 oldstatus = self.instance.status
                 print "Current status is %s; waiting for it to change to %s." % (
@@ -26,7 +47,7 @@ class novaInstance:
             time.sleep(1)
             self.refresh_instance()
 
-    def migrate(self, leavestopped=False):
+    def migrate(self, leave_stopped=False):
         print "Instance %s is now on host %s with state %s" % (
             self.instance_id,
             self.instance._info['OS-EXT-SRV-ATTR:host'],
@@ -54,7 +75,7 @@ class novaInstance:
             print "Failed to confirm migrate, aborting."
             exit(1)
 
-        if not leavestopped:
+        if not leave_stopped:
             self.instance.start()
             self.wait_for_status('ACTIVE')
 
@@ -111,5 +132,5 @@ if __name__ == "__main__":
                                args.nova_project,
                                args.nova_url)
 
-    instance = novaInstance(novaclient, args.instanceid)
+    instance = NovaInstance(novaclient, args.instanceid)
     instance.migrate(args.no_restart)
