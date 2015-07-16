@@ -94,3 +94,5 @@ repo_config:
   wdqs/wdqs:
     gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/wikidata/query/deploy
+  sentry/sentry:
+    upstream: https://gerrit.wikimedia.org/r/operations/software/sentry
