@@ -103,18 +103,3 @@ class role::postgres::slave {
         pgstats_pass => $passwords::postgres::ganglia_pass,
     }
 }
-
-class role::postgres::maps {
-    include osm
-    postgresql::spatialdb { 'gis': }
-    # Import planet.osm
-    osm::planet_import { 'gis':
-        input_pbf_file => '/srv/labsdb/planet-latest-osm.pbf',
-        require        => Postgresql::Spatialdb['gis']
-    }
-    osm::planet_sync { 'gis':
-        period => 'day',
-        hour   => '1',
-        minute => '17',
-    }
-}
