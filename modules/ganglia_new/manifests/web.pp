@@ -39,6 +39,15 @@ class ganglia_new::web(
         require => Package['ganglia-webfrontend'],
     }
 
+    file { "${ganglia_webdir}/robots.txt":
+        ensure  => $ensure,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/ganglia_new/robots.txt',
+        require => Package['ganglia-webfrontend'],
+    }
+
     # Increase the default memory limit
     file_line { 'php.ini-memory':
         line    => 'memory_limit = 256M',
