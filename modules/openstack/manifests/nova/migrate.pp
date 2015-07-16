@@ -1,5 +1,7 @@
 class openstack::nova::migrate(
-    $is_controller=false
+    $is_controller=false,
+    $novaconfig,
+    $openstack_version=$::openstack::version,
 ){
     # Set up users and scripts to permit cold-migration between compute nodes.
     # This requires a keypair for scp
@@ -35,6 +37,11 @@ class openstack::nova::migrate(
     }
 
     if ($is_controller) {
+        include passwords::openstack::nova
+        $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+        $nova_controller_hostname = $novaconfig['controller_hostname']
+        $nova_region = $::site
+
         # Script to cold-migrate instances between compute nodes
         file { '/home/novamigrate/cold-migrate':
             ensure => present,
