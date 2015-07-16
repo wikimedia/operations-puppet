@@ -27,27 +27,16 @@
 #   other files unrelated to puppet, and the puppet files are
 #   in one particular subfolder.
 #
-# [*owner*]
-#   The user who should own the cloned repository.
-#   Defaults to 'root'
-#
-# [*group*]
-#   The group that the cloned repository belongs to.
-#   Defaults to 'root'
-#
 
 class puppetception(
     $git_url,
     $git_branch    = 'master',
     $puppet_subdir = '',
-    $owner         = 'root',
-    $group         = 'root',
 ) {
-    include ::role::labs::lvm::srv
-
-    $base_dir    = '/srv/puppetception'
-    $install_dir = "${base_dir}/git"
+    $base_dir    = '/var/lib/git'
+    $install_dir = "${base_dir}/puppetception"
     $puppet_dir  = "${install_dir}${puppet_subdir}"
+
     file { [$base_dir,
             $install_dir,
     ]:
@@ -63,8 +52,8 @@ class puppetception(
         origin    => $git_url,
         require   => File[$install_dir],
         branch    => $git_branch,
-        owner     => $owner,
-        group     => $group,
+        owner     => 'root',
+        group     => 'root',
     }
 
     file { '/sbin/puppetception':
