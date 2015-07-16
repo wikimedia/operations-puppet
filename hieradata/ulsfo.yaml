@@ -1,2 +1,1 @@
-ganglia_class: "old"
-
+ganglia_aggregators: bast4001.wikimedia.org:12649
