@@ -105,9 +105,11 @@ class role::deployment::server(
         ensure => latest,
     }
 
-    # backup /home dirs on deployment servers
-    include role::backup::host
-    backup::set {'home': }
+    if $::realm != 'labs' {
+        # backup /home dirs on deployment servers
+        include role::backup::host
+        backup::set {'home': }
+    }
 
 }
 
