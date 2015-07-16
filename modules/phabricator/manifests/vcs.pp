@@ -10,7 +10,7 @@ class phabricator::vcs (
     file { '/usr/local/bin/git-http-backend':
         ensure  => 'link',
         target  => '/usr/lib/git-core/git-http-backend',
-        require => Package['Git'],
+        require => Package['git-core'],
     }
 
     sudo::user { 'www-data':
