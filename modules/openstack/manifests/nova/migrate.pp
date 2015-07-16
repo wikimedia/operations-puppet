@@ -10,7 +10,7 @@ class openstack::nova::migrate(
         comment    => 'nova user for cold-migration',
         gid        => 'nova',
         managehome => true,
-        require    => Package['nova-compute'],
+        require    => Package['nova-common'],
         system     => true,
     }
     ssh::userkey { 'novamigrate':
