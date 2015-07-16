@@ -158,7 +158,7 @@ class CheckService(object):
                         idx = ep_idx
             message = u"; ".join(res)
             if status == 'OK':
-                message = "All endpoints are healty"
+                message = "All endpoints are healthy"
         except Exception as e:
             message = "Generic error: {}".format(e)
             status = 'CRITICAL'
