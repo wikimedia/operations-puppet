@@ -40,11 +40,14 @@ class ganglia_new::web(
     }
 
     # Increase the default memory limit
-    augeas { 'php.ini-memory':
-        context => '/files/etc/php5/apache2/php.ini/PHP',
-        changes => [
-            'set memory_limit 256M',
-        ],
+    file_line { 'php.ini-memory':
+        line    => 'memory_limit = 256M',
+        path    => '/etc/php5/apache2/php.ini',
+        notify  => Class['::apache']
+    }
+    file_line { 'php.ini-opcache':
+        line    => 'opcache.enable=1',
+        path    => '/etc/php5/apache2/php.ini',
         notify  => Class['::apache']
     }
 }
