@@ -32,7 +32,7 @@ class role::cache::misc {
             'analytics1001.eqiad.wmnet', # Hadoop Yarn ResourceManager GUI
             'analytics1027.eqiad.wmnet', # Hue (Hadoop GUI)
             'antimony.wikimedia.org',
-            'bromine.eqiad.wmnet', # ganeti VM for misc. services
+            'bromine.eqiad.wmnet', # ganeti VM for misc. static HTML sites
             'caesium.eqiad.wmnet',
             'californium.wikimedia.org',
             'dataset1001.wikimedia.org',
@@ -40,6 +40,7 @@ class role::cache::misc {
             'gallium.wikimedia.org',  # CI server
             'graphite1001.eqiad.wmnet',
             'iridium.eqiad.wmnet', # main phab
+            'krypton.eqiad.wmnet', # ganeti VM for misc. PHP apps
             'logstash1001.eqiad.wmnet',
             'logstash1002.eqiad.wmnet',
             'logstash1003.eqiad.wmnet',
