@@ -32,10 +32,6 @@ class racktables (
         content => template('racktables/racktables.wikimedia.org.erb'),
     }
 
-    apache::conf { 'namevirtualhost':
-        source => 'puppet:///files/apache/conf.d/namevirtualhost',
-    }
-
     # Increase the default memory limit T102092
     file_line { 'racktables_php_memory':
         path    => '/etc/php5/apache2/php.ini',
