@@ -104,7 +104,7 @@ class role::restbase::alerts {
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_pending_internal':
         description   => 'RESTBase Cassandra highest pending internal thread pool tasks http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-thread-pools',
-        metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.ThreadPools.internal.*.PendingTasks.value, 1)',
+        metric        => 'highestMax(exclude(cassandra.restbase10*.org.apache.cassandra.metrics.ThreadPools.internal.*.PendingTasks.value, "CompactionExecutor"), 1)',
         from          => '10min',
         warning       => '500',
         critical      => '1000',
