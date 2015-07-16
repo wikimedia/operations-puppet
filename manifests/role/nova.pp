@@ -431,6 +431,7 @@ class role::nova::controller {
     }
 
     class { 'openstack::nova::migrate':
+        novaconfig => $novaconfig,
         is_controller => true,
     }
 }
@@ -583,7 +584,9 @@ class role::nova::compute($instance_dev='/dev/md1') {
         }
     }
 
-    include openstack::nova::migrate
+    class { 'openstack::nova::migrate':
+        novaconfig => $novaconfig
+    }
 }
 
 # global icinga hostgroups for virt/labs hosts
