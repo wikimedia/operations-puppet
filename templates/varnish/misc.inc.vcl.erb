@@ -20,7 +20,7 @@ sub vcl_recv {
 		set req.backend = logstash;
 	} elsif (req.http.Host == "releases.wikimedia.org") {
 		set req.backend = caesium;
-	} elsif (req.http.Host == "scholarships.wikimedia.org" || req.http.Host == "grafana.wikimedia.org" || req.http.Host == "iegreview.wikimedia.org") {
+	} elsif (req.http.Host == "grafana.wikimedia.org" || req.http.Host == "iegreview.wikimedia.org") {
 		set req.backend = zirconium;
 	} elsif (req.http.Host == "parsoid-tests.wikimedia.org") {
 		set req.backend = ruthenium;
@@ -53,6 +53,8 @@ sub vcl_recv {
 		return (pass);
 	} elsif (req.http.Host == "noc.wikimedia.org" || req.http.Host == "dbtree.wikimedia.org") {
 		set req.backend = terbium;
+	} elsif (req.http.Host == "scholarships.wikimedia.org") {
+		set req.backend = krypton;
 	} elsif (req.http.Host == "hue.wikimedia.org") {
 		// make sure all requests to Hue are via https proxy
 		if (req.http.X-Forwarded-Proto != "https") {
