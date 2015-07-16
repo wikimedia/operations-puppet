@@ -5,7 +5,7 @@ class ores::web {
         settings => {
             uwsgi => {
                 plugins     => 'python3',
-                'wsgi-file' => "${ores::base::config_path}/ores.wmflabs.org.wsgi",
+                'wsgi-file' => "${ores::base::config_path}/ores_wsgi.py",
                 master      => true,
                 chdir       => $ores::base::config_path,
                 http-socket => '0.0.0.0:8080',
