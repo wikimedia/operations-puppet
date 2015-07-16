@@ -430,7 +430,7 @@ class role::nova::controller {
         novaconfig => $novaconfig
     }
 
-    class { ' openstack::nova::migrate':
+    class { 'openstack::nova::migrate':
         is_controller => true,
     }
 }
