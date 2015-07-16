@@ -54,7 +54,7 @@ funnel	store.wikipedia.org	//store.wikimedia.org
 funnel	shop.wikipedia.com	//store.wikimedia.org
 funnel	store.wikipedia.com	//store.wikimedia.org
 
-funnel	sep11.wikipedia.org	http://wayback.archive.org/web/20030315000000*/http://sep11.wikipedia.org/wiki/In_Memoriam
+funnel	sep11.wikipedia.org	https://wayback.archive.org/web/20030315000000*/http://sep11.wikipedia.org/wiki/In_Memoriam
 
 funnel	*wikijunior.com	//en.wikibooks.org/wiki/Wikijunior
 funnel	*wikijunior.org	//en.wikibooks.org/wiki/Wikijunior
