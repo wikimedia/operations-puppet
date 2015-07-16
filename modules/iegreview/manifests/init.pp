@@ -73,6 +73,10 @@ class iegreview(
         content => template('iegreview/apache.conf.erb'),
     }
 
+    file { [ '/srv/deployment', '/srv/deployment/iegreview', $deploy_dir ]:
+        ensure => directory,
+    }
+
     file { "${deploy_dir}/.env":
         ensure  => present,
         owner   => 'root',
