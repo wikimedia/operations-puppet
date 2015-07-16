@@ -23,8 +23,7 @@
   <Directory <%= @deploy_dir %>/public>
     Options Indexes FollowSymLinks
     AllowOverride None
-    Order allow,deny
-    allow from all
+    Require all granted
   </Directory>
 
   <Location />
