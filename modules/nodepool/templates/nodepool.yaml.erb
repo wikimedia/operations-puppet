@@ -7,7 +7,7 @@ elements-dir: /etc/nodepool/elements
 
 # Directory where Nodepool / diskimage-builder stores created images.
 # http://docs.openstack.org/infra/nodepool/configuration.html#images-dir
-images-dir: '<%= $dib_images_dir -%>'
+images-dir: '<%= @dib_images_dir -%>'
 
 # Utilities to prepare an image. Copied to the image while it is being created.
 # http://docs.openstack.org/infra/nodepool/configuration.html#script-dir
