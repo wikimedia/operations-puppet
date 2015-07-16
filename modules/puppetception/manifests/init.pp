@@ -56,11 +56,17 @@ class puppetception(
         group     => 'root',
     }
 
-    file { '/sbin/puppetception':
+    file { '/usr/sbin/puppetception':
         ensure  => present,
         content => template('puppetception/puppetception.erb'),
         mode    => '0700',
         owner   => 'root',
         group   => 'root',
+    }
+
+    cron { 'puppetception-run':
+        ensure  => present,
+        command => '/usr/sbin/puppetception',
+        minute  => [23, 43, 03],
     }
 }
