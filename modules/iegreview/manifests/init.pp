@@ -73,7 +73,9 @@ class iegreview(
         content => template('iegreview/apache.conf.erb'),
     }
 
-    file { [ '/srv/deployment', '/srv/deployment/iegreview', $deploy_dir ]:
+    ensure_resource('file', '/srv/deployment', {'ensure' => 'directory' })
+
+    file { [ '/srv/deployment/iegreview', $deploy_dir ]:
         ensure => directory,
     }
 

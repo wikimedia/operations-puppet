@@ -50,7 +50,9 @@ class wikimania_scholarships(
         content => template('wikimania_scholarships/apache.conf.erb'),
     }
 
-    file { [ '/srv/deployment', '/srv/deployment/scholarships', $deploy_dir ]:
+    ensure_resource('file', '/srv/deployment', {'ensure' => 'directory' })
+
+    file { [ '/srv/deployment/scholarships', $deploy_dir ]:
         ensure  => directory,
     }
 
