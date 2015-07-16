@@ -211,7 +211,6 @@ rewrite	www.wikipedia.com	//www.wikipedia.org
 rewrite	www.wikipedia.net	//www.wikipedia.org
 
 rewrite	en.wikipedia.com	//en.wikipedia.org
-rewrite	en2.wikipedia.org	//en.wikipedia.org
 
 rewrite	*wikipedia.co.uk	//en.wikipedia.org
 
