@@ -40,4 +40,10 @@ class role::grafana {
         description   => "grafana.${domain_suffix}",
         check_command => "check_http_url!grafana.${domain_suffix}!/",
     }
+
+    ferm::service { 'grafana_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
 }
