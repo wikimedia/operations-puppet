@@ -1,117 +1,115 @@
-#!/bin/bash
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/openstack/icehouse/virtscripts/cold-migrate
-#####################################################################
-ssh-add -l > /dev/null
-if [ "$?" != "0" ]
-then
-	echo "You must have a forwarded agent to use this script"
-	exit 1
-fi
-if [ "$#" -ne 2 ]; then
-	echo "Usage:  $0 <instance-id> <destination-host>"
-	exit 1
-fi
-INSTANCE=$1
-TOHOST=$2
-echo "testing that instance exists."
-nova show ${INSTANCE}
-if [ "$?" != "0" ]
-then
-    echo "Instance not found."
-    exit 1
-fi
-FROMHOST=`nova show ${INSTANCE} | grep 'OS-EXT-SRV-ATTR:host' | awk '{ print $4 }'`
-INSTANCENAME=`nova show ${INSTANCE} | grep ' name ' | awk '{ print $4 }'`
-echo "Migrating $INSTANCE from $FROMHOST to $TOHOST"
-echo ""
-echo "Testing host keys"
-echo ""
-ssh $FROMHOST.eqiad.wmnet "true"
-if [ "$?" != "0" ]
-then
-    echo "hostkey check failed for $FROMHOST"
-    exit 1
-fi
-ssh $TOHOST.eqiad.wmnet "true"
-if [ "$?" != "0" ]
-then
-    echo "hostkey check failed for $TOHOST"
-    exit 1
-fi
-ssh -A $FROMHOST.eqiad.wmnet "ssh ${TOHOST}.eqiad.wmnet true"
-if [ "$?" != "0" ]
-then
-    echo "hostkey check failed for connection from $FROMHOST to $TOHOST"
-    exit 1
-fi
+#!/usr/bin/python
+
+import argparse
+from novaclient.v1_1 import client
+import time
+
+class novaInstance:
+    def __init__(self, novaclient, instance_id):
+        self.novaclient = novaclient
+        self.instance_id = instance_id
+        self.refresh_instance()
+
+    def refresh_instance(self):
+        self.instance = self.novaclient.servers.get(self.instance_id)
 
 
-ssh $FROMHOST.eqiad.wmnet "test -f /var/lib/nova/instances/${INSTANCE}/disk"
-if [ $? -eq 0 ]
-then
-    echo "Verifying availability of backing file"
-    BACKINGFILE=`ssh ${FROMHOST}.eqiad.wmnet "qemu-img info /var/lib/nova/instances/${INSTANCE}/disk | grep 'backing file'" | awk '{ print $3 }'`
-    if [ -z $BACKINGFILE ]
-    then
-        echo "Backing file not found."
-        exit 1
-    fi
-    ssh $TOHOST.eqiad.wmnet "test -e ${BACKINGFILE}"
-    if [ "$?" != "0" ]
-    then
-        echo "Copying backing file ${BACKINGFILE} to ${TOHOST}"
-        echo ""
-        ssh -A $FROMHOST.eqiad.wmnet "rsync -S -av --bwlimit 40000 ${BACKINGFILE} ${TOHOST}.eqiad.wmnet:${BACKINGFILE}"
-    fi
-fi
+    def wait_for_status(self, desiredstatus):
+        oldstatus=""
 
-echo ""
-echo "Destroying instance on $FROMHOST"
-echo ""
-ssh $FROMHOST.eqiad.wmnet "virsh destroy ${INSTANCE}"
-echo ""
-echo "Rsyncing instance from $FROMHOST to $TOHOST"
-echo ""
-ssh -A $FROMHOST.eqiad.wmnet "rsync -S -av --bwlimit 40000 /var/lib/nova/instances/${INSTANCE} ${TOHOST}.eqiad.wmnet:/var/lib/nova/instances/"
+        while (self.instance.status != desiredstatus):
+            if self.instance.status != oldstatus:
+                oldstatus = self.instance.status
+                print "Current status is %s; waiting for it to change to %s." % (
+                    self.instance.status, desiredstatus)
 
-# optional shrinking logic, generally not useful
-#ssh $TOHOST.eqiad.wmnet "test -f /var/lib/nova/instances/${INSTANCE}/disk"
-#if [ $? -eq 0 ]
-#then
-    #echo ""
-    #echo "Shrinking the instance on $TOHOST"
-    #echo ""
+            time.sleep(1)
+            self.refresh_instance()
 
-    #ssh $TOHOST.eqiad.wmnet "mv /var/lib/nova/instances/${INSTANCE}/disk /var/lib/nova/instances/${INSTANCE}/disk.bak"
-    #ssh $TOHOST.eqiad.wmnet "qemu-img convert -f qcow2 -O qcow2 /var/lib/nova/instances/${INSTANCE}/disk.bak /var/lib/nova/instances/${INSTANCE}/disk"
+    def migrate(self, leavestopped=False):
+        print "Instance %s is now on host %s with state %s" % (
+            self.instance_id,
+            self.instance._info['OS-EXT-SRV-ATTR:host'],
+            self.instance.status)
 
-    # If something went wrong, we still want there to be a 'disk' file.
-    #ssh $TOHOST.eqiad.wmnet "test -f /var/lib/nova/instances/${INSTANCE}/disk"
-    #if [ $? -ne 0 ]
-    #then
-        #echo ""
-        #echo "Shrink failed; restoring original disk image"
-        #echo ""
-        #ssh $TOHOST.eqiad.wmnet "mv /var/lib/nova/instances/${INSTANCE}/disk.bak /var/lib/nova/instances/${INSTANCE}/disk"
-    #fi
-#fi
+        if self.instance.status != 'SHUTOFF':
+            self.instance.stop()
+            self.wait_for_status('SHUTOFF')
 
-echo "Defining the instance on $TOHOST"
-echo ""
-ssh $TOHOST.eqiad.wmnet "virsh define /var/lib/nova/instances/${INSTANCE}/libvirt.xml"
-echo ""
-echo "Undefining the instance on $FROMHOST"
-echo ""
-ssh $FROMHOST.eqiad.wmnet "virsh undefine ${INSTANCE}"
-echo
-echo ""
-echo "Updating the instance's host in the database"
-echo ""
-mysql -uroot nova -e "update instances set host=\"${TOHOST}\" where hostname=\"${INSTANCENAME}\";"
-mysql -uroot nova -e "update instances set host=\"${TOHOST}\" where hostname=\"${INSTANCE}\";"
-echo ""
-echo "Rebooting the instance"
-echo ""
-nova start ${INSTANCE}
+        if self.instance.status != 'SHUTOFF':
+            print "Failed to stop instance, aborting."
+            exit(1)
+
+        self.instance.migrate()
+        self.wait_for_status('VERIFY_RESIZE')
+
+        if self.instance.status != 'VERIFY_RESIZE':
+            print "Failed to migrate instance, aborting."
+            exit(1)
+
+        self.instance.confirm_resize()
+        self.wait_for_status('SHUTOFF')
+
+        if self.instance.status != 'SHUTOFF':
+            print "Failed to confirm migrate, aborting."
+            exit(1)
+
+        if not leavestopped:
+            self.instance.start()
+            self.wait_for_status('ACTIVE')
+
+        print
+        print "Instance %s is now on host %s with status %s" % (
+            self.instance_id,
+            self.instance._info['OS-EXT-SRV-ATTR:host'],
+            self.instance.status)
+
+
+if __name__ == "__main__":
+    argparser = argparse.ArgumentParser('cold-migrate',
+        description='''Move an instance to a different compute node''',
+        epilog='''Note: The target node cannot be specified.  To avoid
+            a particular node, remove it from wmf_scheduler_hosts_pool
+            in nova.conf.
+
+            Note also that this tool is quite specific to the nova 'icehouse'
+            release.  It may not work with later versions.''')
+    argparser.add_argument(
+        '--nova-user',
+        help='username for nova auth',
+        default='novaadmin'
+    )
+    argparser.add_argument(
+        '--nova-pass',
+        help='password for nova auth',
+        required=True,
+    )
+    argparser.add_argument(
+        '--nova-url',
+        help='url for nova auth',
+        default='http://labcontrol1001.wikimedia.org:35357/v2.0'
+    )
+    argparser.add_argument(
+        '--nova-project',
+        help='project for nova auth',
+        default='testlabs'
+    )
+    argparser.add_argument(
+        '--no-restart',
+        help='Do not start instance after migrate',
+        default=False
+    )
+    argparser.add_argument(
+        'instanceid',
+        help='instance id to migrate',
+        default='testlabs'
+    )
+    args = argparser.parse_args()
+
+    novaclient = client.Client(args.nova_user,
+                               args.nova_pass,
+                               args.nova_project,
+                               args.nova_url)
+
+    instance = novaInstance(novaclient, args.instanceid)
+    instance.migrate(args.no_restart)
