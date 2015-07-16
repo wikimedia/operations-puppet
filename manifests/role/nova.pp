@@ -429,11 +429,6 @@ class role::nova::controller {
     class { 'openstack::spreadcheck':
         novaconfig => $novaconfig
     }
-
-    class { 'openstack::nova::migrate':
-        novaconfig => $novaconfig,
-        is_controller => true,
-    }
 }
 
 class role::nova::api {
@@ -582,10 +577,6 @@ class role::nova::compute($instance_dev='/dev/md1') {
             ensure => link,
             target => '/usr/bin/qemu-system-x86_64',
         }
-    }
-
-    class { 'openstack::nova::migrate':
-        novaconfig => $novaconfig
     }
 }
 
