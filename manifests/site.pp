@@ -1249,6 +1249,19 @@ node 'labnet1001.eqiad.wmnet' {
     }
 }
 
+node 'labnet1002.eqiad.wmnet' {
+    $use_neutron = false
+
+    include standard
+    include role::nova::api
+
+    if $use_neutron == true {
+        include role::neutron::nethost
+    } else {
+        include role::nova::network
+    }
+}
+
 node 'labnodepool1001.eqiad.wmnet' {
 
     include standard
