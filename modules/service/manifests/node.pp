@@ -177,7 +177,7 @@ define service::node( $port,
         nrpe::monitor_service{ "endpoints_${title}":
             description  => "${title} endpoints health",
             nrpe_command => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
-            subscribe    => File['/usr/local/lib/nagions/plugins/service_checker'],
+            subscribe    => File['/usr/local/lib/nagios/plugins/service_checker'],
         }
     } else {
         # Basic monitoring
