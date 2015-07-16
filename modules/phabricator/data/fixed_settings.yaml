@@ -202,4 +202,6 @@ phd.pid-directory: "/var/run/phd/pid"
 phd.log-directory: "/var/log/phd"
 phd.user: 'phd'
 
+diffusion.ssh-user: 'vcs'
+
 pygments.enabled: true
