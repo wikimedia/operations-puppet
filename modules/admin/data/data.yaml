@@ -322,6 +322,10 @@ groups:
     description: TEMP (T95303) roots for nodepool setup
     members: [hashar, dduvall]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  maps-admins:
+    gid: 753
+    description: admin for maps-test cluster
+    members: [maxsem, yurik]
 
 users:
   rush:
