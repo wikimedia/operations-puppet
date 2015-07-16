@@ -102,6 +102,7 @@ sub vcl_recv {
 
 	if (req.http.host ~ "^test\.") {
 		set req.http.X-Wikimedia-Debug = "1";
+		set beresp.do_esi = true;
 	}
 
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
