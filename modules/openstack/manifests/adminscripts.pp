@@ -17,21 +17,10 @@ class openstack::adminscripts(
 
     # Script to cold-migrate instances between compute nodes
     file { '/root/cold-migrate':
-        ensure => present,
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/cold-migrate",
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
+        ensure => absent,
     }
-
-    # Script to migrate instance from one dc to another
-    # (specifically, pmtpa to eqiad)
     file { '/root/dc-migrate':
-        ensure => present,
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/dc-migrate",
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
+        ensure => absent,
     }
 
     # Log analysis tool
