@@ -3,15 +3,16 @@
 ### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///modules/openstack/icehouse/virtscripts/cold-migrate
 #####################################################################
-ssh-add -l > /dev/null
-if [ "$?" != "0" ]
-then
-	echo "You must have a forwarded agent to use this script"
-	exit 1
+if [ `whoami` != 'novamigrate' ]; then
+    echo "This script must be run as user 'novamigrate'"
+    exit 1
 fi
+
+source ~/novaenv.sh
+
 if [ "$#" -ne 2 ]; then
-	echo "Usage:  $0 <instance-id> <destination-host>"
-	exit 1
+    echo "Usage:  $0 <instance-id> <destination-host>"
+    exit 1
 fi
 INSTANCE=$1
 TOHOST=$2
@@ -115,3 +116,7 @@ echo ""
 echo "Rebooting the instance"
 echo ""
 nova start ${INSTANCE}
+echo "  ----    note  ---  "
+echo "For safety, the instance files on the old host (${FROMHOST}) have not been removed."
+echo "After verifying that the migration has completed safely, ssh to ${FROMHOST} and"
+echo "  rm -rf /var/lib/nova/instances/${INSTANCE}"
