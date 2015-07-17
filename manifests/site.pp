@@ -473,11 +473,6 @@ node /^cp30[34][2-9]\.esams\.wmnet$/ {
 #
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
-    # cp4001 and cp4003 are in different racks,
-    # make them each ganglia aggregators.
-    if $::hostname =~ /^cp(4001|4003)$/ {
-        $ganglia_aggregator = true
-    }
 
     interface::add_ip6_mapped { 'main': }
     role cache::bits
