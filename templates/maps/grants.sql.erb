@@ -1,6 +1,6 @@
-CREATE ROLE tilerator WITH PASSWORD '<%= @tilerator_pass %>';
-CREATE ROLE osmupdater WITH PASSWORD '<%= @osmupdater_pass %>';
-CREATE ROLE osmimporter WITH PASSWORD '<%= @osmimporter_pass %>';
+CREATE ROLE tilerator  WITH LOGIN PASSWORD '<%= @tilerator_pass %>';
+CREATE ROLE osmupdater WITH LOGIN PASSWORD '<%= @osmupdater_pass %>';
+CREATE ROLE osmimporter WITH LOGIN PASSWORD '<%= @osmimporter_pass %>';
 
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO tilerator;
 GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO osmupdater;
