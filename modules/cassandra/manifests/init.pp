@@ -357,6 +357,24 @@ class cassandra(
         require => Package['cassandra'],
     }
 
+    file { $data_file_directories:
+      owner => 'cassandra',
+      group => 'cassandra',
+      mode  => '0750',
+    }
+
+    file { $commitlog_directory:
+      owner => 'cassandra',
+      group => 'cassandra',
+      mode  => '0750',
+    }
+
+    file { $saved_caches_directory:
+      owner => 'cassandra',
+      group => 'cassandra',
+      mode  => '0750',
+    }
+
     # This Puppet module does not support
     # PropertyFileSnitch, which uses these files.
     file { ['/etc/cassandra/cassandra-topology.properties', '/etc/cassandra/cassandra-topology.yaml']:
