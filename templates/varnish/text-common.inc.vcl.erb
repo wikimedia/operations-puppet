@@ -1,6 +1,6 @@
 // Common functions for the Text Varnish cluster
 
-sub cookie_munging {
+sub stash_cookie {
 	// This header is saved, and restored before sending it to MediaWiki
 	if (req.restarts == 0) {
 		set req.http.Orig-Cookie = req.http.Cookie;
@@ -32,7 +32,7 @@ sub evaluate_cookie {
 	    && req.url !~ "^/w/load\.php") {
 		set req.hash_ignore_busy = true;
 	} else {
-		call cookie_munging;
+		call stash_cookie;
 	}
 }
 
