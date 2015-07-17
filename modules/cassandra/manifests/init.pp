@@ -307,6 +307,23 @@ class cassandra(
         ensure  => directory,
         owner   => 'cassandra',
         group   => 'cassandra',
+        mode    => '0750',
+        require => Package['cassandra'],
+    }
+
+    file { $commitlog_directory:
+        ensure  => directory,
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0750',
+        require => Package['cassandra'],
+    }
+
+    file { $saved_caches_directory:
+        ensure  => directory,
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0750',
         require => Package['cassandra'],
     }
 
