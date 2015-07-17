@@ -212,6 +212,11 @@ ganglia_clusters:
     id: 48
     sites:
       eqiad: []
+  wdqs:
+    name: "Wikidata Query Service"
+    id: 49
+    sites:
+      eqiad: []
 zookeeper_hosts:
   conf1001.eqiad.wmnet: '1101'
   conf1002.eqiad.wmnet: '1102'
