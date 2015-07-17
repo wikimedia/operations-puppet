@@ -1600,11 +1600,6 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
     # ns override for all lvs for now, see T103921
     $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
 
-    # lvs4001 and lvs4003 are in different racks
-    if $::hostname =~ /^lvs400[13]$/ {
-        $ganglia_aggregator = true
-    }
-
     role lvs::balancer
 
     interface::add_ip6_mapped { 'main':

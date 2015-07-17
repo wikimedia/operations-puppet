@@ -26,6 +26,10 @@ ulsfo_mobile_caches:
   __regex: !ruby/regexp /^cp40(1[129]|20)\.ulsfo\.wmnet$/
   ganglia_class: "new"
 
+ulsfo_lvs_loadbalancers:
+  __regex: !ruby/regexp /^lvs400[1-4]\.ulsfo\.wmnet$/
+  ganglia_class: "new"
+
 virtualization:
   __regex: !ruby/regexp /^(labnet|labvirt|virt)100[1-9]\.eqiad\.wmnet$/
   cluster: "virt"
