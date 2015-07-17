@@ -117,9 +117,7 @@ ganglia_clusters:
     sites:
       eqiad: []
       esams: []
-      ulsfo:
-        - cp4011.ulsfo.wmnet
-        - cp4019.ulsfo.wmnet
+      ulsfo: []
   virt:
     name: "Virtualization cluster"
     id: 29
