@@ -87,9 +87,7 @@ ganglia_clusters:
     sites:
       eqiad: []
       esams: []
-      ulsfo:
-        - cp4005.ulsfo.wmnet
-        - cp4013.ulsfo.wmnet
+      ulsfo: []
   payments:
     name: "Fundraiser payments"
     id: 23
