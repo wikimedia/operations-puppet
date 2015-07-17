@@ -40,7 +40,7 @@ class base::firewall($ensure = 'present') {
     nrpe::monitor_service { 'conntrack_table_size':
         ensure        => 'present',
         description   => 'Check size of conntrack table',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack -w 80 -c 90',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack 80 90',
         require       => File['/usr/lib/nagios/plugins/check_conntrack'],
         contact_group => 'admins',
     }
