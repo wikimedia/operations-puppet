@@ -493,9 +493,6 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
-    if $::hostname =~ /^cp(4008|4016)$/ {
-        $ganglia_aggregator = true
-    }
 
     interface::add_ip6_mapped { 'main': }
     role cache::text
