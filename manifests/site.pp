@@ -2366,6 +2366,12 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
     }
 }
 
+# Wikidata query service
+node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
+    #$cluster = 'wdqs'
+    include standard
+}
+
 # https://www.mediawiki.org/wiki/Parsoid
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     role parsoid::production

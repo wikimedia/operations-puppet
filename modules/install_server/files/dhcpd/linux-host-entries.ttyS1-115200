@@ -5874,6 +5874,16 @@ host uranium {
 	fixed-address uranium.wikimedia.org;
 }
 
+host wdqs1001 {
+	hardware ethernet 90:b1:1c:1d:e7:e6;
+    fixed-address wdqs1001.eqiad.wmnet;
+}
+
+host wdqs1002 {
+	hardware ethernet 90:b1:1c:23:36:1d;
+    fixed-address wdqs1002.eqiad.wmnet;
+}
+
 host wtp1001 {
 	hardware ethernet 90:B1:1C:2D:85:30;
 	fixed-address wtp1001.eqiad.wmnet;
