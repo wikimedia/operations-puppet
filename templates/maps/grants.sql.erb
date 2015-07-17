@@ -1,0 +1,15 @@
+CREATE ROLE tilerator WITH PASSWORD '<%= @tilerator_pass %>';
+CREATE ROLE osmupdater WITH PASSWORD '<%= @osmupdater_pass %>';
+CREATE ROLE osmimporter WITH PASSWORD '<%= @osmimporter_pass %>';
+
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO tilerator;
+GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO osmupdater;
+GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO osmimporter;
+GRANT CREATE,TEMPORARY ON DATABASE gis TO osmimporter;
+
+ALTER DATABASE gis OWNER TO osmimporter;
+ALTER TABLE geography_columns OWNER to osmimporter;
+ALTER TABLE geometry_columns OWNER to osmimporter;
+ALTER TABLE raster_columns OWNER to osmimporter;
+ALTER TABLE raster_overviews OWNER to osmimporter;
+ALTER TABLE spatial_ref_sys OWNER to osmimporter;
