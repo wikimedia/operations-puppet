@@ -55,6 +55,8 @@ def metric_init(params={}):
         "changes_since_last_save": {"units": "changes"},
         "bgsave_in_progress": {"units": "yes/no"},
         "bgrewriteaof_in_progress": {"units": "yes/no"},
+        "instantaneous_ops_per_sec": {"units": "ops/s"},
+        "rejected_connections": {"units": "connections"},
         "total_connections_received": {
             "units": "connections",
             "slope": "positive",
@@ -64,6 +66,15 @@ def metric_init(params={}):
             "slope": "positive",
         },
         "expired_keys": {"units": "keys"},
+        "evicted_keys": {"units": "keys"},
+        "keyspace_hits": {
+            "units": "keys",
+            "slope": "positive",
+        },
+        "keyspace_misses": {
+            "units": "keys",
+            "slope": "positive",
+        },
         "pubsub_channels": {"units": "channels"},
         "pubsub_patterns": {"units": "patterns"},
         "master_last_io_seconds_ago": {"units": "seconds ago"},
