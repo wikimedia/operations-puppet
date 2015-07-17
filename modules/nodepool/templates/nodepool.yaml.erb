@@ -94,7 +94,7 @@ diskimages:
       - nodepool-base
     release: jessie
     env-vars:
-      DIB_IMAGE_CACHE: '<% $dib_cache_dir -%>'
+      DIB_IMAGE_CACHE: '<% @dib_cache_dir -%>'
       QEMU_IMG_OPTIONS: compat=0.10
 
       # debian element
