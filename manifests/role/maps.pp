@@ -22,10 +22,10 @@ class role::maps::master {
     $osmimporter_pass = hiera('postgresql::master::osmimporter_pass')
     $osmupdater_pass = hiera('postgresql::master::osmupdater_pass')
     file { '/usr/local/bin/maps-grants.sql':
-        owner => 'root',
-        group => 'root',
-        mode  => '0400',
-        content => template('templates/maps/grants.sql.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('maps/grants.sql.erb'),
     }
 }
 
