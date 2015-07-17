@@ -21,9 +21,7 @@ ganglia_clusters:
       eqiad: []
       codfw: []
       esams: []
-      ulsfo:
-        - lvs4001.ulsfo.wmnet
-        - lvs4003.ulsfo.wmnet
+      ulsfo: []
   search:
     name: "Search"
     id: 4
