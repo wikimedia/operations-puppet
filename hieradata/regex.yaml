@@ -26,6 +26,10 @@ ulsfo_mobile_caches:
   __regex: !ruby/regexp /^cp40(1[129]|20)\.ulsfo\.wmnet$/
   ganglia_class: "new"
 
+ulsfo_text_caches:
+  __regex: !ruby/regexp /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/
+  ganglia_class: "new"
+
 ulsfo_lvs_loadbalancers:
   __regex: !ruby/regexp /^lvs400[1-4]\.ulsfo\.wmnet$/
   ganglia_class: "new"

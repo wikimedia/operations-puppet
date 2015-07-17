@@ -73,9 +73,7 @@ ganglia_clusters:
     sites:
       eqiad: []
       esams: []
-      ulsfo:
-        - cp4008.ulsfo.wmnet
-        - cp4016.ulsfo.wmnet
+      ulsfo: []
   cache_bits:
     name: "Bits caches"
     id: 21
