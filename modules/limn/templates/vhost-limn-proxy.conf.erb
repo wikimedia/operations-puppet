@@ -15,8 +15,13 @@
 
   ProxyRequests Off
   <Proxy *>
-    Order allow,deny
-    Allow from all
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
+    <IfVersion < 2.4>
+      Order allow,deny
+      Allow from all
+    </IfVersion>
   </Proxy>
 
   # If the file does not exist, assume this is a dynamic

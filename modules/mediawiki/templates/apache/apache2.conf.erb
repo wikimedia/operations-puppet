@@ -34,21 +34,36 @@ DocumentRoot "/srv/mediawiki/docroot/default"
     Options -Indexes +FollowSymLinks +MultiViews
     AllowOverride None
 
-    Order allow,deny
-    Allow from all
+    <IfVersion >= 2.4>
+        Require all granted
+    </IfVersion>
+    <IfVersion < 2.4>
+        Order allow,deny
+        Allow from all
+    </IfVersion>
 </Directory>
 
 <Files ~ "^\.ht">
-    Order allow,deny
-    Deny from all
-    Satisfy All
+    <IfVersion >= 2.4>
+        Require all denied
+    </IfVersion>
+    <IfVersion < 2.4>
+        Order allow,deny
+        Deny from all
+        Satisfy All
+    </IfVersion>
 </Files>
 
 # T80039: prevent downloading of .*~ and similar files
 <FilesMatch "(\.bak|\.old|~|#)$">
-	Order allow,deny
-	Deny from all
-	Satisfy All
+    <IfVersion >= 2.4>
+        Require all denied
+    </IfVersion>
+    <IfVersion < 2.4>
+        Order allow,deny
+        Deny from all
+        Satisfy All
+    </IfVersion>
 </FilesMatch>
 
 UseCanonicalName On
@@ -68,9 +83,14 @@ LogFormat "%{User-agent}i" agent
 ExtendedStatus On
 <Location /server-status>
     SetHandler server-status
-    Order deny,allow
-    Deny from all
-    Allow from 127.0.0.1
+    <IfVersion >= 2.4>
+        Require ip 127.0.0.1
+    </IfVersion>
+    <IfVersion < 2.4>
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.1
+    </IfVersion>
 </Location>
 
 ErrorDocument 503 /503.html
