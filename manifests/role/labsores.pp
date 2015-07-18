@@ -1,5 +1,5 @@
 class role::labs::ores::web {
-    inlcude ::ores::base
+    include ::ores::base
     include ::ores::web
 
     class { '::ores::redisproxy':
