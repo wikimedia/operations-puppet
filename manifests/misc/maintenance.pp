@@ -36,8 +36,8 @@ class misc::maintenance::refreshlinks( $ensure = present ) {
         }
     }
 
-    # add cron jobs - usage: <cluster>@<day of month> (these are just needed monthly) (note: s1 is temp. deactivated)
-    cronjob { ['s2@2', 's3@3', 's4@4', 's5@5', 's6@6', 's7@7']: }
+    # add cron jobs - usage: <cluster>@<day of month> (these are just needed monthly)
+    cronjob { ['s1@1', 's2@2', 's3@3', 's4@4', 's5@5', 's6@6', 's7@7']: }
 }
 
 class misc::maintenance::pagetriage( $ensure = present ) {
