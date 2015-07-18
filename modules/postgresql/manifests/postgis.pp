@@ -13,8 +13,12 @@
 #     include postgresql::postgis
 #
 class postgresql::postgis(
-    $pgversion='9.1',
     $ensure='present'
+    $pgversion = $::lsbdistcodename ? {
+        jessie  => '9.4',
+        precise => '9.1',
+        trusty  => '9.3',
+    },
     ) {
 
     package { [
