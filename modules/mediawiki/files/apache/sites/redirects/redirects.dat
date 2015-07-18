@@ -87,6 +87,12 @@ rewrite	epo.wikipedia.org	//eo.wikipedia.org
 rewrite	jp.wikipedia.org	//ja.wikipedia.org
 rewrite	jp.wikipedia.com	//ja.wikipedia.org
 rewrite	nb.wikipedia.org	//no.wikipedia.org
+rewrite	nb.wiktionary.org	//no.wiktionary.org
+rewrite	nb.wikiquote.org	//no.wikiquote.org
+rewrite	nb.wikibooks.org	//no.wikibooks.org
+rewrite	nb.wikivoyage.org	//no.wikivoyage.org
+rewrite	nb.wikisource.org	//no.wikisource.org
+rewrite	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
 
 # renamed chapter wiki - T40763
 rewrite	pa.us.wikimedia.org	//pa-us.wikimedia.org
