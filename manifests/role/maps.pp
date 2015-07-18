@@ -13,6 +13,23 @@ class role::maps::master {
         description => 'Maps Postgres master',
     }
 
+    # Tuning
+    file { '/etc/postgresql/9.4/main/tuning.conf':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///files/postgres/tuning.conf',
+    }
+    sysctl::parameters { 'postgres_shmem':
+        values => {
+            # That is derived after tuning postgresql, deriving automatically is
+            # not the safest idea yet.
+            'kernel.shmmax' => 8388608000,
+        },
+    }
+
+    # Replication
     $postgres_slaves = hiera('postgresql::master::postgres_slaves', undef)
     if $postgres_slaves {
         create_resources(postgresql::user, $postgres_slaves)
