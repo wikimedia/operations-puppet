@@ -40,6 +40,7 @@ class postgresql::server(
         "postgresql-client-${pgversion}",
         'libdbi-perl',
         'libdbd-pg-perl',
+        'ptop',
     ]:
         ensure => $ensure,
     }
