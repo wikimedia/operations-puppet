@@ -12,6 +12,11 @@ ProxyPreserveHost    On
 AllowEncodedSlashes  On
 
 <Proxy http://localhost:8082/*>
-    Order deny,allow
-    Allow from all
+    <IfVersion >= 2.4>
+        Require all granted
+    </IfVersion>
+    <IfVersion < 2.4>
+        Order deny,allow
+        Allow from all
+    </IfVersion>
 </Proxy>
