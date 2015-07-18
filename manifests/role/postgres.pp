@@ -3,9 +3,9 @@
 class role::postgres::common {
     include standard
 
-    $datadir = '/srv/postgres/9.1/main'
+    $datadir = '/srv/postgres/9.4/main'
 
-    file { '/etc/postgresql/9.1/main/tuning.conf':
+    file { '/etc/postgresql/9.4/main/tuning.conf':
         ensure => 'present',
         owner  => 'root',
         group  => 'root',
