@@ -15,9 +15,6 @@ class ores::base(
     # takes forever and is quite buggy
     require_package('python3-scipy')
 
-    # ORES is a python3 application \o/
-    require_package('uwsgi-plugin-python3')
-
     # It requires the enchant debian package
     require_package('enchant')
 

@@ -1,6 +1,9 @@
 # = Class: ores::web
 # Sets up a uwsgi based web server for ORES running python3
 class ores::web {
+    # ORES is a python3 application \o/
+    require_package('uwsgi-plugin-python3')
+
     uwsgi::app { 'ores-web':
         settings => {
             uwsgi => {
