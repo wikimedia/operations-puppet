@@ -8,7 +8,7 @@ class role::labs::ores::web {
 }
 
 class role::labs::ores::worker {
-    inlcude ::ores::base
+    include ::ores::base
     include ::ores::worker
 
     class { '::ores::redisproxy':
