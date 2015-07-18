@@ -1,5 +1,15 @@
 #!/bin/bash
 
+usage() {
+    echo "Usage: $(basename $0) <command>"
+    echo ""
+    exit
+}
+
+if [ -z "$1" ] || [ "$1" = "--help" ]; then
+    usage
+fi
+
 . /etc/profile.d/mediawiki.sh
 
 # Let us vary mediawiki-config files by realm
