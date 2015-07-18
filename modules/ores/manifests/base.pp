@@ -24,7 +24,7 @@ class ores::base(
     # Spellcheck packages for supported languages
     require_package('myspell-pt', 'myspell-fa', 'myspell-en-au',
                     'myspell-en-gb', 'myspell-en-us',
-                    'myspell-en-za', 'myspell-fr',
+                    'myspell-en-za', 'myspell-fr', 'myspell-es',
                     'aspell-id')
 
     file { '/srv':
