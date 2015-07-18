@@ -2385,6 +2385,8 @@ host labstore2002 {
 host labsdb1004 {
 	hardware ethernet d4:ae:52:76:66:59;
 	fixed-address labsdb1004.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host labsdb1005 {
