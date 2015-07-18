@@ -24,6 +24,7 @@ class postgresql::postgis(
     package { [
                 "postgresql-${pgversion}-postgis",
                 "postgresql-contrib-${pgversion}",
+                'postgis',
             ]:
         ensure  => $ensure,
     }
