@@ -326,6 +326,9 @@ groups:
     gid: 753
     description: admin for maps-test cluster
     members: [maxsem, yurik]
+    # TODO: Revisit this when moving into production
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *']
+                 'ALL = NOPASSWD: /usr/sbin/service postgres *']
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
