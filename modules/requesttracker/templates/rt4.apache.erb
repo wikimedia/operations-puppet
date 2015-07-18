@@ -24,8 +24,13 @@
   DocumentRoot "/usr/share/request-tracker4/html"
 
   <Location />
-    Order allow,deny
-    Allow from all
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
+    <IfVersion < 2.4>
+      Order allow,deny
+      Allow from all
+    </IfVersion>
 
     SetHandler modperl
     PerlResponseHandler Plack::Handler::Apache2
