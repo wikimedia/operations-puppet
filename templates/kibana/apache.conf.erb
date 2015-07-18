@@ -21,17 +21,32 @@
   <Directory />
     Options FollowSymLinks
     AllowOverride None
-    Order Allow,Deny
-    Deny from all
+    <IfVersion >= 2.4>
+      Require all denied
+    </IfVersion>
+    <IfVersion < 2.4>
+      Order Allow,Deny
+      Deny from all
+    </IfVersion>
   </Directory>
 
   <Directory /etc/kibana>
-    Allow from all
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
+    <IfVersion < 2.4>
+      Allow from all
+    </IfVersion>
   </Directory>
 
   <Directory <%= @deploy_dir %>/src>
-    Order Allow,Deny
-    Allow from all
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
+    <IfVersion < 2.4>
+      Order Allow,Deny
+      Allow from all
+    </IfVersion>
   </Directory>
 
 <%- if @apache_auth -%>
@@ -89,8 +104,13 @@
     # Allow access this URI without authenticating
     # Due to varnish frontend, all reqests are seen by Apache as being internal
     # so using IP ranges is not any more restrictive than "all".
-    Allow from all
-    Satisfy Any
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
+    <IfVersion < 2.4>
+      Allow from all
+      Satisfy Any
+    </IfVersion>
   </Location>
 
 </VirtualHost>

@@ -9,7 +9,12 @@
 <VirtualHost *:80>
     ServerName otrs-test.wikimedia.org
     <Directory />
-        Order allow,deny
+        <IfVersion >= 2.4>
+            Require all denied
+        </IfVersion>
+        <IfVersion < 2.4>
+            Order allow,deny
+        </IfVersion>
     </Directory>
 </VirtualHost>
 
@@ -46,8 +51,13 @@
         Options +ExecCGI
         PerlOptions +ParseHeaders
         PerlOptions +SetupEnv
-        Order allow,deny
-        Allow from all
+        <IfVersion >= 2.4>
+            Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+            Order allow,deny
+            Allow from all
+        </IfVersion>
     </Location>
 
     # mod_perl2 options for GenericInterface
@@ -58,8 +68,13 @@
     <Directory "/opt/otrs/bin/cgi-bin/">
         AllowOverride None
         Options +ExecCGI -Includes
-        Order allow,deny
-        Allow from all
+        <IfVersion >= 2.4>
+            Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+            Order allow,deny
+            Allow from all
+        </IfVersion>
 
         <IfModule mod_deflate.c>
             AddOutputFilterByType DEFLATE text/html text/javascript text/css text/xml application/json text/json
@@ -68,8 +83,13 @@
 
     <Directory "/opt/otrs/var/httpd/htdocs/">
         AllowOverride None
-        Order allow,deny
-        Allow from all
+        <IfVersion >= 2.4>
+            Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+            Order allow,deny
+            Allow from all
+        </IfVersion>
 
         <IfModule mod_deflate.c>
             AddOutputFilterByType DEFLATE text/html text/javascript text/css text/xml application/json text/json
