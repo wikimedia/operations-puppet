@@ -6,11 +6,17 @@
         <IfModule mod_php5.c>
             php_admin_flag engine on
         </IfModule>
-        Order deny,allow
-        Deny from all
+
         # Allow calling from localhost and the private network.
-        Allow from 127.0.0.1
-        Allow from 10.0.0.0/8
+        <IfVersion >= 2.4>
+            Require ip 127.0.0.1 10.0.0.0/8
+        </IfVersion>
+        <IfVersion < 2.4>
+            Order deny,allow
+            Deny from all
+            Allow from 127.0.0.1
+            Allow from 10.0.0.0/8
+        </IfVersion>
     </Directory>
 
     # Neat aliases for monitoring scripts
