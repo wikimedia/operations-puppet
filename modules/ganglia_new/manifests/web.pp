@@ -16,6 +16,8 @@ class ganglia_new::web(
     $ganglia_ssl_chain = '/etc/ssl/localcerts/ganglia.wikimedia.org.chain.crt'
     $ganglia_ssl_key = '/etc/ssl/private/ganglia.wikimedia.org.key'
     $ssl_settings = ssl_ciphersuite('apache-2.4', 'compat')
+    # Apache's docroot. Used for populating robots.txt
+    $doc_root = '/var/www'
 
     package { [ 'php5-gd',
                 'php5-mysql',
@@ -39,7 +41,7 @@ class ganglia_new::web(
         require => Package['ganglia-webfrontend'],
     }
 
-    file { "${ganglia_webdir}/robots.txt":
+    file { "${doc_root}/robots.txt":
         ensure  => $ensure,
         mode    => '0444',
         owner   => 'root',

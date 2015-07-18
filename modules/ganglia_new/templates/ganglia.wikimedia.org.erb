@@ -1,10 +1,10 @@
 <VirtualHost *:80>
     ServerName <%= @ganglia_servername %>
     ServerAlias <%= @ganglia_serveralias %>
-    DocumentRoot /var/www
+    DocumentRoot <%= @doc_root %>
     ServerAdmin noc@wikimedia.org
 
-    <Directory "/var/www">
+    <Directory "<%= @doc_root %>">
     Options FollowSymLinks
     AllowOverride None
     Require all granted
@@ -21,7 +21,7 @@
 <VirtualHost *:443>
     ServerName <%= @ganglia_servername %>
     ServerAlias <%= @ganglia_serveralias %>
-    DocumentRoot /var/www
+    DocumentRoot <%= @doc_root %>
     ServerAdmin noc@wikimedia.org
 
     SSLEngine on
@@ -30,7 +30,7 @@
     SSLCertificateKeyFile <%= @ganglia_ssl_key %>
     <%= @ssl_settings.join("\n") %>
 
-    <Directory "/var/www">
+    <Directory "<%= @doc_root %>">
     Options FollowSymLinks
     AllowOverride None
     Require all granted
