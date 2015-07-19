@@ -5,6 +5,9 @@ class role::maps::master {
     include ::osm
     include ::cassandra
     include ::role::kartotherian
+    if $::realm == 'production' {
+        include lvs::realserver
+    }
 
     postgresql::spatialdb { 'gis':
         require => Class['::postgresql::postgis'],
@@ -38,6 +41,9 @@ class role::maps::slave {
     include ::postgresql::postgis
     include ::cassandra
     include ::role::kartotherian
+    if $::realm == 'production' {
+        include lvs::realserver
+    }
 
     system::role { 'role::maps::slave':
         ensure      => 'present',

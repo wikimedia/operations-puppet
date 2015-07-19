@@ -56,6 +56,7 @@ class role::lvs::balancer {
             $sip['api'][$::site],
             $sip['rendering'][$::site],
             $sip['swift'][$::site],
+            $sip['kartotherian'][$::site],
             ],
 
         # esams + ulsfo
