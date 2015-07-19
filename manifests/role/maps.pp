@@ -5,6 +5,7 @@ class role::maps::master {
     include ::postgresql::master
     include ::postgresql::postgis
     include ::osm
+    include ::osm::import_waterlines
     include ::cassandra
     include ::role::kartotherian
     if $::realm == 'production' {
