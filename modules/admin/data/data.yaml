@@ -326,6 +326,12 @@ groups:
     gid: 753
     description: admin for maps-test cluster
     members: [maxsem, yurik]
+  kartotherian-admin:
+    description: Group of kartotherian admins
+    gid: 754
+    members: [yurik, maxsem]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
+                 'ALL = (kartotherian) NOPASSWD: ALL']
 
 users:
   rush:
