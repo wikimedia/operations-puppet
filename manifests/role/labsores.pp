@@ -31,7 +31,7 @@ class role::labs::ores::lb(
 
     class { '::ores::lb':
         realservers => $realservers,
-        cache       => true,
+        cache       => false,
         require     => Labs_lvm::Volume['srv'],
     }
 }
