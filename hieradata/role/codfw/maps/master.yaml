@@ -1,4 +1,5 @@
 # TODO: Heavily deduplicate this
+cluster: maps
 postgresql::postgis::pgversion: 9.4
 postgresql::spatialdb::postgis_version: 2.1
 postgresql::master::pgversion: 9.4

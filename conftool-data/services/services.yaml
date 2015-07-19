@@ -91,3 +91,11 @@ restbase:
       "weight": 10
     datacenters:
       - eqiad
+maps:
+  kartotherian:
+    port: 400
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - codfw
