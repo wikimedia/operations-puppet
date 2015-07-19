@@ -92,6 +92,7 @@ rewrite	nb.wikiquote.org	//no.wikiquote.org
 rewrite	nb.wikibooks.org	//no.wikibooks.org
 rewrite	nb.wikivoyage.org	//no.wikivoyage.org
 rewrite	nb.wikisource.org	//no.wikisource.org
+rewrite	nb.wikinews.org	//no.wikinews.org
 funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
 
 # renamed chapter wiki - T40763
