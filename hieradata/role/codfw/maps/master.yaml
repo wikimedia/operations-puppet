@@ -1,3 +1,4 @@
+# TODO: Heavily deduplicate this
 postgresql::postgis::pgversion: 9.4
 postgresql::spatialdb::postgis_version: 2.1
 postgresql::master::pgversion: 9.4
@@ -27,3 +28,9 @@ cassandra::commitlog_directory: /srv/cassandra/commitlog
 cassandra::saved_caches_directory: /srv/cassandra/saved_caches
 admin::groups:
   - maps-admins
+  - kartotherian-admin
+service::configuration::http_proxy: http://url-downloader.wikimedia.org:8080
+service::configuration::logstash_host: logstash1001.eqiad.wmnet
+service::configuration::statsd_host: statsd.eqiad.wmnet
+lvs::realserver::realserver_ips:
+- 10.2.1.13

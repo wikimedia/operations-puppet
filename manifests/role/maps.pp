@@ -4,6 +4,8 @@ class role::maps::master {
     include ::postgresql::postgis
     include ::osm
     include ::cassandra
+    include ::role::kartotherian
+
     postgresql::spatialdb { 'gis':
         require => Class['::postgresql::postgis'],
     }
@@ -35,6 +37,7 @@ class role::maps::slave {
     include ::postgresql::slave
     include ::postgresql::postgis
     include ::cassandra
+    include ::role::kartotherian
 
     system::role { 'role::maps::slave':
         ensure      => 'present',
