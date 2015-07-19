@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+cd /srv/downloads
+curl -O -x <%= @proxy %> http://data.openstreetmapdata.com/water-polygons-split-3857.zip
+unzip water-polygons-split-3857.zip
+rm water-polygons-split-3857.zip
+shp2pgsql -d -G -g way water-polygons-split-3857/water_polygons.shp water_polygons_tmp | psql <%= @database %>
+rm -rf water-polygons-split-3857
+
+echo "
+  ALTER TABLE water_polygons_tmp OWNER TO osmimporter;
+  SELECT UpdateGeometrySRID('water_polygons_tmp', 'way', 900913);
+
+  BEGIN;
+  DROP TABLE IF EXISTS water_polygons;
+  ALTER TABLE water_polygons_tmp RENAME TO water_polygons;
+  COMMIT;" | psql <%= @database %>

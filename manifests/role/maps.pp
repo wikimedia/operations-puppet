@@ -3,6 +3,7 @@ class role::maps::master {
     include ::postgresql::master
     include ::postgresql::postgis
     include ::osm
+    include ::osm::import_waterlines
     include ::cassandra
     postgresql::spatialdb { 'gis':
         require => Class['::postgresql::postgis'],
