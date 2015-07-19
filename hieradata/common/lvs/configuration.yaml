@@ -840,3 +840,6 @@ lvs_services:
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
+    conftool:
+      cluster: maps
+      service: kartotherian
