@@ -7,4 +7,11 @@ class osm($ensure='present') {
         ]:
         ensure => $ensure,
     }
+
+    file { '/srv/downloads':
+        ensure => 'present',
+        owner => 'root',
+        group => 'root',
+        mode => 0777,
+    }
 }
