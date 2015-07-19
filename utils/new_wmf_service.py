@@ -354,7 +354,6 @@ class Git():
     def _execute_command(cls, command, args):
         cmd = [command]
         cmd.extend(args)
-        print cmd
         return call(cmd)
 
 
