@@ -96,3 +96,6 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/wikidata/query/deploy
   sentry/sentry:
     upstream: https://gerrit.wikimedia.org/r/operations/software/sentry
+  kartotherian/deploy:
+    upstream: http://gerrit.wikimedia.org/r/maps/kartotherian/deploy
+    checkout_submodules: true
