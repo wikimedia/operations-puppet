@@ -1,3 +1,2 @@
 admin::groups:
   - wikidata-query-roots
-ganglia_class: "new"

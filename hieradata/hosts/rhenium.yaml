@@ -1,3 +1,2 @@
 admin::groups:
   - traceback-roots
-ganglia_class: "new"

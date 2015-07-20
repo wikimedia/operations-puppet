@@ -1,3 +1,2 @@
 ---
 base::remote_syslog::enable: false
-ganglia_class: "new"
