@@ -16,9 +16,6 @@ module Puppet::Parser::Functions
     clusters.each do |cluster, data|
       data['sites'].each do |site, aggregators|
         name = sprintf("%s %s", data['name'], site)
-        # We are moving away from the traditional cluster-dedicated aggregators
-        # To switch one cluster from ganglia to ganglia_new it will be enough to
-        # remove its aggregators list, and to re-define the ganglia_class hiera variable
         if not aggregators.empty?
           aggregator = aggregators.join(' ')
         else

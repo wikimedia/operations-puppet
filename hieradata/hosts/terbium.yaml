@@ -5,4 +5,3 @@ admin::groups:
 base::resolving::domain_search:
   - wikimedia.org
   - eqiad.wmnet
-ganglia_class: "new"

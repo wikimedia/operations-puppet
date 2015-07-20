@@ -1,3 +1,2 @@
 admin::groups:
   - udp2log-users
-ganglia_class: "new"

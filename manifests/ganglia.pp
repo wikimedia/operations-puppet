@@ -19,7 +19,7 @@
 class ganglia {
 
     # FIXME: remove after the ganglia module migration
-    if (hiera('ganglia_class', 'new') == 'new') {
+    if (hiera('has_ganglia', true)) {
 
         include ganglia_new::monitor
     }
