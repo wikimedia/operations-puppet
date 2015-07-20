@@ -1,5 +1,5 @@
 # Only support trusty
-class ganglia_new::gmetad::rrdcached(
+class ganglia::gmetad::rrdcached(
     $ensure='present',
     $rrdpath,
     $gmetad_socket,
@@ -22,7 +22,7 @@ class ganglia_new::gmetad::rrdcached(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('ganglia_new/rrdcached.default.erb'),
+        content => template('ganglia/rrdcached.default.erb'),
     }
 
     service { 'rrdcached':

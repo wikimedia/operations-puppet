@@ -118,7 +118,7 @@ class misc::monitoring::views::dns {
     $auth_dns_host_regex = '^(radon|baham|eeden)\.'
     $rec_dns_host_regex = '^(chromium|hydrogen|acamar|achernar|maerlant|nescio)\.'
 
-    ganglia_new::web::view { 'authoritative_dns':
+    ganglia::web::view { 'authoritative_dns':
         ensure      => 'present',
         description => 'DNS Authoritative',
         graphs      => [
@@ -161,7 +161,7 @@ class misc::monitoring::views::dns {
         ]
     }
 
-    ganglia_new::web::view { 'recursive_dns':
+    ganglia::web::view { 'recursive_dns':
         ensure      => 'present',
         description => 'DNS Recursive',
         graphs      => [
@@ -212,16 +212,16 @@ class misc::monitoring::views::dns {
 }
 
 # == Define misc:monitoring::view::udp2log
-# Installs a ganglia_new::web::view for a group of nodes
+# Installs a ganglia::web::view for a group of nodes
 # running udp2log.  This is just a wrapper for
 # udp2log specific metrics to include in udp2log
 # ganglia views.
 #
 # == Parameters:
-# $host_regex - regex to pass to ganglia_new::web::view for matching host names in the view.
+# $host_regex - regex to pass to ganglia::web::view for matching host names in the view.
 #
 define misc::monitoring::view::udp2log($host_regex, $ensure = 'present') {
-    ganglia_new::web::view { $name:
+    ganglia::web::view { $name:
         ensure => $ensure,
         graphs => [
             {
@@ -277,7 +277,7 @@ define misc::monitoring::view::udp2log($host_regex, $ensure = 'present') {
 
 
 # == Define misc:monitoring::view::kafka
-# Installs a ganglia_new::web::view for a group of nodes
+# Installs a ganglia::web::view for a group of nodes
 # running kafka broker servers.  This is just a wrapper for
 # kafka specific metrics to include in kafka
 #
@@ -286,7 +286,7 @@ define misc::monitoring::view::udp2log($host_regex, $ensure = 'present') {
 # $log_disk_regex            - regex matching disks that have Kafka log directories
 #
 define misc::monitoring::view::kafka($kafka_broker_host_regex, $kafka_log_disks_regex = '.+', $ensure = 'present') {
-    ganglia_new::web::view { $name:
+    ganglia::web::view { $name:
         ensure => $ensure,
         graphs => [
             # Messages In
@@ -393,7 +393,7 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $kafka_log_disks_
 # == Define misc::monitoring::view::varnishkafka
 #
 define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $topic_regex = '.+', $ensure = 'present') {
-    ganglia_new::web::view { "varnishkafka-${title}":
+    ganglia::web::view { "varnishkafka-${title}":
         ensure => $ensure,
         graphs => [
             # delivery report error rate
@@ -476,7 +476,7 @@ define misc::monitoring::view::varnishkafka($varnishkafka_host_regex = 'cp.+', $
 # == Class misc::monitoring::view::kafkatee
 #
 class misc::monitoring::view::kafkatee($kafkatee_host_regex, $topic_regex = '.+', $ensure = 'present') {
-    ganglia_new::web::view { 'kafkatee':
+    ganglia::web::view { 'kafkatee':
         ensure => $ensure,
         graphs => [
             # receive transctions per second rate
@@ -512,7 +512,7 @@ class misc::monitoring::view::kafkatee($kafkatee_host_regex, $topic_regex = '.+'
 # == Class misc::monitoring::view::hadoop
 #
 class misc::monitoring::view::hadoop($master, $worker_regex, $ensure = 'present') {
-    ganglia_new::web::view { 'hadoop':
+    ganglia::web::view { 'hadoop':
         ensure => $ensure,
         graphs => [
             # ResourceManager active applications
@@ -613,7 +613,7 @@ class misc::monitoring::view::hadoop($master, $worker_regex, $ensure = 'present'
 # $kafka_producer_host_regex - regex matching kafka producer hosts, this is the same as upd2log hosts
 #
 class misc::monitoring::view::analytics::data($hdfs_stat_host, $kafka_broker_host_regex, $kafka_producer_host_regex, $ensure = 'present') {
-    ganglia_new::web::view { 'analytics-data':
+    ganglia::web::view { 'analytics-data':
         ensure => $ensure,
         graphs => [
             {

@@ -1,5 +1,5 @@
 # Class for the ganglia frontend machine
-class ganglia_new::web(
+class ganglia::web(
                     $ensure='present',
                     $rrdcached_socket,
                     $gmetad_root,
@@ -29,7 +29,7 @@ class ganglia_new::web(
     }
 
     apache::site { $ganglia_servername:
-        content => template("ganglia_new/${ganglia_servername}.erb"),
+        content => template("ganglia/${ganglia_servername}.erb"),
     }
 
     file { '/etc/ganglia-webfrontend/conf.php':
@@ -37,7 +37,7 @@ class ganglia_new::web(
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => template('ganglia_new/conf_production.php.erb'),
+        content => template('ganglia/conf_production.php.erb'),
         require => Package['ganglia-webfrontend'],
     }
 
@@ -46,7 +46,7 @@ class ganglia_new::web(
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/ganglia_new/robots.txt',
+        source  => 'puppet:///modules/ganglia/robots.txt',
         require => Package['ganglia-webfrontend'],
     }
 

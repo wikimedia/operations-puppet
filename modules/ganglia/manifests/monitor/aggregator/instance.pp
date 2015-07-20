@@ -1,21 +1,21 @@
-define ganglia_new::monitor::aggregator::instance($monitored_site) {
+define ganglia::monitor::aggregator::instance($monitored_site) {
     Ganglia_new::Monitor::Aggregator::Instance[$title] ->
     Service['ganglia-monitor-aggregator']
 
-    include ganglia_new::configuration
+    include ganglia::configuration
     include network::constants
 
     $aggregator = true
 
     $cluster = regsubst($title, '^(.*)_[^_]+$', '\1')
-    if has_key($ganglia_new::configuration::clusters[$cluster], 'sites') {
-        $sites = keys($ganglia_new::configuration::clusters[$cluster]['sites'])
+    if has_key($ganglia::configuration::clusters[$cluster], 'sites') {
+        $sites = keys($ganglia::configuration::clusters[$cluster]['sites'])
     } else {
-        $sites = $ganglia_new::configuration::default_sites
+        $sites = $ganglia::configuration::default_sites
     }
-    $id = $ganglia_new::configuration::clusters[$cluster]['id'] + $ganglia_new::configuration::id_prefix[$monitored_site]
-    $desc = $ganglia_new::configuration::clusters[$cluster]['name']
-    $gmond_port = $ganglia_new::configuration::base_port + $id
+    $id = $ganglia::configuration::clusters[$cluster]['id'] + $ganglia::configuration::id_prefix[$monitored_site]
+    $desc = $ganglia::configuration::clusters[$cluster]['name']
+    $gmond_port = $ganglia::configuration::base_port + $id
     $cname = "${desc} ${::site}"
     if $monitored_site in $sites {
         $ensure = 'present'
