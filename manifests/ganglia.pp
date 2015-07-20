@@ -29,23 +29,3 @@ class ganglia {
         notice("Ganglia disabled here")
     }
 }
-
-
-# == Class: ganglia::aggregator
-# for the machine class which listens on multicast and
-# collects all the ganglia information from other sources
-class ganglia::aggregator {
-    # This overrides the default ganglia-monitor script
-    # with one that starts up multiple instances of gmond
-    file { '/etc/init.d/ganglia-monitor-aggrs':
-        ensure  => present,
-        source  => 'puppet:///files/ganglia/ganglia-monitor',
-        mode    => '0555',
-        require => Package['ganglia-monitor'],
-    }
-    service { 'ganglia-monitor-aggrs':
-        ensure  => running,
-        require => File['/etc/init.d/ganglia-monitor-aggrs'],
-        enable  => true,
-    }
-}
