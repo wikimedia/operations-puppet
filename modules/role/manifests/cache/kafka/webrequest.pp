@@ -48,7 +48,7 @@ class role::cache::kafka::webrequest(
         log_statistics_interval      => 15,
     }
 
-    if hiera('has_ganglia', true) {
+    if standard::has_ganglia {
         varnishkafka::monitor { 'webrequest':
             # The primary webrequest varnishkafka instance was formerly the
             # only one running, so we don't prefix its Ganglia metric keys.
