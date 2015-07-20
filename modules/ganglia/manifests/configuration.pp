@@ -1,6 +1,6 @@
 # modules/ganglia/manifests/configuration.pp
 
-class ganglia_new::configuration {
+class ganglia::configuration {
     $clusters = hiera('ganglia_clusters')
 
     $url = 'http://ganglia.wikimedia.org'

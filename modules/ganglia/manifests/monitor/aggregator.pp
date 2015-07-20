@@ -1,6 +1,6 @@
-class ganglia_new::monitor::aggregator($sites) {
-    require ganglia_new::monitor::packages
-    include ganglia_new::configuration
+class ganglia::monitor::aggregator($sites) {
+    require ganglia::monitor::packages
+    include ganglia::configuration
 
     system::role { 'ganglia::monitor::aggregator': description => 'central Ganglia aggregator' }
 
@@ -27,7 +27,7 @@ class ganglia_new::monitor::aggregator($sites) {
 
     define site_instances() {
         # Instantiate aggregators for all clusters for this site ($title)
-        $cluster_list = suffix(keys($ganglia_new::configuration::clusters), "_${title}")
+        $cluster_list = suffix(keys($ganglia::configuration::clusters), "_${title}")
         instance { $cluster_list:
             monitored_site => $title
         }
