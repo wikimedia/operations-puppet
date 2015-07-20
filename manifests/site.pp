@@ -2,7 +2,6 @@
 # site.pp
 
 import 'realm.pp' # These ones first
-import 'ganglia.pp'
 import 'mail.pp'
 import 'misc/*.pp'
 import 'network.pp'
@@ -27,7 +26,7 @@ class standard(
     include role::ntp
     include role::diamond
     if $::realm == 'production' {
-        include ganglia # No ganglia in labs
+        include ganglia_new::monitor
     }
     # Some instances have their own exim definition that
     # will conflict with this
@@ -39,6 +38,7 @@ class standard(
     if $has_admin {
         include ::admin
     }
+
 }
 
 # Default variables. this way, they work with an ENC (as in labs) as well.
