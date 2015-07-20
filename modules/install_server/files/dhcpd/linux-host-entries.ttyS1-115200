@@ -5878,12 +5878,16 @@ host uranium {
 
 host wdqs1001 {
 	hardware ethernet 90:b1:1c:1d:e7:e6;
-    fixed-address wdqs1001.eqiad.wmnet;
+	fixed-address wdqs1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host wdqs1002 {
 	hardware ethernet 90:b1:1c:23:36:1d;
-    fixed-address wdqs1002.eqiad.wmnet;
+	fixed-address wdqs1002.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";    
 }
 
 host wtp1001 {
