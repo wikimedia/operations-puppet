@@ -127,6 +127,7 @@ class hhvm(
                 light_process_file_prefix => '/var/tmp/hhvm',
                 apc                      => {
                     expire_on_sets     => true,  # Purge on expiration
+                    ttl_limit          => to_seconds('2 days'),
                 },
             },
             hack                     => {
