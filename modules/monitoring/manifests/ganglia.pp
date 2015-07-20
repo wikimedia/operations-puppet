@@ -114,7 +114,7 @@ define monitoring::ganglia(
     monitoring::service { $title:
         ensure                => $ensure,
         description           => $description,
-        check_command         => "check_ganglia!${gmetad_host}!${gmetad_query_port}!${metric_host}!${metric}!${warning}!${critical}!${::ganglia::cname}",
+        check_command         => "check_ganglia!${gmetad_host}!${gmetad_query_port}!${metric_host}!${metric}!${warning}!${critical}!${::ganglia_new::cname}",
         retries               => $retries,
         group                 => $ganglia_group,
         critical              => $nagios_critical,
