@@ -1,6 +1,6 @@
 # General variables that once would have been in realm.pp
 datacenters: [eqiad]
-has_ganglia: false
+standard::has_ganglia: false
 has_nrpe: false
 
 # Additional base overrides

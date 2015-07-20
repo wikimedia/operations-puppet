@@ -88,7 +88,7 @@ class memcached(
         }
     }
 
-    if hiera('has_ganglia', true) {
+    if standard::has_ganglia {
         include ::memcached::ganglia
     }
 }
