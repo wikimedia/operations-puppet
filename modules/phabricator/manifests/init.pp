@@ -222,6 +222,18 @@ class phabricator (
             before    => Git::Install['phabricator/phabricator'],
         }
 
+        file { "${$phabdir}/phabricator/src/extensions":
+            ensure  => 'directory',
+            path    => "${$phabdir}/phabricator/src/extensions",
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            require => [
+                        Git::Install['phabricator/extensions'],
+                        Git::Install['phabricator/phabricator'],
+                    ],
+        }
+
         exec {$ext_lock_path:
             command => "touch ${ext_lock_path}",
             unless  => "test -z ${ext_lock_path} || test -e ${ext_lock_path}",
@@ -230,7 +242,7 @@ class phabricator (
 
         phabricator::extension { $extensions:
             rootdir => $phabdir,
-            require => Git::Install['phabricator/extensions'],
+            require => File["${$phabdir}/phabricator/src/extensions"],
         }
 
     }
