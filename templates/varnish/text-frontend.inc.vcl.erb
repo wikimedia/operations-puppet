@@ -134,7 +134,7 @@ sub vcl_fetch {
 	}
 <% if @cluster_options.fetch("do_gzip", false) -%>
 		// Compress ico and SVG files
-		if (beresp.http.content-type ~ "^image/(x-icon|svg\+xml)$") {
+		if (beresp.http.content-type ~ "^image/(x-icon|vnd\.microsoft\.icon|svg\+xml)$") {
 			set beresp.do_gzip = true;
 		}
 <% end -%>
