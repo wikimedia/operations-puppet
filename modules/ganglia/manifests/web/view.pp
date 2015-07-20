@@ -1,4 +1,4 @@
-# == Define ganglia_new::web::view
+# == Define ganglia::web::view
 # Defines a Ganglia view JSON file.
 # See http://sourceforge.net/apps/trac/ganglia/wiki/ganglia-web-2#JSONdefinitionforviews
 # for documentation on Ganglia view JSON format.
@@ -57,7 +57,7 @@
 #   ],
 # }
 #
-define ganglia_new::web::view(
+define ganglia::web::view(
     $graphs       = [],
     $items        = [],
     $view_type    = 'standard',
@@ -74,6 +74,6 @@ define ganglia_new::web::view(
     }
     file { "${conf_dir}/view_${name}.json":
         ensure  => $ensure,
-        content => template('ganglia_new/ganglia_view.json.erb'),
+        content => template('ganglia/ganglia_view.json.erb'),
     }
 }

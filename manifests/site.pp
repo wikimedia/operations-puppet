@@ -262,7 +262,7 @@ node 'bast4001.wikimedia.org' {
     include role::ipmi
     include role::installserver::tftp-server
 
-    class { 'ganglia_new::monitor::aggregator':
+    class { 'ganglia::monitor::aggregator':
         sites =>  'ulsfo',
     }
 }
@@ -324,7 +324,7 @@ node 'carbon.wikimedia.org' {
     include standard
     include role::installserver
 
-    class { 'ganglia_new::monitor::aggregator':
+    class { 'ganglia::monitor::aggregator':
         sites =>  'eqiad',
     }
 
@@ -1080,7 +1080,7 @@ node 'hooft.esams.wikimedia.org' {
     include standard
     include role::installserver::tftp-server
 
-    class { 'ganglia_new::monitor::aggregator':
+    class { 'ganglia::monitor::aggregator':
         sites =>  'esams',
     }
 }
@@ -1121,7 +1121,7 @@ node 'install2001.wikimedia.org' {
     include standard
     include role::installserver::tftp-server
 
-    class { 'ganglia_new::monitor::aggregator':
+    class { 'ganglia::monitor::aggregator':
         sites =>  'codfw',
     }
 }
@@ -1973,7 +1973,7 @@ node 'netmon1001.wikimedia.org' {
 
     interface::add_ip6_mapped { 'main': }
 
-    class { 'ganglia_new::monitor::aggregator':
+    class { 'ganglia::monitor::aggregator':
         sites => ['eqiad', 'codfw'],
     }
 

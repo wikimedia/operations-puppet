@@ -1,4 +1,4 @@
-class ganglia_new::gmetad(
+class ganglia::gmetad(
         $ensure='present',
         $grid,
         $rrd_rootdir,
@@ -32,7 +32,7 @@ class ganglia_new::gmetad(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('ganglia_new/gmetad.conf.erb'),
+        content => template('ganglia/gmetad.conf.erb'),
     }
 
     service { 'gmetad':
@@ -46,7 +46,7 @@ class ganglia_new::gmetad(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('ganglia_new/gmetad.upstart'),
+        content => template('ganglia/gmetad.upstart'),
     }
 
     # We also notify on file changes

@@ -1,5 +1,5 @@
 # === Class ganglia
 #
 class ganglia {
-    include ::ganglia_new::monitor
+    include ::ganglia::monitor
 }

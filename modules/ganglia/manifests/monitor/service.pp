@@ -1,5 +1,5 @@
-class ganglia_new::monitor::service() {
-    Class[ganglia_new::monitor::config] -> Class[ganglia_new::monitor::service]
+class ganglia::monitor::service() {
+    Class[ganglia::monitor::config] -> Class[ganglia::monitor::service]
 
     if $::operatingsystem == 'Ubuntu' and os_version('ubuntu < trusty') {
         file { '/etc/init/ganglia-monitor.conf':
