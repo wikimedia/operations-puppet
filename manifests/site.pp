@@ -1966,7 +1966,7 @@ node 'netmon1001.wikimedia.org' {
     include smokeping::web
     include role::librenms
     include passwords::network
-    include ganglia::collector
+    include ganglia::deprecated::collector
     include role::servermon
     include role::torrus
 
