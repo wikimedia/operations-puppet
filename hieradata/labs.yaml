@@ -1,6 +1,5 @@
 # General variables that once would have been in realm.pp
 datacenters: [eqiad]
-ganglia_class: old
 has_ganglia: false
 has_nrpe: false
 
