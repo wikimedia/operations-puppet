@@ -75,7 +75,6 @@ class contint::packages {
 
         'doxygen',
         'python-sphinx',  # python documentation
-        'ruby-jsduck',
         ]:
         ensure => present,
     }
@@ -142,6 +141,15 @@ class contint::packages {
     # it is used instead of the stock diff.
     package { 'colordiff':
         ensure => present,
+    }
+
+    # JSDuck was built for Ubuntu ( T48236/ T82278 )
+    # It is a pain to rebuild for Jessie so give up (T95008), we will use
+    # bundler/rubygems instead
+    if $::operatingsystem == 'Ubuntu' {
+        package { 'ruby-jsduck':
+            ensure => present,
+        }
     }
 
     # Packages to support use of rspec on puppet modules:
