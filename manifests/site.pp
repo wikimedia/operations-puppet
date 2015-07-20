@@ -21,11 +21,13 @@ import 'stages.pp'
 class standard(
     $has_default_mail_relay = true,
     $has_admin = true,
+    $has_ganglia = true,
 ) {
     include base
     include role::ntp
     include role::diamond
-    if $::realm == 'production' {
+
+    if $has_ganglia {
         include ganglia_new::monitor
     }
     # Some instances have their own exim definition that
