@@ -57,7 +57,7 @@ class role::analytics::clients {
 # Installs monitoring plugins for disks
 #
 class role::analytics::monitor_disks {
-    if hiera('has_ganglia', true) {
+    if standard::has_ganglia {
         ganglia::plugin::python { 'diskstat': }
     }
 
