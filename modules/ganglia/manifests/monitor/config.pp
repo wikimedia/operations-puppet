@@ -1,5 +1,5 @@
-class ganglia_new::monitor::config($gmond_port, $cname, $aggregator_hosts, $override_hostname=undef) {
-    require ganglia_new::monitor::packages
+class ganglia::monitor::config($gmond_port, $cname, $aggregator_hosts, $override_hostname=undef) {
+    require ganglia::monitor::packages
 
     $aggregator = false
 

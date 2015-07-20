@@ -15,7 +15,7 @@ class role::ganglia::web {
     $gmetad_socket = '/var/run/rrdcached-gmetad.sock'
     $gweb_socket = '/var/run/rrdcached-gweb.sock'
 
-    class { 'ganglia_new::gmetad::rrdcached':
+    class { 'ganglia::gmetad::rrdcached':
         rrdpath       => $rrd_rootdir,
         gmetad_socket => $gmetad_socket,
         gweb_socket   => $gwebsocket,
@@ -23,7 +23,7 @@ class role::ganglia::web {
     }
 
     # TODO: Automate the gmetad trusted hosts variable
-    class { 'ganglia_new::gmetad':
+    class { 'ganglia::gmetad':
         grid             => 'Wikimedia',
         authority        => 'http://ganglia.wikimedia.org',
         gmetad_root      => $gmetad_root,
@@ -38,7 +38,7 @@ class role::ganglia::web {
         rra_sizes        => $role::ganglia::config::rra_sizes,
     }
 
-    class { 'ganglia_new::web':
+    class { 'ganglia::web':
         rrdcached_socket => $gweb_socket,
         gmetad_root      => $gmetad_root,
     }
@@ -88,6 +88,6 @@ class role::ganglia::web {
     backup::set { 'var-lib-ganglia': }
     backup::set { 'srv-ganglia': }
 
-    Class['ganglia_new::gmetad::rrdcached'] -> Class['ganglia_new::gmetad']
-    Class['ganglia_new::gmetad'] -> Class['ganglia_new::web']
+    Class['ganglia::gmetad::rrdcached'] -> Class['ganglia::gmetad']
+    Class['ganglia::gmetad'] -> Class['ganglia::web']
 }

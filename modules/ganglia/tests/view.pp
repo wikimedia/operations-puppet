@@ -1,6 +1,6 @@
 #
 
-ganglia_new::web::view { 'kafkatee':
+ganglia::web::view { 'kafkatee':
     ensure => 'present',
     graphs => [
         # receive transctions per second rate

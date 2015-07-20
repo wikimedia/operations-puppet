@@ -1,3 +1,0 @@
-class ganglia_new {
-
-}
