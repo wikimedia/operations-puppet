@@ -1,3 +1,2 @@
 admin::groups:
   - dataset-admins
-ganglia_class: "new"

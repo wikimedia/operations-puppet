@@ -23,7 +23,6 @@ mediawiki_memcached_servers:
 #
 # Ganglia
 #
-ganglia_class: "new"
 ganglia_aggregators: carbon.wikimedia.org:9649
 #
 # Labs
