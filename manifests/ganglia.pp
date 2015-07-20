@@ -19,91 +19,14 @@
 class ganglia {
 
     # FIXME: remove after the ganglia module migration
-    if (hiera('ganglia_class') == 'new') {
+    if (hiera('ganglia_class', 'new') == 'new') {
 
         include ganglia_new::monitor
         # FIXME: ugly, but without it bad things happen with check_ganglia
         $cname = $ganglia_new::monitor::cname
-    } else {
-        $cluster = hiera('cluster', $cluster)
-        # aggregator should not be deaf (they should listen)
-        # ganglia_aggregator for production are defined in site.pp;
-        if $ganglia_aggregator {
-            $deaf = 'no'
-        } else {
-            $deaf = 'yes'
-        }
-
-        $authority_url = 'http://ganglia.wikimedia.org'
-
-        $location = 'unspecified'
-
-        $ip_prefix = $::site ? {
-            'pmtpa' => '239.192.0',
-            'eqiad' => '239.192.1',
-            'codfw' => '239.192.2',
-            'esams' => '239.192.20',
-            'ulsfo' => '239.192.10'
-        }
-
-        $name_suffix = " ${::site}"
-
-        # NOTE: Do *not* add new clusters *per site* anymore,
-        # the site name will automatically be appended now,
-        # and a different IP prefix will be used.
-        $ganglia_clusters = hiera('ganglia_clusters')
-
-        # gmond.conf template variables
-        $ipoct = $ganglia_clusters[$cluster]['id']
-        $mcast_address = "${ip_prefix}.${ipoct}"
-        $clustername = $ganglia_clusters[$cluster][name]
-        $cname = "${clustername}${name_suffix}"
-
-        # Resource definitions
-        file { '/etc/ganglia/gmond.conf':
-            ensure  => present,
-            require => Package['ganglia-monitor'],
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('ganglia/gmond_template.erb'),
-            notify  => Service['ganglia-monitor'],
-        }
-
-        if !defined(Package['ganglia-monitor']) {
-            package { 'ganglia-monitor':
-                ensure => present,
-            }
-        }
-
-        file { [ '/etc/ganglia/conf.d', '/usr/lib/ganglia/python_modules' ]:
-            ensure  => directory,
-            require => Package['ganglia-monitor'],
-        }
-
-        service { 'ganglia-monitor':
-            ensure    => running,
-            require   => [
-                File['/etc/ganglia/gmond.conf'],
-                Package['ganglia-monitor']
-            ],
-            subscribe => File['/etc/ganglia/gmond.conf'],
-            hasstatus => false,
-            pattern   => 'gmond',
-        }
-
-        group { 'gmetric':
-            ensure => present,
-            name   => 'gmetric',
-            system => true,
-        }
-
-        user { 'gmetric':
-            home       => '/home/gmetric',
-            shell      => '/bin/sh',
-            managehome => true,
-            system     => true,
-        }
+    }
+    else {
+        notice("Ganglia disabled here")
     }
 }
 
@@ -210,4 +133,3 @@ define ganglia::plugin::python( $plugin = $title, $opts = {} ) {
         notify  => Service['ganglia-monitor'],
     }
 }
-
