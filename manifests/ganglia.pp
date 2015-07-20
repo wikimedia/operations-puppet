@@ -22,8 +22,6 @@ class ganglia {
     if (hiera('ganglia_class', 'new') == 'new') {
 
         include ganglia_new::monitor
-        # FIXME: ugly, but without it bad things happen with check_ganglia
-        $cname = $ganglia_new::monitor::cname
     }
     else {
         notice("Ganglia disabled here")
