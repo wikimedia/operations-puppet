@@ -37,7 +37,7 @@ class role::db::redis (
         password          => $passwords::redis::main_password,
     }
 
-    if hiera('has_ganglia', true) {
+    if standard::has_ganglia {
         include redis::ganglia
     }
 
