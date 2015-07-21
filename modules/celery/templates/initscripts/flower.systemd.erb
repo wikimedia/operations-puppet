@@ -7,7 +7,7 @@ User=<%= @user %>
 Group=<%= @group %>
 WorkingDirectory=<%= @working_dir %>
 ExecStart=<%= @celery_bin_path %> flower \
-    --app <%= @app %>
+    -A <%= @app %> --port <%= @port %> --ip <%= @ip %>
 
 [Install]
 WantedBy=multi-user.target

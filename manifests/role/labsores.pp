@@ -7,6 +7,15 @@ class role::labs::ores::web {
     }
 }
 
+class role::labs::ores::flower {
+    include ::ores::base
+    include ::ores::flower
+
+    class { '::ores::redisproxy':
+        server => hiera('redis_server'),
+    }
+}
+
 class role::labs::ores::worker {
     include ::ores::base
     include ::ores::worker
@@ -43,6 +52,7 @@ class role::labs::ores::staging {
 
     include ::ores::web
     include ::ores::worker
+    include ::ores::flower
 
     class { '::ores::lb':
         realservers => [ 'localhost:8080' ],
