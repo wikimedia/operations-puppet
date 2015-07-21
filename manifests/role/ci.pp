@@ -96,7 +96,7 @@ class role::ci::master {
         ensure => absent,
     }
 
-    ganglia::plugins::python { 'gmond_jenkins': }
+    ganglia::plugin::python { 'gmond_jenkins': }
 
     # key pair for VE sync tasks (T84731)
     file { '/var/lib/jenkins/.ssh/jenkins-mwext-sync_id_rsa':
