@@ -29,6 +29,10 @@ class wdqs::service(
                 require => Package['wdqs'],
             }
         }
+        file { $package_dir:
+            ensure  => directory,
+            require => Package['wdqs'],
+        }
 
     } else {
         file { $package_dir:
