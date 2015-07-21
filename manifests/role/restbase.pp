@@ -75,7 +75,7 @@ class role::restbase::alerts {
     monitoring::graphite_threshold { 'restbase_cassandra_highest_pending_compactions':
         description   => 'RESTBase Cassandra highest pending compactions http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-compaction',
         metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.Compaction.PendingTasks.value, 1)',
-        from          => '10min',
+        from          => '60min',
         warning       => '100',
         critical      => '400',
         percentage    => '50',
