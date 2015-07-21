@@ -84,7 +84,6 @@ packages:
     - debian-goodies
     - python-redis
     - python-apt
-    - mpt-status
     - apt-show-versions
     - pv
     - nagios-plugins-standard
