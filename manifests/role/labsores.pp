@@ -1,24 +1,19 @@
 class role::labs::ores::web {
     include ::ores::base
     include ::ores::web
-
-    class { '::ores::redisproxy':
-        server => hiera('redis_server'),
-    }
+    include ::ores::redisproxy
 }
 
 class role::labs::ores::flower {
     include ::ores::base
     include ::ores::flower
-
-    class { '::ores::redisproxy':
-        server => hiera('redis_server'),
-    }
+    include ::ores::redisproxy
 }
 
 class role::labs::ores::worker {
     include ::ores::base
     include ::ores::worker
+    include ::ores::redisproxy
 
     class { '::ores::redisproxy':
         server => hiera('redis_server'),
