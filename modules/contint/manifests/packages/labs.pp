@@ -145,7 +145,16 @@ class contint::packages::labs {
             'lib32z1',
             'lib32stdc++6',
 
+            # Android emulation
+            'qemu',
+
             ]: ensure => present,
+        }
+
+        exec {"jenkins-deploy kvm membership":
+            unless => "grep -q 'kvm\\S*jenkins-deploy' /etc/group",
+            command => "usermod -aG kvm jenkins-deploy",
+            require => User['jenkins-deploy'],
         }
     }
 
