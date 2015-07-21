@@ -143,24 +143,16 @@ define service::node( $port,
     }
 
     # service init script and activation
-
-    file { "/etc/init/${title}.conf":
-        content => template('service/node/upstart.conf.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service[$title],
-    }
-
-    service { $title:
-        ensure     => running,
-        hasstatus  => true,
-        hasrestart => true,
-        provider   => 'upstart',
-        require    => [
-            Package["${title}/deploy"],
-            Package['nodejs-legacy']
-        ],
+    base::service_unit { $title:
+        ensure         => present,
+        systemd        => true,
+        upstart        => true,
+        template_name  => 'node',
+        service_params => {
+            enable     => true,
+            hasstatus  => true,
+            hasrestart => true,
+        }
     }
 
     # Basic firewall
