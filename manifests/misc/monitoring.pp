@@ -42,28 +42,6 @@ class misc::monitoring::htcp-loss {
     }
 }
 
-# == Class misc::monitoring::net::udp
-# Sends UDP statistics to ganglia.
-#
-class misc::monitoring::net::udp {
-    file {
-        '/usr/lib/ganglia/python_modules/udp_stats.py':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => 'puppet:///files/ganglia/plugins/udp_stats.py',
-            require => File['/usr/lib/ganglia/python_modules'],
-            notify  => Service['ganglia-monitor'];
-        '/etc/ganglia/conf.d/udp_stats.pyconf':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => 'puppet:///files/ganglia/plugins/udp_stats.pyconf',
-            require => File['/usr/lib/ganglia/python_modules/udp_stats.py'],
-            notify  => Service['ganglia-monitor'];
-    }
-}
-
 # Copied from nagios::ganglia::monitor::enwiki
 # Will run on terbium to use the local MediaWiki install so that we can use
 # maintenance scripts recycling DB connections and taking a few secs, not mins
