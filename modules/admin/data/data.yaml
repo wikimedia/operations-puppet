@@ -1486,4 +1486,10 @@ users:
     realname: David Causse
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC95t2F3S61Za6Y+mZUs4abK95cXm9FedpnUJe2ii3byeFG5QPL9E8+zcZ70o2Mt0NjM5Nitla/Tb+U2BRjk3/YmWEkZxd9crUFRi3IVHjKhEOYhLSSjb2NJdNyWUoUgkQ8DspVDotsnIupdLuHY0Dyh+O4dFI7xnRKIUShm/B//BDCu03PXR4ikYkmtR/+LeKbMh3qSGgvfgv/G4hIiKjyiQt7Md+ROW0YqMp6yAtqIJ+2in1hU3mxy47vfVOFTcL5nNLOLoxJGVSsm0ancVbzrkqruk1o/iFxuz9AzxnX8EAozaNUH7PP3/ybD7ocK7v4SiYpibT2epWPkORgUV7h dcausse_prod@dizzy]
     uid: 12338
-
+  tjones:
+    ensure: present
+    gid: 500
+    name: tjones
+    realname: Trey Jones
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFBwfxSdeDwBy5ypWAfsfnmwqJ3R2ks+T9wbnqq30zPyOvZjzequ6vA5JzboCce6OqZ5+mLg3LPQqczlTXbJakWJTjGz7a1Wjhhb6m1/UWWXWjBbSzRwk6Mit77Vq0zlEm06//rFzsukMIMliwmjZcVrIP8Wyb74pABfpM1NvgDXFYjzbbBxY+LugiIk7sl9quDYWUTR6SETnTGOIET7ONZuZfFAHQltyvhUZkLmV9VbNZXxspoWRLyKJZjMkhHvnIeA55IrDBIdJ0VsruFjEn7wvZodjXAjS4xWvIH68vIiXiL3LTCmZjBk0pNEjfpAjvZ5MX8/bgR4ab2/7H6Voj tjones@wikimedia.org]
+    uid: 12510
