@@ -21,6 +21,12 @@ class postgresql::postgis(
     },
     ) {
 
+    ferm::service { 'postgres-postgis':
+        proto  => 'tcp',
+        port   => 5432,
+        srange => '$INTERNAL',
+    }
+
     package { [
                 "postgresql-${pgversion}-postgis",
                 "postgresql-contrib-${pgversion}",
