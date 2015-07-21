@@ -38,9 +38,6 @@ class ssh::server (
         purge   => true,
     }
 
-    # $::ssh_hba is an ldap variable that can be set via wikitech
-    $hba = $enable_hba or $::ssh_hba == 'yes'
-
     file { '/etc/ssh/sshd_config':
         ensure  => present,
         owner   => 'root',
