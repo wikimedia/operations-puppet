@@ -1,47 +1,5 @@
 # misc/monitoring.pp
 
-class misc::monitoring::htcp-loss {
-    system::role { 'misc::monitoring::htcp-loss': description => 'HTCP packet loss monitor' }
-
-    File {
-        require => File['/usr/lib/ganglia/python_modules'],
-        notify => Service['ganglia-monitor']
-    }
-
-    # Ganglia
-    file {
-        '/usr/lib/ganglia/python_modules/htcpseqcheck.py':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => 'puppet:///files/ganglia/plugins/htcpseqcheck.py';
-        '/usr/lib/ganglia/python_modules/htcpseqcheck_ganglia.py':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => 'puppet:///files/ganglia/plugins/htcpseqcheck_ganglia.py';
-        '/usr/lib/ganglia/python_modules/util.py':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => 'puppet:///files/ganglia/plugins/util.py';
-        '/usr/lib/ganglia/python_modules/compat.py':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            source  => 'puppet:///files/ganglia/plugins/compat.py';
-        '/etc/ganglia/conf.d/htcpseqcheck.pyconf':
-            # Disabled due to excessive memory and CPU usage -- TS
-            # owner   => 'root',
-            # group   => 'root',
-            # mode    => '0444',
-            notify  => Service['ganglia-monitor'],
-            ensure  => absent;
-            # require => File["/etc/ganglia/conf.d"],
-            # source  => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
-    }
-}
-
 # Copied from nagios::ganglia::monitor::enwiki
 # Will run on terbium to use the local MediaWiki install so that we can use
 # maintenance scripts recycling DB connections and taking a few secs, not mins

@@ -140,11 +140,6 @@ class role::cache::upload(
 
     include role::cache::logging
 
-    # HTCP packet loss monitoring on the ganglia aggregators
-    if $ganglia_aggregator and $::site != 'esams' {
-        include misc::monitoring::htcp-loss
-    }
-
     # ToDo: Remove production conditional once this works
     # is verified to work in labs.
     if $::realm == 'production' {
