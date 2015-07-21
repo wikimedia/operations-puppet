@@ -504,6 +504,12 @@ class role::mariadb::labs {
         mode   => '0755',
     }
 
+    ferm::service{ 'mariadb-labsdb':
+        proto  => 'tcp',
+        port   => 3306,
+        srange => '$INTERNAL',
+    }
+
     # Required for TokuDB to start
     # See https://mariadb.com/kb/en/mariadb/enabling-tokudb/#check-for-transparent-hugepage-support-on-linux
     sysfs::parameters { 'disable-transparent-hugepages':
