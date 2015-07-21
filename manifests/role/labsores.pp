@@ -14,10 +14,6 @@ class role::labs::ores::worker {
     include ::ores::base
     include ::ores::worker
     include ::ores::redisproxy
-
-    class { '::ores::redisproxy':
-        server => hiera('redis_server'),
-    }
 }
 
 class role::labs::ores::redis {
