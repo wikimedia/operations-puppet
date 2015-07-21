@@ -135,19 +135,6 @@ UsePAM yes
 AuthorizedKeysCommand /usr/sbin/ssh-key-ldap-lookup
 AuthorizedKeysCommandUser ssh-key-ldap-lookup
 <% end %>
-
-<% if has_variable?("ssh_restrict_network") then %>
-Match <%= ssh_restrict_network %>
-	HostbasedAuthentication no
-	GSSAPIAuthentication no
-	PasswordAuthentication no
-	KerberosAuthentication no
-	KbdInteractiveAuthentication no
-	PermitRootLogin no
-	PubkeyAuthentication no
-	RhostsRSAAuthentication no
-	RSAAuthentication no
-<% end %>
 ##
 ## Anything below this point must start with a match declaration
 ## or will only apply to the previous Matches above.
