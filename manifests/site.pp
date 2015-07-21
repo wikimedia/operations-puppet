@@ -1252,6 +1252,7 @@ node 'labnodepool1001.eqiad.wmnet' {
 
     include standard
     include role::nodepool
+    include base::firewall
 
 }
 
