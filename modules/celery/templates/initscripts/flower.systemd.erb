@@ -1,0 +1,13 @@
+[Unit]
+Description=Celery Flower monitor
+After=network.target
+
+[Service]
+User=<%= @user %>
+Group=<%= @group %>
+WorkingDirectory=<%= @working_dir %>
+ExecStart=<%= @celery_bin_path %> worker \
+    --app <%= @app %>
+
+[Install]
+WantedBy=multi-user.target
