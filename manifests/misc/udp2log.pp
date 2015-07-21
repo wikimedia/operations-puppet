@@ -377,26 +377,8 @@ class misc::udp2log::monitoring {
     }
 
     # send udp2log socket stats to ganglia.
-    file { '/usr/lib/ganglia/python_modules/udp2log_socket.py':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///files/ganglia/plugins/udp2log_socket.py',
-        require => File['/usr/lib/ganglia/python_modules'],
-        notify  => Service['ganglia-monitor'],
-    }
-
-    file { '/etc/ganglia/conf.d/udp2log_socket.pyconf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///files/ganglia/plugins/udp2log_socket.pyconf',
-        require => File['/usr/lib/ganglia/python_modules/udp2log_socket.py'],
-        notify  => Service['ganglia-monitor'],
-    }
-
     # include general UDP statistic monitoring.
-    ganglia::plugin::python{ 'udp_stats': }
+    ganglia::plugin::python{ ['udp_stats', 'udp2log_socket']: }
 }
 
 class misc::udp2log::firewall {
