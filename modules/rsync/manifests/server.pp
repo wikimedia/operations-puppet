@@ -63,6 +63,11 @@ class rsync::server(
     content => template('rsync/header.erb'),
   }
 
+  ferm::service{ 'rsync-server':
+      proto  => 'tcp',
+      port   => 873,
+  }
+
   # perhaps this should be a script
   # this allows you to only have a header and no fragments, which happens
   # by default if you have an rsync::server but not an rsync::repo on a host
