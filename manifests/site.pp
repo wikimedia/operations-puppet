@@ -1643,6 +1643,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include passwords::redis
     include redis
     include redis::ganglia
+    include base::firewall
 }
 
 # codfw deployment host (pending set up)
