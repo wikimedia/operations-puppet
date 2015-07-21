@@ -26,7 +26,7 @@ class standard(
     include role::ntp
     include role::diamond
     if $::realm == 'production' {
-        include ganglia_new::monitor
+        include ::ganglia
     }
     # Some instances have their own exim definition that
     # will conflict with this
