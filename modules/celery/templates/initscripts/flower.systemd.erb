@@ -6,7 +6,7 @@ After=network.target
 User=<%= @user %>
 Group=<%= @group %>
 WorkingDirectory=<%= @working_dir %>
-ExecStart=<%= @celery_bin_path %> worker \
+ExecStart=<%= @celery_bin_path %> flower \
     --app <%= @app %>
 
 [Install]
