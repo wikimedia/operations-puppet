@@ -61,4 +61,13 @@ class ganglia_new::web(
         path    => '/etc/php5/apache2/php.ini',
         notify  => Class['::apache']
     }
+
+    # clean up after ganglia T97637
+    tidy { 'cleanup_tmp_ganglia_graph':
+        path    => '/tmp',
+        age     => '1w',
+        recurse => false,
+        matches => ['ganglia-graph*'],
+        type    => 'mtime',
+    }
 }
