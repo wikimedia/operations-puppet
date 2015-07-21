@@ -28,6 +28,12 @@ class wdqs::service(
                 mode    => '0775',
                 require => Package['wdqs'],
             }
+        } else {
+            # This is to have file resource on $package_dir in any case
+            file { $package_dir:
+                ensure  => directory,
+                require => Package['wdqs'],
+            }
         }
 
     } else {
