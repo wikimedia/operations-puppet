@@ -58,6 +58,12 @@ class misc::syslog-server($config='nfs', $basepath='/srv/syslog') {
         }
     }
 
+    ferm::service { 'syslog-ng':
+        proto  => 'udp',
+        port   => 514,
+        srange => '$INTERNAL',
+    }
+
     service { 'syslog-ng':
         ensure    => running,
         require   => [
