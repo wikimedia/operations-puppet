@@ -91,24 +91,12 @@ class role::ci::master {
     file { '/usr/lib/ganglia/python_modules/jenkins.py':
         ensure => absent,
     }
-    file { '/usr/lib/ganglia/python_modules/gmond_jenkins.py':
-        source => 'puppet:///files/ganglia/plugins/jenkins.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['ganglia-monitor'],
-    }
 
     file { '/etc/ganglia/conf.d/jenkins.pyconf':
         ensure => absent,
     }
-    file { '/etc/ganglia/conf.d/gmond_jenkins.pyconf':
-        source => 'puppet:///files/ganglia/plugins/jenkins.pyconf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['ganglia-monitor'],
-    }
+
+    ganglia::plugins::python { 'gmond_jenkins': }
 
     # key pair for VE sync tasks (T84731)
     file { '/var/lib/jenkins/.ssh/jenkins-mwext-sync_id_rsa':
