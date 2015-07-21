@@ -222,9 +222,9 @@ class phabricator (
             before    => Git::Install['phabricator/phabricator'],
         }
 
-        file { "${$phabdir}/phabricator/src/extensions":
+        file { "${phabdir}/phabricator/src/extensions":
             ensure  => 'directory',
-            path    => "${$phabdir}/phabricator/src/extensions",
+            path    => "${phabdir}/phabricator/src/extensions",
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
@@ -242,7 +242,7 @@ class phabricator (
 
         phabricator::extension { $extensions:
             rootdir => $phabdir,
-            require => File["${$phabdir}/phabricator/src/extensions"],
+            require => File["${phabdir}/phabricator/src/extensions"],
         }
 
     }
