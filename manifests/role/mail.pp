@@ -53,6 +53,11 @@ class role::mail::mx(
         check_command => 'check_smtp',
     }
 
+    ferm::service { 'exim-smtp':
+        proto => 'tcp',
+        port  => '25',
+    }
+
     # mails the wikimedia.org mail alias file to OIT once per week
     $alias_file = '/etc/exim4/aliases/wikimedia.org'
     $recipient  = 'officeit@wikimedia.org'
