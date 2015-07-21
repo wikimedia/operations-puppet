@@ -396,7 +396,7 @@ class misc::udp2log::monitoring {
     }
 
     # include general UDP statistic monitoring.
-    include misc::monitoring::net::udp
+    ganglia::plugin::python{ 'udp_stats': }
 }
 
 class misc::udp2log::firewall {
