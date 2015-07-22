@@ -38,7 +38,7 @@ class role::ganglia::web {
         rra_sizes        => $role::ganglia::config::rra_sizes,
     }
 
-    class { 'ganglia::web':
+    class { '::ganglia::web':
         rrdcached_socket => $gweb_socket,
         gmetad_root      => $gmetad_root,
     }
