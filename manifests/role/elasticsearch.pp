@@ -43,7 +43,7 @@ class role::elasticsearch::server{
         merge_threads     => 1,
     }
 
-    if standard::has_ganglia {
+    if $standard::has_ganglia {
         include ::elasticsearch::ganglia
     }
 

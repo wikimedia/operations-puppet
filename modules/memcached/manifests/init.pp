@@ -88,7 +88,7 @@ class memcached(
         }
     }
 
-    if standard::has_ganglia {
+    if $standard::has_ganglia {
         include ::memcached::ganglia
     }
 }

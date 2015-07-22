@@ -59,7 +59,7 @@ class role::eventlogging {
     # make sure any defined eventlogging services are running
     class { '::eventlogging::monitoring::jobs': }
 
-    if standard::has_ganglia {
+    if $standard::has_ganglia {
         class { '::eventlogging::monitoring::ganglia': }
     }
 

@@ -58,7 +58,7 @@ class role::zookeeper::server {
         srange => '($INTERNAL)',
     }
 
-    if standard::has_ganglia {
+    if $standard::has_ganglia {
         # TODO: use variables from new ganglia module once it is finished.
         $ganglia_host = '208.80.154.10'
         $ganglia_port = 9690
