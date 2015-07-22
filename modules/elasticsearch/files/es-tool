@@ -197,10 +197,10 @@ def es_restart_fast(while_down):
         process_args = ["service", "elasticsearch", "start"]
         subprocess.check_call(process_args, stdout=DEV_NULL)
     except CalledProcessError:
-            print "failed! Elasticsearch is probably still stopped so you",
-            print "will have to start it again with `sudo service",
-            print "elasticsearch start and then reenable replication",
-            print "with `es-tool start-replication`"
+        print "failed! Elasticsearch is probably still stopped so you",
+        print "will have to start it again with `sudo service",
+        print "elasticsearch start and then reenable replication",
+        print "with `es-tool start-replication`"
         return os.EX_UNAVAILABLE
     printu("ok\n")
 
