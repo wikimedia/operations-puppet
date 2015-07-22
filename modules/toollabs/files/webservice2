@@ -54,6 +54,7 @@ def start_web_job(server, release):
                '-l', 'h_vmem=%s,release=%s' % (MEMLIMIT, release),
                '-b', 'y',
                '-N', '%s-%s' % (server, TOOL),
+               '-M', '%s@tools.wmflabs.org' % USER,
                '/usr/local/bin/tool-%s' % server]
     subprocess.check_call(command, stdout=open(os.devnull, 'wb'))
 
