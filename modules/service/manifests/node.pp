@@ -27,9 +27,6 @@
 #   answer. If has_spec it true, this is supposed to be the base url
 #   for the spec request
 #
-# [*firejail*]
-#   Whether to use/enable firejail or not
-#
 # [*has_spec*]
 #   If the service specifies a swagger spec, use it to thoroughly
 #   monitor it
@@ -58,7 +55,6 @@ define service::node( $port,
                       $config = undef,
                       $no_file = 10000,
                       $healthcheck_url='/_info',
-                      $firejail = false,
                       $has_spec = false,
 ) {
     # Import all common configuration
