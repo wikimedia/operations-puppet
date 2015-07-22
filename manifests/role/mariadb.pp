@@ -289,6 +289,20 @@ class role::mariadb::dbstore(
         mode    => '0755',
         content => template('mariadb/dumps-misc.sh.erb'),
     }
+
+    ferm::service{ 'gmond':
+        proto  => 'tcp',
+        port   => 8649,
+        desc   => 'Ganglia monitor port',
+        srange => '$INTERNAL',
+    }
+
+    ferm::service{ 'mariadb':
+        proto  => 'tcp',
+        port   => 3306,
+        desc   => 'MariaDB 10 slaves replicating all shards',
+        srange => '$INTERNAL',
+    }
 }
 
 # MariaDB 10 Analytics all-shards slave, with scratch space and TokuDB
