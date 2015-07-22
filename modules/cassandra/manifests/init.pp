@@ -233,9 +233,11 @@ class cassandra(
     validate_re($incremental_backups, '^(true|false)$')
     validate_re($snapshot_before_compaction, '^(true|false)$')
     validate_re($auto_snapshot, '^(true|false)$')
+    # lint:ignore:only_variable_string
     validate_re("${concurrent_reads}", '^[0-9]+$')
     validate_re("${concurrent_writes}", '^[0-9]+$')
     validate_re("${num_tokens}", '^[0-9]+$')
+    # lint:endignore
     validate_re($internode_compression, '^(all|dc|none)$')
     validate_re($disk_failure_policy, '^(stop|best_effort|ignore)$')
 

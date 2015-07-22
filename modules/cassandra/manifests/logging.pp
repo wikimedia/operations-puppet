@@ -22,7 +22,9 @@ class cassandra::logging(
     require ::cassandra
 
     validate_string($logstash_host)
+    # lint:ignore:only_variable_string
     validate_re("${logstash_port}", '^[0-9]+$')
+    # lint:endignore
 
     file { '/etc/cassandra/logback.xml':
         content => template("${module_name}/logback.xml.erb"),
