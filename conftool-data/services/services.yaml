@@ -93,7 +93,7 @@ restbase:
       - eqiad
 maps:
   kartotherian:
-    port: 400
+    port: 4000
     default_values:
       "pooled": "no"
       "weight": 10
