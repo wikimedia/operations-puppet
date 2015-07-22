@@ -16,7 +16,6 @@ class citoid( $zotero_host,
     service::node { 'citoid':
         port            => 1970,
         config          => template('citoid/config.yaml.erb'),
-        firejail        => true,
         healthcheck_url => '',
         has_spec        => true,
     }

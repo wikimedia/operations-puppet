@@ -39,6 +39,5 @@ class mathoid(
             speakText => $speakText_generation,
         },
         healthcheck_url => '/_info',
-        firejail        => true,
     }
 }
