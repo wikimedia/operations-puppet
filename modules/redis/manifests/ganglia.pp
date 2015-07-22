@@ -1,5 +1,6 @@
 class redis::ganglia {
     include redis
+    include ::ganglia
 
     $password = $redis::password
 
