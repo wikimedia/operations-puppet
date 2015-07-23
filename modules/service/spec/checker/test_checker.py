@@ -78,6 +78,7 @@ class TestEndpointRequest(unittest.TestCase):
         self.ep = checker.EndpointRequest(
             "a Test endpoint",
             "http://127.0.0.1/baseurl",
+            "get",
             "/an/endpoint/{revision}",
             {"http_host": 'example.org', 'params': {'revision': 1}},
             copy.deepcopy(self.resp)
@@ -173,6 +174,7 @@ class TestEndpointRequest(unittest.TestCase):
         ep = checker.EndpointRequest(
             "simple test",
             "http://127.0.0.1:7321",
+            "get",
             "/test",
             {'http_host': "example.org"},
             {'status': 200},

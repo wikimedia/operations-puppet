@@ -64,6 +64,7 @@ class CheckService(object):
     nagios_codes = ['OK', 'WARNING', 'CRITICAL']
     spec_url = '/?spec'
     default_response = {'status': 200}
+    _supported_methods = ['get', 'post']
 
     def __init__(self, host_ip, base_url, timeout=5):
         """
@@ -124,21 +125,23 @@ class CheckService(object):
         for endpoint, data in r['paths'].items():
             if not endpoint:
                 continue
-            try:
-                d = data['get']
-                # If x-monitor is False, skip this
-                if not d.get('x-monitor', True):
-                    continue
-                default_example = {
-                    'request': {},
-                    'response': self.default_response
-                }
-                examples = d.get('x-amples', [default_example])
-                for x in examples:
-                    yield endpoint, x
-            except KeyError:
-                # No GET
-                pass
+            for key in self._supported_methods:
+                try:
+                    d = data[key]
+                    # If x-monitor is False, skip this
+                    if not d.get('x-monitor', True):
+                        continue
+                    default_example = {
+                        'request': {},
+                        'response': self.default_response
+                    }
+                    examples = d.get('x-amples', [default_example])
+                    for x in examples:
+                        x['http_method'] = key
+                        yield endpoint, x
+                except KeyError:
+                    # No data for this method
+                    pass
 
     def run(self):
         """
@@ -175,6 +178,7 @@ class CheckService(object):
             data.get('title',
                      "test for {}".format(endpoint)),
             self._url,
+            data['http_method'],
             endpoint,
             req,
             data.get('response')
@@ -201,7 +205,7 @@ class EndpointRequest(object):
     Manages a request to a specific endpoint
     """
 
-    def __init__(self, title, base_url, endpoint,  request, response):
+    def __init__(self, title, base_url, http_method, endpoint,  request, response):
         """
         Initialize the endpoint request
 
@@ -209,6 +213,8 @@ class EndpointRequest(object):
             title (str): a descriptive name
 
             base_url (str): the base url
+
+            http_method(str): the HTTP method
 
             endpoint (str): an url template for the endpoint, per RFC 6570
 
@@ -219,6 +225,7 @@ class EndpointRequest(object):
         self.status = 'OK'
         self.msg = 'Test "{}" healthy'.format(title)
         self.title = title
+        self.method = http_method
         self._request(request)
         self._response(response)
         self.tpl_url = TemplateUrl(base_url + endpoint)
@@ -237,7 +244,8 @@ class EndpointRequest(object):
                 url,
                 headers=self.request_headers,
                 fields=self.query_parameters,
-                redirect=False
+                redirect=False,
+                method = self.method
             )
         except CheckServiceError as e:
             return ('CRITICAL', "Could not fetch url {}: {}".format(
