@@ -16,9 +16,11 @@ class phabricator::vcs (
 
 
     user { $settings['diffusion.ssh-user']:
-        home   => "/var/lib/${settings['diffusion.ssh-user']}",
-        shell  => '/bin/sh',
-        system => true,
+        home     => "/var/lib/${settings['diffusion.ssh-user']}",
+        comment  => 'Phabricator VCS user'
+        password => 'NP',
+        shell    => '/bin/sh',
+        system   => true,
     }
 
     # phd.user owns repo resources and both vcs and web user
