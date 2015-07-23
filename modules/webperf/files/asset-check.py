@@ -21,15 +21,15 @@ import time
 interval = 300  # 5 minutes.
 
 urls = (
-    ('commons', 'http://commons.wikimedia.org/?mainpage'),
-    ('dewiki', 'http://de.wikipedia.org/?mainpage'),
-    ('enwiki', 'http://en.wikipedia.org/?mainpage'),
-    ('enwiki-mobile', 'http://en.m.wikipedia.org/?mainpage'),
-    ('eswiki', 'http://es.wikipedia.org/?mainpage'),
-    ('frwiki', 'http://fr.wikipedia.org/?mainpage'),
-    ('jawiki', 'http://ja.wikipedia.org/?mainpage'),
-    ('ruwiki', 'http://ru.wikipedia.org/?mainpage'),
-    ('zhwiki', 'http://zh.wikipedia.org/?mainpage'),
+    ('commons', 'https://commons.wikimedia.org/?mainpage'),
+    ('dewiki', 'https://de.wikipedia.org/?mainpage'),
+    ('enwiki', 'https://en.wikipedia.org/?mainpage'),
+    ('enwiki-mobile', 'https://en.m.wikipedia.org/?mainpage'),
+    ('eswiki', 'https://es.wikipedia.org/?mainpage'),
+    ('frwiki', 'https://fr.wikipedia.org/?mainpage'),
+    ('jawiki', 'https://ja.wikipedia.org/?mainpage'),
+    ('ruwiki', 'https://ru.wikipedia.org/?mainpage'),
+    ('zhwiki', 'https://zh.wikipedia.org/?mainpage'),
 )
 
 
@@ -56,7 +56,7 @@ def dispatch_stats(name, stats):
 def gather_stats():
     """Acquire static stats for each configured URL."""
     for name, url in urls:
-        command = ['phantomjs', 'asset-check.js', url]
+        command = ['phantomjs', '--ssl-protocol=any', 'asset-check.js', url]
         try:
             stats = json.loads(subprocess.check_output(command))
         except (subprocess.CalledProcessError, ValueError):
