@@ -27,4 +27,10 @@ class hhvm::admin(
         ensure  => $ensure,
         content => template('hhvm/hhvm-admin.conf.erb'),
     }
+
+    ferm::service { 'hhvm-admin':
+        proto  => 'tcp',
+        port   => $port,
+        srange => '$INTERNAL',
+    }
 }
