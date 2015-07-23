@@ -76,7 +76,8 @@ def handle_navigation_timing(meta):
         ('mediaWikiLoadComplete', 'mediaWikiLoadComplete'),
         ('redirecting', 'redirecting'),
         ('sending', 'fetchStart'),
-        ('totalPageLoadTime', 'loadEventEnd')
+        ('totalPageLoadTime', 'loadEventEnd'),
+        ('firstPaint', 'firstPaint'),
     ):
         if marker in event:
             metrics[metric] = event[marker]
