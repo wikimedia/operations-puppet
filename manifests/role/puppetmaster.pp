@@ -55,6 +55,11 @@ class role::puppetmaster::backend {
             'dbconnections'     => '256',
         }
     }
+
+    ferm::service { 'puppetmaster-backend':
+        proto  => 'tcp',
+        port   => 8141,
+    }
 }
 
 class role::puppetmaster::labs {
