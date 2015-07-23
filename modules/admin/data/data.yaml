@@ -159,10 +159,11 @@ groups:
     gid: 725
     description: Have access to so that they can do analysis on webrequest logs
                 and other private data.
-    members: [handrade, haithams, ezachte, milimetric, dartar, yurik, halfak,
-              awight, dr0ptp4kt, tnegrin, nuria,
-              leila, manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
-              spage, bmansurov, rmoen, tbayer, joal, ashwinpp, madhuvishy, jdouglas, tjones]
+    members: [handrade, haithams, ezachte, milimetric, dartar, yurik,
+              halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
+              manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
+              spage, bmansurov, rmoen, tbayer, joal, ashwinpp,
+              madhuvishy, jdouglas, tjones, legoktm] 
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -229,7 +230,7 @@ groups:
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging investigation
-    members: [nuria, milimetric, mforns, joal]
+    members: [nuria, milimetric, mforns, joal, legoktm]
   citoid-roots:
     gid: 735
     description: rights for debugging citoid
