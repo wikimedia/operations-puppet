@@ -2,7 +2,7 @@
 # Automatically signs new puppet & salt certificate requests
 class puppetmaster::certcleaner {
 
-    $puppetmaster_service_name = hiera('labs_puppet_master')
+    $puppetmaster_service_name = hiera('labs_puppet_master', $::fqdn)
 
     file { '/usr/local/sbin/certcleaner.py':
         ensure  => present,
