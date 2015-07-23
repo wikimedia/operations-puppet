@@ -33,9 +33,12 @@ class graphoid(
     require_package('libcairo2', 'libgif4', $libjpeg62, 'libpango1.0-0')
 
     service::node { 'graphoid':
-        port    => 19000,
-        config  => template('graphoid/config.yaml.erb'),
-        require => Package['libcairo2', 'libgif4', $libjpeg62, 'libpango1.0-0'],
+        port            => 19000,
+        config          => template('graphoid/config.yaml.erb'),
+        has_spec        => true,
+        healthcheck_url => '',
+        require         => Package['libcairo2', 'libgif4',
+                                   $libjpeg62, 'libpango1.0-0'],
     }
 
 }
