@@ -155,6 +155,10 @@ class role::cache::mobile (
         instance_name => 'frontend',
     }
 
+    class { '::role::cache::kafka::banner':
+        varnish_name => 'frontend',
+    }
+
     # ToDo: Remove production conditional once this works
     # is verified to work in labs.
     if $::realm == 'production' {
