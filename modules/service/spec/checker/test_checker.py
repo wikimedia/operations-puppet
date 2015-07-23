@@ -59,6 +59,7 @@ class TestEndpointRequest(unittest.TestCase):
     def setUp(self):
         self.resp = {
             'body': {
+                'has_items': True,
                 'items': [
                     {
                         'comment': '/.*/',
@@ -78,6 +79,7 @@ class TestEndpointRequest(unittest.TestCase):
         self.ep = checker.EndpointRequest(
             "a Test endpoint",
             "http://127.0.0.1/baseurl",
+            "get",
             "/an/endpoint/{revision}",
             {"http_host": 'example.org', 'params': {'revision': 1}},
             copy.deepcopy(self.resp)
@@ -88,6 +90,7 @@ class TestEndpointRequest(unittest.TestCase):
              "rev": 1,
              "tid": "00AA-abcd"}
         ]
+        self.resp["body"]["has_items"] = True
         self.resp["headers"]["etag"] = "Imtrackingyou"
 
     def test_init(self):
@@ -108,6 +111,7 @@ class TestEndpointRequest(unittest.TestCase):
         """
         self.mock_response(self.resp)
         self.ep.run(urllib3.PoolManager())
+        print self.ep.msg
         self.assertEquals(self.ep.status, 'OK')
 
     def test_run_bad_status(self):
@@ -173,6 +177,7 @@ class TestEndpointRequest(unittest.TestCase):
         ep = checker.EndpointRequest(
             "simple test",
             "http://127.0.0.1:7321",
+            "get",
             "/test",
             {'http_host': "example.org"},
             {'status': 200},
