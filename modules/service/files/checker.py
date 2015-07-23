@@ -33,16 +33,24 @@ def fetch_url(client, url, **kw):
             urllib3.request.RequestMethods.request
     """
     if 'method' in kw:
-        method = kw['method']
+        method = kw['method'].upper()
+        del kw['method']
     else:
         method = 'GET'
-
     try:
-        return client.request(
-            method,
-            url,
-            **kw
-        )
+        if method == 'GET':
+            return client.request(
+                method,
+                url,
+                **kw
+            )
+        elif method == 'POST':
+            return client.request_encode_body(
+                method,
+                url,
+                encode_multipart=False,
+                **kw
+            )
     except urllib3.exceptions.SSLError:
         raise CheckServiceError("Invalid certificate")
     except (urllib3.exceptions.ConnectTimeoutError,
@@ -64,6 +72,7 @@ class CheckService(object):
     nagios_codes = ['OK', 'WARNING', 'CRITICAL']
     spec_url = '/?spec'
     default_response = {'status': 200}
+    _supported_methods = ['get', 'post']
 
     def __init__(self, host_ip, base_url, timeout=5):
         """
@@ -124,21 +133,27 @@ class CheckService(object):
         for endpoint, data in r['paths'].items():
             if not endpoint:
                 continue
-            try:
-                d = data['get']
-                # If x-monitor is False, skip this
-                if not d.get('x-monitor', True):
-                    continue
-                default_example = {
-                    'request': {},
-                    'response': self.default_response
-                }
-                examples = d.get('x-amples', [default_example])
-                for x in examples:
-                    yield endpoint, x
-            except KeyError:
-                # No GET
-                pass
+            for key in self._supported_methods:
+                try:
+                    d = data[key]
+                    # If x-monitor is False, skip this
+                    if not d.get('x-monitor', True):
+                        continue
+                    if key == 'get':
+                        default_example = [{
+                            'request': {},
+                            'response': self.default_response
+                        }]
+                    else:
+                        # Only GETs have default examples
+                        default_example = []
+                    examples = d.get('x-amples', default_example)
+                    for x in examples:
+                        x['http_method'] = key
+                        yield endpoint, x
+                except KeyError:
+                    # No data for this method
+                    pass
 
     def run(self):
         """
@@ -175,6 +190,7 @@ class CheckService(object):
             data.get('title',
                      "test for {}".format(endpoint)),
             self._url,
+            data['http_method'],
             endpoint,
             req,
             data.get('response')
@@ -201,7 +217,8 @@ class EndpointRequest(object):
     Manages a request to a specific endpoint
     """
 
-    def __init__(self, title, base_url, endpoint,  request, response):
+    def __init__(self, title, base_url, http_method,
+                 endpoint,  request, response):
         """
         Initialize the endpoint request
 
@@ -209,6 +226,8 @@ class EndpointRequest(object):
             title (str): a descriptive name
 
             base_url (str): the base url
+
+            http_method(str): the HTTP method
 
             endpoint (str): an url template for the endpoint, per RFC 6570
 
@@ -219,6 +238,7 @@ class EndpointRequest(object):
         self.status = 'OK'
         self.msg = 'Test "{}" healthy'.format(title)
         self.title = title
+        self.method = http_method
         self._request(request)
         self._response(response)
         self.tpl_url = TemplateUrl(base_url + endpoint)
@@ -237,7 +257,8 @@ class EndpointRequest(object):
                 url,
                 headers=self.request_headers,
                 fields=self.query_parameters,
-                redirect=False
+                redirect=False,
+                method=self.method
             )
         except CheckServiceError as e:
             return ('CRITICAL', "Could not fetch url {}: {}".format(
@@ -291,7 +312,8 @@ class EndpointRequest(object):
         if 'headers' in data:
             self.request_headers.update(data['headers'])
         self.url_parameters = data.get('params', {})
-        self.query_parameters = data.get('query', {})
+        qkey = 'query' if self.method == 'get' else 'body'
+        self.query_parameters = data.get(qkey, {})
 
     def _response(self, data):
         """
@@ -314,6 +336,8 @@ class EndpointRequest(object):
             arg (str): The argument to check against. If enclosed
                        in slashes, it's assumed to be a regex
         """
+        if not (isinstance(arg, unicode) or isinstance(arg, str)):
+            return lambda x: x == arg
         t = 'eq'
         if arg.startswith('/') and arg.endswith('/'):
             arg = arg.strip('/')
