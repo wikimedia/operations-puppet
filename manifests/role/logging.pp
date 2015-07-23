@@ -484,6 +484,12 @@ class role::logging::kafkatee::webrequest::fundraising {
         type        => 'pipe',
     }
 
+    kafkatee::output { 'fundraising-beaconImpressions':
+        destination => "/usr/bin/udp-filter -F '\t' -p beacon/impression >> ${log_directory}/beaconImpressions-sampled100.tsv.log",
+        sample      => 100,
+        type        => 'pipe',
+    }
+
     kafkatee::output { 'fundraising-bannerRequests':
         destination => "/usr/bin/udp-filter -F '\t' -p Special:BannerRandom >> ${log_directory}/bannerRequests-sampled100.tsv.log",
         sample      => 100,
