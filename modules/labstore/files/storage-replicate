@@ -199,7 +199,7 @@ remote = Context(args.host)
 logging.debug("Backing up %s (%s/%s) -> %s:%s (%s/%s)"
               % (args.path, srcvg, srclv, args.host, args.dest, dstvg, dstlv))
 
-snapshot = srclv + datetime.datetime.utcnow().strftime("%Y%m%d")
+snapshot = srclv + datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
 lockdir = '/var/run/lock/storage-replicate-%s-%s' % (srcvg, srclv)
 
 with Lockdir(local, lockdir) as lock:
@@ -216,7 +216,7 @@ with Lockdir(local, lockdir) as lock:
         sys.exit(0)
 
     with open('%s/started' % lockdir, 'w+') as f:
-        f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d% H%:M\n"))
+        f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d% H%:M:%S\n"))
 
     (out, err) = local.run(
         '/sbin/lvcreate', '--size', '1T', '--snapshot', '--name', snapshot, '%s/%s' % (srcvg, srclv))
