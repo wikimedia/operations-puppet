@@ -1352,7 +1352,7 @@ users:
     gid: 500
     name: joal
     realname: Joseph Allemandou
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCpc0uajJje5PSoka43J7el6BDoyiLsKjofgXCJHKs4lOJN7MCRM6uYYwnT2R8e1KyRCdotkTXWBgH8CYhYaqp9Pt3QBg/Rx7BurkHxk+4xe0n3N2rtllYxPkar0xjpt8HUVa24V+MwJhbvpvJtHvtqklBEVWl1t64K9ZHn2ZKNJdD/aGIZGvJcZfzGx3JOIQqlzdoiZf/FcC2za1cUt9a/NQs8hJvpNLdfqxz6Hw4ZYMIrLeTanIKAEoGxmMEiKXul1qX4qj3BCjVREZCdYWM1d7rA763UXTsnr0b0DLHZQs5pQX2afKtZ5HAdffZx2XzTs7fSzRApkUpg4Z3CNjynZamusR79hjKaDfl1wBxtlsVBGY72c0VVaJ4pqEQK/RtFvgRhBKz5TLbbYwF4g1eEQ1R8VF5loJgXe0erhasLn5Y440jBKLSGI3wdEpzMtGm52HTm9alASgHFTR2AIWDFk+7lj0GklgklC4W3PdJlD0Wdz2m2RmTWzJbIFJDlfSYYKuEcz2w5GYUdc9y6B0atSPG1iuqclmQrXEpvjyK1ckQxEjHWzCtvz+DqJC6mnwapxoFk+Z4Me92xJuGxzvC2M1O/MrVEsPot9cNpJvKsX6CG4dX7numBjvpS6aOhsIfsyOBId0v8REySd80+ndFS9TODG1YYoZAvfb8xnQTPyQ== joal@wikimedia.org]
     uid: 11654
   daisy:
     ensure: present
