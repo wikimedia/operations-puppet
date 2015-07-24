@@ -103,7 +103,7 @@ define base::service_unit (
             group   => root,
         }
 
-        if $refresh {
+        if $refresh and $declare_service {
             File[$path] ~> Service[$name]
         } else {
             File[$path] -> Service[$name]
@@ -114,9 +114,11 @@ define base::service_unit (
                     refreshonly => true,
                     command     => '/bin/systemctl daemon-reload',
                     subscribe   => File[$path],
-                    before      => Service[$name]
                 }
 
+                if $declare_service {
+                    Exec["systemd reload for ${name}"] -> Service[$name]
+                }
         }
     }
 
