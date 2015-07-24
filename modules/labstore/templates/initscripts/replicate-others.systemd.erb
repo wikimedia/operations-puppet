@@ -1,0 +1,6 @@
+[Unit]
+Description=Replicate storage between hosts (other projects)
+
+[Service]
+ExecStart=/usr/local/sbin/storage-replicate /srv/others <%= @target_host %> /srv/eqiad/others
+Restart=no
