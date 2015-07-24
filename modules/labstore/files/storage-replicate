@@ -139,18 +139,21 @@ class Lockdir:
         self.path = path
         self.mountpoint = "%s/snapshot" % path
         self.err = None
+        self.locked = False
 
     def __enter__(self):
         try:
             os.mkdir(self.path, 0o700)
             os.mkdir(self.mountpoint, 0o700)
+            self.locked = True
         except OSError as e:
             self.err = "unable to create lock directory %s: %s" % (self.path, e.strerror)
         return self
 
     def __exit__(self, e1, e2, e3):
-        (out, err) = self.ctx.run('/bin/umount', '-fl', self.mountpoint)
-        (out, err) = self.ctx.run('/bin/rm', '-rf', self.path)
+        if self.locked:
+            (out, err) = self.ctx.run('/bin/umount', '-fl', self.mountpoint)
+            (out, err) = self.ctx.run('/bin/rm', '-rf', self.path)
         return None
 
 
