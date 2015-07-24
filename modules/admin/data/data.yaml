@@ -71,7 +71,7 @@ groups:
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
-              gpaumier, moushira, aklapper, qchris, tjones]
+              gpaumier, moushira, aklapper, qchris, tjones, srijan]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
