@@ -109,7 +109,7 @@ class contint::packages::labs {
     # TODO: Reevaluate this once we switch to trusty. Maybe provider being apt
     # would be better then
     package { 'tox':
-        ensure   => present,
+        ensure   => '1.9.2',
         provider => 'pip',
         require  => Package['python-pip'],
     }
