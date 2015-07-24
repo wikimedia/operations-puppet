@@ -103,10 +103,12 @@ define base::service_unit (
             group   => root,
         }
 
-        if $refresh and $declare_service {
-            File[$path] ~> Service[$name]
-        } else {
-            File[$path] -> Service[$name]
+        if $declare_service {
+            if $refresh {
+                File[$path] ~> Service[$name]
+            } else {
+                File[$path] -> Service[$name]
+            }
         }
 
         if $::initsystem == 'systemd' {
