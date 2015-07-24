@@ -34,6 +34,22 @@ class dataset::nfs($enable=true) {
         ],
     }
 
+    file { '/etc/default/nfs-common':
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/dataset/default-nfs-common',
+        require => Package['nfs-kernel-server'],
+    }
+
+    file { '/etc/default/nfs-kernel-server':
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/dataset/default-nfs-kernel-server',
+        require => Package['nfs-kernel-server'],
+    }
+
     monitoring::service { 'nfs':
         description   => 'NFS',
         check_command => 'check_tcp!2049',
