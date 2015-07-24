@@ -35,7 +35,7 @@ class labstore::fileserver {
         source  => 'puppet:///modules/labstore/storage-replicate',
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0544',
         require => File['/etc/replication-rsync.conf'],
     }
 
