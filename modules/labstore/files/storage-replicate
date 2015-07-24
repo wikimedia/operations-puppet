@@ -15,30 +15,30 @@
 #  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 #  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
-##
-## THIS FILE IS MANAGED BY PUPPET
-##
-## Source: modules/labstore/storage-replicate
-## From:   tbd
-##
+#
+#  THIS FILE IS MANAGED BY PUPPET
+#
+#  Source: modules/labstore/storage-replicate
+#  From:   modules/labstore/manifests/fileserve.rpp
+#
 
-##
-## storage-replicate
-##
-## usage: storage-replicate <mountpoint> <host> <dest>
-##
-## Replicates the directory at <mountpoint> (which must have a
-## volume mounted) to the destination <host>, at mountpoint
-## <dest>.  A snapshot of the source will be taken (and kept)
-## and a temporary snapshot of the destination will be taken
-## before the rsync proper (so that there exists a consistent
-## snapshot at all times).
-##
-## This script provides for locking to avoid more than one
-## replication taking place at a time and making a mess of things.
-## The lock directory is also where the source snapshot
-## will be mounted.
-##
+"""
+storage-replicate
+
+usage: storage-replicate <mountpoint> <host> <dest>
+
+Replicates the directory at <mountpoint> (which must have a
+volume mounted) to the destination <host>, at mountpoint
+<dest>.  A snapshot of the source will be taken (and kept)
+and a temporary snapshot of the destination will be taken
+before the rsync proper (so that there exists a consistent
+snapshot at all times).
+
+This script provides for locking to avoid more than one
+replication taking place at a time and making a mess of things.
+The lock directory is also where the source snapshot
+will be mounted.
+"""
 
 import argparse
 import re
@@ -46,21 +46,9 @@ import datetime
 import subprocess
 import sys
 import logging
-import logging.handlers
 import os
 import paramiko
 from shlex import quote
-
-
-class RuntimeError(Exception):
-    def __init__(self, ctx, err):
-        self.ctx = ctx
-        self.err = err
-
-    def __str__(self):
-        if self.ctx.host:
-            return '[%s] %s' % (self.ctx.host, self.err)
-        return '[local] ' + repr(self.err)
 
 
 class Context:
@@ -69,12 +57,22 @@ class Context:
     and open) or remotely (via paramiko) such that the same
     interface can be used for both."""
 
+    class ContextError(Exception):
+        def __init__(self, ctx, err):
+            self.ctx = ctx
+            self.err = err
+
+        def __str__(self):
+            if self.ctx.host:
+                return '[%s] %s' % (self.ctx.host, self.err)
+            return '[local] ' + repr(self.err)
+
     def __init__(self, host):
         if host:
             self.host = host
             self.client = paramiko.SSHClient()
             self.client.load_system_host_keys()
-            self.client.connect(hostname = host, key_filename = '/root/.ssh/id_labstore')
+            self.client.connect(hostname=host, key_filename='/root/.ssh/id_labstore')
         else:
             self.host = None
             self.client = None
@@ -83,7 +81,7 @@ class Context:
         if self.host:
             (out, err) = self.run('/bin/cat', path)
             if err and err != "":
-               raise RuntimeError(self, err)
+                raise Context.ContextError(self, err)
 
             return out.splitlines()
 
@@ -108,7 +106,7 @@ class Context:
             out = so.read()
             err = se.read()
 
-            if not err or err=='':
+            if not err or err == '':
                 return (out, None)
 
             return (None, err)
@@ -118,7 +116,7 @@ class Context:
             (out, err) = sub.communicate()
             if sub.returncode:
                 err = err.splitlines(False)[0].strip()
-                if not err or err=='':
+                if not err or err == '':
                     if sub.returncode < 0:
                         err = "killed by signal %d" % -sub.returncode
                     else:
@@ -140,7 +138,7 @@ class Lockdir:
         self.ctx = ctx
         self.path = path
         self.mountpoint = "%s/snapshot" % path
-        self.err  = None
+        self.err = None
 
     def __enter__(self):
         try:
@@ -152,7 +150,7 @@ class Lockdir:
 
     def __exit__(self, e1, e2, e3):
         (out, err) = self.ctx.run('/bin/umount', '-fl', self.mountpoint)
-        (out, err) = self.ctx.run('/bin/rm', '-rf', self.path);
+        (out, err) = self.ctx.run('/bin/rm', '-rf', self.path)
         return None
 
 
@@ -172,17 +170,17 @@ def volume_device(ctx, path):
             vg, lv = match.group(1, 2)
 
     if not (vg and lv):
-        raise RuntimeError(ctx, "%s is not a LVM volume mountpoint" % path)
+        raise Context.ContextError(ctx, "%s is not a LVM volume mountpoint" % path)
 
     # Now check that the specified volume has the correct attributes
     (out, err) = ctx.run('/sbin/lvs', '--noheadings', '--options', 'lv_attr', '/dev/mapper/%s-%s' % (vg, lv))
     if err:
-        raise RuntimeError(ctx, "/sbin/lvs: " + err)
+        raise Context.ContextError(ctx, "/sbin/lvs: " + err)
 
     # Must be: not (s)napshot, (-) not mirror, and (a)ctive
-    # The format of lv_attr (the only output) is detailed in lvs(8) 
+    # The format of lv_attr (the only output) is detailed in lvs(8)
     if not re.match(r'^[^s]..-a...', out.strip()):
-        raise RuntimeError(ctx, "%s-%s is not a suitable volume for replication" % (vg, lv))
+        raise Context.ContextError(ctx, "%s-%s is not a suitable volume for replication" % (vg, lv))
 
     return (vg, lv)
 
@@ -199,7 +197,7 @@ remote = Context(args.host)
 (dstvg, dstlv) = volume_device(remote, args.dest)
 
 logging.debug("Backing up %s (%s/%s) -> %s:%s (%s/%s)"
-             % (args.path, srcvg, srclv, args.host, args.dest, dstvg, dstlv))
+              % (args.path, srcvg, srclv, args.host, args.dest, dstvg, dstlv))
 
 snapshot = srclv + datetime.datetime.utcnow().strftime("%Y%m%d")
 lockdir = '/var/run/lock/storage-replicate-%s-%s' % (srcvg, srclv)
@@ -243,13 +241,13 @@ with Lockdir(local, lockdir) as lock:
     logging.info("Replication of %s-%s starting" % (srcvg, snapshot))
 
     (out, err) = local.run(
-            '/usr/bin/ionice', '--class', 'Idle',
-            '/usr/bin/rsync', '--protect-args',
-            '--archive', '--update', '--hard-links', '--acls', '--xattrs', '--delete-during',
-            '--rsh=ssh -i /root/.ssh/id_labstore',
-            '--inplace', '--append-verify', '--filter=._/etc/replication-rsync.conf',
-            '%s/.' % lock.mountpoint,
-            '%s:%s' % (args.host, args.dest))
+        '/usr/bin/ionice', '--class', 'Idle',
+        '/usr/bin/rsync', '--protect-args',
+        '--archive', '--update', '--hard-links', '--acls', '--xattrs', '--delete-during',
+        '--rsh=ssh -i /root/.ssh/id_labstore',
+        '--inplace', '--append-verify', '--filter=._/etc/replication-rsync.conf',
+        '%s/.' % lock.mountpoint,
+        '%s:%s' % (args.host, args.dest))
     if err:
         logging.critical('rsync failed: %s' % err)
         exit(1)
@@ -261,4 +259,3 @@ with Lockdir(local, lockdir) as lock:
 
     if err:
         logging.warn('unable to remove remote snapshot (%s-%s): %s' % (dstvg, snapshot, err))
-
