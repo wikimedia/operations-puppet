@@ -37,6 +37,9 @@
 #[*refresh*]
 # Boolean - tells puppet if a change in the config should notify the service directly
 #
+#[*declare_service*]
+# Boolean - tells puppet if a service {} stanza is required or not
+#
 #[*service_params*]
 # An hash of parameters that we want to apply to the service resource
 #
@@ -63,6 +66,7 @@ define base::service_unit (
     $strict           = true,
     $refresh          = true,
     $template_name    = $name,
+    $declare_service  = true,
     $service_params   = {},
     ) {
 
@@ -116,9 +120,11 @@ define base::service_unit (
         }
     }
 
-    $base_params = {
-        ensure => ensure_service($ensure),
-        provider => $::initsystem }
-    $params = merge($base_params, $service_params)
-    ensure_resource('service',$name, $params)
+    if $declare_service {
+        $base_params = {
+            ensure => ensure_service($ensure),
+            provider => $::initsystem }
+        $params = merge($base_params, $service_params)
+        ensure_resource('service',$name, $params)
+    }
 }
