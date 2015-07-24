@@ -39,6 +39,22 @@ class labstore::fileserver {
         require => File['/etc/replication-rsync.conf'],
     }
 
+    base::service_unit { 'replicate-maps':
+        ensure          => present,
+        systemd         => true,
+        declare_service => false,
+    }
+
+    base::service_unit { 'replicate-tools':
+        ensure          => present,
+        systemd         => true,
+        declare_service => false,
+    }
+    base::service_unit { 'replicate-others':
+        ensure          => present,
+        systemd         => true,
+        declare_service => false,
+    }
     # There is no service {} stanza on purpose -- this service
     # must *only* be started by a manual operation because it must
     # run exactly once on whichever NFS server is the current
