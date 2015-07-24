@@ -107,22 +107,13 @@ class Context:
             err = se.read()
 
             if not err or err == '':
-                return (out.decode(), None)
+                return out.decode()
 
-            return (None, err.decode())
+            # Fake this too!
+            raise subprocess.CalledProcessError(1, command, err)
 
         else:
-            sub = subprocess.Popen(list(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            (out, err) = sub.communicate()
-            if sub.returncode:
-                err = err.splitlines(False)[0].strip()
-                if not err or err == '':
-                    if sub.returncode < 0:
-                        err = "killed by signal %d" % -sub.returncode
-                    else:
-                        err = "exited with %d" % sub.returncode
-                return (None, err.decode())
-            return (out.decode(), None)
+            return subprocess.check_output(list(cmd))
 
 
 class Lockdir:
@@ -149,8 +140,8 @@ class Lockdir:
         return self
 
     def __exit__(self, e1, e2, e3):
-        (out, err) = self.ctx.run('/bin/umount', '-fl', self.mountpoint)
-        (out, err) = self.ctx.run('/bin/rm', '-rf', self.path)
+        self.ctx.run('/bin/umount', '-fl', self.mountpoint)
+        self.ctx.run('/bin/rm', '-rf', self.path)
         return None
 
 
@@ -173,9 +164,7 @@ def volume_device(ctx, path):
         raise Context.ContextError(ctx, "%s is not a LVM volume mountpoint" % path)
 
     # Now check that the specified volume has the correct attributes
-    (out, err) = ctx.run('/sbin/lvs', '--noheadings', '--options', 'lv_attr', '/dev/mapper/%s-%s' % (vg, lv))
-    if err:
-        raise Context.ContextError(ctx, "/sbin/lvs: " + err)
+    out = ctx.run('/sbin/lvs', '--noheadings', '--options', 'lv_attr', '/dev/mapper/%s-%s' % (vg, lv))
 
     # Must be: not (s)napshot, (-) not mirror, and (a)ctive
     # The format of lv_attr (the only output) is detailed in lvs(8)
@@ -220,29 +209,20 @@ with Lockdir(local, lockdir) as lock:
     with open('%s/started' % lockdir, 'w+') as f:
         f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d% %H:%M:%S\n"))
 
-    (out, err) = local.run(
+    local.run(
         '/sbin/lvcreate', '--size', '1T', '--snapshot', '--name', snapshot, '%s/%s' % (srcvg, srclv))
-    if err:
-        logging.critical('unable to create local snapshot (%s-%s): %s' % (srcvg, snapshot, err))
-        sys.exit(1)
 
-    (out, err) = local.run(
+    local.run(
         '/bin/mount', '-oro,noload',
         '/dev/mapper/%s-%s' % (srcvg, snapshot),
         lock.mountpoint)
-    if err:
-        logging.critical('unable to mount local snapshot (%s-%s): %s' % (srcvg, snapshot, err))
-        sys.exit(1)
 
-    (out, err) = remote.run(
+    remote.run(
         '/sbin/lvcreate', '--size', '1T', '--snapshot', '--name', snapshot, '%s/%s' % (dstvg, srclv))
-    if err:
-        logging.critical('unable to create remote snapshot (%s-%s): %s' % (dstvg, snapshot, err))
-        sys.exit(1)
 
     logging.info("Replication of %s-%s starting" % (srcvg, snapshot))
 
-    (out, err) = local.run(
+    local.run(
         '/usr/bin/ionice', '--class', 'Idle',
         '/usr/bin/rsync', '--protect-args',
         '--archive', '--update', '--hard-links', '--acls', '--xattrs', '--delete-during',
@@ -250,14 +230,8 @@ with Lockdir(local, lockdir) as lock:
         '--inplace', '--append-verify', '--filter=._/etc/replication-rsync.conf',
         '%s/.' % lock.mountpoint,
         '%s:%s' % (args.host, args.dest))
-    if err:
-        logging.critical('rsync failed: %s' % err)
-        exit(1)
 
     logging.info("Replication of %s-%s complete" % (srcvg, snapshot))
 
-    (out, err) = remote.run(
+    remote.run(
         '/sbin/lvremove', '--force', '%s/%s' % (dstvg, snapshot))
-
-    if err:
-        logging.warn('unable to remove remote snapshot (%s-%s): %s' % (dstvg, snapshot, err))
