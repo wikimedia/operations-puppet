@@ -298,8 +298,22 @@ Convert a unit of time expressed as a string to seconds.
     to_seconds('2 days')  # 172800
 
 
-## validate_ensure
+## validate_array_re
+`validate_array_re( array $items, string $re )`
 
+Throw an error if any member of $items does not match the regular
+expression $re.
+
+### Examples
+
+    # OK -- each array item is a four-digit number.
+    validate_array_re([8123, 8124, 8125], '^\d{4}$')
+
+    # Fail -- last array item is not a four-digit number.
+    validate_array_re([8123, 8124, 812], '^\d{4}$')
+
+
+## validate_ensure
 `validate_ensure( string $ensure )`
 
 Throw an error if the $ensure argument is not 'present' or 'absent'.
