@@ -5,6 +5,8 @@ class contint::packages::labs {
 
     Package['puppet-lint'] -> Class['contint::packages::labs']
 
+    require contint::packages::apt
+
     include contint::packages
     # Fonts needed for browser tests screenshots (T71535)
     include mediawiki::packages::fonts
@@ -12,29 +14,6 @@ class contint::packages::labs {
     # Required for python testing
     include ::contint::packages::python
 
-    class { 'apt::unattendedupgrades':
-        ensure => absent,
-    }
-
-    apt::conf { 'unattended-upgrades-wikimedia':
-        ensure   => absent,
-        priority => '51',
-        key      => 'Unattended-Upgrade::Allowed-Origins',
-        # lint:ignore:single_quote_string_with_variables
-        value    => 'Wikimedia:${distro_codename}-wikimedia',
-        # lint:endignore
-    }
-    apt::conf { 'lower-periodic-randomsleep':
-        ensure   => absent,
-        priority => '51',
-        key      => 'APT::Periodic::RandomSleep',
-        value    => '300',
-    }
-
-    # Not meant to run hourly :/
-    file { '/etc/cron.hourly/apt':
-        ensure  => absent,
-    }
 
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
