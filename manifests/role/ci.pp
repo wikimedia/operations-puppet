@@ -456,6 +456,11 @@ class role::ci::slave::labs::light {
     # Production DNS migrated to Jessie T98003
     include authdns::lint
 
+    # Can not easily build etcd on Trusty
+    package { 'etcd':
+        ensure => latest,
+    }
+
 }
 
 # == Class role::ci::publisher::labs
