@@ -39,6 +39,29 @@ class labstore::fileserver {
         require => File['/etc/replication-rsync.conf'],
     }
 
+    labstore::fileserver::replicate { 'tools':
+        src_path  => '/srv/project/tools',
+        dest_path => '/srv/eqiad/tools',
+        dest_host => 'labstore2001.codfw.wmnet',
+    }
+
+    labstore::fileserver::replicate { 'others':
+        src_path  => '/srv/others',
+        dest_path => '/srv/eqiad/others',
+        dest_host => 'labstore2001.codfw.wmnet',
+    }
+
+    labstore::fileserver::replicate { 'maps':
+        src_path  => '/srv/project/maps',
+        dest_path => '/srv/eqiad/maps',
+        dest_host => 'labstore2001.codfw.wmnet',
+    }
+
+    base::service_unit { 'replicate-tools':
+        ensure          => present,
+        systemd         => true,
+        declare_service => false,
+    }
     # There is no service {} stanza on purpose -- this service
     # must *only* be started by a manual operation because it must
     # run exactly once on whichever NFS server is the current
