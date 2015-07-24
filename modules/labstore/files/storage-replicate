@@ -107,9 +107,9 @@ class Context:
             err = se.read()
 
             if not err or err == '':
-                return (out, None)
+                return (out.decode(), None)
 
-            return (None, err)
+            return (None, err.decode())
 
         else:
             sub = subprocess.Popen(list(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -121,8 +121,8 @@ class Context:
                         err = "killed by signal %d" % -sub.returncode
                     else:
                         err = "exited with %d" % sub.returncode
-                return (None, err)
-            return (out, None)
+                return (None, err.decode())
+            return (out.decode(), None)
 
 
 class Lockdir:
