@@ -190,7 +190,7 @@ parser.add_argument('host', help='Destination host for the replica')
 parser.add_argument('dest', help='Destination mountpoint for the replica')
 args = parser.parse_args()
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 local = Context(None)
 remote = Context(args.host)
