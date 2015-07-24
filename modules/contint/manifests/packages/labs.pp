@@ -9,6 +9,9 @@ class contint::packages::labs {
     # Fonts needed for browser tests screenshots (T71535)
     include mediawiki::packages::fonts
 
+    # Required for python testing
+    include ::contint::packages::python
+
     class { 'apt::unattendedupgrades':
         ensure => absent,
     }
@@ -78,17 +81,6 @@ class contint::packages::labs {
 
     package { [
         'npm',
-
-        # Let us compile python modules:
-        'python-dev',
-        'libmysqlclient-dev',  # For python SQLAlchemy
-
-        'libxml2-dev',   # For python lxml
-        'libxslt1-dev',  # For python lxml
-        'libffi-dev', # For python requests[security]
-
-        'python3-tk',  # For pywikibot/core running tox-doc-trusty
-
         # For mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
         # Provided by openstack::common:
         #'unzip',
@@ -102,17 +94,6 @@ class contint::packages::labs {
     # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     ensure_packages(['zip'])
 
-    # Also provided by Zuul installation
-    ensure_packages(['python-pip'])
-
-    # Bring tox/virtualenv... from pip  T46443
-    # TODO: Reevaluate this once we switch to trusty. Maybe provider being apt
-    # would be better then
-    package { 'tox':
-        ensure   => '1.9.2',
-        provider => 'pip',
-        require  => Package['python-pip'],
-    }
 
     if os_version('ubuntu >= trusty') {
         exec { '/usr/bin/apt-get -y build-dep hhvm':
@@ -130,10 +111,6 @@ class contint::packages::labs {
         }
 
         package { [
-            'python3.4',
-            # Let us compile python modules:
-            'python3.4-dev',
-
             'ruby2.0',
             # bundle/gem compile ruby modules:
             'ruby2.0-dev',
