@@ -11,7 +11,7 @@ describe 'mysql::db', :type => :define do
 
   it 'should report an error when ensure is not present or absent' do
     params.merge!({'ensure' => 'invalid_val'})
-    expect { subject }.to raise_error(Puppet::Error,
+    expect { subject }.to raise_error(Puppet::Error, 
       /invalid_val is not supported for ensure\. Allowed values are 'present' and 'absent'\./)
   end
 
@@ -33,7 +33,7 @@ describe 'mysql::db', :type => :define do
     params.merge!({'sql' => 'test_sql', 'enforce_sql' => true})
     should contain_exec('test_db-import').with_refreshonly(false)
   end
-
+  
   it 'should not create database and database user' do
     params.merge!({'ensure' => 'absent', 'host' => 'localhost'})
     should contain_database('test_db').with_ensure('absent')
