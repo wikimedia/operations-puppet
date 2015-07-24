@@ -152,8 +152,8 @@ class contint::packages::labs {
         }
 
         exec {"jenkins-deploy kvm membership":
-            unless => "grep -q 'kvm\\S*jenkins-deploy' /etc/group",
-            command => "usermod -aG kvm jenkins-deploy",
+            unless => "/bin/grep -q 'kvm\\S*jenkins-deploy' /etc/group",
+            command => "/usr/sbin/usermod -aG kvm jenkins-deploy",
             require => User['jenkins-deploy'],
         }
     }
