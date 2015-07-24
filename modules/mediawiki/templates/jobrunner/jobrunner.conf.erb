@@ -67,7 +67,8 @@
     "limits": {
         // How many times to let jobs be recycled before abandoning
         "attempts": {
-            "*": 3
+            "*": 3,
+            "RestbaseUpdateJobOnDependencyChange": 1
         },
         // How long jobs can be claimed before being recycled
         "claimTTL": {
