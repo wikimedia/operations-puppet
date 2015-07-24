@@ -1321,6 +1321,7 @@ node /labstore200[12]\.codfw\.wmnet/ {
 node 'lead.wikimedia.org' {
     role mail::mx
     include standard
+    include base::firewall
     interface::add_ip6_mapped { 'main': }
 }
 
