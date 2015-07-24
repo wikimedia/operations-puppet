@@ -218,7 +218,7 @@ with Lockdir(local, lockdir) as lock:
         sys.exit(0)
 
     with open('%s/started' % lockdir, 'w+') as f:
-        f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d% H%:M:%S\n"))
+        f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d% %H:%M:%S\n"))
 
     (out, err) = local.run(
         '/sbin/lvcreate', '--size', '1T', '--snapshot', '--name', snapshot, '%s/%s' % (srcvg, srclv))
