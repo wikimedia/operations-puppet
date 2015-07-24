@@ -20,20 +20,20 @@ describe provider_class do
   it 'should query privilegess from the database' do
     provider_class.expects(:mysql) .with(["--defaults-file=#{root_home}/.my.cnf", 'mysql', '-Be', 'describe user']).returns <<-EOT
 Field	Type	Null	Key	Default	Extra
-Host	char(60)	NO	PRI
-User	char(16)	NO	PRI
-Password	char(41)	NO
-Select_priv	enum('N','Y')	NO		N
-Insert_priv	enum('N','Y')	NO		N
+Host	char(60)	NO	PRI		
+User	char(16)	NO	PRI		
+Password	char(41)	NO			
+Select_priv	enum('N','Y')	NO		N	
+Insert_priv	enum('N','Y')	NO		N	
 Update_priv	enum('N','Y')	NO		N
 EOT
     provider_class.expects(:mysql).with(["--defaults-file=#{root_home}/.my.cnf", 'mysql', '-Be', 'describe db']).returns <<-EOT
 Field	Type	Null	Key	Default	Extra
-Host	char(60)	NO	PRI
-Db	char(64)	NO	PRI
-User	char(16)	NO	PRI
-Select_priv	enum('N','Y')	NO		N
-Insert_priv	enum('N','Y')	NO		N
+Host	char(60)	NO	PRI		
+Db	char(64)	NO	PRI		
+User	char(16)	NO	PRI		
+Select_priv	enum('N','Y')	NO		N	
+Insert_priv	enum('N','Y')	NO		N	
 Update_priv	enum('N','Y')	NO		N
 EOT
     provider_class.user_privs.should == [ 'Select_priv', 'Insert_priv', 'Update_priv' ]
