@@ -1,16 +1,25 @@
 output {
-<% if @require_tag %>if "<%= @require_tag %>" in [tags] {<% end %>
-    # Send messages tagged as "es" to ElasticSearch
+<% if @guard_condition %>if <%= @guard_condition %> {<% end %>
     # We use the http sender so that the cluster and logstash don't have to be
     # tightly coupled by the binary protocol
-    elasticsearch_http {
+    elasticsearch {
         flush_size      => <%= @flush_size %>
         host            => "<%= @host %>"
         replication     => "async"
         idle_flush_time => <%= @idle_flush_time %>
         index           => "<%= @index %>"
         port            => <%= @port %>
+        protocol        => "http"
         replication     => "<%= @replication %>"
+<% if @template %>
+        manage_template    => true
+        template           => "<%= @template %>"
+        template_name      => "<%= @template_name %>"
+        template_overwrite => true
+<% else %>
+        manage_template => false
+        template_overwrite => false
+<% end %>
     }
-<% if @require_tag %>}<% end %>
+<% if @guard_condition %>}<% end %>
 }
