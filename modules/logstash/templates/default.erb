@@ -10,21 +10,12 @@ START=yes
 LS_JAR=/opt/logstash/logstash.jar
 
 # Java JVM options
-LS_JAVA_OPTS="-Xms<%= @heap_memory_mb %>m -Xmx<%= @heap_memory_mb %>m"
-LS_JAVA_OPTS="${LS_JAVA_OPTS} -Djava.io.tmpdir=/var/lib/logstash"
+LS_JAVA_OPTS="-Xms<%= @heap_memory_mb %>m -Xmx<%= @heap_memory_mb %>m -Djava.io.tmpdir=/var/lib/logstash"
 
 # Location of configuration files.
 # All files in this directory are concatenated in alphabetical order.
 CONF_DIR=/etc/logstash/conf.d
 
-# Logstash will look for ruby plugins in the logstash/{inputs,filters,outputs}
-# subdirectories of plugin_dir
-PLUGIN_DIR=/var/lib
-
 # Logstash options
 # Note: the sysv init script prepends these options with "agent -f ${CONF_DIR}"
-LS_OPTS="--log /var/log/logstash/logstash.log"
-LS_OPTS="${LS_OPTS} --filterworkers <%= @filter_workers %>"
-# XXX: Don't add plugin dir until we need it.
-# Logstash refuses to start if missing
-#LS_OPTS="${LS_OPTS} --pluginpath ${PLUGIN_DIR}"
+LS_OPTS="--log /var/log/logstash/logstash.log --filterworkers <%= @filter_workers %> --pluginpath /srv/deployment/logstash/plugins"
