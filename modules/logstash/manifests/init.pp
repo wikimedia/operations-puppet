@@ -19,15 +19,15 @@ class logstash(
     $heap_memory_mb = 64,
     $filter_workers = 1,
 ) {
-    include ::elasticsearch::packages
+    require_package('openjdk-7-jdk')
 
     package { 'logstash':
         ensure  => 'present',
         require => Package['openjdk-7-jdk'],
     }
 
-    package { 'logstash-contrib':
-        ensure  => 'present',
+    package { 'logstash/plugins':
+        provider => 'trebuchet',
     }
 
     file { '/etc/default/logstash':
@@ -47,7 +47,6 @@ class logstash(
 
     service { 'logstash':
         ensure     => running,
-        provider   => 'init',
         enable     => true,
         hasstatus  => true,
         hasrestart => true,
