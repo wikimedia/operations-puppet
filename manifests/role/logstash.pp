@@ -19,6 +19,17 @@ class role::logstash {
         require => Package['elasticsearch/plugins'],
     }
 
+    # TODO: setup repo for this
+    #package { 'logstash/plugins':
+    #    provider => 'trebuchet',
+    #}
+
+    logstash::plugin { 'logstash-filter-prune':
+        ensure  => 'present',
+        gem     => '/srv/deployment/logstash/plugins/logstash-filter-prune-0.1.5.gem',
+        #require => Package['logstash/plugins'],
+    }
+
     logstash::input::udp2log { 'mediawiki':
         port => 8324,
     }
