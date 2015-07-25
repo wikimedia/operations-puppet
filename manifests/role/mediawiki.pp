@@ -163,6 +163,12 @@ class role::mediawiki::imagescaler {
 
     include ::mediawiki::multimedia
     include ::role::mediawiki::webserver
+
+    # Catch thumb_handler as well
+    apache::conf { 'thumb_handler_catchall':
+        source   => 'puppet:///modules/mediawiki/apache/configs/thumb_handler_catchall.conf',
+        priority => 51,
+    }
 }
 
 class role::mediawiki::videoscaler {
