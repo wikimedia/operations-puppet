@@ -19,6 +19,19 @@ class role::logstash {
         require => Package['elasticsearch/plugins'],
     }
 
+    # TODO: setup repo for this
+    #package { 'logstash/plugins':
+    #    provider => 'trebuchet',
+    #}
+
+    logstash::plugin { 'logstash-filter-prune':
+        ensure  => 'present',
+        gem     => '/srv/deployment/logstash/plugins/logstash-filter-prune-0.1.5.gem',
+        #require => Package['logstash/plugins'],
+    }
+
+    ## Inputs (10)
+
     logstash::input::udp2log { 'mediawiki':
         port => 8324,
     }
@@ -31,11 +44,11 @@ class role::logstash {
         port => 12201,
     }
 
-    ## Global pre-processing (10)
+    ## Global pre-processing (15)
 
     logstash::conf { 'filter_strip_ansi_color':
         source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
-        priority => 10,
+        priority => 15,
     }
 
     ## Input specific processing (20)
@@ -69,14 +82,20 @@ class role::logstash {
         priority => 70,
     }
 
-    class { '::logstash::output::elasticsearch':
-        host           => '127.0.0.1',
-        replication    => 'async',
-        require_tag    => 'es',
-        manage_indices => true,
-        priority       => 90,
+    # Template for Elasticsearch index creation
+    file { '/etc/logstash/elasticsearch-template.json':
+        ensure => present,
+        source => 'puppet:///files/logstash/elasticsearch-template.json',
     }
 
+    logstash::output::elasticsearch { 'logstash':
+        host            => '127.0.0.1',
+        guard_condition => '"es" in [tags]',
+        manage_indices  => true,
+        priority        => 90,
+        template        => '/etc/logstash/elasticsearch-template.json',
+        require         => File['/etc/logstash/elasticsearch-template.json'],
+    }
 }
 
 # == Class: role::logstash::elasticsearch
@@ -151,28 +170,16 @@ class role::logstash::puppetreports {
 class role::logstash::apifeatureusage {
     include ::role::logstash
 
-    # Variables for the templates
+    # FIXME: make this a param and use hiera to vary by realm
     $host            = $::realm ? {
         'production' => '10.2.2.30', # search.svc.eqiad.wmnet
         'labs'       => 'deployment-elastic05', # Pick one at random
     }
-    $port            = 9200
 
-    $uri = "http://${host}:${port}"
-
-    # Add the index to ES
-    file { '/etc/logstash/apifeatureusage-elasticsearch-template.json':
+    # Template for Elasticsearch index creation
+    file { '/etc/logstash/apifeatureusage-template.json':
         ensure => present,
-        source => 'puppet:///files/logstash/apifeatureusage-elasticsearch-template.json',
-    }
-
-    exec { 'Create apifeatureusage index template':
-        command => template('logstash/create-apifeatureusage-index.erb'),
-        unless  => template('logstash/check-apifeatureusage-index.erb'),
-        require => [
-            Service['elasticsearch'],
-            File['/etc/logstash/apifeatureusage-elasticsearch-template.json'],
-        ]
+        source => 'puppet:///files/logstash/apifeatureusage-template.json',
     }
 
     # Add configuration to logstash
@@ -183,27 +190,12 @@ class role::logstash::apifeatureusage {
     }
 
     # Output destined for separate Elasticsearch cluster from Logstash cluster
-    logstash::conf{ 'output-apifeatureusage':
-        content  => template('logstash/apifeatureusage.erb'),
-        priority => 95,
-    }
-
-    # Cron jobs to delete and optimize indexes
-    cron { 'apifeatureusage_delete_index':
-        command => "/usr/local/bin/logstash_delete_index.sh ${uri} \"apifeatureusage-$(date -d '-31days' +\\%Y.\\%m.\\%d)\"",
-        user    => 'root',
-        hour    => 0,
-        minute  => 42,
-        require => File['/usr/local/bin/logstash_delete_index.sh'],
-    }
-
-    cron { 'apifeatureusage_optimize_index':
-        command => "/usr/local/bin/logstash_optimize_index.sh ${uri} \"apifeatureusage-$(date -d '-1day' +\\%Y.\\%m.\\%d)\"",
-        user    => 'root',
-        hour    => 1,
-        # Stagger execution on each node of cluster to avoid running in
-        # parallel.
-        minute  => 5 * fqdn_rand(12, 'apifeatureusage_optimize_index'),
-        require => File['/usr/local/bin/logstash_optimize_index.sh'],
+    logstash::output::elasticsearch { 'apifeatureusage':
+        host            => $host,
+        guard_condition => '[type] == "api-feature-usage-sanitized"',
+        manage_indices  => true,
+        priority        => 95,
+        template        => '/etc/logstash/apifeatureusage-template.json',
+        require         => File['/etc/logstash/apifeatureusage-template.json'],
     }
 }
