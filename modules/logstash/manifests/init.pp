@@ -26,10 +26,6 @@ class logstash(
         require => Package['openjdk-7-jdk'],
     }
 
-    package { 'logstash-contrib':
-        ensure  => 'present',
-    }
-
     file { '/etc/default/logstash':
         content => template('logstash/default.erb'),
         require => Package['logstash'],
