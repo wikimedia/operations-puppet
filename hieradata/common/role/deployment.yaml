@@ -102,3 +102,5 @@ repo_config:
   cassandra/logstash-logback-encoder:
     gitfat_enabled: true
     upstream: https://gerrit.wikimedia.org/r/operations/software/logstash-logback-encoder
+  logstash/plugins:
+    upstream: https://gerrit.wikimedia.org/r/operations/software/logstash/plugins
