@@ -5,11 +5,7 @@
 class elasticsearch::packages {
     include ::java::tools
 
-    if ! defined ( Package['openjdk-7-jdk'] ) {
-        package { 'openjdk-7-jdk':
-            ensure => 'present',
-        }
-    }
+    require_package('openjdk-7-jdk')
 
     package { 'elasticsearch':
         ensure  => present,
@@ -18,17 +14,13 @@ class elasticsearch::packages {
 
     # jq is really useful, especially for parsing
     # elasticsearch REST command JSON output.
-    package { 'jq':
-        ensure => present,
-    }
+    require_package('jq')
 
-    if ! defined ( Package['curl'] ) {
-        package { 'curl': ensure => present }
-    }
+    require_package('curl')
 
     # library for elasticsearch. only in trusty+
     if os_version('ubuntu >= trusty') {
-        package { 'python-elasticsearch': ensure => present }
-        package { 'python-ipaddr': ensure => present }
+        require_package('python-elasticsearch')
+        require_package('python-ipaddr')
     }
 }
