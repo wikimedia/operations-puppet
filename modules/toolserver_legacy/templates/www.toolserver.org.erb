@@ -59,6 +59,11 @@
 
     DocumentRoot /var/www/html
 
+    # Redirect wiki.toolserver.org to mediawiki.org.
+    RewriteEngine on
+    RewriteCond %{HTTP_HOST} =wiki.toolserver.org [NC]
+    RewriteRule ^/view/(.*)$ https://www.mediawiki.org/wiki/Toolserver:$1 [L,R]
+
     # Redirects from www.toolserver.org
     #
     Redirect 301 /tiles http://a.tiles.wmflabs.org
