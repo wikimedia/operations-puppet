@@ -95,19 +95,6 @@ rewrite	nb.wikisource.org	//no.wikisource.org
 rewrite	nb.wikinews.org	//no.wikinews.org
 funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
 
-# renamed chapter wiki - T40763
-rewrite	pa.us.wikimedia.org	//pa-us.wikimedia.org
-
-# arbcom
-rewrite	arbcom.de.wikipedia.org	https://arbcom-de.wikipedia.org
-rewrite	arbcom.en.wikipedia.org	https://arbcom-en.wikipedia.org
-rewrite	arbcom.fi.wikipedia.org	https://arbcom-fi.wikipedia.org
-rewrite	arbcom.nl.wikipedia.org	https://arbcom-nl.wikipedia.org
-
-rewrite	noboard.chapters.wikimedia.org	//noboard-chapters.wikimedia.org
-
-rewrite	wg.en.wikipedia.org	//wg-en.wikipedia.org
-
 rewrite	tp.wikipedia.org	//tokipona.wikipedia.org
 
 rewrite	zh-cfr.wikipedia.org	//zh-min-nan.wikipedia.org
