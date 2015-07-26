@@ -1,0 +1,29 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///templates/apache/sites/wiki.toolserver.org.erb
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+    ServerName wiki.toolserver.org
+
+    DocumentRoot /does/not/exist
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    RewriteEngine on
+    RewriteRule ^/view/(.*)$ https://www.mediawiki.org/wiki/Toolserver:$1 [L,R]
+
+    ErrorLog /var/log/apache2/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature Off
+
+</VirtualHost>
