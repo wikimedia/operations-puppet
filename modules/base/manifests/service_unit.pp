@@ -68,20 +68,22 @@ define base::service_unit (
     $template_name    = $name,
     $declare_service  = true,
     $service_params   = {},
-    ) {
+) {
 
     validate_ensure($ensure)
+
     # Validates the service name, and picks the valid init script
     $initscript = pick_initscript(
         $::initsystem, $systemd, $upstart, $sysvinit, $strict)
+
     # we assume init scripts are templated
     if $initscript {
         if $caller_module_name {
             $template = "${caller_module_name}/initscripts/${template_name}.${initscript}.erb"
-        }
-        else {
+        } else {
             $template = "initscripts/${template_name}.${initscript}.erb"
         }
+
         $path = $initscript ? {
             'systemd'  => "/etc/systemd/system/${name}.service",
             'upstart'  => "/etc/init/${name}.conf",
@@ -95,7 +97,7 @@ define base::service_unit (
             $i_mode = '0544'
         }
 
-        file {$path:
+        file { $path:
             ensure  => $ensure,
             content => template($template),
             mode    => $i_mode,
@@ -112,23 +114,24 @@ define base::service_unit (
         }
 
         if $::initsystem == 'systemd' {
-                exec { "systemd reload for ${name}":
-                    refreshonly => true,
-                    command     => '/bin/systemctl daemon-reload',
-                    subscribe   => File[$path],
-                }
+            exec { "systemd reload for ${name}":
+                refreshonly => true,
+                command     => '/bin/systemctl daemon-reload',
+                subscribe   => File[$path],
+            }
 
-                if $declare_service {
-                    Exec["systemd reload for ${name}"] -> Service[$name]
-                }
+            if $declare_service {
+                Exec["systemd reload for ${name}"] -> Service[$name]
+            }
         }
     }
 
     if $declare_service {
         $base_params = {
             ensure => ensure_service($ensure),
-            provider => $::initsystem }
+            provider => $::initsystem,
+        }
         $params = merge($base_params, $service_params)
-        ensure_resource('service',$name, $params)
+        ensure_resource('service', $name, $params)
     }
 }
