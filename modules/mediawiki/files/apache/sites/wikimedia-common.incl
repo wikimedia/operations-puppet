@@ -4,6 +4,7 @@
     RewriteEngine On
     <IfDefine HHVM>
         ProxyPass       /wiki                fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php retry=0
+        ProxyPass       /w/thumb_handler.php fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/thumb_handler.php retry=0
         ProxyPass       /w/extensions        !
         ProxyPassMatch  ^/w/(.*\.(php|hh))$  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/$1 retry=0
         RewriteRule     ^/$                  fcgi://127.0.0.1:9000/srv/mediawiki/docroot/wikimedia.org/w/index.php    [P]
