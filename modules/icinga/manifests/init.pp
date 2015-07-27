@@ -78,7 +78,7 @@ class icinga {
     }
 
     class { 'nagios_common::contacts':
-        source  => 'puppet:///private/nagios/contacts.cfg',
+        content => secret('nagios/contacts.cfg'),
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
