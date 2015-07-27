@@ -230,6 +230,10 @@ JVM_OPTS="$JVM_OPTS -XX:StringTableSize=1000003"
 JVM_OPTS="$JVM_OPTS -XX:+UseG1GC"
 JVM_OPTS="$JVM_OPTS -XX:G1RSetUpdatingPauseTimePercent=5"
 JVM_OPTS="$JVM_OPTS -XX:MaxGCPauseMillis=300"
+# https://issues.apache.org/jira/browse/CASSANDRA-7486 recommends lowering the
+# default of 45% to 25%. We are starting gradually here.
+JVM_OPTS="$JVM_OPTS -XX:InitiatingHeapOccupancyPercent=35"
+
 
 # note: bash evals '1.7.x' as > '1.7' so this is really a >= 1.7 jvm check
 if [ "$JVM_ARCH" = "64-Bit" ] ; then
