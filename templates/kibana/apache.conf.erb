@@ -5,7 +5,7 @@
 #####################################################################
 
 <VirtualHost *:80>
-  ServerName <%= @hostname %>
+  ServerName <%= @vhost %>
   ServerAdmin <%= @serveradmin %>
 
   DocumentRoot <%= @deploy_dir %>/src
@@ -34,11 +34,9 @@
     Allow from all
   </Directory>
 
-<%- if @apache_auth -%>
   <Location />
 <%= @apache_auth -%>
   </Location>
-<%- end -%>
 
   Alias /config.js /etc/kibana/config.js
 
