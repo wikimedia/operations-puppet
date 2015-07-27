@@ -34,7 +34,7 @@ define logstash::input::irc(
     $real      = 'logstash',
     $priority  = 10,
 ) {
-    logstash::conf { "input-irc${title}":
+    logstash::conf { "input-irc-${title}":
         ensure   => $ensure,
         content  => template('logstash/input/irc.erb'),
         priority => $priority,
