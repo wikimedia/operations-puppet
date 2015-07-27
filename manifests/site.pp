@@ -236,7 +236,6 @@ node 'bast1001.wikimedia.org' {
     $ganglia_aggregator = true
     role bastionhost::general
 
-    include standard
     include dsh
 }
 
@@ -246,7 +245,6 @@ node 'bast2001.wikimedia.org' {
         interface => 'eth0',
     }
     role bastionhost::general
-    include standard
 
 }
 
@@ -257,7 +255,6 @@ node 'bast4001.wikimedia.org' {
     }
 
     role bastionhost::general
-    include standard
     include role::ipmi
     include role::installserver::tftp-server
 
@@ -1109,7 +1106,6 @@ node 'hooft.esams.wikimedia.org' {
     }
     role bastionhost::general
 
-    include standard
     include role::installserver::tftp-server
 
     class { 'ganglia::monitor::aggregator':

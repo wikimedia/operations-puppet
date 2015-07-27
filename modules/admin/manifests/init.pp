@@ -8,10 +8,13 @@
 # [*$always_groups*]
 #  Array of valid groups to always run
 #
+# [*$only_ops_sudo*]
+#  When set to true, only the 'ops' group can have any privileges.
 
 class admin(
     $groups=[],
     $always_groups=['absent', 'ops', 'wikidev'],
+    $only_ops_sudo=false
 )
 {
     include sudo
@@ -34,8 +37,9 @@ class admin(
     }
 
     admin::hashgroup { $all_groups:
-        phash  => $data,
-        before => Admin::Hashuser[$user_set],
+        phash         => $data,
+        before        => Admin::Hashuser[$user_set],
+        only_ops_sudo => $only_ops_sudo
     }
 
     admin::hashuser { $user_set:

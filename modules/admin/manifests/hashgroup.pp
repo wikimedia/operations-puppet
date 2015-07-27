@@ -7,9 +7,13 @@
 #
 # [*phash*]
 #  Hash that contains valid group data
+#
+# [*only_ops_sudo*]
+#  When set to true, only the 'ops' group can have any privileges.
 
 define admin::hashgroup(
     $phash={},
+    $only_ops_sudo=false
 )
 {
 
@@ -26,9 +30,13 @@ define admin::hashgroup(
         $group_name = $name
     }
 
+    $privileges = $gdata['privileges']
+    if $only_ops_sudo && $name != 'ops' {
+        $privileges = []
+    }
     admin::group { $group_name:
         ensure     => $gdata['ensure'],
         gid        => $gdata['gid'],
-        privileges => $gdata['privileges'],
+        privileges => $privileges,
     }
 }

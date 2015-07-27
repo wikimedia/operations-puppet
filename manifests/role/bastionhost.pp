@@ -8,6 +8,14 @@ class role::bastionhost::general {
     include base::firewall
     include role::backup::host
 
+    class { 'standard': has_admin => false }
+    $admin_module_path = get_module_path('admin')
+    $admin_data = loadyaml("${admin_module_path}/data/data.yaml")
+    class { 'admin':
+        groups        => keys($admin_data['groups']),
+        only_ops_sudo => true
+    }
+
     backup::set {'home': }
 
     ferm::service { 'ssh':
