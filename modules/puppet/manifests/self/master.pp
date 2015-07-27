@@ -44,7 +44,6 @@ class puppet::self::master(
     }
 
     # If localhost, then just name the cert 'localhost'.
-    # Else certname should be the labs instanceid. ($::ec2id comes from instance metadata.)
     $certname = $server ? {
         'localhost' => 'localhost',
         default     => $fqdn
