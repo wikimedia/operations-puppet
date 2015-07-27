@@ -1,0 +1,17 @@
+---
+# Elasticsearch cluster
+elasticsearch::cluster_name: logstash-test
+elasticsearch::expected_nodes: 1
+elasticsearch::heap_memory: 5G
+elasticsearch::minimum_master_nodes: 1
+elasticsearch::recover_after_nodes: 1
+elasticsearch::recover_after_time: 1m
+elasticsearch::unicast_hosts:
+  - logstash01.logstash.eqiad.wmflabs
+
+# Kibana
+role::kibana::vhost: logstash-test.wmflabs.org
+role::kibana::serveradmin: bd808@wikimedia.org
+role::kibana::auth_type: local
+role::kibana::auth_realm: Login as guest/guest
+role::kibana::auth_file: /etc/logstash/htpasswd
