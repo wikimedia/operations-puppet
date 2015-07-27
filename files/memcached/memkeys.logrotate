@@ -2,7 +2,7 @@
 # writes memcached key usage stats to a CSV file in /var/log/memkeys
 # once a day.
 
-/var/log/memkeys/* {
+/var/log/memkeys/*.csv {
   rotate 90
   compress
   daily
