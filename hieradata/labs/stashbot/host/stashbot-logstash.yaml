@@ -1,0 +1,7 @@
+---
+# Elasticsearch
+# The ES nodes that are run on the same box as Logstash+Kibana are only used
+# as client nodes to communicate with the backing cluster.
+elasticsearch::holds_data: false
+elasticsearch::master_eligible: false
+elasticsearch::heap_memory: '2G'
