@@ -6,18 +6,8 @@
 # Provisions Logstash and ElasticSearch.
 #
 class role::logstash {
-    include standard
-    include ::elasticsearch::ganglia
-    include ::elasticsearch::nagios::check
+    include ::role::logstash::elasticsearch
     include ::logstash
-
-    package { 'elasticsearch/plugins':
-        provider => 'trebuchet',
-    }
-
-    class { '::elasticsearch':
-        require => Package['elasticsearch/plugins'],
-    }
 
     ## Inputs (10)
 
@@ -85,6 +75,9 @@ class role::logstash {
     file { '/etc/logstash/elasticsearch-template.json':
         ensure => present,
         source => 'puppet:///files/logstash/elasticsearch-template.json',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     logstash::output::elasticsearch { 'logstash':
@@ -103,8 +96,11 @@ class role::logstash {
 #
 class role::logstash::elasticsearch {
     include standard
-    include ::elasticsearch::ganglia
     include ::elasticsearch::nagios::check
+
+    if $::standard::has_ganglia {
+        include ::elasticsearch::ganglia
+    }
 
     package { 'elasticsearch/plugins':
         provider => 'trebuchet',
@@ -112,29 +108,6 @@ class role::logstash::elasticsearch {
 
     class { '::elasticsearch':
         require => Package['elasticsearch/plugins'],
-    }
-}
-
-# == Class: role::logstash::ircbot
-#
-# Sets up an IRC Bot to log messages from certain IRC channels
-class role::logstash::ircbot {
-    require ::role::logstash
-
-    $irc_name = $::logstash_irc_name ? {
-        undef => "logstash-${::labsproject}",
-        default => $::logstash_irc_name,
-    }
-
-    logstash::input::irc { 'freenode':
-        user     => $irc_name,
-        nick     => $irc_name,
-        channels => ['#wikimedia-labs', '#wikimedia-releng', '#wikimedia-operations'],
-    }
-
-    logstash::conf { 'filter_irc_banglog':
-        source   => 'puppet:///files/logstash/filter-irc-banglog.conf',
-        priority => 50,
     }
 }
 
@@ -179,6 +152,9 @@ class role::logstash::apifeatureusage {
     file { '/etc/logstash/apifeatureusage-template.json':
         ensure => present,
         source => 'puppet:///files/logstash/apifeatureusage-template.json',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     # Add configuration to logstash
@@ -198,3 +174,113 @@ class role::logstash::apifeatureusage {
         require         => File['/etc/logstash/apifeatureusage-template.json'],
     }
 }
+
+# == Class: role::logstash::stashbot
+#
+# Configure logstash to record IRC channel messages
+#
+# == Parameters:
+# [*irc_user*]
+#   IRC username
+#
+# [*irc_pass*]
+#   IRC password
+#
+# [*irc_nick*]
+#   IRC nick
+#
+# [*irc_real*]
+#   IRC real name
+#
+# [*channels*]
+#   List of channels to join and log
+#
+class role::logstash::stashbot (
+    $irc_user = 'stashbot',
+    $irc_pass = undef,
+    $irc_nick = 'stashbot',
+    $irc_real = 'Wikimedia Tool Labs IRC bot',
+    $channels = [],
+) {
+    include ::role::logstash::elasticsearch
+    include ::logstash
+
+    logstash::input::irc { 'freenode':
+        user     => $irc_user,
+        password => $irc_pass,
+        nick     => $irc_nick,
+        real     => $irc_real,
+        channels => $channels,
+    }
+
+    logstash::conf { 'filter_strip_ansi_color':
+        source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
+        priority => 15,
+    }
+
+    logstash::conf { 'filter_stashbot':
+        source   => 'puppet:///files/logstash/filter-stashbot.conf',
+        priority => 20,
+    }
+
+    logstash::conf { 'filter_stashbot_sal':
+        source   => 'puppet:///files/logstash/filter-stashbot-sal.conf',
+        priority => 50,
+    }
+
+    logstash::conf { 'filter_stashbot_bash':
+        source   => 'puppet:///files/logstash/filter-stashbot-bash.conf',
+        priority => 50,
+    }
+
+    file { '/etc/logstash/stashbot-template.json':
+        ensure => present,
+        source => 'puppet:///files/logstash/stashbot-template.json',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+    logstash::output::elasticsearch { 'logstash':
+        host            => '127.0.0.1',
+        index           => "logstash-%{+YYYY.MM}",
+        guard_condition => '"es" in [tags]',
+        priority        => 90,
+        template        => '/etc/logstash/stashbot-template.json',
+        require         => File['/etc/logstash/stashbot-template.json'],
+    }
+
+    # Special indexing for SAL messages
+    file { '/etc/logstash/stashbot-sal-template.json':
+        ensure => present,
+        source => 'puppet:///files/logstash/stashbot-sal-template.json',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+    logstash::output::elasticsearch { 'sal':
+        host            => $host,
+        index           => 'sal',
+        guard_condition => '[type] == "sal"',
+        priority        => 95,
+        template        => '/etc/logstash/stashbot-sal-template.json',
+        require         => File['/etc/logstash/stashbot-sal-template.json'],
+    }
+
+    # Special indexing for bash messages
+    file { '/etc/logstash/stashbot-bash-template.json':
+        ensure => present,
+        source => 'puppet:///files/logstash/stashbot-bash-template.json',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+    logstash::output::elasticsearch { 'bash':
+        host            => $host,
+        index           => 'bash',
+        guard_condition => '[type] == "bash"',
+        priority        => 95,
+        template        => '/etc/logstash/stashbot-bash-template.json',
+        require         => File['/etc/logstash/stashbot-bash-template.json'],
+    }
+}
+

@@ -26,3 +26,10 @@ logstash::cluster_hosts:
   - logstash1004.eqiad.wmnet
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet
+
+# Kibana
+role::kibana::vhost: logstash-beta.wmflabs.org
+role::kibana::serveradmin: root@deployment-logstash2.deployment-prep.eqiad.wmflabs
+role::kibana::auth_type: local
+role::kibana::auth_realm: "Logstash (ssh deployment-bastion.eqiad.wmflabs sudo cat /root/secrets.txt)"
+role::kibana::auth_file: /etc/logstash/htpasswd
