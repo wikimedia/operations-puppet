@@ -1,0 +1,7 @@
+---
+elasticsearch::auto_create_index: true
+elasticsearch::plugins_dir: /srv/deployment/elasticsearch/plugins
+elasticsearch::script_disable_dynamic: true
+
+logstash::filter_workers: 1
+logstash::heap_memory_mb: 128
