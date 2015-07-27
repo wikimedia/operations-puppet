@@ -64,8 +64,8 @@ class role::cache::mobile (
     }
 
     class { 'varnish::zero_update':
-        site     => $zero_site,
-        auth_src => 'puppet:///private/misc/zerofetcher.auth',
+        site         => $zero_site,
+        auth_content => secret('misc/zerofetcher.auth'),
     }
 
     $runtime_param = $::site ? {

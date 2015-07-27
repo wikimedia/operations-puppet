@@ -23,7 +23,7 @@ class varnish::netmapper_update_common {
 }
 
 # Zero-specific update stuff
-class varnish::zero_update($site, $auth_src, $hour = '*', $minute = '*/5') {
+class varnish::zero_update($site, $auth_content, $hour = '*', $minute = '*/5') {
     require 'varnish::netmapper_update_common'
 
     package { 'python-requests': ensure => installed; }
@@ -47,7 +47,7 @@ class varnish::zero_update($site, $auth_src, $hour = '*', $minute = '*/5') {
         owner   => 'netmap',
         group   => 'netmap',
         mode    => '0400',
-        source  => $auth_src,
+        content => $auth_content,
         require => [File["/etc/zerofetcher"]],
     }
 
