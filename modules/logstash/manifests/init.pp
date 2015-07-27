@@ -32,6 +32,9 @@ class logstash(
 
     file { '/etc/default/logstash':
         content => template('logstash/default.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
         require => Package['logstash'],
         notify  => Service['logstash'],
     }
@@ -41,6 +44,8 @@ class logstash(
         recurse => true,
         purge   => true,
         force   => true,
+        owner   => 'logstash',
+        group   => 'logstash',
         source  => 'puppet:///modules/logstash/conf.d',
         require => Package['logstash'],
     }
