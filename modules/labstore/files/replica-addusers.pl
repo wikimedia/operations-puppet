@@ -67,12 +67,14 @@ for(;;) {
     my $dbopen = 0;
     my @projects = glob "/srv/project/*";
     my %allhomes;
+    my %userhomes;
     print "[enumerating homes]\n";
     foreach my $dir (glob("/srv/project/*/home/*"), glob("/srv/project/*/project/*")) {
         next if -f "$dir/replica.my.cnf";
         my @sd = stat $dir;
         next unless $#sd > -1;
         $allhomes{$dir} = $sd[4]; # uid
+	$userhomes{$sd[4]} = 1;
     }
 
     print "[enumerating users]\n";
@@ -80,6 +82,7 @@ for(;;) {
     while(<PW>) {
         my ($username, undef, $uid, $gid, undef, $home, undef) = split /:/;
         next if $uid < 500;
+	next unless defined $userhomes{$uid};
         my @homes;
         $home =~ s/\/$//;
         $home = $1  if $home =~ m[^/data(/project/.*)$];
