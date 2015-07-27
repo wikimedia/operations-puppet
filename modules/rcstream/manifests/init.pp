@@ -81,6 +81,12 @@ class rcstream(
         force   => true,
     }
 
+    ferm::service_multiport {'rcstream':
+        proto => 'tcp',
+        port  => $ports,
+        srange => '$INTERNAL',
+    }
+
     service { 'rcstream':
         ensure   => 'running',
         provider => 'base',
