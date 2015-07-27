@@ -2487,16 +2487,22 @@ host lithium {
 host logstash1001 {
 	hardware ethernet 90:B1:1C:00:B1:4B;
 	fixed-address logstash1001.eqiad.wmnet;
+        option pxelinux.pathprefix "jessie-installer/";
+        filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host logstash1002 {
 	hardware ethernet D4:AE:52:AF:65:94;
 	fixed-address logstash1002.eqiad.wmnet;
+        option pxelinux.pathprefix "jessie-installer/";
+        filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host logstash1003 {
 	hardware ethernet D4:AE:52:AF:4B:AF;
 	fixed-address logstash1003.eqiad.wmnet;
+        option pxelinux.pathprefix "jessie-installer/";
+        filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host logstash1004 {
