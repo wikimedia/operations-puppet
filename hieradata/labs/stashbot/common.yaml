@@ -1,0 +1,23 @@
+---
+# Elasticsearch
+elasticsearch::auto_create_index: true
+elasticsearch::plugins_dir: /srv/deployment/elasticsearch/plugins
+elasticsearch::script_disable_dynamic: true
+elasticsearch::cluster_name: stashbot
+elasticsearch::expected_nodes: 2
+elasticsearch::heap_memory: '8G'
+elasticsearch::minimum_master_nodes: 1
+elasticsearch::recover_after_nodes: 1
+elasticsearch::recover_after_time: 1m
+elasticsearch::unicast_hosts:
+  - stashbot-elastic01.stashbot.eqiad.wmflabs
+  - stashbot-elastic02.stashbot.eqiad.wmflabs
+
+# Logstash
+logstash::filter_workers: 2
+logstash::heap_memory_mb: 256
+
+# Kibana
+role::kibana::vhost: stashbot.wmflabs.org
+role::kibana::serveradmin: bd808@wikimedia.org
+role::kibana::auth_type: none
