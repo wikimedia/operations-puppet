@@ -1,6 +1,53 @@
 admin::groups:
-  - deployment
-  - restricted
-  - parsoid-admin
-  - ocg-render-admins
-  - bastiononly
+- graphoid-admin
+- nodepool-roots
+- statistics-admins
+- pdf-qa-users
+- mathoid-admin
+- contint-admins
+- chromium-admin
+- deployment
+- logstash-roots
+- ocg-render-admins
+- elasticsearch-roots
+- htmldumps-admin
+- eventlogging-admins
+- wdqs-admins
+- gerrit-admin
+- oit
+- traceback-roots
+- restricted
+- maps-admins
+- phabricator-admin
+- contint-users
+- analytics-users
+- udp2log-users
+- statistics-privatedata-users
+- mathoid-roots
+- parsoid-roots
+- releasers-mobile
+- citoid-users
+- citoid-roots
+- eventlogging-roots
+- analytics-privatedata-users
+- ldap-admins
+- zotero-admin
+- phabricator-roots
+- contint-roots
+- wikidata-query-roots
+- statistics-users
+- analytics-roots
+- dataset-admins
+- gerrit-root
+- bastiononly
+- citoid-admin
+- cxserver-admin
+- analytics-admins
+- statistics-web-users
+- restbase-roots
+- releasers-mediawiki
+- parsoid-admin
+- kartotherian-admin
+- snapshot-admins
+- researchers
+- cassandra-test-roots
