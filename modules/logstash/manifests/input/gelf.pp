@@ -25,4 +25,10 @@ define logstash::input::gelf(
         content  => template('logstash/input/gelf.erb'),
         priority => $priority,
     }
+
+    ferm::service { 'logstash_gelf':
+        proto  => 'tcp',
+        port   => $port,
+        srange => '$INTERNAL',
+    }
 }

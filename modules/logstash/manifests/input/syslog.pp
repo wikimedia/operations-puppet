@@ -25,4 +25,10 @@ define logstash::input::syslog(
         content  => template('logstash/input/syslog.erb'),
         priority => $priority,
     }
+
+    ferm::service { 'logstash_syslog':
+        proto  => 'tcp',
+        port   => $port,
+        srange => '$INTERNAL',
+    }
 }
