@@ -74,6 +74,12 @@ class role::kibana {
     include ::apache::mod::proxy_http
     include ::apache::mod::rewrite
 
+    ferm::service { 'kibana_frontend':
+        proto  => 'tcp',
+        port   => 80,
+        srange => '$INTERNAL',
+    }
+
     apache::site { $hostname:
         content => template('kibana/apache.conf.erb'),
     }
