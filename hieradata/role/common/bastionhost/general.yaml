@@ -6,9 +6,5 @@ base::resolving::domain_search:
   - ulsfo.wmnet
   - esams.wikimedia.org
   - esams.wmnet
-admin::groups:
-  - deployment
-  - restricted
-  - parsoid-admin
-  - ocg-render-admins
-  - bastiononly
+standard::has_admin: false
+admin::hashgroup::only_ops_sudo: true
