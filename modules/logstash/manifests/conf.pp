@@ -32,6 +32,7 @@ define logstash::conf(
         ensure  => $ensure,
         content => $content,
         source  => $source,
+        mode    => '0444',
         require => File['/etc/logstash/conf.d'],
         notify  => Service['logstash'],
     }
