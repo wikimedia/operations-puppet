@@ -71,7 +71,10 @@ class dynamicproxy (
         notify  => Service['nginx'],
     }
 
-    file { '/var/www/error':
+    file { [
+        '/var/www/',
+        '/var/www/error',
+    ]:
         ensure => directory,
         owner  => 'www-data',
         group  => 'www-data',
