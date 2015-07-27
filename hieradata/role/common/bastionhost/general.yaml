@@ -1,14 +1,66 @@
-cluster: misc
-base::resolving::domain_search:
-  - wikimedia.org
-  - eqiad.wmnet
-  - codfw.wmnet
-  - ulsfo.wmnet
-  - esams.wikimedia.org
-  - esams.wmnet
 admin::groups:
-  - deployment
-  - restricted
-  - parsoid-admin
-  - ocg-render-admins
-  - bastiononly
+- graphoid-admin
+- statistics-admins
+- mathoid-admin
+- contint-admins
+- chromium-admin
+- deployment
+- logstash-roots
+- ocg-render-admins
+- elasticsearch-roots
+- mobileapps-admin
+- htmldumps-admin
+- eventlogging-admins
+- wdqs-admins
+- gerrit-admin
+- oit
+- traceback-roots
+- restricted
+- parsoid-roots
+- maps-admins
+- phabricator-admin
+- analytics-users
+- udp2log-users
+- statistics-privatedata-users
+- mathoid-roots
+- mw-log-readers
+- releasers-mobile
+- mailman-admins
+- citoid-users
+- citoid-roots
+- ldap-admins
+- eventlogging-roots
+- analytics-privatedata-users
+- parsoid-admin
+- zotero-admin
+- phabricator-roots
+- contint-roots
+- wikidata-query-roots
+- statistics-users
+- analytics-roots
+- dataset-admins
+- deploy-service
+- gerrit-root
+- contint-users
+- citoid-admin
+- cxserver-admin
+- analytics-admins
+- statistics-web-users
+- perf-admins
+- restbase-roots
+- apertium-admins
+- releasers-mediawiki
+- tilerator-admin
+- bastiononly
+- kartotherian-admin
+- snapshot-admins
+- researchers
+- cassandra-test-roots
+base::resolving::domain_search:
+- wikimedia.org
+- eqiad.wmnet
+- codfw.wmnet
+- ulsfo.wmnet
+- esams.wikimedia.org
+- esams.wmnet
+cluster: misc
