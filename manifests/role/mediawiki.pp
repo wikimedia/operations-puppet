@@ -47,7 +47,7 @@ class role::mediawiki::common {
             redis                => true,
             redis_auth           => $passwords::redis::main_password,
             hash                 => 'md5',
-            listen               => '127.0.0.1:6379',
+            listen               => '127.0.0.1:6380',
             preconnect           => true,
             server_connections   => 2,
             server_failure_limit => 3,
