@@ -35,7 +35,7 @@ class labstore::account_services {
         content => ordered_json($creds),
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0400',
     }
 
     file { '/usr/local/sbin/create-dbusers':
