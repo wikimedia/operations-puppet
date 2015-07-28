@@ -12,9 +12,7 @@ class role::cache::bits (
         realserver_ips => $lvs::configuration::service_ips['bits'][$::site],
     }
 
-    if $::realm == 'production' {
-        include role::cache::ssl::unified
-    }
+    include role::cache::ssl::unified
 
     $cluster_options = {
         'test_hostname'      => 'test.wikipedia.org',
