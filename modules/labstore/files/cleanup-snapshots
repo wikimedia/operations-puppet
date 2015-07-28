@@ -1,0 +1,110 @@
+#! /usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+#
+#  THIS FILE IS MANAGED BY PUPPET
+#
+#  Source: modules/labstore/cleanup-snapshots
+#  From:   modules/labstore/manifests/fileserve.rpp
+#
+
+"""
+cleanup-snapshots
+
+usage: cleanup-snapshots <vg> <space>
+
+This script cleans up snapshots in the specified volume
+group <vg> by discarding:
+
+(a) snapshots that are over 80% full; and
+(b) enough snapshots, oldest first, so that there
+    is at least <space> terabytes of allocatable space
+    in the volume group.
+
+The script will cowardly refuse to touch any mounted
+snapshot.
+"""
+
+import argparse
+import subprocess
+import logging
+import re
+
+def parsed_run(*cmd):
+    """This runs the specified cmd in a subprocess and
+    parses its output into a list of lists for each
+    row and field."""
+
+    entries = []
+    for entry in subprocess.check_output(list(cmd)).decode().splitlines():
+        entries.append(list(col.strip() for col in entry.split(':')))
+    return entries
+
+def terabytes(num):
+    match = re.match(r'^([0-9.]+)t$', num)
+    if match:
+        return float(match.group(1))
+    raise ValueError('Unexpected non-size value "%s"' % num)
+
+def discard_lv(name):
+    if subprocess.call(['/sbin/lvremove', '-f', name]) == 0:
+        return True
+    return False
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('vg', help='Volume group to clean snapshots from')
+    parser.add_argument('space', help='Free space to leave in the volume group (in terabytes)')
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
+
+    free = None
+    for vg in parsed_run('/sbin/vgs', '--separator', ':', '--options', 'name,size,free', '--units', 't'):
+        if vg[0] == args.vg:
+            free = terabytes(vg[2])
+    if not free:
+        raise ValueError('%s is not a volume group' % args.vg)
+
+    snapshots = {}
+    for lv in parsed_run('/sbin/lvs', '--separator', ':', '--options', 'vg_name,name,origin,size,snap_percent', '--units', 't'):
+        if lv[0] == args.vg:
+            match = re.match(r'^(.*?)([0-9]+)$', lv[1])
+            if match and match.group(1) == lv[2]:
+                snapshots["%s/%s" % (lv[0], lv[1])] = (lv[3], lv[4], match.group(2))
+
+    # sort by timestamp (lexicographically, which works out)
+    oldest = sorted(snapshots.items(), key=lambda x: x[1][2])
+
+    overfull = []
+    for lv, entry in snapshots.items():
+        if float(entry[1]) > 80.0:
+            overfull.append(lv)
+            if discard_lv(lv):
+                free += terabytes(entry[0])
+
+    while free < float(args.space):
+        if len(oldest) < 1:
+            break
+        if not oldest[0][0] in overfull:
+            if discard_lv(oldest[0][0]):
+                free += terabytes(oldest[0][1][0])
+        oldest.pop(0)
+
+if __name__ == "__main__":
+    main()
+
