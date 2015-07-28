@@ -63,20 +63,5 @@ class toollabs::master inherits toollabs {
         source  => 'puppet:///modules/toollabs/host_aliases',
         require => Mount['/var/lib/gridengine'],
     }
-
-    # TODO: Remove after migration.
-    file { "${toollabs::repo}/update-repo.sh":
-        ensure => absent,
-    }
-    exec { 'Move Tools all packages to new structure':
-        command => "/bin/mv -i ${toollabs::repo}/all/*.deb ${toollabs::repo}/ && /bin/rm -f ${toollabs::repo}/all/Packages && /bin/rmdir ${toollabs::repo}/all",
-        onlyif => "/usr/bin/test -d ${toollabs::repo}/all",
-        notify => Exec["Turn ${toollabs::repo} into deb repo"],
-    }
-    exec { 'Move Tools amd64 packages to new structure':
-        command => "/bin/mv -i ${toollabs::repo}/amd64/*.deb ${toollabs::repo}/ && /bin/rm -f ${toollabs::repo}/amd64/Packages && /bin/rmdir ${toollabs::repo}/amd64",
-        onlyif => "/usr/bin/test -d ${toollabs::repo}/amd64",
-        notify => Exec["Turn ${toollabs::repo} into deb repo"],
-    }
 }
 
