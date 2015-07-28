@@ -113,7 +113,7 @@ class Context:
             raise subprocess.CalledProcessError(1, command, err)
 
         else:
-            return subprocess.check_output(list(cmd))
+            return subprocess.check_output(list(cmd)).decode()
 
 
 class Lockdir:
