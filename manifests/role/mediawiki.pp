@@ -45,7 +45,7 @@ class role::mediawiki::common {
             distribution         => 'ketama',
             redis                => true,
             hash                 => 'md5',
-            listen               => '/var/run/nutcracker/session_redis.sock 0666',
+            listen               => '127.0.0.1:6379',
             preconnect           => true,
             server_connections   => 2,
             server_failure_limit => 3,
