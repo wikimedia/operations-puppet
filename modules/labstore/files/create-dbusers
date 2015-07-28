@@ -171,12 +171,12 @@ if __name__ == '__main__':
         servicegroups = User.from_ldap_servicegroups(conn, args.project)
         for sg in servicegroups:
             # FIXME: for non tools/maps projects this path is different
-            replica_path = os.path.join(
+            home_path = os.path.join(
                 '/srv/project/', sg.project, 'project',
-                re.sub(r'^%s\.' % sg.project, '', sg.name),
-                'replica.my.cnf'
+                re.sub(r'^%s\.' % sg.project, '', sg.name)
             )
-            if not os.path.exists(replica_path):
+            replica_path = os.path.join(home_path, 'replica.my.cnf')
+            if os.path.exists(home_path) and not os.path.exists(replica_path):
                 if not cgen.check_user_exists(sg):
                     # No replica.my.cnf and no user in db
                     # Generate new creds and put them in there!
