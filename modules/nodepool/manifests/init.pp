@@ -168,21 +168,10 @@ class nodepool(
         mode    => '0600',
     }
 
-    file { '/etc/nodepool/elements':
-        ensure  => directory,
-        owner   => 'nodepool',
-        group   => 'nodepool',
-        recurse => true,
-        purge   => true,
-        source  => 'puppet:///modules/nodepool/elements',
-        require => Package['nodepool'],
-    }
-
     file { '/etc/nodepool/nodepool.yaml':
         content => template('nodepool/nodepool.yaml.erb'),
         require => [
             Package['nodepool'],
-            File['/etc/nodepool/elements'],
         ]
     }
 
