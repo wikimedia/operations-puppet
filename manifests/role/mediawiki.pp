@@ -16,6 +16,7 @@ class role::mediawiki::common {
     include ::mediawiki
     include ::nutcracker::monitoring
     include ::tmpreaper
+    include ::passwords::redis
 
     $nutcracker_pools = {
         'memcached'     => {
@@ -44,6 +45,7 @@ class role::mediawiki::common {
             auto_eject_hosts     => true,
             distribution         => 'ketama',
             redis                => true,
+            redis_auth           => $passwords::redis::main_password,
             hash                 => 'md5',
             listen               => '/var/run/nutcracker/session_redis.sock 0666',
             preconnect           => true,
