@@ -138,10 +138,6 @@ class toollabs (
         handle  => 'tools-project',
         require => File[$toollabs::sysdir],
     }
-    # TODO: Remove after migration.
-    file { '/etc/apt/sources.list.d/local.list':
-        ensure => absent,
-    }
 
     # Trustworthy enough
     # Only necessary on precise hosts, trusty has its own mariadb package

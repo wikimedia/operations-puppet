@@ -78,9 +78,4 @@ class toollabs::bastion(
         group   => 'root',
         content => template('toollabs/crontab.erb'),
     }
-    # TODO: Remove after deployment.
-    file { '/usr/local/bin/xcrontab':
-        ensure => absent,
-    }
-
 }
