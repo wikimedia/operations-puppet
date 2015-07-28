@@ -1,0 +1,29 @@
+#!/usr/bin/python
+import os
+
+import portgrabber
+
+# Attempt to get an open port
+port = portgrabber.get_open_port()
+
+args = [
+    '/usr/bin/uwsgi',
+    '--http-socket', ':' + str(port),
+    '--logto', os.path.expanduser('~/uwsgi.log'),
+    '--workers', '4',
+    '--die-on-term',
+    '--strict',
+    '--master'
+]
+
+if os.path.exists(os.path.expanduser('~/www/python/venv')):
+    args += ['--venv', os.path.expanduser('~/www/python/venv')]
+
+if os.path.exists(os.path.expanduser('~/www/python/uwsgi.ini')):
+    args += ['--ini', os.path.expanduser('~/www/python/uwsgi.ini')]
+
+# Connect to the proxylistener instances on the web proxies and notify
+# them where requests for the tool need to be routed to.
+portgrabber.register(port)
+
+os.execv('/usr/bin/uwsgi', args)
