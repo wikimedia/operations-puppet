@@ -1,2 +1,4 @@
 [http]
 	proxy = http://url-downloader.wikimedia.org:8080/
+[remote "*"]
+	fetch = +refs/*
