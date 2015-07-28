@@ -26,11 +26,10 @@ import time
 
 
 class User:
-    def __init__(self, project, name, uid, homedir):
+    def __init__(self, project, name, uid):
         self.project = project
         self.name = name
         self.uid = int(uid)
-        self.homedir = homedir
 
     @property
     def db_username(self):
@@ -42,8 +41,8 @@ class User:
         return 's%s' % self.uid
 
     def __repr__(self):
-        return "User(name=%s, uid=%s, homedir=%s)" % (
-            self.name, self.uid, self.homedir)
+        return "User(name=%s, uid=%s)" % (
+            self.name, self.uid)
 
     @classmethod
     def from_ldap_servicegroups(cls, conn, projectname):
@@ -51,12 +50,12 @@ class User:
             'ou=people,ou=servicegroups,dc=wikimedia,dc=org',
             '(cn=%s.*)' % projectname,
             ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
-            attributes=['uidNumber', 'homeDirectory', 'cn']
+            attributes=['uidNumber', 'cn']
         )
         users = []
         for resp in conn.response:
             attrs = resp['attributes']
-            users.append(cls(projectname, attrs['cn'][0], attrs['uidNumber'][0], attrs['homeDirectory'][0]))
+            users.append(cls(projectname, attrs['cn'][0], attrs['uidNumber'][0]))
 
         return users
 
