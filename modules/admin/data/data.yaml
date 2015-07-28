@@ -310,7 +310,7 @@ groups:
   graphoid-admin:
     gid: 750
     description: group of graphoid admins
-    members: [yurik]
+    members: [mobrovak, yurik]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service graphoid *',
                  'ALL = (graphoid) NOPASSWD: ALL']
   traceback-roots:
