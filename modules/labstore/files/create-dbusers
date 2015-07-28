@@ -61,15 +61,14 @@ class User:
         return users
 
     def write_user_file(self, path, content):
+        f = os.open(path, os.O_CREAT | os.O_WRONLY)
         try:
-            f = os.open(path, os.O_CREAT | os.O_WRONLY)
             os.write(f, content.encode('utf-8'))
             # uid == gid
             os.fchown(f, self.uid, self.uid)
             os.fchmod(f, 0o400)
         finally:
-            if f:
-                os.close(f)
+            os.close(f)
 
 
 class CredentialCreator:
