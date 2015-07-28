@@ -21,6 +21,7 @@ import os
 import string
 import random
 import configparser
+import io
 
 
 class User:
@@ -58,6 +59,17 @@ class User:
 
         return users
 
+    def write_user_file(self, path, content):
+        try:
+            f = os.open(path, os.O_CREAT | os.O_WRONLY)
+            os.write(f, content.encode('utf-8'))
+            # uid == gid
+            os.fchown(f, self.uid, self.uid)
+            os.fchmod(f, 0o400)
+        finally:
+            if f:
+                os.close(f)
+
 
 class CredentialCreator:
     PASSWORD_LENGTH = 16
@@ -79,6 +91,20 @@ class CredentialCreator:
         return ''.join(sysrandom.sample(
             CredentialCreator.PASSWORD_CHARS,
             CredentialCreator.PASSWORD_LENGTH))
+
+    def write_credentials_file(self, path, user):
+        password = self._generate_pass()
+        replica_config = configparser.ConfigParser()
+        replica_config['client'] = {
+            'user': user.db_username,
+            'password': password
+        }
+        self.create_user(user, password)
+        # Because ConfigParser can only write to a file
+        # and not just return the value as a string directly
+        replica_buffer = io.StringIO()
+        replica_config.write(replica_buffer)
+        sg.write_user_file(replica_path, replica_buffer.getvalue())
 
     def check_user_exists(self, user):
         exists = True
@@ -106,6 +132,7 @@ class CredentialCreator:
                     user_pass=password
                 )
                 cur.execute(sql)
+                logging.info('Created user %s in %s', user.db_username, conn.host)
             finally:
                 cur.close()
 
@@ -150,15 +177,8 @@ if __name__ == '__main__':
             if not cgen.check_user_exists(sg):
                 # No replica.my.cnf and no user in db
                 # Generate new creds and put them in there!
-                password = cgen._generate_pass()
-                replica_config = configparser.ConfigParser()
-                replica_config['client'] = {
-                    'user': sg.db_username,
-                    'password': password
-                }
-                cgen.create_user(sg, password)
-                with open(replica_path, 'w') as f:
-                    replica_config.write(f)
+                logging.info('Creating DB accounts for %s with db username %s', sg.name, sg.db_username)
+                cgen.write_credentials_file(replica_path, sg)
                 logging.info("Created replica.my.cnf for %s, with username %s", sg.name, sg.db_username)
             else:
                 logging.info('Missing replica.my.cnf for user %s despite grants present in db', sg.name)
