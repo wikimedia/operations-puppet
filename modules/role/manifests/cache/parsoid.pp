@@ -12,9 +12,7 @@ class role::cache::parsoid {
     $parsoid_nodes = hiera('cache::parsoid::nodes')
     $site_parsoid_nodes = $parsoid_nodes[$::site]
 
-    if ( $::realm == 'production' ) {
-        include role::cache::ssl::parsoid
-    }
+    include role::cache::ssl::unified
 
     varnish::instance { 'parsoid-backend':
         name             => '',

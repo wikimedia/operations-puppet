@@ -34,11 +34,12 @@ define tlsproxy::localssl(
     $server_aliases = [],
     $default_server = false,
     $upstream_port  = '80',
-    $do_ocsp        = false
+    $do_ocsp        = false,
+    $skip_private   = false,
 ) {
     require tlsproxy::instance
 
-    sslcert::certificate { $certs: }
+    sslcert::certificate { $certs: skip_private => $skip_private }
 
     # Ensure that exactly one definition exists with default_server = true
     # if multiple defines have default_server set to true, this

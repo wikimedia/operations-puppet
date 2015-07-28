@@ -20,9 +20,7 @@ class role::cache::text (
     # 1/8 of total mem
     $memory_storage_size = ceiling(0.125 * $::memorysize_mb / 1024.0)
 
-    if $::realm == 'production' {
-        include role::cache::ssl::unified
-    }
+    include role::cache::ssl::unified
 
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
