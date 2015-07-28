@@ -1681,6 +1681,7 @@ node 'multatuli.wikimedia.org' {
         interface => 'eth0',
     }
     include standard
+    include base::firewall
 }
 
 # also see dataset1001
