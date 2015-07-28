@@ -60,7 +60,7 @@ class User:
         return users
 
     def write_user_file(self, path, content):
-        f = os.open(path, os.O_CREAT | os.O_WRONLY)
+        f = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_NOFOLLOW)
         try:
             os.write(f, content.encode('utf-8'))
             # uid == gid
