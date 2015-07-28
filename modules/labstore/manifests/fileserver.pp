@@ -39,6 +39,13 @@ class labstore::fileserver {
         require => File['/etc/replication-rsync.conf'],
     }
 
+    file { '/usr/local/sbin/cleanup-snapshots':
+        source  => 'puppet:///modules/labstore/cleanup-snapshots',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+    }
+
     labstore::fileserver::replicate { 'tools':
         src_path  => '/srv/project/tools',
         dest_path => '/srv/eqiad/tools',
@@ -55,6 +62,10 @@ class labstore::fileserver {
         src_path  => '/srv/project/maps',
         dest_path => '/srv/eqiad/maps',
         dest_host => 'labstore2001.codfw.wmnet',
+    }
+
+    labstore::fileserver::cleanup_snapshots { 'labstore':
+        keep_free => '6',
     }
 
     # There is no service {} stanza on purpose -- this service
