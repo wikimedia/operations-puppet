@@ -103,7 +103,9 @@ class puppet::self::master(
     service { 'puppetmaster':
         ensure    => 'running',
         require   => Package['puppetmaster'],
-        subscribe => Class['puppet::self::config'],
+        subscribe => [Class['puppet::self::config'],
+                      File['/etc/puppet/hieradata'],
+                      File['/etc/puppet/hiera.yaml']],
     }
 
     include puppetmaster::scripts
