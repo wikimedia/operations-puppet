@@ -3,7 +3,7 @@ dburi: 'mysql+pymysql://nodepool:nodepool@localhost/nodepool'
 
 # Directory providing additional diskimage-builder elements.
 # http://docs.openstack.org/infra/nodepool/configuration.html#elements-dir
-elements-dir: /etc/nodepool/elements
+#elements-dir: /etc/nodepool/elements
 
 # Directory where Nodepool / diskimage-builder stores created images.
 # http://docs.openstack.org/infra/nodepool/configuration.html#images-dir
@@ -47,8 +47,8 @@ targets:
 
 # Jenkins labels
 labels:
-  - name: ci-dib-jessie-wikimedia
-    image: ci-dib-jessie-wikimedia
+  - name: ci-jessie-wikimedia
+    image: ci-jessie-wikimedia
     #ready-script: ready.sh
     min-ready: 1
     providers:
@@ -69,8 +69,9 @@ providers:
     # 'eqiad.wmflabs' is magically added by wmflabs
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ci-dib-jessie-wikimedia
-        diskimage: ci-dib-jessie-wikimedia
+      - name: ci-jessie-wikimedia
+        # RelEng manually build and upload the image to Glance
+        base-image: ci-jessie-wikimedia
         meta:
             properties:
                 # Let Horizon/Wikitech display the image (T105015)
@@ -80,30 +81,3 @@ providers:
         #setup: setup.sh
         username: jenkins
         private-key: /var/lib/nodepool/.ssh/dib_jenkins_id_rsa
-
-# See doc at http://docs.openstack.org/developer/diskimage-builder/
-diskimages:
-  - name: ci-dib-jessie-wikimedia
-    elements:
-      - debian
-      - debian-systemd
-      - cloud-init-datasources
-      - vm
-      - devuser
-      - wikimedia-networking
-      - nodepool-base
-    release: jessie
-    env-vars:
-      DIB_IMAGE_CACHE: '<%= @dib_cache_dir -%>'
-      QEMU_IMG_OPTIONS: compat=0.10
-
-      # debian element
-      DIB_RELEASE: jessie
-      DIB_DISTRIBUTION_MIRROR: http://mirrors.wikimedia.org/debian/
-
-      # cloud-init-datasources
-      DIB_CLOUD_INIT_DATASOURCES: Ec2
-
-      # devuser element
-      DIB_DEV_USER_USERNAME: jenkins
-      DIB_DEV_USER_AUTHORIZED_KEYS: /var/lib/nodepool/.ssh/dib_jenkins_id_rsa.pub
