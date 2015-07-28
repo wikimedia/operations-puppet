@@ -79,12 +79,7 @@ class Context:
 
     def read(self, path):
         if self.host:
-            (out, err) = self.run('/bin/cat', path)
-            if err and err != "":
-                raise Context.ContextError(self, err)
-
-            return out.splitlines()
-
+            return self.run('/bin/cat', path).splitlines()
         else:
             with open(path, 'r') as fd:
                 return fd.readlines()
