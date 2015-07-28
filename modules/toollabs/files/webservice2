@@ -18,7 +18,7 @@ def get_queue_name(server):
     :param server: Type of server to get queue name for
     :return: String containing queue name to use for given server type
     """
-    if server in ('nodejs', 'tomcat', 'uwsgi-python'):
+    if server in ('nodejs', 'tomcat', 'uwsgi-python', 'uwsgi-plain'):
         return 'webgrid-generic'
     return 'webgrid-' + server
 
@@ -182,7 +182,7 @@ def update_service_manifest(webservice_type):
     """
     Update the current tool's service manifest to specify the currently started / stopped web service type
 
-    :param webservice_type: string representing webservice type (lighttpd, lighttpd-precise, nodejs, uwsgi-python)
+    :param webservice_type: string representing webservice type (lighttpd, lighttpd-precise, uwsgi-plain, nodejs, uwsgi-python)
                             or None to represent lack of a webservice (will result in web: being removed)
     """
     with open(os.path.expanduser('~/service.manifest'), 'wb+') as f:
@@ -203,7 +203,7 @@ def update_service_manifest(webservice_type):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('server', help='Type of server to start',
-                        choices=['lighttpd', 'tomcat', 'uwsgi-python', 'nodejs'],
+                        choices=['lighttpd', 'tomcat', 'uwsgi-python', 'nodejs', 'uwsgi-plain'],
                         nargs='?')
     parser.add_argument('action', help='Action to perform',
                         choices=['stop', 'start', 'restart', 'status'])

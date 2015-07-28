@@ -29,6 +29,12 @@ class toollabs::node::web::generic inherits toollabs::node::web {
         require => File['/usr/local/lib/python2.7/dist-packages/portgrabber.py'],
     }
 
+    file { '/usr/local/bin/tool-uwsgi-plain':
+        source  => 'puppet:///modules/toollabs/tool-uwsgi-plain',
+        mode    => '0555',
+        require => File['/usr/local/lib/python2.7/dist-packages/portgrabber.py'],
+    }
+
     # tomcat support
     package { [ 'tomcat7-user', 'xmlstarlet' ]:
         ensure => latest,
