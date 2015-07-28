@@ -1,2 +1,5 @@
 [http]
 	proxy = http://url-downloader.wikimedia.org:8080/
+[remote "origin"]
+	fetch = +refs/changes/*:refs/changes/*
+  fetch = +refs/meta/*:refs/meta/*
