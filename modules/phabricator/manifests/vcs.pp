@@ -14,6 +14,11 @@ class phabricator::vcs (
         require => Package['git-core'],
     }
 
+    # Configure all git repositories we host
+    file { '/etc/gitconfig':
+        source  => 'puppet:///modules/phabricator/system.gitconfig',
+        require => Package['git-core'],
+    }
 
     user { $settings['diffusion.ssh-user']:
         home   => "/var/lib/${settings['diffusion.ssh-user']}",
