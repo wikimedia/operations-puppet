@@ -1650,7 +1650,7 @@ node /^maps-test200[2-4]\.codfw\.wmnet/ {
     role maps::slave
 }
 
-node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
+node /^mc(10[01][0-8])\.eqiad\.wmnet/ {
 
     role memcached
     include passwords::redis
@@ -1663,6 +1663,19 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
     include redis::ganglia
 }
 
+node /^mc(10[01][9])\.eqiad\.wmnet/ {
+
+    role memcached
+    include passwords::redis
+
+    file { '/a':
+        ensure => 'directory',
+    }
+
+    include base::firewall
+    include redis
+    include redis::ganglia
+}
 
 node /^mc20[01][0-9]\.codfw\.wmnet/ {
     role memcached
