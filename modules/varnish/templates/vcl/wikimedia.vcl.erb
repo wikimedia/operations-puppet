@@ -192,8 +192,14 @@ director <%= director_name %> <%= director['type'] %> {
 sub https_recv_redirect {
 	if (req.request == "GET" || req.request == "HEAD") {
 		if (req.http.X-Forwarded-Proto != "https") {
-			// This filter should exactly match our set of SSL cert wildcards
-			if (req.http.Host ~ "(?i)^([^.]+\.)?(zero\.wikipedia|(m\.)?(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimedia|wikimediafoundation|wiktionary|mediawiki))\.org$") {
+			// This is all of our unified cert wildcard domains which are TLS-clean (cert matches all extant hostnames within)
+			// The lone exception now is wikimedia.org, in the next block
+			if (req.http.Host ~ "(?i)^(^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org$") {
+				set req.http.Location = "https://" + req.http.Host + req.url;
+				error 751 "TLS Redirect";
+			}
+			// wikimedia.org has multi-level subdomains used for HTTP for which we have no certs, so they must be avoided here:
+			else if(req.http.Host ~ "(?i)^([^.]+\.)?(m\.)?wikimedia\.org$") {
 				// For now, avoid matching commons for MW UAs. Ref: T102566
 				if (!(req.http.Host ~ "(?i)^commons\.wikimedia\.org$" && req.http.User-Agent ~ "^MediaWiki/")) {
 					set req.http.Location = "https://" + req.http.Host + req.url;
@@ -221,7 +227,8 @@ sub https_deliver_hsts {
 	// HSTS to reach a client, the client implicitly has to have already
 	// successfully reached us over HTTPS for the given domainname.
 	if (req.http.X-Forwarded-Proto == "https") {
-		if (req.http.Host ~ "(?i)(^|\.)(wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org$") {
+		// This is the same regex as the first one in https_recv_redirect (all unified except wikimedia.org)
+		if (req.http.Host ~ "(?i)(^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org$") {
 			set resp.http.Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload";
 		}
 		else {
