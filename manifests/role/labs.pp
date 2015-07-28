@@ -167,15 +167,9 @@ class role::labs::instance {
         ensure => absent,
     }
 
-    # This short script allows verifying whether an instance uses
-    # idmap and will reboot it if it does.  It's meant to be invoked
-    # by salt, not automatically.
-
+    # TODO: Remove after Puppet cycle.
     file { '/usr/local/sbin/reboot-if-idmap':
-        ensure => present,
-        owner  => root,
-        mode   => '0555',
-        source => 'puppet:///files/nfs/reboot-if-idmap',
+        ensure => absent,
     }
 
     # In production, we try to be punctilious about having Puppet manage
