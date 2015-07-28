@@ -18,7 +18,7 @@ class role::mediawiki::common {
     include ::tmpreaper
 
     $nutcracker_pools = {
-        'memcached' => {
+        'memcached'     => {
             auto_eject_hosts     => true,
             distribution         => 'ketama',
             hash                 => 'md5',
@@ -29,11 +29,23 @@ class role::mediawiki::common {
             timeout              => 250,
             servers              => hiera('mediawiki_memcached_servers'),
         },
-        'mc-unix' => {
+        'mc-unix'       => {
             auto_eject_hosts     => true,
             distribution         => 'ketama',
             hash                 => 'md5',
             listen               => '/var/run/nutcracker/nutcracker.sock 0666',
+            preconnect           => true,
+            server_connections   => 2,
+            server_failure_limit => 3,
+            timeout              => 250,
+            servers              => hiera('mediawiki_memcached_servers'),
+        },
+        'session-redis' => {
+            auto_eject_hosts     => true,
+            distribution         => 'ketama',
+            redis                => true,
+            hash                 => 'md5',
+            listen               => '/var/run/nutcracker/session_redis.sock 0666',
             preconnect           => true,
             server_connections   => 2,
             server_failure_limit => 3,
