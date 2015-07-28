@@ -103,7 +103,7 @@ class CredentialCreator:
         # and not just return the value as a string directly
         replica_buffer = io.StringIO()
         replica_config.write(replica_buffer)
-        sg.write_user_file(replica_path, replica_buffer.getvalue())
+        sg.write_user_file(path, replica_buffer.getvalue())
 
     def check_user_exists(self, user):
         exists = True
