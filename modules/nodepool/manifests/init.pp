@@ -56,6 +56,25 @@ class nodepool(
     package { 'nodepool':
         ensure => present,
     }
+    # Nodepool 0.1.0 requires novaclient>=2.21.0
+    # Jessie has 2.18.1  (T104971)
+    apt::pin { 'python-novaclient':
+        pin      => 'release a=jessie-backports',
+        priority => '1001',
+        before   => Package['nodepool'],
+    }
+    apt::pin { 'python-openstackclient':
+        pin      => 'release a=jessie-backports',
+        priority => '1001',
+        before   => Package['nodepool'],
+    }
+
+    # OpenStack CLI
+    package { 'python-openstackclient':
+        ensure  => present,
+        require => Apt::Pin['python-openstackclient'],
+    }
+
     # python-diskimage-builder 0.1.46 missing dependency:
     # https://bugs.debian.org/791655
     package { 'uuid-runtime':
@@ -138,11 +157,6 @@ class nodepool(
         group   => 'nodepool',
         mode    => '0440',
         content => shell_exports($nodepool_user_env),
-    }
-
-    # OpenStack CLI
-    package { 'python-openstackclient':
-        ensure => present,
     }
 
     file { '/var/lib/nodepool/.ssh':
