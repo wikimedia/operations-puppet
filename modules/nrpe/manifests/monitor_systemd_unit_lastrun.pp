@@ -1,8 +1,9 @@
-# === Define: nrpe::monitor_systemd_unit
+# === Define: nrpe::monitor_systemd_unit_state
 #
-# Installs a check for a systemd unit using systemctl
-define nrpe::monitor_systemd_unit(
-    $description = "${title} service",
+# Installs a check for a systemd unit state using systemctl
+define nrpe::monitor_systemd_unit_state(
+    $unit = $title,
+    $description = "${unit} service",
     $contact_group = 'admins',
     $retries = 3,
     $timeout = 10,
@@ -23,12 +24,13 @@ define nrpe::monitor_systemd_unit(
         $nagios_critical = 'false'
     }
 
-    nrpe::monitor_service { $title:
+    nrpe::monitor_service { "${unit}-state":
         ensure       => $ensure,
         description  => $description,
-        nrpe_command => "/usr/local/bin/nrpe_check_systemd_state -s '${title}' -e ${expected_state}",
+        nrpe_command => "/usr/local/bin/nrpe_check_systemd_unit_state -s '${unit}' -e ${expected_state}",
         retries      => $retries,
         timeout      => $timeout,
         critical     => $nagios_critical,
     }
 }
+

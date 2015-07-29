@@ -80,7 +80,7 @@ class confd(
     Confd::File <| |> ~> Service['confd']
 
     if $::initsystem == 'systemd' {
-        nrpe::monitor_systemd_unit { 'confd':
+        nrpe::monitor_systemd_unit_state { 'confd':
             require => Service['confd'],
         }
     } else {

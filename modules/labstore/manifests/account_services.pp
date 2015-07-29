@@ -61,7 +61,7 @@ class labstore::account_services {
     }
 
     if $is_active {
-        nrpe::monitor_systemd_unit { 'create-dbusers':
+        nrpe::monitor_systemd_unit_state { 'create-dbusers':
             description => 'Ensure mysql credential creation for tools users is running',
         }
     }

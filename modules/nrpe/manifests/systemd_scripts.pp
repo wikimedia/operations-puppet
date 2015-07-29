@@ -6,12 +6,21 @@
 class nrpe::systemd_scripts {
     require_package 'libnagios-plugin-perl'
 
-    # This script allows monitoring of systemd services
-    file { '/usr/local/bin/nrpe_check_systemd_state':
+    # These scripts allows monitoring of systemd services
+    file { '/usr/local/bin/nrpe_check_systemd_unit_state':
         ensure => present,
-        source => 'puppet:///modules/nrpe/plugins/check_systemd_state',
+        source => 'puppet:///modules/nrpe/plugins/check_systemd_unit_state',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
     }
+
+    file { '/usr/local/bin/nrpe_check_systemd_unit_lastrun':
+        ensure => present,
+        source => 'puppet:///modules/nrpe/plugins/check_systemd_unit_lastrun',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
 }
