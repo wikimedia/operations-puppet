@@ -10,8 +10,8 @@ define labstore::fileserver::cleanup_snapshots(
     $volume_group = $title,
     $keep_free,
 ) {
-    base::service_unit { "cleanup-snapshot-${volume_group}":
-        template_name   => 'cleanup-snapshot',
+    base::service_unit { "cleanup-snapshots-${volume_group}":
+        template_name   => 'cleanup-snapshots',
         ensure          => present,
         systemd         => true,
         declare_service => false,
