@@ -8,7 +8,13 @@
 # General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
 #
 # Example usage:
-#   check_systemd_state -s apache2
+#   check_systemd_unit_state -s apache2 [ -e <active|inactive|success> ]
+#
+# Checks the state of a systemd unit and raises an error unless:
+#
+#    active: the unit is currently running
+#  inactive: the unit is not currently running
+#   success: the unit is currently running OR its last result is success
 
 use strict;
 use Nagios::Plugin;
@@ -22,13 +28,13 @@ sub setup{
     );
     $np->add_arg(
                  spec    => 'expect|e=s',
-                 help    => '-e active|inactive',
+                 help    => '-e active|inactive|success',
                  default => 'active',
     );
     $np->getopts;
-    my @expected = ('active', 'inactive');
+    my @expected = ('active', 'inactive', 'success');
 
-    $np->nagios_exit(UNKNOWN, "Only 'active' and 'inactive' are valid expected states")
+    $np->nagios_exit(UNKNOWN, "Valid expected states are 'active', 'inactive' or 'success'")
             unless (grep {$_ eq $np->opts->expect} @expected);
 
     return $np;
@@ -55,12 +61,25 @@ my $plugin = setup();
 my $service = $plugin->opts->service;
 my $expect = $plugin->opts->expect;
 my %expected_substates = ( 'active' => 'running', 'inactive' => 'dead' );
-my $substate = $expected_substates{$expect};
 
 my $service_status = get_data($service);
-if ($service_status->{ActiveState} eq $expect) {
-    $plugin->nagios_exit(OK, "Service $service is in the desired state ($expect - $substate)") if ($service_status->{SubState} eq $substate);
+
+$plugin->nagios_exit(UNKNOWN, "Service $service is not loaded") unless $service_status->{LoadState} eq 'loaded';
+
+if ($service_status->{SubState} ne $expected_substates{$service_status->{ActiveState}}) {
     $plugin->nagios_exit(CRITICAL, "Service $service is $service_status->{ActiveState}, but its last recorded state is: $service_status->{SubState}");
-} else {
-    $plugin->nagios_exit(CRITICAL, "Service is in state $service_status->{ActiveState}");
 }
+
+if ($service_status->{ActiveState} eq 'active') {
+    $plugin->nagios_exit(CRITICAL, "Service $service is active (expected inactive)") if $expect eq 'inactive';
+    $plugin->nagios_exit(OK, "Service $service is active (expected success)") if $expect eq 'success';
+} else {
+    $plugin->nagios_exit(CRITICAL, "Service $service is inactive (expected active)") if $expect eq 'active';
+    if($expect eq 'success') {
+        $plugin->nagios_exit(OK, "Last run of service $service was succesful") if $service_status->{Result} eq 'success';
+        $plugin->nagios_exit(CRITICAL, "Service $service failed ($service_status->{Result})");
+    }
+}
+
+$plugin->nagios_exit(OK, "Service $service is in the desired state ($expect)");
+

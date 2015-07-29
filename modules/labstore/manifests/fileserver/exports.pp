@@ -70,7 +70,7 @@ class labstore::fileserver::exports {
     }
 
     if $is_active {
-        nrpe::monitor_systemd_unit { 'nfs-exports':
+        nrpe::monitor_systemd_unit_state { 'nfs-exports':
             description => 'Ensure NFS exports are maintained for new instances with NFS',
         }
     }
