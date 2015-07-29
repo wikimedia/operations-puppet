@@ -12,6 +12,9 @@
 #   /blob/b2cd3ad/notes/recommendation.md> for a discussion of this
 #   option.
 #
+# [*verbosity*]
+#   Set logging level (default: 5, min: 0, max: 11).
+#
 # [*pools*]
 #   A hash defining a nutcracker server pool.
 #   See <https://github.com/twitter/twemproxy#configuration>.
@@ -32,11 +35,13 @@
 #
 class nutcracker(
     $pools,
-    $mbuf_size = undef,
     $ensure    = present,
+    $mbuf_size = undef,
+    $verbosity = 5,
 ) {
     validate_hash($pools)
     validate_re($ensure, '^(present|absent)$')
+    validate_re($verbosity, '^(\d|10|11)$')
 
     package { 'nutcracker':
         ensure => $ensure,
