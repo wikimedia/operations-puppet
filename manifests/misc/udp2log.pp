@@ -188,6 +188,12 @@ define misc::udp2log::instance(
         ],
     }
 
+    ferm::service { 'udp2log_instance':
+        proto  => 'udp',
+        port   => $port,
+        srange => '$INTERNAL',
+    }
+
     # only set up instance monitoring if the monitoring scripts are installed
     if $::misc::udp2log::monitor {
         # include monitoring for this udp2log instance.
