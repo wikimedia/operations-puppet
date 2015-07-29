@@ -21,8 +21,8 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
 
     $nova_dnsmasq_aliases = {
         # eqiad
-        'deployment-cache-text02'   => {public_ip  => '208.80.155.135',
-                                        private_ip => '10.68.16.16' },
+        'deployment-cache-text04'   => {public_ip  => '208.80.155.135',
+                                        private_ip => '10.68.18.103' },
         'deployment-cache-upload02' => {public_ip  => '208.80.155.136',
                                         private_ip => '10.68.17.51' },
         'deployment-cache-bits01'   => {public_ip  => '208.80.155.137',
