@@ -479,7 +479,7 @@ node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
-    role cache::text
+    role cache::text, ipsec
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
