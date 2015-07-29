@@ -1,21 +1,11 @@
 lvs_service_ips:
-  text: &text
-    codfw:
-      textlb: 208.80.153.224
-      textlb6: 2620:0:860:ed1a::1
-    eqiad:
-      textsvc: 10.2.2.25
-      textlb: 208.80.154.224
-      textlb6: 2620:0:861:ed1a::1
-    esams:
-      textsvc: 10.2.3.25
-      textlb: 91.198.174.192
-      textlb6: 2620:0:862:ed1a::1
-    ulsfo:
-      textsvc: 10.2.4.25
-      textlb: 198.35.26.96
-      textlb6: 2620:0:863:ed1a::1
-  bits: &bits
+  apaches: &id001
+    codfw: 10.2.1.1
+    eqiad: 10.2.2.1
+  api: &id002
+    codfw: 10.2.1.22
+    eqiad: 10.2.2.22
+  bits: &id003
     codfw:
       bitslb: 208.80.153.234
       bitslb6: 2620:0:860:ed1a::1:a
@@ -31,32 +21,31 @@ lvs_service_ips:
       bitslb: 198.35.26.106
       bitslb6: 2620:0:863:ed1a::1:a
       bitssvc: 10.2.4.23
-  upload: &upload
+  citoid: &id004
+    eqiad: 10.2.2.19
+  cxserver: &id005
+    eqiad: 10.2.2.18
+  dns_rec: &id006
     codfw:
-      uploadlb: 208.80.153.240
-      uploadlb6: 2620:0:860:ed1a::2:b
+      dns_rec: 208.80.153.254
+      dns_rec6: 2620:0:860:ed1a::3:fe
     eqiad:
-      uploadlb: 208.80.154.240
-      uploadlb6: 2620:0:861:ed1a::2:b
-      uploadsvc: 10.2.2.24
+      dns_rec: 208.80.154.239
+      dns_rec6: 2620:0:861:ed1a::3:fe
     esams:
-      uploadlb: 91.198.174.208
-      uploadlb6: 2620:0:862:ed1a::2:b
-      uploadsvc: 10.2.3.24
-    ulsfo:
-      uploadlb: 198.35.26.112
-      uploadlb6: 2620:0:863:ed1a::2:b
-      uploadsvc: 10.2.4.24
-  apaches: &apaches
-    eqiad: 10.2.2.1
-    codfw: 10.2.1.1
-  rendering: &rendering
-    eqiad: 10.2.2.21
-    codfw: 10.2.1.21
-  api: &api
-    eqiad: 10.2.2.22
-    codfw: 10.2.1.22
-  mobile: &mobile
+      dns_rec: 91.198.174.216
+      dns_rec6: 2620:0:862:ed1a::3:fe
+  graphoid: &id007
+    eqiad: 10.2.2.15
+  kartotherian: &id008
+    codfw: 10.2.1.13
+  mathoid: &id009
+    eqiad: 10.2.2.20
+  misc_web: &id010
+    eqiad:
+      misc_weblb: 208.80.154.241
+      misc_weblb6: 2620:0:861:ed1a::11
+  mobile: &id011
     codfw:
       mobilelb: 208.80.153.236
       mobilelb6: 2620:0:860:ed1a::1:c
@@ -72,125 +61,135 @@ lvs_service_ips:
       mobilelb: 198.35.26.108
       mobilelb6: 2620:0:863:ed1a::1:c
       mobilesvc: 10.2.4.26
-  swift: &swift
-    eqiad: 10.2.2.27
-    codfw: 10.2.1.27
-  dns_rec: &dns_rec
-    eqiad:
-      dns_rec: 208.80.154.239
-      dns_rec6: 2620:0:861:ed1a::3:fe
-    codfw:
-      dns_rec: 208.80.153.254
-      dns_rec6: 2620:0:860:ed1a::3:fe
-    esams:
-      dns_rec: 91.198.174.216
-      dns_rec6: 2620:0:862:ed1a::3:fe
-  osm: &osm
+  mobileapps: &id012
+    eqiad: 10.2.2.32
+  ocg: &id013
+    eqiad: 10.2.2.31
+  osm: &id014
     eqiad: 208.80.154.244
-  misc_web: &misc_web
-    eqiad:
-      misc_weblb: 208.80.154.241
-      misc_weblb6: 2620:0:861:ed1a::11
-  parsoid: &parsoid
+  parsoid: &id015
     eqiad: 10.2.2.28
-  parsoidcache: &parsoidcache
+  parsoidcache: &id016
     eqiad:
       parsoidcachelb: 208.80.154.248
       parsoidcachelb6: 2620:0:861:ed1a::3:14
       parsoidsvc: 10.2.2.29
-  search: &search
+  rendering: &id017
+    codfw: 10.2.1.21
+    eqiad: 10.2.2.21
+  restbase: &id018
+    eqiad: 10.2.2.17
+  search: &id019
     eqiad: 10.2.2.30
-  stream: &stream
+  stream: &id020
     eqiad:
       streamlb: 208.80.154.249
       streamlb6: 2620:0:861:ed1a::3:15
-  ocg: &ocg
-    eqiad: 10.2.2.31
-  mathoid: &mathoid
-    eqiad: 10.2.2.20
-  citoid: &citoid
-    eqiad: 10.2.2.19
-  cxserver: &cxserver
-    eqiad: 10.2.2.18
-  graphoid: &graphoid
-    eqiad: 10.2.2.15
-  restbase: &restbase
-    eqiad: 10.2.2.17
-  zotero: &zotero
+  swift: &id021
+    codfw: 10.2.1.27
+    eqiad: 10.2.2.27
+  text: &id022
+    codfw:
+      textlb: 208.80.153.224
+      textlb6: 2620:0:860:ed1a::1
+    eqiad:
+      textlb: 208.80.154.224
+      textlb6: 2620:0:861:ed1a::1
+      textsvc: 10.2.2.25
+    esams:
+      textlb: 91.198.174.192
+      textlb6: 2620:0:862:ed1a::1
+      textsvc: 10.2.3.25
+    ulsfo:
+      textlb: 198.35.26.96
+      textlb6: 2620:0:863:ed1a::1
+      textsvc: 10.2.4.25
+  upload: &id023
+    codfw:
+      uploadlb: 208.80.153.240
+      uploadlb6: 2620:0:860:ed1a::2:b
+    eqiad:
+      uploadlb: 208.80.154.240
+      uploadlb6: 2620:0:861:ed1a::2:b
+      uploadsvc: 10.2.2.24
+    esams:
+      uploadlb: 91.198.174.208
+      uploadlb6: 2620:0:862:ed1a::2:b
+      uploadsvc: 10.2.3.24
+    ulsfo:
+      uploadlb: 198.35.26.112
+      uploadlb6: 2620:0:863:ed1a::2:b
+      uploadsvc: 10.2.4.24
+  zotero: &id024
     eqiad: 10.2.2.16
-  kartotherian: &kartotherian
-    codfw: 10.2.1.13
 lvs_services:
-  text:
-    description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
-    class: high-traffic1
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *text
+  apaches:
     bgp: 'yes'
-    depool-threshold: ".5"
+    class: low-traffic
     conftool:
-      cluster: cache_text
-      service: varnish-fe
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
+      cluster: appserver
+      service: apache2
+    depool-threshold: '.9'
+    description: Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
     icinga:
-      uri: en.wikipedia.org!/wiki/Main_Page
+      check_command: check_http_lvs!en.wikipedia.org!/wiki/Main_Page
       sites:
         eqiad:
-          hostname: text-lb.eqiad.wikimedia.org
-        esams:
-          hostname: text-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: text-lb.ulsfo.wikimedia.org
-  text-https:
-    description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (nginx)"
-    class: high-traffic1
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *text
-    port: 443
-    scheduler: sh
-    bgp: 'no'
-    depool-threshold: ".5"
-    conftool:
-      cluster: cache_text
-      service: nginx
+          hostname: appservers.svc.eqiad.wmnet
+    ip: *id001
     monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
       ProxyFetch:
         url:
-        - https://en.wikipedia.org/wiki/Main_Page
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-  bits:
-    description: "Site assets (CSS/JS) LVS service, bits.%{::site}.wikimedia.org"
-    class: high-traffic1
+        - http://en.wikipedia.org/wiki/Main_Page
+      RunCommand:
+        arguments: '[ ''/etc/pybal/runcommand/check-apache'', server.host ]'
+        command: /bin/sh
+        interval: 60
+        timeout: 10
     sites:
-    - codfw
     - eqiad
-    - esams
-    - ulsfo
-    ip: *bits
+    - codfw
+  api:
     bgp: 'yes'
-    depool-threshold: ".5"
+    class: low-traffic
+    conftool:
+      cluster: api_appserver
+      service: apache2
+    depool-threshold: '.6'
+    description: MediaWiki API cluster, api.svc.%{::site}.wmnet
+    icinga:
+      check_command: check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
+      sites:
+        eqiad:
+          hostname: api.svc.eqiad.wmnet
+    ip: *id002
     monitors:
       IdleConnection:
-        timeout-clean-reconnect: 3
         max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://en.wikipedia.org/w/api.php
+      RunCommand:
+        arguments: '[ ''/etc/pybal/runcommand/check-apache'', server.host ]'
+        command: /bin/sh
+        interval: 60
+        timeout: 10
+    sites:
+    - eqiad
+    - codfw
+  bits:
+    bgp: 'yes'
+    class: high-traffic1
     conftool:
       cluster: cache_bits
       service: varnish-fe
+    depool-threshold: '.5'
+    description: Site assets (CSS/JS) LVS service, bits.%{::site}.wikimedia.org
     icinga:
-      uri: bits.wikimedia.org!/static-current/resources/assets/poweredby_mediawiki_88x31.png
       sites:
         eqiad:
           hostname: bits-lb.eqiad.wikimedia.org
@@ -198,99 +197,248 @@ lvs_services:
           hostname: bits-lb.esams.wikimedia.org
         ulsfo:
           hostname: bits-lb.ulsfo.wikimedia.org
-  bits-https:
-    description: "Site assets (CSS/JS) LVS service, bits.%{::site}.wikimedia.org"
-    class: high-traffic1
+      uri: bits.wikimedia.org!/static-current/resources/assets/poweredby_mediawiki_88x31.png
+    ip: *id003
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
     sites:
     - codfw
     - eqiad
     - esams
     - ulsfo
-    ip: *bits
-    port: 443
-    scheduler: sh
+  bits-https:
     bgp: 'no'
-    depool-threshold: ".5"
-    monitors:
-      ProxyFetch:
-        url:
-        - https://bits.wikimedia.org/pybal-test-file
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
+    class: high-traffic1
     conftool:
       cluster: cache_bits
       service: nginx
-  upload:
-    description: "Images and other media, upload.%{::site}.wikimedia.org"
-    class: high-traffic2
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *upload
-    bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
+    description: Site assets (CSS/JS) LVS service, bits.%{::site}.wikimedia.org
+    ip: *id003
     monitors:
       IdleConnection:
-        timeout-clean-reconnect: 3
         max-delay: 300
-    conftool:
-      cluster: cache_upload
-      service: varnish-fe
-    icinga:
-      uri: upload.wikimedia.org!/monitoring/backend
-      sites:
-        eqiad:
-          hostname: upload-lb.eqiad.wikimedia.org
-        esams:
-          hostname: upload-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: upload-lb.ulsfo.wikimedia.org
-  upload-https:
-    description: "Images and other media, upload.%{::site}.wikimedia.org"
-    class: high-traffic2
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *upload
-    port: 443
-    scheduler: sh
-    bgp: 'no'
-    depool-threshold: ".5"
-    monitors:
+        timeout-clean-reconnect: 3
       ProxyFetch:
         url:
-        - https://upload.wikimedia.org/monitoring/backend
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_upload
-      service: nginx
-  mobile:
-    description: MediaWiki based mobile site
-    class: high-traffic1
+        - https://bits.wikimedia.org/pybal-test-file
+    port: 443
+    scheduler: sh
     sites:
     - codfw
     - eqiad
     - esams
     - ulsfo
-    ip: *mobile
+  citoid:
     bgp: 'yes'
-    depool-threshold: ".6"
+    class: low-traffic
+    conftool:
+      cluster: sca
+      service: citoid
+    depool-threshold: '.5'
+    description: Citation lookup service, citoid.svc.eqiad.wmnet
+    icinga:
+      check_command: check_http_lvs_on_port!citoid.svc.eqiad.wmnet!1970!/
+      contact_group: admins,parsoid
+      sites:
+        eqiad:
+          hostname: citoid.svc.eqiad.wmnet
+    ip: *id004
     monitors:
       IdleConnection:
-        timeout-clean-reconnect: 3
         max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://citoid.svc.eqiad.wmnet
+    port: 1970
+    sites:
+    - eqiad
+  cxserver:
+    bgp: 'yes'
+    class: low-traffic
+    conftool:
+      cluster: sca
+      service: cxserver
+    depool-threshold: '.5'
+    description: Content Translation service, cxserver.svc.eqiad.wmnet
+    icinga:
+      check_command: check_http_lvs_on_port!citoid.svc.eqiad.wmnet!8080!/
+      sites:
+        eqiad:
+          hostname: cxserver.svc.eqiad.wmnet
+    ip: *id005
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://cxserver.svc.eqiad.wmnet
+    port: 8080
+    sites:
+    - eqiad
+  dns_rec:
+    bgp: 'no'
+    class: high-traffic2
+    conftool:
+      cluster: dns
+      service: pdns_recursor
+    depool-threshold: '.5'
+    description: Recursive DNS - TCP
+    ip: *id006
+    monitors:
+      DNSQuery:
+        fail-on-nxdomain: 'no'
+        hostnames:
+        - en.wikipedia.org
+        - www.google.com
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+    port: 53
+    protocol: tcp
+    sites:
+    - eqiad
+    - codfw
+    - esams
+  dns_rec_udp:
+    bgp: 'yes'
+    class: high-traffic2
+    conftool:
+      cluster: dns
+      service: pdns_recursor
+    depool-threshold: '.5'
+    description: Recursive DNS - UDP
+    ip: *id006
+    monitors:
+      DNSQuery:
+        fail-on-nxdomain: 'no'
+        hostnames:
+        - en.wikipedia.org
+        - www.google.com
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+    port: 53
+    protocol: udp
+    sites:
+    - eqiad
+    - codfw
+    - esams
+  graphoid:
+    bgp: 'yes'
+    class: low-traffic
+    conftool:
+      cluster: sca
+      service: graphoid
+    depool-threshold: '.5'
+    description: Graph-rendering service, graphoid.svc.eqiad.wmnet
+    icinga:
+      check_command: check_http_lvs_on_port!graphoid.svc.eqiad.wmnet!19000!/_info
+      contact_group: admins,parsoid
+      sites:
+        eqiad:
+          hostname: graphoid.svc.eqiad.wmnet
+    ip: *id007
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://graphoid.svc.eqiad.wmnet/_info
+    port: 19000
+    sites:
+    - eqiad
+  kartotherian:
+    bgp: 'yes'
+    class: low-traffic
+    conftool:
+      cluster: maps
+      service: kartotherian
+    depool-threshold: '.5'
+    description: Kartotherian, kartotherian.svc.codfw.wmnet
+    ip: *id008
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+    port: 4000
+    sites:
+    - codfw
+  mathoid:
+    bgp: 'yes'
+    class: low-traffic
+    conftool:
+      cluster: sca
+      service: mathoid
+    depool-threshold: '.5'
+    description: Mathematical rendering service, mathoid.svc.eqiad.wmnet
+    icinga:
+      check_command: check_http_lvs_on_port!mathoid.svc.eqiad.wmnet!10042!/_info
+      sites:
+        eqiad:
+          hostname: mathoid.svc.eqiad.wmnet
+    ip: *id009
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://mathoid.svc.eqiad.wmnet/_info
+    port: 10042
+    sites:
+    - eqiad
+  misc_web:
+    bgp: 'yes'
+    class: high-traffic2
+    conftool:
+      cluster: cache_misc
+      service: varnish-fe
+    depool-threshold: '.5'
+    description: Miscellaneous web sites Varnish cluster
+    icinga:
+      sites:
+        eqiad:
+          hostname: misc-web-lb.eqiad.wikimedia.org
+      uri: varnishcheck!/
+    ip: *id010
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+    sites:
+    - eqiad
+  misc_web-https:
+    bgp: 'no'
+    class: high-traffic2
+    conftool:
+      cluster: cache_misc
+      service: nginx
+    depool-threshold: '.5'
+    description: Miscellaneous web sites Varnish cluster (HTTPS)
+    ip: *id010
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+    port: 443
+    scheduler: sh
+    sites:
+    - eqiad
+  mobile:
+    bgp: 'yes'
+    class: high-traffic1
     conftool:
       cluster: cache_mobile
       service: varnish-fe
+    depool-threshold: '.6'
+    description: MediaWiki based mobile site
     icinga:
-      uri: en.m.wikipedia.org!/wiki/Main_Page
       sites:
         eqiad:
           hostname: mobile-lb.eqiad.wikimedia.org
@@ -298,548 +446,423 @@ lvs_services:
           hostname: mobile-lb.esams.wikimedia.org
         ulsfo:
           hostname: mobile-lb.ulsfo.wikimedia.org
-  mobile-https:
-    description: MediaWiki based mobile site
-    class: high-traffic1
+      uri: en.m.wikipedia.org!/wiki/Main_Page
+    ip: *id011
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
     sites:
     - codfw
     - eqiad
     - esams
     - ulsfo
-    ip: *mobile
-    port: 443
-    scheduler: sh
+  mobile-https:
     bgp: 'no'
-    depool-threshold: ".6"
-    monitors:
-      ProxyFetch:
-        url:
-        - https://en.m.wikipedia.org/wiki/Angelsberg
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
+    class: high-traffic1
     conftool:
       cluster: cache_mobile
       service: nginx
-  dns_rec_udp:
-    description: Recursive DNS - UDP
-    class: high-traffic2
-    sites:
-    - eqiad
-    - codfw
-    - esams
-    protocol: udp
-    ip: *dns_rec
-    port: 53
-    bgp: 'yes'
-    depool-threshold: ".5"
-    monitors:
-      DNSQuery:
-        hostnames:
-        - en.wikipedia.org
-        - www.google.com
-        fail-on-nxdomain: 'no'
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: dns
-      service: pdns_recursor
-  dns_rec:
-    description: Recursive DNS - TCP
-    class: high-traffic2
-    sites:
-    - eqiad
-    - codfw
-    - esams
-    protocol: tcp
-    ip: *dns_rec
-    port: 53
-    bgp: 'no'
-    depool-threshold: ".5"
-    monitors:
-      DNSQuery:
-        hostnames:
-        - en.wikipedia.org
-        - www.google.com
-        fail-on-nxdomain: 'no'
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: dns
-      service: pdns_recursor
-  osm:
-    description: OpenStreetMap tiles
-    class: high-traffic2
-    sites: []
-    ip: *osm
-    bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.6'
+    description: MediaWiki based mobile site
+    ip: *id011
     monitors:
       IdleConnection:
-        timeout-clean-reconnect: 3
         max-delay: 300
-    conftool: {}
-  misc_web:
-    description: Miscellaneous web sites Varnish cluster
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *misc_web
-    bgp: 'yes'
-    depool-threshold: ".5"
-    monitors:
-      IdleConnection:
         timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_misc
-      service: varnish-fe
-    icinga:
-      uri: varnishcheck!/
-      sites:
-        eqiad:
-          hostname: misc-web-lb.eqiad.wikimedia.org
-  misc_web-https:
-    description: Miscellaneous web sites Varnish cluster (HTTPS)
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *misc_web
+      ProxyFetch:
+        url:
+        - https://en.m.wikipedia.org/wiki/Angelsberg
     port: 443
     scheduler: sh
-    bgp: 'no'
-    depool-threshold: ".5"
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_misc
-      service: nginx
-  apaches:
-    description: "Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet"
-    class: low-traffic
-    sites:
-    - eqiad
-    - codfw
-    ip: *apaches
-    bgp: 'yes'
-    depool-threshold: ".9"
-    monitors:
-      ProxyFetch:
-        url:
-        - http://en.wikipedia.org/wiki/Main_Page
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-      RunCommand:
-        command: /bin/sh
-        arguments: "[ '/etc/pybal/runcommand/check-apache', server.host ]"
-        interval: 60
-        timeout: 10
-    conftool:
-      cluster: appserver
-      service: apache2
-    icinga:
-      check_command: check_http_lvs!en.wikipedia.org!/wiki/Main_Page
-      sites:
-        eqiad:
-          hostname: appservers.svc.eqiad.wmnet
-  rendering:
-    description: "MediaWiki thumbnail rendering cluster, rendering.svc.%{::site}.wmnet"
-    class: low-traffic
-    sites:
-    - eqiad
-    - codfw
-    ip: *rendering
-    bgp: 'yes'
-    depool-threshold: ".74"
-    monitors:
-      ProxyFetch:
-        url:
-        - http://en.wikipedia.org/favicon.ico
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-      RunCommand:
-        command: /bin/sh
-        arguments: "[ '/etc/pybal/runcommand/check-apache', server.host ]"
-        interval: 60
-        timeout: 10
-    conftool:
-      cluster: imagescaler
-      service: apache2
-    icinga:
-      check_command: check_http_lvs!en.wikipedia.org!/wiki/Main_Page
-      sites:
-        eqiad:
-          hostname: rendering.svc.eqiad.wmnet
-  api:
-    description: "MediaWiki API cluster, api.svc.%{::site}.wmnet"
-    class: low-traffic
-    sites:
-    - eqiad
-    - codfw
-    ip: *api
-    bgp: 'yes'
-    depool-threshold: ".6"
-    monitors:
-      ProxyFetch:
-        url:
-        - http://en.wikipedia.org/w/api.php
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-      RunCommand:
-        command: /bin/sh
-        arguments: "[ '/etc/pybal/runcommand/check-apache', server.host ]"
-        interval: 60
-        timeout: 10
-    conftool:
-      cluster: api_appserver
-      service: apache2
-    icinga:
-      check_command: check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
-      sites:
-        eqiad:
-          hostname: api.svc.eqiad.wmnet
-  swift:
-    description: Swift/Ceph media storage
-    class: low-traffic
     sites:
     - codfw
     - eqiad
-    ip: *swift
+    - esams
+    - ulsfo
+  mobileapps:
     bgp: 'yes'
-    depool-threshold: ".5"
-    monitors:
-      ProxyFetch:
-        url:
-        - http://localhost/monitoring/backend
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
+    class: low-traffic
     conftool:
-      cluster: swift
-      service: swift-fe
+      cluster: sca
+      service: mobileapps
+    depool-threshold: '.5'
+    description: Mashup service used by the mobile apps
     icinga:
-      check_command: check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend
+      check_command: check_http_zotero_lvs_on_port!zotero.svc.eqiad.wmnet!1969!/export?format=wikipedia
       sites:
         eqiad:
-          hostname: ms-fe.eqiad.wmnet
-  parsoid:
-    description: Parsoid wikitext parser for VisualEditor
-    class: low-traffic
+          hostname: mobileapps.svc.eqiad.wmnet
+    ip: *id012
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+    port: '7000'
     sites:
     - eqiad
-    ip: *parsoid
+  ocg:
+    bgp: 'yes'
+    class: high-traffic2
+    conftool:
+      cluster: pdf
+      service: ocg
+    depool-threshold: '.5'
+    description: Offline Content Generator (e.g. PDF), ocg.svc.eqiad.wmnet
+    icinga:
+      check_command: check_http_lvs_on_port!ocg.svc.eqiad.wmnet!8000!/?command=health
+      sites:
+        eqiad:
+          hostname: ocg.svc.eqiad.wmnet
+    ip: *id013
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://ocg.svc.eqiad.wmnet/?command=health
     port: 8000
+    sites:
+    - eqiad
+  osm:
     bgp: 'yes'
-    depool-threshold: ".5"
+    class: high-traffic2
+    conftool: {}
+    depool-threshold: '.5'
+    description: OpenStreetMap tiles
+    ip: *id014
     monitors:
-      ProxyFetch:
-        url:
-        - http://localhost:8000/
       IdleConnection:
-        timeout-clean-reconnect: 3
         max-delay: 300
+        timeout-clean-reconnect: 3
+    sites: []
+  parsoid:
+    bgp: 'yes'
+    class: low-traffic
     conftool:
       cluster: parsoid
       service: parsoid
+    depool-threshold: '.5'
+    description: Parsoid wikitext parser for VisualEditor
     icinga:
       check_command: check_http_on_port!8000
       contact_group: admins,parsoid
       sites:
         eqiad:
           hostname: parsoid.svc.eqiad.wmnet
-  parsoidcache:
-    description: Varnish caches in front of Parsoid
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *parsoidcache
-    port: 80
-    bgp: 'yes'
-    depool-threshold: ".5"
+    ip: *id015
     monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
       ProxyFetch:
         url:
-        - http://localhost
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
+        - http://localhost:8000/
+    port: 8000
+    sites:
+    - eqiad
+  parsoidcache:
+    bgp: 'yes'
+    class: high-traffic2
     conftool:
       cluster: cache_parsoid
       service: varnish-fe
+    depool-threshold: '.5'
+    description: Varnish caches in front of Parsoid
     icinga:
       check_command: check_http_on_port!80
       contact_group: admins,parsoid
       sites:
         eqiad:
           hostname: parsoid-lb.eqiad.wikimedia.org
-  parsoidcache-https:
-    description: nginx HTTPS terminators for Parsoid
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *parsoidcache
-    port: 443
-    scheduler: sh
-    bgp: 'no'
-    depool-threshold: ".5"
+    ip: *id016
     monitors:
       IdleConnection:
-        timeout-clean-reconnect: 3
         max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://localhost
+    port: 80
+    sites:
+    - eqiad
+  parsoidcache-https:
+    bgp: 'no'
+    class: high-traffic2
     conftool:
       cluster: cache_parsoid
       service: nginx
-  search:
-    description: Elasticsearch search for MediaWiki
-    class: low-traffic
-    sites:
-    - eqiad
-    ip: *search
-    port: 9200
-    bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
+    description: nginx HTTPS terminators for Parsoid
+    ip: *id016
     monitors:
-      ProxyFetch:
-        url:
-        - http://localhost:9200/
       IdleConnection:
-        timeout-clean-reconnect: 3
         max-delay: 300
-    conftool:
-      cluster: elasticsearch
-      service: elasticsearch
-    icinga:
-      check_command: check_http_on_port!9200
-      sites:
-        eqiad:
-          hostname: search.svc.eqiad.wmnet
-  stream:
-    description: Websocket/streaming services
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *stream
-    port: 80
-    bgp: 'yes'
-    depool-threshold: ".5"
-    scheduler: sh
-    monitors:
-      ProxyFetch:
-        url:
-        - http://localhost/rcstream_status
-      IdleConnection:
         timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: rcstream
-      service: nginx
-  stream-https:
-    description: Websocket/streaming services
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *stream
     port: 443
-    bgp: 'no'
-    depool-threshold: ".5"
     scheduler: sh
-    monitors:
-      ProxyFetch:
-        url:
-        - http://localhost/rcstream_status
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: rcstream
-      service: nginx_ssl
-  ocg:
-    description: Offline Content Generator (e.g. PDF), ocg.svc.eqiad.wmnet
-    class: high-traffic2
     sites:
     - eqiad
-    ip: *ocg
-    port: 8000
+  rendering:
     bgp: 'yes'
-    depool-threshold: ".5"
-    monitors:
-      ProxyFetch:
-        url:
-        - http://ocg.svc.eqiad.wmnet/?command=health
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: pdf
-      service: ocg
-    icinga:
-      check_command: check_http_lvs_on_port!ocg.svc.eqiad.wmnet!8000!/?command=health
-      sites:
-        eqiad:
-          hostname: ocg.svc.eqiad.wmnet
-  mathoid:
-    description: Mathematical rendering service, mathoid.svc.eqiad.wmnet
     class: low-traffic
-    sites:
-    - eqiad
-    ip: *mathoid
-    port: 10042
-    bgp: 'yes'
-    depool-threshold: ".5"
-    monitors:
-      ProxyFetch:
-        url:
-        - http://mathoid.svc.eqiad.wmnet/_info
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
     conftool:
-      cluster: sca
-      service: mathoid
+      cluster: imagescaler
+      service: apache2
+    depool-threshold: '.74'
+    description: MediaWiki thumbnail rendering cluster, rendering.svc.%{::site}.wmnet
     icinga:
-      check_command: check_http_lvs_on_port!mathoid.svc.eqiad.wmnet!10042!/_info
+      check_command: check_http_lvs!en.wikipedia.org!/wiki/Main_Page
       sites:
         eqiad:
-          hostname: mathoid.svc.eqiad.wmnet
-  citoid:
-    description: Citation lookup service, citoid.svc.eqiad.wmnet
-    class: low-traffic
-    sites:
-    - eqiad
-    ip: *citoid
-    port: 1970
-    bgp: 'yes'
-    depool-threshold: ".5"
+          hostname: rendering.svc.eqiad.wmnet
+    ip: *id017
     monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
       ProxyFetch:
         url:
-        - http://citoid.svc.eqiad.wmnet
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: sca
-      service: citoid
-    icinga:
-      check_command: check_http_lvs_on_port!citoid.svc.eqiad.wmnet!1970!/
-      contact_group: admins,parsoid
-      sites:
-        eqiad:
-          hostname: citoid.svc.eqiad.wmnet
-  cxserver:
-    description: Content Translation service, cxserver.svc.eqiad.wmnet
-    class: low-traffic
+        - http://en.wikipedia.org/favicon.ico
+      RunCommand:
+        arguments: '[ ''/etc/pybal/runcommand/check-apache'', server.host ]'
+        command: /bin/sh
+        interval: 60
+        timeout: 10
     sites:
     - eqiad
-    ip: *cxserver
-    port: 8080
-    bgp: 'yes'
-    depool-threshold: ".5"
-    monitors:
-      ProxyFetch:
-        url:
-        - http://cxserver.svc.eqiad.wmnet
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: sca
-      service: cxserver
-    icinga:
-      check_command: check_http_lvs_on_port!citoid.svc.eqiad.wmnet!8080!/
-      sites:
-        eqiad:
-          hostname: cxserver.svc.eqiad.wmnet
-  graphoid:
-    description: Graph-rendering service, graphoid.svc.eqiad.wmnet
-    class: low-traffic
-    sites:
-    - eqiad
-    ip: *graphoid
-    port: 19000
-    bgp: 'yes'
-    depool-threshold: ".5"
-    monitors:
-      ProxyFetch:
-        url:
-        - http://graphoid.svc.eqiad.wmnet/_info
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: sca
-      service: graphoid
-    icinga:
-      check_command: check_http_lvs_on_port!graphoid.svc.eqiad.wmnet!19000!/_info
-      contact_group: admins,parsoid
-      sites:
-        eqiad:
-          hostname: graphoid.svc.eqiad.wmnet
+    - codfw
   restbase:
-    description: RESTBase, restbase.svc.eqiad.wmnet
-    class: low-traffic
-    sites:
-    - eqiad
-    ip: *restbase
-    port: 7231
     bgp: 'yes'
-    depool-threshold: ".5"
-    monitors:
-      ProxyFetch:
-        url:
-        - http://restbase.svc.eqiad.wmnet
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
+    class: low-traffic
     conftool:
       cluster: restbase
       service: restbase
+    depool-threshold: '.5'
+    description: RESTBase, restbase.svc.eqiad.wmnet
     icinga:
       check_command: check_http_lvs_on_port!restbase.svc.eqiad.wmnet!7231!/
       sites:
         eqiad:
           hostname: restbase.svc.eqiad.wmnet
-  zotero:
-    description: Zotero, zotero.svc.eqiad.wmnet
-    class: low-traffic
-    sites:
-    - eqiad
-    ip: *zotero
-    port: 1969
-    bgp: 'yes'
-    depool-threshold: ".5"
+    ip: *id018
     monitors:
       IdleConnection:
-        timeout-clean-reconnect: 3
         max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://restbase.svc.eqiad.wmnet
+    port: 7231
+    sites:
+    - eqiad
+  search:
+    bgp: 'yes'
+    class: low-traffic
+    conftool:
+      cluster: elasticsearch
+      service: elasticsearch
+    depool-threshold: '.5'
+    description: Elasticsearch search for MediaWiki
+    icinga:
+      check_command: check_http_on_port!9200
+      sites:
+        eqiad:
+          hostname: search.svc.eqiad.wmnet
+    ip: *id019
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://localhost:9200/
+    port: 9200
+    sites:
+    - eqiad
+  stream:
+    bgp: 'yes'
+    class: high-traffic2
+    conftool:
+      cluster: rcstream
+      service: nginx
+    depool-threshold: '.5'
+    description: Websocket/streaming services
+    ip: *id020
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://localhost/rcstream_status
+    port: 80
+    scheduler: sh
+    sites:
+    - eqiad
+  stream-https:
+    bgp: 'no'
+    class: high-traffic2
+    conftool:
+      cluster: rcstream
+      service: nginx_ssl
+    depool-threshold: '.5'
+    description: Websocket/streaming services
+    ip: *id020
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://localhost/rcstream_status
+    port: 443
+    scheduler: sh
+    sites:
+    - eqiad
+  swift:
+    bgp: 'yes'
+    class: low-traffic
+    conftool:
+      cluster: swift
+      service: swift-fe
+    depool-threshold: '.5'
+    description: Swift/Ceph media storage
+    icinga:
+      check_command: check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend
+      sites:
+        eqiad:
+          hostname: ms-fe.eqiad.wmnet
+    ip: *id021
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - http://localhost/monitoring/backend
+    sites:
+    - codfw
+    - eqiad
+  text:
+    bgp: 'yes'
+    class: high-traffic1
+    conftool:
+      cluster: cache_text
+      service: varnish-fe
+    depool-threshold: '.5'
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)
+    icinga:
+      sites:
+        eqiad:
+          hostname: text-lb.eqiad.wikimedia.org
+        esams:
+          hostname: text-lb.esams.wikimedia.org
+        ulsfo:
+          hostname: text-lb.ulsfo.wikimedia.org
+      uri: en.wikipedia.org!/wiki/Main_Page
+    ip: *id022
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+    sites:
+    - codfw
+    - eqiad
+    - esams
+    - ulsfo
+  text-https:
+    bgp: 'no'
+    class: high-traffic1
+    conftool:
+      cluster: cache_text
+      service: nginx
+    depool-threshold: '.5'
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (nginx)
+    ip: *id022
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - https://en.wikipedia.org/wiki/Main_Page
+    port: 443
+    scheduler: sh
+    sites:
+    - codfw
+    - eqiad
+    - esams
+    - ulsfo
+  upload:
+    bgp: 'yes'
+    class: high-traffic2
+    conftool:
+      cluster: cache_upload
+      service: varnish-fe
+    depool-threshold: '.5'
+    description: Images and other media, upload.%{::site}.wikimedia.org
+    icinga:
+      sites:
+        eqiad:
+          hostname: upload-lb.eqiad.wikimedia.org
+        esams:
+          hostname: upload-lb.esams.wikimedia.org
+        ulsfo:
+          hostname: upload-lb.ulsfo.wikimedia.org
+      uri: upload.wikimedia.org!/monitoring/backend
+    ip: *id023
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+    sites:
+    - codfw
+    - eqiad
+    - esams
+    - ulsfo
+  upload-https:
+    bgp: 'no'
+    class: high-traffic2
+    conftool:
+      cluster: cache_upload
+      service: nginx
+    depool-threshold: '.5'
+    description: Images and other media, upload.%{::site}.wikimedia.org
+    ip: *id023
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+      ProxyFetch:
+        url:
+        - https://upload.wikimedia.org/monitoring/backend
+    port: 443
+    scheduler: sh
+    sites:
+    - codfw
+    - eqiad
+    - esams
+    - ulsfo
+  zotero:
+    bgp: 'yes'
+    class: low-traffic
     conftool:
       cluster: sca
       service: zotero
+    depool-threshold: '.5'
+    description: Zotero, zotero.svc.eqiad.wmnet
     icinga:
       check_command: check_http_zotero_lvs_on_port!zotero.svc.eqiad.wmnet!1969!/export?format=wikipedia
       sites:
         eqiad:
           hostname: zotero.svc.eqiad.wmnet
-  kartotherian:
-    description: Kartotherian, kartotherian.svc.codfw.wmnet
-    class: low-traffic
-    sites:
-    - codfw
-    ip: *kartotherian
-    port: 4000
-    bgp: 'yes'
-    depool-threshold: ".5"
+    ip: *id024
     monitors:
       IdleConnection:
-        timeout-clean-reconnect: 3
         max-delay: 300
-    conftool:
-      cluster: maps
-      service: kartotherian
+        timeout-clean-reconnect: 3
+    port: 1969
+    sites:
+    - eqiad
