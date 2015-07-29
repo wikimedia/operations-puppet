@@ -243,8 +243,8 @@ class role::mariadb::tendril {
         prompt   => 'TENDRIL',
         config   => 'mariadb/tendril.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/a/sqldata',
-        tmpdir   => '/a/tmp',
+        datadir  => '/srv/sqldata',
+        tmpdir   => '/srv/tmp',
     }
 }
 
