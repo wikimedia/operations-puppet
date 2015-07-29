@@ -1,0 +1,13 @@
+#! /bin/bash
+
+eval $(/bin/systemctl show --property=Result,LoadState "$1")
+if [ "x$LoadState" != "xloaded" ]; then
+    echo "UNKNOWN - Unit not loaded: $LoadState"
+    exit 3
+fi
+if [ "x$Result" != "xsuccess" ]; then
+    echo "CRITICAL - Last result is $Result"
+    exit 2
+fi
+echo "OK - Last result is success"
+exit 0
