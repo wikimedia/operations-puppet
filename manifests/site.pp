@@ -1695,6 +1695,7 @@ node 'ms1001.wikimedia.org' {
 
     role dataset::systemusers, dataset::secondary, dumps
     include standard
+    include base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
