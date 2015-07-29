@@ -66,7 +66,7 @@ class ganglia::web(
     tidy { 'cleanup_tmp_ganglia_graph':
         path    => '/tmp',
         age     => '1w',
-        recurse => false,
+        recurse => true,
         matches => ['ganglia-graph*'],
         type    => 'mtime',
     }
