@@ -56,6 +56,14 @@ class nodepool(
     package { 'nodepool':
         ensure => present,
     }
+    # Nodepool 0.1.0 requires novaclient>=2.21.0
+    # Jessie has 2.18.1  (T104971)
+    apt::pin { 'python-novaclient':
+        pin      => 'release a=jessie-backports',
+        priority => '1001',
+        before   => Package['nodepool'],
+    }
+
     # python-diskimage-builder 0.1.46 missing dependency:
     # https://bugs.debian.org/791655
     package { 'uuid-runtime':
