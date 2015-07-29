@@ -58,7 +58,7 @@ groups:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [daniel, dartar, ellery,
+    members: [daniel, dartar, ellery, bearloga,
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, tnegrin, ssastry,
               ironholds, nuria, leila, santhosh, amire80, legoktm, jsahleen]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
@@ -104,7 +104,7 @@ groups:
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
               dduvall, ellery, ezachte, gage, gilles, haithams, halfak, handrade,
               ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
-              kleduc, leila, mattflaschen, milimetric, nettrom,
+              kleduc, leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, springle, tnegrin, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
@@ -163,11 +163,11 @@ groups:
               halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
               manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, rmoen, tbayer, joal, ashwinpp,
-              madhuvishy, jdouglas, tjones, legoktm, dcausse]
+              madhuvishy, jdouglas, tjones, legoktm, dcausse, bearloga]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
-    members: [dartar, halfak, ironholds, jdlrobson, jmorgan,
+    members: [dartar, halfak, ironholds, jdlrobson, jmorgan, bearloga,
               mattflaschen, mhurd, yurik, awight, jforrester,
               tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
@@ -212,7 +212,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, yurik,
-              halfak, dr0ptp4kt, tnegrin, ironholds,
+              halfak, dr0ptp4kt, tnegrin, ironholds, bearloga,
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, ananthrk, awight,
@@ -1509,3 +1509,10 @@ users:
     realname: Srijan Kumar
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDe6n6czECv3pzmwxKgfdd9A/XWmoqssk2MByt/Tra4DihPF25EhbcsoyeqosGcgCmkaDXZCQj6BfOh/VHGOUx6nkMf0bFkQrO25n8pdznMBnUfvGNAQUG2tWllA5q1uzmsQD80EqMtsbjr+Yl3HHE5StiqI6O9Ewxcsj2YsDA350ABzulcf4S81M7ej5ZIV/fmbNPJmCCKD3Ke33k3MCNJqCQpSDohKs9tZYKyhobb09n/OUsl+PNKn3VdDTPJMr+h0el8Y3QM1xHW2qbrUPg5qWSFHtLCBFhWlYhtciznhZTvdv7L7sOdwVCZahNNeAK5Cv4nyBHRjo09p7do9MSz srijankedia@gmail.com]
     uid: 12423
+  bearloga:
+    ensure: present
+    gid: 500
+    name: mpopov
+    realname: Mikhail Popov
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+3r+/y8Wsc4t6c18VXygHTLev9m6rLZqPUCSQdaH0qdyb97O3RlNdqoOZ0rbuPshFMyZjADlYT2TH/UX3fN/TkHJCQrJpk0L/Zc+NDbofejDs4TClbYYgcfZiBhLs7OylheM6Ut0KOmAQXE3qh6pUz1/U/fTwCtml6mFbbNaPPSq62eYNXYqTCGkTUXeuiodJ1bGRwDh1qmIlK5x657roNcJ1ADR7HCWZhnmLKPSOnjAIpN9ulZbvUiT98Pd4Bv4W0GZk6D8wMfbjKFmzv3XGdPjRrUo4JFVzwgJRXlzdEJKEn0v8yMSEthj0CygtUkWb104zgyw0756O9oxsQEI3jVHnb/4Z50xIL1AeuarO1Yi5xN2tTujACo9oAnuDKFqHY3vO6kv5kTZ61/2Foq5BIPA/SFSrSDuHWlveHxp2d2EYRf82E5gJ3ii0tVhSZKpIoiSjE2hGHBTN9iOumkSyL3wOT6YV+bGA4sKs5YgZl36xI8rT8hzBi0XLLy+6MfH+bGMhkBY+tLODj5hjcIBTt8iyjzQHhg2FqAKJX0unV2dTJxHmKLQBG5eVB89p7DKYBr5PhS7uC/zGIGHa08MsJUaWTCACY/jp0cln4MRt1/k4Mx+1Frb/bkzzO4IfchakMZX41m6hkKS29uWOXvTQtxwByamah/RsfhS5B+vI1Q== mpopov@wikimedia.org]
+    uid: 12625
