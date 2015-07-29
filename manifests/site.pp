@@ -437,7 +437,7 @@ node /^cp202[26]\.codfw\.wmnet$/ {
 
 node /^cp30(0[3-9]|1[0-4])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::text
+    role cache::text, ipsec
 }
 
 node /^cp301[5678]\.esams\.wmnet$/ {
