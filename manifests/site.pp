@@ -1336,6 +1336,7 @@ node 'lithium.eqiad.wmnet' {
     include standard
     include role::backup::host
     include role::syslog::centralserver
+    include base::firewall
 }
 
 node /^logstash100[1-3]\.eqiad\.wmnet$/ {
