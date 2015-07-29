@@ -2,7 +2,8 @@
 #
 # Installs a check for a systemd unit using systemctl
 define nrpe::monitor_systemd_unit(
-    $description = "${title} service",
+    $unit = $title,
+    $description = "${unit} service",
     $contact_group = 'admins',
     $retries = 3,
     $timeout = 10,
@@ -23,10 +24,44 @@ define nrpe::monitor_systemd_unit(
         $nagios_critical = 'false'
     }
 
-    nrpe::monitor_service { $title:
+    nrpe::monitor_service { "${unit}-status":
         ensure       => $ensure,
         description  => $description,
-        nrpe_command => "/usr/local/bin/nrpe_check_systemd_state -s '${title}' -e ${expected_state}",
+        nrpe_command => "/usr/local/bin/nrpe_check_systemd_unit_state -s '${unit}' -e ${expected_state}",
+        retries      => $retries,
+        timeout      => $timeout,
+        critical     => $nagios_critical,
+    }
+}
+
+define nrpe::monitor_systemd_unit_lastrun(
+    $unit = $title,
+    $description = "${unit} last run",
+    $contact_group = 'admins',
+    $retries = 3,
+    $timeout = 10,
+    $critical = false,
+    $ensure = 'present',
+    $warn_secs = 60*60*25,
+    $crit_secs = 60*60*49,
+    ){
+
+    if $::initsystem != 'systemd' {
+        fail('nrpe::monitor_systemd_unit_lastrun can only work on systemd-enabled systems')
+    }
+    require nrpe::systemd_scripts
+
+    # Temporary hack until we fix the downstream modules
+    if $critical {
+        $nagios_critical = 'true'
+    } else {
+        $nagios_critical = 'false'
+    }
+
+    nrpe::monitor_service { "${unit}-lastrun":
+        ensure       => $ensure,
+        description  => $description,
+        nrpe_command => "/usr/local/bin/nrpe_check_systemd_unit_lastrun '${unit}' ${warn_secs} ${crit_secs}",
         retries      => $retries,
         timeout      => $timeout,
         critical     => $nagios_critical,

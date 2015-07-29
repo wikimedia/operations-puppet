@@ -46,6 +46,8 @@ class nagios_common::commands(
         'check_to_check_nagios_paging',
         'check_ifstatus_nomon',
         'check_bgp',
+        'check_systemd_unit_lastrun',
+        'check_systemd_unit_result',
     ] :
         require    => File["${config_dir}/commands"],
         config_dir => $config_dir,
