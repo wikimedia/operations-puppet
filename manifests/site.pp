@@ -952,6 +952,7 @@ node 'fluorine.eqiad.wmnet' {
     include standard
     include ::role::xenon
     include role::dataset::publicdirs
+    include base::firewall
 
     class { 'role::logging::mediawiki':
         monitor       => false,
