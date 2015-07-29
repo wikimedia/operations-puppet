@@ -452,11 +452,7 @@ node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
 
 node /^cp30[34][01]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    if $::hostname == 'cp3030' {
-        role cache::text, ipsec
-    } else {
-        role cache::text
-    }
+    role cache::text, ipsec
 }
 
 node /^cp30[34][2-9]\.esams\.wmnet$/ {
