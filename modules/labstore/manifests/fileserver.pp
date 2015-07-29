@@ -11,7 +11,7 @@ class labstore::fileserver {
 
     require_package('lvm2')
     require_package('python3-paramiko')
-    require_package('python3-pymsql')
+    require_package('python3-pymysql')
 
     file { '/usr/local/sbin/replica-addusers.pl':
         source => 'puppet:///modules/labstore/replica-addusers.pl',
