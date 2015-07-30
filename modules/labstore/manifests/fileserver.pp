@@ -13,21 +13,6 @@ class labstore::fileserver {
     require_package('python3-paramiko')
     require_package('python3-pymysql')
 
-    file { '/usr/local/sbin/replica-addusers.pl':
-        source => 'puppet:///modules/labstore/replica-addusers.pl',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0550',
-    }
-
-    file { '/etc/init/replica-addusers.conf':
-        source  => 'puppet:///modules/labstore/replica-addusers.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File['/usr/local/sbin/replica-addusers.pl'],
-    }
-
     file { '/etc/replication-rsync.conf':
         source => 'puppet:///modules/labstore/replication-rsync.conf',
         owner  => 'root',

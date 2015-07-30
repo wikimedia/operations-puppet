@@ -47,7 +47,6 @@ class labstore::account_services {
 
     base::service_unit { 'create-dbusers':
         systemd         => true,
-        declare_service => false,
     }
 
     nrpe::monitor_systemd_unit { 'create-dbusers':
