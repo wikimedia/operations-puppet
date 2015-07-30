@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+
+import argparse
+import glob
+import sys
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--count-warning', default=3,
+                        help='XXX', type=int)
+    parser.add_argument('--count-critical', default=10,
+                        help='XXX', type=int)
+    parser.add_argument('files', help='XXX', nargs='*')
+    options = parser.parse_args()
+
+    if not options.files:
+        parser.error('no files to check')
+
+    all_files = []
+    for pattern in options.files:
+        all_files.extend(glob.glob(pattern))
+
+    found_files = len(all_files)
+    if found_files >= options.count_critical:
+        print "CRITICAL: matched %r with %s files (limit %s)" % (
+            options.files, found_files, options.count_critical)
+        return 2
+    elif found_files >= options.count_warning:
+        print "WARNING: matched %r with %s files (limit %s)" % (
+            options.files, found_files, options.count_warning)
+        return 1
+    elif found_files <= options.count_warning and \
+            found_files <= options.count_critical:
+        return 0
+    else:
+        print "UNKNOWN: this shouldn't happen"
+        return 3
+
+
+if __name__ == '__main__':
+    sys.exit(main())

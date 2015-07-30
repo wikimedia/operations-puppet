@@ -1,5 +1,6 @@
 cassandra::metrics::graphite_host: 'graphite-in.eqiad.wmnet'
 cassandra::start_rpc: 'false'
+cassandra::monitoring::contact_group: 'admins,team-services'
 
 # TODO: set up a cluster variable similar to MySQL clusters to share
 # cassandra cluster configs between cassandra & clients
