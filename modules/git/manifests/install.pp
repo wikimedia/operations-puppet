@@ -34,12 +34,6 @@
 #   Specifies a file on disk whose presence will cause the repository to
 #   hold at the last specified tag
 #
-#   NOTE: If the lock file exists and the tag on disk does not match
-#         the current tag in Puppet a notice will be thrown.
-#
-#         Example:
-#           <path_to_repo> is out of sync with upstream tag <tag_in_puppet>
-#
 # === Example usage
 #
 #   git::install { 'project/name/on/gerrit':
@@ -79,26 +73,6 @@ define git::install(
                 owner   => $owner,
                 group   => $group,
                 require => Git::Clone[$title]
-            }
-        }
-
-        if ($lock_file) {
-
-            exec {"${title}_confirm_tag_version":
-                command   => '/bin/true',
-                cwd       => $directory,
-                user      => $owner,
-                unless    => "git diff HEAD..${git_tag} --exit-code",
-                path      => '/usr/bin/:bin',
-                logoutput => false,
-                notify    => Exec["${title}_alert_for_out_of_sync"],
-            }
-
-            exec { "${title}_alert_for_out_of_sync":
-                command     => "/bin/echo ${directory} is out of sync with upstream tag ${git_tag}",
-                logoutput   => true,
-                before      => Exec["git_update_${title}"],
-                refreshonly => true,
             }
         }
 
