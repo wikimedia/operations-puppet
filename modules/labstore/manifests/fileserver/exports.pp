@@ -58,8 +58,14 @@ class labstore::fileserver::exports {
         notify => Service['nfs-exports'],
     }
 
+    # Terrible hack
+    if $is_active {
+        $service_ensure = 'present'
+    } else {
+        $service_ensure = 'absent'
+    }
     base::service_unit { 'nfs-exports':
-        ensure  => $is_active,
+        ensure  => $service_ensure,
         systemd => true,
     }
 
