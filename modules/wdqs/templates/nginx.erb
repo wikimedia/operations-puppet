@@ -9,6 +9,14 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
+    error_page 503 @maintenance;
+    location @maintenance {
+        root <%= @package_dir %>/gui;
+        rewrite ^(.*)$ /maint.html break;
+    }
+    if (-f /etc/nginx/maintenance) {
+        return 503;
+    }
 
     location / {
         root <%= @package_dir %>/gui;
