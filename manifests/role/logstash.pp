@@ -107,6 +107,16 @@ class role::logstash (
         sender          => 'mediawiki',
         increment       => [ '%{channel}.%{level}' ],
     }
+
+    ## Firewalling
+    $logstash_nodes = hiera('logstash::cluster_hosts')
+    $logstash_nodes_ferm = join($logstash_nodes, ' ')
+
+    ferm::service { 'logstash_elastic_internode':
+        proto  => 'tcp',
+        port   => 9300,
+        srange => "@resolve((${logstash_nodes_ferm}))",
+    }
 }
 
 # == Class: role::logstash::elasticsearch
