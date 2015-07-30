@@ -49,4 +49,8 @@ class labstore::account_services {
         systemd         => true,
         declare_service => false,
     }
+
+    nrpe::monitor_systemd_unit { 'create-dbusers':
+        description => 'Ensure mysql credential creation for tools users is running',
+    }
 }
