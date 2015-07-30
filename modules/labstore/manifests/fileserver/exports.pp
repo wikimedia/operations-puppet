@@ -1,4 +1,9 @@
 class labstore::fileserver::exports {
+
+    # Set to true only for the labstore that is currently
+    # actively serving files
+    $is_active = (hiera('active_labstore_host') == $::hostname)
+
     require_package('python3', 'python3-yaml')
 
     group { 'nfsmanager':
@@ -54,12 +59,14 @@ class labstore::fileserver::exports {
     }
 
     base::service_unit { 'nfs-exports':
-        ensure  => present,
+        ensure  => ensure_service($is_active),
         systemd => true,
     }
 
-    nrpe::monitor_systemd_unit { 'nfs-exports':
-        description => 'Ensure NFS exports are maintained for new instances with NFS',
+    if $is_active {
+        nrpe::monitor_systemd_unit { 'nfs-exports':
+            description => 'Ensure NFS exports are maintained for new instances with NFS',
+        }
     }
 
     file { '/usr/local/sbin/archive-project-volumes':
