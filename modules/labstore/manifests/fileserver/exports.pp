@@ -59,7 +59,7 @@ class labstore::fileserver::exports {
     }
 
     base::service_unit { 'nfs-exports':
-        ensure  => ensure_service($is_active),
+        ensure  => $is_active,
         systemd => true,
     }
 

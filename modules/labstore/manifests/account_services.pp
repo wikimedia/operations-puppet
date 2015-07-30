@@ -50,8 +50,8 @@ class labstore::account_services {
     }
 
     base::service_unit { 'create-dbusers':
+        ensure  => $is_active,
         systemd => true,
-        ensure  => ensure_service($is_active),
     }
 
     if $is_active {
