@@ -102,9 +102,9 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     return yaml.load(stream, OrderedLoader)
 
 
-def ordered_dump(data, stream=None, Dumper=yaml.Dumper, **kwds):
+def ordered_dump(data, stream=None, Dumper=yaml.Dumper, anchor_template=yaml.Dumper.ANCHOR_TEMPLATE, **kwds):
         class OrderedDumper(Dumper):
-            pass
+            ANCHOR_TEMPLATE = anchor_template
 
         def _dict_representer(dumper, data):
             return dumper.represent_mapping(
@@ -284,7 +284,7 @@ class role::%(name)s {
                 }
             }
         }
-        data = ordered_dump(config, default_flow_style=False)
+        data = ordered_dump(config, default_flow_style=False, anchor_template="ip_block%03d")
         with open('hieradata/common/lvs/configuration.yaml', 'w') as f:
             f.writelines(data)
         return True
