@@ -24,4 +24,12 @@ class wdqs::gui(
         proto => 'tcp',
         port  => '443',
     }
+    
+    # The directory for operator-controlled nginx flags
+    file { '/var/lib/nginx/wdqs/':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'wikidev',
+        mode    => '0775',
+    }
 }
