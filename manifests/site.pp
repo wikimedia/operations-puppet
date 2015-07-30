@@ -1820,14 +1820,8 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
 }
 
-# mw1152-8 are imagescalers (trusty)
-node /^mw115[2-8]\.eqiad\.wmnet$/ {
-    role mediawiki::imagescaler
-}
-
-
-# mw1159-1160 are imagescalers (precise)
-node /^mw11(59|60)\.eqiad\.wmnet$/ {
+# mw1152-1160 are imagescalers (trusty)
+node /^mw11(5[2-9]|60)\.eqiad\.wmnet$/ {
     role mediawiki::imagescaler
 }
 
