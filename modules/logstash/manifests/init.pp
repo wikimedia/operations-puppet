@@ -53,6 +53,15 @@ class logstash(
         hasrestart => true,
     }
 
+    $logstash_nodes = hiera("cluster: logstash")
+    $logstash_nodes_ferm = join($logstash_nodes, ' ')
+
+    ferm::service { 'logstash_elastic_internode':
+        proto  => 'tcp',
+        port   => 9300,
+        srange => "@resolve(($logstash_nodes_ferm))",
+    }
+
     file { '/etc/init/logstash.conf':
         ensure  => absent,
         require => Package['logstash'],
