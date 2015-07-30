@@ -8,3 +8,4 @@ admin::groups:
   - parsoid-admin
   - ocg-render-admins
 cluster: misc
+scap::l10nupdate::run_l10nupdate: false

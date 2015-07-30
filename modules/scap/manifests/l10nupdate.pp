@@ -1,11 +1,25 @@
 # = class: scap::l10nupdate
 #
 # Sets up files and cron required to do l10nupdate
+#
+# == Parameters:
+# [*deployment_group*]
+#   User group that will be allowed to read log files. (default: wikidev)
+#
+# [*run_l10nupdate*]
+#   Should l10nupdate be run automatically from cron? (default: false)
+#
 class scap::l10nupdate(
     $deployment_group = 'wikidev',
+    $run_l10nupdate   = false,
 ) {
+    $ensure_l10nupdate_cron = $run_l10nupdate ? {
+        true    => 'present',
+        default => 'absent',
+    }
+
     cron { 'l10nupdate':
-        ensure  => present,
+        ensure  => $ensure_l10nupdate_cron,
         command => '/usr/local/bin/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1',
         user    => 'l10nupdate',
         hour    => '2',
