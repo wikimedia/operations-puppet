@@ -49,8 +49,14 @@ class labstore::account_services {
         mode   => '0555',
     }
 
+    # Terrible hack
+    if $is_active {
+        $service_ensure = 'present'
+    } else {
+        $service_ensure = 'absent'
+    }
     base::service_unit { 'create-dbusers':
-        ensure  => $is_active,
+        ensure  => $service_ensure,
         systemd => true,
     }
 
