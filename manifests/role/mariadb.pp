@@ -467,6 +467,8 @@ class role::mariadb::sanitarium {
 }
 
 # MariaDB 10 labsdb multiple-shards slave.
+# This role is deprecated but still in use
+# It should be migrated to labs::db::slave
 class role::mariadb::labs {
 
     system::role { 'role::mariadb::labs':
