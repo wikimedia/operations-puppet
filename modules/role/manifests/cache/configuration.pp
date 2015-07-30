@@ -9,12 +9,6 @@ class role::cache::configuration {
             'appservers'        => $lvs::configuration::service_ips['apaches'],
             'api'               => $lvs::configuration::service_ips['api'],
             'rendering'         => $lvs::configuration::service_ips['rendering'],
-            'bits' => {
-                'eqiad' => flatten([$lvs::configuration::service_ips['bits']['eqiad']['bitslb']]),
-            },
-            'bits_appservers' => {
-                'eqiad' => flatten([$lvs::configuration::service_ips['apaches']['eqiad']]),
-            },
             'test_appservers' => {
                 'eqiad' => [ 'mw1017.eqiad.wmnet' ],
             },
@@ -42,18 +36,6 @@ class role::cache::configuration {
                 ],
             },
             'api' => {
-                'eqiad' => [
-                    '10.68.17.170',  # deployment-mediawiki01
-                    '10.68.16.127', # deployment-mediawiki02
-                ],
-            },
-            'bits' => {
-                'eqiad' => [
-                    '10.68.17.170',  # deployment-mediawiki01
-                    '10.68.16.127', # deployment-mediawiki02
-                ],
-            },
-            'bits_appservers' => {
                 'eqiad' => [
                     '10.68.17.170',  # deployment-mediawiki01
                     '10.68.16.127', # deployment-mediawiki02
