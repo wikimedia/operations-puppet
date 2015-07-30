@@ -50,6 +50,7 @@ class exim {
             $config_template = template('exim/exim4.conf.otrs.erb')
             $filter_template = template('exim/system_filter.conf.otrs.erb')
         } elsif $enable_mailman {
+            include privateexim::listserve
             $config_template = template('exim/exim4.conf.mailman.erb')
             $filter_template = template('exim/system_filter.conf.mailman.erb')
         } elsif $enable_mail_relay {
@@ -104,8 +105,6 @@ class exim {
         }
 
         if $enable_mailman {
-            include privateexim::listserve
-
             file { '/etc/exim4/aliases/lists.wikimedia.org':
                 owner   => 'root',
                 group   => 'root',
