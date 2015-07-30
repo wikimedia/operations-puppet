@@ -42,11 +42,23 @@ WINDOW_SPAN = 60 * 5  # Size of sliding window, in seconds.
 UPDATE_INTERVAL = 60  # How often we log values.
 RETENTION = 525949    # How many datapoints we retain. (One year's worth.)
 METRICS = (
-    'responseStart',  # Time to user agent receiving first byte
-    'firstPaint',     # Time to initial render
-    'domComplete',    # Time to DOM Comlete event
-    'loadEventEnd',   # Time to load event completion
-    'saveTiming',     # Time to first byte for page edits
+    'connectEnd',
+    'connectStart',
+    'dnsLookup',
+    'domComplete',
+    'domInteractive',
+    'fetchStart',
+    'firstPaint',
+    'loadEventEnd',
+    'loadEventStart',
+    'mediaWikiLoadComplete',
+    'redirectCount',
+    'redirecting',
+    'requestStart',
+    'responseEnd',
+    'responseStart',
+    'saveTiming',
+    'secureConnectionStart',
 )
 ARCHIVES = [(UPDATE_INTERVAL, RETENTION)]
 
