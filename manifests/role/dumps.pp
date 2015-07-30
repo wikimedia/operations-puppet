@@ -33,5 +33,8 @@ class role::dumps::zim {
         port  => '80',
     }
 
+    ferm::service { 'zim_dumps_https':
+        proto => 'tcp',
+        port  => '443',
+    }
 }
-
