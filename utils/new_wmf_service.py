@@ -338,6 +338,21 @@ class role::%(name)s {
     def setup_varnish_entrypoint(self):
         return False
 
+    def setup_conftool_data(self):
+        filename = "conftool-data/services/services.yaml"
+        with open(filename, 'r') as f:
+            data = ordered_load(f)
+        if self.cluster not in data:
+            data[self.cluster] = {}
+        # TODO: un-hardwire eqiad
+        data[self.cluster][self.service_name] = {
+            "port": self.port,
+            "default_values": {"pooled": "yes", "weight": 10},
+            "datacenters": ["eqiad"]
+        }
+        with open(filename, 'w') as f:
+            ordered_dump(data, f, default_flow_style=False)
+
 
 def question_user(answers):
     for q in QUESTIONS:
@@ -434,6 +449,10 @@ def main():
         print 'Failed to setup lvs'
         return False
     Git.add_file('hieradata/common/lvs/configuration.yaml')
+    if not s.setup_conftool():
+        print 'Failed to setup conftool'
+        return False
+    Git.add_file('conftool-data/services/services.yaml')
     # Let's commit the third batch
     Git.commit('Setup LVS for %s service on %s cluster' % (s.service_name, s.cluster))
 
