@@ -392,7 +392,7 @@ node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
-    role cache::mobile
+    role cache::mobile, ipsec
 }
 
 node /^cp10(4[89]|5[01]|6[1-4]|7[1-4]|99)\.eqiad\.wmnet$/ {
@@ -407,7 +407,7 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
 
 node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
-    role cache::bits
+    role cache::bits, ipsec
 }
 
 node /^cp20(0[147]|1[0369]|23)\.codfw\.wmnet$/ {
@@ -442,12 +442,12 @@ node /^cp30(0[3-9]|1[0-4])\.esams\.wmnet$/ {
 
 node /^cp301[5678]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::mobile
+    role cache::mobile, ipsec
 }
 
 node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::bits
+    role cache::bits, ipsec
 }
 
 node /^cp30[34][01]\.esams\.wmnet$/ {
@@ -467,7 +467,7 @@ node /^cp30[34][2-9]\.esams\.wmnet$/ {
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
-    role cache::bits
+    role cache::bits, ipsec
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
@@ -485,7 +485,7 @@ node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
-    role cache::mobile
+    role cache::mobile, ipsec
 }
 
 node 'dataset1001.wikimedia.org' {
