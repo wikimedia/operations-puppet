@@ -1264,6 +1264,7 @@ node 'labnodepool1001.eqiad.wmnet' {
 ## labsdb dbs
 node 'labsdb1001.eqiad.wmnet' {
     include role::mariadb::labs
+    include base::firewall
 }
 
 node 'labsdb1002.eqiad.wmnet' {
