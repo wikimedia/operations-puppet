@@ -1273,6 +1273,7 @@ node 'labsdb1002.eqiad.wmnet' {
 
 node 'labsdb1003.eqiad.wmnet' {
     include role::mariadb::labs
+    include base::firewall
 }
 
 node 'labsdb1004.eqiad.wmnet' {
