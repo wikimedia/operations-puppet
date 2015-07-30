@@ -18,6 +18,7 @@ import os
 import argparse
 import yaml
 from subprocess import call
+from collections import OrderedDict
 
 QUESTIONS = [
     {
@@ -83,6 +84,34 @@ QUESTIONS = [
         'transformer': lambda x: x,
     },
 ]
+
+
+# Yaml formatting primitives.
+# From: http://stackoverflow.com/questions/5121931
+def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
+    class OrderedLoader(Loader):
+        pass
+
+    def construct_mapping(loader, node):
+        loader.flatten_mapping(node)
+        return object_pairs_hook(loader.construct_pairs(node))
+
+    OrderedLoader.add_constructor(
+        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+        construct_mapping)
+    return yaml.load(stream, OrderedLoader)
+
+
+def ordered_dump(data, stream=None, Dumper=yaml.Dumper, **kwds):
+        class OrderedDumper(Dumper):
+            pass
+
+        def _dict_representer(dumper, data):
+            return dumper.represent_mapping(
+                yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+                data.items())
+        OrderedDumper.add_representer(OrderedDict, _dict_representer)
+        return yaml.dump(data, stream, OrderedDumper, **kwds)
 
 
 class Service():
@@ -176,12 +205,12 @@ class role::%(name)s {
         with open('hieradata/common/role/deployment.yaml', 'r') as f:
             data = f.read()
 
-        repos = yaml.load(data)
+        repos = ordered_load(data)
         # Add our repo
         repos['repo_config']['%s/deploy' % self.service_name] = {
             'upstream': self.repo,
         }
-        data = yaml.dump(repos, default_flow_style=False)
+        data = ordered_dump(repos, default_flow_style=False)
         with open('hieradata/common/role/deployment.yaml', 'w') as f:
             f.writelines(data)
         return True
@@ -212,10 +241,10 @@ class role::%(name)s {
         with open('hieradata/role/common/%s.yaml' % self.cluster, 'r') as f:
             data = f.read()
 
-        config = yaml.load(data)
+        config = ordered_load(data)
         # Add our IP
         config['lvs::realserver::realserver_ips'].append(self.lvs_ip)
-        data = yaml.dump(config, default_flow_style=False)
+        data = ordered_dump(config, default_flow_style=False)
         with open('hieradata/role/common/%s.yaml' % self.cluster, 'w') as f:
             f.writelines(data)
         return True
@@ -224,7 +253,7 @@ class role::%(name)s {
         with open('hieradata/common/lvs/configuration.yaml', 'r') as f:
             data = f.read()
 
-        config = yaml.load(data)
+        config = ordered_load(data)
         # Add our IP
         # TODO: Unhardcode eqiad
         config['lvs_service_ips'][self.service_name] = {'eqiad': self.lvs_ip}
@@ -255,7 +284,7 @@ class role::%(name)s {
                 }
             }
         }
-        data = yaml.dump(config, default_flow_style=False)
+        data = ordered_dump(config, default_flow_style=False)
         with open('hieradata/common/lvs/configuration.yaml', 'w') as f:
             f.writelines(data)
         return True
@@ -264,10 +293,10 @@ class role::%(name)s {
         with open('hieradata/role/common/%s.yaml' % self.cluster, 'r') as f:
             data = f.read()
 
-        config = yaml.load(data)
+        config = ordered_load(data)
         # Add our new group
         config['admin::groups'].append('%s-admin' % self.service_name)
-        data = yaml.dump(config, default_flow_style=False)
+        data = ordered_dump(config, default_flow_style=False)
         with open('hieradata/role/common/%s.yaml' % self.cluster, 'w') as f:
             f.writelines(data)
         return True
@@ -276,7 +305,7 @@ class role::%(name)s {
         with open('modules/admin/data/data.yaml', 'r') as f:
             data = f.read()
 
-        config = yaml.load(data)
+        config = ordered_load(data)
         groups = config['groups']
         # Get a suggested gid
         tmp = groups
@@ -297,7 +326,7 @@ class role::%(name)s {
         }
         groups['%s-admin' % self.service_name] = newgroup
         # We avoid on purpose overriding the default flow style
-        data = yaml.dump(config, width=80)
+        data = ordered_dump(config, width=80)
         with open('modules/admin/data/data.yaml', 'w') as f:
             f.writelines(data)
         return True
