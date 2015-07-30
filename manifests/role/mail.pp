@@ -85,6 +85,15 @@ class role::mail::lists {
         prefixlen => '128',
     }
 
+    $outbound_ips = [
+        '208.80.154.61',
+        '2620:0:861:1:208:80:154:61'
+    ]
+    $list_outbound_ips = [
+        '208.80.154.4',
+        '2620:0:861:1::2'
+    ]
+
     sslcert::certificate { 'lists.wikimedia.org': }
 
     include mailman
