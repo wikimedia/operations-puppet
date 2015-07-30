@@ -6,7 +6,6 @@ dumps::rsync_clients:
   - sagres.c3sl.ufpr.br
   - odysseus.fi.muni.cz
   - odysseus.linux.cz
-  - odysseus.ip6.fi.muni.cz
   - mirror.fr.wickedway.nl
   - wikimedia.wansec.com
   - ftpmirror.your.org
