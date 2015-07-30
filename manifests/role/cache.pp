@@ -8,10 +8,6 @@
 @monitoring::group { 'cache_upload_eqiad': description => 'eqiad upload Varnish' }
 @monitoring::group { 'cache_upload_esams': description => 'esams upload Varnish' }
 @monitoring::group { 'cache_upload_ulsfo': description => 'ulsfo upload Varnish' }
-@monitoring::group { 'cache_bits_codfw': description => 'codfw bits Varnish' }
-@monitoring::group { 'cache_bits_eqiad': description => 'eqiad bits Varnish' }
-@monitoring::group { 'cache_bits_esams': description => 'esams bits Varnish' }
-@monitoring::group { 'cache_bits_ulsfo': description => 'ulsfo bits Varnish' }
 @monitoring::group { 'cache_mobile_codfw': description => 'codfw mobile Varnish' }
 @monitoring::group { 'cache_mobile_eqiad': description => 'eqiad mobile Varnish' }
 @monitoring::group { 'cache_mobile_esams': description => 'esams mobile Varnish' }

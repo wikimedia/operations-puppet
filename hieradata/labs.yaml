@@ -26,9 +26,6 @@ cache::upload::nodes:
 cache::mobile::nodes:
     eqiad:
       - '127.0.0.1'
-cache::bits::nodes:
-    eqiad:
-      - '127.0.0.1'
 cache::parsoid::nodes:
     eqiad:
       - '127.0.0.1'
@@ -39,8 +36,6 @@ role::cache::2layer::storage_parts:
   - vdb
 role::cache::upload::upload_domain: 'upload.beta.wmflabs.org'
 role::cache::upload::top_domain: 'beta.wmflabs.org'
-role::cache::bits::bits_domain: 'bits.beta.wmflabs.org'
-role::cache::bits::top_domain: 'beta.wmflabs.org'
 role::cache::text::bits_domain: 'bits.beta.wmflabs.org'
 role::cache::text::top_domain: 'beta.wmflabs.org'
 role::cache::mobile::zero_site: 'http://zero.wikimedia.beta.wmflabs.org'

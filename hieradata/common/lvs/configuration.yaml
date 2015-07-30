@@ -12,19 +12,6 @@ lvs_service_ips:
     ulsfo:
       textlb: 198.35.26.96
       textlb6: 2620:0:863:ed1a::1
-  bits: &bits
-    codfw:
-      bitslb: 208.80.153.234
-      bitslb6: 2620:0:860:ed1a::1:a
-    eqiad:
-      bitslb: 208.80.154.234
-      bitslb6: 2620:0:861:ed1a::1:a
-    esams:
-      bitslb: 91.198.174.202
-      bitslb6: 2620:0:862:ed1a::1:a
-    ulsfo:
-      bitslb: 198.35.26.106
-      bitslb6: 2620:0:863:ed1a::1:a
   upload: &upload
     codfw:
       uploadlb: 208.80.153.240
@@ -159,56 +146,6 @@ lvs_services:
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
-  bits:
-    description: "Site assets (CSS/JS) LVS service, bits.%{::site}.wikimedia.org"
-    class: high-traffic1
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *bits
-    bgp: 'yes'
-    depool-threshold: ".5"
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_bits
-      service: varnish-fe
-    icinga:
-      uri: bits.wikimedia.org!/static-current/resources/assets/poweredby_mediawiki_88x31.png
-      sites:
-        eqiad:
-          hostname: bits-lb.eqiad.wikimedia.org
-        esams:
-          hostname: bits-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: bits-lb.ulsfo.wikimedia.org
-  bits-https:
-    description: "Site assets (CSS/JS) LVS service, bits.%{::site}.wikimedia.org"
-    class: high-traffic1
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *bits
-    port: 443
-    scheduler: sh
-    bgp: 'no'
-    depool-threshold: ".5"
-    monitors:
-      ProxyFetch:
-        url:
-        - https://bits.wikimedia.org/pybal-test-file
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_bits
-      service: nginx
   upload:
     description: "Images and other media, upload.%{::site}.wikimedia.org"
     class: high-traffic2
