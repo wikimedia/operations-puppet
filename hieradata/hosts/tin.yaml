@@ -9,3 +9,4 @@ admin::groups:
   - ocg-render-admins
   - wdqs-admins
 cluster: misc
+scap::l10nupdate::run_l10nupdate: true

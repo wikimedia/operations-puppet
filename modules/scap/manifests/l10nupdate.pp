@@ -3,9 +3,10 @@
 # Sets up files and cron required to do l10nupdate
 class scap::l10nupdate(
     $deployment_group = 'wikidev',
+    $run_l10nupdate = false
 ) {
     cron { 'l10nupdate':
-        ensure  => present,
+        ensure  => $run_l10nupdate,
         command => '/usr/local/bin/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1',
         user    => 'l10nupdate',
         hour    => '2',
