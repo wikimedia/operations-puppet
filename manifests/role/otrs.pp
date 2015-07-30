@@ -167,7 +167,7 @@ class role::otrs (
     class { 'exim4':
         variant => 'heavy',
         config  => template('exim/exim4.conf.otrs.erb'),
-        filter  => template('exim/system_filter.conf.erb'),
+        filter  => template('exim/system_filter.conf.otrs.erb'),
         require => [
             Class['spamassassin'],
             Class['clamav'],
