@@ -71,18 +71,6 @@ acl ssl_proxies {
 
 # Backend probes
 
-probe bits {
-	.request =
-		"GET /w/load.php HTTP/1.1"
-		"Host: en.wikipedia.<%= @cluster_options.fetch( "top_domain", "org" ) %>"
-		"User-agent: Varnish backend check"
-		"Connection: close";
-	.timeout = 1s;
-	.interval = 1s;
-	.window = 3;
-	.threshold = 2;
-}
-
 # frontends in front of other varnish instances should send
 # probes that don't depend on the app backend
 probe varnish {
