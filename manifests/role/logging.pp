@@ -33,7 +33,7 @@ class role::logging
 }
 
 # mediawiki udp2log instance.  Does not use monitoring.
-class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedia/logs' ) {
+class role::logging::mediawiki($monitor = true, $log_directory = '/srv/mw-log' ) {
     system::role { 'role::logging:mediawiki':
         description => 'MediaWiki log collector',
     }

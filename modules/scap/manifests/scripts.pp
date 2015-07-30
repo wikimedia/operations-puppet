@@ -69,12 +69,6 @@ class scap::scripts {
         mode    => '0555',
         source  => 'puppet:///modules/scap/refreshWikiversionsCDB',
     }
-    file { '/usr/local/bin/reset-mysql-slave':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/reset-mysql-slave',
-    }
     file { '/usr/local/bin/set-group-write':
         owner   => 'root',
         group   => 'root',

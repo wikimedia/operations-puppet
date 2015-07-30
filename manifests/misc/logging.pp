@@ -9,7 +9,7 @@
 #
 # $config - Type of configuration to apply (nfs, network). Default 'nfs'
 # $basepath - Path where to write logs to, without trailing slash.
-#             Default: '/home/wikipedia/syslog'
+#             Default: '/srv/syslog'
 #
 class misc::syslog-server($config='nfs', $basepath='/srv/syslog') {
 

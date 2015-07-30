@@ -20,8 +20,8 @@ so wikidev members can write to it. The script is a wrapper to call
 `set-group-write2` is only acting on files owned by the wikidev group. It will
 make sure they are group writable.
 
-On the *fenari* host, the target is `/home/wikipedia/common`, on any other host
-it will be the rsynced copy `/apache/common-local`.
+On the deployment hosts, the target is `/srv/mediawiki-staging`, on any other host
+it will be the rsynced copy `/srv/mediawiki`.
 
 OPTIONS
 -------
