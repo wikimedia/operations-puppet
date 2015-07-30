@@ -123,6 +123,10 @@ notification_driver = ceilometer.compute.nova_notifier
 #  that to 1.3.
 ram_allocation_ratio=1.3
 
+# Apparently the nova scheduler thinks nothing of scheduling 100% of
+#  the disk space of a node.  Let's not do that.
+disk_allocation_ratio=0.9
+
 
 # Deprecated, remove in Kilo:
 node_availability_zone=<%= @novaconfig["zone"] %>
