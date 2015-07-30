@@ -8,7 +8,6 @@ MEDIAWIKI_STAGING_DIR="<%= @common_source_path %>"
 MW_COMMON="$MEDIAWIKI_DEPLOYMENT_DIR"
 MW_COMMON_SOURCE="$MEDIAWIKI_STAGING_DIR"
 
-MW_CRON_LOGS="/home/wikipedia/logs/norotate"
 MW_RSYNC_HOST="<%= @rsync_host %>"
 MW_DSH_ARGS=('-cM' '-g' 'mediawiki-installation' '-o' '-oSetupTimeout=30' '-F30')
 MW_RSYNC_ARGS=('-a' '--delete-delay' '--delay-updates' '--compress' '--delete' '--exclude=**/.svn/lock' '--exclude=**/.git/objects' '--exclude=**/.git/**/objects' '--exclude=**/cache/l10n/*.cdb' '--no-perms')

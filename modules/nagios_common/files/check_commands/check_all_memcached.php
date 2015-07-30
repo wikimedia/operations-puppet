@@ -19,7 +19,7 @@ $wgMemCachedServers=$matches[0];
 
 # old method to get mc.php - relies on NFS, which is a -1
 # but as of today (20120427) you could also still use it if there are any issues with the new way
-# require_once( '/home/w/common/wmf-config/mc.php' );
+# require_once( '/srv/mediawiki-staging/wmf-config/mc.php' );
 
 # should stay commented. was here for debug.
 #$wgMemCachedServers[] = '10.0.2.101:11000';
