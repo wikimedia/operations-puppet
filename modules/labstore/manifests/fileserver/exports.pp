@@ -58,6 +58,10 @@ class labstore::fileserver::exports {
         systemd => true,
     }
 
+    nrpe::monitor_systemd_unit { 'nfs-exports':
+        description => 'Ensure NFS exports are maintained for new instances with NFS',
+    }
+
     file { '/usr/local/sbin/archive-project-volumes':
         owner  => 'root',
         group  => 'root',
