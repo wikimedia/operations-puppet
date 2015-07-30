@@ -1676,14 +1676,6 @@ node 'mira.codfw.wmnet' {
     }
 }
 
-node 'multatuli.wikimedia.org' {
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-    include standard
-    include base::firewall
-}
-
 # also see dataset1001
 node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
