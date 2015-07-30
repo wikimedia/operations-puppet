@@ -27,6 +27,7 @@ class role::mail::mx(
         required_score   => '4.0',
         use_bayes        => '1',
         bayes_auto_learn => '1',
+        max_children     => 16,
         trusted_networks => $network::constants::all_networks,
     }
 
