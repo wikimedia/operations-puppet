@@ -42,6 +42,10 @@ conn %default
 	esp=aes128gcm16-ecp384bp-noesn!
 	type=transport
 	auto=start
+	keyexchange=ikev2 # don't accept IKEv1
+	keyingtries=%forever # don't give up after serial keying failures
+	margintime=13m # default is 9m (double this value must be less than "lifetime", which is def 1h)
+	dpdaction=restart # try to restart if dead peer detected
 
 # Connections
 <% @hosts.each do |node| -%>
