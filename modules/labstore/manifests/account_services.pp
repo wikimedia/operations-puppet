@@ -10,6 +10,10 @@ class labstore::account_services {
 
     require_package('python3-yaml', 'python3-ldap3')
 
+    # Set to true only for the labstore that is currently
+    # actively serving files
+    $is_active = hiera('is_active', false)
+
     include passwords::ldap::labs
     include passwords::mysql::labsdb
 
@@ -46,10 +50,13 @@ class labstore::account_services {
     }
 
     base::service_unit { 'create-dbusers':
-        systemd         => true,
+        systemd => true,
+        ensure  => ensure_service($is_active),
     }
 
-    nrpe::monitor_systemd_unit { 'create-dbusers':
-        description => 'Ensure mysql credential creation for tools users is running',
+    if $is_active {
+        nrpe::monitor_systemd_unit { 'create-dbusers':
+            description => 'Ensure mysql credential creation for tools users is running',
+        }
     }
 }

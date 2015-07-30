@@ -9,6 +9,10 @@ class labstore::fileserver {
 
     include ::labstore
 
+    # Set to true only for the labstore that is currently
+    # actively serving files
+    $is_active = hiera('is_active', false)
+
     require_package('lvm2')
     require_package('python3-paramiko')
     require_package('python3-pymysql')
@@ -35,22 +39,25 @@ class labstore::fileserver {
         mode    => '0544',
     }
 
-    labstore::fileserver::replicate { 'tools':
-        src_path  => '/srv/project/tools',
-        dest_path => '/srv/eqiad/tools',
-        dest_host => 'labstore2001.codfw.wmnet',
-    }
+    if $is_active {
+        # These should only run on the active host
+        labstore::fileserver::replicate { 'tools':
+            src_path  => '/srv/project/tools',
+            dest_path => '/srv/eqiad/tools',
+            dest_host => 'labstore2001.codfw.wmnet',
+        }
 
-    labstore::fileserver::replicate { 'others':
-        src_path  => '/srv/others',
-        dest_path => '/srv/eqiad/others',
-        dest_host => 'labstore2001.codfw.wmnet',
-    }
+        labstore::fileserver::replicate { 'others':
+            src_path  => '/srv/others',
+            dest_path => '/srv/eqiad/others',
+            dest_host => 'labstore2001.codfw.wmnet',
+        }
 
-    labstore::fileserver::replicate { 'maps':
-        src_path  => '/srv/project/maps',
-        dest_path => '/srv/eqiad/maps',
-        dest_host => 'labstore2001.codfw.wmnet',
+        labstore::fileserver::replicate { 'maps':
+            src_path  => '/srv/project/maps',
+            dest_path => '/srv/eqiad/maps',
+            dest_host => 'labstore2001.codfw.wmnet',
+        }
     }
 
     labstore::fileserver::cleanup_snapshots { 'labstore':
