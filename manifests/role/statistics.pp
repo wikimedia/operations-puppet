@@ -1,10 +1,12 @@
 class role::statistics {
-    # Manually set a list of statistics servers.
-    $statistics_servers = [
+    # Manually set a list of servers that can read
+    # from stat* box rsync modules.
+    $rsync_hosts_allow = [
         'stat1001.eqiad.wmnet',
         'stat1002.eqiad.wmnet',
         'stat1003.eqiad.wmnet',
         'analytics1027.eqiad.wmnet',
+        'labstore1003.eqiad.wmnet',
     ]
 
     # we are attempting to stop using /a and to start using
@@ -17,8 +19,8 @@ class role::statistics {
     }
 
     class { '::statistics':
-        servers      => $statistics_servers,
-        working_path => $working_path,
+        rsync_hosts_allow => $rsync_hosts_allow,
+        working_path      => $working_path,
     }
 }
 
