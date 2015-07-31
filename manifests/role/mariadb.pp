@@ -290,6 +290,7 @@ class role::mariadb::dbstore(
     include role::mariadb::grants
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
+    include role::mariadb::ferm
 
     class { 'mariadb::config':
         prompt   => 'DBSTORE',
