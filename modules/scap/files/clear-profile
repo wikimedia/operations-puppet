@@ -1,3 +1,4 @@
 #!/bin/bash
+: ${LOGUSER:=$(logname)}
 echo "-truncate" | nc -q0 -u statsd.eqiad.wmnet 3811
-/usr/local/bin/dologmsg "!log $USER@$HOSTNAME cleared profiling data"
+/usr/local/bin/dologmsg "!log $LOGUSER@$HOSTNAME cleared profiling data"

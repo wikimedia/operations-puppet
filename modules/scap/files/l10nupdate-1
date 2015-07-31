@@ -12,6 +12,8 @@ GITDIR=/var/lib/l10nupdate/mediawiki
 GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
 GITREPOS="core extensions skins"
 QUIET=--quiet
+# Ensure that $LOGUSER is set and has a non-null value.
+: ${LOGUSER:=$(logname)}
 
 umask 0002
 BEGAN=$(date +"%s")
@@ -46,7 +48,7 @@ do
 		then
 			echo "Updated $path"
 		else
-			$BINDIR/dologmsg "!log $USER@$HOSTNAME LocalisationUpdate failed: git pull of $path failed"
+			$BINDIR/dologmsg "!log $LOGUSER@$HOSTNAME LocalisationUpdate failed: git pull of $path failed"
 			echo "Updating $path FAILED."
 			exit 1
 		fi
@@ -59,7 +61,7 @@ do
 		then
 			echo "Cloned $path"
 		else
-			$BINDIR/dologmsg "!log $USER@$HOSTNAME LocalisationUpdate failed: git clone of $path failed"
+			$BINDIR/dologmsg "!log $LOGUSER@$HOSTNAME LocalisationUpdate failed: git clone of $path failed"
 			echo "Cloning $path FAILED."
 			exit 1
 		fi
@@ -70,7 +72,7 @@ echo "git clone updated."
 # Get all MW message cache versions (and a wiki DB name for each)
 mwVerDbSets=$(mwversionsinuse --withdb)
 if [ -z "$mwVerDbSets" ]; then
-	$BINDIR/dologmsg "!log $USER@$HOSTNAME LocalisationUpdate failed: mwversionsinuse returned empty list"
+	$BINDIR/dologmsg "!log $LOGUSER@$HOSTNAME LocalisationUpdate failed: mwversionsinuse returned empty list"
 	echo "Obtaining MediaWiki version list FAILED"
 	exit 1
 fi
@@ -114,11 +116,11 @@ do
 		dsh -g mediawiki-installation -M -F 40 -- "sudo -u mwdeploy $SCAPDIR/scap-rebuild-cdbs"
 		SYNC_END=$(date +%s)
 
-		$BINDIR/dologmsg "!log $USER@$HOSTNAME LocalisationUpdate completed ($mwVerNum) at `date --rfc-3339=seconds`"
+		$BINDIR/dologmsg "!log $LOGUSER@$HOSTNAME LocalisationUpdate completed ($mwVerNum) at `date --rfc-3339=seconds`"
 		echo "All done at `date --rfc-3339=seconds`"
 		$BINDIR/deploy2graphite l10nupdate-sync $((SYNC_END-SYNC_START))
 	else
-		$BINDIR/dologmsg "!log $USER@$HOSTNAME LocalisationUpdate failed ($mwVerNum) at `date --rfc-3339=seconds`"
+		$BINDIR/dologmsg "!log $LOGUSER@$HOSTNAME LocalisationUpdate failed ($mwVerNum) at `date --rfc-3339=seconds`"
 		echo "FAILED"
 	fi
 done
@@ -133,4 +135,4 @@ echo "All done"
 ENDED=$(date +"%s")
 LENGTH=$(($ENDED-$BEGAN))
 $BINDIR/deploy2graphite l10n $LENGTH
-$BINDIR/dologmsg "!log $USER@$HOSTNAME ResourceLoader cache refresh completed at $(date -ud @$ENDED) (duration $(date -ud @"$LENGTH" +'%-Mm %-Ss'))"
+$BINDIR/dologmsg "!log $LOGUSER@$HOSTNAME ResourceLoader cache refresh completed at $(date -ud @$ENDED) (duration $(date -ud @"$LENGTH" +'%-Mm %-Ss'))"
