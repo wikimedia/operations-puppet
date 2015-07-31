@@ -33,8 +33,8 @@ class labstore::monitoring(
         description => 'Persistent high iowait',
         metric      => "servers.${::hostname}.cpu.total.iowait",
         from        => '10min',
-        warning     => '25', # Based off looking at history of metric
-        critical    => '35',
+        warning     => '40', # Based off looking at history of metric
+        critical    => '60',
         percentage  => '50', # Ignore small spikes
     }
 
