@@ -600,6 +600,8 @@ class role::mariadb::proxy::master(
     $secondary_addr,
     ) {
 
+    include role::mariadb::ferm
+
     class { 'role::mariadb::proxy':
         shard => $shard,
     }
