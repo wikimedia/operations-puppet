@@ -58,6 +58,13 @@ class lvs::balancer(
             # It is prone to DDoS attacks, and was even
             # removed in >= 3.6 kernels.
             'net.ipv4.rt_cache_rebuild_count' => -1,
+
+            # Defenses (see http://www.linuxvirtualserver.org/docs/defense.html)
+            # amemthresh is available mem threshold for triggering defenses,
+            # specified in pages.  Default is 1024 (4MB).
+            'net.ipv4.vs.amemthresh'          => 131072, # 512MB
+            # Automatically start dropping likely synflood entries when memory is low:
+            'net.ipv4.vs.drop_entry'          => 1,
         },
     }
 }
