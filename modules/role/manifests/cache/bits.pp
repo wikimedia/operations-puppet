@@ -44,7 +44,7 @@ class role::cache::bits (
         }
     }
 
-    $probe = $::role::cache::base::cluster_tier ? {
+    $probe = $::site_tier ? {
         'one'   => 'bits',
         default => 'varnish',
     }
@@ -70,12 +70,11 @@ class role::cache::bits (
         port            => 80,
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
-        directors       => $varnish_directors[$::role::cache::base::cluster_tier],
+        directors       => $varnish_directors[$::site_tier],
         vcl_config      => {
             'retry503'     => 4,
             'retry5xx'     => 1,
             'cache4xx'     => '1m',
-            'cluster_tier' => $::role::cache::base::cluster_tier,
             'layer'        => 'frontend',
             'ssl_proxies'  => $::role::cache::base::wikimedia_networks,
         },

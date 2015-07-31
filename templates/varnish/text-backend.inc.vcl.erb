@@ -11,7 +11,7 @@ sub vcl_recv {
 		set req.http.X-Wikimedia-Debug = "1";
 	}
 
-<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
+<% if @site_tier == "one" -%>
 	if (req.url ~ "^/w/api\.php") {
 		set req.backend = api;
 	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
@@ -20,7 +20,7 @@ sub vcl_recv {
 <% end -%>
 
 	if (req.url ~ "^/api/rest_v1/") {
-<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
+<% if @site_tier == "one" -%>
 		set req.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
 		set req.backend = restbase_backend;
 <% else -%>
@@ -31,13 +31,13 @@ sub vcl_recv {
 	}
 
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
-<% if @vcl_config.fetch("cluster_tier", "one") != "one" -%>
+<% if @site_tier != "one" -%>
 		set req.backend = backend_random;
 <% end -%>
 		set req.hash_ignore_busy = true;
 	}
 
-<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
+<% if @site_tier == "one" -%>
 	if (req.http.X-Wikimedia-Debug == "1") {
 		set req.backend = test_wikipedia;
 	}
@@ -54,7 +54,7 @@ sub vcl_recv {
 	return (lookup);
 }
 
-<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
+<% if @site_tier == "one" -%>
 // BITS: legacy bits.wm.o domain support
 sub bitscompat_1be_mangle {
 	// Transform backend url: /<sitename>/load.php -> /w/load.php
@@ -67,7 +67,7 @@ sub bitscompat_1be_mangle {
 <% end -%>
 
 sub vcl_pass {
-<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
+<% if @site_tier == "one" -%>
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
 		call bitscompat_1be_mangle;
@@ -78,7 +78,7 @@ sub vcl_pass {
 }
 
 sub vcl_miss {
-<% if @vcl_config.fetch("cluster_tier", "one") == "one" -%>
+<% if @site_tier == "one" -%>
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
 		call bitscompat_1be_mangle;

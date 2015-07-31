@@ -78,10 +78,9 @@ class role::cache::mobile (
         admin_port         => 6083,
         storage            => $::role::cache::2layer::persistent_storage_args,
         runtime_parameters => $runtime_param,
-        directors          => $varnish_be_directors[$::role::cache::base::cluster_tier],
+        directors          => $varnish_be_directors[$::site_tier],
         vcl_config         => {
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
-            'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'backend',
             'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
@@ -124,7 +123,6 @@ class role::cache::mobile (
         vcl_config       => {
             'retry503'         => 1,
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
-            'cluster_tier'     => $::role::cache::base::cluster_tier,
             'layer'            => 'frontend',
             'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
