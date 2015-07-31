@@ -23,6 +23,15 @@ class strongswan (
         }
     }
 
+    file { '/etc/strongswan.d/wmf.conf':
+        content => template('strongswan/wmf.conf.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['strongswan'],
+        require => Package['strongswan'],
+    }
+
     file { '/etc/ipsec.secrets':
         content => template('strongswan/ipsec.secrets.erb'),
         owner   => 'root',

@@ -1,0 +1,17 @@
+# wmf-specific strongswan.conf changes
+charon {
+    make_before_break = yes
+    close_ike_on_child_failure = yes
+    dos_protection = no
+
+    # The defaults are 1.8, 4.0, 5
+    # the default behavior gives 5 retries aggresive timeout backoff and a
+    # total fail time of ~165s
+    # the values below give 15 retries with only moderate timeout backoff and
+    # a total fail time of ~212s
+    # (so basically we're being more aggresive with our retransmits, but also
+    # surviving a longer incident overall)
+    retransmit_base = 1.2
+    retransmit_timeout = 2.0
+    retramsmit_tries = 15
+}
