@@ -43,6 +43,29 @@ class role::mariadb::grants(
     }
 }
 
+class role::mariadb::ferm {
+
+    # Common ferm class for database access. The actual databases are listening on 3306
+    # and are initially limited to the internal network. More specialised sub classes
+    # can grant additional access to other hosts
+
+    ferm::service{ 'mariadb_internal':
+        proto  => 'tcp',
+        port   => 3306,
+        srange => '$INTERNAL',
+    }
+
+    # tendril monitoring
+    ferm::rule { 'mariabdb_monitoring':
+        rule => "saddr @resolve((neon.wikimedia.org iron.wikimedia.org)) proto tcp dport (3306) ACCEPT;",
+    }
+
+    # for DBA purposes (like duplicating databasis via netcat)
+    ferm::rule { 'mariabdb_dba':
+        rule => "saddr @resolve((neon.wikimedia.org iron.wikimedia.org db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;",
+    }
+}
+
 # Annoy people in #wikimedia-operations
 class role::mariadb::monitor {
 
@@ -479,6 +502,7 @@ class role::mariadb::labs {
     include role::mariadb::grants
     include role::mariadb::monitor
     include passwords::misc::scripts
+    include role::mariadb::ferm
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
@@ -504,12 +528,6 @@ class role::mariadb::labs {
         owner  => 'mysql',
         group  => 'mysql',
         mode   => '0755',
-    }
-
-    ferm::service{ 'mariadb-labsdb':
-        proto  => 'tcp',
-        port   => 3306,
-        srange => '$INTERNAL',
     }
 
     # Required for TokuDB to start
