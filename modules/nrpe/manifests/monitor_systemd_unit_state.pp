@@ -27,7 +27,7 @@ define nrpe::monitor_systemd_unit_state(
     nrpe::monitor_service { "${unit}-state":
         ensure       => $ensure,
         description  => $description,
-        nrpe_command => "/usr/local/bin/nrpe_check_systemd_unit_state -s '${unit}' -e ${expected_state}",
+        nrpe_command => "/usr/local/bin/nrpe_check_systemd_unit_state '${unit}' ${expected_state}",
         retries      => $retries,
         timeout      => $timeout,
         critical     => $nagios_critical,
