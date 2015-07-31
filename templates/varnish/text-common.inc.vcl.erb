@@ -31,6 +31,10 @@ sub evaluate_cookie {
 	    && req.url !~ "^/static/"
 	    && req.url !~ "^/w/load\.php") {
 		set req.hash_ignore_busy = true;
+	// prevent caching on search queries that ab tests are running against
+	} else if (req.url ~ "&search="
+	    && req.http.Cookie ~ "mwuser-bucket:didyoumean=") {
+		set req.hash_ignore_busy = true;
 	} else {
 		call cookie_munging;
 	}
