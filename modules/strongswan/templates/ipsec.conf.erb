@@ -43,9 +43,11 @@ conn %default
 	type=transport
 	auto=start
 	keyexchange=ikev2 # don't accept IKEv1
+	mobike=no # no need for multi-home/roam, I don't think?
 	keyingtries=%forever # don't give up after serial keying failures
 	margintime=13m # default is 9m (double this value must be less than "lifetime", which is def 1h)
-	dpdaction=restart # try to restart if dead peer detected
+	# dead peer detection: restart for tier two, clear for tier one (apparently both sides as "restart" breaks things)
+	dpdaction=<%= @site_tier == "one" ? "clear" : "restart" %>
 
 # Connections
 <% @hosts.each do |node| -%>
