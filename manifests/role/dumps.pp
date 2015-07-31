@@ -10,15 +10,28 @@ class role::dumps {
         check_command => 'check_http'
     }
 
+    # By default the resolve() function in ferm performs only an IPv4/A DNS
+    # lookup. It fails if a host only has an IPv6 address. Ferm also provides
+    # a AAAA lookup mode for IPv6 addresses, but this equally fails if only
+    # an IPv4 address is present.
+
     $rsync_clients = hiera('dumps::rsync_clients')
     $rsync_clients_ferm = join($rsync_clients, ' ')
 
-    ferm::service {'dumps-rsyncd':
+    $rsync_clients_ipv6 = hiera('dumps::rsync_clients_ipv6')
+    $rsync_clients_ipv6_ferm = join($rsync_clients, ' ')
+
+    ferm::service {'dumps_rsyncd_ipv4':
         port   => '873',
         proto  => 'tcp',
         srange => "@resolve(($rsync_clients_ferm))",
     }
 
+    ferm::service {'dumps_rsyncd_ipv6':
+        port   => '873',
+        proto  => 'tcp',
+        srange => "@resolve(($rsync_clients_ipv6_ferm),AAAA)",
+    }
 }
 
 # ZIM dumps - https://en.wikipedia.org/wiki/ZIM_%28file_format%29
