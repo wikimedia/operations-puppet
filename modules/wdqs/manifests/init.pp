@@ -17,11 +17,17 @@ class wdqs(
     $log_dir = '/var/log/wdqs'
     ) {
 
+    group { $username:
+        ensure => present,
+        system => true,
+    }
+
     user { $username:
         ensure     => present,
         name       => $username,
         comment    => 'Blazegraph user',
         forcelocal => true,
+        system     => true,
         #        home       => $package_dir,
         managehome => no,
     }
