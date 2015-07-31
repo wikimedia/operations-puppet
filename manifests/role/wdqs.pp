@@ -1,3 +1,6 @@
+@monitoring::group{ 'wdqs_eqiad':
+    description => 'Wikidata Query Service (eqiad)',
+}
 # = Class: role::wdqs
 #
 # This class sets up Wikidata Query Service
