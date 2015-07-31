@@ -125,12 +125,14 @@ groups:
     members: [aaron, csteipp]
   contint-admins:
     gid: 719
-    description: users with some sudo permissions on jenkins hosts
+    description: users with some sudo permissions on jenkins and nodepool hosts
     members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
-              twentyafterfour, zfilipin, thcipriani, legoktm, jzerebecki]
+              twentyafterfour, zfilipin, thcipriani, legoktm, jzerebecki,
+              hashar]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
+                 'ALL = (nodepool) NOPASSWD: ALL',
                  'ALL = (zuul) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /etc/init.d/jenkins',
                  'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
@@ -317,11 +319,6 @@ groups:
     gid: 751
     description: people who have full root on traceback hosts
     members: [dkg]
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
-  nodepool-roots:
-    gid: 752
-    description: TEMP (T95303) roots for nodepool setup
-    members: [hashar, dduvall]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   maps-admins:
     gid: 753
