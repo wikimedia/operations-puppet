@@ -27,10 +27,10 @@ if [ "x$sure" != "xI am absolutely certain!" ]; then
 fi
 
 /usr/sbin/service nfs-kernel-server stop
-/bin/mount /srv/project
+/bin/mount /srv/project/tools
+/bin/mount /srv/project/maps
+/bin/mount /srv/others
 /bin/mount /srv/scratch
-/bin/mount /srv/keys
-/usr/local/sbin/sync-exports
-/usr/sbin/service nfs-project-exports start
+/usr/sbin/service nfs-exports start
 /sbin/ip addr add dev eth0 10.64.37.10/24
 /usr/sbin/service nfs-kernel-server start
