@@ -36,6 +36,16 @@ $site = $main_ipaddress ? {
     default                                   => '(undefined)'
 }
 
+$site_tier = $::realm ? {
+    production => $::site ? {
+        'eqiad' => 'one',
+        'codfw' => 'one',
+        'esams' => 'two',
+        'ulsfo' => 'two',
+    },
+    default => 'one',
+}
+
 $mw_primary = $::realm ? {
     'production' => 'eqiad',
     default => $::site

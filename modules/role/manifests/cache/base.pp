@@ -1,5 +1,4 @@
 class role::cache::base(
-    $cluster_tier = 'two',
     $purge_host_only_upload_re = '/./',
     $purge_host_not_upload_re = '/./'
 ) {
