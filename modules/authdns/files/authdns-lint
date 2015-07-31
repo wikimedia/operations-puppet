@@ -48,13 +48,4 @@ authdns-gen-zones $WORKINGDIR/templates $TESTDIR/etc/zones
 echo "Generating gdnsd config"
 cp -f $WORKINGDIR/config-geo $TESTDIR/etc/config
 
-echo "Copying GeoIP databases inside the chroot:"
-sed -nr 's/.*(geoip_db(.*)?|city_region_names)\s*=>\s*//p' $TESTDIR/etc/config \
-  | sort -u | while read file; do
-    dirname=$(dirname $file)
-    mkdir -p $TESTDIR/$dirname
-    cp $file $TESTDIR/$dirname/
-    echo "  $file"
-done
-
 gdnsd -sSc $TESTDIR/etc checkconf
