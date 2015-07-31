@@ -183,6 +183,26 @@ host analytics1045 {
 	fixed-address analytics1045.eqiad.wmnet;
 }
 
+host analytics1046 {
+        hardware ethernet 44:A8:42:25:07:31;
+        fixed-address analytics1046.eqiad.wmnet;
+}
+
+host analytics1047 {
+        hardware ethernet 44:A8:42:24:FB:52;
+        fixed-address analytics1047.eqiad.wmnet;
+}
+
+host analytics1048 {
+        hardware ethernet 44:A8:42:24:9B:B3;
+        fixed-address analytics1048.eqiad.wmnet;
+}
+
+host analytics1049 {
+        hardware ethernet 44:A8:42:24:D0:32;
+        fixed-address analytics1049.eqiad.wmnet;
+}
+
 host antimony {
 	hardware ethernet D4:AE:52:AF:56:93;
 	fixed-address antimony.wikimedia.org;
