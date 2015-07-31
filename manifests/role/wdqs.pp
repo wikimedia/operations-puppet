@@ -2,6 +2,9 @@
 #
 # This class sets up Wikidata Query Service
 #
+@monitoring::group{ 'wdqs_eqiad':
+    'description' => 'Wikidata Query Service (eqiad)'
+}
 class role::wdqs  {
     include standard
     include base::firewall
