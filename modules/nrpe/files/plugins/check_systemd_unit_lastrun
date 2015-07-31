@@ -49,8 +49,8 @@ def main():
     parser.add_argument('crit', help='Number of seconds past which a critical should be emitted')
     args = parser.parse_args()
 
-    warn = datetime.timedelta(seconds=int(args.warn)):
-    crit = datetime.timedelta(seconds=int(args.crit)):
+    warn = datetime.timedelta(seconds=int(args.warn))
+    crit = datetime.timedelta(seconds=int(args.crit))
 
     logging.basicConfig(level=logging.INFO, format='%(message)s')
 
@@ -85,7 +85,7 @@ def main():
     age = datetime.timedelta(seconds=int(time.time()) - lastrun)
 
     if age > crit:
-        print('LASTRUN CRITICAL - Last run mor than %s ago' % crit)
+        print('LASTRUN CRITICAL - Last run more than %s ago' % crit)
         sys.exit(2)
 
     if age > warn:
