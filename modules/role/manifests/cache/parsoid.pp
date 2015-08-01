@@ -29,6 +29,7 @@ class role::cache::parsoid {
             }
         },
         vcl_config       => {
+            'layer'       => 'backend',
             'retry503'    => 4,
             'retry5xx'    => 1,
             'ssl_proxies' => $::role::cache::base::wikimedia_networks,
@@ -98,6 +99,7 @@ class role::cache::parsoid {
             },
         },
         vcl_config      => {
+            'layer'       => 'frontend',
             'retry5xx'    => 0,
             'ssl_proxies' => $::role::cache::base::wikimedia_networks,
         },
