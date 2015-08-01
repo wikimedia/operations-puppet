@@ -51,7 +51,7 @@ acl purge {
 }
 
 acl ssl_proxies {
-<% @vcl_config.fetch("ssl_proxies", []).each do |entry|
+<% scope.lookupvar('::network::constants::all_networks_lo').each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
 	"<%= subnet %>"/<%= mask %>;

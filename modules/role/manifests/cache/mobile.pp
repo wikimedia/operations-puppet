@@ -82,7 +82,6 @@ class role::cache::mobile (
         vcl_config         => {
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'layer'            => 'backend',
-            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
@@ -123,7 +122,6 @@ class role::cache::mobile (
             'retry503'         => 1,
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'layer'            => 'frontend',
-            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options  => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {

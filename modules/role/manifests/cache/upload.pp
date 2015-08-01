@@ -81,7 +81,6 @@ class role::cache::upload(
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
             'layer'            => 'backend',
-            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
@@ -118,7 +117,6 @@ class role::cache::upload(
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
             'layer'            => 'frontend',
-            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
