@@ -130,16 +130,16 @@ sub summarize {
 
     my @problem_strs = ();
     if (scalar(@nochildsa)) {
-        push(@problem_strs, 'no-child-sa: ' . join(q{,}, @nochildsa));
+        push(@problem_strs, 'no-child-sa: ' . join(q{,}, sort @nochildsa));
     }
     if (scalar(@connecting)) {
-        push(@problem_strs, 'connecting: ' . join(q{,}, @connecting));
+        push(@problem_strs, 'connecting: ' . join(q{,}, sort @connecting));
     }
     if (scalar(@neither)) {
-        push(@problem_strs, 'not-conn: ' . join(q{,}, @neither));
+        push(@problem_strs, 'not-conn: ' . join(q{,}, sort @neither));
     }
     if (scalar(@kernelfail)) {
-        push(@problem_strs, 'no-xfrm: ' . join(q{,}, @kernelfail));
+        push(@problem_strs, 'no-xfrm: ' . join(q{,}, sort @kernelfail));
     }
 
     my $problems = join(q{ }, @problem_strs);
