@@ -1,26 +1,21 @@
 # network.pp
 
 class network::constants {
-    $external_networks = [
-                '91.198.174.0/24',
-                '208.80.152.0/22',
-                '2620:0:860::/46',
-                '198.35.26.0/23',
-                '185.15.56.0/22',
-                '2a02:ec80::/32',
-                ]
-    # NOTE: Should we just use stdlib's concat function and just add 10.0.0.0/8
-    # to external_networks to populate this one?
-    $all_networks = [
-            '91.198.174.0/24',
-            '208.80.152.0/22',
-            '2620:0:860::/46',
-            '198.35.26.0/23',
-            '185.15.56.0/22',
-            '2a02:ec80::/32',
-            '10.0.0.0/8',
-            ]
 
+    # Note this name is misleading.  Most of these are "external" networks,
+    # but some subnets of the IPv6 space are not externally routed, even if
+    # they're externally route-able (the ones used for private vlans).
+    $external_networks = [
+        '91.198.174.0/24',
+        '208.80.152.0/22',
+        '2620:0:860::/46',
+        '198.35.26.0/23',
+        '185.15.56.0/22',
+        '2a02:ec80::/32',
+    ]
+
+    $all_networks = flatten([$external_networks, '10.0.0.0/8'])
+    $all_networks_lo = flatten([$all_networks, '127.0.0.0/8', '::1/128'])
 
     $special_hosts = {
         'production' => {
