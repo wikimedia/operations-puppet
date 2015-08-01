@@ -25,7 +25,6 @@ class role::cache::misc {
             'retry5xx'        => 1,
             'cache4xx'        => '1m',
             'layer'           => 'frontend',
-            'ssl_proxies'     => $::role::cache::base::wikimedia_networks,
             'allowed_methods' => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
         },
         backends        => [
