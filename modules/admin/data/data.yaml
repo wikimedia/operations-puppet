@@ -3,7 +3,7 @@ groups:
     description: meta group for absented users
     members: [avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, howief, jgonera,
               mah, maryana, mglaser, mvolz, mwalker, nimishg, rainman, ssmith, swalling,
-              sumanah, werdna]
+              sumanah, werdna, jdouglas]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -41,7 +41,7 @@ groups:
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
-    members: [aaron, dr0ptp4kt, anomie, aude, awight, awjrichards, bd808, jdouglas,
+    members: [aaron, dr0ptp4kt, anomie, aude, awight, awjrichards, bd808,
               brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
@@ -75,12 +75,12 @@ groups:
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [eevans, gwicke, jdouglas, mobrovac, ssastry]
+    members: [eevans, gwicke, mobrovac, ssastry]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [manybubbles, demon, jdouglas, ebernhardson, dcausse]
+    members: [manybubbles, demon, ebernhardson, dcausse]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   dataset-admins:
     gid: 710
@@ -108,7 +108,7 @@ groups:
               nuria, ori, otto, springle, tnegrin, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
-              neilpquinn-wmf, tbayer, jdouglas, moushira, dbrant, maxsem, srijan]
+              neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -165,7 +165,7 @@ groups:
               halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
               manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, rmoen, tbayer, joal, ashwinpp,
-              madhuvishy, jdouglas, tjones, legoktm, dcausse, bearloga]
+              madhuvishy, tjones, legoktm, dcausse, bearloga]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -336,7 +336,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [smalyshev, jdouglas]
+    members: [smalyshev]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
                  'ALL = NOPASSWD: /bin/journalctl *']
@@ -1297,7 +1297,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpDNpAh83SAftCCJtjnvyTkN8uag0OmMk/Wpn+iAtZz5THTocU7MLdggW5scut+lMfog6Mf7aECC5vPo2eGtGkCXbmsGMhHsuA4mxo4vhnI5PduLY6F9PU4YCRe477NTEFfffy/HxDQR9gHNnuLyoHGqEgCQmmEtQoD1ChEiVHbwM35m6OVZjraMyy5Hfcnr7txHjOnVBGFW3Nn+bT3S42YdJDy3l9SIOg7NGi1WHo+cZaKIpO+wTelDSem1o7m+ERk10XaDOakCpznjnxmzfoy0WKeJWAkG0uGiE7vVAKzOhNw4/v6vaSSXWNRMD7MBea6iDaFduA1ghnq8i6Xf7f smalyshev@wikimedia.org]
     uid: 10977
   jdouglas:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jdouglas
     realname: James Douglas
