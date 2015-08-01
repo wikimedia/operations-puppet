@@ -3,7 +3,7 @@ groups:
     description: meta group for absented users
     members: [avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, howief, jgonera,
               mah, maryana, mglaser, mvolz, mwalker, nimishg, rainman, ssmith, swalling,
-              sumanah, werdna, jdouglas]
+              sumanah, werdna, jdouglas, gage]
   wikidev:
     gid: 500
     description: container group for primary user groups.
