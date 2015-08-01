@@ -13,6 +13,4 @@ class role::cache::base(
     if $::realm == 'production' {
         include role::cache::perf
     }
-
-    $wikimedia_networks = flatten([$network::constants::all_networks, '127.0.0.0/8', '::1/128'])
 }

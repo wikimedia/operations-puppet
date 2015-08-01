@@ -50,18 +50,8 @@ acl purge {
 	"127.0.0.1";
 }
 
-<% if ! @wikimedia_networks.empty? -%>
 acl wikimedia_nets {
-<% @wikimedia_networks.each do |entry|
-	subnet, mask = entry.split("/", 2)
--%>
-	"<%= subnet %>"/<%= mask %>;
-<% end -%>
-}
-<% end -%>
-
-acl ssl_proxies {
-<% @vcl_config.fetch("ssl_proxies", []).each do |entry|
+<% scope.lookupvar('::network::constants::all_networks_lo').each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
 	"<%= subnet %>"/<%= mask %>;
@@ -374,8 +364,11 @@ sub vcl_recv {
 <% if @vcl_config.fetch("layer", "frontend") == "frontend" -%>
 	call rewrite_proxy_urls;
 
-	/* Ensure we only accept Forwarded-Proto headers from the SSL proxies */
-	if (client.ip !~ ssl_proxies) {
+	// Ensure we only accept Forwarded-Proto headers from our networks
+	// Note this *should* be just the local tlsproxy terminator, but we
+	// have known cases where applayer internal things are faking this
+	// header for functional reasons that need addressing...
+	if (client.ip !~ wikimedia_nets) {
 		unset req.http.X-Forwarded-Proto;
 	}
 <% end -%>
