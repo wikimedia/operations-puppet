@@ -11,7 +11,6 @@ define varnish::instance(
     $directors={},
     $extra_vcl = [],
     $cluster_options={},
-    $wikimedia_networks=[],
     $xff_sources=[]
 ) {
 

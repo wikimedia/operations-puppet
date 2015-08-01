@@ -90,7 +90,6 @@ class role::cache::text (
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'layer'            => 'backend',
-            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
@@ -119,7 +118,6 @@ class role::cache::text (
             'bits_domain'        => $bits_domain,
             'top_domain'         => $top_domain,
         },
-        wikimedia_networks => $::role::cache::base::wikimedia_networks,
     }
 
     varnish::instance { 'text-frontend':
@@ -147,7 +145,6 @@ class role::cache::text (
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'layer'            => 'frontend',
-            'ssl_proxies'      => $::role::cache::base::wikimedia_networks,
         },
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
