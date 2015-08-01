@@ -98,7 +98,6 @@ class role::cache::upload(
             },
         ]),
         cluster_options    => $cluster_options,
-        wikimedia_networks => $::role::cache::base::wikimedia_networks,
     }
 
     varnish::instance { 'upload-frontend':

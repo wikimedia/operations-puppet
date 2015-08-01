@@ -119,7 +119,6 @@ class role::cache::text (
             'bits_domain'        => $bits_domain,
             'top_domain'         => $top_domain,
         },
-        wikimedia_networks => $::role::cache::base::wikimedia_networks,
     }
 
     varnish::instance { 'text-frontend':

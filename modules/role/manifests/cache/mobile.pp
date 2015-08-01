@@ -103,7 +103,6 @@ class role::cache::mobile (
             },
         ]),
         cluster_options    => $cluster_options,
-        wikimedia_networks => $::role::cache::base::wikimedia_networks,
     }
 
     varnish::instance { 'mobile-frontend':

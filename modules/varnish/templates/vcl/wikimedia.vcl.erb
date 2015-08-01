@@ -50,16 +50,6 @@ acl purge {
 	"127.0.0.1";
 }
 
-<% if ! @wikimedia_networks.empty? -%>
-acl wikimedia_nets {
-<% @wikimedia_networks.each do |entry|
-	subnet, mask = entry.split("/", 2)
--%>
-	"<%= subnet %>"/<%= mask %>;
-<% end -%>
-}
-<% end -%>
-
 acl ssl_proxies {
 <% @vcl_config.fetch("ssl_proxies", []).each do |entry|
 	subnet, mask = entry.split("/", 2)
@@ -359,14 +349,6 @@ sub vcl_recv_append_xff {
 	}
 }
 
-<% if ! @wikimedia_networks.empty? -%>
-sub restrict_access {
-	if (client.ip !~ wikimedia_nets) {
-		error 403 "Access denied";
-	}
-}
-
-<% end -%>
 sub vcl_recv {
 	if (req.request !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
 		&& !(req.request == "OPTIONS" && req.http.Origin)) {
