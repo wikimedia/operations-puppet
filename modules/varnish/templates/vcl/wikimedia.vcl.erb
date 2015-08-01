@@ -86,21 +86,6 @@ probe varnish {
 	.threshold = 2;
 }
 
-probe options {
-	.request =
-		"OPTIONS * HTTP/1.0"
-		"Connection: close";
-	.timeout = 2s;
-	.interval = 2s;
-	.window = 6;
-	.threshold = 2;
-}
-
-probe swift {
-	.url = "/monitoring/backend";
-	.timeout = 2s;
-}
-
 probe logstash {
 	.url = "/status";
 	.interval = 5s;
