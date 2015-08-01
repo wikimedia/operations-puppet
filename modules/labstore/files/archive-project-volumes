@@ -1,43 +1,46 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/ldap/scripts/archive-managed-projects
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///files/ldap/scripts/archive-managed-projects
 #####################################################################
-###
-### Sometimes labs projects are deleted.  When this happens,
-### orphaned volumes are left on the nfs server.
-###
-### manage-nfs-volumes-daemon records a list of of these orphans
-### in <volumedir>/volumes-without-projects.  To avoid craziness,
-### though, it does not attempt to automatically archive them.
-###
-### This script tarballs those orphaned volumes and sets them aside for
-### posterity.
-###
-#####################################################################
+"""
+ Sometimes labs projects are deleted.  When this happens,
+ orphaned volumes are left on the nfs server.
 
+ The complete list of active volumes is stored in a yaml file,
+ /etc/nfs-mounts.yaml.
+
+ This script will explicitly archive a volume if specified.
+ Otherwise it compares nfs-mounts.yaml with with the actually
+ present project volumes to generate a list of orphans.
+
+ In either case, it then makes a tarball of each orphaned
+ volume, sets it aside, and removes the original.
+
+ The general rule of thumb is that archives can be removed after
+ 6 months; this script leaves them there forever.
+"""
 
 import logging
 import os
 import shutil
 import subprocess
 from optparse import OptionParser
+import yaml
 
 
 class VolumeArchiver:
     def __init__(self):
-        self.base_dir = '/srv/project/'
+        self.base_dir = '/srv/others/'
+        self.active_volumes_file = '/etc/nfs-mounts.yaml'
         self.archive_dir = os.path.join(self.base_dir, 'orphan-volumes')
-        self.orphan_list_filename = 'volumes-without-projects'
-        self.orphan_list = os.path.join(self.base_dir, self.orphan_list_filename)
 
-    def archive(self, volname):
+    def archive(self, volpath):
         if not os.path.isdir(self.base_dir):
             logging.error("Unable to locate %s" % self.base_dir)
             return False
 
-        volpath = (os.path.join(self.base_dir, volname))
         if not os.path.isdir(volpath):
             logging.error("Unable to locate %s" % volpath)
             return False
@@ -45,20 +48,26 @@ class VolumeArchiver:
         if not os.path.isdir(self.archive_dir):
             os.mkdir(self.archive_dir)
 
+        volname = os.path.basename(volpath)
+
         n = 0
         maxn = 200
         archivepath = os.path.join(self.archive_dir, "%s.tgz" % volname)
         while os.path.isfile(archivepath):
-            archivepath = os.path.join(self.archive_dir, "%s-%s.tgz" % (volname, str(n)))
+            archivepath = os.path.join(self.archive_dir, "%s-%s.tgz" %
+                                       (volname, str(n)))
             n += 1
             if (n > maxn):
-                logging.error("Something terrible is happening, we have more than %s archives for a volume named %s." % (str(maxn), volname))
+                logging.error("Something terrible is happening. "
+                              "We have more than %s archives for "
+                              " a volume named %s." % (str(maxn), volname))
                 return False
 
         args = ['tar', '-cpzf', archivepath, volname]
         rval = subprocess.call(args, cwd=self.base_dir)
         if rval:
-            logging.info("Failed to archive %s with exit code %s.  Command was: %s" % (volpath, rval, ' '.join(args)))
+            logging.info("Failed to archive %s with exit code %s. "
+                         "Command was: %s" % (volpath, rval, ' '.join(args)))
             return False
         else:
             logging.info("Archived %s to %s" % (volpath, archivepath))
@@ -72,9 +81,12 @@ class VolumeArchiver:
         parser = OptionParser(conflict_handler="resolve")
         parser.set_usage('archive-project-volumes [options]')
 
-        parser.add_option("--logfile", dest="logfile", help="Write output to the specified log file. (default: stdout)")
+        parser.add_option("--logfile", dest="logfile",
+                          help="Write output to the specified log file. "
+                               "(default: stdout)")
 
-        parser.add_option("--volume", dest="volume", help="Volume to archive (default: all orphans)")
+        parser.add_option("--volume", dest="volume",
+                          help="Volume to archive (default: all orphans)")
         (options, args) = parser.parse_args()
 
         if options.logfile:
@@ -82,22 +94,33 @@ class VolumeArchiver:
         else:
             logging.basicConfig(level=logging.DEBUG)
 
+        projects_in_yaml = []
         if options.volume:
             vol_list = [options.volume]
         else:
-            with open(self.orphan_list) as f:
-                vol_list = f.read().splitlines()
+            with open(self.active_volumes_file, 'r') as f:
+                y = yaml.load(f)
+                projects_in_yaml = y['private']
 
-        for vol in vol_list:
+        projects_on_disk = os.listdir(self.base_dir)
+        vol_list = [vol for vol in projects_on_disk if vol not in
+                    list(projects_in_yaml.keys())]
+
+        for volname in vol_list:
+            vol = os.path.join(self.base_dir, volname)
             # Exclude things that are clearly not project volumes
-            if vol == self.orphan_list_filename:
+            if not os.path.isdir(vol):
                 continue
-            if vol == "lost+found":
+            if volname == "lost+found":
                 continue
-            # And, just to be safe... make sure it's empty or has a 'home' or 'project' subdir
+            if volname == "orphan-volumes":
+                continue
+            # And, just to be safe... make sure it's empty
+            # or has a 'home' or 'project' subdir
 
             if (not os.path.isdir(vol)):
-                logging.error("Volume directory %s not found.  This script needs to run in /srv/project."
+                logging.error("Volume directory %s not found. "
+                              "This script needs to run in /srv/project."
                               % vol)
                 return 1
 
