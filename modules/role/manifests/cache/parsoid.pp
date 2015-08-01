@@ -29,6 +29,7 @@ class role::cache::parsoid {
             }
         },
         vcl_config       => {
+            'layer'       => 'backend',
             'retry503'    => 4,
             'retry5xx'    => 1,
         },
@@ -97,6 +98,7 @@ class role::cache::parsoid {
             },
         },
         vcl_config      => {
+            'layer'       => 'frontend',
             'retry5xx'    => 0,
         },
         backend_options => array_concat($::role::cache::2layer::backend_scaled_weights, [
