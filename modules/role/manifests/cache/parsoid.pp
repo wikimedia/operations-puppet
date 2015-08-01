@@ -32,7 +32,6 @@ class role::cache::parsoid {
             'layer'       => 'backend',
             'retry503'    => 4,
             'retry5xx'    => 1,
-            'ssl_proxies' => $::role::cache::base::wikimedia_networks,
         },
         backend_options  => [
             {
@@ -101,7 +100,6 @@ class role::cache::parsoid {
         vcl_config      => {
             'layer'       => 'frontend',
             'retry5xx'    => 0,
-            'ssl_proxies' => $::role::cache::base::wikimedia_networks,
         },
         backend_options => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
