@@ -76,7 +76,6 @@ class role::cache::bits (
             'retry5xx'     => 1,
             'cache4xx'     => '1m',
             'layer'        => 'frontend',
-            'ssl_proxies'  => $::role::cache::base::wikimedia_networks,
         },
         backend_options => {
             'port'                  => 80,
