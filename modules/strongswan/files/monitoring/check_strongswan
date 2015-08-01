@@ -142,7 +142,7 @@ sub summarize {
         push(@problem_strs, 'no-xfrm: ' . join(q{,}, @kernelfail));
     }
 
-    my $problems = join(q{ | }, @problem_strs);
+    my $problems = join(q{ }, @problem_strs);
     return ($ok, $problems);
 }
 
@@ -158,7 +158,7 @@ my $conns = parse_ipsec($ipsec_lines);
 my ($ok, $problems) = summarize($xfrms, $conns);
 
 if ($problems) {
-    print("Strongswan $CRIT - ok: $ok | $problems\n");
+    print("Strongswan $CRIT - ok: $ok $problems\n");
     exit($ECRIT);
 }
 
