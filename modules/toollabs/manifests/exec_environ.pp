@@ -127,66 +127,14 @@ class toollabs::exec_environ {
         'libxml-xpathengine-perl',     # For Checkwiki.
         'perl-modules',
 
-        # Python libraries
-        'python-apport',
-        'python-babel',                # T60220
-        'python-beautifulsoup',        # For valhallasw.
-        'python-bottle',               # T58995
-        'python-celery',
-        'python-egenix-mxdatetime',
-        'python-egenix-mxtools',
-        'python-flask',
-        'python-flask-login',
+        # Python libraries on apt.wm.o or tools apt repo
+        # Other python package requirements are added
+        # using the genpp tool
         'python-flask-oauth',
-        'python-flickrapi',            # T86015
-        'python-flup',
-        'python-gdal',
-        'python-gdbm',
-        'python-genshi',               # T50863.
-        'python-genshi-doc',           # T50863.
-        'python-geoip',                # T64649
-        'python-gevent',
-        'python-gi',
-        'python-greenlet',
-        'python-httplib2',
-        'python-imaging',
-        'python-ipaddr',               # T86015.
-        'python-irclib',
-        'python-keyring',
-        'python-launchpadlib',
-        'python-lxml',                 # T61083.
-        'python-magic',                # T62211.
-        'python-matplotlib',           # T63445.
         'python-mwparserfromhell',     # T65539
-        'python-mysql.connector',
-        'python-mysqldb',
-        'python-newt',
-        'python-nose',
-        'python-opencv',
         'python-oursql',               # For danilo et al.
-        'python-problem-report',
-        'python-pycountry',            # T86015
-        'python-pydot',                # T86015
-        'python-pyexiv2',              # T61122.
-        'python-pygments',             # T71050
-        'python-pyinotify',            # T59003
-        'python-requests',
-        'python-rsvg',                 # T58996
-        'python-scipy',
         'python-socketio-client',      # T86015
-        'python-sqlalchemy',
-        'python-svn',                  # T58996
-        'python-twisted',
-        'python-twitter',
-        'python-unicodecsv',           # T86015
-        'python-unittest2',            # T86015
-        'python-virtualenv',
-        'python-wadllib',
-        'python-webpy',
-        'python-werkzeug',
         'python-wikitools',
-        'python-zbar',                 # T58996
-        'python-zmq',
 
         # PHP libraries
         'php5-cli',
@@ -375,6 +323,7 @@ class toollabs::exec_environ {
     # Note: Every package *must* have equivalent package in both the
     # branches. If one is unavailable, please mark it as such with a comment.
     if $::lsbdistcodename == 'precise' {
+        include toollabs::genpp::python_exec_precise
         package { [
             'libboost-python1.48.0',
             'libgdal1-1.7.0',              # T58995
@@ -392,6 +341,7 @@ class toollabs::exec_environ {
             ensure => latest,
         }
     } elsif $::lsbdistcodename == 'trusty' {
+        include toollabs::genpp::python_exec_trusty
         # No obvious package available for libgdal
         package { [
             'hhvm',                        # T78783
@@ -408,7 +358,10 @@ class toollabs::exec_environ {
             ]:
             ensure => latest,
         }
+    } elsif $::lsbdistcodename == 'jessie' {
+        include toollabs::genpp::python_exec_jessie
     }
+
 
 
     sysctl::parameters { 'tool labs':
