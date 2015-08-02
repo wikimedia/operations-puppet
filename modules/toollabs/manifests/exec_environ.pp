@@ -21,6 +21,8 @@ class toollabs::exec_environ {
     include ::mediawiki::packages::fonts
     include ::redis::client::python
 
+    include toollabs::genpp::python_exec_${::lsbdistcodename}
+
     package { [
         # Please keep all packages in each group sorted in alphabetical order
 
@@ -127,66 +129,14 @@ class toollabs::exec_environ {
         'libxml-xpathengine-perl',     # For Checkwiki.
         'perl-modules',
 
-        # Python libraries
-        'python-apport',
-        'python-babel',                # T60220
-        'python-beautifulsoup',        # For valhallasw.
-        'python-bottle',               # T58995
-        'python-celery',
-        'python-egenix-mxdatetime',
-        'python-egenix-mxtools',
-        'python-flask',
-        'python-flask-login',
+        # Python libraries on apt.wm.o or tools apt repo
+        # Other python package requirements are added
+        # using the genpp tool
         'python-flask-oauth',
-        'python-flickrapi',            # T86015
-        'python-flup',
-        'python-gdal',
-        'python-gdbm',
-        'python-genshi',               # T50863.
-        'python-genshi-doc',           # T50863.
-        'python-geoip',                # T64649
-        'python-gevent',
-        'python-gi',
-        'python-greenlet',
-        'python-httplib2',
-        'python-imaging',
-        'python-ipaddr',               # T86015.
-        'python-irclib',
-        'python-keyring',
-        'python-launchpadlib',
-        'python-lxml',                 # T61083.
-        'python-magic',                # T62211.
-        'python-matplotlib',           # T63445.
         'python-mwparserfromhell',     # T65539
-        'python-mysql.connector',
-        'python-mysqldb',
-        'python-newt',
-        'python-nose',
-        'python-opencv',
         'python-oursql',               # For danilo et al.
-        'python-problem-report',
-        'python-pycountry',            # T86015
-        'python-pydot',                # T86015
-        'python-pyexiv2',              # T61122.
-        'python-pygments',             # T71050
-        'python-pyinotify',            # T59003
-        'python-requests',
-        'python-rsvg',                 # T58996
-        'python-scipy',
         'python-socketio-client',      # T86015
-        'python-sqlalchemy',
-        'python-svn',                  # T58996
-        'python-twisted',
-        'python-twitter',
-        'python-unicodecsv',           # T86015
-        'python-unittest2',            # T86015
-        'python-virtualenv',
-        'python-wadllib',
-        'python-webpy',
-        'python-werkzeug',
         'python-wikitools',
-        'python-zbar',                 # T58996
-        'python-zmq',
 
         # PHP libraries
         'php5-cli',
@@ -409,6 +359,7 @@ class toollabs::exec_environ {
             ensure => latest,
         }
     }
+
 
 
     sysctl::parameters { 'tool labs':
