@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+# This script generates python package listings for
+# different host types (dev, exec, ...) for both
+# python 2 and 3, and for all genpp-supported
+# distributions
+
+environ_packages = {
+    'dev': ['coverage', 'dev', 'stdeb'],
+    'exec': [
+        'apport',
+        'babel',                # T60220
+        'beautifulsoup',        # For valhallasw.
+        'bottle',               # T58995
+        'celery',
+        'egenix-mxdatetime',
+        'egenix-mxtools',
+        'flask',
+        'flask-login',
+        'flickrapi',            # T86015
+        'flup',
+        'gdal',
+        'gdbm',
+        'genshi',               # T50863.
+        'genshi-doc',           # T50863.
+        'geoip',                # T64649
+        'gevent',
+        'gi',
+        'greenlet',
+        'httplib2',
+        'imaging',
+        'ipaddr',               # T86015.
+        'irclib',
+        'keyring',
+        'launchpadlib',
+        'lxml',                 # T61083.
+        'magic',                # T62211.
+        'matplotlib',           # T63445.
+        'mysql.connector',
+        'mysqldb',
+        'newt',
+        'nose',
+        'opencv',
+        'problem-report',
+        'pycountry',            # T86015
+        'pydot',                # T86015
+        'pyexiv2',              # T61122.
+        'pygments',             # T71050
+        'pyinotify',            # T59003
+        'requests',
+        'rsvg',                 # T58996
+        'scipy',
+        'socketio-client',      # T86015
+        'sqlalchemy',
+        'svn',                  # T58996
+        'twisted',
+        'twitter',
+        'unicodecsv',           # T86015
+        'unittest2',            # T86015
+        'virtualenv',
+        'wadllib',
+        'webpy',
+        'werkzeug',
+        'yaml',
+        'zbar',                 # T58996
+        'zmq',
+    ],
+}
+
+import genpp
+import logging
+import pprint
+
+logging.basicConfig(level=logging.DEBUG)
+
+environ_processed = {}
+
+for environ, packages_post in environ_packages.items():
+    package_list = {}
+    for package_post in packages_post:
+        for prefix in ['python-', 'python3-']:
+            package_name = prefix + package_post
+            package_list[package_name] = {
+                release: genpp.get_version(package_name, release)
+                for release in genpp.releases
+            }
+
+    for release in genpp.releases:
+        genpp.write_pp('python',
+            release,
+            environ,
+            package_list
+        )
+
+    environ_processed[environ] = package_list
+
+genpp.write_report('python',
+    environ_processed
+)
