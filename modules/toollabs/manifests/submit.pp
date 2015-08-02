@@ -15,8 +15,7 @@
 class toollabs::submit inherits toollabs {
 
     include gridengine::submit_host,
-            toollabs::exec_environ,
-            toollabs::hba
+            toollabs::exec_environ
 
     file { '/etc/ssh/ssh_config':
         ensure => file,
