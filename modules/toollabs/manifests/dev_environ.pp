@@ -17,8 +17,8 @@
 # Sample Usage:
 #
 class toollabs::dev_environ {
-
     if os_version('ubuntu trusty') {
+        include toollabs::genpp::python_dev_trusty
         package { [
             # Previously we installed libmariadbclient-dev, but that causes
             # dependency issues on Trusty.  libmariadbclient-dev formerly
@@ -30,10 +30,20 @@ class toollabs::dev_environ {
         ]:
             ensure  => latest,
         }
-    } else {
+    } elif os_version('ubuntu precise') {
+        include toollabs::genpp::python_dev_precise
         package { [
             'libmariadbclient-dev',
             'libboost-python1.48-dev',
+        ]:
+            ensure  => latest,
+        }
+    } elif os_version('debian jessie') {
+        include toollabs::genpp::python_dev_jessie
+        package { [
+            'libmariadb-client-lgpl-dev',
+            'libmariadb-client-lgpl-dev-compat',
+            'libboost-python1.55-dev',
         ]:
             ensure  => latest,
         }
@@ -81,10 +91,6 @@ class toollabs::dev_environ {
         'mercurial',
         'pastebinit',
         'pep8',                        # T59863
-        'python-coverage',             # T59002
-        'python-dev',
-        'python-stdeb',
-        'python3-dev',
         'qt4-qmake',
         'rlwrap',                      # T87368
         'sbt',
