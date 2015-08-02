@@ -103,7 +103,6 @@ define varnish::instance(
     base::service_unit { "varnish${instancesuffix}":
         template_name  => 'varnish',
         systemd        => true,
-        sysvinit       => true,
         refresh        => false,
         service_params => {
             tag     => 'varnish_instance',
@@ -115,11 +114,6 @@ define varnish::instance(
                 File["/etc/varnish/wikimedia_${vcl}.vcl"],
                 Mount['/var/lib/varnish'],
             ],
-            # The two below were for upstart only.  They seem
-            #  nonsensical vs fixing the initscript, but I suspect they're
-            #  harmless on systemd and can be removed later.
-            hasstatus => false,
-            pattern   => "/var/run/varnishd${instancesuffix}.pid",
         }
     }
 
