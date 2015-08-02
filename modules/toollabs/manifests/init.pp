@@ -21,6 +21,7 @@ class toollabs (
 ) {
 
     include labs_lvm
+    include toollabs::hba
 
     $sysdir = '/data/project/.system'
     $store  = "${sysdir}/store"
