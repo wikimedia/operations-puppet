@@ -17,6 +17,7 @@
 # Sample Usage:
 #
 class toollabs::dev_environ {
+    include toollabs::genpp::python_dev_${::lsbdistcodename}
 
     if os_version('ubuntu trusty') {
         package { [
@@ -81,10 +82,6 @@ class toollabs::dev_environ {
         'mercurial',
         'pastebinit',
         'pep8',                        # T59863
-        'python-coverage',             # T59002
-        'python-dev',
-        'python-stdeb',
-        'python3-dev',
         'qt4-qmake',
         'rlwrap',                      # T87368
         'sbt',
