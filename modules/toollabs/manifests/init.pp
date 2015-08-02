@@ -23,7 +23,8 @@ class toollabs (
     $mail_domain = 'tools.wmflabs.org',
 ) {
 
-    include labs_lvm
+    include labs_lvm,
+            toollabs::hba
 
     $sysdir = '/data/project/.system'
     $store  = "${sysdir}/store"

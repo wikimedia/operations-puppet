@@ -16,8 +16,7 @@
 #
 class toollabs::compute inherits toollabs {
 
-    include toollabs::exec_environ,
-            toollabs::hba
+    include toollabs::exec_environ
 
     motd::script { 'exechost-banner':
         ensure   => present,
