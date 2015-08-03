@@ -396,7 +396,7 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
 
 node /^cp10(4[89]|5[01]|6[1-4]|7[1-4]|99)\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::upload
+    role cache::upload, ipsec
 }
 
 node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
@@ -456,7 +456,11 @@ node /^cp30[34][01]\.esams\.wmnet$/ {
 
 node /^cp30[34][2-9]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::upload
+    if $::hostname == 'cp3034' {
+        role cache::upload, ipsec
+    } else {
+        role cache::upload
+    }
 }
 
 #
