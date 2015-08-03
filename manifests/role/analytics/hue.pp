@@ -54,6 +54,12 @@ class role::analytics::hue {
         ssl_certificate            => $ssl_certificate,
         secure_proxy_ssl_header    => $secure_proxy_ssl_header,
     }
+
+    ferm::service{ 'hue_server':
+        proto  => 'tcp',
+        port   => '8888',
+        srange => '$INTERNAL',
+    }
 }
 
 # TODO: Hue database backup.
