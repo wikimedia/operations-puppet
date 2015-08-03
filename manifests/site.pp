@@ -127,8 +127,8 @@ node /analytics10(11|1[5-7]|19|2[89]|3[0-9]|4[0-9]).eqiad.wmnet/ {
     include standard
 }
 
-# analytics1012, analytics1018, analytics1021 and analytics1022 are Kafka Brokers.
-node /analytics10(12|13|18|21|22)\.eqiad\.wmnet/ {
+# Kafka brokers
+node /analytics10(12|13|14|18|20|21|22)\.eqiad\.wmnet/ {
 
     # Kafka brokers are routed via IPv6 so that
     # other DCs can address without public IPv4
@@ -141,7 +141,7 @@ node /analytics10(12|13|18|21|22)\.eqiad\.wmnet/ {
 
 }
 
-# Analytics1026 is the Impala master
+# analytics1026 is the Impala master
 # (llama, impala-state-store, impala-catalog)
 # analytics1026 also runs misc udp2log for sqstat
 node 'analytics1026.eqiad.wmnet' {
