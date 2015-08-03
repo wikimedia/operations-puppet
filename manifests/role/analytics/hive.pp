@@ -97,4 +97,16 @@ class role::analytics::hive::server inherits role::analytics::hive::client {
     class { 'cdh::hive::master':
         heapsize => '512',
     }
+
+    ferm::service{ 'hive_server':
+        proto  => 'tcp',
+        port   => '10000',
+        srange => '$INTERNAL',
+    }
+
+    ferm::service{ 'hive_metastore':
+        proto  => 'tcp',
+        port   => '9083',
+        srange => '$INTERNAL',
+    }
 }
