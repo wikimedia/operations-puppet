@@ -23,10 +23,8 @@ class role::cache::kafka::statsv(
         varnish_name      => $varnish_name,
         varnish_svc_name  => $varnish_svc_name,
         varnish_opts      => { 'm' => 'RxURL:^/beacon/statsv\?', },
-        # By requiring 2 ACKs per message batch, we survive a
-        # single broker dropping out of its leader role,
-        # without seeing lost messages.
-        topic_request_required_acks  => '2',
+        # -1 means all brokers in the ISR must ACK this request.
+        topic_request_required_acks  => '-1',
     }
 
     if $::standard::has_ganglia {
