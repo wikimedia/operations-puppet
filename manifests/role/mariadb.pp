@@ -103,6 +103,7 @@ class role::mariadb::misc(
     include standard
     include role::mariadb::monitor
     include passwords::misc::scripts
+    include role::mariadb::ferm
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
