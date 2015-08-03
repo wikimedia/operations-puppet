@@ -32,6 +32,16 @@ class role::dumps {
         proto  => 'tcp',
         srange => "@resolve(($rsync_clients_ipv6_ferm),AAAA)",
     }
+
+    ferm::service { 'dumps_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'dumps_https':
+        proto => 'tcp',
+        port  => '443',
+    }
 }
 
 # ZIM dumps - https://en.wikipedia.org/wiki/ZIM_%28file_format%29
