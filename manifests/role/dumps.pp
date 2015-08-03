@@ -19,7 +19,7 @@ class role::dumps {
     $rsync_clients_ferm = join($rsync_clients, ' ')
 
     $rsync_clients_ipv6 = hiera('dumps::rsync_clients_ipv6')
-    $rsync_clients_ipv6_ferm = join($rsync_clients, ' ')
+    $rsync_clients_ipv6_ferm = join($rsync_clients_ipv6, ' ')
 
     ferm::service {'dumps_rsyncd_ipv4':
         port   => '873',
