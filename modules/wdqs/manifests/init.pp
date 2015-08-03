@@ -42,6 +42,13 @@ class wdqs(
         require => User[$username],
     }
 
+    # Blazegraph tries to log to this file, redirect to log dir
+    file { "${package_dir}/rules.log":
+        ensure  => link,
+        target  => "${log_dir}/rules.log",
+        require => [ [File[$package_dir], File[$log_dir] ],
+    }
+
     # If we have data in separate dir, make link in package dir
     if $data_dir != $package_dir {
         file { $data_dir:
