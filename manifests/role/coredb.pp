@@ -325,6 +325,22 @@ class role::coredb::common(
         }
     }
 
+    ferm::service{ 'coredb_internal':
+        proto  => 'tcp',
+        port   => 3306,
+        srange => '$INTERNAL',
+    }
+
+    # tendril monitoring
+    ferm::rule { 'codedb_monitoring':
+        rule => "saddr @resolve((neon.wikimedia.org iron.wikimedia.org)) proto tcp dport (3306) ACCEPT;",
+    }
+
+    # for DBA purposes (e.g. duplicating databases via netcat)
+    ferm::rule { 'coredb_dba':
+        rule => "saddr @resolve((neon.wikimedia.org iron.wikimedia.org db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;",
+    }
+
     if $::hostname in $snapshots {
         include coredb_mysql::snapshot
     }
