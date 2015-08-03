@@ -63,4 +63,10 @@ class role::analytics::oozie::server inherits role::analytics::oozie::client {
         # settings look like they are properly configured.
         authorization_service_authorization_enabled => false,
     }
+
+    ferm::service{ 'oozie_server':
+        proto  => 'tcp',
+        port   => '11000',
+        srange => '$INTERNAL',
+    }
 }
