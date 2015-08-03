@@ -120,7 +120,7 @@ node /analytics10(04|10).eqiad.wmnet/ {
 # templates/hadoop/net-topology.py.erb to make sure the
 # hostname -> /datacenter/rack/row id is correct.  This is
 # used for Hadoop network topology awareness.
-node /analytics10(11|1[3-7]|19|2[089]|3[0-9]|4[0-9]).eqiad.wmnet/ {
+node /analytics10(11|1[5-7]|19|2[89]|3[0-9]|4[0-9]).eqiad.wmnet/ {
 
     role analytics::hadoop::worker, analytics::impala::worker
 
