@@ -139,6 +139,7 @@ class role::mariadb::misc::phabricator(
     include mariadb::packages_wmf
     include role::mariadb::monitor
     include passwords::misc::scripts
+    include role::mariadb::ferm
 
     $read_only = $master ? {
         true  => 'off',
