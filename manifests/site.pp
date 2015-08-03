@@ -456,11 +456,7 @@ node /^cp30[34][01]\.esams\.wmnet$/ {
 
 node /^cp30[34][2-9]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    if $::hostname == 'cp3034' {
-        role cache::upload, ipsec
-    } else {
-        role cache::upload
-    }
+    role cache::upload, ipsec
 }
 
 #
@@ -476,7 +472,7 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
 
     interface::add_ip6_mapped { 'main': }
-    role cache::upload
+    role cache::upload, ipsec
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
