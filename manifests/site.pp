@@ -495,7 +495,6 @@ node 'dataset1001.wikimedia.org' {
 
     role dataset::systemusers, dataset::primary, dumps
     include standard
-    include base::firewall
 
     interface::add_ip6_mapped { 'eth2':
         interface => 'eth2',
