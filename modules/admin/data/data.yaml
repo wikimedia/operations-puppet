@@ -58,7 +58,7 @@ groups:
     gid: 706
     description: access to terbium, fluorine (private data) and bastion hosts
                  restricted folks use sudo to access apache / www-data resources
-    members: [daniel, dartar, ellery,
+    members: [daniel, dartar, ellery, bearloga,
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, tnegrin, ssastry,
               ironholds, nuria, leila, santhosh, amire80, legoktm, jsahleen]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
@@ -177,7 +177,7 @@ groups:
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
-    members: [ezachte, ironholds, milimetric, joal, mforns]
+    members: [ezachte, ironholds, milimetric, joal, mforns, bearloga]
     privileges: ['ALL = (stats) NOPASSWD: ALL']
   oit:
     gid: 727
