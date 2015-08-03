@@ -61,7 +61,6 @@ class role::mediawiki::common {
 
     class { '::nutcracker':
         mbuf_size => '64k',
-        verbosity => 6,  # LOG_INFO
         pools     => $nutcracker_pools,
     }
 
