@@ -128,7 +128,7 @@ node /analytics10(11|1[5-7]|19|2[89]|3[0-9]|4[0-9]).eqiad.wmnet/ {
 }
 
 # Kafka brokers
-node /analytics10(12|13|14|18|20|21|22)\.eqiad\.wmnet/ {
+node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
 
     # Kafka brokers are routed via IPv6 so that
     # other DCs can address without public IPv4
