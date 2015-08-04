@@ -1315,7 +1315,7 @@ node /labstore100[12]\.eqiad\.wmnet/ {
 }
 
 node 'labstore1003.eqiad.wmnet' {
-    role labs::nfs::dumps
+    role labs::nfs::extras
 }
 
 node /labstore200[12]\.codfw\.wmnet/ {

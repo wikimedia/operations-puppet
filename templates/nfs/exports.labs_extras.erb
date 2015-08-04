@@ -3,10 +3,11 @@
 #
 #  THIS FILE IS MANAGED BY PUPPET
 #
-#  Source: files/nfs/exports.dumps
-#  From:   role::labs::nfs::dumps
+#  Source: templates/nfs/exports.labs_extras.erb
+#  From:   role::labs::nfs::extras
 #
 
 /srv        *(ro,fsid=0,sec=sys,sync,subtree_check,root_squash,nocrossmnt)
 /srv/dumps  -rw,sec=sys,no_subtree_check,no_root_squash <%= Array(@dump_servers_ips).join(' ') %>
 /srv/dumps  *(ro,sec=sys,no_subtree_check,all_squash,nocrossmnt)
+/srv/statistics *(ro,sec=sys,no_subtree_check,all_squash,nocrossmnt)
