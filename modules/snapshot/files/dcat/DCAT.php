@@ -110,9 +110,11 @@ function makeDataBlob( $config ) {
 
 	// identify existing i18n files and load into array
 	$langs = array();
-	foreach ( glob( 'i18n/*.json' ) as $filename ) {
-		if ( $filename !== 'i18n/qqq.json' ) {
-			$langcode = substr( $filename, strlen( 'i18n/' ), -strlen( '.json' ) );
+	foreach ( glob( __DIR__ . '/i18n/*.json' ) as $filename ) {
+		if ( $filename !== __DIR__ . '/i18n/qqq.json' ) {
+			$langcode = substr( $filename,
+				strlen( __DIR__ . '/i18n/' ),
+				-strlen( '.json' ) );
 			$langs[$langcode] = $filename;
 		}
 	}
