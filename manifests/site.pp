@@ -1083,6 +1083,7 @@ node 'graphite1001.eqiad.wmnet' {
     include role::statsdlb
     include role::gdash
     include role::tessera
+    include role::grafana
     include role::performance
     include role::graphite::production::alerts
     include role::restbase::alerts
@@ -2414,7 +2415,6 @@ node 'ytterbium.wikimedia.org' {
 node 'zirconium.wikimedia.org' {
     include base::firewall
     include standard
-    include role::grafana
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
