@@ -114,7 +114,7 @@ class role::labs::instance {
         }
     }
 
-    if mount_nfs_volume($::instanceproject, 'dumps') {
+    if mount_nfs_volume($::instanceproject, 'dumps') or mount_nfs_volume($::instanceproject, 'statistics') {
         # Directory for public (readonly) mounts
         file { '/public':
             ensure => directory,
@@ -123,6 +123,25 @@ class role::labs::instance {
             mode   => '0755',
         }
 
+    }
+
+    if mount_nfs_volume($::instanceproject, 'statistics') {
+        file { '/public/statistics':
+            ensure  => directory,
+            require => File['/public'],
+        }
+
+        mount { '/public/statistics':
+            ensure  => mounted,
+            atboot  => true,
+            fstype  => 'nfs',
+            options => "ro,${nfs_opts}",
+            device  => "${dumps_server}:/statistics",
+            require => File['/public/statistics', '/etc/modprobe.d/nfs-no-idmap'],
+        }
+    }
+
+    if mount_nfs_volume($::instanceproject, 'dumps') {
         file { '/public/dumps':
             ensure  => directory,
             require => File['/public'],
