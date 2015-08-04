@@ -4,12 +4,12 @@ class snapshot::dumps::dblists($enable=true, $hugewikis_enable=false) {
         $hugewikis_dblist = join($hugewikis, "\n")
 
         $bigwikis = ['dewiki', 'eswiki', 'frwiki', 'itwiki', 'jawiki',
-                    'nlwiki', 'plwiki', 'ptwiki', 'ruwiki']
+                    'nlwiki', 'plwiki', 'ptwiki', 'ruwiki', 'commonswiki',
+                    'wikidatawiki']
         $bigwikis_dblist = join($bigwikis, "\n")
 
         # labswiki Broken, DB permissions issues?
-        # add wikidata here and run manually for right now
-        $excludewikis = ['labswiki', 'wikidatawiki']
+        $excludewikis = ['labswiki']
         $excludewikis_dblist = join($excludewikis, "\n")
 
         $skip_dblist = "${hugewikis_dblist}\n${bigwikis_dblist}\n${excludewikis_dblist}"

@@ -55,6 +55,14 @@ class snapshot::dumps::configs(
                     pagesPerChunkHistory  => '149600,801600,408900,2000000',
                     pagesPerChunkAbstract => '800000',
                 },
+                commonswiki => {
+                    pagesPerChunkHistory  => '6440000,8960000,11260000,20000000',
+                    pagesPerChunkAbstract => '11000000',
+                },
+                wikidatawiki => {
+                    pagesPerChunkHistory  => '2300000,4500000,8600000,10000000',
+                    pagesPerChunkAbstract => '5800000',
+                },
             },
         },
         hugewikis => {
