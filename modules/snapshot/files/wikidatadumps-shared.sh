@@ -44,3 +44,7 @@ function pruneOldLogs {
 	# Remove old logs (keep 35 days)
 	find /var/log/wikidatadump/ -name 'dumpwikidata*-*-*.log' -mtime +36 -delete
 }
+
+function runDcat {
+	php /usr/local/share/dcat/DCAT.php --config=/usr/local/share/dcat/config.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
+}
