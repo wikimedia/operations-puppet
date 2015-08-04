@@ -228,3 +228,8 @@ zookeeper_hosts:
   conf1003.eqiad.wmnet: '1103'
 puppetmaster: "puppet"
 active_labstore_host: 'labstore1002'
+statistics_servers:
+  - stat1001.eqiad.wmnet
+  - stat1002.eqiad.wmnet
+  - stat1003.eqiad.wmnet
+  - analytics1027.eqiad.wmnet
