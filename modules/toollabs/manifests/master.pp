@@ -16,6 +16,11 @@ class toollabs::master inherits toollabs {
             toollabs::queue::task,
             toollabs::queue::continuous
 
+    gridengine_resource { 'h_vmem':
+        ensure     => present,
+        consumable => 'YES',
+    }
+
     file { "${toollabs::collectors}/hostgroups":
         ensure    => directory,
         owner     => 'root',
