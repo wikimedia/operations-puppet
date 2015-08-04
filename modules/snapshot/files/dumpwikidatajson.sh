@@ -43,3 +43,4 @@ find $legacyDirectory -name '*.json.gz' -mtime +`expr $daysToKeep + 1` -delete
 
 pruneOldDirectories
 pruneOldLogs
+runDcat
