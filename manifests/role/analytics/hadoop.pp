@@ -536,6 +536,13 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         }
     }
 
+    # Open up port for debugging
+    ferm::service{ 'hadoop_jmxtrans':
+        proto  => 'tcp',
+        port   => '2101',
+        srange => '$INTERNAL',
+    }
+
     # This will create HDFS user home directories
     # for all users in the provided groups.
     # This only needs to be run on the NameNode
@@ -607,6 +614,13 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
         }
     }
 
+    # Open up port for debugging
+    ferm::service{ 'hadoop_jmxtrans':
+        proto  => 'tcp',
+        port   => '2101',
+        srange => '$INTERNAL',
+    }
+
     # Install hive client on worker nodes to get
     # hive-hcatalog package.  hive-catalog depends
     # on hive package, so we might as well
@@ -665,6 +679,12 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
         }
     }
 
+    # Open up port for debugging
+    ferm::service{ 'hadoop_jmxtrans':
+        proto  => 'tcp',
+        port   => '2101',
+        srange => '$INTERNAL',
+    }
 
     # If this is a resourcemanager host, then go ahead
     # and include a resourcemanager on all standby nodes as well
