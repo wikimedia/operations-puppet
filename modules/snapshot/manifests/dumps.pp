@@ -34,4 +34,7 @@ class snapshot::dumps(
     class { 'snapshot::dumps::templates':
         enable => 'enable'
     }
+    class { 'snapshot::dumps::stagesconfig':
+        enable => 'enable'
+    }
 }
