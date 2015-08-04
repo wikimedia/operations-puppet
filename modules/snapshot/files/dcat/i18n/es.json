@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Macofe"
+		]
+	},
+	"dataset-live-title": "Acceso en vivo",
+	"dataset-live-description": "La versión en vivo de los datos, incluyendo entidades y propiedades. Solo se muestran como distribuciones los formatos que no están en desuso.",
+	"dataset-dump-title": "Volcado de la entidad del $1",
+	"dataset-dump-description": "Un volcado estático de todas las entidades en el fecha dada.",
+	"distribution-dump-description": "Un archivo $1 comprimido con gzip."
+}

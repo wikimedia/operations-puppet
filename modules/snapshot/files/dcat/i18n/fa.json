@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Reza1615"
+		]
+	},
+	"dataset-live-title": "دسترسی زنده",
+	"dataset-dump-title": "دامپ محتوی $1",
+	"distribution-dump-description": "فایل فشرده gziped $1"
+}

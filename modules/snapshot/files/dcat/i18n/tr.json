@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kincki",
+			"Ömer Berkay"
+		]
+	},
+	"dataset-live-title": "Canlı erişim",
+	"dataset-dump-title": "Varlık dökümü $1",
+	"distribution-dump-description": "Bir gziped $1 dosyası."
+}

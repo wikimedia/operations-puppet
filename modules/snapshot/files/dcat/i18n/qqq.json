@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": ["Lokal_Profil"]
+		"authors": [
+			"Lokal_Profil"
+		]
 	},
 	"dataset-live-title": "The title for the live access dataset",
 	"dataset-live-description": "The description of the live access dataset. For terminology see https://www.wikidata.org/wiki/Wikidata:Glossary. For deprecation see https://en.wikipedia.org/wiki/Deprecation.",
