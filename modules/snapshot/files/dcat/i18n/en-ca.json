@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Rbix"
+		]
+	},
+	"dataset-dump-title": "Entity dump of $1",
+	"distribution-dump-description": "A gzipped $1 file."
+}

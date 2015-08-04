@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Siebrand"
+		]
+	},
+	"dataset-live-title": "Live toegang",
+	"dataset-live-description": "De live versie van de gegevens, bevat entiteiten en eigenschappen. Alleen niet-verouderde formaten worden weergegeven als distributies.",
+	"dataset-dump-title": "Entiteitendump van $1",
+	"dataset-dump-description": "Een statische dump van alle entiteiten op een bepaalde datum.",
+	"distribution-ld-description": "Het Linked Data-eindpunt. Het formaat wordt opgemaakt via contentonderhandeling.",
+	"distribution-api-description": "Het eindpunt voor de MediaWiki-API. De opmaak wordt opgegeven via de parameter \"format\".",
+	"distribution-dump-description": "Een met Gzip gecomprimeerd bestand van het type $1."
+}
