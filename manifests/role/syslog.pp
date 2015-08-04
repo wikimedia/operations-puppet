@@ -1,10 +1,18 @@
 # == Class role::syslog::centralserver
 #
-# Setup syslog-ng as a receiver of cluster wide syslog messages.
+# Setup rsyslog as a receiver of cluster wide syslog messages.
 #
 class role::syslog::centralserver {
 
-    system::role { 'role::syslog::centralserver': description => 'Central syslog server' }
+    system::role { 'role::syslog::centralserver':
+        description => 'Central syslog server'
+    }
 
-    class { 'misc::syslog-server': }
+    ferm::service { 'rsyslog-receiver':
+        proto   => 'udp',
+        port    => 514,
+        notrack => true,
+    }
+
+    class { 'rsyslog::receiver': }
 }
