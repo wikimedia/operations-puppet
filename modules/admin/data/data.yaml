@@ -12,7 +12,7 @@ groups:
     gid: 700
     description: include everywhere ops folks
     members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner, yuvipanda,
-              dzahn, akosiaris, springle, mark, gage, ariel, cmjohnson, otto, robh, tstarling,
+              dzahn, akosiaris, springle, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, midom, jmm, jynus, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
@@ -102,7 +102,7 @@ groups:
     gid: 714
     description: users with access to research db
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
-              dduvall, ellery, ezachte, gage, gilles, haithams, halfak, handrade,
+              dduvall, ellery, ezachte, gilles, haithams, halfak, handrade,
               ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
               kleduc, leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, springle, tnegrin, yurik, yuvipanda,
@@ -417,7 +417,7 @@ users:
         jgreen@thwibbith]
     uid: 2074
   gage:
-    ensure: present
+    ensure: absent
     gid: 500
     name: gage
     realname: Jeff Gage
