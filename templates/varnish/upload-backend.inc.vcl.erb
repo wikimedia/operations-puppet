@@ -85,7 +85,6 @@ sub check_thumb_404 {
 <% end -%>
 sub vcl_recv {
 	call vcl_recv_purge;
-	call restrict_access;
 
 	if (req.http.host != "<%= @cluster_options.fetch('upload_domain', 'upload.wikimedia.org') %>") {
 		error 403 "Requested target domain not allowed.";
