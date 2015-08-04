@@ -18,5 +18,6 @@ server {
     location / {
         <% if @cache %>proxy_cache ores;<% end %>
         proxy_pass http://oresweb;
+        add_header 'Access-Control-Allow-Origin' '*';
     }
 }
