@@ -1039,6 +1039,7 @@ node 'hafnium.wikimedia.org' {
 # poolcounter - careful
 node 'helium.eqiad.wmnet' {
     include standard
+    include base::firewall
     include role::poolcounter
     include role::backup::director
     include role::backup::storage
