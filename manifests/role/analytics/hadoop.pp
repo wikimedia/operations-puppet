@@ -446,6 +446,13 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
       ensure => 'absent'
     }
 
+    # Open up port for debugging
+    ferm::service{ 'hadoop_jmxtrans':
+        proto  => 'tcp',
+        port   => '2101',
+        srange => '$INTERNAL',
+    }
+
     # Install packages that are useful for distributed
     # computation in Hadoop, and thus should be available on
     # any Hadoop nodes.
