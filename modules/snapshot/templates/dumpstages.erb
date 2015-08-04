@@ -1,0 +1,81 @@
+# run these commands in order on the regular snapshot hosts
+
+# slots_used numcommands on_failure error_notify command
+<%= if @stagetype == 'normal' || @stagetype == 'partial' %>
+# stubs first
+1 8 <%= @stages['smallwikis']['firststage'] %> --job xmlstubsdump
+# tables next so inconsistencies between stubs and tables aren't too huge
+1 8 <%= @stages['smallwikis']['rest'] %> --job tables
+# stubs for big wikis
+4 8 <%= @stages['bigwikis']['firststage'] %> --job xmlstubsdump
+# tables for big wikis
+1 8 <%= @stages['bigwikis']['rest'] %> --job tables
+# recombine stubs for big wikis
+1 8 <%= @stages['bigwikis']['rest'] %> --job xmlstubsdumprecombine
+
+# regular articles
+1 8 <%= @stages['smallwikis']['rest'] %> --job articlesdump
+# regular articles for big wikis
+4 8 <%= @stages['bigwikis']['rest'] %> --job articlesdump
+# recombine articles for big wikis
+1 8 <%= @stages['bigwikis']['rest'] %> --job articlesdumprecombine
+
+# regular articles multistream
+1 8 <%= @stages['smallwikis']['rest'] %> --job articlesmultistreamdump
+# regular articles for big wikis multistream
+1 8 <%= @stages['bigwikis']['rest'] %> --job articlesmultistreamdump
+
+# articles plus meta pages
+1 8 <%= @stages['smallwikis']['rest'] %> --job metacurrentdump
+# articles plus meta pages for big wikis
+4 8 <%= @stages['bigwikis']['rest'] %> --job metacurrentdump
+# recombine articles plus meta pages for big wikis
+1 8 <%= @stages['bigwikis']['rest'] %> --job metacurrentdumprecombine
+
+<%= if @stagetype == 'normal' %>
+# all remaining jobs
+1 8 <%= @stages['smallwikis']['rest'] %>
+4 8 <%= @stages['bigwikis']['rest'] %>
+<% end -%>
+
+<%= if @stagetype == 'partial' %>
+# all remaining jobs except for the history revs
+1 8 <%= @stages['smallwikis']['rest'] %> <%= @stages['skipjobs'] %>
+4 8 <%= @stages['bigwikis']['rest'] %> <%= @stages['skipjobs'] %>
+<% end -%>
+
+<% end -%>
+
+<%= if @stagetype == 'normal_huge'|| @stagetype == 'partial_huge' %>
+# stubs first
+27 1 <%= @stages['hugewikis']['firststage'] %> --job xmlstubsdump
+# tables next so inconsistencies between stubs and tables aren't too huge
+1 1 <%= @stages['hugewikis']['rest'] %> --job tables
+# recombine stubs for huge wikis
+1 1 <%= @stages['hugewikis']['rest'] %> --job xmlstubsdumprecombine
+
+# regular articles
+27 1 <%= @stages['hugewikis']['rest'] %> --job articlesdump
+# recombine articles for huge wikis
+1 1 <%= @stages['hugewikis']['rest'] %> --job articlesdumprecombine
+
+# regular articles multistream
+27 1 <%= @stages['hugewikis']['rest'] %> --job articlesmultistreamdump
+
+# articles plus meta pages
+27 1 <%= @stages['hugewikis']['rest'] %> --job metacurrentdump
+# recombine articles plus meta pages for huge wikis
+1 1 <%= @stages['hugewikis']['rest'] %> --job metacurrentdumprecombine
+
+<%= if @stagetype == 'normal_huge' %>
+# all remaining jobs
+27 1 <%= @stages['hugewikis']['rest'] %>
+<% end -%>
+
+<%= if @stagetype == 'partial_huge' %>
+# all remaining jobs except for the history revs
+27 1 <%= @stages['hugewikis']['rest'] %> <%= @stages['skipjobs'] %>
+<% end -%>
+
+<% end -%>
+
