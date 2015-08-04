@@ -159,6 +159,7 @@ node 'analytics1026.eqiad.wmnet' {
 node 'analytics1027.eqiad.wmnet' {
 
     include standard
+    include base::firewall
 
     include role::analytics::hive::server
     include role::analytics::oozie::server
