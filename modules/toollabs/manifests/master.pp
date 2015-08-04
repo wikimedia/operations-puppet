@@ -16,6 +16,34 @@ class toollabs::master inherits toollabs {
             toollabs::queue::task,
             toollabs::queue::continuous
 
+    gridengine_resource { 'h_vmem':
+        ensure      => present,
+        requestable => 'FORCED',
+        consumable  => 'YES',
+    }
+
+    gridengine_resource { 'release':
+        ensure      => present,
+        shortcut    => 'rel',
+        type        => 'CSTRING',
+        relop       => '==',
+        requestable => 'YES',
+        consumable  => 'NO',
+        default     => 'NONE',
+        urgency     => '0',
+    }
+
+    gridengine_resource { 'user_slot':
+        ensure      => present,
+        shortcut    => 'u',
+        type        => 'INT',
+        relop       => '<=',
+        requestable => 'YES',
+        consumable  => 'YES',
+        default     => '0',
+        urgency     => '0',
+    }
+
     file { "${toollabs::collectors}/hostgroups":
         ensure => directory,
         owner  => 'root',
@@ -92,4 +120,5 @@ class toollabs::master inherits toollabs {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/gridscripts/runninggridjobsmail.py',
     }
+
 }

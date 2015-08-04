@@ -87,30 +87,6 @@ class gridengine::master
         delcmd => '/usr/bin/qconf -dh',
     }
 
-    file { "${etcdir}/complex":
-        ensure  => directory,
-        force   => true,
-        owner   => 'sgeadmin',
-        group   => 'sgeadmin',
-        mode    => '0775',
-        recurse => true,
-        purge   => true,
-    }
-
-    file { "${etcdir}/complex/99-default":
-        ensure => file,
-        owner  => 'sgeadmin',
-        group  => 'sgeadmin',
-        mode   => '0664',
-        source => 'puppet:///modules/gridengine/complex-99-default',
-    }
-
-    exec { 'update-complex-conf':
-        onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/complex.conf ${etcdir}/complex/*",
-        command => "/bin/echo /usr/bin/qconf -Mc ${etcdir}/complex.conf'",
-        require => File[ "${etcdir}/bin", "${etcdir}/complex/99-default" ],
-    }
-
     file { "${etcdir}/config":
         ensure  => directory,
         force   => true,
@@ -132,7 +108,7 @@ class gridengine::master
     exec { 'update-config-conf':
         onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/config.conf ${etcdir}/config/*",
         command => "/bin/echo /usr/bin/qconf -Mconf ${etcdir}/config.conf",
-        require => File[ "${etcdir}/bin", "${etcdir}/complex/99-default" ],
+        require => File[ "${etcdir}/bin", "${etcdir}/config/99-default" ],
     }
 
 }
