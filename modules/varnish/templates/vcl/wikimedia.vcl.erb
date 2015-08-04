@@ -344,15 +344,14 @@ sub vcl_recv_append_xff {
 	}
 }
 
-<% if ! @wikimedia_networks.empty? -%>
-sub restrict_access {
+sub vcl_recv {
+	// Do not allow direct access to non-frontend layers
+	<% if @vcl_config.fetch("layer", "frontend") != "frontend" -%>
 	if (client.ip !~ wikimedia_nets) {
 		error 403 "Access denied";
 	}
-}
+	<% end -%>
 
-<% end -%>
-sub vcl_recv {
 	if (req.request !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
 		&& !(req.request == "OPTIONS" && req.http.Origin)) {
 		error 403 "HTTP method not allowed.";

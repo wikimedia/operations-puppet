@@ -5,7 +5,6 @@ include "text-common.inc.vcl";
 
 sub vcl_recv {
 	call vcl_recv_purge;
-	call restrict_access;
 
 	if (req.http.host ~ "^test\.") {
 		set req.http.X-Wikimedia-Debug = "1";
