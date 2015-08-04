@@ -10,6 +10,6 @@ class pybal {
 
     nrpe::monitor_service { 'pybal':
         description  => 'pybal',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a /usr/sbin/pybal',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u root -a /usr/sbin/pybal',
     }
 }
