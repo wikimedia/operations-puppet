@@ -4,24 +4,6 @@ info:
   name: restbase
 
 
-# Log error messages and gracefully restart a worker if v8 reports using more
-# heap (note: not RSS).
-worker_heap_limit_mb: 300
-
-logging:
-  name: restbase
-  level: <%= @logging_level %>
-  streams:
-  # XXX: Use gelf-stream -> logstash
-  - type: gelf
-    host: <%= @logstash_host %>
-    port: <%= @logstash_port %>
-
-# StatsD metrics collection
-metrics:
-  type: statsd # default, but lets be explicit
-  host: <%= @statsd_host %>
-  port: <%= @statsd_port %>
 
 # Swagger spec templates, referenced using yaml references in the spec section
 # below.
@@ -143,7 +125,12 @@ templates:
           - name: action
             type: file
             options:
-              apiURI: http://{domain}/w/api.php
+              apiRequest:
+                method: post
+                uri: http://api.svc.eqiad.wmnet/w/api.php
+                headers:
+                  host: '{$.request.params.domain}'
+                body: '{$.request.body}'
 
       /{module:graphoid}:
         x-modules:
@@ -157,6 +144,7 @@ templates:
                     backend_request:
                       # Default value: http://graphoid.svc.eqiad.wmnet:19000
                       uri: <%= @graphoid_host_port %>/{domain}/v1/png/{title}/{revision}/{graph_id}
+                      body: '{$.request.body}'
 
   wp-default-1.0.0: &wp/default/1.0.0
     x-subspecs:
@@ -933,3 +921,23 @@ services:
       spec: *spec
       salt: <%= @salt_key %>
       default_page_size: <%= @page_size %>
+
+# Log error messages and gracefully restart a worker if v8 reports using more
+# heap (note: not RSS).
+worker_heap_limit_mb: 300
+
+logging:
+  name: <%= @cluster %>
+  level: <%= @logging_level %>
+  streams:
+  # XXX: Use gelf-stream -> logstash
+  - type: gelf
+    host: <%= @logstash_host %>
+    port: <%= @logstash_port %>
+
+# StatsD metrics collection
+metrics:
+  name: <%= @cluster %>
+  type: statsd # default, but lets be explicit
+  host: <%= @statsd_host %>
+  port: <%= @statsd_port %>
