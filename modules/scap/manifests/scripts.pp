@@ -9,12 +9,6 @@ class scap::scripts {
     require misc::deployment::passwordscripts
     require mediawiki::users
 
-    file { '/usr/local/bin/clear-profile':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/scap/clear-profile',
-    }
     file { '/usr/local/bin/dologmsg':
         owner  => 'root',
         group  => 'root',
@@ -126,5 +120,10 @@ class scap::scripts {
         group   => 'root',
         mode    => '0444',
         content => template('scap/mw-deployment-vars.erb'),
+    }
+
+    # Clean up old cruft
+    file { '/usr/local/bin/clear-profile':
+        ensure => 'absent',
     }
 }
