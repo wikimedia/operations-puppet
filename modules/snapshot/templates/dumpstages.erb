@@ -7,7 +7,7 @@
 # tables next so inconsistencies between stubs and tables aren't too huge
 1 8 <%= @stages['smallwikis']['rest'] %> --job tables
 # stubs for big wikis
-4 8 <%= @stages['bigwikis']['firststage'] -%> --job xmlstubsdump
+4 2 <%= @stages['bigwikis']['firststage'] -%> --job xmlstubsdump
 # tables for big wikis
 1 8 <%= @stages['bigwikis']['rest'] -%> --job tables
 # recombine stubs for big wikis
@@ -16,7 +16,7 @@
 # regular articles
 1 8 <%= @stages['smallwikis']['rest'] -%> --job articlesdump
 # regular articles for big wikis
-4 8 <%= @stages['bigwikis']['rest'] -%> --job articlesdump
+4 2 <%= @stages['bigwikis']['rest'] -%> --job articlesdump
 # recombine articles for big wikis
 1 8 <%= @stages['bigwikis']['rest'] -%> --job articlesdumprecombine
 
@@ -28,20 +28,20 @@
 # articles plus meta pages
 1 8 <%= @stages['smallwikis']['rest'] -%> --job metacurrentdump
 # articles plus meta pages for big wikis
-4 8 <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump
+4 2 <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump
 # recombine articles plus meta pages for big wikis
 1 8 <%= @stages['bigwikis']['rest'] -%> --job metacurrentdumprecombine
 
 <% if @stagestype == 'normal' %>
 # all remaining jobs
 1 8 <%= @stages['smallwikis']['rest'] %>
-4 8 <%= @stages['bigwikis']['rest'] %>
+4 2 <%= @stages['bigwikis']['rest'] %>
 <% end -%>
 
 <% if @stagestype == 'partial' %>
 # all remaining jobs except for the history revs
 1 8 <%= @stages['smallwikis']['rest'] %> <%= @stages['skipjob_args'] %>
-4 8 <%= @stages['bigwikis']['rest'] %> <%= @stages['skipjob_args'] %>
+4 2 <%= @stages['bigwikis']['rest'] %> <%= @stages['skipjob_args'] %>
 <% end -%>
 
 <% end -%>
