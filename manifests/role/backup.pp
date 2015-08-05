@@ -192,9 +192,6 @@ class role::backup::director {
     bacula::director::fileset { 'srv-ganglia':
         includes => [ '/srv/ganglia' ]
     }
-    bacula::director::fileset { 'srv-org-wikimedia-blog':
-        includes => [ '/srv/org/wikimedia/blog' ]
-    }
     bacula::director::fileset { 'bugzilla-static':
         includes => [ '/srv/org/wikimedia/static-bugzilla' ]
     }
