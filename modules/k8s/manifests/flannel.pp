@@ -1,6 +1,6 @@
 class k8s::flannel(
     $etcd_endpoints,
-    $etcd_prefix='/coreos.com/network/',
+    $etcd_prefix='/coreos.com/network',
 ) {
     # Ugly ugly haaaacccckkkkkk
     # This will eventually be packaged
