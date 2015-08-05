@@ -28,6 +28,7 @@ class package_builder(
         'dh-autoreconf',
         'git-buildpackage',
         'quilt',
+        'wdiff',
         'lintian',
         'zip',
         'unzip',
