@@ -24,6 +24,15 @@ class role::librenms {
             'community' => [ $passwords::network::snmp_ro_community ],
         },
 
+        'auth_mechanism'            => 'ldap',
+        'auth_ldap_version'         => 3,
+        'auth_ldap_server'          => 'ldap-eqaid.wikimedia.org',
+        'auth_ldap_port'            => 1389,
+        'auth_ldap_prefix'          => 'uid=',
+        'auth_ldap_suffix'          => ',ou=people,dc=wikimedia,dc=org',
+        'auth_ldap_groupbase'       => 'cn=librenms,ou=people,dc=wikimedia,dc=org',
+        'auth_ldap_groupmemberattr' => 'gidNumber',
+
         'nets'             => $network::constants::external_networks,
         'autodiscovery'    => {
             'xdp'      => true,
