@@ -14,7 +14,6 @@ private:
     gid: 52647
     mounts:
       scratch: true
-      statistics: true
   bots:
     gid: 50064
     mounts:
