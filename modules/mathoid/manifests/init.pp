@@ -38,6 +38,7 @@ class mathoid(
             png       => $png_generation,
             speakText => $speakText_generation,
         },
-        healthcheck_url => '/_info',
+        healthcheck_url => '',
+        has_spec        => true,
     }
 }
