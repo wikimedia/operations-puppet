@@ -8,7 +8,7 @@ class role::cassandra {
 
     # temporary collector, T78514
     diamond::collector { 'CassandraCollector':
-        source   => 'puppet:///modules/diamond/collector/cassandra.py',
+        ensure => absent,
     }
 
     system::role { 'role::cassandra':
