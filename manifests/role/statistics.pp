@@ -64,7 +64,6 @@ class role::statistics::cruncher inherits role::statistics {
     statistics::limn::data::generate { 'language':  }
     statistics::limn::data::generate { 'extdist':  }
 
-    include statistics::cron_blog_pageviews
 }
 
 
