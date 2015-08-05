@@ -142,6 +142,11 @@ class role::cache::misc {
                     'logstash1003.eqiad.wmnet',
                 ],
             },
+            'wdqs' => {
+                'dynamic' => 'no',
+                'type'    => 'random',
+                backends  => ['wdqs1001.eqiad.wmnet', 'wdqs1002.eqiad.wmnet'],
+            },
         },
         backend_options => [
         {
@@ -155,6 +160,10 @@ class role::cache::misc {
         {
             'backend_match' => '^logstash',
             'probe'         => 'logstash',
+        },
+        {
+            'backend_match' => '^wdqs',
+            'probe'         => 'wdqs',
         },
         {
             # hue serves requests on port 8888
