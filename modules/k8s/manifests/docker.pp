@@ -4,15 +4,10 @@
 class k8s::docker {
     require_package('docker.io')
 
-    service { 'docker':
-        ensure => running,
-    }
+    require k8s::flannel
 
-    file { '/etc/default/docker':
-        source => 'puppet:///modules/k8s/docker.default',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        notify => Service['docker'],
+    base::service_unit { 'docker':
+        systemd => true,
+        require => Base::Service_unit['flannel'],
     }
 }

@@ -1,0 +1,18 @@
+# This file is managed by puppet
+[Unit]
+Description=Docker Application Container Engine (with flannel support)
+Documentation=http://docs.docker.com
+After=network.target docker.socket flannel.service
+Requires=docker.socket
+
+[Service]
+EnvironmentFile=-/etc/default/docker
+EnvironmentFile=/run/flannel/subnet.env
+ExecStart=/usr/bin/docker -d -H fd:// --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} 
+MountFlags=slave
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+
+[Install]
+WantedBy=multi-user.target
