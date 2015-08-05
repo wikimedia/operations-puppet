@@ -105,12 +105,13 @@ class restbase(
         before => Service['restbase'],
     }
 
-    file { '/etc/restbase/config.yaml':
-        content => template($config_template),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
+    # Disabled in favor of Ansible
+    # file { '/etc/restbase/config.yaml':
+    #     content => template($config_template),
+    #     owner   => 'root',
+    #     group   => 'root',
+    #     mode    => '0444',
+    # }
 
     file { '/usr/lib/restbase':
         ensure => directory,
