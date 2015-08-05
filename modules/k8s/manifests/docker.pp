@@ -4,6 +4,10 @@
 class k8s::docker {
     require_package('docker.io')
 
+    service { 'docker':
+        ensure => running,
+    }
+
     file { '/etc/default/docker':
         source => 'puppet:///modules/k8s/docker.default',
         owner  => 'root',
