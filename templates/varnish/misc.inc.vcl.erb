@@ -18,6 +18,14 @@ sub vcl_recv {
         set req.backend = graphite1001;
     } elsif (req.http.Host == "logstash.wikimedia.org"){
         set req.backend = logstash;
+    } elsif (req.http.Host == "query.wikidata.org"){
+        if (req.http.X-Forwarded-Proto != "https") {
+            set req.http.Location = "https://" + req.http.Host + req.url;
+            error 755 "TLS Redirect";
+        }
+        else {
+            set req.backend = wdqs;
+        }
     } elsif (req.http.Host == "releases.wikimedia.org") {
         set req.backend = caesium;
     } elsif (req.http.Host == "grafana.wikimedia.org") {
