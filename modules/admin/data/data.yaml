@@ -2,8 +2,8 @@ groups:
   absent:
     description: meta group for absented users
     members: [avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, howief, jgonera,
-              mah, maryana, mglaser, mwalker, nimishg, rainman, ssmith, swalling, sumanah,
-              werdna]
+              mah, maryana, mglaser, mvolz, mwalker, nimishg, rainman, ssmith, swalling,
+              sumanah, werdna]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -69,7 +69,7 @@ groups:
               haithams, mhurd, dbrant, kleduc, bsitzmann, deskana,
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
-              joal, thcipriani, daisy, ashwinpp, mvolz, jhobs, tomasz, lpintscher,
+              joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan]
   cassandra-test-roots:
@@ -284,7 +284,7 @@ groups:
   citoid-users:
     gid: 745
     description: Login rights for citoid in order to look at citoid logs
-    members: [mvolz]
+    members: []
   phabricator-admin:
     gid: 746
     description: Users who can do sane CLI admin things
@@ -1374,11 +1374,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgV06472reSVOxOHVPGh9rCdt+pkJIePYxoBM6JyNAPic42XYu2dJMvTop4EVZpHV33rpdVNhELY4/JxOY7zU6dFx+yA1W+Ag7u8XrqkSk3WYmyWcUTocrgUrt0c6jAuScSFfHYAkGunyo3XP+l6iUYuej+Sv8v8Xtexq+ax+5YNjxdBH4AOxq8n4s4tso2vvaVEF91jxCGuZS3mSp77WTAO3BZNzJAwlZEF5LD5ufMF7EJgVSFhrfqkkMgbrzvqrSYV4O0mtvPYp4qzigedDpE+WU+DtIu3JRs3Jz/pk7wX3wiELuaZNvwyxPZWihh+gRhS6gYfDwrdd5z0rO1ART ashwin@ashwin-SVE15127CNB]
     uid: 11049
   mvolz:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mvolz
     realname: Marielle Volz
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUwZtM3gAMDybHgDpBkY/TAC2aglbx03BOGK81GKmLEttRPWhvRM2kqml4lh+v7yiDuajAPZ5cV4KkiP/qaa94WfY8J0osRq4Dedwv6Q0R4InuNSF4bJv5jxfm9+L6LRd88hU3aXO/FACs6I6V/4JbWpHnesTFcuunCY3ZtKTyTXlungfpTGNAm8jnOWnHDefBQk/4rwqFPg09IXk/cC7ThQqMf2O4pwwu4JOFyBFfkb3har/DxM+BMKUToB/IQEgNu4LkVa5oeKQNsVZCDGv4bntoQ/t+2PJKxii0h8tOoZYgxkpEzitf5lY0+aAueunFjuzB/R/DAN+fvUjeeEdB]
+    ssh_keys: []
     uid: 4724
   eevans:
     ensure: present
