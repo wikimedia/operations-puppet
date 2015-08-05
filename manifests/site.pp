@@ -139,6 +139,9 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
     include role::analytics
     include standard
 
+    if $::hostname == 'analytics1021' {
+        include base::firewall
+    }
 }
 
 # analytics1026 is the Impala master
