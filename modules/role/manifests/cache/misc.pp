@@ -53,6 +53,8 @@ class role::cache::misc {
             'stat1001.eqiad.wmnet', # metrics and metrics-api
             'terbium.eqiad.wmnet', # public_html
             'ytterbium.wikimedia.org', # Gerrit
+            'wdqs1001.eqiad.wmnet', # wikidata query service
+            'wdqs1002.eqiad.wmnet', # wikidata query service
             'zirconium.wikimedia.org',
         ],
         backend_options => [
@@ -67,6 +69,10 @@ class role::cache::misc {
         {
             'backend_match' => '^logstash',
             'probe'         => 'logstash',
+        },
+        {
+            'backend_match' => '^wdqs',
+            'probe'         => 'plain',
         },
         {
             # hue serves requests on port 8888
@@ -94,6 +100,11 @@ class role::cache::misc {
                     'logstash1002.eqiad.wmnet',
                     'logstash1003.eqiad.wmnet',
                 ],
+            },
+            'wdqs' => {
+                'dynamic' => 'no',
+                'type'    => 'random',
+                backends  => ['wdqs1001.eqiad.wmnet', 'wdqs1002.eqiad.wmnet'],
             }
         },
     }
