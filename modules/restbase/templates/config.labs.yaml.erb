@@ -194,7 +194,7 @@ services:
 worker_heap_limit_mb: 300
 
 logging:
-  name: {{cluster}}
+  name: restbase
   level: <%= @logging_level %>
   streams:
   # XXX: Use gelf-stream -> logstash
@@ -204,7 +204,7 @@ logging:
 
 # StatsD metrics collection
 metrics:
-  name: {{cluster}}
+  name: restbase
   type: statsd # default, but lets be explicit
   host: <%= @statsd_host %>
   port: <%= @statsd_port %>
