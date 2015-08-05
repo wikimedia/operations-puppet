@@ -4,24 +4,6 @@ info:
   name: restbase
 
 
-# Log error messages and gracefully restart a worker if v8 reports using more
-# heap (note: not RSS).
-worker_heap_limit_mb: 300
-
-logging:
-  name: restbase
-  level: <%= @logging_level %>
-  streams:
-  # XXX: Use gelf-stream -> logstash
-  - type: gelf
-    host: <%= @logstash_host %>
-    port: <%= @logstash_port %>
-
-# StatsD metrics collection
-metrics:
-  type: statsd # default, but lets be explicit
-  host: <%= @statsd_host %>
-  port: <%= @statsd_port %>
 
 # Swagger spec templates, referenced using yaml references in the spec section
 # below.
@@ -57,6 +39,11 @@ templates:
       license:
         name: Apache2
         url: http://www.apache.org/licenses/LICENSE-2.0
+
+    # Override the base path for host-based (proxied) requests. In our case,
+    # we proxy https://{domain}/api/rest_v1/ to the API.
+    x-host-basePath: /api/rest_v1
+
     security:
       # ACLs for public *.wikipedia.org wikis
       - mediaWikiAuth:
@@ -122,7 +109,12 @@ templates:
           - name: action
             type: file
             options:
-              apiURI: http://{domain}/w/api.php
+              apiRequest:
+                method: post
+                uri: 'http://{domain}/w/api.php'
+                headers:
+                  host: '{$.request.params.domain}'
+                body: '{$.request.body}'
 
       /{module:graphoid}:
         x-modules:
@@ -136,6 +128,7 @@ templates:
                     backend_request:
                       # Default value: http://graphoid.svc.eqiad.wmnet:19000
                       uri: <%= @graphoid_host_port %>/{domain}/v1/png/{title}/{revision}/{graph_id}
+                      body: '{$.request.body}'
 
   wp-default-1.0.0: &wp/default/1.0.0
     x-subspecs:
@@ -185,6 +178,7 @@ spec: &spec
     /{domain:zero.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
     /{domain:zh.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
 
+
 # The main service setup. Each worker can offer one or more services.
 services:
   - name: restbase
@@ -194,3 +188,23 @@ services:
       spec: *spec
       salt: <%= @salt_key %>
       default_page_size: <%= @page_size %>
+
+# Log error messages and gracefully restart a worker if v8 reports using more
+# heap (note: not RSS).
+worker_heap_limit_mb: 300
+
+logging:
+  name: {{cluster}}
+  level: <%= @logging_level %>
+  streams:
+  # XXX: Use gelf-stream -> logstash
+  - type: gelf
+    host: <%= @logstash_host %>
+    port: <%= @logstash_port %>
+
+# StatsD metrics collection
+metrics:
+  name: {{cluster}}
+  type: statsd # default, but lets be explicit
+  host: <%= @statsd_host %>
+  port: <%= @statsd_port %>
