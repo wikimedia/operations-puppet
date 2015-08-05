@@ -340,6 +340,11 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
                  'ALL = NOPASSWD: /bin/journalctl *']
+  mailman-roots:
+    gid: 756
+    description: TEMP (T108082) roots for mailman staging/migration
+    members: [johnflewis]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
 users:
   rush:
