@@ -5,7 +5,6 @@ After=etcd
 [Service]
 ExecStart=/usr/local/bin/flanneld \
     --etcd-endpoints='<%= @etcd_endpoints %>' \
-    --etcd-cafile='<%= @etcd_ca_file %>' \
     --etcd-prefix='<%= @etcd_prefix %>'
 
 [Install]
