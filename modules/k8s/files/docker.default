@@ -1,4 +1,0 @@
-# This file is managed by puppet
-# Sets up docker to use flannel for networking
-source /run/flannel/subnet.env
-DOCKER_OPTS="--bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU}"
