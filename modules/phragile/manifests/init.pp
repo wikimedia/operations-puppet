@@ -27,6 +27,7 @@ class phragile(
 
     package { [
         'php5-cli',
+        'php5-curl',
         'php5-mysql',
         'php5-mcrypt',
     ]:
