@@ -55,7 +55,8 @@ class restbase(
     $statsd_port    = '8125',
     $graphoid_host_port = 'http://graphoid.svc.eqiad.wmnet:19000',
 ) {
-    ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
+    # Disabled automatic nodejs install for iojs testing
+    # ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
 
     package { 'restbase/deploy':
         provider => 'trebuchet',
