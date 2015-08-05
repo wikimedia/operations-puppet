@@ -11,7 +11,7 @@
 # This also exports /srv/statistics to allow statistics servers
 # a way to rsync public data in from production.
 #
-class role::labs::nfs::extras {
+class role::labs::nfs::extras($dump_servers_ips) {
     include standard
     include ::labstore
     include ::labstore::monitoring
