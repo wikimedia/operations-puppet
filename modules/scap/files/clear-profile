@@ -1,6 +1,0 @@
-#!/bin/bash
-# Ensure that $LOGNAME is set and has a non-null value.
-LOGNAME=${LOGNAME:-$(logname)}
-
-echo "-truncate" | nc -q0 -u statsd.eqiad.wmnet 3811
-/usr/local/bin/dologmsg "!log $LOGNAME@$HOSTNAME cleared profiling data"
