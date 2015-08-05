@@ -378,8 +378,8 @@ rewrite	*mediawiki.com	//www.mediawiki.org
 rewrite	wiki.mediawiki.org	//www.mediawiki.org
 
 # Continuous Integration T83381, T83399
-funnel	doc.mediawiki.org	https://doc.wikimedia.org
-funnel	integration.mediawiki.org	https://integration.wikimedia.org
+rewrite	doc.mediawiki.org	https://doc.wikimedia.org
+rewrite	integration.mediawiki.org	https://integration.wikimedia.org
 
 # CI docs -> doc (T100349)
 funnel	docs.mediawiki.org	https://doc.wikimedia.org
