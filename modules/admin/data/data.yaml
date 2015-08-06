@@ -71,7 +71,7 @@ groups:
               bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
-              gpaumier, moushira, aklapper, qchris, tjones, srijan]
+              gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -343,7 +343,7 @@ groups:
   mailman-users:
     gid: 756
     description: non-root login on mailman staging server
-    members: []
+    members: [johnflewis]
 
 users:
   rush:
