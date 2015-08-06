@@ -642,6 +642,7 @@ registry:
       'nl':
         - 'af'
       'nn':
+        - 'nb'
         - 'no'
       'no':
         - 'nn'
