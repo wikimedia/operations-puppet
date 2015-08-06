@@ -402,6 +402,11 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
+	// default hard cap of max 30d life on all cache objects everywhere
+	if (beresp.ttl > 30d) {
+		beresp.ttl = 30d;
+	}
+
 	/* Don't cache private, no-cache, no-store objects */
 	if (beresp.http.Cache-Control ~ "(private|no-cache|no-store)") {
 		set beresp.ttl = 0s;
