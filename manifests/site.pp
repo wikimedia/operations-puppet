@@ -1299,6 +1299,7 @@ node 'labsdb1006.eqiad.wmnet' {
     $osm_slave_v4 = '10.64.37.12'
 
     include role::osm::master
+    include base::firewall
     # include role::labs::db::slave
 }
 
