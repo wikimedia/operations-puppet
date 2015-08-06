@@ -150,6 +150,7 @@ node 'analytics1026.eqiad.wmnet' {
     include role::analytics::clients
     include role::analytics::impala::master
     include role::logging::udp2log::misc
+    include base::firewall
 
 }
 
