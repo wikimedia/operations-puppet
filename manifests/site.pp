@@ -407,8 +407,7 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
 
 node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
-    # formerly eqiad bits cluster
-    include standard
+    role cache::misc
 }
 
 node /^cp20(0[147]|1[0369]|23)\.codfw\.wmnet$/ {
