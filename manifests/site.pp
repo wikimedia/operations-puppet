@@ -1186,6 +1186,7 @@ node 'krypton.eqiad.wmnet' {
     include base::firewall
     include role::wikimania_scholarships
     include role::iegreview
+    include role::grafana
 }
 
 node 'labcontrol1001.wikimedia.org' {
