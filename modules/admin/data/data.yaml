@@ -340,6 +340,10 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
                  'ALL = NOPASSWD: /bin/journalctl *']
+  mailman-users:
+    gid: 756
+    description: non-root login on mailman staging server
+    members: []
 
 users:
   rush:
