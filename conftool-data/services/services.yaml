@@ -99,3 +99,10 @@ maps:
       "weight": 10
     datacenters:
       - codfw
+  tilerator:
+    port: 4100
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - codfw
