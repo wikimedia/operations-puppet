@@ -1,0 +1,11 @@
+[Unit]
+Description=Kubelet
+
+[Service]
+ExecStart=/usr/local/bin/kubelet \
+    --api-servers=http://<%= @master_ip %> \
+    --config=/etc/kubernetes/manifests \
+    --configure-cbr0=true
+
+[Install]
+WantedBy=multi-user.target
