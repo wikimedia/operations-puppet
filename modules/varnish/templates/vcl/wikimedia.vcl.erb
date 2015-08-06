@@ -131,14 +131,14 @@ include "directors.<%= @inst %>.vcl";
 <% end -%>
 <% @varnish_directors.keys.sort.each do |director_name|
 director = @varnish_directors[director_name] 
-if (!@dynamic_directors or director['dynamic'] != 'yes') -%>
-director <%= director_name %> <%= director['type'] %> {
-<%-
+if (!@dynamic_directors or director['dynamic'] != 'yes')
 	backends = director['backends']
 	if not backends.is_a?(Array)
 		backends = [backends]
 	end
+	if (!backends.empty?)
 -%>
+director <%= director_name %> <%= director['type'] %> {
 <% if director['type'] == 'chash' -%>
 	.retries = <%= chash_def_retries(99, backends.size) %>;
 <% end -%>
@@ -152,6 +152,7 @@ director <%= director_name %> <%= director['type'] %> {
 	}
 <% 	end -%>
 }
+<% end #if !empty -%>
 <% end #if !dynamic -%> 
 <% end #director loop -%>
 
