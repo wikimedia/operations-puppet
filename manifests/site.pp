@@ -947,6 +947,12 @@ node 'eventlog1001.eqiad.wmnet' {
     include role::logging::mediawiki::errors
 }
 
+# virtual machine for testing mailman migration
+node 'fermium.eqiad.wmnet' {
+    include standard
+    include base::firewall
+}
+
 node 'fluorine.eqiad.wmnet' {
     $cluster = 'misc'
 
