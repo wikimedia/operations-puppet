@@ -31,6 +31,13 @@ host bromine.eqaid.wmnet {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host fermium.eqiad.wmnet {
+	hardware ethernet aa:00:00:a4:ac:f1;
+	fixed-address fermium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host krypton.eqaid.wmnet {
 	hardware ethernet aa:00:00:7e:e0:22;
 	fixed-address krypton.eqiad.wmnet;
