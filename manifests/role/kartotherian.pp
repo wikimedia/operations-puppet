@@ -2,7 +2,7 @@
 class role::kartotherian {
 
     system::role { 'role::kartotherian':
-        description => 'A vector and raster map tile generator service',
+        description => 'A vector and raster map tile service',
     }
 
     include ::kartotherian
