@@ -1,5 +1,6 @@
 @monitoring::group { "maps_eqiad": description => "eqiad maps servers" }
 @monitoring::group { "maps_codfw": description => "codfw maps servers" }
+
 class role::maps::master {
     include standard
     include ::postgresql::master
@@ -8,6 +9,8 @@ class role::maps::master {
     include ::osm::import_waterlines
     include ::cassandra
     include ::role::kartotherian
+    include ::role::tilerator
+
     if $::realm == 'production' {
         include lvs::realserver
     }
@@ -38,15 +41,16 @@ class role::maps::master {
     }
 
     # Replication
-    $postgres_slaves = hiera('postgresql::master::postgres_slaves', undef)
+    $postgres_slaves = hiera('maps::postgres_slaves', undef)
     if $postgres_slaves {
         create_resources(postgresql::user, $postgres_slaves)
     }
 
     # Grants
-    $tilerator_pass = hiera('postgresql::master::tilerator_pass')
-    $osmimporter_pass = hiera('postgresql::master::osmimporter_pass')
-    $osmupdater_pass = hiera('postgresql::master::osmupdater_pass')
+    $kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')
+    $tilerator_pass = hiera('maps::postgresql_tilerator_pass')
+    $osmimporter_pass = hiera('maps::postgresql_osmimporter_pass')
+    $osmupdater_pass = hiera('maps::postgresql_osmupdater_pass')
     file { '/usr/local/bin/maps-grants.sql':
         owner   => 'root',
         group   => 'root',
@@ -61,6 +65,8 @@ class role::maps::slave {
     include ::postgresql::postgis
     include ::cassandra
     include ::role::kartotherian
+    include ::role::tilerator
+
     if $::realm == 'production' {
         include lvs::realserver
     }
