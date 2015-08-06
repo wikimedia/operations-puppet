@@ -113,7 +113,7 @@ node /analytics10(04|10).eqiad.wmnet/ {
     include standard
 }
 
-# analytics1011, analytics1013-analytics1017, analytics1019, analytics1020,
+# analytics1011, analytics1015-analytics1017, analytics1019,
 # analytics1028-analytics1049 are Hadoop worker nodes.
 #
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
@@ -140,6 +140,19 @@ node /analytics10(12|18|21|22)\.eqiad\.wmnet/ {
     include standard
 
 }
+
+node /kafka10(13|14|20)\.eqiad\.wmnet/ {
+    # Kafka brokers are routed via IPv6 so that
+    # other DCs can address without public IPv4
+    # addresses.
+    interface::add_ip6_mapped { 'main': }
+
+    # These will be provisioned as new brokers soon - otto.
+    # role analytics::kafka::server
+    include standard
+}
+
+
 
 # analytics1026 is the Impala master
 # (llama, impala-state-store, impala-catalog)
