@@ -621,6 +621,60 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
         srange => '$INTERNAL',
     }
 
+    ferm::service{ 'hadoop-hdfs-journalnode-jmx':
+        proto  => 'tcp',
+        port   => '9981',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-nodemanager-jmx':
+        proto  => 'tcp',
+        port   => '9984',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-nodemanager':
+        proto  => 'tcp',
+        port   => '8041',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-nodemanager-localizer':
+        proto  => 'tcp',
+        port   => '8040',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-nodemanager-http-ui':
+        proto  => 'tcp',
+        port   => '8042',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-hdfs-hd-journalnode':
+        proto  => 'tcp',
+        port   => '8485',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-hdfs-datanode-http-ui':
+        proto  => 'tcp',
+        port   => '50075',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-hdfs-datanode-ipc':
+        proto  => 'tcp',
+        port   => '50020',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-hdfs-datanode-dfs-transfer':
+        proto  => 'tcp',
+        port   => '50010',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
     # Install hive client on worker nodes to get
     # hive-hcatalog package.  hive-catalog depends
     # on hive package, so we might as well
