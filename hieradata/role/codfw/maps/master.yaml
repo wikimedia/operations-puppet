@@ -31,6 +31,7 @@ cassandra::saved_caches_directory: /srv/cassandra/saved_caches
 admin::groups:
   - maps-admins
   - kartotherian-admin
+  - tilerator-admin
 service::configuration::logstash_host: logstash1001.eqiad.wmnet
 service::configuration::statsd_host: statsd.eqiad.wmnet
 lvs::realserver::realserver_ips:
