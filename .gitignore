@@ -24,3 +24,6 @@
 
 # python venv wrapper
 /.tox
+
+# Jetbrain's IDEA editor settings
+/.idea
