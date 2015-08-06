@@ -21,6 +21,12 @@ class role::osm::common {
         },
     }
 
+    ferm::service { 'postgresql':
+        proto  => 'tcp',
+        port   => 5432,
+        srange => '$INTERNAL',
+    }
+
     ganglia::plugin::python { 'diskstat': }
 }
 
