@@ -1284,6 +1284,7 @@ node 'labsdb1004.eqiad.wmnet' {
     #$postgres_slave_v4 = '10.64.37.9'
 
     include role::postgres::master
+    include base::firewall
     # role labs::db::slave
 }
 
