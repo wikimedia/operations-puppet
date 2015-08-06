@@ -74,13 +74,6 @@ ganglia_clusters:
       eqiad: []
       esams: []
       ulsfo: []
-  cache_bits:
-    name: "Bits caches"
-    id: 21
-    sites:
-      eqiad: []
-      esams: []
-      ulsfo: []
   cache_upload:
     name: "Upload caches"
     id: 22
