@@ -5806,6 +5806,20 @@ host sca1002 {
 	fixed-address sca1002.eqiad.wmnet;
 }
 
+host scb1001 {
+	hardware ethernet 90:b1:1c:2d:87:0c;
+	fixed-address scb1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host scb1002 {
+	hardware ethernet 90:b1:1c:2d:7f:6b;
+	fixed-address scb1002.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host silver {
 	hardware ethernet 18:03:73:f1:58:67;
 	fixed-address silver.wikimedia.org;
