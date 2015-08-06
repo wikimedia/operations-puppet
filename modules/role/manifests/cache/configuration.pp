@@ -32,6 +32,7 @@ class role::cache::configuration {
                 'eqiad' => 'restbase.svc.eqiad.wmnet',
             },
             'swift' => $lvs::configuration::service_ips['swift'],
+            'security_audit' => { 'eqiad' => [] }, # no audit backend for prod at this time
         },
         'labs' => {
             'appservers' => {
