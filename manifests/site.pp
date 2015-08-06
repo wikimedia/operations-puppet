@@ -2146,7 +2146,7 @@ node 'ruthenium.eqiad.wmnet' {
     include standard
 }
 
-node /^sca100[12]\.eqiad\.wmnet$/ {
+node /^sc[ab]100[12]\.eqiad\.wmnet$/ {
     role sca
 }
 
