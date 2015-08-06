@@ -18,6 +18,6 @@ class k8s::kubelet(
     $master_ip = ipresolve($master_host, 4, $::nameservers[0])
     base::service_unit { 'kubelet':
         systemd => true,
-        require => File['/usr/locall/bin/kubelet'],
+        require => File['/usr/local/bin/kubelet'],
     }
 }
