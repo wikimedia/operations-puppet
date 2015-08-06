@@ -8,6 +8,7 @@ class role::maps::master {
     include ::osm::import_waterlines
     include ::cassandra
     include ::role::kartotherian
+    include ::role::tilerator
     if $::realm == 'production' {
         include lvs::realserver
     }
@@ -44,6 +45,7 @@ class role::maps::master {
     }
 
     # Grants
+    $kartotherian_pass = hiera('postgresql::master::kartotherian_pass')
     $tilerator_pass = hiera('postgresql::master::tilerator_pass')
     $osmimporter_pass = hiera('postgresql::master::osmimporter_pass')
     $osmupdater_pass = hiera('postgresql::master::osmupdater_pass')
@@ -61,6 +63,7 @@ class role::maps::slave {
     include ::postgresql::postgis
     include ::cassandra
     include ::role::kartotherian
+    include ::role::tilerator
     if $::realm == 'production' {
         include lvs::realserver
     }
