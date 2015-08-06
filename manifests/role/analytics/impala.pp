@@ -33,6 +33,13 @@ class role::analytics::impala::master {
     include role::analytics::impala
     include cdh::impala::master
 
+    # Open up port for debugging
+    ferm::service{ 'jmxtrans-jmx':
+        proto  => 'tcp',
+        port   => '2101',
+        srange => '$INTERNAL',
+    }
+
     ferm::service { 'impala-state-store':
         proto  => 'tcp',
         port   => '(24000 25010)',
