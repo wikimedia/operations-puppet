@@ -8,7 +8,10 @@ class k8s::kubelet(
         mode   => '0555',
     }
 
-    file { '/etc/kuebernetes/manifests':
+    file { [
+        '/etc/kubernetes/',
+        '/etc/kubernetes/manifests',
+    ]:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
