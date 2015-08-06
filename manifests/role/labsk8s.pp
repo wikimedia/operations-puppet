@@ -7,5 +7,5 @@ class role::labs::k8s::master {
 }
 
 class role::labs::k8s::worker {
-    include k8s::flannel
+    include k8s::docker
 }
