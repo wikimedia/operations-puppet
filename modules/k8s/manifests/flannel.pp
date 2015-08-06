@@ -14,4 +14,9 @@ class k8s::flannel(
     base::service_unit { 'flannel':
         systemd => true,
     }
+
+    ferm::service { 'flannel-udp':
+        proto => udp,
+        port  => 8285,
+    }
 }
