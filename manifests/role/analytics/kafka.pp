@@ -51,10 +51,10 @@ class role::analytics::kafka::config {
         $cluster_config = {
             'eqiad'   => {
                 'analytics1012.eqiad.wmnet' => { 'id' => 12 },  # Row A
-                # 'analytics1013.eqiad.wmnet' => { 'id' => 13 },  # Row A
-                # 'analytics1014.eqiad.wmnet' => { 'id' => 14 },  # Row C
+                # 'kafka1013.eqiad.wmnet' => { 'id' => 13 },  # Row A
+                # 'kafka1014.eqiad.wmnet' => { 'id' => 14 },  # Row C
                 'analytics1018.eqiad.wmnet' => { 'id' => 18 },  # Row D
-                # 'analytics1020.eqiad.wmnet' => { 'id' => 20 },  # Row D
+                # 'kafka1020.eqiad.wmnet' => { 'id' => 20 },  # Row D
                 # analytics1021 is to be decomissioned as a kafka broker.
                 'analytics1021.eqiad.wmnet' => { 'id' => 21 },  # Row A
                 'analytics1022.eqiad.wmnet' => { 'id' => 22 },  # Row C
