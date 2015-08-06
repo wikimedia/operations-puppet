@@ -118,6 +118,8 @@ class role::analytics::kafka::config {
 # == Class role::analytics::kafka::client
 #
 class role::analytics::kafka::client inherits role::analytics::kafka::config {
+    require_package('openjdk-7-jdk')
+
     # include kafka package
     include kafka
 

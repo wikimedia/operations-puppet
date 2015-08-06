@@ -8,7 +8,7 @@
 class role::analytics {
     system::role { 'role::analytics': description => 'analytics server' }
 
-    ensure_packages(['openjdk-7-jdk'])
+    require_package('openjdk-7-jdk')
 
     # This packages conflicts with the hadoop-fuse-dfs
     # and with impalad in that two libjvm.so files get added
