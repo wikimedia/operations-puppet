@@ -612,6 +612,13 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
             description  => 'YARN NodeManager Node-State',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state',
         }
+
+        # Open up port for debugging
+        ferm::service{ 'hadoop_jmxtrans':
+            proto  => 'tcp',
+            port   => '2101',
+            srange => '$INTERNAL',
+        }
     }
 
     # Open up port for debugging
