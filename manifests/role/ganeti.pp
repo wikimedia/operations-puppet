@@ -89,5 +89,12 @@ class role::ganeti {
             port   => '11000:14999',
             srange => "@resolve(($ganeti_ferm_nodes))",
         }
+
+        # Migration is done over TCP port
+        ferm::service { 'ganeti_migration':
+            proto  => 'tcp',
+            port   => 8102,
+            srange => "@resolve(($ganeti_ferm_nodes))",
+        }
     }
 }
