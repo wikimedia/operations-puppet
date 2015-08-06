@@ -1306,6 +1306,7 @@ node 'labsdb1007.eqiad.wmnet' {
     $osm_master = 'labsdb1006.eqiad.wmnet'
 
     include role::osm::slave
+    include base::firewall
     # include role::labs::db::master
 }
 
