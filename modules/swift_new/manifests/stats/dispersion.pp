@@ -21,7 +21,7 @@ class swift_new::stats::dispersion(
     # XXX swift-dispersion-populate is not ran/initialized
     cron { 'swift-dispersion-stats':
         ensure  => present,
-        command => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix} --statsd-host ${statsd_host} 1>/dev/null",
+        command => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix} --statsd-host ${statsd_host} >/dev/null 2>&1",
         user    => 'root',
         hour    => '*',
         minute  => '*/15',

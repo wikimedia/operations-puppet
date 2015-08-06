@@ -79,7 +79,7 @@ class role::swift {
             }
             cron { 'swift-dispersion-stats':
                 ensure  => present,
-                command => "/usr/local/bin/swift-dispersion-stats --prefix swift.eqiad-prod.dispersion --statsd-host statsd.eqiad.wmnet 1>/dev/null",
+                command => "/usr/local/bin/swift-dispersion-stats --prefix swift.eqiad-prod.dispersion --statsd-host statsd.eqiad.wmnet >/dev/null 2>&1",
                 user    => 'root',
                 hour    => '*',
                 minute  => '*/15',
@@ -194,7 +194,7 @@ class role::swift {
             }
             cron { 'swift-dispersion-stats':
                 ensure  => present,
-                command => "/usr/local/bin/swift-dispersion-stats --prefix swift.esams-prod.dispersion --statsd-host statsd.eqiad.wmnet 1>/dev/null",
+                command => "/usr/local/bin/swift-dispersion-stats --prefix swift.esams-prod.dispersion --statsd-host statsd.eqiad.wmnet >/dev/null 2>&1",
                 user    => 'root',
                 hour    => '*',
                 minute  => '*/15',
