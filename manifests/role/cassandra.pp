@@ -15,11 +15,8 @@ class role::cassandra {
         description => 'Cassandra server',
     }
 
-    # Emit an Icinga alert unless there is exactly one Java process belonging
-    # to user 'cassandra' and with 'CassandraDaemon' in its argument list.
-    nrpe::monitor_service { 'cassandra':
-        description  => 'Cassandra database',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u cassandra -C java -a CassandraDaemon',
+    nrpe::monitor_systemd_unit_state { 'cassandra':
+        require => Service['cassandra'],
     }
 
     # CQL query interface monitoring (T93886)
