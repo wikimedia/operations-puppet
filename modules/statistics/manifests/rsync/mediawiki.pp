@@ -24,4 +24,9 @@ class statistics::rsync::mediawiki {
         destination    => "${working_path}/mw-log/archive",
         retention_days => $retention_days,
     }
+	statistics::rsync_job { 'CirrusSearchUserTesting':
+        source         => 'fluorine.eqiad.wmnet::udp2log/archive/CirrusSearchUserTesting.*.gz',
+        destination    => "${working_path}/mw-log/archive",
+        retention_days => $retention_days,
+    }
 }
