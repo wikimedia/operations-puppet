@@ -275,6 +275,10 @@ cache_parsoid:
 cache_misc:
   cp1043.eqiad.wmnet: [varnish-fe, nginx]
   cp1044.eqiad.wmnet: [varnish-fe, nginx]
+  cp1056.eqiad.wmnet: [varnish-fe, nginx]
+  cp1057.eqiad.wmnet: [varnish-fe, nginx]
+  cp1069.eqiad.wmnet: [varnish-fe, nginx]
+  cp1070.eqiad.wmnet: [varnish-fe, nginx]
 parsoid:
   wtp1001.eqiad.wmnet: [parsoid]
   wtp1002.eqiad.wmnet: [parsoid]
