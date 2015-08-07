@@ -15,5 +15,6 @@
 @monitoring::group { 'cache_parsoid_eqiad': description => 'Parsoid caches eqiad' }
 @monitoring::group { 'cache_parsoid_codfw': description => 'Parsoid caches codfw' }
 @monitoring::group { 'cache_misc_eqiad': description => 'Misc caches eqiad' }
+@monitoring::group { 'cache_maps_eqiad': description => 'Maps caches eqiad' }
 
 # If you're looking for something that used to be here, check modules/role/manifests/cache/...

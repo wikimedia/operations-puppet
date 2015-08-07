@@ -18,8 +18,8 @@ class role::lvs::balancer {
             ],
         /^(lvs100[25])$/ => [
             $sip['upload'][$::site],
+            $sip['maps'][$::site],
             $sip['dns_rec'][$::site],
-            $sip['osm'][$::site],
             $sip['misc_web'][$::site],
             $sip['parsoidcache'][$::site],
             $sip['stream'][$::site],
