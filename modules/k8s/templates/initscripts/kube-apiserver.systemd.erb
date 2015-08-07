@@ -6,7 +6,7 @@ ExecStart=/usr/local/bin/kube-apiserver \
     --etcd-servers=<%= @etcd_servers %> \
     --service-cluster-ip-range=192.168.0.0/24 \
     --token-auth-file=/dev/null \
-    --insecure-bind=<%= @master_ip %> \
+    --insecure-bind-address=<%= @master_ip %> \
     --advertise-address=<%= @master_ip %>
 
 [Install]
