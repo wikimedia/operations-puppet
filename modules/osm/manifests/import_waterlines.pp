@@ -12,8 +12,8 @@ class osm::import_waterlines (
         ensure  => present,
         owner   => 'root',
         group   => 'root',
-        mode    => 0555,
-        content => template( 'osm/import_waterlines.erb' ),
+        mode    => '0555',
+        content => template('osm/import_waterlines.erb'),
     }
 
     cron { 'import_waterlines':
@@ -22,6 +22,6 @@ class osm::import_waterlines (
         minute  => 0,
         weekday => 'Tue',
         user    => 'postgres',
-        command => '/usr/local/bin/import_waterlines',
+        command => '/usr/local/bin/import_waterlines >/dev/null 2>&1',
     }
 }
