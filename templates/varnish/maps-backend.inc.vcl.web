@@ -1,0 +1,21 @@
+// Varnish VCL include file for maps backends
+
+include "errorpage.inc.vcl";
+
+sub vcl_recv {
+	call vcl_recv_purge;
+	return (lookup);
+}
+
+sub vcl_fetch {
+	// Cap TTL to 1 day for now (purging still hasn't been sorted out...)
+	if (beresp.ttl > 1d) {
+		set beresp.ttl = 1d;
+	}
+	return (deliver);
+}
+
+sub vcl_error {
+	call errorpage;
+	return (deliver);
+}

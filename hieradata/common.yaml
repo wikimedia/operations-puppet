@@ -215,6 +215,11 @@ ganglia_clusters:
     id: 50
     sites:
       codfw: []
+  cache_maps:
+    name: "Maps caches"
+    id: 51
+    sites:
+      eqiad: []
 zookeeper_hosts:
   conf1001.eqiad.wmnet: '1101'
   conf1002.eqiad.wmnet: '1102'

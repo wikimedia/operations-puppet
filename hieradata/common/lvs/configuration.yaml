@@ -25,6 +25,10 @@ lvs_service_ips:
     ulsfo:
       uploadlb: 198.35.26.112
       uploadlb6: 2620:0:863:ed1a::2:b
+  maps: &maps
+    eqiad:
+      mapslb: 208.80.154.244
+      mapslb6: 2620:0:861:ed1a::2:d
   apaches: &apaches
     eqiad: 10.2.2.1
     codfw: 10.2.1.1
@@ -60,8 +64,6 @@ lvs_service_ips:
     esams:
       dns_rec: 91.198.174.216
       dns_rec6: 2620:0:862:ed1a::3:fe
-  osm: &osm
-    eqiad: 208.80.154.244
   misc_web: &misc_web
     eqiad:
       misc_weblb: 208.80.154.241
@@ -195,6 +197,46 @@ lvs_services:
         max-delay: 300
     conftool:
       cluster: cache_upload
+      service: nginx
+  maps:
+    description: "Maps service maps.%{::site}.wikimedia.org"
+    class: high-traffic2
+    sites:
+    - eqiad
+    ip: *maps
+    bgp: 'yes'
+    depool-threshold: ".5"
+    monitors:
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: cache_maps
+      service: varnish-fe
+    icinga:
+      uri: maps.wikimedia.org!/_info
+      sites:
+        eqiad:
+          hostname: maps-lb.eqiad.wikimedia.org
+  maps-https:
+    description: "Maps service maps.%{::site}.wikimedia.org"
+    class: high-traffic2
+    sites:
+    - eqiad
+    ip: *maps
+    port: 443
+    scheduler: sh
+    bgp: 'no'
+    depool-threshold: ".5"
+    monitors:
+      ProxyFetch:
+        url:
+        - https://maps.wikimedia.org/_info
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: cache_maps
       service: nginx
   mobile:
     description: MediaWiki based mobile site

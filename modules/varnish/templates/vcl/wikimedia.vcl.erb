@@ -82,6 +82,14 @@ probe logstash {
 	.threshold = 3;
 }
 
+probe maps {
+	.url = "/_info";
+	.interval = 5s;
+	.timeout = 1s;
+	.window = 5;
+	.threshold = 3;
+}
+
 # Backends
 
 # List of Puppet generated backends
