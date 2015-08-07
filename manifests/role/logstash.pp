@@ -5,7 +5,12 @@
 #
 # Provisions Logstash and ElasticSearch.
 #
-class role::logstash {
+# == Parameters:
+# - $statsd_host: Host to send statsd data to.
+#
+class role::logstash (
+    $statsd_host,
+) {
     include ::role::logstash::elasticsearch
     include ::logstash
 
@@ -71,6 +76,7 @@ class role::logstash {
         priority => 70,
     }
 
+    ## Outputs (90)
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
         ensure => present,
@@ -87,6 +93,14 @@ class role::logstash {
         priority        => 90,
         template        => '/etc/logstash/elasticsearch-template.json',
         require         => File['/etc/logstash/elasticsearch-template.json'],
+    }
+
+    logstash::output::statsd { 'MW_channel_rate':
+        host            => $statsd_host,
+        guard_condition => '[type] == "mediawiki" and "es" in [tags]',
+        namespace       => 'logstash.rate',
+        sender          => 'mediawiki',
+        increment       => [ '%{channel}.%{level}' ],
     }
 }
 
