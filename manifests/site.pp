@@ -2109,6 +2109,11 @@ node 'protactinium.wikimedia.org' {
     include base::firewall
 }
 
+# pybal-test200X VMs are used for pybal testing/development
+node /^pybal-test200[123]\.codfw\.wmnet$/ {
+    include standard
+}
+
 # Tor relay
 node 'radium.wikimedia.org' {
     include base::firewall
