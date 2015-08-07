@@ -968,6 +968,7 @@ node 'fermium.eqiad.wmnet' {
     include standard
     include admin
     include base::firewall
+    include role::lists::migration
 }
 
 node 'fluorine.eqiad.wmnet' {
