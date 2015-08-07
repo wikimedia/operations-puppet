@@ -3,7 +3,16 @@
 # Apertium is a backend Machine Translation service for the Content Translation.
 # https://www.mediawiki.org/wiki/Content_translation/Apertium
 #
-class apertium(){
+# === Parameters
+#
+# [*num_of_processes*]
+# Number of APY instance processes to run
+# [*max_idle_seconds*]
+# Seconds to wait before shutdown idle process
+class apertium(
+    $num_of_processes = 1,
+    $max_idle_seconds = 300,
+) {
     package { [
         'apertium',
         'apertium-af-nl',
@@ -54,8 +63,15 @@ class apertium(){
         notify => Service['apertium-apy'],
     }
 
-    service { 'apertium-apy':
-        ensure  => running,
-        require => Package['apertium-apy'],
+    base::service_unit { 'apertium-apy':
+        ensure  => present,
+        upstart => true,
+        systemd => true,
+        refresh => true,
+        service_params => {
+            enable     => true,
+            hasstatus  => true,
+            hasrestart => true,
+        }
     }
 }
