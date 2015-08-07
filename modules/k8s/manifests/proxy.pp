@@ -1,4 +1,4 @@
-class k8s::proxy((
+class k8s::proxy(
     $master_host,
 ) {
     file { '/usr/local/bin/kube-proxy':
