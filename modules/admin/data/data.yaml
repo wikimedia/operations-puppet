@@ -344,6 +344,13 @@ groups:
     gid: 756
     description: non-root login on mailman staging server
     members: [johnflewis]
+  mailman-admins:
+    gid: 757
+    description: Admins for mailman
+    members: []
+    privileges: ['ALL = (list) NOPASSWD: ALL',
+                 'ALL = NOPASSWD: /usr/sbin/service mailman *',
+                 'ALL = NOPASSWD: /bin/journalctl *']
 
 users:
   rush:
