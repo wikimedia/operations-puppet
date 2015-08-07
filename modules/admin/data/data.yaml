@@ -348,7 +348,7 @@ groups:
   mailman-admins:
     gid: 757
     description: Admins for mailman
-    members: []
+    members: [johnflewis]
     privileges: ['ALL = (list) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service mailman *',
                  'ALL = NOPASSWD: /bin/journalctl *']
