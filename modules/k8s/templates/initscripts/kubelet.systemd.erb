@@ -3,7 +3,7 @@ Description=Kubelet
 
 [Service]
 ExecStart=/usr/local/bin/kubelet \
-    --api-servers=http://<%= @master_ip %> \
+    --api-servers=http://<%= @master_ip %>:8080 \
     --config=/etc/kubernetes/manifests \
     --configure-cbr0=true
 
