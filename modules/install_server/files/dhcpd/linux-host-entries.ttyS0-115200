@@ -110,6 +110,28 @@ host planet1001 {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+# ganeti VMs used for pybal testing/development
+host pybal-test2001 {
+	hardware ethernet
+	fixed-address pybal-test2001.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host pybal-test2002 {
+	hardware ethernet
+	fixed-address pybal-test2002.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host pybal-test2003 {
+	hardware ethernet
+	fixed-address pybal-test2003.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 # ganeti VM used for d-i testing
 host d-i-test {
 	hardware ethernet aa:00:00:3b:60:cb;
