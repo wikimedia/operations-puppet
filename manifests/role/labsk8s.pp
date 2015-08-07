@@ -7,6 +7,7 @@ class role::labs::k8s::master {
     }
 
     class { 'k8s::apiserver':
+        master_host => $master_host,
         etcd_servers => $etcd_servers,
 
     }
