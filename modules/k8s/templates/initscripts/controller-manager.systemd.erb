@@ -1,0 +1,10 @@
+[Unit]
+Description=Kubernetes Controller manager
+
+[Service]
+ExecStart=/usr/local/bin/kube-controller-manager \
+    --cluster-cidr=192.168.0.0/24 \
+    --master=<%= @master_ip %> 
+
+[Install]
+WantedBy=multi-user.target
