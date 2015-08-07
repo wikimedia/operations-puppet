@@ -1,2 +1,4 @@
 admin::groups:
   - mailman-users
+mailman::lists_ipv4: '127.0.0.1'
+mailman::lists_ipv6: '::1'
