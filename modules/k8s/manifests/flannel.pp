@@ -13,6 +13,7 @@ class k8s::flannel(
 
     base::service_unit { 'flannel':
         systemd => true,
+        require => File['/usr/local/bin/flanneld'],
     }
 
     ferm::service { 'flannel-udp':
