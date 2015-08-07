@@ -4,7 +4,10 @@ Description=Kubernetes API Server
 [Service]
 ExecStart=/usr/local/bin/kube-apiserver \
     --etcd-servers=<%= @etcd_servers %> \
-    --service-cluster-ip-range=192.168.0.0/24
+    --service-cluster-ip-range=192.168.0.0/24 \
+    --token-auth-file=/dev/null \
+    --insecure-bind=<%= @master_ip %> \
+    --advertise-address=<%= @master_ip %>
 
 [Install]
 WantedBy=multi-user.target
