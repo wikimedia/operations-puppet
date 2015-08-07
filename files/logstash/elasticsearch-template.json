@@ -16,7 +16,10 @@
   },
   "mappings" : {
     "_default_" : {
-      "_all" : {"enabled" : true},
+      "_all" : {
+        "enabled" : true,
+        "omit_norms": true
+      },
       "dynamic_templates" : [ {
         "string_fields" : {
           "match" : "*",
@@ -32,22 +35,40 @@
               "raw" : {
                 "type" : "string",
                 "index" : "not_analyzed",
-                "ignore_above" : 256
+                "ignore_above" : 256,
+                "doc_values": true
               }
             }
           }
         }
       } ],
       "properties" : {
-        "@timestamp" : { "type" : "date", "index" : "not_analyzed" },
-        "@version" : { "type" : "string", "index" : "not_analyzed" },
+        "@timestamp" : {
+          "type" : "date",
+          "index" : "not_analyzed",
+          "doc_values": true
+        },
+        "@version" : {
+          "type" : "string",
+          "index" : "not_analyzed",
+          "doc_values": true
+        },
         "geoip"  : {
           "type" : "object",
           "dynamic" : true,
           "path" : "full",
-          "properties" : { "location" : { "type" : "geo_point" } }
+          "properties" : {
+            "location" : {
+              "type" : "geo_point",
+              "doc_values": true
+            }
+          }
         },
-        "host" : { "type" : "string", "index" : "not_analyzed" },
+        "host" : {
+          "type" : "string",
+          "index" : "not_analyzed",
+          "doc_values": true
+        },
         "message" : {
           "type" : "string",
           "index" : "analyzed",
@@ -58,8 +79,8 @@
           "fields": {
             "raw": {
               "type": "string",
-              "index": "no",
-              "fielddata": { "format": "doc_values" }
+              "index": "not_analyzed",
+              "doc_values": true
             },
             "normalized_message": {
               "index" : "analyzed",
@@ -68,14 +89,26 @@
             }
           }
         },
-        "sequence_id" : { "type": "long" },
+        "sequence_id" : {
+          "type": "long",
+          "doc_values": true
+        },
         "tags" : {
           "type" : "string",
           "index" : "not_analyzed",
-          "index_name" : "tag"
+          "index_name" : "tag",
+          "doc_values": true
         },
-        "type" : { "type" : "string", "index" : "not_analyzed" },
-        "udp_sender" : { "type" : "string", "index" : "not_analyzed" }
+        "type" : {
+          "type" : "string",
+          "index" : "not_analyzed",
+          "doc_values": true
+        },
+        "udp_sender" : {
+          "type" : "string",
+          "index" : "not_analyzed",
+          "doc_values": true
+        }
       }
     }
   }
