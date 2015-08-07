@@ -155,3 +155,12 @@ class role::lists {
         rule => 'proto tcp dport 783 { saddr (127.0.0.1 ::1) ACCEPT; }'
     }
 }
+
+class role::lists::migration {
+
+    ferm::service { 'mailman-http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+}
