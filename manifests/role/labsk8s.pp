@@ -12,6 +12,10 @@ class role::labs::k8s::master {
         master_host => $master_host,
     }
 
+    class { 'k8s::controller':
+        master_host => $master_host,
+    }
+
     include role::labs::k8s::worker
 }
 
