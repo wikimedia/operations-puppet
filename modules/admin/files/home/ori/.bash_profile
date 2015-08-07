@@ -69,8 +69,8 @@ service()    { sudo service "$@"; }
 perf()       { sudo perf "$@"; }
 gdbh()       { sudo gdb -p "$(pidof -s hhvm)"; }
 redis-cli()  { command redis-cli -a "$(grep -Po '(?<=masterauth )\S+' /etc/redis/redis.conf)" "$@"; }
-fields()     { tail -1 "${@:---}" | awk 'END { for (i = 1; i <= NF; i++) printf("%s : %s\n", i, $i) }' ; }
-field()      { awk -v field="$1" '{print $(field)}'; }
+fields()     { tail -1 "${@:---}" | awk 'END { for (i = 1; i <= NF; i++) printf("%s : %s\n", i, $i) }'; }
+field()      { local fieldnum="$1"; shift; awk -v field="$fieldnum" '{print $(field)}' "${@}"; }
 lat()        { ls -lat *"${@:+.}${@}" | head; }
 sudo()       { command sudo -E "$@"; }
 hbnt()       { /usr/bin/comm -23 "$1" "$2"; } # Here but not there (lines in $1 that are not in $2)
