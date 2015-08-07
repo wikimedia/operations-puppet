@@ -126,8 +126,8 @@ define service::node( $port,
     file { $local_logdir:
         ensure => directory,
         owner  => $title,
-        group  => $title,
-        mode   => '0775',
+        group  => 'root',
+        mode   => '0755',
         before => Service[$title],
     }
 
