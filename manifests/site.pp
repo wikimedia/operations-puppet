@@ -395,7 +395,8 @@ node 'cp1008.wikimedia.org' {
 
 node /^cp104[34]\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::misc
+    include standard
+    # formerly eqiad misc-cluster
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
