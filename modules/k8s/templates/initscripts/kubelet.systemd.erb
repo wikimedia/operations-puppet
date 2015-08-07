@@ -5,7 +5,7 @@ Description=Kubelet
 ExecStart=/usr/local/bin/kubelet \
     --api-servers=http://<%= @master_ip %>:8080 \
     --config=/etc/kubernetes/manifests \
-    --configure-cbr0=true
+    --configure-cbr0=false
 
 [Install]
 WantedBy=multi-user.target
