@@ -61,8 +61,7 @@ class toollabs (
         group   => 'root',
         mode    => '0444',
         require => File[$store],
-        content => "${::fqdn},${::hostname},${::ipaddress} ssh-rsa ${::sshrsakey}\n" +
-            "${::fqdn},${::hostname},${::ipaddress} ecdsa-sha2-nistp256 ${::sshecdsakey}\n"
+        content => "${::fqdn},${::hostname},${::ipaddress} ssh-rsa ${::sshrsakey}\n",
     }
 
     exec { 'make_known_hosts':
