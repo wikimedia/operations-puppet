@@ -2,22 +2,14 @@
 #
 # Runs queries submitted via celery
 class quarry::celeryrunner {
-    $clone_path  = '/srv/quarry'
-    $result_path = '/data/project/quarry/results'
-
     include quarry::base
 
-    file { '/etc/init.d/celeryd':
-        source => 'puppet:///modules/quarry/celeryd',
-        mode   => '0755',
-    }
+    $clone_path  = '/srv/quarry'
 
-    file { '/etc/default/celeryd':
-        content => template('quarry/celeryd.conf.erb'),
-    }
-
-    service { 'celeryd':
-        ensure  => running,
-        require => [File['/etc/init.d/celeryd'], File['/etc/default/celeryd'], User['quarry']],
+    celery::worker { 'quarry-worker':
+        app         => 'quarry.web.worker',
+        working_dir => $clone_path,
+        user        => 'quarry',
+        owner       => 'quarry',
     }
 }
