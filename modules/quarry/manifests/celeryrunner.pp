@@ -10,6 +10,6 @@ class quarry::celeryrunner {
         app         => 'quarry.web.worker',
         working_dir => $clone_path,
         user        => 'quarry',
-        owner       => 'quarry',
+        group       => 'quarry',
     }
 }
