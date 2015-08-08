@@ -6,16 +6,18 @@ class role::torrus {
     $snmp_ro_community = $passwords::network::snmp_ro_community
 
     $corerouters = [
+        'cr1-eqdfw.wikimedia.org',
         'cr1-eqiad.wikimedia.org',
+        'cr1-eqord.wikimedia.org',
         'cr1-esams.wikimedia.org',
         'cr1-ulsfo.wikimedia.org',
         'cr1-ulsfo.wikimedia.org',
+        'cr2-codfw.wikimedia.org',
         'cr2-eqiad.wikimedia.org',
         'cr2-knams.wikimedia.org',
         'cr2-ulsfo.wikimedia.org',
-        'cr2-codfw.wikimedia.org',
-        'pfw1-eqiad.wikimedia.org',
         'pfw1-codfw.wikimedia.org',
+        'pfw1-eqiad.wikimedia.org',
     ]
 
     $accessswitches = [

@@ -15,7 +15,7 @@ remark = Smokeping installation for Wikimedia Foundation
 + eqiad
 
 menu = eqiad
-title = Wikimedia Ashburn, Virginia network
+title = Wikimedia Ashburn, VA network
 alerts = bigloss,someloss,startloss
 
 ++ Core
@@ -91,10 +91,25 @@ menu = iron
 title = iron.wikimedia.org [B4-EQIAD]
 host = iron.wikimedia.org
 
++ eqord
+
+menu = eqord
+title = Wikimedia Chicago, IL network
+alerts = bigloss,someloss,startloss
+
+++ Core
+menu = Core
+title = Core Network Infrastructure
+
++++ cr1-eqord
+menu = cr1-eqord
+title = cr1-eqord.wikimedia.org
+host = cr1-eqord.wikimedia.org
+
 + codfw
 
 menu = codfw
-title = Wikimedia Dallas, Texas network
+title = Wikimedia Dallas, TX network
 alerts = bigloss,someloss,startloss
 
 ++ Core
@@ -110,6 +125,11 @@ host = cr1-codfw.wikimedia.org
 menu = cr2-codfw
 title = cr2-codfw.wikimedia.org
 host = cr2-codfw.wikimedia.org
+
++++ cr1-eqdfw
+menu = cr1-eqdfw
+title = cr1-eqdfw.wikimedia.org
+host = cr1-eqdfw.wikimedia.org
 
 +++ asw-a-codfw
 menu = asw-a-codfw
@@ -182,7 +202,7 @@ host = hooft.esams.wikimedia.org
 + ulsfo
 
 menu = ulsfo
-title = Wikimedia San Francisco, California network
+title = Wikimedia San Francisco, CA network
 alerts = bigloss,someloss,startloss
 
 ++ Core
