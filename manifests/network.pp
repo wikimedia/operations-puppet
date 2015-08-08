@@ -328,7 +328,7 @@ class network::checks {
         description => 'Storage equipment',
     }
 
-    ### ESAMS ###
+    ### esams ###
 
     # cr1-esams
     @monitoring::host { 'cr1-esams':
@@ -385,7 +385,7 @@ class network::checks {
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
 
-    ### EQIAD ###
+    ### eqiad ###
 
     # cr1-eqiad
     @monitoring::host { 'cr1-eqiad':
@@ -447,7 +447,27 @@ class network::checks {
         critical   => true,
     }
 
-    ### ULSFO ###
+    ### eqord ###
+
+    # cr1-eqord
+    @monitoring::host { 'cr1-eqord':
+        ip_address => '208.80.154.198',
+        group      => 'routers',
+    }
+    @monitoring::service { 'cr1-eqord interfaces':
+        host          => 'cr1-eqord',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
+    }
+    @monitoring::service { 'cr1-eqord bgp status':
+        host          => 'cr1-eqord',
+        group         => 'routers',
+        description   => 'BGP status',
+        check_command => "check_bgp!${snmp_ro_community}",
+    }
+
+    ### ulsfo ###
 
     # cr1-ulsfo
     @monitoring::host { 'cr1-ulsfo':
@@ -497,7 +517,7 @@ class network::checks {
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
 
-    ### CODFW ###
+    ### codfw ###
 
     # cr1-codfw
     @monitoring::host { 'cr1-codfw':
@@ -530,6 +550,26 @@ class network::checks {
     }
     @monitoring::service { 'cr2-codfw bgp status':
         host          => 'cr2-codfw',
+        group         => 'routers',
+        description   => 'BGP status',
+        check_command => "check_bgp!${snmp_ro_community}",
+    }
+
+    ### eqdfw ###
+
+    # cr1-eqdfw
+    @monitoring::host { 'cr1-eqdfw':
+        ip_address => '208.80.153.198',
+        group      => 'routers',
+    }
+    @monitoring::service { 'cr1-eqdfw interfaces':
+        host          => 'cr1-eqdfw',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
+    }
+    @monitoring::service { 'cr1-eqdfw bgp status':
+        host          => 'cr1-eqdfw',
         group         => 'routers',
         description   => 'BGP status',
         check_command => "check_bgp!${snmp_ro_community}",

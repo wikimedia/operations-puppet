@@ -6,6 +6,7 @@ cr1-esams.wikimedia.org:juniper:up:
 cr2-knams.wikimedia.org:juniper:up:
 cr1-eqiad.wikimedia.org:juniper:up:
 cr2-eqiad.wikimedia.org:juniper:up:
+cr1-eqord.wikimedia.org:juniper:up:
 asw-a-eqiad.mgmt.eqiad.wmnet:juniper:up:
 asw-b-eqiad.mgmt.eqiad.wmnet:juniper:up:
 asw-c-eqiad.mgmt.eqiad.wmnet:juniper:up:
@@ -24,6 +25,7 @@ asw-ulsfo.mgmt.ulsfo.wmnet:juniper:up:
 mr1-ulsfo.mgmt.ulsfo.wmnet:juniper:up:
 cr1-codfw.wikimedia.org:juniper:up:
 cr2-codfw.wikimedia.org:juniper:up:
+cr1-eqdfw.wikimedia.org:juniper:up:
 asw-a-codfw.mgmt.codfw.wmnet:juniper:up:
 asw-b-codfw.mgmt.codfw.wmnet:juniper:up:
 asw-c-codfw.mgmt.codfw.wmnet:juniper:up:
