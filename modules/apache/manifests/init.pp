@@ -99,4 +99,7 @@ class apache {
         source   => 'puppet:///modules/apache/dummy.conf',
         priority => 0,
     }
+
+    # manage logrotate periodicity and keeping period
+    include apache::logrotate
 }
