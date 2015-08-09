@@ -2,3 +2,5 @@ standard::has_default_mail_relay: false
 admin::groups:
   - phabricator-admin
   - phabricator-roots
+apache::logrotate::period: "daily"
+apache::logrotate::rotate: 7

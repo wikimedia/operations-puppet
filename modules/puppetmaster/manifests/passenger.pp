@@ -62,17 +62,8 @@ class puppetmaster::passenger(
         }
     }
 
-    # Rotate apache logs
+    # Rotate apache logs is now managed via the apache::logrotate class
     file { '/etc/logrotate.d/passenger':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/puppetmaster/logrotate-passenger',
-    }
-
-    # Installed by apache2.x-common and would override our settings
-    file { '/etc/logrotate.d/apache2':
         ensure => absent,
     }
 }

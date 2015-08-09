@@ -6,3 +6,5 @@ base::resolving::domain_search:
   - ulsfo.wmnet
   - esams.wikimedia.org
 confd::monitor_files: false
+apache::logrotate::period: "daily"
+apache::logrotate::rotate: 7
