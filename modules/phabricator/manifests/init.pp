@@ -329,4 +329,18 @@ class phabricator (
         hasrestart => true,
         require    => Git::Install['phabricator/phabricator'],
     }
+
+        # Rotate apache logs
+    file { '/etc/logrotate.d/phabricator':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/phabricator/logrotate_phabricator',
+    }
+
+    # Installed by apache2.x-common and would override our settings
+    file { '/etc/logrotate.d/apache2':
+        ensure => absent,
+    }
 }
