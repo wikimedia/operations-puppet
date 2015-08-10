@@ -1,2 +1,8 @@
-    Allow from all
-    Satisfy Any
+    <IfVersion >= 2.4>
+      Require all granted
+    </IfVersion>
+    <IfVersion < 2.4>
+      Order Allow,Deny
+      Allow from all
+      Satisfy Any
+    </IfVersion>
