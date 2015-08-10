@@ -5807,14 +5807,14 @@ host sca1002 {
 }
 
 host scb1001 {
-	hardware ethernet 90:b1:1c:2d:87:0c;
+	hardware ethernet 90:b1:1c:2d:7f:6b;
 	fixed-address scb1001.eqiad.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host scb1002 {
-	hardware ethernet 90:b1:1c:2d:7f:6b;
+	hardware ethernet 90:b1:1c:2d:87:0c;
 	fixed-address scb1002.eqiad.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
