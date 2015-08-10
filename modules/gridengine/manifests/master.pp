@@ -33,14 +33,6 @@ class gridengine::master {
         purge   => true,
     }
 
-    file { "${etcdir}/bin/mergeconf":
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/gridengine/mergeconf',
-    }
-
     file { "${etcdir}/bin/tracker":
         ensure => file,
         owner  => 'root',
@@ -94,28 +86,9 @@ class gridengine::master {
         delcmd => '/usr/bin/qconf -dh',
     }
 
-    file { "${etcdir}/config":
-        ensure  => directory,
-        force   => true,
-        owner   => 'sgeadmin',
-        group   => 'sgeadmin',
-        mode    => '0775',
-        recurse => true,
-        purge   => true,
-    }
-
-    file { "${etcdir}/config/99-default":
-        ensure => file,
-        owner  => 'sgeadmin',
-        group  => 'sgeadmin',
-        mode   => '0664',
-        source => 'puppet:///modules/gridengine/config-99-default',
-    }
-
-    exec { 'update-config-conf':
-        onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/config.conf ${etcdir}/config/*",
-        command => "/bin/echo /usr/bin/qconf -Mconf ${etcdir}/config.conf",
-        require => File[ "${etcdir}/bin", "${etcdir}/config/99-default" ],
+    gridengine_config { 'mailer':
+        ensure => present,
+        value  => '/usr/local/bin/gridengine-mailer',
     }
 
     service { 'gridengine-master':
