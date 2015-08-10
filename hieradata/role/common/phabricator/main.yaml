@@ -3,4 +3,4 @@ admin::groups:
   - phabricator-admin
   - phabricator-roots
 apache::logrotate::period: "daily"
-apache::logrotate::rotate: 7
+apache::logrotate::rotate: 3
