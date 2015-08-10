@@ -95,7 +95,7 @@ probe maps {
 # List of Puppet generated backends
 <%
 @varnish_backends.each do |backend|
-	name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+	name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
 	probe = backend_option(backend, "probe", nil)
 -%>
 backend <%= name %> {
@@ -140,7 +140,7 @@ director <%= director_name %> <%= director['type'] %> {
 <% end -%>
 <%
 	backends.each do |backend|
-		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
 -%>
 	{
 		.backend = <%= name %>;

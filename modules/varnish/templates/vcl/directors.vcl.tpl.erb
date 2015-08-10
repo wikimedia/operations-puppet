@@ -22,7 +22,7 @@ director <%= director_name %> <%= director['type'] %> {
 	<% end -%>
 	{{range $node := ls "<%= keyspace %>/"}}{{ $key := printf "<%= keyspace %>/%s" $node }}{{ $data := json (getv $key) }}{{ if eq $data.pooled "yes"}}
 	{
-		.backend = {{ $parts := split $node "." }}{{ index $parts 0 }};
+		.backend = be_{{ $parts := split $node "." }}{{ index $parts 0 }};
 		.weight = {{ $data.weight }};
 	}{{end}}{{end}}
 }
