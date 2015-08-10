@@ -149,7 +149,8 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
 
         # Enable auto creation of topics.
         # This will be used for eventlogging-kafka
-        auto_create_topics_enable       => true,
+        # (Disable this until we are ready for eventlogging-kafka).
+        auto_create_topics_enable       => false,
         default_replication_factor      => min(3, size($brokers_array)),
         # Start with a low number of (auto created) partitions per
         # topic.  This can be increased manually for high volume
