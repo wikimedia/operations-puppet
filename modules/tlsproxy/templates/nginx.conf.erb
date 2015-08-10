@@ -40,9 +40,7 @@ pid        /run/nginx.pid;
 
 events {
     worker_connections  <%= @nginx_worker_connections %>;
-    # Setting multi_accept makes it much less likely that
-    # the SSL server will throw SSL connection errors
-    multi_accept on;
+    multi_accept off; # accept 1 conn per epoll hit, basically
     accept_mutex off; # better latencies at high connection rates
 }
 
