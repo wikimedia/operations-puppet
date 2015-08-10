@@ -1,0 +1,9 @@
+[Unit]
+Description=Replicate storage between hosts (<%= @title %>)
+
+[Timer]
+OnCalendar=<%= @calendar %>
+Persistent=true
+
+[Install]
+WantedBy=timers.target
