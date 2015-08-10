@@ -339,6 +339,7 @@ groups:
     members: [smalyshev]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
+		 'ALL = (blazegraph) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *']
   mailman-users:
     gid: 756
