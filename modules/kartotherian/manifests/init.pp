@@ -7,6 +7,12 @@
 # classes as well as conform to a de-facto standard of having a module for every
 # service
 class kartotherian() {
+
+    $cassandra_kartotherian_user = 'kartotherian'
+    $cassandra_kartotherian_pass = hiera('maps::cassandra_kartotherian_pass')
+    $pgsql_kartotherian_user = 'kartotherian'
+    $pgsql_kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')
+
     service::node { 'kartotherian':
         port   => 4000,
         config => template('kartotherian/config.yaml.erb'),
