@@ -1,2 +1,10 @@
 # Kartotherian-specific settings
+
+variables:
+    osmdb-user: '<%= @pgsql_kartotherian_user %>'
+    osmdb-pswd: '<%= @pgsql_kartotherian_pass %>'
+
+    cassandra-user: '<%= @cassandra_kartotherian_user %>'
+    cassandra-pswd: '<%= @cassandra_kartotherian_pass %>'
+
 sources: sources.prod.yaml
