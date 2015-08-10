@@ -47,10 +47,10 @@ class role::labs::instance {
     $nfs_server = 'labstore.svc.eqiad.wmnet'
     $dumps_server = 'labstore1003.eqiad.wmnet'
 
-    if mount_nfs_volume($::instanceproject, 'home') {
+    if mount_nfs_volume($::labsproject, 'home') {
         # Note that this is the same export as for /data/project
         exec { 'block-for-home-export':
-            command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::instanceproject} 180",
+            command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::labsproject} 180",
             require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
             unless  => '/bin/mountpoint -q /home',
         }
@@ -65,7 +65,7 @@ class role::labs::instance {
         }
     }
 
-    if mount_nfs_volume($::instanceproject, 'project') or mount_nfs_volume($::instanceproject, 'scratch') {
+    if mount_nfs_volume($::labsproject, 'project') or mount_nfs_volume($::labsproject, 'scratch') {
         # Directory for data mounts
         file { '/data':
             ensure => directory,
@@ -75,9 +75,9 @@ class role::labs::instance {
         }
     }
 
-    if mount_nfs_volume($::instanceproject, 'project') {
+    if mount_nfs_volume($::labsproject, 'project') {
         exec { 'block-for-project-export':
-            command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::instanceproject} 180",
+            command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::labsproject} 180",
             require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
             unless  => '/bin/mountpoint -q /data/project',
         }
@@ -97,7 +97,7 @@ class role::labs::instance {
         }
     }
 
-    if mount_nfs_volume($::instanceproject, 'scratch') {
+    if mount_nfs_volume($::labsproject, 'scratch') {
         # We don't need to block for this one because it's always exported for everyone.
         file { '/data/scratch':
             ensure  => directory,
@@ -114,7 +114,7 @@ class role::labs::instance {
         }
     }
 
-    if mount_nfs_volume($::instanceproject, 'dumps') or mount_nfs_volume($::instanceproject, 'statistics') {
+    if mount_nfs_volume($::labsproject, 'dumps') or mount_nfs_volume($::labsproject, 'statistics') {
         # Directory for public (readonly) mounts
         file { '/public':
             ensure => directory,
@@ -125,7 +125,7 @@ class role::labs::instance {
 
     }
 
-    if mount_nfs_volume($::instanceproject, 'statistics') {
+    if mount_nfs_volume($::labsproject, 'statistics') {
         file { '/public/statistics':
             ensure  => directory,
             require => File['/public'],
@@ -141,7 +141,7 @@ class role::labs::instance {
         }
     }
 
-    if mount_nfs_volume($::instanceproject, 'dumps') {
+    if mount_nfs_volume($::labsproject, 'dumps') {
         file { '/public/dumps':
             ensure  => directory,
             require => File['/public'],
