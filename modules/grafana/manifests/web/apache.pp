@@ -26,6 +26,7 @@ class grafana::web::apache(
     $elastic_backends = undef,
 ) {
     include ::apache::mod::proxy_balancer
+    include ::apache::mod::lbmethod_byrequests
 
     apache::site { 'grafana':
         ensure  => $ensure,
