@@ -213,11 +213,6 @@ lvs_services:
     conftool:
       cluster: cache_maps
       service: varnish-fe
-    icinga:
-      uri: maps.wikimedia.org!/_info
-      sites:
-        eqiad:
-          hostname: maps-lb.eqiad.wikimedia.org
   maps-https:
     description: "Maps service maps-lb.%{::site}.wikimedia.org"
     class: high-traffic2
