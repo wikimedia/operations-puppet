@@ -6,13 +6,24 @@ class role::cache::configuration {
 
     $backends = {
         'production' => {
-            'appservers'        => $lvs::configuration::service_ips['apaches'],
-            'api'               => $lvs::configuration::service_ips['api'],
-            'rendering'         => $lvs::configuration::service_ips['rendering'],
-            'test_appservers' => {
-                'eqiad' => [ 'mw1017.eqiad.wmnet' ],
+            'appservers'        => {
+                'eqiad' => 'appservers.svc.eqiad.wmnet',
+                'codfw' => 'appservers.svc.codfw.wmnet',
             },
-            'parsoid' => $lvs::configuration::service_ips['parsoid'],
+            'api'               => {
+                'eqiad' => 'api.svc.eqiad.wmnet',
+                'codfw' => 'api.svc.codfw.wmnet',
+            },
+            'rendering'         => {
+                'eqiad' => 'rendering.svc.eqiad.wmnet',
+                'codfw' => 'rendering.svc.codfw.wmnet',
+            },
+            'test_appservers' => {
+                'eqiad' => 'mw1017.eqiad.wmnet',
+            },
+            'parsoid' => {
+                'eqiad' => 'parsoid.svc.eqiad.wmnet',
+            },
             'cxserver' => {
                 'eqiad' => 'cxserver.svc.eqiad.wmnet',
             },
@@ -26,7 +37,9 @@ class role::cache::configuration {
                 'eqiad' => 'restbase.svc.eqiad.wmnet',
             },
             'security_audit' => { 'eqiad' => [] }, # no audit backend for prod at this time
-            'kartotherian' => $lvs::configuration::service_ips['kartotherian'],
+            'kartotherian' => {
+                'codfw' => 'kartotherian.svc.codfw.wmnet',
+            }
         },
         'labs' => {
             'appservers' => {
