@@ -2175,8 +2175,12 @@ node 'ruthenium.eqiad.wmnet' {
     include standard
 }
 
-node /^sc[ab]100[12]\.eqiad\.wmnet$/ {
+node /^sca100[12]\.eqiad\.wmnet$/ {
     role sca
+}
+
+node /^scb100[12]\.eqiad\.wmnet$/ {
+    role scb
 }
 
 # Silver is the new home of the wikitech web server.
