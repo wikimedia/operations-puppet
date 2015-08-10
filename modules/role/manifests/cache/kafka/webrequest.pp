@@ -38,8 +38,8 @@ class role::cache::kafka::webrequest(
         # Perhaps this is a buffer bloat problem.
         # Note that varnishkafka will retry a timed-out produce request.
         topic_request_timeout_ms     => 2000,
-        # -1 means all brokers in the ISR must ACK this request.
-        topic_request_required_acks  => '-1',
+        # 1 means only the leader broker must ACK each produce request
+        topic_request_required_acks  => '1',
         # Write out stats to varnishkafka.stats.json
         # this often.  This is set at 15 so that
         # stats will be fresh when polled from gmetad.
