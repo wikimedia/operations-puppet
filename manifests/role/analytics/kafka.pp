@@ -192,6 +192,32 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     class { '::kafka::server::jmxtrans':
         ganglia  => "${ganglia_host}:${ganglia_port}",
         statsd   => "${statsd_host}:${statsd_port}",
+        objects => {
+            {
+                'name'          => 'kafka.server:type=BrokerTopicMetrics',
+                'resultAlias'   => 'kafka.server.BrokerTopicMetrics',
+                'typeNames'     => ['name'],
+                'attrs'         => {
+                    'Count'             => { 'slope' => 'positive', 'bucketType' => 'g' },
+                    'FifteenMinuteRate' => { 'slope' => 'both',     'bucketType' => 'g' },
+                    'FiveMinuteRate'    => { 'slope' => 'both',     'bucketType' => 'g' },
+                    'OneMinuteRate'     => { 'slope' => 'both',     'bucketType' => 'g' },
+                    'MeanRate'          => { 'slope' => 'both',     'bucketType' => 'g' },
+                },
+            },
+            {
+                'name'          => 'kafka.server:type=BrokerTopicMetrics,name=*,topic=*',
+                'resultAlias'   => 'kafka.server.BrokerTopicMetrics',
+                'typeNames'     => ['name'],
+                'attrs'         => {
+                    'Count'             => { 'slope' => 'positive', 'bucketType' => 'g' },
+                    'FifteenMinuteRate' => { 'slope' => 'both',     'bucketType' => 'g' },
+                    'FiveMinuteRate'    => { 'slope' => 'both',     'bucketType' => 'g' },
+                    'OneMinuteRate'     => { 'slope' => 'both',     'bucketType' => 'g' },
+                    'MeanRate'          => { 'slope' => 'both',     'bucketType' => 'g' },
+                },
+            },
+        }
     }
 
     # Monitor kafka in production
