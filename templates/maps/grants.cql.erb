@@ -1,0 +1,13 @@
+# Cassandra grants for maps
+CREATE USER kartotherian  WITH PASSWORD '<%= @cassadra_kartotherian_pass %>';
+CREATE USER tilerator  WITH PASSWORD '<%= @cassadra_tilerator_pass %>';
+
+# First revoking all permissions to maintain consistency
+REVOKE ALL PERMISSIONS ON ALL KEYSPACES FROM kartotherian;
+REVOKE ALL PERMISSIONS ON ALL KEYSPACES FROM tilerator;
+# kartotherian read only
+GRANT SELECT ON KEYSPACE v1 to kartotherian;
+# tilerator should be able to update tiles
+GRANT SELECT ON KEYSPACE v1 to tilerator;
+GRANT MODIFY ON KEYSPACE v1 to tilerator;
+# TODO: Admin account to create indexes, alter tables?

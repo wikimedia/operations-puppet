@@ -57,6 +57,15 @@ class role::maps::master {
         mode    => '0400',
         content => template('maps/grants.sql.erb'),
     }
+    # Cassandra grants
+    $cassandra_kartotherian_pass = hiera('maps::cassandra_kartotherian_pass')
+    $cassandra_tilerator_pass = hiera('maps::cassandra_tilerator_pass')
+    file { '/usr/local/bin/maps-grants.cql':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('maps/grants.cql.erb'),
+    }
 }
 
 class role::maps::slave {
