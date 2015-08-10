@@ -13,8 +13,14 @@ define labstore::fileserver::replicate(
         declare_service => false,
     }
 
+    nrpe::monitor_systemd_unit_lastrun { "replicate-${title}":
+        description => "Last backup of the ${title} filesystem",
+        warn_secs   => 60*60*1,
+        crit_secs   => 60*60*2,
+    }
+
     nrpe::monitor_systemd_unit_state { "replicate-${title}":
-        description    => "Last backup of the ${title} filesystem",
-        expected_state => "periodic 3600",
+        description    => "Backup of ${title} filesystem",
+        expected_state => "success",
     }
 }

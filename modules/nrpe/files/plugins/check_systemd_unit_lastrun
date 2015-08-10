@@ -1,0 +1,100 @@
+#! /usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+#  Copyright © 2015 Marc-André Pelletier <mpelletier@wikimedia.org>
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+#
+#  THIS FILE IS MANAGED BY PUPPET
+#
+#  Source: modules/labstore/storage-replicate
+#  From:   modules/labstore/manifests/fileserve.rpp
+#
+
+"""
+check_systemd_unit_lastrun
+
+usage: check_systemd_unit_lastrun <unit> <warn> <crit>
+
+Checks that the systemd unit has been run recently
+enough.  Warns if the last start/stop activity is older
+than warn seconds, and criticals if it is older than
+crit seconds.
+"""
+
+import argparse
+import time
+import datetime
+import subprocess
+import logging
+import json
+import sys
+
+def main():
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('unit', help='Systemd unit to check')
+    parser.add_argument('warn', help='Number of seconds past which a warning should be emitted')
+    parser.add_argument('crit', help='Number of seconds past which a critical should be emitted')
+    args = parser.parse_args()
+
+    warn = datetime.timedelta(seconds=int(args.warn))
+    crit = datetime.timedelta(seconds=int(args.crit))
+
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
+
+    log = []
+
+    try:
+        raw = subprocess.check_output(
+            ['/bin/journalctl', '--output=json', '--reverse', '--unit', args.unit],
+            stderr=subprocess.STDOUT).decode()
+        for entry in raw.splitlines():
+            log.append(json.loads(entry))
+    except subprocess.CalledProcessError:
+        print('LASTRUN UNKNOWN - Unable to get systemd journal for unit "%s"' % args.unit)
+        sys.exit(3)
+    except ValueError:
+        print('LASTRUN UNKNOWN - Unable to parse systemd journal for unit "%s"' % args.unit)
+        sys.exit(3)
+
+    lastrun = None
+    for entry in log:
+        try:
+            if entry['CODE_FUNCTION'] == 'unit_status_log_starting_stopping_reloading':
+                lastrun = int(float(entry['__REALTIME_TIMESTAMP'])/1000000) # because microseconds
+                break
+        except (KeyError):
+            pass
+
+    if not lastrun:
+        print('LASTRUN UNKNOWN - No start/stop information for unit "%s"' % args.unit)
+        sys.exit(3)
+
+    age = datetime.timedelta(seconds=int(time.time()) - lastrun)
+
+    if age > crit:
+        print('LASTRUN CRITICAL - Last run more than %s ago' % crit)
+        sys.exit(2)
+
+    if age > warn:
+        print('LASTRUN WARNING - Last run more than %s ago' % warn)
+        sys.exit(1)
+
+    print('LASTRUN OK - Last run %s ago' % age)
+    sys.exit(0)
+
+if __name__ == "__main__":
+    main()
+

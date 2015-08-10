@@ -1,19 +1,20 @@
-# === Define: nrpe::monitor_systemd_unit_state
+# === Define: nrpe::monitor_systemd_unit_lastrun
 #
-# Installs a check for a systemd unit state using systemctl
-define nrpe::monitor_systemd_unit_state(
+# Installs a check for last run time of a systemd unit using journalctl
+define nrpe::monitor_systemd_unit_lastrun(
     $unit = $title,
-    $description = "${unit} service",
+    $description = "${unit} last run",
     $contact_group = 'admins',
     $retries = 3,
     $timeout = 10,
     $critical = false,
     $ensure = 'present',
-    $expected_state = 'active'
+    $warn_secs = 60*60*25,
+    $crit_secs = 60*60*49,
     ){
 
     if $::initsystem != 'systemd' {
-        fail('nrpe::monitor_systemd_unit can only work on systemd-enabled systems')
+        fail('nrpe::monitor_systemd_unit_lastrun can only work on systemd-enabled systems')
     }
     require nrpe::systemd_scripts
 
@@ -24,13 +25,12 @@ define nrpe::monitor_systemd_unit_state(
         $nagios_critical = 'false'
     }
 
-    nrpe::monitor_service { "${unit}-state":
+    nrpe::monitor_service { "${unit}-lastrun":
         ensure       => $ensure,
         description  => $description,
-        nrpe_command => "/usr/local/bin/nrpe_check_systemd_unit_state -s '${unit}' -e ${expected_state}",
+        nrpe_command => "/usr/local/bin/nrpe_check_systemd_unit_lastrun '${unit}' ${warn_secs} ${crit_secs}",
         retries      => $retries,
         timeout      => $timeout,
         critical     => $nagios_critical,
     }
 }
-
