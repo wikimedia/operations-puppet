@@ -194,8 +194,8 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         statsd   => "${statsd_host}:${statsd_port}",
         objects  => [
             {
-                'name'          => 'kafka.server:type=BrokerTopicMetrics',
-                'resultAlias'   => 'kafka.server.BrokerTopicMetrics',
+                'name'          => 'kafka.server:type=BrokerTopicMetrics,name=*',
+                'resultAlias'   => 'kafka.server.BrokerTopicMetrics-AllTopics',
                 'typeNames'     => ['name'],
                 'attrs'         => {
                     'Count'             => { 'slope' => 'positive', 'bucketType' => 'g' },
