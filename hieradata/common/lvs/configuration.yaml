@@ -199,7 +199,7 @@ lvs_services:
       cluster: cache_upload
       service: nginx
   maps:
-    description: "Maps service maps.%{::site}.wikimedia.org"
+    description: "Maps service maps-lb.%{::site}.wikimedia.org"
     class: high-traffic2
     sites:
     - eqiad
@@ -219,7 +219,7 @@ lvs_services:
         eqiad:
           hostname: maps-lb.eqiad.wikimedia.org
   maps-https:
-    description: "Maps service maps.%{::site}.wikimedia.org"
+    description: "Maps service maps-lb.%{::site}.wikimedia.org"
     class: high-traffic2
     sites:
     - eqiad
