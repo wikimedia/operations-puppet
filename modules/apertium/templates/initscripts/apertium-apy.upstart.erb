@@ -12,6 +12,7 @@ setgid "apertium"
 
 env LC_ALL=en_US.utf-8
 
+respawn
 exec /usr/bin/python3 /usr/share/apertium-apy/servlet.py -j<%= @num_of_processes %> -m<%= @max_idle_seconds %> /usr/share/apertium/modes
 
 # wait 60 seconds for a graceful restart before killing the master
