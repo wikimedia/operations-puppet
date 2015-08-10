@@ -1,16 +1,5 @@
 class role::snapshot::common {
     include role::dataset::systemusers
-    # The snapshot nodes do not include standard, so this is needed.
-    # It also includes some duplication with other modules, and should really go away.
-    file { '/etc/sudoers.d/appserver':
-        ensure => present,
-        path   => '/etc/sudoers.d/appserver',
-        owner  => root,
-        group  => root,
-        mode   => '0440',
-        source => 'puppet:///files/snapshot/sudoers.snapshot',
-    }
-
 }
 
 class role::snapshot::cron::primary {
