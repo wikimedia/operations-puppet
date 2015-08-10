@@ -26,6 +26,12 @@ class releases (
         $docroot = undef,
         $server_admin = 'noc@wikimedia.org',
 ) {
+    file { '/srv/mw-builds'
+        ensure => directory,
+        owner  => 'root'
+        group  => 'releasers-mediawiki',
+        mode   => '0775',
+    }
     file { '/srv/org':
         ensure => directory,
         owner  => 'root',
