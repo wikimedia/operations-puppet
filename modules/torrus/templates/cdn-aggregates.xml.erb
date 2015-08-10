@@ -29,10 +29,6 @@ end
 <%= varnish_rpn('text', 'eqiad', dual=true) %>
 		</param>
 
-		<param name="expr-Varnish_bits_eqiad">
-<%= varnish_rpn('bits', 'eqiad') %>
-		</param>
-
 		<param name="expr-Varnish_mobile_eqiad">
 <%= varnish_rpn('mobile', 'eqiad', dual=true) %>
 		</param>
@@ -43,10 +39,6 @@ end
 
 		<param name="expr-Varnish_text_esams">
 <%= varnish_rpn('text', 'esams', dual=true) %>
-		</param>
-
-		<param name="expr-Varnish_bits_esams">
-<%= varnish_rpn('bits', 'esams') %>
 		</param>
 
 		<param name="expr-Varnish_mobile_esams">
@@ -116,16 +108,6 @@ end
 			<subtree name="eqiad">
 				<param name="site" value="eqiad"/>
 
-				<subtree name="bits">
-					<param name="cluster" value="bits"/>
-
-					<subtree name="Totals">
-						<param name="expr-Varnish" value="%expr-Varnish_bits_eqiad%"/>
-
-						<apply-template name="varnish-cluster"/>
-					</subtree>
-				</subtree>
-
 				<subtree name="upload">
 					<param name="cluster" value="upload"/>
 
@@ -151,45 +133,8 @@ end
 			<subtree name="esams">
 				<param name="site" value="esams"/>
 
-				<subtree name="bits">
-					<param name="cluster" value="bits"/>
-
-					<subtree name="Totals">
-						<param name="expr-Varnish" value="%expr-Varnish_bits_esams%"/>
-
-						<apply-template name="varnish-cluster"/>
-					</subtree>
-				</subtree>
-			</subtree>
-
 			<subtree name="Totals">
 				<param name="ds-type" value="rrd-file"/>
-
-				<subtree name="bits">
-					<leaf name="Client_requests">
-						<param name="varnishmetric" value="Clients/client_req"/>
-
-						<param name="ds-type" value="rrd-multigraph"/>
-						<param name="ds-names" value="eqiad,esams"/>
-						<param name="comment" value="Total client requests"/>
-						<param name="vertical-label" value="requests/s"/>
-						<param name="graph-lower-limit" value="0"/>
-
-						<param name="ds-expr-eqiad" value="%expr-Varnish_bits_eqiad%,0,1000000,LIMIT"/>
-						<param name="graph-legend-eqiad" value="eqiad"/>
-						<param name="line-style-eqiad" value="AREA"/>
-						<param name="line-stack-eqiad" value="yes"/>
-						<param name="line-color-eqiad" value="##bits-eqiad"/>
-						<param name="line-order-eqiad" value="2"/>
-
-						<param name="ds-expr-esams" value="%expr-Varnish_bits_esams%,0,1000000,LIMIT"/>
-						<param name="graph-legend-esams" value="esams"/>
-						<param name="line-style-esams" value="STACK"/>
-						<param name="line-stack-esams" value="yes"/>
-						<param name="line-color-esams" value="##bits-esams"/>
-						<param name="line-order-esams" value="3"/>
-					</leaf>
-				</subtree>
 			</subtree>
 		</subtree>
 
@@ -210,7 +155,7 @@ end
 				<param name="varnishmetric" value="Clients/client_req"/>
 
 				<param name="ds-type" value="rrd-multigraph"/>
-				<param name="ds-names" value="text-eqiad,bits-eqiad,upload-eqiad,mobile-eqiad,text-esams,bits-esams,upload-esams,total"/>
+				<param name="ds-names" value="text-eqiad,upload-eqiad,mobile-eqiad,text-esams,upload-esams,total"/>
 				<param name="comment" value="Total of all client requests"/>
 				<param name="vertical-label" value="requests/s"/>
 				<param name="graph-lower-limit" value="0"/>
@@ -221,13 +166,6 @@ end
 				<param name="line-stack-upload-eqiad" value="yes"/>
 				<param name="line-color-upload-eqiad" value="##upload-eqiad"/>
 				<param name="line-order-upload-eqiad" value="4"/>
-
-				<param name="ds-expr-bits-eqiad" value="%expr-Varnish_bits_eqiad%,0,1000000,LIMIT"/>
-				<param name="graph-legend-bits-eqiad" value="bits.eqiad"/>
-				<param name="line-style-bits-eqiad" value="STACK"/>
-				<param name="line-stack-bits-eqiad" value="yes"/>
-				<param name="line-color-bits-eqiad" value="##bits-eqiad"/>
-				<param name="line-order-bits-eqiad" value="4"/>
 
 				<param name="ds-expr-text-eqiad" value="%expr-Varnish_text_eqiad%"/>
 				<param name="graph-legend-text-eqiad" value="text.eqiad"/>
@@ -250,13 +188,6 @@ end
 				<param name="line-color-upload-esams" value="##upload-esams"/>
 				<param name="line-order-upload-esams" value="7"/>
 
-				<param name="ds-expr-bits-esams" value="%expr-Varnish_bits_esams%,0,1000000,LIMIT"/>
-				<param name="graph-legend-bits-esams" value="bits.esams"/>
-				<param name="line-style-bits-esams" value="STACK"/>
-				<param name="line-stack-bits-esams" value="yes"/>
-				<param name="line-color-bits-esams" value="##bits-esams"/>
-				<param name="line-order-bits-esams" value="8"/>
-
 				<param name="ds-expr-text-esams" value="%expr-Varnish_text_esams%"/>
 				<param name="graph-legend-text-esams" value="text.esams"/>
 				<param name="line-style-text-esams" value="STACK"/>
@@ -264,7 +195,7 @@ end
 				<param name="line-color-text-esams" value="##text-esams"/>
 				<param name="line-order-text-esams" value="9"/>
 
-				<param name="ds-expr-total" value="%expr-Varnish_text_eqiad%,%expr-Varnish_bits_eqiad%,%expr-Varnish_upload_eqiad%,%expr-Varnish_mobile_eqiad%,%expr-Varnish_text_esams%,%expr-Varnish_bits_esams%,%expr-Varnish_upload_esams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,0,1000000,LIMIT"/>
+				<param name="ds-expr-total" value="%expr-Varnish_text_eqiad%,%expr-Varnish_upload_eqiad%,%expr-Varnish_mobile_eqiad%,%expr-Varnish_text_esams%,%expr-Varnish_upload_esams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,0,1000000,LIMIT"/>
 				<param name="graph-legend-total" value="Total"/>
 				<param name="line-style-total" value="LINE1"/>
 				<param name="line-stack-total" value="no"/>
@@ -280,7 +211,7 @@ end
 				<param name="varnishmetric" value="Backends/backend_req"/>
 
 				<param name="ds-type" value="rrd-multigraph"/>
-				<param name="ds-names" value="text-eqiad,bits-eqiad,upload-eqiad,mobile-eqiad"/>
+				<param name="ds-names" value="text-eqiad,upload-eqiad,mobile-eqiad"/>
 				<param name="comment" value="All backend requests"/>
 				<param name="vertical-label" value="requests/s"/>
 				<param name="graph-lower-limit" value="0"/>
@@ -290,12 +221,6 @@ end
 				<param name="line-style-text-eqiad" value="LINE2"/>
 				<param name="line-color-text-eqiad" value="##text-eqiad"/>
 				<param name="line-order-text-eqiad" value="5"/>
-
-				<param name="ds-expr-bits-eqiad" value="%expr-Varnish_bits_eqiad%"/>
-				<param name="graph-legend-bits-eqiad" value="bits.eqiad"/>
-				<param name="line-style-bits-eqiad" value="LINE2"/>
-				<param name="line-color-bits-eqiad" value="##bits-eqiad"/>
-				<param name="line-order-bits-eqiad" value="6"/>
 
 				<param name="ds-expr-upload-eqiad" value="%expr-Varnish_upload_eqiad%"/>
 				<param name="graph-legend-upload-eqiad" value="upload.eqiad"/>

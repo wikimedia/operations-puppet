@@ -16,17 +16,6 @@ class role::cache::configuration {
                         'cp4018.ulsfo.wmnet',
                     ]
                 },
-                'bits' => {
-                    'eqiad' => ['cp1056.eqiad.wmnet',
-                                'cp1070.eqiad.wmnet',
-                    ],
-                    'esams' => ['cp3019.esams.wmnet',
-                                'cp3022.esams.wmnet',
-                    ],
-                    'ulsfo' => ['cp4001.ulsfo.wmnet',
-                                'cp4004.ulsfo.wmnet',
-                    ],
-                },
                 'upload' => {
                     'eqiad' => [
                         'cp1048.eqiad.wmnet',
@@ -64,9 +53,6 @@ class role::cache::configuration {
                 }
             },
             'labs' => {
-                'bits'   => {
-                    'eqiad' => '127.0.0.1',
-                },
                 'mobile' => {
                     'eqiad' => '127.0.0.1',
                 },
@@ -87,12 +73,6 @@ class role::cache::configuration {
                 'appservers'        => ['1.1.1.1', '2.2.2.2',],
                 'api'               => ['1.1.1.1', '2.2.2.2',],
                 'rendering'         => ['1.1.1.1', '2.2.2.2',],
-                'bits' => {
-                    'eqiad' => flatten(['1.1.1.1', '2.2.2.2',]),
-                },
-                'bits_appservers' => {
-                    'eqiad' => flatten(['1.1.1.1', '2.2.2.2',]),
-                },
                 'test_appservers' => {
                     'eqiad' => [ 'mw1017.eqiad.wmnet' ],
                 },
@@ -106,18 +86,6 @@ class role::cache::configuration {
                     ],
                 },
                 'api' => {
-                    'eqiad' => [
-                        '10.68.17.96',  # deployment-mediawiki01
-                        '10.68.17.208', # deployment-mediawiki02
-                    ],
-                },
-                'bits' => {
-                    'eqiad' => [
-                        '10.68.17.96',  # deployment-mediawiki01
-                        '10.68.17.208', # deployment-mediawiki02
-                    ],
-                },
-                'bits_appservers' => {
                     'eqiad' => [
                         '10.68.17.96',  # deployment-mediawiki01
                         '10.68.17.208', # deployment-mediawiki02
