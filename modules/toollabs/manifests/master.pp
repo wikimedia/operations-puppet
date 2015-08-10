@@ -35,6 +35,11 @@ class toollabs::master inherits toollabs {
         urgency     => '0',
     }
 
+    gridengine_config { 'gid_range':
+        ensure => present,
+        value  => '65000-65500',
+    }
+
     file { "${toollabs::collectors}/hostgroups":
         ensure => directory,
         owner  => 'root',
