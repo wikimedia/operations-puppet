@@ -7,7 +7,6 @@ define varnish::instance(
     $admin_port="6083",
     $storage="-s malloc,1G",
     $runtime_parameters=[],
-    $backends=undef,
     $directors={},
     $extra_vcl = [],
     $cluster_options={},
@@ -31,12 +30,8 @@ define varnish::instance(
     $varnish_port = $port
     $varnish_admin_port = $admin_port
     $varnish_storage = $storage
-    if $backends {
-        $varnish_backends = $backends
-    } else {
-        $backends_str = inline_template("<%= @directors.map{|k,v|  v['backends'] }.flatten.join('|') %>")
-        $varnish_backends = sort(unique(split($backends_str, '\|')))
-    }
+    $backends_str = inline_template("<%= @directors.map{|k,v|  v['backends'] }.flatten.join('|') %>")
+    $varnish_backends = sort(unique(split($backends_str, '\|')))
 
     $varnish_directors = $directors
     $varnish_backend_options = $backend_options
