@@ -28,7 +28,6 @@ remove_unused_base_images=False
 s3_host=<%= @novaconfig["glance_host"] %>
 glance_api_servers=<%= @novaconfig["glance_host"] %>:9292
 cc_host=<%= @novaconfig["cc_host"] %>
-network_host=<%= @novaconfig["network_host"] %>
 ec2_url=http://<%= @novaconfig["api_host"] %>:8773/services/Cloud
 ec2_dmz_host=<%= @novaconfig["api_ip"] %>
 dmz_cidr=<%= @novaconfig["dmz_cidr"] %>
