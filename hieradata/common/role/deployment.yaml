@@ -107,3 +107,5 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/operations/software/logstash-logback-encoder
   logstash/plugins:
     upstream: https://gerrit.wikimedia.org/r/operations/software/logstash/plugins
+  mobileapps/deploy:
+    upstream: https://gerrit.wikimedia.org/r/mediawiki/services/mobileapps/deploy
