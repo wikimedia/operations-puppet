@@ -2439,16 +2439,6 @@ node 'ytterbium.wikimedia.org' {
 
 }
 
-# https://wikitech.wikimedia.org/wiki/Zirconium
-node 'zirconium.wikimedia.org' {
-    include base::firewall
-    include standard
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 node default {
     # Labs nodes include a different set of defaults via ldap.
     if $::realm == 'production' {
