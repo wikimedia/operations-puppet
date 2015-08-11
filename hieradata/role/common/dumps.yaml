@@ -1,5 +1,6 @@
 dumps::rsync_clients:
   - dataset1001.wikimedia.org
+  - iridium.eqiad.wmnet
   - ms1001.wikimedia.org
   - stat1002.eqiad.wmnet
   - stat1003.eqiad.wmnet
