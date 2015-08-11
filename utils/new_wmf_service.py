@@ -276,7 +276,7 @@ class role::%(name)s {
                 'service': self.service_name,
             },
             'icinga': {
-                'check_command': 'check_http_zotero_lvs_on_port!zotero.svc.eqiad.wmnet!1969!/export?format=wikipedia',
+                'check_command': 'check_http_lvs_on_port!%s!%s!/_info' % (self.lvs_hostname, self.port),
                 'sites': {
                     'eqiad': {
                         'hostname': self.lvs_hostname,
