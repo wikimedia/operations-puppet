@@ -331,18 +331,6 @@ lvs_services:
     conftool:
       cluster: dns
       service: pdns_recursor
-  osm:
-    description: OpenStreetMap tiles
-    class: high-traffic2
-    sites: []
-    ip: *osm
-    bgp: 'yes'
-    depool-threshold: ".5"
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool: {}
   misc_web:
     description: Miscellaneous web sites Varnish cluster
     class: high-traffic2
