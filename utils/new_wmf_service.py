@@ -352,6 +352,7 @@ class role::%(name)s {
         }
         with open(filename, 'w') as f:
             ordered_dump(data, f, default_flow_style=False)
+        return True
 
 
 def question_user(answers):
@@ -449,7 +450,7 @@ def main():
         print 'Failed to setup lvs'
         return False
     Git.add_file('hieradata/common/lvs/configuration.yaml')
-    if not s.setup_conftool():
+    if not s.setup_conftool_data():
         print 'Failed to setup conftool'
         return False
     Git.add_file('conftool-data/services/services.yaml')
