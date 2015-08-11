@@ -72,6 +72,7 @@ ganglia_clusters:
     id: 20
     sites:
       eqiad: []
+      codfw: []
       esams: []
       ulsfo: []
   cache_upload:
@@ -79,6 +80,7 @@ ganglia_clusters:
     id: 22
     sites:
       eqiad: []
+      codfw: []
       esams: []
       ulsfo: []
   payments:
@@ -101,6 +103,7 @@ ganglia_clusters:
     id: 28
     sites:
       eqiad: []
+      codfw: []
       esams: []
       ulsfo: []
   virt:
