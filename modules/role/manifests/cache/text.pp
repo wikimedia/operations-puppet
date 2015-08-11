@@ -77,18 +77,13 @@ class role::cache::text (
         include varnish::monitoring::ganglia::vhtcpd
     }
 
-    $runtime_params = $::site ? {
-        #'esams' => ['prefer_ipv6=on','default_ttl=2592000'],
-        default => ['default_ttl=2592000'],
-    }
-
     varnish::instance { 'text-backend':
         name               => '',
         vcl                => 'text-backend',
         extra_vcl          => ['text-common'],
         port               => 3128,
         admin_port         => 6083,
-        runtime_parameters => $runtime_params,
+        runtime_parameters => ['default_ttl=2592000'],
         storage            => $::role::cache::2layer::persistent_storage_args,
         directors          => $varnish_be_directors[$::site_tier],
         vcl_config         => {
