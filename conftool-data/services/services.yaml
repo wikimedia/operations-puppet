@@ -2,100 +2,107 @@ swift:
   swift-fe:
     port: 80
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
-      - codfw
+    - eqiad
+    - codfw
 parsoid:
   parsoid:
     port: 8000
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
-      - codfw
+    - eqiad
+    - codfw
 elasticsearch:
   elasticsearch:
     port: 9200
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
+    - eqiad
 rcstream:
   nginx:
     port: 80
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
+    - eqiad
   nginx_ssl:
     port: 443
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
+    - eqiad
 pdf:
   ocg:
     port: 8000
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
+    - eqiad
 sca:
   mathoid:
     port: 10042
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
+    - eqiad
   citoid:
     port: 1970
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
+    - eqiad
   cxserver:
     port: 8080
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
+    - eqiad
   graphoid:
     port: 19000
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
+    - eqiad
   zotero:
     port: 7231
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
+    - eqiad
+  mobileapps:
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    port: '8888'
 restbase:
   restbase:
     port: 7231
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - eqiad
+    - eqiad
 maps:
   kartotherian:
     port: 4000
     default_values:
-      "pooled": "no"
-      "weight": 10
+      pooled: 'no'
+      weight: 10
     datacenters:
-      - codfw
+    - codfw

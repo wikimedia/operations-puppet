@@ -1,5 +1,5 @@
 lvs_service_ips:
-  text: &text
+  text: &ip_block001
     codfw:
       textlb: 208.80.153.224
       textlb6: 2620:0:860:ed1a::1
@@ -12,7 +12,7 @@ lvs_service_ips:
     ulsfo:
       textlb: 198.35.26.96
       textlb6: 2620:0:863:ed1a::1
-  upload: &upload
+  upload: &ip_block002
     codfw:
       uploadlb: 208.80.153.240
       uploadlb6: 2620:0:860:ed1a::2:b
@@ -25,20 +25,20 @@ lvs_service_ips:
     ulsfo:
       uploadlb: 198.35.26.112
       uploadlb6: 2620:0:863:ed1a::2:b
-  maps: &maps
+  maps: &ip_block003
     eqiad:
       mapslb: 208.80.154.244
       mapslb6: 2620:0:861:ed1a::2:d
-  apaches: &apaches
+  apaches: &ip_block007
     eqiad: 10.2.2.1
     codfw: 10.2.1.1
-  rendering: &rendering
+  rendering: &ip_block008
     eqiad: 10.2.2.21
     codfw: 10.2.1.21
-  api: &api
+  api: &ip_block009
     eqiad: 10.2.2.22
     codfw: 10.2.1.22
-  mobile: &mobile
+  mobile: &ip_block004
     codfw:
       mobilelb: 208.80.153.236
       mobilelb6: 2620:0:860:ed1a::1:c
@@ -51,10 +51,10 @@ lvs_service_ips:
     ulsfo:
       mobilelb: 198.35.26.108
       mobilelb6: 2620:0:863:ed1a::1:c
-  swift: &swift
+  swift: &ip_block010
     eqiad: 10.2.2.27
     codfw: 10.2.1.27
-  dns_rec: &dns_rec
+  dns_rec: &ip_block005
     eqiad:
       dns_rec: 208.80.154.239
       dns_rec6: 2620:0:861:ed1a::3:fe
@@ -64,51 +64,53 @@ lvs_service_ips:
     esams:
       dns_rec: 91.198.174.216
       dns_rec6: 2620:0:862:ed1a::3:fe
-  misc_web: &misc_web
+  misc_web: &ip_block006
     eqiad:
       misc_weblb: 208.80.154.241
       misc_weblb6: 2620:0:861:ed1a::11
-  parsoid: &parsoid
+  parsoid: &ip_block011
     eqiad: 10.2.2.28
-  parsoidcache: &parsoidcache
+  parsoidcache: &ip_block012
     eqiad:
       parsoidcachelb: 208.80.154.248
       parsoidcachelb6: 2620:0:861:ed1a::3:14
       parsoidsvc: 10.2.2.29
-  search: &search
+  search: &ip_block013
     eqiad: 10.2.2.30
-  stream: &stream
+  stream: &ip_block014
     eqiad:
       streamlb: 208.80.154.249
       streamlb6: 2620:0:861:ed1a::3:15
-  ocg: &ocg
+  ocg: &ip_block015
     eqiad: 10.2.2.31
-  mathoid: &mathoid
+  mathoid: &ip_block016
     eqiad: 10.2.2.20
-  citoid: &citoid
+  citoid: &ip_block017
     eqiad: 10.2.2.19
-  cxserver: &cxserver
+  cxserver: &ip_block018
     eqiad: 10.2.2.18
-  graphoid: &graphoid
+  graphoid: &ip_block019
     eqiad: 10.2.2.15
-  restbase: &restbase
+  restbase: &ip_block020
     eqiad: 10.2.2.17
-  zotero: &zotero
+  zotero: &ip_block021
     eqiad: 10.2.2.16
-  kartotherian: &kartotherian
+  kartotherian: &ip_block022
     codfw: 10.2.1.13
+  mobileapps: &ip_block023
+    eqiad: 10.2.2.14
 lvs_services:
   text:
-    description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)
     class: high-traffic1
     sites:
     - codfw
     - eqiad
     - esams
     - ulsfo
-    ip: *text
+    ip: *ip_block001
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     conftool:
       cluster: cache_text
       service: varnish-fe
@@ -126,18 +128,18 @@ lvs_services:
         ulsfo:
           hostname: text-lb.ulsfo.wikimedia.org
   text-https:
-    description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (nginx)"
+    description: Main wiki platform LVS service, text.%{::site}.wikimedia.org (nginx)
     class: high-traffic1
     sites:
     - codfw
     - eqiad
     - esams
     - ulsfo
-    ip: *text
+    ip: *ip_block001
     port: 443
     scheduler: sh
     bgp: 'no'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     conftool:
       cluster: cache_text
       service: nginx
@@ -149,16 +151,16 @@ lvs_services:
         timeout-clean-reconnect: 3
         max-delay: 300
   upload:
-    description: "Images and other media, upload.%{::site}.wikimedia.org"
+    description: Images and other media, upload.%{::site}.wikimedia.org
     class: high-traffic2
     sites:
     - codfw
     - eqiad
     - esams
     - ulsfo
-    ip: *upload
+    ip: *ip_block002
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       IdleConnection:
         timeout-clean-reconnect: 3
@@ -176,18 +178,18 @@ lvs_services:
         ulsfo:
           hostname: upload-lb.ulsfo.wikimedia.org
   upload-https:
-    description: "Images and other media, upload.%{::site}.wikimedia.org"
+    description: Images and other media, upload.%{::site}.wikimedia.org
     class: high-traffic2
     sites:
     - codfw
     - eqiad
     - esams
     - ulsfo
-    ip: *upload
+    ip: *ip_block002
     port: 443
     scheduler: sh
     bgp: 'no'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -199,13 +201,13 @@ lvs_services:
       cluster: cache_upload
       service: nginx
   maps:
-    description: "Maps service maps-lb.%{::site}.wikimedia.org"
+    description: Maps service maps-lb.%{::site}.wikimedia.org
     class: high-traffic2
     sites:
     - eqiad
-    ip: *maps
+    ip: *ip_block003
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       IdleConnection:
         timeout-clean-reconnect: 3
@@ -214,15 +216,15 @@ lvs_services:
       cluster: cache_maps
       service: varnish-fe
   maps-https:
-    description: "Maps service maps-lb.%{::site}.wikimedia.org"
+    description: Maps service maps-lb.%{::site}.wikimedia.org
     class: high-traffic2
     sites:
     - eqiad
-    ip: *maps
+    ip: *ip_block003
     port: 443
     scheduler: sh
     bgp: 'no'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -241,9 +243,9 @@ lvs_services:
     - eqiad
     - esams
     - ulsfo
-    ip: *mobile
+    ip: *ip_block004
     bgp: 'yes'
-    depool-threshold: ".6"
+    depool-threshold: '.6'
     monitors:
       IdleConnection:
         timeout-clean-reconnect: 3
@@ -268,11 +270,11 @@ lvs_services:
     - eqiad
     - esams
     - ulsfo
-    ip: *mobile
+    ip: *ip_block004
     port: 443
     scheduler: sh
     bgp: 'no'
-    depool-threshold: ".6"
+    depool-threshold: '.6'
     monitors:
       ProxyFetch:
         url:
@@ -291,10 +293,10 @@ lvs_services:
     - codfw
     - esams
     protocol: udp
-    ip: *dns_rec
+    ip: *ip_block005
     port: 53
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       DNSQuery:
         hostnames:
@@ -315,10 +317,10 @@ lvs_services:
     - codfw
     - esams
     protocol: tcp
-    ip: *dns_rec
+    ip: *ip_block005
     port: 53
     bgp: 'no'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       DNSQuery:
         hostnames:
@@ -336,9 +338,9 @@ lvs_services:
     class: high-traffic2
     sites:
     - eqiad
-    ip: *misc_web
+    ip: *ip_block006
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       IdleConnection:
         timeout-clean-reconnect: 3
@@ -356,11 +358,11 @@ lvs_services:
     class: high-traffic2
     sites:
     - eqiad
-    ip: *misc_web
+    ip: *ip_block006
     port: 443
     scheduler: sh
     bgp: 'no'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       IdleConnection:
         timeout-clean-reconnect: 3
@@ -369,14 +371,14 @@ lvs_services:
       cluster: cache_misc
       service: nginx
   apaches:
-    description: "Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet"
+    description: Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
     class: low-traffic
     sites:
     - eqiad
     - codfw
-    ip: *apaches
+    ip: *ip_block007
     bgp: 'yes'
-    depool-threshold: ".9"
+    depool-threshold: '.9'
     monitors:
       ProxyFetch:
         url:
@@ -386,7 +388,7 @@ lvs_services:
         max-delay: 300
       RunCommand:
         command: /bin/sh
-        arguments: "[ '/etc/pybal/runcommand/check-apache', server.host ]"
+        arguments: '[ ''/etc/pybal/runcommand/check-apache'', server.host ]'
         interval: 60
         timeout: 10
     conftool:
@@ -398,14 +400,14 @@ lvs_services:
         eqiad:
           hostname: appservers.svc.eqiad.wmnet
   rendering:
-    description: "MediaWiki thumbnail rendering cluster, rendering.svc.%{::site}.wmnet"
+    description: MediaWiki thumbnail rendering cluster, rendering.svc.%{::site}.wmnet
     class: low-traffic
     sites:
     - eqiad
     - codfw
-    ip: *rendering
+    ip: *ip_block008
     bgp: 'yes'
-    depool-threshold: ".74"
+    depool-threshold: '.74'
     monitors:
       ProxyFetch:
         url:
@@ -415,7 +417,7 @@ lvs_services:
         max-delay: 300
       RunCommand:
         command: /bin/sh
-        arguments: "[ '/etc/pybal/runcommand/check-apache', server.host ]"
+        arguments: '[ ''/etc/pybal/runcommand/check-apache'', server.host ]'
         interval: 60
         timeout: 10
     conftool:
@@ -427,14 +429,14 @@ lvs_services:
         eqiad:
           hostname: rendering.svc.eqiad.wmnet
   api:
-    description: "MediaWiki API cluster, api.svc.%{::site}.wmnet"
+    description: MediaWiki API cluster, api.svc.%{::site}.wmnet
     class: low-traffic
     sites:
     - eqiad
     - codfw
-    ip: *api
+    ip: *ip_block009
     bgp: 'yes'
-    depool-threshold: ".6"
+    depool-threshold: '.6'
     monitors:
       ProxyFetch:
         url:
@@ -444,7 +446,7 @@ lvs_services:
         max-delay: 300
       RunCommand:
         command: /bin/sh
-        arguments: "[ '/etc/pybal/runcommand/check-apache', server.host ]"
+        arguments: '[ ''/etc/pybal/runcommand/check-apache'', server.host ]'
         interval: 60
         timeout: 10
     conftool:
@@ -461,9 +463,9 @@ lvs_services:
     sites:
     - codfw
     - eqiad
-    ip: *swift
+    ip: *ip_block010
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -484,10 +486,10 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
-    ip: *parsoid
+    ip: *ip_block011
     port: 8000
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -509,10 +511,10 @@ lvs_services:
     class: high-traffic2
     sites:
     - eqiad
-    ip: *parsoidcache
+    ip: *ip_block012
     port: 80
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -534,11 +536,11 @@ lvs_services:
     class: high-traffic2
     sites:
     - eqiad
-    ip: *parsoidcache
+    ip: *ip_block012
     port: 443
     scheduler: sh
     bgp: 'no'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       IdleConnection:
         timeout-clean-reconnect: 3
@@ -551,10 +553,10 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
-    ip: *search
+    ip: *ip_block013
     port: 9200
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -575,10 +577,10 @@ lvs_services:
     class: high-traffic2
     sites:
     - eqiad
-    ip: *stream
+    ip: *ip_block014
     port: 80
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     scheduler: sh
     monitors:
       ProxyFetch:
@@ -595,10 +597,10 @@ lvs_services:
     class: high-traffic2
     sites:
     - eqiad
-    ip: *stream
+    ip: *ip_block014
     port: 443
     bgp: 'no'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     scheduler: sh
     monitors:
       ProxyFetch:
@@ -615,10 +617,10 @@ lvs_services:
     class: high-traffic2
     sites:
     - eqiad
-    ip: *ocg
+    ip: *ip_block015
     port: 8000
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -639,10 +641,10 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
-    ip: *mathoid
+    ip: *ip_block016
     port: 10042
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -663,10 +665,10 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
-    ip: *citoid
+    ip: *ip_block017
     port: 1970
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -688,10 +690,10 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
-    ip: *cxserver
+    ip: *ip_block018
     port: 8080
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -712,10 +714,10 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
-    ip: *graphoid
+    ip: *ip_block019
     port: 19000
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -737,10 +739,10 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
-    ip: *restbase
+    ip: *ip_block020
     port: 7231
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       ProxyFetch:
         url:
@@ -761,10 +763,10 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
-    ip: *zotero
+    ip: *ip_block021
     port: 1969
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       IdleConnection:
         timeout-clean-reconnect: 3
@@ -782,10 +784,10 @@ lvs_services:
     class: low-traffic
     sites:
     - codfw
-    ip: *kartotherian
+    ip: *ip_block022
     port: 4000
     bgp: 'yes'
-    depool-threshold: ".5"
+    depool-threshold: '.5'
     monitors:
       IdleConnection:
         timeout-clean-reconnect: 3
@@ -793,3 +795,24 @@ lvs_services:
     conftool:
       cluster: maps
       service: kartotherian
+  mobileapps:
+    bgp: 'yes'
+    class: low-traffic
+    conftool:
+      cluster: sca
+      service: mobileapps
+    depool-threshold: '.5'
+    description: 'Yes'
+    icinga:
+      check_command: check_http_zotero_lvs_on_port!zotero.svc.eqiad.wmnet!1969!/export?format=wikipedia
+      sites:
+        eqiad:
+          hostname: mobileapps.svc.eqiad.wmnet
+    ip: *ip_block023
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+    port: '8888'
+    sites:
+    - eqiad
