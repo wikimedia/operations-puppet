@@ -4,12 +4,11 @@
 # users run SQL queries against LabsDB.
 # Deployment is handled using fabric
 class quarry::web {
-    $clone_path = '/srv/quarry'
-    $result_path = '/data/project/quarry/results'
-
     require_package('python-flask', 'python-mwoauth')
 
-    include quarry::base
+    require quarry::base
+
+    $clone_path = $::quarry::base::clone_path
 
     uwsgi::app { 'quarry-web':
         require  => Git::Clone['analytics/quarry/web'],
