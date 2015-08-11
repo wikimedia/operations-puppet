@@ -2443,7 +2443,6 @@ node 'ytterbium.wikimedia.org' {
 node 'zirconium.wikimedia.org' {
     include base::firewall
     include standard
-    include role::grafana
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
