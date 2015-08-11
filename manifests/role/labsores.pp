@@ -1,22 +1,18 @@
 class role::labs::ores::precached {
-    include ::ores::base
     include ::ores::precached
 }
 
 class role::labs::ores::web {
-    include ::ores::base
     include ::ores::web
     include ::ores::redisproxy
 }
 
 class role::labs::ores::flower {
-    include ::ores::base
     include ::ores::flower
     include ::ores::redisproxy
 }
 
 class role::labs::ores::worker {
-    include ::ores::base
     include ::ores::worker
     include ::ores::redisproxy
 }
