@@ -70,7 +70,7 @@ class postgresql::slave(
     if $ensure == 'present' {
         exec { "pg_basebackup-${master_server}":
             environment => "PGPASSWORD=${replication_pass}",
-            command     => "/usr/bin/pg_basebackup -D ${basepath} -h ${master_server} -U replication -w",
+            command     => "/usr/bin/pg_basebackup -X stream -D ${basepath} -h ${master_server} -U replication -w",
             user        => 'postgres',
             unless      => "/usr/bin/test -f ${basepath}/PG_VERSION",
             require     => Class['postgresql::server'],
