@@ -91,7 +91,6 @@ class strongswan (
     }
 
     base::service_unit { 'strongswan':
-        ensure         => running,
         systemd        => true,
         require        => Package['strongswan']
     }
