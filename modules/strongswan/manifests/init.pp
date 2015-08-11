@@ -90,8 +90,9 @@ class strongswan (
         source => 'puppet:///modules/strongswan/ipsec-global',
     }
 
-    service { 'strongswan':
-        ensure     => running,
-        hasrestart => true,
+    base::service_unit { 'strongswan':
+        ensure         => running,
+        systemd        => true,
+        require        => Package['strongswan']
     }
 }
