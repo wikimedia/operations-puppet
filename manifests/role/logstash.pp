@@ -76,6 +76,11 @@ class role::logstash (
         priority => 70,
     }
 
+    logstash::conf { 'filter_normalize_log_levels':
+        source   => 'puppet:///files/logstash/filter-normalize-log-levels.conf',
+        priority => 70,
+    }
+
     ## Outputs (90)
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
