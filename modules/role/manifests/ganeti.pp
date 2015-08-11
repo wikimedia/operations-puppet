@@ -13,10 +13,10 @@ class role::ganeti {
 
     # And the private key
     file { '/root/.ssh/id_dsa':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0400',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
         content => secret('ganeti/id_dsa'),
     }
     # This is here for completeness
@@ -41,19 +41,19 @@ class role::ganeti {
         ferm::service { 'ganeti_ssh_cluster':
             proto  => 'tcp',
             port   => 'ssh',
-            srange => "@resolve(($ganeti_ferm_nodes))",
+            srange => "@resolve((${ganeti_ferm_nodes}))",
         }
         # RAPI is the API of ganeti
         ferm::service { 'ganeti_rapi_cluster':
             proto  => 'tcp',
             port   => 5080,
-            srange => "@resolve(($ganeti_ferm_nodes))",
+            srange => "@resolve((${ganeti_ferm_nodes}))",
         }
         # Ganeti noded is responsible for all cluster/node actions
         ferm::service { 'ganeti_noded_cluster':
             proto  => 'tcp',
             port   => 1811,
-            srange => "@resolve(($ganeti_ferm_nodes))",
+            srange => "@resolve((${ganeti_ferm_nodes}))",
         }
         nrpe::monitor_service{ 'ganeti-noded':
             description  => 'ganeti-noded running',
@@ -64,7 +64,7 @@ class role::ganeti {
         ferm::service { 'ganeti_confd_cluster':
             proto  => 'udp',
             port   => 1814,
-            srange => "@resolve(($ganeti_ferm_nodes))",
+            srange => "@resolve((${ganeti_ferm_nodes}))",
         }
         nrpe::monitor_service{ 'ganeti-confd':
             description  => 'ganeti-confd running',
@@ -75,7 +75,7 @@ class role::ganeti {
         ferm::service { 'ganeti_mond_cluster':
             proto  => 'tcp',
             port   => 1815,
-            srange => "@resolve(($ganeti_ferm_nodes))",
+            srange => "@resolve((${ganeti_ferm_nodes}))",
         }
         nrpe::monitor_service{ 'ganeti-mond':
             description  => 'ganeti-mond running',
@@ -87,14 +87,14 @@ class role::ganeti {
         ferm::service { 'ganeti_drbd':
             proto  => 'tcp',
             port   => '11000:14999',
-            srange => "@resolve(($ganeti_ferm_nodes))",
+            srange => "@resolve((${ganeti_ferm_nodes}))",
         }
 
         # Migration is done over TCP port
         ferm::service { 'ganeti_migration':
             proto  => 'tcp',
             port   => 8102,
-            srange => "@resolve(($ganeti_ferm_nodes))",
+            srange => "@resolve((${ganeti_ferm_nodes}))",
         }
     }
 }
