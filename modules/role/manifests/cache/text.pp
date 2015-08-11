@@ -121,13 +121,14 @@ class role::cache::text (
     }
 
     varnish::instance { 'text-frontend':
-        name            => 'frontend',
-        vcl             => 'text-frontend',
-        extra_vcl       => ['text-common'],
-        port            => 80,
-        admin_port      => 6082,
-        storage         => "-s malloc,${memory_storage_size}G",
-        directors       => {
+        name               => 'frontend',
+        vcl                => 'text-frontend',
+        extra_vcl          => ['text-common'],
+        port               => 80,
+        admin_port         => 6082,
+        runtime_parameters => ['default_ttl=2592000'],
+        storage            => "-s malloc,${memory_storage_size}G",
+        directors          => {
             'backend' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
@@ -140,7 +141,7 @@ class role::cache::text (
                 'service'  => 'varnish-be-rand',
             },
         },
-        vcl_config      => {
+        vcl_config         => {
             'retry503'         => 1,
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
@@ -156,7 +157,7 @@ class role::cache::text (
                 'probe'                 => 'varnish',
             },
         ]),
-        cluster_options => {
+        cluster_options    => {
             'bits_domain'        => $bits_domain,
             'top_domain'         => $top_domain,
             'enable_geoiplookup' => true,
