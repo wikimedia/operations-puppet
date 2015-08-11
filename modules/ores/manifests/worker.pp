@@ -1,4 +1,6 @@
 class ores::worker {
+    require ores::base
+
     celery::worker { 'ores-worker':
         app             => 'ores_celery.application',
         working_dir     => $ores::base::config_path,
