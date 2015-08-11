@@ -14,7 +14,6 @@
 # - $auth_realm: HTTP basic auth realm description
 # - $auth_file: Path to htpasswd file for $auth_type == 'local'
 # - $ldap_authurl: AuthLDAPURL for $auth_type == 'ldap'
-# - $ldap_bindpass: AuthLDAPBindPassword for $auth_type == 'ldap'
 # - $ldap_binddn: AuthLDAPBindDN for $auth_type == 'ldap'
 # - $ldap_groups: List of ldap-group names for $auth_type == 'ldap'
 #
@@ -28,7 +27,6 @@ class role::kibana (
     $auth_realm    = undef,
     $auth_file     = undef,
     $ldap_authurl  = undef,
-    $ldap_bindpass = undef,
     $ldap_binddn   = undef,
     $ldap_groups   = [],
 ) {
@@ -45,6 +43,9 @@ class role::kibana (
     if $auth_type == 'ldap' {
         include ::apache::mod::authnz_ldap
         include ::passwords::ldap::production
+
+        # FIXME: move this into hiera config
+        $ldap_bindpass = $passwords::ldap::production::proxypass
 
     } elsif $auth_type == 'local' {
         include ::apache::mod::authz_groupfile
