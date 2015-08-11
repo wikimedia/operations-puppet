@@ -32,11 +32,11 @@ path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/
 # added 199.47.196.26 (wansecurity hosted), Jan 25 2012 -- atg
 # for wansecurity, contact: Robert Smith <rtsmith@wansecurity.com>
-# we manage this, see file in /home/wikipedia/docs/mirrors
+# we manage this
 # added your.org, Feb 2 2012 -- atg
 # for your.org, contact: Kevin Day <kevin@your.org>
-# they manage it but we have access; see file in /home/wikipedia/docs/mirrors
+# they manage it but we have access
 # added amazonaws.com, Oct 31 2012 -- atg
-# we are still in the process of setting it up, for access see file in /home/wikipedia/docs/mirrors
+# probably will never go live tbh
 # it will eventually be managed by folks at amazon
 hosts allow = 199.47.196.26 ftpmirror.your.org ec2-174-129-186-231.compute-1.amazonaws.com 69.31.98.2
