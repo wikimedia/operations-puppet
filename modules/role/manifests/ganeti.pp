@@ -1,5 +1,8 @@
 # Role classes for ganeti
 
+@monitoring::group { 'ganeti_eqiad': description => 'Ganeti virt cluster eqiad' }
+@monitoring::group { 'ganeti_codfw': description => 'Ganeti virt cluster codfw' }
+
 class role::ganeti {
     include ::ganeti
 
