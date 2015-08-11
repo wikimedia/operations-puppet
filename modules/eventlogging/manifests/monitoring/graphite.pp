@@ -45,10 +45,10 @@ class eventlogging::monitoring::graphite {
     # characteristic that is worth alerting on.
     monitoring::graphite_threshold { 'eventlogging_difference_raw_validated':
         description   => 'Difference between raw and validated EventLogging overall message rates',
-        metric        => 'movingAverage(diffSeries(eventlogging.overall.raw.rate,eventlogging.overall.valid.rate),10)',
+        metric        => 'movingAverage(absolute(diffSeries(eventlogging.overall.raw.rate,eventlogging.overall.valid.rate)),10)',
         warning       => 20,
         critical      => 30,
-        percentage    => 15, # At least 3 of the 15 readings
+        percentage    => 25, # At least 4 of the 15 readings
         from          => '15min',
         contact_group => 'analytics',
     }
