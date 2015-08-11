@@ -1,3 +1,8 @@
+class role::labs::ores::precached {
+    include ::ores::base
+    include ::ores::precached
+}
+
 class role::labs::ores::web {
     include ::ores::base
     include ::ores::web
