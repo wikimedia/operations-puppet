@@ -129,9 +129,6 @@ include "directors.<%= @inst %>.vcl";
 director = @varnish_directors[director_name] 
 if (!@dynamic_directors or director['dynamic'] != 'yes')
 	backends = director['backends']
-	if not backends.is_a?(Array)
-		backends = [backends]
-	end
 	if (!backends.empty?)
 -%>
 director <%= director_name %> <%= director['type'] %> {

@@ -7,42 +7,42 @@ class role::cache::configuration {
     $backends = {
         'production' => {
             'appservers'        => {
-                'eqiad' => 'appservers.svc.eqiad.wmnet',
-                'codfw' => 'appservers.svc.codfw.wmnet',
+                'eqiad' => ['appservers.svc.eqiad.wmnet'],
+                'codfw' => ['appservers.svc.codfw.wmnet'],
             },
             'api'               => {
-                'eqiad' => 'api.svc.eqiad.wmnet',
-                'codfw' => 'api.svc.codfw.wmnet',
+                'eqiad' => ['api.svc.eqiad.wmnet'],
+                'codfw' => ['api.svc.codfw.wmnet'],
             },
             'rendering'         => {
-                'eqiad' => 'rendering.svc.eqiad.wmnet',
-                'codfw' => 'rendering.svc.codfw.wmnet',
+                'eqiad' => ['rendering.svc.eqiad.wmnet'],
+                'codfw' => ['rendering.svc.codfw.wmnet'],
             },
             'test_appservers' => {
-                'eqiad' => 'mw1017.eqiad.wmnet',
+                'eqiad' => ['mw1017.eqiad.wmnet'],
             },
             'parsoid' => {
-                'eqiad' => 'parsoid.svc.eqiad.wmnet',
+                'eqiad' => ['parsoid.svc.eqiad.wmnet'],
             },
             'cxserver' => {
-                'eqiad' => 'cxserver.svc.eqiad.wmnet',
+                'eqiad' => ['cxserver.svc.eqiad.wmnet'],
             },
             'citoid' => {
-                'eqiad' => 'citoid.svc.eqiad.wmnet',
+                'eqiad' => ['citoid.svc.eqiad.wmnet'],
             },
             'graphoid' => {
-                'eqiad' => 'graphoid.svc.eqiad.wmnet',
+                'eqiad' => ['graphoid.svc.eqiad.wmnet'],
             },
             'restbase' => {
-                'eqiad' => 'restbase.svc.eqiad.wmnet',
+                'eqiad' => ['restbase.svc.eqiad.wmnet'],
             },
             'swift' => {
-                'eqiad' => 'ms-fe.svc.eqiad.wmnet',
-                'codfw' => 'ms-fe.svc.codfw.wmnet',
+                'eqiad' => ['ms-fe.svc.eqiad.wmnet'],
+                'codfw' => ['ms-fe.svc.codfw.wmnet'],
             },
             'security_audit' => { 'eqiad' => [] }, # no audit backend for prod at this time
             'kartotherian' => {
-                'codfw' => 'kartotherian.svc.codfw.wmnet',
+                'codfw' => ['kartotherian.svc.codfw.wmnet'],
             }
         },
         'labs' => {
@@ -74,21 +74,21 @@ class role::cache::configuration {
                 'eqiad' => [ '10.68.16.120' ],  # deployment-parsoid05
             },
             'cxserver' => {
-                'eqiad' => 'cxserver-beta.wmflabs.org',
+                'eqiad' => ['cxserver-beta.wmflabs.org'],
             },
             'citoid' => {
-                'eqiad' => 'citoid.wmflabs.org',
+                'eqiad' => ['citoid.wmflabs.org'],
             },
             'restbase' => {
-                'eqiad' => 'deployment-restbase01.eqiad.wmflabs',
+                'eqiad' => ['deployment-restbase01.eqiad.wmflabs'],
             },
             'graphoid' => {
-                'eqiad' => '10.68.16.145', # deployment-sca01
+                'eqiad' => ['10.68.16.145'], # deployment-sca01
             },
             'swift' => {
                 # ms emulator set in July 2013. Beta does not have Swift yet.
                 # instance is an unpuppetized hack with nginx proxy.
-                'eqiad' => '10.68.16.189',  # deployment-upload.eqiad.wmflabs
+                'eqiad' => ['10.68.16.189'],  # deployment-upload.eqiad.wmflabs
             },
         }
     }
