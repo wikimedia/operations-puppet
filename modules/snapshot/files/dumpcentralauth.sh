@@ -5,7 +5,7 @@ usage() {
     echo
     echo "  --site     codfw, eqiad, etc"
     echo "  --config   path to configuration file for dump generation"
-    echo "             (default value: /backups/dumps/production/confs/wikidump.conf"
+    echo "             (default value: /srv/dumps/confs/wikidump.conf"
     echo "  --dryrun   don't run dump, show what would have been done"
     exit 1
 }
@@ -61,7 +61,7 @@ if [ ! "$dbcluster" ]; then
 fi
 
 wiki=`grep $dbcluster "$dbphpfile" | grep wiki | head -1 | mawk -F"'" ' { print $2 }'`
-host=`echo "echo wfGetLB()->getServerName(wfGetLB()->getReaderIndex(false,'$wiki')); " | php "$multiversionscript" eval.php $wiki`
+host=`php -q "$multiversionscript" getSlaveServer.php --wiki="$wiki" --group=dump`
 if [ -z "$dbcluster" -o -z "$wiki" -o -z "$host" ]; then
     echo "can't locate db server for centralauth, exiting."
     exit 1
