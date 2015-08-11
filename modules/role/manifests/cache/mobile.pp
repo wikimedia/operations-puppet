@@ -66,18 +66,13 @@ class role::cache::mobile (
         auth_content => secret('misc/zerofetcher.auth'),
     }
 
-    $runtime_param = $::site ? {
-        # 'esams' => ["prefer_ipv6=on"],
-        default  => [],
-    }
-
     varnish::instance { 'mobile-backend':
         name               => '',
         vcl                => 'mobile-backend',
         port               => 3128,
         admin_port         => 6083,
         storage            => $::role::cache::2layer::persistent_storage_args,
-        runtime_parameters => $runtime_param,
+        runtime_parameters => ['default_ttl=2592000'],
         directors          => $varnish_be_directors[$::site_tier],
         vcl_config         => {
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
@@ -105,25 +100,26 @@ class role::cache::mobile (
     }
 
     varnish::instance { 'mobile-frontend':
-        name             => 'frontend',
-        vcl              => 'mobile-frontend',
-        extra_vcl        => ['zero'],
-        port             => 80,
-        admin_port       => 6082,
-        storage          => "-s malloc,${memory_storage_size}G",
-        directors        => {
+        name               => 'frontend',
+        vcl                => 'mobile-frontend',
+        extra_vcl          => ['zero'],
+        port               => 80,
+        admin_port         => 6082,
+        storage            => "-s malloc,${memory_storage_size}G",
+        runtime_parameters => ['default_ttl=2592000'],
+        directors          => {
             'backend' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $site_mobile_nodes,
             },
         },
-        vcl_config       => {
+        vcl_config         => {
             'retry503'         => 1,
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
             'layer'            => 'frontend',
         },
-        backend_options  => array_concat($::role::cache::2layer::backend_scaled_weights, [
+        backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'port'                  => 3128,
                 'connect_timeout'       => '5s',
@@ -133,7 +129,7 @@ class role::cache::mobile (
                 'probe'                 => 'varnish',
             },
         ]),
-        cluster_options  => $cluster_options,
+        cluster_options    => $cluster_options,
     }
 
     # varnish::logging to be removed once
