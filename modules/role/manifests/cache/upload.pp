@@ -95,25 +95,26 @@ class role::cache::upload(
     }
 
     varnish::instance { 'upload-frontend':
-        name            => 'frontend',
-        vcl             => 'upload-frontend',
-        port            => 80,
-        admin_port      => 6082,
-        storage         => "-s malloc,${memory_storage_size}G",
-        directors       => {
+        name               => 'frontend',
+        vcl                => 'upload-frontend',
+        port               => 80,
+        admin_port         => 6082,
+        runtime_parameters => ['default_ttl=2592000'],
+        storage            => "-s malloc,${memory_storage_size}G",
+        directors          => {
             'backend' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $site_upload_nodes,
             },
         },
-        vcl_config      => {
+        vcl_config         => {
             'retry503'         => 1,
             'cache4xx'         => '1m',
             'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
             'layer'            => 'frontend',
         },
-        backend_options => array_concat($::role::cache::2layer::backend_scaled_weights, [
+        backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'port'                  => 3128,
                 'connect_timeout'       => '5s',
@@ -123,7 +124,7 @@ class role::cache::upload(
                 'probe'                 => 'varnish',
             },
         ]),
-        cluster_options => $cluster_options,
+        cluster_options    => $cluster_options,
     }
 
     include role::cache::logging
