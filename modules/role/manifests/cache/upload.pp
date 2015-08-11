@@ -55,11 +55,6 @@ class role::cache::upload(
         'https_redirects' => true,
     }
 
-    $runtime_params = $::site ? {
-        #'esams' => ['prefer_ipv6=on','default_ttl=2592000'],
-        default  => ['default_ttl=2592000'],
-    }
-
     $storage_size_bigobj = floor($::role::cache::2layer::storage_size / 6)
     $storage_size_up = $::role::cache::2layer::storage_size - $storage_size_bigobj
     $upload_storage_args = join([
@@ -74,7 +69,7 @@ class role::cache::upload(
         vcl                => 'upload-backend',
         port               => 3128,
         admin_port         => 6083,
-        runtime_parameters => $runtime_params,
+        runtime_parameters => ['default_ttl=2592000'],
         storage            => $upload_storage_args,
         directors          => $varnish_be_directors[$::site_tier],
         vcl_config         => {
