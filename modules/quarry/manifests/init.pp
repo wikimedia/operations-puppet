@@ -2,12 +2,12 @@
 #
 # This class sets up the basic underlying structure for both
 # Quarry web frontends and Quarry query runners.
-class quarry::base {
+class quarry::base(
+    $clone_path = '/sry/quarry',
+    $result_path_parent = '/data/project/quarry',
+    $result_path = '/data/project/quarry/results',
+) {
     include ::redis::client::python
-
-    $clone_path = '/srv/quarry'
-    $result_path_parent = '/data/project/quarry'
-    $result_path = '/data/project/quarry/results'
 
     package { [
         'python-celery',
@@ -74,7 +74,7 @@ class quarry::redis {
 #
 # Sets up a cron based query-killer
 class quarry::querykiller {
-    $clone_path = '/srv/quarry'
+    require quarry::base
 
     file { '/var/log/quarry':
         ensure => directory,
@@ -83,7 +83,7 @@ class quarry::querykiller {
     }
 
     cron { 'query-killer':
-        command => "${clone_path}/quarry/web/killer.py",
+        command => "${quarry::base::clone_path}/quarry/web/killer.py",
         minute  => '*',
         user    => 'quarry',
     }
