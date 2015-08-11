@@ -27,33 +27,127 @@ class role::cache::misc {
             'layer'           => 'frontend',
             'allowed_methods' => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
         },
-        backends        => [
-            'analytics1001.eqiad.wmnet', # Hadoop Yarn ResourceManager GUI
-            'analytics1027.eqiad.wmnet', # Hue (Hadoop GUI)
-            'antimony.wikimedia.org',
-            'bromine.eqiad.wmnet', # ganeti VM for misc. static HTML sites
-            'caesium.eqiad.wmnet',
-            'californium.wikimedia.org',
-            'dataset1001.wikimedia.org',
-            'etherpad1001.eqiad.wmnet',
-            'gallium.wikimedia.org',  # CI server
-            'graphite1001.eqiad.wmnet',
-            'iridium.eqiad.wmnet', # main phab
-            'krypton.eqiad.wmnet', # ganeti VM for misc. PHP apps
-            'logstash1001.eqiad.wmnet',
-            'logstash1002.eqiad.wmnet',
-            'logstash1003.eqiad.wmnet',
-            'magnesium.wikimedia.org', # RT and racktables
-            'neon.wikimedia.org', # monitoring tools (icinga et al)
-            'netmon1001.wikimedia.org', # servermon
-            'palladium.eqiad.wmnet',
-            'planet1001.eqiad.wmnet',
-            'ruthenium.eqiad.wmnet', # parsoid rt test server
-            'stat1001.eqiad.wmnet', # metrics and metrics-api
-            'terbium.eqiad.wmnet', # public_html
-            'ytterbium.wikimedia.org', # Gerrit
-            'zirconium.wikimedia.org',
-        ],
+        directors       => {
+            'analytics1001' => { # Hadoop Yarn ResourceManager GUI
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['analytics1001.eqiad.wmnet'],
+            },
+            'analytics1027' => { # Hue (Hadoop GUI)
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['analytics1027.eqiad.wmnet'],
+            },
+            'antimony' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['antimony.wikimedia.org'],
+            },
+            'bromine' => { # ganeti VM for misc. static HTML sites
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['bromine.eqiad.wmnet'],
+            },
+            'caesium' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['caesium.eqiad.wmnet'],
+            },
+            'californium' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['californium.wikimedia.org'],
+            },
+            'dataset1001' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['dataset1001.wikimedia.org'],
+            },
+            'etherpad1001' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['etherpad1001.eqiad.wmnet'],
+            },
+            'gallium' => { # CI server
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['gallium.wikimedia.org' ],
+            },
+            'graphite1001' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['graphite1001.eqiad.wmnet'],
+            },
+            'iridium' => { # main phab
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['iridium.eqiad.wmnet'],
+            },
+            'krypton' => { # ganeti VM for misc. PHP apps
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['krypton.eqiad.wmnet'],
+            },
+            'magnesium' => { # RT and racktables
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['magnesium.wikimedia.org'],
+            },
+            'neon' => { # monitoring tools (icinga et al)
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['neon.wikimedia.org'],
+            },
+            'netmon1001' => { # servermon
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['netmon1001.wikimedia.org'],
+            },
+            'palladium' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['palladium.eqiad.wmnet'],
+            },
+            'planet1001' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['planet1001.eqiad.wmnet'],
+            },
+            'ruthenium' => { # parsoid rt test server
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['ruthenium.eqiad.wmnet'],
+            },
+            'stat1001' => { # metrics and metrics-api
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['stat1001.eqiad.wmnet'],
+            },
+            'terbium' => { # public_html
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['terbium.eqiad.wmnet'],
+            },
+            'ytterbium' => { # Gerrit
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['ytterbium.wikimedia.org'],
+            },
+            'zirconium' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['zirconium.wikimedia.org'],
+            },
+            'logstash' => {
+                'dynamic'  => 'no',
+                'type' => 'hash', # maybe-wrong? but current value before this commit! XXX
+                'backends' => [
+                    'logstash1001.eqiad.wmnet',
+                    'logstash1002.eqiad.wmnet',
+                    'logstash1003.eqiad.wmnet',
+                ],
+            },
+        },
         backend_options => [
         {
             'backend_match' => '^(antimony|ytterbium)',
@@ -84,17 +178,6 @@ class role::cache::misc {
             'between_bytes_timeout' => '4s',
             'max_connections'       => 100,
         }],
-        directors       => {
-            'logstash' => {
-                'dynamic'  => 'no',
-                'type' => 'hash', # maybe-wrong? but current value before this commit! XXX
-                'backends' => [
-                    'logstash1001.eqiad.wmnet',
-                    'logstash1002.eqiad.wmnet',
-                    'logstash1003.eqiad.wmnet',
-                ],
-            }
-        },
     }
 
     # ToDo: Remove production conditional once this works
