@@ -69,4 +69,12 @@ class role::maps::slave {
         ensure      => 'present',
         description => 'Maps Postgres slave',
     }
+    # Tuning
+    file { '/etc/postgresql/9.4/main/tuning.conf':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///files/postgres/tuning.conf',
+    }
 }
