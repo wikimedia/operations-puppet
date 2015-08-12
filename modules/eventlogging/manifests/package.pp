@@ -12,6 +12,7 @@ class eventlogging::package {
         'python-kafka',
         'python-mysqldb',
         'python-pygments',
+        'python-pykafka',
         'python-pymongo',
         'python-six',
         'python-sqlalchemy',
