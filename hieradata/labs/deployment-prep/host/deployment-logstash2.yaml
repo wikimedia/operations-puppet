@@ -13,6 +13,7 @@ elasticsearch::recover_after_time: '1m'
 elasticsearch::unicast_hosts:
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
 elasticsearch::script_disable_dynamic: true
+elasticsearch::auto_create_index: '+logstash-*,-*'
 
 # Logstash specific
 logstash::filter_workers: 1
