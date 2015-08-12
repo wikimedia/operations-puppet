@@ -1738,7 +1738,7 @@ node 'ms1002.eqiad.wmnet' {
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     role swift::eqiad_prod::proxy
     if $::hostname == 'ms-fe1001' {
-        include role::swift::eqiad_prod::ganglia_reporter
+        include role::swift::eqiad_prod::stats_reporter
     }
 
     class { 'lvs::realserver': realserver_ips => [ '10.2.2.27' ] }
