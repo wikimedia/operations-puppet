@@ -21,7 +21,7 @@ accounts:
         auth:         'http://ms-fe.svc.codfw.wmnet'
         user:         'search:backup'
 # keys are to be defined in private repo, e.g.:
-#swift_new::params::account_keys:
+#swift::params::account_keys:
 #    super_admin: <key>
 #    mw_media: <key>
 #    dispersion: <key>

@@ -1,4 +1,4 @@
-define swift_new::stats::stats_account (
+define swift::stats::stats_account (
     $accounts,
     $statsd_prefix,
     $statsd_host,

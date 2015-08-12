@@ -1,4 +1,4 @@
-define swift_new::init_device($partition_nr='1') {
+define swift::init_device($partition_nr='1') {
     if (! $title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) {
         fail("unable to init ${title} for swift")
     }
@@ -23,7 +23,7 @@ define swift_new::init_device($partition_nr='1') {
         unless  => "xfs_admin -l ${dev}",
     }
 
-    swift_new::mount_filesystem { $dev:
+    swift::mount_filesystem { $dev:
         require => Exec["mkfs-${dev}"],
     }
 }

@@ -1,4 +1,4 @@
-define swift_new::mount_filesystem (
+define swift::mount_filesystem (
     $mount_base = '/srv/swift-storage',
 ){
     $dev         = $title

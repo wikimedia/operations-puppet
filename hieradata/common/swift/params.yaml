@@ -7,7 +7,7 @@ replication_accounts:
         cluster_codfw: 'http://ms-fe.svc.codfw.wmnet/v1/'
 
 # the private part looks like this:
-# swift_new::params::replication_keys:
+# swift::params::replication_keys:
 #   mw_media:
 #       key: 'foo'
 #       key2: 'bar'

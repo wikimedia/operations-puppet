@@ -1,4 +1,4 @@
-define swift_new::storage::monitor_swift_daemon {
+define swift::storage::monitor_swift_daemon {
     include nrpe
 
     # nrpe::monitor_service will create

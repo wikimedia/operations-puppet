@@ -1,7 +1,7 @@
-class swift_new::stats::dispersion(
-    $swift_cluster = $::swift_new::params::swift_cluster,
+class swift::stats::dispersion(
+    $swift_cluster = $::swift::params::swift_cluster,
     $statsd_host   = 'statsd.eqiad.wmnet',
-    $statsd_prefix = "swift.${::swift_new::params::swift_cluster}.dispersion",
+    $statsd_prefix = "swift.${::swift::params::swift_cluster}.dispersion",
 ) {
     $required_packages = [
         Package['python-swiftclient'],
@@ -14,7 +14,7 @@ class swift_new::stats::dispersion(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/swift_new/swift-dispersion-stats',
+        source  => 'puppet:///modules/swift/swift-dispersion-stats',
         require => $required_packages,
     }
 
