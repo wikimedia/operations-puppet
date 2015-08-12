@@ -1,9 +1,9 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, howief, jgonera,
-              mah, maryana, mglaser, mvolz, mwalker, nimishg, rainman, ssmith, swalling,
-              sumanah, werdna, jdouglas, gage]
+    members: [avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage, howief,
+              jdouglas, jgonera,, jsahleen, mah, maryana, mglaser, mvolz, mwalker,
+              nimishg, rainman, ssmith, swalling, sumanah, werdna]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -60,7 +60,7 @@ groups:
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar, ellery, bearloga,
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, tnegrin, ssastry,
-              ironholds, nuria, leila, santhosh, amire80, legoktm, jsahleen]
+              ironholds, nuria, leila, santhosh, amire80, legoktm]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   bastiononly:
     gid: 707
@@ -1274,11 +1274,11 @@ users:
     ssh_keys: []
     uid: 3092
   jsahleen:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jsahleen
     realname: Joel Sahleen
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2T57VzSaiXa3wgaoeMHSTFa9PTpSQeKKVn9ww4CaY/qW3e6+X8Mqql4YanBYNXlg4r3LJTKUFvnf99uuInvXVYfll7Nt8g9Hos+nXJCZuJHq5eLTAijpm8zannofWDE55Twfwzg1aNAgXjILvyHghGWsCM1QpVcCsQtMgijaNRhDT5xV290s3uVXAjIWaHz1VtyJuQELrWafowY+2g6Z9lqhIhU6qt4HdBE7Rp0JRfPXgONM+5s7ltZHoRlLd2axOwFLsECTjeMD/RYDc5pqlI7Cvn9btU35/mDDYbbPvxBJF7Xw658tSC2V9v8Vu6VS0HVpyfuZRpyjF4G/j6A3r jsahleen@wikimedia.org]
+    ssh_keys: []
     uid: 10257
   jkatz:
     ensure: present
