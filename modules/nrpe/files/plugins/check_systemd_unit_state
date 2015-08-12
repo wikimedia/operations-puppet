@@ -100,10 +100,6 @@ def main():
 
     # else periodic
 
-    if state['ActiveState'] == 'active':
-        ok("Unit is currently active")
-    if state['ActiveState'] != 'inactive':
-        crit("Unit is in state %s" % state['ActiveState'])
     if state['Result'] != 'success':
         crit("Last run result was %s" % state['Result'])
 
