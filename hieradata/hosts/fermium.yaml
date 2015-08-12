@@ -1,3 +1,2 @@
 admin::groups:
-  - mailman-users
   - mailman-admins
