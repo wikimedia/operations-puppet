@@ -228,7 +228,6 @@ node 'baham.wikimedia.org' {
 
 # Bastion in Virginia
 node 'bast1001.wikimedia.org' {
-
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
@@ -238,13 +237,7 @@ node 'bast1001.wikimedia.org' {
     role bastionhost
 
     include standard
-    include subversion::client
     include dsh
-    class { 'nfs::netapp::home':
-        mountpoint => '/srv/home_pmtpa',
-        mount_site => 'pmtpa',
-    }
-    backup::set {'home_pmtpa': }
 }
 
 # Bastion in Texas
