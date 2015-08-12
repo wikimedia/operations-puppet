@@ -10,11 +10,6 @@ import 'role/analytics/*.pp'
 import 'role/labs/*.pp'
 import 'role/labs/openstack/*.pp'
 
-# Include stages last
-import 'stages.pp'
-
-# Initialization
-
 # Base nodes
 
 # Class for *most* servers, standard includes
