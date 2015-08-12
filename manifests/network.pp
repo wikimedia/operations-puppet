@@ -555,6 +555,18 @@ class network::checks {
         check_command => "check_bgp!${snmp_ro_community}",
     }
 
+    # mr1-codfw
+    @monitoring::host { 'mr1-codfw':
+        ip_address => '208.80.153.196',
+        group      => 'routers',
+    }
+    @monitoring::service { 'mr1-codfw interfaces':
+        host          => 'mr1-codfw',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
+    }
+
     ### eqdfw ###
 
     # cr1-eqdfw
