@@ -16,7 +16,7 @@ limit nofile 8096 8096
 env LC_ALL=en_US.utf-8
 
 respawn
-exec /usr/bin/python3 /usr/share/apertium-apy/servlet.py -j<%= @num_of_processes %> -m<%= @max_idle_seconds %> /usr/share/apertium/modes
+exec /usr/bin/python3 /usr/share/apertium-apy/servlet.py -j<%= @num_of_processes %> -m<%= @max_idle_seconds %> /usr/share/apertium/modes >> "<%= @log_file %>" 2>&1
 
 # wait 60 seconds for a graceful restart before killing the master
 kill timeout 60

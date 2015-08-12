@@ -9,9 +9,12 @@
 # Number of APY instance processes to run
 # [*max_idle_seconds*]
 # Seconds to wait before shutdown idle process
+# [*log_dir*]
+# Place where Apertium-APY can put log files.
 class apertium(
     $num_of_processes = 1,
     $max_idle_seconds = 300,
+    $log_dir = '/var/log/apertium',
 ) {
     package { [
         'apertium',
@@ -73,5 +76,23 @@ class apertium(
             hasstatus  => true,
             hasrestart => true,
         }
+    }
+
+    $log_file = "${log_dir}/main.log"
+
+    file { $log_dir:
+        ensure => directory,
+        owner  => 'apertium',
+        group  => 'apertium',
+        mode   => '0775',
+        before => Service['apertium-apy'],
+    }
+
+    file { '/etc/logrotate.d/apertium-apy':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('apertium/logrotate.erb'),
     }
 }
