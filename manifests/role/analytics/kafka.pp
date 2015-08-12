@@ -34,9 +34,11 @@ class role::analytics::kafka::config {
 
         # labs only uses a single log_dir
         $log_dirs = ['/var/spool/kafka']
-        # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host   = 'aggregator.eqiad.wmflabs'
-        $ganglia_port   = 50090
+
+        # No ganglia in labs (?)
+        $ganglia   = undef
+        # TODO: use variables for statsd server from somewhere?
+        $statsd = 'labmon1001.eqiad.wmnet:8125'
 
         # Use default ulimit for labs kafka
         $nofiles_ulimit = 8192
@@ -93,11 +95,9 @@ class role::analytics::kafka::config {
                 ]
 
         # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host   = '208.80.154.10'
-        $ganglia_port   = 9694
-        # TODO: use variables for graphite server from somewhere?
-        $statsd_host  = 'statsd.eqiad.wmnet'
-        $statsd_port  = 8125
+        $ganglia   = '208.80.154.10:9694'
+        # TODO: use variables for stats server from somewhere?
+        $statsd  = 'statsd.eqiad.wmnet:8125'
 
 
         # Increase ulimit for production kafka.
@@ -187,229 +187,12 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
     }
 
-    $kafka_rate_jmx_attrs = {
-        'Count'             => { 'slope' => 'positive', 'bucketType' => 'g' },
-        'FifteenMinuteRate' => { 'slope' => 'both',     'bucketType' => 'g' },
-        'FiveMinuteRate'    => { 'slope' => 'both',     'bucketType' => 'g' },
-        'OneMinuteRate'     => { 'slope' => 'both',     'bucketType' => 'g' },
-        'MeanRate'          => { 'slope' => 'both',     'bucketType' => 'g' },
-    }
-    $kafka_timing_jmx_attrs = {
-        '50thPercentile'     => { 'slope' => 'both',     'bucketType' => 'g' },
-        '75ththPercentile'   => { 'slope' => 'both',     'bucketType' => 'g' },
-        '95thPercentile'     => { 'slope' => 'both',     'bucketType' => 'g' },
-        '98thPercentile'     => { 'slope' => 'both',     'bucketType' => 'g' },
-        '99thPercentile'     => { 'slope' => 'both',     'bucketType' => 'g' },
-        '999thPercentile'    => { 'slope' => 'both',     'bucketType' => 'g' },
-        'Count'              => { 'slope' => 'positive', 'bucketType' => 'g' },
-        'Max'                => { 'slope' => 'both',     'bucketType' => 'g' },
-        'Mean'               => { 'slope' => 'both',     'bucketType' => 'g' },
-        'Min'                => { 'slope' => 'both',     'bucketType' => 'g' },
-        'StdDev'             => { 'slope' => 'both',     'bucketType' => 'g' },
-    }
-    $kafka_value_jmx_attrs = {
-        'Value'             => { 'slope' => 'both',     'bucketType' => 'g' },
-    }
-
 
     # Include Kafka Server Jmxtrans class
     # to send Kafka Broker metrics to Ganglia and statsd.
     class { '::kafka::server::jmxtrans':
-        ganglia  => "${ganglia_host}:${ganglia_port}",
-        statsd   => "${statsd_host}:${statsd_port}",
-
-        # 0.8.2.1 JMX metrics.
-        # TODO: this will be moved into kafka module soon.
-        objects  => [
-            # All Topic Metrics
-            {
-                'name'          => 'kafka.server:type=BrokerTopicMetrics,name=*',
-                'resultAlias'   => 'kafka.server.BrokerTopicMetrics-AllTopics',
-                'typeNames'     => ['name'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            # Per Topic Metrics
-            {
-                'name'          => 'kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec,topic=*',
-                'resultAlias'   => 'kafka.server.BrokerTopicMetrics.BytesInPerSec',
-                'typeNames'     => ['topic'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.server:type=BrokerTopicMetrics,name=BytesOutPerSec,topic=*',
-                'resultAlias'   => 'kafka.server.BrokerTopicMetrics.BytesOutPerSec',
-                'typeNames'     => ['topic'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.network:type=BrokerTopicMetrics,name=BytesRejectedPerSec,topic=*',
-                'resultAlias'   => 'kafka.network.BrokerTopicMetrics.BytesRejectedPerSec',
-                'typeNames'     => ['topic'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.network:type=BrokerTopicMetrics,name=FailedFetchRequestsPerSec,topic=*',
-                'resultAlias'   => 'kafka.network.BrokerTopicMetrics.FailedFetchRequestsPerSec',
-                'typeNames'     => ['topic'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.network:type=BrokerTopicMetrics,name=FailedProduceRequestsPerSec,topic=*',
-                'resultAlias'   => 'kafka.network.BrokerTopicMetrics.FailedProduceRequestsPerSec',
-                'typeNames'     => ['topic'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.server:type=BrokerTopicMetrics,name=MessagesInPerSec,topic=*',
-                'resultAlias'   => 'kafka.server.BrokerTopicMetrics.MessagesInPerSec',
-                'typeNames'     => ['topic'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-
-            # ReplicaManager Metrics
-            {
-                'name'          => 'kafka.server:type=ReplicaManager,name=*',
-                'resultAlias'   => 'kafka.server.ReplicaManager',
-                'typeNames'     => ['name'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-
-            # ReplicaFetcherManager
-            {
-                'name'          => 'kafka.server:type=ReplicaFetcherManager,name=*,clientId=Replica',
-                'resultAlias'   => 'kafka.server.ReplicaFetcherManager',
-                'typeNames'     => ['name'],
-                'attrs'         => $kafka_value_jmx_attrs,
-            },
-
-            # Produce/Fetch Request Purgatory Metrics
-            {
-                'name'          => 'kafka.server:type=ProducerRequestPurgatory,name=*',
-                'resultAlias'   => 'kafka.server.ProducerRequestPurgatory',
-                'typeNames'     => ['name'],
-                'attrs'         => $kafka_value_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.server:type=FetchRequestPurgatory,name=*',
-                'resultAlias'   => 'kafka.server.FetchRequestPurgatory',
-                'typeNames'     => ['name'],
-                'attrs'         => $kafka_value_jmx_attrs,
-            },
-
-            # Request Handler Percent Idle
-            {
-                'name'          => 'kafka.server:type=KafkaRequestHandlerPool,name=*',
-                'resultAlias'   => 'kafka.server.KafkaRequestHandlerPool',
-                'typeNames'     => ['name'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-
-
-            # Request Metrics
-
-            # Requests Type Metrics
-            {
-                'name'          => 'kafka.network:type=RequestMetrics,name=RequestsPerSec,request=*',
-                'resultAlias'   => 'kafka.network.RequestMetrics.RequestsPerSec',
-                'typeNames'     => ['request'],
-                'attrs'         => $kafka_rate_jmx_attrs,
-            },
-            # Request/Response Local Time Metrics
-            {
-                'name'          => 'kafka.network:type=RequestMetrics,name=LocalTimeMs,request=*',
-                'resultAlias'   => 'kafka.network.RequestMetrics.LocalTimeMs',
-                'typeNames'     => ['request'],
-                'attrs'         => $kafka_timing_jmx_attrs,
-            },
-            # Request/Response Remote Time Metrics
-            {
-                'name'          => 'kafka.network:type=RequestMetrics,name=RemoteTimeMs,request=*',
-                'resultAlias'   => 'kafka.network.RequestMetrics.RemoteTimeMs',
-                'typeNames'     => ['request'],
-                'attrs'         => $kafka_timing_jmx_attrs,
-            },
-            # Request Queue Time Metrics
-            {
-                'name'          => 'kafka.network:type=RequestMetrics,name=RequestQueueTimeMs,request=*',
-                'resultAlias'   => 'kafka.network.RequestMetrics.RequestQueueTimeMs',
-                'typeNames'     => ['request'],
-                'attrs'         => $kafka_timing_jmx_attrs,
-            },
-            # Response Queue Time Metrics
-            {
-                'name'          => 'kafka.network:type=RequestMetrics,name=ResponseQueueTimeMs,request=*',
-                'resultAlias'   => 'kafka.network.RequestMetrics.ResponseQueueTimeMs',
-                'typeNames'     => ['request'],
-                'attrs'         => $kafka_timing_jmx_attrs,
-            },
-            # Response Send Time Metrics
-            {
-                'name'          => 'kafka.network:type=RequestMetrics,name=ResponseSendTimeMs,request=*',
-                'resultAlias'   => 'kafka.network.RequestMetrics.ResponseSendTimeMs',
-                'typeNames'     => ['request'],
-                'attrs'         => $kafka_timing_jmx_attrs,
-            },
-            # Request/Response Total Time Metrics
-            {
-                'name'          => 'kafka.network:type=RequestMetrics,name=TotalTimeMs,request=*',
-                'resultAlias'   => 'kafka.network.RequestMetrics.TotalTimeMs',
-                'typeNames'     => ['request'],
-                'attrs'         => $kafka_timing_jmx_attrs,
-            },
-
-            # Log Flush Metrics
-            {
-                'name'          => 'kafka.log:type=LogFlushStats,name=*',
-                'resultAlias'   => 'kafka.log.LogFlushStats',
-                'typeNames'     => ['name'],
-                'attrs'         => merge($kafka_timing_jmx_attrs, $kafka_rate_jmx_attrs),
-            },
-
-            # Per topic-partition Metrics
-            {
-                'name'          => 'kafka.log:type=Log,name=LogStartOffset,topic=*,partition=*',
-                'resultAlias'   => 'kafka.log.LogStartOffset',
-                'typeNames'     => ['topic', 'partition'],
-                'attrs'         => $kafka_value_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.log:type=Log,name=LogEndOffset,topic=*,partition=*',
-                'resultAlias'   => 'kafka.log.LogEndOffset',
-                'typeNames'     => ['topic', 'partition'],
-                'attrs'         => $kafka_value_jmx_attrs,
-            },
-            {
-                'name'          => 'kafka.log:type=Log,name=Size,topic=*,partition=*',
-                'resultAlias'   => 'kafka.log.Size',
-                'typeNames'     => ['topic', 'partition'],
-                'attrs'         => $kafka_value_jmx_attrs,
-            },
-
-
-            # Controller Info
-            {
-                'name'          => 'kafka.controller:type=KafkaController,name=*',
-                'resultAlias'   => 'kafka.controller.KafkaController',
-                'typeNames'     => ['name'],
-                'attrs'         => $kafka_value_jmx_attrs,
-            },
-            # Controller Metrics
-            {
-                'name'          => 'kafka.controller:type=ControllerStats,name=*',
-                'resultAlias'   => 'kafka.controller.ControllerStats',
-                'typeNames'     => ['name'],
-                'attrs'         => merge($kafka_timing_jmx_attrs, $kafka_rate_jmx_attrs),
-            },
-
-            # Per topic-partition UnderReplicated Partition Metrics
-            # TODO: fix this metric
-            {
-                'name'          => 'kafka.cluster:type=Partition,name=UnderReplicated,topic=*,partition=*',
-                'resultAlias'   => 'kafka.cluster.Partition.UnderReplicated',
-                'typeNames'     => ['topic, partition'],
-                'attrs'         => $kafka_value_jmx_attrs,
-            },
-        ]
+        ganglia  => $ganglia,
+        statsd   => $statsd,
     }
 
     # Monitor kafka in production
@@ -431,41 +214,16 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
 
         # Set up icinga monitoring of Kafka broker per second.
         # If this drops too low, trigger an alert.
-        # These thresholds have to be manually set.
-        # adjust them if you add or remove data from Kafka topics.
         $nagios_servicegroup = 'analytics_eqiad'
 
-        monitoring::ganglia { 'kafka-broker-MessagesIn':
-            description => 'Kafka Broker Messages In',
-            metric      => 'kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.FifteenMinuteRate',
-            warning     => ':1500.0',
-            critical    => ':1000.0',
-            require     => Class['::kafka::server::jmxtrans'],
-            group       => $nagios_servicegroup,
-        }
-
-        # Use graphite's anomaly detection support.
-        monitoring::graphite_anomaly { 'kafka-broker-MessagesIn-anomaly':
-            # moving this to role::graphite::production since it is not a node based metric.
-            ensure       => 'absent',
-            description  => 'Kafka Broker Messages In Per Second',
-            metric       => 'sumSeries(kafka.*.kafka.server.BrokerTopicMetrics.AllTopicsMessagesInPerSec.OneMinuteRate)',
-            # check over the 60 data points (an hour?) and:
-            # - alert warn if more than 30 are under the confidence band
-            # - alert critical if more than 45 are under the confidecne band
-            check_window => 60,
-            warning      => 30,
-            critical     => 45,
-            under        => true,
-            require      => Class['::kafka::server::jmxtrans'],
-            group        => $nagios_servicegroup,
-        }
-
-
+        # jmxtrans statsd writer emits Kafka Broker fqdns in keys
+        # by substiting '.' with '_' and suffixing the Broker port.
+        $graphite_broker_key = regsubst("${::fqdn}_9999", '\.', '_')
 
         # Alert if any Kafka has under replicated partitions.
         # If it does, this means a broker replica is falling behind
         # and will be removed from the ISR.
+        # TODO: Move this to graphite.  Is the graphite stat for this working???
         monitoring::ganglia { 'kafka-broker-UnderReplicatedPartitions':
             description => 'Kafka Broker Under Replicated Partitions',
             metric      => 'kafka.server.ReplicaManager.UnderReplicatedPartitions.Value',
@@ -479,9 +237,9 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         }
 
         # Alert if any Kafka Broker replica lag is too high
-        monitoring::ganglia { 'kafka-broker-Replica-MaxLag':
-            description => 'Kafka Broker Replica Lag',
-            metric      => 'kafka.server.ReplicaFetcherManager.Replica-MaxLag.Value',
+        monitoring::graphite { 'kafka-broker-Replica-MaxLag':
+            description => 'Kafka Broker Replica Max Lag',
+            metric      => "kafka.${graphite_broker_key}.kafka.server.ReplicaFetcherManager.MaxLag.Value",
             # As of 2014-02 replag could catch up at more than 1000 msgs / sec,
             # (probably more like 2 or 3 K / second). At that rate, 1M messages
             # behind should catch back up in at least 30 minutes.
