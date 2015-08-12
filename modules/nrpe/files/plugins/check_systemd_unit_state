@@ -100,7 +100,7 @@ def main():
 
     # else periodic
 
-    if state['ActiveState'] == 'active':
+    if state['ActiveState'] in ('active', 'activating'):
         ok("Unit is currently active")
     if state['ActiveState'] != 'inactive':
         crit("Unit is in state %s" % state['ActiveState'])
