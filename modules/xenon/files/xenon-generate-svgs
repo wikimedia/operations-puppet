@@ -10,7 +10,7 @@ for log in /srv/xenon/**/*.log; do
     mkdir -m0755 -p "$(dirname $svg)"
     [ ! -f "$svg" -o "$svg" -ot "$log" ] && \
         /usr/local/bin/flamegraph.pl --title="$title" "$log" | gzip -9 > "$svg"
-        /usr/local/bin/flamegraph.pl --reverse --negate --title="$title - reversed" "$log" | gzip -9 > "$rsvg"
+        /usr/local/bin/flamegraph.pl --reverse --colors=blue --title="$title - reversed" "$log" | gzip -9 > "$rsvg"
 done
 
 for svgz in /srv/xenon/**/*.svgz; do
