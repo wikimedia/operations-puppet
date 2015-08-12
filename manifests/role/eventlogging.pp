@@ -159,6 +159,9 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     # Log strictly valid events to the 'log' database on m4-master.
 
+    # Define statsd host url
+    $statsd_host = "statsd.eqiad.wmnet"
+
     class { 'passwords::mysql::eventlogging': }    # T82265
     $mysql_user = $passwords::mysql::eventlogging::user
     $mysql_pass = $passwords::mysql::eventlogging::password
@@ -169,7 +172,7 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     eventlogging::service::consumer { 'mysql-m4-master':
         input  => "tcp://${processor_host}:8600",
-        output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8",
+        output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}",
         # Restrict permissions on this config file since it contains a password.
         owner  => 'root',
         group  => 'eventlogging',
