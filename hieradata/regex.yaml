@@ -38,3 +38,45 @@ cassandra_test:
       - xenon.eqiad.wmnet
   cassandra::max_heap_size: 4g
   cassandra::heap_newsize: 1g
+
+swift_be_codfw:
+  __regex: !ruby/regexp /^ms-be20.*\.codfw\.wmnet$/
+  swift_storage_drives: [
+          '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
+          '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
+          '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+  # no trailing comma!
+  ]
+  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
+
+swift_be_eqiad_dell:
+  __regex: !ruby/regexp /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/
+  swift_storage_drives: [
+          '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
+          '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
+          '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+  # no trailing comma!
+  ]
+  swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
+
+# HP machines have different disk ordering T90922
+swift_be_eqiad_hp:
+  __regex: !ruby/regexp /^ms-be101[678]\.eqiad\.wmnet$/
+  swift_storage_drives: [
+        '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
+        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
+        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+  # no trailing comma!
+  ]
+  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
+
+# 720xd *without* SSDs; sda & sdb serve both as root and as Swift disks
+swift_be_esams:
+  __regex: !ruby/regexp /^ms-be300[1-4]\.esams\.wmnet$/
+  swift_storage_drives: [
+        '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
+        '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
+        '/dev/sdk', '/dev/sdl'
+  # no trailing comma!
+  ]
+  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']

@@ -1,0 +1,7 @@
+proxy_address: 'http://ms-fe.svc.eqiad.wmnet'
+memcached_servers: [
+  'ms-fe1001.eqiad.wmnet:11211',
+  'ms-fe1002.eqiad.wmnet:11211',
+  'ms-fe1003.eqiad.wmnet:11211',
+  'ms-fe1004.eqiad.wmnet:11211'
+# no trailing comma!
