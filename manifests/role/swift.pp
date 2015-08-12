@@ -110,7 +110,6 @@ class role::swift {
             class { '::swift::proxy::monitoring':
                 host => 'ms-fe.eqiad.wmnet',
             }
-            include role::swift::icehouse
             include ::swift_new::params
             include ::swift_new::container_sync
 
@@ -119,7 +118,6 @@ class role::swift {
         class storage inherits role::swift::eqiad_prod {
             include ::swift::storage
             include ::swift::storage::monitoring
-            include role::swift::icehouse
             include ::swift_new::params
             include ::swift_new::container_sync
 
@@ -223,14 +221,12 @@ class role::swift {
             class { '::swift::proxy::monitoring':
                 host => 'ms-fe.esams.wmnet',
             }
-            include role::swift::icehouse
 
             include role::statsite
         }
         class storage inherits role::swift::esams_prod {
             include ::swift::storage
             include ::swift::storage::monitoring
-            include role::swift::icehouse
 
             include role::statsite
         }
@@ -312,23 +308,6 @@ class role::swift::labs inherits role::swift::base {
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///files/swift/swift-labs-ring',
-    }
-}
-
-# temporary class to be applied to hosts to allow for rolling upgrades, will
-# need a manual apt-get install swift
-class role::swift::icehouse {
-    apt::repository { 'ubuntucloud-icehouse':
-        uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-        dist       => 'precise-updates/icehouse',
-        components => 'main',
-        keyfile    => 'puppet:///files/misc/ubuntu-cloud.key',
-    }
-
-    apt::pin { 'swift-icehouse':
-        package  => '*',
-        pin      => 'release n=precise-updates/icehouse',
-        priority => 1005,
     }
 }
 
