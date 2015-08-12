@@ -239,7 +239,6 @@ class role::graphite::production {
 class role::graphite::production::alerts {
     include ::mediawiki::monitoring::graphite
     include ::eventlogging::monitoring::graphite
-    include ::swift::monitoring::graphite
     include ::swift_new::monitoring::graphite
     include ::graphite::monitoring::graphite
 

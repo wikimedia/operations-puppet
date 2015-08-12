@@ -54,9 +54,7 @@ class swift_new::proxy (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        # XXX exception :(
-        # this still lives in files/ to avoid code duplication
-        source  => 'puppet:///files/swift/SwiftMedia/wmf/',
+        source  => 'puppet:///modules/swift_new/SwiftMedia/wmf/',
         recurse => 'remote',
     }
 }
