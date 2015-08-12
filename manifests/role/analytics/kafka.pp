@@ -218,18 +218,16 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
 
         # jmxtrans statsd writer emits Kafka Broker fqdns in keys
         # by substiting '.' with '_' and suffixing the Broker port.
-        $graphite_broker_key = regsubst("${::fqdn}_9999", '\.', '_')
+        $graphite_broker_key = regsubst("${::fqdn}_9999", '\.', '_', 'G')
 
         # Alert if any Kafka has under replicated partitions.
         # If it does, this means a broker replica is falling behind
         # and will be removed from the ISR.
-        # TODO: Move this to graphite.  Is the graphite stat for this working???
-        monitoring::ganglia { 'kafka-broker-UnderReplicatedPartitions':
+        monitoring::graphite_threshold { 'kafka-broker-UnderReplicatedPartitions':
             description => 'Kafka Broker Under Replicated Partitions',
-            metric      => 'kafka.server.ReplicaManager.UnderReplicatedPartitions.Value',
-            # Any under replicated partitions are bad.
-            # Over 10 means (probably) that at least an entire topic
-            # is under replicated.
+            metric      => "kafka.${graphite_broker_key}.kafka.server.ReplicaManager.UnderReplicatedPartitions.Value",
+            # UnderReplicated partitions for more than a minute
+            # or two shouldn't happen.
             warning     => '1',
             critical    => '10',
             require     => Class['::kafka::server::jmxtrans'],
