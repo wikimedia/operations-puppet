@@ -42,6 +42,13 @@ class role::dumps {
         proto => 'tcp',
         port  => '443',
     }
+
+    ferm::service { 'dumps_nfs':
+        proto  => 'tcp',
+        port   => '2049',
+        srange => '($INTERNAL)',
+    }
+
 }
 
 # ZIM dumps - https://en.wikipedia.org/wiki/ZIM_%28file_format%29
