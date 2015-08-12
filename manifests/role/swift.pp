@@ -17,30 +17,21 @@ class role::swift {
             hash_path_suffix => '4f93c548a5903a13',
             cluster_name     => 'eqiad-prod',
         }
-        class ganglia_reporter inherits role::swift::eqiad_prod {
+        class stats_reporter inherits role::swift::eqiad_prod {
 
             require_package('python-statsd')
 
             # one host per cluster should report global stats
             file { '/usr/local/bin/swift-ganglia-report-global-stats':
-                ensure => present,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0555',
-                source => 'puppet:///files/swift/swift-ganglia-report-global-stats',
+                ensure => absent,
             }
             # config file to hold the  password
             $password = $passwords::swift::eqiad_prod::rewrite_password
             file { '/etc/swift-ganglia-report-global-stats.conf':
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0440',
-                content => template('swift/swift-ganglia-report-global-stats.conf.erb'),
+                ensure  => absent,
             }
             cron { 'swift-ganglia-report-global-stats':
-                ensure  => present,
-                command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:media' -c eqiad-prod",
-                user    => 'root',
+                ensure  => absent,
             }
             # report global stats to graphite
             file { '/usr/local/bin/swift-account-stats':
