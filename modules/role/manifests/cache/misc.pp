@@ -133,11 +133,6 @@ class role::cache::misc {
                 'type' => 'random',
                 'backends' => ['ytterbium.wikimedia.org'],
             },
-            'zirconium' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['zirconium.wikimedia.org'],
-            },
             'logstash' => {
                 'dynamic'  => 'no',
                 'type' => 'hash', # maybe-wrong? but current value before this commit! XXX
