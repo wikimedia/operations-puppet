@@ -237,7 +237,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         }
 
         # Alert if any Kafka Broker replica lag is too high
-        monitoring::graphite { 'kafka-broker-Replica-MaxLag':
+        monitoring::graphite_threshold { 'kafka-broker-Replica-MaxLag':
             description => 'Kafka Broker Replica Max Lag',
             metric      => "kafka.${graphite_broker_key}.kafka.server.ReplicaFetcherManager.MaxLag.Value",
             # As of 2014-02 replag could catch up at more than 1000 msgs / sec,
