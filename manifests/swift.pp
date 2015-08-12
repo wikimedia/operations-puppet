@@ -101,16 +101,6 @@ class swift::base($hash_path_suffix, $cluster_name) {
         ensure => 'present',
         source => "puppet:///volatile/swift/${cluster_name}/object.ring.gz",
     }
-
-    package { 'ganglia-logtailer':
-        ensure => 'absent',
-    }
-    file { '/usr/share/ganglia-logtailer/SwiftHTTPLogtailer.py':
-        ensure => 'absent',
-    }
-    cron { 'swift-proxy-ganglia':
-        ensure  => 'absent',
-    }
 }
 
 class swift::proxy(
@@ -394,18 +384,32 @@ class swift::storage {
 #   - $title:
 #       The device to partition
 define swift::create_filesystem($partition_nr='1') {
-    if ($title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) {
-        $dev        = "${title}${partition_nr}"
-        $dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
-        exec { "swift partitioning ${title}":
-            path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-            command => "parted -s -a optimal ${title} mklabel gpt mkpart swift-${dev_suffix} 0% 100% && mkfs -t xfs -i size=512 -L swift-${dev_suffix} ${dev}",
-            creates => $dev,
-        }
+    if (! $title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) {
+        fail("unable to init ${title} for swift")
+    }
 
-        swift::mount_filesystem { $dev:
-            require => Exec["swift partitioning ${title}"],
-        }
+    $dev           = "${title}${partition_nr}"
+    $dev_suffix    = regsubst($dev, '^\/dev\/(.*)$', '\1')
+    $fs_label      = "swift-${dev_suffix}"
+    $parted_cmd    = "parted --script --align optimal ${title}"
+    $parted_script = "mklabel gpt mkpart ${fs_label} 0 100%"
+
+    exec { "parted-${title}":
+        path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+        require => Package['parted'],
+        command => "${parted_cmd} ${parted_script}",
+        creates => $dev,
+    }
+
+    exec { "mkfs-${dev}":
+        command => "mkfs -t xfs -L ${fs_label} -i size=512 ${dev}",
+        path    => '/sbin/:/usr/sbin/',
+        require => [Package['xfsprogs'], Exec["parted-${title}"]],
+        unless  => "xfs_admin -l ${dev}",
+    }
+
+    swift::mount_filesystem { $dev:
+        require => Exec["mkfs-${dev}"],
     }
 }
 
@@ -422,38 +426,30 @@ define swift::create_filesystem($partition_nr='1') {
 define swift::mount_filesystem() {
     $dev        = $title
     $dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
-    $mountpath  = "/srv/swift-storage/${dev_suffix}"
+    $mount_point = "${mount_base}/${dev_suffix}"
 
-    # Make sure the mountpoint exists...
-    # This can't be a file resource, as it would become a duplicate.
-    exec { "mkdir ${mountpath}":
-        require => File['/srv/swift-storage'],
-        path    => '/usr/bin:/bin',
-        creates => $mountpath,
+    file { "mountpoint-${mount_point}":
+        ensure => directory,
+        path   => $mount_point,
+        owner  => 'swift',
+        group  => 'swift',
+        mode   => '0750',
     }
 
-    # ...mount the filesystem by label...
-    mount { $mountpath:
-        ensure   => 'mounted',
+    mount { $mount_point:
+        # XXX this won't mount the disks the first time they are added to
+        # fstab.
+        # We don't want puppet to keep the FS mounted, otherwise
+        # it would conflict with swift-drive-auditor trying to keep FS
+        # unmounted.
+        ensure   => present,
         device   => "LABEL=swift-${dev_suffix}",
-        name     => $mountpath,
+        name     => $mount_point,
         fstype   => 'xfs',
         options  => 'noatime,nodiratime,nobarrier,logbufs=8',
         atboot   => true,
         remounts => true,
     }
-
-    # ...and fix the directory attributes.
-    file { "fix attr ${mountpath}":
-        ensure  => 'directory',
-        require => Class['swift::base'],
-        path    => $mountpath,
-        owner   => 'swift',
-        group   => 'swift',
-        mode    => '0750',
-    }
-
-    Exec["mkdir ${mountpath}"] -> Mount[$mountpath] -> File["fix attr ${mountpath}"]
 }
 
 
@@ -477,7 +473,10 @@ define swift::label_filesystem() {
     $dev_suffix = regsubst($device, '^\/dev\/(.*)$', '\1')
 
     $label = "swift-${dev_suffix}"
-    exec { "/usr/sbin/xfs_admin -L ${label} ${device}":
-        onlyif => "/usr/bin/test $(/bin/mount | /bin/grep ${device} |/usr/bin/wc -l) -eq 0 && /usr/bin/test $(/usr/sbin/grub-probe -t fs -d ${device}) = 'xfs' && /usr/bin/test $(/usr/sbin/xfs_admin -l ${device} |/bin/grep swift | /usr/bin/wc -l) -eq 0"
+    exec { "xfs_label-${dev}":
+        command => "xfs_admin -L ${fs_label} ${dev}",
+        path    => '/usr/sbin:/usr/bin:/sbin:/bin',
+        require => Package['xfsprogs'],
+        unless  => "xfs_admin -l ${dev} | grep -q ${fs_label}"
     }
 }
