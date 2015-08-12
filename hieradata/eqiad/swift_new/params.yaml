@@ -1,0 +1,29 @@
+swift_cluster: eqiad-prod
+accounts:
+    super_admin:
+        access:       '.admin .reseller_admin'
+        account_name: 'AUTH_admin'
+        auth:         'http://ms-fe.svc.eqiad.wmnet'
+        user:         'admin:admin'
+    mw_media:
+        access:       '.admin'
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.eqiad.wmnet'
+        user:         'mw:media'
+    dispersion:
+        access:       '.admin'
+        account_name: 'AUTH_dispersion'
+        auth:         'http://ms-fe.svc.eqiad.wmnet'
+        user:         'swift:dispersion'
+    search_backup:
+        access:       '.admin'
+        account_name: 'AUTH_search'
+        auth:         'http://ms-fe.svc.eqiad.wmnet'
+        user:         'search:backup'
+# keys are to be defined in private repo, e.g.:
+#swift_new::params::account_keys:
+#    super_admin: <key>
+#    mw_media: <key>
+#    dispersion: <key>
+#    search_backup: <key>
+
