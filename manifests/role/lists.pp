@@ -163,4 +163,11 @@ class role::lists::migration {
         port  => '80',
     }
 
+    include rsync::server
+
+    rsync::server::module { 'lists':
+        path        => '/var/lib/mailman',
+        read_only   => 'no',
+        hosts_allow => '208.80.154.61',
+    }
 }
