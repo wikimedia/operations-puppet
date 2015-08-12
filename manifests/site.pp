@@ -7,7 +7,6 @@ import 'network.pp'
 import 'nfs.pp'
 import 'role/*.pp'
 import 'role/analytics/*.pp'
-import 'swift.pp'
 
 # Include stages last
 import 'stages.pp'
