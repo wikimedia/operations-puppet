@@ -1,7 +1,6 @@
 ---
 # Elasticsearch
 elasticsearch::auto_create_index: true
-elasticsearch::plugins_dir: /srv/deployment/elasticsearch/plugins
 elasticsearch::script_disable_dynamic: true
 elasticsearch::cluster_name: stashbot
 elasticsearch::expected_nodes: 2
