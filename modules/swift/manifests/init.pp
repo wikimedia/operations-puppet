@@ -1,7 +1,7 @@
 # XXX support additional storage policies
-class swift_new (
+class swift (
     $hash_path_suffix,
-    $swift_cluster = $swift_new::params::swift_cluster,
+    $swift_cluster = $swift::params::swift_cluster,
 ) {
     # Recommendations from Swift -- see <http://tinyurl.com/swift-sysctl>.
     sysctl::parameters { 'swift_performance':
@@ -77,7 +77,7 @@ class swift_new (
     file { '/etc/swift/swift.conf':
         ensure  => present,
         require => Package['swift'],
-        content => template('swift_new/swift.conf.erb'),
+        content => template('swift/swift.conf.erb'),
     }
 
     file { '/var/cache/swift':

@@ -1,6 +1,6 @@
 # XXX support additional storage policies
-class swift_new::ring (
-    $swift_cluster = $swift_new::params::swift_cluster,
+class swift::ring (
+    $swift_cluster = $swift::params::swift_cluster,
 ) {
     file { '/etc/swift/account.builder':
         ensure    => present,

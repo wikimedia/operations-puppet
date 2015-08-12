@@ -1,4 +1,4 @@
-define swift_new::label_filesystem {
+define swift::label_filesystem {
     $dev        = $title
     $dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
     $fs_label   = "swift-${dev_suffix}"

@@ -1,4 +1,4 @@
-class swift_new::storage (
+class swift::storage (
     $statsd_host               = undef,
     $statsd_metric_prefix      = undef,
     $statsd_sample_rate_factor = '1',
@@ -48,15 +48,15 @@ class swift_new::storage (
     }
 
     file { '/etc/swift/account-server.conf':
-        content => template('swift_new/account-server.conf.erb'),
+        content => template('swift/account-server.conf.erb'),
     }
 
     file { '/etc/swift/container-server.conf':
-        content => template('swift_new/container-server.conf.erb'),
+        content => template('swift/container-server.conf.erb'),
     }
 
     file { '/etc/swift/object-server.conf':
-        content => template('swift_new/object-server.conf.erb'),
+        content => template('swift/object-server.conf.erb'),
     }
 
     file { '/srv/swift-storage':
@@ -97,13 +97,13 @@ class swift_new::storage (
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/swift_new/swift-drive-audit',
+        source => 'puppet:///modules/swift/swift-drive-audit',
     }
     file { '/etc/swift/swift-drive-audit.conf':
         owner  => 'root',
         group  => 'root',
         mode   => '0440',
-        source => 'puppet:///modules/swift_new/swift-drive-audit.conf',
+        source => 'puppet:///modules/swift/swift-drive-audit.conf',
     }
     cron { 'swift-drive-audit':
         ensure  => present,

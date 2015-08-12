@@ -10,9 +10,9 @@ class role::swift::stats_reporter {
         description => 'swift statistics reporter',
     }
 
-    include ::swift_new::params
-    include ::swift_new::stats::dispersion
-    include ::swift_new::stats::accounts
+    include ::swift::params
+    include ::swift::stats::dispersion
+    include ::swift::stats::accounts
 }
 
 class role::swift::proxy {
@@ -22,13 +22,13 @@ class role::swift::proxy {
         description => 'swift frontend proxy',
     }
 
-    include ::swift_new::params
-    include ::swift_new
-    include ::swift_new::ring
-    include ::swift_new::container_sync
+    include ::swift::params
+    include ::swift
+    include ::swift::ring
+    include ::swift::container_sync
 
-    class { '::swift_new::proxy':
-        statsd_metric_prefix => "swift.${::swift_new::params::swift_cluster}.${::hostname}",
+    class { '::swift::proxy':
+        statsd_metric_prefix => "swift.${::swift::params::swift_cluster}.${::hostname}",
     }
 
     class { '::memcached':
@@ -56,25 +56,25 @@ class role::swift::storage {
         description => 'swift storage brick',
     }
 
-    include ::swift_new::params
-    include ::swift_new
-    include ::swift_new::ring
-    class { '::swift_new::storage':
-        statsd_metric_prefix => "swift.${::swift_new::params::swift_cluster}.${::hostname}",
+    include ::swift::params
+    include ::swift
+    include ::swift::ring
+    class { '::swift::storage':
+        statsd_metric_prefix => "swift.${::swift::params::swift_cluster}.${::hostname}",
     }
-    include ::swift_new::container_sync
-    include ::swift_new::storage::monitoring
+    include ::swift::container_sync
+    include ::swift::storage::monitoring
 
     include role::statsite
 
     $all_drives = hiera('swift_storage_drives')
 
-    swift_new::init_device { $all_drives:
+    swift::init_device { $all_drives:
         partition_nr => '1',
     }
 
     # these are already partitioned and xfs formatted by the installer
     $aux_partitions = hiera('swift_aux_partitions')
-    swift_new::label_filesystem { $aux_partitions: }
-    swift_new::mount_filesystem { $aux_partitions: }
+    swift::label_filesystem { $aux_partitions: }
+    swift::mount_filesystem { $aux_partitions: }
 }

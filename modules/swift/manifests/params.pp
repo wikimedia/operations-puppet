@@ -1,4 +1,4 @@
-class swift_new::params (
+class swift::params (
     $swift_cluster        = undef,
     $accounts             = {},
     $account_keys         = {},

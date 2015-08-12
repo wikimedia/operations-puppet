@@ -1,8 +1,8 @@
-class swift_new::storage::monitoring {
+class swift::storage::monitoring {
     include nrpe
 
     # RT-2593. Moved here from nrpe_local.cfg
-    swift_new::storage::monitor_swift_daemon { [
+    swift::storage::monitor_swift_daemon { [
         'swift-account-auditor',
         'swift-account-reaper',
         'swift-account-replicator',

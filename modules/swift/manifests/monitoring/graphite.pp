@@ -1,5 +1,5 @@
-class swift_new::monitoring::graphite (
-    $swift_cluster = $::swift_new::params::swift_cluster,
+class swift::monitoring::graphite (
+    $swift_cluster = $::swift::params::swift_cluster,
 ) {
     monitoring::graphite_threshold { "swift_${swift_cluster}_dispersion_object":
         description     => "swift ${swift_cluster} object availability",
