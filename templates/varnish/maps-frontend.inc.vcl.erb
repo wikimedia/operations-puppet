@@ -4,6 +4,7 @@ include "errorpage.inc.vcl";
 
 sub vcl_recv {
 	call vcl_recv_purge;
+	error 403 "Access Denied";
 	return (lookup);
 }
 
