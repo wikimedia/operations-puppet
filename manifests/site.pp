@@ -1782,26 +1782,11 @@ node /^ms-be101[678]\.eqiad\.wmnet$/ {
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
-    role swift::esams_prod::proxy
+    role swift::proxy
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
-    # 720xd *without* SSDs; sda & sdb serve both as root and as Swift disks
-    $all_drives = [
-        '/dev/sdc', '/dev/sdd', '/dev/sde', '/dev/sdf',
-        '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
-        '/dev/sdk', '/dev/sdl'
-    ]
-
-    role swift::esams_prod::storage
-
-    swift::create_filesystem{ $all_drives: partition_nr => '1' }
-
-    # these are already partitioned and xfs formatted by the installer
-    swift::label_filesystem{ '/dev/sda3': }
-    swift::label_filesystem{ '/dev/sdb3': }
-    swift::mount_filesystem{ '/dev/sda3': }
-    swift::mount_filesystem{ '/dev/sdb3': }
+    role swift::storage
 }
 
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
