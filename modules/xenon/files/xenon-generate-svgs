@@ -3,10 +3,17 @@ set +C  # OK to clobber out-of-date SVGs
 shopt -s globstar nullglob
 for log in /srv/xenon/**/*.log; do
     svg="${log//log/svg}z"
+    rsvg="${svg//.svgz/-reversed.svgz}"
     period="$(basename "$(dirname "$log")")"
     time="$(basename "$log" ".log")"
     title="MediaWiki - ${period} - ${time/_/ }"
     mkdir -m0755 -p "$(dirname $svg)"
     [ ! -f "$svg" -o "$svg" -ot "$log" ] && \
         /usr/local/bin/flamegraph.pl --title="$title" "$log" | gzip -9 > "$svg"
+        /usr/local/bin/flamegraph.pl --reverse --inverted --title="$title - reversed" "$log" | gzip -9 > "$rsvg"
+done
+
+for svgz in /srv/xenon/**/*.svgz; do
+    log="${svgz//svgz/log}"
+    [ ! -f "$log" ] && rm -f "$svgz"
 done
