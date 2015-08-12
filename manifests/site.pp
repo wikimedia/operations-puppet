@@ -1696,9 +1696,9 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
 # codfw deployment host (pending set up)
 node 'mira.codfw.wmnet' {
 
+    role deployment::server
     include standard
     include base::firewall
-    include role::deployment::server
     include role::labsdb::manager
     include role::releases::upload
 
@@ -2341,8 +2341,8 @@ node 'terbium.eqiad.wmnet' {
 
 node 'tin.eqiad.wmnet' {
 
+    role deplyment::server
     include standard
-    include role::deployment::server
     include role::labsdb::manager
 
     interface::add_ip6_mapped { 'main':
