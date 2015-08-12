@@ -9,11 +9,6 @@ import 'role/*.pp'
 import 'role/analytics/*.pp'
 import 'swift.pp'
 
-# Include stages last
-import 'stages.pp'
-
-# Initialization
-
 # Base nodes
 
 # Class for *most* servers, standard includes
