@@ -60,7 +60,7 @@ groups:
                  restricted folks use sudo to access apache / www-data resources
     members: [daniel, dartar, ellery, bearloga,
               ezachte, hoo, jamesur, jdlrobson, khorn, tparscal, tnegrin, ssastry,
-              ironholds, nuria, leila, santhosh, amire80, legoktm, jsahleen]
+              ironholds, nuria, leila, santhosh, amire80, legoktm, jsahleen, tjones]
     privileges: ['ALL = (www-data,apache) NOPASSWD: ALL']
   bastiononly:
     gid: 707
