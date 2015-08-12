@@ -3,10 +3,5 @@ base::resolving::domain_search:
   - codfw.wmnet
   - eqiad.wmnet
   - esams.wikimedia.org
-admin::groups:
-  - deployment
-  - parsoid-admin
-  - ocg-render-admins
-  - wdqs-admins
 cluster: misc
 scap::l10nupdate::run_l10nupdate: false
