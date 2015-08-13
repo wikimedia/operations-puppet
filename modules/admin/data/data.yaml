@@ -354,6 +354,12 @@ groups:
     members: [yurik, maxsem]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
                  'ALL = (tilerator) NOPASSWD: ALL']
+  mobileapps-admin:
+    description: Group of mobileapps admins
+    gid: 759
+    members: [bsitzmann, dbrant]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service mobileapps *',
+                 'ALL = (mobileapps) NOPASSWD: ALL']
 
 users:
   rush:
