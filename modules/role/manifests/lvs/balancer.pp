@@ -38,6 +38,7 @@ class role::lvs::balancer {
             $sip['restbase'][$::site],
             $sip['zotero'][$::site],
             $sip['graphoid'][$::site],
+            $sip['mobileapps'][$::site],
             ],
 
         # codfw (should mirror eqiad above, eventually, and become merged with it via regex
