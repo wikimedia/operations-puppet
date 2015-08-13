@@ -10,6 +10,12 @@ class role::maps::master {
     include ::cassandra
     include ::role::kartotherian
     include ::role::tilerator
+    include ::redis
+
+    system::role { 'role::maps::master':
+        ensure      => 'present',
+        description => 'Maps Postgres master',
+    }
 
     if $::realm == 'production' {
         include lvs::realserver
@@ -17,11 +23,6 @@ class role::maps::master {
 
     postgresql::spatialdb { 'gis':
         require => Class['::postgresql::postgis'],
-    }
-
-    system::role { 'role::maps::master':
-        ensure      => 'present',
-        description => 'Maps Postgres master',
     }
 
     # Tuning
