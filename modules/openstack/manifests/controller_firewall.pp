@@ -4,7 +4,7 @@ class openstack::controller_firewall {
     $labs_vms = '10.68.16.0/21'
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
-    $api_host = ipresolve('labnet1001.eqiad.wmnet',4)
+    $api_host = ipresolve(('labs_nova_api_host'),4)
     $other_master = ipresolve(hiera('labs_nova_controller_other'),4)
     $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
     $monitoring = '208.80.154.14'
