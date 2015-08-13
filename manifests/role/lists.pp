@@ -169,6 +169,8 @@ class role::lists::migration {
         srange => '208.80.154.61/32',
     }
 
+    include rsync::server
+
     rsync::server::module { 'lists':
         path        => '/var/lib/mailman',
         read_only   => 'no',
