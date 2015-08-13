@@ -14,7 +14,7 @@
 #   The host/IP where to reach RESTBase
 #
 class mobileapps(
-    $restbase_uri = 'http://restbase.svc.eqiad.wmnet',
+    $restbase_uri = 'http://restbase.svc.eqiad.wmnet:7231',
 ) {
     service::node { 'mobileapps':
         port            => 8888,
