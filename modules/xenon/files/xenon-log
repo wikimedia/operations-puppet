@@ -50,29 +50,29 @@ class TimeLog(object):
             if exc.errno != errno.EEXIST: raise
 
     def get_file_from_time(self, time=None, tag=None):
-        time = datetime.datetime.utcnow() if time is None else time
-        suffix = '.%s.log' % tag if tag else '.log'
-        return time.strftime(self.format) + suffix
 
     def write(self, message, time=None, tag=None):
-        file = os.path.join(self.path, self.get_file_from_time(time))
-        if not os.path.isfile(file):
+        time = datetime.datetime.utcnow() if time is None else time
+        suffix = '.%s.log' % tag if tag else '.log'
+        base_name = time.strftime(self.format) + suffix
+        file_path = os.path.join(self.path, base_name)
+        if not os.path.isfile(file_path):
             self.prune_files()
-        with open(file, 'a') as f:
+        with open(file_path, 'a') as f:
             print(message, file=f)
 
     def prune_files(self):
         files = {}
-        for file in os.listdir(self.path):
-            file = os.path.join(self.path, file)
+        for base_name in os.listdir(self.path):
+            file_path = os.path.join(self.path, base_name)
             try:
-                files[file] = os.path.getctime(file)
+                files[file_path] = os.path.getctime(file_path)
             except ValueError:
                 continue
         files = list(sorted(files, key=files.get, reverse=True))
-        for file in files[self.retain:]:
+        for file_path in files[self.retain:]:
             try:
-                os.remove(file)
+                os.remove(file_path)
             except OSError:
                 continue
 
