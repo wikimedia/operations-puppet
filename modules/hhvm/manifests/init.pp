@@ -139,15 +139,9 @@ class hhvm(
     }
 
 
-    # Specify a maximum execution time of 290 wall-clock seconds.
-    # This is scandalously high, but we must wean ourselves from
-    # bad habits in stages. -- Ori, 24-Apr-2015.
-    # Halved to 145. -- Ori, 29-Jul-2015
-    $max_execution_time = 145
-
     $fcgi_defaults = {
         memory_limit       => '500M',
-        max_execution_time => $max_execution_time,
+        max_execution_time => 60,
         hhvm         => {
             jit               => true,
             jit_a_size        => $a_size,
