@@ -14,7 +14,8 @@ class tilerator() {
     $pgsql_tilerator_pass = hiera('maps::postgresql_tilerator_pass')
 
     service::node { 'tilerator':
-        port   => 4100,
-        config => template('tilerator/config.yaml.erb'),
+        port       => 4100,
+        config     => template('tilerator/config.yaml.erb'),
+        no_workers => $::processorcount / 2,
     }
 }
