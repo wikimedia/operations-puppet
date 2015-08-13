@@ -163,11 +163,16 @@ class role::lists::migration {
         port  => '80',
     }
 
-    include rsync::server
+    ferm::service { 'sodium-rysnc':
+        proto  => 'tcp',
+        port   => '873',
+        srange => '208.80.154.61/32',
+    }
 
     rsync::server::module { 'lists':
         path        => '/var/lib/mailman',
         read_only   => 'no',
         hosts_allow => '208.80.154.61',
     }
+
 }
