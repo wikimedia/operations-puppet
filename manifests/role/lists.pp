@@ -163,6 +163,12 @@ class role::lists::migration {
         port  => '80',
     }
 
+    ferm::service { 'fermium-rysnc':
+        proto => 'tcp',
+        port  => '873',
+        srange => '208.80.154.62/32
+    }
+
     include rsync::server
 
     rsync::server::module { 'lists':
