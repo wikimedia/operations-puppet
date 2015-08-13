@@ -103,21 +103,21 @@ class role::nova::config::codfw inherits role::nova::config::common {
         flat_network_bridge => 'br1102',
         network_public_interface => 'eth0',
         network_host => $::realm ? {
-            'production' => '10.64.20.13',
+            'production' => hiera('labs_nova_network_ip'),
             'labs'       => $nova_network_hostname ? {
                 undef   => $::ipaddress_eth0,
                 default => $nova_network_hostname,
             }
         },
         api_host => $::realm ? {
-            'production' => 'labnet1001.eqiad.wmnet',
+            'production' => hiera('labs_nova_api_host'),
             'labs'       => $nova_controller_hostname ? {
                 undef   => $::ipaddress_eth0,
                 default => $nova_controller_hostname,
             }
         },
         api_ip => $::realm ? {
-            'production' => '10.64.20.13',
+            'production' => ipresolve(hiera('labs_nova_api_host'),4),
             'labs'       => $nova_controller_ip ? {
                 undef   => $::ipaddress_eth0,
                 default => $nova_controller_ip,
@@ -209,21 +209,21 @@ class role::nova::config::eqiad inherits role::nova::config::common {
         flat_network_bridge => 'br1102',
         network_public_interface => 'eth0',
         network_host => $::realm ? {
-            'production' => '10.64.20.13',
+            'production' => hiera('labs_nova_network_ip'),
             'labs'       => $nova_network_hostname ? {
                 undef   => $::ipaddress_eth0,
                 default => $nova_network_hostname,
             }
         },
         api_host => $::realm ? {
-            'production' => 'labnet1001.eqiad.wmnet',
+            'production' => hiera('labs_nova_api_host'),
             'labs'       => $nova_controller_hostname ? {
                 undef   => $::ipaddress_eth0,
                 default => $nova_controller_hostname,
             }
         },
         api_ip => $::realm ? {
-            'production' => '10.64.20.13',
+            'production' => ipresolve(hiera('labs_nova_api_host'),4),
             'labs'       => $nova_controller_ip ? {
                 undef   => $::ipaddress_eth0,
                 default => $nova_controller_ip,
@@ -264,7 +264,7 @@ class role::nova::config::eqiad inherits role::nova::config::common {
         keystone_auth_protocol => $keystoneconfig['auth_protocol'],
         keystone_auth_port     => $keystoneconfig['auth_port'],
     }
-    if ( $::hostname == 'labnet1001' ) {
+    if ( $::hostname == hiera('labs_nova_network_host') ) {
         $networkconfig = {
             network_flat_interface =>  'eth1.1102',
             network_flat_tagged_base_interface => 'eth1',
