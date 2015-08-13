@@ -17,6 +17,7 @@ import re
 import os
 import argparse
 import yaml
+import copy
 from subprocess import call
 from collections import OrderedDict
 
@@ -308,7 +309,7 @@ class role::%(name)s {
         config = ordered_load(data)
         groups = config['groups']
         # Get a suggested gid
-        tmp = groups
+        tmp = copy.copy(groups)
         # Temporarily drop groups without gid
         for k, v in tmp.items():
             if 'gid' not in v:
