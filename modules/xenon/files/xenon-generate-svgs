@@ -7,7 +7,7 @@ for log in /srv/xenon/**/*.log; do
     time="$(basename "$log" ".log")"
     title="MediaWiki - ${period} - ${time/_/ }"
     svg="${log//log/svg}z"
-    rsvg="${svg//.svgz$/.reversed.svgz}"
+    rsvg="${svg//.svgz/.reversed.svgz}"
     mkdir -m0755 -p "$(dirname $svg)"
     [ ! -f "$svg" -o "$svg" -ot "$log" ] && {
         echo "Generating ${svg}..."
