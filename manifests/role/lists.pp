@@ -169,12 +169,20 @@ class role::lists::migration {
         srange => '208.80.154.61/32',
     }
 
+    file { '/var/lib/mailman/import':
+        ensure => 'directory',
+    }
+
     include rsync::server
 
     rsync::server::module { 'lists':
-        path        => '/var/lib/mailman',
+        path        => '/var/lib/mailman/import',
         read_only   => 'no',
         hosts_allow => '208.80.154.61',
+    }
+
+    package { 'mailman':
+        ensure => 'present',
     }
 
 }
