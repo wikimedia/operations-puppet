@@ -40,6 +40,8 @@ class openstack::openstack-manager(
         }
     }
 
+    include ::mediawiki::multimedia
+
     $webserver_hostname = $::realm ? {
         'production' => 'wikitech.wikimedia.org',
         default      => $controller_hostname,
