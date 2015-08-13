@@ -3,6 +3,7 @@ class role::mediawiki::webserver($pool) {
     include ::apache::monitoring
     include ::mediawiki::web
     include ::mediawiki::web::sites
+    include ::mediawiki::packages::fonts
     # FIXME: These should all be merged into the generic sites class!
     if $::realm == 'labs' {
         include ::mediawiki::web::beta_sites
