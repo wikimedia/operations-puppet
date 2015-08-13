@@ -18,6 +18,10 @@
 #   node service configuration directives. If none is provided, we
 #   assume the config  can be built from a template in a standard location
 #
+# [*no_workers*]
+#   Number of workers to start. Default: 'ncpu' (i.e. start as many workers as
+#   there are CPUs)
+#
 # [*no_file*]
 #   Number of maximum allowed open files for the service, to be set by
 #   ulimit. Default: 10000
@@ -53,6 +57,7 @@
 #
 define service::node( $port,
                       $config = undef,
+                      $no_workers = 'ncpu',
                       $no_file = 10000,
                       $healthcheck_url='/_info',
                       $has_spec = false,
