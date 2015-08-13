@@ -127,14 +127,6 @@ sub vcl_fetch {
 }
 
 sub vcl_error {
-	// Support mobile redirects
-	if (obj.status == 666) {
-		set obj.http.Location = obj.response;
-		set obj.status = 302;
-		set obj.http.Connection = "keep-alive";
-		return (deliver);
-	}
-
 	call errorpage;
 	return (deliver);
 }
