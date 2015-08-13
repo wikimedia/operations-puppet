@@ -32,6 +32,9 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
         rule => "proto tcp dport ${gmond_port} { saddr \$ALL_NETWORKS ACCEPT; }",
     }
 
+    # Run these instances in the foreground
+    $daemonize = "no"
+
     file { "/etc/ganglia/aggregators/${id}.conf":
         ensure  => $ensure,
         require => File['/etc/ganglia/aggregators'],

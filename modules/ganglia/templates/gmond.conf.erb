@@ -3,7 +3,7 @@
 /* This configuration is as close to 2.5.x default behavior as possible
    The values closely match ./gmond/metric.h definitions in 2.5.x */
 globals {
-  daemonize = yes
+  daemonize = <% if @daemonize %><%= @daemonize %><% else %>yes<% end %>
   setuid = yes
   user = ganglia
   debug_level = 0
