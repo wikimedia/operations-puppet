@@ -64,6 +64,7 @@ class TimeLog(object):
     def prune_files(self):
         files = {}
         for file in os.listdir(self.path):
+            file = os.path.join(self.path, file)
             try:
                 files[file] = os.path.getctime(file)
             except ValueError:
@@ -71,7 +72,7 @@ class TimeLog(object):
         files = list(sorted(files, key=files.get, reverse=True))
         for file in files[self.retain:]:
             try:
-                os.remove(os.path.join(self.path, file))
+                os.remove(file)
             except OSError:
                 continue
 
