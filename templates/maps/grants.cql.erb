@@ -1,6 +1,6 @@
 -- Cassandra grants for maps
-CREATE USER kartotherian  WITH PASSWORD '<%= @cassadra_kartotherian_pass %>';
-CREATE USER tilerator  WITH PASSWORD '<%= @cassadra_tilerator_pass %>';
+CREATE USER kartotherian  WITH PASSWORD '<%= @cassandra_kartotherian_pass %>';
+CREATE USER tilerator  WITH PASSWORD '<%= @cassandra_tilerator_pass %>';
 
 -- First revoking all permissions to maintain consistency
 REVOKE ALL PERMISSIONS ON ALL KEYSPACES FROM kartotherian;
