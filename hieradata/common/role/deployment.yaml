@@ -109,3 +109,4 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/operations/software/logstash/plugins
   mobileapps/deploy:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/mobileapps/deploy
+    checkout_submodules: true
