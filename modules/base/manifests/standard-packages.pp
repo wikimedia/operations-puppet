@@ -4,7 +4,10 @@ class base::standard-packages {
         package { [ "linux-tools-${::kernelrelease}", 'linux-tools-generic' ]:
             ensure => present,
         }
+    }
 
+    package { 'command-not-found':
+        ensure => absent,
     }
 
     $packages = [
