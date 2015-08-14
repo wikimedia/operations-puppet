@@ -218,12 +218,14 @@
 
 class cassandra(
     $cluster_name                     = 'Test Cluster',
+    $instances                        = undef,
     $seeds                            = [$::ipaddress],
     $num_tokens                       = 256,
     $authenticator                    = true,
     $authorizor                       = true,
     $data_file_directories            = ['/var/lib/cassandra/data'],
     $commitlog_directory              = '/var/lib/cassandra/commitlog',
+    $heapdump_directory               = '/var/lib/cassandra',
     $disk_failure_policy              = 'stop',
     $row_cache_size_in_mb             = 200,
     $memory_allocator                 = 'JEMallocAllocator',
@@ -267,6 +269,9 @@ class cassandra(
     $yaml_template                    = "${module}/cassandra.yaml.erb",
     $env_template                     = "${module}/cassandra-env.sh.erb",
     $rackdc_template                  = "${module}/cassandra-rackdc.properties.erb",
+
+    $logstash_host                    = 'logstash1003.eqiad.wmnet',
+    $logstash_port                    = 11514,
 ) {
     validate_string($cluster_name)
 
@@ -292,6 +297,12 @@ class cassandra(
 
     validate_array($additional_jvm_opts)
     validate_array($extra_classpath)
+
+    validate_string($logstash_host)
+    # lint:ignore:only_variable_string
+    validate_re("${logstash_port}", '^[0-9]+$')
+    # lint:endignore
+
 
     if (!is_integer($jmx_port)) {
         fail('jmx_port must be a port number between 1 and 65535')
@@ -329,7 +340,6 @@ class cassandra(
         fail('data_file_directories must not be empty')
     }
 
-
     # Choose real authenticator and authorizor values
     $authenticator_value = $authenticator ? {
         true    => 'PasswordAuthenticator',
@@ -359,133 +369,50 @@ class cassandra(
         }
     }
 
-    file { $data_file_directories:
-        ensure  => directory,
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0750',
-        require => Package['cassandra'],
+    if $instances {
+        $instance_names = keys($instances)
+        cassandra::instance{ $instance_names: }
+        service { 'cassandra':
+            ensure => stopped
+        }
+    } else {
+        $all_instances = { "default" => {
+            "jmx_port"       => $jmx_port,
+            "listen_address" => $listen_address,
+            "rpc_address"    => $rpc_address,
+        }}
+        cassandra::instance{ "default":
+            instances => $all_instances,
+        }
     }
 
-    file { $commitlog_directory:
-        ensure  => directory,
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0750',
-        require => Package['cassandra'],
-    }
-
-    file { $saved_caches_directory:
-        ensure  => directory,
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0750',
-        require => Package['cassandra'],
-    }
-
-    file { '/etc/cassandra/cassandra-env.sh':
-        content => template("${module_name}/cassandra-env.sh.erb"),
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0444',
-    }
-
-    file { '/etc/cassandra/cassandra.yaml':
-        content => template("${module_name}/cassandra.yaml.erb"),
+    file { "/etc/cassandra.in.sh":
+        ensure  => present,
+        source  => "puppet:///modules/${module_name}/cassandra.in.sh",
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
         require => Package['cassandra'],
     }
 
-    file { '/etc/cassandra/cqlshrc':
-        content => template("${module_name}/cqlshrc.erb"),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
+    # nodetool wrapper to handle multiple instances, for each instance there
+    # will be symlinks from /usr/local/bin/nodetool-<INSTANCE_NAME> to
+    # nodetool-instance
+    file { "/usr/local/bin/nodetool-instance":
+        ensure  => present,
+        source  => "puppet:///modules/${module_name}/nodetool-instance",
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0555',
         require => Package['cassandra'],
     }
 
-    if $application_username != undef {
-        file { '/etc/cassandra/adduser.cql':
-            content => template("${module_name}/adduser.cql.erb"),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0400',
-            require => Package['cassandra'],
-        }
-    }
-
-    if ($tls_cluster_name) {
-        file { '/etc/cassandra/tls':
-            ensure  => directory,
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
-            require => Package['cassandra'],
-        }
-
-        file { '/etc/cassandra/tls/server.key':
-            content => secret("cassandra/${tls_cluster_name}/${hostname}/${hostname}.kst"),
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
-            require => File['/etc/cassandra/tls'],
-        }
-
-        file { '/etc/cassandra/tls/server.trust':
-            content => secret("cassandra/${tls_cluster_name}/truststore"),
-            owner   => 'cassandra',
-            group   => 'cassandra',
-            mode    => '0400',
-            require => File['/etc/cassandra/tls'],
-        }
-    }
-
-    file { '/etc/default/cassandra':
-        content => template("${module_name}/cassandra.default.erb"),
+    file { "/etc/tmpfiles.d/cassandra.conf":
+        ensure  => present,
+        source  => "puppet:///modules/${module_name}/cassandra-tmpfiles.conf",
         owner   => 'cassandra',
         group   => 'cassandra',
         mode    => '0444',
         require => Package['cassandra'],
-    }
-
-    # cassandra-rackdc.properties is used by the
-    # GossipingPropertyFileSnitch.  Only render
-    # it if we are using that endpoint_snitch.
-    $rackdc_properties_ensure = $endpoint_snitch ? {
-        'GossipingPropertyFileSnitch' => file,
-        default                       => 'absent',
-    }
-    file { '/etc/cassandra/cassandra-rackdc.properties':
-        ensure  => $rackdc_properties_ensure,
-        content => template("${module_name}/cassandra-rackdc.properties.erb"),
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0444',
-        require => Package['cassandra'],
-    }
-
-    # This Puppet module does not support
-    # PropertyFileSnitch, which uses these files.
-    file { ['/etc/cassandra/cassandra-topology.properties', '/etc/cassandra/cassandra-topology.yaml']:
-        ensure => 'absent',
-    }
-
-    service { 'cassandra':
-        ensure     => 'running',
-        enable     => true,
-        hasstatus  => true,
-        hasrestart => true,
-        # This module does not subscribe to its config files,
-        # as we would like to manage service restarts manually.
-        require    => [
-            File[$data_file_directories],
-            File['/etc/cassandra/cassandra-env.sh'],
-            File['/etc/cassandra/cassandra.yaml'],
-            File['/etc/cassandra/cassandra-rackdc.properties'],
-            File['/etc/cassandra/cassandra-topology.properties'],
-            File['/etc/cassandra/cassandra-topology.yaml'],
-        ],
     }
 }
