@@ -59,7 +59,7 @@ define git::install(
         directory => $directory,
         owner     => $owner,
         group     => $group,
-        mode      => '0444',
+        mode      => '0755',
     }
 
     if $ensure == 'present' {
