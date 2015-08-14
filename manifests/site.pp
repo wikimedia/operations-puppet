@@ -2157,6 +2157,13 @@ node /^restbase100[1-9]\.eqiad\.wmnet$/ {
     include standard
 }
 
+# analytics restbase eqiad cluster
+node /^restbase-analytics100[1-2]\.eqiad\.wmnet$/ {
+    role restbase-analytics, cassandra-analytics
+    include base::firewall
+    include standard
+}
+
 # network insights (netflow/pmacct, etc.)
 node 'rhenium.wikimedia.org' {
     role pmacct
