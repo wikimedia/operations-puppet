@@ -26,13 +26,6 @@ class cassandra::logging(
     validate_re("${logstash_port}", '^[0-9]+$')
     # lint:endignore
 
-    file { '/etc/cassandra/logback.xml':
-        content => template("${module_name}/logback.xml.erb"),
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0444',
-    }
-
     package { 'cassandra/logstash-logback-encoder':
         ensure   => present,
         provider => 'trebuchet',
