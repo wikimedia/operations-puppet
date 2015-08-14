@@ -47,8 +47,8 @@ def start_web_job(server, release):
     :param server: Server type to start job as. Current options are lighttpd and tomcat
     """
     command = ['qsub',
-               '-e', '%s/error.log' % HOME,
-               '-o', '%s/error.log' % HOME,
+               '-e', ERROR_LOG_FILE,
+               '-o', ERROR_LOG_FILE,
                '-i', '/dev/null',
                '-q', get_queue_name(server),
                '-l', 'h_vmem=%s,release=%s' % (MEMLIMIT, release),
@@ -139,12 +139,20 @@ PREFIX = read_file('/etc/wmflabs-project', 'tools').strip()  # project name
 pwd_entry = pwd.getpwuid(os.getuid())
 USER = pwd_entry.pw_name
 HOME = pwd_entry.pw_dir
+ERROR_LOG_FILE = '%s/error.log' % HOME
 
 # Ensure that we are indeed a tool.
 if not USER.startswith(PREFIX + '.'):
     sys.stderr.write('Only tool accounts have web services.\n')
     sys.exit(1)
 TOOL = USER[len(PREFIX) + 1:]
+
+# Ensure that SGE will be able to write to ~/error.log.
+# Theoretically, this is only needed when starting and restarting a
+# web service, but it doesn't hurt to enforce it at all times.
+if not os.access(ERROR_LOG_FILE, os.W_OK):
+    sys.stderr.write('The log file %s is not writable.\n' % ERROR_LOG_FILE)
+    sys.exit(1)
 
 # Read memlimit customizations for individual tools, set by
 # admins for tools that require more than usual memory limits.
