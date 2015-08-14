@@ -67,7 +67,7 @@ class puppet_compiler(
     # Install the compiler
     exec { 'install compiler':
         command     => '/usr/bin/python setup.py install',
-        owner       => $user,
+        user        => $user,
         cwd         => $compiler_dir,
         refreshonly => true,
     }
