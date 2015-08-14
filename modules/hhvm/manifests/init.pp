@@ -70,7 +70,7 @@ class hhvm(
         ensure => present,
     }
 
-    package { [ 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]:
+    package { [ 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]:
         ensure => present,
     }
 
@@ -223,7 +223,7 @@ class hhvm(
     service { 'hhvm':
         ensure    => 'running',
         provider  => 'upstart',
-        subscribe => Package['hhvm', 'hhvm-luasandbox', 'hhvm-wikidiff2'],
+        subscribe => Package['hhvm', 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-wikidiff2'],
     }
 
     file { '/etc/hhvm':
