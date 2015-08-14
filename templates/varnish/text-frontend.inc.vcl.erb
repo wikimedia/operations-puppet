@@ -220,4 +220,10 @@ sub vcl_deliver {
 	}
 
 	call analytics_last_access_deliver;
+
+	// For any request Host ending in "wikidata.org", if we see a double-value for the CA token, try to delete the one at .wikidata.org.
+	if(req.http.Host ~ "(?i)(^|\.)wikidata\.org$" && req.http.Cookie ~ "centralauth_Token.*centralauth_Token") {
+		// The exact format of the cookie-delete string is copied from examples of normal CA cookie deletes (e.g. for logouts?) seen in traffic logs
+		header.append(resp.http.Set-Cookie, "centralauth_Token=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.wikidata.org; secure; httponly");
+	}
 }
