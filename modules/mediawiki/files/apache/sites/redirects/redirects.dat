@@ -478,11 +478,6 @@ override	*careers.wikipedia.org/	//wikimediafoundation.org/wiki/Work_with_us
 override	*jobs.wikimedia.org/	//wikimediafoundation.org/wiki/Work_with_us
 override	*jobs.wikipedia.org/	//wikimediafoundation.org/wiki/Work_with_us
 
-# mobile redirects for commonly-used domains
-funnel	mobile.wikipedia.org	//m.wikipedia.org
-rewrite	*.mobile.wikipedia.org	//*.m.wikipedia.org
-rewrite	*.wap.wikipedia.org	//*.m.wikipedia.org
-
 # pywikipedia.org (T60803).
 funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
 
