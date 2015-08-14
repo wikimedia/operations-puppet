@@ -38,12 +38,14 @@ class role::cassandra {
         port   => '7000',
         srange => "@resolve(($cassandra_hosts_ferm))",
     }
+
     # Cassandra JMX/RMI
     ferm::service { 'cassandra-jmx-rmi':
         proto  => 'tcp',
-        port   => '7199',
+        port   => '7199:7202',
         srange => "@resolve(($cassandra_hosts_ferm))",
     }
+
     # Cassandra CQL query interface
     ferm::service { 'cassandra-cql':
         proto  => 'tcp',
