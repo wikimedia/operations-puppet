@@ -8,7 +8,9 @@ class puppet_compiler::setup($vardir, $user, $homedir) {
         command => "/usr/bin/puppet master --compile test --vardir ${vardir}",
         creates => "${vardir}/yaml",
         user    => $user,
-        require => File[$vardir]
+        cwd         => $homedir,
+        environment => "HOME=${homedir}",
+        require => File[$vardir],
     }
 
     # Create the ssl directory, and the puppet ca
@@ -16,6 +18,8 @@ class puppet_compiler::setup($vardir, $user, $homedir) {
         command => "/usr/bin/puppet cert --ssldir ${vardir}/ssl --vardir ${vardir} list -a",
         creates => "${vardir}/ssl/ca/inventory.txt",
         user    => $user,
+        user        => $user,
+        cwd         => $homedir,
         require => Exec['create puppet directories'],
     }
 
@@ -24,7 +28,8 @@ class puppet_compiler::setup($vardir, $user, $homedir) {
         command     => "/usr/bin/puppet module install zack-catalog_diff",
         creates     => "${homedir}/.puppet/modules/catalog_diff",
         user        => $user,
-        environment => "HOME=${homedir}"
+        cwd         => $homedir,
+        environment => "HOME=${homedir}",
     }
 
 }
