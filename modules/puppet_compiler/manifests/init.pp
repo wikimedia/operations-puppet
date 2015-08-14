@@ -1,105 +1,81 @@
 # Installs the puppet compiler and all the other software we need.
 class puppet_compiler(
-    $version = '0.1.0',
-    $rootdir = '/opt/wmf',
+    $version = '0.0.1',
+    $workdir = '/mnt/jenkins-workspace/puppet-compiler',
+    $libdir  = '/var/lib/catalog-differ',
     $ensure  = 'present',
-    $user    = 'www-data'
-    ) {
+    $user    = 'jenkins-deploy',
+    $homedir = '/mnt/home/jenkins-deploy',
+) {
 
-    include puppet_compiler::packages
+    require puppet_compiler::packages
 
-    $install_dir = "${rootdir}/software"
-    $program_dir = "${install_dir}/compare-puppet-catalogs"
-    $puppetdir   = "${program_dir}/external/puppet"
+    $vardir = "${libdir}/puppet"
 
-    nginx::site {'puppet-compiler':
-        ensure  => $ensure,
-        content => template('puppet_compiler/nginx_site.erb'),
+    file { [$libdir, $vardir]:
+        ensure => ensure_directory($ensure),
+        owner  => $user,
+        mode   => '0755',
     }
 
-    file_line { 'modify_nginx_magic_types':
-        path    => '/etc/nginx/mime.types',
-        line    => "\ttext/plain\t\t\t\ttxt pson warnings out diff formatted;",
-        match   => "\ttext/plain\t\t\t\ttxt",
-        require => Nginx::Site['puppet-compiler'],
-        notify  => Service['nginx']
-    }
-
-    # This wrapper defines the env variables for running.
-    file { 'run_wrapper':
-        ensure  => $ensure,
-        path    => '/usr/local/bin/puppet-compiler',
-        content => template('puppet_compiler/run_wrapper.erb'),
-        mode    => '0555'
-    }
-
-
-    if $ensure != 'present' {
-        file { 'root_dir':
-            ensure  => absent,
-            path    => $rootdir,
-            owner   => $user,
-            recurse => true,
-            force   => true,
-        }
-    } else {
-        file { 'root_dir':
-            ensure => directory,
-            path   => $rootdir,
-            owner  => $user,
-            before => Git::Install['operations/software'],
-        }
-
-        git::install { 'operations/software':
-            ensure    => present,
-            directory => $install_dir,
-            owner     => $user,
-            git_tag   => "compare-puppet-catalogs-${version}",
-            require   => Nginx::Site['puppet-compiler'],
-        }
-
-        exec { 'install_puppet_compare_requirements':
-            command => '/usr/bin/pip install requests simplediff',
-            user    => 'root',
-            require => Git::Install['operations/software'],
-        }
-
-        puppet_compiler::bundle {['3']: }
-
-        # Now install the puppet repo
-
-        exec { 'install_puppet_repositories':
-            command => "${program_dir}/shell/helper install",
+    if $ensure == 'present' {
+        class { 'puppet_compiler::setup':
             user    => $user,
-            creates => $puppetdir,
-            require => Git::Install['operations/software'],
-            notify  => Class['puppet_compiler::differ']
+            vardir  => $vardir,
+            homedir => $homedir,
         }
+    }
 
-        class { '::puppetmaster::scripts':
-            require => Exec['install_puppet_repositories']
-        }
+    # We don't really need sshknowngen and naggen, link them to /bin/true
+    file { ['/usr/local/bin/sshknowngen', '/usr/local/bin/naggen2']:
+        ensure => ensure_link($ensure),
+        target => '/bin/true',
+    }
 
-        class { 'puppet_compiler::differ':
-            require => [Exec['install_puppet_repositories'],Class['::puppetmaster::scripts']]
-        }
+    include ::puppet_compiler::web
 
-        file {[ "${program_dir}/output",
-                "${program_dir}/output/html",
-                "${program_dir}/output/diff",
-                "${program_dir}/output/compiled",
-            ]:
-            ensure  => directory,
-            owner   => $user,
-            mode    => '0775',
-            require => Exec['install_puppet_repositories']
-        }
+    ## Git cloning
 
-        $mysql_query = template('puppet_compiler/mysql_queries.erb')
-        exec { 'mysql queries':
-            command => "/usr/bin/mysql -NBe ${mysql_query}",
-            unless  => "/usr/bin/mysql puppet -NBe 'SELECT 1' ",
-            require => Package['mysql-server']
-        }
+    # Git clone of the puppet repo
+    git::clone { 'operations/puppet':
+        ensure    => $ensure,
+        directory => "${libdir}/puppet",
+        owner     => $user,
+        mode      => '0755',
+        require   => File[$libdir],
+    }
+
+    # Git clone labs/private
+    git::clone { 'labs/puppet':
+        ensure    => $ensure,
+        directory => "${libdir}/puppet",
+        owner     => $user,
+        mode      => '0755',
+        require   => File[$libdir],
+    }
+
+    $compiler_dir = "${libdir}/compiler"
+    # Git clone the puppet compiler, install it
+    git::install { 'operations/software/puppet-compiler':
+        ensure    => $ensure,
+        git_tag   => $version,
+        directory => $compiler_dir,
+        owner     => $user,
+        notify    => Exec['install compiler']
+    }
+
+    # Install the compiler
+    exec { 'install compiler':
+        command     => '/usr/bin/python setup.py install',
+        owner       => $user,
+        cwd         => $compiler_dir,
+        refreshonly => true,
+    }
+
+    # configuration file
+    file { '/etc/puppet-compiler.conf':
+        ensure  => $ensure,
+        owner   => $user,
+        content => template('puppet_compiler/puppet-compiler.conf.erb')
     }
 }
