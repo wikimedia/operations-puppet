@@ -1,0 +1,124 @@
+# == Class role::restbase
+#
+
+@monitoring::group { 'restbase_analytics_eqiad': description => 'Analytics Restbase eqiad' }
+@monitoring::group { 'restbase_analytics_codfw': description => 'Analytics Restbase codfw' }
+
+# Config should be pulled from hiera
+class role::analytics::restbase {
+    system::role { 'restbase-analytics': description => "Analytics Restbase ${::realm}" }
+
+    include ::restbase
+    include ::restbase::monitoring
+
+    include lvs::realserver
+
+
+    ferm::service {'restbase_web':
+        proto => 'tcp',
+        port  => '7231',
+    }
+
+}
+
+class role::restbase::alerts {
+    monitoring::graphite_threshold { 'restbase_analytics_request_5xx_rate':
+        description   => 'Analytics RESTBase req/s returning 5xx http://grafana.wikimedia.org/#/dashboard/db/restbase',
+        metric        => 'transformNull(restbase.v1_page_html_-title-_-revision--_tid-.GET.5xx.sample_rate, 0)',
+        from          => '10min',
+        warning       => '1', # 1 5xx/s
+        critical      => '3', # 5 5xx/s
+        percentage    => '20',
+        contact_group => 'team-analytics',
+    }
+
+    monitoring::graphite_threshold { 'restbase_analytics_html_storage_hit_latency':
+        description   => 'Analytics RESTBase HTML storage load mean latency ms http://grafana.wikimedia.org/#/dashboard/db/restbase',
+        metric        => 'movingMedian(restbase.sys_key-rev-value_-bucket-_-key--_revision--_tid-.GET.2xx.mean, 15)',
+        from          => '10min',
+        warning       => '25', # 25ms
+        critical      => '50', # 50ms
+        percentage    => '50',
+        contact_group => 'team-analytics',
+    }
+
+    monitoring::graphite_threshold { 'restbase_analytics_html_storage_hit_latency_99p':
+        description   => 'Analytics RESTBase HTML storage load 99p latency ms http://grafana.wikimedia.org/#/dashboard/db/restbase',
+        metric        => 'movingMedian(restbase.sys_key-rev-value_-bucket-_-key--_revision--_tid-.GET.2xx.p99, 15)',
+        from          => '10min',
+        warning       => '1500', # 1.5s
+        critical      => '3000', # 3s
+        percentage    => '50',
+        contact_group => 'team-analytics',
+    }
+
+    monitoring::graphite_threshold { 'restbase_analytics_cassandra_highest_storage_exceptions':
+        description   => 'Analytics RESTBase Cassandra highest storage exceptions http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-storage',
+        metric        => 'highestMax(nonNegativeDerivative(cassandra.restbase10*.org.apache.cassandra.metrics.Storage.Exceptions.count), 1)',
+        from          => '10min',
+        warning       => '5',
+        critical      => '10',
+        percentage    => '50',
+        contact_group => 'team-analytics',
+    }
+
+    monitoring::graphite_threshold { 'restbase_analytics_cassandra_highest_total_hints':
+        description   => 'Analytics RESTBase Cassandra highest total hints http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-storage',
+        metric        => 'highestMax(nonNegativeDerivative(cassandra.restbase10*.org.apache.cassandra.metrics.Storage.TotalHints.count), 1)',
+        from          => '10min',
+        warning       => '600',
+        critical      => '1000',
+        percentage    => '50',
+        contact_group => 'team-analytics',
+    }
+
+    monitoring::graphite_threshold { 'restbase_analytics_cassandra_highest_pending_compactions':
+        description   => 'Analytics RESTBase Cassandra highest pending compactions http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-compaction',
+        metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.Compaction.PendingTasks.value, 1)',
+        from          => '60min',
+        warning       => '100',
+        critical      => '400',
+        percentage    => '50',
+        contact_group => 'team-analytics',
+    }
+
+    monitoring::graphite_threshold { 'restbase_analytics_cassandra_highest_sstables_per_read':
+        description   => 'Analytics RESTBase Cassandra highest SSTables per-read http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-cf-sstables-per-read',
+        metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.ColumnFamily.all.SSTablesPerReadHistogram.99percentile, 1)',
+        from          => '10min',
+        warning       => '6',
+        critical      => '10',
+        percentage    => '50',
+        contact_group => 'team-analytics',
+    }
+
+    monitoring::graphite_threshold { 'restbase_analytics_cassandra_highest_tombstones_scanned':
+        description   => 'Analytics RESTBase Cassandra highest tombstones scanned http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-cf-tombstones-scanned',
+        metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.ColumnFamily.all.TombstoneScannedHistogram.99percentile, 1)',
+        from          => '10min',
+        warning       => '1000',
+        critical      => '1500',
+        percentage    => '50',
+        contact_group => 'team-analytics',
+    }
+
+    monitoring::graphite_threshold { 'restbase_analytics_cassandra_highest_pending_internal':
+        description   => 'Analytics RESTBase Cassandra highest pending internal thread pool tasks http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-thread-pools',
+        metric        => 'highestMax(exclude(cassandra.restbase10*.org.apache.cassandra.metrics.ThreadPools.internal.*.PendingTasks.value, "CompactionExecutor"), 1)',
+        from          => '10min',
+        warning       => '500',
+        critical      => '1000',
+        percentage    => '50',
+        contact_group => 'team-analytics',
+    }
+
+    monitoring::graphite_threshold { 'restbase_analytics_cassandra_highest_dropped_messages':
+        description   => 'Analytics RESTBase Cassandra highest dropped message rate http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-dropped-messages',
+        metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.DroppedMessage.*.Dropped.1MinuteRate, 1)',
+        from          => '10min',
+        warning       => '50',
+        critical      => '100',
+        percentage    => '50',
+        contact_group => 'team-analytics',
+    }
+}
