@@ -1,0 +1,48 @@
+# Analytics Query Service
+cluster: aqs
+
+admin::groups:
+  - analytics
+
+#
+# Cassandra for AQS
+#
+cassandra::metrics::graphite_host: 'graphite-in.eqiad.wmnet'
+cassandra::start_rpc: 'false'
+
+# TODO: set up a cluster variable similar to MySQL clusters to share
+# cassandra cluster configs between cassandra & clients
+
+cassandra::seeds:
+    - aqs1001.eqiad.wmnet
+    - aqs1002.eqiad.wmnet
+    - aqs1003.eqiad.wmnet
+cassandra::max_heap_size: 16g
+# 1/4 heap size, no more than 100m/thread
+cassandra::heap_newsize: 2048m
+cassandra::compaction_throughput_mb_per_sec: 60
+cassandra::concurrent_compactors: 10
+cassandra::concurrent_writes: 18
+cassandra::concurrent_reads: 18
+
+cassandra::dc: "%{::site}"
+cassandra::cluster_name: "Analytics Query Service Cassandra at %{::site}"
+
+#
+# RESTBase for AQS
+#
+restbase::seeds:
+    - aqs1001.eqiad.wmnet
+    - aqs1002.eqiad.wmnet
+    - aqs1003.eqiad.wmnet
+restbase::config_template: restbase/config.aqs.yaml.erb
+restbase::logstash_host: logstash1001.eqiad.wmnet
+restbase::cassandra_defaultConsistency: localQuorum
+restbase::cassandra_localDc: "%{::site}"
+restbase::statsd_host: statsd.eqiad.wmnet
+restbase::parsoid_uri: undef
+restbase::graphoid_host_port: undef
+
+# TODO: Leaving with a todo until we get an LVS IP
+#lvs::realserver::realserver_ips:
+#- '10.2.2.17' # restbase-analytics.svc.eqiad.wmnet
