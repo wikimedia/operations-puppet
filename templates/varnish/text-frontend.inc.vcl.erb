@@ -221,6 +221,8 @@ sub vcl_deliver {
 
 	call analytics_last_access_deliver;
 
+	// This is a temporary hack to work around issues from T109038
+	// We should be able to remove this sometime after Sept 16, 2015, as the old CA cookies should have 30d expiry.
 	// For any request Host ending in "wikidata.org", if we see a double-value for the CA token, try to delete the one at .wikidata.org.
 	if(req.http.Host ~ "(?i)(^|\.)wikidata\.org$" && req.http.Cookie ~ "centralauth_Token.*centralauth_Token") {
 		// The exact format of the cookie-delete string is copied from examples of normal CA cookie deletes (e.g. for logouts?) seen in traffic logs
