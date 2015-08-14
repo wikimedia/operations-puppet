@@ -1,0 +1,12 @@
+#!/bin/sh
+# symlink to /usr/bin/nodetool-<instance> to address the respective cassandra
+# instance
+set -e
+set -u
+
+me=$(basename $0)
+instance=${me#*-}
+
+export CASSANDRA_INCLUDE=/etc/cassandra.in.sh
+export CASSANDRA_CONF=/etc/cassandra-${instance}
+exec nodetool "$@"
