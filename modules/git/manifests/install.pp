@@ -76,15 +76,21 @@ define git::install(
             }
         }
 
+
         exec {"git_update_${title}":
             command => '/usr/bin/git remote update && git fetch --tags',
-            creates => $lock_file,
             cwd     => $directory,
             user    => $owner,
             unless  => "git clean -df & git checkout . && git diff HEAD..${git_tag} --exit-code",
             path    => '/usr/bin/',
             require => Git::Clone[$title],
             notify  => Exec["git_checkout_${title}"],
+        }
+
+        if $lock_file {
+            Exec["git_update_${title}"] {
+                creates => $lock_file,
+            }
         }
 
         exec {"git_checkout_${title}":
