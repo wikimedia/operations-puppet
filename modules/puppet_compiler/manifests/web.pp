@@ -8,8 +8,8 @@ class puppet_compiler::web($ensure='present') {
 
     file_line { 'modify_nginx_magic_types':
         path    => '/etc/nginx/mime.types',
-        line    => "\ttext/plain\t\t\t\ttxt pson warnings out diff formatted;",
-        match   => "\ttext/plain\t\t\t\ttxt",
+        line    => "    text/plain                            txt pson err diff;",
+        match   => "\s+text/plain\s+txt",
         require => Nginx::Site['puppet-compiler'],
         notify  => Service['nginx']
     }

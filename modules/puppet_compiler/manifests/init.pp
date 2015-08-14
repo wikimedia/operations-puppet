@@ -46,7 +46,7 @@ class puppet_compiler(
     }
 
     # Git clone labs/private
-    git::clone { 'labs/puppet':
+    git::clone { 'labs/private':
         ensure    => $ensure,
         directory => "${libdir}/puppet",
         owner     => $user,
