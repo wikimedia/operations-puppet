@@ -39,7 +39,7 @@ class puppet_compiler(
     # Git clone of the puppet repo
     git::clone { 'operations/puppet':
         ensure    => $ensure,
-        directory => "${libdir}/puppet",
+        directory => "${libdir}/production",
         owner     => $user,
         mode      => '0755',
         require   => File[$libdir],
@@ -48,7 +48,7 @@ class puppet_compiler(
     # Git clone labs/private
     git::clone { 'labs/private':
         ensure    => $ensure,
-        directory => "${libdir}/puppet",
+        directory => "${libdir}/private",
         owner     => $user,
         mode      => '0755',
         require   => File[$libdir],
@@ -67,7 +67,7 @@ class puppet_compiler(
     # Install the compiler
     exec { 'install compiler':
         command     => '/usr/bin/python setup.py install',
-        user        => $user,
+        user        => 'root',
         cwd         => $compiler_dir,
         refreshonly => true,
     }
