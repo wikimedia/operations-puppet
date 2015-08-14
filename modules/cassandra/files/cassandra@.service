@@ -1,0 +1,16 @@
+[Unit]
+Description=distributed storage system for structured data
+
+[Service]
+User=cassandra
+PIDFile=/var/run/cassandra/cassandra-%i.pid
+LimitNOFILE=100000
+LimitMEMLOCK=infinity
+ExecStart=/usr/sbin/cassandra -p /var/run/cassandra/cassandra-%i.pid
+Environment="CASSANDRA_INCLUDE=/etc/cassandra.in.sh"
+Environment="CASSANDRA_CONF=/etc/cassandra-%i"
+Environment="CASSANDRA_INSTANCE=%i"
+
+[Install]
+# XXX add umbrella service or target to start/stop all instances
+WantedBy=network.target

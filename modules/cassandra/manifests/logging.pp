@@ -15,6 +15,7 @@
 # [*logstash_port*]
 #   The logstash logging server port number.
 
+# XXX is logback-tools.xml needed?
 class cassandra::logging(
     $logstash_host  = 'logstash1003.eqiad.wmnet',
     $logstash_port  = 11514,
