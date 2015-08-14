@@ -20,12 +20,21 @@
 <configuration scan="true">
   <jmxConfigurator />
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<% if @instance_name != "default" -%>
+    <file>${cassandra.logdir}/system-<%= @instance_name %>.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>${cassandra.logdir}/system-<%= @instance_name %>.log.%i.zip</fileNamePattern>
+      <minIndex>1</minIndex>
+      <maxIndex>40</maxIndex>
+    </rollingPolicy>
+<% else -%>
     <file>${cassandra.logdir}/system.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
       <fileNamePattern>${cassandra.logdir}/system.log.%i.zip</fileNamePattern>
       <minIndex>1</minIndex>
       <maxIndex>40</maxIndex>
     </rollingPolicy>
+<% end -%>
 
     <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
       <maxFileSize>50MB</maxFileSize>

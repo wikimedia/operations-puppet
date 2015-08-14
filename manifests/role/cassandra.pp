@@ -41,18 +41,22 @@ class role::cassandra {
         port   => '7000',
         srange => "@resolve(($cassandra_hosts_ferm))",
     }
+
     # Cassandra intra-node SSL messaging
     ferm::service { 'cassandra-intra-node-ssl':
         proto  => 'tcp',
         port   => '7001',
         srange => "@resolve(($cassandra_hosts_ferm))",
     }
+
     # Cassandra JMX/RMI
     ferm::service { 'cassandra-jmx-rmi':
         proto  => 'tcp',
-        port   => '7199',
+        # hardcoded limit of 4 instances per host
+        port   => '7199:7202',
         srange => "@resolve(($cassandra_hosts_ferm))",
     }
+
     # Cassandra CQL query interface
     ferm::service { 'cassandra-cql':
         proto  => 'tcp',
