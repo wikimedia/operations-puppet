@@ -19,6 +19,9 @@
     Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
     Include "sites-enabled/public-wiki-rewrites.incl"
 
+    # /api/ rewrites
+    Include "sites-enabled/api-rewrites.incl"
+
     # Math compatibility mode
     RewriteCond %{ENV:RW_PROTO} !=""
     RewriteRule ^/math/(.*) %{ENV:RW_PROTO}://upload.wikimedia.org/math/$1 [R=301]
