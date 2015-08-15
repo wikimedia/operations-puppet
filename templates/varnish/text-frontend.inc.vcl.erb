@@ -53,21 +53,6 @@ sub mobile_redirect {
 	}
 }
 
-sub filter_headers {
-	if (req.restarts == 0) {
-		unset req.http.Orig-Cookie;
-	}
-}
-
-sub filter_noise {
-	if (req.url ~ "Special:RecordImpression.*&campaign=wm2015register") {
-		error 403 "Noise";
-	}
-	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
-		error 403 "Noise";
-	}
-}
-
 sub vcl_recv {
 	call filter_headers;
 	call filter_noise;
