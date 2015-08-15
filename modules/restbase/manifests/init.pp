@@ -113,6 +113,7 @@ class restbase(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        tag     => 'restbase::config',
     }
 
     file { '/usr/lib/restbase':
