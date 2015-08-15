@@ -1,0 +1,106 @@
+#!/bin/bash
+# release_script template for service::node services
+# Copyright (C) 2015 Giuseppe Lavagetto
+#
+# This script is supposed to be run locally on one server
+# and do the release procedure and exit with an exit code of 0,1, or 2
+# depending on the result of the release of the code.
+#
+# This can be useful when deploying services, to be sure a rolling restart
+# happens only after the code has been fully and correctly deployed to
+# each node.
+#
+# What this script does:
+# - executes a tagged puppet run that should only touch the config file,
+#   refreshing it if needed
+# - Releases the code at the desired git ref
+# - Restarts the service
+# - Checks the health of the service until it is ok
+# If more than 10 attempts to check the health fail, we bail out and declare
+# this a failure.
+#
+# This script is local to the server and needs the deployer just to be able to:
+# - do a tagged puppet run as the sudo user
+# - restart the service (via sudo)
+# - deploy the code in git
+set -u
+set -e
+# Maximum number of retries of the health check before declaring failure
+MAX_RETRIES=10
+# Seconds to wait between retries
+SLEEP_INTERVAL=5
+
+# Code directory
+REL_CODE_DIR="<%= @release_dir %>"
+
+# Provider of the code, for now only 'git' is supported.
+REL_PROVIDER="<%= @provider %>"
+
+# Url to pass to the monitoring system
+MONITOR_URL="<%= @monitor_url %>"
+
+# TODO: correctly parse command-line args
+REL_GIT_REF=${1}
+REL_CUR_GIT_REF=""
+
+function log {
+    echo $@
+}
+
+function puppet {
+    # Performs a tagged puppet run
+    log "Performing a puppet tagged run"
+    while sudo test -f /var/lib/puppet/state/agent_catalog_run.lock;
+    do
+        log "Detected a puppet run already happening, sleeping for 5 seconds"
+        sleep 5;
+    done
+
+    # We can't use -t because --detailed-exitcodes is harmful to us
+    if ! sudo puppet agent --onetime --no-daemonize --ignorecache --no-usecacheonfailure --verbose --no-splay --tags '<%= @service %>::release' 2>&1 > /dev/null;
+    then
+        log "Puppet run failed, check your puppet catalog for errors"
+        exit 1
+    else
+        log "Puppet ran successfully, everything should be up to date"
+    fi
+}
+
+function deploy_git {
+    pushd ${REL_CODE_DIR}
+    log "Refreshing the git repository"
+    REL_CUR_GIT_REF=$(git rev-parse HEAD)
+    git remote update
+    git checkout $GIT_REF
+    popd
+}
+
+function restart_service {
+    log "Restarting service <%= @service %>"
+<% if scope.lookupvar('::initsystem') == 'systemd' -%>
+    sudo systemctl restart <%= @service %>
+<%- else -%>
+    sudo restart <%= @service %>
+<%- end -%>
+}
+
+function check_service_health {
+    RETRIES=0
+    log "Waiting for the service to come up; checks will be run every 5 seconds"
+    while ! /usr/local/lib/nagios/plugins/service_checker -t 5 <%= @ipaddress %> "<%= @monitor_url %>";
+    do
+        RETRIES=$((RETRIES + 1))
+        if [ $RETRIES -gt $MAX_RETRIES ];
+        then
+            log "Too many failures, bailing out"
+            exit 2
+        fi
+        log "Health check failed, trying again in 5 seconds"
+        sleep $SLEEP_INTERVAL
+    done
+}
+
+deploy_${PROVIDER}
+puppet
+<% unless @has_autorestart %>restart service<% end %>
+check_service_health
