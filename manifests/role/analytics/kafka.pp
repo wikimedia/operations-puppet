@@ -151,6 +151,13 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         # This will be used for eventlogging-kafka
         # (Disable this until we are ready for eventlogging-kafka).
         auto_create_topics_enable       => false,
+
+        # (Temporarily?) disable auto leader rebalance.
+        # I am having issues with analytics1012, and I can't
+        # get Camus to consume properly for its preferred partitions
+        # if it is online and the leader.  - otto
+        auto_leader_rebalance_enable    => false,
+
         default_replication_factor      => min(3, size($brokers_array)),
         # Start with a low number of (auto created) partitions per
         # topic.  This can be increased manually for high volume
