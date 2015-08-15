@@ -55,13 +55,14 @@
 #        },
 #    }
 #
-define service::node( $port,
-                      $config = undef,
-                      $no_workers = 'ncpu',
-                      $no_file = 10000,
-                      $healthcheck_url='/_info',
-                      $has_spec = false,
-) {
+define service::node(
+    $port,
+    $config = undef,
+    $no_workers = 'ncpu',
+    $no_file = 10000,
+    $healthcheck_url='/_info',
+    $has_spec = false,
+    ) {
     # Import all common configuration
     include service::configuration
 
@@ -120,12 +121,12 @@ define service::node( $port,
         ensure  => present,
         content => merge_config(
             template('service/node/config.yaml.erb'),
-            $local_config
-            ),
+            $local_config),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         notify  => Service[$title],
+        tag     => "${title}::config",
     }
 
     file { $local_logdir:
@@ -171,6 +172,11 @@ define service::node( $port,
             description  => "${title} endpoints health",
             nrpe_command => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
             subscribe    => File['/usr/local/lib/nagios/plugins/service_checker'],
+        }
+        # we also support smart-releases
+        service::deployment_script { $name:
+            monitor_url     => $monitor_url,
+            has_autorestart => true,
         }
     } else {
         # Basic monitoring
