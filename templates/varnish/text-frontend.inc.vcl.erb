@@ -72,12 +72,12 @@ sub vcl_recv {
 	call filter_headers;
 	call filter_noise;
 
-	// Allow purging
-	call vcl_recv_purge;
-
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
 	// Disable Range requests for now.
 	unset req.http.Range;
+
+	// Allow purging
+	call vcl_recv_purge;
 
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
