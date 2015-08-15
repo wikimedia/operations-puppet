@@ -81,7 +81,7 @@ sub vcl_recv {
 
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
-		if (req.url ~ "^/(event\.gif|beacon\/[^/?]+|statsv[/?])") {
+		if (req.url ~ "^/event\.gif") {
 			error 204;
 		}
 		if (req.url ~ "^/(auditcom|boardgovcom|board|chair|chapcom|checkuser|collab|donate|exec|fdc|grants|internal|movementroles|nomcom|office|otrs-wiki|searchcom|spcom|steward|wikimaniateam)\.wikimedia\.org/" && req.http.X-Forwarded-Proto != "https") {
