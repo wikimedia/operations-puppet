@@ -125,6 +125,7 @@ define service::node( $port,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        tag     => "${title}::config",
         notify  => Service[$title],
     }
 
@@ -171,6 +172,10 @@ define service::node( $port,
             description  => "${title} endpoints health",
             nrpe_command => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
             subscribe    => File['/usr/local/lib/nagios/plugins/service_checker'],
+        }
+        # we also support smart-releases
+        service::deployment_script { $name:
+            monitor_url => $monitor_url
         }
     } else {
         # Basic monitoring
