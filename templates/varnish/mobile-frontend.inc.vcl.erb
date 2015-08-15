@@ -5,6 +5,7 @@ include "zero.inc.vcl";
 include "provenance.inc.vcl";
 include "via.inc.vcl";
 include "last-access.inc.vcl";
+include "textmob-fe-common.inc.vcl";
 
 // Note that via.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
@@ -18,23 +19,8 @@ include "last-access.inc.vcl";
 // address) in X-Forwarded-For, even if it's the only value, as in
 // the example of traffic sourced directly by satellite or something.
 
-
-sub filter_noise {
-	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
-		error 403 "Noise";
-	}
-
-	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
-	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
-		error 403 "Noise";
-	}
-
-	if (req.http.referer && req.http.referer ~ "^http://(www\.(keeprefreshing|refreshthis|refresh-page|urlreload)\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.lazywebtools\.co\.uk)/") {
-		error 403 "Noise";
-	}
-}
-
 sub vcl_recv {
+	call filter_headers;
 	call filter_noise;
 
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.

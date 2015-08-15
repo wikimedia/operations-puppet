@@ -8,6 +8,13 @@ class varnish::common::vcl {
         content => template('varnish/geoip.inc.vcl.erb'),
     }
 
+    file { '/etc/varnish/textmob-fe-common.inc.vcl':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('varnish/textmob-fe-common.inc.vcl.erb'),
+    }
+
     file { '/etc/varnish/last-access.inc.vcl':
         owner   => 'root',
         group   => 'root',
