@@ -54,31 +54,16 @@ class role::analytics::refinery {
 class role::analytics::refinery::camus {
     require role::analytics::refinery
 
-    # TODO: Move these Camus .properties files to puppet erb templates.
+    # TODO: Move these .properties files to puppet erb templates.
 
-    # Split up high and low volume webrequest Camus imports into multiple jobs.
-    # This will help keep large volume imports from causing lower volume ones
-    # to lag.
+    $camus_webrequest_properties = "${::role::analytics::refinery::path}/camus/camus.webrequest.properties"
+    $camus_webrequest_log_file   = "${::role::analytics::refinery::log_dir}/camus-webrequest.log"
 
-    # webrequest_text
-    cron { 'refinery-camus-webrequest_text-import':
-        command => "${::role::analytics::refinery::path}/bin/camus --job-name refinery-camus-webrequest_text-import ${::role::analytics::refinery::path}/camus/camus.webrequest_text.properties >> ${::role::analytics::refinery::log_dir}/camus-webrequest_text.log 2>&1",
+    cron { 'refinery-camus-webrequest-import':
+        command => "${::role::analytics::refinery::path}/bin/camus --job-name refinery-camus-webrequest-import ${camus_webrequest_properties} >> ${camus_webrequest_log_file} 2>&1",
         user    => 'hdfs',  # we might want to use a different user for this, not sure.
         minute  => '*/10',
     }
-    # webrequest_upload
-    cron { 'refinery-camus-webrequest_upload-import':
-        command => "${::role::analytics::refinery::path}/bin/camus --job-name refinery-camus-webrequest_upload-import ${::role::analytics::refinery::path}/camus/camus.webrequest_upload.properties >> ${::role::analytics::refinery::log_dir}/camus-webrequest_upload.log 2>&1",
-        user    => 'hdfs',  # we might want to use a different user for this, not sure.
-        minute  => '*/10',
-    }
-    # webrequest_text
-    cron { 'refinery-camus-webrequest-small-import':
-        command => "${::role::analytics::refinery::path}/bin/camus --job-name refinery-camus-webrequest-small-import ${::role::analytics::refinery::path}/camus/camus.webrequest-small.properties >> ${::role::analytics::refinery::log_dir}/camus-webrequest-small.log 2>&1",
-        user    => 'hdfs',  # we might want to use a different user for this, not sure.
-        minute  => '*/10',
-    }
-
 
     $camus_eventlogging_properties = "${::role::analytics::refinery::path}/camus/camus.eventlogging.properties"
     $camus_eventlogging_log_file   = "${::role::analytics::refinery::log_dir}/camus-eventlogging.log"
