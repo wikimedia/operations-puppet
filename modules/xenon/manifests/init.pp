@@ -125,7 +125,7 @@ class xenon(
 
     cron { 'xenon_generate_svgs':
         ensure  => $ensure,
-        command => '/usr/local/bin/xenon-generate-svgs',
+        command => '/usr/local/bin/xenon-generate-svgs > /dev/null',
         user    => 'xenon',
         minute  => '*/15',
     }
