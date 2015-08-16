@@ -24,6 +24,7 @@ class mediawiki::packages {
     package { [
         'texlive',
         'texlive-bibtex-extra',
+        'texlive-extra-utils',
         'texlive-font-utils',
         'texlive-fonts-extra',
         'texlive-lang-all',
