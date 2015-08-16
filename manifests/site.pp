@@ -2198,6 +2198,7 @@ node 'silver.wikimedia.org' {
 node 'sodium.wikimedia.org' {
     role lists
     include standard
+    include ::haveged
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
