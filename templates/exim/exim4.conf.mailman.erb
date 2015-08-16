@@ -95,9 +95,9 @@ acl_check_rcpt:
 		hosts = +relay_from_hosts
 		control = submission/sender_retain
 
-	# Require recipient domain to be local, or a domain we relay for
+	# Require recipient domain to be local
 	require message = Relay not permitted
-		domains = +local_domains : +relay_domains
+		domains = +local_domains
 		set acl_m_relayed = yes
 
 	# Accept mail for postmaster without further policy checking,
