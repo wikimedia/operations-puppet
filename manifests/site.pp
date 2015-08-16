@@ -980,6 +980,7 @@ node 'fermium.eqiad.wmnet' {
     include admin
     include base::firewall
     include role::lists::migration
+    include ::haveged
 }
 
 node 'fluorine.eqiad.wmnet' {
