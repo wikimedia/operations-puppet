@@ -37,11 +37,15 @@ module Puppet::Parser::Functions
       'Raring'   => '13.04',
       'Saucy'    => '13.10',
       'Trusty'   => '14.04',
-      'Utopic'   => '14.10'
+      'Utopic'   => '14.10',
+      'Vivid'    => '15.04',
+      'Wily'     => '15.10',
     },
     'Debian' => {
       'Jessie'  => '8',
       'Wheezy'  => '7',
+      'Stretch' => '9',
+      'Buster'  => '10',
     }
   }
 
