@@ -12,8 +12,8 @@ try:
 except:
     import urllib2 as urllib
 
-parsoidUrl = "http://parsoid-lb.eqiad.wikimedia.org" + \
-             "/metawiki/System_administrators"
+parsoidUrl = "https://meta.wikimedia.org/api/rest_v1" + \
+             "/page/html/System_administrators"
 bs = BeautifulSoup(urllib.urlopen(parsoidUrl).read())
 oldUserData = {}
 for table in bs.find_all('table')[:-2]:
