@@ -51,6 +51,7 @@ templates:
     x-subspecs:
       - mediawiki/v1/content
       - mediawiki_v1_graphoid
+      - mediawiki/v1/mobileapps
     # - mediawiki/v1/revision-scoring
 
   wmf-sys-1.0.0: &wp/sys/1.0.0
@@ -125,10 +126,48 @@ templates:
               paths:
                 /v1/png/{title}/{revision}/{graph_id}:
                   get:
-                    backend_request:
-                      # Default value: http://graphoid.svc.eqiad.wmnet:19000
-                      uri: <%= @graphoid_host_port %>/{domain}/v1/png/{title}/{revision}/{graph_id}
-                      body: '{$.request.body}'
+                    on_request:
+                      - get_from_graphoid:
+                          request:
+                            uri: <%= @graphoid_uri %>/{domain}/v1/png/{title}/{revision}/{graph_id}
+
+      /{module:mobileapps}:
+        x-modules:
+          - name: simple_service
+            version: 1.0.0
+            type: file
+            options:
+              paths:
+                /v1/html/{title}:
+                  get:
+                    on_request:
+                      - get_from_backend:
+                          request:
+                            uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html/{title}
+                /v1/sections/{title}:
+                  get:
+                    on_request:
+                      - get_from_backend:
+                          request:
+                            uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections/{title}
+                /v1/sections-lead/{title}:
+                  get:
+                    on_request:
+                      - get_from_backend:
+                          request:
+                            uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-lead/{title}
+                /v1/sections-remaining/{title}:
+                  get:
+                    on_request:
+                      - get_from_backend:
+                          request:
+                            uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-remaining/{title}
+                /v1/text/{title}:
+                  get:
+                    on_request:
+                      - get_from_backend:
+                          request:
+                            uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-text/{title}
 
   wp-default-1.0.0: &wp/default/1.0.0
     x-subspecs:
