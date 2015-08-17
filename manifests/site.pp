@@ -141,6 +141,18 @@ node /analytics10(18|21|22)\.eqiad\.wmnet/ {
 
 }
 
+# Above analytics* kafka nodes are being renamed kafka*
+node /kafka10(12)\.eqiad\.wmnet/ {
+    # Kafka brokers are routed via IPv6 so that
+    # other DCs can address without public IPv4
+    # addresses.
+    interface::add_ip6_mapped { 'main': }
+
+    role analytics::kafka::server
+    include role::analytics
+    include standard
+}
+
 node /kafka10(13|14|20)\.eqiad\.wmnet/ {
     # Kafka brokers are routed via IPv6 so that
     # other DCs can address without public IPv4
