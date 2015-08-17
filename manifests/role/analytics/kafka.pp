@@ -52,7 +52,7 @@ class role::analytics::kafka::config {
         # Production Kafka clusters are named by $::site.
         $cluster_config = {
             'eqiad'   => {
-                'analytics1012.eqiad.wmnet' => { 'id' => 12 },  # Row A
+                'kafka1012.eqiad.wmnet' => { 'id' => 12 },  # Row A
                 # 'kafka1013.eqiad.wmnet' => { 'id' => 13 },  # Row A
                 # 'kafka1014.eqiad.wmnet' => { 'id' => 14 },  # Row C
                 'analytics1018.eqiad.wmnet' => { 'id' => 18 },  # Row D
