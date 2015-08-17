@@ -6,7 +6,7 @@ sub vcl_recv {
 	call vcl_recv_purge;
 	if (req.http.referer
 		&& req.http.referer !~ "(?i)^https://maps\.wikimedia\.org/"
-		&& req.http.referer !~ "(?i)^https?://[-a-zA-Z0-9.]\.beta\.wmflabs\.org/"
+		&& req.http.referer !~ "(?i)^https?://[-a-zA-Z0-9.]+\.beta\.wmflabs\.org/"
 	) {
 		error 403 "Access Denied";
 	}
