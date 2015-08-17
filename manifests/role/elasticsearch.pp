@@ -68,4 +68,20 @@ class role::elasticsearch::server{
 
     include ::elasticsearch::log::hot_threads
     include ::elasticsearch::nagios::check
+
+    file { '/etc/elasticsearch/scripts':
+        ensure => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => File['/etc/elasticsearch'],
+    }
+    file { '/etc/elasticsearch/scripts/mwgrep.groovy':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        content => '_source["text"].contains(query)',
+        mode    => '0444',
+        require => Package['elasticsearch'],
+    }
 }
