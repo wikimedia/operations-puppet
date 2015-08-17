@@ -113,4 +113,5 @@ source $HOME/.liquidprompt/liquidprompt
 
 # add refinery/bin to my path
 test -d /srv/deployment/analytics/refinery/bin && export PATH=$PATH:/srv/deployment/analytics/refinery/bin
-
+# add ~/bin
+test -d ~/bin && export PATH=~/bin:$PATH
