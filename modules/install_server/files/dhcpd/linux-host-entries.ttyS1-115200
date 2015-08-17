@@ -28,13 +28,6 @@ host analytics1011 {
 	fixed-address analytics1011.eqiad.wmnet;
 }
 
-host analytics1012 {
-	hardware ethernet 90:b1:1c:06:a9:5d;
-	fixed-address analytics1012.eqiad.wmnet;
-	option pxelinux.pathprefix "jessie-installer/";
-	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
 host analytics1015 {
 	hardware ethernet 90:b1:1c:09:7f:f6;
 	fixed-address analytics1015.eqiad.wmnet;
@@ -2313,6 +2306,13 @@ host iridium {
 host iron {
 	hardware ethernet 78:2b:cb:09:0d:5c;
 	fixed-address iron.wikimedia.org;
+}
+
+host kafka1012 {
+	hardware ethernet 90:b1:1c:06:a9:5d;
+	fixed-address kafka1012.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kafka1013 {
