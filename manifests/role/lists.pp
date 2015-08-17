@@ -9,26 +9,22 @@ class role::lists {
         recipient => 'root@wikimedia.org',
     }
 
+    $lists_ip = hiera('mailman::lists_ip')
+
     interface::ip { 'lists.wikimedia.org_v4':
         interface => 'eth0',
-        address   => hiera('mailman::lists_ipv4'),
+        address   => $lists_ip[0],
         prefixlen => '32',
     }
 
     interface::ip { 'lists.wikimedia.org_v6':
         interface => 'eth0',
-        address   => hiera('mailman::lists_ipv6'),
+        address   => $lists_ip[1],
         prefixlen => '128',
     }
 
-    $outbound_ips = [
-        '208.80.154.61',
-        '2620:0:861:1:208:80:154:61'
-    ]
-    $list_outbound_ips = [
-        '208.80.154.4',
-        '2620:0:861:1::2'
-    ]
+    $outbound_ips = hiera_array('mailman::server_ip')
+    $list_outbound_ips = hiera_array('mailman::lists_ip')
 
     sslcert::certificate { 'lists.wikimedia.org': }
 
