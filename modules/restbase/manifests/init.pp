@@ -34,8 +34,10 @@
 #   statsd host name. Default: localhost
 # [*statsd_port*]
 #   statsd port. Default: 8125
-# [*graphoid_host_port*]
+# [*graphoid_uri*]
 #   graphoid host + port. Default: http://graphoid.svc.eqiad.wmnet:19000
+# [*mobileapps_uri*]
+#   MobileApps service URI. Default: http://mobileapps.svc.eqiad.wmnet:8888
 #
 class restbase(
     $cassandra_user = 'cassandra',
@@ -53,7 +55,8 @@ class restbase(
     $logging_level  = 'warn',
     $statsd_host    = 'localhost',
     $statsd_port    = '8125',
-    $graphoid_host_port = 'http://graphoid.svc.eqiad.wmnet:19000',
+    $graphoid_uri   = 'http://graphoid.svc.eqiad.wmnet:19000',
+    $mobileapps_uri = 'http://mobileapps.svc.eqiad.wmnet:8888',
 ) {
     ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
 
