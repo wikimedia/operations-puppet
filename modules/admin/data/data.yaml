@@ -360,7 +360,10 @@ groups:
     members: [bsitzmann, dbrant]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                  'ALL = (mobileapps) NOPASSWD: ALL']
-
+  mw-log-readers:
+    gid: 760
+    description: users who can login on fluorine and read mediawiki logs
+    members: []
 users:
   rush:
     ensure: present

@@ -1,3 +1,4 @@
 admin::groups:
   - deployment
   - restricted
+  - mw-log-readers
