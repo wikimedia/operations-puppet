@@ -1,0 +1,60 @@
+#!/usr/bin/python
+'''
+List running tasks on specified hosts.  Output is in yaml; this tool is
+generally piped into jobmail.py to notify users of approaching calamity.
+
+Example:
+
+./runningtasks.py tools-exec-1211 tools-exec-1212 tools-exec-1215
+
+'''
+from __future__ import print_function
+import subprocess
+import xml.etree.ElementTree
+import itertools
+import sys
+import yaml
+from datetime import datetime
+
+if len(sys.argv) == 1:
+    print("Usage: %s hostname [hostname ...]" % sys.argv[0])
+    sys.exit(1)
+
+def get_jobs(stream):
+    events = xml.etree.ElementTree.iterparse(stream, ['start', 'end'])
+    for event, elem in events:
+        if event == 'start' and elem.tag == 'host':
+            current_host = elem.get('name')
+        if event != 'end' or elem.tag != 'job': 
+            continue
+        job = {'host': current_host,
+               'id': elem.get('name')}
+        for jobvalue in elem.getchildren():
+            job[jobvalue.get('name')] = jobvalue.text
+        yield job
+
+groupkey = lambda x: x['job_owner']
+sortkey = lambda x: (groupkey(x), x['start_time'])
+
+proc = subprocess.Popen(
+    ['qhost', '-j', '-xml', '-h'] + sys.argv[1:],
+    stdout=subprocess.PIPE
+)
+
+jobs = [job for job in get_jobs(proc.stdout)
+        if not job['queue_name'].startswith('continuous')
+        and not job['queue_name'].startswith('webgrid')
+]
+
+jobs = sorted(jobs, key=sortkey)
+
+#or owner,jobs in itertools.groupby(jobs, key=groupkey):
+    #rint(owner)
+    #rint("---------------")
+    #or job in jobs:
+    #   startat = datetime.utcfromtimestamp(int(job['start_time']))
+    #   print(job['id'], job['job_name'], startat.strftime("%c"))
+#   print("")
+
+data = {owner: list(jobs) for owner,jobs in itertools.groupby(jobs, key=groupkey)}
+print(yaml.dump(data))
