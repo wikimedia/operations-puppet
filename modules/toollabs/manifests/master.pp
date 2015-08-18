@@ -63,5 +63,33 @@ class toollabs::master inherits toollabs {
         source  => 'puppet:///modules/toollabs/host_aliases',
         require => Mount['/var/lib/gridengine'],
     }
-}
 
+    file { '/usr/local/bin/dequeugridnodes.sh':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/toollabs/gridscripts/dequeuegridnodes.sh',
+    }
+    file { '/usr/local/bin/requeugridnodes.sh':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/toollabs/gridscripts/requeuegridnodes.sh',
+    }
+    file { '/usr/local/bin/runninggridtasks.py':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/toollabs/gridscripts/runninggridtasks.py',
+    }
+    file { '/usr/local/bin/runninggridjobsmail.py':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/toollabs/gridscripts/runninggridjobsmail.py',
+    }
+}

@@ -78,4 +78,11 @@ class toollabs::bastion(
         group   => 'root',
         content => template('toollabs/crontab.erb'),
     }
+    file { '/usr/local/bin/killgridjobs.sh':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/toollabs/gridscripts/killgridjobs.sh',
+    }
 }
