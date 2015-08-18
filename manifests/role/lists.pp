@@ -185,4 +185,6 @@ class role::lists::migration {
         ensure => 'present',
     }
 
+    include mailman::scripts
+
 }
