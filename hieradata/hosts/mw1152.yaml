@@ -1,3 +1,1 @@
-apache::mpm::mpm: worker
-mediawiki::web::mpm_config::mpm: worker
-mediawiki::web::mpm_config::threads_per_child: 15
+jobrunner_state: stopped

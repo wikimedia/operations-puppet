@@ -1864,8 +1864,14 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
 }
 
-# mw1152-1160 are imagescalers (trusty)
-node /^mw11(5[2-9]|60)\.eqiad\.wmnet$/ {
+# mw1152 is the experimental HAT videoscaler
+node 'mw1152.eqiad.wmnet' {
+    role mediawiki::videoscaler
+}
+
+
+# mw1153-1160 are imagescalers (trusty)
+node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
     role mediawiki::imagescaler
 }
 
