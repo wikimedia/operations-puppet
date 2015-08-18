@@ -598,8 +598,7 @@ users:
     gid: 500
     name: cmcmahon
     realname: Chris McMahon
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAUChaRasX213XksA9xcPs7sqZqcSQBx22rlPPGFfdoxoCTCEgJTL1KU1pzZOaVROQoOPMgThWgKeYk2EtfYLR062HONt8ez+hgjtZ/uBVvR5hg5UJ8dNPSfxjmrgcAVpCkRFE9omABppxOmGj6phxJfujj8j3kTX/gEpadNSTAS5Pb3Az3WDowjRPOGzFjXLV2S5TuEF6ZJbbI7IY4Dc1XY02Lo/5p80mkTzaTo+Yoj6UDAueUDKOmRScWbcicrGSUiN1psnAdvzpHXjyzLrhpkkRHJn+deLffDSKhvg57Ea+T/9Bqo5m54/u9pGlVoyhpWjRKoe3fz4M2hqHCyaH
-        cmcmahon@wikimedia]
+    ssh_keys: []
     uid: 2152
   csteipp:
     ensure: present
@@ -753,8 +752,7 @@ users:
     gid: 500
     name: mwalker
     realname: Matt Walker
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDs1a/cRZMNw1DerltODiEFOWoCM1YJpPcdYDFnEIEvl9dz3X68nBnfHMfAWbQcOxD3f8tCTjrQ4i4M079kawGkm+jEc7priWm5Ww6TFeyA7B2jTuPqRHWfJ6AsPvXnrvJF/RMuG6NwdOluunipbb0sbHpPreBMYwu6KifvEnQNLYDp6Y0c31PYC22Nr7jZTcCkr7P72t0yhxpuDUV4p7vhEsTKAI59wHSdM17ViJRU4DwDIs43ZBKulCwjuiwJ47oc903c4iVeA37D2jV6nrNbao4huJRyrApfpTYm6RwCnKkOOCBNSB4MndZikSpYXGjNgUHWJxj7vquumje4AsGb
-        mwalker@mwalker-t420s]
+    ssh_keys: []
     uid: 2454
   nikerabbit:
     ensure: present
@@ -853,8 +851,7 @@ users:
     gid: 500
     name: jgonera
     realname: Juliusz Gonera
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDT6QY2PcibrrwSCyrBI2TRSN9rwDCLt2uSVlpCRCAUVrHNdXEpLt1WgUotZx3HIWQdPrmpakg4+R8ltsrY01oe5jcjP44aAgj8isIjujjsqKwElKdAl4UxXUQ2udjaqzqr8Qe3sl13bkt/Kkt1yRTzenVek71k878f0TUBQtcTpPUOeRpcNAvHxs/sJMdylGBM3KfjDzD0Cps6NluWXbsrQJCHiMSIaAAYyYaLXBsGRvTYG+vL9nC7gvik+VFh+kyGAindGaCnjx7q+L67837UQloXGrJ/lKDRbaXW8xpepDewSBQ3ItVkXz+TNBWNVcIRo7SL3ZgREpW/WG4DyThj
-        WMF-work]
+    ssh_keys: []
     uid: 2688
   tgr:
     ensure: present
@@ -983,8 +980,7 @@ users:
     gid: 500
     name: csalvia
     realname: Charles Salvia
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjGSS/3k++mudvR5wrGYhLPYa/RQbtURNRhgjYA7lx9dPg6lKilQliaOMhKOxlwKDRCzNZNSz5CGG9Ype6dFrZf/c1nxF6D3YwD07eOITIy85qD7nGmFKTG2+olbwbvl0liC85AQv1Xi6C4QxL2za/t3iXb10XA7EJ0GXYKLp2nfFQ4FkR5+teFqgKpH+gd9SswiefW97HcTvuURc4n4YIC+WZJhD5majNV9Ben5QJe/qz+GnAfGSsKxMWlRRnevx7VP3KfFy9+6Lzj4Gspq+V+34UTlvY6VK4cL37UG/53dfBLgpMVgWQ0G7sooHw2xj//7fVMpAd+ipMQzDabEJ/
-        charles@hailoo.com]
+    ssh_keys: []
     uid: 4415
   leila:
     ensure: present
@@ -1023,8 +1019,7 @@ users:
     gid: 500
     name: howief
     realname: Howie Fung
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6xDAibCed4gMnNdknhU3v+f/82vyi+UcUL8fgsLqs9ADyVP5tjB86kKS5HV1RbA7A7RbE+DBJY/Y/hpjmtrnoYjxAXG1u75PMYiiEO5cNoXu45HBqKKnlEeqOTDhKkN65WtSeBzBQu092vXpMyTMMfKrtp0cnLxZz3Z9nNCmYv8pETaDEVVnJqAgfxn3XORowtiYgBCjskDV0oqUbqXwnxHeua1a2OLQk78QySWxJhFN+lvbqtnH8RWIH/YZJolrGHaLS1PEAhsc8rS1giJVcXsSccGbrMNAoCHNDJOXWNjjLAeHomX55vqkxxjmoiuEy3B0ykUmFO4objzNibUa9
-        howiefung@Macintosh.local]
+    ssh_keys: []
     uid: 611
   jforrester:
     ensure: present
@@ -1047,8 +1042,7 @@ users:
     gid: 500
     name: maryana
     realname: Maryana Pinchuk
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzAIOjRumh6RQKFOkab+4Yjw7Vr4fFyKoufw1h5grtjsq0ruuqgf7IiBlFA1eJ/DXVYax1YVGGJw5LhyZ1XABxXU9LaBfTb7zYC/XUM8rrAyu3N6MoycjY011yhesNa7s8PF0EkN+tOVBSG27cFoOATv6qM/vPEdc69gLb8HlVZyPB6TQuzJLJzRNBNe7UscIIw8eTwd9DDUuaTsColByNPzUaDdd8BS4Lr+vQlg0CzNGeTShkgcK3iRLYfKD0Cd+k3PN25pI3tYzybfrwDCi4WEQHHOO7TvWudkdywMu9GN3QylRT/E5JpYl37r9gS7mC5p5Hzi7II0ujDHFyfmIl
-        mpinchuk@wikimedia.org]
+    ssh_keys: []
     uid: 2515
   msyed:
     ensure: present
@@ -1103,8 +1097,7 @@ users:
     gid: 500
     name: mglaser
     realname: Markus Glaser
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAlpNpOKH1JJu3qBsBwYJFO2DVnE9tzkPuMTe7qZLTpnSDo5AtlzByJ9t+g82PA/NKp6XivRCaEeVxxDQkUOKKl3rg5DVFUkka5BwoymTIiXEpw8abnaiYrCNTN2SDCUKcS8wdbK9nCMvaueYEEvi3HZ3jZZRV9TunSXpJAlb6Y4U/EMmlxTb6xSvFr6AWWt8OgtVISZZuJh4CPTQEQwW0j71vOtAEzBAtSrRVZJS29KXiue19D5mtYpdjWnORtfarowPwkO3UmE1NiBPg4jCClSOcJ/yvr4GM9dTdeXVt4fTrojI9uW/YkHDwZ+2DLpGWj22TO8nvj8KiJMCFwoi4+Q==
-        hwsvn@84-16-252-165.local]
+    ssh_keys: []
     uid: 1229
   mah:
     ensure: absent
@@ -1207,8 +1200,7 @@ users:
     gid: 500
     name: ssmith
     realname: Sam Smith
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9+TJfrksUVwMxt5Oj6NZxacj3UyKQNN+J48r7nF2SSVoH3hOLpXLB5Vep09X2bxyH+1AsqGQKGLW8a5DSTcEhLQ5Rc01GmaV461e51lxJoRRlDtCI6+sqBJRstZVWUrxYeAjAhaif0CWmepySMWytrFrLJuTQ08L+R4XH9uXxWfE+qY6KBjrrOGKS+98E13vYlxegxpctz729ZC0jDrikSNX47lu5us5OTMotaYPOu/lFYO8RUmqQnGNMjoKJjKQJclDZUp9fV3YWPW9XtJR6z1CACJIqng0501bWulMsjw/nWySoJLrh4H99KeLUVSiEWibupoTI6FKO2PC0vrzF
-        samsmith@wikimedia.org]
+    ssh_keys: []
     uid: 4170
   bsimmers:
     ensure: present
