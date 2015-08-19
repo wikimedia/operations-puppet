@@ -12,3 +12,4 @@ hhvm::extra::cli:
   hhvm:
     mysql:
       connect_timeout: 3000
+apache::logrotate::rotate: 12
