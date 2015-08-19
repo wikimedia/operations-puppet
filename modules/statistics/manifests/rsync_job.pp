@@ -17,11 +17,13 @@ define statistics::rsync_job($source, $destination, $retention_days = undef, $en
     require statistics::user
 
     # ensure that the destination directory exists
-    file { $destination:
-        ensure => 'directory',
-        owner  => $::statistics::user::username,
-        group  => 'wikidev',
-        mode   => '0755',
+    unless defined(File[$destination]) {
+        file { $destination:
+            ensure => 'directory',
+            owner  => $::statistics::user::username,
+            group  => 'wikidev',
+            mode   => '0755',
+        }
     }
 
     # Create a daily cron job to rsync $source to $destination.
