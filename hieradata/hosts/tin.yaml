@@ -5,6 +5,7 @@ base::resolving::domain_search:
   - codfw.wmnet
 admin::groups:
   - deployment
+  - servicedeploy
   - parsoid-admin
   - ocg-render-admins
   - wdqs-admins

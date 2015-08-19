@@ -14,8 +14,8 @@ setgid <%= @trusted_group %>
 
 umask 007
 
-pre-start exec /bin/rm -f /run/keyholder/proxy.sock
-exec /usr/local/bin/ssh-agent-proxy
-post-stop exec /bin/rm -f /run/keyholder/proxy.sock
+pre-start exec /bin/rm -f <%= @proxy_socket %>
+exec /usr/local/bin/ssh-agent-proxy --bind <%= @proxy_socket %> --connect <%= @agent_socket %>
+post-stop exec /bin/rm -f <%= @proxy_socket %>
 
 # vim: set ft=upstart:
