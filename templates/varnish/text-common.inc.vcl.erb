@@ -3,17 +3,17 @@
 sub stash_cookie {
 	// This header is saved, and restored before sending it to MediaWiki
 	if (req.restarts == 0) {
-		set req.http.Orig-Cookie = req.http.Cookie;
+		set req.http.X-Orig-Cookie = req.http.Cookie;
 		unset req.http.Cookie;
 	}
 }
 
 sub restore_cookie {
 	// Restore the original Cookie header for upstream
-	// Assumes client header Orig-Cookie has been filtered!
-	if (bereq.http.Orig-Cookie) {
-		set bereq.http.Cookie = bereq.http.Orig-Cookie;
-		unset bereq.http.Orig-Cookie;
+	// Assumes client header X-Orig-Cookie has been filtered!
+	if (bereq.http.X-Orig-Cookie) {
+		set bereq.http.Cookie = bereq.http.X-Orig-Cookie;
+		unset bereq.http.X-Orig-Cookie;
 	}
 }
 
