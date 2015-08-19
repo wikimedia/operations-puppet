@@ -570,6 +570,13 @@ class role::mariadb::wikitech {
     ferm::rule { 'mysql_tendril':
         rule => "saddr 10.64.0.15 proto tcp dport (3306) ACCEPT;",
     }
+
+    # mysql from tin (T98682)
+    ferm::service { 'mysql_tin':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => '@resolve(tin.eqiad.wmnet)',
+    }
 }
 
 class role::mariadb::proxy(
