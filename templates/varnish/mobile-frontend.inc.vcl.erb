@@ -1,6 +1,7 @@
 // Varnish VCL include file for mobile frontends
 
 include "errorpage.inc.vcl";
+include "text-common.inc.vcl";
 include "zero.inc.vcl";
 include "provenance.inc.vcl";
 include "via.inc.vcl";
@@ -62,22 +63,11 @@ sub vcl_recv {
 
 	call analytics_last_access_recv;
 
-	// FIXME: deploy X-Vary-Options support
-	set req.http.X-Orig-Cookie = req.http.Cookie;
-	if (req.http.Cookie ~ "disable" ||
-		req.http.Cookie ~ "optin" ||
-		req.http.Cookie ~ "[Ss]ession") {
-		// Do nothing; these are the cookies we pass.
-		// this is a hack in the absence of X-V-O support
-	} else {
-		unset req.http.Cookie;
-	}
+	call evaluate_cookie_mobile;
 
 	if (req.http.host ~ "^test\.") {
 		set req.http.X-Wikimedia-Debug = "1";
 	}
-
-	set req.hash_ignore_busy = true;
 
 	// Default (now modified) Varnish vcl_recv function
 	if (req.request != "GET" && req.request != "HEAD") {
@@ -89,6 +79,14 @@ sub vcl_recv {
 		return (pass);
 	}
 	return (lookup);
+}
+
+sub vcl_pass {
+	call restore_cookie;
+}
+
+sub vcl_miss {
+	call restore_cookie;
 }
 
 sub vcl_fetch {

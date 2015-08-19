@@ -1,6 +1,7 @@
 // Varnish VCL include file for mobile backends
 
 include "errorpage.inc.vcl";
+include "text-common.inc.vcl";
 
 sub vcl_recv {
 	call vcl_recv_purge;
@@ -18,6 +19,8 @@ sub vcl_recv {
 	}
 <% end -%>
 
+	call evaluate_cookie_mobile;
+
 	// Default (now modified) Varnish vcl_recv function
 	if (req.request != "GET" && req.request != "HEAD") {
 		// We only deal with GET and HEAD by default
@@ -28,6 +31,14 @@ sub vcl_recv {
 		return (pass);
 	}
 	return (lookup);
+}
+
+sub vcl_pass {
+	call restore_cookie;
+}
+
+sub vcl_miss {
+	call restore_cookie;
 }
 
 sub vcl_fetch {
