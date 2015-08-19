@@ -35,10 +35,11 @@ sub evaluate_cookie {
 // most of this mechanism but have a different Cookie regex during
 // the refactoring process...
 sub evaluate_cookie_mobile {
-	// note extra matches for disable/optin, and lack of static and load.php exemptions...
-        if (req.http.Cookie ~ "disable"
-	    || req.http.Cookie ~ "optin"
-	    || req.http.Cookie ~ "([sS]ession|Token)=") {
+	// note extra matches for any Cookie-string that matches /disable/ (needs further investigation!)
+	//  and for 'optin=foo' (used for alpha/beta opt-in)
+	if (req.http.Cookie ~ "disable|((^|;\s*)optin|[sS]ession|Token)="
+	    && req.url !~ "^/static/"
+	    && req.url !~ "^/w/load\.php") {
 		set req.hash_ignore_busy = true;
 	} else {
 		call stash_cookie;
