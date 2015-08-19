@@ -424,9 +424,12 @@ define swift::create_filesystem($partition_nr='1') {
 # Parameters:
 #   - $title:
 #       The device to mount (e.g. /dev/sdc1)
-define swift::mount_filesystem() {
+define swift::mount_filesystem(
+    $mount_base = '/srv/swift-storage',
+){
     $dev        = $title
     $dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
+
     $mount_point = "${mount_base}/${dev_suffix}"
 
     file { "mountpoint-${mount_point}":
