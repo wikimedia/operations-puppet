@@ -59,7 +59,7 @@ class role::analytics::kafka::config {
                 # 'kafka1020.eqiad.wmnet' => { 'id' => 20 },  # Row D
                 # analytics1021 is to be decomissioned as a kafka broker.
                 'analytics1021.eqiad.wmnet' => { 'id' => 21 },  # Row A
-                'analytics1022.eqiad.wmnet' => { 'id' => 22 },  # Row C
+                'kafka1022.eqiad.wmnet' => { 'id' => 22 },  # Row C
             },
             'ulsfo' => { },
             'esams' => { },
