@@ -363,7 +363,7 @@ groups:
   mw-log-readers:
     gid: 760
     description: users who can login on fluorine and read mediawiki logs
-    members: []
+    members: [tjones]
 users:
   rush:
     ensure: present
