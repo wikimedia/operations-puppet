@@ -469,10 +469,10 @@ define swift::mount_filesystem() {
 #   - $title:
 #       The device to label (e.g. /dev/sdc1)
 define swift::label_filesystem() {
-    $device     = $title
-    $dev_suffix = regsubst($device, '^\/dev\/(.*)$', '\1')
+    $dev     = $title
+    $dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
 
-    $label = "swift-${dev_suffix}"
+    $fs_label = "swift-${dev_suffix}"
     exec { "xfs_label-${dev}":
         command => "xfs_admin -L ${fs_label} ${dev}",
         path    => '/usr/sbin:/usr/bin:/sbin:/bin',
