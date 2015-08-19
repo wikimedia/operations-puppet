@@ -170,10 +170,6 @@ sub filter_headers {
 }
 
 sub filter_noise {
-	if (req.url ~ "Special:RecordImpression.*&campaign=wm2015register") {
-		error 403 "Noise";
-	}
-
 	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
 	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
 		error 403 "Noise";
