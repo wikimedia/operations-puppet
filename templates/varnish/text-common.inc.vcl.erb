@@ -1,4 +1,4 @@
-// Common functions for the Text Varnish cluster
+// Common functions for the Text/Mobile Varnish clusters
 
 sub stash_cookie {
 	// This header is saved, and restored before sending it to MediaWiki
@@ -25,6 +25,20 @@ sub evaluate_cookie {
 	if (req.http.Cookie ~ "([sS]ession|Token)="
 	    && req.url !~ "^/static/"
 	    && req.url !~ "^/w/load\.php") {
+		set req.hash_ignore_busy = true;
+	} else {
+		call stash_cookie;
+	}
+}
+
+// Temporary copy of the above for mobile, so that it can share
+// most of this mechanism but have a different Cookie regex during
+// the refactoring process...
+sub evaluate_cookie_mobile {
+	// note extra matches for disable/optin, and lack of static and load.php exemptions...
+        if (req.http.Cookie ~ "disable"
+	    || req.http.Cookie ~ "optin"
+	    || req.http.Cookie ~ "([sS]ession|Token)=") {
 		set req.hash_ignore_busy = true;
 	} else {
 		call stash_cookie;
