@@ -11,6 +11,7 @@ class role::deployment::server(
     # Can't include this while scap is present on tin:
     # include misc::deployment::scripts
     include role::deployment::mediawiki
+    include role::deployment::services
 
     class { 'deployment::deployment_server':
         deployer_groups => [$deployment_group],
@@ -146,6 +147,21 @@ class role::deployment::mediawiki(
     keyholder::agent { $keyholder_user:
         trusted_group   => $keyholder_group,
         key_fingerprint => $key_fingerprint,
+    }
+}
+
+class role::deployment::services (
+    $keyholder_user  = 'deploy-service',
+    $keyholder_group = 'deploy-service',
+    key_fingerprint  = '6d:54:92:8b:39:10:f5:9b:84:40:36:ef:3c:9a:6d:d8',
+) {
+    require ::keyholder
+    require ::keyholder::monitoring
+
+    keyholder::agent { $keyholder_user:
+        trusted_group   => $keyholder_group,
+        key_fingerprint => $key_fingerprint,
+        key_file        => 'servicedeploy_rsa',
     }
 }
 
