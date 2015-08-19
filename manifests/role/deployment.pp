@@ -5,10 +5,6 @@ class role::deployment::config {
 }
 
 class role::deployment::server(
-    # Source of the key, change this if not in production, with hiera.
-    # lint:ignore:puppet_url_without_modules
-    $key_source = 'puppet:///private/ssh/tin/mwdeploy_rsa',
-    # lint:endignore
     $apache_fqdn = $::fqdn,
     $deployment_group = 'wikidev',
 ) {
@@ -59,11 +55,8 @@ class role::deployment::server(
         remote_branch => 'readonly/master'
     }
 
-    class { '::keyholder': trusted_group => $deployment_group, } ->
-    class { '::keyholder::monitoring': } ->
-    keyholder::private_key { 'mwdeploy_rsa':
-        source  => $key_source,
-    }
+    include role::deployment::mediawiki
+    include role::deployment::services
 
     file { '/srv/deployment':
         ensure => directory,
@@ -139,6 +132,30 @@ class role::deployment::salt_masters(
     class { 'deployment::salt_master':
         repo_config       => $role::deployment::config::repo_config,
         deployment_config => $deployment_config,
+    }
+}
+
+class role::deployment::mediawiki(
+    $keyholder_user = 'mwdeploy',
+    $keyholder_group = 'wikidev',
+) {
+    require ::keyholder
+    require ::keyholder::monitoring
+
+    keyholder::agent{ $keyholder_user:
+        trusted_group => $keyholder_group,
+    }
+}
+
+class role::deployment::services (
+    $keyholder_user = 'servicedeploy',
+    $keyholder_group = 'servicedeploy',
+) {
+    require ::keyholder
+    require ::keyholder::monitoring
+
+    keyholder::agent{ $keyholder_user:
+        trusted_group => $keyholder_group,
     }
 }
 

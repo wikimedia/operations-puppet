@@ -364,6 +364,12 @@ groups:
     gid: 760
     description: users who can login on fluorine and read mediawiki logs
     members: [tjones]
+  servicedeploy:
+    gid: 761
+    description: Service deploy users
+    members: [eevans, gwicke, mobrovac, demon, twentyafterfour, thcipriani, dduvall]
+    privileges: []
+
 users:
   rush:
     ensure: present
