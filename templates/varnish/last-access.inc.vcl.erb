@@ -14,10 +14,11 @@
 /*****************************************************************************
  * This must be called *before* any vcl_recv cookie munging.  It more-properly
  * belongs in _deliver, but putting it here avoids all of the issues
- * surrounding consistent access to Cookie vs Orig-Cookie vs X-Orig-Cookie at
- * vcl_deliver time in the text/mobile cases.  It does so at the cost of
- * sending a pointless and unintended "X-WMF-LastStamp: 01-Jan-2000" header to
- * the application layer as well on cache miss/bypass.
+ * surrounding consistent access to Cookie vs X-Orig-Cookie at vcl_deliver
+ * time in the text/mobile cases.
+ * It does so at the cost of sending a pointless and unintended
+ * "X-WMF-LastStamp: 01-Jan-2000" header to the application layer as well on
+ * cache miss/bypass.
  * Note we don't validate that the cookie's 3-letter month abbreviation is
  * legal, or that the numeric values for the date/year are legal, just that
  * they have the right count of the right kinds of characters.

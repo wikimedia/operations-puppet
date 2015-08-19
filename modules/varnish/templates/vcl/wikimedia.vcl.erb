@@ -164,7 +164,6 @@ director <%= director_name %> <%= director['type'] %> {
 
 sub filter_headers {
 	if (req.restarts == 0) {
-		unset req.http.Orig-Cookie;
 		unset req.http.X-Orig-Cookie;
 	}
 }
