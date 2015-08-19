@@ -61,11 +61,15 @@ class restbase(
     $graphoid_uri   = 'http://graphoid.svc.eqiad.wmnet:19000',
     $mobileapps_uri = 'http://mobileapps.svc.eqiad.wmnet:8888',
 ) {
-    ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
+    if $::realm == 'labs' {
+        include restbase::deploy
+    }
 
     package { 'restbase/deploy':
         provider => 'trebuchet',
     }
+
+    ensure_packages( ['nodejs', 'nodejs-legacy', 'npm'] )
 
     group { 'restbase':
         ensure => present,
