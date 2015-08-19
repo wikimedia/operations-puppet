@@ -398,6 +398,11 @@ groups:
     members: [krinkle]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
+  deploy-service:
+    gid: 763
+    description: Service deploy users
+    members: [eevans, gwicke, mobrovac, demon, twentyafterfour, thcipriani, dduvall]
+    privileges: []
 
 users:
   rush:
