@@ -5,7 +5,7 @@ class mailman::scripts {
         ensure => 'present',
         owner  => 'root',
         group  => 'list',
-        mode   => '0540',
+        mode   => '0550',
         source => 'puppet:///modules/mailman/scripts/remove_from_private.sh'
     }
 
@@ -13,7 +13,7 @@ class mailman::scripts {
         ensure => 'present',
         owner  => 'root',
         group  => 'list',
-        mode   => '0540',
+        mode   => '0550',
         source => 'puppet:///modules/mailman/scripts/import_list.sh'
     }
 
@@ -21,7 +21,7 @@ class mailman::scripts {
         ensure => 'present',
         owner  => 'root',
         group  => 'list',
-        mode   => '0540',
+        mode   => '0550',
         source => 'puppet:///modules/mailman/scripts/import_all_lists.sh'
     }
 
