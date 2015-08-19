@@ -112,8 +112,8 @@ echo $user > /tmp/remove-mailman-user
 for privlist in ${privatelists[@]}
 do
     # echo $privlist
-    echo "${mm_base}remove_members -f /tmp/remove-mailman-user $privlist"
-    ${mm_base}remove_members -f /tmp/remove-mailman-user $privlist
+    echo "${mm_base}remove_members -n -f /tmp/remove-mailman-user $privlist"
+    ${mm_base}remove_members -n -f /tmp/remove-mailman-user $privlist
 done
 
 rm /tmp/remove-mailman-user
