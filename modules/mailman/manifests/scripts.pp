@@ -24,4 +24,12 @@ class mailman::scripts {
         mode   => '0540',
         source => 'puppet:///modules/mailman/scripts/import_all_lists.sh'
     }
+
+    file { '/var/lib/mailman/bin/disable_list.sh':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0540',
+        source => 'puppet:///modules/mailman/scripts/disable_list.sh'
+    }
 }
