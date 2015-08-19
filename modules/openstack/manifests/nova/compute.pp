@@ -92,23 +92,19 @@ class openstack::nova::compute(
         require => Package['nova-common'],
     }
 
-    # Fail hard and loud if the kernel is not recent enough to have a
-    # fix for the KSM bug in Trusty and refuse to install nova-compute
-    # entirely.
-    #
-    # see: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1346917
-
+    # Check for buggy kernels.  There are a lot of them!
     if os_version('ubuntu >= trusty') and (versioncmp($::kernelrelease, '3.13.0-46') < 0) {
-
-        fail('nova-compute not installed on buggy kernels')
-
+        # see: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1346917
+        fail('nova-compute not installed on buggy kernels.  Old versions of 3.13 have a KSM bug.')
+    } elseif ($::kernelrelease =~ '3.13.*') {
+        fail('nova-compute not installed on buggy kernels.  On 3.13 series kernels, instance suspension causes complete system lockup.')
+    } elseif ($::kernelrelease =~ '3.19.*') {
+        fail('nova-compute not installed on buggy kernels.  On 3.19 series kernels, instances lose network access when resuming from suspension.')
     } else {
-
         package { [ 'nova-compute', 'nova-compute-kvm' ]:
             ensure  => present,
             require => [Class['openstack::repo'], Package['qemu-system']],
         }
-
     }
 
     # Without qemu-system, apt will install qemu-kvm by default,
