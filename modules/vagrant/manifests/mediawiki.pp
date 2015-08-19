@@ -53,17 +53,4 @@ class vagrant::mediawiki(
         ],
         require     => Git::Clone['mediawiki/vagrant'],
     }
-
-    # Create a local.yaml unless one already exists. This allows the user to
-    # modify the defaults and add additional settings as needed without
-    # fighting with Puppet over the contents of the file.
-    file { "${install_directory}/puppet/hieradata/local.yaml":
-        ensure  => 'present',
-        source  => 'puppet:///modules/vagrant/hieradata/local.yaml',
-        owner   => 'mwvagrant',
-        group   => 'wikidev',
-        mode    => '0664',
-        replace => false,
-        require => Git::Clone['mediawiki/vagrant'],
-    }
 }
