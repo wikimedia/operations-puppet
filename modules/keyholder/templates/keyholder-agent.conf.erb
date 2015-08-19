@@ -9,8 +9,8 @@ start on (local-filesystems and net-device-up IFACE!=lo)
 setgid keyholder
 setuid keyholder
 
-exec /usr/bin/ssh-agent -d -a /run/keyholder/agent.sock
-post-start exec [ -S /run/keyholder/agent.sock ] || sleep 1
-post-stop exec /bin/rm -f /run/keyholder/agent.sock
+exec /usr/bin/ssh-agent -d -a <%= @agent_socket %>
+post-start exec [ -S <%= @agent_socket %> ] || sleep 1
+post-stop exec /bin/rm -f <%= @agent_socket %>
 
 # vim: set ft=upstart:
