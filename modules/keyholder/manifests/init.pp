@@ -26,28 +26,9 @@
 #
 #  $ SSH_AUTH_SOCK=/run/keyholder/proxy.sock ssh remote-host ...
 #
-# === Parameters
-#
-# [*trusted_group*]
-#   The name or GID of the trusted user group with which the agent
-#   should be shared. It is the caller's responsibility to ensure
-#   the group exists.
-#
-# === Examples
-#
-#  class { 'keyholder':
-#      trusted_group => 'wikidev',
-#      require       => Group['wikidev'],
-#  }
-#
-# === Bugs
-#
-# It is currently only possible to have a single agent / proxy pair
-# (shared with just one group) on a particular node.
-#
-class keyholder( $trusted_group ) {
+class keyholder {
 
-    require_package('python3')
+    require_package('python3', 'python3-yaml')
 
     group { 'keyholder':
         ensure => present,
@@ -79,6 +60,16 @@ class keyholder( $trusted_group ) {
         force   => true,
     }
 
+    file { '/etc/keyholder-auth.d':
+        ensure  => directory,
+        owner   => 'keyholder',
+        group   => 'keyholder',
+        mode    => '0750',
+        recurse => true,
+        purge   => true,
+        force   => true,
+    }
+
     file { '/usr/local/bin/ssh-agent-proxy':
         source => 'puppet:///modules/keyholder/ssh-agent-proxy',
         owner  => 'root',
@@ -86,7 +77,6 @@ class keyholder( $trusted_group ) {
         mode   => '0555',
         notify => Service['keyholder-agent'],
     }
-
 
     # The `keyholder-agent` service is responsible for running
     # the ssh-agent instance that will hold shared key(s).
@@ -111,7 +101,7 @@ class keyholder( $trusted_group ) {
     # and the backend ssh-agent that holds the shared key(s).
 
     file { '/etc/init/keyholder-proxy.conf':
-        content => template('keyholder/keyholder-proxy.conf.erb'),
+        source => 'puppet:///modules/keyholder/keyholder-proxy.conf',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
