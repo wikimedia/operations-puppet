@@ -72,11 +72,7 @@ sub vcl_recv {
 	call analytics_last_access_recv;
 
 	call evaluate_cookie_mobile;
-
-	if (req.http.Authorization || req.http.Cookie) {
-		// Not cacheable by default
-		return (pass);
-	}
+	call pass_authorization;
 	return (lookup);
 }
 
