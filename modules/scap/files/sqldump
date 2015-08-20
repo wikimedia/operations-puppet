@@ -13,7 +13,5 @@ elif [ "$db" == centralauth ]; then
 fi
 
 host=`echo 'echo wfGetLB()->getServerName(0);' | /usr/local/bin/mwscript eval.php --wiki="$db"`
-
-MU=wikiadmin
-MP=`wikiadmin_pass`
-mysqldump -u $MU -p$MP -h $host "$@"
+pass=`echo 'echo \$wgDBadminpassword;' | /usr/local/bin/mwscript eval.php --wiki="$db"`
+mysqldump -u wikiadmin -p$pass -h $host "$@"
