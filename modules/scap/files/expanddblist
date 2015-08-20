@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+dblistdir = '/srv/mediawiki/'
+
+import sys
+try:
+	expr = sys.argv[1]
+except IndexError:
+	print >>sys.stderr, "Must provide dblist expression"
+	sys.exit(1)
+
+import re
+
+# Python reimplementation of a couple of MWWikiversions functions
+# from MW multiversion.
+def readDbListFile(name):
+	fcontents = open(dblistdir + name).read()
+	if fcontents[:2] == "%%":
+		return evalDbListExpression(fcontents)
+	else:
+		return fcontents.splitlines()
+
+def evalDbListExpression(expr):
+	tokens = re.split(' +([-+]) +', expr)
+	result = set(readDbListFile(tokens[0]))
+	for i in range(1, len(tokens), 2):
+		op, term = tokens[i:i + 2]
+		dbs = readDbListFile(term)
+		if op == '+':
+			result.update(dbs)
+		elif op == '-':
+			result -= set(dbs)
+
+	return "\n".join(sorted(list(result)))
+
+print(evalDbListExpression(expr))
