@@ -24,6 +24,15 @@ class openstack::adminscripts(
         group  => 'root',
     }
 
+    # Script to migrate (with suspension) instances between compute nodes
+    file { '/root/live-migrate':
+        ensure => present,
+        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/live-migrate",
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     # Script to migrate instance from one dc to another
     # (specifically, pmtpa to eqiad)
     file { '/root/dc-migrate':
@@ -79,5 +88,12 @@ class openstack::adminscripts(
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
+    }
+
+    file { '/root/.ssh/compute-hosts-key':
+        content => secret('ssh/nova/nova.key'),
+        owner   => 'nova',
+        group   => 'nova',
+        mode    => '0600',
     }
 }
