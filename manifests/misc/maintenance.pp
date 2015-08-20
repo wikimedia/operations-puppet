@@ -37,7 +37,7 @@ class misc::maintenance::refreshlinks( $ensure = present ) {
     }
 
     # add cron jobs - usage: <cluster>@<day of month> (these are just needed monthly)
-    cronjob { ['s1@1', 's2@2', 's3@3', 's4@4', 's5@5', 's6@6', 's7@7']: }
+    cronjob { ['s1@1', 's2@2', 's3@3', 's4@4', 's5@5', 's6@6', 's7@7', 'silver@8']: }
 }
 
 class misc::maintenance::pagetriage( $ensure = present ) {
@@ -387,7 +387,7 @@ class misc::maintenance::updatequerypages( $ensure = present ) {
         }
 
         # add cron jobs - usage: <cluster>@<day of month> (monthday currently unused, only sets cronjob name)
-        updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17']: }
+        updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 'silver@18']: }
         updatequerypages::enwiki::cronjob { ['updatequerypages-enwiki-only']: }
 }
 
