@@ -19,6 +19,7 @@
 # limitations under the License.
 
 import os
+import re
 import sys
 import errno
 import argparse
@@ -53,36 +54,49 @@ def parse_options():
                         help="SSL CA certificates directory",
                         default='/etc/ssl/certs')
     parser.add_argument('--time-offset-start', '-s', dest="offset_start",
-                        help="validate thisUpdate <= X secs in the future",
+                        help="validate thisUpdate/NotBefore <= X secs ahead",
                         type=int, default=60)
     parser.add_argument('--time-offset-end', '-e', dest="offset_end",
                         help="validate nextUpdate >= X secs in the future",
+                        type=int, default=3600)
+    parser.add_argument('--min-cert-life', '-m', dest="min_cert",
+                        help="validate cert life >= X secs in the future",
                         type=int, default=3600)
 
     return parser.parse_args()
 
 
 def check_output_errtext(args):
-    """check_output w/ subp std* printed to stderr on fail"""
-    try:
-        return subprocess.check_output(args, stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError as e:
-        sys.stderr.write("Command %s failed with exit code %i, output:\n%s" %
-                         (e.cmd, e.returncode, e.output))
+    """exec args, returns (stdout,stderr). raises on rv!=0 w/ stderr in msg"""
+
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (p_out, p_err) = p.communicate()
+    if p.returncode != 0:
+        sys.stderr.write("Command %s failed with exit code %i, stderr:\n%s" %
+                         (p.cmd, p.returncode, p_err))
         raise
+    return (p_out, p_err)
+
+
+def ossl_parse_stamp(stamp):
+    """Parse an timestamp from OpenSSL output to a datetime object"""
+
+    return datetime.datetime.strptime(stamp, "%b %d %H:%M:%S %Y %Z")
 
 
 def cert_x509_option(filename, attrib):
     """Returns output of an openssl x509 cert option w/ noout"""
+
     return check_output_errtext([
         "openssl", "x509", "-noout",
         "-in", filename,
         "-" + attrib,
-    ]).rstrip()
+    ])[0].rstrip()
 
 
 def cert_x509_option_kv(filename, attrib):
     """As above, but returns the value when output is k=v"""
+
     k, v = cert_x509_option(filename, attrib).split("=", 1)
     assert k == attrib
     return v
@@ -100,12 +114,33 @@ def cert_get_issuer_filename(cert, cadir):
     for issuer in glob.glob(os.path.join(cadir, issuer_hash + '.[0-9]')):
         if cert_x509_option_kv(issuer, "subject") == issuer_subject:
             return issuer
-    raise Exception("No matching issuer file found at %s for %s",
+    raise Exception("No matching issuer file found at %s for %s" %
                     (issuer_glob, cert))
 
 
-def certs_fetch_ocsp(certs, cadir, outfile, proxy):
-    """Fetch validated OCSP response for cert"""
+def ocsp_validate_window(cert, now, thisup, nextup, o_start, o_end):
+    """Validate the validity range of the OCSP response"""
+
+    thisup_notafter = now + datetime.timedelta(0, o_start)
+    if thisup > thisup_notafter:
+        raise Exception("OCSP thisUpdate for %s > %i secs in the future" %
+                        (cert, o_start))
+
+    nextup_notbefore = now + datetime.timedelta(0, o_end)
+    if nextup < nextup_notbefore:
+        raise Exception("OCSP nextUpdate for %s < %i secs in the future" %
+                        (cert, o_end))
+
+
+def certs_fetch_ocsp(out_temp, args):
+    """Fetch validated OCSP response for certs"""
+
+    cadir = args.cadir
+    certs = args.certs
+    proxy = args.proxy
+    o_start = args.offset_start
+    o_end = args.offset_end
+    min_cert = args.min_cert
 
     issuer_path = cert_get_issuer_filename(certs[0], cadir)
     ocsp_uri = cert_x509_option(certs[0], "ocsp_uri")
@@ -115,15 +150,15 @@ def certs_fetch_ocsp(certs, cadir, outfile, proxy):
             this_issuer_path = cert_get_issuer_filename(certs[cert_idx], cadir)
             this_ocsp_uri = cert_x509_option(certs[cert_idx], "ocsp_uri")
             if issuer_path != this_issuer_path:
-                raise Exception("Certs must have same Issuer (%s vs %s)!",
-                    (issuer_path, this_issuer_path))
+                raise Exception("Certs must have same Issuer (%s vs %s)!" %
+                                (issuer_path, this_issuer_path))
             if ocsp_uri != this_ocsp_uri:
-                raise Exception("Certs must have same OCSP URI (%s vs %s)!",
-                    (ocsp_uri, this_ocsp_uri))
+                raise Exception("Certs must have same OCSP URI (%s vs %s)!" %
+                                (ocsp_uri, this_ocsp_uri))
 
     cmd = [
-        "openssl", "ocsp", "-nonce",
-        "-respout", outfile,
+        "openssl", "ocsp", "-nonce", "-resp_text",
+        "-respout", out_temp,
         "-issuer", issuer_path,
     ]
 
@@ -140,44 +175,55 @@ def certs_fetch_ocsp(certs, cadir, outfile, proxy):
     for cert in certs:
         cmd.extend(["-cert", cert])
 
-    return check_output_errtext(cmd)
+    (ocsp_text, ocsp_err) = check_output_errtext(cmd)
 
+    # Check the overall response verification
+    if not re.search('^Response verify OK$', ocsp_err, re.M):
+        raise Exception("Did not find verification OK in stderr:\n%s" %
+                        (ocsp_err))
 
-def ocsp_text_datetime_field(ocsp_text, field):
-    """Create datetime object from field:datetsring line in OCSP text"""
-    for line in ocsp_text.split("\n"):
-        if ":" in line:
-            k, v = line.strip().split(":", 1)
-            if k == field:
-                return datetime.datetime.strptime(v.lstrip(),
-                                                  "%b %d %H:%M:%S %Y %Z")
-    raise Exception("Did not find OCSP datetime field for '%s'" % field)
-
-
-def ocsp_validate_window(ocspfile, offset_start, offset_end):
-    """Validate the validity range of the OCSP response"""
-
-    ocsp_text = check_output_errtext([
-        "openssl", "ocsp", "-noverify",
-        "-respin", ocspfile,
-        "-resp_text",
-    ])
-
-    thisup_dt = ocsp_text_datetime_field(ocsp_text, "This Update")
-    nextup_dt = ocsp_text_datetime_field(ocsp_text, "Next Update")
     now_dt = datetime.datetime.utcnow()
 
-    thisup_notafter = now_dt + datetime.timedelta(0, offset_start)
-    if thisup_dt > thisup_notafter:
-        raise Exception("OCSP thisUpdate more than %i secs in the future"
-                        % offset_start)
+    # This starts out based on min_cert, then is raised to the greater
+    #   of that and the "Next Update" of all certs in the set
+    cert_notafter_compare = now_dt + datetime.timedelta(0, min_cert)
 
-    nextup_notbefore = now_dt + datetime.timedelta(0, offset_end)
-    if nextup_dt < nextup_notbefore:
-        raise Exception("OCSP nextUpdate less than %i secs in the future"
-                        % offset_end)
+    # Check the windows on each of the cert responses
+    for cert in certs:
+        pat = (
+            '^' + re.escape(cert) + ': good\n'
+            + '\s*This Update: ([^\n]+)\n'
+            + '\s*Next Update: ([^\n]+)\n'
+        )
+        res = re.search(pat, ocsp_text, re.M)
+        if not res:
+            raise Exception("Did not find good update for %s in output:\n%s" %
+                            (cert, ocsp_text))
+        this_up = ossl_parse_stamp(res.group(1))
+        next_up = ossl_parse_stamp(res.group(2))
+        ocsp_validate_window(cert, now_dt, this_up, next_up, o_start, o_start)
+        if next_up > cert_notafter_compare:
+            cert_notafter_compare = next_up
 
-    return 0
+    # Check the signing cert's validity
+    v_pat = (
+        '^\s*Validity\n'
+        + '\s*Not Before: ([^\n]+)\n'
+        + '\s*Not After : ([^\n]+)\n'
+    )
+    v_res = re.search(v_pat, ocsp_text, re.M)
+    if not v_res:
+        raise Exception("Did not find cert validity in output:\n%s" %
+                        (ocsp_text))
+    cert_notbefore = ossl_parse_stamp(res.group(1))
+    cert_notafter = ossl_parse_stamp(res.group(2))
+    cert_notbefore_compare = now_dt + datetime.timedelta(0, o_start)
+    if cert_notbefore > cert_notbefore_compare:
+        raise Exception("OCSP cert validity starts > %i secs in the future!" %
+                        (o_start))
+    if cert_notafter < cert_notafter_compare:
+        raise Exception("OCSP cert validity ends before %s!" %
+                        (cert_notafter_compare))
 
 
 def mkdir_p(path):
@@ -200,8 +246,7 @@ def main():
     out_tempdir = tempfile.mkdtemp(".tmp", "update-ocsp-", out_basedir)
     out_tempfile = os.path.join(out_tempdir, out_fn)
 
-    certs_fetch_ocsp(args.certs, args.cadir, out_tempfile, args.proxy)
-    ocsp_validate_window(out_tempfile, args.offset_start, args.offset_end)
+    certs_fetch_ocsp(out_tempfile, args)
 
     os.rename(out_tempfile, args.output)
     os.rmdir(out_tempdir)
