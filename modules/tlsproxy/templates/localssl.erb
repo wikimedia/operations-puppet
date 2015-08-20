@@ -16,8 +16,8 @@ server {
 	ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
 	<% end -%>
 	<% if @do_ocsp -%>
-#	ssl_stapling on;
-#	ssl_stapling_file /var/cache/ocsp/<%= @name %>.ocsp;
+	ssl_stapling on;
+	ssl_stapling_file /var/cache/ocsp/<%= @name %>.ocsp;
 	<% end -%>
 
 	keepalive_timeout 60;
