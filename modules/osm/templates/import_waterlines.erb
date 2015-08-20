@@ -14,4 +14,5 @@ echo "
   BEGIN;
   DROP TABLE IF EXISTS water_polygons;
   ALTER TABLE water_polygons_tmp RENAME TO water_polygons;
+  CREATE INDEX water_polygons_way ON water_polygons USING gist(way);
   COMMIT;" | psql <%= @database %>
