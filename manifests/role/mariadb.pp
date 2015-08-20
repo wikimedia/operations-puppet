@@ -393,6 +393,20 @@ class role::mariadb::grants::core {
     }
 }
 
+class role::mariadb::grants::wikitech {
+
+    include passwords::misc::scripts
+    $wikiadmin_pass = $passwords::misc::scripts::wikiadmin_pass
+
+    file { '/etc/mysql/grants-wikitech.sql':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('mariadb/grants-wikitech.sql.erb'),
+    }
+}
+
 class role::mariadb::core(
     $shard
     ) {
@@ -552,6 +566,7 @@ class role::mariadb::wikitech {
 
     include standard
     include role::mariadb::grants
+    include role::mariadb::grants::wikitech
     include role::mariadb::monitor
     include passwords::misc::scripts
 
