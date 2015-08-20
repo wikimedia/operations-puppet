@@ -6,7 +6,7 @@ class base::standard-packages {
         }
     }
 
-    package { 'command-not-found':
+    package { ['command-not-found', 'command-not-found-data']:
         ensure => absent,
     }
 
