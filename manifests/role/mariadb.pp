@@ -587,11 +587,11 @@ class role::mariadb::wikitech {
         rule => "saddr 10.64.0.15 proto tcp dport (3306) ACCEPT;",
     }
 
-    # mysql from tin (T98682)
-    ferm::service { 'mysql_tin':
+    # mysql from tin and terbium (T98682, T109736)
+    ferm::service { 'mysql_tin_terbium':
         proto  => 'tcp',
         port   => '3306',
-        srange => '@resolve(tin.eqiad.wmnet)',
+        srange => '@resolve(tin.eqiad.wmnet terbium.eqiad.wmnet)',
     }
 }
 
