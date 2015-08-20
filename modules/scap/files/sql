@@ -32,10 +32,7 @@ else
     lookupdb="$db"
 fi
 host=`echo $hostcode | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
-
-# MySQL user credentials.
-MU=wikiadmin
-MP=`wikiadmin_pass`
+pass=`echo 'echo \$wgDBadminpassword;' | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
 
 # Execute mysql.
-exec mysql -u $MU -p$MP -h $host -D $db "$@"
+exec mysql -u wikiadmin -p$pass -h $host -D $db "$@"
