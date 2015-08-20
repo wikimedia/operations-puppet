@@ -20,8 +20,8 @@ files = glob.glob(os.path.join(libs_path, '*', 'package.json'))
 
 packages = []
 for file in files:
-    with open(file) as f:
+    with open(file, encoding='utf-8') as f:
         packages.append(json.load(f))
 
-with open(args.outputpath, 'w') as f:
+with open(args.outputpath, 'w', encoding='utf-8') as f:
     json.dump(packages, f)
