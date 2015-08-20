@@ -29,7 +29,10 @@
   </Directory>
 
   <%- if @elastic_backends -%>
-  ProxyPassMatch ^(/grafana-dashboards/.*)$ balancer://elastic$1
+  <LocationMatch ^(/grafana-dashboards/.*)$>
+    ProxyPassMatch balancer://elastic$1
+    Header set Cache-Control no-cache
+  </LocationMatch>
   ProxyPassReverse /grafana-dashboards balancer://elastic
 
   <Proxy balancer://elastic>

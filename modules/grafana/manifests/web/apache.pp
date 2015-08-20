@@ -28,6 +28,7 @@ class grafana::web::apache(
     include ::apache::mod::proxy_balancer
     include ::apache::mod::proxy_http
     include ::apache::mod::lbmethod_byrequests
+    include ::apache::mod::headers
 
     apache::site { 'grafana':
         ensure  => $ensure,
