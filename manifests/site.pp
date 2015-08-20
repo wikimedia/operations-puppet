@@ -1802,6 +1802,8 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
 }
 
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
+    role swift::proxy
+
     if $::hostname =~ /^ms-fe200[12]$/ {
         $ganglia_aggregator = true
     }
@@ -1810,7 +1812,6 @@ node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
         include role::swift::stats_reporter
     }
 
-    role swift::proxy
     include ::lvs::realserver
 }
 
