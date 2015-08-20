@@ -27,6 +27,7 @@ class tlsproxy::ocsp_updater {
     }
 
     cron { 'update-ocsp-all':
+        ensure  => absent,
         command => "/usr/local/sbin/update-ocsp-all webproxy.${::site}.wmnet:8080",
         minute  => fqdn_rand(60, '1adf3dd699e51805'),
         hour    => '*',
