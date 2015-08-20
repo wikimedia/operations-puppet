@@ -63,6 +63,15 @@ class misc::maintenance::pagetriage( $ensure = present ) {
         monthday => '*/2',
         command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php testwiki > /var/log/mediawiki/updatePageTriageQueue.test.log',
     }
+
+    cron { 'pagetriage_cleanup_test2wiki':
+        ensure   => $ensure,
+        user     => $::mediawiki::users::web,
+        minute   => 55,
+        hour     => 8,
+        monthday => '*/2',
+        command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php test2wiki > /var/log/mediawiki/updatePageTriageQueue.test2.log',
+    }
 }
 
 class misc::maintenance::translationnotifications( $ensure = present ) {
@@ -124,17 +133,10 @@ class misc::maintenance::echo_mail_batch( $ensure = present ) {
 }
 
 class misc::maintenance::update_flaggedrev_stats( $ensure = present ) {
-    file { '/srv/mediawiki/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh':
-        ensure => $ensure,
-        source => 'puppet:///files/misc/scripts/wikimedia-periodic-update.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-    }
 
     cron { 'update_flaggedrev_stats':
         ensure  => $ensure,
-        command => '/srv/mediawiki/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null',
+        command => '/usr/local/bin/mwscriptwikiset extensions/FlaggedRevs/maintenance/updateStats.php flaggedrevs.dblist > /dev/null',
         user    => $::mediawiki::users::web,
         hour    => '*/2',
         minute  => '0',
@@ -154,19 +156,11 @@ class misc::maintenance::cleanup_upload_stash( $ensure = present ) {
 class misc::maintenance::update_special_pages( $ensure = present ) {
     cron { 'update_special_pages':
         ensure   => $ensure,
-        command  => 'flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /var/log/mediawiki/updateSpecialPages.log 2>&1',
+        command  => 'flock -n /var/lock/update-special-pages /usr/local/bin/foreachwiki updateSpecialPages.php > /var/log/mediawiki/updateSpecialPages.log 2>&1',
         user     => $::mediawiki::users::web,
         monthday => '*/3',
         hour     => 5,
         minute   => 0,
-    }
-
-    file { '/usr/local/bin/update-special-pages':
-        ensure => $ensure,
-        source => 'puppet:///files/misc/scripts/update-special-pages',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
     }
 }
 
