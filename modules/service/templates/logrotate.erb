@@ -5,7 +5,10 @@
     copytruncate
     missingok
     compress
+    delaycompress
     notifempty
     rotate 15
-    size 256M
+    postrotate
+	    invoke-rc.d <%= @title %> reload
+    endscript
 }
