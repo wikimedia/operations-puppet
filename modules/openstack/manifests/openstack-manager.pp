@@ -115,10 +115,6 @@ class openstack::openstack-manager(
             ensure  => present,
             user    => $::mediawiki::users::web,
             command => '/usr/local/bin/mwscript maintenance/runJobs.php --wiki=labswiki > /dev/null 2>&1';
-        'send-echo-emails':
-            ensure  => present,
-            user    => $::mediawiki::users::web,
-            command => '/usr/local/bin/mwscript extensions/Echo/maintenance/processEchoEmailBatch.php --wiki=labswiki > /dev/null 2>&1';
         'db-bak':
             ensure  => present,
             user    => 'root',
