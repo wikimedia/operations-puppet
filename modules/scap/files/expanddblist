@@ -1,0 +1,7 @@
+#!/usr/bin/php
+<?php
+include "/srv/mediawiki/multiversion/MWWikiversions.php";
+chdir( "/srv/mediawiki" );
+foreach ( MWWikiversions::evalDbListExpression( $argv[1] ) as $wiki ) {
+        echo $wiki . "\n";
+}
