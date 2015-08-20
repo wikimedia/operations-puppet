@@ -6,7 +6,6 @@
 # FIXME: Why are these named-like-this and namedLikeThis
 # FIXME: Why man pages for some but not all?
 class scap::scripts {
-    require misc::deployment::passwordscripts
     require mediawiki::users
 
     file { '/usr/local/bin/dologmsg':
