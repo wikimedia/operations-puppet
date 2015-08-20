@@ -67,8 +67,8 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
             # Increase connection tracking size
             # and bucket since all of labs is
             # tracked on the network host
-            'net.netfilter.nf_conntrack_max'     => 262144,
-            'net.netfilter.nf_conntrack_buckets' => 32768,
+            'net.netfilter.nf_conntrack_max'     => 524288,
+            'net.netfilter.nf_conntrack_buckets' => 65536,
         },
         priority => 50,
     }
