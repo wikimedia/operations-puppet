@@ -1,5 +1,5 @@
 class swift_new::proxy (
-    $proxy_address,
+    $proxy_service_host,
     $rewrite_thumb_server,
     $shard_container_list,
     $accounts = $swift_new::params::accounts,
