@@ -2289,7 +2289,6 @@ node 'terbium.eqiad.wmnet' {
     }
 
     # (T17434) Periodical run of currently disabled special pages
-    # to be run against PMTPA slaves
     include misc::maintenance::updatequerypages
 
     package { 'python-mysqldb':
