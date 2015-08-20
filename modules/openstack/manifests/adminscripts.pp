@@ -80,4 +80,11 @@ class openstack::adminscripts(
         owner  => 'root',
         group  => 'root',
     }
+
+    file { '/root/.ssh/compute-hosts-key':
+        content => secret('ssh/nova/nova.key'),
+        owner   => 'nova',
+        group   => 'nova',
+        mode    => '0600',
+    }
 }
