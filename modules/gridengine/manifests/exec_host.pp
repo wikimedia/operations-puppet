@@ -11,6 +11,13 @@ class gridengine::exec_host(
         require => Package['gridengine-common'],
     }
 
+    service { 'gridengine-exec':
+        ensure  => running,
+        enable  => true,
+        pattern => 'sge_execd',
+        require => Package['gridengine-exec'],
+    }
+
     gridengine::resource { "exec-${::fqdn}":
         rname   => $::fqdn,
         dir     => 'exechosts',
@@ -18,4 +25,3 @@ class gridengine::exec_host(
     }
 
 }
-
