@@ -36,8 +36,10 @@ class toollabs::static(
     }
 
     exec { 'generate-cdnjs-packages-json':
-        command => '/usr/local/bin/cdnjs-packages-gen /srv/cdnjs /srv/cdnjs/packages.json',
-        require => [File['/usr/local/bin/cdnjs-packages-gen'], Git::Clone['cdnjs']],
+        command     => '/usr/local/bin/cdnjs-packages-gen /srv/cdnjs /srv/cdnjs/packages.json',
+        refreshonly => true,
+        subscribe   => [File['/usr/local/bin/cdnjs-packages-gen'],
+                        Git::Clone['cdnjs']],
     }
 
     $resolver = join($::nameservers, ' ')
