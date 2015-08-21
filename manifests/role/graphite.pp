@@ -280,16 +280,14 @@ class role::graphite::production::alerts {
     # Monitor memcached error rate from MediaWiki. This is commonly a sign of
     # a failing nutcracker instance that can be tracked down via
     # https://logstash.wikimedia.org/#/dashboard/elasticsearch/memcached
-    monitoring::graphite_anomaly { 'mediawiki-memcached-anomoly':
-        description  => 'MediaWiki memcached error rate',
-        metric       => 'logstash.rate.mediawiki.memcached.ERROR.count',
-        # Check over the last 100 samples and:
-        # - alert warn if more than 5% are over the confidence band
-        # - alert critical if more than 15% are over the confidence band
-        check_window => 100,
-        warning      => 5,
-        critical     => 15,
-        over         => true,
+    monitoring::graphite_threshold { 'mediawiki-memcached-threshold':
+        description => 'MediaWiki memcached error rate',
+        metric      => 'logstash.rate.mediawiki.memcached.ERROR.sum',
+        # Nominal error rate in production is <150/min
+        warning     => 1000,
+        critical    => 5000,
+        from        => '5min',
+        percentage  => 40,
     }
 
 }
