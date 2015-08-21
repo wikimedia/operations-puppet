@@ -56,18 +56,6 @@ class openstack::nova::compute(
             mode    => '0600',
             require => File['/var/lib/nova/.ssh'],
         }
-        file { '/root/.ssh/novamigrate.pub':
-            content => secret('ssh/nova/novamigrate.pub'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0600',
-        }
-        file { '/root/.ssh/novamigrate':
-            content => secret('ssh/nova/novamigrate'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0600',
-        }
         file { '/etc/libvirt/libvirtd.conf':
             notify  => Service['libvirt-bin'],
             owner   => 'root',
