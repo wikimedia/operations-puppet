@@ -56,6 +56,13 @@ class openstack::nova::compute(
             mode    => '0600',
             require => File['/var/lib/nova/.ssh'],
         }
+
+        # Support rsyncing instance files between labvirts.
+        @@instancersync { "${::hostname}instancersync":
+            hostname => $::hostname,
+        }
+        Instancersync <<| |>>
+
         file { '/etc/libvirt/libvirtd.conf':
             notify  => Service['libvirt-bin'],
             owner   => 'root',
@@ -170,5 +177,15 @@ class openstack::nova::compute(
     nrpe::monitor_service { 'check_nova_compute_process':
         description  => 'nova-compute process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-compute'",
+    }
+}
+
+define instancersync (
+    $hostname = undef) {
+
+    rsync::server::module { "nova_instance_rsync_${hostname}":
+        path        => '/var/lib/nova/instances',
+        read_only   => 'no',
+        hosts_allow => [$hostname],
     }
 }
