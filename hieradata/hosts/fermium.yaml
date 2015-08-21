@@ -1,2 +1,5 @@
 admin::groups:
   - mailman-admins
+mailman::lists_ip:
+  - '208.80.154.74'
+  - '2620:0:861:3::2'
