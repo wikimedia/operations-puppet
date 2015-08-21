@@ -24,4 +24,8 @@ $conf['default_metric'] = "cpu_report";
 # rrdcached
 $conf['rrdcached_socket'] = "unix:<%= @rrdcached_socket %>";
 
+# Makes "Collapse All Metric Groups" the default view when looking
+#  into a host (some of ours have hundreds...)
+$conf['metric_groups_initially_collapsed'] = true;
+
 ?>
