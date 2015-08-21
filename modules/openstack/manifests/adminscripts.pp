@@ -96,10 +96,4 @@ class openstack::adminscripts(
         group   => 'nova',
         mode    => '0600',
     }
-    file { '/root/.ssh/novamigrate':
-        content => secret('ssh/nova/novamigrate'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0600',
-    }
 }
