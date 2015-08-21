@@ -56,7 +56,8 @@ class openstack::nova::compute(
             mode    => '0600',
             require => File['/var/lib/nova/.ssh'],
         }
-        ssh::userkey { 'root':
+        ssh::userkey { 'novamigrate':
+            user    => 'root',
             content => secret('ssh/nova/novamigrate.pub'),
         }
         file { '/root/.ssh/novamigrate':
