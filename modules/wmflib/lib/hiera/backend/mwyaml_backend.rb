@@ -11,13 +11,18 @@ class Hiera
         Hiera.debug("Looking up #{key}")
 
         Backend.datasources(scope, order_override) do |source|
-          # Small hack: - we don't want to search any datasource but the
+          # Small hack: We don't want to search any datasource but the
           # labs/%{::labsproject} hierarchy here; so we plainly exit
-          # in any other case
-          next unless source[0,5] == 'labs/'
-          source_arr = source.split('/')
-          next if source_arr[1].nil?
-          source = source_arr[1].capitalize
+          # in any other case.
+          next unless source.start_with?('labs/') and source.length > 'labs/'.length
+
+          # For hieradata/, the hierarchy is defined as
+          # "labs/%{::labsproject}/host/%{::hostname}" and
+          # "labs/%{::labsproject}/common".  We map the former
+          # verbatim to "Hiera:$labsproject/host/$hostname", while the
+          # latter gets simplified to "Hiera:$labsproject".  In both
+          # cases, we capitalize $labsproject.
+          source = source['labs/'.length..-1].chomp('/common').capitalize
 
           data = @cache.read(source, Hash, {}) do |content|
             YAML.load(content)
