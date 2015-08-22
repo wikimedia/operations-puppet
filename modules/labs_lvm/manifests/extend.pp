@@ -15,7 +15,6 @@
 # Sample Usage:
 #   labs_lvm::extend { '/srv': size => '8G' }
 #
-
 define labs_lvm::extend(
     $mountat    = $title,
     $mountowner = 'root',
@@ -23,12 +22,10 @@ define labs_lvm::extend(
     $mountmode  = '755',
     $size       = '100%FREE',
 ) {
-
     exec { "extend-vd-${mountat}":
         logoutput => 'on_failure',
         require   => File['/usr/local/sbin/extend-instance-vol'],
         command   => "/usr/local/sbin/extend-instance-vol '${mountat}' '${size}'",
+        unless    => "/usr/local/sbin/extend-instance-vol --test '${mountat}' '${size}'",
     }
-
 }
-

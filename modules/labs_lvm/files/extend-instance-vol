@@ -1,4 +1,15 @@
-#! /bin/bash
+#!/bin/bash
+
+# If we are called with --test as the first parameter, this means that
+# we change nothing on disk, but indicate with an exit status other
+# than 0 that we would have changed anything and with an exit status
+# of 0 that this call would have been a no-op.
+if [ "x$1" = "x--test" ]; then
+  dryrun=1
+  shift
+else
+  dryrun=0
+fi
 
 mount="$1"; shift
 size="$1"; shift
@@ -24,13 +35,26 @@ if ! /sbin/lvs "$volume" >/dev/null 2>&1; then
 fi
 
 if /sbin/lvextend -t $sopt "$volume" >/dev/null 2>&1; then
+  if [ $dryrun -ne 0 ]; then
+    exit 1
+  fi
   /sbin/lvextend -r $sopt "$volume"
   exit
 else
-  if [ "$?" -eq 5 ]; then
+  lvextend_exitcode=$?
+  if [ $lvextend_exitcode -eq 5 ]; then
     echo "$0: no space left to grow $mount to $size" >&2
     exit 2
   fi
+  # This is the only case when --test should succeed: All the tests
+  # above have passed and lvextend wouldn't do anything because the
+  # partition is already of the requested size.
+  if [ $lvextend_exitcode -eq 3 ] && [ $dryrun -ne 0 ]; then
+    exit 0
+  fi
+  if [ $dryrun -ne 0 ]; then
+    exit 1
+  else
+    exit 0
+  fi
 fi
-
-exit 0
