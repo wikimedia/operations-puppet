@@ -204,7 +204,7 @@ sub vcl_deliver {
 		// The exact format of the cookie-delete string is copied from examples of normal CA cookie deletes (e.g. for logouts?) seen in traffic logs
 		header.append(resp.http.Set-Cookie, "centralauth_Token=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.wikidata.org; secure; httponly");
 	}
-	// as above for centraulauth_User (see https://phabricator.wikimedia.org/T109038#1562651 )
+	// As above for centralauth_User (see https://phabricator.wikimedia.org/T109038#1562651)
 	if(req.http.Host ~ "(?i)(^|\.)wikidata\.org$" && req.http.Cookie ~ "centralauth_User.*centralauth_User") {
 		// The exact format of the cookie-delete string is copied from examples of normal CA cookie deletes (e.g. for logouts?) seen in traffic logs
 		header.append(resp.http.Set-Cookie, "centralauth_User=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.wikidata.org; secure; httponly");
