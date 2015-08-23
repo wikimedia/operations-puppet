@@ -1,0 +1,89 @@
+#!/bin/bash
+# send project changes in Phabricator for the last week
+# to aklapper
+# per T85183
+# ! this file is managed by puppet !
+# ./modules/phabricator/templates/<%= @script_name %>.erb
+
+declare rcpt_address='<%= @rcpt_address %>'
+declare sndr_address='<%= @sndr_address %>'
+
+declare sql_host='<%= @mysql_host %>'
+declare sql_user='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_user') %>'
+declare sql_name='phabricator_project'
+declare sql_pass='<%= scope.lookupvar('passwords::mysql::phabricator::metrics_pass') %>'
+
+#echo "result_creations_and_name_changes"
+result_creations_and_name_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u $sql_user $sql_name << END
+
+SELECT oldValue, newValue
+    FROM project_transaction
+    WHERE transactionType = "project:name"
+    AND dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK));
+
+END
+)
+
+#echo "result_color_changes"
+result_color_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT project_transaction.oldValue, project_transaction.newValue, project.name
+    FROM project_transaction
+    JOIN project
+    WHERE project_transaction.transactionType = "project:color"
+    AND project_transaction.objectPHID = project.phid
+    AND project_transaction.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK));
+
+END
+)
+
+#echo "result_policy_locking_archiving_changes"
+result_policy_locking_archiving_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT project_transaction.oldValue, project_transaction.newValue,
+    project_transaction.transactionType, project.name
+    FROM project_transaction
+    JOIN project
+    WHERE (project_transaction.transactionType = "core:join-policy"
+    OR project_transaction.transactionType = "core:edit-policy"
+    OR project_transaction.transactionType = "core:view-policy"
+    OR project_transaction.transactionType = "project:locked"
+    OR project_transaction.transactionType = "project:status")
+    AND project_transaction.objectPHID = project.phid
+    AND project_transaction.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK));
+
+END
+)
+
+
+creations_and_name_changes=$(echo $result_creations_and_name_changes)
+color_changes=$(echo $result_color_changes)
+policy_locking_archiving_changes=$(echo $result_policy_locking_archiving_changes)
+
+
+# the actual email
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" ${rcpt_address}
+
+Hi Phabricator admin,
+
+this is your automatic weekly Phabricator project changes mail.
+
+
+PROJECT CREATIONS AND PROJECT NAME CHANGES:
+${creations_and_name_changes}
+
+
+PROJECT COLOR CHANGES:
+${color_changes}
+
+
+PROJECT POLICY/LOCKING/ARCHIVING CHANGES:
+${policy_locking_archiving_changes}
+
+
+
+Yours sincerely,
+Fab Rick Aytor
+
+(via $(basename $0) on $(hostname) at $(date))
+EOF
