@@ -30,6 +30,7 @@ class dynamicproxy (
     },
     $error_description    = "Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.",
     $error_details        = undef,
+    $web_domain           = undef,
 ) {
     if $ssl_certificate_name != false and $ssl_settings == undef {
         fail('ssl_certificate_nme set but ssl_settings not set')
