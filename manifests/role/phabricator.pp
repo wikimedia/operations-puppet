@@ -163,6 +163,14 @@ class role::phabricator::main {
         sndr_address => 'communitymetrics@wikimedia.org',
         monthday     => '1',
     }
+
+    # project changes mail (T85183)
+    phabricator::logmail {'projectchanges':
+        script_name  => 'project_changes.sh',
+        rcpt_address => 'aklapper@wikimedia.org',
+        sndr_address => 'aklapper@wikimedia.org',
+        monthday     => [1, 8, 15, 22, 29],
+    }
 }
 
 # phabricator instance on wmflabs at phab-0[1-9].wmflabs.org
