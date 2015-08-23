@@ -52,15 +52,15 @@ server {
     charset utf-8;
 
     location = / {
-        return 302 "https://tools.wmflabs.org";
+        return 302 "https://<%= @web_domain %>";
     }
 
     location = /cdnjs {
-        return 302 "https://tools.wmflabs.org/cdnjs/";
+        return 302 "https://<%= @web_domain %>/cdnjs/";
     }
 
     location = /cdnjs/ {
-        return 302 "https://tools.wmflabs.org/cdnjs/";
+        return 302 "https://<%= @web_domain %>/cdnjs/";
     }
 
     location ^~ /cdnjs/ {
