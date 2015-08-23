@@ -35,6 +35,7 @@ class toollabs::proxy(
             logo_alt => "Wikimedia Tool Labs",
             favicon  => "/favicon.ico",
         },
+        web_domain           => $web_domain,
     }
 
     $proxy_nodes = join($proxies, ' ') # $proxies comes from toollabs base class
