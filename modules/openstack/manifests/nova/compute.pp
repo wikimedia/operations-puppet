@@ -64,6 +64,13 @@ class openstack::nova::compute(
         }
         Instancersync <<| |>>
 
+    sudo::user { 'nova':
+        privileges => [
+            "ALL = (root) NOPASSWD: /usr/bin/rsync",
+        ],
+    }
+
+
         file { '/etc/libvirt/libvirtd.conf':
             notify  => Service['libvirt-bin'],
             owner   => 'root',
