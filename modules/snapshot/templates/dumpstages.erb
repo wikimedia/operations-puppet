@@ -2,23 +2,18 @@
 
 # slots_used numcommands on_failure error_notify command
 <% if @stagestype == 'normal' or @stagestype == 'partial' %>
-# stubs first
-1 8 <%= @stages['smallwikis']['firststage'] -%> --job xmlstubsdump
-# tables next so inconsistencies between stubs and tables aren't too huge
-1 8 <%= @stages['smallwikis']['rest'] %> --job tables
-# stubs for big wikis
-4 2 <%= @stages['bigwikis']['firststage'] -%> --job xmlstubsdump
-# tables for big wikis
-1 8 <%= @stages['bigwikis']['rest'] -%> --job tables
-# recombine stubs for big wikis
-1 8 <%= @stages['bigwikis']['rest'] -%> --job xmlstubsdumprecombine
+# mark the start of the run for all small, big wikis
+8 1 <%= @stages['smallwikis']['firststage'] -%> --job createdirs; <%= @stages['bigwikis']['firststage'] %> --job createdirs
+
+# stubs and then tables so inconsistencies between stubs and tables aren't too huge
+1 8 <%= @stages['smallwikis']['rest'] -%> --job xmlstubsdump; <%= @stages['smallwikis']['rest'] %> --job tables
+# stubs, recombines, tables for big wikis
+4 2 <%= @stages['bigwikis']['rest'] -%> --job xmlstubsdump; <%= @stages['bigwikis']['rest'] -%> --job xmlstubsdumprecombine; <%= @stages['bigwikis']['rest'] -%> --job tables
 
 # regular articles
 1 8 <%= @stages['smallwikis']['rest'] -%> --job articlesdump
-# regular articles for big wikis
-4 2 <%= @stages['bigwikis']['rest'] -%> --job articlesdump
-# recombine articles for big wikis
-1 8 <%= @stages['bigwikis']['rest'] -%> --job articlesdumprecombine
+# regular articles, recombines for big wikis
+4 2 <%= @stages['bigwikis']['rest'] -%> --job articlesdump; <%= @stages['bigwikis']['rest'] -%> --job articlesdumprecombine
 
 # regular articles multistream
 1 8 <%= @stages['smallwikis']['rest'] -%> --job articlesmultistreamdump
@@ -27,10 +22,8 @@
 
 # articles plus meta pages
 1 8 <%= @stages['smallwikis']['rest'] -%> --job metacurrentdump
-# articles plus meta pages for big wikis
-4 2 <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump
-# recombine articles plus meta pages for big wikis
-1 8 <%= @stages['bigwikis']['rest'] -%> --job metacurrentdumprecombine
+# articles, recombine plus meta pages for big wikis
+4 2 <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump; <%= @stages['bigwikis']['rest'] -%> --job metacurrentdumprecombine
 
 <% if @stagestype == 'normal' %>
 # all remaining jobs
