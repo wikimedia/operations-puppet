@@ -263,38 +263,18 @@ class role::backup::storage() {
 
     system::role { 'role::backup::storage': description => 'Backup Storage' }
 
-    # TODO: Temporary workaround while migrating from the netapp to DAS
-    if $::hostname == 'helium' {
-        include nfs::netapp::common
-        mount { '/srv/baculasd1' :
-            ensure  => mounted,
-            device  => "${nfs::netapp::common::device}:/vol/baculasd1",
-            fstype  => 'nfs',
-            options => "${nfs::netapp::common::options},rw",
-            require => File['/srv/baculasd1'],
-        }
+    mount { '/srv/baculasd1' :
+        ensure  => mounted,
+        device  => '/dev/mapper/bacula-baculasd1',
+        fstype  => 'ext4',
+        require => File['/srv/baculasd1'],
+    }
 
-        mount { '/srv/baculasd2' :
-            ensure  => mounted,
-            device  => "${nfs::netapp::common::device}:/vol/baculasd2",
-            fstype  => 'nfs',
-            options => "${nfs::netapp::common::options},rw",
-            require => File['/srv/baculasd2'],
-        }
-    } else {
-        mount { '/srv/baculasd1' :
-            ensure  => mounted,
-            device  => '/dev/mapper/bacula-baculasd1',
-            fstype  => 'ext4',
-            require => File['/srv/baculasd1'],
-        }
-
-        mount { '/srv/baculasd2' :
-            ensure  => mounted,
-            device  => '/dev/mapper/bacula-baculasd2',
-            fstype  => 'ext4',
-            require => File['/srv/baculasd2'],
-        }
+    mount { '/srv/baculasd2' :
+        ensure  => mounted,
+        device  => '/dev/mapper/bacula-baculasd2',
+        fstype  => 'ext4',
+        require => File['/srv/baculasd2'],
     }
 
     class { 'bacula::storage':
