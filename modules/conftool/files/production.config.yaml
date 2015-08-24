@@ -1,5 +1,4 @@
 hosts:
-  - https://etcd1001.eqiad.wmnet:2379
   - https://etcd1002.eqiad.wmnet:2379
   - https://conf1001.eqiad.wmnet:2379
   - https://conf1002.eqiad.wmnet:2379
