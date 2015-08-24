@@ -39,7 +39,7 @@ $site = $main_ipaddress ? {
 $site_tier = $::realm ? {
     production => $::site ? {
         'eqiad' => 'one',
-        'codfw' => 'one',
+        'codfw' => 'two', # temporary, see T110065
         'esams' => 'two',
         'ulsfo' => 'two',
     },
