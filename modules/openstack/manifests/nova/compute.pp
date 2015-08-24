@@ -57,6 +57,7 @@ class openstack::nova::compute(
             require => File['/var/lib/nova/.ssh'],
         }
 
+        include rsync::server
         # Support rsyncing instance files between labvirts.
         @@instancersync { "${::hostname}instancersync":
             hostname => $::hostname,
