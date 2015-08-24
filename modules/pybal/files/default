@@ -1,0 +1,2 @@
+# ugly hack to raise the open files limit: T110091
+ulimit -n 10240

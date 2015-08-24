@@ -3,9 +3,18 @@ class pybal {
         ensure => installed,
     }
 
+    file { '/etc/default/pybal':
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/pybal/default',
+        require => Package['pybal'],
+    }
+
     service { 'pybal':
         ensure => running,
         enable => true,
+        require => File['/etc/default/pybal'],
     }
 
     nrpe::monitor_service { 'pybal':
