@@ -140,31 +140,6 @@ node 'analytics1021.eqiad.wmnet' {
 
 }
 
-# Above analytics* kafka nodes are being renamed kafka*
-node /kafka10(12|18|22)\.eqiad\.wmnet/ {
-    # Kafka brokers are routed via IPv6 so that
-    # other DCs can address without public IPv4
-    # addresses.
-    interface::add_ip6_mapped { 'main': }
-
-    role analytics::kafka::server
-    include role::analytics
-    include standard
-}
-
-node /kafka10(13|14|20)\.eqiad\.wmnet/ {
-    # Kafka brokers are routed via IPv6 so that
-    # other DCs can address without public IPv4
-    # addresses.
-    interface::add_ip6_mapped { 'main': }
-
-    # These will be provisioned as new brokers soon - otto.
-    # role analytics::kafka::server
-    include standard
-}
-
-
-
 # analytics1026 is the Impala master
 # (llama, impala-state-store, impala-catalog)
 # analytics1026 also runs misc udp2log for sqstat
@@ -1184,6 +1159,18 @@ node 'iron.wikimedia.org' {
     include standard
     include role::ipmi
     include role::access_new_install
+}
+
+# Analytics Kafka Brokers
+node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
+    # Kafka brokers are routed via IPv6 so that
+    # other DCs can address without public IPv4
+    # addresses.
+    interface::add_ip6_mapped { 'main': }
+
+    role analytics::kafka::server
+    include role::analytics
+    include standard
 }
 
 # virtual machine for misc. PHP apps
