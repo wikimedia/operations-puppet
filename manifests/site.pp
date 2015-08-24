@@ -940,8 +940,8 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
 }
 
 # Etcd distributed kv store
-node /^etcd100[1-3]\.eqiad\.wmnet$/ {
-    if ($hostname != 'etcd1003') {
+node /^etcd100[1-3\.eqiad\.wmnet$/ {
+    if ($hostname == 'etcd1002') {
         role etcd
     } else {
         include standard
