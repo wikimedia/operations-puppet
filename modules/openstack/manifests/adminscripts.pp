@@ -96,4 +96,21 @@ class openstack::adminscripts(
         group   => 'nova',
         mode    => '0600',
     }
+
+    # Installing this package ensures that we have all the UIDs that
+    #  are used to store an instance volume.  That's important for
+    #  when we rsync files via this host.
+    package { 'libvirt-bin':
+        ensure => present,
+    }
+    # Script to rsync (with suspension) instances between compute nodes.
+    #  This ignores most nova facilities so is a good last resort
+    #  when nova is misbehaving.
+    file { '/root/sus-migrate':
+        ensure => present,
+        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/sus-migrate",
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
 }
