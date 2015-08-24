@@ -85,7 +85,7 @@ define base::service_unit (
         }
 
         $path = $initscript ? {
-            'systemd'  => "/etc/systemd/system/${name}.service",
+            'systemd'  => "/lib/systemd/system/${name}.service",
             'upstart'  => "/etc/init/${name}.conf",
             default    => "/etc/init.d/${name}"
         }
@@ -93,6 +93,13 @@ define base::service_unit (
         # systemd complains if unit files are executable
         if $initscript == 'systemd' {
             $i_mode = '0444'
+            # TODO: Temporary resource to ensure old /etc based units removal
+            # Run before the actual /lib population in order to depend on it for
+            # refresh systemd. Delete after a week or so
+            file { "/etc/systemd/system/${name}.service":
+                ensure => absent,
+                before => File[$path],
+            }
         } else {
             $i_mode = '0544'
         }
