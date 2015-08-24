@@ -16,9 +16,9 @@ class openstack::adminscripts(
     }
 
     # Script to cold-migrate instances between compute nodes
-    file { '/root/cold-migrate':
+    file { '/root/cold-nova-migrate':
         ensure => present,
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/cold-migrate",
+        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/cold-nova-migrate",
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
@@ -106,9 +106,9 @@ class openstack::adminscripts(
     # Script to rsync (with suspension) instances between compute nodes.
     #  This ignores most nova facilities so is a good last resort
     #  when nova is misbehaving.
-    file { '/root/sus-migrate':
+    file { '/root/cold-migrate':
         ensure => present,
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/sus-migrate",
+        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/cold-migrate",
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
