@@ -130,6 +130,16 @@ class elasticsearch($cluster_name,
     # config files because you need to be somewhat careful when restarting it.
     # So, for now at least, we'll be restarting it manually.
 
+    # T109497 elasticsearch 1.6.0 init script does not recreate the run
+    # directory which is on tmpfs.
+    file { '/var/run/elasticsearch':
+        ensure  => directory,
+        owner   => 'elasticsearch',
+        group   => 'elasticsearch',
+        mode    => '0755',
+        require => Package['elasticsearch'],  # provides user
+    }
+
     # Keep service running
     service { 'elasticsearch':
         ensure  => running,
@@ -139,6 +149,7 @@ class elasticsearch($cluster_name,
             File['/etc/elasticsearch/elasticsearch.yml'],
             File['/etc/elasticsearch/logging.yml'],
             File['/etc/default/elasticsearch'],
+            File['/var/run/elasticsearch'],
         ],
     }
 
