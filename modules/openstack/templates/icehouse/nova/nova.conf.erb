@@ -10,7 +10,7 @@ instance_name_template=i-%08x
 daemonize=1
 scheduler_driver=nova.scheduler.filter_scheduler.FilterScheduler
 wmf_scheduler_hosts_pool=labvirt1001,labvirt1002,labvirt1003,labvirt1004,labvirt1006,labvirt1007,labvirt1008,labvirt1009
-scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter
+scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter,DiskFilter
 
 # ceilometer things
 
@@ -122,9 +122,8 @@ notification_driver = ceilometer.compute.nova_notifier
 #  that to 1.3.
 ram_allocation_ratio=1.3
 
-# Apparently the nova scheduler thinks nothing of scheduling 100% of
-#  the disk space of a node.  Let's not do that.
-disk_allocation_ratio=0.9
+# Since our images are copy-on-write we can support some overcommitting here.
+disk_allocation_ratio=1.5
 
 
 # Deprecated, remove in Kilo:
