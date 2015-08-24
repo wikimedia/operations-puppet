@@ -85,7 +85,7 @@ define base::service_unit (
         }
 
         $path = $initscript ? {
-            'systemd'  => "/etc/systemd/system/${name}.service",
+            'systemd'  => "/lib/systemd/system/${name}.service",
             'upstart'  => "/etc/init/${name}.conf",
             default    => "/etc/init.d/${name}"
         }
