@@ -12,6 +12,8 @@ class role::maps::master {
     include ::role::tilerator
     include ::redis
 
+    ganglia::plugin::python { 'diskstat': }
+
     system::role { 'role::maps::master':
         ensure      => 'present',
         description => 'Maps Postgres master',
@@ -77,14 +79,17 @@ class role::maps::slave {
     include ::role::kartotherian
     include ::role::tilerator
 
-    if $::realm == 'production' {
-        include lvs::realserver
-    }
+    ganglia::plugin::python { 'diskstat': }
 
     system::role { 'role::maps::slave':
         ensure      => 'present',
         description => 'Maps Postgres slave',
     }
+
+    if $::realm == 'production' {
+        include lvs::realserver
+    }
+
     # Tuning
     file { '/etc/postgresql/9.4/main/tuning.conf':
         ensure => 'present',
