@@ -64,6 +64,12 @@ class openstack::nova::compute(
         }
         Instancersync <<| |>>
 
+        rsync::server::module { "nova_instance_rsync_controller":
+            path        => '/var/lib/nova/instances',
+            read_only   => 'false',
+            hosts_allow => [hiera('labs_nova_controller')],
+        }
+
         file { '/etc/libvirt/libvirtd.conf':
             notify  => Service['libvirt-bin'],
             owner   => 'root',
