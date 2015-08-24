@@ -45,20 +45,23 @@ class NovaInstance(object):
             self.instance_id,
             source,
             self.instance.status)
+        if (source == destination):
+            print "source and destination host are the same.  Nothing to do."
+            exit(0)
 
         self.instance.stop()
         self.wait_for_status('SHUTOFF')
 
         imagedir = "/var/lib/nova/instances/%s" % self.instance_id
 
-        args = ["/usr/bin/rsync", "-S", "-av", "%s.eqiad.wmnet::nova_instance_rsync_controller/%s" % (source, self.instance_id), "/tmp/novamigrate"]
+        args = ["/usr/bin/rsync", "-S", "-av", "%s.eqiad.wmnet::nova_instance_rsync_controller/%s" % (source, self.instance_id), "/srv/migratetmp"]
         print " ".join(args)
         r = subprocess.call(args)
         if r:
             print ("rsync from source to local failed.")
             return(1)
 
-        args = ["rsync", "-S", "-av", "/tmp/novamigrate/%s" % self.instance_id, "%s.eqiad.wmnet::nova_instance_rsync_controller/" % destination]
+        args = ["rsync", "-S", "-av", "/srv/migratetmp/%s" % self.instance_id, "%s.eqiad.wmnet::nova_instance_rsync_controller/" % destination]
         print " ".join(args)
         r = subprocess.call(args)
         if r:
@@ -83,7 +86,11 @@ class NovaInstance(object):
         self.wait_for_status('ACTIVE')
 
         if host_moved:
-            print "Instance is active.  Cleaning up old instance files on %s" % source
+            print "Instance is active."
+            confirm = ""
+            while (confirm != "cleanup"):
+                confirm = raw_input("Verify that the instance is healthy, then type 'cleanup' to delete old instance files:  ")
+            print "Cleaning up old instance files on %s" % source
             args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
                     "nova@%s.eqiad.wmnet" % source,
                     "rm -rf", imagedir]
@@ -97,6 +104,7 @@ class NovaInstance(object):
             self.instance_id,
             self.instance._info['OS-EXT-SRV-ATTR:host'],
             self.instance.status)
+        print "Note that you will need to manually clean up /srv/migratetmp."
 
 
 if __name__ == "__main__":
