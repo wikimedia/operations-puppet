@@ -15,17 +15,17 @@ class role::ipsec ($hosts = undef) {
         $ipsec_cluster = regsubst(hiera('cluster'), '_', '::ipsec::')
         $cluster_nodes = hiera("${ipsec_cluster}::nodes")
         # for 'left' nodes in cache sites, enumerate 'right' nodes in "main" sites
-        if $::site == 'esams' or $::site == 'ulsfo' {
-            $targets = concat(
-                $cluster_nodes['eqiad'],
-                $cluster_nodes['codfw']
-            )
+
+        # Note codfw tier2, which isn't controlled by $site_tier... T110065
+        if $::site == 'esams' or $::site == 'ulsfo' or $::site == 'codfw' {
+            $targets = $cluster_nodes['eqiad']
         }
         # for 'left' nodes in "main" sites, enumerate 'right' nodes in cache sites
-        if $::site == 'eqiad' or $::site == 'codfw' {
+        if $::site == 'eqiad' {
             $targets = concat(
                 $cluster_nodes['esams'],
-                $cluster_nodes['ulsfo']
+                $cluster_nodes['ulsfo'],
+                $cluster_nodes['codfw']
             )
         }
     }
