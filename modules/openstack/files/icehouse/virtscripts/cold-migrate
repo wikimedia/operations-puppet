@@ -4,24 +4,17 @@
 # puppet:///modules/openstack/icehouse/virtscripts/cold-migrate
 #####################################################################
 """
- cold-migrate is a not-very-smart wrapper around the standard
- 'nova migrate' feature.  As documented, nova migration requires
- several steps, each of which includes 'wait until status is...'
- so it's not especially useful for batch applications.  This
- script should be reliable for running multiple migrations
- in sequence.
+ cold-migrate stops an instance, moves it to a new host,
+ and starts it.  It also has to twiddle with the nova
+ db to update the virt host.
 
- cold-migrate performs the following steps, polling for a proper
- instance status after each:
-
-  - Stop instance
-  - Migrate instance
-  - Confirm migration (oddly called 'confirm resize' in nova parlance)
-  - Restart instance (optional)
+ Why does this work when all integrated nova migration
+ methods don't?  It's a mystery.
 """
 
 import argparse
 import time
+import subprocess
 
 from novaclient.v1_1 import client
 
@@ -33,7 +26,6 @@ class NovaInstance(object):
 
     def refresh_instance(self):
         self.instance = self.novaclient.servers.get(self.instance_id)
-
 
     def wait_for_status(self, desiredstatus):
         oldstatus = ""
@@ -47,37 +39,58 @@ class NovaInstance(object):
             time.sleep(1)
             self.refresh_instance()
 
-    def migrate(self, leave_stopped=False):
+    def migrate(self, destination, mysql_password):
+        source = self.instance._info['OS-EXT-SRV-ATTR:host']
         print "Instance %s is now on host %s with state %s" % (
             self.instance_id,
-            self.instance._info['OS-EXT-SRV-ATTR:host'],
+            source,
             self.instance.status)
 
-        if self.instance.status != 'SHUTOFF':
-            self.instance.stop()
-            self.wait_for_status('SHUTOFF')
-
-        if self.instance.status != 'SHUTOFF':
-            print "Failed to stop instance, aborting."
-            exit(1)
-
-        self.instance.migrate()
-        self.wait_for_status('VERIFY_RESIZE')
-
-        if self.instance.status != 'VERIFY_RESIZE':
-            print "Failed to migrate instance, aborting."
-            exit(1)
-
-        self.instance.confirm_resize()
+        self.instance.stop()
         self.wait_for_status('SHUTOFF')
 
-        if self.instance.status != 'SHUTOFF':
-            print "Failed to confirm migrate, aborting."
-            exit(1)
+        imagedir = "/var/lib/nova/instances/%s" % self.instance_id
 
-        if not leave_stopped:
-            self.instance.start()
-            self.wait_for_status('ACTIVE')
+        args = ["/usr/bin/rsync", "-S", "-av", "%s.eqiad.wmnet::nova_instance_rsync_controller/%s" % (source, self.instance_id), "/tmp/novamigrate"]
+        print " ".join(args)
+        r = subprocess.call(args)
+        if r:
+            print ("rsync from source to local failed.")
+            return(1)
+
+        args = ["rsync", "-S", "-av", "/tmp/novamigrate/%s" % self.instance_id, "%s.eqiad.wmnet::nova_instance_rsync_controller/" % destination]
+        print " ".join(args)
+        r = subprocess.call(args)
+        if r:
+            print ("rsync from local to remote failed.")
+            return(1)
+
+        print "Instance copied.  Now updating nova db..."
+
+        host_moved = True
+        args = ["mysql", "--user=nova", "--password=%s" % mysql_password,
+                "--host", "m5-master.eqiad.wmnet", "nova",
+                "-e", "update instances set host=\"%s\" where uuid=\"%s\";" %
+                    (destination, self.instance_id)]
+        r = subprocess.call(args)
+        if r:
+            print ("Failed to update the instance's db record."
+                   "Host not moved.  You will need to clean up files on %s" %
+                       destination)
+            host_moved = False
+
+        self.instance.start()
+        self.wait_for_status('ACTIVE')
+
+        if host_moved:
+            print "Instance is active.  Cleaning up old instance files on %s" % source
+            args = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+                    "nova@%s.eqiad.wmnet" % source,
+                    "rm -rf", imagedir]
+            r = subprocess.call(args)
+            if r:
+                print ("cleanup of %s on %s failed." % (imagedir, source))
+                return(1)
 
         print
         print "Instance %s is now on host %s with status %s" % (
@@ -116,16 +129,26 @@ if __name__ == "__main__":
         default='testlabs'
     )
     argparser.add_argument(
-        '--no-restart',
-        help='Do not start instance after migrate',
-        default=False
+        '--mysql-password',
+        help='mysql password for nova db',
+        required=True,
     )
     argparser.add_argument(
         'instanceid',
         help='instance id to migrate',
-        default='testlabs'
+    )
+    argparser.add_argument(
+        'destination',
+        help='destination host, e.g. labvirt1005',
     )
     args = argparser.parse_args()
+
+    sshargs = ["ssh", "-i", "/root/.ssh/compute-hosts-key",
+            "nova@%s.eqiad.wmnet" % args.destination, "true"]
+    r = subprocess.call(sshargs)
+    if r:
+        print "Remote execution failed; this whole enterprise is doomed."
+        exit(1)
 
     novaclient = client.Client(args.nova_user,
                                args.nova_pass,
@@ -133,4 +156,4 @@ if __name__ == "__main__":
                                args.nova_url)
 
     instance = NovaInstance(novaclient, args.instanceid)
-    instance.migrate(args.no_restart)
+    instance.migrate(args.destination, args.mysql_password)
