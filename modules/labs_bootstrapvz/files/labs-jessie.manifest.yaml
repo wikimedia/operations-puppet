@@ -34,6 +34,7 @@ packages:
     - jfsutils
     - xfsprogs
     - screen
+    - salt-minion
     - gdb
     - iperf
     - htop
@@ -100,8 +101,6 @@ plugins:
     metadata_sources: ConfigDrive
   puppet:
     assets: /etc/bootstrap-vz/puppet
-  salt:
-    install_source: stable
   file_copy:
     files:
       -
