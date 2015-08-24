@@ -73,7 +73,7 @@ def check_output_errtext(args):
     (p_out, p_err) = p.communicate()
     if p.returncode != 0:
         sys.stderr.write("Command %s failed with exit code %i, stderr:\n%s" %
-                         (p.cmd, p.returncode, p_err))
+                         (p.args, p.returncode, p_err))
         raise
     return (p_out, p_err)
 
