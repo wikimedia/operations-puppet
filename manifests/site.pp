@@ -1046,6 +1046,9 @@ node 'helium.eqiad.wmnet' {
     include role::poolcounter
     include role::backup::director
     include role::backup::storage
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 # Bacula storage
