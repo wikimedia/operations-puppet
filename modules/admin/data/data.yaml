@@ -330,6 +330,8 @@ groups:
     gid: 754
     members: [yurik, maxsem]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
+                 'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
+                 'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
                  'ALL = (kartotherian) NOPASSWD: ALL']
   wdqs-admins:
     gid: 755
@@ -351,6 +353,8 @@ groups:
     gid: 758
     members: [yurik, maxsem]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
+                 'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
+                 'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
                  'ALL = (tilerator) NOPASSWD: ALL']
   mobileapps-admin:
     description: Group of mobileapps admins
