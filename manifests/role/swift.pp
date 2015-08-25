@@ -36,6 +36,23 @@ class role::swift::proxy {
 
     include role::statsite
 
+    ferm::service { 'swift-proxy':
+        proto  => 'tcp',
+        notrack => true,
+        port   => '80',
+    }
+
+    $swift_frontends = hiera('swift::proxyhosts')
+    $swift_frontends_ferm = join($swift_frontends, ' ')
+
+    # Access to memcached from swift frontends
+    ferm::service { 'swift-memcached':
+        proto   => 'tcp',
+        port    => '11211',
+        notrack => true,
+        srange  => "@resolve(($swift_frontends_ferm))",
+    }
+
     monitoring::service { 'swift-http-frontend':
         description   => 'Swift HTTP frontend',
         check_command => "check_http_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
