@@ -48,8 +48,8 @@ class base::standard-packages {
     }
 
     # Can clash with authdns::scripts class
-    if ! defined(Package['git-core']){
-        package { 'git-core':
+    if ! defined(Package['git']){
+        package { 'git':
             ensure => latest,
         }
     }
