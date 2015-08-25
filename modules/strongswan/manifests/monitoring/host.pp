@@ -14,9 +14,8 @@ class strongswan::monitoring::host {
                         ],
     }
 
-# Temporarily disabled around a nasty transition, to avoid spam: https://phabricator.wikimedia.org/T110065
-#    nrpe::monitor_service { 'IPsec':
-#        description  => 'IPsec',
-#        nrpe_command => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_strongswan',
-#    }
+    nrpe::monitor_service { 'IPsec':
+        description  => 'IPsec',
+        nrpe_command => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_strongswan',
+    }
 }
