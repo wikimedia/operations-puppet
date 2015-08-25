@@ -11,7 +11,7 @@ class phabricator::vcs (
     file { '/usr/local/bin/git-http-backend':
         ensure  => 'link',
         target  => '/usr/lib/git-core/git-http-backend',
-        require => Package['git-core'],
+        require => Package['git'],
     }
 
 

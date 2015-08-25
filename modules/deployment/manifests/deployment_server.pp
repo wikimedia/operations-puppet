@@ -22,7 +22,7 @@ class deployment::deployment_server($deployer_groups=[]) {
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        require => Package['git-core'],
+        require => Package['git'],
     }
 
     file { '/usr/local/bin/git-new-workdir':
@@ -30,7 +30,7 @@ class deployment::deployment_server($deployer_groups=[]) {
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
-        require => Package['git-core'],
+        require => Package['git'],
     }
 
     file { '/srv/patches':
