@@ -704,6 +704,7 @@ node 'db1043.eqiad.wmnet' {
         shard  => 'm3',
         master => true,
     }
+    include base::firewall
 }
 
 node 'db1048.eqiad.wmnet' {
@@ -720,6 +721,7 @@ node /^db20(12)\.codfw\.wmnet/ {
     class { 'role::mariadb::misc::phabricator':
         shard => 'm3',
     }
+    include base::firewall
 }
 
 # m4 shard
