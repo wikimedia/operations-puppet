@@ -13,3 +13,4 @@ hhvm::extra::cli:
     mysql:
       connect_timeout: 3000
 apache::logrotate::rotate: 12
+nutcracker::verbosity: 4
