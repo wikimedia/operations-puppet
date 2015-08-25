@@ -111,6 +111,11 @@ menu = cr2-codfw
 title = cr2-codfw.wikimedia.org
 host = cr2-codfw.wikimedia.org
 
++++ cr1-eqdfw
+menu = cr1-eqdfw
+title = cr1-eqdfw.wikimedia.org
+host = cr1-eqdfw.wikimedia.org
+
 +++ asw-a-codfw
 menu = asw-a-codfw
 title = asw-a-codfw.mgmt.codfw.wmnet
