@@ -5,15 +5,12 @@ class role::deployment::config {
 }
 
 class role::deployment::server(
-    # Source of the key, change this if not in production, with hiera.
-    # lint:ignore:puppet_url_without_modules
-    $key_source = 'puppet:///private/ssh/tin/mwdeploy_rsa',
-    # lint:endignore
     $apache_fqdn = $::fqdn,
     $deployment_group = 'wikidev',
 ) {
     # Can't include this while scap is present on tin:
     # include misc::deployment::scripts
+    include role::deployment::mediawiki
 
     class { 'deployment::deployment_server':
         deployer_groups => [$deployment_group],
@@ -57,12 +54,6 @@ class role::deployment::server(
         dir           => '/srv/mediawiki-staging/',
         user          => 'root',
         remote_branch => 'readonly/master'
-    }
-
-    class { '::keyholder': trusted_group => $deployment_group, } ->
-    class { '::keyholder::monitoring': } ->
-    keyholder::private_key { 'mwdeploy_rsa':
-        source  => $key_source,
     }
 
     file { '/srv/deployment':
@@ -139,6 +130,20 @@ class role::deployment::salt_masters(
     class { 'deployment::salt_master':
         repo_config       => $role::deployment::config::repo_config,
         deployment_config => $deployment_config,
+    }
+}
+
+class role::deployment::mediawiki(
+    $keyholder_user = 'mwdeploy',
+    $keyholder_group = 'wikidev',
+    $key_fingerprint = 'f5:18:a3:44:77:a2:31:23:cb:7b:44:e1:4b:45:27:11',
+) {
+    require ::keyholder
+    require ::keyholder::monitoring
+
+    keyholder::agent { $keyholder_user:
+        trusted_group   => $keyholder_group,
+        key_fingerprint => $key_fingerprint,
     }
 }
 
