@@ -41,7 +41,7 @@ logstash::cluster_hosts:
 role::logstash::statsd_host: statsd.eqiad.wmnet
 
 # Kibana
-role::kibana::vhost: logstash.wmflabs.org
+role::kibana::vhost: logstash.wikimedia.org
 role::kibana::serveradmin: noc@wikimedia.org
 role::kibana::auth_type: ldap
 role::kibana::auth_realm: WMF Labs (use wiki login name not shell) - nda/ops/wmf
