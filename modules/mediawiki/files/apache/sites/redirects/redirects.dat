@@ -511,3 +511,7 @@ override	svn.mediawiki.org/viewvc/mediawiki	https://phabricator.wikimedia.org/di
 override	svn.mediawiki.org/viewvc/mysql	https://phabricator.wikimedia.org/diffusion/SVNM/
 override	svn.mediawiki.org/viewvc/pywikipedia	https://phabricator.wikimedia.org/diffusion/SVNP/
 funnel	svn.mediawiki.org	https://phabricator.wikimedia.org/diffusion/
+
+# rewrite download.wiki(m|p)edia to dumps.wikimedia - T107575
+rewrite	download.wikimedia.org	https://dumps.wikimedia.org
+rewrite	download.wikipedia.org	https://dumps.wikimedia.org
