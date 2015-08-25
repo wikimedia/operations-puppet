@@ -28,4 +28,10 @@ define logstash::input::tcp(
         content  => template('logstash/input/tcp.erb'),
         priority => $priority,
     }
+
+    ferm::service { "logstash_tcp_${title}":
+        proto  => 'tcp',
+        port   => $port,
+        srange => '$INTERNAL',
+    }
 }

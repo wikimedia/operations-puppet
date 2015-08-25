@@ -35,4 +35,6 @@ define logstash::input::redis(
         content  => template('logstash/input/redis.erb'),
         priority => $priority,
     }
+
+    # ferm::service not needed as connection is made outbound
 }
