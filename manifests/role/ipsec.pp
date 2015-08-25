@@ -22,7 +22,7 @@ class role::ipsec ($hosts = undef) {
         }
         # for 'left' nodes in "main" sites, enumerate 'right' nodes in cache sites
         if $::site == 'eqiad' {
-            $targets = concat(
+            $targets = array_concat(
                 $cluster_nodes['esams'],
                 $cluster_nodes['ulsfo'],
                 $cluster_nodes['codfw']
