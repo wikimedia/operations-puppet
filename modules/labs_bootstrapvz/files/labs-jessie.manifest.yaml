@@ -42,7 +42,7 @@ packages:
     - sysstat
     - ngrep
     - acct
-    - git-core
+    - git
     - lldpd
     - parted
     - lvm2
