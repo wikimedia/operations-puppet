@@ -38,6 +38,7 @@ class role::deployment::server(
     $deployable_networks = $::network::constants::deployable_networks
 
     include mediawiki
+    include ::mediawiki::nutcracker
     include scap::master
 
     if $::realm != 'labs' {
