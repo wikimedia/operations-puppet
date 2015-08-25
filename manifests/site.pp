@@ -969,12 +969,12 @@ node 'eventlog1001.eqiad.wmnet' {
     include role::logging::mediawiki::errors
 }
 
-# virtual machine for testing mailman migration
+# virtual machine for mailman list server
 node 'fermium.wikimedia.org' {
     include standard
     include admin
     include base::firewall
-    include role::lists::migration
+    include role::lists
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
