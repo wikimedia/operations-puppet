@@ -42,6 +42,7 @@ class role::ocg {
         port   => $::ocg::service_port,
         desc   => 'HTTP frontend to submit jobs and get status from pdf rendering',
         srange => '$INTERNAL',
+        notrack => true,
     }
 
     ferm::service{ 'gmond':
