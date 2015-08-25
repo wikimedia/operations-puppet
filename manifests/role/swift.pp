@@ -86,6 +86,30 @@ class role::swift::storage {
         partition_nr => '1',
     }
 
+    $swift_backends = hiera('swift::storagehosts')
+    $swift_backends_ferm = join($swift_backends, ' ')
+
+    ferm::service { 'swift-object-server':
+        proto   => 'tcp',
+        port    => '6000',
+        notrack => true,
+        srange  => "@resolve(($swift_backends_ferm))",
+    }
+
+    ferm::service { 'swift-container-server':
+        proto   => 'tcp',
+        port    => '6001',
+        notrack => true,
+        srange  => "@resolve(($swift_backends_ferm))",
+    }
+
+    ferm::service { 'swift-account-server':
+        proto   => 'tcp',
+        port    => '6002',
+        notrack => true,
+        srange  => "@resolve(($swift_backends_ferm))",
+    }
+
     # these are already partitioned and xfs formatted by the installer
     $aux_partitions = hiera('swift_aux_partitions')
     swift::label_filesystem { $aux_partitions: }
