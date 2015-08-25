@@ -28,7 +28,7 @@ host bromine.eqaid.wmnet {
 
 host fermium.eqiad.wmnet {
 	hardware ethernet aa:00:00:a4:ac:f1;
-	fixed-address fermium.eqiad.wmnet;
+	fixed-address fermium.wikimedia.org;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }

@@ -946,7 +946,7 @@ node 'eventlog1001.eqiad.wmnet' {
 }
 
 # virtual machine for testing mailman migration
-node 'fermium.eqiad.wmnet' {
+node 'fermium.wikimedia.org' {
     include standard
     include admin
     include base::firewall
