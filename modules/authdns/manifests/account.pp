@@ -13,7 +13,7 @@ class authdns::account {
         system     => true,
         managehome => true,
         shell      => '/usr/bin/git-shell',
-        require    => Package['git-core'],
+        require    => Package['git'],
     }
     group { $group:
         ensure     => 'present',

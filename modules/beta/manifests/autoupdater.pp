@@ -18,7 +18,7 @@ class beta::autoupdater {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => Package['git-core'],
+        require => Package['git'],
         content => template('beta/wmf-beta-autoupdate.py.erb'),
     }
 
@@ -26,7 +26,7 @@ class beta::autoupdater {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => Package['git-core'],
+        require => Package['git'],
         content => template('beta/wmf-beta-mwconfig-update.erb'),
     }
 

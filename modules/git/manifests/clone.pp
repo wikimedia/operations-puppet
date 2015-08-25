@@ -143,7 +143,7 @@ define git::clone(
                 group       => $group,
                 umask       => $git_umask,
                 timeout     => $timeout,
-                require     => Package['git-core'],
+                require     => Package['git'],
             }
 
             if (!defined(File[$directory])) {

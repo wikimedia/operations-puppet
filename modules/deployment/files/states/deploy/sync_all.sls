@@ -1,4 +1,4 @@
-git-core:
+git:
   pkg.installed
 
 python-redis:
@@ -9,10 +9,10 @@ deploy.sync_all:
   #module.run:
   #  - name: deploy.sync_all
   #  - require:
-  #    - pkg: git-core
+  #    - pkg: git
   #    - pkg: python-redis
   cmd.run:
     - name: salt-call --return=deploy_redis deploy.sync_all
     - require:
-      - pkg: git-core
+      - pkg: git
       - pkg: python-redis
