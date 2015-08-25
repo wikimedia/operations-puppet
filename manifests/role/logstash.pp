@@ -185,6 +185,12 @@ class role::logstash::puppetreports {
         codec => 'json_lines',
     }
 
+    ferm::service { "logstash_tcp_json}":
+        proto  => 'tcp',
+        port   => '5229',
+        srange => '$ALL_NETWORKS',
+    }
+
     logstash::conf { 'filter_puppet':
         source   => 'puppet:///files/logstash/filter-puppet.conf',
         priority => 50,
@@ -275,6 +281,8 @@ class role::logstash::stashbot (
         source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
         priority => 15,
     }
+
+    # ferm::service not needed as irc connection is made outbound
 
     logstash::conf { 'filter_stashbot':
         source   => 'puppet:///files/logstash/filter-stashbot.conf',
