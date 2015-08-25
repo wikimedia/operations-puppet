@@ -39,4 +39,6 @@ define logstash::input::irc(
         content  => template('logstash/input/irc.erb'),
         priority => $priority,
     }
+
+    # ferm::service not needed as irc connection is made outbound
 }
