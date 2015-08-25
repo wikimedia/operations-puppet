@@ -13,6 +13,7 @@ class scap::master(
     include rsync::server
     include network::constants
     include dsh
+    include mediawiki::scap
 
     git::clone { 'operations/mediawiki-config':
         directory => $common_source_path,
