@@ -7,6 +7,7 @@ class role::backup::config {
     # we don't want to rely on DNS in firewall rules
     $director    = 'helium.eqiad.wmnet'
     $director_ip = '10.64.0.179'
+    $director_ip6 = '2620:0:861:101:10:64:0:179'
     $database = 'm1-master.eqiad.wmnet'
     $days = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
     $pool = 'production'
@@ -41,8 +42,10 @@ class role::backup::host {
     File <| tag == 'backup-motd' |>
 
     # If the machine includes base::firewall then let director connect to us
-    ferm::rule { 'bacula-file-demon':
-        rule => "proto tcp dport 9102 { saddr ${role::backup::config::director_ip} ACCEPT; }"
+    ferm::service { 'bacula-file-demon':
+        proto => 'tcp',
+        port  => '9102',
+        srange => "(${role::backup::config::director_ip} ${role::backup::config::director_ip6})",
     }
 }
 
