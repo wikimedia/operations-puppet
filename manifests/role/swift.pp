@@ -89,26 +89,30 @@ class role::swift::storage {
 
     $swift_backends = hiera('swift::storagehosts')
     $swift_backends_ferm = join($swift_backends, ' ')
+    $swift_proxies = hiera('swift::proxyhosts')
+    $swift_proxies_ferm = join($swift_proxies, ' ')
+
+    $swift_access = "${swift_backends_ferm} ${swift_proxies_ferm}"
 
     ferm::service { 'swift-object-server':
         proto   => 'tcp',
         port    => '6000',
         notrack => true,
-        srange  => "@resolve(($swift_backends_ferm))",
+        srange  => "@resolve(($swift_access))",
     }
 
     ferm::service { 'swift-container-server':
         proto   => 'tcp',
         port    => '6001',
         notrack => true,
-        srange  => "@resolve(($swift_backends_ferm))",
+        srange  => "@resolve(($swift_access))",
     }
 
     ferm::service { 'swift-account-server':
         proto   => 'tcp',
         port    => '6002',
         notrack => true,
-        srange  => "@resolve(($swift_backends_ferm))",
+        srange  => "@resolve(($swift_access))",
     }
 
     # these are already partitioned and xfs formatted by the installer
