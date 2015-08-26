@@ -324,6 +324,10 @@ groups:
     members: [maxsem, yurik]
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
+                 'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
+                 'ALL = NOPASSWD: /bin/systemctl unmask cassandra.service',
+                 'ALL = NOPASSWD: /bin/systemctl mask postgresql.service',
+                 'ALL = NOPASSWD: /bin/systemctl unmask postgresql.service',
                  'ALL = NOPASSWD: /usr/sbin/service postgresql *']
   kartotherian-admin:
     description: Group of kartotherian admins
