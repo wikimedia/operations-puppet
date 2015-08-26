@@ -3,7 +3,7 @@
 # slots_used numcommands on_failure error_notify command
 <% if @stagestype == 'normal' or @stagestype == 'partial' %>
 # mark the start of the run for all small, big wikis
-8 1 <%= @stages['smallwikis']['firststage'] -%> --job createdirs; <%= @stages['bigwikis']['firststage'] %> --job createdirs
+8 1 <%= @stages['smallwikis']['firststage'] -%> --job createdirs --sleep 5; <%= @stages['bigwikis']['firststage'] %> --job createdirs --sleep 5
 
 # stubs and then tables so inconsistencies between stubs and tables aren't too huge
 1 8 <%= @stages['smallwikis']['rest'] -%> --job xmlstubsdump; <%= @stages['smallwikis']['rest'] %> --job tables
