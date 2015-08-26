@@ -7,7 +7,8 @@ ExecStart=/usr/local/bin/kube-apiserver \
     --service-cluster-ip-range=192.168.0.0/24 \
     --token-auth-file=/dev/null \
     --insecure-bind-address=<%= @master_ip %> \
-    --advertise-address=<%= @master_ip %>
+    --advertise-address=<%= @master_ip %> \
+    --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
 
 [Install]
 WantedBy=multi-user.target
