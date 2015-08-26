@@ -328,6 +328,9 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl unmask cassandra.service',
                  'ALL = NOPASSWD: /bin/systemctl mask postgresql.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask postgresql.service',
+                 'ALL = NOPASSWD: /bin/systemctl mask redis.service',
+                 'ALL = NOPASSWD: /bin/systemctl unmask redis.service',
+                 'ALL = NOPASSWD: /usr/sbin/service redis *',
                  'ALL = NOPASSWD: /usr/sbin/service postgresql *']
   kartotherian-admin:
     description: Group of kartotherian admins
