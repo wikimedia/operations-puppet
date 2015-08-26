@@ -855,7 +855,7 @@ node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
 
     role elasticsearch::server
 
-    if $::hostname == 'elastic102[3-6]' {
+    if $::hostname =~ /^elastic102[3-6]$/ {
         include base::firewall
     }
 }
