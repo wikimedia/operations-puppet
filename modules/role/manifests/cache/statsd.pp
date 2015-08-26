@@ -23,4 +23,9 @@ class role::cache::statsd::frontend {
     ::varnish::logging::rls { 'rls':
         statsd_server => 'statsd.eqiad.wmnet',
     }
+
+    # Media browser cache hit rate and request volume stats.
+    ::varnish::logging::media { 'media':
+        statsd_server => 'statsd.eqiad.wmnet',
+    }
 }
