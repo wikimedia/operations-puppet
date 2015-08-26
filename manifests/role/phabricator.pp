@@ -32,6 +32,7 @@ class role::phabricator::main {
     include passwords::phabricator
     include role::phabricator::config
     include phabricator::monitoring
+    include phabricator::mpm
 
     $current_tag = 'release/2015-07-08/1'
     $domain = 'phabricator.wikimedia.org'
