@@ -2450,7 +2450,7 @@ host labmon1001 {
 }
 
 host labnet1001 {
-	hardware ethernet d4:be:d9:af:66:ba;
+	hardware ethernet 00:0A:F7:50:42:28;
 	fixed-address labnet1001.eqiad.wmnet;
 }
 
