@@ -13,6 +13,7 @@
     --key-prefix PREFIX     metric key prefix (default: varnish.clients)
 
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
+  Copyright 2015 Gilles Dubuc <gilles@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -29,44 +30,13 @@
 """
 from __future__ import division
 
-import argparse
-import io
 import re
-import socket
-import urlparse
-
 import varnishlog
+import varnishprocessor
 
-
-class ResourceLoaderVarnishLogProcessor:
-
-    def __init__(self, key_prefix='ResourceLoader', statsd_server=None):
-        self.key_prefix = key_prefix
-        self.statsd_server = statsd_server
-        if statsd_server:
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.stats = {}
-        self.transactions = {}
-
-    def handle_log_record(self, transaction_id, tag, record, remote_party):
-        """VSL_handler_f callback function."""
-        if tag == 'RxURL':
-            # RxURL is the first tag we expect. If there are any existing
-            # records for this transaction ID, we clear them away.
-            self.transactions[transaction_id] = {tag: record}
-        elif tag == 'ReqEnd':
-            # ReqEnd is the last tag we expect. We pop the transaction's
-            # records from the buffer and process it.
-            transaction = self.transactions.pop(transaction_id, None)
-            if transaction is not None:
-                transaction[tag] = record
-                self.process_transaction(transaction)
-        else:
-            # All other tags are buffered.
-            transaction = self.transactions.get(transaction_id)
-            if transaction is not None:
-                transaction[tag] = record
-        return 0
+class ResourceLoaderVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
+    description = 'ResourceLoader Browser Cache Hit Ratio StatsD Reporter'
+    key_prefix = 'ResourceLoader'
 
     def process_transaction(self, transaction):
         """Process a single completed transaction."""
@@ -91,19 +61,6 @@ class ResourceLoaderVarnishLogProcessor:
         if self.stats['reqs.all'] > 10000:
             self.flush_stats()
 
-    def flush_stats(self):
-        """Flush metrics to standard out or statsd server."""
-        buf = io.BytesIO()
-        while self.stats:
-            key, value = self.stats.popitem()
-            metric = '%s.%s:%s|c\n' % (self.key_prefix, key, value)
-            buf.write(metric.encode('utf-8'))
-        buf.seek(io.SEEK_SET)
-        if self.statsd_server:
-            self.sock.sendto(buf.read(), self.statsd_server)
-        else:
-            print(buf.read().decode('utf-8').rstrip())
-
     def start(self):
         varnishlog.varnishlog((
             ('n', 'frontend'),  # Consider the frontend Varnish instance
@@ -121,28 +78,4 @@ class ResourceLoaderVarnishLogProcessor:
                   '|[1-5]\d{2}$)'),  # ...or RxStatus codes
         ), self.handle_log_record)
 
-
-def parse_statsd_server_string(server_string):
-    parsed = urlparse.urlparse('//' + server_string)
-    return parsed.hostname, parsed.port or 8125
-
-
-def parse_prefix_string(key_prefix):
-    key_prefix = key_prefix.strip('.')
-    if not key_prefix:
-        raise ValueError('Key prefix must not be empty')
-    return key_prefix
-
-
-ap = argparse.ArgumentParser(
-    description='ResourceLoader Browser Cache Hit Ratio StatsD Reporter',
-    epilog='If no statsd server is specified, prints stats to stdout instead.'
-)
-ap.add_argument('--key-prefix', help='metric key prefix',
-                type=parse_prefix_string, default='ResourceLoader')
-ap.add_argument('--statsd-server', help='statsd server',
-                type=parse_statsd_server_string, default=None)
-args = ap.parse_args()
-
-lp = ResourceLoaderVarnishLogProcessor(args.key_prefix, args.statsd_server)
-lp.start()
+lp = ResourceLoaderVarnishLogProcessor()
