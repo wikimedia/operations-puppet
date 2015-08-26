@@ -73,8 +73,19 @@ ExtendedStatus On
     Allow from 127.0.0.1
 </Location>
 
+# Error documents
 ErrorDocument 503 /503.html
 ErrorDocument 404 /w/404.php
+
+# Terminal rules for error documents above, to prevent interaction with later
+# site-specific R=301 rules which would otherwise turn some of them into
+# cacheable 301 redirects to an external fetch of the error document URL.
+# https://phabricator.wikimedia.org/T109226
+RewriteEngine On
+RewriteCond %{REQUEST_URI} =/503.html
+RewriteRule .* - [R=503,L]
+RewriteCond %{REQUEST_URI} =/w/404.php
+RewriteRule .* - [R=404,L]
 
 Include sites-enabled/*.conf
 
