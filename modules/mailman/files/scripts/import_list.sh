@@ -52,7 +52,10 @@ echo "checking list ${LISTNAME}"
 
 isprivate
 if [ $PRIVATE == "PUBLIC" ] ; then
-    echo -e "importing ${LISTNAME}\n"
+    echo -e "importing public list ${LISTNAME}\n"
+    importlist
+elif [ $PRIVATE == "PRIVATE" ] && [ -n "$2" ] && [ $2 == "all" ] ; then
+    echo -e "importing private list ${LISTNAME}\n"
     importlist
 else
     echo "skipping ${LISTNAME}"
