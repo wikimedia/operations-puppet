@@ -29,6 +29,7 @@ class role::elasticsearch::server{
     ferm::service { 'elastic-http':
         proto => 'tcp',
         port  => '9200',
+        notrack => true,
         srange => '$INTERNAL',
     }
 
@@ -38,6 +39,7 @@ class role::elasticsearch::server{
     ferm::service { 'elastic-inter-node':
         proto => 'tcp',
         port  => '9300',
+        notrack => true,
         srange  => "@resolve(($elastic_nodes_ferm))",
     }
 
