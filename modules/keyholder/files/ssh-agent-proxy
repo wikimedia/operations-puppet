@@ -8,18 +8,23 @@
   requests. Request signing is only permitted if group is allowed to use
   the requested public key fingerprint.
 
-  Requirements: PyYAML
+  Requirements: PyYAML (http://pyyaml.org/)
 
   usage: ssh-agent-proxy [--bind ADDRESS] [--connect ADDRESS] [--auth-dir DIR]
 
   Options:
     --bind ADDRESS    Bind the proxy to the UNIX domain socket at this address
+                      (default: '/run/keyholder/proxy.sock').
+
     --connect ADDRESS Proxy connects to the ssh-agent socket at this address
-    --auth-dir DIR    Directory where yaml files containing group:[key(s)]
-                      access can be found
+                      (default: '/run/keyholder/agent.sock').
+
+    --auth-dir DIR    Directory where YAML files containing group:[key(s)]
+                      access can be found (default: '/etc/keyholder-auth.d').
 
 
-  Copyright 2014 Ori Livneh <ori@wikimedia.org>
+  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+  Copyright 2015 Tyler Cipriani <thcipriani@wikimedia.org>
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -35,7 +40,6 @@
 
 """
 import argparse
-import errno
 import grp
 import hashlib
 import os
@@ -44,18 +48,36 @@ import select
 import socket
 import socketserver
 import struct
+import sys
 import syslog
 
-import yaml
+try:
+    import yaml
+except ImportError:
+    sys.exit(
+        'Error: ssh-agent-proxy requires PyYAML (http://pyyaml.org/)\n'
+        'Debian / Ubuntu: `apt-get install python3-yaml`\n'
+        'RHEL / Fedora / CentOS: `yum install python-yaml`\n'
+        'All others: `pip3 install PyYAML`'
+    )
+
 
 SSH_AGENT_FAILURE = 5
 SO_PEERCRED = 17
 
-ns_header = struct.Struct('!L')
+s_ns_header = struct.Struct('!L')
 s_message_header = struct.Struct('!LB')
 s_ucred = struct.Struct('2Ii')
 
 syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_AUTH)
+
+
+class SshAgentProxyServer(socketserver.ThreadingUnixStreamServer):
+    def __init__(self, server_address, agent_address, key_permissions):
+        self.agent_address = agent_address
+        super(SshAgentProxyServer, self).__init__(
+                server_address, SshAgentProxyHandler)
+        self.key_permissions = key_permissions
 
 
 class SshAgentProxyHandler(socketserver.BaseRequestHandler):
@@ -78,7 +100,7 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
     def setup(self):
         self.proxy = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         self.proxy.setblocking(False)
-        self.proxy.connect(self.connect)
+        self.proxy.connect(self.server.agent_address)
         self.sockets = (self.request, self.proxy)
 
     def recv_message(self, sock):
@@ -101,21 +123,17 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
         remaining bytes are signing message). Returns md5 base64 key
         representation and compares result against key_permissions hash.
         """
-        bl = ns_header.size
-        l, = ns_header.unpack_from(msg)
-
-        key_blob = msg[bl:bl + l]
-
-        finger = hashlib.md5(key_blob).hexdigest()
-
-        return ':'.join(a + b for a, b in zip(finger[::2], finger[1::2]))
+        key_start = s_ns_header.size
+        key_length, = s_ns_header.unpack_from(msg)
+        key_blob = msg[key_start:key_start + key_length]
+        return hashlib.md5(key_blob).hexdigest()
 
     def check_key(self, groups, msg):
         """Checks key fingerprint and group membership against key_permissions
         """
-        fprint = self.get_fingerprint_from_ns(msg)
+        fingerprint = self.get_fingerprint_from_ns(msg)
         for group in groups:
-            if fprint in self.key_permissions.get(group, ()):
+            if fingerprint in self.server.key_permissions.get(group, ()):
                 return True
         return False
 
@@ -152,16 +170,19 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
                     self.send_message(self.request, SSH_AGENT_FAILURE)
 
 
-def get_permissions(path):
-    if not os.path.isdir(path):
-        raise FileNotFoundError(errno.ENOENT, 'Directory not found', path)
+def raise_err(err):
+    raise err
 
+
+def get_permissions(path):
+    """Recursively walk `path`, loading YAML configuration files."""
     permissions = {}
-    for _, _, files in os.walk(path):
+    for _, _, files in os.walk(path, onerror=raise_err):
         for f in files:
             with open(os.path.join(path, f)) as yml:
-                permissions.update(yaml.load(yml))
-
+                for group, keys in yaml.load(yml).items():
+                    sanitized_keys = (key.replace(':', '') for key in keys)
+                    permissions.setdefault(group, []).extend(sanitized_keys)
     return permissions
 
 
@@ -171,13 +192,11 @@ ap.add_argument('--bind', default='/run/keyholder/proxy.sock',
 ap.add_argument('--connect', default='/run/keyholder/agent.sock',
                 help='Proxy connects to the ssh-agent socket at this address')
 ap.add_argument('--auth-dir', default='/etc/keyholder-auth.d',
-                help='directory with yaml files containing group names'
-                     'mapped to arrays of ssh public key fingerprints')
+                help='directory with YAML files containing group names'
+                     'mapped to arrays of SSH public key fingerprints')
 args = ap.parse_args()
 
-SshAgentProxyHandler.connect = args.connect
-SshAgentProxyHandler.key_permissions = get_permissions(args.auth_dir)
-
 syslog.syslog('Proxying %s -> %s' % (args.bind, args.connect))
-proxy = socketserver.ThreadingUnixStreamServer(args.bind, SshAgentProxyHandler)
+proxy = SshAgentProxyServer(args.bind, args.connect,
+                            get_permissions(args.auth_dir))
 proxy.serve_forever()
