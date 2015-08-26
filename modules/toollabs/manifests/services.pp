@@ -16,6 +16,11 @@ class toollabs::services(
         ensure => latest,
     }
 
+    service { 'bigbrothermonitor':
+        ensure    => ensure_service($active),
+        subscribe => Package['tools-manifest'],
+    }
+
     service { 'webservicemonitor':
         ensure    => ensure_service($active),
         subscribe => Package['tools-manifest'],

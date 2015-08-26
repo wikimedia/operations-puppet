@@ -2,7 +2,7 @@
 #
 # This role sets up an submit host instance in the Tool Labs model.
 # (A host that can only be used to submit jobs; presently used by
-# tools-submit which runs bigbrother and the gridwide cron.
+# tools-submit which runs the gridwide cron.
 #
 # Parameters:
 #
@@ -44,25 +44,19 @@ class toollabs::submit inherits toollabs {
         ensure => latest,
     }
 
-    file { '/usr/local/sbin/bigbrother':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/bigbrother',
+    # TODO: Remove after decommissioning.
+    file { ['/data/project/.system/bigbrother.scoreboard',
+            '/data/project/.system/bigbrother.scoreboard~',
+            '/etc/init/bigbrother.conf',
+            '/usr/local/sbin/bigbrother']:
+        ensure  => absent,
+        require => Service['bigbrother'],
     }
 
-    file { '/etc/init/bigbrother.conf':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/toollabs/bigbrother.conf',
-    }
-
+    # TODO: Remove after decommissioning.
     service { 'bigbrother':
-        ensure    => running,
-        subscribe => File['/usr/local/sbin/bigbrother', '/etc/init/bigbrother.conf'],
+        ensure => stopped,
+        enable => false,
     }
 
     file { '/usr/local/bin/webservice2':
