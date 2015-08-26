@@ -870,13 +870,20 @@ node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
     include role::logging::kafkatee::webrequest::fundraising
 }
 
-# es1 eqiad
+# es1 databases
 node /es100[1234]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es1',
     }
 }
 
+node /es200[1234]\.codfw\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 'es1',
+    }
+}
+
+# es2 databases
 node /es1006\.eqiad\.wmnet/ {
     class { 'role::coredb::es2':
         mariadb => true,
@@ -889,18 +896,21 @@ node /es100[57]\.eqiad\.wmnet/ {
     }
 }
 
-node /es200[1234]\.codfw\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard => 'es1',
-    }
-}
-
 node /es200[567]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es2',
     }
 }
 
+## es2 new nodes (installation in progress)
+node /^es101[17]\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 'es2',
+    }
+}
+
+
+# es3 databases
 node /es100[9]\.eqiad\.wmnet/ {
     class { 'role::coredb::es3':
         mariadb => true,
@@ -920,6 +930,14 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
         shard => 'es3',
     }
 }
+
+## es3 new nodes (installation in progress)
+node /^es101[28]\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 'es3',
+    }
+}
+
 
 # Etcd distributed kv store
 node /^etcd100[1-3]\.eqiad\.wmnet$/ {
