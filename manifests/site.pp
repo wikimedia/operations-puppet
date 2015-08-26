@@ -852,7 +852,23 @@ node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
 }
 
 # erbium is a webrequest udp2log host
-node 'erbium.eqiad.wmnet' inherits 'base_analytics_logging_node' {
+node 'erbium.eqiad.wmnet' {
+
+    # include analytics in nagios_contact_group.
+    # This is used by class base::monitoring::host for
+    # notifications when a host or important service goes down.
+    # NOTE:  This cannot be a fully qualified var
+    # (i.e. $base::nagios_contact_group) because puppet does not
+    # allow setting variables in other namespaces.  I could
+    # parameterize class base AND class stanrdard and pass
+    # the var down the chain, but that seems like too much
+    # modification for just this.  Instead this overrides
+    # the default contact_group of 'admins' set in class base.
+    $nagios_contact_group = 'admins,analytics'
+
+    include standard
+    include role::logging
+
     # gadolinium hosts the separate nginx webrequest udp2log instance.
     include role::logging::udp2log::erbium
 
@@ -1005,7 +1021,22 @@ node 'francium.eqiad.wmnet' {
 
 # gadolinium is the webrequest socat multicast relay.
 # base_analytics_logging_node is defined in role/logging.pp
-node 'gadolinium.wikimedia.org' inherits 'base_analytics_logging_node' {
+node 'gadolinium.wikimedia.org' {
+
+    # include analytics in nagios_contact_group.
+    # This is used by class base::monitoring::host for
+    # notifications when a host or important service goes down.
+    # NOTE:  This cannot be a fully qualified var
+    # (i.e. $base::nagios_contact_group) because puppet does not
+    # allow setting variables in other namespaces.  I could
+    # parameterize class base AND class stanrdard and pass
+    # the var down the chain, but that seems like too much
+    # modification for just this.  Instead this overrides
+    # the default contact_group of 'admins' set in class base.
+    $nagios_contact_group = 'admins,analytics'
+
+    include standard
+    include role::logging
 
     # relay the incoming webrequest log stream to multicast
     include role::logging::relay::webrequest-multicast
