@@ -11,6 +11,6 @@ for MY_DIR in "${IMPORTED_DIRS[@]}"; do
 
 done
 
-/usr/bin/rsync -avp ${INSTALL_DIR}/data/ --include="heldmsg-*" rsync://${RSYNC_TARGET}
+/usr/bin/rsync -avp ${INSTALL_DIR}/data --include="heldmsg-*" --exclude="*.pw" --exclude="bounce-*" rsync://${RSYNC_TARGET}
 
 echo "done rsyncing\n"
