@@ -166,7 +166,7 @@ groups:
               halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
               manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, rmoen, tbayer, joal, ashwinpp, ebernhardson,
-              madhuvishy, tjones, legoktm, dcausse, bearloga, smalyshev]
+              madhuvishy, tjones, legoktm, dcausse, bearloga]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -216,7 +216,8 @@ groups:
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, ananthrk, awight,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
-              andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr, csteipp]
+              andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
+              csteipp, smalyshev]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
