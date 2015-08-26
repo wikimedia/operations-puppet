@@ -1282,9 +1282,9 @@ node 'labnet1001.eqiad.wmnet' {
     include role::nova::api
 
     if $use_neutron == true {
-        include role::neutron::nethost
+        #include role::neutron::nethost
     } else {
-        include role::nova::network
+        #include role::nova::network
     }
 }
 
