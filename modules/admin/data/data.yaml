@@ -160,8 +160,12 @@ groups:
     members: [ezachte, joal, milimetric, tomasz, tnegrin]
   statistics-privatedata-users:
     gid: 725
-    description: Have access to so that they can do analysis on webrequest logs
-                and other private data.
+    description: Access to stat boxes that host private data, including
+                sampled webrequest logs.  This does not (necessarily)
+                grant access to Hadoop.  If someone wants access to
+                stat1002 to access webrequest logs in the Hadoop cluster
+                you should put them in the analytics-privatedata-users
+                group.
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik,
               halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
               manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
