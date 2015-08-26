@@ -134,4 +134,9 @@ class role::cache::upload {
             topic => 'webrequest_upload',
         }
     }
+
+    # Media browser cache hit rate and request volume stats.
+    ::varnish::logging::media { 'media':
+        statsd_server => 'statsd.eqiad.wmnet',
+    }
 }
