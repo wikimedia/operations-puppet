@@ -123,6 +123,12 @@ def main():
         """
         return phab.project.query(names=[name])
 
+    def get_proj_by_phid(phid):
+        """return json response
+        :param phid: str of project phid
+        """
+        return phab.phid.query(phids=[phid])[phid]
+
     def external_user_comment(task, text):
         """update a task with a comment by id
         :param task: int id
@@ -319,7 +325,7 @@ def main():
         # determine if task has an associate project
         dtask_match = None
         for p in proj_info:
-            pname = phab.phid.info(phid=p)['name']
+            pname = get_proj_by_phid(p)['name']
             if pname in direct_com.keys():
                 dtask_match = pname
 
