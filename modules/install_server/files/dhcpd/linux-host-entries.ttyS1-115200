@@ -2092,6 +2092,26 @@ host es1010 {
 	fixed-address es1010.eqiad.wmnet;
 }
 
+host es1011 {
+        hardware ethernet 44:A8:42:35:6C:73;
+        fixed-address es1011.eqiad.wmnet;
+}
+
+host es1012 {
+        hardware ethernet 44:A8:42:35:67:F5;
+        fixed-address es1012.eqiad.wmnet;
+}
+
+host es1017 {
+        hardware ethernet 44:A8:42:35:5F:7D;
+        fixed-address es1017.eqiad.wmnet;
+}
+
+host es1018 {
+        hardware ethernet 44:A8:42:35:77:41;
+        fixed-address es1018.eqiad.wmnet;
+}
+
 host es2001 {
 	hardware ethernet 78:2b:cb:61:1b:b5;
 	fixed-address es2001.codfw.wmnet;
