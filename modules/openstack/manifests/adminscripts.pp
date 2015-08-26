@@ -33,16 +33,6 @@ class openstack::adminscripts(
         group  => 'root',
     }
 
-    # Script to migrate instance from one dc to another
-    # (specifically, pmtpa to eqiad)
-    file { '/root/dc-migrate':
-        ensure => present,
-        source => "puppet:///modules/openstack/${openstack_version}/virtscripts/dc-migrate",
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
-    }
-
     # Log analysis tool
     file { '/root/logstat.py':
         ensure => present,
