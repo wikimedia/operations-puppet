@@ -6,7 +6,7 @@ class snapshot::dumps::stagesconfig(
 
     $firststage_args = '--cutoff today'
     $rest_args= '--date last --onepass'
-    $wikiargs = 'continue none /bin/bash ./worker --skipdone --exclusive --log'
+    $wikiargs = '/bin/bash ./worker --skipdone --exclusive --log'
 
     $args_smallwikis = "${wikiargs} --configfile confs/wikidump.conf"
     $args_bigwikis = "${wikiargs} --configfile confs/wikidump.conf.bigwikis"
