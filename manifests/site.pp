@@ -852,6 +852,10 @@ node 'einsteinium.eqiad.wmnet' {
 node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
 
     role elasticsearch::server
+
+    if $::hostname == 'elastic1023' {
+        include base::firewall
+    }
 }
 
 # erbium is a webrequest udp2log host
