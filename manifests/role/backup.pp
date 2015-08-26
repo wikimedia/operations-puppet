@@ -253,7 +253,7 @@ class role::backup::director {
     ferm::service { 'bacula-director':
         proto  => 'tcp',
         port   => '9101',
-        srange => '$INTERNAL',
+        srange => '$ALL_NETWORKS',
     }
 
 }
@@ -316,6 +316,6 @@ class role::backup::storage() {
     ferm::service { 'bacula-storage-demon':
         proto  => 'tcp',
         port   => '9103',
-        srange => '$INTERNAL',
+        srange => '$ALL_NETWORKS',
     }
 }
