@@ -32,4 +32,12 @@ class mailman::scripts {
         mode   => '0550',
         source => 'puppet:///modules/mailman/scripts/disable_list.sh'
     }
+
+    file { '/var/lib/mailman/bin/rsync_lists.sh':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman/scripts/rsync_lists.sh'
+    }
 }
