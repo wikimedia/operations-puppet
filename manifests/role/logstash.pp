@@ -38,6 +38,12 @@ class role::logstash (
         srange => '$ALL_NETWORKS',
     }
 
+    ferm::service { "grafana_dashboard_definition_storage":
+        proto  => 'tcp',
+        port   => '9200',
+        srange => '$INTERNAL',
+    }
+
     logstash::input::gelf { 'gelf':
         port => 12201,
     }
