@@ -126,18 +126,10 @@ node /analytics10(11|1[5-7]|19|2[89]|3[0-9]|4[0-9]|5[012456]).eqiad.wmnet/ {
     include standard
 }
 
-# This node will be decommissioned as a broker soon.
+# This node was previously a kafka broker, but is now waiting
+# to be repurposed (likely as a stat* type box).
 node 'analytics1021.eqiad.wmnet' {
-
-    # Kafka brokers are routed via IPv6 so that
-    # other DCs can address without public IPv4
-    # addresses.
-    interface::add_ip6_mapped { 'main': }
-
-    role analytics::kafka::server
-    include role::analytics
     include standard
-
 }
 
 # analytics1026 is the Impala master
