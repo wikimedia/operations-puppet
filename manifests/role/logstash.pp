@@ -20,17 +20,45 @@ class role::logstash (
         port => 8324,
     }
 
+    ferm::service { "logstash_udp2log":
+        proto  => 'udp',
+        port   => '8324',
+        notrack => true,
+        srange => '$ALL_NETWORKS',
+    }
+
     logstash::input::syslog { 'syslog':
         port => 10514,
+    }
+
+    ferm::service { "logstash_syslog":
+        proto  => 'udp',
+        port   => '10514',
+        notrack => true,
+        srange => '$ALL_NETWORKS',
     }
 
     logstash::input::gelf { 'gelf':
         port => 12201,
     }
 
+    ferm::service { "logstash_gelf":
+        proto  => 'udp',
+        port   => '12201',
+        notrack => true,
+        srange => '$ALL_NETWORKS',
+    }
+
     logstash::input::udp { 'logback':
         port  => 11514,
         codec => 'json',
+    }
+
+    ferm::service { "logstash_udp":
+        proto  => 'udp',
+        port   => '11514',
+        notrack => true,
+        srange => '$ALL_NETWORKS',
     }
 
     ## Global pre-processing (15)
@@ -115,6 +143,7 @@ class role::logstash (
     ferm::service { 'logstash_elastic_internode':
         proto  => 'tcp',
         port   => 9300,
+        notrack => true,
         srange => "@resolve((${logstash_nodes_ferm}))",
     }
 }
