@@ -37,8 +37,14 @@ class exim4(
         default     => true,
     }
 
+    if $::hostname == 'fermium' {
+        $eximrunning = 'stopped'
+    } else {
+        $eximrunning = 'running'
+    }
+
     service { 'exim4':
-        ensure    => running,
+        ensure    => $eximrunning,
         hasstatus => $servicestatus,
         require   => Package["exim4-daemon-${variant}"],
     }
