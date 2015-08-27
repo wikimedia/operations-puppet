@@ -24,13 +24,6 @@ class contint::packages::labs {
         require => Mount['/mnt'],
     }
 
-    file { '/data/project/debianrepo':
-        ensure => directory,
-        owner  => 'jenkins-deploy',
-        group  => 'wikidev',
-        mode   => '0775',
-    }
-
     file { '/var/cache/pbuilder':
         ensure  => link,
         target  => '/mnt/pbuilder',
