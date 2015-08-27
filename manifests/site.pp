@@ -1809,6 +1809,7 @@ node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
 
 node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
     role swift::storage
+    include base::firewall
 }
 
 # mw1001-1016 are jobrunners
