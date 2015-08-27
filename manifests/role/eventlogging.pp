@@ -160,7 +160,8 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
     # Log strictly valid events to the 'log' database on m4-master.
 
     # Define statsd host url
-    $statsd_host = "statsd.eqiad.wmnet"
+    # for beta cluster, set in https://wikitech.wikimedia.org/wiki/Hiera:Deployment-prep
+    $statsd_host = hiera('eventlogging_statsd_host', 'statsd.eqiad.wmnet')
 
     class { 'passwords::mysql::eventlogging': }    # T82265
     $mysql_user = $passwords::mysql::eventlogging::user
