@@ -975,6 +975,10 @@ node 'fermium.wikimedia.org' {
     include admin
     include base::firewall
     include role::lists::migration
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 node 'fluorine.eqiad.wmnet' {
