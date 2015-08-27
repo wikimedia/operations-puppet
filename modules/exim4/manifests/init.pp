@@ -37,8 +37,15 @@ class exim4(
         default     => true,
     }
 
+    # temp hack for migration, will be removed (T109925)
+    if $::hostname == 'fermium' {
+        $eximrunning = 'stopped'
+    } else {
+        $eximrunning = 'running'
+    }
+
     service { 'exim4':
-        ensure    => running,
+        ensure    => $eximrunning,
         hasstatus => $servicestatus,
         require   => Package["exim4-daemon-${variant}"],
     }
