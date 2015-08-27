@@ -106,7 +106,7 @@ node /analytics10(04|10).eqiad.wmnet/ {
         include role::eventlogging::forwarder::kafka
         # temporarily disable puppetization of this on analytics1010
         # as we test new code and configs there.
-        # include role::eventlogging::processor::kafka
+        include role::eventlogging::processor::kafka
     }
 
     include standard
