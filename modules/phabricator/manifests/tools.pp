@@ -16,6 +16,7 @@ class phabricator::tools (
     $rt_pass               = '',
     $phabtools_cert        = '',
     $phabtools_user        = '',
+    $gerritbot_token       = '',
     $dump                  = false,
 ) {
 
