@@ -16,7 +16,7 @@ class role::aptly {
     }
 
     aptly::repo { 'jessie':
-        distribution => 'precise',
+        distribution => 'jessie',
         publish      => true,
     }
 }
