@@ -16,6 +16,8 @@ class role::phabricator::config {
     include passwords::phabricator
     $phabtools_cert        = $passwords::phabricator::phabtools_cert
     $phabtools_user        = $passwords::phabricator::phabtools_user
+    $gerritbot_cert        = $passwords::phabricator::gerritbot_cert
+    $gerritbot_user        = $passwords::phabricator::gerritbot_user
 }
 
 # production phabricator instance
@@ -85,6 +87,8 @@ class role::phabricator::main {
         rt_pass        => $role::phabricator::config::rt_pass,
         phabtools_cert => $role::phabricator::config::phabtools_cert,
         phabtools_user => $role::phabricator::config::phabtools_user,
+        gerritbot_cert => $role::phabricator::config::gerritbot_cert,
+        gerritbot_user => $role::phabricator::config::gerritbot_user,
         dump           => true,
     }
 
