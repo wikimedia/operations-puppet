@@ -25,10 +25,4 @@ define logstash::input::udp2log(
         content  => template('logstash/input/udp2log.erb'),
         priority => $priority,
     }
-
-    ferm::service { "logstash_udp2log_${title}":
-        proto  => 'udp',
-        port   => $port,
-        srange => '$INTERNAL',
-    }
 }
