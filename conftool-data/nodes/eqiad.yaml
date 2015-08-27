@@ -241,10 +241,10 @@ cache_text:
   cp1067.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1068.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
 cache_mobile:
-  cp1046.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-  cp1047.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-  cp1059.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-  cp1060.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
+  cp1046.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp1047.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp1059.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp1060.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
 cache_upload:
   cp1048.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
   cp1049.eqiad.wmnet: [varnish-fe, varnish-be, nginx]

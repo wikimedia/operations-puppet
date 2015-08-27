@@ -1,8 +1,8 @@
 cache_mobile:
-  cp3015.esams.wmnet: [varnish-fe, varnish-be, nginx]
-  cp3016.esams.wmnet: [varnish-fe, varnish-be, nginx]
-  cp3017.esams.wmnet: [varnish-fe, varnish-be, nginx]
-  cp3018.esams.wmnet: [varnish-fe, varnish-be, nginx]
+  cp3015.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp3016.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp3017.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp3018.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
 cache_text:
   cp3003.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp3004.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
