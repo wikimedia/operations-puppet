@@ -27,15 +27,17 @@ virtualization:
   cluster: "virt"
 
 cassandra_test:
-  __regex: !ruby/regexp /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(cerium|praseodymium|xenon)(-[a-z])?\.eqiad\.wmnet$/
   cassandra::seeds:
       - cerium.eqiad.wmnet
       - praseodymium.eqiad.wmnet
-      - xenon.eqiad.wmnet
+      - xenon-a.eqiad.wmnet
+      - xenon-b.eqiad.wmnet
   restbase::seeds:
       - cerium.eqiad.wmnet
       - praseodymium.eqiad.wmnet
-      - xenon.eqiad.wmnet
+      - xenon-a.eqiad.wmnet
+      - xenon-b.eqiad.wmnet
   cassandra::max_heap_size: 4g
   cassandra::heap_newsize: 1g
 

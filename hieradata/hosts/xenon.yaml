@@ -1,0 +1,9 @@
+cassandra::instances:
+    a:
+        jmx_port: 7189
+        listen_address: 10.64.0.224
+        rpc_address: 10.64.0.224
+    b:
+        jmx_port: 7190
+        listen_address: 10.64.0.225
+        rpc_address: 10.64.0.225
