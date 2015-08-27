@@ -36,6 +36,11 @@ class contint::packages::python {
         group   => 'root',
         require => Package['pip'],
     }
+    package { 'setuptools':
+        ensure   => present,
+        provider => 'pip',
+        require  => Package['python-pip'],
+    }
 
     # Python 3
     require_package(
