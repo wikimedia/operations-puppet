@@ -5,18 +5,15 @@ class role::aptly {
     include ::aptly
 
     # Auto setup published repositories for all 3 available distros
-    aptly::repo { 'precise-project':
-        distribution => 'precise',
+    aptly::repo { "precise-${labsproject}":
         publish      => true,
     }
 
-    aptly::repo { 'trusty-project':
-        distribution => 'trusty',
+    aptly::repo { "trusty-${labsproject}":
         publish      => true,
     }
 
-    aptly::repo { 'jessie':
-        distribution => 'jessie',
+    aptly::repo { "jessie-${labsproject}":
         publish      => true,
     }
 }

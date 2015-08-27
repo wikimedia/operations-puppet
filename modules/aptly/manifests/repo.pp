@@ -1,11 +1,11 @@
 define aptly::repo (
-    $distribution,
-    $component = $::labsproject,
+    $distribution = $title,
+    $component = 'main',
     $publish = false,
 ) {
     require ::aptly
 
-    $repo_name = "${title}-${component}-${distribution}"
+    $repo_name = "${title}-${component}"
     exec { "create-aptly-repo-${title}":
         command => "/usr/bin/aptly repo create -component=${component} -distribution=${distribution} ${repo_name}",
         unless  => "/usr/bin/aptly repo show ${repo_name} > /dev/null",

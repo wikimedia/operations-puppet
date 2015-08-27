@@ -3,8 +3,8 @@ class aptly::client(
 ) {
     apt::repository { 'project-aptly':
         uri        => "http://${servername}/repo",
-        dist       => $::lsbdistcodename,
-        components => $::labsproject,
+        dist       => "${::labsproject}-$::lsbdistcodename",
+        components => 'main',
         source     => true,
     }
 }
