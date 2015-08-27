@@ -69,6 +69,13 @@ class role::maps::master {
         mode    => '0400',
         content => template('maps/grants.cql.erb'),
     }
+    # TODO: Figure out a better way to do this
+    # Ensure postgresql logs as maps-admin to allow maps-admin to read them
+    # Rely on logrotate's copytruncate policy for postgres for the rest of the
+    # log file
+    file { '/var/log/postgresql/postgresql-9.4-main.log':
+        group => 'maps-admin',
+    }
 }
 
 class role::maps::slave {
@@ -97,5 +104,12 @@ class role::maps::slave {
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///files/postgres/tuning.conf',
+    }
+    # TODO: Figure out a better way to do this
+    # Ensure postgresql logs as maps-admin to allow maps-admin to read them
+    # Rely on logrotate's copytruncate policy for postgres for the rest of the
+    # log file
+    file { '/var/log/postgresql/postgresql-9.4-main.log':
+        group => 'maps-admin',
     }
 }
