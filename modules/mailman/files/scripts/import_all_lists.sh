@@ -7,7 +7,7 @@ IMPORT_DIR="/var/lib/mailman/import"
 for list in $(find ${IMPORT_DIR}/lists -maxdepth 1) ; do
 
     LISTNAME=$(basename $list)
-    ${INSTALL_DIR}/import_list.sh $LISTNAME all
+    ${INSTALL_DIR}/bin/import_list.sh $LISTNAME all
 done
 
 echo "done importing. running list_lists\n"
