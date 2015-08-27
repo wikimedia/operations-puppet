@@ -16,6 +16,7 @@ class role::phabricator::config {
     include passwords::phabricator
     $phabtools_cert        = $passwords::phabricator::phabtools_cert
     $phabtools_user        = $passwords::phabricator::phabtools_user
+    $gerritbot_token       = $passwords::phabricator::gerritbot_token
 }
 
 # production phabricator instance
@@ -75,18 +76,19 @@ class role::phabricator::main {
     }
 
     class { '::phabricator::tools':
-        dbhost         => $mysql_host,
-        manifest_user  => $role::phabricator::config::mysql_maniphestuser,
-        manifest_pass  => $role::phabricator::config::mysql_maniphestpass,
-        app_user       => $role::phabricator::config::mysql_appuser,
-        app_pass       => $role::phabricator::config::mysql_apppass,
-        bz_user        => $role::phabricator::config::bz_user,
-        bz_pass        => $role::phabricator::config::bz_pass,
-        rt_user        => $role::phabricator::config::rt_user,
-        rt_pass        => $role::phabricator::config::rt_pass,
-        phabtools_cert => $role::phabricator::config::phabtools_cert,
-        phabtools_user => $role::phabricator::config::phabtools_user,
-        dump           => true,
+        dbhost          => $mysql_host,
+        manifest_user   => $role::phabricator::config::mysql_maniphestuser,
+        manifest_pass   => $role::phabricator::config::mysql_maniphestpass,
+        app_user        => $role::phabricator::config::mysql_appuser,
+        app_pass        => $role::phabricator::config::mysql_apppass,
+        bz_user         => $role::phabricator::config::bz_user,
+        bz_pass         => $role::phabricator::config::bz_pass,
+        rt_user         => $role::phabricator::config::rt_user,
+        rt_pass         => $role::phabricator::config::rt_pass,
+        phabtools_cert  => $role::phabricator::config::phabtools_cert,
+        phabtools_user  => $role::phabricator::config::phabtools_user,
+        gerritbot_token => $role::phabricator::config::gerritbot_token,
+        dump            => true,
     }
 
     cron { 'phab_dump':
