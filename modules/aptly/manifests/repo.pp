@@ -1,10 +1,10 @@
-class aptly::repo (
+define aptly::repo (
     $distribution,
     $component = $::labsproject,
     $publish = false,
 ) {
     require ::aptly
-    
+
     $repo_name = "${title}-${component}-${distribution}"
     exec { "create-aptly-repo-${title}":
         command => "/usr/bin/aptly repo create -component=${component} -distribution=${distribution} ${repo_name}",
