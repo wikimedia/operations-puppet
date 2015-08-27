@@ -5,19 +5,48 @@ include "text-common.inc.vcl";
 
 sub vcl_recv {
 	call vcl_recv_purge;
-	// FIXME: restrict access
 
 	if (req.http.host ~ "^test\.") {
 		set req.http.X-Wikimedia-Debug = "1";
 	}
 
 <% if @site_tier == "one" -%>
-	if (req.http.X-Wikimedia-Debug == "1") {
-		set req.backend = test_wikipedia;
-	} else if (req.url ~ "^/w/api\.php") {
+	if (req.url ~ "^/w/api\.php") {
 		set req.backend = api;
+	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
+		set req.backend = rendering;
 	}
 <% end -%>
+
+	if (req.url ~ "^/api/rest_v1/") {
+<% if @site_tier == "one" -%>
+		set req.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
+		set req.backend = restbase_backend;
+<% else -%>
+		set req.backend = backend_random;
+<% end -%>
+		set req.hash_ignore_busy = true;
+		return (pass);
+	}
+
+	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
+<% if @site_tier != "one" -%>
+		set req.backend = backend_random;
+<% end -%>
+		set req.hash_ignore_busy = true;
+	}
+
+<% if @site_tier == "one" -%>
+	if (req.http.X-Wikimedia-Debug == "1") {
+		set req.backend = test_wikipedia;
+	}
+<% end -%>
+
+<% if @varnish_directors.include?('security_audit') && !@varnish_directors['security_audit']['backends'].empty? %>
+	if (req.http.X-Wikimedia-Security-Audit == "1") {
+		set req.backend = security_audit;
+	}
+<% end %>
 
 	if (req.request != "GET" && req.request != "HEAD") {
 		return (pass);
@@ -37,11 +66,32 @@ sub vcl_miss {
 }
 
 sub vcl_fetch {
+	// Make sure Set-Cookie responses are not cacheable, and log violations
+	// FIXME: exceptions are ugly; maybe get rid of the whole thing?
+	if (beresp.ttl > 0s && beresp.http.Set-Cookie &&
+		req.url !~ "^/wiki/Special:HideBanners") {
+		std.log("Cacheable object with Set-Cookie found. req.url: " + req.url + " Cache-Control: " + beresp.http.Cache-Control + " Set-Cookie: " + beresp.http.Set-Cookie);
+		set beresp.http.Cache-Control = "private, max-age=0, s-maxage=0";
+		set beresp.ttl = 0s;
+		return (hit_for_pass);
+	}
+
+	// FIXME: Fix up missing Vary headers on Apache redirects
+	if ((beresp.status == 301 || beresp.status == 302)
+		&& beresp.http.Location ~ "^http"
+		&& beresp.http.Vary !~ "X-Forwarded-Proto") {
+		if (beresp.http.Vary) {
+			set beresp.http.Vary = beresp.http.Vary + ",X-Forwarded-Proto";
+		} else {
+			set beresp.http.Vary = "X-Forwarded-Proto";
+		}
+	}
+
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
 	}
 
-	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1") {
+	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
