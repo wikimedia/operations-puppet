@@ -146,9 +146,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         nofiles_ulimit                  => $nofiles_ulimit,
 
         # Enable auto creation of topics.
-        # This will be used for eventlogging-kafka
-        # (Disable this until we are ready for eventlogging-kafka).
-        auto_create_topics_enable       => false,
+        auto_create_topics_enable       => true,
 
         # (Temporarily?) disable auto leader rebalance.
         # I am having issues with analytics1012, and I can't
