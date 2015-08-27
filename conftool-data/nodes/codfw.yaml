@@ -204,10 +204,10 @@ cache_text:
   cp2019.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp2023.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
 cache_mobile:
-  cp2003.codfw.wmnet: [varnish-fe, varnish-be, nginx]
-  cp2009.codfw.wmnet: [varnish-fe, varnish-be, nginx]
-  cp2015.codfw.wmnet: [varnish-fe, varnish-be, nginx]
-  cp2021.codfw.wmnet: [varnish-fe, varnish-be, nginx]
+  cp2003.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp2009.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp2015.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp2021.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
 cache_upload:
   cp2002.codfw.wmnet: [varnish-fe, varnish-be, nginx]
   cp2005.codfw.wmnet: [varnish-fe, varnish-be, nginx]
