@@ -56,7 +56,10 @@ sub vcl_recv {
 	// Allow purging
 	call vcl_recv_purge;
 
-	call normalize_path;
+	// Don't decode percent-encoded slashes in paths for REST APIs
+	if (req.url !~ "^/api/rest_v1/") {
+		call normalize_path;
+	}
 
 	# normalize all /static to the same hostname for caching
 	if (req.url ~ "^/static/") { set req.http.host = "<%= scope['role::cache::configuration::static_host'] %>"; }
@@ -65,8 +68,21 @@ sub vcl_recv {
 		set req.http.X-Wikimedia-Debug = "1";
 	}
 
+	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
+		set req.backend = backend_random;
+		set req.hash_ignore_busy = true;
+	} else if (req.url ~ "^/api/rest_v1/") {
+		set req.backend = backend_random;
+	}
+
 	if (req.request != "GET" && req.request != "HEAD") {
 		return (pass);
+	}
+
+	// Users that just logged out, should not get a 304 for their
+	// (locally cached) logged in pages.
+	if (req.http.If-Modified-Since && req.http.Cookie ~ "LoggedOut") {
+		unset req.http.If-Modified-Since;
 	}
 
 	call analytics_last_access_recv;
@@ -89,7 +105,7 @@ sub vcl_fetch {
 		set beresp.ttl = 60 s;
 	}
 
-	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1") {
+	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
@@ -110,7 +126,13 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
-#	unset resp.http.Enable-ESI;
+	<% if @cluster_options.fetch("enable_geoiplookup", false) -%>
+	// Perform GeoIP look-up and send the result as a session cookie
+	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
+		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
+		call geoip_cookie;
+	}
+	<% end -%>
 
 	// Assemble X-Analytics header
 	// Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
@@ -143,13 +165,4 @@ sub vcl_deliver {
 	if (req.url == "/favicon.ico" || req.url ~ "^/apple-touch-icon(-precomposed)?\.png$" || req.url ~ "^/w/index\.php\?title=.*:Gadget-.*&[0-9]+$") {
 		set resp.http.Cache-Control = "s-maxage=3600, max-age=3600";
 	}
-
-	// TODO: this block of VCL code is copypasta from text-frontend. Some consolidation is in order.
-        <% if @cluster_options.fetch("enable_geoiplookup", false) -%>
-		// Perform GeoIP look-up and send the result as a session cookie
-                if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
-                        && req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
-                        call geoip_cookie;
-                }
-        <% end -%>
 }
