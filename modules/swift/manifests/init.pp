@@ -30,6 +30,10 @@ class swift (
             'net.ipv4.tcp_max_orphans'     => 262144,
             'net.ipv4.tcp_synack_retries'  => 2,
             'net.ipv4.tcp_syn_retries'     => 2,
+
+            # even with NOTRACK enabled, conntrack will still keep track
+            # connections in TIME_WAIT, thus lower the respective timeout
+            'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 3,
         },
     }
 
