@@ -22,5 +22,6 @@ define interface::ring($setting, $value, $interface='eth0') {
         command => "ethtool -G ${interface} ${setting} ${value}",
         subscribe => Augeas["${interface}_${title}"],
         refreshonly => true,
+        require => Package['ethtool'],
     }
 }

@@ -28,6 +28,7 @@ define interface::offload($setting, $value, $interface='eth0')  {
     exec { "ethtool ${interface} -K ${setting} ${value}":
         path    => '/usr/bin:/usr/sbin:/bin:/sbin',
         command => "ethtool -K ${interface} ${setting} ${value}",
-        unless  => "test $(ethtool -k ${interface} | awk '/${long_param}:/ { print \$2 }') = '${value}'"
+        unless  => "test $(ethtool -k ${interface} | awk '/${long_param}:/ { print \$2 }') = '${value}'",
+        require => Package['ethtool'],
     }
 }
