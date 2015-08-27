@@ -47,6 +47,8 @@ class role::eventlogging {
     $statsd_host         = hiera('eventlogging_statsd_host',      'statsd.eqiad.wmnet')
 
     $kafka_brokers_array = $role::analytics::kafka::config::brokers_array
+    $kafka_zookeeper_url = $role::analytics::kafka::config::zookeeper_url
+
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
     # with each message keyed by SCHEMA_REVISION.
@@ -265,6 +267,8 @@ class role::eventlogging::forwarder::kafka inherits role::eventlogging {
         count   => false,
     }
 
+    # This will be replaced by configuring varnishkafka on cache servers to send
+    # events directly to kafka topic 'eventlogging-client-side'.
     eventlogging::service::forwarder { 'client-side-raw':
         input   => "tcp://${forwarder_host}:8422?identity=server-side-raw-kafka",
         outputs => ["${kafka_base_uri}?topic=eventlogging-client-side"],
@@ -283,23 +287,48 @@ class role::eventlogging::processor::kafka inherits role::eventlogging {
     # The downstream eventlogging MySQL consumer expects schemas to be
     # all mixed up in a single stream.  We send processed events to a
     # 'mixed' kafka topic in order to keep supporting it for now.
-    # NOTE:  This topic is named 'eventlogging-all', but may not
-    # have ALL events in it.  We plan to blacklist high volume
-    # events so they don't have to hit MySQL.
-    $kafka_mixed_uri   = "${kafka_base_uri}?topic=eventlogging-all"
+    $kafka_mixed_uri   = "${kafka_base_uri}?topic=eventlogging-valid-mixed"
+
+
+    $kafka_consumer_args  = hiera(
+        'eventlogging_processor_kafka_consumer_args',
+        "auto_commit_enable=True&auto_commit_interval_ms=10000&zookeeper_connect=${kafka_zookeeper_url}"
+    )
+    $kafka_consumer_group = hiera(
+        'eventlogging_processor_kafka_consumer_group',
+        'eventlogging-00'
+    )
 
     eventlogging::service::processor { 'server-side-events-kafka':
         format         => '%{seqId}d EventLogging %j',
-        input          => "${kafka_base_uri}?topic=eventlogging-server-side&auto_commit_enable=True",
+        input          => "${kafka_base_uri}?topic=eventlogging-server-side&${kafka_consumer_args}",
+        sid            => $kafka_consumer_group,
         outputs        => [
             $kafka_schema_uri,
             $kafka_mixed_uri
         ],
         output_invalid => true,
     }
-    eventlogging::service::processor { 'client-side-events-kafka':
+
+    # Run N parallel client side processors.
+    # These will auto balance amongts themselves.
+    $kafka_client_side_processors = hiera(
+        'eventlogging_kafka_client_side_processors',
+        [
+            'client-side-0',
+            'client-side-1',
+            'client-side-2',
+            'client-side-3',
+            'client-side-4',
+            'client-side-5',
+            'client-side-6',
+            'client-side-7',
+        ]
+    )
+    eventlogging::service::processor { $kafka_client_side_processors:
         format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
-        input          => "${kafka_base_uri}?topic=eventlogging-client-side&auto_commit_enable=True",
+        input          => "${kafka_base_uri}?topic=eventlogging-client-side&${kafka_consumer_args}",
+        sid            => $kafka_consumer_group,
         outputs        => [
             $kafka_schema_uri,
             $kafka_mixed_uri
