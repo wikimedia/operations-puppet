@@ -162,7 +162,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
 
         # Bump this up to get a little more
         # parallelism between replicas.
-        num_replica_fetchers            => 8,
+        num_replica_fetchers            => 12,
         # Setting this larger so that it is sure to be bigger
         # than batch size from varnishkafka.
         # See: https://issues.apache.org/jira/browse/KAFKA-766
