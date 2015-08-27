@@ -3,7 +3,8 @@ Description=Kubernetes Proxy
 
 [Service]
 ExecStart=/usr/local/bin/kube-proxy \
-    --master=http://<%= @master_ip %>:8080
+    --master=http://<%= @master_ip %>:8080 \
+    --v=4
 
 [Install]
 WantedBy=multi-user.target
