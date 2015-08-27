@@ -1775,6 +1775,7 @@ node /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/ {
 # HP machines have different disk ordering T90922
 node /^ms-be101[678]\.eqiad\.wmnet$/ {
     role swift::storage
+    include base::firewall
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
