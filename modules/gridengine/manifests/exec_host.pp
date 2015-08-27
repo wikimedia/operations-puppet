@@ -12,10 +12,11 @@ class gridengine::exec_host(
     }
 
     service { 'gridengine-exec':
-        ensure  => running,
-        enable  => true,
-        pattern => 'sge_execd',
-        require => Package['gridengine-exec'],
+        ensure    => running,
+        enable    => true,
+        hasstatus => false,
+        pattern   => 'sge_execd',
+        require   => Package['gridengine-exec'],
     }
 
     gridengine::resource { "exec-${::fqdn}":
