@@ -16,6 +16,8 @@ class phabricator::tools (
     $rt_pass               = '',
     $phabtools_cert        = '',
     $phabtools_user        = '',
+    $gerritbot_cert        = '',
+    $gerritbot_user        = '',
     $dump                  = false,
 ) {
 
@@ -65,5 +67,11 @@ class phabricator::tools (
         user    => root,
         hour    => '1',
         require => Git::Install['phabricator/tools'],
+    }
+
+    phabricator::arcrc { "gerritbot":
+        rootdir => $::phabricator::phabdir,
+        user    => $gerrit_bot_user,
+        cert    => $gerrit_bot_cert,
     }
 }
