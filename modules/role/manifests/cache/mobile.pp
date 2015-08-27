@@ -36,10 +36,25 @@ class role::cache::mobile (
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
             },
+            'rendering'        => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+            },
+            'security_audit'   => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['security_audit'][$::mw_primary],
+            },
             'test_wikipedia' => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+            },
+            'restbase_backend' => {
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
             },
         },
         'two' => {
@@ -47,6 +62,12 @@ class role::cache::mobile (
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $mobile_nodes['eqiad'],
+            },
+            'backend_random' => {
+                'dynamic'  => 'yes',
+                'type'     => 'random',
+                'backends' => $mobile_nodes['eqiad'],
+                'service'  => 'varnish-be-rand',
             },
         }
     }
@@ -90,6 +111,11 @@ class role::cache::mobile (
                 'probe'         => 'varnish',
             },
             {
+                'backend_match'   => '^restbase\.svc\.|^deployment-restbase',
+                'port'            => 7231,
+                'max_connections' => 5000,
+            },
+            {
                 'port'                  => 80,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '180s',
@@ -113,6 +139,12 @@ class role::cache::mobile (
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $site_mobile_nodes,
+            },
+            'backend_random' => {
+                'dynamic'  => 'yes',
+                'type'     => 'random',
+                'backends' => $site_mobile_nodes,
+                'service'  => 'varnish-be-rand',
             },
         },
         vcl_config         => {
