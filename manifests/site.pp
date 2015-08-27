@@ -883,6 +883,14 @@ node /es200[1234]\.codfw\.wmnet/ {
     }
 }
 
+## es1 new nodes
+node /^es101[268]\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 'es1',
+    }
+}
+
+
 # es2 databases
 node /es1006\.eqiad\.wmnet/ {
     class { 'role::coredb::es2':
@@ -902,8 +910,8 @@ node /es200[567]\.codfw\.wmnet/ {
     }
 }
 
-## es2 new nodes (installation in progress)
-node /^es101[17]\.eqiad\.wmnet/ {
+## es2 new nodes
+node /^es101[135]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es2',
     }
@@ -931,8 +939,8 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
     }
 }
 
-## es3 new nodes (installation in progress)
-node /^es101[28]\.eqiad\.wmnet/ {
+## es3 new nodes
+node /^es101[479]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es3',
     }
