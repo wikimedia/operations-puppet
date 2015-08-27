@@ -42,6 +42,10 @@ class role::eventlogging {
     $processor_host      = hiera('eventlogging_processor_host',   $eventlogging_host)
     $multiplexer_host    = hiera('eventlogging_multiplexer_host', $eventlogging_host)
 
+    # Define statsd host url
+    # for beta cluster, set in https://wikitech.wikimedia.org/wiki/Hiera:Deployment-prep
+    $statsd_host         = hiera('eventlogging_statsd_host',      'statsd.eqiad.wmnet')
+
     $kafka_brokers_array = $role::analytics::kafka::config::brokers_array
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
@@ -159,9 +163,6 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     # Log strictly valid events to the 'log' database on m4-master.
 
-    # Define statsd host url
-    $statsd_host = "statsd.eqiad.wmnet"
-
     class { 'passwords::mysql::eventlogging': }    # T82265
     $mysql_user = $passwords::mysql::eventlogging::user
     $mysql_pass = $passwords::mysql::eventlogging::password
@@ -234,7 +235,7 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
 class role::eventlogging::consumer::graphite inherits role::eventlogging  {
     eventlogging::service::consumer { 'graphite':
         input  => "tcp://${multiplexer_host}:8600",
-        output => 'statsd://statsd.eqiad.wmnet:8125',
+        output => "statsd://${statsd_host}:8125",
     }
 }
 
@@ -246,7 +247,7 @@ class role::eventlogging::consumer::graphite inherits role::eventlogging  {
 #
 class role::eventlogging::reporter inherits role::eventlogging {
     eventlogging::service::reporter { 'statsd':
-        host => 'statsd.eqiad.wmnet',
+        host => $statsd_host,
     }
 }
 
