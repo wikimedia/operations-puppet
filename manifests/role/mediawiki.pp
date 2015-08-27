@@ -67,6 +67,7 @@ class role::mediawiki::webserver($pool) {
 
     ferm::service { 'mediawiki-http':
         proto => 'tcp',
+        notrack => true,
         port  => 'http',
     }
 
