@@ -3,6 +3,22 @@
 # Sets up a simple aptly repo server serving over http on port 80
 class role::aptly {
     include ::aptly
+
+    # Auto setup published repositories for all 3 available distros
+    aptly::repo { 'precise-project':
+        distribution => 'precise',
+        publish      => true,
+    }
+
+    aptly::repo { 'trusty-project':
+        distribution => 'trusty',
+        publish      => true,
+    }
+
+    aptly::repo { 'jessie':
+        distribution => 'precise',
+        publish      => true,
+    }
 }
 
 # = Class: role::aptly::client
