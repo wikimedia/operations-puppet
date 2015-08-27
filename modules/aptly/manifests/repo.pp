@@ -19,6 +19,7 @@ define aptly::repo (
             command => "/usr/bin/aptly -architectures=amd64,all publish -skip-signing repo ${repo_name}",
             unless  => "/usr/bin/aptly publish list | /bin/grep -F '[${repo_name}]' > /dev/null",
             user    => 'root',
+            require => Exec['create-aptly-repo-${title}'],
         }
     }
 }
