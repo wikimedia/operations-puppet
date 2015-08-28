@@ -72,39 +72,47 @@ SSH2_AGENTC_REQUEST_IDENTITIES = 11
 SSH2_AGENTC_SIGN_REQUEST = 13
 SSH_AGENTC_REQUEST_RSA_IDENTITIES = 1
 SSH_AGENT_FAILURE = 5
+SSH_AGENT_OLD_SIGNATURE = 1
 
 s_message_header = struct.Struct('!LB')
+s_flags = struct.Struct('!L')
 s_ucred = struct.Struct('2Ii')
+err = type('SshAgentProtocolError', (IOError,), {})
 
 
 def unpack_variable_length_string(buffer, offset=0):
     """Read a variable-length string from a buffer. The first 4 bytes are the
     big-endian unsigned long representing the length of the string."""
-    size = struct.unpack_from('!L', buffer, offset)
-    string, = struct.unpack_from('xxxx%ds' % size, buffer, offset)
-    return string
+    fmt = 'xxxx%ds' % struct.unpack_from('!L', buffer, offset)
+    string, = struct.unpack_from(fmt, buffer, offset)
+    return string, offset + struct.calcsize(fmt)
 
 
-def get_key_permissions(path):
+def get_key_perms(path):
     """Recursively walk `path`, loading YAML configuration files."""
-    key_permissions = {}
+    key_perms = {}
     for fname in glob.glob(os.path.join(path, '*.y*ml')):
         with open(fname) as yml:
             for group, keys in yaml.safe_load(yml).items():
                 for key in keys:
                     key = key.replace(':', '')
-                    key_permissions.setdefault(key, set()).add(group)
-    return key_permissions
+                    key_perms.setdefault(key, set()).add(group)
+    return key_perms
 
 
 class SshAgentProxyServer(socketserver.ThreadingUnixStreamServer):
     """A threaded server that listens on a UNIX domain socket and handles
     requests by filtering them and proxying them to a backend SSH agent."""
 
-    def __init__(self, server_address, agent_address, key_permissions):
+    def __init__(self, server_address, agent_address, key_perms):
         super().__init__(server_address, SshAgentProxyHandler)
         self.agent_address = agent_address
-        self.key_permissions = key_permissions
+        self.key_perms = key_perms
+
+    def handle_error(self, request, client_address):
+        super().handle_error(request, client_address)
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        syslog.syslog(syslog.LOG_NOTICE, '[%s] %s' % (exc_type, exc_value))
 
 
 class SshAgentProxyHandler(socketserver.BaseRequestHandler):
@@ -150,35 +158,45 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
         """Read data from client and send to backend SSH agent."""
         code, message = self.recv_message(self.request)
 
-        if code == SSH2_AGENTC_REQUEST_IDENTITIES:
-            return self.send_message(self.backend, code, message)
+        if not code:
+            return
 
-        if code == SSH_AGENTC_REQUEST_RSA_IDENTITIES:
-            return self.send_message(self.backend, code, message)
+        if code in (SSH2_AGENTC_REQUEST_IDENTITIES,
+                    SSH_AGENTC_REQUEST_RSA_IDENTITIES):
+            if message:
+                raise err('Trailing bytes')
+            return self.send_message(self.backend, code)
 
         if code == SSH2_AGENTC_SIGN_REQUEST:
-            key = unpack_variable_length_string(message)
-            digest = hashlib.md5(key).hexdigest()
+            key_blob, *_ = self.parse_sign_request(message)
+            key_digest = hashlib.md5(key_blob).hexdigest()
             user, groups = self.get_peer_credentials(self.request)
-            if groups & self.server.key_permissions.get(digest, set()):
-                syslog.syslog(syslog.LOG_INFO, 'Allowing signing request '
-                              'from user %s using key %s.' % (user, digest))
+            if groups & self.server.key_perms.get(key_digest, set()):
                 return self.send_message(self.backend, code, message)
-            syslog.syslog(syslog.LOG_NOTICE, 'Denying signing request '
-                          'from user %s using key %s.' % (user, digest))
 
         return self.send_message(self.request, SSH_AGENT_FAILURE)
 
     def handle(self):
         """Handle a new client connection by shuttling data between the client
         and the backend."""
-        syslog.syslog('New connection from %s.' % self.client_address)
         while 1:
             rlist, *_ = select.select((self.backend, self.request), (), (), 1)
             if self.backend in rlist:
                 self.handle_backend()
             if self.request in rlist:
                 self.handle_client_request()
+
+    def parse_sign_request(self, message):
+        """Parse the payload of an SSH2_AGENTC_SIGN_REQUEST into its
+        constituent parts: a key blob, data, and a uint32 flag."""
+        key_blob, offset = unpack_variable_length_string(message)
+        data, offset = unpack_variable_length_string(message, offset)
+        flags, = s_flags.unpack_from(message, offset)
+        if offset + s_flags.size != len(message):
+            raise err('SSH2_AGENTC_SIGN_REQUEST: Trailing bytes')
+        if flags != 0 and flags != SSH_AGENT_OLD_SIGNATURE:
+            raise err('SSH2_AGENTC_SIGN_REQUEST: Bad flags 0x%X' % flags)
+        return key_blob, data, flags
 
 
 ap = argparse.ArgumentParser(description='filtering proxy for ssh-agent')
@@ -199,6 +217,6 @@ ap.add_argument(
 )
 args = ap.parse_args()
 
-key_perms = get_key_permissions(args.auth_dir)
+perms = get_key_perms(args.auth_dir)
 syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_AUTH)
-SshAgentProxyServer(args.bind, args.connect, key_perms).serve_forever()
+SshAgentProxyServer(args.bind, args.connect, perms).serve_forever()
