@@ -19,7 +19,7 @@ class icinga::monitor::legal {
         contact_group         => 'admins',
     }
 
-    monitoring::service { 'en.wp.o-legal-html':
+    monitoring::service { 'en.m.wp.o-legal-html':
         description           => 'Ensure mandated html',
         check_command         => 'check_legal_html!https://en.m.wikipedia.org/wiki/Main_Page!mobile',
         host                  => 'en.wikipedia.org',
