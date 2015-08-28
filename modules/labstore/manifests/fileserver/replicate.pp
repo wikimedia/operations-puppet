@@ -29,7 +29,7 @@ define labstore::fileserver::replicate(
         content => template("labstore/initscripts/replicate.timer.erb"),
     }
 
-    nrpe::monitor_systemd_unit_state { "replicate-${title}":
+    nrpe::monitor_systemd_unit_state { "replicate-${title}.timer":
         description    => "Last backup of the ${title} filesystem",
         expected_state => "periodic 90000", # 25h (i.e. daily but with a bit of give)
     }
