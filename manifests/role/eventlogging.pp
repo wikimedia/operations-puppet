@@ -299,7 +299,7 @@ class role::eventlogging::processor::kafka inherits role::eventlogging {
         'eventlogging-00'
     )
 
-    eventlogging::service::processor { 'server-side-events-kafka':
+    eventlogging::service::processor { 'server-side-0':
         format         => '%{seqId}d EventLogging %j',
         input          => "${kafka_base_uri}?topic=eventlogging-server-side&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
         sid            => $kafka_consumer_group,
