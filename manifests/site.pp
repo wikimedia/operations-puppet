@@ -124,6 +124,7 @@ node /analytics10(11|1[5-7]|19|2[89]|3[0-9]|4[0-9]|5[012456]).eqiad.wmnet/ {
     role analytics::hadoop::worker, analytics::impala::worker
 
     include standard
+    include base::debdeploy
 }
 
 # This node was previously a kafka broker, but is now waiting
@@ -1717,6 +1718,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include passwords::redis
     include redis
     include redis::ganglia
+    include base::debdeploy
     include base::firewall
 }
 
@@ -1787,11 +1789,13 @@ node /^ms-be101[678]\.eqiad\.wmnet$/ {
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
     role swift::proxy
     include base::firewall
+    include base::debdeploy
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
     role swift::storage
     include base::firewall
+    include base::debdeploy
 }
 
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
@@ -2030,6 +2034,7 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
 node 'osmium.eqiad.wmnet' {
     role ve
     include ::standard
+    include base::debdeploy
 }
 
 
@@ -2119,6 +2124,7 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
 node 'radium.wikimedia.org' {
     include base::firewall
     include standard
+    include base::debdeploy
     include role::tor
 
     interface::add_ip6_mapped { 'main':
