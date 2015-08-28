@@ -190,6 +190,11 @@ host analytics1052 {
         fixed-address analytics1052.eqiad.wmnet;
 }
 
+host analytics1053 {
+        hardware ethernet 54:9F:35:25:BF:BC;
+        fixed-address analytics1053.eqiad.wmnet;
+}
+
 host analytics1054 {
         hardware ethernet 44:A8:42:24:FB:5A;
         fixed-address analytics1054.eqiad.wmnet;
@@ -203,6 +208,11 @@ host analytics1055 {
 host analytics1056 {
         hardware ethernet 44:A8:42:25:16:24;
         fixed-address analytics1056.eqiad.wmnet;
+}
+
+host analytics1057 {
+        hardware ethernet 44:A8:42:25:03:F0;
+        fixed-address analytics1057.eqiad.wmnet;
 }
 
 host antimony {
