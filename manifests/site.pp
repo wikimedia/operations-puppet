@@ -975,10 +975,10 @@ node 'eventlog1001.eqiad.wmnet' {
 
 # virtual machine for mailman list server
 node 'fermium.wikimedia.org' {
+    role lists
     include standard
     include admin
     include base::firewall
-    include role::lists
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
