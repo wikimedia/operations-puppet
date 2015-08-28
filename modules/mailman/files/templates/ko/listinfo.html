@@ -2,7 +2,7 @@
 <!-- Version: 1.6 -->
 <html lang="ko">
   <head>
-    <title><MM-List-Name> ���ϸ� ����Ʈ - ��Ű�̵��</title>
+    <title><MM-List-Name> ¸ÞÀÏ¸µ ¸®½ºÆ® - À§Å°¹Ìµð¾î</title>
     <style>
       html, body {
         height: 100%;
@@ -204,29 +204,29 @@
         <h3><MM-List-Description></h3>
         <p><MM-List-Info></p>
         <ul>
-          <li><MM-Archive><MM-List-Name> ��� �����Ҹ� �湮�Ͻʽÿ�.</MM-Archive>. <MM-Restricted-List-Message></li>
-          <li>���� �ּҷ� �̸����� �����ʽÿ�. <A HREF="mailto:<MM-Posting-Addr>"><MM-Posting-Addr></A>.</li>
-         <li><a href="https://meta.wikimedia.org/wiki/Special:MyLanguage/Mailing_lists/List_info">������ ����</a>
+          <li><MM-Archive><MM-List-Name> ±â·Ï º¸°ü¼Ò¸¦ ¹æ¹®ÇÏ½Ê½Ã¿À.</MM-Archive>. <MM-Restricted-List-Message></li>
+          <li>´ÙÀ½ ÁÖ¼Ò·Î ÀÌ¸ÞÀÏÀ» º¸³»½Ê½Ã¿À. <A HREF="mailto:<MM-Posting-Addr>"><MM-Posting-Addr></A>.</li>
+         <li><a href="https://meta.wikimedia.org/wiki/Special:MyLanguage/Mailing_lists/List_info">ÆäÀÌÁö ¹ø¿ª</a>
         </ul>
       </div>
       <div id="two-column">
         <div class="box-content" id="subscribe">
-          <h3 class="title title01">����</h3>
+          <h3 class="title title01">±¸µ¶</h3>
           <MM-Subscribe-Form-Start>
           <table>
-            <tr><td>����� �̸��� �ּ�:</td><td><MM-Subscribe-Box></td></tr>
-            <tr><td>����� �̸� (���� ����):</td><td><mm-fullname-box></td></tr>
+            <tr><td>´ç½ÅÀÇ ÀÌ¸ÞÀÏ ÁÖ¼Ò:</td><td><MM-Subscribe-Box></td></tr>
+            <tr><td>´ç½ÅÀÇ ÀÌ¸§ (¼±ÅÃ »çÇ×):</td><td><mm-fullname-box></td></tr>
             <!-- Optional Password Fields (can leave out for public lists as Mailman auto-generates) -->
             <!-- Password reminders can always be requested through web interface -->
             <!-- Most likely only to be used with lists with private archives or subscription lists -->
-            <!-- <tr><td>��й�ȣ:</td><td><MM-New-Password-Box></td></tr> -->
-            <!-- <tr><td>��й�ȣ Ȯ��:</td><td><MM-Confirm-Password></td></tr> -->
+            <!-- <tr><td>ºñ¹Ð¹øÈ£:</td><td><MM-New-Password-Box></td></tr> -->
+            <!-- <tr><td>ºñ¹Ð¹øÈ£ È®ÀÎ:</td><td><MM-Confirm-Password></td></tr> -->
             <!-- Part of the multilingual selector below -->
-            <tr><td>��ȣ�ϴ� ���:</td><td><MM-list-langs></td></tr>
+            <tr><td>¼±È£ÇÏ´Â ¾ð¾î:</td><td><MM-list-langs></td></tr>
           </table>
           <p><MM-Reminder></p>
-          <p><mm-digest-question-start> ���� ���� �� �ϰ� ó���Ǿ� �߼۵Ǵ� ���ϸ� ����Ʈ ������ �޾� ���ðڽ��ϱ�?
-          <MM-Undigest-Radio-Button> �ƴϿ� <MM-Digest-Radio-Button>  �� <mm-digest-question-end></p>
+          <p><mm-digest-question-start> ¸ÅÀÏ ¿ä¾àµÈ ÈÄ ÀÏ°ý Ã³¸®µÇ¾î ¹ß¼ÛµÇ´Â ¸ÞÀÏ¸µ ¸®½ºÆ® ¸ÞÀÏÀ» ¹Þ¾Æ º¸½Ã°Ú½À´Ï±î?
+          <MM-Undigest-Radio-Button> ¾Æ´Ï¿À <MM-Digest-Radio-Button>  ¿¹ <mm-digest-question-end></p>
           <!-- MM-List-Subscription-Msg gives extra details about the subscription rules of the list -->
           <!-- This is optional, and will include variations between subscription rules (confirm vs confirm and approve) -->
           <!-- On the majority of lists this can be commented out as subscription rules will simply be confirm -->
@@ -234,17 +234,17 @@
           <p style="text-align: center"><MM-Subscribe-Button><MM-Form-End></p>
         </div>
         <div class="box-content" id="members">
-          <h3 class="title title03">ȸ���� ���� �ּ�</h3>
+          <h3 class="title title03">È¸¿øÀÇ ¸ÞÀÏ ÁÖ¼Ò</h3>
           <!-- MM-Roster-Form gives easy access to the subscribers list from the main list info page -->
           <!-- You can comment the line below out for when you don't need to give access to the subscribers list -->
           <!-- For example for announcement mailing lists or mailing lists with a large number of subscribers  -->
           <p><MM-Roster-Form-Start><MM-Roster-Option><MM-Form-End></p></div>
         <div class="box-content" id="manage">
-          <h3 class="title title04">���� ���� �Ǵ� Ż��</h3>
+          <h3 class="title title04">¼³Á¤ º¯°æ ¶Ç´Â Å»Åð</h3>
           <p><MM-Options-Form-Start><MM-Editing-Options><MM-Form-End></p>
         </div>
         <div class="box-content" id="admins">
-          <h3 class="title title05">������</h3>
+          <h3 class="title title05">°ü¸®ÀÚ</h3>
           <p><MM-Mailman-Footer></p>
         </div>
       </div>
@@ -253,8 +253,8 @@
     <div id="sidebar">
       <div id="menu">
         <ul>
-          <li><a href="https://meta.wikimedia.org/wiki/Mailing_lists" >���ϸ� ����Ʈ</a></li>
-          <li><a href="https://meta.wikimedia.org/wiki/Wikimedia">��Ű�̵� ���Ͽ�</a></li>
+          <li><a href="https://meta.wikimedia.org/wiki/Mailing_lists" >¸ÞÀÏ¸µ ¸®½ºÆ®</a></li>
+          <li><a href="https://meta.wikimedia.org/wiki/Wikimedia">À§Å°¹Ìµð¾î¿¡ ´ëÇÏ¿©</a></li>
         </ul>
       </div>
       <!-- Optional multilingual selector -->
@@ -264,8 +264,8 @@
     </div>
   </div>
   <div id="copyright" class="container">
-    <p>������ ������ <a href="http://www.freecsstemplates.org">freeCSStemplates.org</a> - <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY 3.0</a>.
-    [[<a href="https://github.com/quimgil/mailman-templates">��ó</a>]]</p>
+    <p>µðÀÚÀÎ Á¦°øÀÚ <a href="http://www.freecsstemplates.org">freeCSStemplates.org</a> - <a href="https://creativecommons.org/licenses/by/3.0/">CC-BY 3.0</a>.
+    [[<a href="https://github.com/quimgil/mailman-templates">ÃâÃ³</a>]]</p>
   </div>
   </body>
 </html>
