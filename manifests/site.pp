@@ -2080,6 +2080,7 @@ node 'palladium.eqiad.wmnet' {
     include role::puppetmaster::frontend
     include role::pybal_config
     include role::conftool::master
+    include role::debdeploymaster
 }
 
 # parser cache databases
