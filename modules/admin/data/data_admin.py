@@ -13,10 +13,24 @@ def dict_sort(dictionary):
     return dict(collections.OrderedDict(sorted(dictionary.items())))
 
 
+def flatten_members(members):
+    res = []
+    for m in members:
+        if isinstance(m, (list, tuple)):
+            res.extend(flatten_members(m))
+        else:
+            res.append(m)
+    # Make them uniq
+    return list(collections.OrderedDict.fromkeys(res))
+
+
 def main():
 
     data = open('data.yaml', 'r')
     admins = yaml.safe_load(data)
+
+    for group in admins['groups'].itervalues():
+        group['members'] = flatten_members(group['members'])
 
     if 'sort' in sys.argv:
         print yaml.dump({'groups': dict_sort(admins['groups'])})

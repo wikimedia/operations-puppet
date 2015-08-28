@@ -9,6 +9,8 @@ import os
 import unittest
 import yaml
 
+from data_admin import flatten_members
+
 
 class DataTest(unittest.TestCase):
     def flatten(self, lists):
@@ -21,7 +23,7 @@ class DataTest(unittest.TestCase):
         :returns: list
         """
         nested_users_list = map(
-            lambda u: u['members'], admins['groups'].values()
+            lambda u: flatten_members(u['members']), admins['groups'].values()
         )
         return list(set(self.flatten(nested_users_list)))
 
