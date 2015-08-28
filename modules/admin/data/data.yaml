@@ -142,6 +142,7 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/service nodepool stop',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool status',
                  'ALL = NOPASSWD: /bin/journalctl -u nodepool',
+                 'ALL = NOPASSWD: /usr/local/sbin/puppet-run',
                  'ALL = (postgres) NOPASSWD: /usr/bin/psql']
   contint-roots:
     gid: 720
