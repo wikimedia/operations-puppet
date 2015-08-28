@@ -62,8 +62,6 @@ class role::eventlogging {
 
     class { '::eventlogging': }
 
-    # make sure any defined eventlogging services are running
-    class { '::eventlogging::monitoring::jobs': }
 
     if $::standard::has_ganglia {
         class { '::eventlogging::monitoring::ganglia': }
@@ -71,6 +69,7 @@ class role::eventlogging {
 
     # This check was written for eventlog1001, so only include it there.,
     if $::hostname == 'eventlog1001' {
+
         # Alert when / gets low. (eventlog1001 has a 9.1G /)
         nrpe::monitor_service { 'eventlogging_root_disk_space':
             description   => 'Eventlogging / disk space',
@@ -87,6 +86,18 @@ class role::eventlogging {
             nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 100000M -c 50000M -p /srv',
             contact_group => 'analytics',
         }
+    }
+
+
+    # analytics1010 is temporarily being used as a staging perf test
+    # host for the EventLogging on Kafka project.  Disable job alerts there.
+    $monitor_jobs_ensure = $::hostname ? {
+        'analytics1010' => 'absent',
+        default => 'present',
+    }
+    # make sure any defined eventlogging services are running
+    class { '::eventlogging::monitoring::jobs':
+        ensure => $monitor_jobs_ensure,
     }
 }
 
