@@ -9,6 +9,33 @@ import os
 import unittest
 import yaml
 
+from data_admin import flatten_members
+
+
+class UnitTest(unittest.TestCase):
+
+    def test_flatten_members(self):
+        assert flatten_members([]) == []
+        assert flatten_members(['hashar']) == ['hashar']
+        assert flatten_members(['a1', 'b1']) == ['a1', 'b1']
+
+        # Nesting related
+        assert flatten_members([['nest1', 'nest2']]) == ['nest1', 'nest2']
+        assert flatten_members(['element', ['nest1']]) == ['element', 'nest1']
+        assert flatten_members(['element', ['nest1', 'nest2']]) \
+            == ['element', 'nest1', 'nest2']
+
+        # Uniqueness
+        assert flatten_members(['nest1', 'nest1']) == ['nest1']
+        assert flatten_members(['nest1', ['nest1']]) == ['nest1']
+        assert flatten_members(['nest1', ['nest1', 'nest1']]) == ['nest1']
+
+        # Ordering
+
+        expected = [1, 4, 3, 7, 9, 2, 6]
+        assert flatten_members([1, 4, 3, 7, 9, 2, 6]) == expected
+        assert flatten_members([[1, 4, 3], [7, 9, 2, 6]]) == expected
+
 
 class DataTest(unittest.TestCase):
     def flatten(self, lists):
@@ -21,7 +48,7 @@ class DataTest(unittest.TestCase):
         :returns: list
         """
         nested_users_list = map(
-            lambda u: u['members'], admins['groups'].values()
+            lambda u: flatten_members(u['members']), admins['groups'].values()
         )
         return list(set(self.flatten(nested_users_list)))
 
