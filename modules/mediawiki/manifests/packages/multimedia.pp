@@ -3,14 +3,8 @@
 # Provisions packages used by MediaWiki for image and video processing.
 #
 class mediawiki::packages::multimedia {
-    if os_version('ubuntu >= trusty') {
-        $libav_package   = 'libav-tools'
-    } else {
-        $libav_package   = 'ffmpeg'
-    }
-
     package { [
-        $libav_package,
+        'ffmpeg',
         'ffmpeg2theora',
         'fontconfig-config',
         'ghostscript',
