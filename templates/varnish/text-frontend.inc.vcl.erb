@@ -198,20 +198,22 @@ sub vcl_deliver {
 	call analytics_last_access_deliver;
 
 	// This is a temporary hack to work around issues from T109038
-	// We should be able to remove this sometime after Sept 16, 2015, as the old CA cookies should have 30d expiry.
-	// For any request Host ending in "wikidata.org", if we see a double-value for the CA token, try to delete the one at .wikidata.org.
-	if(req.http.Host ~ "(?i)(^|\.)wikidata\.org$" && req.http.Cookie ~ "centralauth_Token.*centralauth_Token") {
-		// The exact format of the cookie-delete string is copied from examples of normal CA cookie deletes (e.g. for logouts?) seen in traffic logs
-		header.append(resp.http.Set-Cookie, "centralauth_Token=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.wikidata.org; secure; httponly");
-	}
-	// As above for centralauth_User (see https://phabricator.wikimedia.org/T109038#1562651)
-	if(req.http.Host ~ "(?i)(^|\.)wikidata\.org$" && req.http.Cookie ~ "centralauth_User.*centralauth_User") {
-		// The exact format of the cookie-delete string is copied from examples of normal CA cookie deletes (e.g. for logouts?) seen in traffic logs
-		header.append(resp.http.Set-Cookie, "centralauth_User=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.wikidata.org; secure; httponly");
-	}
-	// another variant with centralauth_Session (see https://phabricator.wikimedia.org/T109038#1581615 )
-	if(req.http.Host ~ "(?i)(^|\.)wikidata\.org$" && req.http.Cookie ~ "centralauth_Session.*centralauth_Session") {
-		// The exact format of the cookie-delete string is copied from examples of normal CA cookie deletes (e.g. for logouts?) seen in traffic logs
-		header.append(resp.http.Set-Cookie, "centralauth_Session=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.wikidata.org; secure; httponly");
+	// We should be able to remove this sometime after Sept 16, 2015, as
+	// the old CA cookies should have 30d expiry.
+	// For any request Host ending in "wikidata.org", if we see a
+	// double-value for the CA token, user, or session, try to delete the
+	// one at .wikidata.org.
+	// The exact format of the cookie-delete strings is copied from
+	// examples of normal CA cookie deletes seen in traffic logs
+	if (req.http.Host ~ "(?i)(^|\.)wikidata\.org$") {
+		if (req.http.Cookie ~ "centralauth_Token.*centralauth_Token") {
+			header.append(resp.http.Set-Cookie, "centralauth_Token=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.wikidata.org; secure; httponly");
+		}
+		if(req.http.Cookie ~ "centralauth_User.*centralauth_User") {
+			header.append(resp.http.Set-Cookie, "centralauth_User=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.wikidata.org; secure; httponly");
+		}
+		if(req.http.Cookie ~ "centralauth_Session.*centralauth_Session") {
+			header.append(resp.http.Set-Cookie, "centralauth_Session=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=0; path=/; domain=.wikidata.org; secure; httponly");
+		}
 	}
 }
