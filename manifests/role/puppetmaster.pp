@@ -61,6 +61,13 @@ class role::puppetmaster::backend {
         proto  => 'tcp',
         port   => 8141,
     }
+
+    $puppetmaster_hostname = hiera('puppetmaster')
+    ferm::service { 'ssh_puppet_merge':
+        proto  => 'tcp',
+        port   => '22',
+        srange => "@resolve($puppetmaster_hostname)",
+    }
 }
 
 class role::puppetmaster::labs {
