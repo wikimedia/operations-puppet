@@ -42,7 +42,7 @@ class toollabs (
     file { $sysdir:
         ensure  => directory,
         owner   => 'root',
-        group   => 'tools.admin',
+        group   => "${::labsproject}.admin",
         mode    => '2775',
         require => Mount['/data/project'],
     }
