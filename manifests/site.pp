@@ -1717,6 +1717,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include passwords::redis
     include redis
     include redis::ganglia
+    include base::debdeploy
     include base::firewall
 }
 
@@ -1787,6 +1788,7 @@ node /^ms-be101[678]\.eqiad\.wmnet$/ {
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
     role swift::proxy
     include base::firewall
+    include base::debdeploy
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
@@ -2030,6 +2032,7 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
 node 'osmium.eqiad.wmnet' {
     role ve
     include ::standard
+    include base::debdeploy
 }
 
 
@@ -2119,6 +2122,7 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
 node 'radium.wikimedia.org' {
     include base::firewall
     include standard
+    include base::debdeploy
     include role::tor
 
     interface::add_ip6_mapped { 'main':
@@ -2187,6 +2191,7 @@ node /^scb100[12]\.eqiad\.wmnet$/ {
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
     include base::firewall
+    include base::debdeploy
 
     include standard
     include role::nova::manager
@@ -2207,6 +2212,7 @@ node 'sodium.wikimedia.org' {
 node /^(strontium|rhodium).eqiad.wmnet/ {
     include standard
     include role::puppetmaster::backend
+    include base::debdeploy
 }
 
 node 'stat1001.eqiad.wmnet' {
