@@ -137,6 +137,7 @@ groups:
                  'ALL = (zuul) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /etc/init.d/jenkins',
                  'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
+                 'ALL = NOPASSWD: /usr/local/sbin/puppet-run',
                  'ALL = (postgres) NOPASSWD: /usr/bin/psql']
   contint-roots:
     gid: 720
