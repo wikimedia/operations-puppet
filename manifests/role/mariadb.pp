@@ -460,6 +460,24 @@ class role::mariadb::sanitarium {
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
+    ferm::service { 'mysqld_sanitarium':
+        proto  => 'tcp',
+        port   => '3311:3317',
+        srange => '$INTERNAL',
+    }
+
+    ferm::service { 'gmond_udp':
+        proto  => 'udp',
+        port   => '8649',
+        srange => '$INTERNAL',
+    }
+
+    ferm::service { 'gmond_tcp':
+        proto  => 'tcp',
+        port   => '8649',
+        srange => '$INTERNAL',
+    }
+
     # One instance per shard using mysqld_multi.
     # This allows us to send separate replication channels downstream.
     $folders = [
