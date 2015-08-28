@@ -369,6 +369,8 @@ class role::mariadb::backup {
         xtrabackup       => false,
         per_db           => true,
         innodb_only      => true,
+        binlog           => false,
+        slave            => true,
         local_dump_dir   => '/srv/backups',
         password_file    => '/etc/mysql/conf.d/dumps.cnf',
         method           => 'predump',
