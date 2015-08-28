@@ -125,10 +125,16 @@ class role::lists {
         source => 'puppet:///files/icinga/check_iostat',
     }
 
+    $iostat_device = $is_virtual ? {
+        'true'    => 'vda',
+        'false'   => 'sda',
+        default   => 'sda',
+    }
+
     # values chosen based on i/o averages for sodium
     nrpe::monitor_service { 'mailman_iostat':
         description   => 'mailman I/O stats',
-        nrpe_command  => '/usr/local/lib/nagios/plugins/check_iostat -i -w 250,350,300,14000,7500 -c 500,400,600,28000,11000',
+        nrpe_command  => "/usr/local/lib/nagios/plugins/check_iostat -i -w 250,350,300,14000,7500 -c 500,400,600,28000,11000 -d ${iostat_device}",
         timeout       => '30',
     }
 
