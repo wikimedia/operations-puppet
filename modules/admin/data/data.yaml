@@ -1,3 +1,7 @@
+aliases:
+    releng: &releng
+        [demon, dduvall, hashar, thcipriani, twentyafterfour, zfilipin]
+
 groups:
   absent:
     description: meta group for absented users
@@ -36,8 +40,7 @@ groups:
     gid: 704
     description: assist in managing gerrit server
     # qchris is RT 6720
-    # Rest is the Release Engineering team
-    members: [qchris, dduvall, hashar, thcipriani, twentyafterfour, zfilipin]
+    members: [*releng, qchris]
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
@@ -127,9 +130,7 @@ groups:
   contint-admins:
     gid: 719
     description: users with some sudo permissions on jenkins and nodepool hosts
-    members: [bd808, cscott, dduvall, demon, krinkle, reedy, marktraceur,
-              twentyafterfour, zfilipin, thcipriani, legoktm, jzerebecki,
-              hashar]
+    members: [*releng, bd808, cscott, krinkle, reedy, marktraceur, legoktm, jzerebecki]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
