@@ -74,7 +74,7 @@ class role::maps::master {
     # Rely on logrotate's copytruncate policy for postgres for the rest of the
     # log file
     file { '/var/log/postgresql/postgresql-9.4-main.log':
-        group => 'maps-admin',
+        group => 'maps-admins',
     }
 }
 
