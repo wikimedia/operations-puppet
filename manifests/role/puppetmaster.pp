@@ -36,7 +36,6 @@ class role::puppetmaster::frontend {
 
 class role::puppetmaster::backend {
     include passwords::puppet::database
-    include base::firewall
 
     system::role { 'puppetmaster':
         description => 'Puppetmaster backend'
