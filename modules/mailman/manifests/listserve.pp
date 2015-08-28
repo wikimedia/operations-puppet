@@ -13,9 +13,12 @@ class mailman::listserve {
     # Install as many languages as possible
     include locales::extended
 
-    debconf::set { 'mailman/gate_news':
-        value  => 'false',
-        notify => Exec['dpkg-reconfigure mailman'],
+    if os_version ( 'debian <= jessie || ubuntu <= precise') {
+
+        debconf::set { 'mailman/gate_news':
+            value  => 'false',
+            notify => Exec['dpkg-reconfigure mailman'],
+        }
     }
 
     debconf::set { 'mailman/site_languages':
