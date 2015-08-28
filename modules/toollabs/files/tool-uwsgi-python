@@ -5,8 +5,14 @@ import pwd
 
 import portgrabber
 
+with open('/etc/wmflabs-project', 'r') as f:
+    PREFIX = f.read().rstrip('\n')
+
 pwd_entry = pwd.getpwuid(os.getuid())  # Use uid as reserved port for eacht ool
-TOOL = re.sub(r'^tools.', '', pwd_entry.pw_name) # Tool users are of form tools.TOOLNAME
+TOOL = pwd_entry.pw_name
+# Tool users are of form tools.TOOLNAME.
+if TOOL.startswith(PREFIX + '.'):
+    TOOL = TOOL[len(PREFIX) + 1:]
 
 # Attempt to get an open port
 port = portgrabber.get_open_port()
