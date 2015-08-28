@@ -17,6 +17,7 @@ class role::icinga(
     include icinga::nsca::daemon
     include icinga::monitor::wikidata
     include icinga::monitor::ripeatlas
+    include icinga::monitor::legal
     include icinga::groups::misc
     include lvs::monitor
     include role::authdns::monitoring
