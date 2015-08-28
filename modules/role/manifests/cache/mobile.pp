@@ -141,8 +141,13 @@ class role::cache::mobile (
         varnish_name => 'frontend',
     }
 
+    # role::cache::logging::eventlistener will soon be fully
+    # replaced by role::cache::kafka::eventlogging.
     class { '::role::cache::logging::eventlistener':
         instance_name => 'frontend',
+    }
+    class { '::role::cache::kafka::eventlogging':
+        varnish_name => 'frontend',
     }
 
     # ToDo: Remove production conditional once this works
