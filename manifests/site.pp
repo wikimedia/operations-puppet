@@ -1786,10 +1786,12 @@ node /^ms-be101[678]\.eqiad\.wmnet$/ {
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
     role swift::proxy
+    include base::firewall
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
     role swift::storage
+    include base::firewall
 }
 
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
