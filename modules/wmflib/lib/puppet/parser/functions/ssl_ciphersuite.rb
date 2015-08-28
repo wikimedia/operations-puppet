@@ -171,16 +171,10 @@ END
       fail(ArgumentError, 'ssl_ciphersuite(): apache 2.2 can only be used with "compat"')
     end
 
-    # no DHE for apache unless jessie (2.4.10)
-    # trusty's apache-2.4.7 can technically do it as well, but only if we
-    # append dhe params to the server cert file, which would be difficult to
-    # factor in with sslcert puppetization and such.  Possible TODO if we're
-    # really stuck on this?
-    #
-    # what we really want here is a check on the actual installed apache
-    # version >= 2.4.8, rather than checking for exactly Debian Jessie.
-    if server == 'apache' && lookupvar('lsbdistcodename').capitalize != 'Jessie'
-      Puppet.warning('ssl_ciphersuite(): DHE ciphers disabled - upgrade to Jessie+Apache2.4!')
+    # We can't do proper DH params for DHE suites on any of our current apache
+    # builds, actually, because they weren't built against openssl-1.0.2.
+    # Disabling for now, until we come up with a better way to configure this
+    if server == 'apache'
       cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^DHE-/}.join(":")
       set_dhparam = false
     else
