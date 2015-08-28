@@ -23,7 +23,7 @@ class toollabs::checker inherits toollabs {
 
     file { '/run/toolschecker':
         ensure => directory,
-        owner  => 'tools.toolschecker',
+        owner  => "${::labsproject}.toolschecker",
         group  => 'www-data',
         mode   => '0755',
     }
