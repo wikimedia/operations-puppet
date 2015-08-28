@@ -295,7 +295,6 @@ node 'calcium.wikimedia.org' {
     $cluster = 'misc'
 
     include standard
-
     include base::firewall
 }
 
