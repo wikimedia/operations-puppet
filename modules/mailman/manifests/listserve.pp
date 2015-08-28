@@ -13,7 +13,7 @@ class mailman::listserve {
     # Install as many languages as possible
     include locales::extended
 
-    if os_version ( 'debian <= jessie || ubuntu <= precise') {
+    if os_version ( 'debian < jessie || ubuntu < precise') {
 
         debconf::set { 'mailman/gate_news':
             value  => 'false',
