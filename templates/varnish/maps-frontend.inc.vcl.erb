@@ -5,8 +5,12 @@ include "errorpage.inc.vcl";
 sub vcl_recv {
 	call vcl_recv_purge;
 	if (req.http.referer
+		&& req.url != "/"
 		&& req.http.referer !~ "(?i)^https://maps\.wikimedia\.org/"
 		&& req.http.referer !~ "(?i)^https://[-a-zA-Z0-9.]+\.wikivoyage\.org/"
+		&& req.http.referer !~ "(?i)^https://[-a-zA-Z0-9.]+\.mediawiki\.org/"
+		&& req.http.referer !~ "(?i)^https://phabricator\.wikimedia\.org/"
+		&& req.http.referer !~ "(?i)^https://wikitech\.wikimedia\.org/"
 		&& req.http.referer !~ "(?i)^https?://[-a-zA-Z0-9.]+\.wmflabs\.org/"
 	) {
 		error 403 "Access Denied";
