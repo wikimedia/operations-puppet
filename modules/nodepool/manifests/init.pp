@@ -56,6 +56,15 @@ class nodepool(
     package { 'nodepool':
         ensure => present,
     }
+
+    # Override Debian package user shell so admins can login as nodepool
+    user { 'nodepool':
+        home    => '/var/lib/nodepool',
+        shell   => '/bin/bash',
+        system  => true,
+        require => Package['nodepool'],
+    }
+
     # Nodepool 0.1.0 requires novaclient>=2.21.0
     # Jessie has 2.18.1  (T104971)
     apt::pin { 'python-novaclient':
