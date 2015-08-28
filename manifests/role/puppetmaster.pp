@@ -61,6 +61,12 @@ class role::puppetmaster::backend {
         proto  => 'tcp',
         port   => 8141,
     }
+
+    ferm::service { 'ssh_puppet_merge':
+        proto  => 'tcp',
+        port   => '22',
+        srange => '$::serverip',
+    }
 }
 
 class role::puppetmaster::labs {
