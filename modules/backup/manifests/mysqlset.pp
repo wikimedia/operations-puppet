@@ -3,6 +3,8 @@ define backup::mysqlset(
     $xtrabackup       = true,
     $per_db           = false,
     $innodb_only      = false,
+	$binlog           = true,
+	$slave            = true,
     $local_dump_dir   = undef,
     $password_file    = undef,
     $mysql_binary     = undef,
