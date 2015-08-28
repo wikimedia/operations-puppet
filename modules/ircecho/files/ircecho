@@ -22,7 +22,7 @@ from ircbot import SingleServerIRCBot
 def beautify_message(m):
     """Clean up formatting of alert messages."""
     m = m.strip()                         # Strip trailing whitespace
-    m = re.sub(r'(\w+): \1:?', r'\1', m)  # Dedupe severity
+    m = re.sub(r'(\w+): \1:\b', r'\1', m) # Dedupe severity
     m = re.sub(r' {2,}', ' ', m)          # Collapse whitespace
     m = m.replace(': -', ':')             # Combine separators
     m = m.strip(':-')                     # Strip trailing separators
