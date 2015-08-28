@@ -142,7 +142,7 @@ node 'analytics1026.eqiad.wmnet' {
     include role::analytics::impala::master
     include role::logging::udp2log::misc
     include base::firewall
-
+    include base::debdeploy
 }
 
 # analytics1027 hosts some frontend web interfaces to Hadoop
@@ -1745,6 +1745,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include passwords::redis
     include redis
     include redis::ganglia
+    include base::debdeploy
     include base::firewall
 }
 
@@ -1812,10 +1813,12 @@ node /^ms-be101[678]\.eqiad\.wmnet$/ {
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
     role swift::proxy
+    include base::debdeploy
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
     role swift::storage
+    include base::debdeploy
 }
 
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
@@ -2052,6 +2055,7 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
 node 'osmium.eqiad.wmnet' {
     role ve
     include ::standard
+    include base::debdeploy
 }
 
 
@@ -2141,6 +2145,7 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
 node 'radium.wikimedia.org' {
     include base::firewall
     include standard
+    include base::debdeploy
     include role::tor
 
     interface::add_ip6_mapped { 'main':
