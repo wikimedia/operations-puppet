@@ -11,7 +11,7 @@ class icinga::monitor::legal {
     }
 
     monitoring::service { 'en.wp.o-legal-html':
-        description           => 'Ensure mandated html',
+        description           => 'Ensure legal html en.wp',
         check_command         => 'check_legal_html!https://en.wikipedia.org/wiki/Main_Page!desktop_enwp',
         host                  => 'en.wikipedia.org',
         normal_check_interval => 1440,
@@ -20,9 +20,9 @@ class icinga::monitor::legal {
     }
 
     monitoring::service { 'en.m.wp.o-legal-html':
-        description           => 'Ensure mandated html',
+        description           => 'Ensure legal html en.m.wp',
         check_command         => 'check_legal_html!https://en.m.wikipedia.org/wiki/Main_Page!mobile',
-        host                  => 'en.wikipedia.org',
+        host                  => 'en.m.wikipedia.org',
         normal_check_interval => 1440,
         retry_check_interval  => 30,
         contact_group         => 'admins',
