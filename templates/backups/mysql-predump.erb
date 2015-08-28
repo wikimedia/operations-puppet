@@ -31,6 +31,18 @@ MYSQLDUMP="$MYSQLDUMP --defaults-extra-file=<%= @password_file -%> "
 # Provided we only have innodb tables --single-transcation works wonders
 MYSQLDUMP="$MYSQLDUMP --single-transaction "
 <% end -%>
+# register
+<% if @binlog -%>
+# if it is a master (any server that produces binary logs), register its
+# position. This will fail if the server does not produce binary logs and
+# its is not a slave either (so it can get the coordinated from the master)
+MYSQLDUMP="$MYSQLDUMP --master-data=2 "
+<% end -%>
+<% if @slave -%>
+# if the server is a slave, register the master binlog coordinates, too
+# this only works on multisource replication hosts with mariadb clients
+MYSQLDUMP="$MYSQLDUMP --dump-slave=2 --include-master-host-port "
+<% end -%>
 
 find <%= @local_dump_dir %> -name "*sql.gz" -mtime +15 -exec rm {} \;
 for database in `$MYSQL -B -N -e "select schema_name from information_schema.schemata where schema_name not like '%\_schema'"`
