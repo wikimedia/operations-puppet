@@ -280,10 +280,10 @@ class role::eventlogging::forwarder::kafka inherits role::eventlogging {
 
     # This will be replaced by configuring varnishkafka on cache servers to send
     # events directly to kafka topic 'eventlogging-client-side'.
-    eventlogging::service::forwarder { 'client-side-raw':
-        input   => "tcp://${forwarder_host}:8422?identity=server-side-raw-kafka",
-        outputs => ["${kafka_base_uri}?topic=eventlogging-client-side"],
-    }
+    # eventlogging::service::forwarder { 'client-side-raw':
+    #     input   => "tcp://${forwarder_host}:8422?identity=server-side-raw-kafka",
+    #     outputs => ["${kafka_base_uri}?topic=eventlogging-client-side"],
+    # }
 }
 
 
