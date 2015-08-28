@@ -176,7 +176,10 @@ END
     # append dhe params to the server cert file, which would be difficult to
     # factor in with sslcert puppetization and such.  Possible TODO if we're
     # really stuck on this?
-    if server == 'apache' && lookupvar('lsbdistrelease').capitalize != 'Jessie'
+    #
+    # what we really want here is a check on the actual installed apache
+    # version >= 2.4.8, rather than checking for exactly Debian Jessie.
+    if server == 'apache' && lookupvar('lsbdistcodename').capitalize != 'Jessie'
       Puppet.warning('ssl_ciphersuite(): DHE ciphers disabled - upgrade to Jessie+Apache2.4!')
       cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^DHE-/}.join(":")
       set_dhparam = false
