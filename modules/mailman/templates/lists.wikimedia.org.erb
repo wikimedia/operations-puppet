@@ -20,8 +20,10 @@
     BrowserMatch "ArchiveTeam ArchiveBot" bad_browser
     <Location />
         <IfVersion >= 2.4>
-            Require all granted
-            Require not env bad_browser
+            <RequireAll>
+                Require all granted
+                Require not env bad_browser
+            </RequireAll>
         </IfVersion>
         <IfVersion < 2.4>
             Order allow,deny
