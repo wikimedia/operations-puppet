@@ -34,6 +34,7 @@ cache::maps::nodes:
       - '127.0.0.1'
 role::cache::base::purge_host_only_upload_re: '^upload\.beta\.wmflabs\.org$'
 role::cache::base::purge_host_not_upload_re: '^(?!upload\.beta\.wmflabs\.org)'
+role::cache::base::static_host: 'deployment.wikimedia.beta.wmflabs.org'
 role::cache::2layer::storage_parts:
   - vdb
   - vdb
@@ -42,7 +43,6 @@ role::cache::upload::top_domain: 'beta.wmflabs.org'
 role::cache::text::bits_domain: 'bits.beta.wmflabs.org'
 role::cache::text::top_domain: 'beta.wmflabs.org'
 role::cache::mobile::zero_site: 'http://zero.wikimedia.beta.wmflabs.org'
-role::cache::text::static_host: 'deployment.wikimedia.beta.wmflabs.org'
 varnish::dynamic_directors: false
 zookeeper_hosts:
   "${::fqdn}": 1
