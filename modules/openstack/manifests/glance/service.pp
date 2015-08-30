@@ -81,7 +81,7 @@ class openstack::glance::service(
     }
 
     ssh::userkey { 'glancesync':
-        require => user['glancesync'],
+        require => User['glancesync'],
         ensure  => present,
         content => secret('ssh/glancesync/glancesync.pub'),
     }
@@ -90,7 +90,7 @@ class openstack::glance::service(
         owner   => 'glancesync',
         group   => 'glance',
         mode    => '0700',
-        require => user['glancesync'],
+        require => User['glancesync'],
     }
     file { '/home/glancesync/.ssh/id_rsa':
         content => secret('ssh/glancesync/glancesync.key'),
@@ -101,10 +101,10 @@ class openstack::glance::service(
     }
     if $spare_glance_host != hiera('labs_nova_controller') {
         cron { 'rsync_glance_images':
-            command     => "/usr/bin/rsync -aS ${image_datadir}/* ${spare_glance_host}:${image_datadir}/",
-            minute      => 15,
-            user        => 'glancesync',
-            require => user['glancesync'],
+            command => "/usr/bin/rsync -aS ${image_datadir}/* ${spare_glance_host}:${image_datadir}/",
+            minute  => 15,
+            user    => 'glancesync',
+            require => User['glancesync'],
         }
     } else {
         # If the primary and the spare are the same, it's not useful to sync
@@ -116,6 +116,6 @@ class openstack::glance::service(
         command     => "chown -R glance ${image_datadir}/*",
         minute      => 30,
         user        => 'root',
-        require     => cron['rsync_glance_images'],
+        require     => Cron['rsync_glance_images'],
     }
 }
