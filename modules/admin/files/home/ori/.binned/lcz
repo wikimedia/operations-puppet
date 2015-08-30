@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  lcz -- estimate line-count of gzip file
+  Intended for log files with regular line lengths and content.
+
+  Usage: lcz FILE
+
+  Copyright (C) 2015 Ori Livneh <ori@wikimedia.org>
+  MIT License
+
+"""
+import gzip
+import sys
+import textwrap
+import zlib
+
+SAMPLE_SIZE = 51200
+z = zlib.decompressobj(-zlib.MAX_WBITS)
+
+try:
+    with gzip.open(sys.argv[1], 'r') as f:
+        f._init_read()
+        f._read_gzip_header()
+        zchunk = f.fileobj.read(SAMPLE_SIZE)
+        f.fileobj.seek(0, 2)
+        file_size = f.fileobj.tell()
+except IndexError:
+    sys.exit(textwrap.dedent(__doc__).strip())
+except IOError as e:
+    sys.exit(textwrap.dedent(__doc__).strip() + '\n' + str(e))
+else:
+    chunk = z.decompress(zchunk)
+    zbytes_per_line = float(SAMPLE_SIZE) / chunk.count('\n')
+    print('%d' % round(file_size / zbytes_per_line))
