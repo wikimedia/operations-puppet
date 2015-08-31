@@ -38,7 +38,8 @@ class ldap::client::nss($ldapconfig) {
     package { [ 'libnss-ldapd',
                 'nss-updatedb',
                 'libnss-db',
-                'nscd' ]:
+                'nscd',
+                'nslcd' ]:
         ensure => latest,
     }
     package { [ 'libnss-ldap' ]:
