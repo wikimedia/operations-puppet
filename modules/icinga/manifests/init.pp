@@ -31,6 +31,11 @@ class icinga {
         ensure => 'present',
     }
 
+    # for nrpe checks to run per T110893
+    package { 'libssl0.9.8':
+        ensure => present,
+    }
+
     # Setup icinga custom init script
     # FIXME: This should be provided by the package
     file { '/etc/init.d/icinga':
