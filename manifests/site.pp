@@ -1792,6 +1792,7 @@ node 'ms1002.eqiad.wmnet' {
 # rate limiting purposes (T66622)
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     role swift::proxy
+    include base::firewall
 
     if $::hostname == 'ms-fe1001' {
         include role::swift::stats_reporter
