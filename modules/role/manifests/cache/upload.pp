@@ -48,12 +48,23 @@ class role::cache::upload(
         include varnish::monitoring::ganglia::vhtcpd
     }
 
-    $cluster_options = {
-        'upload_domain'   => $upload_domain,
-        'top_domain'      => $top_domain,
-        'do_gzip'         => true,
-        'https_redirects' => true,
+    $common_vcl_config = {
+        'cache4xx'         => '1m',
+        'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
+        'upload_domain'    => $upload_domain,
+        'top_domain'       => $top_domain,
+        'do_gzip'          => true,
+        'https_redirects'  => true,
     }
+
+    $be_vcl_config = merge($common_vcl_config, {
+        'layer'            => 'backend',
+    })
+
+    $fe_vcl_config = merge($common_vcl_config, {
+        'layer'            => 'frontend',
+        'retry503'         => 1,
+    })
 
     $storage_size_bigobj = floor($::role::cache::2layer::storage_size / 6)
     $storage_size_up = $::role::cache::2layer::storage_size - $storage_size_bigobj
@@ -72,11 +83,7 @@ class role::cache::upload(
         runtime_parameters => ['default_ttl=2592000'],
         storage            => $upload_storage_args,
         directors          => $varnish_be_directors[$::site_tier],
-        vcl_config         => {
-            'cache4xx'         => '1m',
-            'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
-            'layer'            => 'backend',
-        },
+        vcl_config         => $be_vcl_config,
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'backend_match' => '^cp[0-9]+\.eqiad.wmnet$',
@@ -91,7 +98,6 @@ class role::cache::upload(
                 'max_connections'       => 1000,
             },
         ]),
-        cluster_options    => $cluster_options,
     }
 
     varnish::instance { 'upload-frontend':
@@ -108,12 +114,7 @@ class role::cache::upload(
                 'backends' => $site_upload_nodes,
             },
         },
-        vcl_config         => {
-            'retry503'         => 1,
-            'cache4xx'         => '1m',
-            'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
-            'layer'            => 'frontend',
-        },
+        vcl_config         => $fe_vcl_config,
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'port'                  => 3128,
@@ -124,7 +125,6 @@ class role::cache::upload(
                 'probe'                 => 'varnish',
             },
         ]),
-        cluster_options    => $cluster_options,
     }
 
     include role::cache::logging

@@ -77,6 +77,25 @@ class role::cache::text (
         include varnish::monitoring::ganglia::vhtcpd
     }
 
+    $common_vcl_config = {
+        'cache4xx'           => '1m',
+        'purge_host_regex'   => $::role::cache::base::purge_host_not_upload_re,
+        'bits_domain'        => $bits_domain,
+        'top_domain'         => $top_domain,
+        'enable_geoiplookup' => true,
+        'do_gzip'            => true,
+        'https_redirects'    => true,
+    }
+
+    $be_vcl_config = merge($common_vcl_config, {
+        'layer'              => 'backend',
+    })
+
+    $fe_vcl_config = merge($common_vcl_config, {
+        'layer'              => 'frontend',
+        'retry503'           => 1,
+    })
+
     varnish::instance { 'text-backend':
         name               => '',
         vcl                => 'text-backend',
@@ -86,11 +105,7 @@ class role::cache::text (
         runtime_parameters => ['default_ttl=2592000'],
         storage            => $::role::cache::2layer::persistent_storage_args,
         directors          => $varnish_be_directors[$::site_tier],
-        vcl_config         => {
-            'cache4xx'         => '1m',
-            'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
-            'layer'            => 'backend',
-        },
+        vcl_config         => $be_vcl_config,
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
@@ -114,10 +129,6 @@ class role::cache::text (
                 'max_connections'       => 1000,
             },
         ]),
-        cluster_options => {
-            'bits_domain'        => $bits_domain,
-            'top_domain'         => $top_domain,
-        },
     }
 
     varnish::instance { 'text-frontend':
@@ -141,12 +152,7 @@ class role::cache::text (
                 'service'  => 'varnish-be-rand',
             },
         },
-        vcl_config         => {
-            'retry503'         => 1,
-            'cache4xx'         => '1m',
-            'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
-            'layer'            => 'frontend',
-        },
+        vcl_config         => $fe_vcl_config,
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'port'                  => 3128,
@@ -157,13 +163,6 @@ class role::cache::text (
                 'probe'                 => 'varnish',
             },
         ]),
-        cluster_options    => {
-            'bits_domain'        => $bits_domain,
-            'top_domain'         => $top_domain,
-            'enable_geoiplookup' => true,
-            'do_gzip'            => true,
-            'https_redirects'    => true,
-        },
     }
 
     include role::cache::logging

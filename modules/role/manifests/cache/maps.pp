@@ -34,9 +34,19 @@ class role::cache::maps() {
         include varnish::monitoring::ganglia::vhtcpd
     }
 
-    $cluster_options = {
-        'https_redirects' => true,
+    $common_vcl_config = {
+        'cache4xx'         => '1m',
+        'https_redirects'  => true,
     }
+
+    $be_vcl_config = merge($common_vcl_config, {
+        'layer'            => 'backend',
+    })
+
+    $fe_vcl_config = merge($common_vcl_config, {
+        'layer'            => 'frontend',
+        'retry503'         => 1,
+    })
 
     varnish::instance { 'maps-backend':
         name               => '',
@@ -46,10 +56,7 @@ class role::cache::maps() {
         runtime_parameters => ['default_ttl=86400'],
         storage            => $::role::cache::2layer::persistent_storage_args,
         directors          => $varnish_be_directors[$::site_tier],
-        vcl_config         => {
-            'cache4xx'         => '1m',
-            'layer'            => 'backend',
-        },
+        vcl_config         => $be_vcl_config,
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'backend_match' => '^cp[0-9]+\.eqiad.wmnet$',
@@ -65,7 +72,6 @@ class role::cache::maps() {
                 'probe'                 => 'maps',
             },
         ]),
-        cluster_options    => $cluster_options,
     }
 
     varnish::instance { 'maps-frontend':
@@ -82,11 +88,7 @@ class role::cache::maps() {
                 'backends' => $site_maps_nodes,
             },
         },
-        vcl_config         => {
-            'retry503'         => 1,
-            'cache4xx'         => '1m',
-            'layer'            => 'frontend',
-        },
+        vcl_config         => $fe_vcl_config,
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'port'                  => 3128,
@@ -97,7 +99,6 @@ class role::cache::maps() {
                 'probe'                 => 'varnish',
             },
         ]),
-        cluster_options => $cluster_options,
     }
 
     include role::cache::logging
