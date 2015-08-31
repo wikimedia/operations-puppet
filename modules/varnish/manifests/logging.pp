@@ -10,10 +10,6 @@ define varnish::logging(
     require varnish::packages
     require varnish::logging::config
 
-    if $monitor {
-        require varnish::logging::monitor
-    }
-
     $varnishservice = $instance_name ? {
         ''      => 'varnish',
         default => "varnish-${instance_name}"
@@ -32,4 +28,11 @@ define varnish::logging(
 
     Service[$varnishservice] -> Service["varnishncsa-${name}"]
     File['/etc/default/varnishncsa'] ~> Service["varnishncsa-${name}"]
+
+    if $monitor {
+        nrpe::monitor_service { "varnishncsa-${name}":
+            description  => "Varnish traffic logger - ${name}",
+            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a varnishncsa-${name}.pid -u varnishlog",
+        }
+    }
 }
