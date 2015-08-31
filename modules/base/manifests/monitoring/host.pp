@@ -8,7 +8,7 @@
 #
 # Note that this class is probably already included for your node
 # by the class base.  If you want to change the contact_group, set
-# the variable $nagios_contact_group in your node definition.
+# the variable contactgroups in hiera.
 # class base will use this variable as the $contact_group argument
 # when it includes this class.
 #
