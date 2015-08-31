@@ -28,7 +28,7 @@ class icinga {
     }
 
     package { 'icinga':
-        ensure => latest,
+        ensure => 'present',
     }
 
     # Setup icinga custom init script
