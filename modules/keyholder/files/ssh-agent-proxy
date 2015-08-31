@@ -149,18 +149,8 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
         header = s_message_header.pack(len(message) + 1, code)
         sock.sendall(header + message)
 
-    def handle_backend(self):
-        """Read data from the backend SSH agent and send to client."""
-        code, message = self.recv_message(self.backend)
-        self.send_message(self.request, code, message)
-
-    def handle_client_request(self):
+    def handle_client_request(self, code, message):
         """Read data from client and send to backend SSH agent."""
-        code, message = self.recv_message(self.request)
-
-        if not code:
-            return
-
         if code in (SSH2_AGENTC_REQUEST_IDENTITIES,
                     SSH_AGENTC_REQUEST_RSA_IDENTITIES):
             if message:
@@ -182,9 +172,13 @@ class SshAgentProxyHandler(socketserver.BaseRequestHandler):
         while 1:
             rlist, *_ = select.select((self.backend, self.request), (), (), 1)
             if self.backend in rlist:
-                self.handle_backend()
+                code, message = self.recv_message(self.backend)
+                self.send_message(self.request, code, message)
             if self.request in rlist:
-                self.handle_client_request()
+                code, message = self.recv_message(self.request)
+                if not code:
+                    return
+                self.handle_client_request(code, message)
 
     def parse_sign_request(self, message):
         """Parse the payload of an SSH2_AGENTC_SIGN_REQUEST into its
