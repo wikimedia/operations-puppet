@@ -185,6 +185,9 @@ plugins:
       -
         src: /etc/apt/apt.conf.d/80security-ubuntu-proxy
         dst: /etc/apt/apt.conf.d/80security-ubuntu-proxy
+      -
+        src: /etc/ssl/certs/ca-certificates.crt
+        dst: /etc/ssl/certs/ca-certificates.crt
   image_commands:
     # Current implementation does not specify an order between image_commands and
     #  file_copy.  This section should not depend on anything existing from
