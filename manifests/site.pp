@@ -1792,7 +1792,6 @@ node 'ms1002.eqiad.wmnet' {
 # rate limiting purposes (T66622)
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
     role swift::proxy
-    include base::firewall
 
     if $::hostname == 'ms-fe1001' {
         include role::swift::stats_reporter
@@ -1804,28 +1803,23 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 
 node /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/ {
     role swift::storage
-    include base::firewall
 }
 
 # HP machines have different disk ordering T90922
 node /^ms-be101[678]\.eqiad\.wmnet$/ {
     role swift::storage
-    include base::firewall
 }
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
     role swift::proxy
-    include base::firewall
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
     role swift::storage
-    include base::firewall
 }
 
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
     role swift::proxy
-    include base::firewall
 
     if $::hostname =~ /^ms-fe200[12]$/ {
         $ganglia_aggregator = true
@@ -1840,7 +1834,6 @@ node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
 
 node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
     role swift::storage
-    include base::firewall
 }
 
 # mw1001-1016 are jobrunners
