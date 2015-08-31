@@ -34,13 +34,10 @@ class base {
     include base::kernel
 
     # include base::monitor::host.
-    # if $nagios_contact_group is set, then use it
+    # if contactgroups is set, then use it
     # as the monitor host's contact group.
 
-    $group_contact = $::nagios_contact_group ? {
-        undef   => 'admins',
-        default => $::nagios_contact_group,
-    }
+    $group_contact = hiera('contactgroups', 'admins')
 
     class { 'base::monitoring::host':
         contact_group => $group_contact,
