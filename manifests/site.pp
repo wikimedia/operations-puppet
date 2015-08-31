@@ -130,6 +130,7 @@ node /analytics10(11|1[5-7]|19|2[89]|3[0-9]|4[0-9]|5[012456]).eqiad.wmnet/ {
 # to be repurposed (likely as a stat* type box).
 node 'analytics1021.eqiad.wmnet' {
     include standard
+    include base::firewall
 }
 
 # analytics1026 is the Impala master
