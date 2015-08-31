@@ -94,7 +94,6 @@ sub vcl_recv {
 	}
 
 	call analytics_last_access_recv;
-
 	call evaluate_cookie_mobile;
 	call pass_authorization;
 	return (lookup);
@@ -142,13 +141,13 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
-	<% if @vcl_config.fetch("enable_geoiplookup", false) -%>
+<% if @vcl_config.fetch("enable_geoiplookup", false) -%>
 	// Perform GeoIP look-up and send the result as a session cookie
 	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
 		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
 		call geoip_cookie;
 	}
-	<% end -%>
+<% end -%>
 
 	// Assemble X-Analytics header
 	// Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
