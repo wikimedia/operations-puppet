@@ -33,6 +33,9 @@ class icinga::web {
     }
 
     # install the Icinga Apache site
+    include ::apache::mod::rewrite
+    include ::apache::mod::authnz_ldap
+
     apache::site { 'icinga.wikimedia.org':
         content => template('icinga/icinga.wikimedia.org.erb'),
     }
