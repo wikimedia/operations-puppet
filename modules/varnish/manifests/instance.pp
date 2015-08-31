@@ -9,7 +9,6 @@ define varnish::instance(
     $runtime_parameters=[],
     $directors={},
     $extra_vcl = [],
-    $cluster_options={},
     $xff_sources=[]
 ) {
 

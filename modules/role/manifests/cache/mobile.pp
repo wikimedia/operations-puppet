@@ -76,11 +76,21 @@ class role::cache::mobile (
         include varnish::monitoring::ganglia::vhtcpd
     }
 
-    $cluster_options = {
-        'enable_geoiplookup' => true,
+    $common_vcl_config = {
+        'purge_host_regex'   => $::role::cache::base::purge_host_not_upload_re,
         'do_gzip'            => true,
-        'https_redirects'    => true,
     }
+
+    $be_vcl_config = merge($common_vcl_config, {
+        'layer'              => 'backend',
+    })
+
+    $fe_vcl_config = merge($common_vcl_config, {
+        'layer'              => 'frontend',
+        'retry503'           => 1,
+        'enable_geoiplookup' => true,
+        'https_redirects'    => true,
+    })
 
     class { 'varnish::zero_update':
         site         => $zero_site,
@@ -96,10 +106,7 @@ class role::cache::mobile (
         storage            => $::role::cache::2layer::persistent_storage_args,
         runtime_parameters => ['default_ttl=2592000'],
         directors          => $varnish_be_directors[$::site_tier],
-        vcl_config         => {
-            'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
-            'layer'            => 'backend',
-        },
+        vcl_config         => $be_vcl_config,
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'backend_match'   => '^mw1017\.eqiad\.wmnet$',
@@ -123,7 +130,6 @@ class role::cache::mobile (
                 'max_connections'       => 600,
             },
         ]),
-        cluster_options    => $cluster_options,
     }
 
     varnish::instance { 'mobile-frontend':
@@ -147,11 +153,7 @@ class role::cache::mobile (
                 'service'  => 'varnish-be-rand',
             },
         },
-        vcl_config         => {
-            'retry503'         => 1,
-            'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
-            'layer'            => 'frontend',
-        },
+        vcl_config         => $fe_vcl_config,
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'port'                  => 3128,
@@ -162,7 +164,6 @@ class role::cache::mobile (
                 'probe'                 => 'varnish',
             },
         ]),
-        cluster_options    => $cluster_options,
     }
 
     # varnish::logging to be removed once

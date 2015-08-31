@@ -40,7 +40,7 @@ def chash_def_retries(p, n)
 end
 -%>
 
-<% if @cluster_options.fetch( "enable_geoiplookup", false ) -%>
+<% if @vcl_config.fetch( "enable_geoiplookup", false ) -%>
 include "geoip.inc.vcl";
 <% end -%>
 
@@ -187,7 +187,7 @@ sub filter_noise {
 <% end -%>
 
 // start frontend-only block for HTTPS
-<% if @vcl_config.fetch("layer", "") == "frontend" && @cluster_options.fetch("https_redirects", false) -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
 
 // *** HTTPS recv code - domain-based 301/302->HTTPS decisions happen here
 // if GET/HEAD filter is modified/removed later, keep in mind we need to not affect
@@ -404,7 +404,7 @@ sub vcl_recv {
 
 	call vcl_recv_append_xff;
 
-<% if @vcl_config.fetch("layer", "") == "frontend" && @cluster_options.fetch("https_redirects", false) -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
 	call https_recv_redirect;
 <% end -%>
 
@@ -421,7 +421,7 @@ sub vcl_recv {
 		error 204;
 	}
 
-<% if @cluster_options.fetch("enable_geoiplookup", false) -%>
+<% if @vcl_config.fetch("enable_geoiplookup", false) -%>
 	if (req.url == "/geoiplookup" || req.http.host == "geoiplookup.wikimedia.org") {
 		error 668 "geoiplookup";
 	}
@@ -501,7 +501,7 @@ sub vcl_deliver {
 		}
 	}
 
-<% if @vcl_config.fetch("layer", "") == "frontend" && @cluster_options.fetch("https_redirects", false) -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
 	call https_deliver_hsts;
 <% end -%>
 
@@ -509,7 +509,7 @@ sub vcl_deliver {
 }
 
 sub vcl_error {
-<% if @vcl_config.fetch("layer", "") == "frontend" && @cluster_options.fetch("https_redirects", false) -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
 	call https_error_redirect;
 <% end -%>
 
@@ -526,7 +526,7 @@ sub vcl_error {
 		set obj.http.Connection = "keep-alive";
 	}
 
-<% if @cluster_options.fetch("enable_geoiplookup", false) -%>
+<% if @vcl_config.fetch("enable_geoiplookup", false) -%>
 	// Support geoiplookup
 	if (obj.status == 668) {
 		call geoip_lookup;

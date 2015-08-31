@@ -65,7 +65,7 @@ sub vcl_recv {
 	call vcl_recv_purge;
 
 	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
+	if (req.http.host == "<%= @vcl_config.fetch("bits_domain", "bits.wikimedia.org") %>") {
 		if (req.url ~ "^/event\.gif") {
 			error 204;
 		}
@@ -125,7 +125,7 @@ sub vcl_fetch {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
-<% if @cluster_options.fetch("do_gzip", false) -%>
+<% if @vcl_config.fetch("do_gzip", false) -%>
 		// Compress ico and SVG files
 		if (beresp.http.content-type ~ "^image/(x-icon|vnd\.microsoft\.icon|svg\+xml)$") {
 			set beresp.do_gzip = true;
@@ -137,7 +137,7 @@ sub vcl_fetch {
 
 sub vcl_error {
 	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @cluster_options.fetch("bits_domain", "bits.wikimedia.org") %>") {
+	if (req.http.host == "<%= @vcl_config.fetch("bits_domain", "bits.wikimedia.org") %>") {
 		if (obj.status == 204) {
 			set obj.http.Connection = "keep-alive";
 			return (deliver);
@@ -168,7 +168,7 @@ sub vcl_deliver {
 			set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
 		}
 	}
-<% if @cluster_options.fetch("enable_geoiplookup", false) -%>
+<% if @vcl_config.fetch("enable_geoiplookup", false) -%>
 	// Perform GeoIP look-up and send the result as a session cookie
 	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
 		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
