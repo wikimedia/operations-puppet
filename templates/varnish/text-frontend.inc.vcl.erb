@@ -65,7 +65,7 @@ sub vcl_recv {
 	call vcl_recv_purge;
 
 	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @vcl_config.fetch("bits_domain", "bits.wikimedia.org") %>") {
+	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
 		if (req.url ~ "^/event\.gif") {
 			error 204;
 		}
@@ -80,7 +80,7 @@ sub vcl_recv {
 	call mobile_redirect;
 
 	# normalize all /static to the same hostname for caching
-	if (req.url ~ "^/static/") { set req.http.host = "<%= scope['role::cache::configuration::static_host'] %>"; }
+	if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
 
 	if (req.http.host ~ "^test\.") {
 		set req.http.X-Wikimedia-Debug = "1";
@@ -137,7 +137,7 @@ sub vcl_fetch {
 
 sub vcl_error {
 	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @vcl_config.fetch("bits_domain", "bits.wikimedia.org") %>") {
+	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
 		if (obj.status == 204) {
 			set obj.http.Connection = "keep-alive";
 			return (deliver);

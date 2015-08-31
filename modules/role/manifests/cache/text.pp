@@ -1,7 +1,4 @@
-class role::cache::text (
-    $bits_domain = 'bits.wikimedia.org',
-    $top_domain = 'org'
-) {
+class role::cache::text () {
     system::role { 'role::cache::text':
         description => 'text Varnish cache server',
     }
@@ -80,8 +77,9 @@ class role::cache::text (
     $common_vcl_config = {
         'cache4xx'           => '1m',
         'purge_host_regex'   => $::role::cache::base::purge_host_not_upload_re,
-        'bits_domain'        => $bits_domain,
-        'top_domain'         => $top_domain,
+        'static_host'        => $::role::cache::base::static_host,
+        'bits_domain'        => $::role::cache::base::bits_domain,
+        'top_domain'         => $::role::cache::base::top_domain,
         'do_gzip'            => true,
     }
 

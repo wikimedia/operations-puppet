@@ -2,7 +2,6 @@ class role::cache::configuration {
     include lvs::configuration
 
     $has_ganglia = $::standard::has_ganglia
-    $static_host = hiera('role::cache::base::static_host', 'www.wikimedia.org')
 
     $backends = {
         'production' => {
