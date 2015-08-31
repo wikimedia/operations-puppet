@@ -48,10 +48,12 @@ class ldap::client::nss($ldapconfig) {
     service { 'nscd':
         ensure    => running,
         subscribe => File['/etc/ldap/ldap.conf'],
+        require   => Package['nscd'],
     }
 
     service { 'nslcd':
-        ensure => running,
+        ensure  => running,
+        require => Package['nslcd'],
     }
 
     File {
@@ -66,8 +68,9 @@ class ldap::client::nss($ldapconfig) {
     }
 
     file { '/etc/nscd.conf':
-        notify => Service['nscd'],
-        source => $nscd_conf,
+        require => Package['nscd'],
+        notify  => Service['nscd'],
+        source  => $nscd_conf,
     }
 
     file { '/etc/nsswitch.conf':
@@ -78,11 +81,13 @@ class ldap::client::nss($ldapconfig) {
     # Allow labs projects to give people custom shells
     $shell_override = hiera('user_login_shell', false)
     file { '/etc/ldap.conf':
-        notify  => Service['nscd'],
+        notify  => Service['nscd','nslcd'],
+        require => File['/etc/nslcd.conf', '/etc/nscd.conf'],
         content => template('ldap/nss_ldap.erb'),
     }
 
     file { '/etc/nslcd.conf':
+        require => Package['nslcd'],
         notify  => Service[nslcd],
         mode    => '0440',
         content => template('ldap/nslcd.conf.erb'),
