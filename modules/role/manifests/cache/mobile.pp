@@ -1,6 +1,4 @@
-class role::cache::mobile (
-    $zero_site = 'https://zero.wikimedia.org'
-) {
+class role::cache::mobile {
     system::role { 'role::cache::mobile':
         description => 'mobile Varnish cache server',
     }
@@ -78,6 +76,7 @@ class role::cache::mobile (
 
     $common_vcl_config = {
         'purge_host_regex'   => $::role::cache::base::purge_host_not_upload_re,
+        'static_host'        => $::role::cache::base::static_host,
         'do_gzip'            => true,
     }
 
@@ -93,7 +92,7 @@ class role::cache::mobile (
     })
 
     class { 'varnish::zero_update':
-        site         => $zero_site,
+        site         => $::role::cache::base::zero_site,
         auth_content => secret('misc/zerofetcher.auth'),
     }
 

@@ -1,6 +1,11 @@
 class role::cache::base(
-    $purge_host_only_upload_re = '/./',
-    $purge_host_not_upload_re = '/./'
+    $zero_site = 'https://zero.wikimedia.org',
+    $purge_host_only_upload_re = '^upload\.wikimedia\.org$',
+    $purge_host_not_upload_re = '^(?!upload\.wikimedia\.org)',
+    $static_host = 'www.wikimedia.org',
+    $upload_domain = 'upload.wikimedia.org',
+    $bits_domain = 'bits.wikimedia.org',
+    $top_domain = 'org'
 ) {
     include standard
     include nrpe

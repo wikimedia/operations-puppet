@@ -344,7 +344,7 @@ sub vcl_recv_purge {
 	if (req.request == "PURGE") {
 		if (!client.ip ~ purge) {
 			error 405 "Denied.";
-		} elsif (req.http.Host ~ "<%= @vcl_config.fetch("purge_host_regex", ".*") %>") {
+		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
 			set req.hash_ignore_busy = true;
 			return (lookup);
 		} else {

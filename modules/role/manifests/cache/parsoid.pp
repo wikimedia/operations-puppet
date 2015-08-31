@@ -14,6 +14,21 @@ class role::cache::parsoid {
 
     include role::cache::ssl::unified
 
+    $common_vcl_config = {
+        'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
+    }
+
+    $be_vcl_config = merge($common_vcl_config, {
+        'layer'            => 'backend',
+        'retry503'         => 4,
+        'retry5xx'         => 1,
+    })
+
+    $fe_vcl_config = merge($common_vcl_config, {
+        'layer'            => 'frontend',
+        'retry5xx'         => 0,
+    })
+
     varnish::instance { 'parsoid-backend':
         name             => '',
         vcl              => 'parsoid-backend',
@@ -28,11 +43,7 @@ class role::cache::parsoid {
                 'backends' => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
             }
         },
-        vcl_config       => {
-            'layer'       => 'backend',
-            'retry503'    => 4,
-            'retry5xx'    => 1,
-        },
+        vcl_config       => $be_vcl_config,
         backend_options  => [
             {
                 'backend_match'         => '^cxserver',
@@ -97,10 +108,7 @@ class role::cache::parsoid {
                 'backends' => $::role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
             },
         },
-        vcl_config      => {
-            'layer'       => 'frontend',
-            'retry5xx'    => 0,
-        },
+        vcl_config      => $fe_vcl_config,
         backend_options => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
                 'backend_match'         => '^cxserver',

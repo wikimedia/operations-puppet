@@ -1,4 +1,4 @@
-class role::cache::maps() {
+class role::cache::maps {
     system::role { 'role::cache::maps':
         description => 'maps Varnish cache server',
     }
@@ -36,17 +36,20 @@ class role::cache::maps() {
 
     $common_vcl_config = {
         'cache4xx'         => '1m',
+        'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
     }
 
-    $be_vcl_config = merge($common_vcl_config, {
+    $be_vcl_part = {
         'layer'            => 'backend',
-    })
+    }
+    $be_vcl_config = merge($common_vcl_config, $be_vcl_part)
 
-    $fe_vcl_config = merge($common_vcl_config, {
+    $fe_vcl_part = {
         'layer'            => 'frontend',
         'retry503'         => 1,
         'https_redirects'  => true,
-    })
+    }
+    $fe_vcl_config = merge($common_vcl_config, $fe_vcl_part)
 
     varnish::instance { 'maps-backend':
         name               => '',
