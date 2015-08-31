@@ -16,4 +16,17 @@ define labstore::fileserver::cleanup_snapshots(
         systemd         => true,
         declare_service => false,
     }
+
+    file { "/etc/systemd/system/cleanup-${volume_group}.timer":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('labstore/initscripts/cleanup.timer.erb'),
+    }
+
+    nrpe::monitor_systemd_unit_state { "cleanup-${volume_group}":
+        description    => "Last cleanup of snapshots in the ${volume_group} vg",
+        expected_state => 'periodic 90000', # 25h (i.e. daily but with a bit of give)
+    }
 }
