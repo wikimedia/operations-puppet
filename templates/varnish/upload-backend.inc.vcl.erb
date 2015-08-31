@@ -21,7 +21,7 @@ sub pick_large_object_stevedore {
 sub vcl_recv {
 	call vcl_recv_purge;
 
-	if (req.http.host != "<%= @cluster_options.fetch('upload_domain', 'upload.wikimedia.org') %>") {
+	if (req.http.host != "<%= @vcl_config.fetch('upload_domain', 'upload.wikimedia.org') %>") {
 		error 403 "Requested target domain not allowed.";
 	}
 
@@ -64,7 +64,7 @@ sub vcl_fetch {
 		set beresp.http.X-MediaWiki-Original = regsub(req.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2");
 	}
 
-<% if @cluster_options.fetch("do_gzip", false) -%>
+<% if @vcl_config.fetch("do_gzip", false) -%>
 	if (beresp.http.content-type == "image/svg+xml") {
 		set beresp.do_gzip = true;
 	}
