@@ -23,6 +23,8 @@ class network::constants {
                     '208.80.154.149',                   # bast1001.wikimedia.org
                     '2620:0:861:2:208:80:154:149',      # bast1001.wikimedia.org
                     '2620:0:861:2:7a2b:cbff:fe09:11ba', # bast1001.wikimedia.org SLAAC
+                    '208.80.153.5',                     # bast2001.wikimedia.org
+                    '2620:0:860:1:208:80:153:5',        # bast2001.wikimedia.org
                     '91.198.174.113',                   # hooft.esams.wikimedia.org
                     '2620:0:862:1:91:198:174:113',      # hooft.esams.wikimedia.org
                     '2620:0:862:1:a6ba:dbff:fe30:d770', # hooft.esams.wikimedia.org SLAAC
