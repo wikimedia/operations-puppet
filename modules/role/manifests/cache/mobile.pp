@@ -77,6 +77,8 @@ class role::cache::mobile {
     $common_vcl_config = {
         'purge_host_regex'   => $::role::cache::base::purge_host_not_upload_re,
         'static_host'        => $::role::cache::base::static_host,
+        'bits_domain'        => $::role::cache::base::bits_domain,
+        'top_domain'         => $::role::cache::base::top_domain,
         'do_gzip'            => true,
     }
 
