@@ -56,6 +56,14 @@ sub vcl_recv {
 	// Allow purging
 	call vcl_recv_purge;
 
+	// BITS: legacy bits.wm.o domain support
+	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
+		if (req.url ~ "^/event\.gif") {
+			error 204;
+		}
+		return (lookup);
+	}
+
 	// Don't decode percent-encoded slashes in paths for REST APIs
 	if (req.url !~ "^/api/rest_v1/") {
 		call normalize_path;
@@ -121,6 +129,14 @@ sub vcl_fetch {
 }
 
 sub vcl_error {
+	// BITS: legacy bits.wm.o domain support
+	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
+		if (obj.status == 204) {
+			set obj.http.Connection = "keep-alive";
+			return (deliver);
+		}
+	}
+
 	call errorpage;
 	return (deliver);
 }
