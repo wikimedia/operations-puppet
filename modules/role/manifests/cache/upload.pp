@@ -1,7 +1,4 @@
-class role::cache::upload(
-    $upload_domain = 'upload.wikimedia.org',
-    $top_domain = 'org'
-) {
+class role::cache::upload() {
     system::role { 'role::cache::upload':
         description => 'upload Varnish cache server',
     }
@@ -51,8 +48,7 @@ class role::cache::upload(
     $common_vcl_config = {
         'cache4xx'         => '1m',
         'purge_host_regex' => $::role::cache::base::purge_host_only_upload_re,
-        'upload_domain'    => $upload_domain,
-        'top_domain'       => $top_domain,
+        'upload_domain'    => $::role::cache::base::upload_domain,
         'do_gzip'          => true,
         'https_redirects'  => true,
     }
