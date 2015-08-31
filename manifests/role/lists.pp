@@ -156,6 +156,12 @@ class role::lists {
     ferm::rule { 'mailman-spamd-local':
         rule => 'proto tcp dport 783 { saddr (127.0.0.1 ::1) ACCEPT; }'
     }
+
+    ferm::service { 'sodium-rysnc':
+        proto  => 'tcp',
+        port   => '873',
+        srange => '208.80.154.61/32',
+    }
 }
 
 class role::lists::migration {
