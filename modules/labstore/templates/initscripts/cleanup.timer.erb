@@ -1,0 +1,9 @@
+[Unit]
+Description=Cleanup snapshots (<%= @title %>)
+
+[Timer]
+OnCalendar=<%= @calendar %>
+Persistent=true
+
+[Install]
+WantedBy=timers.target
