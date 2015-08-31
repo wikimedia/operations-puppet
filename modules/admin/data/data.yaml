@@ -98,7 +98,7 @@ groups:
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
-    members: [tnegrin, manybubbles, milimetric, demon, andyrussg]
+    members: [tnegrin, milimetric, demon, andyrussg]
   researchers:
     gid: 714
     description: users with access to research db
@@ -168,7 +168,7 @@ groups:
                  group.
     members: [handrade, haithams, ezachte, milimetric, dartar, yurik,
               halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
-              manybubbles, ironholds, kleduc, ellery, nettrom, mforns,
+              ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, rmoen, tbayer, joal, ashwinpp, ebernhardson,
               madhuvishy, tjones, legoktm, dcausse, bearloga]
   statistics-users:
@@ -259,7 +259,7 @@ groups:
   wikidata-query-roots:
     gid: 740
     description: Full root on the Wikidata Query Service nodes.
-    members: [manybubbles, aaron, gwicke, smalyshev]
+    members: [aaron, gwicke, smalyshev]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   cxserver-admin:
     gid: 741
