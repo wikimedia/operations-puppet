@@ -104,11 +104,8 @@ sub vcl_recv {
 	}
 
 	call analytics_last_access_recv;
-
 	call evaluate_cookie;
-
 	call pass_authorization;
-
 	return (lookup);
 }
 
@@ -125,11 +122,12 @@ sub vcl_fetch {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
+
 <% if @vcl_config.fetch("do_gzip", false) -%>
-		// Compress ico and SVG files
-		if (beresp.http.content-type ~ "^image/(x-icon|vnd\.microsoft\.icon|svg\+xml)$") {
-			set beresp.do_gzip = true;
-		}
+	// Compress ico and SVG files
+	if (beresp.http.content-type ~ "^image/(x-icon|vnd\.microsoft\.icon|svg\+xml)$") {
+		set beresp.do_gzip = true;
+	}
 <% end -%>
 
 	return (deliver);
