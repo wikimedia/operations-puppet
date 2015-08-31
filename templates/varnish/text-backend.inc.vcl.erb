@@ -64,7 +64,7 @@ sub vcl_recv {
 sub bitscompat_1be_mangle {
 	// Transform backend url: /<sitename>/load.php -> /w/load.php
 	// Set host header for backend to <sitename>
-	if (req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.<%= Regexp.escape(@vcl_config.fetch("top_domain", "org")) %>/load\.php") {
+	if (req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.<%= Regexp.escape(@vcl_config.fetch('top_domain')) %>/load\.php") {
 		set bereq.http.host = regsub(req.url, "^/([^/]+)/(.*)$", "\1");
 		set bereq.url = regsub(req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2");
 	}
@@ -74,7 +74,7 @@ sub bitscompat_1be_mangle {
 sub vcl_pass {
 <% if @site_tier == "one" -%>
 	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @vcl_config.fetch("bits_domain", "bits.wikimedia.org") %>") {
+	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
 		call bitscompat_1be_mangle;
 		return (pass);
 	}
@@ -85,7 +85,7 @@ sub vcl_pass {
 sub vcl_miss {
 <% if @site_tier == "one" -%>
 	// BITS: legacy bits.wm.o domain support
-	if (req.http.host == "<%= @vcl_config.fetch("bits_domain", "bits.wikimedia.org") %>") {
+	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
 		call bitscompat_1be_mangle;
 		return (fetch);
 	}
