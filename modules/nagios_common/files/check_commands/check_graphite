@@ -280,10 +280,8 @@ class Threshold(GraphiteCheck):
             if lengths[key] >= t * self.perc / 100.0:
                 perc = lengths[key] * 100.0 / t
                 raise NagiosException(
-                    key, '%3.2f%% of data %s the %s threshold [%s]' %
-                    (perc, report, key.lower(), self.limits[key]))
-        return 'Less than %3.2f%% %s the threshold [%s]' % \
-            (self.perc, report, self.limits['WARNING'])
+                    key, '%d%% %s threshold' % (round(perc), report))
+        return 'Only %d%% %s threshold' % (round(self.perc), report)
 
 
 class SeriesThreshold(Threshold):
