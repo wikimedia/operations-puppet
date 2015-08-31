@@ -198,6 +198,41 @@ class DumpList(object):
         else:
             return os.path.join(self.config.publicDir, name)
 
+    def getDirStatus(self, dirToCheck, day):
+        if isdir(os.path.join(dirToCheck, day)):
+            try:
+                statusFile = os.path.join(dirToCheck, day, "status.html")
+                fd = open(statusFile, "r")
+                text = fd.read()
+                fd.close()
+            except:
+                # if there is no status file, the dir could have any
+                # kind of random junk in it so don't risk it
+                return None
+            return text
+        return None
+
+    def getFirstDir(self, dirs, dirToCheck):
+        if not dirs:
+            return False
+        for day in dirs:
+            text = self.getDirStatus(dirToCheck, day)
+            if text is None:
+                continue
+            if not "failed" in text:
+                return day
+
+        # no dump in there that's not failed. meh.
+        # try again and take the first one we can read
+        for day in dirs:
+            text = self.getDirStatus(dirToCheck, day)
+            if text is None:
+                continue
+            return day
+
+        # no dumps with status we can read. give up
+        return False
+
     def listDumpsForProject(self, project):
         """get list of dump directories for a given project
         ordered by good dumps first, most recent to oldest, then
@@ -214,33 +249,36 @@ class DumpList(object):
         dirs.sort()
         dirs.reverse()
 
-        dirsGood = []
         dirsFailed = []
-        dirsIncomplete = []
+        dirsComplete = []
+        dirsOther = []
+
+        dirsReported = []
+
+        dirFirst = self.getFirstDir(dirs, dirToCheck)
+        if not dirFirst:
+            # never dumped
+            return dirsReported
+
         for day in dirs:
-            if isdir(os.path.join(dirToCheck, day)):
-                try:
-                    statusFile = os.path.join(dirToCheck, day, "status.html")
-                    fd = open(statusFile, "r")
-                    text = fd.read()
-                    fd.close()
-                except:
-                    # if there is no status file, the dir could have any
-                    # kind of random junk in it so don't risk it
-                    continue
-                if not "Dump complete" in text:
-                    dirsIncomplete.append(day)
-                elif "failed" in text:
-                    dirsFailed.append(day)
-                else:
-                    dirsGood.append(day)
-        # we list good (complete not failed) dumps first, then failed dumps,
-        # then incomplete dumps.
-        dirs = []
-        dirs.extend(dirsGood)
-        dirs.extend(dirsFailed)
-        dirs.extend(dirsIncomplete)
-        return dirs
+            if day == dirFirst:
+                continue
+            text = self.getDirStatus(dirToCheck, day)
+            if text is None:
+                continue
+
+            if "failed" in text:
+                dirsFailed.append(day)
+            elif "Dump complete" in text:
+                dirsComplete.append(day)
+            else:
+                dirsOther.append(day)
+
+        dirsReported.append(dirFirst)
+        dirsReported.extend(dirsComplete)
+        dirsReported.extend(dirsOther)
+        dirsReported.append(dirsFailed)
+        return dirsReported
 
     def listFileTemplates(self):
         """list the templates for filenames that were provided
@@ -267,7 +305,7 @@ class DumpList(object):
         up the files that are part of the public run, not scratch or other
         files, and the filenames are either full paths or are relative
         to the base directory of the public dumps, depending on
-        user-specified options"""
+        user-specified options."""
         filesWanted = []
         if self.fileListTemplate:
             dirContents = os.listdir(dirName)
