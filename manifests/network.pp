@@ -20,52 +20,48 @@ class network::constants {
     $special_hosts = {
         'production' => {
             'bastion_hosts' => [
-                    '208.80.154.149', # bast1001.wikimedia.org
-                    '91.198.174.113', # hooft.esams.wikimedia.org
-                    '198.35.26.5', # bast4001.wikimedia.org
-                    '208.80.154.151', # iron.wikimedia.org
-                    '2620:0:861:2:208:80:154:149', # bast1001.wikimedia.org
+                    '208.80.154.149',                   # bast1001.wikimedia.org
+                    '2620:0:861:2:208:80:154:149',      # bast1001.wikimedia.org
                     '2620:0:861:2:7a2b:cbff:fe09:11ba', # bast1001.wikimedia.org SLAAC
-                    '2620:0:862:1:91:198:174:113', # hooft.esams.wikimedia.org
+                    '91.198.174.113',                   # hooft.esams.wikimedia.org
+                    '2620:0:862:1:91:198:174:113',      # hooft.esams.wikimedia.org
                     '2620:0:862:1:a6ba:dbff:fe30:d770', # hooft.esams.wikimedia.org SLAAC
-                    '2620:0:863:1:198:35:26:5', # bast4001.wikimedia.org
+                    '198.35.26.5',                      # bast4001.wikimedia.org
+                    '2620:0:863:1:198:35:26:5',         # bast4001.wikimedia.org
                     '2620:0:863:1:92b1:1cff:fe4d:4249', # bast4001.wikimedia.org SLAAC
-                    '2620:0:861:2:208:80:154:151', # iron.wikimedia.org
-                    '2620:0:861:2:7a2b:cbff:fe09:d5c', # iron.wikimedia.org SLAAC
-                    ],
+                    '208.80.154.151',                   # iron.wikimedia.org
+                    '2620:0:861:2:208:80:154:151',      # iron.wikimedia.org
+                    '2620:0:861:2:7a2b:cbff:fe09:d5c',  # iron.wikimedia.org SLAAC
+                ],
             'monitoring_hosts' => [
-                        '208.80.154.14', # neon.wikimedia.org
-                        '2620:0:861:1:208:80:154:14', # neon.wikimedia.org
-                        '2620:0:861:1:7a2b:cbff:fe08:a42f', # neon.wikimedia.org SLAAC
-                        '208.80.154.53', # uranium.wikimedia.org (ganglia, gmetad needs it)
-                        '2620:0:861:1:208:80:154:53', # uranium.wikimedia.org
-                    ],
+                    '208.80.154.14',                    # neon.wikimedia.org
+                    '2620:0:861:1:208:80:154:14',       # neon.wikimedia.org
+                    '2620:0:861:1:7a2b:cbff:fe08:a42f', # neon.wikimedia.org SLAAC
+                    '208.80.154.53',                    # uranium.wikimedia.org (ganglia, gmetad needs it)
+                    '2620:0:861:1:208:80:154:53',       # uranium.wikimedia.org
+                ],
             'deployment_hosts' => [
-                        '10.64.0.196',                  # tin.eqiad.wmnet
-                        '2620:0:861:101:10:64:0:196',   # tin.eqiad.wmnet
-                        '10.192.16.132',                # mira.codfw.wmnet
-                        '2620:0:860:102:10:192:16:132', # mira.codfw.wmnet
-                    ],
-        },
+                    '10.64.0.196',                      # tin.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:196',       # tin.eqiad.wmnet
+                    '10.192.16.132',                    # mira.codfw.wmnet
+                    '2620:0:860:102:10:192:16:132',     # mira.codfw.wmnet
+                ],
+            },
         'labs' => {
             'bastion_hosts' => [
                     '10.68.17.232', # bastion-01.eqiad.wmflabs
                     '10.68.18.65',  # bastion-02.eqiad.wmflabs
                     '10.68.18.66',  # bastion-restricted-01.eqiad.wmflabs
                     '10.68.18.68',  # bastion-restricted-02.eqiad.wmflabs
-                    ],
+                ],
             'monitoring_hosts' => [
-                    '208.80.153.210',
-                    '208.80.153.249',
-                    '10.4.1.120',
-                    '10.4.1.137',
                     '10.68.16.210', # shinken-01.eqiad.wmflabs
                     '10.68.16.42',  # shinken-server-01.eqiad.wmflabs (test server)
-                    ],
+                ],
             'deployment_hosts' => [
-                '10.68.16.58', # deployment-bastion.eqiad.wmflabs
-            ],
-        }
+                    '10.68.16.58',  # deployment-bastion.eqiad.wmflabs
+                ],
+            }
     }
 
     $all_network_subnets = {
