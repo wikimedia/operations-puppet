@@ -651,6 +651,12 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
         srange => '$ANALYTICS_NETWORKS',
     }
 
+    ferm::service{ 'hadoop-hdfs-ha-journalnode-http':
+        proto  => 'tcp',
+        port   => '8480',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
     ferm::service{ 'hadoop-hdfs-ha-journalnode':
         proto  => 'tcp',
         port   => '8485',
