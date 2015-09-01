@@ -123,6 +123,8 @@ lvs_services:
       sites:
         eqiad:
           hostname: text-lb.eqiad.wikimedia.org
+        codfw:
+          hostname: text-lb.codfw.wikimedia.org
         esams:
           hostname: text-lb.esams.wikimedia.org
         ulsfo:
@@ -173,6 +175,8 @@ lvs_services:
       sites:
         eqiad:
           hostname: upload-lb.eqiad.wikimedia.org
+        codfw:
+          hostname: upload-lb.codfw.wikimedia.org
         esams:
           hostname: upload-lb.esams.wikimedia.org
         ulsfo:
@@ -258,6 +262,8 @@ lvs_services:
       sites:
         eqiad:
           hostname: mobile-lb.eqiad.wikimedia.org
+        codfw:
+          hostname: mobile-lb.codfw.wikimedia.org
         esams:
           hostname: mobile-lb.esams.wikimedia.org
         ulsfo:
