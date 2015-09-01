@@ -1,8 +1,8 @@
 groups:
   absent:
     description: meta group for absented users
-    members: [avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage, howief,
-              jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz, mwalker,
+    members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
+              howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz, mwalker,
               nimishg, rainman, ssmith, swalling, sumanah, werdna]
   wikidev:
     gid: 500
@@ -69,7 +69,7 @@ groups:
     members: [jforrester, jmorgan, msyed, jkrauska,
               haithams, mhurd, dbrant, kleduc, bsitzmann, deskana,
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
-              bmansurov, west1, jhernandez, smalyshev, ananthrk, tbayer, zfilipin,
+              bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis]
@@ -179,7 +179,7 @@ groups:
               tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
               dbrant, tgr, haithams, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
-              mlitn, tbayer, ananthrk, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
+              mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
               neilpquinn-wmf, maxsem]
   statistics-admins:
     posix_name: stats
@@ -218,7 +218,7 @@ groups:
               halfak, dr0ptp4kt, tnegrin, ironholds, bearloga,
               kleduc, nuria, haithams, otto, deskana,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
-              ezachte, mforns, reedy, west1, phuedx, ananthrk, awight,
+              ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev]
@@ -1335,11 +1335,11 @@ users:
     ssh_keys: []
     uid: 10973
   ananthrk:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ananthrk
     realname: Ananth Ramakrishnan
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDt/i1A7KCnZCqaV8oWp3Qg7ueXNFnU+Nl8809U4vvjouTYqndJGaV5xbe1zA6O3KbJH5iNKJf0UzEpTPoy7MR2CNVEh+JfUOgAYJYBnjJde5uogRBVGO6ZYG9FJ7fPuDoM3ueb32My5H/HxTiP21c3OlK6ZDHfiWkJ58PthvhM49is6N2rzdqFPMTWtaFPxtQW8XMJJJ56p2yubhLWDx0uDLV7m04f4ZSpWrnHIjFhVbURoDHA4p5Jaeq7JUV19Z61Iu5vJPS95iKpkcBrbtKPVSDnG3fk6OAKwnU9Ams6w6IWLnMwPuSOqUycxD6YSdDc/Q3JkX0iHqCKfneVqCPF ananthrk@ymxdata.com]
+    ssh_keys: []
     uid: 11223
   krenair:
     ensure: present
