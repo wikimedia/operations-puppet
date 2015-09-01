@@ -48,4 +48,10 @@ class labstore::monitoring(
         percentage  => '50', # Don't freak out on spikes
     }
 
+    # Monitor instance NFS availability
+    monitoring::service { 'nfs-on-labs-instances':
+        description   => 'NFS read/writeable on labs instances',
+        check_command => 'check_http_url_for_string!tools-checker.wmflabs.org!/nfs/home!OK',
+    }
+
 }
