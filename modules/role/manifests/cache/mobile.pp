@@ -129,7 +129,7 @@ class role::cache::mobile {
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '180s',
                 'between_bytes_timeout' => '4s',
-                'max_connections'       => 600,
+                'max_connections'       => 1000,
             },
         ]),
     }
