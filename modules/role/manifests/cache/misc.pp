@@ -20,12 +20,13 @@ class role::cache::misc {
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         vcl_config      => {
-            'has_def_backend' => 'no',
-            'retry503'        => 4,
-            'retry5xx'        => 1,
-            'cache4xx'        => '1m',
-            'layer'           => 'frontend',
-            'allowed_methods' => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
+            'has_def_backend'  => 'no',
+            'retry503'         => 4,
+            'retry5xx'         => 1,
+            'cache4xx'         => '1m',
+            'layer'            => 'frontend',
+            'allowed_methods'  => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
+            'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         },
         directors       => {
             'analytics1001' => { # Hadoop Yarn ResourceManager GUI
