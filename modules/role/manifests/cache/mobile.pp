@@ -24,12 +24,12 @@ class role::cache::mobile {
 
     $varnish_be_directors = {
         'one' => {
-            'backend'        => {
+            'backend'          => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
             },
-            'api'            => {
+            'api'              => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
@@ -44,7 +44,7 @@ class role::cache::mobile {
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['security_audit'][$::mw_primary],
             },
-            'test_wikipedia' => {
+            'test_wikipedia'   => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
@@ -56,7 +56,7 @@ class role::cache::mobile {
             },
         },
         'two' => {
-            'backend' => {
+            'backend'        => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $mobile_nodes['eqiad'],
@@ -67,7 +67,7 @@ class role::cache::mobile {
                 'backends' => $mobile_nodes['eqiad'],
                 'service'  => 'varnish-be-rand',
             },
-        }
+        },
     }
 
     if $::role::cache::configuration::has_ganglia {
@@ -104,19 +104,19 @@ class role::cache::mobile {
         extra_vcl          => ['text-common'],
         port               => 3128,
         admin_port         => 6083,
-        storage            => $::role::cache::2layer::persistent_storage_args,
         runtime_parameters => ['default_ttl=2592000'],
+        storage            => $::role::cache::2layer::persistent_storage_args,
         directors          => $varnish_be_directors[$::site_tier],
         vcl_config         => $be_vcl_config,
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
             {
-                'backend_match'   => '^mw1017\.eqiad\.wmnet$',
-                'max_connections' => 20,
-            },
-            {
                 'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
                 'port'          => 3128,
                 'probe'         => 'varnish',
+            },
+            {
+                'backend_match'   => '^mw1017\.eqiad\.wmnet$',
+                'max_connections' => 20,
             },
             {
                 'backend_match'   => '^restbase\.svc\.|^deployment-restbase',
@@ -139,8 +139,8 @@ class role::cache::mobile {
         extra_vcl          => ['text-common', 'zero'],
         port               => 80,
         admin_port         => 6082,
-        storage            => "-s malloc,${memory_storage_size}G",
         runtime_parameters => ['default_ttl=2592000'],
+        storage            => "-s malloc,${memory_storage_size}G",
         directors          => {
             'backend' => {
                 'dynamic'  => 'yes',

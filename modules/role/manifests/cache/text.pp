@@ -163,6 +163,8 @@ class role::cache::text {
         ]),
     }
 
+    # varnish::logging to be removed once
+    # udp2log kafka consumer is implemented and deployed.
     include role::cache::logging
 
     class { '::role::cache::kafka::statsv':
@@ -183,9 +185,7 @@ class role::cache::text {
     if $::realm == 'production' {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
-        class { 'role::cache::kafka::webrequest':
-            topic => 'webrequest_text',
-        }
+        class { 'role::cache::kafka::webrequest': topic => 'webrequest_text' }
     }
 
     # Test rollout of varnish reqstats diamond collector.
