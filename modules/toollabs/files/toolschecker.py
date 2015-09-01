@@ -1,9 +1,11 @@
+import flask
 import os
+import redis
+import requests
+import socket
 import subprocess
 import uuid
-import redis
 
-import flask
 
 app = flask.Flask(__name__)
 
@@ -23,6 +25,24 @@ def check(endpoint):
         actual_check.__name__ = func.__name__
         return app.route(endpoint)(actual_check)
     return actual_decorator
+
+
+@check('/labs-puppetmaster/eqiad')
+def ldap_catalog_check():
+    # Verify that we can get this host's catalog from the puppet server
+    puppetmaster = "labs-puppetmaster-eqiad.wikimedia.org"
+    fqdn = socket.getfqdn()
+    keyfile = "/var/lib/puppet/ssl/private_keys/%s.pem" % fqdn
+    certfile = "/var/lib/puppet/ssl/certs/%s.pem" % fqdn
+    cafile = "/var/lib/puppet/ssl/certs/ca.pem"
+    url = "https://%s:8140/production/catalog/%s" % (puppetmaster, fqdn)
+    request = requests.get(url, verify=cafile, cert=(certfile, keyfile))
+    if request.status_code != 200:
+        return False
+    if 'document_type' in request.json():
+        if request.json['document_type'].lower() == 'catalog'.lower():
+            return True
+    return False
 
 
 @check('/nfs/home')
