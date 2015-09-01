@@ -92,6 +92,7 @@ class role::swift::storage {
     $swift_frontends = hiera('swift::proxyhosts')
     $swift_access = concat($swift_backends, $swift_frontends)
     $swift_access_ferm = join($swift_access, ' ')
+    $swift_rsync_access_ferm = join($swift_backends, ' ')
 
     ferm::service { 'swift-object-server':
         proto   => 'tcp',
@@ -112,6 +113,13 @@ class role::swift::storage {
         port    => '6002',
         notrack => true,
         srange  => "@resolve(($swift_access_ferm))",
+    }
+
+    ferm::service { 'swift-rsync':
+        proto   => 'tcp',
+        port    => '873',
+        notrack => true,
+        srange  => "@resolve(($swift_rsync_access_ferm))",
     }
 
     # these are already partitioned and xfs formatted by the installer
