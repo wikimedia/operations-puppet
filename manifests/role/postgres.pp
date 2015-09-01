@@ -34,6 +34,7 @@ class role::postgres::master {
     include role::postgres::common
     include ::postgresql::postgis
     include ::passwords::postgres
+    include base::firewall
 
     class { 'postgresql::master':
         includes => 'tuning.conf',
