@@ -22,6 +22,11 @@ class role::cache::mobile {
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
 
+    class { 'varnish::zero_update':
+        site         => $::role::cache::base::zero_site,
+        auth_content => secret('misc/zerofetcher.auth'),
+    }
+
     $varnish_be_directors = {
         'one' => {
             'backend'          => {
@@ -92,11 +97,6 @@ class role::cache::mobile {
         'enable_geoiplookup' => true,
         'https_redirects'    => true,
     })
-
-    class { 'varnish::zero_update':
-        site         => $::role::cache::base::zero_site,
-        auth_content => secret('misc/zerofetcher.auth'),
-    }
 
     varnish::instance { 'mobile-backend':
         name               => '',
