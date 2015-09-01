@@ -114,6 +114,13 @@ class role::swift::storage {
         srange  => "@resolve(($swift_access_ferm))",
     }
 
+    ferm::service { 'swift-rsync':
+        proto   => 'tcp',
+        port    => '873',
+        notrack => true,
+        srange  => "@resolve(($swift_access_ferm))",
+    }
+
     # these are already partitioned and xfs formatted by the installer
     $aux_partitions = hiera('swift_aux_partitions')
     swift::label_filesystem { $aux_partitions: }
