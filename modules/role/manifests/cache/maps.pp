@@ -11,8 +11,8 @@ class role::cache::maps {
         realserver_ips => $lvs::configuration::service_ips['maps'][$::site],
     }
 
-    $maps_nodes = hiera('cache::maps::nodes')
-    $site_maps_nodes = $maps_nodes[$::site]
+    $cluster_nodes = hiera('cache::maps::nodes')
+    $site_cluster_nodes = $cluster_nodes[$::site]
 
     $memory_storage_size = 12
 
@@ -86,7 +86,7 @@ class role::cache::maps {
             'backend' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
-                'backends' => $site_maps_nodes,
+                'backends' => $site_cluster_nodes,
             },
         },
         vcl_config         => $fe_vcl_config,

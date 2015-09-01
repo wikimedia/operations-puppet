@@ -11,8 +11,8 @@ class role::cache::text {
         realserver_ips => $lvs::configuration::service_ips['text'][$::site],
     }
 
-    $text_nodes = hiera('cache::text::nodes')
-    $site_text_nodes = $text_nodes[$::site]
+    $cluster_nodes = hiera('cache::text::nodes')
+    $site_cluster_nodes = $cluster_nodes[$::site]
 
     # 1/8 of total mem
     $memory_storage_size = ceiling(0.125 * $::memorysize_mb / 1024.0)
@@ -64,12 +64,12 @@ class role::cache::text {
             'backend'        => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
-                'backends' => $text_nodes['eqiad'],
+                'backends' => $cluster_nodes['eqiad'],
             },
             'backend_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
-                'backends' => $text_nodes['eqiad'],
+                'backends' => $cluster_nodes['eqiad'],
                 'service'  => 'varnish-be-rand',
             },
         },
@@ -146,12 +146,12 @@ class role::cache::text {
             'backend' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
-                'backends' => $site_text_nodes,
+                'backends' => $site_cluster_nodes,
             },
             'backend_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
-                'backends' => $site_text_nodes,
+                'backends' => $site_cluster_nodes,
                 'service'  => 'varnish-be-rand',
             },
         },

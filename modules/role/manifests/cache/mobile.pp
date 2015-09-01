@@ -11,8 +11,8 @@ class role::cache::mobile {
         realserver_ips => $lvs::configuration::service_ips['mobile'][$::site],
     }
 
-    $mobile_nodes = hiera('cache::mobile::nodes')
-    $site_mobile_nodes = $mobile_nodes[$::site]
+    $cluster_nodes = hiera('cache::mobile::nodes')
+    $site_cluster_nodes = $cluster_nodes[$::site]
 
     # 1/8 of total mem
     $memory_storage_size = ceiling(0.125 * $::memorysize_mb / 1024.0)
@@ -64,12 +64,12 @@ class role::cache::mobile {
             'backend'        => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
-                'backends' => $mobile_nodes['eqiad'],
+                'backends' => $cluster_nodes['eqiad'],
             },
             'backend_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
-                'backends' => $mobile_nodes['eqiad'],
+                'backends' => $cluster_nodes['eqiad'],
                 'service'  => 'varnish-be-rand',
             },
         },
@@ -145,12 +145,12 @@ class role::cache::mobile {
             'backend' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
-                'backends' => $site_mobile_nodes,
+                'backends' => $site_cluster_nodes,
             },
             'backend_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
-                'backends' => $site_mobile_nodes,
+                'backends' => $site_cluster_nodes,
                 'service'  => 'varnish-be-rand',
             },
         },

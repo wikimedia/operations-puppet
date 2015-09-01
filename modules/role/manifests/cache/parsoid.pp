@@ -9,8 +9,8 @@ class role::cache::parsoid {
         realserver_ips => $lvs::configuration::service_ips['parsoidcache'][$::site],
     }
 
-    $parsoid_nodes = hiera('cache::parsoid::nodes')
-    $site_parsoid_nodes = $parsoid_nodes[$::site]
+    $cluster_nodes = hiera('cache::parsoid::nodes')
+    $site_cluster_nodes = $cluster_nodes[$::site]
 
     include role::cache::ssl::unified
 
@@ -85,7 +85,7 @@ class role::cache::parsoid {
             'backend'          => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
-                'backends' => $site_parsoid_nodes,
+                'backends' => $site_cluster_nodes,
             },
             'cxserver_backend' => {
                 'dynamic'  => 'no',

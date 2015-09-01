@@ -11,8 +11,8 @@ class role::cache::upload {
         realserver_ips => $lvs::configuration::service_ips['upload'][$::site],
     }
 
-    $upload_nodes = hiera('cache::upload::nodes')
-    $site_upload_nodes = $upload_nodes[$::site]
+    $cluster_nodes = hiera('cache::upload::nodes')
+    $site_cluster_nodes = $cluster_nodes[$::site]
 
     # 1/12 of total mem
     $memory_storage_size = ceiling(0.08333 * $::memorysize_mb / 1024.0)
@@ -36,7 +36,7 @@ class role::cache::upload {
             'backend' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
-                'backends' => $upload_nodes['eqiad'],
+                'backends' => $cluster_nodes['eqiad'],
             },
         }
     }
@@ -107,7 +107,7 @@ class role::cache::upload {
             'backend' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
-                'backends' => $site_upload_nodes,
+                'backends' => $site_cluster_nodes,
             },
         },
         vcl_config         => $fe_vcl_config,
