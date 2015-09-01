@@ -12,8 +12,6 @@
   - role::db::redis
 .*-cache-text\d\d:
   - role::cache::text
-.*-cache-bits\d\d:
-  - role::cache::cache::bits
 .*-cache-mobile\d\d:
   - role::cache::mobile
 .*-cache-upload\d\d:
