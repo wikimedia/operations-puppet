@@ -178,6 +178,33 @@ function checkAssets( url ) {
 
 	// Print network report
 	page.onLoadFinished = function () {
+		// The "page" is finished, but wait for asynchronously loaded modules
+		// to finish as well.
+		page.evaluate( function () {
+			/*global mw */
+			var loadingPromises = mw.loader.getModuleNames()
+				.filter( function ( name ) {
+				  return mw.loader.getState( name ) === 'loading';
+				} )
+				.map( function ( name ) {
+					return mw.loader.using( name ).then( null, function () {
+						// In order to use the jQuery.when utility and it to not
+						// call back on the first error when other modules are
+						// still pending, cast any error to success.
+						return $.Deferred().resolve();
+					} );
+				} );
+			$.when.apply( $, loadingPromises ).then( function () {
+				window.callPhantom( 'mw-modules-ready' );
+			} );
+		} );
+	};
+
+	// Listens for calls to 'window.callPhantom' from the page
+	page.onCallback = function ( data ) {
+		if ( data !== 'mw-modules-ready' ) {
+			return;
+		}
 		payload.cookies.set = page.cookies.length;
 		payload.css.rules = page.evaluate( countCssRules );
 
