@@ -96,22 +96,16 @@ case "$1" in
    *)
 	# we don't know what the database is so we check if it exist first
 	Log "This database name is not known by sql script, fallback to dblist resolution"
-	# lookup from hosts
-	if [ `echo "$1" | grep -cE '_p$'` -lt 1 ];then
-	     Log "Invalid database name, recursive attempt suffixing _p..."
-	     if ($0 $1_p ${*:2});then
-		     exit 0
-	     fi
-             echo "Make sure to ask for a db in format of <wiki>_p"
-	     exit 1
-	fi
-	db=$1
-	server=`echo "$1" | sed 's/_p//' | sed 's/$/.labsdb/'`
+	db="${1%_p}_p"
+	server="${db%_p}.labsdb"
 	if getent hosts -- "$server" > /dev/null
 	then
 		Log "Resolved to $server $db"
 	else
 	        echo "Could not find requested database"
+                if [ "$db" != "$1" ]; then
+                    echo 'Make sure to ask for a db in format of <wiki>_p'
+                fi
 	        exit 1
 	fi
    ;;
