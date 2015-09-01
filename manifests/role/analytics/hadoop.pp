@@ -67,6 +67,9 @@ class role::analytics::hadoop::config {
     # This needs to be set in order to use Impala
     $dfs_datanode_hdfs_blocks_metadata_enabled = true
 
+    # Yarn App Master possible port ranges
+    $yarn_app_mapreduce_am_job_client_port_range = '55000-55199'
+
     # Look up zookeeper_hosts from hiera.
     $zookeeper_hosts = keys(hiera('zookeeper_hosts', undef))
 
@@ -160,7 +163,7 @@ class role::analytics::hadoop::config {
         $reduce_jvm_heap_size                     = floor(0.8 * 2 * $memory_per_container_mb)
         $mapreduce_reduce_java_opts               = "-Xmx${reduce_jvm_heap_size}m"
 
-        # Yarn ApplicationMaster container size and max heap size (-Xmx)
+        # Yarn ApplicationMaster container size and  max heap size (-Xmx)
         $yarn_app_mapreduce_am_resource_mb        = floor(2 * $memory_per_container_mb)
         $mapreduce_am_heap_size                   = floor(0.8 * 2 * $memory_per_container_mb)
         $yarn_app_mapreduce_am_command_opts       = "-Xmx${mapreduce_am_heap_size}m"
@@ -324,46 +327,48 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
     require_package('openjdk-7-jdk')
 
     class { 'cdh::hadoop':
-        cluster_name                             => $cluster_name,
-        namenode_hosts                           => $namenode_hosts,
-        journalnode_hosts                        => $journalnode_hosts,
-        resourcemanager_hosts                    => $resourcemanager_hosts,
-        zookeeper_hosts                          => $zookeeper_hosts,
-        datanode_mounts                          => $datanode_mounts,
-        dfs_name_dir                             => [$hadoop_name_directory],
-        dfs_journalnode_edits_dir                => $hadoop_journal_directory,
-        dfs_block_size                           => $dfs_block_size,
-        io_file_buffer_size                      => $io_file_buffer_size,
-        mapreduce_intermediate_compression_codec => $mapreduce_intermediate_compression_codec,
-        mapreduce_output_compression             => $mapreduce_output_compression,
-        mapreduce_output_compression_codec       => $mapreduce_output_compression_codec,
-        mapreduce_output_compression_type        => $mapreduce_output_compression_type,
+        cluster_name                                => $cluster_name,
+        namenode_hosts                              => $namenode_hosts,
+        journalnode_hosts                           => $journalnode_hosts,
+        resourcemanager_hosts                       => $resourcemanager_hosts,
+        zookeeper_hosts                             => $zookeeper_hosts,
+        datanode_mounts                             => $datanode_mounts,
+        dfs_name_dir                                => [$hadoop_name_directory],
+        dfs_journalnode_edits_dir                   => $hadoop_journal_directory,
+        dfs_block_size                              => $dfs_block_size,
+        io_file_buffer_size                         => $io_file_buffer_size,
+        mapreduce_intermediate_compression_codec    => $mapreduce_intermediate_compression_codec,
+        mapreduce_output_compression                => $mapreduce_output_compression,
+        mapreduce_output_compression_codec          => $mapreduce_output_compression_codec,
+        mapreduce_output_compression_type           => $mapreduce_output_compression_type,
 
-        mapreduce_job_reuse_jvm_num_tasks        => $mapreduce_job_reuse_jvm_num_tasks,
-        mapreduce_reduce_shuffle_parallelcopies  => $mapreduce_reduce_shuffle_parallelcopies,
-        mapreduce_task_io_sort_mb                => $mapreduce_task_io_sort_mb,
-        mapreduce_task_io_sort_factor            => $mapreduce_task_io_sort_factor,
+        mapreduce_job_reuse_jvm_num_tasks           => $mapreduce_job_reuse_jvm_num_tasks,
+        mapreduce_reduce_shuffle_parallelcopies     => $mapreduce_reduce_shuffle_parallelcopies,
+        mapreduce_task_io_sort_mb                   => $mapreduce_task_io_sort_mb,
+        mapreduce_task_io_sort_factor               => $mapreduce_task_io_sort_factor,
 
-        mapreduce_map_memory_mb                  => $mapreduce_map_memory_mb,
-        mapreduce_reduce_memory_mb               => $mapreduce_reduce_memory_mb,
-        mapreduce_map_java_opts                  => $mapreduce_map_java_opts,
-        mapreduce_reduce_java_opts               => $mapreduce_reduce_java_opts,
-        yarn_app_mapreduce_am_resource_mb        => $yarn_app_mapreduce_am_resource_mb,
-        yarn_app_mapreduce_am_command_opts       => $yarn_app_mapreduce_am_command_opts,
+        mapreduce_map_memory_mb                     => $mapreduce_map_memory_mb,
+        mapreduce_reduce_memory_mb                  => $mapreduce_reduce_memory_mb,
+        mapreduce_map_java_opts                     => $mapreduce_map_java_opts,
+        mapreduce_reduce_java_opts                  => $mapreduce_reduce_java_opts,
+        yarn_app_mapreduce_am_resource_mb           => $yarn_app_mapreduce_am_resource_mb,
+        yarn_app_mapreduce_am_command_opts          => $yarn_app_mapreduce_am_command_opts,
+        yarn_app_mapreduce_am_job_client_port_range => $yarn_app_mapreduce_am_job_client_port_range,
 
-        yarn_nodemanager_resource_memory_mb      => $yarn_nodemanager_resource_memory_mb,
-        yarn_scheduler_minimum_allocation_mb     => $yarn_scheduler_minimum_allocation_mb,
-        yarn_scheduler_maximum_allocation_mb     => $yarn_scheduler_maximum_allocation_mb,
-        yarn_scheduler_minimum_allocation_vcores => $yarn_scheduler_minimum_allocation_vcores,
+        yarn_nodemanager_resource_memory_mb         => $yarn_nodemanager_resource_memory_mb,
+        yarn_scheduler_minimum_allocation_mb        => $yarn_scheduler_minimum_allocation_mb,
+        yarn_scheduler_maximum_allocation_mb        => $yarn_scheduler_maximum_allocation_mb,
+        yarn_scheduler_minimum_allocation_vcores    => $yarn_scheduler_minimum_allocation_vcores,
 
-        dfs_datanode_hdfs_blocks_metadata_enabled => $dfs_datanode_hdfs_blocks_metadata_enabled,
+        dfs_datanode_hdfs_blocks_metadata_enabled   => $dfs_datanode_hdfs_blocks_metadata_enabled,
+
 
         # Use net-topology.py.erb to map hostname to /datacenter/rack/row id.
-        net_topology_script_template             => $net_topology_script_template,
+        net_topology_script_template                => $net_topology_script_template,
         # Use fair-scheduler.xml.erb to define FairScheduler queues.
-        fair_scheduler_template                  => $fair_scheduler_template,
+        fair_scheduler_template                     => $fair_scheduler_template,
 
-        yarn_site_extra_properties               => {
+        yarn_site_extra_properties                  => {
             # Enable FairScheduler preemption. This will allow the essential queue
             # to preempt non-essential jobs.
             'yarn.scheduler.fair.preemption'                => true,
@@ -381,11 +386,11 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
             'yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage' => '99.0',
         },
 
-        gelf_logging_enabled                     => $gelf_logging_enabled,
-        gelf_logging_host                        => $gelf_logging_host,
-        gelf_logging_port                        => $gelf_logging_port,
+        gelf_logging_enabled                        => $gelf_logging_enabled,
+        gelf_logging_host                           => $gelf_logging_host,
+        gelf_logging_port                           => $gelf_logging_port,
 
-        hadoop_namenode_opts                     => $hadoop_namenode_opts,
+        hadoop_namenode_opts                        => $hadoop_namenode_opts,
     }
 
     # If in production AND the current node is a journalnode, then
@@ -648,6 +653,14 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     ferm::service{ 'hadoop-yarn-nodemanager-http-ui':
         proto  => 'tcp',
         port   => '8042',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-mapreduce-application-master':
+        proto  => 'tcp',
+        # $yarn_app_mapreduce_am_job_client_port_range could look like '55000-55199,55500-55599'.
+        # Translate '-' -> ':' and ',' => ' ' for ferm, e.g. (55000:55199 55500:55599)
+        port   => inline_template('(<%= @yarn_app_mapreduce_am_job_client_port_range.tr("-,", ": ") %>)'),
         srange => '$ANALYTICS_NETWORKS',
     }
 
