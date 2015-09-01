@@ -163,7 +163,7 @@ class role::osm::master {
         prio   => '50',
         proto  => 'tcp',
         port   => 873,
-        srange => '($EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD $EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD $EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD $EQIAD_PRIVATE_LABS-INSTANCES1-A-EQIAD)',
+        srange => '($EQIAD_PRIVATE_LABS_INSTANCES1_A_EQIAD $EQIAD_PRIVATE_LABS_INSTANCES1_B_EQIAD $EQIAD_PRIVATE_LABS_INSTANCES1_C_EQIAD $EQIAD_PRIVATE_LABS_INSTANCES1_D_EQIAD)',
     }
     nrpe::monitor_service { 'rsync_server_running':
         description  => 'Check if rsync server is running',
