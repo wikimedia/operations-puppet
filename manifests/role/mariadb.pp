@@ -16,6 +16,7 @@ class role::mariadb::grants(
 
     include passwords::misc::scripts
     include passwords::tendril
+    include passwords::nodepool
 
     $root_pass    = $passwords::misc::scripts::mysql_root_pass
     $repl_pass    = $passwords::misc::scripts::mysql_repl_pass
@@ -32,6 +33,7 @@ class role::mariadb::grants(
     }
 
     if $shard {
+        $nodepool_pass = $passwords::nodepool::nodepooldb_pass
 
         file { "/etc/mysql/production-grants-shard.sql":
             ensure  => present,
