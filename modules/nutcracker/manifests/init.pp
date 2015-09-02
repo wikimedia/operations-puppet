@@ -72,7 +72,16 @@ class nutcracker(
         notify  => Service['nutcracker'],
     }
 
+    file { '/etc/init/nutcracker.override':
+        ensure  => $ensure,
+        content => "limit nofile 64000 64000\n",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['nutcracker'],
+    }
+
     service { 'nutcracker':
-        ensure   => ensure_service($ensure),
+        ensure => ensure_service($ensure),
     }
 }
