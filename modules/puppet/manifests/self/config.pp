@@ -18,6 +18,7 @@ class puppet::self::config(
     $puppet_client_subnet = undef,
     $certname             = $::fqdn,
     $enc_script_path      = undef,
+    $autosign             = hiera('puppetmaster::autosigner', false),
 ) {
     include base::puppet
     include ldap::role::config::labs
@@ -43,6 +44,8 @@ class puppet::self::config(
     }
 
     $config['dbadapter'] = 'sqlite3'
+
+    $config['autosign'] = $autosign
 
     # This is set to something different than the default
     # /var/lib/puppet/ssl to avoid conflicts with previously
