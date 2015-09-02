@@ -64,10 +64,10 @@ class labstore::fileserver {
             dest_host => 'labstore2001.codfw.wmnet',
             calendar  => '04:00',
         }
-    }
 
-    labstore::fileserver::cleanup_snapshots { 'labstore':
-        keep_free => '6',
+        labstore::fileserver::cleanup_snapshots { 'labstore':
+            keep_free => '6',
+        }
     }
 
     # There is no service {} stanza on purpose -- this service
