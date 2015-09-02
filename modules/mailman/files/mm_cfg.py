@@ -126,3 +126,20 @@ PUBLIC_ARCHIVE_URL = 'https://%(hostname)s/pipermail/%(listname)s/'
 
 # Don't store messages in qfiles/bad
 QRUNNER_SAVE_BAD_MESSAGES = No
+
+
+# The AUTHENTICATION_COOKIE_LIFETIME feature was introduced in Mailman 2.1.15
+# to specify a length of time after which the cookie will expire if not used.
+AUTHENTICATION_COOKIE_LIFETIME = 3600
+
+# This controls how much of the original message is included in automatic
+# responses to email commands.  The values are:
+# 0 - Do not include any unprocessed or ignored commands.  Do not include
+#     the original message.
+# 1 - Do not include any unprocessed or ignored commands.  Include only the
+#     headers from the original message.
+# 2 - Include unprocessed and ignored commands.
+#     Include the complete original message.
+#
+# exists from mailman 2.1.15 and up
+RESPONSE_INCLUDE_LEVEL = 0
