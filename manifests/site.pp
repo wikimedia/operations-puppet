@@ -787,11 +787,13 @@ node 'dbstore2001.codfw.wmnet' {
         # don't spam Icinga with warnings. This will not block properly critical alerts.
         warn_stopped => false,
     }
+    include base::firewall
 }
 
 node 'dbstore2002.codfw.wmnet' {
     $cluster = 'mysql'
     include role::mariadb::dbstore
+    include base::firewall
 }
 
 node 'dbproxy1001.eqiad.wmnet' {
