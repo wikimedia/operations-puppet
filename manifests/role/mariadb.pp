@@ -463,7 +463,7 @@ class role::mariadb::sanitarium {
     ferm::service { 'mysqld_sanitarium':
         proto  => 'tcp',
         port   => '3311:3317',
-        srange => '$INTERNAL',
+        srange => '(($INTERNAL @resolve(iron.wikimedia.org)))',
     }
 
     ferm::service { 'gmond_udp':
