@@ -54,6 +54,7 @@ class role::mariadb::ferm {
     ferm::service{ 'mariadb_internal':
         proto  => 'tcp',
         port   => 3306,
+        notrack => true,
         srange => '$INTERNAL',
     }
 
