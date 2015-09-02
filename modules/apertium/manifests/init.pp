@@ -84,7 +84,7 @@ class apertium(
         }
     }
 
-    file { $local_logdir:
+    file { $log_dir:
         ensure => directory,
         owner  => $uid,
         group  => 'root', # This on purpose for logrotate to behave
