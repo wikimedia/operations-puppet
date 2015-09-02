@@ -57,8 +57,13 @@ class role::graphite::base(
                 xFilesFactor      => 0.1,
                 aggregationMethod => 'max',
             },
-            'sum'   => {
+            'count'   => {
                 pattern           => '\.count$',
+                xFilesFactor      => 0,
+                aggregationMethod => 'sum',
+            },
+            'sum'   => {
+                pattern           => '\.sum$',
                 xFilesFactor      => 0,
                 aggregationMethod => 'sum',
             },
