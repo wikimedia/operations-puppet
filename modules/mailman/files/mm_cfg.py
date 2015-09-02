@@ -126,3 +126,9 @@ PUBLIC_ARCHIVE_URL = 'https://%(hostname)s/pipermail/%(listname)s/'
 
 # Don't store messages in qfiles/bad
 QRUNNER_SAVE_BAD_MESSAGES = No
+
+# Expire cookies 3600 seconds (1 hour) after last use
+AUTHENTICATION_COOKIE_LIFETIME = 3600
+
+# Don't include full email in automatic bounces
+RESPONSE_INCLUDE_LEVEL = 0
