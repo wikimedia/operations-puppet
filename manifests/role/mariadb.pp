@@ -205,6 +205,7 @@ class role::mariadb::misc::eventlogging(
     include standard
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
+    include role::mariadb::ferm
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
