@@ -562,6 +562,7 @@ node /^db20(16|34|42|48)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's1',
     }
+    include base::firewall
 }
 
 node /^db10(18|21|36|54|60|63|67)\.eqiad\.wmnet/ {
@@ -576,6 +577,7 @@ node /^db20(17|35|41|49)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's2',
     }
+    include base::firewall
 }
 
 node /^db10(15|27|35|44)\.eqiad\.wmnet/ {
@@ -590,6 +592,7 @@ node /^db20(18|36|43|50)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's3',
     }
+    include base::firewall
 }
 
 node /^db10(19|42|56|59|64|68)\.eqiad\.wmnet/ {
@@ -604,6 +607,7 @@ node /^db20(19|37|44|51)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's4',
     }
+    include base::firewall
 }
 
 node /^db10(26|45|49|70|71)\.eqiad\.wmnet/ {
@@ -618,6 +622,7 @@ node /^db20(23|38|45|52)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's5',
     }
+    include base::firewall
 }
 
 node /^db10(22|30|37|50|61)\.eqiad\.wmnet/ {
@@ -632,6 +637,7 @@ node /^db20(28|39|46|53)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
     }
+    include base::firewall
 }
 
 node /^db10(28|34|39|41|62)\.eqiad\.wmnet/ {
@@ -646,6 +652,7 @@ node /^db20(29|40|47|54)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's7',
     }
+    include base::firewall
 }
 
 ## x1 shard
@@ -659,6 +666,7 @@ node /^db20(09)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'x1',
     }
+    include base::firewall
 }
 
 ## m1 shard
@@ -892,6 +900,7 @@ node /es200[1234]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es1',
     }
+    include base::firewall
 }
 
 ## es1 new nodes
@@ -919,6 +928,7 @@ node /es200[567]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es2',
     }
+    include base::firewall
 }
 
 ## es2 new nodes
@@ -948,6 +958,7 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es3',
     }
+    include base::firewall
 }
 
 ## es3 new nodes
