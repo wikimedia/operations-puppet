@@ -127,7 +127,7 @@ SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, 
 END
 )
 
-echo "number of accounts created"
+#echo "number of accounts created"
 result_accounts_created=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user phabricator_user << END
 
 SELECT COUNT(id) as '' FROM user WHERE FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
