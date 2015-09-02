@@ -730,6 +730,7 @@ node 'db1046.eqiad.wmnet' {
         shard  => 'm4',
         master => true,
     }
+    include base::firewall
 }
 
 # m5 shard
