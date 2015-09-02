@@ -335,6 +335,7 @@ class role::mariadb::analytics {
     include role::mariadb::grants
     include role::mariadb::monitor
     include passwords::misc::scripts
+    include role::mariadb::ferm
 
     class { 'mariadb::config':
         prompt   => 'ANALYTICS',
