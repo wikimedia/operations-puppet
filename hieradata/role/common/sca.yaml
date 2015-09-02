@@ -1,5 +1,6 @@
 cluster: sca
 admin::groups:
+  - apertium-admin
   - citoid-admin
   - citoid-roots
   - citoid-users
