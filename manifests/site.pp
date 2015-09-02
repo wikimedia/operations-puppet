@@ -743,6 +743,7 @@ node 'db1009.eqiad.wmnet' {
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
     include role::mariadb::analytics
+    include base::firewall
 }
 
 node 'db1069.eqiad.wmnet' {
