@@ -6,6 +6,18 @@
 #
 # Parameters:
 #
+# [*db_host*]
+# MySQL database backend hostname
+#
+# [*db_name*]
+# Database name on db_host
+#
+# [*db_user*]
+# Database backend username
+#
+# [*db_pass]
+# Database password associated to user db_user
+#
 # [*dib_base_path*]
 # Directory holding python-diskimagebuilder material. Will create
 # subdirectories 'cache', 'images' and 'tmp'.
@@ -41,6 +53,10 @@
 # [*openstack_tenant_id*]
 # OpenStack tenant holding the instances. Equivalent of wmflabs 'project name'.
 class nodepool(
+    $db_host,
+    $db_name,
+    $db_user,
+    $db_pass,
     $dib_base_path,
     $jenkins_api_user,
     $jenkins_api_key,

@@ -1,5 +1,5 @@
 # Nodepool database backend
-dburi: 'mysql+pymysql://nodepool:nodepool@localhost/nodepool'
+dburi: 'mysql+pymysql://<%= @db_user -%>:<%= @db_pass -%>@<%= @db_host -%>/<%= @db_name -%>'
 
 # Directory providing additional diskimage-builder elements.
 # http://docs.openstack.org/infra/nodepool/configuration.html#elements-dir
