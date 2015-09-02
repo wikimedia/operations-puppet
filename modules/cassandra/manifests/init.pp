@@ -84,7 +84,7 @@
 #   Default: 32
 #
 # [*storage_port*]
-#   TCP port, for commands and data.
+#   TCP port for cluster communication
 #   Default: 7000
 #
 # [*listen_address*]
