@@ -207,8 +207,8 @@ sub geoip_cookie {
 
 		int snp_len;
 		if (record) {
-			// Set-Cookie: GeoIP=US:San_Francisco:37.7749:-122.4194:v4; path=/
-			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%s:%.4f:%.4f:%s",
+			// Set-Cookie: GeoIP=US:CA:San_Francisco:37.77:-122.41:v4; path=/
+			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%s:%.2f:%.2f:%s",
 				record->country_code ? record->country_code : "",
 				record->region ? record->region : "",
 				record->city ? record->city : "",
