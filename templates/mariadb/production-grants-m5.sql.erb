@@ -24,6 +24,11 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY
 TABLES
     ON `designate`.* TO 'designate'@'208.80.154.12';
 
+-- libnodepool1001 backend database
+
+CREATE USER 'nodepool'@'' IDENTIFIED BY '<%= @nodepool_pass %>';
+GRANT ALL ON `nodepooldb`.* TO 'nodepool'@'10.64.20.18';
+
 -- backups to dbstore1001
 
 GRANT ALL PRIVILEGES
