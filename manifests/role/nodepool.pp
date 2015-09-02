@@ -14,6 +14,10 @@ class role::nodepool {
     $novaconfig = $role::nova::config::novaconfig
 
     class { '::nodepool':
+        db_host                 => 'm5-master.eqiad.wmnet',
+        db_name                 => 'nodepooldb'
+        db_user                 => 'nodepool'
+        db_pass                 => $passwords::nodepool::nodepooldb_pass,
         dib_base_path           => '/srv/dib',
         jenkins_api_user        => 'nodepoolmanager',
         jenkins_api_key         => $passwords::nodepool::jenkins_api_key,
