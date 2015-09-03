@@ -137,6 +137,10 @@ groups:
                  'ALL = (zuul) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /etc/init.d/jenkins',
                  'ALL = NOPASSWD: /etc/init.d/postgresql-8.4',
+                 'ALL = NOPASSWD: /usr/sbin/service nodepool start',
+                 'ALL = NOPASSWD: /usr/sbin/service nodepool stop',
+                 'ALL = NOPASSWD: /usr/sbin/service nodepool status',
+                 'ALL = NOPASSWD: /bin/journalctl -u nodepool',
                  'ALL = (postgres) NOPASSWD: /usr/bin/psql']
   contint-roots:
     gid: 720
