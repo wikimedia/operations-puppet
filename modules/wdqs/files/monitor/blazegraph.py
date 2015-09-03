@@ -13,7 +13,6 @@ class BlazegraphCollector(diamond.collector.Collector):
         chelp.update({
             'url': 'URL of the blazegraph instance',
             'counters': 'List of counters to report',
-            'prefix': 'Metric prefix',
         })
         return chelp
 
@@ -25,7 +24,6 @@ class BlazegraphCollector(diamond.collector.Collector):
         config.update({
             'url':     'http://localhost:9999/bigdata/',
             'counters': ["/Query Engine/queryDoneCount"],
-            'prefix': 'blazegraph',
         })
         return config
 
@@ -34,19 +32,8 @@ class BlazegraphCollector(diamond.collector.Collector):
         if isinstance(self.config['counters'], basestring):
             self.config['counters'] = [self.config['counters']]
 
-    def collect(self):
-        """
-        Overrides the Collector.collect method
-        """
-
-        for counter in self.config['counters']:
-            metric_name = self.config['prefix'] + self.query_to_metric(counter)
-            metric_value = self.get_counter(counter)
-            if metric_value is not None:
-                self.publish(metric_name, metric_value)
-
     def query_to_metric(self, qname):
-        return qname.replace(' ', '_').replace('/', '.')
+        return qname.replace(' ', '_').replace('/', '.').lstrip('.')
 
     def get_counter(self, cnt_name):
         # Not sure why we need depth but some counters don't work without it
@@ -64,3 +51,10 @@ class BlazegraphCollector(diamond.collector.Collector):
             if cnt.attrib['name'] == last_name:
                 return cnt.attrib['value']
         return None
+
+    def collect(self):
+        for counter in self.config['counters']:
+            metric_name = self.query_to_metric(counter)
+            metric_value = self.get_counter(counter)
+            if metric_value is not None:
+                self.publish(metric_name, metric_value)

@@ -7,6 +7,7 @@ class wdqs::monitor::updater(
     $username=$::wdqs::username,
     ) {
     require ::wdqs::updater
+
     diamond::collector { 'WDQSUpdater':
         settings => {
             runner    => "${package_dir}/jolokia.sh",
@@ -15,9 +16,8 @@ class wdqs::monitor::updater(
                 '"batch-progress/MeanRate"',
             ],
             sudo_user => $username,
-            interval  => 300,
         },
-        source   => 'puppet:///modules/wdqs/WDQSUpdaterCollector.py',
+        source   => 'puppet:///modules/wdqs/monitor/wdqs_updater.py',
     }
 
     sudo::user { 'diamond_to_blazegraph':
@@ -26,5 +26,4 @@ class wdqs::monitor::updater(
             "ALL=(${username}) NOPASSWD: ${package_dir}/jolokia.sh"
         ],
     }
-
 }
