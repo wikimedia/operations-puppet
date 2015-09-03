@@ -1,13 +1,15 @@
-class role::phabricator::config {
-    #Both app and admin user are limited to the appropriate
-    #database based on the connecting host.
+# production phabricator instance
+class role::phabricator {
+
+    # Both app and admin user are limited to the appropriate
+    # database based on the connecting host.
     include passwords::mysql::phabricator
-    $mysql_adminuser       = $passwords::mysql::phabricator::admin_user
-    $mysql_adminpass       = $passwords::mysql::phabricator::admin_pass
-    $mysql_appuser         = $passwords::mysql::phabricator::app_user
-    $mysql_apppass         = $passwords::mysql::phabricator::app_pass
-    $mysql_maniphestuser   = $passwords::mysql::phabricator::manifest_user
-    $mysql_maniphestpass   = $passwords::mysql::phabricator::manifest_pass
+    $mysql_admin_user      = $passwords::mysql::phabricator::admin_user
+    $mysql_admin_pass      = $passwords::mysql::phabricator::admin_pass
+    $mysql_app_user        = $passwords::mysql::phabricator::app_user
+    $mysql_app_pass        = $passwords::mysql::phabricator::app_pass
+    $mysql_maniphest_user  = $passwords::mysql::phabricator::manifest_user
+    $mysql_maniphest_pass  = $passwords::mysql::phabricator::manifest_pass
     $bz_user               = $passwords::mysql::phabricator::bz_user
     $bz_pass               = $passwords::mysql::phabricator::bz_pass
     $rt_user               = $passwords::mysql::phabricator::rt_user
@@ -17,12 +19,8 @@ class role::phabricator::config {
     $phabtools_cert        = $passwords::phabricator::phabtools_cert
     $phabtools_user        = $passwords::phabricator::phabtools_user
     $gerritbot_token       = $passwords::phabricator::gerritbot_token
-}
 
-# production phabricator instance
-class role::phabricator::main {
-
-    system::role { 'role::phabricator::main':
+    system::role { 'role::phabricator':
         description => 'Phabricator (Main)'
     }
 
@@ -31,7 +29,6 @@ class role::phabricator::main {
     }
 
     include passwords::phabricator
-    include role::phabricator::config
     include phabricator::monitoring
     include phabricator::mpm
     include lvs::realserver
@@ -47,8 +44,8 @@ class role::phabricator::main {
         serveralias      => $altdom,
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
-        mysql_admin_user => $role::phabricator::config::mysql_adminuser,
-        mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
+        mysql_admin_user => $mysql_admin_user,
+        mysql_admin_pass => $mysql_admin_pass,
         sprint_tag       => 'release/2015-07-01',
         security_tag     => $current_tag,
         libraries        => ['/srv/phab/libext/Sprint/src',
@@ -59,22 +56,22 @@ class role::phabricator::main {
                               'PhabricatorMediaWikiAuthProvider.php',
                               'PhutilMediaWikiAuthAdapter.php'],
         settings         => {
-            'darkconsole.enabled'                    => false,
-            'phabricator.base-uri'                   => "https://${domain}",
-            'security.alternate-file-domain'         => "https://${altdom}",
-            'mysql.user'                             => $role::phabricator::config::mysql_appuser,
-            'mysql.pass'                             => $role::phabricator::config::mysql_apppass,
-            'mysql.host'                             => $mysql_host,
-            'phpmailer.smtp-host'                    => inline_template('<%= @mail_smarthost.join(";") %>'),
-            'metamta.default-address'                => "no-reply@${domain}",
-            'metamta.domain'                         => $domain,
-            'metamta.maniphest.public-create-email'  => "task@${domain}",
-            'metamta.reply-handler-domain'           => $domain,
-            'repository.default-local-path'          => '/srv/phab/repos',
-            'phd.taskmasters'                        => 10,
-            'events.listeners'                       => ['SecurityPolicyEventListener'],
-            'diffusion.allow-http-auth'              => true,
-            'diffusion.ssh-host'                     => 'git-ssh.wikimedia.org',
+            'darkconsole.enabled'                   => false,
+            'phabricator.base-uri'                  => "https://${domain}",
+            'security.alternate-file-domain'        => "https://${altdom}",
+            'mysql.user'                            => $mysql_app_user,
+            'mysql.pass'                            => $mysql_app_pass,
+            'mysql.host'                            => $mysql_host,
+            'phpmailer.smtp-host'                   => inline_template('<%= @mail_smarthost.join(";") %>'),
+            'metamta.default-address'               => "no-reply@${domain}",
+            'metamta.domain'                        => $domain,
+            'metamta.maniphest.public-create-email' => "task@${domain}",
+            'metamta.reply-handler-domain'          => $domain,
+            'repository.default-local-path'         => '/srv/phab/repos',
+            'phd.taskmasters'                       => 10,
+            'events.listeners'                      => ['SecurityPolicyEventListener'],
+            'diffusion.allow-http-auth'             => true,
+            'diffusion.ssh-host'                    => 'git-ssh.wikimedia.org',
         },
     }
 
@@ -88,17 +85,17 @@ class role::phabricator::main {
     class { '::phabricator::tools':
         dbhost          => $mysql_host,
         dbslave         => $mysql_slave,
-        manifest_user   => $role::phabricator::config::mysql_maniphestuser,
-        manifest_pass   => $role::phabricator::config::mysql_maniphestpass,
-        app_user        => $role::phabricator::config::mysql_appuser,
-        app_pass        => $role::phabricator::config::mysql_apppass,
-        bz_user         => $role::phabricator::config::bz_user,
-        bz_pass         => $role::phabricator::config::bz_pass,
-        rt_user         => $role::phabricator::config::rt_user,
-        rt_pass         => $role::phabricator::config::rt_pass,
-        phabtools_cert  => $role::phabricator::config::phabtools_cert,
-        phabtools_user  => $role::phabricator::config::phabtools_user,
-        gerritbot_token => $role::phabricator::config::gerritbot_token,
+        manifest_user   => $role::phabricator::mysql_maniphest_user,
+        manifest_pass   => $role::phabricator::mysql_maniphest_pass,
+        app_user        => $role::phabricator::mysql_app_user,
+        app_pass        => $role::phabricator::mysql_app_pass,
+        bz_user         => $role::phabricator::bz_user,
+        bz_pass         => $role::phabricator::bz_pass,
+        rt_user         => $role::phabricator::rt_user,
+        rt_pass         => $role::phabricator::rt_pass,
+        phabtools_cert  => $role::phabricator::phabtools_cert,
+        phabtools_user  => $role::phabricator::phabtools_user,
+        gerritbot_token => $role::phabricator::gerritbot_token,
         dump            => true,
     }
 
@@ -165,8 +162,8 @@ class role::phabricator::main {
     # redirect bugzilla URL patterns to phabricator
     # handles translation of bug numbers to maniphest task ids
     phabricator::redirector { "redirector.${domain}":
-        mysql_user  => $role::phabricator::config::mysql_maniphestuser,
-        mysql_pass  => $role::phabricator::config::mysql_maniphestpass,
+        mysql_user  => $mysql_maniphest_user,
+        mysql_pass  => $mysql_maniphest_pass,
         mysql_host  => $mysql_host,
         rootdir     => '/srv/phab',
         field_index => '4rRUkCdImLQU',
