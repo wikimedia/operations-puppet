@@ -1,1 +1,1 @@
-ssh::server::listen_port: 222
+ssh::server::listen_port: 2222
