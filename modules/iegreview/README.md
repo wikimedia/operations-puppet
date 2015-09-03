@@ -8,4 +8,4 @@ the Wikimedia Foundation.
 Links
 -----
 * https://meta.wikimedia.org/wiki/Grants:IEG
-* https://git.wikimedia.org/summary/wikimedia%2Fiegreview
+* https://phabricator.wikimedia.org/diffusion/WIEG/
