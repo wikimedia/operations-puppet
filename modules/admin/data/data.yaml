@@ -377,6 +377,12 @@ groups:
     gid: 760
     description: users who can login on fluorine and read mediawiki logs
     members: [tjones]
+  apertium-admins:
+    description: Group of apertium admins
+    gid: 761
+    members: []
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service apertium-apy *',
+                 'ALL = (apertium) NOPASSWD: ALL']
 users:
   rush:
     ensure: present
