@@ -1127,7 +1127,7 @@ node 'iridium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role phabricator::main
+    role phabricator
     include standard
     include ganglia
 }
