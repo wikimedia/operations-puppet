@@ -112,14 +112,19 @@ node /analytics10(04|10).eqiad.wmnet/ {
     include standard
 }
 
-# analytics1011, analytics1015-analytics1017, analytics1019,
+# This node is being repurposed - otto 2015-09
+node 'analytics1015.eqiad.wmnet' {
+    include standard
+}
+
+# analytics1011, analytics1016-analytics1017, analytics1019,
 # analytics1028-analytics1056 are Hadoop worker nodes.
 #
 # NOTE:  If you add, remove or move Hadoop nodes, you should edit
 # templates/hadoop/net-topology.py.erb to make sure the
 # hostname -> /datacenter/rack/row id is correct.  This is
 # used for Hadoop network topology awareness.
-node /analytics10(11|1[5-7]|19|2[89]|3[0-9]|4[0-9]|5[012456]).eqiad.wmnet/ {
+node /analytics10(11|1[67]|19|2[89]|3[0-9]|4[0-9]|5[012456]).eqiad.wmnet/ {
 
     role analytics::hadoop::worker, analytics::impala::worker
 
