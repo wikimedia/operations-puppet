@@ -30,6 +30,10 @@ GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
 GRANT USAGE
     ON *.* TO 'phstats'@'10.64.32.150'
     IDENTIFIED BY PASSWORD '*FB8AA9D0E19A01A13E7FB1037FC964F7887D22F5';
+GRANT SELECT ON `phabricator_maniphest`.* TO 'phstats'@'10.64.32.150';
+GRANT SELECT ON `phabricator_user`.* TO 'phstats'@'10.64.32.150';
+GRANT SELECT ON `phabricator_project`.* TO 'phstats'@'10.64.32.150';
+
 
 GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phstats'@'10.64.32.150';
