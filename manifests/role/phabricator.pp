@@ -1,6 +1,8 @@
-class role::phabricator::config {
-    #Both app and admin user are limited to the appropriate
-    #database based on the connecting host.
+# production phabricator instance
+class role::phabricator {
+
+    # Both app and admin user are limited to the appropriate
+    # database based on the connecting host.
     include passwords::mysql::phabricator
     $mysql_adminuser       = $passwords::mysql::phabricator::admin_user
     $mysql_adminpass       = $passwords::mysql::phabricator::admin_pass
@@ -16,12 +18,8 @@ class role::phabricator::config {
     include passwords::phabricator
     $phabtools_cert        = $passwords::phabricator::phabtools_cert
     $phabtools_user        = $passwords::phabricator::phabtools_user
-}
 
-# production phabricator instance
-class role::phabricator::main {
-
-    system::role { 'role::phabricator::main':
+    system::role { 'role::phabricator':
         description => 'Phabricator (Main)'
     }
 
@@ -43,8 +41,8 @@ class role::phabricator::main {
     class { '::phabricator':
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
-        mysql_admin_user => $role::phabricator::config::mysql_adminuser,
-        mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
+        mysql_admin_user => $mysql_adminuser,
+        mysql_admin_pass => $mysql_adminpass,
         auth_type        => 'dual',
         sprint_tag       => 'release/2015-07-01',
         security_tag     => $current_tag,
@@ -59,8 +57,8 @@ class role::phabricator::main {
             'darkconsole.enabled'                    => false,
             'phabricator.base-uri'                   => "https://${domain}",
             'security.alternate-file-domain'         => "https://${altdom}",
-            'mysql.user'                             => $role::phabricator::config::mysql_appuser,
-            'mysql.pass'                             => $role::phabricator::config::mysql_apppass,
+            'mysql.user'                             => $mysql_appuser,
+            'mysql.pass'                             => $mysql_apppass,
             'mysql.host'                             => $mysql_host,
             'phpmailer.smtp-host'                    => inline_template('<%= @mail_smarthost.join(";") %>'),
             'metamta.default-address'                => "no-reply@${domain}",
@@ -76,16 +74,16 @@ class role::phabricator::main {
 
     class { '::phabricator::tools':
         dbhost         => $mysql_host,
-        manifest_user  => $role::phabricator::config::mysql_maniphestuser,
-        manifest_pass  => $role::phabricator::config::mysql_maniphestpass,
-        app_user       => $role::phabricator::config::mysql_appuser,
-        app_pass       => $role::phabricator::config::mysql_apppass,
-        bz_user        => $role::phabricator::config::bz_user,
-        bz_pass        => $role::phabricator::config::bz_pass,
-        rt_user        => $role::phabricator::config::rt_user,
-        rt_pass        => $role::phabricator::config::rt_pass,
-        phabtools_cert => $role::phabricator::config::phabtools_cert,
-        phabtools_user => $role::phabricator::config::phabtools_user,
+        manifest_user  => $mysql_maniphestuser,
+        manifest_pass  => $mysql_maniphestpass,
+        app_user       => $mysql_appuser,
+        app_pass       => $mysql_apppass,
+        bz_user        => $bz_user,
+        bz_pass        => $bz_pass,
+        rt_user        => $rt_user,
+        rt_pass        => $rt_pass,
+        phabtools_cert => $phabtools_cert,
+        phabtools_user => $phabtools_user,
         dump           => true,
     }
 
@@ -148,8 +146,8 @@ class role::phabricator::main {
     # redirect bugzilla URL patterns to phabricator
     # handles translation of bug numbers to maniphest task ids
     phabricator::redirector { "redirector.${domain}":
-        mysql_user  => $role::phabricator::config::mysql_maniphestuser,
-        mysql_pass  => $role::phabricator::config::mysql_maniphestpass,
+        mysql_user  => $mysql_maniphestuser,
+        mysql_pass  => $mysql_maniphestpass,
         mysql_host  => $mysql_host,
         rootdir     => '/srv/phab',
         field_index => '4rRUkCdImLQU',
