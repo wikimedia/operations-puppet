@@ -4,6 +4,6 @@ server {
     listen 80;
 
     location ~ /([a-zA-Z0-9_-]+)/(.*) {
-        proxy_pass http://$1.default.svc.kube/$2;
+        proxy_pass http://$1.default.svc.kube:8080/$2;
     }
 }
