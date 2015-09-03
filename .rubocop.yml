@@ -4,8 +4,24 @@ inherit_from: .rubocop_todo.yml
 # https://www.mediawiki.org/wiki/Manual:Coding_conventions/Ruby#Base_configuration
 
 AllCops:
-  # Only enforce rules that have an entry in the style guide
   StyleGuideCopsOnly: true
+  Exclude:
+    # git submodules
+    - 'modules/cdh/**/*'
+    - 'modules/jmxtrans/**/*'
+    - 'modules/kafka/**/*'
+    - 'modules/kafkatee/**/*'
+    - 'modules/mariadb/**/*'
+    - 'modules/nginx/**/*'
+    - 'modules/varnishkafka/**/*'
+    - 'modules/wikimetrics/**/*'
+    - 'modules/zookeeper/**/*'
+    # third party modules
+    - 'modules/mysql/**/*'
+    - 'modules/rsync/**/*'
+    - 'modules/stdlib/**/*'
+    # bundler installation files
+    - 'vendor/**/*'
 
 # Uncomment when lines are 100 characters or less
 # Metrics/LineLength:
@@ -20,10 +36,8 @@ Style/Alias:
 Style/SignalException:
   Enabled: false
 
-# Pick one and stay consistent
 Style/StringLiterals:
   EnforcedStyle: single_quotes
-#  EnforcedStyle: double_quotes
 
 Style/TrivialAccessors:
   ExactNameMatch: true
