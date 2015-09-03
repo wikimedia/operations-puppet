@@ -144,6 +144,7 @@ node 'analytics1026.eqiad.wmnet' {
     include role::logging::udp2log::misc
     include base::firewall
     include base::debdeploy
+    salt::grain { 'debdeploy-analytics': value => 'true' }
 }
 
 # analytics1027 hosts some frontend web interfaces to Hadoop
@@ -1766,6 +1767,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include redis::ganglia
     include base::debdeploy
     include base::firewall
+    salt::grain { 'debdeploy-memcached': value => 'true' }
 }
 
 # codfw deployment host (pending set up)
@@ -1833,11 +1835,13 @@ node /^ms-be101[678]\.eqiad\.wmnet$/ {
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
     role swift::proxy
     include base::debdeploy
+    salt::grain { 'debdeploy-swift-proxy': value => 'true' }
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
     role swift::storage
     include base::debdeploy
+    salt::grain { 'debdeploy-swift-storage': value => 'true' }
 }
 
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
@@ -2075,6 +2079,7 @@ node 'osmium.eqiad.wmnet' {
     role ve
     include ::standard
     include base::debdeploy
+    salt::grain { 'debdeploy-misc-servers': value => 'true' }
 }
 
 
@@ -2166,6 +2171,7 @@ node 'radium.wikimedia.org' {
     include standard
     include base::debdeploy
     include role::tor
+    salt::grain { 'debdeploy-misc-servers': value => 'true' }
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
