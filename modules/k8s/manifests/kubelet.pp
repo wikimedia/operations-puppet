@@ -1,5 +1,6 @@
 class k8s::kubelet(
     $master_host,
+    $cluster_dns_ip = '192.168.0.100',
 ) {
     file { '/usr/local/bin/kubelet':
         source => '/data/scratch/k8s/kubernetes/server/bin/kubelet',
