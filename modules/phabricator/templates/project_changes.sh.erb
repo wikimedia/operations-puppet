@@ -56,11 +56,6 @@ END
 )
 
 
-creations_and_name_changes=$(echo $result_creations_and_name_changes)
-color_changes=$(echo $result_color_changes)
-policy_locking_archiving_changes=$(echo $result_policy_locking_archiving_changes)
-
-
 # the actual email
 cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" ${rcpt_address}
 
@@ -70,15 +65,15 @@ this is your automatic weekly Phabricator project changes mail.
 
 
 PROJECT CREATIONS AND PROJECT NAME CHANGES:
-${creations_and_name_changes}
+${result_creations_and_name_changes}
 
 
 PROJECT COLOR CHANGES:
-${color_changes}
+${result_color_changes}
 
 
 PROJECT POLICY/LOCKING/ARCHIVING CHANGES:
-${policy_locking_archiving_changes}
+${result_policy_locking_archiving_changes}
 
 
 
