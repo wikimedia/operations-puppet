@@ -8,6 +8,7 @@ admin::groups:
   - mathoid-admin
   - mathoid-roots
   - zotero-admin
+  - apertium-admins
 
 lvs::realserver::realserver_ips:
   - '10.2.2.15' # graphoid.svc.eqiad.wmnet

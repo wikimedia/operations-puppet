@@ -382,7 +382,7 @@ groups:
   apertium-admins:
     description: Group of apertium admins
     gid: 761
-    members: []
+    members: [kartik]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service apertium-apy *',
                  'ALL = (apertium) NOPASSWD: ALL']
   perf-admins:
