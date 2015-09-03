@@ -290,7 +290,6 @@ node 'bromine.eqiad.wmnet' {
     include role::bugzilla_static
     include role::annualreport
     include role::transparency
-    include role::policysite
 }
 
 # http://releases.wikimedia.org
