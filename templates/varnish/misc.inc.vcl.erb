@@ -36,7 +36,7 @@ sub vcl_recv {
         set req.backend = californium;
     } elsif (req.http.Host == "phabricator.wikimedia.org" || req.http.Host == "phab.wmfusercontent.org" || req.http.Host == "bugzilla.wikimedia.org" || req.http.Host == "bugs.wikimedia.org") {
         set req.backend = iridium;
-    } elsif (req.http.Host == "static-bugzilla.wikimedia.org" || req.http.Host == "annual.wikimedia.org" || req.http.Host == "transparency.wikimedia.org" || req.http.Host == "policy.wikimedia.org") {
+    } elsif (req.http.Host == "static-bugzilla.wikimedia.org" || req.http.Host == "annual.wikimedia.org" || req.http.Host == "transparency.wikimedia.org") {
         set req.backend = bromine;
         return (pass);
     } elsif (req.http.Host == "servermon.wikimedia.org") {
