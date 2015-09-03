@@ -1,4 +1,4 @@
-class k9s::webproxy(
+class k8s::webproxy(
     $dns_ip='192.168.0.100',
 )
 {
