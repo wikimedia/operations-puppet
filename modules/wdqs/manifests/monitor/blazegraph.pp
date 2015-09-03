@@ -21,9 +21,8 @@ class wdqs::monitor::blazegraph {
                 '"/JVM/Memory/Runtime Max Memory"',
                 '"/JVM/Memory/Runtime Total Memory"',
             ],
-            interval => 300,
         },
-        source   => 'puppet:///modules/wdqs/BlazegraphCollector.py',
+        source   => 'puppet:///modules/wdqs/monitor/blazegraph.py',
     }
 
     # TODO: add monitoring of the http and https endpoints, and of the service
