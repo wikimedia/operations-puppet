@@ -73,7 +73,9 @@ def handle_navigation_timing(meta):
     for metric, marker in (
         ('dnsLookup', 'dnsLookup'),
         ('loading', 'loadEventStart'),
-        ('mediaWikiLoadComplete', 'mediaWikiLoadComplete'),
+        ('mediaWikiLoadStart', 'mediaWikiLoadStart'),
+        ('mediaWikiLoadEnd', 'mediaWikiLoadEnd'),
+        ('mediaWikiLoadComplete','mediaWikiLoadComplete'),
         ('redirecting', 'redirecting'),
         ('sending', 'fetchStart'),
         ('totalPageLoadTime', 'loadEventEnd'),
