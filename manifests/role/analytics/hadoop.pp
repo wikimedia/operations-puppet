@@ -619,84 +619,10 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
         }
     }
 
-    # Open up port for debugging
-    ferm::service{ 'jmxtrans-jmx':
+    # T111433
+    ferm::service{ 'hadoop-access':
         proto  => 'tcp',
-        port   => '2101',
-        srange => '$INTERNAL',
-    }
-
-    ferm::service{ 'hadoop-hdfs-journalnode-jmx':
-        proto  => 'tcp',
-        port   => '9981',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-yarn-nodemanager-jmx':
-        proto  => 'tcp',
-        port   => '9984',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-yarn-nodemanager':
-        proto  => 'tcp',
-        port   => '8041',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-yarn-nodemanager-localizer':
-        proto  => 'tcp',
-        port   => '8040',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-yarn-nodemanager-http-ui':
-        proto  => 'tcp',
-        port   => '8042',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-yarn-mapreduce-application-master':
-        proto  => 'tcp',
-        # $yarn_app_mapreduce_am_job_client_port_range could look like '55000-55199,55500-55599'.
-        # Translate '-' -> ':' and ',' => ' ' for ferm, e.g. (55000:55199 55500:55599)
-        port   => inline_template('(<%= @yarn_app_mapreduce_am_job_client_port_range.tr("-,", ": ") %>)'),
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-hdfs-ha-journalnode-http':
-        proto  => 'tcp',
-        port   => '8480',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-hdfs-ha-journalnode':
-        proto  => 'tcp',
-        port   => '8485',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-mapreduce-shuffle':
-        proto  => 'tcp',
-        port   => '13562',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-hdfs-datanode-http-ui':
-        proto  => 'tcp',
-        port   => '50075',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-hdfs-datanode-ipc':
-        proto  => 'tcp',
-        port   => '50020',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    ferm::service{ 'hadoop-hdfs-datanode-dfs-transfer':
-        proto  => 'tcp',
-        port   => '50010',
+        port   => '1024:65535',
         srange => '$ANALYTICS_NETWORKS',
     }
 
