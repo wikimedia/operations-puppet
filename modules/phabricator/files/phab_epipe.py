@@ -33,18 +33,20 @@ Looks for configuration file: /etc/phab_epipe.conf
     <project_name> = <comma_separated_list_of_allowed_email_domains>
 
     [phab_bot]
+    # Notice attachments to direct tasks will be permissioned as the
+    # phab_bot user
     root_dir = <path_on_disk_to_phabricator
     username    = <phab_user>
     certificate = <phab_user_cert>
     host        = <phab_host>
 
 """
+import base64
 import os
 import re
-import sys
 import subprocess
+import sys
 import syslog
-import base64
 from email.parser import Parser
 from email.utils import parseaddr
 import ConfigParser
@@ -91,7 +93,8 @@ def main():
     parser = ConfigParser.SafeConfigParser()
     parser_mode = 'phab_bot'
     parser.read('/etc/phab_epipe.conf')
-    phab = Phabricator(username=parser.get(parser_mode, 'username'),
+    username = parser.get(parser_mode, 'username')
+    phab = Phabricator(username=username,
                        certificate=parser.get(parser_mode, 'certificate'),
                        host=parser.get(parser_mode, 'host'))
 
@@ -149,12 +152,21 @@ def main():
         :returns: json
         """
         block = "**`%s`** replied via email on `%s`\n\n" % (name, date)
-        block += "__Subject__: %s\n\n" % (subject)
-        block += '\n'.join(['> ' + s for s in body.splitlines()])
+        block += "`%s`\n\n" % (subject)
+
+        sane_body = []
+        for l in body.splitlines():
+            if l.strip() == '--':
+                sane_body.append('> ~~')
+            else:
+                sane_body.append('> %s' % (l.strip(),))
+
+        block += '\n'.join(sane_body)
+
         if uploads:
-            block += '\n\n\n--------------------------\n'
+            block += '\n\n--------------------------\n'
             for ref in uploads:
-                block += "\n    {%s}" % (ref,)
+                block += "\n{%s}" % (ref,)
         return external_user_comment(task, block)
 
     def mail2task(sender, src_addy, date, subject, body, project, security):
@@ -190,11 +202,18 @@ def main():
             name = addy.split('@')[0]
         return name, addy
 
-    def upload_file(name, data):
-        upload = phab.file.upload(name=name, data_base64=data)
+    def upload_file(name, data, policy):
+        """ upload a base64 image hash
+        :param name: str
+        :param data: base64 encoded str
+        :param policy: valid policy str
+        """
+        upload = phab.file.upload(name=name,
+                                  data_base64=data,
+                                  viewPolicy=policy)
         return phab.file.info(phid=upload.response).response
 
-    def extract_payload_and_upload(payload):
+    def extract_payload_and_upload(payload, policy='public'):
         """ extract content and upload from MIME object
         :param payload: MIME payload object
         :return: str of created phab oject
@@ -214,7 +233,7 @@ def main():
 
         if name:
             data = payload.get_payload()
-            upload = upload_file(name, data)
+            upload = upload_file(name, data, policy=policy)
             return upload['objectName']
 
     def phab_handoff(email):
@@ -225,6 +244,9 @@ def main():
 
     def extract_body_and_attached(msg):
         """ get body and payload objects
+
+        NOTE: there has to be a better way
+
         :param msg: email msg type
         :return: str and list
         """
@@ -309,9 +331,17 @@ def main():
     if dtask:
         log('found direct task: %s' % (dtask,))
         body, attached = extract_body_and_attached(msg)
+        userinfo = phab.user.query(usernames=[username])[0]
+
+        if 'phid' in userinfo and userinfo['phid'].startswith('PHID'):
+            policy = userinfo['phid']
+        else:
+            raise EmailParsingError('unknown user')
+
         uploads = []
         for payload in attached:
-            uploads.append(extract_payload_and_upload(payload))
+            uploads.append(extract_payload_and_upload(payload,
+                                                      policy=policy))
 
         # extra check for address validity for this process
         if src_address.count('@') > 1:
