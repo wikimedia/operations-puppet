@@ -22,10 +22,11 @@ class role::cache::text {
     require geoip
     require geoip::dev # for VCL compilation using libGeoIP
 
-    class { 'varnish::zero_update':
-        site         => $::role::cache::base::zero_site,
-        auth_content => secret('misc/zerofetcher.auth'),
-    }
+# Commented out - not in use on text yet, and causing rate issues: T111045
+#    class { 'varnish::zero_update':
+#        site         => $::role::cache::base::zero_site,
+#        auth_content => secret('misc/zerofetcher.auth'),
+#    }
 
     $varnish_be_directors = {
         'one' => {
