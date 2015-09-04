@@ -510,6 +510,12 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         require => Class['cdh::hadoop::master'],
     }
 
+    # T111433
+    ferm::service{ 'hadoop-access':
+        proto  => 'tcp',
+        port   => '1024:65535',
+        srange => '$ANALYTICS_NETWORKS',
+    }
 
     # Include icinga alerts if production realm.
     if $::realm == 'production' {
@@ -682,6 +688,13 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
             require      => Class['cdh::hadoop::namenode::standby'],
             critical     => 'true',
         }
+    }
+
+    # T111433
+    ferm::service{ 'hadoop-access':
+        proto  => 'tcp',
+        port   => '1024:65535',
+        srange => '$ANALYTICS_NETWORKS',
     }
 
     # Open up port for debugging
