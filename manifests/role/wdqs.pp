@@ -33,4 +33,7 @@ class role::wdqs  {
 
     # Monitor Updater
     include ::wdqs::monitor::updater
+
+    # Service monitoring
+    include ::wdqs::monitor::services
 }
