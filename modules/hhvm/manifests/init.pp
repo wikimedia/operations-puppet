@@ -70,7 +70,7 @@ class hhvm(
         ensure => present,
     }
 
-    package { [ 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]:
+    package { [ 'hhvm-luasandbox', 'hhvm-tidy', 'hhvm-wikidiff2' ]:
         ensure => present,
     }
 
@@ -102,7 +102,7 @@ class hhvm(
         # HHVM specific
         hhvm         => {
             dynamic_extension_path   => '/usr/lib/x86_64-linux-gnu/hhvm/extensions/current',
-            dynamic_extensions       => [ 'fss.so', 'luasandbox.so', 'tidy.so', 'wikidiff2.so' ],
+            dynamic_extensions       => [ 'luasandbox.so', 'tidy.so', 'wikidiff2.so' ],
             enable_obj_destruct_call => true,
             enable_zend_compat       => true,
             pid_file                 => '',  # PID file managed by start-stop-daemon(8)
@@ -217,7 +217,7 @@ class hhvm(
     service { 'hhvm':
         ensure    => 'running',
         provider  => 'upstart',
-        subscribe => Package['hhvm', 'hhvm-fss', 'hhvm-luasandbox', 'hhvm-wikidiff2'],
+        subscribe => Package['hhvm', 'hhvm-luasandbox', 'hhvm-wikidiff2'],
     }
 
     file { '/etc/hhvm':
