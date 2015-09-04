@@ -115,6 +115,7 @@ node /analytics10(04|10).eqiad.wmnet/ {
 # This node is being repurposed - otto 2015-09
 node 'analytics1015.eqiad.wmnet' {
     include standard
+    include base::firewall
 }
 
 # analytics1011, analytics1016-analytics1017, analytics1019,
