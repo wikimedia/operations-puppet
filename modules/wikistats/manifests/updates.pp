@@ -55,4 +55,11 @@ class wikistats::updates {
                 'w3@23', # W3C
                 ]: }
 
+    cron { 'import-miraheze-wikis':
+        ensure  => 'present',
+        command => '/usr/bin/php /usr/bin/import_miraheze.php | mysql wikistats',
+        user    => 'wikistatsuser',
+        hour    => '20',
+        minute  => '20',
+    }
 }
