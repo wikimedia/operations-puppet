@@ -5,6 +5,9 @@ supported = trusty, jessie, precise
 [serverlists]
 # A list of servers, each defined by one or more Salt grains. If multiple grains
 # are specified, they're processed sequentially
-testsystem = debdeploy:testsystem, debdeploy:testsystem2
-
-
+analytics = debdeploy-analytics:true
+misc-servers = debdeploy-misc-servers:true
+swift = debdeploy-swift-proxy:true, debdeploy-swift-storage:true
+swift-storage = debdeploy-swift-storage:true
+swift-proxy = debdeploy-swift-proxy:true
+memcached = debdeploy-memcached:true
