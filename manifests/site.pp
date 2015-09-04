@@ -2076,8 +2076,10 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
 
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
-    role ve
-    include ::standard
+    role snapshot::common
+    include snapshot
+    include snapshot::dumps
+
     include base::debdeploy
     salt::grain { 'debdeploy-misc-servers': value => 'true' }
 }
