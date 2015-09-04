@@ -52,6 +52,10 @@
 #
 # [*openstack_tenant_id*]
 # OpenStack tenant holding the instances. Equivalent of wmflabs 'project name'.
+#
+# [*statsd_host*]
+# IP/hostname of a statsd daemon to send metrics to. If unset (the default),
+# nothing is sent.
 class nodepool(
     $db_host,
     $db_name,
@@ -67,6 +71,7 @@ class nodepool(
     $openstack_username,
     $openstack_password,
     $openstack_tenant_id,
+    $statsd_host = '',
 ) {
 
     package { 'nodepool':
@@ -112,6 +117,14 @@ class nodepool(
         mode   => '0555',
     }
 
+    file { '/etc/default/nodepool':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('nodepool/nodepool.default.erb'),
+    }
+
     base::service_unit { 'nodepool':
         ensure         => present,
         refresh        => true,
@@ -120,6 +133,7 @@ class nodepool(
         require        => [
             Package['nodepool'],
             File['/usr/bin/nodepool-graceful-stop'],
+            File['/etc/default/nodepool'],
         ],
     }
 

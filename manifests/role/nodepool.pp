@@ -28,6 +28,7 @@ class role::nodepool {
         openstack_username      => 'nodepoolmanager',
         openstack_password      => $passwords::nodepool::manager_pass,
         openstack_tenant_id     => 'contintcloud',
+        statsd_host             => 'statsd.eqiad.wmnet',
     }
 
 }
