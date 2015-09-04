@@ -99,7 +99,9 @@ funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
 rewrite	pa.us.wikimedia.org	//pa-us.wikimedia.org
 rewrite	noboard.chapters.wikimedia.org	//noboard-chapters.wikimedia.org
 
-rewrite chapcom.wikimedia.org https://affcom.wikimedia.org
+rewrite	chapcom.wikimedia.org	https://affcom.wikimedia.org
+
+rewrite	be-x-old.wikipedia.org	https://be-tarask.wikipedia.org
 
 rewrite	zh-cfr.wikipedia.org	//zh-min-nan.wikipedia.org
 rewrite	minnan.wikipedia.org	//zh-min-nan.wikipedia.org
