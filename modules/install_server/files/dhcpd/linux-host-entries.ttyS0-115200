@@ -19,7 +19,7 @@ host analytics1010 {
 	fixed-address analytics1010.eqiad.wmnet;
 }
 
-host bromine.eqaid.wmnet {
+host bromine.eqiad.wmnet {
 	hardware ethernet aa:00:00:f1:36:3a;
 	fixed-address bromine.eqiad.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
@@ -33,7 +33,7 @@ host fermium.eqiad.wmnet {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host krypton.eqaid.wmnet {
+host krypton.eqiad.wmnet {
 	hardware ethernet aa:00:00:7e:e0:22;
 	fixed-address krypton.eqiad.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
@@ -53,6 +53,13 @@ host labsdb1002 {
 host labsdb1003 {
 	hardware ethernet 88:43:E1:C2:54:98;
 	fixed-address labsdb1003.eqiad.wmnet;
+}
+
+host mendelevium.eqiad.wmnet {
+	hardware ethernet ; #TODO: Add this
+	fixed-address mendelevium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host etherpad1001 {

@@ -1770,6 +1770,16 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     salt::grain { 'debdeploy-memcached': value => 'true' }
 }
 
+# OTRS evaluation upgrade
+node 'mendelevium.eqiad.wmnet' {
+    include base::firewall
+    role otrs
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+}
+
 # codfw deployment host (pending set up)
 node 'mira.codfw.wmnet' {
 
