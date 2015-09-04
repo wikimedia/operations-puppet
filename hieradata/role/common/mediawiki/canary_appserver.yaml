@@ -6,6 +6,7 @@ admin::groups:
   - deployment
 hhvm::extra::fcgi:
   hhvm:
+    dynamic_extensions: ['luasandbox.so', 'tidy.so', 'wikidiff2.so']
     mysql:
       connect_timeout: 3000
 hhvm::extra::cli:
