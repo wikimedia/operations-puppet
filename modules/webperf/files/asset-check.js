@@ -182,19 +182,7 @@ function checkAssets( url ) {
 		// to finish as well.
 		page.evaluate( function () {
 			/*global mw */
-			var loadingPromises = mw.loader.getModuleNames()
-				.filter( function ( name ) {
-				  return mw.loader.getState( name ) === 'loading';
-				} )
-				.map( function ( name ) {
-					return mw.loader.using( name ).then( null, function () {
-						// In order to use the jQuery.when utility and it to not
-						// call back on the first error when other modules are
-						// still pending, cast any error to success.
-						return $.Deferred().resolve();
-					} );
-				} );
-			$.when.apply( $, loadingPromises ).then( function () {
+			mw.hook( 'resourceloader.loadEnd' ).add( function () {
 				window.callPhantom( 'mw-modules-ready' );
 			} );
 		} );
