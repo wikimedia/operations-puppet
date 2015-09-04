@@ -978,14 +978,6 @@ node /^es101[479]\.eqiad\.wmnet/ {
 }
 
 
-# Etcd distributed kv store
-node /^etcd100[1-3]\.eqiad\.wmnet$/ {
-    include standard
-    base::service_unit{ 'etcd':
-        ensure  => absent,
-    }
-}
-
 # Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
     include base::firewall
