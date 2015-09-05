@@ -33,6 +33,10 @@ class wikistats (
         ensure => 'directory',
     }
 
+    file { '/root/wsbackup':
+        ensure => 'directory',
+    }
+
     # FIXME rename repo, it was a deb in the past
     # but not anymore and also not operations
     git::clone { 'operations/debs/wikistats':
