@@ -83,6 +83,8 @@ class toollabs::genpp::python_exec_precise {
         # python3-pyexiv2 is not available
         'python-pygments',      # 1.4
         'python3-pygments',     # 1.4
+        'python-pyicu',         # 1.3
+        # python3-pyicu is not available
         'python-pyinotify',     # 0.9.2
         # python3-pyinotify is not available
         'python-requests',      # 0.8.2
