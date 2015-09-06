@@ -75,6 +75,8 @@ class toollabs::genpp::python_exec_trusty {
         'python3-nose',         # 1.3.1
         'python-opencv',        # 2.4.8
         # python3-opencv is not available
+        'python-pil',           # 2.3.0
+        'python3-pil',          # 2.3.0
         'python-problem-report', # 2.14.1
         'python3-problem-report', # 2.14.1
         'python-pycountry',     # 0.14.1

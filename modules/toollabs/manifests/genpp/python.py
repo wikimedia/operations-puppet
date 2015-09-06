@@ -41,6 +41,7 @@ environ_packages = {
         'newt',
         'nose',
         'opencv',
+        'pil',                  # T108210
         'problem-report',
         'pycountry',            # T86015
         'pydot',                # T86015
