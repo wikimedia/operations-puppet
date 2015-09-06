@@ -38,8 +38,6 @@ class mediawiki::web::sites {
     }
 
     apache::site { 'redirects':
-        # this must be generated with the redirects.dat file still in apache-config,
-        # then committed to puppet. This will change soon.
         source   => 'puppet:///modules/mediawiki/apache/sites/redirects.conf',
         priority => 2,
     }
