@@ -83,6 +83,8 @@ class toollabs::genpp::python_exec_trusty {
         # python3-pyexiv2 is not available
         'python-pygments',      # 1.6
         'python3-pygments',     # 1.6
+        'python-pyicu',         # 1.5
+        'python3-pyicu',        # 1.5
         'python-pyinotify',     # 0.9.4
         'python3-pyinotify',    # 0.9.4
         'python-requests',      # 2.2.1

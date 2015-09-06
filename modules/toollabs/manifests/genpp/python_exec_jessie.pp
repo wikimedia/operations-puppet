@@ -83,6 +83,8 @@ class toollabs::genpp::python_exec_jessie {
         # python3-pyexiv2 is not available
         'python-pygments',      # 2.0.1
         'python3-pygments',     # 2.0.1
+        'python-pyicu',         # 1.8
+        # python3-pyicu is not available
         'python-pyinotify',     # 0.9.4
         'python3-pyinotify',    # 0.9.4
         'python-requests',      # 2.4.3

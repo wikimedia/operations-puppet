@@ -45,6 +45,7 @@ environ_packages = {
         'pydot',                # T86015
         'pyexiv2',              # T61122.
         'pygments',             # T71050
+        'pyicu',                # T102165
         'pyinotify',            # T59003
         'requests',
         'rsvg',                 # T58996
