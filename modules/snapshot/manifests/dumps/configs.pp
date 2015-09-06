@@ -22,46 +22,57 @@ class snapshot::dumps::configs(
                 ruwiki => {
                     pagesPerChunkHistory  => '256900,895900,1280900,2000000',
                     pagesPerChunkAbstract => '1200000',
+                    chunksForAbstract     => '4',
                 },
                 eswiki => {
                     pagesPerChunkHistory  => '190300,671500,1627200,2000000',
                     pagesPerChunkAbstract => '1500000',
+                    chunksForAbstract     => '4',
                 },
                 dewiki => {
                     pagesPerChunkHistory  => '33640,1446760,2569200,3000000',
                     pagesPerChunkAbstract => '2000000',
+                    chunksForAbstract     => '4',
                 },
                 ptwiki => {
                     pagesPerChunkHistory  => '137500,668700,1208900,2000000',
                     pagesPerChunkAbstract => '1000000',
+                    chunksForAbstract     => '4',
                 },
                 plwiki => {
                     pagesPerChunkHistory  => '208000,422000,818900,2000000',
                     pagesPerChunkAbstract => '800000',
+                    chunksForAbstract     => '4',
                 },
                 nlwiki => {
                     pagesPerChunkHistory  => '200800,490800,934600,2000000',
                     pagesPerChunkAbstract => '1000000',
+                    chunksForAbstract     => '4',
                 },
                 frwiki => {
                     pagesPerChunkHistory  => '348700,965200,2331100,3000000',
                     pagesPerChunkAbstract => '1900000',
+                    chunksForAbstract     => '4',
                 },
                 itwiki => {
                     pagesPerChunkHistory  => '335400,941600,1180900,2000000',
                     pagesPerChunkAbstract => '1200000',
+                    chunksForAbstract     => '4',
                 },
                 jawiki => {
                     pagesPerChunkHistory  => '149600,801600,408900,2000000',
                     pagesPerChunkAbstract => '800000',
+                    chunksForAbstract     => '4',
                 },
                 commonswiki => {
                     pagesPerChunkHistory  => '6440000,8960000,11260000,20000000',
                     pagesPerChunkAbstract => '11000000',
+                    chunksForAbstract     => '4',
                 },
                 wikidatawiki => {
                     pagesPerChunkHistory  => '2300000,4500000,8600000,10000000',
                     pagesPerChunkAbstract => '5800000',
+                    chunksForAbstract     => '4',
                 },
             },
         },
