@@ -75,6 +75,8 @@ class toollabs::genpp::python_exec_precise {
         'python3-nose',         # 1.1.2
         'python-opencv',        # 2.3.1
         # python3-opencv is not available
+        # python-pil is not available
+        # python3-pil is not available
         'python-problem-report', # 2.0.1
         # python3-problem-report is not available
         'python-pycountry',     # 0.14.1
