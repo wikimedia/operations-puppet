@@ -14,6 +14,7 @@ environ_packages = {
         'celery',
         'egenix-mxdatetime',
         'egenix-mxtools',
+        'enum34',               # T111602
         'flask',
         'flask-login',
         'flickrapi',            # T86015

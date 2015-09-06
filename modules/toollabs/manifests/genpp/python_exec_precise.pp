@@ -21,6 +21,8 @@ class toollabs::genpp::python_exec_precise {
         # python3-egenix-mxdatetime is not available
         'python-egenix-mxtools', # 3.2.1
         # python3-egenix-mxtools is not available
+        # python-enum34 is not available
+        # python3-enum34 is not available
         'python-flask',         # 0.8
         # python3-flask is not available
         # python-flask-login is not available

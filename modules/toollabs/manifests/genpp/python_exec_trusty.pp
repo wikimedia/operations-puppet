@@ -21,6 +21,8 @@ class toollabs::genpp::python_exec_trusty {
         # python3-egenix-mxdatetime is not available
         'python-egenix-mxtools', # 3.2.7
         # python3-egenix-mxtools is not available
+        'python-enum34',        # 0.9.23
+        'python3-enum34',       # 0.9.23
         'python-flask',         # 0.10.1
         'python3-flask',        # 0.10.1
         'python-flask-login',   # 0.2.6
