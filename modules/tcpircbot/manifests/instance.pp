@@ -30,6 +30,9 @@
 #   loopback IPs.  Multiple ranges may be specified as an array of values.
 #   Example: ['192.0.2.0/24', '2001:db8::/32']
 #
+# [*infiles*]
+#   Read these files as extra inputs. Optional.
+#
 # [*ssl*]
 #   Whether to use SSL to connect to IRC server (default: true).
 #
@@ -48,7 +51,7 @@
 #   include tcpircbot
 #
 #   tcpircbot::instance { 'announcebot':
-#     channel  => '#wikimedia-operations',
+#     channels => '#wikimedia-operations',
 #     password => $passwords::irc::announcebot,
 #   }
 #
@@ -59,6 +62,7 @@ define tcpircbot::instance(
     $server_host = 'chat.freenode.net',
     $server_port = 7000,
     $cidr        = undef,
+    $infiles     = undef,
     $ssl         = true,
     $max_clients = 5,
     $listen_port = 9200,
