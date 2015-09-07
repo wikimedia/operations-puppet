@@ -17,7 +17,7 @@ class package_builder(
         basepath => $basepath,
     }
 
-    ensure_packages([
+    require_package([
         'cowbuilder',
         'build-essential',
         'fakeroot',
@@ -33,8 +33,18 @@ class package_builder(
         'zip',
         'unzip',
         'debian-archive-keyring',
-        'ubuntu-archive-keyring',
     ])
+
+    if $::operatingsystem == 'Ubuntu' {
+        require_package('ubuntu-keyring')
+    } else {
+        require_package('ubuntu-archive-keyring')
+    }
+
+    if os_version('ubuntu < trusty') {
+        # we cannot build debian debootstrap environments on old ubuntu hosts (T111730)
+        fail('package_builder requires ubuntu >= trusty')
+    }
 
     file { '/etc/pbuilderrc':
         ensure  => present,
