@@ -12,9 +12,7 @@
 #
 class toollabs::node::web::lighttpd inherits toollabs::node::web {
 
-    package { 'php5-cgi':
-        ensure => latest,
-    }
+    require_package('php5-cgi')
 
     package { [
         'lighttpd',

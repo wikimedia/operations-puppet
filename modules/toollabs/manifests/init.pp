@@ -182,9 +182,7 @@ class toollabs (
     }
 
     # Install at on all hosts for maintenance tasks.
-    package { 'at':
-        ensure => latest,
-    }
+    require_package('at')
 
     # Link to currently active proxy
     file { '/etc/active-proxy':

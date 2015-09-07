@@ -1,5 +1,5 @@
 # == Class: toollabs::node::web::generic
-# 
+#
 # Sets up a node for running generic webservices.
 # Currently explicitly supports nodejs
 class toollabs::node::web::generic inherits toollabs::node::web {
@@ -15,13 +15,11 @@ class toollabs::node::web::generic inherits toollabs::node::web {
     }
 
     # uwsgi python support
-    package {[
+    require_package([
         'uwsgi',
         'uwsgi-plugin-python',
         'uwsgi-plugin-python3',
-    ]:
-        ensure => latest,
-    }
+    ])
 
     file { '/usr/local/bin/tool-uwsgi-python':
         source  => 'puppet:///modules/toollabs/tool-uwsgi-python',
@@ -36,9 +34,7 @@ class toollabs::node::web::generic inherits toollabs::node::web {
     }
 
     # tomcat support
-    package { [ 'tomcat7-user', 'xmlstarlet' ]:
-        ensure => latest,
-    }
+    require_package([ 'tomcat7-user', 'xmlstarlet'])
 
     file { '/usr/local/bin/tool-tomcat':
         source => 'puppet:///modules/toollabs/tool-tomcat',

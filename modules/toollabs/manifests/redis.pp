@@ -65,7 +65,5 @@ class toollabs::redis (
         require => Class['::redis::client::python']
     }
 
-    package { 'python-virtualenv':
-        ensure => latest,
-    }
+    require_package('python-virtualenv')
 }

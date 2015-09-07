@@ -6,7 +6,7 @@
 # Please do not edit manually!
 
 class toollabs::genpp::python_exec_trusty {
-    package { [
+    require_package([
         'python-apport',        # 2.14.1
         'python3-apport',       # 2.14.1
         'python-babel',         # 1.3
@@ -125,7 +125,5 @@ class toollabs::genpp::python_exec_trusty {
         # python3-zbar is not available
         'python-zmq',           # 14.0.1
         'python3-zmq',          # 14.0.1
-    ]:
-        ensure => latest,
-    }
+    ])
 }

@@ -12,9 +12,7 @@ class toollabs::services(
 
     include gridengine::submit_host
 
-    package { 'tools-manifest':
-        ensure => latest,
-    }
+    require_package('tools-manifest')
 
     service { 'webservicemonitor':
         ensure    => ensure_service($active),

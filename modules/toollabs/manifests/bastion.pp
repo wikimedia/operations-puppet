@@ -28,9 +28,7 @@ class toollabs::bastion(
     }
 
     # webservice-new command
-    package { 'toollabs-webservice':
-        ensure => latest,
-    }
+    require_package('toollabs-webservice')
 
     motd::script { 'bastion-banner':
         ensure   => present,
@@ -64,9 +62,7 @@ class toollabs::bastion(
         require => Package['grep'],
     }
 
-    package { 'misctools':
-        ensure => latest,
-    }
+    require_package('misctools')
 
     include ldap::role::config::labs
     $ldapconfig = $ldap::role::config::labs::ldapconfig

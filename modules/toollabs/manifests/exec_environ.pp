@@ -21,7 +21,7 @@ class toollabs::exec_environ {
     include ::mediawiki::packages::fonts
     include ::redis::client::python
 
-    package { [
+    require_package([
         # Please keep all packages in each group sorted in alphabetical order
 
         # Locales (T60500)
@@ -307,9 +307,7 @@ class toollabs::exec_environ {
         'xvfb',                        # T100268
         'zbar-tools',                  # T58996
         'zsh',                         # T58995
-        ]:
-        ensure => latest,
-    }
+    ])
 
     file { '/etc/mysql/conf.d/override.my.cnf':
         ensure => file,
@@ -324,7 +322,7 @@ class toollabs::exec_environ {
     # branches. If one is unavailable, please mark it as such with a comment.
     if $::lsbdistcodename == 'precise' {
         include toollabs::genpp::python_exec_precise
-        package { [
+        require_package([
             'libboost-python1.48.0',
             'libgdal1-1.7.0',              # T58995
             'libmpc2',
@@ -337,13 +335,11 @@ class toollabs::exec_environ {
             'pyflakes',                    # T59863
             'tclthread',                   # now called tcl-thread
             # no nodejs-legacy             (presumably, -legacy makes a symlink that is default in precise)
-            ]:
-            ensure => latest,
-        }
+        ])
     } elsif $::lsbdistcodename == 'trusty' {
         include toollabs::genpp::python_exec_trusty
         # No obvious package available for libgdal
-        package { [
+        require_package([
             'hhvm',                        # T78783
             'libboost-python1.54.0',
             'libmpc3',
@@ -355,9 +351,7 @@ class toollabs::exec_environ {
             'python3-flake8',
             'python3-scipy',               # T103136
             'tcl-thread',
-            ]:
-            ensure => latest,
-        }
+         ])
     } elsif $::lsbdistcodename == 'jessie' {
         include toollabs::genpp::python_exec_jessie
     }

@@ -19,7 +19,7 @@
 class toollabs::dev_environ {
     if os_version('ubuntu trusty') {
         include toollabs::genpp::python_dev_trusty
-        package { [
+        require_package([
             # Previously we installed libmariadbclient-dev, but that causes
             # dependency issues on Trusty.  libmariadbclient-dev formerly
             # provided libmysqlclient-dev, but not in trusty.
@@ -27,33 +27,27 @@ class toollabs::dev_environ {
             'libmysqlclient-dev',
             'libboost-python1.54-dev',
             'redis-tools',
-        ]:
-            ensure  => latest,
-        }
+        ])
     } elsif os_version('ubuntu precise') {
         include toollabs::genpp::python_dev_precise
-        package { [
+        require_package([
             'libmariadbclient-dev',
             'libboost-python1.48-dev',
-        ]:
-            ensure  => latest,
-        }
+        ])
     } elsif os_version('debian jessie') {
         include toollabs::genpp::python_dev_jessie
-        package { [
+        require_package([
             'libmariadb-client-lgpl-dev',
             'libmariadb-client-lgpl-dev-compat',
             'libboost-python1.55-dev',
-        ]:
-            ensure  => latest,
-        }
+        ])
     }
 
-    package { [
+    require_package([
         'ant',
         'apt-file',
         'autoconf',
-        'build-essential', # for dpkg
+        'build-essential',             # for dpkg
         'byobu',                       # T88989.
         'cmake',
         'cvs',
@@ -61,7 +55,7 @@ class toollabs::dev_environ {
         'dh-make-perl',
         'elinks',
         'emacs',
-        'fakeroot', # for dpkg
+        'fakeroot',                    # for dpkg
         'gcj-jdk',                     # T58995
         'openjdk-7-jdk',
         'ipython',                     # T58995
@@ -77,7 +71,7 @@ class toollabs::dev_environ {
         'libprotobuf-dev',             # T58995
         'librsvg2-dev',                # T60516
         'libsparsehash-dev',           # T58995
-        'libtiff4-dev', # T54717
+        'libtiff4-dev',                # T54717
         'libtool',
         'libvips-dev',
         'libxml2-dev',
@@ -87,7 +81,7 @@ class toollabs::dev_environ {
         'lintian',
         'lynx',
         'maven',
-        'mc', # Popular{{cn}} on Toolserver
+        'mc',                          # Popular{{cn}} on Toolserver
         'mercurial',
         'pastebinit',
         'pep8',                        # T59863
@@ -99,9 +93,8 @@ class toollabs::dev_environ {
         'tcl8.5-dev',
         'tig',
         'tmux',                        # T67426.
-        'valgrind' ]:                  # T87117.
-        ensure => latest,
-    }
+        'valgrind'                     # T87117.
+    ])
 
     # pastebinit configuration for http://tools.wmflabs.org/paste/.
     file { '/etc/pastebin.d':

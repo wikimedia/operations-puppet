@@ -17,9 +17,7 @@ class toollabs::node::web inherits toollabs {
     include gridengine::submit_host
 
     # New style webservices!
-    package { 'toollabs-webservice':
-        ensure => latest,
-    }
+    require_package('toollabs-webservice')
 
     class { 'gridengine::exec_host':
         config => 'toollabs/gridengine/host-web.erb',
@@ -59,4 +57,4 @@ class toollabs::node::web inherits toollabs {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/jobkill',
     }
-}
+

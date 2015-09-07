@@ -6,7 +6,7 @@
 # Please do not edit manually!
 
 class toollabs::genpp::python_exec_precise {
-    package { [
+    require_package([
         'python-apport',        # 2.0.1
         # python3-apport is not available
         'python-babel',         # 0.9.6
@@ -125,7 +125,5 @@ class toollabs::genpp::python_exec_precise {
         # python3-zbar is not available
         'python-zmq',           # 2.1.11
         'python3-zmq',          # 2.1.11
-    ]:
-        ensure => latest,
-    }
+    ])
 }
