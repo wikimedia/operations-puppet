@@ -1,0 +1,5 @@
+#!/bin/bash
+# THIS FILE IS MANAGED BY PUPPET
+
+/usr/bin/psql --tuples-only --command 'SELECT datname FROM pg_catalog.pg_database;' | /bin/grep -q "^ $1"
+

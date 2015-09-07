@@ -63,4 +63,9 @@ class postgresql::server(
         group   => 'root',
         mode    => '0444',
     }
+
+    file { '/usr/local/sbin/postgres_db_exists':
+        source  => 'puppet:///modules/postgresql/postgres_db_exists',
+        mode    => '0555',
+    }
 }
