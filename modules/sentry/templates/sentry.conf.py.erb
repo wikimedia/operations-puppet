@@ -1,0 +1,110 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+from sentry.conf.server import *
+
+import os.path
+
+CONF_ROOT = os.path.dirname(__file__)
+
+################
+##  Database  ##
+################
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'sentry.db.postgres',
+        'HOST': 'localhost',
+        'NAME': '<%= @db_name %>',
+        'USER': '<%= @db_user %>',
+        'PASSWORD': '<%= @db_pass %>',
+    }
+}
+
+SENTRY_NODESTORE = 'sentry.nodestore.django.DjangoNodeStorage'
+
+# You should not change this setting after your database has been created
+# unless you have altered all schemas first
+SENTRY_USE_BIG_INTS = True
+
+####################
+## Authentication ##
+####################
+
+# TODO don't allow random signups - T97133
+# SENTRY_FEATURES['auth:register'] = False
+
+#################
+# Cache / Queue #
+#################
+
+SENTRY_CACHE = 'sentry.cache.redis.RedisCache'
+SENTRY_BUFFER = 'sentry.buffer.redis.RedisBuffer'
+SENTRY_RATELIMITER = 'sentry.ratelimits.redis.RedisRateLimiter'
+SENTRY_QUOTAS = 'sentry.quotas.redis.RedisQuota'
+SENTRY_TSDB = 'sentry.tsdb.redis.RedisTSDB'
+SENTRY_REDIS_OPTIONS = {
+    'hosts': {
+        0: {
+            'host': 'localhost',
+            'port': 6379,
+        }
+    }
+}
+
+BROKER_URL = "redis://localhost:6379"
+CELERY_ALWAYS_EAGER = False
+
+################
+# File storage #
+################
+
+SENTRY_FILESTORE = 'django.core.files.storage.FileSystemStorage'
+SENTRY_FILESTORE_OPTIONS = {
+    'location': '/tmp/sentry-files',
+}
+
+################
+## Web Server ##
+################
+
+SENTRY_URL_PREFIX = 'https://<%= @host_name %>'
+
+SENTRY_WEB_HOST = '0.0.0.0'
+SENTRY_WEB_PORT = 9000
+SENTRY_WEB_OPTIONS = {
+    'workers': 3,  # the number of gunicorn workers
+    'limit_request_line': 0,  # required for raven-js
+}
+
+SENTRY_ALLOW_ORIGIN = '*'
+
+# Enable logging via HTTPS through the Nginx gateway
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+SENTRY_WEB_OPTIONS['secure_scheme_headers'] = {'X-FORWARDED-PROTO': 'https'}
+SESSION_COOKIE_SECURE = True
+
+#################
+## Mail Server ##
+#################
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = '<%= @smtp_host %>'
+EMAIL_HOST_USER = '<%= @smtp_user %>'
+EMAIL_HOST_PASSWORD = '<%= @smtp_pass %>'
+SERVER_EMAIL = 'sentry@<%= @host_name %>'
+
+# see http://sentry.readthedocs.org/en/latest/beacon.html
+SENTRY_ADMIN_EMAIL = '<%= @admin_email %>'
+
+##########
+## etc. ##
+##########
+
+SECRET_KEY = '<%= @secret_key %>'
+
+# don't allow non-superusers to make projects globally public
+SENTRY_ALLOW_PUBLIC_PROJECTS = False
+
