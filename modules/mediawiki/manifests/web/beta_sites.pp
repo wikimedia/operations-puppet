@@ -11,13 +11,18 @@ class mediawiki::web::beta_sites {
         priority => 0,
     }
 
-    apache::site { 'www.wikipedia':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/www.wikipedia.conf',
+    apache::site { 'main':
+        source   => 'puppet:///modules/mediawiki/apache/beta/sites/main.conf',
+        priority => 2,
+    }
+
+    apache::site { 'wikipedia':
+        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikipedia.conf',
         priority => 1,
     }
 
-    apache::site { 'main':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/main.conf',
+    apache::site { 'wikibooks':
+        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikibooks.conf',
         priority => 2,
     }
 
