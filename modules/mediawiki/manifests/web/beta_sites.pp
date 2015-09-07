@@ -36,11 +36,6 @@ class mediawiki::web::beta_sites {
         priority => 5,
     }
 
-    apache::site { 'wikispecies':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikispecies.conf',
-        priority => 6,
-    }
-
     apache::site { 'wikiversity':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikiversity.conf',
         priority => 7,
