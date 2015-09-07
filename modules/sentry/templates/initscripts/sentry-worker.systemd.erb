@@ -1,0 +1,17 @@
+[Unit]
+Description=Sentry error logging and aggregation service (queue worker)
+Documentation=http://sentry.readthedocs.org/en/latest/
+After=network.target
+
+[Service]
+Type=simple
+Environment="SENTRY_CONF=<%= @cfg_file %>"
+ExecStart=<%= @sentry_dir %>/bin/sentry celery worker -B
+User=<%= @user %>
+Group=<%= @group %>
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+
