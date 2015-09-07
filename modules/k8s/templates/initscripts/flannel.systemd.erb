@@ -2,9 +2,8 @@
 Description=flannel overlay network
 
 [Service]
-ExecStart=/usr/local/bin/flanneld \
-    --etcd-endpoints=<%= @etcd_endpoints %> \
-    --etcd-prefix=<%= @etcd_prefix %>
+ExecStart=/usr/bin/flanneld \
+    --etcd-endpoints=<%= @etcd_endpoints %>
 
 [Install]
 WantedBy=multi-user.target
