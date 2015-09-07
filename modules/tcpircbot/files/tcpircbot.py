@@ -2,7 +2,8 @@
 # -*- coding: utf8 -*-
 """
 TCP -> IRC forwarder bot
-Forward data from a TCP socket to one or more IRC channels
+Forward data from a TCP socket to one or more IRC channels,
+or if 'tcp' is not specified in the config, forward from stdin.
 
 Usage: tcpircbot.py CONFIGFILE
 
@@ -29,6 +30,7 @@ Requirements:
  * netaddr >=0.7.5
    <https://pypi.python.org/pypi/netaddr>
    Ubuntu package: 'python-netaddr'
+   (Not required for stdin support)
 
 The Puppet module bundled with this script will manage these
 dependencies for you.
@@ -44,8 +46,6 @@ import json
 import logging
 import select
 import socket
-
-import netaddr
 
 try:
     # irclib 0.7+
@@ -95,44 +95,48 @@ if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
 with open(sys.argv[1]) as f:
     config = json.load(f)
 
-# Create a TCP server socket
-server = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-server.setblocking(0)
-server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-server.bind((config['tcp'].get('iface', ''), config['tcp']['port']))
-server.listen(config['tcp']['max_clients'])
-
 # Create a bot and connect to IRC
 bot = ForwarderBot(**config['irc'])
 bot._connect()
 
-sockets = [server]
+if 'tcp' in config:
+    import netaddr
 
+    # Create a TCP server socket
+    server = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+    server.setblocking(0)
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-def close_sockets():
-    for sock in sockets:
-        try:
-            sock.close()
-        except socket.error:
-            pass
+    server.bind((config['tcp'].get('iface', ''), config['tcp']['port']))
+    server.listen(config['tcp']['max_clients'])
 
-atexit.register(close_sockets)
+    sockets = [server]
 
+    def close_sockets():
+        for sock in sockets:
+            try:
+                sock.close()
+            except socket.error:
+                pass
 
-def is_ip_allowed(ip):
-    """Check if we should accept a connection from remote IP `ip`. If
-    the config specifies a CIDR, test against that; otherwise allow only
-    private and loopback IPs. Multiple comma-separated CIDRs may be specified.
-    """
-    ip = netaddr.IPAddress(ip)
-    if 'cidr' in config['tcp']:
-        cidrs = config['tcp']['cidr']
-        if not isinstance(cidrs, list):
-            cidrs = cidrs.split(',')
-        return any(ip in netaddr.IPNetwork(cidr) for cidr in cidrs)
-    return ip.is_private() or ip.is_loopback()
+    atexit.register(close_sockets)
 
+    def is_ip_allowed(ip):
+        """Check if we should accept a connection from remote IP `ip`. If
+        the config specifies a CIDR, test against that; otherwise allow only
+        private and loopback IPs. Multiple comma-separated CIDRs may be
+        specified.
+        """
+        ip = netaddr.IPAddress(ip)
+        if 'cidr' in config['tcp']:
+            cidrs = config['tcp']['cidr']
+            if not isinstance(cidrs, list):
+                cidrs = cidrs.split(',')
+            return any(ip in netaddr.IPNetwork(cidr) for cidr in cidrs)
+        return ip.is_private() or ip.is_loopback()
+else:
+    server = None
+    sockets = [sys.stdin]
 
 while 1:
     readable, _, _ = select.select([bot.connection.socket] + sockets, [], [])
@@ -147,6 +151,10 @@ while 1:
             sockets.append(conn)
         elif sock is bot.connection.socket:
             bot.connection.process_data()
+        elif sock is sys.stdin:
+            data = sock.readline()
+            for channel in bot.target_channels:
+                bot.connection.privmsg(channel, data)
         else:
             data = sock.recv(BUFSIZE)
             data = codecs.decode(data, 'utf8', 'replace').strip()
