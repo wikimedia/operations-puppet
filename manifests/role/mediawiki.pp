@@ -32,6 +32,13 @@ class role::mediawiki::common {
         rule  => 'proto tcp dport (6379 6380 11212) NOTRACK;',
     }
 
+    ferm::service{ 'ssh_pybal':
+        proto  => 'tcp',
+        port   => '22',
+        srange => '$INTERNAL',
+        desc   => 'Allow incoming SSH for pybal health checks',
+    }
+
     if $::site == 'eqiad' {
         monitoring::service { 'mediawiki-installation DSH group':
             description           => 'mediawiki-installation DSH group',
