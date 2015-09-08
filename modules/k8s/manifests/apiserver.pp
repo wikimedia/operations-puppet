@@ -30,6 +30,13 @@ class k8s::apiserver(
         mode   => '0400',
     }
 
+    file { '/var/run/kubernetes':
+        ensure => directory,
+        owner  => 'kube-apiserver',
+        group  => 'kube-apiserver',
+        mode   => '0770',
+    }
+
     $master_ip = ipresolve($master_host, 4, $::nameservers[0])
     base::service_unit { 'kube-apiserver':
         systemd => true,
