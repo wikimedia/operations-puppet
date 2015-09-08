@@ -7,7 +7,7 @@ class aptly::client(
         # Can be removed when T111760 is fixed
         file { '/etc/dpkg/dpkg.cfg.d/multiarch':
             ensure => absent,
-            notify => Exect['apt-get update'],
+            notify => Exec['apt-get update'],
         }
     }
 
