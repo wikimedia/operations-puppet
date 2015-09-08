@@ -45,3 +45,21 @@ class role::toollabs::k8s::master {
         port  => '6443',
     }
 }
+
+class role::toollabs::k8s::worker {
+    # NOTE: No base::firewall!
+    # ferm and kube-proxy will conflict
+
+    include toollabs::infrastructure
+    require k8s::docker
+
+    $master_host = hiera('k8s_master')
+
+    class { 'k8s::proxy':
+        master_host => $master_host,
+    }
+
+    class { 'k8s::kubelet':
+        master_host => $master_host,
+    }
+}
