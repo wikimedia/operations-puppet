@@ -1941,6 +1941,7 @@ node /^mw200[0-6]\.codfw\.wmnet$/ {
 #mw2007 is a videoscaler
 node 'mw2007.codfw.wmnet' {
     role mediawiki::videoscaler
+    include base::firewall
 }
 
 #mw2008-mw2049 are appservers
