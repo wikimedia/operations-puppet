@@ -46,10 +46,12 @@ targets:
     subnode-hostname: '{label.name}-{node_id}-{subnode_id}.<%= @openstack_tenant_id -%>.eqiad.wmflabs'
 
 # Jenkins labels
+#
+# Make sure all labels run the 'ready.sh' script
 labels:
   - name: ci-jessie-wikimedia
     image: ci-jessie-wikimedia
-    #ready-script: ready.sh
+    ready-script: ready.sh
     min-ready: 1
     providers:
       - name: wmflabs-eqiad
