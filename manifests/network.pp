@@ -161,6 +161,22 @@ class network::constants {
                     'private-frack-eqiad' => {
                         'ipv4' => '10.64.40.0/24',
                     },
+                    'private1-a-lvs-eqiad' => {
+                        'ipv4' => '10.64.1.0/29',
+                        'ipv6' => '2620:0:861:101:1a03:73ff:fef0::/112'
+                    },
+                    'private1-b-lvs-eqiad' => {
+                        'ipv4' => '10.64.17.0/29',
+                        'ipv6' => '2620:0:861:101:1a03:73ff:fef0::/112'
+                    },
+                    'private1-c-lvs-eqiad' => {
+                        'ipv4' => '10.64.33.0/29',
+                        'ipv6' => '2620:0:861:101:1a03:73ff:fef0::/112'
+                    },
+                    'private1-d-lvs-eqiad' => {
+                        'ipv4' => '10.64.49.0/29',
+                        'ipv6' => '2620:0:861:101:1a03:73ff:fef0::/112'
+                    },
                 },
             },
             'esams' => {
