@@ -68,7 +68,7 @@ class role::kibana (
         srange => '$INTERNAL',
     }
 
-    apache::site { $hostname:
+    apache::site { $vhost
         content => template('kibana/apache.conf.erb'),
     }
 }
