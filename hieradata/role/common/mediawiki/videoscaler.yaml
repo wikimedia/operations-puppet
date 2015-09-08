@@ -1,5 +1,6 @@
 cluster: videoscaler
 admin::groups:
   - deployment
+  - perf-admins
 mediawiki::jobrunner::runners_transcode: 5
 nutcracker::verbosity: "4"
