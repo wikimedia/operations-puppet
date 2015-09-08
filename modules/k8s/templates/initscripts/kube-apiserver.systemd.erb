@@ -10,7 +10,9 @@ ExecStart=/usr/bin/kube-apiserver \
     --basic-auth-file=/etc/kube/basicauth \
     --insecure-bind-address=<%= @master_ip %> \
     --advertise-address=<%= @master_ip %> \
-    --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger
+    --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger \
+    --authorization-mode=ABAC \
+    --authorization-policy-file=/etc/kube/abac
 
 [Install]
 WantedBy=multi-user.target

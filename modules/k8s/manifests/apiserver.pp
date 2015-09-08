@@ -30,6 +30,13 @@ class k8s::apiserver(
         mode   => '0400',
     }
 
+    file { '/etc/kube/abac':
+        source => '/srv/kube-abac',
+        owner  => 'kube-apiserver',
+        group  => 'kube-apiserver',
+        mode   => '0400',
+    }
+
     file { '/var/run/kubernetes':
         ensure => directory,
         owner  => 'kube-apiserver',
