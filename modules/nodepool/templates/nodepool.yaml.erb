@@ -11,7 +11,7 @@ images-dir: '<%= @dib_images_dir -%>'
 
 # Utilities to prepare an image. Copied to the image while it is being created.
 # http://docs.openstack.org/infra/nodepool/configuration.html#script-dir
-script-dir: /etc/nodepool/scripts
+script-dir: /srv/deployment/integration/config/nodepool/scripts
 
 # Internal Nodepool recurring tasks
 # http://docs.openstack.org/infra/nodepool/configuration.html#cron
@@ -78,6 +78,6 @@ providers:
                 show: 'true'
         min-ram: 0
         name-filter: 'm1.medium'
-        #setup: setup.sh
+        setup: setup_node.sh
         username: jenkins
         private-key: /var/lib/nodepool/.ssh/dib_jenkins_id_rsa

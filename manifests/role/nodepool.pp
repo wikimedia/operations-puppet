@@ -13,6 +13,12 @@ class role::nodepool {
 
     $novaconfig = $role::nova::config::novaconfig
 
+    # dib scripts
+    package { 'integration/config':
+        provider => 'trebuchet',
+        before   => Class['::nodepool'],
+    }
+
     class { '::nodepool':
         db_host                 => 'm5-master.eqiad.wmnet',
         db_name                 => 'nodepooldb',

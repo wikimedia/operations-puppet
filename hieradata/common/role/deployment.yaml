@@ -1,4 +1,6 @@
 repo_config:
+  integration/config:
+    upstream: https://gerrit.wikimedia.org/r/integration/config
   integration/mediawiki-tools-codesniffer:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/codesniffer
   integration/phpunit:
