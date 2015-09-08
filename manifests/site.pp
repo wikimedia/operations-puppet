@@ -103,9 +103,6 @@ node /analytics10(04|10).eqiad.wmnet/ {
 
     # Use analytics1010 for testing eventlogging kafka.
     if $::hostname == 'analytics1010' {
-        include role::eventlogging::forwarder::kafka
-        # temporarily disable puppetization of this on analytics1010
-        # as we test new code and configs there.
         include role::eventlogging::processor::kafka
     }
 
