@@ -46,7 +46,7 @@ METRICS = (
     'connectStart',
     'dnsLookup',
     'domainLookupStart',
-    'domainLookupEnd'
+    'domainLookupEnd',
     'domComplete',
     'domContentLoadedEventStart',
     'domContentLoadedEventEnd',
