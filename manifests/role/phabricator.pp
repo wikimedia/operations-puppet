@@ -38,6 +38,7 @@ class role::phabricator::main {
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
+    $mysql_slave = 'm3-slave.eqiad.wmnet'
 
     class { '::phabricator':
         git_tag          => $current_tag,
