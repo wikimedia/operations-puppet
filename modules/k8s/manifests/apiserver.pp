@@ -4,6 +4,32 @@ class k8s::apiserver(
 ) {
     require_package('kube-apiserver')
 
+    group { 'kube-apiserver':
+        ensure => present,
+        system => true,
+    }
+
+    user { 'kube-apiserver':
+        ensure     => present,
+        shell      => '/bin/false',
+        system     => true,
+        managehome => false,
+    }
+
+    file { '/etc/kube':
+        ensure => directory,
+        owner  => 'kube-apiserver',
+        group  => 'kube-apiserver',
+        mode   => '0700',
+    }
+
+    file { '/etc/kube/basicauth':
+        source => '/srv/kube-basicauth',
+        owner  => 'kube-apiserver',
+        group  => 'kube-apiserver',
+        mode   => '0400',
+    }
+
     $master_ip = ipresolve($master_host, 4, $::nameservers[0])
     base::service_unit { 'kube-apiserver':
         systemd => true,

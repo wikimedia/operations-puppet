@@ -2,10 +2,12 @@
 Description=Kubernetes API Server
 
 [Service]
+User=kube-apiserver
+Group=kube-apiserver
 ExecStart=/usr/bin/kube-apiserver \
     --etcd-servers=<%= @etcd_servers %> \
     --service-cluster-ip-range=192.168.0.0/24 \
-    --token-auth-file=/dev/null \
+    --basic-auth-file=/etc/kube/basicauth \
     --insecure-bind-address=<%= @master_ip %> \
     --advertise-address=<%= @master_ip %> \
     --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger
