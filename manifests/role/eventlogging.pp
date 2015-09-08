@@ -132,7 +132,7 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     # in wmf-config/CommonSettings.php.
     eventlogging::service::forwarder { 'server-side-raw':
         input   => 'udp://0.0.0.0:8421',
-        outputs => ["tcp://${forwarder_host}:8421", $server_side_raw_uri],
+        outputs => ["tcp://${forwarder_host}:8421", $kafka_server_side_raw_uri],
         count   => true,
     }
 
