@@ -1564,4 +1564,11 @@ users:
     realname: John Lewis
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDrGLpJnk6+pLPHV7qBS0bkYUVxxh/PBiWAl+BkIAXZ4PWOmEXsdgcpxwgHgfyLa72lZMOuYOqVO6uvp0d5QRmNrnDrM0LFy0feNGMA9qk7KqKBATTRsp76DFV7ZPNH65WwflREiWVLD8ZzMfYqhsKUZhDakgVZLA1irblE6irRh/Px/+TMLRvPRP1q54GoVHin6CjA1s6DW44KB/HR4cHy9byDzw4uQMqArY4RRH/Z5CD53YY2kIW5Ok9t/aSLwshO0uYBMO+7BKdVgyKLMDHFQGopq8/ICuUD7w1eBLZ5HR0sLMI3FhoPu8VyZ5psm/nnHSgI6yw37Z9RXt9QG3RZ johnflewis@wikimedia]
     uid: 2744
+  addshore:
+    ensure: present
+    gid: 500
+    name: addshore
+    realname: Adam Shorland
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEApeItORPk5O7RFYDonA2HMvZnKKxr5caasia26wCgNC4ht9G7YegZRdikSqYGELb8NZtsRWkbtBwSj+T6O2DPcGQFTRIynDwjN9c9iHwd9gQXs7+3R0WZgFfoqs7ycPoq44mTBcDqtR4W2WIaHei5OlbJitEsk0om2+6YQLXVuzE= rsa-key-20150902]
+    uid: 2178
 
