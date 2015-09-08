@@ -54,8 +54,8 @@ host = asw-d-eqiad.mgmt.eqiad.wmnet
 
 +++ mr1-eqiad
 menu = mr1-eqiad
-title = mr1-eqiad.mgmt.eqiad.wmnet
-host = mr1-eqiad.mgmt.eqiad.wmnet
+title = mr1-eqiad.wikimedia.org
+host = mr1-eqiad.wikimedia.org
 
 +++ msw1-eqiad
 menu = msw1-eqiad

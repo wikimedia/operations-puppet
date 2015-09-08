@@ -413,7 +413,7 @@ class network::checks {
 
     # mr1-eqiad
     @monitoring::host { 'mr1-eqiad':
-        ip_address => '10.65.0.1',
+        ip_address => '208.80.154.199',
         group      => 'routers',
     }
     @monitoring::service { 'mr1-eqiad interfaces':
@@ -495,7 +495,7 @@ class network::checks {
 
     # mr1-ulsfo
     @monitoring::host { 'mr1-ulsfo':
-        ip_address => '10.128.128.1',
+        ip_address => '198.35.26.194',
         group      => 'routers',
     }
     @monitoring::service { 'mr1-ulsfo interfaces':

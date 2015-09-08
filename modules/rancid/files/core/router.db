@@ -14,7 +14,6 @@ asw-d-eqiad.mgmt.eqiad.wmnet:juniper:up:
 asw2-a5-eqiad.mgmt.eqiad.wmnet:juniper:up:
 psw1-eqiad.mgmt.eqiad.wmnet:juniper:up:
 msw1-eqiad.mgmt.eqiad.wmnet:juniper:up:
-mr1-eqiad.mgmt.eqiad.wmnet:juniper:up:
 lab-ex4200-1.mgmt.eqiad.wmnet:juniper:down:
 lab-ex4500-1.mgmt.eqiad.wmnet:juniper:down:
 pfw1-eqiad.wikimedia.org:juniper:up:
@@ -22,7 +21,6 @@ pfw1-codfw.wikimedia.org:juniper:up:
 cr1-ulsfo.wikimedia.org:juniper:up:
 cr2-ulsfo.wikimedia.org:juniper:up:
 asw-ulsfo.mgmt.ulsfo.wmnet:juniper:up:
-mr1-ulsfo.mgmt.ulsfo.wmnet:juniper:up:
 cr1-codfw.wikimedia.org:juniper:up:
 cr2-codfw.wikimedia.org:juniper:up:
 cr1-eqdfw.wikimedia.org:juniper:up:
@@ -31,5 +29,7 @@ asw-b-codfw.mgmt.codfw.wmnet:juniper:up:
 asw-c-codfw.mgmt.codfw.wmnet:juniper:up:
 asw-d-codfw.mgmt.codfw.wmnet:juniper:up:
 msw1-codfw.mgmt.codfw.wmnet:juniper:up:
+mr1-eqiad.wikimedia.org:juniper:up:
 mr1-codfw.wikimedia.org:juniper:up:
 mr1-esams.wikimedia.org:juniper:up:
+mr1-ulsfo.wikimedia.org:juniper:up:
