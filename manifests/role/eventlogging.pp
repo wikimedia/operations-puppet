@@ -56,6 +56,15 @@ class role::eventlogging {
     # to your query params.
     $kafka_base_uri    = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
+    # Read in server side and client side raw events from
+    # ZeroMQ, process them, and send events to schema
+    # based topics in Kafka.
+    $kafka_schema_uri  = "${kafka_base_uri}?topic=eventlogging_%(schema)s"
+    # The downstream eventlogging MySQL consumer expects schemas to be
+    # all mixed up in a single stream.  We send processed events to a
+    # 'mixed' kafka topic in order to keep supporting it for now.
+    $kafka_mixed_uri   = "${kafka_base_uri}?topic=eventlogging-valid-mixed"
+
     # jq is very useful, install it on eventlogging servers
     ensure_packages(['jq'])
 
@@ -174,6 +183,10 @@ class role::eventlogging::multiplexer inherits role::eventlogging {
 class role::eventlogging::consumer::mysql inherits role::eventlogging {
     ## MySQL / MariaDB
 
+    $consumer_group = 'eventlogging-mysql-00'
+    $consumer_settings = 'auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1'
+    $kafka_mysql_consumer_uri = "${kafka_mixed_uri}&identity=${consumer_group}&${consumer_settings}"
+
     # Log strictly valid events to the 'log' database on m4-master.
 
     class { 'passwords::mysql::eventlogging': }    # T82265
@@ -185,7 +198,7 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
     }
 
     eventlogging::service::consumer { 'mysql-m4-master':
-        input  => "tcp://${processor_host}:8600",
+        input  => $kafka_mysql_consumer_uri,
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}",
         # Restrict permissions on this config file since it contains a password.
         owner  => 'root',
@@ -291,14 +304,6 @@ class role::eventlogging::forwarder::kafka inherits role::eventlogging {
 # Temporary class to test eventlogging kafka on host other than eventlog1001.
 #
 class role::eventlogging::processor::kafka inherits role::eventlogging {
-    # Read in server side and client side raw events from
-    # ZeroMQ, process them, and send events to schema
-    # based topics in Kafka.
-    $kafka_schema_uri  = "${kafka_base_uri}?topic=eventlogging_%(schema)s"
-    # The downstream eventlogging MySQL consumer expects schemas to be
-    # all mixed up in a single stream.  We send processed events to a
-    # 'mixed' kafka topic in order to keep supporting it for now.
-    $kafka_mixed_uri   = "${kafka_base_uri}?topic=eventlogging-valid-mixed"
 
 
     $kafka_consumer_args  = hiera(
