@@ -34,13 +34,6 @@ root_helper = sudo designate-rootwrap /etc/designate/rootwrap.conf
 # Which networking API to use, Defaults to neutron
 #network_api = neutron
 
-# RabbitMQ Config
-rabbit_userid = <%= @designateconfig["rabbit_user"] %>
-rabbit_password = <%= @designateconfig["rabbit_pass"] %>
-rabbit_use_ssl = False
-rabbit_hosts = <%= @designateconfig["rabbit_host"] %>
-rabbit_port = 5672
-
 # we have a lot of instances, so raise quotas:
 quota_domain_records = 5000
 quota_recordset_records = 5000
@@ -276,3 +269,11 @@ database_connection = mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @desig
 # This is an alternate db account with more rights -- this setting should
 #  be used when running the db-sync command and the like during upgrades.
 #database_connection = mysql://<%= @designateconfig["pdns_db_admin_user"] %>:<%= @designateconfig["pdns_db_admin_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pdns_db_name"] %>
+
+[oslo_messaging_rabbit]
+# RabbitMQ Config
+rabbit_userid = <%= @designateconfig["rabbit_user"] %>
+rabbit_password = <%= @designateconfig["rabbit_pass"] %>
+rabbit_use_ssl = False
+rabbit_hosts = <%= @designateconfig["rabbit_host"] %>
+rabbit_port = 5672

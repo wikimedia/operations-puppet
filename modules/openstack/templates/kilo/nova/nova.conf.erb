@@ -48,13 +48,6 @@ dhcp_lease_time=86400
 fixed_ip_disassociate_timeout=172800
 iscsi_helper=tgtadm
 
-rpc_backend = rabbit
-rabbit_host=<%= @novaconfig["rabbit_host"] %>
-rabbit_port = 5672
-rabbit_use_ssl = false
-rabbit_userid = <%= @novaconfig["rabbit_user"] %>
-rabbit_password = <%= @novaconfig["rabbit_pass"] %>
-
 <% if @novaconfig["use_neutron"] -%>
 # network/neutron settings
 network_api_class = nova.network.neutronv2.api.API
@@ -147,6 +140,14 @@ use_virtio_for_bridges=True
 # throttle running instances when migrating.
 live_migration_bandwidth=300
 
+[oslo_messaging_rabbit]
+rabbit_host=<%= @novaconfig["rabbit_host"] %>
+rabbit_port = 5672
+rabbit_use_ssl = false
+rabbit_userid = <%= @novaconfig["rabbit_user"] %>
+rabbit_password = <%= @novaconfig["rabbit_pass"] %>
+
 [workarounds]
 # This is the safest option until evacuation is fixed in Libery
 destroy_after_evacuate=False
+
