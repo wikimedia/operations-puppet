@@ -108,6 +108,15 @@ class role::analytics::kafka::config {
     } else {
         $brokers_array = []
     }
+
+    $jmx_port         = 9999
+
+    # jmxtrans renders hostname metrics with underscores and
+    # suffixed with the jmx port.  Build a graphite
+    # wildcard to match these.
+    # E.g. kafka1012.eqiad.wmnet -> kafka1012_eqiad_wmnet_9999
+    $brokers_graphite_wildcard = inline_template('{<%= @brokers_array.join("_#{@jmx_port},").tr(".","_") + "_#{@jmx_port}" %>}')
+
     $zookeeper_hosts  = keys(hiera('zookeeper_hosts'))
     $zookeeper_chroot = "/kafka/${kafka_cluster_name}"
     $zookeeper_url    = inline_template("<%= @zookeeper_hosts.sort.join(',') %><%= @zookeeper_chroot %>")
@@ -144,6 +153,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         zookeeper_hosts                 => $zookeeper_hosts,
         zookeeper_chroot                => $zookeeper_chroot,
         nofiles_ulimit                  => $nofiles_ulimit,
+        jmx_port                        => $jmx_port,
 
         # Enable auto creation of topics.
         auto_create_topics_enable       => true,
@@ -196,6 +206,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
     class { '::kafka::server::jmxtrans':
         ganglia  => $ganglia,
         statsd   => $statsd,
+        jmx_port => $jmx_port,
     }
 
     # Monitor kafka in production
@@ -221,7 +232,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
 
         # jmxtrans statsd writer emits Kafka Broker fqdns in keys
         # by substiting '.' with '_' and suffixing the Broker port.
-        $graphite_broker_key = regsubst("${::fqdn}_9999", '\.', '_', 'G')
+        $graphite_broker_key = regsubst("${::fqdn}_${jmx_port}", '\.', '_', 'G')
 
         # Alert if any Kafka has under replicated partitions.
         # If it does, this means a broker replica is falling behind

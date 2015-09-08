@@ -49,6 +49,7 @@ class role::eventlogging {
     $kafka_brokers_array = $role::analytics::kafka::config::brokers_array
     $kafka_zookeeper_url = $role::analytics::kafka::config::zookeeper_url
 
+
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
     # with each message keyed by SCHEMA_REVISION.
