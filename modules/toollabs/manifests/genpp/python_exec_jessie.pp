@@ -97,8 +97,6 @@ class toollabs::genpp::python_exec_jessie {
         # python3-rsvg is not available
         'python-scipy',         # 0.14.0
         'python3-scipy',        # 0.14.0
-        'python-socketio-client', # 0.5.3
-        # python3-socketio-client is not available
         'python-sqlalchemy',    # 0.9.8
         'python3-sqlalchemy',   # 0.9.8
         'python-svn',           # 1.7.8

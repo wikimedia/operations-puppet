@@ -97,8 +97,6 @@ class toollabs::genpp::python_exec_precise {
         # python3-rsvg is not available
         'python-scipy',         # 0.9.0
         'python3-scipy',        # 0.9.0
-        # python-socketio-client is not available
-        # python3-socketio-client is not available
         'python-sqlalchemy',    # 0.7.4
         'python3-sqlalchemy',   # 0.7.4
         'python-svn',           # 1.7.5

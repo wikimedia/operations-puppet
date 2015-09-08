@@ -353,7 +353,6 @@ class toollabs::exec_environ {
             'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
             'python-flake8',
             'python3-flake8',
-            'python3-scipy',               # T103136
             'tcl-thread',
             ]:
             ensure => latest,
