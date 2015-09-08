@@ -44,10 +44,6 @@ templates:
     # we proxy https://{domain}/api/rest_v1/ to the API.
     x-host-basePath: /api/rest_v1
 
-    security:
-      # ACLs for public *.wikipedia.org wikis
-      - mediaWikiAuth:
-        - user:read
     x-subspecs:
       - mediawiki/v1/content
       - mediawiki_v1_graphoid
