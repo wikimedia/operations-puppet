@@ -131,10 +131,18 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     # is specified as the destination in $wgEventLoggingFile, declared
     # in wmf-config/CommonSettings.php.
 
+
+    # Temporarily running 2 server side forwarders, one for zmq and
+    # one for Kafka.  zmq's will be removed soon.
+    eventlogging::service::forwarder { 'server-side-raw-zmq':
+        input   => 'udp://0.0.0.0:8421',
+        outputs => ["tcp://${forwarder_host}:8421"],
+        count   => true,
+    }
+
     eventlogging::service::forwarder { 'server-side-raw':
         input   => 'udp://0.0.0.0:8421',
         outputs => [
-            "tcp://${forwarder_host}:8421",
             # Don't use async producer for low volume server side forwarder.
             "${kafka_server_side_raw_uri}&async=False",
         ],
