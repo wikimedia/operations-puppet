@@ -7,6 +7,11 @@ class role::toollabs::etcd {
     include toollabs::infrastructure
 
     include etcd
+
+    ferm::service{'etcd-clients':
+        proto  => 'tcp',
+        port   => hiera('etcd::client_port', '2379'),
+    }
 }
 
 class role::toollabs::k8s::master {
@@ -54,6 +59,11 @@ class role::toollabs::k8s::worker {
     require k8s::docker
 
     $master_host = hiera('k8s_master')
+    $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
+
+    class { '::k8s::flannel':
+        etcd_endpoints => $etcd_url,
+    }
 
     class { 'k8s::proxy':
         master_host => $master_host,

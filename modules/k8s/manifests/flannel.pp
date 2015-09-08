@@ -7,8 +7,8 @@ class k8s::flannel(
         systemd => true,
     }
 
-    ferm::service { 'flannel-udp':
+    ferm::service { 'flannel-vxlan':
         proto => udp,
-        port  => 8285,
+        port  => 8472,
     }
 }
