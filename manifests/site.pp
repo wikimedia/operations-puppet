@@ -1956,6 +1956,10 @@ node /^mw20(0[89]|[1-4][0-9])\.codfw\.wmnet$/ {
 #mw2050-2079 are api appservers
 node /^mw20[5-7][0-9]\.codfw\.wmnet$/ {
     role mediawiki::appserver::api
+
+    if $::hostname == 'mw2050' {
+        include base::firewall
+    }
 }
 
 # ROW B codfw appservers: mw2080-mw2147
