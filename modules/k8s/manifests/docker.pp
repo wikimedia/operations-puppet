@@ -2,8 +2,6 @@
 #
 # Sets up docker as used by kubernetes
 class k8s::docker {
-    require k8s::flannel
-
     # Use docker from debian backports
     apt::repository { 'debian-backports':
         uri        => 'http://http.debian.net/debian',
@@ -18,6 +16,5 @@ class k8s::docker {
 
     base::service_unit { 'docker':
         systemd => true,
-        require => Base::Service_unit['flannel'],
     }
 }
