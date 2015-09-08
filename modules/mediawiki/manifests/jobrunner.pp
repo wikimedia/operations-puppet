@@ -79,6 +79,7 @@ class mediawiki::jobrunner (
     ferm::service { 'mediawiki-jobrunner':
         proto  => 'tcp',
         port   => $port,
+        notrack => true,
         srange => '$INTERNAL',
     }
 
