@@ -2,7 +2,7 @@
 Description=Kubernetes Scheduler
 
 [Service]
-ExecStart=/usr/local/bin/kube-scheduler \
+ExecStart=/usr/bin/kube-scheduler \
     --master=<%= @master_ip %>:8080
 
 [Install]

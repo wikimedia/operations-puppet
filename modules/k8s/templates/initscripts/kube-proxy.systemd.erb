@@ -2,7 +2,7 @@
 Description=Kubernetes Proxy
 
 [Service]
-ExecStart=/usr/local/bin/kube-proxy \
+ExecStart=/usr/bin/kube-proxy \
     --master=http://<%= @master_ip %>:8080 \
     --v=4
 
