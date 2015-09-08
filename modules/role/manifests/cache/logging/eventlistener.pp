@@ -1,7 +1,9 @@
 class role::cache::logging::eventlistener( $instance_name = '' ) {
     $event_listener = $::realm ? {
-        'production' => '10.64.32.167',  # eventlog1001
-        'labs'       => '10.68.16.52',   # deployment-eventlogging02
+        # default to eventlog1001
+        'production' => hiera('eventlogging_host', '10.64.32.167'),
+        # default to deployment-eventlogging03
+        'labs'       => hiera('eventlogging_host', '10.68.18.111'),
     }
 
     varnish::logging { 'eventlogging' :
