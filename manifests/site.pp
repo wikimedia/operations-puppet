@@ -128,11 +128,7 @@ node 'analytics1015.eqiad.wmnet' {
 node /analytics10(11|1[67]|19|2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
 
     role analytics::hadoop::worker, analytics::impala::worker
-
-    if $::hostname =~ /^analytics10(11|1[67]|19|2[89]|3[0-9]])$/ {
-        include base::firewall
-    }
-
+    include base::firewall
     include standard
 }
 
