@@ -18,7 +18,7 @@ scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFi
 osapi_compute_unique_server_name_scope='global'
 
 my_ip=<%= @novaconfig["my_ip"] %>
-logdir=/var/log/nova
+log_dir=/var/log/nova
 state_path=/var/lib/nova
 lock_path=/var/lock/nova
 sql_connection=mysql://<%= @novaconfig["db_user"] %>:<%= @novaconfig["db_pass"] %>@<%= @novaconfig["db_host"] %>/<%= @novaconfig["db_name"] %>
