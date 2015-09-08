@@ -4,6 +4,7 @@ apache::mpm::mpm: worker
 mediawiki::web::mpm_config::mpm: worker
 admin::groups:
   - deployment
+  - perf-admins
 hhvm::extra::fcgi:
   hhvm:
     mysql:

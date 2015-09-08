@@ -2,6 +2,7 @@ cluster: api_appserver
 role::mediawiki::webserver::pool: api
 admin::groups:
   - deployment
+  - perf-admins
 apache::mpm::mpm: worker
 mediawiki::web::mpm_config::mpm: worker
 hhvm::extra::fcgi:

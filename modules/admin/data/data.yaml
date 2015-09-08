@@ -383,6 +383,13 @@ groups:
     members: []
     privileges: ['ALL = NOPASSWD: /usr/sbin/service apertium-apy *',
                  'ALL = (apertium) NOPASSWD: ALL']
+  perf-admins:
+    gid: 762
+    description: users who have root on memcached, varnish and application servers
+    members: [krinkle]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+
+
 users:
   rush:
     ensure: present
