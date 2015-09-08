@@ -3,7 +3,8 @@ Description=flannel overlay network
 
 [Service]
 ExecStart=/usr/bin/flanneld \
-    --etcd-endpoints=<%= @etcd_endpoints %>
+    --etcd-endpoints=<%= @etcd_endpoints %> \
+    --etcd-cafile=/var/lib/puppet/ssl/certs/ca.pem
 
 [Install]
 WantedBy=multi-user.target
