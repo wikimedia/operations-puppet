@@ -242,9 +242,16 @@ class role::graphite::production {
 # for all hosts that include this class.
 #
 class role::graphite::production::alerts {
+    # Infer Kafka cluster configuration from this class
+    include ::role::analytics::kafka::config
+
     include ::mediawiki::monitoring::graphite
-    include ::eventlogging::monitoring::graphite
     include ::graphite::monitoring::graphite
+
+    class { '::eventlogging::monitoring::graphite':
+        kafka_brokers_array => $role::analytics::kafka::config::brokers_array,
+    }
+
 
     swift::monitoring::graphite_alerts { 'eqiad-prod': }
     swift::monitoring::graphite_alerts { 'codfw-prod': }
