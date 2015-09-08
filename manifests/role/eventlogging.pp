@@ -130,9 +130,14 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     # on UDP port 8421, using wfErrorLog('...', 'udp://...'). eventlog*
     # is specified as the destination in $wgEventLoggingFile, declared
     # in wmf-config/CommonSettings.php.
+
     eventlogging::service::forwarder { 'server-side-raw':
         input   => 'udp://0.0.0.0:8421',
-        outputs => ["tcp://${forwarder_host}:8421", $kafka_server_side_raw_uri],
+        outputs => [
+            "tcp://${forwarder_host}:8421",
+            # Don't use async producer for low volume server side forwarder.
+            "${kafka_server_side_raw_uri}&async=False",
+        ],
         count   => true,
     }
 
