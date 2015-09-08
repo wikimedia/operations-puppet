@@ -51,8 +51,7 @@ environ_packages = {
         'pyinotify',            # T59003
         'requests',
         'rsvg',                 # T58996
-        'scipy',
-        'socketio-client',      # T86015
+        'scipy',                # T103136
         'sqlalchemy',
         'svn',                  # T58996
         'twisted',
