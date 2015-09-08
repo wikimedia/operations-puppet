@@ -145,7 +145,7 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     eventlogging::service::forwarder { 'server-side-raw-zmq':
         input   => "${kafka_server_side_raw_uri}&auto_offset_commit=False&auto_offset_reset=-1&zookeeper_connect=${kafka_zookeeper_url}",
         outputs => ["tcp://${forwarder_host}:8421"],
-        count   => true,
+        count   => false,
     }
 
 
