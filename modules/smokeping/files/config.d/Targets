@@ -91,6 +91,21 @@ menu = iron
 title = iron.wikimedia.org [B4-EQIAD]
 host = iron.wikimedia.org
 
++ eqord
+
+menu = eqord
+title = Wikimedia Chicago, IL network
+alerts = bigloss,someloss,startloss
+
+++ Core
+menu = Core
+title = Core Network Infrastructure
+
++++ cr1-eqord
+menu = cr1-eqord
+title = cr1-eqord.wikimedia.org
+host = cr1-eqord.wikimedia.org
+
 + codfw
 
 menu = codfw
