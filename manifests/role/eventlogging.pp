@@ -158,11 +158,31 @@ class role::eventlogging::forwarder inherits role::eventlogging {
 # them along for further consumption.
 #
 class role::eventlogging::processor inherits role::eventlogging {
-    eventlogging::service::processor { 'server-side events':
-        format  => '%{seqId}d EventLogging %j',
-        input   => "tcp://${forwarder_host}:8421",
-        outputs => ["tcp://${processor_host}:8521"],
+    $kafka_consumer_args  = hiera(
+        'eventlogging_processor_kafka_consumer_args',
+        "auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1"
+    )
+    $kafka_consumer_group = hiera(
+        'eventlogging_processor_kafka_consumer_group',
+        'eventlogging-00'
+    )
+
+    eventlogging::service::processor { 'server-side-0':
+        format         => '%{seqId}d EventLogging %j',
+        sid            => $kafka_consumer_group,
+        input          => "${kafka_server_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+        outputs        => [
+            # Write valid events to schema based topics, and
+            # also to the eventlogging-valid-mixed topic.
+            $kafka_schema_uri,
+            $kafka_mixed_uri,
+            "tcp://${processor_host}:8521"
+
+        ],
+        # Invalid events to to eventlogging_EventError topic
+        output_invalid => true,
     }
+
     eventlogging::service::processor { 'client-side events':
         format  => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
         input   => "tcp://${forwarder_host}:8422",
@@ -298,17 +318,6 @@ class role::eventlogging::processor::kafka inherits role::eventlogging {
         'eventlogging_processor_kafka_consumer_group',
         'eventlogging-00'
     )
-
-    eventlogging::service::processor { 'server-side-0':
-        format         => '%{seqId}d EventLogging %j',
-        input          => "${kafka_base_uri}?topic=eventlogging-server-side&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
-        sid            => $kafka_consumer_group,
-        outputs        => [
-            $kafka_schema_uri,
-            $kafka_mixed_uri
-        ],
-        output_invalid => true,
-    }
 
     # Run N parallel client side processors.
     # These will auto balance amongts themselves.
