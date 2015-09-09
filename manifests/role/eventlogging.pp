@@ -168,17 +168,32 @@ class role::eventlogging::processor inherits role::eventlogging {
             # also to the eventlogging-valid-mixed topic.
             $kafka_schema_uri,
             $kafka_mixed_uri,
+            # Keep the ZMQ output running until we are ready to turn it off.
             "tcp://${processor_host}:8521"
-
         ],
         # Invalid events to to eventlogging_EventError topic
         output_invalid => true,
     }
 
-    eventlogging::service::processor { 'client-side events':
-        format  => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
-        input   => "tcp://${forwarder_host}:8422",
-        outputs => ["tcp://${processor_host}:8522"],
+    # Run N parallel client side processors.
+    # These will auto balance amongts themselves.
+    $client_side_processors = hiera(
+        'eventlogging_client_side_processors',
+        [
+            'client-side-0',
+        ]
+    )
+    eventlogging::service::processor { $client_side_processors:
+        format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
+        input          => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+        sid            => $kafka_consumer_group,
+        outputs        => [
+            $kafka_schema_uri,
+            $kafka_mixed_uri
+            # Keep the ZMQ output running until we are ready to turn it off.
+            "tcp://${processor_host}:8522"
+        ],
+        output_invalid => true,
     }
 }
 
@@ -262,48 +277,5 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
             require     => File[$log_dir],
             hosts_allow => $backup_destinations,
         }
-    }
-}
-
-
-# == Class role::eventlogging::processor::kafka
-# Temporary class to test eventlogging kafka on host other than eventlog1001.
-#
-class role::eventlogging::processor::kafka inherits role::eventlogging {
-
-
-    $kafka_consumer_args  = hiera(
-        'eventlogging_processor_kafka_consumer_args',
-        "auto_commit_enable=True&auto_commit_interval_ms=10000"
-    )
-    $kafka_consumer_group = hiera(
-        'eventlogging_processor_kafka_consumer_group',
-        'eventlogging-00'
-    )
-
-    # Run N parallel client side processors.
-    # These will auto balance amongts themselves.
-    $kafka_client_side_processors = hiera(
-        'eventlogging_kafka_client_side_processors',
-        [
-            'client-side-0',
-            'client-side-1',
-            'client-side-2',
-            'client-side-3',
-            'client-side-4',
-            'client-side-5',
-            'client-side-6',
-            'client-side-7',
-        ]
-    )
-    eventlogging::service::processor { $kafka_client_side_processors:
-        format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
-        input          => "${kafka_base_uri}?topic=eventlogging-client-side&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
-        sid            => $kafka_consumer_group,
-        outputs        => [
-            $kafka_schema_uri,
-            $kafka_mixed_uri
-        ],
-        output_invalid => true,
     }
 }
