@@ -20,3 +20,4 @@ left_meters=AllCPUs Memory Swap
 left_meter_modes=1 1 1 
 right_meters=Tasks LoadAverage Uptime 
 right_meter_modes=2 2 2 
+cpu_count_from_zero=1
