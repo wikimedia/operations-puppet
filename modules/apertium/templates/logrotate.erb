@@ -2,7 +2,7 @@
 ### THIS FILE IS MANAGED BY PUPPET
 #####################################################################
 
-<%= @log_dir %>/apertium-apy.* {
+<%= @log_dir %>/apertium-apy.log <%= @log_dir %>/apertium-apy.err {
     daily
     copytruncate
     missingok
