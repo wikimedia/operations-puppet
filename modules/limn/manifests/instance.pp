@@ -18,6 +18,11 @@ define limn::instance (
     $ensure         = 'present'
 ){
     require limn
+    include ::apache
+    include ::apache::mod::rewrite
+    include ::apache::mod::headers
+    include ::apache::mod::expires
+
 
     validate_ensure($ensure)
 

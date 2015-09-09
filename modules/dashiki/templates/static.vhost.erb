@@ -1,0 +1,56 @@
+<VirtualHost *:80>
+  ServerName   <%= @url %>
+
+  DocumentRoot <%= @build %>
+  ServerAdmin  dandreescu@wikimedia.org
+
+  ErrorLog /var/log/apache2/error.<%= @name %>.log
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel warn
+
+  CustomLog /var/log/apache2/access.<%= @name %>.log combined
+
+  RewriteEngine on
+  # Redirect any non HTTPS request to HTTPS
+  # This HTTP Header is set by Yuvi's proxy-dammit instance
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteCond %{REMOTE_ADDR}%{REQUEST_URI} !127\.0\.0\.1/server-status
+  RewriteRule ^(.*)$ https://<%= @url %>$1 [L,R]
+
+  # Cache everything for up to a week
+  # HTML is retrieved every time
+  # Cache js/css for 1 week
+  # Cache json files 1 day
+  <Directory  <%= @build %>>
+   <IfModule mod_headers.c>
+       <FilesMatch "\.(eot|ttf|woff|png|gif)$">
+           Header set Cache-control "max-age=2592000,public"
+       </FilesMatch>
+       <FilesMatch "\.(js|css)$">
+           Header set Cache-Control "max-age=640800, public, must-revalidate"
+       </FilesMatch>
+      <FilesMatch "\.(json)$">
+         Header set Cache-Control "max-age=86400, public, must-revalidate"
+     </FilesMatch>
+   </IfModule>
+
+   # M86400 -> issue conditional request 1 day after modification
+   <IfModule mod_expires.c>
+       ExpiresActive On
+       ExpiresDefault M86400
+       ExpiresByType image/png  "modification plus 1 month"
+       ExpiresByType image/gif  "modification plus 1 month"
+       ExpiresByType application/x-font-ttf "access plus 1 month"
+       ExpiresByType application/x-font-opentype "access plus 1 month"
+       ExpiresByType application/x-font-woff "access plus 1 month"
+   </IfModule>
+  </Directory>
+
+ # gzip files
+ # looks like deflate is loaded by deafult
+ <IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/javascript text/css text/xml application/json text/json
+ </IfModule>
+
+</VirtualHost>
