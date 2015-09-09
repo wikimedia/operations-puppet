@@ -20,9 +20,6 @@ MAILMAN_GID = list
 domainlist system_domains = @
 domainlist local_domains = +system_domains : +mailman_domains
 
-# Hold all emails, don't send them to mailman
-hold_domains = lists.wikimedia.org
-
 # Standard lists
 domainlist mailman_domains = lists.wikimedia.org
 
