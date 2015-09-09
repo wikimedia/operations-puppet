@@ -7,7 +7,7 @@ Group=kube-apiserver
 ExecStart=/usr/bin/kube-apiserver \
     --etcd-servers=<%= @etcd_servers %> \
     --service-cluster-ip-range=192.168.0.0/24 \
-    --basic-auth-file=/etc/kube/basicauth \
+    --token-auth-file=/etc/kube/tokenauth \
     --insecure-bind-address=<%= @master_ip %> \
     --advertise-address=<%= @master_ip %> \
     --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger \

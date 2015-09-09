@@ -23,8 +23,8 @@ class k8s::apiserver(
         mode   => '0700',
     }
 
-    file { '/etc/kube/basicauth':
-        source => '/srv/kube-basicauth',
+    file { '/etc/kube/tokenauth':
+        source => '/srv/kube-tokenauth',
         owner  => 'kube-apiserver',
         group  => 'kube-apiserver',
         mode   => '0400',
