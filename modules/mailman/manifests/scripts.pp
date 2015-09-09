@@ -40,4 +40,12 @@ class mailman::scripts {
         mode   => '0550',
         source => 'puppet:///modules/mailman/scripts/rsync_lists.sh'
     }
+
+    file { '/var/lib/mailman/bin/rsync_exim.sh':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman/scripts/rsync_exim.sh'
+    }
 }
