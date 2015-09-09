@@ -261,11 +261,11 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
 
     eventlogging::service::consumer {
         'server-side-events.log':
-            input  => "${kafka_server_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+            input  => "${kafka_server_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}&raw=True",
             output => "file://${log_dir}/server-side-events.log",
             sid    => $kafka_consumer_group;
         'client-side-events.log':
-            input  => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+            input  => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}&raw=True",
             output => "file://${log_dir}/client-side-events.log",
             sid    => $kafka_consumer_group;
         'all-events.log':
