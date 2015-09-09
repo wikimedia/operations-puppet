@@ -256,7 +256,7 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
     $kafka_consumer_args  = 'auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1'
     $kafka_consumer_group = hiera(
         'eventlogging_files_kafka_consumer_group',
-        'eventlogging-00'
+        'eventlogging-files-00'
     )
 
     eventlogging::service::consumer {
