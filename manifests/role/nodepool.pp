@@ -13,6 +13,16 @@ class role::nodepool {
 
     $novaconfig = $role::nova::config::novaconfig
 
+    # dib scripts
+    git::clone { 'integration/config':
+        ensure    => present,  # manually deployed / refreshed
+        directory => '/etc/nodepool/wikimedia'
+        branch    => 'master',
+        owner     => 'nodepool',
+        group     => 'nodepool',
+        require   => Class['::nodepool'],
+    }
+
     class { '::nodepool':
         db_host                 => 'm5-master.eqiad.wmnet',
         db_name                 => 'nodepooldb',
