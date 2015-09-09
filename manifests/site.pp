@@ -103,7 +103,7 @@ node /analytics10(04|10).eqiad.wmnet/ {
 
     # Use analytics1010 for testing eventlogging kafka.
     if $::hostname == 'analytics1010' {
-        include role::eventlogging::processor::kafka
+        include role::eventlogging
     }
 
     include standard
