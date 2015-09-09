@@ -2,10 +2,28 @@
 #
 # Setup Phabricator to properly act as a VCS host
 #
+# Much of this logic is based on the Diffusion setup guide
+# https://secure.phabricator.com/book/phabricator/article/diffusion_hosting/
+#
+# [*settings*]
+#  Phab settings hash
+#
+# [listen_addresses]
+#  Array of IP's to listen for SSH
+#
+# [ssh_port]
+#  Port SSH should listen on
 
 class phabricator::vcs (
-    $settings = {},
+    $settings              = {},
+    $listen_addresses      = [],
+    $ssh_port              = '22',
 ) {
+
+    $pdir = $settings['phabdir']
+    $phd_user = $settings['phd.user']
+    $vcs_user = $settings['diffusion.ssh-user']
+    $ssh_hook_path = '/usr/local/lib/phabricator-ssh-hook.sh'
 
     # git-http-backend needs to be in $PATH
     file { '/usr/local/bin/git-http-backend':
@@ -14,28 +32,39 @@ class phabricator::vcs (
         require => Package['git'],
     }
 
+    user { $vcs_user:
+        home   => "/var/lib/${vcs_user}",
+        shell  => '/bin/sh',
+        system => true,
+    }
 
-    user { $settings['diffusion.ssh-user']:
-        home     => "/var/lib/${settings['diffusion.ssh-user']}",
-        comment  => 'Phabricator VCS user',
-        password => 'NP',
-        shell    => '/bin/sh',
-        system   => true,
+    file { $ssh_hook_path:
+        content => template('phabricator/phabricator-ssh-hook.sh.erb'),
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+    }
+
+    file { '/etc/ssh/sshd_config.phabricator':
+        content => template('phabricator/sshd_config.phabricator.erb'),
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        require => Package['openssh-server'],
     }
 
     # phd.user owns repo resources and both vcs and web user
     # must sudo to phd to for repo work.
-
-    sudo::user { $settings['diffusion.ssh-user']:
+    sudo::user { $vcs_user:
         privileges => [
-            "ALL=(${settings['phd.user']}) SETENV: NOPASSWD: /usr/bin/git-upload-pack, /usr/bin/git-receive-pack, /usr/bin/svnserve",
+            "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/bin/git-upload-pack, /usr/bin/git-receive-pack, /usr/bin/svnserve",
         ],
-        require => User[$settings['diffusion.ssh-user']],
+        require => User[$vcs_user],
     }
 
     sudo::user { 'www-data':
         privileges => [
-            "ALL=(${settings['phd.user']}) SETENV: NOPASSWD: /usr/local/bin/git-http-backend",
+            "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/local/bin/git-http-backend",
         ],
         require    => File['/usr/local/bin/git-http-backend'],
     }

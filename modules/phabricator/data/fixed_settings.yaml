@@ -203,5 +203,4 @@ phd.log-directory: "/var/log/phd"
 phd.user: 'phd'
 
 diffusion.ssh-user: 'vcs'
-
 pygments.enabled: true

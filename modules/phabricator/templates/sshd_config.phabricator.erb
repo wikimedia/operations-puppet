@@ -1,0 +1,24 @@
+# NOTE: You must have OpenSSHD 6.2 or newer; support for AuthorizedKeysCommand
+# was added in this version.
+
+AuthorizedKeysCommandUser <%= @vcs_user %>
+AuthorizedKeysCommand <%= @ssh_hook_path %>
+AllowUsers <%= @vcs_user %>
+
+Port <%= $ssh_port %>
+PidFile /var/run/sshd/phab.pid
+
+# We need to listen on the local and the public loopback
+<% listen_addresses.each do |address| -%>
+ListenAddress =  <%= address %>
+<% end -%>
+
+# Turn off dangerous and unneeded things
+Protocol 2
+PermitRootLogin no
+AllowAgentForwarding no
+AllowTcpForwarding no
+PrintMotd no
+PrintLastLog no
+PasswordAuthentication no
+AuthorizedKeysFile none

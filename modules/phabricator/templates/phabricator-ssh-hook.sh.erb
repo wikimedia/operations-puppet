@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# This is the name users should connect with
+VCSUSER=<%= @vcs_user %>
+ROOT="<%= @pdir %>/phabricator"
+
+if [ "$1" != "$VCSUSER" ];
+then
+  exit 1
+fi
+
+exec "$ROOT/bin/ssh-auth" $@
