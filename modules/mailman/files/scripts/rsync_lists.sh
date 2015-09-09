@@ -7,10 +7,10 @@ RSYNC_TARGET="fermium.wikimedia.org/lists"
 
 for MY_DIR in "${IMPORTED_DIRS[@]}"; do
 
-    /usr/bin/rsync -avp ${INSTALL_DIR}/${MY_DIR} rsync://${RSYNC_TARGET}
+    /usr/bin/rsync -avpz ${INSTALL_DIR}/${MY_DIR} rsync://${RSYNC_TARGET}
 
 done
 
-/usr/bin/rsync -avp ${INSTALL_DIR}/data --include="heldmsg-*" --exclude="*.pw" --exclude="bounce-*" rsync://${RSYNC_TARGET}
+/usr/bin/rsync -avpz ${INSTALL_DIR}/data --include="heldmsg-*" --exclude="*.pw" --exclude="bounce-*" rsync://${RSYNC_TARGET}
 
 echo "done rsyncing\n"
