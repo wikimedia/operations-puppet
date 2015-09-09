@@ -80,6 +80,7 @@ class base::puppet($server='puppet', $certname=undef) {
     }
 
     file { '/etc/cron.d/puppet':
+        ensure  => absent,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
