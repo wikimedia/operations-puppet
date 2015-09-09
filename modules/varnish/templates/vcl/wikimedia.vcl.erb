@@ -193,8 +193,8 @@ sub filter_noise {
 // if GET/HEAD filter is modified/removed later, keep in mind we need to not affect
 //   the PURGE traffic here, as purge is called after this.
 sub https_recv_redirect {
-	if (req.request == "GET" || req.request == "HEAD") {
-		if (req.http.X-Forwarded-Proto != "https") {
+	if (req.http.X-Forwarded-Proto != "https") {
+		if (req.request == "GET" || req.request == "HEAD") {
 			// This is all of our unified cert wildcard domains which are TLS-clean (cert matches all extant hostnames within)
 			// The lone exception now is wikimedia.org, in the next block
 			if (req.http.Host ~ "(?i)(^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org$") {
@@ -211,6 +211,11 @@ sub https_recv_redirect {
 				}
 			}
 		}
+<% if @vcl_config.fetch("secure_post", true) -%>
+		if (req.request == "POST") {
+			error 403 "Insecure POST Forbidden - use HTTPS"
+		}
+<% end %>
 	}
 }
 

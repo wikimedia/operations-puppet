@@ -98,6 +98,7 @@ class role::cache::text {
         'retry503'           => 1,
         'enable_geoiplookup' => true,
         'https_redirects'    => true,
+        'secure_post'        => false,
     })
 
     varnish::instance { 'text-backend':
