@@ -253,16 +253,25 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
 
     $log_dir = $::eventlogging::log_dir
 
+    $kafka_consumer_args  = hiera("auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1")
+    $kafka_consumer_group = hiera(
+        'eventlogging_files_kafka_consumer_group',
+        'eventlogging-00'
+    )
+
     eventlogging::service::consumer {
         'server-side-events.log':
-            input  => "tcp://${processor_host}:8421?raw=1",
-            output => "file://${log_dir}/server-side-events.log";
+            input  => "${kafka_server_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+            output => "file://${log_dir}/server-side-events.log",
+            sid    => $kafka_consumer_group;
         'client-side-events.log':
-            input  => "tcp://${processor_host}:8422?raw=1",
-            output => "file://${log_dir}/client-side-events.log";
+            input  => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+            output => "file://${log_dir}/client-side-events.log",
+            sid    => $kafka_consumer_group;
         'all-events.log':
-            input  => "tcp://${processor_host}:8600",
-            output => "file://${log_dir}/all-events.log";
+            input  =>  "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+            output => "file://${log_dir}/all-events.log",
+            sid    => $kafka_consumer_group;
     }
 
     $backup_destinations = $::realm ? {
