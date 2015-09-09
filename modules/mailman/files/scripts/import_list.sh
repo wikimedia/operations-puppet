@@ -48,17 +48,18 @@ if [ -z ${1+x} ]; then
 fi
 
 # main
-echo "checking list ${LISTNAME}"
+echo "importing list ${LISTNAME}"
+importlist
 
-isprivate
-if [ $PRIVATE == "PUBLIC" ] ; then
-    echo -e "importing public list ${LISTNAME}\n"
-    importlist
-elif [ $PRIVATE == "PRIVATE" ] && [ -n "$2" ] && [ $2 == "all" ] ; then
-    echo -e "importing private list ${LISTNAME}\n"
-    importlist
-else
-    echo "skipping ${LISTNAME}"
-fi
+# isprivate
+# if [ $PRIVATE == "PUBLIC" ] ; then
+#    echo -e "importing public list ${LISTNAME}\n"
+#    importlist
+# elif [ $PRIVATE == "PRIVATE" ] && [ -n "$2" ] && [ $2 == "all" ] ; then
+#    echo -e "importing private list ${LISTNAME}\n"
+#    importlist
+# else
+#    echo "skipping ${LISTNAME}"
+# fi
 
 echo -e "--------------------------\n"
