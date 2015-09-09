@@ -191,7 +191,7 @@ class role::lists::migration {
         hosts_allow => '208.80.154.61',
     }
 
-    rsync::server::module { 'lists':
+    rsync::server::module { 'data':
         path        => '/var/lib/mailman/data',
         read_only   => 'no',
         hosts_allow => '208.80.154.61',
