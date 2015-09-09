@@ -1059,7 +1059,7 @@ node 'gadolinium.wikimedia.org' {
 node 'gallium.wikimedia.org' {
 
     $cluster = 'misc'
-
+    $nagios_contact_group = 'admins,contint'
 
     # T51846, let us sync VisualEditor in mediawiki/extensions.git
     sudo::user { 'jenkins-slave':
@@ -1347,6 +1347,7 @@ node 'labnet1002.eqiad.wmnet' {
 }
 
 node 'labnodepool1001.eqiad.wmnet' {
+    $nagios_contact_group = 'admins,contint'
     include standard
     include role::nodepool
     include base::firewall
