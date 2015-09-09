@@ -213,7 +213,7 @@ sub https_recv_redirect {
 		}
 <% if @vcl_config.fetch("secure_post", true) -%>
 		if (req.request == "POST") {
-			error 403 "Insecure POST Forbidden - use HTTPS"
+			error 403 "Insecure POST Forbidden - use HTTPS";
 		}
 <% end %>
 	}
