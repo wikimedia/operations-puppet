@@ -129,7 +129,10 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     eventlogging::service::forwarder { 'server-side-raw':
         input   => 'udp://0.0.0.0:8421',
         # Don't use async producer for low volume server side forwarder.
-        outputs => ["${kafka_server_side_raw_uri}&async=False"],
+        outputs => [
+            "${kafka_server_side_raw_uri}&async=False",
+            "tcp://${processor_host}:8421",
+        ],
         count   => true,
     }
 
