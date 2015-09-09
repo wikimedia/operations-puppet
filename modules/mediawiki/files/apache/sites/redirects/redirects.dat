@@ -96,7 +96,6 @@ rewrite	nb.wikinews.org	//no.wikinews.org
 funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
 
 # renamed chapter wiki - T40763
-rewrite	noboard.chapters.wikimedia.org	//noboard-chapters.wikimedia.org
 
 rewrite	chapcom.wikimedia.org	https://affcom.wikimedia.org
 
