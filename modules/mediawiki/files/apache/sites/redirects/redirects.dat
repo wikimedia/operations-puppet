@@ -96,7 +96,6 @@ rewrite	nb.wikinews.org	//no.wikinews.org
 funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
 
 # renamed chapter wiki - T40763
-rewrite	pa.us.wikimedia.org	//pa-us.wikimedia.org
 rewrite	noboard.chapters.wikimedia.org	//noboard-chapters.wikimedia.org
 
 rewrite	chapcom.wikimedia.org	https://affcom.wikimedia.org
@@ -339,8 +338,6 @@ rewrite	*wikimediacommons.pt	//commons.wikimedia.org
 rewrite	*wikimediacommons.co.uk	//commons.wikimedia.org
 
 rewrite	commons.wikipedia.org	//commons.wikimedia.org
-rewrite	www.commons.wikimedia.org	//commons.wikimedia.org
-rewrite	www.commons.wikipedia.org	//commons.wikimedia.org
 
 # Bookshelf Project
 rewrite	bookshelf.wikimedia.org	//outreach.wikimedia.org/wiki/Bookshelf/
@@ -356,8 +353,6 @@ funnel	*wikimaps.org	//www.wikimedia.org
 # Other projects
 
 rewrite	meta.wikipedia.org	//meta.wikimedia.org
-rewrite	www.meta.wikipedia.org	//meta.wikimedia.org
-rewrite	www.meta.wikimedia.org	//meta.wikimedia.org
 
 rewrite	quality.wikipedia.org	//quality.wikimedia.org
 rewrite	quality.wikipedia.com	//quality.wikimedia.org
