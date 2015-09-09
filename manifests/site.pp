@@ -1870,6 +1870,10 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 # mw1017-mw1025 are canary appservers
 node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
     role mediawiki::canary_appserver
+
+    if $::hostname == 'mw1017' {
+        include base::firewall
+    }
 }
 
 # mw1026-mw1113 are appservers
