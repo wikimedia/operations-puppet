@@ -193,6 +193,10 @@ class role::lists::migration {
         ensure => 'present',
     }
 
+    service { 'mailman':
+        ensure => 'stopped',
+    }
+
     include mailman::scripts
 
 }
