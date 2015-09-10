@@ -1,7 +1,17 @@
 class ferm {
     # @resolve requires libnet-dns-perl
+
+    file { '/etc/modprobe.d/nf_conntrack.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
+    }
+
     package { ['ferm', 'libnet-dns-perl', 'conntrack']:
         ensure => present,
+        require   => File['/etc/modprobe.d/nf_conntrack.conf'],
     }
 
     service { 'ferm':
