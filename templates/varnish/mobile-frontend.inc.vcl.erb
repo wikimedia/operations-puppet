@@ -117,13 +117,6 @@ sub vcl_fetch {
 		return (hit_for_pass);
 	}
 
-<% if @vcl_config.fetch("do_gzip", false) -%>
-	// Compress ico and SVG files
-	if (beresp.http.content-type ~ "^image/(x-icon|vnd\.microsoft\.icon|svg\+xml)$") {
-		set beresp.do_gzip = true;
-	}
-<% end -%>
-
 	return (deliver);
 }
 
