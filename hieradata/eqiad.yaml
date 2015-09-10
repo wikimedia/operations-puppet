@@ -70,6 +70,25 @@ labs_nova_network_ip: "10.64.20.25"
 labs_nova_api_host: "labnet1002.eqiad.wmnet"
 
 # Eventlogging
-eventlogging_host: 10.64.32.167
+eventlogging_host: 10.64.32.167 # eventlog1001
+
+# Kafka Topic eventlogging-client-side with
+# raw eventlogging events has 12 partitions
+# in production.  Run 12 processors.
+eventlogging_client_side_processors:
+    - client-side-00
+    - client-side-01
+    - client-side-02
+    - client-side-03
+    - client-side-04
+    - client-side-05
+    - client-side-06
+    - client-side-07
+    - client-side-08
+    - client-side-09
+    - client-side-10
+    - client-side-11
+    - client-side-12
+
 labs_certmanager_hostname: "holmium.wikimedia.org"
 
