@@ -6,6 +6,6 @@ stop on [!12345]
 setuid designate
 
 chdir /var/lib/designate
-exec /usr/bin/designate-pool-manager --config-file=/etc/designate/designate.conf --log-file=/var/log/designate/designate-agent.log
+exec /usr/bin/designate-pool-manager --config-file=/etc/designate/designate.conf --log-file=/var/log/designate/designate-pool-manager.log
 respawn
 respawn limit 10 30
