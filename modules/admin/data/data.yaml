@@ -873,8 +873,7 @@ users:
     gid: 500
     name: yurik
     realname: Yuri Astrakhan
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCj0LsvabGrIkshTqKlrukoyLCJlAZ7ZsOg0UGQ5H0pO3wH7COkUxKVntYLBTJUEgL9pnS7cLRBtIReNq6wlJh0G+f8iaD/Px9oZ8KTS6rMH1An8EluCqqMFY4uitoFgumrdO05/fNQWOE/vExJxwCXjEeNl10+E/QLj4+VHPYdK9wbKKx31PHiGKZQmuGW9iBUBHzPl2JC7SnTT0nMuXAA7nkOiU6jlVsTcaYpziaMJcxZCd2+FLDLxTbOIH7AyBWpMUg7peKHP28UTbaMKRpwaU0b2IsrLs5kywcihdogDq3spGlY3bqRncOnz2pGkuv6kuWCbx1MziVp3Hk2VEA1
-        yurik@wikimedia.org]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+OjjYJFZVdNjn+fu6u5NcIBmAM82ULWG4U+hnz9rTktMUN5GYcNpSkG4tCuPxGrD3dBAgReX1eP+4UULD0FJFtPCHxkd2j36lTkfNP1I3j3EILxizhD5jye1iBSu7ebRbmSVEeqvKKPVJNRoBQKc8qWnDLDkplZAyIHcTaCHan4m5gn/CBWZmvHibmYuNOBbYlQTUJ04gjWOsgmx8ea/EO8HXLeabzvN4/nk3s9unwWkssXwCL/7FBJfji7wlZs0B1lEnCA9YnD7rliPsFH8vWuvG5XpQJX821dXh+riEGWyTskny7kFq3yaNLnh5nW0ctdGjRJh0j/T3m9ij763x yurik@wikimedia.org]
     uid: 1011
   jgonera:
     ensure: absent
