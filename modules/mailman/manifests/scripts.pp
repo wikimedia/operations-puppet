@@ -9,22 +9,6 @@ class mailman::scripts {
         source => 'puppet:///modules/mailman/scripts/remove_from_private.sh'
     }
 
-    file { '/var/lib/mailman/bin/import_list.sh':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'list',
-        mode   => '0550',
-        source => 'puppet:///modules/mailman/scripts/import_list.sh'
-    }
-
-    file { '/var/lib/mailman/bin/import_all_lists.sh':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'list',
-        mode   => '0550',
-        source => 'puppet:///modules/mailman/scripts/import_all_lists.sh'
-    }
-
     file { '/var/lib/mailman/bin/disable_list.sh':
         ensure => 'present',
         owner  => 'root',
@@ -49,11 +33,4 @@ class mailman::scripts {
         source => 'puppet:///modules/mailman/scripts/rsync_exim.sh'
     }
 
-    file { '/var/lib/mailman/bin/import_exim.sh':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'list',
-        mode   => '0550',
-        source => 'puppet:///modules/mailman/scripts/import_exim.sh'
-    }
 }
