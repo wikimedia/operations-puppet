@@ -224,6 +224,12 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     # Log strictly valid events to the 'log' database on m4-master.
 
+    $kafka_consumer_args  = 'auto_commit_enable=True&auto_commit_interval_ms=1000&auto_offset_reset=-1'
+    $kafka_consumer_group = hiera(
+        'eventlogging_mysql_kafka_consumer_group',
+        'eventlogging-mysql-00'
+    )
+
     class { 'passwords::mysql::eventlogging': }    # T82265
     $mysql_user = $passwords::mysql::eventlogging::user
     $mysql_pass = $passwords::mysql::eventlogging::password
@@ -233,7 +239,7 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
     }
 
     eventlogging::service::consumer { 'mysql-m4-master':
-        input  => "tcp://${processor_host}:8600",
+        input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}",
         # Restrict permissions on this config file since it contains a password.
         owner  => 'root',
