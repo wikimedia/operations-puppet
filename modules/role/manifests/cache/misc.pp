@@ -25,6 +25,7 @@ class role::cache::misc {
             'retry5xx'         => 1,
             'cache4xx'         => '1m',
             'layer'            => 'frontend',
+            'do_gzip'          => true,
             'allowed_methods'  => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
             'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         },
