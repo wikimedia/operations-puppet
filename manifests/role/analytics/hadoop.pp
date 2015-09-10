@@ -319,6 +319,98 @@ class role::analytics::hadoop::config {
     }
 }
 
+
+# This class provides the ferm rules which are common to
+# all the Hadoop master and standby
+class role::analytics::hadoop::ferm_master_standby {
+
+    ferm::service{ 'hadoop-hdfs-namenode-jmx':
+        proto  => 'tcp',
+        port   => '9980',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-hdfs-namenode-http-ui':
+        proto  => 'tcp',
+        port   => '50070',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-mapreduce-history-admininterface':
+        proto  => 'tcp',
+        port   => '10033',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    # config option mapreduce.jobhistory.webapp.address
+    ferm::service{ 'hadoop-mapreduce-jobhistory-admininterface':
+        proto  => 'tcp',
+        port   => '19888',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager':
+        proto  => 'tcp',
+        port   => '9983',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-httpfs':
+        proto  => 'tcp',
+        port   => '14000',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-hdfs-namenode':
+        proto  => 'tcp',
+        port   => '8020',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-mapreduce-historyserver':
+        proto  => 'tcp',
+        port   => '10020',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager':
+        proto  => 'tcp',
+        port   => '8032',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager-http-ui':
+        proto  => 'tcp',
+        port   => '8088',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager-scheduler':
+        proto  => 'tcp',
+        port   => '8030',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager-tracker':
+        proto  => 'tcp',
+        port   => '8031',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager-admin':
+        proto  => 'tcp',
+        port   => '8033',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    # Open up port for debugging
+    ferm::service{ 'jmxtrans-jmx':
+        proto  => 'tcp',
+        port   => '2101',
+        srange => '$INTERNAL',
+    }
+}
+
 # == Class role::analytics::hadoop
 # Installs Hadoop client pacakges and configuration.
 #
@@ -486,6 +578,8 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         require => Class['cdh::hadoop::master'],
     }
 
+    include role::analytics::hadoop::ferm_master_standby
+
     # Hadoop nodes are spread across multiple rows
     # and need to be able to send multicast packets
     # multiple network hops.  Hadoop GangliaContext
@@ -508,13 +602,6 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         minute  => 5,
         hour    => 0,
         require => Class['cdh::hadoop::master'],
-    }
-
-    # T111433
-    ferm::service{ 'hadoop-access':
-        proto  => 'tcp',
-        port   => '1024:65535',
-        srange => '$ANALYTICS_NETWORKS',
     }
 
     # Include icinga alerts if production realm.
@@ -545,13 +632,6 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
             critical    => '\!active',
             require     => Class['cdh::hadoop::master'],
         }
-    }
-
-    # Open up port for debugging
-    ferm::service{ 'jmxtrans-jmx':
-        proto  => 'tcp',
-        port   => '2101',
-        srange => '$INTERNAL',
     }
 
     # This will create HDFS user home directories
@@ -678,6 +758,7 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
 
     # monitor disk statistics
     include role::analytics::monitor_disks
+    include role::analytics::hadoop::ferm_master_standby
 
     # Include icinga alerts if production realm.
     if $::realm == 'production' {
@@ -688,20 +769,6 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
             require      => Class['cdh::hadoop::namenode::standby'],
             critical     => 'true',
         }
-    }
-
-    # T111433
-    ferm::service{ 'hadoop-access':
-        proto  => 'tcp',
-        port   => '1024:65535',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    # Open up port for debugging
-    ferm::service{ 'jmxtrans-jmx':
-        proto  => 'tcp',
-        port   => '2101',
-        srange => '$INTERNAL',
     }
 
     # If this is a resourcemanager host, then go ahead
