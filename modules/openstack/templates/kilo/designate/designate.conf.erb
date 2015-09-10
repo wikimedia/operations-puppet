@@ -21,10 +21,10 @@ state_path = /var/lib/designate
 log_dir = /var/log/designate
 
 # Driver used for issuing notifications
-notification_driver = designate.openstack.common.notifier.rpc_notifier
+notification_driver = messagingv2
 
 # Notification Topics
-#notification_topics = notifications
+notification_topics = notifications
 
 # Use "sudo designate-rootwrap /etc/designate/rootwrap.conf" to use the real
 # root filter facility.
