@@ -1,4 +1,6 @@
-class ores::worker {
+class ores::worker(
+    $log_level = 'ERROR',
+} {
     require ores::base
 
     celery::worker { 'ores-worker':
@@ -7,5 +9,6 @@ class ores::worker {
         user            => 'www-data',
         group           => 'www-data',
         celery_bin_path => "${ores::base::venv_path}/bin/celery",
+        log_level       => $log_level,
     }
 }
