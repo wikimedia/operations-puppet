@@ -11,7 +11,6 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
                 'designate',
                 'designate-api',
                 'designate-doc',
-                'designate-agent',
                 'designate-central',
                 'python-nova-ldap',
                 'python-novaclient',
@@ -34,6 +33,25 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
     service {'designate-central':
         ensure  => running,
         require => Package['designate-central'];
+    }
+
+    # In the perfect future when the designate packages set up
+    #  an init script for this, some of this can be removed.
+    base::service_unit { 'designate-pool-manager':
+        ensure  =>  present,
+        refresh =>  true,
+        upstart =>  true,
+        username => 'designate',
+        require =>  Package['designate'],
+    }
+
+    # Likewise with mdns.
+    base::service_unit { 'designate-mdns':
+        ensure  =>  present,
+        refresh =>  true,
+        upstart =>  true,
+        username => 'designate',
+        require =>  Package['designate'],
     }
 
     # This password is to allow designate to write to instance metadata

@@ -142,7 +142,7 @@ enabled_notification_handlers = nova_fixed_multi, nova_ldap
 # Pool Manager Service
 #-----------------------
 [service:pool_manager]
-#backends = bind9
+backends = powerdns
 #workers = None
 #pool_id = 794ccc2c-d751-44fe-b57f-8894c9f5c842
 #threshold_percentage = 100
@@ -246,7 +246,7 @@ salt_master_host = "<%= @designateconfig['controller_hostname'] %>"
 # SQLAlchemy Pool Manager Cache
 #-----------------------
 [pool_manager_cache:sqlalchemy]
-#connection = sqlite:///$state_path/designate_pool_manager.sqlite
+connection = mysql://<%= @designateconfig["db_user"] %>:<%= @designateconfig["db_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pool_manager_db_name"] %>
 #connection_debug = 100
 #connection_trace = False
 #sqlite_synchronous = True
@@ -258,17 +258,21 @@ salt_master_host = "<%= @designateconfig['controller_hostname'] %>"
 ## Pool Backend Configuration
 #############################
 
-[backend:powerdns]
-connection_debug = 100
-connection_trace = True
-sqlite_synchronous = True
-idle_timeout = 3600
-max_retries = 10
-retry_interval = 10
-connection = mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @designateconfig["pdns_db_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pdns_db_name"] %>
+[pool:794ccc2c-d751-44fe-b57f-8894c9f5c842]
+nameservers = 0f66b842-96c2-4189-93fc-1dc95a08b012
+targets = f26e0b32-736f-4f0a-831b-039a415c481e
+
+[pool_nameserver:0f66b842-96c2-4189-93fc-1dc95a08b012]
+port = 53
+host = 127.0.0.1
+
+[pool_target:f26e0b32-736f-4f0a-831b-039a415c481e]
+options = connection: mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @designateconfig["pdns_db_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pdns_db_name"] %>
 # This is an alternate db account with more rights -- this setting should
 #  be used when running the db-sync command and the like during upgrades.
-#connection = mysql://<%= @designateconfig["pdns_db_admin_user"] %>:<%= @designateconfig["pdns_db_admin_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pdns_db_name"] %>
+#options = connection: mysql://<%= @designateconfig["pdns_db_admin_user"] %>:<%= @designateconfig["pdns_db_admin_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pdns_db_name"] %>
+masters = 127.0.0.1:5354 # this is a comma separated list of the mdns servers
+type = powerdns
 
 [oslo_messaging_rabbit]
 # RabbitMQ Config
