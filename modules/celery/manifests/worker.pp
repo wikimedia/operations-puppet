@@ -4,7 +4,7 @@ define celery::worker(
     $user,
     $group,
     $celery_bin_path = '/usr/bin/celery',
-    $loglevel = 'ERROR',
+    $log_level = 'ERROR',
 ) {
     base::service_unit { "celery-${title}":
         template_name => 'celery',

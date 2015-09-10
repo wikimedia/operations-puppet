@@ -8,7 +8,7 @@ Group=<%= @group %>
 WorkingDirectory=<%= @working_dir %>
 ExecStart=<%= @celery_bin_path %> worker \
     --app <%= @app %> \
-    --loglevel <%= @loglevel %>
+    --loglevel <%= @log_level %>
 
 [Install]
 WantedBy=multi-user.target
