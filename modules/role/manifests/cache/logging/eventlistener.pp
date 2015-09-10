@@ -13,5 +13,8 @@ class role::cache::logging::eventlistener( $instance_name = '' ) {
         cli_args         => '-m RxURL:^/(beacon/)?event(\.gif)?\?. -D',
         log_fmt          => '%q\t%l\t%n\t%t\t%h\t"%{User-agent}i"',
         monitor          => false,
+        # This is being replaced by varnishkafka.
+        # This class will be removed.
+        ensure           => 'absent',
     }
 }
