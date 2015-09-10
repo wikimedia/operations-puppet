@@ -1957,10 +1957,7 @@ node 'mw2007.codfw.wmnet' {
 #mw2008-mw2049 are appservers
 node /^mw20(0[89]|[1-4][0-9])\.codfw\.wmnet$/ {
     role mediawiki::appserver
-
-    if $::hostname =~ /^mw200[89]$/ {
-        include base::firewall
-    }
+    include base::firewall
 }
 
 #mw2050-2079 are api appservers
@@ -1988,6 +1985,7 @@ node /^mw208[6-9]\.codfw\.wmnet$/ {
 #mw2090-mw2119 are appservers
 node /^mw2(09[0-9]|1[0-1][0-9])\.codfw\.wmnet$/ {
     role mediawiki::appserver
+    include base::firewall
 }
 
 #mw2120-2147 are api appservers
@@ -2013,6 +2011,7 @@ node 'mw2152.codfw.wmnet' {
 #mw2153-mw2199 are appservers
 node /^mw21(5[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
     role mediawiki::appserver
+    include base::firewall
 }
 
 #mw2200-2234 are api appservers
