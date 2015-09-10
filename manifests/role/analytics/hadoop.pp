@@ -319,6 +319,97 @@ class role::analytics::hadoop::config {
     }
 }
 
+# == Class role::analytics::hadoop::ferm::namenode
+#
+class role::analytics::hadoop::ferm::namenode {
+    ferm::service{ 'hadoop-hdfs-namenode':
+        proto  => 'tcp',
+        port   => '8020',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-hdfs-namenode-http-ui':
+        proto  => 'tcp',
+        port   => '50070',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-hdfs-httpfs':
+        proto  => 'tcp',
+        port   => '14000',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-hdfs-namenode-jmx':
+        proto  => 'tcp',
+        port   => '9980',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+}
+
+# == Class role::analytics::hadoop::ferm::resourcemanager
+#
+
+class role::analytics::hadoop::ferm::resourcemanager {
+
+    ferm::service{ 'hadoop-yarn-resourcemanager-scheduler':
+        proto  => 'tcp',
+        port   => '8030',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager-tracker':
+        proto  => 'tcp',
+        port   => '8031',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager':
+        proto  => 'tcp',
+        port   => '8032',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager-admin':
+        proto  => 'tcp',
+        port   => '8033',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager-http-ui':
+        proto  => 'tcp',
+        port   => '8088',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-mapreduce-historyserver':
+        proto  => 'tcp',
+        port   => '10020',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-mapreduce-historyserver-admin':
+        proto  => 'tcp',
+        port   => '10033',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-mapreduce-historyserver-http-ui':
+        proto  => 'tcp',
+        port   => '19888',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+    ferm::service{ 'hadoop-yarn-resourcemanager-jmx':
+        proto  => 'tcp',
+        port   => '9983',
+        srange => '$ANALYTICS_NETWORKS',
+    }
+
+
+}
+
+
 # == Class role::analytics::hadoop
 # Installs Hadoop client pacakges and configuration.
 #
@@ -510,13 +601,6 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         require => Class['cdh::hadoop::master'],
     }
 
-    # T111433
-    ferm::service{ 'hadoop-access':
-        proto  => 'tcp',
-        port   => '1024:65535',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
     # Include icinga alerts if production realm.
     if $::realm == 'production' {
         # Icinga process alerts for NameNode, ResourceManager and HistoryServer
@@ -547,13 +631,6 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         }
     }
 
-    # Open up port for debugging
-    ferm::service{ 'jmxtrans-jmx':
-        proto  => 'tcp',
-        port   => '2101',
-        srange => '$INTERNAL',
-    }
-
     # This will create HDFS user home directories
     # for all users in the provided groups.
     # This only needs to be run on the NameNode
@@ -562,6 +639,17 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     class { 'cdh::hadoop::users':
         groups  => $hadoop_users_posix_groups,
         require => Class['cdh::hadoop::master'],
+    }
+
+
+    # Firewall
+    include role::analytics::hadoop::ferm::namenode
+    include role::analytics::hadoop::ferm::resourcemanager
+    # Open up port for debugging
+    ferm::service{ 'jmxtrans-jmx':
+        proto  => 'tcp',
+        port   => '2101',
+        srange => '$INTERNAL',
     }
 }
 
@@ -625,12 +713,6 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
         }
     }
 
-    # T111433
-    ferm::service{ 'hadoop-access':
-        proto  => 'tcp',
-        port   => '1024:65535',
-        srange => '$ANALYTICS_NETWORKS',
-    }
 
     # Install hive client on worker nodes to get
     # hive-hcatalog package.  hive-catalog depends
@@ -647,6 +729,14 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
 
     # Install MaxMind databases for geocoding UDFs
     include geoip
+
+
+    # Firewall
+    ferm::service{ 'hadoop-access':
+        proto  => 'tcp',
+        port   => '1024:65535',
+        srange => '$ANALYTICS_NETWORKS',
+    }
 }
 
 # == Class role::analytics::hadoop::monitor::nsca::client
@@ -671,6 +761,7 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
 
     class { 'cdh::hadoop::namenode::standby': }
 
+
     # Use jmxtrans for sending metrics to ganglia
     class { 'cdh::hadoop::jmxtrans::namenode':
         ganglia => "${ganglia_host}:${ganglia_port}",
@@ -678,6 +769,7 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
 
     # monitor disk statistics
     include role::analytics::monitor_disks
+
 
     # Include icinga alerts if production realm.
     if $::realm == 'production' {
@@ -690,25 +782,23 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
         }
     }
 
-    # T111433
-    ferm::service{ 'hadoop-access':
-        proto  => 'tcp',
-        port   => '1024:65535',
-        srange => '$ANALYTICS_NETWORKS',
-    }
-
-    # Open up port for debugging
-    ferm::service{ 'jmxtrans-jmx':
-        proto  => 'tcp',
-        port   => '2101',
-        srange => '$INTERNAL',
-    }
-
     # If this is a resourcemanager host, then go ahead
     # and include a resourcemanager on all standby nodes as well
     # as the master node.
     if $::fqdn in $resourcemanager_hosts {
         include cdh::hadoop::resourcemanager
+        # Firewall
+        include role::analytics::hadoop::ferm::resourcemanager
+    }
+
+
+    # Firewall
+    include role::analytics::hadoop::ferm::namenode
+    # Open up port for debugging
+    ferm::service{ 'jmxtrans-jmx':
+        proto  => 'tcp',
+        port   => '2101',
+        srange => '$INTERNAL',
     }
 }
 
