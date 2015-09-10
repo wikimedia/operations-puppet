@@ -40,7 +40,6 @@ class role::eventlogging {
     $eventlogging_host   = hiera('eventlogging_host', $::ipaddress)
     $forwarder_host      = hiera('eventlogging_forwarder_host',   $eventlogging_host)
     $processor_host      = hiera('eventlogging_processor_host',   $eventlogging_host)
-    $multiplexer_host    = hiera('eventlogging_multiplexer_host', $eventlogging_host)
 
     # Define statsd host url
     # for beta cluster, set in https://wikitech.wikimedia.org/wiki/Hiera:Deployment-prep
@@ -145,6 +144,14 @@ class role::eventlogging::forwarder inherits role::eventlogging {
         input => 'udp://0.0.0.0:8422',
         outputs => ["tcp://${forwarder_host}:8422"],
     }
+
+
+    # This forwards the kafka eventlogging-valid-mixed topic to
+    # ZMQ port 8600 for backwards compatibility.
+    eventlogging::service::forwarder { 'legacy-zmq':
+        input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&auto_commit_enable=False&auto_offset_reset=-1",
+        outputs => ["tcp://${eventlogging_host}:8600"],
+    }
 }
 
 
@@ -197,21 +204,6 @@ class role::eventlogging::processor inherits role::eventlogging {
             "tcp://${processor_host}:8522",
         ],
         output_invalid => true,
-    }
-}
-
-
-# == Class role::eventlogging::multiplexer
-# Reads multiple processed 0mq eventlogging streams and
-# concatentates them into a single strream.
-#
-class role::eventlogging::multiplexer inherits role::eventlogging {
-    # Parsed and validated client-side (varnishncsa generated) and
-    # server-side (MediaWiki-generated) events are multiplexed into a
-    # single output stream, published on TCP port 8600.
-    eventlogging::service::multiplexer { 'all events':
-        inputs => [ "tcp://${processor_host}:8521", "tcp://${processor_host}:8522" ],
-        output => "tcp://${multiplexer_host}:8600",
     }
 }
 
