@@ -46,6 +46,15 @@ class redis (
         require => File['/etc/redis/redis.conf'],
     }
 
+    if member(['rdb', 'aof', 'both'], $persist) {
+        # Background save may fail under low memory condition unless
+        # vm.overcommit_memory is 1. This is enabled only if persistance
+        # is enabled
+        sysctl::parameters { 'vm.overcommit_memory':
+            values => { 'vm.overcommit_memory' => 1, },
+        }
+    }
+
     if os_version('ubuntu >= trusty || debian >= jessie') {
         # Upon a config change, Redis will be restarted
         # if it's listening on localhost only, see T83956
