@@ -1945,6 +1945,7 @@ node /^mw200[0-6]\.codfw\.wmnet$/ {
         $ganglia_aggregator = true
     }
     role mediawiki::jobrunner
+    include base::firewall
 }
 
 #mw2007 is a videoscaler
@@ -1978,9 +1979,7 @@ node /^mw208[0-5]\.codfw\.wmnet$/ {
         $ganglia_aggregator = true
     }
     role mediawiki::jobrunner
-    if $::hostname == 'mw2081' {
-        include base::firewall
-    }
+    include base::firewall
 }
 
 #mw2086-mw2089 are imagescalers
