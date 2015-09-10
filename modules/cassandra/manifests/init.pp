@@ -175,6 +175,20 @@
 # [*key_cache_size_in_mb*]
 #   Maximum size of the key cache in memory.
 #   Default: empty (aka "auto" (min(5% of heap (in MB), 100MB)))
+#
+# [*tls_cluster_name*]
+#   If specified, use private keys (client and server) from private.git
+#   belonging to this cluster. Also install the cluster's CA as trusted.
+#   Default: undef
+#
+# [*internode_encryption*]
+#   What level of inter node encryption to enable
+#   Default: none
+#
+# [*client_encryption_enabled*]
+#   Enable client-side encryption
+#   Default: false
+
 class cassandra(
     $cluster_name                     = 'Test Cluster',
     $seeds                            = [$::ipaddress],
@@ -214,6 +228,9 @@ class cassandra(
     $dc                               = 'datacenter1',
     $rack                             = 'rack1',
     $key_cache_size_in_mb             = 400,
+    $tls_cluster_name                 = undef,
+    $internode_encryption             = none,
+    $client_encryption_enabled        = false,
 
     $yaml_template                    = "${module}/cassandra.yaml.erb",
     $env_template                     = "${module}/cassandra-env.sh.erb",
@@ -342,6 +359,32 @@ class cassandra(
         group   => 'cassandra',
         mode    => '0444',
         require => Package['cassandra'],
+    }
+
+    if ($tls_cluster_name) {
+        file { '/etc/cassandra/tls':
+            ensure  => directory,
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0400',
+            require => Package['cassandra'],
+        }
+
+        file { '/etc/cassandra/tls/server.key':
+            content => secret("cassandra/${tls_cluster_name}/${hostname}/${hostname}.kst"),
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0400',
+            require => File['/etc/cassandra/tls'],
+        }
+
+        file { '/etc/cassandra/tls/server.trust':
+            content => secret("cassandra/${tls_cluster_name}/truststore"),
+            owner   => 'cassandra',
+            group   => 'cassandra',
+            mode    => '0400',
+            require => File['/etc/cassandra/tls'],
+        }
     }
 
     file { '/etc/default/cassandra':
