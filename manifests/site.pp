@@ -1986,9 +1986,7 @@ node /^mw208[0-5]\.codfw\.wmnet$/ {
 #mw2086-mw2089 are imagescalers
 node /^mw208[6-9]\.codfw\.wmnet$/ {
     role mediawiki::imagescaler
-    if $::hostname == 'mw2086' {
-        include base::firewall
-    }
+    include base::firewall
 }
 
 #mw2090-mw2119 are appservers
@@ -2006,6 +2004,7 @@ node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
 #mw2148-mw2151 are imagescalers
 node /^mw21(4[89]|5[01])\.codfw\.wmnet$/ {
     role mediawiki::imagescaler
+    include base::firewall
 }
 
 #mw2152 is a videoscaler
