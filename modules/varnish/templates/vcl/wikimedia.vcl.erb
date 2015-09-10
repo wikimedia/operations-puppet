@@ -466,8 +466,8 @@ sub vcl_fetch {
 	set beresp.grace = 60m;
 
 <% if @vcl_config.fetch("do_gzip", false) -%>
-	// Compress ico and SVG files
-	if (beresp.http.content-type ~ "^image/(x-icon|vnd\.microsoft\.icon|svg\+xml)$") {
+	// Compress compressible things if the backend didn't already
+	if (beresp.http.content-type ~ "^text/|^image/(x-icon|vnd\.microsoft\.icon)|(xml|html|javascript|json)$") {
 		set beresp.do_gzip = true;
 	}
 <% end -%>
