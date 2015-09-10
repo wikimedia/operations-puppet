@@ -334,6 +334,13 @@ node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     include standard
 }
 
+# cassandra multi-dc temporary test T111382
+node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
+    role restbase, cassandra
+    include base::firewall
+    include standard
+}
+
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     include base::firewall
     include standard
