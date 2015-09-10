@@ -1,6 +1,6 @@
 class ores::worker(
     $log_level = 'ERROR',
-} {
+) {
     require ores::base
 
     celery::worker { 'ores-worker':
