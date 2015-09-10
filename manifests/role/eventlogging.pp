@@ -10,12 +10,9 @@
 # PHP and mw.eventLog.logEvent() in JavaScript. Events generated in PHP
 # are sent by the app servers directly to eventlog* servers on UDP port 8421.
 # JavaScript-generated events are URL-encoded and sent to our servers by
-# means of an HTTP/S request to bits, which a varnishncsa instance
-# forwards to eventlog* on port 8422. These event streams are parsed,
-# validated, and multiplexed into an output stream that is published via
-# ZeroMQ on TCP port 8600. Data sinks are implemented as subscribers
-# that connect to this endpoint and read data into some storage medium.
-#
+# means of an HTTP/S request to bits, which a varnishkafka instance
+# forwards to Kafka.  These event streams are parsed,
+# validated, and multiplexed into an output streams in Kafka.
 
 
 # == Class role::eventlogging
