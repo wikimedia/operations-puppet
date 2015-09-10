@@ -718,11 +718,19 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
 class role::analytics::hadoop::balancer {
     Class['role::analytics::hadoop::client'] -> Class['role::analytics::hadoop::balancer']
 
-    cron {'hdfs-balancer':
-        command => '(lockfile-check /tmp/hdfs-balancer && echo "$(date \'+\%y/\%m/\%d \%H:\%M:\%S\') WARN Not starting hdfs balancer, it is already running (or the lockfile exists)." >> /var/log/hadoop-hdfs/balancer.log) || (lockfile-create /tmp/hdfs-balancer && hdfs dfsadmin -setBalancerBandwidth $((40*1048576)) && /usr/bin/hdfs balancer 2>&1 >> /var/log/hadoop-hdfs/balancer.log; lockfile-remove /tmp/hdfs-balancer)',
+    file { '/usr/local/bin/hdfs-balancer':
+        source => 'puppet:///files/hadoop/hdfs-balancer',
+        mode   => '754',
+        owner  => 'hdfs',
+        group  => 'hdfs',
+    }
+
+    cron { 'hdfs-balancer':
+        command => '/usr/local/bin/hdfs-balancer >> /var/log/hadoop-hdfs/balancer.log 2>&1',
         user    => 'hdfs',
         # Every day at 6am UTC.
         minute  => 0,
         hour    => 6,
+        require => File['/usr/local/bin/hdfs-balancer'],
     }
 }
