@@ -16,6 +16,21 @@ class base::firewall($ensure = 'present') {
         content => $defscontent,
     }
 
+    # Increase the size of conntrack table size (default is 65536)
+    sysctl::parameters { 'ferm_conntrack':
+        values => {
+            'net.netfilter.nf_conntrack_max'     => 262144,
+        },
+    }
+
+    # The recommendation is to set the hash table size to 1/4 of the conntrack table size
+    # The sysctl value net.netfilter.nf_conntrack_buckets is read-only. It is configured
+    # via a modprobe parameter, bump it manually for running systems
+    exec { "bump nf_conntrack hash table size":
+        command => "/bin/echo 65536 > /sys/module/nf_conntrack/parameters/hashsize",
+        onlyif  => "/usr/bin/test -f /sys/module/nf_conntrack/parameters/hashsize",
+    }
+
     ferm::conf { 'main':
         ensure => $ensure,
         prio   => '00',
