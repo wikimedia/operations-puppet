@@ -24,6 +24,11 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY
 TABLES
     ON `designate`.* TO 'designate'@'208.80.154.12';
 
+-- designate_pool_manager
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES
+    ON `designate\_pool\_manager`.* TO 'designate'@'208.80.154.12';
+
 -- labnodepool1001 backend database
 
 CREATE USER 'nodepool'@'10.64.20.18' IDENTIFIED BY '<%= @nodepool_pass %>';
