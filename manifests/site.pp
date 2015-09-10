@@ -2011,6 +2011,7 @@ node /^mw21(4[89]|5[01])\.codfw\.wmnet$/ {
 #mw2152 is a videoscaler
 node 'mw2152.codfw.wmnet' {
     role mediawiki::videoscaler
+    include base::firewall
 }
 
 #mw2153-mw2199 are appservers
