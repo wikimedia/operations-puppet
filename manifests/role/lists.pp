@@ -197,6 +197,12 @@ class role::lists::migration {
         hosts_allow => '208.80.154.61',
     }
 
+    rsync::server::module { 'qfiles':
+        path        => '/var/lib/mailman/qfiles',
+        read_only   => 'no',
+        hosts_allow => '208.80.154.61',
+    }
+
     package { 'mailman':
         ensure => 'present',
     }
