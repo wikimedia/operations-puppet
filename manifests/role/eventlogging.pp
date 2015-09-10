@@ -158,9 +158,7 @@ class role::eventlogging::processor inherits role::eventlogging {
     # These will auto balance amongst themselves.
     $client_side_processors = hiera(
         'eventlogging_client_side_processors',
-        [
-            'client-side-0',
-        ]
+        ['client-side-0']
     )
     eventlogging::service::processor { $client_side_processors:
         format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
