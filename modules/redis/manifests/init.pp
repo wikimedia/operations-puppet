@@ -46,7 +46,8 @@ class redis (
         require => File['/etc/redis/redis.conf'],
     }
 
-    if member(['rdb', 'aof', 'both'], $persist) {
+    # member() doesn't like it when $persist is false
+    if $persist and member(['rdb', 'aof', 'both'], $persist) {
         # Background save may fail under low memory condition unless
         # vm.overcommit_memory is 1. This is enabled only if persistance
         # is enabled
