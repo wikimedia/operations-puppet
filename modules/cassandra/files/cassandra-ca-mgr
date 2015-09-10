@@ -133,7 +133,7 @@ class Keystore(object):
         self.crt = os.path.join(self.base, name, "%s.crt" % name)
         self.password = password
         self.size = size
-        self.subject = KeytoolSubject(self.name, **cert)
+        self.subject = KeytoolSubject(self.name, **cert["subject"])
         self.valid = int(cert.get("valid", 365))
 
         mkdirs(os.path.join(self.base, name))
@@ -247,7 +247,7 @@ class OpensslCertificate(object):
         self.truststore = os.path.join(self.base, "truststore")
         self.key = key
         self.password = password
-        self.subject = OpensslSubject(name, **(kwargs.get("subject", dict())))
+        self.subject = OpensslSubject(name, **kwargs["subject"])
         self.valid = int(kwargs.get("valid", 365))
 
     def generate(self):
