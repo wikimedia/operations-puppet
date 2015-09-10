@@ -1966,10 +1966,7 @@ node /^mw20(0[89]|[1-4][0-9])\.codfw\.wmnet$/ {
 #mw2050-2079 are api appservers
 node /^mw20[5-7][0-9]\.codfw\.wmnet$/ {
     role mediawiki::appserver::api
-
-    if $::hostname == 'mw2050' {
-        include base::firewall
-    }
+    include base::firewall
 }
 
 # ROW B codfw appservers: mw2080-mw2147
@@ -1996,6 +1993,7 @@ node /^mw2(09[0-9]|1[0-1][0-9])\.codfw\.wmnet$/ {
 #mw2120-2147 are api appservers
 node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
     role mediawiki::appserver::api
+    include base::firewall
 }
 
 # ROW C codfw appservers: mw2148-mw2234
@@ -2020,6 +2018,7 @@ node /^mw21(5[3-9]|[6-9][0-9])\.codfw\.wmnet$/ {
 #mw2200-2234 are api appservers
 node /^mw22([0-2][0-9]|3[0-4])\.codfw\.wmnet$/ {
     role mediawiki::appserver::api
+    include base::firewall
 }
 
 # Codfw ldap server, aka ldap-codfw
