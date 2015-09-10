@@ -731,11 +731,11 @@ request_scheduler: org.apache.cassandra.scheduler.NoScheduler
 # http://download.oracle.com/javase/6/docs/technotes/guides/security/jsse/JSSERefGuide.html#CreateKeystore
 #
 server_encryption_options:
-    internode_encryption: none
-    keystore: conf/.keystore
-    keystore_password: cassandra
-    truststore: conf/.truststore
-    truststore_password: cassandra
+    internode_encryption: <%= @internode_encryption %>
+    keystore: tls/server.key
+    keystore_password: placeholder
+    truststore: tls/server.trust
+    truststore_password: placeholder
     # More advanced defaults below:
     # protocol: TLS
     # algorithm: SunX509
@@ -745,13 +745,13 @@ server_encryption_options:
 
 # enable or disable client/server encryption.
 client_encryption_options:
-    enabled: false
-    keystore: conf/.keystore
-    keystore_password: cassandra
+    enabled: <%= @client_encryption_enabled %>
+    keystore: tls/client.key
+    keystore_password: placeholder
     # require_client_auth: false
     # Set trustore and truststore_password if require_client_auth is true
-    # truststore: conf/.truststore
-    # truststore_password: cassandra
+    # truststore: tls/client.trust
+    # truststore_password: placeholder
     # More advanced defaults below:
     # protocol: TLS
     # algorithm: SunX509
