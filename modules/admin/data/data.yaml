@@ -72,7 +72,8 @@ groups:
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
-              gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis]
+              gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis,
+              addshore]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -221,7 +222,7 @@ groups:
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
-              csteipp, smalyshev, ebernhardson]
+              csteipp, smalyshev, ebernhardson, addshore]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -376,7 +377,8 @@ groups:
   mw-log-readers:
     gid: 760
     description: users who can login on fluorine and read mediawiki logs
-    members: [tjones]
+    members: [tjones, addshore]
+
   apertium-admins:
     description: Group of apertium admins
     gid: 761
