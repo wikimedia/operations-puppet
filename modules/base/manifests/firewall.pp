@@ -16,6 +16,15 @@ class base::firewall($ensure = 'present') {
         content => $defscontent,
     }
 
+    # Increase the size of conntrack table size (default is 65536)
+    # Bump the hash table size accordingly (default is 16384)
+    sysctl::parameters { 'ferm_conntrack':
+        values => {
+            'net.netfilter.nf_conntrack_max'     => 262144,
+            'net.netfilter.nf_conntrack_buckets' => 65536,
+        },
+    }
+
     ferm::conf { 'main':
         ensure => $ensure,
         prio   => '00',
