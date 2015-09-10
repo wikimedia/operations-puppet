@@ -5,16 +5,17 @@ class role::designate::config {
     include passwords::labs::rabbitmq
 
     $commondesignateconfig = {
-        db_name            => 'designate',
-        db_user            => $passwords::designate::db_user,
-        db_pass            => $passwords::designate::db_pass,
-        rabbit_user        => $passwords::labs::rabbitmq::rabbit_userid,
-        rabbit_pass        => $passwords::labs::rabbitmq::rabbit_password,
-        pdns_db_name       => 'pdns',
-        pdns_db_user       => $passwords::pdns::db_user,
-        pdns_db_pass       => $passwords::pdns::db_pass,
-        pdns_db_admin_user => $passwords::pdns::db_admin_user,
-        pdns_db_admin_pass => $passwords::pdns::db_admin_pass,
+        db_name              => 'designate',
+        pool_manager_db_name => 'designate_pool_manager',
+        db_user              => $passwords::designate::db_user,
+        db_pass              => $passwords::designate::db_pass,
+        rabbit_user          => $passwords::labs::rabbitmq::rabbit_userid,
+        rabbit_pass          => $passwords::labs::rabbitmq::rabbit_password,
+        pdns_db_name         => 'pdns',
+        pdns_db_user         => $passwords::pdns::db_user,
+        pdns_db_pass         => $passwords::pdns::db_pass,
+        pdns_db_admin_user   => $passwords::pdns::db_admin_user,
+        pdns_db_admin_pass   => $passwords::pdns::db_admin_pass,
     }
 }
 

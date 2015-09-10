@@ -1,0 +1,11 @@
+description "Designate mdns"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on [!12345]
+
+setuid designate
+console log
+
+exec /usr/bin/designate-mdns
+respawn
+respawn limit 10 30
