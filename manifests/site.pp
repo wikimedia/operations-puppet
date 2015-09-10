@@ -992,7 +992,6 @@ node 'eventlog1001.eqiad.wmnet' {
     role eventlogging,
         eventlogging::forwarder,
         eventlogging::processor,
-        eventlogging::multiplexer,
         eventlogging::consumer::mysql,
         eventlogging::consumer::files
 
