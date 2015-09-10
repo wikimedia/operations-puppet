@@ -4,8 +4,8 @@ start on (local-filesystems and net-device-up IFACE!=lo)
 stop on [!12345]
 
 setuid designate
-console log
 
+chdir /var/lib/designate
 exec /usr/bin/designate-pool-manager
 respawn
 respawn limit 10 30
