@@ -1,6 +1,6 @@
 #
 # THIS FILE IS MAINTAINED BY PUPPET
-# source: modules/toollabs/templates/exim4.conf.erb
+# source: modules/toollabs/templates/mail-relay.exim4.conf.erb
 # from:   toollabs::mailrelay
 #
 
@@ -18,7 +18,49 @@ MAILDOMAIN=<%= @mail_domain %>
 primary_hostname = <%= @external_hostname %>
 qualify_domain = MAILDOMAIN
 
-domainlist local_domains = MAILDOMAIN
+domainlist local_domains = MAILDOMAIN : \
+                           *.INSTANCEPROJECT.eqiad.wmflabs : \
+                           # The following list names all grid submit
+                           # hosts that have an alias defined in
+                           # host_aliases which prevents them from
+                           # matching the wildcard above.  The list
+                           # can be generated with the command "qconf
+                           # -ss | grep -v
+                           # '\.tools\.eqiad\.wmflabs$'".  When
+                           # host_aliases has been decommissioned
+                           # (T109485), this list should be empty.
+                           tools-bastion-01.eqiad.wmflabs : \
+                           tools-bastion-02.eqiad.wmflabs : \
+                           tools-checker-01.eqiad.wmflabs : \
+                           tools-checker-02.eqiad.wmflabs : \
+                           tools-mail.eqiad.wmflabs : \
+                           tools-precise-dev.eqiad.wmflabs : \
+                           tools-services-02.eqiad.wmflabs : \
+                           tools-submit.eqiad.wmflabs : \
+                           tools-webgrid-generic-1401.eqiad.wmflabs : \
+                           tools-webgrid-generic-1402.eqiad.wmflabs : \
+                           tools-webgrid-generic-1403.eqiad.wmflabs : \
+                           tools-webgrid-generic-1404.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1201.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1202.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1203.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1204.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1205.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1206.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1207.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1208.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1209.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1210.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1401.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1402.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1403.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1404.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1405.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1406.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1407.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1408.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1409.eqiad.wmflabs : \
+                           tools-webgrid-lighttpd-1410.eqiad.wmflabs
 hostlist relay_from_hosts = 10.0.0.0/8
 
 acl_smtp_rcpt = acl_check_rcpt
