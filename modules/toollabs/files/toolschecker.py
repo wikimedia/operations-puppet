@@ -32,15 +32,15 @@ def ldap_catalog_check():
     # Verify that we can get this host's catalog from the puppet server
     puppetmaster = "labs-puppetmaster-eqiad.wikimedia.org"
     fqdn = socket.getfqdn()
-    keyfile = "/var/lib/toolschecker/puppetcerts/key.pem" % fqdn
-    certfile = "/var/lib/toolschecker/puppetcerts/cert.pem" % fqdn
+    keyfile = "/var/lib/toolschecker/puppetcerts/key.pem"
+    certfile = "/var/lib/toolschecker/puppetcerts/cert.pem"
     cafile = "/var/lib/toolschecker/puppetcerts/ca.pem"
     url = "https://%s:8140/production/catalog/%s" % (puppetmaster, fqdn)
     request = requests.get(url, verify=cafile, cert=(certfile, keyfile))
     if request.status_code != 200:
         return False
     if 'document_type' in request.json():
-        if request.json['document_type'].lower() == 'catalog'.lower():
+        if request.json()['document_type'].lower() == 'catalog'.lower():
             return True
     return False
 
