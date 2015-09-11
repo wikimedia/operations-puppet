@@ -3,5 +3,8 @@ class ores::redis(
 ) {
     class { '::redis':
         maxmemory => $maxmemory,
+        redis_options  => {
+            'tcp-keepalive' => 60,
+        }
     }
 }
