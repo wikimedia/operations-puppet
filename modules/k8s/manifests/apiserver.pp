@@ -28,6 +28,7 @@ class k8s::apiserver(
         owner  => 'kube-apiserver',
         group  => 'kube-apiserver',
         mode   => '0400',
+        notify => Base::Service_unit['kube-apiserver'],
     }
 
     file { '/etc/kubernetes/abac':
@@ -35,9 +36,13 @@ class k8s::apiserver(
         owner  => 'kube-apiserver',
         group  => 'kube-apiserver',
         mode   => '0400',
+        notify => Base::Service_unit['kube-apiserver'],
     }
 
-    include k8s::apiserver_ssl
+    class { '::k8s::ssl':
+        provide_private => true,
+        notify => Base::Service_unit['kube-apiserver'],
+    }
 
     base::service_unit { 'kube-apiserver':
         systemd => true,

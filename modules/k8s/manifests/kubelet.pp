@@ -20,6 +20,11 @@ class k8s::kubelet(
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
+        notify  => Base::Service_unit['kubeley'],
+    }
+
+    class { '::k8s::ssl':
+        notify  => Base::Service_unit['kubeley'],
     }
 
     base::service_unit { 'kubelet':
