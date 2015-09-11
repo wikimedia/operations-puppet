@@ -3,7 +3,7 @@ Description=Kubelet
 
 [Service]
 ExecStart=/usr/bin/kubelet \
-    --api-servers=http://<%= @master_ip %>:8080 \
+    --api-servers=https://<%= @master_ip %>:6443 \
     --config=/etc/kubernetes/manifests \
     --configure-cbr0=false \
     --cluster-dns=<%= @cluster_dns_ip %> \
