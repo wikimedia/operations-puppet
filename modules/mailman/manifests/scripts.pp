@@ -1,7 +1,7 @@
 # helper scripts for mailman admins
 class mailman::scripts {
 
-    file { '/var/lib/mailman/bin/remove_from_private':
+    file { '/usr/local/sbin/remove_from_private_list':
         ensure => 'present',
         owner  => 'root',
         group  => 'list',
@@ -9,7 +9,7 @@ class mailman::scripts {
         source => 'puppet:///modules/mailman/scripts/remove_from_private.sh'
     }
 
-    file { '/var/lib/mailman/bin/disable_list.sh':
+    file { '/usr/local/sbin/disable_list':
         ensure => 'present',
         owner  => 'root',
         group  => 'list',
@@ -17,7 +17,7 @@ class mailman::scripts {
         source => 'puppet:///modules/mailman/scripts/disable_list.sh'
     }
 
-    file { '/var/lib/mailman/bin/rsync_lists.sh':
+    file { '/usr/local/sbin/rsync_lists':
         ensure => 'present',
         owner  => 'root',
         group  => 'list',
@@ -25,7 +25,7 @@ class mailman::scripts {
         source => 'puppet:///modules/mailman/scripts/rsync_lists.sh'
     }
 
-    file { '/var/lib/mailman/bin/rsync_exim.sh':
+    file { '/usr/local/sbin/rsync_exim':
         ensure => 'present',
         owner  => 'root',
         group  => 'list',
