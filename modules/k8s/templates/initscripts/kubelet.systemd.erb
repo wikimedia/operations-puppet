@@ -5,6 +5,7 @@ Description=Kubelet
 ExecStart=/usr/bin/kubelet \
     --config=/etc/kubernetes/manifests \
     --kubeconfig=/etc/kubernetes/kubeconfig \
+    --apiservers=https://<%= @master_host %>:6443 \
     --configure-cbr0=false \
     --cluster-dns=<%= @cluster_dns_ip %> \
     --cluster-domain=kube
