@@ -9,15 +9,17 @@
   </Directory>
 
   <Location />
-    AuthName "<%= @auth_ldap['name'] %>"
-    AuthType Basic
-    AuthBasicProvider ldap
-    AuthLDAPBindDN <%= @auth_ldap['bind_dn'] %>
-    AuthLDAPBindPassword <%= @auth_ldap['bind_password'] %>
-    AuthLDAPURL "<%= @auth_ldap['url'] %>"
-    <% @auth_ldap['groups'].each do |group| -%>
-    Require ldap-group <%= group %>
-    <% end -%>
+    <Limit POST PUT DELETE>
+      AuthName "<%= @auth_ldap['name'] %>"
+      AuthType Basic
+      AuthBasicProvider ldap
+      AuthLDAPBindDN <%= @auth_ldap['bind_dn'] %>
+      AuthLDAPBindPassword <%= @auth_ldap['bind_password'] %>
+      AuthLDAPURL "<%= @auth_ldap['url'] %>"
+      <% @auth_ldap['groups'].each do |group| -%>
+      Require ldap-group <%= group %>
+      <% end -%>
+    </Limit>
   </Location>
 
   <Directory /srv/deployment/grafana/grafana/dist>
