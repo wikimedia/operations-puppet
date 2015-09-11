@@ -121,6 +121,14 @@ class nodepool(
         mode   => '0555',
     }
 
+    file { '/etc/default/nodepool':
+        ensure => present,
+        source => 'puppet:///modules/nodepool/nodepool.default',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
     base::service_unit { 'nodepool':
         ensure         => present,
         refresh        => true,
@@ -129,6 +137,7 @@ class nodepool(
         require        => [
             Package['nodepool'],
             File['/usr/bin/nodepool-graceful-stop'],
+            File['/etc/default/nodepool'],
         ],
     }
 

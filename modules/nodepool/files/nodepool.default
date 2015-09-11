@@ -1,0 +1,4 @@
+# Host to send statsd metrics to
+STATSD_HOST=statsd.eqiad.wmnet
+# Port for the statsd daemon (default 8125)
+STATSD_PORT=8125
