@@ -23,7 +23,10 @@ class k8s::kubelet(
         notify  => Base::Service_unit['kubelet'],
     }
 
-    file { '/var/run/kubernetes':
+    file { [
+        '/var/run/kubernetes',
+        '/var/lib/kubelet',
+    ] :
         ensure => directory,
         owner  => 'kubernetes',
         group  => 'kubernetes',
