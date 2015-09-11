@@ -21,11 +21,35 @@ class toollabs::checker inherits toollabs {
         notify => Service['toolschecker'],
     }
 
-    file { '/run/toolschecker':
+    file { ['/run/toolschecker', '/run/toolschecker/puppetcerts']:
         ensure => directory,
         owner  => "${::labsproject}.toolschecker",
         group  => 'www-data',
         mode   => '0755',
+    }
+
+    # We need this host's puppet cert and key (readable) so we can check
+    #  puppet status
+    file { '/run/toolschecker/puppetcerts/cert.pem':
+        ensure => present,
+        owner  => "${::labsproject}.toolschecker",
+        group  => 'www-data',
+        mode   => '0755',
+        source => "/var/lib/puppet/ssl/certs/${::fqdn}.pem"
+    }
+    file { '/run/toolschecker/puppetcerts/key.pem':
+        ensure => present,
+        owner  => "${::labsproject}.toolschecker",
+        group  => 'www-data',
+        mode   => '0755',
+        source => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem"
+    }
+    file { '/run/toolschecker/puppetcerts/ca.pem':
+        ensure => present,
+        owner  => "${::labsproject}.toolschecker",
+        group  => 'www-data',
+        mode   => '0755',
+        source => '/var/lib/puppet/ssl/certs/ca.pem'
     }
 
     file { '/etc/init/toolschecker.conf':
