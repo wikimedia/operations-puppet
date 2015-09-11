@@ -32,11 +32,11 @@ class nagios_common::contacts(
     $ensure = present,
     $config_dir = '/etc/icinga',
     $source = undef,
-    $content = template('nagios_common/contacts.cfg.erb'),
+    $content = undef,
     $owner = 'icinga',
     $group = 'icinga',
     $contacts = [],
-    ) {
+) {
     if ($source != undef) {
         file { "${config_dir}/contacts.cfg":
             ensure => $ensure,
@@ -46,9 +46,15 @@ class nagios_common::contacts(
             mode   => '0600', # Only $owner:$group can read/write
         }
     } else {
+        if ($content == undef) {
+            $real_content = template('nagios_common/contacts.cfg.erb')
+        } else {
+            $real_content = $content
+        }
+
         file { "${config_dir}/contacts.cfg":
             ensure  => $ensure,
-            content => $content,
+            content => $real_content,
             owner   => $owner,
             group   => $group,
             mode    => '0600', # Only $owner:$group can read/write
