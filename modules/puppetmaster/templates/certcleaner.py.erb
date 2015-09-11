@@ -2,7 +2,7 @@
 
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/puppetsigner.py
+### puppet:///modules/puppetmaster/templates/certcleaner.py.erb
 #####################################################################
 
 import sys
@@ -21,6 +21,26 @@ def getPuppetInfo(attr, conffile="/etc/puppet/puppet.conf"):
     for line in f:
         if line.split('=', 1)[0].strip() == attr:
             return line.split('=', 1)[1].strip()
+
+
+def purgeSaltKeys(output, minion_type):
+    salt_hosts = json.loads(output)
+    for host in salt_hosts[minion_type]:
+        if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
+            print 'Invalid hostname', host
+            subprocess.check_call(['/usr/bin/salt-key', '-y', '--rotate-aes-key=', '-r', host])
+            subprocess.check_call(['/usr/bin/salt-key', '-y', '--rotate-aes-key=', '-d', host])
+            continue
+
+        ldap_query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
+        host_result = ds.search_s(basedn, ldap.SCOPE_SUBTREE, ldap_query)
+        if not host_result:
+            sys.stderr.write('Removing stale salt key %s\n' % host)
+            try:
+                subprocess.check_call(['/usr/bin/salt-key', '-y', '--rotate-aes-key=', '-r', host])
+                subprocess.check_call(['/usr/bin/salt-key', '-y', '--rotate-aes-key=', '-d', host])
+            except subprocess.CalledProcessError:
+                sys.stderr.write('Failed to remove stale salt key %s\n' % host)
 
 
 parser = OptionParser(conflict_handler="resolve")
@@ -91,48 +111,17 @@ try:
                         sys.stderr.write('Failed to rm %s, out of ideas\n' % requestpath)
 
     if os.path.exists('/usr/bin/salt-key'):
+        # Delete salt keys for hosts that can't be found in ldap
         salt_output = subprocess.check_output(['/usr/bin/salt-key',
                                                '--list', 'unaccepted',
                                                '--out', 'json'])
-        # Delete salt keys that can't be found in ldap
-        hosts = json.loads(salt_output)
-        for host in hosts["minions_pre"]:
-            if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
-                print 'Invalid hostname', host
-                subprocess.check_call(['/usr/bin/salt-key', '-y', '-r', host])
-                subprocess.check_call(['/usr/bin/salt-key', '-y', '-d', host])
-                continue
-
-            query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
-            host_result = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
-            if not host_result:
-                try:
-                    subprocess.check_call(['/usr/bin/salt-key', '-y', '-r', host])
-                    subprocess.check_call(['/usr/bin/salt-key', '-y', '-d', host])
-                except subprocess.CalledProcessError:
-                    sys.stderr.write('Failed to update salt key %s\n' % host)
+        purgeSaltKeys(salt_output, "minions_pre")
 
         # Purge accepted but unused keys
         salt_output = subprocess.check_output(['/usr/bin/salt-key',
                                                '--list', 'accepted',
                                                '--out', 'json'])
-        hosts = json.loads(salt_output)
-        for host in hosts["minions"]:
-            if not re.match(r'^[\.a-zA-Z0-9_-]+\.eqiad\.wmflabs$', host):
-                print 'Invalid hostname', host
-                subprocess.check_call(['/usr/bin/salt-key', '-y', '-r', host])
-                subprocess.check_call(['/usr/bin/salt-key', '-y', '-d', host])
-                continue
-
-            query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
-            host_result = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
-            if not host_result:
-                sys.stderr.write('Removing stale salt key %s' % host)
-                try:
-                    subprocess.check_call(['/usr/bin/salt-key', '-y', '-r', host])
-                    subprocess.check_call(['/usr/bin/salt-key', '-y', '-d', host])
-                except subprocess.CalledProcessError:
-                    sys.stderr.write('Failed remove stale salt key %s\n' % host)
+        purgeSaltKeys(salt_output, "minions")
 
 finally:
     ds.unbind()
