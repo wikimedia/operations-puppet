@@ -200,7 +200,7 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     eventlogging::service::consumer { 'mysql-m4-master':
         input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
-        output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}",
+        output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         # Restrict permissions on this config file since it contains a password.
         owner  => 'root',
         group  => 'eventlogging',
