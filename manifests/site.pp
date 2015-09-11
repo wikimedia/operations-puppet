@@ -2476,6 +2476,10 @@ node /^snapshot100[1-4]\.eqiad\.wmnet/ {
     if $::fqdn == 'snapshot1003.eqiad.wmnet' {
         include role::snapshot::cron::primary
     }
+
+    if $::hostname == 'snapshot1001' {
+        include base::firewall
+    }
 }
 
 # codfw poolcounters
