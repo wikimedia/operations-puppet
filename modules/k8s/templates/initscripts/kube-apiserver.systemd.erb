@@ -7,11 +7,12 @@ Group=kube-apiserver
 ExecStart=/usr/bin/kube-apiserver \
     --etcd-servers=<%= @etcd_servers %> \
     --service-cluster-ip-range=192.168.0.0/24 \
-    --token-auth-file=/etc/kube/tokenauth \
-    --advertise-address=<%= @master_ip %> \
+    --token-auth-file=/etc/kubernetes/tokenauth \
     --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger \
     --authorization-mode=ABAC \
-    --authorization-policy-file=/etc/kube/abac
+    --authorization-policy-file=/etc/kubernetes/abac \
+    --tls-private-key-file=/var/lib/kubernetes/ssl/private_keys/server.key \
+    --tls-cert-file=/var/lib/kubernetes/ssl/certs/cert.pem
 
 [Install]
 WantedBy=multi-user.target
