@@ -1002,7 +1002,7 @@ node 'eventlog1001.eqiad.wmnet' {
 
 # virtual machine for mailman list server
 node 'fermium.wikimedia.org' {
-    role lists::migration
+    role lists
     include standard
     include admin
     include base::firewall
