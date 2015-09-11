@@ -23,6 +23,13 @@ class k8s::kubelet(
         notify  => Base::Service_unit['kubelet'],
     }
 
+    file { '/var/run/kubernetes':
+        ensure => directory,
+        owner  => 'kubernetes',
+        group  => 'kubernetes',
+        mode   => '0700',
+    }
+
     include k8s::users
 
     class { '::k8s::ssl':
