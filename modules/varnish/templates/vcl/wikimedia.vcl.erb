@@ -212,7 +212,7 @@ sub https_recv_redirect {
 			}
 		}
 <% if @vcl_config.fetch("secure_post", true) -%>
-		if (req.request == "POST" && !(req.http.Host ~ "\.beta\.wmflabs\.org")) {
+		if (req.request == "POST" && !(req.http.Host ~ "(?i)\.beta\.wmflabs\.org$")) {
 			error 403 "Insecure POST Forbidden - use HTTPS";
 		}
 <% end %>
