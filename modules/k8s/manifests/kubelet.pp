@@ -9,16 +9,16 @@ class k8s::kubelet(
         '/etc/kubernetes/manifests',
     ]:
         ensure => directory,
-        owner  => 'kubernetes',
-        group  => 'kubernetes',
+        owner  => 'root',
+        group  => 'root',
         mode   => '0755',
     }
 
     file { '/etc/kubernetes/kubeconfig':
         ensure  => present,
         content => template('k8s/kubeconfig-client.yaml.erb'),
-        owner   => 'kubernetes',
-        group   => 'kubernetes',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0400',
         notify  => Base::Service_unit['kubelet'],
     }
@@ -28,15 +28,15 @@ class k8s::kubelet(
         '/var/lib/kubelet',
     ] :
         ensure => directory,
-        owner  => 'kubernetes',
-        group  => 'kubernetes',
+        owner  => 'root',
+        group  => 'root',
         mode   => '0700',
     }
 
-    include k8s::users
-
     class { '::k8s::ssl':
-        notify  => Base::Service_unit['kubelet'],
+        notify => Base::Service_unit['kubelet'],
+        user   => 'root',
+        group  => 'root',
     }
 
     base::service_unit { 'kubelet':

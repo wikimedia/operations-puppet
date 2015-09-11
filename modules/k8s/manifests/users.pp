@@ -9,7 +9,5 @@ class k8s::users {
         shell      => '/bin/false',
         system     => true,
         managehome => false,
-        groups     => ['docker',],
     }
-
 }
