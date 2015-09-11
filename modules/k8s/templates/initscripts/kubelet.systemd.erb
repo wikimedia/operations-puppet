@@ -3,8 +3,8 @@ Description=Kubelet
 
 [Service]
 ExecStart=/usr/bin/kubelet \
-    --api-servers=https://<%= @master_ip %>:6443 \
     --config=/etc/kubernetes/manifests \
+    --kubeconfig=/etc/kubernetes/kubeconfig \
     --configure-cbr0=false \
     --cluster-dns=<%= @cluster_dns_ip %> \
     --cluster-domain=kube
