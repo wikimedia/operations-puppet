@@ -196,6 +196,27 @@ class gerrit::jetty ($ldap_hosts,
         require => Exec['install_gerrit_jetty'],
     }
 
+    file { '/var/lib/gerrit2/review_site/lib':
+        ensure  => directory,
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0755',
+        require => [Exec['install_gerrit_jetty'],
+                    File['/var/lib/gerrit2/review_site']
+        ],
+    }
+
+    # This file is tuned for gerrit-2.8.1-4-ga1048ce. If you update gerrit,
+    # you also need to update this jar to match the BouncyCastle version
+    # required by the fresh gerrit.
+    file { '/var/lib/gerrit2/review_site/lib/bcprov-jdk16-144.jar':
+        owner   => 'gerrit2',
+        group   => 'gerrit2',
+        mode    => '0444',
+        source  => 'puppet:///modules/gerrit/bcprov-jdk16-144.jar',
+        require => Exec['install_gerrit_jetty'],
+    }
+
     git::clone { 'operations/gerrit/plugins':
         directory => '/var/lib/gerrit2/review_site/plugins',
         branch    => 'master',
@@ -224,7 +245,9 @@ class gerrit::jetty ($ldap_hosts,
         enable    => true,
         hasstatus => false,
         status    => '/etc/init.d/gerrit check',
-        require   => Exec['install_gerrit_jetty'],
+        require   => [Exec['install_gerrit_jetty'],
+                      File['/var/lib/gerrit2/review_site/lib/bcprov-jdk16-144.jar']
+        ],
     }
 
     nrpe::monitor_service { 'gerrit':
