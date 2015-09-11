@@ -4,37 +4,27 @@ class k8s::apiserver(
 ) {
     require_package('kube-apiserver')
 
-    group { 'kube-apiserver':
-        ensure => present,
-        system => true,
-    }
-
-    user { 'kube-apiserver':
-        ensure     => present,
-        shell      => '/bin/false',
-        system     => true,
-        managehome => false,
-    }
+    include k8s::users
 
     file { '/etc/kubernetes':
         ensure => directory,
-        owner  => 'kube-apiserver',
-        group  => 'kube-apiserver',
+        owner  => 'kubernetes',
+        group  => 'kubernetes',
         mode   => '0700',
     }
 
     file { '/etc/kubernetes/tokenauth':
         source => '/srv/kube-tokenauth',
-        owner  => 'kube-apiserver',
-        group  => 'kube-apiserver',
+        owner  => 'kubernetes',
+        group  => 'kubernetes',
         mode   => '0400',
         notify => Base::Service_unit['kube-apiserver'],
     }
 
     file { '/etc/kubernetes/abac':
         source => '/srv/kube-abac',
-        owner  => 'kube-apiserver',
-        group  => 'kube-apiserver',
+        owner  => 'kubernetes',
+        group  => 'kubernetes',
         mode   => '0400',
         notify => Base::Service_unit['kube-apiserver'],
     }
