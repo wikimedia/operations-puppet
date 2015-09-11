@@ -37,7 +37,7 @@ class k8s::apiserver(
         mode   => '0400',
     }
 
-    require k8s::apiserver_ssl
+    include k8s::apiserver_ssl
 
     base::service_unit { 'kube-apiserver':
         systemd => true,
