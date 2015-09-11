@@ -30,12 +30,13 @@ class package_builder::environments(
         basepath     => $basepath,
     }
     package_builder::pbuilder_base { 'sid-amd64':
-        distribution => 'sid',
-        components   => 'main',
-        architecture => 'amd64',
-        mirror       => 'http://mirrors.wikimedia.org/debian',
-        keyring      => '/usr/share/keyrings/debian-archive-keyring.gpg',
-        basepath     => $basepath,
+        distribution       => 'sid',
+        distribution_alias => 'unstable',
+        components         => 'main',
+        architecture       => 'amd64',
+        mirror             => 'http://mirrors.wikimedia.org/debian',
+        keyring            => '/usr/share/keyrings/debian-archive-keyring.gpg',
+        basepath           => $basepath,
     }
     # i386 architecture
     package_builder::pbuilder_base { 'precise-i386':
@@ -63,11 +64,12 @@ class package_builder::environments(
         basepath     => $basepath,
     }
     package_builder::pbuilder_base { 'sid-i386':
-        distribution => 'sid',
-        components   => 'main',
-        architecture => 'i386',
-        mirror       => 'http://mirrors.wikimedia.org/debian',
-        keyring      => '/usr/share/keyrings/debian-archive-keyring.gpg',
-        basepath     => $basepath,
+        distribution       => 'sid',
+        distribution_alias => 'unstable',
+        components         => 'main',
+        architecture       => 'i386',
+        mirror             => 'http://mirrors.wikimedia.org/debian',
+        keyring            => '/usr/share/keyrings/debian-archive-keyring.gpg',
+        basepath           => $basepath,
     }
 }
