@@ -2,6 +2,8 @@
 Description=Kubernetes Scheduler
 
 [Service]
+User=kubernetes
+Group=kubernetes
 ExecStart=/usr/bin/kube-scheduler \
     --master=127.0.0.1:8080
 

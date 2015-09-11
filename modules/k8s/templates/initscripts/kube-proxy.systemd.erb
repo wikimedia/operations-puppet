@@ -2,6 +2,8 @@
 Description=Kubernetes Proxy
 
 [Service]
+User=kubernetes
+Group=kubernetes
 ExecStart=/usr/bin/kube-proxy \
     --kubeconfig=/etc/kubernetes/kubeconfig \
     --v=10

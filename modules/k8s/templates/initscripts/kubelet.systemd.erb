@@ -2,6 +2,8 @@
 Description=Kubelet
 
 [Service]
+User=kubernetes
+Group=kubernetes
 ExecStart=/usr/bin/kubelet \
     --config=/etc/kubernetes/manifests \
     --kubeconfig=/etc/kubernetes/kubeconfig \

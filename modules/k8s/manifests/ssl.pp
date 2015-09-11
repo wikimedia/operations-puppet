@@ -15,16 +15,16 @@ class k8s::ssl(
         '/var/lib/kubernetes/ssl/private_keys',
     ]:
         ensure => directory,
-        owner  => 'kube-apiserver',
-        group  => 'kube-apiserver',
+        owner  => 'kubernetes',
+        group  => 'kubernetes',
         mode   => '0500',
     }
 
 
     file { '/var/lib/kubernetes/ssl/certs/ca.pem':
         ensure  => present,
-        owner   => 'kube-apiserver',
-        group   => 'kube-apiserver',
+        owner   => 'kubernetes',
+        group   => 'kubernetes',
         mode    => '0400',
         source  => "${ssldir}/certs/ca.pem",
         require => File['/var/lib/kubernetes/ssl/certs'],
@@ -32,8 +32,8 @@ class k8s::ssl(
 
     file { '/var/lib/kubernetes/ssl/certs/cert.pem':
         ensure  => present,
-        owner   => 'kube-apiserver',
-        group   => 'kube-apiserver',
+        owner   => 'kubernetes',
+        group   => 'kubernetes',
         mode    => '0400',
         source  => "${ssldir}/certs/${puppet_cert_name}.pem",
         require => File['/var/lib/kubernetes/ssl/certs/ca.pem'],
@@ -42,8 +42,8 @@ class k8s::ssl(
     if $provide_private {
         file { '/var/lib/kubernetes/ssl/private_keys/server.key':
             ensure  => present,
-            owner   => 'kube-apiserver',
-            group   => 'kube-apiserver',
+            owner   => 'kubernetes',
+            group   => 'kubernetes',
             mode    => '0400',
             source  => "${ssldir}/private_keys/${puppet_cert_name}.pem",
             require => File['/var/lib/kubernetes/ssl/private_keys'],
