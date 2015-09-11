@@ -51,6 +51,7 @@ define postgresql::user(
             command => "/usr/bin/createuser --no-superuser --no-createdb --no-createrole ${user}",
             user    => 'postgres',
             unless  => $userexists,
+            notify  => Exec["pass_set-${name}"],
         }
         # This will set the password and attributes on every puppet run. We explicitly dont
         # depend on anything to ensure consistency with configuration and that
