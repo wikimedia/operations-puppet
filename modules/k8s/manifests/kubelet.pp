@@ -14,7 +14,14 @@ class k8s::kubelet(
         mode   => '0755',
     }
 
-    $master_ip = ipresolve($master_host, 4, $::nameservers[0])
+    file { '/etc/kubernetes/kubeconfig':
+        ensure  => present,
+        content => template('k8s/kubeconfig-client.yaml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+    }
+
     base::service_unit { 'kubelet':
         systemd => true,
     }

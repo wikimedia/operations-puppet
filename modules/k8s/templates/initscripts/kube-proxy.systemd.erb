@@ -3,7 +3,7 @@ Description=Kubernetes Proxy
 
 [Service]
 ExecStart=/usr/bin/kube-proxy \
-    --master=https://<%= @master_ip %>:6443 \
+    --kubeconfig=/etc/kubernetes/kubeconfig \
     --v=10
 
 [Install]
