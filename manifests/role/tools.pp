@@ -31,13 +31,9 @@ class role::toollabs::k8s::master {
         etcd_servers => $etcd_url,
 
     }
-    class { 'k8s::scheduler':
-        master_host => $master_host,
-    }
+    class { 'k8s::scheduler': }
 
-    class { 'k8s::controller':
-        master_host => $master_host,
-    }
+    class { 'k8s::controller': }
 
     # FIXME: Setup TLS properly, disallow HTTP
     ferm::service { 'apiserver-http':
