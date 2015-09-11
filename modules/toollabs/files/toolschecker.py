@@ -45,6 +45,18 @@ def ldap_catalog_check():
     return False
 
 
+@check('/labs-dns/private')
+def dns_private_check():
+    # Verify that we can resolve our own address
+    fqdn = socket.getfqdn()
+    # This will throw an exception if it can't resolve:
+    resolved = socket.gethostbyname_ex(fqdn)
+    if len(resolved) == 3:
+        if len(resolved[2]) > 0:
+            return True
+    return False
+
+
 @check('/nfs/home')
 def nfs_home_check():
     content = str(uuid.uuid4())
