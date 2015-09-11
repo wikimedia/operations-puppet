@@ -38,6 +38,7 @@ cassandra_test_eqiad:
       - xenon.eqiad.wmnet
   cassandra::max_heap_size: 4g
   cassandra::heap_newsize: 1g
+  cassandra::cluster_name: services-test
 
 cassandra_test_codfw:
   __regex: !ruby/regexp /^restbase-test200[1-3]\.codfw\.wmnet$/
@@ -51,6 +52,7 @@ cassandra_test_codfw:
       - xenon.eqiad.wmnet
   cassandra::max_heap_size: 4g
   cassandra::heap_newsize: 1g
+  cassandra::cluster_name: services-test
 
 swift_be_codfw:
   __regex: !ruby/regexp /^ms-be20.*\.codfw\.wmnet$/
