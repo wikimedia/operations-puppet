@@ -8,6 +8,9 @@ class contint::packages {
     # Basic utilites needed for all Jenkins slaves
     include ::contint::packages::base
 
+    # Ruby
+    include ::contint::packages::ruby
+
     include ::mediawiki::packages
     include ::mediawiki::packages::multimedia  # T76661
 
@@ -111,18 +114,6 @@ class contint::packages {
         # already has a package called 'node'
         package { 'nodejs-legacy':
             ensure => latest,
-        }
-    }
-
-    # Ruby
-    if os_version('ubuntu <= trusty') {
-        package { 'ruby1.9.3':
-            ensure => present,
-        }
-    }
-    if os_version('debian >= jessie') {
-        package { 'ruby2.1':
-            ensure => present,
         }
     }
 
