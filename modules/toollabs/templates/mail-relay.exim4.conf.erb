@@ -74,6 +74,8 @@ local_from_suffix = .*
 add_environment = <; PATH=/bin:/usr/bin
 keep_environment =
 
+ldap_default_servers = <%= @ldapconfig['servernames'].join(' : ') %>
+
 ###############################
 # Access Control Lists (ACLs) #
 ###############################
@@ -157,7 +159,15 @@ user_forward:
   expn = false
   check_ancestor
   modemask = 002
-  data = ${run{/usr/local/sbin/localuser INSTANCEPROJECT $local_part}{$value}fail}
+  # The first LDAP "query" here only tests if the user is part of the
+  # project and fails if not (T93526).  The "mail" attribute returned
+  # by the second query is supplied by the user, so we only use it
+  # quoted.
+  # TODO: When T142817 has been resolved, the two queries should be
+  # able to be combined in one with a test for "memberOf".
+  data = ${quote:${lookup ldap \
+            {user="<%= @ldapconfig['proxyagent'] %>" pass="<%= @ldapconfig['proxypass'] %>" ldap:///cn=project-INSTANCEPROJECT,ou=groups,dc=wikimedia,dc=org?member??member=uid=${quote_ldap_dn:$local_part},ou=people,dc=wikimedia,dc=org}{}fail}${lookup ldap \
+            {user="<%= @ldapconfig['proxyagent'] %>" pass="<%= @ldapconfig['proxypass'] %>" ldap:///uid=${quote_ldap_dn:$local_part},ou=people,dc=wikimedia,dc=org?mail}{$value}fail}}
 
 # Forward mail to <toolname>.<anything>@ using a specific .forward.<anything> file
 # if present in the tool's home directory
@@ -219,7 +229,14 @@ tool_default:
   expn = false
   check_ancestor
   modemask = 002
-  data = ${run{/usr/local/sbin/maintainers INSTANCEPROJECT.$local_part}{$value}fail}
+  # All entries returned by this LDAP query were created by the
+  # trusted Extension:OpenStackManager, so we do not have to guard
+  # against injection here, but can rely on them being "scfc",
+  # "scfc,toolsbeta.test", "scfc,valhallasw", etc.  Not quoting the
+  # result is also necessary for correctly expanding multiple
+  # (comma-separated) addresses.
+  data = ${sg{${lookup ldap \
+         {user="<%= @ldapconfig['proxyagent'] %>" pass="<%= @ldapconfig['proxypass'] %>" ldap:///cn=INSTANCEPROJECT.${quote_ldap_dn:$local_part},ou=servicegroups,dc=wikimedia,dc=org?member}{$value}fail}}{uid=(.*?),,ou=people,,(ou=servicegroups,,)?dc=wikimedia,,dc=org}{\$1}}
 
 ##############
 # Transports #
@@ -247,4 +264,3 @@ remote_smtp:
 
 begin retry
 *   *   F,2h,15m; G,16h,1h,1.5; F,4d,6h
-

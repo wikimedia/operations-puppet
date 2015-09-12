@@ -17,28 +17,25 @@ class toollabs::mailrelay inherits toollabs
     include ::gridengine::submit_host
     include ::toollabs::infrastructure
 
+    include ::ldap::role::config::labs
+    $ldapconfig = $ldap::role::config::labs::ldapconfig
+
     class { '::exim4':
         queuerunner => 'combined',
         config      => template('toollabs/mail-relay.exim4.conf.erb'),
         variant     => 'heavy',
-        require     => File['/usr/local/sbin/localuser',
-                            '/usr/local/sbin/maintainers'],
     }
 
+    # TODO: Remove after deployment.
     file { '/usr/local/sbin/localuser':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/localuser',
+        ensure  => absent,
+        require => Class['exim4'],
     }
 
+    # TODO: Remove after deployment.
     file { '/usr/local/sbin/maintainers':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/maintainers',
+        ensure  => absent,
+        require => Class['exim4'],
     }
 
     diamond::collector::extendedexim { 'extended_exim_collector': }
