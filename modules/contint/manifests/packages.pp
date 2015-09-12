@@ -8,6 +8,9 @@ class contint::packages {
     # Basic utilites needed for all Jenkins slaves
     include ::contint::packages::base
 
+    # Ruby
+    include ::contint::packages::ruby
+
     include ::mediawiki::packages
     include ::mediawiki::packages::multimedia  # T76661
 
@@ -114,18 +117,6 @@ class contint::packages {
         }
     }
 
-    # Ruby
-    if os_version('ubuntu <= trusty') {
-        package { 'ruby1.9.3':
-            ensure => present,
-        }
-    }
-    if os_version('debian >= jessie') {
-        package { 'ruby2.1':
-            ensure => present,
-        }
-    }
-
     # these packages are used by the tests for wikistats to parse the
     # generated reports to see if they are correct
     package { [
@@ -148,12 +139,6 @@ class contint::packages {
         package { 'ruby-jsduck':
             ensure => present,
         }
-    }
-
-    package { [
-        'rubygems-integration',
-        ]:
-        ensure => present;
     }
 
     package { [
