@@ -115,16 +115,7 @@ class contint::packages {
     }
 
     # Ruby
-    if os_version('ubuntu <= trusty') {
-        package { 'ruby1.9.3':
-            ensure => present,
-        }
-    }
-    if os_version('debian >= jessie') {
-        package { 'ruby2.1':
-            ensure => present,
-        }
-    }
+    include ::contint::packages::ruby
 
     # these packages are used by the tests for wikistats to parse the
     # generated reports to see if they are correct
