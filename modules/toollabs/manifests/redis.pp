@@ -34,10 +34,6 @@ class toollabs::redis (
         size    => '100%FREE',
     }
 
-    sysctl::parameters { 'vm.overcommit_memory':
-        values => { 'vm.overcommit_memory' => 1, },
-    }
-
     class { '::redis':
         dir               => '/srv/redis',
         maxmemory         => $maxmemory,
