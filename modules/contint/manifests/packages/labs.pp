@@ -14,6 +14,8 @@ class contint::packages::labs {
     # Required for python testing
     include ::contint::packages::python
 
+    # Required for ruby testing
+    include ::contint::packages::ruby
 
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
@@ -83,10 +85,6 @@ class contint::packages::labs {
         }
 
         package { [
-            'ruby2.0',
-            # bundle/gem compile ruby modules:
-            'ruby2.0-dev',
-
             'hhvm-dev',
 
             # Android SDK
