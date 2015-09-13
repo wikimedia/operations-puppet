@@ -1,4 +1,6 @@
 import flask
+import ldap
+import ldapsupportlib
 import os
 import redis
 import requests
@@ -45,15 +47,16 @@ def puppet_catalog_check():
     return False
 
 
-@check('/labs-dns/private')
-def dns_private_check():
-    # Verify that we can resolve our own address
-    fqdn = socket.getfqdn()
-    # This will throw an exception if it can't resolve:
-    resolved = socket.gethostbyname_ex(fqdn)
-    if len(resolved) == 3:
-        if len(resolved[2]) > 0:
-            return True
+@check('/ldap')
+def ldap_query_check():
+    # Run a simple known query and verify that ldap returns something
+    ldapConn = ldapsupportlib.LDAPSupportLib().connect()
+
+    query = '(cn=testlabss)'
+    base = 'ou=projects,dc=wikimedia,dc=org'
+    result = ldapConn.search_s(base, ldap.SCOPE_SUBTREE, query)
+    if len(result) > 0:
+        return True
     return False
 
 
