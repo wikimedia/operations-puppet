@@ -1,0 +1,18 @@
+[Unit]
+Description=Sentry error logging and aggregation service (web interface)
+Documentation=http://sentry.readthedocs.org/en/latest/
+After=network.target
+Requires=sentry-worker
+
+[Service]
+Type=simple
+Environment="SENTRY_CONF=<%= @cfg_file %>"
+ExecStart=<%= @sentry_dir %>/bin/sentry start
+User=<%= @user %>
+Group=<%= @group %>
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+
