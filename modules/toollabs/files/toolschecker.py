@@ -28,7 +28,7 @@ def check(endpoint):
 
 
 @check('/labs-puppetmaster/eqiad')
-def ldap_catalog_check():
+def puppet_catalog_check():
     # Verify that we can get this host's catalog from the puppet server
     puppetmaster = "labs-puppetmaster-eqiad.wikimedia.org"
     fqdn = socket.getfqdn()
