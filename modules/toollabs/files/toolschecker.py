@@ -64,7 +64,7 @@ def ldap_query_check():
     # Run a simple known query and verify that ldap returns something
     ldapConn = ldapsupportlib.LDAPSupportLib().connect()
 
-    query = '(cn=testlabss)'
+    query = '(cn=testlabs)'
     base = 'ou=projects,dc=wikimedia,dc=org'
     result = ldapConn.search_s(base, ldap.SCOPE_SUBTREE, query)
     if len(result) > 0:
