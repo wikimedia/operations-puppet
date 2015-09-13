@@ -14,25 +14,6 @@ class mediawiki::monitoring::webserver( $ensure = present ) {
             source   => 'puppet:///modules/mediawiki/monitoring/collectors/hhvm.py',
             require  => Apache::Site['hhvm_admin'],
         }
-
-        monitoring::graphite_threshold { 'hhvm_queue_size':
-            description     => 'HHVM queue size',
-            metric          => "servers.${::hostname}.hhvmHealthCollector.queued",
-            warning         => 10,
-            critical        => 80,
-            percentage      => 30,
-            nagios_critical => false
-        }
-
-        monitoring::graphite_threshold { 'hhvm_load':
-            description     => 'HHVM busy threads',
-            metric          => "servers.${::hostname}.hhvmHealthCollector.load",
-            warning         => $::mediawiki::hhvm::max_threads*0.6,
-            critical        => $::mediawiki::hhvm::max_threads * 0.9,
-            percentage      => 30,
-            nagios_critical => false
-        }
-
     }
 
     file { '/var/www/monitoring':
