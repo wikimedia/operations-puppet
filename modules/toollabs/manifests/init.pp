@@ -21,6 +21,7 @@ class toollabs (
     $is_mail_relay = false,
     $active_mail_relay = 'tools-mail.eqiad.wmflabs',
     $mail_domain = 'tools.wmflabs.org',
+    $active_aptly_server = 'tools-services-01',
 ) {
 
     include labs_lvm
@@ -127,16 +128,28 @@ class toollabs (
     }
 
     # We keep a project-local apt repo where we stuff packages we
-    # build that are intended to be local to the project.  By keeping
-    # it on the shared storage, we have no need to set up a server to
-    # use it.  The repo is located in
-    # /data/project/.system/deb-jessie,
-    # /data/project/.system/deb-precise or
-    # /data/project/.system/deb-trusty depending on the instance's OS
-    # release.
-    labsdebrepo { $toollabs::repo:
-        handle  => 'tools-project',
-        require => File[$toollabs::sysdir],
+    # build that are intended to be local to the project.
+    class { '::aptly::client':
+        servername => $active_aptly_server,
+    }
+    file { '/etc/apt/preferences.d/project-aptly.pref':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "Explanation: Prefer aptly repo above others
+Package: *
+Pin: origin \"${active_aptly_server}\"
+Pin-Priority: 1500
+",
+        notify => Exec['apt-get update'],
+    }
+
+    # TODO: Remove after migration.
+    file { ['/etc/apt/preferences.d/tools-project.pref',
+            '/etc/apt/sources.list.d/tools-project.list']:
+        ensure => absent,
+        notify => Exec['apt-get update'],
     }
 
     # Trustworthy enough
