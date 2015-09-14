@@ -75,6 +75,19 @@ class releases::reprepro {
                 'Description'   => 'MediaWiki packages for Ubuntu Trusty Tahr',
                 'SignWith'      => 'default',
                 'Log'           => "trusty-mediawiki\n  log",
+            },
+            'jessie'  => {
+                'Origin'        => 'MediaWiki',
+                'Label'         => 'MediaWiki',
+                'Suite'         => 'jessie-mediawiki',
+                'Codename'      => 'jessie-mediawiki',
+                'AlsoAcceptFor' => 'jessie',
+                'Version'       => '8',
+                'Architectures' => 'source amd64 i386',
+                'Components'    => 'main',
+                'Description'   => 'MediaWiki packages for Debian jessie',
+                'SignWith'      => 'default',
+                'Log'           => "jessie-mediawiki\n  log",
             }
         }
     }
