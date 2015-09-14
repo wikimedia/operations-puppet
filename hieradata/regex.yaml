@@ -32,6 +32,10 @@ cassandra_test_eqiad:
       - cerium.eqiad.wmnet
       - praseodymium.eqiad.wmnet
       - xenon.eqiad.wmnet
+  cassandra::non_seeds:
+      - restbase-test2001.codfw.wmnet
+      - restbase-test2002.codfw.wmnet
+      - restbase-test2003.codfw.wmnet
   restbase::seeds:
       - cerium.eqiad.wmnet
       - praseodymium.eqiad.wmnet
@@ -46,6 +50,10 @@ cassandra_test_codfw:
       - cerium.eqiad.wmnet
       - praseodymium.eqiad.wmnet
       - xenon.eqiad.wmnet
+  cassandra::non_seeds:
+      - restbase-test2001.codfw.wmnet
+      - restbase-test2002.codfw.wmnet
+      - restbase-test2003.codfw.wmnet
   restbase::seeds:
       - cerium.eqiad.wmnet
       - praseodymium.eqiad.wmnet

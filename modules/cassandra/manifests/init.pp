@@ -192,6 +192,7 @@
 class cassandra(
     $cluster_name                     = 'Test Cluster',
     $seeds                            = [$::ipaddress],
+    $non_seeds                        = [],
     $num_tokens                       = 256,
     $authenticator                    = true,
     $authorizor                       = true,

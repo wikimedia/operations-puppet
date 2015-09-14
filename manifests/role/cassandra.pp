@@ -29,7 +29,9 @@ class role::cassandra {
         contact_group => 'admins,team-services',
     }
 
-    $cassandra_hosts = hiera('cassandra::seeds')
+    $cassandra_seeds = hiera('cassandra::seeds')
+    $cassandra_non_seeds = hiera('cassandra::non_seeds')
+    $cassandra_hosts = concat($cassandra_seeds, $cassandra_non_seeds)
     $cassandra_hosts_ferm = join($cassandra_hosts, ' ')
 
     # Cassandra intra-node messaging
