@@ -17,4 +17,11 @@ class aptly::client(
         components => 'main',
         source     => $source,
     }
+
+    # Pin it so it has higher preference
+    apt::pin { 'project-aptly':
+        package  => '*',
+        pin      => "origin ${servername}",
+        priority => 1500,
+    }
 }
