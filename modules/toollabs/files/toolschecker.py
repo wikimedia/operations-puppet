@@ -2,6 +2,7 @@ import flask
 import ldap
 import ldapsupportlib
 import os
+import pymysql
 import redis
 import requests
 import socket
@@ -99,6 +100,42 @@ def redis_check():
         return red.get(content) == content
     finally:
         red.delete(content)
+
+
+def db_query_check(host):
+    # Run a simple known query, verify the db returns.
+    connection = pymysql.connect(host, read_default_file=os.path.expanduser('~/replica.my.cnf'))
+    cur = connection.cursor()
+    cur.execute('select * from meta_p.wiki limit 1')
+    result = cur.fetchone()
+    if result:
+        return True
+    return False
+
+
+@check('/labsdb/labstore1001')
+def labsdb_check_labstore1001():
+    return db_query_check('labstore1001.eqiad.wmnet')
+
+
+@check('/labsdb/labstore1002')
+def labsdb_check_labstore1001():
+    return db_query_check('labstore1002.eqiad.wmnet')
+
+
+@check('/labsdb/labstore1003')
+def labsdb_check_labstore1001():
+    return db_query_check('labstore1003.eqiad.wmnet')
+
+
+@check('/labsdb/labstore1004')
+def labsdb_check_labstore1001():
+    return db_query_check('labstore1004.eqiad.wmnet')
+
+
+@check('/labsdb/labstore1005')
+def labsdb_check_labstore1001():
+    return db_query_check('labstore1005.eqiad.wmnet')
 
 
 def job_running(name):
