@@ -64,8 +64,9 @@ class LDAPSource(object):
     def __init__(self, server, bindas, passwd):
         server = ldap3.Server(server)
         self.conn = ldap3.Connection(server, read_only=True,
-                                     user=bindas, password=passwd,
-                                     auto_bind=ldap3.AUTO_BIND_TLS_AFTER_BIND)
+                                     user=bindas, password=passwd)
+        self.conn.bind()
+        self.conn.start_tls()
 
     def get_instances(self, project):
         """
