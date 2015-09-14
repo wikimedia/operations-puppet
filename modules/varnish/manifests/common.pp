@@ -33,6 +33,16 @@ class varnish::common {
         mode   => '0555',
     }
 
+    file { '/usr/local/lib/python2.7/dist-packages/varnishprocessor':
+        source  => 'puppet:///modules/varnish/varnishprocessor',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
+        force   => true,
+    }
+
     file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
         source  => 'puppet:///modules/varnish/varnishlog.py',
         owner   => 'root',
