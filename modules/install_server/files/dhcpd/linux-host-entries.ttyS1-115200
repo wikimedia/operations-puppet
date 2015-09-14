@@ -2828,41 +2828,57 @@ host lvs2006 {
 host lvs3001 {
 	hardware ethernet 90:b1:1c:45:56:0d;
 	fixed-address lvs3001.esams.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs3002 {
 	hardware ethernet 90:b1:1c:57:3b:35;
 	fixed-address lvs3002.esams.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs3003 {
 	hardware ethernet 90:b1:1c:57:53:93;
 	fixed-address lvs3003.esams.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs3004 {
 	hardware ethernet 90:b1:1c:57:5f:2a;
 	fixed-address lvs3004.esams.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs4001 {
 	hardware ethernet 90:b1:1c:42:f0:9e;
 	fixed-address lvs4001.ulsfo.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs4002 {
 	hardware ethernet 90:b1:1c:45:51:ef;
 	fixed-address lvs4002.ulsfo.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs4003 {
 	hardware ethernet 90:b1:1c:45:5d:91;
 	fixed-address lvs4003.ulsfo.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs4004 {
 	hardware ethernet 90:b1:1c:42:c3:7a;
 	fixed-address lvs4004.ulsfo.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host maerlant {
