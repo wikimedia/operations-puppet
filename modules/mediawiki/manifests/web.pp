@@ -4,7 +4,11 @@ class mediawiki::web {
     include ::apache
     include ::mediawiki
     include ::mediawiki::users
-    include ::mediawiki::monitoring::webserver
+
+    class { '::mediawiki::monitoring::webserver':
+        ensure => absent,
+    }
+
     include ::mediawiki::web::modules
     include ::mediawiki::web::mpm_config
 
