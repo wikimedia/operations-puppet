@@ -1289,7 +1289,6 @@ node 'labcontrol1002.wikimedia.org' {
     $is_puppet_master      = true
     $is_labs_puppet_master = true
     $use_neutron           = false
-    role nova::controller
 
     include standard
     include ldap::role::client::labs
@@ -1298,10 +1297,12 @@ node 'labcontrol1002.wikimedia.org' {
     # The dns controller grabs an IP, so leave this disabled until/unless
     #  this server is the primary labs controller.
     #include role::dns::ldap
-    if $use_neutron == true {
-        include role::neutron::controller
-
-    }
+    # And, we don't want nova services here listening to rabbit until
+    #  we need them.
+    #role nova::controller
+    #if $use_neutron == true {
+        #include role::neutron::controller
+    #}
 }
 
 node 'labcontrol2001.wikimedia.org' {
