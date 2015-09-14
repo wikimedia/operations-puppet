@@ -195,6 +195,8 @@ class SaltKeys(object):
         client will wait for the minion response
         '''
         self.client = salt.client.LocalClient()
+        # don't rotate saltmaster aes key on salt key deletion
+        self.client.opts['rotate_aes_key'] = False
         self.all_keys = None
         self.accepted_keys = None
         self.key_manager = salt.key.Key(self.client.opts)
