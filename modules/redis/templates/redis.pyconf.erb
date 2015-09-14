@@ -14,14 +14,19 @@ collection_group {
   metric { name = "connected_slaves" }
   metric { name = "blocked_clients" }
   metric { name = "used_memory" }
-  metric { name = "changes_since_last_save" }
-  metric { name = "bgsave_in_progress" }
-  metric { name = "bgrewriteaof_in_progress" }
+  metric { name = "rdb_changes_since_last_save" }
+  metric { name = "rdb_bgsave_in_progress" }
+  metric { name = "aof_rewrite_in_progress" }
+  metric { name = "aof_last_rewrite_time_sec" }
+  metric { name = "aof_current_size" }
+  metric { name = "instantaneous_ops_per_sec" }
   metric { name = "total_connections_received" }
   metric { name = "total_commands_processed" }
   metric { name = "expired_keys" }
+  metric { name = "evicted_keys" }
   metric { name = "pubsub_channels" }
   metric { name = "pubsub_patterns" }
-  metric { name = "vm_enabled" }
   metric { name = "master_last_io_seconds_ago" }
+  metric { name = "keyspace_hits" }
+  metric { name = "keyspace_misses" }
 }
