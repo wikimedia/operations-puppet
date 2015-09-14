@@ -1577,4 +1577,11 @@ users:
     realname: Adam Shorland
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIEApeItORPk5O7RFYDonA2HMvZnKKxr5caasia26wCgNC4ht9G7YegZRdikSqYGELb8NZtsRWkbtBwSj+T6O2DPcGQFTRIynDwjN9c9iHwd9gQXs7+3R0WZgFfoqs7ycPoq44mTBcDqtR4W2WIaHei5OlbJitEsk0om2+6YQLXVuzE= rsa-key-20150902]
     uid: 2178
+  jminor:
+    ensure: present
+    gid: 500
+    name: jminor
+    realname: Joshua Minor
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/DVqjpNzvrXk070XI1TUChXlXTcYjzH4M8nprwuY5Nnd+dMuWP3IaFvDTCHmZP6U40jKFQzxsOcht4KN/5cACTwUqNbrWyp2Emj/CSriE7iDhaRc1ojnTaOuCQRWXWk4S+KxUyKnTB0au59ldKU8GoaD1qlpv3jgK0I6LEuNTJWorSubaTAvd/DLq3JLPTjUWJehd9RGYznhOosIxmKU5cr3pwjJkWVZP4Xkd/CTlmsfrYpyEzL3fjT1fADWQOGOpbNGtRpI2ZvqYjD/9jU2Dy4vBp418yyOkEZ2gvkxItbg5ttJ0f87Q7l+Uv4+nccN+xOfWfWMmdcNfAvHdvfDroiynAURdq/uwq/+UjQtN+Rh3nsvNNRilL+S3NgNzrXgjG7377HKBo/MTru89Z7HzQFxYvbJQ1B3fZJP3OB+lUNTdiwwnbNPYBZVW1wvjUMs27D5TlNZCZv4sjL9AR1+u9iQJ6EDIqwBP9ib1P2+OipJXwbGR+W8rQQJEf9+XajS8kdzH1/vZxc0lzFiezbeTiWSXvZUIEdLPbhMexiPdUUdEWEUtLlyzILEKEhNa5uW9TebxCdIqdReqRYEm+yHEEDDMgfexbmhYmfz754KHOH0rrTL6esJ7JXrgFroDZ6wyX7dfq33Tqb3h8WfNanVX63NPwDzDXRbhmsPuR6PzxQ== jminor@wikimedia.org]
+    uid: 2178
 
