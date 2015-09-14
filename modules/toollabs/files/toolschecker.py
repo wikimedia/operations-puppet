@@ -135,7 +135,13 @@ def labsdb_check_labsdb1004():
 
 @check('/labsdb/labsdb1005')
 def labsdb_check_labsdb1005():
-    return db_query_check('labsdb1005.eqiad.wmnet')
+    connection = pymysql.connect('labsdb1005.eqiad.wmnet', read_default_file=os.path.expanduser('~/replica.my.cnf'))
+    cur = connection.cursor()
+    cur.execute('select * from toolserverdb_p.wiki limit 1')
+    result = cur.fetchone()
+    if result:
+        return True
+    return False
 
 
 def job_running(name):
