@@ -6,8 +6,7 @@ class role::cache::ssl::misc {
 
     tlsproxy::localssl { 'wmfusercontent.org':
         do_ocsp        => true,
-        certs          => ['star.wmfusercontent.org'], # temporary, until ECDSA re-issue
-        # certs          => ['ecc-star.wmfusercontent.org', 'star.wmfusercontent.org'],
+        certs          => ['ecc-star.wmfusercontent.org', 'star.wmfusercontent.org'],
         server_name    => 'wmfusercontent.org',
         server_aliases => ['*.wmfusercontent.org'];
     }
