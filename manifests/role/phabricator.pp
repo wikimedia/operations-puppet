@@ -36,7 +36,7 @@ class role::phabricator::main {
 
     $current_tag = 'release/2015-07-08/1'
     $domain = 'phabricator.wikimedia.org'
-    $altdom = 'phab.wikivoyage.org' # TEMPORARY
+    $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
     $mysql_slave = 'm3-slave.eqiad.wmnet'
 
