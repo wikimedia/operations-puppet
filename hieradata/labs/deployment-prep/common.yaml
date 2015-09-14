@@ -8,6 +8,7 @@ base::remote_syslog::central_host: "deployment-logstash2.deployment-prep.eqiad.w
 "ocg::redis_password": '%{::passwords::redis::main_password}'
 has_lvs: false
 "puppetmaster::scripts::keep_reports_minutes": 360
+puppetmaster::autosigner: true
 #service::configuration::http_proxy:
 service::configuration::statsd_host: labmon1001.eqiad.wmnet
 service::configuration::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
