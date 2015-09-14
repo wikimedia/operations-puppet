@@ -119,22 +119,22 @@ def labsdb_check_labsdb1001():
 
 
 @check('/labsdb/labsdb1002')
-def labsdb_check_labsdb1001():
+def labsdb_check_labsdb1002():
     return db_query_check('labsdb1002.eqiad.wmnet')
 
 
 @check('/labsdb/labsdb1003')
-def labsdb_check_labsdb1001():
+def labsdb_check_labsdb1003():
     return db_query_check('labsdb1003.eqiad.wmnet')
 
 
 @check('/labsdb/labsdb1004')
-def labsdb_check_labsdb1001():
+def labsdb_check_labsdb1004():
     return db_query_check('labsdb1004.eqiad.wmnet')
 
 
 @check('/labsdb/labsdb1005')
-def labsdb_check_labsdb1001():
+def labsdb_check_labsdb1005():
     return db_query_check('labsdb1005.eqiad.wmnet')
 
 
