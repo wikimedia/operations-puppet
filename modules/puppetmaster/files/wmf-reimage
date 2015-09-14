@@ -35,9 +35,9 @@ function clean_salt {
     # ask confirmation later about unaccepted keys
     if salt-key --list accepted | fgrep -q ${nodename}; then
         if [ ${force_yes} -eq 1 ]; then
-            salt-key -y --delete ${nodename}
+            salt-key -y --rotate-aes-key= --delete ${nodename}
         else
-            salt-key --delete ${nodename}
+            salt-key --rotate-aes-key= --delete ${nodename}
         fi
     fi
     # salt-key --delete above exits 0 regardless, double check
