@@ -62,7 +62,7 @@ export EDITOR=vim
 
 if [ -e /usr/local/lib/mw-deployment-vars.sh ]; then
 	. /usr/local/lib/mw-deployment-vars.sh
-	export ENWIKI_VERSION=`tr -cd 'a-zA-Z0-9-. \n' < $MEDIAWIKI_DEPLOYMENT_DIR/wikiversions.json | awk '$1 == "enwiki" {print $2}'`
+	export ENWIKI_VERSION=$(php -r '$a = json_decode(file_get_contents("/srv/mediawiki-staging/wikiversions.json")); print $a->enwiki;')
 	if [ -e $MEDIAWIKI_STAGING_DIR ]; then
 		export WIKI=$MEDIAWIKI_STAGING_DIR/$ENWIKI_VERSION
 	else
