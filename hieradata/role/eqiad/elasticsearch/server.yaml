@@ -6,7 +6,7 @@ elasticsearch::multicast_group: 224.2.2.5
 
 lvs::realserver::realserver_ips: "10.2.2.30"
 
-elasticsearch::cluster_hosts::eqiad:
+elasticsearch::cluster_hosts:
   - elastic1001.eqiad.wmnet
   - elastic1002.eqiad.wmnet
   - elastic1003.eqiad.wmnet
