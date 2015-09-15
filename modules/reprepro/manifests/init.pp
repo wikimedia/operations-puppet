@@ -32,7 +32,7 @@ class reprepro (
     $options         = [],
     $uploaders       = [],
     $incomingdir     = 'incoming',
-    $default_distro  = 'trusty',
+    $default_distro  = 'jessie',
     $gpg_secring     = undef,
     $gpg_pubring     = undef,
     $authorized_keys = [],
