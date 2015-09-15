@@ -1,0 +1,37 @@
+# codfw prod name
+elasticsearch::cluster_name: production-search-codfw
+
+# ES-specific: Not default
+elasticsearch::multicast_group: 224.2.2.7
+
+elasticsearch::cluster_hosts:
+  - elastic2001.codfw.wmnet
+  - elastic2002.codfw.wmnet
+  - elastic2003.codfw.wmnet
+  - elastic2004.codfw.wmnet
+  - elastic2005.codfw.wmnet
+  - elastic2006.codfw.wmnet
+  - elastic2007.codfw.wmnet
+  - elastic2008.codfw.wmnet
+  - elastic2009.codfw.wmnet
+  - elastic2010.codfw.wmnet
+  - elastic2011.codfw.wmnet
+  - elastic2012.codfw.wmnet
+  - elastic2013.codfw.wmnet
+  - elastic2014.codfw.wmnet
+  - elastic2015.codfw.wmnet
+  - elastic2016.codfw.wmnet
+  - elastic2017.codfw.wmnet
+  - elastic2018.codfw.wmnet
+  - elastic2019.codfw.wmnet
+  - elastic2020.codfw.wmnet
+  - elastic2021.codfw.wmnet
+  - elastic2022.codfw.wmnet
+  - elastic2023.codfw.wmnet
+  - elastic2024.codfw.wmnet
+
+# We expect 31 nodes total
+elasticsearch::expected_nodes: 24
+
+# We should be able to run "OK" with 11 servers.
+elasticsearch::recover_after_nodes: 11
