@@ -93,14 +93,14 @@ restbase:
     - eqiad
 maps:
   kartotherian:
-    port: 4000
+    port: 6533
     default_values:
       pooled: 'no'
       weight: 10
     datacenters:
     - codfw
   tilerator:
-    port: 4100
+    port: 6534
     default_values:
       pooled: 'no'
       weight: 10

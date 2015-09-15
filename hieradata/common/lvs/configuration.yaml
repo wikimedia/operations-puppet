@@ -791,7 +791,7 @@ lvs_services:
     sites:
     - codfw
     ip: *ip_block022
-    port: 4000
+    port: 6533
     bgp: 'yes'
     depool-threshold: '.5'
     monitors:

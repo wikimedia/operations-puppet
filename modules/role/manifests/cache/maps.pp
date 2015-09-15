@@ -66,7 +66,7 @@ class role::cache::maps {
                 'probe'         => 'varnish',
             },
             {
-                'port'                  => 4000,
+                'port'                  => 6533,
                 'connect_timeout'       => '5s',
                 'first_byte_timeout'    => '35s',
                 'between_bytes_timeout' => '4s',
