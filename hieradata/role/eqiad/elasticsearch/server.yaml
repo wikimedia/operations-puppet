@@ -6,7 +6,7 @@ elasticsearch::multicast_group: 224.2.2.5
 
 lvs::realserver::realserver_ips: "10.2.2.30"
 
-elasticsearch::cluster_hosts::eqiad:
+elasticsearch::cluster_hosts:
   - elastic1001.eqiad.wmnet
   - elastic1002.eqiad.wmnet
   - elastic1003.eqiad.wmnet
@@ -39,7 +39,6 @@ elasticsearch::cluster_hosts::eqiad:
   - elastic1030.eqiad.wmnet
   - elastic1031.eqiad.wmnet
 
-# We expect 31 nodes total
 elasticsearch::expected_nodes: 31
 
 # We should be able to run "OK" with 11 servers.
