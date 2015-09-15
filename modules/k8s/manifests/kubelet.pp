@@ -35,8 +35,6 @@ class k8s::kubelet(
 
     class { '::k8s::ssl':
         notify => Base::Service_unit['kubelet'],
-        user   => 'root',
-        group  => 'root',
     }
 
     base::service_unit { 'kubelet':
