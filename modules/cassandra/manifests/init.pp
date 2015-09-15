@@ -310,8 +310,13 @@ class cassandra(
         default => $authorizor,
     }
 
-    package { ['cassandra', 'openjdk-8-jdk']:
+    package { 'openjdk-8-jdk':
         ensure  => 'installed',
+    }
+
+    package { 'cassandra':
+        ensure  => 'installed',
+        require => Package['openjdk-8-jdk'],
     }
 
     # Make sure libjemalloc is installed if
