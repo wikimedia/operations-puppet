@@ -39,6 +39,18 @@ class role::mediawiki::common {
         desc   => 'Allow incoming SSH for pybal health checks',
     }
 
+    ferm::service { 'dns_udp':
+        proto   => 'udp',
+        port    => '53',
+        notrack => true,
+    }
+
+    ferm::service { 'dns_tcp':
+        proto   => 'tcp',
+        port    => '53',
+        notrack => true,
+    }
+
     if $::site == 'eqiad' {
         monitoring::service { 'mediawiki-installation DSH group':
             description           => 'mediawiki-installation DSH group',
