@@ -39,6 +39,20 @@ class role::mediawiki::common {
         desc   => 'Allow incoming SSH for pybal health checks',
     }
 
+    ferm::rule { 'skip_dns_conntrack-in':
+        desc  => 'Skip incoming connection tracking for DNS',
+        table => 'raw',
+        chain => 'PREROUTING',
+        rule  => 'proto (tcp udp) dport 53 NOTRACK;',
+    }
+
+    ferm::rule { 'skip_dns_conntrack_out':
+        desc  => 'Skip outgoing connection tracking for DNS',
+        table => 'raw',
+        chain => 'OUTPUT',
+        rule  => 'proto (tcp udp) sport 53 NOTRACK;',
+    }
+
     if $::site == 'eqiad' {
         monitoring::service { 'mediawiki-installation DSH group':
             description           => 'mediawiki-installation DSH group',
