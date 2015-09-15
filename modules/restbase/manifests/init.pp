@@ -32,6 +32,8 @@
 #   Default: 'warn'
 # [*statsd_host*]
 #   statsd host name. Default: localhost
+# [*statsd_prefix*]
+#   statsd metric prefix. Default: restbase
 # [*statsd_port*]
 #   statsd port. Default: 8125
 # [*graphoid_uri*]
@@ -53,6 +55,7 @@ class restbase(
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
     $logging_level  = 'warn',
+    $statsd_prefix  = 'restbase',
     $statsd_host    = 'localhost',
     $statsd_port    = '8125',
     $graphoid_uri   = 'http://graphoid.svc.eqiad.wmnet:19000',
