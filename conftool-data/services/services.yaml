@@ -24,6 +24,7 @@ elasticsearch:
       weight: 10
     datacenters:
     - eqiad
+    - codfw
 rcstream:
   nginx:
     port: 80
