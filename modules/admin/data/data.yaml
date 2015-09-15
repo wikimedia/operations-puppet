@@ -73,7 +73,7 @@ groups:
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis,
-              addshore]
+              addshore, jminor]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -110,7 +110,7 @@ groups:
               nuria, ori, otto, springle, tnegrin, yurik, yuvipanda,
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
-              neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair]
+              neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair, jminor]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -185,7 +185,7 @@ groups:
               dbrant, tgr, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
-              neilpquinn-wmf, maxsem]
+              neilpquinn-wmf, maxsem, jminor]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -226,7 +226,7 @@ groups:
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
-              csteipp, smalyshev, ebernhardson, addshore]
+              csteipp, smalyshev, ebernhardson, addshore, jminor]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
