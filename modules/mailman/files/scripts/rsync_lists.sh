@@ -12,6 +12,5 @@
 --exclude="*.pw" \
 --exclude="bounce-*" \
 --exclude="sitelist.cfg" \
---exclude="last_mailman_version" \
 rsync://fermium.wikimedia.org/data
 
