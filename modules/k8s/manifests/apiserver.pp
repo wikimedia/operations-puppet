@@ -31,7 +31,9 @@ class k8s::apiserver(
 
     class { '::k8s::ssl':
         provide_private => true,
-        notify => Base::Service_unit['kube-apiserver'],
+        user            => 'kubernetes',
+        group           => 'kubernetes',
+        notify          => Base::Service_unit['kube-apiserver'],
     }
 
     base::service_unit { 'kube-apiserver':

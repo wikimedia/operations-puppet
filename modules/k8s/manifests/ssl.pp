@@ -4,8 +4,8 @@
 # Note: Only copies public components, no private keys
 class k8s::ssl(
     $provide_private = false,
-    $user = 'kubernetes',
-    $group = 'kubernetes',
+    $user = 'root',
+    $group = 'root',
 ) {
     $puppet_cert_name = $::fqdn
     $ssldir = '/var/lib/puppet/ssl'
