@@ -6,16 +6,6 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   StyleGuideCopsOnly: true
   Exclude:
-    # git submodules
-    - 'modules/cdh/**/*'
-    - 'modules/jmxtrans/**/*'
-    - 'modules/kafka/**/*'
-    - 'modules/kafkatee/**/*'
-    - 'modules/mariadb/**/*'
-    - 'modules/nginx/**/*'
-    - 'modules/varnishkafka/**/*'
-    - 'modules/wikimetrics/**/*'
-    - 'modules/zookeeper/**/*'
     # third party modules
     - 'modules/mysql/**/*'
     - 'modules/rsync/**/*'
