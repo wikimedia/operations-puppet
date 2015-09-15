@@ -79,6 +79,8 @@ class toollabs::genpp::python_exec_jessie {
         'python3-pil',          # 2.6.1
         # python-problem-report is not available
         # python3-problem-report is not available
+        'python-psycopg2',      # 2.5.4
+        'python3-psycopg2',     # 2.5.4
         'python-pycountry',     # 1.8
         'python3-pycountry',    # 1.8
         'python-pydot',         # 1.0.28

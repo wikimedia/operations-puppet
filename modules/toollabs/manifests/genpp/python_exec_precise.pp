@@ -79,6 +79,8 @@ class toollabs::genpp::python_exec_precise {
         # python3-pil is not available
         'python-problem-report', # 2.0.1
         # python3-problem-report is not available
+        'python-psycopg2',      # 2.4.5
+        'python3-psycopg2',     # 2.4.5
         'python-pycountry',     # 0.14.1
         # python3-pycountry is not available
         'python-pydot',         # 1.0.2

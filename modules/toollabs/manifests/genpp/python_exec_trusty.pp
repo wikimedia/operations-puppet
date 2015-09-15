@@ -79,6 +79,8 @@ class toollabs::genpp::python_exec_trusty {
         'python3-pil',          # 2.3.0
         'python-problem-report', # 2.14.1
         'python3-problem-report', # 2.14.1
+        'python-psycopg2',      # 2.4.5
+        'python3-psycopg2',     # 2.4.5
         'python-pycountry',     # 0.14.1
         # python3-pycountry is not available
         'python-pydot',         # 1.0.28
