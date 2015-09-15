@@ -20,8 +20,6 @@ class role::elasticsearch::server{
         fail("${msg}\n${msg2}")
     }
 
-    include standard
-
     if hiera('has_lvs', true) {
         include lvs::realserver
     }
