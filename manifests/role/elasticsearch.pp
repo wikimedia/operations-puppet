@@ -33,7 +33,7 @@ class role::elasticsearch::server{
         srange => '(($INTERNAL @resolve(silver.wikimedia.org)))',
     }
 
-    $elastic_nodes = hiera('elasticsearch::cluster_hosts::eqiad')
+    $elastic_nodes = hiera('elasticsearch::cluster_hosts')
     $elastic_nodes_ferm = join($elastic_nodes, ' ')
 
     ferm::service { 'elastic-inter-node':
