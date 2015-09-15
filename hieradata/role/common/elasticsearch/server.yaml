@@ -2,50 +2,10 @@
 cluster: elasticsearch
 admin::groups:
   - elasticsearch-roots
-lvs::realserver::realserver_ips: "10.2.2.30"
-
-elasticsearch::cluster_hosts::eqiad:
-  - elastic1001.eqiad.wmnet
-  - elastic1002.eqiad.wmnet
-  - elastic1003.eqiad.wmnet
-  - elastic1004.eqiad.wmnet
-  - elastic1005.eqiad.wmnet
-  - elastic1006.eqiad.wmnet
-  - elastic1007.eqiad.wmnet
-  - elastic1008.eqiad.wmnet
-  - elastic1009.eqiad.wmnet
-  - elastic1010.eqiad.wmnet
-  - elastic1011.eqiad.wmnet
-  - elastic1012.eqiad.wmnet
-  - elastic1013.eqiad.wmnet
-  - elastic1014.eqiad.wmnet
-  - elastic1015.eqiad.wmnet
-  - elastic1016.eqiad.wmnet
-  - elastic1017.eqiad.wmnet
-  - elastic1018.eqiad.wmnet
-  - elastic1019.eqiad.wmnet
-  - elastic1020.eqiad.wmnet
-  - elastic1021.eqiad.wmnet
-  - elastic1022.eqiad.wmnet
-  - elastic1023.eqiad.wmnet
-  - elastic1024.eqiad.wmnet
-  - elastic1025.eqiad.wmnet
-  - elastic1026.eqiad.wmnet
-  - elastic1027.eqiad.wmnet
-  - elastic1028.eqiad.wmnet
-  - elastic1029.eqiad.wmnet
-  - elastic1030.eqiad.wmnet
-  - elastic1031.eqiad.wmnet
-
-# ES-specific
-# Not default
-elasticsearch::multicast_group: 224.2.2.5
 # Nodes should not be master eligible by default in prod
 elasticsearch::master_eligible: false
 # Don't run if more than 1 master missing
 elasticsearch::minimum_master_nodes: 2
-# eqiad prod name
-elasticsearch::cluster_name: production-search-eqiad
 # More than 30G isn't very useful
 elasticsearch::heap_memory: '30G'
 # Production elasticsearch needs these plugins to be loaded in order
@@ -54,17 +14,9 @@ elasticsearch::heap_memory: '30G'
 elasticsearch::plugins_mandatory:
   - 'experimental highlighter'
   - 'analysis-icu'
-# We expect 31 nodes total
-elasticsearch::expected_nodes: 31
-# We should be able to run "OK" with 11 servers.
-elasticsearch::recover_after_nodes: 11
 # But it'd save time if we just waited for all of them to come back so
 # lets give them plenty of time to restart.
 elasticsearch::recover_after_time: '20m'
-# Production can get a lot of use out of the filter cache.
-elasticsearch::filter_cache_size: "20%"
-elasticsearch::bulk_thread_pool_capacity: 1000
-elasticsearch::bulk_thread_pool_executors: 6
 # Enable dynamic scripting
 elasticsearch::script_disable_dynamic: false
 # Let apifeatureusage create their indices
