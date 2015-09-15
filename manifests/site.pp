@@ -113,6 +113,7 @@ node /analytics10(04|10).eqiad.wmnet/ {
 node 'analytics1015.eqiad.wmnet' {
     include standard
     include base::firewall
+    include role::analytics::mysql::meta
 }
 
 # analytics1017
