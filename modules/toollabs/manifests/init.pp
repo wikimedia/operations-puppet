@@ -123,6 +123,24 @@ class toollabs (
         group  => 'root',
     }
 
+    # Backports are enabled for Debian in the class apt, included via
+    # role::labs::instance, base::labs and base, so we only need to
+    # enable them for Ubuntu here.
+    case $::operatingsystem {
+        'Debian': {
+        }
+        'Ubuntu': {
+            apt::repository { "${::lsbdistcodename}-backports":
+                uri        => 'http://nova.clouds.archive.ubuntu.com/ubuntu/',
+                dist       => "${::lsbdistcodename}-backports",
+                components => 'main restricted universe multiverse',
+            }
+        }
+        default: {
+            fail("Unknown operating system '$::operatingsystem'.")
+        }
+    }
+
     # Trustworthy enough
     # Only necessary on precise hosts, trusty has its own mariadb package
     if $::lsbdistcodename == 'precise' {
