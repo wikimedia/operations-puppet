@@ -77,6 +77,7 @@ lvs_service_ips:
       parsoidsvc: 10.2.2.29
   search: &ip_block013
     eqiad: 10.2.2.30
+    codfw: 10.2.1.30
   stream: &ip_block014
     eqiad:
       streamlb: 208.80.154.249
@@ -559,6 +560,7 @@ lvs_services:
     class: low-traffic
     sites:
     - eqiad
+    - codfw
     ip: *ip_block013
     port: 9200
     bgp: 'yes'
@@ -578,6 +580,8 @@ lvs_services:
       sites:
         eqiad:
           hostname: search.svc.eqiad.wmnet
+        codfw:
+          hostname: search.svc.codfw.wmnet
   stream:
     description: Websocket/streaming services
     class: high-traffic2
