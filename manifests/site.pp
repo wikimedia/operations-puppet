@@ -1876,7 +1876,7 @@ node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
     role mediawiki::canary_appserver
 
-    if $::hostname == 'mw1017' {
+    if $::hostname =~ /^mw101[78]$/ {
         include base::firewall
     }
 }
