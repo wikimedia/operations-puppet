@@ -25,8 +25,6 @@ class contint::packages {
         ensure => present,
     }
 
-    include subversion::client
-
     # PHP related packages
     package { [
         'php5-dev',  # phpize
