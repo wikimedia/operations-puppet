@@ -870,13 +870,17 @@ node 'einsteinium.eqiad.wmnet' {
 }
 
 node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
-
     role elasticsearch::server
     include base::firewall
+    include standard
 }
 
 node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
-    include standard
+    role elasticsearch::server
+    include base::firewall
+    class { 'standard':
+        has_ganglia => false,
+    }
 }
 
 # erbium is a webrequest udp2log host
