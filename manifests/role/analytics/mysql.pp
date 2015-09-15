@@ -15,11 +15,21 @@ class role::analytics::mysql::meta {
         require   => Class['mariadb::packages_wmf'],
     }
 
+    file { '/etc/init.d/mysql':
+        ensure  => '/opt/wmf-mariadb10/service',
+        require   => Class['mariadb::packages_wmf'],
+    }
+
+    file { '/usr/local/bin/mysql':
+        ensure  => '/opt/wmf-mariadb10/bin/mysql'
+        require   => Class['mariadb::packages_wmf'],
+    }
+
     service { 'mysql':
         ensure     => 'running',
         enable     => true,
         hasrestart => true,
         hasstatus  => true,
-        require    => Class['mariadb::config']
+        require    => [File['/etc/init.d/mysql'], Class['mariadb::config']],
     }
 }
