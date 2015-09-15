@@ -884,7 +884,7 @@ logging:
 
 # StatsD metrics collection
 metrics:
-  name: restbase
+  name: <%= @statsd_prefix %>
   type: statsd # default, but lets be explicit
   host: <%= @statsd_host %>
   port: <%= @statsd_port %>
