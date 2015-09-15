@@ -133,6 +133,53 @@ class toollabs (
         notify => Exec['apt-get update'],
     }
 
+    # Enable backports for specific distributions and packages only.
+    case $::lsbdistcodename {
+        'trusty': {
+            $packages_from_backports = ['python-socketio-client']
+        }
+    }
+    case $::operatingsystem {
+        'Debian': {
+            apt::repository { "${::lsbdistcodename}-backports":
+                uri        => 'http://mirrors.wikimedia.org/debian',
+                dist       => "${::lsbdistcodename}-backports",
+                components => 'main',
+            }
+        }
+        'Ubuntu': {
+            apt::repository { "${::lsbdistcodename}-backports":
+                uri        => 'http://nova.clouds.archive.ubuntu.com/ubuntu/',
+                dist       => "${::lsbdistcodename}-backports",
+                components => 'main restricted universe multiverse',
+            }
+        }
+        default: {
+            fail("Unknown operating system '$::operatingsystem'.")
+        }
+    }
+    # By default, mark packages from backports as ineligible for
+    # installation.
+    apt::pin { "${::lsbdistcodename}-backports":
+        pin      => "release a=${::lsbdistcodename}-backports",
+        priority => -1,
+        package  => '*',
+    }
+    # Explicitly white-list the packages we want to install from
+    # backports.
+    apt::pin { "${::lsbdistcodename}-backports-whitelisted":
+        ensure   => $packages_from_backports ? {
+            undef   => absent,
+            default => present,
+        },
+        pin      => "release a=${::lsbdistcodename}-backports",
+        priority => 500,
+        package  => $packages_from_backports ? {
+            undef   => undef,
+            default => join($packages_from_backports, ' '),
+        },
+    }
+
     # Trustworthy enough
     # Only necessary on precise hosts, trusty has its own mariadb package
     if $::lsbdistcodename == 'precise' {
