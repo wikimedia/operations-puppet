@@ -48,7 +48,6 @@ class contint::packages {
     package { [
         'mysql-server',
         'sqlite3',
-        'postgresql',
         ]:
         ensure => present,
     }
