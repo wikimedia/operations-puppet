@@ -52,7 +52,7 @@ labels:
   - name: ci-jessie-wikimedia
     image: ci-jessie-wikimedia
     ready-script: ready.sh
-    min-ready: 1
+    min-ready: 10
     providers:
       - name: wmflabs-eqiad
 
@@ -66,7 +66,7 @@ providers:
     password: '<%= @openstack_password -%>'
     auth-url: '<%= @openstack_auth_url -%>'
     boot-timeout: 300  # seconds
-    max-servers: 5
+    max-servers: 20
     rate: 10.0  # seconds
     # 'eqiad.wmflabs' is magically added by wmflabs
     template-hostname: '{image.name}-{timestamp}'
