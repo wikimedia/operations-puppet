@@ -3,7 +3,7 @@
 # This class sets up the basic underlying structure for both
 # Quarry web frontends and Quarry query runners.
 class quarry::base(
-    $clone_path = '/sry/quarry',
+    $clone_path = '/srv/quarry',
     $result_path_parent = '/data/project/quarry',
     $result_path = '/data/project/quarry/results',
 ) {
