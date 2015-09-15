@@ -874,6 +874,10 @@ node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
     include base::firewall
 }
 
+node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
+    include standard
+}
+
 # erbium is a webrequest udp2log host
 node 'erbium.eqiad.wmnet' {
 
