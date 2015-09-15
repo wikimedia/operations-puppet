@@ -1,3 +1,43 @@
+es_codfw_rack_a5:
+  __regex: !ruby/regexp /^elastic200[1-3]\.codfw\.wmnet$/
+  elasticsearch::rack: A5
+  elasticsearch::row:  A
+
+es_codfw_rack_a8:
+  __regex: !ruby/regexp /^elastic200[4-6]\.codfw\.wmnet$/
+  elasticsearch::rack: A8
+  elasticsearch::row:  A
+
+es_codfw_rack_b5:
+  __regex: !ruby/regexp /^elastic200[7-9]\.codfw\.wmnet$/
+  elasticsearch::rack: B5
+  elasticsearch::row:  B
+
+es_codfw_rack_b8:
+  __regex: !ruby/regexp /^elastic201[0-2]\.codfw\.wmnet$/
+  elasticsearch::rack: B8
+  elasticsearch::row:  B
+
+es_codfw_rack_c1:
+  __regex: !ruby/regexp /^elastic201[3-5]\.codfw\.wmnet$/
+  elasticsearch::rack: C1
+  elasticsearch::row:  C
+
+es_codfw_rack_c5:
+  __regex: !ruby/regexp /^elastic201[6-8]\.codfw\.wmnet$/
+  elasticsearch::rack: C5
+  elasticsearch::row:  C
+
+es_codfw_rack_d1:
+  __regex: !ruby/regexp /^elastic20(1[9]|2[0-1])\.codfw\.wmnet$/
+  elasticsearch::rack: D1
+  elasticsearch::row:  D
+
+es_codfw_rack_d5:
+  __regex: !ruby/regexp /^elastic202[2-4]\.codfw\.wmnet$/
+  elasticsearch::rack: D5
+  elasticsearch::row:  D
+
 es_eqiad_rack_a3:
   __regex: !ruby/regexp /^elastic100[0-6]\.eqiad\.wmnet$/
   elasticsearch::rack: A3
