@@ -3,7 +3,7 @@
 Description=Docker Application Container Engine (with flannel support)
 Documentation=http://docs.docker.com
 After=network.target docker.socket flannel.service
-Requires=docker.socket
+Requires=docker.socket flannel.service
 
 [Service]
 EnvironmentFile=-/etc/default/docker
