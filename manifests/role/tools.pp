@@ -69,3 +69,8 @@ class role::toollabs::k8s::worker {
         master_host => $master_host,
     }
 }
+
+class role::toollabs::k8s::bastion {
+    # kubectl and things
+    include k8s::client
+}
