@@ -43,6 +43,7 @@ environ_packages = {
         'opencv',
         'pil',                  # T108210
         'problem-report',
+        'psycopg2',
         'pycountry',            # T86015
         'pydot',                # T86015
         'pyexiv2',              # T61122.
