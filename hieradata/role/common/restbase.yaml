@@ -15,6 +15,8 @@ restbase::seeds:
 restbase::logstash_host: logstash1001.eqiad.wmnet
 restbase::cassandra_defaultConsistency: localQuorum
 restbase::cassandra_localDc: "%{::site}"
+restbase::cassandra_datacenters:
+    - "%{::site}"
 restbase::statsd_host: statsd.eqiad.wmnet
 restbase::parsoid_uri: http://parsoid.svc.eqiad.wmnet:8000
 restbase::graphoid_uri: http://graphoid.svc.eqiad.wmnet:19000
