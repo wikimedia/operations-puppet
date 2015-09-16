@@ -144,6 +144,18 @@ def labsdb_check_labsdb1005():
     return False
 
 
+@check('/dumps')
+def dumps_read_check():
+    dumpdir = "/public/dumps/public/enwiki"
+    dumps = os.listdir(dumpdir)
+    statuspath = os.path.join(dumpdir, dumps[0], 'status.html')
+    with open(statuspath) as f:
+        content = f.read()
+    if len(content) > 0:
+        return True
+    return False
+
+
 def job_running(name):
     """Check if a job with given name is running"""
     try:
