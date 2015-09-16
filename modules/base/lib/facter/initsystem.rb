@@ -24,7 +24,7 @@ Facter.add("initsystem") do
     elsif ["Linux", "GNU/kFreeBSD"].include? Facter.value(:kernel)
       # generic fallback
       result = "sysvinit"
-    elsif ["FreeBSD", "OpenBSD", "NetBSD"].include? Facter.value(:kernel)
+    elsif %w(FreeBSD OpenBSD NetBSD).include? Facter.value(:kernel)
       result = "bsd"
     elsif Facter.value(:kernel) == "SunOS"
       result = "smf"

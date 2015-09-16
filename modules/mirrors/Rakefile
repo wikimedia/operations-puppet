@@ -5,7 +5,7 @@ require 'rspec/core/rake_task'
 
 # Note: The nginx puppet module is a git submodule right now, so don't forget to
 # checkout submodules before testing
-extra_modules = [ 'nginx', 'wmflib' ]
+extra_modules = %w(nginx wmflib)
 
 modulename = File.basename(File.expand_path(File.dirname(__FILE__)))
 

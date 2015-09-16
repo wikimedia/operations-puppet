@@ -38,7 +38,7 @@ describe 'role' do
   end
 
   it "adds the keys to the top-scope variable" do
-    @scope.function_role(['test', 'test2'])
+    @scope.function_role(%w(test test2))
     expect(@topscope.lookupvar('_roles')).to eq({'test' => true, 'test2' => true})
   end
 

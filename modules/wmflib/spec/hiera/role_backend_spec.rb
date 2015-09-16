@@ -37,17 +37,17 @@ describe 'role_backend' do
   end
 
   it "lookup raises an error if conflicting values are given in different roles" do
-    @scope.function_role(['test', 'test2'])
+    @scope.function_role(%w(test test2))
     expect {@backend.lookup('admin::groups', @topscope, nil, nil)}.to raise_error(Exception, "Conflicting value for admin::groups found in role test2")
   end
 
   it "merges values when using an array lookup" do
-    @scope.function_role(['test', 'test2'])
+    @scope.function_role(%w(test test2))
     expect(@backend.lookup('admin::groups', @topscope, nil, :array)).to eq([['FooBar'],['FooBar1']])
   end
 
   it "merges values when using hash lookup" do
-    @scope.function_role(['test', 'test2'])
+    @scope.function_role(%w(test test2))
     expect(@backend.lookup('an_hash', @topscope, nil, :hash)).to eq({"test2"=>true, "test3"=>{"another"=>"level"}, "test"=>true})
   end
 end

@@ -3,7 +3,7 @@ require 'fileutils'
 
 require 'rspec/core/rake_task'
 
-extra_modules = [ 'wmflib', 'stdlib' ]
+extra_modules = %w(wmflib stdlib)
 
 modulename = File.basename(File.expand_path(File.dirname(__FILE__)))
 
