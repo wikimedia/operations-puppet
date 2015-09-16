@@ -1892,10 +1892,7 @@ node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 # mw1114-mw1119 are canary api appservers
 node /^mw111[4-9]\.eqiad\.wmnet$/ {
     role mediawiki::appserver::canary_api
-
-    if $::hostname == 'mw1114' {
-        include base::firewall
-    }
+    include base::firewall
 }
 
 # mw1120-1148 are api apaches
