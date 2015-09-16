@@ -19,16 +19,6 @@ class openstack::glance::service(
         require => Class['openstack::repo'],
     }
 
-    service { 'glance-api':
-        ensure  => running,
-        require => Package['glance'],
-    }
-
-    service { 'glance-registry':
-        ensure  => running,
-        require => Package['glance'],
-    }
-
     file {
         '/etc/glance/glance-api.conf':
             content => template("openstack/${$openstack_version}/glance/glance-api.conf.erb"),
@@ -66,7 +56,6 @@ class openstack::glance::service(
         }
     }
 
-    $spare_glance_host = hiera('labs_nova_controller_spare')
     # Set up a keypair and rsync image files between the main glance server
     #  and the spare.
     user { 'glancesync':
@@ -99,23 +88,47 @@ class openstack::glance::service(
         mode    => '0600',
         require => File['/home/glancesync/.ssh'],
     }
-    if $spare_glance_host != hiera('labs_nova_controller') {
-        cron { 'rsync_glance_images':
-            command => "/usr/bin/rsync -aS ${image_datadir}/* ${spare_glance_host}:${image_datadir}/",
-            minute  => 15,
-            user    => 'glancesync',
-            require => User['glancesync'],
+
+    if $::hostname == hiera('labs_nova_controller') {
+        service { 'glance-api':
+            ensure  => running,
+            require => Package['glance'],
+        }
+
+        service { 'glance-registry':
+            ensure  => running,
+            require => Package['glance'],
+        }
+
+        $spare_glance_host = hiera('labs_nova_controller_spare')
+        if $spare_glance_host != hiera('labs_nova_controller') {
+            cron { 'rsync_glance_images':
+                command => "/usr/bin/rsync -aS ${image_datadir}/* ${spare_glance_host}:${image_datadir}/",
+                minute  => 15,
+                user    => 'glancesync',
+                require => User['glancesync'],
+            }
+        } else {
+            # If the primary and the spare are the same, it's not useful to sync
+            cron { 'rsync_glance_images':
+                ensure => absent,
+            }
+        }
+        cron { 'rsync_chown_images':
+            command     => "chown -R glance ${image_datadir}/*",
+            minute      => 30,
+            user        => 'root',
+            require     => Cron['rsync_glance_images'],
         }
     } else {
-        # If the primary and the spare are the same, it's not useful to sync
-        cron { 'rsync_glance_images':
-            ensure => absent,
+        service { 'glance-api':
+            ensure  => stopped,
+            require => Package['glance'],
         }
-    }
-    cron { 'rsync_chown_images':
-        command     => "chown -R glance ${image_datadir}/*",
-        minute      => 30,
-        user        => 'root',
-        require     => Cron['rsync_glance_images'],
+
+        service { 'glance-registry':
+            ensure  => stopped,
+            require => Package['glance'],
+        }
     }
 }
