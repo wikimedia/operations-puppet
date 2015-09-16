@@ -29,4 +29,12 @@ class statistics::rsync::mediawiki {
         destination    => "${working_path}/mw-log/archive",
         retention_days => $retention_days,
     }
+
+    # Api logs from fluorine
+        statistics::rsync_job { 'api':
+            source         => 'fluorine.eqiad.wmnet::udp2log/archive/api.log.*.gz',
+            destination    => "${working_path}/mw-log/archive",
+            # Retention of 30 days to save disk space
+            retention_days => 30,
+        }
 }
