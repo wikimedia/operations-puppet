@@ -8,7 +8,7 @@ class openstack::queue-server(
         require => Class['openstack::repo'];
     }
 
-    if $::hostname == hiera('labs_nova_controller') {
+    if $::fqdn == hiera('labs_nova_controller') {
         service { 'rabbitmq-server':
             ensure    => running,
             require   => Package['rabbitmq-server'];
