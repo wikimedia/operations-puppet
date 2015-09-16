@@ -1554,6 +1554,107 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     }
 }
 
+node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
+
+    # lvs1008,11 are LVS balancers for the eqiad recursive DNS IP,
+    #   so they need to use the recursive DNS backends directly
+    #   (chromium and hydrogen) with fallback to codfw
+    # (doing this for all lvs for now, see T103921)
+    $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
+
+    role lvs::balancer
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+
+    include lvs::configuration
+    $ips = $lvs::configuration::subnet_ips
+
+    # Set up tagged interfaces to all subnets with real servers in them
+    # lint:ignore:case_without_default
+    case $::hostname {
+    # lint:endignore
+        /^lvs100[789]$/: {
+            # Row A subnets on eth0
+            interface::tagged { 'eth0.1017':
+                base_interface => 'eth0',
+                vlan_id        => '1017',
+                address        => $ips['public1-a-eqiad'][$::hostname],
+                netmask        => '255.255.252.0',
+            }
+            # Row C subnets on eth1
+            interface::tagged { 'eth1.1003':
+                base_interface => 'eth1',
+                vlan_id        => '1003',
+                address        => $ips['public1-c-eqiad'][$::hostname],
+                netmask        => '255.255.255.192',
+            }
+            interface::tagged { 'eth1.1019':
+                base_interface => 'eth1',
+                vlan_id        => '1019',
+                address        => $ips['private1-c-eqiad'][$::hostname],
+                netmask        => '255.255.252.0',
+            }
+        }
+        /^lvs101[012]$/: {
+            # Row C subnets on eth0
+            interface::tagged { 'eth0.1019':
+                base_interface => 'eth0',
+                vlan_id        => '1019',
+                address        => $ips['public1-c-eqiad'][$::hostname],
+                netmask        => '255.255.252.0',
+            }
+            # Row A subnets on eth1
+            interface::tagged { 'eth1.1001':
+                base_interface => 'eth1',
+                vlan_id        => '1001',
+                address        => $ips['public1-a-eqiad'][$::hostname],
+                netmask        => '255.255.255.192',
+            }
+            interface::tagged { 'eth1.1017':
+                base_interface => 'eth1',
+                vlan_id        => '1017',
+                address        => $ips['private1-a-eqiad'][$::hostname],
+                netmask        => '255.255.252.0',
+            }
+        }
+    }
+    # Row B subnets on eth2
+    interface::tagged { 'eth2.1002':
+        base_interface => 'eth2',
+        vlan_id        => '1002',
+        address        => $ips['public1-b-eqiad'][$::hostname],
+        netmask        => '255.255.255.192',
+    }
+    interface::tagged { 'eth2.1018':
+        base_interface => 'eth2',
+        vlan_id        => '1018',
+        address        => $ips['private1-b-eqiad'][$::hostname],
+        netmask        => '255.255.252.0',
+    }
+    # Row D subnets on eth3
+    interface::tagged { 'eth3.1004':
+        base_interface => 'eth3',
+        vlan_id        => '1004',
+        address        => $ips['public1-d-eqiad'][$::hostname],
+        netmask        => '255.255.255.224',
+    }
+    interface::tagged { 'eth3.1020':
+        base_interface => 'eth3',
+        vlan_id        => '1020',
+        address        => $ips['private1-d-eqiad'][$::hostname],
+        netmask        => '255.255.252.0',
+    }
+
+    lvs::interface-tweaks {
+        'eth0': bnx2x => true, txqlen => 10000, rss_pattern => 'eth0-fp-%d';
+        'eth1': bnx2x => true, txqlen => 10000, rss_pattern => 'eth1-fp-%d';
+        'eth2': bnx2x => true, txqlen => 10000, rss_pattern => 'eth2-fp-%d';
+        'eth3': bnx2x => true, txqlen => 10000, rss_pattern => 'eth3-fp-%d';
+    }
+}
+
 # codfw lvs
 node /lvs200[1-6]\.codfw\.wmnet/ {
 
