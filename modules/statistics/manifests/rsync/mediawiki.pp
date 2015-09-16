@@ -29,4 +29,11 @@ class statistics::rsync::mediawiki {
         destination    => "${working_path}/mw-log/archive",
         retention_days => $retention_days,
     }
+
+    # Api logs from fluorine
+        statistics::rsync_job { 'Api':
+            source         => 'fluorine.eqiad.wmnet::udp2log/archive/api.log.*.gz',
+            destination    => "${working_path}/mw-log/archive",
+            retention_days => $retention_days,
+        }
 }
