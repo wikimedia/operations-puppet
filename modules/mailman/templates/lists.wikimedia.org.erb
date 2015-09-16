@@ -100,7 +100,8 @@
     Redirect permanent /mailman/listinfo/pywikipedia-bugs     https://<%= @lists_servername %>/mailman/listinfo/pywikibot-bugs
     Redirect permanent /mailman/listinfo/education-coop       https://<%= @lists_servername %>/mailman/listinfo/education-collab
     Redirect permanent /mailman/listinfo/advocacy_advisors    https://<%= @lists_servername %>/mailman/listinfo/publicpolicy
-
+    Redirect permanent /mailman/listinfo/wikimedia-search     https://<%= @lists_servername %>/mailman/listinfo/discovery
+    Redirect permanent /mailman/listinfo/wikimedia-search-private     https://<%= @lists_servername %>/mailman/listinfo/discovery-private
 
     ErrorLog /var/log/apache2/<%= @lists_servername %>-error.log
     CustomLog /var/log/apache2/<%= @lists_servername %>-access.log combined
