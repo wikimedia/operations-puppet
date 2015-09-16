@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'postgresql::server', :type => :class do
     let(:params) { {
         :pgversion => '9.1',
-        :ensure => 'present',
+        :ensure => 'present'
         }
     }
 
@@ -17,7 +17,7 @@ describe 'postgresql::server', :type => :class do
         it { should contain_file('/etc/postgresql/9.1/main/postgresql.conf').with_ensure('present') }
         it do
             should contain_service('postgresql').with({
-            'ensure'  => 'running',
+            'ensure'  => 'running'
             })
         end
     end
@@ -26,7 +26,7 @@ end
 describe 'postgresql::server', :type => :class do
     let(:params) { {
         :pgversion => '9.1',
-        :ensure => 'absent',
+        :ensure => 'absent'
         }
     }
 
@@ -39,7 +39,7 @@ describe 'postgresql::server', :type => :class do
         it { should contain_file('/etc/postgresql/9.1/main/postgresql.conf').with_ensure('absent') }
         it do
             should contain_service('postgresql').with({
-            'ensure'  => 'stopped',
+            'ensure'  => 'stopped'
             })
         end
     end
@@ -49,7 +49,7 @@ describe 'postgresql::server', :type => :class do
     let(:params) { {
         :pgversion => '9.1',
         :ensure => 'absent',
-        :includes => ['a.conf', 'b.conf'],
+        :includes => ['a.conf', 'b.conf']
         }
     }
 

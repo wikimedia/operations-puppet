@@ -4,7 +4,7 @@ describe 'bacula::client::job', :type => :define do
     let(:title) { 'something' }
     let(:params) { {
         :fileset      => 'root',
-        :jobdefaults  => 'testdefaults',
+        :jobdefaults  => 'testdefaults'
         }
     }
 end

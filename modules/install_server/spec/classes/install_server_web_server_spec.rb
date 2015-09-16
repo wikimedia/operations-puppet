@@ -6,7 +6,7 @@ describe 'install_server::web-server', :type => :class do
             'mode'    => '0444',
             'owner'   => 'root',
             'group'   => 'root',
-            'content' => '',
+            'content' => ''
         })
     end
 end

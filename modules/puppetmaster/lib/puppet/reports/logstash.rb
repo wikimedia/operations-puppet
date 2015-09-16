@@ -44,7 +44,7 @@ Puppet::Reports.register_report(:logstash) do
             'start_time'            => self.logs.first.time.utc.iso8601,
             'end_time'              => self.logs.last.time.utc.iso8601,
             'log_messages'          => self.logs.map(&:to_report),
-            'metrics'               => {},
+            'metrics'               => {}
         }
 
         self.metrics.each do |category,v|

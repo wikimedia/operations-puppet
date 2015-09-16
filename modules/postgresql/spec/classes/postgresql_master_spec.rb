@@ -4,7 +4,7 @@ describe 'postgresql::master', :type => :class do
     let(:params) { {
         :pgversion        => '9.1',
         :ensure           => 'present',
-        :master_server    => 'test',
+        :master_server    => 'test'
         }
     }
 
@@ -29,7 +29,7 @@ describe 'postgresql::master', :type => :class do
     let(:params) { {
         :pgversion        => '9.1',
         :ensure           => 'absent',
-        :master_server    => 'test',
+        :master_server    => 'test'
         }
     }
 

@@ -3,12 +3,12 @@ require 'spec_helper'
 describe 'osm::planet_sync', :type => :define do
     let(:title) { 'somedb' }
     let(:facts) { {
-        :memoryfree => '1000 MB',
+        :memoryfree => '1000 MB'
         }
     }
     let(:params) { {
         :osmosis_dir => '/srv/osmosis',
-        :period => 'minute',
+        :period => 'minute'
         }
     }
     context 'with ensure present' do

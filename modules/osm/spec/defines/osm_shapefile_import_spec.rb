@@ -5,7 +5,7 @@ describe 'osm::shapefile_import', :type => :define do
     let(:params) { {
         :database => 'gis',
         :input_shape_file => '/nonexistent',
-        :shape_table      => 'shapes',
+        :shape_table      => 'shapes'
         }
     }
     context 'with ensure present' do

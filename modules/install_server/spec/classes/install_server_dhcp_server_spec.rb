@@ -10,7 +10,7 @@ describe 'install_server::dhcp-server', :type => :class do
             'mode'   => '0444',
             'owner'  => 'root',
             'group'  => 'root',
-            'recurse' => 'true',
+            'recurse' => 'true'
         })
     end
 end

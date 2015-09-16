@@ -9,7 +9,7 @@ describe 'bacula::client::mysql-bpipe', :type => :define do
             :xtrabackup            => false,
             :pigz_level            => 'fast',
             :is_slave              => false,
-            :mysqldump_innodb_only => false,
+            :mysqldump_innodb_only => false
             }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/for database/) }
@@ -21,7 +21,7 @@ describe 'bacula::client::mysql-bpipe', :type => :define do
             :xtrabackup            => false,
             :pigz_level            => 'fast',
             :is_slave              => false,
-            :mysqldump_innodb_only => false,
+            :mysqldump_innodb_only => false
             }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/alldatabases/) }
@@ -32,7 +32,7 @@ describe 'bacula::client::mysql-bpipe', :type => :define do
             :xtrabackup            => true,
             :pigz_level            => 'fast',
             :is_slave              => false,
-            :mysqldump_innodb_only => false,
+            :mysqldump_innodb_only => false
             }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/XTRABACKUP/) }
@@ -44,7 +44,7 @@ describe 'bacula::client::mysql-bpipe', :type => :define do
             :xtrabackup            => false,
             :pigz_level            => 'fast',
             :is_slave              => true,
-            :mysqldump_innodb_only => false,
+            :mysqldump_innodb_only => false
             }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/slave/) }
@@ -56,7 +56,7 @@ describe 'bacula::client::mysql-bpipe', :type => :define do
             :xtrabackup            => false,
             :pigz_level            => 'fast',
             :is_slave              => false,
-            :mysqldump_innodb_only => true,
+            :mysqldump_innodb_only => true
             }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/single-transcation/) }
@@ -69,7 +69,7 @@ describe 'bacula::client::mysql-bpipe', :type => :define do
             :pigz_level            => 'fast',
             :is_slave              => false,
             :mysqldump_innodb_only => true,
-            :local_dump_dir        => '/var/backup',
+            :local_dump_dir        => '/var/backup'
             }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/\$TEE \$LOCALDUMPDIR/) }
@@ -80,7 +80,7 @@ describe 'bacula::client::mysql-bpipe', :type => :define do
             :xtrabackup            => false,
             :pigz_level            => 'fast',
             :is_slave              => false,
-            :mysqldump_innodb_only => true,
+            :mysqldump_innodb_only => true
             }
         }
         it { should contain_file('/etc/bacula/scripts/something').with_content(/^[\$TEE \$LOCALDUMPDIR]/) }

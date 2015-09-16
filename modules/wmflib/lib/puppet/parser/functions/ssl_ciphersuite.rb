@@ -83,7 +83,7 @@ module Puppet::Parser::Functions
       'DHE-RSA-AES128-GCM-SHA256',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES256-GCM-SHA384',
-      'DHE-RSA-AES256-GCM-SHA384',
+      'DHE-RSA-AES256-GCM-SHA384'
     ],
     # Forward-Secret, but not AEAD
     'mid' => [
@@ -100,7 +100,7 @@ module Puppet::Parser::Functions
       'DHE-RSA-AES256-SHA256',
       'DHE-RSA-AES256-SHA',
       'DHE-RSA-CAMELLIA128-SHA',
-      'DHE-RSA-CAMELLIA256-SHA',
+      'DHE-RSA-CAMELLIA256-SHA'
     ],
     # not-forward-secret compat for ancient stuff
     'compat' => [
@@ -111,14 +111,14 @@ module Puppet::Parser::Functions
       'AES256-SHA256',
       'AES256-SHA',
       'DES-CBC3-SHA', # Only for IE8/XP at this point, I think
-    ],
+    ]
   }
 
   # Final lists exposed to callers
   ciphersuites = {
     'strong'     => basic['strong'],
     'mid'        => basic['strong'] + basic['mid'],
-    'compat'     => basic['strong'] + basic['mid'] + basic['compat'],
+    'compat'     => basic['strong'] + basic['mid'] + basic['compat']
   }
 
   newfunction(

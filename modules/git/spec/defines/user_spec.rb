@@ -16,7 +16,7 @@ describe 'git::userconfig', :type => :define do
 			:settings => {
 			'user' => {
 				'name' => 'Antoine Musso',
-				'email' => 'hashar@free.fr',
+				'email' => 'hashar@free.fr'
 			}
 		} }
 		}

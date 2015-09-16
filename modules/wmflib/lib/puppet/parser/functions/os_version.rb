@@ -39,13 +39,13 @@ module Puppet::Parser::Functions
       'Trusty'   => '14.04',
       'Utopic'   => '14.10',
       'Vivid'    => '15.04',
-      'Wily'     => '15.10',
+      'Wily'     => '15.10'
     },
     'Debian' => {
       'Wheezy'  => '7',
       'Jessie'  => '8',
       'Stretch' => '9',
-      'Buster'  => '10',
+      'Buster'  => '10'
     }
   }
 

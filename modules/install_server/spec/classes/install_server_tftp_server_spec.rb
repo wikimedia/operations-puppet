@@ -8,7 +8,7 @@ describe 'install_server::tftp-server', :type => :class do
         should contain_file('/etc/default/atftpd').with({
             'mode'   => '0444',
             'owner'  => 'root',
-            'group'  => 'root',
+            'group'  => 'root'
         })
     end
 
@@ -17,7 +17,7 @@ describe 'install_server::tftp-server', :type => :class do
             'mode'   => '0444',
             'owner'  => 'root',
             'group'  => 'root',
-            'recurse'  => 'remote',
+            'recurse'  => 'remote'
         })
     end
 end

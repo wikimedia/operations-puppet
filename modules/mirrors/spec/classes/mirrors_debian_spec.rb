@@ -7,7 +7,7 @@ describe 'mirrors::debian', :type => :class do
             'ensure' => 'directory',
             'owner'  => 'mirror',
             'group'  => 'mirror',
-            'mode'   => '0755',
+            'mode'   => '0755'
         })
     end
     it do
@@ -16,7 +16,7 @@ describe 'mirrors::debian', :type => :class do
             'owner'   => 'mirror',
             'group'   => 'mirror',
             'mode'    => '0755',
-            'source'  => 'puppet:///modules/mirrors/archvsync',
+            'source'  => 'puppet:///modules/mirrors/archvsync'
         })
     end
     it do
@@ -25,7 +25,7 @@ describe 'mirrors::debian', :type => :class do
             'owner'   => 'mirror',
             'group'   => 'mirror',
             'mode'    => '0555',
-            'source'  => 'puppet:///modules/mirrors/ftpsync.conf',
+            'source'  => 'puppet:///modules/mirrors/ftpsync.conf'
         })
     end
     it do
@@ -34,7 +34,7 @@ describe 'mirrors::debian', :type => :class do
             'command' => '/var/lib/mirror/archvsync/bin/ftpsync',
             'user'    => 'mirror',
             'hour'    => '*/6',
-            'minute'  => '03',
+            'minute'  => '03'
         })
     end
 end

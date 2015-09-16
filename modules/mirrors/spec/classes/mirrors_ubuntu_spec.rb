@@ -7,7 +7,7 @@ describe 'mirrors::ubuntu', :type => :class do
             'ensure' => 'directory',
             'owner'  => 'mirror',
             'group'  => 'mirror',
-            'mode'   => '0755',
+            'mode'   => '0755'
         })
     end
     it do
@@ -16,7 +16,7 @@ describe 'mirrors::ubuntu', :type => :class do
             'owner'   => 'root',
             'group'   => 'root',
             'mode'    => '0555',
-            'source'  => 'puppet:///modules/mirrors/update-ubuntu-mirror',
+            'source'  => 'puppet:///modules/mirrors/update-ubuntu-mirror'
         })
     end
     it do
@@ -25,7 +25,7 @@ describe 'mirrors::ubuntu', :type => :class do
             'command' => '/usr/local/sbin/update-ubuntu-mirror 1>/dev/null 2>/var/lib/mirror/mirror.err.log',
             'user'    => 'mirror',
             'hour'    => '*/6',
-            'minute'  => '43',
+            'minute'  => '43'
         })
     end
 end

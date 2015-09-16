@@ -6,7 +6,7 @@ describe 'bacula::storage::device', :type => :define do
         :device_type => 'File',
         :media_type  => 'File',
         :archive_device => '/dev/nst0',
-        :max_concur_jobs => '10',
+        :max_concur_jobs => '10'
         }
     }
 
@@ -16,7 +16,7 @@ describe 'bacula::storage::device', :type => :define do
                 'ensure'  => 'present',
                 'owner'   => 'root',
                 'group'   => 'root',
-                'mode'    => '0400',
+                'mode'    => '0400'
             }) \
             .with_content(/Name = something/) \
             .with_content(/Device Type = File/) \
@@ -33,7 +33,7 @@ describe 'bacula::storage::device', :type => :define do
             :archive_device => '/dev/nst0',
             :max_concur_jobs => '10',
             :spool_dir => '/tmp',
-            :max_spool_size => '100',
+            :max_spool_size => '100'
             }
         }
 

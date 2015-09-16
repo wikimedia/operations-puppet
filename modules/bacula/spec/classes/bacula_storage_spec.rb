@@ -7,7 +7,7 @@ describe 'bacula::storage', :type => :class do
         :sd_max_concur_jobs => '10',
         :sqlvariant => 'testsql',
         :sd_port => '9000',
-        :directorpassword => 'testdirectorpass',
+        :directorpassword => 'testdirectorpass'
         }
     }
 
@@ -21,7 +21,7 @@ describe 'bacula::storage', :type => :class do
         'purge'   => 'true',
         'mode'    => '0444',
         'owner'   => 'root',
-        'group'   => 'bacula',
+        'group'   => 'bacula'
         })
     end
     it 'should generate valid content for /etc/bacula/bacula-sd.conf' do
@@ -29,7 +29,7 @@ describe 'bacula::storage', :type => :class do
             'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'root',
-            'mode'    => '0400',
+            'mode'    => '0400'
         }) \
         .with_content(/Name = "testdirector"/) \
         .with_content(/Password = "testdirectorpass"/) \

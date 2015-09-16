@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'osm', :type => :class do
     let(:params) { {
-        :ensure           => 'present',
+        :ensure           => 'present'
         }
     }
 
@@ -14,7 +14,7 @@ end
 
 describe 'osm', :type => :class do
     let(:params) { {
-        :ensure           => 'absent',
+        :ensure           => 'absent'
         }
     }
 

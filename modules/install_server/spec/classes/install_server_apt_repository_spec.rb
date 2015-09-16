@@ -12,7 +12,7 @@ describe 'install_server::apt-repository', :type => :class do
             'ensure' => 'directory',
             'mode'   => '0755',
             'owner'  => 'root',
-            'group'  => 'root',
+            'group'  => 'root'
         })
     end
 
@@ -21,7 +21,7 @@ describe 'install_server::apt-repository', :type => :class do
             'ensure' => 'directory',
             'mode'   => '0755',
             'owner'  => 'root',
-            'group'  => 'root',
+            'group'  => 'root'
         })
     end
 
@@ -30,7 +30,7 @@ describe 'install_server::apt-repository', :type => :class do
             'ensure' => 'present',
             'mode'   => '0755',
             'owner'  => 'root',
-            'group'  => 'root',
+            'group'  => 'root'
         })
     end
 
@@ -39,7 +39,7 @@ describe 'install_server::apt-repository', :type => :class do
             'ensure' => 'present',
             'mode'   => '0444',
             'owner'  => 'root',
-            'group'  => 'root',
+            'group'  => 'root'
         })
     end
 
@@ -48,7 +48,7 @@ describe 'install_server::apt-repository', :type => :class do
             'ensure' => 'present',
             'mode'   => '0444',
             'owner'  => 'root',
-            'group'  => 'root',
+            'group'  => 'root'
         })
     end
 
@@ -57,7 +57,7 @@ describe 'install_server::apt-repository', :type => :class do
             'ensure' => 'present',
             'mode'   => '0444',
             'owner'  => 'root',
-            'group'  => 'root',
+            'group'  => 'root'
         })
     end
 end

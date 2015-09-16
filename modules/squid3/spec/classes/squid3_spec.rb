@@ -9,14 +9,14 @@ describe 'squid3', :type => :class do
             'ensure' => 'present',
             'mode'   => '0444',
             'owner'  => 'root',
-            'group'  => 'root',
+            'group'  => 'root'
         }).without_path()
 
         should contain_file('/etc/logrotate.d/squid3').with({
             'ensure' => 'present',
             'mode'   => '0444',
             'owner'  => 'root',
-            'group'  => 'root',
+            'group'  => 'root'
         }).without_path()
     end
 end

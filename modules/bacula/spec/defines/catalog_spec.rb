@@ -7,7 +7,7 @@ describe 'bacula::director::catalog', :type => :define do
         :dbuser      => 'bacula',
         :dbhost      => 'bacula-db.example.org',
         :dbport      => '3306',
-        :dbpassword  => 'bacula',
+        :dbpassword  => 'bacula'
         }
     }
 
@@ -16,7 +16,7 @@ describe 'bacula::director::catalog', :type => :define do
             'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'bacula',
-            'mode'    => '0440',
+            'mode'    => '0440'
         }) \
         .with_content(/Name = something/) \
         .with_content(/dbname = bacula/) \

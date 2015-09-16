@@ -5,7 +5,7 @@ describe 'postgresql::slave', :type => :class do
         :pgversion        => '9.1',
         :ensure           => 'present',
         :master_server    => 'test',
-        :replication_pass => 'pass',
+        :replication_pass => 'pass'
         }
     }
 
@@ -32,7 +32,7 @@ describe 'postgresql::slave', :type => :class do
         :ensure           => 'present',
         :master_server    => 'test',
         :replication_pass => 'pass',
-        :datadir          => '/srv/postgres/9.1/main',
+        :datadir          => '/srv/postgres/9.1/main'
         }
     }
     context 'ensure present' do
@@ -57,7 +57,7 @@ describe 'postgresql::slave', :type => :class do
         :pgversion        => '9.1',
         :ensure           => 'absent',
         :master_server    => 'test',
-        :replication_pass => 'pass',
+        :replication_pass => 'pass'
         }
     }
 

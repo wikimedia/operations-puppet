@@ -8,7 +8,7 @@ describe 'bacula::client', :type => :class do
         :file_retention => 'testfr',
         :job_retention => 'testjr',
         :fdport => '2000',
-        :directorpassword => 'testdirectorpass',
+        :directorpassword => 'testdirectorpass'
         }
     }
 
@@ -20,7 +20,7 @@ describe 'bacula::client', :type => :class do
             'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'root',
-            'mode'    => '0400',
+            'mode'    => '0400'
         }) \
         .with_content(/Name = "testdirector"/) \
         .with_content(/Password = "testdirectorpass"/) \

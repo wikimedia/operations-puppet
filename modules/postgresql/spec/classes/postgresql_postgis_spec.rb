@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'postgresql::postgis', :type => :class do
     let(:params) { {
         :pgversion => '9.1',
-        :ensure => 'present',
+        :ensure => 'present'
         }
     }
 
@@ -15,7 +15,7 @@ end
 describe 'postgresql::postgis', :type => :class do
     let(:params) { {
         :pgversion => '9.1',
-        :ensure => 'absent',
+        :ensure => 'absent'
         }
     }
 

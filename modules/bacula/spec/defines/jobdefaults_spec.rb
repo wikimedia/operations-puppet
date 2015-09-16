@@ -4,7 +4,7 @@ describe 'bacula::director::jobdefaults', :type => :define do
     let(:title) { 'something' }
     let(:params) { {
         :when => 'never',
-        :pool => 'testpool',
+        :pool => 'testpool'
         }
     }
 
@@ -13,7 +13,7 @@ describe 'bacula::director::jobdefaults', :type => :define do
             'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'bacula',
-            'mode'    => '0440',
+            'mode'    => '0440'
         }) \
             .with_content(/Name = something/) \
             .with_content(/Type = Backup/) \

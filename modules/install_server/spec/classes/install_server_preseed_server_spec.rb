@@ -9,7 +9,7 @@ describe 'install_server::preseed-server', :type => :class do
             'owner'  => 'root',
             'group'  => 'root',
             'recurse' => 'true',
-            'links' => 'manage',
+            'links' => 'manage'
         }).without_path()
     end
 end

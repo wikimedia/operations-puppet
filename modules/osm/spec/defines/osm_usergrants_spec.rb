@@ -4,7 +4,7 @@ describe 'osm::usergrants', :type => :define do
     let(:title) { 'somedb' }
     let(:params) { {
         :postgresql_user => 'someuser',
-        :ensure => 'present',
+        :ensure => 'present'
         }
     }
     context 'with ensure present' do
@@ -16,7 +16,7 @@ describe 'osm::usergrants', :type => :define do
     let(:title) { 'somedb' }
     let(:params) { {
         :postgresql_user => 'someuser',
-        :ensure => 'absent',
+        :ensure => 'absent'
         }
     }
     context 'with ensure absent' do

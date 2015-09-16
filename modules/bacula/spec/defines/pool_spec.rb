@@ -5,7 +5,7 @@ describe 'bacula::director::pool', :type => :define do
     let(:params) { {
         :max_vols => '10',
         :storage => 'teststorage',
-        :volume_retention => '10 days',
+        :volume_retention => '10 days'
         }
     }
 
@@ -15,7 +15,7 @@ describe 'bacula::director::pool', :type => :define do
                 'ensure'  => 'present',
                 'owner'   => 'root',
                 'group'   => 'bacula',
-                'mode'    => '0440',
+                'mode'    => '0440'
             }) \
             .with_content(/Name = something/) \
             .with_content(/Maximum Volumes = 10/) \
@@ -32,7 +32,7 @@ describe 'bacula::director::pool', :type => :define do
             :max_vols => '10',
             :storage => 'teststorage',
             :volume_retention => '10 days',
-            :max_vol_bytes => '2000',
+            :max_vol_bytes => '2000'
             }
         }
         it 'should create /etc/bacula/conf.d/pool-something.conf' do
@@ -45,7 +45,7 @@ describe 'bacula::director::pool', :type => :define do
             :max_vols => '10',
             :storage => 'teststorage',
             :volume_retention => '10 days',
-            :label_fmt => 'TEST',
+            :label_fmt => 'TEST'
             }
         }
         it 'should create /etc/bacula/conf.d/pool-something.conf' do

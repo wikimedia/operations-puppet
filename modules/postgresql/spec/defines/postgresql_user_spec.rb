@@ -5,7 +5,7 @@ describe 'postgresql::user', :type => :define do
     let(:params) { {
         :user     => 'something',
         :password => 'soemthing',
-        :ensure   => 'present',
+        :ensure   => 'present'
         }
     }
     context 'with ensure present' do
@@ -20,7 +20,7 @@ describe 'postgresql::user', :type => :define do
     let(:params) { {
         :user     => 'something',
         :password => 'soemthing',
-        :ensure   => 'absent',
+        :ensure   => 'absent'
         }
     }
 
