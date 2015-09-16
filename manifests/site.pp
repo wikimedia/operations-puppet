@@ -1904,6 +1904,7 @@ node /^mw11([23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
 # mw1149-1151 are apaches
 node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
+    include base::firewall
 }
 
 # mw1152 is the experimental HAT videoscaler
