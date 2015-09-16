@@ -102,7 +102,17 @@ class role::labsdnsrecursor {
             listen_addresses         => $listen_addresses,
             allow_from               => $network::constants::all_networks,
             ip_aliases               => $nova_floating_ip_aliases,
-            additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}"
+            additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}",
+            auth_zones               => "labsdb=/var/zones/labsdb"
+    }
+
+    file { '/var/zones/labsdb':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['pdns-recursor'],
+        content => template('labsdns/labsdb.erb')
     }
 
     ::dnsrecursor::monitor { $listen_addresses: }
