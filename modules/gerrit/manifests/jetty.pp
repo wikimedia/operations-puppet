@@ -197,6 +197,7 @@ class gerrit::jetty ($ldap_hosts,
     }
 
     git::clone { 'operations/gerrit/plugins':
+        ensure    => latest,
         directory => '/var/lib/gerrit2/review_site/plugins',
         branch    => 'master',
         origin    => 'https://gerrit.wikimedia.org/r/p/operations/gerrit/plugins.git',
