@@ -66,7 +66,6 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
             # and bucket since all of labs is
             # tracked on the network host
             'net.netfilter.nf_conntrack_max'     => 262144,
-            'net.netfilter.nf_conntrack_buckets' => 32768,
         },
         priority => 50,
     }
@@ -76,4 +75,24 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-network'",
     }
 
+    file { '/etc/modprobe.d/nf_conntrack.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/base/firewall/nf_conntrack.conf',
+    }
+
+    file { '/usr/lib/nagios/plugins/check_conntrack':
+        source => 'puppet:///modules/base/firewall/check_conntrack.py',
+        mode   => '0755',
+    }
+
+    nrpe::monitor_service { 'conntrack_table_size':
+        ensure        => 'present',
+        description   => 'Check size of conntrack table',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack 80 90',
+        require       => File['/usr/lib/nagios/plugins/check_conntrack'],
+        contact_group => 'admins',
+    }
 }
