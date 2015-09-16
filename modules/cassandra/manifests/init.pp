@@ -188,6 +188,18 @@
 # [*client_encryption_enabled*]
 #   Enable client-side encryption
 #   Default: false
+#
+# [*super_username*]
+#   Cassandra superuser username.
+#
+# [*super_password*]
+#   Cassandra superuser password.
+#
+# [*application_username*]
+#   Non-superuser user; Username for application access.
+#
+# [*application_password*]
+#   Password for application user.
 
 class cassandra(
     $cluster_name                     = 'Test Cluster',
@@ -231,6 +243,10 @@ class cassandra(
     $tls_cluster_name                 = undef,
     $internode_encryption             = none,
     $client_encryption_enabled        = false,
+    $super_username                   = 'root',
+    $super_password                   = 'n0ts3kr3t',
+    $application_username             = 'cassandra',
+    $application_password             = 'passw0rd',
 
     $yaml_template                    = "${module}/cassandra.yaml.erb",
     $env_template                     = "${module}/cassandra-env.sh.erb",
@@ -366,6 +382,22 @@ class cassandra(
         require => Package['cassandra'],
     }
 
+    file { '/etc/cassandra/cqlshrc':
+        content => template("${module_name}/cqlshrc.erb"),
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0444',
+        require => Package['cassandra'],
+    }
+
+    file { '/etc/cassandra/adduser.cql':
+        content => template("${module_name}/adduser.cql.erb"),
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0444',
+        require => Package['cassandra'],
+    }
+
     if ($tls_cluster_name) {
         file { '/etc/cassandra/tls':
             ensure  => directory,
@@ -420,6 +452,11 @@ class cassandra(
     # PropertyFileSnitch, which uses these files.
     file { ['/etc/cassandra/cassandra-topology.properties', '/etc/cassandra/cassandra-topology.yaml']:
         ensure => 'absent',
+    }
+
+    exec { 'create application user if not exists':
+        command => "cqlsh --cqlshrc=/etc/cassandra/cqlshrc -f /etc/cassandra/adduser.cql ${::ipaddress}",
+        unless => "cqlsh --cqlshrc=/etc/cassandra/cqlshrc -e 'select name from system_auth.users' ${::ipaddress} | grep -q ${application_username}",
     }
 
     service { 'cassandra':
