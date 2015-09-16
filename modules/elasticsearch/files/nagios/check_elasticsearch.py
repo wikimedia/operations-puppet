@@ -58,7 +58,7 @@ class Threshold(object):
         if total is None and self.percent is not None:
             raise ValueError('threshold %r has percent but no total provided' %
                              self.threshold_string)
-        if total is not None:
+        if total not in [None, 0]:
             value = float(value) / total
         return self.predicate(value, self.threshold)
 
