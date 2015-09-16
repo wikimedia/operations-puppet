@@ -7,6 +7,7 @@ import redis
 import requests
 import socket
 import subprocess
+import time
 import uuid
 
 
@@ -162,6 +163,45 @@ def continuous_job_precise():
 @check('/continuous/trusty')
 def continuous_job_trusty():
     return job_running('test-long-running-trusty')
+
+
+def grid_check_start(release):
+    """Launch a new job, wait until it starts"""
+    name = 'start-precise-test'
+    try:
+        with open(os.devnull, 'w') as devnull:
+            subprocess.check_call(['/usr/bin/jstart', '-N', name,
+                                   '-l', 'release=%s' % release,
+                                   'testjob.py'],
+                                  stderr=devnull, stdout=devnull)
+    except subprocess.CalledProcessError:
+        return False
+    i = 0
+    success = False
+    while i < 10:
+        if job_running(name):
+            success = True
+            break
+        time.sleep(1)
+        i += 1
+    # clean up, whether or not it started
+    try:
+        with open(os.devnull, 'w') as devnull:
+            subprocess.check_call(['/usr/bin/qdel', name],
+                                  stderr=devnull, stdout=devnull)
+    except subprocess.CalledProcessError:
+        return False
+    return success
+
+
+@check('/grid/start/trusty')
+def grid_check_start_trusty():
+    return grid_check_start('trusty')
+
+
+@check('/grid/start/precise')
+def grid_check_start_precise():
+    return grid_check_start('precise')
 
 
 @check('/self')
