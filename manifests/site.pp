@@ -1921,6 +1921,10 @@ node 'mw1152.eqiad.wmnet' {
 # mw1153-1160 are imagescalers (trusty)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
     role mediawiki::imagescaler
+
+    if $::hostname == 'mw1153' {
+        include base::firewall
+    }
 }
 
 # mw1161-1188 are apaches
