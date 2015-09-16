@@ -1295,15 +1295,14 @@ node 'labcontrol1002.wikimedia.org' {
     include ldap::role::client::labs
     include role::salt::masters::labs
     include role::deployment::salt_masters
+    role nova::controller
+    if $use_neutron == true {
+        include role::neutron::controller
+    }
+
     # The dns controller grabs an IP, so leave this disabled until/unless
     #  this server is the primary labs controller.
     #include role::dns::ldap
-    # And, we don't want nova services here listening to rabbit until
-    #  we need them.
-    #role nova::controller
-    #if $use_neutron == true {
-        #include role::neutron::controller
-    #}
 }
 
 node 'labcontrol2001.wikimedia.org' {
