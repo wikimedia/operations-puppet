@@ -6,7 +6,7 @@ class openstack::nova::conductor($novaconfig) {
         require => Class['openstack::repo'];
     }
 
-    if $::hostname == hiera('labs_nova_controller') {
+    if $::fqdn == hiera('labs_nova_controller') {
         service { 'nova-conductor':
             ensure    => running,
             subscribe => File['/etc/nova/nova.conf'],

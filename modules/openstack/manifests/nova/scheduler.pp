@@ -18,7 +18,7 @@ class openstack::nova::scheduler(
         require => Package['nova-scheduler'],
     }
 
-    if $::hostname == hiera('labs_nova_controller') {
+    if $::fqdn == hiera('labs_nova_controller') {
         service { 'nova-scheduler':
             ensure    => running,
             subscribe => File['/etc/nova/nova.conf'],
