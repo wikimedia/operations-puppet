@@ -89,7 +89,7 @@ class openstack::glance::service(
         require => File['/home/glancesync/.ssh'],
     }
 
-    if $::hostname == hiera('labs_nova_controller') {
+    if $::fqdn == hiera('labs_nova_controller') {
         service { 'glance-api':
             ensure  => running,
             require => Package['glance'],
