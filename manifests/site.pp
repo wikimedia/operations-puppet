@@ -2448,6 +2448,11 @@ node 'stat1002.eqiad.wmnet' {
     # and only readable by users in the
     # analytics-privatedata-users group.
     include role::analytics::password::research
+
+    # The eventlogging code is useful for scripting
+    # EventLogging consumers.  Install this on
+    # stat1002, but don't run any daemons.
+    include ::eventlogging::package
 }
 
 # stat1003 is a general purpose number cruncher for
