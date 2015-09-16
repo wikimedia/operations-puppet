@@ -36,5 +36,3 @@
 	username = demon
 [url "https://gerrit.wikimedia.org/r/p/"]
     insteadOf = "gerrit:"
-[push]
-	default = simple
