@@ -188,6 +188,18 @@
 # [*client_encryption_enabled*]
 #   Enable client-side encryption
 #   Default: false
+#
+# [*super_username*]
+#   Cassandra superuser username.
+#
+# [*super_password*]
+#   Cassandra superuser password.
+#
+# [*application_username*]
+#   Non-superuser user; Username for application access.
+#
+# [*application_password*]
+#   Password for application user.
 
 class cassandra(
     $cluster_name                     = 'Test Cluster',
@@ -231,6 +243,10 @@ class cassandra(
     $tls_cluster_name                 = undef,
     $internode_encryption             = none,
     $client_encryption_enabled        = false,
+    $super_username                   = 'cassandra',
+    $super_password                   = 'cassandra',
+    $application_username             = undef,
+    $application_password             = undef,
 
     $yaml_template                    = "${module}/cassandra.yaml.erb",
     $env_template                     = "${module}/cassandra-env.sh.erb",
@@ -364,6 +380,24 @@ class cassandra(
         group   => 'cassandra',
         mode    => '0444',
         require => Package['cassandra'],
+    }
+
+    file { '/etc/cassandra/cqlshrc':
+        content => template("${module_name}/cqlshrc.erb"),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        require => Package['cassandra'],
+    }
+
+    if $application_username != undef {
+        file { '/etc/cassandra/adduser.cql':
+            content => template("${module_name}/adduser.cql.erb"),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
+            require => Package['cassandra'],
+        }
     }
 
     if ($tls_cluster_name) {
