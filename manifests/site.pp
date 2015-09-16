@@ -1567,6 +1567,7 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
 
     # comment out for now, requires defining serviceip/traffic-class stuff...
     # role lvs::balancer
+    include standard # in place of above!
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
