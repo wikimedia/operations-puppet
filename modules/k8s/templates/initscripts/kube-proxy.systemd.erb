@@ -4,7 +4,8 @@ Description=Kubernetes Proxy
 [Service]
 ExecStart=/usr/bin/kube-proxy \
     --kubeconfig=/etc/kubernetes/kubeconfig \
-    --v=10
+    --v=10 \
+    --masquerade-all=true
 
 [Install]
 WantedBy=multi-user.target
