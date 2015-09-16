@@ -39,7 +39,7 @@
 # EventLogging tasks.
 #
 class eventlogging {
-    include ::eventlogging::package
+    require ::eventlogging::package
 
     $log_dir = '/srv/log/eventlogging'
 
