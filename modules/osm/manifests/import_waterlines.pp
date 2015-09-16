@@ -17,7 +17,7 @@ class osm::import_waterlines (
     }
 
     cron { 'import_waterlines':
-        ensure    => present,
+        ensure    => absent, # broken, temporarily disabled
         hour      => 9,
         minute    => 13,
         monthday  => 1,
