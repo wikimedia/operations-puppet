@@ -17,6 +17,8 @@
 #   'localQuorum'. Default: 'localQuorum'.
 # [*cassandra_localDc*]
 #   Which DC should be considered local. Default: 'datacenter1'.
+# [*cassandra_datacenters*]
+#   The full list of member datacenters.
 # [*port*]
 #   Port where to run the restbase service. Default: 7231
 # [*config_template*]
@@ -45,6 +47,7 @@ class restbase(
     $seeds          = [$::ipaddress],
     $cassandra_defaultConsistency = 'localQuorum',
     $cassandra_localDc = 'datacenter1',
+    $cassandra_datacenters = [ 'datacenter1' ],
     $port           = 7231,
     $salt_key       = 'secretkey',
     $page_size      = 250,
