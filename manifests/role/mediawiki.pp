@@ -155,6 +155,15 @@ class role::mediawiki::imagescaler {
 class role::mediawiki::videoscaler {
     system::role { 'role::mediawiki::videoscaler': }
 
+    # operations/mediawiki-config's CommonSettings.php checks if this file is
+    # present. If it is, it raises $wgMaxShellMemory and $wgMaxShellFileSize.
+    file { '/etc/wikimedia-image-scaler':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+
     include ::role::mediawiki::common
     include ::mediawiki::multimedia
     include ::mediawiki::jobrunner
@@ -220,4 +229,3 @@ class role::mediawiki::maintenance {
     include mediawiki::maintenance::updatequerypages
 
 }
-
