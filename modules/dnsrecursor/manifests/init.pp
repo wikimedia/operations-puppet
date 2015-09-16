@@ -9,7 +9,8 @@ class dnsrecursor(
     $listen_addresses         = [$::ipaddress],
     $allow_from               = [],
     $ip_aliases               = undef,
-    $additional_forward_zones = ""
+    $additional_forward_zones = "",
+    $auth_zones               = undef
 ) {
     package { 'pdns-recursor':
         ensure => 'present',
