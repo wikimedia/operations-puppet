@@ -23,6 +23,15 @@ class toollabs::checker inherits toollabs {
         notify => Service['toolschecker'],
     }
 
+    file { '/usr/local/lib/python2.7/dist-packages/testjob.py':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/toollabs/testjob.py',
+        notify => Service['toolschecker'],
+    }
+
     file { ['/run/toolschecker', '/var/lib/toolschecker', '/var/lib/toolschecker/puppetcerts']:
         ensure => directory,
         owner  => "${::labsproject}.toolschecker",
