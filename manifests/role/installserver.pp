@@ -57,6 +57,15 @@ class role::installserver {
     class { 'squid3':
         config_source => 'puppet:///files/caching-proxy/squid3-apt-proxy.conf',
     }
+
+    cron { 'squid-logrotate':
+        ensure  => 'present',
+        command => '/usr/sbin/squid3 -k rotate',
+        user    => 'root',
+        hour    => '17',
+        minute  => '15',
+    }
+
     ferm::rule { 'proxy':
         rule => 'proto tcp dport 8080 { saddr $ALL_NETWORKS ACCEPT; }'
     }
