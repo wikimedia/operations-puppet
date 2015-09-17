@@ -196,6 +196,11 @@ node 'analytics1027.eqiad.wmnet' {
     include role::analytics::hadoop::balancer
 }
 
+# Analytics Query Service (RESTBase & Cassandra)
+node /aqs100[123]\.eqiad\.wmnet/ {
+    include standard
+    include base::firewall
+}
 
 
 # git.wikimedia.org
