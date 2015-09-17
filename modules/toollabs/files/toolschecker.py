@@ -237,7 +237,7 @@ def db_read_write_check(host, db):
     return success
 
 
-@check('toolsdb')
+@check('/toolsdb')
 def check_toolsdb():
     return db_read_write_check('tools-db', 's52524__rwtest')
 
