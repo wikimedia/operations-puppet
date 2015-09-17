@@ -1,7 +1,9 @@
+import ConfigParser
 import flask
 import ldap
 import ldapsupportlib
 import os
+import psycopg2
 import pymysql
 import redis
 import requests
@@ -129,11 +131,6 @@ def labsdb_check_labsdb1003():
     return db_query_check('labsdb1003.eqiad.wmnet')
 
 
-@check('/labsdb/labsdb1004')
-def labsdb_check_labsdb1004():
-    return db_query_check('labsdb1004.eqiad.wmnet')
-
-
 @check('/labsdb/labsdb1005')
 def labsdb_check_labsdb1005():
     connection = pymysql.connect('labsdb1005.eqiad.wmnet', read_default_file=os.path.expanduser('~/replica.my.cnf'))
@@ -228,7 +225,34 @@ def db_read_write_check(host, db):
         cur.execute("SELECT * FROM test WHERE test=%s" % magicnumber)
         result = cur.fetchone()
         if result:
-            cur.execute('DELETE FROM test WHERE test=%s;', magicnumber)
+            cur.execute('DELETE FROM test WHERE test=%s' % magicnumber)
+            connection.commit()
+            success = True
+    finally:
+        cur.close()
+        connection.close()
+    return success
+
+
+@check('/labsdb/labsdb1004rw')
+def postgres_read_write_check():
+    dbconfig = ConfigParser.RawConfigParser()
+    dbconfig.read(os.path.expanduser('~/postgres.my.cnf'))
+    user = dbconfig.get('client', 'user')
+    password = dbconfig.get('client', 'password')
+    magicnumber = int(time.time())
+
+    try:
+        connection = psycopg2.connect(
+            "host=labsdb1004.eqiad.wmnet dbname=%s_rwtest user=%s password=%s" %
+            (user, user, password))
+        cur = connection.cursor()
+        cur.execute("INSERT INTO test (test) VALUES (%s)" % magicnumber)
+        connection.commit()
+        cur.execute("SELECT * FROM test WHERE test=%s" % magicnumber)
+        result = cur.fetchone()
+        if result:
+            cur.execute('DELETE FROM test WHERE test=%s' % magicnumber)
             connection.commit()
             success = True
     finally:
