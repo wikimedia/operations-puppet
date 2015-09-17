@@ -55,6 +55,7 @@ class role::lvs::balancer {
             $sip['api'][$::site],
             $sip['rendering'][$::site],
             $sip['swift'][$::site],
+            $sip['search'][$::site],
             $sip['kartotherian'][$::site],
             ],
 
