@@ -230,6 +230,7 @@ class role::ci::slave::labs::common {
 
     # Jenkins slaves need to access beta cluster for the browsertests
     include contint::firewall::labs
+    include contint::packages::base
 
     if $::site == 'eqiad' {
         # Does not come with /dev/vdb, we need to mount it using lvm
