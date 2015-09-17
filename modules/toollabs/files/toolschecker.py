@@ -1,7 +1,9 @@
+import ConfigParser
 import flask
 import ldap
 import ldapsupportlib
 import os
+import psycopg2
 import pymysql
 import redis
 import requests
@@ -139,6 +141,24 @@ def labsdb_check_labsdb1005():
     connection = pymysql.connect('labsdb1005.eqiad.wmnet', read_default_file=os.path.expanduser('~/replica.my.cnf'))
     cur = connection.cursor()
     cur.execute('select * from toolserverdb_p.wiki limit 1')
+    result = cur.fetchone()
+    if result:
+        return True
+    return False
+
+
+@check('/labsdb/labsdb1004')
+def labsdb_check_labsdb1004():
+    dbconfig = ConfigParser.RawConfigParser()
+    dbconfig.read(os.path.expanduser('~/postgres.my.cnf'))
+    user = dbconfig.get('client', 'user')
+    password = dbconfig.get('client', 'password')
+
+    conn = psycopg2.connect(
+        "host=labsdb1004.eqiad.wmnet dbname=meta_p user=%s password=%s" %
+        (user, password))
+    cur = conn.cursor()
+    cur.execute('select * from meta_p.wiki limit 1')
     result = cur.fetchone()
     if result:
         return True
