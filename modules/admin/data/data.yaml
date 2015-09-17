@@ -610,8 +610,7 @@ users:
     gid: 500
     name: brion
     realname: Brion Vibber
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPe5ARdfajt7cDlcK6Fn3uFf5d5hvFdefqdr3L4Q2qeojQYioEvgcbZfVXRzpoSuPPx1cl/tDZCdfYityJiZWaE3T+gDZqYh/zO4M/JkiRp0vfnHKQeRbW7ledlitPKi9ZoEGE0e8FX17V9DNxnSolI3wBrEOOHxmBnnqS2Q04bM1/MRuMH/jxkcOWEp/SG5TOJtlSqKMAOrui7vU0gycQ9Kn6bwB0csuRA2IUwAnn07oVlCoBLR4nDTzj+iXF9j3aB2nyuZE0huXJM4ys3oL5CSDVTDow42vLyH4jwMlugxsgC2QBwUuCPLGz0uTVOvdFG5PstXBEWJnr6lL/0D13
-        brion@Hawkeye.local]
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8VCaFjLWMBNFmij4lWEIGpfmhoaFxyuLq9DFzZnjjWWXOKvMf0ySuGBAw1lbCfmirKpzRiAw82TVjSHfRKzcmuqyDy0SQolffqrSwk3rghE9yORVN6EfkJCkQQw8h8RX1Dz92hqV32LMT0G9J3oHSixPhUU9SFdtO+eFwZbVKJSlGiWzQItkxoKmLs/Q3Vw2XDYT3hATijXjbnJcOvlIDuys4Timt4goVzg2WEctCP6KFqNrZ0IQnIa88MIL7LwhCw+X6tRBKt7LXhMppHJo62P4ogDnRFKhvjiymCTbTP7KIHn77QGK6qQHlf7z9D8UluEd7md1fo/zbs1UaQOL3 brion@Orac.local]
     uid: 500
   bsitu:
     ensure: absent
