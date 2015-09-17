@@ -5,6 +5,9 @@
 #
 class contint::packages {
 
+    # Basic utilites needed for all Jenkins slaves
+    include ::contint::packages::base
+
     include ::mediawiki::packages
     include ::mediawiki::packages::multimedia  # T76661
 
@@ -137,19 +140,6 @@ class contint::packages {
 
     # need geoip to build udp-filter
     include geoip
-
-    # frontend tests use curl to make http requests to mediawiki
-    package { [
-        'curl',
-        ]:
-        ensure => present,
-    }
-
-    # Colordiff gives us nice coloring in Jenkins console whenever
-    # it is used instead of the stock diff.
-    package { 'colordiff':
-        ensure => present,
-    }
 
     # JSDuck was built for Ubuntu ( T48236/ T82278 )
     # It is a pain to rebuild for Jessie so give up (T95008), we will use
