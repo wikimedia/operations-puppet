@@ -2045,6 +2045,7 @@ node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
 # mw1209-1220 are apaches
 node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
     role mediawiki::appserver
+    include base::firewall
 }
 
 #mw1221-mw1235 are api apaches
