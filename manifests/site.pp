@@ -1997,6 +1997,10 @@ node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
 # mw1026-mw1113 are appservers
 node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
+
+    if $::hostname =~ /^mw103[0-9]$/ {
+        include base::firewall
+    }
 }
 
 # mw1114-mw1119 are canary api appservers
