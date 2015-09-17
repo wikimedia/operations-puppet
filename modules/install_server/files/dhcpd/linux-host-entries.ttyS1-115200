@@ -23,29 +23,14 @@ host analytics1002 {
 	fixed-address analytics1002.eqiad.wmnet;
 }
 
-host analytics1011 {
-	hardware ethernet 90:b1:1c:06:bf:01;
-	fixed-address analytics1011.eqiad.wmnet;
-}
-
 host analytics1015 {
 	hardware ethernet 90:b1:1c:09:7f:f6;
 	fixed-address analytics1015.eqiad.wmnet;
 }
 
-host analytics1016 {
-	hardware ethernet 90:b1:1c:12:68:32;
-	fixed-address analytics1016.eqiad.wmnet;
-}
-
 host analytics1017 {
 	hardware ethernet 90:b1:1c:12:8f:9a;
 	fixed-address analytics1017.eqiad.wmnet;
-}
-
-host analytics1019 {
-	hardware ethernet 90:b1:1c:12:88:48;
-	fixed-address analytics1019.eqiad.wmnet;
 }
 
 host analytics1021 {
@@ -213,6 +198,27 @@ host analytics1056 {
 host analytics1057 {
         hardware ethernet 44:A8:42:25:03:F0;
         fixed-address analytics1057.eqiad.wmnet;
+}
+
+host aqs1001 {
+	hardware ethernet 90:b1:1c:06:bf:01;
+	fixed-address aqs1001.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host aqs1002 {
+	hardware ethernet 90:b1:1c:12:68:32;
+	fixed-address aqs1002.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host aqs1003 {
+	hardware ethernet 90:b1:1c:12:88:48;
+	fixed-address aqs1003.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host antimony {
