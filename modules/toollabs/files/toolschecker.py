@@ -215,6 +215,33 @@ def grid_check_start_precise():
     return grid_check_start('precise')
 
 
+def db_read_write_check(host, db):
+    ''' Write, read, and delete a single record.  The existing db must have
+        a table named "test" with one field, also named "test" '''
+    success = False
+    try:
+        connection = pymysql.connect(host, read_default_file=os.path.expanduser('~/replica.my.cnf'), db=db)
+        cur = connection.cursor()
+        magicnumber=int(time.time())
+        cur.execute("INSERT INTO test (test) VALUES (%s)" % magicnumber)
+        connection.commit()
+        cur.execute("SELECT * FROM test WHERE test=%s" % magicnumber)
+        result = cur.fetchone()
+        if result:
+            cur.execute('DELETE FROM test WHERE test=%s;', magicnumber)
+            connection.commit()
+            success = True
+    finally:
+        cur.close()
+        connection.close()
+    return success
+
+
+@check('toolsdb')
+def check_toolsdb():
+    return db_read_write_check('tools-db', 's52524__rwtest')
+
+
 @check('/self')
 def self_check():
     return True
