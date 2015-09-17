@@ -2057,6 +2057,10 @@ node /^mw12(2[1-9]|3[0-5])\.eqiad\.wmnet$/ {
 #mw1236-mw1258 are apaches
 node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
+
+    if $::hostname =~ /^mw124[0-9]/ {
+        include base::firewall
+    }
 }
 
 # ROW A codfw appservers: mw2001-mw2079
