@@ -145,11 +145,8 @@ class contint::packages {
         ensure => present,
     }
 
-    # Colordiff gives us nice coloring in Jenkins console whenever
-    # it is used instead of the stock diff.
-    package { 'colordiff':
-        ensure => present,
-    }
+    # Basic utilites needed for all Jenkins slaves
+    include contint::packages::base
 
     # JSDuck was built for Ubuntu ( T48236/ T82278 )
     # It is a pain to rebuild for Jessie so give up (T95008), we will use
