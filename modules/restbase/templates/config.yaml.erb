@@ -49,6 +49,17 @@ templates:
       - mediawiki_v1_graphoid
       - mediawiki/v1/mobileapps
     # - mediawiki/v1/revision-scoring
+    securityDefinitions:
+      mediawiki_auth:
+        description: Checks permissions using MW api
+        type: apiKey
+        in: header
+        name: cookie
+        x-internal-request-whitelist:
+          - http://api.svc.eqiad.wmnet/w/api.php
+          - <%= @parsoid_uri %>
+          - <%= @graphoid_uri %>
+          - <%= @mobileapps_uri %>
 
   wmf-sys-1.0.0: &wp/sys/1.0.0
     info:
@@ -100,23 +111,23 @@ templates:
 
       /{module:page_revisions}:
         x-modules:
-            - name: page_revisions
-              version: 1.0.0
-              type: file
+          - name: page_revisions
+            type: file
 
       /{module:key_rev_value}:
         x-modules:
           - name: key_rev_value
-            version: 1.0.0
             type: file
 
-      /{module:parsoid}:
+      /{module:key_value}:
         x-modules:
-          - name: parsoid
-            version: 1.0.0
+          - name: key_value
             type: file
-            options:
-              parsoidHost: <%= @parsoid_uri %>
+
+      /{module:post_data}:
+        x-modules:
+          - name: post_data
+            type: file
 
       /{module:action}:
         x-modules:
@@ -130,57 +141,56 @@ templates:
                   host: '{$.request.params.domain}'
                 body: '{$.request.body}'
 
-      /{module:graphoid}:
+      /{module:page_save}:
         x-modules:
-          - name: simple_service
-            version: 1.0.0
+          - name: page_save
             type: file
-            options:
-              paths:
-                /v1/png/{title}/{revision}/{graph_id}:
-                  get:
-                    on_request:
-                      - get_from_graphoid:
-                          request:
-                            uri: <%= @graphoid_uri %>/{domain}/v1/png/{title}/{revision}/{graph_id}
 
-      /{module:mobileapps}:
+      /{module:parsoid}:
         x-modules:
-          - name: simple_service
-            version: 1.0.0
+          - name: parsoid
             type: file
             options:
-              paths:
-                /v1/html/{title}:
-                  get:
-                    on_request:
-                      - get_from_backend:
-                          request:
-                            uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html/{title}
-                /v1/sections/{title}:
-                  get:
-                    on_request:
-                      - get_from_backend:
-                          request:
-                            uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections/{title}
-                /v1/sections-lead/{title}:
-                  get:
-                    on_request:
-                      - get_from_backend:
-                          request:
-                            uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-lead/{title}
-                /v1/sections-remaining/{title}:
-                  get:
-                    on_request:
-                      - get_from_backend:
-                          request:
-                            uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-remaining/{title}
-                /v1/text/{title}:
-                  get:
-                    on_request:
-                      - get_from_backend:
-                          request:
-                            uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-text/{title}
+              parsoidHost: <%= @parsoid_uri %>
+
+      /{module:graphoid}/v1/png/{title}/{revision}/{graph_id}:
+        get:
+          x-request-handler:
+            - get_from_graphoid:
+                request:
+                  uri: <%= @graphoid_uri %>/{domain}/v1/png/{title}/{revision}/{graph_id}
+
+      /{module:mobileapps}/v1/html/{title}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html/{title}
+      /{module:mobileapps}/v1/sections/{title}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections/{title}
+      /{module:mobileapps}/v1/sections-lead/{title}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-lead/{title}
+      /{module:mobileapps}/v1/sections-remaining/{title}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-remaining/{title}
+      /{module:mobileapps}/v1/text/{title}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-text/{title}
+
 
   wp-default-1.0.0: &wp/default/1.0.0
     x-subspecs:
@@ -960,6 +970,7 @@ services:
       spec: *spec
       salt: <%= @salt_key %>
       default_page_size: <%= @page_size %>
+      user_agent: RESTBase/WMF
 
 # Log error messages and gracefully restart a worker if v8 reports using more
 # heap (note: not RSS).
