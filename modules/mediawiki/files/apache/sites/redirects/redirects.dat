@@ -98,6 +98,7 @@ funnel	nb.wikiversity.org	//beta.wikiversity.org/wiki/Hovedside
 # renamed chapter wiki - T40763
 
 rewrite	chapcom.wikimedia.org	https://affcom.wikimedia.org
+rewrite	et.wikimedia.org	https://ee.wikimedia.org
 
 rewrite	be-x-old.wikipedia.org	https://be-tarask.wikipedia.org
 
@@ -181,7 +182,7 @@ rewrite	*wikipedie.cz	//cs.wikipedia.org
 rewrite	*wikipedia.cz	//cs.wikipedia.org
 
 # wikimedia.ee / wikipedia.ee - RT #4566
-rewrite	*wikimedia.ee	//et.wikimedia.org
+rewrite	*wikimedia.ee	//ee.wikimedia.org
 
 rewrite	*wikipedia.ee	//et.wikipedia.org
 
