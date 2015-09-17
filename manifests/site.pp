@@ -2067,6 +2067,11 @@ node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     }
 }
 
+#mw1259 is a videoscaler
+node 'mw1259.eqiad.wmnet' {
+    role mediawiki::vidoescaler
+}
+
 # ROW A codfw appservers: mw2001-mw2079
 #mw2001-mw2006 are jobrunners
 node /^mw200[0-6]\.codfw\.wmnet$/ {
