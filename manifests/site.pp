@@ -1998,7 +1998,7 @@ node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
 node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
 
-    if $::hostname =~ /^mw10([3-4][0-9])$/ {
+    if $::hostname =~ /^mw10([3-5][0-9])$/ {
         include base::firewall
     }
 }
