@@ -20,6 +20,11 @@ define lvs::interface-tweaks($bnx2x=false, $txqlen=false, $rss_pattern=false) {
             interface::offload { "${name} lro": interface => $name, setting => 'lro', value => 'off' }
         }
     }
+    else {
+        if $name != 'eth0' {
+            interface::manual { $name: interface => $name }
+        }
+    }
 
     # RSS/RPS/XPS-type perf stuff ( https://www.kernel.org/doc/Documentation/networking/scaling.txt )
     if $rss_pattern { interface::rps { $name: rss_pattern => $rss_pattern } }
