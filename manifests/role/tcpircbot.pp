@@ -12,7 +12,7 @@ class role::tcpircbot {
     }
 
     tcpircbot::instance { 'logmsgbot':
-        channels => '#wikimedia-operations',
+        channels => [ '#wikimedia-operations', '#wikimedia-releng' ],
         password => $passwords::logmsgbot::logmsgbot_password,
         cidr     => [
             '::ffff:10.64.32.167/128',    # eventlog1001
