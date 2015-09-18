@@ -3563,11 +3563,6 @@ host mw1030 {
 	fixed-address mw1030.eqiad.wmnet;
 }
 
-host mw1031 {
-	hardware ethernet 84:2b:2b:77:e4:ed;
-	fixed-address mw1031.eqiad.wmnet;
-}
-
 host mw1032 {
 	hardware ethernet 84:2b:2b:78:27:b3;
 	fixed-address mw1032.eqiad.wmnet;
