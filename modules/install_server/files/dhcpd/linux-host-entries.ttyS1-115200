@@ -6174,11 +6174,6 @@ host snapshot1004 {
 	fixed-address snapshot1004.eqiad.wmnet;
 }
 
-host sodium {
-	hardware ethernet 78:2b:cb:08:aa:e1;
-	fixed-address sodium.wikimedia.org;
-}
-
 host stat1001 {
 	hardware ethernet 78:2b:cb:35:c4:f7;
 	fixed-address stat1001.eqiad.wmnet;

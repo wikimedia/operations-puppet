@@ -2387,15 +2387,6 @@ node 'silver.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'sodium.wikimedia.org' {
-    role lists
-    include standard
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 node /^(strontium|rhodium).eqiad.wmnet/ {
     include standard
     include role::puppetmaster::backend
