@@ -5,7 +5,7 @@
 
 /usr/bin/rsync -avz --delete /var/lib/mailman/archives/ rsync://fermium.wikimedia.org/archives
 
-/usr/bin/rsync -avz --delete /var/lib/mailman/archives/qfiles/ rsync://fermium.wikimedia.org/qfiles
+/usr/bin/rsync -avz --delete /var/lib/mailman/qfiles/ rsync://fermium.wikimedia.org/qfiles
 
 /usr/bin/rsync -avz --delete /var/lib/mailman/data/ \
 --include="heldmsg-*" \
