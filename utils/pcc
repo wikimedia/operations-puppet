@@ -129,7 +129,10 @@ build_params = {
     'LIST_OF_NODES': args.nodes,
 }
 invocation = job.invoke(build_params=build_params)
-invocation.block(until='not_queued')
+if hasattr(invocation, 'block_until_building'):
+    invocation.block_until_building()
+else:
+    invocation.block(until='not_queued')
 build = invocation.get_build()
 
 print 'Your build URL is %s' % white(build.baseurl)
