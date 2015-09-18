@@ -484,21 +484,6 @@ class role::nova::network {
     class { 'openstack::nova::network':
         novaconfig        => $novaconfig,
     }
-
-    diamond::collector::conntrack { 'conntrack_collector': }
-
-    # The current maximum is 262144; the threshold should be set
-    # to a faction of *.conntrack_max rather than a literal here
-    # but graphite_threshold doesn't support that.
-    monitoring::graphite_threshold { 'conntrack_saturated':
-        description => 'Connection tracking saturation',
-        metric      => "servers.${::hostname}.ConntrackCollector.network.netfilter.conntrack_count",
-        from        => '5min',
-        warning     => '241664', # (~90%)
-        critical    => '258048', # (~98%)
-        percentage  => '1',
-    }
-
 }
 
 class role::nova::wikiupdates {
