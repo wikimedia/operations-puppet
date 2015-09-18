@@ -1,9 +1,9 @@
-class openstack::horizon::service($openstack_version='icehouse', $novaconfig) {
-
+class openstack::horizon::service(
+    $openstack_version=$::openstack::version,
+    $novaconfig)
+{
     # basic horizon packages and config
-    if ! defined(Class['openstack::repo']) {
-        class { 'openstack::repo': openstack_version => $openstack_version }
-    }
+    include openstack::repo
 
     package { 'openstack-dashboard':
         ensure  => present,
