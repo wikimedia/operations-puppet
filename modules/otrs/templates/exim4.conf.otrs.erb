@@ -18,7 +18,7 @@ OTRSQUERY=SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_p
 ###############################
 
 # MySQL lookups (OTRS)
-hide mysql_servers =  m2-master.eqiad.wmnet/otrs/exim/<%= @otrs_mysql_password %> : m2-slave.eqiad.wmnet/otrs/exim/<%= @otrs_mysql_password %>
+hide mysql_servers =  m2-master.eqiad.wmnet/<%= @otrs_mysql_database %>/<%= @otrs_mysql_user %>/<%= @otrs_mysql_password %> : m2-slave.eqiad.wmnet/<%= @otrs_mysql_database %>/<%= @otrs_mysql_user %>/<%= @otrs_mysql_password %>
 
 domainlist system_domains = @
 domainlist local_domains = +system_domains : +wikimedia_domains
@@ -28,7 +28,7 @@ domainlist wikimedia_domains = lsearch;CONFDIR/wikimedia_domains
 domainlist defer_domains = lsearch;CONFDIR/defer_domains
 
 # Standard lists
-hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
+hostlist wikimedia_nets = <; <%= @trusted_networks.join(" ; ") %>
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ;
 
 # Interfaces
