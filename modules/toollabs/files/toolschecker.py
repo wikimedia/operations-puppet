@@ -257,6 +257,18 @@ def labsdb_check_labsdb1003rw():
     return db_read_write_check('labsdb1003.eqiad.wmnet', 's52524__rwtest')
 
 
+@check('/toolscron')
+def cron_check():
+    ''' A tools cron job touches a file every five minutes.  This test verifies
+        that the mtime is appropriately recent.'''
+    filepath = '/data/project/toolschecker/crontest.txt'
+    tenminutes = 60 * 10
+    mtime = os.path.getmtime(filepath)
+    if time.time() - mtime < tenminutes:
+        return True
+    return False
+
+
 @check('/self')
 def self_check():
     return True
