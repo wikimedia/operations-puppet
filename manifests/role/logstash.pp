@@ -196,7 +196,7 @@ class role::logstash::puppetreports {
         codec => 'json_lines',
     }
 
-    ferm::service { "logstash_tcp_json}":
+    ferm::service { 'logstash_tcp_json':
         proto  => 'tcp',
         port   => '5229',
         srange => '$ALL_NETWORKS',
