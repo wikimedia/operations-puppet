@@ -429,6 +429,10 @@ class role::nova::controller {
     class { 'openstack::spreadcheck':
         novaconfig => $novaconfig
     }
+
+    package { 'python-openstackclient':
+        ensure => present,
+    }
 }
 
 class role::nova::api {
