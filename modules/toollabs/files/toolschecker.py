@@ -269,6 +269,60 @@ def cron_check():
     return False
 
 
+@check('/service/start/lighttpd')
+def service_start_lighttpd():
+    ''' Start a simple web service, verify that it can serve a page
+        within 10 seconds.'''
+    success = False
+    url = "https://tools.wmflabs.org/toolschecker/"
+    with open(os.devnull, 'w') as devnull:
+        subprocess.check_call(['/usr/local/bin/webservice', 'start'],
+                              stderr=devnull, stdout=devnull)
+
+    for i in range(0, 10):
+        request = requests.get(url)
+        if request.status_code == 200:
+            success = True
+            break
+
+    with open(os.devnull, 'w') as devnull:
+        subprocess.check_call(['/usr/local/bin/webservice', 'stop'],
+                              stderr=devnull, stdout=devnull)
+
+    # Make sure it really stopped
+    request = requests.get(url)
+    if request.status_code == 200:
+        success = False
+
+    return success
+
+
+@check('/service/start/generic')
+def service_start_generic():
+    success = False
+    url = "https://tools.wmflabs.org/toolschecker/"
+    with open(os.devnull, 'w') as devnull:
+        subprocess.check_call(['/usr/local/bin/webservice2', 'uwsgi-python', 'start'],
+                              stderr=devnull, stdout=devnull)
+
+    for i in range(0, 10):
+        request = requests.get(url)
+        if request.status_code == 200:
+            success = True
+            break
+
+    with open(os.devnull, 'w') as devnull:
+        subprocess.check_call(['/usr/local/bin/webservice2', 'uwsgi-python', 'stop'],
+                              stderr=devnull, stdout=devnull)
+
+    # Make sure it really stopped
+    request = requests.get(url)
+    if request.status_code == 200:
+        success = False
+
+    return success
+
+
 @check('/self')
 def self_check():
     return True
