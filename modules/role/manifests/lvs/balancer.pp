@@ -12,11 +12,11 @@ class role::lvs::balancer {
 
     $lvs_balancer_ips = $::hostname ? {
         # eqiad
-        /^(lvs100[14])$/ => [
+        /^(lvs10(0[14]|07|10))$/ => [
             $sip['text'][$::site],
             $sip['mobile'][$::site],
             ],
-        /^(lvs100[25])$/ => [
+        /^(lvs10(0[25]|08|11))$/ => [
             $sip['upload'][$::site],
             $sip['maps'][$::site],
             $sip['dns_rec'][$::site],
@@ -25,7 +25,7 @@ class role::lvs::balancer {
             $sip['stream'][$::site],
             $sip['ocg'][$::site],
             ],
-        /^(lvs100[36])$/ => [
+        /^(lvs10(0[36]|09|12))$/ => [
             $sip['apaches'][$::site],
             $sip['api'][$::site],
             $sip['rendering'][$::site],

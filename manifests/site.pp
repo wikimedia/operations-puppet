@@ -1544,9 +1544,7 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
     # (doing this for all lvs for now, see T103921)
     $nameservers_override = [ '208.80.154.157', '208.80.154.50', '208.80.153.254' ]
 
-    # comment out for now, requires defining serviceip/traffic-class stuff...
-    # role lvs::balancer
-    include standard # in place of above!
+    role lvs::balancer
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
