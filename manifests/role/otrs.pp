@@ -9,20 +9,14 @@ class role::otrs (
     system::role { 'role::otrs::webserver':
         description => 'OTRS Web Application Server',
     }
-
-    mailalias { 'root':
-        recipient => 'root@wikimedia.org',
-    }
-
     include standard
-    include webserver::apache
-    include network::constants
+    include ::otrs
+
     include passwords::mysql::otrs
 
     $otrs_database_user = $::passwords::mysql::otrs::user
     $otrs_database_pw   = $::passwords::mysql::otrs::pass
 
-    $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
     ferm::service { 'otrs_http':
         proto => 'tcp',
@@ -40,165 +34,6 @@ class role::otrs (
         srange => '($EXTERNAL_NETWORKS)',
     }
 
-    user { 'otrs':
-        home       => '/var/lib/otrs',
-        groups     => 'www-data',
-        shell      => '/bin/bash',
-        managehome => true,
-        system     => true,
-    }
-
-    $packages = [
-        'libapache-dbi-perl',
-        'libdbd-mysql-perl',
-        'libgd-graph-perl',
-        'libgd-text-perl',
-        'libio-socket-ssl-perl',
-        'libjson-xs-perl',
-        'libnet-ldap-perl',
-        'libpdf-api2-perl',
-        'libsoap-lite-perl',
-        'libtext-csv-xs-perl',
-        'libtimedate-perl',
-        'mysql-client',
-        'perl-doc',
-    ]
-
-    package { $packages:
-        ensure => 'present',
-    }
-
-    # can conflict with ferm module
-    if ! defined(Package['libnet-dns-perl']){
-        package { 'libnet-dns-perl':
-            ensure => present,
-        }
-    }
-
-    file { '/opt/otrs/Kernel/Config.pm':
-        ensure  => 'file',
-        owner   => 'otrs',
-        group   => 'www-data',
-        mode    => '0440',
-        content => template('otrs/Config.pm.erb'),
-    }
-
-    apache::site { 'ticket.wikimedia.org':
-        content => template('apache/sites/ticket.wikimedia.org.erb'),
-    }
-
-    file { '/etc/cron.d/otrs':
-        ensure => 'file',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///files/otrs/crontab.otrs',
-    }
-
-    file { '/var/spool/spam':
-        ensure => 'directory',
-        owner  => 'otrs',
-        group  => 'www-data',
-        mode   => '0775',
-    }
-
-    file { '/opt/otrs/bin/otrs.TicketExport2Mbox.pl':
-        ensure => 'file',
-        owner  => 'otrs',
-        group  => 'www-data',
-        mode   => '0755',
-        source => 'puppet:///files/otrs/otrs.TicketExport2Mbox.pl',
-    }
-
-    file { '/opt/otrs/bin/cgi-bin/idle_agent_report':
-        ensure => 'file',
-        owner  => 'otrs',
-        group  => 'www-data',
-        mode   => '0755',
-        source => 'puppet:///files/otrs/idle_agent_report',
-    }
-
-    file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/icons/product.ico':
-        ensure => 'file',
-        owner  => 'otrs',
-        group  => 'www-data',
-        mode   => '0664',
-        source => 'puppet:///files/otrs/wmf.ico',
-    }
-
-    file { '/usr/local/bin/train_spamassassin':
-        ensure => 'file',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///files/otrs/train_spamassassin',
-    }
-
-    file { '/opt/otrs/Kernel/Output/HTML/OTRS':
-        ensure => link,
-        target => '/opt/otrs/Kernel/Output/HTML/Standard',
-    }
-
-    sslcert::certificate { 'ticket.wikimedia.org': }
-    include ::apache::mod::perl
-    include ::apache::mod::rewrite
-    include ::apache::mod::ssl
-    include ::apache::mod::headers
-
-    include clamav
-    class { 'spamassassin':
-        required_score        => '3.5',# (5.0)
-        use_bayes             => '1',  # 0|(1)
-        bayes_auto_learn      => '0',  # 0|(1)
-        short_report_template => true, # true|(false)
-        trusted_networks      => $network::constants::all_networks,
-        custom_scores         => {
-            'RP_MATCHES_RCVD'   => '-0.500',
-            'SPF_SOFTFAIL'      => '2.000',
-            'SUSPICIOUS_RECIPS' => '2.000',
-            'DEAR_SOMETHING'    => '1.500',
-        },
-        debug_logging         => '--debug spf',
-    }
-
-    include passwords::exim
-    $otrs_mysql_password = $passwords::exim::otrs_mysql_password
-
-    class { 'exim4':
-        variant => 'heavy',
-        config  => template('exim/exim4.conf.otrs.erb'),
-        filter  => template('exim/system_filter.conf.otrs.erb'),
-        require => [
-            Class['spamassassin'],
-            Class['clamav'],
-        ]
-    }
-    include exim4::ganglia
-
-    file { '/etc/exim4/defer_domains':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'Debian-exim',
-        mode    => '0444',
-        require => Class['exim4'],
-    }
-
-    file { '/etc/exim4/wikimedia_domains':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///files/exim/wikimedia_domains',
-        require => Class['exim4'],
-    }
-
-    cron { 'otrs_train_spamassassin':
-        ensure  => 'present',
-        user    => 'root',
-        minute  => '5',
-        command => '/usr/local/bin/train_spamassassin',
-    }
-
     monitoring::service { 'smtp':
         description   => 'OTRS SMTP',
         check_command => 'check_smtp',
@@ -209,4 +44,10 @@ class role::otrs (
         check_command => 'check_ssl_http!ticket.wikimedia.org',
     }
 
+    # can conflict with ferm module
+    if ! defined(Package['libnet-dns-perl']){
+        package { 'libnet-dns-perl':
+            ensure => present,
+        }
+    }
 }
