@@ -1561,9 +1561,9 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
     # lint:endignore
         /^lvs100[789]$/: {
             # Row A subnets on eth0
-            interface::tagged { 'eth0.1017':
+            interface::tagged { 'eth0.1001':
                 base_interface => 'eth0',
-                vlan_id        => '1017',
+                vlan_id        => '1001',
                 address        => $ips['public1-a-eqiad'][$::hostname],
                 netmask        => '255.255.252.0',
             }
@@ -1583,9 +1583,9 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
         }
         /^lvs101[012]$/: {
             # Row C subnets on eth0
-            interface::tagged { 'eth0.1019':
+            interface::tagged { 'eth0.1003':
                 base_interface => 'eth0',
-                vlan_id        => '1019',
+                vlan_id        => '1003',
                 address        => $ips['public1-c-eqiad'][$::hostname],
                 netmask        => '255.255.252.0',
             }
