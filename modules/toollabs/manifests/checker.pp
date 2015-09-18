@@ -8,7 +8,7 @@
 # idmapd related issues.
 class toollabs::checker inherits toollabs {
     include toollabs::infrastructure
-    include gridengine::submit_host
+    include toollabs::submit
 
     require_package('python-flask', 'python-redis',
                     'uwsgi', 'uwsgi-plugin-python',
@@ -20,6 +20,24 @@ class toollabs::checker inherits toollabs {
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/toollabs/toolschecker.py',
+        notify => Service['toolschecker'],
+    }
+
+    file { '/data/project/toolschecker/www/python/src/app.py':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/toolschecker_generic_service.py',
+        notify => Service['toolschecker'],
+    }
+
+    file { '/data/project/toolschecker/public_html/index.php':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/toolschecker_lighttpd_service.php',
         notify => Service['toolschecker'],
     }
 
