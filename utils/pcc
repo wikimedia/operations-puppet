@@ -129,7 +129,12 @@ build_params = {
     'LIST_OF_NODES': args.nodes,
 }
 invocation = job.invoke(build_params=build_params)
-invocation.block(until='not_queued')
+
+try:
+    invocation.block_until_building()
+except AttributeError:
+    invocation.block(until='not_queued')
+
 build = invocation.get_build()
 
 print 'Your build URL is %s' % white(build.baseurl)
