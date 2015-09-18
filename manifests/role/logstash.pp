@@ -14,6 +14,11 @@ class role::logstash (
     include ::role::logstash::elasticsearch
     include ::logstash
 
+    nrpe::monitor_service { 'logstash':
+        description  => 'logstash process',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u logstash -C java -a logstash',
+    }
+
     ## Inputs (10)
 
     logstash::input::udp2log { 'mediawiki':
