@@ -8,6 +8,8 @@
 class role::restbase {
     system::role { 'restbase': description => "Restbase ${::realm}" }
 
+    include ::passwords::cassandra
+
     include ::restbase
     include ::restbase::monitoring
 

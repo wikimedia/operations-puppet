@@ -92,6 +92,8 @@ cassandra_test_eqiad:
   cassandra::internode_encryption: dc
   cassandra::application_username: restbase
   cassandra::application_password: "%{passwords::cassandra::restbase}"
+  restbase::cassandra_user: restbase
+  restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 
 cassandra_test_codfw:
   __regex: !ruby/regexp /^restbase-test200[1-3]\.codfw\.wmnet$/
@@ -119,6 +121,8 @@ cassandra_test_codfw:
   cassandra::internode_encryption: dc
   cassandra::application_username: restbase
   cassandra::application_password: "%{passwords::cassandra::restbase}"
+  restbase::cassandra_user: restbase
+  restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 
 swift_be_codfw:
   __regex: !ruby/regexp /^ms-be20.*\.codfw\.wmnet$/
