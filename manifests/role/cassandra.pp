@@ -1,6 +1,8 @@
 # == Class role::cassandra
 #
 class role::cassandra {
+    include ::passwords::cassandra
+
     # Parameters to be set by Hiera
     class { '::cassandra': }
     class { '::cassandra::metrics': }
