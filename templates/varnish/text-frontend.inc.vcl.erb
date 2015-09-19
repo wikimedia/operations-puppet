@@ -149,10 +149,12 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
-	// Override the Cache-Control header for wiki content pages
-	// NOTE: Language variants URLs are not currently covered by these
-	// regexps. Instead of writing regexps for every edge-case, we should
-	// impose some order and coherence on our URL routing schemes.
+	// Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
+	// by MediaWiki $wgUseSquid, sends purges internally). But pages musn't be cached elsewhere.
+	// NOTE: Language variants URLs are not currently covered by these regexps.
+	// Instead of writing regexps for every edge-case, we should impose some order and coherence
+	// on our URL routing schemes.
+	// NOTE: Only apply to pages. Don't steal cachability of api.php, load.php, etc. (T102898, T113007)
 	if (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/\?title=") {
 		// ...but exempt CentralNotice banner special pages
 		if (req.url !~ "^/wiki/Special\:Banner") {

@@ -134,6 +134,13 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
+	// Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
+	// by MediaWiki $wgUseSquid, sends purges internally). But pages musn't be cached elsewhere.
+	// NOTE: Only apply to pages. Don't steal cachability of api.php, load.php, etc. (T102898, T113007)
+	if ((req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php") && resp.http.Cache-Control ~ "s-maxage=[1-9]") {
+		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+	}
+
 <% if @vcl_config.fetch("enable_geoiplookup", false) -%>
 	// Perform GeoIP look-up and send the result as a session cookie
 	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
@@ -162,10 +169,4 @@ sub vcl_deliver {
 	}
 
 	call analytics_last_access_deliver;
-
-	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
-		set resp.http.Cache-Control = "s-maxage=300, must-revalidate, max-age=0";
-	} else {
-		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
-	}
 }
