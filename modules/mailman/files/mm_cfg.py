@@ -47,54 +47,43 @@ from Defaults import *
 # Put YOUR site-specific configuration below, in mm_cfg.py . #
 # See Defaults.py for explanations of the values.            #
 
-#-------------------------------------------------------------
 # The name of the list Mailman uses to send password reminders
 # and similar. Don't change if you want mailman-owner to be
 # a valid local part.
 MAILMAN_SITE_LIST = 'mailman'
 
-#-------------------------------------------------------------
 # If you change these, you have to configure your http server
 # accordingly (Alias and ScriptAlias directives in most httpds)
 DEFAULT_URL_PATTERN = 'https://%s/mailman/'
 PRIVATE_ARCHIVE_URL = '/mailman/private'
 IMAGE_LOGOS = '/images/mailman/'
 
-#-------------------------------------------------------------
 # Default domain for email addresses of newly created MLs
 DEFAULT_EMAIL_HOST = 'lists.wikimedia.org'
-#-------------------------------------------------------------
 # Default host for web interface of newly created MLs
 DEFAULT_URL_HOST = 'lists.wikimedia.org'
-#-------------------------------------------------------------
 # Required when setting any of its arguments.
 add_virtualhost(DEFAULT_URL_HOST, DEFAULT_EMAIL_HOST)
 
-#-------------------------------------------------------------
 # The default language for this server.
 DEFAULT_SERVER_LANGUAGE = 'en'
 
-#-------------------------------------------------------------
 # Iirc this was used in pre 2.1, leave it for now
 USE_ENVELOPE_SENDER = 0              # Still used?
 
-#-------------------------------------------------------------
 # Unset send_reminders on newly created lists
 DEFAULT_SEND_REMINDERS = 0
 
-#-------------------------------------------------------------
 # Uncomment this if you configured your MTA such that it
 # automatically recognizes newly created lists.
 # (see /usr/share/doc/mailman/README.{EXIM,...})
 # MTA=None   # Misnomer, suppresses alias output on newlist
 MTA = None
 
-#-------------------------------------------------------------
 # Uncomment if you use Postfix virtual domains, but be sure to
 # read /usr/share/doc/mailman/README.POSTFIX first.
 # MTA='Postfix'
 
-#-------------------------------------------------------------
 # Uncomment if you want to filter mail with SpamAssassin. For
 # more information please visit this website:
 # http://www.daa.com.au/~james/articles/mailman-spamassassin/
@@ -107,14 +96,14 @@ MTA = None
 DEFAULT_REPLY_GOES_TO_LIST = 1
 
 # Htdig integration
-#HTDIG_RUNDIG_PATH = "/usr/bin/rundig"
-#HTDIG_HTSEARCH_PATH = "/usr/lib/cgi-bin/htsearch"
-#USE_HTDIG = 1
+# HTDIG_RUNDIG_PATH = "/usr/bin/rundig"
+# HTDIG_HTSEARCH_PATH = "/usr/lib/cgi-bin/htsearch"
+# USE_HTDIG = 1
 
 # Customization
 SHORTCUT_ICON = 'favicon.png'
 
-#Limiting the size of message to prevent archrunner from dying...
+# Limiting the size of message to prevent archrunner from dying...
 MAX_MESSAGE_SIZE = 5120
 
 # we put footers etc. and hence invalidate DKIM signatures
@@ -133,5 +122,6 @@ AUTHENTICATION_COOKIE_LIFETIME = 3600
 # Don't include full email in automatic bounces
 RESPONSE_INCLUDE_LEVEL = 0
 
-# set a secret to be included in HTML subscription forms to help with bots subscription
+# set a secret to be included in HTML subscription forms to help
+# with bots subscription
 SUBSCRIBE_FORM_SECRET = open('/etc/machine-id', 'r').readline().rstrip()
