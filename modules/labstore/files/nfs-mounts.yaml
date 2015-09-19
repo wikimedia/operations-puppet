@@ -10,6 +10,10 @@ private:
     gid: 50090
     mounts:
       project: true
+  reportcard:
+    gid: ?????
+    mounts:
+      statistics: true
   k8s-eval:
     gid: 52647
     mounts:
