@@ -132,3 +132,6 @@ AUTHENTICATION_COOKIE_LIFETIME = 3600
 
 # Don't include full email in automatic bounces
 RESPONSE_INCLUDE_LEVEL = 0
+
+# set a secret to be included in HTML subscription forms to help with bots subscription
+SUBSCRIBE_FORM_SECRET = open('/etc/machine-id', 'r').readline().rstrip()

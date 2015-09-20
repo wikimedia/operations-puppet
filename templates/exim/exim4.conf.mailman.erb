@@ -76,6 +76,10 @@ begin acl
 
 acl_check_rcpt:
 
+	# temporary spam countermeasures, 2015-09-20
+	discard local_parts = ^.+\\+[0-9]{4,}
+	        domains = gmail.com
+
 	# If there have been ~4 times as many previous RCPT rejects than
 	# accepts, drop the connection
 	drop message = Too many ($rcpt_fail_count) rejected recipients, good bye
