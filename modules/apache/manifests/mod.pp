@@ -32,7 +32,6 @@ class apache::mod::proxy_http      { apache::mod_conf { 'proxy_http':     } }
 class apache::mod::rewrite         { apache::mod_conf { 'rewrite':        } }
 class apache::mod::setenvif        { apache::mod_conf { 'setenvif':       } }
 class apache::mod::ssl             { apache::mod_conf { 'ssl':            } }
-class apache::mod::status          { apache::mod_conf { 'status':         } }
 class apache::mod::userdir         { apache::mod_conf { 'userdir':        } }
 
 # Modules that depend on additional packages
@@ -54,3 +53,32 @@ class apache::mod::access_compat { if os_version('debian >= jessie || ubuntu >= 
 class apache::mod::proxy_fcgi    { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'proxy_fcgi':    } } }
 class apache::mod::version       { if os_version('ubuntu < 13.10')  { apache::mod_conf { 'version':       } } }
 class apache::mod::lbmethod_byrequests  { if os_version('debian >= jessie || ubuntu >= 13.10') { apache::mod_conf { 'lbmethod_byrequests': } } }
+
+
+# == Class: apache::mod::status
+#
+# The default mod_status configuration enables /server-status on all
+# vhosts for local requests, but it does not correctly distinguish
+# between requests which are truly local and requests that have been
+# proxied. Because most of our Apaches sit behind a reverse proxy, the
+# default configuration is not safe, so we make sure to replace it with
+# a more conservative configuration that makes /server-status accessible
+# only to requests made via the loopback interface. See T113090.
+#
+class apache::mod::status {
+    file { [
+        '/etc/apache2/mods-available/status.conf',
+        '/etc/apache2/mods-enabled/status.conf',
+    ]:
+        ensure  => absent,
+        before  => Apache::Mod_conf['status'],
+        require => Package['apache2'],
+    }
+
+    apache::mod_conf { 'status': }
+
+    apache::conf { 'server_status':
+        source   => 'puppet:///modules/apache/status.conf',
+        require  =>  Apache::Mod_conf['status'],
+    }
+}
