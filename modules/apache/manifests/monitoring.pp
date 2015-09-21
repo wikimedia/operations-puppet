@@ -9,6 +9,16 @@ class apache::monitoring {
     include ::apache::mod::status
     include ::ganglia
 
+    # The default mod_status configuration enables /server-status on all
+    # vhosts for local requests, but it does not correctly distinguish
+    # between requests which are truly local and requests that have been
+    # proxied. So replace the default config with a more conservative one.
+    apache::conf { 'server_status':
+        source   => 'puppet:///modules/apache/status.conf',
+        replaces => '/etc/apache2/mods-enabled/status.conf',
+        require  =>  Apache::Mod_conf['status'],
+    }
+
     # Use `links -dump http://127.0.0.1/server-status` to generate
     # an Apache status report.
     require_package('links')
