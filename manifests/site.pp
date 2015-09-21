@@ -2006,7 +2006,7 @@ node 'mw1152.eqiad.wmnet' {
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
     role mediawiki::imagescaler
 
-    if $::hostname == 'mw1153' {
+    if $::hostname =~ /^mw115[3-5]$/ {
         include base::firewall
     }
 }
