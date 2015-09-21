@@ -16,7 +16,7 @@ describe 'backup::weeklyschedule', :type => :define do
         should contain_bacula__director__jobdefaults("Weekly-#{title}-unimportant").with({
             'when'    => "Weekly-#{title}",
             'pool'    => 'unimportant',
-        })
+        },)
     end
     it 'should create bacula::director::schedule' do
         should contain_bacula__director__schedule("Weekly-#{title}")

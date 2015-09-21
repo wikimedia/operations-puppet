@@ -16,7 +16,7 @@ describe 'bacula::director::pool', :type => :define do
                 'owner'   => 'root',
                 'group'   => 'bacula',
                 'mode'    => '0440',
-            }) \
+            },) \
             .with_content(/Name = something/) \
             .with_content(/Maximum Volumes = 10/) \
             .with_content(/Storage = teststorage/) \

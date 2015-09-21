@@ -437,12 +437,6 @@ Style/TrailingBlankLines:
   Exclude:
     - 'modules/base/lib/facter/labsproject.rb'
 
-# Offense count: 116
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
-Style/TrailingComma:
-  Enabled: false
-
 # Offense count: 1
 Style/UnlessElse:
   Exclude:

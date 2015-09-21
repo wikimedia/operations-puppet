@@ -5,7 +5,7 @@ describe 'servermon', :type => :class do
         :ensure     => 'present',
         :directory  => '/tmp/test',
         :db_name    => 'testdb',
-        :secret_key => 'superdupersecret'
+        :secret_key => 'superdupersecret',
         }
     }
 

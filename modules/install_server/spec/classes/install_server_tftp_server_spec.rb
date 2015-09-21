@@ -9,7 +9,7 @@ describe 'install_server::tftp-server', :type => :class do
             'mode'   => '0444',
             'owner'  => 'root',
             'group'  => 'root',
-        })
+        },)
     end
 
     it do
@@ -18,6 +18,6 @@ describe 'install_server::tftp-server', :type => :class do
             'owner'  => 'root',
             'group'  => 'root',
             'recurse'  => 'remote',
-        })
+        },)
     end
 end

@@ -7,7 +7,7 @@ modulename = File.basename(File.expand_path(File.dirname(__FILE__)))
 
 
 symlinks = {
-             'spec/checker/checker.py' => '../../files/checker.py'
+             'spec/checker/checker.py' => '../../files/checker.py',
            }
 
 

@@ -22,7 +22,7 @@ describe 'bacula::storage', :type => :class do
         'mode'    => '0444',
         'owner'   => 'root',
         'group'   => 'bacula',
-        })
+        },)
     end
     it 'should generate valid content for /etc/bacula/bacula-sd.conf' do
         should contain_file('/etc/bacula/bacula-sd.conf').with({
@@ -30,7 +30,7 @@ describe 'bacula::storage', :type => :class do
             'owner'   => 'root',
             'group'   => 'root',
             'mode'    => '0400',
-        }) \
+        },) \
         .with_content(/Name = "testdirector"/) \
         .with_content(/Password = "testdirectorpass"/) \
         .with_content(/TLS Certificate = "\/var\/lib\/puppet\/ssl\/certs\/testhost.example.com.pem"/) \
