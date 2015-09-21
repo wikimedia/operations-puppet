@@ -1,5 +1,43 @@
 "base::environment::core_dump_pattern": core
 classes:
     - role::aptly::client
+role::aptly::client::key: '-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+  Version: GnuPG v1.4.11 (GNU/Linux)
+
+
+  mQENBFYAYg4BCAC2Xc4OHmajEtdbGJSK4yrjh46ZfYkWr5CLRQppZDLRB2kpdY93
+
+  RpJZp/Ho7qh8tO7MOJaUVCqd2BIYJnB2i/bzEyDOg7Uo6qliZ0tWNkemU9iPBIZT
+
+  EnGzw72r1/BASqh/domqv4x1k6H/xyjy9Lbf/rcTOH9OJTmyzPKWcngg89gWtac0
+
+  kHH0GJPcnKJYMfCkTREycaX9EsGlQl+mGso8fDycobO382O4Qliwgk7jpr3R3m+W
+
+  FWnVXAj13zQiPz5WlvKU5q0XOCuWqZHPILV+52OH054qdLbEq8iODV4z2K1SeHVJ
+
+  yF6FLxXG7pnBhql/hMPLgXJYqOqzCwdjhxAHABEBAAG0M1dpa2ltZWRpYSBUb29s
+
+  IExhYnMgTG9jYWwgUGFja2FnZXMgU2lnbmluZyBUZXN0IEtleYkBOAQTAQIAIgUC
+
+  VgBiDgIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQ+SpAakPAEtAIeAf+
+
+  MRMzD1UGJrdTJcnPsc6CgXVabXlaxylRHr6Six5hQCJ69IHGQ87R85DHP1SIIDst
+
+  JT0zgNhZfVzne0kCvESqvphjBTzHDQt7S5Ddlc2b5hcSMfyNRyodYLGXcZRxiaTU
+
+  8TALnYcVvdqoy1TAFRCkbyqMlwjsdNXFF/mIAiF8Ofu+ThlhSG/Ms8x/e4UhfOER
+
+  ym/4CrHIt3fHkWFlC8aZOijD1T/ZgAgZvcNZjbMP2DabhEdrcoopjxxCuLEjNdRV
+
+  rN1yQrqa1XoGfzLVVpUp1gx7GMVPfOLdu1NTrxDDTzIXJJ6Kl/BNDqHQtYqCPQuD
+
+  1etgRTAx5z42z0NXohWtFA==
+
+  =V7Cf
+
+  -----END PGP PUBLIC KEY BLOCK-----
+
+  '
 role::aptly::client::servername: tools-services-01
 standard::has_default_mail_relay: false

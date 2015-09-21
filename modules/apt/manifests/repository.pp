@@ -5,6 +5,7 @@ define apt::repository(
     $source=true,
     $comment_old=false,
     $keyfile='',
+    $key = undef,
     $ensure=present
 ) {
     $binline = "deb ${uri} ${dist} ${components}\n"
@@ -34,15 +35,27 @@ define apt::repository(
         }
     }
 
-    if $keyfile {
-        file { "/var/lib/apt/keys/${name}.gpg":
-            ensure  => present,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0400',
-            source  => $keyfile,
-            require => File['/var/lib/apt/keys'],
-            before  => File["/etc/apt/sources.list.d/${name}.list"],
+    if $key != undef or $keyfile {
+        if $key != undef {
+            file { "/var/lib/apt/keys/${name}.gpg":
+                ensure  => present,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0400',
+                content => $key,
+                require => File['/var/lib/apt/keys'],
+                before  => File["/etc/apt/sources.list.d/${name}.list"],
+            }
+        } else {
+            file { "/var/lib/apt/keys/${name}.gpg":
+                ensure  => present,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0400',
+                source  => $keyfile,
+                require => File['/var/lib/apt/keys'],
+                before  => File["/etc/apt/sources.list.d/${name}.list"],
+            }
         }
 
         exec { "/usr/bin/apt-key add /var/lib/apt/keys/${name}.gpg":
