@@ -2022,6 +2022,11 @@ node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 # mw1189-1208 are api apaches
 node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
     role mediawiki::appserver::api
+
+    if $::hostname =~ /^mw119[0-9]$/ {
+        include base::firewall
+    }
+
 }
 
 # mw1209-1220 are apaches
