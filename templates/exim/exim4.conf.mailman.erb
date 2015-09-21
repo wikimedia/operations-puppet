@@ -65,6 +65,11 @@ spamd_address = 127.0.0.1 783
 never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
 
+# TLS
+tls_certificate = /etc/ssl/localcerts/lists.wikimedia.org.chained.crt
+tls_privatekey = /etc/ssl/private/lists.wikimedia.org.key
+tls_advertise_hosts = *
+
 # force Gmail over IPv4 due to reports of bad spam reputation over IPv6
 dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
 
@@ -228,14 +233,12 @@ begin transports
 
 remote_smtp:
 	driver = smtp
-	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
 <% if !@outbound_ips.empty? then -%>
 	interface = <; <%= @outbound_ips.join(" ; ") %>
 <% end -%>
 
 remote_smtp_signed:
 	driver = smtp
-	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
 	dkim_domain = wikimedia.org
 	dkim_selector = wikimedia
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
@@ -246,7 +249,6 @@ remote_smtp_signed:
 
 list_smtp:
 	driver = smtp
-	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
 	interface = <; <%= @list_outbound_ips.join(" ; ") %>
 	helo_data = lists.wikimedia.org
 	dkim_domain = lists.wikimedia.org
