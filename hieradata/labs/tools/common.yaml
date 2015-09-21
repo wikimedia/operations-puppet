@@ -1,5 +1,18 @@
 "base::environment::core_dump_pattern": core
 classes:
     - role::aptly::client
+role::aptly::client::key: !!binary |
+  mQENBFYAYg4BCAC2Xc4OHmajEtdbGJSK4yrjh46ZfYkWr5CLRQppZDLRB2kpdY93RpJZp/Ho7qh8
+  tO7MOJaUVCqd2BIYJnB2i/bzEyDOg7Uo6qliZ0tWNkemU9iPBIZTEnGzw72r1/BASqh/domqv4x1
+  k6H/xyjy9Lbf/rcTOH9OJTmyzPKWcngg89gWtac0kHH0GJPcnKJYMfCkTREycaX9EsGlQl+mGso8
+  fDycobO382O4Qliwgk7jpr3R3m+WFWnVXAj13zQiPz5WlvKU5q0XOCuWqZHPILV+52OH054qdLbE
+  q8iODV4z2K1SeHVJyF6FLxXG7pnBhql/hMPLgXJYqOqzCwdjhxAHABEBAAG0M1dpa2ltZWRpYSBU
+  b29sIExhYnMgTG9jYWwgUGFja2FnZXMgU2lnbmluZyBUZXN0IEtleYkBOAQTAQIAIgUCVgBiDgIb
+  AwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQ+SpAakPAEtAIeAf+MRMzD1UGJrdTJcnPsc6C
+  gXVabXlaxylRHr6Six5hQCJ69IHGQ87R85DHP1SIIDstJT0zgNhZfVzne0kCvESqvphjBTzHDQt7
+  S5Ddlc2b5hcSMfyNRyodYLGXcZRxiaTU8TALnYcVvdqoy1TAFRCkbyqMlwjsdNXFF/mIAiF8Ofu+
+  ThlhSG/Ms8x/e4UhfOERym/4CrHIt3fHkWFlC8aZOijD1T/ZgAgZvcNZjbMP2DabhEdrcoopjxxC
+  uLEjNdRVrN1yQrqa1XoGfzLVVpUp1gx7GMVPfOLdu1NTrxDDTzIXJJ6Kl/BNDqHQtYqCPQuD1etg
+  RTAx5z42z0NXohWtFA==
 role::aptly::client::servername: tools-services-01
 standard::has_default_mail_relay: false

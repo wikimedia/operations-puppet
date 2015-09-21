@@ -1,6 +1,7 @@
 class aptly::client(
     $servername,
-    $source=false
+    $source=false,
+    $key = undef,
 ) {
     if os_version('ubuntu <= precise') {
         # Remove multiarch support in precise aptly clients.
@@ -16,6 +17,7 @@ class aptly::client(
         dist       => "${::lsbdistcodename}-${::labsproject}",
         components => 'main',
         source     => $source,
+        key        => $key,
     }
 
     # Pin it so it has higher preference
