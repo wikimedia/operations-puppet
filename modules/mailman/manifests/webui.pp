@@ -9,6 +9,10 @@ class mailman::webui {
         'auth_digest',
     ]: }
 
+    apache::mod_conf { 'status':
+        ensure => 'absent',
+    }
+
     $lists_servername = hiera('mailman::lists_servername')
 
     if os_version ( 'debian >= jessie') {
