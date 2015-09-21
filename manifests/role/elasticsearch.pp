@@ -66,6 +66,7 @@ class role::elasticsearch::server{
         include ::elasticsearch::ganglia
     }
 
+    include elasticsearch::monitor::diamond
     include ::elasticsearch::log::hot_threads
     include ::elasticsearch::nagios::check
 
@@ -76,6 +77,7 @@ class role::elasticsearch::server{
         mode    => '0755',
         require => Package['elasticsearch'],
     }
+
     file { '/etc/elasticsearch/scripts/mwgrep.groovy':
         ensure  => file,
         owner   => 'root',

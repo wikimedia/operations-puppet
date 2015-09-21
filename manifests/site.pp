@@ -883,7 +883,6 @@ node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
 node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
     role elasticsearch::server
     include base::firewall
-    include elasticsearch::monitor::diamond
     class { 'standard':
         has_ganglia => false,
     }
