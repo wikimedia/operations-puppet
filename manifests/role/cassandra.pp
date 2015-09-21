@@ -2,6 +2,7 @@
 #
 class role::cassandra {
     include ::passwords::cassandra
+    include base::firewall
 
     # Parameters to be set by Hiera
     class { '::cassandra': }

@@ -336,14 +336,12 @@ node 'carbon.wikimedia.org' {
 # cerium, praseodymium and xenon are Cassandra test hosts
 node /^(cerium|praseodymium|xenon)\.eqiad\.wmnet$/ {
     role restbase, cassandra
-    include base::firewall
     include standard
 }
 
 # cassandra multi-dc temporary test T111382
 node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
     role restbase, cassandra
-    include base::firewall
     include standard
 }
 
@@ -2345,7 +2343,6 @@ node /^rdb200[1-4]\.codfw\.wmnet/ {
 # restbase eqiad cluster
 node /^restbase100[1-9]\.eqiad\.wmnet$/ {
     role restbase, cassandra
-    include base::firewall
     include standard
 }
 
