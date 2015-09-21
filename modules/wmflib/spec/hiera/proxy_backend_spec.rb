@@ -26,21 +26,21 @@ describe 'proxy_backend' do
 
   it "lookup returns the default when no role is defined" do
     expect(
-      @backend.lookup('mysql::innodb_threads',@topscope, nil, nil)
+      @backend.lookup('mysql::innodb_threads',@topscope, nil, nil),
     ).to eq(15)
   end
 
   it "lookup returns the role-specific value if a role is defined" do
     @scope.function_role(['test'])
     expect(
-      @backend.lookup('mysql::innodb_threads',@topscope, nil, nil)
+      @backend.lookup('mysql::innodb_threads',@topscope, nil, nil),
     ).to eq(50)
   end
 
   it "return the host-overridden value for a role-defined variable" do
     @scope.function_role(['test'])
     expect(
-      @backend.lookup('admin::groups',@topscope, nil, nil)
+      @backend.lookup('admin::groups',@topscope, nil, nil),
     ).to eq(['go-spurs'])
   end
 

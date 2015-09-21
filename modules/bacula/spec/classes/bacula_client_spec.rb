@@ -21,7 +21,7 @@ describe 'bacula::client', :type => :class do
             'owner'   => 'root',
             'group'   => 'root',
             'mode'    => '0400',
-        }) \
+        },) \
         .with_content(/Name = "testdirector"/) \
         .with_content(/Password = "testdirectorpass"/) \
         .with_content(/TLS Certificate = "\/var\/lib\/puppet\/ssl\/certs\/testhost.example.com.pem"/) \

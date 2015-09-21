@@ -46,7 +46,7 @@ module Puppet::Parser::Functions
       'Jessie'  => '8',
       'Stretch' => '9',
       'Buster'  => '10',
-    }
+    },
   }
 
   newfunction(:os_version, :type => :rvalue, :arity => 1) do |args|

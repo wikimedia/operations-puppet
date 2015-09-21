@@ -18,7 +18,7 @@ describe 'postgresql::server', :type => :class do
         it do
             should contain_service('postgresql').with({
             'ensure'  => 'running',
-            })
+            },)
         end
     end
 end
@@ -40,7 +40,7 @@ describe 'postgresql::server', :type => :class do
         it do
             should contain_service('postgresql').with({
             'ensure'  => 'stopped',
-            })
+            },)
         end
     end
 end

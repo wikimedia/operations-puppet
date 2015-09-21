@@ -8,7 +8,7 @@ describe 'mirrors::ubuntu', :type => :class do
             'owner'  => 'mirror',
             'group'  => 'mirror',
             'mode'   => '0755',
-        })
+        },)
     end
     it do
         should contain_file('/usr/local/sbin/update-ubuntu-mirror').with({
@@ -17,7 +17,7 @@ describe 'mirrors::ubuntu', :type => :class do
             'group'   => 'root',
             'mode'    => '0555',
             'source'  => 'puppet:///modules/mirrors/update-ubuntu-mirror',
-        })
+        },)
     end
     it do
         should contain_cron('update-ubuntu-mirror').with({
@@ -26,6 +26,6 @@ describe 'mirrors::ubuntu', :type => :class do
             'user'    => 'mirror',
             'hour'    => '*/6',
             'minute'  => '43',
-        })
+        },)
     end
 end

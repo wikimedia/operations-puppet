@@ -12,6 +12,6 @@ describe 'mirrors', :type => :class do
             'owner'  => 'root',
             'group'  => 'root',
             'mode'   => '0555',
-        })
+        },)
     end
 end

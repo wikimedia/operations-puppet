@@ -14,7 +14,7 @@ describe 'nrpe::monitor_service', :type => :define do
         pending "After refactoring nagios visit this again"
         should contain_nrpe__check('check_something').with(
             :command       => '/usr/local/bin/mycommand -i this -o that',
-            :ensure        => 'present'
+            :ensure        => 'present',
         )
     end
     it do
@@ -25,7 +25,7 @@ describe 'nrpe::monitor_service', :type => :define do
             :retries       => 3,
             :ensure        => 'present',
             :check_command => 'nrpe!check_something',
-            :critical      => 'false'
+            :critical      => 'false',
         )
     end
 end

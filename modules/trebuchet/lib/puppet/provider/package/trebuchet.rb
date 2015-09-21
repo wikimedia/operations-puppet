@@ -24,7 +24,7 @@ require 'open-uri'
 
 Puppet::Type.type(:package).provide(
   :trebuchet,
-  :parent => Puppet::Provider::Package
+  :parent => Puppet::Provider::Package,
 ) do
 
   desc 'Puppet package provider for `Trebuchet`.'
@@ -103,13 +103,13 @@ Puppet::Type.type(:package).provide(
     begin
       tag = git('rev-parse', 'HEAD')
       {
-        :ensure => tag.strip
+        :ensure => tag.strip,
       }
     rescue Puppet::ExecutionFailure
       {
         :ensure => :purged,
         :status => 'missing',
-        :name   => @resource[:name]
+        :name   => @resource[:name],
       }
     end
   end

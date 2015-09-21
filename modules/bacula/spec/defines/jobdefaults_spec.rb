@@ -14,7 +14,7 @@ describe 'bacula::director::jobdefaults', :type => :define do
             'owner'   => 'root',
             'group'   => 'bacula',
             'mode'    => '0440',
-        }) \
+        },) \
             .with_content(/Name = something/) \
             .with_content(/Type = Backup/) \
             .with_content(/Accurate = no/) \
