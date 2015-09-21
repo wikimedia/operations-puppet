@@ -30,6 +30,16 @@ class sslcert {
         require => Package['ssl-cert'],
     }
 
+    # default permissions are 0710 which is overly restrictive; we support
+    # setting $group to allow other groups to access certain keypairs
+    file { '/etc/ssl/private':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'ssl-cert',
+        mode    => '0711',
+        require => Package['ssl-cert'],
+    }
+
     # generic script for fetching the OCSP file for a given cert
     file { '/usr/local/sbin/update-ocsp':
         mode   => '0555',
