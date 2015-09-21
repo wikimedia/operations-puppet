@@ -34,7 +34,8 @@ class k8s::kubelet(
     }
 
     class { '::k8s::ssl':
-        notify => Base::Service_unit['kubelet'],
+        provide_private => true,
+        notify          => Base::Service_unit['kubelet'],
     }
 
     base::service_unit { 'kubelet':
