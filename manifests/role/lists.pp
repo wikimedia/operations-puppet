@@ -26,7 +26,9 @@ class role::lists {
     $outbound_ips = hiera_array('mailman::server_ip')
     $list_outbound_ips = hiera_array('mailman::lists_ip')
 
-    sslcert::certificate { 'lists.wikimedia.org': }
+    sslcert::certificate { 'lists.wikimedia.org':
+        group => 'Debian-exim',
+    }
 
     include mailman
 
