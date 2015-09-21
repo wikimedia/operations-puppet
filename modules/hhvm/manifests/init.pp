@@ -195,6 +195,22 @@ class hhvm(
         notify  => Service['hhvm'],
     }
 
+    file { '/var/cache/hhvm/cli.hhbc.sq3':
+        ensure => present,
+        mode   => '0644',
+        owner  => $user,
+        group  => $group,
+        before => File['/etc/hhvm/php.ini'],
+    }
+
+    file { '/var/cache/hhvm/fcgi.hhbc.sq3':
+        ensure => present,
+        mode   => '0644',
+        owner  => $user,
+        group  => $group,
+        before => File['/etc/hhvm/fcgi.ini'],
+    }
+
 
     ## Service
 
