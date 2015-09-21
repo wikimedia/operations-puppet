@@ -31,3 +31,6 @@ Style/StringLiterals:
 
 Style/TrivialAccessors:
   ExactNameMatch: true
+
+Style/WordArray:
+  Enabled: false
