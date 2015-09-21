@@ -211,6 +211,10 @@
 # [*application_password*]
 #   Password for application user.
 #   Default: undef
+#
+# [*auto_bootstrap*]
+#   Control whether new nodes joining the cluster will get data they own.
+#   Default: true
 
 class cassandra(
     $cluster_name                     = 'Test Cluster',
@@ -258,6 +262,7 @@ class cassandra(
     $super_password                   = 'cassandra',
     $application_username             = undef,
     $application_password             = undef,
+    $auto_bootstrap                   = true,
 
     $yaml_template                    = "${module}/cassandra.yaml.erb",
     $env_template                     = "${module}/cassandra-env.sh.erb",
