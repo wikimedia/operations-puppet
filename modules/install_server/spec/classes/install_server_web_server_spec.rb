@@ -7,6 +7,6 @@ describe 'install_server::web-server', :type => :class do
             'owner'   => 'root',
             'group'   => 'root',
             'content' => '',
-        })
+        },)
     end
 end

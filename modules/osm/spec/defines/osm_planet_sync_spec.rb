@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'osm::planet_sync', :type => :define do
     let(:title) { 'somedb' }
     let(:facts) { {
-        :memoryfree => '1000 MB',
+        :memoryfree => '1000 MB'
         }
     }
     let(:params) { {

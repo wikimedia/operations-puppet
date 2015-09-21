@@ -24,7 +24,7 @@ end
     [ "--help",        "-h",   GetoptLong::NO_ARGUMENT ],
     [ "--usage",       "-u",   GetoptLong::NO_ARGUMENT ],
 
-    [ "--version",     "-v",   GetoptLong::NO_ARGUMENT ]
+    [ "--version",     "-v",   GetoptLong::NO_ARGUMENT ],
 )
 
 begin

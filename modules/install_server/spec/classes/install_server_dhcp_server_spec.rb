@@ -11,6 +11,6 @@ describe 'install_server::dhcp-server', :type => :class do
             'owner'  => 'root',
             'group'  => 'root',
             'recurse' => 'true',
-        })
+        },)
     end
 end

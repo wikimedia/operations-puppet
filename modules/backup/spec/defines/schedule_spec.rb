@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'backup::schedule', :type => :define do
     let(:title) { 'something' }
     let(:params) { {
-        :pool => 'unimportant',
+        :pool => 'unimportant'
     }
     }
     let(:pre_condition) do
@@ -16,7 +16,7 @@ describe 'backup::schedule', :type => :define do
         should contain_bacula__director__jobdefaults("Monthly-1st-#{title}-unimportant").with({
             'when'    => "Monthly-1st-#{title}",
             'pool'    => 'unimportant',
-        })
+        },)
     end
     it 'should create bacula::director::schedule' do
         should contain_bacula__director__schedule("Monthly-1st-#{title}")

@@ -63,7 +63,7 @@ class Hiera
           Config[:hierarchy] = [source]
           new_answer = @plugins[plugin].
                        lookup(key, scope, order_override,
-                              resolution_type)
+                              resolution_type,)
           Config[:hierarchy] = hierarchy
 
           next if new_answer.nil?

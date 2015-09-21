@@ -17,7 +17,7 @@ describe 'bacula::director::catalog', :type => :define do
             'owner'   => 'root',
             'group'   => 'bacula',
             'mode'    => '0440',
-        }) \
+        },) \
         .with_content(/Name = something/) \
         .with_content(/dbname = bacula/) \
         .with_content(/user = bacula/) \
