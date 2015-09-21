@@ -1978,6 +1978,10 @@ node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     if $::hostname =~ /^mw10([3-9][0-9])$/ {
         include base::firewall
     }
+
+    if $::hostname =~ /^mw110[0-9]$/ {
+        include base::firewall
+    }
 }
 
 # mw1114-mw1119 are canary api appservers
