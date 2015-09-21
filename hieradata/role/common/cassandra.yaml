@@ -21,6 +21,8 @@ cassandra::compaction_throughput_mb_per_sec: 60
 cassandra::concurrent_compactors: 10
 cassandra::concurrent_writes: 18
 cassandra::concurrent_reads: 18
+cassandra::tls_cluster_name: services
+cassandra::internode_encryption: dc
 
 cassandra::dc: "%{::site}"
 cassandra::cluster_name: "%{::site}"
