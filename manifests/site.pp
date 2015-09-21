@@ -2130,6 +2130,20 @@ node /^mw22([0-2][0-9]|3[0-4])\.codfw\.wmnet$/ {
     include base::firewall
 }
 
+node 'mx1001.wikimedia.org' {
+    role mail::mx
+    include standard
+    include base::firewall
+    interface::add_ip6_mapped { 'main': }
+}
+
+node 'mx2001.wikimedia.org' {
+    role mail::mx
+    include standard
+    include base::firewall
+    interface::add_ip6_mapped { 'main': }
+}
+
 # Codfw ldap server, aka ldap-codfw
 node 'nembus.wikimedia.org' {
     include standard

@@ -62,6 +62,20 @@ host mendelevium.eqiad.wmnet {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host mx1001.wikimedia.org {
+	hardware ethernet aa:00:00:b2:f5:b7;
+	fixed-address mx1001.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host mx2001.wikimedia.org {
+	hardware ethernet aa:00:00:d2:18:cf;
+	fixed-address mx2001.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host etherpad1001 {
 	hardware ethernet AA:00:00:EE:AD:01;
 	fixed-address etherpad1001.eqiad.wmnet;
