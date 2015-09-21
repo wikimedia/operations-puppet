@@ -73,12 +73,12 @@ class toollabs::checker inherits toollabs {
     }
 
     file { '/etc/init/toolschecker.conf':
-        ensure => present,
-        source => 'puppet:///modules/toollabs/toolschecker.upstart',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        notify => Service['toolschecker'],
+        ensure  => present,
+        content => template('toollabs/toolschecker.upstart.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        notify  => Service['toolschecker'],
     }
 
     service { 'toolschecker':
