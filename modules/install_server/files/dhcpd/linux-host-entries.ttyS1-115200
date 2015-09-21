@@ -5816,6 +5816,13 @@ host nitrogen {
 	fixed-address nitrogen.wikimedia.org;
 }
 
+host nobelium {
+	hardware ethernet F0:1F:AF:E8:B1:FB;
+	fixed-address nobelium.eqiad.wmnet;
+	option pxelinux.pathprefix "trusty-installer/";
+	filename "trusty-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host ocg1001{
 	hardware ethernet F0:1F:AF:E8:AE:EA;
 	fixed-address ocg1001.eqiad.wmnet;
