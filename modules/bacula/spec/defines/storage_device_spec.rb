@@ -17,7 +17,7 @@ describe 'bacula::storage::device', :type => :define do
                 'owner'   => 'root',
                 'group'   => 'root',
                 'mode'    => '0400',
-            }) \
+            },) \
             .with_content(/Name = something/) \
             .with_content(/Device Type = File/) \
             .with_content(/Media Type = File/) \

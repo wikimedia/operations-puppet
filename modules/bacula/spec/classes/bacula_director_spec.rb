@@ -21,7 +21,7 @@ describe 'bacula::director', :type => :class do
         'mode'    => '0444',
         'owner'   => 'root',
         'group'   => 'bacula',
-        })
+        },)
     end
     it do
         should contain_file('/etc/bacula/jobs.d').with({
@@ -32,7 +32,7 @@ describe 'bacula::director', :type => :class do
         'mode'    => '0444',
         'owner'   => 'root',
         'group'   => 'bacula',
-        })
+        },)
     end
     it do
         should contain_file('/etc/bacula/clients.d').with({
@@ -43,7 +43,7 @@ describe 'bacula::director', :type => :class do
         'mode'    => '0444',
         'owner'   => 'root',
         'group'   => 'bacula',
-        })
+        },)
     end
     it do
         should contain_file('/etc/bacula/storages.d').with({
@@ -54,7 +54,7 @@ describe 'bacula::director', :type => :class do
         'mode'    => '0444',
         'owner'   => 'root',
         'group'   => 'bacula',
-        })
+        },)
     end
     it 'should generate valid content for /etc/bacula/bacula-dir.conf' do
         should contain_file('/etc/bacula/bacula-dir.conf').with({
@@ -62,7 +62,7 @@ describe 'bacula::director', :type => :class do
             'owner'   => 'root',
             'group'   => 'bacula',
             'mode'    => '0440',
-        }) \
+        },) \
         .with_content(/Name = "testhost.example.com"/) \
         .with_content(/Password = "bconsolepass"/) \
         .with_content(/TLS Certificate = "\/var\/lib\/puppet\/ssl\/certs\/testhost.example.com.pem"/) \
@@ -76,7 +76,7 @@ describe 'bacula::director', :type => :class do
             'owner'   => 'root',
             'group'   => 'bacula',
             'mode'    => '0444',
-        }) \
+        },) \
         .with_content(/Client = testhost.example.com-fd/) \
         .with_content(/Type = Restore/) \
         .with_content(/Type = Migrate/) \

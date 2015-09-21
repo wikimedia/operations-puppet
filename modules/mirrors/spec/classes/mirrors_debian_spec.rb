@@ -8,7 +8,7 @@ describe 'mirrors::debian', :type => :class do
             'owner'  => 'mirror',
             'group'  => 'mirror',
             'mode'   => '0755',
-        })
+        },)
     end
     it do
         should contain_file('/var/lib/mirror/archvsync/').with({
@@ -17,7 +17,7 @@ describe 'mirrors::debian', :type => :class do
             'group'   => 'mirror',
             'mode'    => '0755',
             'source'  => 'puppet:///modules/mirrors/archvsync',
-        })
+        },)
     end
     it do
         should contain_file('/var/lib/mirror/archvsync/etc/ftpsync.conf').with({
@@ -26,7 +26,7 @@ describe 'mirrors::debian', :type => :class do
             'group'   => 'mirror',
             'mode'    => '0555',
             'source'  => 'puppet:///modules/mirrors/ftpsync.conf',
-        })
+        },)
     end
     it do
         should contain_cron('update-debian-mirror').with({
@@ -35,6 +35,6 @@ describe 'mirrors::debian', :type => :class do
             'user'    => 'mirror',
             'hour'    => '*/6',
             'minute'  => '03',
-        })
+        },)
     end
 end

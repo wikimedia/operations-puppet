@@ -3,11 +3,11 @@ require 'spec_helper'
 describe 'osm::planet_import', :type => :define do
     let(:title) { 'somedb' }
     let(:facts) { {
-        :memoryfree => '1000 MB',
+        :memoryfree => '1000 MB'
         }
     }
     let(:params) { {
-        :input_pbf_file => '/nonexistent',
+        :input_pbf_file => '/nonexistent'
         }
     }
     context 'with ensure present' do

@@ -146,7 +146,7 @@ class Hiera
             new_answer = Backend.parse_answer(data[key], scope)
             Hiera.debug("Found: #{key} =>  #{new_answer}")
             is_done, answer = merge_answer(new_answer, answer,
-                                           resolution_type)
+                                           resolution_type,)
             break if is_done
           end
           # skip parsing if no answer was found.

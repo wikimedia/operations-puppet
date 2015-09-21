@@ -18,7 +18,7 @@ describe 'git::userconfig', :type => :define do
 				'name' => 'Antoine Musso',
 				'email' => 'hashar@free.fr',
 			}
-		} }
+		}, }
 		}
 		it { should contain_file('/tmp/foo/.gitconfig') \
 			.with_content(/[user]\n/) \

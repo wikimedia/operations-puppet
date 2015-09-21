@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'postgresql::spatialdb', :type => :define do
     let(:title) { 'somedb' }
     let(:params) { {
-        :ensure => 'present',
+        :ensure => 'present'
         }
     }
     context 'with ensure present' do
@@ -19,7 +19,7 @@ end
 describe 'postgresql::spatialdb', :type => :define do
     let(:title) { 'somedb' }
     let(:params) { {
-        :ensure => 'absent',
+        :ensure => 'absent'
         }
     }
     context 'with ensure absent' do

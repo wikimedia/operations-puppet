@@ -18,18 +18,18 @@ HEREDOC
     return 'sysvinit' if has_sysvinit
     return false unless strict
     raise(ArgumentError,
-          'This service unit has an upstart script but nothing useful for systemd')
+          'This service unit has an upstart script but nothing useful for systemd',)
   when 'upstart'
     return 'upstart' if has_upstart
     return 'sysvinit' if has_sysvinit
     return false unless strict
     raise(ArgumentError,
-          'This service unit has a systemd script but nothing useful for upstart')
+          'This service unit has a systemd script but nothing useful for upstart',)
   when 'sysvinit'
     return 'sysvinit' if has_sysvinit
     return false unless strict
     raise(ArgumentError,
-          'This service unit lacks a custom sysvinit script')
+          'This service unit lacks a custom sysvinit script',)
   else
     raise(ArgumentError, 'Unsupported init system')
   end

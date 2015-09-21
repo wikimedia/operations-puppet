@@ -16,7 +16,7 @@ describe 'bacula::director::schedule', :type => :define do
             'owner'   => 'root',
             'group'   => 'bacula',
             'mode'    => '0440',
-        }) \
+        },) \
         .with_content(/Name = something/) \
         .with_content(/Run = Level=Full 1st Sat at 00:00/) \
         .with_content(/Run = Level=Differential 3rd Sat at 00:00/)

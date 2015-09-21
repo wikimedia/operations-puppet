@@ -46,7 +46,7 @@ module Puppet::Parser::Functions
       'Jessie'  => '8',
       'Stretch' => '9',
       'Buster'  => '10',
-    }
+    },
   }
 
   newfunction(:os_version, :type => :rvalue, :arity => 1) do |args|
@@ -78,7 +78,7 @@ module Puppet::Parser::Functions
 
       unless /^[\d.]+$/ =~ other_release
         fail(ArgumentError,
-             "os_version(): unknown #{other_id} release '#{other_release}'")
+             "os_version(): unknown #{other_id} release '#{other_release}'",)
       end
 
       # special-case Debian point-releases, as e.g. jessie is all of 8.x
@@ -95,7 +95,7 @@ module Puppet::Parser::Functions
       when '>=' then cmp >= 0
       when '<=' then cmp <= 0
       else fail(ArgumentError,
-                "os_version(): unknown comparison operator '#{operator}'")
+                "os_version(): unknown comparison operator '#{operator}'",)
       end
     end
   end
