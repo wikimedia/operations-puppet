@@ -246,7 +246,6 @@ class toollabs::exec_environ {
         'fabric',                      # T56135.
         'gawk',                        # T67974.
         'gdal-bin',
-        'git',
         'git-review',                  # T64871.
         'git-svn',
         'gnuplot-nox',
