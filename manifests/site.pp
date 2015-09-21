@@ -230,7 +230,7 @@ node 'bast1001.wikimedia.org' {
 
     $cluster = 'misc'
     $ganglia_aggregator = true
-    role bastionhost
+    role bastionhost::general
 
     include standard
     include subversion::client
@@ -246,7 +246,7 @@ node 'bast2001.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role bastionhost
+    role bastionhost::general
     include standard
 
 }
@@ -257,7 +257,7 @@ node 'bast4001.wikimedia.org' {
         interface => 'eth0',
     }
 
-    role bastionhost
+    role bastionhost::general
     include standard
     include role::ipmi
     include role::installserver::tftp-server
@@ -1159,7 +1159,7 @@ node 'hooft.esams.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role bastionhost
+    role bastionhost::general
 
     include standard
     include role::installserver::tftp-server
@@ -1240,7 +1240,7 @@ node 'iron.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role bastionhost
+    role bastionhost::opsonly
 
     include standard
     include role::ipmi
