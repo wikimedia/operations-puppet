@@ -2535,6 +2535,7 @@ node 'tin.eqiad.wmnet' {
     role deployment::server
     include standard
     include role::labsdb::manager
+    include base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
