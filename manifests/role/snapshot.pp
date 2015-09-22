@@ -1,9 +1,11 @@
 class role::snapshot::common {
     include role::dataset::systemusers
-
-    # No additional ferm rules need to be declared, the dumps are
-    # directly written to an NFS mount from dataset1001
     include base::firewall
+
+    # Allow SSH from deployment hosts
+    ferm::rule { 'deployment-ssh':
+        rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
+    }
 }
 
 class role::snapshot::cron::primary {
