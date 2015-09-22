@@ -1870,7 +1870,6 @@ node 'mira.codfw.wmnet' {
     include standard
     include base::firewall
     include role::labsdb::manager
-    include role::releases::upload
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
