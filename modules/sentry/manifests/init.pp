@@ -3,26 +3,12 @@
 # Sentry is a real-time, platform-agnostic error logging and aggregation
 # platform.
 #
-# Installation:
-#   1. Apply the role
-#   2. (if admin_user is not set) run sudo /srv/deployment/sentry/sentry/bin/sentry --config=<cfg_file> createuser --superuser --email=<email>
-# Update:
-#   1. Apply the role with the newer version of Sentry
-#   2. Run sudo /srv/deployment/sentry/sentry/bin/sentry --config=<cfg_file> upgrade
-#
 # === Parameters
-#
-# [*db_user*]
-#   MySQL user to use to connect to the database.
 #
 # [*db_pass*]
 #   Password for MySQL account.
 #
-# [*manage_db*]
-#   Whether Puppet should automatically set up a database and create the
-#   admin user or leave that as a manual task.
-#
-# [*host_name*]
+# [*server_name*]
 #   Domain name under which Sentry will be available.
 #
 # [*smtp_host*]
@@ -34,46 +20,33 @@
 # [*smtp_pass*]
 #   SMTP password.
 #
-# [*sentry_branch*]
+# [*git_branch*]
 #   Which branch to check out.
-#
-# [*sentry_dir*]
-#   The directory where Sentry and its dependencies should be installed.
 #
 # [*secret_key*]
 #   The secret key required by Sentry.
 #
 # [*admin_email*]
-#   Email address of the application administrator. Also doubles as superuser login if
-#   $admin_pass is set.
+#   Email address of the application administrator.
 #
 # [*admin_pass*]
-#   Password of the Sentry superuser. Optional, superuser will not be created if not set.
+#   Password of the Sentry superuser.
 #
 class sentry (
     $db_pass,
-    $host_name,
-    $smtp_host,
-    $smtp_user,
-    $smtp_pass,
-    $sentry_dir,
+    $server_name,
     $secret_key,
-    $admin_email,
-    $admin_pass    = undef,
-    $db_user       = 'sentry',
-    $manage_db     = true,
-    $sentry_branch = 'master',
+    $admin_pass,
+    $admin_email = 'noc@wikimedia.org',
+    $smtp_host   = '',
+    $smtp_user   = '',
+    $smtp_pass   = '',
+    $git_branch  = 'master',
 ) {
     include ::nginx
     include ::nginx::ssl
     include ::postgresql::server
     include ::redis
-
-    git::clone { 'operations/software/sentry':
-        ensure    => latest,
-        directory => $sentry_dir,
-        branch    => $sentry_branch,
-    }
 
 
     # System packages compatible with Sentry 7.4.3 on Debian Jessie on 2015-03-31
@@ -95,87 +68,77 @@ class sentry (
     require_package('python-setproctitle')
     require_package('python-six')
 
+    git::clone { 'operations/software/sentry':
+        ensure    => latest,
+        directory => '/srv/sentry',
+        branch    => $git_branch,
+        require   => Class['::sentry::packages'],
+    }
+
+    group { 'sentry':
+        system => true,
+    }
+
     user { 'sentry':
-        ensure => present,
         gid    => 'sentry',
         shell  => '/bin/false',
         home   => '/nonexistent',
         system => true,
     }
 
-    group { 'sentry':
-        ensure => present,
-        system => true,
-    }
-
     file { '/etc/sentry.conf.py':
-        ensure  => present,
         content => template('sentry/sentry.conf.py.erb'),
         owner   => 'sentry',
         group   => 'sentry',
         mode    => '0640',
+        require => Git::Clone['operations/software/sentry'],
     }
 
     file { '/usr/local/sbin/sentry-auth':
         source  => 'puppet:///modules/sentry/sentry-auth',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0555',
+        require => File['/etc/sentry.conf.py'],
     }
 
-    if $manage_db {
-        postgresql::user { $db_user:
-            ensure    => present,
-            user      => $db_user,
-            password  => $db_pass,
-            pgversion => '9.4',
-            before    => Postgresql::Db['sentry'],
-            require   => User['sentry'],
-        }
+    postgresql::user { 'sentry':
+        user      => 'sentry',
+        password  => $db_pass,
+        pgversion => '9.4',
+        require   => File['/etc/sentry.conf.py'],
+    }
 
-        postgresql::db { 'sentry':
-            ensure     => present,
-            name       => 'sentry',
-            owner      => $db_user,
-        }
+    postgresql::db { 'sentry':
+        name    => 'sentry',
+        owner   => 'sentry',
+        require => Postgresql::User['sentry'],
+    }
 
-        exec { 'initialize_sentry_database':
-            command     => "${sentry_dir}/bin/sentry upgrade --noinput",
-            user        => 'sentry',
-            environment => 'SENTRY_CONF=/etc/sentry.conf.py',
-            unless      => "/usr/bin/pg_dump --schema-only --dbname=sentry --table='sentry_*'",
-            require     => [
-                Git::Clone['operations/software/sentry'],
-                Postgresql::Db['sentry'],
-                File['/etc/sentry.conf.py']
-            ],
-            before      => [
-                Base::Service_unit['sentry-worker'],
-                Base::Service_unit['sentry']
-            ],
-        }
+    exec { 'initialize_sentry_database':
+        command     => '/srv/sentry/bin/sentry upgrade --noinput',
+        unless      => '/usr/bin/pg_dump --schema-only --dbname=sentry --table=sentry_*',
+        environment => 'SENTRY_CONF=/etc/sentry.conf.py',
+        user        => 'sentry',
+        require     => Postgresql::Db['sentry'],
+    }
 
-        if $admin_pass {
-            exec { 'create_sentry_admin':
-                command => "/usr/local/sbin/sentry-auth set ${admin_email} ${admin_pass}",
-                unless  => "/usr/local/sbin/sentry-auth check ${admin_email} ${admin_pass}",
-                subscribe => [
-                    Exec['initialize_sentry_database'],
-                    File['/usr/local/sbin/sentry-auth'],
-                ]
-            }
-        }
+    exec { 'create_sentry_admin':
+        command => "/usr/local/sbin/sentry-auth set ${admin_email} ${admin_pass}",
+        unless  => "/usr/local/sbin/sentry-auth check ${admin_email} ${admin_pass}",
+        require => Exec['initialize_sentry_database'],
     }
 
     base::service_unit { 'sentry-worker':
-        ensure    => present,
         systemd   => true,
         subscribe => File['/etc/sentry.conf.py'],
+        require   => Exec['initialize_sentry_database'],
     }
 
     base::service_unit { 'sentry':
-        ensure    => present,
         systemd   => true,
-        require   => Base::Service_unit['sentry-worker'],
         subscribe => File['/etc/sentry.conf.py'],
+        require   => Base::Service_unit['sentry-worker'],
     }
 
     nginx::site { 'sentry':

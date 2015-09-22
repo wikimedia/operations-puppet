@@ -7,7 +7,7 @@ Requires=sentry-worker
 [Service]
 Type=simple
 Environment="SENTRY_CONF=/etc/sentry.conf.py"
-ExecStart=<%= @sentry_dir %>/bin/sentry start
+ExecStart=/srv/sentry/bin/sentry start
 User=sentry
 Group=sentry
 Restart=always
