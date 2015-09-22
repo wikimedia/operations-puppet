@@ -308,15 +308,20 @@ def service_start_test():
         if request.status_code == 200:
             success = True
             break
+        time.sleep(1)
 
     with open(os.devnull, 'w') as devnull:
         subprocess.check_call(['/usr/bin/webservice', 'stop'],
                               stderr=devnull, stdout=devnull)
 
     # Make sure it really stopped
-    request = requests.get(url)
-    if request.status_code == 200:
-        success = False
+    success = False
+    for i in range(0, 10):
+        request = requests.get(url)
+        if request.status_code != 200:
+            success = True
+            break
+        time.sleep(1)
 
     if not success:
         return False
@@ -332,15 +337,20 @@ def service_start_test():
         if request.status_code == 200:
             success = True
             break
+        time.sleep(1)
 
     with open(os.devnull, 'w') as devnull:
         subprocess.check_call(['/usr/local/bin/webservice2', 'uwsgi-python', 'stop'],
                               stderr=devnull, stdout=devnull)
 
     # Make sure it really stopped
-    request = requests.get(url)
-    if request.status_code == 200:
-        success = False
+    success = False
+    for i in range(0, 10):
+        request = requests.get(url)
+        if request.status_code != 200:
+            success = True
+            break
+        time.sleep(1)
 
     return success
 
