@@ -43,7 +43,7 @@ define exim4::dkim(
         }
     } elsif $content != undef {
         File[$keyfile] {
-            content => $source,
+            content => $content,
         }
     } else {
         fail('Either source or content attribute needs to be given')
