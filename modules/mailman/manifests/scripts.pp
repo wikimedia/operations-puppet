@@ -33,4 +33,11 @@ class mailman::scripts {
         source => 'puppet:///modules/mailman/scripts/rsync_exim.sh'
     }
 
+    file { '/usr/local/sbin/rename_list':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman/scripts/rename_list.sh'
+    }
 }
