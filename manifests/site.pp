@@ -705,6 +705,7 @@ node /^db20(10|30)\.codfw\.wmnet/ {
     class { 'role::mariadb::misc':
         shard => 'm1',
     }
+    include base::firewall
 }
 
 ## m2 shard
