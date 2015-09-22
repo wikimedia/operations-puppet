@@ -23,6 +23,11 @@ class role::mail::mx(
         recipient => 'root@wikimedia.org',
     }
 
+    sslcert::certificate { 'mail.wikimedia.org':
+        group  => 'Debian-exim',
+        before => Class['exim4'],
+    }
+
     class { 'spamassassin':
         required_score   => '4.0',
         use_bayes        => '1',
