@@ -1,9 +1,3 @@
-sentry::db_user: 'sentry'
-sentry::host_name: 'sentry.wikimedia.org'
+sentry::server_name: 'sentry.wikimedia.org'
 sentry::smtp_host: 'polonium.wikimedia.org'
-sentry::smtp_user: ''
-sentry::smtp_pass: ''
-sentry::sentry_branch: 'master'
-sentry::sentry_dir: '/srv/sentry'
 sentry::admin_email: 'gtisza@wikimedia.org'
-sentry::manage_db: false

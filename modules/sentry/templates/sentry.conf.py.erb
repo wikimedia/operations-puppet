@@ -69,7 +69,7 @@ SENTRY_FILESTORE_OPTIONS = {
 ## Web Server ##
 ################
 
-SENTRY_URL_PREFIX = 'https://<%= @host_name %>'
+SENTRY_URL_PREFIX = 'https://<%= @server_name %>'
 
 SENTRY_WEB_HOST = '0.0.0.0'
 SENTRY_WEB_PORT = 9000
@@ -94,7 +94,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = '<%= @smtp_host %>'
 EMAIL_HOST_USER = '<%= @smtp_user %>'
 EMAIL_HOST_PASSWORD = '<%= @smtp_pass %>'
-SERVER_EMAIL = 'sentry@<%= @host_name %>'
+SERVER_EMAIL = 'sentry@<%= @server_name %>'
 
 # see http://sentry.readthedocs.org/en/latest/beacon.html
 SENTRY_ADMIN_EMAIL = '<%= @admin_email %>'
@@ -107,4 +107,3 @@ SECRET_KEY = '<%= @secret_key %>'
 
 # don't allow non-superusers to make projects globally public
 SENTRY_ALLOW_PUBLIC_PROJECTS = False
-
