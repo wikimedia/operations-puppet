@@ -2229,6 +2229,7 @@ node 'oxygen.eqiad.wmnet'
 {
     role logging::kafkatee::webrequest::ops
 
+    include base::firewall
     include standard
 }
 
