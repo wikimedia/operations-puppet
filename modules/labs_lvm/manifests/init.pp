@@ -12,14 +12,14 @@
 
 class labs_lvm($disk = '/dev/vda') {
 
-    package { 'lvm2':
+    package { ['lvm2', 'parted']:
         ensure => present,
     }
 
     file { '/usr/local/sbin/make-instance-vg':
         ensure  => file,
         source  => 'puppet:///modules/labs_lvm/make-instance-vg',
-        require => Package['lvm2'],
+        require => Package['lvm2', 'parted'],
         mode    => '0544',
         owner   => 'root',
         group   => 'root',
