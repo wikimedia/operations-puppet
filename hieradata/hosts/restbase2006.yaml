@@ -1,0 +1,2 @@
+cassandra::rack: 'd'
+cassandra::auto_bootstrap: false

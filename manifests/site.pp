@@ -2349,6 +2349,12 @@ node /^restbase100[1-9]\.eqiad\.wmnet$/ {
     include standard
 }
 
+# restbase codfw cluster
+node /^restbase200[1-6]\.codfw\.wmnet$/ {
+    role restbase, cassandra
+    include standard
+}
+
 # network insights (netflow/pmacct, etc.)
 node 'rhenium.wikimedia.org' {
     role pmacct
