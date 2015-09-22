@@ -23,6 +23,15 @@ class role::statistics {
         servers      => $statistics_servers,
         working_path => $working_path,
     }
+
+    # Set umask for wikidev users so that newly-created files are g+w
+    file { '/etc/profile.d/umask-wikidev.sh':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///files/deploy/umask-wikidev-profile-d.sh',
+    }
 }
 
 

@@ -22,6 +22,7 @@ class role::deployment::server(
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
+        # NOTE: This file is also used in role::statistics
         source => 'puppet:///files/deploy/umask-wikidev-profile-d.sh',
     }
 
