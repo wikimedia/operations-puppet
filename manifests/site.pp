@@ -714,6 +714,7 @@ node /^db10(20)\.eqiad\.wmnet/ {
     class { 'role::mariadb::misc':
         shard => 'm2',
     }
+    include base::firewall
 }
 
 node /^db20(11)\.codfw\.wmnet/ {
