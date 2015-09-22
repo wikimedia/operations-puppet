@@ -38,6 +38,12 @@ class role::deployment::server(
     include ::mediawiki::nutcracker
     include scap::master
 
+    ferm::service { 'rsyncd_scap_master':
+        proto   => 'tcp',
+        port    => '873',
+        srange  => '$MW_APPSERVER_NETWORKS',
+    }
+
     if $::realm != 'labs' {
         include role::releases::upload
         include wikitech::wiki::passwords
