@@ -244,6 +244,7 @@ node 'bast1001.wikimedia.org' {
         mountpoint => '/srv/home_pmtpa',
         mount_site => 'pmtpa',
     }
+    backup::set {'home_pmtpa': }
 }
 
 # Bastion in Texas
