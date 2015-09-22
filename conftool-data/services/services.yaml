@@ -92,6 +92,7 @@ restbase:
       weight: 10
     datacenters:
     - eqiad
+    - codfw
 maps:
   kartotherian:
     port: 6533
