@@ -1999,6 +1999,7 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
 # mw1152 is the experimental HAT videoscaler
 node 'mw1152.eqiad.wmnet' {
     role mediawiki::videoscaler
+    include base::firewall
 }
 
 
