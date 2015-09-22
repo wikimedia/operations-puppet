@@ -1,0 +1,10 @@
+Code-Review+2: RobH <rob@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Daniel Kinzler <daniel.kinzler@wikimedia.de>
+Code-Review+1: JanZerebecki <jan.wikimedia@zerebecki.de>
+Code-Review+1: BBlack <bblack@wikimedia.org>
+Submitted-by: RobH <rob@wikimedia.org>
+Submitted-at: Tue, 22 Sep 2015 16:43:00 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/230483
+Project: operations/puppet
+Branch: refs/heads/production
