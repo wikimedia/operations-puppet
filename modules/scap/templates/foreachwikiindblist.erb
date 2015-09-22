@@ -1,7 +1,7 @@
 #!/bin/bash
 
 . /etc/profile.d/mediawiki.sh
-DBLIST=$(expanddblist "$1")
+DBLIST=$(/usr/local/bin/expanddblist "$1")
 CMD=$2
 shift
 shift
