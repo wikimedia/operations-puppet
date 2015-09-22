@@ -57,6 +57,7 @@ class role::lvs::balancer {
             $sip['swift'][$::site],
             $sip['search'][$::site],
             $sip['kartotherian'][$::site],
+            $sip['restbase'][$::site],
             ],
 
         # esams + ulsfo
