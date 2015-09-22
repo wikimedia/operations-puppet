@@ -41,8 +41,7 @@ class role::analytics::impala::master {
         comment => 'Llama',
         home    => '/var/lib/llama',
         shell   => '/bin/bash',
-        uid     => '991',
-        system => true,
+        system  => true,
         before  => Class['cdh::impala::master'],
     }
 
