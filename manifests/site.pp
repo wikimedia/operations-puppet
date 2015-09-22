@@ -2131,6 +2131,18 @@ node 'mx1001.wikimedia.org' {
     include standard
     include base::firewall
     interface::add_ip6_mapped { 'main': }
+
+    interface::ip { 'wiki-mail-eqiad.wikimedia.org_v4':
+        interface => 'eth0',
+        address   => '208.80.154.91',
+        prefixlen => '32',
+    }
+
+    interface::ip { 'wiki-mail-eqiad.wikimedia.org_v6':
+        interface => 'eth0',
+        address   => '2620:0:861:3:208:80:154:91',
+        prefixlen => '128',
+    }
 }
 
 node 'mx2001.wikimedia.org' {
@@ -2274,18 +2286,6 @@ node 'polonium.wikimedia.org' {
     include base::firewall
 
     interface::add_ip6_mapped { 'main': }
-
-    interface::ip { 'wiki-mail-eqiad.wikimedia.org_v4':
-        interface => 'eth0',
-        address   => '208.80.154.91',
-        prefixlen => '32',
-    }
-
-    interface::ip { 'wiki-mail-eqiad.wikimedia.org_v6':
-        interface => 'eth0',
-        address   => '2620:0:861:3:208:80:154:91',
-        prefixlen => '128',
-    }
 }
 
 # careful when moving poolcounters
