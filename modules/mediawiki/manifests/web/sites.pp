@@ -26,12 +26,6 @@ class mediawiki::web::sites {
         before => Service['apache2'],
     }
 
-    file { '/etc/apache2/sites-enabled/wikidata-uris.incl':
-        ensure => present,
-        source => 'puppet:///modules/mediawiki/apache/sites/wikidata-uris.incl',
-        before => Service['apache2'],
-    }
-
     # Now the sites, in strict sequence
     apache::site { 'nonexistent':
         source   => 'puppet:///modules/mediawiki/apache/sites/nonexistent.conf',
