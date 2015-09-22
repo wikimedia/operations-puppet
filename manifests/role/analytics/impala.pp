@@ -31,6 +31,20 @@ class role::analytics::impala::worker {
 #
 class role::analytics::impala::master {
     include role::analytics::impala
+
+    # The llama-master package stupidly creates the llama user
+    # with a non system uid.  This causes our admin module to
+    # attempt to remove the user.  Manage the user manually
+    # here in puppet before installing that package.
+    user { 'llama':
+        ensure  => 'present',
+        comment => 'Llama',
+        home    => '/var/lib/llama',
+        shell   => '/bin/bash',
+        uid     => '991',
+        before  => Class['cdh::impala::master'],
+    }
+
     include cdh::impala::master
 
     # Open up port for debugging
