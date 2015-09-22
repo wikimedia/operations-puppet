@@ -179,12 +179,16 @@ $wikimail_smarthost = $::realm ? {
     'production' => [ 'wiki-mail-eqiad.wikimedia.org' ],
     'labs'       => $::labsproject ? {
         'deployment-prep' => [ 'deployment-mx.eqiad.wmflabs' ],
-        default           => [ 'polonium.wikimedia.org', 'lead.wikimedia.org' ],
+        default           => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
     }
 }
 # Generic, default servers (order matters!)
 $mail_smarthost = $::realm ? {
-    'production' => [ 'polonium.wikimedia.org', 'lead.wikimedia.org' ],
+    'production' => $::site ? {
+        'eqiad' => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
+        'codfw' => [ 'mx2001.wikimedia.org', 'mx1001.wikimedia.org' ],
+        default => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
+    }
     # FIXME: find some SMTP servers for labs
-    'labs'       => [ 'polonium.wikimedia.org', 'lead.wikimedia.org' ],
+    'labs'       => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
 }
