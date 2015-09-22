@@ -300,7 +300,7 @@ def service_start_test():
     success = False
     url = "https://tools.wmflabs.org/toolschecker/"
     with open(os.devnull, 'w') as devnull:
-        subprocess.check_call(['/usr/local/bin/webservice', 'start'],
+        subprocess.check_call(['/usr/bin/webservice', 'start'],
                               stderr=devnull, stdout=devnull)
 
     for i in range(0, 10):
@@ -310,7 +310,7 @@ def service_start_test():
             break
 
     with open(os.devnull, 'w') as devnull:
-        subprocess.check_call(['/usr/local/bin/webservice', 'stop'],
+        subprocess.check_call(['/usr/bin/webservice', 'stop'],
                               stderr=devnull, stdout=devnull)
 
     # Make sure it really stopped
