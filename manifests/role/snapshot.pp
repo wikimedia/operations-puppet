@@ -1,5 +1,9 @@
 class role::snapshot::common {
     include role::dataset::systemusers
+
+    # No additional ferm rules need to be declared, the dumps are
+    # directly written to an NFS mount from dataset1001
+    include base::firewall
 }
 
 class role::snapshot::cron::primary {
