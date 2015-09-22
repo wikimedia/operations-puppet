@@ -697,6 +697,7 @@ node 'db1016.eqiad.wmnet' {
         shard  => 'm1',
         master => true,
     }
+    include base::firewall
 }
 
 node /^db20(10|30)\.codfw\.wmnet/ {
