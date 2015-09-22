@@ -1,6 +1,11 @@
-# 'check_smtp' command definition
-define command{
+define command {
         command_name    check_smtp
-        # workaround Debian #578333
+        # workaround Debian #578333 with -F
         command_line    $USER1$/check_smtp -F <%= @fqdn %> -H $HOSTADDRESS$
-        }
+}
+
+define command {
+        command_name    check_smtp_tls
+        # set critical days for expiry to 30
+        command_line    $USER1$/check_smtp -F <%= @fqdn %> -H $HOSTADDRESS$ --starttls -D 30
+}
