@@ -358,23 +358,73 @@ sub vcl_recv_purge {
 	}
 }
 
-sub vcl_recv_append_xff {
+sub vcl_recv {
+	// client.ip / XFP / XRIP -handling (order is important below)
 	if (req.restarts == 0) {
+		<% if @vcl_config.fetch("layer", "frontend") != "frontend" -%>
+			// Do not allow direct access to non-frontend layers
+			if (client.ip !~ wikimedia_nets) {
+				error 403 "Access denied";
+			}
+		<% end -%>
+
+		// Both layers need to correctly update XFF with real network-level IPs
+		// before client.ip gets mangled later below
 		if (req.http.X-Forwarded-For) {
 			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
 		} else {
 			set req.http.X-Forwarded-For = client.ip;
 		}
-	}
-}
 
-sub vcl_recv {
-	// Do not allow direct access to non-frontend layers
-	<% if @vcl_config.fetch("layer", "frontend") != "frontend" -%>
-	if (client.ip !~ wikimedia_nets) {
-		error 403 "Access denied";
+		// Ensure we only accept XFP and XRIP from our nets.  Note
+		// this *should* be just the local tlsproxy terminator, or
+		// passing through layers of varnish, but we have known cases
+		// where applayer internal things are faking XFP...
+		if (client.ip !~ wikimedia_nets) {
+			unset req.http.X-Forwarded-Proto;
+			unset req.http.X-Real-IP;
+		}
+
+		// set "client.ip" to XRIP value so that at all layers of
+		// varnish, it represents the real IP address which contacted
+		// nginx (if HTTPS) or varnish-frontend (if HTTP).
+		if (req.http.X-Real-IP) {
+			// This is mostly copypasta from:
+			//  https://www.varnish-cache.org/lists/pipermail/varnish-misc/2013-August/023237.html
+			C{
+			struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
+			struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
+			struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
+			char *xrip = VRT_GetHdr(sp, HDR_REQ, "\012X-Real-IP:");
+			if (xrip != NULL) {
+				// Copy the ip address into the struct's sin_addr.
+				inet_pton(AF_INET, xrip, client_ip_ia);
+			}
+			}C
+		} else {
+			// if XRIP is not set, set it for the first time for
+			// deeper layers of varnish to use above.  This should
+			// only actually execute on frontend-layer instances
+			// (all other cases would already have the header from
+			// nginx or a frontend-layer instance), and it only
+			// really matters in practice today for e.g.
+			// outside-world traffic hitting port 80 directly and
+			// then passing through to a backend layer instead of
+			// redirecting.
+			set req.http.X-Real-IP = "" + client.ip;
+		}
+
+		// From this (very early) point forward, all code can assume
+		// "client.ip" and "req.http.X-Real-IP" are defined, and contain the
+		// same data (one binary for ACL matches, the other in text format),
+		// and that the data represents the actual network-level IP
+		// address of the client which contacted the front edge of our
+		// infrastructure (which still might be a WMF IP address for
+		// some other internal server/service), without any regard to
+		// externally-defined XFF headers, and without being confused
+		// by our own edge-layer proxying through nginx and multiple
+		// layers of varnish.
 	}
-	<% end -%>
 
 	if (req.request !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
 		&& !(req.request == "OPTIONS" && req.http.Origin)) {
@@ -397,17 +447,7 @@ sub vcl_recv {
 	
 <% if @vcl_config.fetch("layer", "frontend") == "frontend" -%>
 	call rewrite_proxy_urls;
-
-	// Ensure we only accept Forwarded-Proto headers from our networks
-	// Note this *should* be just the local tlsproxy terminator, but we
-	// have known cases where applayer internal things are faking this
-	// header for functional reasons that need addressing...
-	if (client.ip !~ wikimedia_nets) {
-		unset req.http.X-Forwarded-Proto;
-	}
 <% end -%>
-
-	call vcl_recv_append_xff;
 
 <% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
 	call https_recv_redirect;
