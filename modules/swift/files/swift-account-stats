@@ -2,8 +2,6 @@
 
 # report swift account statistics, by default on stdout and optionally to
 # a statsd server via UDP
-# optionally, report statistics for every container found for the given
-# account.
 
 import argparse
 import os
@@ -32,9 +30,6 @@ def main():
     parser.add_argument('--prefix', dest='prefix',
         default='',
         help='Prefix to use with the metrics')
-    parser.add_argument('--show-containers', dest='show_containers',
-        default=False, action='store_true',
-        help='Prefix to use with the metrics')
     parser.add_argument('--statsd-host', dest='statsd_host',
         default='', metavar="HOST",
         help='Send metrics to this statsd host as well')
@@ -48,7 +43,6 @@ def main():
         return 1
 
     account_stats = {}
-    container_stats = {}
     output_stats = []
 
     connection = swiftclient.Connection(args.auth, args.user, args.key)
@@ -59,23 +53,9 @@ def main():
         'bytes': headers['x-account-bytes-used'],
     }
 
-    if args.show_containers:
-        headers, containers = connection.get_account(full_listing=True)
-        for container in containers:
-            container_stats[container['name']] = {
-               'bytes': container['bytes'],
-               'objects': container['count'],
-            }
-
     for key, value in account_stats.iteritems():
         prefix = '.'.join([args.prefix, key])
         output_stats.append((prefix, value))
-
-    if args.show_containers:
-        for name, stats in container_stats.iteritems():
-            for key, value in stats.iteritems():
-                prefix = '.'.join([args.prefix, 'container', name, key])
-                output_stats.append((prefix, value))
 
     for name, value in output_stats:
         print "%s: %s" % (name, value)
