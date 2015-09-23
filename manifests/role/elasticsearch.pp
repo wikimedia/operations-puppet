@@ -89,7 +89,7 @@ class role::elasticsearch::server{
 }
 
 # Role for the test labs replica of ElasticSearch
-class role::elasticsearch::labsearch {
+class role::elasticsearch::server::labsearch {
     class { '::elasticsearch':
         cluster_name => 'labsearch',
         heap_memory  => '30G',
