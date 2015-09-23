@@ -2211,6 +2211,7 @@ node 'nitrogen.wikimedia.org' {
 
 # Test server for labs ElasticSearch replication
 node 'nobelium.eqiad.wmnet' {
+    role elasticsearch::server
     include base::firewall
     include standard
 }
