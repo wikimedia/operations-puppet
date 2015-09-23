@@ -20,7 +20,8 @@ EXCLUDE=("nobody" \
          "reprepro" \   # caesium.eqiad.wmnet
          "mysql" \      # pc1001.eqiad.wmnet
          "dbmon" \      # db1044.eqiad.wmnet
-         "parsoid-rt"); # ruthenium.eqiad.wmnet T90966
+         "parsoid-rt" \ # ruthenium.eqiad.wmnet T90966
+         "datasets" );\ # snapshot*, dataset*, ms1001
 
 log() {
     logger $1
