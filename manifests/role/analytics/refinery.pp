@@ -106,7 +106,7 @@ class role::analytics::refinery::data::drop {
     # keep this many days of eventlogging data
     $eventlogging_retention_days = 90
     cron {'refinery-drop-eventlogging-partitions':
-        command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics::refinery::path}/python && ${role::analytics::refinery::path}/bin/refinery-drop-eventlogging-partitions -d ${raw_retention_days} -l /wmf/data/raw/eventlogging >> ${eventlogging_log_file} 2>&1",
+        command => "export PYTHONPATH=\${PYTHONPATH}:${role::analytics::refinery::path}/python && ${role::analytics::refinery::path}/bin/refinery-drop-eventlogging-partitions -d ${eventlogging_retention_days} -l /wmf/data/raw/eventlogging >> ${eventlogging_log_file} 2>&1",
         user    => 'hdfs',
         minute  => '15',
         hour    => '*/4',
