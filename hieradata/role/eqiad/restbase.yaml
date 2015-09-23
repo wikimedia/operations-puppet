@@ -1,0 +1,10 @@
+restbase::seeds:
+    - restbase1001.eqiad.wmnet
+    - restbase1002.eqiad.wmnet
+    - restbase1003.eqiad.wmnet
+    - restbase1004.eqiad.wmnet
+    - restbase1005.eqiad.wmnet
+    - restbase1006.eqiad.wmnet
+    - restbase1007.eqiad.wmnet
+    - restbase1008.eqiad.wmnet
+    - restbase1009.eqiad.wmnet
