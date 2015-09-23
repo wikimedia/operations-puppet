@@ -1,5 +1,6 @@
 cluster: labsnfs
 standard::has_admin: false
+ssh::server::permit_root: true
 # This is there because we have a ssh::userkey stanza
 # and it will not be used without this hack.  Same
 # pattern ganeti uses.
