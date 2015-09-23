@@ -27,7 +27,7 @@ class role::cassandra {
 
     # CQL query interface monitoring (T93886)
     monitoring::service { 'cassandra-cql':
-        description   => 'Cassanda CQL query interface',
+        description   => 'Cassandra CQL query interface',
         check_command => 'check_tcp!9042',
         contact_group => 'admins,team-services',
     }
