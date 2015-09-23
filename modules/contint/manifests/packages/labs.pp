@@ -66,6 +66,10 @@ class contint::packages::labs {
     # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     ensure_packages(['zip'])
 
+    # For Selenium jobs recording (T113520)
+    package { 'libav-tools':
+        ensure => present,
+    }
 
     if os_version('ubuntu >= trusty') {
         exec { '/usr/bin/apt-get -y build-dep hhvm':
