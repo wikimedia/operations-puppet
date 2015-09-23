@@ -108,6 +108,7 @@ class role::dataset::systemusers {
     }
 
     user { 'datasets':
+        uid        => 10003,
         home       => '/home/datasets',
         shell      => '/bin/bash',
         managehome => true,
