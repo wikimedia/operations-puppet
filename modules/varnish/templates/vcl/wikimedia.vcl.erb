@@ -358,23 +358,50 @@ sub vcl_recv_purge {
 	}
 }
 
-sub vcl_recv_append_xff {
-	if (req.restarts == 0) {
-		if (req.http.X-Forwarded-For) {
-			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
-		} else {
-			set req.http.X-Forwarded-For = client.ip;
+// XFF / XFP / XRIP -handling (order is important below, should be at start of recv)
+// TODO: Integration with zero-like XFF-handling, to skip over authorized proxies for XRIP
+sub recv_ip_processing {
+	<% if @vcl_config.fetch("layer", "frontend") != "frontend" -%>
+		// Do not allow direct access to non-frontend layers
+		if (client.ip !~ wikimedia_nets) {
+			error 403 "Access denied";
 		}
+	<% end -%>
+
+	// Both layers need to correctly update XFF with client.ip
+	if (req.http.X-Forwarded-For) {
+		set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+	} else {
+		set req.http.X-Forwarded-For = client.ip;
 	}
+
+	// Ensure we only accept XFP and XRIP from our nets.  Note
+	// this *should* be just the local tlsproxy terminator, or
+	// passing through layers of varnish, but we have known cases
+	// where applayer internal things are faking XFP...
+	if (client.ip !~ wikimedia_nets) {
+		unset req.http.X-Forwarded-Proto;
+		unset req.http.X-Real-IP;
+	}
+
+	// Ensure XRIP is always set, in the case of varnish-fe and a true
+	// direct external request (otherwise nginx will have set it).
+	if (!req.http.X-Real-IP) {
+		set req.http.X-Real-IP = "" + client.ip;
+	}
+
+	// From this (very early) point forward:
+	// client.ip -> the real network-level source address, hop-by-hop
+	// X-Real-IP -> the real network-level source address when this
+	// request first entered our infrastructure at the edge, without any
+	// regard to external XFF header processing, or having already
+	// traversed other proxies within our edge infrastructure.
 }
 
 sub vcl_recv {
-	// Do not allow direct access to non-frontend layers
-	<% if @vcl_config.fetch("layer", "frontend") != "frontend" -%>
-	if (client.ip !~ wikimedia_nets) {
-		error 403 "Access denied";
+	if (req.restarts == 0) {
+		call recv_ip_processing;
 	}
-	<% end -%>
 
 	if (req.request !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
 		&& !(req.request == "OPTIONS" && req.http.Origin)) {
@@ -397,17 +424,7 @@ sub vcl_recv {
 	
 <% if @vcl_config.fetch("layer", "frontend") == "frontend" -%>
 	call rewrite_proxy_urls;
-
-	// Ensure we only accept Forwarded-Proto headers from our networks
-	// Note this *should* be just the local tlsproxy terminator, but we
-	// have known cases where applayer internal things are faking this
-	// header for functional reasons that need addressing...
-	if (client.ip !~ wikimedia_nets) {
-		unset req.http.X-Forwarded-Proto;
-	}
 <% end -%>
-
-	call vcl_recv_append_xff;
 
 <% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
 	call https_recv_redirect;
