@@ -2062,6 +2062,7 @@ node 'nobelium.eqiad.wmnet' {
     include role::mediawiki::common
     include scap::scripts
 
+    include elasticsearch::proxy
     include base::firewall
     include standard
 }
