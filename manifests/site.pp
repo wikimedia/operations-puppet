@@ -2209,6 +2209,12 @@ node 'nitrogen.wikimedia.org' {
     }
 }
 
+# Test server for labs ElasticSearch replication
+node 'nobelium.eqiad.wmnet' {
+    include base::firewall
+    include standard
+}
+
 # Offline Content Generator
 node /^ocg100[123]\.eqiad\.wmnet$/ {
     role ocg
