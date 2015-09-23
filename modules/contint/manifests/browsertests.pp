@@ -28,6 +28,11 @@ class contint::browsertests {
         }
     }
 
+    # For Selenium jobs recording (T113520)
+    package { 'libav-tools':
+        ensure => present,
+    }
+
     # Ubuntu Precise version is too old.  Instead use either:
     # /srv/deployment/integration/slave-scripts/tools/bundler/bundle
     # or:
