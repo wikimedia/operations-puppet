@@ -35,6 +35,7 @@ class role::lvs::balancer {
             $sip['citoid'][$::site],
             $sip['cxserver'][$::site],
             $sip['search'][$::site],
+            $sip['git-ssh'][$::site],
             $sip['restbase'][$::site],
             $sip['zotero'][$::site],
             $sip['graphoid'][$::site],
