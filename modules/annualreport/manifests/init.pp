@@ -1,4 +1,4 @@
-# https://annual.wikimedia.org/
+# sets up the WMF annual report site - https://annual.wikimedia.org/
 # T599
 class annualreport {
 
@@ -16,4 +16,12 @@ class annualreport {
         source => 'puppet:///modules/annualreport/annual.wikimedia.org',
     }
 
+    git::clone { 'wikimedia/annualreport':
+        ensure    => 'present',
+        directory => '/srv/org/wikimedia/annualreport',
+        branch    => 'master',
+        owner     => 'www-data',
+        group     => 'www-data',
+        require   => File['/srv/org/wikimedia/annualreport'],
+    }
 }
