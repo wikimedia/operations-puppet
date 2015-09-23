@@ -108,9 +108,14 @@ class role::lists {
         source => 'puppet:///files/icinga/check_mailman_queue',
     }
 
+    sudo::user { 'nagios_mailman_queue':
+        user       => 'nagios',
+        privileges => ['ALL = (list) NOPASSWD: /usr/local/lib/nagios/plugins/check_mailman_queue'],
+    }
+
     nrpe::monitor_service { 'mailman_queue':
         description   => 'mailman_queue_size',
-        nrpe_command  => '/usr/local/lib/nagios/plugins/check_mailman_queue 42',
+        nrpe_command  => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 42',
     }
 
     # on list servers we monitor I/O with iostat
