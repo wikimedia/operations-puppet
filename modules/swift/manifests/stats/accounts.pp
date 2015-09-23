@@ -17,7 +17,17 @@ class swift::stats::accounts(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/swift/swift-account-stats',
+        source  => "puppet:///modules/${module_name}/swift-account-stats",
+        require => $required_packages,
+    }
+
+    # report container stats to graphite
+    file { '/usr/local/bin/swift-container-stats':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => "puppet:///modules/${module_name}/swift-container-stats",
         require => $required_packages,
     }
 
