@@ -1,0 +1,7 @@
+cluster: labsearch
+
+# Only one node, gottabe master
+elasticsearch::master_eligible: true
+
+# Can run with only one master
+elasticsearch::minimum_master_nodes: 1
