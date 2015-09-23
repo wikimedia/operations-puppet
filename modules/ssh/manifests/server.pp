@@ -1,7 +1,7 @@
 class ssh::server (
     $listen_port = '22',
     $listen_address = undef,
-    $permit_root = true,
+    $permit_root = false,
     $authorized_keys_file = undef,
     $disable_nist_kex = true, # Allow labs projects to temporarily opt out of nist kex disabling
     $explicit_macs = true, # Allow labs projects to temporarily opt out of more secure MACs
