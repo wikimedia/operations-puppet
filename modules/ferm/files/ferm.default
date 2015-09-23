@@ -4,7 +4,7 @@
 FAST=yes
 
 # cache the output of ferm --lines in /var/cache/ferm?
-CACHE=yes
+CACHE=no
 
 # additional paramaters for ferm (like --def '$foo=bar')
 OPTIONS=
