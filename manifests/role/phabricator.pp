@@ -34,6 +34,7 @@ class role::phabricator::main {
     include role::phabricator::config
     include phabricator::monitoring
     include phabricator::mpm
+    include lvs::realserver
 
     $current_tag = 'release/2015-07-08/1'
     $domain = 'phabricator.wikimedia.org'
