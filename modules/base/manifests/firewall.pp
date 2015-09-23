@@ -19,7 +19,8 @@ class base::firewall($ensure = 'present') {
     # Increase the size of conntrack table size (default is 65536)
     sysctl::parameters { 'ferm_conntrack':
         values => {
-            'net.netfilter.nf_conntrack_max'     => 262144,
+            'net.netfilter.nf_conntrack_max'                   => 262144,
+            'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 65,
         },
     }
 
