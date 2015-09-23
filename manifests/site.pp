@@ -2223,6 +2223,7 @@ node 'nitrogen.wikimedia.org' {
 
 # Test server for labs ElasticSearch replication
 node 'nobelium.eqiad.wmnet' {
+    include elasticsearch::proxy
     include base::firewall
     include standard
 }
