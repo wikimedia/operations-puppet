@@ -2149,6 +2149,18 @@ node 'mx2001.wikimedia.org' {
     include standard
     include base::firewall
     interface::add_ip6_mapped { 'main': }
+
+    interface::ip { 'wiki-mail-codfw.wikimedia.org_v4':
+        interface => 'eth0',
+        address   => '208.80.153.46',
+        prefixlen => '32',
+    }
+
+    interface::ip { 'wiki-mail-codfw.wikimedia.org_v6':
+        interface => 'eth0',
+        address   => '2620:0:860:2:208:80:153:46',
+        prefixlen => '128',
+    }
 }
 
 # Codfw ldap server, aka ldap-codfw

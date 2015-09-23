@@ -176,7 +176,11 @@ $private_tables = [
 
 # Route list for mail coming from MediaWiki mailer
 $wikimail_smarthost = $::realm ? {
-    'production' => [ 'wiki-mail-eqiad.wikimedia.org' ],
+    'production' => $::site ? {
+        'eqiad' => [ 'wiki-mail-eqiad.wikimedia.org', 'wiki-mail-codfw.wikimedia.org' ],
+        'codfw' => [ 'wiki-mail-codfw.wikimedia.org', 'wiki-mail-eqiad.wikimedia.org' ],
+        default => [ 'wiki-mail-eqiad.wikimedia.org', 'wiki-mail-codfw.wikimedia.org' ],
+    },
     'labs'       => $::labsproject ? {
         'deployment-prep' => [ 'deployment-mx.eqiad.wmflabs' ],
         default           => [ 'mx1001.wikimedia.org', 'mx2001.wikimedia.org' ],
