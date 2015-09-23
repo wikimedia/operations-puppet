@@ -2221,6 +2221,7 @@ node 'nitrogen.wikimedia.org' {
 node 'nobelium.eqiad.wmnet' {
     role elasticsearch::server
 
+    include elasticsearch::proxy
     include base::firewall
     include standard
 }
