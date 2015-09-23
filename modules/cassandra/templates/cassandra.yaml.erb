@@ -9,6 +9,8 @@
 
 # The name of the cluster. This is mainly used to prevent machines in
 # one logical cluster from joining another.
+# NOTE: this is not related to datacenter name, a single cassandra cluster can
+# span multiple datacenters.
 cluster_name: '<%= @cluster_name %>'
 
 # This defines the number of tokens randomly assigned to this node on the ring

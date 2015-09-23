@@ -31,7 +31,10 @@ cassandra::tls_cluster_name: services
 cassandra::internode_encryption: dc
 
 cassandra::dc: "%{::site}"
-cassandra::cluster_name: "%{::site}"
+# NOTE: this is cassandra's logical cluster name, not related to cassandra's datacenters (eqiad/codfw)
+# it used to be defined as "%{::site}" and thus the first cassandra cluster has been named "eqiad"
+# see also https://phabricator.wikimedia.org/T112257#1663467 for full context
+cassandra::cluster_name: "eqiad"
 
 cassandra::application_username: restbase
 cassandra::application_password: "%{passwords::cassandra::restbase}"
