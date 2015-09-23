@@ -21,6 +21,16 @@ class swift::stats::accounts(
         require => $required_packages,
     }
 
+    # report container stats to graphite
+    file { '/usr/local/bin/swift-container-stats':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/swift/swift-container-stats',
+        require => $required_packages,
+    }
+
     $account_names = sort(keys($accounts))
     swift::stats::stats_account { $account_names:
         accounts      => $accounts,
