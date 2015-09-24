@@ -216,7 +216,7 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
             description  => 'Kafka Broker Server',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "kafka.Kafka /etc/kafka/server.properties"',
             require      => Class['::kafka::server'],
-            critical     => 'true',
+            critical     => true,
         }
 
         # Generate icinga alert if this jmxtrans instance is not running.

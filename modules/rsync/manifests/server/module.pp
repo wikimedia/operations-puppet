@@ -35,9 +35,9 @@
 define rsync::server::module (
   $path,
   $comment         = undef,
-  $read_only       = 'yes',
-  $write_only      = 'no',
-  $list            = 'yes',
+  $read_only       = yes,
+  $write_only      = no,
+  $list            = yes,
   $uid             = '0',
   $gid             = '0',
   $incoming_chmod  = '0644',

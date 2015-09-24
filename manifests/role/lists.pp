@@ -181,31 +181,31 @@ class role::lists::migration {
 
     rsync::server::module { 'lists':
         path        => '/var/lib/mailman/lists',
-        read_only   => 'no',
+        read_only   => no,
         hosts_allow => '208.80.154.61',
     }
 
     rsync::server::module { 'archives':
         path        => '/var/lib/mailman/archives',
-        read_only   => 'no',
+        read_only   => no,
         hosts_allow => '208.80.154.61',
     }
 
     rsync::server::module { 'data':
         path        => '/var/lib/mailman/data',
-        read_only   => 'no',
+        read_only   => no,
         hosts_allow => '208.80.154.61',
     }
 
     rsync::server::module { 'qfiles':
         path        => '/var/lib/mailman/qfiles',
-        read_only   => 'no',
+        read_only   => no,
         hosts_allow => '208.80.154.61',
     }
 
     rsync::server::module { 'exim':
         path        => '/var/spool/exim4',
-        read_only   => 'no',
+        read_only   => no,
         hosts_allow => '208.80.154.61',
     }
 

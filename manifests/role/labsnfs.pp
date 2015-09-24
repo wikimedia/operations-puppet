@@ -19,7 +19,7 @@ class role::labs::nfs::extras($dump_servers_ips) {
 
     rsync::server::module { 'pagecounts':
         path        => '/srv/dumps/pagecounts',
-        read_only   => 'no',
+        read_only   => no,
         hosts_allow => $dump_servers_ips,
     }
 
@@ -30,7 +30,7 @@ class role::labs::nfs::extras($dump_servers_ips) {
     $statistics_servers = hiera('statistics_servers')
     rsync::server::module { 'statistics':
         path        => '/srv/statistics',
-        read_only   => 'no',
+        read_only   => no,
         hosts_allow => $statistics_servers,
         require     => File['/srv/statistics']
     }
