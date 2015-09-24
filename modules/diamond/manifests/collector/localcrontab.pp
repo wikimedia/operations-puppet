@@ -18,7 +18,11 @@ define diamond::collector::localcrontab(
     $settings = {},
     $ensure   = present,
 ) {
+
+    # lint:ignore:quoted_booleans
+    # This is jammed straight into a config file, needs quoting.
     $default_settings = {'use_sudo' => 'true'}
+    # lint:endignore
     $merged_settings = merge($default_settings, $settings)
 
     diamond::collector { 'LocalCrontabCollector':

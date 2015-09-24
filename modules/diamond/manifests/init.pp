@@ -105,8 +105,12 @@ class diamond(
 
     diamond::collector { 'CPU':
         settings => {
+            # lint:ignore:quoted_booleans
+            # As per comments above, these must be quoted for the config
+            #  file.
             percore   => 'false',
             normalize => 'true',
+            # lint:endignore
         },
     }
 
