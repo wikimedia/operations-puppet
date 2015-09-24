@@ -45,7 +45,7 @@ class openstack::keystone::service($openstack_version=$::openstack::version, $ke
         nrpe::monitor_service { 'check_keystone_process':
             description  => 'keystone process',
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/keystone-all'",
-            critical     => 'true',
+            critical     => true,
         }
     } else {
         service { 'keystone':

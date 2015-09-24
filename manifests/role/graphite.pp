@@ -263,7 +263,7 @@ class role::graphite::production::alerts {
         warning         => 250,
         critical        => 500,
         from            => '15min',
-        nagios_critical => 'false'
+        nagios_critical => false
     }
 
     # Will try to detect anomalies in the requests error ratio;

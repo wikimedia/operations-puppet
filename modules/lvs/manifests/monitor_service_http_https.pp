@@ -3,14 +3,14 @@ define lvs::monitor_service_http_https (
     $ip6_address   = undef,
     $uri           = undef,
     $check_command = undef,
-    $critical      = 'true',
+    $critical      = true,
     $contact_group = 'admins'
 ) {
     # Virtual resource for the monitoring host
     @monitoring::host { $title:
         ip_address    => $ip_address,
         group         => 'lvs',
-        critical      => 'true',
+        critical      => true,
         contact_group => $contact_group,
     }
 
@@ -46,7 +46,7 @@ define lvs::monitor_service_http_https (
         @monitoring::host { "${title}_ipv6":
             ip_address    => $ip6_address,
             group         => 'lvs',
-            critical      => 'true',
+            critical      => true,
             contact_group => $contact_group,
         }
         if $check_command {
