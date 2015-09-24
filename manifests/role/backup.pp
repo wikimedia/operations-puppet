@@ -201,9 +201,6 @@ class role::backup::director {
     bacula::director::fileset { 'bugzilla-backup':
         includes => [ '/srv/org/wikimedia/bugzilla-backup' ]
     }
-    bacula::director::fileset { 'home_pmtpa':
-        includes => [ '/srv/home_pmtpa' ]
-    }
     # As all /a this will hopefully no longer be needed at some point and will
     # be killed with fire
     bacula::director::fileset { 'mysql-a-backups':
