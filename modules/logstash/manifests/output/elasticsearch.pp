@@ -24,7 +24,7 @@
 #   logstash::output::elasticsearch { 'logstash':
 #       host            => '127.0.0.1',
 #       guard_condition => '"es" in [tags]',
-#       manage_indices  => 'true',
+#       manage_indices  => true,
 #   }
 #
 define logstash::output::elasticsearch(
