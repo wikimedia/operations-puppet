@@ -140,9 +140,21 @@ class role::eventlogging::processor inherits role::eventlogging {
         'eventlogging-00'
     )
 
+    # Get etcd_hosts out of hiera and prepend them each with the
+    # etcd client port, and join them into a string.
+    $etcd_hosts = join(suffix(hiera('etcd_hosts'), ':2379'), ',')
+
+    # If etcd is using SSL, then we'll need to copy this node's
+    # puppet cert so that we can use it to connect to etcd.
+    class { '::etcd::ssl':
+        provide_private => false
+    }
+    $etcd_uri  = "https://${etcd_hosts}:2379?cert=${::etcd::ssl::cert}"
+
     eventlogging::service::processor { 'server-side-0':
         format         => '%{seqId}d EventLogging %j',
         sid            => $kafka_consumer_group,
+        etcd_uri       => $etcd_uri,
         input          => "${kafka_server_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
         outputs        => [
             # Write valid events to schema based topics, and
@@ -163,6 +175,7 @@ class role::eventlogging::processor inherits role::eventlogging {
     eventlogging::service::processor { $client_side_processors:
         format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
         input          => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+        etcd_uri       => $etcd_uri,
         sid            => $kafka_consumer_group,
         outputs        => [
             $kafka_schema_uri,
