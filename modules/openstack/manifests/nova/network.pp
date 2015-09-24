@@ -73,6 +73,7 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
     nrpe::monitor_service { 'check_nova_network_process':
         description  => 'nova-network process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-network'",
+        critical     => 'true',
     }
 
     file { '/etc/modprobe.d/nf_conntrack.conf':
