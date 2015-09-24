@@ -1,6 +1,10 @@
 class puppetmaster::ssl(
             $server_name='puppet',
-            $ca='false') {
+            # lint:ignore:quoted_booleans
+            # This isn't a simple boolean, it may also contain a ca name
+            $ca='false'
+            # lint:endignore
+) {
     $ssldir = '/var/lib/puppet/server/ssl'
 
     # TODO: Hack to make class pass tests
@@ -33,6 +37,8 @@ class puppetmaster::ssl(
             ensure => directory;
     }
 
+    # lint:ignore:quoted_booleans
+    # This isn't a simple boolean, it may also contain a ca name
     if $ca != 'false' {
         exec { 'generate hostcert':
             require => File["${ssldir}/certs"],
@@ -40,6 +46,7 @@ class puppetmaster::ssl(
             creates => "${ssldir}/certs/${server_name}.pem";
         }
     }
+    # lint:endignore
 
     exec { 'setup crl dir':
         require => File["${ssldir}/crl"],
