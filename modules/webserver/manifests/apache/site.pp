@@ -3,7 +3,7 @@
 #
 # Parameters:
 #   $aliases=[]       - array of ServerAliases
-#   $ssl="false"      - if true, sets up an ssl certificate for $title
+#   $ssl='false'      - if true, sets up an ssl certificate for $title.  Must be quoted.
 #   $certfile=undef   - defaults to /etc/ssl/localcerts/${title}.crt
 #   $certkey=undef    - defaults to "/etc/ssl/private/${title}.key
 #   $docroot=undef    - defaults to: $title == 'stats.wikimedia.org', then /srv/stats.wikimedia.org
@@ -18,7 +18,10 @@
 #   webserver::apache::site { "mysite.wikimedia.org": aliases = ["mysite.wikimedia.com"] }
 define webserver::apache::site(
     $aliases      = [],
+    # lint:ignore:quoted_booleans
+    #  This must be a string -- it may contain actual information as well as true/false
     $ssl          = 'false',
+    # lint:endignore
     $certfile     = "/etc/ssl/localcerts/${title}.crt",
     $certkey      = "/etc/ssl/private/${title}.key",
     $docroot      = undef,
