@@ -1,5 +1,5 @@
 define interface::tun6to4($remove=undef) {
-    if $remove == 'true' {
+    if $remove == true {
         $augeas_cmd = [ "rm auto[./1 = 'tun6to4']",
                 "rm iface[. = 'tun6to4']"
             ]
@@ -17,7 +17,7 @@ define interface::tun6to4($remove=undef) {
             ]
     }
 
-    if $remove == 'true' {
+    if $remove == true {
         exec { '/sbin/ifdown tun6to4':
             before => Augeas['tun6to4'],
         }
@@ -29,7 +29,7 @@ define interface::tun6to4($remove=undef) {
         changes => $augeas_cmd,
     }
 
-    if $remove != 'true' {
+    if $remove != true {
         exec { '/sbin/ifup tun6to4':
             require => Augeas['tun6to4'],
         }
