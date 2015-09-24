@@ -444,15 +444,9 @@ class role::ci::slave::labs::light {
     include contint::slave-scripts
     include role::ci::slave::labs::common
 
-    # Production DNS migrated to Jessie T98003
-    include authdns::lint
-
     include contint::packages::apt
+    include contint::packages::ops
     include contint::packages::python
-    # Can not easily build etcd on Trusty
-    package { 'etcd':
-        ensure => latest,
-    }
 
 }
 
