@@ -88,7 +88,7 @@ class role::cache::kafka::webrequest(
         # are over the threshold.
         percentage      => 80,
         from            => '10min',
-        nagios_critical => 'false',
+        nagios_critical => false,
         require         => Logster::Job['varnishkafka-webrequest'],
         ensure          => 'present',
     }
@@ -102,7 +102,7 @@ class role::cache::kafka::webrequest(
         warning         => 5,
         # critical if more than 45 anomylous datapoints (last 45 minutes)
         critical        => 45,
-        nagios_critical => 'false',
+        nagios_critical => false,
         require         => Logster::Job['varnishkafka-webrequest'],
         # Disabling this.  It doesn't work like I wanted it to.
         ensure          => 'absent',
