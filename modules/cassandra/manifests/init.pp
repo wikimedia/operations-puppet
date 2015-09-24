@@ -234,15 +234,15 @@ class cassandra(
     $storage_port                     = 7000,
     $listen_address                   = $::ipaddress,
     $broadcast_address                = undef,
-    $start_native_transport           = 'true',
+    $start_native_transport           = true,
     $native_transport_port            = 9042,
-    $start_rpc                        = 'true',
+    $start_rpc                        = true,
     $rpc_address                      = $::ipaddress,
     $rpc_port                         = 9160,
     $rpc_server_type                  = 'sync',
-    $incremental_backups              = 'false',
-    $snapshot_before_compaction       = 'false',
-    $auto_snapshot                    = 'true',
+    $incremental_backups              = false,
+    $snapshot_before_compaction       = false,
+    $auto_snapshot                    = true,
     $compaction_throughput_mb_per_sec = 16,
     $concurrent_compactors            = 1,
     $endpoint_snitch                  = 'GossipingPropertyFileSnitch',
@@ -276,12 +276,7 @@ class cassandra(
     validate_string($initial_token)
     validate_string($endpoint_snitch)
 
-    validate_re($start_rpc, '^(true|false)$')
-    validate_re($start_native_transport, '^(true|false)$')
     validate_re($rpc_server_type, '^(hsha|sync|async)$')
-    validate_re($incremental_backups, '^(true|false)$')
-    validate_re($snapshot_before_compaction, '^(true|false)$')
-    validate_re($auto_snapshot, '^(true|false)$')
     # lint:ignore:only_variable_string
     validate_re("${concurrent_reads}", '^[0-9]+$')
     validate_re("${concurrent_writes}", '^[0-9]+$')
