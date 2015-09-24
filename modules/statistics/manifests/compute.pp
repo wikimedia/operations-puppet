@@ -31,6 +31,7 @@ class statistics::compute {
         # libwww-perl for wikistats stuff
         'libwww-perl',
         'php5-cli',
+        'php5-curl',
         'php5-mysql',
         'sqlite3', # For storing and interacting with intermediate results
         'libgdal1-dev', # Requested by lzia for rgdal
