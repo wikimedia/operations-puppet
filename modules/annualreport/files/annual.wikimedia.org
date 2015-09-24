@@ -21,4 +21,7 @@
         Require all granted
     </Directory>
 
+    # Old annual reports from 2007 through 2013 are PDF files on Foundation Wiki.
+    RedirectMatch ^/(200[7-9]|201[0-3])/?$ https://wikimediafoundation.org/wiki/Annual_Report
+
 </VirtualHost>
