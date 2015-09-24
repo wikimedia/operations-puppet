@@ -62,7 +62,7 @@ class role::gerrit {
                         # lint:endignore
                     ],
                     'threads' => '4',
-                    'mirror'  => 'true',
+                    'mirror'  => true,
                 },
                 'gitblit'        => {
                     # Note: This is in single quotes on purpose. ${name} is not
@@ -74,7 +74,7 @@ class role::gerrit {
                     'threads'   => '4',
                     'authGroup' => 'mediawiki-replication',
                     'push'      => '+refs/*:refs/*',
-                    'mirror'    => 'true',
+                    'mirror'    => true,
                 },
                 'github'         => {
                     # Note: This is in single quotes on purpose. ${name} is not
@@ -87,7 +87,7 @@ class role::gerrit {
                     'authGroup'       => 'mediawiki-replication',
                     'push'            => $replication_basic_push_refs,
                     'remoteNameStyle' => 'dash',
-                    'mirror'          => 'true',
+                    'mirror'          => true,
                 },
                 # Do not add custom mirrors for GitHub here!
                 # Instead let the default replication happen and perform the rename
