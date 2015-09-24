@@ -6,7 +6,7 @@ define monitoring::host (
     $host_fqdn     = undef,
     $group         = undef,
     $ensure        = present,
-    $critical      = 'false',
+    $critical      = false,
     $contact_group = 'admins'
     ) {
 
@@ -25,7 +25,7 @@ define monitoring::host (
     }
 
     $is_critical = $critical ? {
-        'true'  => 'admins,sms',
+        true    => 'admins,sms',
         default => $contact_group,
     }
 
