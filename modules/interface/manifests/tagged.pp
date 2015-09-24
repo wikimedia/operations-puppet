@@ -32,7 +32,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
         $down_cmd = ''
     }
 
-    if $remove == 'true' {
+    if $remove == true {
         $augeas_cmd = [ "rm auto[./1 = '${intf}']",
                 "rm iface[. = '${intf}']"
             ]
@@ -48,7 +48,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
             ]
     }
 
-    if $remove == 'true' {
+    if $remove == true {
         exec { "/sbin/ifdown ${intf}":
             before => Augeas[$intf],
         }
@@ -60,7 +60,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
         changes => $augeas_cmd;
     }
 
-    if $remove != 'true' {
+    if $remove != true {
         exec { "/sbin/ifup ${intf}":
             subscribe => Augeas[$intf],
             refreshonly => true,
