@@ -1,0 +1,118 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  xenon-grep -- analyze xenon logs
+
+  usage: xenon-grep [--resolution TIME] [--entrypoint NAME]
+                    [--grep STRING] [--count COUNT]
+
+  Options:
+   --resolution TIME   Which log files to analyze. May be one of 'hourly',
+                       'daily', or 'weekly'. (Default: 'daily').
+
+   --entrypoint NAME   Analyze logs for this entry point. May be one of
+                       'index', 'api', or 'load'). (Default: 'index').
+
+   --grep STRING       Only include stacks which include this string
+
+   --count COUNT       Analyze this many of the most recent files.
+
+
+  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY CODE, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+"""
+import argparse
+import collections
+import glob
+import os.path
+import re
+import sys
+import textwrap
+
+
+skip_prefixes = ('/srv', 'AutoLoader', 'Curl', 'Database',
+                 'Elastica\Transport\Http::exec', 'Hooks',
+                 'Http::', 'LoadBalancer', 'Memcached',
+                 'WANObjectCache', 'wfGetDB', 'SqlBagOStuff',
+                 'MultiWriteBagOStuff')
+
+
+if {'-h', '--help'}.intersection(sys.argv):
+    sys.exit(textwrap.dedent(__doc__))
+
+arg_parser = argparse.ArgumentParser(add_help=False)
+arg_parser.add_argument(
+    '--resolution',
+    default='daily',
+    choices=('hourly', 'daily', 'weekly'),
+)
+arg_parser.add_argument(
+    '--entrypoint',
+    default='index',
+    choices=('index', 'api', 'load'),
+)
+arg_parser.add_argument(
+    '--grep',
+    default='',
+    help='only include stacks which include this string',
+)
+arg_parser.add_argument(
+    '--count',
+    default=2,
+    type=int,
+)
+args = arg_parser.parse_args()
+
+
+def should_skip(f):
+    return f.lower() == f or any(f.startswith(pfx) for pfx in skip_prefixes)
+
+
+def parse_line(line):
+    line = re.sub(r'\d\.\d\dwmf\d+', 'X.XXwmfXX', line.rstrip())
+    funcs, count = line.split(' ', 1)
+    return funcs.split(';'), int(count)
+
+
+def grep(fname, search_string):
+    with open(fname) as f:
+        for line in f:
+            if search_string in line:
+                yield line
+
+
+def iter_funcs(files):
+    for fname in files:
+        for line in grep(fname, args.grep):
+            funcs, count = parse_line(line)
+            while funcs and should_skip(funcs[-1]):
+                funcs.pop()
+            if funcs:
+                func = funcs.pop()
+                for _ in range(count):
+                    yield func
+
+
+glob_pattern = '/srv/xenon/logs/%(resolution)s/*.%(entrypoint)s.log'
+files = glob.glob(glob_pattern % vars(args))
+files.sort(key=os.path.getctime)
+files = files[-(args.count):]
+print(files)
+counter = collections.Counter(iter_funcs(files))
+total = sum(1 for _ in counter.elements())
+for idx, (func, count) in enumerate(counter.most_common(40)):
+    ordinal = idx + 1
+    percent = 100.0 * count / total
+    print('%02d) %s (%d samples; %.2f%%)' % (ordinal, func, count, percent))

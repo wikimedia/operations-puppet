@@ -129,4 +129,16 @@ class xenon(
         user    => 'xenon',
         minute  => '*/15',
     }
+
+    # xenon-grep is a simple CLI tool for parsing xenon logs
+    # and printing a leaderboard of the functions which are most
+    # frequently on-CPU.
+
+    file { '/usr/local/bin/xenon-grep':
+        ensure => $ensure,
+        source => 'puppet:///modules/xenon/xenon-grep',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
