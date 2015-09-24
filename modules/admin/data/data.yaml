@@ -177,7 +177,8 @@ groups:
               halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
               ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, rmoen, tbayer, joal, ashwinpp,
-              madhuvishy, tjones, legoktm, dcausse, bearloga]
+              madhuvishy, tjones, legoktm, dcausse, bearloga,
+              junikowski]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
