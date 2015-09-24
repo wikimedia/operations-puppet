@@ -2739,6 +2739,41 @@ host lvs1006 {
 	fixed-address lvs1006.wikimedia.org;
 }
 
+host lvs1007 {
+	hardware ethernet ec:b1:d7:7b:c6:d8;
+	fixed-address lvs1007.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host lvs1008 {
+	hardware ethernet ec:b1:d7:7b:b8:58;
+	fixed-address lvs1008.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host lvs1009 {
+	hardware ethernet ec:b1:d7:7b:1a:f8;
+	fixed-address lvs1009.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host lvs1010 {
+	hardware ethernet ec:b1:d7:7b:59:78;
+	fixed-address lvs1010.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host lvs1011 {
+	hardware ethernet ec:b1:d7:7b:59:88;
+	fixed-address lvs1011.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host lvs1012 {
 	hardware ethernet ec:b1:d7:7b:07:28;
 	fixed-address lvs1012.eqiad.wmnet;
