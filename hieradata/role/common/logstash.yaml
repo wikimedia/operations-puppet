@@ -1,6 +1,7 @@
 cluster: logstash
 admin::groups:
   - logstash-roots
+  - elasticsearch-roots
 
 # ES-specific
 # NOTE: multicast_group and cluster_name must be kept in sync with the backend
