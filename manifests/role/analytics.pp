@@ -99,8 +99,8 @@ class role::analytics::rsyncd {
     # be present and mounted at /mnt/hdfs
     rsync::server::module { 'hdfs-archive':
         path        => "${::cdh::hadoop::mount::mount_point}/wmf/data/archive",
-        read_only   => 'yes',
-        list        => 'yes',
+        read_only   => yes,
+        list        => yes,
         hosts_allow => $hosts_allow,
         require     => Class['cdh::hadoop::mount'],
     }
