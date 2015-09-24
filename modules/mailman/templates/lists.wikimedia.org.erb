@@ -77,10 +77,6 @@
         Deny from all
     </LocationMatch>
 
-    <Location "/server-status">
-        Require all denied
-    </Location>
-
     # anti-subscription bot mitigation
     RewriteEngine on
     RewriteCond &%{QUERY_STRING} &pw(-conf)?= [NC]
