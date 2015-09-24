@@ -140,9 +140,17 @@ class role::eventlogging::processor inherits role::eventlogging {
         'eventlogging-00'
     )
 
+    # TODO: Not sure of the proper way to get an etcd host/port list out of
+    # hiera for use with clients.
+    # TODO: etcd cert to use?
+
+    $etcd_hosts = hiera('etcd::host')
+    $etcd_uri = "http://${etcd_host}:2379"
+
     eventlogging::service::processor { 'server-side-0':
         format         => '%{seqId}d EventLogging %j',
         sid            => $kafka_consumer_group,
+        etcd_uri       => $etcd_uri,
         input          => "${kafka_server_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
         outputs        => [
             # Write valid events to schema based topics, and
@@ -163,6 +171,7 @@ class role::eventlogging::processor inherits role::eventlogging {
     eventlogging::service::processor { $client_side_processors:
         format         => '%q %{recvFrom}s %{seqId}d %t %h %{userAgent}i',
         input          => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
+        etcd_uri       => $etcd_uri,
         sid            => $kafka_consumer_group,
         outputs        => [
             $kafka_schema_uri,
