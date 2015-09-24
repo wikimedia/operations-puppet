@@ -22,7 +22,10 @@ class role::diamond {
         keep_logs_for => $keep_logs_for,
         service       => $service,
         settings      => {
+            # lint:ignore:quoted_booleans
+            # Diamond needs its bools in string-literals.
             enabled => 'true',
+            # lint:endignore
             host    => $host,
             port    => '8125',
         },
