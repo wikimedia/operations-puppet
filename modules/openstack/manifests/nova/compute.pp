@@ -68,7 +68,7 @@ class openstack::nova::compute(
 
         rsync::server::module { "nova_instance_rsync_controller":
             path        => '/var/lib/nova/instances',
-            read_only   => 'no',
+            read_only   => no,
             hosts_allow => [hiera('labs_nova_controller')],
         }
 
@@ -194,7 +194,7 @@ define instancersync (
 
     rsync::server::module { "nova_instance_rsync_${hostname}":
         path        => '/var/lib/nova/instances',
-        read_only   => 'false',
+        read_only   => false,
         hosts_allow => ["${hostname}.${::site}.wmnet"],
     }
 }
