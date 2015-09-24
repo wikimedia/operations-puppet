@@ -47,7 +47,10 @@ class role::puppetmaster::backend {
         config      => {
             'storeconfigs'      => true, # Required by thin_storeconfigs on puppet 3.x
             'thin_storeconfigs' => true,
+            # lint:ignore:quoted_booleans
+            # Not a simple boolean, this must be quoted.
             'ca'                => 'false',
+            # lint:endignore
             'ca_server'         => 'palladium.eqiad.wmnet',
             'dbadapter'         => 'mysql',
             'dbuser'            => 'puppet',
