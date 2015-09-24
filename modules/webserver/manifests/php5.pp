@@ -3,14 +3,14 @@
 # Install a basic apache2 web server with mod_php
 #
 class webserver::php5(
-    $ssl = 'false',
+    $ssl = false,
     ) {
 
     include webserver::sysctl_settings
     include ::apache
     include ::apache::mod::php5
 
-    if $ssl == true {
+    if $ssl {
         include ::apache::mod::ssl
     }
 
