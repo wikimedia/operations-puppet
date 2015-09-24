@@ -5,14 +5,13 @@ all_network_subnets = scope.lookupvar('network::constants::all_network_subnets')
 special_hosts = scope.lookupvar('network::constants::special_hosts')
 analytics_networks = scope.lookupvar('network::constants::analytics_networks')
 mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networks')
-deployable_networks = scope.lookupvar('network::constants::deployable_networks')
 -%>
 
 @def $EXTERNAL_NETWORKS = (<%- external_networks.each do |external_net| -%><%= external_net %> <% end -%>);
 @def $ALL_NETWORKS = (<%- all_networks.each do |net| -%><%= net %> <% end -%>);
 @def $ANALYTICS_NETWORKS = (<%- analytics_networks.each do |net| -%><%= net %> <% end -%>);
 @def $MW_APPSERVER_NETWORKS = (<%- mw_appserver_networks.each do |net| -%><%= net %> <% end -%>);
-@def $DEPLOYABLE_NETWORKS = (<%- deployable_networks.each do |net| -%><%= net %> <% end -%>);
+@def $DEPLOYABLE_NETWORKS = ($ANALYTICS_NETWORKS $MW_APPSERVER_NETWORKS);
 
 <%- special_hosts.sort.map do |realm, services | -%>
 	<%- if @realm != realm then next end -%>
