@@ -2178,56 +2178,6 @@ host elastic2024 {
 	fixed-address elastic2024.codfw.wmnet;
 }
 
-host es1001 {
-	hardware ethernet 78:2b:cb:0b:11:b5;
-	fixed-address es1001.eqiad.wmnet;
-}
-
-host es1002 {
-	hardware ethernet 78:2b:cb:0a:11:7a;
-	fixed-address es1002.eqiad.wmnet;
-}
-
-host es1003 {
-	hardware ethernet 78:2b:cb:0a:12:49;
-	fixed-address es1003.eqiad.wmnet;
-}
-
-host es1004 {
-	hardware ethernet 78:2b:cb:0b:0c:87;
-	fixed-address es1004.eqiad.wmnet;
-}
-
-host es1005 {
-	hardware ethernet d4:ae:52:b0:39:c5;
-	fixed-address es1005.eqiad.wmnet;
-}
-
-host es1006 {
-	hardware ethernet d4:ae:52:b0:35:d3;
-	fixed-address es1006.eqiad.wmnet;
-}
-
-host es1007 {
-	hardware ethernet d4:ae:52:93:46:0e;
-	fixed-address es1007.eqiad.wmnet;
-}
-
-host es1008 {
-	hardware ethernet d4:ae:52:93:41:d9;
-	fixed-address es1008.eqiad.wmnet;
-}
-
-host es1009 {
-	hardware ethernet d4:ae:52:93:41:10;
-	fixed-address es1009.eqiad.wmnet;
-}
-
-host es1010 {
-	hardware ethernet d4:ae:52:93:3e:54;
-	fixed-address es1010.eqiad.wmnet;
-}
-
 host es1011 {
 	hardware ethernet 44:A8:42:35:6C:73;
 	fixed-address es1011.eqiad.wmnet;
