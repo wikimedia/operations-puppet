@@ -893,8 +893,9 @@ node 'erbium.eqiad.wmnet' {
     include role::logging::kafkatee::webrequest::fundraising
 }
 
-# es1 databases
-node /es100[1234]\.eqiad\.wmnet/ {
+# External Storage, Shard 1 (es1) databases
+
+node /^es101[268]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es1',
     }
@@ -907,22 +908,9 @@ node /es200[1234]\.codfw\.wmnet/ {
     include base::firewall
 }
 
-## es1 new nodes
-node /^es101[268]\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard => 'es1',
-    }
-}
+# External Storage, Shard 2 (es2) databases
 
-
-# es2 databases
-node /es1006\.eqiad\.wmnet/ {
-    class { 'role::coredb::es2':
-        mariadb => true,
-    }
-}
-
-node /es100[57]\.eqiad\.wmnet/ {
+node /^es101[135]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es2',
     }
@@ -935,43 +923,20 @@ node /es200[567]\.codfw\.wmnet/ {
     include base::firewall
 }
 
-## es2 new nodes
-node /^es101[135]\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard => 'es2',
-    }
-}
+# External Storage, Shard 3 (es3) databases
 
-
-# es3 databases
-node /es100[9]\.eqiad\.wmnet/ {
-    class { 'role::coredb::es3':
-        mariadb => true,
-    }
-}
-
-node /es10(08|10)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard => 'es3',
-    }
-}
-
-node /es20(08|09|10)\.codfw\.wmnet/ {
-
-    $cluster = 'mysql'
-    class { 'role::mariadb::core':
-        shard => 'es3',
-    }
-    include base::firewall
-}
-
-## es3 new nodes
 node /^es101[479]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es3',
     }
 }
 
+node /es20(08|09|10)\.codfw\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 'es3',
+    }
+    include base::firewall
+}
 
 # Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
