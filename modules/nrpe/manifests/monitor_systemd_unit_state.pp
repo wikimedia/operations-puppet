@@ -19,9 +19,9 @@ define nrpe::monitor_systemd_unit_state(
 
     # Temporary hack until we fix the downstream modules
     if $critical {
-        $nagios_critical = 'true'
+        $nagios_critical = true
     } else {
-        $nagios_critical = 'false'
+        $nagios_critical = false
     }
 
     nrpe::monitor_service { "${unit}-state":

@@ -5,8 +5,8 @@ define monitoring::service(
     $retries               = 3,
     $group                 = undef,
     $ensure                = present,
-    $critical              = 'false',
-    $passive               = 'false',
+    $critical              = false,
+    $passive               = false,
     $freshness             = 36000,
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
@@ -28,32 +28,32 @@ define monitoring::service(
     }
 
     $notification_critical = $critical ? {
-        'true'  => 240,
+        true    => 240,
         default => 0,
     }
 
     $contact_critical = $critical ? {
-        'true'  => 'admins,sms',
+        true    => 'admins,sms',
         default => $contact_group,
     }
 
     $is_active = $passive ? {
-        'true'  => 0,
+        true    => 0,
         default => 1,
     }
 
     $check_volatile = $passive ? {
-        'true'  => 1,
+        true    => 1,
         default => 0,
     }
 
     $check_fresh = $passive ? {
-        'true'  => 1,
+        true    => 1,
         default => 0,
     }
 
     $is_fresh = $passive ? {
-        'true'  => $freshness,
+        true    => $freshness,
         default => undef,
     }
 
