@@ -73,7 +73,7 @@ groups:
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis,
-              addshore, jminor]
+              addshore, jminor, pt1979]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -1606,3 +1606,10 @@ users:
     realname: Andrew Sherman
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCoNjOK45S7G5ZyAFFE4lLfNvcW+67JMyLPhivnXIYPckEKdA08FW3GNNuvLqfeSseKvhLGHwBEVeK3osA1ZFwbsKUyRPxHxL2iIaCj7JUp/3QoHjxUa4pFCRM408mrlEnhMYMJwjQ5irXkO7LHyE/89v3Jv2ext6S3vOGSdVDrQcAlS6zZnuWtlMeIh/oj0+0HrW6e6HoMeYqbb9t0tUr/X18emh9K9jQ3bKmbnEv4iVEKBBImJ6MVpXaDAX7zwAcAXGgtfXp1oNIR7z21uM1RuxlcP1Sj60x/RNPc3dbD+xi25ddaIfVC4mO6VoHcBsxwSHHWVVsyqHalRP666kK7 Andrew@Andrews-MBP-2]
     uid: 12989
+  pt1979:
+    ensure: present
+    gid: 500
+    name: pt1979
+    realname: Papaul Tshibamba
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmlt2EID9N7s/YwZ91Ma4t+/M4aQEGx6Qzzwz+pFOC/CNiz43fw89fHsMmrrU+e6T9hI9nTz899EVaxM8CG9kmGtpYOtcpoFkcMhFlnP9JZpuUzmE/DVVDXBFnrjnXQzNisKjpPOe+NEu4v4NDwPv+cOQpJ8uXqikg+pd0ZYWxbdFIp+7dokhk1+1ltxTCDDrMkiZEBbfYEcXmw2Kt0KU2hdq9IRg1o/YFJSYVmIXkkN3Ayr238vYLi03946ReyKm/czGq+0UFh+Lp+TuDwrVa/kOqBko6aAJgVvYLofKF6CgfTHmMPfA01EbCDUtPxmg6nUF0fHweQsGKMHKFxFSF productionwiki]
+    uid: 10275
