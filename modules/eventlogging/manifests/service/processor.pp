@@ -44,6 +44,11 @@
 #   Specifies the socket ID the processor will use to identify itself
 #   when subscribing to input streams. Defaults to the resource title.
 #
+#
+# [*etcd_uri*]
+#   If given, a shared token in etcd will be used to hash client IPs
+#   for anonymization.
+#
 # [*ensure*]
 #   If 'present' (the default), sets up the processor. If 'absent',
 #   destroys it.
@@ -62,6 +67,7 @@ define eventlogging::service::processor(
     $outputs,
     $output_invalid = undef,
     $sid            = $title,
+    $etcd_uri       = undef,
     $ensure         = present,
 ) {
     include ::eventlogging

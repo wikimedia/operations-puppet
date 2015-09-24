@@ -11,7 +11,16 @@
 # [*ssldir*]
 #   The directory where the puppet ssl certs are contained
 #
-class etcd::ssl($puppet_cert_name = $::fqdn, $ssldir = '/var/lib/puppet/ssl') {
+# [*provide_private*]
+#   If true, private keys will be copied too.  Set this to true if you
+#   are provisioning an etcd server when including this class.
+#   Default: false
+#
+class etcd::ssl(
+    $puppet_cert_name = $::fqdn,
+    $ssldir           = '/var/lib/puppet/ssl',
+    $provide_private  = false
+) {
 
     file { '/var/lib/etcd/ssl':
         ensure  => directory,
@@ -36,7 +45,11 @@ class etcd::ssl($puppet_cert_name = $::fqdn, $ssldir = '/var/lib/puppet/ssl') {
         source => "${ssldir}/certs/ca.pem",
     }
 
-    file { '/var/lib/etcd/ssl/certs/cert.pem':
+    # $::etcd::ssl::cert can be used by other classes
+    # to make sure they are using the proper
+    # cert file when connecting to etcd.
+    $cert = '/var/lib/etcd/ssl/certs/cert.pem'
+    file { $cert:
         ensure  => present,
         owner   => 'etcd',
         group   => 'etcd',
@@ -45,18 +58,20 @@ class etcd::ssl($puppet_cert_name = $::fqdn, $ssldir = '/var/lib/puppet/ssl') {
         require => File['/var/lib/etcd/ssl/certs/ca.pem'],
     }
 
-    file { '/var/lib/etcd/ssl/private_keys':
-        ensure => directory,
-        owner  => 'etcd',
-        group  => 'etcd',
-        mode   => '0500',
-    }
+    if $provide_private {
+        file { '/var/lib/etcd/ssl/private_keys':
+            ensure => directory,
+            owner  => 'etcd',
+            group  => 'etcd',
+            mode   => '0500',
+        }
 
-    file { '/var/lib/etcd/ssl/private_keys/server.key':
-        ensure => present,
-        owner  => 'etcd',
-        group  => 'etcd',
-        mode   => '0400',
-        source => "${ssldir}/private_keys/${puppet_cert_name}.pem",
+        file { '/var/lib/etcd/ssl/private_keys/server.key':
+            ensure => present,
+            owner  => 'etcd',
+            group  => 'etcd',
+            mode   => '0400',
+            source => "${ssldir}/private_keys/${puppet_cert_name}.pem",
+        }
     }
 }
