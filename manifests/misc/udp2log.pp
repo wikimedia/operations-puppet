@@ -84,7 +84,7 @@ class misc::udp2log::rsyncd(
     rsync::server::module { 'udp2log':
         comment     => 'udp2log log files',
         path        => $path,
-        read_only   => 'yes',
+        read_only   => yes,
         hosts_allow => $hosts_allow;
     }
 

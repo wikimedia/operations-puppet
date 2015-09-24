@@ -56,7 +56,7 @@ class archiva::gitfat {
     #   hostname::archiva/git-fat
     rsync::server::module { 'archiva':
         path      => $archiva_path,
-        read_only => 'yes',
+        read_only => yes,
         uid       => 'nobody',
         gid       => 'nogroup',
     }
