@@ -63,7 +63,9 @@ class etcd (
     # SSL setup
     if $use_ssl {
         $scheme = 'https'
-        include etcd::ssl
+        class { 'etcd::ssl':
+            provide_private => true,
+        }
     } else {
         $scheme = 'http'
     }
