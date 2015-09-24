@@ -132,11 +132,13 @@ class role::lists {
         source => 'puppet:///files/icinga/check_iostat',
     }
 
+    # lint:ignore:quoted_booleans
     $iostat_device = $is_virtual ? {
         'true'    => 'vda',
         'false'   => 'sda',
         default   => 'sda',
     }
+    # lint:endignore
 
     nrpe::monitor_service { 'mailman_iostat':
         description   => 'mailman I/O stats',
