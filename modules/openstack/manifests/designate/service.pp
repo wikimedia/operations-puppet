@@ -117,11 +117,5 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
             ensure  => stopped,
             require => Package['designate-central'];
         }
-
-        # In the perfect future when the designate packages set up
-        #  an init script for this, some of this can be removed.
-        base::service_unit { ['designate-pool-manager', 'designate-mdns']:
-            ensure  =>  absent,
-        }
     }
 }
