@@ -15,7 +15,7 @@ class shinken::ircbot(
 ){
     include shinken
 
-    file { '/var/log/ircecho':
+    file { '/var/log/ircbot':
         ensure  => directory,
         owner   => 'shinken',
         group   => 'shinken',
@@ -23,18 +23,21 @@ class shinken::ircbot(
         mode    => '0775',
     }
 
-    $ircecho_logs   = {
-        '/var/log/ircecho/irc.log'          => '#wikimedia-operations',
-        '/var/log/ircecho/irc-releng.log'   => '#wikimedia-releng',
-        '/var/log/ircecho/irc-labs.log'     => '#wikimedia-labs',
-        '/var/log/ircecho/irc-cvn.log'      => '#countervandalism',
-        '/var/log/ircecho/irc-wmt.log'      => '##wmt',
-    }
-
-    class { '::ircecho':
-        ircecho_logs   => $ircecho_logs,
-        ircecho_nick   => $nick,
-        ircecho_server => $server,
-        require        => File['/var/log/ircecho'],
+    tcpircbot::instance { $nick:
+        channels => [
+            '#wikimedia-operations',
+            '#wikimedia-releng',
+            '#wikimedia-labs',
+            '#countervandalism',
+            '##wmt'
+        ],
+        server_host => $server,
+        infiles => {
+            '/var/log/ircbot/irc.log'        => '#wikimedia-operations',
+            '/var/log/ircbot/irc-releng.log' => '#wikimedia-releng',
+            '/var/log/ircbot/irc-labs.log'   => '#wikimedia-labs',
+            '/var/log/ircbot/irc-cvn.log'    => '#countervandalism',
+            '/var/log/ircbot/irc-wmt.log'    => '##wmt',
+        }
     }
 }
