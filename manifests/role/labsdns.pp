@@ -5,7 +5,7 @@ class role::labsdns {
     class { '::labs_dns':
         dns_auth_ipaddress     => $::ipaddress_eth0,
         dns_auth_query_address => $::ipaddress_eth0,
-        dns_auth_soa_name      => 'labs-ns2.wikimedia.org',
+        dns_auth_soa_name      => hiera('labs_dns_host'),
         pdns_db_host           => 'm5-master.eqiad.wmnet',
         pdns_db_password       => $passwords::pdns::db_pass,
     }
