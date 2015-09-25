@@ -20,28 +20,6 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
         require => Class['openstack::repo'];
     }
 
-    service {'designate-api':
-        ensure  => running,
-        require => Package['designate-api'];
-    }
-
-    service {'designate-sink':
-        ensure  => running,
-        require => Package['designate-sink'];
-    }
-
-    service {'designate-central':
-        ensure  => running,
-        require => Package['designate-central'];
-    }
-
-    # In the perfect future when the designate packages set up
-    #  an init script for this, some of this can be removed.
-    base::service_unit { ['designate-pool-manager', 'designate-mdns']:
-        ensure  =>  present,
-        upstart =>  true,
-        require =>  Package['designate'],
-    }
 
     # This password is to allow designate to write to instance metadata
     $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
@@ -78,6 +56,50 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
     }
 
     # include rootwrap.d entries
+
+    if $::fqdn == hiera('labs_designate_hostname') {
+        service {'designate-api':
+            ensure  => running,
+            require => Package['designate-api'];
+        }
+
+        service {'designate-sink':
+            ensure  => running,
+            require => Package['designate-sink'];
+        }
+
+        service {'designate-central':
+            ensure  => running,
+            require => Package['designate-central'];
+        }
+
+        # In the perfect future when the designate packages set up
+        #  an init script for this, some of this can be removed.
+        base::service_unit { ['designate-pool-manager', 'designate-mdns']:
+            ensure  =>  present,
+            upstart =>  true,
+            require =>  Package['designate'],
+        }
+    } else {
+        service {'designate-api':
+            ensure  => stopped,
+            require => Package['designate-api'];
+        }
+
+        service {'designate-sink':
+            ensure  => stopped,
+            require => Package['designate-sink'];
+        }
+
+        service {'designate-central':
+            ensure  => stopped,
+            require => Package['designate-central'];
+        }
+
+        # In the perfect future when the designate packages set up
+        #  an init script for this, some of this can be removed.
+        base::service_unit { ['designate-pool-manager', 'designate-mdns']:
+            ensure  =>  absent,
+        }
+    }
 }
-
-
