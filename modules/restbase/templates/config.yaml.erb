@@ -46,7 +46,7 @@ templates:
 
     x-subspecs:
       - mediawiki/v1/content
-      - mediawiki_v1_graphoid
+      - mediawiki/v1/graphoid
       - mediawiki/v1/mobileapps
     # - mediawiki/v1/revision-scoring
     securityDefinitions:
@@ -160,36 +160,41 @@ templates:
                 request:
                   uri: <%= @graphoid_uri %>/{domain}/v1/png/{title}/{revision}/{graph_id}
 
-      /{module:mobileapps}/v1/html/{title}:
-        get:
-          x-request-handler:
-            - get_from_backend:
-                request:
-                  uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html/{title}
-      /{module:mobileapps}/v1/sections/{title}:
-        get:
-          x-request-handler:
-            - get_from_backend:
-                request:
-                  uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections/{title}
-      /{module:mobileapps}/v1/sections-lead/{title}:
-        get:
-          x-request-handler:
-            - get_from_backend:
-                request:
-                  uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-lead/{title}
-      /{module:mobileapps}/v1/sections-remaining/{title}:
-        get:
-          x-request-handler:
-            - get_from_backend:
-                request:
-                  uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-remaining/{title}
-      /{module:mobileapps}/v1/text/{title}:
-        get:
-          x-request-handler:
-            - get_from_backend:
-                request:
-                  uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-text/{title}
+      /{module:mobileapps}:
+        x-subspec:
+          info:
+            title: Mobileapps sys API module
+          paths:
+            /html/{title}:
+              get:
+                x-request-handler:
+                  - get_from_backend:
+                      request:
+                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html/{title}
+            /sections/{title}:
+              get:
+                x-request-handler:
+                  - get_from_backend:
+                      request:
+                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections/{title}
+            /sections-lead/{title}:
+              get:
+                x-request-handler:
+                  - get_from_backend:
+                      request:
+                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-lead/{title}
+            /sections-remaining/{title}:
+              get:
+                x-request-handler:
+                  - get_from_backend:
+                      request:
+                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-remaining/{title}
+            /text/{title}:
+              get:
+                x-request-handler:
+                  - get_from_backend:
+                      request:
+                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-text/{title}
 
 
   wp-default-1.0.0: &wp/default/1.0.0
