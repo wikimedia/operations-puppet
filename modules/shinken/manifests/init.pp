@@ -106,7 +106,7 @@ class shinken(
         notify       => Service['shinken'],
         require      => Package['shinken'],
         lover_name   => 'Shinken',
-        irc_dir_path => '/var/log/ircecho',
+        irc_dir_path => '/var/log/ircbot',
     }
 
     # Default localhost config, we do not need this
