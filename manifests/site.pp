@@ -1088,6 +1088,18 @@ node 'holmium.wikimedia.org' {
     include ldap::role::client::labs
 }
 
+# labservices1001 will be the new holmium
+node 'labservices1001.wikimedia.org' {
+    include standard
+
+    include base::firewall
+    include role::labsdns
+    include role::labsdnsrecursor
+    include role::designate::server
+
+    include ldap::role::client::labs
+}
+
 # bastion in the Netherlands
 node 'hooft.esams.wikimedia.org' {
     $ganglia_aggregator = true
