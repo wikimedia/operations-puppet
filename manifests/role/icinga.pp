@@ -28,7 +28,16 @@ class role::icinga(
     include nrpe
 
     if $ircbot {
-        include icinga::ircbot
+        tcpircbot::instance { 'icinga-wm':
+            server_host => 'chat.freenode.net',
+            infiles => {
+                '/var/log/icinga/irc.log'           => '#wikimedia-operations',
+                '/var/log/icinga/irc-wikidata.log'  => '#wikidata',
+                '/var/log/icinga/irc-releng.log'    => '#wikimedia-releng',
+                '/var/log/icinga/irc-labs.log'      => '#wikimedia-labs',
+                '/var/log/icinga/irc-analytics.log' => '#wikimedia-analytics',
+            }
+        }
     }
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
