@@ -21,7 +21,7 @@ CONFIGFILE should be a JSON file with the following structure:
           "cidr": "::/0",
           "port": 9125
       },
-      "infiles": []
+      "infiles": {"filename": ["#channel1", "#channel2"]}
   }
 
 Requirements:
@@ -60,7 +60,7 @@ BUFSIZE = 460  # Read from socket in IRC-message-sized chunks.
 logging.basicConfig(level=logging.INFO, stream=sys.stderr,
                     format='%(asctime)-15s %(message)s')
 
-files = []
+files = {}
 
 
 class ForwarderBot(ircbot.SingleServerIRCBot):
@@ -93,10 +93,13 @@ class ForwarderBot(ircbot.SingleServerIRCBot):
 
         if 'infiles' in config:
             global files
-            for infile in config['infiles']:
-                f = open(infile, 'r')
+            for filename, channels in config['infiles'].items():
+                f = open(filename, 'r')
                 f.seek(0, 2)
-                files.append(f)
+                if isinstance(channels, list):
+                    files[f] = channels
+                else:
+                    files[f] = [channels]
 
 
 if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
@@ -121,7 +124,7 @@ if 'tcp' in config:
     server.bind((config['tcp'].get('iface', ''), config['tcp']['port']))
     server.listen(config['tcp']['max_clients'])
 
-    files.append(server)
+    files[server] = None
 
     def close_sockets():
         for f in files:
@@ -147,7 +150,8 @@ if 'tcp' in config:
         return ip.is_private() or ip.is_loopback()
 
 while 1:
-    readable, _, _ = select.select([bot.connection.socket] + files, [], [])
+    read_files = [bot.connection.socket] + files.keys()
+    readable, _, _ = select.select(read_files, [], [])
     for f in readable:
         if f is server:
             conn, addr = server.accept()
@@ -156,14 +160,14 @@ while 1:
                 continue
             conn.setblocking(0)
             logging.info('Connection from %s', addr)
-            files.append(conn)
+            files[conn] = None
         elif f is bot.connection.socket:
             bot.connection.process_data()
         elif isinstance(f, file):
             data = f.readline().rstrip()
             if data:
-                logging.info('infile: %s', data)
-                for channel in bot.target_channels:
+                logging.info('infile for %s: %s', ', '.join(files[f]), data)
+                for channel in files[f]:
                     bot.connection.privmsg(channel, data)
         else:
             data = f.recv(BUFSIZE)
@@ -174,4 +178,4 @@ while 1:
                     bot.connection.privmsg(channel, data)
             else:
                 f.close()
-                files.remove(f)
+                del files[f]

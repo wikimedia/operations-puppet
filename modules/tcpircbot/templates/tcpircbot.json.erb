@@ -5,7 +5,7 @@
         <% if @ssl %>"ssl": true,<% end %>
         "nickname": "<%= @nickname %>"
     },
-    <% if @infiles %>"infiles": <%= Array(@infiles).to_pson %>,<% end %>
+    <% if @infiles %>"infiles": <%= scope.function_ordered_json([@infiles]) %>,<% end %>
     "tcp": {
         "max_clients": <%= @max_clients %>,
         <% if @cidr %>"cidr": <%= Array(@cidr).to_pson %>,<% end %>
