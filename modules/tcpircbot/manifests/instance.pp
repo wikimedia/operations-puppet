@@ -31,7 +31,8 @@
 #   Example: ['192.0.2.0/24', '2001:db8::/32']
 #
 # [*infiles*]
-#   Read these files as extra inputs. Optional.
+#   Read these files as extra inputs. Keys are filenames and values are
+#   either channel names or arrays of channel names. Optional.
 #
 # [*ssl*]
 #   Whether to use SSL to connect to IRC server (default: true).
