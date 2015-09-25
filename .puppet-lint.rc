@@ -17,9 +17,6 @@
 --no-unquoted_resource_title-check
 --no-arrow_alignment-check
 
-# "true" and "false" are everywhere.
---no-quoted_booleans-check
-
 # We dont have much documentation yet:
 --no-documentation-check
 
