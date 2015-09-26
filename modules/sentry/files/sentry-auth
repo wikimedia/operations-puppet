@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env /srv/sentry/bin/python
 # -*- coding: utf-8 -*-
 """
    Check or set Sentry admin credentials
