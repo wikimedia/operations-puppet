@@ -65,8 +65,8 @@ class role::analytics::refinery::camus {
     # Import webrequest_* topics into /wmf/data/raw/webrequest
     # every 10 minutes, check runs and flag fully imported hours.
     camus::job { 'webrequest':
-        check => true,
-        minute  => '*/10',
+        check  => true,
+        minute => '*/10',
     }
 
     # Import eventlogging_* topics into /wmf/data/raw/eventlogging
@@ -153,36 +153,36 @@ class role::analytics::refinery::data::check::icinga {
     # This is a passive check that is triggered by the Oozie
     # webrequest add partition jobs.
     monitoring::service { 'hive_partition_webrequest-bits':
-        ensure          => 'absent',
-        description     => 'hive_partition_webrequest-bits',
-        check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest bits!${alert_return_code}",
-        passive         => true,
-        freshness       => $freshness_threshold,
-        retries         => 1,
+        ensure        => 'absent',
+        description   => 'hive_partition_webrequest-bits',
+        check_command => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest bits!${alert_return_code}",
+        passive       => true,
+        freshness     => $freshness_threshold,
+        retries       => 1,
     }
     monitoring::service { 'hive_partition_webrequest-mobile':
-        ensure          => 'absent',
-        description     => 'hive_partition_webrequest-mobile',
-        check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest mobile!${alert_return_code}",
-        passive         => true,
-        freshness       => $freshness_threshold,
-        retries         => 1,
+        ensure        => 'absent',
+        description   => 'hive_partition_webrequest-mobile',
+        check_command => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest mobile!${alert_return_code}",
+        passive       => true,
+        freshness     => $freshness_threshold,
+        retries       => 1,
     }
     monitoring::service { 'hive_partition_webrequest-text':
-        ensure          => 'absent',
-        description     => 'hive_partition_webrequest-text',
-        check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest text!${alert_return_code}",
-        passive         => true,
-        freshness       => $freshness_threshold,
-        retries         => 1,
+        ensure        => 'absent',
+        description   => 'hive_partition_webrequest-text',
+        check_command => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest text!${alert_return_code}",
+        passive       => true,
+        freshness     => $freshness_threshold,
+        retries       => 1,
     }
     monitoring::service { 'hive_partition_webrequest-upload':
-        ensure          => 'absent',
-        description     => 'hive_partition_webrequest-upload',
-        check_command   => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest upload!${alert_return_code}",
-        passive         => true,
-        freshness       => $freshness_threshold,
-        retries         => 1,
+        ensure        => 'absent',
+        description   => 'hive_partition_webrequest-upload',
+        check_command => "analytics_cluster_data_import-FAIL!wmf_raw.webrequest upload!${alert_return_code}",
+        passive       => true,
+        freshness     => $freshness_threshold,
+        retries       => 1,
     }
 }
 
