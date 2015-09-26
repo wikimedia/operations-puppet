@@ -275,8 +275,8 @@ class role::analytics::hadoop::config {
         }
 
         $datanode_mounts = [
-            "$hadoop_data_directory/a",
-            "$hadoop_data_directory/b",
+            "${hadoop_data_directory}/a",
+            "${hadoop_data_directory}/b",
         ]
 
         # Labs sets these at undef, which lets the Hadoop defaults stick.
@@ -371,15 +371,15 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         yarn_site_extra_properties                  => {
             # Enable FairScheduler preemption. This will allow the essential queue
             # to preempt non-essential jobs.
-            'yarn.scheduler.fair.preemption'                => true,
+            'yarn.scheduler.fair.preemption'        => true,
             # Let YARN wait for at least 1/3 of nodes to present scheduling
             # opportunties before scheduling a job for certain data
             # on a node on which that data is not present.
-            'yarn.scheduler.fair.locality.threshold.node'   => '0.33',
+            'yarn.scheduler.fair.locality.threshold.node' => '0.33',
             # After upgrading to CDH 5.4.0, we are encountering this bug:
             # https://issues.apache.org/jira/browse/MAPREDUCE-5799
             # This should work around the problem.
-            'yarn.app.mapreduce.am.env'          => 'LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native',
+            'yarn.app.mapreduce.am.env'                   => 'LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native',
             # The default of 90.0 for this was marking older dells as unhealthy when they still
             # had 2TB of space left.  99% will mark them at unhealthy with they still have
             # > 200G free.
@@ -405,7 +405,7 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
     }
     file { '/usr/local/bin/hadoop-yarn-logging-helper.sh':
         content => template('hadoop/hadoop-yarn-logging-helper.erb'),
-        mode    => 0744,
+        mode    => '0744',
     }
     if $gelf_logging_enabled {
         ensure_packages([
@@ -430,14 +430,14 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         # Patch container-log4j.properties inside nodemanager jar
         # See script source for details
         exec { 'hadoop-yarn-logging-helper-set':
-            command    => '/usr/local/bin/hadoop-yarn-logging-helper.sh set',
-            subscribe  => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
+            command   => '/usr/local/bin/hadoop-yarn-logging-helper.sh set',
+            subscribe => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
         }
     } else {
         # Revert to original unmodified jar
         exec { 'hadoop-yarn-logging-helper-reset':
-            command    => '/usr/local/bin/hadoop-yarn-logging-helper.sh reset',
-            subscribe  => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
+            command   => '/usr/local/bin/hadoop-yarn-logging-helper.sh reset',
+            subscribe => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
         }
     }
 
@@ -446,9 +446,9 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
     # are cached in DNS.  I need to fix now.  Will remove
     # this after new DNS has propogated.
     file_line { 'hadoop_master_cname_dns_override':
-      path => '/etc/hosts',
-      line => '10.64.36.118    namenode.analytics.eqiad.wmnet resoucemanager.analytics.eqiad.wmnet',
-      ensure => 'absent'
+      ensure => 'absent',
+      path   => '/etc/hosts',
+      line   => '10.64.36.118    namenode.analytics.eqiad.wmnet resoucemanager.analytics.eqiad.wmnet',
     }
 
     # Install packages that are useful for distributed
@@ -720,7 +720,7 @@ class role::analytics::hadoop::balancer {
 
     file { '/usr/local/bin/hdfs-balancer':
         source => 'puppet:///files/hadoop/hdfs-balancer',
-        mode   => '754',
+        mode   => '0754',
         owner  => 'hdfs',
         group  => 'hdfs',
     }
