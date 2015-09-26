@@ -20,6 +20,11 @@ class role::relic {
         require => Sslcert::Certificate['toolserver.org'],
     }
 
+    class { 'exim4':
+        queuerunner => 'separate',
+        config      => template("mail/exim4.minimal.${::realm}.erb"),
+    }
+
     file { '/var/www/html':
         ensure => directory,
         owner  => 'root',
