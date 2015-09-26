@@ -140,7 +140,7 @@ class sentry (
         exec { 'initialize_sentry_database':
             command     => "${sentry_dir}/bin/sentry upgrade --noinput",
             user        => 'sentry',
-            environment => 'SENTRY_CONF=/etc/sentry/sentry.conf.py',
+            environment => 'SENTRY_CONF=/etc/sentry.conf.py',
             unless      => "/usr/bin/pg_dump --schema-only --dbname=sentry --table='sentry_*'",
             require     => [
                 Git::Clone['operations/software/sentry'],
