@@ -73,7 +73,7 @@ groups:
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis,
-              addshore, jminor, pt1979]
+              addshore, jminor, pt1979, asherman]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
