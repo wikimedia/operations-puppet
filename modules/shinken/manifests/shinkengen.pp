@@ -13,16 +13,14 @@
 #
 # [*ldap_bindas*]
 #   What to bind as when connecting to LDAP server
-#
-# [*ldap_pass*]
-#   Simple LDAP password to use when connecting to LDAP server
 class shinken::shinkengen(
     $ldap_server = 'ldap-eqiad.wikimedia.org',
     $ldap_bindas = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
-    $ldap_pass = $passwords::ldap::labs::proxypass,
 ){
 
     include shinken
+    include passwords::ldap::labs
+    $ldap_pass = $passwords::ldap::labs::proxypass
 
     package { [
         'python3-ldap3', # Custom package of https://pypi.python.org/pypi/python3-ldap
