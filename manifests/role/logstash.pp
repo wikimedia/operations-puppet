@@ -72,6 +72,12 @@ class role::logstash (
         srange => '$ALL_NETWORKS',
     }
 
+    logstash::input::kafka { 'logstash_kafka':
+        tags => ['eventlogging', 'EventError'],
+        topic_id => 'eventlogging_EventError',
+        zk_connect => 'deployment-zookeeper01.eqiad.wmflabs:2181/kafka/deployment-prep',
+    }
+
     ## Global pre-processing (15)
 
     logstash::conf { 'filter_strip_ansi_color':
