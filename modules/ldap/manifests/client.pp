@@ -84,7 +84,7 @@ class ldap::client::nss($ldapconfig) {
     file { '/etc/ldap.conf':
         notify  => Service['nscd','nslcd'],
         require => File['/etc/nslcd.conf', '/etc/nscd.conf'],
-        content => template('ldap/nss_ldap.erb'),
+        content => template('ldap/ldap.conf.erb'),
     }
 
     file { '/etc/nslcd.conf':
