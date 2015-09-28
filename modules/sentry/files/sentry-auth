@@ -26,7 +26,7 @@ def check_admin(args):
 
 def set_admin(args):
     try:
-        user = User.objects.get(username=args.user)
+        user = User.objects.get(username=args.email)
         user.set_password(args.password)
         user.save()
         return True

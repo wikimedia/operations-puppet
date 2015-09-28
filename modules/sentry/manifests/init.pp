@@ -107,6 +107,7 @@ class sentry (
     exec { 'create_sentry_admin':
         command => "/usr/local/sbin/sentry-auth set ${admin_email} ${admin_pass}",
         unless  => "/usr/local/sbin/sentry-auth check ${admin_email} ${admin_pass}",
+        user    => 'sentry',
         require => Exec['initialize_sentry_database'],
     }
 
