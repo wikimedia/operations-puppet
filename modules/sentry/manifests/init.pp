@@ -48,31 +48,12 @@ class sentry (
     include ::postgresql::server
     include ::redis
 
-
-    # System packages compatible with Sentry 7.4.3 on Debian Jessie on 2015-03-31
-    # The rest of the python packages are packaged as a venv inside sentry/sentry
-
-    require_package('python-beautifulsoup')
-    require_package('python-celery')
-    require_package('python-cssutils')
-    require_package('python-dateutil')
-    require_package('python-django-crispy-forms')
-    require_package('python-django-jsonfield')
-    require_package('python-django-picklefield')
-    require_package('python-ipaddr')
-    require_package('python-mock')
-    require_package('python-progressbar')
-    require_package('python-psycopg2')
-    require_package('python-pytest')
-    require_package('python-redis')
-    require_package('python-setproctitle')
-    require_package('python-six')
+    require sentry::packages
 
     git::clone { 'operations/software/sentry':
         ensure    => latest,
         directory => '/srv/sentry',
         branch    => $git_branch,
-        require   => Class['::sentry::packages'],
     }
 
     group { 'sentry':
