@@ -1,0 +1,17 @@
+# Kube2proxy
+#
+# A simple service to sync information from the kubernetes cluster
+# to toollabs' own dynamic proxy.
+description "Syncronizer for kubernetes-dynamicproxy integration"
+
+# There is no point in trying to start (and fail) until redis is up
+start on started redis-server
+
+setuid kubeproxy
+setgid kubeproxy
+
+env "K2D_KUBE_CA='/var/lib/kubernetes/ssl/certs/ca.pem'"
+env "K2D_TOKEN='<%= @kube_token %>'"
+env "K2D_KUBE_MASTER='<%= @kubemaster %>'"
+
+exec /usr/local/sbin/kube2proxy
