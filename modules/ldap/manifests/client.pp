@@ -123,10 +123,7 @@ class ldap::client::utils($ldapconfig) {
     }
 
     file { '/usr/local/sbin/add-labs-user':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-        source => 'puppet:///modules/ldap/scripts/add-labs-user',
+        ensure => absent,
     }
 
     file { '/usr/local/sbin/modify-ldap-user':
