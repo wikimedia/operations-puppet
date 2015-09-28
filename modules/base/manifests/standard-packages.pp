@@ -6,7 +6,7 @@ class base::standard-packages {
         }
     }
 
-    package { ['command-not-found', 'command-not-found-data']:
+    package { [ 'command-not-found', 'command-not-found-data' ]:
         ensure => absent,
     }
 
@@ -40,19 +40,8 @@ class base::standard-packages {
         ensure => latest,
     }
 
-    # Can clash with java::tools class
-    if ! defined ( Package['gdb'] ) {
-        package { 'gdb':
-            ensure => latest
-        }
-    }
-
-    # Can clash with authdns::scripts class
-    if ! defined(Package['git']){
-        package { 'git':
-            ensure => latest,
-        }
-    }
+    require_package('gdb')
+    require_package('git')
 
     # This should be in $packages, but moved here temporarily because it's
     # currently broken on jessie hosts...
@@ -70,10 +59,12 @@ class base::standard-packages {
     }
 
     # real-hardware specific
+    # As of September 2015, mcelog still does not support newer AMD processors.
+    # See <http://www.mcelog.org/faq.html#18>.
     # Note: False is quoted on purpose
     # lint:ignore:quoted_booleans
-    if $::is_virtual == 'false' {
+    if $::is_virtual == 'false' and $::processor0 !~ /AMD/ {
     # lint:endignore
-        package { 'mcelog': ensure => present }
+        require_package('mcelog')
     }
 }
