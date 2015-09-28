@@ -2607,6 +2607,11 @@ host labsdb1007 {
 	fixed-address labsdb1007.eqiad.wmnet;
 }
 
+host labservices1001 {
+	hardware ethernet C8:1F:66:BF:82:9A;
+	fixed-address labservices1001.wikimedia.org;
+}
+
 host labvirt1001 {
         hardware ethernet 28:80:23:9a:d4:08;
         fixed-address labvirt1001.eqiad.wmnet;
