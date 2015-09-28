@@ -11,6 +11,8 @@
 class role::logstash (
     $statsd_host,
 ) {
+    include ::role::analytics::kafka::config
+    include ::role::eventlogging::config
     include ::role::logstash::elasticsearch
     include ::logstash
 
@@ -70,6 +72,15 @@ class role::logstash (
         port   => '11514',
         notrack => true,
         srange => '$ALL_NETWORKS',
+    }
+
+    logstash::input::kafka { 'logstash_kafka':
+        tags => $role::eventlogging::config::logstash_tags,
+        topic => $role::eventlogging::config::logstash_kafka_topic,
+        # The actual config should be:
+        # zk_connect => $role::analytics::kafka::config::zookeeper_url,
+        # but for testing purposes:
+        zk_connect => 'deployment-zookeeper01.eqiad.wmflabs:2181/kafka/deployment-prep',
     }
 
     ## Global pre-processing (15)

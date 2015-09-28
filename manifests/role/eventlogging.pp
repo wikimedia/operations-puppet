@@ -15,6 +15,19 @@
 # validated, and multiplexed into an output streams in Kafka.
 
 
+# == Class role::eventlogging::config
+# Sets up some configuration variables.
+#
+class role::eventlogging::config {
+
+    # Logstash consumes EventLogging validation errors from this Kafka topic:
+    $logstash_kafka_topic = "eventlogging_EventError"
+
+    # All logs consumed from Logstash will be tagged with:
+    $logstash_tags = ["eventlogging", "EventError"]
+}
+
+
 # == Class role::eventlogging
 # Parent class for eventlogging service role classes.
 # This just installs eventlogging and sets up some configuration variables.
