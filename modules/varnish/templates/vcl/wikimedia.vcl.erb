@@ -10,6 +10,9 @@ import header;
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 # only used in recv_fe_ip_processing on frontends
 import netmapper;
+# only used on frontends, for ratelimiter
+import ipcast;
+import tbf;
 <% end %>
 
 <%
@@ -170,6 +173,16 @@ director <%= director_name %> <%= director['type'] %> {
 # Functions
 
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
+
+sub misspass_limiter {
+	if (ipcast.ip(req.http.X-Client-IP, "127.0.0.1") !~ wikimedia_nets) {
+		// TBF: "1, 0.02s, 250" == "50/s, burst of 250"
+		if (!tbf.rate(req.http.X-Client-IP, 1, 0.02s, 250)) {
+			error 429 "Request Rate Exceeded";
+		}
+	}
+}
+
 // filter_headers + filter_noise are used (consistently) by the text+mobile frontends
 
 sub filter_headers {
@@ -489,6 +502,16 @@ sub vcl_init {
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
 	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
 	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
+	// no sync to disk, tmpfs, truncate data on reload/restart - simpler
+	// to reason about, and our ratelimits aren't long-term enough for
+	// persistence across daemon restarts to matter much.
+	tbf.open("/run/vmod_tbf/tbf.db", "mode=600;dbname=tbf.bdb;trunc");
+<% end %>
+}
+
+sub vcl_fini {
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	tbf.close();
 <% end %>
 }
 
@@ -624,8 +647,18 @@ sub vcl_miss {
 		error 204 "Cache miss";
 	}
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	call misspass_limiter;
+<% end %>
+
 	/* Function vcl_miss in <%= @vcl %>.inc.vcl will be appended here */
 }
+
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+sub vcl_pass {
+	call misspass_limiter;
+}
+<% end %>
 
 sub vcl_deliver {
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
