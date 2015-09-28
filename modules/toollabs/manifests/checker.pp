@@ -7,12 +7,34 @@
 # This runs as an ldap user, toolschecker, so it can touch NFS without causing
 # idmapd related issues.
 class toollabs::checker inherits toollabs {
+    include gridengine::submit_host
     include toollabs::infrastructure
-    include toollabs::submit
 
-    require_package('python-flask', 'python-redis',
-                    'uwsgi', 'uwsgi-plugin-python',
-                    'python-pymysql')
+    require_package('misctools',
+                    'python-flask',
+                    'python-psycopg2',
+                    'python-pymysql',
+                    'python-redis',
+                    'uwsgi',
+                    'uwsgi-plugin-python')
+
+    file { '/usr/local/bin/webservice2':
+        ensure  => present,
+        source  => 'puppet:///modules/toollabs/webservice2',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        require => Package['python-yaml'], # Present on all hosts, defined for puppet diamond collector
+    }
+
+    file { '/usr/local/bin/webservice':
+        ensure => link,
+        target => '/usr/local/bin/webservice2',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        require => File['/usr/local/bin/webservice2'],
+    }
 
     file { '/usr/local/lib/python2.7/dist-packages/toolschecker.py':
         ensure => file,
