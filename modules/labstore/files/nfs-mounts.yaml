@@ -184,13 +184,6 @@ private:
       home: true
       project: true
       scratch: true
-  toolserver-legacy:
-    gid: 52379
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   utrs:
     gid: 50318
     mounts:
