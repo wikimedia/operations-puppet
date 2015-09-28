@@ -1368,9 +1368,8 @@ node /labstore200[12]\.codfw\.wmnet/ {
 }
 
 
-# secondary mailserver
+# spare
 node 'lead.wikimedia.org' {
-    role mail::mx
     include standard
     include base::firewall
     interface::add_ip6_mapped { 'main': }
@@ -2255,12 +2254,10 @@ node /(plutonium|pollux)\.wikimedia\.org/ {
     include base::firewall
 }
 
-# primary mail server
+# spare
 node 'polonium.wikimedia.org' {
-    role mail::mx
     include standard
     include base::firewall
-
     interface::add_ip6_mapped { 'main': }
 }
 
