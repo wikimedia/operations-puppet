@@ -72,7 +72,7 @@ class base::standard-packages {
     # real-hardware specific
     # Note: False is quoted on purpose
     # lint:ignore:quoted_booleans
-    if $::is_virtual == 'false' {
+    if $::is_virtual == 'false' and $::processor0 !~ /AMD/ {
     # lint:endignore
         package { 'mcelog': ensure => present }
     }
