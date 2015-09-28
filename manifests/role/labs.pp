@@ -40,7 +40,7 @@ class role::labs::instance {
         source => 'puppet:///files/nfs/block-for-export',
     }
 
-    $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,nofsc'
+    $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,lookupcache=none,nofsc'
     $nfs_server = 'labstore.svc.eqiad.wmnet'
     $dumps_server = 'labstore1003.eqiad.wmnet'
 
