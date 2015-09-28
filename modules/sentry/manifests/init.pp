@@ -94,6 +94,13 @@ class sentry (
         require => Git::Clone['operations/software/sentry'],
     }
 
+    file { '/etc/sentry.d':
+        ensure => directory,
+        owner   => 'sentry',
+        group   => 'sentry',
+        mode    => '0750',
+    }
+
     file { '/usr/local/sbin/sentry-auth':
         source  => 'puppet:///modules/sentry/sentry-auth',
         owner   => 'root',

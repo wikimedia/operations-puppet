@@ -5,6 +5,7 @@
 from sentry.conf.server import *
 
 import os.path
+import glob
 
 CONF_ROOT = os.path.dirname(__file__)
 
@@ -107,3 +108,13 @@ SECRET_KEY = '<%= @secret_key %>'
 
 # don't allow non-superusers to make projects globally public
 SENTRY_ALLOW_PUBLIC_PROJECTS = False
+
+##############
+## sentry.d ##
+##############
+
+config_files = glob.glob( os.path.join(CONF_ROOT, 'sentry.d', '*.conf.py')
+config_files.sort()
+for file in config_files:
+    execfile(os.path.abspath(file))
+
