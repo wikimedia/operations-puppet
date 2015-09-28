@@ -361,3 +361,24 @@ class role::logstash::stashbot (
     }
 }
 
+# == Class: role::logstash::eventlogging
+#
+# Configure Logstash to consume validation logs from EventLogging.
+#
+class role::logstash::eventlogging {
+    include ::role::logstash
+    include ::role::analytics::kafka::config
+
+    $topic = 'eventlogging_EventError'
+
+    logstash::input::kafka { $topic:
+        tags       => [$topic, 'kafka'],
+        type       => 'eventlogging',
+        zk_connect => $role::analytics::kafka::config::zookeeper_url,
+    }
+
+    logstash::conf { 'filter_eventlogging':
+        source   => 'puppet:///files/logstash/filter-eventlogging.conf',
+        priority => 50,
+    }
+}
