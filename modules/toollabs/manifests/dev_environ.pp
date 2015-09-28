@@ -62,6 +62,7 @@ class toollabs::dev_environ {
         'elinks',
         'emacs',
         'fakeroot', # for dpkg
+        'flex',                        # T114003.
         'gcj-jdk',                     # T58995
         'openjdk-7-jdk',
         'ipython',                     # T58995
