@@ -42,7 +42,11 @@ class toollabs::proxy(
         web_domain           => $web_domain,
     }
 
+
     $proxy_nodes = join($proxies, ' ')
+
+    include ::toollabs::kube2proxy
+
     # Open up redis to all proxies!
     ferm::service { 'redis-replication':
         proto  => 'tcp',
