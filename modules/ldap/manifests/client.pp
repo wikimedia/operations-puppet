@@ -191,15 +191,6 @@ class ldap::client::utils($ldapconfig) {
             ensure => present,
             system => true,
         }
-
-        # Old names for the script and user ^
-        file { '/usr/local/sbin/ldapkeys':
-            ensure => absent,
-        }
-
-        user { 'ldapkeys':
-            ensure => absent,
-        }
     }
 
     file { '/usr/local/sbin/change-ldap-passwd':
@@ -214,15 +205,6 @@ class ldap::client::utils($ldapconfig) {
         group  => 'root',
         mode   => '0544',
         source => 'puppet:///modules/ldap/scripts/homedirectorymanager.py',
-    }
-
-    file { '/usr/local/sbin/manage-keys-nfs':
-        ensure => absent,
-    }
-
-    file { ['/usr/local/bin/ldapsupportlib.py',
-            '/usr/local/sbin/ldapsupportlib.py']:
-        ensure => absent,
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py':
