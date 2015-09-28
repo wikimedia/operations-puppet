@@ -2484,6 +2484,13 @@ node 'terbium.eqiad.wmnet' {
 
     include role::backup::host
     backup::set {'home': }
+
+    # The eventlogging code is useful for scripting
+    # EventLogging consumers.  Install this but don't
+    # run any daemons.  To use eventlogging code,
+    # add /srv/deployment/eventlogging/EventLogging/server
+    # to your PYTHONPATh or sys.path.
+    include ::eventlogging::package
 }
 
 node 'tin.eqiad.wmnet' {
