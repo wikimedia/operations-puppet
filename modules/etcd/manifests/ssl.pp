@@ -16,17 +16,26 @@ class etcd::ssl(
     $ssldir           = '/var/lib/puppet/ssl',
     ) {
 
-    # Creates the ssl directory and the CA file
-    class { 'etcd::ssl::base':
-        ssldir => $ssldir
+    $basedir = '/var/lib/etcd/ssl'
+    $pubdir = "${basedir}/certs"
+
+    file { [$vardir, $pubdir]:
+        ensure  => directory,
+        owner   => 'etcd',
+        group   => 'etcd',
+        mode    => '0500',
+        requre  => Package['etcd'],
     }
 
+    file { "${pubdir}/ca.pem":
+        ensure => present,
+        owner  => 'etcd',
+        group  => 'etcd',
+        mode   => '0400',
+        source => "${ssldir}/certs/ca.pem",
+    }
 
-    # $::etcd::ssl::cert can be used by other classes
-    # to make sure they are using the proper
-    # cert file when connecting to etcd.
-    $cert = '/var/lib/etcd/ssl/certs/cert.pem'
-    file { $cert:
+    file { '/var/lib/etcd/ssl/certs/cert.pem':
         ensure  => present,
         owner   => 'etcd',
         group   => 'etcd',
