@@ -2,6 +2,7 @@
 #
 class phabricator::monitoring {
 
+    include apache::mod::status
     nrpe::monitor_service { 'check_phab_taskmaster':
         description   => 'PHD should be supervising processes',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 3:150 -u phd',
