@@ -19,8 +19,8 @@ class statistics::rsyncd($path, $hosts_allow)
     # (in /etc/rsyncd.conf) for /srv.
     rsync::server::module { 'srv':
         path        => $path,
-        read_only   => no,
-        list        => yes,
+        read_only   => 'no',
+        list        => 'yes',
         hosts_allow => $hosts_allow,
     }
 
@@ -30,8 +30,8 @@ class statistics::rsyncd($path, $hosts_allow)
     if ($::statistics::working_path == '/srv') {
         rsync::server::module { 'a':
             path        => $path,
-            read_only   => no,
-            list        => yes,
+            read_only   => 'no',
+            list        => 'yes',
             hosts_allow => $hosts_allow,
         }
     }
@@ -42,8 +42,8 @@ class statistics::rsyncd($path, $hosts_allow)
     # from the default Apache VirtualHost.
     rsync::server::module { 'www':
         path        => '/var/www',
-        read_only   => no,
-        list        => yes,
+        read_only   => 'no',
+        list        => 'yes',
         hosts_allow => $hosts_allow,
     }
 

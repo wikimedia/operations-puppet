@@ -25,7 +25,7 @@ class scap::master(
 
     rsync::server::module { 'common':
         path        => $common_source_path,
-        read_only   => yes,
+        read_only   => 'yes',
         hosts_allow => $::network::constants::mw_appserver_networks;
     }
 

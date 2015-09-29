@@ -250,8 +250,8 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
 
         rsync::server::module { 'eventlogging':
             path        => $log_dir,
-            read_only   => yes,
-            list        => yes,
+            read_only   => 'yes',
+            list        => 'yes',
             require     => File[$log_dir],
             hosts_allow => $backup_destinations,
         }

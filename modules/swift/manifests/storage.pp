@@ -20,7 +20,7 @@ class swift::storage (
         gid             => 'swift',
         max_connections => '5',
         path            => '/srv/swift-storage/',
-        read_only       => no,
+        read_only       => 'no',
         lock_file       => '/var/lock/account.lock',
     }
     rsync::server::module { 'container':
@@ -28,7 +28,7 @@ class swift::storage (
         gid             => 'swift',
         max_connections => '5',
         path            => '/srv/swift-storage/',
-        read_only       => no,
+        read_only       => 'no',
         lock_file       => '/var/lock/container.lock',
     }
     rsync::server::module { 'object':
@@ -36,7 +36,7 @@ class swift::storage (
         gid             => 'swift',
         max_connections => '13',
         path            => '/srv/swift-storage/',
-        read_only       => no,
+        read_only       => 'no',
         lock_file       => '/var/lock/object.lock',
     }
 
