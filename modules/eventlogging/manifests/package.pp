@@ -8,6 +8,7 @@ class eventlogging::package {
     $path = '/srv/deployment/eventlogging/EventLogging'
 
     require_package([
+        'python-etcd',
         'python-jsonschema',
         'python-kafka',
         'python-mysqldb',
