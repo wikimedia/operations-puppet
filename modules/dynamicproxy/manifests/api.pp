@@ -13,7 +13,7 @@ class dynamicproxy::api(
 
     require_package('invisible-unicorn')
 
-    service { 'dynamicproxy-api':
+    service { 'invisible-unicorn':
         ensure  => running,
     }
 
