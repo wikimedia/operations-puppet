@@ -153,7 +153,7 @@ class role::eventlogging::processor inherits role::eventlogging {
         mode   => '0755'
     }
 
-    file { '/etc/eventlogging/ssl/ca.pem':
+    file { '/etc/eventlogging.d/ssl/ca.pem':
         ensure => present,
         owner  => 'root',
         group  => 'root',
@@ -162,7 +162,7 @@ class role::eventlogging::processor inherits role::eventlogging {
     }
 
     #TODO: should the url be properly encoded?
-    $etcd_uri  = "https://${etcd_hosts}?cert=/var/lib/puppet/ssl/certs/ca.pem"
+    $etcd_uri  = "https://${etcd_hosts}?cert=/etc/eventlogging.d/ssl/ca.pem"
 
     eventlogging::service::processor { 'server-side-0':
         format         => '%{seqId}d EventLogging %j',
