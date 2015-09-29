@@ -1968,7 +1968,6 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
 # mw1152 is the experimental HAT videoscaler
 node 'mw1152.eqiad.wmnet' {
     role mediawiki::videoscaler
-    include base::firewall
 }
 
 
@@ -2011,7 +2010,6 @@ node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
 #mw1259-60 are videoscalers
 node /^mw12(59|60)\.eqiad\.wmnet/ {
     role mediawiki::videoscaler
-    include base::firewall
 }
 
 # ROW A codfw appservers: mw2001-mw2079
@@ -2027,7 +2025,6 @@ node /^mw200[0-6]\.codfw\.wmnet$/ {
 #mw2007 is a videoscaler
 node 'mw2007.codfw.wmnet' {
     role mediawiki::videoscaler
-    include base::firewall
 }
 
 #mw2008-mw2049 are appservers
@@ -2081,7 +2078,6 @@ node /^mw21(4[89]|5[01])\.codfw\.wmnet$/ {
 #mw2152 is a videoscaler
 node 'mw2152.codfw.wmnet' {
     role mediawiki::videoscaler
-    include base::firewall
 }
 
 #mw2153-mw2199 are appservers

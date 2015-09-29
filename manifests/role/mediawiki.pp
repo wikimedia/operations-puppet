@@ -166,6 +166,7 @@ class role::mediawiki::videoscaler {
     include ::role::mediawiki::common
     include ::mediawiki::multimedia
     include ::mediawiki::jobrunner
+    include base::firewall
 }
 
 class role::mediawiki::jobrunner {
