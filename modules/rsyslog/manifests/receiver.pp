@@ -26,7 +26,7 @@ class rsyslog::receiver (
 ) {
 
     if ($log_directory == $archive_directory) {
-        fail("rsyslog log and archive are the same: $log_directory")
+        fail("rsyslog log and archive are the same: ${log_directory}")
     }
 
     rsyslog::conf { 'receiver':

@@ -21,8 +21,8 @@ define diamond::collector::servicestats (
 
     include ::diamond::collector::servicestats_lib
 
-    file { "/etc/diamond/servicestats.d/$title.conf":
-      content  => "[systemd]\nname=$systemd_name\n[upstart]\nname=$upstart_name\n",
+    file { "/etc/diamond/servicestats.d/${title}.conf":
+      content  => "[systemd]\nname=${systemd_name}\n[upstart]\nname=${upstart_name}\n",
       owner    => 'root',
       group    => 'root',
       mode     => '0444',
