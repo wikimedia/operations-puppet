@@ -1,7 +1,6 @@
 import ConfigParser
 import flask
 import ldap
-import ldapsupportlib
 import os
 import psycopg2
 import pymysql
@@ -77,11 +76,17 @@ def showmount_check():
 @check('/ldap')
 def ldap_query_check():
     # Run a simple known query and verify that ldap returns something
-    ldapConn = ldapsupportlib.LDAPSupportLib().connect()
+
+    with open('/etc/ldap.yaml') as f:
+        config = yaml.safe_load(f)
+    conn = ldap.initialize('ldap://%s:389' % config['servers'][0])
+    conn.protocol_version = ldap.VERSION3
+    conn.start_tls_s()
+    conn.simple_bind_s(config['server'], config['password'])
 
     query = '(cn=testlabs)'
     base = 'ou=projects,dc=wikimedia,dc=org'
-    result = ldapConn.search_s(base, ldap.SCOPE_SUBTREE, query)
+    result = conn.search_s(base, ldap.SCOPE_SUBTREE, query)
     if len(result) > 0:
         return True
     return False
