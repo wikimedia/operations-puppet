@@ -66,7 +66,7 @@ groups:
   bastiononly:
     gid: 707
     description: these folks are allowed bastion _only_ access
-    members: [jforrester, jmorgan, msyed, jkrauska,
+    members: [jforrester, jmorgan, msyed, jkrauska, dfoy,
               haithams, mhurd, dbrant, kleduc, bsitzmann, deskana,
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
@@ -222,7 +222,7 @@ groups:
                  This will grant shell access on Hadoop client nodes (stat1002) and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, yurik,
+    members: [dartar, milimetric, yurik, dfoy,
               halfak, dr0ptp4kt, tnegrin, ironholds, bearloga,
               kleduc, nuria, haithams, otto, deskana, zhousquared,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
@@ -1639,3 +1639,10 @@ users:
     realname: Zhou Zhou
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Gxb8FnbJRmu5chragFQRDJnLG3Fku7Tl7jkoKgvb5Bz+F1tJV03SkVnpBuZ8EUonoh6vRp5+LUIMa8LGdUTQ+XMXGgA16nq2k4W5XVVpoe1ts9RdsZk6rwbuffi+p+ouXAdDk1f0jVTu6pMK32jT/jTstORTXdeeCy/MryQ2ihVEXgJeoAtqbKn/Aclp4R7ysABotP0IS2ThQvVtdJm+5r27jkjOZ51+hTJ+y3VKBeVsgK8EFf4krlNNQK/9k0+fPTMFLI16htmdYNp/pJKBZp9L+M5Kwfl+J+HV/3e7qxpFUzUZnv01y6XIfS1e6IbwHJUan40cTBnMIJ7Sv/Yb zzhou@wikimedia.org]
     uid: 12576
+  dfoy:
+    ensure: present
+    gid: 500
+    name: dfoy
+    realname: Dan Foy
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcPoXJg9IgK5+067Fe5pzHVDmCEKbjFJClxcrTOoAqe9+xZfWIdMJKWV1h4Wj0fYiGJZDBwwrvwlPN+9pMiR1OwjB3BA0XTWVGBWeLwMsNRvCs9RDSLl7iI8N8v0oa58PAMquVDsVufILCC5H1fz8LfxywPrwDaR0y5vDXTlj2/FirXuZLC8lgOJXdLNp31SRoSZ/0Q/gISqBknGnqF9vTFRPq31B9OP3EAzpPAXVneGCcKp+EeG02AXss0S2Dvz8XDYWuduQVYVJCpJkHHdxdhCMA30BD6eiaJ0iyWS2NpAngBrCTXnlacdRJXsiVyBXpisyHRLQdyjHK6p2ijwJN dfoy@wikimedia.org]
+    uid: 2318
