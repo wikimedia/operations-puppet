@@ -38,7 +38,7 @@ class role::elasticsearch::server{
         proto => 'tcp',
         port  => '9300',
         notrack => true,
-        srange  => "@resolve(($elastic_nodes_ferm))",
+        srange  => "@resolve((${elastic_nodes_ferm}))",
     }
 
     ferm::service { 'elastic-zen-discovery':
