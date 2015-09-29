@@ -1,28 +1,28 @@
-# Class: role::relic
+# Class: toolserver_legacy
 #
 # This class installs the parts needed for the Toolserver legacy
 # "relic" server to provide redirection and mail aliases intended
-# to server the 'toolserver.org' domain.
+# to serve the 'toolserver.org' domain.
 #
 
-class role::relic {
+class toolserver_legacy {
     include ::apache
     include ::apache::mod::rewrite
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat')
 
-    system::role { 'relic': description => 'Toolserver legacy server' }
+    system::role { 'toolserver_legacy': description => 'Toolserver legacy server' }
 
     sslcert::certificate { 'toolserver.org': skip_private => true }
 
     apache::site { 'www.toolserver.org':
-        content => template('apache/sites/www.toolserver.org.erb'),
+        content => template('toolserver_legacy/www.toolserver.org.erb'),
         require => Sslcert::Certificate['toolserver.org'],
     }
 
     class { 'exim4':
         queuerunner => 'separate',
-        config      => template("mail/exim4.minimal.${::realm}.erb"),
+        config      => template('toolserver_legacy/exim4.conf.erb'),
     }
 
     file { '/var/www/html':
@@ -37,7 +37,7 @@ class role::relic {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///files/misc/relic/index.html',
+        source  => 'puppet:///modules/toolserver_legacy/index.html',
         require => File['/var/www/html'],
     }
 
@@ -46,7 +46,7 @@ class role::relic {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///files/misc/relic/notfound.html',
+        source  => 'puppet:///modules/toolserver_legacy/notfound.html',
         require => File['/var/www/html'],
     }
 }
