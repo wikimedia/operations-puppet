@@ -52,7 +52,7 @@ class phabricator::tools (
 
     $bz_header = '/var/run/bz_header.flock'
     cron { 'bz_header_update':
-        ensure  => present,
+        ensure  => absent,
         command => "/usr/bin/flock -n ${bz_header} -c '/srv/phab/tools/bugzilla_update_user_header.py -a' >/dev/null 2>&1",
         user    => root,
         hour    => '0',
@@ -61,7 +61,7 @@ class phabricator::tools (
 
     $bz_comments = '/var/run/bz_comments.flock'
     cron { 'bz_comment_update':
-        ensure  => present,
+        ensure  => absent,
         command => "/usr/bin/flock -n ${bz_comments} -c '/srv/phab/tools/bugzilla_update_user_comments.py -a' >/dev/null 2>&1",
         user    => root,
         hour    => '1',
