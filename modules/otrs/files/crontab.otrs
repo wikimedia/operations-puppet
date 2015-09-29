@@ -26,3 +26,6 @@ MAILTO="root@wikimedia.org"
 
 # unlock old locked tickets hourly
 35 * * * *   otrs /opt/otrs/bin/otrs.UnlockTickets.pl --timeout > /dev/null 2>&1
+
+# check scheduler status
+*/5 * * * *  otrs /opt/bin/otrs.Scheduler.pl -w 1 > /dev/null 2>&1
