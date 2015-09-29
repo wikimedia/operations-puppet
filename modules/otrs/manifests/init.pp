@@ -69,6 +69,8 @@ class otrs(
         'libtext-csv-xs-perl',
         'libtimedate-perl',
         'libyaml-libyaml-perl',
+        'libtemplate-perl',
+        'libarchive-zip-perl',
         'mysql-client',
         'perl-doc',
     ]
