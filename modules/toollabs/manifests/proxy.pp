@@ -49,7 +49,7 @@ class toollabs::proxy(
     ferm::service { 'redis-replication':
         proto  => 'tcp',
         port   => '6379',
-        srange => "@resolve(($proxy_nodes))",
+        srange => "@resolve((${proxy_nodes}))",
     }
 
     file { '/usr/local/sbin/proxylistener':

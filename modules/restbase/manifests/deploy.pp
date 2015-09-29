@@ -47,7 +47,7 @@ class restbase::deploy(
 
     sudo::user { $user:
         privileges => [
-            "ALL = ($user) NOPASSWD: ALL",
+            "ALL = (${user}) NOPASSWD: ALL",
             'ALL = (root) NOPASSWD: /usr/sbin/service restbase restart',
         ]
     }
