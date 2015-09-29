@@ -1,4 +1,4 @@
-class etcd::ssl::base ( $ssldir ) {
+class etcd::ssl::base ($ssldir = '/var/lib/puppet/ssl') {
     $basedir = '/var/lib/etcd/ssl'
     $pubdir = "${basedir}/certs"
     $cacert = "${pubdir}/ca.pem"
