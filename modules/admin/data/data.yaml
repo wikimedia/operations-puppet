@@ -188,7 +188,7 @@ groups:
               dbrant, tgr, handrade, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
-              neilpquinn-wmf, maxsem, jminor]
+              neilpquinn-wmf, maxsem, jminor, dpatrick]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
