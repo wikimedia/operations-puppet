@@ -1,5 +1,5 @@
 # A dynamic HTTP routing proxy, based on nginx+lua+redis
-class role::dynamicproxy::eqiad {
+class role::dynamicproxy {
     include base::firewall
 
     sslcert::certificate { 'star.wmflabs.org': skip_private => true }
