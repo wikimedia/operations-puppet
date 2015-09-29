@@ -7,7 +7,6 @@ class etcd::ssl::base ($ssldir = '/var/lib/puppet/ssl') {
         owner   => 'etcd',
         group   => 'etcd',
         mode    => '0500',
-        require => Package['etcd']
     }
 
     file { $pubdir:
