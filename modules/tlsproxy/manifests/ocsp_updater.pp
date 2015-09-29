@@ -55,7 +55,7 @@ class tlsproxy::ocsp_updater {
     $check_args = '-c 29100 -w 14700 -d /var/cache/ocsp -g "*.ocsp"'
     nrpe::monitor_service { 'ocsp-freshness':
         description  => 'Freshness of OCSP Stapling files',
-        nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py $check_args",
+        nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
         require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
     }
 }
