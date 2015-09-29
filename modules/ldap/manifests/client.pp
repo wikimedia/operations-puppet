@@ -92,7 +92,7 @@ class ldap::client::nss($ldapconfig) {
     $client_readable_config = {
         'servers'  => $ldapconfig['servernames'],
         'basedn'   => $ldapconfig['basedn'],
-        'username' => "cn=proxyagent,ou=profile,$ldap_pw",
+        'user' => "cn=proxyagent,ou=profile,$ldap_pw",
         'password' => $ldapconfig['proxypass'],
     }
 
