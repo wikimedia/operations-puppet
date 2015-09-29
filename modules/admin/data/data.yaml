@@ -178,7 +178,7 @@ groups:
               ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, rmoen, tbayer, joal, ashwinpp,
               madhuvishy, tjones, legoktm, dcausse, bearloga,
-              junikowski]
+              junikowski, dpatrick]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -188,7 +188,7 @@ groups:
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
-              neilpquinn-wmf, maxsem, jminor]
+              neilpquinn-wmf, maxsem, jminor, dpatrick]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
