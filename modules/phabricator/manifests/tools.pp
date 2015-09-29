@@ -41,7 +41,7 @@ class phabricator::tools (
         }
 
         cron { $dump_script:
-            ensure  => present,
+            ensure  => absent,
             command => $dump_script,
             user    => root,
             hour    => '2',
