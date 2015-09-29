@@ -9,3 +9,11 @@ dns:
       - eqiad
       - esams
       - ulsfo
+phabricator:
+  git-ssh:
+    port: 22
+    default_values:
+      "pooled": "no"
+      "weight": 10
+    datacenters:
+      - eqiad

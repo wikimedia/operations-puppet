@@ -368,3 +368,5 @@ swift:
   ms-fe1002.eqiad.wmnet: [swift-fe]
   ms-fe1003.eqiad.wmnet: [swift-fe]
   ms-fe1004.eqiad.wmnet: [swift-fe]
+phabricator:
+  iridium.eqiad.wmnet: [git-ssh]
