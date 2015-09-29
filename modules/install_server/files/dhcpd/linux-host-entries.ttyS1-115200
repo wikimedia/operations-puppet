@@ -4699,6 +4699,11 @@ host mw1259 {
 	fixed-address mw1259.eqiad.wmnet;
 }
 
+host mw1260 {
+	hardware ethernet 18:03:73:f1:59:5a;
+	fixed-address mw1260.eqiad.wmnet;
+}
+
 host mw2001 {
 	hardware ethernet 78:2b:cb:2f:cf:57;
 	fixed-address mw2001.codfw.wmnet;
@@ -6212,11 +6217,6 @@ host tin {
 host titanium {
 	hardware ethernet 78:2b:cb:08:aa:57;
 	fixed-address titanium.wikimedia.org;
-}
-
-host tmh1002 {
-	hardware ethernet 18:03:73:f1:59:5a;
-	fixed-address tmh1002.eqiad.wmnet;
 }
 
 host tungsten {
