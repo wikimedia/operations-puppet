@@ -19,7 +19,7 @@ class etcd::ssl(
     $basedir = '/var/lib/etcd/ssl'
     $pubdir = "${basedir}/certs"
 
-    file { [$vardir, $pubdir]:
+    file { [$basedir, $pubdir]:
         ensure  => directory,
         owner   => 'etcd',
         group   => 'etcd',
