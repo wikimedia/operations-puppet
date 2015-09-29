@@ -46,15 +46,15 @@ define sslcert::chainedcert(
         exec { "x509-bundle ${title}-chained":
             path    => 'bin:/usr/bin',
             cwd     => '/etc/ssl/localcerts',
-            command => "$script --skip-root -c $inpath -o $chainedfile",
-            unless  => "[ $chainedfile -nt $inpath -a $chainedfile -nt $script ]",
+            command => "${script} --skip-root -c ${inpath} -o ${chainedfile}",
+            unless  => "[ ${chainedfile} -nt ${inpath} -a ${chainedfile} -nt ${script} ]",
             require => [ File[$inpath], File[$script] ],
         }
         exec { "x509-bundle ${title}-chain":
             path    => 'bin:/usr/bin',
             cwd     => '/etc/ssl/localcerts',
-            command => "$script --skip-root --skip-first -c $inpath -o $chainfile",
-            unless  => "[ $chainfile -nt $inpath -a $chainfile -nt $script ]",
+            command => "${script} --skip-root --skip-first -c ${inpath} -o ${chainfile}",
+            unless  => "[ ${chainfile} -nt ${inpath} -a ${chainfile} -nt ${script} ]",
             require => [ File[$inpath], File[$script] ],
         }
 

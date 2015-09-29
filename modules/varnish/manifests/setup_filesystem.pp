@@ -14,7 +14,7 @@ define varnish::setup_filesystem() {
         $custom_mount_opts = ',nodiratime,nobarrier,logbufs=8'
     }
 
-    $mount_options = "noatime$custom_mount_opts"
+    $mount_options = "noatime${custom_mount_opts}"
 
     if $::realm == 'labs' and $::site == 'eqiad' {
       include labs_lvm

@@ -96,7 +96,7 @@ class apt {
             value    => $http_proxy,
         }
     } else {
-        fail("Unknown operating system '$::operatingsystem'.")
+        fail("Unknown operating system '${::operatingsystem}'.")
     }
 
     apt::repository { 'wikimedia':

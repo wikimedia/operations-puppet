@@ -26,10 +26,10 @@ define statsite::instance(
     $input_counter     = "statsd.${::hostname}.received",
     $extended_counters = hiera('statsite::instance::extended_counters', 1),
 ) {
-    $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py $graphite_host $graphite_port \"\""
+    $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py ${graphite_host} ${graphite_port} \"\""
 
     if os_version('ubuntu >= precise') {
-        file { "/etc/statsite/$port.ini":
+        file { "/etc/statsite/${port}.ini":
             content => template('statsite/statsite.ini.erb'),
             require => Package['statsite'],
             notify  => Service['statsite'],
