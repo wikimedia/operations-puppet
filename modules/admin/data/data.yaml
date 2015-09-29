@@ -73,7 +73,7 @@ groups:
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis,
-              addshore, jminor, pt1979, asherman, etonkovidova, sbisson]
+              addshore, jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -224,7 +224,7 @@ groups:
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, yurik,
               halfak, dr0ptp4kt, tnegrin, ironholds, bearloga,
-              kleduc, nuria, haithams, otto, deskana,
+              kleduc, nuria, haithams, otto, deskana, zhousquared,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
@@ -1632,3 +1632,10 @@ users:
     realname: Stephane Bisson
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWBhtVz0rMyWOMkA/h5veSdmrzNd6SB4kktb98TjC1JtFDu5U8SggBFobAIOgy0DEIIo5rjtdQ2a+NB+zqP2jgYuJ4F4S6NPG4o3zWyNdaRRNit0/KC0U1UXhmHGk3WODAc5mbAMTtDRz6aJvo0GbK141AzKppD/QCOYkr7bMz6UcxRXe7DKGENYMvw+IiB98IdKg6ilO0k9YdBIRuF4GFDOlRnCCeJ8gzyukbHbGVMfMkW1jqWQeyzdBSUlxROzBQ74Ge5gy63rj8ypAXhJ3O5t8UCWUCX+wgsyCZwKaDt4C/ejt+N74hCeQ0aemzkFGHD6EvpFYZXiks2wGQiy3B sbisson@sbissons-MacBook-Air.local]
     uid: 11999
+  zhousquared:
+    ensure: present
+    gid: 500
+    name: zhousquared
+    realname: Zhou Zhou
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Gxb8FnbJRmu5chragFQRDJnLG3Fku7Tl7jkoKgvb5Bz+F1tJV03SkVnpBuZ8EUonoh6vRp5+LUIMa8LGdUTQ+XMXGgA16nq2k4W5XVVpoe1ts9RdsZk6rwbuffi+p+ouXAdDk1f0jVTu6pMK32jT/jTstORTXdeeCy/MryQ2ihVEXgJeoAtqbKn/Aclp4R7ysABotP0IS2ThQvVtdJm+5r27jkjOZ51+hTJ+y3VKBeVsgK8EFf4krlNNQK/9k0+fPTMFLI16htmdYNp/pJKBZp9L+M5Kwfl+J+HV/3e7qxpFUzUZnv01y6XIfS1e6IbwHJUan40cTBnMIJ7Sv/Yb zzhou@wikimedia.org]
+    uid: 12576
