@@ -28,7 +28,9 @@ class role::labs::db::slave {
     }
 
     include standard
-    include mariadb::packages_wmf
+    class { 'mariadb::packages_wmf':
+        mariadb10 => true
+    }
     include role::mariadb::grants
     include role::mariadb::monitor
 
