@@ -1,4 +1,10 @@
-class etcd::ssl::base ($ssldir = '/var/lib/puppet/ssl') {
+class etcd::ssl::base (
+    $ssldir   = '/var/lib/puppet/ssl'
+    $owner    = 'etcd',
+    $group    = 'etcd',
+    $dirmode  = '0500',
+    $filemode = '0400',
+) {
     $basedir = '/var/lib/etcd/ssl'
     $pubdir = "${basedir}/certs"
     $cacert = "${pubdir}/ca.pem"
@@ -12,16 +18,16 @@ class etcd::ssl::base ($ssldir = '/var/lib/puppet/ssl') {
 
     file { [$vardir, $basedir, $pubdir]:
         ensure  => directory,
-        owner   => 'etcd',
-        group   => 'etcd',
-        mode    => '0500',
+        owner   => $owner,
+        group   => $group,
+        mode    => $dirmode
     }
 
     file { $cacert:
         ensure => present,
-        owner  => 'etcd',
-        group  => 'etcd',
-        mode   => '0400',
+        owner  => $owner,
+        group  => $group,
+        mode   => $filemode,
         source => "${ssldir}/certs/ca.pem",
     }
 
