@@ -1994,8 +1994,8 @@ node /^mw12(3[6-9]|4[0-9]|5[0-8])\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-#mw1259 is a videoscaler
-node 'mw1259.eqiad.wmnet' {
+#mw1259-60 are videoscalers
+node /^mw12(59|60)\.eqiad\.wmnet/ {
     role mediawiki::videoscaler
     include base::firewall
 }
@@ -2511,11 +2511,6 @@ node 'titanium.wikimedia.org' {
     include base::firewall
     include standard
     include role::archiva
-}
-
-# tmh1001/tmh1002 video encoding server (precise only)
-node /^tmh100[1-2]\.eqiad\.wmnet/ {
-    role mediawiki::videoscaler
 }
 
 node 'uranium.wikimedia.org' {
