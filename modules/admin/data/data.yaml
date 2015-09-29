@@ -67,7 +67,7 @@ groups:
     gid: 707
     description: these folks are allowed bastion _only_ access
     members: [jforrester, jmorgan, msyed, jkrauska,
-              haithams, mhurd, dbrant, kleduc, bsitzmann, deskana,
+              haithams, mhurd, dbrant, kleduc, bsitzmann, deskana, chedasaurus,
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
