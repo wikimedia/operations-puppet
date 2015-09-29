@@ -50,7 +50,7 @@ class role::swift::proxy {
         proto   => 'tcp',
         port    => '11211',
         notrack => true,
-        srange  => "@resolve(($swift_frontends_ferm))",
+        srange  => "@resolve((${swift_frontends_ferm}))",
     }
 
     monitoring::service { 'swift-http-frontend':
@@ -98,28 +98,28 @@ class role::swift::storage {
         proto   => 'tcp',
         port    => '6000',
         notrack => true,
-        srange  => "@resolve(($swift_access_ferm))",
+        srange  => "@resolve((${swift_access_ferm}))",
     }
 
     ferm::service { 'swift-container-server':
         proto   => 'tcp',
         port    => '6001',
         notrack => true,
-        srange  => "@resolve(($swift_access_ferm))",
+        srange  => "@resolve((${swift_access_ferm}))",
     }
 
     ferm::service { 'swift-account-server':
         proto   => 'tcp',
         port    => '6002',
         notrack => true,
-        srange  => "@resolve(($swift_access_ferm))",
+        srange  => "@resolve((${swift_access_ferm}))",
     }
 
     ferm::service { 'swift-rsync':
         proto   => 'tcp',
         port    => '873',
         notrack => true,
-        srange  => "@resolve(($swift_rsync_access_ferm))",
+        srange  => "@resolve((${swift_rsync_access_ferm}))",
     }
 
     # these are already partitioned and xfs formatted by the installer
