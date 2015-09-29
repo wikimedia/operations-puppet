@@ -204,7 +204,7 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
     include role::logging::systemusers
 
     # udp2log::instance will ensure this is created
-    $webrequest_log_directory    = "$log_directory/webrequest"
+    $webrequest_log_directory    = "${log_directory}/webrequest"
 
     # keep fundraising logs in a subdir
     $fundraising_log_directory = "${log_directory}/fundraising"

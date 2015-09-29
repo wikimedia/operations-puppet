@@ -46,7 +46,7 @@ class role::designate::config::eqiad inherits role::designate::config {
 
     $auth_uri = $::realm ? {
         'production' => "http://${nova_controller}:5000",
-        'labs'       => "http://$::ipaddress_eth0:5000",
+        'labs'       => "http://${::ipaddress_eth0}:5000",
     }
 
     $eqiaddesignateconfig = {

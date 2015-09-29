@@ -39,25 +39,25 @@ class role::cassandra {
     ferm::service { 'cassandra-intra-node':
         proto  => 'tcp',
         port   => '7000',
-        srange => "@resolve(($cassandra_hosts_ferm))",
+        srange => "@resolve((${cassandra_hosts_ferm}))",
     }
     # Cassandra intra-node SSL messaging
     ferm::service { 'cassandra-intra-node-ssl':
         proto  => 'tcp',
         port   => '7001',
-        srange => "@resolve(($cassandra_hosts_ferm))",
+        srange => "@resolve((${cassandra_hosts_ferm}))",
     }
     # Cassandra JMX/RMI
     ferm::service { 'cassandra-jmx-rmi':
         proto  => 'tcp',
         port   => '7199',
-        srange => "@resolve(($cassandra_hosts_ferm))",
+        srange => "@resolve((${cassandra_hosts_ferm}))",
     }
     # Cassandra CQL query interface
     ferm::service { 'cassandra-cql':
         proto  => 'tcp',
         port   => '9042',
-        srange => "@resolve(($cassandra_hosts_ferm))",
+        srange => "@resolve((${cassandra_hosts_ferm}))",
     }
 
 }
