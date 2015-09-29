@@ -73,7 +73,7 @@ groups:
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis,
-              addshore, jminor, pt1979, asherman]
+              addshore, jminor, pt1979, asherman, etonkovidova]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -111,7 +111,7 @@ groups:
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
-              jminor, asherman]
+              jminor, asherman, etonkovidova]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -1618,3 +1618,10 @@ users:
     realname: Papaul Tshibamba
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmlt2EID9N7s/YwZ91Ma4t+/M4aQEGx6Qzzwz+pFOC/CNiz43fw89fHsMmrrU+e6T9hI9nTz899EVaxM8CG9kmGtpYOtcpoFkcMhFlnP9JZpuUzmE/DVVDXBFnrjnXQzNisKjpPOe+NEu4v4NDwPv+cOQpJ8uXqikg+pd0ZYWxbdFIp+7dokhk1+1ltxTCDDrMkiZEBbfYEcXmw2Kt0KU2hdq9IRg1o/YFJSYVmIXkkN3Ayr238vYLi03946ReyKm/czGq+0UFh+Lp+TuDwrVa/kOqBko6aAJgVvYLofKF6CgfTHmMPfA01EbCDUtPxmg6nUF0fHweQsGKMHKFxFSF productionwiki]
     uid: 10275
+  etonkovidova:
+    ensure: present
+    gid: 500
+    name: etonkovidova
+    realname: Elena Tonkovidova
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqxPSqR8la7MAqz7BC6+1xM4tSKrZObfbh3unfyu4cuPtaj1v6oJ+wm7USqVR8sSVFoqpyq8kVLL6mGgLt+HzCWT5c3fyDrPdRJ89o0EXlkZ02EGkmTDdYzs7VLkvSyKLIqxg1wOdX8s0oYaiCaJ6OiFi/lIjfyOVcnIQ0yB4h3qcpzMXlzjiAsyWBTA/wNCY2pCEjKR3JdW8aYV8tw/ol0eV3F5Q9hZumrd7GwAD6AJMnHlNgUAHTd+g5RllhBsniXOu1ejZWyTka3dWjSyK3JFAyDUmVNZwC+l6XC1bSyOoFEMyWDctmXpKqKbe24IfQ/vVeh9PzYr5sbasVX5gV etonkovidova@Administrators-MacBook-Air.local]
+    uid: 11400
