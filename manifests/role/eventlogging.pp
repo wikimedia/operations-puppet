@@ -146,13 +146,23 @@ class role::eventlogging::processor inherits role::eventlogging {
 
     # If etcd is using SSL, then we'll need to have the
     # CA cert in place so that we can use it to verify the HTTPS connection
-    class { '::etcd::ssl::base':
-        owner    => 'root',
-        group    => 'root',
-        dirmode  => '0755',
-        filemode => '0644',
+    file { '/etc/eventlogging.d/ssl':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755'
     }
-    $etcd_uri  = "https://${etcd_hosts}?cert=${::etcd::ssl::base::cacert}"
+
+    file { '/etc/eventlogging/ssl/ca.pem':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => '/var/lib/puppet/ssl/certs/ca.pem',
+    }
+
+    #TODO: should the url be properly encoded?
+    $etcd_uri  = "https://${etcd_hosts}?cert=/var/lib/puppet/ssl/certs/ca.pem"
 
     eventlogging::service::processor { 'server-side-0':
         format         => '%{seqId}d EventLogging %j',
