@@ -66,7 +66,7 @@ class role::puppetmaster::backend {
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
-        srange => "@resolve($puppetmaster_hostname)"
+        srange => "@resolve(${puppetmaster_hostname})"
     }
 }
 

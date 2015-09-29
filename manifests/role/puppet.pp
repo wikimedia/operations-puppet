@@ -17,7 +17,7 @@ class role::puppet::self(
 ) {
     if $master != undef {
         if $master =~ /\./ {
-            fail("$::puppetmaster must be a simple hostname.  The project-specific domain will be automatically appended.")
+            fail("${::puppetmaster} must be a simple hostname.  The project-specific domain will be automatically appended.")
         }
     }
 

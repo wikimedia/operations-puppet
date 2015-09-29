@@ -24,13 +24,13 @@ class role::dumps {
     ferm::service {'dumps_rsyncd_ipv4':
         port   => '873',
         proto  => 'tcp',
-        srange => "@resolve(($rsync_clients_ferm))",
+        srange => "@resolve((${rsync_clients_ferm}))",
     }
 
     ferm::service {'dumps_rsyncd_ipv6':
         port   => '873',
         proto  => 'tcp',
-        srange => "@resolve(($rsync_clients_ipv6_ferm),AAAA)",
+        srange => "@resolve((${rsync_clients_ipv6_ferm}),AAAA)",
     }
 
     ferm::service { 'dumps_http':
