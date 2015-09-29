@@ -2,7 +2,8 @@ class etcd::ssl::base ($ssldir = '/var/lib/puppet/ssl') {
     $basedir = '/var/lib/etcd/ssl'
     $pubdir = "${basedir}/certs"
     $cacert = "${pubdir}/ca.pem"
-    file { $basedir:
+
+    file { [dirname($basedir), $basedir]:
         ensure  => directory,
         owner   => 'etcd',
         group   => 'etcd',
