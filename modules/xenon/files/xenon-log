@@ -18,6 +18,7 @@ sys.setdefaultencoding('utf-8')
 import argparse
 import datetime
 import errno
+import fnmatch
 import logging
 import os
 import os.path
@@ -49,19 +50,21 @@ class TimeLog(object):
         except OSError as exc:
             if exc.errno != errno.EEXIST: raise
 
-    def write(self, message, time=None, tag=None):
+    def write(self, message, time=None, tag='all'):
         time = datetime.datetime.utcnow() if time is None else time
-        suffix = '.%s.log' % tag if tag else '.log'
-        base_name = time.strftime(self.format) + suffix
+        base_name = '%s.%s.log' % (time.strftime(self.format), tag)
         file_path = os.path.join(self.path, base_name)
         if not os.path.isfile(file_path):
-            self.prune_files()
+            self.prune_files(tag)
         with open(file_path, 'a') as f:
             print(message, file=f)
 
-    def prune_files(self):
+    def prune_files(self, tag):
+        mask = '*.%s.log' % tag
         files = {}
         for base_name in os.listdir(self.path):
+            if not fnmatch.fnmatch(base_name, mask):
+                continue
             file_path = os.path.join(self.path, base_name)
             try:
                 files[file_path] = os.path.getctime(file_path)
@@ -92,6 +95,6 @@ for message in pubsub.listen():
     time = datetime.datetime.utcnow()
     tag = get_tag(data)
     for log in logs:
-        log.write(data, time)
+        log.write(data, time, 'all')
         if tag:
             log.write(data, time, tag)
