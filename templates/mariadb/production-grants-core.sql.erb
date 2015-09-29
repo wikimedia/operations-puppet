@@ -10,6 +10,9 @@ GRANT ALL PRIVILEGES
 GRANT ALL PRIVILEGES
     ON `centralauth`.* TO 'wikiadmin'@'10.%';
 
+GRANT SELECT
+    ON `heartbeat`.`heartbeat` TO 'wikiadmin'@'10.%';
+
 -- wikiuser 10.64.%
 
 GRANT PROCESS, REPLICATION CLIENT
@@ -22,6 +25,9 @@ GRANT SELECT, INSERT, UPDATE, DELETE
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `centralauth`.* TO 'wikiuser'@'10.64.%';
 
+GRANT SELECT
+    ON `heartbeat`.`heartbeat` TO 'wikiuser'@'10.64.%';
+
 -- wikiuser 10.192.%
 
 GRANT PROCESS, REPLICATION CLIENT
@@ -33,3 +39,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE
 
 GRANT SELECT, INSERT, UPDATE, DELETE
     ON `centralauth`.* TO 'wikiuser'@'10.192.%';
+
+GRANT SELECT
+    ON `heartbeat`.`heartbeat` TO 'wikiuser'@'10.192.%';
+
