@@ -11,37 +11,10 @@ class dynamicproxy::api(
         desc  => 'API for adding / removing proxies from dynamicproxy domainproxy'
     }
 
-    package { 'python-flask':
-        ensure  => latest,
-        require => Class['misc::labsdebrepo'],
-    }
-
-    package { ['python-invisible-unicorn', 'python-flask-sqlalchemy', 'uwsgi', 'uwsgi-plugin-python']:
-        ensure  => present,
-        require => Package['python-flask'],
-    }
-
-    file { '/etc/init/dynamicproxy-api.conf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/dynamicproxy/upstart.conf',
-        before => Service['dynamicproxy-api'],
-        notify => Service['dynamicproxy-api'],
-    }
+    require_package('invisible-unicorn')
 
     service { 'dynamicproxy-api':
         ensure  => running,
-        enable  => true,
-        require => [
-            Package['python-invisible-unicorn'],
-            Package['python-flask-sqlalchemy'],
-            Package['redis-server'],
-            Package['python-flask'],
-            Package['uwsgi'],
-            Package['uwsgi-plugin-python'],
-        ],
     }
 
     file { '/etc/dynamicproxy-api':
