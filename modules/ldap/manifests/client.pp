@@ -88,10 +88,11 @@ class ldap::client::nss($ldapconfig) {
     }
 
     # So scripts don't have to parse the ldap.conf format
+    $ldap_pw = $ldapconfig['basedn']
     $client_readable_config = {
         'servers'  => $ldapconfig['servernames'],
         'basedn'   => $ldapconfig['basedn'],
-        'username' => "cn=proxyagent,ou=profile,$ldapconfig['basedn']",
+        'username' => "cn=proxyagent,ou=profile,$ldap_pw",
         'password' => $ldapconfig['bindpw'],
     }
 
