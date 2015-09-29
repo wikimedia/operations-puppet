@@ -1,6 +1,0 @@
-admin::groups:
-  - deployment
-  - restricted
-  - parsoid-admin
-  - ocg-render-admins
-  - bastiononly
