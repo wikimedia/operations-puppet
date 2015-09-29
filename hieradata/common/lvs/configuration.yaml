@@ -843,4 +843,4 @@ lvs_services:
         max-delay: 300
     conftool:
       cluster: phabricator
-      service: ssh
+      service: git-ssh
