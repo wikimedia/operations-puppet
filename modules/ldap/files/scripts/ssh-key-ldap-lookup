@@ -1,94 +1,62 @@
 #!/usr/bin/python
+# Copyright 2015 Yuvi Panda <yuvipanda@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""
+Takes a user as a parameter and prints list of allowed ssh keys
+for that user from querying LDAP.
 
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/ldap/scripts/ssh-key-ldap-lookup
-#####################################################################
+We just let all errors crash the script since that makes it
+exit with a non zero status code and thus prevents login, which
+is the behavior we want
+"""
+import ldap
+import yaml
+import argparse
 
-import ldapsupportlib
-from optparse import OptionParser
-import re
-from signal import signal, SIGPIPE, SIG_DFL
-import sys
-import traceback
 
-try:
-    import ldap
-except ImportError:
-    sys.stderr.write("Unable to import LDAP library.\n")
-    sys.exit(1)
+def connect(server, username, password):
+    conn = ldap.initialize('ldap://%s:389' % server)
+    conn.protocol_version = ldap.VERSION3
+    conn.start_tls_s()
+    conn.simple_bind_s(username, password)
+    return conn
 
-# Avoid "IOError: [Errno 32] Broken pipe" when piping to head & Co.
-signal(SIGPIPE, SIG_DFL)
+
+def get_keys(conn, basedn, username):
+    response = conn.search_s(
+        'ou=people,%s' % basedn,
+        ldap.SCOPE_SUBTREE,
+        '(uid=%s)' % username
+    )
+    for _, user in response:
+        print user['sshPublicKey']
+        return user['sshPublicKey']
+
 
 def main():
-    """Print ssh keys for a given ldap user.  Mostly cribbed from 'ldaplist'"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('username', help='Username to list ssh keys for')
+    args = parser.parse_args()
 
-    parser = OptionParser(conflict_handler="resolve")
-    parser.set_usage("ldap-keys [options] <username>\n\nexample: ldaplist andrew")
+    with open('/etc/ldap.yaml') as f:
+        config = yaml.safe_load(f)
 
-    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-    ldapSupportLib.addParserOptions(parser)
+    conn = connect(config['servers'][0], config['user'], config['password'])
+    keys = get_keys(conn, config['basedn'], args.username)
+    for key in keys:
+        # Some keys have an accidental newline at the end, see T77902
+        print key.strip()
 
-    (options, args) = parser.parse_args()
-
-    ldapSupportLib.setBindInfoByOptions(options, parser)
-
-    base = "ou=people," + ldapSupportLib.getBase()
-
-    if len(args) != 1:
-        print parser.usage
-        exit(1)
-
-    ds = ldapSupportLib.connect()
-
-    # w00t We're in!
-    try:
-        PosixData = ds.search_s(base, ldap.SCOPE_SUBTREE,
-                                "(uid="+ args[0] + ")")
-
-    except ldap.NO_SUCH_OBJECT:
-        sys.stderr.write("Object not found. If you are trying to use * in your search, make sure that you wrap your string in single quotes to avoid shell expansion.\n")
-        ds.unbind()
-        sys.exit(1)
-    except ldap.PROTOCOL_ERROR:
-        sys.stderr.write("The search returned a protocol error, this shouldn't ever happen, please submit a trouble ticket.\n")
-        ds.unbind()
-        sys.exit(1)
-    except Exception:
-        sys.stderr.write("The search returned an error.\n")
-        ds.unbind()
-        sys.exit(1)
-
-    PosixData.sort()
-
-    # PosixData is a list of lists where:
-    # index 0 of PosixData[N]: contains the distinquished name
-    # index 1 of PosixData[N]: contains a dictionary of lists hashed by the following keys:
-    #               telephoneNumber, departmentNumber, uid, objectClass, loginShell,
-    #               uidNumber, gidNumber, sn, homeDirectory, givenName, cn
-
-    for i in range(len(PosixData)):
-        for (k, v) in PosixData[i][1].items():
-            if ( k != "sshPublicKey" ):
-                continue
-            for v2 in v:
-                print v2
-
-    ds.unbind()
-
-def showdatabase(objectbasedns, args):
-    print ""
-    if len(args) < 1:
-        print objectbasedns["base"]
-    else:
-        if args[0].find('auto_') != -1:
-            objectbasedns["auto_*"] = objectbasedns["auto_*"].replace("auto_AUTO", args[0])
-            args[0] = "auto_*"
-        if args[0] in objectbasedns:
-            print objectbasedns[args[0]]
-        else:
-            print "Database " + args[0] + " not found, use ldaplist -h to list database types."
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
