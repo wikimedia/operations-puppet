@@ -146,7 +146,12 @@ class role::eventlogging::processor inherits role::eventlogging {
 
     # If etcd is using SSL, then we'll need to have the
     # CA cert in place so that we can use it to verify the HTTPS connection
-    include ::etcd::ssl::base
+    class { '::etcd::ssl::base':
+        owner    => 'root',
+        group    => 'root',
+        dirmode  => '0755',
+        filemode => '0644',
+    }
     $etcd_uri  = "https://${etcd_hosts}?cert=${::etcd::ssl::base::cacert}"
 
     eventlogging::service::processor { 'server-side-0':
