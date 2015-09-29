@@ -59,6 +59,20 @@ class base::sysctl {
             'net.ipv4.tcp_keepalive_time'   => 300,
             'net.ipv4.tcp_keepalive_intvl'  => 1,
             'net.ipv4.tcp_keepalive_probes' => 2,
+
+            # Default IPv6 route table max_size is too small for the modern
+            # Internet.  It's tempting to set this only for public-facing
+            # caches and LVS, but when surveying hosts there are non-obvious
+            # cases with significant route table sizes (other independent
+            # public services with v6, recdns servers, etc..), and even the
+            # public ones with smaller live tables would be subject to easier
+            # DoS without this setting.  I think it's better to simply set it
+            # globally for all our hosts and be done with worrying about it so
+            # much.  This value seems to be an order of magnitude+ above what
+            # our tier-1 cache nodes currently need, and not cause any issues
+            # from being oversized, but this may need adjustment later, unless
+            # future kernels fix the issue completely as they did with ipv4.
+            'net.ipv6.route.max_size'       => 131072,
         },
         priority => 60,
     }
