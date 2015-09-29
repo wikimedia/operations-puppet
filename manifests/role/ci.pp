@@ -470,7 +470,7 @@ class role::ci::publisher::labs {
 
     rsync::server::module { 'doc':
         path      => '/srv/doc',
-        read_only => no,
+        read_only => 'no',
         require   => [
             File['/srv/doc'],
             Class['role::labs::lvm::srv'],

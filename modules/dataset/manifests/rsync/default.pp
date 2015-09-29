@@ -1,5 +1,5 @@
 class dataset::rsync::default(
-    $rsync_enable      = true,
+    $rsync_enable      = 'true', # this is a string used in a template
     $public            = true,
     $rsync_opts        = '--bwlimit=50000',
     $rsync_config_file = undef

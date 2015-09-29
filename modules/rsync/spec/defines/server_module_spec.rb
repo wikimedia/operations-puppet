@@ -47,9 +47,9 @@ describe 'rsync::server::module', :type => :define do
 
   {
     :comment        => 'super module !',
-    :read_only      => no,
-    :write_only     => yes,
-    :list           => no,
+    :read_only      => 'no',
+    :write_only     => 'yes',
+    :list           => 'no',
     :uid            => '4682',
     :gid            => '4682',
     :secrets_file   => '/path/to/secrets',

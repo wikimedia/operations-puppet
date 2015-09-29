@@ -7,7 +7,7 @@ class scap::proxy {
 
     rsync::server::module { 'common':
         path        => '/srv/mediawiki',
-        read_only   => true,
+        read_only   => 'true',
         hosts_allow => $::network::constants::mw_appserver_networks;
     }
 }
