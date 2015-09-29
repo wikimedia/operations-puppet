@@ -87,6 +87,19 @@ class ldap::client::nss($ldapconfig) {
         content => template('ldap/ldap.conf.erb'),
     }
 
+    # So scripts don't have to parse the ldap.conf format
+    $client_readable_config = {
+        'servers'  => $ldapconfig['servernames'],
+        'basedn'   => $ldapconfig['basedn'],
+        'username' => "cn=proxyagent,ou=profile,$ldapconfig['basedn']",
+        'password' => $ldapconfig['bindpw'],
+    }
+
+    file { '/etc/ldap.yaml':
+        content => ordered_yaml($client_readable_config),
+    }
+
+
     file { '/etc/nslcd.conf':
         require => Package['nslcd'],
         notify  => Service[nslcd],
