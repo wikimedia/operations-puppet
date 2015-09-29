@@ -73,7 +73,7 @@ groups:
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis,
-              addshore, jminor, pt1979, asherman, etonkovidova]
+              addshore, jminor, pt1979, asherman, etonkovidova, sbisson]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -111,7 +111,7 @@ groups:
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
-              jminor, asherman, etonkovidova]
+              jminor, asherman, etonkovidova, sbisson]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -1625,3 +1625,10 @@ users:
     realname: Elena Tonkovidova
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqxPSqR8la7MAqz7BC6+1xM4tSKrZObfbh3unfyu4cuPtaj1v6oJ+wm7USqVR8sSVFoqpyq8kVLL6mGgLt+HzCWT5c3fyDrPdRJ89o0EXlkZ02EGkmTDdYzs7VLkvSyKLIqxg1wOdX8s0oYaiCaJ6OiFi/lIjfyOVcnIQ0yB4h3qcpzMXlzjiAsyWBTA/wNCY2pCEjKR3JdW8aYV8tw/ol0eV3F5Q9hZumrd7GwAD6AJMnHlNgUAHTd+g5RllhBsniXOu1ejZWyTka3dWjSyK3JFAyDUmVNZwC+l6XC1bSyOoFEMyWDctmXpKqKbe24IfQ/vVeh9PzYr5sbasVX5gV etonkovidova@Administrators-MacBook-Air.local]
     uid: 11400
+  sbisson:
+    ensure: present
+    gid: 500
+    name: sbisson
+    realname: Stephane Bisson
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWBhtVz0rMyWOMkA/h5veSdmrzNd6SB4kktb98TjC1JtFDu5U8SggBFobAIOgy0DEIIo5rjtdQ2a+NB+zqP2jgYuJ4F4S6NPG4o3zWyNdaRRNit0/KC0U1UXhmHGk3WODAc5mbAMTtDRz6aJvo0GbK141AzKppD/QCOYkr7bMz6UcxRXe7DKGENYMvw+IiB98IdKg6ilO0k9YdBIRuF4GFDOlRnCCeJ8gzyukbHbGVMfMkW1jqWQeyzdBSUlxROzBQ74Ge5gy63rj8ypAXhJ3O5t8UCWUCX+wgsyCZwKaDt4C/ejt+N74hCeQ0aemzkFGHD6EvpFYZXiks2wGQiy3B sbisson@sbissons-MacBook-Air.local]
+    uid: 11999
