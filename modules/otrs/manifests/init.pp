@@ -133,6 +133,9 @@ class otrs(
     }
 
     # TODO: Remove the safeguard once we are jessie only
+    # NOTE: We couple the move to 4.0.x OTRS with the move to jessie, since that
+    # should not bite back as after the move the 3.2.x install we have will be
+    # decomissioned
     if os_version('debian >= jessie') {
         base::service_unit { 'otrs-scheduler':
             ensure  => present,
@@ -144,6 +147,13 @@ class otrs(
                 hasstatus  => true,
                 hasrestart => false,
             }
+        }
+        file { '/etc/cron.d/otrs-scheduler':
+            ensure => 'file',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/otrs/crontab.otrs-scheduler',
         }
     }
 }
