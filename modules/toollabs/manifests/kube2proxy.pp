@@ -30,7 +30,6 @@ class toollabs::kube2proxy(
     package { 'requests':
         provider => 'pip',
         ensure   => latest,
-        require  => Package['python-requests'],
     }
 
     include k8s::ssl
