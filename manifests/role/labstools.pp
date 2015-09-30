@@ -59,7 +59,7 @@ class role::labs::tools {
         system::role { 'role::labs::tools::submit': description => 'Tool Labs job submit (cron) host' }
     }
 
-    class proxy inherits role::labs::tools::common {
+    class proxy {
         include toollabs::proxy
 
         system::role { 'role::labs::tools::proxy': description => 'Tool labs generic web proxy' }
