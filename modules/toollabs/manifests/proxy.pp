@@ -8,8 +8,6 @@ class toollabs::proxy(
     include toollabs::infrastructure
     include ::redis::client::python
 
-    include k8s::webproxy
-
     include base::firewall
 
     if $ssl_install_certificate {
