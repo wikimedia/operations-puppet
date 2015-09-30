@@ -60,18 +60,11 @@ class toollabs::proxy(
         require => Class['::redis::client::python'],
     }
 
-    file { '/etc/init/proxylistener.conf':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/toollabs/proxylistener.conf',
+    base::service_unit { 'proxylistener':
+        ensure  => present,
+        upstart => true
+        systemd => true,
         require => File['/usr/local/sbin/proxylistener'],
-    }
-
-    service { 'proxylistener':
-        ensure  => running,
-        require => File['/etc/init/proxylistener.conf'],
     }
 
     ferm::service { 'proxylistener-port':
