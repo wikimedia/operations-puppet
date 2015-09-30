@@ -10,14 +10,14 @@ class snapshot::wikidatadumps::common {
         ensure => 'directory',
         mode   => '0755',
         owner  => 'datasets',
-        group  => 'apache',
+        group  => 'www-data',
     }
 
     file { '/usr/local/share/dcat':
         ensure  => 'directory',
         mode    => '0444',
         owner   => 'datasets',
-        group   => 'apache',
+        group   => 'www-data',
         recurse => true,
         purge   => true,
         source => 'puppet:///modules/snapshot/dcat',
