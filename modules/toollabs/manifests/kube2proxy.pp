@@ -40,13 +40,26 @@ class toollabs::kube2proxy(
     # instead of having processes syncing every proxy
     # with kubernetes is a bad idea, we're doing it just
     # because that's how OGE integration worked.
-    $should_run = ($::hostname != $active_proxy)
+    if service_ensure($ensure) == 'running' {
+        $should_run = hiera('active_proxy') ?{
+            $::hostname => 'running',
+            default     => 'stopped'
+        }
+        $params = {'ensure' => $should_run}
+    } else {
+        $params = {}
+    }
+
     base::service_unit{ 'kubesync':
-        ensure    => $should_run,
-        refresh   => true,
-        systemd   => true,
-        upstart   => true,
-        subscribe => [File['/usr/local/sbin/kube2proxy'],File['/var/lib/kubernetes/ssl/certs/ca.pem']],
+        ensure         => $ensure,
+        refresh        => true,
+        systemd        => true,
+        upstart        => true,
+        service_params => $params,
+        subscribe => [
+                      File['/usr/local/sbin/kube2proxy'],
+                      File['/var/lib/kubernetes/ssl/certs/ca.pem']
+                      ],
     }
 
 }
