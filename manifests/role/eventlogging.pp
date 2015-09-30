@@ -48,13 +48,19 @@ class role::eventlogging {
     $kafka_base_uri    = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
     # Read in server side and client side raw events from
-    # ZeroMQ, process them, and send events to schema
+    # Kafka, process them, and send events to schema
     # based topics in Kafka.
     $kafka_schema_uri  = "${kafka_base_uri}?topic=eventlogging_%(schema)s"
+
     # The downstream eventlogging MySQL consumer expects schemas to be
     # all mixed up in a single stream.  We send processed events to a
     # 'mixed' kafka topic in order to keep supporting it for now.
-    $kafka_mixed_uri   = "${kafka_base_uri}?topic=eventlogging-valid-mixed"
+    # We blacklist certain high volume schemas from going into this topic.
+    $mixed_schema_blacklist = hiera('+eventlogging_valid_mixed_schema_blacklist', undef)
+    $kafka_mixed_uri = $mixed_schema_blacklist ? {
+        undef   => "${kafka_base_uri}?topic=eventlogging-valid-mixed",
+        default => "${kafka_base_uri}?topic=eventlogging-valid-mixed&blacklist=${mixed_schema_blacklist}"
+    }
 
     $kafka_server_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-server-side"
     $kafka_client_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-client-side"
