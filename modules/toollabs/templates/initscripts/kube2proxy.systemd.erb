@@ -12,6 +12,6 @@ User=kubeproxy
 Environment="K2D_KUBE_CA=/var/lib/kubernetes/ssl/certs/ca.pem"
 Environment="K2D_TOKEN=<%= @kube_token %>"
 Environment="K2D_KUBE_MASTER=<%= @kubemaster %>"
-EnvironmentFile="-/etc/default/kube2proxy"
-ExecStart="/usr/local/sbin/kube2proxy"
+EnvironmentFile=-/etc/default/kube2proxy
+ExecStart=/usr/local/sbin/kube2proxy
 

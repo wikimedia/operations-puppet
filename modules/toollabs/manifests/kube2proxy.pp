@@ -14,18 +14,22 @@ class toollabs::kube2proxy(
     }
 
     group { 'kubeproxy':
+        ensure => present,
         system => true,
     }
 
     user { 'kubeproxy':
-        ensure => present,
-        gid    => 'kubeproxy',
-        shell  => '/bin/false',
-        home   => '/nonexistent',
-        system => true,
+        ensure  => present,
+        gid     => 'kubeproxy',
+        shell   => '/bin/false',
+        home    => '/nonexistent',
+        system  => true,
+        require => Group['kubeproxy']
     }
 
-    # Trusty's python-requests package is buggy
+    require_package(['python-requests', 'python-redis', 'python-yaml'])
+
+    # Trusty and jessie's python-requests package is buggy
     # and would break watching kubernetes for changes
     package { 'requests':
         provider => 'pip',
