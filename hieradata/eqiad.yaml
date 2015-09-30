@@ -75,12 +75,20 @@ eventlogging_host: 10.64.32.167 # eventlog1001
 # Kafka Topic eventlogging-client-side with
 # raw eventlogging events has 12 partitions
 # in production.  Run 12 processors.
-# NOTE:  there is a bug caused by running
-# multiple client side processors.  Running
-# 1 until this is fixedx.
 # https://phabricator.wikimedia.org/T112688
 eventlogging_client_side_processors:
     - client-side-00
+    - client-side-01
+    - client-side-02
+    - client-side-03
+    - client-side-04
+    - client-side-05
+    - client-side-06
+    - client-side-07
+    - client-side-08
+    - client-side-09
+    - client-side-10
+    - client-side-11
 
 
 labs_certmanager_hostname: "holmium.wikimedia.org"
