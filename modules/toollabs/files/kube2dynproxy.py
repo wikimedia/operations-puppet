@@ -62,8 +62,8 @@ class KubeClient(object):
         """Does a full sync of the services, returns a list
         of the active ones."""
         services = self.get_services()
-        registered_services = self.conn.smembers(services_registry)
-        actual_services = set([str(serv) for serv in services])
+        registered_services = set([str(s) for s in self.conn.smembers(services_registry)])
+        actual_services = set([str(s) for s in services])
         services_to_delete = registered_services - actual_services
         for service in services_to_delete:
             namespace, name, route = service.split('/')
