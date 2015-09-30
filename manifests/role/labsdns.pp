@@ -82,7 +82,7 @@ class role::labsdnsrecursor {
         'relic'                     => {public_ip  => '208.80.155.197',
                                         private_ip => '10.68.16.162' },
         'tools-webproxy'            => {public_ip  => '208.80.155.131',
-                                        private_ip => '10.68.17.139' },
+                                        private_ip => '10.68.21.49' },
         'udplog'                    => {public_ip  => '208.80.155.191',
                                         private_ip => '10.68.16.58' },
 
