@@ -1,7 +1,12 @@
 # Expects address without a length, like address => "208.80.152.10", prefixlen => "32"
-define interface::ip($interface, $address, $prefixlen='32', $options='') {
+define interface::ip($interface, $address, $prefixlen='32', $options=undef) {
     $prefix = "${address}/${prefixlen}"
-    $ipaddr_command = "ip addr add ${prefix} ${options} dev ${interface}"
+    if $options {
+        $options_real = "${options} "
+    } else {
+        $options_real = ''
+    }
+    $ipaddr_command = "ip addr add ${prefix} ${options_real}dev ${interface}"
 
     # Use augeas to add an 'up' command to the interface
     augeas { "${interface}_${prefix}":
