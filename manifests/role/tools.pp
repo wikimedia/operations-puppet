@@ -70,6 +70,20 @@ class role::toollabs::k8s::worker {
     }
 }
 
+class role::toollabs::k8s::webproxy {
+    $master_host = hiera('k8s_master')
+    $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
+
+    class { '::k8s::flannel':
+        etcd_endpoints => $etcd_url,
+    }
+
+    class { 'k8s::proxy':
+        master_host => $master_host,
+    }
+
+}
+
 class role::toollabs::k8s::bastion {
     # kubectl and things
     include k8s::client
