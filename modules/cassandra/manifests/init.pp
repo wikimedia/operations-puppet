@@ -472,20 +472,34 @@ class cassandra(
         ensure => 'absent',
     }
 
-    service { 'cassandra':
-        ensure     => 'running',
-        enable     => true,
-        hasstatus  => true,
-        hasrestart => true,
-        # This module does not subscribe to its config files,
-        # as we would like to manage service restarts manually.
-        require    => [
+    file { '/etc/cassandra.in.sh':
+        ensure  => present,
+        source  => "puppet:///modules/${module_name}/cassandra.in.sh",
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0444',
+        require => Package['cassandra'],
+    }
+
+    file { '/etc/tmpfiles.d/cassandra.conf':
+        ensure  => present,
+        source  => "puppet:///modules/${module_name}/cassandra-tmpfiles.conf",
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0444',
+        require => Package['cassandra'],
+    }
+
+    base::service_unit { 'cassandra':
+        ensure        => present,
+        template_name => 'cassandra',
+        systemd       => true,
+        refresh       => false,
+        require       => [
             File[$data_file_directories],
             File['/etc/cassandra/cassandra-env.sh'],
             File['/etc/cassandra/cassandra.yaml'],
             File['/etc/cassandra/cassandra-rackdc.properties'],
-            File['/etc/cassandra/cassandra-topology.properties'],
-            File['/etc/cassandra/cassandra-topology.yaml'],
         ],
     }
 }
