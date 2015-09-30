@@ -79,6 +79,10 @@ class role::toollabs::k8s::webproxy {
         etcd_endpoints => $etcd_url,
     }
 
+    class { '::toollabs::kube2proxy':
+        master_host => $master_host,
+    }
+
     class { 'k8s::proxy':
         master_host => $master_host,
     }
