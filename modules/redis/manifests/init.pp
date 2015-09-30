@@ -13,7 +13,8 @@ class redis (
     $auto_aof_rewrite_min_size = '512mb',
     $dbfilename = undef, # filename for rdb. If undef, "$hostname-$port.rdb" is used
     $saves = [ "900 1", "300 100", "60 10000" ], # Save points for rdb
-    $stop_writes_on_bgsave_error = false
+    $stop_writes_on_bgsave_error = false,
+    $expose = true,
 ) {
     package { 'redis-server':
         ensure => present,
@@ -35,9 +36,11 @@ class redis (
         require => Package['redis-server'],
     }
 
-    ferm::service {'redis':
-        proto => 'tcp',
-        port  => $port,
+    if $expose {
+        ferm::service {'redis':
+            proto => 'tcp',
+            port  => $port,
+        }
     }
 
     service { 'redis-server':

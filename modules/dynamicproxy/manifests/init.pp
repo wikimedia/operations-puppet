@@ -43,6 +43,7 @@ class dynamicproxy (
         dir               => '/var/lib/redis',
         maxmemory         => $redis_maxmemory,
         redis_replication => $redis_replication,
+        expose            => false,
     }
 
     # The redis module intentionally does not restart the redis
