@@ -41,6 +41,10 @@ sub vcl_recv {
         return (pass);
     } elsif (req.http.Host == "servermon.wikimedia.org") {
         set req.backend = netmon1001;
+    } elsif (req.http.Host == "otrs-test.wikimedia.org") {
+        set req.backend = mendelevium;
+        // No caching of OTRS for now
+        return (pass);
     } elsif (req.http.Host == "people.wikimedia.org") {
         set req.backend = terbium;
         // No caching of public_html dirs

@@ -130,6 +130,11 @@ class role::cache::misc {
                 'type' => 'random',
                 'backends' => ['terbium.eqiad.wmnet'],
             },
+            'mendelevium' => { # OTRS
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['mendelevium.eqiad.wmnet'],
+            },
             'ytterbium' => { # Gerrit
                 'dynamic' => 'no',
                 'type' => 'random',
