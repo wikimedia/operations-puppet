@@ -78,6 +78,7 @@ class role::phabricator::main {
 
     class { '::phabricator::tools':
         dbhost          => $mysql_host,
+        dbslave         => $mysql_slave,
         manifest_user   => $role::phabricator::config::mysql_maniphestuser,
         manifest_pass   => $role::phabricator::config::mysql_maniphestpass,
         app_user        => $role::phabricator::config::mysql_appuser,

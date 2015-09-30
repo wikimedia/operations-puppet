@@ -5,6 +5,7 @@
 #
 class phabricator::tools (
     $dbhost                = 'localhost',
+    $dbslave               = 'localhost',
     $directory             = '/srv/phab/tools',
     $manifest_user         = '',
     $manifest_pass         = '',
