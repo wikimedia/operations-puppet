@@ -245,3 +245,13 @@ statistics_servers:
   - stat1002.eqiad.wmnet
   - stat1003.eqiad.wmnet
   - analytics1027.eqiad.wmnet
+
+# Schemas names that match this regex
+# will not be produced to the eventlogging-valid-mixed
+# topic.  This allows us to keep high volume schema
+# events out of the MySQL consumer.
+# This is in common.yaml so that this will be used
+# for eventlogging in labs as well as production.
+# Currently this just blacklists the Analytics schema
+# so we can use it for testing throughput.
+eventlogging_valid_mixed_schema_blacklist: ^Analytics$
