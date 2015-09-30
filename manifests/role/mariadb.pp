@@ -345,7 +345,9 @@ class role::mariadb::analytics {
         tmpdir   => '/a/tmp',
     }
 
-    mariadb::monitor_replication { ['s1','s2','m2']: }
+    mariadb::monitor_replication { ['s1','s2','m2']:
+        is_critical => false,
+    }
 }
 
 class role::mariadb::backup {
