@@ -2110,6 +2110,8 @@ node 'mx1001.wikimedia.org' {
         interface => 'eth0',
         address   => '2620:0:861:3:208:80:154:91',
         prefixlen => '128',
+        # mark as deprecated = never pick this address unless explicitly asked
+        options   => 'preferred_lft 0',
     }
 }
 
@@ -2129,6 +2131,8 @@ node 'mx2001.wikimedia.org' {
         interface => 'eth0',
         address   => '2620:0:860:2:208:80:153:46',
         prefixlen => '128',
+        # mark as deprecated = never pick this address unless explicitly asked
+        options   => 'preferred_lft 0',
     }
 }
 
