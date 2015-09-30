@@ -14,8 +14,6 @@
 class toollabs (
     $external_hostname = undef,
     $external_ip = undef,
-    $proxies = ['tools-webproxy-01', 'tools-webproxy-02'],
-    $active_proxy = 'tools-webproxy-01',
     $active_redis = 'tools-redis-01',
     $active_redis_ip = '10.68.18.70',
     $is_mail_relay = false,
@@ -182,6 +180,7 @@ class toollabs (
     }
 
     # Link to currently active proxy
+    $active_proxy = hiera('active_proxy_host')
     file { '/etc/active-proxy':
         ensure  => file,
         owner   => 'root',
