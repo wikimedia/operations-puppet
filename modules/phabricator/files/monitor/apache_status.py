@@ -21,10 +21,10 @@ $server.apache.BusyWorkers:10|g
 """
 
 
-class ApacheStatusSimple(diamond.collector.Collector):
+class ApacheStatusSimpleCollector(diamond.collector.Collector):
 
     def __init__(self, *args, **kwargs):
-        super(ApacheStatusSimple, self).__init__(*args, **kwargs)
+        super(ApacheStatusSimpleCollector, self).__init__(*args, **kwargs)
 
         self.stats = [
             'Total\sAccesses',
@@ -42,7 +42,7 @@ class ApacheStatusSimple(diamond.collector.Collector):
         """
         Returns the default collector settings
         """
-        config = super(ApacheStatusSimple, self).get_default_config()
+        config = super(ApacheStatusSimpleCollector, self).get_default_config()
         config.update({
             'path': 'apache',
             'url': 'http://127.0.0.1/server-status?auto',
