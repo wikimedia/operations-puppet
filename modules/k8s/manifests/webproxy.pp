@@ -3,8 +3,4 @@ class k8s::webproxy(
 ) {
     require k8s::flannel
     require k8s::proxy
-
-    nginx::site { 'proxy':
-        content => template('k8s/webproxy.conf.erb'),
-    }
 }
