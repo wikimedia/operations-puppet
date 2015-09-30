@@ -144,10 +144,7 @@ private:
   project-proxy:
     gid: 50254
     mounts:
-      dumps: true
-      home: true
       project: true
-      scratch: true
   quarry:
     gid: 52243
     mounts:
