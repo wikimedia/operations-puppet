@@ -41,7 +41,7 @@ class toollabs::kube2proxy(
     # with kubernetes is a bad idea, we're doing it just
     # because that's how OGE integration worked.
     if ensure_service($ensure) == 'running' {
-        $should_run = hiera('active_proxy') ?{
+        $should_run = hiera('active_proxy_host') ?{
             $::hostname => 'running',
             default     => 'stopped'
         }
