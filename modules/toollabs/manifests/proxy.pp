@@ -2,6 +2,7 @@
 class toollabs::proxy(
     $ssl_certificate_name = 'star.wmflabs.org',
     $ssl_install_certificate = true,
+    $web_domain = 'tools.wmflabs.org',
     $proxies = ['tools-webproxy-01', 'tools-webproxy-02'],
 ) {
     include toollabs::infrastructure

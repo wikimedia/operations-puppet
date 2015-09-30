@@ -19,7 +19,6 @@ class toollabs (
     $is_mail_relay = false,
     $active_mail_relay = 'tools-mail.eqiad.wmflabs',
     $mail_domain = 'tools.wmflabs.org',
-    $web_domain = 'tools.wmflabs.org',
 ) {
 
     include labs_lvm
