@@ -20,15 +20,11 @@ class toollabs::kube2proxy(
     # instead of having processes syncing every proxy
     # with kubernetes is a bad idea, we're doing it just
     # because that's how OGE integration worked.
-    if ensure_service($ensure) == 'running' {
-        $should_run = hiera('active_proxy_host') ?{
-            $::hostname => 'running',
-            default     => 'stopped'
-        }
-        $service_params = {'ensure' => $should_run}
-    } else {
-        $service_params = {}
+    $should_run = hiera('active_proxy_host') ?{
+        $::hostname => 'running',
+        default     => 'stopped'
     }
+    $service_params = {'ensure' => $should_run}
 
     base::service_unit{ 'kube2proxy':
         ensure         => $ensure,
