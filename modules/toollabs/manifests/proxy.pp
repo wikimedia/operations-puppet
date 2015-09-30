@@ -2,7 +2,8 @@
 class toollabs::proxy(
     $ssl_certificate_name = 'star.wmflabs.org',
     $ssl_install_certificate = true,
-) inherits toollabs {
+    $proxies = ['tools-webproxy-01', 'tools-webproxy-02'],
+) {
     include toollabs::infrastructure
     include ::redis::client::python
 
@@ -14,6 +15,8 @@ class toollabs::proxy(
             before => Class['::dynamicproxy'],
         }
     }
+
+    $active_proxy = hiera('active_proxy_host')
 
     if $::hostname != $active_proxy {
         $redis_replication = {
