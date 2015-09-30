@@ -252,6 +252,9 @@ JVM_OPTS="$JVM_OPTS -XX:+UseGCLogFileRotation"
 JVM_OPTS="$JVM_OPTS -XX:NumberOfGCLogFiles=10"
 JVM_OPTS="$JVM_OPTS -XX:GCLogFileSize=10M"
 
+# used by cassandra-metrics-collector to report metrics for this instance
+JVM_OPTS="$JVM_OPTS -Dcassandra.instance-id=<%= @hostname %>"
+
 # Configure the following for JEMallocAllocator and if jemalloc is not available in the system
 # library path (Example: /usr/local/lib/). Usually "make install" will do the right thing.
 # export LD_LIBRARY_PATH=<JEMALLOC_HOME>/lib/
