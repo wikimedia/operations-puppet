@@ -131,4 +131,19 @@ class otrs(
         ensure => link,
         target => '/opt/otrs/Kernel/Output/HTML/Standard',
     }
+
+    # TODO: Remove the safeguard once we are jessie only
+    if os_version('debian >= jessie') {
+        base::service_unit { 'otrs-scheduler':
+            ensure  => present,
+            upstart => false,
+            systemd => true,
+            refresh => true,
+            service_params => {
+                enable     => true,
+                hasstatus  => true,
+                hasrestart => false,
+            }
+        }
+    }
 }
