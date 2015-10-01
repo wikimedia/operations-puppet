@@ -63,8 +63,7 @@ class varnish::zero_update($site, $auth_content) {
     }
 
     $m15 = fqdn_rand(15, 'fbba09c80d01946cb219d0c92bd5fb05')
-    $m_ary = [ $m15, ($m15 + 15), ($m15 + 30), ($m15 + 45) ]
-    $minutes = join($m_ary, ",")
+    $minutes = [ $m15, ($m15 + 15), ($m15 + 30), ($m15 + 45) ]
 
     cron { 'zero_update':
         user    => 'netmap',
