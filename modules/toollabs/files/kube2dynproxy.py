@@ -62,11 +62,12 @@ class KubeClient(object):
         """Does a full sync of the services, returns a list
         of the active ones."""
         services = self.get_services()
-        registered_services = set([str(s) for s in self.conn.smembers(services_registry)])
+        registered_services = set([s.decode('utf-8') for s in self.conn.smembers(services_registry)])
         actual_services = set([str(s) for s in services])
         services_to_delete = registered_services - actual_services
         for service in services_to_delete:
             namespace, name, route = service.split('/')
+            route = route.rstrip('.*')
             try:
                 s = Service(name, namespace)
                 s.route = route
@@ -91,7 +92,8 @@ class KubeClient(object):
                 # this should watch forever
                 resp = self.watch_services()
                 for line in resp.iter_lines():
-                    yield self._resp_to_service(json.loads(line))
+                    yield self._resp_to_service(
+                        json.loads(line.decode('utf-8')))
             except Exception as e:
                 # If watching fails, start from scratch
                 log.error("An error occurred while watching for changes, "
@@ -146,16 +148,16 @@ class Service(object):
     @property
     def route(self):
         if not self._route:
-            try:
-                self._route = "/{}.*".format(
-                    self.labels.get('toollabs-proxy-path'))
-            except:
+            route = self.labels.get('toollabs-proxy-path')
+            if route:
+                self._route = "/{}.*".format(route)
+            else:
                 self._route = self.default_route
         return self._route
 
     @route.setter
     def route(self, route):
-        if not route:
+        if not route or route == self.default_route:
             self._route = self.default_route
         else:
             self._route = "/{}.*".format(route)

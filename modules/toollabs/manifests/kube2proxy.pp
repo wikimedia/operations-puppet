@@ -13,7 +13,19 @@ class toollabs::kube2proxy(
         source => 'puppet:///modules/toollabs/kube2dynproxy.py',
     }
 
-    require_package(['python3-requests', 'python3-redis', 'python3-yaml'])
+    require_package(
+        [
+         'python3-pip',
+         'python3-redis',
+         'python3-yaml',
+         'python3-requests'
+         ])
+
+     package {'requests':
+         provider => 'pip3',
+
+     }
+
 
     # Temporarily not run on non-active proxies
     # note that having redis based replication
