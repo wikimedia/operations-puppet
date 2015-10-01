@@ -8,9 +8,15 @@
 # otrs-test.wikimedia.org -> nowhere
 <VirtualHost *:80>
     ServerName otrs-test.wikimedia.org
+
+    <IfModule mod_remoteip.c>
+        RemoteIPHeader X-Real-IP
+        RemoteIPInternalProxy <%= @trusted_proxies.join(' ') %>
+    </IfModule>
+
     # Make an access log, so we know when people abuse OTRS's insecure interface
-    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
-    CustomLog /var/log/apache2/otrs-access.log combined
+    LogFormat "%a %{c}a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined-realip
+    CustomLog /var/log/apache2/otrs-access.log combined-realip
 
     ScriptAlias /otrs/ "/opt/otrs/bin/cgi-bin/"
     Alias /otrs-web/ "/opt/otrs/var/httpd/htdocs/"
