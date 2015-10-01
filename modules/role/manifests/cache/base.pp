@@ -18,4 +18,10 @@ class role::cache::base(
     if $::realm == 'production' {
         include role::cache::perf
     }
+
+    # Not ideal factorization to put this here, but works for now
+    class { 'varnish::zero_update':
+        site         => $zero_site,
+        auth_content => secret('misc/zerofetcher.auth'),
+    }
 }
