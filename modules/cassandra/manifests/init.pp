@@ -218,12 +218,14 @@
 
 class cassandra(
     $cluster_name                     = 'Test Cluster',
+    $instances                        = undef,
     $seeds                            = [$::ipaddress],
     $num_tokens                       = 256,
     $authenticator                    = true,
     $authorizor                       = true,
     $data_file_directories            = ['/var/lib/cassandra/data'],
     $commitlog_directory              = '/var/lib/cassandra/commitlog',
+    $heapdump_directory               = '/var/lib/cassandra',
     $disk_failure_policy              = 'stop',
     $row_cache_size_in_mb             = 200,
     $memory_allocator                 = 'JEMallocAllocator',
@@ -323,7 +325,6 @@ class cassandra(
     if (empty($data_file_directories)) {
         fail('data_file_directories must not be empty')
     }
-
 
     # Choose real authenticator and authorizor values
     $authenticator_value = $authenticator ? {
@@ -437,14 +438,6 @@ class cassandra(
         }
     }
 
-    file { '/etc/default/cassandra':
-        content => template("${module_name}/cassandra.default.erb"),
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0444',
-        require => Package['cassandra'],
-    }
-
     # cassandra-rackdc.properties is used by the
     # GossipingPropertyFileSnitch.  Only render
     # it if we are using that endpoint_snitch.
@@ -465,6 +458,18 @@ class cassandra(
     # PropertyFileSnitch, which uses these files.
     file { ['/etc/cassandra/cassandra-topology.properties', '/etc/cassandra/cassandra-topology.yaml']:
         ensure => 'absent',
+    }
+
+    # nodetool wrapper to handle multiple instances, for each instance there
+    # will be symlinks from /usr/local/bin/nodetool-<INSTANCE_NAME> to
+    # nodetool-instance
+    file { '/usr/local/bin/nodetool-instance':
+        ensure  => present,
+        source  => "puppet:///modules/${module_name}/nodetool-instance",
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0555',
+        require => Package['cassandra'],
     }
 
     file { '/etc/cassandra.in.sh':

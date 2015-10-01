@@ -33,6 +33,13 @@ class cassandra::logging(
         mode    => '0444',
     }
 
+    file { '/etc/cassandra/logback-tools.xml':
+        source  => "puppet:///modules/${module_name}/logback-tools.xml",
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0444',
+    }
+
     package { 'cassandra/logstash-logback-encoder':
         ensure   => present,
         provider => 'trebuchet',
