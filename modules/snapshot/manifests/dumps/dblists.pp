@@ -16,6 +16,8 @@ class snapshot::dumps::dblists($enable=true, $hugewikis_enable=false) {
 
         $skipnone_dblist = ''
 
+        $globalusage_dblist = 'commonswiki'
+
         include snapshot::dirs
 
         file { "${snapshot::dirs::dumpsdir}/dblists":
@@ -59,6 +61,14 @@ class snapshot::dumps::dblists($enable=true, $hugewikis_enable=false) {
             owner   => 'root',
             group   => 'root',
             content => "${skipnone_dblist}\n",
+        }
+        file { "${snapshot::dirs::dumpsdir}/dblists/globalusage.dblist":
+            ensure  => 'present',
+            path    => "${snapshot::dirs::dumpsdir}/dblists/globalusage.dblist",
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            content => "${globalusage_dblist}\n",
         }
 
         $warning = "The files in this directory are maintained by puppet!\n"
