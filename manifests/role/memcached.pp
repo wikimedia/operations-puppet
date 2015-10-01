@@ -79,6 +79,11 @@ class role::memcached {
         minute  => fqdn_rand(59, 'memkeys'),
     }
 
+    ferm::service {'redis_memcached_role':
+        proto    => 'tcp',
+        port     => '6379',
+    }
+
     rsyslog::conf { 'memkeys':
         content  => template('memcached/rsyslog.conf.erb'),
         priority => 40,

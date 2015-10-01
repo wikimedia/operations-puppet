@@ -13,4 +13,9 @@ class role::abacist {
     }
 
     Service['redis-server'] ~> Service['abacist']
+
+    ferm::service {'redis_abacist':
+        proto    => 'tcp',
+        port     => '6379',
+    }
 }
