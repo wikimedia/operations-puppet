@@ -1224,7 +1224,7 @@ users:
         jkrauska@wmf-2013-10]
     uid: 3874
   handrade:
-    ensure: abenst
+    ensure: absent
     gid: 500
     name: handrade
     realname: Henrique Andrade
