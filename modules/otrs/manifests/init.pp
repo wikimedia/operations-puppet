@@ -131,4 +131,16 @@ class otrs(
         ensure => link,
         target => '/opt/otrs/Kernel/Output/HTML/Standard',
     }
+
+    base::service_unit { 'otrs-scheduler':
+        ensure  => present,
+        upstart => false,
+        systemd => true,
+        refresh => true,
+        service_params => {
+            enable     => true,
+            hasstatus  => true,
+            hasrestart => false,
+        }
+    }
 }
