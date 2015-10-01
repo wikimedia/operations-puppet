@@ -68,6 +68,11 @@ sub Load {
     # $Self->{SessionUseCookie} = 0;
     # $Self->{CheckMXRecord} = 0;
 
+    # Disable remote IP checks for sessions. We use Cookies over TLS so we
+    # don't need this extra check.  Having it enabled is actually hurtful, as
+    # it logs out users that e.g. use IPv6 with privacy extensions enabled.
+    $Self->{SessionCheckRemoteIP} = 0;
+
     $Self->{CheckEmailInvalidAddress} = '@(aaaaarenulxxxx)\.(..|...)$';
 
     # ---------------------------------------------------- #
