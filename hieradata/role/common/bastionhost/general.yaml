@@ -11,4 +11,7 @@ admin::groups:
   - restricted
   - parsoid-admin
   - ocg-render-admins
+  - researchers
+  - statistics-users
+  - statistics-privatedata-users
   - bastiononly
