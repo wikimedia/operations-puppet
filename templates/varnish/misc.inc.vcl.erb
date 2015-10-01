@@ -42,7 +42,15 @@ sub vcl_recv {
     } elsif (req.http.Host == "servermon.wikimedia.org") {
         set req.backend = netmon1001;
     } elsif (req.http.Host == "otrs-test.wikimedia.org") {
-        set req.backend = mendelevium;
+        if (req.http.X-Forwarded-Proto != "https") {
+            set req.http.Location = "https://" + req.http.Host + req.url;
+            // Use a custom 755 error code to indicate internally
+            // that we are forcing a 301 redirect to https.
+            error 755 "TLS Redirect";
+        }
+        else {
+            set req.backend = mendelevium;
+        }
         // No caching of OTRS for now
         return (pass);
     } elsif (req.http.Host == "people.wikimedia.org") {
