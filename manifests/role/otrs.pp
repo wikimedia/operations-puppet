@@ -15,9 +15,12 @@ class role::otrs {
     $otrs_database_pw   = $::passwords::mysql::otrs::pass
     $exim_database_pass = $passwords::exim::otrs_mysql_password
 
+    $otrs_database_host = hiera('otrs::otrs_database_host')
+    $otrs_database_name = hiera('otrs::otrs_database_name')
+
     class { '::otrs':
-        otrs_database_host => 'm2-master.eqiad.wmnet',
-        otrs_database_name => 'otrs',
+        otrs_database_host => $otrs_database_host,
+        otrs_database_name => $otrs_database_name,
         otrs_database_user => $otrs_database_user,
         otrs_database_pw   => $otrs_database_pw,
         exim_database_name => 'otrs',
