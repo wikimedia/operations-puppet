@@ -135,6 +135,7 @@ class toollabs::exec_environ {
         'python-oursql',               # For danilo et al.
         'python-socketio-client',      # T86015
         'python-wikitools',
+        'python-mwclient',             # for morebots et al
 
         # PHP libraries
         'php5-cli',
