@@ -122,14 +122,17 @@
     #MaxRequestsPerChild 4000
 
     RewriteEngine On
-    RewriteRule ^/otrs$ /otrs/index.pl [R=301]
-    RewriteRule ^/otrs/$ /otrs/index.pl [R=301]
-    RewriteRule ^/$ /otrs/index.pl [R=301]
-    RewriteRule /customer.pl /otrs/index.pl [R=301,L]
+    RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+    RewriteCond %{ENV:RW_PROTO} !=https
+    RewriteRule . - [E=RW_PROTO:http]
+
+    RewriteRule ^/(otrs/?)?$ %{ENV:RW_PROTO}://%{SERVER_NAME}/otrs/index.pl [R=301]
+    RewriteRule /customer.pl %{ENV:RW_PROTO}://%{SERVER_NAME}/otrs/index.pl [R=301,L]
 
     # Fix incorrect TicketID links (common on Wikipedia)
     RewriteCond %{QUERY_STRING} ^Action=AgentTicketZoom\&TicketID=(200[0-9]{13})$
-    RewriteRule ^/otrs/index\.pl /otrs/index.pl?Action=AgentTicketZoom&TicketNumber=%1 [R]
+    RewriteRule ^/otrs/index\.pl %{ENV:RW_PROTO}://%{SERVER_NAME}/otrs/index.pl?Action=AgentTicketZoom&TicketNumber=%1 [R]
+
 </VirtualHost>
 
 # https://ticket.wikimedia.org
