@@ -23,7 +23,7 @@ class varnish::netmapper_update_common {
 }
 
 # Zero-specific update stuff
-class varnish::zero_update($site, $auth_content, $hour = '*', $minute = '*/5') {
+class varnish::zero_update($site, $auth_content) {
     require 'varnish::netmapper_update_common'
 
     package { 'python-requests':
@@ -62,11 +62,15 @@ class varnish::zero_update($site, $auth_content, $hour = '*', $minute = '*/5') {
         require => File['/etc/zerofetcher/zerofetcher.auth'],
     }
 
+    $m15 = fqdn_rand(15, 'fbba09c80d01946cb219d0c92bd5fb05')
+    $m_ary = [ $m15, ($m15 + 15), ($m15 + 30), ($m15 + 45) ]
+    $minutes = join($m_ary, ",")
+
     cron { 'zero_update':
         user    => 'netmap',
         command => $cmd,
-        hour    => $hour,
-        minute  => $minute,
+        minute  => $minutes,
+        hour    => '*',
         require => File['/etc/zerofetcher/zerofetcher.auth'],
     }
 }
