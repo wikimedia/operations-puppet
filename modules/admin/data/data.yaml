@@ -2,8 +2,8 @@ groups:
   absent:
     description: meta group for absented users
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
-              howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz, mwalker,
-              nimishg, rainman, ssmith, swalling, sumanah, werdna]
+              handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
+              mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -104,7 +104,7 @@ groups:
     gid: 714
     description: users with access to research db
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
-              dduvall, ellery, ezachte, gilles, haithams, halfak, handrade,
+              dduvall, ellery, ezachte, gilles, haithams, halfak,
               ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
               kleduc, leila, mattflaschen, milimetric, nettrom, bearloga,
               nuria, ori, otto, springle, tnegrin, yurik, yuvipanda,
@@ -173,7 +173,7 @@ groups:
                  stat1002 to access webrequest logs in the Hadoop cluster
                  you should put them in the analytics-privatedata-users
                  group.
-    members: [handrade, haithams, ezachte, milimetric, dartar, yurik,
+    members: [haithams, ezachte, milimetric, dartar, yurik,
               halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
               ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, rmoen, tbayer, joal, ashwinpp,
@@ -185,7 +185,7 @@ groups:
     members: [dartar, halfak, ironholds, jdlrobson, jmorgan, bearloga,
               mattflaschen, mhurd, yurik, awight, jforrester,
               tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
-              dbrant, tgr, handrade, dr0ptp4kt, brion, bsitzmann,
+              dbrant, tgr, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
               neilpquinn-wmf, maxsem, jminor]
@@ -1224,12 +1224,11 @@ users:
         jkrauska@wmf-2013-10]
     uid: 3874
   handrade:
-    ensure: present
+    ensure: abenst
     gid: 500
     name: handrade
     realname: Henrique Andrade
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQChbQJJVbZV7Nh+wq0VKfMaWfrIhmpbpHe6xKbJDJtbz1QOcEJJJzz5mSBkf0yEVypvlQgRs0YPbY7TBaXQ0DK2qjJvRjYQz6AFEqAxhjjtB6YcCqGb1XrVqhmVpRW8E4zpYzdCrFAKhEZrShFvTh19tx2tqJyh2AWV/KqJOx2/VTXz4+fhqZYzuLEdnQIxw4dkUHfHmiJi1gPRatv+chFP5snAAjs0ArZZXkVVyWhCS6kv4hC2objC5vKNFYsAEvsv4QCIRnZHkvdNpa8nsVKCg4iq5bhVkt+98nybQAFVfsN9eOU1a8nYzuDrzdze2CcBOTy483KMyomUZepxBjjf
-        handrade@administrator-Dell-System-XPS-L322X]
+    ssh_keys: []
     uid: 633
   bsitzmann:
     ensure: present
