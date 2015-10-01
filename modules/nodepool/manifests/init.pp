@@ -203,6 +203,9 @@ class nodepool(
     }
     # Private SSH key
     file { '/var/lib/nodepool/.ssh/dib_jenkins_id_rsa':
+        ensure => absent,
+    }
+    file { '/var/lib/nodepool/.ssh/id_rsa':
         ensure  => present,
         content => $jenkins_ssh_private_key,
         owner   => 'nodepool',
@@ -211,6 +214,9 @@ class nodepool(
     }
     # Matching public SSH key
     file { '/var/lib/nodepool/.ssh/dib_jenkins_id_rsa.pub':
+        ensure => absent,
+    }
+    file { '/var/lib/nodepool/.ssh/id_rsa.pub':
         ensure  => present,
         content => $jenkins_ssh_public_key,
         owner   => 'nodepool',
