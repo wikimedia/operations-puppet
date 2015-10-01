@@ -27,6 +27,7 @@ import subprocess
 import glob
 import tempfile
 import datetime
+import urlparse
 
 
 def file_exists(fname):
@@ -48,8 +49,7 @@ def parse_options():
                         help="output filename",
                         required=True)
     parser.add_argument('--proxy', '-p', dest="proxy",
-                        help="HTTP proxy host:port to use for OCSP request",
-                        required=True)
+                        help="HTTP proxy host:port to use for OCSP request")
     parser.add_argument('--ca-certs', '-d', dest="cadir",
                         help="SSL CA certificates directory",
                         default='/etc/ssl/certs')
@@ -73,8 +73,7 @@ def check_output_errtext(args):
     (p_out, p_err) = p.communicate()
     if p.returncode != 0:
         sys.stderr.write("Command %s failed with exit code %i, stderr:\n%s" %
-                         (p.args, p.returncode, p_err))
-        raise
+                         (" ".join(args), p.returncode, p_err))
     return (p_out, p_err)
 
 
@@ -168,8 +167,12 @@ def certs_fetch_ocsp(out_temp, args):
             "-host", proxy,
         ])
     else:
+        # OpenSSL only speaks HTTP/1.0 and sends no Host header. This doesn't
+        # really work in many OCSP servers, so supply the Host header manually.
+        hosthdr = urlparse.urlparse(ocsp_uri).netloc
         cmd.extend([
             "-url", ocsp_uri,
+            "-header", "Host", hosthdr,
         ])
 
     for cert in certs:
