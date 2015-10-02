@@ -7,7 +7,11 @@
 # * local-relay: takes metrics on port 1903 and forwards to all configured
 # carbon-cache processes on the local machine ('carbon-cache' list in config)
 # * frontend-relay: listen on standard port 2003 and mirror metrics to all
-# configured backends ('backends' list in config)
+# configured backends ('backends' list in config).
+#
+# The frontend also supports metric tapping ('teeing' data inline) and
+# metric routing (no duplication) to specific clusters. Respectively via
+# 'cluster_tap' and 'cluster_routes' maps c_relay_settings.
 #
 class graphite::carbon_c_relay( $c_relay_settings ) {
     package { 'carbon-c-relay':
