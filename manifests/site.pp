@@ -293,7 +293,6 @@ node 'bromine.eqiad.wmnet' {
 # http://releases.wikimedia.org
 node 'caesium.eqiad.wmnet' {
     role releases
-    include base::firewall
     include standard
 }
 
