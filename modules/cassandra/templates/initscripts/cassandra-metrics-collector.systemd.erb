@@ -1,0 +1,11 @@
+[Unit]
+Description=cassandra metrics collector
+After=network.target
+
+[Service]
+User=cassandra
+<% if @blacklist %>
+ExecStart=/usr/bin/java -jar /usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar --graphite-host <%= @graphite_host %> --graphite-port <%= @graphite_port %> --filter-config <%= @filter_file %>
+<% else %>
+ExecStart=/usr/bin/java -jar /usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar --graphite-host <%= @graphite_host %> --graphite-port <%= @graphite_port %>
+<% end %>
