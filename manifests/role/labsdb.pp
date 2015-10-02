@@ -33,6 +33,7 @@ class role::labs::db::slave {
     }
     include role::mariadb::grants
     include role::mariadb::monitor
+	include role::mariadb::ferm
 
     class { 'mariadb::config':
         prompt    => "TOOLSDB slave",
@@ -42,6 +43,7 @@ class role::labs::db::slave {
         tmpdir    => '/tmp',
         read_only => 'ON',
     }
+	
 
     #mariadb::monitor_replication { 'tools':
     #    multisource   => false,
