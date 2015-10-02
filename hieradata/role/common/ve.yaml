@@ -1,2 +1,5 @@
 admin::groups:
   - chromium-admin
+debdeploy::grains:
+  debdeploy-ve:
+    value: standard
