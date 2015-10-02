@@ -51,7 +51,10 @@ define tlsproxy::localssl(
     }
 
     if $do_ocsp {
-        tlsproxy::ocsp_stapler { $name: certs => $certs }
+        tlsproxy::ocsp_stapler { $name:
+            certs  => $certs,
+            before => Service['nginx'],
+        }
     }
 
     nginx::site { $name:

@@ -14,7 +14,7 @@ define tlsproxy::ocsp_stapler($certs) {
     exec { "${title}-create-ocsp":
         command => "/usr/local/sbin/update-ocsp -p ${proxy} ${ocsp_args}",
         creates => $output,
-        before  => Service['nginx']
+        require => Sslcert::Certificate[$certs],
     }
 
     # Configuration file for ocsp_updater
@@ -24,7 +24,4 @@ define tlsproxy::ocsp_stapler($certs) {
         mode  => '0444',
         content => "${ocsp_args}\n";
     }
-
-    # This should ideally only be for the ones in $certs, but that's a PITA...
-    Sslcert::Certificate<| |> -> Exec["${title}-create-ocsp"]
 }
