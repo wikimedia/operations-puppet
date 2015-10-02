@@ -26,6 +26,21 @@ class tlsproxy::ocsp_updater {
         mode   => '0555',
     }
 
+    file { '/etc/update-ocsp.d/hooks':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    file { '/etc/update-ocsp.d/hooks/nginx-reload':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/tlsproxy/update-ocsp-nginx-hook',
+    }
+
     cron { 'update-ocsp-all':
         command => '/usr/local/sbin/update-ocsp-all',
         minute  => fqdn_rand(60, '1adf3dd699e51805'),

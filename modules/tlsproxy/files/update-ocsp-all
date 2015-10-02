@@ -15,6 +15,6 @@ for config in /etc/update-ocsp.d/*.conf; do
     fi
 done
 
-/usr/sbin/service nginx reload >/dev/null 2>&1 || exit 99
+run-parts /etc/update-ocsp.d/hooks
 
 exit $some_failed
