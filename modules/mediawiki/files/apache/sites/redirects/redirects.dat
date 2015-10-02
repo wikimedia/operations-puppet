@@ -227,8 +227,6 @@ rewrite	wiki-pedia.org	//www.wikipedia.org
 funnel	*visualwikipedia.com	//www.wikipedia.org
 funnel	*visualwikipedia.net	//www.wikipedia.org
 funnel	*webhostingwikipedia.com	//www.wikipedia.org
-funnel	*wikifamily.com	//www.wikipedia.org
-funnel	*wikifamily.org	//www.wikipedia.org
 
 # wikipedia typo domains to www. instead of en - RT #4679,#4681
 funnel	*wiikipedia.com	//www.wikipedia.org
