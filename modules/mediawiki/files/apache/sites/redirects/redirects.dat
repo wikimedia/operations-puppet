@@ -372,10 +372,6 @@ rewrite	integration.mediawiki.org	https://integration.wikimedia.org
 funnel	docs.mediawiki.org	https://doc.wikimedia.org
 funnel	docs.wikimedia.org	https://doc.wikimedia.org
 
-rewrite	*softwarewikipedia.com	//www.mediawiki.org
-rewrite	*softwarewikipedia.net	//www.mediawiki.org
-rewrite	*softwarewikipedia.org	//www.mediawiki.org
-
 rewrite	nostalgia.wikimedia.org	//nostalgia.wikipedia.org
 
 rewrite	mail.wikipedia.org	https://lists.wikimedia.org
