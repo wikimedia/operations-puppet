@@ -3,12 +3,12 @@
 # volumes created by replication
 #
 # Parameters:
-#   volume_group = volume group to clean
 #   keep_free    = free space to keep (in terabytes)
+#   volume_group = volume group to clean
 #
 define labstore::fileserver::cleanup_snapshots(
-    $volume_group = $title,
     $keep_free,
+    $volume_group = $title,
 ) {
     base::service_unit { "cleanup-snapshots-${volume_group}":
         template_name   => 'cleanup-snapshots',
