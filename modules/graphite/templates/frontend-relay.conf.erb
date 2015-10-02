@@ -5,6 +5,25 @@ cluster backends
   <% end -%>
   ;
 
+
+<% @c_relay_settings['cluster_tap'].each do |tap| -%>
+# duplicate (tap) this metric to <%= tap[1] %>
+match <%= tap[0] %>
+  send to <%= tap[1] %>
+  ;
+
+<% end -%>
+
+<% @c_relay_settings['cluster_routes'].each do |route| -%>
+# route this metric to <%= route[1] %>, don't send to backends
+match <%= route[0] %>
+  send to <%= route[1] %>
+  stop
+  ;
+
+<% end -%>
+
+# catch-all, send to backends if it made this far
 match *
   send to backends
   ;
