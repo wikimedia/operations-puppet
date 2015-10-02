@@ -1,6 +1,0 @@
-# installed by puppet
-
-MAILTO="root@wikimedia.org"
-
-# check scheduler status
-*/5 * * * *  otrs /opt/otrs/bin/otrs.Scheduler.pl -w 1 > /dev/null 2>&1

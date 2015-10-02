@@ -148,12 +148,12 @@ class otrs(
                 hasrestart => false,
             }
         }
+        # OTRS normally ships a watchdog scheduler cron entry that watches the
+        # scheduler and restarts it if it dies. That mode unfortunately is not
+        # compatible with systemd. Purge the scheduler and rely on systemd to
+        # watch over the scheduler
         file { '/etc/cron.d/otrs-scheduler':
-            ensure => 'file',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/otrs/crontab.otrs-scheduler',
+            ensure => absent,
         }
     }
 }

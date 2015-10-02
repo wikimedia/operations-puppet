@@ -26,3 +26,6 @@ MAILTO="root@wikimedia.org"
 
 # unlock old locked tickets hourly
 35 * * * *   otrs /opt/otrs/bin/otrs.UnlockTickets.pl --timeout > /dev/null 2>&1
+
+# NOTE: This is here for completeness. It is NOT to be used under systemd otherwise it WILL cause problems
+# */5 * * * *  otrs /opt/otrs/bin/otrs.Scheduler.pl -w 1 > /dev/null 2>&1
