@@ -5,6 +5,21 @@ cluster backends
   <% end -%>
   ;
 
+# metrics 'tapped', i.e. pass through
+<% @c_relay_settings['cluster_tap'].each do |tap| -%>
+match <%= tap[0] %>
+  send to <%= tap[1] %>
+  ;
+<% end -%>
+
+# metrics 'routed' away from this relay towards a cluster
+<% @c_relay_settings['cluster_routes'].each do |route| -%>
+match <%= route[0] %>
+  send to <%= route[1] %>
+  stop
+  ;
+<% end -%>
+
 match *
   send to backends
   ;
