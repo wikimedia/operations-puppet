@@ -224,8 +224,6 @@ rewrite	*.wikipaedia.net	//*.wikipedia.org
 rewrite	wikipaedia.net	//www.wikipedia.org
 rewrite	wiki-pedia.org	//www.wikipedia.org
 
-funnel	*visualwikipedia.com	//www.wikipedia.org
-funnel	*visualwikipedia.net	//www.wikipedia.org
 funnel	*webhostingwikipedia.com	//www.wikipedia.org
 funnel	*wikifamily.com	//www.wikipedia.org
 funnel	*wikifamily.org	//www.wikipedia.org
