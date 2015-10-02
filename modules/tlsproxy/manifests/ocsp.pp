@@ -1,15 +1,9 @@
-# == Class: tlsproxy::ocsp_updater
-#
-# This class defines a machine-global cronjob which keeps the OCSP Stapling
-# files defined through tlsproxy::ocsp_stapler up to date at runtime.
-#
-# Note that everything about how we time/check this stuff today makes
-# assumptions based on GlobalSign's OCSP validity time windows.  In the
-# future, it would be better to find a way to make the cron/check -timing
-# a bit more adaptive...
-#
+# == Class: tlsproxy::ocsp
 
-class tlsproxy::ocsp_updater {
+class tlsproxy::ocsp {
+    # nginx does not automatically pick up new OCSP responses from the
+    # filesystem. Install a hook for update-ocsp that reloads nginx after
+    # fetching new responses.
     sslcert::ocsp::hook { 'nginx-reload':
         ensure => 'present',
         source => 'puppet:///modules/tlsproxy/update-ocsp-nginx-hook',
