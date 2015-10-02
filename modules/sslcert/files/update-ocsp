@@ -23,6 +23,7 @@ import re
 import sys
 import errno
 import argparse
+import ConfigParser
 import subprocess
 import glob
 import tempfile
@@ -40,26 +41,51 @@ def file_exists(fname):
 def parse_options():
     """Parse command-line options, return args hash"""
     parser = argparse.ArgumentParser(description="OCSP Fetcher")
-    parser.add_argument('--certificate', '-c', dest="certs",
-                        type=file_exists,
+
+    # read options from a config file first
+    parser.add_argument("--config", "-f",
+                        type=file_exists, metavar="FILE",
+                        help="Specify config file")
+
+    args, argv = parser.parse_known_args()
+    defaults = {}
+    if args.config:
+        config = ConfigParser.SafeConfigParser()
+        config.read([args.config])
+        defaults = dict(config.items("Options"))
+
+        # Handle the list of certificates (separated by comma) manually.
+        # While at it, also allow the simple form of "Certificate"
+        if 'certificates' in defaults:
+            defaults['certificates'] = defaults['certificates'].split(',')
+        elif 'certificate' in defaults:
+            defaults['certificates'] = [ defaults['certificate'] ]
+            del defaults['certificate']
+
+    parser.set_defaults(**defaults)
+
+    # parse command-line arguments, overriding the config if we have both
+    parser.add_argument('--certificate', '-c', dest="certificates",
+                        type=file_exists, metavar="FILE",
                         action="append",
                         help="certificate filename",
-                        required=True)
+                        required=('certificates' not in defaults))
     parser.add_argument('--output', '-o', dest="output",
+                        metavar="FILE",
                         help="output filename",
-                        required=True)
+                        required=('output' not in defaults))
     parser.add_argument('--proxy', '-p', dest="proxy",
                         help="HTTP proxy host:port to use for OCSP request")
     parser.add_argument('--ca-certs', '-d', dest="cadir",
                         help="SSL CA certificates directory",
                         default='/etc/ssl/certs')
-    parser.add_argument('--time-offset-start', '-s', dest="offset_start",
+    parser.add_argument('--time-offset-start', '-s', dest="time_offset_start",
                         help="validate thisUpdate/NotBefore <= X secs ahead",
                         type=int, default=60)
-    parser.add_argument('--time-offset-end', '-e', dest="offset_end",
+    parser.add_argument('--time-offset-end', '-e', dest="time_offset_end",
                         help="validate nextUpdate >= X secs in the future",
                         type=int, default=3600)
-    parser.add_argument('--min-cert-life', '-m', dest="min_cert",
+    parser.add_argument('--min-cert-life', '-m', dest="min_cert_life",
                         help="validate cert life >= X secs in the future",
                         type=int, default=3600)
 
@@ -135,11 +161,11 @@ def certs_fetch_ocsp(out_temp, args):
     """Fetch validated OCSP response for certs"""
 
     cadir = args.cadir
-    certs = args.certs
+    certs = args.certificates
     proxy = args.proxy
-    o_start = args.offset_start
-    o_end = args.offset_end
-    min_cert = args.min_cert
+    o_start = args.time_offset_start
+    o_end = args.time_offset_end
+    min_cert = args.min_cert_life
 
     issuer_path = cert_get_issuer_filename(certs[0], cadir)
     ocsp_uri = cert_x509_option(certs[0], "ocsp_uri")
