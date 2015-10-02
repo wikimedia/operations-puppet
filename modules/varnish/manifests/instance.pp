@@ -52,11 +52,13 @@ define varnish::instance(
         $inst = $name
     }
 
+    # lint:ignore:quoted_booleans
     if inline_template("<%= @directors.map{|k,v| v['dynamic'] }.include?('yes') %>") == "true" {
         $use_dynamic_directors = true
     } else {
         $use_dynamic_directors = false
     }
+    # lint:endignore
 
     if $use_dynamic_directors {
         varnish::common::directors { $vcl:
