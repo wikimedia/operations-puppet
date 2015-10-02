@@ -16,19 +16,45 @@
 #
 # [*graphite_port*]
 #   What port to send metrics to
+#
+# [*blacklist*]
+#   Array of strings, each is a regular expression of metric names to blacklist
+#   (i.e. don't send to graphite)
 
 class cassandra::metrics(
     $graphite_prefix = "cassandra.${::hostname}",
     $graphite_host   = 'localhost',
     $graphite_port   = '2003',
+    $blacklist       = undef,
 ) {
     validate_string($graphite_prefix)
     validate_string($graphite_host)
     validate_string($graphite_port)
+    if defined($blacklist) {
+        validate_array($blacklist)
+    }
+
+    $filter_file   = '/etc/cassandra-metrics-collector/filter.yaml'
+    $collector_jar = '/usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar'
 
     package { 'cassandra/metrics-collector':
         ensure   => present,
         provider => 'trebuchet',
+    }
+
+    file { '/etc/cassandra-metrics-collector':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        ensure => 'directory',
+    }
+
+    file { $filter_file:
+        ensure  => 'present',
+        content => template("${module_name}/metrics-filter.yaml.erb"),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     file { '/usr/local/lib/cassandra-metrics-collector':
@@ -38,25 +64,26 @@ class cassandra::metrics(
         ensure => 'directory',
     }
 
-    file { '/usr/local/lib/cassandra-metrics-collector/cassandra-metrics-collector.jar':
+    file { $collector_jar:
         ensure => 'link',
-        target => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-1.0.0-20150810.174059-7-jar-with-dependencies.jar',
+        target => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-2.0.0-20151001.182133-1-jar-with-dependencies.jar',
         require => Package['cassandra/metrics-collector'],
-    }
-
-    file { '/usr/local/bin/cassandra-metrics-collector':
-        source => "puppet:///modules/${module_name}/cassandra-metrics-collector",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
     }
 
     cron { 'cassandra-metrics-collector':
-        ensure  => present,
-        user    => 'cassandra',
-        command => "flock --wait 2 /tmp/cassandra-metrics-collector.lock /usr/local/bin/cassandra-metrics-collector --graphite-host ${graphite_host} --graphite-port ${graphite_port} --prefix ${graphite_prefix} >/dev/null 2>&1",
-        minute  => '*',
-        require => Package['cassandra/metrics-collector'],
+        ensure => absent,
+        user   => 'cassandra',
+    }
+
+    base::service_unit { 'cassandra-metrics-collector':
+        ensure        => present,
+        template_name => 'cassandra-metrics-collector',
+        systemd       => true,
+        refresh       => false,
+        require       => [
+            File[$collector_jar],
+            File[$filter_file],
+        ],
     }
 
     # built-in cassandra metrics reporter, T104208

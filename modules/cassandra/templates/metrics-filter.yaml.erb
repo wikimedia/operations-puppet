@@ -1,0 +1,6 @@
+<% if @blacklist %>
+blacklist:
+  <%- @blacklist.each do |x| -%>
+  - '<%= x %>'
+  <%- end -%>
+<% end %>
