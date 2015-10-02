@@ -1974,7 +1974,6 @@ node 'mw1152.eqiad.wmnet' {
 # mw1153-1160 are imagescalers (trusty)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
     role mediawiki::imagescaler
-    include base::firewall
 }
 
 # mw1161-1188 are apaches
@@ -2052,7 +2051,6 @@ node /^mw208[0-5]\.codfw\.wmnet$/ {
 #mw2086-mw2089 are imagescalers
 node /^mw208[6-9]\.codfw\.wmnet$/ {
     role mediawiki::imagescaler
-    include base::firewall
 }
 
 #mw2090-mw2119 are appservers
@@ -2072,7 +2070,6 @@ node /^mw21([2-3][0-9]|4[0-7])\.codfw\.wmnet$/ {
 #mw2148-mw2151 are imagescalers
 node /^mw21(4[89]|5[01])\.codfw\.wmnet$/ {
     role mediawiki::imagescaler
-    include base::firewall
 }
 
 #mw2152 is a videoscaler

@@ -149,6 +149,7 @@ class role::mediawiki::imagescaler {
 
     include ::mediawiki::multimedia
     include ::role::mediawiki::webserver
+    include base::firewall
 }
 
 class role::mediawiki::videoscaler {
