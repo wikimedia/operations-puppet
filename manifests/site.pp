@@ -66,6 +66,7 @@ node 'analytics1001.eqiad.wmnet' {
     role analytics::hadoop::master
 
     include standard
+    include base::firewall
 }
 
 
