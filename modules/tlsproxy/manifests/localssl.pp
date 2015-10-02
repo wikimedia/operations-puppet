@@ -39,8 +39,6 @@ define tlsproxy::localssl(
 ) {
     require tlsproxy::instance
 
-    sslcert::certificate { $certs: skip_private => $skip_private }
-
     # Ensure that exactly one definition exists with default_server = true
     # if multiple defines have default_server set to true, this
     # resource will conflict.
@@ -50,10 +48,42 @@ define tlsproxy::localssl(
         }
     }
 
+    sslcert::certificate { $certs:
+        skip_private => $skip_private,
+    }
+
     if $do_ocsp {
-        tlsproxy::ocsp_stapler { $name:
+        sslcert::ocsp::hook { 'nginx-reload':
+            ensure => 'present',
+            source => 'puppet:///modules/tlsproxy/update-ocsp-nginx-hook',
+        }
+
+        sslcert::ocsp::conf { $title:
+            proxy  => "webproxy.${::site}.wmnet:8080",
             certs  => $certs,
             before => Service['nginx'],
+        }
+
+        # Generate icinga alert if OCSP files falling out of date due to errors
+        #
+        # Note this makes no provision for un-configured stapling at this time, so
+        # it will generate warnings if you don't clean up old /var/cache/ocsp/
+        # entries after removing a tlsproxy::ocsp_stapler cert from a server!
+        #
+        # The cron above attempts to get fresh data every hour, and a good fresh
+        # fetch of data has a 12H lifetime with the windows we're seeing from
+        # GlobalSign today.
+        #
+        # The crit/warn values of 29100 and 14700 correspond are "8h5m" and
+        # "4h5m", so those are basically warning if 4 updates in a row failed
+        # for a given cert, and critical if 8 updates in a row failed (at which
+        # point we have 4h left to fix the situation before the validity window
+        # expires).
+        $check_args = '-c 29100 -w 14700 -d /var/cache/ocsp -g "*.ocsp"'
+        nrpe::monitor_service { 'ocsp-freshness':
+            description  => 'Freshness of OCSP Stapling files',
+            nrpe_command => "/usr/lib/nagios/plugins/check-fresh-files-in-dir.py ${check_args}",
+            require      => File['/usr/lib/nagios/plugins/check-fresh-files-in-dir.py'],
         }
     }
 
