@@ -215,8 +215,6 @@ rewrite	*.wikipaedia.net	//*.wikipedia.org
 rewrite	wikipaedia.net	//www.wikipedia.org
 rewrite	wiki-pedia.org	//www.wikipedia.org
 
-funnel	*webhostingwikipedia.com	//www.wikipedia.org
-
 # wikipedia typo domains to www. instead of en - RT #4679,#4681
 funnel	*wiikipedia.com	//www.wikipedia.org
 funnel	*wekipedia.com	//www.wikipedia.org
