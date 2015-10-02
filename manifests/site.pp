@@ -75,6 +75,7 @@ node 'analytics1002.eqiad.wmnet' {
     role analytics::hadoop::standby
 
     include standard
+    include base::firewall
 }
 
 
