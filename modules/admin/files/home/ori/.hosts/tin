@@ -32,6 +32,10 @@ looksgood() {
         echo "$(tput setaf 4)Updating $(tput setaf 3; tput bold)${extension}$(tput sgr0)"
         git submodule update --quiet --init --recursive "$extension"
     done < <(git log -p "${prev_head}..HEAD" | grep -Po '(?<= b/)extensions/.*' | sort | uniq)
+    while read -r vendor; do
+        echo "$(tput setaf 4)Updating $(tput setaf 3; tput bold)vendor/$(tput sgr0)"
+        git submodule update --quiet --init --recursive vendor
+    done < <(git log -p "${prev_head}..HEAD" | grep -P '(?<= b/)vendor/.*' | head -1)
     echo
     while read -r commit; do
         change_summary "$commit"
@@ -45,7 +49,7 @@ fetch() {
         git fetch origin 2>&1 >/dev/null
         git --no-pager diff HEAD origin
     else
-        branch_dir=$(find . -maxdepth 1 -type d -iregex "./php-[0-9.]+wmf$1")
+        branch_dir="$(find . -maxdepth 1 -type d -iregex "./php-1.${1}.*-wmf.*" | sort | tail -1)"
         branch="origin/wmf/${branch_dir#./php-}"
         cd "${branch_dir}"
         git fetch 2>&1 >/dev/null
@@ -55,7 +59,7 @@ fetch() {
 
 cdbranch() {
     cd "$MEDIAWIKI_STAGING_DIR"
-    branch_dir=$(find . -maxdepth 1 -type d -iregex "./php-[0-9.]+wmf$1")
+    branch_dir="$(find . -maxdepth 1 -type d -iregex "./php-1.${1}.*-wmf.*" | sort | tail -1)"
     cd "${branch_dir}"
 }
 
