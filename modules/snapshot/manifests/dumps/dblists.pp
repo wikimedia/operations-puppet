@@ -54,6 +54,14 @@ class snapshot::dumps::dblists($enable=true, $hugewikis_enable=false) {
             group   => 'root',
             content => "${skip_dblist}\n",
         }
+        file { "${snapshot::dirs::dumpsdir}/dblists/skipmonitor.dblist":
+            ensure  => 'present',
+            path    => "${snapshot::dirs::dumpsdir}/dblists/skipmonitor.dblist",
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            content => "${excludewikis_dblist}\n",
+        }
         file { "${snapshot::dirs::dumpsdir}/dblists/skipnone.dblist":
             ensure  => 'present',
             path    => "${snapshot::dirs::dumpsdir}/dblists/skipnone.dblist",
