@@ -332,8 +332,6 @@ rewrite	commons.wikipedia.org	//commons.wikimedia.org
 rewrite	bookshelf.wikimedia.org	//outreach.wikimedia.org/wiki/Bookshelf
 
 # Random acquired cruft
-funnel	*wikidisclosure.com	//www.wikimedia.org
-funnel	*wikidisclosure.org	//www.wikimedia.org
 funnel	*wikimaps.com	//www.wikimedia.org
 funnel	*wikimaps.net	//www.wikimedia.org
 funnel	*wikimaps.org	//www.wikimedia.org
