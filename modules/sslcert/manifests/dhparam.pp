@@ -1,7 +1,14 @@
-# Should be required by anything that installs a server certificate.  This
-# ensures we have our dhparam.pem available at a default path for all such
-# servers to use with DHE ciphersuites.  ssl_ciphersuite will conditionally
-# reference this path within nginx/apache config when needed.
+# == Define: sslcert::dhparam
+#
+# Creates a dhparam file available at a default, well-known path. This is
+# needed for servers to use with DHE ciphersuites.
+#
+# === Parameters
+#
+# === Examples
+#
+#  include sslcert::dhparam
+
 class sslcert::dhparam {
     file { '/etc/ssl/dhparam.pem':
         ensure => present,
