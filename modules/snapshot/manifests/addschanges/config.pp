@@ -20,5 +20,21 @@ class snapshot::addschanges::config(
             group   => 'root',
             content => template('snapshot/addschanges.conf.erb'),
         }
+        file { "${snapshot::dirs::addschangesdir}/dblists":
+            ensure => 'directory',
+            path   => "${snapshot::dirs::addschangesdir}/dblists",
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
+        $skipdbs = 'labswiki'
+        file { "${snapshot::dirs::addschangesdir}/dblists/skip.dblist":
+            ensure  => 'present',
+            path    => "${snapshot::dirs::addschangesdir}/dblists/skip.dblist",
+            mode    => '0755',
+            owner   => 'root',
+            group   => 'root',
+            content => "${skipdbs}\n",
+        }
     }
 }
