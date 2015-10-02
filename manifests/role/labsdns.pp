@@ -68,28 +68,8 @@ class role::labsdnsrecursor {
     system::role { 'role::labsdnsrecursor': description => 'Recursive DNS server for Labs instances' }
 
     #  We need to alias some public IPs to their corresponding private IPs.
-    #   FIXME:  these should be automatically synced rather than hard-coded.
-    $nova_floating_ip_aliases = {
-        # eqiad
-        'deployment-cache-text04'   => {public_ip  => '208.80.155.135',
-                                        private_ip => '10.68.18.103' },
-        'deployment-cache-upload04' => {public_ip  => '208.80.155.136',
-                                        private_ip => '10.68.18.109' },
-        'deployment-stream'         => {public_ip  => '208.80.155.138',
-                                        private_ip => '10.68.17.106' },
-        'deployment-cache-mobile04' => {public_ip  => '208.80.155.139',
-                                        private_ip => '10.68.18.110' },
-        'relic'                     => {public_ip  => '208.80.155.197',
-                                        private_ip => '10.68.16.162' },
-        'tools-webproxy'            => {public_ip  => '208.80.155.131',
-                                        private_ip => '10.68.21.81' },
-        'udplog'                    => {public_ip  => '208.80.155.191',
-                                        private_ip => '10.68.16.58' },
-
-        # A wide variety of hosts are reachable via a public web proxy.
-        'labs_shared_proxy' => {public_ip  => '208.80.155.156',
-                                private_ip => '10.68.21.68'},
-    }
+    $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+    $nova_controller_hostname = hiera('labs_nova_controller')
 
     $listen_addresses = $::realm ? {
         'labs'  => [$::ipaddress],
@@ -98,12 +78,25 @@ class role::labsdnsrecursor {
 
     $labs_auth_dns = ipresolve(hiera('labs_dns_host'),4)
 
+    $alias_file = '/etc/powerdns/labs-ip-alias.lua'
     class { '::dnsrecursor':
             listen_addresses         => $listen_addresses,
             allow_from               => $network::constants::all_networks,
-            ip_aliases               => $nova_floating_ip_aliases,
             additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}",
-            auth_zones               => 'labsdb=/var/zones/labsdb'
+            auth_zones               => 'labsdb=/var/zones/labsdb',
+            lua_script               => $alias_file
+    }
+
+    class { '::dnsrecursor::labsaliaser':
+        username   => 'novaadmin',
+        password   => $wikitech_nova_ldap_user_pass,
+        projects   => [
+            'tools',
+            'deployment-prep',
+            'toolserver-legacy',
+            'project-proxy',
+        ],
+        alias_file => $alias_script,
     }
 
     # There are three replica servers (c1, c2, c3).  The mapping of
