@@ -108,15 +108,6 @@ rewrite	nan.wikipedia.org	//zh-min-nan.wikipedia.org
 
 rewrite	zh-tw.wikipedia.org	//zh.wikipedia.org
 
-# RT #4240
-funnel	*wikiartpedia.biz	//www.wikipedia.org
-funnel	*wikiartpedia.co	//www.wikipedia.org
-funnel	*wikiartpedia.info	//www.wikipedia.org
-funnel	*wikiartpedia.me	//www.wikipedia.org
-funnel	*wikiartpedia.mobi	//www.wikipedia.org
-funnel	*wikiartpedia.net	//www.wikipedia.org
-funnel	*wikiartpedia.org	//www.wikipedia.org
-
 # Education program
 
 funnel	educacao.wikimedia.org	//pt.wikipedia.org/wiki/Wikip%C3%A9dia:WU
