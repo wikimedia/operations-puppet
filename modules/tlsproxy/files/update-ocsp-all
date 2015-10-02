@@ -5,18 +5,12 @@ if [ $# != 1 ]; then
     exit 1
 fi
 
-PROXY=$1
-CFG_DIR=/etc/ocsp_updater
-OCSP_DIR=/var/cache/ocsp
-LCERT_DIR=/etc/ssl/localcerts
-
 some_failed=0
 
-for cfg_file in ${CFG_DIR}/*; do
-    ocsp_args=$(cat $cfg_file)
-    /usr/local/sbin/update-ocsp -p $PROXY $ocsp_args
+for config in /etc/update-ocsp.d/*.conf; do
+    /usr/local/sbin/update-ocsp --config $config
     if [ $? -ne 0 ]; then
-        echo "OCSP update failed for $cfg_file ($ocsp_args)"
+        echo "OCSP update failed for $config"
         some_failed=1
     fi
 done
