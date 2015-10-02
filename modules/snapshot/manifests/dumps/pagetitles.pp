@@ -45,7 +45,15 @@ class snapshot::dumps::pagetitles(
         group   => root,
         content => template('snapshot/wq.conf.erb'),
     }
-
+    $skipdbs = 'labswiki'
+    file { "${snapshot::dirs::wikiqueriesdir}/dblists/skip.dblist":
+        ensure  => 'present',
+        path    => "${snapshot::dirs::wikiqueriesdir}/dblists/skip.dblist",
+        mode    => '0644',
+        owner   => root,
+        group   => root,
+        content => "${skipdbs}\n",
+    }
     cron { 'pagetitles-ns0':
         ensure      => $ensure,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
