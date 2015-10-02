@@ -2,25 +2,24 @@
 # https://wiki.openstack.org/wiki/Designate
 class openstack::designate::service ($openstack_version=$::openstack::version, $designateconfig) {
 
-    include openstack::repo
+    require openstack::repo
 
     include passwords::openstack::nova
     $ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
 
-    package { ['python-designateclient',
-                'designate-sink',
-                'designate-common',
-                'designate',
-                'designate-api',
-                'designate-doc',
-                'designate-central',
-                'python-nova-ldap',
-                'python-novaclient',
-                'python-paramiko',
-                'python-nova-fixed-multi' ]:
-        ensure  => present,
-        require => Class['openstack::repo'];
-    }
+    require_package(
+        'python-designateclient',
+        'designate-sink',
+        'designate-common',
+        'designate',
+        'designate-api',
+        'designate-doc',
+        'designate-central',
+        'python-nova-ldap',
+        'python-novaclient',
+        'python-paramiko',
+        'python-nova-fixed-multi'
+    )
 
 
     # This password is to allow designate to write to instance metadata
