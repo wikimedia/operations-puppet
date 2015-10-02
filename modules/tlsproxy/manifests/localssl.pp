@@ -39,8 +39,6 @@ define tlsproxy::localssl(
 ) {
     require tlsproxy::instance
 
-    sslcert::certificate { $certs: skip_private => $skip_private }
-
     # Ensure that exactly one definition exists with default_server = true
     # if multiple defines have default_server set to true, this
     # resource will conflict.
@@ -50,8 +48,15 @@ define tlsproxy::localssl(
         }
     }
 
+    sslcert::certificate { $certs:
+        skip_private => $skip_private,
+    }
+
     if $do_ocsp {
-        tlsproxy::ocsp_stapler { $name:
+        include tlsproxy::ocsp
+
+        sslcert::ocsp::conf { $title:
+            proxy  => "webproxy.${::site}.wmnet:8080",
             certs  => $certs,
             before => Service['nginx'],
         }
