@@ -312,8 +312,21 @@ class role::graphite::production::alerts {
 # Instance is open to all, no password required to see metrics
 class role::graphite::labmon {
     class { 'role::graphite::base':
-        storage_dir => '/srv/carbon',
-        auth        => false,
-        hostname    => 'graphite.wmflabs.org',
+        storage_dir      => '/srv/carbon',
+        auth             => false,
+        hostname         => 'graphite.wmflabs.org',
+        c_relay_settings => {
+            'cluster_tap' => [
+                ['^.*\.cpu\.total.*$', 'graphite_exporter'],
+                ['^.*memory\..*$', 'graphite_exporter'],
+                ['^.*diskspace.*byte_(free|avail)$', 'graphite_exporter'],
+                ['^.*diskspace.*inode_free$', 'graphite_exporter'],
+                ['^.*iostat\..*(reads|writes)_per_second$', 'graphite_exporter'],
+                ['^.*iostat\..*(write_read)_byte_per_second$', 'graphite_exporter'],
+                ['^.*loadavg\.01$', 'graphite_exporter'],
+                ['^.*loadavg\.processes_(running|total)$', 'graphite_exporter'],
+                ['^.*network.*(tx|rx)_byte$', 'graphite_exporter'],
+            ]
+        }
     }
 }
