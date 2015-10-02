@@ -25,23 +25,6 @@ class dnsrecursor(
 
     include network::constants
 
-    $alias_script='/etc/powerdns/ip-alias.lua'
-    if $ip_aliases {
-        file { $alias_script:
-            ensure  => present,
-            require => Package['pdns-recursor'],
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            notify  => Service['pdns-recursor'],
-            content => template('dnsrecursor/ip-alias.lua.erb'),
-        }
-    } else {
-        file { $alias_script:
-            ensure  => absent,
-        }
-    }
-
     file { '/etc/powerdns/recursor.conf':
         ensure  => 'present',
         require => Package['pdns-recursor'],
