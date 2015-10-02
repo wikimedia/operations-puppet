@@ -28,6 +28,10 @@ class role::mail::mx(
         before => Class['exim4'],
     }
 
+    sslcert::ocsp::conf { 'mail.wikimedia.org':
+        before => Class['exim4'],
+    }
+
     class { 'spamassassin':
         required_score   => '4.0',
         use_bayes        => '1',
