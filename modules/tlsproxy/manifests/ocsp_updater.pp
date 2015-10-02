@@ -19,20 +19,20 @@ class tlsproxy::ocsp_updater {
         source => 'puppet:///modules/tlsproxy/update-ocsp-all',
     }
 
-    file { '/etc/ocsp_updater':
-        mode   => '0555',
+    file { '/etc/update-ocsp.d':
+        ensure => 'directory',
         owner  => 'root',
         group  => 'root',
-        ensure => 'directory',
+        mode   => '0555',
     }
 
     cron { 'update-ocsp-all':
-        command => "/usr/local/sbin/update-ocsp-all webproxy.${::site}.wmnet:8080",
+        command => '/usr/local/sbin/update-ocsp-all',
         minute  => fqdn_rand(60, '1adf3dd699e51805'),
         hour    => '*',
         require => [
             File['/usr/local/sbin/update-ocsp-all'],
-            File['/etc/ocsp_updater'],
+            File['/etc/update-ocsp.d'],
         ],
     }
 
