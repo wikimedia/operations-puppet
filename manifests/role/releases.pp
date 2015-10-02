@@ -1,5 +1,6 @@
 class role::releases {
     system::role { 'releases': description => 'Releases webserver' }
+    include base::firewall
 
     monitoring::service { 'http':
         description   => 'HTTP',
