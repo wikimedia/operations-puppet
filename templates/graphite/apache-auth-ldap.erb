@@ -5,6 +5,7 @@
         AuthLDAPBindDN <%= @ldap_binddn %>
         AuthLDAPBindPassword <%= @ldap_bindpass %>
         AuthLDAPURL "<%= @ldap_authurl %>"
+        AuthLDAPRemoteUserAttribute uid
 
         <LimitExcept OPTIONS>
             <% @ldap_groups.each do |group| -%>
