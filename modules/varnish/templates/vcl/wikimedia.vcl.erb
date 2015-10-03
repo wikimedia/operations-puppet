@@ -426,7 +426,7 @@ sub vcl_recv {
 	}
 	<% end -%>
 	
-<% if @vcl_config.fetch("layer", "frontend") == "frontend" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call rewrite_proxy_urls;
 <% end -%>
 
