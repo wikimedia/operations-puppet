@@ -11,11 +11,13 @@
                        'daily', or 'weekly'. (Default: 'daily').
 
    --entrypoint NAME   Analyze logs for this entry point. May be one of
-                       'index', 'api', or 'load'). (Default: 'index').
+                       'all', 'index', 'api', or 'load'). (Default: 'all').
 
    --grep STRING       Only include stacks which include this string
 
-   --count COUNT       Analyze this many of the most recent files.
+   --slice SLICE       Slice of files to analyze, in Python slice notation.
+                       Files are ordered from oldest to newest, so
+                       '--slice=-2:' means the two most recent files.
 
 
   Copyright 2015 Ori Livneh <ori@wikimedia.org>
@@ -36,6 +38,7 @@
 import argparse
 import collections
 import glob
+import operator
 import os.path
 import re
 import sys
@@ -49,31 +52,10 @@ skip_prefixes = ('/srv', 'AutoLoader', 'Curl', 'Database',
                  'MultiWriteBagOStuff')
 
 
-if {'-h', '--help'}.intersection(sys.argv):
-    sys.exit(textwrap.dedent(__doc__))
-
-arg_parser = argparse.ArgumentParser(add_help=False)
-arg_parser.add_argument(
-    '--resolution',
-    default='daily',
-    choices=('hourly', 'daily', 'weekly'),
-)
-arg_parser.add_argument(
-    '--entrypoint',
-    default='index',
-    choices=('index', 'api', 'load'),
-)
-arg_parser.add_argument(
-    '--grep',
-    default='',
-    help='only include stacks which include this string',
-)
-arg_parser.add_argument(
-    '--count',
-    default=2,
-    type=int,
-)
-args = arg_parser.parse_args()
+def slicer(spec):
+    args = re.match('(-?[0-9]+)?(?::(-?[0-9]+))?', spec).groups()
+    args = [int(arg) if arg is not None else arg for arg in args]
+    return lambda seq: operator.getitem(seq, slice(*args))
 
 
 def should_skip(f):
@@ -105,14 +87,41 @@ def iter_funcs(files):
                     yield func
 
 
+if {'-h', '--help'}.intersection(sys.argv):
+    sys.exit(textwrap.dedent(__doc__))
+
+arg_parser = argparse.ArgumentParser(add_help=False)
+arg_parser.add_argument(
+    '--resolution',
+    default='daily',
+    choices=('hourly', 'daily', 'weekly'),
+)
+arg_parser.add_argument(
+    '--entrypoint',
+    choices=('all', 'index', 'api', 'load'),
+    default='all',
+)
+arg_parser.add_argument(
+    '--grep',
+    default='',
+    help='only include stacks which include this string',
+)
+arg_parser.add_argument(
+    '--slice',
+    default='-2:',
+    help='slice of files to consider',
+    type=slicer,
+)
+args = arg_parser.parse_args()
+
 glob_pattern = '/srv/xenon/logs/%(resolution)s/*.%(entrypoint)s.log'
 files = glob.glob(glob_pattern % vars(args))
 files.sort(key=os.path.getctime)
-files = files[-(args.count):]
+files = args.slice(files)
 print(files)
 counter = collections.Counter(iter_funcs(files))
 total = sum(1 for _ in counter.elements())
-for idx, (func, count) in enumerate(counter.most_common(40)):
+for idx, (func, count) in enumerate(counter.most_common(20)):
     ordinal = idx + 1
     percent = 100.0 * count / total
     print('%02d) %s (%d samples; %.2f%%)' % (ordinal, func, count, percent))
