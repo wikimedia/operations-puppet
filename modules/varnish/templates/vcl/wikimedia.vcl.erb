@@ -52,6 +52,11 @@ end
 include "geoip.inc.vcl";
 <% end -%>
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+// but defines last_access_* subs to use from recv/deliver for analytics
+include "last-access.inc.vcl";
+<% end -%>
+
 # ACLs
 
 acl purge { 
@@ -475,6 +480,60 @@ sub recv_fe_ip_processing {
 	//     Zero-specific flags appended, e.g.: "123-45|wap|residential"
 }
 
+// Standard X-Analytics for vcl_deliver on frontends only
+sub deliver_analytics {
+	if (req.http.X-Carrier) {
+		// Some carriers have multiple ip ranges with different rules. IP set name is added at
+		// the end of the X-CS, e.g. "123-45|wap" to indicate a wap gateway with their own IPs.
+		// To minimize analytics impact, the 'zero' value in X-Analytics will stay as carrier id,
+		// and the additional suffix will go into the 'zeronet=xxx' if it was present.
+
+		// The following is strictly related to X-Analytics, not for other outbound headers.
+		// Remove everything before and including the first '|' char
+		set req.http.X-ZEROSFX = regsub(req.http.X-Carrier, "^[^\|]*\|?", "");
+		if (req.http.X-ZEROSFX != "") {
+			// Remove everything on and after the first '|' char
+			set req.http.X-Temp1 = "zero=" + regsub(req.http.X-Carrier, "\|.*", "") + ";zeronet=" + req.http.X-ZEROSFX;
+		} else {
+			set req.http.X-Temp1 = "zero=" + req.http.X-Carrier;
+		}
+
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";" + req.http.X-Temp1;
+		} else {
+			set resp.http.X-Analytics = req.http.X-Temp1;
+		}
+
+		unset req.http.X-Temp1; // clear temp var
+	}
+
+	if (req.http.X-Trusted-Proxy) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=" + req.http.X-Trusted-Proxy;
+		} else {
+			set resp.http.X-Analytics = "proxy=" + req.http.X-Trusted-Proxy;
+		}
+	}
+
+	if (req.http.X-Forwarded-Proto) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";https=1";
+		} else {
+			set resp.http.X-Analytics = "https=1";
+		}
+	}
+
+	if (req.http.X-WMF-UUID) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuuid=" + req.http.X-WMF-UUID;
+		} else {
+			set resp.http.X-Analytics = "wmfuuid=" + req.http.X-WMF-UUID;
+		}
+	}
+
+	call analytics_last_access_deliver;
+}
+
 <% end %>
 
 sub vcl_init {
@@ -565,6 +624,11 @@ sub vcl_recv {
 	}
 <% end -%>
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	if(req.restarts == 0) {
+		call analytics_last_access_recv;
+	}
+<% end -%>
 	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
 }
 
@@ -660,6 +724,10 @@ sub vcl_deliver {
 	call https_deliver_hsts;
 <% end -%>
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	call deliver_analytics;
+<% end -%>
+
 	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
 }
 
@@ -705,5 +773,10 @@ sub vcl_hash {
 }
 
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+// these have vcl_recv and/or vcl_deliver for analytics purposes
+include "provenance.inc.vcl";
+include "via.inc.vcl";
+<% end -%>
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
