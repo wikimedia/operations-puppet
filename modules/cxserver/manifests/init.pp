@@ -43,7 +43,7 @@ class cxserver(
     $log_dir = '/var/log/cxserver',
     $logstash_host  = undef,
     $logstash_port  = 12201,
-    $parsoid = 'http://parsoid-lb.eqiad.wikimedia.org',
+    $parsoid = 'http://parsoid-lb.eqiad.wikimedia.org/@lang.wikipedia.org/v3/page/html/@title',
     $restbase = 'https://@lang.wikipedia.org/api/rest_v1/page/html/@title',
     $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
     $yandex_url = undef,
