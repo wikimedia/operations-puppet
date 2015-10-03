@@ -4,13 +4,8 @@
     ServerName <%= @hostname %>
 
     <Location />
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-            Order allow,deny
-            Allow from all
-        </IfVersion>
+        Order allow,deny
+        Allow from all
 
 <%= @apache_auth -%>
 
@@ -21,13 +16,8 @@
     </Location>
 
     <Location ~ "/(render|metrics)">
-        <IfVersion >= 2.4>
-            Require all granted
-        </IfVersion>
-        <IfVersion < 2.4>
-            Satisfy Any
-            Allow from all
-        </IfVersion>
+        Satisfy Any
+        Allow from all
     </Location>
 
 </VirtualHost>
