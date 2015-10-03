@@ -40,9 +40,11 @@ class role::labs::db::slave {
         config    => "mariadb/tools.my.cnf.erb",
         password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/srv/labsdb/data',
-        tmpdir    => '/tmp',
+        tmpdir    => '/srv/labsdb/tmp',
         read_only => 'ON',
     }
+	
+	
 
     #mariadb::monitor_replication { 'tools':
     #    multisource   => false,
