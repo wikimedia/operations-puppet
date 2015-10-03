@@ -29,6 +29,10 @@
 #   Overrides the Documentation link used in the header of the Graphite
 #   Composer (default: 'http://graphite.readthedocs.org/').
 #
+# [*remote_user_auth*]
+#   If true, enable authentication via REMOTE_USER.
+#   See <https://docs.djangoproject.com/en/1.8/howto/auth-remote-user/>.
+#
 # [*cors_origins*]
 #   An optional array of HTTP Origin header values or regexp patterns
 #   for which graphite-web should set CORS headers.
@@ -41,11 +45,16 @@ class graphite::web(
     $memcached_size    = 200,
     $admin_user        = 'admin',
     $documentation_url = 'http://graphite.readthedocs.org/',
+    $remote_user_auth  = false,
     $cors_origins      = undef,
 ) {
     include ::graphite
 
-    package { ['memcached', 'python-memcache', 'graphite-web']: }
+    validate_bool($remote_user_auth)
+
+    require_package('memcached')
+    require_package('python-memcache')
+    require_package('graphite-web')
 
     file { '/etc/graphite/cors.py':
         source  => 'puppet:///modules/graphite/cors.py',
@@ -60,10 +69,7 @@ class graphite::web(
     }
 
 
-    file { [
-        '/var/lib/graphite-web',
-        '/var/log/graphite-web',
-    ]:
+    file { [ '/var/lib/graphite-web', '/var/log/graphite-web' ]:
         ensure  => directory,
         owner   => 'www-data',
         group   => 'www-data',

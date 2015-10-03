@@ -15,6 +15,7 @@ TIME_ZONE = 'Etc/UTC'
 SECRET_KEY = '<%= @secret_key %>'
 DOCUMENTATION_URL = '<%= @documentation_url %>'
 DEFAULT_CACHE_DURATION = 120
+REMOTE_USER_AUTHENTICATION = <% @remote_user_auth.capitalize %>
 
 
 ## Logging
@@ -58,7 +59,7 @@ CARBONLINK_HOSTS = [<%=
 <%- end -%>
 
 
-## CORS and REMOTE_USER-based authentication
+## CORS
 
 from graphite.app_settings import *
 
@@ -66,5 +67,4 @@ CORS_ORIGINS = <%= Array(@cors_origins).inspect %>
 
 MIDDLEWARE_CLASSES += (
     'cors.CorsMiddleware',
-    'django.contrib.auth.middleware.RemoteUserMiddleware',
 )

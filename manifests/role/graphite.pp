@@ -173,6 +173,7 @@ class role::graphite::base(
     class { '::graphite::web':
         admin_user        => $::passwords::graphite::user,
         admin_pass        => $::passwords::graphite::pass,
+        remote_user_auth  => true,
         secret_key        => $::passwords::graphite::secret_key,
         storage_dir       => $carbon_storage_dir,
         documentation_url => '//wikitech.wikimedia.org/wiki/Graphite',
