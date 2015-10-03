@@ -15,7 +15,7 @@ TIME_ZONE = 'Etc/UTC'
 SECRET_KEY = '<%= @secret_key %>'
 DOCUMENTATION_URL = '<%= @documentation_url %>'
 DEFAULT_CACHE_DURATION = 120
-REMOTE_USER_AUTHENTICATION = <% @remote_user_auth.capitalize %>
+REMOTE_USER_AUTHENTICATION = <%= @remote_user_auth ? 'True' : 'False' %>
 
 
 ## Logging
