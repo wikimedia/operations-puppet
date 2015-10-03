@@ -14,7 +14,6 @@
 import argparse
 import logging
 import subprocess
-import json
 
 try:
     NullHandler = logging.NullHandler
@@ -28,22 +27,22 @@ LOG = logging.getLogger(__name__)
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument('--repo', dest='repo', action='store',
-                    help='The repo name that controls the service to restart.')
-    ap.add_argument('--batch', dest='batch', action='store', default='10%',
-                    help='The batch size of the restart. Default: 10%')
-    ap.add_argument('--timeout', dest='timeout', action='store', default='5',
-                    help='Timeout to the publish.runner command. Default: 5 seconds')
-    args = ap.parse_args()
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('--repo', dest='repo', action='store',
+                           help='The repo name that controls the service to restart.')
+    argparser.add_argument('--batch', dest='batch', action='store', default='10%',
+                           help='The batch size of the restart. Default: 10%')
+    argparser.add_argument('--timeout', dest='timeout', action='store', default='5',
+                           help='Timeout to the publish.runner command. Default: 5 seconds')
+    args = argparser.parse_args()
 
     if args.repo:
         repo = args.repo
     else:
-        p = subprocess.Popen("git config deploy.tag-prefix",
-                             shell=True,
-                             stdout=subprocess.PIPE)
-        repo = p.communicate()[0]
+        proc = subprocess.Popen("git config deploy.tag-prefix",
+                                shell=True,
+                                stdout=subprocess.PIPE)
+        repo = proc.communicate()[0]
         repo = repo.strip()
         if not repo:
             LOG.warning('service-restart must be run within a repository or'
@@ -51,32 +50,13 @@ def main():
             raise SystemExit(1)
     cmd = ("sudo salt-call -l quiet --out json publish.runner --timeout {0} "
            "deploy.restart '[{1},{2}]'")
-    p = subprocess.Popen(cmd.format(args.timeout, repo, args.batch),
-                         shell=True,
-                         stdout=subprocess.PIPE)
-    out = p.communicate()[0]
-    ## Disabled until salt bug is fixed:
-    ##   https://github.com/saltstack/salt/issues/9146
-    #LOG.info('Service restart sent to salt. Check the status using:'
-    #         ' deploy-info --repo={0} --restart'.format(repo))
-    ## Display the data directly from the runner return until bug is fixed.
-    try:
-        minion_data = json.loads(out)
-    except (ValueError, AttributeError):
-        LOG.warning('Could not parse salt return; raw output:')
-        LOG.warning(out)
-        raise SystemExit(1)
-    minion_data = minion_data['local']
-    for i in minion_data:
-        try:
-            for minion, data in i.items():
-                try:
-                    LOG.info('{0}: {1}'.format(minion, data['status']))
-                except KeyError:
-                    LOG.info('{0}: No status available'.format(minion))
-        except AttributeError:
-            LOG.error('Got bad return from salt. Here is the raw data:')
-            LOG.error('{}'.format(i))
+    proc = subprocess.Popen(cmd.format(args.timeout, repo, args.batch),
+                            shell=True,
+                            stdout=subprocess.PIPE)
+    proc.communicate()
+    LOG.info('Service restart sent to salt. Check the status using:'
+             ' deploy-info --repo=%s --restart' % repo)
+
 
 if __name__ == "__main__":
     main()
