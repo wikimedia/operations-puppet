@@ -49,6 +49,11 @@ end
 include "geoip.inc.vcl";
 <% end -%>
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+// defines analytics_(recv|deliver) subs
+include "analytics.inc.vcl";
+<% end -%>
+
 # ACLs
 
 acl purge { 
@@ -560,6 +565,11 @@ sub vcl_recv {
 	}
 <% end -%>
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	if(req.restarts == 0) {
+		call analytics_recv;
+	}
+<% end -%>
 	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
 }
 
@@ -643,6 +653,10 @@ sub vcl_deliver {
 
 <% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
 	call https_deliver_hsts;
+<% end -%>
+
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	call analytics_deliver;
 <% end -%>
 
 	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
