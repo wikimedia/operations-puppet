@@ -52,6 +52,11 @@ end
 include "geoip.inc.vcl";
 <% end -%>
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+// but defines analytics_(recv|deliver) subs
+include "analytics.inc.vcl";
+<% end -%>
+
 # ACLs
 
 acl purge { 
@@ -475,8 +480,6 @@ sub recv_fe_ip_processing {
 	//     Zero-specific flags appended, e.g.: "123-45|wap|residential"
 }
 
-<% end %>
-
 sub vcl_init {
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	// again, netmapper only used in frontends, for recv_fe_ip_processing
@@ -565,6 +568,11 @@ sub vcl_recv {
 	}
 <% end -%>
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	if(req.restarts == 0) {
+		call analytics_recv;
+	}
+<% end -%>
 	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
 }
 
@@ -660,6 +668,10 @@ sub vcl_deliver {
 	call https_deliver_hsts;
 <% end -%>
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	call analytics_deliver;
+<% end -%>
+
 	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
 }
 
@@ -703,7 +715,6 @@ sub vcl_hash {
 	}
 	/* Function vcl_hash in <%= @vcl %>.inc.vcl will be appended here */
 }
-
 
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
