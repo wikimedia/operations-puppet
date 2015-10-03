@@ -57,6 +57,10 @@ innodb_write_io_threads        = 8
 innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
 
+# dump and load innodb buffer at start and stop
+innodb_buffer_pool_load_at_startup  = 1
+innodb_buffer_pool_dump_at_shutdown = 1
+
 [mysqldump]
 
 quick
