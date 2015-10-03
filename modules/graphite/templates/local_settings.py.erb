@@ -58,8 +58,13 @@ CARBONLINK_HOSTS = [<%=
 <%- end -%>
 
 
-## CORS
+## CORS and REMOTE_USER-based authentication
 
 from graphite.app_settings import *
-MIDDLEWARE_CLASSES += ('cors.CorsMiddleware',)
+
 CORS_ORIGINS = <%= Array(@cors_origins).inspect %>
+
+MIDDLEWARE_CLASSES += (
+    'cors.CorsMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
+)
