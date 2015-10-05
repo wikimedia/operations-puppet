@@ -84,6 +84,11 @@ class role::memcached {
         port     => '6379',
     }
 
+    ferm::service {'memcached_memcached_role':
+        proto => 'tcp',
+        port  => '11211',
+    }
+
     rsyslog::conf { 'memkeys':
         content  => template('memcached/rsyslog.conf.erb'),
         priority => 40,
