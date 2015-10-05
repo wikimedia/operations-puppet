@@ -306,6 +306,7 @@ class role::mariadb::dbstore(
     }
 
     mariadb::monitor_replication { ['s1','s2','s3','s4','s5','s6','s7','m2','m3']:
+        is_critical  => false,
         lag_warn     => $lag_warn,
         lag_crit     => $lag_crit,
         warn_stopped => $warn_stopped,
