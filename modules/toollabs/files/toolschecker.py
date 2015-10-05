@@ -40,9 +40,8 @@ def puppet_catalog_check():
     fqdn = socket.getfqdn()
     keyfile = "/var/lib/toolschecker/puppetcerts/key.pem"
     certfile = "/var/lib/toolschecker/puppetcerts/cert.pem"
-    cafile = "/var/lib/toolschecker/puppetcerts/ca.pem"
     url = "https://%s:8140/production/catalog/%s" % (puppetmaster, fqdn)
-    request = requests.get(url, verify=cafile, cert=(certfile, keyfile))
+    request = requests.get(url, verify=True, cert=(certfile, keyfile))
     if request.status_code != 200:
         return False
     if 'document_type' in request.json():

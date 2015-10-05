@@ -86,13 +86,6 @@ class toollabs::checker inherits toollabs {
         mode   => '0400',
         source => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem"
     }
-    file { '/var/lib/toolschecker/puppetcerts/ca.pem':
-        ensure => present,
-        owner  => "${::labsproject}.toolschecker",
-        group  => 'www-data',
-        mode   => '0400',
-        source => '/var/lib/puppet/ssl/certs/ca.pem'
-    }
 
     file { '/etc/init/toolschecker.conf':
         ensure  => present,
