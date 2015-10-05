@@ -10,6 +10,10 @@ class icinga::monitor::legal {
         ip_address => 'en.m.wikipedia.org',
     }
 
+    @monitoring::host { 'en.wikibooks.org':
+        host_fqdn => 'en.wikibooks.org'
+    }
+
     monitoring::service { 'en.wp.o-legal-html':
         description           => 'Ensure legal html en.wp',
         check_command         => 'check_legal_html!https://en.wikipedia.org/wiki/Main_Page!desktop_enwp',
