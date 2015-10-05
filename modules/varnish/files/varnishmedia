@@ -69,7 +69,7 @@ class MediaVarnishLogProcessor(varnishprocessor.VarnishLogProcessor):
             ('m', 'RxURL:/thumb/'), # Only look at thumb requests
             ('n', 'frontend'),      # Consider the frontend Varnish instance
             ('i', 'TxStatus'),      # Get TxStatus for the HTTP status code
-            ('i', 'RxURL'),         # Get RxURL to match /w/load.php
+            ('i', 'RxURL'),         # Get RxURL to delimit requests
             ('i', 'ReqEnd'),        # Get ReqEnd to delimit requests
         ), self.handle_log_record)
 
