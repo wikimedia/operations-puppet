@@ -1,4 +1,5 @@
 # Root for all elasticsearch admins
 elasticsearch::rack: c7
-admin::groups:
-  - elasticsearch-roots
+
+elasticsearch::master_eligible: true
+elasticsearch::minimum_master_nodes: 1
