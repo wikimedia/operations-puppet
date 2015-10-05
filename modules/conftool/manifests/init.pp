@@ -26,13 +26,7 @@ class conftool(
     }
 
     if $use_ssl {
-        file { '/etc/conftool/ca.pem':
-            ensure => present,
-            owner  => root,
-            group  => root,
-            mode   => '0444',
-            source => "${ssl_dir}/certs/ca.pem",
-        }
+        include base::puppet::ca
     }
 
 }
