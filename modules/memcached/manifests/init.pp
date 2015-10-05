@@ -60,11 +60,6 @@ class memcached(
         }
     }
 
-    ferm::service {'memcached':
-        proto => 'tcp',
-        port  => $port,
-    }
-
     base::service_unit { 'memcached':
         ensure         => present,
         systemd        => true,
