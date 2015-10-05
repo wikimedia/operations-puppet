@@ -1,44 +1,14 @@
 # == Class: cassandra::logging
 #
-# Configure remote logging for Cassandra
+# Configure remote logging requirements for Cassandra
 #
 # === Usage
-# class { '::cassandra::logging':
-#     logstash_host => 'logstash1001.eqiad.wmnet',
-#     logstash_port => 11514,
-# }
+# class { '::cassandra::logging': }
 #
-# === Parameters
-# [*logstash_host*]
-#   The logstash logging server to send to.
-#
-# [*logstash_port*]
-#   The logstash logging server port number.
 
 class cassandra::logging(
-    $logstash_host  = 'logstash1003.eqiad.wmnet',
-    $logstash_port  = 11514,
 ) {
     require ::cassandra
-
-    validate_string($logstash_host)
-    # lint:ignore:only_variable_string
-    validate_re("${logstash_port}", '^[0-9]+$')
-    # lint:endignore
-
-    file { '/etc/cassandra/logback.xml':
-        content => template("${module_name}/logback.xml.erb"),
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0444',
-    }
-
-    file { '/etc/cassandra/logback-tools.xml':
-        source  => "puppet:///modules/${module_name}/logback-tools.xml",
-        owner   => 'cassandra',
-        group   => 'cassandra',
-        mode    => '0444',
-    }
 
     package { 'cassandra/logstash-logback-encoder':
         ensure   => present,
