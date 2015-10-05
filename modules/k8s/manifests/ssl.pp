@@ -1,5 +1,6 @@
 # Copy of etcd::ssl
 # Copies appropriate cert files from the puppet CA infrastructure
+# Also installs the puppet CA system-wide
 # To be usable by the k8s binaries
 # Note: Only copies public components, no private keys
 class k8s::ssl(
@@ -9,6 +10,8 @@ class k8s::ssl(
 ) {
     $puppet_cert_name = $::fqdn
     $ssldir = '/var/lib/puppet/ssl'
+
+    include base::puppet::ssl
 
     file { [
         '/var/lib/kubernetes',
@@ -22,23 +25,12 @@ class k8s::ssl(
         mode   => '0555',
     }
 
-
-    file { '/var/lib/kubernetes/ssl/certs/ca.pem':
-        ensure  => present,
-        owner   => $user,
-        group   => $group,
-        mode    => '0444',
-        source  => "${ssldir}/certs/ca.pem",
-        require => File['/var/lib/kubernetes/ssl/certs'],
-    }
-
     file { '/var/lib/kubernetes/ssl/certs/cert.pem':
         ensure  => present,
         owner   => $user,
         group   => $group,
         mode    => '0400',
         source  => "${ssldir}/certs/${puppet_cert_name}.pem",
-        require => File['/var/lib/kubernetes/ssl/certs/ca.pem'],
     }
 
     if $provide_private {
@@ -48,7 +40,6 @@ class k8s::ssl(
             group   => $group,
             mode    => '0400',
             source  => "${ssldir}/private_keys/${puppet_cert_name}.pem",
-            require => File['/var/lib/kubernetes/ssl/private_keys'],
         }
     }
 }

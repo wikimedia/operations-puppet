@@ -3,6 +3,8 @@ class k8s::flannel(
 ) {
     require_package('flannel')
 
+    include base::puppet::ca
+
     base::service_unit { 'flannel':
         systemd => true,
     }
