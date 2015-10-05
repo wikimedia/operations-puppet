@@ -1,10 +1,14 @@
 # Roles for Kubernetes and co on Tool Labs
 class role::toollabs::etcd {
+    include role::toollabs::puppet::client
+
     # To deny access to etcd - atm the kubernetes master
     # and etcd will be on the same host, so ok to just deny
     # access to everyone else
     include base::firewall
     include toollabs::infrastructure
+
+    include role::toollabs::puppet::client
 
     include etcd
 
@@ -14,7 +18,20 @@ class role::toollabs::etcd {
     }
 }
 
+class role::toollabs::puppet::master {
+    include ::toollabs::infrastructure
+    include ::toollabs;:puppetmaster
+}
+
+class role::toollabs::puppet::client {
+    $master = hiera('puppetmaster')
+    class { '::puppet::self::client':
+        server => $master,
+    }
+}
+
 class role::toollabs::k8s::master {
+    include role::toollabs::puppet::client
     # This requires that etcd is on the same host
     # And is not HA. Will re-evaluate when it is HA
 
@@ -48,6 +65,7 @@ class role::toollabs::k8s::master {
 }
 
 class role::toollabs::k8s::worker {
+    include role::toollabs::puppet::client
     # NOTE: No base::firewall!
     # ferm and kube-proxy will conflict
 
@@ -71,6 +89,8 @@ class role::toollabs::k8s::worker {
 }
 
 class role::toollabs::k8s::webproxy {
+    include role::toollabs::puppet::client
+
     $master_host = hiera('k8s_master')
     $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
 
@@ -90,6 +110,8 @@ class role::toollabs::k8s::webproxy {
 }
 
 class role::toollabs::k8s::bastion {
+    include role::toollabs::puppet::client
+
     # kubectl and things
     include k8s::client
 }
