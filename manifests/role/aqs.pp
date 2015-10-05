@@ -73,16 +73,14 @@ class role::aqs {
         port  => '7231',
     }
 
-    /*
-    TODO: add monitoring once we figure out what metrics we want
-    monitoring::graphite_threshold { 'restbase_analytics_<<some-metric-name>>':
-        description   => 'Analytics RESTBase req/s returning 5xx http://grafana.wikimedia.org/#/dashboard/db/restbase',
-        metric        => '<<the metric and any transformations>>',
-        from          => '10min',
-        warning       => '<<warning threshold>>', # <<explain>>
-        critical      => '<<critical threshold>>', # <<explain>>
-        percentage    => '20',
-        contact_group => 'aqs-admins',
-    }
-    */
+    #TODO: add monitoring once we figure out what metrics we want
+    #monitoring::graphite_threshold { 'restbase_analytics_<<some-metric-name>>':
+        #description   => 'Analytics RESTBase req/s returning 5xx http://grafana.wikimedia.org/#/dashboard/db/restbase',
+        #metric        => '<<the metric and any transformations>>',
+        #from          => '10min',
+        #warning       => '<<warning threshold>>', # <<explain>>
+        #critical      => '<<critical threshold>>', # <<explain>>
+        #percentage    => '20',
+        #contact_group => 'aqs-admins',
+    #}
 }

@@ -63,7 +63,7 @@ define cassandra::instance(
         $data_directory_base = '/var/lib/cassandra'
         $config_directory    = '/etc/cassandra'
         $service_name        = 'cassandra'
-        $tls_hostname        = "${hostname}"
+        $tls_hostname        = $hostname
         $pid_file            = '/var/run/cassandra/cassandra.pid'
     } else {
         $data_directory_base = "/srv/cassandra-${instance_name}"
