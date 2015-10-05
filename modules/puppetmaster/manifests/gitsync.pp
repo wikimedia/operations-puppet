@@ -17,7 +17,7 @@ class puppetmaster::gitsync(
     cron { 'rebase_operations_puppet':
         ensure  => present,
         user    => 'root',
-        minute  => "*/$run_every_minutes",
+        minute  => "*/${run_every_minutes}",
         command => '/usr/local/bin/git-sync-upstream >>/var/log/git-sync-upstream.log 2>&1',
         require => File['/usr/local/bin/git-sync-upstream'],
     }
