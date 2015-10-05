@@ -3,5 +3,4 @@ hosts:
   - https://conf1002.eqiad.wmnet:2379
   - https://conf1003.eqiad.wmnet:2379
 driver_options:
-  ca_cert: /etc/conftool/ca.pem
   allow_reconnect: true
