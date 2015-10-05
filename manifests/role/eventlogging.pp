@@ -156,23 +156,7 @@ class role::eventlogging::processor inherits role::eventlogging {
     # etcd client port, and join them into a string.
     $etcd_hosts = join(suffix(hiera('etcd_hosts'), ':2379'), ',')
 
-    # If etcd is using SSL, then we'll need to have the
-    # CA cert in place so that we can use it to verify the HTTPS connection
-    file { '/etc/eventlogging.d/ssl':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755'
-    }
-
-    file { '/etc/eventlogging.d/ssl/ca.pem':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        source => '/var/lib/puppet/ssl/certs/ca.pem',
-    }
-    $etcd_uri  = "https://${etcd_hosts}?ca_cert=/etc/eventlogging.d/ssl/ca.pem"
+    $etcd_uri  = "https://${etcd_hosts}"
 
     eventlogging::service::processor { 'server-side-0':
         format         => '%{seqId}d EventLogging %j',
