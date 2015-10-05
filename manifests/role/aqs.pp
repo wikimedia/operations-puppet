@@ -33,7 +33,7 @@ class role::aqs {
     monitoring::service { 'cassandra-analytics-cql':
         description   => 'Analytics Cassanda CQL query interface',
         check_command => 'check_tcp!9042',
-        contact_group => 'admins,aqs-admins',
+        contact_group => 'admins,analytics',
     }
 
     $cassandra_hosts = hiera('cassandra::seeds')
