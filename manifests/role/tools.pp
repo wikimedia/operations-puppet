@@ -20,7 +20,7 @@ class role::toollabs::etcd {
 
 class role::toollabs::puppet::master {
     include ::toollabs::infrastructure
-    include ::toollabs;:puppetmaster
+    include ::toollabs::puppetmaster
 }
 
 class role::toollabs::puppet::client {
