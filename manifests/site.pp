@@ -2163,7 +2163,6 @@ node 'neon.wikimedia.org' {
 
     include standard
     include role::icinga
-    include role::ishmael
     include role::tendril
     include role::tcpircbot
 }
