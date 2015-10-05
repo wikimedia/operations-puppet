@@ -21,6 +21,9 @@ class role::aqs {
     include ::cassandra
     include ::cassandra::metrics
     include ::cassandra::logging
+    include networks::constants
+
+    $analytics_networks = $network::constants::analytics_networks
 
     # Emit an Icinga alert unless there is exactly one Java process belonging
     # to user 'cassandra' and with 'CassandraDaemon' in its argument list.
@@ -55,7 +58,7 @@ class role::aqs {
     ferm::service { 'cassandra-analytics-cql':
         proto  => 'tcp',
         port   => '9042',
-        srange => "@resolve((${cassandra_hosts_ferm}))",
+        srange => "@resolve((${cassandra_hosts_ferm} ${analytics_networks}))",
     }
 
 
