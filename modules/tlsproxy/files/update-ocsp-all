@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [ $# != 1 ]; then
-    echo One argument required: the proxy hostname:port
-    exit 1
-fi
-
 some_failed=0
 
 for config in /etc/update-ocsp.d/*.conf; do
