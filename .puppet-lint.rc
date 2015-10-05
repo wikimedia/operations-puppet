@@ -22,7 +22,7 @@
 --no-documentation-check
 
 # Variables should be enclosed in {}
---no-variables_not_enclosed-check
+# --no-variables_not_enclosed-check
 
 # We use dash in class and variables.
 --no-names_containing_dash-check
