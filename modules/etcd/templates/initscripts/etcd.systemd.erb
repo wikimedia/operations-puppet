@@ -27,7 +27,7 @@ Environment=ETCD_ADVERTISE_CLIENT_URLS=<%= @client_url %>
 Environment=ETCD_CERT_FILE=/var/lib/etcd/ssl/certs/cert.pem
 Environment=ETCD_KEY_FILE=/var/lib/etcd/ssl/private_keys/server.key
 <%- if @use_client_certs -%>
-Environment=ETCD_CA_FILE=/var/lib/etcd/ssl/certs/ca.pem
+Environment=ETCD_CA_FILE=/etc/ssl/certs/Puppet_Internal_CA.pem
 <%- end -%>
 <% end -%>
 ExecStart=/usr/bin/etcd
