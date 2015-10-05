@@ -441,6 +441,9 @@ override	*jobs.wikipedia.org/	//wikimediafoundation.org/wiki/Work_with_us
 # pywikipedia.org (T60803).
 funnel	*pywikipedia.org	//tools.wmflabs.org/pywikibot/
 
+# pywikibot.org (T106311)
+funnel	*pywikibot.org	//tools.wmflabs.org/pywikibot/
+
 # w.wiki - upcoming URL shortener
 funnel	*w.wiki	//www.wikipedia.org
 
