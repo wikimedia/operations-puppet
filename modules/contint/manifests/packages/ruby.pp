@@ -41,7 +41,7 @@ class contint::packages::ruby {
         package { [
             'ruby2.1',
             'ruby2.1-dev',
-            'ruby-bundler',
+            'bundler',
             ]: ensure => present,
         }
     }
