@@ -87,11 +87,3 @@ class role::elasticsearch::server{
         require => Package['elasticsearch'],
     }
 }
-
-# Role for the test labs replica of ElasticSearch
-class role::elasticsearch::server::labsearch {
-    class { '::elasticsearch':
-        cluster_name => 'labsearch',
-        heap_memory  => '30G',
-    }
-}

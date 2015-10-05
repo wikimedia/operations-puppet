@@ -1,3 +1,4 @@
 # Root for all elasticsearch admins
+elasticsearch::rack: c7
 admin::groups:
   - elasticsearch-roots
