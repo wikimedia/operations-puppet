@@ -12,7 +12,7 @@ class role::dynamicproxy(
     ferm::service { 'redis-replication':
         proto  => 'tcp',
         port   => '6379',
-        srange => "@resolve(($proxy_nodes))",
+        srange => "@resolve((${proxy_nodes}))",
     }
 
     if $::hostname != $active_proxy {
