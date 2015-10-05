@@ -47,6 +47,11 @@ enwp_trademark = 'Wikipedia® is a registered trademark \
 of the <a href="//www.wikimediafoundation.org/">\
 Wikimedia Foundation, Inc.</a>, a non-profit organization.'
 
+enwb_copyright = 'Text is available under the \
+<a href="//creativecommons.org/licenses/by-sa/3.0/">\
+Creative Commons Attribution-ShareAlike License.</a>; \
+additional terms may apply.'
+
 
 def logger(msg, enabled):
     if enabled:
@@ -61,6 +66,11 @@ def site_html(url):
 def main():
 
     ensure = {
+        'desktop_enwb': [
+            enwb_copyright,
+            terms,
+            privacy,
+        ],
         'desktop_enwp': [
             copyright,
             terms,

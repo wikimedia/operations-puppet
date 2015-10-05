@@ -27,4 +27,13 @@ class icinga::monitor::legal {
         retry_check_interval  => 30,
         contact_group         => 'admins',
     }
+
+    monitoring::service { 'en.wb.o-legal-html':
+        description           => 'Ensure legal html en.wb',
+        check_command         => 'check_legal_html!https://en.wikibooks.org!desktop_enwb',
+        host                  => 'en.wikibooks.org',
+        normal_check_interval => 1440,
+        retry_check_interval  => 30,
+        contact_group         => 'admins',
+    }
 }
