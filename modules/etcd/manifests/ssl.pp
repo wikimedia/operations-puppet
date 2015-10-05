@@ -27,13 +27,7 @@ class etcd::ssl(
         require  => Package['etcd'],
     }
 
-    file { "${pubdir}/ca.pem":
-        ensure => present,
-        owner  => 'etcd',
-        group  => 'etcd',
-        mode   => '0400',
-        source => "${ssldir}/certs/ca.pem",
-    }
+    include base::puppet::ca
 
     file { '/var/lib/etcd/ssl/certs/cert.pem':
         ensure  => present,
@@ -41,7 +35,6 @@ class etcd::ssl(
         group   => 'etcd',
         mode    => '0400',
         source  => "${ssldir}/certs/${puppet_cert_name}.pem",
-        require => File['/var/lib/etcd/ssl/certs/ca.pem'],
     }
 
     file { '/var/lib/etcd/ssl/private_keys':
