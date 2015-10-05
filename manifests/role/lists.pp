@@ -30,10 +30,6 @@ class role::lists {
         group => 'Debian-exim',
     }
 
-    sslcert::ocsp::conf { 'lists.wikimedia.org':
-        before => Class['exim4'],
-    }
-
     include mailman
 
     class { 'spamassassin':
