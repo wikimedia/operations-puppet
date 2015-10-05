@@ -36,8 +36,12 @@ class KubeClient(object):
     def get_services(self):
         """Gets an initial list of all services"""
         log.debug('Searching for existing services')
+        if self.capath:
+            verif = self.capath
+        else:
+            verif = True
         resp = self.session.get(self.url_for('/services'),
-                                params=self.base_params, verify=self.capath)
+                                params=self.base_params, verify=verif)
         services = []
         try:
             servicelist = resp.json()
