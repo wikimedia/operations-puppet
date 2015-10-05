@@ -23,10 +23,11 @@ class role::toollabs::puppet::master {
     include ::toollabs::puppetmaster
 }
 
-class role::toollabs::puppet::client {
-    $master = hiera('puppetmaster')
+class role::toollabs::puppet::client(
+    $puppetmaster,
+) {
     class { '::puppet::self::client':
-        server => $master,
+        server => $puppetmaster,
     }
 }
 
