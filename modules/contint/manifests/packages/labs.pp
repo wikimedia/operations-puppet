@@ -66,7 +66,7 @@ class contint::packages::labs {
     }
 
     # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
-    ensure_packages(['zip'])
+    require_package('zip')
 
     # For Selenium jobs recording (T113520)
     package { 'libav-tools':
