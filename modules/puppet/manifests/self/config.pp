@@ -20,7 +20,6 @@ class puppet::self::config(
     $enc_script_path      = undef,
     $autosign             = hiera('puppetmaster::autosigner', false),
 ) {
-    include base::puppet
     include ldap::role::config::labs
 
     $ldapconfig = $ldap::role::config::labs::ldapconfig
