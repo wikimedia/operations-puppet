@@ -213,7 +213,7 @@ class role::parsoid::beta {
     $parsoid_settings_file = '/srv/deployment/parsoid/deploy/conf/wmf/betalabs.localsettings.js'
 
     # Checkout of mediawiki/services/parsoid
-    $parsoid_base_path = '/srv/deployment/parsoid/deploy/src'
+    $parsoid_base_path = '/srv/deployment/parsoid/parsoid'
 
     file { '/etc/default/parsoid':
         ensure  => present,
