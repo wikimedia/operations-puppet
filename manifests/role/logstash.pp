@@ -25,25 +25,25 @@ class role::logstash (
         port => 8324,
     }
 
-    ferm::service { "logstash_udp2log":
-        proto  => 'udp',
-        port   => '8324',
+    ferm::service { 'logstash_udp2log':
+        proto   => 'udp',
+        port    => '8324',
         notrack => true,
-        srange => '$ALL_NETWORKS',
+        srange  => '$ALL_NETWORKS',
     }
 
     logstash::input::syslog { 'syslog':
         port => 10514,
     }
 
-    ferm::service { "logstash_syslog":
-        proto  => 'udp',
-        port   => '10514',
+    ferm::service { 'logstash_syslog':
+        proto   => 'udp',
+        port    => '10514',
         notrack => true,
-        srange => '$ALL_NETWORKS',
+        srange  => '$ALL_NETWORKS',
     }
 
-    ferm::service { "grafana_dashboard_definition_storage":
+    ferm::service { 'grafana_dashboard_definition_storage':
         proto  => 'tcp',
         port   => '9200',
         srange => '$INTERNAL',
@@ -53,11 +53,11 @@ class role::logstash (
         port => 12201,
     }
 
-    ferm::service { "logstash_gelf":
-        proto  => 'udp',
-        port   => '12201',
+    ferm::service { 'logstash_gelf':
+        proto   => 'udp',
+        port    => '12201',
         notrack => true,
-        srange => '$ALL_NETWORKS',
+        srange  => '$ALL_NETWORKS',
     }
 
     logstash::input::udp { 'logback':
@@ -65,11 +65,11 @@ class role::logstash (
         codec => 'json',
     }
 
-    ferm::service { "logstash_udp":
-        proto  => 'udp',
-        port   => '11514',
+    ferm::service { 'logstash_udp':
+        proto   => 'udp',
+        port    => '11514',
         notrack => true,
-        srange => '$ALL_NETWORKS',
+        srange  => '$ALL_NETWORKS',
     }
 
     ## Global pre-processing (15)
@@ -152,10 +152,10 @@ class role::logstash (
     $logstash_nodes_ferm = join($logstash_nodes, ' ')
 
     ferm::service { 'logstash_elastic_internode':
-        proto  => 'tcp',
-        port   => 9300,
+        proto   => 'tcp',
+        port    => 9300,
         notrack => true,
-        srange => "@resolve((${logstash_nodes_ferm}))",
+        srange  => "@resolve((${logstash_nodes_ferm}))",
     }
 }
 
@@ -319,7 +319,7 @@ class role::logstash::stashbot (
     }
     logstash::output::elasticsearch { 'logstash':
         host            => '127.0.0.1',
-        index           => "logstash-%{+YYYY.MM}",
+        index           => 'logstash-%{+YYYY.MM}',
         guard_condition => '"es" in [tags]',
         priority        => 90,
         template        => '/etc/logstash/stashbot-template.json',
