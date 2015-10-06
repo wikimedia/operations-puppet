@@ -169,6 +169,13 @@ class role::logstash (
         namespace       => 'logstash.rate',
         sender          => 'apache2',
         increment       => [ '%{level}' ],
+
+    ferm::service { 'logstash_elastic_internode':
+        proto   => 'tcp',
+        port    => 9300,
+        notrack => true,
+        srange  => "@resolve((${logstash_nodes_ferm}))",
+>>>>>>> 943313d... lint: double quoted strings pt.1
     }
 }
 
