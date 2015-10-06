@@ -426,7 +426,7 @@ sub recv_fe_ip_processing {
 
 	// If XCIP not set above, or looks invalid due to bad external XFF
 	// input, just alias to XRIP
-	if (!req.http.X-Client-IP || req.http.X-Client-IP !~ "[0-9a-fA-F:.]+") {
+	if (!req.http.X-Client-IP || req.http.X-Client-IP !~ "^[0-9a-fA-F:.]+$") {
 		set req.http.X-Client-IP = req.http.X-Real-IP;
 	}
 
