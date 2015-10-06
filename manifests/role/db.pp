@@ -82,7 +82,7 @@ class role::db::labsdb( $instances = {} ) {
     ## some per-node monitoring here
     $instances_count = size($instances_keys)
 
-    file { "/usr/lib/nagios/plugins/percona":
+    file { '/usr/lib/nagios/plugins/percona':
         ensure  => directory,
         recurse => true,
         owner   => 'root',

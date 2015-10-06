@@ -35,7 +35,7 @@ class role::mariadb::grants(
     if $shard {
         $nodepool_pass = $passwords::nodepool::nodepooldb_pass
 
-        file { "/etc/mysql/production-grants-shard.sql":
+        file { '/etc/mysql/production-grants-shard.sql':
             ensure  => present,
             owner   => 'root',
             group   => 'root',
@@ -52,20 +52,20 @@ class role::mariadb::ferm {
     # can grant additional access to other hosts
 
     ferm::service{ 'mariadb_internal':
-        proto  => 'tcp',
-        port   => 3306,
+        proto   => 'tcp',
+        port    => 3306,
         notrack => true,
-        srange => '$INTERNAL',
+        srange  => '$INTERNAL',
     }
 
     # tendril monitoring
     ferm::rule { 'mariabdb_monitoring':
-        rule => "saddr @resolve((neon.wikimedia.org iron.wikimedia.org)) proto tcp dport (3306) ACCEPT;",
+        rule => 'saddr @resolve((neon.wikimedia.org iron.wikimedia.org)) proto tcp dport (3306) ACCEPT;',
     }
 
     # for DBA purposes
     ferm::rule { 'mariabdb_dba':
-        rule => "saddr @resolve((neon.wikimedia.org iron.wikimedia.org db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;",
+        rule => 'saddr @resolve((neon.wikimedia.org iron.wikimedia.org db1011.eqiad.wmnet)) proto tcp dport (3307) ACCEPT;',
     }
 }
 
@@ -200,7 +200,7 @@ class role::mariadb::misc::eventlogging(
     ) {
 
     system::role { 'role::mariadb::misc':
-        description => "Eventlogging Database",
+        description => 'Eventlogging Database',
     }
 
     include standard
@@ -420,7 +420,7 @@ class role::mariadb::core(
     $shard
     ) {
 
-    system::role { "role::mariadb::core":
+    system::role { 'role::mariadb::core':
         description => "Core DB Server ${shard}",
     }
 
@@ -450,8 +450,8 @@ class role::mariadb::core(
 
 class role::mariadb::sanitarium {
 
-    system::role { "role::mariadb::sanitarium":
-        description => "Sanitarium DB Server",
+    system::role { 'role::mariadb::sanitarium':
+        description => 'Sanitarium DB Server',
     }
 
     include standard
@@ -463,7 +463,7 @@ class role::mariadb::sanitarium {
     }
 
     class { 'mariadb::config':
-        prompt   => "SANITARIUM",
+        prompt   => 'SANITARIUM',
         config   => 'mariadb/sanitarium.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
     }
@@ -489,20 +489,20 @@ class role::mariadb::sanitarium {
     # One instance per shard using mysqld_multi.
     # This allows us to send separate replication channels downstream.
     $folders = [
-        "/srv/sqldata.s1",
-        "/srv/sqldata.s2",
-        "/srv/sqldata.s3",
-        "/srv/sqldata.s4",
-        "/srv/sqldata.s5",
-        "/srv/sqldata.s6",
-        "/srv/sqldata.s7",
-        "/srv/tmp.s1",
-        "/srv/tmp.s2",
-        "/srv/tmp.s3",
-        "/srv/tmp.s4",
-        "/srv/tmp.s5",
-        "/srv/tmp.s6",
-        "/srv/tmp.s7",
+        '/srv/sqldata.s1',
+        '/srv/sqldata.s2',
+        '/srv/sqldata.s3',
+        '/srv/sqldata.s4',
+        '/srv/sqldata.s5',
+        '/srv/sqldata.s6',
+        '/srv/sqldata.s7',
+        '/srv/tmp.s1',
+        '/srv/tmp.s2',
+        '/srv/tmp.s3',
+        '/srv/tmp.s4',
+        '/srv/tmp.s5',
+        '/srv/tmp.s6',
+        '/srv/tmp.s7',
     ]
 
     file { $folders:
@@ -554,7 +554,7 @@ class role::mariadb::labs {
     }
 
     class { 'mariadb::config':
-        prompt   => "LABS",
+        prompt   => 'LABS',
         config   => 'mariadb/labs.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => '/srv/sqldata',
@@ -578,7 +578,7 @@ class role::mariadb::labs {
     # Required for TokuDB to start
     # See https://mariadb.com/kb/en/mariadb/enabling-tokudb/#check-for-transparent-hugepage-support-on-linux
     sysfs::parameters { 'disable-transparent-hugepages':
-        values  => {
+        values => {
             'kernel/mm/transparent_hugepage/enabled' => 'never',
             'kernel/mm/transparent_hugepage/defrag'  => 'never',
         }
@@ -589,7 +589,7 @@ class role::mariadb::labs {
 class role::mariadb::wikitech {
 
     system::role { 'role::mariadb::wikitech':
-        description => "Wikitech Database",
+        description => 'Wikitech Database',
     }
 
     include standard
@@ -603,7 +603,7 @@ class role::mariadb::wikitech {
     }
 
     class { 'mariadb::config':
-        prompt   => "WIKITECH",
+        prompt   => 'WIKITECH',
         config   => 'mariadb/wikitech.my.cnf.erb',
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => '/srv/sqldata',
@@ -612,7 +612,7 @@ class role::mariadb::wikitech {
 
     # mysql monitoring access from tendril (db1011)
     ferm::rule { 'mysql_tendril':
-        rule => "saddr 10.64.0.15 proto tcp dport (3306) ACCEPT;",
+        rule => 'saddr 10.64.0.15 proto tcp dport (3306) ACCEPT;',
     }
 
     # mysql from deployment master servers and terbium (T98682, T109736)
@@ -641,7 +641,7 @@ class role::mariadb::proxy(
     }
 
     class { 'haproxy':
-        template => "mariadb/haproxy.cfg.erb",
+        template => 'mariadb/haproxy.cfg.erb',
     }
 }
 
@@ -668,7 +668,7 @@ class role::mariadb::proxy::master(
 
     nrpe::monitor_service { 'haproxy_failover':
         description  => 'haproxy failover',
-        nrpe_command => "/usr/lib/nagios/plugins/check_haproxy --check=failover",
+        nrpe_command => '/usr/lib/nagios/plugins/check_haproxy --check=failover',
     }
 }
 
