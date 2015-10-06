@@ -21,7 +21,7 @@ class role::aqs {
     include ::cassandra
     include ::cassandra::metrics
     include ::cassandra::logging
-    include networks::constants
+    include network::constants
 
     $analytics_networks = $network::constants::analytics_networks
 
