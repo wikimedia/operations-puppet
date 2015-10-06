@@ -5,8 +5,8 @@
 # Graphite or Ganglia. See <https://github.com/armon/statsite>.
 #
 class role::statsite {
-    system::role { "role::statsite":
-        description => "statsite server"
+    system::role { 'role::statsite':
+        description => 'statsite server'
     }
 
     class { '::statsite': }
