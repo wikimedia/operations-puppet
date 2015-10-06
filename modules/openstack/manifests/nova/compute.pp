@@ -66,7 +66,7 @@ class openstack::nova::compute(
         }
         Instancersync <<| |>>
 
-        rsync::server::module { "nova_instance_rsync_controller":
+        rsync::server::module { 'nova_instance_rsync_controller':
             path        => '/var/lib/nova/instances',
             read_only   => 'no',
             hosts_allow => [hiera('labs_nova_controller')],

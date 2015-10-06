@@ -103,7 +103,7 @@ class role::labsdnsrecursor {
             allow_from               => $network::constants::all_networks,
             ip_aliases               => $nova_floating_ip_aliases,
             additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}",
-            auth_zones               => "labsdb=/var/zones/labsdb"
+            auth_zones               => 'labsdb=/var/zones/labsdb'
     }
 
     # There are three replica servers (c1, c2, c3).  The mapping of
