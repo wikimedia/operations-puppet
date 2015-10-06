@@ -126,7 +126,7 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     # This forwards the kafka eventlogging-valid-mixed topic to
     # ZMQ port 8600 for backwards compatibility.
     eventlogging::service::forwarder { 'legacy-zmq':
-        input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&auto_commit_enable=False&auto_offset_reset=-1",
+        input   => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&auto_commit_enable=False&auto_offset_reset=-1",
         outputs => ["tcp://${eventlogging_host}:8600"],
     }
 }
@@ -139,7 +139,7 @@ class role::eventlogging::forwarder inherits role::eventlogging {
 class role::eventlogging::processor inherits role::eventlogging {
     $kafka_consumer_args  = hiera(
         'eventlogging_processor_kafka_consumer_args',
-        "auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1"
+        'auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1'
     )
     $kafka_consumer_group = hiera(
         'eventlogging_processor_kafka_consumer_group',
