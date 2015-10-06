@@ -135,7 +135,7 @@ sub analytics_deliver {
     // required (having a real value for the false/negative case), we could
     // set that one first and this would get a bit cleaner...
     if (!resp.http.X-Analytics) {
-        resp.http.X-Analytics = "";
+        set resp.http.X-Analytics = "";
     }
 
     call analytics_last_access_deliver;
