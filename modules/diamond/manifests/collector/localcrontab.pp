@@ -34,7 +34,7 @@ define diamond::collector::localcrontab(
     if str2bool($merged_settings[use_sudo]) {
         sudo::user { 'diamond_sudo_for_localcrontab':
             user       => 'diamond',
-            privileges => ["ALL=(root) NOPASSWD: /bin/ls /var/spool/cron/crontabs/"],
+            privileges => ['ALL=(root) NOPASSWD: /bin/ls /var/spool/cron/crontabs/'],
             ensure     => $ensure,
         }
     }

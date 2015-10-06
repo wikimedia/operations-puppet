@@ -10,12 +10,12 @@
 #   If set (to hw-specific value), RSS will be enabled as well
 #   Must contain a single "%d" format character for the queue number
 #   (on bnx2x, this would be "eth0-fp-%d")
-define interface::rps( $rss_pattern="" ) {
+define interface::rps( $rss_pattern='' ) {
     require interface::rpstools
     require interface::rps::modparams
 
     $interface = $title
-    if $rss_pattern != "" {
+    if $rss_pattern != '' {
         $cmd = "/usr/local/sbin/interface-rps ${interface} ${rss_pattern}"
     }
     else {
@@ -23,32 +23,32 @@ define interface::rps( $rss_pattern="" ) {
     }
 
     # Disable irqbalance if RSS in use
-    if $rss_pattern != "" {
+    if $rss_pattern != '' {
         require irqbalance::disable
     }
 
     # Add to ifup commands in /etc/network/interfaces
     interface::up_command { "rps-${interface}":
         interface => $interface,
-        command => $cmd,
+        command   => $cmd,
     }
 
     # Exec immediately if newly-added
     exec { "rps-${interface}":
-        command   => $cmd,
-        subscribe => Augeas["${interface}_rps-${interface}"],
+        command     => $cmd,
+        subscribe   => Augeas["${interface}_rps-${interface}"],
         refreshonly => true,
     }
 }
 
 class interface::rps::modparams {
-    file { "/etc/modprobe.d/rps.conf":
+    file { '/etc/modprobe.d/rps.conf':
         content => template("${module_name}/rps.conf.erb"),
-        notify => Exec["update-initramfs-rps"]
+        notify  => Exec['update-initramfs-rps']
     }
 
-    exec { "update-initramfs-rps":
-        command => "/usr/sbin/update-initramfs -u",
+    exec { 'update-initramfs-rps':
+        command     => '/usr/sbin/update-initramfs -u',
         refreshonly => true
     }
 }

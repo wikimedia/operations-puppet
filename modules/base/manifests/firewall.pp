@@ -26,8 +26,8 @@ class base::firewall($ensure = 'present') {
 
     # The sysctl value net.netfilter.nf_conntrack_buckets is read-only. It is configured
     # via a modprobe parameter, bump it manually for running systems
-    exec { "bump nf_conntrack hash table size":
-        command => "/bin/echo 32768 > /sys/module/nf_conntrack/parameters/hashsize",
+    exec { 'bump nf_conntrack hash table size':
+        command => '/bin/echo 32768 > /sys/module/nf_conntrack/parameters/hashsize',
         onlyif  => "/bin/grep --invert-match --quiet '^32768$' /sys/module/nf_conntrack/parameters/hashsize",
     }
 
