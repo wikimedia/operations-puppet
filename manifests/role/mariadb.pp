@@ -310,6 +310,7 @@ class role::mariadb::dbstore(
         lag_warn     => $lag_warn,
         lag_crit     => $lag_crit,
         warn_stopped => $warn_stopped,
+        is_critical  => false,
     }
 
     file { '/usr/local/bin/dumps-misc.sh':
