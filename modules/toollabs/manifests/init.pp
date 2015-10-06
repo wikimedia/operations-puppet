@@ -124,13 +124,6 @@ class toollabs (
         group  => 'root',
     }
 
-    # TODO: Remove after migration. from Aptly to Labsdebrepo
-    file { ['/etc/apt/preferences.d/tools-project.pref',
-            '/etc/apt/sources.list.d/tools-project.list']:
-        ensure => absent,
-        notify => Exec['apt-get update'],
-    }
-
     # Trustworthy enough
     # Only necessary on precise hosts, trusty has its own mariadb package
     if $::lsbdistcodename == 'precise' {
