@@ -2,73 +2,19 @@
 
 // Note: This requires "import header" in the including VCL
 
-import netmapper;
-
-sub vcl_init {
-    // args here are map-name (for .map()), data file, and seconds between mtime checks for reload
-    netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
-    netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
-}
-
 sub tag_carrier {
-    // This is what things look like on entry in four basic scenarios
-    // ("both" here means something MITM-proxied the SSL connection, like OperaMini,
-    //   but was kind enough to set an XFF header on the way)
-    // (the leading "..." in XFF is that sometimes there are other local
-    //   proxies on 127.0.0.1 or whatever, according to some OperaMini docs...)
+    // XTP and XC are set up in the common wikimedia.vcl now from netmapper data
 
-    // *********************************************************
-    // *    v> | client.ip | XFF                        | XFP
-    // * direct| client    | (...,)? client             |
-    // * ssl   | ssl       | (...,)? client, ssl        | https
-    // * proxy | proxy     | (...,)? client, proxy      |
-    // * both  | ssl       | (...,)? client, proxy, ssl | https
-    // *********************************************************
+    // Use standard XTP to set the tag_carrier-specific XFB header...
+    set req.http.X-Forwarded-By = req.http.X-Trusted-Proxy;
 
-    // first, strip the SSL entry from XFF if applicable
-    if (req.http.X-Forwarded-Proto) {
-        set req.http.XFF-NoSSL = regsub(req.http.X-Forwarded-For, ",[^,]+$", ""); // strips final entry
-    } else {
-        set req.http.XFF-NoSSL = req.http.X-Forwarded-For;
+    // Use standard XC/XCM to set the tag_carrier-specific X-CS2 header...
+    if (req.http.X-Carrier-Meta) {
+        set req.http.X-CS2 = req.http.X-Carrier + "|" + req.http.X-Carrier-Meta;
     }
-
-    // *****************************************************************************
-    // *    v>      | XFF-NoSSL             | map("proxies") input from regsub below
-    // * direct/ssl | (...,)? client        | client
-    // * proxy/both | (...,)? client, proxy | proxy
-    // *****************************************************************************
-
-    // now get the trusted proxy into XFB, if any - the regsub grabs the final entry in the list
-    set req.http.X-Forwarded-By = netmapper.map("proxies", regsub(req.http.XFF-NoSSL, "^([^,]+, ?)+", ""));
-
-    // normalize to boolean again...
-    if (req.http.X-Forwarded-By == "") {
-        unset req.http.X-Forwarded-By;
+    else {
+        set req.http.X-CS2 = req.http.X-Carrier;
     }
-
-    // now, iff XFB was set, strip away one more layer to put the supposed client IP at the end
-    if (req.http.X-Forwarded-By) {
-        set req.http.XFF-ClientEnd = regsub(req.http.XFF-NoSSL, ",[^,]+$", "");
-    } else {
-        set req.http.XFF-ClientEnd = req.http.XFF-NoSSL;
-    }
-
-    unset req.http.XFF-NoSSL; // clean up temp var
-
-    // ****************************************************************
-    // *    v>  | XFF-CE         | map("carriers") input from regsub below
-    // *   all  | (...,)? client | client
-    // *****************************************************************
-
-    // Grab client IP from the end of the XFF-CE list and feed to map("zero")
-    set req.http.X-CS2 = netmapper.map("carriers", regsub(req.http.XFF-ClientEnd, "^([^,]+, ?)+", ""));
-
-    // normalize to boolean (varnish-3.0.4...)
-    if (req.http.X-CS2 == "") {
-        unset req.http.X-CS2;
-    }
-
-    unset req.http.XFF-ClientEnd; // clean up temp var
 
     // Now the per-carrier stuff...
     // Short of having netmapper (or equivalent) return a set of match parameters, I can't see any
@@ -115,55 +61,24 @@ sub vcl_deliver {
     }
 
     // Prepare for outbound X-CS and X-Analytics header assembly.
-    // See following section where actual outbound X-CS and X-Analytics are set.
-    // Some of the headers used for X-Analytics are not varied on, so add them after the backend processing.
-    // Note that vcl_deliver in other files may also modify X-Analytics
-    if (req.http.X-CS == "ON") {
-        set req.http.X-CS = req.http.X-CS2;
-    }
+    if (req.http.X-CS2) {
+	// Regardless of X-CS transform to "ON" for Vary and/or server-side
+	// purposes, if a carrier was detected at all, set X-CS as an outbound
+	// response header for the application to consume.
+	set resp.http.X-CS = req.http.X-CS2;
 
-    // Now that we've updated the req.http.X-CS for postprocessing, set outbound headers
-    // and X-Analytics.
-    if (req.http.X-CS) {
-
-        // All mobile responses need to have the X-CS set if it came from a zero network.
-        // This allows apps to detect when we switch from zero to non-zero and back,
-        // or when the user switches from one network to another and both are zero (multi-SIM phones).
-        // The client should constantly check each response for this header, and if it changes,
-        // re-request the partner's message info.
-        // This value is only based on Varnish's zero detection, not the backend processing of any sort.
-        // When apps see an outbound X-CS, they ask the API for the formal enabled/disabled status in a JSON object.
-        // We are in vcl_deliver, so setting the resp.http.X-CS should not impact caching; it's postprocessing.
-        set resp.http.X-CS = req.http.X-CS;
-
-        // Some carriers have multiple ip ranges with different rules. IP set name is added at
-        // the end of the X-CS, e.g. "123-45|wap" to indicate a wap gateway with their own IPs.
-        // To minimize analytics impact, the 'zero' value in X-Analytics will stay as carrier id,
-        // and the additional suffix will go into the 'zeronet=xxx' if it was present.
-
-        // The following is strictly related to X-Analytics, not outbound X-CS for apps.
-        // Remove everything before and including the first '|' char
-        set req.http.X-ZEROSFX = regsub(req.http.X-CS, "^[^\|]*\|?", "");
-        if (req.http.X-ZEROSFX != "") {
-            // Remove everything on and after the first '|' char
-            set req.http.X-CS = "zero=" + regsub(req.http.X-CS, "\|.*", "") + ";zeronet=" + req.http.X-ZEROSFX;
-        } else if (req.http.X-CS == "404-01b") {
-            // For a short time we had this workaround. This "else if" can be removed after 2014-10-15
-            // We only had one carrier, "404-01b", whom we temporarily had to create an extra entry until backend was ready.
-            // In order for analytics to report correct stats, we used to remove "b" before modifying X-Analytics.
-            set req.http.X-CS = "zero=404-01;zeronet=b";
-        } else {
-            set req.http.X-CS = "zero=" + req.http.X-CS;
-        }
-
-        if (resp.http.X-Analytics) {
-            set resp.http.X-Analytics = resp.http.X-Analytics + ";" + req.http.X-CS;
-        } else {
-            set resp.http.X-Analytics = req.http.X-CS;
-        }
-    } else {
-        // Let's ensure no outbound X-CS if pre-analytics X-CS (as determined in corresponding if) was not set.
-        unset resp.http.X-CS;
+	// X-C and X-C-M are set/split in the common recv code in
+	// wikimedia.vcl; X-CS2 is aggregated from them in recv
+	if (req.http.X-Carrier) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";zero=" + req.http.X-Carrier;
+		} else {
+			set resp.http.X-Analytics = "zero=" + req.http.X-Carrier;
+		}
+		if (req.http.X-Carrier-Meta) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";zeronet=" + req.http.X-Carrier-Meta;
+		}
+	}
     }
     if (req.http.X-Forwarded-By2) {
         if (resp.http.X-Analytics) {
