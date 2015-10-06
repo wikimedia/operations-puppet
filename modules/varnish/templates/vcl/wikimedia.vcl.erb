@@ -7,11 +7,6 @@ import std;
 #   being set from different code.
 import header;
 
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-# only used in recv_fe_ip_processing on frontends
-import netmapper;
-<% end %>
-
 <%
 def backend_option(backend, option, default)
 	if @varnish_backend_options.kind_of?(Array)
@@ -363,143 +358,30 @@ sub vcl_recv_purge {
 	}
 }
 
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-// Must be done at the top of vcl_recv, in our varnish-frontend layer only,
-// and should be guarded against running on request restarts.
-sub recv_fe_ip_processing {
-	// this subroutine "owns" these 4 headers - nothing else in our VCL or
-	// anywhere in our network should be setting them.
-	unset req.http.X-Trusted-Proxy;
-	unset req.http.X-Client-IP;
-	unset req.http.X-Carrier;
-	unset req.http.X-Carrier-Meta;
-
-	if (client.ip !~ wikimedia_nets) {
-		// Ensure we only accept XFP from our own networks.  Ideally
-		// it should only be set by our nginx TLS terminator
-		// specifically, but there are known cases where internal apps
-		// set XFP to fake HTTPS when making a request to our public
-		// endpoints from the inside.
-		unset req.http.X-Forwarded-Proto;
-		// only the nginx TLS terminator should be setting this one at
-		// all - there are no other internal exceptions to that rule
-		unset req.http.X-Real-IP;
-	}
-
-	// There are two possible cases here: either nginx acted as our TLS
-	// proxy and already set X-Real-IP (as well as appended the same value
-	// as XFF), or the traffic was direct to varnish-fe, in which case
-	// XRIP is not yet set and XFF is directly from external.
-	if (!req.http.X-Real-IP) {
-		// direct-to-port-80 case, set XRIP ourselves
-		set req.http.X-Real-IP = client.ip;
-		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Real-IP);
-		// normalize to boolean post-netmapper (varnish-3.0.4...)
-		if (req.http.X-Trusted-Proxy == "") {
-			unset req.http.X-Trusted-Proxy;
-		}
-		if (req.http.X-Trusted-Proxy && req.http.X-Forwarded-For) {
-			// get last from trusted-proxy-supplied XFF
-			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, "^([^,]+, ?)+", "");
-		}
-	} else {
-		// XRIP from nginx, XFF assumed to be set and contain at least
-		// XRIP at the end, possibly prepended by other addrs set
-		// externally by some proxy.
-		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Real-IP);
-		// normalize to boolean post-netmapper (varnish-3.0.4...)
-		if (req.http.X-Trusted-Proxy == "") {
-			unset req.http.X-Trusted-Proxy;
-		}
-		if (req.http.X-Trusted-Proxy) {
-			// strip off final XFF entry (should alias XRIP, both set
-			// by nginx) to set xffce, then take the final entry
-			// of xffce as the client IP.  Note that if the
-			// trusted proxy did not set an XFF header nginx would
-			// have set it to just XRIP with no commas, and the
-			// regsubs would result in setting XCIP = XRIP.
-			set req.http.xffce = regsub(req.http.X-Forwarded-For, ",[^,]+$", "");
-			set req.http.X-Client-IP = regsub(req.http.xffce, "^([^,]+, ?)+", "");
-			unset req.http.xffce; // clean up temp var
-		}
-	}
-
-	// If XCIP not set above, or looks invalid due to bad external XFF
-	// input, just alias to XRIP
-	if (!req.http.X-Client-IP || req.http.X-Client-IP !~ "^[0-9a-fA-F:.]+$") {
-		set req.http.X-Client-IP = req.http.X-Real-IP;
-	}
-
-	// Now check carrier database for setting X-Carrier based on XCIP
-	set req.http.X-Carrier = netmapper.map("carriers", req.http.X-Client-IP);
-	// normalize to boolean post-netmapper (varnish-3.0.4...)
-	if (req.http.X-Carrier == "") {
-		unset req.http.X-Carrier;
-	}
-	else {
-		// Split X-Carrier data from raw form with optional trailing metadata,
-		// such as "123-45|wap|mobile", so that X-Carrier contains only
-		// MCC-MNC and X-Carrier-Meta contains the trailing attributes
-		set req.http.X-Carrier-Meta = regsub(req.http.X-Carrier, "^[^|]*\|?", "");
-		if (req.http.X-Carrier-Meta != "") {
-			set req.http.X-Carrier = regsub(req.http.X-Carrier, "\|.*$", "");
-		}
-		else {
-			unset req.http.X-Carrier-Meta;
-		}
-	}
-
-	// From this (very early) point forward, regardless of cache tier/layer:
-	// client.ip   ->
-	//     the network-level source address, hop-by-hop - could be an
-	//     internal address within our infrastructure as we traverse
-	//     various cache/proxy layers.
-	// req.http.X-Real-IP   ->
-	//     the network-level source address when this request first
-	//     entered our public traffic infrastructure at the edge, with no
-	//     other decoding.  Could still be a trusted external proxy.
-	// req.http.X-Trusted-Proxy ->
-	//     If X-Real-IP mapped to the address of a trusted proxy in our
-	//     "proxies" database (such as OperaMini), this will be the
-	//     official name of the trusted proxy.  Otherwise it will be unset
-	//     (boolean false).
-	// req.http.X-Client-IP ->
-	//     Iff XTP above is set, *and* the trusted-proxy-supplied X-F-F
-	//     had a legitimate-looking address at the end, X-Client-IP will
-	//     contain the claimed client IP directly behind the trusted
-	//     proxy.  Otherwise this will alias X-Real-IP.
-	// req.http.X-Carrier ->
-	//     If X-Client-IP matches a network in our "carriers" database,
-	//     this will contain the MCC-MNC code for that carrier.  Otherwise
-	//     it will be undefined.
-	// req.http.X-Carrier-Meta ->
-	//     If X-Carrier is defined: for some carriers, the database
-	//     contains extra metadata in the form of one or more labels like
-	//     "wap" or "residential".  They'll be separated by "|" if more
-	//     than one, and this header is undefined if there was no such
-	//     metadata.
-}
-
-<% end %>
-
-sub vcl_init {
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-	// again, netmapper only used in frontends, for recv_fe_ip_processing
-	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
-	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
-	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
-<% end %>
-}
-
-sub vcl_recv {
-	// IP processing is req->req mangling that shouldn't be re-done on
-	// restart, and XFF-appending is non-idempotent for restart purposes..
+// XFF / XFP / XRIP -handling (order is important below, should be at start of recv)
+// TODO: Integration with zero-like XFF-handling, to skip over authorized proxies for XRIP
+sub recv_ip_processing {
+	// Everything here is req-mangling based on the req
+	// itself, and some parts are non-idempotent, so do not
+	// re-run this on a request restart
 	if (req.restarts == 0) {
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-		call recv_fe_ip_processing;
-<% end %>
-		// All layers need to update XFF with client.ip hop-by-hop so that it
-		// looks right to layers beneath, including the app layer
+		if (client.ip !~ wikimedia_nets) {
+			// Ensure we only accept XFP and XRIP from our nets.
+			// Note this *should* be just the local tlsproxy
+			// terminator, or passing through layers of varnish,
+			// but we have known cases where applayer internal
+			// things are faking XFP...
+			unset req.http.X-Forwarded-Proto;
+			unset req.http.X-Real-IP;
+		}
+
+		// Ensure XRIP is always set, in the case of varnish-fe and a
+		// direct external request (otherwise nginx will have set it).
+		if (!req.http.X-Real-IP) {
+			set req.http.X-Real-IP = client.ip;
+		}
+
+		// All proxies need to update XFF with client.ip hop-by-hop
 		if (req.http.X-Forwarded-For) {
 			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
 		} else {
@@ -507,7 +389,18 @@ sub vcl_recv {
 		}
 	}
 
-<% if @vcl_config.fetch("layer", "") != "frontend" -%>
+	// From this (very early) point forward:
+	// client.ip -> the network-level source address, hop-by-hop
+	// X-Real-IP -> the network-level source address when this
+	// request first entered our infrastructure at the edge, without any
+	// regard to external XFF header processing, and does not become
+	// "wrong" from traversing our internal proxy layers.
+}
+
+sub vcl_recv {
+	call recv_ip_processing;
+
+<% if @vcl_config.fetch("layer", "frontend") != "frontend" -%>
 	if (client.ip !~ wikimedia_nets) {
 		// Do not allow direct access to non-frontend layers
 		error 403 "Access denied";
