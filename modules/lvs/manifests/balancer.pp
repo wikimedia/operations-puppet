@@ -22,10 +22,10 @@ class lvs::balancer(
     # ethtool is also a package needed but it is included from base
 
     class { 'pybal::configuration':
-        global_options => $pybal_global_options,
-        lvs_services => $lvs_services,
+        global_options  => $pybal_global_options,
+        lvs_services    => $lvs_services,
         lvs_class_hosts => $lvs_class_hosts,
-        site => $site
+        site            => $site
     }
 
     file { '/etc/modprobe.d/lvs.conf':
@@ -33,11 +33,11 @@ class lvs::balancer(
         owner   => 'root',
         group   => 'root',
         content => template('lvs/lvs.conf.erb'),
-        notify => Exec['update-initramfs-lvs-balancer']
+        notify  => Exec['update-initramfs-lvs-balancer']
     }
 
     exec { 'update-initramfs-lvs-balancer':
-        command => '/usr/sbin/update-initramfs -u',
+        command     => '/usr/sbin/update-initramfs -u',
         refreshonly => true
     }
 
