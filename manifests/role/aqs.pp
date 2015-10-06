@@ -23,7 +23,7 @@ class role::aqs {
     include ::cassandra::logging
     include network::constants
 
-    $analytics_networks = $network::constants::analytics_networks
+    $analytics_networks = join($network::constants::analytics_networks, ' ')
 
     # Emit an Icinga alert unless there is exactly one Java process belonging
     # to user 'cassandra' and with 'CassandraDaemon' in its argument list.
