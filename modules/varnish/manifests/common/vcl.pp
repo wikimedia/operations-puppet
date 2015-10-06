@@ -9,11 +9,17 @@ class varnish::common::vcl {
     }
 
     file { '/etc/varnish/last-access.inc.vcl':
-        ensure => absent,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('varnish/last-access.inc.vcl.erb'),
     }
 
     file { '/etc/varnish/provenance.inc.vcl':
-        ensure => absent,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('varnish/provenance.inc.vcl.erb'),
     }
 
     file { '/etc/varnish/device-detection.inc.vcl':
@@ -27,8 +33,12 @@ class varnish::common::vcl {
         content => template('varnish/errorpage.inc.vcl.erb'),
     }
 
+
     file { '/etc/varnish/via.inc.vcl':
-        ensure => absent,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('varnish/via.inc.vcl.erb'),
     }
 
     file { '/etc/varnish/hhvm.inc.vcl':
@@ -36,13 +46,6 @@ class varnish::common::vcl {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-    }
-
-    file { '/etc/varnish/analytics.inc.vcl':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('varnish/analytics.inc.vcl.erb'),
     }
 
     # VCL unit tests
