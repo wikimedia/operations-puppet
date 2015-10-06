@@ -42,7 +42,7 @@ define sslcert::chainedcert(
 
     if $ensure == 'present' {
         $inpath = "/etc/ssl/localcerts/${title}.crt"
-        $script = "/usr/local/sbin/x509-bundle"
+        $script = '/usr/local/sbin/x509-bundle'
         exec { "x509-bundle ${title}-chained":
             path    => 'bin:/usr/bin',
             cwd     => '/etc/ssl/localcerts',

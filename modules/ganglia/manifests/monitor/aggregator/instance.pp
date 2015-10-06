@@ -33,7 +33,7 @@ define ganglia::monitor::aggregator::instance($monitored_site) {
     }
 
     # Run these instances in the foreground
-    $daemonize = "no"
+    $daemonize = 'no'
 
     file { "/etc/ganglia/aggregators/${id}.conf":
         ensure  => $ensure,

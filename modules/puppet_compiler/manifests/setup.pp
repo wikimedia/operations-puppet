@@ -25,7 +25,7 @@ class puppet_compiler::setup($vardir, $user, $homedir) {
 
     # Install the puppet catalog diff face
     exec { 'install puppet catalog diff':
-        command     => "/usr/bin/puppet module install zack-catalog_diff",
+        command     => '/usr/bin/puppet module install zack-catalog_diff',
         creates     => "${homedir}/.puppet/modules/catalog_diff",
         user        => $user,
         cwd         => $homedir,

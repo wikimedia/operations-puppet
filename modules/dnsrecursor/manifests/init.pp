@@ -9,14 +9,14 @@ class dnsrecursor(
     $listen_addresses         = [$::ipaddress],
     $allow_from               = [],
     $ip_aliases               = undef,
-    $additional_forward_zones = "",
+    $additional_forward_zones = '',
     $auth_zones               = undef
 ) {
     package { 'pdns-recursor':
         ensure => 'present',
     }
 
-    $forward_zones    = "wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239"
+    $forward_zones    = 'wmnet=208.80.154.238;208.80.153.231;91.198.174.239, 10.in-addr.arpa=208.80.154.238;208.80.153.231;91.198.174.239'
 
     system::role { 'dnsrecursor':
         ensure      => 'absent',

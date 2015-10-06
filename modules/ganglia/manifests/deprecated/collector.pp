@@ -20,11 +20,11 @@ class ganglia::deprecated::collector {
             $rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
         }
         default: {
-            fail("ganglia::deprecated::collector is deprecated and only applied to netmon1001")
+            fail('ganglia::deprecated::collector is deprecated and only applied to netmon1001')
         }
     }
 
-    file { "/etc/ganglia/gmetad.conf":
+    file { '/etc/ganglia/gmetad.conf':
         ensure  => present,
         require => Package['gmetad'],
         content => template('ganglia/deprecated/gmetad.conf.erb'),
@@ -33,8 +33,8 @@ class ganglia::deprecated::collector {
 
     service { 'gmetad':
         ensure    => running,
-        require   => File["/etc/ganglia/gmetad.conf"],
-        subscribe => File["/etc/ganglia/gmetad.conf"],
+        require   => File['/etc/ganglia/gmetad.conf'],
+        subscribe => File['/etc/ganglia/gmetad.conf'],
         hasstatus => false,
     }
 

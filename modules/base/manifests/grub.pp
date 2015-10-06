@@ -41,7 +41,7 @@ class base::grub {
         # The CFQ I/O scheduler is rather # suboptimal for some of our I/O
         # workloads. Override with deadline. (the installer does this too)
         exec { 'grub2 iosched deadline':
-            path    => "/bin:/usr/bin",
+            path    => '/bin:/usr/bin',
             command => "sed -i '/^GRUB_CMDLINE_LINUX=/s/\\\"\$/ elevator=deadline\\\"/' /etc/default/grub",
             unless  => "grep -q '^GRUB_CMDLINE_LINUX=.*elevator=deadline' /etc/default/grub",
             onlyif  => 'test -f /etc/default/grub',

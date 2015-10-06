@@ -81,13 +81,13 @@ class openstack::controller_firewall {
     ferm::service { 'mysql_iron':
         proto  => 'tcp',
         port   => '3306',
-        srange => "@resolve(iron.wikimedia.org)",
+        srange => '@resolve(iron.wikimedia.org)',
     }
 
     # mysql monitoring access from tendril (db1011)
     ferm::service { 'mysql_tendril':
         proto  => 'tcp',
         port   => '3306',
-        srange => "@resolve(tendril.wikimedia.org)",
+        srange => '@resolve(tendril.wikimedia.org)',
     }
 }

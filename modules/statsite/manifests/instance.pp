@@ -37,7 +37,7 @@ define statsite::instance(
     }
 
     if os_version('debian >= jessie') {
-        file { "/etc/statsite.ini":
+        file { '/etc/statsite.ini':
             content => template('statsite/statsite.ini.erb'),
             require => Package['statsite'],
             notify  => Service['statsite'],
