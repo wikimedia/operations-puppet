@@ -7,7 +7,7 @@ sub vcl_recv {
 	if (req.http.referer
 		&& req.url != "/"
 		&& req.http.referer !~ "(?i)^https?://([-a-zA-Z0-9.]+\.)?(mediawiki|wikivoyage|wikivoyage-ev|wmflabs)\.org/"
-		&& req.http.referer !~ "(?i)^https?://(maps|phabricator|wikitech)\.wikimedia\.org/"
+		&& req.http.referer !~ "(?i)^https?://(maps|phabricator|wikitech|incubator)\.wikimedia\.org/"
 		&& req.http.referer !~ "(?i)^https?://(localhost|127\.0\.0\.1)(:\d+)?/"
 	) {
 		error 403 "Access Denied";
