@@ -25,6 +25,21 @@ class clamav {
         require => Package['clamav-daemon'],
     }
 
+    # Add proxy settings to freshclam
+    file_line { 'freshclam_proxyserver':
+        line   => "HTTPProxyServer webproxy.${::site}.wmnet",
+        path   => '/etc/clamav/freshclam.conf',
+        notify => Service['clamav-freshclam'],
+    }
+    file_line { 'freshclam_proxyport':
+        line    => 'HTTPProxyPort 8080',
+        path    => '/etc/clamav/freshclam.conf',
+        notify => Service['clamav-freshclam'],
+    }
+    service { 'clamav-freshclam':
+        ensure    => running,
+    }
+
     service { 'clamav-daemon':
         ensure    => running,
         require   => File['/etc/clamav/clamd.conf'],
