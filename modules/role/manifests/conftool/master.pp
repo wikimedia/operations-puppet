@@ -5,7 +5,7 @@
 class role::conftool::master {
 
     system::role { 'conftool-master':
-        description => "Conftool master",
+        description => 'Conftool master',
     }
 
     require puppetmaster::scripts
