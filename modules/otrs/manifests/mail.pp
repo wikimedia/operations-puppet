@@ -31,7 +31,10 @@ class otrs::mail(
     $otrs_mysql_password,
     $trusted_networks,
 ){
-    include clamav
+    class { 'clamav':
+        proxy => "webproxy.${::site}.wmnet:8080",
+    }
+
     include exim4::ganglia
 
     class { 'exim4':
