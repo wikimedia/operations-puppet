@@ -400,7 +400,7 @@ sub recv_fe_ip_processing {
 		}
 		if (req.http.X-Trusted-Proxy && req.http.X-Forwarded-For) {
 			// get last from trusted-proxy-supplied XFF
-			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, "^([^,]+, ?)+", "")
+			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, "^([^,]+, ?)+", "");
 		}
 	} else {
 		// XRIP from nginx, XFF assumed to be set and contain at least
