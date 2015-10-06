@@ -202,9 +202,13 @@ class role::parsoid::beta {
         mode   => '0775',
     }
 
-    # For beta, override NODE_PATH:
-    $parsoid_node_path = '/srv/deployment/parsoid/deploy/node_modules'
-    # Also override PARSOID_SETTINGS_FILE
+    # For beta, override NODE_PATH
+    # The packages are installed by Jenkins via npm install using pinned
+    # versions in npm-shrinkwrap.json
+    $parsoid_node_path = '/srv/deployment/parsoid/parsoid/node_modules'
+
+    # Override PARSOID_SETTINGS_FILE
+    # The setting file is in parsoid/deploy.git
     $parsoid_settings_file = '/srv/deployment/parsoid/deploy/conf/wmf/betalabs.localsettings.js'
 
     # Checkout of mediawiki/services/parsoid
