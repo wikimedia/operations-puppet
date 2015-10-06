@@ -1,4 +1,5 @@
 class role::lvs::balancer {
+
     system::role { "role::lvs::balancer": description => "LVS balancer" }
 
     $rp_args = inline_template('<%= @interfaces.split(",").map{|x| "net.ipv4.conf.#{x.gsub("_","/")}.rp_filter=0" if !x.start_with?("lo") }.compact.join(",") %>')
