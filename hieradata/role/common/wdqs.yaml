@@ -4,3 +4,4 @@ admin::groups:
   - wdqs-admins
 cluster: wdqs
 contact_group: admins,wdqs-admins
+"nginx::variant": 'extras'
