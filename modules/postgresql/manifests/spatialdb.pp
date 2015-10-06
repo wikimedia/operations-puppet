@@ -87,12 +87,12 @@ define postgresql::spatialdb(
     } elsif $ensure == 'absent' {
         exec { "drop_db-${name}":
             command => "/usr/bin/dropdb ${name}",
-            user    => "postgres",
+            user    => 'postgres',
             onlyif  => $db_exists,
         }
         exec { "drop_plpgsql_lang-${name}":
             command => "/usr/bin/droplang plpgsql ${name}",
-            user    => "postgres",
+            user    => 'postgres',
             onlyif  => $plpgsql_exists,
         }
         Exec["drop_plpgsql_lang-${name}"] -> Exec["drop_db-${name}"]

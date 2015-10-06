@@ -105,7 +105,7 @@ class gridengine::master
         source  => 'puppet:///modules/gridengine/complex-99-default',
     }
 
-    exec { "update-complex-conf":
+    exec { 'update-complex-conf':
         onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/complex.conf ${etcdir}/complex/*",
         command => "/bin/echo /usr/bin/qconf -Mc ${etcdir}/complex.conf'",
         require => File[ "${etcdir}/bin", "${etcdir}/complex/99-default" ],
@@ -129,7 +129,7 @@ class gridengine::master
         source  => 'puppet:///modules/gridengine/config-99-default',
     }
 
-    exec { "update-config-conf":
+    exec { 'update-config-conf':
         onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/config.conf ${etcdir}/config/*",
         command => "/bin/echo /usr/bin/qconf -Mconf ${etcdir}/config.conf",
         require => File[ "${etcdir}/bin", "${etcdir}/complex/99-default" ],

@@ -23,14 +23,14 @@ define labstore::fileserver::replicate(
     # systemd.
     file { "/etc/systemd/system/replicate-${title}.timer":
         ensure  => present,
-        owner   => "root",
-        group   => "root",
-        mode    => "0444",
-        content => template("labstore/initscripts/replicate.timer.erb"),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('labstore/initscripts/replicate.timer.erb'),
     }
 
     nrpe::monitor_systemd_unit_state { "replicate-${title}":
         description    => "Last backup of the ${title} filesystem",
-        expected_state => "periodic 90000", # 25h (i.e. daily but with a bit of give)
+        expected_state => 'periodic 90000', # 25h (i.e. daily but with a bit of give)
     }
 }

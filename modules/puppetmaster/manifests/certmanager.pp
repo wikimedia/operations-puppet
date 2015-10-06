@@ -1,9 +1,9 @@
 class puppetmaster::certmanager(
-    $remote_cert_cleaner=""
+    $remote_cert_cleaner=''
 ){
     user { 'certmanager':
-        home       => '/',
-        system     => true,
+        home   => '/',
+        system => true,
     }
 
     # Allow remote execution for cert cleanup

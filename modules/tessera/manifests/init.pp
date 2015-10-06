@@ -53,7 +53,7 @@
 class tessera(
     $graphite_url,
     $secret_key,
-    $sqlalchemy_database_uri = "sqlite:////var/lib/tessera/app.db",
+    $sqlalchemy_database_uri = 'sqlite:////var/lib/tessera/app.db',
 ) {
     require_package('python-flask-migrate')
     require_package('python-flask-sqlalchemy')
