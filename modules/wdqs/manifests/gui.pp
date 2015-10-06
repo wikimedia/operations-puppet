@@ -13,6 +13,13 @@ class wdqs::gui(
 ) {
     ::nginx::site { 'wdqs':
         content => template('wdqs/nginx.erb'),
+        require => File['/etc/nginx/post.lua'],
+    }
+
+    file { '/etc/nginx/post.lua':
+        ensure => present,
+        owner => 'root',
+        content => template('wdqs/post.lua'),
     }
 
     ferm::service { 'wdqs_http':

@@ -27,6 +27,14 @@ server {
         access_log   off;
     }
 
+    location /sparql {
+        lua_need_request_body on;
+        content_by_lua_file /etc/nginx/post.lua;
+        limit_except GET OPTIONS POST {
+            deny all;
+        }
+    }
+
     location /bigdata/namespace/wdq/sparql {
         proxy_pass http://localhost:9999;
 
