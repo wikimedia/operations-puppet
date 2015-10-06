@@ -90,7 +90,7 @@ spec: &spec
 # The main service setup. Each worker can offer one or more services.
 services:
   - name: aqs
-    module: ./restbase/lib/server
+    module: /srv/deployment/restbase/deploy/src/lib/server
     conf:
       port: <%= @port %>
       spec: *spec
