@@ -1,11 +1,11 @@
 define varnish::instance(
     $vcl_config,
     $backend_options,
-    $name="",
-    $vcl = "",
-    $port="80",
-    $admin_port="6083",
-    $storage="-s malloc,1G",
+    $name='',
+    $vcl = '',
+    $port='80',
+    $admin_port='6083',
+    $storage='-s malloc,1G',
     $runtime_parameters=[],
     $directors={},
     $extra_vcl = [],
@@ -14,10 +14,10 @@ define varnish::instance(
 
     include varnish::common
 
-    $runtime_params = join(prefix($runtime_parameters, "-p "), " ")
-    if $name == "" {
-        $instancesuffix = ""
-        $extraopts = ""
+    $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
+    if $name == '' {
+        $instancesuffix = ''
+        $extraopts = ''
     }
     else {
         $instancesuffix = "-${name}"
@@ -62,13 +62,13 @@ define varnish::instance(
 
     if $use_dynamic_directors {
         varnish::common::directors { $vcl:
-            instance      => $inst,
-            directors     => $directors,
-            extraopts     => $extraopts,
-            before        => [
-                              File["/etc/varnish/wikimedia_${vcl}.vcl"],
-                              Service["varnish${instancesuffix}"]
-                              ],
+            instance  => $inst,
+            directors => $directors,
+            extraopts => $extraopts,
+            before    => [
+                File["/etc/varnish/wikimedia_${vcl}.vcl"],
+                Service["varnish${instancesuffix}"]
+            ],
         }
     }
 
@@ -135,7 +135,7 @@ define varnish::instance(
             ],
         subscribe   => [
                 Class['varnish::common::vcl'],
-                File[suffix(prefix($extra_vcl, '/etc/varnish/'),".inc.vcl")],
+                File[suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl')],
                 File["/etc/varnish/wikimedia_${vcl}.vcl"]
             ],
         command     => "/usr/share/varnish/reload-vcl ${extraopts} || (touch ${vcl_failed_file}; false)",
