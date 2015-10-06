@@ -1,5 +1,5 @@
-@monitoring::group { "maps_eqiad": description => "eqiad maps servers" }
-@monitoring::group { "maps_codfw": description => "codfw maps servers" }
+@monitoring::group { 'maps_eqiad': description => 'eqiad maps servers' }
+@monitoring::group { 'maps_codfw': description => 'codfw maps servers' }
 
 class role::maps::master {
     include standard
