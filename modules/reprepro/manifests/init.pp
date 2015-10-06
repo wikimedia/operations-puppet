@@ -142,7 +142,7 @@ class reprepro (
         content => template('reprepro/authorized_keys.erb'),
     }
 
-    file { "/usr/local/bin/reprepro-ssh-upload":
+    file { '/usr/local/bin/reprepro-ssh-upload':
         ensure  => file,
         owner   => 'root',
         group   => 'root',

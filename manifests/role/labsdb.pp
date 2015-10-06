@@ -3,7 +3,7 @@
 class role::labs::db::master {
 
     system::role { 'role::labs::db::master':
-        description => "Labs user database master",
+        description => 'Labs user database master',
     }
 
     include standard
@@ -12,8 +12,8 @@ class role::labs::db::master {
     include role::mariadb::monitor
 
     class { 'mariadb::config':
-        prompt    => "TOOLSDB master",
-        config    => "mariadb/tools.my.cnf.erb",
+        prompt    => 'TOOLSDB master',
+        config    => 'mariadb/tools.my.cnf.erb',
         password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/srv/labsdb/data',
         tmpdir    => '/tmp',
@@ -24,7 +24,7 @@ class role::labs::db::master {
 class role::labs::db::slave {
 
     system::role { 'role::labs::db::slave':
-        description => "Labs user database slave",
+        description => 'Labs user database slave',
     }
 
     include standard
@@ -36,8 +36,8 @@ class role::labs::db::slave {
     include role::mariadb::ferm
 
     class { 'mariadb::config':
-        prompt    => "TOOLSDB slave",
-        config    => "mariadb/tools.my.cnf.erb",
+        prompt    => 'TOOLSDB slave',
+        config    => 'mariadb/tools.my.cnf.erb',
         password  => $passwords::misc::scripts::mysql_root_pass,
         datadir   => '/srv/labsdb/data',
         tmpdir    => '/srv/labsdb/tmp',
