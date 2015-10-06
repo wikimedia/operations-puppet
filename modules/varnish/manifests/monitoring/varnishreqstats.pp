@@ -21,7 +21,7 @@ define varnish::monitoring::varnishreqstats(
     # when varnishreqstats-diamond.py.erb is rendered.
     $collector_name = "Varnishreqstats${name}"
     diamond::collector { $collector_name:
-        content   => template('varnish/varnishreqstats-diamond.py.erb'),
+        content  => template('varnish/varnishreqstats-diamond.py.erb'),
         settings => {
             'varnish_name' => $instance_name,
             'path'         => $metric_path,

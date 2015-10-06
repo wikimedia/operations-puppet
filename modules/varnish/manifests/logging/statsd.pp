@@ -33,7 +33,7 @@ define varnish::logging::statsd(
     if $instance_name {
         $service_unit_name = "varnishstatsd-${instance_name}"
     } else {
-        $service_unit_name = "varnishstatsd-default"
+        $service_unit_name = 'varnishstatsd-default'
     }
 
     if ! defined(File['/usr/local/bin/varnishstatsd']) {
