@@ -55,6 +55,24 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
             mode    => '0440';
     }
 
+    # These would be automatically included in a correct designate package...
+    # probably this can be ripped out in Liberty.
+    file { '/etc/logrotate.d/designate-mdns':
+        ensure  => present,
+        source  => 'puppet:///modules/openstack/designate-mdns.logrotate',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+    file { '/etc/logrotate.d/designate-pool-manager':
+        ensure  => present,
+        source  => 'puppet:///modules/openstack/designate-pool-manager.logrotate',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
+
     # include rootwrap.d entries
 
     if $::fqdn == hiera('labs_designate_hostname') {
