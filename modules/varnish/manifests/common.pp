@@ -44,9 +44,9 @@ class varnish::common {
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/varnishlog.py':
-        source  => 'puppet:///modules/varnish/varnishlog.py',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        source => 'puppet:///modules/varnish/varnishlog.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 }
