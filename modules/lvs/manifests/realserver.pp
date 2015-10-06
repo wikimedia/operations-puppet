@@ -14,7 +14,7 @@ class lvs::realserver($realserver_ips=[]) {
         require => File['/etc/default/wikimedia-lvs-realserver'],
     }
 
-    file { "/etc/default/wikimedia-lvs-realserver":
+    file { '/etc/default/wikimedia-lvs-realserver':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
