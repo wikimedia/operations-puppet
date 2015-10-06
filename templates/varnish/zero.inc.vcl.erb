@@ -43,10 +43,7 @@ sub tag_carrier {
 
     if (req.http.X-Forwarded-By) {
         // Current backend & cache vary on X-Forwarded-By, so in order not to fragment cache,
-        // unset X-Forwarded-By. We still need that value in the resulting X-Analytics header,
-        // so create a copy to be used in the vcl_deliver.
-        set req.http.X-Forwarded-By2 = req.http.X-Forwarded-By;
-
+        // unset X-Forwarded-By.
         // the backend now checks this value. Soon we will stop varying on it
         if (!req.http.X-CS) {
             unset req.http.X-Forwarded-By;
@@ -68,34 +65,10 @@ sub vcl_deliver {
         header.append(resp.http.Set-Cookie,"ZeroOpts=tls");
     }
 
-    // Prepare for outbound X-CS and X-Analytics header assembly.
+    // Regardless of X-CS transform to "ON" for Vary and/or server-side
+    // purposes, if a carrier was detected at all, set X-CS as an outbound
+    // response header for the application to consume.
     if (req.http.X-CS2) {
-        // Regardless of X-CS transform to "ON" for Vary and/or server-side
-        // purposes, if a carrier was detected at all, set X-CS as an outbound
-        // response header for the application to consume.
         set resp.http.X-CS = req.http.X-CS2;
-
-        // X-C and X-C-M are set/split in the common recv code in
-        // wikimedia.vcl; X-CS2 is aggregated from them in recv
-        if (req.http.X-Carrier) {
-            if (resp.http.X-Analytics) {
-                set resp.http.X-Analytics = resp.http.X-Analytics + ";zero=" + req.http.X-Carrier;
-            } else {
-                set resp.http.X-Analytics = "zero=" + req.http.X-Carrier;
-            }
-            if (req.http.X-Carrier-Meta) {
-                set resp.http.X-Analytics = resp.http.X-Analytics + ";zeronet=" + req.http.X-Carrier-Meta;
-            }
-        }
-    } else {
-        // Let's ensure no outbound X-CS if pre-analytics X-CS (as determined in corresponding if) was not set.
-        unset resp.http.X-CS;
-    }
-    if (req.http.X-Forwarded-By2) {
-        if (resp.http.X-Analytics) {
-            set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=" + req.http.X-Forwarded-By2;
-        } else {
-            set resp.http.X-Analytics = "proxy=" + req.http.X-Forwarded-By2;
-        }
     }
 }

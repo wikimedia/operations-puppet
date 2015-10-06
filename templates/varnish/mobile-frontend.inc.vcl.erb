@@ -3,11 +3,8 @@
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 include "zero.inc.vcl";
-include "provenance.inc.vcl";
-include "via.inc.vcl";
-include "last-access.inc.vcl";
 
-// Note that via.inc.vcl will set an X-Analytics value of proxy=IORG
+// Note that analytics.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
 // value pair inside X-Analytics. We do this because if the traffic
 // had come from a known proxy (e.g., Opera or Nokia), that would
@@ -93,7 +90,6 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
-	call analytics_last_access_recv;
 	call evaluate_cookie_mobile;
 	call pass_authorization;
 	return (lookup);
@@ -148,25 +144,4 @@ sub vcl_deliver {
 		call geoip_cookie;
 	}
 <% end -%>
-
-	// Assemble X-Analytics header
-	// Some of the headers used for X-Analytics are not varied on, so add them after the backend processing
-	// Note that vcl_deliver in other files may also modify X-Analytics.
-	if (req.http.X-Forwarded-Proto) {
-		if (resp.http.X-Analytics) {
-			set resp.http.X-Analytics = resp.http.X-Analytics + ";https=1";
-		} else {
-			set resp.http.X-Analytics = "https=1";
-		}
-	}
-
-	if (req.http.X-WMF-UUID) {
-		if (resp.http.X-Analytics) {
-			set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuuid=" + req.http.X-WMF-UUID;
-		} else {
-			set resp.http.X-Analytics = "wmfuuid=" + req.http.X-WMF-UUID;
-		}
-	}
-
-	call analytics_last_access_deliver;
 }
