@@ -1,4 +1,4 @@
-wdqs::gui::log_aggregator:  'logstash1001.eqiad.wmnet'
+wdqs::gui::log_aggregator:  'logstash1001.eqiad.wmnet:10514'
 wdqs::updater::options: '-n wdq'
 admin::groups:
   - wdqs-admins
