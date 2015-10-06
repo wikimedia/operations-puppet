@@ -28,11 +28,11 @@ class toollabs::checker inherits toollabs {
     }
 
     file { '/usr/local/bin/webservice':
-        ensure => link,
-        target => '/usr/local/bin/webservice2',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure  => link,
+        target  => '/usr/local/bin/webservice2',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
         require => File['/usr/local/bin/webservice2'],
     }
 
@@ -104,7 +104,7 @@ class toollabs::checker inherits toollabs {
     }
 
     service { 'toolschecker':
-        ensure    => running,
+        ensure  => running,
         require => File['/run/toolschecker'],
     }
 

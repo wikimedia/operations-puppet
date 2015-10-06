@@ -13,7 +13,7 @@ class toollabs::proxy(
     if $ssl_install_certificate {
         sslcert::certificate { $ssl_certificate_name:
             skip_private => true,
-            before => Class['::dynamicproxy'],
+            before       => Class['::dynamicproxy'],
         }
     }
 
@@ -33,11 +33,11 @@ class toollabs::proxy(
         ssl_certificate_name => $ssl_certificate_name,
         redis_replication    => $redis_replication,
         error_config         => {
-            title    => "Wikimedia Tool Labs Error",
-            logo     => "/tool-labs-logo.png",
-            logo_2x  => "/tool-labs-logo-2x.png",
-            logo_alt => "Wikimedia Tool Labs",
-            favicon  => "/favicon.ico",
+            title    => 'Wikimedia Tool Labs Error',
+            logo     => '/tool-labs-logo.png',
+            logo_2x  => '/tool-labs-logo-2x.png',
+            logo_alt => 'Wikimedia Tool Labs',
+            favicon  => '/favicon.ico',
         },
         web_domain           => $web_domain,
     }
@@ -93,20 +93,20 @@ class toollabs::proxy(
     }
 
     file { '/var/www/error/favicon.ico':
-        ensure => file,
-        source => '/data/project/admin/toollabs/www/favicon.ico',
+        ensure  => file,
+        source  => '/data/project/admin/toollabs/www/favicon.ico',
         require => [File['/var/www/error'], Git::Clone['labs/toollabs']]
     }
 
     file { '/var/www/error/tool-labs-logo.png':
-        ensure => file,
-        source => 'puppet:///modules/toollabs/tool-labs-logo.png',
+        ensure  => file,
+        source  => 'puppet:///modules/toollabs/tool-labs-logo.png',
         require => [File['/var/www/error']]
     }
 
     file { '/var/www/error/tool-labs-logo-2x.png':
-        ensure => file,
-        source => 'puppet:///modules/toollabs/tool-labs-logo-2x.png',
+        ensure  => file,
+        source  => 'puppet:///modules/toollabs/tool-labs-logo-2x.png',
         require => [File['/var/www/error']]
     }
 

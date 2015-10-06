@@ -37,7 +37,7 @@ class toollabs::kube2proxy(
         refresh        => true,
         systemd        => true,
         service_params => $service_params,
-        subscribe => [
+        subscribe      => [
                       File['/usr/local/sbin/kube2proxy'],
                       ],
     }
