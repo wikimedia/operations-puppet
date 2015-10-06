@@ -4,9 +4,11 @@
 #
 # == Parameters
 #
+# [*proxy*]
+#   An HTTP proxy to use for fetching freshclam updates. Optional.
 
-class clamav {
-    package { 'clamav-daemon':
+class clamav($proxy=undef) {
+    package { [ 'clamav-daemon', 'clamav-freshclam' ]:
         ensure => present,
     }
 
@@ -26,18 +28,28 @@ class clamav {
     }
 
     # Add proxy settings to freshclam
-    file_line { 'freshclam_proxyserver':
-        line   => "HTTPProxyServer webproxy.${::site}.wmnet",
-        path   => '/etc/clamav/freshclam.conf',
-        notify => Service['clamav-freshclam'],
+    if $proxy {
+        $proxy_arr = split($proxy, ':')
+        $proxy_host = $proxy_arr[0]
+        $proxy_port = $proxy_arr[1]
+
+        file_line { 'freshclam_proxyserver':
+            line   => "HTTPProxyServer ${proxy_host}",
+            match  => "^HTTPProxyServer",
+            path   => '/etc/clamav/freshclam.conf',
+            notify => Service['clamav-freshclam'],
+        }
+        file_line { 'freshclam_proxyport':
+            line   => "HTTPProxyPort ${proxy_port}",
+            match  => "^HTTPProxyPort",
+            path   => '/etc/clamav/freshclam.conf',
+            notify => Service['clamav-freshclam'],
+        }
     }
-    file_line { 'freshclam_proxyport':
-        line    => 'HTTPProxyPort 8080',
-        path    => '/etc/clamav/freshclam.conf',
-        notify => Service['clamav-freshclam'],
-    }
+
     service { 'clamav-freshclam':
-        ensure    => running,
+        ensure  => running,
+        require => Package['clamav-freshclam'],
     }
 
     service { 'clamav-daemon':
