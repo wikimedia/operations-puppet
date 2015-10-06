@@ -23,9 +23,4 @@ class puppetmaster::labs {
         environment => 'GIT_SSH=/var/lib/git/ssh',
         minute      => '*/1',
     }
-
-    # Used to contain sensitive information
-    file { '/etc/labsstatus.cfg':
-        ensure => absent,
-    }
 }
