@@ -64,9 +64,6 @@ class contint::packages {
         'rake',
 
         'pep8',
-        'pyflakes',
-        'pylint',
-
         'python-simplejson',  # For mw/ext/Translate among others
 
         'luajit',
