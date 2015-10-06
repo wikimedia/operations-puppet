@@ -11,7 +11,6 @@
 # Misc rules, some of them might use to be enabled later.
 --no-autoloader_layout-check
 --no-inherits_across_namespaces-check
---no-double_quoted_strings-check
 --no-unquoted_file_mode-check
 --no-ensure_first_param-check
 --no-unquoted_resource_title-check
