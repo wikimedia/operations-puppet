@@ -1,1 +1,3 @@
 cluster: lvs
+# fqdn should resolve to the IP on eth0
+ssh::server::listen_address: %{::ipaddress_eth0}
