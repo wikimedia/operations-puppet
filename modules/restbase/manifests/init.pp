@@ -141,7 +141,7 @@ class restbase(
     }
 
     service { 'restbase':
-        ensure     => present,
+        ensure     => running,
         hasstatus  => true,
         hasrestart => true,
         provider   => 'init',
