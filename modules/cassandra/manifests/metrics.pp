@@ -30,7 +30,7 @@ class cassandra::metrics(
     validate_string($graphite_prefix)
     validate_string($graphite_host)
     validate_string($graphite_port)
-    if defined($blacklist) {
+    if $blacklist {
         validate_array($blacklist)
     }
 
