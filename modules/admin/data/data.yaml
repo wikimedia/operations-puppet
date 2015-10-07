@@ -300,11 +300,15 @@ groups:
     description: Users who can do sane CLI admin things
                  * Remove repositories
                  * Manage repositories, phd service, and workers
+                 * Reset authentication of users
+                 * Delete users (e.g. unverified accounts due to wrong email address)
     members: [aklapper]
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy r*',
+                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/remove destroy @*',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/repository',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/phd',
-                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/worker']
+                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/worker',
+                 'ALL = NOPASSWD: /srv/phab/phabricator/auth strip']
   zotero-admin:
     gid: 747
     description: group of zotero admins
