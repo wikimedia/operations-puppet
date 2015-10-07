@@ -1,0 +1,11 @@
+[identity]
+driver = keystone.identity.backends.ldap.Identity
+
+[ldap]
+url = ldap://<%= @keystoneconfig["ldap_host"] %>
+tree_dn = <%= @keystoneconfig["ldap_base_dn"] %>
+user_tree_dn = ou=people,<%= @keystoneconfig["ldap_base_dn"] %>
+user_id_attribute = <%= @keystoneconfig["ldap_user_id_attribute"] %>
+user_name_attribute = <%= @keystoneconfig["ldap_user_name_attribute"] %>
+user = <%= @keystoneconfig["ldap_user_dn"] %>
+password = <%= @keystoneconfig["ldap_user_pass"] %>
