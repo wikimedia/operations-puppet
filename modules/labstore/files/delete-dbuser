@@ -1,0 +1,33 @@
+#!/usr/bin/python3
+"""
+Delete user accounts from all labs hosts.
+
+create-dbusers then recreates them.
+"""
+import argparse
+import pymysql
+import yaml
+
+
+if __name__ == '__main__':
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('--config', help='Path to YAML config file')
+    argparser.add_argument('username', help='mysql username to delete')
+    args = argparser.parse_args()
+
+    with open(args.config) as f:
+        config = yaml.safe_load(f)
+
+    
+    for host in config['mysql']['hosts']:
+        conn = pymysql.connect(
+            host,
+            config['mysql']['username'],
+            config['mysql']['password']
+        )
+        cur = conn.cursor()
+        try:
+            cur.execute('DROP USER %s' % args.username)
+            print("Dropped %s in %s" % (args.username, host))
+        finally:
+            cur.close()
