@@ -1,7 +1,3 @@
-#####################################################################
-# THIS FILE IS MANAGED BY PUPPET
-# puppet:///modules/openstack/kilo/keystone/policy.json
-#####################################################################
 {
     "admin_required": "role:admin",
     "cloud_admin": "rule:admin_required and domain_id:admin_domain_id",
