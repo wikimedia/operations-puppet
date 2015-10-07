@@ -308,7 +308,7 @@ groups:
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/repository',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/phd',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/worker',
-                 'ALL = NOPASSWD: /srv/phab/phabricator/auth strip --all-types --user *']
+                 'ALL = NOPASSWD: /srv/phab/phabricator/bin/auth strip --all-types --user *']
   zotero-admin:
     gid: 747
     description: group of zotero admins
