@@ -5,12 +5,6 @@ class mediawiki::web::beta_sites {
         ensure => 'absent',
     }
 
-    # Now the sites, in strict sequence
-    apache::site { 'nonexistent':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/nonexistent.conf',
-        priority => 0,
-    }
-
     apache::site { 'main':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/main.conf',
         priority => 1,
