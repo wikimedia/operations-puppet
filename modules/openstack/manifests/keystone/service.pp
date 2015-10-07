@@ -28,6 +28,18 @@ class openstack::keystone::service($openstack_version=$::openstack::version, $ke
             owner   => 'root',
             group   => 'root',
             require => Package['keystone'];
+        '/etc/keystone/domains/':
+            ensure  => directory,
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            require => Package['keystone'];
+        '/etc/keystone/domains/keystone.Default.conf':
+            source  => "puppet:///modules/openstack/${openstack_version}/keystone/domains/keystone.Default.conf.erb",
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            require => File['/etc/keystone/domains/'];
     }
 
     if $::fqdn == hiera('labs_nova_controller') {
