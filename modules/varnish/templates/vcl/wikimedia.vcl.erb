@@ -430,6 +430,25 @@ sub recv_fe_ip_processing {
 		set req.http.X-Client-IP = req.http.X-Real-IP;
 	}
 
+	// Now check carrier database for setting X-Carrier based on XCIP
+	set req.http.X-Carrier = netmapper.map("carriers", req.http.X-Client-IP);
+	// normalize to boolean post-netmapper (varnish-3.0.4...)
+	if (req.http.X-Carrier == "") {
+		unset req.http.X-Carrier;
+	}
+	else {
+		// Split X-Carrier data from raw form with optional trailing metadata,
+		// such as "123-45|wap|mobile", so that X-Carrier contains only
+		// MCC-MNC and X-Carrier-Meta contains the trailing attributes
+		set req.http.X-Carrier-Meta = regsub(req.http.X-Carrier, "^[^|]*\|?", "");
+		if (req.http.X-Carrier-Meta != "") {
+			set req.http.X-Carrier = regsub(req.http.X-Carrier, "\|.*$", "");
+		}
+		else {
+			unset req.http.X-Carrier-Meta;
+		}
+	}
+
 	// From this (very early) point forward, regardless of cache tier/layer:
 	// client.ip   ->
 	//     the network-level source address, hop-by-hop - could be an
@@ -449,6 +468,16 @@ sub recv_fe_ip_processing {
 	//     had a legitimate-looking address at the end, X-Client-IP will
 	//     contain the claimed client IP directly behind the trusted
 	//     proxy.  Otherwise this will alias X-Real-IP.
+	// req.http.X-Carrier ->
+	//     If X-Client-IP matches a network in our "carriers" database,
+	//     this will contain the MCC-MNC code for that carrier.  Otherwise
+	//     it will be undefined.
+	// req.http.X-Carrier-Meta ->
+	//     If X-Carrier is defined: for some carriers, the database
+	//     contains extra metadata in the form of one or more labels like
+	//     "wap" or "residential".  They'll be separated by "|" if more
+	//     than one, and this header is undefined if there was no such
+	//     metadata.
 }
 
 <% end %>
