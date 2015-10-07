@@ -64,7 +64,8 @@ admin_port = <%= @keystoneconfig["auth_port"] %>
 connection = mysql://<%= @keystoneconfig["db_user"] %>:<%= @keystoneconfig["db_pass"] %>@<%= @keystoneconfig["db_host"] %>/<%= @keystoneconfig["db_name"] %>
 
 [identity]
-driver = keystone.identity.backends.ldap.Identity
+domain_specific_drivers_enabled = true
+domain_config_dir = /etc/keystone/domains
 
 [catalog]
 # dynamic, sql-based backend (supports API/CLI-based management commands)
@@ -114,40 +115,6 @@ enable = False
 #valid_days = 3650
 #ca_password = None
 #token_format = PKI
-
-[ldap]
-url = ldap://<%= @keystoneconfig["ldap_host"] %>
-tree_dn = <%= @keystoneconfig["ldap_base_dn"] %>
-user_tree_dn = ou=people,<%= @keystoneconfig["ldap_base_dn"] %>
-tenant_tree_dn = ou=projects,<%= @keystoneconfig["ldap_base_dn"] %>
-user_id_attribute = <%= @keystoneconfig["ldap_user_id_attribute"] %>
-tenant_id_attribute = <%= @keystoneconfig["ldap_tenant_id_attribute"] %>
-user_name_attribute = <%= @keystoneconfig["ldap_user_name_attribute"] %>
-tenant_name_attribute = <%= @keystoneconfig["ldap_tenant_name_attribute"] %>
-user = <%= @keystoneconfig["ldap_user_dn"] %>
-password = <%= @keystoneconfig["ldap_user_pass"] %>
-# url = ldap://localhost
-# user = dc=Manager,dc=example,dc=com
-# password = None
-# suffix = cn=example,cn=com
-# use_dumb_member = False
-
-# user_tree_dn = ou=Users,dc=example,dc=com
-# user_objectclass = inetOrgPerson
-# user_id_attribute = cn
-# user_name_attribute = sn
-
-# tenant_tree_dn = ou=Groups,dc=example,dc=com
-# tenant_objectclass = groupOfNames
-# tenant_id_attribute = cn
-# tenant_member_attribute = member
-# tenant_name_attribute = ou
-
-role_tree_dn = ou=roles,<%= @keystoneconfig["ldap_base_dn"] %>
-role_objectclass = organizationalRole
-role_id_attribute = cn
-role_name_attribute = cn
-role_member_attribute = roleOccupant
 
 [filter:debug]
 paste.filter_factory = keystone.common.wsgi:Debug.factory
