@@ -25,4 +25,10 @@ class role::mw-rc-irc {
         srange => '$MW_APPSERVER_NETWORKS',
     }
 
+    # Apache - redirecting people who try http to wiki page on meta
+    ferm::service { 'irc_apache':
+        proto  => 'tcp',
+        port   => '80',
+    }
+
 }
