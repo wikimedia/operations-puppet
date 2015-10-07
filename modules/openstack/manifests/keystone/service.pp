@@ -25,7 +25,6 @@ class openstack::keystone::service($openstack_version=$::openstack::version, $ke
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
-            notify  => Service['keystone'],
             require => Package['keystone'];
     }
 
