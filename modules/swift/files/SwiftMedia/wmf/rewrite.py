@@ -210,13 +210,13 @@ class _WMFRewriteContext(WSGIContext):
         # regular uploads
         match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/((?P<zone>transcoded|thumb)/)?(?P<path>((temp|archive)/)?[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$', req.path)
         if match:
-            proj  = match.group('proj')
-            lang  = match.group('lang')
-            repo  = 'local'  # the upload repo name is "local"
+            proj = match.group('proj')
+            lang = match.group('lang')
+            repo = 'local'  # the upload repo name is "local"
             # Get the repo zone (if not provided that means "public")
-            zone  = (match.group('zone') if match.group('zone') else 'public')
+            zone = (match.group('zone') if match.group('zone') else 'public')
             # Get the object path relative to the zone (and thus container)
-            obj   = match.group('path')  # e.g. "archive/a/ab/..."
+            obj = match.group('path')  # e.g. "archive/a/ab/..."
             shard = match.group('shard')
 
         # timeline renderings
@@ -224,11 +224,11 @@ class _WMFRewriteContext(WSGIContext):
             # /wikipedia/en/timeline/a876297c277d80dfd826e1f23dbfea3f.png
             match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/(?P<repo>timeline)/(?P<path>.+)$', req.path)
             if match:
-                proj  = match.group('proj')  # wikipedia
-                lang  = match.group('lang')  # en
-                repo  = match.group('repo')  # timeline
-                zone  = 'render'
-                obj   = match.group('path')  # a876297c277d80dfd826e1f23dbfea3f.png
+                proj = match.group('proj')  # wikipedia
+                lang = match.group('lang')  # en
+                repo = match.group('repo')  # timeline
+                zone = 'render'
+                obj = match.group('path')  # a876297c277d80dfd826e1f23dbfea3f.png
                 shard = ''
 
         # math renderings
@@ -238,11 +238,11 @@ class _WMFRewriteContext(WSGIContext):
             match = re.match(r'^(/(?P<proj>[^/]+)/(?P<lang>[^/]+))?/(?P<repo>math)/(?P<path>(?P<shard1>[0-9a-f])/(?P<shard2>[0-9a-f])/.+)$', req.path)
 
             if match:
-                proj  = 'global'
-                lang  = 'data'
-                repo  = match.group('repo')  # math
-                zone  = 'render'
-                obj   = match.group('path')  # c/9/f/c9f2055dadfb49853eff822a453d9ceb.png
+                proj = 'global'
+                lang = 'data'
+                repo = match.group('repo')  # math
+                zone = 'render'
+                obj = match.group('path')  # c/9/f/c9f2055dadfb49853eff822a453d9ceb.png
                 shard = match.group('shard1') + match.group('shard2')  # c9
 
         # score renderings
@@ -251,17 +251,17 @@ class _WMFRewriteContext(WSGIContext):
             # /score/override-midi/8/i/8i9pzt87wtpy45lpz1rox8wusjkt7ki.ogg
             match = re.match(r'^/(?P<repo>score)/(?P<path>.+)$', req.path)
             if match:
-                proj  = 'global'
-                lang  = 'data'
-                repo  = match.group('repo')  # score
-                zone  = 'render'
-                obj   = match.group('path')  # j/q/jqn99bwy8777srpv45hxjoiu24f0636/jqn99bwy.png
+                proj = 'global'
+                lang = 'data'
+                repo = match.group('repo')  # score
+                zone = 'render'
+                obj = match.group('path')  # j/q/jqn99bwy8777srpv45hxjoiu24f0636/jqn99bwy.png
                 shard = ''
 
         if match is None:
             match = re.match(r'^/monitoring/(?P<what>.+)$', req.path)
             if match:
-                what  = match.group('what')
+                what = match.group('what')
                 if what == 'frontend':
                     headers = {'Content-Type': 'application/octet-stream'}
                     resp = webob.Response(headers=headers, body="OK\n")
@@ -283,7 +283,7 @@ class _WMFRewriteContext(WSGIContext):
             # /index.html /favicon.ico /robots.txt etc.
             # serve from a default "root" container
             if match:
-                path  = match.group('path')
+                path = match.group('path')
                 if not path:
                     path = 'index.html'
 
