@@ -5,12 +5,6 @@ class mediawiki::web::beta_sites {
         ensure => 'absent',
     }
 
-    # Now the sites, in strict sequence
-    apache::site { 'nonexistent':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/nonexistent.conf',
-        priority => 0,
-    }
-
     # w-beta.wmflabs.org depends on proxy_http
     include ::apache::mod::proxy_http
     apache::site { 'main':
