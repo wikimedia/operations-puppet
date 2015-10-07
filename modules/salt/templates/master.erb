@@ -110,7 +110,10 @@
 ping_on_rotate: True
 
 # Cache minion grains and pillar data in the cachedir.
-#minion_data_cache: True
+#
+# default: True
+# this is somewhat expensive as on each auth the directory is traversed
+minion_data_cache: False
 
 # The master can include configuration from other files. To enable this,
 # pass a list of paths to this option. The paths can be either relative or
