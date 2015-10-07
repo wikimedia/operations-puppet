@@ -1,4 +1,4 @@
-class mediawiki::web::sites {
+class mediawiki::web::prod_sites {
     tag 'mediawiki', 'mw-apache-config'
 
     #common code snippets that are included in the virtualhosts.
