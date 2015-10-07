@@ -32,12 +32,6 @@ class mediawiki::web::prod_sites {
         before => Service['apache2'],
     }
 
-    # Now the sites, in strict sequence
-    apache::site { 'nonexistent':
-        source   => 'puppet:///modules/mediawiki/apache/sites/nonexistent.conf',
-        priority => 0,
-    }
-
     apache::site { 'wwwportals':
         source   => 'puppet:///modules/mediawiki/apache/sites/wwwportals.conf',
         priority => 1,

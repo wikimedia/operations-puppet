@@ -7,6 +7,7 @@ class role::ve {
     include ::role::jsbench
     include ::mediawiki
     include ::mediawiki::web
+    include ::mediawiki::web::sites
     include ::mediawiki::web::prod_sites
 
     file { '/usr/local/bin/vb':

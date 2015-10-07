@@ -50,7 +50,8 @@ class role::mediawiki::webserver($pool) {
     include ::role::mediawiki::common
     include ::apache::monitoring
     include ::mediawiki::web
-    # HACK: Fix to not be different classes!
+    include ::mediawiki::web::sites
+    # FIXME: These should all be merged into the generic sites class!
     if $::realm == 'labs' {
         include ::mediawiki::web::beta_sites
     } else {
