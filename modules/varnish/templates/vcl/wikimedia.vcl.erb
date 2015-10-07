@@ -415,7 +415,7 @@ sub vcl_recv {
 		call recv_fe_ip_processing;
 	}
 
-<% if @vcl_config.fetch("layer", "frontend") != "frontend" -%>
+<% if @vcl_config.fetch("layer", "") != "frontend" -%>
 	if (client.ip !~ wikimedia_nets) {
 		// Do not allow direct access to non-frontend layers
 		error 403 "Access denied";
