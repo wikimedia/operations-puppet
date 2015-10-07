@@ -386,18 +386,45 @@ sub recv_fe_ip_processing {
 		unset req.http.X-Real-IP;
 	}
 
-	// Ensure XRIP is always set, in the case of varnish-fe and a
-	// direct external request (otherwise nginx will have set it).
+	// There are two possible cases here: either nginx acted as our TLS
+	// proxy and already set X-Real-IP (as well as appended the same value
+	// as XFF), or the traffic was direct to varnish-fe, in which case
+	// XRIP is not yet set and XFF is directly from external.
 	if (!req.http.X-Real-IP) {
+		// direct-to-port-80 case, set XRIP ourselves
 		set req.http.X-Real-IP = client.ip;
+		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Real-IP);
+		// normalize to boolean post-netmapper (varnish-3.0.4...)
+		if (req.http.X-Trusted-Proxy == "") {
+			unset req.http.X-Trusted-Proxy;
+		}
+		// XXX ... deal with XFF / XCIP here
+	} else {
+		// XRIP from nginx, XFF assumed to be set and contain at least
+		// XRIP at the end, possibly prepended by other addrs set
+		// externally by some proxy.
+		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Real-IP);
+		// normalize to boolean post-netmapper (varnish-3.0.4...)
+		if (req.http.X-Trusted-Proxy == "") {
+			unset req.http.X-Trusted-Proxy;
+		}
+		// XXX ... deal with XFF / XCIP here
 	}
 
-	// From this (very early) point forward:
-	// client.ip -> the network-level source address, hop-by-hop
-	// X-Real-IP -> the network-level source address when this
-	// request first entered our infrastructure at the edge, without any
-	// regard to external XFF header processing, and does not become
-	// "wrong" from traversing our internal proxy layers.
+	// From this (very early) point forward, regardless of cache tier/layer:
+	// client.ip   ->
+	//     the network-level source address, hop-by-hop - could be an
+	//     internal address within our infrastructure as we traverse
+	//     various cache/proxy layers.
+	// req.http.X-Real-IP   ->
+	//     the network-level source address when this request first
+	//     entered our public traffic infrastructure at the edge, with no
+	//     other decoding.  Could still be a trusted external proxy.
+	// req.http.X-Trusted-Proxy ->
+	//     If X-Real-IP mapped to the address of a trusted proxy in our
+	//     "proxies" database (such as OperaMini), this will be the
+	//     official name of the trusted proxy.  Otherwise it will be unset
+	//     (boolean false).
 }
 
 <% end %>
