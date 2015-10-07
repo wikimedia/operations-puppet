@@ -3,64 +3,26 @@
 // Note: This requires "import header" in the including VCL
 
 sub tag_carrier {
-    // This is what things look like on entry in four basic scenarios
-    // ("both" here means something MITM-proxied the SSL connection, like OperaMini,
-    //   but was kind enough to set an XFF header on the way)
-    // (the leading "..." in XFF is that sometimes there are other local
-    //   proxies on 127.0.0.1 or whatever, according to some OperaMini docs...)
+    // clear the 4 headers we may set below, nobody else should be setting them...
+    unset req.http.X-Forwarded-By;
+    unset req.http.X-Forwarded-By2;
+    unset req.http.X-CS;
+    unset req.http.X-CS2;
 
-    // *********************************************************
-    // *    v> | client.ip | XFF                        | XFP
-    // * direct| client    | (...,)? client             |
-    // * ssl   | ssl       | (...,)? client, ssl        | https
-    // * proxy | proxy     | (...,)? client, proxy      |
-    // * both  | ssl       | (...,)? client, proxy, ssl | https
-    // *********************************************************
-
-    // first, strip the SSL entry from XFF if applicable
-    if (req.http.X-Forwarded-Proto) {
-        set req.http.XFF-NoSSL = regsub(req.http.X-Forwarded-For, ",[^,]+$", ""); // strips final entry
-    } else {
-        set req.http.XFF-NoSSL = req.http.X-Forwarded-For;
+    // XTP and XC are set up in the common wikimedia.vcl now from netmapper data
+    // Use standard XTP to set the tag_carrier-specific XFB header...
+    if (req.http.X-Trusted-Proxy) {
+        set req.http.X-Forwarded-By = req.http.X-Trusted-Proxy;
     }
 
-    // *****************************************************************************
-    // *    v>      | XFF-NoSSL             | map("proxies") input from regsub below
-    // * direct/ssl | (...,)? client        | client
-    // * proxy/both | (...,)? client, proxy | proxy
-    // *****************************************************************************
-
-    // now get the trusted proxy into XFB, if any - the regsub grabs the final entry in the list
-    set req.http.X-Forwarded-By = netmapper.map("proxies", regsub(req.http.XFF-NoSSL, "^([^,]+, ?)+", ""));
-
-    // normalize to boolean again...
-    if (req.http.X-Forwarded-By == "") {
-        unset req.http.X-Forwarded-By;
+    // Use standard XC/XCM to set the tag_carrier-specific X-CS2 header...
+    if (req.http.X-Carrier) {
+        if (req.http.X-Carrier-Meta) {
+            set req.http.X-CS2 = req.http.X-Carrier + "|" + req.http.X-Carrier-Meta;
+        } else {
+            set req.http.X-CS2 = req.http.X-Carrier;
+        }
     }
-
-    // now, iff XFB was set, strip away one more layer to put the supposed client IP at the end
-    if (req.http.X-Forwarded-By) {
-        set req.http.XFF-ClientEnd = regsub(req.http.XFF-NoSSL, ",[^,]+$", "");
-    } else {
-        set req.http.XFF-ClientEnd = req.http.XFF-NoSSL;
-    }
-
-    unset req.http.XFF-NoSSL; // clean up temp var
-
-    // ****************************************************************
-    // *    v>  | XFF-CE         | map("carriers") input from regsub below
-    // *   all  | (...,)? client | client
-    // *****************************************************************
-
-    // Grab client IP from the end of the XFF-CE list and feed to map("zero")
-    set req.http.X-CS2 = netmapper.map("carriers", regsub(req.http.XFF-ClientEnd, "^([^,]+, ?)+", ""));
-
-    // normalize to boolean (varnish-3.0.4...)
-    if (req.http.X-CS2 == "") {
-        unset req.http.X-CS2;
-    }
-
-    unset req.http.XFF-ClientEnd; // clean up temp var
 
     // Now the per-carrier stuff...
     // Short of having netmapper (or equivalent) return a set of match parameters, I can't see any
