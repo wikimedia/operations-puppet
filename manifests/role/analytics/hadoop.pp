@@ -583,9 +583,14 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     # does not support this.  See:
     # https://issues.apache.org/jira/browse/HADOOP-10181
     # We use jmxtrans instead.
-    # Use jmxtrans for sending metrics to ganglia
+    # Use jmxtrans for sending metrics to ganglia and statsd
+
+    # TODO: use variables for stats server from somewhere?
+    $statsd  = 'statsd.eqiad.wmnet:8125'
+
     class { 'cdh::hadoop::jmxtrans::master':
         ganglia => "${ganglia_host}:${ganglia_port}",
+        statsd  => $statsd,
     }
 
     # monitor disk statistics
@@ -666,6 +671,7 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     # Use jmxtrans for sending metrics to ganglia
     class { 'cdh::hadoop::jmxtrans::worker':
         ganglia => "${ganglia_host}:${ganglia_port}",
+        statsd  => $statsd,
     }
 
     # monitor disk statistics
