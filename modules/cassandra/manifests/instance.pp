@@ -75,6 +75,8 @@ define cassandra::instance(
     $commitlog_directory    = "${data_directory_base}/commitlog"
     $heapdump_directory     = "${data_directory_base}/"
     $saved_caches_directory = "${data_directory_base}/saved_caches"
+    $tls_cluster_name       = $::cassandra::tls_cluster_name
+    $application_username   = $::cassandra::application_username
 
     file { $config_directory:
         ensure  => directory,
