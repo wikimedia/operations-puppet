@@ -136,6 +136,12 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 "elasticsearch::cluster_name": beta-search
 "elasticsearch::auto_create_index": '+apifeatureusage-*,-*'
 role::logstash::statsd_host: labmon1001.eqiad.wmnet
+"mediawiki::redis_servers::eqiad":
+  - 10.68.16.177:6379:1
+  - 10.68.16.231:6379:1
+"mediawiki::redis_servers::codfw":
+  - 10.68.16.177:6379:1
+  - 10.68.16.231:6379:1
 nfs_mounts:
   project: false
   home: false
