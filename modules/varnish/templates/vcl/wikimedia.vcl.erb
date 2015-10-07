@@ -367,6 +367,13 @@ sub vcl_recv_purge {
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
 // and should be guarded against running on request restarts.
 sub recv_fe_ip_processing {
+	// this subroutine "owns" these 4 headers - nothing else in our VCL or
+	// anywhere in our network should be setting them.
+	unset req.http.X-Trusted-Proxy;
+	unset req.http.X-Client-IP;
+	unset req.http.X-Carrier;
+	unset req.http.X-Carrier-Meta;
+
 	if (client.ip !~ wikimedia_nets) {
 		// Ensure we only accept XFP from our own networks.  Ideally
 		// it should only be set by our nginx TLS terminator
