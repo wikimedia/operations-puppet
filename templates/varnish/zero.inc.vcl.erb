@@ -2,14 +2,6 @@
 
 // Note: This requires "import header" in the including VCL
 
-import netmapper;
-
-sub vcl_init {
-    // args here are map-name (for .map()), data file, and seconds between mtime checks for reload
-    netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
-    netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
-}
-
 sub tag_carrier {
     // This is what things look like on entry in four basic scenarios
     // ("both" here means something MITM-proxied the SSL connection, like OperaMini,
