@@ -222,7 +222,7 @@ node 'antimony.wikimedia.org' {
 node 'argon.wikimedia.org' {
     include standard
     include base::firewall
-    include role::mw_rc_irc
+    include role::mw-rc-irc
 }
 
 node 'baham.wikimedia.org' {

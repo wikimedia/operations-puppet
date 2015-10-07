@@ -3,7 +3,7 @@
 # This is a modified ircd server and is not
 # suitable for a general ircd deployment
 
-class mw_rc_irc::ircserver {
+class mw-rc-irc::ircserver {
 
     file {
         '/usr/etc/ircd.conf':
@@ -15,9 +15,9 @@ class mw_rc_irc::ircserver {
             mode    => '0444',
             owner   => 'irc',
             group   => 'irc',
-            content => template('mw_rc_irc/motd.erb');
+            content => template('mw-rc-irc/motd.erb');
         '/etc/init/ircd.conf':
-            source  => 'puppet:///modules/mw_rc_irc/upstart/ircd.conf',
+            source  => 'puppet:///modules/mw-rc-irc/upstart/ircd.conf',
     }
 
     service { 'ircd':
@@ -27,7 +27,7 @@ class mw_rc_irc::ircserver {
     }
 
     diamond::collector { 'IRCDStats':
-        source   => 'puppet:///modules/mw_rc_irc/monitor/ircd_stats.py',
+        source   => 'puppet:///modules/mw-rc-irc/monitor/ircd_stats.py',
         settings => {
             method => 'Threaded',
         },
