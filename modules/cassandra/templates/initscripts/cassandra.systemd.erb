@@ -4,10 +4,10 @@ After=network.target
 
 [Service]
 User=cassandra
-PIDFile=/var/run/cassandra/cassandra.pid
+PIDFile=<%= @pid_file %>
 LimitNOFILE=100000
 LimitMEMLOCK=infinity
 Environment="CASSANDRA_INCLUDE=/etc/cassandra.in.sh"
-Environment="CASSANDRA_CONF=/etc/cassandra"
-Environment="CASSANDRA_INSTANCE=<%= @hostname %>"
-ExecStart=/usr/sbin/cassandra -p /var/run/cassandra/cassandra.pid
+Environment="CASSANDRA_CONF=<%= @config_directory %>"
+Environment="CASSANDRA_INSTANCE=<%= @instance_id %>"
+ExecStart=/usr/sbin/cassandra -p <%= @pid_file %>

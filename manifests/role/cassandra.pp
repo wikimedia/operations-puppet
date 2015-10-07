@@ -50,7 +50,8 @@ class role::cassandra {
     # Cassandra JMX/RMI
     ferm::service { 'cassandra-jmx-rmi':
         proto  => 'tcp',
-        port   => '7199',
+        # hardcoded limit of 4 instances per host
+        port   => '7199:7202',
         srange => "@resolve((${cassandra_hosts_ferm}))",
     }
     # Cassandra CQL query interface
