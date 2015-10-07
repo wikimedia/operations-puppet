@@ -49,6 +49,14 @@ class labstore::account_services {
         mode   => '0555',
     }
 
+    # To delete users from all the labsdb mysql databases
+    file { '/usr/local/sbin/delete-dbuser':
+        source => 'puppet:///modules/labstore/delete-dbuser',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+    }
+
     # Terrible hack
     if $is_active {
         $service_ensure = 'present'
