@@ -363,35 +363,32 @@ sub vcl_recv_purge {
 	}
 }
 
-// XFF / XFP / XRIP -handling (order is important below, should be at start of recv)
-// TODO: Integration with zero-like XFF-handling, to skip over authorized proxies for XRIP
-sub recv_ip_processing {
-	// Everything here is req-mangling based on the req
-	// itself, and some parts are non-idempotent, so do not
-	// re-run this on a request restart
-	if (req.restarts == 0) {
-		if (client.ip !~ wikimedia_nets) {
-			// Ensure we only accept XFP and XRIP from our nets.
-			// Note this *should* be just the local tlsproxy
-			// terminator, or passing through layers of varnish,
-			// but we have known cases where applayer internal
-			// things are faking XFP...
-			unset req.http.X-Forwarded-Proto;
-			unset req.http.X-Real-IP;
-		}
+// Must be done at the top of vcl_recv, in our varnish-frontend layer only,
+// and should be guarded against running on request restarts.
+sub recv_fe_ip_processing {
+	if (client.ip !~ wikimedia_nets) {
+		// Ensure we only accept XFP from our own networks.  Ideally
+		// it should only be set by our nginx TLS terminator
+		// specifically, but there are known cases where internal apps
+		// set XFP to fake HTTPS when making a request to our public
+		// endpoints from the inside.
+		unset req.http.X-Forwarded-Proto;
+		// only the nginx TLS terminator should be setting this one at
+		// all - there are no other internal exceptions to that rule
+		unset req.http.X-Real-IP;
+	}
 
-		// Ensure XRIP is always set, in the case of varnish-fe and a
-		// direct external request (otherwise nginx will have set it).
-		if (!req.http.X-Real-IP) {
-			set req.http.X-Real-IP = client.ip;
-		}
+	// Ensure XRIP is always set, in the case of varnish-fe and a
+	// direct external request (otherwise nginx will have set it).
+	if (!req.http.X-Real-IP) {
+		set req.http.X-Real-IP = client.ip;
+	}
 
-		// All proxies need to update XFF with client.ip hop-by-hop
-		if (req.http.X-Forwarded-For) {
-			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
-		} else {
-			set req.http.X-Forwarded-For = client.ip;
-		}
+	// All proxies need to update XFF with client.ip hop-by-hop
+	if (req.http.X-Forwarded-For) {
+		set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+	} else {
+		set req.http.X-Forwarded-For = client.ip;
 	}
 
 	// From this (very early) point forward:
@@ -412,7 +409,11 @@ sub vcl_init {
 }
 
 sub vcl_recv {
-	call recv_ip_processing;
+	// IP processing is req->req mangling that shouldn't be re-done on
+	// restart, and XFF-appending is non-idempotent for restart purposes..
+	if (req.restarts == 0) {
+		call recv_fe_ip_processing;
+	}
 
 <% if @vcl_config.fetch("layer", "frontend") != "frontend" -%>
 	if (client.ip !~ wikimedia_nets) {
