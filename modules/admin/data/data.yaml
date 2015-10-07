@@ -73,7 +73,8 @@ groups:
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis,
-              addshore, jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared]
+              addshore, jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
+              vbaranetsky]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -229,7 +230,8 @@ groups:
               ezachte, mforns, reedy, west1, phuedx, awight, spage, junikowski,
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
-              csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf]
+              csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
+              vbaranetsky]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -1658,3 +1660,10 @@ users:
     realname: Dan Foy
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcPoXJg9IgK5+067Fe5pzHVDmCEKbjFJClxcrTOoAqe9+xZfWIdMJKWV1h4Wj0fYiGJZDBwwrvwlPN+9pMiR1OwjB3BA0XTWVGBWeLwMsNRvCs9RDSLl7iI8N8v0oa58PAMquVDsVufILCC5H1fz8LfxywPrwDaR0y5vDXTlj2/FirXuZLC8lgOJXdLNp31SRoSZ/0Q/gISqBknGnqF9vTFRPq31B9OP3EAzpPAXVneGCcKp+EeG02AXss0S2Dvz8XDYWuduQVYVJCpJkHHdxdhCMA30BD6eiaJ0iyWS2NpAngBrCTXnlacdRJXsiVyBXpisyHRLQdyjHK6p2ijwJN dfoy@wikimedia.org]
     uid: 2318
+  vbaranetsky:
+    ensure: present
+    gid: 500
+    name: vbaranetsky
+    realname: D. Victoria Baranetsky
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXDLLO7xO3ORplUgyymQvLJZ7WB2FExGHjlxTKOSRwFGVPdAqbjAZVy84y+1+jAdbkwtMYtM+NaEZQ0iXsdCU6oY9mCoolJSc5LlvWv2I6mN2m9PW/2m2CH7wLaKlrv/a4flA07T4ZZwzPYXaqzCpNAOQzoOAwCoNuBBSz27Vocoqw3tNYo/7dxzTdq3EB+MeJFxQzCqK0LZe9DMfkImHNCwEWS+11JxZyfN752n+v5RBWjP4jGz5pRPN4gM0bOeYTyMHtzUR/+cWsSLx3I55ZmZ3FvYRVa7ALTKbqvmYm5il5rVbg7ViLLud1NbKrJPewJPGC5BJWB43khMiiQurB vbaranetsky@AdminisorsAir24.corp.wikimedia.org]
+    uid: 13214
