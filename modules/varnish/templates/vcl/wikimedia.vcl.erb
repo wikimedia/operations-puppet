@@ -384,13 +384,6 @@ sub recv_fe_ip_processing {
 		set req.http.X-Real-IP = client.ip;
 	}
 
-	// All proxies need to update XFF with client.ip hop-by-hop
-	if (req.http.X-Forwarded-For) {
-		set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
-	} else {
-		set req.http.X-Forwarded-For = client.ip;
-	}
-
 	// From this (very early) point forward:
 	// client.ip -> the network-level source address, hop-by-hop
 	// X-Real-IP -> the network-level source address when this
@@ -413,6 +406,13 @@ sub vcl_recv {
 	// restart, and XFF-appending is non-idempotent for restart purposes..
 	if (req.restarts == 0) {
 		call recv_fe_ip_processing;
+		// All layers need to update XFF with client.ip hop-by-hop so that it
+		// looks right to layers beneath, including the app layer
+		if (req.http.X-Forwarded-For) {
+			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+		} else {
+			set req.http.X-Forwarded-For = client.ip;
+		}
 	}
 
 <% if @vcl_config.fetch("layer", "") != "frontend" -%>
