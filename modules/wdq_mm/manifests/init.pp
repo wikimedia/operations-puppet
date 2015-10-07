@@ -1,7 +1,7 @@
-# == Class: wdq-mm
+# == Class: wdq_mm
 #
 # Class for setting up an instance of Magnus' WDQ
-class wdq-mm {
+class wdq_mm {
     package { 'wdq-mm':
         ensure => latest,
     }
@@ -21,7 +21,7 @@ class wdq-mm {
     }
 
     file { '/etc/monit/conf.d/wdq-mm':
-        source  => 'puppet:///modules/wdq-mm/monitrc',
+        source  => 'puppet:///modules/wdq_mm/monitrc',
         require => [
             Package['monit'],
             Package['wdq-mm'],
