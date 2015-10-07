@@ -734,9 +734,9 @@ request_scheduler: org.apache.cassandra.scheduler.NoScheduler
 #
 server_encryption_options:
     internode_encryption: <%= @internode_encryption %>
-    keystore: /etc/cassandra/tls/server.key
+    keystore: <%= @config_directory %>/tls/server.key
     keystore_password: placeholder
-    truststore: /etc/cassandra/tls/server.trust
+    truststore: <%= @config_directory %>/tls/server.trust
     truststore_password: placeholder
     # More advanced defaults below:
     # protocol: TLS
@@ -748,11 +748,11 @@ server_encryption_options:
 # enable or disable client/server encryption.
 client_encryption_options:
     enabled: <%= @client_encryption_enabled %>
-    keystore: /etc/cassandra/tls/client.key
+    keystore: <%= @config_directory %>/tls/client.key
     keystore_password: placeholder
     # require_client_auth: false
     # Set trustore and truststore_password if require_client_auth is true
-    # truststore: /etc/cassandra/tls/client.trust
+    # truststore: <%= @config_directory %>/tls/client.trust
     # truststore_password: placeholder
     # More advanced defaults below:
     # protocol: TLS
