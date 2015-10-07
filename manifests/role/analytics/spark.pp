@@ -16,13 +16,6 @@ class role::analytics::spark::standalone {
         worker_cores     => hiera('spark_worker_cores',     floor($::processorcount / hiera('spark_worker_instances', 1))),
         worker_memory    => hiera('spark_worker_memory',    undef)
     }
-
-    # Open up port for debugging
-    ferm::service{ 'jmxtrans-jmx':
-        proto  => 'tcp',
-        port   => '2101',
-        srange => '$INTERNAL',
-    }
 }
 
 class role::analytics::spark::standalone::master {
