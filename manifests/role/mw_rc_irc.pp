@@ -1,16 +1,16 @@
-class role::mw-rc-irc {
+class role::mw_rc_irc {
 
-    system::role { 'role::mw-rc-irc': description => 'MW Changes IRC Broadcast Server' }
+    system::role { 'role::mw_rc_irc': description => 'MW Changes IRC Broadcast Server' }
 
     include passwords::udpmxircecho
     $udpmxircecho_pass = $passwords::udpmxircecho::udpmxircecho_pass
 
-    class { '::mw-rc-irc::irc-echo':
+    class { '::mw_rc_irc::irc-echo':
         ircpassword => $udpmxircecho_pass,
     }
 
-    include mw-rc-irc::ircserver
-    include mw-rc-irc::apache
+    include mw_rc_irc::ircserver
+    include mw_rc_irc::apache
 
     ferm::service { 'ircd_public':
         proto => 'tcp',
