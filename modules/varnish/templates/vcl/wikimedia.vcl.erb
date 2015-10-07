@@ -363,6 +363,7 @@ sub vcl_recv_purge {
 	}
 }
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
 // and should be guarded against running on request restarts.
 sub recv_fe_ip_processing {
@@ -392,6 +393,8 @@ sub recv_fe_ip_processing {
 	// "wrong" from traversing our internal proxy layers.
 }
 
+<% end %>
+
 sub vcl_init {
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	// again, netmapper only used in frontends, for recv_fe_ip_processing
@@ -405,7 +408,9 @@ sub vcl_recv {
 	// IP processing is req->req mangling that shouldn't be re-done on
 	// restart, and XFF-appending is non-idempotent for restart purposes..
 	if (req.restarts == 0) {
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 		call recv_fe_ip_processing;
+<% end %>
 		// All layers need to update XFF with client.ip hop-by-hop so that it
 		// looks right to layers beneath, including the app layer
 		if (req.http.X-Forwarded-For) {
