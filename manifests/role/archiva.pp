@@ -30,9 +30,19 @@ class role::archiva {
         }
     }
 
-    ferm::service { 'rsync':
+    ferm::service { 'archiva_rsync':
         proto => 'tcp',
         port  => '873',
+    }
+
+    ferm::service { 'archiva_https':
+        proto => 'tcp',
+        port  => 443,
+    }
+
+    ferm::service { 'archiva_http':
+        proto => 'tcp',
+        port  => 80,
     }
 }
 
