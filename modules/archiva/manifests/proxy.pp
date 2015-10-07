@@ -62,11 +62,6 @@ class archiva::proxy(
         ]
 
         $force_https_site_ensure = 'present'
-
-        ferm::service { 'https':
-            proto => 'tcp',
-            port  => 443,
-        }
     }
     else {
         $listen = 80
@@ -83,10 +78,5 @@ class archiva::proxy(
     nginx::site { 'archiva-force-https':
         ensure  => $force_https_site_ensure,
         content => template('nginx/sites/force-https.erb'),
-    }
-
-    ferm::service { 'http':
-        proto => 'tcp',
-        port  => 80,
     }
 }
