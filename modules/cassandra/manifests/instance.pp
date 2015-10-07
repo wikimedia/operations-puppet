@@ -76,8 +76,8 @@ define cassandra::instance(
 
     file { $config_directory:
         ensure  => directory,
-        owner   => 'cassandra',
-        group   => 'cassandra',
+        owner   => 'root',
+        group   => 'root',
         mode    => '0755',
         require => Package['cassandra'],
     }
