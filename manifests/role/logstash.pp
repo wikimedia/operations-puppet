@@ -46,7 +46,7 @@ class role::logstash (
     ferm::service { "grafana_dashboard_definition_storage":
         proto  => 'tcp',
         port   => '9200',
-        srange => '$INTERNAL',
+        srange => '@resolve(krypton.eqiad.wmnet)',
     }
 
     logstash::input::gelf { 'gelf':
