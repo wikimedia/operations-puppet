@@ -14,6 +14,11 @@ class role::mw-rc-irc {
 
     ferm::service { 'ircd_public':
         proto => 'tcp',
-        port   => '(6664 6665 6666 6667 6668 6669 8001)',
+        port  => '(6664 6665 6666 6667 6668 6669 8001)',
+    }
+
+    ferm::service { 'irc_apache':
+        proto => 'tcp',
+        port  => '80',
     }
 }
