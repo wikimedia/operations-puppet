@@ -270,12 +270,5 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
             port   => '9092',
             srange => '$ALL_NETWORKS',
         }
-
-        ferm::service { 'kafka-jmx':
-            proto  => 'tcp',
-            port   => '9999',
-            srange => '$ALL_NETWORKS',
-
-        }
     }
 }
