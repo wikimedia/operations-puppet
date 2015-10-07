@@ -60,6 +60,12 @@ templates:
           - <%= @parsoid_uri %>
           - <%= @graphoid_uri %>
           - <%= @mobileapps_uri %>
+      header_match:
+        description: Checks client ip against one of the predefined whitelists
+        x-error-message: This client is not allowed to use the endpoint
+        x-whitelists:
+          internal:
+            - /^(?:::ffff:)?(?:10|127)\./
 
   wmf-sys-1.0.0: &wp/sys/1.0.0
     info:
