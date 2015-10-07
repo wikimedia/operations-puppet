@@ -264,13 +264,6 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         # monitor disk statistics
         include role::analytics::monitor_disks
 
-        # Open up port for debugging
-        ferm::service{ 'jmxtrans-jmx':
-            proto  => 'tcp',
-            port   => '2101',
-            srange => '$INTERNAL',
-        }
-
         #firewall Kafka Broker
         ferm::service { 'kafka-server':
             proto  => 'tcp',

@@ -645,12 +645,6 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     # Firewall
     include role::analytics::hadoop::ferm::namenode
     include role::analytics::hadoop::ferm::resourcemanager
-    # Open up port for debugging
-    ferm::service{ 'jmxtrans-jmx':
-        proto  => 'tcp',
-        port   => '2101',
-        srange => '$INTERNAL',
-    }
 }
 
 # == Class role::analytics::hadoop::worker
@@ -794,12 +788,6 @@ class role::analytics::hadoop::standby inherits role::analytics::hadoop::client 
 
     # Firewall
     include role::analytics::hadoop::ferm::namenode
-    # Open up port for debugging
-    ferm::service{ 'jmxtrans-jmx':
-        proto  => 'tcp',
-        port   => '2101',
-        srange => '$INTERNAL',
-    }
 }
 
 
