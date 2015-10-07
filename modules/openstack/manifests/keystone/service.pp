@@ -20,6 +20,13 @@ class openstack::keystone::service($openstack_version=$::openstack::version, $ke
             notify  => Service['keystone'],
             require => Package['keystone'],
             mode    => '0440';
+        '/etc/keystone/policy.json':
+            source  => "puppet:///modules/openstack/${openstack_version}/keystone/policy.json",
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            notify  => Service['keystone'],
+            require => Package['keystone'];
     }
 
     if $::fqdn == hiera('labs_nova_controller') {
