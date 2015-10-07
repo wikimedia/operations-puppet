@@ -7,6 +7,11 @@ import std;
 #   being set from different code.
 import header;
 
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+# only used in recv_fe_ip_processing on frontends
+import netmapper;
+<% end %>
+
 <%
 def backend_option(backend, option, default)
 	if @varnish_backend_options.kind_of?(Array)
@@ -395,6 +400,15 @@ sub recv_ip_processing {
 	// request first entered our infrastructure at the edge, without any
 	// regard to external XFF header processing, and does not become
 	// "wrong" from traversing our internal proxy layers.
+}
+
+sub vcl_init {
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	// again, netmapper only used in frontends, for recv_fe_ip_processing
+	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
+	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
+	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
+<% end %>
 }
 
 sub vcl_recv {
