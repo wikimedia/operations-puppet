@@ -512,3 +512,13 @@ reactor:<% salt_reactor.sort.each do |salt_tag, salt_states| %>
   - '<%= salt_tag %>':<% salt_states.sort.each do |salt_state| %>
     - <%= salt_reactor_root %>/<%= salt_state %><% end %>
 <% end %><% end %>
+
+##### Timeout for find_job to collect results #####
+###################################################
+# This setting is used to determine how long we wait
+# for minions to respond to a find_job request (checks
+# whether a given job id is still in process on
+# minions, in case we have not gotten return data from
+# them)
+# default value is 5 seconds
+gather_job_timeout=10
