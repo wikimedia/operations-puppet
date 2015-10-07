@@ -101,11 +101,6 @@ sub vcl_deliver {
         if (req.http.X-ZEROSFX != "") {
             // Remove everything on and after the first '|' char
             set req.http.X-CS = "zero=" + regsub(req.http.X-CS, "\|.*", "") + ";zeronet=" + req.http.X-ZEROSFX;
-        } else if (req.http.X-CS == "404-01b") {
-            // For a short time we had this workaround. This "else if" can be removed after 2014-10-15
-            // We only had one carrier, "404-01b", whom we temporarily had to create an extra entry until backend was ready.
-            // In order for analytics to report correct stats, we used to remove "b" before modifying X-Analytics.
-            set req.http.X-CS = "zero=404-01;zeronet=b";
         } else {
             set req.http.X-CS = "zero=" + req.http.X-CS;
         }
