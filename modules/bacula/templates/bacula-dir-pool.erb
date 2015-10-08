@@ -4,13 +4,13 @@ Pool {
     Name = <%= @name %>
     Pool Type = Backup
     Maximum Volumes = <%= @max_vols %>
-    <% if @max_vol_bytes -%>
+    <%- if @max_vol_bytes -%>
     Maximum Volume Bytes = <%= @max_vol_bytes %>
-    <% end -%>
+    <%- end -%>
     Storage = <%= @storage %>
-    <% if @label_fmt -%>
+    <%- if @label_fmt -%>
     Label Format = "<%= @label_fmt %>"
-    <% end -%>
+    <%- end -%>
     Volume Retention = <%= @volume_retention %>
     AutoPrune = <%= @autoprune %>
     Recycle = <%= @recycle %>
