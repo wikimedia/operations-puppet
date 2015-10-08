@@ -626,16 +626,6 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
             require      => Class['cdh::hadoop::master'],
         }
-        # Alert if this NameNode is not active
-        monitoring::ganglia { 'hadoop-hdfs-namenode-primary-is-active':
-            # This check is being deprecated in favor of the one below.
-            ensure      => 'absent',
-            description => 'Hadoop NameNode Primary Is Active',
-            metric      => 'Hadoop.NameNode.FSNamesystem.tag_HAState',
-            warning     => '\!active',
-            critical    => '\!active',
-            require     => Class['cdh::hadoop::master'],
-        }
 
         # Allow nagios to run the check_hdfs_active_namenode as hdfs user.
         sudo::user { 'nagios-check_hdfs_active_namenode':
