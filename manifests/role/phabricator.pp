@@ -76,6 +76,13 @@ class role::phabricator::main {
         },
     }
 
+    # This exists to offer git services
+    interface::ip { 'role::phabricator::main::ipv4':
+        interface => 'eth0',
+        address   => '10.64.32.186',
+        prefixlen => '21',
+    }
+
     class { '::phabricator::tools':
         dbhost          => $mysql_host,
         dbslave         => $mysql_slave,
@@ -147,6 +154,10 @@ class role::phabricator::main {
         port   => '25',
         proto  => 'tcp',
         srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
+    }
+
+    ferm::rule { 'ssh_public':
+        rule => 'saddr (0.0.0.0/0) daddr (10.64.32.186/32 208.80.154.250/32) proto tcp dport (22) ACCEPT;',
     }
 
     # redirect bugzilla URL patterns to phabricator
