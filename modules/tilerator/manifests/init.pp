@@ -13,8 +13,9 @@ class tilerator() {
     $pgsql_tilerator_user = 'tilerator'
     $pgsql_tilerator_pass = hiera('maps::postgresql_tilerator_pass')
 
+    # NOTE: We are explicitly not passing a port argument here. tilerator is a
+    # daemon executing tasks from a queue, it does not listen to requests
     service::node { 'tilerator':
-        port       => 6534,
         config     => template('tilerator/config.yaml.erb'),
         no_workers => $::processorcount / 2,
     }
