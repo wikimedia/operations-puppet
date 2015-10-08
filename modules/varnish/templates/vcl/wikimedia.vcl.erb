@@ -403,24 +403,23 @@ sub recv_fe_ip_processing {
 			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, "^([^,]+, ?)+", "");
 		}
 	} else {
-		// XRIP from nginx, XFF assumed to be set and contain at least
-		// XRIP at the end, possibly prepended by other addrs set
-		// externally by some proxy.
+		// XRIP from nginx, XFF set/appended by nginx and contains at
+		// least XRIP at the end, possibly prepended by other addrs
+		// set externally by some proxy.
 		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Real-IP);
 		// normalize to boolean post-netmapper (varnish-3.0.4...)
 		if (req.http.X-Trusted-Proxy == "") {
 			unset req.http.X-Trusted-Proxy;
 		}
 		if (req.http.X-Trusted-Proxy) {
-			// strip off final XFF entry (should alias XRIP, both set
-			// by nginx) to set xffce, then take the final entry
-			// of xffce as the client IP.  Note that if the
-			// trusted proxy did not set an XFF header nginx would
-			// have set it to just XRIP with no commas, and the
-			// regsubs would result in setting XCIP = XRIP.
-			set req.http.xffce = regsub(req.http.X-Forwarded-For, ",[^,]+$", "");
-			set req.http.X-Client-IP = regsub(req.http.xffce, "^([^,]+, ?)+", "");
-			unset req.http.xffce; // clean up temp var
+			// We want the second-to-last XFF entry here, assuming
+			// there's two or more IPs.  Note that with the
+			// regsub's below if there was only one (which would
+			// alias XRIP by definition), there would be no commas
+			// to match, so this would set XCIP = XRIP, which is
+			// the desirable/default state.
+			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, ",[^,]+$", "");
+			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^([^,]+, ?)+", "");
 		}
 	}
 
