@@ -61,7 +61,7 @@ def handle_save_timing(meta):
     duration = event.get('saveTiming')
     if duration is None:
         duration = event.get('duration')
-    if is_sane(duration):
+    if duration and is_sane(duration):
         dispatch_stat('mw.performance.save', duration)
 
 
@@ -97,9 +97,8 @@ def handle_navigation_timing(meta):
 
     site = 'mobile' if 'mobileMode' in event else 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
-    https = 'https' if event.get('isHttps') else 'http'
 
-    # Current unused:
+    # Currently unused:
     bits_cache = meta.get('recvFrom', '').split('.')[0]
     wiki = meta.get('wiki', '')
 
@@ -110,12 +109,24 @@ def handle_navigation_timing(meta):
         metrics = {'sslNegotiation': metrics['sslNegotiation']}
 
     for metric, value in metrics.items():
-        dispatch_stat(prefix, metric, site, auth, value)
-        dispatch_stat(prefix, metric, site, 'overall', value)
-        dispatch_stat(prefix, metric, 'overall', value)
+        if is_sane(value):
+            dispatch_stat(prefix, metric, site, auth, value)
+            dispatch_stat(prefix, metric, site, 'overall', value)
+            dispatch_stat(prefix, metric, 'overall', value)
 
-        if metric == 'connecting':
-            dispatch_stat(prefix, metric, site, https, value)
+            if metric == 'connecting':
+                dispatch_stat(prefix, metric, site, 'https', value)
+
+        # Allow zero values in Navigation Timing metrics
+        # Bug: T104902
+        if is_sane(value) or value == 0:
+            prefix = prefix + '_with_zeros'
+            dispatch_stat(prefix, metric, site, auth, value)
+            dispatch_stat(prefix, metric, site, 'overall', value)
+            dispatch_stat(prefix, metric, 'overall', value)
+
+            if metric == 'connecting':
+                dispatch_stat(prefix, metric, site, 'https', value)
 
 
 for meta in iter(zsock.recv_json, ''):
