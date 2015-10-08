@@ -6,7 +6,8 @@
 # accomodate future tilerator needs that are not suited for the service module
 # classes as well as conform to a de-facto standard of having a module for every
 # service
-class tilerator() {
+class tilerator {
+    include tilerator::ui
 
     $cassandra_tilerator_user = 'tilerator'
     $cassandra_tilerator_pass = hiera('maps::cassandra_tilerator_pass')
