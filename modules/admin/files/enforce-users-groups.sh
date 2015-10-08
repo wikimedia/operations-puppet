@@ -15,7 +15,7 @@ EXCLUDE=("nobody" \
          "l10nupdate" \
          "mwdeploy" \   # eventlog*
          "gerrit2" \    # ytterbium.wikimedia.org
-         "spamd" \      # sodium.wikimedia.org:
+         "spamd" \      # fermium.wikimedia.org:
          "releases" \   # tin.eqiad.wmnet
          "reprepro" \   # caesium.eqiad.wmnet
          "mysql" \      # pc1001.eqiad.wmnet
