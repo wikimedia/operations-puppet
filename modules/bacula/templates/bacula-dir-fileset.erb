@@ -13,7 +13,7 @@ FileSet {
         <%- end -%>
         <%- end -%>
     }
-    <% if @excludes -%>
+    <%- if @excludes -%>
     Exclude {
         <%- @excludes.each do |exclude| -%>
         File = <%= exclude %>
