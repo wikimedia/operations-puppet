@@ -627,12 +627,20 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
             require      => Class['cdh::hadoop::master'],
         }
         # Alert if this NameNode is not active
+        # This check is being deprecated in favor of the one below.
         monitoring::ganglia { 'hadoop-hdfs-namenode-primary-is-active':
             description => 'Hadoop NameNode Primary Is Active',
             metric      => 'Hadoop.NameNode.FSNamesystem.tag_HAState',
             warning     => '\!active',
             critical    => '\!active',
             require     => Class['cdh::hadoop::master'],
+        }
+
+        # Alert if there is no active NameNode
+        nrpe::monitor_service { 'hadoop-hdfs-active-namenode':
+            description  => 'At least one Hadoop HDFS NameNode is active',
+            nrpe_command => '/usr/local/bin/check_hdfs_active_namenode',
+            require      => Class['cdh::hadoop::master'],
         }
     }
 
