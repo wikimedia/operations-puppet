@@ -1,6 +1,11 @@
 class dumps {
     sslcert::certificate { 'dumps.wikimedia.org': }
 
+    monitoring::service { 'https':
+        description   => 'HTTPS',
+        check_command => 'check_ssl_http!dumps.wikimedia.org',
+    }
+
     class { '::nginx':
         variant => 'extras',
     }
