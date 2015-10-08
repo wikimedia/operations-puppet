@@ -121,4 +121,8 @@ class diamond(
             devices   => 'PhysicalDrive[0-9]+$|md[0-9]+$|sd[a-z]+$|x?vd[a-z]+$|disk[0-9]+$|dm-[0-9]+$',
         },
     }
+
+    diamond::collector { 'TcpConnStates':
+        source   => 'puppet:///modules/diamond/collector/tcpconnstates.py',
+    }
 }
