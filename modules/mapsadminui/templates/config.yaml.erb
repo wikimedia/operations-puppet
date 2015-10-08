@@ -1,0 +1,11 @@
+# mapadminui-specific settings
+
+redis: redis://maps-test2001.codfw.wmnet
+
+variables:
+  osmdb-user: '<%= @pgsql_mapsadminui_user %>'
+  osmdb-pswd: '<%= @pgsql_mapsadminui_pass %>'
+  cassandra-user: '<%= @cassandra_mapsadminui_user %>'
+  cassandra-pswd: '<%= @cassandra_mapsadminui_pass %>'
+
+sources: sources.prod.yaml
