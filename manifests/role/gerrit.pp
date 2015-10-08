@@ -8,6 +8,11 @@ class role::gerrit {
 
         sslcert::certificate { 'gerrit.wikimedia.org': }
 
+        monitoring::service { 'https':
+            description   => 'HTTPS',
+            check_command => 'check_ssl_http!gerrit.wikimedia.org',
+        }
+
         backup::set { 'var-lib-gerrit2-review_site-git': }
 
         interface::ip { 'role::gerrit::production_ipv4':
