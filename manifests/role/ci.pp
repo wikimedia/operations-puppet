@@ -124,14 +124,11 @@ class role::ci::master {
 }
 
 # Set up a Jenkins slave suitable for Continuous Integration jobs execution.
-# You will need to setup the Gerrit replication on the Gerrit server by
-# amending the role::gerrit::production class
 class role::ci::slave {
 
     system::role { 'role::ci::slave': description => 'CI slave runner' }
 
     include contint::packages
-    include role::gerrit::production::replicationdest
     include role::zuul::install
 
     package {
@@ -179,14 +176,6 @@ class role::ci::slave {
     nrpe::monitor_service { 'ci_tmpfs':
         description  => 'CI tmpfs disk space',
         nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 20% -c 5% -e -p /var/lib/jenkins-slave/tmpfs',
-    }
-
-    # Setup Gerrit replication destination:
-    file { '/srv/ssd/gerrit':
-        ensure => 'directory',
-        owner  => 'gerritslave',
-        group  => 'root',
-        mode   => '0755',
     }
 
     # user and private key for Travis integration

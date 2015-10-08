@@ -56,20 +56,6 @@ class role::gerrit {
             replication  => {
                 # If adding a new entry, remember to add the fingerprint to gerrit2's known_hosts
 
-                # All entries should have the same target directory '/srv/ssd/gerrit'
-                # since it is referenced in Jenkins jobs.
-                'jenkins-slaves' => {
-                    'url'     => [
-                        # Note: This is in single quotes on purpose. ${name} is not
-                        # expected to be expanded by puppet but rather by gerrit
-                        #
-                        # lint:ignore:single_quote_string_with_variables
-                        'gerritslave@gallium.wikimedia.org:/srv/ssd/gerrit/${name}.git',
-                        # lint:endignore
-                    ],
-                    'threads' => '4',
-                    'mirror'  => true,
-                },
                 'gitblit'        => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
