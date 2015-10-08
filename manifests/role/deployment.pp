@@ -51,11 +51,13 @@ class role::deployment::server(
         include wikitech::wiki::passwords
     }
 
+    $deployable_networks_ferm = join($deployable_networks, ' ')
+
     ferm::service { 'http_deployment_server':
         desc   => 'http on trebuchet deployment servers, for serving actual files to deploy',
         proto  => 'tcp',
         port   => '80',
-        srange => $deployable_networks,
+        srange => $deployable_networks_ferm,
     }
 
     #T83854
