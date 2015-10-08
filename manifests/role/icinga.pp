@@ -34,6 +34,11 @@ class role::icinga(
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
     sslcert::certificate { 'icinga.wikimedia.org': }
 
+    monitoring::service { 'https':
+        description   => 'HTTPS',
+        check_command => 'check_ssl_http!icinga.wikimedia.org',
+    }
+
     class { '::icinga':            }
     class { '::icinga::web':       }
     class { '::icinga::naggen':    }
