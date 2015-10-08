@@ -9,26 +9,26 @@ sub tag_carrier {
     unset req.http.X-CS;
     unset req.http.X-CS2;
 
-    // XTP and XC are set up in the common wikimedia.vcl now from netmapper data
-    // Use standard XTP to set the tag_carrier-specific XFB header...
-    if (req.http.X-Trusted-Proxy) {
-        set req.http.X-Forwarded-By = req.http.X-Trusted-Proxy;
-    }
-
-    // Use standard XC/XCM to set the tag_carrier-specific X-CS2 header...
+    // X-C, X-C-M, and X-T-P are set up in the common wikimedia.vcl now from
+    // netmapper data, and are the source for these Zero headers
     if (req.http.X-Carrier) {
         if (req.http.X-Carrier-Meta) {
             set req.http.X-CS2 = req.http.X-Carrier + "|" + req.http.X-Carrier-Meta;
         } else {
             set req.http.X-CS2 = req.http.X-Carrier;
         }
-    }
 
-    // Now the per-carrier stuff...
-    // Short of having netmapper (or equivalent) return a set of match parameters, I can't see any
-    //   good way to make the rest of this cleaner really.
-    if (req.http.X-CS2) {
-        // TBD: Beware of legitimately formed links happening to have :ZeroRatedMobileAccess...
+        // X-F-B is only set if X-C is set.  Old comments on this:
+        // Current backend & cache vary on X-Forwarded-By, so in order not to fragment cache,
+        // unset X-Forwarded-By [if no carrier match]. the backend now checks
+        // this value. Soon we will stop varying on it.
+        if (req.http.X-Trusted-Proxy) {
+            set req.http.X-Forwarded-By = req.http.X-Trusted-Proxy;
+        }
+
+        // X-CS needs the real data only for "special" pages we vary on, and
+        // can just be "ON" for normal wikitext fetches and such TBD: Beware
+        // of legit links happening to have :ZeroRatedMobileAccess
         if (req.url ~ "(action=zeroconfig|:ZeroRatedMobileAccess)($|&|\?)" || req.http.host ~ "^(zero|m)\.") {
             set req.http.X-CS = req.http.X-CS2;
         } else {
@@ -38,15 +38,6 @@ sub tag_carrier {
         // Only trigger Set-Cookie below if the cookie isn't already being sent by the client
         if (req.http.X-ZeroTLS && req.http.Cookie ~ "ZeroOpts=tls") {
             unset req.http.X-ZeroTLS;
-        }
-    } // end of if(X-CS2)
-
-    if (req.http.X-Forwarded-By) {
-        // Current backend & cache vary on X-Forwarded-By, so in order not to fragment cache,
-        // unset X-Forwarded-By.
-        // the backend now checks this value. Soon we will stop varying on it
-        if (!req.http.X-CS) {
-            unset req.http.X-Forwarded-By;
         }
     }
 }
