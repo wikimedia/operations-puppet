@@ -644,7 +644,7 @@ class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
         # Alert if there is no active NameNode
         nrpe::monitor_service { 'hadoop-hdfs-active-namenode':
             description  => 'At least one Hadoop HDFS NameNode is active',
-            nrpe_command => '/usr/local/bin/check_hdfs_active_namenode',
+            nrpe_command => '/usr/bin/sudo /usr/local/bin/check_hdfs_active_namenode',
             require      => [
                 Class['cdh::hadoop::master'],
                 Sudo::User['nagios-check_hdfs_active_namenode'],
