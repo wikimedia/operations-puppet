@@ -79,9 +79,6 @@ av_scanner = clamd:/var/run/clamav/clamd.ctl
 never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
 
-# force Gmail over IPv4 due to reports of bad spam reputation over IPv6
-dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
-
 ###############################
 # Access Control Lists (ACLs) #
 ###############################
@@ -106,7 +103,6 @@ acl_check_rcpt:
 	# Require recipient domain to be local
 	require message = Relay not permitted
 		domains = +local_domains
-		set acl_m_relayed = yes
 
 	# Verify the recipient address for local domains, or require the
 	# recipient domain to exist for remote domains

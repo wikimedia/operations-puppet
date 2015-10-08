@@ -56,9 +56,6 @@ rfc1413_hosts =
 never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
 
-# force Gmail over IPv4 due to reports of bad spam reputation over IPv6
-dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
-
 ###############################
 # Access Control Lists (ACLs) #
 ###############################
@@ -83,12 +80,10 @@ acl_check_rcpt:
 	# Require recipient domain to be local, or a domain we relay for
 	require message = Relay not permitted
 		domains = +local_domains : +relay_domains
-		set acl_m_relayed = yes
 
 	# Accept mail for postmaster without further policy checking,
 	# for compliance with the RFCs
 	accept local_parts = postmaster : abuse
-		set acl_m2 = skip_spamd
 
 	# Verify the recipient address for local domains, or require the
 	# recipient domain to exist for remote domains
