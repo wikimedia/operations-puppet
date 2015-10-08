@@ -17,19 +17,18 @@ class role::mediawiki::common {
     include ::mediawiki::nutcracker
     include ::tmpreaper
 
-    # Nutcracker/Redis only listens on localhost, but exempt it from connection tracking
-    ferm::rule { 'skip_nutcracker_redis_conntrack_out':
+    ferm::rule { 'skip_nutcracker_conntrack_out':
         desc  => 'Skip outgoing connection tracking for Nutcracker',
         table => 'raw',
         chain => 'OUTPUT',
-        rule  => 'proto tcp sport (6379 6380 11212) NOTRACK;',
+        rule  => 'proto tcp sport (6379 11212) NOTRACK;',
     }
 
-    ferm::rule { 'skip_nutcracker_redis_conntrack_in':
+    ferm::rule { 'skip_nutcracker_conntrack_in':
         desc  => 'Skip incoming connection tracking for Nutcracker',
         table => 'raw',
         chain => 'PREROUTING',
-        rule  => 'proto tcp dport (6379 6380 11212) NOTRACK;',
+        rule  => 'proto tcp dport (6379 11212) NOTRACK;',
     }
 
     ferm::service{ 'ssh_pybal':
