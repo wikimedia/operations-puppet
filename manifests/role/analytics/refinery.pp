@@ -73,6 +73,15 @@ class role::analytics::refinery::camus {
     camus::job { 'eventlogging':
         minute => '5',
     }
+
+    # Import mediawiki_* topics into /wmf/data/raw/mediawiki
+    # once every hour.  This data is expected to be Avro binary.
+    camus::job { 'mediawiki':
+        minute  => '15',
+        # refinery-camus contains some custom decoder classes which
+        # are needed to import Avro binary data.
+        libjars => "${role::analytics::refinery::path}/artifacts/refinery-camus.jar"
+    }
 }
 
 # == Class role::analytics::refinery::data::drop
