@@ -5,7 +5,7 @@ AuthorizedKeysCommandUser <%= @vcs_user %>
 AuthorizedKeysCommand <%= @ssh_hook_path %>
 AllowUsers <%= @vcs_user %>
 
-Port <%= $ssh_port %>
+Port 22
 PidFile /var/run/sshd/phab.pid
 
 # We need to listen on the local and the public loopback
