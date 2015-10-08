@@ -319,6 +319,11 @@ class role::nova::manager {
 
     sslcert::certificate { $certificate: }
 
+    monitoring::service { 'https':
+        description   => 'HTTPS',
+        check_command => 'check_ssl_http!wikitech.wikimedia.org',
+    }
+
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
     ferm::service { 'wikitech_http':
