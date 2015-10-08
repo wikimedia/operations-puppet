@@ -1,0 +1,19 @@
+sub vcl_recv {
+    // see if this request had no cookies whatsoever
+    if (!req.http.Cookie) {
+		// Ready a variable for later X-Analytics tagging in vcl_deliver.
+		set req.http.X-WMF-NOCOOKIES = 1;
+
+	}
+}
+
+sub vcl_deliver {
+	// In case this request was marked as having no cookies, add it to X-Analytics
+	if (req.http.X-WMF-NOCOOKIES) {
+		if (resp.http.X-Analytics) {
+			set resp.http.X-Analytics = resp.http.X-Analytics + ";nocookies=" + req.http.X-NOCOOKIES;
+		} else {
+			set resp.http.X-Analytics = "nocookies=" + req.http.X-WMF-NOCOOKIES;
+		}
+	}
+}
