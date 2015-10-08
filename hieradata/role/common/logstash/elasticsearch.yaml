@@ -19,3 +19,10 @@ elasticsearch::unicast_hosts:
   - logstash1004.eqiad.wmnet
   - logstash1005.eqiad.wmnet
   - logstash1006.eqiad.wmnet
+logstash::cluster_hosts:
+  - logstash1001.eqiad.wmnet
+  - logstash1002.eqiad.wmnet
+  - logstash1003.eqiad.wmnet
+  - logstash1004.eqiad.wmnet
+  - logstash1005.eqiad.wmnet
+  - logstash1006.eqiad.wmnet
