@@ -1,10 +1,14 @@
 CREATE ROLE kartotherian  WITH LOGIN PASSWORD '<%= @kartotherian_pass %>';
 CREATE ROLE tilerator  WITH LOGIN PASSWORD '<%= @tilerator_pass %>';
+CREATE ROLE tileratorui  WITH LOGIN PASSWORD '<%= @tileratorui_pass %>';
+
 CREATE ROLE osmupdater WITH LOGIN PASSWORD '<%= @osmupdater_pass %>';
 CREATE ROLE osmimporter WITH LOGIN PASSWORD '<%= @osmimporter_pass %>';
 
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO kartotherian;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO tilerator;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO tileratorui;
+
 GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO osmupdater;
 GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO osmimporter;
 GRANT CREATE,TEMPORARY ON DATABASE gis TO osmimporter;
