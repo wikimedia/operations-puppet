@@ -1,0 +1,17 @@
+cluster: maps
+postgresql::postgis::pgversion: 9.4
+postgresql::spatialdb::postgis_version: 2.1
+cassandra::cluster_name: maps
+cassandra::seeds: [ 10.192.16.34, 10.192.16.35, 10.192.0.128, 10.192.0.129 ]
+cassandra::dc: codfw
+cassandra::data_file_directories: [/srv/cassandra/data]
+cassandra::commitlog_directory: /srv/cassandra/commitlog
+cassandra::saved_caches_directory: /srv/cassandra/saved_caches
+admin::groups:
+  - maps-admins
+  - kartotherian-admin
+  - tilerator-admin
+service::configuration::logstash_host: logstash1001.eqiad.wmnet
+service::configuration::statsd_host: statsd.eqiad.wmnet
+lvs::realserver::realserver_ips:
+  - 10.2.1.13

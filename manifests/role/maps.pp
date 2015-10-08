@@ -1,30 +1,17 @@
 @monitoring::group { "maps_eqiad": description => "eqiad maps servers" }
 @monitoring::group { "maps_codfw": description => "codfw maps servers" }
 
-class role::maps::master {
+class role::maps {
     include standard
-    include ::postgresql::master
     include ::postgresql::postgis
-    include ::osm
-    include ::osm::import_waterlines
     include ::cassandra
     include ::role::kartotherian
     include ::role::tilerator
-    include ::redis
 
     ganglia::plugin::python { 'diskstat': }
 
-    system::role { 'role::maps::master':
-        ensure      => 'present',
-        description => 'Maps Postgres master',
-    }
-
     if $::realm == 'production' {
         include lvs::realserver
-    }
-
-    postgresql::spatialdb { 'gis':
-        require => Class['::postgresql::postgis'],
     }
 
     # Tuning
@@ -42,8 +29,31 @@ class role::maps::master {
             'kernel.shmmax' => 8388608000,
         },
     }
+    # TODO: Figure out a better way to do this
+    # Ensure postgresql logs as maps-admin to allow maps-admin to read them
+    # Rely on logrotate's copytruncate policy for postgres for the rest of the
+    # log file
+    file { '/var/log/postgresql/postgresql-9.4-main.log':
+        group => 'maps-admins',
+    }
+}
 
-    # Replication
+class role::maps::master {
+    include ::postgresql::master
+    include ::osm
+    include ::osm::import_waterlines
+    include ::redis
+
+    system::role { 'role::maps::master':
+        ensure      => 'present',
+        description => 'Maps Postgres master',
+    }
+
+    postgresql::spatialdb { 'gis':
+        require => Class['::postgresql::postgis'],
+    }
+
+    # PostgreSQL Replication
     $postgres_slaves = hiera('maps::postgres_slaves', undef)
     if $postgres_slaves {
         create_resources(postgresql::user, $postgres_slaves)
@@ -69,47 +79,13 @@ class role::maps::master {
         mode    => '0400',
         content => template('maps/grants.cql.erb'),
     }
-    # TODO: Figure out a better way to do this
-    # Ensure postgresql logs as maps-admin to allow maps-admin to read them
-    # Rely on logrotate's copytruncate policy for postgres for the rest of the
-    # log file
-    file { '/var/log/postgresql/postgresql-9.4-main.log':
-        group => 'maps-admins',
-    }
 }
 
 class role::maps::slave {
-    include standard
     include ::postgresql::slave
-    include ::postgresql::postgis
-    include ::cassandra
-    include ::role::kartotherian
-    include ::role::tilerator
-
-    ganglia::plugin::python { 'diskstat': }
 
     system::role { 'role::maps::slave':
         ensure      => 'present',
         description => 'Maps Postgres slave',
-    }
-
-    if $::realm == 'production' {
-        include lvs::realserver
-    }
-
-    # Tuning
-    file { '/etc/postgresql/9.4/main/tuning.conf':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///files/postgres/tuning.conf',
-    }
-    # TODO: Figure out a better way to do this
-    # Ensure postgresql logs as maps-admin to allow maps-admin to read them
-    # Rely on logrotate's copytruncate policy for postgres for the rest of the
-    # log file
-    file { '/var/log/postgresql/postgresql-9.4-main.log':
-        group => 'maps-admins',
     }
 }
