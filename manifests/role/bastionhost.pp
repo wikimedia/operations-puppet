@@ -4,11 +4,13 @@ class role::bastionhost::general {
         description => 'Bastion host for all shell users',
     }
 
+
     include ::bastionhost
     include base::firewall
     include role::backup::host
 
     backup::set {'home': }
+    class { 'admin': all_group_users => true }
 
     ferm::service { 'ssh':
         desc  => 'SSH open from everywhere, this is a bastion host',

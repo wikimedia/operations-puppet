@@ -6,12 +6,6 @@ base::resolving::domain_search:
   - ulsfo.wmnet
   - esams.wikimedia.org
   - esams.wmnet
-admin::groups:
-  - deployment
-  - restricted
-  - parsoid-admin
-  - ocg-render-admins
-  - bastiononly
 debdeploy::grains:
   debdeploy-bastion:
     value: standard

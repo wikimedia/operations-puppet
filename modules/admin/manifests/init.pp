@@ -4,14 +4,21 @@
 #
 # [*$groups*]
 #  Array of valid groups (defined in yaml) to create with associated members
+#  Do not specify when using $all_group_users
 #
 # [*$always_groups*]
 #  Array of valid groups to always run
 #
+# [*$all_group_users*]
+#  Boolean that indicates all active users should be applied
+#
+#  NOTE: This does not come with any group permissions on its own
+#
 
 class admin(
-    $groups=[],
-    $always_groups=['absent', 'ops', 'wikidev'],
+    $groups          = [],
+    $all_group_users = false,
+    $always_groups   = ['absent', 'ops', 'wikidev'],
 )
 {
     include sudo
@@ -21,11 +28,22 @@ class admin(
     $uinfo = $data['users']
     $users = keys($uinfo)
 
-    #making sure to include always_groups
-    $all_groups = concat($always_groups, $groups)
+    if ($all_group_users) and !empty($groups) {
+        fail('Do not specify groups using $all_group_users')
+    }
 
-    #this custom function eliminates the need for virtual users
-    $user_set = unique_users($data, $all_groups)
+    if ($all_group_users) {
+        $ginfo = $data['groups']
+        $grouplist = keys($ginfo)
+
+        $applied_groups = $always_groups
+        # All users defined in at least one group
+        $user_set = unique_users($data, $grouplist)
+    }
+    else {
+        $applied_groups = concat($always_groups, $groups)
+        $user_set = unique_users($data, $applied_groups)
+    }
 
     file { '/usr/local/sbin/enforce-users-groups':
         ensure => file,
@@ -33,17 +51,17 @@ class admin(
         source => 'puppet:///modules/admin/enforce-users-groups.sh',
     }
 
-    admin::hashgroup { $all_groups:
+    admin::hashgroup { $applied_groups:
         phash  => $data,
         before => Admin::Hashuser[$user_set],
     }
 
     admin::hashuser { $user_set:
         phash  => $data,
-        before => Admin::Groupmembers[$all_groups],
+        before => Admin::Groupmembers[$applied_groups],
     }
 
-    admin::groupmembers { $all_groups:
+    admin::groupmembers { $applied_groups:
         phash  => $data,
         before => Exec['enforce-users-groups-cleanup'],
     }
