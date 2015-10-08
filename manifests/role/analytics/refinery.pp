@@ -73,6 +73,12 @@ class role::analytics::refinery::camus {
     camus::job { 'eventlogging':
         minute => '5',
     }
+
+    # Import mediawiki_* topics into /wmf/data/raw/mediawiki
+    # once every hour.  This data is expected to be binary Avro.
+    camus::job { 'mediawiki':
+        minute => '15',
+    }
 }
 
 # == Class role::analytics::refinery::data::drop
