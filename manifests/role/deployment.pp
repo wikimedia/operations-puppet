@@ -57,7 +57,7 @@ class role::deployment::server(
         desc   => 'http on trebuchet deployment servers, for serving actual files to deploy',
         proto  => 'tcp',
         port   => '80',
-        srange => $deployable_networks_ferm,
+        srange => '(${deployable_networks_ferm})',
     }
 
     #T83854
