@@ -299,6 +299,7 @@ class phabricator (
     }
 
     class { 'phabricator::vcs':
+        basedir  => $phabdir,
         settings => $phab_settings,
     }
 

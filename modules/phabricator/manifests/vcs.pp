@@ -15,12 +15,12 @@
 #  Port SSH should listen on
 
 class phabricator::vcs (
+    $basedir               = '/srv/phab/',
     $settings              = {},
     $listen_addresses      = [],
     $ssh_port              = '22',
 ) {
 
-    $pdir = $settings['phabdir']
     $phd_user = $settings['phd.user']
     $vcs_user = $settings['diffusion.ssh-user']
     $ssh_hook_path = '/usr/local/lib/phabricator-ssh-hook.sh'
