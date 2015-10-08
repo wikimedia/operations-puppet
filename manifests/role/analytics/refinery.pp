@@ -73,6 +73,17 @@ class role::analytics::refinery::camus {
         # import once an hour.
         minute  => '5',
     }
+
+    $camus_mediawiki_properties = "${::role::analytics::refinery::path}/camus/camus.mediawiki.properties"
+    $camus_mediawiki_log_file   = "${::role::analytics::refinery::log_dir}/camus-mediawiki.log"
+    # This path should be configured better
+    $libjars                    = "${::role::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.20.jar"
+    cron { 'refinery-camus-mediawiki-import':
+        command => "${::role::analytics::refinery::path}/bin/camus --job-name refinery-camus-mediawiki-import ${camus_mediawiki_properties} --libjars ${libjars} >> ${camus_mediawiki_log_file} 2>&1",
+        user    => 'hdfs',  # we might want to use a different user for this, not sure.
+        # import once an hour.
+        minute  => '20', #maybe?
+    }
 }
 
 # == Class role::analytics::refinery::data::drop
