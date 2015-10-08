@@ -52,7 +52,7 @@ def handles(schema):
 
 
 def is_sane(value):
-    return isinstance(value, int) and value > 0 and value < 60000
+    return isinstance(value, int) and value >= 0 and value < 60000
 
 
 @handles('SaveTiming')
