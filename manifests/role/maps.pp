@@ -7,6 +7,7 @@ class role::maps {
     include ::cassandra
     include ::kartotherian
     include ::tilerator
+    include ::tileratorui
 
     system::role { 'role::maps':
         description => 'A vector and raster map tile generation service',
@@ -66,6 +67,7 @@ class role::maps::master {
     # Grants
     $kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')
     $tilerator_pass = hiera('maps::postgresql_tilerator_pass')
+    $tileratorui_pass = hiera('maps::postgresql_tileratorui_pass')
     $osmimporter_pass = hiera('maps::postgresql_osmimporter_pass')
     $osmupdater_pass = hiera('maps::postgresql_osmupdater_pass')
     file { '/usr/local/bin/maps-grants.sql':
@@ -77,6 +79,7 @@ class role::maps::master {
     # Cassandra grants
     $cassandra_kartotherian_pass = hiera('maps::cassandra_kartotherian_pass')
     $cassandra_tilerator_pass = hiera('maps::cassandra_tilerator_pass')
+    $cassandra_tileratorui_pass = hiera('maps::cassandra_tileratorui_pass')
     file { '/usr/local/bin/maps-grants.cql':
         owner   => 'root',
         group   => 'root',
