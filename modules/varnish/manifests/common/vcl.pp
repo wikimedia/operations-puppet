@@ -8,34 +8,11 @@ class varnish::common::vcl {
         content => template('varnish/geoip.inc.vcl.erb'),
     }
 
-    file { '/etc/varnish/last-access.inc.vcl':
-        ensure => absent,
-    }
-
-    file { '/etc/varnish/provenance.inc.vcl':
-        ensure => absent,
-    }
-
-    file { '/etc/varnish/device-detection.inc.vcl':
-        ensure  => absent,
-    }
-
     file { '/etc/varnish/errorpage.inc.vcl':
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('varnish/errorpage.inc.vcl.erb'),
-    }
-
-    file { '/etc/varnish/via.inc.vcl':
-        ensure => absent,
-    }
-
-    file { '/etc/varnish/hhvm.inc.vcl':
-        ensure => absent,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
     }
 
     file { '/etc/varnish/analytics.inc.vcl':
