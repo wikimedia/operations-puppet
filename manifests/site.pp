@@ -1806,11 +1806,11 @@ node 'magnesium.wikimedia.org' {
 }
 
 node 'maps-test2001.codfw.wmnet' {
-    role maps::master
+    role maps, maps::master
 }
 
 node /^maps-test200[2-4]\.codfw\.wmnet/ {
-    role maps::slave
+    role maps, maps::slave
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
