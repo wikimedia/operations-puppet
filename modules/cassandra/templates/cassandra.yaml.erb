@@ -268,7 +268,7 @@ seed_provider:
           # https://phabricator.wikimedia.org/T91617).
           <% clean_seeds = @seeds.length > 1 ? @seeds.select { |x|
                                                       x != @hostname \
-                                                      && x != "#{@hostname}-#{@instance_name}" \
+                                                      && ! (x.start_with? "#{@hostname}-") \
                                                       && x != @ipaddress \
                                                       && x != @fqdn
                                                   }.join(',') : @seeds.join(',') %>
