@@ -1,0 +1,9 @@
+Verified+2: jenkins-bot
+Code-Review+1: Daniel Kinzler <daniel.kinzler@wikimedia.de>
+Code-Review+1: BBlack <bblack@wikimedia.org>
+Code-Review+2: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Submitted-by: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Submitted-at: Thu, 08 Oct 2015 07:50:15 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/238396
+Project: operations/puppet
+Branch: refs/heads/production
