@@ -116,6 +116,8 @@ class diamond(
 
     diamond::collector { 'Network': }
 
+    diamond::collector { 'TCP': }
+
     diamond::collector { 'DiskUsage':
         settings => {
             devices   => 'PhysicalDrive[0-9]+$|md[0-9]+$|sd[a-z]+$|x?vd[a-z]+$|disk[0-9]+$|dm-[0-9]+$',
@@ -123,6 +125,6 @@ class diamond(
     }
 
     diamond::collector { 'TcpConnStates':
-        source   => 'puppet:///modules/diamond/collector/tcpconnstates.py',
+        source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
     }
 }
