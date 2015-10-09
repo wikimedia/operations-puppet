@@ -56,6 +56,7 @@ class role::dnsrecursor {
     system::role { 'role::dnsrecursor': description => 'Recursive DNS server' }
 
     include lvs::configuration, network::constants
+    include base::firewall
 
     class {
         'lvs::realserver':

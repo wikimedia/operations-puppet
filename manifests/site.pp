@@ -48,7 +48,6 @@ if $cluster == undef {
 # Node definitions (alphabetic order)
 
 node /^(acamar|achernar)\.wikimedia\.org$/ {
-    include base::firewall
     include standard
 
     include role::dnsrecursor
@@ -347,7 +346,6 @@ node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
-    include base::firewall
     include standard
     include role::dnsrecursor
 
@@ -1782,7 +1780,6 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
 node 'maerlant.wikimedia.org' {
     include standard
-    include base::firewall
     include role::dnsrecursor
 
     interface::add_ip6_mapped { 'main':
@@ -2183,7 +2180,6 @@ node 'neptunium.wikimedia.org' {
 
 node 'nescio.wikimedia.org' {
     include standard
-    include base::firewall
     include role::dnsrecursor
 
     interface::add_ip6_mapped { 'main':
