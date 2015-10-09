@@ -27,7 +27,7 @@
 #
 define nrpe::monitor_service( $description,
                               $nrpe_command,
-                              $contact_group = 'admins',
+                              $contact_group = hiera('contactgroups', 'admins'),
                               $retries       = 3,
                               $timeout       = 10,
                               $critical      = false,
