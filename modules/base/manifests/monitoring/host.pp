@@ -27,13 +27,11 @@ class base::monitoring::host(
 ) {
     include base::puppet::params # In order to be able to use some variables
 
-    monitoring::host { $::hostname:
-        contact_group => $contact_group
-    }
+    monitoring::host { $::hostname: }
+
     monitoring::service { 'ssh':
         description   => 'SSH',
         check_command => 'check_ssh',
-        contact_group => $contact_group
     }
 
     package { [ 'megacli', 'arcconf', 'mpt-status' ]:
