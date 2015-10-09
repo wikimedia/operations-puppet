@@ -970,7 +970,6 @@ node 'fermium.wikimedia.org' {
     role lists
     include standard
     include admin
-    include base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
