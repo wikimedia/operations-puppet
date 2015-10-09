@@ -3,4 +3,4 @@ wdqs::updater::options: '-n wdq'
 admin::groups:
   - wdqs-admins
 cluster: wdqs
-contact_group: admins,wdqs-admins
+contactgroups: admins,wdqs-admins
