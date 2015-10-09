@@ -1,5 +1,6 @@
 class role::etherpad{
     include standard
+    include base::firewall
 
     include passwords::etherpad_lite
 
