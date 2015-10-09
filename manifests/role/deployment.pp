@@ -66,7 +66,7 @@ class role::deployment::server(
         desc   => 'ssh on trebuchet deployment servers, for sync-file / scap',
         proto  => 'tcp',
         port   => '22',
-        srange => "@resolve(tin.eqiad.wmnet)",
+        srange => "@resolve((tin.eqiad.wmnet mira.codfw.wmnet))",
     }
 
     #T83854
