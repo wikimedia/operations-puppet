@@ -244,7 +244,6 @@ define misc::udp2log::instance::monitoring(
             ensure        => 'present',
             description   => "udp2log log age for ${name}",
             nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_log_age ${name}",
-            contact_group => 'admins,analytics',
         }
     }
     # TODO else ensure absent,
@@ -257,7 +256,6 @@ define misc::udp2log::instance::monitoring(
             ensure        => 'present',
             description   => "udp2log processes for ${name}",
             nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_procs ${name}",
-            contact_group => 'admins,analytics',
             retries       => 10,
         }
     }
@@ -301,7 +299,6 @@ define misc::udp2log::instance::monitoring(
             metric                => 'packet_loss_average',
             warning               => '4',
             critical              => '8',
-            contact_group         => 'admins,analytics',
             # ganglia-logtailer only runs every 5.
             # let's make nagios check every 2 minutes (to match ganglia_parser)
             # and retry 4 times (total 8 minutes) before

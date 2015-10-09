@@ -29,7 +29,6 @@ class role::cassandra {
     monitoring::service { 'cassandra-cql':
         description   => 'Cassandra CQL query interface',
         check_command => 'check_tcp!9042',
-        contact_group => 'admins,team-services',
     }
 
     $cassandra_hosts = hiera('cassandra::seeds')

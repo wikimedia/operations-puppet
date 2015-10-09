@@ -18,3 +18,4 @@ restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 
 admin::groups:
   - restbase-roots
+contactgroups: admins,team-services

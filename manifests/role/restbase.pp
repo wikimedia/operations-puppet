@@ -37,7 +37,6 @@ class role::restbase::alerts {
         warning       => '1', # 1 5xx/s
         critical      => '3', # 5 5xx/s
         percentage    => '20',
-        contact_group => 'team-services',
     }
 
     monitoring::graphite_threshold { 'restbase_html_storage_hit_latency':
@@ -47,7 +46,6 @@ class role::restbase::alerts {
         warning       => '25', # 25ms
         critical      => '50', # 50ms
         percentage    => '50',
-        contact_group => 'team-services',
     }
 
     monitoring::graphite_threshold { 'restbase_html_storage_hit_latency_99p':
@@ -57,7 +55,6 @@ class role::restbase::alerts {
         warning       => '1500', # 1.5s
         critical      => '3000', # 3s
         percentage    => '50',
-        contact_group => 'team-services',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_storage_exceptions':
@@ -67,7 +64,6 @@ class role::restbase::alerts {
         warning       => '5',
         critical      => '10',
         percentage    => '50',
-        contact_group => 'team-services',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_total_hints':
@@ -77,7 +73,6 @@ class role::restbase::alerts {
         warning       => '600',
         critical      => '1000',
         percentage    => '50',
-        contact_group => 'team-services',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_pending_compactions':
@@ -87,7 +82,6 @@ class role::restbase::alerts {
         warning       => '100',
         critical      => '400',
         percentage    => '50',
-        contact_group => 'team-services',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_sstables_per_read':
@@ -97,7 +91,6 @@ class role::restbase::alerts {
         warning       => '6',
         critical      => '10',
         percentage    => '50',
-        contact_group => 'team-services',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_tombstones_scanned':
@@ -107,7 +100,6 @@ class role::restbase::alerts {
         warning       => '1000',
         critical      => '1500',
         percentage    => '50',
-        contact_group => 'team-services',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_pending_internal':
@@ -117,7 +109,6 @@ class role::restbase::alerts {
         warning       => '500',
         critical      => '1000',
         percentage    => '50',
-        contact_group => 'team-services',
     }
 
     monitoring::graphite_threshold { 'restbase_cassandra_highest_dropped_messages':
@@ -127,6 +118,5 @@ class role::restbase::alerts {
         warning       => '50',
         critical      => '100',
         percentage    => '50',
-        contact_group => 'team-services',
     }
 }
