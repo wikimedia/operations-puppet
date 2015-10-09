@@ -16,7 +16,7 @@ EXCLUDE=("nobody" \
          "mwdeploy" \   # eventlog*
          "gerrit2" \    # ytterbium.wikimedia.org
          "spamd" \      # sodium.wikimedia.org:
-         "releases" \   # tin.eqiad.wmnet
+         "releases" \   # tin.eqiad.wmnet/mira.codfw.wmnet
          "reprepro" \   # caesium.eqiad.wmnet
          "mysql" \      # pc1001.eqiad.wmnet
          "dbmon" \      # db1044.eqiad.wmnet
