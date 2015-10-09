@@ -48,6 +48,7 @@ class role::analytics::refinery {
     }
 }
 
+
 # == Class role::analytics::refinery::camus
 # Submits Camus MapReduce jobs to import data from Kafka.
 #
@@ -68,10 +69,23 @@ class role::analytics::refinery::camus {
     $camus_eventlogging_properties = "${::role::analytics::refinery::path}/camus/camus.eventlogging.properties"
     $camus_eventlogging_log_file   = "${::role::analytics::refinery::log_dir}/camus-eventlogging.log"
     cron { 'refinery-camus-eventlogging-import':
+        # Testing replacement of cron job here with user of camus::job define.
+        ensure => 'absent'
         command => "${::role::analytics::refinery::path}/bin/camus --job-name refinery-camus-eventlogging-import ${camus_eventlogging_properties} >> ${camus_eventlogging_log_file} 2>&1",
         user    => 'hdfs',  # we might want to use a different user for this, not sure.
         # import once an hour.
         minute  => '5',
+    }
+
+    include role::analytics::kafka::config
+
+    # Make all uses of camus::job set kafka_brokers to this
+    Camus::Job {
+        kafka_brokers => $role::analytics::kafka::config::brokers_array
+    }
+
+    camus::job { 'eventlogging':
+        minute => '5',
     }
 }
 
