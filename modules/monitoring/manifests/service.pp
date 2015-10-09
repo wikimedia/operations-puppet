@@ -10,7 +10,7 @@ define monitoring::service(
     $freshness             = 36000,
     $normal_check_interval = 1,
     $retry_check_interval  = 1,
-    $contact_group         = 'admins',
+    $contact_group         = hiera('contactgroups', 'admins'),
     $config_dir            = '/etc/nagios',
 )
 {
