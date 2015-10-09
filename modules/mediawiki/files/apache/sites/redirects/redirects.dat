@@ -397,7 +397,6 @@ rewrite	ve.wikimedia.org	http://wikimedia.org.ve
 rewrite	*wikimania.org	//wikimania2015.wikimedia.org
 rewrite	*wikimania.com	//wikimania2015.wikimedia.org
 rewrite	wikimania.wikimedia.org	//wikimania2015.wikimedia.org
-rewrite	*wikimania.asia	//wikimania2013.wikimedia.org
 
 # Labs redirects -> wikitech
 funnel	labs.wikimedia.org	https://wikitech.wikimedia.org
