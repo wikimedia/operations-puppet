@@ -7,7 +7,7 @@ define monitoring::host (
     $group         = undef,
     $ensure        = present,
     $critical      = false,
-    $contact_group = 'admins'
+    $contact_group = hiera('contactgroups', 'admins')
     ) {
 
     $nagios_address = $host_fqdn ? {
