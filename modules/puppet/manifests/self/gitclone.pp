@@ -64,9 +64,24 @@ class puppet::self::gitclone {
         ssh       => "${gitdir}/ssh",
         require   => [ File["${gitdir}/labs"], File["${gitdir}/ssh"] ],
     }
+
+    # Intentionally readable / writeable only by root and puppet
+    git::clone { 'labs/puppet-secret':
+        ensure    => present,
+        directory => "${gitdir}/labs/secret",
+        owner     => 'root',
+        group     => 'puppet',
+        mode      => '0750',
+    }
+
     file { '/etc/puppet/private':
         ensure => link,
         target => "${gitdir}/labs/private",
+        force  => true,
+    }
+    file { '/etc/puppet/secret':
+        ensure => link,
+        target => "${gitdir}/labs/secret",
         force  => true,
     }
     file { '/etc/puppet/templates':
