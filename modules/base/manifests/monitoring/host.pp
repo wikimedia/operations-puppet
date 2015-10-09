@@ -20,7 +20,7 @@
 #                             all disks and warning at < 6% and critical at < 3% free.
 #
 class base::monitoring::host(
-    $contact_group = 'admins',
+    $contact_group = hiera('contactgroups', 'admins'),
     # the -A -i ... part is a gross hack to workaround Varnish partitions
     # that are purposefully at 99%. Better ideas are welcome.
     $nrpe_check_disk_options = '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]"',
