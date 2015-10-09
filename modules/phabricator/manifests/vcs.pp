@@ -25,17 +25,23 @@ class phabricator::vcs (
     $vcs_user = $settings['diffusion.ssh-user']
     $ssh_hook_path = '/usr/local/lib/phabricator-ssh-hook.sh'
 
+    user { $vcs_user:
+        shell      => '/bin/sh',
+        managehome => true,
+        home       => "/var/lib/${vcs_user}",
+        system     => true,
+    }
+
+    file { "${basedir}/phabricator/scripts/ssh/":
+        owner   => $vcs_user,
+        recurse => true,
+    }
+
     # git-http-backend needs to be in $PATH
     file { '/usr/local/bin/git-http-backend':
         ensure  => 'link',
         target  => '/usr/lib/git-core/git-http-backend',
         require => Package['git'],
-    }
-
-    user { $vcs_user:
-        home   => "/var/lib/${vcs_user}",
-        shell  => '/bin/sh',
-        system => true,
     }
 
     file { $ssh_hook_path:

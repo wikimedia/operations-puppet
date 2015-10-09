@@ -51,4 +51,3 @@ class phabricator::mailrelay(
         owner   => mail,
     }
 }
-
