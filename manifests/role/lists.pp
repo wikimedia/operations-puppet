@@ -1,5 +1,6 @@
 class role::lists {
     include network::constants
+    include base::firewall
 
     system::role { 'role::mail::lists':
         description => 'Mailing list server',
