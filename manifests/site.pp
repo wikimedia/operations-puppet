@@ -217,7 +217,7 @@ node 'antimony.wikimedia.org' {
 
 # irc.wikimedia.org
 node 'argon.wikimedia.org' {
-    role mw-rc-irc
+    role mw_rc_irc
 }
 
 node 'baham.wikimedia.org' {
