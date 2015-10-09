@@ -114,7 +114,7 @@ uri = BASE_URI + '?' + urllib.urlencode(query)
 req = urllib2.urlopen(uri, json.dumps(search))
 result = json.load(req)['hits']
 
-private_wikis = open('/srv/mediawiki/private.dblist').read().splitlines()
+private_wikis = open('/srv/mediawiki/dblists/private.dblist').read().splitlines()
 
 for hit in result['hits']:
     db_name = hit['_index'].rsplit('_', 2)[0]
