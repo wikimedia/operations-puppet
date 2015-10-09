@@ -24,6 +24,7 @@ class phabricator::vcs (
     $phd_user = $settings['phd.user']
     $vcs_user = $settings['diffusion.ssh-user']
     $ssh_hook_path = '/usr/local/lib/phabricator-ssh-hook.sh'
+    $sshd_config = '/etc/ssh/sshd_config.phabricator'
 
     user { $vcs_user:
         shell      => '/bin/sh',
@@ -51,8 +52,17 @@ class phabricator::vcs (
         group   => 'root',
     }
 
-    file { '/etc/ssh/sshd_config.phabricator':
+    file { $sshd_config:
         content => template('phabricator/sshd_config.phabricator.erb'),
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        require => Package['openssh-server'],
+        notify  => Service['ssh-phab'],
+    }
+
+    file { '/etc/init/ssh-phab.conf':
+        content => template('phabricator/sshd-phab.conf'),
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
@@ -73,5 +83,11 @@ class phabricator::vcs (
             "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/local/bin/git-http-backend",
         ],
         require    => File['/usr/local/bin/git-http-backend'],
+    }
+
+    service { 'ssh-phab':
+        ensure     => running,
+        hasrestart => true,
+        require    => File['/etc/init/ssh-phab.conf'],
     }
 }
