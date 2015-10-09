@@ -8,7 +8,4 @@ class base::debdeploy
     package { 'debdeploy-minion':
         ensure => present,
     }
-
-    $grains = hiera_hash('debdeploy::grains')
-    create_resources(salt::grain, $grains)
 }
