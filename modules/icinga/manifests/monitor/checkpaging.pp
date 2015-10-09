@@ -8,7 +8,6 @@ class icinga::monitor::checkpaging {
         check_command         => 'check_to_check_nagios_paging',
         normal_check_interval => 1,
         retry_check_interval  => 1,
-        contact_group         => 'admins',
         critical              => false
     }
 }

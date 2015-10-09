@@ -12,7 +12,6 @@ class icinga::monitor::ripeatlas {
         host                  => 'ripe-atlas-eqiad',
         normal_check_interval => 10,
         retry_check_interval  => 5,
-        contact_group         => 'admins',
     }
 
     @monitoring::host { 'ripe-atlas-codfw':
@@ -25,7 +24,6 @@ class icinga::monitor::ripeatlas {
         host                  => 'ripe-atlas-codfw',
         normal_check_interval => 10,
         retry_check_interval  => 5,
-        contact_group         => 'admins',
     }
 
     @monitoring::host { 'ripe-atlas-ulsfo':
@@ -38,6 +36,5 @@ class icinga::monitor::ripeatlas {
         host                  => 'ripe-atlas-ulsfo',
         normal_check_interval => 10,
         retry_check_interval  => 5,
-        contact_group         => 'admins',
     }
 }

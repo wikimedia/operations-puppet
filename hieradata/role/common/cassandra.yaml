@@ -38,3 +38,4 @@ cassandra::cluster_name: "eqiad"
 
 cassandra::application_username: restbase
 cassandra::application_password: "%{passwords::cassandra::restbase}"
+contactgroups: admins,team-services

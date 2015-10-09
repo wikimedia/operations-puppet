@@ -79,7 +79,6 @@ class role::eventlogging {
         nrpe::monitor_service { 'eventlogging_root_disk_space':
             description   => 'Eventlogging / disk space',
             nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 1024M -c 512M -p /',
-            contact_group => 'analytics',
         }
 
         # Alert when /srv gets low. (eventlog1001 has a 456G /srv)
@@ -89,7 +88,6 @@ class role::eventlogging {
         nrpe::monitor_service { 'eventlogging_srv_disk_space':
             description   => 'Eventlogging /srv disk space',
             nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 100000M -c 50000M -p /srv',
-            contact_group => 'analytics',
         }
     }
 
