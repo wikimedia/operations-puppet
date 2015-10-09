@@ -70,8 +70,6 @@ innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
 innodb_thread_concurrency      = 0
 innodb_io_capacity             = 1000
-innodb_read_io_threads         = 16
-innodb_write_io_threads        = 8
 innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
 aria_pagecache_buffer_size     = 1G
@@ -81,9 +79,33 @@ join_cache_level               = 8
 innodb_buffer_pool_load_at_startup  = 1
 innodb_buffer_pool_dump_at_shutdown = 1
 
+<% if @kernelversion < "3.19" %>
 # Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
 # At least, I think so. For now we need to avoid the an assertion failure on Trusty w/ 3.13
 innodb_use_native_aio          = 0
+innodb_read_io_threads         = 16
+innodb_write_io_threads        = 8
+<% end %>
+
+<% if @p_s == 'on' %>
+# Enabling performance_schema (disabled by default in MariaDB10)
+performance_schema = 1
+# downsizing performance schema memory usage: T99485
+performance_schema_digests_size = -1
+performance_schema_max_thread_instances = 500
+performance_schema_max_cond_instances = 1000
+performance_schema_accounts_size = 100
+performance_schema_events_statements_history_size = 10
+performance_schema_events_statements_history_long_size = 1000
+performance_schema_events_waits_history_size = 10
+performance_schema_events_waits_history_long_size = 1000
+performance_schema_events_stages_history_size = 10
+performance_schema_events_stages_history_long_size = 1000
+performance_schema_max_mutex_instances = 5000
+performance_schema_max_rwlock_instances = 2000
+performance_schema_max_socket_instances = 500
+performance_schema_max_table_instances = 1000
+<% end %>
 
 optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on'
 
