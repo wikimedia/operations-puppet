@@ -40,6 +40,8 @@
 #   graphoid host + port. Default: http://graphoid.svc.eqiad.wmnet:19000
 # [*mobileapps_uri*]
 #   MobileApps service URI. Default: http://mobileapps.svc.eqiad.wmnet:8888
+# [*mathoid_uri*]
+#   Mathoid service URI. Default: http://mathoid.svc.eqiad.wmnet:10042
 #
 class restbase(
     $cassandra_user = 'cassandra',
@@ -60,6 +62,7 @@ class restbase(
     $statsd_port    = '8125',
     $graphoid_uri   = 'http://graphoid.svc.eqiad.wmnet:19000',
     $mobileapps_uri = 'http://mobileapps.svc.eqiad.wmnet:8888',
+    $mathoid_uri    = 'http://mathoid.svc.eqiad.wmnet:10042',
 ) {
     if $::realm == 'labs' {
         include restbase::deploy

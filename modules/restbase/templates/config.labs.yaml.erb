@@ -12,7 +12,7 @@ templates:
   wmf-content-1.0.0: &wp/content/1.0.0
     swagger: '2.0'
     # swagger options, overriding the shared ones from the merged specs (?)
-    info:
+    info: &wp/content-info/1.0.0
       version: 1.0.0-beta
       title: Wikimedia REST API
       description: >
@@ -48,8 +48,9 @@ templates:
       - mediawiki/v1/content
       - mediawiki/v1/graphoid
       - mediawiki/v1/mobileapps
+      - media/v1/mathoid
     # - mediawiki/v1/revision-scoring
-    securityDefinitions:
+    securityDefinitions: &wp/content-security/1.0.0
       mediawiki_auth:
         description: Checks permissions using MW api
         type: apiKey
@@ -60,13 +61,20 @@ templates:
           - <%= @parsoid_uri %>
           - <%= @graphoid_uri %>
           - <%= @mobileapps_uri %>
+          - <%= @mathoid_uri %>
+      header_match:
+        description: Checks client ip against one of the predefined whitelists
+        x-error-message: This client is not allowed to use the endpoint
+        x-whitelists:
+          internal:
+            - /^(?:::ffff:)?(?:10|127)\./
 
   wmf-sys-1.0.0: &wp/sys/1.0.0
     info:
       title: Default MediaWiki sys API module
       version: 1.0.0
     paths:
-      /{module:table}:
+      /{module:table}: &wp/sys/table
         x-modules:
           # There can be multiple modules too per stanza, as long as the
           # exported symbols don't conflict. The operationIds from the spec
@@ -88,32 +96,38 @@ templates:
                     domains:
                       - /^(?:test.*\.wiki.*\.org|www.mediawiki.org)$/
                   - name: wikipedia.group.local
-                    domains: /\.wikipedia.org$/
+                    domains: /\.wikipedia\.org$/
+                  - name: globaldomain.group.local
+                    domains: /^wikimedia\.org$/
                   # Catch-all group
                   - name: default.group.local
                     domains: /./
 
-      /{module:page_revisions}:
+      /{module:page_revisions}: &wp/sys/page_revisions
         x-modules:
           - name: page_revisions
+            version: 1.0.0
             type: file
 
-      /{module:key_rev_value}:
-        x-modules:
-          - name: key_rev_value
-            type: file
-
-      /{module:key_value}:
+      /{module:key_value}: &wp/sys/key_value
         x-modules:
           - name: key_value
+            version: 1.0.0
             type: file
 
-      /{module:post_data}:
+      /{module:key_rev_value}: &wp/sys/key_rev_value
+        x-modules:
+          - name: key_rev_value
+            version: 1.0.0
+            type: file
+
+      /{module:post_data}: &wp/sys/post_data
         x-modules:
           - name: post_data
+            version: 1.0.0
             type: file
 
-      /{module:action}:
+      /{module:action}: &wp/sys/action
         x-modules:
           - name: action
             type: file
@@ -125,12 +139,12 @@ templates:
                   host: '{$.request.params.domain}'
                 body: '{$.request.body}'
 
-      /{module:page_save}:
+      /{module:page_save}: &wp/sys/page_save
         x-modules:
           - name: page_save
             type: file
 
-      /{module:parsoid}:
+      /{module:parsoid}: &wp/sys/parsoid
         x-modules:
           - name: parsoid
             type: file
@@ -181,6 +195,105 @@ templates:
                         uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-text/{title}
 
 
+  global-content: &gb/content/1.0.0
+    swagger: '2.0'
+    info: *wp/content-info/1.0.0
+    securityDefinitions: *wp/content-security/1.0.0
+    x-subspecs:
+      - media/v1/mathoid
+
+
+  global-sys: &gb/sys/1.0.0
+    info:
+      title: global domain sys API module
+      version: 1.0.0
+    paths:
+      /{module:table}: *wp/sys/table
+      /{module:key_value}: *wp/sys/key_value
+      /{module:post_data}: *wp/sys/post_data
+      /{module:mathoid}/v1/request/{format}:
+        post:
+          x-request-handler:
+            - store:
+                request:
+                  method: put
+                  uri: /{domain}/sys/post_data/mathoid.request/
+                  body:
+                    q: '{$.request.body.q}'
+                    type: '{$$.default($.request.body.type, "tex")}'
+            - handle_req:
+                request:
+                  method: post
+                  uri: /{domain}/sys/mathoid/v1/handler/{format}
+                  headers:
+                    cache-control: '{cache-control}'
+                    x-resource-location: '{$.store.body}'
+                  body:
+                    q: '{$.request.body.q}'
+                    type: '{$$.default($.request.body.type, "tex")}'
+      /{module:mathoid}/v1/request/{format}/{hash}:
+        get:
+          x-setup-handler:
+            - init:
+                uri: /{domain}/sys/post_data/mathoid.request
+          x-request-handler:
+            - get_from_storage:
+                request:
+                  method: get
+                  uri: /{domain}/sys/post_data/mathoid.request/{hash}
+            - handle_req:
+                request:
+                  method: post
+                  uri: /{domain}/sys/mathoid/v1/handler/{format}
+                  headers:
+                    cache-control: '{cache-control}'
+                    x-resource-location: '{$.request.params.hash}'
+                  body: '{$.get_from_storage.body}'
+      /{module:mathoid}/v1/handler/{format}:
+        post:
+          x-setup-handler:
+            - init:
+                uri: /{domain}/sys/key_value/mathoid.data
+                body:
+                  keyType: string
+                  valueType: json
+          x-request-handler:
+            - check_storage:
+                request:
+                  method: get
+                  uri: /{domain}/sys/key_value/mathoid.data/{$.request.headers.x-resource-location}
+                  headers:
+                    cache-control: '{cache-control}'
+                return_if:
+                  status: '2xx'
+                return:
+                  status: 200
+                  headers: '{$$.merge($.check_storage.body.data[$.request.params.format].headers,$.check_storage.body.headers)}'
+                  body: '{$.check_storage.body.data[$.request.params.format].body}'
+                catch:
+                  status: 404
+            - mathoid:
+                request:
+                  method: post
+                  uri: <%= @mathoid_uri %>/complete
+                  body:
+                    q: '{$.request.body.q}'
+                    type: '{$.request.body.type}'
+            - store:
+                request:
+                  method: put
+                  uri: /{domain}/sys/key_value/mathoid.data/{$.request.headers.x-resource-location}
+                  headers:
+                    content-type: application/json
+                  body:
+                    headers: '{$$.merge($.mathoid.headers, {"x-resource-location": $.request.headers.x-resource-location})}'
+                    data: '{$.mathoid.body}'
+                return:
+                  status: 200
+                  headers: '{$$.merge($.mathoid.body[$.request.params.format].headers,$$.merge($.mathoid.headers, {"x-resource-location": $.request.headers.x-resource-location}))}'
+                  body: '{$.mathoid.body[$.request.params.format].body}'
+
+
   wp-default-1.0.0: &wp/default/1.0.0
     x-subspecs:
       - paths:
@@ -189,6 +302,16 @@ templates:
       - paths:
           /{api:sys}:
             x-subspec: *wp/sys/1.0.0
+
+
+  global-default-1.0.0: &gb/default/1.0.0
+    x-subspecs:
+      - paths:
+          /{api:v1}:
+            x-subspec: *gb/content/1.0.0
+      - paths:
+          /{api:sys}:
+            x-subspec: *gb/sys/1.0.0
 
 
 # Swagger spec root.
@@ -229,6 +352,8 @@ spec: &spec
     /{domain:zero.wikimedia.beta.wmflabs.org}: *wp/default/1.0.0
     /{domain:zh.wikipedia.beta.wmflabs.org}: *wp/default/1.0.0
 
+    # global domain
+    /{domain:wikimedia.org}: *gb/default/1.0.0
 
 # The main service setup. Each worker can offer one or more services.
 services:
