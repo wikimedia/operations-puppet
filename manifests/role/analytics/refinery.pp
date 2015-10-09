@@ -81,7 +81,7 @@ class role::analytics::refinery::camus {
 
     # Make all uses of camus::job set kafka_brokers to this
     Camus::Job {
-        kafka_brokers => $role::analytics::kafka::config::brokers_array
+        kafka_brokers => suffix($role::analytics::kafka::config::brokers_array, ':9092')
     }
 
     camus::job { 'eventlogging':
