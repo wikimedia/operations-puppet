@@ -1,0 +1,10 @@
+# Note:  This file is managed by Puppet.
+#
+/var/log/camus/*.log {
+  monthly
+  rotate 3
+  missingok
+  notifempty
+  nocreate
+  su root hdfs
+}

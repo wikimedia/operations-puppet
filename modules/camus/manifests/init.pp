@@ -21,5 +21,11 @@ class camus {
         mode   => '2775',
     }
 
-    # TODO: Add logrotate for camus logs
+    # logrotate camus log files
+    file { '/etc/logrotate.d/camus':
+        source => 'puppet:///modules/camus/camus.logrotate',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
 }
