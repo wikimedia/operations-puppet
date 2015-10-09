@@ -95,18 +95,11 @@ class restbase(
     }
 
     file { '/etc/default/restbase':
-        content => template('restbase/restbase.default.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        ensure  => absent
     }
 
     file { '/etc/init.d/restbase':
-        content => template('restbase/restbase.init'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => File['/etc/default/restbase'],
+        ensure  => absent
     }
 
     file { '/etc/restbase':
@@ -140,14 +133,13 @@ class restbase(
         before  => Service['restbase'],
     }
 
-    service { 'restbase':
-        ensure     => running,
-        hasstatus  => true,
-        hasrestart => true,
-        provider   => 'init',
-        require    => File[
-            '/etc/restbase/config.yaml',
-            '/etc/init.d/restbase'
-        ],
+    base::service_unit { 'restbase':
+        ensure        => present,
+        template_name => 'restbase',
+        systemd       => true,
+        refresh       => false,
+        require       => [File['/etc/restbase/config.yaml'],
+                          Package['restbase/deploy'],
+                         ],
     }
 }
