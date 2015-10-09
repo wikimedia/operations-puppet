@@ -33,7 +33,7 @@ define monitoring::service(
     }
 
     $contact_critical = $critical ? {
-        true    => 'admins,sms',
+        true    => "${contact_group},sms",
         default => $contact_group,
     }
 
