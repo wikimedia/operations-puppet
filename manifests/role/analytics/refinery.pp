@@ -61,20 +61,10 @@ class role::analytics::refinery::camus {
     $camus_webrequest_log_file   = "${::role::analytics::refinery::log_dir}/camus-webrequest.log"
 
     cron { 'refinery-camus-webrequest-import':
+        ensure => 'absent',
         command => "${::role::analytics::refinery::path}/bin/camus --job-name refinery-camus-webrequest-import ${camus_webrequest_properties} >> ${camus_webrequest_log_file} 2>&1",
         user    => 'hdfs',  # we might want to use a different user for this, not sure.
         minute  => '*/10',
-    }
-
-    $camus_eventlogging_properties = "${::role::analytics::refinery::path}/camus/camus.eventlogging.properties"
-    $camus_eventlogging_log_file   = "${::role::analytics::refinery::log_dir}/camus-eventlogging.log"
-    cron { 'refinery-camus-eventlogging-import':
-        # Testing replacement of cron job here with user of camus::job define.
-        ensure => 'absent',
-        command => "${::role::analytics::refinery::path}/bin/camus --job-name refinery-camus-eventlogging-import ${camus_eventlogging_properties} >> ${camus_eventlogging_log_file} 2>&1",
-        user    => 'hdfs',  # we might want to use a different user for this, not sure.
-        # import once an hour.
-        minute  => '5',
     }
 
     include role::analytics::kafka::config
@@ -84,6 +74,14 @@ class role::analytics::refinery::camus {
         kafka_brokers => suffix($role::analytics::kafka::config::brokers_array, ':9092')
     }
 
+    # Import webrequest_* topics into /wmf/data/raw/webrequest
+    # every 10 minutes.
+    camus::job { 'webrequest':
+        minute  => '*/10',
+    }
+
+    # Import eventlogging_* topics into /wmf/data/raw/eventlogging
+    # once every hour.
     camus::job { 'eventlogging':
         minute => '5',
     }
