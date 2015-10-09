@@ -2240,11 +2240,7 @@ node 'osmium.eqiad.wmnet' {
     role ve
     include ::standard
     include base::debdeploy
-    # lint:ignore:quoted_booleans
-    salt::grain { 'debdeploy-misc-servers': value => 'true' }
-    # lint:endignore
 }
-
 
 # oxygen runs a kafkatee instance that consumes webrequest from Kafka
 # and writes to a couple of files for quick and easy ops debugging.,
@@ -2321,9 +2317,6 @@ node 'radium.wikimedia.org' {
     include standard
     include base::debdeploy
     include role::tor
-    # lint:ignore:quoted_booleans
-    salt::grain { 'debdeploy-misc-servers': value => 'true' }
-    # lint:endignore
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
