@@ -50,23 +50,11 @@ class role::analytics::refinery {
 
 
 # == Class role::analytics::refinery::camus
-# Submits Camus MapReduce jobs to import data from Kafka.
+# Uses camus::job to set up cron jobs to
+# import data from Kafka into Hadoop.
 #
 class role::analytics::refinery::camus {
     require role::analytics::refinery
-
-    # TODO: Move these .properties files to puppet erb templates.
-
-    $camus_webrequest_properties = "${::role::analytics::refinery::path}/camus/camus.webrequest.properties"
-    $camus_webrequest_log_file   = "${::role::analytics::refinery::log_dir}/camus-webrequest.log"
-
-    cron { 'refinery-camus-webrequest-import':
-        ensure => 'absent',
-        command => "${::role::analytics::refinery::path}/bin/camus --job-name refinery-camus-webrequest-import ${camus_webrequest_properties} >> ${camus_webrequest_log_file} 2>&1",
-        user    => 'hdfs',  # we might want to use a different user for this, not sure.
-        minute  => '*/10',
-    }
-
     include role::analytics::kafka::config
 
     # Make all uses of camus::job set kafka_brokers to this
