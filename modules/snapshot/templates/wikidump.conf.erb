@@ -5,11 +5,11 @@
 
 [wiki]
 dblist=<%= @config[@configtype]['dblist'] %>
-privatelist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/private.dblist
-flaggedrevslist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/flaggedrevs.dblist
-biglist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/big.dblist
+privatelist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblist/private.dblist
+flaggedrevslist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblist/flaggedrevs.dblist
+biglist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblist/big.dblist
 skipdblist=<%= @config[@configtype]['skipdblist'] %>
-wikidatalist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/wikidata.dblist
+wikidatalist=<%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblist/wikidata.dblist
 globalusagelist=<%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/dblists/globalusage.dblist
 dir=<%= scope.lookupvar('snapshot::dirs::apachedir') %>
 adminsettings=private/PrivateSettings.php

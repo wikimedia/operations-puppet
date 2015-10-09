@@ -11,9 +11,9 @@ DATE=`date +%Y%m%d`
 
 # generate the new file
 python <%= scope.lookupvar('snapshot::dirs::wikiqueriesdir') -%>/listwikiuploaddirs.py \
-    --allwikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/all.dblist \
-    --closedwikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/closed.dblist \
-    --privatewikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/private.dblist \
+    --allwikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblist/all.dblist \
+    --closedwikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblist/closed.dblist \
+    --privatewikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblist/private.dblist \
     --wmfhack --multiversion \
     --scriptpath <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/multiversion \
   > "${outputdir}${outputfile}.${DATE}"

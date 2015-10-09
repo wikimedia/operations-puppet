@@ -20,7 +20,7 @@ if [ $# -lt 2 ]; then
 fi
 
 if [ ! -f $MEDIAWIKI_DEPLOYMENT_DIR/$LISTFILE ]; then
-	echo "The specified dblist file, $MEDIAWIKI_DEPLOYMENT_DIR/$LISTFILE, could not be found."
+	echo "The specified dblist file, $MEDIAWIKI_DEPLOYMENT_DIR/dblist/$LISTFILE, could not be found."
 	exit 1
 fi
 
@@ -31,7 +31,7 @@ unset SCRIPTARGS[1] # dblist file name
 SCRIPTARGS="${SCRIPTARGS[@]}"
 
 # Run the script on all wikis in the dblist
-for DBNAME in $(cat $MEDIAWIKI_DEPLOYMENT_DIR/$LISTFILE)
+for DBNAME in $(cat $MEDIAWIKI_DEPLOYMENT_DIR/dblist/$LISTFILE)
 do
 	echo "-------------------------------------"
 	echo "$DBNAME"

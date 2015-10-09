@@ -20,6 +20,6 @@ fi
 #
 # On production the call will return all.dblist
 # On labs: all-labs.dblist
-ALL_DBLIST=$(getRealmSpecificFilename $MEDIAWIKI_STAGING_DIR'/all.dblist')
+ALL_DBLIST=$(getRealmSpecificFilename $MEDIAWIKI_STAGING_DIR'/dblist/all.dblist')
 
 exec "$(dirname "$0")/foreachwikiindblist" "$ALL_DBLIST" "${@}"
