@@ -64,9 +64,23 @@ class puppet::self::gitclone {
         ssh       => "${gitdir}/ssh",
         require   => [ File["${gitdir}/labs"], File["${gitdir}/ssh"] ],
     }
+
+    git::clone { 'labs/puppet-secret':
+        ensure    => present, # Updates will be made on top of this!
+        directory => "${gitdir}/labs/secret",
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0700',
+    }
+
     file { '/etc/puppet/private':
         ensure => link,
         target => "${gitdir}/labs/private",
+        force  => true,
+    }
+    file { '/etc/puppet/secret':
+        ensure => link,
+        target => "${gitdir}/labs/secret",
         force  => true,
     }
     file { '/etc/puppet/templates':
