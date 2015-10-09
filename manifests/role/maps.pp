@@ -5,8 +5,12 @@ class role::maps {
     include standard
     include ::postgresql::postgis
     include ::cassandra
-    include ::role::kartotherian
-    include ::role::tilerator
+    include ::kartotherian
+    include ::tilerator
+
+    system::role { 'role::maps':
+        description => 'A vector and raster map tile generation service',
+    }
 
     ganglia::plugin::python { 'diskstat': }
 
