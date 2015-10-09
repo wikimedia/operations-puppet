@@ -53,11 +53,20 @@ class role::deployment::server(
 
     $deployable_networks_ferm = join($deployable_networks, ' ')
 
+    # T113351
     ferm::service { 'http_deployment_server':
         desc   => 'http on trebuchet deployment servers, for serving actual files to deploy',
         proto  => 'tcp',
         port   => '80',
         srange => "(${deployable_networks_ferm})",
+    }
+
+    # T115075
+    ferm::service { 'ssh_deployment_server':
+        desc   => 'ssh on trebuchet deployment servers, for sync-file / scap',
+        proto  => 'tcp',
+        port   => '22',
+        srange => "@resolve(tin.eqiad.wmnet)",
     }
 
     #T83854
