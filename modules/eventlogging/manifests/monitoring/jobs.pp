@@ -14,6 +14,5 @@ class eventlogging::monitoring::jobs($ensure = 'present') {
         description   => 'Check status of defined EventLogging jobs',
         nrpe_command  => '/usr/lib/nagios/plugins/check_eventlogging_jobs',
         require       => File['/usr/lib/nagios/plugins/check_eventlogging_jobs'],
-        contact_group => 'admins,analytics',
     }
 }
