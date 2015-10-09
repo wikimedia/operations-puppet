@@ -24,7 +24,6 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
         critical        => 600,
         percentage      => 15, # At least 3 of the 15 readings
         from            => '15min',
-        contact_group   => 'analytics'
     }
 
     # Alarms if 15% of Navigation Timing event throughput goes under 1 req/sec
@@ -37,7 +36,6 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
         critical        => 0,
         percentage      => 15, # At least 3 of the 15 readings
         from            => '15min',
-        contact_group   => 'analytics',
         under           => true
     }
 
@@ -58,6 +56,5 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
         critical      => 30,
         percentage    => 25, # At least 4 of the 15 readings
         from          => '15min',
-        contact_group => 'analytics',
     }
 }

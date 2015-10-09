@@ -1,3 +1,4 @@
 admin::groups:
   - eventlogging-admins
   - eventlogging-roots
+contactgroups: admins,analytics
