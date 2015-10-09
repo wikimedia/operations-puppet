@@ -20,7 +20,7 @@ def get_staging_dir():
 
 
 def get_default_dblist():
-    return os.path.join(get_staging_dir(), 'all-labs.dblist')
+    return os.path.join(get_staging_dir(), 'dblists', 'all-labs.dblist')
 
 
 def do_wait(procs):

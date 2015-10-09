@@ -127,7 +127,7 @@ done
 
 # Clear the ResourceLoader cached messages
 echo "Refreshing ResourceLoader caches"
-ALLDB=`getRealmSpecificFilename "$MEDIAWIKI_STAGING_DIR/all.dblist"`
+ALLDB=`getRealmSpecificFilename "$MEDIAWIKI_STAGING_DIR/dblists/all.dblist"`
 for wiki in `<"$ALLDB"`; do
 	/usr/local/bin/mwscript extensions/WikimediaMaintenance/refreshMessageBlobs.php --wiki="$wiki"
 done

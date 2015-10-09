@@ -7,7 +7,7 @@ class snapshot::dumps::configs(
 
     $config = {
         smallwikis => {
-            dblist        => "${snapshot::dirs::apachedir}/all.dblist",
+            dblist        => "${snapshot::dirs::apachedir}/dblists/all.dblist",
             skipdblist    => "${snapshot::dirs::dumpsdir}/dblists/skip.dblist",
             keep          => '12',
             chunksEnabled => '0',
