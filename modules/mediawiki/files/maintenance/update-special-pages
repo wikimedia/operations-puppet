@@ -3,7 +3,7 @@
 . /etc/profile.d/mediawiki.sh
 
 cd "$MEDIAWIKI_DEPLOYMENT_DIR/multiversion"
-for db in `<"$MEDIAWIKI_DEPLOYMENT_DIR/all.dblist"`; do
+for db in `<"$MEDIAWIKI_DEPLOYMENT_DIR/dblists/all.dblist"`; do
 	echo $db
 	php MWScript.php updateSpecialPages.php $db
 	echo
