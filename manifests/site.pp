@@ -944,7 +944,6 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
 # Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
     role etherpad
-    include base::firewall
 }
 
 # Receives log data from Kafka and Apaches (udp 8421),
