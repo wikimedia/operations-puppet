@@ -11,6 +11,9 @@ class contint::packages::labs {
     # Fonts needed for browser tests screenshots (T71535)
     include mediawiki::packages::fonts
 
+    # Required for javascript testing
+    include ::contint::packages::javascript
+
     # Required for python testing
     include ::contint::packages::python
 
@@ -52,18 +55,6 @@ class contint::packages::labs {
             require => File['/var/cache/pbuilder'],
     }
     # end of jenkins-debian glue puppetization
-
-    package { [
-        'npm',
-        # For mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
-        # Provided by openstack::common:
-        #'unzip',
-        # provided by misc::contint::packages:
-        #'librsvg2-bin',
-        #'imagemagick',
-
-        ]: ensure => present,
-    }
 
     # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     require_package('zip')
