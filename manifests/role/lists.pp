@@ -115,7 +115,7 @@ class role::lists {
 
     nrpe::monitor_service { 'mailman_queue':
         description   => 'mailman_queue_size',
-        nrpe_command  => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 100 100 100 100',
+        nrpe_command  => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 25 25 200 25',
     }
 
     # on list servers we monitor I/O with iostat
