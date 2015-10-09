@@ -47,6 +47,7 @@ class vagrant::lxc {
             "ALL=(root) NOPASSWD: ${::vagrant::vagrant_home}/gems/gems/vagrant-lxc*/scripts/pipework *",
             # Driver commands
             'ALL=(root) NOPASSWD: /usr/bin/which lxc-*',
+            'ALL=(root) NOPASSWD: /usr/bin/env which lxc-*',
             'ALL=(root) NOPASSWD: /usr/bin/lxc-attach --name *',
             'ALL=(root) NOPASSWD: /usr/bin/lxc-attach -h',
             'ALL=(root) NOPASSWD: /usr/bin/lxc-config lxc.lxcpath',
