@@ -53,4 +53,13 @@ class vagrant::mediawiki(
         ],
         require     => Git::Clone['mediawiki/vagrant'],
     }
+
+    file { "${install_directory}/.settings.yaml":
+        ensure  => 'present',
+        source  => 'puppet:///modules/vagrant/default-settings.yaml',
+        owner   => 'mwvagrant',
+        group   => 'wikidev',
+        replace => false,
+        before  => Exec['mediawiki_vagrant_setup'],
+    }
 }
