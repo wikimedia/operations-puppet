@@ -27,6 +27,8 @@
 # $+mode+:: Permission mode of $directory, default: 2755 if shared, 0755 otherwise
 # $+ssh+:: SSH command/wrapper to use when checking out, default: ''
 # $+timeout+:: Time out in seconds for the exec command, default: 300
+# $+default_source+:: Where to request the repo from, if $origin isn't specified
+#                     default to 'gerrit', 'phabricator' also accepted
 #
 # === Example usage
 #
@@ -57,12 +59,17 @@ define git::clone(
     $depth='full',
     $recurse_submodules=false,
     $umask=undef,
-    $mode=undef) {
+    $mode=undef,
+    $default_source='gerrit') {
 
-    $gerrit_url_format = 'https://gerrit.wikimedia.org/r/p/%s.git'
+    $default_url_format = $default_source ? {
+        'phabricator' => 'https://phabricator.wikimedia.org/diffusion/%.git',
+        'gerrit'      => 'https://gerrit.wikimedia.org/r/p/%s.git',
+        default       => 'https://gerrit.wikimedia.org/r/p/%s.git',
+    }
 
     $remote = $origin ? {
-        undef   => sprintf($gerrit_url_format, $title),
+        undef   => sprintf($default_url_format, $title),
         default => $origin,
     }
 
