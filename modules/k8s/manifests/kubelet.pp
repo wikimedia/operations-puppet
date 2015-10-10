@@ -14,6 +14,9 @@ class k8s::kubelet(
         mode   => '0755',
     }
 
+    $users = hiera('k8s_users')
+    # Ugly HACK!
+    $client_password = inline_template("<%= @users.select { |u| u['name'] == 'client-infrastructure' }[0] %>")
     file { '/etc/kubernetes/kubeconfig':
         ensure  => present,
         content => template('k8s/kubeconfig-client.yaml.erb'),
