@@ -5,9 +5,16 @@ define apt::repository(
     $source=true,
     $comment_old=false,
     $keyfile='',
-    $ensure=present
+    $ensure=present,
+    $trusted=false,
 ) {
-    $binline = "deb ${uri} ${dist} ${components}\n"
+    if $trusted {
+        $trustedline = '[trusted=yes]'
+    } else {
+        $trustedline = ''
+    }
+
+    $binline = "deb ${trustedline} ${uri} ${dist} ${components}\n"
     $srcline = $source ? {
         true    => "deb-src ${uri} ${dist} ${components}\n",
         default => '',
