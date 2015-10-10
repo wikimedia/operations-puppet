@@ -1,0 +1,3 @@
+<%- @users.sort.each do |user| -%>
+<%= user['token'] %>,<%= user['name'] %>,<%= user['id'] %>
+<%- end -%>
