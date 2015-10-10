@@ -43,7 +43,7 @@ class toollabs::kube2proxy(
         'redis'       => 'localhost:6379',
         'kubernetes'  => {
             'master'  => "https://${master_host}:6443",
-            'ca_cert' => '/var/lib/kubernetes/ssl/ca.pem',
+            'ca_cert' => '/var/lib/kubernetes/ssl/certs/ca.pem',
             'token'   => $client_token,
         }
     }
