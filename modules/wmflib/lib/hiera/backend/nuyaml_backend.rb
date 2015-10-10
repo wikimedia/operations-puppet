@@ -92,6 +92,15 @@ class Hiera
           source = m[1]
         end
 
+        # Special case: 'secret' repository. This is practically labs only
+        # We use a different datadir in this case.
+        # Example: private/common will search in the common source
+        # within the private datadir
+        if m = /secret\/(.*)/.match(source)
+            config_section = :secret
+            source = m[1]
+        end
+
         Hiera.debug("The source is: #{source}")
         # If the source is in the expand_path list, perform path
         # expansion. This is thought to allow large codebases to live
