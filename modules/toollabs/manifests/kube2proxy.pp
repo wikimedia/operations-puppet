@@ -32,14 +32,35 @@ class toollabs::kube2proxy(
     }
     $service_params = {'ensure' => $should_run}
 
+    $users = hiera('k8s_users')
+    # Ugly hack, ugh!
+    $client_token = inline_template("<%= @users.select { |u| u['name'] == 'client-infrastructure' }[0]['token'] %>")
+
+    $config = {
+        'redis'       => 'localhost:6379',
+        'kubernetes'  => {
+            'master'  => "https://${master_host}:6443",
+            'ca_cert' => '/var/lib/kubernetes/ssl/ca.pem',
+            'token'   => $client_token,
+        }
+    }
+
+    file { '/etc/kube2proxy.yaml':
+        content => ordered_yaml($config),
+        owner   => 'kubernetes',
+        group   => 'kubernetes',
+        mode    => '0440',
+    }
+
     base::service_unit{ 'kube2proxy':
         ensure         => $ensure,
         refresh        => true,
         systemd        => true,
         service_params => $service_params,
-        subscribe      => [
-                      File['/usr/local/sbin/kube2proxy'],
-                      ],
+        subscribe      => File[
+            '/usr/local/sbin/kube2proxy',
+            '/etc/kube2proxy.yaml'
+        ],
     }
 
 }

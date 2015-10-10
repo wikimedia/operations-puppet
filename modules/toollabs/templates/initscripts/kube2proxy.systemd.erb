@@ -10,8 +10,4 @@ Requires=redis-server.service
 [Service]
 User=kubernetes
 Group=kubernetes
-Environment="K2D_KUBE_CA=/var/lib/kubernetes/ssl/certs/ca.pem"
-Environment="K2D_TOKEN=<%= @kube_token %>"
-Environment="K2D_KUBE_MASTER=https://<%= @master_host %>:6443"
-EnvironmentFile=-/etc/default/kube2proxy
-ExecStart=/usr/local/sbin/kube2proxy
+ExecStart=/usr/local/sbin/kube2proxy --config /etc/kube2proxy.yaml

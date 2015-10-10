@@ -196,7 +196,7 @@ class Service(object):
 def main():
     parser = argparse.ArgumentParser(
         description="Kubernetes to dynamicproxy syncronizer")
-    parser.add_argument('--config', default="",
+    parser.add_argument('--config',
                         help="Optional yaml config file")
     parser.add_argument('-d', '--debug', action='store_true')
     args = parser.parse_args()
@@ -207,22 +207,8 @@ def main():
         level = logging.INFO
     logging.basicConfig(format=LOG_FORMAT, level=level)
 
-    if args.config:
-        with open(args.config, 'r') as fh:
-
-            config = yaml.load(fh)
-    else:
-        config = {
-            'redis': os.environ.get('K2D_REDIS_HOST', 'localhost:6379'),
-            'kubernetes': {
-                'master': os.environ.get(
-                    'K2D_KUBE_MASTER',
-                    'https://tools-k8s-master-01.tools.eqiad.wmflabs:6443'),
-                'ca_cert': os.environ.get('K2D_KUBE_CA',
-                                          '/var/lib/kubernetes/ssl/ca.pem'),
-                'token': os.environ.get('K2D_TOKEN', 'test')
-            }
-        }
+    with open(args.config, 'r') as fh:
+        config = yaml.load(fh)
 
     rhost, rport = config['redis'].split(':')
     conn = redis.Redis(host=rhost, port=rport)
