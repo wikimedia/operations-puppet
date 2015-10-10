@@ -11,60 +11,6 @@ class nfs::common {
 
 # Classes for NetApp mounts used on multiple servers
 
-class nfs::netapp::common {
-    include nfs::common
-
-    $device = $::site ? {
-        'eqiad' => 'nas1001-a.eqiad.wmnet',
-        'codfw' => 'nas2001-a.codfw.wmnet',
-        default => undef,
-    }
-
-    $options = 'bg,intr'
-}
-
-class nfs::netapp::home($ensure='mounted', $mountpoint='/home', $mount_site=$::site) {
-    include common
-
-    file { $mountpoint:
-        ensure => 'directory',
-    }
-
-    mount { $mountpoint:
-        ensure  => $ensure,
-        require => File[$mountpoint],
-        device  => "${nfs::netapp::common::device}:/vol/home_${mount_site}",
-        fstype  => 'nfs',
-        options => $nfs::netapp::common::options,
-    }
-}
-
-class nfs::netapp::home::othersite($ensure='mounted', $mountpoint=undef) {
-    include common
-
-    $peersite = $::site ? {
-        'eqiad' => 'codfw',
-        'codfw' => 'eqiad',
-        default => undef
-    }
-    $path = $mountpoint ? {
-        undef   => "/srv/home_${peersite}",
-        default => $mountpoint
-    }
-
-    file { $path:
-        ensure => 'directory',
-    }
-
-    mount { $path:
-        ensure  => $ensure,
-        require => File[$path],
-        device  => "${nfs::netapp::common::device}:/vol/home_${peersite}",
-        fstype  => 'nfs',
-        options => "${nfs::netapp::common::options},ro",
-    }
-}
-
 class nfs::data {
     include nfs::common
 
@@ -93,7 +39,15 @@ class nfs::netapp::fr_archive(
         $mountpoint= '/archive/udplogs'
     ) {
 
-    include common
+    include nfs::common
+
+    $device = $::site ? {
+        'eqiad' => 'nas1001-a.eqiad.wmnet',
+        'codfw' => 'nas2001-a.codfw.wmnet',
+        default => undef,
+    }
+
+    $options = 'bg,intr'
 
     file { $mountpoint:
         ensure => 'directory',
@@ -102,9 +56,9 @@ class nfs::netapp::fr_archive(
     mount { $mountpoint:
         ensure  => $ensure,
         require => File[$mountpoint],
-        device  => "${nfs::netapp::common::device}:/vol/fr_archive",
+        device  => "${device}:/vol/fr_archive",
         fstype  => 'nfs',
-        options => $nfs::netapp::common::options,
+        options => $options,
     }
 }
 
