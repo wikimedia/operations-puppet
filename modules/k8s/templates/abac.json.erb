@@ -1,9 +1,9 @@
 {"readonly": true, "resource": "swaggerapi"}
 {"readonly": true, "nonResourcePath": "/api"}
-{"user": "client-infrastructure"}
-<%- @regular_users.sort.each do |user| -%>
-{"user": "<%= user %>", "namespace": "<%= user %>"}
+<%- @users.each do |user| -%>
+<%- if user['type'] == 'namespaced' %>
+{"user": "<%= user['name'] %>", "namespace": "<%= user['name'] %>"}
+<%- elsif user['type'] == 'infrastructure' or user['type'] == 'admin' -%>
+{"user": "<%= user['name'] %>"}
 <%- end -%>
-<%- @admin_users.sort.each do |admin| -%>
-{"user": "<%= admin %>"}
 <%- end -%>
