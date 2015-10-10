@@ -5,5 +5,7 @@
 {"user": "<%= user['name'] %>", "namespace": "<%= user['name'] %>"}
 <%- elsif user['type'] == 'infrastructure' or user['type'] == 'admin' -%>
 {"user": "<%= user['name'] %>"}
+<%- elsif user['type'] == 'infrastructure-readonly' -%>
+{"user": "<%= user['name'] %>", "readonly": true}
 <%- end -%>
 <%- end -%>
