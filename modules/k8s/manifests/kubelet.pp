@@ -2,6 +2,7 @@ class k8s::kubelet(
     $master_host,
     $cluster_dns_ip = '192.168.0.100',
 ) {
+    include ::k8s::infrastructure_config
     require_package('kubelet')
 
     file { [
@@ -12,15 +13,6 @@ class k8s::kubelet(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-    }
-
-    file { '/etc/kubernetes/kubeconfig':
-        ensure  => present,
-        content => template('k8s/kubeconfig-client.yaml.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        notify  => Base::Service_unit['kubelet'],
     }
 
     file { [
@@ -39,6 +31,7 @@ class k8s::kubelet(
     }
 
     base::service_unit { 'kubelet':
-        systemd => true,
+        systemd   => true,
+        subscribe => File['/etc/kubernetes/kubeconfig'],
     }
 }
