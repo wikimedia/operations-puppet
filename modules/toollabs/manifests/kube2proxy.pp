@@ -37,7 +37,7 @@ class toollabs::kube2proxy(
 
     $users = hiera('k8s_users')
     # Ugly hack, ugh!
-    $client_token = inline_template("<%= @users.select { |u| u['name'] == 'client-infrastructure' }[0]['token'] %>")
+    $client_token = inline_template("<%= @users.select { |u| u['name'] == 'proxy-infrastructure' }[0]['token'] %>")
 
     $config = {
         'redis'       => 'localhost:6379',
