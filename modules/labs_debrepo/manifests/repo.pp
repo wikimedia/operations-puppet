@@ -1,4 +1,4 @@
-define labsdebrepo::repo ($dir = $title, $handle = 'labsdebrepo') {
+define labs_debrepo::repo ($dir = $title, $handle = 'labsdebrepo') {
     # Manage $dir: Make sure it's a directory and turn it into a deb
     # repository.
     file { $dir:

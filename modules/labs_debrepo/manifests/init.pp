@@ -2,6 +2,6 @@
 # to your sources.list.
 
 class labs_debrepo {
-    labsdebrepo::repo { '/data/project/repo':
+    labs_debrepo::repo { '/data/project/repo':
     }
 }
