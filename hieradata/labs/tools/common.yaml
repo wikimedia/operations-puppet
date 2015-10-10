@@ -3,3 +3,9 @@ classes:
     - role::aptly::client
 role::aptly::client::servername: tools-services-01
 standard::has_default_mail_relay: false
+k8s_regular_users:
+  - lolrrit-wm
+  - nagf
+k8s_admin_users:
+  - joe
+  - yuvipanda

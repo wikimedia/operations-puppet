@@ -21,12 +21,14 @@ class k8s::apiserver(
         notify => Base::Service_unit['kube-apiserver'],
     }
 
+    $regular_users = hiera('k8s_regular_users')
+    $admin_users = hiera('k8s_admin_users')
     file { '/etc/kubernetes/abac':
-        source => '/srv/kube-abac',
-        owner  => 'kubernetes',
-        group  => 'kubernetes',
-        mode   => '0400',
-        notify => Base::Service_unit['kube-apiserver'],
+        content => template('k8s/abac.json.erb'),
+        owner   => 'kubernetes',
+        group   => 'kubernetes',
+        mode    => '0400',
+        notify  => Base::Service_unit['kube-apiserver'],
     }
 
     class { '::k8s::ssl':
