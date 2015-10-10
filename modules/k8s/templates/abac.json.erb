@@ -2,8 +2,8 @@
 {"readonly": true, "nonResourcePath": "/api"}
 {"user": "client-infrastructure"}
 <%- @regular_users.sort.each do |user| -%>
-{"user": "<%= @user %>", "namespace": "<%= @user %>"}
+{"user": "<%= user %>", "namespace": "<%= user %>"}
 <%- end -%>
 <%- @admin_users.sort.each do |admin| -%>
-{"user": "<%= @admin %>"}
+{"user": "<%= admin %>"}
 <%- end -%>
