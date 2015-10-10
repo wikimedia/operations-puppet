@@ -95,7 +95,6 @@ class role::toollabs::k8s::webproxy {
     $master_host = hiera('k8s_master')
     $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
 
-    include k8s::ssl
     class { '::k8s::flannel':
         etcd_endpoints => $etcd_url,
     }
