@@ -40,7 +40,6 @@ def get_keys(conn, basedn, username):
         '(uid=%s)' % username
     )
     for _, user in response:
-        print user['sshPublicKey']
         return user['sshPublicKey']
 
 
