@@ -58,7 +58,6 @@ class network::constants {
                 ],
             'monitoring_hosts' => [
                     '10.68.16.210', # shinken-01.eqiad.wmflabs
-                    '10.68.16.42',  # shinken-server-01.eqiad.wmflabs (test server)
                 ],
             'deployment_hosts' => [
                     '10.68.16.58',  # deployment-bastion.eqiad.wmflabs
