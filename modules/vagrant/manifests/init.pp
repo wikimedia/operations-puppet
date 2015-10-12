@@ -10,7 +10,7 @@
 class vagrant(
     $vagrant_home = '/srv/vagrant-data',
 ) {
-    requires_os('ubuntu >= trusty')
+    requires_os('Ubuntu >= Trusty || Debian >= Jessie')
 
     package { 'vagrant':
         ensure => present,

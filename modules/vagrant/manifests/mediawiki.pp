@@ -28,7 +28,10 @@ class vagrant::mediawiki(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        notify  => Service['apparmor'],
+    }
+
+    if defined(Service['apparmor']) {
+        File['/etc/apparmor.d/abstractions/lxc/container-base'] ~> Service['apparmor']
     }
 
     git::clone { 'mediawiki/vagrant':
