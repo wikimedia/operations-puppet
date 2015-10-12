@@ -42,6 +42,10 @@ class reprepro (
         ensure => present,
     }
 
+    package { 'apt-transport-https':
+        ensure => present,
+    }
+
     group { 'reprepro':
         ensure => present,
         name   => $group,
