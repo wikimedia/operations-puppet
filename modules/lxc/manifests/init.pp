@@ -9,31 +9,71 @@
 class lxc(
     $container_root = '/srv/lxc',
 ) {
-    # T154294: Running a jessie image in the container requires newer versions
-    # of LXC and it's dependencies than Trusty shipped with. Install the
-    # versions provided by trusty-backports instead.
-    $lxc_backports = [
-        'cgroup-lite',
-        'liblxc1',
-        'lxc',
-        'lxc-common',
-        'lxc-templates',
-        'lxc1',
-        'python3-lxc',
-    ]
-    apt::pin { $lxc_backports:
-        pin      => 'release a=trusty-backports',
-        priority => 500,
-    }
-    package { $lxc_backports:
-      ensure => present,
-    }
+    requires_os('Ubuntu >= Trusty || Debian >= Jessie')
 
     package { [
-        'redir',
         'bridge-utils',
+        'dnsmasq-base',
+        'redir',
     ]:
         ensure => present,
+    }
+
+    # T154294: Running a jessie image in the container requires newer versions
+    # of LXC and it's dependencies than Trusty or Jessie shipped with.
+    # Install the versions provided by backports instead.
+    $backports = $::lsbdistcodename ? {
+        trusty => [
+            'cgroup-lite',
+            'liblxc1',
+            'lxc',
+            'lxc-common',
+            'lxc-templates',
+            'lxc1',
+            'python3-lxc',
+        ],
+        jessie => [
+            'libapparmor1',
+            'liblxc1',
+            'libseccomp2',
+            'lxc',
+            'python3-lxc',
+        ],
+    }
+
+    apt::pin { $backports:
+      pin      => "release a=${::lsbdistcodename}-backports",
+      priority => 500,
+    }
+    package { $backports:
+      ensure  => present,
+      require => Apt::Pin[$backports],
+    }
+
+    if os_version('Debian >= Jessie') {
+        file { '/etc/default/lxc-net':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => 'USE_LXC_BRIDGE="true"',
+            require => Package['lxc'],
+            notify  => Service['lxc-net'],
+        }
+
+        file { '/etc/lxc/default.conf':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => 'puppet:///modules/lxc/jessie/etc-lxc-default.conf',
+            require => Package['lxc'],
+            notify  => Service['lxc-net'],
+        }
+
+        service { 'lxc-net':
+            ensure => 'running',
+        }
     }
 
     file { $container_root:
@@ -53,4 +93,3 @@ class lxc(
         }
     }
 }
-
