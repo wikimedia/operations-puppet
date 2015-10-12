@@ -64,3 +64,12 @@ Suite: trusty
 Architectures: amd64 source
 VerifyRelease: 74A941BA219EC810
 ListShellHook: grep-dctrl -X -S tor || [ $? -eq 1 ]
+
+Name: grafana
+Method: https://packagecloud.io/grafana/stable/debian
+Components: main>thirdparty
+UDebComponents:
+Suite: wheezy
+Architectures: amd64
+VerifyRelease: C2E73424D59097AB
+ListShellHook: grep-dctrl -X -S grafana || [ $? -eq 1 ]
