@@ -18,8 +18,25 @@ class vagrant::mediawiki(
     # allows us to work around permissions problems that would otherwise
     # require adding various user accounts to the host VM and ensuring that
     # their UIDs match with the LXC guest.
+    file { '/etc/exports':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/vagrant/etc-exports',
+        # Do not replace an existing file. Vagrant will add exports, but we
+        # seem to need to have something exported to get the NFS server to
+        # start on Jessie hosts.
+        replace => false,
+    }
+
     package { 'nfs-kernel-server':
-        ensure => present,
+        ensure  => 'present',
+        require => File['/etc/exports'],
+    }
+
+    service { 'nfs-kernel-server':
+        ensure  => 'running',
+        require => Package['nfs-kernel-server'],
     }
 
     # Add custom apparmor profile that allows NFS mounts
@@ -29,7 +46,10 @@ class vagrant::mediawiki(
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        notify => Service['apparmor'],
+    }
+
+    if defined(Service['apparmor']) {
+        File['/etc/apparmor.d/abstractions/lxc/container-base'] ~> Service['apparmor']
     }
 
     git::clone { 'mediawiki/vagrant':
@@ -60,11 +80,20 @@ class vagrant::mediawiki(
 
     # T127129: Attempt to start an existing MediaWiki-Vagrant LXC container on
     # instance boot.
-    file { '/etc/init/mediawiki-vagrant.conf':
+    file { '/usr/local/bin/start-mwvagrant.sh':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
-        content => template('vagrant/mediawiki-vagrant.conf.erb'),
+        mode    => '0555',
+        content => template('vagrant/start-mwvagrant.sh.erb'),
+    }
+
+    base::service_unit { 'mediawiki-vagrant':
+        ensure          => present,
+        systemd         => true,
+        upstart         => true,
+        refresh         => false,
+        declare_service => false,
+        require         => File['/usr/local/bin/start-mwvagrant.sh'],
     }
 }
