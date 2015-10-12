@@ -37,7 +37,7 @@ Version: 8
 Architectures: source amd64 i386
 Components: main backports thirdparty
 UDebComponents: main backports thirdparty
-Update: hwraid cassandra
+Update: hwraid cassandra grafana
 Description: Wikimedia packages for Debian Jessie
 SignWith: default
 DebOverride: deb-override
