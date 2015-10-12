@@ -1,0 +1,10 @@
+[Unit]
+Description="Start MediaWiki-Vagrant on system startup"
+Type=oneshot
+
+[Service]
+Environment=LANG=en_US.UTF-8
+ExecStart=/usr/local/bin/start-mwvagrant.sh
+
+[Install]
+WantedBy=multi-user.target
