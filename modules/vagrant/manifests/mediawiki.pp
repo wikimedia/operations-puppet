@@ -29,7 +29,10 @@ class vagrant::mediawiki(
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        notify => Service['apparmor'],
+    }
+
+    if defined(Service['apparmor']) {
+        File['/etc/apparmor.d/abstractions/lxc/container-base'] ~> Service['apparmor']
     }
 
     git::clone { 'mediawiki/vagrant':
@@ -75,6 +78,7 @@ class vagrant::mediawiki(
 
     # T127129: Attempt to start an existing MediaWiki-Vagrant LXC container on
     # instance boot.
+    # FIXME: need a systemd unit version too, probably using base::service_unit
     file { '/etc/init/mediawiki-vagrant.conf':
         ensure  => present,
         owner   => 'root',
