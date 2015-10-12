@@ -1,0 +1,6 @@
+#!/bin/sh
+# Start MediaWiki-Vagrant container if stopped.
+
+cd <%= @install_directory %> &&
+/usr/local/bin/mwvagrant status | grep -q 'stopped (lxc)' &&
+/usr/local/bin/mwvagrant up
