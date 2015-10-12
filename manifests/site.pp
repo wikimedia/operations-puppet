@@ -1219,6 +1219,7 @@ node 'krypton.eqiad.wmnet' {
     include role::wikimania_scholarships
     include role::iegreview
     include role::grafana
+    include role::grafana2
 }
 
 node 'labcontrol1001.wikimedia.org' {
