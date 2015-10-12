@@ -10,13 +10,13 @@ class vagrant::lxc {
     require ::lxc
 
     require_package('build-essential')
-    require_package('ruby1.9.1-dev')
+    require_package('ruby-dev')
 
     ::vagrant::plugin { 'vagrant-lxc':
         ensure  => present,
         require => [
             Package['build-essential'],
-            Package['ruby1.9.1-dev'],
+            Package['ruby-dev'],
         ],
     }
 
@@ -51,6 +51,7 @@ class vagrant::lxc {
             # Private network script and commands
             'ALL=(root) NOPASSWD: /sbin/ip addr add */24 dev *',
             'ALL=(root) NOPASSWD: /sbin/ifconfig * down',
+            'ALL=(root) NOPASSWD: /sbin/brctl addbr *',
             'ALL=(root) NOPASSWD: /sbin/brctl delbr *',
             "ALL=(root) NOPASSWD: ${::vagrant::vagrant_home}/gems/gems/vagrant-lxc*/scripts/pipework *",
             # Driver commands
@@ -93,8 +94,9 @@ class vagrant::lxc {
             # Private network script and commands
             'ALL=(root) NOPASSWD: /usr/bin/env ip addr add */24 dev *',
             'ALL=(root) NOPASSWD: /usr/bin/env ifconfig * down',
+            'ALL=(root) NOPASSWD: /usr/bin/env brctl addbr *',
             'ALL=(root) NOPASSWD: /usr/bin/env brctl delbr *',
-            "ALL=(root) NOPASSWD: /usr/bin/env ${::vagrant::vagrant_home}/gems/gems/vagrant-lxc*/scripts/pipework *",
+            "ALL=(root) NOPASSWD: /usr/bin/env ${::vagrant::vagrant_home}/gems/*/gems/vagrant-lxc*/scripts/pipework *",
             # Driver commands
             'ALL=(root) NOPASSWD: /usr/bin/env which lxc-*',
             'ALL=(root) NOPASSWD: /usr/bin/env lxc-attach --name *',

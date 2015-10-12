@@ -4,8 +4,5 @@ task
 start on filesystem and net-device-up IFACE!=lo
 env LANG=en_US.UTF-8
 script
-    cd <%= @install_directory %> &&
-    /usr/local/bin/mwvagrant status |
-    grep -q 'stopped (lxc)' &&
-    /usr/local/bin/mwvagrant up
+    /usr/local/bin/start-mwvagrant.sh
 end script
