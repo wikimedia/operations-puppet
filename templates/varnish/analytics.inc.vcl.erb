@@ -132,6 +132,12 @@ sub analytics_provenance_deliver_ {
  ****************************************************************************/
 
 sub analytics_recv {
+    // If this request had no cookies whatsoever mark it as such
+    // to later report this fact to X-Analytics
+    if (!req.http.Cookie) {
+        set req.http.X-WMF-NOCOOKIES = 1;
+    }
+
     call analytics_last_access_recv_;
     call analytics_provenance_recv_;
 }
@@ -177,6 +183,10 @@ sub analytics_deliver {
     // text-frontend.inc.vcl.erb for more context.
     if (req.http.Via ~ "(?i)Internet\.org") {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=IORG";
+    }
+
+    if (req.http.X-WMF-NOCOOKIES) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";nocookies=1";
     }
 
     // Clean up header from setting to empty at the start...
