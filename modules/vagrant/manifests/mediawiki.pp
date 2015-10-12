@@ -61,5 +61,6 @@ class vagrant::mediawiki(
         group   => 'wikidev',
         replace => false,
         before  => Exec['mediawiki_vagrant_setup'],
+        require => Git::Clone['mediawiki/vagrant'],
     }
 }
