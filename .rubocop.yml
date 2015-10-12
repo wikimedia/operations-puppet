@@ -29,6 +29,9 @@ Style/SignalException:
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 
+Style/TrailingComma:
+  Enabled: false
+
 Style/TrivialAccessors:
   ExactNameMatch: true
 
