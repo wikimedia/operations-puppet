@@ -2200,7 +2200,6 @@ node 'netmon1001.wikimedia.org' {
     include passwords::network
     include ganglia::deprecated::collector
     include role::servermon
-    include role::torrus
 
     interface::add_ip6_mapped { 'main': }
 
