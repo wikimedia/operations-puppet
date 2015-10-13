@@ -3,39 +3,45 @@
 # Grafana is an open-source, feature-rich dashboard and graph editor
 # for Graphite and InfluxDB. See <http://grafana.org/> for details.
 #
-# Grafana only has one optional external dependency and that is
-# Elasticsearch. Elasticsearch is used to store, load and search for
-# dashboards. But you can use Grafana without it.
-#
 # === Parameters
 #
 # [*config*]
 #   A hash of Grafana configuration options.
-#   For an annotated example of possible configuration values, see
-#   <https://github.com/grafana/grafana/blob/v1.8.1/src/config.sample.js>
+#   For a list of available configuration options and their purpose,
+#   see <http://docs.grafana.org/installation/configuration/>.
 #
 # === Examples
 #
-#  class { 'grafana':
+#  class { '::grafana':
 #    config => {
-#      graphiteUrl   => 'https://graphite.wikimedia.org',
-#      elasticsearch => 'https://elastic.wikimedia.org',
+#      server => {
+#          http_addr => '127.0.0.1',
+#          domain    => 'grafana.wikimedia.org',
+#      },
 #    },
 #  }
 #
 class grafana( $config ) {
+
     package { 'grafana':
-        provider => 'trebuchet',
+        ensure => present,
     }
 
-    file { '/etc/grafana':
-        ensure => directory,
-    }
-
-    file { '/etc/grafana/config.js':
-        content => template('grafana/config.js.erb'),
-        owner   => 'www-data',
-        group   => 'www-data',
+    file { '/etc/grafana/grafana.ini':
+        content => ini($config),
+        owner   => 'root',
+        group   => 'root',
         mode    => '0444',
+        require => Package['grafana'],
+    }
+
+    service { 'grafana-server':
+        ensure    => running,
+        enable    => true,
+        provider  => 'systemd',
+        subscribe => [
+            File['/etc/grafana/grafana.ini'],
+            Package['grafana'],
+        ],
     }
 }
