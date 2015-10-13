@@ -60,13 +60,16 @@ class role::grafana2 {
             # 'Viewer', the default).
             'users'      => {
                 auto_assign_org_role => 'Editor',
+                allow_org_create     => false,
+                allow_user_create    => false,
             },
 
             # Because we enable `auth.proxy` (see above), if session data
             # is lost, Grafana will simply create a new session on the next
             # request, so it's OK for session storage to be volatile.
             'session'    => {
-                provider     => 'memory',
+                provider      => 'memory',
+                cookie_secure => true,
             },
 
             # Don't send anonymous usage stats to stats.grafana.org.
