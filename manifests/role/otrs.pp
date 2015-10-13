@@ -7,6 +7,7 @@ class role::otrs {
         description => 'OTRS Web Application Server',
     }
     include standard
+    include base::firewall
 
     include passwords::mysql::otrs
     include passwords::exim
