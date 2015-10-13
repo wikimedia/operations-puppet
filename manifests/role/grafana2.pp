@@ -99,8 +99,18 @@ class role::grafana2 {
         require => Class['::grafana'],
     }
 
+    apache::site { 'grafana-admin.wikimedia.org':
+        content => template('apache/sites/grafana-admin.wikimedia.org.erb'),
+        require => Class['::grafana'],
+    }
+
     monitoring::service { 'grafana-test':
         description   => 'grafana-test.wikimedia.org',
         check_command => 'check_http_url!grafana-test.wikimedia.org!/',
+    }
+
+    monitoring::service { 'grafana-admin':
+        description   => 'grafana-admin.wikimedia.org',
+        check_command => 'check_http_url!grafana-admin.wikimedia.org!/',
     }
 }

@@ -1,0 +1,25 @@
+# Apache configuration for Grafana 2.
+# This file is managed by Puppet.
+<VirtualHost *:80>
+  ServerName grafana-test.wikimedia.org
+  DocumentRoot /usr/share/grafana/public
+
+  ProxyPreserveHost On
+  ProxyPass / http://localhost:3000/
+  ProxyPassReverse / http://localhost:3000/
+
+  RewriteEngine On
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+  Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+  Header always set Strict-Transport-Security "max-age=31536000"
+
+  # Automatically log in all visitors as anonymous.
+  Header always set X-WEBAUTH-USER "Anonymous"
+
+  <Proxy *>
+    <Limit POST PUT DELETE>
+      Require all denied
+    </Limit>
+  </Proxy>
+</VirtualHost>
