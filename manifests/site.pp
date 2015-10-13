@@ -2615,7 +2615,6 @@ node 'ytterbium.wikimedia.org' {
     # to update the role::zuul::production
     role gerrit::production
     include standard
-    include base::firewall
 
     interface::add_ip6_mapped { 'main': }
 }

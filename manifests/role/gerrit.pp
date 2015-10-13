@@ -4,6 +4,7 @@ class role::gerrit {
     class production {
         system::role { 'role::gerrit::production': description => 'Gerrit master' }
         include role::backup::host
+        include base::firewall
 
         sslcert::certificate { 'gerrit.wikimedia.org': }
 
