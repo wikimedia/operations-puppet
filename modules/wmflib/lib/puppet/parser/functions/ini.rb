@@ -37,6 +37,6 @@ module Puppet::Parser::Functions
         else "#{k} = #{ini_cast(vs)}"
         end
       end.flatten.sort.push('').unshift("[#{section}]").join("\n")
-    end.flatten.push('').join("\n")
+    end.flatten.sort.push('').join("\n")
   end
 end

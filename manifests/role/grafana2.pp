@@ -45,10 +45,12 @@ class role::grafana2 {
             },
 
             # Automatically create an account for users and authenticate
-            # them based on the REMOTE_USER env var set by mod_authnz_ldap.
+            # them based on the X-WEBAUTH-USER. We use mod_rewrite to
+            # rewrite the REMOTE_USER env var set by mod_authnz_ldap into
+            # X-WEBAUTH-USER.
             'auth.proxy' => {
                 enabled      => true,
-                header_name  => 'REMOTE_USER',
+                header_name  => 'X-WEBAUTH-USER',
                 auto_sign_up => true,
             },
 
