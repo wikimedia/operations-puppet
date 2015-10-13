@@ -31,8 +31,10 @@ class grafana2( $config ) {
         mode    => '0444',
     }
 
-    base::service_unit { 'grafana-server':
-        systemd   => true,
+    service { 'grafana-server':
+        ensure    => running,
+        enable    => true,
+        provider  => 'systemd',
         subscribe => File['/etc/grafana/grafana.ini'],
     }
 }
