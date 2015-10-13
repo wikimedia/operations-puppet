@@ -123,4 +123,15 @@ class diamond(
             devices   => 'PhysicalDrive[0-9]+$|md[0-9]+$|sd[a-z]+$|x?vd[a-z]+$|disk[0-9]+$|dm-[0-9]+$',
         },
     }
+
+    # Ensure non parsoid and parsoid varnish hosts do not have this collector.
+    # Temporary hack, this will be removed once puppet has applied this.
+    # If this is still here by 2015-10-23, please poke otto.
+    # See: https://gerrit.wikimedia.org/r/#/c/246084/
+    if $::hostname !~ 'cp104[58]|cp202[26]|wtp10(0[1-9]|1[0-9]|2[0-4)|wtp20(0[1-9]|1[0-9]|2[0-4])' {
+        diamond::collector { 'TcpConnStates':
+            source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
+            ensure => 'absent',
+        }
+    }
 }
