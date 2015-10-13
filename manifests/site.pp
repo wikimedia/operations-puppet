@@ -1794,8 +1794,6 @@ node 'magnesium.wikimedia.org' {
 
     $cluster = 'misc'
 
-    include base::firewall
-
     role racktables, requesttracker
 
     interface::add_ip6_mapped { 'main':
