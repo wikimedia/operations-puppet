@@ -2,6 +2,8 @@
 
 class role::planet {
 
+    include base::firewall
+
     system::role { 'role::planet': description => 'Planet (venus) weblog aggregator' }
 
     # be flexible about labs vs. prod
