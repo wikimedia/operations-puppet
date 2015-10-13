@@ -2113,7 +2113,6 @@ node /^mw22([0-2][0-9]|3[0-4])\.codfw\.wmnet$/ {
 node 'mx1001.wikimedia.org' {
     role mail::mx
     include standard
-    include base::firewall
     interface::add_ip6_mapped { 'main': }
 
     interface::ip { 'wiki-mail-eqiad.wikimedia.org_v4':
@@ -2134,7 +2133,6 @@ node 'mx1001.wikimedia.org' {
 node 'mx2001.wikimedia.org' {
     role mail::mx
     include standard
-    include base::firewall
     interface::add_ip6_mapped { 'main': }
 
     interface::ip { 'wiki-mail-codfw.wikimedia.org_v4':
