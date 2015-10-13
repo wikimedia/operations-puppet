@@ -40,6 +40,12 @@
 #[*declare_service*]
 # Boolean - tells puppet if a service {} stanza is required or not
 #
+#[*service_running*]
+# Boolean, determines whether or not the defined service is running.
+# Note that ensure => absent and running -> false will cause an error
+# since we can't stop a nonexistent service.
+#
+#
 #[*service_params*]
 # An hash of parameters that we want to apply to the service resource
 #
@@ -67,6 +73,7 @@ define base::service_unit (
     $refresh          = true,
     $template_name    = $name,
     $declare_service  = true,
+    $service_running  = true,
     $service_params   = {},
 ) {
 
@@ -135,7 +142,7 @@ define base::service_unit (
 
     if $declare_service {
         $base_params = {
-            ensure => ensure_service($ensure),
+            ensure   => $service_running,
             provider => $::initsystem,
         }
         $params = merge($base_params, $service_params)
