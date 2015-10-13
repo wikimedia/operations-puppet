@@ -1165,7 +1165,6 @@ node 'install2001.wikimedia.org' {
 
 # ticket.wikimedia.org
 node 'iodine.wikimedia.org' {
-    include base::firewall
     role otrs
 
     interface::add_ip6_mapped { 'main':
@@ -1840,7 +1839,6 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
 
 # OTRS evaluation upgrade
 node 'mendelevium.eqiad.wmnet' {
-    include base::firewall
     role otrs
 }
 
