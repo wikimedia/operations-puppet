@@ -177,7 +177,7 @@ class role::graphite::base(
         secret_key        => $::passwords::graphite::secret_key,
         storage_dir       => $carbon_storage_dir,
         documentation_url => '//wikitech.wikimedia.org/wiki/Graphite',
-        cors_origins      => [ 'https?://grafana.wikimedia.org' ],
+        cors_origins      => [ 'https?://(grafana|grafana-test).wikimedia.org' ],
     }
 
 
