@@ -38,6 +38,12 @@ class role::grafana2 {
                 admin_password => $passwords::grafana::admin_password,
             },
 
+            # Disabled auth.basic, because it conflicts with auth.proxy.
+            # See <https://github.com/grafana/grafana/issues/2357>
+            'auth.basic' => {
+                enabled => false,
+            },
+
             # Automatically create an account for users and authenticate
             # them based on the REMOTE_USER env var set by mod_authnz_ldap.
             'auth.proxy' => {
