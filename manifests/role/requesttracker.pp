@@ -3,6 +3,7 @@ class role::requesttracker {
     system::role { 'requesttracker': description => 'RT' }
 
     include passwords::misc::rt
+    include base::firewall
 
     sslcert::certificate { 'rt.wikimedia.org': }
 
