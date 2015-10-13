@@ -54,6 +54,14 @@ class role::grafana2 {
                 auto_sign_up => true,
             },
 
+            # Since we require ops / nda / wmf LDAP group membership
+            # to log in to Grafana, we can assume all users are trusted,
+            # and can assign to them the 'Editor' role (rather than
+            # 'Viewer', the default).
+            'users'      => {
+                auto_assign_org_role => 'Editor',
+            },
+
             # Because we enable `auth.proxy` (see above), if session data
             # is lost, Grafana will simply create a new session on the next
             # request, so it's OK for session storage to be volatile.
