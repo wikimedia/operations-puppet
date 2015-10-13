@@ -15,6 +15,8 @@ class role::grafana {
     include ::passwords::grafana
     include ::passwords::ldap::production
 
+    include base::firewall
+
     class { '::grafana':
         config => {
             # Configuration settings for /etc/grafana/grafana.ini.
