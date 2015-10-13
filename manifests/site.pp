@@ -2377,12 +2377,14 @@ node /^snapshot100[124]\.eqiad\.wmnet/ {
     role snapshot::common
     include snapshot
     include snapshot::dumps
+    include standard
 }
 
 node /^snapshot1003\.eqiad\.wmnet/ {
     role snapshot::common, snapshot::cron::primary
     include snapshot
     include snapshot::dumps
+    include standard
 }
 
 # codfw poolcounters
