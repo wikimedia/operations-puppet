@@ -30,6 +30,7 @@ sub vcl_recv {
         set req.backend = caesium;
     } elsif (req.http.Host == "grafana.wikimedia.org" || req.http.Host == "grafana-test.wikimedia.org") {
         set req.backend = krypton;
+        return (pass);
     } elsif (req.http.Host == "parsoid-tests.wikimedia.org") {
         set req.backend = ruthenium;
     } elsif (req.http.Host == "horizon.wikimedia.org") {
