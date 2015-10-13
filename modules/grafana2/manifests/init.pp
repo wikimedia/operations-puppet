@@ -25,7 +25,7 @@ class grafana2( $config ) {
     require_package('grafana')
 
     file { '/etc/grafana/grafana.ini':
-        content => php_ini($config),
+        content => ini($config),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

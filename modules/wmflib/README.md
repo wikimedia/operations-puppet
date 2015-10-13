@@ -91,6 +91,25 @@ Otherwise, the return value is 'stopped'.
     }
 
 
+## ini
+
+`ini( hash $ini_settings [, hash $... ] )`
+
+Serialize a hash into the .ini-style format expected by Python's
+ConfigParser. Takes one or more hashes as arguments. If the argument
+list contains more than one hash, they are merged together. In case of
+duplicate keys, hashes to the right win.
+
+### Example
+
+    ini({'server' => {'port' => 80}})
+
+will produce:
+
+    [server]
+    port = 80
+
+
 ## ordered_json
 
 `ordered_json( hash $data [, hash $... ] )`
