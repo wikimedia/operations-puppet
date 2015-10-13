@@ -17,6 +17,8 @@
 # Sample Usage:
 #
 class toollabs::dev_environ {
+    include toollabs::composer
+
     if os_version('ubuntu trusty') {
         include toollabs::genpp::python_dev_trusty
         package { [
