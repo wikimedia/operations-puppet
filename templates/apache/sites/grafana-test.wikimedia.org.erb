@@ -14,6 +14,10 @@
   Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
   Header always set Strict-Transport-Security "max-age=31536000"
 
+  # Rewrite REMOTE_USER envvar into X-WEBAUTH-USER header.
+  RewriteRule .* - [E=WEBAUTH_USER:%{LA-U:REMOTE_USER}]
+  RequestHeader set X-WEBAUTH-USER %{WEBAUTH_USER}e
+
   <Proxy *>
     AuthName "<%= @auth_ldap['name'] %>"
     AuthType Basic
