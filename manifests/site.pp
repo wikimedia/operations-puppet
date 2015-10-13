@@ -990,7 +990,6 @@ node 'francium.eqiad.wmnet' {
     role dumps::zim
     include standard
     include admin
-    include base::firewall
 }
 
 # gadolinium is the webrequest socat multicast relay.
