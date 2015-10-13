@@ -548,6 +548,7 @@ class role::mariadb::labs {
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
+    include base::firewall
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true,

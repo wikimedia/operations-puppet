@@ -1324,19 +1324,16 @@ node 'labnodepool1001.eqiad.wmnet' {
 node 'labsdb1001.eqiad.wmnet' {
     # this role is depecated and should be converted to labs::db::slave
     include role::mariadb::labs
-    include base::firewall
 }
 
 node 'labsdb1002.eqiad.wmnet' {
     # this role is depecated and should be converted to labs::db::slave
     include role::mariadb::labs
-    include base::firewall
 }
 
 node 'labsdb1003.eqiad.wmnet' {
     # this role is depecated and should be converted to labs::db::slave
     include role::mariadb::labs
-    include base::firewall
 }
 
 node 'labsdb1004.eqiad.wmnet' {
