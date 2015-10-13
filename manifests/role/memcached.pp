@@ -14,6 +14,7 @@ class role::memcached {
 
     include standard
     include webserver::sysctl_settings
+    include base::firewall
 
     $memcached_size = $::realm ? {
         'production' => 89088,

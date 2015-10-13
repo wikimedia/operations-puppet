@@ -1821,7 +1821,6 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
         ensure => 'directory',
     }
 
-    include base::firewall
     include redis
     include redis::ganglia
 }
@@ -1832,7 +1831,6 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include redis
     include redis::ganglia
     include base::debdeploy
-    include base::firewall
     # lint:ignore:quoted_booleans
     salt::grain { 'debdeploy-memcached': value => 'true' }
     # lint:endignore
