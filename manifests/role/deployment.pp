@@ -91,9 +91,11 @@ class role::deployment::server(
         monitor   => true,
     }
 
+    # Used by the trebuchet salt returner
     ferm::service { 'deployment-redis':
         proto => 'tcp',
         port  => '6379',
+        srange => '(($INTERNAL @resolve(silver.wikimedia.org)))',
     }
 
     sudo::group { "${deployment_group}_deployment_server":
