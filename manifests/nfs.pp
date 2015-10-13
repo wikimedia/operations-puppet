@@ -1,18 +1,9 @@
 # nfs.pp
 
-# Virtual resource for the monitoring server
-#@monitoring::group { "nfs": description => "NFS" }
-
-class nfs::common {
-    package { 'nfs-common':
-        ensure => 'latest',
-    }
-}
-
 # Classes for NetApp mounts used on multiple servers
 
 class nfs::data {
-    include nfs::common
+    require_package('nfs-common')
 
     file { [ '/mnt/data' ]:
         ensure => 'directory',
@@ -39,7 +30,7 @@ class nfs::netapp::fr_archive(
         $mountpoint= '/archive/udplogs'
     ) {
 
-    include nfs::common
+    require_package('nfs-common')
 
     $device = $::site ? {
         'eqiad' => 'nas1001-a.eqiad.wmnet',

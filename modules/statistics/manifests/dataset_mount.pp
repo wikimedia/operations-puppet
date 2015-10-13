@@ -8,7 +8,7 @@
 #
 class statistics::dataset_mount {
     # need this for NFS mounts.
-    include nfs::common
+    require_package('nfs-common')
 
     file { '/mnt/data':
         ensure => 'directory',
@@ -20,6 +20,6 @@ class statistics::dataset_mount {
         fstype  => 'nfs',
         options => 'ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.154.11',
         atboot  => true,
-        require => [File['/mnt/data'], Class['nfs::common']],
+        require => File['/mnt/data'],
     }
 }
