@@ -71,5 +71,5 @@ Components: main>thirdparty
 UDebComponents:
 Suite: wheezy
 Architectures: amd64
-VerifyRelease: C2E73424D59097AB
+VerifyRelease: 37BBEE3F7AD95B3F
 ListShellHook: grep-dctrl -X -S grafana || [ $? -eq 1 ]
