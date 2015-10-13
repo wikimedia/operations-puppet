@@ -2537,7 +2537,6 @@ node 'tin.eqiad.wmnet' {
 node 'titanium.wikimedia.org' {
     $cluster = 'misc'
     # include firewall here, until it is on all hosts
-    include base::firewall
     include standard
     include role::archiva
 }
