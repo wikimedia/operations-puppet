@@ -4,6 +4,9 @@
 # editor for Graphite & InfluxDB. It powers <https://grafana.wikimedia.org>.
 #
 class role::grafana {
+
+    include base::firewall
+
     $domain_suffix = $::realm ? {
         production => 'wikimedia.org',
         labs       => 'wmflabs.org',
