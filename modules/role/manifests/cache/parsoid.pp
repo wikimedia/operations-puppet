@@ -3,6 +3,11 @@ class role::cache::parsoid {
         description => 'Parsoid Varnish cache server',
     }
 
+    # Monitor TCP Connection States
+    diamond::collector { 'TcpConnStates':
+        source => 'puppet:///modules/diamond/collector/tcpconnstates.py',
+    }
+
     include role::cache::2layer
 
     class { 'lvs::realserver':
