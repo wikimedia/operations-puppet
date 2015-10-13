@@ -2437,7 +2437,6 @@ node 'titanium.wikimedia.org' {
     $cluster = 'misc'
     # include firewall here, until it is on all hosts
     role archiva
-    include base::firewall
     include standard
 }
 
