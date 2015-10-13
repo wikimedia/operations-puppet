@@ -2271,7 +2271,6 @@ node /pc100[1-3]\.eqiad\.wmnet/ {
 
 # virtual machine hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
 node 'planet1001.eqiad.wmnet' {
-    include base::firewall
     include role::planet
 }
 
