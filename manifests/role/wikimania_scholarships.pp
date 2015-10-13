@@ -4,6 +4,8 @@
 #
 class role::wikimania_scholarships {
 
+    include base::firewall
+
     class { '::wikimania_scholarships':
         hostname     => 'scholarships.wikimedia.org',
         deploy_dir   => '/srv/deployment/scholarships/scholarships',

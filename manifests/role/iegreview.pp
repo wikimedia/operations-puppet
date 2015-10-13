@@ -4,6 +4,8 @@
 #
 class role::iegreview {
 
+    include base::firewall
+
     class { '::iegreview':
         hostname             => 'iegreview.wikimedia.org',
         deploy_dir           => '/srv/deployment/iegreview/iegreview',
