@@ -31,6 +31,10 @@ class dynamicproxy (
     $error_description    = "Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.",
     $error_details        = undef,
     $web_domain           = undef,
+    $blocked_user_agent_regexes = [
+        "TweetmemeBot", # T73120 - misbehaving crawler
+        "^$" # Block requests with no UA string
+    ],
 ) {
     if $ssl_certificate_name != false and $ssl_settings == undef {
         fail('ssl_certificate_nme set but ssl_settings not set')
