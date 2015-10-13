@@ -14,12 +14,19 @@
   Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
   Header always set Strict-Transport-Security "max-age=31536000"
 
-  # Automatically log in all visitors as anonymous.
-  RequestHeader set X-WEBAUTH-USER "Anonymous"
+  # Rewrite REMOTE_USER envvar into X-WEBAUTH-USER header.
+  RewriteRule .* - [E=WEBAUTH_USER:%{LA-U:REMOTE_USER}]
+  RequestHeader set X-WEBAUTH-USER %{WEBAUTH_USER}e
 
   <Proxy *>
-    <Limit POST PUT DELETE>
-      Require all denied
-    </Limit>
+    AuthName "<%= @auth_ldap['name'] %>"
+    AuthType Basic
+    AuthBasicProvider ldap
+    AuthLDAPBindDN <%= @auth_ldap['bind_dn'] %>
+    AuthLDAPBindPassword <%= @auth_ldap['bind_password'] %>
+    AuthLDAPURL "<%= @auth_ldap['url'] %>"
+    <% @auth_ldap['groups'].each do |group| -%>
+    Require ldap-group <%= group %>
+    <% end -%>
   </Proxy>
 </VirtualHost>
