@@ -147,6 +147,22 @@ class role::logstash (
         increment       => [ '%{channel}.%{level}' ],
     }
 
+    logstash::output::statsd { 'OOM_channel_rate':
+        host            => $statsd_host,
+        guard_condition => '[type] == "hhvm" and [message] =~ "request has exceeded memory limit"',
+        namespace       => 'logstash.rate',
+        sender          => 'oom',
+        increment       => [ '%{level}' ],
+    }
+
+    logstash::output::statsd { 'HHVM_channel_rate':
+        host            => $statsd_host,
+        guard_condition => '[type] == "hhvm" and [message] !~ "request has exceeded memory limit"',
+        namespace       => 'logstash.rate',
+        sender          => 'hhvm',
+        increment       => [ '%{level}' ],
+    }
+
     ## Firewalling
     $logstash_nodes = hiera('logstash::cluster_hosts')
     $logstash_nodes_ferm = join($logstash_nodes, ' ')
