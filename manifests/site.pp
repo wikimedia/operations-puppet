@@ -48,9 +48,8 @@ if $cluster == undef {
 # Node definitions (alphabetic order)
 
 node /^(acamar|achernar)\.wikimedia\.org$/ {
+    role dnsrecursor
     include standard
-
-    include role::dnsrecursor
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -335,8 +334,8 @@ node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
+    role dnsrecursor
     include standard
-    include role::dnsrecursor
 
     if $::hostname == 'chromium' {
         $url_downloader_ip = hiera('url_downloader_ip')
@@ -1737,8 +1736,8 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 }
 
 node 'maerlant.wikimedia.org' {
+    role dnsrecursor
     include standard
-    include role::dnsrecursor
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
@@ -2120,8 +2119,8 @@ node 'neptunium.wikimedia.org' {
 }
 
 node 'nescio.wikimedia.org' {
+    role dnsrecursor
     include standard
-    include role::dnsrecursor
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
