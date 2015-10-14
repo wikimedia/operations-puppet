@@ -242,6 +242,9 @@ class role::backup::director {
         includes => [],
         plugins  => [ 'bpipe-mysql-xfalse-ptrue-itrue'],
     }
+    bacula::director::fileset { 'var-lib-grafana':
+        includes => [ '/var/lib/grafana' ],
+    }
 
     # The console should be on the director
     class { 'bacula::console':

@@ -10,6 +10,8 @@ class role::grafana {
     include ::apache::mod::proxy_http
     include ::apache::mod::rewrite
 
+    include ::role::backup::host
+
     include ::passwords::grafana
     include ::passwords::ldap::production
 
@@ -119,5 +121,9 @@ class role::grafana {
     monitoring::service { 'grafana-admin':
         description   => 'grafana-admin.wikimedia.org',
         check_command => 'check_http_url!grafana-admin.wikimedia.org!/',
+    }
+
+    backup::set { 'var-lib-grafana':
+        require => Class['::grafana'],
     }
 }
