@@ -133,8 +133,7 @@ node /analytics10(17|2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
 # This node was previously a kafka broker, but is now waiting
 # to be repurposed (likely as a stat* type box).
 node 'analytics1021.eqiad.wmnet' {
-    include standard
-    include base::firewall
+    role spare
 }
 
 # analytics1026 is the Impala master
