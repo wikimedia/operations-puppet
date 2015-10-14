@@ -14,7 +14,7 @@ sub vcl_recv {
         set req.backend = ytterbium;
         // No caching
         return (pass);
-    } elsif (req.http.Host == "gdash.wikimedia.org" || req.http.Host == "tessera.wikimedia.org" || req.http.Host == "performance.wikimedia.org" || req.http.Host == "graphite.wikimedia.org") {
+    } elsif (req.http.Host == "gdash.wikimedia.org" || req.http.Host == "performance.wikimedia.org" || req.http.Host == "graphite.wikimedia.org") {
         set req.backend = graphite1001;
     } elsif (req.http.Host == "logstash.wikimedia.org"){
         set req.backend = logstash;
