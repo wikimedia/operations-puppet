@@ -148,7 +148,6 @@ node 'analytics1026.eqiad.wmnet' {
     include role::analytics::impala::master
     include role::logging::udp2log::misc
     include base::firewall
-    include base::debdeploy
     # lint:ignore:quoted_booleans
     # salt grain values are passed to a shell command
     salt::grain { 'debdeploy-analytics': value => 'true' }
@@ -1824,7 +1823,6 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include passwords::redis
     include redis
     include redis::ganglia
-    include base::debdeploy
     include base::firewall
     # lint:ignore:quoted_booleans
     salt::grain { 'debdeploy-memcached': value => 'true' }
@@ -1900,7 +1898,6 @@ node /^ms-be101[678]\.eqiad\.wmnet$/ {
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
     role swift::proxy
-    include base::debdeploy
     # lint:ignore:quoted_booleans
     salt::grain { 'debdeploy-swift-proxy': value => 'true' }
     # lint:endignore
@@ -1908,7 +1905,6 @@ node /^ms-fe300[1-2]\.esams\.wmnet$/ {
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
     role swift::storage
-    include base::debdeploy
     # lint:ignore:quoted_booleans
     salt::grain { 'debdeploy-swift-storage': value => 'true' }
     # lint:endignore
@@ -2229,7 +2225,6 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
 node 'osmium.eqiad.wmnet' {
     role ve
     include ::standard
-    include base::debdeploy
 }
 
 # oxygen runs a kafkatee instance that consumes webrequest from Kafka
@@ -2302,7 +2297,6 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
 node 'radium.wikimedia.org' {
     include base::firewall
     include standard
-    include base::debdeploy
     include role::tor
 
     interface::add_ip6_mapped { 'main':
