@@ -1,0 +1,61 @@
+{
+  "title": "Home",
+  "tags": [],
+  "style": "light",
+  "timezone": "browser",
+  "editable": false,
+  "hideControls": true,
+  "rows": [
+    {
+      "title": "New row",
+      "height": "60px",
+      "collapse": false,
+      "editable": true,
+      "panels": [
+        {
+          "id": 1,
+          "span": 12,
+          "editable": true,
+          "type": "text",
+          "mode": "html",
+          "content": "<h1 style=\"font-weight: normal; color: #555;\">Wikimedia Operations Performance Metrics<img src=\"//upload.wikimedia.org/wikipedia/commons/8/81/Wikimedia-logo.svg\" alt=\"Wikimedia logo\" style=\"float: left; width: 40px; margin-right: 10px; position: relative; top: 2px;\"></h1>",
+          "style": {},
+          "title": ""
+        }
+      ]
+    },
+    {
+      "height": "610px",
+      "panels": [
+        {
+          "id": 2,
+          "span": 6,
+          "type": "dashlist",
+          "mode": "starred",
+          "title": "Starred dashboards"
+        },
+        {
+          "id": 3,
+          "span": 6,
+          "type": "dashlist",
+          "mode": "search",
+          "title": "Dashboards"
+        }
+      ]
+    }
+  ],
+  "nav": [
+    {
+      "type": "timepicker",
+      "enable": false
+    }
+  ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": []
+  },
+  "version": 5
+}

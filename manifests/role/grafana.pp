@@ -97,6 +97,15 @@ class role::grafana {
         ],
     }
 
+    # Override the default home dashboard with something custom.
+    # This will be doable via a preference in the future. See:
+    # <https://groups.io/org/groupsio/grafana/thread/home_dashboard_in_grafana_2_0/43631?threado=120>
+    file { '/usr/share/grafana/public/dashboards/home.json':
+        source  => 'puppet:///files/grafana/home.json',
+        require => Package['grafana'],
+        notify  => Service['grafana-server'],
+    }
+
     # Serve Grafana via two different vhosts:
     #
     # - grafana.wikimedia.org (read-only, but accessible to all)
