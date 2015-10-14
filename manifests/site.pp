@@ -2590,7 +2590,6 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
 # Wikidata query service
 node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
     role wdqs
-    include standard
 
     $nagios_contact_group = 'admins,wdqs-admins'
 }
