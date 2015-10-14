@@ -10,6 +10,7 @@
       "title": "New row",
       "height": "60px",
       "collapse": false,
+      "transparent": true,
       "editable": true,
       "panels": [
         {
