@@ -62,17 +62,9 @@ class role::deployment::server(
     }
 
     # T115075
-    ferm::service { 'ssh_deployment_server_ipv4':
-        desc   => 'ssh on trebuchet deployment servers, for sync-file / scap',
-        proto  => 'tcp',
-        port   => '22',
-        srange => "@resolve((tin.eqiad.wmnet mira.codfw.wmnet), A)",
-    }
-    ferm::service { 'ssh_deployment_server_ipv6':
-        desc   => 'ssh on trebuchet deployment servers, for sync-file / scap',
-        proto  => 'tcp',
-        port   => '22',
-        srange => "@resolve((tin.eqiad.wmnet mira.codfw.wmnet), AAAA)",
+    ferm::service { 'deployment-ssh':
+        ensure => present,
+        rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
     }
 
     #T83854
