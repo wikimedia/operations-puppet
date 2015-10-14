@@ -31,6 +31,7 @@ class role::analytics::impala::worker {
 #
 class role::analytics::impala::master {
     include role::analytics::impala
+    include base::firewall
 
     # The llama-master package stupidly creates the llama user
     # with a non system uid.  This causes our admin module to
