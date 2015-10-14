@@ -32,6 +32,7 @@ class base {
     include role::trebuchet
     include nrpe
     include base::kernel
+    include base::debdeploy
 
     # include base::monitor::host.
     # if contactgroups is set, then use it
