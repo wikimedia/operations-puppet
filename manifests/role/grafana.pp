@@ -83,6 +83,11 @@ class role::grafana {
         },
     }
 
+    ferm::service { 'grafana_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
     # LDAP configuration. Interpolated into the Apache site template
     # to provide mod_authnz_ldap-based user authentication.
     $auth_ldap = {
