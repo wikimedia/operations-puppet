@@ -284,6 +284,7 @@ class toollabs::exec_environ {
         'libxml2-utils',               # T64944.
         'libyaml-dev',                 # T67974.
         'libzbar0',                    # T58996
+        'mailutils',                   # T114073
         'mdbtools',                    # T50805.
         'melt',                        # T71365
         'openbabel',                   # T68995
