@@ -1128,7 +1128,6 @@ node 'graphite1001.eqiad.wmnet' {
     include role::graphite::production
     include role::statsdlb
     include role::gdash
-    include role::tessera
     include role::performance
     include role::graphite::production::alerts
     include role::restbase::alerts

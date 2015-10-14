@@ -15,10 +15,6 @@ repo_config:
   jobrunner/jobrunner:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner
     service_name: jobrunner
-  tessera/tessera:
-    upstream: https://gerrit.wikimedia.org/r/operations/software/tessera
-  grafana/grafana:
-    upstream: https://gerrit.wikimedia.org/r/operations/software/grafana
   parsoid/deploy:
     upstream: https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy
     checkout_submodules: true
