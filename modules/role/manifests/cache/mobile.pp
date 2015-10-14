@@ -187,4 +187,13 @@ class role::cache::mobile {
         # varnish webrequest logs to Kafka.
         class { 'role::cache::kafka::webrequest': topic => 'webrequest_mobile' }
     }
+
+    # Test rollout of varnish reqstats diamond collector in eqiad
+    if $::site == 'eqiad' {
+        # Parse varnishlogs for request statistics and send to statsd via diamond.
+        varnish::monitoring::varnishreqstats { 'MobileFrontend':
+            instance_name => 'frontend',
+            metric_path   => "varnish.${::site}.mobile.frontend.request",
+        }
+    }
 }
