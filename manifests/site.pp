@@ -1384,10 +1384,8 @@ node /labstore200[12]\.codfw\.wmnet/ {
 }
 
 
-# spare
 node 'lead.wikimedia.org' {
-    include standard
-    include base::firewall
+    role spare
     interface::add_ip6_mapped { 'main': }
 }
 
@@ -2281,10 +2279,8 @@ node /(plutonium|pollux)\.wikimedia\.org/ {
     include base::firewall
 }
 
-# spare
 node 'polonium.wikimedia.org' {
-    include standard
-    include base::firewall
+    role spare
     interface::add_ip6_mapped { 'main': }
 }
 
