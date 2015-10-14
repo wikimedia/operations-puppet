@@ -76,6 +76,11 @@ class role::toollabs::k8s::worker {
     $master_host = hiera('k8s_master')
     $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
 
+    ferm::service { 'flannel-vxlan':
+        proto => udp,
+        port  => 8472,
+    }
+
     class { '::k8s::flannel':
         etcd_endpoints => $etcd_url,
     }
@@ -94,6 +99,11 @@ class role::toollabs::k8s::webproxy {
 
     $master_host = hiera('k8s_master')
     $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
+
+    ferm::service { 'flannel-vxlan':
+        proto => udp,
+        port  => 8472,
+    }
 
     class { '::k8s::flannel':
         etcd_endpoints => $etcd_url,
