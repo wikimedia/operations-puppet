@@ -21,9 +21,10 @@ class role::grafana {
             # Only listen on loopback, because we'll have a local Apache
             # instance acting as a reverse-proxy.
             'server'     => {
-                http_addr => '127.0.0.1',
-                domain    => 'grafana.wikimedia.org',
-                protocol  => 'http',
+                http_addr   => '127.0.0.1',
+                domain      => 'grafana.wikimedia.org',
+                protocol    => 'http',
+                enable_gzip => true,
             },
 
             # Grafana needs a database to store users and dashboards.
@@ -61,7 +62,7 @@ class role::grafana {
             'users'      => {
                 auto_assign_org_role => 'Editor',
                 allow_org_create     => false,
-                allow_user_create    => false,
+                allow_sign_up        => false,
             },
 
             # Because we enable `auth.proxy` (see above), if session data
