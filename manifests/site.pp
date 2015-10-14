@@ -202,9 +202,6 @@ node 'analytics1027.eqiad.wmnet' {
 # Analytics Query Service (RESTBase & Cassandra)
 node /aqs100[123]\.eqiad\.wmnet/ {
     role aqs
-
-    include standard
-    include base::firewall
 }
 
 
