@@ -12,6 +12,8 @@ class role::aqs {
         description => 'Analytics Query Service Node',
     }
 
+    include standard
+    include base::firewall
 
     #
     # Set up Cassandra for AQS.
