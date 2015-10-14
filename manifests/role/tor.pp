@@ -16,4 +16,17 @@ class role::tor {
         tor_exit_policy => 'reject *:*', # no exits allowed
     }
 
+    # actual Tor port where clients connect, public
+    ferm::service { 'tor_orport':
+        desc  => 'port for the actual Tor client connections',
+        proto => 'tcp',
+        port  => '443',
+    }
+
+    # for serving directory updates, public
+    ferm::service { 'tor_dirport':
+        desc  => 'port advertising the directory service',
+        proto => 'tcp',
+        port  => '80',
+    }
 }
