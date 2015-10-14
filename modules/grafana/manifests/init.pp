@@ -23,15 +23,33 @@
 #
 class grafana( $config ) {
 
+    $defaults = {
+        'dashboards.json' => {
+            enabled => true,
+            path    => '/var/lib/grafana/dashboards',
+        },
+    }
+
     package { 'grafana':
         ensure => present,
     }
 
     file { '/etc/grafana/grafana.ini':
-        content => ini($config),
+        content => ini($defaults, $config),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        require => Package['grafana'],
+    }
+
+    file { '/var/lib/grafana/dashboards':
+        ensure  => directory,
+        owner   => 'grafana',
+        group   => 'grafana',
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
+        force   => true,
         require => Package['grafana'],
     }
 
