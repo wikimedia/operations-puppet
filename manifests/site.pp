@@ -147,7 +147,6 @@ node 'analytics1026.eqiad.wmnet' {
     include role::analytics::clients
     include role::analytics::impala::master
     include role::logging::udp2log::misc
-    include base::firewall
     include base::debdeploy
     # lint:ignore:quoted_booleans
     # salt grain values are passed to a shell command
