@@ -15,16 +15,6 @@ class wdqs::gui(
         content => template('wdqs/nginx.erb'),
     }
 
-    ferm::service { 'wdqs_http':
-        proto => 'tcp',
-        port  => '80',
-    }
-
-    ferm::service { 'wdqs_https':
-        proto => 'tcp',
-        port  => '443',
-    }
-
     # The directory for operator-controlled nginx flags
     file { '/var/lib/nginx/wdqs/':
         ensure  => directory,

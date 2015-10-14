@@ -29,6 +29,16 @@ class role::wdqs  {
     # Service Web proxy
     include ::wdqs::gui
 
+    ferm::service { 'wdqs_http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'wdqs_https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
     # Monitor Blazegraph
     include ::wdqs::monitor::blazegraph
 
