@@ -45,6 +45,12 @@ class phabricator::vcs (
         require => Package['git'],
     }
 
+    # Configure all git repositories we host
+    file { '/etc/gitconfig':
+        source  => 'puppet:///modules/phabricator/system.gitconfig',
+        require => Package['git-core'],
+    }
+
     file { $ssh_hook_path:
         content => template('phabricator/phabricator-ssh-hook.sh.erb'),
         mode    => '0755',

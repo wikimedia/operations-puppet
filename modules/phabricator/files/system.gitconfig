@@ -1,0 +1,3 @@
+[remote "origin"]
+    fetch = +refs/changes/*:refs/changes/*
+    fetch = +refs/meta/*:refs/meta/*
