@@ -1,0 +1,2 @@
+[remote "origin"]
+    fetch = +refs/*:refs/*
