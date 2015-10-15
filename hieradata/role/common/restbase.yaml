@@ -15,6 +15,7 @@ restbase::mobileapps_uri: http://mobileapps.svc.eqiad.wmnet:8888
 restbase::mathoid_uri: http://mathoid.svc.eqiad.wmnet:10042
 restbase::cassandra_user: restbase
 restbase::cassandra_password: "%{passwords::cassandra::restbase}"
+restbase::monitoring::monitor_domain: en.wikipedia.org
 
 admin::groups:
   - restbase-roots
