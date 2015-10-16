@@ -778,10 +778,9 @@ node 'db1011.eqiad.wmnet' {
 
 # codfw db
 node /^db20(5[5-9]|6[0-9]|70)\.codfw\.wmnet$/ {
+    role spare
 
     $cluster = 'mysql'
-    include standard
-    include base::firewall
 }
 
 node 'dbstore1001.eqiad.wmnet' {
