@@ -7,11 +7,6 @@ class dataset::cron::kiwix($enable=true) {
         $ensure = 'absent'
     }
 
-    system::role { 'dataset::cron::kiwix':
-        ensure      => $ensure,
-        description => 'mirror of Kiwix files'
-    }
-
     include dataset::common
 
     group { 'mirror':

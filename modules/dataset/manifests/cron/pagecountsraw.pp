@@ -10,11 +10,6 @@ class dataset::cron::pagecountsraw(
     else {
         $ensure = 'absent'
     }
-    system::role { 'dataset::cron::pagecountsraw':
-        ensure      => $ensure,
-        description => 'server of raw page view stats'
-    }
-
     file { '/usr/local/bin/daily-pagestats-copy.sh':
         mode   => '0755',
         owner  => 'root',

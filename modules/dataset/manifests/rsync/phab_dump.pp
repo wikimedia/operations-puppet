@@ -6,11 +6,6 @@ class dataset::rsync::phab_dump($enable=true) {
         $ensure = 'absent'
     }
 
-    system::role { 'dataset::rsync::phab_dump':
-        ensure      => $ensure,
-        description => 'mirror of phabricator dump'
-    }
-
     include dataset::common
 
     include dataset::rsync::common
