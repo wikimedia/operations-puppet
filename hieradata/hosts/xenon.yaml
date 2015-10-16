@@ -1,4 +1,3 @@
-cassandra::rack: 'b'
 debdeploy::grains:
   debdeploy-restbase:
     value: canary
