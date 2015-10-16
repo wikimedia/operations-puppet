@@ -1,0 +1,5 @@
+postgresql::slave::pgversion: 9.4
+postgresql::slave::datadir: /srv/postgresql/9.4/main
+postgresql::slave::includes: tuning.conf
+# Defined in the private repo
+#postgresql::slave::replication_pass: justapass
