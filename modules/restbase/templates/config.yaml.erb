@@ -62,6 +62,7 @@ templates:
           - <%= @graphoid_uri %>
           - <%= @mobileapps_uri %>
           - <%= @mathoid_uri %>
+          - <%= @aqs_uri %>
       header_match:
         description: Checks client ip against one of the predefined whitelists
         x-error-message: This client is not allowed to use the endpoint
@@ -218,6 +219,10 @@ templates:
     securityDefinitions: *wp/content-security/1.0.0
     x-subspecs:
       - media/v1/mathoid
+    paths:
+      /metrics:
+        x-subspecs:
+          - analytics/v1/pageviews
 
 
   global-sys: &gb/sys/1.0.0
@@ -309,6 +314,25 @@ templates:
                   status: 200
                   headers: '{$$.merge($.mathoid.body[$.request.params.format].headers,$$.merge($.mathoid.headers, {"x-resource-location": $.request.headers.x-resource-location}))}'
                   body: '{$.mathoid.body[$.request.params.format].body}'
+
+      /{module:pageviews}/per-article/{+rest}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @aqs_uri %>/pageviews/per-article/{rest}
+      /{module:pageviews}/per-project/{+rest}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @aqs_uri %>/pageviews/aggregate/{rest}
+      /{module:pageviews}/top/{+rest}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @aqs_uri %>/pageviews/top/{rest}
 
 
   wp-default-1.0.0: &wp/default/1.0.0
