@@ -9,3 +9,6 @@ hhvm::extra::fcgi:
     server:
       connection_timeout_seconds: 1200
   max_execution_time: 1200
+debdeploy::grains:
+  debdeploy-videoscaler:
+    value: standard
