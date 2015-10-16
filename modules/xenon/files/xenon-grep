@@ -49,7 +49,7 @@ skip_prefixes = ('/srv', 'AutoLoader', 'Curl', 'Database',
                  'Elastica\Transport\Http::exec', 'Hooks',
                  'Http::', 'LoadBalancer', 'Memcached',
                  'WANObjectCache', 'wfGetDB', 'SqlBagOStuff',
-                 'MultiWriteBagOStuff')
+                 'MultiWriteBagOStuff', 'BagOStuff')
 
 
 def slicer(spec):
