@@ -63,4 +63,12 @@ class vagrant::mediawiki(
         before  => Exec['mediawiki_vagrant_setup'],
         require => Git::Clone['mediawiki/vagrant'],
     }
+
+    file { '/usr/local/bin/labs-vagrant':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('vagrant/labs-vagrant.erb'),
+    }
 }
