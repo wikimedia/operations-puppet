@@ -89,6 +89,6 @@ define interface::aggregate($orig_interface=undef, $members=[], $lacp_rate='fast
 class interface::bonding-tools {
     # ethtool is also needed but is included from base
     package { ['ifenslave-2.6', ]:
-        ensure => latest,
+        ensure => 'present',
     }
 }

@@ -1,6 +1,6 @@
 class interface::vlan-tools {
     package { 'vlan':
-        ensure => latest,
+        ensure => 'present',
     }
 }
 
