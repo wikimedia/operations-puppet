@@ -1,5 +1,5 @@
 define interface::aggregate_member($master) {
-    require interface::bonding-tools
+    require_package('ifenslave-2.6')
 
     $interface = $title
 
@@ -22,7 +22,7 @@ define interface::aggregate_member($master) {
 }
 
 define interface::aggregate($orig_interface=undef, $members=[], $lacp_rate='fast', $hash_policy='layer2+3') {
-    require interface::bonding-tools
+    require_package('ifenslave-2.6')
 
     # Use the definition title as the destination (aggregated) interface
     $aggr_interface = $title
@@ -83,12 +83,5 @@ define interface::aggregate($orig_interface=undef, $members=[], $lacp_rate='fast
         command     => "/sbin/ifup --force ${aggr_interface}",
         require     => Interface::Aggregate_member[$members],
         refreshonly => true
-    }
-}
-
-class interface::bonding-tools {
-    # ethtool is also needed but is included from base
-    package { ['ifenslave-2.6', ]:
-        ensure => latest,
     }
 }
