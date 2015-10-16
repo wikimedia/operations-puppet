@@ -5,5 +5,8 @@ admin::groups:
   - analytics-privatedata-users
   - analytics-roots
   - analytics-admins
+debdeploy::grains:
+  debdeploy-hadoop-master:
+    value: standard
 
   
