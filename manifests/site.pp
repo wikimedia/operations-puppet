@@ -300,8 +300,8 @@ node 'calcium.wikimedia.org' {
 # Californium hosts openstack-dashboard AKA horizon
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
+    role horizon
     include standard
-    include role::horizon
     include base::firewall
 }
 
