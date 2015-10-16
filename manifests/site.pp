@@ -959,7 +959,7 @@ node 'fermium.wikimedia.org' {
 }
 
 node 'fluorine.eqiad.wmnet' {
-    role xenon, dataset::publicdirs
+    role xenon
     $cluster = 'misc'
 
     include standard
