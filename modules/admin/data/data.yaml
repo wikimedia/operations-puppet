@@ -45,7 +45,7 @@ groups:
               brion, cscott, csteipp, demon, ebernhardson, esanders, gilles,
               gjg, gwicke, halfak, hashar, hoo, kaldari, kartik, khorn, krinkle, manybubbles,
               maxsem, mattflaschen, marktraceur, milimetric, mlitn, andyrussg,
-              nikerabbit, reedy, rmoen, robla, spage, ssastry, tomasz, yurik,
+              nikerabbit, reedy, robla, spage, ssastry, tomasz, yurik,
               tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, krenair,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
               bsitzmann, mholloway-shell]
@@ -177,7 +177,7 @@ groups:
     members: [haithams, ezachte, milimetric, dartar, yurik,
               halfak, awight, dr0ptp4kt, tnegrin, nuria, leila,
               ironholds, kleduc, ellery, nettrom, mforns,
-              spage, bmansurov, rmoen, tbayer, joal, ashwinpp,
+              spage, bmansurov, tbayer, joal, ashwinpp,
               madhuvishy, tjones, legoktm, dcausse, bearloga,
               dpatrick]
   statistics-users:
@@ -848,7 +848,7 @@ users:
     gid: 500
     name: rmoen
     realname: Rob Moen
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDDk7c4PgSQ6sRcOxEvbccJrTNTGH+/aBj9TFXq3zlEYoOd1+3UqBQPi1zn4sUbdIshyfPA0oUL/5URXkEA76tYhyia72qdW5bhu1dF9RtQQOgtgIlgMh/VMGChw6AIHFNtdF+xJpk92os3uPdcnexrkQ0g06ImZdCsLZssGxCwnLWPE9uwF/OadJPOp48Idz/xvOIo7aVU6A2tSyk72FZXXCGuY77GQBjswuAs0T25HI+lYcGxQF8IskevZzp5sfc/hvfb50NuPUfw/0oM3Ilk+2oToq0LtRvdVMm4nMayI41EC9RMPf34l2hG+P2na09kvQnZOU8LYJSxfG9UzcH8wdtjwfJp9YvADNvhzh8J8k4kVCbcyZFo6LtCtpdFdC+ZfR61A5BEf58XYBhZYE9lGy/fRsgokfpeYed343QD0X8uzc2amiQSg2CXQVKVla9IUT7vzbV0Fo0zpTuF4sgAMqiGacJTSvrmPPInD1yjwhgGnvYe23rfiyUezdBOvSK1zZBorsR3i/VeHhe6h45DGVODPGHdKZsFg8GxU4Rt7lge2MeAQ6ZyVUupL03BA59TPRLJpwEIkPbQCRSVujcia0u5dwk4j7clM+DC/rL0G10MOkq+62LMA7X0Efv13hBZiXgl9aGYchRWjei2zi//XEPNlUWvuzrXeoWjevnl3w== dev@sane.ly]
+    ssh_keys: []
     uid: 2099
   robla:
     ensure: present
