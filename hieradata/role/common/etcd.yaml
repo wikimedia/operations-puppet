@@ -2,3 +2,6 @@ cluster: etcd
 etcd::host: "%{::fqdn}"
 etcd::srv_dns: 'eqiad.wmnet'
 etcd::use_ssl: true
+debdeploy::grains:
+  debdeploy-etcd:
+    value: standard
