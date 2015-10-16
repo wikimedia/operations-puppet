@@ -37,6 +37,7 @@
 """
 import argparse
 import collections
+import fnmatch
 import glob
 import operator
 import os.path
@@ -45,11 +46,11 @@ import sys
 import textwrap
 
 
-skip_prefixes = ('/srv', 'AutoLoader', 'Curl', 'Database',
-                 'Elastica\Transport\Http::exec', 'Hooks',
-                 'Http::', 'LoadBalancer', 'Memcached',
-                 'WANObjectCache', 'wfGetDB', 'SqlBagOStuff',
-                 'MultiWriteBagOStuff')
+# Stack frames which match any of these shell-style wildcard patterns
+# are excluded from the leaderboard.
+skip_patterns = ('*BagOStuff*', '*Http::exec*', '*ObjectCache*', '/srv*',
+                 'AutoLoader*', 'Curl*', 'Database*', 'Hooks*', 'Http::*',
+                 'LoadBalancer*', 'Memcached*', 'wfGetDB*')
 
 
 def slicer(spec):
@@ -59,7 +60,7 @@ def slicer(spec):
 
 
 def should_skip(f):
-    return f.lower() == f or any(f.startswith(pfx) for pfx in skip_prefixes)
+    return f.lower() == f or any(fnmatch.fnmatch(f, p) for p in skip_patterns)
 
 
 def parse_line(line):
