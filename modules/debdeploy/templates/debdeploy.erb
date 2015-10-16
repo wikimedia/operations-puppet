@@ -13,4 +13,6 @@ swift-proxy = debdeploy-swift-proxy:true
 memcached = debdeploy-memcached:true
 hadoop-worker = debdeploy-hadoop-worker:standard
 hadoop-worker-canary = debdeploy-hadoop-worker:canary
-hadoop = debdeploy-hadoop-worker:standard
+hadoop-master = debdeploy-hadoop-master:standard
+hadoop-standby = debdeploy-hadoop-standby:standard
+hadoop = debdeploy-hadoop-worker:standard, debdeploy-hadoop-master:standard, debdeploy-hadoop-standby:standard
