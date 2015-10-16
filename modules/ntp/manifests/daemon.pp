@@ -1,6 +1,6 @@
 define ntp::daemon($servers=[], $peers=[], $query_acl=[], $time_acl=[], $servers_opt='',
     $ensure=hiera('ntp::daemon::ensure', 'present')) {
-    package { 'ntp': ensure => latest }
+    package { 'ntp': ensure => present }
 
     file { 'ntp.conf':
         mode    => '0644',
