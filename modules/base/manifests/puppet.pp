@@ -6,9 +6,7 @@ class base::puppet($server='puppet', $certname=undef) {
     $crontime = $base::puppet::params::crontime
     $freshnessinterval = $base::puppet::params::freshnessinterval
 
-    package { [ 'puppet', 'facter' ]:
-        ensure  => latest,
-    }
+    require_package('puppet', 'facter')
 
     # facter needs this for proper "virtual"/"is_virtual" resolution
     package { 'virt-what':
