@@ -11,11 +11,6 @@ class snapshot::centralauthdump(
         $ensure = 'absent'
     }
 
-    system::role { 'snapshot::centralauthdump':
-        ensure      => $ensure,
-        description => 'mysql dumper of centralauth',
-    }
-
     file { '/usr/local/bin/dumpcentralauth.sh':
         mode   => '0755',
         owner  => 'root',

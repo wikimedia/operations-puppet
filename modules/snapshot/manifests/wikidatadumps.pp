@@ -37,11 +37,6 @@ class snapshot::wikidatadumps::json(
         $ensure = 'absent'
     }
 
-    system::role { 'snapshot::wikidatadumps::json':
-        ensure      => $ensure,
-        description => 'producer of weekly wikidata json dumps'
-    }
-
     $scriptPath = '/usr/local/bin/dumpwikidatajson.sh'
     file { $scriptPath:
         mode    => '0755',

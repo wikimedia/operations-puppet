@@ -11,11 +11,6 @@ class snapshot::dumps::pagetitles(
         $ensure = 'absent'
     }
 
-    system::role { 'snapshot::dumps::pagetitles':
-        ensure      => $ensure,
-        description => 'producer of daily page title files'
-    }
-
     file { "${snapshot::dirs::datadir}/public/other/pagetitles":
         ensure => 'directory',
         path   => "${snapshot::dirs::datadir}/public/other/pagetitles",
