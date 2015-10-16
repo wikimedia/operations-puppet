@@ -1,6 +1,3 @@
-postgresql::master::pgversion: 9.4
-postgresql::master::datadir: /srv/postgresql/9.4/main
-postgresql::master::includes: tuning.conf
 # Defined in the private repo
 #postgresql::master::postgres_slaves:
 #  replication@maps-test2002-v4:
