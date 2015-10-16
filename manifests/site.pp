@@ -287,11 +287,9 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
 
 # virtual machine for static misc. services
 node 'bromine.eqiad.wmnet' {
+    role bugzilla_static, annualreport, transparency
     include standard
     include base::firewall
-    include role::bugzilla_static
-    include role::annualreport
-    include role::transparency
 }
 
 # http://releases.wikimedia.org
