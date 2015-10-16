@@ -1,7 +1,5 @@
 class interface::vlan-tools {
-    package { 'vlan':
-        ensure => latest,
-    }
+    require_package('vlan')
 }
 
 define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $remove=undef) {
