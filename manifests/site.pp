@@ -1834,11 +1834,11 @@ node 'mira.codfw.wmnet' {
 }
 
 node 'multatuli.wikimedia.org' {
+    role spare
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    include standard
-    include base::firewall
 }
 
 # also see dataset1001
