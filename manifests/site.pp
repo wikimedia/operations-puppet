@@ -753,7 +753,7 @@ node 'db1047.eqiad.wmnet' {
 }
 
 node 'db1069.eqiad.wmnet' {
-    include role::mariadb::sanitarium
+    role mariadb::sanitarium
     include base::firewall
 }
 
