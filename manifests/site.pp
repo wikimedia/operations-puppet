@@ -957,11 +957,11 @@ node 'eventlog1001.eqiad.wmnet' {
         eventlogging::forwarder,
         eventlogging::processor,
         eventlogging::consumer::mysql,
-        eventlogging::consumer::files
+        eventlogging::consumer::files,
+        ipython_notebook,
+        logging::mediawiki::errors
 
     include standard
-    include role::ipython_notebook
-    include role::logging::mediawiki::errors
 }
 
 # virtual machine for mailman list server
