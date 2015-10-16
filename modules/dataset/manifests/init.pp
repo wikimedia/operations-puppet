@@ -18,6 +18,7 @@ class dataset(
     ) {
 
     include dataset::common
+    require dataset::user
 
     $rsync_public_enable = has_key($rsync,'public')
     class { 'dataset::rsync::public': enable => $rsync_public_enable }
