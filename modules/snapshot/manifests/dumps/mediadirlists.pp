@@ -11,11 +11,6 @@ class snapshot::dumps::mediadirlists(
         $ensure = 'absent'
     }
 
-    system::role { 'snapshot::dumps::mediadirlists':
-        ensure      => $ensure,
-        description => 'producer of daily lists of media directories'
-    }
-
     file { '/usr/local/bin/create-mediadir-list.sh':
         ensure  => 'present',
         path    => '/usr/local/bin/create-mediadir-list.sh',
