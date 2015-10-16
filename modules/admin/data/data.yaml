@@ -419,6 +419,12 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/service restbase *',
                  'ALL = (restbase) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *']
+  datacenter-ops:
+    gid: 765
+    description: Group of datacenter ops engineers
+    members: []
+    privileges: ['ALL = NOPASSWD: /usr/local/sbin/install-console *']
+
 users:
   rush:
     ensure: present
