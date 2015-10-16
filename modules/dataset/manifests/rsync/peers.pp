@@ -6,11 +6,6 @@ class dataset::rsync::peers($enable=true) {
         $ensure = 'absent'
     }
 
-    system::role { 'dataset::rsync::peers':
-        ensure      => $ensure,
-        description => 'rsyncer to internal peers of dumps'
-    }
-
     include dataset::common
 
     include dataset::rsync::common

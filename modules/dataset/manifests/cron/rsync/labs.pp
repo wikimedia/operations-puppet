@@ -8,11 +8,6 @@ class dataset::cron::rsync::labs($enable=true) {
         $ensure = 'absent'
     }
 
-    system::role { 'dataset::cron::rsync::labs':
-        ensure      => $ensure,
-        description => 'rsyncer of dumps to labs fs'
-    }
-
     file { '/mnt/dumps':
         ensure => directory,
         owner  => 'root',

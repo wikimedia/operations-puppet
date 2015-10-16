@@ -9,11 +9,6 @@ class dataset::nfs($enable=true) {
         $role_ensure = 'absent'
     }
 
-    system::role { 'dataset::nfs':
-        ensure      => $role_ensure,
-        description => 'nfs server of dumps and other datasets'
-    }
-
     file { '/etc/exports':
         mode    => '0444',
         owner   => 'root',

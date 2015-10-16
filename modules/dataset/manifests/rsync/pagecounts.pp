@@ -6,11 +6,6 @@ class dataset::rsync::pagecounts($enable=true) {
         $ensure = 'absent'
     }
 
-    system::role { 'dataset::rsync::pagecounts':
-        ensure      => $ensure,
-        description => 'mirror of pagecount stats'
-    }
-
     include dataset::common
     include dataset::rsync::common
 
