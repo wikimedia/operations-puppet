@@ -307,6 +307,7 @@ node 'californium.wikimedia.org' {
 
 # DHCP / TFTP
 node 'carbon.wikimedia.org' {
+    role installserver
     $cluster = 'misc'
 
     interface::add_ip6_mapped { 'main':
@@ -314,7 +315,6 @@ node 'carbon.wikimedia.org' {
     }
 
     include standard
-    include role::installserver
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'eqiad',
