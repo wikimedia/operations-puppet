@@ -2,3 +2,6 @@ cluster: pdf
 admin::groups:
   - ocg-render-admins
 role::ocg::tmpfs_size: '32G'
+debdeploy::grains:
+  debdeploy-ocg:
+    value: standard
