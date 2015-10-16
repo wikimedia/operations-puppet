@@ -8,6 +8,17 @@ class role::snapshot::common {
     }
 }
 
+class role::snapshot {
+    include role::snapshot::common
+
+    include ::snapshot
+    include ::snapshot::dumps
+
+    system::role { 'role::snapshot':
+        description => 'producer of XML dumps',
+    }
+}
+
 class role::snapshot::cron::primary {
     include role::snapshot::common
 

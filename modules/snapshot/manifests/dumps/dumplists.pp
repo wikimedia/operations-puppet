@@ -11,11 +11,6 @@ class snapshot::dumps::dumplists(
         $ensure = 'absent'
     }
 
-    system::role { 'snapshot::dumps::dumplists':
-        ensure      => $ensure,
-        description => 'producer of daily lists of good dumps for mirrors'
-    }
-
     file { '/usr/local/bin/list-last-good-dumps.sh':
         ensure  => 'present',
         path    => '/usr/local/bin/list-last-good-dumps.sh',

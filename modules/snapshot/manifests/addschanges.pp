@@ -18,11 +18,6 @@ class snapshot::addschanges(
         enable => $enable,
     }
 
-    system::role { 'snapshot::addschanges':
-        ensure      => $ensure,
-        description => 'producer of adds-changes dumps'
-    }
-
     cron { 'adds-changes':
         ensure      => $ensure,
         environment => 'MAILTO=ops-dumps@wikimedia.org',

@@ -11,11 +11,6 @@ class snapshot::mediaperprojectlists(
         $ensure = 'absent'
     }
 
-    system::role { 'snapshot::mediaperprojectlists':
-        ensure      => $ensure,
-        description => 'producer of weekly lists of media per project'
-    }
-
     file { '/usr/local/bin/create-media-per-project-lists.sh':
         ensure  => 'present',
         path    => '/usr/local/bin/create-media-per-project-lists.sh',
