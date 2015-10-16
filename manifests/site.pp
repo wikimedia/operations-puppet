@@ -2276,10 +2276,11 @@ node 'rhenium.wikimedia.org' {
 }
 
 node 'rubidium.wikimedia.org' {
+    role spare
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    include standard
 }
 
 # ruthenium is a parsoid regression test server
