@@ -36,3 +36,6 @@ graphoid::domains:
   - wikivoyage.org
   - wiktionary.org
 
+debdeploy::grains:
+  debdeploy-sca:
+    value: standard
