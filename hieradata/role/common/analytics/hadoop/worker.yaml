@@ -3,6 +3,9 @@ cluster: analytics
 admin::groups:
   - analytics-roots
   - analytics-admins
+debdeploy::grains:
+  debdeploy-hadoop-worker:
+    value: standard
 
 # Analytics worker disks are large.  We will install a custom
 # NRPE check for them, so the base module's should ignore them.
