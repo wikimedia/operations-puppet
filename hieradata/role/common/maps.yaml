@@ -1,0 +1,13 @@
+cluster: maps
+postgresql::postgis::pgversion: 9.4
+postgresql::spatialdb::postgis_version: 2.1
+cassandra::cluster_name: maps
+cassandra::data_file_directories: [/srv/cassandra/data]
+cassandra::commitlog_directory: /srv/cassandra/commitlog
+cassandra::saved_caches_directory: /srv/cassandra/saved_caches
+admin::groups:
+  - maps-admins
+  - kartotherian-admin
+  - tilerator-admin
+service::configuration::logstash_host: logstash1001.eqiad.wmnet
+service::configuration::statsd_host: statsd.eqiad.wmnet

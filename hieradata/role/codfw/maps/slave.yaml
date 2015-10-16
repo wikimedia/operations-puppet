@@ -1,6 +1,1 @@
-postgresql::slave::pgversion: 9.4
 postgresql::slave::master_server: maps-test2001.codfw.wmnet
-postgresql::slave::datadir: /srv/postgresql/9.4/main
-postgresql::slave::includes: tuning.conf
-# Defined in the private repo
-#postgresql::slave::replication_pass: justapass
