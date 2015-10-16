@@ -976,17 +976,15 @@ node 'fermium.wikimedia.org' {
 }
 
 node 'fluorine.eqiad.wmnet' {
+    role xenon, dataset::publicdirs
     $cluster = 'misc'
 
     include standard
-    include ::role::xenon
-    include role::dataset::publicdirs
 
     class { 'role::logging::mediawiki':
         monitor       => false,
         log_directory => '/a/mw-log',
     }
-
 }
 
 # ZIM dumps (https://en.wikipedia.org/wiki/ZIM_%28file_format%29)
