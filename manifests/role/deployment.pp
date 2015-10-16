@@ -62,7 +62,7 @@ class role::deployment::server(
     }
 
     # T115075
-    ferm::service { 'deployment-ssh':
+    ferm::rule { 'deployment-ssh':
         ensure => present,
         rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
     }
