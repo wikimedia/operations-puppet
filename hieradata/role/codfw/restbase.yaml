@@ -8,3 +8,7 @@ restbase::seeds:
 
 lvs::realserver::realserver_ips:
   - '10.2.1.17' # restbase.svc.codfw.wmnet
+
+debdeploy::grains:
+  debdeploy-restbase-codfw:
+    value: standard
