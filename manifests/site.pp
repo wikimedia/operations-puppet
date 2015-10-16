@@ -874,15 +874,15 @@ node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
 
 # erbium is a webrequest udp2log host
 node 'erbium.eqiad.wmnet' {
+    role logging, logging::udp2log::erbium, logging::kafkatee::webrequest::fundraising
     include standard
-    include role::logging
 
+    # logging::udp2log::erbium :
     # gadolinium hosts the separate nginx webrequest udp2log instance.
-    include role::logging::udp2log::erbium
 
+    # logging::kafkatee::webrequest::fundraising :
     # Include kafkatee fundraising outputs alongside of udp2log
     # while FR techs verify that they can use this output.
-    include role::logging::kafkatee::webrequest::fundraising
 }
 
 # External Storage, Shard 1 (es1) databases
