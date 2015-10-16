@@ -3,7 +3,7 @@ groups:
     description: meta group for absented users
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
-              mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna]
+              mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -844,7 +844,7 @@ users:
         reedy]
     uid: 1226
   rmoen:
-    ensure: present
+    ensure: absent
     gid: 500
     name: rmoen
     realname: Rob Moen
