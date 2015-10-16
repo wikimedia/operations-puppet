@@ -258,10 +258,8 @@ node 'bast4001.wikimedia.org' {
         interface => 'eth0',
     }
 
-    role bastionhost::general
+    role bastionhost::general, ipmi, installserver::tftp-server
     include standard
-    include role::ipmi
-    include role::installserver::tftp-server
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'ulsfo',
