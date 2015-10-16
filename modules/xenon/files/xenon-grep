@@ -4,7 +4,7 @@
   xenon-grep -- analyze xenon logs
 
   usage: xenon-grep [--resolution TIME] [--entrypoint NAME]
-                    [--grep STRING] [--count COUNT]
+                    [--grep STRING] [--slice SLICE] [--count COUNT]
 
   Options:
    --resolution TIME   Which log files to analyze. May be one of 'hourly',
@@ -14,6 +14,8 @@
                        'all', 'index', 'api', or 'load'). (Default: 'all').
 
    --grep STRING       Only include stacks which include this string
+
+   --count COUNT       Show the top COUNT entries. (Default: 20).
 
    --slice SLICE       Slice of files to analyze, in Python slice notation.
                        Files are ordered from oldest to newest, so
@@ -48,9 +50,11 @@ import textwrap
 
 # Stack frames which match any of these shell-style wildcard patterns
 # are excluded from the leaderboard.
-skip_patterns = ('*BagOStuff*', '*Http::exec*', '*ObjectCache*', '/srv*',
+SKIP_PATTERNS = ('*BagOStuff*', '*Http::exec*', '*ObjectCache*', '/srv*',
                  'AutoLoader*', 'Curl*', 'Database*', 'Hooks*', 'Http::*',
                  'LoadBalancer*', 'Memcached*', 'wfGetDB*')
+RESET = '\033[0m'
+YELLOW = '\033[93m'
 
 
 def slicer(spec):
@@ -60,7 +64,7 @@ def slicer(spec):
 
 
 def should_skip(f):
-    return f.lower() == f or any(fnmatch.fnmatch(f, p) for p in skip_patterns)
+    return f.lower() == f or any(fnmatch.fnmatch(f, p) for p in SKIP_PATTERNS)
 
 
 def parse_line(line):
@@ -98,6 +102,12 @@ arg_parser.add_argument(
     choices=('hourly', 'daily', 'weekly'),
 )
 arg_parser.add_argument(
+    '--count',
+    default=20,
+    type=int,
+    help='show this many entries',
+)
+arg_parser.add_argument(
     '--entrypoint',
     choices=('all', 'index', 'api', 'load'),
     default='all',
@@ -116,13 +126,33 @@ arg_parser.add_argument(
 args = arg_parser.parse_args()
 
 glob_pattern = '/srv/xenon/logs/%(resolution)s/*.%(entrypoint)s.log'
-files = glob.glob(glob_pattern % vars(args))
-files.sort(key=os.path.getctime)
-files = args.slice(files)
-print(files)
-counter = collections.Counter(iter_funcs(files))
+file_names = glob.glob(glob_pattern % vars(args))
+file_names.sort(key=os.path.getctime)
+file_names = args.slice(file_names)
+counter = collections.Counter(iter_funcs(file_names))
 total = sum(1 for _ in counter.elements())
-for idx, (func, count) in enumerate(counter.most_common(20)):
+
+max_len = max(len(f) for f, _ in counter.most_common(args.count))
+
+desc = 'Top %d functions' % args.count
+if args.grep:
+    desc += ' in traces matching "%s"' % args.grep
+if args.entrypoint == 'all':
+    desc += ', all entry-points:'
+else:
+    desc += ', %s.php:' % args.entrypoint
+
+print(desc)
+print('-' * len(desc))
+
+for idx, (func, count) in enumerate(counter.most_common(args.count)):
     ordinal = idx + 1
     percent = 100.0 * count / total
-    print('%02d) %s (%d samples; %.2f%%)' % (ordinal, func, count, percent))
+    func = YELLOW + (('%% -%ds' % max_len) % func) + RESET
+    print('% 4d | %s |% 5.2f%%' % (ordinal, func, percent))
+
+print('-' * len(desc))
+print('Log files:')
+for f in file_names:
+    print(' - %s' % f)
+print('')
