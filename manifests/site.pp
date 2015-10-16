@@ -216,9 +216,9 @@ node 'antimony.wikimedia.org' {
 
 # irc.wikimedia.org
 node 'argon.wikimedia.org' {
+    role mw-rc-irc
     include standard
     include base::firewall
-    include role::mw-rc-irc
 }
 
 node 'baham.wikimedia.org' {
