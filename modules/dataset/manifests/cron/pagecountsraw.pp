@@ -1,7 +1,7 @@
 class dataset::cron::pagecountsraw(
     $enable = true,
-    $user   = undef,
     $source = undef,
+    $user   = 'datasets',
 ) {
 
     if ($enable) {

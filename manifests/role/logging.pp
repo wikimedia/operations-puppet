@@ -17,7 +17,7 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/srv/mw-log' )
 
     # Rsync archived slow-parse logs to dumps.wikimedia.org.
     # These are available for download at http://dumps.wikimedia.org/other/slow-parse/
-    include role::dataset::systemusers
+    include ::dataset::user
     cron { 'rsync_slow_parse':
         command     => '/usr/bin/rsync -rt /a/mw-log/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/',
         hour        => 23,

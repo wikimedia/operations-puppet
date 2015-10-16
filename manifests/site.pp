@@ -481,7 +481,7 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 
 node 'dataset1001.wikimedia.org' {
 
-    role dataset::systemusers, dataset::primary, dumps
+    role dataset::primary, dumps
     include standard
     include base::firewall
 
@@ -1807,7 +1807,7 @@ node 'multatuli.wikimedia.org' {
 node 'ms1001.wikimedia.org' {
     $cluster = 'misc'
 
-    role dataset::systemusers, dataset::secondary, dumps
+    role dataset::secondary, dumps
     include standard
     include base::firewall
 

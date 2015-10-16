@@ -1,5 +1,5 @@
 class role::snapshot::common {
-    include role::dataset::systemusers
+    include ::dataset::user
     include base::firewall
 
     # Allow SSH from deployment hosts
