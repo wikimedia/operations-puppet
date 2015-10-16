@@ -121,13 +121,3 @@ class role::dataset::systemusers {
     }
 }
 
-class role::dataset::publicdirs {
-
-    file { '/a/public-datasets':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'deployment',
-        mode   => '0775',
-    }
-
-}
