@@ -6,11 +6,6 @@ class dataset::rsync::public($enable=true) {
         $ensure = 'absent'
     }
 
-    system::role { 'dataset::rsync::public':
-        ensure      => $ensure,
-        description => 'rsyncer to the public of dumps'
-    }
-
     include dataset::common
     include dataset::rsync::common
     file { '/etc/rsyncd.d/20-rsync-dumps_to_public.conf':
