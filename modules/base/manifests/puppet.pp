@@ -7,7 +7,7 @@ class base::puppet($server='puppet', $certname=undef) {
     $freshnessinterval = $base::puppet::params::freshnessinterval
 
     package { [ 'puppet', 'facter' ]:
-        ensure  => latest,
+        ensure  => 'present',
     }
 
     # facter needs this for proper "virtual"/"is_virtual" resolution
