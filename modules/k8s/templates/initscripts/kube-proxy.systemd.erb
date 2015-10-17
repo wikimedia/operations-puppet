@@ -4,7 +4,6 @@ Description=Kubernetes Proxy
 [Service]
 ExecStart=/usr/bin/kube-proxy \
     --kubeconfig=/etc/kubernetes/kubeconfig \
-    --v=10 \
     --legacy-userspace-proxy=false \
     --masquerade-all=true
 
