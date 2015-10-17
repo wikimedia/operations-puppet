@@ -77,6 +77,14 @@ class zuul::server (
         source => 'puppet:///modules/zuul/zuul-gearman.py',
     }
 
+    file { '/usr/local/bin/zuul-test-repo':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/zuul/zuul-test-repo.py',
+    }
+
     # Additionally provide a publicly readeable configuration file
     exec { 'craft public zuul conf':
         cwd         => '/etc/zuul/',
