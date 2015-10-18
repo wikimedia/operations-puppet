@@ -64,6 +64,16 @@ define package_builder::pbuilder_base(
         creates => $cowdir,
     }
 
+    $update_command = "/usr/sbin/cowbuilder --update \
+                    --basepath \"${cowdir}\" \
+                    "
+
+    cron { "cowbuilder_update_${distribution}-${architecture}":
+        command => $update_command,
+        hour    => 7,
+        minute  => 34,
+    }
+
     if $distribution_alias {
         file { "${basepath}/base-${distribution_alias}-${architecture}.cow":
             ensure => link,
