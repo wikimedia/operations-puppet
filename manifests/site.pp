@@ -2422,21 +2422,15 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
-    include role::mediawiki::common
-    include role::db::maintenance
-    include role::peopleweb
+    role mediawiki::common, db::maintenance, peopleweb, noc, mediawiki::searchmonitor, mediawiki::maintenance, backup::host
     include misc::monitoring::jobqueue
     include scap::scripts
-    include role::noc
-    include role::mediawiki::searchmonitor
-    include role::mediawiki::maintenance
     include ldap::role::client::labs
 
     package { 'python-mysqldb':
         ensure => installed,
     }
 
-    include role::backup::host
     backup::set {'home': }
 
     # The eventlogging code is useful for scripting
