@@ -159,13 +159,10 @@ node 'analytics1026.eqiad.wmnet' {
 # (Hue, Oozie, Hive, etc.).  It also submits regularly scheduled
 # batch Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
+    role analytics::hive::server, analytics::oozie::server, analytics::hue
 
     include standard
     include base::firewall
-
-    include role::analytics::hive::server
-    include role::analytics::oozie::server
-    include role::analytics::hue
 
     # Make sure refinery happens before analytics::clients,
     # so that the hive role can properly configure Hive's
