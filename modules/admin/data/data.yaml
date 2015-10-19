@@ -179,7 +179,7 @@ groups:
               ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, tbayer, joal, ashwinpp,
               madhuvishy, tjones, legoktm, dcausse, bearloga,
-              dpatrick]
+              dpatrick, bd808]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
