@@ -1281,8 +1281,8 @@ node 'labnet1002.eqiad.wmnet' {
 
 node 'labnodepool1001.eqiad.wmnet' {
     $nagios_contact_group = 'admins,contint'
+    role nodepool
     include standard
-    include role::nodepool
     include base::firewall
 }
 
