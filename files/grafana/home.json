@@ -33,18 +33,18 @@
           "id": 2,
           "span": 6,
           "type": "dashlist",
-          "mode": "starred",
-          "title": "Starred dashboards"
+          "mode": "search",
+          "tags": [
+            "home"
+          ],
+          "title": "Featured dashboards"
         },
         {
           "id": 3,
           "span": 6,
           "type": "dashlist",
-          "mode": "search",
-          "tags": [
-            "home"
-          ],
-          "title": "Dashboards"
+          "mode": "starred",
+          "title": "Starred dashboards"
         }
       ]
     }
