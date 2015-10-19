@@ -1095,13 +1095,9 @@ node 'holmium.wikimedia.org' {
 
 # labservices1001 will be the new holmium
 node 'labservices1001.wikimedia.org' {
+    role labsdns, labsdnsrecursor, designate::server
     include standard
-
     include base::firewall
-    include role::labsdns
-    include role::labsdnsrecursor
-    include role::designate::server
-
     include ldap::role::client::labs
 }
 
