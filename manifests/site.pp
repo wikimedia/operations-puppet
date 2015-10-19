@@ -2319,8 +2319,8 @@ node 'silver.wikimedia.org' {
 }
 
 node /^(strontium|rhodium).eqiad.wmnet/ {
+    role puppetmaster::backend
     include standard
-    include role::puppetmaster::backend
 }
 
 node 'stat1001.eqiad.wmnet' {
