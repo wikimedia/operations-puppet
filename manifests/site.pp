@@ -1117,10 +1117,8 @@ node 'graphite1002.eqiad.wmnet' {
 
 # Primary graphite machines, replacing tungsten
 node 'graphite2001.codfw.wmnet' {
+    role graphite::production, statsdlb, gdash
     include standard
-    include role::graphite::production
-    include role::statsdlb
-    include role::gdash
 }
 
 node 'install2001.wikimedia.org' {
