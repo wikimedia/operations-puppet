@@ -10,10 +10,14 @@ class scap::master(
     $deployment_group   = 'wikidev',
 ) {
     include scap::scripts
+    include scap::dsh
     include rsync::server
     include network::constants
-    include dsh
     include mediawiki::scap
+
+    package { 'dsh':
+        ensure => present,
+    }
 
     git::clone { 'operations/mediawiki-config':
         directory => $common_source_path,
