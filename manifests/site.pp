@@ -2226,7 +2226,7 @@ node /pc100[1-3]\.eqiad\.wmnet/ {
 
 # virtual machine hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
 node 'planet1001.eqiad.wmnet' {
-    include role::planet
+    role planet
 }
 
 # LDAP servers relied on by OIT for mail
