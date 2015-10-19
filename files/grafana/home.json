@@ -20,7 +20,7 @@
           "type": "text",
           "transparent": true,
           "mode": "html",
-          "content": "<h1 style=\"font-weight: normal; color: #555;\">Wikimedia Operations Performance Metrics<img src=\"//upload.wikimedia.org/wikipedia/commons/8/81/Wikimedia-logo.svg\" alt=\"Wikimedia logo\" style=\"float: left; width: 40px; margin-right: 10px; position: relative; top: 2px;\"></h1>",
+          "content": "<h1 style=\"font-weight: normal; color: #555;\">Wikimedia Metrics<img src=\"//upload.wikimedia.org/wikipedia/commons/8/81/Wikimedia-logo.svg\" alt=\"Wikimedia logo\" style=\"float: left; width: 40px; margin-right: 10px; position: relative; top: 2px;\"></h1>",
           "style": {},
           "title": ""
         }
@@ -41,6 +41,9 @@
           "span": 6,
           "type": "dashlist",
           "mode": "search",
+          "tags": [
+            "home"
+          ],
           "title": "Dashboards"
         }
       ]
