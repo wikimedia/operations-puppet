@@ -6,6 +6,7 @@ class role::annualreport {
     system::role { 'role::annualreport': description => 'WMF Annual report server - annual.wikimedia.org' }
 
     include ::annualreport
+    include base::firewall
 
     ferm::service { 'annualreport_http':
         proto => 'tcp',
