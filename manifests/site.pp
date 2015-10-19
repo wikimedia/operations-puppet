@@ -2266,9 +2266,11 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
 
 # Tor relay
 node 'radium.wikimedia.org' {
+    role tor
+
     include base::firewall
     include standard
-    include role::tor
+    include base::debdeploy
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
