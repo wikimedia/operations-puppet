@@ -1064,11 +1064,10 @@ node 'hafnium.wikimedia.org' {
 
 # poolcounter - careful
 node 'helium.eqiad.wmnet' {
+    role poolcounter, backup::director, backup::storage
+
     include standard
     include base::firewall
-    include role::poolcounter
-    include role::backup::director
-    include role::backup::storage
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
