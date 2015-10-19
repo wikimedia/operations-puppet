@@ -2148,24 +2148,19 @@ node 'nescio.wikimedia.org' {
 
 # network monitoring tool server
 node 'netmon1001.wikimedia.org' {
+    role rancid, librenms, servermon, torrus
     include standard
     include webserver::apache
-    include role::rancid
     include smokeping
     include smokeping::web
-    include role::librenms
     include passwords::network
     include ganglia::deprecated::collector
-    include role::servermon
-    include role::torrus
 
     interface::add_ip6_mapped { 'main': }
 
     class { 'ganglia::monitor::aggregator':
         sites => ['eqiad', 'codfw'],
     }
-
-
 }
 
 node 'nitrogen.wikimedia.org' {
