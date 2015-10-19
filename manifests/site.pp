@@ -2260,7 +2260,7 @@ node 'palladium.eqiad.wmnet' {
 
 # parser cache databases
 node /pc100[1-3]\.eqiad\.wmnet/ {
-    include role::mariadb::parsercache
+    role mariadb::parsercache
 }
 
 # virtual machine hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
