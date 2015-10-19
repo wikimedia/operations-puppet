@@ -2272,8 +2272,8 @@ node 'planet1001.eqiad.wmnet' {
 node /(plutonium|pollux)\.wikimedia\.org/ {
     $cluster = 'openldap_corp_mirror'
 
+    role openldap::corp
     include standard
-    include role::openldap::corp
     include base::firewall
 }
 
