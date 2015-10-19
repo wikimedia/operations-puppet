@@ -66,7 +66,7 @@ define package_builder::pbuilder_base(
 
     $update_command = "/usr/sbin/cowbuilder --update \
                     --basepath \"${cowdir}\" \
-                    "
+                    >/dev/null 2>&1"
 
     cron { "cowbuilder_update_${distribution}-${architecture}":
         command => $update_command,
