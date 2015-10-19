@@ -1288,8 +1288,8 @@ node 'labmon1001.eqiad.wmnet' {
 node 'labnet1001.eqiad.wmnet' {
     $use_neutron = false
 
+    role nova::api
     include standard
-    include role::nova::api
 
     if $use_neutron == true {
         #include role::neutron::nethost
