@@ -1234,11 +1234,10 @@ node 'labcontrol2001.wikimedia.org' {
     #$is_labs_puppet_master = true
     #$use_neutron           = false
 
+    role dns::ldap, salt::masters::labs
     include standard
     include base::firewall
-    include role::dns::ldap
     include ldap::role::client::labs
-    include role::salt::masters::labs
 
     #include role::nova::controller
     #include role::nova::manager
