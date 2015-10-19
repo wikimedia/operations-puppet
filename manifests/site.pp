@@ -1390,10 +1390,8 @@ node 'lead.wikimedia.org' {
 }
 
 node 'lithium.eqiad.wmnet' {
-
+    role backup::host, syslog::centralserver
     include standard
-    include role::backup::host
-    include role::syslog::centralserver
     include base::firewall
 }
 
