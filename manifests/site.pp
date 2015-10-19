@@ -773,7 +773,7 @@ node 'db1069.eqiad.wmnet' {
 }
 
 node 'db1011.eqiad.wmnet' {
-    include role::mariadb::tendril
+    role mariadb::tendril
 }
 
 # codfw db
