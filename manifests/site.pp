@@ -782,7 +782,7 @@ node 'dbstore1001.eqiad.wmnet' {
 }
 
 node 'dbstore1002.eqiad.wmnet' {
-    include role::mariadb::dbstore
+    role mariadb::dbstore
 }
 
 node 'dbstore2001.codfw.wmnet' {
@@ -800,7 +800,7 @@ node 'dbstore2001.codfw.wmnet' {
 
 node 'dbstore2002.codfw.wmnet' {
     $cluster = 'mysql'
-    include role::mariadb::dbstore
+    role mariadb::dbstore
     include base::firewall
 }
 
