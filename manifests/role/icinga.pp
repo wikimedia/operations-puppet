@@ -23,7 +23,7 @@ class role::icinga(
     include lvs::monitor
     include role::authdns::monitoring
     include network::checks
-    include dsh::config
+    include scap::dsh
     include mysql
     include icinga::gsbmonitoring
     include nrpe
