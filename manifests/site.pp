@@ -2365,7 +2365,7 @@ node 'rubidium.wikimedia.org' {
 # ruthenium is a parsoid regression test server
 # https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
 node 'ruthenium.eqiad.wmnet' {
-    include standard
+    role testsystem
 }
 
 node /^sca100[12]\.eqiad\.wmnet$/ {
