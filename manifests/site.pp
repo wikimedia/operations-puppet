@@ -2338,11 +2338,9 @@ node /^scb100[12]\.eqiad\.wmnet$/ {
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
+    role nova::manager, mariadb::wikitech
     include base::firewall
-
     include standard
-    include role::nova::manager
-    include role::mariadb::wikitech
 
     interface::add_ip6_mapped { 'main': }
 }
