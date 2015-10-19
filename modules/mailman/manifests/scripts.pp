@@ -40,4 +40,13 @@ class mailman::scripts {
         mode   => '0550',
         source => 'puppet:///modules/mailman/scripts/rename_list.sh'
     }
+
+    file { '/usr/local/sbin/queue_data':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman/scripts/queue_data.sh'
+    }
+
 }
