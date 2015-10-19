@@ -59,6 +59,9 @@ class mediawiki::users(
             'ALL = (root) NOPASSWD: /usr/sbin/service apache2 start',
             'ALL = (root) NOPASSWD: /sbin/start hhvm',
             'ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful-stop',
+            # Allow rsync of common module to mediawiki-staging as GID=wikidev
+            # This is for master-master sync of /srv/mediawiki-staging
+            'ALL = (mwdeploy:wikidev) NOPASSWD: /usr/bin/rsync *\:\:common /srv/mediawiki-staging',
         ]
     }
 
