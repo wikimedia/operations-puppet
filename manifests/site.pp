@@ -1169,7 +1169,7 @@ node 'iridium.eqiad.wmnet' {
         interface => 'eth0',
     }
     include base::firewall
-    role phabricator::main
+    role phabricator::main, ntp, diamond
     include standard
     include ganglia
 }
