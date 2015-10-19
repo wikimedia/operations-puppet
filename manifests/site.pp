@@ -1213,11 +1213,9 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 
 # virtual machine for misc. PHP apps
 node 'krypton.eqiad.wmnet' {
+    role wikimania_scholarships, iegreview, grafana
     include standard
     include base::firewall
-    include role::wikimania_scholarships
-    include role::iegreview
-    include role::grafana
 }
 
 node 'labcontrol1001.wikimedia.org' {
