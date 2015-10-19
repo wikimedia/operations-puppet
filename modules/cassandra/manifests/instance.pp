@@ -62,6 +62,10 @@ define cassandra::instance(
         $tls_hostname        = $hostname
         $pid_file            = '/var/run/cassandra/cassandra.pid'
         $instance_id         = $hostname
+        $data_file_directories  = $this_instance['data_file_directories']
+        $commitlog_directory    = $this_instance['commitlog_directory']
+        $heapdump_directory     = $this_instance['heapdump_directory']
+        $saved_caches_directory = $this_instance['saved_caches_directory']
     } else {
         $data_directory_base = "/srv/cassandra-${instance_name}"
         $config_directory    = "/etc/cassandra-${instance_name}"
@@ -69,12 +73,12 @@ define cassandra::instance(
         $tls_hostname        = "${hostname}-${instance_name}"
         $pid_file            = "/var/run/cassandra/cassandra-${instance_name}.pid"
         $instance_id         = "${hostname}-${instance_name}"
+        $data_file_directories  = ["${data_directory_base}/data"]
+        $commitlog_directory    = "${data_directory_base}/commitlog"
+        $heapdump_directory     = $data_directory_base
+        $saved_caches_directory = "${data_directory_base}/saved_caches"
     }
 
-    $data_file_directories  = ["${data_directory_base}/data"]
-    $commitlog_directory    = "${data_directory_base}/commitlog"
-    $heapdump_directory     = "${data_directory_base}/"
-    $saved_caches_directory = "${data_directory_base}/saved_caches"
     $tls_cluster_name       = $::cassandra::tls_cluster_name
     $application_username   = $::cassandra::application_username
 
