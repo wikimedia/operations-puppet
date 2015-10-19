@@ -2247,15 +2247,9 @@ node 'oxygen.eqiad.wmnet'
 
 # primary puppet master
 node 'palladium.eqiad.wmnet' {
+    role ipmi, salt::masters::production, deployment::salt_masters, access_new_install, puppetmaster::frontend, pybal_config, debdeploymaster
     include standard
-    include role::ipmi
-    include role::salt::masters::production
-    include role::deployment::salt_masters
-    include role::access_new_install
-    include role::puppetmaster::frontend
-    include role::pybal_config
     include role::conftool::master
-    include role::debdeploymaster
 }
 
 # parser cache databases
