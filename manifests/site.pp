@@ -1038,11 +1038,10 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 # Hosts visualization / monitoring of EventLogging event streams
 # and MediaWiki errors.
 node 'hafnium.wikimedia.org' {
-    role eventlogging
+    role eventlogging, webperf
 
     include standard
     include base::firewall
-    include role::webperf
 }
 
 # poolcounter - careful
