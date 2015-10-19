@@ -1147,7 +1147,6 @@ node 'iridium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    include base::firewall
     role phabricator::main
     include standard
     include ganglia
