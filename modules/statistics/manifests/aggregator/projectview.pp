@@ -22,7 +22,7 @@ class statistics::aggregator::projectview {
     # parameter when the cdh::hadoop::mount class is evaluated.
     # I am not sure why this is not working.
     $hdfs_mount_point = '/mnt/hdfs'
-    $hdfs_source_path = "${hdfs_mount_point}/wmf/data/archive/projectview/webstatcollector/hourly"
+    $hdfs_source_path = "${hdfs_mount_point}/wmf/data/archive/projectview/legacy/hourly"
     $user             = $::statistics::user::username
     $group            = $::statistics::user::username
 
@@ -54,8 +54,9 @@ class statistics::aggregator::projectview {
 
     # Cron for doing the basic aggregation step itself
     # Note that the --all-projects flag is set to compute aggregates across all projects.
+    # Note that the --output-projectviews flag is set to use input files that look like pageviews-*
     cron { 'aggregator projectview aggregate':
-        command => "log_file=\"${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log\" && ${script_path}/bin/aggregate_projectcounts --source ${hdfs_source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --all-projects --push-target --log \${log_file} 2>> \${log_file}",
+        command => "log_file=\"${log_path}/`date +\\%Y-\\%m-\\%d--\\%H-\\%M-\\%S`.log\" && ${script_path}/bin/aggregate_projectcounts --source ${hdfs_source_path} --target ${data_path} --first-date=`date --date='-8 day' +\\%Y-\\%m-\\%d` --last-date=`date --date='-1 day' +\\%Y-\\%m-\\%d` --all-projects --output-projectviews --push-target --log \${log_file} 2>> \${log_file}",
         user    => $user,
         hour    => '13',
         minute  => '0',
