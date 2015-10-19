@@ -4,9 +4,8 @@
 # setting up dsh. Useful primarily for monitoring and deploy servers.
 #
 # == Paramters:
-# [*group_source*]
-#   Puppet file source for /etc/dsh/group.
-#   Default 'puppet:///modules/dsh/group'
+# [*mediawiki_installation*]
+#   List of FQDNs for servers to be used as mediawiki installs. Default []
 #
 # [*scap_proxies*]
 #   List of FQDNs for servers to be used as scap rsync proxies. Default []
@@ -15,7 +14,7 @@
 #   List of FQDNs for servers to be used as scap masters. Default []
 #
 class scap::dsh (
-    $group_source = 'puppet:///modules/scap/dsh/group',
+    $mediawiki_installation = [],
     $scap_proxies = [],
     $scap_masters = [],
 ){
@@ -26,11 +25,17 @@ class scap::dsh (
         mode   => '0444',
     }
     file { '/etc/dsh/group':
+        ensure  => directory,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => $group_source,
-        recurse => true,
+    }
+
+    file { '/etc/dsh/group/mediawiki-installation':
+        content => join($mediawiki_installation, "\n"),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
     }
 
     file { '/etc/dsh/group/scap-proxies':
