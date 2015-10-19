@@ -74,7 +74,7 @@ groups:
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis,
               addshore, jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
-              vbaranetsky]
+              vbaranetsky, atgomez]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -179,7 +179,7 @@ groups:
               ironholds, kleduc, ellery, nettrom, mforns,
               spage, bmansurov, tbayer, joal, ashwinpp,
               madhuvishy, tjones, legoktm, dcausse, bearloga,
-              dpatrick]
+              dpatrick, atgomez]
   statistics-users:
     gid: 726
     description: Access hosts with a mysql client for research. NO PRIVS.
@@ -189,7 +189,7 @@ groups:
               dbrant, tgr, dr0ptp4kt, brion, bsitzmann,
               deskana, jzerebecki, dduvall, nettrom, mforns, jkatz, ebernhardson,
               mlitn, tbayer, joal, tomasz, kartik, nikerabbit, pcoombe, madhuvishy,
-              neilpquinn-wmf, maxsem, jminor, dpatrick]
+              neilpquinn-wmf, maxsem, jminor, dpatrick, atgomez]
   statistics-admins:
     posix_name: stats
     description: access files created by stats user cron jobs
@@ -1673,3 +1673,10 @@ users:
     realname: D. Victoria Baranetsky
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXDLLO7xO3ORplUgyymQvLJZ7WB2FExGHjlxTKOSRwFGVPdAqbjAZVy84y+1+jAdbkwtMYtM+NaEZQ0iXsdCU6oY9mCoolJSc5LlvWv2I6mN2m9PW/2m2CH7wLaKlrv/a4flA07T4ZZwzPYXaqzCpNAOQzoOAwCoNuBBSz27Vocoqw3tNYo/7dxzTdq3EB+MeJFxQzCqK0LZe9DMfkImHNCwEWS+11JxZyfN752n+v5RBWjP4jGz5pRPN4gM0bOeYTyMHtzUR/+cWsSLx3I55ZmZ3FvYRVa7ALTKbqvmYm5il5rVbg7ViLLud1NbKrJPewJPGC5BJWB43khMiiQurB vbaranetsky@AdminisorsAir24.corp.wikimedia.org]
     uid: 13214
+  atgomez:
+    ensure: present
+    gid: 500
+    name: atgomez
+    realname: Anne Gomez
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+rFSx3I00yhYMJzgg3IthAqLBEnE9nab3DF9l+QKT2pWFQP7adRDOz5FqI5nPKNrTl122q8xm4qErbXLb07momy2gFYCGNTtCTiyV4z7+Ckmvqc42FKJ3qjzAI2BFsBK/2A9RAdXDgbkmd7nyiEIEhL1r+rdL2W0VYa1exhMjeXme8ckfYDpCxcWtHz4+4OXe6tO+K4SVfzlhfqMrQCzBRRaIrjhvV1WrxNddPS2+CWQ03v/2l6RSjftc2ibzKiq1uvtrN99Hi6OYt9j6pUsXaG/z0WpLuT5ekaxyeKcEHwFMI32zn6+Pw/kRCGBFA9rOKdtYpQYarFsZsM43MVP9 agomez@Annes-MacBook-Air-2.local]
+    uid: 4891
