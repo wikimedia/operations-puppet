@@ -2290,7 +2290,7 @@ node 'protactinium.wikimedia.org' {
 
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[123]\.codfw\.wmnet$/ {
-    include standard
+    role testsystem
 }
 
 # Tor relay
