@@ -2480,10 +2480,9 @@ node /^snapshot100[1-4]\.eqiad\.wmnet/ {
 
 # codfw poolcounters
 node /(subra|suhail)\.codfw\.wmnet/ {
-
+    role poolcounter
     include standard
     include base::firewall
-    include role::poolcounter
 }
 
 # https://wikitech.wikimedia.org/wiki/Terbium
