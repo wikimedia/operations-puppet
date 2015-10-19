@@ -1124,13 +1124,8 @@ node 'hooft.esams.wikimedia.org' {
 
 # Primary graphite machines, replacing tungsten
 node 'graphite1001.eqiad.wmnet' {
+    role graphite::production, statsdlb, gdash, performance, graphite::production::alerts, restbase::alerts
     include standard
-    include role::graphite::production
-    include role::statsdlb
-    include role::gdash
-    include role::performance
-    include role::graphite::production::alerts
-    include role::restbase::alerts
 }
 
 # graphite test machine, currently with SSD caching + spinning disks
