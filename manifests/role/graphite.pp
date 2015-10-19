@@ -49,34 +49,38 @@ class role::graphite::base(
         storage_aggregation => {
             'min'   => {
                 pattern           => '\.min$',
-                xFilesFactor      => 0.1,
+                xFilesFactor      => 0.0,
                 aggregationMethod => 'min',
             },
             'max'   => {
                 pattern           => '\.max$',
-                xFilesFactor      => 0.1,
+                xFilesFactor      => 0.0,
                 aggregationMethod => 'max',
             },
             'count'   => {
                 pattern           => '\.count$',
-                xFilesFactor      => 0,
+                xFilesFactor      => 0.0,
                 aggregationMethod => 'sum',
             },
             'sum'   => {
                 pattern           => '\.sum$',
-                xFilesFactor      => 0,
+                xFilesFactor      => 0.0,
                 aggregationMethod => 'sum',
             },
             # statsite extended counters
             'lower' => {
                 pattern           => '\.lower$',
-                xFilesFactor      => 0.1,
+                xFilesFactor      => 0.0,
                 aggregationMethod => 'min',
             },
             'upper' => {
                 pattern           => '\.upper$',
-                xFilesFactor      => 0.1,
+                xFilesFactor      => 0.0,
                 aggregationMethod => 'max',
+            },
+            'default' => {
+                pattern           => '.*',
+                xFilesFactor      => 0.0,
             },
         },
 
