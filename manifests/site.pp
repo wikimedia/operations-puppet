@@ -1112,10 +1112,9 @@ node 'hooft.esams.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role bastionhost::general
+    role bastionhost::general, installserver::tftp-server
 
     include standard
-    include role::installserver::tftp-server
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'esams',
