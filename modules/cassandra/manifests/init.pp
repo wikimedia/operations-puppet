@@ -383,9 +383,13 @@ class cassandra(
     } else {
         $default_instances = {
             'default' => {
-                'jmx_port'       => $jmx_port,
-                'listen_address' => $listen_address,
-                'rpc_address'    => $rpc_address,
+                'jmx_port'               => $jmx_port,
+                'listen_address'         => $listen_address,
+                'rpc_address'            => $rpc_address,
+                'data_file_directories'  => $data_file_directories,
+                'commitlog_directory'    => $commitlog_directory,
+                'heapdump_directory'     => $heapdump_directory,
+                'saved_caches_directory' => $saved_caches_directory,
         }}
         cassandra::instance{ 'default':
             instances => $default_instances,
