@@ -2231,8 +2231,8 @@ node 'polonium.wikimedia.org' {
 
 # careful when moving poolcounters
 node 'potassium.eqiad.wmnet' {
+    role poolcounter
     include standard
-    include role::poolcounter
 }
 
 # protactinium was being used as an emergency gadolinium replacement.
