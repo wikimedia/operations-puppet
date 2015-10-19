@@ -41,6 +41,9 @@
           "span": 6,
           "type": "dashlist",
           "mode": "search",
+          "tags": [
+            "homelist"
+          ],
           "title": "Dashboards"
         }
       ]
