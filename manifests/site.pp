@@ -1129,6 +1129,7 @@ node 'graphite2001.codfw.wmnet' {
 }
 
 node 'install2001.wikimedia.org' {
+    role installserver::tftp-server
     $cluster = 'misc'
     $ganglia_aggregator = true
 
@@ -1137,7 +1138,6 @@ node 'install2001.wikimedia.org' {
     }
 
     include standard
-    include role::installserver::tftp-server
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'codfw',
