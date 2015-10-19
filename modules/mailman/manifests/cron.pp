@@ -9,5 +9,13 @@ class mailman::cron {
         minute  => '0',
     }
 
+    # temporary cron for statistics on queue data
+    cron { 'queue_data':
+        ensure  => 'present',
+        command => "/usr/local/sbin/queue_data -a >> /var/www/qdata.html",
+        user    => 'root',
+        minute  => '2',
+    }
+
 }
 
