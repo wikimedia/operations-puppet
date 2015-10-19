@@ -45,7 +45,7 @@ class role::mediawiki::common {
             normal_check_interval => 60,
         }
     }
-    $scap_proxies = hiera('dsh::config::scap_proxies',[])
+    $scap_proxies = hiera('scap::dsh::scap_proxies',[])
     if member($scap_proxies, $::fqdn) {
         include scap::proxy
 
