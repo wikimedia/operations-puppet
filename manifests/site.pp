@@ -1075,8 +1075,8 @@ node 'helium.eqiad.wmnet' {
 
 # Bacula storage
 node 'heze.codfw.wmnet' {
+    role backup::storage
     include standard
-    include role::backup::storage
     include base::firewall
 }
 
