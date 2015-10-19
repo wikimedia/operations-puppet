@@ -266,6 +266,7 @@ class role::backup::director {
 
 class role::backup::storage() {
     include role::backup::config
+    include base::firewall
 
     system::role { 'role::backup::storage': description => 'Backup Storage' }
 
