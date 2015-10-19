@@ -4,11 +4,11 @@ class smokeping {
     include config
 
     package { 'smokeping':
-        ensure => latest;
+        ensure => present;
     }
 
     package { 'curl':
-        ensure => latest;
+        ensure => present;
     }
 
     service { 'smokeping':
