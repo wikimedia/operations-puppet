@@ -1882,13 +1882,12 @@ node 'ms1002.eqiad.wmnet' {
 # new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
 # rate limiting purposes (T66622)
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
-    role swift::proxy
+    role swift::proxy, diamond
 
     if $::hostname == 'ms-fe1001' {
         include role::swift::stats_reporter
     }
 
-    include role::diamond
     include ::lvs::realserver
 }
 
