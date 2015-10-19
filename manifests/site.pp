@@ -1192,11 +1192,8 @@ node 'iron.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role bastionhost::opsonly
-
+    role bastionhost::opsonly, ipmi, access_new_install
     include standard
-    include role::ipmi
-    include role::access_new_install
 }
 
 # Analytics Kafka Brokers
