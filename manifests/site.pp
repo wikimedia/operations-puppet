@@ -868,7 +868,7 @@ node 'eeden.wikimedia.org' {
 }
 
 node 'einsteinium.eqiad.wmnet' {
-    include standard
+    role testsystem
     system::role { 'Titan test host': }
 }
 
