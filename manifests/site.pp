@@ -2527,8 +2527,8 @@ node 'titanium.wikimedia.org' {
 node 'uranium.wikimedia.org' {
     $ganglia_aggregator = true
 
+    role ganglia::web
     include standard
-    include role::ganglia::web
     include misc::monitoring::views
     include base::firewall
 
