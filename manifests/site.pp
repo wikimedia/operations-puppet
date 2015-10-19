@@ -2547,9 +2547,8 @@ node 'uranium.wikimedia.org' {
 }
 
 node /^virt100[5-7].eqiad.wmnet/ {
-    # We're doing some ceph testing on these
-    #  boxes.
-    include standard
+    # We're doing some ceph testing on these boxes.
+    role testsystem
 }
 
 node /^virt100[1-4].eqiad.wmnet/ {
