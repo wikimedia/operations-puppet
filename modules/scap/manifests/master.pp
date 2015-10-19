@@ -37,4 +37,13 @@ class scap::master(
     class { 'scap::l10nupdate':
         deployment_group => $deployment_group,
     }
+
+    # Allow rsync of common module to mediawiki-staging as GID=wikidev
+    # This is for master-master sync of /srv/mediawiki-staging
+    sudo::user { 'scap-master-sync':
+        user       => 'mwdeploy',
+        privileges => [
+            'ALL = (mwdeploy:wikidev) NOPASSWD: /usr/bin/rsync *\:\:common /srv/mediawiki-staging',
+        ]
+    }
 }
