@@ -2382,8 +2382,6 @@ node 'stat1002.eqiad.wmnet' {
 # query results for further processing on this node.
 node 'stat1003.eqiad.wmnet' {
     role statistics::cruncher
-    include standard
-    include base::firewall
 
     include passwords::mysql::research
     # This file will render at
