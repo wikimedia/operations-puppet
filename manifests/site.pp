@@ -240,7 +240,6 @@ node 'bast1001.wikimedia.org' {
     role bastionhost::general
 
     include standard
-    include dsh
 }
 
 # Bastion in Texas
