@@ -220,11 +220,12 @@ node 'argon.wikimedia.org' {
 }
 
 node 'baham.wikimedia.org' {
+    role authdns::server
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
     include standard
-    include role::authdns::server
 }
 
 # Bastion in Virginia
@@ -845,11 +846,12 @@ node 'dbproxy1004.eqiad.wmnet' {
 }
 
 node 'eeden.wikimedia.org' {
+    role authdns::server
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
     include standard
-    include role::authdns::server
 }
 
 node 'einsteinium.eqiad.wmnet' {
@@ -2247,11 +2249,12 @@ node 'radium.wikimedia.org' {
 }
 
 node 'radon.wikimedia.org' {
+    role authdns::server
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
     include standard
-    include role::authdns::server
 }
 
 # Live Recent Changes WebSocket stream
