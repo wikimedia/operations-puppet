@@ -1170,8 +1170,6 @@ node 'iridium.eqiad.wmnet' {
     role phabricator::main
     include standard
     include ganglia
-    include role::ntp
-    include role::diamond
 }
 
 node 'iron.wikimedia.org' {
@@ -1870,7 +1868,6 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
         include role::swift::stats_reporter
     }
 
-    include role::diamond
     include ::lvs::realserver
 }
 
