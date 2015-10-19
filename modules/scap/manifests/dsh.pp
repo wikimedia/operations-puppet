@@ -1,9 +1,9 @@
-# == Class dsh::config
+# == Class scap::dsh
 #
 # Sets up dsh config files alone, without actually
 # setting up dsh. Useful primarily for monitoring
-class dsh::config (
-    $group_source = 'puppet:///modules/dsh/group',
+class scap::dsh (
+    $group_source = 'puppet:///modules/scap/dsh/group',
     $scap_proxies = [],
 ){
     file { '/etc/dsh':
@@ -31,6 +31,6 @@ class dsh::config (
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/dsh/dsh.conf',
+        source => 'puppet:///modules/scap/dsh/dsh.conf',
     }
 }
