@@ -202,4 +202,11 @@ class role::cache::misc {
             varnish_svc_name => 'varnish',
         }
     }
+
+    # Parse varnishlogs for request statistics and send to statsd via diamond.
+    varnish::monitoring::varnishreqstats { 'Misc':
+        instance_name => 'frontend',
+        metric_path   => "varnish.${::site}.misc.frontend.request",
+        require       => Varnish::Instance['misc'],
+    }
 }
