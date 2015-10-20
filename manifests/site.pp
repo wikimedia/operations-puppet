@@ -295,8 +295,7 @@ node 'caesium.eqiad.wmnet' {
 # T83044 cameras
 node 'calcium.wikimedia.org' {
     $cluster = 'misc'
-
-    include standard
+    role testsystem
     include base::firewall
 }
 
