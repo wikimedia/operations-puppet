@@ -565,9 +565,16 @@ node /^db20(16|34|42|48)\.codfw\.wmnet/ {
     include base::firewall
 }
 
-node /^db10(18|21|36|54|60|63|67)\.eqiad\.wmnet/ {
+node /^db10(21|36|54|60|63|67)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's2',
+    }
+}
+
+node /^db1018\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 's2',
+        p_s   => 'on',
     }
 }
 
