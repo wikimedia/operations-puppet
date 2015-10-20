@@ -3,9 +3,12 @@
 # Provision a trebuchet deployment server.
 #
 # == Parameters:
-# - $deployer_groups: Array of unix groups to add to the trebuchet user
+# - $deployment_group: Default value for group ownership of any trebuchet-
+#                      deployed repositories
 #
-class deployment::deployment_server($deployer_groups=[]) {
+class deployment::deployment_server(
+    $deployment_group = undef,
+) {
     include ::redis::client::python
 
     ensure_packages([
@@ -34,11 +37,10 @@ class deployment::deployment_server($deployer_groups=[]) {
     }
 
     file { '/srv/patches':
-      ensure   => 'directory',
-      owner    => 'root',
-      group    => $deployer_groups[0],  # FIXME: why is this even an array?
-                                        # in practice it's always ['wikidev']
-      mode     => '0775',
+        ensure => 'directory',
+        owner  => 'root',
+        group  => $deployment_group,
+        mode   => '0775',
     }
 
     if $::realm != 'labs' {
@@ -52,9 +54,8 @@ class deployment::deployment_server($deployer_groups=[]) {
       user { 'trebuchet':
           shell      => '/bin/false',
           home       => '/nonexistent',
-          managehome => true,
+          managehome => false,
           gid        => 'trebuchet',
-          groups     => $deployer_groups,
           system     => true,
       }
     }
@@ -73,7 +74,7 @@ class deployment::deployment_server($deployer_groups=[]) {
 
     salt::grain { 'deployment_repo_group':
         grain   => 'deployment_repo_group',
-        value   => $deployer_groups[0],
+        value   => $deployment_group,
         replace => true,
     }
 

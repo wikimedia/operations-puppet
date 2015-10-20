@@ -14,7 +14,7 @@ class role::deployment::server(
     include role::deployment::services
 
     class { 'deployment::deployment_server':
-        deployer_groups => [$deployment_group],
+        deployment_group => $deployment_group,
     }
 
     # set umask for wikidev users so that newly-created files are g+w
