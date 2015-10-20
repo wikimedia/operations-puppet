@@ -163,6 +163,14 @@ class role::logstash (
         increment       => [ '%{level}' ],
     }
 
+    logstash::output::statsd { 'Apache2_channel_rate':
+        host            => $statsd_host,
+        guard_condition => '[type] == "apache2" and "syslog" in [tags]',
+        namespace       => 'logstash.rate',
+        sender          => 'apache2',
+        increment       => [ '%{level}' ],
+    }
+
     ## Firewalling
     $logstash_nodes = hiera('logstash::cluster_hosts')
     $logstash_nodes_ferm = join($logstash_nodes, ' ')
