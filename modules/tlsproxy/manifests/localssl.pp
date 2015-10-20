@@ -10,10 +10,17 @@
 #   List of server aliases, host names also served.
 #
 # [*certs*]
-#   Required - Array of certs, normally just one.  If more than one, special
+#   Optional - specify either this or acme_subjects.
+#   Array of certs, normally just one.  If more than one, special
 #   patched nginx support is required, and the OCSP/Issuer/Subject/SAN info
 #   should be identical in all certs.  This is intended to support duplicate
 #   keys with differing crypto (e.g. ECDSA + RSA).
+#
+# [*acme_subjects*]
+#   Optional - specify either this or certs.
+#   Array of certificate subjects, beginning with the canonical one - the rest
+#   will be listed as Subject Alternative Names.
+#   There should be no more than 100 entries in this.
 #
 # [*upstream_port*]
 #   TCP port to proxy to. Defaults to '80'
@@ -34,7 +41,8 @@
 #   keep it up to date.
 
 define tlsproxy::localssl(
-    $certs,
+    $certs          = [],
+    $acme_subjects  = [],
     $server_name    = $::fqdn,
     $server_aliases = [],
     $default_server = false,
@@ -43,6 +51,10 @@ define tlsproxy::localssl(
     $do_ocsp        = false,
     $skip_private   = false,
 ) {
+    if (!empty($certs) and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects)) {
+        fail('Specify either certs or acme_subjects, not both and not neither.')
+    }
+
     require tlsproxy::instance
 
     $varnish_version4 = hiera('varnish_version4', false)
@@ -61,8 +73,16 @@ define tlsproxy::localssl(
         }
     }
 
-    sslcert::certificate { $certs:
-        skip_private => $skip_private,
+    if $certs {
+        sslcert::certificate { $certs:
+            skip_private => $skip_private,
+        }
+    } elsif $acme_subjects {
+        letsencrypt::cert::integrated { $server_name:
+            subjects   => join($acme_subjects, ','),
+            puppet_svc => 'nginx',
+            system_svc => 'nginx',
+        }
     }
 
     if $do_ocsp {
