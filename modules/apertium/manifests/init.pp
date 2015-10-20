@@ -56,6 +56,8 @@ class apertium(
         'apertium-hbs-slv',
         'apertium-id-ms',
         'apertium-is-sv',
+        'apertium-isl',
+        'apertium-isl-eng',
         'apertium-kaz',
         'apertium-kaz-tat',
         'apertium-lex-tools',
