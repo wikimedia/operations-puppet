@@ -1,0 +1,49 @@
+[general]
+logdir=/var/log/burrow
+logconfig=<%= @config_dir %>/burrow.cfg
+pidfile=burrow.pid
+client-id=<%= @client_id %>
+group-blacklist=^(console-consumer-|python-kafka-consumer-).*$
+
+[zookeeper]
+<% @zk_hosts.each do |host| -%>
+    hostname=<%= host %>
+<% end -%>
+port=2181
+timeout=6
+lock-path=/etc/burrow/notifier
+
+[kafka "<%= @kafka_cluster_name %>"]
+<% @kafka_hosts.each do |host| -%>
+    hostname=<%= host %>
+<% end -%>
+broker-port=9092
+<% @zk_hosts.each do |host| -%>
+    hostname=<%= host %>
+<% end -%>
+zookeeper-port=2181
+zookeeper-path=/<%= @zk_path %>
+offsets-topic=__consumer_offsets
+
+[tickers]
+broker-offsets=60
+
+[lagcheck]
+intervals=10
+expire-group=604800
+
+[httpserver]
+server=on
+port=8000
+
+[smtp]
+server=<%= @smtp_server %>
+port=25
+from=<%= @from_email %>
+template=/etc/config/default-email.tmpl
+
+[email "<%= @to_emails %>"]
+<% @consumer_groups.each do |group| -%>
+    group=<%= @kafka_cluster_name %>,<%= @group %>
+<% end -%>
+interval=120
