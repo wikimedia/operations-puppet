@@ -20,7 +20,7 @@
           "type": "text",
           "transparent": true,
           "mode": "html",
-          "content": "<h1 id=\"wikimedia-header\" style=\"font-weight: normal; color: #555;\">Wikimedia Metrics<img src=\"//upload.wikimedia.org/wikipedia/commons/8/81/Wikimedia-logo.svg\" alt=\"Wikimedia logo\" style=\"float: left; width: 40px; margin-right: 10px; position: relative; top: 2px;\"></h1>\n<script>\n\t( function () {\n\t\tvar header, p;\n\t\tif ( window.location.hostname === 'grafana.wikimedia.org' ) {\n\t\t\theader = document.getElementById( 'wikimedia-header' );\n\t\t\tp = document.createElement( 'p' );\n\t\t\tp.innerHTML = 'To edit dashboards, visit <a href=\"https://grafana-admin.wikimedia.org\">https://grafana-admin.wikimedia.org/</a>.';\n\t\t\theader.parentNode.insertBefore( p, header.nextSibling );\n\t\t}\n\t}() );\n</script>",
+          "content": "<h1 id=\"wikimedia-header\" style=\"font-weight: normal;\">Wikimedia Metrics<img src=\"//upload.wikimedia.org/wikipedia/commons/8/81/Wikimedia-logo.svg\" alt=\"Wikimedia logo\" style=\"float: left; width: 40px; margin-right: 10px; position: relative; top: 2px;\"></h1>\n<script>\n\t( function () {\n\t\tvar header, p;\n\t\tif ( window.location.hostname === 'grafana.wikimedia.org' ) {\n\t\t\theader = document.getElementById( 'wikimedia-header' );\n\t\t\tp = document.createElement( 'p' );\n\t\t\tp.innerHTML = 'To edit dashboards, visit <a href=\"https://grafana-admin.wikimedia.org\">https://grafana-admin.wikimedia.org/</a>.';\n\t\t\theader.parentNode.insertBefore( p, header.nextSibling );\n\t\t}\n\t}() );\n</script>",
           "style": {},
           "title": ""
         }
