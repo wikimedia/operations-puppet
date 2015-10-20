@@ -28,9 +28,9 @@ class icinga::gsbmonitoring {
         check_command => 'check_https_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikipedia.org/!\'Safe Browsing has not recently seen malicious content\'',
         host          => 'google',
     }
-    @monitoring::service { 'GSB_wikiquotes':
-        description   => 'check google safe browsing for wikiquotes.org',
-        check_command => 'check_https_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiquotes.org/!\'Safe Browsing has not recently seen malicious content\'',
+    @monitoring::service { 'GSB_wikiquote':
+        description   => 'check google safe browsing for wikiquote.org',
+        check_command => 'check_https_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiquote.org/!\'Safe Browsing has not recently seen malicious content\'',
         host          => 'google',
     }
     @monitoring::service { 'GSB_wikisource':
