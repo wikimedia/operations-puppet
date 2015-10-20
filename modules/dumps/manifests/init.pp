@@ -1,5 +1,4 @@
 class dumps {
-    sslcert::certificate { 'dumps.wikimedia.org': }
 
     class { '::nginx':
         variant => 'extras',
