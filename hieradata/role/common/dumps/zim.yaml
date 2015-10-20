@@ -1,2 +1,5 @@
 admin::groups:
   - htmldumps-admin
+debdeploy::grains:
+  debdeploy-dumps:
+    value: standard
