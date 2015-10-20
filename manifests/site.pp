@@ -1176,7 +1176,10 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 
 # virtual machine for misc. PHP apps
 node 'krypton.eqiad.wmnet' {
-    role wikimania_scholarships, iegreview, grafana, gdash
+    # analytics::burrow is a Kafka consumer lag monitor.
+    # Running this here because krypton is a 'misc' Jessie
+    # monitoring host.
+    role wikimania_scholarships, iegreview, grafana, gdash, analytics::burrow
     include standard
 }
 
