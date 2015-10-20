@@ -1,0 +1,33 @@
+title   "Jobs Queue -1hour"
+linewidth 2
+linemode "connected"
+hide_legend "false"
+from "-1 hours"
+
+field :push, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(sumSeries(MediaWiki.jobqueue.inserts.*.sum),"Jobs Queued/s"))'
+
+field :run, :color => "green",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(sumSeries(MediaWiki.jobqueue.pops.*.sum),"Jobs Run/s"))'
+
+field :pushdupl, :color => "red",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(sumSeries(MediaWiki.jobqueue.dupe_inserts.*.sum),"Duplicate jobs Queued/s"))'
+
+field :rundupl, :color => "purple",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(sumSeries(MediaWiki.jobqueue.dupe_pops.*.sum),"Duplicate jobs run/s"))'
+
+field :recycle, :color => "orange",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(sumSeries(MediaWiki.jobqueue.recycles.*.sum),"Jobs recycled/s"))'
+
+field :abandon, :color => "brown",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(sumSeries(MediaWiki.jobqueue.abandons.*.sum),"Jobs abandoned/s"))'
+
+field :ack, :color => "aqua",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(sumSeries(MediaWiki.jobqueue.acks.*.sum),"Jobs aknowledged/s"))'
