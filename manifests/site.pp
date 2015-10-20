@@ -930,6 +930,9 @@ node /es20(08|09|10)\.codfw\.wmnet/ {
 # Etherpad (virtual machine)
 node 'etherpad1001.eqiad.wmnet' {
     role etherpad
+    # NOTE: On purpose not included in the class while the migration to module
+    # for roles is still happening
+    include standard
     include base::firewall
 }
 
