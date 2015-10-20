@@ -114,4 +114,11 @@ class role::cache::maps {
             topic => 'webrequest_maps',
         }
     }
+
+    # Parse varnishlogs for request statistics and send to statsd via diamond.
+    varnish::monitoring::varnishreqstats { 'MapsFrontend':
+        instance_name => 'frontend',
+        metric_path   => "varnish.${::site}.maps.frontend.request",
+        require       => Varnish::Instance['maps-frontend'],
+    }
 }

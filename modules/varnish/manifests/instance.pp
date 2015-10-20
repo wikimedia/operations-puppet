@@ -9,7 +9,7 @@ define varnish::instance(
     $runtime_parameters=[],
     $directors={},
     $extra_vcl = [],
-    $xff_sources=[]
+    $xff_sources=[],
 ) {
 
     include varnish::common
@@ -155,4 +155,6 @@ define varnish::instance(
         description   => "Varnish HTTP ${title}",
         check_command => "check_http_varnish!varnishcheck!${port}"
     }
+
+
 }
