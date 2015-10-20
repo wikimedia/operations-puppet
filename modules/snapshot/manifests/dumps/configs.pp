@@ -91,7 +91,7 @@ class snapshot::dumps::configs(
             },
         },
         monitor => {
-            dblist        => "${snapshot::dirs::apachedir}/all.dblist",
+            dblist        => "${snapshot::dirs::apachedir}/dblists/all.dblist",
             skipdblist    => "${snapshot::dirs::dumpsdir}/dblists/skipmonitor.dblist",
             keep          => '30',
             chunksEnabled => '0',
