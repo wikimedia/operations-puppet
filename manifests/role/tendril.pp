@@ -8,8 +8,8 @@ class role::tendril {
     sslcert::certificate { 'tendril.wikimedia.org': }
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
-    monitoring::service { 'https':
-        description   => 'HTTPS',
+    monitoring::service { 'https-tendril':
+        description   => 'HTTPS-tendril',
         check_command => 'check_ssl_http!tendril.wikimedia.org',
     }
 
