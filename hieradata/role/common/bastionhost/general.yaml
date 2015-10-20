@@ -12,3 +12,6 @@ admin::groups:
   - parsoid-admin
   - ocg-render-admins
   - bastiononly
+debdeploy::grains:
+  debdeploy-bastion:
+    value: standard
