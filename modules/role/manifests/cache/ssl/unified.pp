@@ -15,14 +15,48 @@ class role::cache::ssl::unified {
         }
     }
     else {
+        $subjects = hiera('cache::cluster') ? {
+            'upload' => 'upload.beta.wmflabs.org',
+            'text'   => join(cache_ssl_beta_subjects(), ',')
+        }
+        $server_name = hiera('cache::cluster') ? {
+            'upload' => 'upload.beta.wmflabs.org',
+            'text'   => 'beta.wmflabs.org'
+        }
+
+        letsencrypt::cert::integrated { 'unified':
+            subjects   => $subjects,
+            puppet_svc => 'nginx',
+            system_svc => 'nginx',
+        }
+        file { '/etc/ssl/localcerts/unified.crt':
+            ensure => 'link',
+            target => '/etc/acme/cert/unified.crt',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0640',
+        }
+        file { '/etc/ssl/private/unified.key':
+            ensure => 'link',
+            target => '/etc/acme/key/unified.key',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0640',
+        }
         tlsproxy::localssl { 'unified':
-            server_name    => 'www.wikimedia.beta.wmflabs.org',
-            certs          => ['star.wmflabs.org'],
+            server_name    => $server_name,
+            certs          => ['unified'],
             default_server => true,
             do_ocsp        => false,
             skip_private   => true,
             upstream_port  => 3127,
             redir_port     => 8080,
+            from_puppet    => false,
+            acme_challenge => true,
+            require        => [
+                File['/etc/ssl/localcerts/unified.crt'],
+                File['/etc/ssl/private/unified.key'],
+            ],
         }
     }
 
