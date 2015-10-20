@@ -189,11 +189,10 @@ class role::cache::text {
         class { 'role::cache::kafka::webrequest': topic => 'webrequest_text' }
     }
 
-    # Test rollout of varnish reqstats diamond collector.
-    if $::hostname == 'cp1052' {
-        varnish::monitoring::varnishreqstats { 'TextFrontend':
-            instance_name => 'frontend',
-            metric_path   => "varnish.${::site}.text.frontend.request",
-        }
+    # Parse varnishlogs for request statistics and send to statsd via diamond.
+    varnish::monitoring::varnishreqstats { 'TextFrontend':
+        instance_name => 'frontend',
+        metric_path   => "varnish.${::site}.text.frontend.request",
+        require       => Varnish::Instance['text-frontend'],
     }
 }

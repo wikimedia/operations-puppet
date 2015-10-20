@@ -144,5 +144,6 @@ class role::cache::upload {
     varnish::monitoring::varnishreqstats { 'UploadFrontend':
         instance_name => 'frontend',
         metric_path   => "varnish.${::site}.upload.frontend.request",
+        require       => Varnish::Instance['upload-frontend'],
     }
 }

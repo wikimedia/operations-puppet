@@ -16,11 +16,13 @@
 define varnish::monitoring::varnishreqstats(
     $instance_name = $name,
     $metric_path   = "varnish.${::site}.${name}.request",
+    $ensure        = 'present',
 ) {
     # ${collector_name}Collector will be used as the python diamond collector class name
     # when varnishreqstats-diamond.py.erb is rendered.
     $collector_name = "Varnishreqstats${name}"
     diamond::collector { $collector_name:
+        ensure   => $ensure,
         content  => template('varnish/varnishreqstats-diamond.py.erb'),
         settings => {
             'varnish_name' => $instance_name,
