@@ -1,0 +1,9 @@
+[Unit]
+Description=Burrow: Kafka consumer lag monitor
+
+[Service]
+ExecStart=/usr/bin/Burrow \
+    --config=/etc/burrow/burrow.cfg
+
+[Install]
+WantedBy=multi-user.target
