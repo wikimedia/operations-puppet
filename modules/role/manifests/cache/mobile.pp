@@ -192,5 +192,6 @@ class role::cache::mobile {
     varnish::monitoring::varnishreqstats { 'MobileFrontend':
         instance_name => 'frontend',
         metric_path   => "varnish.${::site}.mobile.frontend.request",
+        require       => Varnish::Instance['mobile-frontend'],
     }
 }
