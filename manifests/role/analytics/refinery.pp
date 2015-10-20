@@ -220,6 +220,14 @@ class role::analytics::refinery::data::check::email {
         hour        => 10,
         minute      => 5,
     }
+
+    cron { 'refinery data check pageviews':
+        command     => "${::role::analytics::refinery::path}/bin/refinery-dump-status-webrequest-partitions --hdfs-mount ${hdfs_mount_point} --datasets pageview,projectview --quiet",
+        environment => "MAILTO=${$mail_to}",
+        user        => 'hdfs', # See comment in first cron above
+        hour        => 10,
+        minute      => 10,
+    }
 }
 
 # == Class role::analytics::refinery::source
