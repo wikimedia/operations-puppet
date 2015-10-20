@@ -21,7 +21,11 @@ server {
 	access_log   off;
 
 	<%- @certs.each do |cert| -%>
+	<% if @chain -%>
 	ssl_certificate /etc/ssl/localcerts/<%= cert %>.chained.crt;
+	<% else -%>
+	ssl_certificate /etc/ssl/localcerts/<%= cert %>.crt;
+	<% end -%>
 	ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
 	<%- end -%>
 	<%- if @do_ocsp -%>
@@ -31,6 +35,9 @@ server {
 
 	keepalive_timeout 60;
 
+<% if @acme_challenge -%>
+	include /etc/acme/challenge-nginx.conf;
+<% end -%>
 	location / {
 		proxy_pass http://local_fe_<%= @basename %>;
 <% if @varnish_version4 -%>
