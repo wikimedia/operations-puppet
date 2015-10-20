@@ -164,19 +164,23 @@ class role::cache::text {
         ]),
     }
 
-    # varnish::logging to be removed once
-    # udp2log kafka consumer is implemented and deployed.
+    # varnish::logging UDP based varnishncsa to be removed once
+    # all uses of udp2log are ported to Kafka.
     include role::cache::logging
 
+    # varnishkafka statsv listens for special stats related requests
+    # and sends them to the 'statsv' topic in Kafka.
+    # A kafka consumer then consumes these and emits
+    # metrics.
     class { '::role::cache::kafka::statsv':
         varnish_name => 'frontend',
     }
 
-    # role::cache::logging::eventlistener will soon be fully
-    # replaced by role::cache::kafka::eventlogging.
-    class { '::role::cache::logging::eventlistener':
-        instance_name => 'frontend',
-    }
+    # varnishkafka eventlogging listens for eventlogging
+    # requests and logs them to the eventlogging-client-side
+    # topic.  EventLogging servers consume and process this
+    # topic into many JSON based kafka topics for further
+    # consumption.
     class { '::role::cache::kafka::eventlogging':
         varnish_name => 'frontend',
     }

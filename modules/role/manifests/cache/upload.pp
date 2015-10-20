@@ -123,6 +123,8 @@ class role::cache::upload {
         ]),
     }
 
+    # varnish::logging UDP based varnishncsa to be removed once
+    # all uses of udp2log are ported to Kafka.
     include role::cache::logging
 
     # ToDo: Remove production conditional once this works
