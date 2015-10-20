@@ -35,7 +35,7 @@ define tlsproxy::localssl(
     $default_server = false,
     $upstream_port  = '80',
     $do_ocsp        = false,
-    $skip_private   = false,
+    $chain          = true,
 ) {
     require tlsproxy::instance
 
@@ -49,7 +49,7 @@ define tlsproxy::localssl(
     }
 
     sslcert::certificate { $certs:
-        skip_private => $skip_private,
+        chain => $chain,
     }
 
     if $do_ocsp {
