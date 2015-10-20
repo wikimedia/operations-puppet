@@ -2170,8 +2170,8 @@ node 'netmon1001.wikimedia.org' {
 }
 
 node 'nitrogen.wikimedia.org' {
+    role ipv6relay
     include standard
-    include role::ipv6relay
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
