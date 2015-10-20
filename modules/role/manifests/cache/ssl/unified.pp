@@ -15,9 +15,17 @@ class role::cache::ssl::unified {
         }
     }
     else {
+        if hiera('cache::cluster') == 'upload' {
+            $server_name = 'upload.beta.wmflabs.org'
+            $subjects = ['upload.beta.wmflabs.org']
+        } else {
+            $server_name = 'beta.wmflabs.org'
+            $subjects = cache_ssl_beta_subjects()
+        }
+
         tlsproxy::localssl { 'unified':
-            server_name    => 'www.wikimedia.beta.wmflabs.org',
-            certs          => ['star.wmflabs.org'],
+            server_name    => $server_name,
+            acme_subjects  => $subjects,
             default_server => true,
             do_ocsp        => false,
             skip_private   => true,
