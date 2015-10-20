@@ -417,7 +417,8 @@ class role::mariadb::grants::wikitech {
 }
 
 class role::mariadb::core(
-    $shard
+    $shard,
+    $p_s = 'off',
     ) {
 
     system::role { "role::mariadb::core":
@@ -441,6 +442,7 @@ class role::mariadb::core(
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => '/srv/sqldata',
         tmpdir   => '/srv/tmp',
+        p_s      => $p_s,
     }
 
     mariadb::monitor_replication { [ $shard ]:
