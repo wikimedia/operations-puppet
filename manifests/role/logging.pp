@@ -253,16 +253,19 @@ class role::logging::systemusers {
 
     group { 'file_mover':
         ensure => present,
+        gid    => 30001,
         name   => 'file_mover',
         system => true,
     }
 
     user { 'file_mover':
+        uid        => 30001,
         shell      => '/bin/bash',
         gid        => 'file_mover',
         home       => '/var/lib/file_mover',
         managehome => true,
         system     => true,
+        require    => Group['file_mover'],
     }
 
     file { '/var/lib/file_mover':
