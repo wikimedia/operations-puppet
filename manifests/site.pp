@@ -2253,6 +2253,7 @@ node 'potassium.eqiad.wmnet' {
 # Since gadolinium is back up, varnishncsa instances now send logs
 # to gadolinium again.  protactinium is not being used.
 node 'protactinium.wikimedia.org' {
+    role spare
     include standard
     include base::firewall
 }
