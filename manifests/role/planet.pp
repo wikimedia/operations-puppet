@@ -209,5 +209,9 @@ class role::planet {
         port  => '80',
     }
 
+    monitoring::service { 'https':
+        description   => 'HTTPS',
+        check_command => 'check_ssl_http!en.planet.wikimedia.org',
+    }
 }
 
