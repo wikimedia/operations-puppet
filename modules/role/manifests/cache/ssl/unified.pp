@@ -13,10 +13,10 @@ class role::cache::ssl::unified {
     }
     else {
         tlsproxy::localssl { 'unified':
-            certs          => ['star.wmflabs.org'],
+            certs          => ['star.star.beta.wmflabs.org'],
             default_server => true,
             do_ocsp        => false,
-            skip_private   => true,
+            chain          => false,
         }
     }
 
