@@ -9,3 +9,6 @@ mailman::server_ip:
 admin::groups:
   - mailman-admins
 contactgroups: admins,mailman-admins
+debdeploy::grains:
+  debdeploy-lists:
+    value: standard
