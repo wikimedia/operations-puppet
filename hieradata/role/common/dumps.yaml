@@ -15,3 +15,6 @@ dumps::rsync_clients:
   - ftpmirror-ae0-4.us.your.org
 dumps::rsync_clients_ipv6:
   - odysseus.ip6.fi.muni.cz
+debdeploy::grains:
+  debdeploy-dumps:
+    value: standard
