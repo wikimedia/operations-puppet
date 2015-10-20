@@ -13,6 +13,7 @@ set -e
 ARCHIVE_DIR='/var/userarchive'
 EXCLUDE=("nobody" \
          "l10nupdate" \
+         "file_mover" \ # erbium (FR things)
          "mwdeploy" \   # eventlog*
          "gerrit2" \    # ytterbium.wikimedia.org
          "releases" \   # tin.eqiad.wmnet/mira.codfw.wmnet
