@@ -2,6 +2,8 @@ class role::mw-rc-irc {
 
     system::role { 'role::mw-rc-irc': description => 'MW Changes IRC Broadcast Server' }
 
+    include standard
+    include base::firewall
     include passwords::udpmxircecho
     $udpmxircecho_pass = $passwords::udpmxircecho::udpmxircecho_pass
 
