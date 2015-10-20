@@ -1,0 +1,4 @@
+burrow::consumer_groups:
+  - eventlogging-00
+  - eventlogging-mysql-00
+  - eventlogging-files-00
