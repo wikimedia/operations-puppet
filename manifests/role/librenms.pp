@@ -71,6 +71,11 @@ class role::librenms {
 
     sslcert::certificate { $sitename: }
 
+    monitoring::service { 'https':
+        description   => 'HTTPS',
+        check_command => 'check_ssl_http!librenms.wikimedia.org',
+    }
+
     include ::apache::mod::php5
     include ::apache::mod::rewrite
     include ::apache::mod::ssl
