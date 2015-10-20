@@ -48,7 +48,7 @@ class phabricator::vcs (
     # Configure all git repositories we host
     file { '/etc/gitconfig':
         source  => 'puppet:///modules/phabricator/system.gitconfig',
-        require => Package['git-core'],
+        require => Package['git'],
     }
 
     file { $ssh_hook_path:
