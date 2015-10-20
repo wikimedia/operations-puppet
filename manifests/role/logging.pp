@@ -260,7 +260,7 @@ class role::logging::systemusers {
     user { 'file_mover':
         uid        => 30001,
         shell      => '/bin/bash',
-        gid        => 30001,
+        gid        => 'file_mover',
         home       => '/var/lib/file_mover',
         managehome => true,
         system     => true,
