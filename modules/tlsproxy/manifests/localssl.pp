@@ -32,6 +32,16 @@
 #   correct configuration directives in the site's nginx config file as well
 #   as creates the OCSP data file itself and ensures a cron is running to
 #   keep it up to date.
+#
+# [*chain*]
+#   Boolean. Whether to enable chaining of certificates.
+#
+# [*from_puppet*]
+#   Boolean. Whether the certificate file comes from puppet (true) or elsewhere
+#   (false).
+#
+# [*acme_challenge*]
+#   Boolean. Whether the server should handle ACME challenge requests.
 
 define tlsproxy::localssl(
     $certs,
@@ -42,6 +52,9 @@ define tlsproxy::localssl(
     $redir_port     = undef,
     $do_ocsp        = false,
     $skip_private   = false,
+    $chain          = true,
+    $from_puppet    = true,
+    $acme_challenge = false,
 ) {
     require tlsproxy::instance
 
@@ -63,6 +76,8 @@ define tlsproxy::localssl(
 
     sslcert::certificate { $certs:
         skip_private => $skip_private,
+        chain        => $chain,
+        from_puppet  => $from_puppet,
     }
 
     if $do_ocsp {
