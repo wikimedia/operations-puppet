@@ -2120,14 +2120,12 @@ node 'nembus.wikimedia.org' {
 
 # Icinga
 node 'neon.wikimedia.org' {
-    include base::firewall
 
-    interface::add_ip6_mapped { 'main': interface => 'eth0' }
+    role icinga, tendril, tcpircbot
 
     include standard
-    include role::icinga
-    include role::tendril
-    include role::tcpircbot
+    include base::firewall
+    interface::add_ip6_mapped { 'main': interface => 'eth0' }
 }
 
 # Eqiad ldap server, aka ldap-eqiad
