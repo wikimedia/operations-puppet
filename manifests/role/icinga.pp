@@ -32,6 +32,7 @@ class role::icinga(
     }
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
+    sslcert::certificate { 'icinga.wikimedia.org': }
 
     class { '::icinga':            }
     class { '::icinga::web':       }
