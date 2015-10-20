@@ -15,14 +15,59 @@ class role::cache::ssl::unified {
         }
     }
     else {
-        tlsproxy::localssl { 'unified':
-            server_name    => 'www.wikimedia.beta.wmflabs.org',
-            certs          => ['star.wmflabs.org'],
-            default_server => true,
-            do_ocsp        => false,
-            skip_private   => true,
-            upstream_port  => 3127,
-            redir_port     => 8080,
+        if ( hiera('cache::cluster') == 'upload' ) {
+            letsencrypt::cert::integrated { 'upload':
+                subjects   => 'upload.beta.wmflabs.org',
+                puppet_svc => 'nginx',
+                system_svc => 'nginx',
+            }
+            file { '/etc/ssl/localcerts/upload.crt':
+                ensure => 'link',
+                target => '/etc/acme/cert/upload.crt',
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0640',
+            }
+            file { '/etc/ssl/private/upload.key':
+                ensure => 'link',
+                target => '/etc/acme/key/upload.key',
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0640',
+            }
+            tlsproxy::localssl { 'unified':
+                server_name    => 'upload.beta.wmflabs.org',
+                certs          => ['upload'],
+                default_server => true,
+                do_ocsp        => false,
+                skip_private   => true,
+                upstream_port  => 3127,
+                redir_port     => 8080,
+                from_puppet    => false,
+                acme_challenge => true,
+                require        => [
+                    File['/etc/ssl/localcerts/upload.crt'],
+                    File['/etc/ssl/private/upload.key'],
+                ],
+            }
+        } else {
+            # TODO: Needs the ability to use a *LOT* of domains, no wildcards!
+            #letsencrypt::cert::integrated { 'testing-le':
+            #    subjects   => 'www.wikimedia.beta.wmflabs.org',
+            #    puppet_svc => 'nginx',
+            #    system_svc => 'nginx',
+            #}
+
+            tlsproxy::localssl { 'unified':
+                server_name    => 'www.wikimedia.beta.wmflabs.org',
+                certs          => ['star.star.beta.wmflabs.org'],
+                default_server => true,
+                do_ocsp        => false,
+                skip_private   => true,
+                upstream_port  => 3127,
+                redir_port     => 8080,
+                chain          => false,
+            }
         }
     }
 

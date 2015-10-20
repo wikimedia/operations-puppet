@@ -31,6 +31,10 @@
 #   If true, no private key is installed by standard means/paths.  The default
 #   is false.
 #
+# [*from_puppet*]
+#   Boolean. Whether the certificate file comes from puppet (true) or elsewhere
+#   (false).
+#
 # === Examples
 #
 #  sslcert::certificate { 'www.example.org':
@@ -44,16 +48,19 @@ define sslcert::certificate(
   $group='ssl-cert',
   $chain=true,
   $skip_private=false,
+  $from_puppet=true,
 ) {
     require sslcert
     require sslcert::dhparam
 
-    file { "/etc/ssl/localcerts/${title}.crt":
-        ensure => $ensure,
-        owner  => 'root',
-        group  => $group,
-        mode   => '0444',
-        source => "puppet:///files/ssl/${title}.crt",
+    if $from_puppet {
+        file { "/etc/ssl/localcerts/${title}.crt":
+            ensure => $ensure,
+            owner  => 'root',
+            group  => $group,
+            mode   => '0444',
+            source => "puppet:///files/ssl/${title}.crt",
+        }
     }
 
     if !$skip_private {
