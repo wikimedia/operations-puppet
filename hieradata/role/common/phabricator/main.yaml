@@ -4,3 +4,6 @@ admin::groups:
   - phabricator-roots
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 3
+debdeploy::grains:
+  debdeploy-phabricator:
+    value: standard
