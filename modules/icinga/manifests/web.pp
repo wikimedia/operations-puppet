@@ -48,6 +48,4 @@ class icinga::web {
         ensure => absent,
     }
 
-    sslcert::certificate { 'icinga.wikimedia.org': }
-
 }
