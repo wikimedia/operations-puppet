@@ -3,3 +3,6 @@ admin::groups:
   - analytics-admins
 cluster: analytics_kafka
 nagios_group: analytics_eqiad
+debdeploy::grains:
+  debdeploy-kafka:
+    value: standard
