@@ -36,3 +36,7 @@ elasticsearch::expected_nodes: 24
 
 # We should be able to run "OK" with 11 servers.
 elasticsearch::recover_after_nodes: 11
+
+debdeploy::grains:
+  debdeploy-elastic-codfw:
+    value: standard
