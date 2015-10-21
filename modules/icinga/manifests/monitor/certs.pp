@@ -22,4 +22,11 @@ class icinga::monitor::certs {
         host          => 'virtual-ssl-host',
     }
 
+    # eventdonations.wikimedia.org (Fundraising)
+    monitoring::service { 'https_policy':
+        description   => 'HTTPS-policy',
+        check_command => 'check_ssl_http!eventdonations.wikimedia.org',
+        host          => 'virtual-ssl-host',
+    }
+
 }
