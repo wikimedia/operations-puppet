@@ -113,6 +113,40 @@ class role::grafana {
         notify  => Service['grafana-server'],
     }
 
+
+    # We disable account creation, because accounts are created
+    # automagically based on the X-WEBAUTH-USER, which is either set
+    # to the LDAP user (if accessing the site via the grafana-admin vhost)
+    # or 'Anonymous'. But we need to have an 'Anonymous' user in the first
+    # place. To accomplish that, we use a small Python script that directly
+    # directly inserts the user into Grafana's sqlite database.
+    #
+    # If you are reading this comment because something broke and you are
+    # trying to figure out why, it is probably because Grafana's database
+    # schema changed. You can nuke this script and achieve the same result
+    # by temporarily commenting out the allow_signups line in
+    # /etc/grafana/grafana.ini and removing the restriction on POST and
+    # PUT in /etc/apache2/sites-enabled/50-grafana.wikimedia.org.conf,
+    # and then creating the user manually via the web interface.
+
+    require_package('python-sqlalchemy')
+
+    file { '/usr/local/sbin/grafana_create_anon_user':
+        source  => 'puppet:///files/grafana/grafana_create_anon_user',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        require => [
+            Service['grafana-server'],
+            Package['python-sqlalchemy'],
+        ],
+    }
+
+    exec { '/usr/local/sbin/grafana_create_anon_user --create':
+        unless  => '/usr/local/sbin/grafana_create_anon_user --check',
+        require => File['/usr/local/sbin/grafana_create_anon_user'],
+    }
+
     # Serve Grafana via two different vhosts:
     #
     # - grafana.wikimedia.org (read-only, but accessible to all)
