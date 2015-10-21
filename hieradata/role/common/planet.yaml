@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-planet:
+    value: standard
