@@ -35,6 +35,11 @@ class role::etherpad{
     include ::apache::mod::rewrite
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
+    include ::apache::mod::remoteip
+
+    # this site's misc-lb caching proxies hostnames
+    $cache_misc_nodes = hiera('cache::misc::nodes')
+    $trusted_proxies = $cache_misc_nodes[$::site]
 
     ::apache::site { 'etherpad.wikimedia.org':
         content => template('apache/sites/etherpad.wikimedia.org.erb'),

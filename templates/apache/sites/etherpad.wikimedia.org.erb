@@ -53,10 +53,16 @@
             Allow from all
         </IfVersion>
     </Proxy>
+
+    <IfModule mod_remoteip.c>
+        RemoteIPHeader X-Real-IP
+        RemoteIPInternalProxy <%= @trusted_proxies.join(' ') %>
+    </IfModule>
+
     ErrorLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-error.log
     LogLevel warn
     # Rely on X-Real-IP to log the actual IP of the request
-    LogFormat "%{X-Real-IP}i %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" proxied
-    CustomLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-access.log proxied
 
+    LogFormat "%a %{c}a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined-realip
+    CustomLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-access.log combined-realip
 </VirtualHost>
