@@ -52,3 +52,7 @@ role::kibana::ldap_groups:
   - cn=ops,ou=groups,dc=wikimedia,dc=org
   - cn=nda,ou=groups,dc=wikimedia,dc=org
   - cn=wmf,ou=groups,dc=wikimedia,dc=org
+
+debdeploy::grains:
+  debdeploy-logstash:
+    value: standard
