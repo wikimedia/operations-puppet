@@ -19,6 +19,11 @@ class role::openldap::corp {
 
     sslcert::certificate { 'ldap-mirror.wikimedia.org': }
 
+    monitoring::service { 'SSL-LDAP-mirror':
+        description   => 'SSL-LDAP',
+        check_command => 'check_ssl_ldap!ldap-mirror.wikimedia.org',
+    }
+
     class { '::openldap':
         server_id   => 3, # 1 and 2 used in OIT
         suffix      => 'dc=corp,dc=wikimedia,dc=org',
