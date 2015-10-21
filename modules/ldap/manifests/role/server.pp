@@ -36,7 +36,7 @@ class ldap::role::server::labs {
 
     sslcert::certificate { $certificate: }
 
-    monitoring::service { "https-${certificate}":
+    monitoring::service { "SSL-${certificate}":
         description   => 'LDAP-SSL',
         check_command => "check_ssl_ldap!${certificate}",
     }
@@ -79,7 +79,7 @@ class ldap::role::server::labs {
         first_master         => false,
     }
 
-    if $realm == 'labs' {
+    if $::realm == 'labs' {
         # server is on localhost
         file { '/var/opendj/.ldaprc':
             content => 'TLS_CHECKPEER   no TLS_REQCERT     never ',
