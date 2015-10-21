@@ -36,4 +36,11 @@ class icinga::monitor::certs {
         host          => 'virtual-ssl-host',
     }
 
+    # *.planet.wikimedia.org (has its own wildcard on cp cluster hosts)
+    monitoring::service { 'https_planet':
+        description   => 'HTTPS-planet',
+        check_command => 'check_ssl_http!en.planet.wikimedia.org',
+        host          => 'virtual-ssl-host',
+    }
+
 }
