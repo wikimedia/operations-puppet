@@ -36,6 +36,11 @@ class ldap::role::server::labs {
 
     sslcert::certificate { $certificate: }
 
+    monitoring::service { "https-${certificate}":
+        description   => 'LDAP-SSL',
+        check_command => "check_ssl_ldap!${certificate}",
+    }
+
     # Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
     # Add it into the instance location, and ensure opendj can read it.
     exec  { "${certificate}_pkcs12":
