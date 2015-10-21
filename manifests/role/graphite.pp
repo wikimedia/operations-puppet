@@ -35,7 +35,13 @@ class role::graphite::base(
     $carbon_storage_dir = $storage_dir
 
     class { '::graphite':
+        # First match wins with storage schemas
         storage_schemas     => {
+            # Retain daily metrics for 25 years
+            'daily' => {
+                pattern    => '^daily\..*',
+                retentions => '1d:25y',
+            },
             # Retain aggregated data at a one-minute resolution for one week; at
             # five-minute resolution for two weeks; at 15-minute resolution for
             # one month; and at one-hour resolution for one year.
