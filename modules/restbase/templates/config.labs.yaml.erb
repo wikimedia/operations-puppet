@@ -62,6 +62,7 @@ templates:
           - <%= @graphoid_uri %>
           - <%= @mobileapps_uri %>
           - <%= @mathoid_uri %>
+          - <%= @aqs_uri %>
       header_match:
         description: Checks client ip against one of the predefined whitelists
         x-error-message: This client is not allowed to use the endpoint
@@ -165,34 +166,160 @@ templates:
           paths:
             /html/{title}:
               get:
+                x-setup-handler:
+                  - init:
+                      method: put
+                      uri: /{domain}/sys/key_rev_value/mobileapps.mobile-html
+                      body:
+                        revisionRetentionPolicy:
+                          type: 'latest'
+                          count: 1
+                          grace_ttl: 86400
+                        valueType: 'json'
+                        version: 1
                 x-request-handler:
-                  - get_from_backend:
+                  - handle_req:
                       request:
-                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html/{title}
+                        method: get
+                        uri: /{domain}/sys/mobileapps/handling/rev/mobile-html/{title}
+                        headers:
+                          cache-control: '{cache-control}'
             /sections/{title}:
               get:
+                x-setup-handler:
+                  - init:
+                      method: put
+                      uri: /{domain}/sys/key_rev_value/mobileapps.mobile-html-sections
+                      body:
+                        revisionRetentionPolicy:
+                          type: 'latest'
+                          count: 1
+                          grace_ttl: 86400
+                        valueType: 'json'
+                        version: 1
                 x-request-handler:
-                  - get_from_backend:
+                  - handle_req:
                       request:
-                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections/{title}
+                        method: get
+                        uri: /{domain}/sys/mobileapps/handling/rev/mobile-html-sections/{title}
+                        headers:
+                          cache-control: '{cache-control}'
             /sections-lead/{title}:
               get:
+                x-setup-handler:
+                  - init:
+                      method: put
+                      uri: /{domain}/sys/key_rev_value/mobileapps.mobile-html-sections-lead
+                      body:
+                        revisionRetentionPolicy:
+                          type: 'latest'
+                          count: 1
+                          grace_ttl: 86400
+                        valueType: 'json'
+                        version: 1
                 x-request-handler:
-                  - get_from_backend:
+                  - handle_req:
                       request:
-                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-lead/{title}
+                        method: get
+                        uri: /{domain}/sys/mobileapps/handling/rev/mobile-html-sections-lead/{title}
+                        headers:
+                          cache-control: '{cache-control}'
             /sections-remaining/{title}:
               get:
+                x-setup-handler:
+                  - init:
+                      method: put
+                      uri: /{domain}/sys/key_rev_value/mobileapps.mobile-html-sections-remaining
+                      body:
+                        revisionRetentionPolicy:
+                          type: 'latest'
+                          count: 1
+                          grace_ttl: 86400
+                        valueType: 'json'
+                        version: 1
                 x-request-handler:
-                  - get_from_backend:
+                  - handle_req:
                       request:
-                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-html-sections-remaining/{title}
+                        method: get
+                        uri: /{domain}/sys/mobileapps/handling/rev/mobile-html-sections-remaining/{title}
+                        headers:
+                          cache-control: '{cache-control}'
             /text/{title}:
               get:
+                x-setup-handler:
+                  - init:
+                      method: put
+                      uri: /{domain}/sys/key_rev_value/mobileapps.mobile-text
+                      body:
+                        revisionRetentionPolicy:
+                          type: 'latest'
+                          count: 1
+                          grace_ttl: 86400
+                        valueType: 'json'
+                        version: 1
                 x-request-handler:
-                  - get_from_backend:
+                  - handle_req:
                       request:
-                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/mobile-text/{title}
+                        method: get
+                        uri: /{domain}/sys/mobileapps/handling/rev/mobile-text/{title}
+                        headers:
+                          cache-control: '{cache-control}'
+            /handling/rev/{route}/{title}:
+              get:
+                x-request-handler:
+                  - get_rev:
+                      request:
+                        method: get
+                        uri: /{domain}/sys/page_revisions/page/{title}
+                        headers:
+                          cache-control: '{cache-control}'
+                  - cache_branch:
+                      request:
+                        method: post
+                        uri: /{domain}/sys/mobileapps/handling/content/{$$.default($.request.headers.cache-control, 'none-given')}/{route}/{title}
+                        body: '{$.get_rev.body}'
+            /handling/content/no-cache/{route}/{title}:
+              post:
+                x-request-handler:
+                  - get_mobileapps:
+                      request:
+                        method: get
+                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/{route}/{title}
+                        headers:
+                          x-restbase-etag: '{$.request.body.items[0].rev}/{$.request.body.items[0].tid}'
+                  - store:
+                      request:
+                        method: put
+                        uri: /{domain}/sys/key_rev_value/mobileapps.{route}/{title}/{$.request.body.items[0].rev}/{$.request.body.items[0].tid}
+                        headers:
+                          content-type: application/json
+                        body:
+                          headers: '{$.get_mobileapps.headers}'
+                          body: '{$.get_mobileapps.body}'
+                      return:
+                        status: 200
+                        headers: '{$.get_mobileapps.headers}'
+                        body: '{$.get_mobileapps.body}'
+            /handling/content/{cache-default}/{route}/{title}:
+              post:
+                x-request-handler:
+                  - check_storage:
+                      request:
+                        method: get
+                        uri: /{domain}/sys/key_rev_value/mobileapps.{route}/{title}/{$.request.body.items[0].rev}/{$.request.body.items[0].tid}
+                      return_if:
+                        status: '2xx'
+                      return:
+                        status: 200
+                        headers: '{$.check_storage.body.headers}'
+                        body: '{$.check_storage.body.body}'
+                      catch:
+                        status: 404
+                  - render:
+                      request:
+                        method: post
+                        uri: /{domain}/sys/mobileapps/handling/content/no-cache/{route}/{title}
+                        body: '{$.request.body}'
 
 
   global-content: &gb/content/1.0.0
@@ -201,6 +328,10 @@ templates:
     securityDefinitions: *wp/content-security/1.0.0
     x-subspecs:
       - media/v1/mathoid
+    paths:
+      /metrics:
+        x-subspecs:
+          - analytics/v1/pageviews
 
 
   global-sys: &gb/sys/1.0.0
@@ -293,6 +424,24 @@ templates:
                   headers: '{$$.merge($.mathoid.body[$.request.params.format].headers,$$.merge($.mathoid.headers, {"x-resource-location": $.request.headers.x-resource-location}))}'
                   body: '{$.mathoid.body[$.request.params.format].body}'
 
+      /{module:pageviews}/per-article/{+rest}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @aqs_uri %>/pageviews/per-article/{+rest}
+      /{module:pageviews}/per-project/{+rest}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @aqs_uri %>/pageviews/aggregate/{+rest}
+      /{module:pageviews}/top/{+rest}:
+        get:
+          x-request-handler:
+            - get_from_backend:
+                request:
+                  uri: <%= @aqs_uri %>/pageviews/top/{+rest}
 
   wp-default-1.0.0: &wp/default/1.0.0
     x-subspecs:
