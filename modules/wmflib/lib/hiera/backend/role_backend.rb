@@ -139,7 +139,7 @@ class Hiera
               YAML.load(content)
             end
 
-            next if data.empty?
+            next if data.nil? or data.empty?
 
             next unless data.include? key
 
