@@ -33,7 +33,11 @@ module.exports = {
 	'mt.apertium.api': '<%= @apertium %>',
 	<%- if @yandex_url -%>
 	'mt.yandex.api': '<%= @yandex_url %>',
-	'mt.yandex.key': '<%= @yandex_api_key %>',
+	'mt.yandex.key': '<%= @yandex_api_key %>'
+	jwt: {
+		secret: '<%= @jwt_secret %>,
+		algorithms: [ 'HS256' ]
+	}
 	<%- end -%>
 	<%- if @ordered_registry %>
 	registry: <%= @ordered_registry %>
