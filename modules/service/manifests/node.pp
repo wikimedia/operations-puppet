@@ -62,6 +62,7 @@ define service::node(
     $no_file = 10000,
     $healthcheck_url='/_info',
     $has_spec = false,
+    $repo = "${title}/deploy",
     ) {
     # Import all common configuration
     include service::configuration
@@ -89,8 +90,10 @@ define service::node(
 
     # Software and the deployed code, firejail for containment
     require_package('nodejs', 'nodejs-legacy', 'firejail')
-    package { "${title}/deploy":
-        provider => 'trebuchet',
+    if ! defined(Package[$repo]) {
+        package { $repo:
+            provider => 'trebuchet',
+        }
     }
 
     # User/group
