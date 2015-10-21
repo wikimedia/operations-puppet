@@ -44,5 +44,10 @@ class role::archiva {
         proto => 'tcp',
         port  => 80,
     }
+
+    monitoring::service { 'https_archiva':
+        description   => 'HTTPS',
+        check_command => 'check_ssl_http!archiva.wikimedia.org',
+    }
 }
 
