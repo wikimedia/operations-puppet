@@ -31,9 +31,13 @@ module.exports = {
 	'parsoid.api': '<%= @parsoid %>',
 	'restbase.url': '<%= @restbase %>',
 	'mt.apertium.api': '<%= @apertium %>',
+	jwt: {
+		secret: '<%= @jwt_secret %>',
+		algorithms: [ 'HS256' ]
+	},
 	<%- if @yandex_url -%>
 	'mt.yandex.api': '<%= @yandex_url %>',
-	'mt.yandex.key': '<%= @yandex_api_key %>',
+	'mt.yandex.key': '<%= @yandex_api_key %>'
 	<%- end -%>
 	<%- if @ordered_registry %>
 	registry: <%= @ordered_registry %>
