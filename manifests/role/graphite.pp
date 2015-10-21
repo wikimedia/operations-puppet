@@ -43,6 +43,11 @@ class role::graphite::base(
                 pattern    => '.*',
                 retentions => '1m:7d,5m:14d,15m:30d,1h:1y',
             },
+            # Retains daily metrics for much longer
+            'daily' => {
+                pattern    => '^daily\..*',
+                retentions => '1d:25y',
+            },
         },
 
         # Aggregation methods for whisper files.
