@@ -23,9 +23,16 @@ class icinga::monitor::certs {
     }
 
     # eventdonations.wikimedia.org (Fundraising)
-    monitoring::service { 'https_policy':
-        description   => 'HTTPS-policy',
+    monitoring::service { 'https_eventdonations':
+        description   => 'HTTPS-eventdonations',
         check_command => 'check_ssl_http!eventdonations.wikimedia.org',
+        host          => 'virtual-ssl-host',
+    }
+
+    # toolserver.org (redirect page to Tool Labs)
+    monitoring::service { 'https_toolserver':
+        description   => 'HTTPS-toolserver',
+        check_command => 'check_ssl_http!www.toolserver.org',
         host          => 'virtual-ssl-host',
     }
 
