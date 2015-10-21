@@ -29,4 +29,11 @@ class icinga::monitor::certs {
         host          => 'virtual-ssl-host',
     }
 
+    # toolserver.org (redirect page to Tool Labs)
+    monitoring::service { 'https_policy':
+        description   => 'HTTPS-policy',
+        check_command => 'check_ssl_http!www.toolserver.org',
+        host          => 'virtual-ssl-host',
+    }
+
 }
