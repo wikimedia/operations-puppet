@@ -36,6 +36,8 @@ class role::aqs {
         description   => 'Analytics Cassanda CQL query interface',
         check_command => 'check_tcp!9042',
         contact_group => 'admins,analytics',
+        # TODO: ensure => present before AQS goes production.
+        ensure        => 'absent'
     }
 
     $cassandra_hosts = hiera('cassandra::seeds')
