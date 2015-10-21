@@ -40,9 +40,6 @@
 #     Specify to use a different password for schema upgrades and database maintenance
 #     Requires: mysql_admin_user
 #
-# [*auth_type*]
-#     Specify a template to match the provided login mechanisms
-#
 # [*sprint_tag*]
 #     Track sprint app by tag
 #
@@ -82,7 +79,6 @@ class phabricator (
     $mysql_admin_user = '',
     $mysql_admin_pass = '',
     $serveradmin      = '',
-    $auth_type        = '',
 ) {
 
     #A combination of static and dynamic conf parameters must be merged
@@ -91,17 +87,6 @@ class phabricator (
 
     #per stdlib merge the dynamic settings will take precendence for conflicts
     $phab_settings = merge($fixed_settings, $settings)
-
-    # depending on what type of auth we use (SUL,LDAP,both,others) we change
-    # which template we use for the login message
-    case $auth_type {
-        'local':    { $auth_template = 'auth_log_message_local.erb' }
-        'sul':      { $auth_template = 'auth_log_message_sul.erb' }
-        'dual':     { $auth_template = 'auth_log_message_dual.erb'}
-        default:    { fail ('please set an auth type for the login message') }
-    }
-
-    $phab_settings['auth.login-message'] = template("phabricator/${auth_template}")
 
     if empty($mysql_admin_user) {
         $storage_user = $phab_settings['mysql.user']

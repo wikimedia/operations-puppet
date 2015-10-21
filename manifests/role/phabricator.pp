@@ -47,7 +47,6 @@ class role::phabricator::main {
         lock_file        => '/var/run/phab_repo_lock',
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
-        auth_type        => 'dual',
         sprint_tag       => 'release/2015-07-01',
         security_tag     => $current_tag,
         libraries        => ['/srv/phab/libext/Sprint/src',
@@ -199,7 +198,6 @@ class role::phabricator::labs {
     class { '::phabricator':
         git_tag       => $current_tag,
         lock_file     => '/var/run/phab_repo_lock',
-        auth_type     => 'local',
         sprint_tag    => 'release/2015-07-01',
         libraries     => ['/srv/phab/libext/Sprint/src',
                           '/srv/phab/libext/security/src'],
