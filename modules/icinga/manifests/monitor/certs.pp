@@ -54,4 +54,13 @@ class icinga::monitor::certs {
         host          => 'en.planet.wikimedia.org',
     }
 
+    # *.wmflabs.org (labs wildcard cert, testing tools.wmflabs.org)
+    @monitoring::host { 'tools.wmflabs.org':
+        host_fqdn     => 'tools.wmflabs.org'
+    }
+    monitoring::service { 'https_wmflabs':
+        description   => 'HTTPS-wmflabs',
+        check_command => 'check_ssl_http!tools.wmflabs.org',
+        host          => 'tools.wmflabs.org',
+    }
 }
