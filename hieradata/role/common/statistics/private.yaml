@@ -5,3 +5,6 @@ admin::groups:
   - analytics-privatedata-users
   - analytics-roots
   - analytics-admins
+debdeploy::grains:
+  debdeploy-stat:
+    value: standard

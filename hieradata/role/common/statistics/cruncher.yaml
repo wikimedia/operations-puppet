@@ -4,3 +4,6 @@ admin::groups:
   - statistics-admins
   - statistics-users
   - researchers
+debdeploy::grains:
+  debdeploy-stat:
+    value: standard
