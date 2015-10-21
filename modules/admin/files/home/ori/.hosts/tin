@@ -49,7 +49,7 @@ fetch() {
         git fetch origin 2>&1 >/dev/null
         git --no-pager diff HEAD origin
     else
-        branch_dir="$(find . -maxdepth 1 -type d -iregex "./php-1.${1}.*-wmf.*" | sort | tail -1)"
+        branch_dir="$(branchdir $1)"
         branch="origin/wmf/${branch_dir#./php-}"
         cd "${branch_dir}"
         git fetch 2>&1 >/dev/null
@@ -58,9 +58,7 @@ fetch() {
 }
 
 cdbranch() {
-    cd "$MEDIAWIKI_STAGING_DIR"
-    branch_dir="$(find . -maxdepth 1 -type d -iregex "./php-1.${1}.*-wmf.*" | sort | tail -1)"
-    cd "${branch_dir}"
+    cd "$(branchdir $1)"
 }
 
 bump() {
