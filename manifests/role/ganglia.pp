@@ -10,6 +10,11 @@ class role::ganglia::web {
 
     sslcert::certificate { 'ganglia.wikimedia.org': }
 
+    monitoring::service { 'https':
+        description   => 'HTTPS',
+        check_command => 'check_ssl_http!ganglia.wikimedia.org',
+    }
+
     $gmetad_root = '/srv/ganglia'
     $rrd_rootdir = "${gmetad_root}/rrds"
     $gmetad_socket = '/var/run/rrdcached-gmetad.sock'
