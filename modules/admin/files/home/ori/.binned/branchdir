@@ -1,33 +1,24 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-
+import json
 import os
 import re
 import sys
 
-if not (len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1].isdigit())):
-    print('Usage: %s BRANCH_NUMBER' % __file__, file=sys.stderr)
-    sys.exit(1)
+search_dir = '/srv/mediawiki-staging'
+if not os.path.exists(search_dir):
+    search_dir = '/srv/mediawiki'
 
-search_dir = ('/srv/mediawiki-staging'
-              if os.path.exists('/srv/mediawiki-staging')
-              else '/srv/mediawiki')
-target_branch = '(\d+)' if len(sys.argv) == 1 else sys.argv[1]
-branch_pattern = r'php-(\d+)\.(\d+)\.(\d+)-wmf\.' + target_branch + '$'
-branch_version = []
-branch_dirname = None
+with open(os.path.join(search_dir, 'wikiversions.json')) as f:
+    versions = json.load(f)
 
-for node in os.listdir(search_dir):
-    match = re.match(branch_pattern, node)
-    if match:
-        version = map(int, match.groups())
-        if version > branch_version:
-            branch_dirname = node
-            branch_version = version
-
-if branch_dirname:
-    print(branch_dirname)
+target = sys.argv[1]
+if target in versions:
+    target = versions[target]
+target = next(v for v in versions.values() if v.endswith(target))
+path = os.path.join(search_dir, target)
+if os.path.exists(path):
+    print(path)
     sys.exit(0)
 else:
     sys.exit(1)
