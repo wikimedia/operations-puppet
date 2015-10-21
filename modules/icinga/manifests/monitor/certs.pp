@@ -44,4 +44,14 @@ class icinga::monitor::certs {
         host          => 'www.toolserver.org',
     }
 
+    # *.planet.wikimedia.org (has its own wildcard cert on misc cp cluster)
+    @monitoring::host { 'en.planet.wikimedia.org':
+        host_fqdn     => 'en.planet.wikimedia.org'
+    }
+    monitoring::service { 'https_planet':
+        description   => 'HTTPS-planet',
+        check_command => 'check_ssl_http!en.planet.wikimedia.org',
+        host          => 'en.planet.wikimedia.org',
+    }
+
 }
