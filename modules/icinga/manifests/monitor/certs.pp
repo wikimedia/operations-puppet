@@ -25,4 +25,15 @@ class icinga::monitor::certs {
         check_command => 'check_ssl_http!policy.wikimedia.org',
         host          => 'policy.wikimedia.org',
     }
+
+    # eventdonations.wikimedia.org (Fundraising)
+    @monitoring::host { 'eventdonations.wikimedia.org':
+        host_fqdn => 'eventdonations.wikimedia.org'
+    }
+    monitoring::service { 'https_eventdonations':
+        description   => 'HTTPS-eventdonations',
+        check_command => 'check_ssl_http!eventdonations.wikimedia.org',
+        host          => 'eventdonations.wikimedia.org',
+    }
+
 }
