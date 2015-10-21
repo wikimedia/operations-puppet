@@ -71,6 +71,11 @@ class role::rcstream {
         srange => '$INTERNAL',
     }
 
+    monitoring::service { 'https':
+        description   => 'HTTPS',
+        check_command => 'check_ssl_http!stream.wikimedia.org',
+    }
+
     diamond::collector { 'RCStream':
         source   => 'puppet:///modules/rcstream/diamond_collector.py',
         settings => {
