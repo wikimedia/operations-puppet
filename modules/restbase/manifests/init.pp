@@ -42,6 +42,9 @@
 #   MobileApps service URI. Default: http://mobileapps.svc.eqiad.wmnet:8888
 # [*mathoid_uri*]
 #   Mathoid service URI. Default: http://mathoid.svc.eqiad.wmnet:10042
+# [*aqs_uri*]
+#   Analytics Query Service URI. Default:
+#   http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1
 #
 class restbase(
     $cassandra_user = 'cassandra',
@@ -63,6 +66,8 @@ class restbase(
     $graphoid_uri   = 'http://graphoid.svc.eqiad.wmnet:19000',
     $mobileapps_uri = 'http://mobileapps.svc.eqiad.wmnet:8888',
     $mathoid_uri    = 'http://mathoid.svc.eqiad.wmnet:10042',
+    $aqs_uri        =
+    'http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1',
 ) {
     if $::realm == 'labs' {
         include restbase::deploy

@@ -73,6 +73,7 @@ restbase::cassandra_defaultConsistency: localQuorum
 restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
 restbase::mobileapps_uri: http://appservice.wmflabs.org
 restbase::mathoid_uri: http://mathoid-tester.wmflabs.org
+restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
 "mediawiki::log_aggregator": deployment-fluorine.eqiad.wmflabs:8420
 "mediawiki::forward_syslog": deployment-logstash2.deployment-prep.eqiad.wmflabs:10514
 mediawiki_memcached_servers:
