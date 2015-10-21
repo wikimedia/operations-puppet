@@ -36,6 +36,8 @@
 #   Port where to run the cxserver service. Defaults to 8080.
 # [*registry*]
 #   Registry to use for language pairs for Content Translation.
+# [*jwt_secret*]
+#   JWT secret token
 class cxserver(
     $base_path = '/srv/deployment/cxserver/deploy',
     $node_path = '/srv/deployment/cxserver/deploy/node_modules',
@@ -51,6 +53,7 @@ class cxserver(
     $proxy = undef,
     $port = 8080,
     $registry = undef,
+    $jwt_secret = undef,
 ) {
     require_package('nodejs')
 
