@@ -24,6 +24,10 @@ class hhvm::monitoring {
         notify  => Service['ganglia-monitor'],
     }
 
+    diamond::collector { 'HhvmApc':
+        source  => 'puppet:///modules/hhvm/monitoring/hhvm_apc.py',
+    }
+
 
     ## Health statistics
 
