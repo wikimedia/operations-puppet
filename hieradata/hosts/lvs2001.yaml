@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-lvs:
+    value: canary
