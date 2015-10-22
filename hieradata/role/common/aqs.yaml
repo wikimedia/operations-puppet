@@ -34,6 +34,7 @@ cassandra::cluster_name: "Analytics Query Service Cassandra"
 #
 # RESTBase for AQS
 #
+restbase::port: 7232
 restbase::seeds:
     - aqs1001.eqiad.wmnet
     - aqs1002.eqiad.wmnet

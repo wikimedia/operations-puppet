@@ -15,7 +15,7 @@ class restbase::monitoring(
     # Spec checking
     require service::monitoring
 
-    $monitor_url = "http://127.0.0.1:7231/${monitor_domain}/v1"
+    $monitor_url = "http://127.0.0.1:${::restbase::port}/${monitor_domain}/v1"
     nrpe::monitor_service { 'endpoints_restbase':
         description  => 'Restbase endpoints health',
         nrpe_command => "/usr/local/lib/nagios/plugins/service_checker -t 5 127.0.0.1 ${monitor_url}"

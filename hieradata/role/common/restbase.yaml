@@ -2,6 +2,7 @@
 # RESTBase
 #
 cluster: restbase
+restbase::port: 7231
 restbase::logstash_host: logstash1002.eqiad.wmnet
 restbase::cassandra_defaultConsistency: localQuorum
 restbase::cassandra_localDc: "%{::site}"
