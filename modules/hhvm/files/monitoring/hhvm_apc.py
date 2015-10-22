@@ -32,7 +32,8 @@ class HhvmApcCollector(diamond.collector.Collector):
 
     def get_default_config(self):
         config = super(hhvmApcCollector, self).get_default_config()
-        config.update(url='http://localhost:9002/dump-apc-info', timeout=5)
+        config.update(url='http://localhost:9002/dump-apc-info', timeout=5,
+                      path='hhvm')
         return config
 
     def collect(self):
