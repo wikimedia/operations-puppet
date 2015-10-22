@@ -204,9 +204,17 @@ class role::cache::misc {
     }
 
     # Parse varnishlogs for request statistics and send to statsd via diamond.
+    # THIS DOESN'T WORK and is being removed.
     varnish::monitoring::varnishreqstats { 'MiscFrontend':
         instance_name => 'frontend',
         metric_path   => "varnish.${::site}.misc.frontend.request",
         require       => Varnish::Instance['misc'],
+    }
+
+    # testing on cp1056
+    if $::hostname == 'cp1056' {
+        varnish::logging::reqstats { 'frontend':
+            metric_path   => "varnish.${::site}.misc.frontend.request",
+        }
     }
 }

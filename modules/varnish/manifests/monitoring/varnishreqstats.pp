@@ -13,10 +13,15 @@
 #   If $name is text.frontend,  this will create graphite keys that look like:
 #   servers.cp1052.varnish.eqiad.text.frontend.request.client.status.2xx
 #
+
+# NOTE: This does not work.  The combination of diamond + varnishlog ctypes
+# + multiprocessing causes segfaults.  This is being removed in favor of
+# varnish::logging::reqstats, which sends directly to statsd rather than
+#
 define varnish::monitoring::varnishreqstats(
     $instance_name = $name,
     $metric_path   = "varnish.${::site}.${name}.request",
-    $ensure        = 'present',
+    $ensure        = 'absent',
 ) {
     # ${collector_name}Collector will be used as the python diamond collector class name
     # when varnishreqstats-diamond.py.erb is rendered.
