@@ -45,6 +45,8 @@ sub vcl_recv {
 		set req.http.host = "wikimediafoundation.org";
 	} else if (req.http.host == "m.wikisource.org") {
 		set req.http.host = "wikisource.org";
+	} else if (req.http.host == "m.wikidata.org") {
+		set req.http.host = "www.wikidata.org";
 	} else {
 		// Replace <language>.(m|zero).<project>.org by <language>.<project>.org
 		set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
