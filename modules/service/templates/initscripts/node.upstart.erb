@@ -12,7 +12,7 @@ limit nofile <%= @no_file %> <%= @no_file %>
 setuid "<%= @title %>"
 setgid "<%= @title %>"
 
-env NODE_PATH="/srv/deployment/<%= @title %>/deploy/node_modules"
+env NODE_PATH="/srv/deployment/<%= @repo %>/node_modules"
 env <%= @title.gsub(/[^a-zA-Z0-9_]/, '_').upcase %>_PORT="<%= @port %>"
 
 respawn
@@ -20,5 +20,5 @@ respawn
 # wait 60 seconds for a graceful restart before killing the master
 kill timeout 60
 
-chdir /srv/deployment/<%= @title %>/deploy
+chdir /srv/deployment/<%= @repo %>
 exec /usr/bin/firejail --blacklist=root --blacklist=/home/* --tmpfs=/tmp --caps --seccomp /usr/bin/nodejs src/server.js -c /etc/<%= @title %>/config.yaml

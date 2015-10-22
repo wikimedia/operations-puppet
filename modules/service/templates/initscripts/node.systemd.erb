@@ -8,13 +8,13 @@ Description="<%= @title %> service"
 LimitNOFILE=<%= @no_file %>
 User=<%= @title %>
 Group=<%= @title %>
-Environment="NODE_PATH=/srv/deployment/<%= @title %>/deploy/node_modules"
+Environment="NODE_PATH=/srv/deployment/<%= @repo %>/node_modules"
 Environment="<%= @title.gsub(/[^a-zA-Z0-9_]/, '_').upcase %>_PORT=<%= @port %>"
 Restart=always
 RestartSec=2s
 # wait 60 seconds for a graceful restart before killing the master
 TimeoutStopSec=60
-WorkingDirectory=/srv/deployment/<%= @title %>/deploy
+WorkingDirectory=/srv/deployment/<%= @repo %>
 ExecStart=/usr/bin/firejail --blacklist=root --blacklist=/home/* --tmpfs=/tmp --caps --seccomp /usr/bin/nodejs src/server.js -c /etc/<%= @title %>/config.yaml
 
 [Install]
