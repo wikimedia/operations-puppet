@@ -2652,6 +2652,16 @@ host labvirt1009 {
 	fixed-address labvirt1009.eqiad.wmnet;
 }
 
+host labvirt1010 {
+	hardware ethernet 3c:a8:2a:12:5a:ec;
+	fixed-address labvirt1010.eqiad.wmnet;
+}
+
+host labvirt1011 {
+	hardware ethernet 3c:a8:2a:0a:e9:10;
+	fixed-address labvirt1011.eqiad.wmnet;
+}
+
 host lanthanum {
 	hardware ethernet 90:B1:1C:00:A2:67;
 	fixed-address lanthanum.eqiad.wmnet;
