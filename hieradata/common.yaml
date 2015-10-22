@@ -5,6 +5,8 @@ datacenters:
   - esams
   - ulsfo
 
+# Main statsd instance
+statsd: statsd.eqiad.wmnet:8125
 
 # NOTE: Do *not* add new clusters *per site* anymore,
 # the site name will automatically be appended now,

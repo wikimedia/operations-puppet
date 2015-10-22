@@ -1,0 +1,9 @@
+[Unit]
+Description=Varnish Request Stats StatsD reporter
+After=varnish<%= /\w/.match(@instance_name) ? "-#{@instance_name}" : '' -%>.service
+
+[Service]
+ExecStart=/usr/local/bin/varnishreqstats <%= /\w/.match(@instance_name) ? "--varnish-name=#{@instance_name}" : ""  %> --statsd=<%= @statsd %> --metric-prefix=<%= @metric_prefix %> --interval=<%= @interval %>
+
+[Install]
+WantedBy=multi-user.target
