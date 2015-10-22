@@ -1,1 +1,4 @@
 redis::dir: "/srv/redis"
+debdeploy::grains:
+  debdeploy-memcached-codfw:
+    value: standard
