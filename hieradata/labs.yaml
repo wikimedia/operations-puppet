@@ -7,6 +7,9 @@ has_nrpe: false
 standard::has_admin: false
 base::remote_syslog::enable: false
 
+# Labs statsd instance
+statsd: labmon1001.eqiad.wmnet:8125
+
 # Other overrides
 elasticsearch::minimum_master_nodes: 1
 elasticsearch::recover_after_time: "1m"

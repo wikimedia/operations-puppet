@@ -13,9 +13,12 @@
 #   If $name is text.frontend,  this will create graphite keys that look like:
 #   servers.cp1052.varnish.eqiad.text.frontend.request.client.status.2xx
 #
-# NOTE:  Diamond collectors using varnishlog and multiprocessing doesn't work.
-#        They will all be removed and replaced with a service sending directly
-#        to statsd.
+
+# NOTE: This does not work.  The combination of diamond + varnishlog ctypes
+# + multiprocessing causes segfaults.  This is being removed in favor of
+# varnish::logging::reqstats, which sends directly to statsd rather than
+# via diamond.
+#
 define varnish::monitoring::varnishreqstats(
     $instance_name = $name,
     $metric_path   = "varnish.${::site}.${name}.request",
