@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-osm-master:
+    value: standard
