@@ -103,6 +103,8 @@ lvs_service_ips:
     eqiad: 10.2.2.14
   git-ssh: &ip_block024
     eqiad: 208.80.154.250
+  aqs: &ip_block025
+    eqiad: 10.2.2.12
 lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
@@ -848,3 +850,27 @@ lvs_services:
     conftool:
       cluster: phabricator
       service: git-ssh
+  aqs:
+  description: "Analytics Query Service, aqs.svc.%{::site}.wmnet"
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block025
+    port: 7232
+    bgp: 'yes'
+    depool-threshold: '.5'
+    monitors:
+      ProxyFetch:
+        url:
+        - "http://aqs.svc.%{::site}.wmnet"
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
+    conftool:
+      cluster: aqs
+      service: aqs
+    icinga:
+    check_command: "check_http_lvs_on_port!aqs.svc.%{::site}.wmnet!7232!/_info"
+      sites:
+        eqiad:
+          hostname: aqs.svc.eqiad.wmnet
