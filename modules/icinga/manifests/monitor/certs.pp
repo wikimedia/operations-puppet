@@ -63,4 +63,14 @@ class icinga::monitor::certs {
         check_command => 'check_ssl_http!tools.wmflabs.org',
         host          => 'tools.wmflabs.org',
     }
+
+    # *.wmfusercontent.org (wildcard cert, testing phab.wmfusercontent.org)
+    @monitoring::host { 'phab.wmfusercontent.org':
+        host_fqdn     => 'phab.wmfusercontent.org'
+    }
+    monitoring::service { 'https_wmfusercontent':
+        description   => 'HTTPS-wmfusercontent',
+        check_command => 'check_ssl_http!phab.wmfusercontent.org',
+        host          => 'phab.wmfusercontent.org',
+    }
 }
