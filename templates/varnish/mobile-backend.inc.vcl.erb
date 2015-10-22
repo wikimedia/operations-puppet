@@ -40,6 +40,12 @@ sub vcl_recv {
 	if (req.http.X-Wikimedia-Debug == "1") {
 		set req.backend = test_wikipedia;
 	}
+
+	/* When multi-DC is ready, add '|| req.request == "POST"' to the condition below. */
+	if (header.get(req.http.Cookie, "RequestDC=") == "master") {
+		/* set req.backend = master_dc; */
+		set req.backend = test_wikipedia;
+	}
 <% end -%>
 
 <% if @varnish_directors.include?('security_audit') && !@varnish_directors['security_audit']['backends'].empty? %>
