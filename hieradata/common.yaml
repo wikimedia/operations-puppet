@@ -259,4 +259,4 @@ statistics_servers:
 # for eventlogging in labs as well as production.
 # Currently this just blacklists the Analytics schema
 # so we can use it for testing throughput.
-eventlogging_valid_mixed_schema_blacklist: ^Analytics$
+eventlogging_valid_mixed_schema_blacklist: ^Analytics|CentralNoticeBannerHistory$
