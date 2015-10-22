@@ -50,7 +50,7 @@ fetch() {
         git --no-pager diff HEAD origin
     else
         branch_dir="$(branchdir $1)"
-        branch="origin/wmf/${branch_dir#./php-}"
+        branch="origin/wmf/${branch_dir#/srv/mediawiki-staging/php-}"
         cd "${branch_dir}"
         git fetch 2>&1 >/dev/null
         git --no-pager log --pretty=format:"$PRETTY_FORMAT" "HEAD..${branch}"
