@@ -15,10 +15,6 @@ class role::dumps {
         check_command => 'check_ssl_http!dumps.wikimedia.org',
     }
 
-    sslcert::certificate { 'dumps.wikimedia.org': }
-
-    $ssl_settings = ssl_ciphersuite('nginx', 'compat')
-
     # By default the resolve() function in ferm performs only an IPv4/A DNS
     # lookup. It fails if a host only has an IPv6 address. Ferm also provides
     # a AAAA lookup mode for IPv6 addresses, but this equally fails if only

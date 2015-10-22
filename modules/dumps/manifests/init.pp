@@ -1,8 +1,11 @@
 class dumps {
+    sslcert::certificate { 'dumps.wikimedia.org': }
 
     class { '::nginx':
         variant => 'extras',
     }
+
+    $ssl_settings = ssl_ciphersuite('nginx', 'compat')
 
     nginx::site { 'dumps':
         content => template('dumps/nginx.dumps.conf.erb'),
