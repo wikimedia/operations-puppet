@@ -12,10 +12,7 @@ class role::abacist {
         eventlogging_publisher => 'tcp://eventlog1001.eqiad.wmnet:8600',
     }
 
+    # The redis server is only accessed from localhost (and monitoring), so
+    # no further ferm rules are needed
     Service['redis-server'] ~> Service['abacist']
-
-    ferm::service {'redis_abacist':
-        proto    => 'tcp',
-        port     => '6379',
-    }
 }
