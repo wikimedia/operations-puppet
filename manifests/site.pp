@@ -2464,30 +2464,6 @@ node 'uranium.wikimedia.org' {
     }
 }
 
-node /^virt100[5-7].eqiad.wmnet/ {
-    # We're doing some ceph testing on these
-    #  boxes.
-    include standard
-}
-
-node /^virt100[1-4].eqiad.wmnet/ {
-    $use_neutron = false
-    role nova::compute
-    include standard
-    if $use_neutron == true {
-        include role::neutron::computenode
-    }
-}
-
-node /^virt100[8-9].eqiad.wmnet/ {
-    $use_neutron = false
-    role nova::compute
-    include standard
-    if $use_neutron == true {
-        include role::neutron::computenode
-    }
-}
-
 node /^labvirt100[0-9].eqiad.wmnet/ {
     $use_neutron = false
     openstack::nova::partition{ '/dev/sdb': }
