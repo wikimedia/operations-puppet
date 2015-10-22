@@ -1899,11 +1899,6 @@ host eeden {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host einsteinium {
-	hardware ethernet F0:1F:AF:E8:B2:33;
-	fixed-address einsteinium.eqiad.wmnet;
-}
-
 host elastic1001 {
 	hardware ethernet d4:ae:52:6e:e3:32;
 	fixed-address elastic1001.eqiad.wmnet;

@@ -854,11 +854,6 @@ node 'eeden.wikimedia.org' {
     include standard
 }
 
-node 'einsteinium.eqiad.wmnet' {
-    include standard
-    system::role { 'Titan test host': }
-}
-
 node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
     role elasticsearch::server
     include base::firewall
