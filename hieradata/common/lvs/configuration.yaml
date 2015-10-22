@@ -851,7 +851,7 @@ lvs_services:
       cluster: phabricator
       service: git-ssh
   aqs:
-  description: "Analytics Query Service, aqs.svc.%{::site}.wmnet"
+    description: "Analytics Query Service, aqs.svc.%{::site}.wmnet"
     class: low-traffic
     sites:
     - eqiad
