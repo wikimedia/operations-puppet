@@ -41,7 +41,7 @@ class HhvmApcCollector(diamond.collector.Collector):
         req.add_header('User-Agent', '%s/1.0' % __file__)
         try:
             response = urllib2.urlopen(req, None, self.config['timeout'])
-            apc_info = self.parse_apc_info(raw)
+            apc_info = self.parse_apc_info(response.read())
             for metric in self.interesting_metrics:
                 value = apc_info.get(metric)
                 if value is not None:
