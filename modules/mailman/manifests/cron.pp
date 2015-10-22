@@ -14,7 +14,7 @@ class mailman::cron {
         ensure  => 'present',
         command => '/usr/local/sbin/queue_data -a >> /var/www/qdata.html',
         user    => 'root',
-        minute  => '2',
+        minute  => '15',
     }
 
 }
