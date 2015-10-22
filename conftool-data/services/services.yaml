@@ -78,7 +78,7 @@ sca:
     datacenters:
     - eqiad
   zotero:
-    port: 7231
+    port: 1969
     default_values:
       pooled: 'no'
       weight: 10

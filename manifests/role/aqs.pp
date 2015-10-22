@@ -75,7 +75,7 @@ class role::aqs {
 
     ferm::service {'restbase_web':
         proto => 'tcp',
-        port  => '7231',
+        port  => $::restbase::port,
     }
 
     #TODO: add monitoring once we figure out what metrics we want
