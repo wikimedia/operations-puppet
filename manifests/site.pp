@@ -151,10 +151,6 @@ node 'analytics1026.eqiad.wmnet' {
     include role::analytics::impala::master
     include role::logging::udp2log::misc
     include base::firewall
-    # lint:ignore:quoted_booleans
-    # salt grain values are passed to a shell command
-    salt::grain { 'debdeploy-analytics': value => 'true' }
-    # lint:endignore
 }
 
 # analytics1027 hosts some frontend web interfaces to Hadoop
@@ -1774,9 +1770,6 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     include redis
     include redis::ganglia
     include base::firewall
-    # lint:ignore:quoted_booleans
-    salt::grain { 'debdeploy-memcached': value => 'true' }
-    # lint:endignore
 }
 
 # OTRS evaluation upgrade
@@ -1846,16 +1839,10 @@ node /^ms-be101[678]\.eqiad\.wmnet$/ {
 
 node /^ms-fe300[1-2]\.esams\.wmnet$/ {
     role swift::proxy
-    # lint:ignore:quoted_booleans
-    salt::grain { 'debdeploy-swift-proxy': value => 'true' }
-    # lint:endignore
 }
 
 node /^ms-be300[1-4]\.esams\.wmnet$/ {
     role swift::storage
-    # lint:ignore:quoted_booleans
-    salt::grain { 'debdeploy-swift-storage': value => 'true' }
-    # lint:endignore
 }
 
 node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
