@@ -100,7 +100,7 @@ class role::labsdnsrecursor {
 
     class { ::dnsrecursor:
             listen_addresses         => $listen_addresses,
-            allow_from               => $network::constants::all_networks,
+            allow_from               => $::network::constants::all_networks,
             ip_aliases               => $nova_floating_ip_aliases,
             additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}",
             auth_zones               => "labsdb=/var/zones/labsdb"
