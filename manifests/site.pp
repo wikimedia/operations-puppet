@@ -2225,7 +2225,7 @@ node 'nobelium.eqiad.wmnet' {
 
     # To help copy ES indices from production to here
     include role::mediawiki::common
-    include role::mediawiki::maintenance
+    include scap::scripts
 
     include base::firewall
     include standard
