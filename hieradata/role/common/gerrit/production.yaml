@@ -1,3 +1,6 @@
 admin::groups:
   - gerrit-root
   - gerrit-admin
+debdeploy::grains:
+  debdeploy-gerrit:
+    value: standard
