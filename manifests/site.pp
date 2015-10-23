@@ -2223,6 +2223,10 @@ node 'nitrogen.wikimedia.org' {
 node 'nobelium.eqiad.wmnet' {
     role elasticsearch::server
 
+    # To help copy ES indices from production to here
+    include role::mediawiki::common
+    include role::mediawiki::maintenance
+
     include base::firewall
     include standard
 }
