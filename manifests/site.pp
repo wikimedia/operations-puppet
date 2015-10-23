@@ -2466,7 +2466,18 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
     }
 }
 
-node /^labvirt101[0-1].eqiad.wmnet/ {
+node /^labvirt1010.eqiad.wmnet/ {
+    $use_neutron = false
+    openstack::nova::partition{ '/dev/sdb': }
+    role nova::compute
+    include standard
+
+    if $use_neutron == true {
+        include role::neutron::computenode
+    }
+}
+
+node /^labvirt1011.eqiad.wmnet/ {
     include standard
 }
 
