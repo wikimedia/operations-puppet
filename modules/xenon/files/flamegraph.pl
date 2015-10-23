@@ -10,6 +10,9 @@
 #
 #        grep funcA input.txt | ./flamegraph.pl [options] > graph.svg
 #
+# Then open the resulting .svg in a web browser, for interactivity: mouse-over
+# frames for info, click to zoom, and ctrl-F to search.
+#
 # Options are listed in the usage message (--help).
 #
 # The input is stack frames and sample counts formatted as single lines.  Each
@@ -66,6 +69,7 @@
 #
 # CDDL HEADER END
 #
+# 11-Oct-2014	Adrien Mahieux	Added zoom.
 # 21-Nov-2013   Shawn Sterling  Added consistent palette file option
 # 17-Mar-2013   Tim Bunce       Added options and more tunables.
 # 15-Dec-2011	Dave Pacheco	Support for frames with whitespace.
@@ -101,6 +105,33 @@ my $negate = 0;                 # switch differential hues
 my $titletext = "";             # centered heading
 my $titledefault = "Flame Graph";	# overwritten by --title
 my $titleinverted = "Icicle Graph";	#   "    "
+my $searchcolor = "rgb(230,0,230)";	# color for search highlighting
+my $help = 0;
+
+sub usage {
+	die <<USAGE_END;
+USAGE: $0 [options] infile > outfile.svg\n
+	--title       # change title text
+	--width       # width of image (default 1200)
+	--height      # height of each frame (default 16)
+	--minwidth    # omit smaller functions (default 0.1 pixels)
+	--fonttype    # font type (default "Verdana")
+	--fontsize    # font size (default 12)
+	--countname   # count type label (default "samples")
+	--nametype    # name type label (default "Function:")
+	--colors      # set color palette. choices are: hot (default), mem, io,
+	              # java, js, red, green, blue, yellow, purple, orange
+	--hash        # colors are keyed by function name hash
+	--cp          # use consistent palette (palette.map)
+	--reverse     # generate stack-reversed flame graph
+	--inverted    # icicle graph
+	--negate      # switch differential hues (blue<->red)
+	--help        # this message
+
+	eg,
+	$0 --title="Flame Graph: malloc()" trace.txt > graph.svg
+USAGE_END
+}
 
 GetOptions(
 	'fonttype=s'  => \$fonttype,
@@ -122,27 +153,9 @@ GetOptions(
 	'reverse'     => \$stackreverse,
 	'inverted'    => \$inverted,
 	'negate'      => \$negate,
-) or die <<USAGE_END;
-USAGE: $0 [options] infile > outfile.svg\n
-	--title       # change title text
-	--width       # width of image (default 1200)
-	--height      # height of each frame (default 16)
-	--minwidth    # omit smaller functions (default 0.1 pixels)
-	--fonttype    # font type (default "Verdana")
-	--fontsize    # font size (default 12)
-	--countname   # count type label (default "samples")
-	--nametype    # name type label (default "Function:")
-	--colors      # set color palette. choices are: hot (default), mem, io,
-	              # java, js, red, green, blue, yellow, purple, orange
-	--hash        # colors are keyed by function name hash
-	--cp          # use consistent palette (palette.map)
-	--reverse     # generate stack-reversed flame graph
-	--inverted    # icicle graph
-	--negate      # switch differential hues (blue<->red)
-
-	eg,
-	$0 --title="Flame Graph: malloc()" trace.txt > graph.svg
-USAGE_END
+	'help'        => \$help,
+) or usage();
+$help && usage();
 
 # internals
 my $ypad1 = $fontsize * 4;      # pad top, include title
@@ -195,6 +208,7 @@ if ($colors eq "io")  { $bgcolor1 = "#f8f8f8"; $bgcolor2 = "#e8e8e8"; }
 <?xml version="1.0"$enc_attr standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" width="$w" height="$h" onload="init(evt)" viewBox="0 0 $w $h" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Flame graph stack visualization. See https://github.com/brendangregg/FlameGraph for latest version, and http://www.brendangregg.com/flamegraphs.html for examples. -->
 SVG
 	}
 
@@ -582,13 +596,33 @@ my $inc = <<INC;
 </style>
 <script type="text/ecmascript">
 <![CDATA[
-	var details, svg;
+	var details, searchbtn, matchedtxt, svg;
 	function init(evt) { 
 		details = document.getElementById("details").firstChild; 
+		searchbtn = document.getElementById("search");
+		matchedtxt = document.getElementById("matched");
 		svg = document.getElementsByTagName("svg")[0];
+		searching = 0;
 	}
-	function s(info) { details.nodeValue = "$nametype " + info; }
-	function c() { details.nodeValue = ' '; }
+
+	// mouse-over for info
+	function s(node) {		// show
+		info = g_to_text(node);
+		details.nodeValue = "$nametype " + info;
+	}
+	function c() {			// clear
+		details.nodeValue = ' ';
+	}
+
+	// ctrl-F for search
+	window.addEventListener("keydown",function (e) {
+		if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)) {
+			e.preventDefault();
+			search_prompt();
+		}
+	})
+
+	// functions
 	function find_child(parent, name, attr) {
 		var children = parent.childNodes;
 		for (var i=0; i<children.length;i++) {
@@ -607,6 +641,16 @@ my $inc = <<INC;
 		if (e.attributes["_orig_"+attr] == undefined) return;
 		e.attributes[attr].value = e.attributes["_orig_"+attr].value;
 		e.removeAttribute("_orig_"+attr);
+	}
+	function g_to_text(e) {
+		var text = find_child(e, "title").firstChild.nodeValue;
+		return (text)
+	}
+	function g_to_func(e) {
+		var func = g_to_text(e);
+		if (func != null)
+			func = func.replace(/ .*/, "");
+		return (func);
 	}
 	function update_text(e) {
 		var r = find_child(e, "rect");
@@ -634,6 +678,8 @@ my $inc = <<INC;
 		}
 		t.textContent = "";
 	}
+
+	// zoom
 	function zoom_reset(e) {
 		if (e.attributes != undefined) {
 			orig_load(e, "x");
@@ -742,6 +788,129 @@ my $inc = <<INC;
 			update_text(el[i]);
 		}
 	}	
+
+	// search
+	function reset_search() {
+		var el = document.getElementsByTagName("rect");
+		for (var i=0; i < el.length; i++) {
+			orig_load(el[i], "fill")
+		}
+	}
+	function search_prompt() {
+		if (!searching) {
+			var term = prompt("Enter a search term (regexp " +
+			    "allowed, eg: ^ext4_)", "");
+			if (term != null) {
+				search(term)
+			}
+		} else {
+			reset_search();
+			searching = 0;
+			searchbtn.style["opacity"] = "0.1";
+			searchbtn.firstChild.nodeValue = "Search"
+			matchedtxt.style["opacity"] = "0.0";
+			matchedtxt.firstChild.nodeValue = ""
+		}
+	}
+	function search(term) {
+		var re = new RegExp(term);
+		var el = document.getElementsByTagName("g");
+		var matches = new Object();
+		var maxwidth = 0;
+		for (var i = 0; i < el.length; i++) {
+			var e = el[i];
+			if (e.attributes["class"].value != "func_g")
+				continue;
+			var func = g_to_func(e);
+			var rect = find_child(e, "rect");
+			if (rect == null) {
+				// the rect might be wrapped in an anchor
+				// if nameattr href is being used
+				if (rect = find_child(e, "a")) {
+				    rect = find_child(r, "rect");
+				}
+			}
+			if (func == null || rect == null)
+				continue;
+
+			// Save max width. Only works as we have a root frame
+			var w = parseFloat(rect.attributes["width"].value);
+			if (w > maxwidth)
+				maxwidth = w;
+
+			if (func.match(re)) {
+				// highlight
+				var x = parseFloat(rect.attributes["x"].value);
+				orig_save(rect, "fill");
+				rect.attributes["fill"].value =
+				    "$searchcolor";
+
+				// remember matches
+				if (matches[x] == undefined) {
+					matches[x] = w;
+				} else {
+					if (w > matches[x]) {
+						// overwrite with parent
+						matches[x] = w;
+					}
+				}
+				searching = 1;
+			}
+		}
+		if (!searching)
+			return;
+
+		searchbtn.style["opacity"] = "1.0";
+		searchbtn.firstChild.nodeValue = "Reset Search"
+
+		// calculate percent matched, excluding vertical overlap
+		var count = 0;
+		var lastx = -1;
+		var lastw = 0;
+		var keys = Array();
+		for (k in matches) {
+			if (matches.hasOwnProperty(k))
+				keys.push(k);
+		}
+		// sort the matched frames by their x location
+		// ascending, then width descending
+		keys.sort(function(a, b){
+				return a - b;
+			if (a < b || a > b)
+				return a - b;
+			return matches[b] - matches[a];
+		});
+		// Step through frames saving only the biggest bottom-up frames
+		// thanks to the sort order. This relies on the tree property
+		// where children are always smaller than their parents.
+		for (var k in keys) {
+			var x = parseFloat(keys[k]);
+			var w = matches[keys[k]];
+			if (x >= lastx + lastw) {
+				count += w;
+				lastx = x;
+				lastw = w;
+			}
+		}
+		// display matched percent
+		matchedtxt.style["opacity"] = "1.0";
+		pct = 100 * count / maxwidth;
+		if (pct == 100)
+			pct = "100"
+		else
+			pct = pct.toFixed(1)
+		matchedtxt.firstChild.nodeValue = "Matched: " + pct + "%";
+	}
+	function searchover(e) {
+		searchbtn.style["opacity"] = "1.0";
+	}
+	function searchout(e) {
+		if (searching) {
+			searchbtn.style["opacity"] = "1.0";
+		} else {
+			searchbtn.style["opacity"] = "0.1";
+		}
+	}
 ]]>
 </script>
 INC
@@ -757,6 +926,9 @@ $im->stringTTF($black, $fonttype, $fontsize + 5, 0.0, int($imagewidth / 2), $fon
 $im->stringTTF($black, $fonttype, $fontsize, 0.0, $xpad, $imageheight - ($ypad2 / 2), " ", "", 'id="details"');
 $im->stringTTF($black, $fonttype, $fontsize, 0.0, $xpad, $fontsize * 2,
     "Reset Zoom", "", 'id="unzoom" onclick="unzoom()" style="opacity:0.0;cursor:pointer"');
+$im->stringTTF($black, $fonttype, $fontsize, 0.0, $imagewidth - $xpad - 100,
+    $fontsize * 2, "Search", "", 'id="search" onmouseover="searchover()" onmouseout="searchout()" onclick="search_prompt()" style="opacity:0.1;cursor:pointer"');
+$im->stringTTF($black, $fonttype, $fontsize, 0.0, $imagewidth - $xpad - 100, $imageheight - ($ypad2 / 2), " ", "", 'id="matched"');
 
 if ($palette) {
 	read_palette();
@@ -794,18 +966,20 @@ while (my ($id, $node) = each %Node) {
 		$escaped_func =~ s/&/&amp;/g;
 		$escaped_func =~ s/</&lt;/g;
 		$escaped_func =~ s/>/&gt;/g;
+		$escaped_func =~ s/"/&quot;/g;
 		unless (defined $delta) {
 			$info = "$escaped_func ($samples_txt $countname, $pct%)";
 		} else {
-			my $deltapct = sprintf "%.2f", ((100 * $delta) / ($timemax * $factor));
-			$deltapct = $delta > 0 ? "+$deltapct" : $deltapct;
+			my $d = $negate ? -$delta : $delta;
+			my $deltapct = sprintf "%.2f", ((100 * $d) / ($timemax * $factor));
+			$deltapct = $d > 0 ? "+$deltapct" : $deltapct;
 			$info = "$escaped_func ($samples_txt $countname, $pct%; $deltapct%)";
 		}
 	}
 
 	my $nameattr = { %{ $nameattr{$func}||{} } }; # shallow clone
 	$nameattr->{class}       ||= "func_g";
-	$nameattr->{onmouseover} ||= "s('".$info."')";
+	$nameattr->{onmouseover} ||= "s(this)";
 	$nameattr->{onmouseout}  ||= "c()";
 	$nameattr->{onclick}     ||= "zoom(this)";
 	$nameattr->{title}       ||= $info;
