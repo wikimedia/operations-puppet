@@ -2,3 +2,6 @@ admin::groups:
   - udp2log-users
   - deployment
   - snapshot-admins
+debdeploy::grains:
+  debdeploy-snapshot:
+    value: standard
