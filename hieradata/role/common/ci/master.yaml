@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-ci:
+    value: standard
