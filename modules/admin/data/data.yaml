@@ -425,6 +425,11 @@ groups:
     members: []
     privileges: ['ALL = NOPASSWD: /usr/local/sbin/install-console *']
 
+  aqs-restbase-deployers:
+    gid: 766
+    description: Users who deploy restbase for the Analytics Query Service
+    members: []
+    privileges: ['ALL = NOPASSWD: ansible-playbook -i production -e target=aqs roles/restbase/deploy.yml']
 users:
   rush:
     ensure: present
