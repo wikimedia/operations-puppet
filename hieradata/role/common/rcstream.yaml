@@ -1,1 +1,4 @@
 cluster: rcstream
+debdeploy::grains:
+  debdeploy-rcstream:
+    value: standard
