@@ -29,6 +29,16 @@ cassandra::concurrent_writes: 18
 cassandra::concurrent_reads: 18
 cassandra::tls_cluster_name: services
 cassandra::internode_encryption: dc
+cassandra::metrics::blacklist:
+    - .*\.15MinuteRate$
+    - .*\.5MinuteRate$
+    - .*\.98percentile$
+    - .*\.999percentile$
+    - .*\.max$
+    - .*\.mean$
+    - .*\.meanRate$
+    - .*\.min$
+    - .*\.stddev$
 
 cassandra::dc: "%{::site}"
 # NOTE: this is cassandra's logical cluster name, not related to cassandra's datacenters (eqiad/codfw)
