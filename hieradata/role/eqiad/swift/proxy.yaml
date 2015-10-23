@@ -2,3 +2,6 @@ cluster: swift
 nagios_group: swift
 lvs::realserver::realserver_ips:
   - '10.2.2.27'
+debdeploy::grains:
+  debdeploy-swift-fe-eqiad:
+    value: standard
