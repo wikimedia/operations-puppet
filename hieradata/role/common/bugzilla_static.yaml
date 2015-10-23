@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-bugzilla:
+    value: standard
