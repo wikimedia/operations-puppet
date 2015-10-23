@@ -1726,81 +1726,113 @@ host db2054 {
 host db2055 {
 	hardware ethernet 40:a8:f0:35:4d:1c;
 	fixed-address db2055.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2056 {
 	hardware ethernet 40:a8:f0:35:58:e8;
 	fixed-address db2056.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2057 {
 	hardware ethernet 40:a8:f0:35:1e:1c;
 	fixed-address db2057.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2058 {
 	hardware ethernet 40:a8:f0:35:57:fc;
 	fixed-address db2058.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2059 {
 	hardware ethernet 40:a8:f0:35:65:0c;
 	fixed-address db2059.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2060 {
 	hardware ethernet 40:a8:f0:35:06:f8;
 	fixed-address db2060.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2061 {
 	hardware ethernet 40:a8:f0:35:56:14;
 	fixed-address db2061.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2062 {
 	hardware ethernet 40:a8:f0:35:3b:a0;
 	fixed-address db2062.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2063 {
 	hardware ethernet 40:a8:f0:35:0d:b0;
 	fixed-address db2063.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2064 {
 	hardware ethernet 40:a8:f0:35:0a:9c;
 	fixed-address db2064.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2065 {
 	hardware ethernet 40:a8:f0:35:1e:2c;
 	fixed-address db2065.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2066 {
 	hardware ethernet 40:a8:f0:35:05:a4;
 	fixed-address db2066.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2067 {
 	hardware ethernet 40:a8:f0:35:5b:f0;
 	fixed-address db2067.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2068 {
 	hardware ethernet 40:a8:f0:35:30:d0;
 	fixed-address db2068.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2069 {
 	hardware ethernet 40:a8:f0:35:27:f8;
 	fixed-address db2069.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2070 {
 	hardware ethernet 40:a8:f0:35:08:e0;
 	fixed-address db2070.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 
