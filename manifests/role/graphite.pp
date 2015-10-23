@@ -321,4 +321,6 @@ class role::graphite::labmon {
         auth        => false,
         hostname    => 'graphite.wmflabs.org',
     }
+
+    include graphite::labs::archiver
 }
