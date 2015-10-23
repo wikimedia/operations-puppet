@@ -1,1 +1,4 @@
 role::nova::compute::instance_dev: "/dev/sdb1"
+debdeploy::grains:
+  debdeploy-nova-compute:
+    value: canary
