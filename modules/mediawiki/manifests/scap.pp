@@ -56,5 +56,7 @@ class mediawiki::scap {
         creates => "${mediawiki_deployment_dir}/docroot",
         require => [ File[$mediawiki_deployment_dir], Package['scap'] ],
         timeout => 30 * 60,  # 30 minutes
+        user    => 'mwdeploy',
+        group   => 'mwdeploy',
     }
 }
