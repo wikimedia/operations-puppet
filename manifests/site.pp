@@ -651,6 +651,20 @@ node /^db20(29|40|47|54)\.codfw\.wmnet/ {
     include base::firewall
 }
 
+# New deployed mariadb servers
+# Temporarily setting them on shard1 until we
+# distribute them among all shards according
+# to actual load needs
+node /^db20(5[5-9]|6[0-9]|70)\.codfw\.wmnet$/ {
+
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's1',
+    }
+    include base::firewall
+}
+
+
 ## x1 shard
 node /^db10(29|31)\.eqiad\.wmnet/ {
     include role::coredb::x1
@@ -756,14 +770,6 @@ node 'db1069.eqiad.wmnet' {
 
 node 'db1011.eqiad.wmnet' {
     role mariadb::tendril
-}
-
-# codfw db
-node /^db20(5[5-9]|6[0-9]|70)\.codfw\.wmnet$/ {
-
-    $cluster = 'mysql'
-    include standard
-    include base::firewall
 }
 
 node 'dbstore1001.eqiad.wmnet' {
