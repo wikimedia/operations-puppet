@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-poolcounter-eqiad:
+    value: standard
