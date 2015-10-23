@@ -1,3 +1,6 @@
 postgresql::master::pgversion: 9.4
 postgresql::master::datadir: /srv/postgresql/9.4/main
 postgresql::master::includes: tuning.conf
+debdeploy::grains:
+  debdeploy-maps-master:
+    value: standard
