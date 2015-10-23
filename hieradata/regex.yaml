@@ -76,6 +76,8 @@ cassandra_test_eqiad:
       - restbase-test2001-a.codfw.wmnet
       - restbase-test2001-b.codfw.wmnet
       - restbase-test2002.codfw.wmnet
+      - restbase-test2002-a.codfw.wmnet
+      - restbase-test2002-b.codfw.wmnet
       - restbase-test2003.codfw.wmnet
   restbase::seeds:
       - cerium.eqiad.wmnet
@@ -85,6 +87,8 @@ cassandra_test_eqiad:
       - restbase-test2001-a.codfw.wmnet
       - restbase-test2001-b.codfw.wmnet
       - restbase-test2002.codfw.wmnet
+      - restbase-test2002-a.codfw.wmnet
+      - restbase-test2002-b.codfw.wmnet
       - restbase-test2003.codfw.wmnet
   restbase::cassandra_datacenters:
       - eqiad
@@ -119,6 +123,8 @@ cassandra_test_codfw:
       - restbase-test2001-a.codfw.wmnet
       - restbase-test2001-b.codfw.wmnet
       - restbase-test2002.codfw.wmnet
+      - restbase-test2002-a.codfw.wmnet
+      - restbase-test2002-b.codfw.wmnet
       - restbase-test2003.codfw.wmnet
   restbase::seeds:
       - cerium.eqiad.wmnet
@@ -128,6 +134,8 @@ cassandra_test_codfw:
       - restbase-test2001-a.codfw.wmnet
       - restbase-test2001-b.codfw.wmnet
       - restbase-test2002.codfw.wmnet
+      - restbase-test2002-a.codfw.wmnet
+      - restbase-test2002-b.codfw.wmnet
       - restbase-test2003.codfw.wmnet
   restbase::cassandra_datacenters:
       - eqiad
