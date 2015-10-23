@@ -21,7 +21,7 @@ class puppetmaster::ssl(
         ]:
             ensure  => directory,
             owner   => 'puppet',
-            group   => 'root',
+            group   => 'puppet',
             mode    => '0771',
             before  => $before;
         [
