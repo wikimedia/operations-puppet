@@ -34,7 +34,6 @@ class snapshot::centralauthdump(
     cron { 'centralauth-dump':
         ensure      => $ensure,
         command     => "/usr/local/bin/dumpcentralauth.sh --site ${dbsite} --config ${snapshot::dirs::dumpsdir}/confs/wikidump.conf",
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         minute      => '15',
         hour        => '8',
