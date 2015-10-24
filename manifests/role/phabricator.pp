@@ -199,6 +199,7 @@ class role::phabricator::labs {
         git_tag       => $current_tag,
         lock_file     => '/var/run/phab_repo_lock',
         sprint_tag    => 'release/2015-07-01',
+        security_tag     => $current_tag,
         libraries     => ['/srv/phab/libext/Sprint/src',
                           '/srv/phab/libext/security/src'],
         extension_tag => 'release/2015-06-10/1',
