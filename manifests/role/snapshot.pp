@@ -43,6 +43,10 @@ class role::snapshot::cron::primary {
         enable => true,
         user   => 'datasets',
     }
+    class { 'snapshot:cirrussearch':
+        enable => true,
+        user   => 'datasets',
+    }
 }
 
 class role::snapshot::cron::secondary {
@@ -77,6 +81,10 @@ class role::snapshot::cron::secondary {
         user   => 'datasets',
     }
     class { 'snapshot::mediaperprojectlists':
+        enable => false,
+        user   => 'datasets',
+    }
+    class { 'snapshot:cirrussearch':
         enable => false,
         user   => 'datasets',
     }
