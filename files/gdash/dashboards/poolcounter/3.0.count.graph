@@ -1,9 +1,0 @@
-title   "PoolCounter Client Sampled Call Rate -1week"
-linewidth 1
-linemode "connected"
-hide_legend "false"
-from "-1week"
-
-field :count, :alias => "none",
-               :data  => 'cactiStyle(MediaWiki.PoolCounter.Client.*.count)'
-

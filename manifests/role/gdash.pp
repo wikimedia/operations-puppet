@@ -1,34 +1,28 @@
 # == Class: role::gdash
 #
-# Gdash is a dashboarding webapp for Graphite.
-# It powers <https://gdash.wikimedia.org>.
+# https://gdash.wikimedia.org/ is a static mirror of the site that was
+# previously served at that URL -- a dashboard templating webapp for Graphite.
+# At the time of writing (October 2015), we are in the process of migrating to
+# Grafana (https://grafana.wikimedia.org), but gdash continues to receive
+# traffic, so we preserved it here.
 #
 class role::gdash {
-    class { '::gdash':
-        graphite_host   => 'https://graphite.wikimedia.org',
-        template_source => 'puppet:///files/gdash',
-        options         => {
-          title         => 'WMF stats',
-          graph_columns => 1,
-          graph_height  => 500,
-          graph_width   => 1024,
-          hide_legend   => false,
-          deploy_addon  => template('gdash/deploy_addon.erb'),
-        },
-    }
-
     include ::apache
-    include ::apache::mod::uwsgi
-    include ::apache::mod::rewrite
+
+    include ::apache::mod::filter
     include ::apache::mod::headers
+    include ::apache::mod::rewrite
+
+    file { '/var/www/gdash.wikimedia.org':
+        ensure  => directory,
+        source => 'puppet:///files/gdash/docroot',
+        recurse => true,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+    } ->
 
     apache::site { 'gdash.wikimedia.org':
-        content => template('apache/sites/gdash.wikimedia.org.erb'),
-    }
-
-    # We're on the backend, no https here.
-    monitoring::service { 'gdash':
-        description   => 'gdash.wikimedia.org',
-        check_command => 'check_http_url!gdash.wikimedia.org!/',
+        source  => 'puppet:///files/gdash/gdash.wikimedia.org.conf',
     }
 }
