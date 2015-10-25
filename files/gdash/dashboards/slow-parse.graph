@@ -1,7 +1,0 @@
-title   "8 Slowest Parser Functions by Average -1week"
-vtitle "time in ms"
-linewidth 2
-from "-1 week"
-
-field :hit, :alias => 'none',
-               :data  => 'substr(highestMax(MediaWiki.Parser.*.*.tavg,8),1,3)'

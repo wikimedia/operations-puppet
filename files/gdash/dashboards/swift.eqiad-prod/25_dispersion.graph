@@ -1,9 +1,0 @@
-title   "object and container availability (swift-dispersion)"
-
-field :container_avail,
-    :alias => "container avail %",
-    :data  => "keepLastValue(swift.eqiad-prod.dispersion.container.pct_found)"
-
-field :object_avail,
-    :alias => "object avail %",
-    :data  => "keepLastValue(swift.eqiad-prod.dispersion.object.pct_found)"

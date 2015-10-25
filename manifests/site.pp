@@ -1094,7 +1094,7 @@ node 'hooft.esams.wikimedia.org' {
 
 # Primary graphite machines, replacing tungsten
 node 'graphite1001.eqiad.wmnet' {
-    role graphite::production, statsdlb, gdash, performance, graphite::production::alerts, restbase::alerts
+    role graphite::production, statsdlb, performance, graphite::production::alerts, restbase::alerts
     include standard
 }
 
@@ -1170,7 +1170,7 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 
 # virtual machine for misc. PHP apps
 node 'krypton.eqiad.wmnet' {
-    role wikimania_scholarships, iegreview, grafana
+    role wikimania_scholarships, iegreview, grafana, gdash
     include standard
 }
 

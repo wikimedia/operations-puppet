@@ -1,9 +1,0 @@
-title   "EditPage Methods by Sampled Call Rate log(2) -1month"
-linewidth 1
-logbase 2
-linemode "connected"
-hide_legend "false"
-from "-1month"
-
-field :count, :alias => "none",
-               :data  => 'cactiStyle(substr(MediaWiki.EditPage.*.count,1,2))'

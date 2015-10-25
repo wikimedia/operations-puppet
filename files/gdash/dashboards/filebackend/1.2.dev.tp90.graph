@@ -1,9 +1,0 @@
-title   "Top 4 FileBackend Methods by Max 90th Percentile Time (ms) log(2) -8hours"
-linewidth 1
-linemode "connected"
-logbase 2
-hide_legend "false"
-from "-8hours"
-
-field :devavg, :alias => "none",
-               :data  => 'cactiStyle(substr(highestMax(MediaWiki.FileBackendStore.*.tp90,4),0,2))'
