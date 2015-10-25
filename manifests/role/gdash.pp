@@ -9,6 +9,7 @@
 class role::gdash {
     include ::apache
 
+    include ::apache::mod::expires
     include ::apache::mod::filter
     include ::apache::mod::headers
     include ::apache::mod::rewrite
