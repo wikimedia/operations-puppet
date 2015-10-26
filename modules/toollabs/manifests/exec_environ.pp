@@ -112,6 +112,7 @@ class toollabs::exec_environ {
         'libredis-perl',
         'libregexp-common-perl',       # T76974
         'libsocket-getaddrinfo-perl',
+        'libsort-fields-perl',         # T116579
         'libstring-diff-perl',
         'libtask-weaken-perl',
         'libtest-exception-perl',      # For Checkwiki.
