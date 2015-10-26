@@ -1,0 +1,4 @@
+debdeploy::grains:
+  debdeploy-appserver-codfw:
+    value: standard
+
