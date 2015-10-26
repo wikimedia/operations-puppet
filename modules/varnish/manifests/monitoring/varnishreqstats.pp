@@ -13,10 +13,13 @@
 #   If $name is text.frontend,  this will create graphite keys that look like:
 #   servers.cp1052.varnish.eqiad.text.frontend.request.client.status.2xx
 #
+# NOTE:  Diamond collectors using varnishlog and multiprocessing doesn't work.
+#        They will all be removed and replaced with a service sending directly
+#        to statsd.
 define varnish::monitoring::varnishreqstats(
     $instance_name = $name,
     $metric_path   = "varnish.${::site}.${name}.request",
-    $ensure        = 'present',
+    $ensure        = 'absent',
 ) {
     # ${collector_name}Collector will be used as the python diamond collector class name
     # when varnishreqstats-diamond.py.erb is rendered.
