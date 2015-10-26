@@ -95,6 +95,8 @@ module Puppet::Parser::Functions
       'ECDHE-RSA-AES256-SHA384',
       'ECDHE-ECDSA-AES256-SHA',
       'ECDHE-RSA-AES256-SHA',
+      'ECDHE-ECDSA-DES-CBC3-SHA',
+      'ECDHE-RSA-DES-CBC3-SHA',
       'DHE-RSA-AES128-SHA256',
       'DHE-RSA-AES128-SHA',
       'DHE-RSA-AES256-SHA256',
@@ -110,7 +112,7 @@ module Puppet::Parser::Functions
       'AES128-SHA',
       'AES256-SHA256',
       'AES256-SHA',
-      'DES-CBC3-SHA', # Only for IE8/XP at this point, I think
+      'DES-CBC3-SHA', # Mostly IE7-8 on XP
     ],
   }
 
