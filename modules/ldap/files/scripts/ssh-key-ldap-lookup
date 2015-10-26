@@ -24,6 +24,9 @@ import ldap
 import yaml
 import argparse
 
+with open('/etc/wmflabs-project') as f:
+    PROJECT_NAME = f.read().strip()
+
 
 def connect(server, username, password):
     conn = ldap.initialize('ldap://%s:389' % server)
@@ -33,26 +36,55 @@ def connect(server, username, password):
     return conn
 
 
-def get_keys(conn, basedn, username):
+def get_user_keys(conn, user):
     response = conn.search_s(
-        'ou=people,%s' % basedn,
-        ldap.SCOPE_SUBTREE,
-        '(uid=%s)' % username
+        user,
+        ldap.SCOPE_BASE
     )
     for _, user in response:
         return user['sshPublicKey']
 
 
+def get_group_keys(conn, groupname):
+    response = conn.search_s(
+        groupname,
+        ldap.SCOPE_BASE
+    )
+    # only one service group can have that name
+    assert len(response) <= 1
+    if response:
+        sg = response[0][1]
+        keys = []
+        for member in sg['member']:
+            keys += get_user_keys(conn, member)
+        return keys
+    else:
+        return []
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('username', help='Username to list ssh keys for')
+    parser.add_argument(
+        '--enable-servicegroups',
+        action='store_true',
+        default=False,
+        help='Allow direct ssh login for service groups',
+    )
     args = parser.parse_args()
 
     with open('/etc/ldap.yaml') as f:
         config = yaml.safe_load(f)
 
     conn = connect(config['servers'][0], config['user'], config['password'])
-    keys = get_keys(conn, config['basedn'], args.username)
+    if args.enable_servicegroups and args.username.startswith(PROJECT_NAME + '.'):
+        groupname = 'cn=%s,ou=servicegroups,%s' % (
+            args.username, config['basedn']
+        )
+        keys = get_group_keys(conn, groupname)
+    else:
+        username = 'uid=%s,ou=people,%s' % (args.username, config['basedn'])
+        keys = get_user_keys(conn, username)
     for key in keys:
         # Some keys have an accidental newline at the end, see T77902
         print key.strip()
