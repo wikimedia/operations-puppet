@@ -8,3 +8,5 @@ base::resolving::domain_search:
 confd::monitor_files: false
 apache::logrotate::period: "daily"
 apache::logrotate::rotate: 7
+admin::groups:
+  - datacenter-ops
