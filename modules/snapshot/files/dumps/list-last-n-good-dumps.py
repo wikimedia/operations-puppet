@@ -401,8 +401,9 @@ class DumpList(object):
         """produce long listing of files from a specific dump run,
         by passing the file list to rsync --list-only"""
         fpath = self.getAbsOutDirPath(f)
-        command = ["/usr/bin/rsync", "--list-only", "--files-from",
-                   fpath + ".relpath", self.config.publicDir,
+        command = ["/usr/bin/rsync", "--list-only", "--no-h",
+                   "--files-from", fpath + ".relpath",
+                   self.config.publicDir,
                    "dummy", ">", fpath + ".rsync"]
         commandString = " ".join(command)
         proc = Popen(commandString, shell=True, stderr=PIPE)
