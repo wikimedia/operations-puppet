@@ -119,7 +119,7 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 UsePAM yes
 
 <% if @realm == "labs" then %>
-AuthorizedKeysCommand /usr/sbin/ssh-key-ldap-lookup
+AuthorizedKeysCommand <%= @authorized_keys_command %>
 AuthorizedKeysCommandUser ssh-key-ldap-lookup
 <% end %>
 ##
