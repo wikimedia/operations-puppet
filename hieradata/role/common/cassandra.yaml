@@ -20,7 +20,7 @@ cassandra::seeds:
     - restbase2004.codfw.wmnet
     - restbase2005.codfw.wmnet
     - restbase2006.codfw.wmnet
-cassandra::max_heap_size: 16g
+cassandra::max_heap_size: 12g
 # 1/4 heap size, no more than 100m/thread
 cassandra::heap_newsize: 2048m
 cassandra::compaction_throughput_mb_per_sec: 60
