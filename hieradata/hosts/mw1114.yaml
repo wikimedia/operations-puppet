@@ -7,5 +7,8 @@ hhvm::extra::fcgi:
       # Limit number of child processes running at once
       # Also, use light processes, that are more efficient
       light_process_count: "%{::processorcount}"
+debdeploy::grains:
+  debdeploy-appserverapi:
+    value: single_canary
 
       
