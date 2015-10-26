@@ -7,7 +7,7 @@ nodes:
   eqiad:
     - 'cp1046.eqiad.wmnet'
     - 'cp1047.eqiad.wmnet'
-#    - 'cp1059.eqiad.wmnet' # T114870
+    - 'cp1059.eqiad.wmnet'
     - 'cp1060.eqiad.wmnet'
   esams:
     - 'cp3015.esams.wmnet'
