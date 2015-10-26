@@ -5,7 +5,7 @@ supported = trusty, jessie, precise
 [serverlists]
 # A list of servers, each defined by one or more Salt grains. If multiple grains
 # are specified, they're processed sequentially
-misc-servers = debdeploy-tor:standard, debdeploy-ve:standard, debdeploy-gitblit:standard, debdeploy-spare:standard, debdeploy-releases:standard, debdeploy-testsystem:standard, debdeploy-etherpad:standard, debdeploy-lists:standard, debdeploy-otrs:standard, debdeploy-phabricator:standard, debdeploy-nova-manager:standard, debdeploy-planet:standard, debdeploy-horizon:standard, debdeploy-grafana:standard, debdeploy-irc:standard, debdeploy-deployment:standard, debdeploy-packagebuild:standard, debdeploy-racktables:standard, debdeploy-syslog:standard, debdeploy-ipv6relay:standard, debdeploy-archiva:standard, debdeploy-pmacct:standard, debdeploy-labmon:standard, debdeploy-nova-control:standard, debdeploy-bugzilla:standard, debdeploy-installserver:standard, debdeploy-xenon:standard, debdeploy-icinga:standard, debdeploy-kafkatee:standard, debdeploy-gerrit:standard, debdeploy-ganglia:standard, debdeploy-db-maintenance:standard, debdeploy-hue:standard, debdeploy-ci:standard
+misc-servers = debdeploy-tor:standard, debdeploy-ve:standard, debdeploy-gitblit:standard, debdeploy-spare:standard, debdeploy-releases:standard, debdeploy-testsystem:standard, debdeploy-etherpad:standard, debdeploy-lists:standard, debdeploy-otrs:standard, debdeploy-phabricator:standard, debdeploy-nova-manager:standard, debdeploy-planet:standard, debdeploy-horizon:standard, debdeploy-grafana:standard, debdeploy-irc:standard, debdeploy-deployment:standard, debdeploy-packagebuild:standard, debdeploy-racktables:standard, debdeploy-syslog:standard, debdeploy-ipv6relay:standard, debdeploy-archiva:standard, debdeploy-pmacct:standard, debdeploy-labmon:standard, debdeploy-nova-control:standard, debdeploy-bugzilla:standard, debdeploy-installserver:standard, debdeploy-xenon:standard, debdeploy-icinga:standard, debdeploy-kafkatee:standard, debdeploy-gerrit:standard, debdeploy-ganglia:standard, debdeploy-db-maintenance:standard, debdeploy-hue:standard, debdeploy-ci:standard, debdeploy-librenms:standard
 hadoop-worker = debdeploy-hadoop-worker:standard
 hadoop-worker-canary = debdeploy-hadoop-worker:canary
 hadoop-master = debdeploy-hadoop-master:standard
@@ -105,5 +105,4 @@ mw-eqiad = debdeploy-appserver-eqiad:standard
 mw-codfw = debdeploy-appserver-codfw:standard
 mw = debdeploy-appserver-codfw:standard, debdeploy-appserver-eqiad:standard
 mw-canary = debdeploy-appserver-eqiad:canary
-
 mw-canary-single = debdeploy-appserver:single_canary
