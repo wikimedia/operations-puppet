@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-jobrunner-eqiad:
+    value: canary
