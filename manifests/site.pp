@@ -1333,7 +1333,7 @@ node /labstore200[12]\.codfw\.wmnet/ {
 
 
 node 'lead.wikimedia.org' {
-    role spare
+    role spare, test_foo, test_bar
     interface::add_ip6_mapped { 'main': }
 }
 
