@@ -214,8 +214,8 @@ class role::cache::misc {
     # testing on cp1056
     if $::hostname == 'cp1056' {
         varnish::logging::reqstats { 'frontend':
-            metric_path => "varnish.${::site}.misc.frontend.request",
-            statsd      => hiera('statsd'),
+            metric_prefix => "varnish.${::site}.misc.frontend.request",
+            statsd        => hiera('statsd'),
         }
     }
 }
