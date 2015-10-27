@@ -30,9 +30,19 @@ class openstack::nova::compute(
             target  => "/etc/ssl/localcerts/${certname}.crt",
             require => Sslcert::Certificate[$certname],
         }
-        monitoring::service { 'kvm_cert':
+
+        file { '/usr/local/lib/nagios/plugins/check_ssl_certfile':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            source => 'puppet:///modules/nagios_common/check_commands/check_ssl_certfile',
+        }
+
+        # T116332
+        nrpe::monitor_service { 'kvm_ssl_cert':
             description   => 'kvm ssl cert',
-            check_command => "check_ssl_certfile!/etc/ssl/localcerts/${certname}.crt",
+            nrpe_command  => "/usr/local/lib/nagios/plugins/check_ssl_certfile ${certname}",
         }
 
         file { '/var/lib/nova/cacert.pem':
