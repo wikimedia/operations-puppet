@@ -95,14 +95,6 @@ class otrs(
         content => template('otrs/Config.pm.erb'),
     }
 
-    file { '/etc/cron.d/otrs':
-        ensure => 'file',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/otrs/crontab.otrs',
-    }
-
     file { '/opt/otrs/bin/otrs.TicketExport2Mbox.pl':
         ensure => 'file',
         owner  => 'otrs',
@@ -137,7 +129,12 @@ class otrs(
     # should not bite back as after the move the 3.2.x install we have will be
     # decomissioned
     if os_version('debian >= jessie') {
-        base::service_unit { 'otrs-scheduler':
+        # TODO: Remove this after the migration to 5.0.x is complete
+        file { '/etc/cron.d/otrs':
+            ensure => absent,
+        }
+
+        base::service_unit { 'otrs-daemon':
             ensure  => present,
             upstart => false,
             systemd => true,
@@ -148,12 +145,14 @@ class otrs(
                 hasrestart => false,
             }
         }
-        # OTRS normally ships a watchdog scheduler cron entry that watches the
-        # scheduler and restarts it if it dies. That mode unfortunately is not
-        # compatible with systemd. Purge the scheduler and rely on systemd to
-        # watch over the scheduler
-        file { '/etc/cron.d/otrs-scheduler':
-            ensure => absent,
+    }
+    else {
+        file { '/etc/cron.d/otrs':
+            ensure => 'file',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/otrs/crontab.otrs',
         }
     }
 }
