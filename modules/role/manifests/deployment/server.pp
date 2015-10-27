@@ -22,8 +22,7 @@ class role::deployment::server(
     }
 
     include ::apache
-    include ::apache::mod::dav
-    include ::apache::mod::dav_fs
+    # Install apache-fast-test
     include ::apache::helper_scripts
     include mysql
 
