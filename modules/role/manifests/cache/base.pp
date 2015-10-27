@@ -1,7 +1,5 @@
 class role::cache::base(
     $zero_site = 'https://zero.wikimedia.org',
-    $purge_host_only_upload_re = '^upload\.wikimedia\.org$',
-    $purge_host_not_upload_re = '^(?!upload\.wikimedia\.org)',
     $static_host = 'www.wikimedia.org',
     $upload_domain = 'upload.wikimedia.org',
     $bits_domain = 'bits.wikimedia.org',
