@@ -14,6 +14,8 @@
   Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
   Header always set Strict-Transport-Security "max-age=31536000"
 
+  RequestHeader unset X-WEBAUTH-USER
+
   # Automatically log in all visitors as anonymous.
   RequestHeader set X-WEBAUTH-USER "Anonymous"
 
