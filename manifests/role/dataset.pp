@@ -22,6 +22,21 @@ class role::dataset::pagecounts_all_sites($enable = true) {
     }
 }
 
+# == Class role::dataset::pageviews
+#
+# NOTE: this requires that an rsync server
+# module named 'hdfs-archive' is configured on stat1002.
+#
+# This will make these files available at
+# http://dumps.wikimedia.org/other/pageviews/
+#
+class role::dataset::pageviews($enable = true) {
+    class { '::dataset::cron::pageviews':
+        source =>  'stat1002.eqiad.wmnet::hdfs-archive/pageviews',
+        enable => $enable,
+    }
+}
+
 # == Class role::dataset::mediacounts
 #
 # NOTE: this requires that an rsync server
@@ -62,6 +77,10 @@ class role::dataset::primary {
     class { 'role::dataset::pagecountsraw': enable => true }
 
     class { 'role::dataset::pagecounts_all_sites':
+        enable => true,
+    }
+
+    class { 'role::dataset::pageviews':
         enable => true,
     }
 
