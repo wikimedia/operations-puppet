@@ -21,7 +21,7 @@ temp-pool
 
 max_connections                = 1000
 max_connect_errors             = 1000000000
-max_allowed_packet             = 16M
+max_allowed_packet             = 32M
 connect_timeout                = 3
 query_cache_size               = 0
 query_cache_type               = 0
@@ -106,6 +106,6 @@ s7.replicate-wild-do-table = heartbeat.%
 [mysqldump]
 
 quick
-max_allowed_packet = 16M
+max_allowed_packet = 32M
 
 #!includedir /etc/mysql/conf.d/

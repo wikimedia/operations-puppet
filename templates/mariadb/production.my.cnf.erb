@@ -31,7 +31,7 @@ max_connections                = 5000
 back_log                       = 500
 extra_max_connections          = 10
 max_connect_errors             = 1000000000
-max_allowed_packet             = 16M
+max_allowed_packet             = 32M
 connect_timeout                = 3
 query_cache_size               = 0
 query_cache_type               = 0
@@ -112,6 +112,6 @@ optimizer_switch = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buff
 [mysqldump]
 
 quick
-max_allowed_packet = 16M
+max_allowed_packet = 32M
 
 #!includedir /etc/mysql/conf.d/
