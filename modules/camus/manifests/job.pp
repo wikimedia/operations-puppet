@@ -40,6 +40,7 @@ define camus::job (
     $script             = '/srv/deployment/analytics/refinery/bin/camus',
     $user               = 'hdfs',
     $libjars            = undef,
+    $check_run          = undef,
     $template           = "camus/${title}.erb",
     $template_variables = {},
     $hour               = undef,
@@ -63,7 +64,12 @@ define camus::job (
         default => "--libjars ${libjars}",
     }
 
-    $command = "${script} --job-name camus-${title} ${libjars_opt} ${properties_file} >> ${log_file} 2>&1"
+    $check_run_opt = $check_run ? {
+        undef   => '',
+        default => "--check",
+    }
+
+    $command = "${script} --run --job-name camus-${title} ${libjars_opt} ${check_run_opt} ${properties_file} >> ${log_file} 2>&1"
 
     cron { "camus-${title}":
         command  => $command,
