@@ -210,6 +210,7 @@ class role::mediawiki::appserver::canary_api {
 # mediawiki maintenance scripts
 class role::mediawiki::maintenance {
 
+    include role::mediawiki::common
     include mediawiki::maintenance::pagetriage
     include mediawiki::maintenance::translationnotifications
     include mediawiki::maintenance::updatetranslationstats
