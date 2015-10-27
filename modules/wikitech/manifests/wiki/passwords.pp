@@ -8,7 +8,7 @@ class wikitech::wiki::passwords {
     file { '/srv/mediawiki/private/WikitechPrivateLdapSettings.php':
         ensure  => present,
         content => template('wikitech/wikitech_ldap.php.erb'),
-        mode    => '0444',
+        mode    => '0644',
         owner   => 'mwdeploy',
         group   => 'mwdeploy',
     }
