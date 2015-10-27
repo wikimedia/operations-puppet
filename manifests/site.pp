@@ -2465,7 +2465,7 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
     }
 }
 
-node /^labvirt1010.eqiad.wmnet/ {
+node /^labvirt101[0-1].eqiad.wmnet/ {
     $use_neutron = false
     role nova::compute
     include standard
@@ -2473,10 +2473,6 @@ node /^labvirt1010.eqiad.wmnet/ {
     if $use_neutron == true {
         include role::neutron::computenode
     }
-}
-
-node /^labvirt1011.eqiad.wmnet/ {
-    include standard
 }
 
 # Wikidata query service
