@@ -38,13 +38,12 @@ class role::mediawiki::common {
         desc   => 'Allow incoming SSH for pybal health checks',
     }
 
-    if $::site == 'eqiad' {
-        monitoring::service { 'mediawiki-installation DSH group':
-            description           => 'mediawiki-installation DSH group',
-            check_command         => 'check_dsh_groups!mediawiki-installation',
-            normal_check_interval => 60,
-        }
+    monitoring::service { 'mediawiki-installation DSH group':
+        description           => 'mediawiki-installation DSH group',
+        check_command         => 'check_dsh_groups!mediawiki-installation',
+        normal_check_interval => 60,
     }
+
     $scap_proxies = hiera('scap::dsh::scap_proxies',[])
     if member($scap_proxies, $::fqdn) {
         include scap::proxy
