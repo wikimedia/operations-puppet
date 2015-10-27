@@ -216,7 +216,7 @@ class role::cache::misc {
         varnish::logging::reqstats { 'frontend':
             # Remove instance_name if misc varnishes get a frontend
             # instance just like other varnish clusters.
-            instance_name => undef,
+            instance_name => '',
             metric_prefix => "varnish.${::site}.misc.frontend.request",
             statsd        => hiera('statsd'),
         }

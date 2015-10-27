@@ -26,7 +26,7 @@ define varnish::logging::reqstats(
     $metric_prefix = "varnish.${::site}.${name}.request",
     $ensure        = 'present',
 ) {
-    if $instance_name {
+    if $instance_name != '' {
         $service_unit_name = "varnishreqstats-${instance_name}"
         $varnish_service_name = "varnish-${instance_name}"
     } else {
