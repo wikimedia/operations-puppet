@@ -1,10 +1,21 @@
 # === Class role::deployment::mediawiki
-# Installs the keyholder agent for mediawiki
+# Installs everything needed to deploy mediawiki
 class role::deployment::mediawiki(
     $keyholder_user = 'mwdeploy',
     $keyholder_group = 'wikidev',
     $key_fingerprint = 'f5:18:a3:44:77:a2:31:23:cb:7b:44:e1:4b:45:27:11',
-) {
+    ) {
+
+    # All needed classes for deploying mediawiki
+    include mediawiki
+    include ::mediawiki::nutcracker
+    include scap::master
+
+    if $::realm != 'labs' {
+        include wikitech::wiki::passwords
+    }
+
+    # Keyholder
     require ::keyholder
     require ::keyholder::monitoring
 
@@ -12,4 +23,6 @@ class role::deployment::mediawiki(
         trusted_group   => $keyholder_group,
         key_fingerprint => $key_fingerprint,
     }
+
+    # Wikitech credentials file
 }

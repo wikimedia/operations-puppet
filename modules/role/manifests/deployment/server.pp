@@ -30,13 +30,8 @@ class role::deployment::server(
     include network::constants
     $deployable_networks = $::network::constants::deployable_networks
 
-    include mediawiki
-    include ::mediawiki::nutcracker
-    include scap::master
-
     if $::realm != 'labs' {
         include role::releases::upload
-        include wikitech::wiki::passwords
         # backup /home dirs on deployment servers
         include role::backup::host
         backup::set {'home': }
