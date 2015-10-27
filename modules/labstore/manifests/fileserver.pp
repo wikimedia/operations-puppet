@@ -68,13 +68,6 @@ class labstore::fileserver {
         labstore::fileserver::cleanup_snapshots { 'labstore':
             keep_free => '6',
         }
-
-        # Monitor instance NFS availability, only on the active labstore and make it paging
-        monitoring::service { 'nfs-on-labs-instances':
-            description   => 'NFS read/writeable on labs instances',
-            check_command => 'check_http_url_at_address_for_string!tools-checker.wmflabs.org!/nfs/home!OK',
-            critical      => true,
-        }
     }
 
     # There is no service {} stanza on purpose -- this service
