@@ -10,8 +10,8 @@ Restart=always
 RestartSec=2s
 TimeoutStopSec=60
 Type=forking
-ExecStart=/opt/otrs/bin/otrs.Scheduler.pl -a start --force
-ExecStop=/opt/otrs/bin/otrs.Scheduler.pl -a stop --force
+ExecStart=/opt/otrs/bin/otrs.Daemon.pl start --force
+ExecStop=/opt/otrs/bin/otrs.Daemon.pl stop --force
 
 [Install]
 WantedBy=multi-user.target
