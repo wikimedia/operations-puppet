@@ -4,6 +4,7 @@ class role::cache::text {
     }
 
     class { 'varnish::htcppurger':
+        mc_addrs => [ '239.128.0.112' ],
     }
 
     include role::cache::2layer

@@ -4,6 +4,7 @@ class role::cache::maps {
     }
 
     class { 'varnish::htcppurger':
+        mc_addrs => [ '239.128.0.114' ],
     }
 
     include role::cache::2layer
