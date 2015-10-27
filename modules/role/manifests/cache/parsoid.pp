@@ -20,7 +20,6 @@ class role::cache::parsoid {
     include role::cache::ssl::unified
 
     $common_vcl_config = {
-        'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
     }
 
     $be_vcl_config = merge($common_vcl_config, {
