@@ -7,6 +7,9 @@ class contint::packages::ruby {
     package { 'rubygems-integration':
         ensure => present,
     }
+    package { 'rake':
+        ensure => present,
+    }
 
     if os_version('ubuntu < trusty') {
         package { [
@@ -30,6 +33,7 @@ class contint::packages::ruby {
         }
     }
     if os_version('ubuntu >= trusty') {
+        # ruby defaults to 1.9.3 we want 2.0
         package { [
             'ruby2.0',
             'ruby2.0-dev',
