@@ -3383,6 +3383,36 @@ host ms-be2015 {
 	fixed-address ms-be2015.codfw.wmnet;
 }
 
+host ms-be2016 {
+        hardware ethernet 3C:A8:2A:17:85:B8;
+        fixed-address ms-be2016.codfw.wmnet;
+}
+
+host ms-be2017 {
+        hardware ethernet 3C:A8:2A:17:F7:B8;
+        fixed-address ms-be2017.codfw.wmnet;
+}
+
+host ms-be2018 {
+        hardware ethernet 3C:A8:2A:17:15:D8;
+        fixed-address ms-be2018.codfw.wmnet;
+}
+
+host ms-be2019 {
+        hardware ethernet 3C:A8:2A:17:95:98;
+        fixed-address ms-be2019.codfw.wmnet;
+}
+
+host ms-be2020 {
+        hardware ethernet 3C:A8:2D:17:D5:98;
+        fixed-address ms-be2020.codfw.wmnet;
+}
+
+host ms-be2021 {
+        hardware ethernet 3C:A8:2A:17:D7:88;
+        fixed-address ms-be2021.codfw.wmnet;
+}
+
 host ms-be3001 {
 	hardware ethernet 24:B6:FD:F6:13:AC;
 	fixed-address ms-be3001.esams.wmnet;
