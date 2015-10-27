@@ -1,7 +1,7 @@
 [Unit]
 Description=Varnish Request Stats StatsD reporter
 After=<%= @varnish_service_name %>
-Require=<%= @varnish_service_name %>
+Requires=<%= @varnish_service_name %>
 
 [Service]
 ExecStart=/usr/local/bin/varnishreqstats <%= /\w/.match(@instance_name) ? "--varnish-name=#{@instance_name}" : ""  %> --statsd=<%= @statsd %> --metric-prefix=<%= @metric_prefix %> --interval=<%= @interval %>
