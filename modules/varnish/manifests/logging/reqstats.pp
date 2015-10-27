@@ -28,8 +28,10 @@ define varnish::logging::reqstats(
 ) {
     if $instance_name {
         $service_unit_name = "varnishreqstats-${instance_name}"
+        $varnish_service_name = "varnish-${instance_name}"
     } else {
         $service_unit_name = 'varnishreqstats-default'
+        $varnish_service_name = 'varnish'
     }
 
     if ! defined(File['/usr/local/bin/varnishreqstats']) {
@@ -50,6 +52,7 @@ define varnish::logging::reqstats(
         template_name  => 'varnishreqstats',
         require        => File['/usr/local/bin/varnishreqstats'],
         service_params => {
+            require => Service[$varnish_service_name],
             enable => true,
         },
     }
