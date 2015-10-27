@@ -19,8 +19,8 @@ if [ $# -lt 2 ]; then
 	exit 1
 fi
 
-if [ ! -f $MEDIAWIKI_DEPLOYMENT_DIR/$LISTFILE ]; then
-	echo "The specified dblist file, $MEDIAWIKI_DEPLOYMENT_DIR/dblist/$LISTFILE, could not be found."
+if [ ! -f $MEDIAWIKI_DEPLOYMENT_DIR/dblists/$LISTFILE ]; then
+	echo "The specified dblist file, $MEDIAWIKI_DEPLOYMENT_DIR/dblists/$LISTFILE, could not be found."
 	exit 1
 fi
 
