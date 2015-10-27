@@ -6179,6 +6179,11 @@ host ruthenium {
 	fixed-address ruthenium.eqiad.wmnet;
 }
 
+host scandium {
+	hardware ethernet 84:2b:2b:fd:be:52;
+	fixed-address scandium.eqiad.wmnet;
+}
+
 host sca1001 {
 	hardware ethernet F0:1F:AF:E8:B0:EF;
 	fixed-address sca1001.eqiad.wmnet;
