@@ -30,6 +30,7 @@ class contint::packages::ruby {
         }
     }
     if os_version('ubuntu >= trusty') {
+        # ruby defaults to 1.9.3 we want 2.0
         package { [
             'ruby2.0',
             'ruby2.0-dev',
@@ -41,6 +42,8 @@ class contint::packages::ruby {
         package { [
             'ruby2.1',
             'ruby2.1-dev',
+            # Unlike Ubuntu, Jessie ruby2.1 ships rake2.1, not rake
+            'rake',
             'bundler',
             ]: ensure => present,
         }
