@@ -1,14 +1,8 @@
-# Configuration info: https://wikitech.wikimedia.org/wiki/Trebuchet#Adding_a_new_repo
-# Troubleshooting: https://wikitech.wikimedia.org/wiki/Trebuchet#Troubleshooting
-class role::deployment::config {
-    $repo_config = hiera_hash('role::deployment::repo_config')
-}
-
 class role::deployment::server(
     $apache_fqdn = $::fqdn,
     $deployment_group = 'wikidev',
 ) {
-    # Can't include this while scap is present on tin:
+    # Can't include this while scap is present on the deployment server:
     # include misc::deployment::scripts
     include role::deployment::mediawiki
     include role::deployment::services
@@ -24,7 +18,7 @@ class role::deployment::server(
         group  => 'root',
         mode   => '0444',
         # NOTE: This file is also used in role::statistics
-        source => 'puppet:///files/deploy/umask-wikidev-profile-d.sh',
+        source => 'puppet:///modules/role/deployment/umask-wikidev-profile-d.sh',
     }
 
     include ::apache
@@ -81,7 +75,7 @@ class role::deployment::server(
     }
 
     apache::site { 'deployment':
-        content => template('apache/sites/deployment.erb'),
+        content => template('role/deployment/apache-vhost.erb'),
         require => File['/srv/deployment'],
     }
 
@@ -126,64 +120,4 @@ class role::deployment::server(
 
     # jq is a cli program for manipulating json (from api endpoints and such)
     ensure_packages(['jq'])
-}
-
-class role::deployment::salt_masters(
-    $deployment_server = 'tin.eqiad.wmnet',
-) {
-
-    $deployment_config = {
-        'parent_dir' => '/srv/deployment',
-        'servers'    => {
-            'eqiad'  => $deployment_server,
-            'codfw'  => $deployment_server,
-        },
-        'redis'      => {
-            'host'     => $deployment_server,
-            'port'     => '6379',
-            'db'       => '0',
-        },
-    }
-
-    class { '::role::deployment::config': }
-
-    class { 'deployment::salt_master':
-        repo_config       => $role::deployment::config::repo_config,
-        deployment_config => $deployment_config,
-    }
-}
-
-class role::deployment::mediawiki(
-    $keyholder_user = 'mwdeploy',
-    $keyholder_group = 'wikidev',
-    $key_fingerprint = 'f5:18:a3:44:77:a2:31:23:cb:7b:44:e1:4b:45:27:11',
-) {
-    require ::keyholder
-    require ::keyholder::monitoring
-
-    keyholder::agent { $keyholder_user:
-        trusted_group   => $keyholder_group,
-        key_fingerprint => $key_fingerprint,
-    }
-}
-
-class role::deployment::services (
-    $keyholder_user  = 'deploy-service',
-    $keyholder_group = 'deploy-service',
-    $key_fingerprint  = '6d:54:92:8b:39:10:f5:9b:84:40:36:ef:3c:9a:6d:d8',
-) {
-    require ::keyholder
-    require ::keyholder::monitoring
-
-    keyholder::agent { $keyholder_user:
-        trusted_group   => $keyholder_group,
-        key_fingerprint => $key_fingerprint,
-        key_file        => 'servicedeploy_rsa',
-    }
-}
-
-class role::deployment::test {
-    package { 'test/testrepo':
-        provider => 'trebuchet',
-    }
 }
