@@ -25,39 +25,39 @@ class role::logstash (
         port => 8324,
     }
 
-    ferm::service { "logstash_udp2log":
-        proto  => 'udp',
-        port   => '8324',
+    ferm::service { 'logstash_udp2log':
+        proto   => 'udp',
+        port    => '8324',
         notrack => true,
-        srange => '$ALL_NETWORKS',
+        srange  => '$ALL_NETWORKS',
     }
 
     logstash::input::syslog { 'syslog':
         port => 10514,
     }
 
-    ferm::service { "logstash_syslog":
-        proto  => 'udp',
-        port   => '10514',
+    ferm::service { 'logstash_syslog':
+        proto   => 'udp',
+        port    => '10514',
         notrack => true,
-        srange => '$ALL_NETWORKS',
+        srange  => '$ALL_NETWORKS',
     }
 
-    ferm::service { "grafana_dashboard_definition_storage":
+    ferm::service { 'grafana_dashboard_definition_storage':
         proto  => 'tcp',
         port   => '9200',
-        srange => '@resolve(krypton.eqiad.wmnet)',
+        srange => '$INTERNAL',
     }
 
     logstash::input::gelf { 'gelf':
         port => 12201,
     }
 
-    ferm::service { "logstash_gelf":
-        proto  => 'udp',
-        port   => '12201',
+    ferm::service { 'logstash_gelf':
+        proto   => 'udp',
+        port    => '12201',
         notrack => true,
-        srange => '$ALL_NETWORKS',
+        srange  => '$ALL_NETWORKS',
     }
 
     logstash::input::udp { 'logback':
@@ -65,11 +65,11 @@ class role::logstash (
         codec => 'json',
     }
 
-    ferm::service { "logstash_udp":
-        proto  => 'udp',
-        port   => '11514',
+    ferm::service { 'logstash_udp':
+        proto   => 'udp',
+        port    => '11514',
         notrack => true,
-        srange => '$ALL_NETWORKS',
+        srange  => '$ALL_NETWORKS',
     }
 
     ## Global pre-processing (15)
@@ -147,28 +147,15 @@ class role::logstash (
         increment       => [ '%{channel}.%{level}' ],
     }
 
-    logstash::output::statsd { 'OOM_channel_rate':
-        host            => $statsd_host,
-        guard_condition => '[type] == "hhvm" and [message] =~ "request has exceeded memory limit"',
-        namespace       => 'logstash.rate',
-        sender          => 'oom',
-        increment       => [ '%{level}' ],
-    }
+    ## Firewalling
+    $logstash_nodes = hiera('logstash::cluster_hosts')
+    $logstash_nodes_ferm = join($logstash_nodes, ' ')
 
-    logstash::output::statsd { 'HHVM_channel_rate':
-        host            => $statsd_host,
-        guard_condition => '[type] == "hhvm" and [message] !~ "request has exceeded memory limit"',
-        namespace       => 'logstash.rate',
-        sender          => 'hhvm',
-        increment       => [ '%{level}' ],
-    }
-
-    logstash::output::statsd { 'Apache2_channel_rate':
-        host            => $statsd_host,
-        guard_condition => '[type] == "apache2" and "syslog" in [tags]',
-        namespace       => 'logstash.rate',
-        sender          => 'apache2',
-        increment       => [ '%{level}' ],
+    ferm::service { 'logstash_elastic_internode':
+        proto   => 'tcp',
+        port    => 9300,
+        notrack => true,
+        srange  => "@resolve((${logstash_nodes_ferm}))",
     }
 }
 
@@ -190,16 +177,6 @@ class role::logstash::elasticsearch {
 
     class { '::elasticsearch':
         require => Package['elasticsearch/plugins'],
-    }
-
-    $logstash_nodes = hiera('logstash::cluster_hosts')
-    $logstash_nodes_ferm = join($logstash_nodes, ' ')
-
-    ferm::service { 'logstash_elastic_internode':
-        proto  => 'tcp',
-        port   => 9300,
-        notrack => true,
-        srange => "@resolve((${logstash_nodes_ferm}))",
     }
 }
 
@@ -342,7 +319,7 @@ class role::logstash::stashbot (
     }
     logstash::output::elasticsearch { 'logstash':
         host            => '127.0.0.1',
-        index           => "logstash-%{+YYYY.MM}",
+        index           => 'logstash-%{+YYYY.MM}',
         guard_condition => '"es" in [tags]',
         priority        => 90,
         template        => '/etc/logstash/stashbot-template.json',
@@ -384,24 +361,3 @@ class role::logstash::stashbot (
     }
 }
 
-# == Class: role::logstash::eventlogging
-#
-# Configure Logstash to consume validation logs from EventLogging.
-#
-class role::logstash::eventlogging {
-    include ::role::logstash
-    include ::role::analytics::kafka::config
-
-    $topic = 'eventlogging_EventError'
-
-    logstash::input::kafka { $topic:
-        tags       => [$topic, 'kafka'],
-        type       => 'eventlogging',
-        zk_connect => $role::analytics::kafka::config::zookeeper_url,
-    }
-
-    logstash::conf { 'filter_eventlogging':
-        source   => 'puppet:///files/logstash/filter-eventlogging.conf',
-        priority => 50,
-    }
-}
