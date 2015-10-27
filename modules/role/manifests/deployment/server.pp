@@ -34,16 +34,21 @@ class role::deployment::server(
     include ::mediawiki::nutcracker
     include scap::master
 
+    if $::realm != 'labs' {
+        include role::releases::upload
+        include wikitech::wiki::passwords
+        # backup /home dirs on deployment servers
+        include role::backup::host
+        backup::set {'home': }
+    }
+
+    # Firewall rules
     ferm::service { 'rsyncd_scap_master':
         proto   => 'tcp',
         port    => '873',
         srange  => '$MW_APPSERVER_NETWORKS',
     }
 
-    if $::realm != 'labs' {
-        include role::releases::upload
-        include wikitech::wiki::passwords
-    }
 
     $deployable_networks_ferm = join($deployable_networks, ' ')
 
@@ -60,6 +65,7 @@ class role::deployment::server(
         ensure => present,
         rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
     }
+    ### End firewall rules
 
     #T83854
     ::monitoring::icinga::git_merge { 'mediawiki_config':
@@ -68,6 +74,7 @@ class role::deployment::server(
         remote_branch => 'readonly/master'
     }
 
+    ### Trebuchet
     file { '/srv/deployment':
         ensure => directory,
         owner  => 'trebuchet',
@@ -101,23 +108,12 @@ class role::deployment::server(
             'ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out=json publish.runner deploy.restart *',
         ],
     }
+    ### End Trebuchet
 
-    package { 'percona-toolkit':
-        ensure => latest,
-    }
 
     # tig is a ncurses-based git utility which is useful for
     # determining the state of git repos during deployments.
-    package { 'tig':
-        ensure => latest,
-    }
-
-    if $::realm != 'labs' {
-        # backup /home dirs on deployment servers
-        include role::backup::host
-        backup::set {'home': }
-    }
-
     # jq is a cli program for manipulating json (from api endpoints and such)
-    ensure_packages(['jq'])
+
+    require_package 'percona-toolkit', 'tig', 'jq'
 }
