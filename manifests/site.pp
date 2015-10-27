@@ -2289,6 +2289,13 @@ node 'ruthenium.eqiad.wmnet' {
     role testsystem
 }
 
+# T95046 install/deploy scandium as zuul merger (ci) server
+# REMOVE THE SPARE WHEN YOU INPUT THE SYSTEMS ROLE
+node 'scandium.eqiad.wmnet' {
+    role spare
+
+}
+
 node /^sca100[12]\.eqiad\.wmnet$/ {
     role sca
 }
