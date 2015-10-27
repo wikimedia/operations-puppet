@@ -12,7 +12,7 @@ class role::deployment::mediawiki(
     include scap::master
 
     if $::realm != 'labs' {
-        include wikitech::wiki::passwords
+        include deployment::wikitech
     }
 
     # Keyholder
