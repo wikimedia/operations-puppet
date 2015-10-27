@@ -2699,6 +2699,13 @@ host lanthanum {
 	fixed-address lanthanum.eqiad.wmnet;
 }
 
+host lawrencium {
+	hardware ethernet 90:B1:1C:23:23:BF;
+	fixed-address lawrencium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host lead {
 	hardware ethernet C8:1F:66:BF:71:66;
 	fixed-address lead.wikimedia.org;
