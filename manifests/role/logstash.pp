@@ -75,48 +75,48 @@ class role::logstash (
     ## Global pre-processing (15)
 
     logstash::conf { 'filter_strip_ansi_color':
-        source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
+        source   => 'puppet:///modules/logstash/filter-strip-ansi-color.conf',
         priority => 15,
     }
 
     ## Input specific processing (20)
 
     logstash::conf { 'filter_syslog':
-        source   => 'puppet:///files/logstash/filter-syslog.conf',
+        source   => 'puppet:///modules/logstash/filter-syslog.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_udp2log':
-        source   => 'puppet:///files/logstash/filter-udp2log.conf',
+        source   => 'puppet:///modules/logstash/filter-udp2log.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_gelf':
-        source   => 'puppet:///files/logstash/filter-gelf.conf',
+        source   => 'puppet:///modules/logstash/filter-gelf.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_logback':
-        source   => 'puppet:///files/logstash/filter-logback.conf',
+        source   => 'puppet:///modules/logstash/filter-logback.conf',
         priority => 20,
     }
 
     ## Application specific processing (50)
 
     logstash::conf { 'filter_mediawiki':
-        source   => 'puppet:///files/logstash/filter-mediawiki.conf',
+        source   => 'puppet:///modules/logstash/filter-mediawiki.conf',
         priority => 50,
     }
 
     ## Global post-processing (70)
 
     logstash::conf { 'filter_add_normalized_message':
-        source   => 'puppet:///files/logstash/filter-add-normalized-message.conf',
+        source   => 'puppet:///modules/logstash/filter-add-normalized-message.conf',
         priority => 70,
     }
 
     logstash::conf { 'filter_normalize_log_levels':
-        source   => 'puppet:///files/logstash/filter-normalize-log-levels.conf',
+        source   => 'puppet:///modules/logstash/filter-normalize-log-levels.conf',
         priority => 70,
     }
 
@@ -124,7 +124,7 @@ class role::logstash (
     # Template for Elasticsearch index creation
     file { '/etc/logstash/elasticsearch-template.json':
         ensure => present,
-        source => 'puppet:///files/logstash/elasticsearch-template.json',
+        source => 'puppet:///modules/logstash/elasticsearch-template.json',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -203,7 +203,7 @@ class role::logstash::puppetreports {
     }
 
     logstash::conf { 'filter_puppet':
-        source   => 'puppet:///files/logstash/filter-puppet.conf',
+        source   => 'puppet:///modules/logstash/filter-puppet.conf',
         priority => 50,
     }
 }
@@ -226,7 +226,7 @@ class role::logstash::apifeatureusage {
     # Template for Elasticsearch index creation
     file { '/etc/logstash/apifeatureusage-template.json':
         ensure => present,
-        source => 'puppet:///files/logstash/apifeatureusage-template.json',
+        source => 'puppet:///modules/logstash/apifeatureusage-template.json',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -235,7 +235,7 @@ class role::logstash::apifeatureusage {
     # Add configuration to logstash
     # Needs to come after 'filter_mediawiki' (priority 50)
     logstash::conf { 'filter_apifeatureusage':
-        source   => 'puppet:///files/logstash/filter-apifeatureusage.conf',
+        source   => 'puppet:///modules/logstash/filter-apifeatureusage.conf',
         priority => 55,
     }
 
@@ -289,30 +289,30 @@ class role::logstash::stashbot (
     }
 
     logstash::conf { 'filter_strip_ansi_color':
-        source   => 'puppet:///files/logstash/filter-strip-ansi-color.conf',
+        source   => 'puppet:///modules/logstash/filter-strip-ansi-color.conf',
         priority => 15,
     }
 
     # ferm::service not needed as irc connection is made outbound
 
     logstash::conf { 'filter_stashbot':
-        source   => 'puppet:///files/logstash/filter-stashbot.conf',
+        source   => 'puppet:///modules/logstash/filter-stashbot.conf',
         priority => 20,
     }
 
     logstash::conf { 'filter_stashbot_sal':
-        source   => 'puppet:///files/logstash/filter-stashbot-sal.conf',
+        source   => 'puppet:///modules/logstash/filter-stashbot-sal.conf',
         priority => 50,
     }
 
     logstash::conf { 'filter_stashbot_bash':
-        source   => 'puppet:///files/logstash/filter-stashbot-bash.conf',
+        source   => 'puppet:///modules/logstash/filter-stashbot-bash.conf',
         priority => 50,
     }
 
     file { '/etc/logstash/stashbot-template.json':
         ensure => present,
-        source => 'puppet:///files/logstash/stashbot-template.json',
+        source => 'puppet:///modules/logstash/stashbot-template.json',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -329,7 +329,7 @@ class role::logstash::stashbot (
     # Special indexing for SAL messages
     file { '/etc/logstash/stashbot-sal-template.json':
         ensure => present,
-        source => 'puppet:///files/logstash/stashbot-sal-template.json',
+        source => 'puppet:///modules/logstash/stashbot-sal-template.json',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -346,7 +346,7 @@ class role::logstash::stashbot (
     # Special indexing for bash messages
     file { '/etc/logstash/stashbot-bash-template.json':
         ensure => present,
-        source => 'puppet:///files/logstash/stashbot-bash-template.json',
+        source => 'puppet:///modules/logstash/stashbot-bash-template.json',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
