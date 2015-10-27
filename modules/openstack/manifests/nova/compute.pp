@@ -14,6 +14,11 @@ class openstack::nova::compute(
         }
         sslcert::certificate { $certname: }
 
+        monitoring::service { 'kvm_cert':
+            description   => 'kvm ssl cert',
+            check_command => "check_ssl_certfile!${certificate}",
+        }
+
         file { "/var/lib/nova/${certname}.key":
             owner   => 'nova',
             group   => 'libvirtd',
