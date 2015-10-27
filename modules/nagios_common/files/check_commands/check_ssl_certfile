@@ -1,0 +1,19 @@
+#!/bin/bash
+if [ ! -f $1 ]; then
+    echo "Cannot find cert file $1"
+    exit 3
+fi
+openssl x509 -checkend 324000 -noout -in $1
+if [[ $? == 0 ]]; then
+    echo "Cert $1 will not expire for at least 90 days"
+    exit 0
+else
+    openssl x509 -checkend 108000 -noout -in $1
+    if [[ $? == 0 ]]; then
+        echo "Cert $1 will expire in less than 90 days"
+        exit 1
+    else
+        echo "Cert $1 will expire in less than 30 days"
+        exit 2
+    fi
+fi

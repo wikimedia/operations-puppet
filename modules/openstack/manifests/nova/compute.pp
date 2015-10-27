@@ -30,6 +30,11 @@ class openstack::nova::compute(
             target  => "/etc/ssl/localcerts/${certname}.crt",
             require => Sslcert::Certificate[$certname],
         }
+        monitoring::service { 'kvm_cert':
+            description   => 'kvm ssl cert',
+            check_command => "check_ssl_certfile!/etc/ssl/localcerts/${certname}.crt",
+        }
+
         file { '/var/lib/nova/cacert.pem':
             ensure  => link,
             target  => $ca_target,
