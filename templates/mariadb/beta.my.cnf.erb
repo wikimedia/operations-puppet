@@ -23,7 +23,7 @@ server_id = <%= @server_id %>
 read_only = 0
 
 max_connections    = 250
-max_allowed_packet = 16M
+max_allowed_packet = 32M
 sync_binlog        = 1
 binlog_format      = statement
 expire_logs_days   = 30
@@ -39,6 +39,6 @@ innodb_log_file_size    = 500M
 [mysqldump]
 
 quick
-max_allowed_packet = 16M
+max_allowed_packet = 32M
 
 #!includedir /etc/mysql/conf.d/
