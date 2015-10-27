@@ -1,4 +1,7 @@
-class varnish::htcppurger($varnish_instances=['localhost:80']) {
+class varnish::htcppurger(
+    $varnishes = [ '127.0.0.1:80', '127.0.0.1:3128' ],
+    $mc_addrs  = [ '239.128.0.112' ],
+) {
     Class[varnish::packages] -> Class[varnish::htcppurger]
 
     package { 'vhtcpd':
@@ -9,9 +12,8 @@ class varnish::htcppurger($varnish_instances=['localhost:80']) {
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package['vhtcpd'], # if we go first, we get overwritten
-        # TODO: -r ^upload\\.wikimedia\\.org\$ (POSIX ERE, new param for class, quoting/escaping will be tricky...)
-        content => inline_template('DAEMON_OPTS="-m 239.128.0.112<% @varnish_instances.each do |inst| -%> -c <%= inst %><% end -%>"'),
+        require => Package['vhtcpd'],
+        content => template('varnish/vhtcpd-default.erb'),
     }
 
     service { 'vhtcpd':
