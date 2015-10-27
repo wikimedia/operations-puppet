@@ -63,8 +63,9 @@ class role::analytics::refinery::camus {
     }
 
     # Import webrequest_* topics into /wmf/data/raw/webrequest
-    # every 10 minutes.
+    # every 10 minutes, check runs and flag fully imported hours.
     camus::job { 'webrequest':
+        check => true,
         minute  => '*/10',
     }
 
