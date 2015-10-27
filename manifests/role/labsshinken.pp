@@ -26,5 +26,5 @@ class role::labs::shinken(
     }
 
     include beta::monitoring::shinken
-    include toollabs::monitoring
+    include toollabs::monitoring::shinken
 }
