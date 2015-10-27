@@ -25,7 +25,7 @@ class role::logstash (
         port => 8324,
     }
 
-    ferm::service { "logstash_udp2log":
+    ferm::service { 'logstash_udp2log':
         proto  => 'udp',
         port   => '8324',
         notrack => true,
@@ -36,14 +36,14 @@ class role::logstash (
         port => 10514,
     }
 
-    ferm::service { "logstash_syslog":
+    ferm::service { 'logstash_syslog':
         proto  => 'udp',
         port   => '10514',
         notrack => true,
         srange => '$ALL_NETWORKS',
     }
 
-    ferm::service { "grafana_dashboard_definition_storage":
+    ferm::service { 'grafana_dashboard_definition_storage':
         proto  => 'tcp',
         port   => '9200',
         srange => '@resolve(krypton.eqiad.wmnet)',
@@ -53,7 +53,7 @@ class role::logstash (
         port => 12201,
     }
 
-    ferm::service { "logstash_gelf":
+    ferm::service { 'logstash_gelf':
         proto  => 'udp',
         port   => '12201',
         notrack => true,
@@ -65,7 +65,7 @@ class role::logstash (
         codec => 'json',
     }
 
-    ferm::service { "logstash_udp":
+    ferm::service { 'logstash_udp':
         proto  => 'udp',
         port   => '11514',
         notrack => true,
@@ -342,7 +342,7 @@ class role::logstash::stashbot (
     }
     logstash::output::elasticsearch { 'logstash':
         host            => '127.0.0.1',
-        index           => "logstash-%{+YYYY.MM}",
+        index           => 'logstash-%{+YYYY.MM}',
         guard_condition => '"es" in [tags]',
         priority        => 90,
         template        => '/etc/logstash/stashbot-template.json',
