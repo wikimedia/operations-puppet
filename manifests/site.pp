@@ -1911,9 +1911,10 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1152 is the experimental HAT videoscaler
+# mw1152 is the experimental HAT script runner
 node 'mw1152.eqiad.wmnet' {
-    role mediawiki::videoscaler
+    role mediawiki::maintenance, db::maintenance
+    include standard
 }
 
 
