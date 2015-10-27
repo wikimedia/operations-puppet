@@ -217,4 +217,8 @@ define cassandra::instance(
             File["${config_directory}/cassandra-rackdc.properties"],
         ],
     }
+
+    nrpe::monitor_systemd_unit_state { $service_name:
+        require => Service[$service_name],
+    }
 }
