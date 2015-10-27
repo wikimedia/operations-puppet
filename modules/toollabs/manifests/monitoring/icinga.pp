@@ -9,6 +9,7 @@ class toollabs::monitoring::icinga {
         description   => 'tools-home',
         check_command => 'check_http',
         host          => 'tools.wmflabs.org',
+        critical      => true,
     }
 
     monitoring::service { 'nfs-on-labs-instances':
