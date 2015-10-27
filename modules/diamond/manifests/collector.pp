@@ -82,6 +82,7 @@ define diamond::collector(
             owner  => 'root',
             group  => 'root',
             mode   => '0755',
+            force  => true,
         }
         file { "/usr/share/diamond/collectors/${name}/${name}.py":
             ensure => $ensure,
