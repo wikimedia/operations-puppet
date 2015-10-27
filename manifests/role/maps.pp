@@ -1,6 +1,8 @@
-@monitoring::group { "maps_eqiad": description => "eqiad maps servers" }
-@monitoring::group { "maps_codfw": description => "codfw maps servers" }
+@monitoring::group { 'maps_eqiad': description => 'eqiad maps servers' }
+@monitoring::group { 'maps_codfw': description => 'codfw maps servers' }
 
+# This role class sets up a maps server with
+# the services kartotherian and tilerator
 class role::maps {
     include standard
     include ::postgresql::postgis
@@ -42,6 +44,7 @@ class role::maps {
     }
 }
 
+# Sets up a maps server master
 class role::maps::master {
     include ::postgresql::master
     include ::osm
@@ -87,6 +90,7 @@ class role::maps::master {
     }
 }
 
+# Sets up a maps server slave
 class role::maps::slave {
     include ::postgresql::slave
 
