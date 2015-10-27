@@ -142,7 +142,6 @@ $private_tables = [
     'migrateuser_medium',
     'moodbar_feedback',
     'moodbar_feedback_response',
-    'msg_resource',
     'objectcache',
     'old_growth',
     'oldimage_old',
