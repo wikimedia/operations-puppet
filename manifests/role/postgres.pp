@@ -10,7 +10,7 @@ class role::postgres::common {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///files/postgres/tuning.conf',
+        source => 'puppet:///modules/role/postgres/tuning.conf',
     }
 
     sysctl::parameters { 'postgres_shmem':
