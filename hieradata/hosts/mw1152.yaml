@@ -1,0 +1,25 @@
+admin::groups:
+  - restricted
+  - deployment
+  - ldap-admins
+base::resolving::domain_search:
+  - wikimedia.org
+  - eqiad.wmnet
+  - esams.wikimedia.org
+  - codfw.wmnet
+role::mediawiki::maintenance::pagetriage::ensure: absent
+role::mediawiki::maintenance::translationnotifications::ensure: absent
+role::mediawiki::maintenance::updatetranslationstats::ensure: absent
+role::mediawiki::maintenance::wikidata::ensure: absent
+role::mediawiki::maintenance::echo_mail_batch::ensure: absent
+role::mediawiki::maintenance::parsercachepurging::ensure: absent
+role::mediawiki::maintenance::cleanup_upload_stash::ensure: absent
+role::mediawiki::maintenance::tor_exit_node::ensure: absent
+role::mediawiki::maintenance::update_flaggedrev_stats::ensure: absent
+role::mediawiki::maintenance::refreshlinks::ensure: absent
+role::mediawiki::maintenance::update_special_pages::ensure: absent
+role::mediawiki::maintenance::update_article_count::ensure: absent
+role::mediawiki::maintenance::purge_abusefilter::ensure: absent
+role::mediawiki::maintenance::purge_checkuser::ensure: absent
+role::mediawiki::maintenance::purge_securepoll::ensure: absent
+role::mediawiki::maintenance::jobqueue_stats::ensure: absent
