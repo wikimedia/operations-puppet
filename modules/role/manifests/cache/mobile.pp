@@ -3,7 +3,8 @@ class role::cache::mobile {
         description => 'mobile Varnish cache server',
     }
 
-    class { 'varnish::htcppurger': varnish_instances => [ '127.0.0.1:80', '127.0.0.1:3128' ] }
+    class { 'varnish::htcppurger':
+    }
 
     include role::cache::2layer
 
