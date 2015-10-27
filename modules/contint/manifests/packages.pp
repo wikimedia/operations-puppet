@@ -61,7 +61,6 @@ class contint::packages {
         'librsvg2-2',
 
         'asciidoc',
-        'rake',
 
         'pep8',
         'python-simplejson',  # For mw/ext/Translate among others
