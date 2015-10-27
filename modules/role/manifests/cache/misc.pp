@@ -214,6 +214,9 @@ class role::cache::misc {
     # testing on cp1056
     if $::hostname == 'cp1056' {
         varnish::logging::reqstats { 'frontend':
+            # Remove instance_name if misc varnishes get a frontend
+            # instance just like other varnish clusters.
+            instance_name => undef,
             metric_prefix => "varnish.${::site}.misc.frontend.request",
             statsd        => hiera('statsd'),
         }
