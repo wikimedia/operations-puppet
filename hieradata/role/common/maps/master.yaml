@@ -1,6 +1,8 @@
 postgresql::master::pgversion: 9.4
 postgresql::master::datadir: /srv/postgresql/9.4/main
 postgresql::master::includes: tuning.conf
+postgresql::master::checkpoint_segments: 768
+postgresql::master::wal_keep_segments: 768
 debdeploy::grains:
   debdeploy-maps-master:
     value: standard
