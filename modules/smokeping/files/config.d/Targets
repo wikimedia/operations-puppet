@@ -67,11 +67,6 @@ menu = psw1-eqiad
 title = psw1-eqiad.mgmt.eqiad.wmnet
 host = psw1-eqiad.mgmt.eqiad.wmnet
 
-+++ psw2-eqiad
-menu = psw2-eqiad
-title = psw2-eqiad.mgmt.eqiad.wmnet
-host = psw2-eqiad.mgmt.eqiad.wmnet
-
 ++ Hosts
 menu = Hosts
 title = Sampled Hosts
