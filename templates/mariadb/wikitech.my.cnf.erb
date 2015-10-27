@@ -25,7 +25,7 @@ temp-pool
 max_connections                = 250
 extra_max_connections          = 10
 max_connect_errors             = 1000000000
-max_allowed_packet             = 16M
+max_allowed_packet             = 32M
 connect_timeout                = 3
 query_cache_size               = 0
 query_cache_type               = 0
@@ -62,6 +62,6 @@ aria_pagecache_buffer_size     = 128M
 [mysqldump]
 
 quick
-max_allowed_packet = 16M
+max_allowed_packet = 32M
 
 #!includedir /etc/mysql/conf.d/

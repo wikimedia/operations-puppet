@@ -22,7 +22,7 @@ server_id = <%= @server_id %>
 read_only = 0
 
 max_connections    = 250
-max_allowed_packet = 16M
+max_allowed_packet = 32M
 connect_timeout    = 3
 query_cache_size   = 0
 query_cache_type   = 0
@@ -83,6 +83,6 @@ x1.replicate-wild-do-table = flowdb.%
 [mysqldump]
 
 quick
-max_allowed_packet = 16M
+max_allowed_packet = 32M
 
 #!includedir /etc/mysql/conf.d/

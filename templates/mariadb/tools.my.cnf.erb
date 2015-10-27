@@ -22,7 +22,7 @@ temp-pool
 
 max_connections                = 1024
 max_connect_errors             = 1000000000
-max_allowed_packet             = 16M
+max_allowed_packet             = 32M
 connect_timeout                = 5
 query_cache_size               = 0
 query_cache_type               = 0
@@ -64,6 +64,6 @@ innodb_buffer_pool_dump_at_shutdown = 1
 [mysqldump]
 
 quick
-max_allowed_packet = 16M
+max_allowed_packet = 32M
 
 #!includedir /etc/mysql/conf.d/
