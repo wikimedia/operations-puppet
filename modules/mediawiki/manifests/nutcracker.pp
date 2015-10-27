@@ -7,7 +7,7 @@ class mediawiki::nutcracker {
 
     $nutcracker_pools = {
         'memcached'     => {
-            auto_eject_hosts     => true,
+            auto_eject_hosts     => hiera('mediawiki::nutcracker::auto_eject_hosts', true),
             distribution         => 'ketama',
             hash                 => 'md5',
             listen               => '127.0.0.1:11212',
@@ -20,7 +20,7 @@ class mediawiki::nutcracker {
         },
 
         'mc-unix'       => {
-            auto_eject_hosts     => true,
+            auto_eject_hosts     => hiera('mediawiki::nutcracker::auto_eject_hosts', true),
             distribution         => 'ketama',
             hash                 => 'md5',
             listen               => '/var/run/nutcracker/nutcracker.sock 0666',
@@ -33,7 +33,7 @@ class mediawiki::nutcracker {
         },
 
         'redis_eqiad'           =>  {
-            auto_eject_hosts     => true,
+            auto_eject_hosts     => hiera('mediawiki::nutcracker::auto_eject_hosts', true),
             distribution         => 'ketama',
             redis                => true,
             redis_auth           => $passwords::redis::main_password,
@@ -47,7 +47,7 @@ class mediawiki::nutcracker {
         },
 
         'redis_codfw'           =>  {
-            auto_eject_hosts     => true,
+            auto_eject_hosts     => hiera('mediawiki::nutcracker::auto_eject_hosts', true),
             distribution         => 'ketama',
             redis                => true,
             redis_auth           => $passwords::redis::main_password,
