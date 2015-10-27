@@ -30,7 +30,10 @@ class role::beta::trebuchet_testing {
     }
 
     include ::beta::config
-    include ::role::deployment::test
+    package { 'test/testrepo':
+        provider => 'trebuchet',
+    }
+
 
     # Allow ssh inbound from deployment-bastion.eqiad.wmflabs for testing
     ferm::rule { 'deployment-bastion-trebuchet-testing-ssh':
