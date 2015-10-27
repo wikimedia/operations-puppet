@@ -201,4 +201,12 @@ class role::cache::text {
         metric_path   => "varnish.${::site}.text.frontend.request",
         require       => Varnish::Instance['text-frontend'],
     }
+
+    # testing on cp1065
+    if $::hostname == 'cp1065' {
+        varnish::logging::reqstats { 'frontend':
+            metric_prefix => "varnish.${::site}.text.frontend.request",
+            statsd        => hiera('statsd'),
+        }
+    }
 }
