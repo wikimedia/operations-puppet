@@ -1,3 +1,6 @@
+# The 'nova compute' service does the actual VM management
+#  within nova.
+# https://wiki.openstack.org/wiki/Nova
 class openstack::nova::compute(
     $openstack_version=$::openstack::version,
     $novaconfig
@@ -81,7 +84,7 @@ class openstack::nova::compute(
         }
         Instancersync <<| |>>
 
-        rsync::server::module { "nova_instance_rsync_controller":
+        rsync::server::module { 'nova_instance_rsync_controller':
             path        => '/var/lib/nova/instances',
             read_only   => 'no',
             hosts_allow => [hiera('labs_nova_controller')],
@@ -204,6 +207,7 @@ class openstack::nova::compute(
     }
 }
 
+# defines an rsync server on an instance
 define instancersync (
     $hostname = undef) {
 

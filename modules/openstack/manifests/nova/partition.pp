@@ -1,3 +1,6 @@
+# creates a xfs partition for openstack nova
+#  This is applied selectively on Compute nodes, depending on
+#  what kind of a drive setup they have.
 define openstack::nova::partition($partition_nr='1') {
     if (! $title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) {
         fail("unable to init ${title} for nova")

@@ -1,3 +1,5 @@
+# openstack scheduler determines on which host a
+# particular instance should run
 class openstack::nova::scheduler(
     $openstack_version=$::openstack::version,
     $novaconfig

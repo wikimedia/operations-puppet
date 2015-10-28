@@ -1,3 +1,6 @@
+# sets upt APT repository for labs openstack.
+#  We use the Ubuntu cloud archive for this -- this repo points us to the
+#  package versions specified in $::openstack::version
 class openstack::repo(
     $openstack_version=$::openstack::version,
 ) {

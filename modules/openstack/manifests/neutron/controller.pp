@@ -1,3 +1,8 @@
+# the networking part of openstack
+# https://wiki.openstack.org/wiki/Neutron
+#  Labs currently uses nova-network rather than Neutron,
+#  but we hope to migrate to Neutron someday.  Meanwhile
+#  this code is largely vestigial.
 class openstack::neutron::controller(
     $neutronconfig,
     $data_interface_ip,

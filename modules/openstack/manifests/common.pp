@@ -1,3 +1,4 @@
+# common packages and config for openstack
 class openstack::common(
             $novaconfig,
             $instance_status_wiki_host,

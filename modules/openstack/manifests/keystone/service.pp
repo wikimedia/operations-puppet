@@ -1,3 +1,5 @@
+# keystone is the identity service of openstack
+# http://docs.openstack.org/developer/keystone/
 class openstack::keystone::service($openstack_version=$::openstack::version, $keystoneconfig, $glanceconfig) {
     include openstack::repo
 
@@ -42,9 +44,9 @@ class openstack::keystone::service($openstack_version=$::openstack::version, $ke
         $keystone_db_host = $keystoneconfig['db_host']
         cron {
             'cleanup_expired_keystone_tokens':
+                ensure  => present,
                 user    => 'root',
                 minute  => 20,
-                ensure  => present,
                 command => "/usr/bin/mysql ${keystone_db_name} -h${keystone_db_host} -u${keystone_db_user} -p${keystone_db_pass} -e 'DELETE FROM token WHERE NOW() - INTERVAL 2 day > expires LIMIT 10000;'",
         }
 
