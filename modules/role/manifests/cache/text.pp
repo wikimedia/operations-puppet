@@ -204,6 +204,7 @@ class role::cache::text {
 
     # testing on cp1065
     if $::hostname == 'cp1065' {
+        # Parse varnishlogs for request statistics and send to statsd.
         varnish::logging::reqstats { 'frontend':
             metric_prefix => "varnish.${::site}.text.frontend.request",
             statsd        => hiera('statsd'),

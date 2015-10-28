@@ -194,10 +194,9 @@ class role::cache::mobile {
         class { 'role::cache::kafka::webrequest': topic => 'webrequest_mobile' }
     }
 
-    # Parse varnishlogs for request statistics and send to statsd via diamond.
-    varnish::monitoring::varnishreqstats { 'MobileFrontend':
-        instance_name => 'frontend',
-        metric_path   => "varnish.${::site}.mobile.frontend.request",
-        require       => Varnish::Instance['mobile-frontend'],
+    # Parse varnishlogs for request statistics and send to statsd.
+    varnish::logging::reqstats { 'frontend':
+        metric_prefix => "varnish.${::site}.text.frontend.request",
+        statsd        => hiera('statsd'),
     }
 }
