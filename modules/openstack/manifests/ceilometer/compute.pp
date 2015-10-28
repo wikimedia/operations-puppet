@@ -1,3 +1,5 @@
+# Telemetry for OpenStack - the agent
+# https://wiki.openstack.org/wiki/Ceilometer
 class openstack::ceilometer::compute ($openstack_version=$::openstack::version, $novaconfig) {
 
     include openstack::repo

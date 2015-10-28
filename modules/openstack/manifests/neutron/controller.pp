@@ -1,3 +1,5 @@
+# the networking part of openstack
+# https://wiki.openstack.org/wiki/Neutron
 class openstack::neutron::controller(
     $neutronconfig,
     $data_interface_ip,
