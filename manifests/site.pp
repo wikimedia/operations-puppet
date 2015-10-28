@@ -2288,9 +2288,11 @@ node 'ruthenium.eqiad.wmnet' {
 }
 
 # T95046 install/deploy scandium as zuul merger (ci) server
-# REMOVE THE SPARE WHEN YOU INPUT THE SYSTEMS ROLE
 node 'scandium.eqiad.wmnet' {
-    role spare
+    # no role yet. Will use zuul::merger
+
+    include standard
+    include base::firewall
 
 }
 

@@ -1,0 +1,6 @@
+admin::groups:
+  - contint-users
+  - contint-admins
+  - contint-roots
+cluster: misc
+contactgroups: 'admins,contint'
