@@ -42,7 +42,7 @@ class openstack::nova::compute(
         # T116332
         nrpe::monitor_service { 'kvm_ssl_cert':
             description   => 'kvm ssl cert',
-            nrpe_command  => "/usr/local/lib/nagios/plugins/check_ssl_certfile ${certname}",
+            nrpe_command  => "/usr/local/lib/nagios/plugins/check_ssl_certfile /etc/ssl/localcerts/${certname}.crt",
         }
 
         file { '/var/lib/nova/cacert.pem':
