@@ -383,7 +383,12 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
                  'ALL = (tilerator) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl -u tilerator *']
+                 'ALL = NOPASSWD: /bin/journalctl -u tilerator *',
+                 'ALL = NOPASSWD: /usr/sbin/service tileratorui *',
+                 'ALL = NOPASSWD: /bin/systemctl mask tileratorui.service',
+                 'ALL = NOPASSWD: /bin/systemctl unmask tileratorui.service',
+                 'ALL = (tileratorui) NOPASSWD: ALL',
+                 'ALL = NOPASSWD: /bin/journalctl -u tileratorui *']
   mobileapps-admin:
     description: Group of mobileapps admins
     gid: 759
