@@ -265,8 +265,10 @@ class EndpointRequest(object):
                 method=self.method
             )
         except CheckServiceError as e:
-            return ('CRITICAL', "Could not fetch url {}: {}".format(
-                url, e))
+            self.status = 'CRITICAL'
+            self.msg = "Could not fetch url {}: {}".format(
+                url, e)
+            return
 
         # Response status
         if r.status != self.resp_status:
