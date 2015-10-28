@@ -22,16 +22,16 @@ class dynamicproxy (
     $redis_replication    = undef,
     $error_enabled        = false,
     $error_config         = {
-        title => "Wikimedia Labs Error",
-        logo => "/labs-logo.png",
-        logo_2x => "/labs-logo-2x.png",
-        logo_alt => "Wikimedia Labs",
-        favicon => "//wikitech.wikimedia.org/static/favicon/wikitech.ico",
+        title    => 'Wikimedia Labs Error',
+        logo     => '/labs-logo.png',
+        logo_2x  => '/labs-logo-2x.png',
+        logo_alt => 'Wikimedia Labs',
+        favicon  => '//wikitech.wikimedia.org/static/favicon/wikitech.ico',
     },
-    $error_description    = "Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.",
+    $error_description    = 'Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.',
     $error_details        = undef,
     $web_domain           = undef,
-    $blocked_user_agent_regex = "TweetmemeBot", # T73120 - misbehaving crawler
+    $blocked_user_agent_regex = 'TweetmemeBot', # T73120 - misbehaving crawler
 ) {
     if $ssl_certificate_name != false and $ssl_settings == undef {
         fail('ssl_certificate_nme set but ssl_settings not set')
@@ -103,7 +103,7 @@ class dynamicproxy (
         content => template('dynamicproxy/errorpage.erb'),
         owner   => 'www-data',
         group   => 'www-data',
-        mode   => '0444',
+        mode    => '0444',
         require => [File['/var/www/error'],
                     File['/var/www/error/labs-logo.png'],
                     File['/var/www/error/labs-logo-2x.png']

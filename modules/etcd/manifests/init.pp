@@ -53,7 +53,7 @@ class etcd (
         fail("Can't use SSL client certs if we don't use SSL")
     }
     unless $srv_dns or $peers_list {
-        fail("We need either the domain name for DNS discovery or an explicit peers list")
+        fail('We need either the domain name for DNS discovery or an explicit peers list')
     }
 
     require etcd::logging
