@@ -545,9 +545,16 @@ node /^db10(33)\.eqiad\.wmnet/ {
 
 # MariaDB 10
 
-node /^db10(51|53|55|57|65|66|72|73)\.eqiad\.wmnet/ {
+node /^db10(51|53|55|57|66|72|73)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's1',
+    }
+}
+
+node /^db1065\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 's1',
+        p_s   => 'on',
     }
 }
 
