@@ -30,7 +30,7 @@ class role::statistics {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///files/deploy/umask-wikidev-profile-d.sh',
+        source => 'puppet:///modules/role/deployment/umask-wikidev-profile-d.sh',
     }
 }
 
@@ -152,4 +152,3 @@ class role::statistics::web inherits role::statistics {
     }
 
 }
-
