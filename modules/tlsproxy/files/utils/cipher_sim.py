@@ -110,8 +110,8 @@ import collections
 
 
 def get_choice(client_ciphers, server_pref):
-    for c in client_ciphers:
-        for servc in server_pref:
+    for servc in server_pref:
+        for c in client_ciphers:
             if int(c) == servc[0]:
                 return servc[1]
     return ":HANDSHAKE-FAILURE:"
