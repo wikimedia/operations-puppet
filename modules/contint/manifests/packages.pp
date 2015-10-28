@@ -104,7 +104,7 @@ class contint::packages {
         }
     }
 
-    if os_version('ubuntu >= trusty') {
+    if (os_version('ubuntu < trusty') or os_version('debian >= jessie')) {
 
         # Provide 'node' alias for 'nodejs' because Debian/Ubuntu
         # already has a package called 'node'
