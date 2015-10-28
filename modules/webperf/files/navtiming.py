@@ -124,6 +124,11 @@ def handle_navigation_timing(meta):
             dispatch_stat(prefix, metric, site, 'overall', value)
             dispatch_stat(prefix, metric, 'overall', value)
 
+            if site == 'desktop' and wiki == 'wikidatawiki':
+                w = 'wikidata-desktop'
+                dispatch_stat(prefix, metric, w, auth, value)
+                dispatch_stat(prefix, metric, w, 'overall', value)
+
             if metric == 'connecting':
                 dispatch_stat(prefix, metric, site, 'https', value)
 
