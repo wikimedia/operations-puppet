@@ -225,6 +225,7 @@ class role::mediawiki::maintenance {
     include mediawiki::maintenance::purge_checkuser
     include mediawiki::maintenance::purge_securepoll
     include mediawiki::maintenance::jobqueue_stats
+    include mediawiki::maintenance::jobqueue_monitor
 
     # (T17434) Periodical run of currently disabled special pages
     include mediawiki::maintenance::updatequerypages
