@@ -34,7 +34,6 @@ cassandra::metrics::blacklist:
     - .*\.5MinuteRate$
     - .*\.98percentile$
     - .*\.999percentile$
-    - .*\.max$
     - .*\.mean$
     - .*\.meanRate$
     - .*\.min$
