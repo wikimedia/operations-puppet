@@ -5994,6 +5994,8 @@ host protactinium {
 host radium {
 	hardware ethernet 84:2b:2b:fd:bd:0e;
 	fixed-address radium.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host radon {
