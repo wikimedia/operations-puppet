@@ -11,6 +11,7 @@ function disable_list {
     echo "emergency=1"  | config_list -i /dev/stdin $list
     echo "member_moderation_action=2" | config_list -i /dev/stdin $list
     echo "generic_nonmember_action=2" | config_list -i /dev/stdin $list
+    echo "ban_list=['^.*@.*]" | config_list -i /dev/stdin $list
     if find /var/lib/mailman/data/ | grep heldmsg-$list; then
         rm /var/lib/mailman/data/heldmsg-$list-*.pck
     fi
@@ -21,6 +22,7 @@ function enable_list {
     echo "emergency=0"  | config_list -i /dev/stdin $list
     echo "member_moderation_action=0" | config_list -i /dev/stdin $list
     echo "generic_nonmember_action=1" | config_list -i /dev/stdin $list
+    echo "ban_list=[]" | config_list -i /dev/stdin $list
 }
 
 function usage {
