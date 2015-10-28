@@ -5,7 +5,9 @@
 # capable of serving this function, but neither activates nor
 # enables it to do so by itself (as this requires manual
 # intervention at this time because of the shared storage).
-class labstore::fileserver {
+class labstore::fileserver(
+    $use_ldap = false,
+) {
 
     include ::labstore
 
@@ -13,8 +15,10 @@ class labstore::fileserver {
     # actively serving files
     $is_active = (hiera('active_labstore_host') == $::hostname)
 
-    $ldapincludes = ['openldap', 'nss', 'utils']
-    class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
+    if $use_ldap {
+        $ldapincludes = ['openldap', 'nss', 'utils']
+        class { 'ldap::role::client::labs': ldapincludes => $ldapincludes }
+    }
 
     require_package('lvm2')
     require_package('python3-paramiko')
