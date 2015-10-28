@@ -26,6 +26,7 @@ class apertium(
         'apertium',
         'apertium-af-nl',
         'apertium-apy',
+        'apertium-br-fr',
         'apertium-ca-it',
         'apertium-cy-en',
         'apertium-dan',
