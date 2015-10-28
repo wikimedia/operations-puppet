@@ -25,7 +25,7 @@ class zuul::merger (
     $git_email      = "zuul-merger@${::hostname}",
     $git_name       = 'Wikimedia Zuul Merger',
     $status_url     = "https://${::fqdn}/zuul/status",
-    $zuul_url       = 'git://zuul.eqiad.wmnet',
+    $zuul_url       = $::fqdn,
 ) {
 
     require ::zuul

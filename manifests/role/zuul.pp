@@ -29,8 +29,7 @@ class role::zuul::configuration {
             'git_dir'   => '/srv/ssd/zuul/git',
             'git_email' => "zuul-merger@${::hostname}",
             'git_name'  => 'Wikimedia Zuul Merger',
-            # FIXME should be $::fqdn
-            'zuul_url'  => 'git://zuul.eqiad.wmnet',
+            'zuul_url'  => "git://${::fqdn}",
         },
         'labs' => {
             # FIXME migrate under /data/project whenever T66868 is solved
