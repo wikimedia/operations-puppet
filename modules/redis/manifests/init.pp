@@ -12,7 +12,7 @@ class redis (
     $password = false,
     $auto_aof_rewrite_min_size = '512mb',
     $dbfilename = undef, # filename for rdb. If undef, "$hostname-$port.rdb" is used
-    $saves = [ "900 1", "300 100", "60 10000" ], # Save points for rdb
+    $saves = [ '900 1', '300 100', '60 10000' ], # Save points for rdb
     $stop_writes_on_bgsave_error = false,
     $expose = true,
 ) {

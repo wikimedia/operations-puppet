@@ -24,7 +24,7 @@ class etcd::ssl(
         owner   => 'etcd',
         group   => 'etcd',
         mode    => '0500',
-        require  => Package['etcd'],
+        require => Package['etcd'],
     }
 
     file { "${pubdir}/ca.pem":
