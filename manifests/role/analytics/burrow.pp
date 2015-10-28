@@ -17,4 +17,12 @@ class role::analytics::burrow {
         from_email         => "burrow@${::fqdn}",
         to_emails          => 'madhuvishy@wikimedia.org, otto@wikimedia.org',
     }
+
+    # Burrow has an HTTP REST API on port 8000
+    #firewall Kafka Broker
+    ferm::service { 'burrow':
+        proto  => 'tcp',
+        port   => '8000',
+        srange => '$ALL_NETWORKS',
+    }
 }
