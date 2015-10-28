@@ -206,10 +206,13 @@ define cassandra::instance(
     }
 
     base::service_unit { $service_name:
-        ensure        => present,
-        template_name => 'cassandra',
-        systemd       => true,
-        refresh       => false,
+        ensure         => present,
+        template_name  => 'cassandra',
+        systemd        => true,
+        refresh        => false,
+        service_params => {
+            enable => false
+        },
         require       => [
             File[$data_file_directories],
             File["${config_directory}/cassandra-env.sh"],
