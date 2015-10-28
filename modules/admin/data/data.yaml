@@ -419,13 +419,14 @@ groups:
     gid: 765
     description: Group of datacenter ops engineers
     members: [pt1979]
-    privileges: ['ALL = NOPASSWD: /usr/local/sbin/install-console *']
+    privileges: ['ALL = NOPASSWD: /usr/local/sbin/install-console *',
+                 'ALL = NOPASSWD: /usr/bin/salt-key *',
+                 'ALL = NOPASSWD: /usr/bin/puppet cert *']
   perf-roots:
     gid: 766
     description: users who have root on memcached, varnish and application servers
     members: [krinkle]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-
 
 users:
   rush:
