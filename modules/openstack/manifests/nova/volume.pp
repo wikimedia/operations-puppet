@@ -1,3 +1,5 @@
+# OpenStack Compute - storage
+#  Currently unused in Labs.
 class openstack::nova::volume($novaconfig) {
     include openstack::repo
 

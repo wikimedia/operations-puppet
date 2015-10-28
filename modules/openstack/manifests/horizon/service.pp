@@ -1,3 +1,5 @@
+# The OpenStack Dashboard Project
+# http://docs.openstack.org/developer/horizon/
 class openstack::horizon::service(
     $openstack_version=$::openstack::version,
     $novaconfig)
