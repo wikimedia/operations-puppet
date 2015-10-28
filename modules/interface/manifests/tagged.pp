@@ -56,7 +56,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
 
     if $remove != true {
         exec { "/sbin/ifup ${intf}":
-            subscribe => Augeas[$intf],
+            subscribe   => Augeas[$intf],
             refreshonly => true,
         }
     }

@@ -14,7 +14,7 @@ define interface::txqueuelen($len) {
     # Set in /etc/network/interfaces
     interface::up_command { "txqueuelen-${name}":
         interface => $name,
-        command => $setcmd,
+        command   => $setcmd,
     }
 
     # And make sure it's always active
