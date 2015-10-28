@@ -3,7 +3,7 @@
 # and forwards them to StatsD.
 class role::cache::statsd {
     ::varnish::logging::statsd { 'default':
-        statsd_server => 'statsd.eqiad.wmnet',
+        statsd_server => hiera('statsd'),
         key_prefix    => "varnish.${::site}.backends",
     }
 
@@ -16,11 +16,11 @@ class role::cache::statsd::frontend {
     # Client connection stats from the 'X-Connection-Properties'
     # header set by the SSL terminators.
     ::varnish::logging::xcps { 'xcps':
-        statsd_server => 'statsd.eqiad.wmnet',
+        statsd_server => hiera('statsd'),
     }
 
     # ResourceLoader browser cache hit rate and request volume stats.
     ::varnish::logging::rls { 'rls':
-        statsd_server => 'statsd.eqiad.wmnet',
+        statsd_server => hiera('statsd'),
     }
 }
