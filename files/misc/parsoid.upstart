@@ -37,5 +37,5 @@ script
     fi
     DAEMON_ARGS="-c $PARSOID_SETTINGS_FILE"
     chdir "$PARSOID_BASE_PATH"
-    exec /usr/bin/nodejs api/server.js $DAEMON_ARGS < /dev/null >> "$PARSOID_LOG_FILE" 2>&1
+    exec /usr/bin/nodejs bin/server.js $DAEMON_ARGS < /dev/null >> "$PARSOID_LOG_FILE" 2>&1
 end script
