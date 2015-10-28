@@ -28,7 +28,6 @@ cc_host=<%= @novaconfig["cc_host"] %>
 ec2_url=http://<%= @novaconfig["api_host"] %>:8773/services/Cloud
 ec2_dmz_host=<%= @novaconfig["api_ip"] %>
 dmz_cidr=<%= @novaconfig["dmz_cidr"] %>
-libvirt_type=<%= @novaconfig["libvirt_type"] %>
 dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
 dhcp_domain=<%= @novaconfig["dhcp_domain"] %>
@@ -37,8 +36,6 @@ quota_fixed_ips=200
 api_paste_config=/etc/nova/api-paste.ini
 #use_ipv6=True
 allow_same_net_traffic=False
-live_migration_uri=<%= @novaconfig["live_migration_uri"] %>
-libvirt_use_virtio_for_bridges=True
 force_dhcp_release=True
 # set the lease time to 24 hours
 dhcp_lease_time=86400
@@ -136,6 +133,7 @@ use_virtio_for_bridges=True
 # Limit this to around a third of available 1Gbps connection so we don't
 # throttle running instances when migrating.
 live_migration_bandwidth=300
+live_migration_uri=<%= @novaconfig["live_migration_uri"] %>
 
 [oslo_messaging_rabbit]
 rabbit_host=<%= @novaconfig["rabbit_host"] %>
