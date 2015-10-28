@@ -80,6 +80,7 @@ mediawiki_memcached_servers:
     - 10.68.16.14:11211:1
     - 10.68.16.15:11211:1
 "varnish::packages::version": latest
+varnish::logging::statsd_server: labmon1001.eqiad.wmnet
 "keyholder::trusted_group": wikidev
 "base::environment::core_dump_pattern": '/data/project/cores/%{::instancename}-core.%h.%e.%p.%t'
 
