@@ -18,11 +18,11 @@ class role::cache::base(
     # Client connection stats from the 'X-Connection-Properties'
     # header set by the SSL terminators.
     ::varnish::logging::xcps { 'xcps':
-        statsd_server => 'statsd.eqiad.wmnet',
+        statsd_server => hiera('statsd'),
     }
 
     ::varnish::logging::statsd { 'default':
-        statsd_server => 'statsd.eqiad.wmnet',
+        statsd_server => hiera('statsd'),
         key_prefix    => "varnish.${::site}.backends",
     }
 
