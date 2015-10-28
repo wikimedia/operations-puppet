@@ -160,6 +160,6 @@ class role::cache::text {
 
     # ResourceLoader browser cache hit rate and request volume stats.
     ::varnish::logging::rls { 'rls':
-        statsd_server => 'statsd.eqiad.wmnet',
+        statsd_server => hiera('statsd'),
     }
 }
