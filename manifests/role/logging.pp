@@ -200,7 +200,7 @@ class role::logging::udp2log {
 # - Fundraising: This requires write permissions on the netapp mount.
 #
 class role::logging::udp2log::erbium inherits role::logging::udp2log {
-    include misc::fundraising::udp2log_rotation
+    include role::logging::fundraising_udp2log_rotation
     include role::logging::systemusers
 
     # udp2log::instance will ensure this is created
@@ -474,4 +474,39 @@ class role::logging::kafkatee::webrequest::fundraising {
         sample      => 100,
         type        => 'pipe',
     }
+}
+
+
+class role::logging::fundraising_udp2log_rotation {
+
+    include role::logging::systemusers
+
+    sudo::user { 'file_mover':
+        privileges => ['ALL = NOPASSWD: /usr/bin/killall -HUP udp2log'] }
+
+    file { '/usr/local/bin/rotate_fundraising_logs':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///files/misc/scripts/rotate_fundraising_logs',
+    }
+
+    file { '/a/log/fundraising/logs/buffer':
+        ensure => directory,
+        owner  => 'file_mover',
+        group  => 'wikidev',
+        mode   => '0750',
+    }
+
+    cron { 'rotate_fundraising_logs':
+        ensure  => present,
+        user    => 'file_mover',
+        minute  => '*/15',
+        command => '/usr/local/bin/rotate_fundraising_logs',
+    }
+
+    class { 'nfs::netapp::fr_archive':
+        mountpoint => '/a/log/fundraising/logs/fr_archive',
+    }
+
 }
