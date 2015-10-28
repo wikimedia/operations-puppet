@@ -294,11 +294,11 @@ templates:
                         headers:
                           content-type: application/json
                         body:
-                          headers: '{$.get_mobileapps.headers}'
+                          headers: '{$$.strip($.get_mobileapps.headers, ["content-length", "content-encoding"])}'
                           body: '{$.get_mobileapps.body}'
                       return:
                         status: 200
-                        headers: '{$.get_mobileapps.headers}'
+                        headers: '{$$.strip($.get_mobileapps.headers, ["content-length", "content-encoding"])}'
                         body: '{$.get_mobileapps.body}'
             /handling/content/{cache-default}/{route}/{title}:
               post:
@@ -418,11 +418,11 @@ templates:
                   headers:
                     content-type: application/json
                   body:
-                    headers: '{$$.merge($.mathoid.headers, {"x-resource-location": $.request.headers.x-resource-location})}'
+                    headers: '{$$.merge($$.strip($.mathoid.headers, ["content-length", "content-encoding"]), {"x-resource-location": $.request.headers.x-resource-location})}'
                     data: '{$.mathoid.body}'
                 return:
                   status: 200
-                  headers: '{$$.merge($.mathoid.body[$.request.params.format].headers,$$.merge($.mathoid.headers, {"x-resource-location": $.request.headers.x-resource-location}))}'
+                  headers: '{$$.merge($.mathoid.body[$.request.params.format].headers,$$.merge($$.strip($.mathoid.headers, ["content-length", "content-encoding"]), {"x-resource-location": $.request.headers.x-resource-location}))}'
                   body: '{$.mathoid.body[$.request.params.format].body}'
 
       /{module:pageviews}/per-article/{+rest}:
