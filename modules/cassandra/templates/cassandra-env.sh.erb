@@ -201,8 +201,8 @@ JVM_OPTS="$JVM_OPTS -XX:+HeapDumpOnOutOfMemoryError"
 
 CASSANDRA_HEAPDUMP_DIR=<%= @heapdump_directory %>
 if [ "x$CASSANDRA_HEAPDUMP_DIR" != "x" ]; then
-    JVM_OPTS="$JVM_OPTS -XX:HeapDumpPath=$CASSANDRA_HEAPDUMP_DIR/java_%p.hprof"
-    JVM_OPTS="$JVM_OPTS -XX:ErrorFile=$CASSANDRA_HEAPDUMP_DIR/hs_err_%p.log"
+    JVM_OPTS="$JVM_OPTS -XX:HeapDumpPath=$CASSANDRA_HEAPDUMP_DIR"
+    JVM_OPTS="$JVM_OPTS -XX:ErrorFile=$CASSANDRA_HEAPDUMP_DIR/hs_err_pid%p.log"
 fi
 
 
