@@ -2414,7 +2414,6 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
     role mediawiki::common, db::maintenance, peopleweb, noc, mediawiki::searchmonitor, mediawiki::maintenance, backup::host
-    include misc::monitoring::jobqueue
     include scap::scripts
     include ldap::role::client::labs
 
