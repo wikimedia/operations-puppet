@@ -2298,6 +2298,11 @@ node 'ruthenium.eqiad.wmnet' {
 node 'scandium.eqiad.wmnet' {
     role spare
 
+    $cluster = 'misc'
+    $nagios_contact_group = 'admins,contint'
+
+    include standard
+
 }
 
 node /^sca100[12]\.eqiad\.wmnet$/ {
