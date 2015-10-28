@@ -1,3 +1,4 @@
+# OpenStack Compute - storage
 class openstack::nova::volume($novaconfig) {
     include openstack::repo
 

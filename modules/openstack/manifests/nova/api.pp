@@ -1,3 +1,4 @@
+# http://developer.openstack.org/api-ref.html
 class openstack::nova::api($openstack_version=$::openstack::version, $novaconfig) {
     include openstack::repo
 

@@ -1,3 +1,4 @@
+# admin helper scripts for openstack
 class openstack::adminscripts(
     $novaconfig,
     $openstack_version = $::openstack::version,

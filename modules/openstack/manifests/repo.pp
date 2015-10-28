@@ -1,3 +1,4 @@
+# sets upt APT repository for openstack
 class openstack::repo(
     $openstack_version=$::openstack::version,
 ) {

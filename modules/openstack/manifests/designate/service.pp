@@ -1,3 +1,5 @@
+# Designate provides DNSaaS services for OpenStack
+# https://wiki.openstack.org/wiki/Designate
 class openstack::designate::service ($openstack_version=$::openstack::version, $designateconfig) {
 
     include openstack::repo
@@ -58,18 +60,18 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
     # These would be automatically included in a correct designate package...
     # probably this can be ripped out in Liberty.
     file { '/etc/logrotate.d/designate-mdns':
-        ensure  => present,
-        source  => 'puppet:///modules/openstack/designate-mdns.logrotate',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        ensure => present,
+        source => 'puppet:///modules/openstack/designate-mdns.logrotate',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
     file { '/etc/logrotate.d/designate-pool-manager':
-        ensure  => present,
-        source  => 'puppet:///modules/openstack/designate-pool-manager.logrotate',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        ensure => present,
+        source => 'puppet:///modules/openstack/designate-pool-manager.logrotate',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
 
@@ -137,9 +139,9 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
         }
 
         base::service_unit { ['designate-pool-manager', 'designate-mdns']:
-            upstart         =>  true,
-            require         =>  Package['designate'],
-            service_params  => { ensure => stopped },
+            upstart        =>  true,
+            require        =>  Package['designate'],
+            service_params => { ensure => stopped },
         }
     }
 }

@@ -1,3 +1,4 @@
+# sets up rabbitmq on the nova controller
 class openstack::queue-server(
     $novaconfig
 ) {

@@ -1,3 +1,4 @@
+# http://blog.russellbryant.net/2012/11/19/a-new-nova-service-nova-conductor/
 class openstack::nova::conductor($novaconfig) {
     include openstack::repo
 
