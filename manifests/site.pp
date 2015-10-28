@@ -997,9 +997,6 @@ node 'gadolinium.wikimedia.org' {
 node 'gallium.wikimedia.org' {
     role ci::master, ci::slave, ci::website, zuul::production
 
-    $cluster = 'misc'
-    $nagios_contact_group = 'admins,contint'
-
     # T51846, let us sync VisualEditor in mediawiki/extensions.git
     sudo::user { 'jenkins-slave':
         privileges => [
