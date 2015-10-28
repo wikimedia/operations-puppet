@@ -117,7 +117,7 @@ class role::cache::upload {
 
     # Media browser cache hit rate and request volume stats.
     ::varnish::logging::media { 'media':
-        statsd_server => 'statsd.eqiad.wmnet',
+        statsd_server => hiera('statsd'),
     }
 
     # Parse varnishlogs for request statistics and send to statsd.
