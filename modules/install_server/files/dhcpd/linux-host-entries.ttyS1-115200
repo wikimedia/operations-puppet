@@ -3294,7 +3294,7 @@ host ms-be1018 {
 }
 
 host ms-be1019 {
-        hardware ethernet 5c:b9:01:fe:f0:50;
+        hardware ethernet 3C:A8:2A:0D:5F:E8;
         fixed-address ms-be1019.eqiad.wmnet;
 }
 
