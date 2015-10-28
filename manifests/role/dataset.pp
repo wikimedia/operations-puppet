@@ -32,7 +32,7 @@ class role::dataset::pagecounts_all_sites($enable = true) {
 #
 class role::dataset::pageviews($enable = true) {
     class { '::dataset::cron::pageviews':
-        source =>  'stat1002.eqiad.wmnet::hdfs-archive/pageviews',
+        source =>  'stat1002.eqiad.wmnet::hdfs-archive/pageview/legacy/hourly',
         enable => $enable,
     }
 }
