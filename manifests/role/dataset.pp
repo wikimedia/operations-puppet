@@ -16,6 +16,7 @@ class role::dataset::pagecountsraw($enable = true) {
 # http://dumps.wikimedia.org/other/pagecounts-all-sites/
 #
 class role::dataset::pagecounts_all_sites($enable = true) {
+    # TODO: Make this class use dataset::cron::job define instead.
     class { '::dataset::cron::pagecounts_all_sites':
         source =>  'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-all-sites',
         enable => $enable,
@@ -30,10 +31,26 @@ class role::dataset::pagecounts_all_sites($enable = true) {
 # This will make these files available at
 # http://dumps.wikimedia.org/other/pageviews/
 #
-class role::dataset::pageviews($enable = true) {
-    class { '::dataset::cron::pageviews':
-        source =>  'stat1002.eqiad.wmnet::hdfs-archive/pageviews',
-        enable => $enable,
+# Copies over files with pageview statistics per page and project,
+# using the current definition of pageviews, from an rsyncable location.
+#
+# These statistics are computed from the raw webrequest logs by the
+# pageview definition: https://meta.wikimedia.org/wiki/Research:Page_view
+#
+# See: https://github.com/wikimedia/analytics-refinery/tree/master/oozie/pageview
+#           (docs on the jobs that create the table and archive the files)
+#      https://wikitech.wikimedia.org/wiki/Analytics/Data/Pageview_hourly
+#           (docs on the table from which these statistics are computed)
+#
+class role::dataset::pageviews($ensure = 'present') {
+    # Note:  pageview and projectvew files are expected to be in the same
+    # directory on dumps.wikimedia.org.  Here the destination for these
+    # is the same.
+    dataset::cron::job { 'pageview':
+        ensure      => $ensure,
+        source      => 'stat1002.eqiad.wmnet::hdfs-archive/{pageview,projectview}/legacy/hourly',
+        destination => '/data/xmldatadumps/public/other/pageviews',
+        minute      => '51',
     }
 }
 
@@ -80,9 +97,7 @@ class role::dataset::primary {
         enable => true,
     }
 
-    class { 'role::dataset::pageviews':
-        enable => true,
-    }
+    class { 'role::dataset::pageviews': }
 
     class { 'role::dataset::mediacounts':
         enable => true,
