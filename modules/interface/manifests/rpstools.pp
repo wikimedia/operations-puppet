@@ -7,9 +7,9 @@
 # definitions of the file resource.
 class interface::rpstools {
     file { '/usr/local/sbin/interface-rps':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/interface/interface-rps.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/interface/interface-rps.py',
     }
 }
