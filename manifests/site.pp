@@ -2412,7 +2412,6 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 node 'terbium.eqiad.wmnet' {
     role db::maintenance, peopleweb, noc, mediawiki::generic_monitoring, mediawiki::maintenance, backup::host
 
-    include scap::scripts
     include ldap::role::client::labs
 
     package { 'python-mysqldb':
