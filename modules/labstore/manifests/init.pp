@@ -10,11 +10,11 @@ class labstore {
     require_package('nfs-kernel-server')
 
     file { '/usr/local/sbin/set-stripe-cache':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/labstore/set-stripe-cache',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/labstore/set-stripe-cache',
     }
 
     # This is done unconditionally to all the md devices at
@@ -41,10 +41,10 @@ class labstore {
     }
 
     file { '/root/.ssh/id_labstore':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0400',
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
         content => secret('labstore/id_labstore'),
     }
 

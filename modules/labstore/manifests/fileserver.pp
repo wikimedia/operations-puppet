@@ -36,10 +36,10 @@ class labstore::fileserver {
     }
 
     file { '/usr/local/sbin/cleanup-snapshots':
-        source  => 'puppet:///modules/labstore/cleanup-snapshots',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
+        source => 'puppet:///modules/labstore/cleanup-snapshots',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
     }
 
     if $is_active {
@@ -79,11 +79,11 @@ class labstore::fileserver {
     # active one.
 
     file { '/usr/local/sbin/start-nfs':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0550',
-        source  => 'puppet:///modules/labstore/start-nfs',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+        source => 'puppet:///modules/labstore/start-nfs',
     }
 
     include ::labstore::fileserver::exports
