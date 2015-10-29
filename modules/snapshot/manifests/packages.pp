@@ -9,4 +9,5 @@ class snapshot::packages {
     require_package('p7zip-full')
     require_package('subversion')
     require_package('utfnormal')
+    require_package('pbzip2')
 }
