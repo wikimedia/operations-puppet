@@ -20,7 +20,7 @@ mediawiki::maintenance::refreshlinks::ensure: absent
 mediawiki::maintenance::update_special_pages::ensure: absent
 mediawiki::maintenance::update_article_count::ensure: absent
 mediawiki::maintenance::purge_abusefilter::ensure: absent
-mediawiki::maintenance::purge_checkuser::ensure: absent
+mediawiki::maintenance::purge_checkuser::ensure: present
 mediawiki::maintenance::purge_securepoll::ensure: present
 mediawiki::maintenance::jobqueue_stats::ensure: present
 mediawiki::maintenance::updatequerypages::ensure: absent 
