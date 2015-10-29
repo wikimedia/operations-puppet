@@ -21,6 +21,6 @@ mediawiki::maintenance::update_special_pages::ensure: present
 mediawiki::maintenance::update_article_count::ensure: present
 mediawiki::maintenance::purge_abusefilter::ensure: present
 mediawiki::maintenance::purge_checkuser::ensure: present
-mediawiki::maintenance::purge_securepoll::ensure: present
+mediawiki::maintenance::purge_securepoll::ensure: absent
 mediawiki::maintenance::jobqueue_stats::ensure: absent
 mediawiki::maintenance::updatequerypages::ensure: present
