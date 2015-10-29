@@ -79,6 +79,7 @@ def handle_navigation_timing(meta):
         ('redirecting', 'redirecting'),
         ('sending', 'fetchStart'),
         ('totalPageLoadTime', 'loadEventEnd'),
+        ('responseStart', 'responseStart'),
         ('firstPaint', 'firstPaint'),
     ):
         if marker in event:
