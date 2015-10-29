@@ -65,10 +65,10 @@ class base::puppet($server='puppet', $certname=undef) {
     }
 
     file { '/usr/local/sbin/puppet-run':
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/base/puppet/puppet-run',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/base/puppet/puppet-run',
     }
 
     file { '/etc/cron.d/puppet':
