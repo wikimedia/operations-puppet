@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# cipher_sim - Simulate ciphersuite negotation results based on a set of pcap
-# files of ClientHello packets from real clients, and an arbitrary
-# ssl_ciphersuite string like the ones we configure nginx with (but which may
-# be different from our current, live ciphersuite list).
+# cipher_sim - Simulate ciphersuite negotation results based on one or more
+# aggregated ClientHello data files and an arbitrary server cipher preference
+# list.
 #
 # Copyright 2015 Brandon Black
 # Copyright 2015 Wikimedia Foundation, Inc.
@@ -22,88 +21,49 @@
 # limitations under the License.
 
 # ----
-# The first part of the process is gathering the live packet data, which can
-# then be re-used and re-simulated against different server preference lists:
-# The pcap files should be generated with a BPF filter that matches only the
-# inbound ClientHello packets, such as:
+# The commandline arguments take the form:
 #
-#   dst port 443 \
-#     and (tcp[((tcp[12:1] & 0xf0) >> 2)+5:1] = 0x01) \
-#     and (tcp[((tcp[12:1] & 0xf0) >> 2):1] = 0x16)
+#   cat aggegrate_files* | cipher_sim.py -s server_pref_file
 #
-# (but note the above would also capture the outbound clienthello of local
-# processes connecting outwards from the capturing machine! - could use some
-# filtering on the dst ip addresses as well if you want to close that
-# loophole).
+# Where "server_pref_file" is a file containing a standard OpenSSL ciphersuite
+# preference list in the same form used by e.g. nginx's ssl_ciphers parameter
+# on a single line, and the standard input contains aggregated clienthello
+# stats (possibly catted from several files) formatted with lines as ...
 #
-# Several different sniffer utilities can capture with such a BPF filter.
-# With "tshark" in non-promiscious mode on eth0 and stopping after 1000
-# packets, the command looks like:
-#   tshark -n -p -i eth0 -w /tmp/output.cap -c 1000 -f <bpf filter above>
+# NNN;C1,C2,C3,...
 #
-# Once you have your capture file(s), move them all to the host you're doing
-# the analysis on (as a non-root user!), which needs installed and up-to-date
-# working binaries for both "tshark" and "openssl".  Then you feed this script
-# the name of all the capture files and the OpenSSL server-side ciphersuite
-# setting to simulate, in the same form used in HTTPS server configs, like:
-#  '-ALL:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:....'
+# ... where "NNN" is the count of clienthellos of this type seen, and
+# "C1,C2,C3,..." is the list of decimal integer ciphers those clienthellos
+# indicated.  Example of 54 clienthellos which all specified exactly this list
+# of 3 ciphers: "ECDHE-RSA-AES128-SHA, AES128-SHA, DES-CBC3-SHA"
 #
-# The output of this script is an ordered list of the negotiated ciphersuites
-# by the count and percentage (both displayed) of clients which would have
-# negotiated them.  If some clients would have failed negotiation completely
-# (no ciphersuites in common), they are listed as the special ciphersuite
-# ":HANDSHAKE-FAILURE:".  Be aware that this is only simulating
+# 54;49171,47,10
+#
+# There are no further requirements on the input data: it can contain repeats
+# (which be aggregated up as they're processed), and it can contain duplicates
+# in different order (which it would be more efficient to sort and aggregate
+# when generating the input, but isn't strictly necessary).  If you're
+# concatenating multiple aggregate files from several machines into this
+# analysis script, there likely will be all sorts of repeats, and that's ok.
+#
+# There is a companion shellscript "cipher_cap.sh" designed to generate this
+# aggregated captured data efficiently on our cp* cache machine setup today.
+#
+# The output of this simulator is an ordered list of the negotiated
+# ciphersuites by the count and percentage (both displayed) of clients which
+# would have negotiated them.  If some clients would have failed negotiation
+# completely (no ciphersuites in common), they are listed as the special
+# ciphersuite ":HANDSHAKE-FAILURE:".  Be aware that this is only simulating
 # cipher-matching, and does not account for other forms of potential handshake
 # failure such as DHE>1024 incompatibility.
 #
-# Full example of real usage (pcap files generated as indicated above...):
-# -CUT------------------------
-#   bblack@cp1065:~/cipher_work$ fold -w 72 < server_pref # pep8--
-#   -ALL:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-A
-#   ES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA3
-#   84:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-
-#   SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SH
-#   A384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA
-#   :DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-
-#   AES256-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-RSA-CAMELLIA256-SHA:AES128-GCM-SH
-#   A256:AES256-GCM-SHA384:AES128-SHA256:AES128-SHA:AES256-SHA256:AES256-SHA
-#   :DES-CBC3-SHA
-#   bblack@cp1065:~/cipher_work$ ls -l capfiles/
-#   total 3268
-#   -rw-r--r-- 1 bblack wikidev 3031756 Oct 28 12:36 second.cap
-#   -rw-r--r-- 1 bblack wikidev  310804 Oct 27 21:13 test.cap
-#   bblack@cp1065:~/cipher_work$ ./cipher_sim.py -s server_pref capfiles/*.cap
-#   Total ClientHellos             | 10993
-#   -----------------------------------------------
-#   ECDHE-ECDSA-AES128-GCM-SHA256  | 30.901% (3397)
-#   ECDHE-RSA-AES256-GCM-SHA384    | 14.236% (1565)
-#   ECDHE-RSA-AES256-SHA384        | 11.789% (1296)
-#   ECDHE-ECDSA-AES256-SHA         | 07.814% (859)
-#   AES128-SHA                     | 05.695% (626)
-#   ECDHE-RSA-AES256-SHA           | 05.494% (604)
-#   ECDHE-ECDSA-AES256-SHA384      | 04.776% (525)
-#   DHE-RSA-AES256-SHA             | 04.030% (443)
-#   ECDHE-RSA-AES128-GCM-SHA256    | 03.812% (419)
-#   ECDHE-ECDSA-AES256-GCM-SHA384  | 03.593% (395)
-#   DES-CBC3-SHA                   | 02.283% (251)
-#   AES128-SHA256                  | 01.674% (184)
-#   AES256-SHA                     | 01.355% (149)
-#   DHE-RSA-AES128-SHA             | 01.164% (128)
-#   ECDHE-ECDSA-AES128-SHA256      | 00.382% (42)
-#   ECDHE-ECDSA-AES128-SHA         | 00.373% (41)
-#   DHE-RSA-AES256-GCM-SHA384      | 00.337% (37)
-#   DHE-RSA-CAMELLIA256-SHA        | 00.109% (12)
-#   DHE-RSA-AES256-SHA256          | 00.073% (8)
-#   AES256-SHA256                  | 00.036% (4)
-#   DHE-RSA-AES128-GCM-SHA256      | 00.036% (4)
-#   ECDHE-RSA-AES128-SHA           | 00.027% (3)
-#   ECDHE-RSA-AES128-SHA256        | 00.009% (1)
-#
-# -CUT------------------------
+# There is also currently a special outout ":TSHARK_BLANK:" to indicate counts
+# of no cipher list at all (e.g. "54;"), which currently happens in small
+# numbers with the current capture script for unknown reasons...
 
 import os
 import re
-import glob
+import sys
 import argparse
 import subprocess
 import collections
@@ -117,20 +77,16 @@ def get_choice(client_ciphers, server_pref):
     return ":HANDSHAKE-FAILURE:"
 
 
-def process_pcapfile(pcapf, server_pref):
+def process_stdin(server_pref):
     cipher_stats = collections.Counter()
-    shark_args = [
-        'tshark', '-n', '-l', '-Tfields', '-r', pcapf,
-        '-e', 'ssl.handshake.ciphersuite',
-    ]
-    shark = subprocess.Popen(shark_args, stdout=subprocess.PIPE)
-    for line in iter(shark.stdout.readline, b''):
-        # for some reason there are rare blanks... 0.06% in testing
-        # are these just bad hellos, inexactness of BPF filter, ?
-        if line != '\n':
-            client_cipher_nums = line.rstrip().split(',')
-            choice = get_choice(client_cipher_nums, server_pref)
-            cipher_stats[choice] += 1
+    for line in sys.stdin.readlines():
+         (ct, clist) = line.rstrip().split(';')
+         if len(clist):
+             cnums = clist.split(',')
+             choice = get_choice(cnums, server_pref)
+         else:
+             choice = ":TSHARK_BLANK:"
+         cipher_stats[choice] += int(ct)
     return cipher_stats
 
 
@@ -166,28 +122,18 @@ def parse_options():
     p.add_argument('--serverpref', '-s', dest='serverpref', required=True,
                    metavar="FILE", nargs=1, type=file_exists,
                    help="File containing server cipher pref string")
-    p.add_argument('pcapfiles', nargs=argparse.REMAINDER,
-                   help="List of one or more pcap files")
 
     args = p.parse_args()
-    if len(args.pcapfiles) < 1:
-        raise Exception('One or more pcap files must be specified!')
-
     with open(args.serverpref[0], mode='r') as spref_file:
         spref_str = spref_file.read().rstrip()
 
-    return [spref_str, args.pcapfiles]
+    return spref_str
 
 
 def main():
-    (spref_str, pcapfiles) = parse_options()
-
+    spref_str = parse_options()
     server_pref = load_server_pref(spref_str)
-    cipher_stats = collections.Counter()
-    # XXX this could be trivially parallelized mapreduce-style per capfile ...
-    for pcapf in pcapfiles:
-        cipher_stats += process_pcapfile(pcapf, server_pref)
-
+    cipher_stats = process_stdin(server_pref)
     total = sum(cipher_stats.values())
     print "Total ClientHellos             | %d" % (total)
     print "-----------------------------------------------"
