@@ -22,38 +22,44 @@ class mediawiki::maintenance::updatequerypages( $ensure = present ) {
                 }
 
                 cron { "cron-updatequerypages-ancientpages-${name}":
+                    ensure   => $ensure,
                     command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${db_cluster}.dblist --override --only=Ancientpages > /var/log/mediawiki/updateSpecialPages/${name}-AncientPages.log 2>&1",
                     monthday => [8, 22],
                 }
 
                 cron { "cron-updatequerypages-deadendpages-${name}":
+                    ensure   => $ensure,
                     command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${db_cluster}.dblist --override --only=Deadendpages > /var/log/mediawiki/updateSpecialPages/${name}-DeadendPages.log 2>&1",
                     monthday => [9, 23],
                 }
 
                 cron { "cron-updatequerypages-mostlinked-${name}":
+                    ensure   => $ensure,
                     command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${db_cluster}.dblist --override --only=Mostlinked > /var/log/mediawiki/updateSpecialPages/${name}-MostLinked.log 2>&1",
                     monthday => [10, 24],
                 }
 
                 cron { "cron-updatequerypages-mostrevisions-${name}":
+                    ensure   => $ensure,
                     command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${db_cluster}.dblist --override --only=Mostrevisions > /var/log/mediawiki/updateSpecialPages/${name}-MostRevisions.log 2>&1",
                     monthday => [11, 25],
                 }
 
                 cron { "cron-updatequerypages-wantedpages-${name}":
+                    ensure   => $ensure,
                     command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${db_cluster}.dblist --override --only=Wantedpages > /var/log/mediawiki/updateSpecialPages/${name}-WantedPages.log 2>&1",
                     monthday => [12, 26],
                 }
 
                 cron { "cron-updatequerypages-fewestrevisions-${name}":
+                    ensure   => $ensure,
                     command  => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${db_cluster}.dblist --override --only=Fewestrevisions > /var/log/mediawiki/updateSpecialPages/${name}-FewestRevisions.log 2>&1",
                     monthday => [13, 27],
                 }
         }
 
         define updatequerypages::enwiki::cronjob() {
-            $ensure = $mediawiki::maintenance::updatequerypages::status
+            $ensure = $mediawiki::maintenance::updatequerypages::ensure
 
             Cron {
                 ensure => $ensure,
@@ -103,4 +109,3 @@ class mediawiki::maintenance::updatequerypages( $ensure = present ) {
         updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 'silver@18']: }
         updatequerypages::enwiki::cronjob { ['updatequerypages-enwiki-only']: }
 }
-
