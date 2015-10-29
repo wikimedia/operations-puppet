@@ -22,6 +22,7 @@ class scap::master(
     git::clone { 'operations/mediawiki-config':
         directory => $common_source_path,
         ensure    => present,
+        owner     => 'mwdeploy',
         group     => $deployment_group,
         shared    => true,
         before    => Exec['fetch_mediawiki'],
