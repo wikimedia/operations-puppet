@@ -46,5 +46,8 @@ runCurl -XPUT "${ES_HOST}/${ES_INDEX}/_settings" \
     -d '{"index.blocks.write":true}' ||
 die "Failed to change settings for ${ES_HOST}/${ES_INDEX}"
 
+runCurl -XPOST "${ES_HOST}/${ES_INDEX}/_flush/synced" ||
+die "Failed to force a synced flush for ${ES_HOST}/${ES_INDEX}"
+
 cleanUp
 exit
