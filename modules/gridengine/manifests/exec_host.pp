@@ -20,9 +20,9 @@ class gridengine::exec_host(
     }
 
     gridengine::resource { "exec-${::fqdn}":
-        rname   => $::fqdn,
-        dir     => 'exechosts',
-        config  => $config,
+        rname  => $::fqdn,
+        dir    => 'exechosts',
+        config => $config,
     }
 
 }

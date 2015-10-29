@@ -10,10 +10,10 @@ class gridengine::master
     $etcdir = '/var/lib/gridengine/etc'
 
     file { "${etcdir}/tracker":
-        ensure  => directory,
-        owner   => 'sgeadmin',
-        group   => 'sgeadmin',
-        mode    => '0775',
+        ensure => directory,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0775',
     }
 
     file { "${etcdir}/bin":
@@ -27,64 +27,64 @@ class gridengine::master
     }
 
     file { "${etcdir}/bin/mergeconf":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/gridengine/mergeconf',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/gridengine/mergeconf',
     }
 
     file { "${etcdir}/bin/tracker":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/gridengine/tracker',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/gridengine/tracker',
     }
 
     file { "${etcdir}/bin/collector":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/gridengine/collector',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/gridengine/collector',
     }
 
     gridengine::resourcedir { 'queues':
-        addcmd  => '/usr/bin/qconf -Aq',
-        modcmd  => '/usr/bin/qconf -Mq',
-        delcmd  => '/usr/bin/qconf -dq',
+        addcmd => '/usr/bin/qconf -Aq',
+        modcmd => '/usr/bin/qconf -Mq',
+        delcmd => '/usr/bin/qconf -dq',
     }
     gridengine::resourcedir { 'hostgroups':
-        addcmd  => '/usr/bin/qconf -Ahgrp',
-        modcmd  => '/usr/bin/qconf -Mhgrp',
-        delcmd  => '/usr/bin/qconf -dhgrp',
+        addcmd => '/usr/bin/qconf -Ahgrp',
+        modcmd => '/usr/bin/qconf -Mhgrp',
+        delcmd => '/usr/bin/qconf -dhgrp',
     }
     gridengine::resourcedir { 'quotas':
-        addcmd  => '/usr/bin/qconf -Arqs',
-        modcmd  => '/usr/bin/qconf -Mrqs',
-        delcmd  => '/usr/bin/qconf -drqs',
+        addcmd => '/usr/bin/qconf -Arqs',
+        modcmd => '/usr/bin/qconf -Mrqs',
+        delcmd => '/usr/bin/qconf -drqs',
     }
     gridengine::resourcedir { 'checkpoints':
-        addcmd  => '/usr/bin/qconf -Ackpt',
-        modcmd  => '/usr/bin/qconf -Mckpt',
-        delcmd  => '/usr/bin/qconf -dckpt',
+        addcmd => '/usr/bin/qconf -Ackpt',
+        modcmd => '/usr/bin/qconf -Mckpt',
+        delcmd => '/usr/bin/qconf -dckpt',
     }
     gridengine::resourcedir { 'exechosts':
-        addcmd  => '/usr/bin/qconf -Ae',
-        modcmd  => '/usr/bin/qconf -Me',
-        delcmd  => '/usr/bin/qconf -de',
+        addcmd => '/usr/bin/qconf -Ae',
+        modcmd => '/usr/bin/qconf -Me',
+        delcmd => '/usr/bin/qconf -de',
     }
     gridengine::resourcedir { 'submithosts':
-        addcmd  => '/usr/bin/qconf -as',
-        modcmd  => '/bin/true',
-        delcmd  => '/usr/bin/qconf -ds',
+        addcmd => '/usr/bin/qconf -as',
+        modcmd => '/bin/true',
+        delcmd => '/usr/bin/qconf -ds',
     }
 
     gridengine::resourcedir { 'adminhosts':
-        addcmd  => '/usr/bin/qconf -ah',
-        modcmd  => '/bin/true',
-        delcmd  => '/usr/bin/qconf -dh',
+        addcmd => '/usr/bin/qconf -ah',
+        modcmd => '/bin/true',
+        delcmd => '/usr/bin/qconf -dh',
     }
 
     file { "${etcdir}/complex":
@@ -98,14 +98,14 @@ class gridengine::master
     }
 
     file { "${etcdir}/complex/99-default":
-        ensure  => file,
-        owner   => 'sgeadmin',
-        group   => 'sgeadmin',
-        mode    => '0664',
-        source  => 'puppet:///modules/gridengine/complex-99-default',
+        ensure => file,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0664',
+        source => 'puppet:///modules/gridengine/complex-99-default',
     }
 
-    exec { "update-complex-conf":
+    exec { 'update-complex-conf':
         onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/complex.conf ${etcdir}/complex/*",
         command => "/bin/echo /usr/bin/qconf -Mc ${etcdir}/complex.conf'",
         require => File[ "${etcdir}/bin", "${etcdir}/complex/99-default" ],
@@ -122,14 +122,14 @@ class gridengine::master
     }
 
     file { "${etcdir}/config/99-default":
-        ensure  => file,
-        owner   => 'sgeadmin',
-        group   => 'sgeadmin',
-        mode    => '0664',
-        source  => 'puppet:///modules/gridengine/config-99-default',
+        ensure => file,
+        owner  => 'sgeadmin',
+        group  => 'sgeadmin',
+        mode   => '0664',
+        source => 'puppet:///modules/gridengine/config-99-default',
     }
 
-    exec { "update-config-conf":
+    exec { 'update-config-conf':
         onlyif  => "${etcdir}/bin/mergeconf ${etcdir}/config.conf ${etcdir}/config/*",
         command => "/bin/echo /usr/bin/qconf -Mconf ${etcdir}/config.conf",
         require => File[ "${etcdir}/bin", "${etcdir}/complex/99-default" ],
