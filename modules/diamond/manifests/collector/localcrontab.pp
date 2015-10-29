@@ -26,16 +26,16 @@ define diamond::collector::localcrontab(
     $merged_settings = merge($default_settings, $settings)
 
     diamond::collector { 'LocalCrontabCollector':
+        ensure   => $ensure,
         settings => $merged_settings,
         source   => 'puppet:///modules/diamond/collector/localcrontab.py',
-        ensure   => $ensure,
     }
 
     if str2bool($merged_settings[use_sudo]) {
         sudo::user { 'diamond_sudo_for_localcrontab':
-            user       => 'diamond',
-            privileges => ["ALL=(root) NOPASSWD: /bin/ls /var/spool/cron/crontabs/"],
             ensure     => $ensure,
+            user       => 'diamond',
+            privileges => ['ALL=(root) NOPASSWD: /bin/ls /var/spool/cron/crontabs/'],
         }
     }
 }

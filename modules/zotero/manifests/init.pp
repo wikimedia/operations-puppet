@@ -92,7 +92,7 @@ class zotero( $http_proxy = undef ) {
     }
 
     exec { 'zotero-run-ldconfig':
-        subscribe   => File["/etc/ld.so.conf.d/zotero.conf"],
+        subscribe   => File['/etc/ld.so.conf.d/zotero.conf'],
         command     => '/sbin/ldconfig',
         refreshonly => true,
         notify      => Service['zotero'],
