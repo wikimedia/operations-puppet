@@ -1,1 +1,3 @@
 logstash_host: logstash1001.eqiad.wmnet
+proxy: http://url-downloader.wikimedia.org:8080
+yandex_url: 'https://translate.yandex.net'
