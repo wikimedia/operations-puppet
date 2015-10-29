@@ -63,7 +63,7 @@ class openldap(
     }
 
     # our replication dir
-    file { '/var/lib/ldap/corp/':
+    file { $datadir:
         ensure  => directory,
         recurse => false,
         owner   => 'openldap',
@@ -121,12 +121,12 @@ class openldap(
     # Relationships
     Package['slapd'] -> File['/etc/ldap/slapd.conf']
     Package['slapd'] -> File['/etc/default/slapd']
-    Package['slapd'] -> File['/var/lib/ldap/corp/']
+    Package['slapd'] -> File[$datadir]
     Package['slapd'] -> Exec['rm_slapd.d']
     Exec['rm_slapd.d'] -> Service['slapd']
     File['/etc/ldap/slapd.conf'] ~> Service['slapd'] # We also notify
     File['/etc/default/slapd'] ~> Service['slapd'] # We also notify
-    File['/var/lib/ldap/corp/'] -> Service['slapd']
+    File[$datadir] -> Service['slapd']
     Package['slapd'] -> File['/etc/ldap/schema/rfc2307bis.schema']
     Package['slapd'] -> File['/etc/ldap/schema/samba.schema']
     File['/etc/ldap/schema/rfc2307bis.schema'] -> Service['slapd']
