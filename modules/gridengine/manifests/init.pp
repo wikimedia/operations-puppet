@@ -49,17 +49,17 @@ class gridengine($gridmaster) {
     }
 
     file { "${etcdir}/hosts":
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { "${etcdir}/hosts/${::fqdn}":
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/usr/local/bin/gridengine-mailer':

@@ -5,9 +5,9 @@ class gridengine::admin_host(
 )
 {
     gridengine::resource { "admin-${::fqdn}":
-        rname   => $::fqdn,
-        dir     => 'adminhosts',
-        config  => $config,
+        rname  => $::fqdn,
+        dir    => 'adminhosts',
+        config => $config,
     }
 
 }

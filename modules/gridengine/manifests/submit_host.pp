@@ -7,7 +7,7 @@ class gridengine::submit_host
     }
 
     package { 'gridengine-client':
-        ensure => latest,
+        ensure  => latest,
         require => Package['gridengine-common'],
     }
 
@@ -17,9 +17,9 @@ class gridengine::submit_host
     }
 
     gridengine::resource { "submit-${::fqdn}":
-        rname   => $::fqdn,
-        dir     => 'submithosts',
-        config  => 'gridengine/nothing.erb', # the content here doesn't actually matter
+        rname  => $::fqdn,
+        dir    => 'submithosts',
+        config => 'gridengine/nothing.erb', # the content here doesn't actually matter
     }
 
 }

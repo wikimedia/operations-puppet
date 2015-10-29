@@ -6,29 +6,29 @@ class gridengine::shadow_master(
   ) {
 
     package { 'gridengine-master':
-        ensure => latest,
+        ensure  => latest,
         require => Package['gridengine-common'],
     }
 
     file { "${sgeroot}/default":
-        require => [ File[$sgeroot], Package['gridengine-common'] ],
         ensure  => directory,
+        require => [ File[$sgeroot], Package['gridengine-common'] ],
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '2775',
     }
 
     file { "${sgeroot}/default/common":
-        require => File["${sgeroot}/default"],
         ensure  => directory,
+        require => File["${sgeroot}/default"],
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '2775',
     }
 
     file { '/etc/default/gridengine':
-        before  => Package['gridengine-common'],
         ensure  => present,
+        before  => Package['gridengine-common'],
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -36,8 +36,8 @@ class gridengine::shadow_master(
     }
 
     file { '/etc/init/gridengine-shadow.conf':
-        require => Package['gridengine-master'],
         ensure  => present,
+        require => Package['gridengine-master'],
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -45,8 +45,8 @@ class gridengine::shadow_master(
     }
 
     file { "${sgeroot}/default/common/shadow_masters":
-        require => File["${sgeroot}/default/common"],
         ensure  => present,
+        require => File["${sgeroot}/default/common"],
         owner   => 'sgeadmin',
         group   => 'sgeadmin',
         mode    => '0555',
@@ -54,8 +54,8 @@ class gridengine::shadow_master(
     }
 
     service { 'gridengine-shadow':
-        require => File['/etc/init/gridengine-shadow.conf', "${sgeroot}/default/common/shadow_masters"],
         ensure  => running,
+        require => File['/etc/init/gridengine-shadow.conf', "${sgeroot}/default/common/shadow_masters"],
     }
 }
 
