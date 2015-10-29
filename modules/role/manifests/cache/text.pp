@@ -195,19 +195,9 @@ class role::cache::text {
         class { 'role::cache::kafka::webrequest': topic => 'webrequest_text' }
     }
 
-    # Parse varnishlogs for request statistics and send to statsd via diamond.
-    varnish::monitoring::varnishreqstats { 'TextFrontend':
-        instance_name => 'frontend',
-        metric_path   => "varnish.${::site}.text.frontend.request",
-        require       => Varnish::Instance['text-frontend'],
-    }
-
-    # testing on cp1065
-    if $::hostname == 'cp1065' {
-        # Parse varnishlogs for request statistics and send to statsd.
-        varnish::logging::reqstats { 'frontend':
-            metric_prefix => "varnish.${::site}.text.frontend.request",
-            statsd        => hiera('statsd'),
-        }
+    # Parse varnishlogs for request statistics and send to statsd.
+    varnish::logging::reqstats { 'frontend':
+        metric_prefix => "varnish.${::site}.text.frontend.request",
+        statsd        => hiera('statsd'),
     }
 }
