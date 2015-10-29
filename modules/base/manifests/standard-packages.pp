@@ -29,6 +29,7 @@ class base::standard-packages {
         'sysstat',
         'tcpdump',
         'tree',
+        'tshark',
         'tzdata',
         'vim',
         'wipe',
