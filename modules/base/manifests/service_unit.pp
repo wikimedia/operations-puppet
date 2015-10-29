@@ -8,40 +8,44 @@
 #
 # === Parameters ===
 #
-#[*ensure*]
-# Is the usual metaparameter, defaults to present
+# [*ensure*]
+#  Is the usual metaparameter, defaults to present.
+#  Note that the underlying service is also controlled by this metaparameter
+#  (unless $declare_service is false), in other words a truthy value here will
+#  ensure => running and conversely a falsey value will ensure => stopped.
 #
-#[*template_name*]
-# String, default $name.  Init file template pathnames are formed
-# using the pattern "$module/initscripts/$template_name.$initsystem.erb"
+# [*template_name*]
+#  String, default $name.  Init file template pathnames are formed
+#  using the pattern "$module/initscripts/$template_name.$initsystem.erb"
 #
-#[*systemd*]
-# Boolean - set it to true to make the resource include personalized
-# init file. As this is used to You are expected to put them in a
-# specific subdirectory of the current module, which is
-# $module/initscripts/$template_name.systemd.erb for systemd  (and
-# similarly for other init systems)
+# [*systemd*]
+#  Boolean - set it to true to make the resource include personalized
+#  init file. As this is used to You are expected to put them in a
+#  specific subdirectory of the current module, which is
+#  $module/initscripts/$template_name.systemd.erb for systemd  (and
+#  similarly for other init systems)
 #
-#[*upstart*]
-# As the preceding param, but for upstart scripts
+# [*upstart*]
+#  As the preceding param, but for upstart scripts
 #
-#[*sysvinit*]
-# As the preceding param, but for traditional sysvinit scripts
+# [*sysvinit*]
+#  As the preceding param, but for traditional sysvinit scripts
 #
-#[*strict*]
-# Boolean - if true (default), only allows to have customized scripts
-# for all init systems; if false allows to use standard scripts from
-# the distro (e.g. memcached will need a custom systemd unit, but use
-# the standard init file on upstart).
+# [*strict*]
+#  Boolean - if true (default), only allows to have customized scripts
+#  for all init systems; if false allows to use standard scripts from
+#  the distro (e.g. memcached will need a custom systemd unit, but use
+#  the standard init file on upstart).
 #
-#[*refresh*]
-# Boolean - tells puppet if a change in the config should notify the service directly
+# [*refresh*]
+#  Boolean - tells puppet if a change in the config should notify the service
+#  directly
 #
-#[*declare_service*]
-# Boolean - tells puppet if a service {} stanza is required or not
+# [*declare_service*]
+#  Boolean - tells puppet if a service {} stanza is required or not
 #
-#[*service_params*]
-# An hash of parameters that we want to apply to the service resource
+# [*service_params*]
+#  An hash of parameters that we want to apply to the service resource
 #
 # === Example ===
 #
@@ -58,6 +62,7 @@
 #         }
 #     }
 # }
+
 define base::service_unit (
     $ensure           = present,
     $systemd          = false,
