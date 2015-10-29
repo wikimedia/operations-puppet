@@ -8,10 +8,10 @@ class base::resolving (
         if $::realm == 'labs' {
             # Thanks to dhcp, resolvconf is constantly messing with our resolv.conf.  Disable it.
             file { '/sbin/resolvconf':
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0555',
-                source  => 'puppet:///modules/base/resolv/resolvconf.dummy',
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0555',
+                source => 'puppet:///modules/base/resolv/resolvconf.dummy',
             }
 
             file { '/etc/dhcp/dhclient-enter-hooks.d':
