@@ -22,19 +22,19 @@ define diamond::collector::servicestats (
     include ::diamond::collector::servicestats_lib
 
     file { "/etc/diamond/servicestats.d/${title}.conf":
-      content  => "[systemd]\nname=${systemd_name}\n[upstart]\nname=${upstart_name}\n",
-      owner    => 'root',
-      group    => 'root',
-      mode     => '0444',
-      ensure   => $ensure,
+      ensure  => $ensure,
+      content => "[systemd]\nname=${systemd_name}\n[upstart]\nname=${upstart_name}\n",
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
     }
 }
 
 # support class, to be include'd multiple times
 class diamond::collector::servicestats_lib {
     diamond::collector { 'ServiceStats':
-        source       => 'puppet:///modules/diamond/collector/servicestats.py',
-        settings     => {
+        source   => 'puppet:///modules/diamond/collector/servicestats.py',
+        settings => {
           initsystem => $::initsystem
         }
     }
@@ -42,16 +42,16 @@ class diamond::collector::servicestats_lib {
     file { '/usr/share/diamond/collectors/servicestats/servicestats_lib.py':
         owner   => 'root',
         group   => 'root',
-        mode    => 0444,
+        mode    => '0444',
         source  => 'puppet:///modules/diamond/collector/servicestats_lib.py',
         require => Diamond::Collector['ServiceStats'],
     }
 
     file { '/etc/diamond/servicestats.d':
+        ensure => directory,
         owner  => 'root',
         group  => 'root',
-        mode   => 0444,
-        ensure => directory,
+        mode   => '0444',
     }
 
     package { ['python-psutil', 'python-configparser']:

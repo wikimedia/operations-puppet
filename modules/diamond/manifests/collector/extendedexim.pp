@@ -25,16 +25,16 @@ define diamond::collector::extendedexim(
     $merged_settings = merge($default_settings, $settings)
 
     diamond::collector { 'ExtendedExim':
+        ensure   => $ensure,
         settings => $merged_settings,
         source   => 'puppet:///modules/diamond/collector/extendedexim.py',
-        ensure   => $ensure,
     }
 
     if str2bool($merged_settings[use_sudo]) {
         sudo::user { 'diamond_sudo_for_exim':
+            ensure     => $ensure,
             user       => 'diamond',
             privileges => ['ALL=(root) NOPASSWD: /usr/sbin/exim, /bin/cat /var/log/exim4/paniclog'],
-            ensure     => $ensure,
         }
     }
 }
