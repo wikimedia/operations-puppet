@@ -36,6 +36,18 @@ $site = $main_ipaddress ? {
     default                                   => '(undefined)'
 }
 
+# This is used to define the fallback site and is to be used by application that
+# are capable of automatically detecting a failed service and falling back to
+# another one. While the only 2 sites that make sense to really be here are
+# eqiad and codfw, ulsfo and esams are here for completeness.
+$other_site = $site ? {
+    'codfw' => 'eqiad',
+    'eqiad' => 'codfw',
+    'ulsfo' => 'ulsfo',
+    'esams' => 'esams',
+    default => '(undefined)'
+}
+
 $site_tier = $::realm ? {
     production => $::site ? {
         'eqiad' => 'one',
