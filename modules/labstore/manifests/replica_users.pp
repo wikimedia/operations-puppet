@@ -12,10 +12,10 @@ class labstore::replica_users {
     }
 
     file { '/etc/init/replica-addusers.conf':
-        source => 'puppet:///modules/labstore/replica-addusers.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        source  => 'puppet:///modules/labstore/replica-addusers.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
         require => File['/usr/local/sbin/replica-addusers.pl'],
     }
 

@@ -33,7 +33,7 @@ class labstore::fileserver::exports {
             'ALL = NOPASSWD: /usr/local/sbin/sync-exports',
             'ALL = NOPASSWD: /usr/sbin/exportfs',
         ],
-        require => User['nfsmanager'],
+        require    => User['nfsmanager'],
     }
 
     file { '/usr/local/sbin/sync-exports':
