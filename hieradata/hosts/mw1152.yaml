@@ -12,7 +12,7 @@ mediawiki::maintenance::translationnotifications::ensure: absent
 mediawiki::maintenance::updatetranslationstats::ensure: absent
 mediawiki::maintenance::wikidata::ensure: absent
 mediawiki::maintenance::echo_mail_batch::ensure: absent
-mediawiki::maintenance::parsercachepurging::ensure: absent
+mediawiki::maintenance::parsercachepurging::ensure: present
 mediawiki::maintenance::cleanup_upload_stash::ensure: present
 mediawiki::maintenance::tor_exit_node::ensure: present
 mediawiki::maintenance::update_flaggedrev_stats::ensure: absent
