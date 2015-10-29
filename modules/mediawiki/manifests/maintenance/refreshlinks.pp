@@ -11,7 +11,7 @@ class mediawiki::maintenance::refreshlinks( $ensure = present ) {
         mode   => '0664',
     }
 
-    define cronjob( $ensure = present ) {
+    define cronjob( $ensure =  $::mediawiki::maintenance::refreshlinks::ensure) {
         $db_cluster = regsubst($name, '@.*', '\1')
         $monthday = regsubst($name, '.*@', '\1')
 
@@ -28,4 +28,3 @@ class mediawiki::maintenance::refreshlinks( $ensure = present ) {
     # add cron jobs - usage: <cluster>@<day of month> (these are just needed monthly)
     cronjob { ['s1@1', 's2@2', 's3@3', 's4@4', 's5@5', 's6@6', 's7@7', 'silver@8']: }
 }
-
