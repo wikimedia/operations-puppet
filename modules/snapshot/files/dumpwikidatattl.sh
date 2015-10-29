@@ -7,7 +7,8 @@
 . /usr/local/bin/wikidatadumps-shared.sh
 
 filename=wikidata-$today-all-BETA
-targetFile=$targetDir/$filename.ttl.gz
+targetFileGzip=$targetDir/$filename.ttl.gz
+targetFileBzip2=$targetDir/$filename.ttl.bz2
 
 i=0
 shards=4
@@ -21,10 +22,15 @@ wait
 
 i=0
 while [ $i -lt $shards ]; do
-	cat $tempDir/wikidataTTL.$i.gz >> $targetFile
+	cat $tempDir/wikidataTTL.$i.gz >> $tempDir/wikidataTtl.gz
 	rm $tempDir/wikidataTTL.$i.gz
 	let i++
 done
+
+mv $tempDir/wikidataTtl.gz $targetFileGzip
+
+gzip -dc $targetFileGzip | pbzip2 -p3 -c > $tempDir/wikidataTtl.bz2
+mv $tempDir/wikidataTtl.bz2 $targetFileBzip2
 
 pruneOldDirectories
 pruneOldLogs
