@@ -32,8 +32,8 @@ class mediawiki::hhvm {
                 },
                 server         => {
                     source_root           => '/srv/mediawiki/docroot',
-                    error_document500     => '/srv/mediawiki/hhvm-fatal-error.php',
-                    error_document404     => '/srv/mediawiki/w/404.php',
+                    error_document500     => '/srv/mediawiki/errorpages/hhvm-fatal-error.php',
+                    error_document404     => '/srv/mediawiki/errorpages/404.php',
                     request_init_document => '/srv/mediawiki/wmf-config/HHVMRequestInit.php',
                     thread_count          => $max_threads,
                     ip                    => '127.0.0.1',
