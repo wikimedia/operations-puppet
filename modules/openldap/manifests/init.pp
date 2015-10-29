@@ -48,13 +48,7 @@ class openldap(
     $ca=undef,
 ) {
 
-    package { [
-        'slapd',
-        'ldap-utils',
-        'python-ldap',
-        ]:
-        ensure => installed,
-    }
+    require_package('slapd', 'ldap-utils', 'python-ldap')
 
     service { 'slapd':
         ensure     => running,
