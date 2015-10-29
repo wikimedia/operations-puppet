@@ -83,6 +83,12 @@
         // runJobs.php memory limits
         "memory": {
             "*": "300M"
+        },
+        // how many jobs to run per invocation of the runner
+        "jobs": {
+            "*": 1,
+            "enqueue": 500,
+            "wikibase-addUsagesForPage": 100
         }
     },
 
