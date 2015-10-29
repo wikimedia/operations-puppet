@@ -52,8 +52,8 @@ class mediawiki::maintenance::updatequerypages( $ensure = present ) {
                 }
         }
 
-        define updatequerypages::enwiki::cronjob() {
-            $ensure = $mediawiki::maintenance::updatequerypages::status
+        define updatequerypages::enwiki::cronjob($ensure = $mediawiki::maintenance::updatequerypages::ensure) {
+
 
             Cron {
                 ensure => $ensure,
@@ -103,4 +103,3 @@ class mediawiki::maintenance::updatequerypages( $ensure = present ) {
         updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 'silver@18']: }
         updatequerypages::enwiki::cronjob { ['updatequerypages-enwiki-only']: }
 }
-
