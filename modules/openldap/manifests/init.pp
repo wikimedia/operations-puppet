@@ -83,19 +83,19 @@ class openldap(
     }
 
     file { '/etc/ldap/schema/samba.schema' :
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/openldap/samba.schema',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/openldap/samba.schema',
     }
 
     file { '/etc/ldap/schema/rfc2307bis.schema' :
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/openldap/rfc2307bis.schema',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/openldap/rfc2307bis.schema',
     }
     # We do this cause we want to rely on using slapd.conf for now
     exec { 'rm_slapd.d':
