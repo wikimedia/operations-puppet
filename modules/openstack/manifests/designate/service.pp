@@ -141,7 +141,9 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
         base::service_unit { ['designate-pool-manager', 'designate-mdns']:
             upstart        =>  true,
             require        =>  Package['designate'],
-            service_params => { ensure => stopped },
+            service_params => {
+                ensure => stopped
+            },
         }
     }
 }

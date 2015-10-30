@@ -70,8 +70,8 @@ class openstack::glance::service(
     }
 
     ssh::userkey { 'glancesync':
-        require => User['glancesync'],
         ensure  => present,
+        require => User['glancesync'],
         content => secret('ssh/glancesync/glancesync.pub'),
     }
     file { '/home/glancesync/.ssh':
@@ -125,9 +125,9 @@ class openstack::glance::service(
             require => Package['glance'],
         }
         cron { 'rsync_chown_images':
-            command     => "chown -R glance ${image_datadir}/*",
-            minute      => 30,
-            user        => 'root',
+            command => "chown -R glance ${image_datadir}/*",
+            minute  => 30,
+            user    => 'root',
         }
     }
 }
