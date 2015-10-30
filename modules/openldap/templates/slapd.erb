@@ -7,13 +7,7 @@
 #allow bind_v2
 
 # Schema and objectClass definitions
-include         /etc/ldap/schema/core.schema
-include         /etc/ldap/schema/cosine.schema
-include         /etc/ldap/schema/rfc2307bis.schema
-include         /etc/ldap/schema/inetorgperson.schema
-include         /etc/ldap/schema/dyngroup.schema
-include         /etc/ldap/schema/samba.schema
-include         /etc/ldap/schema/ppolicy.schema
+include         /etc/ldap/ldap-schema.conf
 
 # Where the pid file is put. The init.d script
 # will not stop the server if you change this.

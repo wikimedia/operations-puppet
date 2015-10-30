@@ -1,0 +1,13 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/openldap/templates/base-schema.erb
+#####################################################################
+
+# Schema and objectClass definitions
+include         /etc/ldap/schema/core.schema
+include         /etc/ldap/schema/cosine.schema
+include         /etc/ldap/schema/rfc2307bis.schema
+include         /etc/ldap/schema/inetorgperson.schema
+include         /etc/ldap/schema/dyngroup.schema
+include         /etc/ldap/schema/samba.schema
+include         /etc/ldap/schema/ppolicy.schema

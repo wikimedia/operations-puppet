@@ -24,6 +24,8 @@
 #       Optional. TLS enable the server. The path to the certificate file
 #    $ca
 #       Optional. TLS enable the server. The path to the CA certificate file
+#    $extra_schemas
+#       Optional. Specify an ERB template file with additional LDAP schemas
 #
 # Actions:
 #       Install/configure slapd
@@ -46,6 +48,7 @@ class openldap(
     $certificate=undef,
     $key=undef,
     $ca=undef,
+    $extra_schemas=undef,
 ) {
 
     require_package('slapd', 'ldap-utils', 'python-ldap')
@@ -72,6 +75,24 @@ class openldap(
         group   => 'root',
         mode    => '0444',
         content => template('openldap/slapd.erb'),
+    }
+
+    if $extra_schemas {
+        file { '/etc/ldap/ldap-schema.conf' :
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('openldap/base-schema.erb', $extra_schemas),
+        }
+    } else {
+        file { '/etc/ldap/ldap-schema.conf' :
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('openldap/base-schema.erb'),
+        }
     }
 
     file { '/etc/default/slapd' :
@@ -121,6 +142,7 @@ class openldap(
     File['/etc/ldap/slapd.conf'] ~> Service['slapd'] # We also notify
     File['/etc/default/slapd'] ~> Service['slapd'] # We also notify
     File[$datadir] -> Service['slapd']
+    File['/etc/ldap/ldap-schema.conf'] -> File['/etc/ldap/slapd.conf']
     Package['slapd'] -> File['/etc/ldap/schema/rfc2307bis.schema']
     Package['slapd'] -> File['/etc/ldap/schema/samba.schema']
     File['/etc/ldap/schema/rfc2307bis.schema'] -> Service['slapd']
