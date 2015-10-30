@@ -480,6 +480,21 @@ class role::ci::publisher::labs {
 
 }
 
+# == Class role::ci::pmcache
+#
+# Proxy/Cache for package managers
+class role::ci::pmcache {
+
+    requires_realm('labs')
+
+    include role::labs::lvm::srv
+
+    class { '::devpi':
+        require => Class['role::labs::lvm::srv'],
+    }
+
+}
+
 # Website for Continuous integration
 #
 # http://doc.mediawiki.org/
