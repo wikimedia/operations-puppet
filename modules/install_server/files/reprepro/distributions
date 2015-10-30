@@ -21,7 +21,7 @@ Version: 14.04
 Architectures: source amd64 i386
 Components: main universe non-free thirdparty
 UDebComponents: main
-Update: hwraid cloudera elasticsearch logstash tor-trusty
+Update: hwraid cloudera elasticsearch logstash
 Description: Wikimedia specific packages for Ubuntu Trusty Tahr
 SignWith: default
 DebOverride: deb-override
@@ -37,7 +37,7 @@ Version: 8
 Architectures: source amd64 i386
 Components: main backports thirdparty
 UDebComponents: main backports thirdparty
-Update: hwraid cassandra grafana
+Update: hwraid cassandra grafana tor
 Description: Wikimedia packages for Debian Jessie
 SignWith: default
 DebOverride: deb-override
