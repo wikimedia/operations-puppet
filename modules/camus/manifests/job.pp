@@ -66,7 +66,7 @@ define camus::job (
 
     $check_opt = $check ? {
         undef   => '',
-        default => "--check",
+        default => '--check',
     }
 
     $command = "${script} --run --job-name camus-${title} ${libjars_opt} ${check_opt} ${properties_file} >> ${log_file} 2>&1"

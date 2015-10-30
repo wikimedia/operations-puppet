@@ -49,8 +49,8 @@ class misc::udp2log(
 
     if !$default_instance {
         file { '/etc/init.d/udp2log':
-            require => Package['udplog'],
-            ensure  => absent
+            ensure  => absent,
+            require => Package['udplog']
         }
         exec { '/usr/sbin/update-rc.d -f udp2log remove':
             subscribe   => File['/etc/init.d/udp2log'],
@@ -91,7 +91,7 @@ class misc::udp2log::rsyncd(
     ferm::service { 'udp2log_rsyncd':
         proto  => 'tcp',
         port   => '873',
-        srange => "@resolve(stat1002.eqiad.wmnet)",
+        srange => '@resolve(stat1002.eqiad.wmnet)',
     }
 }
 
@@ -154,10 +154,10 @@ define misc::udp2log::instance(
 
     # primary directory where udp2log log files will be stored.
     file { [$log_directory, "${log_directory}/archive"]:
-        ensure  => 'directory',
-        mode    => '0755',
-        owner   => 'udp2log',
-        group   => 'udp2log',
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => 'udp2log',
+        group  => 'udp2log',
     }
 
     $logrotation = $logrotate ? {
