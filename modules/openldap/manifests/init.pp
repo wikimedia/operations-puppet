@@ -24,6 +24,8 @@
 #       Optional. TLS enable the server. The path to the certificate file
 #    $ca
 #       Optional. TLS enable the server. The path to the CA certificate file
+#    $extra_schemas
+#       Optional. A list of schema files relative to the /etc/ldap/schema directory
 #
 # Actions:
 #       Install/configure slapd
@@ -46,6 +48,7 @@ class openldap(
     $certificate=undef,
     $key=undef,
     $ca=undef,
+    $extra_schemas=undef,
 ) {
 
     require_package('slapd', 'ldap-utils', 'python-ldap')
