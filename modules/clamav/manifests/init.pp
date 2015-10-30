@@ -35,13 +35,13 @@ class clamav($proxy=undef) {
 
         file_line { 'freshclam_proxyserver':
             line   => "HTTPProxyServer ${proxy_host}",
-            match  => "^HTTPProxyServer",
+            match  => '^HTTPProxyServer',
             path   => '/etc/clamav/freshclam.conf',
             notify => Service['clamav-freshclam'],
         }
         file_line { 'freshclam_proxyport':
             line   => "HTTPProxyPort ${proxy_port}",
-            match  => "^HTTPProxyPort",
+            match  => '^HTTPProxyPort',
             path   => '/etc/clamav/freshclam.conf',
             notify => Service['clamav-freshclam'],
         }
