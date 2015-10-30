@@ -1818,13 +1818,13 @@ node 'ms1002.eqiad.wmnet' {
 # Whenever adding a new node there, you have to ask MediaWiki to recognize the
 # new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
 # rate limiting purposes (T66622)
-node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
+node /^ms-fe1001\.eqiad\.wmnet$/ {
+    role swift::proxy, swift::stats_reporter
+    include lvs::realserver
+}
+
+node /^ms-fe100[2-4]\.eqiad\.wmnet$/ {
     role swift::proxy
-
-    if $::hostname == 'ms-fe1001' {
-        include role::swift::stats_reporter
-    }
-
     include ::lvs::realserver
 }
 
@@ -1845,17 +1845,20 @@ node /^ms-be300[1-4]\.esams\.wmnet$/ {
     role swift::storage
 }
 
-node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
+node /^ms-fe2001\.codfw\.wmnet$/ {
+    role swift::proxy, swift::stats_reporter
+    $ganglia_aggregator = true
+    include ::lvs::realserver
+}
+
+node /^ms-fe2002\.codfw\.wmnet$/ {
     role swift::proxy
+    $ganglia_aggregator = true
+    include ::lvs::realserver
+}
 
-    if $::hostname =~ /^ms-fe200[12]$/ {
-        $ganglia_aggregator = true
-    }
-
-    if $::hostname == 'ms-fe2001' {
-        include role::swift::stats_reporter
-    }
-
+node /^ms-fe200[3-4]\.codfw\.wmnet$/ {
+    role swift::proxy
     include ::lvs::realserver
 }
 
