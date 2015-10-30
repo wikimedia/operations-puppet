@@ -400,12 +400,6 @@ groups:
     members: [kartik]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service apertium-apy *',
                  'ALL = (apertium) NOPASSWD: ALL']
-  perf-roots:
-    gid: 762
-    description: users who have root on memcached, varnish and application servers
-    members: [krinkle]
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
-
   deploy-service:
     gid: 763
     description: Service deploy users
@@ -426,6 +420,12 @@ groups:
     description: Group of datacenter ops engineers
     members: [pt1979]
     privileges: ['ALL = NOPASSWD: /usr/local/sbin/install-console *']
+  perf-roots:
+    gid: 766
+    description: users who have root on memcached, varnish and application servers
+    members: [krinkle]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+
 
 users:
   rush:
