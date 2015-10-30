@@ -400,7 +400,7 @@ groups:
     members: [kartik]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service apertium-apy *',
                  'ALL = (apertium) NOPASSWD: ALL']
-  perf-admins:
+  perf-roots:
     gid: 762
     description: users who have root on memcached, varnish and application servers
     members: [krinkle]
