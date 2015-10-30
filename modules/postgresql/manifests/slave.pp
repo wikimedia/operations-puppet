@@ -34,8 +34,8 @@ class postgresql::slave(
     ) {
 
     class { 'postgresql::server':
-        pgversion => $pgversion,
         ensure    => $ensure,
+        pgversion => $pgversion,
         includes  => [ $includes, 'slave.conf'],
         datadir   => $datadir,
     }

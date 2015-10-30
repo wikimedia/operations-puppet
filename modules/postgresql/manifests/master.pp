@@ -42,8 +42,8 @@ class postgresql::master(
     ) {
 
     class { 'postgresql::server':
-        pgversion => $pgversion,
         ensure    => $ensure,
+        pgversion => $pgversion,
         includes  => [ $includes, 'master.conf'],
         datadir   => $datadir,
     }
