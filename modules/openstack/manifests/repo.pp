@@ -10,7 +10,9 @@ class openstack::repo(
             uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
             dist       => "trusty-updates/${openstack_version}",
             components => 'main',
+            # lint:ignore:puppet_url_without_modules
             keyfile    => 'puppet:///files/misc/ubuntu-cloud.key';
+            # lint:endignore
         }
     }
 }
