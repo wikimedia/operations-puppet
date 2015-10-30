@@ -291,10 +291,6 @@ class role::ci::slave::labs::common {
         require => File['/mnt/home/jenkins-deploy'],
     }
 
-    file { '/mnt/home/jenkins-deploy/.pip/pip.conf':
-        ensure => absent,
-    }
-
     git::userconfig { '.gitconfig for jenkins-deploy user':
         homedir  => '/mnt/home/jenkins-deploy',
         settings => {
