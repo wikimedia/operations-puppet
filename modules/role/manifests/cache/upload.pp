@@ -144,10 +144,9 @@ class role::cache::upload {
         statsd_server => 'statsd.eqiad.wmnet',
     }
 
-    # Parse varnishlogs for request statistics and send to statsd via diamond.
-    varnish::monitoring::varnishreqstats { 'UploadFrontend':
-        instance_name => 'frontend',
-        metric_path   => "varnish.${::site}.upload.frontend.request",
-        require       => Varnish::Instance['upload-frontend'],
+    # Parse varnishlogs for request statistics and send to statsd.
+    varnish::logging::reqstats { 'frontend':
+        metric_prefix => "varnish.${::site}.upload.frontend.request",
+        statsd        => hiera('statsd'),
     }
 }

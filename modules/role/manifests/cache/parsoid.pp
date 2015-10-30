@@ -146,10 +146,9 @@ class role::cache::parsoid {
         ]),
     }
 
-    # Parse varnishlogs for request statistics and send to statsd via diamond.
-    varnish::monitoring::varnishreqstats { 'ParsoidFrontend':
-        instance_name => 'frontend',
-        metric_path   => "varnish.${::site}.parsoid.frontend.request",
-        require       => Varnish::Instance['parsoid-frontend'],
+    # Parse varnishlogs for request statistics and send to statsd.
+    varnish::logging::reqstats { 'frontend':
+        metric_prefix => "varnish.${::site}.parsoid.frontend.request",
+        statsd        => hiera('statsd'),
     }
 }
