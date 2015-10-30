@@ -3,7 +3,6 @@
 ### puppet:///modules/openldap/templates/slapd.erb
 #####################################################################
 
-
 # Only allow v3 bindings
 #allow bind_v2
 
@@ -115,7 +114,7 @@ syncrepl rid=1
 	credentials="<%= @sync_pass %>"
 <%- end -%>
 <%- if @master and @mirrormode -%>
-# 'Multi-Master'
+# Mirror-Mode. This is not true multi-master, but really useful nonetheless
 mirrormode on
 <%- end -%>
 
