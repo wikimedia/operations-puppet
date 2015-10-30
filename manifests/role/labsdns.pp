@@ -98,12 +98,12 @@ class role::labsdnsrecursor {
 
     $labs_auth_dns = ipresolve(hiera('labs_dns_host'),4)
 
-    class { ::dnsrecursor:
+    class { '::dnsrecursor':
             listen_addresses         => $listen_addresses,
             allow_from               => $network::constants::all_networks,
             ip_aliases               => $nova_floating_ip_aliases,
             additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}",
-            auth_zones               => "labsdb=/var/zones/labsdb"
+            auth_zones               => 'labsdb=/var/zones/labsdb'
     }
 
     # There are three replica servers (c1, c2, c3).  The mapping of
@@ -326,10 +326,10 @@ class role::labsdnsrecursor {
         'zuwiki', 'zuwikibooks', 'zuwiktionary']
 
     file { '/var/zones':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444'
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444'
     }
 
     file { '/var/zones/labsdb':
