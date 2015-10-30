@@ -1305,8 +1305,7 @@ node 'labsdb1004.eqiad.wmnet' {
     #$postgres_slave = 'labsdb1005.eqiad.wmnet'
     #$postgres_slave_v4 = '10.64.37.9'
 
-    include role::postgres::master
-    role labs::db::slave
+    role postgres::master, labs::db::slave
 }
 
 node 'labsdb1005.eqiad.wmnet' {
