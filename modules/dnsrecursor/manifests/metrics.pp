@@ -1,5 +1,5 @@
+# installs ganglia metrics reporting on pdns_recursor
 class dnsrecursor::metrics {
-    # install ganglia metrics reporting on pdns_recursor
     file { '/usr/local/sbin/pdns_gmetric':
         ensure => 'present',
         owner  => 'root',

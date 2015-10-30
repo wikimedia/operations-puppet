@@ -1,3 +1,4 @@
+# icinga monitoring for DNS recursors
 define dnsrecursor::monitor() {
     # Monitoring
     monitoring::host { $title:
