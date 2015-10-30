@@ -227,6 +227,12 @@ class role::mediawiki::appserver::canary_api {
 class role::mediawiki::maintenance {
     include scap::scripts
     include role::mediawiki::common
+
+    file { $::mediawiki::scap::mediawiki_staging_dir:
+        ensure => link,
+        target => '/srv/mediawiki'
+    }
+
     include mediawiki::maintenance::pagetriage
     include mediawiki::maintenance::translationnotifications
     include mediawiki::maintenance::updatetranslationstats
