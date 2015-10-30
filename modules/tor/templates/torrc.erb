@@ -8,15 +8,6 @@
 ## do not open socks proxy by default, run as relay only
 SocksPort 0
 
-## self-explaining
-RunAsDaemon 1
-
-## created by the distro package
-User debian-tor
-
-## log to its own file instead of syslog
-Log notice file /var/log/tor/tor.log
-
 ## port for local connections from Tor controller
 ControlPort <%= @tor_controlport %>
 
@@ -31,11 +22,6 @@ ORPort <%= @tor_orport %>
 
 ## IP or DNS for incoming connections
 Address <%= @tor_address %>
-
-## if we want to throttle
-#RelayBandwidthRate 100 KB  # Throttle traffic to 100KB/s (800Kbps)
-#RelayBandwidthBurst 200 KB # But allow bursts up to 200KB/s (1600Kbps)
-## (there are also Accounting* options for traffic per day/week/month)
 
 # mirror directory information ('please do if enough bandwidth')
 DirPort <%= @tor_dirport %>
