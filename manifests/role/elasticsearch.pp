@@ -10,6 +10,8 @@
 
 class role::elasticsearch::server{
 
+    include base::firewall
+
     if ($::realm == 'production' and hiera('elasticsearch::rack', undef) == undef) {
         fail("Don't know rack for ${::hostname} and rack awareness should be turned on")
     }

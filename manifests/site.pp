@@ -871,13 +871,11 @@ node 'eeden.wikimedia.org' {
 
 node /^elastic10[0-3][0-9]\.eqiad\.wmnet/ {
     role elasticsearch::server
-    include base::firewall
     include standard
 }
 
 node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
     role elasticsearch::server
-    include base::firewall
     class { 'standard':
         has_ganglia => false,
     }
@@ -2135,7 +2133,6 @@ node 'nitrogen.wikimedia.org' {
 node 'nobelium.eqiad.wmnet' {
     role elasticsearch::server, mediawiki::common, scap::scripts
     # mediawiki::common: to help copy ES indices from production to here
-    include base::firewall
     include standard
 }
 
