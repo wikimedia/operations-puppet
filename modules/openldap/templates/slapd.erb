@@ -15,6 +15,10 @@ include         /etc/ldap/schema/dyngroup.schema
 include         /etc/ldap/schema/samba.schema
 include         /etc/ldap/schema/ppolicy.schema
 
+<% if @extra_schemas -%>
+    <% @extra_schemas.each do |extra_schema| %> include /etc/ldap/schema/<%= @extra_schema %>
+<% end -%>
+
 # Where the pid file is put. The init.d script
 # will not stop the server if you change this.
 pidfile         /var/run/slapd/slapd.pid
