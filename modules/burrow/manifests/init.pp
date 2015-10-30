@@ -32,7 +32,7 @@ class burrow (
 {
     require_package('burrow')
 
-    file { "/etc/burrow/burrow.cfg":
+    file { '/etc/burrow/burrow.cfg':
         ensure  => $ensure,
         content => template('burrow/burrow.cfg.erb'),
     }
