@@ -2,6 +2,8 @@ class role::deployment::server(
     $apache_fqdn = $::fqdn,
     $deployment_group = 'wikidev',
 ) {
+    include standard
+
     # Can't include this while scap is present on the deployment server:
     # include misc::deployment::scripts
     include role::deployment::mediawiki
