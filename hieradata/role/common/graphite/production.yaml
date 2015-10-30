@@ -1,3 +1,5 @@
+admin::groups:
+  - perf-roots
 debdeploy::grains:
   debdeploy-graphite:
     value: standard
