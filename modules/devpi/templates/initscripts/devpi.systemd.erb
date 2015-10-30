@@ -1,0 +1,12 @@
+[Unit]
+Description=devpi, PyPI proxy
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=devpi
+Group=devpi
+ExecStart=/usr/local/bin/devpi-server --host=0.0.0.0 --port=3141 --serverdir /srv/devpi
+# Mimic Ctrl+C
+KillSignal=SIGINT
