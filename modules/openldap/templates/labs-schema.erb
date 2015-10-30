@@ -1,0 +1,11 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/openldap/templates/labs-schema.erb
+#####################################################################
+
+# schema definitions for labs
+include         /etc/ldap/schema/dnsdomain2.schema
+include         /etc/ldap/schema/nova_sun.schema
+include         /etc/ldap/schema/openssh-ldap.schema
+include         /etc/ldap/schema/puppet.schema
+include         /etc/ldap/schema/sudo.schema
