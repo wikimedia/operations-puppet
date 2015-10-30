@@ -20,7 +20,7 @@ class snapshot::wikidatadumps::common {
         group   => 'www-data',
         recurse => true,
         purge   => true,
-        source => 'puppet:///modules/snapshot/dcat',
+        source  => 'puppet:///modules/snapshot/dcat',
     }
 }
 
