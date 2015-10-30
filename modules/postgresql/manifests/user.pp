@@ -60,9 +60,9 @@ define postgresql::user(
         # listing tools like ps. Need to investigate better ways of setting the
         # password .e.g. hashed with md5 in the manifest
         exec { "pass_set-${name}":
-            command     => $pass_set,
-            user        => 'postgres',
-            onlyif      => $userexists,
+            command => $pass_set,
+            user    => 'postgres',
+            onlyif  => $userexists,
         }
 
         $changes = [  "set 01/type \'${type}\'",
