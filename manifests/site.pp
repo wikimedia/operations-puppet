@@ -2133,12 +2133,8 @@ node 'nitrogen.wikimedia.org' {
 
 # Test server for labs ElasticSearch replication
 node 'nobelium.eqiad.wmnet' {
-    role elasticsearch::server
-
-    # To help copy ES indices from production to here
-    include role::mediawiki::common
-    include scap::scripts
-
+    role elasticsearch::server, mediawiki::common, scap::scripts
+    # mediawiki::common: to help copy ES indices from production to here
     include base::firewall
     include standard
 }
