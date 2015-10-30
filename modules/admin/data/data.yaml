@@ -266,7 +266,7 @@ groups:
     description: Full root on EventLogging servers.
     members: [nuria, milimetric, mforns, joal]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-  wikidata-query-roots:
+  wdqs-roots:
     gid: 740
     description: Full root on the Wikidata Query Service nodes.
     members: [aaron, gwicke, smalyshev]
