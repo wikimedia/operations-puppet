@@ -2,7 +2,7 @@ define swift::stats::stats_container (
     $account_name,
     $container_set,
     $statsd_prefix,
-    $statsd_host = "statsd.eqiad.wmnet",
+    $statsd_host = 'statsd.eqiad.wmnet',
 ) {
     $account_file = "/etc/swift/account_${account_name}.env"
 
