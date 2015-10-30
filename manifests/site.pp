@@ -1170,8 +1170,7 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
     # addresses.
     interface::add_ip6_mapped { 'main': }
 
-    role analytics::kafka::server
-    include role::analytics
+    role analytics::kafka::server, analytics
     include standard
 }
 
