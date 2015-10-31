@@ -89,6 +89,23 @@ class base::environment(
         content => "${::realm}\n",
     }
 
+    $cluster = $::realm ? {
+        'labs'       => 'labs',
+        'production' => $::site,
+    }
+
+    $wikimedia_cluster = $::realm ? {
+        'labs'       => "labs\n",
+        'production' => "${::site}\n",
+    }
+
+    file { '/etc/wikimedia-cluster':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => $wikimedia_cluster,
+    }
+
 
     ### Core dumps
 
