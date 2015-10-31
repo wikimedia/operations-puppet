@@ -6,7 +6,7 @@
 # ! this file is managed by puppet !
 # ./modules/phabricator/templates/<%= @script_name %>.erb
 
-declare rcpt_address='<%= @rcpt_address %>'
+declare rcpt_address='<%= Array(@rcpt_address).join(',') %>'
 declare sndr_address='<%= @sndr_address %>'
 
 declare sql_host='<%= @mysql_slave %>'

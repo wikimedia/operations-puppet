@@ -10,7 +10,7 @@
 #   script you want to execute
 #
 # [*rcpt_address*]
-#   mail to: address
+#   mail to: address (or array of addresses)
 #
 # [*sndr_address*]
 #   mail from: address
