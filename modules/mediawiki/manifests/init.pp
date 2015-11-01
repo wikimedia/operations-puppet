@@ -25,6 +25,7 @@ class mediawiki (
     include ::mediawiki::users
     include ::mediawiki::syslog
     include ::mediawiki::php
+    include ::mediawiki::multimedia
 
     if os_version('ubuntu >= trusty') {
         include ::mediawiki::hhvm
