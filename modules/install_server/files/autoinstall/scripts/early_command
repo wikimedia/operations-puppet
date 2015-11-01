@@ -37,7 +37,7 @@ else
 	SUITE=$(cat /etc/default-release)-wikimedia
 	COMPONENTS="main backports thirdparty"
 fi
-echo d-i apt-setup/local0/repository string http://apt.wikimedia.org/wikimedia $SUITE $COMPONENTS > /tmp/apt_repository.cfg
+echo d-i apt-setup/local0/repository string deb http://apt.wikimedia.org/wikimedia $SUITE $COMPONENTS > /tmp/apt_repository.cfg
 debconf-set-selections /tmp/apt_repository.cfg
 
 # apt-setup doesn't allow us to set up pinning and hence everything we install
