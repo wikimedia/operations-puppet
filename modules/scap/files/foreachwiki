@@ -12,14 +12,10 @@ fi
 
 . /etc/profile.d/mediawiki.sh
 
-# Let us vary mediawiki-config files by realm
-. $MEDIAWIKI_STAGING_DIR/multiversion/MWRealm.sh
-
-# Get the all.dblist to be used depending on the realm we are on. This is made
-# possible by multiversion/MWRealm.sh
-#
-# On production the call will return all.dblist
-# On labs: all-labs.dblist
-ALL_DBLIST=$(getRealmSpecificFilename $MEDIAWIKI_STAGING_DIR'/dblists/all.dblist')
+if hostname --domain | grep -q wmflabs ; then
+    ALL_DBLIST="$MEDIAWIKI_STAGING_DIR/dblists/all-labs.dblist"
+else
+    ALL_DBLIST="$MEDIAWIKI_STAGING_DIR/dblists/all.dblist"
+fi
 
 exec "$(dirname "$0")/foreachwikiindblist" "$ALL_DBLIST" "${@}"

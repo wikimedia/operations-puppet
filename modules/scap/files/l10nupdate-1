@@ -2,7 +2,6 @@
 # This script belongs in /usr/local/bin/.
 
 . /etc/profile.d/mediawiki.sh
-. $MEDIAWIKI_STAGING_DIR/multiversion/MWRealm.sh
 
 BINDIR=/usr/local/bin
 SCAPDIR=/srv/deployment/scap/scap/bin
@@ -127,7 +126,13 @@ done
 
 # Clear the ResourceLoader cached messages
 echo "Refreshing ResourceLoader caches"
-ALLDB=`getRealmSpecificFilename "$MEDIAWIKI_STAGING_DIR/dblists/all.dblist"`
+
+if hostname --domain | grep -q wmflabs ; then
+    ALLDB="$MEDIAWIKI_STAGING_DIR/dblists/all-labs.dblist"
+else
+    ALLDB="$MEDIAWIKI_STAGING_DIR/dblists/all.dblist"
+fi
+
 for wiki in `<"$ALLDB"`; do
 	/usr/local/bin/mwscript extensions/WikimediaMaintenance/refreshMessageBlobs.php --wiki="$wiki"
 done
