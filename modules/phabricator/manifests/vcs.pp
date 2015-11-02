@@ -45,10 +45,14 @@ class phabricator::vcs (
         require => Package['git'],
     }
 
+    $http_proxy = "http://webproxy.${::site}.wmnet:8080"
+
     # Configure all git repositories we host
     file { '/etc/gitconfig':
-        source  => 'puppet:///modules/phabricator/system.gitconfig',
+        content => template('phabricator/system.gitconfig.erb'),
         require => Package['git'],
+        owner   => 'root',
+        group   => 'root',
     }
 
     file { $ssh_hook_path:
