@@ -221,4 +221,10 @@ define cassandra::instance(
     nrpe::monitor_systemd_unit_state { $service_name:
         require => Service[$service_name],
     }
+
+    nrpe::monitor_service { "${service_name}_cql":
+        description   => "${service_name} listening on ${listen_address}",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_tcp -H ${listen_address} -p 9042",
+        contact_group => 'admins,team-services',
+    }
 }
