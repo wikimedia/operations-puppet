@@ -317,13 +317,17 @@ def main():
     src_name, src_addy = parse_from_string(src_address)
     dest_addresses = msg['to'].split(',')
 
+    if msg['cc']:
+        cc_addresses = msg['cc'].split(',')
+    else:
+        cc_addresses = []
+
     if 'debug' in defaults and src_address in defaults['debug']:
         with open('/tmp/%s' % (src_address + '.txt'), 'w') as r:
             r.write(stdin)
 
     # does this email have a direct to task addresss
-    dtask = extract_direct_task(dest_addresses)
-
+    dtask = extract_direct_task(dest_addresses + cc_addresses)
     # determine if there is a reroutable address
     to_addresses = [d.split('@')[0] for d in dest_addresses]
     routed_addresses = [a for a in address_routing.keys() if a in to_addresses]
