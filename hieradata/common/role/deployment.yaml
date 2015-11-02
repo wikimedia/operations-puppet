@@ -71,7 +71,7 @@ repo_config:
   kibana/kibana:
     upstream: https://gerrit.wikimedia.org/r/operations/software/kibana
   scap/scap:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/tools/scap
+    upstream: https://phabricator.wikimedia.org/diffusion/MSCA/scap
   servermon/servermon:
     service_name: gunicorn
   iegreview/iegreview:
