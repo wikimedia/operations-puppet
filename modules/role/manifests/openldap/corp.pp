@@ -12,20 +12,9 @@ class role::openldap::corp {
     $master = 'ldap1.corp.wikimedia.org'
     $sync_pass = $passwords::openldap::corp::sync_pass
 
-    sslcert::certificate { 'ldap-mirror.wikimedia.org': }
     # Certificate needs to be readable by slapd
     sslcert::certificate { "ldap-corp.${::site}.wikimedia.org":
         group => 'openldap',
-    }
-
-    # NOTE: Temporary while migration to ldap-corp takes place
-    $certificate = $::site ? {
-        'eqiad' => '/etc/ssl/localcerts/ldap-mirror.wikimedia.org.crt',
-        'codfw' => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.crt",
-    }
-    $key = $::site ? {
-        'eqiad' => '/etc/ssl/private/ldap-mirror.wikimedia.org.key',
-        'codfw' => "/etc/ssl/private/ldap-corp.${::site}.wikimedia.org.key",
     }
 
     class { '::openldap':
@@ -35,8 +24,8 @@ class role::openldap::corp {
         master      => $master,
         sync_pass   => $sync_pass,
         ca          => '/etc/ssl/certs/ca-certificates.crt',
-        certificate => $certificate,
-        key         => $key,
+        certificate => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.crt",
+        key         => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.key",
     }
 
     ferm::service { 'corp_ldap':
