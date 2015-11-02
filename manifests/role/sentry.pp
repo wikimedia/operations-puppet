@@ -6,6 +6,7 @@
 #
 class role::sentry {
     include ::sentry
+    include ::sentry::ldap
 
     system::role { 'role::sentry':
         description => 'Sentry server (error aggregation & presentation service)',
