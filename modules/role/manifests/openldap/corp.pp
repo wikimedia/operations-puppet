@@ -13,6 +13,10 @@ class role::openldap::corp {
     $sync_pass = $passwords::openldap::corp::sync_pass
 
     sslcert::certificate { 'ldap-mirror.wikimedia.org': }
+    # Certificate needs to be readable by slapd
+    sslcert::certificate { "ldap-corp.${::site}.wikimedia.org":
+        group => 'openldap',
+    }
 
     class { '::openldap':
         server_id   => 3, # 1 and 2 used in OIT
