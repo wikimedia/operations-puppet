@@ -1,0 +1,7 @@
+Code-Review+2: RobH <rob@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: RobH <rob@wikimedia.org>
+Submitted-at: Mon, 02 Nov 2015 20:36:42 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/250498
+Project: operations/puppet
+Branch: refs/heads/production
