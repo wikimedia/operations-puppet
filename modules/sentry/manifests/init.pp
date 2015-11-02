@@ -11,15 +11,6 @@
 # [*server_name*]
 #   Domain name under which Sentry will be available.
 #
-# [*smtp_host*]
-#   SMTP server host name; used to send email alerts on new errors.
-#
-# [*smtp_user*]
-#   SMTP username.
-#
-# [*smtp_pass*]
-#   SMTP password.
-#
 # [*git_branch*]
 #   Which branch to check out.
 #
@@ -38,9 +29,6 @@ class sentry (
     $secret_key,
     $admin_pass,
     $admin_email = 'noc@wikimedia.org',
-    $smtp_host   = '',
-    $smtp_user   = '',
-    $smtp_pass   = '',
     $git_branch  = 'master',
 ) {
     include ::nginx

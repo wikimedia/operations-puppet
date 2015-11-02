@@ -1,3 +1,2 @@
 sentry::server_name: 'sentry.wikimedia.org'
-sentry::smtp_host: 'polonium.wikimedia.org'
 sentry::admin_email: 'gtisza@wikimedia.org'
