@@ -21,8 +21,7 @@ VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 hide mysql_servers =  m2-master.eqiad.wmnet/otrs/exim/<%= @otrs_mysql_password %> : m2-slave.eqiad.wmnet/otrs/exim/<%= @otrs_mysql_password %>
 
 # LDAP lookups (Office)
-# NOTE: temporarily keeping ldap-mirror.wikimedia.org until migration is complete to ldap-corp.$::site
-ldap_default_servers = ldap-mirror.wikimedia.org : ldap-corp.<%= @site %>.wikimedia.org : ldap-corp.<%= @other_site %>.wikimedia.org
+ldap_default_servers = ldap-corp.<%= @site %>.wikimedia.org : ldap-corp.<%= @other_site %>.wikimedia.org
 LDAPPASSWORD=<%= @smtp_ldap_password %>
 
 domainlist system_domains = @
