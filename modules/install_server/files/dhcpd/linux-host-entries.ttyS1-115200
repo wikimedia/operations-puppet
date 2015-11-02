@@ -3404,7 +3404,7 @@ host ms-be2019 {
 }
 
 host ms-be2020 {
-        hardware ethernet 3C:A8:2D:17:D5:98;
+        hardware ethernet 3C:A8:2A:17:D5:98;
         fixed-address ms-be2020.codfw.wmnet;
 }
 
