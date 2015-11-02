@@ -49,6 +49,8 @@ class phabricator::vcs (
     file { '/etc/gitconfig':
         source  => 'puppet:///modules/phabricator/system.gitconfig',
         require => Package['git'],
+        owner   => 'root',
+        group   => 'root',
     }
 
     file { $ssh_hook_path:

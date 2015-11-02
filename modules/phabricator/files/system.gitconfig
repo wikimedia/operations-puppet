@@ -1,3 +1,10 @@
 [remote "origin"]
     fetch = +refs/changes/*:refs/changes/*
     fetch = +refs/meta/*:refs/meta/*
+
+
+[http "https://github.com"]
+    proxy = http://url-downloader.wikimedia.org:8080
+
+[http "https://gerrit.wikimedia.org"]
+    proxy =
