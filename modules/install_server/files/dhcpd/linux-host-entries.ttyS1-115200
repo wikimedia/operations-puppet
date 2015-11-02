@@ -5964,11 +5964,6 @@ host plutonium {
 	fixed-address plutonium.wikimedia.org;
 }
 
-host pollux {
-	hardware ethernet d4:be:d9:af:68:bb;
-	fixed-address pollux.wikimedia.org;
-}
-
 host polonium {
 	hardware ethernet C8:1F:66:BF:8D:D6;
 	fixed-address polonium.wikimedia.org;
