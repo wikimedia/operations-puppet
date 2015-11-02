@@ -62,6 +62,15 @@ define logstash::output::elasticsearch(
         require => File['/usr/local/bin/logstash_delete_index.sh'],
     }
 
+    cron { "logstash_decrease_replicas_${title}":
+        ensure  => $ensure_cron,
+        command => "/usr/local/bin/logstash_decrease_replicas.sh ${host}:${port} \"${title}-$(date -d '-21days' +\\%Y.\\%m.\\%d)\"",
+        user    => 'root',
+        hour    => 0,
+        minute  => 45,
+        require => File['/usr/local/bin/logstash_decrease_replicas.sh'],
+    }
+
     cron { "logstash_optimize_index_${title}":
         ensure  => $ensure_cron,
         command => "/usr/local/bin/logstash_optimize_index.sh ${host}:${port} \"${title}-$(date -d '-1days' +\\%Y.\\%m.\\%d)\"",
