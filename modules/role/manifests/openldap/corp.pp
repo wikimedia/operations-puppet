@@ -18,6 +18,16 @@ class role::openldap::corp {
         group => 'openldap',
     }
 
+    # NOTE: Temporary while migration to ldap-corp takes place
+    $certificate = $::site ? {
+        'eqiad' => '/etc/ssl/localcerts/ldap-mirror.wikimedia.org.crt',
+        'codfw' => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.crt",
+    }
+    $key = $::site ? {
+        'eqiad' => '/etc/ssl/localcerts/ldap-mirror.wikimedia.org.key',
+        'codfw' => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.key",
+    }
+
     class { '::openldap':
         server_id   => 3, # 1 and 2 used in OIT
         suffix      => 'dc=corp,dc=wikimedia,dc=org',
@@ -25,8 +35,8 @@ class role::openldap::corp {
         master      => $master,
         sync_pass   => $sync_pass,
         ca          => '/etc/ssl/certs/ca-certificates.crt',
-        certificate => '/etc/ssl/localcerts/ldap-mirror.wikimedia.org.crt',
-        key         => '/etc/ssl/private/ldap-mirror.wikimedia.org.key',
+        certificate => $certificate,
+        key         => $key,
     }
 
     ferm::service { 'corp_ldap':
