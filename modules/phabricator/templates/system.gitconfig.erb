@@ -1,3 +1,9 @@
 [remote "origin"]
     fetch = +refs/changes/*:refs/changes/*
     fetch = +refs/meta/*:refs/meta/*
+
+[http]
+    proxy = <%= @http_proxy %>
+
+[https]
+    proxy = <%= @http_proxy %>
