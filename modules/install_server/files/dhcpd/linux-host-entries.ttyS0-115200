@@ -108,6 +108,8 @@ host planet1001 {
 host pollux {
 	hardware ethernet aa:00:00:2d:a2:76;
 	fixed-address pollux.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 # ganeti VMs used for pybal testing/development
