@@ -129,7 +129,7 @@ class role::phabricator::main {
             ops-esams   => '*',
             ops-ulsfo   => '*',
             domains     => 'markmonitor.com,wikimedia.org',
-            procurement => 'cdw.com,dasher.com,dell.com,globalsign.com,optiv.com,unitedlayer.com,us.ntt.net,wikimedia.org,zayo.com',
+            procurement => 'cdw.com,cyrusone.com,dasher.com,dell.com,globalsign.com,optiv.com,unitedlayer.com,us.ntt.net,wikimedia.org,zayo.com',
         },
 
         phab_bot                => {
