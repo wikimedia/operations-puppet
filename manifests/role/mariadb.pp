@@ -107,10 +107,7 @@ class role::mariadb::misc(
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
-
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
 
     class { 'mariadb::config':
         prompt    => "MISC ${shard}",
@@ -206,10 +203,7 @@ class role::mariadb::misc::eventlogging(
     include standard
     include role::mariadb::monitor::dba
     include passwords::misc::scripts
-
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
 
     $read_only = $master ? {
         true  => 'off',
@@ -258,10 +252,7 @@ class role::mariadb::tendril {
         description => 'tendril database server',
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
-
+    include mariadb::packages_wmf
     include standard
     include role::mariadb::grants
     include role::mariadb::monitor::dba
@@ -287,10 +278,7 @@ class role::mariadb::dbstore(
         description => 'Delayed Slave',
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
-
+    include mariadb::packages_wmf
     include standard
     include role::mariadb::grants
     include role::mariadb::monitor::dba
@@ -329,10 +317,7 @@ class role::mariadb::analytics {
         description => 'Analytics All-Shards Slave',
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
-
+    include mariadb::packages_wmf
     include standard
     include role::mariadb::grants
     include role::mariadb::monitor
@@ -432,10 +417,7 @@ class role::mariadb::core(
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
-
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
 
     class { 'mariadb::config':
         prompt   => "PRODUCTION ${shard}",
@@ -460,10 +442,7 @@ class role::mariadb::sanitarium {
     include standard
     include role::mariadb::grants
     include passwords::misc::scripts
-
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
 
     class { 'mariadb::config':
         prompt   => "SANITARIUM",
@@ -552,10 +531,7 @@ class role::mariadb::labs {
     include passwords::misc::scripts
     include role::mariadb::ferm
     include base::firewall
-
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
 
     class { 'mariadb::config':
         prompt   => "LABS",
@@ -601,10 +577,7 @@ class role::mariadb::wikitech {
     include role::mariadb::grants::wikitech
     include role::mariadb::monitor
     include passwords::misc::scripts
-
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
 
     class { 'mariadb::config':
         prompt   => "WIKITECH",
@@ -706,9 +679,7 @@ class role::mariadb::parsercache {
         description => 'Parser Cache DB Server',
     }
 
-    class { 'mariadb::packages_wmf':
-        mariadb10 => true,
-    }
+    include mariadb::packages_wmf
 
     class { 'role::mariadb::grants':
         shard => 'parsercache',
