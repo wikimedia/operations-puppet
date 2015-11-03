@@ -2426,10 +2426,6 @@ node 'terbium.eqiad.wmnet' {
 # deployment servers
 node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
     role deployment::server, labsdb::manager
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
 }
 
 # titanium hosts archiva.wikimedia.org
