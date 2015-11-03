@@ -188,11 +188,11 @@ class nodepool(
     }
 
     file { '/usr/local/bin/become-nodepool':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/nodepool/become-nodepool.sh',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/nodepool/become-nodepool.sh',
     }
 
     file { '/var/lib/nodepool/.ssh':

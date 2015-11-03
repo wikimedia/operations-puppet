@@ -12,7 +12,7 @@ class dumps {
         notify  => Service['nginx'],
     }
     nginx::site { 'download':
-        source  => 'puppet:///modules/dumps/nginx.download.conf',
-        notify  => Service['nginx'],
+        source => 'puppet:///modules/dumps/nginx.download.conf',
+        notify => Service['nginx'],
     }
 }
