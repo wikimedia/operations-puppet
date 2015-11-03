@@ -78,7 +78,7 @@ class apache::mod::status {
     apache::mod_conf { 'status': }
 
     apache::conf { 'server_status':
-        source   => 'puppet:///modules/apache/status.conf',
-        require  =>  Apache::Mod_conf['status'],
+        source  => 'puppet:///modules/apache/status.conf',
+        require =>  Apache::Mod_conf['status'],
     }
 }

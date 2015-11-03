@@ -39,9 +39,9 @@ class apache::monitoring {
     }
 
     file { '/usr/local/bin/apache-status':
-        source  => 'puppet:///modules/apache/apache-status',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+        source => 'puppet:///modules/apache/apache-status',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 }
