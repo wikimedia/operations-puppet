@@ -57,6 +57,9 @@
 #       node.
 # - $statsd_host: host to send statsd data to
 # - $merge_threads: Number of merge threads to use. Default 3
+# - $load_fixed_bitset_filters_eagerly: set to false to disable loading
+#        bitsets in memory when opening indices will slowdown queries but can
+#        significantly reduce heap usage.
 #
 # == Sample usage:
 #
@@ -84,7 +87,8 @@ class elasticsearch($cluster_name,
                     $bulk_thread_pool_executors = undef,
                     $bulk_thread_pool_capacity = undef,
                     $statsd_host = undef,
-                    $merge_threads = 3) {
+                    $merge_threads = 3,
+                    $load_fixed_bitset_filters_eagerly = true) {
 
     include ::elasticsearch::packages
 

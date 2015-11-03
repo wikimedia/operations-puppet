@@ -6,3 +6,4 @@ elasticsearch::minimum_master_nodes: 1
 elasticsearch::cluster_name: labsearch
 elasticsearch::recover_after_nodes: 1
 elasticsearch::expected_nodes: 1
+elasticsearch::load_fixed_bitset_filters_eagerly: false
