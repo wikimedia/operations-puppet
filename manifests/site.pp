@@ -1197,11 +1197,11 @@ node 'labcontrol1002.wikimedia.org' {
     $is_labs_puppet_master = true
     $use_neutron           = false
 
+    role nova::controller
     include standard
     include ldap::role::client::labs
     include role::salt::masters::labs
     include role::deployment::salt_masters
-    role nova::controller
     if $use_neutron == true {
         include role::neutron::controller
     }
