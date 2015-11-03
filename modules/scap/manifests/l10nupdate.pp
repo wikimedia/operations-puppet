@@ -47,15 +47,15 @@ class scap::l10nupdate(
         mode   => '0755',
     }
     file { '/home/l10nupdate/.ssh/id_rsa':
-        owner  => 'l10nupdate',
-        group  => 'l10nupdate',
-        mode   => '0400',
+        owner   => 'l10nupdate',
+        group   => 'l10nupdate',
+        mode    => '0400',
         content => secret('ssh/tin/l10nupdate/id_rsa'),
     }
     file { '/home/l10nupdate/.ssh/id_rsa.pub':
-        owner  => 'l10nupdate',
-        group  => 'l10nupdate',
-        mode   => '0444',
+        owner   => 'l10nupdate',
+        group   => 'l10nupdate',
+        mode    => '0444',
         content => secret('ssh/tin/l10nupdate/id_rsa.pub'),
     }
 
