@@ -20,8 +20,8 @@ class toollabs::compute inherits toollabs {
             toollabs::hba
 
     motd::script { 'exechost-banner':
-        ensure   => present,
-        source   => "puppet:///modules/toollabs/40-${::labsproject}-exechost-banner",
+        ensure => present,
+        source => "puppet:///modules/toollabs/40-${::labsproject}-exechost-banner",
     }
 
     file { "${toollabs::store}/execnode-${::fqdn}":

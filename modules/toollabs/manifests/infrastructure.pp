@@ -15,8 +15,8 @@
 class toollabs::infrastructure {
 
     motd::script { 'infrastructure-banner':
-        ensure   => present,
-        source   => "puppet:///modules/toollabs/40-${::labsproject}-infrastructure-banner",
+        ensure => present,
+        source => "puppet:///modules/toollabs/40-${::labsproject}-infrastructure-banner",
     }
 
     # Infrastructure instances are limited to an (arbitrarily picked) local

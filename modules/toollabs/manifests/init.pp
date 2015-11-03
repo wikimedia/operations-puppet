@@ -148,7 +148,7 @@ class toollabs (
     # here that have not been standardized per se, but still bear a
     # high risk of mimicry.
     mailalias { [ 'admin', 'administrator' ]:
-        ensure => present,
+        ensure    => present,
         recipient => 'root',
     }
 

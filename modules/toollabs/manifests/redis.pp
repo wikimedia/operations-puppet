@@ -39,7 +39,7 @@ class toollabs::redis (
         maxmemory         => $maxmemory,
         # Disable the following commands, to try to limit people from
         # Trampling on each others' keys
-        rename_commands => {
+        rename_commands   => {
             'CONFIG'    => '',
             'FLUSHALL'  => '',
             'FLUSHDB'   => '',

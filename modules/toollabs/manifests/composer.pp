@@ -18,10 +18,10 @@ class toollabs::composer {
 
     # Create a symlink for the composer executable
     file { '/usr/local/bin/composer':
-        ensure => 'link',
-        target => '/srv/composer/vendor/bin/composer',
-        owner  => 'root',
-        group  => 'root',
+        ensure  => 'link',
+        target  => '/srv/composer/vendor/bin/composer',
+        owner   => 'root',
+        group   => 'root',
         require => Git::Clone['composer'],
     }
 }
