@@ -39,67 +39,67 @@ class scap::scripts {
         content => template('scap/foreachwikiindblist.erb'),
     }
     file { '/usr/local/bin/expanddblist':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
         source => 'puppet:///modules/scap/expanddblist',
     }
     file { '/usr/local/bin/mwscript':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/mwscript',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/mwscript',
     }
     file { '/usr/local/bin/mwscriptwikiset':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/mwscriptwikiset',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/mwscriptwikiset',
     }
     file { '/usr/local/bin/purge-varnish':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/purge-varnish',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/purge-varnish',
     }
     file { '/usr/local/bin/refreshWikiversionsCDB':
         ensure => absent,
     }
     file { '/usr/local/bin/set-group-write':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/set-group-write',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/set-group-write',
     }
     file { '/usr/local/bin/sql':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/sql',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/sql',
     }
     file { '/usr/local/bin/sqldump':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/sqldump',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/sqldump',
     }
     file { '/usr/local/bin/udprec':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/udprec',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/udprec',
     }
     file { '/usr/local/sbin/set-group-write2':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/set-group-write2',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/set-group-write2',
     }
     file { '/usr/local/bin/updateinterwikicache':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/updateinterwikicache',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/updateinterwikicache',
     }
         # Manpages
         # Need to be generated manually using make in modules/scap/files/manpages
@@ -112,10 +112,10 @@ class scap::scripts {
         source  => 'puppet:///modules/scap/manpages/man',
     }
     file { '/usr/local/bin/sudo-withagent':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/scap/sudo-withagent',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/sudo-withagent',
     }
     file { '/usr/local/lib/mw-deployment-vars.sh':
         owner   => 'root',
