@@ -55,7 +55,7 @@ class wdqs::service(
         systemd        => true,
         upstart        => true,
         service_params => {
-            enable     => true,
+            enable => true,
         }
     }
 }

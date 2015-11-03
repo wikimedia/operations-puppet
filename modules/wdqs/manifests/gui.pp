@@ -17,9 +17,9 @@ class wdqs::gui(
 
     # The directory for operator-controlled nginx flags
     file { '/var/lib/nginx/wdqs/':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'wikidev',
-        mode    => '0775',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'wikidev',
+        mode   => '0775',
     }
 }
