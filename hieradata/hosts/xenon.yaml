@@ -1,3 +1,9 @@
 debdeploy::grains:
   debdeploy-restbase:
     value: canary
+cassandra::instances:
+  a:
+    jmx_port: 7189
+    listen_address: 10.64.0.202
+    rpc_address: 10.64.0.202
+    rpc_interface: eth0
