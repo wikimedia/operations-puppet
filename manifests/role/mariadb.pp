@@ -373,7 +373,7 @@ class role::mariadb::analytics::custom_repl_slave {
     }
     nrpe::monitor_service { 'eventlogging_sync':
         description  => 'eventlogging_sync processes',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${instances_count}:${instances_count} -C eventlogging_sync.sh",
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u root -a "/bin/bash /usr/local/bin/eventlogging_sync.sh"',
         critical      => false,
         contact_group => 'dba',
     }
