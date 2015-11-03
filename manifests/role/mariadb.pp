@@ -351,6 +351,33 @@ class role::mariadb::analytics {
         is_critical => false,
     }
 }
+class role::mariadb::analytics::custom_repl_slave {
+
+    file { '/usr/local/bin/eventlogging_sync.sh':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+        source  => 'puppet:///files/mariadb/eventlogging_sync.sh',
+    }
+    file { '/etc/init.d/eventlogging_sync':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => 'puppet:///files/mariadb/eventlogging_sync.init',
+        notify  => Service['eventlogging_sync'],
+    }
+    service { 'eventlogging_sync':
+        ensure  => running,
+        enable  => true,
+    }
+    nrpe::monitor_service { 'eventlogging_sync':
+        description  => 'eventlogging_sync processes',
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${instances_count}:${instances_count} -C eventlogging_sync.sh",
+        critical      => false,
+        contact_group => 'dba',
+    }
+}
 
 class role::mariadb::backup {
     include role::backup::host
