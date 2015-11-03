@@ -2448,6 +2448,8 @@ host haedus {
 host hafnium {
 	hardware ethernet 78:2b:cb:1f:17:48;
 	fixed-address hafnium.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host helium {
