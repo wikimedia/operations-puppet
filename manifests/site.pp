@@ -112,8 +112,6 @@ node /analytics10(04|10).eqiad.wmnet/ {
 # This node is being repurposed - otto 2015-09
 node 'analytics1015.eqiad.wmnet' {
     role analytics::mysql::meta
-    include standard
-    include base::firewall
 }
 
 # analytics1028-analytics1057 are Hadoop worker nodes.

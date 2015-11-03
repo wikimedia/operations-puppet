@@ -2,7 +2,11 @@
 # Installs a MySQL/MariaDB server for use with Hive and Oozie
 #
 class role::analytics::mysql::meta {
-    class { 'mariadb::packages_wmf':
+
+   include standard
+   include base::firewall
+
+   class { 'mariadb::packages_wmf':
         mariadb10 => true
     }
     # This will be included once analytics1015 has been productionized
