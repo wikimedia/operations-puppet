@@ -232,8 +232,6 @@ node 'bast1001.wikimedia.org' {
     $cluster = 'misc'
     $ganglia_aggregator = true
     role bastionhost::general
-
-    include standard
 }
 
 # Bastion in Texas
@@ -242,8 +240,6 @@ node 'bast2001.wikimedia.org' {
         interface => 'eth0',
     }
     role bastionhost::general
-    include standard
-
 }
 
 # Bastion in California
@@ -253,7 +249,6 @@ node 'bast4001.wikimedia.org' {
     }
 
     role bastionhost::general, ipmi, installserver::tftp-server
-    include standard
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'ulsfo',
@@ -1096,8 +1091,6 @@ node 'hooft.esams.wikimedia.org' {
     }
     role bastionhost::general, installserver::tftp-server
 
-    include standard
-
     class { 'ganglia::monitor::aggregator':
         sites =>  'esams',
     }
@@ -1163,7 +1156,6 @@ node 'iron.wikimedia.org' {
         interface => 'eth0',
     }
     role bastionhost::opsonly, ipmi, access_new_install
-    include standard
 }
 
 # Analytics Kafka Brokers

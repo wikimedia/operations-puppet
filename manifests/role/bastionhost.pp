@@ -5,6 +5,7 @@ class role::bastionhost::general {
     }
 
     include ::bastionhost
+    include standard
     include base::firewall
     include role::backup::host
 
@@ -25,6 +26,7 @@ class role::bastionhost::opsonly {
     }
 
     include ::bastionhost
+    include standard
     include base::firewall
     include role::backup::host
 
