@@ -4,6 +4,10 @@ class role::deployment::server(
 ) {
     include standard
 
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
+
     # Can't include this while scap is present on the deployment server:
     # include misc::deployment::scripts
     include role::deployment::mediawiki
