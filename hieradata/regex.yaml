@@ -176,8 +176,8 @@ cassandra_test_codfw:
       - .*\.min$
       - .*\.stddev$
 
-swift_be_codfw:
-  __regex: !ruby/regexp /^ms-be20.*\.codfw\.wmnet$/
+swift_be_codfw_dell:
+  __regex: !ruby/regexp /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/
   swift_storage_drives: [
           '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
           '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
@@ -185,6 +185,17 @@ swift_be_codfw:
   # no trailing comma!
   ]
   swift_aux_partitions: ['/dev/sdm3', '/dev/sdn3']
+
+# HP machines have different disk ordering T90922
+swift_be_codfw_hp:
+  __regex: !ruby/regexp /^ms-be20(1[6-9]|2[0-1])\.codfw\.wmnet$/
+  swift_storage_drives: [
+        '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
+        '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',
+        '/dev/sdi', '/dev/sdj', '/dev/sdk', '/dev/sdl'
+  # no trailing comma!
+  ]
+  swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
 
 swift_be_eqiad_dell:
   __regex: !ruby/regexp /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/
@@ -198,7 +209,7 @@ swift_be_eqiad_dell:
 
 # HP machines have different disk ordering T90922
 swift_be_eqiad_hp:
-  __regex: !ruby/regexp /^ms-be101[678]\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^ms-be10(1[6-9]|2[0-1])\.eqiad\.wmnet$/
   swift_storage_drives: [
         '/dev/sdm', '/dev/sdn', '/dev/sdc', '/dev/sdd',
         '/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh',

@@ -1835,7 +1835,7 @@ node /^ms-be10(0[0-9]|1[0-5])\.eqiad\.wmnet$/ {
 }
 
 # HP machines have different disk ordering T90922
-node /^ms-be101[678]\.eqiad\.wmnet$/ {
+node /^ms-be10(1[6-9]|2[0-1])\.eqiad\.wmnet$/ {
     role swift::storage
 }
 
@@ -1861,7 +1861,12 @@ node /^ms-fe200[1-4]\.codfw\.wmnet$/ {
     include ::lvs::realserver
 }
 
-node /^ms-be20[0-9][0-9]\.codfw\.wmnet$/ {
+node /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/ {
+    role swift::storage
+}
+
+# HP machines have different disk ordering T90922
+node /^ms-be20(1[6-9]|2[0-1])\.codfw\.wmnet$/ {
     role swift::storage
 }
 
