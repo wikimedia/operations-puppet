@@ -13,6 +13,7 @@ class swift::storage (
 
     class { 'rsync::server':
         log_file => '/var/log/rsyncd.log',
+        rsync_opts => ['--protocol=30'],
     }
 
     rsync::server::module { 'account':
