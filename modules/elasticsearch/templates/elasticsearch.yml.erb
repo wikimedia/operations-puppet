@@ -468,6 +468,14 @@ metrics.statsd.host: <%= @statsd_host %>
 ##
 index.merge.scheduler.max_thread_count: <%= @merge_threads %>
 
+<% unless @load_fixed_bitset_filters_eagerly -%>
+##
+# Bitsets used by nested (parent/child) queries will be loaded lazily.
+# Can reduce significantly heap usage if the cluster does not serve
+# these queries.
+index.load_fixed_bitset_filters_eagerly: false
+
+<% end -%>
 ##
 # Set /langdetect/short-text/ the default langdect profile
 ##
