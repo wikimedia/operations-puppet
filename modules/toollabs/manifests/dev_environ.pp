@@ -133,11 +133,11 @@ class toollabs::dev_environ {
     }
 
     file { '/usr/local/bin/webservice':
-        ensure => link,
-        target => '/usr/local/bin/webservice2',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
+        ensure  => link,
+        target  => '/usr/local/bin/webservice2',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
         require => File['/usr/local/bin/webservice2'],
     }
 

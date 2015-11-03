@@ -36,19 +36,19 @@ class toollabs::mailrelay inherits toollabs
     }
 
     file { '/usr/local/sbin/localuser':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/toollabs/localuser',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/localuser',
     }
 
     file { '/usr/local/sbin/maintainers':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/toollabs/maintainers',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/maintainers',
     }
 
     diamond::collector::extendedexim { 'extended_exim_collector': }

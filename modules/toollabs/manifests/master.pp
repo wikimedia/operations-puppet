@@ -17,17 +17,17 @@ class toollabs::master inherits toollabs {
             toollabs::queue::continuous
 
     file { "${toollabs::collectors}/hostgroups":
-        ensure    => directory,
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0755',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { "${toollabs::collectors}/queues":
-        ensure    => directory,
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0755',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     gridengine::collectors::hostgroups { '@general':
@@ -65,31 +65,31 @@ class toollabs::master inherits toollabs {
     }
 
     file { '/usr/local/bin/dequeugridnodes.sh':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/toollabs/gridscripts/dequeuegridnodes.sh',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/gridscripts/dequeuegridnodes.sh',
     }
     file { '/usr/local/bin/requeugridnodes.sh':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/toollabs/gridscripts/requeuegridnodes.sh',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/gridscripts/requeuegridnodes.sh',
     }
     file { '/usr/local/bin/runninggridtasks.py':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/toollabs/gridscripts/runninggridtasks.py',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/gridscripts/runninggridtasks.py',
     }
     file { '/usr/local/bin/runninggridjobsmail.py':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/toollabs/gridscripts/runninggridjobsmail.py',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/gridscripts/runninggridjobsmail.py',
     }
 }

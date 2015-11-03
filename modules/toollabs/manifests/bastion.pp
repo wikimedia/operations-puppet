@@ -33,8 +33,8 @@ class toollabs::bastion(
     }
 
     motd::script { 'bastion-banner':
-        ensure   => present,
-        source   => "puppet:///modules/toollabs/40-${::labsproject}-bastion-banner",
+        ensure => present,
+        source => "puppet:///modules/toollabs/40-${::labsproject}-bastion-banner",
     }
 
     file { "${toollabs::store}/submithost-${::fqdn}":
@@ -79,10 +79,10 @@ class toollabs::bastion(
         content => template('toollabs/crontab.erb'),
     }
     file { '/usr/local/bin/killgridjobs.sh':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/toollabs/gridscripts/killgridjobs.sh',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/toollabs/gridscripts/killgridjobs.sh',
     }
 }
