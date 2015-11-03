@@ -206,11 +206,12 @@ define cassandra::instance(
     }
 
     base::service_unit { $service_name:
-        ensure        => present,
-        template_name => 'cassandra',
-        systemd       => true,
-        refresh       => false,
-        require       => [
+        ensure          => present,
+        template_name   => 'cassandra',
+        systemd         => true,
+        declare_service => false,
+        refresh         => false,
+        require         => [
             File[$data_file_directories],
             File["${config_directory}/cassandra-env.sh"],
             File["${config_directory}/cassandra.yaml"],
@@ -219,7 +220,7 @@ define cassandra::instance(
     }
 
     nrpe::monitor_systemd_unit_state { $service_name:
-        require => Service[$service_name],
+        require => Base::Service_unit[$service_name],
     }
 
     # CQL query interface monitoring (T93886)
