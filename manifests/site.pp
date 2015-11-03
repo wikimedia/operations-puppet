@@ -774,6 +774,8 @@ node 'db1009.eqiad.wmnet' {
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
     role mariadb::analytics
+    # this slave has an m4 custom replication protocol
+    role mariadb::analytics::custom_repl_slave
 }
 
 node 'db1069.eqiad.wmnet' {
@@ -799,6 +801,8 @@ node 'dbstore1001.eqiad.wmnet' {
 
 node 'dbstore1002.eqiad.wmnet' {
     role mariadb::dbstore
+    # this slave has an m4 custom replication protocol
+    role mariadb::analytics::custom_repl_slave
 }
 
 node 'dbstore2001.codfw.wmnet' {
