@@ -128,34 +128,33 @@ function enable_and_run_puppet {
 
 
 function usage {
-    echo "Usage: $0 [-y][-r][-n][-p][-s SECONDS] <nodename> <mgmtname> [<newnodename>]"; exit 1;
+    echo "Usage: $0 [OPTIONS] <nodename> <mgmtname> [<newnodename>]"
+    echo "  -y, --force          continue on errors"
+    echo "  -r, --no-reboot      don't reboot"
+    echo "  -n, --no-clean       don't clean machine puppet/salt keys"
+    echo "  -p, --no-puppet      don't run puppet after reimage"
+    echo "  -s, --sleep=SECONDS  sleep for SECONDS while waiting puppet/salt keys"
+    exit 1
 }
 
 ## Main script
+TEMP=$(getopt -o yrnps: --long force,no-reboot,no-clean,no-puppet,sleep: \
+	             -n "$0" -- "$@")
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
-while getopts "yrnps:" option; do
-    case $option in
-        y)
-            FORCE=1
-            ;;
-        r)
-            NOREBOOT=1
-            ;;
-        n)
-            NOCLEAN=1
-            ;;
-        s)
-            SLEEPTIME=${OPTARG}
-            ;;
-        p)
-            RUNPUPPET=0
-            ;;
-        *)
-            usage
-            ;;
-esac
+eval set -- "$TEMP"
+while true; do
+    case "$1" in
+	-y|--force) FORCE=1; shift ;;
+	-r|--no-reboot) NOREBOOT=1; shift ;;
+	-n|--no-clean) NOCLEAN=1; shift ;;
+	-p|--no-puppet) RUNPUPPET=0; shift ;;
+	-s|--sleep) SLEEPTIME=$2; shift 2 ;;
+	--) shift ; break ;;
+	*) echo "Internal error!"; exit 1 ;;
+    esac
 done
-shift $((OPTIND-1))
+
 nodename=${1:-}
 mgmtname=${2:-}
 newnodename=${3:-}
