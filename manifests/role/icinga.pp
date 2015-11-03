@@ -27,6 +27,10 @@ class role::icinga(
     include mysql
     include icinga::gsbmonitoring
     include nrpe
+    include standard
+    include base::firewall
+
+    interface::add_ip6_mapped { 'main': interface => 'eth0' }
 
     if $ircbot {
         include icinga::ircbot
