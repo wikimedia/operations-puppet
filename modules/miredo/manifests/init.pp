@@ -1,3 +1,6 @@
+# Miredo is a Teredo client (as per RFC 4380)
+# Teredo is IPv6 tunneling
+# https://packages.debian.org/jessie/miredo
 class miredo {
 
     package { 'miredo':
@@ -5,11 +8,11 @@ class miredo {
     }
 
     file { '/etc/miredo.conf':
-        owner     => root,
-        group     => root,
-        mode      => '0444',
-        require   => Package['miredo'],
-        source    => 'puppet:///modules/miredo/miredo.conf',
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        require => Package['miredo'],
+        source  => 'puppet:///modules/miredo/miredo.conf',
     }
 
     service { 'miredo':
