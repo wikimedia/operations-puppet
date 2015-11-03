@@ -56,7 +56,7 @@ class role::dnsrecursor {
     system::role { 'role::dnsrecursor': description => 'Recursive DNS server' }
 
     include lvs::configuration, network::constants
-    include base::firewall
+    include base::firewall, standard
 
     class {
         'lvs::realserver':
@@ -71,6 +71,10 @@ class role::dnsrecursor {
     }
 
     ::dnsrecursor::monitor { [ $::ipaddress, $::ipaddress6_eth0 ]: }
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 
     ferm::service { 'udp_dns_rec':
         proto => 'udp',

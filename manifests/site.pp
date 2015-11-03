@@ -49,11 +49,6 @@ if $cluster == undef {
 
 node /^(acamar|achernar)\.wikimedia\.org$/ {
     role dnsrecursor
-    include standard
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
 }
 
 
@@ -331,7 +326,6 @@ node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     role dnsrecursor
-    include standard
 
     if $::hostname == 'chromium' {
         $url_downloader_ip = hiera('url_downloader_ip')
@@ -342,10 +336,6 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
         class { 'role::url_downloader':
             url_downloader_ip => $url_downloader_ip
         }
-    }
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
     }
 }
 
@@ -1736,11 +1726,6 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 
 node 'maerlant.wikimedia.org' {
     role dnsrecursor
-    include standard
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
 }
 
 # RT and the other RT
@@ -2096,11 +2081,6 @@ node 'neptunium.wikimedia.org' {
 
 node 'nescio.wikimedia.org' {
     role dnsrecursor
-    include standard
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
 }
 
 # network monitoring tool server
