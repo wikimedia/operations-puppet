@@ -46,9 +46,9 @@ class role::deployment::server(
 
     # Firewall rules
     ferm::service { 'rsyncd_scap_master':
-        proto   => 'tcp',
-        port    => '873',
-        srange  => '$MW_APPSERVER_NETWORKS',
+        proto  => 'tcp',
+        port   => '873',
+        srange => '$MW_APPSERVER_NETWORKS',
     }
 
 
@@ -96,8 +96,8 @@ class role::deployment::server(
 
     # Used by the trebuchet salt returner
     ferm::service { 'deployment-redis':
-        proto => 'tcp',
-        port  => '6379',
+        proto  => 'tcp',
+        port   => '6379',
         srange => '(($INTERNAL @resolve(silver.wikimedia.org)))',
     }
 
