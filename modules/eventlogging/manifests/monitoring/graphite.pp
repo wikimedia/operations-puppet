@@ -18,27 +18,27 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     # was seen that the current setup can handle 500 events/s.
     # Better thresholds are pending (see T86244).
     monitoring::graphite_threshold { 'eventlogging_throughput':
-        description     => 'Throughput of event logging events',
-        metric          => $raw_events_rate_metric,
-        warning         => 500,
-        critical        => 600,
-        percentage      => 15, # At least 3 of the 15 readings
-        from            => '15min',
-        contact_group   => 'analytics'
+        description   => 'Throughput of event logging events',
+        metric        => $raw_events_rate_metric,
+        warning       => 500,
+        critical      => 600,
+        percentage    => 15, # At least 3 of the 15 readings
+        from          => '15min',
+        contact_group => 'analytics'
     }
 
     # Alarms if 15% of Navigation Timing event throughput goes under 1 req/sec
     # in a 15 min period
     # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
     monitoring::graphite_threshold { 'eventlogging_NavigationTiming_throughput':
-        description     => 'Throughput of event logging NavigationTiming events',
-        metric          => "kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_NavigationTiming.OneMinuteRate",
-        warning         => 1,
-        critical        => 0,
-        percentage      => 15, # At least 3 of the 15 readings
-        from            => '15min',
-        contact_group   => 'analytics',
-        under           => true
+        description   => 'Throughput of event logging NavigationTiming events',
+        metric        => "kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_NavigationTiming.OneMinuteRate",
+        warning       => 1,
+        critical      => 0,
+        percentage    => 15, # At least 3 of the 15 readings
+        from          => '15min',
+        contact_group => 'analytics',
+        under         => true
     }
 
     # Warn/Alert if the difference between raw and valid EventLogging

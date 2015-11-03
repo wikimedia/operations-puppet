@@ -48,10 +48,10 @@ class eventlogging {
     # separate would be an overkill for now.
     if !defined(File['/srv/log']) {
         file { '/srv/log':
-            ensure  => 'directory',
-            mode    => '0755',
-            owner   => 'root',
-            group   => 'root',
+            ensure => 'directory',
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
         }
     }
 
@@ -81,7 +81,7 @@ class eventlogging {
         recurse => true,
         purge   => true,
         force   => true,
-        before => File['/etc/init/eventlogging'],
+        before  => File['/etc/init/eventlogging'],
     }
 
     # Manage EventLogging services with 'eventloggingctl'.
@@ -117,18 +117,18 @@ class eventlogging {
 
     # Logs are collected in <$log_dir> and rotated daily.
     file { [ $log_dir, "${log_dir}/archive" ]:
-        ensure  => directory,
-        owner   => 'eventlogging',
-        group   => 'eventlogging',
-        mode    => '0664',
+        ensure => directory,
+        owner  => 'eventlogging',
+        group  => 'eventlogging',
+        mode   => '0664',
     }
 
     # Link logs to /var/log/eventlogging, so people can find it in a
     # more prominent place too.
     if ( $log_dir != '/var/log/eventlogging' ) {
         file { '/var/log/eventlogging':
-            ensure  => 'link',
-            target  => $log_dir,
+            ensure => 'link',
+            target => $log_dir,
         }
     }
 
