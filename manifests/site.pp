@@ -1036,7 +1036,7 @@ node /^ganeti[12]00[0-9]\.(codfw|eqiad)\.wmnet$/ {
 
 # Hosts visualization / monitoring of EventLogging event streams
 # and MediaWiki errors.
-node 'hafnium.wikimedia.org' {
+node 'hafnium.eqiad.wmnet' {
     role eventlogging, webperf
 
     include standard
