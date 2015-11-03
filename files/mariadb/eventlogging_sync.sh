@@ -66,8 +66,8 @@ for table in $($master $db -e "$querytables $ls"); do
 
 done
 
-echo "Sleeping for 10 seconds before the next batch..."
-sleep 10
+#echo "Sleeping for 10 seconds before the next batch..."
+#sleep 10
 
 ## infinite loop
 done
