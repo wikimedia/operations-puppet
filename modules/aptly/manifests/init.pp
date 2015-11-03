@@ -13,11 +13,11 @@ class aptly {
     }
 
     file { '/etc/aptly.conf':
-        ensure  => present,
-        source  => 'puppet:///modules/aptly/aptly.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        ensure => present,
+        source => 'puppet:///modules/aptly/aptly.conf',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     nginx::site { 'aptly-server':
