@@ -1,0 +1,25 @@
+# cxserver specific config
+
+'restbase_url': '<%= @restbase %>'
+
+# JWT token
+<% if @jwt_secret -%>
+jwt:
+  secret: '<%= @jwt_secret %>'
+  algorithms: [ 'HS256' ]
+<% end -%>
+
+mt:
+  apertium:
+    api: '<%= @apertium %>'
+  <% if @yandex_url -%>
+  yandex:
+    api: '<%= @yandex_url %>',
+    key: '<%= @yandex_api_key %>'
+    certificate: null
+  <% end -%>
+
+# registry to use from config.prod.yaml
+<% if @ordered_registry -%>
+registry: <%= @ordered_registry %>
+<% end -%>
