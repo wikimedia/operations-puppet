@@ -57,6 +57,7 @@ class role::labsdns {
 # Eventually all labs instances will point to one of these in resolv.conf
 
 class role::labsdnsrecursor {
+    include passwords::openstack::nova
 
     $recursor_ip = ipresolve(hiera('labs_recursor'),4)
 
@@ -68,7 +69,7 @@ class role::labsdnsrecursor {
     system::role { 'role::labsdnsrecursor': description => 'Recursive DNS server for Labs instances' }
 
     #  We need to alias some public IPs to their corresponding private IPs.
-    $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+    $wikitech_nova_ldap_user_pass = $::passwords::openstack::nova::nova_ldap_user_pass
     $nova_controller_hostname = hiera('labs_nova_controller')
 
     $listen_addresses = $::realm ? {
