@@ -7,7 +7,7 @@ base::resolving::domain_search:
   - eqiad.wmnet
   - esams.wikimedia.org
   - codfw.wmnet
-mediawiki::maintenance::pagetriage::ensure: absent
+mediawiki::maintenance::pagetriage::ensure: present
 mediawiki::maintenance::translationnotifications::ensure: absent
 mediawiki::maintenance::updatetranslationstats::ensure: absent
 mediawiki::maintenance::wikidata::ensure: present
