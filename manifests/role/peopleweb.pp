@@ -6,4 +6,9 @@ class role::peopleweb {
         sitename     => 'people.wikimedia.org',
         server_admin => 'noc@wikimedia.org',
     }
+
+    ferm::service { 'people-http':
+        proto => 'tcp',
+        port  => '80',
+    }
 }
