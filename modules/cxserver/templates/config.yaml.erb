@@ -1,0 +1,22 @@
+# cxserver specific config
+
+'restbase.url': '<%= @restbase %>'
+
+<% if @jwt_secret? -%>
+jwt:
+  secret: '<%= @jwt_secret %>'
+  algorithms: [ 'HS256' ]
+ <% end -%>
+
+mt:
+  apertium:
+    api: '<%= @apertium %>'
+  <% if @yandex_url? -%>
+  yandex:
+    api: '<%= @yandex_url %>',
+    key: '<%= @yandex_api_key %>'
+  <% end -%>
+
+<% if @ordered_registry? -%>
+registry: <%= @ordered_registry %>
+<% end -%>
