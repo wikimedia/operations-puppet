@@ -2272,7 +2272,7 @@ node 'rubidium.wikimedia.org' {
 }
 
 node 'rutherfordium.eqiad.wmnet' {
-    include standard
+    role peopleweb
 }
 
 # ruthenium is a parsoid regression test server
