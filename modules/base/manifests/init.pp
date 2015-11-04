@@ -1,5 +1,6 @@
 class base {
     include apt
+    include ::apt::backports
 
     file { '/usr/local/sbin':
         ensure => directory,
