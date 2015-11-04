@@ -103,6 +103,7 @@ module Puppet::Parser::Functions
       'DHE-RSA-AES256-SHA',
       'DHE-RSA-CAMELLIA128-SHA',
       'DHE-RSA-CAMELLIA256-SHA',
+      'EDH-RSA-DES-CBC3-SHA', # EDH == DHE here, confusingly
     ],
     # not-forward-secret compat for ancient stuff
     'compat' => [
