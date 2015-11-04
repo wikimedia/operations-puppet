@@ -31,13 +31,13 @@ class webperf::deprecate(
         notify => Service['statsd-mw-js-deprecate'],
     }
 
-    file { '/etc/init/statsd-mw-js-deprecate.conf':
-        content => template('webperf/deprecate.conf.erb'),
+    file { '/lib/systemd/system/statsd-mw-js-deprecate.service':
+        content => template('webperf/deprecate.systemd.erb'),
         notify  => Service['statsd-mw-js-deprecate'],
     }
 
     service { 'statsd-mw-js-deprecate':
         ensure   => running,
-        provider => upstart,
+        provider => systemd,
     }
 }

@@ -29,13 +29,13 @@ class webperf::ve(
         notify => Service['ve'],
     }
 
-    file { '/etc/init/ve.conf':
-        content => template('webperf/ve.conf.erb'),
+    file { '/lib/systemd/system/ve.service':
+        content => template('webperf/ve.systemd.erb'),
         notify  => Service['ve'],
     }
 
     service { 've':
         ensure   => running,
-        provider => upstart,
+        provider => systemd,
     }
 }

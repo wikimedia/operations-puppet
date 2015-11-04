@@ -31,13 +31,13 @@ class webperf::navtiming(
         notify => Service['navtiming'],
     }
 
-    file { '/etc/init/navtiming.conf':
-        content => template('webperf/navtiming.conf.erb'),
+    file { '/lib/systemd/system/navtiming.service':
+        content => template('webperf/navtiming.systemd.erb'),
         notify  => Service['navtiming'],
     }
 
     service { 'navtiming':
         ensure   => running,
-        provider => upstart,
+        provider => systemd,
     }
 }
