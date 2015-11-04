@@ -98,7 +98,7 @@ class role::labsdnsrecursor {
             'project-proxy',
         ],
         nova_api_url => "http://${nova_controller_hostname}:35357/v2.0",
-        alias_file   => $alias_script,
+        alias_file   => $alias_file,
     }
 
     # There are three replica servers (c1, c2, c3).  The mapping of
