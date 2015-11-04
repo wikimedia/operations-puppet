@@ -8,8 +8,8 @@ base::resolving::domain_search:
   - esams.wikimedia.org
   - codfw.wmnet
 mediawiki::maintenance::pagetriage::ensure: absent
-mediawiki::maintenance::translationnotifications::ensure: present
-mediawiki::maintenance::updatetranslationstats::ensure: present
+mediawiki::maintenance::translationnotifications::ensure: absent
+mediawiki::maintenance::updatetranslationstats::ensure: absent
 mediawiki::maintenance::wikidata::ensure: absent
 mediawiki::maintenance::echo_mail_batch::ensure: present
 mediawiki::maintenance::parsercachepurging::ensure: absent
