@@ -1,0 +1,14 @@
+[Unit]
+Description=asset-check
+After=network-online.target
+
+[Service]
+WorkingDirectory=/srv/webperf
+ExecStart=/usr/bin/python /srv/webperf/asset-check.py \
+    <%= @endpoint %> \
+    --statsd-host <%= @statsd_host %> \
+    --statsd-port <%= @statsd_port %>
+User=nobody
+
+[Install]
+WantedBy=multi-user.target

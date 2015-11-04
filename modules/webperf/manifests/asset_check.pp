@@ -32,8 +32,8 @@ class webperf::asset_check(
         require => File['/srv/webperf/asset-check.js'],
     }
 
-    file { '/etc/init/asset-check.conf':
-        content => template('webperf/asset-check.conf.erb'),
+    file { '/lib/systemd/system/asset-check.service':
+        content => template('webperf/asset-check.systemd.erb'),
         notify  => Service['asset-check'],
         require => [
             File['/srv/webperf/asset-check.py'],
@@ -45,7 +45,7 @@ class webperf::asset_check(
 
     service { 'asset-check':
         ensure   => running,
-        provider => 'upstart',
-        require  => File['/etc/init/asset-check.conf'],
+        provider => 'systemd',
+        require  => File['/lib/systemd/system/asset-check.service'],
     }
 }

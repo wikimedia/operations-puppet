@@ -10,15 +10,15 @@ class webperf::statsv {
         provider => 'trebuchet',
     }
 
-    file { '/etc/init/statsv.conf':
+    file { '/lib/systemd/system/statsv.service':
         ensure  => present,
-        source  => 'puppet:///modules/webperf/statsv.conf',
+        source  => 'puppet:///modules/webperf/statsv.service',
         require => Package['statsv'],
         notify  => Service['statsv'],
     }
 
     service { 'statsv':
         ensure   => running,
-        provider => 'upstart',
+        provider => 'systemd',
     }
 }
