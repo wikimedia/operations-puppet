@@ -1,6 +1,8 @@
 # = Class: ores::web
 # Sets up a uwsgi based web server for ORES running python3
-class ores::web {
+class ores::web(
+    $workers_per_core = 4,
+) {
     require ores::base
 
     # ORES is a python3 application \o/
@@ -15,7 +17,7 @@ class ores::web {
                 chdir       => $ores::base::config_path,
                 http-socket => '0.0.0.0:8080',
                 venv        => $ores::base::venv_path,
-                processes   => inline_template('<%= @processorcount.to_i * 4 %>'),
+                processes   => inline_template("<%= @processorcount.to_i * ${workers_per_core} %>"),
             }
         }
     }
