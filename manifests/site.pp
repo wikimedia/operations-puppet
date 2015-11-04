@@ -1352,7 +1352,6 @@ node 'lithium.eqiad.wmnet' {
 
 node /^logstash100[1-3]\.eqiad\.wmnet$/ {
     role logstash, kibana, logstash::apifeatureusage
-    include base::firewall
 
     if $::hostname == 'logstash1003' {
         include role::logstash::eventlogging
@@ -1360,7 +1359,6 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
 }
 node /^logstash100[4-6]\.eqiad\.wmnet$/ {
     role logstash::elasticsearch
-    include base::firewall
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {

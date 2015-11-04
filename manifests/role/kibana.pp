@@ -36,6 +36,7 @@ class role::kibana (
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
     include ::apache::mod::rewrite
+    include base::firewall
 
     # Directory trebuchet puts Kibana files in
     $deploy_dir = '/srv/deployment/kibana/kibana'

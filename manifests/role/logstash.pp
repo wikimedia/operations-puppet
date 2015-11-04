@@ -13,6 +13,7 @@ class role::logstash (
 ) {
     include ::role::logstash::elasticsearch
     include ::logstash
+    include base::firewall
 
     nrpe::monitor_service { 'logstash':
         description  => 'logstash process',
@@ -179,6 +180,7 @@ class role::logstash (
 class role::logstash::elasticsearch {
     include standard
     include ::elasticsearch::nagios::check
+    include base::firewall
 
     if $::standard::has_ganglia {
         include ::elasticsearch::ganglia
