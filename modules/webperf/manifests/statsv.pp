@@ -5,6 +5,14 @@
 class webperf::statsv {
     include ::webperf
 
+    apt::repository { 'debian-backports':
+        uri        => 'http://http.debian.net/debian',
+        dist       => 'jessie-backports',
+        components => 'main',
+    }
+
+    require_package('python-pykafka')
+
     package { 'statsv':
         ensure   => present,
         provider => 'trebuchet',
