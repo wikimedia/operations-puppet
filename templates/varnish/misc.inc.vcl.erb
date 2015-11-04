@@ -63,7 +63,7 @@ sub vcl_recv {
         // No caching of OTRS for now
         return (pass);
     } elsif (req.http.Host == "people.wikimedia.org") {
-        set req.backend = terbium;
+        set req.backend = rutherfordium;
         // No caching of public_html dirs
         return (pass);
     } elsif (req.http.Host == "racktables.wikimedia.org" || req.http.Host == "rt.wikimedia.org") {

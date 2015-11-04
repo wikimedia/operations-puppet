@@ -120,12 +120,17 @@ class role::cache::misc {
                 'type' => 'random',
                 'backends' => ['ruthenium.eqiad.wmnet'],
             },
+            'rutherfordium' => { # people.wikimedia.org
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['rutherfordium.eqiad.wmnet'],
+            },
             'stat1001' => { # metrics and metrics-api
                 'dynamic' => 'no',
                 'type' => 'random',
                 'backends' => ['stat1001.eqiad.wmnet'],
             },
-            'terbium' => { # public_html
+            'terbium' => { # noc.wikimedia.org
                 'dynamic' => 'no',
                 'type' => 'random',
                 'backends' => ['terbium.eqiad.wmnet'],
