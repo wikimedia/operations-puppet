@@ -1,0 +1,53 @@
+/*
+ * THIS FILE IS MANAGED BY PUPPET
+ */
+
+num_workers: ncpu
+
+worker_heap_limit_mb: 500
+
+logging:
+	level: warn
+	steams:
+	<%- if @logstash_host %>
+		type: 'gelf',
+		host: '<%= @logstash_host %>',
+		port: <%= @logstash_port %>,
+		level: 'warn'
+	<%- end -%>
+		type: 'file',
+		level: 'info',
+		path: '<%= @log_file %>'
+
+metrics:
+	type: statsd,
+	host: statsd.eqiad.wmnet,
+	port: 8125
+
+services:
+	name: 'cxserver',
+	module: ./app.js,
+	config:
+		port: <%- @port %>,
+		<%- if @proxy -%>
+		proxy: <%- @proxy %>,
+		<%- end -%>
+		cors: '*',
+		'restbase.url': '<%= @restbase %>',
+		<%- if @jwt_secret -%>
+			jwt: {
+			secret: '<%= @jwt_secret %>',
+			algorithms: [ 'HS256' ]
+		},
+		<%- end -%>
+		mt:
+			apertium:
+				api: '<%= @apertium %>'
+			<%- if @yandex_url -%>
+			yandex:
+				api: '<%= @yandex_url %>',
+				key: '<%= @yandex_api_key %>'
+			<%- end -%>
+		<%- if @ordered_registry %>
+			registry: <%= @ordered_registry %>
+		<%- end -%>

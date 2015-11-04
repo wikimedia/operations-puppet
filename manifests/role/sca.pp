@@ -7,6 +7,7 @@ class role::sca {
     include role::mathoid
     include role::zotero
     include role::graphoid
+    include role::cxserver
 
     include standard
     include base::firewall

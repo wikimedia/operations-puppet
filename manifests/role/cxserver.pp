@@ -14,13 +14,5 @@ class role::cxserver {
         jwt_secret     => $jwt_secret,
     }
 
-    ferm::service { 'cxserver_http':
-        proto => 'tcp',
-        port  => $::cxserver::port,
-    }
-
-    monitoring::service { 'cxserver':
-        description   => 'cxserver',
-        check_command => "check_http_on_port!${::cxserver::port}",
-    }
+    include ::cxserver
 }

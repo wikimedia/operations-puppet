@@ -66,7 +66,7 @@ sca:
   cxserver:
     port: 8080
     default_values:
-      pooled: 'no'
+      pooled: 'yes'
       weight: 10
     datacenters:
     - eqiad
