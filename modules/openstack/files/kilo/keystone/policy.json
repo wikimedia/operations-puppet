@@ -1,9 +1,11 @@
 {
     "admin_required": "role:admin or is_admin:1",
     "service_role": "role:service",
+    "observer_role": "role:observer",
     "service_or_admin": "rule:admin_required or rule:service_role",
     "owner" : "user_id:%(user_id)s",
     "admin_or_owner": "rule:admin_required or rule:owner",
+    "admin_or_observer": "rule:admin_required or rule:observer_role",
     "token_subject": "user_id:%(target.token.user_id)s",
     "admin_or_token_subject": "rule:admin_required or rule:token_subject",
  
@@ -33,9 +35,9 @@
     "identity:update_domain": "rule:admin_required",
     "identity:delete_domain": "rule:admin_required",
  
-    "identity:get_project": "rule:admin_required",
-    "identity:list_projects": "rule:admin_required",
-    "identity:list_user_projects": "rule:admin_or_owner",
+    "identity:get_project": "rule:admin_or_observer",
+    "identity:list_projects": "rule:admin_or_observer",
+    "identity:list_user_projects": "rule:admin_or_observer",
     "identity:create_project": "rule:admin_required",
     "identity:update_project": "rule:admin_required",
     "identity:delete_project": "rule:admin_required",
