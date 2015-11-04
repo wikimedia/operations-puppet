@@ -51,7 +51,7 @@ class cxserver(
     $yandex_url = undef,
     $yandex_api_key = undef,
     $proxy = undef,
-    $port = 8080,
+    $port = 6927,
     $registry = undef,
     $jwt_secret = undef,
 ) {
