@@ -23,4 +23,4 @@ mediawiki::maintenance::purge_abusefilter::ensure: present
 mediawiki::maintenance::purge_checkuser::ensure: present
 mediawiki::maintenance::purge_securepoll::ensure: present
 mediawiki::maintenance::jobqueue_stats::ensure: present
-mediawiki::maintenance::updatequerypages::ensure: absent 
+mediawiki::maintenance::updatequerypages::ensure: present
