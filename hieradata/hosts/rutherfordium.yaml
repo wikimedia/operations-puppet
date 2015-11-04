@@ -3,6 +3,9 @@ base::resolving::domain_search:
   - eqiad.wmnet
   - esams.wikimedia.org
   - codfw.wmnet
+debdeploy::grains:
+  debdeploy-people:
+    value: standard
 admin::groups:
   - analytics-admins
   - analytics-privatedata-users
@@ -59,7 +62,7 @@ admin::groups:
   - statistics-web-users
   - tilerator-admin
   - traceback-roots
-  - ud2log-users
+  - udp2log-users
   - wdqs-admins
   - wdqs-roots
   - zotero-admin
