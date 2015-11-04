@@ -1095,7 +1095,6 @@ node 'hooft.esams.wikimedia.org' {
     }
 }
 
-# Primary graphite machines, replacing tungsten
 node 'graphite1001.eqiad.wmnet' {
     role graphite::production, statsdlb, performance, graphite::production::alerts, restbase::alerts
     include standard
@@ -1106,7 +1105,6 @@ node 'graphite1002.eqiad.wmnet' {
     role testsystem
 }
 
-# Primary graphite machines, replacing tungsten
 node 'graphite2001.codfw.wmnet' {
     role graphite::production, statsdlb, gdash
     include standard
