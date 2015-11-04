@@ -1,12 +1,11 @@
-# statsv
-description "Kafka-to-StatsD bridge"
+[Unit]
+Description=statsv
+After=network-online.target
 
-start on (local-filesystems and net-device-up IFACE!=lo)
+[Service]
+WorkingDirectory=/srv/deployment/statsv/statsv
+ExecStart=/usr/bin/python /srv/deployment/statsv/statsv/statsv.py
+User=nobody
 
-setuid webperf
-setgid webperf
-
-respawn
-respawn limit unlimited
-
-exec /usr/bin/python /srv/deployment/statsv/statsv/statsv.py
+[Install]
+WantedBy=multi-user.target
