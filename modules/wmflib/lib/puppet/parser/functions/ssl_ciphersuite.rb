@@ -103,6 +103,13 @@ module Puppet::Parser::Functions
       'DHE-RSA-CAMELLIA128-SHA',
       'DHE-RSA-CAMELLIA256-SHA',
     ],
+    # Only include this in "mid" for the mid-spec, because including it in
+    # "compat" might block a successful negotiation by "upgrading" a working
+    # compat option to a DHE-based mid option for clients that are probably
+    # likely to fail on >1024-bit DHE.
+    'mid-only-tail' => [
+      'EDH-RSA-DES-CBC3-SHA', # EDH == DHE here, confusingly
+    ],
     # not-forward-secret compat for ancient stuff
     'compat' => [
       'AES128-GCM-SHA256', # AEAD, but not forward-secret
@@ -118,7 +125,7 @@ module Puppet::Parser::Functions
   # Final lists exposed to callers
   ciphersuites = {
     'strong'     => basic['strong'],
-    'mid'        => basic['strong'] + basic['mid'],
+    'mid'        => basic['strong'] + basic['mid'] + basic['mid-only-tail'],
     'compat'     => basic['strong'] + basic['mid'] + basic['compat'],
   }
 
@@ -176,7 +183,7 @@ END
     # builds, actually, because they weren't built against openssl-1.0.2.
     # Disabling for now, until we come up with a better way to configure this
     if server == 'apache'
-      cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^DHE-/}.join(":")
+      cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^(DHE|EDH)-/}.join(":")
       set_dhparam = false
     else
       cipherlist = ciphersuites[ciphersuite].join(":")
