@@ -1907,8 +1907,9 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
 
 # mw1152 is the experimental HAT script runner
 node 'mw1152.eqiad.wmnet' {
-    role mediawiki::maintenance, db::maintenance
+    role mediawiki::maintenance, db::maintenance, mediawiki::generic_monitoring
     include standard
+    include ldap::role::client::labs
 }
 
 
@@ -2402,9 +2403,7 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
-    role db::maintenance, peopleweb, noc, mediawiki::generic_monitoring, backup::host
-
-    include ldap::role::client::labs
+    role db::maintenance, peopleweb, noc, backup::host
 
     package { 'python-mysqldb':
         ensure => installed,
