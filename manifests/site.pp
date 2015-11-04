@@ -1360,10 +1360,7 @@ node /^logstash100[1-3]\.eqiad\.wmnet$/ {
 }
 node /^logstash100[4-6]\.eqiad\.wmnet$/ {
     role logstash::elasticsearch
-
-    if $::hostname == 'logstash1004' {
-        include base::firewall
-    }
+    include base::firewall
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
