@@ -1909,8 +1909,9 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
 
 # mw1152 is the experimental HAT script runner
 node 'mw1152.eqiad.wmnet' {
-    role mediawiki::maintenance, db::maintenance
+    role mediawiki::maintenance, db::maintenance, mediawiki::generic_monitoring
     include standard
+    include ldap::role::client::labs
 }
 
 
@@ -2409,7 +2410,7 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
-    role db::maintenance, peopleweb, noc, mediawiki::generic_monitoring, mediawiki::maintenance, backup::host
+    role db::maintenance, peopleweb, noc, mediawiki::maintenance, backup::host
 
     include ldap::role::client::labs
 
