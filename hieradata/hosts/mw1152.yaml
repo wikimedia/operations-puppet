@@ -16,7 +16,7 @@ mediawiki::maintenance::parsercachepurging::ensure: present
 mediawiki::maintenance::cleanup_upload_stash::ensure: present
 mediawiki::maintenance::tor_exit_node::ensure: present
 mediawiki::maintenance::update_flaggedrev_stats::ensure: absent
-mediawiki::maintenance::refreshlinks::ensure: absent
+mediawiki::maintenance::refreshlinks::ensure: present
 mediawiki::maintenance::update_special_pages::ensure: present
 mediawiki::maintenance::update_article_count::ensure: absent
 mediawiki::maintenance::purge_abusefilter::ensure: present
