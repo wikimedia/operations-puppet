@@ -20,8 +20,6 @@
 #   GELF logging host.
 # [*logstash_port*]
 #   GELF logging port. Default: 12201
-# [*parsoid*]
-#   Url to Parsoid service.
 # [*restbase*]
 #   Url to Restbase API.
 # [*apertium*]
@@ -45,7 +43,6 @@ class cxserver(
     $log_dir = '/var/log/cxserver',
     $logstash_host  = undef,
     $logstash_port  = 12201,
-    $parsoid = 'http://parsoid-lb.eqiad.wikimedia.org/@lang.wikipedia.org/v3/page/html/@title',
     $restbase = 'https://@lang.wikipedia.org/api/rest_v1/page/html/@title',
     $apertium = 'http://apertium.svc.eqiad.wmnet:2737',
     $yandex_url = undef,
