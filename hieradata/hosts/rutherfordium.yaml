@@ -1,3 +1,8 @@
+base::resolving::domain_search:
+  - wikimedia.org
+  - eqiad.wmnet
+  - esams.wikimedia.org
+  - codfw.wmnet
 admin::groups:
   - analytics-admins
   - analytics-privatedata-users
@@ -35,7 +40,6 @@ admin::groups:
   - mathoid-roots
   - mobileapps-admin
   - mw-log-readers
-  - ocg-render-admins
   - ocg-render-admins
   - oit
   - parsoid-admin
