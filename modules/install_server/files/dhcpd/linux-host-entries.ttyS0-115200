@@ -134,6 +134,13 @@ host pybal-test2003 {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host rutherfordium.eqiad.wmnet {
+	hardware ethernet aa:00:00:94:f7:c2;
+	fixed-address rutherfordium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 # ganeti VM used for d-i testing
 host d-i-test {
 	hardware ethernet aa:00:00:3b:60:cb;
