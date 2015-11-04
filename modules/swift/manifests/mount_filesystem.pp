@@ -23,7 +23,7 @@ define swift::mount_filesystem (
         device   => "LABEL=swift-${dev_suffix}",
         name     => $mount_point,
         fstype   => 'xfs',
-        options  => 'noatime,nodiratime,nobarrier,logbufs=8',
+        options  => 'nobootwait,noatime,nodiratime,nobarrier,logbufs=8',
         atboot   => true,
         remounts => true,
     }
