@@ -18,7 +18,7 @@ mediawiki::maintenance::tor_exit_node::ensure: absent
 mediawiki::maintenance::update_flaggedrev_stats::ensure: absent
 mediawiki::maintenance::refreshlinks::ensure: absent
 mediawiki::maintenance::update_special_pages::ensure: absent
-mediawiki::maintenance::update_article_count::ensure: present
+mediawiki::maintenance::update_article_count::ensure: absent
 mediawiki::maintenance::purge_abusefilter::ensure: absent
 mediawiki::maintenance::purge_checkuser::ensure: absent
 mediawiki::maintenance::purge_securepoll::ensure: absent
