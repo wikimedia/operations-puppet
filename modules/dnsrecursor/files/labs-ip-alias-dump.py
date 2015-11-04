@@ -20,7 +20,7 @@ argparser.add_argument(
     action='store_true'
 )
 
-LUA_LINE_TEMPLATE = 'aliasmapping["{public}"] = "{private}" # {name}\n'
+LUA_LINE_TEMPLATE = 'aliasmapping["{public}"] = "{private}" -- {name}\n'
 
 args = argparser.parse_args()
 config = yaml.safe_load(args.config_file)
