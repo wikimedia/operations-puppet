@@ -105,6 +105,11 @@ class role::cache::misc {
                 'type' => 'random',
                 'backends' => ['netmon1001.wikimedia.org'],
             },
+            'noc' => { # noc.wikimedia.org and dbtree.wikimedia.org
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['mw1152.eqiad.wmnet'],
+            },
             'palladium' => {
                 'dynamic' => 'no',
                 'type' => 'random',

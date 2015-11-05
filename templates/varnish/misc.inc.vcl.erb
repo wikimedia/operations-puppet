@@ -79,7 +79,7 @@ sub vcl_recv {
         // No caching of configs; scripts may want to know when things change
         return (pass);
     } elsif (req.http.Host == "noc.wikimedia.org" || req.http.Host == "dbtree.wikimedia.org") {
-        set req.backend = terbium;
+        set req.backend = noc;
     } elsif (req.http.Host == "scholarships.wikimedia.org" || req.http.Host == "iegreview.wikimedia.org") {
         set req.backend = krypton;
     } elsif (req.http.Host == "hue.wikimedia.org") {
