@@ -20,7 +20,7 @@ class dnsrecursor::labsaliaser(
         ensure  => present,
         owner   => 'root',
         group   => 'root',
-        mode    => '0550',
+        mode    => '0440',
         content => ordered_yaml($config),
     }
 
