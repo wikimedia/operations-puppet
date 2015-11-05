@@ -8,6 +8,8 @@ class openstack::controller_firewall {
     $other_master = ipresolve(hiera('labs_nova_controller_other'),4)
     $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
     $designate = ipresolve(hiera('labs_designate_hostname'),4)
+    $labs_dns_secondary = ipresolve(hiera('labs_ldap_dns_secondary'))
+
     $monitoring = '208.80.154.14'
     if ($::site == 'codfw') {
         # TODO!  codfw will need something
@@ -51,7 +53,7 @@ class openstack::controller_firewall {
 
     # internal services to Labs virt servers
     ferm::rule { 'keystone':
-        rule => "saddr (${other_master} ${labs_nodes} ${spare_master} ${api_host} ${designate}) proto tcp dport (5000 35357) ACCEPT;",
+        rule => "saddr (${other_master} ${labs_nodes} ${spare_master} ${api_host} ${designate} ${labs_dns_secondary}) proto tcp dport (5000 35357) ACCEPT;",
     }
     ferm::rule { 'mysql_nova':
         rule => "saddr ${labs_nodes} proto tcp dport (3306) ACCEPT;",
