@@ -134,28 +134,38 @@ class role::mediawiki::appserver::api {
     }
 }
 
+class role::mediawiki::scaler {
+    include ::role::mediawiki::common
+    include ::mediawiki::multimedia
+
+    file { '/etc/wikimedia-scaler':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+}
+
 class role::mediawiki::imagescaler {
     system::role { 'role::mediawiki::imagescaler': }
 
-    include ::mediawiki::multimedia
+    include ::role::mediawiki::scaler
     include ::role::mediawiki::webserver
-    include base::firewall
+    include ::base::firewall
 }
 
 class role::mediawiki::videoscaler {
     system::role { 'role::mediawiki::videoscaler': }
 
-    include ::role::mediawiki::common
-    include ::mediawiki::multimedia
+    include ::role::mediawiki::scaler
     include ::mediawiki::jobrunner
-    include base::firewall
+    include ::base::firewall
 }
 
 class role::mediawiki::jobrunner {
     system::role { 'role::mediawiki::jobrunner': }
 
     include ::role::mediawiki::common
-
     include ::mediawiki::jobrunner
 }
 
