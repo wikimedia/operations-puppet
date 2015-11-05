@@ -6305,11 +6305,6 @@ host titanium {
 	fixed-address titanium.wikimedia.org;
 }
 
-host tungsten {
-	hardware ethernet 78:2b:cb:0a:04:12;
-	fixed-address tungsten.eqiad.wmnet;
-}
-
 host uranium {
 	hardware ethernet 84:2b:2b:fb:a6:67;
 	fixed-address uranium.wikimedia.org;
