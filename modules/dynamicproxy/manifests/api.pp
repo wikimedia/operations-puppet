@@ -1,17 +1,32 @@
 class dynamicproxy::api(
     $port = 5668,
 ) {
-    nginx::site { 'api':
-        content => template('dynamicproxy/api.conf'),
-    }
-
     ferm::service { 'dynamicproxy-api-http':
         port  => $port,
         proto => 'tcp',
         desc  => 'API for adding / removing proxies from dynamicproxy domainproxy'
     }
 
-    require_package('invisible-unicorn')
+    file { '/usr/local/bin/invisible-unicorn.py':
+        source => 'puppet:///modules/dynamicproxy/invisible-unicorn.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    require_package('flask-flask', 'python-redis', 'python-flask-sqlalchemy')
+
+    uwsgi::app { 'invisible-unicorn':
+        settings            => {
+            uwsgi           => {
+                plugins     => 'python',
+                master      => true,
+                http-socket => '0.0.0.0:80',
+                wsgi-file   => '/usr/local/bin/invisible-unicorn.py',
+            }
+        },
+        subscribe => File['/usr/local/bin/invisible-unicorn.py'],
+    }
 
     service { 'invisible-unicorn':
         ensure  => running,
