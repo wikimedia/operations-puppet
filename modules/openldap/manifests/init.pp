@@ -53,6 +53,19 @@ class openldap(
 
     require_package('slapd', 'ldap-utils', 'python-ldap')
 
+    define include_ldap_schemas {
+        file { "/etc/ldap/schema/${name}" :
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            source  => "puppet:///modules/openldap/${name}",
+        }
+
+        Package['slapd'] -> File["/etc/ldap/schema/${name}"]
+        File["/etc/ldap/schema/${name}"] -> Service['slapd']
+    }
+
     service { 'slapd':
         ensure     => running,
         hasstatus  => true,
@@ -85,21 +98,13 @@ class openldap(
         content => template('openldap/default.erb'),
     }
 
-    file { '/etc/ldap/schema/samba.schema' :
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/openldap/samba.schema',
+    $ldap_base_schemas = ['samba.schema', 'rfc2307bis.schema']
+    include_ldap_schemas { $ldap_base_schemas: }
+
+    if $extra_schemas {
+        include_ldap_schemas { $extra_schemas: }
     }
 
-    file { '/etc/ldap/schema/rfc2307bis.schema' :
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/openldap/rfc2307bis.schema',
-    }
     # We do this cause we want to rely on using slapd.conf for now
     exec { 'rm_slapd.d':
         onlyif  => '/usr/bin/test -d /etc/ldap/slapd.d',
@@ -124,9 +129,5 @@ class openldap(
     File['/etc/ldap/slapd.conf'] ~> Service['slapd'] # We also notify
     File['/etc/default/slapd'] ~> Service['slapd'] # We also notify
     File[$datadir] -> Service['slapd']
-    Package['slapd'] -> File['/etc/ldap/schema/rfc2307bis.schema']
-    Package['slapd'] -> File['/etc/ldap/schema/samba.schema']
-    File['/etc/ldap/schema/rfc2307bis.schema'] -> Service['slapd']
-    File['/etc/ldap/schema/samba.schema'] -> Service['slapd']
     File['/etc/ldap/ldap.conf'] -> Service['slapd']
 }
