@@ -77,6 +77,9 @@ class contint::packages {
         ensure => present,
     }
 
+    # For Sphinx based documentation contain blockdiag diagrams
+    require_package('libjpeg-dev')
+
     # For Doxygen based documentations
     require_package('graphviz')
 
