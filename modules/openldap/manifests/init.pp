@@ -26,6 +26,9 @@
 #       Optional. TLS enable the server. The path to the CA certificate file
 #    $extra_schemas
 #       Optional. A list of schema files relative to the /etc/ldap/schema directory
+#    $extra_acls
+#       Optional. Specify an ERB template file with additional ACL access rules
+#       (in addition to the base rules)
 #
 # Actions:
 #       Install/configure slapd
@@ -49,6 +52,7 @@ class openldap(
     $key=undef,
     $ca=undef,
     $extra_schemas=undef,
+    $extra_acls=undef,
 ) {
 
     require_package('slapd', 'ldap-utils', 'python-ldap')
@@ -105,6 +109,24 @@ class openldap(
         include_ldap_schemas { $extra_schemas: }
     }
 
+    if $extra_acls {
+        file { '/etc/ldap/base-acls.conf' :
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('openldap/base-acls.erb', $extra_acls),
+        }
+    } else {
+        file { '/etc/ldap/base-acls.conf' :
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('openldap/base-acls.erb'),
+        }
+    }
+
     # We do this cause we want to rely on using slapd.conf for now
     exec { 'rm_slapd.d':
         onlyif  => '/usr/bin/test -d /etc/ldap/slapd.d',
@@ -121,6 +143,7 @@ class openldap(
     }
 
     # Relationships
+    File['/etc/ldap/base-acls.conf'] -> File['/etc/ldap/slapd.conf']
     Package['slapd'] -> File['/etc/ldap/slapd.conf']
     Package['slapd'] -> File['/etc/default/slapd']
     Package['slapd'] -> File[$datadir]
