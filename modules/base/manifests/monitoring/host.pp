@@ -19,11 +19,14 @@
 # nrpe_check_disk_options   - Default options for checking disks.  Defaults to checking
 #                             all disks and warning at < 6% and critical at < 3% free.
 #
+# nrpe_check_disk_critical  - Make disk space alerts paging, defaults to not paging
+#
 class base::monitoring::host(
     $contact_group = hiera('contactgroups', 'admins'),
     # the -A -i ... part is a gross hack to workaround Varnish partitions
     # that are purposefully at 99%. Better ideas are welcome.
     $nrpe_check_disk_options = '-w 6% -c 3% -l -e -A -i "/srv/sd[a-b][1-3]"',
+    $nrpe_check_disk_critical = false,
 ) {
     include base::puppet::params # In order to be able to use some variables
 
@@ -108,6 +111,7 @@ class base::monitoring::host(
 
     nrpe::monitor_service { 'disk_space':
         description  => 'Disk space',
+        critical     => ${nrpe_check_disk_critical},
         nrpe_command => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
     }
 
