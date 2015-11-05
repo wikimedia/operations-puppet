@@ -29,7 +29,9 @@ class noc {
     $tendril_user_web = $passwords::tendril::db_user_web
     $tendril_pass_web = $passwords::tendril::db_pass_web
 
-    file { '/srv/org/wikimedia/dbtree':
+
+
+    file { ['/srv/org/wikimedia/dbtree', '/srv/org/wikimedia', '/srv/org']:
         ensure => 'directory',
         owner  => 'mwdeploy',
         group  => 'mwdeploy',
