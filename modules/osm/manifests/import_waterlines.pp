@@ -17,11 +17,11 @@ class osm::import_waterlines (
     }
 
     cron { 'import_waterlines':
-        ensure    => present,
-        hour      => 9,
-        minute    => 13,
-        monthday  => 1,
-        user      => 'postgres',
-        command   => '/usr/local/bin/import_waterlines >/dev/null 2>&1',
+        ensure   => present,
+        hour     => 9,
+        minute   => 13,
+        monthday => 1,
+        user     => 'postgres',
+        command  => '/usr/local/bin/import_waterlines >/dev/null 2>&1',
     }
 }
