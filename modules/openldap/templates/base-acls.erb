@@ -1,0 +1,39 @@
+#######################################################################
+## Access lists
+
+# Allow radiusagent to check sambaNTPassword for 802.1x Enterprise WPA2
+access to attrs=sambaNTPassword
+	by dn="cn=admin,<%= @suffix %>" write
+	by dn="cn=radiusagent,ou=other,<%= @suffix %>" read
+	by anonymous auth
+	by self write
+	by * none
+
+# The userPassword by default can be changed
+# by the entry owning it if they are authenticated.
+# Others should not be able to see it, except the
+# admin entry below
+# These access lines apply to database #1 only
+access to attrs=userPassword,shadowLastChange
+	by dn="cn=admin,<%= @suffix %>" write
+	by anonymous auth
+	by self write
+	by * none
+
+# Ensure read access to the base for things like
+# supportedSASLMechanisms.  Without this you may
+# have problems with SASL not knowing what
+# mechanisms are available and the like.
+# Note that this is covered by the 'access to *'
+# ACL below too but if you change that as people
+# are wont to do you'll still need this if you
+# want SASL (and possible other things) to work
+# happily.
+access to dn.base="" by * read
+
+# The admin dn has full write access, everyone else
+# can read everything.
+access to *
+	by dn="cn=admin,<%= @suffix %>" write
+	by self write
+	by * read
