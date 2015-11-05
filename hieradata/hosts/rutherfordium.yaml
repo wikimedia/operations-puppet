@@ -3,9 +3,6 @@ base::resolving::domain_search:
   - eqiad.wmnet
   - esams.wikimedia.org
   - codfw.wmnet
-debdeploy::grains:
-  debdeploy-people:
-    value: standard
 admin::groups:
   - analytics-admins
   - analytics-privatedata-users
