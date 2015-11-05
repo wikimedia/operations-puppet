@@ -2,7 +2,19 @@
 # https://dbtree.wikimedia.org/
 class noc {
 
+    # NOC needs a working mediawiki installation at the moment
+    include ::mediawiki
+
     include ::apache
+
+    if os_version('ubuntu >= trusty') {
+        apache::def { 'HHVM': }
+    }
+
+    include ::mediawiki::web::php_engine
+
+    include ::apache::mod::rewrite
+    include ::apache::mod::headers
 
     apache::site { 'noc.wikimedia.org':
         content => template('noc/noc.wikimedia.org.erb'),
@@ -11,11 +23,6 @@ class noc {
     apache::site { 'dbtree.wikimedia.org':
         content => template('noc/dbtree.wikimedia.org.erb'),
     }
-
-    include ::apache::mod::php5
-
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
 
     # dbtree config
     include passwords::tendril
