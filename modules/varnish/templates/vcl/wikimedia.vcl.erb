@@ -601,7 +601,7 @@ sub vcl_fetch {
 
 <% if @vcl_config.fetch("do_gzip", false) -%>
 	// Compress compressible things if the backend didn't already
-	if (beresp.http.content-type ~ "^text/|^image/(x-icon|vnd\.microsoft\.icon)|(xml|html|javascript|json)$") {
+	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font") {
 		set beresp.do_gzip = true;
 	}
 <% end -%>
