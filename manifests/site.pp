@@ -1910,6 +1910,7 @@ node /^mw11(49|5[0-1])\.eqiad\.wmnet$/ {
 # mw1152 is the experimental HAT script runner
 node 'mw1152.eqiad.wmnet' {
     role mediawiki::maintenance, db::maintenance, mediawiki::generic_monitoring
+    include role::noc
     include standard
     include ldap::role::client::labs
 }
