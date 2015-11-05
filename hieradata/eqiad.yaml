@@ -44,6 +44,7 @@ labs_ldap_dns_host_secondary: "labs-ns1.wikimedia.org"
 labs_dns_host: "labs-ns2.wikimedia.org"
 labs_recursor: "labs-recursor0.wikimedia.org"
 labs_designate_hostname: "holmium.wikimedia.org"
+labs_designate_hostname_secondary: "labservices1001.wikimedia.org"
 
 labs_nova_network_host: "labnet1002"
 labs_nova_network_ip: "10.64.20.25"
