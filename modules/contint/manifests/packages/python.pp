@@ -12,6 +12,7 @@ class contint::packages::python {
         'libxslt1-dev',  # For python lxml
         'libffi-dev', # For python requests[security]
         'libssl-dev', # python cryptography
+        'libcurl-dev', # For pycurl
     )
 
     # Bring in fresh pip. The Trusty package does not provide wheels cache
