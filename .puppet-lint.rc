@@ -12,11 +12,14 @@
 --no-autoloader_layout-check
 --no-inherits_across_namespaces-check
 --no-double_quoted_strings-check
---no-unquoted_file_mode-check
 --no-ensure_first_param-check
 --no-unquoted_resource_title-check
 --no-arrow_alignment-check
 --no-puppet_url_without_modules-check
+
+#--no-unquoted_file_mode-check
+# we fixed this all across the repo
+# re-enabled. dzahn 20151105
 
 # We dont have much documentation yet:
 --no-documentation-check
