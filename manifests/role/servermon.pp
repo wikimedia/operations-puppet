@@ -52,4 +52,15 @@ class role::servermon {
     apache::site { 'servermon.wikimedia.org':
         content => template('apache/sites/servermon.wikimedia.org.erb'),
     }
+
+    ferm::service { 'servermon-http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'servermon-https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
 }
