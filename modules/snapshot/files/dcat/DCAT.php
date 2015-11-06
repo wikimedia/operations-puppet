@@ -166,8 +166,11 @@ function dumpDistributionExtras( XMLWriter $xml, array $data, $dumpDate, $format
 	$xml->writeAttributeNS( 'rdf', 'resource', null, $url );
 	$xml->endElement();
 
-	$xml->writeElementNS( 'dcterms', 'issued', null,
-		$data['dumps'][$dumpDate][$format]['timestamp'] );
+	$xml->startElementNS( 'dcterms', 'issued', null );
+	$xml->writeAttributeNS( 'rdf', 'datatype', null,
+		'http://www.w3.org/2001/XMLSchema#date' );
+	$xml->text( $data['dumps'][$dumpDate][$format]['timestamp'] );
+	$xml->endElement();
 
 	$xml->startElementNS( 'dcat', 'byteSize', null );
 	$xml->writeAttributeNS( 'rdf', 'datatype', null,
@@ -469,9 +472,18 @@ function writeCatalog( XMLWriter $xml, array $data, $publisher, array $dataset )
 
 	$xml->writeElementNS( 'foaf', 'homepage', null,
 		$data['config']['catalog-homepage'] );
-	$xml->writeElementNS( 'dcterms', 'modified', null, date( 'Y-m-d' ) );
-	$xml->writeElementNS( 'dcterms', 'issued', null,
-		$data['config']['catalog-issued'] );
+
+	$xml->startElementNS( 'dcterms', 'modified', null );
+	$xml->writeAttributeNS( 'rdf', 'datatype', null,
+		'http://www.w3.org/2001/XMLSchema#date' );
+	$xml->text( date( 'Y-m-d' ) );
+	$xml->endElement();
+
+	$xml->startElementNS( 'dcterms', 'issued', null );
+	$xml->writeAttributeNS( 'rdf', 'datatype', null,
+		'http://www.w3.org/2001/XMLSchema#date' );
+	$xml->text( $data['config']['catalog-issued'] );
+	$xml->endElement();
 
 	$xml->startElementNS( 'dcterms', 'publisher', null );
 	$xml->writeAttributeNS( 'rdf', 'nodeID', null, $publisher );
