@@ -14,11 +14,13 @@
 define pybal::conf_file (
     $cluster,
     $service,
-    $dc=$::site
+    $dc=$::site,
+    $ensure=present
 ){
     $watch_keys = ["/conftool/v1/pools/${dc}/${cluster}/${service}/"]
 
     confd::file { $name:
+        ensure     => $ensure,
         watch_keys => $watch_keys,
         content    => template('pybal/host-pool.tmpl.erb'),
         check      => '/usr/local/bin/pybal-eval-check',
