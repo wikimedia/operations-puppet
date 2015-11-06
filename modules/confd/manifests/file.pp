@@ -14,7 +14,10 @@ define confd::file (
     $content    = undef,
 ) {
 
-    include ::confd
+    if $ensure == 'present' {
+        include ::confd
+    }
+
     $safe_name = regsubst($name, '/', '_', 'G')
 
     file { "/etc/confd/templates/${safe_name}.tmpl":

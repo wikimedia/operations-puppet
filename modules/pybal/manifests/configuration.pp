@@ -14,7 +14,8 @@ class pybal::configuration(
 
     $service_keys = keys($lvs_services)
     pybal::pool { $service_keys:
-        lvs_services => $lvs_services,
+        ensure          => absent,
+        lvs_services    => $lvs_services,
         lvs_class_hosts => $lvs_class_hosts
     }
 }
