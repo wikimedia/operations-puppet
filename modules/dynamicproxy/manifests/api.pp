@@ -22,7 +22,7 @@ class dynamicproxy::api(
                 plugins     => 'python',
                 master      => true,
                 http-socket => '0.0.0.0:5668',
-                wsgi-file   => '/usr/local/bin/invisible-unicorn.py',
+                mount       => "/dynamicproxy-api=/usr/local/bin/invisible-unicorn.py",
                 callable    => 'app',
             }
         },
