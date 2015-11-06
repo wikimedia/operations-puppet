@@ -15,6 +15,12 @@ class contint::packages::python {
         'libcurl4-gnutls-dev', # For pycurl
     )
 
+    if os_version('debian jessie') {
+        # Debian only has: Suggests: libgnutls28-dev
+        # Whereas on Ubuntu libgnutls-dev is a dependency
+        require_package('libgnutls28-dev')
+    }
+
     # Bring in fresh pip. The Trusty package does not provide wheels cache
     # https://pip.pypa.io/en/latest/news.html
     package { 'pip':
