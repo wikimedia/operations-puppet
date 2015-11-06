@@ -6,5 +6,15 @@ class role::smokeping {
     include smokeping
     include smokeping::web
 
+    ferm::service { 'smokeping-http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'smokeping-https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
 }
 
