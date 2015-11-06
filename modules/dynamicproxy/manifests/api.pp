@@ -23,6 +23,7 @@ class dynamicproxy::api(
                 master      => true,
                 http-socket => '0.0.0.0:5668',
                 wsgi-file   => '/usr/local/bin/invisible-unicorn.py',
+                callable    => 'app',
             }
         },
         subscribe => File['/usr/local/bin/invisible-unicorn.py'],
