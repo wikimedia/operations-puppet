@@ -6218,6 +6218,8 @@ host ruthenium {
 host scandium {
 	hardware ethernet 84:2b:2b:fd:be:52;
 	fixed-address scandium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host sca1001 {
