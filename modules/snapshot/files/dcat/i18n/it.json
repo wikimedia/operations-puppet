@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Beta16"
+		]
+	},
+	"dataset-live-title": "Accesso in diretta",
+	"dataset-live-description": "La versione in tempo reale dei dati, include entità e proprietà. Solo i formati non deprecati sono elencati come distribuzioni.",
+	"dataset-dump-title": "Dati dell'entità al $1",
+	"dataset-dump-description": "Un dump statico di tutte le entità per la data indicata.",
+	"distribution-ld-description": "Il punto finale di Linked Data. Il formato è risolto attraverso la negoziazione dei contenuti.",
+	"distribution-api-description": "Il punto finale delle API MediaWiki. Il formato è dato attraverso il parametro \"format\".",
+	"distribution-dump-description": "Un file $1 gzip."
+}
