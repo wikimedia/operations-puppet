@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Laboramus",
+			"Okras"
+		]
+	},
+	"dataset-live-title": "Прямой доступ",
+	"dataset-live-description": "Живая версия данных, включает элементы и свойства. Устаревшие форматы не включаются в список.",
+	"dataset-dump-title": "Дамп сущности на $1",
+	"dataset-dump-description": "Статичный дамп всех записей на заданную дату.",
+	"distribution-ld-description": "Точка доступа Linked Data. Формат определяется протоколом согласования содержимого.",
+	"distribution-api-description": "Точка доступа для MediaWiki API. Формат задаётся параметром \"format\".",
+	"distribution-dump-description": "Сжатый в gzip $1-файл."
+}
