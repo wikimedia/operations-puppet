@@ -2240,7 +2240,7 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
     role rcstream
 }
 
-node /^rdb100[1-4]\.eqiad\.wmnet/ {
+node /^rdb101[0-9]\.eqiad\.wmnet/ {
     role db::redis
 }
 
