@@ -30,6 +30,9 @@ storagehosts:
   - ms-be1016.eqiad.wmnet
   - ms-be1017.eqiad.wmnet
   - ms-be1018.eqiad.wmnet
+  - ms-be1019.eqiad.wmnet
+  - ms-be1020.eqiad.wmnet
+  - ms-be1021.eqiad.wmnet
   - ms-be2001.codfw.wmnet
   - ms-be2002.codfw.wmnet
   - ms-be2003.codfw.wmnet
@@ -45,6 +48,12 @@ storagehosts:
   - ms-be2013.codfw.wmnet
   - ms-be2014.codfw.wmnet
   - ms-be2015.codfw.wmnet
+  - ms-be2016.codfw.wmnet
+  - ms-be2017.codfw.wmnet
+  - ms-be2018.codfw.wmnet
+  - ms-be2019.codfw.wmnet
+  - ms-be2020.codfw.wmnet
+  - ms-be2021.codfw.wmnet
   - ms-be3001.esams.wmnet
   - ms-be3002.esams.wmnet
   - ms-be3003.esams.wmnet
