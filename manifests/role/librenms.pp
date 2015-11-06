@@ -98,4 +98,15 @@ class role::librenms {
         description   => 'LibreNMS HTTPS',
         check_command => "check_https_url!${sitename}!http://${sitename}",
     }
+
+    ferm::service { 'librenms-http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'librenams-https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
 }
