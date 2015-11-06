@@ -20,4 +20,13 @@ define swift::monitoring::graphite_alerts (
         under           => true,
         nagios_critical => false,
     }
+
+    monitoring::graphite_threshold { "mediawiki_${cluster}_media_uploads":
+        description     => "mediawiki originals uploads (hourly) for ${cluster}",
+        metric          => "summarize(nonNegativeDerivative(keepLastValue(swift.eqiad-prod.containers.mw-media.originals.objects)), '1h', 'avg')",
+        from            => '5h',
+        warning         => 50,
+        critical        => 100,
+        nagios_critical => false,
+    }
 }
