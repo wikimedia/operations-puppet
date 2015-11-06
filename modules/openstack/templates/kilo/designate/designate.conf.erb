@@ -216,10 +216,14 @@ domain_id = '114f1333-c2c1-44d3-beb4-ebed1a91742b'
 notification_topics = monitor
 notification_topics = notifications
 control_exchange = nova
-format = '%(hostname)s.%(tenant_id)s.%(domain)s'
+format = '%(hostname)s.%(project_name)s.%(domain)s'
 format = '%(hostname)s.%(domain)s'
 reverse_domain_id = '8d114f3c-815b-466c-bdd4-9b91f704ea60'
-reverse_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
+reverse_format = '%(hostname)s.%(project_name)s.%(domain)s'
+keystone_auth_name = "novaadmin"
+keystone_auth_pass = "<%= @wikitech_nova_ldap_user_pass %>"
+keystone_auth_project = "testlabs"
+keystone_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357/v3"
 
 #-----------------------
 # Nova Fixed Ldap Handler
@@ -230,7 +234,7 @@ domain_id = '114f1333-c2c1-44d3-beb4-ebed1a91742b'
 notification_topics = monitor
 notification_topics = notifications
 control_exchange = nova
-format = %(hostname)s.%(tenant_id)s.%(domain)s, %(hostname)s.%(domain)s
+format = %(hostname)s.%(project_name)s.%(domain)s, %(hostname)s.%(domain)s
 ldapusername = uid=novaadmin,ou=people,dc=wikimedia,dc=org
 ldappassword = <%= @ldap_user_pass %>
 puppetdefaultclasses = role::labs::instance
@@ -239,11 +243,15 @@ nova_auth_name = "novaadmin"
 nova_auth_pass = "<%= @wikitech_nova_ldap_user_pass %>"
 nova_auth_project = "testlabs"
 nova_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357/v2.0"
+keystone_auth_name = "novaadmin"
+keystone_auth_pass = "<%= @wikitech_nova_ldap_user_pass %>"
+keystone_auth_project = "testlabs"
+keystone_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357/v3"
 
 certmanager_user = certmanager
-puppet_key_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
+puppet_key_format = '%(hostname)s.%(project_name)s.%(domain)s'
 puppet_master_host = "<%= @designateconfig['controller_hostname'] %>"
-salt_key_format = '%(hostname)s.%(tenant_id)s.%(domain)s'
+salt_key_format = '%(hostname)s.%(project_name)s.%(domain)s'
 salt_master_host = "<%= @designateconfig['controller_hostname'] %>"
 
 #------------------------
