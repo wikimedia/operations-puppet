@@ -9,6 +9,7 @@ ExecStart=/usr/bin/python /srv/webperf/ve.py \
     --statsd-host <%= @statsd_host %> \
     --statsd-port <%= @statsd_port %>
 User=nobody
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
