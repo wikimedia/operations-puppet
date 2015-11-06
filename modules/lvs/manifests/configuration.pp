@@ -60,15 +60,16 @@ class lvs::configuration {
             /^lvs101[012]$/ => "208.80.154.197", # cr2-eqiad
             /^lvs200[1-3]$/ => "208.80.153.192", # cr1-codfw
             /^lvs200[4-6]$/ => "208.80.153.193", # cr2-codfw
-            /^lvs300[12]$/ => "91.198.174.245",  # cr1-esams
-            /^lvs300[34]$/ => "91.198.174.246",  # cr2-knams
-            /^lvs400[12]$/ => "198.35.26.192",   # cr1-ulsfo
-            /^lvs400[34]$/ => "198.35.26.193",   # cr2-ulsfo
-            default => "(unspecified)"
-            },
+            /^lvs300[12]$/  => "91.198.174.245",  # cr1-esams
+            /^lvs300[34]$/  => "91.198.174.246",  # cr2-knams
+            /^lvs400[12]$/  => "198.35.26.192",   # cr1-ulsfo
+            /^lvs400[34]$/  => "198.35.26.193",   # cr2-ulsfo
+            default         => "(unspecified)"
+        },
         'bgp-nexthop-ipv4' => $::ipaddress_eth0,
         # FIXME: make a Puppet function, or fix facter
-        'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(@v6_ip).mask(64) | IPAddr.new(\"::\" + scope.lookupvar(\"::ipaddress\").gsub('.', ':'))).to_s() %>")
+        'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(@v6_ip).mask(64) | IPAddr.new(\"::\" + scope.lookupvar(\"::ipaddress\").gsub('.', ':'))).to_s() %>"),
+        'instrumentation' => 'yes',
     }
 
     # NOTE! This hash is referenced in many other manifests
