@@ -9,6 +9,7 @@
 #   lvs_class_hosts hash from lvs/configuration.pp
 #
 define pybal::pool(
+    $ensure='present',
     $lvs_services={},
     $lvs_class_hosts={},
 ) {
@@ -20,6 +21,7 @@ define pybal::pool(
         if member($lvs_class_hosts[$service_config['class']], $::hostname) {
 
             pybal::conf_file { "/etc/pybal/pools/${name}":
+                ensure  => $ensure,
                 cluster => $service_config['conftool']['cluster'],
                 service => $service_config['conftool']['service'],
                 require => File['/etc/pybal/pools'],
