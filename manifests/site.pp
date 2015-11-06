@@ -553,7 +553,7 @@ node /^db1065\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(16|34|42|48)\.codfw\.wmnet/ {
+node /^db20(16|34|42|48|55|62|69|70)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -568,7 +568,7 @@ node /^db10(18|21|36|54|60|63|67)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(17|35|41|49)\.codfw\.wmnet/ {
+node /^db20(17|35|41|49|56|63|64)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -583,7 +583,7 @@ node /^db10(15|27|35|44)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(18|36|43|50)\.codfw\.wmnet/ {
+node /^db20(18|36|43|50|57)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -598,7 +598,7 @@ node /^db10(19|42|56|59|64|68)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(19|37|44|51)\.codfw\.wmnet/ {
+node /^db20(19|37|44|51|58|65)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -613,7 +613,7 @@ node /^db10(26|45|49|70|71)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(23|38|45|52)\.codfw\.wmnet/ {
+node /^db20(23|38|45|52|59|66)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -635,7 +635,7 @@ node /^db1022\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(28|39|46|53)\.codfw\.wmnet/ {
+node /^db20(28|39|46|53|60|67)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -650,24 +650,11 @@ node /^db10(28|34|39|41|62)\.eqiad\.wmnet/ {
     }
 }
 
-node /^db20(29|40|47|54)\.codfw\.wmnet/ {
+node /^db20(29|40|47|54|61|68)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
         shard => 's7',
-    }
-    include base::firewall
-}
-
-# New deployed mariadb servers
-# Temporarily setting them on shard1 until we
-# distribute them among all shards according
-# to actual load needs
-node /^db20(5[5-9]|6[0-9]|70)\.codfw\.wmnet$/ {
-
-    $cluster = 'mysql'
-    class { 'role::mariadb::core':
-        shard => 's1',
     }
     include base::firewall
 }
