@@ -38,6 +38,7 @@ class nagios_common::commands(
 
     nagios_common::check_command { [
         'check_graphite',
+        'check_graphite_freshness',
         'check_dsh_groups',
         'check_wikidata',
         'check_ssl',
