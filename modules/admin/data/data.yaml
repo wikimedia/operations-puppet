@@ -359,7 +359,7 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
                  'ALL = (kartotherian) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl -u kartotherian *']
+                 'ALL = NOPASSWD: /bin/journalctl *']
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
@@ -383,12 +383,10 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
                  'ALL = (tilerator) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl -u tilerator *',
-                 'ALL = NOPASSWD: /usr/sbin/service tileratorui *',
                  'ALL = NOPASSWD: /bin/systemctl mask tileratorui.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tileratorui.service',
                  'ALL = (tileratorui) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl -u tileratorui *']
+                 'ALL = NOPASSWD: /bin/journalctl *']
   mobileapps-admin:
     description: Group of mobileapps admins
     gid: 759
