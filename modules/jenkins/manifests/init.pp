@@ -34,6 +34,20 @@ class jenkins {
         mode    => '0644',
     }
 
+    file { '/var/lib/jenkins/init.groovy.d':
+        ensure  => 'directory',
+        owner   => 'jenkins',
+        group   => 'jenkins',
+        mode    => '0755',
+    }
+
+    file { '/var/lib/jenkins/init.groovy.d/cli-shutdown.groovy':
+        source  => 'puppet:///modules/jenkins/cli-shutdown.groovy',
+        owner   => 'jenkins',
+        group   => 'jenkins',
+        mode    => '0755',
+    }
+
     service { 'jenkins':
         ensure     => 'running',
         enable     => true,
