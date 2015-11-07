@@ -1,1 +1,2 @@
 cluster: cache_misc
+tlsproxy::ciphersuite: mid
