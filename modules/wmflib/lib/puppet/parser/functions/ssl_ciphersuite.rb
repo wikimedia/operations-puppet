@@ -17,9 +17,8 @@
 #   - strong:     Only TLSv1.2 with PFS+AEAD ciphers.  In practice this is a
 #                 very short list, and requires a very modern client.  No
 #                 tradeoff is made for compatibility.  Known to work with:
-#                 New FF/Chrome, IE11, Java8, Android 4.4+, OpenSSL 1.0.x
-#                 Definitely broken with: All Safari (OSX/iOS).
-#                 IE11 support requires either DHE support or an ECDSA key.
+#                 FF/Chrome, IE11, Safari 9, Java8, Android 4.4+, OpenSSL 1.0.x
+#                 IE11 requires server-side DHE support or an ECDSA key.
 #   - mid:        Supports TLSv1.0 and higher, and adds several forward-secret
 #                 options which are not AEAD.  This is compatible with many
 #                 more clients than "strong".  With a DHE-capable server,
@@ -31,7 +30,7 @@
 # - An optional argument, that if non-nil will set HSTS to max-age of
 #   N days
 #
-# For servers which support it (nginx, or apache-2.4 on Jessie), DHE cipher
+# For servers which support it (currently only nginx @ WMF), DHE cipher
 # variants that are appropriate for the compatibility mode selected will be
 # enabled, generally increasing forward-secrecy and compatibility, but
 # sacrificing some rare/ancient/un-updated Java6 clients.
