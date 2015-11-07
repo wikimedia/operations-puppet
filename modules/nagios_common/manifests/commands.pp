@@ -45,6 +45,7 @@ class nagios_common::commands(
         'check_bgp',
         'check_dsh_groups',
         'check_graphite',
+        'check_graphite_freshness',
         'check_ifstatus_nomon',
         'check_jnx_alarms',
         'check_ores_workers',
