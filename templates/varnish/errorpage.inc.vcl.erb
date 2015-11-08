@@ -38,7 +38,7 @@ code { font-family: sans-serif; }
 <div class="footer">
 <p>If you report this error to the Wikimedia System Administrators, please include the details below.</p>
 <p class="text-muted"><code>
-Request from " + client.ip + " via " + server.hostname + " " + server.identity + " ([" + server.ip + "]:" + server.port + "), Varnish XID " + req.xid + "<br>" +
+Request from "} + client.ip + " via " + server.hostname + " " + server.identity + " ([" + server.ip + "]:" + server.port + "), Varnish XID " + req.xid + "<br>" +
 regsub(req.http.X-Forwarded-For, ".+", "Forwarded for: \0<br>") + regsub(obj.http.X-Cache, ".+", "Upstream caches: \0<br>") +
 "Error: " + obj.status + ", " + obj.response + " at " + now +
 {"
