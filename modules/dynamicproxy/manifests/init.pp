@@ -190,4 +190,13 @@ class dynamicproxy (
         port  => '443',
         desc  => 'HTTPS webserver for the entire world',
     }
+
+    $graphite_metric_prefix = "${labsproject}.${hostname}"
+
+    logster::job { 'proxy-requests':
+        minute          => '*/1',
+        parser          => 'LineCountLogster', # Nothing more specific yet
+        logfile         => '/var/log/nginx/access.log',
+        logster_options => "-o statsd --statsd-host=logmon1001.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}",
+    }
 }
