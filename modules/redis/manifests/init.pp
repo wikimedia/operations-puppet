@@ -6,7 +6,7 @@ class redis (
     $maxmemory_samples = 5,
     $persist = 'rdb', # [ rdb, aof, both ]
     $redis_options = {},
-    $rename_commands = {},
+    $rename_commands = { 'CONFIG' => '', 'SLAVEOF' => '', 'DEBUG' => '' },
     $redis_replication = undef,
     $monitor = true,
     $password = false,
