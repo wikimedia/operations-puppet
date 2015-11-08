@@ -121,7 +121,7 @@ def get_metrics():
     response = cache.get(flask.request.url)
     if response is not None:
         return response
-    period_name = flask.request.args.get('period', 'hour')
+    period_name = flask.request.args.get('period', 'day')
     if period_name not in PERIODS:
         return flask.jsonify(error='Invalid value for "period".'), 401
     period = PERIODS.get(period_name)
