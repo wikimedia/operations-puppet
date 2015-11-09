@@ -98,6 +98,10 @@ class role::lvs::balancer {
         site                 => $::site
     }
 
+    if os_version('Debian >= jessie') {
+        include ::pybal::monitoring
+    }
+
     if $::site in ['eqiad', 'codfw'] {
         include ::lvs::balancer::runcommand
     }

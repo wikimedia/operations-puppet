@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+# Copyright 2015 Giuseppe Lavagetto
+# Copyright 2015 Wikimedia Foundation, Inc.
+#
+# This nagios plugin is free software, and comes with ABSOLUTELY NO WARRANTY.
+# It may be used, redistributed and/or modified under the terms of the GNU
+# General Public Licence (see http://www.fsf.org/licensing/licenses/gpl.txt).
+#
+# Example usage:
+#   check_pybal --url https://localhost:9090
+
+
+use strict;
+use Nagios::Plugin;
+use LWP::UserAgent;
+
+my $np = Nagios::Plugin->new(usage => "Usage: %s --url <URL>");
+$np->add_arg(
+             spec     => 'url|u=s',
+             help     => '--url https://localhost:9090',
+             required => 1,
+            );
+$np->getopts;
+
+my $url = $np->opts->url;
+
+my $ua = LWP::UserAgent->new;
+$ua->timeout(10);
+my $r = $ua->get($url);
+
+if ($r->is_success) {
+    if ($r->content eq "OK") {
+        $np->nagios_exit(OK, "All pools are healthy");
+    } else {
+        $np->nagios_exit(CRITICAL, $r->content);
+    }
+} else {
+    $np->nagios_exit(CRITICAL, "Bad Response from pybal: ".$r->status_line);
+}
