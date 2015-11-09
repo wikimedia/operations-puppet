@@ -1154,6 +1154,10 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
     role analytics::kafka::server
     include role::analytics
     include standard
+
+    if $::hostname == 'kafka1014' {
+        include base::firewall
+    }
 }
 
 # virtual machine for misc. PHP apps
