@@ -9,7 +9,7 @@
 
     ServerName dbtree.wikimedia.org
 
-    DocumentRoot /srv/org/wikimedia/dbtree
+    DocumentRoot /srv/dbtree
 
     ErrorLog /var/log/apache2/error.log
 
@@ -36,7 +36,7 @@
         </IfVersion>
     </Directory>
 
-    <Directory /srv/org/wikimedia/dbtree/inc>
+    <Directory /srv/dbtree/inc>
         <IfVersion >= 2.4>
             Require all denied
         </IfVersion>
