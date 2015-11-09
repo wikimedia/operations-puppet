@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-cp-eqiad-upload:
+    value: standard
