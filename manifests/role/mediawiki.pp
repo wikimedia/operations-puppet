@@ -82,12 +82,6 @@ class role::mediawiki::webserver($pool) {
         port    => 'http',
     }
 
-    # allow ssh from deployment hosts
-    ferm::rule { 'deployment-ssh':
-        ensure => present,
-        rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
-    }
-
     # If a service check happens to run while we are performing a
     # graceful restart of Apache, we want to try again before declaring
     # defeat. See T103008.
