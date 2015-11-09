@@ -97,34 +97,6 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/srv/mw-log' )
         source => 'puppet:///files/misc/scripts/fatalmonitor',
     }
 
-    $cirrussearch_slow_log_check_interval = 5
-    # Send CirrusSearch-slow.log entry rate to ganglia.
-    logster::job { 'CirrusSearch-slow.log':
-        parser          => 'LineCountLogster',
-        logfile         => "${log_directory}/CirrusSearchSlowRequests.log",
-        logster_options => '--output ganglia --metric-prefix CirrusSearch-slow.log',
-        minute          => "*/${cirrussearch_slow_log_check_interval}"
-    }
-    # The logster job runs every $cirrussearch_slow_log_check_interval
-    # minutes.  We set retries to
-    # 60 minutes / cirrussearch_slow_log_check_interval minutes)
-    # This should keep icinga from alerting us unless the alert thresholds are
-    # exceeded for more than an hour.
-    monitoring::ganglia { 'CirrusSearch-slow-queries':
-        description           => 'Slow CirrusSearch query rate',
-        # this metric is output to ganglia by logster
-        metric                => 'CirrusSearch-slow.log_line_rate',
-        # warning  ->  36 queries/h
-        # critical -> 360 queries/h
-        warning               => '0.01',
-        critical              => '0.1',
-        normal_check_interval => $cirrussearch_slow_log_check_interval,
-        retry_check_interval  => $cirrussearch_slow_log_check_interval,
-        retries               => (60/$cirrussearch_slow_log_check_interval),
-        require               => Logster::Job['CirrusSearch-slow.log'],
-    }
-
-
 }
 
 # == Class role::logging::mediawiki::errors
