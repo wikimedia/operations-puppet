@@ -62,11 +62,6 @@ class role::deployment::server(
         srange => "(${deployable_networks_ferm})",
     }
 
-    # T115075
-    ferm::rule { 'deployment-ssh':
-        ensure => present,
-        rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
-    }
     ### End firewall rules
 
     #T83854

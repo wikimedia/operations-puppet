@@ -10,6 +10,7 @@ class role::deployment::mediawiki(
     include mediawiki
     include ::mediawiki::nutcracker
     include scap::master
+    include scap::target
 
     if $::realm != 'labs' {
         include deployment::wikitech

@@ -7,24 +7,14 @@
 # contains a copy of MediaWiki.
 #
 class mediawiki::scap {
+    include ::scap
+    include ::scap::target
     include ::mediawiki::users
 
     $mediawiki_deployment_dir = '/srv/mediawiki'
     $mediawiki_staging_dir    = '/srv/mediawiki-staging'
     $scap_bin_dir             = '/srv/deployment/scap/scap/bin'
     $mediawiki_web_user       = $::mediawiki::users::web
-
-    require_package('python-psutil')
-    require_package('python-netifaces')
-
-    # 'scap' is the command-line tool we use to push MediaWiki changes
-    # to the webapp servers. The name stands for 'sync-common-all-php'.
-
-    package { 'scap':
-        ensure   => latest,
-        provider => 'trebuchet',
-    }
-
 
     # /srv/mediawiki is the root path of the MediaWiki deployment tree.
 
