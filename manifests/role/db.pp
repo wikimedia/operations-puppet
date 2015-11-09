@@ -98,9 +98,7 @@ class role::db::labsdb( $instances = {} ) {
 }
 
 class role::labsdb::manager {
-    package { ['python-mysqldb', 'python-yaml']:
-        ensure => present,
-    }
+    require_package(['python-mysqldb', 'python-yaml'])
 
     file { '/usr/local/sbin/skrillex.py':
         owner  => 'root',

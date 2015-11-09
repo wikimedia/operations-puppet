@@ -38,6 +38,8 @@ class role::mediawiki::common {
         desc   => 'Allow incoming SSH for pybal health checks',
     }
 
+    include role::scap::target
+
     monitoring::service { 'mediawiki-installation DSH group':
         description           => 'mediawiki-installation DSH group',
         check_command         => 'check_dsh_groups!mediawiki-installation',
@@ -80,12 +82,6 @@ class role::mediawiki::webserver($pool) {
         proto   => 'tcp',
         notrack => true,
         port    => 'http',
-    }
-
-    # allow ssh from deployment hosts
-    ferm::rule { 'deployment-ssh':
-        ensure => present,
-        rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
     }
 
     # If a service check happens to run while we are performing a
