@@ -9,10 +9,11 @@
 # === Parameters ===
 #
 # [*ensure*]
-#  Is the usual metaparameter, defaults to present.
+#  Is the usual metaparameter, defaults to present. Valid values are 'present'
+#  and 'absent'.
 #  Note that the underlying service is also controlled by this metaparameter
-#  (unless $declare_service is false), in other words a truthy value here will
-#  ensure => running and conversely a falsey value will ensure => stopped.
+#  (unless $declare_service is false), in other words 'present' will
+#  ensure => running and conversely 'absent' will ensure => stopped.
 #
 # [*template_name*]
 #  String, default $name.  Init file template pathnames are formed
