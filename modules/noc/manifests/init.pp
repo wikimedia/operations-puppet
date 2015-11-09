@@ -50,6 +50,7 @@ class noc {
         owner   => 'mwdeploy',
         group   => 'mwdeploy',
         content => template('noc/dbtree.config.php.erb'),
+        require => Git::Clone['operations/software/dbtree']
     }
 
     # Monitoring
