@@ -31,21 +31,21 @@ class noc {
 
 
 
-    file { ['/srv/org/wikimedia/dbtree', '/srv/org/wikimedia', '/srv/org']:
+    file { ['/srv/dbtree']:
         ensure => 'directory',
         owner  => 'mwdeploy',
         group  => 'mwdeploy',
     }
 
     git::clone { 'operations/software/dbtree':
-        directory => '/srv/org/wikimedia/dbtree',
+        directory => '/srv/dbtree',
         branch    => 'master',
         owner     => 'mwdeploy',
         group     => 'mwdeploy',
-        require   => File['/srv/org/wikimedia/dbtree'],
+        require   => File['/srv/dbtree'],
     }
 
-    file { '/srv/org/wikimedia/dbtree/inc/config.php':
+    file { '/srv/dbtree/inc/config.php':
         ensure  => 'present',
         owner   => 'mwdeploy',
         group   => 'mwdeploy',
