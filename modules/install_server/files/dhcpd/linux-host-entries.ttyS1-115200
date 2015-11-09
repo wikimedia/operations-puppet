@@ -5895,6 +5895,13 @@ host nembus {
 	fixed-address nembus.wikimedia.org;
 }
 
+host neodymium {
+	hardware ethernet 90:B1:1C:2D:79:8C;
+	fixed-address neodymium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host neon {
 	hardware ethernet 78:2b:cb:08:a4:2f;
 	fixed-address neon.wikimedia.org;
