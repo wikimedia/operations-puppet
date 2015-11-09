@@ -53,8 +53,8 @@ class role::zookeeper::server {
 
     ferm::service { 'zookeeper':
         proto  => 'tcp',
-        # Zookeeper client, protocol, and jmx listen ports.
-        port   => "(2181 2182 2183 ${$::zookeeper::server::jmx_port})",
+        # Zookeeper client, protocol ports
+        port   => "(2181 2182 2183)",
         srange => '($INTERNAL)',
     }
 
