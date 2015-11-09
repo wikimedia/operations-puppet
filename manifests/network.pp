@@ -386,6 +386,10 @@ class network::checks {
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
+    @monitoring::host { 'mr1-esams.oob':
+        host_fqdn => 'mr1-esams.oob.wikimedia.org',
+        group     => 'routers'
+    }
 
     ### eqiad ###
 
@@ -435,6 +439,10 @@ class network::checks {
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
+    }
+    @monitoring::host { 'mr1-eqiad.oob':
+        host_fqdn => 'mr1-eqiad.oob.wikimedia.org',
+        group     => 'routers'
     }
 
     # NAS
@@ -518,6 +526,10 @@ class network::checks {
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
     }
+    @monitoring::host { 'mr1-ulsfo.oob':
+        host_fqdn => 'mr1-ulsfo.oob.wikimedia.org',
+        group     => 'routers'
+    }
 
     ### codfw ###
 
@@ -567,6 +579,10 @@ class network::checks {
         group         => 'routers',
         description   => 'Router interfaces',
         check_command => "check_ifstatus_nomon!${snmp_ro_community}",
+    }
+    @monitoring::host { 'mr1-codfw.oob':
+        host_fqdn => 'mr1-codfw.oob.wikimedia.org',
+        group     => 'routers'
     }
 
     ### eqdfw ###
