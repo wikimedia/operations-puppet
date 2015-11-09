@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-cp-codfw-text:
+    value: standard

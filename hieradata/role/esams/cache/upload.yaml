@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-cp-esams-upload:
+    value: standard

@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-cp-eqiad-misc:
+    value: standard
