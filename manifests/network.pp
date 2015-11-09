@@ -345,6 +345,18 @@ class network::checks {
 #        check_command => "check_bgp!${snmp_ro_community}",
 #    }
 
+    # cr2-esams
+    @monitoring::host { 'cr2-esams':
+        ip_address => '91.198.174.244',
+        group      => 'routers',
+    }
+    @monitoring::service { 'cr2-esams interfaces':
+        host          => 'cr2-esams',
+        group         => 'routers',
+        description   => 'Router interfaces',
+        check_command => "check_ifstatus_nomon!${snmp_ro_community}",
+    }
+
     # cr2-knams
     @monitoring::host { 'cr2-knams':
         ip_address => '91.198.174.246',

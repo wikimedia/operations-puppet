@@ -180,6 +180,11 @@ menu = cr1-esams
 title = cr1-esams.wikimedia.org
 host = cr1-esams.wikimedia.org
 
++++ cr2-esams
+menu = cr2-esams
+title = cr2-esams.wikimedia.org
+host = cr2-esams.wikimedia.org
+
 +++ cr2-knams
 menu = cr2-knams
 title = cr2-knams.wikimedia.org

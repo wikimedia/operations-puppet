@@ -10,6 +10,7 @@ class role::torrus {
         'cr1-eqiad.wikimedia.org',
         'cr1-eqord.wikimedia.org',
         'cr1-esams.wikimedia.org',
+        'cr2-esams.wikimedia.org',
         'cr1-ulsfo.wikimedia.org',
         'cr1-ulsfo.wikimedia.org',
         'cr2-codfw.wikimedia.org',
