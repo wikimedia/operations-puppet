@@ -2175,11 +2175,6 @@ node /(plutonium|pollux)\.wikimedia\.org/ {
     include standard
 }
 
-node 'polonium.wikimedia.org' {
-    role spare
-    interface::add_ip6_mapped { 'main': }
-}
-
 # careful when moving poolcounters
 node 'potassium.eqiad.wmnet' {
     role poolcounter
