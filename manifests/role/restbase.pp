@@ -84,8 +84,8 @@ class role::restbase::alerts {
         description   => 'RESTBase Cassandra highest pending compactions http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-compaction',
         metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.Compaction.PendingTasks.value, 1)',
         from          => '60min',
-        warning       => '100',
-        critical      => '400',
+        warning       => '15000',
+        critical      => '25000',
         percentage    => '50',
         contact_group => 'team-services',
     }
