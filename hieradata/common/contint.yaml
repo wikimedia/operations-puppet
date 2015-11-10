@@ -10,5 +10,6 @@ nodepool_host: '10.64.20.18'  # labnodepool1001.eqiad.wmnet
 #
 zuul_merger_hosts:
     - 208.80.154.135  # gallium.wikimedia.org
+    - 10.64.4.12  # scandium.eqiad.wmnet T95046
     - '::1'  # Uses quotes for hiera
     - 127.0.0.1
