@@ -69,4 +69,14 @@ class redis (
             check_command => "check_tcp!${port}",
         }
     }
+
+    if $password {
+        $collector_settings = { auth => $password }
+    } else {
+        $collector_settings = {}
+    }
+
+    ::diamond::collector { 'Redis':
+        settings => $collector_settings,
+    }
 }
