@@ -2424,6 +2424,11 @@ node 'titanium.wikimedia.org' {
     include standard
 }
 
+# test system for performance team (T117888)
+node 'tungsten.eqiad.wmnet' {
+    role testsystem
+}
+
 node 'uranium.wikimedia.org' {
     $ganglia_aggregator = true
 
