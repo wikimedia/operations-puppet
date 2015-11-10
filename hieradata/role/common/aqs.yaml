@@ -40,7 +40,7 @@ restbase::seeds:
     - aqs1001.eqiad.wmnet
     - aqs1002.eqiad.wmnet
     - aqs1003.eqiad.wmnet
-restbase::config_template: restbase/config.aqs.yaml.erb
+restbase::config::config_template: restbase/config.aqs.yaml.erb
 restbase::logstash_host: logstash1001.eqiad.wmnet
 restbase::cassandra_defaultConsistency: localQuorum
 restbase::cassandra_localDc: "%{::site}"
