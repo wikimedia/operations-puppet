@@ -21,8 +21,6 @@
 #   The full list of member datacenters.
 # [*port*]
 #   Port where to run the restbase service. Default: 7231
-# [*config_template*]
-#   File to use as the configuration file template. Default: restbase/config.yaml.erb
 # [*parsoid_uri*]
 #   URI to reach Parsoid. Default: http://parsoid-lb.eqiad.wikimedia.org
 # [*logstash_host*]
@@ -56,7 +54,6 @@ class restbase(
     $port           = 7231,
     $salt_key       = 'secretkey',
     $page_size      = 250,
-    $config_template = 'restbase/config.yaml.erb',
     $parsoid_uri    = 'http://parsoid-lb.eqiad.wikimedia.org',
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
@@ -68,9 +65,12 @@ class restbase(
     $mathoid_uri    = 'http://mathoid.svc.eqiad.wmnet:10042',
     $aqs_uri        =
     'http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1',
+    $deployment     = undef,
 ) {
-    if $::realm == 'labs' {
-        include restbase::deploy
+    # TODO: remove conditional once scap deploys RESTBase everywhere
+    case $deployment {
+        'scap': { include restbase::deploy::scap }
+        default: { include restbase::deploy::trebuchet }
     }
 
     package { 'restbase/deploy':
@@ -108,22 +108,6 @@ class restbase(
 
     file { '/etc/init.d/restbase':
         ensure  => absent
-    }
-
-    file { '/etc/restbase':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        before => Service['restbase'],
-    }
-
-    file { '/etc/restbase/config.yaml':
-        content => template($config_template),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        tag     => 'restbase::config',
     }
 
     file { '/usr/lib/restbase':
