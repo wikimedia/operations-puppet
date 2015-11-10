@@ -17,7 +17,7 @@ case "$command" in
         } |& { sed 's/, process//' | column -t | tee /dev/stderr | grep -qv running ; } 2>&1
         ;;
     check)
-        $0 status 2>&1 >/dev/null || {
+        $0 status >/dev/null 2>&1 || {
             echo "CRITICAL: Not all configured Carbon instances are running."
             exit 2
         }
