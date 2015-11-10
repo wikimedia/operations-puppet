@@ -2262,7 +2262,7 @@ node 'rubidium.wikimedia.org' {
 }
 
 node 'rutherfordium.eqiad.wmnet' {
-    role peopleweb, peopleweb::migration
+    role peopleweb, peopleweb::migration, backup::host
     include base::firewall
 }
 

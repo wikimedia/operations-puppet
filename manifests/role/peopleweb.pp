@@ -16,6 +16,8 @@ class role::peopleweb {
         ensure  => present,
         content => "#!/bin/sh\necho '\nThis is people.wikimedia.org.\nFiles you put in 'public_html' in your home dir will be accessible on the web.\nMore info on https://wikitech.wikimedia.org/wiki/People.wikimedia.org.\n'",
     }
+
+    backup::set {'home': }
 }
 
 class role::peopleweb::migration {
