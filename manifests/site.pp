@@ -2273,6 +2273,7 @@ node 'scandium.eqiad.wmnet' {
 
     include standard
     include base::firewall
+    role zuul::merger
 
 }
 
