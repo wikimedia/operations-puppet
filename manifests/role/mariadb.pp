@@ -754,3 +754,14 @@ class role::mariadb::parsercache {
         rule => 'saddr 10.64.0.15 proto tcp dport (3306) ACCEPT;',
     }
 }
+
+class role::maridb::maintenance {
+    # place from which tendril-related cron jobs are run
+    include passwords::tendril
+
+    class { 'tendril::maintenance':
+        tendril_host => 'db1011.eqiad.wmnet',
+        tendril_user => 'watchdog',
+        tendril_password => $passwords::tendril::db_pass,
+    }
+}
