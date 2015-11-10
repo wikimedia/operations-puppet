@@ -1153,7 +1153,7 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
     include role::analytics
     include standard
 
-    if $::hostname == 'kafka1014' {
+    if $::hostname =~ /^kafka101[2-4]$/ {
         include base::firewall
     }
 }
