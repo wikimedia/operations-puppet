@@ -2065,6 +2065,12 @@ node 'nembus.wikimedia.org' {
     include ldap::role::client::labs
 }
 
+# secondary salt master
+node 'neodymium.eqiad.wmnet' {
+    role salt::masters::production, deployment::salt_masters, debdeploymaster
+    include standard
+}
+
 # Icinga
 node 'neon.wikimedia.org' {
     role icinga, tendril, tcpircbot
