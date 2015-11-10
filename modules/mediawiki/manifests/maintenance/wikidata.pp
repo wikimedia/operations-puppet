@@ -2,17 +2,18 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
     require mediawiki::users
 
     # Starts a dispatcher instance every 3 minutes
+    # They will run for a maximum of 9 minutes, so we can only have 3 concurrent instances.
     # This handles inserting jobs into client job queue, which then process the changes
     cron { 'wikibase-dispatch-changes4':
         ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 1600 --batch-size 275 --dispatch-interval 25 --lock-grace-interval 200 2>&1 >> /dev/null',
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 540 --batch-size 275 --dispatch-interval 25 --lock-grace-interval 200 2>&1 > /dev/null',
         user    => $::mediawiki::users::web,
         minute  => '*/3',
     }
 
     cron { 'wikibase-dispatch-changes-test':
         ensure  => $ensure,
-        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /dev/null',
+        command => '/usr/local/bin/mwscript extensions/Wikidata/extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 > /dev/null',
         user    => $::mediawiki::users::web,
         minute  => '*/15',
     }
@@ -57,4 +58,3 @@ class mediawiki::maintenance::wikidata( $ensure = present ) {
         mode   => '0444',
     }
 }
-
