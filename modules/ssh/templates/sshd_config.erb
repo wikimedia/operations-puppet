@@ -64,6 +64,9 @@ RhostsRSAAuthentication no
 <% if @enable_hba %>
 HostbasedAuthentication yes
 HostbasedUsesNameFromPacketOnly no
+
+# matching entries shosts.equiv requires a reverse DNS lookup
+UseDNS yes
 <% else %>
 HostbasedAuthentication no
 <% end %>
