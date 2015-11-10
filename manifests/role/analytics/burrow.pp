@@ -13,7 +13,7 @@ class role::analytics::burrow {
         zookeeper_path     => $role::analytics::kafka::config::zookeeper_chroot,
         kafka_cluster_name => $role::analytics::kafka::config::kafka_cluster_name,
         kafka_brokers      => $role::analytics::kafka::config::brokers_array,
-        smtp_server        => 'polonium.wikimedia.org',
+        smtp_server        => 'mx1001.wikimedia.org',
         from_email         => "burrow@${::fqdn}",
         to_emails          => 'madhuvishy@wikimedia.org, otto@wikimedia.org',
     }
