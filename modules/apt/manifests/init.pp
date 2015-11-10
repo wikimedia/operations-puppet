@@ -39,12 +39,6 @@ class apt {
         pin      => 'release o=Wikimedia',
         priority => 1001,
     }
-    # TODO: Remove after applied everywhere.
-    file { '/etc/apt/preferences.d/wikimedia':
-        ensure  => absent,
-        require => Apt::Pin['wikimedia'],
-        notify  => Exec['apt-get update'],
-    }
 
     $http_proxy = "http://webproxy.${::site}.wmnet:8080"
 
@@ -104,6 +98,16 @@ class apt {
         dist        => "${::lsbdistcodename}-wikimedia",
         components  => $components,
         comment_old => true,
+    }
+
+    # enable backports for Debian systems
+    if $::operatingsystem == 'Debian' {
+        apt::repository { 'debian-backports':
+            uri         => 'http://mirrors.debian.org/debian',
+            dist        => "${::lsbdistcodename}-backports",
+            components  => 'main non-free contrib',
+            comment_old => true,
+        }
     }
 
     # apt-get should not install recommended packages
