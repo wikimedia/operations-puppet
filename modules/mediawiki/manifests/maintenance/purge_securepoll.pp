@@ -4,6 +4,6 @@ class mediawiki::maintenance::purge_securepoll( $ensure = present ) {
         user    => $::mediawiki::users::web,
         hour    => 1,
         minute  => 0,
-        command => '/usr/local/bin/foreachwiki extensions/SecurePoll/cli/purgePrivateVoteData.php 2>&1 > /dev/null',
+        command => '/usr/local/bin/foreachwiki extensions/SecurePoll/cli/purgePrivateVoteData.php >/dev/null 2>&1',
     }
 }

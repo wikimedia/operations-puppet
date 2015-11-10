@@ -14,7 +14,7 @@ usage ()
 bold=`/usr/bin/tput -T xterm-256color setaf bold`
 normal=`/usr/bin/tput -T xterm-256color setaf sgr0`
 
-which puppet-lint 2>&1 >/dev/null || {
+which puppet-lint >/dev/null 2>&1 || {
   echo "puppet-lint not installed.";
   if [ "$1" = "-h" ]; then exit 0;
   else usage; exit 1; fi;
