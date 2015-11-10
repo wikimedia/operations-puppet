@@ -28,8 +28,7 @@
     CustomLog /var/log/apache2/access.log combined
 
     <Directory />
-        Order Deny,Allow
-        AllowOverride All
+        Require all granted
     </Directory>
 
 </VirtualHost>
