@@ -21,7 +21,7 @@ class ores::base(
     # Spellcheck packages for supported languages
     require_package('aspell-id',
                     'hunspell-vi',
-                    'myspell-de-at', 'myspell-de-ch', 'myspell-de-ch',
+                    'myspell-de-at', 'myspell-de-ch', 'myspell-de-de',
                     'myspell-en-au', 'myspell-en-gb', 'myspell-en-us',
                     'myspell-es',
                     'myspell-fa',
