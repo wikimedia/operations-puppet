@@ -1,2 +1,3 @@
 cassandra::seeds:
   - deployment-aqs01.deployment-prep.eqiad.wmflabs
+restbase::deploy:scap::dir: /srv/deployment/aqs
