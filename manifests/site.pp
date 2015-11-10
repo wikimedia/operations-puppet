@@ -1328,12 +1328,6 @@ node /labstore200[12]\.codfw\.wmnet/ {
     role labs::nfs::fileserver
 }
 
-
-node 'lead.wikimedia.org' {
-    role spare
-    interface::add_ip6_mapped { 'main': }
-}
-
 node 'lithium.eqiad.wmnet' {
     role backup::host, syslog::centralserver
     include standard
@@ -2173,11 +2167,6 @@ node /(plutonium|pollux)\.wikimedia\.org/ {
 
     role openldap::corp
     include standard
-}
-
-node 'polonium.wikimedia.org' {
-    role spare
-    interface::add_ip6_mapped { 'main': }
 }
 
 # careful when moving poolcounters

@@ -2735,7 +2735,7 @@ host lanthanum {
 
 host lead {
 	hardware ethernet C8:1F:66:BF:71:66;
-	fixed-address lead.wikimedia.org;
+	fixed-address ;
 }
 
 host lithium {
@@ -6000,7 +6000,7 @@ host plutonium {
 
 host polonium {
 	hardware ethernet C8:1F:66:BF:8D:D6;
-	fixed-address polonium.wikimedia.org;
+	fixed-address ;
 }
 
 host potassium {
