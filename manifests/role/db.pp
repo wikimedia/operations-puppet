@@ -116,11 +116,3 @@ class role::labsdb::manager {
         content => template('mysql_wmf/skrillex.yaml.erb'),
     }
 }
-
-class role::db::maintenance {
-    include mysql
-
-    package { 'percona-toolkit':
-        ensure => latest,
-    }
-}

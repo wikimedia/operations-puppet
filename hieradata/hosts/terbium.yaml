@@ -24,3 +24,4 @@ mediawiki::maintenance::purge_checkuser::ensure: absent
 mediawiki::maintenance::purge_securepoll::ensure: absent
 mediawiki::maintenance::jobqueue_stats::ensure: absent
 mediawiki::maintenance::updatequerypages::ensure: absent
+tendril::maintenance::ensure: absent
