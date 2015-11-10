@@ -1,0 +1,4 @@
+# Not assigned via the role since helium uses the same role along with the poolcounter role
+debdeploy::grains:
+  debdeploy-backup-storage:
+    value: standard
