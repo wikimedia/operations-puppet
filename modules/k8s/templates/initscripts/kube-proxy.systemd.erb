@@ -4,7 +4,7 @@ Description=Kubernetes Proxy
 [Service]
 ExecStart=/usr/bin/kube-proxy \
     --kubeconfig=/etc/kubernetes/kubeconfig \
-    --legacy-userspace-proxy=false \
+    --proxymode=iptables \
     --masquerade-all=true
 
 [Install]
