@@ -195,4 +195,8 @@ sub analytics_deliver {
     } else {
         set resp.http.X-Analytics = regsub(resp.http.X-Analytics, "^;", "");
     }
+
+    // Put XCIP into resp headers for webrequest logging purposes indepedent
+    // of the X-Analytics fields:
+    set resp.http.X-Client-IP = req.http.X-Client-IP
 }
