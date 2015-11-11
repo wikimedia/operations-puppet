@@ -24,7 +24,6 @@ class role::salt::masters::labs {
         salt_reactor_options => { 'puppet_server' => $puppet_master },
     }
 
-
     if ! defined(Class['puppetmaster::certmanager']) {
         include role::labs::openstack::nova::common
         $novaconfig = $role::labs::openstack::nova::common::novaconfig
@@ -33,4 +32,10 @@ class role::salt::masters::labs {
             remote_cert_cleaner => hiera('labs_certmanager_hostname'),
         }
     }
+
+    class { 'salt::master::key':
+        $salt_master_pubkey_type => 'labs',
+        $salt_master_privkey     => secret('salt/labsmaster.pem'),
+    }
+
 }
