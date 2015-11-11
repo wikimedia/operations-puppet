@@ -12,8 +12,9 @@
 #
 # Sample Usage:
 #
-class toollabs::node::web inherits toollabs {
+class toollabs::node::web {
 
+    include toollabs::node
     include gridengine::submit_host
 
     # New style webservices!
@@ -59,4 +60,5 @@ class toollabs::node::web inherits toollabs {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/jobkill',
     }
+
 }
