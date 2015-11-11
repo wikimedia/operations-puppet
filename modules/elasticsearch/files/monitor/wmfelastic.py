@@ -154,7 +154,7 @@ class WMFElasticCollector(diamond.collector.Collector):
         url = 'http://%s:%i/%s' % (self.config['host'],
                                    self.config['port'],
                                    path)
-        response = urllib2.urlopen(url)
+        response = urllib2.urlopen(url, timeout=3)
         return json.load(response)
 
     def is_master(self):
