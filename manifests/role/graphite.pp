@@ -268,8 +268,8 @@ class role::graphite::production::alerts {
     swift::monitoring::graphite_alerts { 'codfw-prod': }
 
     # Monitor production 5xx rates
-    monitoring::graphite_threshold { 'reqstats_5xx':
-        description     => 'HTTP 5xx req/min',
+    monitoring::graphite_threshold { 'reqstats-5xx-threshold':
+        description     => 'HTTP 5xx reqs/min threshold',
         metric          => 'reqstats.5xx',
         warning         => 250,
         critical        => 500,
@@ -279,8 +279,8 @@ class role::graphite::production::alerts {
 
     # Will try to detect anomalies in the requests error ratio;
     # if 10% of the last 100 checks is out of forecasted bounds
-    monitoring::graphite_anomaly { 'requests_error_ratio':
-        description  => 'HTTP error ratio anomaly detection',
+    monitoring::graphite_anomaly { 'reqstats-5xx-anomaly':
+        description  => 'HTTP 5xx reqs/min anomaly',
         metric       => 'reqstats.5xx',
         warning      => 5,
         critical     => 10,
