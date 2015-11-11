@@ -6,7 +6,7 @@ class mediawiki::maintenance::translationnotifications( $ensure = present ) {
     cron { 'translationnotifications-metawiki':
         ensure  => $ensure,
         user    => $::mediawiki::users::web,
-        command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log',
+        command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki >> /var/log/translationnotifications/digests.log 2>&1',
         weekday => 1, # Monday
         hour    => 10,
         minute  => 0,
@@ -15,7 +15,7 @@ class mediawiki::maintenance::translationnotifications( $ensure = present ) {
     cron { 'translationnotifications-mediawikiwiki':
         ensure  => $ensure,
         user    => $::mediawiki::users::web,
-        command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log',
+        command => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki >> /var/log/translationnotifications/digests.log 2>&1',
         weekday => 1, # Monday
         hour    => 10,
         minute  => 5,

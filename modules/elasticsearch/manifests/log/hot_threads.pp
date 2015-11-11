@@ -12,7 +12,7 @@ class elasticsearch::log::hot_threads {
     }
 
     cron { 'elasticsearch-hot-threads-log':
-        command => "python ${script} 2>&1 >> ${log}",
+        command => "python ${script} >> ${log} 2>&1",
         #So the destination directory exists
         require => Package['elasticsearch'],
         user    => 'elasticsearch',
