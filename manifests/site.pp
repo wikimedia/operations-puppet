@@ -2067,7 +2067,8 @@ node 'nembus.wikimedia.org' {
 
 # secondary salt master
 node 'neodymium.eqiad.wmnet' {
-    role salt::masters::production, deployment::salt_masters, debdeploymaster
+#    role salt::masters::production, deployment::salt_masters, debdeploymaster
+    role salt::masters::production
     include standard
 }
 
