@@ -20,4 +20,8 @@ class role::salt::masters::production {
         salt_returner_roots => $salt_returner_roots,
     }
 
+    class { 'salt::master::key':
+        salt_master_pubkey_type => 'prod',
+    }
+
 }
