@@ -17,12 +17,12 @@ class dynamicproxy::api(
     require_package('python-flask', 'python-redis', 'python-flask-sqlalchemy')
 
     uwsgi::app { 'invisible-unicorn':
-        settings => {
+        settings  => {
             uwsgi => {
                 plugins            => 'python',
                 master             => true,
                 http-socket        => '0.0.0.0:5668',
-                mount              => "/dynamicproxy-api=/usr/local/bin/invisible-unicorn.py",
+                mount              => '/dynamicproxy-api=/usr/local/bin/invisible-unicorn.py',
                 callable           => 'app',
                 manage-script-name => true,
                 workers            => 4,
