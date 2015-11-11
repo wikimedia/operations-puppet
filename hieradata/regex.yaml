@@ -249,3 +249,13 @@ debdeploy_dbstore:
   debdeploy::grains:
     debdeploy-db-dbstore:
       value: standard
+debdeploy_es-eqiad:
+  __regex: !ruby/regexp /^es1\d\d\d\.eqiad\.wmnet$/
+  debdeploy::grains:
+    debdeploy-db-es-eqiad:
+      value: standard
+debdeploy_es-codfw:
+  __regex: !ruby/regexp /^es2\d\d\d\.codfw\.wmnet$/
+  debdeploy::grains:
+    debdeploy-db-es-codfw:
+      value: standard
