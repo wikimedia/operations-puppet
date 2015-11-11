@@ -37,6 +37,14 @@ class role::db::redis (
         password          => $passwords::redis::main_password,
     }
 
+    monitoring::graphite_threshold { 'redis_memory_utilization':
+        description     => 'redis memory utilization',
+        metric          => "servers.${::hostname}.redis.6379.memory.external_view",
+        warning         => to_bytes($maxmemory) * 0.60,
+        critical        => to_bytes($maxmemory) * 0.50,
+        nagios_critical => true,
+    }
+
     if $::standard::has_ganglia {
         include redis::ganglia
     }
