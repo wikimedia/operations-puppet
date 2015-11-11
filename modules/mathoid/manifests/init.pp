@@ -15,12 +15,15 @@
 #   files, so it might be insecure.
 # [*speakText_generation*]
 #   Enable speakText generation.
+# [*textvcinfo_generation*]
+#   Enable texvcinfo generation. Default: true
 #
 class mathoid(
     $svg_generation=true,
     $img_generation=true,
     $png_generation=false,
     $speakText_generation=false,
+    $texvcinfo_generation=true,
 ) {
 
     # Pending fix for <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742347>
@@ -37,6 +40,7 @@ class mathoid(
             img       => $img_generation,
             png       => $png_generation,
             speakText => $speakText_generation,
+            texvcinfo => $texvcinfo_generation,
         },
         healthcheck_url => '',
         has_spec        => true,
