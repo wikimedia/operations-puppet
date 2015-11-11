@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-nodepool:
+    value: standard
