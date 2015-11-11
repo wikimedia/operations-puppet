@@ -35,9 +35,9 @@ C{
 	}
 
 	/*
-	 * Write the relevant client IP address to a character string.
-	 * The relevant IP is either the first IP address from the X-Forwarded-For header or the
-	 * client IP if no valid X-Forwarded-For header was present.
+	 * Write the relevant client IP address to a character string,
+	 * protecting against possible invalid data in the source
+	 * "X-Client-IP" header set by common VCL.
 	 *
 	 * This function will write at most maxlen-1 characters into the output string (the maxlen'th
 	 * character then gets the terminating '\0'). The output is always null-terminated. The return
@@ -46,18 +46,11 @@ C{
 	 */
 	int
 	geo_get_relevant_ip(const struct sess *sp, char *ip, size_t maxlen) {
-		const char *client_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+		const char *client_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Client-IP:");
 		size_t len = 0;
 
 		if (client_ip != NULL) {
 			len = strspn(client_ip, "1234567890abcdefABCDEF.:");
-		}
-
-		if (len == 0) {
-			client_ip = VRT_IP_string(sp, VRT_r_client_ip(sp));
-			if (client_ip != NULL) {
-				len = strnlen(client_ip, maxlen);
-			}
 		}
 
 		if (len == 0 || len >= maxlen) {
