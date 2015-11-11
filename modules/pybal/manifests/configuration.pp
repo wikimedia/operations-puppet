@@ -12,10 +12,4 @@ class pybal::configuration(
         # do not notify => Service['pybal'] on purpose
     }
 
-    $service_keys = keys($lvs_services)
-    pybal::pool { $service_keys:
-        ensure          => absent,
-        lvs_services    => $lvs_services,
-        lvs_class_hosts => $lvs_class_hosts
-    }
 }
