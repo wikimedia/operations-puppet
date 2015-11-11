@@ -3,7 +3,7 @@
 # Installs a check for a systemd unit state using systemctl
 define nrpe::monitor_systemd_unit_state(
     $unit = $title,
-    $description = "${unit} service",
+    $description = "${title} service",
     $contact_group = 'admins',
     $retries = 3,
     $timeout = 10,
@@ -33,4 +33,3 @@ define nrpe::monitor_systemd_unit_state(
         critical     => $nagios_critical,
     }
 }
-
