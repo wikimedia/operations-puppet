@@ -12,6 +12,8 @@
 #
 class toollabs::node::compute::dedicated {
 
+    include toollabs::node
+
     if $::node_dedicated_tool {
 
         system::role { 'toollabs::node::compute::dedicated':
@@ -48,4 +50,5 @@ class toollabs::node::compute::dedicated {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/jobkill',
     }
+
 }
