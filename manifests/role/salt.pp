@@ -5,7 +5,6 @@ class role::salt::masters::production {
     $salt_pillar_roots   = { 'base'=>['/srv/pillars']}
     $salt_module_roots   = { 'base'=>['/srv/salt/_modules']}
     $salt_returner_roots = { 'base'=>['/srv/salt/_returners']}
-
     class { 'salt::master':
         salt_runner_dirs    => ['/srv/runners'],
         salt_peer_run       => {
@@ -20,6 +19,9 @@ class role::salt::masters::production {
         salt_returner_roots => $salt_returner_roots,
     }
 
+    class { 'salt::master::key':
+      salt_master_pubkey_type => 'prod',
+    }
 }
 
 # A salt master that manages all labs minions
@@ -42,6 +44,10 @@ class role::salt::masters::labs {
         salt_module_roots   => $salt_module_roots,
         salt_returner_roots => $salt_returner_roots,
         salt_auto_accept    => true,
+    }
+
+    class { 'salt::master::key':
+      $salt_master_pubkey_type = 'labs',
     }
 
     class { 'salt::reactors':
