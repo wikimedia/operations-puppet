@@ -447,6 +447,7 @@ class role::mariadb::grants::wikitech {
 class role::mariadb::core(
     $shard,
     $p_s = 'off',
+    $ssl = 'off',
     ) {
 
     system::role { 'role::mariadb::core':
@@ -471,6 +472,7 @@ class role::mariadb::core(
         datadir  => '/srv/sqldata',
         tmpdir   => '/srv/tmp',
         p_s      => $p_s,
+        ssl      => $ssl,
     }
 
     mariadb::monitor_replication { [ $shard ]:
