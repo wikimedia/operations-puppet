@@ -17,6 +17,9 @@ etl.execution.history.path=hdfs://analytics-hadoop/wmf/camus/mediawiki/history
 # Concrete implementation of the Decoder class to use.
 camus.message.decoder.class=org.wikimedia.analytics.refinery.camus.coders.AvroBinaryMessageDecoder
 
+# Default schema for messages produced without a schema rev id.
+camus.message.schema.default=101446746400
+
 # Used by avro-based Decoders to use as their schema registry.
 kafka.message.coder.schema.registry.class=org.wikimedia.analytics.refinery.camus.schemaregistry.KafkaTopicSchemaRegistry
 
@@ -24,7 +27,7 @@ kafka.message.coder.schema.registry.class=org.wikimedia.analytics.refinery.camus
 camus.message.timestamp.format=unix_seconds
 
 # use the dt field
-camus.message.timestamp.field=timestamp
+camus.message.timestamp.field=ts
 
 etl.default.timezone=UTC
 
