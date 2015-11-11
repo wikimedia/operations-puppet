@@ -1,13 +1,13 @@
 
 class irqbalance::disable {
-    service { "irqbalance":
-        enable => false,
+    service { 'irqbalance':
         ensure => stopped,
+        enable => false,
     }
 
     # Apparently puppet can't actually disable this upstart service,
     #  but this is a decent workaround
-    file { "/etc/default/irqbalance":
+    file { '/etc/default/irqbalance':
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
