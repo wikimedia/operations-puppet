@@ -259,3 +259,8 @@ debdeploy_es-codfw:
   debdeploy::grains:
     debdeploy-db-es-codfw:
       value: standard
+debdeploy_dbproxy:
+  __regex: !ruby/regexp /^dbproxy100\d\.eqiad\.wmnet$/
+  debdeploy::grains:
+    debdeploy-db-dbproxy:
+      value: standard
