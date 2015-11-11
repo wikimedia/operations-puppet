@@ -642,6 +642,17 @@ node /^db20(28|39|46|53|60|67)\.codfw\.wmnet/ {
     include base::firewall
 }
 
+node /^db2067\.codfw\.wmnet/ {
+
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 's6',
+        p_s   => 'on',
+        ssl   => 'on',
+    }
+    include base::firewall
+}
+
 node /^db10(28|34|39|41|62)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's7',
