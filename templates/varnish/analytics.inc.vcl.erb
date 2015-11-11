@@ -143,12 +143,13 @@ sub analytics_recv {
 }
 
 sub analytics_deliver {
-    // Create empty header if none, to avoid tons of if/else clauses; will
-    // clean up at the end.  Note that if we defined one of the k=v pairs as
-    // required (having a real value for the false/negative case), we could
-    // set that one first and this would get a bit cleaner...
+    // On frontend instances where analytics_deliver runs, XCIP is always set,
+    // and from this point forward we can assume resp.http.X-Analytics is too.
     if (!resp.http.X-Analytics) {
-        set resp.http.X-Analytics = "";
+        set resp.http.X-Analytics = "clientip=" + req.http.X-Client-IP;
+    }
+    else {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";clientip=" + req.http.X-Client-IP;
     }
 
     call analytics_last_access_deliver_;
@@ -187,12 +188,5 @@ sub analytics_deliver {
 
     if (req.http.X-WMF-NOCOOKIES) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";nocookies=1";
-    }
-
-    // Clean up header from setting to empty at the start...
-    if (resp.http.X-Analytics == "") {
-        unset resp.http.X-Analytics;
-    } else {
-        set resp.http.X-Analytics = regsub(resp.http.X-Analytics, "^;", "");
     }
 }
