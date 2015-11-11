@@ -14,8 +14,15 @@ class network::constants {
         '2a02:ec80::/32',
     ]
 
+    # Address space for WMF offices
+    $oit_networks = [
+        '198.73.209.0/24',
+        '2620:62:c000::/48',
+    ]
+
     $all_networks = flatten([$external_networks, '10.0.0.0/8'])
     $all_networks_lo = flatten([$all_networks, '127.0.0.0/8', '::1/128'])
+    $all_networks_oit_lo = flatten([$all_networks_lo, $oit_networks])
 
     $special_hosts = {
         'production' => {

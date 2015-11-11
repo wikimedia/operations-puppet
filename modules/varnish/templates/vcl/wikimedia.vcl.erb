@@ -71,6 +71,14 @@ acl wikimedia_nets {
 <% end -%>
 }
 
+acl wikimedia_nets_plus_oit {
+<% scope.lookupvar('::network::constants::all_networks_oit_lo').each do |entry|
+	subnet, mask = entry.split("/", 2)
+-%>
+	"<%= subnet %>"/<%= mask %>;
+<% end -%>
+}
+
 # Backend probes
 
 # frontends in front of other varnish instances should send
@@ -175,7 +183,7 @@ director <%= director_name %> <%= director['type'] %> {
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 
 sub misspass_limiter {
-	if (ipcast.ip(req.http.X-Client-IP, "127.0.0.1") !~ wikimedia_nets) {
+	if (ipcast.ip(req.http.X-Client-IP, "127.0.0.1") !~ wikimedia_nets_plus_oit) {
 		// TBF: "1, 0.02s, 250" == "50/s, burst of 250"
 		if (!tbf.rate(req.http.X-Client-IP, 1, 0.02s, 250)) {
 			error 429 "Request Rate Exceeded";
