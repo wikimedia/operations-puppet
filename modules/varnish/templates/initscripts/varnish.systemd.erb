@@ -10,7 +10,6 @@ Restart=on-failure
 <% if @vcl_config.fetch("enable_geoiplookup", false) -%>
 Environment="CC_COMMAND=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%s -lGeoIP"
 <% end -%>
-ExecStartPre=/usr/bin/install -d -o varnish -g varnish -m 755 /run/vmod_tbf
 ExecReload=/usr/share/varnish/reload-vcl <%= @extraopts %> -q
 ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
