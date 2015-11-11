@@ -1,1 +1,4 @@
 cluster: virt
+debdeploy::grains:
+  debdeploy-nova-control:
+    value: standard
