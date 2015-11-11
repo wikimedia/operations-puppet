@@ -1498,7 +1498,7 @@ users:
     gid: 500
     name: mholloway-shell
     realname: Michael Holloway
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClpNu2ypDdiuw6Lh0xB6/niNGkBgI3U7YEKycd2QaD/mNeaIj+s3BgOYT86FkvZlK9L6VcCp6rPTW9ExQULJMr8VRZkYItSSrnx6hrNIfXnf7oB1UIkC5qtMWbg6Y6KvvvzJxMmcNymuLBMstcxvKUn+CN3+aCnpVHv5b4YGOJZmpHKEM1/OywXvp+DRfq93qkfvelOHG/dcUfwPj4tfrP10nLkAMyJWKkfLXvkoW1TfqOqYDk3hjJNyuFnYOyw46l+lX7SEoiooFQfJPq7kMafPfG+uJHwbtO8v5E0TIyCmjS7eJkpF/braBMxZwUIgBqjh+6jgCGD99H2RVPFKrh mholloway@wikimedia.org]
+    ssh_keys: []
     uid: 11963
   madhuvishy:
     ensure: present
