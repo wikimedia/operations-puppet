@@ -264,3 +264,13 @@ debdeploy_dbproxy:
   debdeploy::grains:
     debdeploy-db-dbproxy:
       value: standard
+debdeploy_dbcore-eqiad:
+  __regex: !ruby/regexp /^db10\d\.eqiad\.wmnet$/
+  debdeploy::grains:
+    debdeploy-db-core-eqiad:
+      value: standard
+debdeploy_dbcore-codfw:
+  __regex: !ruby/regexp /^db20\d\.codfw\.wmnet$/
+  debdeploy::grains:
+    debdeploy-db-core-codfw:
+      value: standard
