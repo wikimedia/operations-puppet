@@ -14,9 +14,7 @@ define confd::file (
     $content    = undef,
 ) {
 
-    if $ensure == 'present' {
-        include ::confd
-    }
+    include ::confd
 
     $safe_name = regsubst($name, '/', '_', 'G')
 
