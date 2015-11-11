@@ -12,7 +12,7 @@
 #
 # Sample Usage:
 #
-class toollabs::node::web inherits toollabs {
+class toollabs::node::web inherits toollabs::node {
 
     include gridengine::submit_host
 
