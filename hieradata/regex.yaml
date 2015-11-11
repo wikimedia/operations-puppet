@@ -245,7 +245,7 @@ swift_be_esams:
   ]
   swift_aux_partitions: ['/dev/sda3', '/dev/sdb3']
 debdeploy_dbstore:
-  __regex: !ruby/regexp /^dbstore[12]00[12]]\.(eqiad|codfw)\.wmnet$/
+  __regex: !ruby/regexp /^dbstore[12]00[12]\.(eqiad|codfw)\.wmnet$/
   debdeploy::grains:
     debdeploy-db-dbstore:
       value: standard
