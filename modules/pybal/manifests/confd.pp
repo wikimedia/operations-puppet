@@ -8,7 +8,7 @@ class pybal::confd {
     }
 
     file { '/usr/local/bin/pybal-eval-check':
-        ensure => file,
+        ensure => absent,
         mode   => '0555',
         source => 'puppet:///modules/pybal/pybal-eval-check.py',
     }
