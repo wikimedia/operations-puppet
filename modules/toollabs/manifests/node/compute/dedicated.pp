@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class toollabs::node::compute::dedicated {
+class toollabs::node::compute::dedicated inherits toollabs::node {
 
     if $::node_dedicated_tool {
 
