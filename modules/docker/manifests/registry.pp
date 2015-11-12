@@ -2,7 +2,7 @@ class docker::registry(
     $datapath = '/srv/registry',
 ){
 
-    require_package('docker-distribution')
+    require_package('docker-registry')
  
     $config = {
         'version' => '0.1',
@@ -28,8 +28,8 @@ class docker::registry(
 
     file { '/etc/docker/registry/config.yml':
         content => ordered_yaml($config),
-        owner   => 'docker-distributions',
-        group   => 'docker-distribution',
+        owner   => 'docker-registry',
+        group   => 'docker-registry',
         mode    => '0444',
     }
 
