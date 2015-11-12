@@ -232,7 +232,7 @@ groups:
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
-              vbaranetsky, dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak]
+              vbaranetsky, dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
