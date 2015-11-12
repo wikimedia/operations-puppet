@@ -57,10 +57,6 @@ class toollabs::redis (
         require           => Labs_lvm::Volume['redis-disk'],
     }
 
-    diamond::collector { 'Redis':
-        require => Class['::redis::client::python']
-    }
-
     package { 'python-virtualenv':
         ensure => latest,
     }
