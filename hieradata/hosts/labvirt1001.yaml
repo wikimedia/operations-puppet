@@ -1,1 +1,1 @@
-role::nova::compute::instance_dev: "/dev/sdb1"
+role::labs::openstack::nova::compute::instance_dev: "/dev/sdb1"
