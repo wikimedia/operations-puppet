@@ -1,0 +1,30 @@
+
+cluster: testvirt
+
+
+#
+# testlabs
+#
+labs_nova_controller: "labtestcontrol2001.wikimedia.org"
+# _spare is a duplicate/backup controller.  In theory it has the
+#  same state as the main controller
+labs_nova_controller_spare: "labtestcontrol2001.wikimedia.org"
+# _other is the controller in the other datacenter
+labs_nova_controller_other: "labtestcontrol2001.wikimedia.org"
+labs_glance_controller: "labtestcontrol2001.wikimedia.org"
+labs_puppet_master: "labtest-puppetmaster-codfw.wikimedia.org"
+labs_keystone_host: "labtestcontrol2001.wikimedia.org"
+# These are the old, soon-to-be-phased-out dns servers:
+labs_ldap_dns_host: "labtest-ns0.wikimedia.org"
+labs_ldap_dns_host_secondary: "labtest-ns0.wikimedia.org"
+# These are the up-and-coming, better dns servers:
+labs_dns_host: "labtest-ns2.wikimedia.org"
+labs_recursor: "labtest-recursor0.wikimedia.org"
+labs_designate_hostname: "labtestservices2001.wikimedia.org"
+labs_designate_hostname_secondary: "labtestservices2001.wikimedia.org"
+
+labs_nova_network_host: "labtestnet2001"
+labs_nova_network_ip: "10.192.20.5"
+labs_nova_api_host: "labtestnet2001.codfw.wmnet"
+
+labs_certmanager_hostname: "labtestservices2001.wikimedia.org"
