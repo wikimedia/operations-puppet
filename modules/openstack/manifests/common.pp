@@ -10,23 +10,24 @@ class openstack::common(
             $instance_status_wiki_pass,
             $openstack_version=$::openstack::version,
             ) {
+
     include openstack::repo
 
-    package { [ 'nova-common', 'python-keystone' ]:
-        ensure  => present,
-        require => Class['openstack::repo'];
-    }
-
-    package { [ 'unzip', 'vblade-persist', 'python-mysqldb', 'bridge-utils', 'ebtables', 'mysql-common' ]:
-        ensure  => present,
-        require => Class['openstack::repo'];
-    }
-
-    require mysql
-
-    # For IPv6 support
-    package { [ 'python-netaddr', 'radvd' ]:
-        ensure  => present,
+    package { [
+            'unzip',
+            'nova-common',
+            'vblade-persist',
+            'bridge-utils',
+            'ebtables',
+            'mysql-common',
+            'mysql-client-5.5',
+            'python-mysqldb',
+            'python-netaddr',
+            'python-keystone',
+            'python-novaclient',
+            'radvd',
+        ]:
+        ensure => present,
         require => Class['openstack::repo'];
     }
 
@@ -37,18 +38,11 @@ class openstack::common(
             group   => 'nogroup',
             mode    => '0440',
             require => Package['nova-common'];
-    }
-
-    file {
         '/etc/nova/api-paste.ini':
             content => template("openstack/${$openstack_version}/nova/api-paste.ini.erb"),
             owner   => 'nova',
             group   => 'nogroup',
             mode    => '0440',
             require => Package['nova-common'];
-    }
-
-    package { 'python-novaclient':
-        ensure => present,
     }
 }
