@@ -25,6 +25,11 @@
 #   $ rake spec
 #
 
+require 'bundler/setup'
+require 'rubocop/rake_task'
+
+RuboCop::RakeTask.new(:rubocop)
+
 # Only care about color when using a tty.
 if Rake.application.tty_output?
     # Since we are going to use puppet internal stuff, we might as
@@ -81,6 +86,9 @@ end
 task :run_puppet_lint do
     system('puppet-lint .')
 end
+
+desc 'Run all build/tests commands (CI entry point)'
+task test: [:rubocop]
 
 desc "Build documentation"
 task :doc do
