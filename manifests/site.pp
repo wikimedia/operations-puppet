@@ -993,7 +993,11 @@ node 'gadolinium.wikimedia.org' {
 
 # Continuous Integration
 node 'gallium.wikimedia.org' {
-    role ci::master, ci::slave, ci::website, zuul::production
+    role ci::master,
+        ci::slave,
+        ci::website,
+        zuul::merger,
+        zuul::server
 
     # T51846, let us sync VisualEditor in mediawiki/extensions.git
     sudo::user { 'jenkins-slave':
@@ -2492,7 +2496,7 @@ node /^wtp20(0[1-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
 # https://www.mediawiki.org/wiki/Gerrit
 node 'ytterbium.wikimedia.org' {
     # Note: whenever moving Gerrit out of ytterbium, you will need
-    # to update the role::zuul::production
+    # to update the role::zuul::configuration variable 'gerrit_server'
     role gerrit::production
     include standard
 

@@ -150,21 +150,3 @@ class role::zuul::merger {
     }
 
 } # /role::zuul::merger
-
-# Class: role::zuul::production
-#
-# Install the continuous integration Zuul instance for production usage.
-#
-# https://www.mediawiki.org/wiki/Continuous_integration/Zuul
-#
-# The Zuul git repositories are published over the git:// protocol by using git
-# daemon. That allows remote Jenkins slaves to fetch the references crafted by
-# Zuul when a change is submitted.
-#
-class role::zuul::production {
-    system::role { 'role::zuul::production (obsolete)': description => 'Zuul on production' }
-
-    include role::zuul::merger
-    include role::zuul::server
-
-} # /role::zuul::production
