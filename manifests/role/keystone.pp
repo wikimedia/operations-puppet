@@ -89,7 +89,7 @@ class role::keystone::redis {
         }
     }
 
-    class { '::redis':
+    class { '::redis::legacy':
         maxmemory                 => '250mb',
         persist                   => 'aof',
         redis_replication         => $replication,
@@ -103,7 +103,7 @@ class role::keystone::redis {
 class role::keystone::redis::labs {
     include passwords::openstack::keystone
 
-    class { '::redis':
+    class { '::redis::legacy':
         maxmemory                 => '250mb',
         persist                   => 'aof',
         redis_replication         => {

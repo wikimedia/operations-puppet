@@ -88,7 +88,7 @@ class role::deployment::server(
         require => File['/srv/deployment'],
     }
 
-    class { 'redis':
+    class { '::redis::legacy':
         dir       => '/srv/redis',
         maxmemory => '500Mb',
         monitor   => true,

@@ -13,7 +13,7 @@ class role::rcstream {
         description => 'MediaWiki Recent Changes stream',
     }
 
-    class { '::redis':
+    class { '::redis::legacy':
         maxmemory         => '100mb',
         dir               => '/var/run/redis',
         persist           => false,

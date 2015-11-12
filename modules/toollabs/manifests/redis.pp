@@ -34,7 +34,7 @@ class toollabs::redis (
         size    => '100%FREE',
     }
 
-    class { '::redis':
+    class { '::redis::legacy':
         dir               => '/srv/redis',
         maxmemory         => $maxmemory,
         # Disable the following commands, to try to limit people from
