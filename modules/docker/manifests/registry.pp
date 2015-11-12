@@ -3,7 +3,7 @@ class docker::registry(
 ){
 
     require_package('docker-registry')
- 
+
     $config = {
         'version' => '0.1',
         'storage' => {
@@ -17,6 +17,13 @@ class docker::registry(
         'http' => {
             'addr' => ':5000',
         },
+    }
+
+    file { $datapath:
+        ensure => directory,
+        mode   => '0775',
+        owner  => 'docker-registry',
+        group  => 'docker-registry',
     }
 
     # This is by default 0700 for some reason - nothing sensitive inside
