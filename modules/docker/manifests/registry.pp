@@ -51,7 +51,8 @@ class docker::registry(
         content => ordered_yaml($config),
         owner   => 'docker-registry',
         group   => 'docker-registry',
-        mode    => '0444',
+        mode    => '0440',
+        notify  => Service['docker-registry'],
     }
 
     service { 'docker-registry':
