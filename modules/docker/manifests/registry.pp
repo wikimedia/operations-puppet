@@ -4,6 +4,14 @@ class docker::registry(
 
     require_package('docker-registry')
 
+    ## Pretty bad hack, should be using a more generic thing
+    class { '::k8s::ssl':
+        provide_private => true,
+        user            => 'docker-registry',
+        group           => 'docker-registry',
+        target_basedir  => '/var/lib/docker-registry',
+    }
+
     $config = {
         'version' => '0.1',
         'storage' => {
@@ -14,8 +22,14 @@ class docker::registry(
                 'blobdescriptor' => 'inmemory',
             },
         },
-        'http' => {
+        'http'     => {
             'addr' => ':5000',
+            'host' => $::fqdn,
+            'tls'  => {
+                # FIXME: YOU SHOULD FEEL BAD ABOUT HARDCODING
+                'certificate' => '/var/lib/docker-registry/ssl/certs/cert.pem',
+                'key'         => '/var/lib/docker-registry/ssl/private_keys/server.key'
+            },
         },
     }
 
