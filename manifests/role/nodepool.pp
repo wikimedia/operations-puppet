@@ -8,10 +8,10 @@ class role::nodepool {
 
     system::role { 'role::nodepool': description => 'CI Nodepool' }
 
-    include role::nova::config
+    include role::labs::openstack::nova::config
     include passwords::nodepool
 
-    $novaconfig = $role::nova::config::novaconfig
+    $novaconfig = $role::labs::openstack::nova::config::novaconfig
 
     # dib scripts
     git::clone { 'integration/config':
