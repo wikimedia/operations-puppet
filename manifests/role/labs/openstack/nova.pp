@@ -1,4 +1,4 @@
-class role::nova::config {
+class role::labs::openstack::nova::config {
     include role::nova::config::eqiad
     include role::nova::config::codfw
 
@@ -15,7 +15,7 @@ class role::nova::config {
     }
 }
 
-class role::nova::config::common {
+class role::labs::openstack::nova::config::common {
     require openstack
     include passwords::openstack::nova
     include passwords::openstack::ceilometer
@@ -56,7 +56,7 @@ class role::nova::config::common {
     }
 }
 
-class role::nova::config::codfw inherits role::nova::config::common {
+class role::labs::openstack::nova::config::codfw inherits role::labs::openstack::nova::config::common {
     include role::keystone::config::eqiad
 
     $nova_controller = hiera('labs_nova_controller')
@@ -162,7 +162,7 @@ class role::nova::config::codfw inherits role::nova::config::common {
     $novaconfig = merge( $codfwnovaconfig, $commonnovaconfig )
 }
 
-class role::nova::config::eqiad inherits role::nova::config::common {
+class role::labs::openstack::nova::config::eqiad inherits role::labs::openstack::nova::config::common {
     include role::keystone::config::eqiad
 
     $nova_controller = hiera('labs_nova_controller')
@@ -275,9 +275,9 @@ class role::nova::config::eqiad inherits role::nova::config::common {
     }
 }
 
-class role::nova::common {
-    include role::nova::config
-    $novaconfig = $role::nova::config::novaconfig
+class role::labs::openstack::nova::common {
+    include role::labs::openstack::nova::config
+    $novaconfig = $role::labs::openstack::nova::config::novaconfig
 
     include passwords::misc::scripts
 
@@ -297,13 +297,13 @@ class role::nova::common {
         instance_status_wiki_pass        => $passwords::misc::scripts::wikinotifier_pass,
     }
 
-    include role::nova::wikiupdates
+    include role::labs::openstack::nova::wikiupdates
 }
 
 # This is the wikitech UI
-class role::nova::manager {
-    include role::nova::config
-    $novaconfig = $role::nova::config::novaconfig
+class role::labs::openstack::nova::manager {
+    include role::labs::openstack::nova::config
+    $novaconfig = $role::labs::openstack::nova::config::novaconfig
 
     case $::realm {
         'labs': {
@@ -375,14 +375,14 @@ class role::nova::manager {
 }
 
 # This is nova controller stuff
-class role::nova::controller {
+class role::labs::openstack::nova::controller {
     require openstack
-    include role::nova::config
-    $novaconfig = $role::nova::config::novaconfig
+    include role::labs::openstack::nova::config
+    $novaconfig = $role::labs::openstack::nova::config::novaconfig
 
     include role::keystone::config::eqiad
     include role::glance::config::eqiad
-    include role::nova::wikiupdates
+    include role::labs::openstack::nova::wikiupdates
 
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $glanceconfig = $::openstack_site_override ? {
@@ -400,7 +400,7 @@ class role::nova::controller {
         }
     }
 
-    include role::nova::common
+    include role::labs::openstack::nova::common
 
     class { 'openstack::nova::conductor':
         novaconfig        => $novaconfig,
@@ -436,32 +436,32 @@ class role::nova::controller {
     }
 }
 
-class role::nova::api {
+class role::labs::openstack::nova::api {
     require openstack
-    include role::nova::config
-    $novaconfig = $role::nova::config::novaconfig
+    include role::labs::openstack::nova::config
+    $novaconfig = $role::labs::openstack::nova::config::novaconfig
 
-    include role::nova::common
+    include role::labs::openstack::nova::common
 
     class { 'openstack::nova::api':
         novaconfig        => $novaconfig,
     }
 }
 
-class role::nova::network::bonding {
+class role::labs::openstack::nova::network::bonding {
     interface::aggregate { 'bond1':
         orig_interface => 'eth1',
         members        => [ 'eth1', 'eth2', 'eth3' ],
     }
 }
 
-class role::nova::network {
+class role::labs::openstack::nova::network {
     require openstack
-    include role::nova::config
-    $novaconfig = $role::nova::config::novaconfig
+    include role::labs::openstack::nova::config
+    $novaconfig = $role::labs::openstack::nova::config::novaconfig
 
-    include role::nova::common
-    include role::nova::wikiupdates
+    include role::labs::openstack::nova::common
+    include role::labs::openstack::nova::wikiupdates
 
     if ($::realm == production) {
         $site_address = $::site ? {
@@ -487,7 +487,7 @@ class role::nova::network {
     }
 }
 
-class role::nova::wikiupdates {
+class role::labs::openstack::nova::wikiupdates {
     require openstack
     if $::realm == 'production' {
         if ! defined(Package['python-mwclient']) {
@@ -513,15 +513,15 @@ class role::nova::wikiupdates {
     }
 }
 
-class role::nova::compute($instance_dev='/dev/md1') {
+class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
     require openstack
-    include role::nova::config
-    $novaconfig = $role::nova::config::novaconfig
+    include role::labs::openstack::nova::config
+    $novaconfig = $role::labs::openstack::nova::config::novaconfig
 
-    include role::nova::common
+    include role::labs::openstack::nova::common
     ganglia::plugin::python {'diskstat': }
 
-    system::role { 'role::nova::compute':
+    system::role { 'role::labs::openstack::nova::compute':
         ensure      => 'present',
         description => 'openstack nova compute node',
     }

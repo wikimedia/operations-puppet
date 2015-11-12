@@ -7,6 +7,7 @@ import 'network.pp'
 import 'nfs.pp'
 import 'role/*.pp'
 import 'role/analytics/*.pp'
+import 'role/labs/openstack/*.pp'
 
 # Include stages last
 import 'stages.pp'
@@ -1191,7 +1192,7 @@ node 'labcontrol1001.wikimedia.org' {
     $is_puppet_master      = true
     $is_labs_puppet_master = true
     $use_neutron           = false
-    role nova::controller
+    role labs::openstack::nova::controller
 
     include standard
     include ldap::role::client::labs
@@ -1242,8 +1243,8 @@ node 'labcontrol2001.wikimedia.org' {
     include base::firewall
     include ldap::role::client::labs
 
-    #include role::nova::controller
-    #include role::nova::manager
+    #include role::labs::openstack::nova::controller
+    #include role::labs::openstack::nova::manager
     #include role::salt::masters::labs
     #include role::deployment::salt_masters
 }
@@ -1263,7 +1264,7 @@ node 'labnet1001.eqiad.wmnet' {
     if $use_neutron == true {
         #include role::neutron::nethost
     } else {
-        #include role::nova::network
+        #include role::labs::openstack::nova::network
     }
 }
 
@@ -1276,7 +1277,7 @@ node 'labnet1002.eqiad.wmnet' {
     if $use_neutron == true {
         include role::neutron::nethost
     } else {
-        include role::nova::network
+        include role::labs::openstack::nova::network
     }
 }
 
