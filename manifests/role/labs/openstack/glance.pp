@@ -1,4 +1,4 @@
-class role::glance::config {
+class role::labs::openstack::glance::config {
     include passwords::openstack::glance
     include passwords::labs::rabbitmq
 
@@ -11,9 +11,9 @@ class role::glance::config {
     }
 }
 
-class role::glance::config::eqiad inherits role::glance::config {
-    include role::keystone::config::eqiad
-    $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
+class role::labs::openstack::glance::config::eqiad inherits role::labs::openstack::glance::config {
+    include role::labs::openstack::keystone::config::eqiad
+    $keystoneconfig = $role::labs::openstack::keystone::config::eqiad::keystoneconfig
     $keystone_host = hiera('labs_keystone_host')
 
     $db_host = $::realm ? {
@@ -40,16 +40,16 @@ class role::glance::config::eqiad inherits role::glance::config {
     $glanceconfig = merge($eqiadglanceconfig, $commonglanceconfig)
 }
 
-class role::glance::server {
-    include role::glance::config::eqiad
+class role::labs::openstack::glance::server {
+    include role::labs::openstack::glance::config::eqiad
 
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $glanceconfig = $::openstack_site_override ? {
-            'eqiad' => $role::glance::config::eqiad::glanceconfig,
+            'eqiad' => $role::labs::openstack::glance::config::eqiad::glanceconfig,
         }
     } else {
         $glanceconfig = $::site ? {
-            'eqiad' => $role::glance::config::eqiad::glanceconfig,
+            'eqiad' => $role::labs::openstack::glance::config::eqiad::glanceconfig,
         }
     }
 

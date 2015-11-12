@@ -7,6 +7,7 @@ import 'network.pp'
 import 'nfs.pp'
 import 'role/*.pp'
 import 'role/analytics/*.pp'
+import 'role/labs/openstack/*.pp'
 
 # Include stages last
 import 'stages.pp'
@@ -1191,7 +1192,7 @@ node 'labcontrol1001.wikimedia.org' {
     $is_puppet_master      = true
     $is_labs_puppet_master = true
     $use_neutron           = false
-    role nova::controller
+    role labs::openstack::nova::controller
 
     include standard
     include ldap::role::client::labs
@@ -1217,7 +1218,7 @@ node 'labcontrol1002.wikimedia.org' {
     $is_labs_puppet_master = true
     $use_neutron           = false
 
-    role nova::controller
+    role labs::openstack::nova::controller
     include standard
     include ldap::role::client::labs
     include role::salt::masters::labs
@@ -1242,8 +1243,8 @@ node 'labcontrol2001.wikimedia.org' {
     include base::firewall
     include ldap::role::client::labs
 
-    #include role::nova::controller
-    #include role::nova::manager
+    #include role::labs::openstack::nova::controller
+    #include role::labs::openstack::nova::manager
     #include role::salt::masters::labs
     #include role::deployment::salt_masters
 }
@@ -1257,26 +1258,26 @@ node 'labmon1001.eqiad.wmnet' {
 node 'labnet1001.eqiad.wmnet' {
     $use_neutron = false
 
-    role nova::api
+    role labs::openstack::nova::api
     include standard
 
     if $use_neutron == true {
         #include role::neutron::nethost
     } else {
-        #include role::nova::network
+        #include role::labs::openstack::nova::network
     }
 }
 
 node 'labnet1002.eqiad.wmnet' {
     $use_neutron = false
 
-    role nova::api
+    role labs::openstack::nova::api
     include standard
 
     if $use_neutron == true {
         include role::neutron::nethost
     } else {
-        include role::nova::network
+        include role::labs::openstack::nova::network
     }
 }
 
@@ -2307,7 +2308,7 @@ node /^scb100[12]\.eqiad\.wmnet$/ {
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
-    role nova::manager, mariadb::wikitech
+    role labs::openstack::nova::manager, mariadb::wikitech
     include base::firewall
     include standard
 
@@ -2465,7 +2466,7 @@ node 'uranium.wikimedia.org' {
 node /^labvirt100[0-9].eqiad.wmnet/ {
     $use_neutron = false
     openstack::nova::partition{ '/dev/sdb': }
-    role nova::compute
+    role labs::openstack::nova::compute
     include standard
 
     if $use_neutron == true {
@@ -2475,7 +2476,7 @@ node /^labvirt100[0-9].eqiad.wmnet/ {
 
 node /^labvirt101[0-1].eqiad.wmnet/ {
     $use_neutron = false
-    role nova::compute
+    role labs::openstack::nova::compute
     include standard
 
     if $use_neutron == true {

@@ -1,4 +1,4 @@
-class role::designate::config {
+class role::labs::openstack::designate::config {
     include openstack
     include passwords::designate
     include passwords::pdns
@@ -19,8 +19,8 @@ class role::designate::config {
     }
 }
 
-class role::designate::config::eqiad inherits role::designate::config {
-    include role::keystone::config::eqiad
+class role::labs::openstack::designate::config::eqiad inherits role::labs::openstack::designate::config {
+    include role::labs::openstack::keystone::config::eqiad
 
     $nova_controller = hiera('labs_nova_controller')
 
@@ -32,7 +32,7 @@ class role::designate::config::eqiad inherits role::designate::config {
         }
     }
 
-    $keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
+    $keystoneconfig = $role::labs::openstack::keystone::config::eqiad::keystoneconfig
 
     $db_host = $::realm ? {
         'production' => 'm5-master.eqiad.wmnet',
@@ -64,16 +64,16 @@ class role::designate::config::eqiad inherits role::designate::config {
     $designateconfig = merge($eqiaddesignateconfig, $commondesignateconfig)
 }
 
-class role::designate::server {
-    include role::designate::config::eqiad
+class role::labs::openstack::designate::server {
+    include role::labs::openstack::designate::config::eqiad
 
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $designateconfig = $::openstack_site_override ? {
-            'eqiad' => $role::designate::config::eqiad::designateconfig,
+            'eqiad' => $role::labs::openstack::designate::config::eqiad::designateconfig,
         }
     } else {
         $designateconfig = $::site ? {
-            'eqiad' => $role::designate::config::eqiad::designateconfig,
+            'eqiad' => $role::labs::openstack::designate::config::eqiad::designateconfig,
         }
     }
 
