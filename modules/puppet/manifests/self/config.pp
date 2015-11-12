@@ -50,7 +50,7 @@ class puppet::self::config(
     # /var/lib/puppet/ssl to avoid conflicts with previously
     # generated puppet certificates from the normal puppet setup.
     if $is_puppetmaster {
-        $ssldir = '/var/lib/puppet/server/ssl'
+        $ssldir = puppet_ssldir('master')
         # include puppetmaster::ssl for self hosted
         # puppetmasters.  (This sets up the ssl directories).
         class { 'puppetmaster::ssl':
@@ -64,7 +64,7 @@ class puppet::self::config(
         Exec['compile puppet.conf'] -> Class['puppetmaster::ssl']
     }
     else {
-        $ssldir = '/var/lib/puppet/client/ssl'
+        $ssldir = puppet_ssldir('client')
         # ensure $ssldir's parent dir exists
         # so that puppet can create $ssldir.
         file { '/var/lib/puppet/client':
