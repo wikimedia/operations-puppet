@@ -18,18 +18,6 @@ class redis::legacy (
 ) {
     include ::redis
 
-    package { 'redis-server':
-        ensure => present,
-    }
-
-    file { $dir:
-        ensure  => directory,
-        owner   => 'redis',
-        group   => 'redis',
-        mode    => '0755',
-        require => Package['redis-server'],
-    }
-
     file { '/etc/redis/redis.conf':
         content => template('redis/redis.conf.erb'),
         owner   => 'root',
