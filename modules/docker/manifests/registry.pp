@@ -3,7 +3,7 @@ class docker::registry(
 ){
 
     require_package('docker-distribution')
-
+ 
     $config = {
         'version' => '0.1',
         'storage' => {
