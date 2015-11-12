@@ -1074,7 +1074,7 @@ node 'holmium.wikimedia.org' {
 
     include base::firewall
     include role::labsdnsrecursor
-    include role::designate::server
+    include role::labs::openstack::designate::server
 
     include ldap::role::client::labs
 }
@@ -1086,7 +1086,7 @@ node 'labservices1001.wikimedia.org' {
 
     include base::firewall
     include role::labsdnsrecursor
-    include role::designate::server
+    include role::labs::opensatck::designate::server
 
     include ldap::role::client::labs
 }

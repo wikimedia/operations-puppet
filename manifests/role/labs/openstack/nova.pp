@@ -286,7 +286,7 @@ class role::labs::openstack::nova::common {
             'labs'       => $::osm_hostname,
     }
 
-    class { 'openstack::common':
+    class { '::openstack::common':
         novaconfig                       => $novaconfig,
         instance_status_wiki_host        => $status_wiki_host_master,
         instance_status_wiki_domain      => 'labs',
@@ -342,7 +342,7 @@ class role::labs::openstack::nova::manager {
         rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
     }
 
-    class { 'openstack::openstack-manager':
+    class { '::openstack::openstack-manager':
         novaconfig  => $novaconfig,
         certificate => $certificate,
     }
@@ -402,16 +402,16 @@ class role::labs::openstack::nova::controller {
 
     include role::labs::openstack::nova::common
 
-    class { 'openstack::nova::conductor':
+    class { '::openstack::nova::conductor':
         novaconfig        => $novaconfig,
     }
-    class { 'openstack::nova::scheduler':
+    class { '::openstack::nova::scheduler':
         novaconfig        => $novaconfig,
     }
-    class { 'openstack::glance::service':
+    class { '::openstack::glance::service':
         glanceconfig      => $glanceconfig,
     }
-    class { 'openstack::queue-server':
+    class { '::openstack::queue-server':
         novaconfig        => $novaconfig,
     }
     class { 'role::labs::openstack::keystone::server':
@@ -419,15 +419,15 @@ class role::labs::openstack::nova::controller {
     }
 
     if $::realm == 'production' {
-        class { 'openstack::controller_firewall': }
+        class { '::openstack::controller_firewall': }
         include role::labs::puppetmaster
     }
 
-    class { 'openstack::adminscripts':
+    class { '::openstack::adminscripts':
         novaconfig => $novaconfig
     }
 
-    class { 'openstack::spreadcheck':
+    class { '::openstack::spreadcheck':
         novaconfig => $novaconfig
     }
 
@@ -443,7 +443,7 @@ class role::labs::openstack::nova::api {
 
     include role::labs::openstack::nova::common
 
-    class { 'openstack::nova::api':
+    class { '::openstack::nova::api':
         novaconfig        => $novaconfig,
     }
 }
@@ -482,7 +482,7 @@ class role::labs::openstack::nova::network {
         down           => 'ip link set $IFACE down',
     }
 
-    class { 'openstack::nova::network':
+    class { '::openstack::nova::network':
         novaconfig        => $novaconfig,
     }
 }
@@ -537,7 +537,7 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
         }
     }
 
-    class { 'openstack::nova::compute':
+    class { '::openstack::nova::compute':
         novaconfig        => $novaconfig,
     }
 
