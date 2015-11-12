@@ -19,6 +19,13 @@ class docker::registry(
         },
     }
 
+    file { $datapath:
+        ensure => directory,
+        mode   => '0775',
+        owner  => 'docker-registry',
+        group  => 'docker-registry',
+    }
+
     # This is by default 0700 for some reason - nothing sensitive inside
     # that doesn't have additional protection
     file { '/etc/docker':
