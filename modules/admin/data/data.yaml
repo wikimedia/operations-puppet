@@ -1225,7 +1225,8 @@ users:
     gid: 500
     name: ori
     realname: Ori Livneh
-    ssh_keys: []
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwniGVe6HpYxdbN9IQl+Lb0n0tJE1/KfywrHP0x+7FwK6piUP+sj3IsoZXrxS2TGOQ1pJ6FFaHUDskt5coGX5QmAQXJjsGVU3cQkuARvQGZ3Y3SvUSqJ5Sn3s5fVTPWWbQfNkhE4ARuA2GhiJMyGRGvy5SFKwcim+cUSt95vy+rKWi+Qptb25gGC2SMbaaZX97N6LWj7JOVoodgeyG2S8t3lxIi2U7fUKRShVmZWFSfD3KnspFN9TsTYskQjzizDVYUyw5qpDDL/u/ycGGXwgcI7c8ZD5LvtE8rzkG+a+79xdT1xkhWXavO4OWN6iIB/GpoFkFW+G2ldh3sNnhvgM9 wmf
     uid: 2220
   jkrauska:
     ensure: present
