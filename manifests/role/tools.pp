@@ -18,6 +18,17 @@ class role::toollabs::etcd {
     }
 }
 
+class role::toollabs::docker::registry {
+    include role::toollabs::puppet::client
+    include ::toollabs::infrastructure
+
+    require role::labs::lvm::srv
+
+    class { '::docker::registry':
+        datapath => '/srv/registry',
+    }
+}
+
 class role::toollabs::puppet::master {
     include ::toollabs::infrastructure
     include ::toollabs::puppetmaster
