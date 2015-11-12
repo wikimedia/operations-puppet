@@ -20,6 +20,13 @@ class base::certificates {
         source  => 'puppet:///modules/base/ca/GlobalSign_Organization_Validation_CA_-_SHA256_-_G2.crt',
     }
 
+    $self_puppetmaster = hiera('role::puppet::self::master', $::puppetmaster)
+    $puppet_ssl_dir = ssldir($self_puppetmaster)
+
+    sslcert::ca { 'Puppet_Internal_CA':
+        source => "${puppet_ssl_dir}/certs/ca.pem"
+    }
+
     # install all CAs before generating certificates
     Sslcert::Ca <| |> -> Sslcert::Certificate<| |>
 }
