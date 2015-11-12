@@ -1760,14 +1760,14 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
         ensure => 'directory',
     }
 
-    include redis
+    include redis::legacy
     include redis::ganglia
 }
 
 node /^mc20[01][0-9]\.codfw\.wmnet/ {
     role memcached
     include passwords::redis
-    include redis
+    include redis::legacy
     include redis::ganglia
 
 }

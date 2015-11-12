@@ -1,7 +1,7 @@
 class redis::ganglia {
-    include redis
+    include redis::legacy
 
-    $password = $redis::password
+    $password = $redis::legacy::password
 
     file { '/etc/ganglia/conf.d/redis.pyconf':
         owner   => 'root',

@@ -354,7 +354,7 @@ class role::ci::slave::browsertests {
     }
 
     # For CirrusSearch testing:
-    class { '::redis':
+    class { '::redis::legacy':
         maxmemory                 => '128mb',
         persist                   => 'aof',
         redis_replication         => undef,

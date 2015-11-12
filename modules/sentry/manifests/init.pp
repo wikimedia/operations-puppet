@@ -34,7 +34,7 @@ class sentry (
     include ::nginx
     include ::nginx::ssl
     include ::postgresql::server
-    include ::redis
+    include ::redis::legacy
 
     require sentry::packages
 

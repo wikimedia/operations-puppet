@@ -10,7 +10,7 @@ class ircyall(
     $web_port = 80,
 ) {
 
-    class { 'redis':
+    class { '::redis::legacy':
         persist => 'aof',
     }
 
