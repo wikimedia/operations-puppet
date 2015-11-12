@@ -29,7 +29,7 @@ class role::db::redis (
         srange => '$ALL_NETWORKS',
     }
 
-    class { '::redis':
+    class { '::redis::legacy':
         maxmemory         => $maxmemory,
         dir               => $dir,
         persist           => 'aof',

@@ -62,7 +62,7 @@ class quarry::database {
 # by the Quarry frontends and also as working queue & results
 # backend by the query runners.
 class quarry::redis {
-    class { '::redis':
+    class { '::redis::legacy':
         dir       => '/srv/redis',
         maxmemory => '2GB',
         persist   => 'aof',

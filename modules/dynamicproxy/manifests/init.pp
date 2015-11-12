@@ -39,7 +39,7 @@ class dynamicproxy (
 
     $resolver = join($::nameservers, ' ')
 
-    class { '::redis':
+    class { '::redis::legacy':
         persist           => 'aof',
         dir               => '/var/lib/redis',
         maxmemory         => $redis_maxmemory,
