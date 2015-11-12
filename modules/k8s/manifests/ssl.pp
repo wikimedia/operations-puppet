@@ -7,49 +7,56 @@ class k8s::ssl(
     $user = 'root',
     $group = 'root',
     $ssldir = '/var/lib/puppet/client/ssl', # FIXME: This is different for self hosted puppet vs not. WHY?
+    $target_basedir = '/var/lib/kubernetes'
 ) {
     $puppet_cert_name = $::fqdn
 
-
-    file { [
-        '/var/lib/kubernetes',
-        '/var/lib/kubernetes/ssl',
-        '/var/lib/kubernetes/ssl/certs',
-        '/var/lib/kubernetes/ssl/private_keys',
-    ]:
+    file { $target_basedir:
         ensure => directory,
         owner  => $user,
         group  => $group,
-        mode   => '0555',
+        mode   => '0755', # more permissive!
+    }
+
+    file { [
+        "${target_basedir}/ssl",
+        "${target_basedir}/ssl/certs",
+        "${target_basedir}/ssl/private_keys",
+    ]:
+        ensure  => directory,
+        owner   => $user,
+        group   => $group,
+        mode    => '0555',
+        require => File[$target_basedir], # less permissive
     }
 
 
-    file { '/var/lib/kubernetes/ssl/certs/ca.pem':
+    file { "${target_basedir}/ssl/certs/ca.pem":
         ensure  => present,
         owner   => $user,
         group   => $group,
         mode    => '0444',
         source  => "${ssldir}/certs/ca.pem",
-        require => File['/var/lib/kubernetes/ssl/certs'],
+        require => File["${target_basedir}/ssl/certs"],
     }
 
-    file { '/var/lib/kubernetes/ssl/certs/cert.pem':
+    file { "${target_basedir}/ssl/certs/cert.pem":
         ensure  => present,
         owner   => $user,
         group   => $group,
         mode    => '0400',
         source  => "${ssldir}/certs/${puppet_cert_name}.pem",
-        require => File['/var/lib/kubernetes/ssl/certs/ca.pem'],
+        require => File["${target_basedir}/ssl/certs/ca.pem"],
     }
 
     if $provide_private {
-        file { '/var/lib/kubernetes/ssl/private_keys/server.key':
+        file { "${target_basedir}/ssl/private_keys/server.key":
             ensure  => present,
             owner   => $user,
             group   => $group,
             mode    => '0400',
             source  => "${ssldir}/private_keys/${puppet_cert_name}.pem",
-            require => File['/var/lib/kubernetes/ssl/private_keys'],
+            require => File["${target_basedir}/ssl/private_keys"],
         }
     }
 }
