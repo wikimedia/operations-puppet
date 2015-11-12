@@ -1,3 +1,14 @@
+# == Class: redis
+#
+# Redis is an in-memory data store with support for rich data structures,
+# scripting, transactions, persistence, and high availability.
+#
 class redis {
-  # placeholder for a new-and-improved redis class
+    require_package('redis-server')
+
+    file { '/srv/redis':
+        owner => 'redis',
+        group => 'redis',
+        mode  => '0755',
+    }
 }
