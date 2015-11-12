@@ -2299,7 +2299,7 @@ node /^(strontium|rhodium).eqiad.wmnet/ {
 }
 
 node 'stat1001.eqiad.wmnet' {
-    role statistics::web, abacist
+    role statistics::web
     include standard
     include base::firewall
 }
