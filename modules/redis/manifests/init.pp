@@ -1,3 +1,9 @@
 class redis {
-  # placeholder for a new-and-improved redis class
+    require_package('redis-server')
+
+    file { '/srv/redis':
+        owner   => 'redis',
+        group   => 'redis',
+        mode    => '0755',
+    }
 }
