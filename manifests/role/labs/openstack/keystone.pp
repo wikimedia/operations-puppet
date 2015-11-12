@@ -1,4 +1,4 @@
-class role::keystone::config {
+class role::labs::openstack::keystone::config {
     include passwords::openstack::keystone
 
     $commonkeystoneconfig = {
@@ -21,7 +21,7 @@ class role::keystone::config {
     }
 }
 
-class role::keystone::config::eqiad inherits role::keystone::config {
+class role::labs::openstack::keystone::config::eqiad inherits role::labs::openstack::keystone::config {
 
     $keystone_host = hiera('labs_keystone_host')
 
@@ -56,25 +56,25 @@ class role::keystone::config::eqiad inherits role::keystone::config {
     $keystoneconfig = merge($eqiadkeystoneconfig, $commonkeystoneconfig)
 }
 
-class role::keystone::server ($glanceconfig) {
-    include role::keystone::config::eqiad
+class role::labs::openstack::keystone::server ($glanceconfig) {
+    include role::labs::openstack::keystone::config::eqiad
 
     if $::realm == 'labs' and $::openstack_site_override != undef {
         $keystoneconfig = $::openstack_site_override ? {
-            'eqiad' => $role::keystone::config::eqiad::keystoneconfig,
+            'eqiad' => $role::labs::openstack::keystone::config::eqiad::keystoneconfig,
         }
     } else {
         $keystoneconfig = $::site ? {
-            'eqiad' => $role::keystone::config::eqiad::keystoneconfig,
+            'eqiad' => $role::labs::openstack::keystone::config::eqiad::keystoneconfig,
         }
     }
 
     class { 'openstack::keystone::service': keystoneconfig => $keystoneconfig, glanceconfig => $glanceconfig }
 
-    include role::keystone::redis
+    include role::labs::openstack::keystone::redis
 }
 
-class role::keystone::redis {
+class role::labs::openstack::keystone::redis {
     include passwords::openstack::keystone
 
     $nova_controller = hiera('labs_nova_controller')
@@ -100,7 +100,7 @@ class role::keystone::redis {
 }
 
 
-class role::keystone::redis::labs {
+class role::labs::openstack::keystone::redis::labs {
     include passwords::openstack::keystone
 
     class { '::redis::legacy':
