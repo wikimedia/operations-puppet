@@ -77,7 +77,7 @@ class role::ocg::test {
         srange => '$INTERNAL',
     }
 
-    class { 'redis':
+    class { 'redis::legacy':
         maxmemory => '500Mb',
         password  => $passwords::redis::ocg_test_password,
     }

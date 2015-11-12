@@ -267,7 +267,7 @@ class role::wikimetrics {
     # than the default redis.conf.erb template allows.
     $redis_dir        = '/a/redis'
     $redis_dbfilename = "${hostname}-6379.rdb"
-    class { '::redis':
+    class { '::redis::legacy':
         dir                         => $redis_dir,
         dbfilename                  => $redis_dbfilename,
         saves                       => [ '900 1', '300 10', '60 20' ],

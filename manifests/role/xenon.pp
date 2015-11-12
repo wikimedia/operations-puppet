@@ -10,7 +10,7 @@ class role::xenon {
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
 
-    class { '::redis':
+    class { '::redis::legacy':
         maxmemory         => '1Mb',
         persist           => undef,
         redis_replication => undef,
