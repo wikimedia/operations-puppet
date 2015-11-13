@@ -1039,7 +1039,8 @@ users:
     gid: 500
     name: nuria
     realname: Nuria Ruiz
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIUCvA8K9rgp4n0hCJxbFt66CSbo9JhkSvQwlMj4+mxj9Mypf5/TLoRVPNVEwF4htjKmMdtaXDzGDTJUJPh9SPWqi1wP0YGydxv7z8BAIgaRliCHycviGE3nHjcxkiG+U2zxBL7Bc/Jy7d5Ky2qC/5Nu7jhBRF+kq3haZ0zx0T0cSmTvvUDfKt27uuLWxBA8Z4z2kNYVCpVL4pvlGPkqhZO75wPIUsCAlPH3Tq+Cq8FIc7BoZgjFQ+g6okpUF2PZY4eVoMR2MS8WIwQlOXwe+AMh+JEgq7oH//LN03IDX7YJQCNbmJ6MR0YdB1TOQHF/RKFImGBdDEC0vx6/QeIVOr
+        nuria@wikimedia.org-production]
     uid: 4193
   csalvia:
     ensure: absent
@@ -1351,7 +1352,7 @@ users:
     gid: 500
     name: bmansurov
     realname: Bahodir Mansurov
-    ssh_keys: []
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC50DOWu62crD61EV/CKVpA4velNf0sExkBqn4+j6mkSfjBQ3u1NbIiTuRevJ1QejKLrwt+r6RTFH6Zo8HdhumnfHLemNb6b6lPI3X+t9zMP9bfstnE7KpSvAIEPuN83nR9nfs0hMndcqsR1jmSs+zAfZ9rPorIcaGKGnsscao1Xv22yvGk6zAtbQmkEW0uH8d339EgVo9WSVWcJL3EgDuunJyy28XWqjB+YTYxiwlHnla4YZXsXm9YxoC3PNYbe83jDfxkG0TTqW5BSYeVaOwtwRpYiW6pWU3tNyCX6RUx57IhuC2TTshox05EhsREC0eYQcUAny9PAYf5moehRY8V bmansurov@wikimedia.org]
     uid: 10570
   west1:
     ensure: present
