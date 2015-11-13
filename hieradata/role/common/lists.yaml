@@ -6,9 +6,6 @@ mailman::lists_ip:
 mailman::server_ip:
   - '208.80.154.61'
   - '2620:0:861:1:208:80:154:61'
-admin::groups:
-  - mailman-admins
-contactgroups: admins,mailman-admins
 debdeploy::grains:
   debdeploy-lists:
     value: standard

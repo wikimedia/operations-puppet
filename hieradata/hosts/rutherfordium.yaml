@@ -34,7 +34,6 @@ admin::groups:
   - kartotherian-admin
   - ldap-admins
   - logstash-roots
-  - mailman-admins
   - maps-admins
   - mathoid-admin
   - mathoid-roots
