@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # hiera_lookup: hiera lookup tool
 
-def usage(error=nil)
+def usage(error='')
   msg = <<-end
 hiera_lookup: hiera lookup tool
 Usage: hiera_lookup --fqdn=FQDN [--site=SITE] [--roles=ROLE1,ROLE2] KEY
@@ -11,9 +11,7 @@ If site is not provided, it will be derived from the FQDN whenever possible
 
 Example: hiera_lookup --fqdn=mw1020.eqiad.wmnet --roles=mediawiki::appserver admin::groups
 end
-  if error
     msg << error
-  end
 end
 
 begin
