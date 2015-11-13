@@ -1,0 +1,11 @@
+# THIS FILE IS MANAGED BY UPPET
+
+check host etherpad with address etherpad.wikimedia.org
+    start "/usr/sbin/service apache2 start"
+    stop "/usr/sbin/service apache2 stop"
+    if failed 
+        port 443
+        protocol HTTPS
+        request /
+        with timeout 10 seconds
+        then restart
