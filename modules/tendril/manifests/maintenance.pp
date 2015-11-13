@@ -8,11 +8,11 @@ class tendril::maintenance (
     $tendril_host,
     $tendril_user,
     $tendril_password,
-    $tendril_database = 'tendril',
+    $tendril_db = 'tendril',
     $tendril_port = 3306,
     $wd_user = undef,
     $wd_password = undef,
-    ){
+){
 
     # We want to control if cron is running, not if the scripts are installed.
     Cron {
