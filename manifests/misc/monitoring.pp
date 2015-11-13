@@ -6,7 +6,7 @@ class misc::monitoring::views {
     include role::analytics::kafka::config
 
     misc::monitoring::view::udp2log { 'udp2log':
-        host_regex => 'erbium|gadolinium',
+        host_regex => 'gadolinium',
     }
 
     $kafka_log_disks_regex = join($::role::analytics::kafka::config::log_disks, '|')

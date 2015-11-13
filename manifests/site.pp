@@ -4,7 +4,6 @@
 import 'realm.pp' # These ones first
 import 'misc/*.pp'
 import 'network.pp'
-import 'nfs.pp'
 import 'role/*.pp'
 import 'role/analytics/*.pp'
 
@@ -848,17 +847,12 @@ node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
     }
 }
 
-# erbium is a webrequest udp2log host
+# erbium was previously  a webrequest udp2log host.
+# It is currently spare.
 node 'erbium.eqiad.wmnet' {
-    role logging, logging::udp2log::erbium, logging::kafkatee::webrequest::fundraising
+    role spare
+
     include standard
-
-    # logging::udp2log::erbium :
-    # gadolinium hosts the separate nginx webrequest udp2log instance.
-
-    # logging::kafkatee::webrequest::fundraising :
-    # Include kafkatee fundraising outputs alongside of udp2log
-    # while FR techs verify that they can use this output.
 }
 
 # External Storage, Shard 1 (es1) databases
