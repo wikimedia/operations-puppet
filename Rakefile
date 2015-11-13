@@ -1,31 +1,29 @@
-=begin
-This rakefile is meant to trigger your local puppet-linter. To take
-advantage of that powerful linter, you must have the puppet and
-puppet-lint gems:
-
-  $ sudo gem install puppet
-  $ sudo gem install puppet-lint
-
-Then run the linter using rake (a ruby build helper):
-
-  $ rake lint
-
-A list of top errors can be obtained using:
-  $ rake lint |rev |cut -d\  -f4- | rev | sort | uniq -c | sort -rn
-
-puppet-lint doc is at https://github.com/rodjek/puppet-lint
-
-
-Another target is spec, which runs unit/integration tests. You will need some
-more gems installed:
-
-  $ sudo gem install puppet rspec puppetlabs_spec_helper
-
-Then:
-
-  $ rake spec
-
-=end
+# This rakefile is meant to trigger your local puppet-linter. To take
+# advantage of that powerful linter, you must have the puppet and
+# puppet-lint gems:
+#
+#   $ sudo gem install puppet
+#   $ sudo gem install puppet-lint
+#
+# Then run the linter using rake (a ruby build helper):
+#
+#   $ rake lint
+#
+# A list of top errors can be obtained using:
+#   $ rake lint |rev |cut -d\  -f4- | rev | sort | uniq -c | sort -rn
+#
+# puppet-lint doc is at https://github.com/rodjek/puppet-lint
+#
+#
+# Another target is spec, which runs unit/integration tests. You will need some
+# more gems installed:
+#
+#   $ sudo gem install puppet rspec puppetlabs_spec_helper
+#
+# Then:
+#
+#   $ rake spec
+#
 
 # Only care about color when using a tty.
 if Rake.application.tty_output?
@@ -35,7 +33,6 @@ if Rake.application.tty_output?
     begin
         require'puppet/util/colors'
         include Puppet::Util::Colors
-        $enable_color=true
     rescue LoadError
         puts "Cant load puppet/util/colors .. no color for you!"
     end
@@ -43,8 +40,8 @@ end
 
 unless respond_to? :console_color
     # Define our own colorization method that simply outputs the message.
-    def console_color( level, message )
-        return message
+    def console_color(_level, message)
+        message
     end
 end
 
@@ -87,7 +84,8 @@ end
 
 desc "Build documentation"
 task :doc do
-    doc_cmd = ["puppet doc",
+    doc_cmd = [
+        "puppet doc",
         "--mode rdoc",
         "--all",  # build all references
         "--manifestdir manifests",
@@ -101,28 +99,28 @@ desc "Lint puppet files"
 task :lint => :run_puppet_lint
 
 desc "Validate puppet syntax (default: manifests/site.pp)"
-task :validate, [:files ] do |t, args|
+task :validate, [:files ] do |_t, args|
 
     success = true
 
     if args.files
-        puts console_color( :info, "Validating " + args.files.inspect )
+        puts console_color(:info, "Validating " + args.files.inspect)
         ok = puppet_parser_validate args.files
     else
         ok = puppet_parser_validate 'manifests/site.pp'
-        success = success && ok
+        success &&= ok
 
         Dir.glob("modules/*").each do |dir|
-            puts console_color( :info, "Validating manifests in '#{dir}'" )
-            ok = puppet_parser_validate Dir.glob( "#{dir}/**/*.pp" )
-            success = success && ok
+            puts console_color(:info, "Validating manifests in '#{dir}'")
+            ok = puppet_parser_validate Dir.glob("#{dir}/**/*.pp")
+            success &&= ok
         end
     end
 
     if success
-        puts "[OK] " + console_color( :info,  "files looks fine!" )
+        puts "[OK] " + console_color(:info,  "files looks fine!")
     else
-        raise console_color( :alert, "puppet failed to validate files (exit: #{res.exitstatus}" )
+        raise console_color(:alert, "puppet failed to validate files (exit: #{res.exitstatus}")
     end
 end
 
@@ -143,7 +141,7 @@ task :spec do
 
         module_name = rakefile.match('modules/(.+)/')[1]
 
-        if not run_module_spec(module_name)
+        if !run_module_spec(module_name)
             failed_modules << module_name  # recording
         end
         puts "\n"
@@ -200,7 +198,6 @@ def run_module_spec(module_name)
 end
 
 
-=begin lint
-amass profit
-donate!
-=end
+# lint
+# amass profit
+# donate!
