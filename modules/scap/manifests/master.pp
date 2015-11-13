@@ -38,12 +38,20 @@ class scap::master(
         deployment_group => $deployment_group,
     }
 
-    # Allow rsync of common module to mediawiki-staging as GID=wikidev
+    file { '/usr/local/bin/scap-master-sync':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/scap-master-sync',
+    }
+
+    # Allow rsync of common module to mediawiki-staging as root.
     # This is for master-master sync of /srv/mediawiki-staging
     sudo::user { 'scap-master-sync':
         user       => 'mwdeploy',
         privileges => [
-            'ALL = (mwdeploy:wikidev) NOPASSWD: /usr/bin/rsync *\:\:common /srv/mediawiki-staging',
+            'ALL = (root) NOPASSWD: /usr/local/bin/scap-master-sync',
         ]
     }
 }
