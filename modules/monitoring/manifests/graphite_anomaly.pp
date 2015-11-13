@@ -76,6 +76,11 @@ define monitoring::graphite_anomaly(
     else {
         $modifier = ''
     }
+
+    if $metric =~ /'/ {
+        fail("single quotes will be stripped from graphite metric ${metric}, consider using double quotes")
+    }
+
     # checkcommands.cfg's check_graphite_anomaly command has
     # many positional arguments that
     # are passed to the check_graphite script:
