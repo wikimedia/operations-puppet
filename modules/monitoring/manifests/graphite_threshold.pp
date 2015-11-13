@@ -91,6 +91,11 @@ define monitoring::graphite_threshold(
         true    => 'check_graphite_series_threshold',
         default => 'check_graphite_threshold'
     }
+
+    if $metric =~ /'/ {
+        fail("single quotes will be stripped from graphite metric $metric, consider using double quotes")
+    }
+
     monitoring::service { $title:
         ensure                => $ensure,
         description           => $description,
