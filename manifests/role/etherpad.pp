@@ -57,6 +57,9 @@ class role::etherpad{
         check_command => 'check_http_url!etherpad.wikimedia.org!/',
     }
 
+    # Autorestart because etherpad sucks
+    include ::etherpad::autorestarter
+
     ferm::service { 'etherpad_http':
         proto => 'tcp',
         port  => 'http',
