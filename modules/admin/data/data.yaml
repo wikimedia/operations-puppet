@@ -3,7 +3,8 @@ groups:
     description: meta group for absented users
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
-              mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen]
+              mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
+              johnflewis]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -72,8 +73,8 @@ groups:
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
               joal, thcipriani, daisy, ashwinpp, jhobs, tomasz, lpintscher,
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
-              gpaumier, moushira, aklapper, qchris, tjones, srijan, johnflewis,
-              addshore, jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
+              gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
+              jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
               vbaranetsky, atgomez]
   cassandra-test-roots:
     gid: 708
@@ -370,7 +371,7 @@ groups:
   mailman-admins:
     gid: 757
     description: Admins for mailman
-    members: [johnflewis]
+    members: []
     privileges: ['ALL = (list) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service mailman *',
                  'ALL = NOPASSWD: /bin/journalctl *']
@@ -1590,11 +1591,11 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC27kIX/UKoi5f1hXxao9nU6pQgL/LazvOBB7jm2D66hQgb+xt8JKNLJPQGIVZC9cQNwj52LotGRV9sDoY5eZC7iCPQr4tQt3YhJh7fJuzPd9wKglL+KoHNZamDP10GejKsk26Jv1Ltf6PKDiNLPimq/cki4PUvp1FDWbc+K50jk+ALa9QfPnIN2h+zz89BhgW5pAZ5M0xANyqI68wawFRSyuepxp/S841AVaLJH4qar5LSjr/2h6rrvhlpjAL43cWaKbqHKzksHV4iyJURk7fVeyoAJ64cou3rdDvbVcjl3laa8/DHznJUaRFoJ91a/olFZbLFfWkT4fJLjoWFn8XrxCixb9TGjd6X4bHZhCObCfdwKogLTWFZEGnlVnMxRdxc1oBkPkbd5rsaRo5s07WTV0WIIFsFktnm5fzwLZ0qNCSWq3Ao+g/NNgeCSedXZrJPE3KJK2XSmL16qccqoncrZOrd1GhIfRJuJ/tPvjpKtosbR5/O+lAIHQTsBTA11yzyqXeB6oXLsGjF92hHCkVJFBVrJHxurGarv4JZ72WUOtWXFo0VCgMz6LdWf8GzWd4Z+yvCYgP9s3fzfclQY0i4oX+RDg6Iy3nAmJqdUVgaEc8Tc5zSldQAf63xI5y8hUrlecINBcMuBiEo9UXb9MiU43XggafGd6VoRbHKWoUrbQ== mpopov@wikimedia.org]
     uid: 12625
   johnflewis:
-    ensure: present
+    ensure: absent
     gid: 500
     name: johnflewis
     realname: John Lewis
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDrGLpJnk6+pLPHV7qBS0bkYUVxxh/PBiWAl+BkIAXZ4PWOmEXsdgcpxwgHgfyLa72lZMOuYOqVO6uvp0d5QRmNrnDrM0LFy0feNGMA9qk7KqKBATTRsp76DFV7ZPNH65WwflREiWVLD8ZzMfYqhsKUZhDakgVZLA1irblE6irRh/Px/+TMLRvPRP1q54GoVHin6CjA1s6DW44KB/HR4cHy9byDzw4uQMqArY4RRH/Z5CD53YY2kIW5Ok9t/aSLwshO0uYBMO+7BKdVgyKLMDHFQGopq8/ICuUD7w1eBLZ5HR0sLMI3FhoPu8VyZ5psm/nnHSgI6yw37Z9RXt9QG3RZ johnflewis@wikimedia]
+    ssh_keys: []
     uid: 2744
   addshore:
     ensure: present
