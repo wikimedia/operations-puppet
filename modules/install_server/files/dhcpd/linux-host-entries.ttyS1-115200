@@ -5988,11 +5988,6 @@ host palladium {
 	fixed-address palladium.eqiad.wmnet;
 }
 
-host plutonium {
-	hardware ethernet 84:2b:2b:fd:b9:ff;
-	fixed-address plutonium.wikimedia.org;
-}
-
 host potassium {
 	hardware ethernet 78:2b:cb:08:ac:78;
 	fixed-address potassium.eqiad.wmnet;
