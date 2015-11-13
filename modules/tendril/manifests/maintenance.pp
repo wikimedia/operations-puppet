@@ -59,6 +59,12 @@ class tendril::maintenance (
         mode   => '0640',
     }
 
+    file { '/var/log/tendril-cron-5m.err':
+        owner  => 'tendril',
+        group  => 'tendril',
+        mode   => '0640',
+    }
+
     file { '/usr/local/bin/tendril-queries.pl':
         owner  => 'tendril',
         group  => 'tendril',
