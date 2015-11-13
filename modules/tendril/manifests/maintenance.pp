@@ -93,10 +93,8 @@ class tendril::maintenance (
 
     cron { 'tendril-cron-5m':
         user    => 'tendril',
+        command => '/usr/local/bin/tendril-cron-5m.pl /etc/mysql/tendril.cnf > /var/log/tendril-cron-5m.log 2> /var/log/tendril-cron-5m.err',
         minute  => '*/5',
-        command => '/usr/local/bin/tendril-cron-5m.pl \
-/etc/mysql/tendril.cnf > /var/log/tendril-cron-5m.log 2> \
-/var/log/tendril-cron-5m.err',
         require => [
             File['/usr/local/bin/tendril-cron-5m.pl'],
             File['/var/log/tendril-cron-5m.log'],
@@ -106,10 +104,8 @@ class tendril::maintenance (
 
     cron { 'tendril-queries':
         user    => 'tendril',
+        command => '/usr/local/bin/tendril-queries.pl /etc/mysql/tendril.cnf > /var/log/tendril-queries.log 2> /var/log/tendril-queries.err',
         minute  => '*/5',
-        command => '/usr/local/bin/tendril-queries.pl \
-/etc/mysql/tendril.cnf > /var/log/tendril-queries.log 2> \
-/var/log/tendril-queries.err',
         require => [
             File['/usr/local/bin/tendril-queries.pl'],
             File['/var/log/tendril-queries.log'],
