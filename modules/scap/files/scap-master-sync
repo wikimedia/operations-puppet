@@ -1,0 +1,18 @@
+#!/bin/bash
+# Rsync the common module from the given deployment master to the local
+# staging directory (/srv/mediawiki-staging)
+
+set -eu
+
+MASTER=${1:?No master provided}
+
+if [[ $EUID -ne 0 ]]; then
+    echo "$0 must be run as root" 1>&2
+    exit 2
+fi
+
+exec /usr/bin/rsync \
+    --archive --delete-delay --delay-updates --compress --delete \
+    --exclude="**/cache/l10n/*.cdb" \
+    --exclude="*.swp" \
+    "${MASTER}::common" /srv/mediawiki-staging
