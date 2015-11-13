@@ -167,47 +167,6 @@ class role::logging::udp2log {
     }
 }
 
-# == Class role::logging::udp2log::erbium
-# Erbium udp2log instance:
-# - Fundraising: This requires write permissions on the netapp mount.
-#
-class role::logging::udp2log::erbium inherits role::logging::udp2log {
-    include misc::fundraising::udp2log_rotation
-    include role::logging::systemusers
-
-    # udp2log::instance will ensure this is created
-    $webrequest_log_directory    = "${log_directory}/webrequest"
-
-    # keep fundraising logs in a subdir
-    $fundraising_log_directory = "${log_directory}/fundraising"
-
-    file { $fundraising_log_directory:
-        ensure  => 'directory',
-        mode    => '0775',
-        owner   => 'udp2log',
-        group   => 'file_mover',
-        require =>  User['file_mover'],
-    }
-
-    file { "${fundraising_log_directory}/logs":
-        ensure  => 'directory',
-        mode    => '2775',  # make sure setgid bit is set.
-        owner   => 'udp2log',
-        group   => 'file_mover',
-        require =>  User['file_mover'],
-    }
-
-    misc::udp2log::instance { 'erbium':
-        port               => '8419',
-        packet_loss_log    => '/var/log/udp2log/packet-loss.log',
-        log_directory      => $webrequest_log_directory,
-        template_variables => {
-            'fundraising_log_directory' => $fundraising_log_directory
-        },
-        require            => File["${fundraising_log_directory}/logs"],
-    }
-}
-
 # misc udp2log instance, mainly for a post-udp2log era...one day :)
 class role::logging::udp2log::misc {
     include misc::udp2log

@@ -41,29 +41,50 @@ class statistics::rsync::webrequest {
         mode   => '0755',
     }
 
-    # wikipedia zero logs from oxygen
-    statistics::rsync_job { 'wikipedia_zero':
-        ensure      => 'absent',
-        source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/zero*.gz',
-        destination => "${working_path}/squid/archive/zero",
+    # all webrequest archive logs from hdfs
+    statistics::rsync_job { 'hdfs_webrequest_archive':
+        source         => 'stat1002.eqiad.wmnet::hdfs-archive/webrequest/*',
+        destination    => "${working_path}/log/webrequest/archive",
+        retention_days => 90, # Pruning after 90 days as those logs contain private data.
     }
 
+
+    # NOTE: The following jobs may be removed once they are all
+    #       ensured to be absent.
+
+
+    # The following logs can be
     # API logs from erbium
     statistics::rsync_job { 'api':
         source      => 'erbium.eqiad.wmnet::udp2log/webrequest/archive/api-usage*.gz',
         destination => "${working_path}/squid/archive/api",
+        # udp2log on eribum has been disabled
+        ensure      => 'absent'
     }
 
     # sampled-1000 logs from erbium
     statistics::rsync_job { 'sampled_1000':
         source      => 'erbium.eqiad.wmnet::udp2log/webrequest/archive/sampled-1000*.gz',
         destination => "${working_path}/squid/archive/sampled",
+        # udp2log on eribum has been disabled
+        ensure      => 'absent'
     }
 
     # glam_nara logs from erbium
     statistics::rsync_job { 'glam_nara':
         source      => 'erbium.eqiad.wmnet::udp2log/webrequest/archive/glam_nara*.gz',
         destination => "${working_path}/squid/archive/glam_nara",
+        # udp2log on eribum has been disabled
+        ensure      => 'absent'
+    }
+
+    # wikipedia zero logs from oxygen
+    statistics::rsync_job { 'wikipedia_zero':
+        ensure      => 'absent',
+        source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/zero*.gz',
+        destination => "${working_path}/squid/archive/zero",
+        # oxygen is no longer generating this data.
+        ensure => 'absent'
     }
 
     # edit logs from oxygen
@@ -72,6 +93,8 @@ class statistics::rsync::webrequest {
         source         => 'oxygen.wikimedia.org::udp2log/webrequest/archive/edits*.gz',
         destination    => "${working_path}/squid/archive/edits",
         retention_days => 90,
+        # oxygen is no longer generating this data.
+        ensure => 'absent'
     }
 
     # mobile logs from oxygen
@@ -79,12 +102,7 @@ class statistics::rsync::webrequest {
         ensure      => 'absent',
         source      => 'oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz',
         destination => "${working_path}/squid/archive/mobile",
-    }
-
-    # all webrequest archive logs from hdfs
-    statistics::rsync_job { 'hdfs_webrequest_archive':
-        source         => 'stat1002.eqiad.wmnet::hdfs-archive/webrequest/*',
-        destination    => "${working_path}/log/webrequest/archive",
-        retention_days => 90, # Pruning after 90 days as those logs contain private data.
+        # oxygen is no longer generating this data.
+        ensure => 'absent'
     }
 }
