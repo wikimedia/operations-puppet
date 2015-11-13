@@ -108,7 +108,7 @@ class tendril::maintenance (
             File['/usr/local/bin/tendril-queries.pl'],
             File['/var/log/tendril-queries.log'],
             File['/var/log/tendril-queries.err'],
-            File['/etc/mysql/tendril.cfg'],
+            File['/etc/mysql/tendril.cnf'],
         ]
     }
 }
