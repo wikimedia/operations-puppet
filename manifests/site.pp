@@ -2192,7 +2192,7 @@ node 'planet1001.eqiad.wmnet' {
 }
 
 # LDAP servers relied on by OIT for mail
-node /(plutonium|pollux)\.wikimedia\.org/ {
+node /(plutonium|pollux|dubnium)\.wikimedia\.org/ {
     $cluster = 'openldap_corp_mirror'
 
     role openldap::corp
