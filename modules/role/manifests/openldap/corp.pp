@@ -26,7 +26,7 @@ class role::openldap::corp {
         sync_pass   => $sync_pass,
         ca          => '/etc/ssl/certs/ca-certificates.crt',
         certificate => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.crt",
-        key         => "/etc/ssl/localcerts/ldap-corp.${::site}.wikimedia.org.key",
+        key         => "/etc/ssl/private/ldap-corp.${::site}.wikimedia.org.key",
     }
 
     ferm::service { 'corp_ldap':
