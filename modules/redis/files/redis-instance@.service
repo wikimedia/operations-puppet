@@ -1,0 +1,10 @@
+[Unit]
+Description=Advanced key-value store
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/redis-server /etc/redis/%i.conf
+Restart=always
+User=redis
+Group=redis
