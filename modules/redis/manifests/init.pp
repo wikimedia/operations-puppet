@@ -22,6 +22,6 @@ class redis {
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
-        }
+        } -> Redis::Instance <|  |>
     }
 }
