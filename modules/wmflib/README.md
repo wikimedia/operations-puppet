@@ -15,6 +15,18 @@ Apply a format string to each element of an array.
     $packages = apply_format('texlive-lang-%s', $languages)
 
 
+## conflicts
+
+`conflicts( string|resource $resource )`
+
+Throw an error if a resource is declared.
+
+### Examples
+
+    conflicts('::redis::legacy')
+    conflicts(Class['::redis-server'])
+
+
 ## ensure_directory
 
 `ensure_directory( string|bool $ensure )`
