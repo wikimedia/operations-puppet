@@ -49,6 +49,10 @@ sub vcl_recv {
 <% end %>
 
 	if (req.request != "GET" && req.request != "HEAD") {
+<% if @site_tier != "one" -%>
+		set req.backend = backend_random;
+<% end -%>
+		set req.hash_ignore_busy = true;
 		return (pass);
 	}
 
