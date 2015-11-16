@@ -21,7 +21,8 @@ class mysql::server (
   $service_provider = $mysql::params::service_provider,
   $config_hash      = {},
   $enabled          = true,
-  $manage_service   = false
+  $manage_service   = false,
+  $use_apparmor     = true,
 ) inherits mysql::params {
 
   Class['mysql::server::package'] -> Class['mysql::config']
@@ -44,16 +45,18 @@ class mysql::server (
     }
   }
 
-  include apparmor
-  # mysql is protected by apparmor.  Need to
-  # reload apparmor if the file changes.
-  file { '/etc/apparmor.d/usr.sbin.mysqld':
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('mysql/apparmor.template.usr.sbin.mysqld.erb'),
-    require => Package['mysql-server'],
-    notify  => Service['apparmor'],
+  if $use_apparmor {
+      include apparmor
+      # mysql is protected by apparmor.  Need to
+      # reload apparmor if the file changes.
+      file { '/etc/apparmor.d/usr.sbin.mysqld':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('mysql/apparmor.template.usr.sbin.mysqld.erb'),
+        require => Package['mysql-server'],
+        notify  => Service['apparmor'],
+      }
   }
 
 
