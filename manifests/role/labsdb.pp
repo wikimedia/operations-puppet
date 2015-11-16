@@ -7,7 +7,9 @@ class role::labs::db::master {
     }
 
     include standard
-    include mariadb::packages_wmf
+    class { 'mariadb::packages_wmf':
+        mariadb10 => false
+    }
     include role::mariadb::grants
     include role::mariadb::monitor
 

@@ -140,7 +140,9 @@ class role::mariadb::misc::phabricator(
     }
 
     include standard
-    include mariadb::packages_wmf
+    class { 'mariadb::packages_wmf':
+        mariadb10 => !$master,
+    }
     include role::mariadb::monitor
     include passwords::misc::scripts
     include role::mariadb::ferm
