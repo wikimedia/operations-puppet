@@ -1,0 +1,32 @@
+<VirtualHost *:80>
+    ServerName librenms.wikimedia.org
+    ServerAdmin noc@wikimedia.org
+
+    Redirect permanent / https://<%= @sitename %>
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName <%= @sitename %>
+    ServerAdmin noc@wikimedia.org
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/localcerts/<%= @sitename %>.crt
+    SSLCertificateKeyFile /etc/ssl/private/<%= @sitename %>.key
+    SSLCACertificatePath /etc/ssl/certs
+    <%= @ssl_settings.join("\n") %>
+
+    DocumentRoot <%= @install_dir %>/html
+    <Directory <%= @install_dir %>/html>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    ErrorLog /var/log/apache2/<%= @sitename %>.error.log
+    LogLevel warn
+
+    CustomLog /var/log/apache2/<%= @sitename %>.access.log combined
+    ServerSignature On
+
+</VirtualHost>
