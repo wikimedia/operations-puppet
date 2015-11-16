@@ -49,13 +49,8 @@ class dynamicproxy (
             maxmemory  => $redis_maxmemory,
             slaveof    => $slaveof,
             dir        => '/var/lib/redis',
-        }
+        },
     }
-
-    # The redis module intentionally does not restart the redis
-    # service if the configuration changes, so we have to do this
-    # explicitly here.
-    File['/etc/redis/redis.conf'] ~> Service['redis-server']
 
     class { 'nginx':
         variant => 'extras',
