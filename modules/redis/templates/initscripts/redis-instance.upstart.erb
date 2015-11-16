@@ -1,0 +1,16 @@
+# This file is managed by Puppet
+description "Advanced key-value store"
+
+start on started network-services
+
+setuid redis
+setgid redis
+
+exec /usr/bin/redis-server /etc/redis/<%= @instance_name %>.conf
+
+# We expect daemonize=yes
+expect fork
+
+respawn
+
+# vim: set ft=upstart:
