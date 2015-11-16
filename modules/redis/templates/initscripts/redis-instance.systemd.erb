@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/redis-server /etc/redis/%i.conf
+ExecStart=/usr/bin/redis-server /etc/redis/<%= @instance_name %>.conf
 Restart=always
 User=redis
 Group=redis
