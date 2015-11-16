@@ -433,7 +433,10 @@ groups:
     description: users who have root on memcached, varnish and application servers
     members: [krinkle]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-
+  aqs-users:
+    description: Group of users for the Analytics Query Service
+    gid: 767
+    members: [nuria, mforns, madhuvishy]
 users:
   rush:
     ensure: present
