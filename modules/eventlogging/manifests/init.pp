@@ -75,39 +75,13 @@ class eventlogging {
         '/etc/eventlogging.d/forwarders',
         '/etc/eventlogging.d/multiplexers',
         '/etc/eventlogging.d/processors',
-        '/etc/eventlogging.d/reporters'
+        '/etc/eventlogging.d/reporters',
+        '/etc/eventlogging.d/services',
     ]:
         ensure  => directory,
         recurse => true,
         purge   => true,
         force   => true,
-        before  => File['/etc/init/eventlogging'],
-    }
-
-    # Manage EventLogging services with 'eventloggingctl'.
-    # Usage: eventloggingctl {start|stop|restart|status|tail}
-    file { '/sbin/eventloggingctl':
-        source => 'puppet:///modules/eventlogging/eventloggingctl',
-        mode   => '0755',
-    }
-
-    # Upstart job definitions.
-    file { '/etc/init/eventlogging':
-        source  => 'puppet:///modules/eventlogging/init',
-        recurse => true,
-        purge   => true,
-        force   => true,
-    }
-
-    # 'eventlogging/init' is the master upstart task; it walks
-    # </etc/eventlogging.d> and starts a job for each instance
-    # definition file that it encounters.
-    service { 'eventlogging/init':
-        provider => 'upstart',
-        require  => [
-            File['/etc/init/eventlogging'],
-            User['eventlogging']
-        ],
     }
 
     # Plug-ins placed in this directory are loaded automatically.
@@ -136,5 +110,46 @@ class eventlogging {
         content => template('eventlogging/logrotate.erb'),
         require => File["${log_dir}/archive"],
         mode    => '0444',
+    }
+
+    # Temporary conditional while we migrate eventlogging service over to
+    # using systemd on Debian Jessie.  This will allow us to individually
+    # configure services on new nodes while not affecting the running
+    # eventlogging instance on Ubuntu Trusty.
+    if $::operatingsystem == 'Ubuntu' {
+        # Manage EventLogging services with 'eventloggingctl'.
+        # Usage: eventloggingctl {start|stop|restart|status|tail}
+        file { '/sbin/eventloggingctl':
+            source => 'puppet:///modules/eventlogging/eventloggingctl',
+            mode   => '0755',
+        }
+
+        # Upstart job definitions.
+        file { '/etc/init/eventlogging':
+            source  => 'puppet:///modules/eventlogging/init',
+            recurse => true,
+            purge   => true,
+            force   => true,
+            require => [
+                File['/etc/eventlogging.d'],
+                File['/etc/eventlogging.d/consumers]',
+                File['/etc/eventlogging.d/forwarders'],
+                File['/etc/eventlogging.d/multiplexers'],
+                File['/etc/eventlogging.d/processors'],
+                File['/etc/eventlogging.d/reporters'],
+                File['/etc/eventlogging.d/services']
+            ]
+        }
+
+        # 'eventlogging/init' is the master upstart task; it walks
+        # </etc/eventlogging.d> and starts a job for each instance
+        # definition file that it encounters.
+        service { 'eventlogging/init':
+            provider => 'upstart',
+            require  => [
+                File['/etc/init/eventlogging'],
+                User['eventlogging']
+            ],
+        }
     }
 }
