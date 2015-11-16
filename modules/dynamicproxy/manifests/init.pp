@@ -39,12 +39,17 @@ class dynamicproxy (
 
     $resolver = join($::nameservers, ' ')
 
-    class { '::redis::legacy':
-        persist           => 'aof',
-        dir               => '/var/lib/redis',
-        maxmemory         => $redis_maxmemory,
-        redis_replication => $redis_replication,
-        expose            => false,
+    if $redis_replication and $redis_replication[$::hostname] {
+        $slaveof = $redis_replication[$::hostname]
+    }
+
+    redis::instance { '6379':
+        settings       => {
+            appendonly => 'yes',
+            maxmemory  => $redis_maxmemory,
+            slaveof    => $slaveof,
+            dir        => '/var/lib/redis',
+        }
     }
 
     # The redis module intentionally does not restart the redis
