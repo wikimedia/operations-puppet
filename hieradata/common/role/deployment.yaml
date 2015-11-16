@@ -22,6 +22,13 @@ repo_config:
   eventlogging/eventlogging:
     upstream: https://gerrit.wikimedia.org/r/eventlogging
     checkout_submodules: true
+  # eventlogging/eventbus is the eventlogging codebase, but as a
+  # separate deploy target so that eventlogging-service-eventbus
+  # deployments can be scheduled separately from other eventlogging
+  # codebase deployments.
+  eventlogging/eventbus:
+    upstream: https://gerrit.wikimedia.org/r/eventlogging
+    checkout_submodules: true
   ocg/ocg:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/ocg-collection
     service_name: ocg
