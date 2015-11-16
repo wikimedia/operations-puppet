@@ -1,0 +1,2 @@
+openldap::master: ldap-labs.codfw.wikimedia.org
+openldap::server_id: 1
