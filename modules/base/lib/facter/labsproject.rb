@@ -16,4 +16,3 @@ Facter.add(:labsproject) do
     end
   end
 end
-
