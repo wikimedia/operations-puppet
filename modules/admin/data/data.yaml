@@ -249,8 +249,8 @@ groups:
                  'ALL = (hive)  NOPASSWD: ALL']
   eventlogging-admins:
     gid: 733
-    description: Login access for EventLogging investigation
-    members: [nuria, milimetric, mforns, joal, legoktm]
+    description: Login access for EventLogging deployment and investigation
+    members: [nuria, milimetric, mforns, joal, legoktm, otto, madhuvishy]
   citoid-roots:
     gid: 735
     description: rights for debugging citoid
