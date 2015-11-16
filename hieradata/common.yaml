@@ -264,7 +264,6 @@ statistics_servers:
 #   * CentralNoticeBannerHistory because it can't be inserted into mysql with its array property
 eventlogging_valid_mixed_schema_blacklist: ^Analytics|CentralNoticeBannerHistory$
 
-
 # LABS
 
 labs_designate_hostname: &labsdesignatehostname "labservices1001.wikimedia.org"
