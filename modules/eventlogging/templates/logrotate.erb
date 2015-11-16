@@ -2,8 +2,17 @@
 # puppet:///modules/eventlogging/logrotate
 
 <%= @log_dir %>/*.log {
+       notifempty
+       maxage 30
+       rotate 2
+       dateext
+       compress
+       missingok
+}
+
+<%= @out_dir %>/*.log {
        daily
-       olddir <%= @log_dir %>/archive
+       olddir <%= @out_dir %>/archive
        notifempty
        maxage 30
        rotate 1000
