@@ -8,6 +8,7 @@ class eventlogging::package {
     $path = '/srv/deployment/eventlogging/eventlogging'
 
     require_package([
+        'python-dateutil',
         'python-etcd',
         'python-jsonschema',
         'python-kafka',
@@ -17,6 +18,8 @@ class eventlogging::package {
         'python-pymongo',
         'python-six',
         'python-sqlalchemy',
+        'python-statsd',
+        'python-yaml',
         'python-zmq',
     ])
 

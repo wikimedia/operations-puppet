@@ -8,6 +8,7 @@ class role::deployment::server(
     # include misc::deployment::scripts
     include role::deployment::mediawiki
     include role::deployment::services
+    include eventlogging::deployment::source
 
     include base::firewall
 
