@@ -1,0 +1,22 @@
+[Unit]
+Description=EventLogging Produce HTTP Service
+After=network.target
+
+[Service]
+User=eventlogging
+Group=eventlogging
+WorkingDirectory=<%= @eventlogging_path %>
+Environment="PYTHONPATH=<%= @eventlogging_path %>"
+Environment="STATSD_HOST=<%= @statsd.split(':')[0] %>"
+Environment="STATSD_PORT=<%= @statsd.split(':')[1] %>"
+Environment="STATSD_PREFIX=<%= @statsd_prefix %>"
+
+Restart=on-failure
+ExecStart=/usr/bin/python -OO <%= @eventlogging_path %>/bin/eventlogging-service @<%= @config_file %>
+
+# Send SIGHUP on reload.
+# This causes topic config and local schemas to be reloaded.
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
