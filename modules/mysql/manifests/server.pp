@@ -57,18 +57,17 @@ class mysql::server (
         require => Package['mysql-server'],
         notify  => Service['apparmor'],
       }
-  }
 
-
-  # This is needed because reconfigure creates $datadir and the necessary files inside.
-  # The sleep is to avoid mysql getting canned for speedy respawn;
-  #   the retry is to give apparmor a chance to settle in.
-  exec { 'dpkg-reconfigure mysql-server':
-    command     => "/bin/sleep 30; /usr/sbin/dpkg-reconfigure -fnoninteractive ${package_name}",
-    require     => [File['/etc/apparmor.d/usr.sbin.mysqld']],
-    tries       => 2,
-    refreshonly => true,
-    subscribe   => File['/etc/mysql/my.cnf']
+      # This is needed because reconfigure creates $datadir and the necessary files inside.
+      # The sleep is to avoid mysql getting canned for speedy respawn;
+      #   the retry is to give apparmor a chance to settle in.
+      exec { 'dpkg-reconfigure mysql-server':
+        command     => "/bin/sleep 30; /usr/sbin/dpkg-reconfigure -fnoninteractive ${package_name}",
+        require     => [File['/etc/apparmor.d/usr.sbin.mysqld']],
+        tries       => 2,
+        refreshonly => true,
+        subscribe   => File['/etc/mysql/my.cnf']
+      }
   }
 }
 
