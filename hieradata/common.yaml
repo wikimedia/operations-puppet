@@ -264,6 +264,27 @@ statistics_servers:
 #   * CentralNoticeBannerHistory because it can't be inserted into mysql with its array property
 eventlogging_valid_mixed_schema_blacklist: ^Analytics|CentralNoticeBannerHistory$
 
+# TODO: find a good home for this.
+# Topic config.  This maps topic names to schema names
+# in the mediawiki/event-schemas repository.
+# This is used by the EventLogging HTTP Produce service
+# to restrict certain types of events to certain topics.
+eventlogging_topic_config:
+
+  mediawiki.page_edit:
+    schema_name: page_edit
+
+  mediawiki.page_delete:
+    schema_name: page_delete
+
+  mediawiki.page_move:
+    schema_name: page_move
+
+  mediawiki.page_restore:
+    schema_name: page_restore
+
+  mediawiki.revision_visibility_set:
+    schema_name: revision_visibility_set
 
 # LABS
 
