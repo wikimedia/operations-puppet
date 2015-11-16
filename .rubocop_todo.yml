@@ -426,14 +426,6 @@ Style/SpecialGlobalVars:
 Style/StringLiterals:
   Enabled: false
 
-# Offense count: 49
-# Cop supports --auto-correct.
-Style/Tab:
-  Exclude:
-    - 'modules/apt/lib/facter/apt.rb'
-    - 'modules/git/spec/defines/user_spec.rb'
-    - 'utils/expanderb.rb'
-
 # Offense count: 116
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
