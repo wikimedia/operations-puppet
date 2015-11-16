@@ -40,14 +40,15 @@ class dynamicproxy (
     $resolver = join($::nameservers, ' ')
 
     if $redis_replication and $redis_replication[$::hostname] {
-        $slaveof = $redis_replication[$::hostname]
+        $slave_host = $redis_replication[$::hostname]
+        $slaveof = "${slave_host} 6379"
     }
 
     redis::instance { '6379':
         settings       => {
             appendonly => 'yes',
             maxmemory  => $redis_maxmemory,
-            slaveof    => "${slaveof} 6379",
+            slaveof    => $slaveof,
             dir        => '/var/lib/redis',
         },
     }
