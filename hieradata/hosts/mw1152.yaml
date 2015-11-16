@@ -7,14 +7,14 @@ base::resolving::domain_search:
   - eqiad.wmnet
   - esams.wikimedia.org
   - codfw.wmnet
-mediawiki::maintenance::pagetriage::ensure: present
-mediawiki::maintenance::translationnotifications::ensure: present
-mediawiki::maintenance::updatetranslationstats::ensure: present
-mediawiki::maintenance::wikidata::ensure: present
-mediawiki::maintenance::echo_mail_batch::ensure: present
-mediawiki::maintenance::parsercachepurging::ensure: present
-mediawiki::maintenance::cleanup_upload_stash::ensure: present
-mediawiki::maintenance::tor_exit_node::ensure: present
+mediawiki::maintenance::pagetriage::ensure: absent
+mediawiki::maintenance::translationnotifications::ensure: absent
+mediawiki::maintenance::updatetranslationstats::ensure: absent
+mediawiki::maintenance::wikidata::ensure: absent
+mediawiki::maintenance::echo_mail_batch::ensure: absent
+mediawiki::maintenance::parsercachepurging::ensure: absent
+mediawiki::maintenance::cleanup_upload_stash::ensure: absent
+mediawiki::maintenance::tor_exit_node::ensure: absent
 mediawiki::maintenance::update_flaggedrev_stats::ensure: present
 mediawiki::maintenance::refreshlinks::ensure: present
 mediawiki::maintenance::update_special_pages::ensure: present
@@ -24,6 +24,7 @@ mediawiki::maintenance::purge_checkuser::ensure: present
 mediawiki::maintenance::purge_securepoll::ensure: present
 mediawiki::maintenance::jobqueue_stats::ensure: present
 mediawiki::maintenance::updatequerypages::ensure: present
+tendril::maintenance::ensure: absent
 hhvm::extra::cli:
   hhvm:
     server:
