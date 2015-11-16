@@ -90,11 +90,6 @@ class role::librenms {
         ],
     }
 
-    # redirect the old, pre-Jan 2014 name to librenms
-    @webserver::apache::site { 'observium.wikimedia.org':
-        custom => [ "Redirect permanent / https://${sitename}/" ],
-    }
-
     monitoring::service { 'librenms':
         description   => 'LibreNMS HTTPS',
         check_command => "check_https_url!${sitename}!http://${sitename}",
