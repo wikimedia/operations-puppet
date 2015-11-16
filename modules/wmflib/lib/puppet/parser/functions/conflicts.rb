@@ -13,6 +13,6 @@
 module Puppet::Parser::Functions
   newfunction(:conflicts, :arity => 1) do |args|
     Puppet::Parser::Functions.function(:defined)
-    fail(Puppet::ParseError, "Resource conflicts with #{args.first}.") unless function_defined(args)
+    fail(Puppet::ParseError, "Resource conflicts with #{args.first}.") if function_defined(args)
   end
 end
