@@ -7,10 +7,7 @@ class torrus::web {
     include ::apache::mod::rewrite
     include ::apache::mod::perl
 
-    @webserver::apache::site { 'torrus.wikimedia.org':
-        require  => Class['::apache::mod::rewrite', '::apache::mod::perl'],
-        docroot  => '/var/www',
-        custom   => ['RedirectMatch ^/$ /torrus'],
-        includes => ['/etc/torrus/torrus-apache2.conf'],
+    apache::site { 'torrus.wikimedia.org':
+        source => 'puppet:///modules/torrus/apache.conf',
     }
 }
