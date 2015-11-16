@@ -1,0 +1,9 @@
+# NOTE: This file is managed by puppet
+
+#
+# Topic config file.  This file specifies which schemas are allowed to
+# be produced to topics.
+#
+
+<% require \'yaml\' -%>
+<%= YAML.dump(@topic_config) %>
