@@ -34,14 +34,32 @@
 # job for each instance definition. Instance definition files contain
 # command-line arguments for the service program, one argument per line.
 #
-# An 'eventloggingctl' shell script provides a convenient wrapper around
-# Upstart's initctl that is specifically tailored for managing
+# An 'eventloggingctl' (in Ubuntu) shell script provides a convenient
+# wrapper around Upstart's initctl that is specifically tailored for managing
 # EventLogging tasks.
 #
 class eventlogging {
-    require ::eventlogging::package
+    require_package([
+        'python-dateutil',
+        'python-etcd',
+        'python-jsonschema',
+        'python-kafka',
+        'python-mysqldb',
+        'python-pygments',
+        'python-pykafka',
+        'python-pymongo',
+        'python-six',
+        'python-sqlalchemy',
+        'python-statsd',
+        'python-yaml',
+        'python-zmq',
+    ])
 
-    $log_dir = '/srv/log/eventlogging'
+    # eventlogging runtime logs go here
+    $log_dir = '/var/log/eventlogging'
+
+    # eventlogging content output can go here
+    $out_dir = '/srv/log/eventlogging'
 
     # We ensure the /srv/log (parent of $log_dir) manually here, as
     # there is no proper class to rely on for this, and starting a
@@ -60,54 +78,30 @@ class eventlogging {
     }
 
     user { 'eventlogging':
-        ensure     => present,
+        ensure     => 'present',
         gid        => 'eventlogging',
-        shell      => '/bin/false',
+        shell      => '/bin/bash',
         home       => '/nonexistent',
         system     => true,
         managehome => false,
     }
 
-    # Instance definition files.
-    file { [
+    $eventlogging_directories = [
         '/etc/eventlogging.d',
         '/etc/eventlogging.d/consumers',
         '/etc/eventlogging.d/forwarders',
         '/etc/eventlogging.d/multiplexers',
         '/etc/eventlogging.d/processors',
-        '/etc/eventlogging.d/reporters'
-    ]:
+        '/etc/eventlogging.d/reporters',
+        '/etc/eventlogging.d/services',
+    ]
+
+    # Instance definition files.
+    file { $eventlogging_directories:
         ensure  => directory,
         recurse => true,
         purge   => true,
         force   => true,
-        before  => File['/etc/init/eventlogging'],
-    }
-
-    # Manage EventLogging services with 'eventloggingctl'.
-    # Usage: eventloggingctl {start|stop|restart|status|tail}
-    file { '/sbin/eventloggingctl':
-        source => 'puppet:///modules/eventlogging/eventloggingctl',
-        mode   => '0755',
-    }
-
-    # Upstart job definitions.
-    file { '/etc/init/eventlogging':
-        source  => 'puppet:///modules/eventlogging/init',
-        recurse => true,
-        purge   => true,
-        force   => true,
-    }
-
-    # 'eventlogging/init' is the master upstart task; it walks
-    # </etc/eventlogging.d> and starts a job for each instance
-    # definition file that it encounters.
-    service { 'eventlogging/init':
-        provider => 'upstart',
-        require  => [
-            File['/etc/init/eventlogging'],
-            User['eventlogging']
-        ],
     }
 
     # Plug-ins placed in this directory are loaded automatically.
@@ -116,25 +110,71 @@ class eventlogging {
     }
 
     # Logs are collected in <$log_dir> and rotated daily.
-    file { [ $log_dir, "${log_dir}/archive" ]:
-        ensure => directory,
+    file { [
+            $log_dir,
+            $out_dir,
+            "${out_dir}/archive"
+        ]:
+        ensure => 'directory',
         owner  => 'eventlogging',
         group  => 'eventlogging',
         mode   => '0664',
     }
 
-    # Link logs to /var/log/eventlogging, so people can find it in a
-    # more prominent place too.
-    if ( $log_dir != '/var/log/eventlogging' ) {
-        file { '/var/log/eventlogging':
-            ensure => 'link',
-            target => $log_dir,
-        }
-    }
-
     file { '/etc/logrotate.d/eventlogging':
         content => template('eventlogging/logrotate.erb'),
-        require => File["${log_dir}/archive"],
         mode    => '0444',
+        require => [
+            File[$log_dir],
+            File["${out_dir}/archive"]
+        ],
+    }
+
+
+    # Temporary conditional while we migrate eventlogging service over to
+    # using systemd on Debian Jessie.  This will allow us to individually
+    # configure services on new nodes while not affecting the running
+    # eventlogging analytics instance on Ubuntu Trusty.
+    if $::operatingsystem == 'Ubuntu' {
+        # Ubuntu Trusty hosts use Trebuchet for deployment.
+        package { 'eventlogging/eventlogging':
+            provider => 'trebuchet',
+        }
+
+        # Manage EventLogging services with 'eventloggingctl'.
+        # Usage: eventloggingctl {start|stop|restart|status|tail}
+        file { '/sbin/eventloggingctl':
+            source => 'puppet:///modules/eventlogging/eventloggingctl',
+            mode   => '0755',
+        }
+
+        # Upstart job definitions.
+        file { '/etc/init/eventlogging':
+            source  => 'puppet:///modules/eventlogging/init',
+            recurse => true,
+            purge   => true,
+            force   => true,
+            require => [
+                File['/etc/eventlogging.d'],
+                File['/etc/eventlogging.d/consumers'],
+                File['/etc/eventlogging.d/forwarders'],
+                File['/etc/eventlogging.d/multiplexers'],
+                File['/etc/eventlogging.d/processors'],
+                File['/etc/eventlogging.d/reporters'],
+                File['/etc/eventlogging.d/services'],
+                Package['eventlogging/eventlogging'],
+            ]
+        }
+
+        # 'eventlogging/init' is the master upstart task; it walks
+        # </etc/eventlogging.d> and starts a job for each instance
+        # definition file that it encounters.
+        service { 'eventlogging/init':
+            provider => 'upstart',
+            require  => [
+                File['/etc/init/eventlogging'],
+                User['eventlogging']
+            ],
+        }
     }
 }
