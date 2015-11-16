@@ -34,7 +34,7 @@ if Rake.application.tty_output?
         require'puppet/util/colors'
         include Puppet::Util::Colors
     rescue LoadError
-        puts "Cant load puppet/util/colors .. no color for you!"
+        puts 'Cant load puppet/util/colors .. no color for you!'
     end
 end
 
@@ -60,9 +60,9 @@ Welcome #{ENV['USER']} to WMFs wonderful rake helper to play with puppet.
 ---[Available rake tasks]----------------------------------------------"
 
     # Show our tasks list.
-    system "rake -T"
+    system 'rake -T'
 
-puts "-----------------------------------------------------------------------"
+puts '-----------------------------------------------------------------------'
 puts "
 Examples:
 
@@ -82,35 +82,35 @@ task :run_puppet_lint do
     system('puppet-lint .')
 end
 
-desc "Build documentation"
+desc 'Build documentation'
 task :doc do
     doc_cmd = [
-        "puppet doc",
-        "--mode rdoc",
-        "--all",  # build all references
-        "--manifestdir manifests",
-        "--modulepath modules",
+        'puppet doc',
+        '--mode rdoc',
+        '--all',  # build all references
+        '--manifestdir manifests',
+        '--modulepath modules',
     ].join(' ')
     puts "Running #{doc_cmd}"
     system(doc_cmd)
 end
 
-desc "Lint puppet files"
+desc 'Lint puppet files'
 task :lint => :run_puppet_lint
 
-desc "Validate puppet syntax (default: manifests/site.pp)"
+desc 'Validate puppet syntax (default: manifests/site.pp)'
 task :validate, [:files ] do |_t, args|
 
     success = true
 
     if args.files
-        puts console_color(:info, "Validating " + args.files.inspect)
+        puts console_color(:info, 'Validating ' + args.files.inspect)
         ok = puppet_parser_validate args.files
     else
         ok = puppet_parser_validate 'manifests/site.pp'
         success &&= ok
 
-        Dir.glob("modules/*").each do |dir|
+        Dir.glob('modules/*').each do |dir|
             puts console_color(:info, "Validating manifests in '#{dir}'")
             ok = puppet_parser_validate Dir.glob("#{dir}/**/*.pp")
             success &&= ok
@@ -118,7 +118,7 @@ task :validate, [:files ] do |_t, args|
     end
 
     if success
-        puts "[OK] " + console_color(:info,  "files looks fine!")
+        puts '[OK] ' + console_color(:info,  'files looks fine!')
     else
         raise console_color(:alert, "puppet failed to validate files (exit: #{res.exitstatus}")
     end
@@ -130,14 +130,14 @@ def puppet_parser_validate(*manifests)
     sh "puppet parser validate #{manifests}"
 end
 
-desc "Run spec tests found in modules"
+desc 'Run spec tests found in modules'
 task :spec do
 
     # Hold a list of modules not passing tests.
     failed_modules = []
 
     # Invoke rake whenever a module has a Rakefile.
-    FileList["modules/*/Rakefile"].each do |rakefile|
+    FileList['modules/*/Rakefile'].each do |rakefile|
 
         module_name = rakefile.match('modules/(.+)/')[1]
 
@@ -156,18 +156,18 @@ task :spec do
         puts "\nThe following modules are NOT passing tests:\n"
         puts '- ' + failed_modules * "\n- "
         puts
-        raise "Some modules had failures, sorry."
+        raise 'Some modules had failures, sorry.'
     end
 end
 
-desc "Generates ctags"
+desc 'Generates ctags'
 task :tags do
-    puts "Generating ctags file.."
+    puts 'Generating ctags file..'
     system('ctags -R .')
-    puts "Done"
+    puts 'Done'
     puts
-    puts "See https://github.com/majutsushi/tagbar/wiki#puppet for vim"
-    puts "integration with the vim tagbar plugin."
+    puts 'See https://github.com/majutsushi/tagbar/wiki#puppet for vim'
+    puts 'integration with the vim tagbar plugin.'
 end
 
 # Wrapper to run rspec in a module.
@@ -181,15 +181,15 @@ def run_module_spec(module_name)
         # The following is a customized replacement for 'spec_prep'.
         # We do not want to use upstream modules which are usually installed
         # using `rake spec_prep`, instead we symlink to our own modules.
-        directory_name = "spec/fixtures"
+        directory_name = 'spec/fixtures'
         Dir.mkdir(directory_name) unless File.exists?(directory_name)
-        link_name = "spec/fixtures/modules"
+        link_name = 'spec/fixtures/modules'
         system("ln -s ../../../../modules #{link_name}") unless File.exists?(link_name)
 
         # We also need to create an empty site.pp file in the manifests dir.
-        directory_name = "spec/fixtures/manifests"
+        directory_name = 'spec/fixtures/manifests'
         Dir.mkdir(directory_name) unless File.exists?(directory_name)
-        site_file_name = "spec/fixtures/manifests/site.pp"
+        site_file_name = 'spec/fixtures/manifests/site.pp'
         system("touch #{site_file_name}") unless File.exists?(site_file_name)
 
         puts "Invoking tests on module #{module_name}"

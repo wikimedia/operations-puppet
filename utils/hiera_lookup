@@ -37,7 +37,7 @@ cfg = File.join($DIR, 'modules/puppetmaster/files/production.hiera.yaml')
 def get_scope()
   # Transform the CL arguments in a dictionary in the form "::option" => argument
   scope = Hash[ARGV.map { |kv| "::#{kv.sub('--', '')}".split('=') }]
-  abort(usage "Error: --fqdn=FQDN is required.") unless scope['::fqdn']
+  abort(usage 'Error: --fqdn=FQDN is required.') unless scope['::fqdn']
   scope['::hostname'] = scope['::fqdn'][/^[^.]+/]
   scope['::realm'] = scope['::fqdn'].include?('labs') ? 'labs' : 'production'
 
@@ -66,6 +66,6 @@ end
 
 hiera = Hiera.new(:config => cfg)
 if not get_scope().include?('::debug')
-    Hiera.logger = "noop"
+    Hiera.logger = 'noop'
 end
 puts hiera.lookup(key, nil, get_scope(), nil, :priority)

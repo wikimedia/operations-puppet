@@ -37,7 +37,7 @@ class Hiera
     def read_file(path, expected_type = Object, &block)
       if stale?(path)
         resp = get_from_mediawiki(path, true)
-        data = resp["*"]
+        data = resp['*']
         @cache[path][:data] = block_given? ? yield(data) : data
 
         if !@cache[path][:data].is_a?(expected_type)
@@ -85,7 +85,7 @@ class Hiera
         return @cache[path][:meta]
       end
       # TODO: add some locking mechanism for requests? Maybe overkill, maybe not.
-      revision = get_from_mediawiki(path, false)["revid"]
+      revision = get_from_mediawiki(path, false)['revid']
 
       return {:ts => now, :revision => revision}
     end
@@ -103,14 +103,14 @@ class Hiera
       # We shamelessly throw exceptions here, and catch them upper in the chain
       # specifically in Hiera::Mwcache.stale? and Hiera::Mwcache.read
       body = JSON.parse(res.body)
-      pages = body["query"]["pages"]
+      pages = body['query']['pages']
       # Quoting Yuvi: "MediaWiki API doesn't give a fuck about HTTP status codes"
-      if pages.keys.include? "-1"
+      if pages.keys.include? '-1'
         raise Hiera::MediawikiPageNotFoundError, "Hiera:#{path}"
       end
       #yes, it's that convoluted.
       key = pages.keys[0]
-      return pages[key]["revisions"][0]
+      return pages[key]['revisions'][0]
     end
   end
 end

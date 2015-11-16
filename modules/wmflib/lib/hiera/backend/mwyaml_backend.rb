@@ -1,4 +1,4 @@
-require "hiera/mwcache"
+require 'hiera/mwcache'
 class Hiera
   module Backend
     class Mwyaml_backend

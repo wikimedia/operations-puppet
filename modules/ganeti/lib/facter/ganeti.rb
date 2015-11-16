@@ -1,8 +1,8 @@
-Facter.add("ganeti_cluster") do
+Facter.add('ganeti_cluster') do
     confine :kernel => :linux
 
     setcode do
-        if File.exists?("/var/lib/ganeti/ssconf_cluster_name") then
+        if File.exists?('/var/lib/ganeti/ssconf_cluster_name') then
             cmdline = %x{cat /var/lib/ganeti/ssconf_cluster_name}.chomp
         end
     end

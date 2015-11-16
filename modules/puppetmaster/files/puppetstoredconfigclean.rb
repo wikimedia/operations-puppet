@@ -13,33 +13,33 @@ config = '/etc/puppet/puppet.conf'
 def printusage(error_code)
   puts "Usage: #{$0} [ list of hostnames as stored in hosts table ]"
   puts "\n Options:"
-  puts "--config <puppet config file>"
+  puts '--config <puppet config file>'
   exit(error_code)
 end
 
 
       opts = GetoptLong.new(
 
-    [ "--config",     "-c",   GetoptLong::REQUIRED_ARGUMENT ],
-    [ "--help",        "-h",   GetoptLong::NO_ARGUMENT ],
-    [ "--usage",       "-u",   GetoptLong::NO_ARGUMENT ],
+    [ '--config',     '-c',   GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--help',        '-h',   GetoptLong::NO_ARGUMENT ],
+    [ '--usage',       '-u',   GetoptLong::NO_ARGUMENT ],
 
-    [ "--version",     "-v",   GetoptLong::NO_ARGUMENT ]
+    [ '--version',     '-v',   GetoptLong::NO_ARGUMENT ]
 )
 
 begin
   opts.each do |opt, arg|
     case opt
-    when "--config"
+    when '--config'
       config = arg
 
-    when "--help"
+    when '--help'
       printusage(0)
 
-    when "--usage"
+    when '--usage'
       printusage(0)
 
-    when "--version"
+    when '--version'
       puts "#{Puppet.version}"
       exit
     end
@@ -60,9 +60,9 @@ adapter = pm_conf[:dbadapter]
 args = {:adapter => adapter, :log_level => pm_conf[:rails_loglevel]}
 
 case adapter
-  when "sqlite3"
+  when 'sqlite3'
     args[:dbfile] = pm_conf[:dblocation]
-  when "mysql", "postgresql"
+  when 'mysql', 'postgresql'
     args[:host]     = pm_conf[:dbserver] unless pm_conf[:dbserver].to_s.empty?
     args[:username] = pm_conf[:dbuser] unless pm_conf[:dbuser].to_s.empty?
     args[:password] = pm_conf[:dbpassword] unless pm_conf[:dbpassword].to_s.empty?
@@ -74,7 +74,7 @@ case adapter
     raise ArgumentError, "Invalid db adapter #{adapter}"
 end
 
-args[:database] = "puppet" unless not args[:database].to_s.empty?
+args[:database] = 'puppet' unless not args[:database].to_s.empty?
 
 ActiveRecord::Base.establish_connection(args)
 
@@ -83,7 +83,7 @@ ARGV.each { |hostname|
     print "Killing #{hostname}..."
     $stdout.flush
     @host.destroy
-    puts "done."
+    puts 'done.'
   else
     puts "Can't find host #{hostname}."
   end

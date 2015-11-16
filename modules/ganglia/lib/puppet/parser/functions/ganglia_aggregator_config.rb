@@ -4,7 +4,7 @@
 def calc_url(aggregator, ip_octet)
   url, port = aggregator.split(':')
   port = port.to_i + ip_octet.to_i
-  return sprintf("%s:%d", url, port)
+  return sprintf('%s:%d', url, port)
 end
 
 
@@ -15,7 +15,7 @@ module Puppet::Parser::Functions
     clusters = function_hiera(['ganglia_clusters'])
     clusters.each do |cluster, data|
       data['sites'].each do |site, aggregators|
-        name = sprintf("%s %s", data['name'], site)
+        name = sprintf('%s %s', data['name'], site)
         if not aggregators.empty?
           aggregator = aggregators.join(' ')
         else

@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe 'pick_initscript' do
   before :each do
-    @compiler = Puppet::Parser::Compiler.new(Puppet::Node.new("foo"))
+    @compiler = Puppet::Parser::Compiler.new(Puppet::Node.new('foo'))
     @scope = Puppet::Parser::Scope.new(@compiler)
   end
 

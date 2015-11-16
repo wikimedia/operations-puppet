@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'ipresolve' do
   before :each do
-    @compiler = Puppet::Parser::Compiler.new(Puppet::Node.new("foo"))
+    @compiler = Puppet::Parser::Compiler.new(Puppet::Node.new('foo'))
     @scope = Puppet::Parser::Scope.new(@compiler)
   end
   it 'should be called with two parameters' do
@@ -24,7 +24,7 @@ describe 'ipresolve' do
 
   it 'uses cached results on subsequent lookups' do
     r = Resolv::DNS::Resource::IN::A.new(Resolv::IPv4.create('74.125.29.113'))
-    resolv = double("Resolv::DNS", :getresource => r)
+    resolv = double('Resolv::DNS', :getresource => r)
     resolv.should_receive(:getresource).once
     dns = DNSCached.new
     dns.dns = resolv
@@ -34,7 +34,7 @@ describe 'ipresolve' do
 
   it 'not uses cached results if ttl is zero' do
     r = Resolv::DNS::Resource::IN::A.new(Resolv::IPv4.create('74.125.29.113'))
-    resolv = double("Resolv::DNS", :getresource => r)
+    resolv = double('Resolv::DNS', :getresource => r)
     resolv.should_receive(:getresource).twice
     dns = DNSCached.new(nil, 0)
     dns.dns = resolv

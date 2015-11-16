@@ -420,12 +420,6 @@ Style/SpecialGlobalVars:
     - 'modules/puppetmaster/files/puppetstoredconfigclean.rb'
     - 'utils/expanderb.rb'
 
-# Offense count: 153
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/StringLiterals:
-  Enabled: false
-
 # Offense count: 116
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.

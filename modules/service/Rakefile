@@ -30,8 +30,8 @@ RSpec::Core::RakeTask.new(:realspec) do |t|
 end
 
 task :test_checker  do
-  puts "Testing the python service checker"
-  sh "nosetests spec/checker/"
+  puts 'Testing the python service checker'
+  sh 'nosetests spec/checker/'
 end
 
 task :spec_standalone => [ :setup, :test_checker, :realspec, :teardown]
