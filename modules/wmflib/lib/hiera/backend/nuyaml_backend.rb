@@ -79,8 +79,8 @@ class Hiera
         config_section = :nuyaml
         # Special case: regex
         if m = /^regex\//.match(source)
-          Hiera.debug("Regex match going on - using regex.yaml")
-          return key, Backend.datafile(config_section, scope, 'regex', "yaml")
+          Hiera.debug('Regex match going on - using regex.yaml')
+          return key, Backend.datafile(config_section, scope, 'regex', 'yaml')
         end
 
         # Special case: 'private' repository.
@@ -113,12 +113,12 @@ class Hiera
           newkey = namespaces.pop
 
           unless namespaces.empty?
-            source += "/".concat(namespaces.join('/'))
+            source += '/'.concat(namespaces.join('/'))
             key = newkey
           end
         end
 
-        return key, Backend.datafile(config_section, scope, source, "yaml")
+        return key, Backend.datafile(config_section, scope, source, 'yaml')
       end
 
       def plain_lookup(key, data, scope)
@@ -128,7 +128,7 @@ class Hiera
 
       def regex_lookup(key, matchon, data, scope)
         data.each do |label, datahash|
-          r = datahash["__regex"]
+          r = datahash['__regex']
           Hiera.debug("Scanning label #{label} for matches to '#{r}' in '#{matchon}' ")
           next unless r.match(matchon)
           Hiera.debug("Label #{label} matches; searching within it")

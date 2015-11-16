@@ -10,7 +10,7 @@ describe 'git::userconfig', :type => :define do
 
   let(:title) { 'gitconfig' }
 
-  context "Setting up user name and email" do
+  context 'Setting up user name and email' do
     let(:params) { {
       :homedir => '/tmp/foo',
       :settings => {

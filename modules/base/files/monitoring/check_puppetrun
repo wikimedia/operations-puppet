@@ -12,10 +12,10 @@
 require 'optparse'
 require 'yaml'
 
-runlockfile = "/var/lib/puppet/state/agent_catalog_run.lock"
-adminlockfile = "/var/lib/puppet/state/agent_disabled.lock"
-statefile = "/var/lib/puppet/state/state.yaml"
-summaryfile = "/var/lib/puppet/state/last_run_summary.yaml"
+runlockfile = '/var/lib/puppet/state/agent_catalog_run.lock'
+adminlockfile = '/var/lib/puppet/state/agent_disabled.lock'
+statefile = '/var/lib/puppet/state/state.yaml'
+summaryfile = '/var/lib/puppet/state/last_run_summary.yaml'
 enabled = true
 running = false
 lastrun_failed = false
@@ -27,38 +27,38 @@ enabled_only = false
 
 opt = OptionParser.new
 
-opt.on("--critical [CRIT]", "-c", Integer, "Critical staleness threshold, time in seconds") do |f|
+opt.on('--critical [CRIT]', '-c', Integer, 'Critical staleness threshold, time in seconds') do |f|
     crit = f.to_i
 end
 
-opt.on("--warn [WARN]", "-w", Integer, "Warning staleness threshold, time in seconds") do |f|
+opt.on('--warn [WARN]', '-w', Integer, 'Warning staleness threshold, time in seconds') do |f|
     warn = f.to_i
 end
 
-opt.on("--only-enabled", "-e", "Only alert if Puppet is enabled") do |f|
+opt.on('--only-enabled', '-e', 'Only alert if Puppet is enabled') do |f|
     enabled_only = true
 end
 
-opt.on("--runlock-file [FILE]", "-l", "Location of the run lock file, default #{runlockfile}") do |f|
+opt.on('--runlock-file [FILE]', '-l', "Location of the run lock file, default #{runlockfile}") do |f|
     runlockfile = f
 end
 
-opt.on("--adminlock-file [FILE]", "-a", "Location of the admin lock file, default #{adminlockfile}") do |f|
+opt.on('--adminlock-file [FILE]', '-a', "Location of the admin lock file, default #{adminlockfile}") do |f|
     adminlockfile = f
 end
 
-opt.on("--state-file [FILE]", "-t", "Location of the state file, default #{statefile}") do |f|
+opt.on('--state-file [FILE]', '-t', "Location of the state file, default #{statefile}") do |f|
     statefile = f
 end
 
-opt.on("--summary-file [FILE]", "-s", "Location of the summary file, default #{summaryfile}") do |f|
+opt.on('--summary-file [FILE]', '-s', "Location of the summary file, default #{summaryfile}") do |f|
     summaryfile = f
 end
 
 opt.parse!
 
 if warn == 0 || crit == 0
-    puts "Please specify a warning and critical level"
+    puts 'Please specify a warning and critical level'
     exit 3
 end
 
@@ -75,16 +75,16 @@ lastrun = File.stat(statefile).mtime.to_i if File.exists?(statefile)
 if File.exists?(summaryfile)
     begin
         summary = YAML.load_file(summaryfile)
-        lastrun = summary["time"]["last_run"]
+        lastrun = summary['time']['last_run']
 
         # machines that outright failed to run like on missing dependencies
         # are treated as huge failures. The yaml file will be valid but
         # it wont have anything but last_run in it
-        unless summary.include?("events")
+        unless summary.include?('events')
             failcount = :failed
         else
             # and unless there are failures, the events hash just wont have the failure count
-            failcount = summary["events"]["failure"] || 0
+            failcount = summary['events']['failure'] || 0
         end
     rescue
         failcount = :unknown
@@ -97,12 +97,12 @@ end
 def time_ago(s)
   units = {86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second'}
   if s == 0
-    return "0 seconds"
+    return '0 seconds'
   end
   units.sort.reverse.each do |len, unit|
     return "#{s / len} #{unit}#{'s' if s / len > 1}" if s >= len
   end
-  "Indeterminate amount of time (see time_ago)"
+  'Indeterminate amount of time (see time_ago)'
 end
 
 time_since_last_run = Time.now.to_i - lastrun
@@ -119,12 +119,12 @@ if not enabled
 end
 
 if failcount == :failed
-    puts "CRITICAL: puppet fail"
+    puts 'CRITICAL: puppet fail'
     exit 2
 end
 
 if failcount == :unknown or failcount == :nostatefile
-    puts "UNKNOWN: Failed to check. Probably failed to read the state file"
+    puts 'UNKNOWN: Failed to check. Probably failed to read the state file'
     exit 3
 end
 

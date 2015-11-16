@@ -94,7 +94,7 @@ class Hiera
         src = "role/#{source}/#{path}"
 
         # Use the datadir for the 'role' section of the config
-        return Backend.datafile(config_section, scope, src, "yaml")
+        return Backend.datafile(config_section, scope, src, 'yaml')
       end
 
       def merge_answer(new_answer, answer, resolution_type)

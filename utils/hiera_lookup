@@ -26,14 +26,21 @@ begin
 rescue LoadError
   abort("Hiera not found - try 'apt-get install ruby-hiera' or 'gem install hiera'.")
 end
+abort(usage) if ARGV.include?('-h') || ARGV.include?('--help')
+key = ARGV.pop() || abort(usage "\nError: KEY is required")
+
+$DIR = ENV['PUPPETDIR'] || File.expand_path('../..', __FILE__)
+$LOAD_PATH << File.join($DIR, 'modules/wmflib/lib')
+cfg = File.join($DIR, 'modules/puppetmaster/files/production.hiera.yaml')
 
 # Get the scope from the command line arguments
 def get_scope()
   # Transform the CL arguments in a dictionary in the form "::option" => argument
   scope = Hash[ARGV.map { |kv| "::#{kv.sub('--', '')}".split('=') }]
-  abort(usage "Error: --fqdn=FQDN is required.") unless scope['::fqdn']
+  abort(usage 'Error: --fqdn=FQDN is required.') unless scope['::fqdn']
   scope['::hostname'] = scope['::fqdn'][/^[^.]+/]
   scope['::realm'] = scope['::fqdn'].include?('labs') ? 'labs' : 'production'
+
   # Attempt at determining the site
   scope['::site'] ||= scope['::realm'] == 'labs' ? 'eqiad' : scope['::fqdn'].split('.')[-2]
   abort(usage "\nError: --site=SITE is required if the FQDN doesn't contain it") if scope['::site'] == 'wikimedia'
@@ -57,24 +64,8 @@ class Hiera
   end
 end
 
-abort(usage) if ARGV.include?('-h') || ARGV.include?('--help') || ARGV.empty?
-if ARGV.include?('-v')
-  verbose = true
-  ARGV.delete('-v')
-else
-  verbose = false
-end
-
-$DIR = ENV['PUPPETDIR'] || File.expand_path('../..', __FILE__)
-$LOAD_PATH << File.join($DIR, 'modules/wmflib/lib')
-cfg = File.join($DIR, 'modules/puppetmaster/files/production.hiera.yaml')
-
-key = ARGV.pop()
-abort(usage "\nError: KEY is required") if key.match('^--')
-
 hiera = Hiera.new(:config => cfg)
-if not verbose || get_scope().include?('::debug')
-    Hiera.logger = "noop"
+if not get_scope().include?('::debug')
+    Hiera.logger = 'noop'
 end
-
 puts hiera.lookup(key, nil, get_scope(), nil, :priority)

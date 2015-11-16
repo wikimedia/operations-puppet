@@ -176,10 +176,10 @@ END
     # builds, actually, because they weren't built against openssl-1.0.2.
     # Disabling for now, until we come up with a better way to configure this
     if server == 'apache'
-      cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^DHE-/}.join(":")
+      cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^DHE-/}.join(':')
       set_dhparam = false
     else
-      cipherlist = ciphersuites[ciphersuite].join(":")
+      cipherlist = ciphersuites[ciphersuite].join(':')
       set_dhparam = true
     end
 

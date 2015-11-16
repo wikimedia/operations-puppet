@@ -19,7 +19,7 @@ $filename = nil
 # Parsing the options
 optparse = OptionParser.new do |opts|
 
-  opts.banner = "Usage: expanderb.rb -f FILENAME [key=val [key2=val]]"
+  opts.banner = 'Usage: expanderb.rb -f FILENAME [key=val [key2=val]]'
 
   opts.on( '-f', '--filename FILENAME', 'ERB filename to expand') do |f|
     $filename = f
@@ -36,7 +36,7 @@ begin
   # -f is mandatory
   optparse.parse!
   if $filename.nil?
-     puts "You must specify an ERB filename."
+     puts 'You must specify an ERB filename.'
     puts optparse
     exit
   end
@@ -67,6 +67,6 @@ end
 begin
   puts render_erb(File.read($filename), template_values)
 rescue
-  p "Something went wrong, usually because you are missing a variable."
+  p 'Something went wrong, usually because you are missing a variable.'
   p $!.to_s
 end

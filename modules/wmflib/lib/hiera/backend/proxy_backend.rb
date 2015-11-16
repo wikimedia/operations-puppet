@@ -23,7 +23,7 @@ class Hiera
   module Backend
     class Proxy_backend
       def initialize
-        Hiera.debug "Starting the proxy backend"
+        Hiera.debug 'Starting the proxy backend'
         @config = Config[:proxy]
         self.load_plugins
       end
