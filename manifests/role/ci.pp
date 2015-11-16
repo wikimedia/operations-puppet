@@ -426,6 +426,36 @@ class role::ci::slave::labs::light {
 
 }
 
+# == Class role::ci::castor::server
+#
+# rsync server to store cache related material from CI jobs.
+class role::ci::castor::server {
+    requires_realm( 'labs' )
+
+    include role::labs::lvm::mnt
+    include rsync::server
+
+    file { '/mnt/jenkins-workspace/caches':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode    => '0775',
+        require => Class['role::labs::lvm::mnt'],
+    }
+
+    rsync::server::module { 'caches':
+        path      => '/srv/jenkins-workspace/caches',
+        read_only => 'yes',
+        uid       => 'jenkins-deploy',
+        gid       => 'wikidev',
+        require   => [
+            File['/mnt/jenkins-workspace/caches'],
+            Class['role::labs::lvm::mnt'],
+        ],
+    }
+
+}
+
 # == Class role::ci::publisher::labs
 #
 # Intermediary rsync hosts in labs to let Jenkins slave publish their results
