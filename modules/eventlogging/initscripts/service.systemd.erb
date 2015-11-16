@@ -1,0 +1,14 @@
+[Unit]
+Description=EventLogging Produce HTTP Service
+After=network.target
+
+[Service]
+User=eventlogging
+Group=eventlogging
+WorkingDirectory=<%= @working_path %>
+Environment="PYTHONPATH=<%= @working_path %>"
+Restart=on-failure
+ExecStart=<%= @executable %> <%= @config_file %>
+
+[Install]
+WantedBy=multi-user.target
