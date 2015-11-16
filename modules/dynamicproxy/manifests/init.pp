@@ -47,7 +47,7 @@ class dynamicproxy (
         settings       => {
             appendonly => 'yes',
             maxmemory  => $redis_maxmemory,
-            slaveof    => $slaveof,
+            slaveof    => "${slaveof} 6379",
             dir        => '/var/lib/redis',
         },
     }
