@@ -434,13 +434,6 @@ Style/Tab:
     - 'modules/git/spec/defines/user_spec.rb'
     - 'utils/expanderb.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/TrailingBlankLines:
-  Exclude:
-    - 'modules/base/lib/facter/labsproject.rb'
-
 # Offense count: 116
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
