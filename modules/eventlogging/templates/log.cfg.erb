@@ -1,0 +1,60 @@
+[loggers]
+keys=root, kafka, pykafka, kazoo, tornado_access, tornado_application, tornado_general
+
+[handlers]
+keys=watched_file_handler
+
+[formatters]
+keys=formatter
+
+
+### Loggers ###
+
+[logger_root]
+level=DEBUG
+handlers=watched_file_handler
+
+[logger_kafka]
+level=INFO
+qualname=kafka
+handlers=
+
+[logger_pykafka]
+level=INFO
+qualname=pykafka
+handlers=
+
+[logger_kazoo]
+level=INFO
+qualname=kazoo
+handlers=
+
+[logger_tornado_access]
+level=INFO
+qualname=tornado.access
+handlers=
+
+[logger_tornado_application]
+level=INFO
+qualname=tornado.application
+handlers=
+
+[logger_tornado_general]
+level=INFO
+qualname=tornado.general
+handlers=
+
+
+### Formatters ###
+
+[formatter_formatter]
+format=%(asctime)s (%(threadName)-10s) %(message)s
+
+
+### Output Handlers ###
+
+[handler_watched_file_handler]
+class=logging.handlers.WatchedFileHandler
+level=DEBUG
+formatter=formatter
+args=("<%= @_log_file %>",)
