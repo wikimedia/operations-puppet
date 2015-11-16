@@ -952,7 +952,7 @@ node 'etherpad1001.eqiad.wmnet' {
 
 # Receives log data from Kafka and Apaches (udp 8421),
 # processes it, and broadcasts to Kafka Schema based topics.
-node 'eventlog1001.eqiad.wmnet' {
+node 'eventlog1001.eqiad.wmnet', 'eventlog2001.codfw.wmnet' {
     role eventlogging,
         eventlogging::forwarder,
         eventlogging::processor,
