@@ -101,15 +101,15 @@ define varnish::instance(
         systemd        => true,
         refresh        => false,
         service_params => {
-            tag     => 'varnish_instance',
-            enable  => true,
-            require => [
-                Package['varnish'],
-                File["/etc/default/varnish${instancesuffix}"],
-                File["/etc/varnish/${vcl}.inc.vcl"],
-                File["/etc/varnish/wikimedia_${vcl}.vcl"],
-                Mount['/var/lib/varnish'],
-            ],
+                            tag     => 'varnish_instance',
+                            enable  => true,
+                            require => [
+                                        Package['varnish'],
+                                        File["/etc/default/varnish${instancesuffix}"],
+                                        File["/etc/varnish/${vcl}.inc.vcl"],
+                                        File["/etc/varnish/wikimedia_${vcl}.vcl"],
+                                        Mount['/var/lib/varnish'],
+                                        ],
         }
     }
 
