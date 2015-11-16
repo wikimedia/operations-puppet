@@ -2783,31 +2783,43 @@ host logstash1006 {
 host lvs1001 {
 	hardware ethernet 18:03:73:f0:89:69;
 	fixed-address lvs1001.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs1002 {
 	hardware ethernet 18:03:73:f0:8e:dc;
 	fixed-address lvs1002.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs1003 {
 	hardware ethernet 18:03:73:f0:8b:07;
 	fixed-address lvs1003.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs1004 {
 	hardware ethernet 18:03:73:f0:8c:30;
 	fixed-address lvs1004.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs1005 {
 	hardware ethernet 18:03:73:f0:8e:28;
 	fixed-address lvs1005.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs1006 {
 	hardware ethernet 18:03:73:f0:8a:77;
 	fixed-address lvs1006.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host lvs1007 {
