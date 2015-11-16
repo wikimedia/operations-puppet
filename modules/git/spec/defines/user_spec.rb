@@ -8,23 +8,23 @@ require 'spec_helper'
 
 describe 'git::userconfig', :type => :define do
 
-	let(:title) { 'gitconfig' }
+  let(:title) { 'gitconfig' }
 
-	context "Setting up user name and email" do
-		let(:params) { {
-			:homedir => '/tmp/foo',
-			:settings => {
-			'user' => {
-				'name' => 'Antoine Musso',
-				'email' => 'hashar@free.fr',
-			}
-		} }
-		}
-		it { should contain_file('/tmp/foo/.gitconfig') \
-			.with_content(/[user]\n/) \
-			.with_content(/name = Antoine Musso\n/) \
-			.with_content(/email = hashar@free.fr\n/)
-		}
-	end
+  context "Setting up user name and email" do
+    let(:params) { {
+      :homedir => '/tmp/foo',
+      :settings => {
+      'user' => {
+        'name' => 'Antoine Musso',
+        'email' => 'hashar@free.fr',
+      }
+    } }
+    }
+    it { should contain_file('/tmp/foo/.gitconfig') \
+      .with_content(/[user]\n/) \
+      .with_content(/name = Antoine Musso\n/) \
+      .with_content(/email = hashar@free.fr\n/)
+    }
+  end
 
 end
