@@ -20,10 +20,10 @@ class mysql::params {
 
     $service_provider    = $::initsystem
 
-    if $::lsbdistid == 'Ubuntu' and versioncmp($::lsbdistrelease, '12.04') >= 0 {
-        $ver = '5.5'
-    } else {
+    if os_version('ubuntu <= precise') {
         $ver = '5.1'
+    } else {
+        $ver = '5.5'
     }
 
     $client_package_name  = "mysql-client-${ver}"
