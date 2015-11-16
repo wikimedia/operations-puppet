@@ -70,29 +70,10 @@ class role::librenms {
         require => Class['::librenms']
     }
 
-    sslcert::certificate { $sitename: }
-
-    monitoring::service { 'https':
-        description   => 'HTTPS',
-        check_command => 'check_ssl_http!librenms.wikimedia.org',
-    }
-
-    include ::apache::mod::php5
-    include ::apache::mod::rewrite
-    include ::apache::mod::ssl
-    @webserver::apache::site { $sitename:
-        docroot => "${install_dir}/html",
-        ssl     => 'redirected',
-        require => [
-            Class['::apache::mod::php5', '::apache::mod::ssl'],
-            Sslcert::Certificate[$sitename],
-            Class['::librenms'],
-        ],
-    }
-
-    monitoring::service { 'librenms':
-        description   => 'LibreNMS HTTPS',
-        check_command => "check_https_url!${sitename}!http://${sitename}",
+    class { '::librenms::web':
+        sitename    => $sitename,
+        install_dir => $install_dir,
+        require     => Class['::librenms'],
     }
 
     ferm::service { 'librenms-http':
@@ -104,5 +85,4 @@ class role::librenms {
         proto => 'tcp',
         port  => '443',
     }
-
 }
