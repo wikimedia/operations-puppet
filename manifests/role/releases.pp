@@ -11,7 +11,6 @@ class role::releases {
 
     class { '::releases':
         sitename => 'releases.wikimedia.org',
-        docroot  => 'releases',
     }
 
     class { '::releases::reprepro': }
