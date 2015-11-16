@@ -20,11 +20,7 @@ class mysql::params {
 
     $service_provider    = $::initsystem
 
-    if os_version('ubuntu <= precise') {
-        $ver = '5.1'
-    } else {
-        $ver = '5.5'
-    }
+    $ver                  = '5.5'
 
     $client_package_name  = "mysql-client-${ver}"
     $server_package_name  = "mysql-server-${ver}"
