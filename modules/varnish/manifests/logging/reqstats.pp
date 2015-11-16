@@ -53,7 +53,7 @@ define varnish::logging::reqstats(
         require        => File['/usr/local/bin/varnishreqstats'],
         service_params => {
             require => Service[$varnish_service_name],
-            enable => true,
+            enable  => true,
         },
     }
 }

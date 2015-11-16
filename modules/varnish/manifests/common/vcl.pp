@@ -27,6 +27,6 @@ class varnish::common::vcl {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///files/varnish/varnish-test-geoip',
+        source => 'puppet:///modules/varnish/varnish-test-geoip',
     }
 }

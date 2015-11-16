@@ -53,7 +53,7 @@ define varnish::instance(
     }
 
     # lint:ignore:quoted_booleans
-    if inline_template("<%= @directors.map{|k,v| v['dynamic'] }.include?('yes') %>") == "true" {
+    if inline_template("<%= @directors.map{|k,v| v['dynamic'] }.include?('yes') %>") == 'true' {
         $use_dynamic_directors = true
     } else {
         $use_dynamic_directors = false
@@ -106,20 +106,20 @@ define varnish::instance(
         sysvinit       => true,
         refresh        => false,
         service_params => {
-            tag     => 'varnish_instance',
-            enable  => true,
-            require => [
-                Package['varnish'],
-                File["/etc/default/varnish${instancesuffix}"],
-                File["/etc/varnish/${vcl}.inc.vcl"],
-                File["/etc/varnish/wikimedia_${vcl}.vcl"],
-                Mount['/var/lib/varnish'],
-            ],
-            # The two below were for upstart only.  They seem
-            #  nonsensical vs fixing the initscript, but I suspect they're
-            #  harmless on systemd and can be removed later.
-            hasstatus => false,
-            pattern   => "/var/run/varnishd${instancesuffix}.pid",
+                            tag       => 'varnish_instance',
+                            enable    => true,
+                            require   => [
+                                        Package['varnish'],
+                                        File["/etc/default/varnish${instancesuffix}"],
+                                        File["/etc/varnish/${vcl}.inc.vcl"],
+                                        File["/etc/varnish/wikimedia_${vcl}.vcl"],
+                                        Mount['/var/lib/varnish'],
+                                        ],
+                            # The two below were for upstart only.  They seem
+                            # nonsensical vs fixing the initscript, but I suspect they're
+                            # harmless on systemd and can be removed later.
+                            hasstatus => false,
+                            pattern   => "/var/run/varnishd${instancesuffix}.pid",
         }
     }
 
