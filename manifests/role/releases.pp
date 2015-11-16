@@ -1,6 +1,5 @@
 class role::releases {
     system::role { 'releases': description => 'Releases webserver' }
-    include base::firewall
 
     include base::firewall
 
