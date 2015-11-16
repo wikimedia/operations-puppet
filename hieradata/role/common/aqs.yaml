@@ -3,6 +3,7 @@ cluster: aqs
 
 admin::groups:
     - aqs-admins
+    - aqs-users
 debdeploy::grains:
   debdeploy-aqs:
     value: standard
