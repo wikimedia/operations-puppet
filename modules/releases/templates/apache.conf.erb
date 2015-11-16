@@ -1,0 +1,20 @@
+<VirtualHost *:80>
+    ServerName <%= @sitename %>
+    ServerAdmin <%= @server_admin %>
+
+    DocumentRoot /srv/org/wikimedia/releases/
+    <Directory /srv/org/wikimedia/releases/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+
+
+    ErrorLog /var/log/apache2/<%= @sitename %>.error.log
+
+    LogLevel warn
+
+    CustomLog /var/log/apache2/<%= @sitename %>.access.log combined
+    ServerSignature On
+</VirtualHost>
