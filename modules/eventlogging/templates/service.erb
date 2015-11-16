@@ -1,0 +1,15 @@
+--log-config
+<%= @log_config_file %>
+<% if @port -%>
+--port
+<%= @port %>
+<% end -%>
+<% if @num_processes -%>
+--num-processes
+<%= @num_processes %>
+<% end -%>
+--schemas-path
+<%= @schemas_path %>
+--topic-config
+<%= @topic_config %>
+<%= @outputs.join("\n") %>
