@@ -6,7 +6,7 @@ include /etc/redis/redis.conf
 # Instance-specific settings
 <%=
     @defaults.merge(@settings).select { |k,v|
-        v and v.to_s != 'undef'
+        !v.empty? and v.to_s != 'undef'
     }.map { |k,v|
         Array(v).flatten.unshift(k.tr '_', '-').join(' ')
     }.sort.join("\n")
