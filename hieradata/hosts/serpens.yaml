@@ -1,0 +1,2 @@
+openldap::master: ldap-labs.eqiad.wikimedia.org
+openldap::server_id: 2
