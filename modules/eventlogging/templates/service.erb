@@ -1,0 +1,9 @@
+<% if @port -%>
+--port
+@port
+<% end -%>
+--schemas-path
+<%= @schemas_path %>
+--topic-config
+<%= @topic_config %>
+<%= @outputs.join("\n") %>
