@@ -287,3 +287,17 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
         }
     }
 }
+
+
+# == Class role::eventlogging::service inherits role::eventlogging
+#
+class role::eventlogging::service inherits role::eventlogging {
+    eventlogging::service::service { 'test':
+        schemas_path => "${eventlogging::package::path}/tests/fixtures/config/schemas/jsonschema",
+        topic_config => "${eventlogging::package::path}/tests/fixtures/config/topics.yaml",
+        outputs => [
+            "${kafka_base_uri}?async=False",
+            "file://${eventlogging::log_dir}/service-test.out",
+        ]
+    }
+}
