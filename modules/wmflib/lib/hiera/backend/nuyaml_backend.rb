@@ -163,7 +163,7 @@ class Hiera
             YAML.load(content)
           end
 
-          next if data.empty?
+          next if data.nil?
 
           if m = /regex\/(.*)$/.match(source)
             matchto = m[1]
