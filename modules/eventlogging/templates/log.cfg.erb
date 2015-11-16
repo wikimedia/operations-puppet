@@ -1,0 +1,61 @@
+[loggers]
+keys=root, kafka, pykafka, kazoo, tornado_access, tornado_application, tornado_general
+
+[handlers]
+keys=syslog
+
+[formatters]
+keys=syslog
+
+
+### Loggers ###
+
+[logger_root]
+level=INFO
+handlers=syslog
+
+[logger_kafka]
+level=INFO
+qualname=kafka
+handlers=
+
+[logger_pykafka]
+level=INFO
+qualname=pykafka
+handlers=
+
+[logger_kazoo]
+level=INFO
+qualname=kazoo
+handlers=
+
+[logger_tornado_access]
+level=INFO
+qualname=tornado.access
+handlers=
+
+[logger_tornado_application]
+level=INFO
+qualname=tornado.application
+handlers=
+
+[logger_tornado_general]
+level=INFO
+qualname=tornado.general
+handlers=
+
+
+### Formatters ###
+
+[formatter_syslog]
+# Must prepend syslog logs with name of this instance
+# so that it can be matched with rsyslog using $programname.
+format=<%= @service_name %>[%(process)d]: (%(threadName)-10s) %(message)s
+
+### Output Handlers ###
+
+[handler_syslog]
+class=logging.handlers.SysLogHandler
+level=INFO
+formatter=syslog
+args=('/dev/log',)
