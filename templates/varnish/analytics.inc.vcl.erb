@@ -198,5 +198,5 @@ sub analytics_deliver {
 
     // Put XCIP into resp headers for webrequest logging purposes independent
     // of the X-Analytics fields:
-    set resp.http.X-Client-IP = req.http.X-Client-IP
+    set resp.http.X-Client-IP = req.http.X-Client-IP;
 }
