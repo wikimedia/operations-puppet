@@ -34,7 +34,6 @@ define redis::instance(
 
     validate_ensure($ensure)
     validate_hash($settings)
-    validate_re($::initsystem, 'systemd')
 
     include ::redis
 
@@ -81,6 +80,7 @@ define redis::instance(
         ensure        => $ensure,
         template_name => 'redis-instance',
         systemd       => true,
+        upstart       => true,
         subscribe     => File["/etc/redis/${instance_name}.conf"],
     }
 }
