@@ -16,7 +16,6 @@ class statistics::web {
         owner   => 'root',
         group   => 'wikidev',
         mode    => '0750',
-        require => Class['webserver::apache'],
     }
 
     include ::apache::mod::rewrite
