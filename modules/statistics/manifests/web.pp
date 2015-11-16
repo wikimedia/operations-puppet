@@ -7,8 +7,6 @@ class statistics::web {
 
     $ssl_settings = ssl_ciphersuite('apache-2.2', 'compat', '365')
 
-    include webserver::apache
-
     # make sure /var/log/apache2 is readable by wikidevs for debugging.
     # This won't make the actual log files readable, only the directory.
     # Individual log files can be created and made readable by
