@@ -10,10 +10,8 @@ class role::xenon {
     include ::apache::mod::proxy
     include ::apache::mod::proxy_http
 
-    class { '::redis::legacy':
-        maxmemory         => '1Mb',
-        persist           => undef,
-        redis_replication => undef,
+    redis::instance { 6379:
+        settings => { maxmemory => '1Mb' },
     }
 
     Service['redis-server'] ~> Service['xenon-log']
