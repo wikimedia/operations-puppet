@@ -1,0 +1,21 @@
+# NOTE: This file is managed by puppet
+
+#
+# Topic config file.  This file specifies which schemas are allowed to
+# be produced to topics.
+#
+
+mediawiki.page_edit:
+  schema_name: page_edit
+
+mediawiki.page_delete:
+  schema_name: page_delete
+
+mediawiki.page_move:
+  schema_name: page_move
+
+mediawiki.page_restore:
+  schema_name: page_restore
+
+mediawiki.revision_visibility_set:
+  schema_name: revision_visibility_set
