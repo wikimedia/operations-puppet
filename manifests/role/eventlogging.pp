@@ -52,7 +52,7 @@ class role::eventlogging {
     # based topics in Kafka.
 
     # NOTE:
-    # eventlogging in beta labs is running the service 'EventBus' branch, which
+    # eventlogging in beta labs is running the new service branch, which
     # has changed the way topics are interpolated.  This conditional will
     # be removed when we deploy this to prod as well.
     if $::realm == 'labs' {
@@ -250,10 +250,10 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 #
 class role::eventlogging::consumer::files inherits role::eventlogging {
     # Log all raw log records and decoded events to flat files in
-    # $log_dir as a medium of last resort. These files are rotated
+    # $out_dir as a medium of last resort. These files are rotated
     # and rsynced to stat1003 & stat1002 for backup.
 
-    $log_dir = $::eventlogging::log_dir
+    $out_dir = $::eventlogging::out_dir
 
     $kafka_consumer_args  = 'auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1'
     $kafka_consumer_group = hiera(
@@ -264,15 +264,15 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
     eventlogging::service::consumer {
         'server-side-events.log':
             input  => "${kafka_server_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}&raw=True",
-            output => "file://${log_dir}/server-side-events.log",
+            output => "file://${out_dir}/server-side-events.log",
             sid    => $kafka_consumer_group;
         'client-side-events.log':
             input  => "${kafka_client_side_raw_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}&raw=True",
-            output => "file://${log_dir}/client-side-events.log",
+            output => "file://${out_dir}/client-side-events.log",
             sid    => $kafka_consumer_group;
         'all-events.log':
             input  =>  "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
-            output => "file://${log_dir}/all-events.log",
+            output => "file://${out_dir}/all-events.log",
             sid    => $kafka_consumer_group;
     }
 
@@ -285,11 +285,36 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
         class { 'rsync::server': }
 
         rsync::server::module { 'eventlogging':
-            path        => $log_dir,
+            path        => $out_dir,
             read_only   => 'yes',
             list        => 'yes',
-            require     => File[$log_dir],
+            require     => File[$out_dir],
             hosts_allow => $backup_destinations,
         }
+    }
+}
+
+
+# == Class role::eventlogging::service inherits role::eventlogging
+#
+class role::eventlogging::service inherits role::eventlogging {
+    # render topic config
+    $topic_config_file = '/etc/eventlogging.d/topics.yaml'
+    $topic_config_hash = hiera('eventlogging_topic_config')
+    file { $topic_config_file:
+        content => inline_template('
+<% require \'yaml\' -%>
+<%= YAML.dump(@topic_config_hash) %>
+'),
+        notify => Service['eventlogging-service-test'],
+    }
+
+    eventlogging::service::service { 'test':
+        schemas_path => "${eventlogging::package::path}/config/schemas/jsonschema",
+        topic_config => $topic_config_file,
+        outputs => [
+            "${kafka_base_uri}?async=False",
+            "file://${::eventlogging::out_dir}/service-test.out",
+        ]
     }
 }
