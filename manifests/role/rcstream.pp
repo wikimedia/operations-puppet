@@ -13,11 +13,8 @@ class role::rcstream {
         description => 'MediaWiki Recent Changes stream',
     }
 
-    class { '::redis::legacy':
-        maxmemory         => '100mb',
-        dir               => '/var/run/redis',
-        persist           => false,
-        redis_replication => false,
+    redis::instance { 6379:
+        settings => { maxmemory => '100mb' },
     }
 
     # Spawn as many instances as there are CPU cores, less two.
