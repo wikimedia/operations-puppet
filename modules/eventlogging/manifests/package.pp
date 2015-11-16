@@ -5,7 +5,7 @@
 # EventLogging itself is distributed via Trebuchet.
 #
 class eventlogging::package {
-    $path = '/srv/deployment/eventlogging/EventLogging'
+    $path = '/srv/deployment/eventlogging/eventlogging'
 
     require_package([
         'python-etcd',
