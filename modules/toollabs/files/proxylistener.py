@@ -108,7 +108,7 @@ class RouteRequestHandler(SocketServer.StreamRequestHandler):
             self.request.send('ok')
 
         elif command == 'unregister':
-            logging.log(logging.INFO, "Cleaning up request from %s", toolname, route)
+            logging.log(logging.INFO, "Cleaning up request from %s for %s", toolname, route)
 
             red.hdel(redis_key, route)
             logging.log(logging.DEBUG, "Removed redis key %s with key %s", redis_key, route)
