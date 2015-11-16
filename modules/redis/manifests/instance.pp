@@ -85,6 +85,6 @@ define redis::instance(
     service { "redis-instance@${instance_name}":
         ensure    => ensure_service($ensure),
         provider  => 'systemd',
-        subscribe => "/etc/redis/${instance_name}.conf",
+        subscribe => File["/etc/redis/${instance_name}.conf"],
     }
 }
