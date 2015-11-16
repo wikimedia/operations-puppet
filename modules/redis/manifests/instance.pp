@@ -77,14 +77,10 @@ define redis::instance(
         mode    => '0444',
     }
 
-    file { "/etc/systemd/system/multi-user.target.wants/redis-instance@${instance_name}.service":
-        ensure => ensure_link($ensure),
-        target => '/lib/systemd/system/redis-instance@.service',
-    }
-
-    service { "redis-instance@${instance_name}":
-        ensure    => ensure_service($ensure),
-        provider  => 'systemd',
-        subscribe => File["/etc/redis/${instance_name}.conf"],
+    base::service_unit { "redis-instance-${instance_name}":
+        ensure        => $ensure,
+        template_name => 'redis-instance',
+        systemd       => true,
+        subscribe     => File["/etc/redis/${instance_name}.conf"],
     }
 }
