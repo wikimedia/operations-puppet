@@ -8,6 +8,12 @@ include /etc/redis/redis.conf
     @defaults.merge(@settings).select { |k,v|
         !v.empty? and v.to_s != 'undef'
     }.map { |k,v|
-        Array(v).flatten.unshift(k.tr '_', '-').join(' ')
+        Array(v).flatten.map { |item|
+          case item
+          when TrueClass then 'yes'
+          when FalseClass then 'no'
+          else v
+          end
+        }.unshift(k.tr '_', '-').join(' ')
     }.sort.join("\n")
 %>
