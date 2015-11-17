@@ -136,6 +136,17 @@ class phabricator (
         ensure => directory,
     }
 
+    # Robots.txt disallowing to crawl the alias domain
+    if $serveralias {
+        file {"${phabdir}/robots.txt":
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => "User-agent: *\nDisallow: /\n",
+        }
+    }
+
     git::install { 'phabricator/libphutil':
         directory => "${phabdir}/libphutil",
         git_tag   => $git_tag,
