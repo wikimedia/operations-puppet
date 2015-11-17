@@ -1,8 +1,4 @@
 # the apache setup for the wikistats site
-# expects:
-# class {'webserver::php5': ssl => true; }
-# to be on the node already, but can be enabled if not sharing
-# with other roles already using it
 class wikistats::web (
     $wikistats_host,
     ) {
