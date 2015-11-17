@@ -30,9 +30,15 @@ class zuul::merger (
 
     require ::zuul
 
+    exec { 'zuul merger recursive mkdir of git_dir':
+        command => "/bin/mkdir -p ${git_dir}",
+        creates => $git_dir,
+    }
+
     file { $git_dir:
-        ensure => directory,
-        owner  => 'zuul',
+        ensure  => directory,
+        owner   => 'zuul',
+        require => Exec['zuul merger recursive mkdir of git_dir'],
     }
 
     # Configuration file for the zuul merger
