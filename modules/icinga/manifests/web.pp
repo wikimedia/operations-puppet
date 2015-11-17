@@ -9,7 +9,9 @@ class icinga::web {
     package { 'icinga-doc':
         ensure => latest
     }
-    class {'webserver::php5': ssl => true,}
+    include ::apache
+    include ::apache::mod::php5
+    include ::apache::mod::ssl
 
     ferm::service { 'icinga-https':
       proto => 'tcp',
