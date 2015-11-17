@@ -1,11 +1,9 @@
 # sets up Apache site for a WMF RT install
 class requesttracker::apache($apache_site) {
-
-    if ! defined(Class['webserver::php5']) {
-        class { 'webserver::php5':
-            ssl => true,
-        }
-    }
+    include ::apache
+    include ::apache::mod::php5  # WAT WHY
+    include ::apache::mod::ssl
+    include ::apache::mod::perl
 
     apache::site { 'rt.wikimedia.org':
         content => template('requesttracker/rt4.apache.erb'),
@@ -20,8 +18,5 @@ class requesttracker::apache($apache_site) {
         group  => 'root',
         source => 'puppet:///modules/requesttracker/ports.conf.ssl',
     }
-
-    include ::apache::mod::perl
-
 }
 
