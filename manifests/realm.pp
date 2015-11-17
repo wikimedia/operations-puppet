@@ -3,7 +3,7 @@
 #
 
 if $::realm == undef {
-    $realm = 'production'
+    $realm = hiera('realm', 'production')
 }
 
 if $::projectgroup == undef {
