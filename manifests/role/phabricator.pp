@@ -44,6 +44,7 @@ class role::phabricator::main {
     $mysql_slave = 'm3-slave.eqiad.wmnet'
 
     class { '::phabricator':
+        serveralias      => $altdom,
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,

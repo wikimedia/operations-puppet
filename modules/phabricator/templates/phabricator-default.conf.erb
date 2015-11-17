@@ -3,6 +3,9 @@
 
 <VirtualHost *:80>
   ServerName <%= @phab_servername.gsub('http://', '').gsub('https://', '') %>
+<% if !@serveralias.empty? %>
+  ServerAlias <%= @serveralias %>
+<% end %>
 
 <% if !@serveradmin.empty? %>
   ServerAdmin <%= @serveradmin %>
