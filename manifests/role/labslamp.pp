@@ -24,6 +24,18 @@ class role::simplelamp(
     }
 }
 
+# = class: role::simplelap
+#
+# For times when you do not want mysql@
+class role::simplelap{
+    include ::apache
+    include ::apache::mod::php5
+    include ::apache::mod::rewrite
+
+    require_package('php5-cli')
+}
+
+
 # Deprecated older role that no longer works
 class role::lamp::labs {
 
