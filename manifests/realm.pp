@@ -11,6 +11,8 @@ if $::realm == undef {
     $realm = hiera('realm', 'production')
 }
 
+notify{ "realm is ${realm}": }
+
 if $::projectgroup == undef {
     $projectgroup = "project-${labsproject}"
 }
