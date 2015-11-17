@@ -21,6 +21,11 @@ repo_config:
     service_name: parsoid
   eventlogging/EventLogging:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging
+  # New server code repo for eventlogging.  This will obsolete deployment
+  # from the above MW Extension repo.
+  eventlogging/eventlogging:
+    upstream: https://gerrit.wikimedia.org/r/eventlogging
+    checkout_submodules: true
   ocg/ocg:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/ocg-collection
     service_name: ocg

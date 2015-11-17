@@ -20,7 +20,7 @@ class eventlogging::package {
         'python-zmq',
     ])
 
-    package { 'eventlogging/EventLogging':
+    package { 'eventlogging/eventlogging':
         provider => 'trebuchet',
     }
 }
