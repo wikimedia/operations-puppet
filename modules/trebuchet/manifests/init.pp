@@ -1,10 +1,10 @@
-# == Class: role::trebuchet
+# == Class: trebuchet
 #
 # Trebuchet is a SaltStack-based, two-stage deployment system that we
 # use to deploy software that we develop internally or that changes
 # rapidly enough to make Debianization impractical.
 #
-class role::trebuchet(
+class trebuchet(
     $deployment_server = $::deployment_server_override
 ) {
     $trebuchet_master = $::realm ? {
