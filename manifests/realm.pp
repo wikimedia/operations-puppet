@@ -2,6 +2,11 @@
 # Collection of global definitions used across sites, within one realm.
 #
 
+# Lab testing cluster all prefix labtest
+if $::hostname =~ /^labtest/ {
+    $realm = 'labtest'
+}
+
 if $::realm == undef {
     $realm = hiera('realm', 'production')
 }
