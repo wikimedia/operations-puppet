@@ -32,3 +32,8 @@ labs_designate_hostname: "holmium.wikimedia.org"
 labs_nova_network_host: "labnet1002"
 labs_nova_network_ip: "10.64.20.25"
 labs_nova_api_host: "labnet1002.eqiad.wmnet"
+
+etcd_hosts:
+    - conf1001.eqiad.wmnet
+    - conf1002.eqiad.wmnet
+    - conf1003.eqiad.wmnet
