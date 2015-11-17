@@ -7,11 +7,11 @@ class puppetmaster::gitsync(
 ) {
 
     file { '/usr/local/bin/git-sync-upstream':
-        ensure  => present,
-        source  => 'puppet:///modules/puppetmaster/git-sync-upstream',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+        ensure => present,
+        source => 'puppet:///modules/puppetmaster/git-sync-upstream',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     cron { 'rebase_operations_puppet':
@@ -23,10 +23,10 @@ class puppetmaster::gitsync(
     }
 
     file { '/etc/logrotate.d/git-sync-upstream':
-        ensure  => present,
-        source  => 'puppet:///modules/puppetmaster/git-sync-upstream.logrotate',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        ensure => present,
+        source => 'puppet:///modules/puppetmaster/git-sync-upstream.logrotate',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 }

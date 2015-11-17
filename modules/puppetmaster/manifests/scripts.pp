@@ -19,18 +19,18 @@ class puppetmaster::scripts(
         ensure  => absent,
     }
     file {'/usr/local/sbin/puppetstoredconfigclean.rb':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/puppetmaster/puppetstoredconfigclean.rb'
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/puppetstoredconfigclean.rb'
     }
     file{'/usr/local/bin/puppet-merge':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/puppetmaster/puppet-merge'
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/puppet-merge'
     }
 
     # Clear out older reports
@@ -45,19 +45,19 @@ class puppetmaster::scripts(
     # Helper script to clean stored data about a server we're reimaging.
     if $::realm == 'production' {
         file { '/usr/local/bin/wmf-reimage':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0544',
-            source  => 'puppet:///modules/puppetmaster/wmf-reimage',
+            ensure => 'present',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0544',
+            source => 'puppet:///modules/puppetmaster/wmf-reimage',
         }
 
         file { '/usr/local/sbin/install-console':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0544',
-            source  => 'puppet:///modules/puppetmaster/install-console',
+            ensure => 'present',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0544',
+            source => 'puppet:///modules/puppetmaster/install-console',
         }
     }
 }
