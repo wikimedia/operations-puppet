@@ -2409,8 +2409,7 @@ node /^snapshot100[124]\.eqiad\.wmnet/ {
 }
 
 node /^snapshot1003\.eqiad\.wmnet/ {
-    role snapshot
-    include snapshot::cron::primary
+    role snapshot, snapshot::cron::primary
     include standard
 }
 
