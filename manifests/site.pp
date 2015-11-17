@@ -577,13 +577,13 @@ node /^db20(17|35|41|49|56|63|64)\.codfw\.wmnet/ {
     include base::firewall
 }
 
-node /^db10(27|44)\.eqiad\.wmnet/ {
+node /^db10(44)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's3',
     }
 }
 
-node /^db10(35|15)\.eqiad\.wmnet/ {
+node /^db10(15|27|35)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's3',
         p_s   => 'on',
