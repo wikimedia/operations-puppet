@@ -4,7 +4,6 @@
 class k8s::docker {
     package { 'docker.io':
         ensure  => present,
-        require => Apt::Repository['debian-backports'],
     }
 
     base::service_unit { 'docker':
