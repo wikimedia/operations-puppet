@@ -52,6 +52,9 @@
 # [*extensions*]
 #     Array of extensions to load
 #
+# [*serveralias*]
+#     Alternative domain on which to respond too
+#
 # === Examples
 #
 #    class { 'phabricator':
@@ -79,6 +82,7 @@ class phabricator (
     $mysql_admin_user = '',
     $mysql_admin_pass = '',
     $serveradmin      = '',
+    $serveralias      = '',
 ) {
 
     #A combination of static and dynamic conf parameters must be merged
