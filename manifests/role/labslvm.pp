@@ -13,14 +13,3 @@ class role::labs::lvm::mnt {
 class role::labs::lvm::srv {
     labs_lvm::volume { 'second-local-disk': mountat => '/srv' }
 }
-
-# Allocate a custom LVM volume
-class role::labs::lvm::volume(
-    $mountat = '/srv',
-    $size = '100%FREE',
-) {
-    labs_lvm::volume { 'second-local-disk':
-        mountat => $mountat,
-        size    => $size,
-    }
-}
