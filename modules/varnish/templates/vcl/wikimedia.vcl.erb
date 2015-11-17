@@ -661,6 +661,20 @@ sub vcl_deliver {
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	std.collect(resp.http.Via);
 	std.collect(resp.http.X-Varnish);
+
+	// Set CP ('Connection Properties') cookie
+	if (req.http.X-Connection-Properties ~ "SPDY=[123]") {
+		if (req.http.X-Orig-Cookie !~ "(^|;\s*)CP=H2" && req.http.Cookie !~ "(^|;\s*)CP=H2") {
+			header.append(resp.http.Set-Cookie, "CP=H2");
+		}
+	} else {
+		// Users are liable to lose HTTP 2 support in the span
+		// of a single session if they move behind an HTTP proxy
+		// that does not support it, so we need to check for the
+		// existence of a stale cookie and clear it if it exists.
+		header.remove(resp.http.Set-Cookie,"CP=");
+	}
+
 <% end -%>
 
 	if (resp.http.X-Cache) {
