@@ -510,5 +510,3 @@ funnel	svn.mediawiki.org	https://phabricator.wikimedia.org/diffusion/
 rewrite	download.wikimedia.org	https://dumps.wikimedia.org
 rewrite	download.wikipedia.org	https://dumps.wikimedia.org
 
-# rewrite sitemap.wikimedia.org to dumps.wikimedia - T110511
-rewrite	sitemap.wikimedia.org	https://dumps.wikimedia.org
