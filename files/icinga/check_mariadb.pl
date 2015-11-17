@@ -20,12 +20,15 @@ my $port = "3306";
 my $user = "";
 my $pass = "";
 my $sock = "";
+my $master_server_id = "";
 
 my $sql_lag_warn = 30;
 my $sql_lag_crit = 60;
 
 # Warn when IO or SQL stopped cleanly (no errno)
 my $warn_stopped = 0;
+
+my $heartbeat_table = 'heartbeat.heartbeat';
 
 my @vars = ();
 
@@ -70,6 +73,10 @@ foreach my $arg (@ARGV)
 	elsif ($arg =~ /^--no-warn-stopped$/)
 	{
 		$warn_stopped = 0;
+	}
+	elsif ($arg =~ /^--master-server-id=(.+)$/)
+	{
+		$master_server_id = $1;
 	}
 	elsif ($arg =~ /^--set=(.+)$/)
 	{
@@ -162,8 +169,18 @@ if ($check eq "slave_sql_state")
 
 if ($check eq "slave_sql_lag")
 {
-	# TODO: Make this check heartbeat
-
+# The slave lag is checked using the $heartbeat_table table,
+# usually created and updated by running pt-heartbeat on the
+# master.
+# For that, --master-server-id is strongly suggested to be 
+# set. In case it is not, the lag from its direct master is
+# reported. If the heartbeat table does not exist, the record
+# for the master is not found or any other errors happens,
+# it failbacks to using Seconds_Behind_Master.
+# If the server is not a slave, it returns OK. If lag cannot 
+# be determined neither by using heartbeat nor seconds behind
+# master, it returns unknown, unless the replication is 
+# stopped manually- reporting optionally a warning.
 	my $status = $db->selectrow_hashref("show slave status");
 
 	unless ($status) {
@@ -171,36 +188,49 @@ if ($check eq "slave_sql_lag")
 		exit($EOK);
 	}
 
-	# Either IO or SQL threads stopped? WARN
-	if ($status->{Slave_IO_Running} ne "Yes" || $status->{Slave_SQL_Running} ne "Yes") {
-		if ($warn_stopped == 1) {
-			printf("%s %s Slave_IO_Running: %s, Slave_SQL_Running: %s\n",
-				$WARN, $check, $status->{Slave_IO_Running}, $status->{Slave_SQL_Running});
-			exit($EWARN);
-		}
-		printf("%s %s Slave_IO_Running: %s, Slave_SQL_Running: %s, (no error; intentional)\n",
-			$OK, $check, $status->{Slave_IO_Running}, $status->{Slave_SQL_Running});
-		exit($EOK);
-	}
+    if ($master_server_id eq "") {
+        $master_server_id = $status->{Master_Server_Id};
+    }
+    my $heartbeat = $db->selectrow_hashref("SELECT TIMESTAMPDIFF(MICROSECOND,ts,UTC_TIMESTAMP(6)) AS lag FROM heartbeat.heartbeat WHERE server_id = $master_server_id");
 
+    my $lag = $heartbeat->{lag}?$heartbeat->{lag}/1000000:$status->{Seconds_Behind_Master};
+
+    if ($lag eq "NULL") {
+	    # Either IO or SQL threads stopped? WARN
+        if ($status->{Slave_IO_Running} ne "Yes" || $status->{Slave_SQL_Running} ne "Yes") {
+		    if ($warn_stopped == 1) {
+			    printf("%s %s Slave_IO_Running: %s, Slave_SQL_Running: %s\n",
+				    $WARN, $check, $status->{Slave_IO_Running}, $status->{Slave_SQL_Running});
+			    exit($EWARN);
+		    }
+		    printf("%s %s Slave_IO_Running: %s, Slave_SQL_Running: %s, (no error; intentional)\n",
+			$OK, $check, $status->{Slave_IO_Running}, $status->{Slave_SQL_Running});
+		    exit($EOK);
+	    }
+        # lag could not be determined
+        printf("%s %s lag could not be determined\n", $UNKN, $check);
+        exit($EUNKN);
+
+    }
 	# Small lag? OK
-	if ($status->{Seconds_Behind_Master} < $sql_lag_warn) {
-		printf("%s %s Seconds_Behind_Master: %s\n",
-			$OK, $check, $status->{Seconds_Behind_Master});
+	if ($lag < $sql_lag_warn) {
+		printf("%s %s Replication lag: %s seconds\n",
+			$OK, $check, $lag);
 		exit($EOK);
 	}
 
 	# Medium lag? WARN
-	if ($status->{Seconds_Behind_Master} < $sql_lag_crit) {
-		printf("%s %s Seconds_Behind_Master: %s\n",
-			$WARN, $check, $status->{Seconds_Behind_Master});
+	if ($lag < $sql_lag_crit) {
+		printf("%s %s Replication lag: %s seconds\n",
+			$WARN, $check, $lag);
 		exit($EWARN);
 	}
 
-	printf("%s %s Seconds_Behind_Master: %s\n",
-		$CRIT, $check, $status->{Seconds_Behind_Master});
+	printf("%s %s Replication lag: %s seconds\n",
+		$CRIT, $check, $lag);
 	exit($ECRIT);
 }
 
 printf("%s %s invalid check: %s\n", $UNKN, $check, $check);
 exit($EUNKN);
+
