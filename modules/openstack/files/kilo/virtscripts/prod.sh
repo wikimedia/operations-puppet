@@ -23,18 +23,11 @@ KEYSTONE_PUBLIC_URL="http://labcontrol1001.wikimedia.org:5000/v2.0"
 KEYSTONE_ADMIN_URL="http://labcontrol1001.wikimedia.org:35357/v2.0"
 KEYSTONE_INTERNAL_URL=$KEYSTONE_PUBLIC_URL
 
-NEUTRON_PUBLIC_URL="http://labcontrol1001.wikimedia.org:9696"
-NEUTRON_ADMIN_URL=$NEUTRON_PUBLIC_URL
-NEUTRON_INTERNAL_URL=$NEUTRON_PUBLIC_URL
-
 # Create required services
 keystone --token $SERVICE_TOKEN --os-endpoint $SERVICE_ENDPOINT service-create --name nova --type compute --description 'OpenStack Compute Service'
 keystone --token $SERVICE_TOKEN --os-endpoint $SERVICE_ENDPOINT service-create --name glance --type image --description 'OpenStack Image Service'
 keystone --token $SERVICE_TOKEN --os-endpoint $SERVICE_ENDPOINT service-create --name keystone --type identity --description 'OpenStack Identity Service'
-#keystone --token $SERVICE_TOKEN --os-endpoint $SERVICE_ENDPOINT service-create --name neutron --type network --description 'OpenStack Network Service'
 
-# Create endpoints on the services
-#for S in NOVA GLANCE KEYSTONE NEUTRON
 for S in NOVA GLANCE KEYSTONE
 do
 	ID=$(keystone --token $SERVICE_TOKEN --os-endpoint $SERVICE_ENDPOINT service-list | grep -i "\ $S\ " | awk '{print $2}')
