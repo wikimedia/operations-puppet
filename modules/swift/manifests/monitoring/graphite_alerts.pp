@@ -28,5 +28,6 @@ define swift::monitoring::graphite_alerts (
         warning         => 2000,
         critical        => 3000,
         nagios_critical => false,
+        percentage      => 80,
     }
 }
