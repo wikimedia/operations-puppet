@@ -2,227 +2,245 @@
 
 // Note: This requires "import header" in the including VCL
 
-// Init GeoIP code
 C{
-	#include <dlfcn.h>
-	#include <stdlib.h>
-	#include <stdio.h>
-	#include <string.h>
-	#include <GeoIPCity.h>
-	#include <pthread.h>
-	#include <sys/types.h>
-	#include <sys/socket.h>
-	#include <netdb.h>
-	#include <arpa/inet.h>
+    #include <dlfcn.h>
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <string.h>
+    #include <maxminddb.h>
+    #include <pthread.h>
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netdb.h>
+    #include <arpa/inet.h>
+    #include <alloca.h>
 
-	GeoIP *gi = NULL;
-
-	int geo_init(void);
-	int geo_get_relevant_ip (const struct sess *sp, char *ip, size_t maxlen);
-	void geo_sanitize_for_cookie (char *string);
-	void geo_set_cache_control (const struct sess *sp);
-	const char * geo_get_top_cookie_domain (const char *host);
-
-	int
-	geo_init(void) {
-		if (gi == NULL) {
-			gi = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MMAP_CACHE);
-			if (gi == NULL) {
-				return -1;
-			}
-		}
-		return 0;
-	}
-
-	/*
-	 * Write the relevant client IP address to a character string,
-	 * protecting against possible invalid data in the source
-	 * "X-Client-IP" header set by common VCL.
-	 *
-	 * This function will write at most maxlen-1 characters into the output string (the maxlen'th
-	 * character then gets the terminating '\0'). The output is always null-terminated. The return
-	 * value is the number of characters printed (not including the final '\0'), or -1 if no
-	 * relevant client IP is available or if its length exceeds the maximum.
-	 */
-	int
-	geo_get_relevant_ip(const struct sess *sp, char *ip, size_t maxlen) {
-		const char *client_ip = VRT_GetHdr(sp, HDR_REQ, "\014X-Client-IP:");
-		size_t len = 0;
-
-		if (client_ip != NULL) {
-			len = strspn(client_ip, "1234567890abcdefABCDEF.:");
-		}
-
-		if (len == 0 || len >= maxlen) {
-			return -1;
-		}
-
-		memcpy(ip, client_ip, len);
-		ip[len] = '\0';
-		return len;
-	}
-
-	/*
-	 * Make a string safe to use as a cookie value in a Set-Cookie header
-	 * by replacing CTLs, DEL, 8-bit characters, space, double-quote,
-	 * comma, semicolon, and backslash with an underscore.
-	 */
-	void
-	geo_sanitize_for_cookie(char *string) {
-		char *ptr;
-		for (ptr = string; ptr && *ptr; ptr++) {
-			if (*ptr < 0x21 || *ptr > 0x7E || strchr("\",;\\", *ptr)) {
-				*ptr = '_';
-			}
-		}
-	}
-
-	/*
-	 * Set Last-Modified and Cache-Control headers for GeoIP requests.
-	 */
-	void
-	geo_set_cache_control(const struct sess *sp) {
-		char *now = VRT_time_string(sp, VRT_r_now(sp));
-		VRT_SetHdr(sp, HDR_OBJ, "\016Last-Modified:", now, vrt_magic_string_end);
-		VRT_SetHdr(sp, HDR_OBJ, "\016Cache-Control:", "private, max-age=86400, s-maxage=0", vrt_magic_string_end);
-	}
-
-
-	/*
-	 * Extract the topmost part of the domain name for which a cookie may be set.
-	 * This consists of the public suffix (e.g., 'org') plus one more level.
-	 *
-	 * In Wikimedia's case, this is always the top two parts of the name (for example,
-	 * 'wikipedia.org' for 'en.m.wikipedia.org'. But we handle other common cases correctly too,
-	 * like 'news.bbc.co.uk' (which may set cookies for bbc.co.uk, but not the entire co.uk public
-	 * suffix), by assuming that if either of the top two levels is less than three characters
-	 * long, then the public suffix contains two parts. A fully comprehensive and correct solution
-	 * would require checking against a public suffix database like <https://publicsuffix.org/>.
-	 */
-	const char *
-	geo_get_top_cookie_domain(const char *host) {
-		const char *last, *second_last, *third_last, *pos, *top_cookie_domain;
-
-		if (host == NULL) {
-			return NULL;
-		}
-
-		last = second_last = third_last = host;
-		for (pos = host; *pos != '\0'; pos++) {
-			if (*pos == '.') {
-				third_last = second_last;
-				second_last = last;
-				last = pos;
-			}
-		}
-
-		// If either the second- or top-level domain is less than three characters long,
-		// assume that the domain uses a two-part public suffix (like '.co.uk') and include
-		// one additional level in the result.  Also, if the name ends in
-		// '.beta.wmflabs.org', make a special case for that.
-		if (!strcmp(third_last, ".beta.wmflabs.org") || (pos - last) <= 3 || (last - second_last) <= 3) {
-			top_cookie_domain = third_last;
-		} else {
-			top_cookie_domain = second_last;
-		}
-
-		if (*top_cookie_domain == '.') {
-			top_cookie_domain++;
-		}
-
-		return top_cookie_domain;
-	}
+    MMDB_s* mmdb = NULL;
 }C
 
-sub geoip_lookup {
-	set obj.http.Content-Type = "text/javascript";
+// XXX this is no worse than the previous PS's model and a little more
+// efficient, but needs more investigation on globals vs VCL-reload cycle...
+sub vcl_init { C{
+    if (!mmdb) {
+        mmdb = malloc(sizeof(*mmdb));
+        int st = MMDB_open("/usr/share/GeoIP/GeoIP2-City.mmdb", MMDB_MODE_MMAP, mmdb);
+        if (st != MMDB_SUCCESS) {
+            free(mmdb);
+            mmdb = NULL;
+            // XXX log/complain loudly?
+        }
+    }
+}C }
 
-	C{
-		char ip[50];
-		GeoIPRecord *record = NULL;
-		char json[255];
+/* XXX if globals are VCL-scoped ...
+sub vcl_fini { C{
+    if (mmdb) {
+        MMDB_close(mmdb);
+        free(mmdb);
+        mmdb = NULL;
+    }
+}C }
+*/
 
-		if (geo_get_relevant_ip(sp, ip, sizeof(ip)) == -1) {
-			return;
-		}
+// runtime stuff
+C{
+    /*
+     * Write the relevant client IP address to a character string,
+     * protecting against possible invalid data in the source
+     * "X-Client-IP" header set by common VCL.
+     *
+     * This function will write at most INET6_ADDRSTRLEN characters to "ip"
+     * including the (always present) terminal NUL.  The return value is the
+     * zero for success, non-zero for failure (input IP is invalid or the
+     * encoding of it is too long).
+     */
+    static int geo_get_xcip(const struct sess *sp, char *ip) {
+        const char *client_ip = VRT_GetHdr(sp, HDR_REQ, "\014X-Client-IP:");
+        size_t len = 0;
+        int rv = -1;
 
-		if (!geo_init()) {
-			record = GeoIP_record_by_addr(gi, ip);
-		}
+        if (client_ip != NULL) {
+            len = strspn(client_ip, "1234567890abcdefABCDEF.:");
+            if (len > 0 && len < INET6_ADDRSTRLEN) {
+                memcpy(ip, client_ip, len);
+                ip[len] = '\0';
+                rv = 0;
+            }
+        }
 
-		if (record) {
-			snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"region\":\"%s\",\"lat\":\"%f\",\"lon\":\"%f\",\"IP\":\"%s\"}",
-				record->city,
-				record->country_code,
-				record->region,
-				record->latitude,
-				record->longitude,
-				ip
-			);
-			GeoIPRecord_delete(record);
-			VRT_synth_page(sp, 0, json,  vrt_magic_string_end);
-		} else {
-			if (strchr(ip, ':') != NULL) {
-				VRT_synth_page(sp, 0, "Geo = {IPv6:true}", vrt_magic_string_end);
-			} else {
-				VRT_synth_page(sp, 0, "Geo = {}", vrt_magic_string_end);
-			}
-		}
+        return rv;
+    }
 
-		geo_set_cache_control(sp);
-	}C
-}
+    /*
+     * Make a string safe to use as a cookie value in a Set-Cookie header
+     * by replacing CTLs, DEL, 8-bit characters, space, double-quote,
+     * comma, semicolon, and backslash with an underscore.
+     */
+    static void geo_sanitize_for_cookie(char *p) {
+        while(*p) {
+            if (*p < 0x21 || *p > 0x7E || strchr("\",;\\", *p))
+                *p = '_';
+            *p++;
+        }
+    }
 
+    /*
+     * Extract the topmost part of the domain name for which a cookie may be set.
+     * This consists of the public suffix (e.g., 'org') plus one more level.
+     *
+     * In Wikimedia's case, this is always the top two parts of the name (for example,
+     * 'wikipedia.org' for 'en.m.wikipedia.org'. But we handle other common cases correctly too,
+     * like 'news.bbc.co.uk' (which may set cookies for bbc.co.uk, but not the entire co.uk public
+     * suffix), by assuming that if either of the top two levels is less than three characters
+     * long, then the public suffix contains two parts. A fully comprehensive and correct solution
+     * would require checking against a public suffix database like <https://publicsuffix.org/>.
+     */
+    static const char* geo_get_top_cookie_domain(const char *host) {
+        const char *last, *second_last, *third_last, *pos, *top_cookie_domain;
 
-sub geoip_cookie {
-	C{
-		GeoIPRecord *record = NULL;
-		char *geo_header;
-		char cookie_buf[255];
-		char ip[50];
-		char host_safe[50];
+        if (host == NULL) {
+            return NULL;
+        }
 
-		const char *host = VRT_GetHdr(sp, HDR_REQ, "\005host:");
-		if (host == NULL) {
-			return;
-		}
-		if (snprintf(host_safe, sizeof(host_safe), "%s", geo_get_top_cookie_domain(host)) >= sizeof(host_safe)) {
-			return;
-		}
-		geo_sanitize_for_cookie(host_safe);
+        last = second_last = third_last = host;
+        for (pos = host; *pos != '\0'; pos++) {
+            if (*pos == '.') {
+                third_last = second_last;
+                second_last = last;
+                last = pos;
+            }
+        }
 
-		if (geo_get_relevant_ip(sp, ip, sizeof(ip)) == -1) {
-			return;
-		}
+        // If either the second- or top-level domain is less than three characters long,
+        // assume that the domain uses a two-part public suffix (like '.co.uk') and include
+        // one additional level in the result.  Also, if the name ends in
+        // '.beta.wmflabs.org', make a special case for that.
+        if (!strcmp(third_last, ".beta.wmflabs.org") || (pos - last) <= 3 || (last - second_last) <= 3) {
+            top_cookie_domain = third_last;
+        } else {
+            top_cookie_domain = second_last;
+        }
 
-		if (!geo_init()) {
-			record = GeoIP_record_by_addr(gi, ip);
-		}
+        if (*top_cookie_domain == '.') {
+            top_cookie_domain++;
+        }
 
-		int snp_len;
-		if (record) {
-			// Set-Cookie: GeoIP=US:CA:San_Francisco:37.77:-122.41:v4; path=/
-			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%s:%.2f:%.2f:%s",
-				record->country_code ? record->country_code : "",
-				record->region ? record->region : "",
-				record->city ? record->city : "",
-				record->latitude,
-				record->longitude,
-				(strchr(ip, ':') != NULL) ? "v6" : "v4"
-			);
-			GeoIPRecord_delete(record);
-		} else {
-			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=:::::%s", (strchr(ip, ':') != NULL) ? "v6" : "v4");
-		}
+        return top_cookie_domain;
+    }
 
-		// don't use snprintf()-truncated output
-		if (snp_len < sizeof(cookie_buf)) {
-			geo_sanitize_for_cookie(cookie_buf);
+    typedef enum _geo_idx_t {
+        GEO_IDX_CITY    = 0,
+        GEO_IDX_COUNTRY = 1,
+        GEO_IDX_REGION  = 2,
+        GEO_IDX_LAT     = 3,
+        GEO_IDX_LON     = 4,
+        _GEO_IDX_SIZE   = 5,
+    } geo_idx_t;
 
-			// Use libvmod-header to ensure the Set-Cookie header we are adding does not
-			// clobber or manipulate existing cookie headers (if any).
-			Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:", cookie_buf, "; Path=/; secure; Domain=.",
-				host_safe, vrt_magic_string_end);
-		}
-	}C
-}
+    static void geo_xcip_output_json(struct sess* sp, const char* ip, char** geo) {
+        char out[255];
+        int out_size = snprintf(out, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"region\":\"%s\",\"lat\":\"%s\",\"lon\":\"%s\",\"IP\":\"%s\"}",
+            geo[GEO_IDX_CITY],
+            geo[GEO_IDX_COUNTRY],
+            geo[GEO_IDX_REGION],
+            geo[GEO_IDX_LAT],
+            geo[GEO_IDX_LON],
+            ip
+        );
+        if (out_size >= 254) // Don't use truncated output
+            return;
+
+        VRT_synth_page(sp, 0, out, vrt_magic_string_end);
+        char *now = VRT_time_string(sp, VRT_r_now(sp));
+        VRT_SetHdr(sp, HDR_OBJ, "\016Last-Modified:", now, vrt_magic_string_end);
+        VRT_SetHdr(sp, HDR_OBJ, "\016Cache-Control:", "private, max-age=86400, s-maxage=0", vrt_magic_string_end);
+        VRT_SetHdr(sp, HDR_OBJ, "\015Content-Type:", "text/javascript", vrt_magic_string_end);
+    }
+
+    static void geo_xcip_output_cookie(struct sess* sp, const char* ip, char** geo) {
+        char host_safe[50];
+        char out[255];
+        int out_size = snprintf(out, 255, "GeoIP=%s:%s:%s:%s:%s:%s",
+            geo[GEO_IDX_COUNTRY],
+            geo[GEO_IDX_REGION],
+            geo[GEO_IDX_CITY],
+            geo[GEO_IDX_LAT],
+            geo[GEO_IDX_LON],
+            (strchr(ip, ':') != NULL) ? "v6" : "v4"
+        );
+        if (out_size >= 254) // Don't use truncated output
+            return;
+
+        geo_sanitize_for_cookie(out);
+        const char *host = VRT_GetHdr(sp, HDR_REQ, "\005host:");
+        if (!host)
+            return;
+        if (snprintf(host_safe, sizeof(host_safe), "%s", geo_get_top_cookie_domain(host)) >= sizeof(host_safe))
+            return;
+        geo_sanitize_for_cookie(host_safe);
+        // Use libvmod-header to ensure the Set-Cookie header we are adding does not
+        // clobber or manipulate existing cookie headers (if any).
+        Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:", out, "; Path=/; secure; Domain=.",
+            host_safe, vrt_magic_string_end);
+    }
+
+    static const char* lookup_path[_GEO_IDX_SIZE][4] = {
+        {"city", "names", "en", NULL},
+        {"country", "iso_code", NULL, NULL},
+        {"subdivisions", "0", "iso_code", NULL},
+        {"location", "latitude", NULL, NULL},
+        {"location", "longitude", NULL, NULL},
+    };
+
+    static void geo_xcip_output(struct sess *sp, const bool json) {
+        char ip[INET6_ADDRSTRLEN];
+        int gai_error, mmdb_error;
+
+        if (!mmdb)
+            return;
+        if (geo_get_xcip(sp, ip))
+            return;
+        MMDB_lookup_result_s result = MMDB_lookup_string(mmdb, ip, &gai_error, &mmdb_error);
+        if (gai_error || mmdb_error != MMDB_SUCCESS || !result.found_entry)
+            return;
+
+	// Parse results into "geo" on the stack, which is always full of
+	// pointers.  The pointers are to empty strings if results are lacking.
+	char* geo[_GEO_IDX_SIZE];
+        char empty[1];
+        empty[0] = '\0';
+        geo_idx_t g;
+        for (g = 0; g < _GEO_IDX_SIZE; g++) {
+            char *data = empty;
+            MMDB_entry_data_s entry_data;
+            int status = MMDB_aget_value(&result.entry, &entry_data, lookup_path[g]);
+            if (status == MMDB_SUCCESS && entry_data.has_data) {
+                switch(entry_data.type){
+                    case MMDB_DATA_TYPE_UTF8_STRING:
+                        data = alloca(entry_data.data_size + 1);
+                        memcpy(data, entry_data.utf8_string, entry_data.data_size);
+                        data[entry_data.data_size] = '\0';
+                        break;
+                    case MMDB_DATA_TYPE_DOUBLE:
+                        data = alloca(16);
+                        snprintf(data, 16, "%3.2f", entry_data.double_value);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            geo[g] = data;
+        }
+
+        if (json)
+            geo_xcip_output_json(sp, ip, geo);
+        else
+            geo_xcip_output_cookie(sp, ip, geo);
+    }
+}C
+
+// Emits JSON
+sub geoip_lookup { C{geo_xcip_output(sp, true);}C }
+
+// Emits a Set-Cookie
+sub geoip_cookie { C{geo_xcip_output(sp, false);}C }
