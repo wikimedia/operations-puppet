@@ -9,15 +9,12 @@ class openstack::horizon::service(
 
     package { 'openstack-dashboard':
         ensure  => present,
-        require => Class['openstack::repo', 'webserver::php5', 'apache::mod::wsgi'];
+        require => Class['openstack::repo',  '::apache::mod::wsgi'];
     }
 
-    # web services to host horizon
-    if !defined(Class['webserver::php5']) {
-        class {'webserver::php5': ssl => true; }
-    }
-
-    include apache::mod::wsgi
+    include ::apache
+    include ::apache::mod::ssl
+    include ::apache::mod::wsgi
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
