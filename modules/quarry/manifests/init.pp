@@ -62,11 +62,13 @@ class quarry::database {
 # by the Quarry frontends and also as working queue & results
 # backend by the query runners.
 class quarry::redis {
-    class { '::redis::legacy':
-        dir       => '/srv/redis',
-        maxmemory => '2GB',
-        persist   => 'aof',
-        monitor   => false,
+    redis::instance { '6379':
+        settings => {
+            dir            => '/srv/redis',
+            maxmemory      => '2GB',
+            appendonly     => 'yes',
+            appendfilename => "${hostname}-6379.aof",
+        }
     }
 }
 
