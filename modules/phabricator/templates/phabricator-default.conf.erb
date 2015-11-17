@@ -3,9 +3,9 @@
 
 <VirtualHost *:80>
   ServerName <%= @phab_servername.gsub('http://', '').gsub('https://', '') %>
-<% if !@serveralias.empty? %>
+<% if !@serveralias.empty? -%>
   ServerAlias <%= @serveralias %>
-<% end %>
+<%- end %>
 
 <% if !@serveradmin.empty? %>
   ServerAdmin <%= @serveradmin %>
@@ -18,8 +18,13 @@
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect,L]
   Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+<% if !@serveralias.empty? -%>
+  # Read robots.txt from disk for the alternative domain
+  RewriteCond "%{HTTP_HOST}" "<%= @serveralias.gsub('.', '\.') %>"
+  RewriteRule ^/robots.txt$ <%= @phab_dir %>/robots.txt [L]
+<%- end %>
 
-  # enable HTTP Strict Transport Security
+# enable HTTP Strict Transport Security
   Header always set Strict-Transport-Security "max-age=31536000"
 
   <Directory "<%= @docroot %>">
