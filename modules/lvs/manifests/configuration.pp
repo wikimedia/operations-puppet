@@ -52,7 +52,7 @@ class lvs::configuration {
     }
 
     $pybal = {
-        'bgp' => 'yes',
+        'bgp' => hiera('lvs::configuration::bgp', 'yes'),
         'bgp-peer-address' => $hostname ? {
             /^lvs100[1-3]$/ => '208.80.154.196', # cr1-eqiad
             /^lvs100[4-6]$/ => '208.80.154.197', # cr2-eqiad
