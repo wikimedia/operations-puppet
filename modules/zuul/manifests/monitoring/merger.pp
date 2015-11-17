@@ -10,4 +10,10 @@ class zuul::monitoring::merger {
         nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/share/python/zuul/bin/python /usr/bin/zuul-merger'"
     }
 
+    nrpe::monitor_service { 'zuul_merger_git_daemon':
+        description   => 'git_daemon_running',
+        contact_group => 'contint',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/lib/git-core/git-daemon'",
+    }
+
 }
