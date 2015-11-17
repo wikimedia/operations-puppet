@@ -2306,6 +2306,19 @@ node 'scandium.eqiad.wmnet' {
     include base::firewall
     role zuul::merger
 
+    file { '/srv/ssd':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+    }
+    mount { '/srv/ssd':
+        ensure  => mounted,
+        device  => '/dev/md2',
+        fstype  => 'xfs',
+        options => 'noatime,nodiratime,nobarrier,logbufs=8',
+        require => File['/srv/ssd'],
+    }
+
 }
 
 node /^sca100[12]\.eqiad\.wmnet$/ {
