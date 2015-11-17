@@ -9,7 +9,7 @@ class statistics::rsync::mediawiki {
 
     # Any logs older than this will be pruned by
     # the rsync_job define.
-    $retention_days = 90
+    $retention_days = 30
 
     file { "${working_path}/mw-log":
         ensure => 'directory',
@@ -34,7 +34,6 @@ class statistics::rsync::mediawiki {
     statistics::rsync_job { 'mw-api':
         source         => 'fluorine.eqiad.wmnet::udp2log/archive/api.log-*.gz',
         destination    => "${working_path}/mw-log/archive",
-        # Retention of 30 days to save disk space
-        retention_days => 30,
+        retention_days => $retention_days,
     }
 }
