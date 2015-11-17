@@ -10,6 +10,9 @@ class racktables (
 
     include mysql
     include passwords::racktables
+    include ::apache
+    include ::apache::mod::php5
+    include ::apache::mod::ssl
     include ::apache::mod::rewrite
     include ::apache::mod::headers
 
@@ -21,11 +24,6 @@ class racktables (
         owner   => 'root',
         group   => 'root',
         content => template('racktables/racktables.config.erb'),
-    }
-
-
-    if ! defined(Class['webserver::php5']) {
-        class {'webserver::php5': ssl => true; }
     }
 
     apache::site { 'racktables.wikimedia.org':
