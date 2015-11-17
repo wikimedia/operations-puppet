@@ -186,7 +186,6 @@ rewrite	*wikimedia.ee	//ee.wikimedia.org
 
 rewrite	*wikipedia.ee	//et.wikipedia.org
 
-rewrite	*wikimedia.biz	//www.wikimedia.org
 rewrite	*wikimedia.jp.net	//www.wikimedia.org
 
 rewrite	*wikimedia.lt	//wikimediafoundation.org
