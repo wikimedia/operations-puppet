@@ -13,8 +13,8 @@ class puppetmaster::certcleaner {
     }
 
     cron { 'puppet_certificate_signer':
-        command => '/usr/local/sbin/puppetsigner.py > /dev/null 2>&1',
         ensure  => absent,
+        command => '/usr/local/sbin/puppetsigner.py > /dev/null 2>&1',
     }
 
     cron { 'puppet_salt_certificate_cleaner':
