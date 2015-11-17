@@ -6,11 +6,9 @@
 <% if !@serveralias.empty? -%>
   ServerAlias <%= @serveralias %>
 <%- end %>
-
-<% if !@serveradmin.empty? %>
+<% if !@serveradmin.empty? -%>
   ServerAdmin <%= @serveradmin %>
-<% end %>
-
+<%- end %>
   DocumentRoot <%= @docroot %>
 
   # redirect/enforce http->https
@@ -21,7 +19,11 @@
 <% if !@serveralias.empty? -%>
   # Read robots.txt from disk for the alternative domain
   RewriteCond "%{HTTP_HOST}" "<%= @serveralias.gsub('.', '\.') %>"
-  RewriteRule ^/robots.txt$ <%= @phab_dir %>/robots.txt [L]
+  RewriteRule ^/robots.txt$ <%= @phabdir %>/robots.txt [L]
+
+  <Files "robots.txt">
+    Require All granted
+  </Files>
 <%- end %>
 
 # enable HTTP Strict Transport Security
