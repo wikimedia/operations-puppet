@@ -13,16 +13,12 @@ class eventlogging::package {
         'python-kafka',
         'python-mysqldb',
         'python-pygments',
+        'python-pykafka',
         'python-pymongo',
         'python-six',
         'python-sqlalchemy',
         'python-zmq',
     ])
-
-    # See T109567
-    if os_version('Ubuntu == Trusty') {
-        require_package 'python-pykafka'
-    }
 
     package { 'eventlogging/EventLogging':
         provider => 'trebuchet',
