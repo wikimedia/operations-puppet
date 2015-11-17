@@ -8,30 +8,134 @@ C{
 	#include <stdlib.h>
 	#include <stdio.h>
 	#include <string.h>
-	#include <GeoIPCity.h>
+	#include <maxminddb.h>
 	#include <pthread.h>
 	#include <sys/types.h>
 	#include <sys/socket.h>
 	#include <netdb.h>
 	#include <arpa/inet.h>
 
-	GeoIP *gi = NULL;
+	MMDB_s *mmdb = NULL;
 
-	int geo_init(void);
 	int geo_get_relevant_ip (const struct sess *sp, char *ip, size_t maxlen);
 	void geo_sanitize_for_cookie (char *string);
 	void geo_set_cache_control (const struct sess *sp);
 	const char * geo_get_top_cookie_domain (const char *host);
 
-	int
-	geo_init(void) {
-		if (gi == NULL) {
-			gi = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MMAP_CACHE);
-			if (gi == NULL) {
-				return -1;
+	const char *
+	mmdb_lookup(struct sess *sp, const char *ipstr, const char **lookup_path)
+	{
+		char *data = NULL;
+
+		if (mmdb == NULL) {
+			mmdb = malloc(sizeof(MMDB_s));
+			if (mmdb == NULL) {
+				return NULL;
+			}
+
+			int status = MMDB_open("/usr/share/GeoIP/GeoIP2-City.mmdb", MMDB_MODE_MMAP, mmdb);
+			if (MMDB_SUCCESS != status) {
+				return NULL;
 			}
 		}
-		return 0;
+
+		int gai_error, mmdb_error;
+		MMDB_lookup_result_s result = MMDB_lookup_string(mmdb, ipstr, &gai_error, &mmdb_error);
+
+		if (0 != gai_error) {
+			return NULL;
+		}
+
+		if (MMDB_SUCCESS != mmdb_error) {
+			return NULL;
+		}
+
+		// Parse results
+		MMDB_entry_data_s entry_data;
+		int exit_code = 0;
+		size_t strsize = 0;
+
+		if (result.found_entry) {
+			int status = MMDB_aget_value(&result.entry, &entry_data, lookup_path);
+
+			if (MMDB_SUCCESS != status) {
+				exit_code = 4;
+			}
+
+			if (entry_data.has_data) {
+				switch(entry_data.type){
+					case MMDB_DATA_TYPE_UTF8_STRING:
+						data = strndup(entry_data.utf8_string, entry_data.data_size);
+						break;
+					case MMDB_DATA_TYPE_DOUBLE:
+						strsize = 1 + 2 + 1 + 2 + 1; // -NN.MM\0
+						data = malloc(strsize);
+						snprintf(data, strsize, "%2.2f", entry_data.double_value);
+						break;
+					default:
+						exit_code = 6;
+						break;
+				}
+		}
+		} else {
+			exit_code = 5;
+		}
+		if (exit_code != 0) {
+			data = malloc(sizeof(char)*2);
+			sprintf(data, "%s", "");
+		}
+
+		/*
+		char *cp;
+		cp = WS_Dup(sp->wrk->ws, data);
+		free(data);
+		return cp;
+		*/
+
+		return data;
+
+	}
+
+	const char*
+	mmdb_city(struct sess *sp, const char *ipstr)
+	{
+		const char *lookup_path[] = {"city", "names", "en", NULL};
+		return mmdb_lookup(sp, ipstr, lookup_path);
+	}
+
+	const char*
+	mmdb_country(struct sess *sp, const char *ipstr)
+	{
+		const char *lookup_path[] = {"country", "names", "en", NULL};
+		return mmdb_lookup(sp, ipstr, lookup_path);
+	}
+
+	const char*
+	mmdb_region(struct sess *sp, const char *ipstr)
+	{
+		const char *lookup_path[] = {"subdivisions", "0", "iso_code", NULL};
+		return mmdb_lookup(sp, ipstr, lookup_path);
+	}
+
+	const char*
+	mmdb_country_code(struct sess *sp, const char *ipstr)
+	{
+		const char *lookup_path[] = {"country", "iso_code", NULL};
+		return mmdb_lookup(sp, ipstr, lookup_path);
+	}
+
+	const char*
+	mmdb_latitude(struct sess *sp, const char *ipstr)
+	{
+		const char *lookup_path[] = {"location", "latitude", NULL};
+		return mmdb_lookup(sp, ipstr, lookup_path);
+	}
+
+	const char*
+	mmdb_longitude(struct sess *sp, const char *ipstr)
+	{
+		const char *lookup_path[] = {"location", "longitude", NULL};
+		return mmdb_lookup(sp, ipstr, lookup_path);
 	}
 
 	/*
@@ -138,35 +242,21 @@ sub geoip_lookup {
 
 	C{
 		char ip[50];
-		GeoIPRecord *record = NULL;
 		char json[255];
 
 		if (geo_get_relevant_ip(sp, ip, sizeof(ip)) == -1) {
 			return;
 		}
 
-		if (!geo_init()) {
-			record = GeoIP_record_by_addr(gi, ip);
-		}
-
-		if (record) {
-			snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"region\":\"%s\",\"lat\":\"%f\",\"lon\":\"%f\",\"IP\":\"%s\"}",
-				record->city,
-				record->country_code,
-				record->region,
-				record->latitude,
-				record->longitude,
-				ip
-			);
-			GeoIPRecord_delete(record);
-			VRT_synth_page(sp, 0, json,  vrt_magic_string_end);
-		} else {
-			if (strchr(ip, ':') != NULL) {
-				VRT_synth_page(sp, 0, "Geo = {IPv6:true}", vrt_magic_string_end);
-			} else {
-				VRT_synth_page(sp, 0, "Geo = {}", vrt_magic_string_end);
-			}
-		}
+		snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"region\":\"%s\",\"lat\":\"%s\",\"lon\":\"%s\",\"IP\":\"%s\"}",
+			mmdb_city(sp, ip),
+			mmdb_country_code(sp, ip),
+			mmdb_region(sp, ip),
+			mmdb_latitude(sp, ip),
+			mmdb_longitude(sp, ip),
+			ip
+		);
+		VRT_synth_page(sp, 0, json, vrt_magic_string_end);
 
 		geo_set_cache_control(sp);
 	}C
@@ -175,7 +265,6 @@ sub geoip_lookup {
 
 sub geoip_cookie {
 	C{
-		GeoIPRecord *record = NULL;
 		char *geo_header;
 		char cookie_buf[255];
 		char ip[50];
@@ -194,25 +283,16 @@ sub geoip_cookie {
 			return;
 		}
 
-		if (!geo_init()) {
-			record = GeoIP_record_by_addr(gi, ip);
-		}
-
 		int snp_len;
-		if (record) {
-			// Set-Cookie: GeoIP=US:CA:San_Francisco:37.77:-122.41:v4; path=/
-			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%s:%.2f:%.2f:%s",
-				record->country_code ? record->country_code : "",
-				record->region ? record->region : "",
-				record->city ? record->city : "",
-				record->latitude,
-				record->longitude,
-				(strchr(ip, ':') != NULL) ? "v6" : "v4"
-			);
-			GeoIPRecord_delete(record);
-		} else {
-			snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=:::::%s", (strchr(ip, ':') != NULL) ? "v6" : "v4");
-		}
+		// Set-Cookie: GeoIP=US:CA:San_Francisco:37.77:-122.41:v4; path=/
+		snp_len = snprintf(cookie_buf, sizeof(cookie_buf), "GeoIP=%s:%s:%s:%s:%s:%s",
+			mmdb_country_code(sp, ip),
+			mmdb_region(sp, ip),
+			mmdb_city(sp, ip),
+			mmdb_latitude(sp, ip),
+			mmdb_longitude(sp, ip),
+			(strchr(ip, ':') != NULL) ? "v6" : "v4"
+		);
 
 		// don't use snprintf()-truncated output
 		if (snp_len < sizeof(cookie_buf)) {

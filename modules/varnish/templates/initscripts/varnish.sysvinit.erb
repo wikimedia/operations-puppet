@@ -46,7 +46,7 @@ DAEMON_OPTS=${DAEMON_OPTS:--b localhost}
 
 <% if @vcl_config.fetch( "enable_geoiplookup", false ) -%>
 # Bash sucks
-CC_COMMAND="exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lGeoIP"
+CC_COMMAND="exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lmaxminddb"
 <% end %>
 
 case "$1" in
