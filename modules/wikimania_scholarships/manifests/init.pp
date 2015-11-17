@@ -30,7 +30,8 @@ class wikimania_scholarships(
 ) {
 
     include passwords::mysql::wikimania_scholarships,
-        webserver::php5
+        ::apache,
+        ::apache::mod::php5
 
     require_package('php5-mysql')
 
