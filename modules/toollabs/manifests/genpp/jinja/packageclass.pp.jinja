@@ -6,7 +6,7 @@
 # Please do not edit manually!
 
 class {{class}} {
-    package { [
+    require_package(
         {%- for package, versions in packages|pydictsort -%}
             {%- set version = versions[release] -%}
             {%- if version is none %}
@@ -15,7 +15,5 @@ class {{class}} {
         {{package|pline}} # {{version}}
             {%- endif -%}
         {%- endfor %}
-    ]:
-        ensure => latest,
-    }
+    )
 }

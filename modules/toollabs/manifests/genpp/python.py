@@ -63,7 +63,6 @@ environ_packages = {
         'wadllib',
         'webpy',
         'werkzeug',
-        'yaml',
         'zbar',                 # T58996
         'zmq',
     ],
