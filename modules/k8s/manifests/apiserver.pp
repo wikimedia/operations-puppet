@@ -25,7 +25,7 @@ class k8s::apiserver(
     # List of resources that namespaced users can access
     $namespace_allowed_resources = [
         'pods',
-        'replicationControllers',
+        'replicationcontrollers',
         'services',
         'secrets',
     ]
