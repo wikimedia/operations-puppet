@@ -57,7 +57,7 @@ class base::standard-packages {
     }
 
     # uninstall these packages
-    package { [ 'mlocate', 'os-prober', 'wpasupplicant' ]:
+    package { [ 'mlocate', 'os-prober', 'wpasupplicant', 'apport', 'python3-apport' ]:
         ensure => absent,
     }
 
