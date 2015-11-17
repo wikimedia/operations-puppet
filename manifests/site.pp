@@ -2121,7 +2121,6 @@ node 'nescio.wikimedia.org' {
 node 'netmon1001.wikimedia.org' {
     role rancid, librenms, servermon, torrus, smokeping
     include standard
-    include webserver::apache
     include passwords::network
     include ganglia::deprecated::collector
 
