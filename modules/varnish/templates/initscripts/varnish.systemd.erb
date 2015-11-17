@@ -9,7 +9,7 @@ PIDFile=%t/%p.pid
 Restart=on-failure
 KillMode=process
 <% if @vcl_config.fetch("enable_geoiplookup", false) -%>
-Environment="CC_COMMAND=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%s -lGeoIP"
+Environment="CC_COMMAND=exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %%o %%s -lmaxminddb"
 <% end -%>
 <% if @jemalloc_conf -%>
 Environment="MALLOC_CONF=<%= @jemalloc_conf %>"
