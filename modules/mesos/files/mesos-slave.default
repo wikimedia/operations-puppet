@@ -1,4 +1,0 @@
-MASTER=`cat /etc/mesos/zk`
-ISOLATION='cgroups/cpu,cgroups/mem'
-CONTAINERIZERS='docker,mesos'
-EXECUTOR_REGISTRATION_TIMEOUT='5min'
