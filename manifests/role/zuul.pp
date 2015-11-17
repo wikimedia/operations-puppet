@@ -24,6 +24,12 @@ class role::zuul::configuration {
         },
     }
 
+    file { '/srv/ssd/zuul':
+        ensure => 'directory',
+        owner   => 'root',
+        group   => 'root',
+    }
+
     $merger = {
         'production' => {
             'git_dir'   => '/srv/ssd/zuul/git',
