@@ -13,7 +13,7 @@ class role::memcached {
     system::role { 'role::memcached': }
 
     include standard
-    include webserver::sysctl_settings
+    include base::mysterious_sysctl
     include base::firewall
 
     $memcached_size = $::realm ? {

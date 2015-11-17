@@ -1,4 +1,10 @@
-class webserver::sysctl_settings {
+# These are orphaned sysctls from the webserver::sysctl_settings
+# Ancient and mysterious, these can either have absolutely no
+# effect on modern kernels or could be the very things that keeps
+# the fabric of the space time continuum (and our wikis) alive.
+# We do not know, though. So move it here so we can kill the
+# webservermodule, and then figure out what to do with these
+class base::mysterious_sysctl {
     # Sysctl settings for high-load HTTP caches
     sysctl::parameters { 'high http performance':
         values => {
