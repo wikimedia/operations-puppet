@@ -25,8 +25,8 @@ class mysql::params {
     $client_package_name  = "mysql-client-${ver}"
     $server_package_name  = "mysql-server-${ver}"
 
-    $socket               = "/run/mysqld/mysqld.sock"
-    $pidfile              = "/run/mysqld/mysqld.pid"
+    $socket               = '/run/mysqld/mysqld.sock'
+    $pidfile              = '/run/mysqld/mysqld.pid'
     $datadir              = '/var/lib/mysql'
     $log_error            = '/var/log/mysql/mysql.err'
 
