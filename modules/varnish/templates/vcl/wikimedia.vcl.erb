@@ -661,6 +661,9 @@ sub vcl_deliver {
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	std.collect(resp.http.Via);
 	std.collect(resp.http.X-Varnish);
+	if (req.http.X-Connection-Properties ~ "SPDY=[123]") {
+		header.append(resp.http.Set-Cookie, "CP=H2");
+	}
 <% end -%>
 
 	if (resp.http.X-Cache) {
