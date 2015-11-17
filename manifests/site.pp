@@ -1,4 +1,4 @@
-# vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
+ vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 # site.pp
 
 import 'realm.pp' # These ones first
@@ -2409,8 +2409,7 @@ node /^snapshot100[124]\.eqiad\.wmnet/ {
 }
 
 node /^snapshot1003\.eqiad\.wmnet/ {
-    role snapshot
-    include snapshot::cron::primary
+    role snapshot, snapshot::cron::primary
     include standard
 }
 
