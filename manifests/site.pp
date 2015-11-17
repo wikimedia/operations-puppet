@@ -2539,8 +2539,9 @@ node 'ytterbium.wikimedia.org' {
 }
 
 node default {
-    # Labs nodes include a different set of defaults via ldap.
     if $::realm == 'production' {
         include standard
+    } else {
+        include role::labs::instance
     }
 }
