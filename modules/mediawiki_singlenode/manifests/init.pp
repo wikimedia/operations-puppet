@@ -22,7 +22,7 @@ class mediawiki_singlenode(
     $memcached_size    = 128,
     $apache_site_template = 'mediawiki_singlenode/mediawiki_singlenode.erb'
     ) {
-    require role::labs-mysql-server, webserver::sysctl_settings
+    require role::labs-mysql-server, base::mysterious_sysctl
 
     require_package('php5-mysql')
 
