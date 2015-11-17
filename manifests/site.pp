@@ -958,7 +958,6 @@ node 'eventlog1001.eqiad.wmnet', 'eventlog2001.codfw.wmnet' {
         eventlogging::processor,
         eventlogging::consumer::mysql,
         eventlogging::consumer::files,
-        ipython_notebook,
         logging::mediawiki::errors
 
     include standard
