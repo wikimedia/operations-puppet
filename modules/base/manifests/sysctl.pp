@@ -73,6 +73,9 @@ class base::sysctl {
             # from being oversized, but this may need adjustment later, unless
             # future kernels fix the issue completely as they did with ipv4.
             'net.ipv6.route.max_size'       => 131072,
+
+            # Increase the number of ephemeral ports
+            'net.ipv4.ip_local_port_range' =>  [ 1024, 65535 ],
         },
         priority => 60,
     }
