@@ -6,10 +6,6 @@ class openstack::openstack-manager(
 ) {
     require mediawiki::users
 
-    if !defined(Class['webserver::php5']) {
-        class {'webserver::php5': ssl => true; }
-    }
-
     if !defined(Class['memcached']) {
         apt::pin { 'memcached':
             pin      => 'release o=Ubuntu',
@@ -52,7 +48,10 @@ class openstack::openstack-manager(
         default      => "www.${controller_hostname}",
     }
 
+    include ::apache
     include ::apache::mod::alias
+    include ::apache::mod::ssl
+    include ::apache::mod::php5
 
     apache::site { $webserver_hostname:
         content => template("apache/sites/${webserver_hostname}.erb"),
