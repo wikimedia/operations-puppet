@@ -29,7 +29,7 @@ class base {
     include ssh::client
     include ssh::server
     include role::salt::minions
-    include role::trebuchet
+    include ::trebuchet
     include nrpe
     include base::kernel
     include base::debdeploy
