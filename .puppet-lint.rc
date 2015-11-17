@@ -13,15 +13,11 @@
 --no-inherits_across_namespaces-check
 --no-double_quoted_strings-check
 --no-ensure_first_param-check
---no-unquoted_resource_title-check
 --no-arrow_alignment-check
 --no-puppet_url_without_modules-check
 
 # We dont have much documentation yet:
 --no-documentation-check
-
-# Variables should be enclosed in {}
-# --no-variables_not_enclosed-check
 
 # We use dash in class and variables.
 --no-names_containing_dash-check
