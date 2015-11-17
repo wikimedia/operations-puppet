@@ -3,6 +3,7 @@
 # Sets up a simple LAMP server for use by arbitrary php applications
 class role::simplelamp(
     $mysql_local = true,
+    $mysql_datadir = '/srv/mysql',
 ) {
     include ::apache
     include ::apache::mod::php5
@@ -18,7 +19,7 @@ class role::simplelamp(
     # Simple mysql
     class { '::mysql::server':
         config_hash        => {
-            'datadir'      => '/srv/mysql',
+            'datadir'      => $mysql_datadir,
             'bind_address' => $bind_address,
         }
     }
