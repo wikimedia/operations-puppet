@@ -2,7 +2,9 @@
 {"readonly": true, "nonResourcePath": "/api"}
 <%- @users.each do |user| -%>
 <%- if user['type'] == 'namespaced' -%>
-{"user": "<%= user['name'] %>", "namespace": "<%= user['name'] %>"}
+<%- @namespace_allowed_resources.each do |resource| -%>
+{"user": "<%= user['name'] %>", "namespace": "<%= user['name'] %>", "resource": "<%= resource %>"}
+<%- end -%>
 <%- elsif user['type'] == 'infrastructure' or user['type'] == 'admin' -%>
 {"user": "<%= user['name'] %>"}
 <%- elsif user['type'] == 'infrastructure-readonly' -%>

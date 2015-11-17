@@ -22,6 +22,14 @@ class k8s::apiserver(
         notify  => Base::Service_unit['kube-apiserver'],
     }
 
+    # List of resources that namespaced users can access
+    $namespace_allowed_resources = [
+        'pods',
+        'replicationControllers',
+        'services',
+        'secrets',
+    ]
+
     file { '/etc/kubernetes/abac':
         content => template('k8s/abac.json.erb'),
         owner   => 'kubernetes',
