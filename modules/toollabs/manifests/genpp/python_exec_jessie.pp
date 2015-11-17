@@ -6,7 +6,7 @@
 # Please do not edit manually!
 
 class toollabs::genpp::python_exec_jessie {
-    package { [
+    require_package(
         # python-apport is not available
         # python3-apport is not available
         'python-babel',         # 1.3
@@ -119,13 +119,9 @@ class toollabs::genpp::python_exec_jessie {
         # python3-webpy is not available
         'python-werkzeug',      # 0.9.6
         'python3-werkzeug',     # 0.9.6
-        'python-yaml',          # 3.11
-        'python3-yaml',         # 3.11
         'python-zbar',          # 0.10
         # python3-zbar is not available
         'python-zmq',           # 14.4.0
         'python3-zmq',          # 14.4.0
-    ]:
-        ensure => latest,
-    }
+    )
 }
