@@ -7,8 +7,13 @@ class smokeping::web {
     }
 
     include ::apache::mod::fcgid
-
-    apache::site { 'smokeping.wikimedia.org':
-        source => 'puppet:///modules/smokeping/apache.conf',
+    @webserver::apache::site { 'smokeping.wikimedia.org':
+        require => [Class['::apache::mod::fcgid'],
+                    File['/usr/share/smokeping/www/smokeping.fcgi']],
+        docroot => '/var/www',
+        custom  => [
+            'AliasMatch ^/($|smokeping\.cgi) /usr/share/smokeping/www/smokeping.fcgi',
+            'Alias /images /var/cache/smokeping/images/'
+            ],
     }
 }
