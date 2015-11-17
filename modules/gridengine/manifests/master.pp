@@ -7,6 +7,11 @@ class gridengine::master
         require => Package['gridengine-common'],
     }
 
+    service { 'gridengine-master':
+        ensure  => running,
+        require => Package['gridengine-master'],
+    }
+
     $etcdir = '/var/lib/gridengine/etc'
 
     file { "${etcdir}/tracker":
