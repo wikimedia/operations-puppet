@@ -1192,7 +1192,6 @@ node 'krypton.eqiad.wmnet' {
 node 'labcontrol1001.wikimedia.org' {
     $is_puppet_master      = true
     $is_labs_puppet_master = true
-    $use_neutron           = false
     role labs::openstack::nova::controller
 
     include standard
@@ -1200,10 +1199,6 @@ node 'labcontrol1001.wikimedia.org' {
     include role::salt::masters::labs
     include role::deployment::salt_masters
     include role::dns::ldap
-    if $use_neutron == true {
-        include role::neutron::controller
-
-    }
 
     # Monitoring checks for toollabs that page
     include toollabs::monitoring::icinga
@@ -1217,17 +1212,12 @@ node 'labcontrol1001.wikimedia.org' {
 node 'labcontrol1002.wikimedia.org' {
     $is_puppet_master      = true
     $is_labs_puppet_master = true
-    $use_neutron           = false
 
     role labs::openstack::nova::controller
     include standard
     include ldap::role::client::labs
     include role::salt::masters::labs
     include role::deployment::salt_masters
-    if $use_neutron == true {
-        include role::neutron::controller
-    }
-
     # The dns controller grabs an IP, so leave this disabled until/unless
     #  this server is the primary labs controller.
     #include role::dns::ldap
@@ -1237,7 +1227,6 @@ node 'labcontrol2001.wikimedia.org' {
     $ganglia_aggregator    = true
     #$is_puppet_master      = true
     #$is_labs_puppet_master = true
-    #$use_neutron           = false
 
     role dns::ldap, salt::masters::labs
     include standard
@@ -1257,29 +1246,15 @@ node 'labmon1001.eqiad.wmnet' {
 }
 
 node 'labnet1001.eqiad.wmnet' {
-    $use_neutron = false
 
     role labs::openstack::nova::api
     include standard
-
-    if $use_neutron == true {
-        #include role::neutron::nethost
-    } else {
-        #include role::labs::openstack::nova::network
-    }
 }
 
 node 'labnet1002.eqiad.wmnet' {
-    $use_neutron = false
-
     role labs::openstack::nova::api
     include standard
-
-    if $use_neutron == true {
-        include role::neutron::nethost
-    } else {
-        include role::labs::openstack::nova::network
-    }
+    include role::labs::openstack::nova::network
 }
 
 node 'labnodepool1001.eqiad.wmnet' {
@@ -2465,24 +2440,14 @@ node 'uranium.wikimedia.org' {
 }
 
 node /^labvirt100[0-9].eqiad.wmnet/ {
-    $use_neutron = false
     openstack::nova::partition{ '/dev/sdb': }
     role labs::openstack::nova::compute
     include standard
-
-    if $use_neutron == true {
-        include role::neutron::computenode
-    }
 }
 
 node /^labvirt101[0-1].eqiad.wmnet/ {
-    $use_neutron = false
     role labs::openstack::nova::compute
     include standard
-
-    if $use_neutron == true {
-        include role::neutron::computenode
-    }
 }
 
 # Wikidata query service
