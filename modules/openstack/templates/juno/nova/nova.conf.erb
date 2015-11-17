@@ -53,12 +53,6 @@ rabbit_use_ssl = false
 rabbit_userid = <%= @novaconfig["rabbit_user"] %>
 rabbit_password = <%= @novaconfig["rabbit_pass"] %>
 
-<% if @novaconfig["use_neutron"] -%>
-# network/neutron settings
-network_api_class = nova.network.neutronv2.api.API
-linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver
-firewall_driver = nova.virt.libvirt.firewall.IptablesFirewallDriver
-<% else -%>
 network_api_class=nova.network.api.API
 flat_network_dhcp_start=<%= @novaconfig["dhcp_start"] %>
 network_manager=nova.network.manager.FlatDHCPManager
@@ -69,7 +63,6 @@ fixed_range=<%= @novaconfig["fixed_range"] %>
 public_interface=<%= @novaconfig["network_public_interface"] %>
 routing_source_ip=<%= @novaconfig["network_public_ip"] %>
 multi_host=False
-<% end -%>
 
 #  novnc stuff
 novncproxy_base_url=<%= @novaconfig['controller_hostname'] %>:6080/vnc_auto.html
@@ -123,18 +116,6 @@ zone_name=<%= @novaconfig["zone"] %>
 
 [glance]
 host=<%= @novaconfig["glance_host"] %>
-
-<% if novaconfig["use_neutron"] -%>
-[neutron]
-neutron_url = http://<%= @novaconfig['controller_hostname'] %>:9696
-neutron_auth_strategy = keystone
-neutron_admin_tenant_name=testlabs
-neutron_admin_username=neutron
-neutron_admin_password=<%= @novaconfig['neutron_ldap_user_pass'] %>
-neutron_admin_auth_url = http://<%= @novaconfig['controller_hostname'] %>:35357/v2.0
-service_neutron_metadata_proxy = true
-neutron_metadata_proxy_shared_secret = <%= @novaconfig["metadata_pass"] %>
-<% end -%>
 
 [libvirt]
 virt_type=<%= @novaconfig["libvirt_type"] %>

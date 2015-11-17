@@ -19,7 +19,6 @@ class role::labs::openstack::nova::config::common {
     require openstack
     include passwords::openstack::nova
     include passwords::openstack::ceilometer
-    include passwords::openstack::neutron
     include passwords::labs::rabbitmq
 
     $commonnovaconfig = {
@@ -29,13 +28,11 @@ class role::labs::openstack::nova::config::common {
         metadata_pass              => $passwords::openstack::nova::nova_metadata_pass,
         rabbit_user                => $passwords::labs::rabbitmq::rabbit_userid,
         rabbit_pass                => $passwords::labs::rabbitmq::rabbit_password,
-        neutron_ldap_user_pass     => $passwords::openstack::neutron::neutron_ldap_user_pass,
         ceilometer_user            => $passwords::openstack::ceilometer::db_user,
         ceilometer_pass            => $passwords::openstack::ceilometer::db_pass,
         ceilometer_secret_key      => $passwords::openstack::ceilometer::secret_key,
         ceilometer_db_name         => 'ceilometer',
         my_ip                      => $::ipaddress_eth0,
-        use_neutron                => $use_neutron,
         ldap_base_dn               => 'dc=wikimedia,dc=org',
         ldap_user_dn               => 'uid=novaadmin,ou=people,dc=wikimedia,dc=org',
         ldap_user_pass             => $passwords::openstack::nova::nova_ldap_user_pass,
@@ -526,15 +523,12 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
         description => 'openstack nova compute node',
     }
 
-    # Neutron roles configure their own interfaces.
-    if ( $use_neutron == false ) {
-        interface::tagged { $novaconfig['network_flat_interface']:
-            base_interface => $novaconfig['network_flat_tagged_base_interface'],
-            vlan_id        => $novaconfig['network_flat_interface_vlan'],
-            method         => 'manual',
-            up             => 'ip link set $IFACE up',
-            down           => 'ip link set $IFACE down',
-        }
+    interface::tagged { $novaconfig['network_flat_interface']:
+        base_interface => $novaconfig['network_flat_tagged_base_interface'],
+        vlan_id        => $novaconfig['network_flat_interface_vlan'],
+        method         => 'manual',
+        up             => 'ip link set $IFACE up',
+        down           => 'ip link set $IFACE down',
     }
 
     class { '::openstack::nova::compute':
