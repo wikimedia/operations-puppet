@@ -44,7 +44,7 @@ define statistics::rsync_job($source, $destination, $retention_days = undef, $en
 
     cron { "prune_old_${name}_logs":
         ensure  => $prune_old_logs_ensure,
-        command => "/usr/bin/find ${destination} -ctime +${retention_days} -exec rm {} \\;",
+        command => "/usr/bin/find ${destination} -mtime +${retention_days} -exec rm {} \\;",
         user    => $::statistics::user::username,
         minute  => 0,
         hour    => 9,
