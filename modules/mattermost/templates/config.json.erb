@@ -23,7 +23,7 @@
     },
     "SqlSettings": {
         "DriverName": "mysql",
-        "DataSource": "<%= @mysql_user %>:<%= @mysql_password %>@<%= @mysql_host %>/<%= @mysql_db %>?charset=utf8mb4,utf8",
+        "DataSource": "<%= @mysql_user %>:<%= @mysql_password %>@tcp(<%= @mysql_host %>:3306)/<%= @mysql_db %>?charset=utf8mb4,utf8",
         "DataSourceReplicas": [],
         "MaxIdleConns": 10,
         "MaxOpenConns": 10,
