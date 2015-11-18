@@ -80,16 +80,6 @@ class role::restbase::alerts {
         contact_group => 'team-services',
     }
 
-    monitoring::graphite_threshold { 'restbase_cassandra_highest_pending_compactions':
-        description   => 'RESTBase Cassandra highest pending compactions http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-compaction',
-        metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.Compaction.PendingTasks.value, 1)',
-        from          => '60min',
-        warning       => '100',
-        critical      => '400',
-        percentage    => '50',
-        contact_group => 'team-services',
-    }
-
     monitoring::graphite_threshold { 'restbase_cassandra_highest_sstables_per_read':
         description   => 'RESTBase Cassandra highest SSTables per-read http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-cf-sstables-per-read',
         metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.ColumnFamily.all.SSTablesPerReadHistogram.99percentile, 1)',
