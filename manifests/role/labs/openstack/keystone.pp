@@ -1,4 +1,5 @@
 class role::labs::openstack::keystone::config {
+
     include passwords::openstack::keystone
 
     $commonkeystoneconfig = {
@@ -26,89 +27,44 @@ class role::labs::openstack::keystone::config::eqiad inherits role::labs::openst
     $keystone_host = hiera('labs_keystone_host')
 
     $eqiadkeystoneconfig = {
-        db_host      => $::realm ? {
-            'production' => 'm5-master.eqiad.wmnet',
-            'labs'       => $nova_controller_hostname ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_controller_hostname,
-            }
-        },
-        ldap_host    => $::realm ? {
-            'production' => 'ldap-eqiad.wikimedia.org',
-            'labs'       => $nova_controller_hostname ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_controller_hostname,
-            }
-        },
-        bind_ip      => $::realm ? {
-            'production' => ipresolve($keystone_host,4),
-            'labs'       => $nova_controller_ip ? {
-                undef   => $::ipaddress_eth0,
-                default => $nova_controller_ip,
-            }
-        },
-        token_driver => $::realm ? {
-            # Temporarily disable the redis keystone driver... it doesn't work in icehouse
-            'production' => 'normal',
-            'labs'       => 'redis',
-        },
+        db_host      => m5-master.eqiad.wmnet',
+        ldap_host    => 'ldap-eqiad.wikimedia.org',
+        bind_ip      => ipresolve($keystone_host,4),
+        # Temporarily disable the redis keystone driver... it doesn't work in icehouse
+        token_driver => 'normal',
     }
     $keystoneconfig = merge($eqiadkeystoneconfig, $commonkeystoneconfig)
 }
 
 class role::labs::openstack::keystone::server ($glanceconfig) {
-    include role::labs::openstack::keystone::config::eqiad
 
-    if $::realm == 'labs' and $::openstack_site_override != undef {
-        $keystoneconfig = $::openstack_site_override ? {
-            'eqiad' => $role::labs::openstack::keystone::config::eqiad::keystoneconfig,
-        }
-    } else {
-        $keystoneconfig = $::site ? {
-            'eqiad' => $role::labs::openstack::keystone::config::eqiad::keystoneconfig,
-        }
+    include role::labs::openstack::keystone::config::eqiad
+    include role::labs::openstack::keystone::redis
+
+    $keystoneconfig = $::site ? {
+        'eqiad' => $role::labs::openstack::keystone::config::eqiad::keystoneconfig,
     }
 
-    class { 'openstack::keystone::service': keystoneconfig => $keystoneconfig, glanceconfig => $glanceconfig }
-
-    include role::labs::openstack::keystone::redis
+    class { 'openstack::keystone::service':
+        keystoneconfig => $keystoneconfig,
+        glanceconfig => $glanceconfig,
+    }
 }
 
 class role::labs::openstack::keystone::redis {
+
     include passwords::openstack::keystone
 
     $nova_controller = hiera('labs_nova_controller')
 
-    if ($::realm == 'production') {
-        $replication = {
-            'labcontrol2001' => $nova_controller
-        }
-    } else {
-        $replication = {
-            'nova-precise3' => 'nova-precise2'
-        }
+    $replication = {
+        'labcontrol2001' => $nova_controller
     }
 
     class { '::redis::legacy':
         maxmemory                 => '250mb',
         persist                   => 'aof',
         redis_replication         => $replication,
-        password                  => $passwords::openstack::keystone::keystone_db_pass,
-        dir                       => '/var/lib/redis/',
-        auto_aof_rewrite_min_size => '64mb',
-    }
-}
-
-
-class role::labs::openstack::keystone::redis::labs {
-    include passwords::openstack::keystone
-
-    class { '::redis::legacy':
-        maxmemory                 => '250mb',
-        persist                   => 'aof',
-        redis_replication         => {
-            'nova-precise3' => 'nova-precise2'
-        },
         password                  => $passwords::openstack::keystone::keystone_db_pass,
         dir                       => '/var/lib/redis/',
         auto_aof_rewrite_min_size => '64mb',
