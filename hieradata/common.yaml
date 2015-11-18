@@ -263,3 +263,11 @@ statistics_servers:
 #   * Analytics so we can use it for testing throughput
 #   * CentralNoticeBannerHistory because it can't be inserted into mysql with its array property
 eventlogging_valid_mixed_schema_blacklist: ^Analytics|CentralNoticeBannerHistory$
+
+
+# LABS
+
+labs_designate_hostname: "holmium.wikimedia.org"
+labs_nova_api_host: "labnet1002.eqiad.wmnet"
+labs_nova_network_host: "labnet1002"
+labs_nova_network_ip: "10.64.20.25"
