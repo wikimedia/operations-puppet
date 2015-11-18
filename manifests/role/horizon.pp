@@ -1,6 +1,6 @@
 class role::horizon {
-    include role::labs::openstack::nova::config
-    $novaconfig = $role::labs::openstack::nova::config::novaconfig
+    include role::labs::openstack::nova::common
+    $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
     class { 'openstack::horizon::service':
         openstack_version => $::openstack_version,
