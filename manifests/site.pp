@@ -1091,6 +1091,10 @@ node 'labservices1001.wikimedia.org' {
     include ldap::role::client::labs
 }
 
+node 'labtestneutron.codfw.wmnet' {
+    include standard
+}
+
 # bastion in the Netherlands
 node 'hooft.esams.wikimedia.org' {
     $ganglia_aggregator = true
