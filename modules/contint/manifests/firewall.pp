@@ -40,13 +40,6 @@ class contint::firewall {
         srange => $nodepool_host,
     }
 
-    # The master runs a git-daemon process used by slave to fetch changes from
-    # the Zuul git repository. It is only meant to be used from slaves, so
-    # reject outside calls.
-    ferm::rule { 'git-daemon_internal':
-        rule => 'proto tcp dport 9418 { saddr $INTERNAL ACCEPT; }'
-    }
-
     # Need to grant ytterbium ssh access for git
     ferm::rule { 'ytterbium_ssh':
         rule => 'proto tcp dport ssh { saddr (208.80.154.80 208.80.154.81 2620:0:861:3:92b1:1cff:fe2a:e60 2620:0:861:3:208:80:154:80 2620:0:861:3:208:80:154:81) ACCEPT; }'
