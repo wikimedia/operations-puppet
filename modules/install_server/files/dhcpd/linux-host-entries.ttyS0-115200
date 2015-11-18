@@ -19,7 +19,7 @@ host analytics1010 {
 	fixed-address analytics1010.eqiad.wmnet;
 }
 
-host bromine.eqiad.wmnet {
+host bromine {
 	hardware ethernet aa:00:00:f1:36:3a;
 	fixed-address bromine.eqiad.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
@@ -33,14 +33,14 @@ host dubnium {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host fermium.eqiad.wmnet {
+host fermium {
 	hardware ethernet aa:00:00:a4:ac:f1;
 	fixed-address fermium.wikimedia.org;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host krypton.eqiad.wmnet {
+host krypton {
 	hardware ethernet aa:00:00:7e:e0:22;
 	fixed-address krypton.eqiad.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
@@ -115,6 +115,20 @@ host planet1001 {
 host pollux {
 	hardware ethernet aa:00:00:2d:a2:76;
 	fixed-address pollux.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host seaborgium {
+	hardware ethernet aa:00:00:4d:be:84;
+	fixed-address seaborgium.wikimedia.org
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host serpens {
+	hardware ethernet aa:00:00:0e:a4:81;
+	fixed-address serpens.wikimedia.org
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
