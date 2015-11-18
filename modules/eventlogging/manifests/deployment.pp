@@ -3,5 +3,5 @@
 # This class manages the deployment configuration for EventLogging.
 #
 class eventlogging::deployment {
-    $path = '/srv/deployment/eventlogging/EventLogging'
+    $path = '/srv/deployment/eventlogging/eventlogging'
 }

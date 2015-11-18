@@ -19,10 +19,6 @@ repo_config:
     upstream: https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy
     checkout_submodules: true
     service_name: parsoid
-  eventlogging/EventLogging:
-    upstream: https://gerrit.wikimedia.org/r/mediawiki/extensions/EventLogging
-  # New server code repo for eventlogging.  This will obsolete deployment
-  # from the above MW Extension repo.
   eventlogging/eventlogging:
     upstream: https://gerrit.wikimedia.org/r/eventlogging
     checkout_submodules: true

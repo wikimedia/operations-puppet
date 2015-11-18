@@ -2428,7 +2428,7 @@ node 'terbium.eqiad.wmnet' {
     # The eventlogging code is useful for scripting
     # EventLogging consumers.  Install this but don't
     # run any daemons.  To use eventlogging code,
-    # add /srv/deployment/eventlogging/EventLogging/server
+    # add /srv/deployment/eventlogging/eventlogging
     # to your PYTHONPATh or sys.path.
     include ::eventlogging::package
 }
