@@ -26,26 +26,6 @@ mediawiki_memcached_servers:
 #
 ganglia_aggregators: carbon.wikimedia.org:9649
 
-#
-# Labs
-#
-labs_nova_controller: "labcontrol1001.wikimedia.org"
-# _spare is a duplicate/backup controller.  In theory it has the
-#  same state as the main controller
-labs_nova_controller_spare: "labcontrol1002.wikimedia.org"
-# _other is the controller in the other datacenter
-labs_nova_controller_other: "labcontrol2001.wikimedia.org"
-labs_glance_controller: "labcontrol1001.wikimedia.org"
-labs_puppet_master: "labs-puppetmaster-eqiad.wikimedia.org"
-labs_keystone_host: "labcontrol1001.wikimedia.org"
-# These are the old, soon-to-be-phased-out dns servers:
-labs_ldap_dns_host: "labs-ns0.wikimedia.org"
-labs_ldap_dns_host_secondary: "labs-ns1.wikimedia.org"
-# These are the up-and-coming, better dns servers:
-labs_dns_host: "labs-ns2.wikimedia.org"
-labs_recursor: "labs-recursor0.wikimedia.org"
-labs_designate_hostname_secondary: "labservices1001.wikimedia.org"
-
 # Eventlogging
 eventlogging_host: 10.64.32.167 # eventlog1001
 
@@ -76,3 +56,43 @@ etcd_hosts:
     - conf1001.eqiad.wmnet
     - conf1002.eqiad.wmnet
     - conf1003.eqiad.wmnet
+
+#
+# Labs
+#
+
+labs_nova_controller: &labsnovacontroller "labcontrol1001.wikimedia.org"
+# _spare is a duplicate/backup controller.  In theory it has the
+#  same state as the main controller
+labs_nova_controller_spare: &labsnovacontrollerspare "labcontrol1002.wikimedia.org"
+
+# _other is the controller in the other datacenter
+labs_nova_controller_other: &labsnovacontrollerother "labcontrol2001.wikimedia.org"
+labs_glance_controller: &labsglancecontroller "labcontrol1001.wikimedia.org"
+labs_puppet_master: &labspuppetmaster "labs-puppetmaster-eqiad.wikimedia.org"
+labs_keystone_host: &labskeystonehost "labcontrol1001.wikimedia.org"
+
+# These are the old, soon-to-be-phased-out dns servers:
+labs_ldap_dns_host: &labsldapdnshost "labs-ns0.wikimedia.org"
+labs_ldap_dns_host_secondary: &labsldapdnshostsecondary "labs-ns1.wikimedia.org"
+
+# These are the up-and-coming, better dns servers:
+labs_dns_host: &labsdnshost "labs-ns2.wikimedia.org"
+labs_recursor: &labsrecursor "labs-recursor0.wikimedia.org"
+labs_designate_hostname_secondary: &labs_designate_hostname_secondary "labservices1001.wikimedia.org"
+designate_hostname: $designatehostname 'holmium.wikimedia.org'
+
+novaconfig:
+  db_host: 'm5-master.eqiad.wmnet'
+  glance_host: *labsnovacontroller
+  rabbit_host: *labsnovacontroller
+  cc_host: *labsnovacontroller
+  site_address: '208.80.155.255'
+  controller_hostname: *labsnovacontroller
+  ldap_host: *labsnovacontroller
+  puppet_host: *labsnovacontroller
+  puppet_db_host: *labsnovacontroller
+
+keystone:
+  auth_port: '35357'
+  auth_protocol: 'http'

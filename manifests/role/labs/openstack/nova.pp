@@ -1,158 +1,30 @@
-class role::labs::openstack::nova::config {
-
-    include role::labs::openstack::nova::config::eqiad
-    include role::labs::openstack::nova::config::codfw
-
-    $novaconfig = $::site ? {
-        'eqiad' => $role::labs::openstack::nova::config::eqiad::novaconfig,
-        'codfw' => $role::labs::openstack::nova::config::codfw::novaconfig,
-    }
-}
-
-class role::labs::openstack::nova::config::common {
-
-    require openstack
-    include passwords::openstack::nova
-    include passwords::openstack::ceilometer
-    include passwords::labs::rabbitmq
-
-    $commonnovaconfig = {
-        db_name                    => 'nova',
-        db_user                    => 'nova',
-        db_pass                    => $passwords::openstack::nova::nova_db_pass,
-        metadata_pass              => $passwords::openstack::nova::nova_metadata_pass,
-        rabbit_user                => $passwords::labs::rabbitmq::rabbit_userid,
-        rabbit_pass                => $passwords::labs::rabbitmq::rabbit_password,
-        ceilometer_user            => $passwords::openstack::ceilometer::db_user,
-        ceilometer_pass            => $passwords::openstack::ceilometer::db_pass,
-        ceilometer_secret_key      => $passwords::openstack::ceilometer::secret_key,
-        ceilometer_db_name         => 'ceilometer',
-        my_ip                      => $::ipaddress_eth0,
-        ldap_base_dn               => 'dc=wikimedia,dc=org',
-        ldap_user_dn               => 'uid=novaadmin,ou=people,dc=wikimedia,dc=org',
-        ldap_user_pass             => $passwords::openstack::nova::nova_ldap_user_pass,
-        ldap_proxyagent            => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
-        ldap_proxyagent_pass       => $passwords::openstack::nova::nova_ldap_proxyagent_pass,
-        controller_mysql_root_pass => $passwords::openstack::nova::controller_mysql_root_pass,
-        puppet_db_name             => 'puppet',
-        puppet_db_user             => 'puppet',
-        puppet_db_pass             => $passwords::openstack::nova::nova_puppet_user_pass,
-        # By default, don't allow projects to allocate public IPs; this way we can
-        # let users have network admin rights, for firewall rules and such, and can
-        # give them public ips by increasing their quota
-        quota_floating_ips         => '0',
-        libvirt_type               => 'kvm',
-    }
-}
-
-class role::labs::openstack::nova::config::codfw inherits role::labs::openstack::nova::config::common {
-
-    include role::labs::openstack::keystone::config::eqiad
-
-    $nova_controller     = hiera('labs_nova_controller')
-    $keystoneconfig      = $role::labs::openstack::keystone::config::eqiad::keystoneconfig
-    $controller_hostname = $nova_controller
-    $controller_address  = ipresolve($nova_controller, 4)
-    $designate_hostname  = 'holmium.wikimedia.org'
-
-    $codfwnovaconfig = {
-        db_host                            => $controller_hostname,
-        dhcp_domain                        => 'codfw.wmflabs',
-        glance_host                        => $controller_hostname,
-        rabbit_host                        => $controller_hostname,
-        cc_host                            => $controller_hostname,
-        designate_hostname                 => $designate_hostname,
-        network_flat_interface             => 'eth1.1102',
-        network_flat_tagged_base_interface => 'eth1',
-        network_flat_interface_vlan        => '1102',
-        flat_network_bridge                => 'br1102',
-        network_public_interface           => 'eth0',
-        network_host                       => hiera('labs_nova_network_ip'),
-        api_host                           => hiera('labs_nova_api_host'),
-        api_ip                             => ipresolve(hiera('labs_nova_api_host'),4),
-        fixed_range                        => '10.68.16.0/21',
-        dhcp_start                         => '10.68.16.4',
-        network_public_ip                  => '208.80.155.255',
-        dmz_cidr                           => '208.80.155.0/22,10.0.0.0/8',
-        auth_uri                           => "http://${nova_controller}:5000",
-        controller_hostname                => $controller_hostname,
-        controller_address                 => $controller_address,
-        ldap_host                          => $controller_hostname,
-        puppet_host                        => $controller_hostname,
-        puppet_db_host                     => $controller_hostname,
-        live_migration_uri                 => 'qemu://%s.codfw.wmnet/system?pkipath=/var/lib/nova',
-        zone                               => 'codfw',
-        keystone_admin_token               => $keystoneconfig['admin_token'],
-        keystone_auth_host                 => $keystoneconfig['bind_ip'],
-        keystone_auth_protocol             => $keystoneconfig['auth_protocol'],
-        keystone_auth_port                 => $keystoneconfig['auth_port'],
-    }
-
-    $novaconfig = merge( $codfwnovaconfig, $commonnovaconfig )
-}
-
-class role::labs::openstack::nova::config::eqiad inherits role::labs::openstack::nova::config::common {
-
-    include role::labs::openstack::keystone::config::eqiad
-
-    $nova_controller     = hiera('labs_nova_controller')
-    $keystoneconfig      = $role::labs::openstack::keystone::config::eqiad::keystoneconfig
-    $controller_hostname = $nova_controller
-    $designate_hostname  ='holmium.wikimedia.org'
-    $controller_address  = ipresolve($nova_controller,4)
-
-    $eqiadnovaconfig = {
-        db_host                            => 'm5-master.eqiad.wmnet',
-        dhcp_domain                        => 'eqiad.wmflabs',
-        glance_host                        => $controller_hostname,
-        rabbit_host                        => $controller_hostname,
-        cc_host                            => $controller_hostname,
-        designate_hostname                 => $designate_hostname,
-        network_flat_interface             => 'eth1.1102',
-        network_flat_tagged_base_interface => 'eth1',
-        network_flat_interface_vlan        => '1102',
-        flat_network_bridge                => 'br1102',
-        network_public_interface           => 'eth0',
-        network_host                       => hiera('labs_nova_network_ip'),
-        api_host                           => hiera('labs_nova_api_host'),
-        api_ip                             => ipresolve(hiera('labs_nova_api_host'),4),
-        fixed_range                        => '10.68.16.0/21',
-        dhcp_start                         => '10.68.16.4',
-        network_public_ip                  => '208.80.155.255',
-        dmz_cidr                           => '208.80.155.0/22,10.0.0.0/8',
-        auth_uri                           => "http://${nova_controller}:5000",
-        controller_hostname                => $controller_hostname,
-        controller_address                 => $controller_address,
-        ldap_host                          => $controller_hostname,
-        puppet_host                        => $controller_hostname,
-        puppet_db_host                     => $controller_hostname,
-        live_migration_uri                 => 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova',
-        zone                               => 'eqiad',
-        keystone_admin_token               => $keystoneconfig['admin_token'],
-        keystone_auth_host                 => $keystoneconfig['bind_ip'],
-        keystone_auth_protocol             => $keystoneconfig['auth_protocol'],
-        keystone_auth_port                 => $keystoneconfig['auth_port'],
-    }
-
-    if ( $::hostname == hiera('labs_nova_network_host') ) {
-        $networkconfig = {
-            network_flat_interface =>  'eth1.1102',
-            network_flat_tagged_base_interface => 'eth1',
-        }
-        $novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig, $networkconfig )
-    } else {
-        $novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig )
-    }
-}
-
 class role::labs::openstack::nova::common {
 
     include passwords::misc::scripts
-    include role::labs::openstack::nova::config
     include role::labs::openstack::nova::wikiupdates
 
-    $status_wiki_host_master = 'wikitech.wikimedia.org'
-    $novaconfig              = $role::labs::openstack::nova::config::novaconfig
+    $novaconfig                           = hiera_hash('novaconfig', {})
+    $keystone                             = hiera_hash('keystone', {})
+
+    $keystone_host                        = hiera('labs_keystone_host')
+    $nova_controller                      = hiera('labs_nova_controller')
+    $nova_api_host                        = hiera('labs_nova_api_host')
+    $network_host                         = hiera('labs_nova_network_host')
+    $status_wiki_host_master              = hiera('status_wiki_host_master')
+
+    $novaconfig['bind_ip']                = ipresolve($keystone_host,4)
+    $novaconfig['keystone_auth_port']     = $keystone['auth_port']
+    $novaconfig['keystone_admin_token']   = $keystone['admin_token']
+    $novaconfig['keystone_auth_protocol'] = $keystone['auth_protocol']
+
+    $novaconfig['auth_uri']               = "http://${nova_controller}:5000"
+    $novaconfig['api_ip']                 = ipresolve($nova_api_host,4)
+    $novaconfig['controller_address']     = ipresolve($nova_controller,4)
+
+    if ( $::hostname == $network_host ) {
+        $novaconfig['network_flat_interface'] = 'eth1.1102'
+        $novaconfig['network_flat_tagged_base_interface'] = 'eth1'
+    }
 
     class { '::openstack::common':
         novaconfig                       => $novaconfig,
@@ -169,13 +41,13 @@ class role::labs::openstack::nova::common {
 # This is the wikitech UI
 class role::labs::openstack::nova::manager {
 
-    include role::labs::openstack::nova::config
     include ::nutcracker::monitoring
     include ::mediawiki::packages::php5
     include ::mediawiki::cgroup
     include ::scap::scripts
 
-    $novaconfig = $role::labs::openstack::nova::config::novaconfig
+    include role::labs::openstack::nova::common
+    $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
     case $::realm {
         'production': {
@@ -242,14 +114,12 @@ class role::labs::openstack::nova::manager {
 class role::labs::openstack::nova::controller {
 
     require openstack
-    include role::labs::openstack::nova::config
     include role::labs::puppetmaster
-    include role::labs::openstack::keystone::config::eqiad
     include role::labs::openstack::glance::config::eqiad
     include role::labs::openstack::nova::wikiupdates
-    include role::labs::openstack::nova::common
 
-    $novaconfig = $role::labs::openstack::nova::config::novaconfig
+    include role::labs::openstack::nova::common
+    $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
     $glanceconfig = $::site ? {
         'eqiad' => $role::labs::openstack::glance::config::eqiad::glanceconfig,
@@ -288,10 +158,8 @@ class role::labs::openstack::nova::controller {
 class role::labs::openstack::nova::api {
 
     require openstack
-    include role::labs::openstack::nova::config
     include role::labs::openstack::nova::common
-
-    $novaconfig = $role::labs::openstack::nova::config::novaconfig
+    $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
     class { '::openstack::nova::api':
         novaconfig        => $novaconfig,
@@ -308,19 +176,13 @@ class role::labs::openstack::nova::network::bonding {
 class role::labs::openstack::nova::network {
 
     require openstack
-    include role::labs::openstack::nova::config
     include role::labs::openstack::nova::common
     include role::labs::openstack::nova::wikiupdates
-
-    $novaconfig = $role::labs::openstack::nova::config::novaconfig
-
-    $site_address = $::site ? {
-        'eqiad' => '208.80.155.255',
-    }
+    $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
     interface::ip { 'openstack::network_service_public_dynamic_snat':
         interface => 'lo',
-        address   => $site_address,
+        address   => $novaconfig['site_address'],
     }
 
     interface::tagged { $novaconfig['network_flat_interface']:
@@ -368,9 +230,9 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
     }
 
     require openstack
-    include role::labs::openstack::nova::config
     include role::labs::openstack::nova::common
-    $novaconfig = $role::labs::openstack::nova::config::novaconfig
+    $novaconfig = $role::labs::openstack::nova::common::novaconfig
+
 
     ganglia::plugin::python {'diskstat': }
 
