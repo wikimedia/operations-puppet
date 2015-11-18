@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User=www-data
-ExecStart=/srv/matterircd/matterircd
+ExecStart=/srv/matterircd/matterircd -bind-interface=0.0.0.0
 WorkingDirectory=/srv/matterircd
 Restart=always
 RestartSec=30
