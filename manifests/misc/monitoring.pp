@@ -19,7 +19,7 @@ class misc::monitoring::views {
         topic_regex => 'webrequest_.+',
     }
     class { 'misc::monitoring::view::kafkatee':
-        kafkatee_host_regex => 'analytics1003.eqiad.wmnet',
+        kafkatee_host_regex => '',
     }
 
     class { 'misc::monitoring::view::hadoop':
