@@ -207,9 +207,6 @@ rewrite	www.*.wikipedia.com	//*.wikipedia.org
 rewrite	www.*.wikipedia.net	//*.wikipedia.org
 rewrite	www.*.wikipedia.info	//*.wikipedia.org
 rewrite	*.wiki-pedia.org	//*.wikipedia.org
-rewrite	*.wikipaedia.net	//*.wikipedia.org
-
-rewrite	wikipaedia.net	//www.wikipedia.org
 rewrite	wiki-pedia.org	//www.wikipedia.org
 
 # wikipedia typo domains to www. instead of en - RT #4679,#4681
