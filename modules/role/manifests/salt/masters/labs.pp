@@ -26,8 +26,8 @@ class role::salt::masters::labs {
 
 
     if ! defined(Class['puppetmaster::certmanager']) {
-        include role::labs::openstack::nova::config
-        $novaconfig = $role::labs::openstack::nova::config::novaconfig
+        include role::labs::openstack::nova::common
+        $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
         class { 'puppetmaster::certmanager':
             remote_cert_cleaner => $novaconfig['designate_hostname'],
