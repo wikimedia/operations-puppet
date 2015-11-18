@@ -94,8 +94,8 @@ class role::restbase::alerts {
         description   => 'RESTBase Cassandra highest SSTables per-read http://grafana.wikimedia.org/#/dashboard/db/restbase-cassandra-cf-sstables-per-read',
         metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.ColumnFamily.all.SSTablesPerReadHistogram.99percentile, 1)',
         from          => '10min',
-        warning       => '6',
-        critical      => '10',
+        warning       => '15',
+        critical      => '30',
         percentage    => '50',
         contact_group => 'team-services',
     }
