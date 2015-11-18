@@ -20,6 +20,7 @@ class zuul::merger (
     $gerrit_server,
     $gerrit_user,
     $url_pattern,
+    $gerrit_ssh_key_file,
     $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
     $git_dir        = '/var/lib/zuul/git',
     $git_email      = "zuul-merger@${::hostname}",
@@ -39,6 +40,15 @@ class zuul::merger (
         ensure  => directory,
         owner   => 'zuul',
         require => Exec['zuul merger recursive mkdir of git_dir'],
+    }
+
+    file { '/var/lib/zuul/.ssh/id_rsa':
+        ensure  => present,
+        owner   => 'zuul',
+        group   => 'zuul',
+        mode    => '0400',
+        content => secret($gerrit_ssh_key_file),
+        require => User['zuul'],
     }
 
     # Configuration file for the zuul merger
