@@ -13,7 +13,7 @@ class mattermost::server(
         directory => '/srv/mattermost',
         owner     => 'www-data',
         group     => 'www-data',
-        mode      => '0555',
+        mode      => '0775',
     }
 
     file { '/srv/mattermost/config/config.json':
