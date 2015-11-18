@@ -1,4 +1,5 @@
 class role::labs::openstack::designate::config {
+
     include openstack
     include passwords::designate
     include passwords::pdns
@@ -20,34 +21,16 @@ class role::labs::openstack::designate::config {
 }
 
 class role::labs::openstack::designate::config::eqiad inherits role::labs::openstack::designate::config {
+
     include role::labs::openstack::keystone::config::eqiad
 
     $nova_controller = hiera('labs_nova_controller')
-
-    $controller_hostname = $::realm ? {
-        'production' => $nova_controller,
-        'labs'       => $nova_controller_hostname ? {
-            undef   => $::ipaddress_eth0,
-            default => $nova_controller_hostname,
-        }
-    }
-
     $keystoneconfig = $role::labs::openstack::keystone::config::eqiad::keystoneconfig
 
-    $db_host = $::realm ? {
-        'production' => 'm5-master.eqiad.wmnet',
-        'labs'       => $::ipaddress_eth0,
-    }
-
-    $pdns_db_host = $::realm ? {
-        'production' => 'm5-master.eqiad.wmnet',
-        'labs'       => $::ipaddress_eth0,
-    }
-
-    $auth_uri = $::realm ? {
-        'production' => "http://${nova_controller}:5000",
-        'labs'       => "http://${::ipaddress_eth0}:5000",
-    }
+    $controller_hostname = $nova_controller
+    $db_host             = 'm5-master.eqiad.wmnet'
+    $pdns_db_host        = 'm5-master.eqiad.wmnet'
+    $auth_uri            = "http://${nova_controller}:5000"
 
     $eqiaddesignateconfig = {
         db_host                => $db_host,
@@ -65,27 +48,21 @@ class role::labs::openstack::designate::config::eqiad inherits role::labs::opens
 }
 
 class role::labs::openstack::designate::server {
+
     include role::labs::openstack::designate::config::eqiad
-
-    if $::realm == 'labs' and $::openstack_site_override != undef {
-        $designateconfig = $::openstack_site_override ? {
-            'eqiad' => $role::labs::openstack::designate::config::eqiad::designateconfig,
-        }
-    } else {
-        $designateconfig = $::site ? {
-            'eqiad' => $role::labs::openstack::designate::config::eqiad::designateconfig,
-        }
-    }
-
-    class { 'openstack::designate::service':
-        designateconfig      => $designateconfig,
-    }
-
 
     # Firewall
     $wikitech = ipresolve('wikitech.wikimedia.org',4)
     $horizon = ipresolve('horizon.wikimedia.org',4)
     $controller = ipresolve(hiera('labs_nova_controller'),4)
+
+    $designateconfig = $::site ? {
+        'eqiad' => $role::labs::openstack::designate::config::eqiad::designateconfig,
+    }
+
+    class { 'openstack::designate::service':
+        designateconfig      => $designateconfig,
+    }
 
     # Poke a firewall hole for the designate api
     ferm::rule { 'designate-api':
