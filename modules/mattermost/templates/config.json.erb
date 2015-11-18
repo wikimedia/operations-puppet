@@ -1,0 +1,95 @@
+{
+    "ServiceSettings": {
+        "ListenAddress": ":8065",
+        "MaximumLoginAttempts": 10,
+        "SegmentDeveloperKey": "",
+        "GoogleDeveloperKey": "",
+        "EnableOAuthServiceProvider": false,
+        "EnableIncomingWebhooks": false,
+        "EnableOutgoingWebhooks": false,
+        "EnablePostUsernameOverride": false,
+        "EnablePostIconOverride": false,
+        "EnableTesting": false,
+        "EnableSecurityFixAlert": true
+    },
+    "TeamSettings": {
+        "SiteName": "<%= @sitename %>",
+        "MaxUsersPerTeam": 100,
+        "EnableTeamCreation": <%= @allow_team_creation %>,
+        "EnableUserCreation": <$= @allow_user_creation %>,
+        "RestrictCreationToDomains": "",
+        "RestrictTeamNames": true,
+        "EnableTeamListing": false
+    },
+    "SqlSettings": {
+        "DriverName": "mysql",
+        "DataSource": "<%= @mysql_user %>:<%= @mysql_password %>@<%= @mysql_host %>/<%= @mysql_db %>?charset=utf8mb4,utf8",
+        "DataSourceReplicas": [],
+        "MaxIdleConns": 10,
+        "MaxOpenConns": 10,
+        "Trace": false,
+        "AtRestEncryptKey": "7rAh6iwQCkV4cA1Gsg3fgGOXJAQ43QVg"
+    },
+    "LogSettings": {
+        "EnableConsole": true,
+        "ConsoleLevel": "DEBUG",
+        "EnableFile": true,
+        "FileLevel": "INFO",
+        "FileFormat": "",
+        "FileLocation": ""
+    },
+    "FileSettings": {
+        "DriverName": "local",
+        "Directory": "<%= @file_storage_path %>",
+        "EnablePublicLink": true,
+        "PublicLinkSalt": "A705AklYF8MFDOfcwh3I488G8vtLlVip",
+        "ThumbnailWidth": 120,
+        "ThumbnailHeight": 100,
+        "PreviewWidth": 1024,
+        "PreviewHeight": 0,
+        "ProfileWidth": 128,
+        "ProfileHeight": 128,
+        "InitialFont": "luximbi.ttf",
+        "AmazonS3AccessKeyId": "",
+        "AmazonS3SecretAccessKey": "",
+        "AmazonS3Bucket": "",
+        "AmazonS3Region": ""
+    },
+    "EmailSettings": {
+        "EnableSignUpWithEmail": true,
+        "SendEmailNotifications": false,
+        "RequireEmailVerification": false,
+        "FeedbackName": "",
+        "FeedbackEmail": "",
+        "SMTPUsername": "",
+        "SMTPPassword": "",
+        "SMTPServer": "",
+        "SMTPPort": "",
+        "ConnectionSecurity": "",
+        "InviteSalt": "bjlSR4QqkXFBr7TP4oDzlfZmcNuH9YoS",
+        "PasswordResetSalt": "vZ4DcKyVVRlKHHJpexcuXzojkE5PZ5eL",
+        "ApplePushServer": "",
+        "ApplePushCertPublic": "",
+        "ApplePushCertPrivate": ""
+    },
+    "RateLimitSettings": {
+        "EnableRateLimiter": true,
+        "PerSec": 10,
+        "MemoryStoreSize": 10000,
+        "VaryByRemoteAddr": true,
+        "VaryByHeader": ""
+    },
+    "PrivacySettings": {
+        "ShowEmailAddress": true,
+        "ShowFullName": true
+    },
+    "GitLabSettings": {
+        "Enable": false,
+        "Secret": "",
+        "Id": "",
+        "Scope": "",
+        "AuthEndpoint": "",
+        "TokenEndpoint": "",
+        "UserApiEndpoint": ""
+    }
+}
