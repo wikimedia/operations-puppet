@@ -1,4 +1,5 @@
 class role::labs::openstack::glance::config {
+
     include passwords::openstack::glance
     include passwords::labs::rabbitmq
 
@@ -12,21 +13,14 @@ class role::labs::openstack::glance::config {
 }
 
 class role::labs::openstack::glance::config::eqiad inherits role::labs::openstack::glance::config {
+
     include role::labs::openstack::keystone::config::eqiad
+
     $keystoneconfig = $role::labs::openstack::keystone::config::eqiad::keystoneconfig
-    $keystone_host = hiera('labs_keystone_host')
-
-    $db_host = $::realm ? {
-        'production' => 'm5-master.eqiad.wmnet',
-        'labs'       => $::ipaddress_eth0,
-    }
-
-    $bind_ip = $::ipaddress_eth0
-
-    $auth_uri = $::realm ? {
-        'production' => "http://${keystone_host}:5000",
-        'labs'       => "http://${::ipaddress_eth0}:5000",
-    }
+    $keystone_host  = hiera('labs_keystone_host')
+    $db_host        = 'm5-master.eqiad.wmnet'
+    $bind_ip        = $::ipaddress_eth0
+    $auth_uri       = "http://${keystone_host}:5000"
 
     $eqiadglanceconfig = {
         db_host                => $db_host,
@@ -41,16 +35,11 @@ class role::labs::openstack::glance::config::eqiad inherits role::labs::openstac
 }
 
 class role::labs::openstack::glance::server {
+
     include role::labs::openstack::glance::config::eqiad
 
-    if $::realm == 'labs' and $::openstack_site_override != undef {
-        $glanceconfig = $::openstack_site_override ? {
-            'eqiad' => $role::labs::openstack::glance::config::eqiad::glanceconfig,
-        }
-    } else {
-        $glanceconfig = $::site ? {
-            'eqiad' => $role::labs::openstack::glance::config::eqiad::glanceconfig,
-        }
+    $glanceconfig = $::site ? {
+        'eqiad' => $role::labs::openstack::glance::config::eqiad::glanceconfig,
     }
 
     class { 'openstack::glance::service':

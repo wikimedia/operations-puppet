@@ -13,23 +13,21 @@ class openstack::common(
 
     include openstack::repo
 
-    package { [
-            'unzip',
-            'nova-common',
-            'vblade-persist',
-            'bridge-utils',
-            'ebtables',
-            'mysql-common',
-            'mysql-client-5.5',
-            'python-mysqldb',
-            'python-netaddr',
-            'python-keystone',
-            'python-novaclient',
-            'radvd',
-        ]:
-        ensure => present,
-        require => Class['openstack::repo'];
-    }
+    $packages = [ 'unzip',
+                 'nova-common',
+                 'vblade-persist',
+                 'bridge-utils',
+                 'ebtables',
+                 'mysql-common',
+                 'mysql-client-5.5',
+                 'python-mysqldb',
+                 'python-netaddr',
+                 'python-keystone',
+                 'python-novaclient',
+                 'python-openstackclient',
+                 'radvd',
+    ]
+    require_package($packages)
 
     file {
         '/etc/nova/nova.conf':
