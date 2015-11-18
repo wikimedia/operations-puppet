@@ -1,7 +1,9 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class role::labs::puppetmaster {
+
     include network::constants
+    include ldap::role::config::labs
 
     $labs_ranges = [
         $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-a-eqiad']['ipv4'],
@@ -9,16 +11,12 @@ class role::labs::puppetmaster {
         $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-c-eqiad']['ipv4'],
         $network::constants::all_network_subnets['production']['eqiad']['private']['labs-instances1-d-eqiad']['ipv4'],
     ]
-
-    include ldap::role::config::labs
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
 
+
     # Only allow puppet access from the instances
-    $allow_from = $::realm ? {
-        'production' => flatten([$labs_ranges, '208.80.154.14']),
-        'labs' => [ '192.168.0.0/21' ],
-    }
+    $allow_from = flatten([$labs_ranges, '208.80.154.14'])
 
     class { '::puppetmaster':
         server_name => hiera('labs_puppet_master'),
