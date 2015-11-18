@@ -25,6 +25,7 @@ class openstack::common(
             'python-netaddr',
             'python-keystone',
             'python-novaclient',
+            'python-openstackclient',
             'radvd',
         ]:
         ensure => present,
