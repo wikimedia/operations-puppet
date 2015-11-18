@@ -18,6 +18,19 @@ class racktables (
 
     require_package('php5-mysql', 'php5-gd')
 
+    file { [
+        '/srv/org',
+        '/srv/org/wikimedia',
+        '/srv/org/wikimedia/racktables',
+        '/srv/org/wikimedia/racktables/wwwroot',
+        '/srv/org/wikimedia/racktables/wwwroot/inc',
+    ]:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/srv/org/wikimedia/racktables/wwwroot/inc/secret.php':
         ensure  => present,
         mode    => '0444',
