@@ -144,4 +144,13 @@ class role::zuul::merger {
         zuul_git_dir => $role::zuul::configuration::merger[$::realm]['git_dir'],
     }
 
+    # We run a git-daemon process to exposes the zuul-merger git repositories.
+    # The slaves fetch changes from it over the git:// protocol.
+    # It is only meant to be used from slaves, so only accept internal
+    # connections.
+    ferm::rule { 'git-daemon_internal':
+        rule => 'proto tcp dport 9418 { saddr $INTERNAL ACCEPT; }'
+    }
+
+
 } # /role::zuul::merger
