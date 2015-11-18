@@ -504,9 +504,7 @@ users:
     gid: 500
     name: jgreen
     realname: Jeff Green
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjkTnfRGIhs0of/3Z9GhOEEavkzFFg87n9D5BqNJAKtRSy5uh87p3DEHWnYcA5Ak7TD66hWae/V2tyQTHVBcDfZhoSFKsIMmhC/ooDtN8iewl37Dbss+a7m4GT0BmILkgUC2IJnFDFz2Eb6RVsnD11ajfbO4buNfokJC7jMjxQ2btpR5FojWNX7xffw5yg4aGg+k9x+32bM8ZTEzyYUGpxUZxV9jmbK1uzTBfZSlgmfok3Hn+scki52DM7EPIU0pxf8cyPHPIc7WX/wR56GsILoFNMBkePP86O/ZDuhOSdsFMJaBmOHM+9qCMW6JPKOtogvEaglbgCRrTZ0VkJx2HX jgreen@thwibbith
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+bdjMc3xayu9twy6HlYSpbfF1i0q+yylefuR6Kqol/0YeK133qNwGDBXCs3j7y/M/h6V9fQIfS15g/fyH7H7NMz6ESTVXehBXw+2Lk8PAPNS0c+ZyVbCbBeBV+2lPmrCiQ1vTrunSB86IUIfHnPQIK/+jkCTF56GmVv8ifV8Vp20jsJ/yfoxM+rC9PkbX8RTtDrrWfzrdXBMsm6QSr9s4i320+uyj2w6hROfsYQPDnw+GlIS741DED8dhLOJUKVQdqv0mAXJC3dMGNF1G0VN5okDsTAiFdrfhObMC/PjsPyQyloFv4EGCLEqVDs+nNmWZwMjEqOy7FoPw45Qz0cv1 jgreen@neo
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+bdjMc3xayu9twy6HlYSpbfF1i0q+yylefuR6Kqol/0YeK133qNwGDBXCs3j7y/M/h6V9fQIfS15g/fyH7H7NMz6ESTVXehBXw+2Lk8PAPNS0c+ZyVbCbBeBV+2lPmrCiQ1vTrunSB86IUIfHnPQIK/+jkCTF56GmVv8ifV8Vp20jsJ/yfoxM+rC9PkbX8RTtDrrWfzrdXBMsm6QSr9s4i320+uyj2w6hROfsYQPDnw+GlIS741DED8dhLOJUKVQdqv0mAXJC3dMGNF1G0VN5okDsTAiFdrfhObMC/PjsPyQyloFv4EGCLEqVDs+nNmWZwMjEqOy7FoPw45Qz0cv1 jgreen@neo]
     uid: 2074
   gage:
     ensure: absent
