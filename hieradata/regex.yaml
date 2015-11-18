@@ -275,6 +275,6 @@ debdeploy_dbcore-codfw:
     debdeploy-db-core-codfw:
       value: standard
 lvs_temp_bgp_disable:
-  __regex: !ruby/regexp /^lvs10(0[7-9]|1[0-2])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^lvs10(0[123789]|1[0-2])\.eqiad\.wmnet$/
   lvs::configuration::bgp: no
 
