@@ -95,7 +95,7 @@ class role::restbase::alerts {
         metric        => 'highestMax(cassandra.restbase10*.org.apache.cassandra.metrics.ColumnFamily.all.SSTablesPerReadHistogram.99percentile, 1)',
         from          => '10min',
         warning       => '6',
-        critical      => '10',
+        critical      => '30',
         percentage    => '50',
         contact_group => 'team-services',
     }
