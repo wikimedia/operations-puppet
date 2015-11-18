@@ -8,8 +8,8 @@ class role::trebuchet(
     $deployment_server = $::deployment_server_override
 ) {
     $trebuchet_master = $::realm ? {
-        production => 'tin.eqiad.wmnet',
         labs       => pick($deployment_server, "${::labsproject}-deploy.eqiad.wmflabs"),
+        default    => 'tin.eqiad.wmnet',
     }
 
     include ::trebuchet::packages
