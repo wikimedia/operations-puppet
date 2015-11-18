@@ -16,7 +16,7 @@ templates:
       version: 1.0.0-beta
       title: Wikimedia REST API
       description: >
-          This API aims to provide straightforward and low-latency access to
+          This API aims to provide coherent and low-latency access to
           Wikimedia content and services. It is currently in beta testing, so
           things aren't completely locked down yet. Each entry point has
           explicit stability markers to inform you about development status
@@ -44,12 +44,16 @@ templates:
     # we proxy https://{domain}/api/rest_v1/ to the API.
     x-host-basePath: /api/rest_v1
 
+    x-modules:
+      - name: mobileapps-public
+        path: specs/mediawiki/v1/mobileapps
+        type: spec
+        options:
+          host: <%= @mobileapps_uri %>
     x-subspecs:
       - mediawiki/v1/content
       - mediawiki/v1/graphoid
-      - mediawiki/v1/mobileapps
       - media/v1/mathoid
-    # - mediawiki/v1/revision-scoring
     securityDefinitions: &wp/content-security/1.0.0
       mediawiki_auth:
         description: Checks permissions using MW api
@@ -161,166 +165,14 @@ templates:
 
       /{module:mobileapps}:
         x-subspec:
-          info:
-            title: Mobileapps sys API module
           paths:
-            /html/{title}:
-              get:
-                x-setup-handler:
-                  - init:
-                      method: put
-                      uri: /{domain}/sys/key_rev_value/mobileapps.mobile-html
-                      body:
-                        revisionRetentionPolicy:
-                          type: 'latest'
-                          count: 1
-                          grace_ttl: 86400
-                        valueType: 'json'
-                        version: 1
-                x-request-handler:
-                  - handle_req:
-                      request:
-                        method: get
-                        uri: /{domain}/sys/mobileapps/handling/rev/mobile-html/{title}
-                        headers:
-                          cache-control: '{cache-control}'
-            /sections/{title}:
-              get:
-                x-setup-handler:
-                  - init:
-                      method: put
-                      uri: /{domain}/sys/key_rev_value/mobileapps.mobile-html-sections
-                      body:
-                        revisionRetentionPolicy:
-                          type: 'latest'
-                          count: 1
-                          grace_ttl: 86400
-                        valueType: 'json'
-                        version: 1
-                x-request-handler:
-                  - handle_req:
-                      request:
-                        method: get
-                        uri: /{domain}/sys/mobileapps/handling/rev/mobile-html-sections/{title}
-                        headers:
-                          cache-control: '{cache-control}'
-            /sections-lead/{title}:
-              get:
-                x-setup-handler:
-                  - init:
-                      method: put
-                      uri: /{domain}/sys/key_rev_value/mobileapps.mobile-html-sections-lead
-                      body:
-                        revisionRetentionPolicy:
-                          type: 'latest'
-                          count: 1
-                          grace_ttl: 86400
-                        valueType: 'json'
-                        version: 1
-                x-request-handler:
-                  - handle_req:
-                      request:
-                        method: get
-                        uri: /{domain}/sys/mobileapps/handling/rev/mobile-html-sections-lead/{title}
-                        headers:
-                          cache-control: '{cache-control}'
-            /sections-remaining/{title}:
-              get:
-                x-setup-handler:
-                  - init:
-                      method: put
-                      uri: /{domain}/sys/key_rev_value/mobileapps.mobile-html-sections-remaining
-                      body:
-                        revisionRetentionPolicy:
-                          type: 'latest'
-                          count: 1
-                          grace_ttl: 86400
-                        valueType: 'json'
-                        version: 1
-                x-request-handler:
-                  - handle_req:
-                      request:
-                        method: get
-                        uri: /{domain}/sys/mobileapps/handling/rev/mobile-html-sections-remaining/{title}
-                        headers:
-                          cache-control: '{cache-control}'
-            /text/{title}:
-              get:
-                x-setup-handler:
-                  - init:
-                      method: put
-                      uri: /{domain}/sys/key_rev_value/mobileapps.mobile-text
-                      body:
-                        revisionRetentionPolicy:
-                          type: 'latest'
-                          count: 1
-                          grace_ttl: 86400
-                        valueType: 'json'
-                        version: 1
-                x-request-handler:
-                  - handle_req:
-                      request:
-                        method: get
-                        uri: /{domain}/sys/mobileapps/handling/rev/mobile-text/{title}
-                        headers:
-                          cache-control: '{cache-control}'
-            /handling/rev/{route}/{title}:
-              get:
-                x-request-handler:
-                  - get_rev:
-                      request:
-                        method: get
-                        uri: /{domain}/sys/page_revisions/page/{title}
-                        headers:
-                          cache-control: '{cache-control}'
-                  - cache_branch:
-                      request:
-                        method: post
-                        uri: /{domain}/sys/mobileapps/handling/content/{$$.default($.request.headers.cache-control, 'none-given')}/{route}/{title}
-                        body: '{$.get_rev.body}'
-            /handling/content/no-cache/{route}/{title}:
-              post:
-                x-request-handler:
-                  - get_mobileapps:
-                      request:
-                        method: get
-                        uri: <%= @mobileapps_uri %>/{domain}/v1/page/{route}/{title}
-                        headers:
-                          x-restbase-etag: '{$.request.body.items[0].rev}/{$.request.body.items[0].tid}'
-                  - store:
-                      request:
-                        method: put
-                        uri: /{domain}/sys/key_rev_value/mobileapps.{route}/{title}/{$.request.body.items[0].rev}/{$.request.body.items[0].tid}
-                        headers:
-                          content-type: application/json
-                        body:
-                          headers: '{$$.strip($.get_mobileapps.headers, ["content-length", "content-encoding"])}'
-                          body: '{$.get_mobileapps.body}'
-                      return:
-                        status: 200
-                        headers: '{$$.strip($.get_mobileapps.headers, ["content-length", "content-encoding"])}'
-                        body: '{$.get_mobileapps.body}'
-            /handling/content/{cache-default}/{route}/{title}:
-              post:
-                x-request-handler:
-                  - check_storage:
-                      request:
-                        method: get
-                        uri: /{domain}/sys/key_rev_value/mobileapps.{route}/{title}/{$.request.body.items[0].rev}/{$.request.body.items[0].tid}
-                      return_if:
-                        status: '2xx'
-                      return:
-                        status: 200
-                        headers: '{$.check_storage.body.headers}'
-                        body: '{$.check_storage.body.body}'
-                      catch:
-                        status: 404
-                  - render:
-                      request:
-                        method: post
-                        uri: /{domain}/sys/mobileapps/handling/content/no-cache/{route}/{title}
-                        body: '{$.request.body}'
-
+            /v1:
+              x-modules:
+                - name: mobileapps-sys
+                  path: mods/wikimedia/v1/mobileapps
+                  type: spec
+                  options:
+                    host: <%= @mobileapps_uri %>
 
   global-content: &gb/content/1.0.0
     swagger: '2.0'
