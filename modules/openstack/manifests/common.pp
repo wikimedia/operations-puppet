@@ -13,7 +13,7 @@ class openstack::common(
 
     include openstack::repo
 
-    package { [
+    packages = [
             'unzip',
             'nova-common',
             'vblade-persist',
@@ -25,11 +25,10 @@ class openstack::common(
             'python-netaddr',
             'python-keystone',
             'python-novaclient',
+            'python-openstackclient',
             'radvd',
-        ]:
-        ensure => present,
-        require => Class['openstack::repo'];
-    }
+    ]
+    require_package($packages)
 
     file {
         '/etc/nova/nova.conf':
