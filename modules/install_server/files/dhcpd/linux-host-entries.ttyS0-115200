@@ -3,23 +3,12 @@
 #### puppet:///modules/install_server/dhcpd/linux-host-entries.ttyS0-115200
 ######################################################################
 
-
-host analytics1003 {
-	hardware ethernet 88:43:e1:c2:99:48;
-	fixed-address analytics1003.eqiad.wmnet;
-}
-
-host analytics1004 {
-	hardware ethernet 88:43:e1:c2:86:94;
-	fixed-address analytics1004.eqiad.wmnet;
-}
-
-host analytics1010 {
-	hardware ethernet 88:43:e1:c2:94:e8;
-	fixed-address analytics1010.eqiad.wmnet;
-}
+<<<<<<< HEAD
 
 host bromine {
+=======
+host bromine.eqiad.wmnet {
+>>>>>>> 03f1a38... Removing all entries regarding analytics1003/4/10 bug: task tT118572
 	hardware ethernet aa:00:00:f1:36:3a;
 	fixed-address bromine.eqiad.wmnet;
 	option pxelinux.pathprefix "jessie-installer/";
