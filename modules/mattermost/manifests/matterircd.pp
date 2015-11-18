@@ -1,6 +1,7 @@
 class mattermost::matterircd {
     git::clone { 'operations/software/matterircd':
         ensure    => present,
+        branch    => 'deploy',
         directory => '/srv/matterircd',
         owner     => 'www-data',
         group     => 'www-data',
