@@ -9,29 +9,31 @@ class role::zuul::configuration {
 
     $shared = {
         'production' => {
-            'gearman_server'    => '208.80.154.135',  # gallium.wikimedia.org
-            'gerrit_server'     => 'ytterbium.wikimedia.org',
-            'gerrit_user'       => 'jenkins-bot',
-            'url_pattern'       => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
-            'status_url'        => 'https://integration.wikimedia.org/zuul/',
+            'gearman_server'      => '208.80.154.135',  # gallium.wikimedia.org
+            'gerrit_server'       => 'ytterbium.wikimedia.org',
+            'gerrit_user'         => 'jenkins-bot',
+            'url_pattern'         => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
+            'status_url'          => 'https://integration.wikimedia.org/zuul/',
         },
         'labs' => {
-            'gearman_server'       => '127.0.0.1',
-            'gerrit_server'     => '127.0.0.1',
-            'gerrit_user'       => 'jenkins',
-            'url_pattern'       => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
-            'status_url'        => 'http://integration.wmflabs.org/zuul/status',
+            'gearman_server'      => '127.0.0.1',
+            'gerrit_server'       => '127.0.0.1',
+            'gerrit_user'         => 'jenkins',
+            'url_pattern'         => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
+            'status_url'          => 'http://integration.wmflabs.org/zuul/status',
         },
     }
 
     $merger = {
         'production' => {
-            'git_dir'   => '/srv/ssd/zuul/git',
-            'git_email' => "zuul-merger@${::hostname}",
-            'git_name'  => 'Wikimedia Zuul Merger',
-            'zuul_url'  => "git://${::fqdn}",
+            'gerrit_ssh_key_file' => 'ssh/ci/jenkins-bot_gerrit_id_rsa',
+            'git_dir'             => '/srv/ssd/zuul/git',
+            'git_email'           => "zuul-merger@${::hostname}",
+            'git_name'            => 'Wikimedia Zuul Merger',
+            'zuul_url'            => "git://${::fqdn}",
         },
         'labs' => {
+            'gerrit_ssh_key_file' => 'ssh/ci/jenkins-bot_gerrit_id_rsa',
             # FIXME migrate under /data/project whenever T66868 is solved
             #   'git_dir'       => '/data/project/zuul/git',
             'git_dir' => '/srv/zuul/git',
@@ -133,10 +135,11 @@ class role::zuul::merger {
         status_url     => $role::zuul::configuration::shared[$::realm]['status_url'],
 
         # Merger related
-        git_dir        => $role::zuul::configuration::merger[$::realm]['git_dir'],
-        git_email      => $role::zuul::configuration::merger[$::realm]['git_email'],
-        git_name       => $role::zuul::configuration::merger[$::realm]['git_name'],
-        zuul_url       => $role::zuul::configuration::merger[$::realm]['zuul_url'],
+        gerrit_ssh_key_file => $role::zuul::configuration::merger[$::realm]['gerrit_ssh_key_file'],
+        git_dir             => $role::zuul::configuration::merger[$::realm]['git_dir'],
+        git_email           => $role::zuul::configuration::merger[$::realm]['git_email'],
+        git_name            => $role::zuul::configuration::merger[$::realm]['git_name'],
+        zuul_url            => $role::zuul::configuration::merger[$::realm]['zuul_url'],
     }
 
     # Serves Zuul git repositories
