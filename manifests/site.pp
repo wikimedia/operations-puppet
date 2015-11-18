@@ -1091,7 +1091,7 @@ node 'labservices1001.wikimedia.org' {
     include ldap::role::client::labs
 }
 
-node 'labtestneutron.codfw.wmnet' {
+node 'labtestneutron2001.codfw.wmnet' {
     include standard
 }
 
