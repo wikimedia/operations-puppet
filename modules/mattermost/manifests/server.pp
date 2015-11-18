@@ -22,10 +22,11 @@ class mattermost::server(
         group   => 'www-data',
         mode    => '0444',
         content => template('mattermost/config.json.erb'),
+        require => Git::Clone['operations/software/mattermost'],
+        notify  => Base::Service_unit['mattermost'],
     }
 
     base::service_unit { 'mattermost':
         systemd => true,
-        require => Git::Clone['operations/software/mattermost'],
     }
 }
