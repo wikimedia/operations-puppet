@@ -16,6 +16,13 @@ class mattermost::server(
         mode      => '0775',
     }
 
+    file { $file_storage_path:
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0770',
+    }
+
     file { '/srv/mattermost/config/config.json':
         ensure  => present,
         owner   => 'www-data',
