@@ -607,26 +607,27 @@ lvs_services:
     conftool:
       cluster: rcstream
       service: nginx
-  stream-https:
-    description: Websocket/streaming services
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *ip_block014
-    port: 443
-    bgp: 'no'
-    depool-threshold: '.5'
-    scheduler: sh
-    monitors:
-      ProxyFetch:
-        url:
-        - http://localhost/rcstream_status
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: rcstream
-      service: nginx_ssl
+# Bug: https://phabricator.wikimedia.org/T118956
+#  stream-https:
+#    description: Websocket/streaming services
+#    class: high-traffic2
+#    sites:
+#    - eqiad
+#    ip: *ip_block014
+#    port: 443
+#    bgp: 'no'
+#    depool-threshold: '.5'
+#    scheduler: sh
+#    monitors:
+#      ProxyFetch:
+#        url:
+#        - http://localhost/rcstream_status
+#      IdleConnection:
+#        timeout-clean-reconnect: 3
+#        max-delay: 300
+#    conftool:
+#      cluster: rcstream
+#      service: nginx_ssl
   ocg:
     description: Offline Content Generator (e.g. PDF), ocg.svc.eqiad.wmnet
     class: high-traffic2
