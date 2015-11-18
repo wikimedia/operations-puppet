@@ -890,7 +890,7 @@ users:
         subbu@earth]
     uid: 2316
   demon:
-    ensure: present
+    ensure: absent
     gid: 500
     name: demon
     realname: Chad Horohoe
