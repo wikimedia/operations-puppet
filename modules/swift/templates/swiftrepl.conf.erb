@@ -1,0 +1,22 @@
+[src]
+username = <%= @source_user %>
+api_key = <%= @source_api_key %>
+auth_url = <%= @source_auth_url %>
+
+[dst]
+username = <%= @dest_user %>
+api_key = <%= @dest_api_key %>
+auth_url = <%= @dest_auth_url %>
+
+[container_sets]
+all=^.*$
+thumb=-thumb(\.[a-z0-9][a-z][0-9])?$
+originals=-public(\.[a-z0-9][a-z0-9])?$
+temp=-temp(\.[a-z0-9][a-z0-9])?$
+deleted=-deleted(\.[a-z0-9][a-z0-9])?$
+transcoded=-transcoded(\.[a-z0-9][a-z0-9])?$
+render=-render(\.[a-z0-9][a-z0-9])?$
+commons=^wikipedia-commons-local-public.[0-9a-f]{2}$
+notcommons=^wikipedia-..-local-public.[0-9a-f]{2}$
+unsharded=^wik[a-z]+-.*-local-public$
+global=^global-.*$
