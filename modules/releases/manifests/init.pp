@@ -37,6 +37,7 @@ class releases (
     }
 
     include ::apache::mod::rewrite
+    include ::apache::mod::headers
 
     apache::site { $sitename:
         content => template('releases/apache.conf.erb'),
