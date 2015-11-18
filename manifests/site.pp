@@ -2058,8 +2058,8 @@ node 'mx2001.wikimedia.org' {
     }
 }
 
-# Codfw ldap server, aka ldap-codfw
-node 'nembus.wikimedia.org' {
+# Codfw, eqiad ldap servers, aka ldap-$::site
+node /^(nembus|neptunium)\.wikimedia\.org$/ {
     include standard
     include base::firewall
     include ldap::role::server::labs
@@ -2076,14 +2076,6 @@ node 'neodymium.eqiad.wmnet' {
 # Icinga
 node 'neon.wikimedia.org' {
     role icinga, tendril, tcpircbot
-}
-
-# Eqiad ldap server, aka ldap-eqiad
-node 'neptunium.wikimedia.org' {
-    include standard
-    include base::firewall
-    include ldap::role::server::labs
-    include ldap::role::client::labs
 }
 
 node 'nescio.wikimedia.org' {
@@ -2306,6 +2298,12 @@ node /^sca100[12]\.eqiad\.wmnet$/ {
 
 node /^scb100[12]\.eqiad\.wmnet$/ {
     role scb
+}
+
+# Codfw, eqiad ldap servers, aka ldap-$::site
+node /^(seaborgium|serpens)\.wikimedia\.org$/ {
+    include standard
+    include base::firewall
 }
 
 # Silver is the new home of the wikitech web server.
