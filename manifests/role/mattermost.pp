@@ -11,4 +11,7 @@ class role::mattermost {
     class { '::mysql::server':
         package_name => 'mariadb-server-10.0',
     }
+
+    class { '::mattermost::matterircd':
+    }
 }

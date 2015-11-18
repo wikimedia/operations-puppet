@@ -1,0 +1,13 @@
+[Unit]
+Description=Matterircd
+After=network.target
+
+[Service]
+User=www-data
+ExecStart=/srv/matterircd/matterircd
+WorkingDirectory=/srv/matterircd
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
