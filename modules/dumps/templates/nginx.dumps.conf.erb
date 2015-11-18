@@ -25,7 +25,7 @@ server {
 
    rewrite ^/other/(iOS|PlayBook|win8|android)(|/.*)$ $scheme://releases.wikimedia.org/mobile/$1$2  break;
    rewrite ^/(other/)?mediawiki(|/.*)$                $scheme://releases.wikimedia.org/mediawiki$2 break;
-   rewrite ^/fundraising(/.*_)$                       /other/fundraising$1 permanent;
+   rewrite ^/fundraising(|/.*)$                       /other/fundraising$1 permanent;
 
    # for now we proxy for html (openzim style) dumps
    location /htmldumps {
