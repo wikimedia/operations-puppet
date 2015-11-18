@@ -1,4 +1,5 @@
 class role::labs::openstack::keystone::config {
+
     include passwords::openstack::keystone
 
     $commonkeystoneconfig = {
