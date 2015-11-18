@@ -106,7 +106,8 @@ class LDAPSource(object):
                 'ec2id': hostinfo['dc'][0],
                 'ip': ip,
                 'region': hostinfo['l'][0],
-                'puppetClasses': hostinfo['puppetClass'],
+                # Default to having at least this role if no roles exist
+                'puppetClasses': hostinfo.get('puppetClass', ['role::labs::instance']),
                 'project': project,
                 'name': puppetvars['instancename'],
                 'puppetVars': puppetvars
