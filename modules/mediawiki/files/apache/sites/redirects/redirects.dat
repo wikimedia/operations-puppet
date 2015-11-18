@@ -182,8 +182,6 @@ rewrite	*wikimedia.jp.net	//www.wikimedia.org
 rewrite	*wikimedia.lt	//wikimediafoundation.org
 rewrite	*wikipedia.lt	//lt.wikipedia.org
 
-rewrite	*wikimemory.org	//www.wikimedia.org
-
 # Wikipedia
 
 rewrite	*en-wp.com	//en.wikipedia.org
