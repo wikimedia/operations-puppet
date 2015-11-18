@@ -9,6 +9,6 @@ class role::mattermost {
     }
 
     class { '::mysql::server':
-        package_name => 'mariadb-server-10',
+        package_name => 'mariadb-server-10.0',
     }
 }
