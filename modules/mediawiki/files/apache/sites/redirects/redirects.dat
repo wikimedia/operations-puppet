@@ -330,9 +330,6 @@ rewrite	bookshelf.wikimedia.org	//outreach.wikimedia.org/wiki/Bookshelf
 
 rewrite	meta.wikipedia.org	//meta.wikimedia.org
 
-rewrite	quality.wikipedia.org	//quality.wikimedia.org
-rewrite	quality.wikipedia.com	//quality.wikimedia.org
-
 rewrite	bugzilla.wikipedia.org	https://bugzilla.wikimedia.org
 rewrite	bugs.mediawiki.org	https://bugzilla.wikimedia.org
 rewrite	bugzilla.mediawiki.org	https://bugzilla.wikimedia.org
