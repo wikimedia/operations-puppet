@@ -27,6 +27,8 @@ server {
         access_log   off;
     }
 
+    rewrite ^/sparql$ /bigdata/namespace/wdq/sparql last;
+    
     location /bigdata/namespace/wdq/sparql {
         proxy_pass http://localhost:9999;
 
