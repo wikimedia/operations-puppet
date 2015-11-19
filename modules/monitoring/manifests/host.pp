@@ -25,7 +25,7 @@ define monitoring::host (
     }
 
     $is_critical = $critical ? {
-        true    => "${contact_group},sms",
+        true    => "${contact_group},sms,admins",
         default => $contact_group,
     }
 
