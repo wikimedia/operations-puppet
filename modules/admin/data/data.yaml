@@ -144,7 +144,12 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/service nodepool start',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool stop',
                  'ALL = NOPASSWD: /usr/sbin/service nodepool status',
-                 'ALL = NOPASSWD: /bin/journalctl -u nodepool',
+                 'ALL = NOPASSWD: /usr/sbin/service zuul-merger reload',
+                 'ALL = NOPASSWD: /usr/sbin/service zuul-merger restart',
+                 'ALL = NOPASSWD: /usr/sbin/service zuul-merger start',
+                 'ALL = NOPASSWD: /usr/sbin/service zuul-merger stop',
+                 'ALL = NOPASSWD: /usr/sbin/service zuul-merger status',
+                 'ALL = NOPASSWD: /bin/journalctl*',
                  'ALL = NOPASSWD: /usr/local/sbin/puppet-run',
                  'ALL = (postgres) NOPASSWD: /usr/bin/psql']
   contint-roots:
