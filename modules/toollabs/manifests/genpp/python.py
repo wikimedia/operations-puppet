@@ -7,7 +7,6 @@
 environ_packages = {
     'dev': ['coverage', 'dev', 'stdeb'],
     'exec': [
-        'apport',
         'babel',                # T60220
         'beautifulsoup',        # For valhallasw.
         'bottle',               # T58995
