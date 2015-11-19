@@ -22,4 +22,6 @@ class SSHSessionsCollector(diamond.collector.Collector):
     def collect(self):
         who_output = subprocess.check_output('/usr/bin/who').decode('utf-8')
 
-        self.publish('open_sessions', len(who_output.strip().split("\n")))
+        # weed out empty lines
+        sessions = [l for l in who_output.split("\n") if l.strip() != ""]
+        self.publish('open_sessions', len(sessions))
