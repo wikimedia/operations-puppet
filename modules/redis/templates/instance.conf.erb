@@ -5,15 +5,28 @@ include /etc/redis/redis.conf
 
 # Instance-specific settings
 <%=
+    def redis_config_item(key, value)
+        Array(value).flatten.map { |item|
+            case item
+            when TrueClass then 'yes'
+            when FalseClass then 'no'
+            else item
+            end
+        }.unshift(key.tr '_', '-').join(' ')
+    end
+
     @defaults.merge(@settings).select { |k,v|
         !v.empty? and v.to_s != 'undef'
-    }.map { |k,v|
-        Array(v).flatten.map { |item|
-          case item
-          when TrueClass then 'yes'
-          when FalseClass then 'no'
-          else v
-          end
-        }.unshift(k.tr '_', '-').join(' ')
+    }.reduce([]) { |lines,kv|
+        k, v = *kv
+
+        case v
+        when Hash
+            v.each { |v1,v2| lines.push redis_config_item(k, [v1, v2]) }
+        else
+            lines.push redis_config_item(k, v)
+        end
+
+        lines
     }.sort.join("\n")
 %>
