@@ -83,6 +83,7 @@ define diamond::collector(
             group  => 'root',
             mode   => '0755',
             force  => true,
+            require => File['/usr/share/diamond/collectors']
         }
         file { "/usr/share/diamond/collectors/${name}/${name}.py":
             ensure => $ensure,
@@ -90,6 +91,7 @@ define diamond::collector(
             group  => 'root',
             mode   => '0444',
             notify => Service['diamond'],
+            require => File["/usr/share/diamond/collectors/${name}"]
         }
         if $source {
             File["/usr/share/diamond/collectors/${name}/${name}.py"] {

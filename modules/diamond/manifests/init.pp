@@ -69,7 +69,10 @@ class diamond(
         ensure  => present,
     }
 
-    file { [ '/etc/diamond/collectors', '/etc/diamond/handlers' ]:
+    file { [ '/etc/diamond/collectors',
+             '/etc/diamond/handlers',
+             '/usr/share/diamond/collectors'
+           ]:
         ensure  => directory,
         owner   => 'root',
         group   => 'root',
