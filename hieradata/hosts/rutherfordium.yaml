@@ -10,7 +10,6 @@ admin::groups:
   - analytics-users
   - apertium-admins
   - aqs-admins
-  - aqs-users
   - bastiononly
   - cassandra-test-roots
   - chromium-admin
