@@ -39,8 +39,9 @@ class role::grafana {
             },
 
             'security'   => {
-                secret_key     => $passwords::grafana::secret_key,
-                admin_password => $passwords::grafana::admin_password,
+                secret_key       => $passwords::grafana::secret_key,
+                admin_password   => $passwords::grafana::admin_password,
+                disable_gravatar => true,
             },
 
             # Disabled auth.basic, because it conflicts with auth.proxy.
