@@ -7,8 +7,6 @@
 
 class toollabs::genpp::python_exec_precise {
     require_package(
-        'python-apport',        # 2.0.1
-        # python3-apport is not available
         'python-babel',         # 0.9.6
         # python3-babel is not available
         'python-beautifulsoup', # 3.2.0
