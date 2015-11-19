@@ -2480,3 +2480,8 @@ node default {
         include role::labs::instance
     }
 }
+
+node 'bastion.toollabs.compiler' {
+    include role::labs::instance
+    include role::labs::tools::bastion
+}
