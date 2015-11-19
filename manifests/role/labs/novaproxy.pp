@@ -1,5 +1,6 @@
 # A dynamic HTTP routing proxy, based on nginx+lua+redis
-class role::dynamicproxy(
+# Is accessed from Special:NovaProxy in wikitech
+class role::labs::novaproxy(
     $all_proxies,
     $active_proxy,
 ) {
