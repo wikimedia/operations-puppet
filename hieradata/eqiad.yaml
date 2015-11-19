@@ -92,7 +92,11 @@ novaconfig:
   ldap_host: *labsnovacontroller
   puppet_host: *labsnovacontroller
   puppet_db_host: *labsnovacontroller
+  dhcp_domain: 'eqiad.wmflabs'
+  live_migration_uri: 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova'
+  zone: eqiad
 
 keystoneconfig:
   auth_port: '35357'
   auth_protocol: 'http'
+  auth_host: 208.80.154.92

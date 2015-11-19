@@ -13,6 +13,7 @@ class role::labs::openstack::nova::common {
     $status_wiki_host_master              = hiera('status_wiki_host_master')
 
     $novaconfig['bind_ip']                = ipresolve($keystone_host,4)
+    $novaconfig['keystone_auth_host']     = $keystoneconfig['auth_host']
     $novaconfig['keystone_auth_port']     = $keystoneconfig['auth_port']
     $novaconfig['keystone_admin_token']   = $keystoneconfig['admin_token']
     $novaconfig['keystone_auth_protocol'] = $keystoneconfig['auth_protocol']
