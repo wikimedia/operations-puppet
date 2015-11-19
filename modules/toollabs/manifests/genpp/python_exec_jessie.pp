@@ -7,8 +7,6 @@
 
 class toollabs::genpp::python_exec_jessie {
     require_package(
-        # python-apport is not available
-        # python3-apport is not available
         'python-babel',         # 1.3
         'python3-babel',        # 1.3
         'python-beautifulsoup', # 3.2.1

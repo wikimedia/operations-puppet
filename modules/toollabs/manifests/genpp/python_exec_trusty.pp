@@ -7,8 +7,6 @@
 
 class toollabs::genpp::python_exec_trusty {
     require_package(
-        'python-apport',        # 2.14.1
-        'python3-apport',       # 2.14.1
         'python-babel',         # 1.3
         'python3-babel',        # 1.3
         'python-beautifulsoup', # 3.2.1
