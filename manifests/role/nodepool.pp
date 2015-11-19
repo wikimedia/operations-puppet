@@ -7,7 +7,7 @@
 class role::nodepool {
 
     system::role { 'role::nodepool': description => 'CI Nodepool' }
-
+    include passwords::nodepool
     $nova_controller = hiera('labs_nova_controller')
 
     # dib scripts
