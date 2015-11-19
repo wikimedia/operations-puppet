@@ -1,5 +1,4 @@
 # coding=utf-8
-
 """
 Collect number of open ssh / mosh sessions
 

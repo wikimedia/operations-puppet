@@ -89,6 +89,7 @@ define diamond::collector(
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
+            notify => Service['diamond'],
         }
         if $source {
             File["/usr/share/diamond/collectors/${name}/${name}.py"] {
