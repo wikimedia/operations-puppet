@@ -1,4 +1,8 @@
-class base::puppet($server='puppet', $certname=undef) {
+class base::puppet(
+  $server='puppet',
+  $certname=undef,
+  $unattended_upgrade=false
+) {
 
     include passwords::puppet::database
     include base::puppet::params
@@ -13,6 +17,12 @@ class base::puppet($server='puppet', $certname=undef) {
     # facter needs this for proper "virtual"/"is_virtual" resolution
     package { 'virt-what':
         ensure => present,
+    }
+
+    if $unattended_upgrade {
+        package {'unattended-upgrades':
+            ensure => present,
+        }
     }
 
     file { '/etc/puppet/puppet.conf':
@@ -65,10 +75,10 @@ class base::puppet($server='puppet', $certname=undef) {
     }
 
     file { '/usr/local/sbin/puppet-run':
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/base/puppet/puppet-run',
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        content => template('base/puppet-run.erb'),
     }
 
     file { '/etc/cron.d/puppet':
