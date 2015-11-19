@@ -1,4 +1,8 @@
-class base::puppet($server='puppet', $certname=undef) {
+class base::puppet(
+  $server='puppet',
+  $certname=undef,
+  $auto_upgrade_packages=false
+) {
 
     include passwords::puppet::database
     include base::puppet::params
@@ -65,10 +69,10 @@ class base::puppet($server='puppet', $certname=undef) {
     }
 
     file { '/usr/local/sbin/puppet-run':
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/base/puppet/puppet-run',
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        content => template('base/puppet-run.erb'),
     }
 
     file { '/etc/cron.d/puppet':
