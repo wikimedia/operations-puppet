@@ -2480,3 +2480,8 @@ node default {
         include role::labs::instance
     }
 }
+
+node 'toolsbeta-bastion.toolsbeta.eqiad.wmflabs' {
+    include role::labs::instance
+    include role::labs::tools::bastion
+}
