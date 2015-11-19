@@ -23,6 +23,7 @@ class labstore::fileserver(
     require_package('lvm2')
     require_package('python3-paramiko')
     require_package('python3-pymysql')
+    require_package('nfsd-ldap')
 
     file { '/etc/replication-rsync.conf':
         source => 'puppet:///modules/labstore/replication-rsync.conf',
