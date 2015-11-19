@@ -30,7 +30,7 @@ class role::salt::masters::labs {
         $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
         class { 'puppetmaster::certmanager':
-            remote_cert_cleaner => $novaconfig['designate_hostname'],
+            remote_cert_cleaner => hiera('labs_certmanager_hostname'),
         }
     }
 }
