@@ -106,7 +106,6 @@ class role::deployment::server(
 
     # tig is a ncurses-based git utility which is useful for
     # determining the state of git repos during deployments.
-    # jq is a cli program for manipulating json (from api endpoints and such)
 
-    require_package 'percona-toolkit', 'tig', 'jq'
+    require_package 'percona-toolkit', 'tig'
 }

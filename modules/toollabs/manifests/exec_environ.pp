@@ -256,7 +256,6 @@ class toollabs::exec_environ {
         'hugin-tools',                 # T108210
         'imagemagick',                 # T65000
         'iotop',                       # useful for labs admins to monitor tools
-        'jq',                          # T67049.
         'ksh',
         'libaio1',                     # T70615
         'libav-tools',                 # T55870.

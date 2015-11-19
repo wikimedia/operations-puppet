@@ -12,10 +12,6 @@ class elasticsearch::packages {
         require => Package['openjdk-7-jdk'],
     }
 
-    # jq is really useful, especially for parsing
-    # elasticsearch REST command JSON output.
-    require_package('jq')
-
     require_package('curl')
 
     # library for elasticsearch. only in trusty+

@@ -76,10 +76,6 @@ class role::eventlogging {
     $kafka_client_side_raw_uri = "${kafka_base_uri}?topic=eventlogging-client-side"
 
 
-    # jq is very useful, install it on eventlogging servers
-    ensure_packages(['jq'])
-
-
     class { '::eventlogging': }
 
     # This check was written for eventlog1001, so only include it there.,

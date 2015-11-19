@@ -556,7 +556,6 @@ class role::analytics::hadoop::client inherits role::analytics::hadoop::config {
         'python-matplotlib',
         'python-dateutil',
         'python-sympy',
-        'jq',
     ])
 }
 

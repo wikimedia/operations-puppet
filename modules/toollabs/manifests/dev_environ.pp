@@ -101,7 +101,6 @@ class toollabs::dev_environ {
         'subversion',
         'tcl8.5-dev',
         'tig',
-        'tmux',                        # T67426.
         'valgrind' ]:                  # T87117.
         ensure => latest,
     }
