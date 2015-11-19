@@ -88,12 +88,16 @@ class nodepool(
         priority => '1001',
         before   => Package['nodepool'],
     }
-
-    # OpenStack CLI
     apt::pin { 'python-openstackclient':
         pin      => 'release a=jessie-wikimedia c=backports',
         priority => '1001',
-        before   => [Package['nodepool'],Package['python-openstackclient']],
+        before   => Package['nodepool'],
+    }
+
+    # OpenStack CLI
+    package { 'python-openstackclient':
+        ensure  => present,
+        require => Apt::Pin['python-openstackclient'],
     }
 
     # python-diskimage-builder 0.1.46 missing dependency:
