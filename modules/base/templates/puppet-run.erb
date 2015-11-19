@@ -27,6 +27,10 @@ fi
 
 timeout -k 60 300 apt-get update -qq >> /var/log/puppet.log 2>&1
 
+<% if @auto_upgrade_packages %>
+timeout -k 60 1800 apt-get upgrade -q --assume-no >> /var/log/puppet.log 2>&1
+<% end %>
+
 timeout -k 60 1800 puppet agent \
   --onetime \
   --no-daemonize \
