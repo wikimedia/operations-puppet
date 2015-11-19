@@ -204,5 +204,9 @@ class role::labs::instance {
     # icinga, so collect puppet freshness metrics via diamond/graphite
     diamond::collector::minimalpuppetagent { 'minimal-puppet-agent': }
 
+    diamond::collector { 'SSHSessions':
+        source => 'puppet:///modules/diamond/collector/sshsessions.py',
+    }
+
     hiera_include('classes', [])
 }
