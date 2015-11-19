@@ -162,6 +162,7 @@ rewrite	*wiktionary.cz	//cs.wiktionary.org
 rewrite	*wikislovnik.cz	//cs.wiktionary.org
 rewrite	*wikiknihy.cz	//cs.wikibooks.org
 rewrite	*wikisource.pl	//pl.wikisource.org
+rewrite	*wikiquote.pl	//pl.wikiquote.org
 
 # RT-3244
 override	*wikipedie.cz/Experti_na_prirodu	//cs.wikipedia.org/wiki/Wikipedie:WikiProjekt_Chráněná_území/Experti_na_přírodu
