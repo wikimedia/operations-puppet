@@ -20,9 +20,13 @@ def _get_redis_serv():
     '''
     deployment_config = __pillar__.get('deployment_config')
     deploy_redis = deployment_config['redis']
+    socket_connect_timeout = deploy_redis.get('socket_connect_timeout')
+    if socket_connect_timeout is not None:
+        socket_connect_timeout = int(socket_connect_timeout)
     serv = redis.Redis(host=deploy_redis['host'],
                        port=int(deploy_redis['port']),
-                       db=int(deploy_redis['db']))
+                       db=int(deploy_redis['db']),
+                       socket_connect_timeout=socket_connect_timeout)
     return serv
 
 
