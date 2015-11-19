@@ -66,7 +66,7 @@ sub vcl_recv {
         set req.backend = rutherfordium;
         // No caching of public_html dirs
         return (pass);
-    } elsif (req.http.Host == "racktables.wikimedia.org" || req.http.Host == "rt.wikimedia.org") {
+    } elsif (req.http.Host == "rt.wikimedia.org") {
         set req.backend = magnesium;
     } elsif (req.http.Host == "metrics.wikimedia.org" || req.http.Host == "stats.wikimedia.org") {
         set req.backend = stat1001;
@@ -80,7 +80,7 @@ sub vcl_recv {
         return (pass);
     } elsif (req.http.Host == "noc.wikimedia.org" || req.http.Host == "dbtree.wikimedia.org") {
         set req.backend = noc;
-    } elsif (req.http.Host == "scholarships.wikimedia.org" || req.http.Host == "iegreview.wikimedia.org") {
+    } elsif (req.http.Host == "scholarships.wikimedia.org" || req.http.Host == "iegreview.wikimedia.org" || req.http.Host == "racktables.wikimedia.org") {
         set req.backend = krypton;
     } elsif (req.http.Host == "hue.wikimedia.org") {
         // make sure all requests to Hue are via https proxy
