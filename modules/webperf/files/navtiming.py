@@ -44,7 +44,7 @@ def parse_ua(ua):
 
     m = re.search('OS ([\d_]+) like Mac OS X.*Version', ua)
     if m is not None:
-        return 'iOS_%s_WebView' % '.'.join(m.group(1).split('_')[:2])
+        return 'iOS_%s_WebView' % '_'.join(m.group(1).split('_')[:2])
 
     m = re.search('Mobile.*OPR/(\d+)', ua)
     if m is not None:
