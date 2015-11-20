@@ -1030,8 +1030,8 @@ node 'heze.codfw.wmnet' {
     include standard
 }
 
-# Holmium hosts openstack-designate, the labs DNS service.
-node 'holmium.wikimedia.org' {
+# openstack-designate, the labs DNS service.
+node 'labservices1001.wikimedia.org' {
     role labsdns
     include standard
 
@@ -1042,8 +1042,8 @@ node 'holmium.wikimedia.org' {
     include ldap::role::client::labs
 }
 
-# labservices1001 will be the new holmium
-node 'labservices1001.wikimedia.org' {
+# backup for labservices1001
+node 'labservices1002.wikimedia.org' {
     role labsdns
     include standard
 
