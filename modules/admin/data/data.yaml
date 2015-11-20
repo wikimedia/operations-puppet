@@ -232,7 +232,7 @@ groups:
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
-              vbaranetsky, dcausse, bd808, tjones, mobrovac]
+              vbaranetsky, dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -1692,3 +1692,17 @@ users:
     realname: Anne Gomez
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+rFSx3I00yhYMJzgg3IthAqLBEnE9nab3DF9l+QKT2pWFQP7adRDOz5FqI5nPKNrTl122q8xm4qErbXLb07momy2gFYCGNTtCTiyV4z7+Ckmvqc42FKJ3qjzAI2BFsBK/2A9RAdXDgbkmd7nyiEIEhL1r+rdL2W0VYa1exhMjeXme8ckfYDpCxcWtHz4+4OXe6tO+K4SVfzlhfqMrQCzBRRaIrjhvV1WrxNddPS2+CWQ03v/2l6RSjftc2ibzKiq1uvtrN99Hi6OYt9j6pUsXaG/z0WpLuT5ekaxyeKcEHwFMI32zn6+Pw/kRCGBFA9rOKdtYpQYarFsZsM43MVP9 agomez@Annes-MacBook-Air-2.local]
     uid: 4891
+  jgirault:
+    ensure: present
+    gid: 500
+    name: jgirault
+    realname: Julien Girault
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMR2TEdzI8TP4Khbvm7AOqX/dTKWoxtrcb4fb0gDzocfdiiONAPPhTQc4zsN5RtGUnNhZYm/iUTH2wUQi40uvupjdcKr0RcfAlfrShiqouNQemdOjcy9YQ7CPHmFjs+o3qmpS+STT+FBiRKHC9upy25/UXwW1FXizq1/BINB83WRdeLO5SgRsp1gEKXNeClhPYW8YTUMLC2TqP9P5fdel+mcFKCKhO4HH0SIAXHDoMht2spdLAW+PMxdX0t1iSrXM4x4cV1bQ9AFm+4Pji4zSr+lliv7/G5dR5hw6JCjJJ3DaDM1j5T+oRpc+VfwIIrzl/DgcpAl9pohZJ5Gt8GXT8EyJsDo0crN0aI7+n1sqW/mncNqYHzcZ+EaVsZEXMLrH/hF794dss+rSyBMHZ4/+rN2x1RGLZMyseaAceAh5Zp26hDuHVHg0GZLl5hZ9toadNJHIag/WfNkJiJ4Z5lEwc7kMJV/LHalCi+tdwNN7Ai6m4hLohiCIDn2p+G1umtta8eUJRTnS0qWyn6W72PHXqJlXit4WUzDtOWo5oWdvMcvN26WC10oA1QtbYoLdNulNdpJCk8Aszl9NkoraVt3GWTWpWEvisCFdmNS859vhKjw+cyDJ4jO9rAwFSO8rNK3NxPD9OLEBL8ysjMyB8R4swhwxS+Fof5hgp/Ldr7PSWlw== jgirault@wikimedia.org]
+    uid: 13211
+  jdrewniak:
+    ensure: present
+    gid: 500
+    name: jdrewniak
+    realname: Jan Drewniak
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDpY8H5wj5hwRngoX6xScBN9RTPvnpKoxq7lqXj7QjTXNyEA20XhXfpp46KA7XwokHx3lepXOn8JLnJ98jCwLxMNL2AlpflN46JAgC+f+Zk53+ImXYKCUaLEyhgonUoaLhpEr0cukFMosDgDDw3PRD7Y/ph2O+WXNeOkXAlhxp/eKsHEwLbf+LTATApT69hT7lAjR3WLAiW8ENM6dmyiztjBLW122RjJv/Lp21caK7ttIf2TIGKrbYSFwVvlrEPVUk4QIqRgOrn8KV4FpgJ+4QI4DrTAVBMzVu2dFd/dcNaR8HjsTsWz+eTwGbcz797BSZ9M+1mXjXQERF8w95dgG+criSqJDh1Yjm1F8w+vQbBatSmoTSrQ1+NtL+FovB+GVtHmsAu6dEIcx4q59oe79iK0xPZCpRg40DIpdLwSeXsPUBroGQmu6i5wFnEABwqwwN5q7KcV0BDbmIksJp6BYy6YIfcfiAxPuvESCN17BgusLUrPitCgpohbtiiRMl2/92UfyB8n/gJpAEQUAa7WhvEUTvFcFH0u8dhyBt6QOUuLftxO7ou27jXApn/8YYucofl34lX+BTNWYBWFiib90sVO/Azb7cpMmESagN0Nn4x4qg8gcmq/frtd8N4QF21WjxT1MxLDPc+ux02KVHE/qNggEDn03nZxBFrm3811Z2H6w== jdrewniak@wikimedia.org]
+    uid: 13379
