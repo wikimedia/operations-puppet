@@ -268,7 +268,7 @@ eventlogging_valid_mixed_schema_blacklist: ^Analytics|CentralNoticeBannerHistory
 # LABS
 
 labs_designate_hostname: &labsdesignatehostname "labservices1001.wikimedia.org"
-labs_designate_hostname_secondary: &labs_designate_hostname_secondary "holmium.wikimedia.org"
+labs_designate_hostname_secondary: &labs_designate_hostname_secondary "labservices1002.wikimedia.org"
 labs_nova_api_host: &labsnovaapihost "labnet1002.eqiad.wmnet"
 labs_nova_network_host: &labsnovanetworkhost "labnet1002"
 labs_nova_network_ip: &labsnovanetworkip "10.64.20.25"
