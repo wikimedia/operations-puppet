@@ -7,8 +7,6 @@ import 'network.pp'
 import 'nfs.pp'
 import 'role/*.pp'
 import 'role/analytics/*.pp'
-import 'role/labs/*.pp'
-import 'role/labs/openstack/*.pp'
 
 # Base nodes
 
