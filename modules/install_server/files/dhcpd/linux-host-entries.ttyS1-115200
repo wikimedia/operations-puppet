@@ -2452,11 +2452,6 @@ host heze {
 	fixed-address heze.codfw.wmnet;
 }
 
-host holmium {
-	hardware ethernet 90:B1:1C:00:A1:0E;
-	fixed-address holmium.wikimedia.org;
-}
-
 host hooft {
 	hardware ethernet a4:ba:db:30:d7:70;
 	fixed-address hooft.esams.wikimedia.org;
@@ -2629,6 +2624,11 @@ host labsdb1007 {
 host labservices1001 {
 	hardware ethernet C8:1F:66:BF:82:9A;
 	fixed-address labservices1001.wikimedia.org;
+}
+
+host labservices1002 {
+	hardware ethernet 90:B1:1C:00:A1:0E;
+	fixed-address labservices1002.wikimedia.org;
 }
 
 host labtestcontrol2001 {
