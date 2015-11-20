@@ -1767,7 +1767,7 @@ node 'ms1002.eqiad.wmnet' {
 # new server IP as a trusted proxy so X-Forwarded-For headers are trusted for
 # rate limiting purposes (T66622)
 node /^ms-fe1001\.eqiad\.wmnet$/ {
-    role swift::proxy, swift::stats_reporter
+    role swift::proxy, swift::stats_reporter, swift::swiftrepl
     include lvs::realserver
 }
 
