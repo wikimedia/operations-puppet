@@ -1,6 +1,6 @@
-# Class: toollabs::node
+# Class: toollabs::node::all
 #
-# Base class for compute nodes
+# Base class for all compute nodes
 #
 # Parameters:
 #
@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class toollabs::node {
+class toollabs::node::all {
 
     include toollabs
 

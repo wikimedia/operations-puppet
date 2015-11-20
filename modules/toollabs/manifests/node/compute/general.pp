@@ -12,7 +12,7 @@
 #
 class toollabs::node::compute::general {
 
-    include toollabs::node
+    include toollabs::node::all
 
     system::role { 'toollabs::node::compute::general': description => 'General computation node' }
 

@@ -12,7 +12,7 @@
 #
 class toollabs::node::compute::dedicated {
 
-    include toollabs::node
+    include toollabs::node::all
 
     if $::node_dedicated_tool {
 
