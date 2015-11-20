@@ -100,3 +100,13 @@ keystoneconfig:
   auth_port: '35357'
   auth_protocol: 'http'
   auth_host: 208.80.154.92
+
+designateconfig:
+  db_host:  'm5-master.eqiad.wmnet'
+  db_name: 'designate'
+  pool_manager_db_name: 'designate_pool_manager'
+  pdns_db_host: 'm5-master.eqiad.wmnet'
+  dhcp_domain: 'eqiad'
+  pdns_db_name: 'pdns'
+  rabbit_host:  *labsnovacontroller
+  controller_hostname: *labsnovacontroller
