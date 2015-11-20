@@ -63,9 +63,10 @@ class role::osm::master {
         require        => Postgresql::Spatialdb['gis']
     }
     osm::planet_sync { 'gis':
-        period => 'day',
-        hour   => '1',
-        minute => '17',
+        pg_password => hiera('osm::postgresql_osmupdater_pass'),
+        period      => 'day',
+        hour        => '1',
+        minute      => '17',
     }
     # Add coastlines
     osm::shapefile_import { 'gis-coastlines':
