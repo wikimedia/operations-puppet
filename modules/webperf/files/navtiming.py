@@ -7,6 +7,7 @@ sys.setdefaultencoding("utf-8")
 
 import argparse
 import logging
+import re
 import socket
 
 import zmq
@@ -34,6 +35,64 @@ addr = args.statsd_host, args.statsd_port
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 handlers = {}
+
+
+def parse_ua(ua):
+    m = re.search('CriOS/(\d+)', ua)
+    if m is not None:
+        return 'CriOS_%s' % m.group(1)
+
+    m = re.search('OS ([\d_]+) like Mac OS X.*Version', ua)
+    if m is not None:
+        return 'iOS_%s_WebView' % '.'.join(m.group(1).split('_')[:2])
+
+    m = re.search('Mobile.*OPR/(\d+)', ua)
+    if m is not None:
+        return 'Mobile_Opera_%s' % m.group(1)
+
+    m = re.search('Android (\d).*Version/[\d.]+', ua)
+    if m is not None:
+        return 'Android_%s_WebView' % m.group(1)
+
+    m = re.search('Android.*Chrome/(\d+)', ua)
+    if m is not None:
+        return 'Mobile_Chrome_%s' % m.group(1)
+
+    m = re.search('OPR/(\d+)', ua)
+    if m is not None:
+        return 'Opera_%s' % m.group(1)
+
+    m = re.search('rv:11.0', ua)
+    if m is not None:
+        return 'MSIE_11'
+
+    m = re.search('MSIE_\d+', ua)
+    if m is not None:
+        return m.group(0)
+
+    m = re.search('Firefox/\d+', ua)
+    if m is not None:
+        return m.group(0).replace('/', '_')
+
+    m = re.search('Chrome/(\d+)[\d.]* Safari', ua)
+    if m is not None:
+        return 'Chrome_%s' % m.group(1)
+
+    m = re.search('Safari/(\d)[\d.]*$', ua)
+    if m is not None:
+        return 'Safari_%s' % m.group(1)
+
+    m = re.search('Edge/(\d+)[\d.]*$', ua)
+    if m is not None:
+        return 'Edge_%s' % m.group(1)
+
+    m = re.search('OS ([\d_]+) like Mac OS X', ua)
+    if m is not None:
+        return 'iOS_%s_other' % '.'.join(m.group(1).split('_')[:2])
+
+    m = re.match('Opera/(\d+)', ua)
+    if m is not None:
+        return 'Opera_%s' % m.group(1)
 
 
 def dispatch_stat(*args):
@@ -100,8 +159,8 @@ def handle_navigation_timing(meta):
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
 
     # Currently unused:
-    bits_cache = meta.get('recvFrom', '').split('.')[0]
-    wiki = meta.get('wiki', '')
+    # bits_cache = meta.get('recvFrom', '').split('.')[0]
+    # wiki = meta.get('wiki', '')
 
     if 'sslNegotiation' in metrics:
         metrics = {'sslNegotiation': metrics['sslNegotiation']}
@@ -114,19 +173,10 @@ def handle_navigation_timing(meta):
             dispatch_stat(prefix, metric, site, 'overall', value)
             dispatch_stat(prefix, metric, 'overall', value)
 
-            if metric == 'connecting':
-                dispatch_stat(prefix, metric, site, 'https', value)
-
-        # Allow zero values in Navigation Timing metrics
-        # Bug: T104902
-        prefix = prefix + '_with_zeros'
-        if is_sane(value) or value == 0:
-            dispatch_stat(prefix, metric, site, auth, value)
-            dispatch_stat(prefix, metric, site, 'overall', value)
-            dispatch_stat(prefix, metric, 'overall', value)
-
-            if metric == 'connecting':
-                dispatch_stat(prefix, metric, site, 'https', value)
+            prefix = prefix + '.by_platform'
+            ua = parse_ua(meta['userAgent'])
+            if ua:
+                dispatch_stat(prefix, ua, metric, site, value)
 
 
 for meta in iter(zsock.recv_json, ''):
