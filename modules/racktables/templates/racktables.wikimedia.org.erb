@@ -22,8 +22,7 @@
     <Directory /srv/org/wikimedia/racktables/wwwroot/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
-        Order allow,deny
-        allow from all
+        Require all granted
     </Directory>
 
     ErrorLog /var/log/apache2/error.log
