@@ -40,20 +40,6 @@ templates:
         name: Apache2
         url: http://www.apache.org/licenses/LICENSE-2.0
 
-    # Override the base path for host-based (proxied) requests. In our case,
-    # we proxy https://{domain}/api/rest_v1/ to the API.
-    x-host-basePath: /api/rest_v1
-
-    x-modules:
-      - name: mobileapps-public
-        path: specs/mediawiki/v1/mobileapps
-        type: spec
-        options:
-          host: <%= @mobileapps_uri %>
-    x-subspecs:
-      - mediawiki/v1/content
-      - mediawiki/v1/graphoid
-      - media/v1/mathoid
     securityDefinitions: &wp/content-security/1.0.0
       mediawiki_auth:
         description: Checks permissions using MW api
@@ -73,6 +59,30 @@ templates:
         x-whitelists:
           internal:
             - /^(?:::ffff:)?(?:10|127)\./
+
+    # Override the base path for host-based (proxied) requests. In our case,
+    # we proxy https://{domain}/api/rest_v1/ to the API.
+    x-host-basePath: /api/rest_v1
+
+    x-modules:
+      - name: mobileapps-public
+        path: specs/mediawiki/v1/mobileapps.yaml
+        options:
+          host: <%= @mobileapps_uri %>
+
+      - name: page-summary
+        path: wikimedia/v1/summary_v1.js
+        options:
+          # One hour, for now.
+          response_cache-control: 'max-age: 3600, s-maxage: 3600'
+
+      - path: wikimedia/v1/graphoid_v1.yaml
+        options:
+          host: <%= @graphoid_uri %>
+
+    x-subspecs:
+      - mediawiki/v1/content
+      - media/v1/mathoid
 
   wmf-sys-1.0.0: &wp/sys/1.0.0
     info:
@@ -136,7 +146,7 @@ templates:
         x-modules:
           - name: action
             type: file
-            options:
+            templates:
               apiRequest:
                 method: post
                 uri: http://{domain}/w/api.php
@@ -155,13 +165,6 @@ templates:
             type: file
             options:
               parsoidHost: <%= @parsoid_uri %>
-
-      /{module:graphoid}/v1/png/{title}/{revision}/{graph_id}:
-        get:
-          x-request-handler:
-            - get_from_graphoid:
-                request:
-                  uri: <%= @graphoid_uri %>/{domain}/v1/png/{title}/{revision}/{graph_id}
 
       /{module:mobileapps}:
         x-subspec:
