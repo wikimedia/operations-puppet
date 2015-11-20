@@ -172,14 +172,8 @@ def init():
                     start, end = determine_start_end_range(section, hostname)
                     prefix = determine_hostname_prefix(hostname)
                     suffix = determine_hostname_suffix(hostname)
-                    if prefix in ['holmium']:
-                        if '%s-%s' % (dc, role) not in elements:
-                            matcher = RoleMatcher('%s_%s_elements' % (dc, role), 'holmium')
-                            elements['%s-%s' % (dc, role)] = True
-                            matchers.append(matcher)
-                    else:
-                        matcher = RoleMatcher('%s_%s_%s' % (dc, role, prefix), '%s([0-9]+)\.%s' % (prefix, suffix), start, end)
-                        matchers.append(matcher)
+                    matcher = RoleMatcher('%s_%s_%s' % (dc, role, prefix), '%s([0-9]+)\.%s' % (prefix, suffix), start, end)
+                    matchers.append(matcher)
     return matchers
 
 
