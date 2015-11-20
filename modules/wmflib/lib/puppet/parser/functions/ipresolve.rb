@@ -38,13 +38,13 @@ class BasicTTLCache
   end
 
   def delete(key)
-    @cache.delete(key) if @cache.has_key?(key)
+    @cache.delete(key) if @cache.key?(key)
   end
 
   def is_valid?(key)
     # If the key exists, and its ttl has not expired, return true.
     # Return false (and maybe clean up the stale entry) otherwise.
-    return false unless @cache.has_key?(key)
+    return false unless @cache.key?(key)
     t = Time.now.to_i
     return true if @cache[key].is_valid?t
     return false
@@ -58,7 +58,7 @@ class BasicTTLCache
   end
 
   def read_stale(key)
-    if @cache.has_key?(key)
+    if @cache.key?(key)
       return @cache[key].value
     end
     return nil
