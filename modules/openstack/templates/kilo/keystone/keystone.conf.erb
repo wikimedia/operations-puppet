@@ -49,7 +49,7 @@ log_config = /etc/keystone/logging.conf
 # public_port = 5000
 
 # The port number which the public admin listens on
-admin_port = <%= @glanceconfig["keystone_auth_port"] %>
+admin_port = <%= @keystoneconfig["auth_port"] %>
 
 # The port number which the OpenStack Compute service listens on
 # compute_port = 8774

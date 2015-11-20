@@ -299,3 +299,23 @@ novaconfig:
   dhcp_start: '10.68.16.4'
   network_public_ip: '208.80.155.255'
   dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
+
+keystoneconfig:
+  db_name: 'keystone'
+  db_user: 'keystone'
+  ldap_base_dn: 'dc=wikimedia,dc=org'
+  ldap_user_dn: 'uid=novaadmin,ou=people,dc=wikimedia,dc=org'
+  ldap_user_id_attribute: 'uid'
+  ldap_tenant_id_attribute: 'cn'
+  ldap_user_name_attribute: 'uid'
+  ldap_tenant_name_attribute: 'cn'
+  ldap_proxyagent : 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
+  auth_protocol: 'http'
+  auth_port: '35357'
+  db_host: 'm5-master.eqiad.wmnet'
+  ldap_host: 'ldap-eqiad.wikimedia.org'
+  token_driver: 'normal'
+
+glanceconfig:
+  db_host: 'm5-master.eqiad.wmnet'
+  bind_ip: "%{::ipaddress_eth0}"

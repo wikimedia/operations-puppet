@@ -37,6 +37,8 @@ class role::labs::openstack::nova::common {
 # This is the wikitech UI
 class role::labs::openstack::nova::manager {
 
+    requires_realm('production')
+
     include ::nutcracker::monitoring
     include ::mediawiki::packages::php5
     include ::mediawiki::cgroup
@@ -45,17 +47,7 @@ class role::labs::openstack::nova::manager {
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
-    case $::realm {
-        'production': {
-            $certificate = 'wikitech.wikimedia.org'
-        }
-        default: {
-            fail('unknown realm')
-        }
-    }
-
     sslcert::certificate { $certificate: }
-
     monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => "check_ssl_http!${certificate}",
@@ -110,37 +102,27 @@ class role::labs::openstack::nova::manager {
 class role::labs::openstack::nova::controller {
 
     require openstack
+    include ::openstack::controller_firewall
+
     include role::labs::puppetmaster
-    include role::labs::openstack::glance::config::eqiad
     include role::labs::openstack::nova::wikiupdates
+    include role::labs::openstack::glance::server
+    include role::labs::openstack::keystone::server
 
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
-    $glanceconfig = $::site ? {
-        'eqiad' => $role::labs::openstack::glance::config::eqiad::glanceconfig,
-    }
-    $keystoneconfig = $::site ? {
-        'eqiad' => $role::labs::openstack::keystone::config::eqiad::keystoneconfig,
-    }
-
     class { '::openstack::nova::conductor':
-        novaconfig        => $novaconfig,
-    }
-    class { '::openstack::nova::scheduler':
-        novaconfig        => $novaconfig,
-    }
-    class { '::openstack::glance::service':
-        glanceconfig      => $glanceconfig,
-    }
-    class { '::openstack::queue-server':
-        novaconfig        => $novaconfig,
-    }
-    class { 'role::labs::openstack::keystone::server':
-        glanceconfig => $glanceconfig,
+        novaconfig => $novaconfig,
     }
 
-    class { '::openstack::controller_firewall': }
+    class { '::openstack::nova::scheduler':
+        novaconfig => $novaconfig,
+    }
+
+    class { '::openstack::queue-server':
+        novaconfig => $novaconfig,
+    }
 
     class { '::openstack::adminscripts':
         novaconfig => $novaconfig
@@ -172,8 +154,8 @@ class role::labs::openstack::nova::network::bonding {
 class role::labs::openstack::nova::network {
 
     require openstack
-    include role::labs::openstack::nova::common
     include role::labs::openstack::nova::wikiupdates
+    include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
     interface::ip { 'openstack::network_service_public_dynamic_snat':
@@ -241,7 +223,7 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
     }
 
     class { '::openstack::nova::compute':
-        novaconfig        => $novaconfig,
+        novaconfig => $novaconfig,
     }
 
     mount { '/var/lib/nova/instances':
