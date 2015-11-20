@@ -66,6 +66,12 @@ class role::maps::master {
         create_resources(postgresql::user, $postgres_slaves)
     }
 
+    osm::planet_sync { 'gis':
+        flat_nodes    => true,
+        expire_levels => '16',
+        num_threads   => 4,
+    }
+
     # Grants
     $kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')
     $tilerator_pass = hiera('maps::postgresql_tilerator_pass')
