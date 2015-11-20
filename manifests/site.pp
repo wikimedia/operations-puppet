@@ -1696,7 +1696,7 @@ node 'magnesium.wikimedia.org' {
 
     $cluster = 'misc'
 
-    role racktables, requesttracker
+    role requesttracker
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
