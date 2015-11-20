@@ -56,6 +56,14 @@ class role::maps::master {
         description => 'Maps Postgres master',
     }
 
+    # DB passwords
+    $kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')
+    $tilerator_pass = hiera('maps::postgresql_tilerator_pass')
+    $tileratorui_pass = hiera('maps::postgresql_tileratorui_pass')
+    $osmimporter_pass = hiera('maps::postgresql_osmimporter_pass')
+    $osmupdater_pass = hiera('maps::postgresql_osmupdater_pass')
+
+    # Db setup
     postgresql::spatialdb { 'gis':
         require => Class['::postgresql::postgis'],
     }
@@ -66,12 +74,15 @@ class role::maps::master {
         create_resources(postgresql::user, $postgres_slaves)
     }
 
+    osm::planet_sync { 'gis':
+        ensure        => disabled, # remove this line after reimporting the DB
+        flat_nodes    => true,
+        expire_levels => '16',
+        num_threads   => 4,
+        pg_password   => $osmupdater_pass,
+    }
+
     # Grants
-    $kartotherian_pass = hiera('maps::postgresql_kartotherian_pass')
-    $tilerator_pass = hiera('maps::postgresql_tilerator_pass')
-    $tileratorui_pass = hiera('maps::postgresql_tileratorui_pass')
-    $osmimporter_pass = hiera('maps::postgresql_osmimporter_pass')
-    $osmupdater_pass = hiera('maps::postgresql_osmupdater_pass')
     file { '/usr/local/bin/maps-grants.sql':
         owner   => 'root',
         group   => 'root',
