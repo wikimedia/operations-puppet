@@ -1,0 +1,11 @@
+#!/bin/bash
+
+EXPIRY_FILE=<%= @expire_dir %>/expire.list.$(date "+%Y%m%d%H%M")
+EXTRA_PARAMS=<%if @flat_nodes %>--flat_nodes <%= @osmosis_dir %>/nodes.bin<% end %>
+
+<% if @proxy -%>
+export JAVACMD_OPTIONS='-Dhttp.proxyHost=<%= @proxy.split(':')[0] %> -Dhttp.proxyPort=<%= @proxy.split(':')[1] %>'
+<% end -%>
+
+/usr/bin/osmosis --read-replication-interval workingDirectory=<%= @osmosis_dir %> --simplify-change --write-xml-change - 2>/dev/null \
+    | /usr/bin/osm2pgsql -k -s -C <%= @memory_limit %> --number-processes <%= @num_threads %> -e<%= @expire_levels %> --expire-output $EXPIRY_FILE -d gis --append $EXTRA_PARAMS -
