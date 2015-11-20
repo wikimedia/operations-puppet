@@ -162,7 +162,7 @@ END
     end
 
     ciphersuite = args.shift
-    unless ciphersuites.has_key?(ciphersuite)
+    unless ciphersuites.key?(ciphersuite)
       fail(ArgumentError, "ssl_ciphersuite(): unknown ciphersuite '#{ciphersuite}'")
     end
 

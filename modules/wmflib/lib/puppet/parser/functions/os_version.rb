@@ -70,7 +70,7 @@ module Puppet::Parser::Functions
 
       next unless self_id == other_id
 
-      if os_versions[other_id].has_key?(other_release)
+      if os_versions[other_id].key?(other_release)
         other_was_codename = true
       end
 

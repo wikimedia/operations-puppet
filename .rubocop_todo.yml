@@ -132,15 +132,6 @@ Style/DefWithParentheses:
   Exclude:
     - 'utils/hiera_lookup'
 
-# Offense count: 8
-# Cop supports --auto-correct.
-Style/DeprecatedHashMethods:
-  Exclude:
-    - 'modules/labstore/lib/puppet/parser/functions/mount_nfs_volume.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/ipresolve.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/os_version.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/ssl_ciphersuite.rb'
-
 # Offense count: 16
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
