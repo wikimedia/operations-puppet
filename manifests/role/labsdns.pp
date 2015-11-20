@@ -60,9 +60,9 @@ class role::labsdns::recursor {
 
     system::role { 'role::labsdns::recursor': description => 'Recursive DNS server for Labs instances' }
 
-    include network::constants
     include passwords::openstack::nova
-    $all_networks = $network::constants
+    include ::network::constants
+    $all_networks = $::network::constants
 
     $recursor_ip = ipresolve(hiera('labs_recursor'),4)
 
