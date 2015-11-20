@@ -1,4 +1,4 @@
--- pdns, holmium
+-- pdns, labservices1002
 
 GRANT USAGE
     ON *.* TO 'pdns_admin'@'208.80.154.12'
@@ -30,7 +30,7 @@ GRANT USAGE ON *.* TO 'pdns'@'208.80.155.117'
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES
     ON `pdns`.* TO 'pdns'@'208.80.155.117';
 
--- designate, holmium
+-- designate, labservices1002
 
 GRANT USAGE
     ON *.* TO 'designate'@'208.80.154.12'
@@ -50,7 +50,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY
 TABLES
     ON `designate`.* TO 'designate'@'208.80.155.117';
 
--- designate_pool_manager, holmium
+-- designate_pool_manager, labservices1002
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES
     ON `designate\_pool\_manager`.* TO 'designate'@'208.80.154.12';
