@@ -7,6 +7,7 @@ class wdqs::monitor::blazegraph {
     diamond::collector { 'Blazegraph':
         settings => {
             counters => [
+                '"/Query Engine/queryStartCount"',
                 '"/Query Engine/queryDoneCount"',
                 '"/Query Engine/queryErrorCount"',
                 '"/Query Engine/queriesPerSecond"',
