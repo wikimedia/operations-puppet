@@ -7,11 +7,4 @@ class osm($ensure='present') {
         ]:
         ensure => $ensure,
     }
-
-    file { '/srv/downloads':
-        ensure => 'directory',
-        owner  => 'postgres',
-        group  => 'postgres',
-        mode   => '0755',
-    }
 }
