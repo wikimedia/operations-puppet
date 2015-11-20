@@ -133,3 +133,20 @@ class role::swift::storage {
     swift::label_filesystem { $aux_partitions: }
     swift::mount_filesystem { $aux_partitions: }
 }
+
+class role::swift::swiftrepl {
+    include passwords::swift::eqiad_prod
+    include passwords::swift::codfw_prod
+
+    swift::swiftrepl { 'eqiad_codfw_originals':
+        source_user => 'mw:media',
+        source_api_key => $passwords::swift::eqiad_prod::rewrite_password,
+        source_auth_url => 'http://ms-fe.svc.eqiad.wmnet/auth/v1.0',
+        dest_user => 'mw:media',
+        dest_api_key => $passwords::swift::codfw_prod::rewrite_password,
+        dest_auth_url => 'http://ms-fe.svc.codfw.wmnet/auth/v1.0',
+        container_set => 'originals',
+        cron_hour => '*/6',
+        cron_minute => '12',
+    }
+}
