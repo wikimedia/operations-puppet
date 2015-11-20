@@ -1032,25 +1032,17 @@ node 'heze.codfw.wmnet' {
 
 # Holmium hosts openstack-designate, the labs DNS service.
 node 'holmium.wikimedia.org' {
-    role labsdns
+    role labsdns, labs::openstack::designate::server, labsdnsrecursor
     include standard
-
     include base::firewall
-    include role::labsdnsrecursor
-    include role::labs::openstack::designate::server
-
     include ldap::role::client::labs
 }
 
 # labservices1001 will be the new holmium
 node 'labservices1001.wikimedia.org' {
-    role labsdns
+    role labsdns, labsdnsrecursor, labs::openstack::designate::server
     include standard
-
     include base::firewall
-    include role::labsdnsrecursor
-    include role::labs::openstack::designate::server
-
     include ldap::role::client::labs
 }
 
@@ -1159,13 +1151,14 @@ node 'krypton.eqiad.wmnet' {
 node 'labcontrol1001.wikimedia.org' {
     $is_puppet_master      = true
     $is_labs_puppet_master = true
-    role labs::openstack::nova::controller
+
+    role labs::openstack::nova::controller,
+          salt::masters::labs,
+          deployment::salt_masters,
+          dns::ldap
 
     include standard
     include ldap::role::client::labs
-    include role::salt::masters::labs
-    include role::deployment::salt_masters
-    include role::dns::ldap
 
     # Monitoring checks for toollabs that page
     include toollabs::monitoring::icinga
@@ -1180,11 +1173,13 @@ node 'labcontrol1002.wikimedia.org' {
     $is_puppet_master      = true
     $is_labs_puppet_master = true
 
-    role labs::openstack::nova::controller
+    role labs::openstack::nova::controller,
+          salt::masters::labs,
+          deployment::salt_masters
+
     include standard
     include ldap::role::client::labs
-    include role::salt::masters::labs
-    include role::deployment::salt_masters
+
     # The dns controller grabs an IP, so leave this disabled until/unless
     #  this server is the primary labs controller.
     #include role::dns::ldap
@@ -1213,15 +1208,13 @@ node 'labmon1001.eqiad.wmnet' {
 }
 
 node 'labnet1001.eqiad.wmnet' {
-
     role labs::openstack::nova::api
     include standard
 }
 
 node 'labnet1002.eqiad.wmnet' {
-    role labs::openstack::nova::api
+    role labs::openstack::nova::api, labs::openstack::nova::network
     include standard
-    include role::labs::openstack::nova::network
 }
 
 node 'labnodepool1001.eqiad.wmnet' {
@@ -1279,7 +1272,6 @@ node 'labsdb1007.eqiad.wmnet' {
 
 node /labstore100[12]\.eqiad\.wmnet/ {
     role labs::nfs::fileserver
-
 }
 
 node 'labstore1003.eqiad.wmnet' {
@@ -1288,7 +1280,6 @@ node 'labstore1003.eqiad.wmnet' {
 
 node /labstore200[12]\.codfw\.wmnet/ {
     $cluster = 'labsnfs'
-
     role labs::nfs::fileserver
 }
 
