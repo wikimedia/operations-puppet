@@ -62,7 +62,7 @@ class role::labsdns::recursor {
 
     include passwords::openstack::nova
     include ::network::constants
-    $all_networks = $::network::constants
+    $all_networks = $::network::constants::all_networks
 
     $recursor_ip = ipresolve(hiera('labs_recursor'),4)
 
