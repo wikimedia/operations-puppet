@@ -1015,8 +1015,7 @@ node 'heze.codfw.wmnet' {
     include standard
 }
 
-# Holmium will soon be renamed labservices1002
-node 'holmium.wikimedia.org' {
+node 'labservices1002.wikimedia.org' {
     role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
     include standard
     include base::firewall
