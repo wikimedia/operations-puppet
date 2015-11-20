@@ -50,11 +50,15 @@ define labs_lvm::volume(
         command   => "/usr/local/sbin/make-instance-vol '${volname}' '${size}' '${fstype}' ${mkfs_opt}",
     }
 
-    file { $mountat:
-        ensure => directory,
-        owner  => $mountowner,
-        group  => $mountgroup,
-        mode   => $mountmode,
+    # (possible) creation of the mountpoint needs to happen
+    # here before the mount, because a file{} stanza will
+    # apply to the mountpoint rather than the mounted root
+    # until at least the second puppet run.
+
+    exec { "create-mountpoint-${volname}":
+        creates   => $mountat,
+        logoutput => 'on_failure',
+        command   => "/bin/mkdir -p '${mountat}'",
     }
 
     mount { $mountat:
@@ -65,8 +69,16 @@ define labs_lvm::volume(
         fstype  => $fstype,
         require => [
             Exec["create-vd-${volname}"],
-            File[$mountat],
+            Exec["create-mountpoint-${volname}"],
         ],
+    }
+
+    file { $mountat:
+        ensure  => directory,
+        owner   => $mountowner,
+        group   => $mountgroup,
+        mode    => $mountmode,
+        require => Mount[$mountat],
     }
 
     labs_lvm::extend { $mountat:
