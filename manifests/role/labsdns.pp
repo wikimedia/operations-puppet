@@ -35,7 +35,7 @@ class role::labsdns {
     }
 }
 
-# Class: role::labsdnsrecursor
+# Class: role::labsdns::recursor
 #
 # Labs instances can't communicate directly with other instances
 #  via floating IP, but they often want to do DNS lookups for the
@@ -56,17 +56,20 @@ class role::labsdns {
 #
 # Eventually all labs instances will point to one of these in resolv.conf
 
-class role::labsdnsrecursor {
+class role::labsdns::recursor {
+
+    system::role { 'role::labsdns::recursor': description => 'Recursive DNS server for Labs instances' }
+
+    include network::constants
     include passwords::openstack::nova
+    $all_networks = $network::constants
 
     $recursor_ip = ipresolve(hiera('labs_recursor'),4)
 
-    interface::ip { 'role::labsdnsrecursor':
+    interface::ip { 'role::labsdns::recursor':
         interface => 'eth0',
         address   => $recursor_ip
     }
-
-    system::role { 'role::labsdnsrecursor': description => 'Recursive DNS server for Labs instances' }
 
     #  We need to alias some public IPs to their corresponding private IPs.
     $wikitech_nova_ldap_user_pass = $::passwords::openstack::nova::nova_ldap_user_pass
@@ -82,7 +85,7 @@ class role::labsdnsrecursor {
     $alias_file = '/etc/powerdns/labs-ip-alias.lua'
     class { '::dnsrecursor':
             listen_addresses         => $listen_addresses,
-            allow_from               => $network::constants::all_networks,
+            allow_from               => $all_networks,
             additional_forward_zones => "wmflabs=${labs_auth_dns}, 68.10.in-addr.arpa=${labs_auth_dns}",
             auth_zones               => 'labsdb=/var/zones/labsdb',
             lua_script               => $alias_file

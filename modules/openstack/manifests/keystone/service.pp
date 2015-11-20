@@ -1,6 +1,6 @@
 # keystone is the identity service of openstack
 # http://docs.openstack.org/developer/keystone/
-class openstack::keystone::service($openstack_version=$::openstack::version, $keystoneconfig, $glanceconfig) {
+class openstack::keystone::service($openstack_version=$::openstack::version, $keystoneconfig) {
     include openstack::repo
 
     package { 'keystone':
