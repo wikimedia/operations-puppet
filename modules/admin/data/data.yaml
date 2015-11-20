@@ -1494,7 +1494,9 @@ users:
     gid: 500
     name: jmm
     realname: Moritz Muehlenhoff
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZnM4K3crGB7rmCfrDbUgivp+lUlOTBQfW++9igVSbV1b7RYzzWri/LDLkfi4cstEccGIV+4s/V9P7UoV++EWH6+qoUZk6pkSwZS5sqjN1DE41kskzuA07G0w1xot/Wf4JzBSJRvZrQ/9VLTe2/OUaFTnZYzoMT+1gRSkEEt7SaEFPIQ2Vh0Hc0Y3vORfYj4IG6gC7qA4vqb/LqvhpfFIj9MlgMIgTfv94sqnAlXyrWydsrVdUvqiB2pdAyfX1XKa5Ysa4abbE2pzduy/UfQmxMbEJUQDfU+N5WhFzyfsVdtv0ZEHcZFkCaJSnEM7UeDBz623FTqhrop3pUMNg5r1v Moritz Muehlenhoff production key]
+    ssh_keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZnM4K3crGB7rmCfrDbUgivp+lUlOTBQfW++9igVSbV1b7RYzzWri/LDLkfi4cstEccGIV+4s/V9P7UoV++EWH6+qoUZk6pkSwZS5sqjN1DE41kskzuA07G0w1xot/Wf4JzBSJRvZrQ/9VLTe2/OUaFTnZYzoMT+1gRSkEEt7SaEFPIQ2Vh0Hc0Y3vORfYj4IG6gC7qA4vqb/LqvhpfFIj9MlgMIgTfv94sqnAlXyrWydsrVdUvqiB2pdAyfX1XKa5Ysa4abbE2pzduy/UfQmxMbEJUQDfU+N5WhFzyfsVdtv0ZEHcZFkCaJSnEM7UeDBz623FTqhrop3pUMNg5r1v Moritz Muehlenhoff production key
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCQoCbWXpMPwiJa8zQPFpUKP9hgtAxeMa6Eol3SBxqUC5hspYZ9fgYLMB2HlqSNrGdMopMltMBDOi3/90NZQ32vZVrK0KZt04icPINibgjUBzHdI0xlvurgE2AOdVUuswDDsUzFk0eUInCrymZ13mKC7dS9IE+lqbIxM0VIHgctI/dW5rATnDDsRv/L68tpsZtoZlOunomR6uqWGws99TZm/652wikMpmjUy4Gb1ruvuOwbJUQp7erb+V5+zq6JzuCwuJQzwscz1lg4qwPZ9din2CKNn8ZfMgQ8LtZyrBOVVrSTS/DB0H4JdILJUtaqc7HOhGC7w1wN+tYyD1Xj/MYJ Moritz Muehlenhoff production NEO key
     uid: 11984
   pcoombe:
     ensure: present
