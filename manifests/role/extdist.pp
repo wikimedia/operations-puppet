@@ -3,7 +3,7 @@
 # This class sets up a tarball generator for the Extension Distributor
 # extension enabled on mediawiki.org.
 #
-class role::labs::extdist {
+class role::extdist {
 
     include role::labs::lvm::srv
 
