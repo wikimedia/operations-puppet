@@ -2172,11 +2172,11 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
 }
 
 node /^rdb100[0-9]\.eqiad\.wmnet/ {
-    role db::redis
+    role redisdb
 }
 
 node /^rdb200[1-4]\.codfw\.wmnet/ {
-    role db::redis
+    role redisdb
 }
 
 # restbase eqiad cluster

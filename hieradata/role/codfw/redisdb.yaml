@@ -1,7 +1,7 @@
-role::db::redis::redis_replication:
+role::redisdb::redis_replication:
   rdb2003: rdb2001
   rdb2004: rdb2002
-role::db::redis::dir: "/srv/redis"
+role::redisdb::dir: "/srv/redis"
 debdeploy::grains:
   debdeploy-redis-codfw:
     value: standard

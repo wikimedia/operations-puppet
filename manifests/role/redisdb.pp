@@ -10,7 +10,7 @@
     description => 'codfw Redis',
 }
 
-class role::db::redis (
+class role::redisdb (
     $maxmemory         = inline_template('<%= (Float(@memorysize.split[0]) * 0.82).round %>Gb'),
     $redis_replication = undef,
     $dir               = '/srv/redis'
