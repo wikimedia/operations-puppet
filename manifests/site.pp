@@ -2020,7 +2020,7 @@ node /^(nembus|neptunium)\.wikimedia\.org$/ {
 
 # secondary salt master
 node 'neodymium.eqiad.wmnet' {
-#    role salt::masters::production, deployment::salt_masters, debdeploymaster
+#    role salt::masters::production, deployment::salt_masters, debdeploy::master
     role salt::masters::production
     include standard
 }
@@ -2097,7 +2097,7 @@ node 'oxygen.eqiad.wmnet'
 
 # primary puppet master
 node 'palladium.eqiad.wmnet' {
-    role ipmi, salt::masters::production, deployment::salt_masters, access_new_install, puppetmaster::frontend, pybal_config, debdeploymaster
+    role ipmi, salt::masters::production, deployment::salt_masters, access_new_install, puppetmaster::frontend, pybal_config, debdeploy::master
     include standard
     include role::conftool::master
 }
