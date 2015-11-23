@@ -59,8 +59,8 @@ def extract_direct_task(list_of_dests):
     :param list_of_dests: list of dest email strings
     :returns: string
     """
-    for dest in list_of_dests:
-        task = re.match('^T(\d+)@', dest)
+    for dest in [m.strip() for m in list_of_dests]:
+        task = re.match('^[T|t](\d+)@', dest)
         if task:
             return int(task.group(1))
     return ''
