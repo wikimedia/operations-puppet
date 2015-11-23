@@ -3,7 +3,7 @@ class role::cache::misc {
         description => 'misc Varnish cache server'
     }
 
-    include role::cache::1layer
+    include role::cache::2layer
 
     class { 'lvs::realserver':
         realserver_ips => $lvs::configuration::service_ips['misc_web'][$::site],
@@ -13,22 +13,8 @@ class role::cache::misc {
 
     $memory_storage_size = 8
 
-    varnish::instance { 'misc':
-        name            => '',
-        vcl             => 'misc',
-        ports           => [ 80 ],
-        admin_port      => 6082,
-        storage         => "-s malloc,${memory_storage_size}G",
-        vcl_config      => {
-            'has_def_backend'  => 'no',
-            'retry503'         => 4,
-            'retry5xx'         => 1,
-            'cache4xx'         => '1m',
-            'layer'            => 'frontend',
-            'do_gzip'          => true,
-            'allowed_methods'  => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
-        },
-        directors       => {
+    $varnish_be_directors = {
+        'one' => {
             'analytics1001' => { # Hadoop Yarn ResourceManager GUI
                 'dynamic' => 'no',
                 'type' => 'random',
@@ -164,7 +150,9 @@ class role::cache::misc {
                 backends  => ['wdqs1001.eqiad.wmnet', 'wdqs1002.eqiad.wmnet'],
             },
         },
-        backend_options => [
+    }
+
+    $be_opts = [
         {
             'backend_match' => '^(antimony|ytterbium)',
             'port'          => 8080,
@@ -197,7 +185,46 @@ class role::cache::misc {
             'first_byte_timeout'    => '35s',
             'between_bytes_timeout' => '4s',
             'max_connections'       => 100,
-        }],
+        }
+    ]
+
+    $common_vcl_config = {
+        'has_def_backend'  => 'no',
+        'retry503'         => 4,
+        'retry5xx'         => 1,
+        'cache4xx'         => '1m',
+        'do_gzip'          => true,
+        'allowed_methods'  => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
+    }
+
+    $be_vcl_config = merge($common_vcl_config, {
+        'layer'              => 'backend',
+    })
+
+    $fe_vcl_config = merge($common_vcl_config, {
+        'layer'              => 'frontend',
+    })
+
+    varnish::instance { 'misc-backend':
+        name            => '',
+        vcl             => 'misc-backend',
+        ports           => [ 3128 ],
+        admin_port      => 6083,
+        storage         => $::role::cache::2layer::persistent_storage_args,
+        vcl_config      => $be_vcl_config,
+        directors       => $varnish_be_directors[$::site_tier],
+        backend_options => $be_opts,
+    }
+
+    varnish::instance { 'misc-frontend':
+        name            => 'frontend',
+        vcl             => 'misc-frontend',
+        ports           => [ 80 ],
+        admin_port      => 6082,
+        storage         => "-s malloc,${memory_storage_size}G",
+        vcl_config      => $fe_vcl_config,
+        directors       => $varnish_be_directors[$::site_tier],
+        backend_options => $be_opts,
     }
 
     # ToDo: Remove production conditional once this works
@@ -205,18 +232,11 @@ class role::cache::misc {
     if $::realm == 'production' {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
-        class { 'role::cache::kafka::webrequest':
-            topic => 'webrequest_misc',
-            varnish_name => $::hostname,
-            varnish_svc_name => 'varnish',
-        }
+        class { 'role::cache::kafka::webrequest': topic => 'webrequest_misc' }
     }
 
     # Parse varnishlogs for request statistics and send to statsd.
     varnish::logging::reqstats { 'frontend':
-        # Remove instance_name if misc varnishes get a frontend
-        # instance just like other varnish clusters.
-        instance_name => '',
         metric_prefix => "varnish.${::site}.misc.frontend.request",
         statsd        => hiera('statsd'),
     }
