@@ -1,2 +1,2 @@
 use_ldap: true
-nsswitch_use_default: true
+nsswitch_use_default: yes
