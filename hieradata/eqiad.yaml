@@ -79,8 +79,6 @@ labs_ldap_dns_host_secondary: &labsldapdnshostsecondary "labs-ns1.wikimedia.org"
 # These are the up-and-coming, better dns servers:
 labs_dns_host: &labsdnshost "labs-ns2.wikimedia.org"
 labs_recursor: &labsrecursor "labs-recursor0.wikimedia.org"
-labs_designate_hostname_secondary: &labs_designate_hostname_secondary "holmium.wikimedia.org"
-designate_hostname: $designatehostname 'labservices1001.wikimedia.org'
 
 novaconfig:
   db_host: 'm5-master.eqiad.wmnet'
