@@ -74,7 +74,7 @@ class Hiera
         @cache = cache || Filecache.new
       end
 
-      def get_path(key, role, source, scope)
+      def get_path(_key, role, source, scope)
         config_section = :role
 
         # Special case: 'private' repository.
