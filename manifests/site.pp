@@ -976,10 +976,10 @@ node 'francium.eqiad.wmnet' {
     include admin
 }
 
-# gadolinium is the webrequest socat multicast relay.
-# base_analytics_logging_node is defined in role/logging.pp
+# gadolinium  was previously the eventlogging and webrequest
+# multicast relay, it is now a spare.
 node 'gadolinium.wikimedia.org' {
-    role logging, logging::relay::webrequest-multicast, logging::relay::eventlogging
+    role spare
     include standard
 }
 
