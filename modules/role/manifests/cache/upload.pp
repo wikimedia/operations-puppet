@@ -75,7 +75,7 @@ class role::cache::upload {
     varnish::instance { 'upload-backend':
         name               => '',
         vcl                => 'upload-backend',
-        port               => 3128,
+        ports              => [ 3128 ],
         admin_port         => 6083,
         runtime_parameters => ['default_ttl=2592000'],
         storage            => $upload_storage_args,
@@ -100,7 +100,7 @@ class role::cache::upload {
     varnish::instance { 'upload-frontend':
         name               => 'frontend',
         vcl                => 'upload-frontend',
-        port               => 80,
+        ports              => [ 80 ],
         admin_port         => 6082,
         runtime_parameters => ['default_ttl=2592000'],
         storage            => "-s malloc,${memory_storage_size}G",

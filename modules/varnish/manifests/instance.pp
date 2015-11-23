@@ -1,10 +1,10 @@
 define varnish::instance(
     $vcl_config,
     $backend_options,
+    $ports,
+    $admin_port,
     $name='',
     $vcl = '',
-    $port='80',
-    $admin_port='6083',
     $storage='-s malloc,1G',
     $runtime_parameters=[],
     $directors={},
@@ -25,10 +25,6 @@ define varnish::instance(
     }
 
     # Initialize variables for templates
-    # FIXME: get rid of the $varnish_* below and update the templates
-    $varnish_port = $port
-    $varnish_admin_port = $admin_port
-    $varnish_storage = $storage
     $backends_str = inline_template("<%= @directors.map{|k,v|  v['backends'] }.flatten.join('|') %>")
     $varnish_backends = sort(unique(split($backends_str, '\|')))
 
@@ -145,6 +141,7 @@ define varnish::instance(
         path    => '/bin:/usr/bin',
     }
 
+    # XXX parameterize this over $ports
     monitoring::service { "varnish http ${title}":
         description   => "Varnish HTTP ${title}",
         check_command => "check_http_varnish!varnishcheck!${port}"

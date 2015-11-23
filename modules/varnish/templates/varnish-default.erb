@@ -1,5 +1,5 @@
 # Bare minimum /etc/default file for reload-vcl to parse DAEMON_OPTS from...
 # (the systemd unit file doesn't use this at all)
 DAEMON_OPTS="-f /etc/varnish/wikimedia_<%= @vcl %>.vcl \
-	-T 127.0.0.1:<%= @varnish_admin_port %> \
+	-T 127.0.0.1:<%= @admin_port %> \
 	-S /etc/varnish/secret"
