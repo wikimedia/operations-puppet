@@ -5,10 +5,6 @@
 class misc::monitoring::views {
     include role::analytics::kafka::config
 
-    misc::monitoring::view::udp2log { 'udp2log':
-        host_regex => 'gadolinium',
-    }
-
     $kafka_log_disks_regex = join($::role::analytics::kafka::config::log_disks, '|')
     $kafka_broker_host_regex = join($::role::analytics::kafka::config::brokers_array, '|')
     misc::monitoring::view::kafka { 'kafka':
@@ -17,9 +13,6 @@ class misc::monitoring::views {
     }
     misc::monitoring::view::varnishkafka { 'webrequest':
         topic_regex => 'webrequest_.+',
-    }
-    class { 'misc::monitoring::view::kafkatee':
-        kafkatee_host_regex => '',
     }
 
     class { 'misc::monitoring::view::hadoop':

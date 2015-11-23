@@ -1,3 +1,6 @@
+# NOTE: This class is no longer being used and may be removed
+# as soon as varnishncsa instances are ensure absent on cache hosts
+
 class role::cache::logging {
     if $::realm == 'production' {
         $webrequest_multicast_relay_host = '208.80.154.73' # gadoinium
@@ -7,6 +10,7 @@ class role::cache::logging {
                 listener_address => $webrequest_multicast_relay_host,
                 port             => '8419',
                 cli_args         => $cliargs,
+                ensure           => 'absent',
         }
 
         varnish::logging { 'erbium':
