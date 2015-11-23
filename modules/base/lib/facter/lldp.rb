@@ -1,7 +1,7 @@
 require 'facter'
 require 'rexml/document'
 
-if Facter.value('virtual') == 'physical' and File.exists?('/usr/sbin/lldpctl')
+if Facter.value('virtual') == 'physical' && File.exists?('/usr/sbin/lldpctl')
 
     lldppeers = nil
 
