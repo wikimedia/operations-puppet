@@ -50,13 +50,6 @@ Lint/UselessAssignment:
 Metrics/LineLength:
   Max: 158
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/AlignParameters:
-  Exclude:
-    - 'modules/base/lib/puppet/parser/functions/pick_initscript.rb'
-
 # Offense count: 13
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

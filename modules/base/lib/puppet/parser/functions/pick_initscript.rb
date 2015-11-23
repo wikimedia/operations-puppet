@@ -1,9 +1,9 @@
 # Choose which init script to install, based on the init system.
 
 Puppet::Parser::Functions.newfunction(:pick_initscript,
-                                       :type => :rvalue,
-                                       :arity => 5,
-                                       :doc => <<-'HEREDOC'
+                                      :type => :rvalue,
+                                      :arity => 5,
+                                      :doc => <<-'HEREDOC'
 Takes as an input the init system currently installed, the
 available init scripts, and returns the chosen one.
 HEREDOC
