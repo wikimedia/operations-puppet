@@ -9,6 +9,9 @@ class role::cache::misc {
         realserver_ips => $lvs::configuration::service_ips['misc_web'][$::site],
     }
 
+    $cluster_nodes = hiera('cache::misc::nodes')
+    $site_cluster_nodes = $cluster_nodes[$::site]
+
     include role::cache::ssl::misc
 
     $memory_storage_size = 8
@@ -150,9 +153,27 @@ class role::cache::misc {
                 backends  => ['wdqs1001.eqiad.wmnet', 'wdqs1002.eqiad.wmnet'],
             },
         },
+        'two' => {
+            'backend'        => {
+                'dynamic'  => 'no', # should be 'yes' XXX
+                'type'     => 'chash',
+                'backends' => $cluster_nodes['eqiad'],
+            },
+            'backend_random' => {
+                'dynamic'  => 'no', # should be 'yes' XXX
+                'type'     => 'random',
+                'backends' => $cluster_nodes['eqiad'],
+                'service'  => 'varnish-be-rand',
+            },
+        },
     }
 
-    $be_opts = [
+    $be_opts = array_concat($::role::cache::2layer::backend_scaled_weights, [
+        {
+            'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
+            'port'          => 3128,
+            'probe'         => 'varnish',
+        },
         {
             'backend_match' => '^(antimony|ytterbium)',
             'port'          => 8080,
@@ -186,10 +207,9 @@ class role::cache::misc {
             'between_bytes_timeout' => '4s',
             'max_connections'       => 100,
         }
-    ]
+    ])
 
     $common_vcl_config = {
-        'has_def_backend'  => 'no',
         'retry503'         => 4,
         'retry5xx'         => 1,
         'cache4xx'         => '1m',
@@ -197,13 +217,20 @@ class role::cache::misc {
         'allowed_methods'  => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
     }
 
-    $be_vcl_config = merge($common_vcl_config, {
-        'layer'              => 'backend',
+    $fe_vcl_config = merge($common_vcl_config, {
+        'layer'           => 'frontend',
+        'has_def_backend' => 'no',
     })
 
-    $fe_vcl_config = merge($common_vcl_config, {
-        'layer'              => 'frontend',
-    })
+    $be_vcl_config = $::site_tier ? {
+        'one'   => {
+            'layer'           => 'backend',
+            'has_def_backend' => 'no',
+        },
+        default => {
+            'layer'           => 'backend',
+        }
+    }
 
     varnish::instance { 'misc-backend':
         name            => '',
