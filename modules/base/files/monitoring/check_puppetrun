@@ -123,7 +123,7 @@ if failcount == :failed
     exit 2
 end
 
-if failcount == :unknown or failcount == :nostatefile
+if failcount == :unknown || failcount == :nostatefile
     puts "UNKNOWN: Failed to check. Probably failed to read the state file"
     exit 3
 end

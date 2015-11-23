@@ -26,7 +26,7 @@ end
 
 module Puppet::Parser::Functions
     newfunction(:configparser_format, :type => :rvalue) { |args|
-        unless args.any? and args.all? { |a| a.is_a? Hash }
+        unless args.any? && args.all? { |a| a.is_a? Hash }
             fail 'configparser_format() requires one or more hash arguments'
         end
         configparser_format(rmerge(*args))

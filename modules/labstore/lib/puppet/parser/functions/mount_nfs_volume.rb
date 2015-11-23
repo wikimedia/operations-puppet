@@ -21,8 +21,8 @@ module Puppet::Parser::Functions
     config = @@labs_nfs_config['private']
     project = args[0]
     mount = args[1]
-    if config.key? project and config[project].key? 'mounts' \
-        and config[project]['mounts'].key? mount
+    if config.key?(project) && config[project].key?('mounts') \
+        && config[project]['mounts'].key?(mount)
       config[project]['mounts'][mount]
     else
       false
