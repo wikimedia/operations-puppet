@@ -38,9 +38,16 @@ class ldap::client::nss($ldapconfig) {
         source  => $nscd_conf,
     }
 
+    # Allow hiera to prevent systemwide nsswitch.conf change
+    # (more specifically, force the distro default)
+    $default_nsswitch = hiera('nsswitch_use_default', false)
+
     file { '/etc/nsswitch.conf':
         notify => Service['nscd'],
-        source => 'puppet:///modules/ldap/nsswitch.conf',
+        source => $default_nsswitch ? {
+            true    => 'file:///usr/share/base-files/nsswitch.conf',
+            default => 'puppet:///modules/ldap/nsswitch.conf',
+        }
     }
 
     # Allow labs projects to give people custom shells
