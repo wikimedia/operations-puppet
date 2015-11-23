@@ -16,7 +16,7 @@ class role::cache::misc {
     varnish::instance { 'misc':
         name            => '',
         vcl             => 'misc',
-        port            => 80,
+        ports           => [ 80 ],
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         vcl_config      => {
