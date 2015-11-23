@@ -54,7 +54,7 @@ class role::cache::maps {
     varnish::instance { 'maps-backend':
         name               => '',
         vcl                => 'maps-backend',
-        port               => 3128,
+        ports              => [ 3128 ],
         admin_port         => 6083,
         runtime_parameters => ['default_ttl=86400'],
         storage            => $::role::cache::2layer::persistent_storage_args,
@@ -80,7 +80,7 @@ class role::cache::maps {
     varnish::instance { 'maps-frontend':
         name               => 'frontend',
         vcl                => 'maps-frontend',
-        port               => 80,
+        ports              => [ 80 ],
         admin_port         => 6082,
         runtime_parameters => ['default_ttl=86400'],
         storage            => "-s malloc,${memory_storage_size}G",
