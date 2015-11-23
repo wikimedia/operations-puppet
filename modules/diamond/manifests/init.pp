@@ -53,7 +53,7 @@
 #
 
 class diamond(
-    $handler       = 'diamond.handler.dastatsd.StatsHandler',
+    $handler       = 'diamond.handler.stats_d.StatsdHandler',
     $interval      = '60',
     $path_prefix   = 'servers',
     $keep_logs_for = '5',
