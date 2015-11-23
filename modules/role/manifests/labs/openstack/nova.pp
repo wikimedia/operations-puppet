@@ -47,6 +47,15 @@ class role::labs::openstack::nova::manager {
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
 
+    case $::realm {
+        'production': {
+            $certificate = 'wikitech.wikimedia.org'
+        }
+        default: {
+            fail('unknown realm')
+        }
+    }
+
     sslcert::certificate { $certificate: }
     monitoring::service { 'https':
         description   => 'HTTPS',
