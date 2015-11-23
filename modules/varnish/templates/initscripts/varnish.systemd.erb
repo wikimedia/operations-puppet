@@ -14,12 +14,12 @@ ExecStartPre=/usr/bin/install -d -o varnish -g varnish -m 755 /run/vmod_tbf
 ExecReload=/usr/share/varnish/reload-vcl <%= @extraopts %> -q
 ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
--a :<%= @varnish_port -%> \
--T 127.0.0.1:<%= @varnish_admin_port -%> \
+-a <%= @ports.map { |p| ":"+p }.join(",") -%> \
+-T 127.0.0.1:<%= @admin_port -%> \
 -f /etc/varnish/wikimedia_<%= @vcl -%>.vcl \
 -w 250,<%= @processorcount.to_i * 250 -%>,120 \
 -S /etc/varnish/secret \
-<%= @varnish_storage -%> \
+<%= @storage -%> \
 -p user=varnish -p thread_pool_add_delay=1 -p thread_pool_stack=131072 \
 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off \
 -p nuke_limit=300 -p shm_workspace=16384 -p shm_reclen=2048 \
