@@ -47,34 +47,4 @@ class statistics::rsync::webrequest {
         destination    => "${working_path}/log/webrequest/archive",
         retention_days => 90, # Pruning after 90 days as those logs contain private data.
     }
-
-
-    # NOTE: The following jobs may be removed once they are all
-    #       ensured to be absent.
-
-
-    # The following logs can be
-    # API logs from erbium
-    statistics::rsync_job { 'api':
-        source      => 'erbium.eqiad.wmnet::udp2log/webrequest/archive/api-usage*.gz',
-        destination => "${working_path}/squid/archive/api",
-        # udp2log on eribum has been disabled
-        ensure      => 'absent'
-    }
-
-    # sampled-1000 logs from erbium
-    statistics::rsync_job { 'sampled_1000':
-        source      => 'erbium.eqiad.wmnet::udp2log/webrequest/archive/sampled-1000*.gz',
-        destination => "${working_path}/squid/archive/sampled",
-        # udp2log on eribum has been disabled
-        ensure      => 'absent'
-    }
-
-    # glam_nara logs from erbium
-    statistics::rsync_job { 'glam_nara':
-        source      => 'erbium.eqiad.wmnet::udp2log/webrequest/archive/glam_nara*.gz',
-        destination => "${working_path}/squid/archive/glam_nara",
-        # udp2log on eribum has been disabled
-        ensure      => 'absent'
-    }
 }

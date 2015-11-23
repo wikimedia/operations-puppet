@@ -33,6 +33,7 @@ define varnish::logging(
         nrpe::monitor_service { "varnishncsa-${name}":
             description  => "Varnish traffic logger - ${name}",
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a varnishncsa-${name}.pid -u varnishlog",
+            ensure => $ensure
         }
     }
 }
