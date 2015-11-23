@@ -22,11 +22,11 @@ describe 'bacula::director::fileset', :type => :define do
     end
 
     context 'with excludes' do
-        let(:params) { {
+        let(:params) do {
             :includes    => [ "/", "/var",],
             :excludes    => [ "/tmp", ],
             }
-        }
+        end
         it 'should create valid content for /etc/bacula/conf.d/fileset-something.conf' do
             should contain_file('/etc/bacula/conf.d/fileset-something.conf') \
             .with_content(/File = \//) \

@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe 'postgresql::slave', :type => :class do
-    let(:params) { {
+    let(:params) do {
         :pgversion        => '9.1',
         :ensure           => 'present',
         :master_server    => 'test',
         :replication_pass => 'pass',
         }
-    }
+    end
 
     context 'ensure present' do
         it { should contain_class('postgresql::server') }
@@ -27,14 +27,14 @@ describe 'postgresql::slave', :type => :class do
 end
 
 describe 'postgresql::slave', :type => :class do
-    let(:params) { {
+    let(:params) do {
         :pgversion        => '9.1',
         :ensure           => 'present',
         :master_server    => 'test',
         :replication_pass => 'pass',
         :datadir          => '/srv/postgres/9.1/main',
         }
-    }
+    end
     context 'ensure present' do
         it { should contain_class('postgresql::server') }
         it do
@@ -53,13 +53,13 @@ describe 'postgresql::slave', :type => :class do
 end
 
 describe 'postgresql::slave', :type => :class do
-    let(:params) { {
+    let(:params) do {
         :pgversion        => '9.1',
         :ensure           => 'absent',
         :master_server    => 'test',
         :replication_pass => 'pass',
         }
-    }
+    end
 
     context 'ensure absent' do
         it { should contain_class('postgresql::server') }

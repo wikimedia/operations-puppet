@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe 'postgresql::master', :type => :class do
-    let(:params) { {
+    let(:params) do {
         :pgversion        => '9.1',
         :ensure           => 'present',
         :master_server    => 'test',
         }
-    }
+    end
 
     context 'ensure present' do
         it { should contain_class('postgresql::server') }
@@ -26,12 +26,12 @@ describe 'postgresql::master', :type => :class do
 end
 
 describe 'postgresql::master', :type => :class do
-    let(:params) { {
+    let(:params) do {
         :pgversion        => '9.1',
         :ensure           => 'absent',
         :master_server    => 'test',
         }
-    }
+    end
 
     context 'ensure absent' do
         it { should contain_class('postgresql::server') }

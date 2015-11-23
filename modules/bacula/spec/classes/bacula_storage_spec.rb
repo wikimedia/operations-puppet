@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe 'bacula::storage', :type => :class do
     let(:node) { 'testhost.example.com' }
-    let(:params) { {
+    let(:params) do {
         :director => 'testdirector',
         :sd_max_concur_jobs => '10',
         :sqlvariant => 'testsql',
         :sd_port => '9000',
         :directorpassword => 'testdirectorpass',
         }
-    }
+    end
 
     it { should contain_package('bacula-sd-testsql') }
     it { should contain_service('bacula-sd') }

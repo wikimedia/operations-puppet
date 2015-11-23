@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'bacula::client', :type => :class do
     let(:node) { 'testhost.example.com' }
-    let(:params) { {
+    let(:params) do {
         :director => 'testdirector',
         :catalog => 'testcatalog',
         :file_retention => 'testfr',
@@ -10,7 +10,7 @@ describe 'bacula::client', :type => :class do
         :fdport => '2000',
         :directorpassword => 'testdirectorpass',
         }
-    }
+    end
 
     it { should contain_package('bacula-fd') }
     it { should contain_service('bacula-fd') }

@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe 'servermon', :type => :class do
-    let(:params) { {
+    let(:params) do {
         :ensure     => 'present',
         :directory  => '/tmp/test',
         :db_name    => 'testdb',
         :secret_key => 'superdupersecret'
         }
-    }
+    end
 
     it { should contain_package('python-django') }
     it { should contain_package('python-django-south') }

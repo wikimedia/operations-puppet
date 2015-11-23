@@ -40,9 +40,9 @@ describe 'base::service_unit' do
     let(:params) { { :ensure => 'present', :sysvinit => true, :refresh => false}}
 
     it 'should not refresh service' do
-      expect {
+      expect do
         should contain_file('/etc/init.d/nginx').that_notifies('Service[nginx]')
-      }.to raise_error()
+      end.to raise_error()
     end
   end
 

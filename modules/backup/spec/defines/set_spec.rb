@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe 'backup::set', :type => :define do
     let(:title) { 'something' }
-    let(:params) { {
+    let(:params) do {
         :jobdefaults => 'unimportant',
     }
-    }
+    end
     let(:pre_condition) do
         [
             'File <| |>',

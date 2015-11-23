@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe 'postgresql::spatialdb', :type => :define do
     let(:title) { 'somedb' }
-    let(:params) { {
+    let(:params) do {
         :ensure => 'present',
         }
-    }
+    end
     context 'with ensure present' do
         it { should contain_exec('create_db-somedb') }
         it { should contain_exec('create_plpgsql_lang-somedb') }
@@ -18,10 +18,10 @@ end
 
 describe 'postgresql::spatialdb', :type => :define do
     let(:title) { 'somedb' }
-    let(:params) { {
+    let(:params) do {
         :ensure => 'absent',
         }
-    }
+    end
     context 'with ensure absent' do
         it { should contain_exec('drop_db-somedb') }
         it { should contain_exec('drop_plpgsql_lang-somedb') }

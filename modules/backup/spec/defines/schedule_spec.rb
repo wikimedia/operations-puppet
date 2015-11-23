@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe 'backup::schedule', :type => :define do
     let(:title) { 'something' }
-    let(:params) { {
+    let(:params) do {
         :pool => 'unimportant',
     }
-    }
+    end
     let(:pre_condition) do
        [
             'define bacula::director::jobdefaults($when, $pool) {}',

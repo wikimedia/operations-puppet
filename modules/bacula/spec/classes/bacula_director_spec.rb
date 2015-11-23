@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe 'bacula::director', :type => :class do
     let(:node) { 'testhost.example.com' }
-    let(:params) { {
+    let(:params) do {
         :max_dir_concur_jobs => '10',
         :sqlvariant => 'testsql',
         :dir_port => '9900',
         :bconsolepassword => 'bconsolepass',
         }
-    }
+    end
 
     it { should contain_package('bacula-director-testsql') }
     it { should contain_service('bacula-director') }

@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe 'bacula::director::jobdefaults', :type => :define do
     let(:title) { 'something' }
-    let(:params) { {
+    let(:params) do {
         :when => 'never',
         :pool => 'testpool',
         }
-    }
+    end
 
     it 'should create /etc/bacula/conf.d/jobdefaults-something.conf' do
         should contain_file('/etc/bacula/conf.d/jobdefaults-something.conf').with({

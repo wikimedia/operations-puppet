@@ -11,7 +11,7 @@ describe 'git::userconfig', :type => :define do
   let(:title) { 'gitconfig' }
 
   context "Setting up user name and email" do
-    let(:params) { {
+    let(:params) do {
       :homedir => '/tmp/foo',
       :settings => {
       'user' => {
@@ -19,12 +19,12 @@ describe 'git::userconfig', :type => :define do
         'email' => 'hashar@free.fr',
       }
     } }
-    }
-    it { should contain_file('/tmp/foo/.gitconfig') \
+    end
+    it do should contain_file('/tmp/foo/.gitconfig') \
       .with_content(/[user]\n/) \
       .with_content(/name = Antoine Musso\n/) \
       .with_content(/email = hashar@free.fr\n/)
-    }
+    end
   end
 
 end

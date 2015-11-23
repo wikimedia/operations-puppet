@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe 'bacula::storage::device', :type => :define do
     let(:title) { 'something' }
-    let(:params) { {
+    let(:params) do {
         :device_type => 'File',
         :media_type  => 'File',
         :archive_device => '/dev/nst0',
         :max_concur_jobs => '10',
         }
-    }
+    end
 
     context 'without spool_dir, max_spool_size' do
         it 'should create /etc/bacula/sd-devices.d/something.conf' do
@@ -27,7 +27,7 @@ describe 'bacula::storage::device', :type => :define do
     end
 
     context 'with spool_dir, max_spool_size' do
-        let(:params) { {
+        let(:params) do {
             :device_type => 'File',
             :media_type  => 'File',
             :archive_device => '/dev/nst0',
@@ -35,7 +35,7 @@ describe 'bacula::storage::device', :type => :define do
             :spool_dir => '/tmp',
             :max_spool_size => '100',
             }
-        }
+        end
 
         it 'should create /etc/bacula/sd-devices.d/something.conf' do
             should contain_file('/etc/bacula/sd-devices.d/something.conf') \

@@ -78,7 +78,7 @@ args[:database] = "puppet" unless not args[:database].to_s.empty?
 
 ActiveRecord::Base.establish_connection(args)
 
-ARGV.each { |hostname|
+ARGV.each do |hostname|
   if @host = Puppet::Rails::Host.find_by_name(hostname.strip)
     print "Killing #{hostname}..."
     $stdout.flush
@@ -87,5 +87,5 @@ ARGV.each { |hostname|
   else
     puts "Can't find host #{hostname}."
   end
-}
+end
 exit 0

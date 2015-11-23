@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe 'bacula::director::pool', :type => :define do
     let(:title) { 'something' }
-    let(:params) { {
+    let(:params) do {
         :max_vols => '10',
         :storage => 'teststorage',
         :volume_retention => '10 days',
         }
-    }
+    end
 
     context 'without label_fmt, max_vol_bytes' do
         it 'should create /etc/bacula/conf.d/pool-something.conf' do
@@ -28,26 +28,26 @@ describe 'bacula::director::pool', :type => :define do
     end
 
     context 'with max_vol_bytes' do
-        let(:params) { {
+        let(:params) do {
             :max_vols => '10',
             :storage => 'teststorage',
             :volume_retention => '10 days',
             :max_vol_bytes => '2000',
             }
-        }
+        end
         it 'should create /etc/bacula/conf.d/pool-something.conf' do
             should contain_file('/etc/bacula/conf.d/pool-something.conf') \
             .with_content(/Maximum Volume Bytes = 2000/) \
         end
     end
     context 'with max_vol_bytes' do
-        let(:params) { {
+        let(:params) do {
             :max_vols => '10',
             :storage => 'teststorage',
             :volume_retention => '10 days',
             :label_fmt => 'TEST',
             }
-        }
+        end
         it 'should create /etc/bacula/conf.d/pool-something.conf' do
             should contain_file('/etc/bacula/conf.d/pool-something.conf') \
             .with_content(/Label Format = "TEST"/) \

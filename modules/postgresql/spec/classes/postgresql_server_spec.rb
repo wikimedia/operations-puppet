@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe 'postgresql::server', :type => :class do
-    let(:params) { {
+    let(:params) do {
         :pgversion => '9.1',
         :ensure => 'present',
         }
-    }
+    end
 
     context 'ensure present' do
         it { should contain_package('postgresql-9.1').with_ensure('present') }
@@ -24,11 +24,11 @@ describe 'postgresql::server', :type => :class do
 end
 
 describe 'postgresql::server', :type => :class do
-    let(:params) { {
+    let(:params) do {
         :pgversion => '9.1',
         :ensure => 'absent',
         }
-    }
+    end
 
     context 'ensure absent' do
         it { should contain_package('postgresql-9.1').with_ensure('absent') }
@@ -46,12 +46,12 @@ describe 'postgresql::server', :type => :class do
 end
 
 describe 'postgresql::server', :type => :class do
-    let(:params) { {
+    let(:params) do {
         :pgversion => '9.1',
         :ensure => 'absent',
         :includes => ['a.conf', 'b.conf'],
         }
-    }
+    end
 
     context 'with includes' do
         it { should contain_file('/etc/postgresql/9.1/main/postgresql.conf').with_content(/include 'a.conf'/) }

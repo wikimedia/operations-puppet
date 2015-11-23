@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe 'bacula::director::catalog', :type => :define do
     let(:title) { 'something' }
-    let(:params) { {
+    let(:params) do {
         :dbname      => 'bacula',
         :dbuser      => 'bacula',
         :dbhost      => 'bacula-db.example.org',
         :dbport      => '3306',
         :dbpassword  => 'bacula',
         }
-    }
+    end
 
     it 'should create valid content for /etc/bacula/conf.d/catalog-something.conf' do
         should contain_file('/etc/bacula/conf.d/catalog-something.conf').with({

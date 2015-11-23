@@ -6,29 +6,29 @@
 def rmerge(*args)
     # Recursively merge hashes.
     merged = args.shift.clone
-    args.each { |hash|
-        merged.merge!(hash) { |k, old, new|
+    args.each do |hash|
+        merged.merge!(hash) do |k, old, new|
             merged[k] = old.is_a?(Hash) && new.is_a?(Hash) ? rmerge(old, new) : new
-        }
-    }
+        end
+    end
     return merged
 end
 
 def configparser_format(config)
     # Serialize a hash to Python ConfigParser format.
-    config.sort.map { |section,items|
+    config.sort.map do |section,items|
             ["[#{section}]"].concat items.sort.map { |k,v|
                 v = v.is_a?(Array) ? v.join(',') : ( v == :undef ? '' : v )
                 "#{k} = #{v}"
             }.push []
-    }.join("\n")
+    end.join("\n")
 end
 
 module Puppet::Parser::Functions
-    newfunction(:configparser_format, :type => :rvalue) { |args|
+    newfunction(:configparser_format, :type => :rvalue) do |args|
         unless args.any? and args.all? { |a| a.is_a? Hash }
             fail 'configparser_format() requires one or more hash arguments'
         end
         configparser_format(rmerge(*args))
-    }
+    end
 end
