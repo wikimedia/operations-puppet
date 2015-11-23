@@ -1,3 +1,0 @@
-cluster: virt
-labs_dns_host: "labs-ns3.wikimedia.org"
-labs_recursor: "labs-recursor1.wikimedia.org"
