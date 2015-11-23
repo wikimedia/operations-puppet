@@ -9,11 +9,11 @@ end
 
 
 module Puppet::Parser::Functions
-  newfunction(:ganglia_aggregator_config, :type => :rvalue) do |args|
+  newfunction(:ganglia_aggregator_config, :type => :rvalue) do
     config = {}
     site_wide_aggregators = {}
     clusters = function_hiera(['ganglia_clusters'])
-    clusters.each do |cluster, data|
+    clusters.each do |_cluster, data|
       data['sites'].each do |site, aggregators|
         name = sprintf("%s %s", data['name'], site)
         if not aggregators.empty?

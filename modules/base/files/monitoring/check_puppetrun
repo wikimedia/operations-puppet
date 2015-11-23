@@ -35,7 +35,7 @@ opt.on("--warn [WARN]", "-w", Integer, "Warning staleness threshold, time in sec
     warn = f.to_i
 end
 
-opt.on("--only-enabled", "-e", "Only alert if Puppet is enabled") do |f|
+opt.on("--only-enabled", "-e", "Only alert if Puppet is enabled") do
     enabled_only = true
 end
 
