@@ -59,8 +59,9 @@ class diamond(
     $keep_logs_for = '5',
     $service       = running,
     $settings      = {
-        host => 'localhost',
-        port => '8125',
+        host  => 'localhost',
+        port  => '8125',
+        batch => '20',
     },
 ) {
     require_package('python-statsd')
