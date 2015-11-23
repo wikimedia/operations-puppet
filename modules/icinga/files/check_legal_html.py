@@ -27,7 +27,7 @@ CC BY-SA 3.0</a> unless otherwise noted.'
 mobile_terms = '<a href="//m.wikimediafoundation.org/wiki/Terms_of_Use">\
 Terms of Use</a>'
 
-mobile_privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy"> \
+mobile_privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy">\
 Privacy</a>'
 
 copyright = 'Text\sis available under the <a\s+rel="license"\s+\
@@ -40,7 +40,7 @@ terms = 'additional terms may apply.  \
 By using this site, you agree to the \
 <a href="//wikimediafoundation.org/wiki/Terms_of_Use">Terms of Use</a>'
 
-privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy"> \
+privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy">\
 Privacy policy</a>'
 
 enwp_trademark = 'Wikipedia® is a registered trademark \
