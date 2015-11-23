@@ -100,7 +100,7 @@ class Hiera
       def merge_answer(new_answer, answer, resolution_type)
         case resolution_type
         when :array
-          raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of? Array or new_answer.kind_of? String
+          raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of?(Array) || new_answer.kind_of?(String)
           answer ||= []
           answer << new_answer
         when :hash
@@ -139,7 +139,7 @@ class Hiera
               YAML.load(content)
             end
 
-            next if data.nil? or data.empty?
+            next if data.nil? || data.empty?
 
             next unless data.include? key
 
@@ -163,7 +163,7 @@ class Hiera
             resultset = Backend.merge_answer(answer, resultset)
           else
             # We raise an exception if we have received conflicting results
-            if resultset and answer != resultset
+            if resultset && answer != resultset
               raise Exception, "Conflicting value for #{key} found in role #{role}"
             else
               resultset = answer

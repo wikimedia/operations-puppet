@@ -65,21 +65,6 @@ Style/AlignParameters:
   Exclude:
     - 'modules/base/lib/puppet/parser/functions/pick_initscript.rb'
 
-# Offense count: 13
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/AndOr:
-  Exclude:
-    - 'modules/base/files/monitoring/check_puppetrun'
-    - 'modules/base/lib/facter/lldp.rb'
-    - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
-    - 'modules/labstore/lib/puppet/parser/functions/mount_nfs_volume.rb'
-    - 'modules/trebuchet/lib/puppet/provider/package/trebuchet.rb'
-    - 'modules/wmflib/lib/hiera/backend/mwyaml_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/role_backend.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/os_version.rb'
-
 # Offense count: 1
 Style/AsciiComments:
   Exclude:
