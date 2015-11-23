@@ -144,7 +144,7 @@ Puppet::Type.type(:package).provide(
   def resolve_tag(tag)
     ['origin', target_path].each do |remote|
       sha1 = git('ls-remote', remote, '--tags', "refs/tags/#{tag}")
-      return sha1[/^\S+/] unless sha1.nil? or sha1.empty?
+      return sha1[/^\S+/] unless sha1.nil? || sha1.empty?
     end
   rescue Puppet::ExecutionFailure
   end

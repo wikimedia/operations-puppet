@@ -14,7 +14,7 @@ class Hiera
           # Small hack: We don't want to search any datasource but the
           # labs/%{::labsproject} hierarchy here; so we plainly exit
           # in any other case.
-          next unless source.start_with?('labs/') and source.length > 'labs/'.length
+          next unless source.start_with?('labs/') && source.length > 'labs/'.length
 
           # For hieradata/, the hierarchy is defined as
           # "labs/%{::labsproject}/host/%{::hostname}" and
@@ -34,7 +34,7 @@ class Hiera
           new_answer = Backend.parse_answer(data[key], scope)
           case resolution_type
           when :array
-            raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of? Array or new_answer.kind_of? String
+            raise Exception, "Hiera type mismatch: expected Array and got #{new_answer.class}" unless new_answer.kind_of?(Array) || new_answer.kind_of?(String)
             answer ||= []
             answer << new_answer
           when :hash
