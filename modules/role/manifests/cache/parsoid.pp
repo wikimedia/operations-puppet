@@ -37,7 +37,7 @@ class role::cache::parsoid {
         name             => '',
         vcl              => 'parsoid-backend',
         extra_vcl        => ['parsoid-common'],
-        port             => 3128,
+        ports            => [ 3128 ],
         admin_port       => 6083,
         storage          => $::role::cache::2layer::persistent_storage_args,
         directors        => {
@@ -83,7 +83,7 @@ class role::cache::parsoid {
         name            => 'frontend',
         vcl             => 'parsoid-frontend',
         extra_vcl       => ['parsoid-common'],
-        port            => 80,
+        ports           => [ 80 ],
         admin_port      => 6082,
         directors       => {
             'backend'          => {
