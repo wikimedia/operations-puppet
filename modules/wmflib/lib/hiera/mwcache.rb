@@ -34,7 +34,7 @@ class Hiera
       raise error
     end
 
-    def read_file(path, expected_type = Object, &block)
+    def read_file(path, expected_type = Object, &_block)
       if stale?(path)
         resp = get_from_mediawiki(path, true)
         data = resp["*"]

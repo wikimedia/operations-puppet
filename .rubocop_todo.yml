@@ -34,14 +34,6 @@ Lint/UnusedBlockArgument:
     - 'modules/base/files/monitoring/check_puppetrun'
     - 'modules/ganglia/lib/puppet/parser/functions/ganglia_aggregator_config.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'modules/wmflib/lib/hiera/backend/role_backend.rb'
-    - 'modules/wmflib/lib/hiera/mwcache.rb'
-
 # Offense count: 10
 Lint/UselessAssignment:
   Exclude:
