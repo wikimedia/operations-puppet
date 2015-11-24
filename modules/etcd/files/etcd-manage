@@ -1,0 +1,53 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Simple wrapper script around etcdctl that should help
+# running it from the command line
+import os
+import subprocess
+import sys
+
+import yaml
+
+def get_config():
+    conf = {}
+    for directory in ('/etc/etcd', os.path.expanduser('~')):
+        filename = os.path.join(directory, '.etcd.cnf')
+        try:
+            with open(filename, 'r') as f:
+                c = yaml.load(f)
+                conf.update(c)
+        except:
+            continue
+    return conf
+
+
+def main():
+    c = get_config()
+    opts = ['/home/joe/bin/etcdctl']
+    if c.get('url', None):
+        opts.append(('-C', c['url']))
+    if c.get('ca_path', None):
+        opts.extend(('--ca-file', c['ca_path']))
+    if c.get('username', None) and c.get('password', None):
+        opts.extend(
+            ('-u', "{username}:{password}".format(**c))
+        )
+
+    args = sys.argv[1:]
+    try:
+        idx = args.index('-p')
+        password = args[idx + 1]
+        args[idx:idx+2] = []
+    except ValueError:
+        password = None
+    opts.extend(args)
+
+    proc = subprocess.Popen(opts, stdin=subprocess.PIPE,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = proc.communicate(password)
+    exitcode = proc.poll()
+    sys.stdout.write(out)
+    sys.exit(exitcode)
+
+if __name__ == '__main__':
+    main()
