@@ -5,10 +5,12 @@
 class etcd::client::globalconfig(
     $host = undef,
     $port = undef,
-    $srv_dns = "${::site}.wmnet",
+    $srv_domain = "${::site}.wmnet",
     $protocol = 'https',
     $ssl_dir = undef,
     ) {
+
+    require_package 'python-etcd'
 
     if $ssl_dir {
         file { '/etc/etcd/ca.pem':
@@ -33,10 +35,11 @@ class etcd::client::globalconfig(
     etcd::client::config { '/etc/etcd/etcdrc':
         world_readable => true,
         settings       => {
-            host    => $host,
-            port    => $port,
-            srv_dns => $srv_dns,
-            ca_cert => $ca_cert,
+            host       => $host,
+            port       => $port,
+            srv_domain => $srv_domain,
+            ca_cert    => $ca_cert,
+            protocol   => $protocol,
         },
     }
 }
