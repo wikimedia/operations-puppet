@@ -74,7 +74,7 @@ sub vcl_recv {
         || req.http.Host == "config-master.wikimedia.org"
         || req.http.Host == "etherpad.wikimedia.org" // No caching of configs; scripts may want to know when things change
     ) {
-        return (pass)
+        return (pass);
     }
 
     if (req.request != "GET" && req.request != "HEAD") {
