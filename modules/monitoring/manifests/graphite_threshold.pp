@@ -54,7 +54,6 @@ define monitoring::graphite_threshold(
     $critical,
     $series                = false,
     $from                  = '10min',
-    $until                 = '0min',
     $percentage            = 1,
     $under                 = false,
     $graphite_url          = 'http://graphite.wikimedia.org',
@@ -81,10 +80,9 @@ define monitoring::graphite_threshold(
     #   $ARG3$  the metric to monitor
     #   $ARG4$  -W warning threshold
     #   $ARG5$  -C critical threshold
-    #   $ARG6$  --from start sampling date (negative relative time from now)
-    #   $ARG7$  --until end sampling date (negative relative time from now)
-    #   $ARG8$  --perc percentage of exceeding datapoints
-    #   $ARG9$  --over or --under
+    #   $ARG6$  --from start sampling date
+    #   $ARG7$  --perc percentage of exceeding datapoints
+    #   $ARG8$  --over or --under
     $modifier = $under ? {
         true  => '--under',
         default => '--over'
@@ -101,7 +99,7 @@ define monitoring::graphite_threshold(
     monitoring::service { $title:
         ensure                => $ensure,
         description           => $description,
-        check_command         => "${command}!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${until}!${percentage}!${modifier}",
+        check_command         => "${command}!${graphite_url}!${timeout}!${metric}!${warning}!${critical}!${from}!${percentage}!${modifier}",
         retries               => $retries,
         group                 => $group,
         critical              => $nagios_critical,
