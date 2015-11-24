@@ -16,7 +16,7 @@ include /etc/redis/redis.conf
     end
 
     @defaults.merge(@settings).select { |k,v|
-        !v.empty? and v.to_s != 'undef'
+        !['', 'undef'].include?(v.to_s)
     }.reduce([]) { |lines,kv|
         k, v = *kv
 
