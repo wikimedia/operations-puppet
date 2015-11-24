@@ -52,7 +52,7 @@ BYTES = merge(COUNTER, {
 
 # Stats to be collected
 main_stats = dict()
-## CACHE
+# CACHE
 main_stats['es_filter_cache_size'] = merge(BYTES_GAUGE, {
     'path': 'indices.filter_cache.memory_size_in_bytes',
     'description': 'Filter Cache Size'
@@ -75,7 +75,7 @@ main_stats['es_fielddata_cache_evictions'] = merge(COUNTER, {
     'description': 'Field Data Cache Evictions/sec',
 })
 
-## DOCS
+# DOCS
 main_stats['es_docs_count'] = merge(GAUGE, {
     'path': 'indices.docs.count',
     'units': 'docs',
@@ -87,7 +87,7 @@ main_stats['es_docs_deleted'] = merge(GAUGE, {
     'description': 'Deleted Documents',
 })
 
-## FLUSH
+# FLUSH
 main_stats['es_flushes'] = merge(COUNTER, {
     'path': 'indices.flush.total',
     'units': 'flushes',
@@ -98,7 +98,7 @@ main_stats['es_flush_time'] = merge(TIME, {
     'description': 'Flush Time/sec'
 })
 
-## GET
+# GET
 main_stats['es_gets'] = merge(COUNTER, {
     'path': 'indices.get.total',
     'units': 'gets/sec',
@@ -127,7 +127,7 @@ main_stats['es_get_missing_time'] = merge(TIME, {
     'description': 'Gets (missing) Time/sec'
 })
 
-## INDEXING
+# INDEXING
 main_stats['es_deletes'] = merge(COUNTER, {
     'path': 'indices.indexing.delete_total',
     'units': 'deletes/sec',
@@ -147,7 +147,7 @@ main_stats['es_index_time'] = merge(TIME, {
     'description': 'Index Time/sec'
 })
 
-## MERGES
+# MERGES
 main_stats['es_merges'] = merge(COUNTER, {
     'path': 'indices.merges.total',
     'units': 'merges/sec',
@@ -162,7 +162,7 @@ main_stats['es_merge_data'] = merge(BYTES, {
     'description': 'Bytes/sec'
 })
 
-## REFRESH
+# REFRESH
 main_stats['es_refreshes'] = merge(COUNTER, {
     'path': 'indices.refresh.total',
     'units': 'refreshes/sec',
@@ -173,7 +173,7 @@ main_stats['es_refresh_time'] = merge(TIME, {
     'description': 'Refresh Time/sec'
 })
 
-## WARMER
+# WARMER
 main_stats['es_warmers'] = merge(COUNTER, {
     'path': 'indices.warmer.total',
     'units': 'warmers/sec',
@@ -184,7 +184,7 @@ main_stats['es_warmer_time'] = merge(TIME, {
     'description': 'Warmer Time/sec'
 })
 
-## SEARCH
+# SEARCH
 main_stats['es_queries'] = merge(COUNTER, {
     'path': 'indices.search.query_total',
     'units': 'queries/sec',
@@ -204,7 +204,7 @@ main_stats['es_fetch_time'] = merge(TIME, {
     'description': 'Fetch Time/sec'
 })
 
-## STORE
+# STORE
 main_stats['es_indices_size'] = merge(BYTES_GAUGE, {
     'path': 'indices.store.size_in_bytes',
     'description': 'Indices Size'
@@ -215,7 +215,7 @@ main_stats['es_indices_throttle_time'] = merge(TIME, {
 })
 
 # JVM METRICS #
-## MEM
+# MEM
 main_stats['es_heap_committed'] = merge(BYTES_GAUGE, {
     'path': 'jvm.mem.heap_committed_in_bytes',
     'description': 'Java Heap Committed (Bytes)',
@@ -233,7 +233,7 @@ main_stats['es_non_heap_used'] = merge(BYTES_GAUGE, {
     'description': 'Java Non Heap Used (Bytes)',
 })
 
-## MEMORY POOLS
+# MEMORY POOLS
 for name in ['young', 'survivor', 'old']:
     main_stats['es_' + name + '_heap_used'] = merge(BYTES_GAUGE, {
         'path': 'jvm.mem.pools.' + name + '.used_in_bytes',
@@ -244,14 +244,14 @@ for name in ['young', 'survivor', 'old']:
         'description': name.capitalize() + ' Generation Max (Bytes)',
     })
 
-## THREADS
+# THREADS
 main_stats['es_jvm_threads'] = merge(GAUGE, {
     'path': 'jvm.threads.count',
     'units': 'threads',
     'description': 'JVM Threads',
 })
 
-## GC
+# GC
 for name in ['young', 'old']:
     main_stats['es_' + name + '_gcs'] = merge(COUNTER, {
         'path': 'jvm.gc.collectors.' + name + '.collection_count',
@@ -263,7 +263,7 @@ for name in ['young', 'old']:
         'description': 'Collection Time/sec'
     })
 
-## BUFFER POOLS
+# BUFFER POOLS
 for name in ['direct', 'mapped']:
     main_stats['es_jvm_' + name + '_buffer_pools'] = merge(GAUGE, {
         'path': 'jvm.buffer_pools.' + name + '.count',
