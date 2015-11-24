@@ -1,0 +1,278 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Simple wrapper script around etcdctl that should help
+# running it from the command line
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+
+import yaml
+import etcd
+from etcd import auth
+
+
+class ExecError(Exception):
+    status_code = 1
+
+    def die(self):
+        sys.exit(self.status_code)
+
+
+class EtcdAuthObject(object):
+    actions = []
+    model = auth.EtcdAuthBase
+
+    def __init__(self, client, objname):
+        self.name = objname
+        self.client = client
+        self.orm = self.model(self.client, self.name)
+
+    def exists(self):
+        try:
+            self.orm.read()
+            return True
+        except etcd.EtcdException:
+            return False
+
+    def list(self, **kwargs):
+        print(self.orm.names)
+
+    def get(self, **kwargs):
+        if self.exists():
+            print self.orm
+        else:
+            sys.stderr.write("{} {} not found".format(
+                self.orm.entity,
+                self.name))
+            raise ExecError()
+
+    @classmethod
+    def get_subparser(cls, parser):
+        name = cls.__name__.lower()
+        entity = parser.add_parser(name, help=cls.__doc__)
+        subp = entity.add_subparsers(title="action", dest="action")
+        subp.add_parser('list', help="List all {}s".format(name))
+        # Add all listed actions, and any additional arguments for them.
+        for action in cls.actions:
+            act = subp.add_parser(action, help=getattr(cls, action).__doc__)
+            act.add_argument("name",
+                             help="Name of the {}".format(name))
+            try:
+                add = getattr(cls, 'args_{}'.format(action))
+                add(act)
+            except AttributeError:
+                pass
+        return entity
+
+    @classmethod
+    def get_obj(cls, entity):
+        for subclass in cls.__subclasses__():
+            if subclass.__name__.lower() == entity:
+                return subclass
+        raise NotImplementedError(
+            "No suitable class found for entity {}".format(entity))
+
+
+class User(EtcdAuthObject):
+    """Manipulate etcd ACL users"""
+    actions = ['get', 'set', 'delete']
+    model = auth.EtcdUser
+
+    @classmethod
+    def args_set(cls, parser):
+        parser.add_argument("--roles", nargs='*', default=[],
+                            help="All the roles the user is part of")
+        parser.add_argument("-p", nargs="?", default=None, dest="password")
+
+    def set(self, roles=None, password=None, **kwargs):
+        """Creates/Modifies a user, setting roles and password"""
+        if not self.exists() and password is None:
+            sys.stderr.write("Cannot create a user without password")
+            raise ExecError()
+
+        if password:
+            self.orm.password = password
+        if roles is not None:
+            self.orm.roles = roles
+        try:
+            self.orm.write()
+        except etcd.EtcdException as e:
+            sys.stderr.write("ERROR: %s" % e)
+
+    def delete(self, **kwargs):
+        """Deletes the user"""
+        super(User, self).delete(**kwargs)
+        try:
+            self.orm.delete()
+        except:
+            sys.stderr.write("User {} could not be deleted".format(self.name))
+            raise ExecError()
+
+    def get(self, **kwargs):
+        """Gets information on the user"""
+        super(User, self).get(**kwargs)
+
+
+class Role(EtcdAuthObject):
+    """Manipulate the etcd roles and corresponding ACLs"""
+    actions = ['get', 'set', 'delete']
+    model = auth.EtcdRole
+    perm_re = re.compile('^(.*)([-+])([rRwW]{1,2})$')
+    acl_re = re.compile('^(.*)=([rRwW]{1,2})$')
+
+    @classmethod
+    def args_set(cls, parser):
+        parser.add_argument("--permissions", nargs=1, metavar="PERMISSIONS",
+                            action="append",
+                            help="ACLs to modify: e.g. --permissions '/pub/*-R'"
+                            " --permissions '/application/*+rw'")
+        parser.add_argument('--acls', nargs='+', help="Full set of ACLs for the user")
+
+    def parse_acls(self, acls):
+        ACL = {}
+        for acl in acls:
+            m = self.acl_re.match(acl)
+            if m is None:
+                sys.stderr.write("Invalid ACL %s\n" % acl)
+                raise ExecError()
+            ACL[m.group(1)] = m.group(2)
+        self.orm.acls = ACL
+
+    def parse_permissions(self, permissions):
+        for perms in permissions:
+            m = self.perm_re.match(perms[0])
+            if m is None:
+                sys.stderr.write("Invalid ACL %s\n" % perms)
+                raise ExecError()
+            path = m.group(1)
+            sign = m.group(2)
+            permissions = m.group(3)
+            if sign == '-':
+                self.orm.revoke(path, permissions)
+            elif sign == '+':
+                self.orm.grant(path, permissions)
+
+    def set(self, permissions=[], acls=[], **kwargs):
+        """Sets permissions for a specific role"""
+        # We need to read the object before we write it
+        self.exists()
+        if acls:
+            self.parse_acls(acls)
+        elif permissions:
+            self.parse_permissions(permissions)
+
+        try:
+            self.orm.write()
+        except:
+            # TODO: log what has gone wrong
+            raise ExecError()
+
+    def get(self, **kwargs):
+        """Gets information on a role"""
+        super(Role,self).get(**kwargs)
+
+    def delete(self, **kwargs):
+        """Deletes the role"""
+        try:
+            self.client.del_role(self.name)
+        except:
+            sys.stderr.write("Role {} could not be deleted".format(self.name))
+            raise ExecError()
+
+
+class Auth(EtcdAuthObject):
+    """Enable/disable the authentication on etcd."""
+    actions = ['enable', 'disable', 'status']
+    model = auth.Auth
+
+    def __init__(self, client, name=None):
+        self.client = client
+        self.orm = self.model(self.client)
+        self.name = name
+
+    @classmethod
+    def get_subparser(cls, parser):
+        name = cls.__name__.lower()
+        entity = parser.add_parser(name, help=cls.__doc__)
+        subp = entity.add_subparsers(title="action", dest="action")
+        # Add all listed actions, and any additional arguments for them.
+        for action in cls.actions:
+            subp.add_parser(action, help=getattr(cls, action).__doc__)
+
+    def status(self, **kwargs):
+        """Shows the auth status"""
+        print json.dumps({"enabled": self.orm.active})
+
+    def enable(self, **kwargs):
+        """Enables auth"""
+        try:
+            self.orm.active = True
+        except:
+            raise ExecError()
+
+    def disable(self, **kwargs):
+        """Disables auth"""
+        try:
+            self.orm.active = False
+        except:
+            raise ExecError()
+
+
+def get_config(configdir):
+    conf = {}
+    configfiles = ['/etc/etcd/etcdrc']
+    if configdir:
+        configfiles.append(os.path.join(configdir, 'etcdrc'))
+    configfiles.append(os.path.join(os.path.expanduser('~'), '.etcdrc'))
+
+    for filename in configfiles:
+        try:
+            with open(filename, 'r') as f:
+                c = yaml.load(f)
+                conf.update(c)
+        except:
+            continue
+    return conf
+
+
+def get_args():
+    parser = argparse.ArgumentParser(
+        description="Tool to manage users and roles in etcd",
+    )
+    parser.add_argument('--configdir',
+                        help="Directory where the .etcd.cnf config file is located",
+                        default='/etc/etcd')
+    subparsers = parser.add_subparsers(title="object", dest="obj_name",
+                                       help="Type of object to act upon")
+    User.get_subparser(subparsers)
+    Role.get_subparser(subparsers)
+    Auth.get_subparser(subparsers)
+    return parser.parse_args()
+
+
+def main():
+    args = get_args()
+    args_dict = vars(args)
+    c = get_config(args.configdir)
+    client = etcd.Client(
+        host=c.get('host', 'localhost'),
+        port=c.get('port', 2379),
+        srv_domain=c.get('srv_domain', None),
+        protocol=c.get('protocol', 'http'),
+        ca_cert=c.get('ca_cert', None),
+        username=c.get('username', None),
+        password=c.get('password', None)
+    )
+    entity = EtcdAuthObject.get_obj(args.obj_name)
+    obj = entity(client, args_dict.get('name', None))
+    act = getattr(obj, args.action)
+    try:
+        act(**args_dict)
+    except ExecError as e:
+        e.die()
+
+if __name__ == '__main__':
+    main()

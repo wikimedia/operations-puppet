@@ -28,6 +28,6 @@ define etcd::client::config(
         owner   => $owner,
         group   => $group,
         mode    => $file_perms,
-        content => oredered_yaml($settings),
+        content => template('etcd/client_config.erb'),
     }
 }
