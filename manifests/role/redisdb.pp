@@ -54,6 +54,7 @@ class role::redisdb (
             dir               => $dir,
             persist           => 'aof',
             redis_replication => $redis_replication,
+            password          => $passwords::redis::main_password,
         }
 
         if $::standard::has_ganglia {
