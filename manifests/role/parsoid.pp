@@ -1,9 +1,4 @@
 # vim: set ts=4 et sw=4:
-
-# TODO: Hiera for this
-@monitoring::group { 'parsoid_eqiad': description => 'eqiad parsoid servers' }
-@monitoring::group { 'parsoid_codfw': description => 'codfw parsoid servers' }
-
 class role::parsoid::common {
     package { [
         'nodejs',

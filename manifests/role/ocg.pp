@@ -1,10 +1,6 @@
 # vim: set ts=4 et sw=4:
 # role/ocg.pp
 # Offline content generator for the MediaWiki collection extension
-
-# Virtual resources for the monitoring server
-@monitoring::group { 'ocg_eqiad': description => 'offline content generator eqiad' }
-
 class role::ocg {
     include base::firewall
     include standard

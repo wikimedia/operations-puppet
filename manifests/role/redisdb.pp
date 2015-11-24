@@ -1,15 +1,5 @@
 # role/redis.pp
 # db::redis
-
-# Virtual resource for the monitoring server
-@monitoring::group { 'redis_eqiad':
-    description => 'eqiad Redis',
-}
-
-@monitoring::group { 'redis_codfw':
-    description => 'codfw Redis',
-}
-
 class role::redisdb (
     $maxmemory         = inline_template('<%= (Float(@memorysize.split[0]) * 0.82).round %>Gb'),
     $redis_replication = undef,

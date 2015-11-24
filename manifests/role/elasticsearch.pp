@@ -2,12 +2,6 @@
 #
 # This class sets up Elasticsearch in a WMF-specific way.
 #
-
-@monitoring::group { 'elasticsearch_eqiad': description => 'eqiad elasticsearch servers' }
-@monitoring::group { 'elasticsearch_codfw': description => 'codfw elasticsearch servers' }
-@monitoring::group { 'elasticsearch_esams': description => 'esams elasticsearch servers' }
-@monitoring::group { 'elasticsearch_ulsfo': description => 'ulsfo elasticsearch servers' }
-
 class role::elasticsearch::server{
 
     if ($::realm == 'production' and hiera('elasticsearch::rack', undef) == undef) {

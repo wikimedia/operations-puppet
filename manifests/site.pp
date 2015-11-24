@@ -2,6 +2,7 @@
 # site.pp
 
 import 'realm.pp' # These ones first
+import 'monitoring_groups.pp'
 import 'misc/*.pp'
 import 'network.pp'
 import 'role/*.pp'

@@ -1,7 +1,4 @@
 # analytics servers (RT-1985)
-
-@monitoring::group { 'analytics_eqiad': description => 'analytics servers in eqiad' }
-
 # == Class role::analytics
 # Base class for all analytics nodes.
 # All analytics nodes should include this.
