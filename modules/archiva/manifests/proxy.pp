@@ -24,7 +24,7 @@ class archiva::proxy(
 
     # $archiva_server_properties and
     # $ssl_server_properties will be concatenated together to form
-    # a single $server_properties array for the simple-proxy.erb
+    # a single $server_properties array for proxy.nginx.erb
     # nginx site template.
     $archiva_server_properties = [
         # Need large body size to allow for .jar deployment.
@@ -61,22 +61,15 @@ class archiva::proxy(
             ],
         ]
 
-        $force_https_site_ensure = 'present'
     }
     else {
         $listen = 80
         $server_properties = $archiva_server_properties
-
-        $force_https_site_ensure = 'absent'
     }
 
     $proxy_pass = "http://127.0.0.1:${::archiva::port}/"
 
     nginx::site { 'archiva':
-        content => template('nginx/sites/simple-proxy.erb'),
-    }
-    nginx::site { 'archiva-force-https':
-        ensure  => $force_https_site_ensure,
-        content => template('nginx/sites/force-https.erb'),
+        content => template('archiva/proxy.nginx.erb'),
     }
 }
