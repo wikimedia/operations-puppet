@@ -1,7 +1,9 @@
-# == Class: role::labs::wdq_mm
+# == Class: role::wdq_mm
 # Role class for setting up an instance of
 # Magnus' WDQ on labs
-class role::labs::wdq_mm {
+class role::wdq_mm {
+    requires_realm('labs')
+
     include ::labs_debrepo
 
     include labs_lvm
@@ -18,10 +20,12 @@ class role::labs::wdq_mm {
     }
 }
 
-# == Class: role::labs::wdq_mm::lb
+# == Class: role::wdq_mm::lb
 # Load balancer for balancing across multiple instances
 # of role::labs::wdq_mm
 class role::labs::wdq_mm::lb {
+    requires_realm('labs')
+
     class { '::wdq_mm::lb':
     }
 }
