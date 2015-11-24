@@ -58,7 +58,7 @@ class etcd (
 
     require etcd::logging
 
-    require_package 'etcd', 'etcdctl'
+    require_package 'etcd'
 
     # SSL setup
     if $use_ssl {
