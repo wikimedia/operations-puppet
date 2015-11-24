@@ -7,3 +7,4 @@ elasticsearch::cluster_name: labsearch
 elasticsearch::recover_after_nodes: 1
 elasticsearch::expected_nodes: 1
 elasticsearch::load_fixed_bitset_filters_eagerly: false
+elasticsearch::merge_threads: 1

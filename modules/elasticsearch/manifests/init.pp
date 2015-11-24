@@ -56,7 +56,8 @@
 # - $bulk_thread_pool_executors: number of executors for bulk actions on each
 #       node.
 # - $statsd_host: host to send statsd data to
-# - $merge_threads: Number of merge threads to use. Default 3
+# - $merge_threads: Number of merge threads to use. Default 3. Set
+#        to 1 if using spinning disks.
 # - $load_fixed_bitset_filters_eagerly: set to false to disable loading
 #        bitsets in memory when opening indices will slowdown queries but can
 #        significantly reduce heap usage.
