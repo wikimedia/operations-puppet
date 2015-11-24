@@ -10,6 +10,8 @@ class etcd::client::globalconfig(
     $ssl_dir = undef,
     ) {
 
+    require_package 'python-etcd'
+
     if $ssl_dir {
         file { '/etc/etcd/ca.pem':
             ensure => present,
