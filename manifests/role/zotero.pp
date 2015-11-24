@@ -4,9 +4,6 @@
 # for bibliographic data and related research materials.
 # See <https://en.wikipedia.org/wiki/Zotero>.
 #
-@monitoring::group { 'zotero_eqiad': description => 'Zotero eqiad' }
-@monitoring::group { 'zotero_codfw': description => 'Zotero codfw' }
-
 class role::zotero {
     system::role { 'zotero': description => "Zotero ${::realm}" }
 

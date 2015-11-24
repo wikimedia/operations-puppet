@@ -1,5 +1,3 @@
-@monitoring::group { 'rcstream_eqiad': description => 'eqiad rcstream' }
-
 # == Class: role::rcstream
 #
 # Provisions a recent changes -> redis -> socket.io -> Nginx setup
