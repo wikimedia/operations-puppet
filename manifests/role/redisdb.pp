@@ -29,16 +29,35 @@ class role::redisdb (
         srange => '$ALL_NETWORKS',
     }
 
-    class { '::redis::legacy':
-        maxmemory         => $maxmemory,
-        dir               => $dir,
-        persist           => 'aof',
-        redis_replication => $redis_replication,
-        password          => $passwords::redis::main_password,
-    }
+    if $::hostname == 'rdb1008' {
+        redis::instance { 6379:
+            settings => {
+                appendfilename              => "${::hostname}_6379.aof",
+                appendonly                  => true,
+                auto_aof_rewrite_min_size   => '512mb',
+                client_output_buffer_limit  => 'slave 512mb 200mb 60',
+                dbfilename                  => "${::hostname}_6379.rdb",
+                dir                         => '/srv/redis',
+                masterauth                  => $passwords::redis::main_password,
+                maxmemory                   => $maxmemory,
+                no_appendfsync_on_rewrite   => true,
+                requirepass                 => $passwords::redis::main_password,
+                save                        => '',
+                slave_read_only             => false,
+                slaveof                     => 'rdb1007 6379',
+                stop_writes_on_bgsave_error => false,
+            }
+        }
+    } else {
+        class { '::redis::legacy':
+            maxmemory         => $maxmemory,
+            dir               => $dir,
+            persist           => 'aof',
+            redis_replication => $redis_replication,
+        }
 
-    if $::standard::has_ganglia {
-        include redis::ganglia
+        if $::standard::has_ganglia {
+            include redis::ganglia
+        }
     }
-
 }
