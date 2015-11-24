@@ -1,8 +1,0 @@
-# This file is managed by Puppet.
-
-## Nginx site to force all requests on port 80 to https
-
-server {
-    listen 80;
-    return 301 https://$host$request_uri;
-}
