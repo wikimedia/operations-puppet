@@ -1,0 +1,6 @@
+This is for roles that should have died, but for some reason,
+can not. The biggest legit reason being that there are a 
+lot of labs instances that rely on it and there is no migration
+path other than 'remove and redo'. Sometimes when someone
+has enough energy they should all be killed, but until then
+let us mark them as clearly deprecated and move them here.
