@@ -7,8 +7,6 @@
   Licensed under the terms of the GPL, version 2 or later.
 """
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 import argparse
 import json
@@ -17,6 +15,8 @@ import socket
 import subprocess
 import time
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 interval = 300  # 5 minutes.
 

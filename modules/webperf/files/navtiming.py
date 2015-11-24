@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
 
 import argparse
 import logging
@@ -12,6 +10,8 @@ import socket
 
 import zmq
 
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 ap = argparse.ArgumentParser(description='NavigationTiming Graphite module')
 ap.add_argument('endpoint', help='URI of EventLogging endpoint')
