@@ -371,7 +371,7 @@ node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
 
 node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    include cache::misc, ipsec
+    role cache::misc, ipsec
 }
 
 node /^cp202[26]\.codfw\.wmnet$/ {
@@ -391,7 +391,7 @@ node /^cp301[5678]\.esams\.wmnet$/ {
 
 node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    include cache::misc, ipsec
+    role cache::misc, ipsec
 }
 
 node /^cp30[34][01]\.esams\.wmnet$/ {
@@ -410,7 +410,7 @@ node /^cp30[34][2-9]\.esams\.wmnet$/ {
 
 node /^cp400[1-4]\.ulsfo\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    include cache::misc, ipsec
+    role cache::misc, ipsec
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
