@@ -57,11 +57,6 @@ class puppet::self::config(
             server_name => $::fqdn,
             ca          => true,
         }
-
-        # Make sure the puppet.conf compile (defined in base::puppet)
-        # runs before puppetmaster::ssl tries to generate the puppet
-        # cert.
-        Exec['compile puppet.conf'] -> Class['puppetmaster::ssl']
     }
     else {
         $ssldir = '/var/lib/puppet/client/ssl'
