@@ -1,6 +1,6 @@
+# DEPRECATED, DO NOT USE!
 # Install Mediawiki-Vagrant puppet repo, manage manually from CLI
-class role::labs::vagrant {
-    include ::role::labs::lvm::srv
+class role::deprecated::labsvagrant {
 
     # Mount secondary disk before applying labs_vagrant
     class { '::labs_vagrant':
