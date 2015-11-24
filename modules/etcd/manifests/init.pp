@@ -94,4 +94,10 @@ class etcd (
         refresh => true,
         require => File[$etcd_data_dir],
     }
+
+    # Temporary workaround for labs
+    include ::etcd::auth
+    if $::hostname == 'etcd01' {
+        include ::etcd::auth::users
+    }
 }
