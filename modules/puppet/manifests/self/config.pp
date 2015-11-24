@@ -22,6 +22,8 @@ class puppet::self::config(
 ) {
     include ldap::role::config::labs
 
+    require ::base::puppet
+
     $ldapconfig = $ldap::role::config::labs::ldapconfig
     $basedn = $ldapconfig['basedn']
 
