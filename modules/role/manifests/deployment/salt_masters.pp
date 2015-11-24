@@ -14,7 +14,7 @@ class role::deployment::salt_masters(
             'host'                   => $deployment_server,
             'port'                   => '6379',
             'db'                     => '0',
-            'socket_connect_timeout' => '2',
+            'socket_connect_timeout' => '5',
         },
     }
 
