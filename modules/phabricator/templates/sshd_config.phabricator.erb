@@ -4,6 +4,7 @@
 AuthorizedKeysCommandUser <%= @vcs_user %>
 AuthorizedKeysCommand <%= @ssh_hook_path %>
 AllowUsers <%= @vcs_user %>
+AddressFamily any
 
 Port 22
 PidFile /var/run/sshd/phab.pid
