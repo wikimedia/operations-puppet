@@ -5,7 +5,8 @@
 # Parameters:
 #    $server_id
 #       This openLDAP server's ID. Mostly used in replication environments, but
-#       generally good to have. An integer
+#       generally good to have. An integer. When using a multi-master setup or
+#       mirrormode, the IDs of each server must be unique.
 #    $suffix
 #       The suffix, e.g. "dc=example,dc=com"
 #    $datadir
