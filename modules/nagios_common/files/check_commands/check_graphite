@@ -175,11 +175,6 @@ class Threshold(GraphiteCheck):
             help='When to fetch the metric from (date or "-1d")',
             default='-1h')
         p.add_argument(
-            '--until',
-            dest='_until',
-            help='When to fetch the metric until (date or "-1d")',
-            default='-0min')
-        p.add_argument(
             '--over',
             dest='over',
             action='store_true',
@@ -199,17 +194,6 @@ class Threshold(GraphiteCheck):
             help='Number of datapoints above or below threshold that will raise the alarm')
         return p
 
-    def check_time_parameter(self, param_name, param_value):
-        m = self.from_regex.match(param_value)
-        if not m:
-            raise ValueError(
-                'the value of the %s argument is invalid: %s' %
-                (param_name, param_value))
-        if m.group(2) not in self._accepted_time_defs:
-            raise ValueError('The unit specification for %s' % param_name +
-                             'should be one of the following: %s' %
-                             ','.join(self._accepted_time_defs))
-
     def get_all(self, args):
         '''
         Gets additional data from the command-line args.
@@ -220,13 +204,18 @@ class Threshold(GraphiteCheck):
         _from = args._from
         if not args._from.startswith('-'):
             _from = '-%s' % args._from
-        self.check_time_parameter('--from', _from)
-        _until = args._until
-        if not args._until.startswith('-'):
-            _until = '-%s' % args._until
-        self.check_time_parameter('--until', _until)
+        m = self.from_regex.match(_from)
+        if not m:
+            raise ValueError(
+                'the value of the --from argument is invalid: %s' %
+                args._from)
+        if m.group(2) not in self._accepted_time_defs:
+            raise ValueError(
+                'The unit specification for --from should be one of the following: %s' %
+                ','.join(
+                    self._accepted_time_defs))
 
-        self.params = [('format', 'json'), ('from', _from), ('until', _until)]
+        self.params = [('format', 'json'), ('from', _from)]
         for target in self.targets:
             self.params.append(('target', target))
         if args.under:
@@ -530,12 +519,11 @@ def main():
 
     Examples:
 
-    Check if a metric exceeds a certain value 10 times in the last 20 minutes
-    with a 5 minutes lag:
+    Check if a metric exceeds a certain value 10 times in the last 20 minutes:
 
     ./check_graphite --url http://some-graphite-host \
            check_threshold my.beloved.metric  --from -20minutes \
-           --until -5minutes --threshold 100 --over -C 10 -W 5
+           --threshold 100 --over -C 10 -W 5
 
     Check if a metric has exceeded its holt-winters confidence bands 5% of the
     times over the last 500 checks
