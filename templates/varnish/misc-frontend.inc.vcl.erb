@@ -2,117 +2,42 @@ include "errorpage.inc.vcl";
 
 sub vcl_recv {
     if (req.http.Host == "git.wikimedia.org") {
-        set req.backend = antimony;
         // gitblit requires the following request headers:
         set req.http.X-Forwarded-Proto = "https";
         set req.http.X-Forwarded-Port = "443";
-    } elsif (req.http.Host == "doc.wikimedia.org" || req.http.Host == "integration.wikimedia.org") {
-        set req.backend = gallium;
-    } elsif (req.http.Host == "download.wikimedia.org") {
-        set req.backend = dataset1001;
-    } elsif (req.http.Host == "gerrit.wikimedia.org") {
-        set req.backend = ytterbium;
-        // No caching
-        return (pass);
-    } elsif (req.http.Host == "performance.wikimedia.org" || req.http.Host == "graphite.wikimedia.org") {
-        set req.backend = graphite1001;
-    } elsif (req.http.Host == "logstash.wikimedia.org"){
-        set req.backend = logstash;
-    } elsif (req.http.Host == "query.wikidata.org"){
-        if (req.http.X-Forwarded-Proto != "https") {
-            set req.http.Location = "https://" + req.http.Host + req.url;
-            error 755 "TLS Redirect";
-        }
-        else {
-            set req.backend = wdqs;
-        }
-    } elsif (req.http.Host == "releases.wikimedia.org") {
-        set req.backend = caesium;
-    } elsif (req.http.Host == "gdash.wikimedia.org") {
-        set req.backend = krypton;
-    } elsif (req.http.Host == "grafana.wikimedia.org" || req.http.host == "grafana-admin.wikimedia.org") {
-        set req.backend = krypton;
+    }
 
+    if (req.http.Host == "grafana.wikimedia.org" || req.http.host == "grafana-admin.wikimedia.org") {
         // X-WEBAUTH-USER is set by Apache's mod_authnz_ldap on the request it
         // proxies to the grafana backend. We discard any user-set X-WEBAUTH-USER
         // header on the Apache layer, but do it here as well as added insurance.
         unset req.http.X-WEBAUTH-USER;
+    }
 
-        return (pass);
-    } elsif (req.http.Host == "parsoid-tests.wikimedia.org") {
-        set req.backend = ruthenium;
-    } elsif (req.http.Host == "horizon.wikimedia.org") {
-        set req.backend = californium;
-    } elsif (req.http.Host == "phabricator.wikimedia.org" || req.http.Host == "phab.wmfusercontent.org" || req.http.Host == "bugzilla.wikimedia.org" || req.http.Host == "bugs.wikimedia.org") {
-        set req.backend = iridium;
-    } elsif (req.http.Host == "static-bugzilla.wikimedia.org" || req.http.Host == "annual.wikimedia.org" || req.http.Host == "transparency.wikimedia.org") {
-        set req.backend = bromine;
-        return (pass);
-    } elsif (req.http.Host == "servermon.wikimedia.org") {
-        set req.backend = netmon1001;
-    } elsif (req.http.Host == "otrs-test.wikimedia.org") {
+    if (
+           req.http.Host == "query.wikidata.org"
+        || req.http.Host == "otrs-test.wikimedia.org"
+        || req.http.Host == "hue.wikimedia.org"
+        || req.http.Host == "yarn.wikimedia.org"
+    ) {
         if (req.http.X-Forwarded-Proto != "https") {
             set req.http.Location = "https://" + req.http.Host + req.url;
-            // Use a custom 755 error code to indicate internally
-            // that we are forcing a 301 redirect to https.
             error 755 "TLS Redirect";
-        }
-        else {
-            set req.backend = mendelevium;
-        }
-        // No caching of OTRS for now
-        return (pass);
-    } elsif (req.http.Host == "people.wikimedia.org") {
-        set req.backend = rutherfordium;
-        // No caching of public_html dirs
-        return (pass);
-    } elsif (req.http.Host == "rt.wikimedia.org") {
-        set req.backend = magnesium;
-    } elsif (req.http.Host == "metrics.wikimedia.org" || req.http.Host == "stats.wikimedia.org") {
-        set req.backend = stat1001;
-    } elsif (req.http.Host == "datasets.wikimedia.org") {
-        set req.backend = stat1001;
-        // No caching of datasets.  They can be larger than misc varnish can deal with.
-        return (pass);
-    } elsif (req.http.Host == "config-master.wikimedia.org") {
-        set req.backend = palladium;
-        // No caching of configs; scripts may want to know when things change
-        return (pass);
-    } elsif (req.http.Host == "noc.wikimedia.org" || req.http.Host == "dbtree.wikimedia.org") {
-        set req.backend = noc;
-    } elsif (req.http.Host == "scholarships.wikimedia.org" || req.http.Host == "iegreview.wikimedia.org" || req.http.Host == "racktables.wikimedia.org") {
-        set req.backend = krypton;
-    } elsif (req.http.Host == "hue.wikimedia.org") {
-        // make sure all requests to Hue are via https proxy
-        if (req.http.X-Forwarded-Proto != "https") {
-            set req.http.Location = "https://" + req.http.Host + req.url;
-            // Use a custom 755 error code to indicate internally
-            // that we are forcing a 301 redirect to https.
-            error 755 "TLS Redirect";
-        }
-        else {
-            set req.backend = analytics1027;
         }
     }
-    elsif (req.http.Host == "yarn.wikimedia.org") {
-        // make sure all requests to Yarn ResourceManager UI are via https proxy
-        if (req.http.X-Forwarded-Proto != "https") {
-            set req.http.Location = "https://" + req.http.Host + req.url;
-            // Use a custom 755 error code to indicate internally
-            // that we are forcing a 301 redirect to https.
-            error 755 "TLS Redirect";
-        }
-        else {
-            set req.backend = analytics1001;
-        }
-    }
-    elsif (req.http.Host ~ ".*\.planet\.wikimedia\.org" || req.http.Host == "planet.wikimedia.org") {
-        set req.backend = planet1001;
-    } elsif (req.http.Host == "etherpad.wikimedia.org") {
-        set req.backend = etherpad1001;
-        return (pass);
-    } else {
-        error 404 "Domain not served here";
+
+    // XXX this pass-block is common to all misc VCL, refactor later...
+    if (
+           req.http.Host == "gerrit.wikimedia.org"
+        || req.http.Host == "grafana.wikimedia.org" || req.http.host == "grafana-admin.wikimedia.org"
+        || req.http.Host == "static-bugzilla.wikimedia.org" || req.http.Host == "annual.wikimedia.org" || req.http.Host == "transparency.wikimedia.org"
+        || req.http.Host == "otrs-test.wikimedia.org" // No caching of OTRS for now
+        || req.http.Host == "people.wikimedia.org" // No caching of public_html dirs
+        || req.http.Host == "datasets.wikimedia.org" // No caching of datasets.  They can be larger than misc varnish can deal with.
+        || req.http.Host == "config-master.wikimedia.org"
+        || req.http.Host == "etherpad.wikimedia.org" // No caching of configs; scripts may want to know when things change
+    ) {
+        return (pass)
     }
 
     if (req.request != "GET" && req.request != "HEAD") {
