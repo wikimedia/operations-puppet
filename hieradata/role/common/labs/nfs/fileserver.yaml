@@ -1,5 +1,4 @@
 cluster: labsnfs
-standard::has_admin: false
 ldap::client::nss::nsswitch_conf_source: file:///usr/share/base-files/nsswitch.conf
 # This is there because we have a ssh::userkey stanza
 # and it will not be used without this hack.  Same
