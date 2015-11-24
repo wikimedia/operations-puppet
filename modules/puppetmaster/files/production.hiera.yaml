@@ -13,8 +13,8 @@
 :hierarchy:
   - "hosts/%{::hostname}"
   - "regex/%{::fqdn}"
-  - "%{::site}"
   - "%{::site}/%{::realm}"
+  - "%{::site}"
   - "private/%{::site}"
   - "common"
   - "private/common"
