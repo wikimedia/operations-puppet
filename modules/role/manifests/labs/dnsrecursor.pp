@@ -301,7 +301,7 @@ class role::labs::dnsrecursor {
         group   => 'root',
         mode    => '0444',
         notify  => Service['pdns-recursor'],
-        content => template('labsdns/labsdb.erb'),
+        content => template('role/labs/dns/db_aliases.erb'),
         require => File['/var/zones']
     }
 
