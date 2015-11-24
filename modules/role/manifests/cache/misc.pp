@@ -219,7 +219,6 @@ class role::cache::misc {
 
     $fe_vcl_config = merge($common_vcl_config, {
         'layer'           => 'frontend',
-        'has_def_backend' => 'no',
     })
 
     $be_vcl_config = $::site_tier ? {
@@ -250,8 +249,29 @@ class role::cache::misc {
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         vcl_config      => $fe_vcl_config,
-        directors       => $varnish_be_directors[$::site_tier],
-        backend_options => $be_opts,
+        directors          => {
+            'backend' => {
+                'dynamic'  => 'no', # XXX should be 'yes'
+                'type'     => 'chash',
+                'backends' => $site_cluster_nodes,
+            },
+            'backend_random' => {
+                'dynamic'  => 'no', # XXX should be 'yes'
+                'type'     => 'random',
+                'backends' => $site_cluster_nodes,
+                'service'  => 'varnish-be-rand',
+            },
+        },
+        backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
+            {
+                'port'                  => 3128,
+                'connect_timeout'       => '5s',
+                'first_byte_timeout'    => '185s',
+                'between_bytes_timeout' => '2s',
+                'max_connections'       => 100000,
+                'probe'                 => 'varnish',
+            },
+        ]),
     }
 
     # ToDo: Remove production conditional once this works
