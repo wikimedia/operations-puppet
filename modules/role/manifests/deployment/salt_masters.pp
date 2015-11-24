@@ -11,9 +11,10 @@ class role::deployment::salt_masters(
             'codfw'  => $deployment_server,
         },
         'redis'      => {
-            'host'     => $deployment_server,
-            'port'     => '6379',
-            'db'       => '0',
+            'host'                   => $deployment_server,
+            'port'                   => '6379',
+            'db'                     => '0',
+            'socket_connect_timeout' => '2',
         },
     }
 
