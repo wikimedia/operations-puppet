@@ -1195,7 +1195,7 @@ node 'labcontrol2001.wikimedia.org' {
 
 # Labs Graphite and StatsD host
 node 'labmon1001.eqiad.wmnet' {
-    role labmon
+    role labs::graphite
     include standard
 }
 
