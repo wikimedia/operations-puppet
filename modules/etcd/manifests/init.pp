@@ -94,4 +94,5 @@ class etcd (
         refresh => true,
         require => File[$etcd_data_dir],
     }
+
 }

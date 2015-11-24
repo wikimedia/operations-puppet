@@ -8,13 +8,13 @@ define etcd::client::config(
     $group = 'root',
     $world_readable = false,
     $settings = {
-        username => undef,
-        password => undef,
-        host     => undef,
-        port     => undef,
-        srv_dns  => undef,
-        ca_cert  => undef,
-        protocol => undef,
+        username   => undef,
+        password   => undef,
+        host       => undef,
+        port       => undef,
+        srv_domain => undef,
+        ca_cert    => undef,
+        protocol   => undef,
     },
     ) {
 
@@ -28,6 +28,6 @@ define etcd::client::config(
         owner   => $owner,
         group   => $group,
         mode    => $file_perms,
-        content => oredered_yaml($settings),
+        content => template('etcd/client_config.erb'),
     }
 }
