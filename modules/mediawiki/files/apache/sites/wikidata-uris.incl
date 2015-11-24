@@ -1,19 +1,22 @@
+RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
+RewriteCond %{ENV:RW_PROTO} !=https
+RewriteRule . - [E=RW_PROTO:http]
 # RDF URIs
 # TODO: we may try to find a way to refer to actual statement
-RewriteRule ^/entity/statement/([QqPp]\d+).*$ /wiki/Special:EntityData/$1 [R=303,L]
+RewriteRule ^/entity/statement/([QqPp]\d+).*$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Special:EntityData/$1 [R=303,L]
 # TODO: value & reference handling can be improved to refer to something better
 # like DESCRIBE query
-RewriteRule ^/value/(.*)$ /wiki/Special:ListDatatypes [R=303,L]
-RewriteRule ^/reference/(.*)$ https://www.wikidata.org/wiki/Help:Sources [R=303,L]
-RewriteRule ^/prop/direct/(.*)$ /wiki/Property:$1 [R=303,L]
-RewriteRule ^/prop/novalue/(.*)$ /wiki/Property:$1 [R=303,L]
-RewriteRule ^/prop/statement/value/(.*)$ /wiki/Property:$1 [R=303,L]
-RewriteRule ^/prop/qualifier/value/(.*)$ /wiki/Property:$1 [R=303,L]
-RewriteRule ^/prop/reference/value/(.*)$ /wiki/Property:$1 [R=303,L]
-RewriteRule ^/prop/statement/(.*)$ /wiki/Property:$1 [R=303,L]
-RewriteRule ^/prop/qualifier/(.*)$ /wiki/Property:$1 [R=303,L]
-RewriteRule ^/prop/reference/(.*)$ /wiki/Property:$1 [R=303,L]
-RewriteRule ^/prop/(.*)$ /wiki/Property:$1 [R=303,L]
+RewriteRule ^/value/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Special:ListDatatypes [R=303,L]
+RewriteRule ^/reference/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Help:Sources [R=303,L]
+RewriteRule ^/prop/direct/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
+RewriteRule ^/prop/novalue/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
+RewriteRule ^/prop/statement/value/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
+RewriteRule ^/prop/qualifier/value/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
+RewriteRule ^/prop/reference/value/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
+RewriteRule ^/prop/statement/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
+RewriteRule ^/prop/qualifier/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
+RewriteRule ^/prop/reference/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
+RewriteRule ^/prop/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Property:$1 [R=303,L]
 # https://meta.wikimedia.org/wiki/Wikidata/Notes/URI_scheme
-RewriteRule ^/entity/(.*)$ /wiki/Special:EntityData/$1 [R=303,QSA]
+RewriteRule ^/entity/(.*)$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Special:EntityData/$1 [R=303,QSA]
 
