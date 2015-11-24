@@ -33,7 +33,6 @@ sys.setdefaultencoding('utf-8')
 
 
 TIMEOUT = 30
-BASE_URI = 'http://search.svc.eqiad.wmnet:9200/_all/page/_search'
 NS_MEDIAWIKI = 8
 NS_USER = 2
 NS_MODULE = 828
@@ -51,6 +50,17 @@ ap = argparse.ArgumentParser(
 )
 ap.add_argument('term', help='text to search for')
 
+ap.add_argument(
+    '--search-host',
+    default='search.svc.eqiad.wmnet',
+    help='Hostname to use to connect to the elasticsearch API'
+)
+ap.add_argument(
+    '--search-port',
+    default=9200,
+    type=int,
+    help='Port to use to connect to the elasticsearch API'
+)
 ap.add_argument(
     '--max-results',
     metavar='N',
@@ -92,6 +102,11 @@ ns_group.add_argument(
 
 args = ap.parse_args()
 
+base_uri = 'http://{host}:{port}/_all/page/_search'.format(
+    host=args.search_host,
+    port=args.search_port
+)
+
 filters = [
     {'term': {'namespace': str(args.ns)}},
     {'script': {
@@ -119,7 +134,7 @@ query = {
 }
 
 matches = {'public': [], 'private': []}
-uri = BASE_URI + '?' + urllib.urlencode(query)
+uri = base_uri + '?' + urllib.urlencode(query)
 req = urllib2.urlopen(uri, json.dumps(search))
 result = json.load(req)['hits']
 
