@@ -6,7 +6,7 @@
 #
 class elasticsearch::proxy {
     nginx::site { 'elasticsearch-proxy':
-        source => 'file:///modules/elasticsearch/labs-es-proxy.nginx.conf'
+        source => 'puppet:///modules/elasticsearch/labs-es-proxy.nginx.conf'
     }
 
     ferm::service { 'http':
