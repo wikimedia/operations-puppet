@@ -27,8 +27,8 @@ CC BY-SA 3.0</a> unless otherwise noted.'
 mobile_terms = '<a href="//m.wikimediafoundation.org/wiki/Terms_of_Use">\
 Terms of Use</a>'
 
-mobile_privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy">\
-Privacy</a>'
+mobile_privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy" \
+title="wmf:Privacy policy">Privacy</a>'
 
 copyright = 'Text\sis available under the <a\s+rel="license"\s+\
 href="//en.wikipedia.org/wiki/Wikipedia:\
@@ -42,6 +42,9 @@ By using this site, you agree to the \
 
 privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy">\
 Privacy policy</a>'
+
+enwb_privacy = '<a href="//wikimediafoundation.org/wiki/Privacy_policy">\
+Privacy Policy.</a>'
 
 enwp_trademark = 'Wikipedia® is a registered trademark \
 of the <a href="//www.wikimediafoundation.org/">\
@@ -69,7 +72,7 @@ def main():
         'desktop_enwb': [
             enwb_copyright,
             terms,
-            privacy,
+            enwb_privacy,
         ],
         'desktop_enwp': [
             copyright,
@@ -102,7 +105,7 @@ def main():
     html = site_html(site)
     for match in ensures:
         log(match)
-        count = len(re.findall(match, html))
+        count = len(re.findall(match, html, re.IGNORECASE))
         log(count)
         if not count:
             print "%s html not found" % (match,)
