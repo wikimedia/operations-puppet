@@ -316,17 +316,3 @@ class role::graphite::production::alerts {
     }
 
 }
-
-# == Class: role::graphite::labmon
-#
-# Sets up graphite instance for monitoring labs, running on production hardware.
-# Instance is open to all, no password required to see metrics
-class role::graphite::labmon {
-    class { 'role::graphite::base':
-        storage_dir => '/srv/carbon',
-        auth        => false,
-        hostname    => 'graphite.wmflabs.org',
-    }
-
-    include graphite::labs::archiver
-}
