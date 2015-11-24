@@ -1,10 +1,4 @@
 # === Class role::etcd
-#
-# Virtual resource for the monitoring server
-@monitoring::group { 'etcd_eqiad':
-    description => 'eqiad Etcd',
-}
-
 class role::etcd {
     system::role { 'role::etcd':
         description => 'Highly-consistent distributed k/v store'

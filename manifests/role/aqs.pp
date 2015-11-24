@@ -1,6 +1,3 @@
-@monitoring::group { 'aqs_eqiad': description => 'Analytics Query Service eqiad' }
-@monitoring::group { 'aqs_codfw': description => 'Analytics Query Service codfw' }
-
 # == Class role::aqs
 # Analytics Query Service
 #

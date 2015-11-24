@@ -1,8 +1,3 @@
-# Virtual resource for the monitoring server
-@monitoring::group { 'es_eqiad': description => 'eqiad External Storage' }
-@monitoring::group { 'mysql_eqiad': description => 'eqiad mysql core' }
-@monitoring::group { 'mysql_codfw': description => 'codfw mysql core' }
-
 ## for describing replication topology
 ## hosts must be added here in addition to site.pp
 class role::coredb::config {

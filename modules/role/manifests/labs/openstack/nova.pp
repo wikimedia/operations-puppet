@@ -261,7 +261,3 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
         }
     }
 }
-
-# global icinga hostgroups for virt/labs hosts
-@monitoring::group { 'virt_eqiad': description => 'eqiad virt servers' }
-@monitoring::group { 'virt_codfw': description => 'codfw virt servers' }
