@@ -39,11 +39,6 @@ in_array() {
     return 1
 }
 
-# FIXME: this is an intentional hard stop as before T84032
-if [[ `hostname -s` =~ ^labstore100 ]]; then
-        exit 1
-fi
-
 if [ ! -d $ARCHIVE_DIR ]
     then
         log "creating new user files archive ${ARCHIVE_DIR}"
