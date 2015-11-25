@@ -75,6 +75,14 @@ class role::cache::kafka::webrequest(
         logster_options => "-o statsd --statsd-host=statsd.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}",
     }
 
+
+    # TEMPORARY test --until only on a single host
+    $until = $::fqdn ? {
+        'cp1054.eqiad.wmnet' => '0min',
+        default              => undef,
+    }
+
+
     # Generate an alert if too many delivery report errors per minute
     # (logster only reports once a minute)
     monitoring::graphite_threshold { 'varnishkafka-kafka_drerr':
@@ -88,6 +96,7 @@ class role::cache::kafka::webrequest(
         # are over the threshold.
         percentage      => 80,
         from            => '10min',
+        until           => $until,
         nagios_critical => false,
         require         => Logster::Job['varnishkafka-webrequest'],
         ensure          => 'present',
