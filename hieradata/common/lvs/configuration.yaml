@@ -376,7 +376,13 @@ lvs_services:
       uri: varnishcheck!/
       sites:
         eqiad:
-          hostname: misc-web-lb.wikimedia.org
+          hostname: misc-web-lb.eqiad.wikimedia.org
+        codfw:
+          hostname: misc-web-lb.codfw.wikimedia.org
+        esams:
+          hostname: misc-web-lb.esams.wikimedia.org
+        ulsfo:
+          hostname: misc-web-lb.ulsfo.wikimedia.org
   misc_web-https:
     description: Miscellaneous web sites Varnish cluster (HTTPS)
     class: high-traffic2
