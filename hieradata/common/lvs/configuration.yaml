@@ -65,9 +65,18 @@ lvs_service_ips:
       dns_rec: 91.198.174.216
       dns_rec6: 2620:0:862:ed1a::3:fe
   misc_web: &ip_block006
+    codfw:
+      misc_weblb: 208.80.153.248
+      misc_weblb6: 2620:0:860:ed1a::3:d
     eqiad:
       misc_weblb: 208.80.154.241
-      misc_weblb6: 2620:0:861:ed1a::11
+      misc_weblb6: 2620:0:861:ed1a::3:d
+    esams:
+      misc_weblb: 91.198.174.217
+      misc_weblb6: 2620:0:862:ed1a::3:d
+    ulsfo:
+      misc_weblb: 198.35.26.120
+      misc_weblb6: 2620:0:863:ed1a::3:d
   parsoid: &ip_block011
     eqiad: 10.2.2.28
   parsoidcache: &ip_block012
