@@ -1,9 +1,39 @@
 class openstack::glance::service(
     $openstack_version=$::openstack::version,
-    $glanceconfig) {
+    $image_datadir = '/srv/glance/images',
+    $active_server,
+    $standby_server,
+    $keystone_host,
+    $glanceconfig,
+    $keystoneconfig,
+) {
     include openstack::repo
 
-    $image_datadir = '/srv/glance/images'
+    $keystone_host_ip  = ipresolve($keystone_host,4)
+    $keystone_auth_uri = "http://${active_server}:5000/v2.0"
+
+    # Set up a keypair and rsync image files between active and standby
+    user { 'glancesync':
+        ensure     => present,
+        name       => 'glancesync',
+        shell      => '/bin/sh',
+        comment    => 'glance rsync user',
+        gid        => 'glance',
+        managehome => true,
+        require    => Package['glance'],
+        system     => true,
+    }
+
+    ssh::userkey { 'glancesync':
+        ensure  => present,
+        require => User['glancesync'],
+        content => secret('ssh/glancesync/glancesync.pub'),
+    }
+
+    package { 'glance':
+        ensure  => present,
+        require => Class['openstack::repo'],
+    }
 
     #  This is 775 so that the glancesync user can rsync to it.
     file { $image_datadir:
@@ -12,11 +42,6 @@ class openstack::glance::service(
         group   => 'glance',
         require => Package['glance'],
         mode    => '0775',
-    }
-
-    package { 'glance':
-        ensure  => present,
-        require => Class['openstack::repo'],
     }
 
     file {
@@ -35,45 +60,7 @@ class openstack::glance::service(
             require => Package['glance'],
             mode    => '0440';
     }
-    if ($openstack_version == 'essex') {
-        # Keystone config was (thankfully) moved out of the paste config
-        # So, past essex we don't need to change these.
-        file {
-            '/etc/glance/glance-api-paste.ini':
-                content => template("openstack/${$openstack_version}/glance/glance-api-paste.ini.erb"),
-                owner   => 'glance',
-                group   => 'glance',
-                notify  => Service['glance-api'],
-                require => Package['glance'],
-                mode    => '0440';
-            '/etc/glance/glance-registry-paste.ini':
-                content => template("openstack/${$openstack_version}/glance/glance-registry-paste.ini.erb"),
-                owner   => 'glance',
-                group   => 'glance',
-                notify  => Service['glance-registry'],
-                require => Package['glance'],
-                mode    => '0440';
-        }
-    }
 
-    # Set up a keypair and rsync image files between the main glance server
-    #  and the spare.
-    user { 'glancesync':
-        ensure     => present,
-        name       => 'glancesync',
-        shell      => '/bin/sh',
-        comment    => 'glance rsync user',
-        gid        => 'glance',
-        managehome => true,
-        require    => Package['glance'],
-        system     => true,
-    }
-
-    ssh::userkey { 'glancesync':
-        ensure  => present,
-        require => User['glancesync'],
-        content => secret('ssh/glancesync/glancesync.pub'),
-    }
     file { '/home/glancesync/.ssh':
         ensure  => directory,
         owner   => 'glancesync',
@@ -81,6 +68,7 @@ class openstack::glance::service(
         mode    => '0700',
         require => User['glancesync'],
     }
+
     file { '/home/glancesync/.ssh/id_rsa':
         content => secret('ssh/glancesync/glancesync.key'),
         owner   => 'glancesync',
@@ -89,7 +77,7 @@ class openstack::glance::service(
         require => File['/home/glancesync/.ssh'],
     }
 
-    if $::fqdn == hiera('labs_nova_controller') {
+    if $::fqdn == $active_server {
         service { 'glance-api':
             ensure  => running,
             require => Package['glance'],
@@ -100,16 +88,15 @@ class openstack::glance::service(
             require => Package['glance'],
         }
 
-        $spare_glance_host = hiera('labs_nova_controller_spare')
-        if $spare_glance_host != hiera('labs_nova_controller') {
+        if $spandby_server != $active_server {
             cron { 'rsync_glance_images':
-                command => "/usr/bin/rsync -aS ${image_datadir}/* ${spare_glance_host}:${image_datadir}/",
+                command => "/usr/bin/rsync -aS ${image_datadir}/* ${standby_server}:${image_datadir}/",
                 minute  => 15,
                 user    => 'glancesync',
                 require => User['glancesync'],
             }
         } else {
-            # If the primary and the spare are the same, it's not useful to sync
+            # If the active and the standby are the same, it's not useful to sync
             cron { 'rsync_glance_images':
                 ensure => absent,
             }
