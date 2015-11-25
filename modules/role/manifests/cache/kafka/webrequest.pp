@@ -76,12 +76,8 @@ class role::cache::kafka::webrequest(
     }
 
 
-    # TEMPORARY test --until only on a single host
-    $until = $::fqdn ? {
-        'cp1054.eqiad.wmnet' => '0min',
-        default              => undef,
-    }
-
+    # TEMPORARY test --until on all vk drerr alerts
+    $until = '0min'
 
     # Generate an alert if too many delivery report errors per minute
     # (logster only reports once a minute)
