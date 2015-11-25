@@ -19,6 +19,7 @@ sub vcl_recv {
         || req.http.Host == "otrs-test.wikimedia.org"
         || req.http.Host == "hue.wikimedia.org"
         || req.http.Host == "yarn.wikimedia.org"
+        || req.http.Host == "etherpad.wikimedia.org"
     ) {
         if (req.http.X-Forwarded-Proto != "https") {
             set req.http.Location = "https://" + req.http.Host + req.url;
