@@ -68,7 +68,9 @@ templates:
         options:
           host: <%= @mobileapps_uri %>
 
-      - path: wikimedia/v1/graphoid_v1
+      - name: graphoid
+        path: wikimedia/v1/graphoid_v1
+        type: spec
         options:
           host: <%= @graphoid_uri %>
 
