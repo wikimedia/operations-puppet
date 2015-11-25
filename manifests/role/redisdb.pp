@@ -40,6 +40,7 @@ class role::redisdb (
         requirepass                 => $passwords::redis::main_password,
         save                        => '',
         stop_writes_on_bgsave_error => false,
+        slave_read_only             => false,
     }
 
     if $::hostname == 'rdb1008' {
