@@ -36,9 +36,7 @@ class role::labs::openstack::nova::common {
 
 # This is the wikitech UI
 class role::labs::openstack::nova::manager {
-
-    requires_realm('production')
-
+    system::role { $name: }
     include ::nutcracker::monitoring
     include ::mediawiki::packages::php5
     include ::mediawiki::cgroup
@@ -109,29 +107,19 @@ class role::labs::openstack::nova::manager {
 
 # This is nova controller stuff
 class role::labs::openstack::nova::controller {
+    system::role { $name: }
 
     require openstack
-    include ::openstack::controller_firewall
-
     include role::labs::puppetmaster
     include role::labs::openstack::nova::wikiupdates
     include role::labs::openstack::glance::server
     include role::labs::openstack::keystone::server
+    include ::openstack::nova::conductor
+    include ::openstack::nova::scheduler
+    include ::openstack::queue-server
 
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
-
-    class { '::openstack::nova::conductor':
-        novaconfig => $novaconfig,
-    }
-
-    class { '::openstack::nova::scheduler':
-        novaconfig => $novaconfig,
-    }
-
-    class { '::openstack::queue-server':
-        novaconfig => $novaconfig,
-    }
 
     class { '::openstack::adminscripts':
         novaconfig => $novaconfig
@@ -140,10 +128,82 @@ class role::labs::openstack::nova::controller {
     class { '::openstack::spreadcheck':
         novaconfig => $novaconfig
     }
+
+    # TOBE: hiera'd
+    $labs_vms = '10.68.16.0/21'
+    $wikitech = '208.80.154.136'
+    $horizon = '208.80.154.147'
+    $api_host = ipresolve(hiera('labs_nova_api_host'),4)
+    $other_master = ipresolve(hiera('labs_nova_controller_other'),4)
+    $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
+    $designate = ipresolve(hiera('labs_designate_hostname'),4)
+    $designate_secondary = ipresolve(hiera('labs_designate_hostname_secondary'))
+    $monitoring = '208.80.154.14'
+    $labs_nodes = '10.64.20.0/24'
+
+    $fwrules = {
+        wikitech_ssh_public => {
+            rule  => 'saddr (0.0.0.0/0) proto tcp dport (ssh) ACCEPT;',
+        },
+        http_public => {
+            rule  => 'saddr (0.0.0.0/0) proto tcp dport (http https) ACCEPT;',
+        },
+        dns_public => {
+            rule  => 'saddr (0.0.0.0/0) proto (udp tcp) dport 53 ACCEPT;',
+        },
+        keystone_redis_replication => {
+            rule  => "saddr (${other_master} ${spare_master}) proto tcp dport (6379) ACCEPT;",
+        },
+        wikitech_openstack_services => {
+            rule  => "saddr (${wikitech} ${spare_master}) proto tcp dport (5000 35357 9292) ACCEPT;",
+        },
+        horizon_openstack_services => {
+            rule  => "saddr ${horizon} proto tcp dport (5000 35357 9292) ACCEPT;",
+        },
+        keystone => {
+            rule  => "saddr (${other_master} ${labs_nodes} ${spare_master} ${api_host} ${designate} ${designate_secondary}) proto tcp dport (5000 35357) ACCEPT;",
+        },
+        horizon_openstack_services => {
+            rule  => "saddr ${horizon} proto tcp dport (5000 35357 9292) ACCEPT;",
+        },
+        mysql_nova => {
+            rule  => "saddr ${labs_nodes} proto tcp dport (3306) ACCEPT;",
+        },
+        beam_nova => {
+            rule =>  "saddr ${labs_nodes} proto tcp dport (5672 56918) ACCEPT;",
+        },
+        rabbit_for_designate => {
+            rule =>  "saddr ${designate} proto tcp dport 5672 ACCEPT;",
+        },
+        rabbit_for_nova_api => {
+            rule =>  "saddr ${api_host} proto tcp dport 5672 ACCEPT;",
+        },
+        glance_api_nova => {
+            rule => "saddr ${labs_nodes} proto tcp dport 9292 ACCEPT;",
+        },
+        puppetmaster => {
+            rule => "saddr (${labs_vms} ${monitoring}) proto tcp dport 8140 ACCEPT;",
+        },
+        salt => {
+            rule => "saddr (${labs_vms} ${monitoring}) proto tcp dport (4505 4506) ACCEPT;",
+        },
+        mysql_iron => {
+            proto  => 'tcp',
+            port   => '3306',
+            srange => '@resolve(iron.wikimedia.org)',
+        },
+        mysql_tendril_monitoring => {
+            proto  => 'tcp',
+            port   => '3306',
+            srange => '@resolve(tendril.wikimedia.org)',
+        },
+    }
+
+    create_resources (ferm::service, $fwrules)
 }
 
 class role::labs::openstack::nova::api {
-
+    system::role { $name: }
     require openstack
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
@@ -163,6 +223,7 @@ class role::labs::openstack::nova::network::bonding {
 class role::labs::openstack::nova::network {
 
     require openstack
+    system::role { $name: }
     include role::labs::openstack::nova::wikiupdates
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
@@ -211,8 +272,7 @@ class role::labs::openstack::nova::wikiupdates {
 
 class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
 
-    system::role { 'role::labs::openstack::nova::compute':
-        ensure      => 'present',
+    system::role { $name:
         description => 'openstack nova compute node',
     }
 

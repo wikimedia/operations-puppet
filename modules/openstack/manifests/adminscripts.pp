@@ -3,6 +3,7 @@ class openstack::adminscripts(
     $novaconfig,
     $openstack_version = $::openstack::version,
     ) {
+
     include passwords::openstack::nova
     $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
     $nova_controller_hostname = $novaconfig['controller_hostname']

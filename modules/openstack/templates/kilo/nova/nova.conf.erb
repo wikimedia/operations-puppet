@@ -1,5 +1,4 @@
 [DEFAULT]
-
 verbose=True
 auth_strategy=keystone
 compute_driver=nova.virt.libvirt.LibvirtDriver
@@ -95,7 +94,6 @@ ram_allocation_ratio=1.3
 
 # Since our images are copy-on-write we can support some overcommitting here.
 disk_allocation_ratio=1.8
-
 
 # Deprecated, remove in Kilo:
 node_availability_zone=<%= @novaconfig["zone"] %>
