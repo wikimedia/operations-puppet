@@ -25,7 +25,7 @@ class role::redisdb (
         client_output_buffer_limit  => 'slave 512mb 200mb 60',
         dir                         => '/srv/redis',
         masterauth                  => $passwords::redis::main_password,
-        maxmemory                   => $maxmemory,
+        maxmemory                   => '10Gb',
         no_appendfsync_on_rewrite   => true,
         requirepass                 => $passwords::redis::main_password,
         save                        => '',
@@ -41,11 +41,41 @@ class role::redisdb (
                 slaveof                     => 'rdb1007 6379',
             }),
         }
+
+        redis::instance { 6380:
+            settings => merge($defaults, {
+                appendfilename              => "${::hostname}-6380.aof",
+                dbfilename                  => "${::hostname}-6380.rdb",
+                slaveof                     => 'rdb1007 6380',
+            }),
+        }
+
+        redis::instance { 6381:
+            settings => merge($defaults, {
+                appendfilename              => "${::hostname}-6381.aof",
+                dbfilename                  => "${::hostname}-6381.rdb",
+                slaveof                     => 'rdb1007 6381',
+            }),
+        }
     } elsif $::hostname == 'rdb1007' {
         redis::instance { 6379:
             settings => merge($defaults, {
                 appendfilename              => "${::hostname}-6379.aof",
                 dbfilename                  => "${::hostname}-6379.rdb",
+            }),
+        }
+
+        redis::instance { 6380:
+            settings => merge($defaults, {
+                appendfilename              => "${::hostname}-6380.aof",
+                dbfilename                  => "${::hostname}-6380.rdb",
+            }),
+        }
+
+        redis::instance { 6381:
+            settings => merge($defaults, {
+                appendfilename              => "${::hostname}-6381.aof",
+                dbfilename                  => "${::hostname}-6381.rdb",
             }),
         }
     } else {
