@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User=www-data
-ExecStart=/srv/matterircd/matterircd -interface=0.0.0.0
+ExecStart=/srv/matterircd/matterircd -interface=0.0.0.0 -debug=true -mmteam=<%= @default_team %> -mmserver=<%= @default_server %>
 WorkingDirectory=/srv/matterircd
 Restart=always
 RestartSec=30

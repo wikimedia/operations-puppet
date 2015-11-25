@@ -13,5 +13,7 @@ class role::mattermost {
     }
 
     class { '::mattermost::matterircd':
+        default_team   => 'Wikimedia',
+        default_server => 'mattermost.wmflabs.org',
     }
 }

@@ -1,4 +1,7 @@
-class mattermost::matterircd {
+class mattermost::matterircd(
+    $default_team,
+    $default_server,
+) {
     git::clone { 'operations/software/matterircd':
         ensure    => present,
         branch    => 'deploy',
