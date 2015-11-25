@@ -1056,7 +1056,7 @@ node 'hooft.esams.wikimedia.org' {
 
 # Primary graphite machines
 node 'graphite1001.eqiad.wmnet' {
-    role graphite::production, statsdlb, performance, graphite::production::alerts, restbase::alerts
+    role graphite::production, statsdlb, performance, graphite::alerts, restbase::alerts, graphite::alerts::reqstats
     include standard
 }
 
