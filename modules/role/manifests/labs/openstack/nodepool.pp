@@ -4,9 +4,10 @@
 # https://wikitech.wikimedia.org/wiki/Nodepool
 # http://docs.openstack.org/infra/nodepool/
 #
-class role::nodepool {
+class role::labs::openstack::nodepool {
 
     system::role { 'role::nodepool': description => 'CI Nodepool' }
+
     include passwords::nodepool
     $nova_controller = hiera('labs_nova_controller')
 
