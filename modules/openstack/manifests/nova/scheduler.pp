@@ -2,7 +2,6 @@
 # particular instance should run
 class openstack::nova::scheduler(
     $openstack_version=$::openstack::version,
-    $novaconfig
 ){
     include openstack::repo
 

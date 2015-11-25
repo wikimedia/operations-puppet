@@ -1142,6 +1142,7 @@ node 'labcontrol1001.wikimedia.org' {
           deployment::salt_masters,
           dns::ldap
 
+    include base::firewall
     include standard
     include ldap::role::client::labs
 
@@ -1162,6 +1163,7 @@ node 'labcontrol1002.wikimedia.org' {
           salt::masters::labs,
           deployment::salt_masters
 
+    include base::firewall
     include standard
     include ldap::role::client::labs
 
@@ -1176,8 +1178,9 @@ node 'labcontrol2001.wikimedia.org' {
     #$is_labs_puppet_master = true
 
     role dns::ldap, salt::masters::labs
-    include standard
+
     include base::firewall
+    include standard
     include ldap::role::client::labs
 
     #include role::labs::openstack::nova::controller
