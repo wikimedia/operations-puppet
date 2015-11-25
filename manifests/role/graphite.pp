@@ -277,16 +277,6 @@ class role::graphite::production::alerts {
         nagios_critical => false
     }
 
-    # Will try to detect anomalies in the requests error ratio;
-    # if 10% of the last 100 checks is out of forecasted bounds
-    monitoring::graphite_anomaly { 'reqstats-5xx-anomaly':
-        description  => 'HTTP 5xx reqs/min anomaly',
-        metric       => 'reqstats.5xx',
-        warning      => 5,
-        critical     => 10,
-        check_window => 100,
-        over         => true
-    }
 
     # Use graphite's anomaly detection support.
     monitoring::graphite_anomaly { 'kafka-broker-MessagesIn-anomaly':
