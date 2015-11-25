@@ -13,15 +13,52 @@
 	},
 
 	"defaultPadText": "",
-	"sessionKey" : "",
+	"padOptions": {
+	    "noColors": false,
+	    "showControls": true,
+	    "showChat": true,
+	    "showLineNumbers": true,
+	    "useMonospaceFont": false,
+	    "userName": false,
+	    "userColor": false,
+	    "rtl": false,
+	    "alwaysShowChat": false,
+	    "chatAndUsers": false,
+	    "lang": "en-gb"
+	},
+	"suppressErrorsInPadText" : false,
 	"requireSession" : false,
 	"editOnly" : false,
+	"sessionNoPassword" : false,
 	"minify": true,
 	"maxAge" : 21600, // 60 * 60 * 6 = 6 hours
 	"abiword": null,
+	"soffice": null,
+	"tidyHtml" : null,
+	"allowUnknownFileEnds" : false,
 	"requireAuthentication": false,
 	"requireAuthorization": false,
+	"trustProxy" : false,
+	"disableIPlogging" : false,
 	"socketTransportProtocols" : ["xhr-polling", "jsonp-polling", "htmlfile"],
+	"loadTest": false,
+	"indentationOnNewLine": false,
+	"toolbar": {
+	  "left": [
+	    ["bold", "italic", "underline", "strikethrough"],
+	    ["orderedlist", "unorderedlist", "indent", "outdent"],
+	    ["undo", "redo"],
+	    ["clearauthorship"]
+	  ],
+	  "right": [
+	    ["importexport", "timeslider", "savedrevision"],
+	    ["settings", "embed"],
+	    ["showusers"]
+	  ],
+	  "timeslider": [
+	    ["timeslider_export", "timeslider_returnToPad"]
+	  ]
+	},
 	"loglevel": "INFO",
 	"logconfig" : {
 		"appenders": [
