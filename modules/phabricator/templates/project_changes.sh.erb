@@ -55,6 +55,23 @@ SELECT project_transaction.oldValue, project_transaction.newValue,
 END
 )
 
+#echo "result_column_changes"
+result_column_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -u$sql_user $sql_name << END
+
+SELECT cltr.oldValue, cltr.newValue, prj.name, usr.userName
+    FROM phabricator_project.project_columntransaction cltr
+    JOIN phabricator_project.project prj
+    JOIN phabricator_project.project_column pcl
+    JOIN phabricator_user.user usr
+    WHERE (cltr.transactionType = "project:col:name"
+    OR cltr.transactionType = "project:col:status")
+    AND cltr.objectPHID = pcl.phid
+    AND pcl.projectPHID = prj.phid
+    AND cltr.authorPHID = usr.phid
+    AND cltr.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK));
+
+END
+)
 
 # the actual email
 cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" ${rcpt_address}
@@ -75,6 +92,9 @@ ${result_color_changes}
 PROJECT POLICY/LOCKING/ARCHIVING CHANGES:
 ${result_policy_locking_archiving_changes}
 
+
+PROJECT WORKBOARD COLUMN CHANGES:
+${result_column_changes}
 
 
 Yours sincerely,
