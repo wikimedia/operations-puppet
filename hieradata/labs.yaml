@@ -49,8 +49,8 @@ zookeeper_hosts:
   "${::fqdn}": 1
 nrpe::allowed_hosts: '10.68.16.195'
 
-labs_recursor: "labs-recursor0.wikimedia.org"
-labs_recursor_secondary: "labs-recursor1.wikimedia.org"
+labs_recursor: "labs-recursor1.wikimedia.org"
+labs_recursor_secondary: "labs-recursor0.wikimedia.org"
 nfs_mounts:
   project: true
   home: true
