@@ -5,7 +5,7 @@
 
 domain <%= @labsproject %>.<%= @site %>.wmflabs
 search <%= @labsproject %>.<%= @site %>.wmflabs <%= @site %>.wmflabs
-<% scope.lookupvar('::nameservers').sort.each do |nsip| -%>
+<% scope.lookupvar('::nameservers').each do |nsip| -%>
 nameserver <%= nsip %>
 <% end -%>
 options timeout:2 ndots:2
