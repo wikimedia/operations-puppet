@@ -50,6 +50,7 @@ class role::lvs::balancer {
             ],
         /^(lvs200[25])$/ => [
             $sip['upload'][$::site],
+            $sip['misc_web'][$::site],
             $sip['dns_rec'][$::site],
             ],
         /^(lvs200[36])$/ => [
@@ -69,10 +70,12 @@ class role::lvs::balancer {
             ],
         /^(lvs300[24])$/ => [
             $sip['upload'][$::site],
+            $sip['misc_web'][$::site],
             $sip['dns_rec'][$::site],
             ],
         /^(lvs400[24])$/ => [
             $sip['upload'][$::site],
+            $sip['misc_web'][$::site],
             ],
     }
 
