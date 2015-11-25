@@ -2239,6 +2239,7 @@ node /^scb100[12]\.eqiad\.wmnet$/ {
 
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\.org$/ {
+    role openldap::labs
     include standard
     include base::firewall
 }
