@@ -15,7 +15,7 @@ class role::redisdb (
 
     ferm::service { 'redis-server':
         proto  => 'tcp',
-        port   => '6379:6381',
+        port   => '(6379 6380 6381)',
         srange => '$ALL_NETWORKS',
     }
 
