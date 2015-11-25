@@ -1,10 +1,37 @@
 # https://www.mediawiki.org/wiki/Extension:OpenStackManager
 class openstack::openstack-manager(
-    $openstack_version=$::openstack::version,
     $novaconfig,
-    $certificate
+    $certificate,
+    $openstack_version          = $::openstack::version,
+    $webserver_hostname         = 'wikitech.wikimedia.org',
+    $webserver_hostname_aliases = 'wmflabs.org www.wmflabs.org',
 ) {
+
     require mediawiki::users
+    include ::mediawiki::multimedia
+    include ::apache
+    include ::apache::mod::alias
+    include ::apache::mod::ssl
+    include ::apache::mod::php5
+    # ::mediawiki::scap supports syncing the wikitech wiki from tin.
+    include ::mediawiki::scap
+    include ::apache::mod::rewrite
+    include ::apache::mod::headers
+    include role::backup::host
+    include nrpe
+
+    package { [
+        'php5-ldap',
+        'imagemagick',
+        'librsvg2-bin',
+        'nova-xvpvncproxy',
+        'nova-novncproxy',
+        'nova-consoleauth',
+        'novnc']:
+            ensure => present;
+    }
+
+    backup::set {'a-backup': }
 
     if !defined(Class['memcached']) {
         apt::pin { 'memcached':
@@ -24,41 +51,9 @@ class openstack::openstack-manager(
         }
     }
 
-    $controller_hostname = $novaconfig['controller_hostname']
-
-    if ($::lsbdistcodename == 'precise') {
-        package { [ 'php5-ldap', 'php5-uuid', 'imagemagick', 'librsvg2-bin' ]:
-            ensure => present;
-        }
-    } else {
-        package { [ 'php5-ldap', 'imagemagick', 'librsvg2-bin']:
-            ensure => present;
-        }
-    }
-
-    include ::mediawiki::multimedia
-
-    $webserver_hostname = $::realm ? {
-        'production' => 'wikitech.wikimedia.org',
-        default      => $controller_hostname,
-    }
-
-    $webserver_hostname_aliases = $::realm ? {
-        'production' => 'wmflabs.org www.wmflabs.org',
-        default      => "www.${controller_hostname}",
-    }
-
-    include ::apache
-    include ::apache::mod::alias
-    include ::apache::mod::ssl
-    include ::apache::mod::php5
-
     apache::site { $webserver_hostname:
         content => template("apache/sites/${webserver_hostname}.erb"),
     }
-
-    # ::mediawiki::scap supports syncing the wikitech wiki from tin.
-    include ::mediawiki::scap
 
     file {
         '/a':
@@ -142,27 +137,5 @@ class openstack::openstack-manager(
             minute  => 0,
             command => 'find /a/backup -type f -mtime +4 -delete',
             require => File['/a/backup'];
-    }
-
-
-    include ::apache::mod::rewrite
-    include ::apache::mod::headers
-
-    include role::backup::host
-    backup::set {'a-backup': }
-
-    include nrpe
-
-    package { 'nova-xvpvncproxy':
-        ensure => present,
-    }
-    package { 'nova-novncproxy':
-        ensure => present,
-    }
-    package { 'nova-consoleauth':
-        ensure => present,
-    }
-    package { 'novnc':
-        ensure => present,
     }
 }
