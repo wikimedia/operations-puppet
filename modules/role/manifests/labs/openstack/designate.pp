@@ -1,7 +1,8 @@
 class role::labs::openstack::designate::server {
 
-    include openstack
+    system::role { $name: }
 
+    include openstack
     $keystone_host   = hiera('labs_keystone_host')
     $nova_controller = hiera('labs_nova_controller')
     $keystoneconfig  = hiera_hash('keystoneconfig', {})

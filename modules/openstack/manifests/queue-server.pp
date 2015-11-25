@@ -1,7 +1,6 @@
 # sets up rabbitmq on the nova controller
-class openstack::queue-server(
-    $novaconfig
-) {
+class openstack::queue-server {
+
     include openstack::repo
 
     package { [ 'rabbitmq-server' ]:
