@@ -37,6 +37,11 @@ cache_upload:
   cp3047.esams.wmnet: [varnish-fe, varnish-be, nginx]
   cp3048.esams.wmnet: [varnish-fe, varnish-be, nginx]
   cp3049.esams.wmnet: [varnish-fe, varnish-be, nginx]
+cache_misc:
+  cp3019.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp3020.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp3021.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp3022.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
 dns:
   maerlant.wikimedia.org: [pdns_recursor]
   nescio.wikimedia.org: [pdns_recursor]

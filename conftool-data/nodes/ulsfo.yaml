@@ -17,3 +17,8 @@ cache_upload:
   cp4013.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
   cp4014.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
   cp4015.ulsfo.wmnet: [varnish-fe, varnish-be, nginx]
+cache_misc:
+  cp4001.ulsfo.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp4002.ulsfo.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp4003.ulsfo.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp4004.ulsfo.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
