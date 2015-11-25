@@ -40,6 +40,7 @@ class mediawiki::users(
 
     user { 'l10nupdate':
         ensure     => present,
+        uid        => 10002,
         gid        => 10002,
         shell      => '/bin/bash',
         home       => '/home/l10nupdate',
