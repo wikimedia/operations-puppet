@@ -5,6 +5,7 @@ class role::labs::openstack::designate::server {
     include openstack
     $keystone_host   = hiera('labs_keystone_host')
     $nova_controller = hiera('labs_nova_controller')
+
     $keystoneconfig  = hiera_hash('keystoneconfig', {})
     $designateconfig = hiera_hash('designateconfig', {})
 
@@ -19,6 +20,7 @@ class role::labs::openstack::designate::server {
     $designateconfig['keystone_auth_protocol'] = $keystoneconfig['auth_protocol']
 
     class { 'openstack::designate::service':
+        keystoneconfig => $keystoneconfig,
         designateconfig => $designateconfig,
     }
 

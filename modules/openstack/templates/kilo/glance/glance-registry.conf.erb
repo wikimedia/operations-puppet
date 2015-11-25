@@ -64,12 +64,12 @@ use_syslog = False
 #ca_file = /path/to/cafile
 
 [keystone_authtoken]
-service_protocol = <%= @glanceconfig["keystone_auth_protocol"] %>
-service_host = <%= @glanceconfig["keystone_auth_host"] %>
+service_host = <%= @keystone_host_ip %>
+service_protocol = <%= @keystoneconfig['auth_protocol'] %>
 service_port = 5000
-identity_uri = <%= @glanceconfig["keystone_auth_protocol"] %>://<%= @glanceconfig["keystone_auth_host"] %>:<%= @glanceconfig["keystone_auth_port"] %>
-admin_token = <%= @glanceconfig["keystone_admin_token"] %>
-auth_uri = <%= @glanceconfig["auth_uri"] %>/v2.0
+identity_uri = <%= @keystoneconfig["auth_protocol"] %>://<%= @keystone_host_ip %>:<%= @keystoneconfig['auth_port'] %>
+admin_token = <%= @keystoneconfig["admin_token"] %>
+auth_uri = <%= @keystone_auth_uri %>
 
 [paste_deploy]
 # Name of the paste configuration file that defines the available pipelines
