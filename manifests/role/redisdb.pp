@@ -46,16 +46,16 @@ class role::redisdb (
     if $::hostname == 'rdb1008' {
         redis::instance { 6379:
             settings => merge($defaults, {
-                appendfilename              => "${::hostname}_6379.aof",
-                dbfilename                  => "${::hostname}_6379.rdb",
+                appendfilename              => "${::hostname}-6379.aof",
+                dbfilename                  => "${::hostname}-6379.rdb",
                 slaveof                     => 'rdb1007 6379',
             }),
         }
     } elsif $::hostname == 'rdb1007' {
         redis::instance { 6379:
             settings => merge($defaults, {
-                appendfilename              => "${::hostname}_6379.aof",
-                dbfilename                  => "${::hostname}_6379.rdb",
+                appendfilename              => "${::hostname}-6379.aof",
+                dbfilename                  => "${::hostname}-6379.rdb",
             }),
         }
     } else {
