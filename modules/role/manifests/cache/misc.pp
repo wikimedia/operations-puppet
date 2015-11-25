@@ -155,12 +155,12 @@ class role::cache::misc {
         },
         'two' => {
             'backend'        => {
-                'dynamic'  => 'no', # should be 'yes' XXX
+                'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $cluster_nodes['eqiad'],
             },
             'backend_random' => {
-                'dynamic'  => 'no', # should be 'yes' XXX
+                'dynamic'  => 'yes',
                 'type'     => 'random',
                 'backends' => $cluster_nodes['eqiad'],
                 'service'  => 'varnish-be-rand',
@@ -253,14 +253,14 @@ class role::cache::misc {
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
         vcl_config      => $fe_vcl_config,
-        directors          => {
+        directors       => {
             'backend' => {
-                'dynamic'  => 'no', # XXX should be 'yes'
+                'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $site_cluster_nodes,
             },
             'backend_random' => {
-                'dynamic'  => 'no', # XXX should be 'yes'
+                'dynamic'  => 'yes',
                 'type'     => 'random',
                 'backends' => $site_cluster_nodes,
                 'service'  => 'varnish-be-rand',
