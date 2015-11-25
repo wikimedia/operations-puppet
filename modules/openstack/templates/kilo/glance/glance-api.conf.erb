@@ -284,7 +284,6 @@ service_protocol = <%= @glanceconfig["keystone_auth_protocol"] %>
 service_host = <%= @glanceconfig["keystone_auth_host"] %>
 service_port = 5000
 identity_uri = <%= @glanceconfig["keystone_auth_protocol"] %>://<%= @glanceconfig["keystone_auth_host"] %>:<%= @glanceconfig["keystone_auth_port"] %>
-admin_token = ADMIN
 admin_token = <%= @glanceconfig["keystone_admin_token"] %>
 auth_uri = <%= @glanceconfig["auth_uri"] %>/v2.0
 
