@@ -358,7 +358,10 @@ lvs_services:
     description: Miscellaneous web sites Varnish cluster
     class: high-traffic2
     sites:
+    - codfw
     - eqiad
+    - esams
+    - ulsfo
     ip: *ip_block006
     bgp: 'yes'
     depool-threshold: '.5'
@@ -373,12 +376,15 @@ lvs_services:
       uri: varnishcheck!/
       sites:
         eqiad:
-          hostname: misc-web-lb.eqiad.wikimedia.org
+          hostname: misc-web-lb.wikimedia.org
   misc_web-https:
     description: Miscellaneous web sites Varnish cluster (HTTPS)
     class: high-traffic2
     sites:
+    - codfw
     - eqiad
+    - esams
+    - ulsfo
     ip: *ip_block006
     port: 443
     scheduler: sh
