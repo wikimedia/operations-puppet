@@ -246,13 +246,13 @@ class role::graphite::production {
     }
 }
 
-# == Class: role::graphite::production::alerts
+# == Class: role::graphite::alerts
 #
 # Install icinga alerts on graphite metrics.
 # NOTE to be included only from one host, icinga will generate different alerts
 # for all hosts that include this class.
 #
-class role::graphite::production::alerts {
+class role::graphite::alerts {
     # Infer Kafka cluster configuration from this class
     include ::role::analytics::kafka::config
 
@@ -266,17 +266,6 @@ class role::graphite::production::alerts {
 
     swift::monitoring::graphite_alerts { 'eqiad-prod': }
     swift::monitoring::graphite_alerts { 'codfw-prod': }
-
-    # Monitor production 5xx rates
-    monitoring::graphite_threshold { 'reqstats-5xx-threshold':
-        description     => 'HTTP 5xx reqs/min threshold',
-        metric          => 'reqstats.5xx',
-        warning         => 250,
-        critical        => 500,
-        from            => '15min',
-        nagios_critical => false
-    }
-
 
     # Use graphite's anomaly detection support.
     monitoring::graphite_anomaly { 'kafka-broker-MessagesIn-anomaly':
@@ -305,4 +294,110 @@ class role::graphite::production::alerts {
         percentage  => 40,
     }
 
+}
+
+class role::graphite::alerts::reqstats {
+
+    # Global threshold alarm as we had with reqstats.5xx
+    # Monitor production 5xx rates
+    monitoring::graphite_threshold { 'reqstats-5xx-threshold':
+        description     => 'HTTP 5xx reqs/min threshold',
+        metric          => 'sumSeries(varnish.*.*.frontend.request.client.status.5xx.sum)',
+        warning         => 250,
+        critical        => 500,
+        from            => '15min',
+        nagios_critical => false,
+    }
+
+    # sites aggregates
+    monitoring::graphite_threshold { 'reqstats-5xx-eqiad':
+        description     => 'EQIAD HTTP 5xx reqs/min',
+        metric          => 'sumSeries(varnish.eqiad.*.frontend.request.client.status.5xx.sum)',
+        warning         => 75,
+        critical        => 150,
+        from            => '15min',
+        nagios_critical => false,
+    }
+
+    monitoring::graphite_threshold { 'reqstats-5xx-esams':
+        description     => 'ESAMS HTTP 5xx reqs/min',
+        metric          => 'sumSeries(varnish.esams.*.frontend.request.client.status.5xx.sum)',
+        warning         => 75,
+        critical        => 150,
+        from            => '15min',
+        nagios_critical => false,
+    }
+
+    monitoring::graphite_threshold { 'reqstats-5xx-codfw':
+        description     => 'CODFW HTTP 5xx reqs/min',
+        metric          => 'sumSeries(varnish.codfw.*.frontend.request.client.status.5xx.sum)',
+        warning         => 75,
+        critical        => 150,
+        from            => '15min',
+        nagios_critical => false,
+    }
+
+    monitoring::graphite_threshold { 'reqstats-5xx-ulsfo':
+        description     => 'ULSFO HTTP 5xx reqs/min',
+        metric          => 'sumSeries(varnish.ulsfo.*.frontend.request.client.status.5xx.sum)',
+        warning         => 75,
+        critical        => 150,
+        from            => '15min',
+        nagios_critical => false,
+    }
+
+    # per-cache aggregates
+    monitoring::graphite_threshold { 'reqstats-5xx-text':
+        description     => 'Text HTTP 5xx reqs/min',
+        metric          => 'sumSeries(varnish.*.text.frontend.request.client.status.5xx.sum)',
+        warning         => 75,
+        critical        => 150,
+        from            => '15min',
+        nagios_critical => false,
+    }
+
+    monitoring::graphite_threshold { 'reqstats-5xx-mobile':
+        description     => 'Mobile HTTP 5xx reqs/min',
+        metric          => 'sumSeries(varnish.*.mobile.frontend.request.client.status.5xx.sum)',
+        warning         => 75,
+        critical        => 150,
+        from            => '15min',
+        nagios_critical => false,
+    }
+
+    monitoring::graphite_threshold { 'reqstats-5xx-uploads':
+        description     => 'Uploads HTTP 5xx reqs/min',
+        metric          => 'sumSeries(varnish.*.uploads.frontend.request.client.status.5xx.sum)',
+        warning         => 75,
+        critical        => 150,
+        from            => '15min',
+        nagios_critical => false,
+    }
+
+    monitoring::graphite_threshold { 'reqstats-5xx-misc':
+        description     => 'Misc HTTP 5xx reqs/min',
+        metric          => 'sumSeries(varnish.*.misc.frontend.request.client.status.5xx.sum)',
+        warning         => 75,
+        critical        => 150,
+        from            => '15min',
+        nagios_critical => false,
+    }
+
+    monitoring::graphite_threshold { 'reqstats-5xx-parsoid':
+        description     => 'Parsoid HTTP 5xx reqs/min',
+        metric          => 'sumSeries(varnish.*.parsoid.frontend.request.client.status.5xx.sum)',
+        warning         => 75,
+        critical        => 150,
+        from            => '15min',
+        nagios_critical => false,
+    }
+
+    monitoring::graphite_threshold { 'reqstats-5xx-maps':
+        description     => 'Maps HTTP 5xx reqs/min',
+        metric          => 'sumSeries(varnish.*.maps.frontend.request.client.status.5xx.sum)',
+        warning         => 75,
+        critical        => 150,
+        from            => '15min',
+        nagios_critical => false,
+    }
 }
