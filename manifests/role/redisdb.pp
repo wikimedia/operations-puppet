@@ -20,6 +20,7 @@ class role::redisdb (
     }
 
     $defaults = {
+        bind                        => '0.0.0.0',
         appendonly                  => true,
         auto_aof_rewrite_min_size   => '512mb',
         client_output_buffer_limit  => 'slave 512mb 200mb 60',
