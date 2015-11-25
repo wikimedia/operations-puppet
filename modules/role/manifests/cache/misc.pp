@@ -201,6 +201,11 @@ class role::cache::misc {
             'port'          => 8088,
         },
         {
+            # etherpad nodejs listens on 9001
+            'backend_match' => '^etherpad1001',
+            'port'          => 9001,
+        },
+        {
             'port'                  => 80,
             'connect_timeout'       => '5s',
             'first_byte_timeout'    => '35s',
