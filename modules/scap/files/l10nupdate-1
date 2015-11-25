@@ -107,6 +107,7 @@ do
 		# l10nupdate private key.
 		NOLOGMSG=1 $BINDIR/sudo-withagent l10nupdate $SCAPDIR/sync-dir --no-shared-authsock -D ssh_user:l10nupdate "php-$mwVerNum/cache/l10n" "l10nupdate for $mwVerNum"
 		if [[ $? -ne 0 ]]; then
+			$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: Failed to sync-dir 'php-$mwVerNum/cache/l10n'"
 			echo "Failed to sync-dir 'php-$mwVerNum/cache/l10n'"
 			exit 1
 		fi
