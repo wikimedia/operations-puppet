@@ -1,1 +1,1 @@
-role::db::redis::dir: "/srv/redis"
+jobqueue_redis_slaveof: rdb1007
