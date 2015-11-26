@@ -1,7 +1,6 @@
 class ldap::client::pam($ldapconfig) {
-    package { 'libpam-ldapd':
-        ensure => latest,
-    }
+
+    require_package('libpam-ldapd')
 
     File {
         owner => 'root',
@@ -9,27 +8,20 @@ class ldap::client::pam($ldapconfig) {
         mode  => '0444',
     }
 
-    file { '/etc/pam.d/common-auth':
-            source => 'puppet:///modules/ldap/common-auth',
+    exec { 'pam-auth-update':
+        command     => '/usr/sbin/pam-auth-update --package',
+        refreshonly => true,
+        require     => Package['libpam-ldapd'],
     }
 
-    file { '/etc/pam.d/sshd':
-            source => 'puppet:///modules/ldap/sshd',
+    file { '/usr/share/pam-configs/wikimedia-labs-pam':
+        source => 'puppet:///modules/ldap/wikimedia-labs-pam',
+        notify => Exec['pam-auth-update'],
     }
 
-    file { '/etc/pam.d/common-account':
-            source => 'puppet:///modules/ldap/common-account',
+    file { '/usr/local/sbin/cleanup-pam-config':
+        source => 'puppet:///modules/ldap/cleanup-pam-config',
+        mode   => '0555',
     }
 
-    file { '/etc/pam.d/common-password':
-            source => 'puppet:///modules/ldap/common-password',
-    }
-
-    file { '/etc/pam.d/common-session':
-            source => 'puppet:///modules/ldap/common-session',
-    }
-
-    file { '/etc/pam.d/common-session-noninteractive':
-            source => 'puppet:///modules/ldap/common-session-noninteractive',
-    }
 }
