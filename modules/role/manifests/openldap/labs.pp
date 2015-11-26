@@ -16,7 +16,7 @@ class role::openldap::labs {
     $sync_pass = $passwords::openldap::labs::sync_pass
     class { '::openldap':
         sync_pass   => $sync_pass,
-        mirror_mode => true,
+        mirrormode => true,
         suffix      => 'dc=wikimedia,dc=org',
         datadir     => '/var/lib/ldap/labs',
         ca          => '/etc/ssl/certs/ca-certificates.crt',
