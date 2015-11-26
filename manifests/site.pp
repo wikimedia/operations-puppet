@@ -2169,7 +2169,7 @@ node /^rdb100[1-9]\.eqiad\.wmnet/ {
 }
 
 node /^rdb200[1-4]\.codfw\.wmnet/ {
-    role redisdb
+    role jobqueue_redis
 }
 
 # restbase eqiad cluster
