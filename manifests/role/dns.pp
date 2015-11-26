@@ -5,11 +5,7 @@ class role::dns::ldap {
 
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 
-    if hiera('labs_ldap_dns_ip_override', undef) == undef {
-        $primary_ldap_dns = ipresolve(hiera('labs_ldap_dns_host'),4)
-    } else {
-        $primary_ldap_dns = hiera('labs_ldap_dns_ip_override')
-    }
+    $primary_ldap_dns = ipresolve(hiera('labs_ldap_dns_host'),4)
 
     interface::ip { 'role::dns::ldap':
         interface => 'eth0',
