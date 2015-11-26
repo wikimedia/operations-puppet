@@ -1,0 +1,43 @@
+#! /bin/bash
+
+## This script axes the current pam configuration from
+## /etc/pam.d/sshd and /etc/pam.d/common-* and forces it
+## to be recreated (from the package for the former, and
+## from /usr/share/pam-configs/ for the latter).
+##
+## The whole thing paranoidly:
+##  a) keeps backups;
+##  b) rolls back at the first sign of trouble; and
+##  c) won't even start if a backup is present
+
+if ! cd /etc/pam.d; then
+    echo "Unable to cd to /etc/pam.d" >&2
+    exit 1
+fi
+
+# iff ./sshd exists and ./sshd.orig does not, move the former
+# to the latter and force dpkg to reinstall missing config
+# files (via apt-get).  This restarts the sshd master daemon,
+# and returns ./sshd.orig to ./sshd if apt-get reports issues.
+#
+# If all went well, ./sshd has the stock config and ./sshd.orig
+# has a backup of the previous one.
+mv -n sshd sshd.orig && (
+    apt-get -o Dpkg::Options::="--force-confmiss" install --reinstall openssh-server ||
+    mv -f sshd.orig sshd
+)
+
+# For ./common-* we make copies instead of moving the
+# configuration files around to avoid there ever being a point
+# where only /part/ of the configuration is present. Once
+# all the files have been copied, /then/ we remove the
+# originals and regenerate configuration.
+for i in common-{account,auth,password,session,session-noninteractive}; do
+    cp -np $i $i.orig || exit 1
+done
+rm common-{account,auth,password,session,session-noninteractive} && (
+    pam-auth-update --package --force ||
+    for i in common-{account,auth,password,session,session-noninteractive}; do
+        mv -f $i.orig $i
+    done
+)
