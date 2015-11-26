@@ -1172,13 +1172,12 @@ node 'labcontrol1002.wikimedia.org' {
 
     role labs::openstack::nova::controller,
           salt::masters::labs,
-          deployment::salt_masters
+          deployment::salt_masters,
+          dns::ldap
 
     include base::firewall
     include standard
     include ldap::role::client::labs
-
-    role dns::ldap
 }
 
 node 'labcontrol2001.wikimedia.org' {
