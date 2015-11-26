@@ -1,6 +1,1 @@
 cluster: redis
-role::redisdb::redis_replication:
-  rdb1002: rdb1001
-  rdb1004: rdb1003
-  rdb1008: rdb1007
-role::redisdb::dir: "/a/redis"
