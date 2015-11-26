@@ -12,7 +12,7 @@ group =
 pid_file = /var/run/diamond.pid
 
 [handlers]
-keys = rotated_file
+keys = rotated_file,stdout
 
 ### Defaults options for all Handlers
 [[default]]
@@ -32,8 +32,12 @@ keys = default
 [logger_root]
 # to increase verbosity, set DEBUG
 level = INFO
-handlers = rotated_file
+handlers = stdout
 propagate = 1
+
+[handler_stdout]
+class = logging.handlers.StreamHandler
+args = (None, )
 
 [handler_rotated_file]
 class = logging.handlers.TimedRotatingFileHandler
