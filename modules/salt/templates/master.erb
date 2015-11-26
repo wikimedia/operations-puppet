@@ -525,3 +525,11 @@ reactor:<% salt_reactor.sort.each do |salt_tag, salt_states| %>
 # them)
 # default value is 5 seconds
 gather_job_timeout: 10
+
+##### ZMQ High Watermark Setting for pub sockets #####
+######################################################
+# This setting is used to determine how many messages
+# can be pending on a pub socket per peer receiving
+# before messages are discarded
+# default value is 1000
+pub_hwm: 2000
