@@ -2,3 +2,5 @@ cluster: virt
 debdeploy::grains:
   debdeploy-nova-control:
     value: standard
+
+labs_ldap_dns_ip_override: 208.80.153.15
