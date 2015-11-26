@@ -42,22 +42,18 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     }
 
     # Warn/Alert if the difference between raw and valid EventLogging
-    # alerts gets too big.
+    # alerts gets too big.  We put a 5 minute lag because of metrics
+    # not being correct in graphite before.
     # If the difference gets too big, either the validation step is
     # overloaded, or high volume schemas are failing validation.
-    #
-    # Since diffed series are not fully synchronized, the plain diff
-    # would gives a trajectory that is flip/flopping above and below
-    # zero ~50 events/s. Hence, we average the diff over 10
-    # readings. That way, we dampen flip/flopping enough to get a
-    # characteristic that is worth alerting on.
     monitoring::graphite_threshold { 'eventlogging_difference_raw_validated':
         description   => 'Difference between raw and validated EventLogging overall message rates',
-        metric        => "movingAverage(absolute(diffSeries(${raw_events_rate_metric},${valid_events_rate_metric})),10)",
+        metric        => "absolute(diffSeries(${raw_events_rate_metric},${valid_events_rate_metric}))",
         warning       => 20,
         critical      => 30,
-        percentage    => 25, # At least 4 of the 15 readings
-        from          => '15min',
+        percentage    => 20, # At least 3 of the (20 - 5) = 15 readings
+        from          => '20min',
+        until         => '5min',
         contact_group => 'analytics',
     }
 }
