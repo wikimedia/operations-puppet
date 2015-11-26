@@ -1167,9 +1167,7 @@ node 'labcontrol1002.wikimedia.org' {
     include standard
     include ldap::role::client::labs
 
-    # The dns controller grabs an IP, so leave this disabled until/unless
-    #  this server is the primary labs controller.
-    #include role::dns::ldap
+    role dns::ldap
 }
 
 node 'labcontrol2001.wikimedia.org' {
