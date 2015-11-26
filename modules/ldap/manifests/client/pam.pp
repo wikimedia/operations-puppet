@@ -9,27 +9,14 @@ class ldap::client::pam($ldapconfig) {
         mode  => '0444',
     }
 
-    file { '/etc/pam.d/common-auth':
-            source => 'puppet:///modules/ldap/common-auth',
+    exec { 'pam-auth-update':
+        command     => '/usr/sbin/pam-auth-update --package --force',
+        refreshonly => true,
+        require     => Exec['restore-default-pamd-sshd'],
     }
 
-    file { '/etc/pam.d/sshd':
-            source => 'puppet:///modules/ldap/sshd',
-    }
-
-    file { '/etc/pam.d/common-account':
-            source => 'puppet:///modules/ldap/common-account',
-    }
-
-    file { '/etc/pam.d/common-password':
-            source => 'puppet:///modules/ldap/common-password',
-    }
-
-    file { '/etc/pam.d/common-session':
-            source => 'puppet:///modules/ldap/common-session',
-    }
-
-    file { '/etc/pam.d/common-session-noninteractive':
-            source => 'puppet:///modules/ldap/common-session-noninteractive',
+    file { '/usr/share/pam-configs/wikimedia-labs-pam':
+        source  => 'puppet:///modules/ldap/wikimedia-labs-pam',
+        notify  => Exec['pam-auth-update'],
     }
 }
