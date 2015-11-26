@@ -6,7 +6,8 @@ User=kubernetes
 Group=kubernetes
 ExecStart=/usr/bin/kube-controller-manager \
     --cluster-cidr=192.168.0.0/24 \
-    --master=http://127.0.0.1:8080
+    --master=http://127.0.0.1:8080 \
+    --service-account-private-key-file=/var/lib/kubernetes/ssl/private_keys/server.key
 
 [Install]
 WantedBy=multi-user.target
