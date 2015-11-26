@@ -2164,11 +2164,11 @@ node 'rcs1001.eqiad.wmnet', 'rcs1002.eqiad.wmnet' {
     role rcstream
 }
 
-node 'rdb1004.eqiad.wmnet', 'rdb1007.eqiad.wmnet', 'rdb1008.eqiad.wmnet' {
+node /^rdb100[3-9]\.eqiad\.wmnet/ {
     role jobqueue_redis
 }
 
-node /^rdb100[0-3]\.eqiad\.wmnet/ {
+node /^rdb100[0-2]\.eqiad\.wmnet/ {
     role redisdb
 }
 
