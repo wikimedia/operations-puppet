@@ -26,7 +26,6 @@ def sort_keys_recursive(value)
     end
     value.sort.reduce(map) { |h, (k, v)| h[k] = sort_keys_recursive(v); h }
   when 'true', 'false'
-    value == 'true'
   when :undef
     nil
   else
