@@ -1,6 +1,8 @@
 queue_servers:
   - rdb1001.eqiad.wmnet
   - rdb1003.eqiad.wmnet
+  - rdb1003.eqiad.wmnet:6380
+  - rdb1003.eqiad.wmnet:6381
   - rdb1007.eqiad.wmnet
   - rdb1007.eqiad.wmnet:6380
   - rdb1007.eqiad.wmnet:6381
