@@ -31,3 +31,6 @@ hhvm::extra::cli:
       # Limit number of child processes running at once
       # Also, use light processes, that are more efficient
       light_process_count: 2
+    mysql:
+      # Kill queries only after 1 day
+      read_timeout: 86400000
