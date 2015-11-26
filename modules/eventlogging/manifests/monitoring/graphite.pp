@@ -42,7 +42,7 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     }
 
     # Warn/Alert if the difference between raw and valid EventLogging
-    # alerts gets too big.  We put a 5 minute lag because of metrics
+    # alerts gets too big.  We put a 10 minute lag because of metrics
     # not being correct in graphite before.
     # If the difference gets too big, either the validation step is
     # overloaded, or high volume schemas are failing validation.
@@ -52,8 +52,8 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
         warning       => 20,
         critical      => 30,
         percentage    => 20, # At least 3 of the (20 - 5) = 15 readings
-        from          => '20min',
-        until         => '5min',
+        from          => '25min',
+        until         => '10min',
         contact_group => 'analytics',
     }
 }
