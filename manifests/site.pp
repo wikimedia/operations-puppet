@@ -498,17 +498,28 @@ node /^db10(33)\.eqiad\.wmnet/ {
 
 # MariaDB 10
 
-node /^db10(51|53|55|57|66|72|73)\.eqiad\.wmnet/ {
+node /^db10(51|55|57|66|72|73)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's1',
     }
 }
 
+# s1 (enwiki) core production slave dbs on eqiad
 node /^db1065\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's1',
         p_s   => 'on',
     }
+}
+
+# This mess will be eventually cleaned up and all
+# servers will be on the following node:
+node /^db10(53)\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 's1',
+        p_s   => 'on',
+    }
+    include base::firewall
 }
 
 node /^db20(16|34|42|48|55|62|69|70)\.codfw\.wmnet/ {
@@ -535,7 +546,7 @@ node /^db20(17|35|41|49|56|63|64)\.codfw\.wmnet/ {
     include base::firewall
 }
 
-# s3 core production slave dbs on eqiad
+# s3 (default) core production slave dbs on eqiad
 node /^db10(15|27|35|44)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's3',
