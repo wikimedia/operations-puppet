@@ -210,15 +210,14 @@ class role::cache::misc {
     ])
 
     $common_vcl_config = {
-        'retry503'         => 4,
-        'retry5xx'         => 1,
         'cache4xx'         => '1m',
         'do_gzip'          => true,
         'allowed_methods'  => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
     }
 
     $fe_vcl_config = merge($common_vcl_config, {
-        'layer'           => 'frontend',
+        'layer'            => 'frontend',
+        'retry503'         => 1,
     })
 
     $be_one_vcl_config = merge($common_vcl_config, {
