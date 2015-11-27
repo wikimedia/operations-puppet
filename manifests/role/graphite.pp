@@ -215,6 +215,14 @@ class role::graphite::base(
         content => template('graphite/graphite.apache.erb'),
     }
 
+    file { '/etc/apache2/graphite-referer-ban':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('graphite/graphite-referer-ban.erb'),
+    }
+
     nrpe::monitor_service { 'carbon':
         description  => 'Graphite Carbon',
         nrpe_command => '/sbin/carbonctl check',

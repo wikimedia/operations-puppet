@@ -15,6 +15,13 @@
         SetHandler uwsgi-handler
     </Location>
 
+    RewriteEngine on
+    RewriteMap graphite_referer_ban "txt:/etc/apache2/graphite-referer-ban"
+
+    RewriteCond "%{HTTP_REFERER}" !=""
+    RewriteCond "${graphite_referer_ban:%{HTTP_REFERER}}" =-
+    RewriteRule "^" "" [F]
+
     <Location ~ "/(render|metrics)">
         Satisfy Any
         Allow from all
