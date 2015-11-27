@@ -1,3 +1,5 @@
 cluster: virt
 admin::groups:
   - deployment
+
+apache::logrotate::rotate: 12
