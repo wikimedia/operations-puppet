@@ -5,6 +5,10 @@ cluster backends
   <% end -%>
   ;
 
+# graphite -> prometheus metric mapping
+cluster graphite_exporter
+  forward localhost:9109
+;
 
 <% @c_relay_settings['cluster_tap'].each do |tap| -%>
 # duplicate (tap) this metric to <%= tap[1] %>
