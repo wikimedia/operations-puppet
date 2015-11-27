@@ -7,9 +7,6 @@ setgid redis
 
 exec /usr/bin/redis-server /etc/redis/<%= @instance_name %>.conf
 
-# We expect daemonize=yes
-expect fork
-
 respawn
 
 # vim: set ft=upstart:
