@@ -22,6 +22,8 @@ class role::openldap::labs {
         ca          => '/etc/ssl/certs/ca-certificates.crt',
         certificate => "/etc/ssl/localcerts/ldap-labs.${::site}.wikimedia.org.crt",
         key         => "/etc/ssl/private/ldap-labs.${::site}.wikimedia.org.key",
+        extra_schemas => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
+                          'puppet.schema', 'sudo.schema'],
     }
 
     ferm::service { 'corp_ldap':
