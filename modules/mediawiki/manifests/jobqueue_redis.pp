@@ -47,7 +47,7 @@ define mediawiki::jobqueue_redis(
             maxmemory                   => '10Gb',
             no_appendfsync_on_rewrite   => true,
             requirepass                 => $passwords::redis::main_password,
-            save                        => '',
+            save                        => '""',
             stop_writes_on_bgsave_error => false,
             slave_read_only             => false,
             appendfilename              => "${::hostname}-${port}.aof",
