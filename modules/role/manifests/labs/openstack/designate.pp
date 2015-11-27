@@ -20,7 +20,6 @@ class role::labs::openstack::designate::server {
     $designateconfig['keystone_auth_protocol'] = $keystoneconfig['auth_protocol']
 
     class { 'openstack::designate::service':
-        keystoneconfig => $keystoneconfig,
         designateconfig => $designateconfig,
     }
 
