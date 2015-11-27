@@ -56,4 +56,20 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
         until         => '10min',
         contact_group => 'analytics',
     }
+
+
+    # Warn/Alert if the db inserts of EventLogging data have dropped dramatically
+    # Since the MySQL consumer is at the bottom of the pipeline
+    # this metric is a good proxy to make sure events are flowing through the
+    # kafka pipeline
+    monitoring::graphite_threshold { 'eventlogging_overall_inserted_rate':
+        description   => 'Overall insertion rate from MySQL consumer',
+        metric        => "eventlogging.overall.inserted.rate",
+        warning       => 100,
+        critical      => 10,
+        percentage    => 20, # At least 3 of the (25 - 10) = 15 readings
+        from          => '25min',
+        until         => '10min',
+        contact_group => 'analytics',
+    }
 }
