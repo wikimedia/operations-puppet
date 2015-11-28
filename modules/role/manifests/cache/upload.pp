@@ -4,7 +4,7 @@ class role::cache::upload {
     }
 
     class { 'varnish::htcppurger':
-        mc_addrs => [ '239.128.0.113' ],
+        mc_addrs => [ '239.128.0.112', '239.128.0.113' ],
     }
 
     include role::cache::2layer
