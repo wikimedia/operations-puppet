@@ -7,7 +7,6 @@ ExecStart=/usr/bin/kubelet \
     --kubeconfig=/etc/kubernetes/kubeconfig \
     --api-servers=https://<%= @master_host %>:6443 \
     --configure-cbr0=false \
-    --cluster-dns=<%= @cluster_dns_ip %> \
     --tls-private-key-file=/var/lib/kubernetes/ssl/private_keys/server.key \
     --tls-cert-file=/var/lib/kubernetes/ssl/certs/cert.pem \
     --cluster-domain=kube \
