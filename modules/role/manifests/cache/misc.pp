@@ -213,6 +213,7 @@ class role::cache::misc {
         'cache4xx'         => '1m',
         'do_gzip'          => true,
         'allowed_methods'  => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
+        'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
     }
 
     $fe_vcl_config = merge($common_vcl_config, {

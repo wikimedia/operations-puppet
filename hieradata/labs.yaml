@@ -37,6 +37,8 @@ cache::maps::nodes:
     eqiad:
       - '127.0.0.1'
 role::cache::base::zero_site: 'http://zero.wikimedia.beta.wmflabs.org'
+role::cache::base::purge_host_only_upload_re: '^upload\.beta\.wmflabs\.org$'
+role::cache::base::purge_host_not_upload_re: '^(?!upload\.beta\.wmflabs\.org)'
 role::cache::base::static_host: 'deployment.wikimedia.beta.wmflabs.org'
 role::cache::base::upload_domain: 'upload.beta.wmflabs.org'
 role::cache::base::bits_domain: 'bits.beta.wmflabs.org'
