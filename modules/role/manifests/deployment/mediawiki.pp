@@ -2,7 +2,7 @@
 # Installs everything needed to deploy mediawiki
 class role::deployment::mediawiki(
     $keyholder_user = 'mwdeploy',
-    $keyholder_group = 'wikidev',
+    $keyholder_group = ['wikidev', 'mwdeploy'],
     $key_fingerprint = 'f5:18:a3:44:77:a2:31:23:cb:7b:44:e1:4b:45:27:11',
     ) {
 

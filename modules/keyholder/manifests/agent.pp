@@ -14,7 +14,8 @@
 # [*trusted_group*]
 #   The name or GID of the trusted user group with which the agent
 #   should be shared. It is the caller's responsibility to ensure
-#   the group exists.
+#   the group exists. An array of group idnetifiers can also be provided
+#   to allow access by multiple groups.
 #
 # [*key_fingerprint*]
 #   Fingerprint of the public half of the private keyfile specified
@@ -24,7 +25,7 @@
 #
 #  keyholder::agent { 'mwdeploy':
 #      keyfile         => 'mwdeploy_key_rsa',
-#      trusted_group   => 'wikidev',
+#      trusted_group   => ['wikidev', 'mwdeploy'],
 #      key_fingerprint => '00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00'
 #      require         => Group['wikidev'],
 #  }
@@ -35,7 +36,7 @@ define keyholder::agent(
     $key_file = "${name}_rsa",
 ) {
     file { "/etc/keyholder-auth.d/${name}.yml":
-        content => inline_template("---\n<%= @trusted_group %>: ['<%= @key_fingerprint %>']\n"),
+        content => inline_template("---\n<% [*@trusted_group].each do |g| %><%= g %>: ['<%= @key_fingerprint %>']\n<% end %>"),
         owner   => 'root',
         group   => 'keyholder',
         mode    => '0440',
