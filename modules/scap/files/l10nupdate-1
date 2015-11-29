@@ -102,23 +102,12 @@ do
 		refreshCdbJsonFiles --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
 
 		echo "Syncing to Apaches at `date --rfc-3339=seconds`"
-		SYNC_START=$(date +%s)
-		# FIXME: This should use the keyholder proxy so we can kill the
-		# l10nupdate private key.
-		NOLOGMSG=1 $BINDIR/sudo-withagent l10nupdate $SCAPDIR/sync-dir --no-shared-authsock -D ssh_user:l10nupdate "php-$mwVerNum/cache/l10n" "l10nupdate for $mwVerNum"
+		sudo -u mwdeploy -n -- $SCAPDIR/sync-l10n --verbose $mwVerNum
 		if [[ $? -ne 0 ]]; then
-			$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: Failed to sync-dir 'php-$mwVerNum/cache/l10n'"
-			echo "Failed to sync-dir 'php-$mwVerNum/cache/l10n'"
+			echo "Failed to sync-l10n '$mwVerNum'"
 			exit 1
 		fi
-
-		# TODO: Add parameter to scap-rebuild-cdbs to only build 1 version of MW
-		dsh -g mediawiki-installation -M -F 40 -- "sudo -u mwdeploy $SCAPDIR/scap-rebuild-cdbs"
-		SYNC_END=$(date +%s)
-
-		$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate completed ($mwVerNum) at `date --rfc-3339=seconds`"
 		echo "All done at `date --rfc-3339=seconds`"
-		$BINDIR/deploy2graphite l10nupdate-sync $((SYNC_END-SYNC_START))
 	else
 		$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed ($mwVerNum) at `date --rfc-3339=seconds`"
 		echo "FAILED"

@@ -39,24 +39,24 @@ class scap::l10nupdate(
         source => 'puppet:///modules/scap/l10nupdate-1',
     }
 
-    # add ssh keypair for l10nupdate user from fenari for T82575
-    file { '/home/l10nupdate/.ssh':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+    # Allow l10nupdate user to call sync-l10n as the mwdeploy user.
+    # This command is equivalent to a restricted sync-dir call that only syncs
+    # l10n cache files followed by a scap-rebuild-cdbs call.
+    sudo::user { 'l10nupdate-sync':
+        user => 'l10nupdate',
+        privileges => [
+            'ALL = (mwdeploy) NOPASSWD: /srv/deployment/scap/scap/bin/sync-l10n',
+        ]
     }
+
+    # l10nupdate's ssh key is no longer needed due to the introduction of the
+    # sync-l10n scap script.
+    # TODO: remove after ssh key is removed from all hosts
     file { '/home/l10nupdate/.ssh/id_rsa':
-        owner   => 'l10nupdate',
-        group   => 'l10nupdate',
-        mode    => '0400',
-        content => secret('ssh/tin/l10nupdate/id_rsa'),
+        ensure => 'absent',
     }
     file { '/home/l10nupdate/.ssh/id_rsa.pub':
-        owner   => 'l10nupdate',
-        group   => 'l10nupdate',
-        mode    => '0444',
-        content => secret('ssh/tin/l10nupdate/id_rsa.pub'),
+        ensure => 'absent',
     }
 
     # Make sure the log directory exists and has adequate permissions.
