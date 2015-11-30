@@ -81,6 +81,15 @@ class role::lvs::balancer {
 
     include standard
 
+    # temporary experimental section used here for newer Linux kernels
+    if $::operatingsystem == 'Debian' {
+        apt::repository { 'wikimedia-experimental':
+            uri         => 'http://apt.wikimedia.org/wikimedia',
+            dist        => "${::lsbdistcodename}-wikimedia",
+            components  => 'experimental',
+        }
+    }
+
     class { '::lvs::balancer':
         service_ips          => $lvs_balancer_ips,
         lvs_services         => $lvs::configuration::lvs_services,
