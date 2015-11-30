@@ -52,8 +52,7 @@ class role::elasticsearch::server{
 
     # Install
     class { '::elasticsearch':
-        require       => Package['elasticsearch/plugins'],
-        merge_threads => 1,
+        require => Package['elasticsearch/plugins'],
     }
 
     if $::standard::has_ganglia {
