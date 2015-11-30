@@ -1,0 +1,26 @@
+index	default 		pres,eq
+index	objectClass 		eq
+index	entryCSN 		eq
+index	entryUUID 		eq
+index	automountkey 		pres,eq
+index	businessCategory 	pres,eq
+index   cn 			eq,sub
+index	gidNumber 		pres,eq
+index	givenName 		eq,sub
+index	initials 		pres,eq
+index	ipHostNumber 		pres,sub
+index	ipnetworkNumber 	pres,eq
+index	mail			eq,sub
+index	member			eq
+index	membernisnetgroup	pres,sub
+#NOTE: nisnetgrouptriple one had sub as well in opendj due to a slightly different schema
+index	nisnetgrouptriple	pres
+index	oncRpcNumber		pres,eq
+index	sn 			eq,sub
+index	telephoneNumber		eq,sub
+index   uid			eq
+index	uidNumber		pres,eq
+index	uniqueMember		eq
+index	x121address		pres,eq
+index	memberOf 		eq
+index	memberUid 		eq
