@@ -55,6 +55,7 @@ class toollabs::dev_environ {
         'ant',
         'apt-file',
         'autoconf',
+        'automake',                    # T119870
         'build-essential', # for dpkg
         'byobu',                       # T88989.
         'cmake',
