@@ -75,9 +75,9 @@ class openldap(
 
     file { '/etc/ldap/slapd.conf' :
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        owner   => 'openldap',
+        group   => 'openldap',
+        mode    => '0440',
         content => template('openldap/slapd.erb'),
     }
 
