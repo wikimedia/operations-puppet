@@ -77,7 +77,7 @@ class openldap(
         ensure  => present,
         owner   => 'root',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0440',
         content => template('openldap/slapd.erb'),
     }
 
