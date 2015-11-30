@@ -59,6 +59,15 @@ class scap::l10nupdate(
         ensure => 'absent',
     }
 
+    # T119746: make git fetch happy by setting up git identity
+    file { '/home/l10nupdate/.gitconfig':
+        ensure => 'present',
+        owner  => 'l10nupdate',
+        group  => 'l10nupdate',
+        mode   => '0644',
+        source => 'puppet:///modules/scap/l10nupdate.gitconfig',
+    }
+
     # Make sure the log directory exists and has adequate permissions.
     # It's called l10nupdatelog because /var/log/l10nupdate was used
     # previously so it'll be an existing file on some systems.
