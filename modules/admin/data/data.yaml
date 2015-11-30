@@ -75,7 +75,7 @@ groups:
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
-              vbaranetsky, atgomez]
+              vbaranetsky, atgomez, matmarex]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -113,7 +113,7 @@ groups:
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
-              jminor, asherman, etonkovidova, sbisson, addshore]
+              jminor, asherman, etonkovidova, sbisson, addshore, matmarex]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -1706,3 +1706,10 @@ users:
     realname: Jan Drewniak
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDpY8H5wj5hwRngoX6xScBN9RTPvnpKoxq7lqXj7QjTXNyEA20XhXfpp46KA7XwokHx3lepXOn8JLnJ98jCwLxMNL2AlpflN46JAgC+f+Zk53+ImXYKCUaLEyhgonUoaLhpEr0cukFMosDgDDw3PRD7Y/ph2O+WXNeOkXAlhxp/eKsHEwLbf+LTATApT69hT7lAjR3WLAiW8ENM6dmyiztjBLW122RjJv/Lp21caK7ttIf2TIGKrbYSFwVvlrEPVUk4QIqRgOrn8KV4FpgJ+4QI4DrTAVBMzVu2dFd/dcNaR8HjsTsWz+eTwGbcz797BSZ9M+1mXjXQERF8w95dgG+criSqJDh1Yjm1F8w+vQbBatSmoTSrQ1+NtL+FovB+GVtHmsAu6dEIcx4q59oe79iK0xPZCpRg40DIpdLwSeXsPUBroGQmu6i5wFnEABwqwwN5q7KcV0BDbmIksJp6BYy6YIfcfiAxPuvESCN17BgusLUrPitCgpohbtiiRMl2/92UfyB8n/gJpAEQUAa7WhvEUTvFcFH0u8dhyBt6QOUuLftxO7ou27jXApn/8YYucofl34lX+BTNWYBWFiib90sVO/Azb7cpMmESagN0Nn4x4qg8gcmq/frtd8N4QF21WjxT1MxLDPc+ux02KVHE/qNggEDn03nZxBFrm3811Z2H6w== jdrewniak@wikimedia.org]
     uid: 13379
+  matmarex:
+    ensure: present
+    gid: 500
+    name: matmarex
+    realname: Bartosz Dziewoński
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCvoVABbR0lV0QYcyviYSzkjwSwIsvLsLpomvJGX6CsVAXa8b7q8TMhcXRxEdcVv50JE+wE0PqCetLtNxRYVOPOMVZibt/w3jCZyVTio0bsdkYVDK0YT5UECfB9B+TI/gs2DRfDyeOIRjK8CqSSIqXsc7LeWQE3AZaFqAOXgtX+mTUIFfye3+yhs23mFWRx6LMUYkhiEviRlbHW83yMRRGZXPOLqsBGmAfusogv5g7+Xfr03LwEdLvOjXc+PxMNVZ1eUT3BQ+FOol93l0p/jCtME8ODiLbyhvaPbOOy5zbeqieRz0+xpgcfMWo9mOx6cVNUwL4FKD7D4Y0cYdaEq0QKdpeGh23lUDwVP2cnAgYgOE0Foon3QZV2q25fDprsnaNmYN6/YFCfmmQTy+YSI7K4gCahS1Wy7lJEAT/iKD5siPLkNKxCvQfgNFBQAJjfZbom9xeZdGHO0wwPlS2/FvwvlGIEf5v+b3bVLSKp2+J1HBRzqg26lcNtK3zehh+BuTOtBoWXaoE5gzIY1FhIRxcIiXqmYjPmb9DGMeX9QYeZ8AwV3SVPc8GI6mtBW6hsMNPvPNIBlIaINWX/dbAYmxhS4IolSWK5naXtKM3ZdnlfkJEI0HBvTLPIGEPYB1Dp31d1NuATO3SNtPsSbfWedufX3S+b6yqrO//sUIfhvKkJAQ== a@T500]
+    uid: 2501
