@@ -1,6 +1,6 @@
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/misc/demux.py
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///files/misc/demux.py
 #####################################################################
 
 # Simple python script for demultiplexing MediaWiki log files
@@ -54,7 +54,8 @@ while True:
         if sys.exc_info()[0] == 'KeyboardInterrupt':
             break
 
-        # Close the file and delete it from the map, in case there's something wrong with it
+        # Close the file and delete it from the map,
+        # in case there's something wrong with it
         if name in openFiles:
             try:
                 openFiles[name].close()
