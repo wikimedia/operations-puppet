@@ -24,6 +24,7 @@ class role::openldap::labs {
         key         => "/etc/ssl/private/ldap-labs.${::site}.wikimedia.org.key",
         extra_schemas => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                           'puppet.schema', 'sudo.schema'],
+        extra_indices => 'openldap/labs-indices.erb',
     }
 
     ferm::service { 'corp_ldap':
