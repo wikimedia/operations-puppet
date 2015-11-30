@@ -35,8 +35,8 @@ Codename: jessie-wikimedia
 AlsoAcceptFor: jessie jessie-backports
 Version: 8
 Architectures: source amd64 i386
-Components: main backports thirdparty
-UDebComponents: main backports thirdparty
+Components: main backports thirdparty experimental
+UDebComponents: main backports thirdparty experimental
 Update: hwraid cassandra grafana tor
 Description: Wikimedia packages for Debian Jessie
 SignWith: default
