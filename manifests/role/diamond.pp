@@ -28,6 +28,7 @@ class role::diamond {
             # lint:endignore
             host    => $host,
             port    => '8125',
+            batch   => '20',
         },
     }
 }
