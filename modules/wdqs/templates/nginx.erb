@@ -40,6 +40,11 @@ server {
         # drop cookies
         proxy_set_header Cookie "";
 
+        # 5 minute max query time for stat1002
+        if ( $remote_addr ~* 10.64.5.102 ) {
+            proxy_set_header X-BIGDATA-MAX-QUERY-MILLIS 300000;
+        }
+
         add_header Access-Control-Allow-Origin *;
 
         client_max_body_size 10M;
