@@ -15,7 +15,7 @@ nagios_exits = {
 
 
 def nagios_exit(state, msg):
-    if not state in nagios_exits:
+    if state not in nagios_exits:
         state = 'UNKNOWN'
     print("HHVM_TC_SPACE {} {}".format(state, msg))
     sys.exit(nagios_exits[state])
