@@ -36,6 +36,12 @@ class role::wdqs  {
         port  => '443',
     }
 
+    ferm::service { 'wdqs_analytics_http':
+        proto => 'tcp',
+        port => '9999',
+        srange => '@resolve(stat1002.eqiad.wmnet stat1003.eqiad.wmnet)',
+    }
+
     # Monitor Blazegraph
     include ::wdqs::monitor::blazegraph
 
