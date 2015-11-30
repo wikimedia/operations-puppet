@@ -14,10 +14,14 @@ class mediawiki::packages {
     # Pear
     package { [
         'php-pear',
-        'php-mail',
-        'php-mail-mime',
     ]:
         ensure => present,
+    }
+
+    package { [
+        'php-pear',
+    ]:
+        ensure => absent,
     }
 
     # TeX packages
