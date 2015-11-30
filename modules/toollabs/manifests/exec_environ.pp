@@ -253,6 +253,7 @@ class toollabs::exec_environ {
         'gnuplot-nox',
         'graphicsmagick',              # T58995
         'graphviz',
+        'grep',
         'hugin-tools',                 # T108210
         'imagemagick',                 # T65000
         'iotop',                       # useful for labs admins to monitor tools
