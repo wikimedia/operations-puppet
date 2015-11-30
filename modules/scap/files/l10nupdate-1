@@ -1,4 +1,7 @@
 #!/bin/bash
+# Merge new translations from HEAD into the l10n cache files for deployed
+# MediaWiki versions and sync the updated caches to the MediaWiki servers.
+#
 # This script belongs in /usr/local/bin/.
 
 . /etc/profile.d/mediawiki.sh
@@ -99,7 +102,7 @@ do
 		echo "Completed at `date --rfc-3339=seconds`. Copying LC files to $MEDIAWIKI_STAGING_DIR"
 		cp --preserve=timestamps --force "$tempCacheDir"/l10n_cache-* $MEDIAWIKI_STAGING_DIR/php-"$mwVerNum"/cache/l10n
 		# Include JSON versions of the CDB files and add MD5 files
-		refreshCdbJsonFiles --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
+		${SCAPDIR}/refreshCdbJsonFiles --directory="$MEDIAWIKI_STAGING_DIR/php-$mwVerNum/cache/l10n"
 
 		echo "Syncing to Apaches at `date --rfc-3339=seconds`"
 		sudo -u mwdeploy -n -- $SCAPDIR/sync-l10n --verbose $mwVerNum
