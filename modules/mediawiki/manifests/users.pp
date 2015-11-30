@@ -28,29 +28,8 @@ class mediawiki::users(
         content => $mwdeploy_pub_key,
     }
 
-    # The l10nupdate account is used for updating the localisation files
-    # with new interface message translations.
-
-    group { 'l10nupdate':
-        ensure => present,
-        gid    => 10002,
-    }
-
-    user { 'l10nupdate':
-        ensure     => present,
-        gid        => 10002,
-        shell      => '/bin/bash',
-        home       => '/home/l10nupdate',
-        managehome => true,
-    }
-
-    # TODO: remove after ssh key has been purged from production servers
-    ssh::userkey { 'l10nupdate':
-        ensure => 'absent',
-    }
-
-    # Grant mwdeploy sudo rights to run anything as itself or apache.
-    # This allows MediaWiki deployers to deploy as mwdeploy.
+    # Grant mwdeploy sudo rights to run anything as itself, apache and the
+    # l10nupdate user. This allows MediaWiki deployers to deploy as mwdeploy.
     sudo::user { 'mwdeploy':
         privileges => [
             "ALL = (${web},mwdeploy,l10nupdate) NOPASSWD: ALL",
@@ -60,13 +39,6 @@ class mediawiki::users(
             'ALL = (root) NOPASSWD: /usr/sbin/apache2ctl graceful-stop',
         ]
     }
-
-    # Allow l10nupdate user to run anything as the unprivledged web user.
-    # Needed for mwscript actions and related operations.
-    sudo::user { 'l10nupdate':
-        privileges => ["ALL = (${web}) NOPASSWD: ALL"],
-    }
-
 
     # The pybal-check account is used by PyBal to monitor server health
     # See <https://wikitech.wikimedia.org/wiki/LVS#SSH_checking>
