@@ -135,13 +135,6 @@ private:
       home: true
       project: true
       scratch: true
-  orgcharts:
-    gid: 50228
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   project-proxy:
     gid: 50254
     mounts:
