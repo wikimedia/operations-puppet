@@ -13,9 +13,27 @@ class scap::l10nupdate(
     $deployment_group = 'wikidev',
     $run_l10nupdate   = false,
 ) {
+    require ::mediawiki::users::web
+
     $ensure_l10nupdate_cron = $run_l10nupdate ? {
         true    => 'present',
         default => 'absent',
+    }
+
+    # The l10nupdate account is used for updating the localisation files
+    # with new interface message translations.
+
+    group { 'l10nupdate':
+        ensure => present,
+        gid    => 10002,
+    }
+
+    user { 'l10nupdate':
+        ensure     => present,
+        gid        => 10002,
+        shell      => '/bin/bash',
+        home       => '/home/l10nupdate',
+        managehome => true,
     }
 
     cron { 'l10nupdate':
@@ -39,24 +57,18 @@ class scap::l10nupdate(
         source => 'puppet:///modules/scap/l10nupdate-1',
     }
 
-    # Allow l10nupdate user to call sync-l10n as the mwdeploy user.
-    # This command is equivalent to a restricted sync-dir call that only syncs
-    # l10n cache files followed by a scap-rebuild-cdbs call.
-    sudo::user { 'l10nupdate-sync':
+    sudo::user { 'l10nupdate':
         user => 'l10nupdate',
         privileges => [
+            # Allow l10nupdate user to call sync-l10n as the mwdeploy user.
+            # This command is equivalent to a restricted sync-dir call that
+            # only syncs l10n cache files followed by a scap-rebuild-cdbs
+            # call.
             'ALL = (mwdeploy) NOPASSWD: /srv/deployment/scap/scap/bin/sync-l10n',
+            # Allow l10nupdate user to run anything as the unprivledged web
+            # user. Needed for mwscript actions and related operations.
+            "ALL = (${::mediawiki::users::web}) NOPASSWD: ALL",
         ]
-    }
-
-    # l10nupdate's ssh key is no longer needed due to the introduction of the
-    # sync-l10n scap script.
-    # TODO: remove after ssh key is removed from all hosts
-    file { '/home/l10nupdate/.ssh/id_rsa':
-        ensure => 'absent',
-    }
-    file { '/home/l10nupdate/.ssh/id_rsa.pub':
-        ensure => 'absent',
     }
 
     # T119746: make git fetch happy by setting up git identity
