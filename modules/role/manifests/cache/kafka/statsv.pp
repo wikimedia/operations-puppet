@@ -13,7 +13,7 @@ class role::cache::kafka::statsv(
     $varnish_svc_name = 'varnish',
 ) inherits role::cache::kafka
 {
-    $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{@ip}h %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
+    $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
 
     varnishkafka::instance { 'statsv':
         brokers           => $kafka_brokers,
