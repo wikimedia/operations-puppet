@@ -41,6 +41,7 @@ server {
         proxy_set_header Cookie "";
 
         add_header Access-Control-Allow-Origin *;
+        add_header X-Served-By $hostname;
 
         client_max_body_size 10M;
         client_body_buffer_size 1m;
