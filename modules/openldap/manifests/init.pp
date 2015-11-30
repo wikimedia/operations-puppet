@@ -29,6 +29,9 @@
 #    $extra_acls
 #       Optional. Specify an ERB template file with additional ACL access rules
 #       (in addition to the base rules)
+#    $extra_indices
+#       Optional. Specify an ERB template file with additional LDAP indices
+#       (in addition to the base indices)
 #
 # Actions:
 #       Install/configure slapd
@@ -53,6 +56,7 @@ class openldap(
     $ca=undef,
     $extra_schemas=undef,
     $extra_acls=undef,
+    $extra_indices=undef,
 ) {
 
     require_package('slapd', 'ldap-utils', 'python-ldap')
@@ -114,6 +118,24 @@ class openldap(
         }
     }
 
+    if $extra_indices {
+        file { '/etc/ldap/indices.conf' :
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('openldap/base-indices.erb', $extra_indices),
+        }
+    } else {
+        file { '/etc/ldap/indices.conf' :
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('openldap/base-indices.erb'),
+        }
+    }
+
     # We do this cause we want to rely on using slapd.conf for now
     exec { 'rm_slapd.d':
         onlyif  => '/usr/bin/test -d /etc/ldap/slapd.d',
@@ -131,6 +153,7 @@ class openldap(
 
     # Relationships
     File['/etc/ldap/acls.conf'] -> File['/etc/ldap/slapd.conf']
+    File['/etc/ldap/indices.conf'] -> File['/etc/ldap/slapd.conf']
     Package['slapd'] -> File['/etc/ldap/slapd.conf']
     Package['slapd'] -> File['/etc/default/slapd']
     Package['slapd'] -> File[$datadir]
