@@ -7,7 +7,7 @@ class mediawiki::php {
 
     if os_version('ubuntu >= trusty || debian >= Jessie') {
         $php_module_conf_dir = '/etc/php5/mods-available'
-        mediawiki::php_enmod { ['fss', 'mail']: }
+        mediawiki::php_enmod { ['fss']: }
     } else {
         $php_module_conf_dir = '/etc/php5/conf.d'
     }
@@ -38,7 +38,6 @@ class mediawiki::php {
 
     file { "${php_module_conf_dir}/mail.ini":
         ensure  => absent,
-        require => Package['php-mail'],
     }
 
     if os_version('ubuntu precise') {
