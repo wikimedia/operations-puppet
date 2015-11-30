@@ -37,16 +37,16 @@ The Puppet module bundled with this script will manage these
 dependencies for you.
 
 """
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
-
 import atexit
 import codecs
 import json
 import logging
 import select
 import socket
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 try:
     # irclib 0.7+
