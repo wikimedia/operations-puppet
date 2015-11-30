@@ -30,10 +30,11 @@ See more below on how to use those
 Building packages
 =================
 
-You just either download a ready package and either of
+You just either download a ready package:
 
+    dget http://http.debian.net/debian/pool/main/d/dh-virtualenv/dh-virtualenv_0.10-1.dsc
     export DIST=jessie
-    sudo -E cowbuilder --build dh-virtualenv_0.9-1.dsc
+    sudo -E cowbuilder --build dh-virtualenv_0.10-1.dsc
 
 or if you are developing a package and are in the package directory:
 
