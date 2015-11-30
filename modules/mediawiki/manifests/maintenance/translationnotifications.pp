@@ -28,7 +28,7 @@ class mediawiki::maintenance::translationnotifications( $ensure = present ) {
         mode   => '0664',
     }
 
-    file { '/etc/logrotate.d/l10nupdate':
+    file { '/etc/logrotate.d/translationnotifications':
         ensure => $ensure,
         source => 'puppet:///modules/mediawiki/maintenance/logrotate.d_translationnotifications',
         owner  => 'root',
