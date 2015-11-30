@@ -39,23 +39,10 @@ echo "Starting l10nupdate at $(date -ud @$BEGAN)."
 echo "Updating git clone ..."
 for path in $GITREPOS
 do
-	if [ -d $GITDIR/$path ]
+	if [ ! -d $GITDIR/$path ]
 	then
-		# Checkout exists, update it
-		if cd $GITDIR/$path && git pull && git submodule update --init
-		then
-			echo "Updated $path"
-		else
-			$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: git pull of $path failed"
-			echo "Updating $path FAILED."
-			exit 1
-		fi
-	else
 		# Create the checkout's parent directory
-		if mkdir -p `dirname $GITDIR/$path` &&
-			git clone $GITURL/$path $GITDIR/$path &&
-			cd $GITDIR/$path &&
-			git submodule update --init
+		if mkdir -p `dirname $GITDIR/$path` &&	git clone $GITURL/$path $GITDIR/$path
 		then
 			echo "Cloned $path"
 		else
@@ -63,6 +50,15 @@ do
 			echo "Cloning $path FAILED."
 			exit 1
 		fi
+	fi
+	# Checkout exists, update it
+	if cd $GITDIR/$path && git pull && git submodule update --init
+	then
+		echo "Updated $path"
+	else
+		$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME LocalisationUpdate failed: git pull of $path failed"
+		echo "Updating $path FAILED."
+		exit 1
 	fi
 done
 echo "git clone updated."
