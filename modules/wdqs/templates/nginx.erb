@@ -9,6 +9,8 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
+    add_header X-Served-By <%= @hostname %> always;
+
     error_page 503 @maintenance;
     location @maintenance {
         root <%= @package_dir %>/gui;
