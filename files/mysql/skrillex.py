@@ -109,21 +109,21 @@ def executeQuery(instanceHost, instancePort,
 
 
 def main():
-    ## Set any defaults that need setting
+    # Set any defaults that need setting
     yamlConfig = '/etc/skrillex.yaml'
 
-    ## parse comnmand line and set defaults
+    # parse comnmand line and set defaults
     args = parseCommandLine()
     if args["config"] is None:
         args["config"] = yamlConfig
 
-    ## load yaml file
+    # load yaml file
     topology = loadConfig(args["config"])
 
-    ## create dict of all instances that will be queried
+    # create dict of all instances that will be queried
     executionInstances = setInstances(args["group"], topology)
 
-    ## iterate over dict and actuall run queries
+    # iterate over dict and actuall run queries
     for instance in executionInstances:
         instanceHost = executionInstances[instance]["host"]
         instancePort = executionInstances[instance]["port"]
