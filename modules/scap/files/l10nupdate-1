@@ -5,7 +5,6 @@
 
 BINDIR=/usr/local/bin
 SCAPDIR=/srv/deployment/scap/scap/bin
-MWMULTIDIR=$MEDIAWIKI_STAGING_DIR/multiversion
 # The configuration in CommonSettings.php should match GITDIR and GITREPOS
 GITDIR=/var/lib/l10nupdate/mediawiki
 GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
