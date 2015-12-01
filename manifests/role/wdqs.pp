@@ -36,12 +36,6 @@ class role::wdqs  {
         port  => '443',
     }
 
-    ferm::service { 'wdqs_internal_http':
-        proto => 'tcp',
-        port  => '8888',
-        srange => '$INTERNAL',
-    }
-
     # Monitor Blazegraph
     include ::wdqs::monitor::blazegraph
 
