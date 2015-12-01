@@ -161,7 +161,7 @@ function checkAssets( url ) {
 					payload.combined.http304++;
 					break;
 				case 403: // Forbidden
-				case 403: // Not Found
+				case 404: // Not Found
 					payload.combined.http4xx++;
 					break;
 				case 500: // Internal Server Error
