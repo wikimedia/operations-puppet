@@ -5,7 +5,7 @@ class toollabs::monitoring::icinga {
         host_fqdn => 'tools.wmflabs.org',
     }
 
-    monitoring::service { 'main_page':
+    monitoring::service { 'tools_main_page':
         description   => 'tools-home',
         check_command => 'check_http',
         host          => 'tools.wmflabs.org',

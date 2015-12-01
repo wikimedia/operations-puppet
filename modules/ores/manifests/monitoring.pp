@@ -5,7 +5,7 @@ class ores::monitoring {
         host_fqdn => 'ores.wmflabs.org',
     }
 
-    monitoring::service { 'main_page':
+    monitoring::service { 'ores_main_page':
         description    => 'ORES home page',
         check_command  => 'check_http',
         host           => 'ores.wmflabs.org',
