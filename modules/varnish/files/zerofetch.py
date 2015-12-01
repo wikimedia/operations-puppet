@@ -26,15 +26,15 @@ class ZeroFetcher:
         params.update({'action': action})
         resp = getattr(self.sess, method)(self.baseurl, params=params)
         if resp.status_code != requests.codes.ok:
-            raise Exception('Bad response code '
-                            + str(resp.status_code)
-                            + ' from API request for '
-                            + action)
+            raise Exception('Bad response code ' +
+                            str(resp.status_code) +
+                            ' from API request for ' +
+                            action)
         try:
             resp_data = json.loads(resp.content)
         except ValueError:
-            raise Exception('Invalid JSON response from API request for '
-                            + action)
+            raise Exception('Invalid JSON response from API request for ' +
+                            action)
         return resp_data
 
     # Object instantiation does an immediate two-phase login...
@@ -47,15 +47,15 @@ class ZeroFetcher:
         login_params = {'lgname': username, 'lgpassword': password}
         login1_data = self._apiJSON('post', 'login', login_params)
         if login1_data['login']['result'] != 'NeedToken':
-            raise Exception('API login phase1 gave result '
-                            + login1_data['login']['result']
-                            + ', expected "NeedToken"')
+            raise Exception('API login phase1 gave result ' +
+                            login1_data['login']['result'] +
+                            ', expected "NeedToken"')
         login_params['lgtoken'] = login1_data['login']['token']
         login2_data = self._apiJSON('post', 'login', login_params)
         if login2_data['login']['result'] != 'Success':
-            raise Exception('API login phase2 gave result '
-                            + login2_data['login']['result']
-                            + ', expected "Success"')
+            raise Exception('API login phase2 gave result ' +
+                            login2_data['login']['result'] +
+                            ', expected "Success"')
         self.logged_in = True
 
     # Logout method, which only acts if we're currently logged-in
@@ -119,16 +119,16 @@ def main():
         renames[out_temp] = os.path.join(args.directory, ztype + '.json')
         json.dump(json_data[ztype], file(out_temp, 'w'))
         if os.system('/usr/bin/vnm_validate ' + out_temp + ' >/dev/null 2>&1'):
-            raise Exception('Validation of ' + out_temp
-                            + ' via vnm_validate failed')
+            raise Exception('Validation of ' + out_temp +
+                            ' via vnm_validate failed')
 
     # Rename all of the JSON files into the actual output directory,
     #  IFF the contents are different from the existing file (so as
     #  not to trip the mtime-watching reload code in vmod_netmapper
     #  unnecessarily)
     for temp in renames:
-        if (not os.path.exists(renames[temp])
-                or not filecmp.cmp(temp, renames[temp])):
+        if (not os.path.exists(renames[temp]) or
+                not filecmp.cmp(temp, renames[temp])):
             os.rename(temp, renames[temp])
         else:
             os.remove(temp)
