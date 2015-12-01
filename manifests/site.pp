@@ -1046,6 +1046,21 @@ node 'labtestneutron2001.codfw.wmnet' {
     include standard
 }
 
+node 'labtestcontrol2001.wikimedia.org' {
+    #$is_puppet_master      = true
+    #$is_labs_puppet_master = true
+
+    include standard
+    role labs::openstack::nova::controller
+
+    #role labs::openstack::nova::controller,
+    #      salt::masters::labs,
+    #      deployment::salt_masters,
+    #      dns::ldap
+    #include base::firewall
+    #include ldap::role::client::labs
+}
+
 # bastion in the Netherlands
 node 'hooft.esams.wikimedia.org' {
     $ganglia_aggregator = true
