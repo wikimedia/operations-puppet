@@ -19,7 +19,7 @@ class labstore::account_services {
 
     $creds = {
         'ldap' => {
-            'host'     => 'ldap-eqiad.wikimedia.org',
+            'host'     => 'ldap-labs.eqiad.wikimedia.org',
             'username' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
             'password' => $::passwords::ldap::labs::proxypass,
         },
