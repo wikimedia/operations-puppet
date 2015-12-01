@@ -49,7 +49,7 @@ class salt::minion(
         master_finger       => $master_finger,
         grains              => $grains,
         dns_check           => false,
-        random_reauth_delay => 270,
+        random_reauth_delay => 10,
         recon_default       => 1000,
         recon_max           => 30000,
         recon_randomize     => true,
