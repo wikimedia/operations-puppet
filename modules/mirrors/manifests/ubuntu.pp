@@ -35,7 +35,7 @@ class mirrors::ubuntu {
         ensure  => present,
         command => '/usr/local/sbin/update-ubuntu-mirror 1>/dev/null 2>/var/lib/mirror/mirror.err.log',
         user    => 'mirror',
-        hour    => '*/6',
+        hour    => '*/3',
         minute  => '43',
         require => File['/usr/local/sbin/update-ubuntu-mirror'],
     }
