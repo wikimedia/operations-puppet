@@ -59,7 +59,7 @@ include "analytics.inc.vcl";
 
 # ACLs
 
-acl purge { 
+acl local_host {
 	"127.0.0.1";
 }
 
@@ -367,7 +367,7 @@ sub normalize_path {
 sub vcl_recv_purge {
 	/* Support HTTP PURGE */
 	if (req.request == "PURGE") {
-		if (!client.ip ~ purge) {
+		if (client.ip !~ local_host) {
 			error 405 "Denied.";
 		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
 			set req.hash_ignore_busy = true;
@@ -396,7 +396,10 @@ sub recv_fe_ip_processing {
 		// set XFP to fake HTTPS when making a request to our public
 		// endpoints from the inside.
 		unset req.http.X-Forwarded-Proto;
-		// only the nginx TLS terminator should be setting this one at
+	}
+
+	if (client.ip !~ local_host) {
+		// only the local nginx TLS terminator should set this one at
 		// all - there are no other internal exceptions to that rule
 		unset req.http.X-Real-IP;
 	}
