@@ -46,7 +46,7 @@ define varnish::logging::reqstats(
     }
 
     base::service_unit { $service_unit_name:
-        ensure         => present,
+        ensure         => $ensure,
         systemd        => true,
         strict         => false,
         template_name  => 'varnishreqstats',
