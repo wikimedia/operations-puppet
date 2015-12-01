@@ -418,7 +418,9 @@ sub recv_fe_ip_processing {
 		}
 		if (req.http.X-Trusted-Proxy && req.http.X-Forwarded-For) {
 			// get last from trusted-proxy-supplied XFF
-			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, "^([^,]+, ?)+", "");
+			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, "^([^,]+,\s*)+", "");
+			// Clean up XCIP leading/trailing whitespace
+			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^\s*(\S*)\s*$", "\1");
 		}
 	} else {
 		// XRIP from nginx, XFF set/appended by nginx and contains at
@@ -436,8 +438,10 @@ sub recv_fe_ip_processing {
 			// alias XRIP by definition), there would be no commas
 			// to match, so this would set XCIP = XRIP, which is
 			// the desirable/default state.
-			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, ",[^,]+$", "");
-			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^([^,]+, ?)+", "");
+			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, ",\s*[^,]+$", "");
+			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^([^,]+,\s*)+", "");
+			// Clean up XCIP leading/trailing whitespace
+			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^\s*(\S*)\s*$", "\1");
 		}
 	}
 
