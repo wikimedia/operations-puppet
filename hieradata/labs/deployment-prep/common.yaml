@@ -117,7 +117,7 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 "beta::syncsiteresources::user": www-data
 "role::url_downloader::url_downloader_ip": 10.68.16.135
 "zotero::http_proxy": deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
-"role::trebuchet::deployment_server": deployment-bastion.eqiad.wmflabs
+"trebuchet::deployment_server": deployment-bastion.deployment-prep.eqiad.wmflabs
 "scap::dsh::group_source": 'puppet:///modules/beta/dsh/group'
 "mediawiki::users::mwdeploy_pub_key": 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFwlmBBBJAr1GI+vuYjFh5vq0YIVa5fqE5DZdpzUZISlQ0Kt+9bIr2qNHIj+Jl5Bc6ZY1mkh8l693tAHVx+8tayoiFWYNs9IVsxR+iHgOOhAdDIBXaHaUattdiye5bQmdvJVXaVegckNX2gbmUCOc09jvZvlk3blKFTSEpZRU8dmpXQzKdZgaAq2VTajAegoFnuN9FbC7hzBPA+1NxFNKn94eIeFPSlo5rWr44OEb5Uy3O0B5c6WPM+IgfiygetP+yGL4cKv7qEjZ0Sxok/Rh1lBh1vP1YQ/Mc6tMV0s+kOv7Wz+P88bfU1/uWvy479OZdfh3NQqDTrLzqHwVW1vef root@deployment-salt'
 # NOTE: these elasticsearch settings will need to be overloaded on a per-host
