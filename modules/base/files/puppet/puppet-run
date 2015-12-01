@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Bail out early if any of these first commands exit abnormally
 set -e
 
 # We pass show-diff, show the log may be sensitive,
@@ -10,8 +11,11 @@ chmod 600 /var/log/puppet.log
 # Check this before apt-get update, so that our update doesn't screw up
 # package installs in a running (manual and/or initial install) puppet run
 PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
+
+# From here out, make a best effort to continue in the face of failure
+set +e
+
 if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
-    set +e
     PUPPETPID=$(cat $PUPPETLOCK)
     CMDLINE_FILE="/proc/$PUPPETPID/cmdline"
     if [ -f $CMDLINE_FILE ]; then
@@ -21,7 +25,6 @@ if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
             exit 0
         fi
     fi
-    set -e
     echo Ignoring stale puppet agent lock for pid `cat $PUPPETLOCK` >>/var/log/puppet.log
 fi
 
