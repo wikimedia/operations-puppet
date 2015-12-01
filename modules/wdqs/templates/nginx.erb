@@ -42,6 +42,7 @@ server {
         # drop cookies
         proxy_set_header Cookie "";
 
+        add_header X-Served-By <%= @hostname %> always;
         add_header Access-Control-Allow-Origin *;
 
         client_max_body_size 10M;
