@@ -44,7 +44,7 @@ METRICS = {
 LAST_METRICS = copy.deepcopy(METRICS)
 
 
-def build_desc (skel, prop):
+def build_desc(skel, prop):
     """Build a description dict from a template.
 
     :param skel: template dict
@@ -52,10 +52,10 @@ def build_desc (skel, prop):
     :returns: New dict
     """
     d = skel.copy()
-    for k,v in prop.iteritems():
+    for k, v in prop.iteritems():
         d[k] = v
     return d
-#end build_desc
+# end build_desc
 
 
 def get_metrics():
@@ -63,19 +63,19 @@ def get_metrics():
     global METRICS, LAST_METRICS
 
     if (time.time() - METRICS['time']) > CONF['cache_secs']:
-        #cache stale, re-read the source file
+        # cache stale, re-read the source file
         with open(CONF['log'], 'rb') as log_file:
             raw = log_file.read()
 
         metrics = {}
         for chunk in raw.split():
-            (k,v) = chunk.split(':', 2)
+            (k, v) = chunk.split(':', 2)
             try:
                 metrics[k] = int(v)
             except ValueError:
                 metrics[k] = 0
 
-        #update cache
+        # update cache
         LAST_METRICS = copy.deepcopy(METRICS)
         METRICS = {
             'time': time.time(),
@@ -83,13 +83,13 @@ def get_metrics():
         }
 
     return [METRICS, LAST_METRICS]
-#end get_metrics
+# end get_metrics
 
 
 def clean_name(name):
     """Strip prefix from metric name."""
     return name[len(CONF['prefix']):]
-#end clean_name
+# end clean_name
 
 
 def get_value(name):
@@ -101,7 +101,7 @@ def get_value(name):
     except StandardError:
         val = 0
     return val
-#end get_value
+# end get_value
 
 
 def get_delta(name):
@@ -114,7 +114,7 @@ def get_delta(name):
     except StandardError:
         delta = 0
     return delta
-#end get_delta
+# end get_delta
 
 
 def metric_init(params):
@@ -122,7 +122,7 @@ def metric_init(params):
 
     global CONF
 
-    for k,v in params.iteritems():
+    for k, v in params.iteritems():
         CONF[key] = v
 
     skel = {
@@ -192,17 +192,18 @@ def metric_init(params):
         'name': CONF['prefix'] + 'queue_max_size',
         'call_back': get_value,
         'units': 'count',
-        'description': 'Maximum number of packets in queue since startup/overflow',
+        'description':
+            'Maximum number of packets in queue since startup/overflow',
         }))
 
     return descriptors
-#end metric_init
+# end metric_init
 
 
 def metric_cleanup():
     """Clean up on gmond shutdown."""
     pass
-#end metric_cleanup
+# end metric_cleanup
 
 
 if __name__ == '__main__':
