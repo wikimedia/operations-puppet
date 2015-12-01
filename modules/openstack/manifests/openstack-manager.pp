@@ -109,6 +109,12 @@ class openstack::openstack-manager(
             ensure  => present,
             user    => $::mediawiki::users::web,
             command => '/usr/local/bin/mwscript maintenance/runJobs.php --wiki=labswiki > /dev/null 2>&1';
+        'update-smw':
+            ensure  => present,
+            user    => $::mediawiki::users::web,
+            hour    => '*/6',
+            minute  => 20,
+            command => '/usr/local/bin/mwscript extensions/SemanticMediaWiki/maintenance/SMW_refreshData.php --wiki=labswiki > /dev/null 2>&1';
         'db-bak':
             ensure  => present,
             user    => 'root',
