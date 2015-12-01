@@ -225,8 +225,8 @@ def getMemStats(pid):
     Private_lines = []
     Shared_lines = []
     Pss_lines = []
-    Rss = (int(proc.open(pid, 'statm').readline().split()[1])
-           * PAGESIZE)
+    Rss = (int(proc.open(pid, 'statm').readline().split()[1]) *
+           PAGESIZE)
     if os.path.exists(proc.path(pid, 'smaps')):  # stat
         digester = md5_new()
         for line in proc.open(pid, 'smaps').readlines():  # open
