@@ -21,9 +21,9 @@ class WikiConfig(object):
             "/etc/wikidump.conf",
             os.path.join(os.getenv("HOME"), ".wikidump.conf")]
         defaults = {
-            #"wiki": {
+            # "wiki": {
             "dblist": "/dumps/all.dblist",
-            #"output": {
+            # "output": {
             "public": "/dumps/public",
             "temp": "/dumps/temp",
         }
@@ -219,7 +219,7 @@ class DumpList(object):
             text = self.getDirStatus(dirToCheck, day)
             if text is None:
                 continue
-            if not "failed" in text:
+            if "failed" not in text:
                 return day
 
         # no dump in there that's not failed. meh.
@@ -556,7 +556,7 @@ if __name__ == "__main__":
         elif opt == "--toplevel":
             topLevel = True
 
-    if not ',' in dumpsNumber:
+    if ',' not in dumpsNumber:
         dumpsNumberList = [dumpsNumber.strip()]
     else:
         dumpsNumberList = [d.strip() for d in dumpsNumber.split(',')]
@@ -571,14 +571,14 @@ if __name__ == "__main__":
               " --filelisting must be specified")
 
     if (fileListTemplate and len(dumpsNumberList) > 1 and
-            not '%s' in fileListTemplate):
+            '%s' not in fileListTemplate):
         usage("In order to write more than one output file with"
               " dump runs, the value specified for filelisting"
               " must contain '%s' which will be replaced by the"
               " number of dumps to write to the given output file")
 
     if (fileListTemplate and len(dumpsNumberList) > 1 and
-            not '%s' in fileListTemplate):
+            '%s' not in fileListTemplate):
         usage("In order to write more than one output file with"
               " dump runs, the value specified for dirlisting must"
               " contain '%s' which will be replaced by the number"
