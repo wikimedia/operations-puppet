@@ -106,7 +106,7 @@ def get_config(repo):
         config['shadow_location'] = shadow_location
     site = __grains__.get('site')
     server = deployment_config['servers'][site]
-    #TODO: fetch scheme/url from implementation
+    # TODO: fetch scheme/url from implementation
     if config['type'] == 'git-http':
         scheme = 'http'
     elif config['type'] == 'git-https':
