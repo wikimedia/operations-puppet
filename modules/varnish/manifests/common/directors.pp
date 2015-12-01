@@ -13,8 +13,8 @@ define varnish::common::directors(
     require varnish::common::director_scripts
 
     $director_list = $instance ? {
-        'frontend' => keys($directors),
-        'backend'  => keys($directors),
+        /frontend/ => keys($directors),
+        /backend/  => keys($directors),
         default    => undef
     }
 
@@ -23,13 +23,14 @@ define varnish::common::directors(
     }
 
     $dc = $instance ? {
-        'frontend' => $::site,
+        /frontend/ => $::site,
         default    => $::mw_primary,
     }
 
     $service_name = $instance ? {
         'frontend' => 'varnish-frontend',
-        default    => 'varnish'
+        'backend'  => 'varnish',
+        default    => "varnish-${instance}",
     }
 
     # usual old trick
