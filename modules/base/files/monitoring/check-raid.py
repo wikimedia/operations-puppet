@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/base/monitoring/check-raid.py
+# THIS FILE IS MANAGED BY PUPPET
+# puppet:///modules/base/monitoring/check-raid.py
 #####################################################################
 
 import os
