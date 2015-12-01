@@ -8,6 +8,8 @@ log_format logstash
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
+    listen 8888 default_server;
+    listen [::]:8888 default_server;
 
     error_page 503 @maintenance;
     location @maintenance {
@@ -36,9 +38,18 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-BIGDATA-MAX-QUERY-MILLIS 30000;
         # drop cookies
         proxy_set_header Cookie "";
+
+        # Default 30 second max query time
+        set $xmaxqueryheader "30000";
+
+        # 5 minute max query time for internal requests on port 8888
+        if ( $server_port = 8888 ) {
+            set $xmaxqueryheader "300000";
+        }
+
+        proxy_set_header X-BIGDATA-MAX-QUERY-MILLIS $xmaxqueryheader;
 
         add_header Access-Control-Allow-Origin *;
 
