@@ -47,6 +47,16 @@ Architectures
 ARCH=amd64, or ARCH=i386 is supported if you feel like building for
 different architecture versions.
 
+Using built packages as dependencies
+====================================
+
+By default, cowbuilder will always use upstream packages rather than packages
+you have built. If you have built a new version of a dependency, you typically
+want to use that version rather than the one provided by upstream. To force
+cowbuilder to use packages in the output directory, use:
+
+    APT_USE_BUILT=yes sudo -E cowbuilder --build dh-virtualenv_0.10-1.dsc
+
 Wikimedia repos
 ===============
 
