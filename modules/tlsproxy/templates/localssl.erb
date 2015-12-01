@@ -23,7 +23,7 @@ server {
 	keepalive_timeout 60;
 
 	location / {
-		proxy_pass http://<%= @ipaddress %>:<%= @upstream_port %>;
+		proxy_pass http://<%= @upstream_ip %>:<%= @upstream_port %>;
 
 		# this should be in sync with Varnish's first_byte_timeout
 		# and PHP's max_execution_time
