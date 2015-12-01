@@ -9,6 +9,6 @@ class ores::monitoring {
         description    => 'ORES home page',
         check_command  => 'check_http',
         host           => 'ores.wmflabs.org',
-        contact_groups => 'team-ores',
+        contact_group  => 'team-ores',
     }
 }
