@@ -30,7 +30,7 @@ for ID in bigDict.keys():
         continue
 
     updated = novastats.checkMatch(ec2ID,
-                                   "ldap-eqiad",
+                                   "ldap-labs.eqiad",
                                    "/etc/ldap.conf",
                                    site="eqiad")
     if updated == "found":

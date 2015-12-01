@@ -314,7 +314,7 @@ keystoneconfig:
   auth_protocol: 'http'
   auth_port: '35357'
   db_host: 'm5-master.eqiad.wmnet'
-  ldap_host: 'ldap-eqiad.wikimedia.org'
+  ldap_host: 'ldap-labs.eqiad.wikimedia.org'
   token_driver: 'normal'
 
 glanceconfig:
