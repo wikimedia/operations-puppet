@@ -1,3 +1,2 @@
-labs_ldap_dns_host: &labsldapdnshost "labs-ns1placeholder.wikimedia.org"
-labs_ldap_dns_ip_override: 208.80.154.102
+labs_ldap_dns_host: &labsldapdnshost "labs-ns1.wikimedia.org"
 cluster: virt
