@@ -52,11 +52,17 @@ class role::cache::maps {
         'https_redirects'  => true,
     })
 
+    # remove the default/unnamed varnish instance
+    varnish::remove_instance { "": }
+
+    # temporary, remove after full deploy:
+    varnish::remove_instance { "-frontend": }
+
     varnish::instance { 'maps-backend':
-        name               => '',
+        name               => 'maps-backend',
         vcl                => 'maps-backend',
-        ports              => [ 3128 ],
-        admin_port         => 6083,
+        ports              => [ 5091, 3128 ],
+        admin_port         => 6091,
         runtime_parameters => ['default_ttl=86400'],
         storage            => $::role::cache::2layer::persistent_storage_args,
         directors          => $varnish_be_directors[$::site_tier],
@@ -79,10 +85,10 @@ class role::cache::maps {
     }
 
     varnish::instance { 'maps-frontend':
-        name               => 'frontend',
+        name               => 'maps-frontend',
         vcl                => 'maps-frontend',
-        ports              => [ 80 ],
-        admin_port         => 6082,
+        ports              => [ 5090, 80 ],
+        admin_port         => 6090,
         runtime_parameters => ['default_ttl=86400'],
         storage            => "-s malloc,${memory_storage_size}G",
         directors          => {
@@ -116,11 +122,20 @@ class role::cache::maps {
         # varnish webrequest logs to Kafka.
         class { 'role::cache::kafka::webrequest':
             topic => 'webrequest_maps',
+            varnish_name     => 'maps-frontend',
+            varnish_svc_name => 'varnish-maps-frontend',
         }
     }
 
-    # Parse varnishlogs for request statistics and send to statsd.
+    # temporary, remove after full deploy:
     varnish::logging::reqstats { 'frontend':
+        ensure        => absent,
+        metric_prefix => "varnish.${::site}.maps.frontend.request",
+        statsd        => hiera('statsd'),
+    }
+
+    # Parse varnishlogs for request statistics and send to statsd.
+    varnish::logging::reqstats { 'maps-frontend':
         metric_prefix => "varnish.${::site}.maps.frontend.request",
         statsd        => hiera('statsd'),
     }
