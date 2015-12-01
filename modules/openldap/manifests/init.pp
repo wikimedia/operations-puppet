@@ -32,6 +32,10 @@
 #    $extra_indices
 #       Optional. Specify an ERB template file with additional LDAP indices
 #       (in addition to the base indices)
+#    $size_limit
+#       Optional. Specify the maximum number of entries to return from a search
+#       operation. May be set to a number or to 'unlimited'. If unset, the default
+#       is 2048.
 #
 # Actions:
 #       Install/configure slapd
