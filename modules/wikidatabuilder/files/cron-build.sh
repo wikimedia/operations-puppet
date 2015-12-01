@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# license AGPL version 3 or later
+# License AGPL version 3 or later
+# Authors: Addshore, JanZerebecki
 set -ex
 
 export PATH="/data/wdbuilder/composer/vendor/bin/:/usr/local/bin:/usr/bin:/bin:"
