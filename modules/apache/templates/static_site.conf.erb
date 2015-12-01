@@ -17,7 +17,7 @@
     AuthBasicProvider ldap
     AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
     AuthLDAPBindPassword <%= scope.lookupvar('::passwords::ldap::production::proxypass') %>
-    AuthLDAPURL "ldaps://ldap-eqiad.wikimedia.org ldap-codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+    AuthLDAPURL "ldaps://ldap-labs.eqiad.wikimedia.org ldap-labs.codfw.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
     <%- @ldap_groups.each do |group| -%>
     Require ldap-group "cn=<%= group %>,ou=groups,dc=wikimedia,dc=org"
     <%- end -%>
