@@ -3,8 +3,8 @@ class ldap::role::config::labs {
 
     $basedn = 'dc=wikimedia,dc=org'
     $servernames = $site ? {
-        'eqiad' => [ 'ldap-eqiad.wikimedia.org', 'ldap-codfw.wikimedia.org' ],
-        'codfw' => [ 'ldap-codfw.wikimedia.org', 'ldap-eqiad.wikimedia.org' ],
+        'eqiad' => [ 'ldap-labs.eqiad.wikimedia.org', 'ldap-labs.codfw.wikimedia.org' ],
+        'codfw' => [ 'ldap-labs.codfw.wikimedia.org', 'ldap-labs.eqiad.wikimedia.org' ],
     }
     $sudobasedn = $::realm ? {
         'labs'       => "ou=sudoers,cn=${labsproject},ou=projects,${basedn}",
