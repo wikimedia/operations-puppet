@@ -29,6 +29,7 @@ urls = (
     ('frwiki', 'https://fr.wikipedia.org/?mainpage'),
     ('jawiki', 'https://ja.wikipedia.org/?mainpage'),
     ('ruwiki', 'https://ru.wikipedia.org/?mainpage'),
+    ('wikidatawiki', 'https://www.wikidata.org/?mainpage'),
     ('zhwiki', 'https://zh.wikipedia.org/?mainpage'),
 )
 
