@@ -235,11 +235,17 @@ class role::cache::misc {
         default => $be_two_vcl_config,
     }
 
+    # remove the default/unnamed varnish instance
+    varnish::remove_instance { "": }
+
+    # temporary, remove after full deploy:
+    varnish::remove_instance { "-frontend": }
+
     varnish::instance { 'misc-backend':
-        name            => '',
+        name            => 'misc-backend',
         vcl             => 'misc-backend',
-        ports           => [ 3128 ],
-        admin_port      => 6083,
+        ports           => [ 5089, 3128 ],
+        admin_port      => 6089,
         storage         => $::role::cache::2layer::persistent_storage_args,
         vcl_config      => $be_vcl_config,
         directors       => $varnish_be_directors[$::site_tier],
@@ -247,10 +253,10 @@ class role::cache::misc {
     }
 
     varnish::instance { 'misc-frontend':
-        name            => 'frontend',
+        name            => 'misc-frontend',
         vcl             => 'misc-frontend',
-        ports           => [ 80 ],
-        admin_port      => 6082,
+        ports           => [ 5088, 80 ],
+        admin_port      => 6088,
         storage         => "-s malloc,${memory_storage_size}G",
         vcl_config      => $fe_vcl_config,
         directors       => {
@@ -283,11 +289,22 @@ class role::cache::misc {
     if $::realm == 'production' {
         # Install a varnishkafka producer to send
         # varnish webrequest logs to Kafka.
-        class { 'role::cache::kafka::webrequest': topic => 'webrequest_misc' }
+        class { 'role::cache::kafka::webrequest':
+            topic            => 'webrequest_misc',
+            varnish_name     => 'misc-frontend',
+            varnish_svc_name => 'varnish-misc-frontend',
+        }
+    }
+
+    # temporary, remove after full deploy:
+    varnish::logging::reqstats { 'frontend':
+        ensure        => absent,
+        metric_prefix => "varnish.${::site}.misc.frontend.request",
+        statsd        => hiera('statsd'),
     }
 
     # Parse varnishlogs for request statistics and send to statsd.
-    varnish::logging::reqstats { 'frontend':
+    varnish::logging::reqstats { 'misc-frontend':
         metric_prefix => "varnish.${::site}.misc.frontend.request",
         statsd        => hiera('statsd'),
     }
