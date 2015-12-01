@@ -17,7 +17,8 @@
 #       user
 #    $mirrormode
 #       Optional, false by default. Whether the server will participate in a
-#       dualmaster environment
+#       dualmaster environment. The replication user needs to be created manually,
+#       see README.md
 #    $certificate
 #       Optional. TLS enable the server. The path to the certificate file
 #    $key
