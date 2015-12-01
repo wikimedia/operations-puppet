@@ -23,7 +23,8 @@ $dump_slave -h m3-slave --ignore-table=phabricator_search.search_documentfield \
     --databases $($my "$sql" | tr '\n' ' ') | \
     pigz > /srv/backups/m3-phabricator-phlegal-$(date +%Y%m%d%H%M%S).sql.gz
 
-$dump_master -h m5-slave --databases ceilometer glance keystone neutron nova pdns designate designate_pool_manager | \
+$dump_master -h m5-slave --databases ceilometer glance keystone neutron nova \
+    pdns designate designate_pool_manager nodepooldb | \
     pigz > /srv/backups/m5-$(date +%Y%m%d%H%M%S).sql.gz &
 
 sql="select schema_name from information_schema.schemata where schema_name regexp '^(wik|flowdb)'"
