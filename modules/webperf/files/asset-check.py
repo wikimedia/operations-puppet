@@ -30,6 +30,7 @@ urls = (
     ('jawiki', 'https://ja.wikipedia.org/?mainpage'),
     ('ruwiki', 'https://ru.wikipedia.org/?mainpage'),
     ('wikidatawiki', 'https://www.wikidata.org/?mainpage'),
+    ('wikidatawiki-berlin-276539678', 'https://www.wikidata.org/w/index.php?title=Q64&oldid=276539678'),
     ('zhwiki', 'https://zh.wikipedia.org/?mainpage'),
 )
 
