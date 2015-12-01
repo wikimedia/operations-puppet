@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ "${APT_USE_BUILT}" = "yes" ]; then
+    apt-get install -y apt-utils
+
+    (cd $BUILDRESULT;
+    apt-ftparchive packages . > Packages)
+
+    echo "deb [trusted=yes] file://${BUILDRESULT} ./" > /etc/apt/sources.list.d/local.list
+    apt-get update
+fi
