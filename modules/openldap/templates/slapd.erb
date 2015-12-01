@@ -40,7 +40,13 @@ moduleload  auditlog
 moduleload  ppolicy
 
 # Maximum number of entries that is returned for a search operation
+<% if @size_limit then %>
+sizelimit <%= @size_limit %>
+<% else %>
 sizelimit 2048
+<% end %>
+
+
 
 # Limit amount of cpu's that is used for indexing.
 tool-threads 1
