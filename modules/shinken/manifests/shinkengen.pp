@@ -14,7 +14,7 @@
 # [*ldap_bindas*]
 #   What to bind as when connecting to LDAP server
 class shinken::shinkengen(
-    $ldap_server = 'ldap-eqiad.wikimedia.org',
+    $ldap_server = 'ldap-labs.eqiad.wikimedia.org',
     $ldap_bindas = 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
 ){
 
