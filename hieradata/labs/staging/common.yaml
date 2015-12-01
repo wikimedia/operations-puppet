@@ -7,7 +7,7 @@ salt::master::salt_pillar_roots: { base: [ '/srv/pillars' ] }
 salt::master::salt_module_roots: { base: [ '/srv/salt/_modules' ] }
 salt::master::salt_returner_roots: { base: [ '/srv/salt/_returners' ] }
 role::deployment::salt_masters::deployment_server: staging-tin.eqiad.wmflabs
-role::trebuchet::deployment_server: staging-tin.eqiad.wmflabs
+trebuchet::deployment_server: staging-tin.staging.eqiad.wmflabs
 elasticsearch::expected_nodes: 3
 elasticsearch::minimum_master_nodes: 3
 elasticsearch::heap_memory: 4G
