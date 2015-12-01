@@ -61,5 +61,4 @@ admin::groups:
   - traceback-roots
   - udp2log-users
   - wdqs-admins
-  - wdqs-roots
   - zotero-admin
