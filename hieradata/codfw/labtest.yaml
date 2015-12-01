@@ -1,0 +1,98 @@
+# These values are site/realm specific for LABTEST infrastructure
+
+# This address range is not really used for labtest external, it is
+# used for labs in eqiad.  We are using it as a placeholder for now
+# with no actual advertisement or needed external services for now
+# 208.80.155.0/22
+
+# Should handle all being the same
+labs_nova_controller: &labsnovacontroller "labtestcontrol2001.wikimedia.org"
+labs_nova_controller_spare: &labsnovacontrollerspare "labtestcontrol2001.wikimedia.org"
+labs_nova_controller_other: &labsnovacontrollerother "labtestcontrol2001.wikimedia.org"
+
+labs_designate_hostname: &labsdesignatehostname "labtestservices2001.wikimedia.org"
+labs_designate_hostname_secondary: &labs_designate_hostname_secondary "labtestservices2001.wikimedia.org"
+
+labs_nova_api_host: &labsnovaapihost "labtestnet2001.codfw.wmnet"
+labs_nova_network_host: &labsnovanetworkhost "labtestnet2001.codfw.wmnet"
+labs_nova_network_ip: &labsnovanetworkip "10.192.20.5"
+status_wiki_host_master: 'localhost'
+
+labs_glance_controller: &labsglancecontroller "labtestcontrol2001.wikimedia.org"
+labs_puppet_master: &labspuppetmaster "labtestcontrol2001.wikimedia.org"
+labs_keystone_host: &labskeystonehost "labtestcontrol2001.wikimedia.org"
+
+labs_ldap_dns_host: &labsldapdnshost "labtestservices2001.wikimedia.org"
+labs_ldap_dns_host_secondary: &labsldapdnshostsecondary "labtestservices2001.wikimedia.org"
+
+labs_dns_host: &labsdnshost "labtestservices2001.wikimedia.org"
+labs_recursor: &labsrecursor "labtestservices2001.wikimedia.org"
+
+novaconfig:
+  network_host: *labsnovanetworkip
+  api_host: *labsnovaapihost
+  db_name: 'nova'
+  db_user: 'nova'
+  ceilometer_db_name: 'ceilometer'
+  ldap_base_dn: 'dc=wikimedia,dc=org'
+  ldap_user_dn: 'uid=novaadmin,ou=people,dc=wikimedia,dc=org'
+  ldap_proxyagent: 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
+  puppet_db_name: 'puppet'
+  puppet_db_user: 'puppet'
+  quota_floating_ips: '0'
+  libvirt_type: 'kvm'
+  my_ip: "%{::ipaddress_eth0}"
+  network_public_interface: 'eth0'
+  network_flat_interface: 'eth1.1102'
+  network_flat_tagged_base_interface: 'eth1'
+  network_flat_interface_vlan: '1102'
+  flat_network_bridge: 'br1102'
+  fixed_range: '10.196.16.0/21'
+  dhcp_start: '10.196.16.4'
+  network_public_ip: '208.80.155.255'
+  dmz_cidr: '208.80.155.0/22,10.0.0.0/8'
+  db_host: 'labtestcontrol2001.wikimedia.org'
+  glance_host: *labsnovacontroller
+  rabbit_host: *labsnovacontroller
+  cc_host: *labsnovacontroller
+  site_address: '208.80.155.255'
+  controller_hostname: *labsnovacontroller
+  ldap_host: *labsnovacontroller
+  puppet_host: *labsnovacontroller
+  puppet_db_host: *labsnovacontroller
+  dhcp_domain: 'codfw.wmflabs'
+  live_migration_uri: 'qemu://%s.codfw.wmnet/system?pkipath=/var/lib/nova'
+  zone: codfw
+
+keystoneconfig:
+  db_name: 'keystone'
+  db_user: 'keystone'
+  ldap_base_dn: 'dc=wikimedia,dc=org'
+  ldap_user_dn: 'uid=novaadmin,ou=people,dc=wikimedia,dc=org'
+  ldap_user_id_attribute: 'uid'
+  ldap_tenant_id_attribute: 'cn'
+  ldap_user_name_attribute: 'uid'
+  ldap_tenant_name_attribute: 'cn'
+  ldap_proxyagent : 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
+  auth_protocol: 'http'
+  auth_port: '35357'
+  db_host: 'labtestcontrol2001.wikimedia.org'
+  ldap_host: 'ldap-codfw.wikimedia.org'
+  token_driver: 'normal'
+  auth_port: '35357'
+  auth_protocol: 'http'
+  auth_host: 208.80.153.47
+
+designateconfig:
+  db_host:  'labtestcontrol2001.wikimedia.org'
+  db_name: 'designate'
+  pool_manager_db_name: 'designate_pool_manager'
+  pdns_db_host: 'labtestcontrol2001.wikimedia.org'
+  dhcp_domain: 'labtestcodfw'
+  pdns_db_name: 'pdns'
+  rabbit_host:  *labsnovacontroller
+  controller_hostname: *labsnovacontroller
+
+glanceconfig:
+  db_host: 'labtestcontrol2001.wikimedia.org'
+  bind_ip: "%{::ipaddress_eth0}"
