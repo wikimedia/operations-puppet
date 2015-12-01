@@ -182,31 +182,33 @@ cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator monthly statistic
 
 Hi Community Metrics team,
 
-this is your automatic monthly Phabricator statistics mail.
+This is your automatic monthly Phabricator statistics mail.
 
-Number of accounts created in (${lastmonth}): ${accountscreated}
-Number of active users (any activity) in (${lastmonth}): ${activeusers}
-Number of task authors in (${lastmonth}): ${authors}
-Number of users who have closed tasks in (${lastmonth}): ${resolvers}
+Accounts created in (${lastmonth}): ${accountscreated}
+Active users (any activity) in (${lastmonth}): ${activeusers}
+Task authors in (${lastmonth}): ${authors}
+Users who have closed tasks in (${lastmonth}): ${resolvers}
 
-Number of projects which had at least one task moved from one column
- to another on their workboard in (${lastmonth}): ${projectsboardmove}
+Projects which had at least one task moved from one column to another on
+their workboard in (${lastmonth}): ${projectsboardmove}
 
-Number of tasks created in (${lastmonth}): ${taskscreated}
-Number of tasks closed in (${lastmonth}): ${tasksclosed}
-
-Number of open and stalled tasks in total: ${tasksopen}
+Tasks created in (${lastmonth}): ${taskscreated}
+Tasks closed in (${lastmonth}): ${tasksclosed}
+Open and stalled tasks in total: ${tasksopen}
 
 Median age in days of open tasks by priority:
+
 Unbreak now: ${mediantasksopen_unbreaknow}
 Needs Triage: ${mediantasksopen_needstriage}
 High: ${mediantasksopen_high}
 Normal: ${mediantasksopen_normal}
 Low: ${mediantasksopen_low}
 Lowest: ${mediantasksopen_lowest}
+
 (How long tasks have been open, not how long they have had that priority)
 
-TODO: Numbers which refer to closed tasks might not be correct, as described in T1003.
+TODO: Numbers which refer to closed tasks might not be correct, as
+described in https://phabricator.wikimedia.org/T1003 .
 
 Yours sincerely,
 Fab Rick Aytor
