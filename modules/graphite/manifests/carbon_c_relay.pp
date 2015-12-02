@@ -33,8 +33,8 @@ class graphite::carbon_c_relay( $c_relay_settings ) {
     }
 
     service { 'carbon-c-relay':
-        provider => 'upstart',
         ensure   => stopped,
+        provider => 'upstart',
     }
 
     file { '/etc/carbon/frontend-relay.conf':

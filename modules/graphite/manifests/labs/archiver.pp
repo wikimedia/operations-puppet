@@ -11,9 +11,9 @@ class graphite::labs::archiver {
     }
 
     cron { 'archive-deleted-instances':
+        ensure  => present,
         command => '/usr/local/bin/archive-instances',
         user    => '_graphite',
-        ensure  => present,
         minute  => 0,
         require => File['/usr/local/bin/archive-instances'],
     }
