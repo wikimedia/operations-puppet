@@ -1062,6 +1062,14 @@ node 'labtestcontrol2001.wikimedia.org' {
     #include ldap::role::client::labs
 }
 
+node 'labtestservices2001.wikimedia.org' {
+    #role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
+    role labs::openstack::designate::server
+    include standard
+    #include base::firewall
+    #include ldap::role::client::labs
+}
+
 # bastion in the Netherlands
 node 'hooft.esams.wikimedia.org' {
     $ganglia_aggregator = true

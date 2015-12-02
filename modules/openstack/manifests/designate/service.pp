@@ -1,11 +1,20 @@
 # Designate provides DNSaaS services for OpenStack
 # https://wiki.openstack.org/wiki/Designate
-class openstack::designate::service ($openstack_version=$::openstack::version, $designateconfig) {
+
+class openstack::designate::service (
+    $openstack_version=$::openstack::version,
+    $active_server,
+    $nova_controller,
+    $keystone_host,
+    $keystoneconfig,
+    $designateconfig,
+)
+    {
 
     require openstack::repo
 
-    include passwords::openstack::nova
-    $ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+    $keystone_host_ip   = ipresolve($keystone_host,4)
+    $nova_controller_ip = ipresolve($nova_controller)
 
     require_package(
         'python-designateclient',
@@ -19,10 +28,6 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
         'python-novaclient',
         'python-nova-fixed-multi'
     )
-
-
-    # This password is to allow designate to write to instance metadata
-    $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
 
     file {
         '/etc/designate/designate.conf':
@@ -72,10 +77,22 @@ class openstack::designate::service ($openstack_version=$::openstack::version, $
         mode   => '0444',
     }
 
+    file { '/var/lib/designate/.ssh/':
+        ensure => directory,
+        owner  => 'designate',
+        group  => 'designate',
+    }
+
+    file { '/var/lib/designate/.ssh/id_rsa':
+        owner   => 'designate',
+        group   => 'designate',
+        mode    => '0400',
+        content => secret('ssh/puppet_cert_manager/cert_manager')
+    }
 
     # include rootwrap.d entries
 
-    if $::fqdn == hiera('labs_designate_hostname') {
+    if $::fqdn == $active_server {
         service {'designate-api':
             ensure  => running,
             require => Package['designate-api'];

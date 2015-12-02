@@ -100,11 +100,11 @@ enabled_extensions_v2 = quotas, reports
 # Keystone Middleware
 #-----------------------
 [keystone_authtoken]
-auth_host = <%= @designateconfig["keystone_auth_host"] %>
-auth_port = <%= @designateconfig["keystone_auth_port"] %>
-auth_protocol = <%= @designateconfig["keystone_auth_protocol"] %>
-admin_token = <%= @designateconfig["keystone_admin_token"] %>
-auth_uri = <%= @designateconfig["auth_uri"] %>
+auth_host = <%= @keystone_host_ip %>
+auth_port = <%= @keystoneconfig["auth_port"] %>
+auth_protocol = <%= @keystoneconfig['auth_protocol'] %>
+admin_token = <%= @keystoneconfig['admin_token'] %>
+auth_uri = http://<%= @nova_controller_ip %>:5000
 
 #-----------------------
 # Sink Service
@@ -220,7 +220,7 @@ format = '%(hostname)s.%(domain)s'
 reverse_domain_id = '8d114f3c-815b-466c-bdd4-9b91f704ea60'
 reverse_format = '%(hostname)s.%(project_name)s.%(domain)s'
 keystone_auth_name = "novaadmin"
-keystone_auth_pass = "<%= @wikitech_nova_ldap_user_pass %>"
+keystone_auth_pass = "<%= @keystoneconfig['ldap_user_pass'] %>"
 keystone_auth_project = "testlabs"
 keystone_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357/v3"
 
@@ -237,11 +237,11 @@ format = %(hostname)s.%(project_name)s.%(domain)s, %(hostname)s.%(domain)s
 ldapusername = uid=novaadmin,ou=people,dc=wikimedia,dc=org
 ldappassword = <%= @ldap_user_pass %>
 nova_auth_name = "novaadmin"
-nova_auth_pass = "<%= @wikitech_nova_ldap_user_pass %>"
+nova_auth_pass = "<%= @keystoneconfig['ldap_user_pass'] %>"
 nova_auth_project = "testlabs"
 nova_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357/v2.0"
 keystone_auth_name = "novaadmin"
-keystone_auth_pass = "<%= @wikitech_nova_ldap_user_pass %>"
+keystone_auth_pass = "<%= @keystoneconfig['ldap_user_pass'] %>"
 keystone_auth_project = "testlabs"
 keystone_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357/v3"
 
