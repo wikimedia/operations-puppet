@@ -10,10 +10,10 @@ class role::cache::logging {
         }
 
         varnish::logging { 'erbium':
+                ensure           => 'absent',
                 listener_address => '10.64.32.135',
                 port             => '8419',
                 cli_args         => $cliargs,
-                ensure           => 'absent',
         }
     }
 }
