@@ -110,6 +110,9 @@ class role::phabricator::main {
         hour    => '4',
     }
 
+    # Backup repositories
+    backup::set { 'srv-phab-repos': }
+
     class { 'exim4':
         variant => 'heavy',
         config  => template('exim/exim4.conf.phab.erb'),
