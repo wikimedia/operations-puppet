@@ -82,6 +82,7 @@ class role::cache::kafka::webrequest(
     # Generate an alert if too many delivery report errors per minute
     # (logster only reports once a minute)
     monitoring::graphite_threshold { 'varnishkafka-kafka_drerr':
+        ensure          => 'present',
         description     => 'Varnishkafka Delivery Errors per minute',
         metric          => "derivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
         # More than 0 errors is warning threshold.
@@ -95,11 +96,11 @@ class role::cache::kafka::webrequest(
         until           => $until,
         nagios_critical => false,
         require         => Logster::Job['varnishkafka-webrequest'],
-        ensure          => 'present',
     }
 
     # Use graphite_anomaly to alert about anomolous deliver errors.
     monitoring::graphite_anomaly { 'varnishkafka-anomaly-kafka_drerr':
+        ensure          => 'absent',
         description     => 'Varnishkafka Delivery Errors per minute anomaly',
         metric          => "nonNegativeDerivative(transformNull(${graphite_metric_prefix}.varnishkafka.kafka_drerr, 0))",
         over            => true,
@@ -110,6 +111,5 @@ class role::cache::kafka::webrequest(
         nagios_critical => false,
         require         => Logster::Job['varnishkafka-webrequest'],
         # Disabling this.  It doesn't work like I wanted it to.
-        ensure          => 'absent',
     }
 }
