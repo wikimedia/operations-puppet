@@ -108,3 +108,7 @@ designateconfig:
   pdns_db_name: 'pdns'
   rabbit_host:  *labsnovacontroller
   controller_hostname: *labsnovacontroller
+
+debdeploy::dc_grain:
+  debdeploy-dc-eqiad:
+    value: standard
