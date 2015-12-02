@@ -21,6 +21,7 @@ class role::icinga(
     include icinga::monitor::legal
     include icinga::monitor::certs
     include icinga::groups::misc
+    include icinga::groups::labs
     include lvs::monitor
     include role::authdns::monitoring
     include network::checks
