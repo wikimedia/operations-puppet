@@ -51,8 +51,8 @@ class ores::base(
     }
 
     git::clone { 'ores-wm-config':
-        origin    => 'https://github.com/wiki-ai/ores-wikimedia-config.git',
         ensure    => present,
+        origin    => 'https://github.com/wiki-ai/ores-wikimedia-config.git',
         directory => $config_path,
         branch    => $branch,
         owner     => 'www-data',
