@@ -36,16 +36,15 @@ class openstack::glance::service(
         require => Class['openstack::repo'],
     }
 
-
-    #  This is 775 so that the glancesync user can rsync to it.
     file { $glance_data:
         ensure  => directory,
-        owner   => 'glance',
-        group   => 'glance',
+        owner   => 'root',
+        group   => 'root',
         require => Package['glance'],
-        mode    => '0775',
+        mode    => '0755',
     }
 
+    #  This is 775 so that the glancesync user can rsync to it.
     file { $glance_images_dir:
         ensure  => directory,
         owner   => 'glance',
