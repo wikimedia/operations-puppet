@@ -1174,8 +1174,6 @@ node 'labcontrol1001.wikimedia.org' {
 
     # Monitoring checks for toollabs that page
     include toollabs::monitoring::icinga
-    # Monitoring checks for ores that page
-    include ores::monitoring
 }
 
 # labcontrol1002 is a hot spare for 1001.  Switching it on
