@@ -8,8 +8,6 @@ class icinga {
     # Setup icinga user
     # FIXME: This should be done by the package
     include icinga::group
-    # FIXME: where does the dialout user group come from?
-    # It should be included here somehow
 
     group { 'icinga':
         ensure => present,
@@ -24,7 +22,7 @@ class icinga {
         managehome => false,
         shell      => '/bin/false',
         require    => [ Group['icinga'], Group['nagios'] ],
-        groups     => [ 'dialout', 'nagios' ],
+        groups     => [ 'nagios' ],
     }
 
     package { 'icinga':
