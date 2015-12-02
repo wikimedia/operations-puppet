@@ -19,12 +19,4 @@ class icinga::groups::misc {
         description => 'ulsfo misc servers'
     }
 
-    # This needs to be consolited in the virt cluster probably
-    @monitoring::group { 'labsnfs_eqiad':
-        description => 'eqiad labsnfs server servers'
-    }
-    @monitoring::group { 'labsnfs_codfw':
-        description => 'codfw labsnfs server servers'
-    }
-
 }
