@@ -1,0 +1,21 @@
+:backends:
+  - mwyaml
+  - nuyaml
+:nuyaml:
+  :datadir: /etc/puppet/hieradata
+:mwyaml:
+  :host: https://wikitech.wikimedia.org
+  :cache_ttl: 120
+:private:
+  :datadir: /etc/puppet/private/hieradata
+:secret:
+  :datadir: /etc/puppet/secret/hieradata
+:hierarchy:
+  - "labs/%{::labsproject}/host/%{::hostname}"
+  - "labs/%{::labsproject}/common"
+  - "labs"
+  - "secret/%{::labsproject}"
+  - "private/%{::labsproject}"
+  - common
+  - "secret/common"
+  - "private/common"

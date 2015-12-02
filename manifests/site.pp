@@ -1051,7 +1051,8 @@ node 'labtestcontrol2001.wikimedia.org' {
     #$is_labs_puppet_master = true
 
     include standard
-    role labs::openstack::nova::controller
+    role labs::openstack::nova::controller,
+          labs::puppetmaster
 
     #role labs::openstack::nova::controller,
     #      salt::masters::labs,
@@ -1164,6 +1165,7 @@ node 'labcontrol1001.wikimedia.org' {
     $is_labs_puppet_master = true
 
     role labs::openstack::nova::controller,
+          labs::puppetmaster,
           salt::masters::labs,
           deployment::salt_masters,
           dns::ldap
@@ -1186,6 +1188,7 @@ node 'labcontrol1002.wikimedia.org' {
     $is_labs_puppet_master = true
 
     role labs::openstack::nova::controller,
+          labs::puppetmaster,
           salt::masters::labs,
           deployment::salt_masters,
           dns::ldap

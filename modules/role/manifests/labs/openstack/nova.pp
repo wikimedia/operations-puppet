@@ -110,7 +110,6 @@ class role::labs::openstack::nova::controller {
     system::role { $name: }
 
     require openstack
-    include role::labs::puppetmaster
     include role::labs::openstack::nova::wikiupdates
     include role::labs::openstack::glance::server
     include role::labs::openstack::keystone::server
