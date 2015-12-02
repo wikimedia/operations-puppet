@@ -26,4 +26,24 @@ class mediawiki::monitoring::graphite {
         nagios_critical => false
         # this will be enabled shortly if we don't see false positives
     }
+
+    # MediaWiki is reporting edit failures due to session loss
+    monitoring::graphite_threshold { 'mediawiki_failure_session_loss':
+        description     => 'MediaWiki edit failures due to session loss',
+        metric          => 'MediaWiki.edit.failures.session_loss.count',
+        from            => '15min',
+        warning         => 30,
+        critical        => 50,
+        percentage      => 70,
+    }
+
+    # MediaWiki is reporting edit failures due to bad token
+    monitoring::graphite_threshold { 'mediawiki_failure_bad_token':
+        description     => 'MediaWiki edit failures due to bad token',
+        metric          => 'MediaWiki.edit.failures.bad_token.count',
+        from            => '15min',
+        warning         => 30,
+        critical        => 50,
+        percentage      => 70,
+    }
 }
