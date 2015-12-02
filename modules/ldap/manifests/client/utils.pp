@@ -2,6 +2,7 @@
 # include ldap::client::utils, since some scripts use getent for ldap user info
 # Remember though, that including ldap::client::nss will mean users in the
 # ldap database will then be listed as users of the system, so use care.
+
 class ldap::client::utils($ldapconfig) {
     package { [
         'python-ldap',
