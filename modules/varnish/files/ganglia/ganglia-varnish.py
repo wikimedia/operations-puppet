@@ -83,16 +83,16 @@ if __name__ == '__main__':
 
     metrics = metric_init(params)
 
-    print "# Varnish plugin for Ganglia Monitor, " +
-    "automatically generated config file\n"
-    print "modules {\n\tmodule {\n\t\tname = \"varnish\"\n" +
-    "\t\tlanguage = \"python\"\n\t\tpath = \"varnish.py\"\n"
+    print "# Varnish plugin for Ganglia Monitor, " \
+          "automatically generated config file\n"
+    print "modules {\n\tmodule {\n\t\tname = \"varnish\"\n" \
+          "\t\tlanguage = \"python\"\n\t\tpath = \"varnish.py\"\n"
     print "\t\tparam instances {\n\t\t\tvalue = \"%s\"\n\t\t}" % ",".join(
         instances)
     print "\t}\n}\n"
 
     print "collection_group {\n\tcollect_every = 15\n\ttime_threshold = 15\n"
     for metric_properties in metrics:
-        print "\tmetric {\n\t\tname = '%(name)s'\n" +
-        "\t\ttitle = '%(description)s'\n\t}" % metric_properties
+        print "\tmetric {\n\t\tname = '%(name)s'\n" \
+              "\t\ttitle = '%(description)s'\n\t}" % metric_properties
     print "}"
