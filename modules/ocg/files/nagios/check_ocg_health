@@ -25,6 +25,9 @@ import json
 import requests
 import sys
 
+class HTTPError(Exception):
+	pass
+
 def parse_arguments():
 	"""parse command line arguments into various thresholds
 	:returns: dict containing validated arguments
@@ -55,9 +58,9 @@ def poll_ocg_server(url):
 	try:
 		r = requests.get(url, timeout=5)
 	except requests.exceptions.RequestException as e:
-		raise StandardError("connection error: %s" % e)
+		raise HTTPError("connection error: %s" % e)
 	if r.status_code != 200:
-		raise StandardError("http status %s" % r.status_code)
+		raise HTTPError("http status %s" % r.status_code)
 	try:
 		json_data = r.json()
 	except:
@@ -108,11 +111,14 @@ def main():
 	args = parse_arguments()
 	try:
 		data = poll_ocg_server(args.url)
-	except:
-		report = str(sys.exc_info()[1])
+	except HTTPError as e:
+		report = str(e)
+		exit_status = 2
+	except Exception as e:
+		report = str(e)
 		exit_status = 1
 	else:
-		exit_status,report = run_checks(args, data)
+		exit_status, report = run_checks(args, data)
 	if exit_status == 2:
 		print "CRITICAL: %s" % report
 	elif exit_status == 1:
