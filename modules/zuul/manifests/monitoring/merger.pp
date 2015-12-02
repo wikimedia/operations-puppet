@@ -13,7 +13,9 @@ class zuul::monitoring::merger {
     nrpe::monitor_service { 'zuul_merger_git_daemon':
         description   => 'git_daemon_running',
         contact_group => 'contint',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/lib/git-core/git-daemon'",
+        # git-daemon forks sub process with an extra parameter '--serve'
+        # the regex ends with '--user' to ignore the forked child.
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/lib/git-core/git-daemon --user'",
     }
 
 }
