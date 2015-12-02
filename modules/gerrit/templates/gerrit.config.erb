@@ -59,13 +59,13 @@
 [cache "accounts_byname"]
     maxAge = 7 days
 [gitweb]
-    url = https://phabricator.wikimedia.org
+    url = https://git.wikimedia.org
     type = custom
-    revision = /r/revision/${project};${commit}
-    project = /r/project/${project}
-    branch = /r/branch/${project};${branch}
-    filehistory = /r/browse/${project};${branch};${file}
-    linkname = diffusion
+    revision = /commit/${project}/${commit}
+    project = /summary/${project}
+    branch = /log/${project}/${branch}
+    filehistory = /blob/${project}/${branch}/${file}
+    linkname = gitblit
     linkDrafts = false
 [user]
     email = gerrit@wikimedia.org
