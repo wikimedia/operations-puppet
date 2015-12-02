@@ -64,7 +64,7 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     # kafka pipeline
     monitoring::graphite_threshold { 'eventlogging_overall_inserted_rate':
         description   => 'Overall insertion rate from MySQL consumer',
-        metric        => "eventlogging.overall.inserted.rate",
+        metric        => 'eventlogging.overall.inserted.rate',
         warning       => 100,
         critical      => 10,
         percentage    => 20, # At least 3 of the (25 - 10) = 15 readings
