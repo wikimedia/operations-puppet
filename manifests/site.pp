@@ -1047,8 +1047,8 @@ node 'labtestneutron2001.codfw.wmnet' {
 }
 
 node 'labtestcontrol2001.wikimedia.org' {
-    #$is_puppet_master      = true
-    #$is_labs_puppet_master = true
+    $is_puppet_master      = true
+    $is_labs_puppet_master = true
 
     include standard
     role labs::openstack::nova::controller,
