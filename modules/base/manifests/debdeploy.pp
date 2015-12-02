@@ -14,4 +14,11 @@ class base::debdeploy
     if $grains != {} {
         create_resources(salt::grain, $grains)
     }
+
+    $dc_grain = hiera_hash('debdeploy::dc_grain', {})
+
+    if $dc_grain != {} {
+        create_resources(salt::grain, $dc_grain)
+    }
+
 }
