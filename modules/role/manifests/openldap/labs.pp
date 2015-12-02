@@ -15,16 +15,17 @@ class role::openldap::labs {
 
     $sync_pass = $passwords::openldap::labs::sync_pass
     class { '::openldap':
-        sync_pass   => $sync_pass,
-        mirrormode => true,
-        suffix      => 'dc=wikimedia,dc=org',
-        datadir     => '/var/lib/ldap/labs',
-        ca          => '/etc/ssl/certs/ca-certificates.crt',
-        certificate => "/etc/ssl/localcerts/ldap-labs.${::site}.wikimedia.org.crt",
-        key         => "/etc/ssl/private/ldap-labs.${::site}.wikimedia.org.key",
+        sync_pass     => $sync_pass,
+        mirrormode    => true,
+        suffix        => 'dc=wikimedia,dc=org',
+        datadir       => '/var/lib/ldap/labs',
+        ca            => '/etc/ssl/certs/ca-certificates.crt',
+        certificate   => "/etc/ssl/localcerts/ldap-labs.${::site}.wikimedia.org.crt",
+        key           => "/etc/ssl/private/ldap-labs.${::site}.wikimedia.org.key",
         extra_schemas => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                           'puppet.schema', 'sudo.schema'],
         extra_indices => 'openldap/labs-indices.erb',
+        size_limit    => '32768',
     }
 
     ferm::service { 'corp_ldap':
