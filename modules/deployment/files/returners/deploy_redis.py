@@ -33,7 +33,7 @@ def _get_serv():
     serv = redis.Redis(host=deploy_redis['host'],
                        port=int(deploy_redis['port']),
                        db=int(deploy_redis['db']),
-                       socket_connect_timeout=socket_connect_timeout)
+                       socket_timeout=socket_connect_timeout)
     return serv
 
 
