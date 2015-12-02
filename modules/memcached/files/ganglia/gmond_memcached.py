@@ -10,14 +10,16 @@ import socket
 import select
 
 descriptors = list()
-Desc_Skel   = {}
+Desc_Skel = {}
 _Worker_Thread = None
-_Lock = threading.Lock() # synchronization lock
+_Lock = threading.Lock()  # synchronization lock
 Debug = False
+
 
 def dprint(f, *v):
     if Debug:
         print >>sys.stderr, "DEBUG: "+f % v
+
 
 def floatable(str):
     try:
@@ -26,27 +28,28 @@ def floatable(str):
     except:
         return False
 
+
 class UpdateMetricThread(threading.Thread):
 
     def __init__(self, params):
         threading.Thread.__init__(self)
-        self.running      = False
+        self.running = False
         self.shuttingdown = False
         self.refresh_rate = 15
         if "refresh_rate" in params:
             self.refresh_rate = int(params["refresh_rate"])
-        self.metric       = {}
-        self.last_metric       = {}
-        self.timeout      = 2
+        self.metric = {}
+        self.last_metric = {}
+        self.timeout = 2
 
-        self.host         = "localhost"
-        self.port         = 11211
+        self.host = "localhost"
+        self.port = 11211
         if "host" in params:
             self.host = params["host"]
         if "port" in params:
             self.port = int(params["port"])
-        self.type    = params["type"]
-        self.mp      = params["metrix_prefix"]
+        self.type = params["type"]
+        self.mp = params["metrix_prefix"]
 
     def shutdown(self):
         self.shuttingdown = True
@@ -67,7 +70,7 @@ class UpdateMetricThread(threading.Thread):
 
     def update_metric(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        msg  = ""
+        msg = ""
         self.last_metric = self.metric.copy()
         try:
             dprint("connect %s:%d", self.host, self.port)
@@ -100,9 +103,10 @@ class UpdateMetricThread(threading.Thread):
     def metric_of(self, name):
         val = 0
         mp = name.split("_")[0]
-        if name.rsplit("_",1)[1] == "rate" and name.rsplit("_",1)[0] in self.metric:
+        if (name.rsplit("_", 1)[1] == "rate" and
+                name.rsplit("_", 1)[0] in self.metric):
             _Lock.acquire()
-            name = name.rsplit("_",1)[0]
+            name = name.rsplit("_", 1)[0]
             if name in self.last_metric:
                 num = self.metric[name]-self.last_metric[name]
                 period = self.metric[mp+"_time"]-self.last_metric[mp+"_time"]
@@ -116,6 +120,7 @@ class UpdateMetricThread(threading.Thread):
             val = self.metric[name]
             _Lock.release()
         return val
+
 
 def metric_init(params):
     global descriptors, Desc_Skel, _Worker_Thread, Debug
@@ -134,15 +139,15 @@ def metric_init(params):
 
     # initialize skeleton of descriptors
     Desc_Skel = {
-        'name'        : 'XXX',
-        'call_back'   : metric_of,
-        'time_max'    : 60,
-        'value_type'  : 'float',
-        'format'      : '%.0f',
-        'units'       : 'XXX',
-        'slope'       : 'XXX', # zero|positive|negative|both
-        'description' : 'XXX',
-        'groups'      : params["type"],
+        'name': 'XXX',
+        'call_back': metric_of,
+        'time_max': 60,
+        'value_type': 'float',
+        'format': '%.0f',
+        'units': 'XXX',
+        'slope': 'XXX',  # zero|positive|negative|both
+        'description': 'XXX',
+        'groups': params["type"],
         }
 
     if "refresh_rate" not in params:
@@ -161,93 +166,99 @@ def metric_init(params):
     mp = params["metrix_prefix"]
 
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_curr_items",
-                "units"      : "items",
-                "slope"      : "both",
+                "name": mp+"_curr_items",
+                "units": "items",
+                "slope": "both",
                 "description": "Current number of items stored",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_cmd_get",
-                "units"      : "commands",
-                "slope"      : "positive",
+                "name": mp+"_cmd_get",
+                "units": "commands",
+                "slope": "positive",
                 "description": "Cumulative number of retrieval reqs",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_cmd_set",
-                "units"      : "commands",
-                "slope"      : "positive",
+                "name": mp+"_cmd_set",
+                "units": "commands",
+                "slope": "positive",
                 "description": "Cumulative number of storage reqs",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_bytes_read",
-                "units"      : "bytes",
-                "slope"      : "positive",
-                "description": "Total number of bytes read by this server from network",
+                "name": mp+"_bytes_read",
+                "units": "bytes",
+                "slope": "positive",
+                "description": "Total number of bytes read by this server " +
+                               " from network",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_bytes_written",
-                "units"      : "bytes",
-                "slope"      : "positive",
-                "description": "Total number of bytes sent by this server to network",
+                "name": mp+"_bytes_written",
+                "units": "bytes",
+                "slope": "positive",
+                "description": "Total number of bytes sent by this server " +
+                               "to network",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_bytes",
-                "units"      : "bytes",
-                "slope"      : "both",
+                "name": mp+"_bytes",
+                "units": "bytes",
+                "slope": "both",
                 "description": "Current number of bytes used to store items",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_limit_maxbytes",
-                "units"      : "bytes",
-                "slope"      : "both",
-                "description": "Number of bytes this server is allowed to use for storage",
+                "name": mp+"_limit_maxbytes",
+                "units": "bytes",
+                "slope": "both",
+                "description": "Number of bytes this server is allowed to " +
+                               "use for storage",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_curr_connections",
-                "units"      : "connections",
-                "slope"      : "both",
+                "name": mp+"_curr_connections",
+                "units": "connections",
+                "slope": "both",
                 "description": "Number of open connections",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_evictions",
-                "units"      : "items",
-                "slope"      : "both",
-                "description": "Number of valid items removed from cache to free memory for new items",
+                "name": mp+"_evictions",
+                "units": "items",
+                "slope": "both",
+                "description": "Number of valid items removed from cache to " +
+                               "free memory for new items",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_get_hits",
-                "units"      : "items",
-                "slope"      : "positive",
-                "description": "Number of keys that have been requested and found present ",
+                "name": mp+"_get_hits",
+                "units": "items",
+                "slope": "positive",
+                "description": "Number of keys that have been requested and " +
+                               "found present",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_get_misses",
-                "units"      : "items",
-                "slope"      : "positive",
-                "description": "Number of items that have been requested and not found",
+                "name": mp+"_get_misses",
+                "units": "items",
+                "slope": "positive",
+                "description": "Number of items that have been requested " +
+                               "and not found",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_get_hits_rate",
-                "units"      : "items",
-                "slope"      : "both",
+                "name": mp+"_get_hits_rate",
+                "units": "items",
+                "slope": "both",
                 "description": "Hits per second",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_get_misses_rate",
-                "units"      : "items",
-                "slope"      : "both",
+                "name": mp+"_get_misses_rate",
+                "units": "items",
+                "slope": "both",
                 "description": "Misses per second",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_cmd_get_rate",
-                "units"      : "commands",
-                "slope"      : "both",
+                "name": mp+"_cmd_get_rate",
+                "units": "commands",
+                "slope": "both",
                 "description": "Gets per second",
                 }))
     descriptors.append(create_desc(Desc_Skel, {
-                "name"       : mp+"_cmd_set_rate",
-                "units"      : "commands",
-                "slope"      : "both",
+                "name": mp+"_cmd_set_rate",
+                "units": "commands",
+                "slope": "both",
                 "description": "Sets per second",
                 }))
 
@@ -261,7 +272,7 @@ def metric_init(params):
                 mp+"_limit_maxbytes",
                 mp+"_curr_connections",
                 mp+"_evictions",
-                ]:
+            ]:
                 descriptors.remove(d)
         for d in descriptors:
             if d["name"] == mp+"_get_hits":
@@ -270,48 +281,54 @@ def metric_init(params):
                 d["name"] = mp+"_cmd_get_misses"
 
         descriptors.append(create_desc(Desc_Skel, {
-                    "name"       : mp+"_cmd_set_hits",
-                    "units"      : "items",
-                    "slope"      : "positive",
-                    "description": "Number of keys that have been stored and found present ",
+                    "name": mp+"_cmd_set_hits",
+                    "units": "items",
+                    "slope": "positive",
+                    "description": "Number of keys that have been stored " +
+                                   "and found present",
                     }))
         descriptors.append(create_desc(Desc_Skel, {
-                    "name"       : mp+"_cmd_set_misses",
-                    "units"      : "items",
-                    "slope"      : "positive",
-                    "description": "Number of items that have been stored and not found",
+                    "name": mp+"_cmd_set_misses",
+                    "units": "items",
+                    "slope": "positive",
+                    "description": "Number of items that have been stored " +
+                                   "and not found",
                     }))
 
         descriptors.append(create_desc(Desc_Skel, {
-                    "name"       : mp+"_cmd_delete",
-                    "units"      : "commands",
-                    "slope"      : "positive",
+                    "name": mp+"_cmd_delete",
+                    "units": "commands",
+                    "slope": "positive",
                     "description": "Cumulative number of delete reqs",
                     }))
         descriptors.append(create_desc(Desc_Skel, {
-                    "name"       : mp+"_cmd_delete_hits",
-                    "units"      : "items",
-                    "slope"      : "positive",
-                    "description": "Number of keys that have been deleted and found present ",
+                    "name": mp+"_cmd_delete_hits",
+                    "units": "items",
+                    "slope": "positive",
+                    "description": "Number of keys that have been deleted " +
+                                   "and found present ",
                     }))
         descriptors.append(create_desc(Desc_Skel, {
-                    "name"       : mp+"_cmd_delete_misses",
-                    "units"      : "items",
-                    "slope"      : "positive",
-                    "description": "Number of items that have been deleted and not found",
+                    "name": mp+"_cmd_delete_misses",
+                    "units": "items",
+                    "slope": "positive",
+                    "description": "Number of items that have been deleted " +
+                                   "and not found",
                     }))
-
 
     return descriptors
 
+
 def create_desc(skel, prop):
     d = skel.copy()
-    for k,v in prop.iteritems():
+    for k, v in prop.iteritems():
         d[k] = v
     return d
 
+
 def metric_of(name):
     return _Worker_Thread.metric_of(name)
+
 
 def metric_cleanup():
     _Worker_Thread.shutdown()
@@ -319,13 +336,13 @@ def metric_cleanup():
 if __name__ == '__main__':
     try:
         params = {
-            "host"  : "localhost",
-            "port"  : 11211,
-            # "host"  : "tt101",
-            # "port"  : 1978,
-            # "type"  : "Tokyo Tyrant",
-            # "metrix_prefix" : "tt101",
-            "debug" : True,
+            "host": "localhost",
+            "port": 11211,
+            # "host": "tt101",
+            # "port": 1978,
+            # "type": "Tokyo Tyrant",
+            # "metrix_prefix": "tt101",
+            "debug": True,
             }
         metric_init(params)
 
