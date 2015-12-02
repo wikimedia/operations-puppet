@@ -498,8 +498,9 @@ users:
     gid: 500
     name: mark
     realname: Mark Bergsma
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAorTmQ0qlrxB3RL+GULLzex3k1Pg/c6tgLbKsl1A7Qo0B5XI4eNgfWwaAXUrKyQW3/9gwDH3YJ2eoOue0/BGhKX6voOTnNPeGE9ZbrufpPLT6DXDEbvpmXQd/qw8s0GxdftleHYl28av0nTZgKY+1/Oc+ZHNUN5YxmdGehWBvTXs=
-        Mark\s main public key]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAorTmQ0qlrxB3RL+GULLzex3k1Pg/c6tgLbKsl1A7Qo0B5XI4eNgfWwaAXUrKyQW3/9gwDH3YJ2eoOue0/BGhKX6voOTnNPeGE9ZbrufpPLT6DXDEbvpmXQd/qw8s0GxdftleHYl28av0nTZgKY+1/Oc+ZHNUN5YxmdGehWBvTXs= Mark\s main public key
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCGYwDexjSlyf1dMsVMr9VrEwnsEW90p3Ywgz/1Zl1EmYIrwLztKZ6V2bR6FbMx072YT6eEkg3m6dHxck5Q2Tx8QvUuUMoHzg18e/ZzsVZkG/cqtwrEXTRpg7O35xcdg0rYAbyyB0qo2z5gZWakZPd+h9hwfj2CUQ29aGRv83fsu2Ua5rbavU8OwAfndxJaBHDUqHsS/Mc+M3h6LF6XjhT9ELh0k7ZyPNhYTJ0N1VI4ROoxWI4/WRsclsSZtnWi7tYWP6WjhptezRGdbo2H/EMNffmISq5/n/1lkcAWGTIY3bppmBGe+f7CDcg8VN0i56Xe9+U7smlnqBSc17HZ8035 mark@neo
     uid: 531
   jgreen:
     ensure: present
