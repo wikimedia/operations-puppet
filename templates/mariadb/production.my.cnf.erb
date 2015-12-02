@@ -9,6 +9,9 @@ socket = /tmp/mysql.sock
 ssl-ca=/etc/mysql/ssl/cacert.pem
 ssl-cert=/etc/mysql/ssl/server-cert.pem
 ssl-key=/etc/mysql/ssl/server-key.pem
+# skip server cert validation until we generate one cert per server
+# it would check the cert's common name against the host
+# ssl-verify-server-cert
 <% end %>
 
 [mysqld]
