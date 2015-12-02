@@ -1,4 +1,4 @@
-class icinga::gsbmonitoring($client_id, $api_key){
+class icinga::monitor::gsb($client_id, $api_key){
     @monitoring::host { 'google':
         host_fqdn => 'google.com'
     }
