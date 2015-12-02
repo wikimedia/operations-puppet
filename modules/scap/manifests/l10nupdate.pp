@@ -13,7 +13,7 @@ class scap::l10nupdate(
     $deployment_group = 'wikidev',
     $run_l10nupdate   = false,
 ) {
-    require ::mediawiki::users::web
+    require ::mediawiki::users
 
     $ensure_l10nupdate_cron = $run_l10nupdate ? {
         true    => 'present',
