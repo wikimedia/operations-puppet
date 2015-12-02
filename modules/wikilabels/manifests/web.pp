@@ -33,8 +33,8 @@ class wikilabels::web (
     }
 
     git::clone { 'wikilabels-wikimedia-config':
-        origin    => 'https://github.com/wiki-ai/wikilabels-wikimedia-config.git',
         ensure    => present,
+        origin    => 'https://github.com/wiki-ai/wikilabels-wikimedia-config.git',
         directory => $config_path,
         branch    => $branch,
         owner     => 'www-data',
