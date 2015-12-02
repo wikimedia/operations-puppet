@@ -6,6 +6,7 @@ import 'monitoring_groups.pp'
 import 'misc/*.pp'
 import 'network.pp'
 import 'role/*.pp'
+import 'role/mediawiki/*.pp'
 import 'role/analytics/*.pp'
 
 # Base nodes
