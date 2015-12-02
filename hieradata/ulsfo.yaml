@@ -1,1 +1,4 @@
 ganglia_aggregators: bast4001.wikimedia.org:12649
+debdeploy::dc_grain:
+  debdeploy-dc-ulsfo:
+    value: standard

@@ -1,1 +1,4 @@
 ganglia_aggregators: hooft.esams.wikimedia.org:11649
+debdeploy::dc_grain:
+  debdeploy-dc-esams:
+    value: standard
