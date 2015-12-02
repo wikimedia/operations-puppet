@@ -48,7 +48,7 @@ define varnish::instance(
         $inst = $name
     }
 
-    # lint:ignore:quoted_booleans
+    # lint:ignore:quoted_booleans lint:ignore:double_quoted_strings
     if inline_template("<%= @directors.map{|k,v| v['dynamic'] }.include?('yes') %>") == "true" {
         $use_dynamic_directors = true
     } else {
