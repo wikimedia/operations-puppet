@@ -11,6 +11,14 @@
 class labstore::monitoring(
     $monitor_iface = 'eth0',
 ) {
+
+    @monitoring::group { 'labsnfs_eqiad':
+        description => 'eqiad labsnfs server servers'
+    }
+    @monitoring::group { 'labsnfs_codfw':
+        description => 'codfw labsnfs server servers'
+    }
+
     monitoring::graphite_threshold { 'network_out_saturated':
         description => 'Outgoing network saturation',
         metric      => "servers.${::hostname}.network.${monitor_iface}.tx_byte",
