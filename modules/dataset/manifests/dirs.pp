@@ -10,43 +10,43 @@ class dataset::dirs {
     $relative_wikidatawiki = 'other/wikibase/wikidatawiki'
 
     file { $datadir:
-        mode   => '0755',
         ensure => 'directory',
+        mode   => '0755',
         owner  => 'root',
         group  => 'root',
     }
 
     file { $publicdir:
-        mode   => '0775',
         ensure => 'directory',
+        mode   => '0775',
         owner  => 'datasets',
         group  => 'datasets',
     }
 
     file { $otherdir:
-        mode   => '0755',
         ensure => 'directory',
+        mode   => '0755',
         owner  => 'datasets',
         group  => 'datasets',
     }
 
     file { $othermiscdir:
-        mode   => '0755',
         ensure => 'directory',
+        mode   => '0755',
         owner  => 'datasets',
         group  => 'datasets',
     }
 
     file { $otherdir_wikibase:
-        mode   => '0755',
         ensure => 'directory',
+        mode   => '0755',
         owner  => 'datasets',
         group  => 'datasets',
     }
 
     file { "${publicdir}/${relative_wikidatawiki}":
-        mode   => '0755',
         ensure => 'directory',
+        mode   => '0755',
         owner  => 'datasets',
         group  => 'datasets',
     }
@@ -60,8 +60,8 @@ class dataset::dirs {
 
     # Legacy
     file { $otherdir_wikidata_legacy:
-        mode   => '0755',
         ensure => 'directory',
+        mode   => '0755',
         owner  => 'datasets',
         group  => 'datasets',
     }
