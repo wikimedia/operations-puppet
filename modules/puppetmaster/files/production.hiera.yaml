@@ -15,6 +15,7 @@
   - "regex/%{::fqdn}"
   - "%{::site}/%{::realm}"
   - "%{::site}"
+  - "private/%{::site}/%{::realm}"
   - "private/%{::site}"
   - "common"
   - "private/common"

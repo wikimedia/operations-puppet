@@ -1,6 +1,6 @@
 class openstack::glance::service(
     $openstack_version=$::openstack::version,
-    $image_datadir = '/srv/glance/images',
+    $glance_data = '/srv/glance/',
     $active_server,
     $standby_server,
     $keystone_host,
@@ -9,6 +9,7 @@ class openstack::glance::service(
 ) {
     include openstack::repo
 
+    $glance_images_dir = "${glance_data}/images"
     $keystone_host_ip  = ipresolve($keystone_host,4)
     $keystone_auth_uri = "http://${active_server}:5000/v2.0"
 
@@ -35,8 +36,17 @@ class openstack::glance::service(
         require => Class['openstack::repo'],
     }
 
+
     #  This is 775 so that the glancesync user can rsync to it.
-    file { $image_datadir:
+    file { $glance_data:
+        ensure  => directory,
+        owner   => 'glance',
+        group   => 'glance',
+        require => Package['glance'],
+        mode    => '0775',
+    }
+
+    file { $glance_images_dir:
         ensure  => directory,
         owner   => 'glance',
         group   => 'glance',
@@ -90,7 +100,7 @@ class openstack::glance::service(
 
         if $spandby_server != $active_server {
             cron { 'rsync_glance_images':
-                command => "/usr/bin/rsync -aS ${image_datadir}/* ${standby_server}:${image_datadir}/",
+                command => "/usr/bin/rsync -aS ${glance_images_dir}/* ${standby_server}:${glance_images_dir}/",
                 minute  => 15,
                 user    => 'glancesync',
                 require => User['glancesync'],
@@ -112,7 +122,7 @@ class openstack::glance::service(
             require => Package['glance'],
         }
         cron { 'rsync_chown_images':
-            command => "chown -R glance ${image_datadir}/*",
+            command => "chown -R glance ${glance_images_dir}/*",
             minute  => 30,
             user    => 'root',
         }
