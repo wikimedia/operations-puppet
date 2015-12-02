@@ -15,9 +15,6 @@
 #   should be identical in all certs.  This is intended to support duplicate
 #   keys with differing crypto (e.g. ECDSA + RSA).
 #
-# [*upstream_ip*]
-#   IP address to proxy to. Defaults to '127.0.0.1'
-#
 # [*upstream_port*]
 #   TCP port to proxy to. Defaults to '80'
 #
@@ -36,7 +33,6 @@ define tlsproxy::localssl(
     $server_name    = $::fqdn,
     $server_aliases = [],
     $default_server = false,
-    $upstream_ip    = '127.0.0.1',
     $upstream_port  = '80',
     $do_ocsp        = false,
     $skip_private   = false,
