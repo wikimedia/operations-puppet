@@ -1,0 +1,2 @@
+# Do not fetch the private MaxMind geodbs
+puppetmaster::geoip::fetch_private: false

@@ -1,17 +1,25 @@
-class puppetmaster::geoip {
+class puppetmaster::geoip(
+    $fetch_private = true,
+    $use_proxy = true,
+) {
     # Fetch the GeoIP databases into puppet's volatile dir, so that other hosts
     # can then just sync that directory into their own /usr/share/GeoIP via a
     # normal puppet File resource (see the geoip module for more)
 
     $geoip_destdir = "${puppetmaster::volatiledir}/GeoIP"
-    $webproxy = "http://webproxy.${::site}.wmnet:8080"
 
     # geoip::data classes depend on this
     file { $geoip_destdir:
         ensure => directory,
     }
 
-    if $is_labs_puppet_master {
+    if $use_proxy {
+        $webproxy = "http://webproxy.${::site}.wmnet:8080"
+    } else {
+        $webproxy = undef
+    }
+
+    if $fetch_private {
         class { 'geoip::data::maxmind':
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
