@@ -23,22 +23,6 @@ class puppet::self::gitclone {
         group  => 'puppet',
         mode   => '0640',
     }
-    file { "${gitdir}/ssh":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        # FIXME: ok, this sucks. ew. ewww.
-        content => "#!/bin/sh\nexec ssh -o StrictHostKeyChecking=no -i ${gitdir}/labs-puppet-key \$*\n",
-        require => File["${gitdir}/labs-puppet-key"],
-    }
-    file { "${gitdir}/labs-puppet-key":
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0600',
-        content => secret('ssh/labs-puppet-key'),
-    }
     file { $volatiledir:
         ensure => directory,
         owner  => 'root',
@@ -60,9 +44,9 @@ class puppet::self::gitclone {
     }
     git::clone { 'labs/private':
         directory => "${gitdir}/labs/private",
-        origin    => 'ssh://labs-puppet@gerrit.wikimedia.org:29418/labs/private.git',
+        origin    => 'https://gerrit.wikimedia.org/r/labs/private.git',
         ssh       => "${gitdir}/ssh",
-        require   => [ File["${gitdir}/labs"], File["${gitdir}/ssh"] ],
+        require   => File["${gitdir}/labs"]
     }
 
     # Intentionally readable / writeable only by root and puppet

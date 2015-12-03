@@ -6,9 +6,6 @@ set -e
 
 # TODO: rewrite in python?
 
-# pull via ssh - use the wrapper ssh command
-export GIT_SSH=/var/lib/git/ssh
-
 # Used only on labs, send metrics to labmon1001
 STATSD_HOST=labmon1001.eqiad.wmnet
 # Run script as root
