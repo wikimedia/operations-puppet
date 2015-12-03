@@ -37,12 +37,4 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
         }
     }
 
-    if 'access' in $ldapincludes {
-        file { '/etc/security/access.conf':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('ldap/access.conf.erb'),
-        }
-    }
 }
