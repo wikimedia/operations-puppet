@@ -242,7 +242,6 @@ class role::labs::openstack::nova::network {
         method         => 'manual',
         up             => 'ip link set $IFACE up',
         down           => 'ip link set $IFACE down',
-        hotplug        => false,
     }
 
     class { '::openstack::nova::network':
@@ -293,7 +292,6 @@ class role::labs::openstack::nova::compute($instance_dev='/dev/md1') {
         method         => 'manual',
         up             => 'ip link set $IFACE up',
         down           => 'ip link set $IFACE down',
-        hotplug        => false,
     }
 
     class { '::openstack::nova::compute':

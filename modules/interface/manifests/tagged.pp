@@ -1,11 +1,5 @@
-define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $remove=undef, $hotplug=true) {
+define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $remove=undef) {
     require_package('vlan')
-
-    if $hotplug {
-        $act_type = 'allow-hotplug'
-    } else {
-        $act_type = 'auto'
-    }
 
     $intf = "${base_interface}.${vlan_id}"
 
@@ -33,11 +27,11 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
     }
 
     if $remove == true {
-        $augeas_cmd = [ "rm ${act_type}[./1 = '${intf}']",
+        $augeas_cmd = [ "rm auto[./1 = '${intf}']",
                 "rm iface[. = '${intf}']"
             ]
     } else {
-        $augeas_cmd = [ "set ${act_type}[./1 = '${intf}']/1 '${intf}'",
+        $augeas_cmd = [ "set auto[./1 = '${intf}']/1 '${intf}'",
                 "set iface[. = '${intf}'] '${intf}'",
                 "set iface[. = '${intf}']/family '${family}'",
                 "set iface[. = '${intf}']/method '${method}'",
