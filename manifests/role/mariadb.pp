@@ -449,8 +449,9 @@ class role::mariadb::grants::wikitech {
 
 class role::mariadb::core(
     $shard,
-    $p_s = 'off',
-    $ssl = 'on',
+    $p_s           = 'off',
+    $ssl           = 'on',
+    $binlog_format = 'MIXED',
     ) {
 
     system::role { 'role::mariadb::core':
@@ -469,13 +470,14 @@ class role::mariadb::core(
     }
 
     class { 'mariadb::config':
-        prompt   => "PRODUCTION ${shard}",
-        config   => 'mariadb/production.my.cnf.erb',
-        password => $passwords::misc::scripts::mysql_root_pass,
-        datadir  => '/srv/sqldata',
-        tmpdir   => '/srv/tmp',
-        p_s      => $p_s,
-        ssl      => $ssl,
+        prompt        => "PRODUCTION ${shard}",
+        config        => 'mariadb/production.my.cnf.erb',
+        password      => $passwords::misc::scripts::mysql_root_pass,
+        datadir       => '/srv/sqldata',
+        tmpdir        => '/srv/tmp',
+        p_s           => $p_s,
+        ssl           => $ssl,
+        binlog_format => $binlog_format
     }
 
     mariadb::monitor_replication { [ $shard ]:
