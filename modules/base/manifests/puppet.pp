@@ -1,4 +1,7 @@
-class base::puppet($server='puppet', $certname=undef) {
+class base::puppet(
+    $server = 'puppet',
+    $certname = undef,
+) {
 
     include passwords::puppet::database
     include base::puppet::params
@@ -30,9 +33,9 @@ class base::puppet($server='puppet', $certname=undef) {
         mode   => '0550',
     }
 
-    base::puppet::config { 'main':
-        prio    => 10,
-        content => template('base/puppet.conf.d/10-main.conf.erb'),
+    class { '::base::puppet::client':
+        servername => $server,
+        certname   => $certname
     }
 
     if $::realm == 'labs' {
@@ -43,6 +46,14 @@ class base::puppet($server='puppet', $certname=undef) {
             onlyif      => 'test -f /root/allowcertdeletion',
             subscribe   => File['/etc/puppet/puppet.conf.d/10-main.conf'],
             refreshonly => true,
+        }
+
+        # Provision a small script that'll allow flipping puppetmasters
+        file { '/usr/local/sbin/switch-puppetmaster':
+            source => 'puppet:///modules/base/switch-puppetmaster',
+            mode   => '0550',
+            owner  => 'root',
+            group  => 'root',
         }
     }
 

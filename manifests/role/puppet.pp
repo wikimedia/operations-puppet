@@ -54,11 +54,7 @@ class role::puppet::self(
         if $autoupdate_master {
             include puppetmaster::gitsync
         }
-    }
-    # Else this is a puppet client.
-    else {
-        class { 'puppet::self::client':
-            server => $server,
-        }
+    } else {
+        fail("role::puppet::self should not be applied to self hosted clients. Just use hiera instead to set servername")
     }
 }

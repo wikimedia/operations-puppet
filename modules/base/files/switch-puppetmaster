@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "Cleaning out current puppetmaser's certs"
+rm -r /var/lib/puppet/ssl
+echo "running puppet to request new certificate and ca"
+puppet agent -tv
