@@ -43,3 +43,7 @@ sub vcl_error {
     call errorpage;
     return (deliver);
 }
+
+sub vcl_fetch {
+    call misc_fetch_large_objects;
+}

@@ -18,3 +18,14 @@ sub misc_recv_pass {
         return (pass);
     }
 }
+
+sub misc_fetch_large_objects {
+    // Stream objects >= 1MB in size
+    if (std.integer(beresp.http.Content-Length, 1048576) >= 1048576 || beresp.http.Content-Length ~ "^[0-9]{8}") {
+        set beresp.do_stream = true;
+        // hit_for_pass on objects >= 10MB in size (no effect on backends that always (pass) anyways)
+        if (std.integer(beresp.http.Content-Length, 10485760) >= 10485760 || beresp.http.Content-Length ~ "^[0-9]{9}") {
+            return (hit_for_pass);
+        }
+    }
+}
