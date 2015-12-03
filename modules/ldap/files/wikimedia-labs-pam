@@ -4,6 +4,3 @@ Priority: 200
 Session-Type: Additional
 Session:
     [success=ok new_authtok_reqd=ok default=ignore] pam_mkhomedir.so umask=0077
-Account-Type: Primary
-Account:
-    [success=ok new_authtok_reqd=ok ignore=ignore default=bad] pam_access.so
