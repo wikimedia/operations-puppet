@@ -98,11 +98,9 @@
     html  = "<li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>"
 [commentlink "its-phabricator"]
     # Due to limitations of our old gerrit (and hence the old plugins)
-    # that we use, $1 needs to hold the bug number. By the way the
-    # pattern gets used, neither non-capturing groups nor
-    # look-aheads/look-backs work reliably.
-    match =  "\\bT(\\d+)\\b"
-    link = https://phabricator.wikimedia.org/T$1
+    # that we use, $1 needs to hold the bug number.
+    match =  "\\bT(\\d+)(#\\d+)?\\b(?![#\"<])"
+    link = https://phabricator.wikimedia.org/T$1$2
 [mimetype "application/javascript"]
     safe = true
 [mimetype "application/x-php"]
