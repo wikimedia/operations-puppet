@@ -10,4 +10,3 @@ echo '+:ALL:' $(for host in submithost-*; do
     cat $host
   fi
 done)
-echo "-:ALL EXCEPT ($(cat /etc/wmflabs-project).admin) root:ALL"

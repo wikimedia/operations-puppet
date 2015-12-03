@@ -21,9 +21,8 @@ class toollabs::infrastructure {
 
     # Infrastructure instances are limited to an (arbitrarily picked) local
     # service group and root.
-
-    File <| title == '/etc/security/access.conf' |> {
-        source  => undef,
+    security::access::config { 'labs-admin-only':
         content => "-:ALL EXCEPT (${::labsproject}.admin) root:ALL\n",
     }
+
 }
