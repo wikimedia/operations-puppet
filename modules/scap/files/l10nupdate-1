@@ -119,6 +119,7 @@ done
 
 # Clear the ResourceLoader cached messages
 echo "Refreshing ResourceLoader caches"
+BEGAN=$(date +"%s")
 
 if hostname --domain | grep -q wmflabs ; then
     ALLDB="$MEDIAWIKI_STAGING_DIR/dblists/all-labs.dblist"
@@ -132,5 +133,10 @@ done
 echo "All done"
 ENDED=$(date +"%s")
 LENGTH=$(($ENDED-$BEGAN))
+if [[ $LENGTH -lt 3600 ]]; then
+	DURATION=$(date -ud @"$LENGTH" +'%-Mm %-Ss')
+else
+	DURATION=$(date -ud @"$LENGTH" +'%-Hh %-Mm %-Ss')
+fi
 $BINDIR/deploy2graphite l10n $LENGTH
-$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME ResourceLoader cache refresh completed at $(date -ud @$ENDED) (duration $(date -ud @"$LENGTH" +'%-Mm %-Ss'))"
+$BINDIR/dologmsg "!log $LOGNAME@$HOSTNAME ResourceLoader cache refresh completed at $(date -ud @$ENDED) (duration $DURATION)"
