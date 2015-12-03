@@ -27,11 +27,12 @@ class role::openldap::labs {
         extra_indices => 'openldap/labs-indices.erb',
     }
 
-    ferm::service { 'corp_ldap':
+    # Ldap services are used all over the place, including within
+    #  labs and on various prod hosts.
+    ferm::service { 'labs_ldap':
         proto  => 'tcp',
         port   => '389',
-        srange => '(($INTERNAL @resolve(seaborgium.wikimedia.org) @resolve(serpens.wikimedia.org)))',
-        # TODO: Replace with ldap-labs.eqiad.wikimedia.org and ldap-labs.codfw.wikimedia.org
+        srange => '$ALL_NETWORKS',
     }
 
     monitoring::service { 'labs_ldap_check':
