@@ -72,8 +72,8 @@ define redis::instance(
         ensure  => $ensure,
         content => template('redis/instance.conf.erb'),
         owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        group   => 'redis',
+        mode    => '0440',
     }
 
     base::service_unit { "redis-instance-${instance_name}":
