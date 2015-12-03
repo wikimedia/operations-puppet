@@ -1,0 +1,52 @@
+upstream elasticsearch {
+  server 127.0.0.1:9200;
+}
+
+server {
+  listen 80;
+
+  # Use named location error code handlers to control access
+  error_page 599 = @anon_elasticsearch;
+  error_page 598 = @protected_elasticsearch;
+
+  # Named location for anon access
+  location @anon_elasticsearch {
+    proxy_pass http://elasticsearch;
+    proxy_redirect off;
+  }
+
+  # Named location for authed access
+  location @protected_elasticsearch {
+    auth_basic "<%= @auth_realm %>";
+    auth_basic_user_file <%= @auth_file %>;
+    proxy_pass http://elasticsearch;
+    proxy_redirect off;
+  }
+
+  location / {
+    # Require auth for POST, PUT, DELETE, ... requests
+    limit_except GET HEAD {
+      auth_basic "<%= @auth_realm %>";
+      auth_basic_user_file <%= @auth_file %>;
+    }
+
+    # Searches
+    location ^~ /.*/(_search|_analyze)$ {
+      return 599;
+    }
+
+    # Meta-data requests
+    location ^~ /(_nodes|.*/(_aliases|_mapping))$ {
+      return 599;
+    }
+
+    # Everything not otherwise whitelisted requires auth
+    location ^~ /.+ {
+      return 598;
+    }
+
+    # Server status
+    return 599;
+  }
+}
+# vim:ft=nginx:sw=2:ts=2:sts=2:et:
