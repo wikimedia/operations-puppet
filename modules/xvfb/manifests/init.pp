@@ -41,15 +41,12 @@ class xvfb(
         system => true,
     }
 
-    file { '/etc/init/xvfb.conf':
-        content => template('xvfb/xvfb.conf.erb'),
-        require => [ Package['xvfb'], User['xvfb'] ],
-        notify  => Service['xvfb'],
-    }
-
-    service { 'xvfb':
-        ensure   => running,
-        provider => 'upstart',
-        require  => File['/etc/init/xvfb.conf'],
+    base::service_unit { 'xvfb':
+        ensure  => present,
+        refresh => true,
+        require => [
+            Package['xvfb'],
+            User['xvfb']
+        ],
     }
 }
