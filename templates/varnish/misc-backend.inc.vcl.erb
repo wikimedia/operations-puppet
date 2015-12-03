@@ -31,7 +31,7 @@ sub vcl_recv {
         set req.backend = iridium;
     } elsif (req.http.Host == "static-bugzilla.wikimedia.org" || req.http.Host == "annual.wikimedia.org" || req.http.Host == "transparency.wikimedia.org") {
         set req.backend = bromine;
-    } elsif (req.http.Host == "servermon.wikimedia.org") {
+    } elsif (req.http.Host == "servermon.wikimedia.org" || req.http.Host == "smokeping.wikimedia.org") {
         set req.backend = netmon1001;
     } elsif (req.http.Host == "otrs-test.wikimedia.org") {
         set req.backend = mendelevium;
