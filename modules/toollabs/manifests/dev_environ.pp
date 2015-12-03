@@ -22,6 +22,7 @@ class toollabs::dev_environ {
     if os_version('ubuntu trusty') {
         include toollabs::genpp::python_dev_trusty
         package { [
+            'bundler',  # T120287
             # Previously we installed libmariadbclient-dev, but that causes
             # dependency issues on Trusty.  libmariadbclient-dev formerly
             # provided libmysqlclient-dev, but not in trusty.
@@ -43,6 +44,7 @@ class toollabs::dev_environ {
     } elsif os_version('debian jessie') {
         include toollabs::genpp::python_dev_jessie
         package { [
+            'bundler',  # T120287
             'libmariadb-client-lgpl-dev',
             'libmariadb-client-lgpl-dev-compat',
             'libboost-python1.55-dev',
@@ -96,7 +98,9 @@ class toollabs::dev_environ {
         'pastebinit',
         'pep8',                        # T59863
         'qt4-qmake',
+        'rake',                        # T120287
         'rlwrap',                      # T87368
+        'ruby-dev',                    # T120287
         'sbt',
         'sqlite3',
         'subversion',
