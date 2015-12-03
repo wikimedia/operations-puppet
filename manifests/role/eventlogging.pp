@@ -214,10 +214,19 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
         labs       => '127.0.0.1/log',
     }
 
+    # Run N parallel mysql consumers processors.
+    # These will auto balance amongst themselves.
+    $mysql_consumers = hiera(
+        'eventlogging_mysql_consumers',
+        ['mysql-m4-master']
+    )
+    $kafka_consumer_group = 'mysql-m4-master'
+
     # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { 'mysql-m4-master':
         input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
+        sid    => $kafka_consumer_group,
         # Restrict permissions on this config file since it contains a password.
         owner  => 'root',
         group  => 'eventlogging',
