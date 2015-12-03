@@ -10,7 +10,7 @@ Port 22
 PidFile /var/run/sshd/phab.pid
 
 # We need to listen on the local and the public loopback
-<% listen_addresses.each do |address| -%>
+<% @listen_addresses.each do |address| -%>
 ListenAddress =  <%= address %>
 <% end -%>
 

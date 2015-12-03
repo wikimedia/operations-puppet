@@ -15,4 +15,4 @@ keys = [
 ]
 
 <% if @check %>check_cmd = "/usr/local/bin/confd-lint-wrap <%= @check %> {{.src}}"<% end %>
-<% if @reload %>reload_cmd = "<%= reload %>"<% end %>
+<% if @reload %>reload_cmd = "<%= @reload %>"<% end %>

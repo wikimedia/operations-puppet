@@ -61,7 +61,7 @@ include "analytics.inc.vcl";
 
 acl local_host {
 	"127.0.0.1";
-	"<%= ipaddress %>"; // note this matches nginx proxy_pass for TLS
+	"<%= @ipaddress %>"; // note this matches nginx proxy_pass for TLS
 }
 
 acl wikimedia_nets {
