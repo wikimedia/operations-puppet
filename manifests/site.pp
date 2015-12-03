@@ -1204,16 +1204,18 @@ node 'labcontrol1002.wikimedia.org' {
 }
 
 node 'labcontrol2001.wikimedia.org' {
-    $ganglia_aggregator    = true
+    #$ganglia_aggregator    = true
     #$is_puppet_master      = true
     #$is_labs_puppet_master = true
 
-    role dns::ldap, salt::masters::labs
 
     include base::firewall
     include standard
     include ldap::role::client::labs
 
+    # This box isn't doing anything these days... this change is pending
+    #  decomission and rename
+    #role dns::ldap, salt::masters::labs
     #include role::labs::openstack::nova::controller
     #include role::labs::openstack::nova::manager
     #include role::salt::masters::labs
