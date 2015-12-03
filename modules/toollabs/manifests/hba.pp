@@ -44,14 +44,13 @@ class toollabs::hba {
     }
 
     exec { 'make-access':
-        command => '/usr/local/sbin/project-make-access >/etc/security/access.conf~',
+        command => '/usr/local/sbin/project-make-access >/etc/project.access',
         require => File['/usr/local/sbin/project-make-access'],
-        onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find /data/project/.system/store -maxdepth 1 \\( -type d -or -type f -name submithost-\\* \\) -newer /etc/security/access.conf~)\" -o ! -s /etc/security/access.conf~",
+        onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find /data/project/.system/store -maxdepth 1 \\( -type d -or -type f -name submithost-\\* \\) -newer /etc/project.access)\" -o ! -s /etc/project.access",
     }
 
-    File <| title == '/etc/security/access.conf' |> {
-        content => undef,
-        source  => '/etc/security/access.conf~',
+    security::access::config { 'toollabs-hba':
+        source  => '/etc/project.access',
         require => Exec['make-access'],
     }
 
