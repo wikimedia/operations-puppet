@@ -1,4 +1,7 @@
-class base::puppet($server='puppet', $certname=undef) {
+class base::puppet(
+    $server = 'puppet',
+    $certname = undef,
+) {
 
     include passwords::puppet::database
     include base::puppet::params
@@ -30,9 +33,10 @@ class base::puppet($server='puppet', $certname=undef) {
         mode   => '0550',
     }
 
-    base::puppet::config { 'main':
-        prio    => 10,
-        content => template('base/puppet.conf.d/10-main.conf.erb'),
+    class { '::base::puppet::client':
+        servername => $server,
+        ssldir     => puppet_ssldir(),
+        certname   => $certname
     }
 
     if $::realm == 'labs' {

@@ -6,7 +6,7 @@
 [main]
 logdir = /var/log/puppet
 vardir = /var/lib/puppet
-ssldir = /var/lib/puppet/ssl
+ssldir = <%= @ssldir %>
 rundir = /var/run/puppet
 factpath = $vardir/lib/facter
 
