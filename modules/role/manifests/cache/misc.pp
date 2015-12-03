@@ -238,6 +238,7 @@ class role::cache::misc {
     varnish::instance { 'misc-backend':
         name            => '',
         vcl             => 'misc-backend',
+        extra_vcl       => ['misc-common'],
         ports           => [ 3128 ],
         admin_port      => 6083,
         storage         => $::role::cache::2layer::persistent_storage_args,
@@ -249,6 +250,7 @@ class role::cache::misc {
     varnish::instance { 'misc-frontend':
         name            => 'frontend',
         vcl             => 'misc-frontend',
+        extra_vcl       => ['misc-common'],
         ports           => [ 80 ],
         admin_port      => 6082,
         storage         => "-s malloc,${memory_storage_size}G",
