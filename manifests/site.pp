@@ -876,10 +876,19 @@ node /es200[1234]\.codfw\.wmnet/ {
 
 # External Storage, Shard 2 (es2) databases
 
-node /^es101[135]\.eqiad\.wmnet/ {
+node /^es101[15]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es2',
     }
+}
+
+# temporary extra role for rolling restart
+node /^es101[3]\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 'es2',
+        p_s   => 'on',
+    }
+    include base::firewall
 }
 
 node /es200[567]\.codfw\.wmnet/ {
