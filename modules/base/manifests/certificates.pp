@@ -20,7 +20,7 @@ class base::certificates {
         source  => 'puppet:///modules/base/ca/GlobalSign_Organization_Validation_CA_-_SHA256_-_G2.crt',
     }
 
-    $puppet_ssl_dir = puppet_ssldir()
+    $puppet_ssl_dir = '/var/lib/puppet/ssl'
 
     sslcert::ca { 'Puppet_Internal_CA':
         source => "${puppet_ssl_dir}/certs/ca.pem"
