@@ -450,7 +450,7 @@ class role::mariadb::grants::wikitech {
 class role::mariadb::core(
     $shard,
     $p_s = 'off',
-    $ssl = 'off',
+    $ssl = 'on',
     ) {
 
     system::role { 'role::mariadb::core':
