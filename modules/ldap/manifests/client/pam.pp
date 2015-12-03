@@ -4,19 +4,17 @@ class ldap::client::pam($ldapconfig) {
         ensure => present,
     }
 
-    exec { 'pam-auth-update':
-        command     => '/usr/sbin/pam-auth-update --package',
-        refreshonly => true,
-        require     => Package['libpam-ldapd'],
+    security::pam::config {
+        source => 'puppet:///modules/ldap/wikimedia-labs-pam',
     }
 
-    file { '/usr/share/pam-configs/wikimedia-labs-pam':
-        ensure => present,
-        source => 'puppet:///modules/ldap/wikimedia-labs-pam',
-        notify => Exec['pam-auth-update'],
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+    #
+    # FIXME: This is needed transitionally until the
+    # access.conf handling is changed to the security::access
+    # scheme.
+    #
+    security::pam::config {
+        source => 'puppet:///modules/security/wikimedia-pam-access',
     }
 
     file { '/usr/local/sbin/cleanup-pam-config':
