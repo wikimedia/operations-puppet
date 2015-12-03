@@ -4,6 +4,7 @@
 # Set up to only allow root to add packages
 class aptly {
     require_package('aptly')
+    require_package('graphviz') # for aptly graph
 
     file { '/srv/packages':
         ensure => directory,
