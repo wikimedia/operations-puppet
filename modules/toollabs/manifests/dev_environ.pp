@@ -57,6 +57,7 @@ class toollabs::dev_environ {
         'autoconf',
         'automake',                    # T119870
         'build-essential', # for dpkg
+        'bundler',                     # T120287
         'byobu',                       # T88989.
         'cmake',
         'cvs',
