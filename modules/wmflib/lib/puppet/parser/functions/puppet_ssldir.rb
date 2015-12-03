@@ -34,17 +34,22 @@ module Puppet::Parser::Functions
     # Production uses the standard layout
     return default if lookupvar('::realm') != 'labs'
 
+    # Self-hosted puppetmasters explicit setup
+    case override
+    when 'master'
+      return self_master
+    when 'client'
+      return self_client
+    end
+
     # Since all self-hosted puppetmasters are in .eqiad.wmflabs, while
     # the labs masters don't
-    return default if lookupvar('::settings::certname') =~ /\.wikimedia\.org$/ &&
-                      override.nil?
-
+    return default if lookupvar('::settings::certname') =~ /\.wikimedia\.org$/
 
     # Non-self-hosted puppetmasters all use the default ssldir
     puppetmaster = lookupvar('puppetmaster')
     puppetmaster ||= function_hiera(['role::puppet::self::master', ''])
-    if [lookupvar('hostname'), 'localhost', '', nil].include?puppetmaster ||
-       override == 'master'
+    if [lookupvar('hostname'), 'localhost', '', nil].include?puppetmaster
       self_master
     else
       self_client
