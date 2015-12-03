@@ -136,3 +136,45 @@ class role::toollabs::k8s::bastion {
     # kubectl and things
     include k8s::client
 }
+
+# == Class: role::toollabs::elasticsearch
+#
+# Provisions Elasticsearch node with nginx reverse proxy
+#
+class role::toollabs::elasticsearch {
+    include ::role::toollabs::puppet::client
+    include ::base::firewall
+    include ::elasticsearch
+
+    class { '::nginx':
+        variant => 'light',
+    }
+
+    nginx::site { 'elasticsearch':
+        source => 'puppet:///files/labs/toollabs/elasticsearch/nginx.conf',
+    }
+
+    file { '/etc/nginx/elasticsearch.htpasswd':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'www-data',
+        mode    => '0440',
+        content => secret('labs/toollabs/elasticsearch/htpasswd'),
+        require => Class['nginx'],
+    }
+
+    ferm::service{ 'nginx-http':
+        proto   => 'tcp',
+        port    => 80,
+        notrack => true,
+    }
+
+    $unicast_hosts = hiera('elasticsearch::unicast_hosts')
+    $unicast_hosts_ferm = join($unicast_hosts, ' ')
+    ferm::service { 'logstash_elastic_internode':
+        proto   => 'tcp',
+        port    => 9300,
+        notrack => true,
+        srange  => "@resolve((${unicast_hosts_ferm}))",
+    }
+}
