@@ -17,7 +17,6 @@ class role::openldap::labs {
     class { '::openldap':
         sync_pass   => $sync_pass,
         mirrormode  => true,
-        size_limit  => '32768',
         suffix      => 'dc=wikimedia,dc=org',
         datadir     => '/var/lib/ldap/labs',
         ca          => '/etc/ssl/certs/ca-certificates.crt',

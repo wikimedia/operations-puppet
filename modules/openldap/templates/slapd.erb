@@ -107,6 +107,8 @@ access  to dn.subtree="<%= @suffix %>"
 	by dn.base="cn=repluser,<%= @suffix %>" read
 	by * break
 
+limits dn.exact="cn=repluser,<%= @suffix %>" time=unlimited size=unlimited
+
 <%- if @master -%>
 # And at the same time a replica
 syncrepl rid=1
