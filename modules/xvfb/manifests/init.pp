@@ -45,6 +45,7 @@ class xvfb(
         ensure  => present,
         refresh => true,
         upstart => true,
+        systemd => true,
         require => [
             Package['xvfb'],
             User['xvfb']

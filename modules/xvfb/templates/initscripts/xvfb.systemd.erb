@@ -1,0 +1,13 @@
+[Unit]
+Description=Permanent X virtual framebuffer
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=Xvfb :<%= @display %> -screen 0 <%= @resolution %> -ac -noreset
+Restart=always
+User=xvfb
+Group=xvfb
+
+[Install]
+WantedBy=multi-user.target
