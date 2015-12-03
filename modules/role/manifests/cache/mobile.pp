@@ -79,6 +79,7 @@ class role::cache::mobile {
     $common_vcl_config = {
         'cache4xx'           => '1m',
         'purge_host_regex'   => $::role::cache::base::purge_host_not_upload_re,
+        'eval_cookie_regex'  => '((^|;\s*)optin|disableImages|[sS]ession|Token)=',
         'static_host'        => $::role::cache::base::static_host,
         'bits_domain'        => $::role::cache::base::bits_domain,
         'top_domain'         => $::role::cache::base::top_domain,

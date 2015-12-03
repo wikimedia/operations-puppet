@@ -94,7 +94,7 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
-	call evaluate_cookie_mobile;
+	call evaluate_cookie;
 	call pass_authorization;
 	return (lookup);
 }

@@ -56,7 +56,7 @@ sub vcl_recv {
 		return (pass);
 	}
 
-	call evaluate_cookie_mobile;
+	call evaluate_cookie;
 	call pass_authorization;
 	return (lookup);
 }
