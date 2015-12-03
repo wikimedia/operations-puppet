@@ -9,3 +9,16 @@ k8s_regular_users:
 k8s_admin_users:
   - joe
   - yuvipanda
+
+# Elasticsearch
+elasticsearch::auto_create_index: true
+elasticsearch::cluster_name: labs-tools
+elasticsearch::expected_nodes: 3
+elasticsearch::heap_memory: '8G'
+elasticsearch::minimum_master_nodes: 2
+elasticsearch::recover_after_nodes: 2
+elasticsearch::recover_after_time: 1m
+elasticsearch::unicast_hosts:
+  - tools-elastic-01.tools.eqiad.wmflabs
+  - tools-elastic-02.tools.eqiad.wmflabs
+  - tools-elastic-03.tools.eqiad.wmflabs
