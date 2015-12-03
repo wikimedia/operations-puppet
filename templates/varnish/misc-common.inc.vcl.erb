@@ -1,0 +1,20 @@
+
+sub misc_recv_pass {
+    if (
+           req.http.Host == "gerrit.wikimedia.org"
+        || req.http.Host == "grafana.wikimedia.org" || req.http.host == "grafana-admin.wikimedia.org"
+        || req.http.Host == "static-bugzilla.wikimedia.org" || req.http.Host == "annual.wikimedia.org" || req.http.Host == "transparency.wikimedia.org"
+        || req.http.Host == "otrs-test.wikimedia.org" // No caching of OTRS for now
+        || req.http.Host == "people.wikimedia.org" // No caching of public_html dirs
+        || req.http.Host == "datasets.wikimedia.org" // No caching of datasets.  They can be larger than misc varnish can deal with.
+        || req.http.Host == "config-master.wikimedia.org"
+        || req.http.Host == "etherpad.wikimedia.org" // No caching of configs; scripts may want to know when things change
+    ) {
+        return (pass);
+    }
+
+    if (req.request != "GET" && req.request != "HEAD") {
+        // We only deal with GET and HEAD
+        return (pass);
+    }
+}
