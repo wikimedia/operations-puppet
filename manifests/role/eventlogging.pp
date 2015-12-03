@@ -205,10 +205,6 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
         'eventlogging_mysql_kafka_consumer_args',
         'auto_commit_enable=True&auto_commit_interval_ms=1000&auto_offset_reset=-1'
     )
-    $kafka_consumer_group = hiera(
-        'eventlogging_mysql_kafka_consumer_group',
-        'eventlogging-mysql-00'
-    )
 
     class { 'passwords::mysql::eventlogging': }    # T82265
     $mysql_user = $passwords::mysql::eventlogging::user
@@ -218,6 +214,7 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
         labs       => '127.0.0.1/log',
     }
 
+    # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { 'mysql-m4-master':
         input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
