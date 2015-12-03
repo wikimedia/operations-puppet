@@ -1,6 +1,6 @@
 define interface::manual($interface, $family='inet') {
-    # Use augeas to create a new manually setup interface
-    $augeas_cmd = [ "set auto[./1 = '${interface}']/1 '${interface}'",
+    # Use augeas to create a new manually setup interface with allow-hotplug
+    $augeas_cmd = [ "set allow-hotplug[./1 = '${interface}']/1 '${interface}'",
             "set iface[. = '${interface}'] '${interface}'",
             "set iface[. = '${interface}']/family '${family}'",
             "set iface[. = '${interface}']/method 'manual'",
