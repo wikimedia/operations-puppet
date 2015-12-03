@@ -8,7 +8,7 @@ class role::etherpad{
         description => 'Etherpad-lite server'
     }
 
-    $etherpad_ip = '127.0.0.1'
+    $etherpad_ip = '0.0.0.0'
     $etherpad_port = '9001'
 
     case $::realm {
