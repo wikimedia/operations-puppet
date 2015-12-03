@@ -1,1 +1,2 @@
 cassandra::rack: 'd'
+cassandra::num_tokens: 128
