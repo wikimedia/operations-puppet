@@ -32,7 +32,6 @@ eventlogging_host: 10.64.32.167 # eventlog1001
 # Kafka Topic eventlogging-client-side with
 # raw eventlogging events has 12 partitions
 # in production.  Run 12 processors.
-# https://phabricator.wikimedia.org/T112688
 eventlogging_client_side_processors:
     - client-side-00
     - client-side-01
@@ -46,6 +45,16 @@ eventlogging_client_side_processors:
     - client-side-09
     - client-side-10
     - client-side-11
+
+# Kafka Topic eventlogging-valid-mixed with
+# most eventlogging events has 12 partitions
+# in production.  Run 4 mysql consumers
+# to insert this data into the log database.
+eventlogging_mysql_consumers:
+    - mysql-m4-master-00
+    - mysql-m4-master-01
+    - mysql-m4-master-02
+    - mysql-m4-master-03
 
 
 labs_certmanager_hostname: "labservices1001.wikimedia.org"
