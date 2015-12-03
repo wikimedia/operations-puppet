@@ -5,6 +5,9 @@
 # mark the start of the run for all small, big wikis
 8 1 continue none <%= @stages['smallwikis']['firststage'] -%> --job createdirs --sleep 5; <%= @stages['bigwikis']['firststage'] %> --job createdirs --sleep 5
 
+<% end -%>
+
+<% if @stagestype == 'normal' or @stagestype == 'partial' or @stagestype == 'normal_nocreate' or @stagestype == 'partial_nocreate' %>
 # stubs and then tables so inconsistencies between stubs and tables aren't too huge
 1 8 continue none <%= @stages['smallwikis']['rest'] -%> --job xmlstubsdump; <%= @stages['smallwikis']['rest'] %> --job tables
 # stubs, recombines, tables for big wikis
@@ -25,13 +28,13 @@
 # articles, recombine plus meta pages for big wikis
 4 2 continue none <%= @stages['bigwikis']['rest'] -%> --job metacurrentdump; <%= @stages['bigwikis']['rest'] -%> --job metacurrentdumprecombine
 
-<% if @stagestype == 'normal' %>
+<% if @stagestype == 'normal' or @stagestype == 'normal_nocreate' %>
 # all remaining jobs
 1 8 continue none <%= @stages['smallwikis']['rest'] %>
 4 2 continue none <%= @stages['bigwikis']['rest'] %>
 <% end -%>
 
-<% if @stagestype == 'partial' %>
+<% if @stagestype == 'partial' or @stagestype == 'partial_nocreate' %>
 # all remaining jobs except for the history revs
 1 8 continue none <%= @stages['smallwikis']['rest'] %> <%= @stages['skipjob_args'] %>
 4 2 continue none <%= @stages['bigwikis']['rest'] %> <%= @stages['skipjob_args'] %>

@@ -57,6 +57,14 @@ class snapshot::dumps::stagesconfig(
             stagestype => 'partial',
             stages     => $stages,
         }
+        snapshot::dumps::stagesconf { 'stages_normal_nocreate':
+            stagestype => 'normal_nocreate',
+            stages     => $stages,
+        }
+        snapshot::dumps::stagesconf { 'stages_partial_nocreate':
+            stagestype => 'partial_nocreate',
+            stages     => $stages,
+        }
         snapshot::dumps::stagesconf { 'stages_normal_hugewikis':
             stagestype => 'normal_huge',
             stages     => $stages,
