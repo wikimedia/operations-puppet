@@ -84,7 +84,7 @@ class role::deployment::server(
     ferm::service { 'deployment-redis':
         proto  => 'tcp',
         port   => '6379',
-        srange => '(($INTERNAL @resolve(silver.wikimedia.org)))',
+        srange => "(${deployable_networks_ferm})",
     }
 
     sudo::group { "${deployment_group}_deployment_server":
