@@ -20,9 +20,9 @@ class redis::legacy (
 
     file { '/etc/redis/redis.conf':
         content => template('redis/redis.conf.erb'),
-        owner   => 'root',
+        owner   => 'redis',
         group   => 'root',
-        mode    => '0444',
+        mode    => '0440',
         require => Package['redis-server'],
     }
 
