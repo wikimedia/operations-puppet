@@ -42,8 +42,10 @@ port=25
 from=<%= @from_email %>
 template=/etc/burrow/default-email.tmpl
 
-[email "<%= @to_emails %>"]
+<% @to_emails.each do |to_email| -%>
+[email "<%= @to_email %>"]
+    interval=1800 # 30 minutes
 <% @consumer_groups.each do |group| -%>
     group=<%= @kafka_cluster_name %>,<%= group %>
-<% end -%>
-interval=120
+<% end # @consumer_groups.each -%>
+<% end # @to_emails.each -%>
