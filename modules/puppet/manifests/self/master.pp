@@ -26,7 +26,10 @@ class puppet::self::master(
         description  => $server_desc,
     }
 
-    include puppet::self::geoip
+    class { '::puppetmaster::geoip':
+        fetch_private => false,
+        use_proxy     => false,
+    }
 
     # If localhost, only bind to loopback.
     $bindaddress = $server ? {
