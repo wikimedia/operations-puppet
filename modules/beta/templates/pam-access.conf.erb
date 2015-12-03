@@ -1,7 +1,0 @@
-# This file is managed by puppet! (beta/templates/pam-access.conf.erb)
-# Disallow access to all forms of login to all
-# users except for members of the nova project
-# that this instance is a member of:
-
-+ : deploy-service mwdeploy : <%= @bastion_ip %>
--:ALL EXCEPT (project-deployment-prep) root:ALL
