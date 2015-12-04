@@ -31,8 +31,8 @@ class quarry::base(
     }
 
     git::clone { 'analytics/quarry/web':
-        directory => $clone_path,
         ensure    => present,
+        directory => $clone_path,
         branch    => 'master',
         require   => [File[$clone_path], User['quarry']],
         owner     => 'quarry',
