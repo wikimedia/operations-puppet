@@ -106,7 +106,8 @@ def redis_check():
 
 def db_query_check(host):
     # Run a simple known query, verify the db returns.
-    connection = pymysql.connect(host, read_default_file=os.path.expanduser('~/replica.my.cnf'))
+    connection = pymysql.connect(
+        host, read_default_file=os.path.expanduser('~/replica.my.cnf'))
     cur = connection.cursor()
     cur.execute('select * from meta_p.wiki limit 1')
     result = cur.fetchone()
@@ -132,7 +133,10 @@ def labsdb_check_labsdb1003():
 
 @check('/labsdb/labsdb1005')
 def labsdb_check_labsdb1005():
-    connection = pymysql.connect('labsdb1005.eqiad.wmnet', read_default_file=os.path.expanduser('~/replica.my.cnf'))
+    connection = pymysql.connect(
+        'labsdb1005.eqiad.wmnet',
+        read_default_file=os.path.expanduser('~/replica.my.cnf')
+    )
     cur = connection.cursor()
     cur.execute('select * from toolserverdb_p.wiki limit 1')
     result = cur.fetchone()
@@ -157,7 +161,8 @@ def job_running(name):
     """Check if a job with given name is running"""
     try:
         with open(os.devnull, 'w') as devnull:
-            subprocess.check_call(['/usr/bin/qstat', '-j', name], stderr=devnull)
+            subprocess.check_call(
+                ['/usr/bin/qstat', '-j', name], stderr=devnull)
         return True
     except subprocess.CalledProcessError:
         return False
@@ -216,7 +221,11 @@ def db_read_write_check(host, db):
         a table named "test" with one field, also named "test" '''
     success = False
     try:
-        connection = pymysql.connect(host, read_default_file=os.path.expanduser('~/replica.my.cnf'), db=db)
+        connection = pymysql.connect(
+            host,
+            read_default_file=os.path.expanduser('~/replica.my.cnf'),
+            db=db
+        )
         cur = connection.cursor()
         magicnumber = int(time.time())
         cur.execute("INSERT INTO test (test) VALUES (%s)" % magicnumber)
@@ -243,8 +252,8 @@ def postgres_read_write_check():
 
     try:
         connection = psycopg2.connect(
-            "host=labsdb1004.eqiad.wmnet dbname=%s_rwtest user=%s password=%s" %
-            (user, user, password))
+            "host=labsdb1004.eqiad.wmnet dbname=%s_rwtest user=%s password=%s"
+            % (user, user, password))
         cur = connection.cursor()
         cur.execute("INSERT INTO test (test) VALUES (%s)" % magicnumber)
         connection.commit()
@@ -328,8 +337,9 @@ def service_start_test():
     # So far so good -- now, test wsgi
     success = False
     with open(os.devnull, 'w') as devnull:
-        subprocess.check_call(['/usr/local/bin/webservice2', 'uwsgi-python', 'start'],
-                              stderr=devnull, stdout=devnull)
+        subprocess.check_call(
+            ['/usr/local/bin/webservice2', 'uwsgi-python', 'start'],
+            stderr=devnull, stdout=devnull)
 
     for i in range(0, 10):
         request = requests.get(url)
@@ -339,8 +349,9 @@ def service_start_test():
         time.sleep(1)
 
     with open(os.devnull, 'w') as devnull:
-        subprocess.check_call(['/usr/local/bin/webservice2', 'uwsgi-python', 'stop'],
-                              stderr=devnull, stdout=devnull)
+        subprocess.check_call(
+            ['/usr/local/bin/webservice2', 'uwsgi-python', 'stop'],
+            stderr=devnull, stdout=devnull)
 
     # Make sure it really stopped
     success = False

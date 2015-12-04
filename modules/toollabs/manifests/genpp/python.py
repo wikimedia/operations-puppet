@@ -4,6 +4,10 @@
 # python 2 and 3, and for all genpp-supported
 # distributions
 
+import genpp
+import logging
+import pprint
+
 environ_packages = {
     'dev': ['coverage', 'dev', 'stdeb'],
     'exec': [
@@ -66,10 +70,6 @@ environ_packages = {
         'zmq',
     ],
 }
-
-import genpp
-import logging
-import pprint
 
 logging.basicConfig(level=logging.DEBUG)
 

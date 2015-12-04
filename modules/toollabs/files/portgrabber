@@ -11,7 +11,8 @@ import portgrabber
 if len(sys.argv) <= 2:
     sys.stderr.write('Usage: portgrabber TOOLNAME EXECUTABLE [ARGUMENTS...]\n')
     sys.stderr.write('\n')
-    sys.stderr.write('portgrabber requests a free port number for TOOLNAME and then\n')
+    sys.stderr.write(
+        'portgrabber requests a free port number for TOOLNAME and then\n')
     sys.stderr.write('calls EXECUTABLE [ARGUMENTS...] PORT.\n')
     sys.exit(1)
 

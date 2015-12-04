@@ -41,7 +41,8 @@ class KubeClient(object):
         services = []
         try:
             servicelist = resp.json()
-            self.resourceVersion = int(servicelist['metadata']['resourceVersion'])
+            self.resourceVersion = int(
+                servicelist['metadata']['resourceVersion'])
             log.debug("global resourceVersion now at %s", self.resourceVersion)
             for servicedata in servicelist['items']:
                 services.append(KubeClient._resp_to_service(servicedata))
@@ -62,7 +63,8 @@ class KubeClient(object):
         """Does a full sync of the services, returns a list
         of the active ones."""
         services = self.get_services()
-        registered_services = set([s.decode('utf-8') for s in self.conn.smembers(services_registry)])
+        registered_services = set(
+            [s.decode('utf-8') for s in self.conn.smembers(services_registry)])
         actual_services = set([str(s) for s in services])
         services_to_delete = registered_services - actual_services
         for service in services_to_delete:

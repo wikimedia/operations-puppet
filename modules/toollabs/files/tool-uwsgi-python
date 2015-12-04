@@ -26,7 +26,8 @@ args = [
     '--callable', 'app',
     '--manage-script-name',
     '--workers', '4',
-    '--mount', '/%s=%s' % (TOOL, os.path.expanduser('~/www/python/src/app.py')),
+    '--mount', '/%s=%s' % (TOOL,
+                           os.path.expanduser('~/www/python/src/app.py')),
     '--die-on-term',
     '--strict',
     '--master'
