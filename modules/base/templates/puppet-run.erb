@@ -25,6 +25,23 @@ if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
     echo Ignoring stale puppet agent lock for pid `cat $PUPPETLOCK` >>/var/log/puppet.log
 fi
 
+<%- if @auto_puppetmaster_switching -%>
+set +e
+curl --cacert /var/lib/puppet/ssl/certs/ca.pem https://<%= @puppetmaster %>:8140 > /dev/null
+# The previous command exits with code 60 if it runs into an invalid SSL certificate
+# This means that the puppetmaster we are contacting is different from the one we
+# used to contact, since they have different CAs. So if this is the case (and we have
+# automatic puppetmaster switching turned on), we remove the current certificate and
+# the puppet run at the bottom of this script generates a new one and sends it to
+# the new puppetmaster for signing
+if [[ $? -eq 60 ]]; then
+    echo "Removing current puppet certs" >> /var/log/puppet.log
+    rm -r /var/lib/puppet/ssl || exit 1
+fi
+
+set -e
+<%- end -%>
+
 timeout -k 60 300 apt-get update -qq >> /var/log/puppet.log 2>&1
 
 timeout -k 60 1800 puppet agent \
