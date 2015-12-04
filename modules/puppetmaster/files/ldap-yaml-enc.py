@@ -101,8 +101,8 @@ if __name__ == '__main__':
 
     ec2id_name = sys.argv[1]
 
-    # check to make sure ec2id_name is an actual ec2id based hostname, to prevent
-    # ldap injection attacks
+    # check to make sure ec2id_name is an actual ec2id based hostname, to
+    # prevent ldap injection attacks
     if not _is_valid_hostname(ec2id_name):
         print 'Invalid hostname', ec2id_name
         sys.exit(-1)
