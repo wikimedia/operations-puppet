@@ -79,11 +79,7 @@ class role::deployment::server(
         require => File['/srv/deployment'],
     }
 
-    class { '::redis::legacy':
-        dir       => '/srv/redis',
-        maxmemory => '500Mb',
-        monitor   => true,
-    }
+    redis::instance { 6379: }
 
     # Used by the trebuchet salt returner
     ferm::service { 'deployment-redis':
