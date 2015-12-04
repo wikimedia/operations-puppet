@@ -60,7 +60,7 @@ def extract_direct_task(list_of_dests):
     :returns: string
     """
     for dest in [m.strip() for m in list_of_dests]:
-        task = re.match('^[T|t](\d+)@', dest)
+        task = re.search('[T|t](\d+)@phabricator', dest)
         if task:
             return int(task.group(1))
     return ''
