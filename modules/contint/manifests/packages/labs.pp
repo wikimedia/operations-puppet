@@ -17,6 +17,8 @@ class contint::packages::labs {
     # Required for ruby testing
     include ::contint::packages::ruby
 
+    include phabricator::arcanist
+
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
 
