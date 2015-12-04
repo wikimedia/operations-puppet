@@ -176,13 +176,6 @@ class role::mediawiki::canary_appserver {
     # include the deployment scripts because mwscript can occasionally be useful
     # here: T112174
     include scap::scripts
-
-    # Test of 'AcceptFilter http none' prior to full deployment
-    # see https://gerrit.wikimedia.org/r/#/c/256968/
-    apache::conf { 'acceptfilter_http_none':
-        priority => 1,
-        content  => "AcceptFilter http none\n",
-    }
 }
 
 # Ditto, for api
@@ -190,13 +183,6 @@ class role::mediawiki::appserver::canary_api {
     # salt -G 'canary:api_appserver' will select servers with this role.'
     salt::grain { 'canary': value => 'api_appserver' }
     include role::mediawiki::appserver::api
-
-    # Test of 'AcceptFilter http none' prior to full deployment
-    # see https://gerrit.wikimedia.org/r/#/c/256968/
-    apache::conf { 'acceptfilter_http_none':
-        priority => 1,
-        content  => "AcceptFilter http none\n",
-    }
 }
 
 # mediawiki maintenance scripts
