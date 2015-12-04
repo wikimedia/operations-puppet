@@ -1,0 +1,8 @@
+Code-Review+1: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Code-Review+2: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Verified+2: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Submitted-by: Muehlenhoff <mmuhlenhoff@wikimedia.org>
+Submitted-at: Fri, 04 Dec 2015 14:20:29 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/256929
+Project: operations/puppet
+Branch: refs/heads/production
