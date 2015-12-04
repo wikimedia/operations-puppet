@@ -51,30 +51,3 @@ class role::ocg {
     include lvs::configuration
     class { 'lvs::realserver': realserver_ips => $lvs::configuration::service_ips['ocg'][$::site] }
 }
-
-class role::ocg::test {
-    system::role { 'ocg-test': description => 'offline content generator for MediaWiki Collection extension (single host testing)' }
-
-    include passwords::redis
-
-    $service_port = 8000
-
-    class { '::ocg':
-        redis_host     => 'localhost',
-        redis_password => $passwords::redis::ocg_test_password,
-        service_port   => $service_port,
-        statsd_host    => 'statsd.eqiad.wmnet',
-    }
-
-    ferm::service { 'ocg-http':
-        proto  => 'tcp',
-        port   => $service_port,
-        desc   => 'HTTP frontend to submit jobs and get status from pdf rendering',
-        srange => '$INTERNAL',
-    }
-
-    class { 'redis::legacy':
-        maxmemory => '500Mb',
-        password  => $passwords::redis::ocg_test_password,
-    }
-}
