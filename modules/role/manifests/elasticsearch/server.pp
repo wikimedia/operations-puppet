@@ -19,25 +19,25 @@ class role::elasticsearch::server{
     }
 
     ferm::service { 'elastic-http':
-        proto => 'tcp',
-        port  => '9200',
+        proto   => 'tcp',
+        port    => '9200',
         notrack => true,
-        srange => '(($INTERNAL @resolve(silver.wikimedia.org)))',
+        srange  => '(($INTERNAL @resolve(silver.wikimedia.org)))',
     }
 
     $elastic_nodes = hiera('elasticsearch::cluster_hosts')
     $elastic_nodes_ferm = join($elastic_nodes, ' ')
 
     ferm::service { 'elastic-inter-node':
-        proto => 'tcp',
-        port  => '9300',
+        proto   => 'tcp',
+        port    => '9300',
         notrack => true,
         srange  => "@resolve((${elastic_nodes_ferm}))",
     }
 
     ferm::service { 'elastic-zen-discovery':
-        proto => 'udp',
-        port  => '54328',
+        proto  => 'udp',
+        port   => '54328',
         srange => '$INTERNAL',
     }
 
@@ -52,8 +52,8 @@ class role::elasticsearch::server{
 
     # Install
     class { '::elasticsearch':
-        require           => Package['elasticsearch/plugins'],
-        merge_threads     => 1,
+        require       => Package['elasticsearch/plugins'],
+        merge_threads => 1,
     }
 
     if $::standard::has_ganglia {
@@ -65,7 +65,7 @@ class role::elasticsearch::server{
     include ::elasticsearch::nagios::check
 
     file { '/etc/elasticsearch/scripts':
-        ensure => directory,
+        ensure  => directory,
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
