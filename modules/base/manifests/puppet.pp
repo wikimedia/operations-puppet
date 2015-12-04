@@ -69,11 +69,16 @@ class base::puppet(
         enable => false,
     }
 
+    $auto_puppetmaster_switching = hiera('auto_puppetmaster_switching', false)
+    if $auto_puppetmaster_switching and defined(Class["role::puppetmaster::standalone"]) {
+        error("auto_puppetmaster_switching should only be applied on puppet clients; behavior on masters is undefined.")
+    }
+
     file { '/usr/local/sbin/puppet-run':
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/base/puppet/puppet-run',
+        source => template('base/puppet-run.erb')
     }
 
     file { '/usr/local/sbin/run-no-puppet':
