@@ -16,10 +16,16 @@ class role::librenms {
     $config = {
         'title_image'      => 'url(//upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wikimedia_Foundation_RGB_logo_with_text.svg/100px-Wikimedia_Foundation_RGB_logo_with_text.svg.png)',
 
+        # disable evil daily auto-git pull
+        'update'           => 0,
+
         'db_host'          => 'm1-master.eqiad.wmnet',
         'db_user'          => $passwords::librenms::db_user,
         'db_pass'          => $passwords::librenms::db_pass,
         'db_name'          => 'librenms',
+        'db'               => {
+            'extension' => 'mysqli',
+        },
 
         'snmp'             => {
             'community' => [ $passwords::network::snmp_ro_community ],
