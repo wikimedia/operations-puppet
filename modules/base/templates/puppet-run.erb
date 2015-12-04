@@ -25,6 +25,17 @@ if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
     echo Ignoring stale puppet agent lock for pid `cat $PUPPETLOCK` >>/var/log/puppet.log
 fi
 
+<%- if @auto_puppetmaster_switching -%>
+set +e
+curl --cacert /var/lib/puppet/ssl/certs/ca.pem https://<%= @puppetmaster %>:8140 > /dev/null
+if [[ $? -eq 60 ]]; then
+    echo "Removing current puppet certs" >> /var/log/puppet.log
+    rm -r /var/lib/puppet/ssl || exit 1
+fi
+
+set -e
+<%- end -%>
+
 timeout -k 60 300 apt-get update -qq >> /var/log/puppet.log 2>&1
 
 timeout -k 60 1800 puppet agent \
