@@ -44,7 +44,7 @@ define mediawiki::jobqueue_redis(
             client_output_buffer_limit  => 'slave 512mb 200mb 60',
             dir                         => '/srv/redis',
             masterauth                  => $passwords::redis::main_password,
-            maxmemory                   => '10Gb',
+            maxmemory                   => '8Gb',
             no_appendfsync_on_rewrite   => true,
             requirepass                 => $passwords::redis::main_password,
             save                        => '""',
