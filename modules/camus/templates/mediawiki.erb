@@ -102,8 +102,6 @@ etl.ignore.schema.errors=true
 
 # WMF relies on the relevant Hadoop properties for this,
 # not Camus' custom properties.
-#   i.e.  mapreduce.output.compression* properties
-# # configure output compression for deflate or snappy. Defaults to deflate.
-# etl.output.codec=deflate
-# etl.deflate.level=6
-# #etl.output.codec=snappy
+# But AvroRecordWriterProvider ignores hadoop properties
+# so we must force to snappy with a camus property
+etl.output.codec=snappy
