@@ -46,7 +46,8 @@ class role::maps::master {
     include ::postgresql::master
     include ::osm
     include ::osm::import_waterlines
-    include ::redis::legacy
+
+    redis::instance { 6379: }
 
     system::role { 'role::maps::master':
         ensure      => 'present',
