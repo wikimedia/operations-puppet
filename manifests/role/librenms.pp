@@ -14,7 +14,7 @@ class role::librenms {
     }
 
     $config = {
-        'title_image'      => 'url(//upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Wikimedia_Foundation_RGB_logo_with_text.svg/100px-Wikimedia_Foundation_RGB_logo_with_text.svg.png)',
+        'title_image'      => '//upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Wmf_logo_horiz_pms.svg/140px-Wmf_logo_horiz_pms.svg.png',
 
         # disable evil daily auto-git pull
         'update'           => 0,
