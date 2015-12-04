@@ -1,2 +1,8 @@
 cassandra::rack: 'd'
 cassandra::num_tokens: 128
+cassandra::instances:
+  a:
+    jmx_port: 7189
+    listen_address: 10.64.48.120
+    rpc_address: 10.64.48.120
+    rpc_interface: eth0
