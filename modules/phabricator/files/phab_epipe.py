@@ -298,7 +298,7 @@ def main():
         save = False
 
     if 'debug' in defaults:
-        defaults['debug'] = defaults['debug'].split(',')
+        defaults['debug'] = defaults['debug'].lower().split(',')
 
     # Reading in the message
     stdin = sys.stdin.read()
@@ -322,9 +322,10 @@ def main():
     else:
         cc_addresses = []
 
-    if 'debug' in defaults and src_address in defaults['debug']:
-        with open('/tmp/%s' % (src_address + '.txt'), 'w') as r:
-            r.write(stdin)
+    if 'debug' in defaults and \
+        src_address.lower().strip().strip('<').strip('>') in defaults['debug']:
+            with open('/tmp/%s' % (src_address + '.txt'), 'w') as r:
+                r.write(stdin)
 
     # does this email have a direct to task addresss
     dtask = extract_direct_task(dest_addresses + cc_addresses)
@@ -378,6 +379,7 @@ def main():
                          body,
                          uploads))
 
+
     elif routed_addresses:
 
         route_address = routed_addresses[0]
@@ -420,6 +422,7 @@ def main():
                       body,
                       project,
                       security))
+
     else:
         phab_handoff(stdin)
 
