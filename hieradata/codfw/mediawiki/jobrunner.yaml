@@ -2,7 +2,7 @@ queue_servers:
   - rdb2001.codfw.wmnet
   - rdb2003.codfw.wmnet
 aggr_servers:
-  - rdb2001.codfw.wmnet
-  - rdb2003.codfw.wmnet
+  - rdb2001.codfw.wmnet:6378
+  - rdb2003.codfw.wmnet:6378
 # statsd is still in eqiad
 statsd_server: statsd.eqiad.wmnet:8125
