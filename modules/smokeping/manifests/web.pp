@@ -7,6 +7,7 @@ class smokeping::web {
     }
 
     include ::apache::mod::fcgid
+    include ::apache::mod::headers
 
     apache::site { 'smokeping.wikimedia.org':
         source => 'puppet:///modules/smokeping/apache.conf',
