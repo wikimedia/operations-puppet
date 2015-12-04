@@ -1,0 +1,7 @@
+# The cn=admin DN and the members of the "Directory Managers" group
+# have full write access, everyone else can read everything.
+access to *
+	by dn="cn=admin,<%= @suffix %>" write
+	by group/groupOfUniqueNames/uniqueMember="cn=Directory Managers,ou=groups,dc=wikimedia,dc=org" write
+	by self write
+	by * read
