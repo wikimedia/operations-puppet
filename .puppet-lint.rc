@@ -12,7 +12,6 @@
 --no-autoloader_layout-check
 --no-inherits_across_namespaces-check
 --no-double_quoted_strings-check
---no-ensure_first_param-check
 --no-arrow_alignment-check
 --no-puppet_url_without_modules-check
 
