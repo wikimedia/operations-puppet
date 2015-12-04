@@ -11,9 +11,9 @@ def get_active_proxy():
 def get_open_port():
     """Tries to get a random open port to listen on
 
-    It does this by starting to listen on a socket, letting the kernel determine
-    the open port. It then immediately closes it and returns the port.
-    """
+    It does this by starting to listen on a socket, letting the kernel
+    determine the open port. It then immediately closes it and returns the
+    port."""
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind(('', 0))
     port = s.getsockname()[1]

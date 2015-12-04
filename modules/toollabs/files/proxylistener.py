@@ -17,16 +17,16 @@
 """
 Simple TCP server that keeps routes in the Redis db for authenticated requests.
 
-The routes are kept as long as the socket making the request is open, and cleaned
-up right afterwards. identd is used for authentication - while normally that is
-a terrible idea, this is okay in the toollabs environment because we only have
-a limited number of trusted admins. This also allows routes to be added
-only for URLs that are under the URL prefix allocated for the tool making the
-request. For example, a tool named 'testtool' can ask only for URLs that
+The routes are kept as long as the socket making the request is open, and
+cleaned up right afterwards. identd is used for authentication - while normally
+that is a terrible idea, this is okay in the toollabs environment because we
+only have a limited number of trusted admins. This also allows routes to be
+added only for URLs that are under the URL prefix allocated for the tool making
+the request. For example, a tool named 'testtool' can ask only for URLs that
 start with /testtool/ to be routed to where it wants.
 
-The socket server is a threaded implementation. Python can not be truly parallel
-(hello, GIL!), but for our purposes it is good enough.
+The socket server is a threaded implementation. Python can not be truly
+parallel (hello, GIL!), but for our purposes it is good enough.
 """
 import logging
 import socket
@@ -65,7 +65,8 @@ def get_remote_user(remote_host, remote_port, local_port):
     resp_parts = [r.strip() for r in resp.split(":")]
     if "USERID" not in resp_parts:
         # Some auth error has occured. Abort!
-        logging.log(logging.INFO, "Identd auth failed, sent %s got back %s" % (request.strip(), resp.strip()))
+        logging.log(logging.INFO, "Identd auth failed, sent %s got back %s" %
+                    (request.strip(), resp.strip()))
         return None
 
     return resp_parts[-1]
@@ -77,11 +78,14 @@ class RouteRequestHandler(SocketServer.StreamRequestHandler):
     """
     def handle(self):
 
-        user = get_remote_user(self.client_address[0], self.client_address[1], PORT)
-        # For some reason the identd response gave us an error, or failed otherwise
-        # This should usually not happen, so we'll just ask folks to 'Contact an administrator'
+        user = get_remote_user(self.client_address[0],
+                               self.client_address[1], PORT)
+        # For some reason the identd response gave an error or failed otherwise
+        # This should usually not happen, so we'll just ask folks to 'Contact
+        # an administrator'
         if user is None:
-            self.request.send("Identd authentication failed. Please contact an administrator")
+            self.request.send("Identd authentication failed. " +
+                              "Please contact an administrator")
             self.request.close()
             return
 
@@ -101,17 +105,21 @@ class RouteRequestHandler(SocketServer.StreamRequestHandler):
 
         if command == 'register':
             destination = self.rfile.readline().strip()
-            logging.log(logging.INFO, "Received request from %s for %s to %s", toolname, route, destination)
+            logging.log(logging.INFO, "Received request from %s for %s to %s",
+                        toolname, route, destination)
 
             red.hset(redis_key, route, destination)
-            logging.log(logging.DEBUG, "Set redis key %s with key/value %s:%s", redis_key, route, destination)
+            logging.log(logging.DEBUG, "Set redis key %s with key/value %s:%s",
+                        redis_key, route, destination)
             self.request.send('ok')
 
         elif command == 'unregister':
-            logging.log(logging.INFO, "Cleaning up request from %s for %s", toolname, route)
+            logging.log(logging.INFO, "Cleaning up request from %s for %s",
+                        toolname, route)
 
             red.hdel(redis_key, route)
-            logging.log(logging.DEBUG, "Removed redis key %s with key %s", redis_key, route)
+            logging.log(logging.DEBUG, "Removed redis key %s with key %s",
+                        redis_key, route)
             self.request.send('ok')
         else:
             logging.log(logging.ERROR, "Unknown command received: %s", command)

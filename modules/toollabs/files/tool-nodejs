@@ -18,7 +18,7 @@ os.chdir(os.path.expanduser('~/www/js'))
 # Pass in all of our parent environment too
 # npm doesn't like it too much if you give it an almost empty environment
 os.environ['TOOL_WEB_PORT'] = str(port)
-os.environ['PORT'] = str(port) # Switch things to PORT, same as heroku
+os.environ['PORT'] = str(port)  # Switch things to PORT, same as heroku
 
 os.environ['MYSQL_CREDS_PATH'] = os.path.expanduser('~/replica.my.cnf')
 

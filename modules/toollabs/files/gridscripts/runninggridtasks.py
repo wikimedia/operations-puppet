@@ -38,8 +38,9 @@ def get_jobs(stream):
             job[jobvalue.get('name')] = jobvalue.text
         yield job
 
-groupkey = lambda x: x['job_owner']
-sortkey = lambda x: (groupkey(x), x['start_time'])
+
+def groupkey(x):
+    return x['job_owner']
 
 proc = subprocess.Popen(
     ['qhost', '-j', '-xml', '-h'] + sys.argv[1:],
@@ -47,10 +48,11 @@ proc = subprocess.Popen(
 )
 
 jobs = [job for job in get_jobs(proc.stdout)
-        if not job['queue_name'].startswith('continuous')
-        and not job['queue_name'].startswith('webgrid')]
+        if not job['queue_name'].startswith('continuous') and
+        not job['queue_name'].startswith('webgrid')]
 
-jobs = sorted(jobs, key=sortkey)
+jobs = sorted(jobs, key=lambda x: (groupkey(x), x['start_time']))
 
-data = {owner: list(jobs) for owner, jobs in itertools.groupby(jobs, key=groupkey)}
+data = {owner: list(jobs) for owner, jobs in itertools.groupby(
+    jobs, key=groupkey)}
 print(yaml.dump(data))
