@@ -55,7 +55,7 @@ define cassandra::instance(
         }
     }
 
-    if $instance_name == "default" {
+    if $instance_name == 'default' {
         $data_directory_base = '/var/lib/cassandra'
         $config_directory    = '/etc/cassandra'
         $service_name        = 'cassandra'
@@ -197,7 +197,7 @@ define cassandra::instance(
         }
     }
 
-    if $instance_name != "default" {
+    if $instance_name != 'default' {
         file { "/usr/local/bin/nodetool-${instance_name}":
             ensure  => link,
             target  => '/usr/local/bin/nodetool-instance',

@@ -11,14 +11,14 @@
 
 class cassandra::ca_manager {
     file { '/usr/local/bin/cassandra-ca-manager':
-        source  => 'puppet:///modules/cassandra-ca-manager',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+        source => 'puppet:///modules/cassandra-ca-manager',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     # keytool dependency
     package { 'default-jre':
-        ensure   => present,
+        ensure => present,
     }
 }

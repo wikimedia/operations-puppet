@@ -43,10 +43,10 @@ class cassandra::metrics(
     }
 
     file { '/etc/cassandra-metrics-collector':
+        ensure => 'directory',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        ensure => 'directory',
     }
 
     file { $filter_file:
@@ -58,15 +58,15 @@ class cassandra::metrics(
     }
 
     file { '/usr/local/lib/cassandra-metrics-collector':
+        ensure => 'directory',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        ensure => 'directory',
     }
 
     file { $collector_jar:
-        ensure => 'link',
-        target => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-2.0.0-20151001.182133-1-jar-with-dependencies.jar',
+        ensure  => 'link',
+        target  => '/srv/deployment/cassandra/metrics-collector/lib/cassandra-metrics-collector-2.0.0-20151001.182133-1-jar-with-dependencies.jar',
         require => Package['cassandra/metrics-collector'],
     }
 
