@@ -64,11 +64,12 @@ class base::puppet($server='puppet', $certname=undef) {
         enable => false,
     }
 
+    $auto_puppetmaster_switching = hiera('auto_puppetmaster_switching', false)
     file { '/usr/local/sbin/puppet-run':
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/base/puppet/puppet-run',
+        source => template('base/puppet-run.erb')
     }
 
     file { '/etc/cron.d/puppet':
