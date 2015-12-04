@@ -157,7 +157,9 @@ class openstack::designate::service (
             upstart        =>  true,
             require        =>  Package['designate'],
             service_params => {
+            # lint:ignore:ensure_first_param
                 ensure => stopped
+            # lint:endignore
             },
         }
     }
