@@ -1,0 +1,6 @@
+# The admin dn has full write access, everyone else
+# can read everything.
+access to *
+	by dn="cn=admin,<%= @suffix %>" write
+	by self write
+	by * read
