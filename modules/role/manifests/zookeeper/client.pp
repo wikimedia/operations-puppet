@@ -1,5 +1,3 @@
-# role/zookeeper.pp
-#
 # Classes for Zookeeper nodes.
 # These role classes will configure Zookeeper properly in either
 # the labs or production environments.
@@ -40,32 +38,3 @@ class role::zookeeper::client {
     }
 }
 
-# == Class role::zookeeper::server
-#
-class role::zookeeper::server {
-    system::role { 'role::zookeeper::server':
-        description => 'Analytics Cluster Zookeeper Server'
-    }
-
-    include role::zookeeper::client
-
-    class { '::zookeeper::server': }
-
-    ferm::service { 'zookeeper':
-        proto  => 'tcp',
-        # Zookeeper client, protocol ports
-        port   => '(2181 2182 2183)',
-        srange => '($INTERNAL)',
-    }
-
-    if $::standard::has_ganglia {
-        # TODO: use variables from new ganglia module once it is finished.
-        $ganglia_host = '208.80.154.10'
-        $ganglia_port = 9690
-
-        # Use jmxtrans for sending metrics to ganglia
-        class { 'zookeeper::jmxtrans':
-            ganglia => "${ganglia_host}:${ganglia_port}",
-        }
-    }
-}
