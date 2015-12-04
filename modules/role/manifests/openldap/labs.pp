@@ -26,6 +26,7 @@ class role::openldap::labs {
         extra_schemas => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                           'puppet.schema', 'sudo.schema'],
         extra_indices => 'openldap/labs-indices.erb',
+        extra_acls    => 'openldap/labs-acls.erb',
     }
 
     ferm::service { 'corp_ldap':
