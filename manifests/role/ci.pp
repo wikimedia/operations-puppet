@@ -343,15 +343,16 @@ class role::ci::slave::browsertests {
     }
 
     # For CirrusSearch testing:
-    class { '::redis::legacy':
-        maxmemory                 => '128mb',
-        persist                   => 'aof',
-        redis_replication         => undef,
-        password                  => 'notsecure',
-        dir                       => '/mnt/redis',
-        auto_aof_rewrite_min_size => '32mb',
+    redis::instance { 6379:
+        settings => {
+            bind                      => '0.0.0.0',
+            appendonly                => true,
+            dir                       => '/mnt/redis',
+            maxmemory                 => '128Gb',
+            requirepass               => 'notsecure',
+            auto_aof_rewrite_min_size => '32mb',
+        },
     }
-
 }
 
 class role::ci::slave::labs {
