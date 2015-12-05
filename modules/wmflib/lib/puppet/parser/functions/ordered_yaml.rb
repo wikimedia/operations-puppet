@@ -5,7 +5,7 @@
 # === Examples
 #
 #   # Render a Puppet hash as a configuration file:
-#   $options = { 'useGraphite' => true, 'minVal' => 0.1 }
+#   $options = { 'useGraphite' => true, 'minVal' => '0.1' }
 #   file { '/etc/kibana/config.yaml':
 #     content => ordered_yaml($options),
 #   }
@@ -25,10 +25,12 @@ def sort_keys_recursive(value)
       map.sort.each { |p| yield p }
     end
     value.sort.reduce(map) { |h, (k, v)| h[k] = sort_keys_recursive(v); h }
+  when 'true', 'false'
+    value == 'true'
   when :undef
     nil
   else
-    value
+    value.include?('.') ? Float(value) : Integer(value) rescue value
   end
 end
 
