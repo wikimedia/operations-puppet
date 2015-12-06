@@ -1,19 +1,4 @@
 # Roles for Kubernetes and co on Tool Labs
-class role::toollabs::etcd {
-    # To deny access to etcd - atm the kubernetes master
-    # and etcd will be on the same host, so ok to just deny
-    # access to everyone else
-    include base::firewall
-    include toollabs::infrastructure
-
-    include etcd
-
-    ferm::service{'etcd-clients':
-        proto  => 'tcp',
-        port   => hiera('etcd::client_port', '2379'),
-    }
-}
-
 class role::toollabs::docker::registry {
     include ::toollabs::infrastructure
 
@@ -36,7 +21,12 @@ class role::toollabs::k8s::master {
     include base::firewall
     include toollabs::infrastructure
 
-    include role::toollabs::etcd
+    include ::etcd
+
+    ferm::service{'etcd-clients':
+        proto  => 'tcp',
+        port   => hiera('etcd::client_port', '2379'),
+    }
 
     $master_host = hiera('k8s_master', $::fqdn)
     $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$::fqdn]), ':2379'), 'https://'), ',')
