@@ -17,6 +17,18 @@ class pybal {
         require => File['/etc/default/pybal'],
     }
 
+    rsyslog::conf { 'pybal':
+        source   => 'puppet:///modules/pybal/pybal.rsyslog.conf',
+        priority => 75,
+        before   => Service['pybal'],
+    }
+
+    file { '/etc/logrotate.d/pybal':
+        ensure => present,
+        source => 'puppet:///modules/pybal/pybal.logrotate.conf',
+        mode   => '0444',
+    }
+
     nrpe::monitor_service { 'pybal':
         description  => 'pybal',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u root -a /usr/sbin/pybal',
