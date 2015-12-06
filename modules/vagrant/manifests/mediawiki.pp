@@ -71,4 +71,14 @@ class vagrant::mediawiki(
         mode    => '0555',
         content => template('vagrant/labs-vagrant.erb'),
     }
+
+    # Set umask for wikidev users so that newly-created files are g+w.
+    # This makes shared ownership of $install_directory easier
+    file { '/etc/profile.d/umask-wikidev.sh':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/vagrant/umask-wikidev-profile-d.sh',
+    }
 }
