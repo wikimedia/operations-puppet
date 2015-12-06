@@ -6,7 +6,7 @@ class k8s::ssl(
     $provide_private = false,
     $user = 'root',
     $group = 'root',
-    $ssldir = '/var/lib/puppet/client/ssl', # FIXME: This is different for self hosted puppet vs not. WHY?
+    $ssldir = '/var/lib/puppet/ssl',
     $target_basedir = '/var/lib/kubernetes'
 ) {
     $puppet_cert_name = $::fqdn
