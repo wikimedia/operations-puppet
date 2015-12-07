@@ -60,10 +60,10 @@ class PyBalStateCollector(diamond.collector.Collector):
             for label, val in v.items():
                 if val:
                     acc[label] += 1
-            for metric, count in acc.items():
-                path = 'pools.{}.{}'.format(name, metric)
-                self.publish(path, count)
-                self.publish(path + ".ratio", count / total)
+        for metric, count in acc.items():
+            path = 'pools.{}.{}'.format(name, metric)
+            self.publish(path, count)
+            self.publish(path + ".ratio", count / total)
 
     def collect(self):
         for pool in self.get_pools():
