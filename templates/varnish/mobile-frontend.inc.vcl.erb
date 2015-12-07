@@ -94,7 +94,7 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
-	call evaluate_cookie_mobile;
+	call evaluate_cookie;
 	call pass_authorization;
 	return (lookup);
 }
@@ -148,4 +148,25 @@ sub vcl_deliver {
 		call geoip_cookie;
 	}
 <% end -%>
+}
+
+sub vcl_hash {
+	// The cookies below represent prefrences that can be set for anonymous users.
+
+	// Split the cache for the images-disabled variant of the mobile site.
+	if (req.http.X-Orig-Cookie ~ "(^|;\s*)disableImages=1" || req.http.Cookie ~ "(^|;\s*)disableImages=1") {
+		hash_data("disableImages=1");
+	}
+
+	// Split the cache if the NetSpeed cookie is set and if its value is 'B'. The only other
+	// permissable value is 'A', which is equivalent to not having the cookie at all, so we
+	// don't need to update the hash in that case.
+	if (req.http.X-Orig-Cookie ~ "(^|;\s*)NetSpeed=B" || req.http.Cookie ~ "(^|;\s*)NetSpeed=B") {
+		hash_data("NetSpeed=B");
+	}
+
+	// Split the cache for the beta variant of the mobile site.
+	if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
+		hash_data("optin=beta");
+	}
 }
