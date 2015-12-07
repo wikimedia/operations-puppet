@@ -309,15 +309,6 @@ class network::checks {
     include passwords::network
     $snmp_ro_community = $passwords::network::snmp_ro_community
 
-    # Nagios monitoring
-    @monitoring::group { 'routers':
-        description => 'IP routers',
-    }
-
-    @monitoring::group { 'storage':
-        description => 'Storage equipment',
-    }
-
     ### esams ###
 
     # cr1-esams

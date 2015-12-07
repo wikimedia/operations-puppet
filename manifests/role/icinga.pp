@@ -11,6 +11,8 @@
 class role::icinga(
     $ircbot = true,
 ){
+    $groups = hiera('monitoring::groups')
+    create_resources(monitoring::group, $groups)
     include facilities
     include icinga::monitor::checkpaging
     include icinga::nsca::firewall
@@ -21,8 +23,6 @@ class role::icinga(
     include icinga::monitor::legal
     include icinga::monitor::certs
     include icinga::monitor::gsb
-    include icinga::groups::misc
-    include icinga::groups::labs
     include lvs::monitor
     include role::authdns::monitoring
     include network::checks
