@@ -19,7 +19,7 @@ define labs_debrepo::repo ($dir = $title, $handle = 'labsdebrepo') {
 
     # Add the directory-turned-repository to sources.list.
     file { "/etc/apt/sources.list.d/${handle}.list":
-        content => "deb [trusted=yes] file://<%= @dir %>/ /\n",
+        content => inline_template("deb [trusted=yes] file://<%= @dir %>/ /\n"),
         require => Exec["Turn ${dir} into deb repo"],
     }
     file { "/etc/apt/preferences.d/${handle}.pref":
