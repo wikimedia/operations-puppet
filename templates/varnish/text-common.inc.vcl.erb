@@ -26,6 +26,7 @@ sub evaluate_cookie {
 	    && req.url !~ "^/static/"
 	    && req.url !~ "^/w/load\.php") {
 		set req.hash_ignore_busy = true;
+		return (pass);
 	} else {
 		call stash_cookie;
 	}
@@ -43,6 +44,7 @@ sub evaluate_cookie_mobile {
 	    && req.url !~ "^/static/"
 	    && req.url !~ "^/w/load\.php") {
 		set req.hash_ignore_busy = true;
+		return (pass);
 	} else {
 		call stash_cookie;
 	}
