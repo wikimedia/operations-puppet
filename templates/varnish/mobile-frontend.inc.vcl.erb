@@ -155,4 +155,10 @@ sub vcl_hash {
        if (req.http.X-Orig-Cookie ~ "(^|;\s*)disableImages=1" || req.http.Cookie ~ "(^|;\s*)disableImages=1") {
                hash_data("disableImages=1");
        }
+       // Split the cache if the NetSpeed cookie is set and if its value is 'B'. The only other
+       // permissable value is 'A', which is equivalent to not having the cookie at all, so we
+       // don't need to update the hash in that case.
+       if (req.http.X-Orig-Cookie ~ "(^|;\s*)NetSpeed=B" || req.http.Cookie ~ "(^|;\s*)NetSpeed=B") {
+	       hash_data("NetSpeed=B");
+       }
 }
