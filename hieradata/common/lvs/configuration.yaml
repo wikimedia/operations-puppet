@@ -621,7 +621,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://localhost/rcstream_status
+        - http://stream.wikimedia.org/rcstream_status
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
@@ -641,7 +641,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://localhost/rcstream_status
+        - https://stream.wikimedia.org/rcstream_status
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
