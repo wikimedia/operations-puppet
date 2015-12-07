@@ -149,3 +149,10 @@ sub vcl_deliver {
 	}
 <% end -%>
 }
+
+sub vcl_hash {
+       // Split the cache for the images-disabled variant of the mobile site.
+       if (req.http.X-Orig-Cookie ~ "(^|;\s*)disableImages=1" || req.http.Cookie ~ "(^|;\s*)disableImages=1") {
+               hash_data("disableImages=1");
+       }
+}
