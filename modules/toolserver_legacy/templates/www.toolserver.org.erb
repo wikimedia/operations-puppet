@@ -8,6 +8,7 @@
     ServerAdmin noc@wikimedia.org
     ServerName www.toolserver.org
     ServerAlias toolserver.org
+    ServerAlias stable.toolserver.org
 
     DocumentRoot /does/not/exist
     <Directory />
@@ -50,6 +51,8 @@
 
     DocumentRoot /var/www/html
 
+    # Redirects from www.toolserver.org
+    #
     Redirect 301 /tiles http://a.tiles.wmflabs.org
     Redirect 301 /~acc https://accounts.wmflabs.org
     Redirect 301 /~alexxw/Denkmalliste https://tools.wmflabs.org/denkmalliste
@@ -258,5 +261,9 @@
     Redirect 301 /~webboy/stats.php https://tools.wmflabs.org/unpatrollededitstats/nlwiki
     Redirect 301 /~webboy/nowiki/stats.php https://tools.wmflabs.org/unpatrollededitstats/nowiki
     Redirect 301 /~webboy/commonswiki/stats.php https://tools.wmflabs.org/unpatrollededitstats/commonswiki
+
+    # Redirects from stable.toolserver.org
+    #
+    Redirect 301 /geohack https://tools.wmflabs.org/geohack
 
 </VirtualHost>
