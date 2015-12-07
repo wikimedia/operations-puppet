@@ -1,0 +1,215 @@
+---
+# This is a yaml file. Remember to keep indentation otherwise the structure
+# will not be what you intend
+groups:
+  analytics_eqiad:
+    description: analytics servers in eqiad
+
+# Analytics Query Service
+  aqs_eqiad:
+    description: Analytics Query Service eqiad
+  aqs_codfw:
+    description: Analytics Query Service codfw
+
+# Cache
+  cache_text_codfw:
+    description: codfw text Varnish
+  cache_text_eqiad:
+    description: eqiad text Varnish
+  cache_text_esams:
+    description: esams text Varnish
+  cache_text_ulsfo:
+    description: ulsfo text Varnish
+  cache_upload_codfw:
+    description: codfw upload Varnish
+  cache_upload_eqiad:
+    description: eqiad upload Varnish
+  cache_upload_esams:
+    description: esams upload Varnish
+  cache_upload_ulsfo:
+    description: ulsfo upload Varnish
+  cache_mobile_codfw:
+    description: codfw mobile Varnish
+  cache_mobile_eqiad:
+    description: eqiad mobile Varnish
+  cache_mobile_esams:
+    description: esams mobile Varnish
+  cache_mobile_ulsfo:
+    description: ulsfo mobile Varnish
+  cache_parsoid_codfw:
+    description: Parsoid caches codfw
+  cache_parsoid_eqiad:
+    description: Parsoid caches eqiad
+  cache_misc_codfw:
+    description: Misc caches codfw
+  cache_misc_eqiad:
+    description: Misc caches eqiad
+  cache_misc_esams:
+    description: Misc caches esams
+  cache_misc_ulsfo:
+    description: Misc caches ulsfo
+  cache_maps_eqiad:
+    description: Maps caches eqiad
+
+# Elasticsearch
+  elasticsearch_eqiad:
+    description: eqiad elasticsearch servers
+  elasticsearch_codfw:
+    description: codfw elasticsearch servers
+  elasticsearch_esams:
+    description: esams elasticsearch servers
+  elasticsearch_ulsfo:
+    description: ulsfo elasticsearch servers
+
+# Etcd
+  etcd_eqiad:
+    description: eqiad Etcd
+
+# Ganeti
+  ganeti_eqiad:
+    description: Ganeti virt cluster eqiad
+  ganeti_codfw:
+    description: Ganeti virt cluster codfw
+
+# Labs OpenStack Nova (labvirt***)
+  virt_eqiad:
+    description: eqiad virt servers
+  virt_codfw:
+    description: codfw virt servers
+
+# LVS
+  lvs:
+    description: LVS
+  lvs_eqiad:
+    description: eqiad LVS servers
+  lvs_codfw:
+    description: codfw LVS servers
+  lvs_ulsfo:
+    description: ulsfo LVS servers
+  lvs_esams:
+    description: esams LVS servers
+
+# Logstash
+  logstash_eqiad:
+    description: eqiad logstash
+
+# Maps
+  maps_eqiad:
+    description: eqiad maps servers
+  maps_codfw:
+    description: codfw maps servers
+
+# MediaWiki
+  appserver_eqiad:
+    description: eqiad application servers
+  api_appserver_eqiad:
+    description: eqiad API application servers
+  imagescaler_eqiad:
+    description: eqiad image scalers
+  jobrunner_eqiad:
+    description: eqiad jobrunner application servers
+  videoscaler_eqiad:
+    description: eqiad video scaler
+
+  appserver_codfw:
+    description: codfw application servers
+  api_appserver_codfw:
+    description: codfw API application servers
+  imagescaler_codfw:
+    description: codfw image scalers
+  jobrunner_codfw:
+    description: codfw jobrunner application servers
+  videoscaler_codfw:
+    description: codfw video scaler
+
+# Memcached
+  memcached_eqiad:
+    description: eqiad memcached
+  memcached_codfw:
+    description: codfw memcached
+
+# MySQL
+  es_eqiad:
+    description: eqiad External Storage
+  mysql_eqiad:
+    description: eqiad mysql core
+  mysql_codfw:
+    description: codfw mysql core
+
+# OCG
+  ocg_eqiad:
+    description: offline content generator eqiad
+
+# OpenLDAP (Corp IT)
+  openldap_corp_mirror_eqiad:
+    description: Corp OIT LDAP Mirror
+  openldap_corp_mirror_codfw:
+    description: Corp OIT LDAP Mirror codfw
+
+# Parsoid
+  parsoid_eqiad:
+    description: eqiad parsoid servers
+  parsoid_codfw:
+    description: codfw parsoid servers
+
+# RCStream
+  rcstream_eqiad:
+    description: eqiad rcstream
+
+# RedisDB
+  redis_eqiad:
+    description: eqiad Redis
+  redis_codfw:
+    description: codfw Redis
+
+# RESTBase
+  restbase_eqiad:
+    description: Restbase eqiad
+  restbase_codfw:
+    description: Restbase codfw
+
+# Service Clusters
+  sca_eqiad:
+    description: Service Cluster A servers
+  scb_eqiad:
+    description: Service Cluster B servers
+
+# Swift
+  swift:
+    description: swift servers
+
+# Wikidata Query Service
+  wdqs_eqiad:
+    description: Wikidata Query Service (eqiad)
+
+# Zotero
+  zotero_eqiad:
+    description: Zotero eqiad
+  zotero_codfw:
+    description: Zotero codfw
+
+# Labs
+  labsnfs_eqiad:
+    description: eqiad labsnfs server servers
+  labsnfs_codfw:
+    description: codfw labsnfs server servers
+
+# Misc
+  misc_eqiad:
+    description: eqiad misc servers
+  misc_codfw:
+    description: codfw misc servers
+  misc_esams:
+    description: esams misc servers
+  misc_ulsfo:
+    description: ulsfo misc servers
+
+# Facilities
+  pdus:
+    description: PDUs
+
+# Network
+  routers:
+    description: IP routers
+  storage:
+    description: Storage equipment
