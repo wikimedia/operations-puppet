@@ -76,6 +76,8 @@ class role::memcached {
             auto_aof_rewrite_min_size   => '512mb',
             client_output_buffer_limit  => 'slave 512mb 200mb 60',
             dir                         => '/srv/redis',
+            appendfilename              => "${hostname}-6379.aof",
+            dbfilename                  => "${::hostname}-${port}.rdb",
             masterauth                  => $passwords::redis::main_password,
             maxmemory                   => '500Mb',
             maxmemory_policy            => 'volatile-lru',
