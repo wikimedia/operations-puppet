@@ -54,8 +54,8 @@ class PyBalStateCollector(diamond.collector.Collector):
         if total == 0:
             return
         self.publish('pools.{}.total'.format(name), total)
+        acc = {u'pooled': 0, u'enabled': 0, u'up': 0}
         for k, v in data.items():
-            acc = {u'pooled': 0, u'enabled': 0, u'up': 0}
             del v['weight']
             for label, val in v.items():
                 if val:
