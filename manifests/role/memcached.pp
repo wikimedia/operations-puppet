@@ -5,6 +5,7 @@ class role::memcached {
     include standard
     include base::mysterious_sysctl
     include base::firewall
+    include passwords::redis
 
     $memcached_size = $::realm ? {
         'production' => 89088,
@@ -70,12 +71,29 @@ class role::memcached {
         minute  => fqdn_rand(59, 'memkeys'),
     }
 
-    ferm::service {'redis_memcached_role':
+    redis::instance { 6379:
+        settings => {
+            auto_aof_rewrite_min_size   => '512mb',
+            client_output_buffer_limit  => 'slave 512mb 200mb 60',
+            dir                         => '/srv/redis',
+            masterauth                  => $passwords::redis::main_password,
+            maxmemory                   => '500Mb',
+            maxmemory_policy            => 'volatile-lru',
+            maxmemory_samples           => 5,
+            no_appendfsync_on_rewrite   => true,
+            requirepass                 => $passwords::redis::main_password,
+            save                        => '300 100',
+            slave_read_only             => false,
+            stop_writes_on_bgsave_error => false,
+        },
+    }
+
+    ferm::service { 'redis_memcached_role':
         proto    => 'tcp',
         port     => '6379',
     }
 
-    ferm::service {'memcached_memcached_role':
+    ferm::service { 'memcached_memcached_role':
         proto => 'tcp',
         port  => '11211',
     }
