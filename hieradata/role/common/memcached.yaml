@@ -1,6 +1,6 @@
 cluster: memcached
 redis::legacy::maxmemory: "500Mb"
-redis::legacy::dir: "/a/redis"
+redis::legacy::dir: "/srv/redis"
 redis::legacy::password: "%{passwords::redis::main_password}"
 admin::groups:
   - perf-roots
