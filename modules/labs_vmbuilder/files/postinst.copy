@@ -7,16 +7,10 @@
 /etc/ldap.conf /etc/ldap.conf
 /etc/nscd.conf /etc/nscd.conf
 /etc/nsswitch.conf /etc/nsswitch.conf
-/etc/pam.d/common-account /etc/pam.d/common-account
-/etc/pam.d/common-auth /etc/pam.d/common-auth
-/etc/pam.d/common-password /etc/pam.d/common-password
-/etc/pam.d/common-session /etc/pam.d/common-session
-/etc/pam.d/common-session-noninteractive /etc/pam.d/common-session-noninteractive
-/etc/pam.d/sshd /etc/pam.d/sshd
+/usr/share/pam-configs/wikimedia-labs-pam /usr/share/pam-configs/wikimedia-labs-pam
 /etc/ssh/sshd_config /etc/ssh/sshd_config
 /etc/sudoers.d/ops /etc/sudoers.d/ops
 /etc/sudoers /etc/sudoers
-/etc/vmbuilder/files/access.conf /etc/security/access.conf
 /etc/vmbuilder/files/install_sudo.sh /root/install_sudo.sh
 /etc/vmbuilder/files/nslcd.conf /etc/nslcd.conf
 /etc/vmbuilder/files/nss_ldap.conf /etc/ldap/ldap.conf

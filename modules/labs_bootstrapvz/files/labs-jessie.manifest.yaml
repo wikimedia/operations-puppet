@@ -117,9 +117,6 @@ plugins:
         src: /etc/bootstrap-vz/cloud.cfg
         dst: /etc/cloud/cloud.cfg
       -
-        src: /etc/bootstrap-vz/access.conf
-        dst: /etc/security/access.conf
-      -
         src: /etc/ldap.conf
         dst: /etc/ldap.conf
       -
@@ -135,23 +132,8 @@ plugins:
         src: /etc/nsswitch.conf
         dst: /etc/nsswitch.conf
       -
-        src: /etc/pam.d/common-auth
-        dst: /etc/pam.d/common-auth
-      -
-        src: /etc/pam.d/sshd
-        dst: /etc/pam.d/sshd
-      -
-        src: /etc/pam.d/common-account
-        dst: /etc/pam.d/common-account
-      -
-        src: /etc/pam.d/common-password
-        dst: /etc/pam.d/common-password
-      -
-        src: /etc/pam.d/common-session
-        dst: /etc/pam.d/common-session
-      -
-        src: /etc/pam.d/common-session-noninteractive
-        dst: /etc/pam.d/common-session-noninteractive
+        src: /usr/share/pam-configs/wikimedia-labs-pam
+        dst: /usr/share/pam-configs/wikimedia-labs-pam
       -
         src: /etc/exim4/exim4.conf
         dst: /etc/exim4/exim4.conf
