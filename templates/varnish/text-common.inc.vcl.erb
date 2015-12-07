@@ -35,11 +35,9 @@ sub evaluate_cookie {
 // most of this mechanism but have a different Cookie regex during
 // the refactoring process...
 sub evaluate_cookie_mobile {
-	// note extra matches for disableImages= and for optin=foo, which
-	// create unique and valid variances for alpha-vs-beta-vs-stable, and
-	// for images-vs-not.  optin has no prefix, so we can be more-precise,
-	// whereas disableImages has a wikiname prefix like session/token do.
-	if (req.http.Cookie ~ "((^|;\s*)optin|disableImages|[sS]ession|Token)="
+	// note extra matches for optin=foo, which create unique and valid
+	// variances for alpha-vs-beta-vs-stable.
+	if (req.http.Cookie ~ "((^|;\s*)optin|[sS]ession|Token)="
 	    && req.url !~ "^/static/"
 	    && req.url !~ "^/w/load\.php") {
 		set req.hash_ignore_busy = true;
