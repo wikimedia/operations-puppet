@@ -25,7 +25,7 @@ sub evaluate_cookie {
 	if (req.http.Cookie ~ "([sS]ession|Token)="
 	    && req.url !~ "^/static/"
 	    && req.url !~ "^/w/load\.php") {
-		set req.hash_ignore_busy = true;
+		return (pass);
 	} else {
 		call stash_cookie;
 	}
