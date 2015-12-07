@@ -1742,22 +1742,11 @@ node /^maps-test200[2-4]\.codfw\.wmnet/ {
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
-
     role memcached
-    include passwords::redis
-
-    file { '/a':
-        ensure => 'directory',
-    }
-
-    include redis::legacy
 }
 
 node /^mc20[01][0-9]\.codfw\.wmnet/ {
     role memcached
-    include passwords::redis
-    include redis::legacy
-
 }
 
 # OTRS evaluation upgrade
