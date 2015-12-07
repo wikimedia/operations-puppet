@@ -63,6 +63,6 @@ class role::torrus {
 
     monitoring::service { 'torrus-http':
         description   => 'torrus.wikimedia.org HTTP',
-        check_command => 'check_http_url_for_string!torrus.wikimedia.org!/torrus!\'Torrus Top: Wikimedia\'',
+        check_command => 'check_https_url_for_string!torrus.wikimedia.org!/torrus!\'Torrus Top: Wikimedia\'',
     }
 }
