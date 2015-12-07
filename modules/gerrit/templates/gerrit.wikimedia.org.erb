@@ -132,6 +132,11 @@ NameVirtualHost *:443
     RewriteCond ;p=%1;%{QUERY_STRING} ^;p=([^;]*).*;f=([^;]*)
     RewriteRule ^/r/gitweb$ https://git.wikimedia.org/raw/%1/HEAD/%2? [R=301,L,B,NE]
 
+    # git-review for some reason sometimes uses https://gerrit.wikimedia.org/tools/hooks/commit-msg
+    # instead of https://gerrit.wikimedia.org/r/tools/hooks/commit-msg, except when somebody is
+    # trying to reproduce this behavior.
+    RewriteRule ^/tools/hooks/commit-msg$ https://gerrit.wikimedia.org/r/tools/hooks/commit-msg
+
     ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
 
     ErrorLog /var/log/apache2/error.log
