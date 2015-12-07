@@ -46,7 +46,7 @@ class PyBalStateCollector(diamond.collector.Collector):
         return config_help
 
     def get_pools(self):
-        r = requests.get(self.base_url)
+        r = self.session.get(self.base_url)
         return r.json()
 
     def collect_pool(self, name, data):
