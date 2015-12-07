@@ -51,7 +51,7 @@ class salt::minion(
         dns_check           => false,
         random_reauth_delay => 10,
         recon_default       => 1000,
-        recon_max           => 30000,
+        recon_max           => 10000,
         recon_randomize     => true,
         keysize             => 2048,
     }
