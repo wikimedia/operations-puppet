@@ -2,10 +2,6 @@
 # hardware like power distribution units and cameras
 class facilities {
 
-    @monitoring::group { 'pdus':
-        description => 'PDUs',
-    }
-
     # The PDUs are queried over SNMP using the snmp command provided by the snmp
     # package. For now ensure it here but it may need to be put in another place
     # in the future

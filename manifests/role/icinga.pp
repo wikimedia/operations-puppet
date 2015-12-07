@@ -21,8 +21,6 @@ class role::icinga(
     include icinga::monitor::legal
     include icinga::monitor::certs
     include icinga::monitor::gsb
-    include icinga::groups::misc
-    include icinga::groups::labs
     include lvs::monitor
     include role::authdns::monitoring
     include network::checks
@@ -31,6 +29,9 @@ class role::icinga(
     include nrpe
     include standard
     include base::firewall
+
+    $monitoring_groups = hiera('monitoring::groups')
+    create_resources(monitoring::group, $monitoring_groups)
 
     interface::add_ip6_mapped { 'main': interface => 'eth0' }
 
