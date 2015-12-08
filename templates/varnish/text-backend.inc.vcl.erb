@@ -32,12 +32,11 @@ sub vcl_recv {
 	if (req.http.X-Wikimedia-Debug == "1") {
 		set req.backend = test_wikipedia;
 	}
-<% end -%>
-
 <% if @varnish_directors.include?('security_audit') && !@varnish_directors['security_audit']['backends'].empty? %>
 	if (req.http.X-Wikimedia-Security-Audit == "1") {
 		set req.backend = security_audit;
 	}
+<% end %>
 <% end %>
 
 	if (req.request != "GET" && req.request != "HEAD") {
