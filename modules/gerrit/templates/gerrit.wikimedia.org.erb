@@ -126,7 +126,7 @@ NameVirtualHost *:443
     # Rewrite a gitweb project link (no file).
     RewriteCond ;%{QUERY_STRING} !;f=
     RewriteCond ;%{QUERY_STRING} ;p=([^;]*)
-    RewriteRule ^/r/gitweb$ https://git.wikimedia.org/summary/%1/HEAD? [R=301,L,B,NE]
+    RewriteRule ^/r/gitweb$ https://phabricator.wikimedia.org/r/project/%1 [R=301,L,B,NE]
     # Rewrite a gitweb file link (project and file, in any order).
     RewriteCond ;%{QUERY_STRING} ;p=([^;]*)
     RewriteCond ;p=%1;%{QUERY_STRING} ^;p=([^;]*).*;f=([^;]*)
