@@ -98,7 +98,7 @@ class role::cache::mobile {
 
     varnish::instance { 'mobile-backend':
         name               => '',
-        vcl                => 'mobile-backend',
+        vcl                => 'text-backend',
         extra_vcl          => ['text-common'],
         ports              => [ 3128 ],
         admin_port         => 6083,
@@ -133,7 +133,7 @@ class role::cache::mobile {
 
     varnish::instance { 'mobile-frontend':
         name               => 'frontend',
-        vcl                => 'mobile-frontend',
+        vcl                => 'text-frontend',
         extra_vcl          => ['text-common', 'zero'],
         ports              => [ 80 ],
         admin_port         => 6082,
