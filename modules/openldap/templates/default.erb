@@ -3,6 +3,9 @@
 ### puppet:///modules/openldap/templates/default.erb
 ###################################################################
 
+# Bump the fd limit, otherwise we max out LDAP connections at around 1000
+ulimit -n 4096
+
 # Default location of the slapd.conf file or slapd.d cn=config directory. If
 # empty, use the compiled-in default (/etc/ldap/slapd.d with a fallback to
 # /etc/ldap/slapd.conf).
