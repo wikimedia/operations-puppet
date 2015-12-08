@@ -11,6 +11,7 @@ sub vcl_recv {
 	}
 
 <% if @site_tier == "one" -%>
+
 	if (req.url ~ "^/w/api\.php") {
 		set req.backend = api;
 	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
@@ -19,16 +20,7 @@ sub vcl_recv {
 		set req.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
 		set req.backend = restbase_backend;
 	}
-<% end -%>
 
-	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
-<% if @site_tier != "one" -%>
-		set req.backend = backend_random;
-<% end -%>
-		set req.hash_ignore_busy = true;
-	}
-
-<% if @site_tier == "one" -%>
 	if (req.http.X-Wikimedia-Debug == "1") {
 		set req.backend = test_wikipedia;
 	}
@@ -37,7 +29,15 @@ sub vcl_recv {
 		set req.backend = security_audit;
 	}
 <% end %>
-<% end %>
+
+<% end %> // end site_tier == one
+
+	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
+<% if @site_tier != "one" -%>
+		set req.backend = backend_random;
+<% end -%>
+		return (pass);
+	}
 
 	if (req.request != "GET" && req.request != "HEAD") {
 <% if @site_tier != "one" -%>
