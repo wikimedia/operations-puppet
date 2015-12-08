@@ -30,22 +30,10 @@ define redis::instance(
     $ensure   = present,
     $settings = {}
 ) {
-    conflicts(Class['redis::legacy'])
-
     validate_ensure($ensure)
     validate_hash($settings)
 
-    include ::redis
-
-    # Disable the system-global redis service that the redis-server
-    # package configures by default.
-    if ! defined(Service['redis-server']) {
-        service { 'redis-server':
-            ensure    => stopped,
-            enable    => false,
-            subscribe => Package['redis-server'],
-        }
-    }
+    require ::redis
 
     if $title =~ /^[1-9]\d*/ {
         # Listen on TCP port
@@ -62,10 +50,13 @@ define redis::instance(
     }
 
     $defaults = {
-        pidfile    => "/var/run/redis/${instance_name}.pid",
-        logfile    => "/var/log/redis/${instance_name}.log",
-        port       => $port,
-        unixsocket => $unixsocket,
+        appendfilename => "${::hostname}-${instance_name}.aof",
+        dbfilename     => "${::hostname}-${instance_name}.rdb",
+        dir            => '/srv/redis',
+        logfile        => "/var/log/redis/${instance_name}.log",
+        pidfile        => "/var/run/redis/${instance_name}.pid",
+        port           => $port,
+        unixsocket     => $unixsocket,
     }
 
     file { "/etc/redis/${instance_name}.conf":

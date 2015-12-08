@@ -11,4 +11,12 @@ class redis {
         group => 'redis',
         mode  => '0755',
     }
+
+    # Disable the default, system-global redis service,
+    # because it's incompatible with a multi-instance setup.
+    service { 'redis-server':
+        ensure    => stopped,
+        enable    => false,
+        subscribe => Package['redis-server'],
+    }
 }
