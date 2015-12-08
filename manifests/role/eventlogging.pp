@@ -156,7 +156,14 @@ class role::eventlogging::processor inherits role::eventlogging {
     # etcd client port, and join them into a string.
     $etcd_hosts = join(suffix(hiera('etcd_hosts'), ':2379'), ',')
 
-    $etcd_uri  = "https://${etcd_hosts}"
+    # Something isn't working with https + etcd in labs.
+    # Use http for now.
+    if $::realm == 'labs' {
+        $etcd_uri  = "http://${etcd_hosts}"
+    }
+    else {
+        $etcd_uri  = "https://${etcd_hosts}"
+    }
 
     eventlogging::service::processor { 'server-side-0':
         format         => '%{seqId}d EventLogging %j',
