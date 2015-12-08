@@ -64,8 +64,7 @@ class mediawiki::web::prod_sites {
     }
 
     apache::site { 'secure.wikimedia':
-        source   => 'puppet:///modules/mediawiki/apache/sites/secure.wikimedia.conf',
-        priority => 6,
+        ensure   => absent,
     }
 
     apache::site { 'wikimania':
