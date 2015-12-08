@@ -1,3 +1,124 @@
-# Current labs testing is using scap3, so this is entirely unused. If we start
-# using this again, we should really share a config with production.
-# -- gwicke Mon Dec  7 12:00:43 PST 2015
+# RESTBase wikimedia config
+
+# First, load & parametrize project templates. These are referenced / shared
+# between domains in the root_spec further down.
+default_project: &default_project
+  x-modules:
+    /:
+      - path: projects/wmf_default.yaml
+        options: &default_options
+          table:
+            hosts: [<%= Array(@seeds).join(',') %>]
+            keyspace: system
+            localDc: <%= @cassandra_localDc %>
+            datacenters: [<%= Array(@cassandra_datacenters).join(',') %>]
+            username: <%= @cassandra_user %>
+            password: <%= @cassandra_password %>
+            defaultConsistency: <%= @cassandra_defaultConsistency %>
+            storage_groups:
+              # Catch-all group
+              - name: default.group.local
+                domains: /./
+
+          parsoid:
+            host: <%= @parsoid_uri %>
+          action:
+            apiUriTemplate: http://api.svc.eqiad.wmnet/w/api.php
+          graphoid:
+            host: <%= @graphoid_uri %>
+          mathoid:
+            host: <%= @mathoid_uri %>
+            # 10 days Varnish caching, one day client-side
+            cache-control: s-maxage=864000, max-age=86400
+          mobileapps:
+            host: <%= @mobileapps_uri %>
+
+# A different project template, sharing configuration options.
+wikimedia.org: &wikimedia.org
+  x-modules:
+    /:
+      - path: projects/wikimedia.org.yaml
+        options:
+            <<: *default_options
+            pageviews:
+              host: <%= @aqs_uri %>
+
+
+# Swagger spec root.
+root_spec: &root_spec
+  title: "The RESTBase root"
+  # Some more general RESTBase info
+  paths:
+    # list taken from Parsoid's beta config
+    /{domain:aa.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:ar.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:ca.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:commons.wikimedia.beta.wmflabs.org}: *default_project
+    /{domain:deployment.wikimedia.beta.wmflabs.org}: *default_project
+    /{domain:de.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:en-rtl.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:en.wikibooks.beta.wmflabs.org}: *default_project
+    /{domain:en.wikinews.beta.wmflabs.org}: *default_project
+    /{domain:en.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:en.wikiquote.beta.wmflabs.org}: *default_project
+    /{domain:en.wikisource.beta.wmflabs.org}: *default_project
+    /{domain:en.wikitionary.beta.wmflabs.org}: *default_project
+    /{domain:en.wikiversity.beta.wmflabs.org}: *default_project
+    /{domain:en.wikivoyage.beta.wmflabs.org}: *default_project
+    /{domain:eo.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:es.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:fa.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:he.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:hi.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:ja.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:ko.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:login.wikimedia.beta.wmflabs.org}: *default_project
+    /{domain:meta.wikimedia.beta.wmflabs.org}: *default_project
+    /{domain:ru.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:simple.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:sq.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:test.wikimedia.beta.wmflabs.org}: *default_project
+    /{domain:uk.wikipedia.beta.wmflabs.org}: *default_project
+    /{domain:wikidata.beta.wmflabs.org}: *default_project
+    /{domain:zero.wikimedia.beta.wmflabs.org}: *default_project
+    /{domain:zh.wikipedia.beta.wmflabs.org}: *default_project
+
+    # global domain
+    /{domain:wikimedia.org}: *wikimedia.org
+
+
+
+# Finally, a standard service-runner config.
+info:
+  name: restbase
+
+# The main service setup. Each worker can offer one or more services.
+services:
+  - name: restbase
+    module: ./restbase/lib/server
+    conf:
+      port: <%= @port %>
+      spec: *root_spec
+      salt: <%= @salt_key %>
+      default_page_size: <%= @page_size %>
+      user_agent: RESTBase/deployment-prep
+
+# Log error messages and gracefully restart a worker if v8 reports using more
+# heap (note: not RSS).
+worker_heap_limit_mb: 300
+
+logging:
+  name: restbase
+  level: <%= @logging_level %>
+  streams:
+  # XXX: Use gelf-stream -> logstash
+  - type: gelf
+    host: <%= @logstash_host %>
+    port: <%= @logstash_port %>
+
+# StatsD metrics collection
+metrics:
+  name: restbase
+  type: statsd # default, but lets be explicit
+  host: <%= @statsd_host %>
+  port: <%= @statsd_port %>
