@@ -177,6 +177,8 @@ class openldap(
     Package['slapd'] -> Exec['rm_slapd.d']
     Exec['rm_slapd.d'] -> Service['slapd']
     File['/etc/ldap/slapd.conf'] ~> Service['slapd'] # We also notify
+    File['/etc/ldap/acls.conf'] ~> Service['slapd'] # We also notify
+    File['/etc/ldap/indices.conf'] ~> Service['slapd'] # We also notify
     File['/etc/default/slapd'] ~> Service['slapd'] # We also notify
     File[$datadir] -> Service['slapd']
     File['/etc/ldap/ldap.conf'] -> Service['slapd']
