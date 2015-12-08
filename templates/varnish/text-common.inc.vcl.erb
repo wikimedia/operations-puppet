@@ -1,13 +1,5 @@
 // Common functions for the Text/Mobile Varnish clusters
 
-sub stash_cookie {
-	// This header is saved, and restored before sending it to MediaWiki
-	if (req.restarts == 0) {
-		set req.http.X-Orig-Cookie = req.http.Cookie;
-		unset req.http.Cookie;
-	}
-}
-
 sub restore_cookie {
 	// Restore the original Cookie header for upstream
 	// Assumes client header X-Orig-Cookie has been filtered!
@@ -27,7 +19,11 @@ sub evaluate_cookie {
 	    && req.url !~ "^/w/load\.php") {
 		return (pass);
 	} else {
-		call stash_cookie;
+		// This header is saved, and restored before sending it to MediaWiki
+		if (req.restarts == 0) {
+			set req.http.X-Orig-Cookie = req.http.Cookie;
+			unset req.http.Cookie;
+		}
 	}
 }
 
