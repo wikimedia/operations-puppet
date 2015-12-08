@@ -91,6 +91,12 @@ class role::cache::maps {
                 'type'     => 'chash',
                 'backends' => $site_cluster_nodes,
             },
+            'backend_random' => {
+                'dynamic'  => 'yes',
+                'type'     => 'random',
+                'backends' => $site_cluster_nodes,
+                'service'  => 'varnish-be-rand',
+            },
         },
         vcl_config         => $fe_vcl_config,
         backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
