@@ -117,3 +117,6 @@ designateconfig:
   pdns_db_name: 'pdns'
   rabbit_host:  *labsnovacontroller
   controller_hostname: *labsnovacontroller
+
+labs_baremetal_servers:
+  - '10.64.20.12'
