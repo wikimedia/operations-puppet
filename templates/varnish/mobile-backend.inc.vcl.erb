@@ -25,7 +25,6 @@ sub vcl_recv {
 <% else -%>
 		set req.backend = backend_random;
 <% end -%>
-		set req.hash_ignore_busy = true;
 		return (pass);
 	}
 
@@ -52,7 +51,6 @@ sub vcl_recv {
 <% if @site_tier != "one" -%>
 		set req.backend = backend_random;
 <% end -%>
-		set req.hash_ignore_busy = true;
 		return (pass);
 	}
 
