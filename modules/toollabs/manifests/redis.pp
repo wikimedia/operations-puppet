@@ -21,11 +21,9 @@ class toollabs::redis (
 
     # $active_redis inherited from toollabs
     if $active_redis != $::hostname {
-        $redis_replication = {
-            "${::hostname}" => $active_redis,
-        }
+        $slaveof = $active_redis
     } else {
-        $redis_replication = undef
+        $slaveof = undef
     }
 
     include labs_lvm
@@ -34,27 +32,35 @@ class toollabs::redis (
         size    => '100%FREE',
     }
 
-    class { '::redis::legacy':
-        dir               => '/srv/redis',
-        maxmemory         => $maxmemory,
-        # Disable the following commands, to try to limit people from
-        # Trampling on each others' keys
-        rename_commands   => {
-            'CONFIG'    => '',
-            'FLUSHALL'  => '',
-            'FLUSHDB'   => '',
-            'KEYS'      => '',
-            'SHUTDOWN'  => '',
-            'SLAVEOF'   => '',
-            'CLIENT'    => '',
-            'RANDOMKEY' => '',
-            'DEBUG'     => '',
-            'MONITOR'   => ''
+    redis::instance { 6379:
+        settings => {
+            auto_aof_rewrite_min_size   => '512mb',
+            client_output_buffer_limit  => 'slave 512mb 200mb 60',
+            dbfilename                  => "${::hostname}-6379.rdb",
+            dir                         => '/srv/redis',
+            maxmemory                   => $maxmemory,
+            maxmemory_policy            => 'allkeys-lru',
+            maxmemory_samples           => 5,
+            no_appendfsync_on_rewrite   => true,
+            save                        => '300 100',
+            slave_read_only             => false,
+            stop_writes_on_bgsave_error => false,
+            appendfilename              => "${::hostname}-6379.aof",
+            slaveof                     => $slaveof,
+            rename_command              => {
+                'CLIENT'    => '""',
+                'CONFIG'    => '""',
+                'DEBUG'     => '""',
+                'FLUSHALL'  => '""',
+                'FLUSHDB'   => '""',
+                'KEYS'      => '""',
+                'MONITOR'   => '""',
+                'RANDOMKEY' => '""',
+                'SHUTDOWN'  => '""',
+                'SLAVEOF'   => '""',
+            },
+            require                     => Labs_lvm::Volume['redis-disk'],
         },
-        monitor           => false,
-        redis_replication => $redis_replication,
-        maxmemory_policy  => 'allkeys-lru',
-        require           => Labs_lvm::Volume['redis-disk'],
     }
 
     package { 'python-virtualenv':
