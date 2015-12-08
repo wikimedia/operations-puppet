@@ -82,12 +82,10 @@ sub vcl_recv {
 	}
 
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
-		set req.backend = backend_random;
 		return (pass);
 	}
 
 	if (req.request != "GET" && req.request != "HEAD") {
-		set req.backend = backend_random;
 		return (pass);
 	}
 
