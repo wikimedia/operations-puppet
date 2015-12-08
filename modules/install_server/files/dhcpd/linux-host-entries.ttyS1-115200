@@ -6007,6 +6007,11 @@ host praseodymium {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host promethium {
+        hardware ethernet 90:B1:1C:2D:6F:0C;
+        fixed-address promethium.eqiad.wmnet;
+}
+
 host protactinium {
 	hardware ethernet 84:2b:2b:fd:be:b5;
 	fixed-address protactinium.wikimedia.org;
