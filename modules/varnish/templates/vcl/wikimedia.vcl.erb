@@ -662,11 +662,25 @@ sub vcl_miss {
 	/* Function vcl_miss in <%= @vcl %>.inc.vcl will be appended here */
 }
 
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 sub vcl_pass {
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call misspass_limiter;
-}
 <% end %>
+
+// All cache clusters are dual-tier/layer, and all tier-two backends and all
+// frontends have exactly two backends: "backend" and "backend_random".  The
+// regular backend is a chash on the URL to help with cacheable objects,
+// whereas the randomized one avoids focusing pass/hit-for-pass traffic onto a
+// single node in the varnish-backend layers.  All pass and hit-for-pass
+// traffic comes through vcl_pass, so we set backend_random here for all such
+// requests.
+// Note parsoid is specially excluded, because it's legacy / non-standard.
+<% if scope.function_hiera(["cluster"]) != "cache_parsoid" %>
+<% if @vcl_config.fetch("layer", "") == "frontend" || @site_tier == "two" -%>
+	set req.backend = backend_random;
+<% end -%>
+<% end -%>
+}
 
 sub vcl_deliver {
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
