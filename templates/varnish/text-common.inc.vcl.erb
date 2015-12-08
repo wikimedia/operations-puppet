@@ -52,7 +52,6 @@ sub pass_authorization {
 	// have OAuth data, with the same header-matching as in:
 	// https://phabricator.wikimedia.org/diffusion/EOAU/browse/master/backend/MWOAuthUtils.php;8029ef146211a1016b1f8e676944c3750f78b0eb$89
 	if (req.http.Authorization ~ "^OAuth ") {
-		set req.hash_ignore_busy = true;
 		return (pass);
 	}
 }
