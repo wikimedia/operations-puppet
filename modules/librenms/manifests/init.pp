@@ -102,6 +102,20 @@ class librenms(
         minute  => '*/5',
         require => User['librenms'],
     }
+    cron { 'librenms-check-services':
+        ensure  => present,
+        user    => 'librenms',
+        command => "${install_dir}/check-services.php >/dev/null 2>&1",
+        minute  => '*/5',
+        require => User['librenms'],
+    }
+    cron { 'librenms-alerts':
+        ensure  => present,
+        user    => 'librenms',
+        command => "${install_dir}/alerts.php >/dev/null 2>&1",
+        minute  => '*',
+        require => User['librenms'],
+    }
 
     # syslog script, in an install_dir-agnostic location
     # used by librenms::syslog or a custom alternative placed manually.
