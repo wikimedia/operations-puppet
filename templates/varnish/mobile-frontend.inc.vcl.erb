@@ -75,6 +75,12 @@ sub vcl_recv {
 		set req.http.X-Wikimedia-Debug = "1";
 	}
 
+	// Users that just logged out, should not get a 304 for their
+	// (locally cached) logged in pages.
+	if (req.http.If-Modified-Since && req.http.Cookie ~ "LoggedOut") {
+		unset req.http.If-Modified-Since;
+	}
+
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
 		set req.backend = backend_random;
 		set req.hash_ignore_busy = true;
@@ -85,12 +91,6 @@ sub vcl_recv {
 	if (req.request != "GET" && req.request != "HEAD") {
 		set req.backend = backend_random;
 		return (pass);
-	}
-
-	// Users that just logged out, should not get a 304 for their
-	// (locally cached) logged in pages.
-	if (req.http.If-Modified-Since && req.http.Cookie ~ "LoggedOut") {
-		unset req.http.If-Modified-Since;
 	}
 
 	call evaluate_cookie;
