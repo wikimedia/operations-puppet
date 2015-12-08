@@ -16,6 +16,7 @@ access to attrs=sambaNTPassword
 # These access lines apply to database #1 only
 access to attrs=userPassword,shadowLastChange
 	by dn="cn=admin,<%= @suffix %>" write
+	by group/groupOfUniqueNames/uniqueMember="cn=Directory Managers,ou=groups,dc=wikimedia,dc=org" write
 	by anonymous auth
 	by self write
 	by * none
