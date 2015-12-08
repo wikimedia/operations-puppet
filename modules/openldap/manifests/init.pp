@@ -117,7 +117,7 @@ class openldap(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            content => template('openldap/base-acls.erb', $extra_acls),
+            content => template($extra_acls, 'openldap/base-acls.erb'),
         }
     } else {
         file { '/etc/ldap/acls.conf' :
