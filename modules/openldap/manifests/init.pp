@@ -38,6 +38,9 @@
 #       Optional. Specify the maximum number of entries to return from a search
 #       operation. May be set to a number or to 'unlimited'. If unset, the default
 #       is 2048.
+#    $logging
+#       Optional. Specify the kind of logging desired. Defaults to "sync stats"
+#       And it is not named loglevel cause that's a puppet metaparameter
 #
 # Actions:
 #       Install/configure slapd
@@ -64,7 +67,7 @@ class openldap(
     $extra_acls=undef,
     $extra_indices=undef,
     $size_limit=undef,
-    $loglevel='sync stats',
+    $logging='sync stats',
 ) {
 
     require_package('slapd', 'ldap-utils', 'python-ldap')
