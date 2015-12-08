@@ -130,6 +130,7 @@ class role::labs::openstack::nova::controller {
 
     # TOBE: hiera'd
     $labs_vms = '10.68.16.0/21'
+    $labs_metal = join(hiera('labs_baremetal_servers', []), " ")
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
     $api_host = ipresolve(hiera('labs_nova_api_host'),4)
@@ -195,7 +196,7 @@ class role::labs::openstack::nova::controller {
             rule => "saddr ${labs_nodes} proto tcp dport 9292 ACCEPT;",
         },
         puppetmaster => {
-            rule => "saddr (${labs_vms} ${monitoring}) proto tcp dport 8140 ACCEPT;",
+            rule => "saddr (${labs_vms} ${labs_metal} ${monitoring}) proto tcp dport 8140 ACCEPT;",
         },
         salt => {
             rule => "saddr (${labs_vms} ${monitoring}) proto tcp dport (4505 4506) ACCEPT;",
