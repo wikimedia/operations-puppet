@@ -32,7 +32,7 @@ class role::openldap::labs {
     #  labs and on various prod hosts.
     ferm::service { 'labs_ldap':
         proto  => 'tcp',
-        port   => '389',
+        port   => '(389 636)',
         srange => '$ALL_NETWORKS',
     }
 
