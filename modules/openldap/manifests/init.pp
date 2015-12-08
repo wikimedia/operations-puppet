@@ -41,6 +41,11 @@
 #    $logging
 #       Optional. Specify the kind of logging desired. Defaults to "sync stats"
 #       And it is not named loglevel cause that's a puppet metaparameter
+#    $hash_passwords
+#       Optional. Specify what hashing scheme will be used by openldap to hash
+#       cleartext passwords sent to it on account creation or password change.
+#       Defauts to SHA. Valid values: SHA, SSHA, MD5, SMD5, CRYPT, SASL
+#       Do not supply this if you don't know what you are doing!!!!
 #
 # Actions:
 #       Install/configure slapd
@@ -68,6 +73,7 @@ class openldap(
     $extra_indices=undef,
     $size_limit=undef,
     $logging='sync stats',
+    $hash_passwords='SHA',
 ) {
 
     require_package('slapd', 'ldap-utils', 'python-ldap')
