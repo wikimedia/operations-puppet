@@ -1,6 +1,5 @@
-# The admin dn has full write access, everyone else
-# can read everything.
+# The admin dn has full write access
+# The break here means nobody else will be considered for this rule
 access to *
 	by dn="cn=admin,<%= @suffix %>" write
-	by self write
-	by * read
+	by * break

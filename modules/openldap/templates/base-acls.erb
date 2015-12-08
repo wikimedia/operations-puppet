@@ -30,3 +30,9 @@ access to attrs=userPassword,shadowLastChange
 # want SASL (and possible other things) to work
 # happily.
 access to dn.base="" by * read
+
+# everyone can read everything else not already defined
+# in above rules and write self
+access to *
+	by self write
+	by * read
