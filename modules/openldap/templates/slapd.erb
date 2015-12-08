@@ -87,7 +87,7 @@ auditlog /var/lib/ldap/slapd-audit.log
 
 overlay ppolicy
 ppolicy_hash_cleartext
-password-hash {SHA}
+password-hash {<%= @hash_passwords %>}
 
 #######################################################################
 ## Replication
