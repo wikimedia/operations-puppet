@@ -29,7 +29,11 @@ class tcpircbot(
     $dir         = '/srv/tcpircbot',
 ) {
 
-    require_package(['python-irclib', 'python-netaddr'])
+    if os_version('debian >= jessie') {
+        require_package(['python-irclib', 'python-netaddr'])
+    } else {
+        require_package(['python-irc', 'python-netaddr'])
+    }
 
     group { 'tcpircbot':
         ensure  => present,

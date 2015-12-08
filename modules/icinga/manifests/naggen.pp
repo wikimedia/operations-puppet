@@ -3,8 +3,6 @@
 # Runs naggen2 to generate hosts, service and hostext config
 # from exported puppet resources
 class icinga::naggen {
-    include icinga
-
     file { '/etc/icinga/puppet_hosts.cfg':
         content => generate('/usr/local/bin/naggen2', '--type', 'hosts'),
         backup  => false,

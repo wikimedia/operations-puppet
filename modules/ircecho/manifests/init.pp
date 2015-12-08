@@ -14,7 +14,11 @@ class ircecho (
     $ircecho_server = 'chat.freenode.net',
 ) {
 
-    require_package(['python-pyinotify', 'python-irclib'])
+    if os_version('debian >= jessie') {
+        require_package(['python-pyinotify', 'python-irc'])
+    } else {
+        require_package(['python-pyinotify', 'python-irclib'])
+    }
 
     file { '/usr/local/bin/ircecho':
         ensure => present,

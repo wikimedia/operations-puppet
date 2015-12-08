@@ -45,8 +45,8 @@ class shinken::shinkengen(
     }
 
     exec { '/usr/local/bin/shinkengen':
-        user    => 'shinken',
-        group   => 'shinken',
+        user    => 'root',
+        group   => 'root',
         require => [
             File['/usr/local/bin/shinkengen'],
             File['/etc/shinkengen.yaml']
