@@ -320,3 +320,35 @@ keystoneconfig:
 glanceconfig:
   db_host: 'm5-master.eqiad.wmnet'
   bind_ip: "%{::ipaddress_eth0}"
+
+kafka_clusters:
+  # This is the analytics Kafka cluster, named just 'eqiad' for
+  # historical reasons.
+  eqiad:
+    brokers:
+      kafka1012.eqiad.wmnet:
+        id: 12  # Row A
+      kafka1013.eqiad.wmnet:
+        id: 13  # Row A
+      kafka1014.eqiad.wmnet:
+        id: 14  # Row C
+      kafka1018.eqiad.wmnet:
+        id: 18  # Row D
+      kafka1020.eqiad.wmnet:
+        id: 20  # Row D
+      kafka1022.eqiad.wmnet:
+        id: 22  # Row C
+
+  main-eqiad:
+    brokers:
+      kafka1001.eqiad.wmnet:
+        id: 1001
+      kafka1002.eqiad.wmnet:
+        id: 1002
+
+  main-codfw:
+    brokers:
+      kafka2001.eqiad.wmnet:
+        id: 2001
+      kafka2002.eqiad.wmnet:
+        id: 2002

@@ -1211,8 +1211,19 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
     # addresses.
     interface::add_ip6_mapped { 'main': }
 
+    # TODO: use role::kafka::analytics::broker instead.
     role analytics::kafka::server, ipsec
+
     include role::analytics
+    include standard
+    include base::firewall
+}
+
+# Main Kafka Brokers in eqiad and codfw.
+# kafka1001,kafka1002 kafka2001,kafka2002
+node /kafka[12]00[12]\.(eqiad|codfw)\.wmnet/ {
+    role kafka::main::broker
+
     include standard
     include base::firewall
 }
