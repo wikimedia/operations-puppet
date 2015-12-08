@@ -35,6 +35,12 @@ class role::cache::upload {
                 'type'     => 'chash',
                 'backends' => $cluster_nodes['eqiad'],
             },
+            'backend_random' => {
+                'dynamic'  => 'yes',
+                'type'     => 'random',
+                'backends' => $cluster_nodes['eqiad'],
+                'service'  => 'varnish-be-rand',
+            },
         }
     }
 
@@ -105,6 +111,12 @@ class role::cache::upload {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $site_cluster_nodes,
+            },
+            'backend_random' => {
+                'dynamic'  => 'yes',
+                'type'     => 'random',
+                'backends' => $site_cluster_nodes,
+                'service'  => 'varnish-be-rand',
             },
         },
         vcl_config         => $fe_vcl_config,
