@@ -174,18 +174,18 @@ class gerrit::jetty ($ldap_hosts,
         ensure  => absent,
     }
 
-    file { '/var/lib/gerrit2/review_site/static/page-bkg.jpg':
+    file { '/var/lib/gerrit2/review_site/static/page-bkg.cache.jpg':
         owner  => 'gerrit2',
         group  => 'gerrit2',
         mode   => '0444',
-        source => 'puppet:///modules/gerrit/skin/page-bkg.jpg',
+        source => 'puppet:///modules/gerrit/skin/page-bkg.cache.jpg',
     }
 
-    file { '/var/lib/gerrit2/review_site/static/wikimedia-codereview-logo.png':
+    file { '/var/lib/gerrit2/review_site/static/wikimedia-codereview-logo.cache.png':
         owner  => 'gerrit2',
         group  => 'gerrit2',
         mode   => '0444',
-        source => 'puppet:///modules/gerrit/skin/wikimedia-codereview-logo.png',
+        source => 'puppet:///modules/gerrit/skin/wikimedia-codereview-logo.cache.png',
     }
 
     file { '/var/lib/gerrit2/review_site/hooks':
