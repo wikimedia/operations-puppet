@@ -111,7 +111,9 @@ if __name__ == '__main__':
     result = ldapConn.search_s(base, ldap.SCOPE_SUBTREE, query)
     if result:
         host_info = result[0][1]
-        roles = host_info['puppetClass']
+        # Default classes are no more in ldap but in hiera
+        # Tolerate the variable not being set
+        roles = host_info.get('puppetClass', [])
         puppetvars = {
             var[0]: _guess_and_convert_type(var[1])
             for var in [pv.split("=") for pv in host_info['puppetVar']]
