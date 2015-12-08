@@ -28,11 +28,6 @@ class role::cache::upload {
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['swift'][$::mw_primary],
             },
-            'rendering'   => {
-                'dynamic'  => 'no',
-                'type'     => 'random',
-                'backends' => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-            },
         },
         'two' => {
             'backend' => {
