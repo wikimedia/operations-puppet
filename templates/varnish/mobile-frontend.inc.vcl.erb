@@ -84,8 +84,6 @@ sub vcl_recv {
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
 		set req.backend = backend_random;
 		set req.hash_ignore_busy = true;
-	} else if (req.url ~ "^/api/rest_v1/") {
-		set req.backend = backend_random;
 	}
 
 	if (req.request != "GET" && req.request != "HEAD") {
