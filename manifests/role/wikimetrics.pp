@@ -287,7 +287,6 @@ class role::wikimetrics {
     class { '::wikimetrics::queue':
         require => [
             Exec['install_wikimetrics_dependencies'],
-            Class['::redis::legacy'],
         ],
     }
 
