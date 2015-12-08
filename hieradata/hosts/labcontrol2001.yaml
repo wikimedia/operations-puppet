@@ -7,3 +7,4 @@ debdeploy::grains:
 #  we're leaving it up for a few days in case
 #  of misbehaving caches.
 labs_ldap_dns_ip_override: 208.80.153.15
+keystone_redis_slaveof: labcontrol1001.wikimedia.org

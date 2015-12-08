@@ -1,2 +1,3 @@
 labs_ldap_dns_host: &labsldapdnshost "labs-ns1.wikimedia.org"
 cluster: virt
+keystone_redis_slaveof: labcontrol1001.wikimedia.org
