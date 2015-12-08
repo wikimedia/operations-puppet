@@ -135,7 +135,7 @@ class role::cache::text {
     varnish::instance { 'text-frontend':
         name               => 'frontend',
         vcl                => 'text-frontend',
-        extra_vcl          => ['text-common'],
+        extra_vcl          => ['text-common', 'zero'],
         ports              => [ 80 ],
         admin_port         => 6082,
         runtime_parameters => ['default_ttl=2592000'],

@@ -102,11 +102,9 @@ sub vcl_fetch {
 		}
 	}
 
-<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
-	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
+	if (req.http.X-Subdomain && (req.url ~ "mobileaction=" || req.url ~ "useformat=")) {
 		set beresp.ttl = 60 s;
 	}
-<% end -%>
 
 	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
 		set beresp.ttl = 120s;
@@ -121,25 +119,24 @@ sub vcl_error {
 	return (deliver);
 }
 
-<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
 sub vcl_hash {
-	// The cookies below represent prefrences that can be set for anonymous users.
+	// The cookies below represent mobile preferences that can be set for anonymous users.
+	if (req.http.X-Subdomain) {
+		// Split the cache for the images-disabled variant of the mobile site.
+		if (req.http.X-Orig-Cookie ~ "(^|;\s*)disableImages=1" || req.http.Cookie ~ "(^|;\s*)disableImages=1") {
+			hash_data("disableImages=1");
+		}
 
-	// Split the cache for the images-disabled variant of the mobile site.
-	if (req.http.X-Orig-Cookie ~ "(^|;\s*)disableImages=1" || req.http.Cookie ~ "(^|;\s*)disableImages=1") {
-		hash_data("disableImages=1");
-	}
+		// Split the cache if the NetSpeed cookie is set and if its value is 'B'. The only other
+		// permissable value is 'A', which is equivalent to not having the cookie at all, so we
+		// don't need to update the hash in that case.
+		if (req.http.X-Orig-Cookie ~ "(^|;\s*)NetSpeed=B" || req.http.Cookie ~ "(^|;\s*)NetSpeed=B") {
+			hash_data("NetSpeed=B");
+		}
 
-	// Split the cache if the NetSpeed cookie is set and if its value is 'B'. The only other
-	// permissable value is 'A', which is equivalent to not having the cookie at all, so we
-	// don't need to update the hash in that case.
-	if (req.http.X-Orig-Cookie ~ "(^|;\s*)NetSpeed=B" || req.http.Cookie ~ "(^|;\s*)NetSpeed=B") {
-		hash_data("NetSpeed=B");
-	}
-
-	// Split the cache for the beta variant of the mobile site.
-	if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
-		hash_data("optin=beta");
+		// Split the cache for the beta variant of the mobile site.
+		if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
+			hash_data("optin=beta");
+		}
 	}
 }
-<% end -%>
