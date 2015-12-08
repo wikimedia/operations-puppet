@@ -34,16 +34,10 @@ sub vcl_recv {
 <% end %> // end site_tier == one
 
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
-<% if @site_tier != "one" -%>
-		set req.backend = backend_random;
-<% end -%>
 		return (pass);
 	}
 
 	if (req.request != "GET" && req.request != "HEAD") {
-<% if @site_tier != "one" -%>
-		set req.backend = backend_random;
-<% end -%>
 		return (pass);
 	}
 
