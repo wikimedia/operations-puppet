@@ -29,7 +29,7 @@ files.viewable-mime-types:
   'audio/x-wav': 'audio/x-wav'
   'application/ogg': 'application/ogg'
   'audio/mpeg': 'audio/mpeg'
-  'text/x-php': 'text/x-php'
+  'text/x-php': 'text/x-php; charset=utf-8'
 
 files.image-mime-types:
     'image/jpeg': true
