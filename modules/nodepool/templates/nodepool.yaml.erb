@@ -42,8 +42,8 @@ targets:
       user: '<%= @jenkins_api_user -%>'
       apikey: '<%= @jenkins_api_key -%>'
       credentials-id: '<%= @jenkins_credentials_id -%>'
-    hostname: '{label.name}-{node_id}.<%= @openstack_tenant_id -%>.eqiad.wmflabs'
-    subnode-hostname: '{label.name}-{node_id}-{subnode_id}.<%= @openstack_tenant_id -%>.eqiad.wmflabs'
+    hostname: '{label.name}-{node_id}'
+    subnode-hostname: '{label.name}-{node_id}-{subnode_id}'
 
 # Jenkins labels
 #
