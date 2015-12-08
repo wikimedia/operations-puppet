@@ -1,0 +1,15 @@
+nagios_common::commands::config_dir: /etc/shinken/
+nagios_common::commands::owner: shinken
+nagios_common::commands::group: shinken
+#TODO: Clean this up and deduplicate
+nagios_common::user_macros::config_dir: /etc/shinken/
+nagios_common::user_macros::owner: shinken
+nagios_common::user_macros::group: shinken
+#TODO: Ditto
+nagios_common::timeperiods::config_dir: /etc/shinken/
+nagios_common::timeperiods::owner: shinken
+nagios_common::timeperiods::group: shinken
+#TODO: Ditto
+nagios_common::notification_commands::config_dir: /etc/shinken/
+nagios_common::notification_commands::owner: shinken
+nagios_common::notification_commands::group: shinken
