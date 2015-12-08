@@ -10,8 +10,11 @@ class ircyall(
     $web_port = 80,
 ) {
 
-    class { '::redis::legacy':
-        persist => 'aof',
+    redis::instance { 6379:
+        settings => {
+            appendonly     => true,
+            appendfilename => "${hostname}-6379.aof",
+        },
     }
 
     package { 'uwsgi-plugin-python3':
