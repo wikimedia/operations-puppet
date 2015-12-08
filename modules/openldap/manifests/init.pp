@@ -64,6 +64,7 @@ class openldap(
     $extra_acls=undef,
     $extra_indices=undef,
     $size_limit=undef,
+    $loglevel='sync stats',
 ) {
 
     require_package('slapd', 'ldap-utils', 'python-ldap')
