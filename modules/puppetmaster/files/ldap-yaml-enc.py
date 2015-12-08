@@ -110,8 +110,12 @@ if __name__ == '__main__':
     base = 'ou=hosts,dc=wikimedia,dc=org'
     result = ldapConn.search_s(base, ldap.SCOPE_SUBTREE, query)
     if result:
+        roles = ['role::labs::instance']
         host_info = result[0][1]
-        roles = host_info['puppetClass']
+        try:
+            roles += host_info['puppetClass']
+        except KeyError:
+            pass
         puppetvars = {
             var[0]: _guess_and_convert_type(var[1])
             for var in [pv.split("=") for pv in host_info['puppetVar']]
