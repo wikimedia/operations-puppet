@@ -1,0 +1,17 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+description "Dumps monitoring service"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+setuid "datasets"
+setgid "datasets"
+
+respawn
+
+chdir <%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>
+
+exec /bin/bash <%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/monitor
