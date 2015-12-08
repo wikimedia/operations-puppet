@@ -19,6 +19,13 @@ class role::ci::master {
     include ::jenkins,
         contint::proxy_jenkins
 
+    nrpe::monitor_service { 'jenkins_zmq_publisher':
+        description   => 'jenkins_zmq_publisher',
+        contact_group => 'contint',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 8888 --timeout=2',
+    }
+
+
     # .gitconfig file required for rare git write operations
     git::userconfig { '.gitconfig for jenkins user':
         homedir  => '/var/lib/jenkins',
