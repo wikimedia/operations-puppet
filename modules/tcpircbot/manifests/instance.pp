@@ -90,7 +90,7 @@ define tcpircbot::instance(
         provider  => 'upstart',
         subscribe => File["/etc/init/tcpircbot-${title}.conf", "${tcpircbot::dir}/${title}.json"],
         require   => [
-            Package['python-irclib'],
+            Class['tcpircbot'],
             File["${tcpircbot::dir}/${title}.json"],
         ],
     }
