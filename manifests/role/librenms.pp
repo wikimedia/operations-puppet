@@ -40,19 +40,6 @@ class role::librenms {
         },
 
         'enable_inventory' => 1,
-        'email_backend'    => 'sendmail',
-        'alerts'           => {
-            'port_util_alert' => true,
-            'port_util_perc'  => 85,
-            'email' => {
-                'default' => 'noc@wikimedia.org',
-                'enable'  => true,
-            },
-            'port' => {
-                'ifdown'  => false,
-            },
-        },
-
         'enable_syslog'    => 1,
         'syslog_filter'    => [
             'message repeated',
