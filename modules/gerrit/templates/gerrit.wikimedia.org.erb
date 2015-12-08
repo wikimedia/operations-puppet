@@ -135,7 +135,7 @@ NameVirtualHost *:443
     # git-review for some reason sometimes uses <https://gerrit.wikimedia.org/tools/hooks/commit-msg>
     # instead of <https://gerrit.wikimedia.org/r/tools/hooks/commit-msg>, except when somebody is
     # trying to reproduce this behavior. But people run into this all the time.
-    RewriteRule ^/tools/hooks/commit-msg$ /r/tools/hooks/commit-msg
+    RewriteRule ^/tools/hooks/commit-msg$ https://gerrit.wikimedia.org/r/tools/hooks/commit-msg
 
     ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
 
