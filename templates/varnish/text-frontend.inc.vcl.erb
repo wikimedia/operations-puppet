@@ -95,7 +95,6 @@ sub vcl_recv {
 	}
 
 	if (req.request != "GET" && req.request != "HEAD") {
-		set req.backend = backend_random;
 		return (pass);
 	}
 
