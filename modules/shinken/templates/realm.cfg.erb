@@ -1,0 +1,7 @@
+define realm {
+	realm_name <%= @realm_name %>
+	<%- if @members -%>
+	realm_members <%= @members.join(',') %>
+	<%- end -%>
+	default <%= @default %>
+}

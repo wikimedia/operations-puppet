@@ -1,0 +1,22 @@
+#===============================================================================
+# MANAGED BY PUPPET
+#===============================================================================
+# IMPORTANT: If you use several arbiters you MUST set the host_name on each
+# servers to its real DNS name ('hostname' command).
+#===============================================================================
+define arbiter {
+    arbiter_name    <%= @arbiter_name %>
+    host_name       <%= @arbiter_name %>
+    address         <%= @listen_address %>
+    port            7770
+    spare           <%= @spare %>           ; 1 = is a spare, 0 = is not a spare
+
+    ## Uncomment these lines in a HA architecture so the master and slaves know
+    ## how long they may wait for each other.
+    timeout             <%= @timeout %>; Ping timeout
+    data_timeout        <%= @data_timeout %>; Data send timeout
+    max_check_attempts  <%= @max_check_attempts %>; If ping fails N or more, then the node is dead
+    check_interval      <%= @check_interval %>; Ping node every N seconds
+    ## Modules
+    modules    <%= @modules.join(',') %>
+}
