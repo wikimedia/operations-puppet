@@ -2,6 +2,9 @@
 
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
+<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
+include "zero.inc.vcl";
+<% end -%>
 
 // Note that analytics.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
@@ -20,6 +23,7 @@ include "text-common.inc.vcl";
 // mobile-frontend.inc.vcl.erb for (m|zero).wikipedia.org and its
 // subdomains.
 
+<% if scope.function_hiera(["cluster"]) == "cache_text" -%>
 sub mobile_redirect {
 	if ((req.request == "GET" || req.request == "HEAD")
 		&& (req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|semc-browser|sendo|sharp|silk|softbank|symbian|teleca|up.browser|vodafone|webos)"
@@ -49,6 +53,7 @@ sub mobile_redirect {
 		unset req.http.MobileHost;
 	}
 }
+<% end -%>
 
 sub vcl_recv {
 	call filter_headers;
@@ -57,6 +62,36 @@ sub vcl_recv {
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
 	// Disable Range requests for now.
 	unset req.http.Range;
+
+<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
+	// Only do tag_carrier logic on first start, and only for (m|zero).wp
+	if (req.restarts == 0) {
+		// Always set X-Subdomain
+		if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?zero\.") {
+			set req.http.X-Subdomain = "ZERO";
+		} else {
+			set req.http.X-Subdomain = "M";
+		}
+
+		if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?(m|zero)\.wikipedia\.") {
+			call tag_carrier;
+		}
+	}
+
+	// Rewrite m.mediawiki.org to mediawiki.org etc
+	if (req.http.host == "m.mediawiki.org") {
+		set req.http.host = "www.mediawiki.org";
+	} else if (req.http.host == "m.wikimediafoundation.org") {
+		set req.http.host = "wikimediafoundation.org";
+	} else if (req.http.host == "m.wikisource.org") {
+		set req.http.host = "wikisource.org";
+	} else if (req.http.host == "m.wikidata.org") {
+		set req.http.host = "www.wikidata.org";
+	} else {
+		// Replace <language>.(m|zero).<project>.org by <language>.<project>.org
+		set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
+	}
+<% end -%>
 
 	// Allow purging
 	call vcl_recv_purge;
@@ -74,7 +109,9 @@ sub vcl_recv {
 		call normalize_path;
 	}
 
+<% if scope.function_hiera(["cluster"]) == "cache_text" -%>
 	call mobile_redirect;
+<% end -%>
 
 	# normalize all /static to the same hostname for caching
 	if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
@@ -111,6 +148,11 @@ sub vcl_miss {
 }
 
 sub vcl_fetch {
+<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
+	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
+		set beresp.ttl = 60 s;
+	}
+<% end -%>
 	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
@@ -128,6 +170,7 @@ sub vcl_error {
 		}
 	}
 
+<% if scope.function_hiera(["cluster"]) == "cache_text" -%>
 	// Support mobile redirects
 	if (obj.status == 666) {
 		set obj.http.Location = req.http.Location;
@@ -136,6 +179,7 @@ sub vcl_error {
 		set obj.http.Content-Length = "0"; // BZ #62245
 		return (deliver);
 	}
+<% end -%>
 
 	call errorpage;
 	return (deliver);
@@ -148,12 +192,22 @@ sub vcl_deliver {
 	// Instead of writing regexps for every edge-case, we should impose some order and coherence
 	// on our URL routing schemes.
 	// NOTE: Only apply to pages. Don't steal cachability of api.php, load.php, etc. (T102898, T113007)
+
+<% if scope.function_hiera(["cluster"]) == "cache_text" -%>
 	if (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/\?title=") {
 		// ...but exempt CentralNotice banner special pages
 		if (req.url !~ "^/wiki/Special\:Banner") {
 			set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
 		}
 	}
+<% end -%>
+
+<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
+	if ((req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php") && resp.http.Cache-Control ~ "s-maxage=[1-9]") {
+		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+	}
+<% end -%>
+
 <% if @vcl_config.fetch("enable_geoiplookup", false) -%>
 	// Perform GeoIP look-up and send the result as a session cookie
 	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
@@ -162,3 +216,26 @@ sub vcl_deliver {
 	}
 <% end -%>
 }
+
+<% if scope.function_hiera(["cluster"]) != "cache_mobile" -%>
+sub vcl_hash {
+	// The cookies below represent prefrences that can be set for anonymous users.
+
+	// Split the cache for the images-disabled variant of the mobile site.
+	if (req.http.X-Orig-Cookie ~ "(^|;\s*)disableImages=1" || req.http.Cookie ~ "(^|;\s*)disableImages=1") {
+		hash_data("disableImages=1");
+	}
+
+	// Split the cache if the NetSpeed cookie is set and if its value is 'B'. The only other
+	// permissable value is 'A', which is equivalent to not having the cookie at all, so we
+	// don't need to update the hash in that case.
+	if (req.http.X-Orig-Cookie ~ "(^|;\s*)NetSpeed=B" || req.http.Cookie ~ "(^|;\s*)NetSpeed=B") {
+		hash_data("NetSpeed=B");
+	}
+
+	// Split the cache for the beta variant of the mobile site.
+	if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
+		hash_data("optin=beta");
+	}
+}
+<% end -%>
