@@ -1,0 +1,30 @@
+[daemon]
+workdir=/var/lib/shinken
+pidfile=/var/run/shinken/<%= @daemon %>d.pid
+modules_dir=/usr/lib/python2.7/dist-packages/shinken/modules
+interval_poll=5
+maxfd=1024
+port=<%= @port %>
+<% if @listen_address %>
+host=<%= @listen_address %>
+<% else %>
+host=0.0.0.0
+<% end %>
+daemon_enabled=1
+
+user=shinken
+group=shinken
+idontcareaboutsecurity=0
+
+# SSL part
+use_ssl=0
+certs_dir=etc/certs
+ca_cert=etc/certs/ca.pem
+server_cert=etc/certs/server.pem
+hard_ssl_name_check=1
+
+# Local log management.
+# Enable it only if you need it
+use_local_log=1
+local_log=/var/log/shinken/<%= @daemon %>d.log
+log_level=INFO

@@ -1,0 +1,23 @@
+define <%= @daemon_type %> {
+    <%= @daemon_type%>_name <%= @daemon_name %>
+    address                 <%= @address %>
+    port                    <%= @port %>
+    spare                   <%= @spare %>
+    realm                   <%= @realm %>
+
+    ## Optional
+    timeout                 <%= @timeout %>; Ping timeout
+    data_timeout            <%= @data_timeout %>; Data send timeout
+    max_check_attempts      <%= @max_check_attempts %>; If ping fails N or more, then the node is dead
+    check_interval          <%= @check_interval %>; Ping node every N seconds
+
+    ## Modules
+    modules    <%= @modules.join(',') %>
+
+    ## Daemon specific config
+    <%- if @daemon_config %>
+    <%- @daemon_config.each do |key,value| -%>
+    <%= key %>              <%= value %>
+    <%- end -%>
+    <%- end -%>
+}
