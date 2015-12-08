@@ -15,18 +15,11 @@ sub vcl_recv {
 		set req.backend = api;
 	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
 		set req.backend = rendering;
-	}
-<% end -%>
-
-	if (req.url ~ "^/api/rest_v1/") {
-<% if @site_tier == "one" -%>
+	} else if (req.url ~ "^/api/rest_v1/") {
 		set req.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
 		set req.backend = restbase_backend;
-<% else -%>
-		set req.backend = backend_random;
-<% end -%>
-		return (pass);
 	}
+<% end -%>
 
 	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
 <% if @site_tier != "one" -%>
