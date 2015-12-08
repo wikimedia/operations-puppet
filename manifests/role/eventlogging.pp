@@ -50,17 +50,7 @@ class role::eventlogging {
     # Read in server side and client side raw events from
     # Kafka, process them, and send events to schema
     # based topics in Kafka.
-
-    # NOTE:
-    # eventlogging in beta labs is running the service 'EventBus' branch, which
-    # has changed the way topics are interpolated.  This conditional will
-    # be removed when we deploy this to prod as well.
-    if $::realm == 'labs' {
-        $kafka_schema_uri  = "${kafka_base_uri}?topic=eventlogging_{schema}"
-    }
-    else {
-        $kafka_schema_uri  = "${kafka_base_uri}?topic=eventlogging_%(schema)s"
-    }
+    $kafka_schema_uri  = "${kafka_base_uri}?topic=eventlogging_{schema}"
 
     # The downstream eventlogging MySQL consumer expects schemas to be
     # all mixed up in a single stream.  We send processed events to a
