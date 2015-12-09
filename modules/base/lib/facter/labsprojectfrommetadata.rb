@@ -1,10 +1,10 @@
-# labsproject.rb
+# labsprojectfrommetadata.rb
 #
 # This fact pulls the labs project out of instance metadata
 
 require 'facter'
 
-Facter.add(:labsproject) do
+Facter.add(:labsprojectfrommetadata) do
   setcode do
     domain = Facter::Util::Resolution.exec("hostname -d").chomp
     if domain.end_with? ".wmflabs"
