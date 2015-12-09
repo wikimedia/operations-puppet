@@ -107,7 +107,6 @@ class statistics::compute {
         'myspell-de-at', # Austrian (German) dictionary for myspell
         'myspell-de-ch', # Swiss (German) dictionary for myspell
         'myspell-de-de', # German dictionary for myspell
-        'myspell-de-de-oldspell', # German dictionary for myspell (old orthography)
         'myspell-el-gr', # Greek (el_GR) dictionary for myspell
         'myspell-en-au', # English_australian dictionary for myspell
         'myspell-en-gb', # English_british dictionary for myspell
