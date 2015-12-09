@@ -401,6 +401,23 @@ sub recv_fe_ip_processing {
 		unset req.http.X-Real-IP;
 	}
 
+	if (req.http.X-Forwarded-For) {
+		// To make further parsing/sanitizing simpler, convert all whitespace
+		// in XFF to single spaces, and make sure all commas have a space
+		// suffix but no space prefix.
+		set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, "[ \t]+", " ");
+		set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, " ?, ?", ", ");
+
+		// Now fully-sanitize it to only the strict form "X(, X)*", where X is
+		// a string of legal characters in IPv[46] addresses.  Note
+		// that injections can still leave well-formed junk on the
+		// left, but it's up to the trusted proxy code to ignore that,
+		// e.g.:
+		// "junk2, 123.123.123.123" -> "2, 123.123.123.123"
+		set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For,
+			"^.*?([0-9A-Fa-f:.]+(, [0-9A-Fa-f:.]+)*)?\s*$", "\1");
+	}
+
 	// There are two possible cases here: either nginx acted as our TLS
 	// proxy and already set X-Real-IP (as well as appended the same value
 	// as XFF), or the traffic was direct to varnish-fe, in which case
@@ -409,20 +426,20 @@ sub recv_fe_ip_processing {
 		// direct-to-port-80 case, set XRIP ourselves
 		set req.http.X-Real-IP = client.ip;
 		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Real-IP);
+		set req.http.X-Client-IP = req.http.X-Real-IP;
 		// normalize to boolean post-netmapper (varnish-3.0.4...)
 		if (req.http.X-Trusted-Proxy == "") {
 			unset req.http.X-Trusted-Proxy;
 		}
 		if (req.http.X-Trusted-Proxy && req.http.X-Forwarded-For) {
 			// get last from trusted-proxy-supplied XFF
-			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, "^([^,]+,\s*)+", "");
-			// Clean up XCIP leading/trailing whitespace
-			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^\s*(\S*)\s*$", "\1");
+			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, "^([^,]+, )+", "");
 		}
 	} else {
 		// XRIP from nginx, XFF set/appended by nginx and contains at
 		// least XRIP at the end, possibly prepended by other addrs
 		// set externally by some proxy.
+		set req.http.X-Client-IP = req.http.X-Real-IP;
 		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Real-IP);
 		// normalize to boolean post-netmapper (varnish-3.0.4...)
 		if (req.http.X-Trusted-Proxy == "") {
@@ -435,17 +452,9 @@ sub recv_fe_ip_processing {
 			// alias XRIP by definition), there would be no commas
 			// to match, so this would set XCIP = XRIP, which is
 			// the desirable/default state.
-			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, ",\s*[^,]+$", "");
-			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^([^,]+,\s*)+", "");
-			// Clean up XCIP leading/trailing whitespace
-			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^\s*(\S*)\s*$", "\1");
+			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
+			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^([^,]+, )+", "");
 		}
-	}
-
-	// If XCIP not set above, or looks invalid due to bad external XFF
-	// input, just alias to XRIP
-	if (!req.http.X-Client-IP || req.http.X-Client-IP !~ "^[0-9a-fA-F:.]+$") {
-		set req.http.X-Client-IP = req.http.X-Real-IP;
 	}
 
 	// Now check carrier database for setting X-Carrier based on XCIP
