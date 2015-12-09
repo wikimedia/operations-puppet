@@ -12,9 +12,10 @@ class contint::packages::ops {
     }
 
     # Python test suite for operations/software/conftool
-    package { 'etcd':
+    package { ['etcd', 'python-etcd']:
         ensure => latest,
     }
+
 
     # For Jenkins job operations-dns-lint
     # Production DNS migrated to Jessie T98003
