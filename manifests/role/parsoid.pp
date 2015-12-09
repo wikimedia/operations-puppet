@@ -246,6 +246,7 @@ class role::parsoid::beta {
     # change is made on mediawiki/services/parsoid repository
     include role::ci::slave::labs::common
     # Also need the slave scripts for multi-git.sh
-    include contint::slave-scripts
+    include contint::slave_scripts
+
 
 }
