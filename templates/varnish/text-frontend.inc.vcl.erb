@@ -205,32 +205,3 @@ sub vcl_deliver {
 	}
 <% end -%>
 }
-
-sub vcl_hash {
-	// The cookies below represent mobile preferences that can be set for anonymous users.
-	if (req.http.X-Subdomain) {
-<% if scope.function_hiera(["cluster"]) == "cache_text" -%>
-		// this splits the cache between mobile and desktop variants in general
-		// the text-cluster conditional is temporary, to avoid effectively wiping the primary cache
-		// on the legacy mobile cluster on deploy
-		hash_data("Mobile-Subdomain");
-<% end -%>
-
-		// Split the cache for the images-disabled variant of the mobile site.
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)disableImages=1" || req.http.Cookie ~ "(^|;\s*)disableImages=1") {
-			hash_data("disableImages=1");
-		}
-
-		// Split the cache if the NetSpeed cookie is set and if its value is 'B'. The only other
-		// permissable value is 'A', which is equivalent to not having the cookie at all, so we
-		// don't need to update the hash in that case.
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)NetSpeed=B" || req.http.Cookie ~ "(^|;\s*)NetSpeed=B") {
-			hash_data("NetSpeed=B");
-		}
-
-		// Split the cache for the beta variant of the mobile site.
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)optin=beta" || req.http.Cookie ~ "(^|;\s*)optin=beta") {
-			hash_data("optin=beta");
-		}
-	}
-}
