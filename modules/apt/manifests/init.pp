@@ -105,7 +105,7 @@ class apt {
         apt::repository { 'debian-backports':
             uri         => 'http://mirrors.wikimedia.org/debian',
             dist        => "${::lsbdistcodename}-backports",
-            components  => 'main non-free contrib',
+            components  => 'main contrib non-free',
             comment_old => true,
         }
     }
