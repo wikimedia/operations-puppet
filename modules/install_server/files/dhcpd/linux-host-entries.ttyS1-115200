@@ -231,6 +231,13 @@ host argon {
 	fixed-address argon.wikimedia.org;
 }
 
+host auth2001 {
+        hardware ethernet 14:18:77:33:1D:20
+        fixed-address auth2001.codfw.wmnet;
+        option pxelinux.pathprefix "jessie-installer/";
+        filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host backup4001 {
 	hardware ethernet F0:1F:AF:D8:72:9A;
 	fixed-address backup4001.ulsfo.wmnet;
