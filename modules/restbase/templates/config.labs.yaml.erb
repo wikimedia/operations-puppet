@@ -23,7 +23,7 @@ default_project: &default_project
           parsoid:
             host: <%= @parsoid_uri %>
           action:
-            apiUriTemplate: http://api.svc.eqiad.wmnet/w/api.php
+            apiUriTemplate: "{{'http://{domain}/w/api.php'}}"
           graphoid:
             host: <%= @graphoid_uri %>
           mathoid:
