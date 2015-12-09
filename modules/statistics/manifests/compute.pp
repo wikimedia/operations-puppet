@@ -116,7 +116,6 @@ class statistics::compute {
         'myspell-fa', # Persian (Farsi) dictionary for myspell
         'myspell-fo', # Faroese dictionary for myspell
         'myspell-fr', # French dictionary for myspell (Hydro-Quebec version)
-        'myspell-fr-gut', # French dictionary for myspell (GUTenberg version)
         'myspell-ga', # Irish (Gaeilge) dictionary for OpenOffice and Mozilla
         'myspell-gd', # Scots Gaelic dictionary for myspell
         'myspell-gv', # Manx Gaelic dictionary for myspell
