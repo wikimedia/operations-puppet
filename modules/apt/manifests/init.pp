@@ -103,7 +103,7 @@ class apt {
     # enable backports for Debian systems
     if $::operatingsystem == 'Debian' {
         apt::repository { 'debian-backports':
-            uri         => 'http://mirrors.wikimedia.org/debian',
+            uri         => 'http://mirrors.wikimedia.org/debian/',
             dist        => "${::lsbdistcodename}-backports",
             components  => 'main contrib non-free',
             comment_old => true,
