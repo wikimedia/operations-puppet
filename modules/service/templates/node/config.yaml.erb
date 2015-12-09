@@ -29,12 +29,15 @@ logging:
   - type: gelf
     host: <%= cvars['gelf_host'] %>
     port: <%= cvars['gelf_port'] %>
+<% if @local_logging -%>
   - type: file
     path: <%= @local_logfile %>
     level: info
+<% end -%>
 
 # Statsd metrics reporter
 metrics:
+  name: <%= @title %>
   type: statsd
   host: <%= cvars['stat_host'] %>
   port: <%= cvars['stat_port'] %>

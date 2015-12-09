@@ -18,6 +18,11 @@
 #   node service configuration directives. If none is provided, we
 #   assume the config  can be built from a template in a standard location
 #
+# [*full_config*]
+#   Whether the full config has been provided by the caller. If set to true,
+#   no config merging will take place and the caller is required to supply the
+#   'config' parameter. Default: false
+#
 # [*no_workers*]
 #   Number of workers to start. Default: 'ncpu' (i.e. start as many workers as
 #   there are CPUs)
@@ -34,6 +39,22 @@
 # [*has_spec*]
 #   If the service specifies a swagger spec, use it to thoroughly
 #   monitor it
+#
+# [*repo*]
+#   The name of the repo to use for deployment. Default: ${title}/deploy
+#
+# [*firejail*]
+#   Whether to use firejail when starting the service. Default: true
+#
+# [*starter_script*]
+#   The script used for starting the service. Default: src/server.js
+#
+# [*local_logging*]
+#   Whether to store log entries on the target node as well. Default: true
+#
+# [*auto_refresh*]
+#   Whether the service should automatically restarted after config changes.
+#   Default: true
 #
 # === Examples
 #
@@ -57,22 +78,20 @@
 #
 define service::node(
     $port,
-    $config = undef,
-    $no_workers = 'ncpu',
-    $no_file = 10000,
-    $healthcheck_url='/_info',
-    $has_spec = false,
-    $repo = "${title}/deploy",
-    ) {
+    $config          = undef,
+    $full_config     = false,
+    $no_workers      = 'ncpu',
+    $no_file         = 10000,
+    $healthcheck_url = '/_info',
+    $has_spec        = false,
+    $repo            = "${title}/deploy",
+    $firejail        = true,
+    $starter_script  = 'src/server.js',
+    $local_logging   = true,
+    $auto_refresh    = true,
+) {
     # Import all common configuration
     include service::configuration
-
-    # load configuration; if none is provided, assume it's
-    # in a standard location
-    $local_config = $config ? {
-        undef   => template("service/node/${title}_config.yaml.erb"),
-        default => $config,
-    }
 
     # we do not allow empty names
     unless $title and size($title) > 0 {
@@ -87,6 +106,25 @@ define service::node(
     # the local log file name
     $local_logdir = "${service::configuration::log_dir}/${title}"
     $local_logfile = "${local_logdir}/main.log"
+
+    # configuration management
+    # load configuration; if none is provided, assume it's
+    # in a standard location
+    $local_config = $config ? {
+        undef   => template("service/node/${title}_config.yaml.erb"),
+        default => $config,
+    }
+    if $full_config {
+        unless $config and size($config) > 0 {
+            fail('A config needs to be specified when full_config == true!')
+        }
+        $complete_config = $config
+    } else {
+        $complete_config = merge_config(
+            template('service/node/config.yaml.erb'),
+            $local_config
+        )
+    }
 
     # Software and the deployed code, firejail for containment
     require_package('nodejs', 'nodejs-legacy', 'firejail')
@@ -122,29 +160,37 @@ define service::node(
 
     file { "/etc/${title}/config.yaml":
         ensure  => present,
-        content => merge_config(
-            template('service/node/config.yaml.erb'),
-            $local_config),
+        content => $complete_config,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service[$title],
         tag     => "${title}::config",
     }
 
-    file { $local_logdir:
-        ensure => directory,
-        owner  => $title,
-        group  => 'root',
-        mode   => '0755',
-        before => Service[$title],
+    if $auto_refresh {
+        # if the service should be restarted after a
+        # config change, specify the notify/before requirement
+        File["/etc/${title}/config.yaml"] ~> Service[$title]
+    } else {
+        # no restart should happen, just ensure the file is
+        # created before the service
+        File["/etc/${title}/config.yaml"] -> Service[$title]
     }
 
-    file { "/etc/logrotate.d/${title}":
-        content => template('service/logrotate.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    if $local_logging {
+        file { $local_logdir:
+            ensure => directory,
+            owner  => $title,
+            group  => 'root',
+            mode   => '0755',
+            before => Service[$title],
+        }
+        file { "/etc/logrotate.d/${title}":
+            content => template('service/logrotate.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
     }
 
     # service init script and activation
@@ -153,11 +199,13 @@ define service::node(
         systemd        => true,
         upstart        => true,
         template_name  => 'node',
+        refresh        => $auto_refresh,
         service_params => {
             enable     => true,
             hasstatus  => true,
             hasrestart => true,
-        }
+        },
+        require        => Package[$repo],
     }
 
     # Basic firewall
@@ -179,7 +227,7 @@ define service::node(
         # we also support smart-releases
         service::deployment_script { $name:
             monitor_url     => $monitor_url,
-            has_autorestart => true,
+            has_autorestart => $auto_refresh,
         }
     } else {
         # Basic monitoring
