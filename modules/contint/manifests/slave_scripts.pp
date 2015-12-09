@@ -1,7 +1,7 @@
-class contint::slave-scripts {
+class contint::slave_scripts {
 
     if $::realm == 'production' {
-        fail('contint::slave-scripts must not be used in production. Slaves are already Trebuchet deployment targets.')
+        fail('contint::slave_scripts must not be used in production. Slaves are already Trebuchet deployment targets.')
     }
 
     # Hack: faking directories that Trebuchet would normally manage.

@@ -1,5 +1,5 @@
 class toollabs::composer {
-    # based on contint::slave-scripts
+    # based on contint::slave_scripts
 
     file { '/srv/composer':
         ensure => 'directory',

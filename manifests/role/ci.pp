@@ -46,7 +46,7 @@ class role::ci::master {
     }
 
     # As of October 2013, the slave scripts are installed with
-    # contint::slave-scripts and land under /srv/jenkins.
+    # contint::slave_scripts and land under /srv/jenkins.
     # FIXME: clean up Jenkins jobs to no more refer to the paths below:
     file { '/var/lib/jenkins/.git':
         ensure => directory,
@@ -389,7 +389,7 @@ class role::ci::slave::labs {
     }
 
     # Trebuchet replacement on labs
-    include contint::slave-scripts
+    include contint::slave_scripts
 
     # Include package unsafe for production
     include contint::packages::labs
@@ -428,7 +428,7 @@ class role::ci::slave::labs::light {
         description => 'CI *LIGHT* Jenkins slave on labs' }
 
     # Trebuchet replacement on labs
-    include contint::slave-scripts
+    include contint::slave_scripts
     include role::ci::slave::labs::common
 
     include contint::packages::apt
@@ -495,5 +495,5 @@ class role::ci::jenkins_access {
     # change is made on mediawiki/services/citoid repository
     include role::ci::slave::labs::common
     # Also need the slave scripts for multi-git.sh
-    include contint::slave-scripts
+    include contint::slave_scripts
 }
