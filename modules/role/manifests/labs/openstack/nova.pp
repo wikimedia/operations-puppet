@@ -93,11 +93,11 @@ class role::labs::openstack::nova::manager {
         mbuf_size => '64k',
         pools     => {
             'memcached' => {
-                distribution         => 'ketama',
-                hash                 => 'md5',
-                listen               => '127.0.0.1:11212',
-                server_connections   => 2,
-                servers              => [
+                distribution       => 'ketama',
+                hash               => 'md5',
+                listen             => '127.0.0.1:11212',
+                server_connections => 2,
+                servers            => [
                     '127.0.0.1:11000:1',
                 ],
             },
@@ -130,7 +130,7 @@ class role::labs::openstack::nova::controller {
 
     # TOBE: hiera'd
     $labs_vms = '10.68.16.0/21'
-    $labs_metal = join(hiera('labs_baremetal_servers', []), " ")
+    $labs_metal = join(hiera('labs_baremetal_servers', []), ' ')
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
     $api_host = ipresolve(hiera('labs_nova_api_host'),4)
