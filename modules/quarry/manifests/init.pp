@@ -12,7 +12,6 @@ class quarry::base(
     package { [
         'python-celery',
         'python-sqlalchemy',
-        'python-pymysql',
         'python-unicodecsv',
         'python-translitcodec',
     ]:
