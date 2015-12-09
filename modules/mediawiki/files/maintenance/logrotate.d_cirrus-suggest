@@ -1,0 +1,13 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+/var/log/mediawiki/cirrus-suggest/*.log {
+	daily
+	notifempty
+	maxage 30
+	rotate 5
+	dateext
+	compress
+	missingok
+}
