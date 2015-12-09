@@ -1,4 +1,4 @@
-class base::instance-upstarts {
+class base::instance_upstarts {
 
     file { '/etc/init/ttyS0.conf':
         owner  => 'root',
