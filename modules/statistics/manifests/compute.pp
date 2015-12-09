@@ -103,7 +103,7 @@ class statistics::compute {
         'myspell-bg', # Bulgarian dictionary for myspell
         'myspell-ca', # Catalan dictionary for myspell
         'myspell-cs', # Czech dictionary for myspell
-        'myspell-da', # The Comprehensive Danish Dictionary (DSDO)
+        # 'myspell-da', # The Comprehensive Danish Dictionary (DSDO) # conflicts with hunspell-vi
         'myspell-de-at', # Austrian (German) dictionary for myspell
         'myspell-de-ch', # Swiss (German) dictionary for myspell
         'myspell-de-de', # German dictionary for myspell
