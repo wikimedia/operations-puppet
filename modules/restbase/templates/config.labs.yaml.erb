@@ -86,6 +86,18 @@ root_spec: &root_spec
     # global domain
     /{domain:wikimedia.org}: *wikimedia.org
 
+    # A robots.txt to make sure that the content isn't indexed.
+    /robots.txt:
+      get:
+        x-request-handler:
+          - static:
+              return:
+                headers:
+                  content-type: text/plain
+                body: |
+                  User-agent: *
+                  Allow: /*/v1/?doc
+                  Disallow: /
 
 
 # Finally, a standard service-runner config.
