@@ -11,13 +11,19 @@ if $::realm == undef {
     $realm = hiera('realm', 'production')
 }
 
-if $::projectgroup == undef {
-    $projectgroup = "project-${labsproject}"
+if $::realm == 'labs' {
+    $labsproject = hiera('labsproject', $::labsprojectfrommetadata)
+
+    if $::labsproject == undef {
+        fail('Failed to determined $::labsproject')
+    }
+
+    if $::projectgroup == undef {
+        $projectgroup = "project-${labsproject}"
+    }
 }
 
-if ($::realm == 'labs') and ($::labsproject == undef) {
-    fail('Failed to determined $::labsproject')
-}
+
 
 # Determine the site the server is in
 if $::ipaddress_eth0 != undef {
