@@ -45,7 +45,7 @@ restbase::logstash_host: logstash1001.eqiad.wmnet
 restbase::cassandra_defaultConsistency: localQuorum
 restbase::cassandra_localDc: "%{::site}"
 restbase::statsd_host: statsd.eqiad.wmnet
-restbase::monitoring::monitor_domain: analytics.wikimedia.org
+restbase::monitor_domain: analytics.wikimedia.org
 
 # TODO: these should default to undef in the restbase class or there should be separate classes for the analytics restbase instance
 restbase::parsoid_uri: undef

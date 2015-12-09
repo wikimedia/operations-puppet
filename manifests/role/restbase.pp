@@ -9,11 +9,6 @@ class role::restbase {
     include ::restbase
     include ::restbase::monitoring
 
-    # Add a script to make deployment easier
-    service::deployment_script { 'restbase':
-        monitor_url => $::restbase::monitoring::monitor_url,
-    }
-
     include lvs::realserver
 
 
