@@ -24,6 +24,7 @@ mediawiki::maintenance::purge_checkuser::ensure: present
 mediawiki::maintenance::purge_securepoll::ensure: present
 mediawiki::maintenance::jobqueue_stats::ensure: present
 mediawiki::maintenance::updatequerypages::ensure: present
+mediawiki::maintenance::cirrussearch::ensure: present
 tendril::maintenance::ensure: present
 hhvm::extra::cli:
   hhvm:
