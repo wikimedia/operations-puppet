@@ -348,7 +348,7 @@ class role::ci::slave::browsertests {
             bind                      => '0.0.0.0',
             appendonly                => true,
             dir                       => '/mnt/redis',
-            maxmemory                 => '128Gb',
+            maxmemory                 => '128Mb',
             requirepass               => 'notsecure',
             auto_aof_rewrite_min_size => '32mb',
         },
