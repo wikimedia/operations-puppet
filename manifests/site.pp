@@ -862,21 +862,26 @@ node 'erbium.eqiad.wmnet' {
 
 # External Storage, Shard 1 (es1) databases
 
+## eqiad servers
 node /^es101[268]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 'es1',
     }
 }
 
+## codfw servers
 node /es200[1234]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
-        shard => 'es1',
+        shard          => 'es1',
+        p_s            => 'on',
+        binlog_format  => 'off',
     }
     include base::firewall
 }
 
 # External Storage, Shard 2 (es2) databases
 
+## eqiad servers
 # temporary extra role for rolling restart
 node /^es101[1]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
@@ -893,15 +898,19 @@ node /^es101[35]\.eqiad\.wmnet/ {
     include base::firewall
 }
 
+## codfw servers
 node /es200[567]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
-        shard => 'es2',
+        shard         => 'es2',
+        p_s           => 'on',
+        binlog_format => 'ROW',
     }
     include base::firewall
 }
 
 # External Storage, Shard 3 (es3) databases
 
+## eqiad servers
 # temporary extra role for rolling restart
 node /^es101[4]\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
@@ -918,9 +927,12 @@ node /^es101[79]\.eqiad\.wmnet/ {
     include base::firewall
 }
 
+## codfw servers
 node /es20(08|09|10)\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
-        shard => 'es3',
+        shard         => 'es3',
+        p_s           => 'on',
+        binlog_format => 'ROW',
     }
     include base::firewall
 }
