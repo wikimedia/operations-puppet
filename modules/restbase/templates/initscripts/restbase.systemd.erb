@@ -1,9 +1,0 @@
-[Unit]
-Description=REST storage API and backend orchestration layer
-After=network.target
-
-[Service]
-User=restbase
-Group=restbase
-LimitNOFILE=200000
-ExecStart=/usr/bin/nodejs /usr/lib/restbase/deploy/restbase/server.js -c /etc/restbase/config.yaml
