@@ -3,7 +3,7 @@ class role::labs::instance {
     include standard
     include base::labs
     include sudo
-    include base::instance-upstarts
+    include base::instance_upstarts
 
     sudo::group { 'ops':
         privileges => ['ALL=(ALL) NOPASSWD: ALL'],
