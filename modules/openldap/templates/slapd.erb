@@ -38,6 +38,7 @@ moduleload  memberof
 moduleload  syncprov
 moduleload  auditlog
 moduleload  ppolicy
+moduleload  deref
 
 # Maximum number of entries that is returned for a search operation
 <% if @size_limit then %>
@@ -79,6 +80,8 @@ rootdn              "cn=admin,<%= @suffix %>"
 
 overlay auditlog
 auditlog /var/lib/ldap/slapd-audit.log
+
+overlay deref
 
 #######################################################################
 ## Password policy (default is to store passwords in plaintext)
