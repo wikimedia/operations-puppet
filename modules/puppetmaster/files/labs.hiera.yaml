@@ -11,6 +11,7 @@
 :secret:
   :datadir: /etc/puppet/secret/hieradata
 :hierarchy:
+  - "labs/hosts/%{::hostname}"
   - "labs/%{::labsproject}/host/%{::hostname}"
   - "labs/%{::labsproject}/common"
   - "labs"
