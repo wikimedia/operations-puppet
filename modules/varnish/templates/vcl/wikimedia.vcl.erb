@@ -724,6 +724,14 @@ sub vcl_deliver {
 	call analytics_deliver;
 <% end -%>
 
+<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("enable_geoiplookup", false) -%>
+        // Perform GeoIP look-up and send the result as a session cookie
+        if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
+                && req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
+                call geoip_cookie;
+        }
+<% end -%>
+
 	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
 }
 
