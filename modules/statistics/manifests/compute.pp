@@ -94,8 +94,11 @@ class statistics::compute {
 
     # spell checker/dictionary packages for research (halfak)
     # T99030 - for machine learning and natural language processing
+    # T121011 - for vandalism detection
     ensure_packages([
         'enchant', # generic spell checking library (uses myspell as backend)
+        'aspell-id',   # Indonesian dictionary for GNU aspell
+        'hunspell-vi', # Vietnamese dictionary for hunspell
         'myspell-af', # Afrikaans dictionary for myspell
         'myspell-bg', # Bulgarian dictionary for myspell
         'myspell-ca', # Catalan dictionary for myspell
