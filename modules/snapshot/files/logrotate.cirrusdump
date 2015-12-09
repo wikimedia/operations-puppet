@@ -1,6 +1,6 @@
 # This file is managed by puppet
 
-/var/log/cirrusdump/*.log {{
+/var/log/cirrusdump/*.log {
     daily
     notifempty
     dateext
