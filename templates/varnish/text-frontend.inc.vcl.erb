@@ -3,6 +3,7 @@
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 include "zero.inc.vcl";
+include "geoip.inc.vcl";
 
 // Note that analytics.inc.vcl will set an X-Analytics value of proxy=IORG
 // without inspecting whether there's an existing proxy=<proxy> key-
@@ -58,6 +59,10 @@ sub vcl_recv {
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
 	// Disable Range requests for now.
 	unset req.http.Range;
+
+	if (req.url == "/geoiplookup" || req.http.host == "geoiplookup.wikimedia.org") {
+		error 668 "geoiplookup";
+	}
 
 	if (req.restarts == 0) {
 		// Always set or clear X-Subdomain
@@ -166,6 +171,14 @@ sub vcl_error {
 		}
 	}
 
+	// Support geoiplookup
+	if (obj.status == 668) {
+		call geoip_lookup;
+		set obj.status = 200;
+		set obj.http.Connection = "keep-alive";
+		return (deliver);
+	}
+
 	// Support mobile redirects
 	if (obj.status == 666) {
 		set obj.http.Location = req.http.Location;
@@ -200,11 +213,9 @@ sub vcl_deliver {
 		}
 	}
 
-<% if @vcl_config.fetch("enable_geoiplookup", false) -%>
 	// Perform GeoIP look-up and send the result as a session cookie
 	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
 		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
 		call geoip_cookie;
 	}
-<% end -%>
 }
