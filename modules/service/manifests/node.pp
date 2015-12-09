@@ -18,6 +18,11 @@
 #   node service configuration directives. If none is provided, we
 #   assume the config  can be built from a template in a standard location
 #
+# [*full_config*]
+#   Whether the full config has been provided by the caller. If set to true,
+#   no config merging will take place and the caller is required to supply the
+#   'config' parameter. Default: false
+#
 # [*no_workers*]
 #   Number of workers to start. Default: 'ncpu' (i.e. start as many workers as
 #   there are CPUs)
@@ -34,6 +39,18 @@
 # [*has_spec*]
 #   If the service specifies a swagger spec, use it to thoroughly
 #   monitor it
+#
+# [*repo*]
+#   The name of the repo to use for deployment. Default: ${title}/deploy
+#
+# [*firejail*]
+#   Whether to use firejail when starting the service. Default: true
+#
+# [*starter_script*]
+#   The script used for starting the service. Default: src/server.js
+#
+# [*local_logging*]
+#   Whether to store log entries on the target node as well. Default: true
 #
 # === Examples
 #
@@ -57,21 +74,37 @@
 #
 define service::node(
     $port,
-    $config = undef,
-    $no_workers = 'ncpu',
-    $no_file = 10000,
-    $healthcheck_url='/_info',
-    $has_spec = false,
-    $repo = "${title}/deploy",
-    ) {
+    $config          = undef,
+    $full_config     = false,
+    $no_workers      = 'ncpu',
+    $no_file         = 10000,
+    $healthcheck_url = '/_info',
+    $has_spec        = false,
+    $repo            = "${title}/deploy",
+    $firejail        = true,
+    $starter_script  = 'src/server.js',
+    $local_logging   = true,
+) {
     # Import all common configuration
     include service::configuration
 
+    # configuration management
     # load configuration; if none is provided, assume it's
     # in a standard location
     $local_config = $config ? {
         undef   => template("service/node/${title}_config.yaml.erb"),
         default => $config,
+    }
+    if $full_config {
+        unless $config and size($config) > 0 {
+            fail('A config needs to be specified when full_config == true!')
+        }
+        $complete_config = $config
+    } else {
+        $complete_config = merge_config(
+            template('service/node/config.yaml.erb'),
+            $local_config
+        )
     }
 
     # we do not allow empty names
@@ -122,9 +155,7 @@ define service::node(
 
     file { "/etc/${title}/config.yaml":
         ensure  => present,
-        content => merge_config(
-            template('service/node/config.yaml.erb'),
-            $local_config),
+        content => $complete_config,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -132,19 +163,20 @@ define service::node(
         tag     => "${title}::config",
     }
 
-    file { $local_logdir:
-        ensure => directory,
-        owner  => $title,
-        group  => 'root',
-        mode   => '0755',
-        before => Service[$title],
-    }
-
-    file { "/etc/logrotate.d/${title}":
-        content => template('service/logrotate.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+    if $local_logging {
+        file { $local_logdir:
+            ensure => directory,
+            owner  => $title,
+            group  => 'root',
+            mode   => '0755',
+            before => Service[$title],
+        }
+        file { "/etc/logrotate.d/${title}":
+            content => template('service/logrotate.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
     }
 
     # service init script and activation
@@ -153,11 +185,14 @@ define service::node(
         systemd        => true,
         upstart        => true,
         template_name  => 'node',
+        refresh        => false,
         service_params => {
             enable     => true,
             hasstatus  => true,
             hasrestart => true,
-        }
+        },
+        require        => [File["/etc/${title}/config.yaml"],
+                           Package[$repo]],
     }
 
     # Basic firewall
