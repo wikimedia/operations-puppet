@@ -1,0 +1,10 @@
+<% @host_names.each do |host_name| -%>
+    <VirtualHost <%= host_name %>>
+        ServerName <%= host_name %>
+        DocumentRoot <%= base_path %>/<%= host_name %>
+        <Directory <%= base_path %>/<%= host_name %>>
+            Order Deny,Allow
+            Allow from all
+        </Directory>
+    </VirtualHost>
+<% end -%>
