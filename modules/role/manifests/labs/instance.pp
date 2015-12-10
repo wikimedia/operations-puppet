@@ -33,7 +33,7 @@ class role::labs::instance {
     }
 
     # No NFS on labs metal for now.
-    if $::is_virtual {
+    if $::virtual == 'kvm' {
         # This script will block until the NFS volume is available
         file { '/usr/local/sbin/block-for-export':
             ensure => present,
