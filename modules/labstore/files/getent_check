@@ -1,0 +1,25 @@
+#! /bin/bash
+
+# Plant a sigalarm and catch it
+# for a hard timeout
+#
+sleep 1 && kill -14 $$ &
+trap timeout 14
+
+timeout() {
+    echo "CRITICAL: getent group tools.admin timed out (>1s)"
+    exit 2
+}
+
+/usr/bin/useldap /usr/bin/getent group tools.admin >/dev/null 2>&1
+rv=$?
+
+trap '' 14
+wait
+
+if [ $rv -ne 0 ]; then
+    echo "CRITICAL: getent group tools.admin failed"
+    exit 2
+fi
+echo "OK: getent group returns within a second"
+exit 0
