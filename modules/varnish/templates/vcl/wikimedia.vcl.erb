@@ -385,6 +385,11 @@ sub recv_fe_ip_processing {
 	unset req.http.X-Carrier;
 	unset req.http.X-Carrier-Meta;
 
+	// unset this one just because it's well-known and some default
+	// software configs may look at it, and an external client may spoof
+	// it. We don't set or use this header internally (we use X-Client-IP)
+	unset req.http.X-Real-IP;
+
 	if (client.ip !~ wikimedia_nets) {
 		// Ensure we only accept XFP from our own networks.  Ideally
 		// it should only be set by our nginx TLS terminator
