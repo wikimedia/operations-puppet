@@ -415,7 +415,7 @@ sub recv_fe_ip_processing {
 		// e.g.:
 		// "junk2, 123.123.123.123" -> "2, 123.123.123.123"
 		set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For,
-			"^.*?([0-9A-Fa-f:.]+(, [0-9A-Fa-f:.]+)*)? *$", "\1");
+			"^.*?([0-9A-Fa-f:.]+(, [0-9A-Fa-f:.]+)*)? ?$", "\1");
 	}
 
 	// There are two possible cases here: either nginx acted as our TLS
