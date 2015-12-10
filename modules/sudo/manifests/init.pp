@@ -1,12 +1,25 @@
 class sudo {
-    $package = $::realm ? {
-        'labs'  => 'sudo-ldap',
-        default => 'sudo',
+
+    if $::realm == labs {
+        $package = 'sudo-ldap'
+
+        # This hack is necessary because sudo-ldap can only be installed
+        #  if SUDO_FORCE_REMOVE is set.  Puppet doesn't allow passing
+        #  in an environment to a normal package resource.
+        exec {'install sudo-ldap':
+            command     => 'apt-get install sudo-ldap',
+            environment => 'SUDO_FORCE_REMOVE=yes',
+            subscribe   => Package[$package],
+            refreshonly => True,
+        }
+    } else {
+        $package = 'sudo'
     }
 
     package { $package:
         ensure => installed,
     }
+
 
     file { '/etc/sudoers':
         ensure  => present,
