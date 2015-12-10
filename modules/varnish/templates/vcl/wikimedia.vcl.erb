@@ -424,9 +424,8 @@ sub recv_fe_ip_processing {
 	// XRIP is not yet set and XFF is directly from external.
 	if (!req.http.X-Real-IP) {
 		// direct-to-port-80 case, set XRIP ourselves
-		set req.http.X-Real-IP = client.ip;
-		set req.http.X-Client-IP = req.http.X-Real-IP;
-		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Real-IP);
+		set req.http.X-Client-IP = client.ip;
+		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
 		// normalize to boolean post-netmapper (varnish-3.0.4...)
 		if (req.http.X-Trusted-Proxy == "") {
 			unset req.http.X-Trusted-Proxy;
@@ -440,7 +439,8 @@ sub recv_fe_ip_processing {
 		// least XRIP at the end, possibly prepended by other addrs
 		// set externally by some proxy.
 		set req.http.X-Client-IP = req.http.X-Real-IP;
-		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Real-IP);
+		unset req.http.X-Real-IP;
+		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
 		// normalize to boolean post-netmapper (varnish-3.0.4...)
 		if (req.http.X-Trusted-Proxy == "") {
 			unset req.http.X-Trusted-Proxy;
@@ -477,24 +477,14 @@ sub recv_fe_ip_processing {
 	}
 
 	// From this (very early) point forward, regardless of cache tier/layer:
-	// client.ip   ->
-	//     the network-level source address, hop-by-hop - could be an
-	//     internal address within our infrastructure as we traverse
-	//     various cache/proxy layers.
-	// req.http.X-Real-IP   ->
-	//     the network-level source address when this request first
-	//     entered our public traffic infrastructure at the edge, with no
-	//     other decoding.  Could still be a trusted external proxy.
-	// req.http.X-Trusted-Proxy ->
-	//     If X-Real-IP mapped to the address of a trusted proxy in our
-	//     "proxies" database (such as OperaMini), this will be the
-	//     official name of the trusted proxy.  Otherwise it will be unset
-	//     (boolean false).
 	// req.http.X-Client-IP ->
-	//     Iff XTP above is set, *and* the trusted-proxy-supplied X-F-F
-	//     had a legitimate-looking address at the end, X-Client-IP will
-	//     contain the claimed client IP directly behind the trusted
-	//     proxy.  Otherwise this will alias X-Real-IP.
+	//     This is our standard notion of the Client/UA's real IP, after
+	//     decoding XFF for our internal infrastructure addresses as well
+	//     as any trusted proxies.
+	// req.http.X-Trusted-Proxy ->
+	//     If the traffic pass through a trusted proxy in our "proxies"
+	//     database (such as OperaMini), this will be the official name of
+	//     the trusted proxy.  Otherwise it will be unset (boolean false).
 	// req.http.X-Carrier ->
 	//     If X-Client-IP matches a network in our "carriers" database,
 	//     this will contain the MCC-MNC code for that carrier.  Otherwise
