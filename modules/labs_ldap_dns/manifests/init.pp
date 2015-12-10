@@ -47,9 +47,10 @@ class labs_ldap_dns(
         ip_address => $dns_auth_ipaddress,
     }
     monitoring::service { 'auth dns':
-        host          => $dns_auth_soa_name,
-        description   => 'Auth DNS',
-        check_command => 'check_dns!nagiostest.beta.wmflabs.org',
+        host                 => $dns_auth_soa_name,
+        description          => 'Auth DNS',
+        check_command        => 'check_dns!nagiostest.beta.wmflabs.org',
+        retry_check_interval => 0,
+        retries              => 2,
     }
-
 }
