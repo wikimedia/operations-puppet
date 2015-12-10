@@ -357,6 +357,7 @@ class toollabs::exec_environ {
             'python-flake8',
             'python3-flake8',
             'tcl-thread',
+            'openjdk-8-jre-headless',      # T121020, from apt.wm.o, only available for trusty
             ]:
             ensure => latest,
         }
