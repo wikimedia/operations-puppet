@@ -874,7 +874,7 @@ node /es200[1234]\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard          => 'es1',
         p_s            => 'on',
-        binlog_format  => 'off',
+        binlog_format  => 'ROW',
     }
     include base::firewall
 }
