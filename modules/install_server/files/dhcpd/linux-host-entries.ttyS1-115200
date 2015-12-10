@@ -6075,6 +6075,16 @@ host rdb1004 {
 	fixed-address rdb1004.eqiad.wmnet;
 }
 
+host rdb1005 {
+        hardware ethernet 14:18:77:33:46:B1;
+        fixed-address rdb1005.eqiad.wmnet;
+}
+
+host rdb1006 {
+        hardware ethernet 14:18:77:33:3C:ED;
+        fixed-address rdb1006.eqiad.wmnet;
+}
+
 host rdb1007 {
 	hardware ethernet 84:2b:2b:77:2a:16;
 	fixed-address rdb1007.eqiad.wmnet;
