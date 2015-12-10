@@ -127,11 +127,6 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
-	if (req.url ~ "^/wiki/Special:CentralAutoLogin/") {
-		set req.backend = backend_random;
-		set req.hash_ignore_busy = true;
-	}
-
 	if (req.request != "GET" && req.request != "HEAD") {
 		return (pass);
 	}
