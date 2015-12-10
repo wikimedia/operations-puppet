@@ -146,6 +146,13 @@ host rutherfordium.eqiad.wmnet {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host technetium.eqiad.wmnet {
+	hardware ethernet aa:00:00:91:c6:9f;
+	fixed-address technetium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 # ganeti VM used for d-i testing
 host d-i-test {
 	hardware ethernet aa:00:00:3b:60:cb;
