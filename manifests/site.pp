@@ -2391,6 +2391,11 @@ node /(subra|suhail)\.codfw\.wmnet/ {
     include base::firewall
 }
 
+# T118763 (temporary in use)
+node 'technetium.eqiad.wmnet' {
+    role spare
+}
+
 # https://wikitech.wikimedia.org/wiki/Terbium
 node 'terbium.eqiad.wmnet' {
     role mariadb::maintenance, mediawiki::maintenance, backup::host
