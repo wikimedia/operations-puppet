@@ -50,7 +50,7 @@ class labs_ldap_dns(
         host                 => $dns_auth_soa_name,
         description          => 'Auth DNS',
         check_command        => 'check_dns!nagiostest.beta.wmflabs.org',
-        retry_check_interval => 0,
+        retry_check_interval => 1,
         retries              => 2,
     }
 }
