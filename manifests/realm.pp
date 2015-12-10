@@ -21,6 +21,16 @@ if $::realm == 'labs' {
     if $::projectgroup == undef {
         $projectgroup = "project-${labsproject}"
     }
+
+    if $::labsprojectfrommetadata == undef {
+        # If we are in $::realm labs and don't have a metadata service,
+        #  we're probably on a bare-metal instance.
+        # This is stupid, but facter is broken and sets $::is_virtual
+        #  incorrectly so this is my best bet about how to decide this.
+        $is_labs_baremetal = true
+    } else {
+        $is_labs_baremetal = false
+    }
 }
 
 
