@@ -379,10 +379,9 @@ sub vcl_recv_purge {
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
 // and should be guarded against running on request restarts.
 sub recv_fe_ip_processing {
-	// this subroutine "owns" these 4 headers - nothing else in our VCL or
+	// this subroutine "owns" these 3 headers - nothing else in our VCL or
 	// anywhere in our network should be setting them.
 	unset req.http.X-Trusted-Proxy;
-	unset req.http.X-Client-IP;
 	unset req.http.X-Carrier;
 	unset req.http.X-Carrier-Meta;
 
@@ -398,7 +397,7 @@ sub recv_fe_ip_processing {
 	if (client.ip !~ local_host) {
 		// only the local nginx TLS terminator should set this one at
 		// all - there are no other internal exceptions to that rule
-		unset req.http.X-Real-IP;
+		unset req.http.X-Client-IP;
 	}
 
 	if (req.http.X-Forwarded-For) {
@@ -419,11 +418,11 @@ sub recv_fe_ip_processing {
 	}
 
 	// There are two possible cases here: either nginx acted as our TLS
-	// proxy and already set X-Real-IP (as well as appended the same value
-	// as XFF), or the traffic was direct to varnish-fe, in which case
-	// XRIP is not yet set and XFF is directly from external.
-	if (!req.http.X-Real-IP) {
-		// direct-to-port-80 case, set XRIP ourselves
+	// proxy and already set X-Client-IP (as well as appended the same value
+	// to XFF), or the traffic was direct to varnish-fe, in which case
+	// XCIP is not yet set and XFF is directly from external.
+	if (!req.http.X-Client-IP) {
+		// direct-to-port-80 case, set XCIP ourselves
 		set req.http.X-Client-IP = client.ip;
 		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
 		// normalize to boolean post-netmapper (varnish-3.0.4...)
@@ -435,11 +434,9 @@ sub recv_fe_ip_processing {
 			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, "^([^,]+, )+", "");
 		}
 	} else {
-		// XRIP from nginx, XFF set/appended by nginx and contains at
-		// least XRIP at the end, possibly prepended by other addrs
+		// XCIP from nginx, XFF set/appended by nginx and contains at
+		// least XCIP at the end, possibly prepended by other addrs
 		// set externally by some proxy.
-		set req.http.X-Client-IP = req.http.X-Real-IP;
-		unset req.http.X-Real-IP;
 		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
 		// normalize to boolean post-netmapper (varnish-3.0.4...)
 		if (req.http.X-Trusted-Proxy == "") {
@@ -449,9 +446,8 @@ sub recv_fe_ip_processing {
 			// We want the second-to-last XFF entry here, assuming
 			// there's two or more IPs.  Note that with the
 			// regsub's below if there was only one (which would
-			// alias XRIP by definition), there would be no commas
-			// to match, so this would set XCIP = XRIP, which is
-			// the desirable/default state.
+			// alias XCIP by definition), there would be no commas
+			// to match and XCIP gets reset to its original value.
 			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
 			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^([^,]+, )+", "");
 		}
