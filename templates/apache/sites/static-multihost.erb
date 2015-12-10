@@ -1,0 +1,15 @@
+<% @host_names.each do |host_name| -%>
+    <VirtualHost *:80>
+        ServerName <%= host_name %>
+        DocumentRoot <%= base_path %>/<%= host_name %>
+        <Directory <%= base_path %>/<%= host_name %>>
+            <IfVersion >= 2.4>
+                Require all granted
+            </IfVersion>
+            <IfVersion < 2.4>
+                Order Deny,Allow
+                Allow from all
+            </IfVersion>
+        </Directory>
+    </VirtualHost>
+<% end -%>
