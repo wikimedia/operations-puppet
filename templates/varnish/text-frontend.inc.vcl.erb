@@ -200,15 +200,9 @@ sub vcl_deliver {
 	// on our URL routing schemes.
 	// NOTE: Only apply to pages. Don't steal cachability of api.php, load.php, etc. (T102898, T113007)
 
-	if (!req.http.X-Subdomain) {
-		if (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/\?title=") {
-			// ...but exempt CentralNotice banner special pages
-			if (req.url !~ "^/wiki/Special\:Banner") {
-				set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
-			}
-		}
-	} else {
-		if ((req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php") && resp.http.Cache-Control ~ "s-maxage=[1-9]") {
+	if (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/\?title=") {
+		// ...but exempt CentralNotice banner special pages
+		if (req.url !~ "^/wiki/Special\:Banner") {
 			set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
 		}
 	}
