@@ -32,128 +32,130 @@ class role::labs::instance {
         ensure => present,
     }
 
-    # This script will block until the NFS volume is available
-    file { '/usr/local/sbin/block-for-export':
-        ensure => present,
-        owner  => root,
-        mode   => '0555',
-        source => 'puppet:///files/nfs/block-for-export',
-    }
-
-    $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,lookupcache=none,nofsc'
-    $nfs_server = 'labstore.svc.eqiad.wmnet'
-    $dumps_server = 'labstore1003.eqiad.wmnet'
-
-    # Allows per-host overriding of NFS mounts
-    $mount_nfs = hiera('mount_nfs', true)
-
-    if mount_nfs_volume($::labsproject, 'home') and $mount_nfs {
-        # Note that this is the same export as for /data/project
-        exec { 'block-for-home-export':
-            command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::labsproject} 180",
-            require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
-            unless  => '/bin/mountpoint -q /home',
+    # No NFS on labs metal for now.
+    if $::is_virtual {
+        # This script will block until the NFS volume is available
+        file { '/usr/local/sbin/block-for-export':
+            ensure => present,
+            owner  => root,
+            mode   => '0555',
+            source => 'puppet:///files/nfs/block-for-export',
         }
 
-        mount { '/home':
-            ensure  => mounted,
-            atboot  => true,
-            fstype  => 'nfs',
-            options => "rw,${nfs_opts}",
-            device  => "${nfs_server}:/project/${labsproject}/home",
-            require => [File['/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-home-export']],
-        }
-    }
+        $nfs_opts = 'vers=4,bg,hard,intr,sec=sys,proto=tcp,port=0,noatime,lookupcache=none,nofsc'
+        $nfs_server = 'labstore.svc.eqiad.wmnet'
+        $dumps_server = 'labstore1003.eqiad.wmnet'
 
-    if mount_nfs_volume($::labsproject, 'project') or mount_nfs_volume($::labsproject, 'scratch') {
-        # Directory for data mounts
-        file { '/data':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-    }
+        # Allows per-host overriding of NFS mounts
+        $mount_nfs = hiera('mount_nfs', true)
 
-    if mount_nfs_volume($::labsproject, 'project') and $mount_nfs {
-        exec { 'block-for-project-export':
-            command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::labsproject} 180",
-            require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
-            unless  => '/bin/mountpoint -q /data/project',
+        if mount_nfs_volume($::labsproject, 'home') and $mount_nfs {
+            # Note that this is the same export as for /data/project
+            exec { 'block-for-home-export':
+                command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::labsproject} 180",
+                require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
+                unless  => '/bin/mountpoint -q /home',
+            }
+
+            mount { '/home':
+                ensure  => mounted,
+                atboot  => true,
+                fstype  => 'nfs',
+                options => "rw,${nfs_opts}",
+                device  => "${nfs_server}:/project/${labsproject}/home",
+                require => [File['/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-home-export']],
+            }
         }
 
-        file { '/data/project':
-            ensure  => directory,
-            require => File['/data'],
+        if mount_nfs_volume($::labsproject, 'project') or mount_nfs_volume($::labsproject, 'scratch') {
+            # Directory for data mounts
+            file { '/data':
+                ensure => directory,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0755',
+            }
         }
 
-        mount { '/data/project':
-            ensure  => mounted,
-            atboot  => true,
-            fstype  => 'nfs',
-            options => "rw,${nfs_opts}",
-            device  => "${nfs_server}:/project/${labsproject}/project",
-            require => [File['/data/project', '/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-project-export']],
-        }
-    }
+        if mount_nfs_volume($::labsproject, 'project') and $mount_nfs {
+            exec { 'block-for-project-export':
+                command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::labsproject} 180",
+                require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
+                unless  => '/bin/mountpoint -q /data/project',
+            }
 
-    if mount_nfs_volume($::labsproject, 'scratch') and $mount_nfs {
-        # We don't need to block for this one because it's always exported for everyone.
-        file { '/data/scratch':
-            ensure  => directory,
-            require => File['/data'],
-        }
+            file { '/data/project':
+                ensure  => directory,
+                require => File['/data'],
+            }
 
-        mount { '/data/scratch':
-            ensure  => mounted,
-            atboot  => true,
-            fstype  => 'nfs',
-            options => "rw,${nfs_opts}",
-            device  => "${nfs_server}:/scratch",
-            require => File['/data/scratch', '/etc/modprobe.d/nfs-no-idmap'],
-        }
-    }
-
-    if mount_nfs_volume($::labsproject, 'dumps') or mount_nfs_volume($::labsproject, 'statistics') {
-        # Directory for public (readonly) mounts
-        file { '/public':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
+            mount { '/data/project':
+                ensure  => mounted,
+                atboot  => true,
+                fstype  => 'nfs',
+                options => "rw,${nfs_opts}",
+                device  => "${nfs_server}:/project/${labsproject}/project",
+                require => [File['/data/project', '/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-project-export']],
+            }
         }
 
-    }
+        if mount_nfs_volume($::labsproject, 'scratch') and $mount_nfs {
+            # We don't need to block for this one because it's always exported for everyone.
+            file { '/data/scratch':
+                ensure  => directory,
+                require => File['/data'],
+            }
 
-    if mount_nfs_volume($::labsproject, 'statistics') and $mount_nfs {
-        file { '/public/statistics':
-            ensure  => directory,
-            require => File['/public'],
+            mount { '/data/scratch':
+                ensure  => mounted,
+                atboot  => true,
+                fstype  => 'nfs',
+                options => "rw,${nfs_opts}",
+                device  => "${nfs_server}:/scratch",
+                require => File['/data/scratch', '/etc/modprobe.d/nfs-no-idmap'],
+            }
         }
 
-        mount { '/public/statistics':
-            ensure  => mounted,
-            atboot  => true,
-            fstype  => 'nfs',
-            options => "ro,${nfs_opts}",
-            device  => "${dumps_server}:/statistics",
-            require => File['/public/statistics', '/etc/modprobe.d/nfs-no-idmap'],
-        }
-    }
-
-    if mount_nfs_volume($::labsproject, 'dumps') and $mount_nfs {
-        file { '/public/dumps':
-            ensure  => directory,
-            require => File['/public'],
+        if mount_nfs_volume($::labsproject, 'dumps') or mount_nfs_volume($::labsproject, 'statistics') {
+            # Directory for public (readonly) mounts
+            file { '/public':
+                ensure => directory,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0755',
+            }
         }
 
-        mount { '/public/dumps':
-            ensure  => mounted,
-            atboot  => true,
-            fstype  => 'nfs',
-            options => "ro,${nfs_opts}",
-            device  => "${dumps_server}:/dumps",
-            require => File['/public/dumps', '/etc/modprobe.d/nfs-no-idmap'],
+        if mount_nfs_volume($::labsproject, 'statistics') and $mount_nfs {
+            file { '/public/statistics':
+                ensure  => directory,
+                require => File['/public'],
+            }
+
+            mount { '/public/statistics':
+                ensure  => mounted,
+                atboot  => true,
+                fstype  => 'nfs',
+                options => "ro,${nfs_opts}",
+                device  => "${dumps_server}:/statistics",
+                require => File['/public/statistics', '/etc/modprobe.d/nfs-no-idmap'],
+            }
+        }
+
+        if mount_nfs_volume($::labsproject, 'dumps') and $mount_nfs {
+            file { '/public/dumps':
+                ensure  => directory,
+                require => File['/public'],
+            }
+
+            mount { '/public/dumps':
+                ensure  => mounted,
+                atboot  => true,
+                fstype  => 'nfs',
+                options => "ro,${nfs_opts}",
+                device  => "${dumps_server}:/dumps",
+                require => File['/public/dumps', '/etc/modprobe.d/nfs-no-idmap'],
+            }
         }
     }
 
