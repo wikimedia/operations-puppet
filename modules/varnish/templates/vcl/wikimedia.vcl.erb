@@ -420,6 +420,12 @@ sub recv_fe_ip_processing {
 		// "junk2, 123.123.123.123" -> "2, 123.123.123.123"
 		set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For,
 			"^.*?([0-9A-Fa-f:.]+(, [0-9A-Fa-f:.]+)*)? ?$", "\1");
+
+		// Clear header if empty after all the above, to avoid messing
+		// up our normal XFF-append code later
+		if (req.http.X-Forwarded-For == "") {
+			unset req.http.X-Forwarded-For;
+		}
 	}
 
 	// There are two possible cases here: either nginx acted as our TLS
