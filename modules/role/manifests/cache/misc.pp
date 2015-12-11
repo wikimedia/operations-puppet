@@ -269,7 +269,7 @@ class role::cache::misc {
             'backend_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
-                'backends' => $site_cluster_nodes,
+                'backends' => $cluster_nodes['eqiad'],
                 'service'  => 'varnish-be-rand',
             },
         },
