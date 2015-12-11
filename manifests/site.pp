@@ -527,7 +527,9 @@ node /^db20(16|34|42|48|55|62|69|70)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
-        shard => 's1',
+        shard         => 's1',
+        p_s           => 'on',
+        binlog_format => 'ROW',
     }
     include base::firewall
 }
