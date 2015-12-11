@@ -270,7 +270,7 @@ lvs_services:
         timeout-clean-reconnect: 3
         max-delay: 300
     conftool:
-      cluster: cache_mobile
+      cluster: cache_text
       service: varnish-fe
     icinga:
       uri: en.m.wikipedia.org!/wiki/Special:BlankPage
@@ -304,7 +304,7 @@ lvs_services:
         timeout-clean-reconnect: 3
         max-delay: 300
     conftool:
-      cluster: cache_mobile
+      cluster: cache_text
       service: nginx
   dns_rec_udp:
     description: Recursive DNS - UDP
