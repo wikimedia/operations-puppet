@@ -10,6 +10,13 @@ host bromine {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host cygnus.codfw.wmnet {
+	hardware ethernet aa:00:00:54:85:16;
+	fixed-address cygnus.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host dubnium {
 	hardware ethernet aa:00:00:2f:d8:57;
 	fixed-address dubnium.wikimedia.org;
