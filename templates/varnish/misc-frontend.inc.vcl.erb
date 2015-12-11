@@ -28,9 +28,24 @@ sub vcl_recv {
         }
     }
 
+    // Allow etherpad to use websockets. To achieve this, look into the Upgrade header
+    // and use pipe should it be contain the websocket string (case insensitive)
+    if (req.http.Host == "etherpad.wikimedia.org") {
+	if (req.http.Upgrade ~ "(?i)websocket") {
+		return(pipe);
+	}
+    }
+
     call misc_recv_pass;
 
     return (lookup);
+}
+
+sub vcl_pipe {
+    if (req.http.Upgrade) {
+        set bereq.http.Upgrade = req.http.Upgrade;
+        set bereq.http.Connection = req.http.Connection + ", close"
+    }
 }
 
 sub vcl_error {
