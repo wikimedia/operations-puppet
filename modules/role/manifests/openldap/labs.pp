@@ -41,4 +41,15 @@ class role::openldap::labs {
         check_command => 'check_ldap!dc=wikimedia,dc=org',
         critical      => false,
     }
+
+    # Diamond config
+    package { 'python-ldap':
+        ensure => installed,
+    }
+    diamond::collector { 'OpenLDAP':
+        settings => {
+            'username' => 'cn=diamond,dc=wikimedia,dc=org',
+            'password' => $passwords::openldap::labs::diamond_pass,
+        }
+    }
 }

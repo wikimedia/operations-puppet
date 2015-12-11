@@ -69,6 +69,7 @@ rootdn          "cn=admin,<%= @suffix %>"
 
 access to dn="cn=monitor"
 	by dn="cn=admin,<%= @suffix %>" write
+	by dn="cn=diamond,<%= @suffix %>" read
 	by self write
 	by * none
 
