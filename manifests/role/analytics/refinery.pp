@@ -201,7 +201,7 @@ class role::analytics::refinery::data::check::email {
     # I am not sure why this is not working.
     $hdfs_mount_point = '/mnt/hdfs'
 
-    $mail_to = 'otto@wikimedia.org,joal@wikimedia.org,nuria@wikimedia.org,mviswanathan@wikimedia.org,dandreescu@wikimedia.org,mforns@wikimedia.org'
+    $mail_to = 'analytics-alerts@wikimedia.org'
 
     # Since the 'stats' user is not in ldap, it is unnecessarily hard
     # to grant it access to the private data in hdfs. As discussed in
