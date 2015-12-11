@@ -16,4 +16,10 @@ class ganglia::monitor {
         cname            => $cname,
         aggregator_hosts => $aggregator_hosts,
     }
+
+    # export ganglia::cluster resource to expose cluster -> hosts mapping
+    @@ganglia::cluster { $::fqdn:
+        cluster => $cluster,
+        site    => $site,
+    }
 }
