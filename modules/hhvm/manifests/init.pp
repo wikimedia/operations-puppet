@@ -270,7 +270,7 @@ class hhvm(
         before => Service['hhvm'],
     }
 
-    file { [ '/run/hhvm', '/var/cache/hhvm' ]:
+    file { [ '/run/hhvm', '/var/cache/hhvm', '/tmp/heaps' ]:
         ensure => directory,
         owner  => $user,
         group  => $group,

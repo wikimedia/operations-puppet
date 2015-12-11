@@ -3,7 +3,7 @@
 # Debugging symbols and tools for HHVM and related software.
 #
 class hhvm::debug {
-    require ::hhvm
+
     ## Debugging symbols
 
     package { [
@@ -127,12 +127,5 @@ class hhvm::debug {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-    }
-
-    file { '/tmp/heaps':
-        ensure => directory,
-        owner  => $::hhvm::user,
-        group  => $::hhvm::group,
-        mode   => '0775',
     }
 }
