@@ -16,13 +16,13 @@ sub vcl_recv {
 		set req.backend = api;
 	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
 		set req.backend = rendering;
-	} else if (req.url ~ "^/api/rest_v1/") {
+	}
+		
+	if (req.url ~ "^/api/rest_v1/") {
 		set req.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
 		set req.backend = restbase_backend;
-	}
-
-
-	if (req.http.X-Wikimedia-Debug == "1") {
+	} else if (req.http.X-Wikimedia-Debug == "1") {
+		// Note: Make sure only MW core traffic is sent to this backend.
 		set req.backend = test_wikipedia;
 	}
 
