@@ -217,7 +217,7 @@ sub https_recv_redirect {
 		if (req.request == "GET" || req.request == "HEAD") {
 			// This is all of our unified cert wildcard domains which are TLS-clean (cert matches all extant hostnames within)
 			// The lone exception now is wikimedia.org, in the next block
-			if (req.http.Host ~ "(?i)(^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org$") {
+			if (req.http.Host ~ "(?i)((^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org|^w\.wiki)$") {
 				set req.http.Location = "https://" + req.http.Host + req.url;
 				error 751 "TLS Redirect";
 			}
@@ -254,7 +254,7 @@ sub https_deliver_hsts {
 	// successfully reached us over HTTPS for the given domainname.
 	if (req.http.X-Forwarded-Proto == "https") {
 		// This is the same regex as the first one in https_recv_redirect (all unified except wikimedia.org)
-		if (req.http.Host ~ "(?i)(^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org$") {
+		if (req.http.Host ~ "(?i)((^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org|^w\.wiki)$") {
 			set resp.http.Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload";
 		}
 		else {
