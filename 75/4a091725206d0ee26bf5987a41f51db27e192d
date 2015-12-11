@@ -1,0 +1,8 @@
+Code-Review+1: Yurik <yurik@wikimedia.org>
+Code-Review+2: BBlack <bblack@wikimedia.org>
+Verified+2: BBlack <bblack@wikimedia.org>
+Submitted-by: BBlack <bblack@wikimedia.org>
+Submitted-at: Fri, 11 Dec 2015 21:25:49 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/258498
+Project: operations/puppet
+Branch: refs/heads/production
