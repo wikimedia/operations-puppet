@@ -10,7 +10,10 @@ class role::cache::text {
     include role::cache::2layer
 
     class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips['text'][$::site],
+        realserver_ips => merge(
+            $lvs::configuration::service_ips['text'][$::site],
+            $lvs::configuration::service_ips['mobile'][$::site]
+        )
     }
 
     $cluster_nodes = hiera('cache::text::nodes')
