@@ -41,4 +41,14 @@ class role::openldap::corp {
         check_command => 'check_ldap!dc=corp,dc=wikimedia,dc=org',
         critical      => true,
     }
+
+    # NOTE: username is in double quotes cause otherwise it get's auto split
+    # into array hence the nested quoting
+    diamond::collector { 'OpenLDAP':
+        settings => {
+            'host'     => "ldap-corp.${::site}.wikimedia.org",
+            'username' => '"cn=monitor,dc=corp,dc=wikimedia,dc=org"',
+            'password' => $passwords::openldap::corp::monitor_pass,
+        }
+    }
 }
