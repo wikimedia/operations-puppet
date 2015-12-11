@@ -159,9 +159,6 @@ class role::labs::openstack::nova::controller {
         wikitech_ssh_public => {
             rule  => 'saddr (0.0.0.0/0) proto tcp dport (ssh) ACCEPT;',
         },
-        http_public => {
-            rule  => 'saddr (0.0.0.0/0) proto tcp dport (http https) ACCEPT;',
-        },
         dns_public => {
             rule  => 'saddr (0.0.0.0/0) proto (udp tcp) dport 53 ACCEPT;',
         },
