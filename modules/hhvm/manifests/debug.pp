@@ -131,8 +131,8 @@ class hhvm::debug {
 
     file { '/tmp/heaps':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'www-data',
+        group  => 'www-data',
         mode   => '0775',
     }
 }
