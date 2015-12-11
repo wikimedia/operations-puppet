@@ -1,10 +1,9 @@
 [remote "origin"]
-    fetch = +refs/changes/*:refs/changes/*
-    fetch = +refs/meta/*:refs/meta/*
+    fetch = +refs/changes/*:refs/remotes/origin/*
+    fetch = +refs/meta/*:refs/remotes/origin/*
 
+[http "https://gerrit.wikimedia.org"]
+    proxy = https://gerrit.wikimedia.org:443
 
 [http "https://github.com"]
     proxy = http://url-downloader.wikimedia.org:8080
-
-[http "https://gerrit.wikimedia.org"]
-    proxy =
