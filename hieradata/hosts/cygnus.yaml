@@ -1,0 +1,3 @@
+admin::groups:
+  - pentesters
+cluster: misc
