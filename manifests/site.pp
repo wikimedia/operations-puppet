@@ -433,6 +433,11 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
     role cache::mobile, ipsec
 }
 
+# T118763 (temporary in use)
+node 'cygnus.codfw.wmnet' {
+    role spare
+}
+
 node 'dataset1001.wikimedia.org' {
 
     role dataset::primary, dumps
