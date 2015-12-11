@@ -67,7 +67,7 @@ sub vcl_recv {
 	if (req.restarts == 0) {
 		// Always set or clear X-Subdomain
 		unset req.http.X-Subdomain;
-		if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?zero\.") {
+		if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?zero\." && req.http.host != "zero.wikimedia.org") {
 			set req.http.X-Subdomain = "ZERO";
 		} else if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?m\.") {
 			set req.http.X-Subdomain = "M";
