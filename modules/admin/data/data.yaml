@@ -436,6 +436,10 @@ groups:
     description: Group of users for the Analytics Query Service
     gid: 767
     members: [nuria, mforns, madhuvishy]
+  pentesters:
+    description: Group of users running penetration tests
+    gid: 768
+    members: []
 users:
   rush:
     ensure: present
