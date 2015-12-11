@@ -41,4 +41,11 @@ class role::openldap::corp {
         check_command => 'check_ldap!dc=corp,dc=wikimedia,dc=org',
         critical      => true,
     }
+
+    diamond::collector { 'OpenLDAP':
+        settings => {
+            'username' => 'cn=monitor,dc=corp,dc=wikimedia,dc=org',
+            'password' => $passwords::openldap::corp::monitor_pass,
+        }
+    }
 }
