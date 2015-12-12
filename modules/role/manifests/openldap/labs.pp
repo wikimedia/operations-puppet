@@ -41,4 +41,13 @@ class role::openldap::labs {
         check_command => 'check_ldap!dc=wikimedia,dc=org',
         critical      => false,
     }
+
+    $monitor_pass = $passwords::openldap::labs::monitor_pass
+    diamond::collector { 'OpenLDAP':
+        settings => {
+            host     => "ldap-labs.${::site}.wikimedia.org",
+            username => '"cn=monitor,dc=wikimedia,dc=org"',
+            password => $monitor_pass,
+        },
+    }
 }

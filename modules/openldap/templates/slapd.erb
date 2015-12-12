@@ -69,8 +69,9 @@ TLSCertificateKeyFile <%= @key %>
 database        monitor
 rootdn          "cn=admin,<%= @suffix %>"
 
-access to dn="cn=monitor"
+access to dn.subtree="cn=monitor"
 	by dn="cn=admin,<%= @suffix %>" write
+	by dn="cn=monitor,<%= @suffix %>" read
 	by self write
 	by * none
 
