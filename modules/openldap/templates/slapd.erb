@@ -47,7 +47,9 @@ sizelimit <%= @size_limit %>
 sizelimit 2048
 <% end %>
 
-
+# 10 minute idle timeout for ill-behaved clients
+idletimeout 600
+writetimeout 30
 
 # Limit amount of cpu's that is used for indexing.
 tool-threads 1
