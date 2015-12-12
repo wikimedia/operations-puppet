@@ -66,7 +66,7 @@ define redis::instance(
         logfile    => "/var/log/redis/${instance_name}.log",
         port       => $port,
         unixsocket => $unixsocket,
-        daemonize  => false,
+        daemonize  => true,
     }
 
     file { "/etc/redis/${instance_name}.conf":
