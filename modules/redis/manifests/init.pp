@@ -7,8 +7,10 @@ class redis {
     require_package('redis-server')
 
     file { '/srv/redis':
-        owner => 'redis',
-        group => 'redis',
-        mode  => '0755',
+        ensure => directory,
+        owner  => 'redis',
+        group  => 'redis',
+        mode   => '0755',
+        before => Redis::Instance <| |>,
     }
 }
