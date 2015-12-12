@@ -87,7 +87,7 @@ class User:
             search_string = member.replace(',ou=people,dc=wikimedia,dc=org', '')
             conn.search(
                 'ou=people,dc=wikimedia,dc=org',
-                '(%s)'% search_string,
+                '(%s)' % search_string,
                 ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
                 attributes=['uidNumber', 'cn']
             )
@@ -186,7 +186,7 @@ if __name__ == '__main__':
     argparser.add_argument('--project', help='Project name to create db users for',
                            default='tools')
     argparser.add_argument('--delay', help='Number of seconds to wait between runs',
-                           default=60)
+                           default=120)
     args = argparser.parse_args()
 
     logging.basicConfig(format='%(message)s',
@@ -195,13 +195,6 @@ if __name__ == '__main__':
     with open(args.config) as f:
         config = yaml.safe_load(f)
 
-    server = ldap3.Server(config['ldap']['host'])
-    conn = ldap3.Connection(
-        server, read_only=True,
-        user=config['ldap']['username'],
-        auto_bind=True,
-        password=config['ldap']['password'])
-
     cgen = CredentialCreator(
         config['mysql']['hosts'],
         config['mysql']['username'],
@@ -209,20 +202,28 @@ if __name__ == '__main__':
     )
 
     while True:
-        logging.info('Starting createdb-users run')
-        users = User.from_ldap_users(conn, args.project)
-        servicegroups = User.from_ldap_servicegroups(conn, args.project)
-        all_users = users + servicegroups
-        for u in all_users:
-            replica_path = os.path.join(u.homedir, 'replica.my.cnf')
-            if os.path.exists(u.homedir) and not os.path.exists(replica_path):
-                if not cgen.check_user_exists(u):
-                    # No replica.my.cnf and no user in db
-                    # Generate new creds and put them in there!
-                    logging.info('Creating DB accounts for %s with db username %s', u.name, u.db_username)
-                    cgen.write_credentials_file(replica_path, u)
-                    logging.info("Created replica.my.cnf for %s, with username %s", u.name, u.db_username)
-                else:
-                    logging.info('Missing replica.my.cnf for user %s despite grants present in db', u.name)
-        logging.info('Completed createdb-users run')
+        server = ldap3.Server(config['ldap']['host'])
+        with ldap3.Connection(
+            server, read_only=True,
+            user=config['ldap']['username'],
+            auto_bind=True,
+            password=config['ldap']['password']
+        ) as conn:
+
+            logging.info('Starting createdb-users run')
+            users = User.from_ldap_users(conn, args.project)
+            servicegroups = User.from_ldap_servicegroups(conn, args.project)
+            all_users = users + servicegroups
+            for u in all_users:
+                replica_path = os.path.join(u.homedir, 'replica.my.cnf')
+                if os.path.exists(u.homedir) and not os.path.exists(replica_path):
+                    if not cgen.check_user_exists(u):
+                        # No replica.my.cnf and no user in db
+                        # Generate new creds and put them in there!
+                        logging.info('Creating DB accounts for %s with db username %s', u.name, u.db_username)
+                        cgen.write_credentials_file(replica_path, u)
+                        logging.info("Created replica.my.cnf for %s, with username %s", u.name, u.db_username)
+                    else:
+                        logging.info('Missing replica.my.cnf for user %s despite grants present in db', u.name)
+            logging.info('Completed createdb-users run')
         time.sleep(args.delay)
