@@ -64,7 +64,7 @@ define diamond::collector(
 ) {
     validate_ensure($ensure)
 
-    include ::diamond
+    require ::diamond
 
     $collector = regsubst($name, '(Collector)?$', 'Collector')
 
