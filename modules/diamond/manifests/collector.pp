@@ -78,18 +78,20 @@ define diamond::collector(
     # Install a custom diamond collector if $source or $content were provided.
     if $source or $content {
         file { "/usr/share/diamond/collectors/${name}":
-            ensure => ensure_directory($ensure),
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-            force  => true,
+            ensure  => ensure_directory($ensure),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            force   => true,
+            require => Package['python-diamond'],
         }
         file { "/usr/share/diamond/collectors/${name}/${name}.py":
-            ensure => $ensure,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            notify => Service['diamond'],
+            ensure  => $ensure,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            notify  => Service['diamond'],
+            require => Package['python-diamond'],
         }
         if $source {
             File["/usr/share/diamond/collectors/${name}/${name}.py"] {
