@@ -70,8 +70,8 @@ module Puppet::Parser::Functions
   # 0) Kx:   (EC)DHE > RSA    (Forward Secrecy)
   # 1) Mac:  AEAD > ALL       (GCM > CBC)
   # 2) Kx:   ECDHE > DHE      (Server Perf, may help with DH>1024 compat)
-  # 3) Enc:  AES128 > AES256  (>CAMELLIA128 > CAMELLIA256)
-  # 4) Mac:  SHA-2 > SHA-1
+  # 3) Mac:  SHA-2 > SHA-1
+  # 4) Enc:  AES128 > AES256  (>CAMELLIA128 > CAMELLIA256)
   # 5) Auth: ECDSA > RSA      (Server Performance)
   basic = {
     # Forward-Secret + AEAD
@@ -88,17 +88,17 @@ module Puppet::Parser::Functions
     'mid' => [
       'ECDHE-ECDSA-AES128-SHA256',
       'ECDHE-RSA-AES128-SHA256',
-      'ECDHE-ECDSA-AES128-SHA',
-      'ECDHE-RSA-AES128-SHA',
       'ECDHE-ECDSA-AES256-SHA384',
       'ECDHE-RSA-AES256-SHA384',
+      'ECDHE-ECDSA-AES128-SHA',
+      'ECDHE-RSA-AES128-SHA',
       'ECDHE-ECDSA-AES256-SHA',
       'ECDHE-RSA-AES256-SHA',
       'ECDHE-ECDSA-DES-CBC3-SHA',
       'ECDHE-RSA-DES-CBC3-SHA',
       'DHE-RSA-AES128-SHA256',
-      'DHE-RSA-AES128-SHA',
       'DHE-RSA-AES256-SHA256',
+      'DHE-RSA-AES128-SHA',
       'DHE-RSA-AES256-SHA',
       'DHE-RSA-CAMELLIA128-SHA',
       'DHE-RSA-CAMELLIA256-SHA',
@@ -115,8 +115,8 @@ module Puppet::Parser::Functions
       'AES128-GCM-SHA256', # AEAD, but not forward-secret
       'AES256-GCM-SHA384', # AEAD, but not forward-secret
       'AES128-SHA256',
-      'AES128-SHA',
       'AES256-SHA256',
+      'AES128-SHA',
       'AES256-SHA',
       'DES-CBC3-SHA', # Mostly IE7-8 on XP
     ],
