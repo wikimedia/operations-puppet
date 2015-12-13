@@ -11,10 +11,17 @@ class k8s::docker {
     }
 
     package { 'docker.io':
+        ensure  => absent,
+        require => Apt::Repository['docker'],
+    }
+
+    package { 'docker-engine':
         ensure  => present,
+        require => Package['docker.io'],
     }
 
     base::service_unit { 'docker':
-        systemd => true,
+        systemd   => true,
+        subscribe => Package['docker-engine'],
     }
 }
