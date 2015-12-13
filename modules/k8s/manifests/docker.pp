@@ -2,6 +2,14 @@
 #
 # Sets up docker as used by kubernetes
 class k8s::docker {
+    apt::repository { 'docker':
+        uri        => 'https://apt.dockerproject.org/repo',
+        dist       => $::lsbdistcodename,
+        components => 'main',
+        source     => false,
+        keyfile    => 'puppet:///modules/k8s/docker.gpg',
+    }
+
     package { 'docker.io':
         ensure  => present,
     }
