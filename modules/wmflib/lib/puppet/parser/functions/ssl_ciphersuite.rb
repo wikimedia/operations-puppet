@@ -79,9 +79,9 @@ module Puppet::Parser::Functions
       '-ALL',
       'ECDHE-ECDSA-AES128-GCM-SHA256',
       'ECDHE-RSA-AES128-GCM-SHA256',
-      'DHE-RSA-AES128-GCM-SHA256',
       'ECDHE-ECDSA-AES256-GCM-SHA384',
       'ECDHE-RSA-AES256-GCM-SHA384',
+      'DHE-RSA-AES128-GCM-SHA256',
       'DHE-RSA-AES256-GCM-SHA384',
     ],
     # Forward-Secret, but not AEAD
