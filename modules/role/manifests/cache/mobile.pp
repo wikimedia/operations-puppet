@@ -166,10 +166,6 @@ class role::cache::mobile {
         ]),
     }
 
-    # varnish::logging UDP based varnishncsa to be removed once
-    # all uses of udp2log are ported to Kafka.
-    include role::cache::logging
-
     # varnishkafka statsv listens for special stats related requests
     # and sends them to the 'statsv' topic in Kafka.
     # A kafka consumer then consumes these and emits
