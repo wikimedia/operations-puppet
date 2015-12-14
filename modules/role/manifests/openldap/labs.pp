@@ -50,4 +50,7 @@ class role::openldap::labs {
             password => $monitor_pass,
         },
     }
+
+    backup::set {'srv-ldap-backup': }
+
 }
