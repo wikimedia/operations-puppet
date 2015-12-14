@@ -71,11 +71,8 @@ class icinga {
         notify  => Service['icinga'],
     }
 
-    file { '/etc/icinga/contactgroups.cfg':
-        source  => 'puppet:///modules/icinga/contactgroups.cfg',
-        owner   => 'icinga',
-        group   => 'icinga',
-        mode    => '0644',
+    class { 'nagios_common::contactgroups':
+        source => 'puppet:///modules/nagios_common/contactgroups.cfg',
         require => Package['icinga'],
         notify  => Service['icinga'],
     }
