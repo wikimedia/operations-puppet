@@ -216,7 +216,7 @@ ganglia_clusters:
     sites:
       eqiad: []
   maps:
-    name: "maps Cluster"
+    name: "Maps Cluster"
     id: 50
     sites:
       codfw: []
