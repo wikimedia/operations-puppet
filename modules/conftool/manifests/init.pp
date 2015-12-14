@@ -7,8 +7,12 @@ class conftool(
     $config_file = 'puppet:///modules/conftool/production.config.yaml',
     $ssl_dir     = '/var/lib/puppet/ssl',
     $use_ssl     = true,
+    $auth        = true,
+    $password    = undef,
     ) {
     require_package 'python-conftool'
+
+    require ::etcd::client::globalconfig
 
     file { '/etc/conftool':
         ensure => directory,
@@ -25,4 +29,8 @@ class conftool(
         source => $config_file,
     }
 
+    if $auth {
+        # Install basic auth data
+        require etcd::auth::common
+    }
 }

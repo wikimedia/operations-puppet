@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+echo "Pooling <%= scope.lookupvar('fqdn') %>..."
+conftool --find set/pooled=yes '<%= scope.lookupvar('fqdn') %>'
