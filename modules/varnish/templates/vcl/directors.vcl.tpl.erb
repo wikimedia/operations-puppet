@@ -16,7 +16,7 @@ end
 director = @directors[director_name]
 if director['dynamic'] == 'yes' -%>
 director <%= director_name %> <%= director['type'] %> {
-<%- keyspace = "#{@keyspace_base}/#{director['service'] || @default_service}" -%>
+<%- keyspace = "#{@conftool_namespace}/#{director['dc'] || @def_dc}/#{@group}/#{director['service'] || @def_service}" -%>
 	<%- if director['type'] == 'chash' %>
 	.retries = <%= chash_def_retries(99, director['backends'].size) %>;
 	<% end -%>

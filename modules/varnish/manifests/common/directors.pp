@@ -22,7 +22,7 @@ define varnish::common::directors(
         fail("Invalid instance type ${instance}")
     }
 
-    $dc = $instance ? {
+    $def_dc = $instance ? {
         /frontend/ => $::site,
         default    => $::mw_primary,
     }
@@ -35,10 +35,9 @@ define varnish::common::directors(
 
     # usual old trick
     $group = hiera('cluster', $cluster)
-    $keyspace_base = "${conftool_namespace}/${dc}/${group}"
-    $default_service = 'varnish-be'
+    $def_service = 'varnish-be'
 
-    $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@keyspace_base}/#{v['service'] || @default_service}\" }.join('|') %>")
+    $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@conftool_namespace}/#{v['dc'] || @def_dc}/#{@group}/#{v['service'] || @def_service}\" }.join('|') %>")
     $keyspaces = sort(unique(split($keyspaces_str, '\|')))
     confd::file { "/etc/varnish/directors.${instance}.vcl":
         ensure     => present,
