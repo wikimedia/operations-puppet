@@ -18,10 +18,16 @@ class openstack::nova::conductor {
             require   => Package['nova-conductor'];
         }
 
+        if $is_test_machine {
+            $is_paging = false
+        } else {
+            $is_paging = true
+        }
+
         nrpe::monitor_service { 'check_nova_conductor_process':
             description  => 'nova-conductor process',
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python /usr/bin/nova-conductor'",
-            critical     => true,
+            critical     => $is_paging,
         }
     } else {
         service { 'nova-conductor':
