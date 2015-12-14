@@ -1,3 +1,7 @@
+# == Class conftool::master
+#
+# Installs the conftool master scripts
+#
 class conftool::master($sync_dir = '/etc/conftool/data') {
 
     require conftool
@@ -18,4 +22,21 @@ class conftool::master($sync_dir = '/etc/conftool/data') {
         content => template('conftool/conftool-merge.erb')
     }
 
+    if $::conftool::auth {
+        # Install a conftool role and a user too
+        etcd_role { 'conftool':
+            ensure => present,
+            acls   => {
+                '/conftool/*' => 'RW'
+            }
+        }
+
+        if $::conftool::password != undef {
+            etcd_user { 'conftool':
+                ensure   => present,
+                password => $::conftool::password,
+                roles    => ['conftool', 'guest'],
+            }
+        }
+    }
 }
