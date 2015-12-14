@@ -324,7 +324,7 @@ class misc::udp2log::utilities {
     }
 
     file { '/usr/local/bin/sqstat':
-        ensure => present,
+        ensure => 'absent',
         mode   => '0555',
         owner  => 'root',
         group  => 'root',

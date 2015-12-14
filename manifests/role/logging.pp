@@ -167,17 +167,6 @@ class role::logging::udp2log {
     }
 }
 
-# misc udp2log instance, mainly for a post-udp2log era...one day :)
-class role::logging::udp2log::misc {
-    include misc::udp2log
-    include misc::udp2log::utilities
-
-    misc::udp2log::instance { 'misc':
-        multicast       => true,
-        packet_loss_log => '/var/log/udp2log/packet-loss.log',
-        monitor_log_age => false,
-    }
-}
 
 # FIXME: this clearly not a role.
 class role::logging::systemusers {
