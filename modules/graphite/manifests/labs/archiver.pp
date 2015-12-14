@@ -15,6 +15,7 @@ class graphite::labs::archiver {
         command => '/usr/local/bin/archive-instances',
         user    => '_graphite',
         minute  => 0,
+        hour    => 13,
         require => File['/usr/local/bin/archive-instances'],
     }
 }
