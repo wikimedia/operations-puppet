@@ -270,7 +270,7 @@ groups:
   eventlogging-roots:
     gid: 739
     description: Full root on EventLogging servers.
-    members: [nuria, milimetric, mforns, joal]
+    members: [nuria, milimetric, mforns, joal, madhuvishy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   cxserver-admin:
     gid: 741
