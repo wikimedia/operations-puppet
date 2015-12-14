@@ -13,12 +13,15 @@ class role::labs::db::slave {
     include role::mariadb::ferm
 
     class { 'mariadb::config':
-        prompt    => 'TOOLSDB slave',
-        config    => 'mariadb/tools.my.cnf.erb',
-        password  => $passwords::misc::scripts::mysql_root_pass,
-        datadir   => '/srv/labsdb/data',
-        tmpdir    => '/srv/labsdb/tmp',
-        read_only => 'ON',
+        prompt        => 'TOOLSDB slave',
+        config        => 'mariadb/tools.my.cnf.erb',
+        password      => $passwords::misc::scripts::mysql_root_pass,
+        datadir       => '/srv/labsdb/data',
+        tmpdir        => '/srv/labsdb/tmp',
+        read_only     => 'ON',
+        p_s           => 'on',
+        ssl           => 'on',
+        binlog_format => 'ROW',
     }
 
     #mariadb::monitor_replication { 'tools':

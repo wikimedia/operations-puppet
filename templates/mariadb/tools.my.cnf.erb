@@ -27,7 +27,6 @@ connect_timeout                = 5
 query_cache_size               = 0
 query_cache_type               = 0
 event_scheduler                = 1
-userstat                       = 1
 log-warnings                   = 0
 thread_stack                   = 192K
 thread_cache_size              = 128
@@ -36,7 +35,7 @@ wait_timeout                   = 600
 
 binlog_cache_size              = 1M
 max_binlog_size                = 100M
-binlog_format                  = MIXED
+binlog_format                  = <%= @binlog_format %>
 expire_logs_days               = 7
 slave_transaction_retries      = 4294967295
 
@@ -52,14 +51,52 @@ innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
 innodb_thread_concurrency      = 0
 innodb_io_capacity             = 1000
-innodb_read_io_threads         = 16
-innodb_write_io_threads        = 8
 innodb_stats_sample_pages      = 16
 innodb_stats_method            = nulls_unequal
+
+<% if @kernelversion < "3.19" %>
+# Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
+# At least, I think so. For now we need to avoid the an assertion failure on Trusty w/ 3.13
+innodb_use_native_aio          = 0
+innodb_read_io_threads         = 16
+innodb_write_io_threads        = 8
+<% end %>
+<% if @ssl == 'on' %>
+# ssl
+ssl-ca=/etc/mysql/ssl/cacert.pem
+ssl-cert=/etc/mysql/ssl/server-cert.pem
+ssl-key=/etc/mysql/ssl/server-key.pem
+ssl-cipher=TLSv1.2
+<% end %>
 
 # dump and load innodb buffer at start and stop
 innodb_buffer_pool_load_at_startup  = 1
 innodb_buffer_pool_dump_at_shutdown = 1
+
+<% if @p_s == 'on' %>
+# Enabling performance_schema (disabled by default in MariaDB10)
+performance_schema                                     = 1
+# downsizing performance schema memory usage: T99485
+performance_schema_digests_size                        = -1
+performance_schema_max_thread_instances                = 500
+performance_schema_max_cond_instances                  = 1000
+performance_schema_accounts_size                       = 300
+performance_schema_hosts_size                          = 300
+performance_schema_events_statements_history_size      = 10
+performance_schema_events_statements_history_long_size = 1000
+performance_schema_events_waits_history_size           = 10
+performance_schema_events_waits_history_long_size      = 1000
+performance_schema_events_stages_history_size          = 10
+performance_schema_events_stages_history_long_size     = 1000
+performance_schema_max_mutex_instances                 = 5000
+performance_schema_max_rwlock_instances                = 2000
+performance_schema_max_socket_instances                = 500
+performance_schema_max_table_instances                 = 1000
+<% else %>
+# only enable userstat if p_s is disabled
+performance_schema                                     = 0
+userstat                                               = 1
+<% end %>
 
 [mysqldump]
 
