@@ -66,7 +66,7 @@ class diamond(
 ) {
     require_package('python-statsd')
 
-    package { [ 'python-diamond', 'python-configobj' ]:
+    package { [ 'diamond', ]:
         ensure  => present,
     }
 
@@ -78,7 +78,7 @@ class diamond(
         recurse => true,
         purge   => true,
         force   => true,
-        require => Package['python-diamond'],
+        require => Package['diamond'],
     }
 
     file { '/etc/diamond/diamond.conf':
@@ -99,7 +99,7 @@ class diamond(
         enable     => true,
         hasrestart => true,
         hasstatus  => true,
-        require    => Package['python-diamond'],
+        require    => Package['diamond'],
         subscribe  => File['/etc/diamond/diamond.conf'],
     }
 
