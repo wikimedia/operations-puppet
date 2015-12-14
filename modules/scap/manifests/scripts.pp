@@ -5,6 +5,7 @@
 # FIXME: Why are these in a combination of languages?
 # FIXME: Why are these named-like-this and namedLikeThis
 # FIXME: Why man pages for some but not all?
+# FIXME: What on earth does MW have to do with this? Send it to the right module
 class scap::scripts {
     require mediawiki::users
 
