@@ -329,6 +329,7 @@ class misc::udp2log::utilities {
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///files/udp2log/sqstat.pl',
+        ensure => 'absent'
     }
 }
 
