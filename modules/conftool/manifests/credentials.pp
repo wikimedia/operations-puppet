@@ -13,7 +13,6 @@ define conftool::credentials(
         ensure   => present,
         owner    => $title,
         group    => $title,
-        mode     => '0400',
         settings => {
             username => 'conftool',
             password => $::conftool::password,

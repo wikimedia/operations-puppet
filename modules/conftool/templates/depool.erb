@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 echo "Deooling <%= scope.lookupvar('fqdn') %>..."
-conftool --find set/pooled=no '<%= scope.lookupvar('fqdn') %>'
+confctl --find set/pooled=no '<%= scope.lookupvar('fqdn') %>'
