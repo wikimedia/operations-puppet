@@ -70,17 +70,17 @@ class shinken(
         require => Package['shinken'],
     }
 
-    file { '/etc/shinken/contactgroups.cfg':
-        ensure  => present,
-        source  => 'puppet:///modules/shinken/contactgroups.cfg',
-        owner   => 'shinken',
-        group   => 'shinken',
-        require => Package['shinken'],
-        notify  => Service['shinken'],
+    class { 'nagios_common::contactgroups':
+        source     => 'puppet:///modules/nagios_common/contactgroups-labs.cfg',
+        owner      => 'shinken',
+        group      => 'shinken',
+        config_dir => '/etc/shinken',
+        require    => Package['shinken'],
+        notify     => Service['shinken'],
     }
 
     class { 'nagios_common::contacts':
-        source     => 'puppet:///modules/shinken/contacts.cfg',
+        source     => 'puppet:///modules/nagios_common/contacts-labs.cfg',
         owner      => 'shinken',
         group      => 'shinken',
         config_dir => '/etc/shinken',
