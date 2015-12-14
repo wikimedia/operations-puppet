@@ -248,7 +248,9 @@ class role::backup::director {
     bacula::director::fileset { 'srv-phab-repos':
         includes => [ '/srv/phab/repos' ],
     }
-
+    bacula::director::fileset { 'srv-ldap-backup':
+        includes => [ '/srv/ldap-backup' ],
+    }
     # The console should be on the director
     class { 'bacula::console':
         director   => $::fqdn,

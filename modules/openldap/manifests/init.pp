@@ -168,6 +168,23 @@ class openldap(
         content => template('openldap/ldap.conf.erb'),
     }
 
+    # backup directory
+    file '/srv/ldap-backup':
+        ensure => directory,
+        mode   => '0750',
+        owner  => 'openldap',
+        group  => 'openldap',
+    }
+
+    # create ldif file for backup
+    cron { 'cron-slapcat':
+        ensure  => present,
+        command => '/usr/sbin/slapcat -c -l /srv/ldap-backup/wmf-openldap.ldif',
+        user    => 'openldap',
+        hour    => 3,
+        minute  => 3,
+    }
+
     # Relationships
     File['/etc/ldap/acls.conf'] -> File['/etc/ldap/slapd.conf']
     File['/etc/ldap/indices.conf'] -> File['/etc/ldap/slapd.conf']
