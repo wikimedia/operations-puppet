@@ -322,14 +322,6 @@ class misc::udp2log::utilities {
         group  => 'root',
         source => 'puppet:///files/misc/demux.py',
     }
-
-    file { '/usr/local/bin/sqstat':
-        ensure => 'absent',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///files/udp2log/sqstat.pl',
-    }
 }
 
 class misc::udp2log::udp_filter {

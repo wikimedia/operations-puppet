@@ -146,61 +146,6 @@ class role::logging::relay::eventlogging {
     }
 }
 
-
-# udp2log base role class
-class role::logging::udp2log {
-    include misc::udp2log
-    include misc::udp2log::utilities
-
-    $log_directory = '/a/log'
-
-    file { $log_directory:
-        ensure => 'directory',
-    }
-
-    # Set up an rsync daemon module for udp2log logrotated
-    # archives.  This allows stat1003 to copy logs from the
-    # logrotated archive directory
-    class { 'misc::udp2log::rsyncd':
-        path    => $log_directory,
-        require => File[$log_directory],
-    }
-}
-
-
-# FIXME: this clearly not a role.
-class role::logging::systemusers {
-
-    group { 'file_mover':
-        ensure => present,
-        gid    => 30001,
-        name   => 'file_mover',
-        system => true,
-    }
-
-    user { 'file_mover':
-        uid        => 30001,
-        shell      => '/bin/bash',
-        gid        => 'file_mover',
-        home       => '/var/lib/file_mover',
-        managehome => true,
-        system     => true,
-        require    => Group['file_mover'],
-    }
-
-    file { '/var/lib/file_mover':
-        ensure => directory,
-        owner  => 'file_mover',
-        group  => 'file_mover',
-        mode   => '0755',
-    }
-
-    ssh::userkey { 'file_mover':
-        ensure  => present,
-        content => 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw== file_mover',
-    }
-}
-
 # == Class role::logging::kafkatee::webrequest
 # TODO: This needs a not-stupid name.
 #

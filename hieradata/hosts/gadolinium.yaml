@@ -1,3 +1,2 @@
 contactgroups: 'admins,analytics'
-admin::groups:
-  - udp2log-users
+
