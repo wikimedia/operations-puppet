@@ -33,12 +33,11 @@ define varnish::common::directors(
         default    => "varnish-${instance}",
     }
 
-    # usual old trick
-    $group = hiera('cluster', $cluster)
-    $keyspace_base = "${conftool_namespace}/${dc}/${group}"
+    $group           = hiera('cluster', $cluster)
+    $default_dc      = $dc
     $default_service = 'varnish-be'
 
-    $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@keyspace_base}/#{v['service'] || @default_service}\" }.join('|') %>")
+    $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@conftool_namespace}/#{v['dc'] || @default_dc}/#{@group}/#{v['service'] || @default_service}\" }.join('|') %>")
     $keyspaces = sort(unique(split($keyspaces_str, '\|')))
     confd::file { "/etc/varnish/directors.${instance}.vcl":
         ensure     => present,
