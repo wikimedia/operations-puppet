@@ -7,10 +7,10 @@ class role::cache::logging {
 
         $cliargs = '-m RxRequest:^(?!PURGE$) -D'
         varnish::logging { 'multicast_relay':
+                ensure           => 'absent',
                 listener_address => $webrequest_multicast_relay_host,
                 port             => '8419',
                 cli_args         => $cliargs,
-                ensure           => 'absent',
         }
 
         varnish::logging { 'erbium':
