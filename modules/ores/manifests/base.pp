@@ -24,12 +24,14 @@ class ores::base(
                     'myspell-de-at', 'myspell-de-ch', 'myspell-de-de',
                     'myspell-en-au', 'myspell-en-gb', 'myspell-en-us',
                     'myspell-es',
+                    'myspell-et',
                     'myspell-fa',
                     'myspell-fr',
                     'myspell-he',
                     'myspell-it',
                     'myspell-nl',
-                    'myspell-pt',)
+                    'myspell-pt',
+                    'myspell-uk')
 
     file { '/srv':
         ensure => directory,
