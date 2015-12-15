@@ -223,9 +223,8 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
         }
 
         #firewall allow ipsec esp
-        ferm::service { 'kafka-ipsec-esp':
-            proto  => 'esp',
-            srange => '$ALL_NETWORKS',
+        ferm::rule { 'kafka-ipsec-esp':
+            rule   => 'proto esp { saddr $ALL_NETWORKS ACCEPT; }'
         }
 
         #firewall allow ipsec ike udp 500
