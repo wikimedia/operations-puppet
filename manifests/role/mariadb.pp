@@ -309,6 +309,8 @@ class role::mariadb::dbstore(
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => '/srv/sqldata',
         tmpdir   => '/srv/tmp',
+        ssl      => 'on',
+        p_s      => 'off',
     }
 
     mariadb::monitor_replication {
