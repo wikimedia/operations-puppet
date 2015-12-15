@@ -61,8 +61,8 @@ class role::torrus {
         hosts          => $storagehosts,
     }
 
-    monitoring::service { 'torrus-http':
-        description   => 'torrus.wikimedia.org HTTP',
-        check_command => 'check_https_url_for_string!torrus.wikimedia.org!/torrus!\'Torrus Top: Wikimedia\'',
+    monitoring::service { 'torrus-ui':
+        description   => 'torrus.wikimedia.org UI',
+        check_command => 'check_https_url_for_string_on_host!torrus.wikimedia.org!misc-web-lb.wikimedia.org!/torrus!\'Torrus Top: Wikimedia\'',
     }
 }
