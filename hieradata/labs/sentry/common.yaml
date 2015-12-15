@@ -1,2 +1,2 @@
-sentry::server_name: "%{::sentry_server_name}"
+sentry::server_name: "${::hostname}.wmflabs.org"
 sentry::admin_email: 'gtisza@wikimedia.org'
