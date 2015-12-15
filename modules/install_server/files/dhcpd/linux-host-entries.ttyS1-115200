@@ -314,11 +314,6 @@ host chromium {
 	fixed-address chromium.wikimedia.org;
 }
 
-host cobalt {
-	hardware ethernet 78:2b:cb:08:a1:68;
-	fixed-address cobalt.wikimedia.org;
-}
-
 host conf1001 {
 	hardware ethernet d4:ae:52:73:60:e6;
 	fixed-address conf1001.eqiad.wmnet;
@@ -5931,11 +5926,6 @@ host nescio {
 	fixed-address nescio.wikimedia.org;
 	option pxelinux.pathprefix "jessie-installer/";
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
-host nickel {
-	hardware ethernet 78:2b:cb:08:aa:93;
-	fixed-address nickel.wikimedia.org;
 }
 
 host nitrogen {
