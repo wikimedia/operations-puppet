@@ -32,9 +32,19 @@ define monitoring::service(
         default => 0,
     }
 
-    $contact_critical = $critical ? {
-        true    => "${contact_group},sms,admins",
-        default => $contact_group,
+    # If a service is set to critical and
+    # paging is not disabled for this machine in hiera,
+    # then use the "sms" contact group which creates pages.
+    $do_paging = hiera('do_paging', true)
+
+    case $critical {
+        true: {
+            case $do_paging {
+                true:    { $contact_critical = "${contact_group},sms,admins" }
+                default: { $contact_critical = "${contact_group},admins" }
+            }
+        }
+        default: { $contact_critical = $contact_group }
     }
 
     $is_active = $passive ? {
