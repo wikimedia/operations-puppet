@@ -32,9 +32,16 @@ define monitoring::service(
         default => 0,
     }
 
-    $contact_critical = $critical ? {
-        true    => "${contact_group},sms,admins",
-        default => $contact_group,
+    # If a service is set to critical AND it's NOT a test machine,
+    # then use the "sms" contact group which creates SMS/pages.
+    case $critical {
+        true: {
+            case $::is_test_machine {
+                true: { $contact_critical = $contact_group }
+                default: { $contact_critical = "${contact_group},sms,admins" }
+            }
+        }
+        default: { $contact_critical = $contact_group }
     }
 
     $is_active = $passive ? {
