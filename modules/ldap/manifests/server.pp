@@ -166,12 +166,9 @@ set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-ce
     }
 
     service { 'opendj':
-        ensure => running,
+        ensure => stopped,
         enable => true,
     }
-
-    monitoring::service { 'ldap': description      => 'LDAP', check_command                   => 'check_tcp!389' }
-    monitoring::service { 'ldaps': description     => 'LDAPS', check_command                  => 'check_tcp!636' }
 
     # TODO: make this critical (paging) again once confirmed fixed
     monitoring::service { 'ldap cert':
