@@ -6,7 +6,7 @@ class conftool::master($sync_dir = '/etc/conftool/data') {
 
     file { '/etc/conftool/data':
         ensure => link,
-        target => "${::puppet::base_repo::gitdir}/operations/puppet/conftool-data",
+        target => "${::puppetmaster::base_repo::gitdir}/operations/puppet/conftool-data",
         force  => true,
         before => File['/usr/local/bin/conftool-merge'],
     }
