@@ -1,11 +1,12 @@
 class conftool::master($sync_dir = '/etc/conftool/data') {
 
     require conftool
-    require puppetmaster::gitclone
+
+    require ::puppet::base_repo
 
     file { '/etc/conftool/data':
         ensure => link,
-        target => "${puppetmaster::gitdir}/operations/puppet/conftool-data",
+        target => "${::puppet::base_repo::gitdir}/operations/puppet/conftool-data",
         force  => true,
         before => File['/usr/local/bin/conftool-merge'],
     }

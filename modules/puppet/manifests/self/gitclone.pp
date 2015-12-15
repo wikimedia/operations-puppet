@@ -6,16 +6,10 @@ class puppet::self::gitclone {
     $gitdir = '/var/lib/git'
     $volatiledir = '/var/lib/puppet/volatile'
 
-    file { $gitdir:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+    class { '::puppetmaster::base_repo':
+        gitdir => $gitdir,
     }
-    file { "${gitdir}/operations":
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-    }
+
     file { "${gitdir}/labs":
         ensure => directory,
         # private repo resides here, so enforce some perms
@@ -34,13 +28,6 @@ class puppet::self::gitclone {
         owner  => 'root',
         group  => 'puppet',
         mode   => '0750',
-    }
-    git::clone { 'operations/puppet':
-        directory          => "${gitdir}/operations/puppet",
-        branch             => 'production',
-        origin             => 'https://gerrit.wikimedia.org/r/operations/puppet.git',
-        recurse_submodules => true,
-        require            => File["${gitdir}/operations"],
     }
     git::clone { 'labs/private':
         directory => "${gitdir}/labs/private",
