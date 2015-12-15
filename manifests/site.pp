@@ -573,11 +573,14 @@ node /^db20(18|36|43|50|57)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
-        shard => 's3',
+        shard         => 's3',
+        p_s           => 'on',
+        binlog_format => 'ROW',
     }
     include base::firewall
 }
 
+# s4 (commons) core production slave dbs on eqiad
 node /^db10(19|42|56|59|64|68)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's4',
@@ -636,7 +639,6 @@ node /^db2067\.codfw\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
         p_s   => 'on',
-        ssl   => 'on',
     }
     include base::firewall
 }
