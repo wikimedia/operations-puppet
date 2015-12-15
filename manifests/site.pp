@@ -606,17 +606,28 @@ node /^db20(19|37|44|51|58|65)\.codfw\.wmnet/ {
     include base::firewall
 }
 
-node /^db10(26|45|49|70|71)\.eqiad\.wmnet/ {
+# s5 (wikidata/dewiki) core production slave dbs on eqiad
+node /^db10(26|45|70|71)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's5',
     }
 }
+node /^db10(49)\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 's5',
+        p_s   => 'on',
+    }
+    include base::firewall
+}
 
+# s5 (wikidata/dewiki) core production slave dbs on codfw
 node /^db20(23|38|45|52|59|66)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
-        shard => 's5',
+        shard         => 's5',
+        p_s           => 'on',
+        binlog_format => 'ROW',
     }
     include base::firewall
 }
