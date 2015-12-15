@@ -325,23 +325,10 @@ class role::ci::slave::browsertests {
 
     # For CirrusSearch testing:
     file { '/mnt/elasticsearch':
-        ensure => 'directory',
+        ensure => absent,
     }
     file { '/var/lib/elasticsearch':
-        ensure  => 'link',
-        require => File['/mnt/elasticsearch'],
-        target  => '/mnt/elasticsearch',
-        force   => true,
-    }
-    class { '::elasticsearch':
-        cluster_name => 'jenkins',
-        heap_memory  => '1G', #We have small data in test
-        require      => File['/var/lib/elasticsearch'],
-        # We don't have reliable multicast in labs but we don't mind because we
-        # only use a single instance
-
-        # Right now we're not testing with any of the plugins we plan to install
-        # later.  We'll cross that bridge when we come to it.
+        ensure  => absent,
     }
 
     # For CirrusSearch testing:
