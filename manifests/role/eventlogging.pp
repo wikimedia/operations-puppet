@@ -147,9 +147,9 @@ class role::eventlogging::processor inherits role::eventlogging {
     $etcd_hosts = join(suffix(hiera('etcd_hosts'), ':2379'), ',')
 
     # Something isn't working with https + etcd in labs.
-    # Use http for now.
+    # Disabling for now.
     if $::realm == 'labs' {
-        $etcd_uri  = "http://${etcd_hosts}"
+        $etcd_uri  = undef
     }
     else {
         $etcd_uri  = "https://${etcd_hosts}"
