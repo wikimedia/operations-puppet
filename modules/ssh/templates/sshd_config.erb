@@ -106,10 +106,6 @@ TCPKeepAlive yes
 <% if @ssh_tcp_forwarding then %>
 AllowTcpForwarding <%= @ssh_tcp_forwarding %>
 <% end %>
-<% if @ssh_x11_forwarding then %>
-X11Forwarding <%= @ssh_x11_forwarding %>
-<% end %>
-
 
 #MaxStartups 10:30:60
 #Banner /etc/issue.net
