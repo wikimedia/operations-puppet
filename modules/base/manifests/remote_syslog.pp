@@ -22,7 +22,7 @@ class base::remote_syslog (
         }
 
         rsyslog::conf { 'remote_syslog':
-            content  => "*.info;mail.none;authpriv.none;cron.none @${central_host}",
+            content  => template('base/remote_syslog.conf.erb'),
             priority => 30,
         }
     }
