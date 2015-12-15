@@ -1840,8 +1840,8 @@ node /^ms-be20(1[6-9]|2[0-1])\.codfw\.wmnet$/ {
     role swift::storage
 }
 
-# mw1001-1016 are jobrunners
-node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
+# mw1001-1016 and mw1026-1035 are jobrunners
+node /^mw10(0[1-9]|1[0-6]|2[6-9]|3[0-5])\.eqiad\.wmnet$/ {
     role mediawiki::jobrunner
 
     if $::hostname == 'mw1010' {
@@ -1855,8 +1855,8 @@ node /^mw10(1[7-9]|2[0-5])\.eqiad\.wmnet$/ {
     include base::firewall
 }
 
-# mw1026-mw1113 are appservers
-node /^mw1(02[6-9]|0[3-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+# mw1036-mw1113 are appservers
+node /^mw1(03[6-9]|0[4-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
     include base::firewall
 }
