@@ -37,6 +37,9 @@ tls_reqcert demand
 tls_cacertdir /etc/ssl/certs
 tls_cacertfile /etc/ssl/certs/<%= @ldapconfig["ca"] %>
 
+# The LDAP servers impose an server-side timeout of 600 seconds (configured through the 'idletimeout'
+# option in modules/openldap/templates/slapd.erb, terminate our connections a minute earlier than that
+idle_timelimit 540
 
 # Limit user names to this regex. This needs to be kept in sync with OpenStackManager's regex.
 validnames /^[a-z][.a-z0-9_-]*$/i
