@@ -2,15 +2,13 @@
 #
 # This class handles the repositories from which the puppetmasters pull
 class puppetmaster::gitclone {
+
+    class  { '::puppetmaster::base_repo':
+        gitdir   => $::puppetmaster::gitdir,
+        gitowner => 'gitpuppet'
+    }
+
     file {
-        $puppetmaster::gitdir:
-            ensure  => directory,
-            owner   => 'root',
-            group   => 'root';
-        "${puppetmaster::gitdir}/operations":
-            ensure  => directory,
-            owner   => 'root',
-            group   => 'root';
         "${puppetmaster::gitdir}/operations/puppet/.git/hooks/post-merge":
             require => Git::Clone['operations/puppet'],
             owner   => 'gitpuppet',
@@ -100,12 +98,6 @@ class puppetmaster::gitclone {
     }
 
     git::clone {
-        'operations/puppet':
-            require     => File["${puppetmaster::gitdir}/operations"],
-            directory   => "${puppetmaster::gitdir}/operations/puppet",
-            owner       => 'gitpuppet',
-            branch      => 'production',
-            origin      => 'https://gerrit.wikimedia.org/r/p/operations/puppet';
         'operations/software':
             require     => File["${puppetmaster::gitdir}/operations"],
             owner       => 'gitpuppet',
