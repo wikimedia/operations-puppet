@@ -20,6 +20,11 @@ camus.message.decoder.class=org.wikimedia.analytics.refinery.camus.coders.AvroBi
 # Default schema for messages produced without a schema rev id.
 camus.message.schema.default=101446746400
 
+# Always force to write records with the latest schema otherwise
+# AvroRecordWriterProvider does not support writing a record with multiple
+# schema rev and won't generate a new file if the schema changes
+org.wikimedia.analytics.schemas.CirrusSearchRequestSet.latestRev=111448028943
+
 # Used by avro-based Decoders to use as their schema registry.
 kafka.message.coder.schema.registry.class=org.wikimedia.analytics.refinery.camus.schemaregistry.KafkaTopicSchemaRegistry
 
