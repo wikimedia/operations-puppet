@@ -15,16 +15,21 @@ if ! cd /etc/pam.d; then
     exit 1
 fi
 
-# iff ./sshd exists and ./sshd.orig does not, move the former
+if ! mkdir /etc/pambak; then
+    echo "Unable to create /etc/pambak for backup files" >&2
+    exit 1
+fi
+
+# iff ./sshd exists and /etc/pambak/sshd.orig does not, move the former
 # to the latter and force dpkg to reinstall missing config
 # files (via apt-get).  This restarts the sshd master daemon,
 # and returns ./sshd.orig to ./sshd if apt-get reports issues.
 #
-# If all went well, ./sshd has the stock config and ./sshd.orig
+# If all went well, ./sshd has the stock config and /etc/pambak/sshd.orig
 # has a backup of the previous one.
-mv -n sshd sshd.orig && (
+mv -n sshd /etc/pambak/sshd.orig && (
     apt-get -o Dpkg::Options::="--force-confmiss" install --reinstall openssh-server ||
-    mv -f sshd.orig sshd
+    mv -f /etc/pambak/sshd.orig sshd
 )
 
 # For ./common-* we make copies instead of moving the
@@ -33,11 +38,11 @@ mv -n sshd sshd.orig && (
 # all the files have been copied, /then/ we remove the
 # originals and regenerate configuration.
 for i in common-{account,auth,password,session,session-noninteractive}; do
-    cp -np $i $i.orig || exit 1
+    cp -np $i /etc/pambak/$i.orig || exit 1
 done
 rm common-{account,auth,password,session,session-noninteractive} && (
     pam-auth-update --package --force ||
     for i in common-{account,auth,password,session,session-noninteractive}; do
-        mv -f $i.orig $i
+        mv -f /etc/pambak/$i.orig $i
     done
 )
