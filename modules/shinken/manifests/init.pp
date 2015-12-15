@@ -105,7 +105,6 @@ class shinken(
         group        => 'shinken',
         notify       => Service['shinken'],
         require      => Package['shinken'],
-        lover_name   => 'Shinken',
         irc_dir_path => '/var/log/ircecho',
     }
 
