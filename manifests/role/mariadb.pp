@@ -220,12 +220,15 @@ class role::mariadb::misc::eventlogging(
     }
 
     class { 'mariadb::config':
-        prompt    => "EVENTLOGGING ${shard}",
-        config    => 'mariadb/eventlogging.my.cnf.erb',
-        password  => $passwords::misc::scripts::mysql_root_pass,
-        datadir   => '/srv/sqldata',
-        tmpdir    => '/srv/tmp',
-        read_only => $read_only,
+        prompt        => "EVENTLOGGING ${shard}",
+        config        => 'mariadb/eventlogging.my.cnf.erb',
+        password      => $passwords::misc::scripts::mysql_root_pass,
+        datadir       => '/srv/sqldata',
+        tmpdir        => '/srv/tmp',
+        read_only     => $read_only,
+        ssl           => 'on',
+        p_s           => 'on',
+        binlog_format => 'ROW',
     }
 
     class { 'role::mariadb::grants':
