@@ -1918,14 +1918,17 @@ node 'mw1152.eqiad.wmnet' {
     include ldap::role::client::labs
 }
 
+node 'mw1161.eqiad.wmnet' {
+    role mediawiki::jobrunner
+}
 
 # mw1153-1160 are imagescalers (trusty)
 node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
     role mediawiki::imagescaler
 }
 
-# mw1161-1188 are apaches
-node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
+# mw1162-1188 are apaches
+node /^mw11(6[2-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
     role mediawiki::appserver
     include base::firewall
 }
