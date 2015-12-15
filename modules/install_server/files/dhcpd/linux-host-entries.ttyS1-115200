@@ -2508,6 +2508,16 @@ host kafka1012 {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host kafka1001 {
+        hardware ethernet 14:18:77:33:52:42;
+        fixed-address kafka1001.eqiad.wmnet;
+}
+
+host kafka1002 {
+        hardware ethernet 14:18:77:33:4A:4E;
+        fixed-address kafka1002.eqiad.wmnet;
+}
+
 host kafka1013 {
 	hardware ethernet 90:b1:1c:06:7f:ee;
 	fixed-address kafka1013.eqiad.wmnet;
@@ -5960,6 +5970,16 @@ host ocg1002{
 host ocg1003{
 	hardware ethernet F0:1F:AF:E6:81:60;
 	fixed-address ocg1003.eqiad.wmnet;
+}
+
+host ores1001 {
+        hardware ethernet 14:18:77:33:4C:E9;
+        fixed-address ores1001.eqiad.wmnet;
+}
+
+host ores1002 {
+        hardware ethernet 14:18:77:33:4A:D2;
+        fixed-address ores1002.eqiad.wmnet;
 }
 
 host osm-cp1001{
