@@ -19,7 +19,7 @@ class role::ipsec ($hosts = undef) {
 
             # tier-2 sites associate with tier-1 kafka and tier-1 same-cluster cache nodes
             if $::site == 'esams' or $::site == 'ulsfo' or $::site == 'codfw' {
-                if $::hostname == 'cp4011.ulsfo.wmnet' {
+                if $::hostname == 'cp4011' {
                     $targets = array_concat(
                         $cluster_nodes['eqiad'],
                         ['kafka1012.eqiad.wmnet']
