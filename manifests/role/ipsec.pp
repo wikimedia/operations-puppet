@@ -19,11 +19,19 @@ class role::ipsec ($hosts = undef) {
 
             # tier-2 sites associate with tier-1 kafka and tier-1 same-cluster cache nodes
             if $::site == 'esams' or $::site == 'ulsfo' or $::site == 'codfw' {
-                $targets = array_concat(
-                    $cluster_nodes['eqiad'],
-                    $kafka_nodes['eqiad']
-                )
-
+                if $::hostname == 'cp4011.ulsfo.wmnet' {
+                    $targets = array_concat(
+                        $cluster_nodes['eqiad'],
+                        ['kafka1012.eqiad.wmnet'],
+                    )
+                } else {
+                    $targets = $cluster_nodes['eqiad']
+                }
+# commented out for testing -- bblack
+#                $targets = array_concat(
+#                    $cluster_nodes['eqiad'],
+#                    $kafka_nodes['eqiad']
+#                )
             }
             # tier-1 sites associate with tier-2 same-cluster cache nodes
             if $::site == 'eqiad' {
@@ -40,10 +48,12 @@ class role::ipsec ($hosts = undef) {
             $upload  = hiera('cache::ipsec::upload::nodes')
             $mobile  = hiera('cache::ipsec::mobile::nodes')
             $targets = array_concat(
-                $text['esams'], $text['ulsfo'], $text['codfw'],
-                $misc['esams'], $misc['ulsfo'], $misc['codfw'],
-                $upload['esams'], $upload['ulsfo'], $upload['codfw'],
-                $mobile['esams'], $mobile['ulsfo'], $mobile['codfw']
+                 ['cp4011.ulsfo.wmnet']
+# commented out for testing -- bblack
+#                $text['esams'], $text['ulsfo'], $text['codfw'],
+#                $misc['esams'], $misc['ulsfo'], $misc['codfw'],
+#                $upload['esams'], $upload['ulsfo'], $upload['codfw'],
+#                $mobile['esams'], $mobile['ulsfo'], $mobile['codfw']
             )
         }
     }
