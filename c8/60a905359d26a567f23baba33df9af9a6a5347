@@ -1,0 +1,11 @@
+Code-Review+1: Hashar <hashar@free.fr>
+Verified+2: jenkins-bot
+Code-Review+2: Faidon Liambotis <faidon@wikimedia.org>
+Code-Review+1: Alexandros Kosiaris <akosiaris@wikimedia.org>
+Code-Review+1: Filippo Giunchedi <fgiunchedi@wikimedia.org>
+Code-Review+1: Jcrespo <jcrespo@wikimedia.org>
+Submitted-by: Faidon Liambotis <faidon@wikimedia.org>
+Submitted-at: Tue, 15 Dec 2015 13:30:46 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/259237
+Project: operations/puppet
+Branch: refs/heads/production
