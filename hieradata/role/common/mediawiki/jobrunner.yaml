@@ -4,7 +4,7 @@ admin::groups:
   - perf-roots
 mediawiki::jobrunner::runners_basic: 20
 mediawiki::jobrunner::runners_gwt: 1
-mediawiki::jobrunner::runners_restbase: 4
+mediawiki::jobrunner::runners_restbase: 3
 mediawiki::jobrunner::runners_translate: 1
 mediawiki::jobrunner::runners_upload: 7
 nutcracker::verbosity: "4"
