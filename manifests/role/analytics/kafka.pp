@@ -221,5 +221,18 @@ class role::analytics::kafka::server inherits role::analytics::kafka::client {
             port   => '9092',
             srange => '$ALL_NETWORKS',
         }
+
+        #firewall allow ipsec esp
+        ferm::service { 'kafka-ipsec-esp':
+            proto  => 'esp',
+            srange => '$ALL_NETWORKS',
+        }
+
+        #firewall allow ipsec udp 500
+        ferm::service { 'kafka-ipsec-esp':
+            proto  => 'udp',
+            port   => '500',
+            srange => '$ALL_NETWORKS',
+        }
     }
 }
