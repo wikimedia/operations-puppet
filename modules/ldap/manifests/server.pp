@@ -166,7 +166,7 @@ set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-ce
     }
 
     service { 'opendj':
-        ensure => running,
+        ensure => stopped,
         enable => true,
     }
 
