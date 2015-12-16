@@ -3,14 +3,12 @@ class wikidatabuilder {
 
     requires_realm('labs')
 
-    package { [
-            'nodejs',
-            'npm',
-            'php5',
-            'php5-cli',
-            'git'
-        ]: ensure => 'present',
-    }
+    require_package(
+        'nodejs',
+        'npm',
+        'php5',
+        'php5-cli',
+        'git')
 
     group { 'wdbuilder':
         ensure => present,
