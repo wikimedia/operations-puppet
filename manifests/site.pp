@@ -648,7 +648,7 @@ node /^db10(22)\.eqiad\.wmnet/ {
 }
 
 # s6 core production slave dbs on codfw
-node /^db20(28|39|46|53|60)\.codfw\.wmnet/ {
+node /^db20(28|39|46|53|60|67)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
@@ -659,27 +659,30 @@ node /^db20(28|39|46|53|60)\.codfw\.wmnet/ {
     include base::firewall
 }
 
-node /^db2067\.codfw\.wmnet/ {
+# s7 (centralauth, meta et al.) core production slave dbs on eqiad
+node /^db10(28|34|39|62)\.eqiad\.wmnet/ {
+    class { 'role::mariadb::core':
+        shard => 's7',
+    }
+}
+node /^db10(41)\.eqiad\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
-        shard => 's6',
+        shard => 's7',
         p_s   => 'on',
     }
     include base::firewall
 }
 
-node /^db10(28|34|39|41|62)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard => 's7',
-    }
-}
-
+# s7 (centralauth, meta et al.) core production slave dbs on codfw
 node /^db20(29|40|47|54|61|68)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
-        shard => 's7',
+        shard         => 's7',
+        p_s           => 'on',
+        binlog_format => 'ROW',
     }
     include base::firewall
 }
