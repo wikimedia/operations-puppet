@@ -4,6 +4,12 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
     if ( $::realm == 'labs' ) {
         $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils']
 
+        # always allow cron for all users in the system
+        security::access::config { 'labs-cron':
+            content  => "+:ALL:cron\n",
+            priority => '00',
+        }
+
         # Labs instance default to allowing root and project members
         # only (members of the project-foo group).
         #
