@@ -9,3 +9,5 @@ cassandra::instances:
     listen_address: 10.192.16.155
     rpc_address: 10.192.16.155
     rpc_interface: eth0
+
+do_paging: false
