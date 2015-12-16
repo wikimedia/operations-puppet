@@ -37,8 +37,18 @@ class WMFElasticCollector(diamond.collector.Collector):
 
         self.endpoints = {
             'node': '_nodes/_local/stats',
-            'cluster': '_cluster/stats',
+            'cluster_stats': '_cluster/stats',
+            'cluster_health': '_cluster/health',
         }
+
+        # Metrics provided at cluster level
+        # _cluster/health
+        self.health_metrics = [
+            "delayed_unassigned_shards",
+            "unassigned_shards",
+            "initializing_shards",
+            "relocating_shards",
+        ]
 
         # Metrics provided at cluster level
         # _cluster/stats
@@ -179,8 +189,19 @@ class WMFElasticCollector(diamond.collector.Collector):
     def dict_path(self, m, sep='.'):
         return m.split(sep)
 
+    def cluster_health(self):
+        chealth = self._get(self.endpoints['cluster_health'])
+        gmetrics = {}
+        for metric in self.health_metrics:
+            try:
+                gmetrics[metric] = chealth[metric]
+            except KeyError, e:
+                self.errors += 1
+                pass
+        return gmetrics
+
     def cluster_stats(self):
-        cstats = self._get(self.endpoints['cluster'])
+        cstats = self._get(self.endpoints['cluster_stats'])
         gmetrics = {}
         for m in self.cluster_metrics:
             depth = self.dict_path(m)
@@ -222,6 +243,9 @@ class WMFElasticCollector(diamond.collector.Collector):
             self.config['hostname'] = master
             cluster_stats = self.cluster_stats()
             for metric, value in cluster_stats.iteritems():
+                self.publish(metric, value)
+            health_stats = self.health_stats()
+            for metric, value in health_stats.iteritems():
                 self.publish(metric, value)
 
             # Remaining fall under the hostname context
