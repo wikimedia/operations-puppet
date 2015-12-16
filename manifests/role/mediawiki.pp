@@ -26,7 +26,7 @@ class role::mediawiki::common {
         desc   => 'Allow incoming SSH for pybal health checks',
     }
 
-    include role::scap::target
+    include scap::ferm
 
     monitoring::service { 'mediawiki-installation DSH group':
         description           => 'mediawiki-installation DSH group',
