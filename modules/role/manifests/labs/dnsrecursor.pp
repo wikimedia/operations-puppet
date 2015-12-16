@@ -11,7 +11,7 @@
 #  a public IP in that mapping, we return the corresponding private
 #  IP instead.
 #
-#  - It relays requests for *.wmflabs to the auth server that knows
+#  - It relays requests for *.wmflabs.org to the auth server that knows
 #  about such things (defined as $labs_forward)
 #
 #  Other than that it should act like any other WMF recursor.
