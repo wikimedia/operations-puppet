@@ -213,7 +213,7 @@ with Lockdir(local, lockdir) as lock:
         # to both bootup faster, and also actually boot when there might be
         # issues with our setup (THAT NEVER HAPPENS I SWEAR) instead of being
         # stuck in the bootup screen. This does require us to manually activate
-        # the snapshots later on - FIXME: add that to `start-nfs`
+        # the snapshots later on in the start-nfs script
         '--setactivationskip', 'y',
         # This is needed since otherwise lvcreate just bails. It can't create
         # a snapshot valume and not enabled

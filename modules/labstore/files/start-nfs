@@ -28,6 +28,11 @@ if [ "x$sure" != "xI am absolutely certain!" ]; then
 fi
 
 /bin/systemctl stop nfs-kernel-server
+
+# Activate all volumes!
+# FIXME: Investigate ways to selectively activate them.
+# Possibly involving lvm.conf or explicitly listing snapshots
+/sbin/vgchange -aay -v
 /bin/mount /srv/project/tools
 /bin/mount /srv/project/maps
 /bin/mount /srv/others
