@@ -9,7 +9,7 @@
 .*-ocg\d\d:
   - role::ocg
 .*-rdb\d\d?:
-  - role::redisdb::redis
+  - role::redisdb
 .*-cache-text\d\d:
   - role::cache::text
 .*-cache-mobile\d\d:
