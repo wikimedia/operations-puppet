@@ -16,9 +16,15 @@ class swift::proxy (
 ) {
     package {[
         'swift-proxy',
-        'python-swauth',
+        'python-webob',
     ]:
         ensure => present,
+    }
+
+    if $::operatingsystem == 'Ubuntu' {
+        package {'python-swauth':
+            ensure => present,
+        }
     }
 
     file { '/etc/swift/proxy-server.conf':
