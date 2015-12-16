@@ -111,4 +111,9 @@ class puppet::self::master(
     }
 
     include puppetmaster::scripts
+
+    ferm::service { 'puppetmaster-self':
+        proto  => 'tcp',
+        port   => 8141,
+    }
 }
