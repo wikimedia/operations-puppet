@@ -9,13 +9,15 @@ class role::kafka::analytics::broker {
 
     require_package('openjdk-7-jdk')
 
-    system::role { 'role::kafka::analytics::broker':
-        description => "Kafka Broker Server in the ${::role::kafka::main::config::cluster_name} cluster",
-    }
-
-    # Make these local so kafka-profile.sh.erb can easily render them.
+    # Make these local for convenience
+    $cluster_name   = $::role::kafka::main::config::cluster_name
     $zookeeper_url  = $::role::kafka::main::config::zookeeper_url
     $brokers_string = $::role::kafka::main::config::brokers_string
+
+    system::role { 'role::kafka::analytics::broker':
+        description => "Kafka Broker Server in the ${cluster_name} cluster",
+    }
+
     # export ZOOKEEPER_URL and BROKER_LIST user environment variable.
     # This makes it much more convenient to run kafka commands without having
     # to specify the --zookeeper or --brokers flag every time.
@@ -117,6 +119,13 @@ class role::kafka::analytics::broker {
     # Include Kafka Server Jmxtrans class
     # to send Kafka Broker metrics to Ganglia and statsd.
     class { '::kafka::server::jmxtrans':
+        # TODO: move metrics under this prefix.
+        # Historically there was only one kafka cluster, so
+        # all kafka metrics were under that.  We should change this.
+        # Q: Should we make metrics for analytics-eqiad show as
+        # kafka.analytics-eqiad, even if the real cluster name is
+        # 'eqiad' for historical reasons?
+        # group_prefix => "kafka.${cluster_name}",
         ganglia  => hiera('ganglia_aggregators', undef),
         statsd   => hiera('statsd', undef),
         jmx_port => $::role::kafka::analytics::config::jmx_port,
