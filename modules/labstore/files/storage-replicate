@@ -208,7 +208,18 @@ with Lockdir(local, lockdir) as lock:
         f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d% %H:%M:%S\n"))
 
     local.run(
-        '/sbin/lvcreate', '--size', '1T', '--snapshot', '--name', snapshot, '%s/%s' % (srcvg, srclv))
+        '/sbin/lvcreate',
+        # Do not activate snapshots by default on boot. This allows the machine
+        # to both bootup faster, and also actually boot when there might be
+        # issues with our setup (THAT NEVER HAPPENS I SWEAR) instead of being
+        # stuck in the bootup screen. This does require us to manually activate
+        # the snapshots later on - FIXME: add that to `start-nfs`
+        '--setactivationskip', 'y',
+        '--size', '1T',
+        '--snapshot',
+        '--name', snapshot,
+        '%s/%s' % (srcvg, srclv)
+    )
 
     local.run(
         '/bin/mount', '-oro,noload',
