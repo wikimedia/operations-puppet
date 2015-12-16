@@ -56,4 +56,10 @@ class salt::master(
         salt_module_roots   => $salt_module_roots,
         salt_returner_roots => $salt_returner_roots,
     }
+
+    sysctl::parameters { 'salt-master':
+        values => {
+            'net.core.somaxconn' => 4096,
+        }
+    }
 }
