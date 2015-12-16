@@ -229,6 +229,7 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
 }
 
 node 'bohrium.eqiad.wmnet' {
+    role piwik
     include standard
 }
 
