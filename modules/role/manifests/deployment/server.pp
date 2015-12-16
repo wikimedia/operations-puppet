@@ -9,8 +9,6 @@ class role::deployment::server(
     include role::deployment::mediawiki
     include role::deployment::services
 
-    include base::firewall
-
     class { 'deployment::deployment_server':
         deployment_group => $deployment_group,
     }

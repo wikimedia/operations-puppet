@@ -2481,6 +2481,7 @@ node 'terbium.eqiad.wmnet' {
 # deployment servers
 node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
     role deployment::server, labsdb::manager
+    include base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
