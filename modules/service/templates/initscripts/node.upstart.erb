@@ -15,7 +15,9 @@ setgid "<%= @title %>"
 env NODE_PATH="/srv/deployment/<%= @repo %>/node_modules"
 env <%= @title.gsub(/[^a-zA-Z0-9_]/, '_').upcase %>_PORT="<%= @port %>"
 
+<% if @auto_refresh -%>
 respawn
+<% end -%>
 
 # wait 60 seconds for a graceful restart before killing the master
 kill timeout 60
