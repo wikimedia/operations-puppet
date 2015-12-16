@@ -54,6 +54,12 @@ class role::puppet::self(
         if $autoupdate_master {
             include puppetmaster::gitsync
         }
+
+        # Allow access to the Puppetmaster when base::firewall is applied
+        ferm::service { 'puppetmaster-self':
+            proto  => 'tcp',
+            port   => 8140,
+        }
     }
     # Else this is a puppet client.
     else {
