@@ -125,7 +125,7 @@ class role::kafka::analytics::broker {
         # Q: Should we make metrics for analytics-eqiad show as
         # kafka.analytics-eqiad, even if the real cluster name is
         # 'eqiad' for historical reasons?
-        # group_prefix => "kafka.${cluster_name}",
+        # group_prefix => "kafka.${cluster_name}.",
         ganglia  => hiera('ganglia_aggregators', undef),
         statsd   => hiera('statsd', undef),
         jmx_port => $::role::kafka::analytics::config::jmx_port,
