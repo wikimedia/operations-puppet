@@ -23,6 +23,7 @@ is the behavior we want
 import ldap
 import yaml
 import argparse
+import sys
 
 with open('/etc/wmflabs-project') as f:
     PROJECT_NAME = f.read().strip()
@@ -43,6 +44,22 @@ def get_user_keys(conn, user):
     )
     for _, user in response:
         return user['sshPublicKey']
+
+
+def get_users_for_group(conn, groupname):
+    response = conn.search_s(
+        groupname,
+        ldap.SCOPE_BASE
+    )
+
+    # only one group can have that name
+    assert len(response) <= 1
+
+    if response:
+        sg = response[0][1]
+        return sg['members']
+    else:
+        return []
 
 
 def get_group_keys(conn, groupname):
@@ -71,6 +88,11 @@ def main():
         default=False,
         help='Allow direct ssh login for service groups',
     )
+    parser.add_argument(
+        '--restrict-to',
+        default='project-%s' % PROJECT_NAME,
+        help='Allow only users in this group to ssh in'
+    )
     args = parser.parse_args()
 
     with open('/etc/ldap.yaml') as f:
@@ -84,7 +106,13 @@ def main():
         keys = get_group_keys(conn, groupname)
     else:
         username = 'uid=%s,ou=people,%s' % (args.username, config['basedn'])
+        groupname = "cn=%s,ou=groups,%s" % (args.restrict_to, config['basedn'])
+        users = get_users_for_group(conn, groupname)
+        if username not in users:
+            # User is not part of the right group!
+            sys.exit(1)
         keys = get_user_keys(conn, username)
+
     for key in keys:
         # Some keys have an accidental newline at the end, see T77902
         print key.strip()
