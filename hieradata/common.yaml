@@ -350,5 +350,5 @@ kafka_clusters:
     brokers:
       kafka2001.codfw.wmnet:
         id: 2001
-      kafka2002.codfs.wmnet:
+      kafka2002.codfw.wmnet:
         id: 2002
