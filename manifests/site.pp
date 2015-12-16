@@ -2426,6 +2426,7 @@ node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
 
     role deployment::server, labsdb::manager
     include standard
+    include base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
