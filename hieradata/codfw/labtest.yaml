@@ -5,6 +5,9 @@
 # with no actual advertisement or needed external services for now
 # 208.80.155.0/22
 
+# no Icinga SMS for test machines
+do_paging: false
+
 # Should handle all being the same
 labs_nova_controller: &labsnovacontroller "labtestcontrol2001.wikimedia.org"
 labs_nova_controller_spare: &labsnovacontrollerspare "labtestcontrol2001.wikimedia.org"
