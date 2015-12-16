@@ -33,10 +33,21 @@ fi
 # FIXME: Investigate ways to selectively activate them.
 # Possibly involving lvm.conf or explicitly listing snapshots
 /sbin/vgchange --ignoreactivationskip --activate ay --verbose
+
+# Mount actual volumes
 /bin/mount /srv/project/tools
 /bin/mount /srv/project/maps
 /bin/mount /srv/others
 /bin/mount /srv/scratch
+
+# Setup the bind mounts for the exports
+/usr/local/sbin/sync-exports
+
+# Start service to make sure that ip addresses for each project
+# are maintained properly
 /bin/systemctl start nfs-exports
+
+# Setup service IP
 /sbin/ip addr add dev eth0 10.64.37.10/24
+
 /bin/systemctl start nfs-kernel-server
