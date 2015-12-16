@@ -2501,21 +2501,25 @@ host iron {
 	fixed-address iron.wikimedia.org;
 }
 
-host kafka1012 {
-	hardware ethernet 90:b1:1c:06:a9:5d;
-	fixed-address kafka1012.eqiad.wmnet;
-	option pxelinux.pathprefix "jessie-installer/";
-	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
 host kafka1001 {
         hardware ethernet 14:18:77:33:52:42;
         fixed-address kafka1001.eqiad.wmnet;
+        option pxelinux.pathprefix "jessie-installer/";
+        filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kafka1002 {
         hardware ethernet 14:18:77:33:4A:4E;
         fixed-address kafka1002.eqiad.wmnet;
+        option pxelinux.pathprefix "jessie-installer/";
+        filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host kafka1012 {
+	hardware ethernet 90:b1:1c:06:a9:5d;
+	fixed-address kafka1012.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host kafka1013 {
