@@ -53,11 +53,6 @@ nrpe::allowed_hosts: '10.68.16.195'
 
 labs_recursor: "labs-recursor1.wikimedia.org"
 labs_recursor_secondary: "labs-recursor0.wikimedia.org"
-nfs_mounts:
-  project: true
-  home: true
-  scratch: true
-  dumps: true
 ssh::server::disable_agent_forwarding: false
 puppetmaster: "labs-puppetmaster-eqiad.wikimedia.org"
 saltmaster: "labs-puppetmaster-eqiad.wikimedia.org"
