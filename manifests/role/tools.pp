@@ -115,7 +115,6 @@ class role::toollabs::k8s::bastion {
 # Provisions Elasticsearch node with nginx reverse proxy
 #
 class role::toollabs::elasticsearch {
-    include ::role::toollabs::puppet::client
     include ::base::firewall
     include ::elasticsearch
 
