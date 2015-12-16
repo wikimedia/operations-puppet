@@ -38,6 +38,11 @@ class role::cache::misc {
                 'type' => 'random',
                 'backends' => ['bromine.eqiad.wmnet'],
             },
+            'bohrium' => {
+                'dynamic' => 'no',
+                'type' => 'random',
+                'backends' => ['bohrium.eqiad.wmnet'],
+            },
             'caesium' => {
                 'dynamic' => 'no',
                 'type' => 'random',
