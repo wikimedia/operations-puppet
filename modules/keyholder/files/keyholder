@@ -62,7 +62,7 @@ case "$command" in
     ;;
   start|stop|restart)
     requires_root
-    "/sbin/${command}" keyholder-agent
+    "/sbin/${command}" keyholder-agent && "/sbin/${command}" keyholder-proxy
     ;;
   *)
     show_usage
