@@ -25,12 +25,13 @@ class scap::l10nupdate(
 
     group { 'l10nupdate':
         ensure => present,
-        gid    => 10002,
+        gid    => 120,
     }
 
     user { 'l10nupdate':
         ensure     => present,
-        gid        => 10002,
+        system     => true,
+        gid        => 120,
         shell      => '/bin/bash',
         home       => '/home/l10nupdate',
         managehome => true,
