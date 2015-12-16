@@ -109,7 +109,7 @@ class mediawiki_singlenode(
     }
 
     exec { 'import_privacy_policy':
-        require   => [ Exec['mediawiki_setup','mediawiki_update'], File["${install_path}/privacy-policy.xml", "${install_path}/LocalSettings.php"], Mw-extension[ 'Nuke', 'SpamBlacklist', 'ConfirmEdit' ] ],
+        require   => [ Exec['mediawiki_setup','mediawiki_update'], File["${install_path}/privacy-policy.xml", "${install_path}/LocalSettings.php"], Mwextension[ 'Nuke', 'SpamBlacklist', 'ConfirmEdit' ] ],
         cwd       => "${install_path}/maintenance",
         command   => '/usr/bin/php importDump.php ../privacy-policy.xml',
         unless    => '/usr/bin/test $(/usr/bin/php updateArticleCount.php | grep -Po \'\d+\') -gt 300',
@@ -126,7 +126,7 @@ class mediawiki_singlenode(
         logoutput   => on_failure,
     }
 
-    Mw-extension <| |> -> Exec['mediawiki_update']
+    Mwextension <| |> -> Exec['mediawiki_update']
 
     include ::apache::mod::php5
     include ::apache::mod::rewrite
