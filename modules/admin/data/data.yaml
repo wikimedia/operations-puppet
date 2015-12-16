@@ -550,7 +550,6 @@ users:
     name: ariel
     realname: Ariel T. Glenn
     ssh_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAwaTYlLZ90/oQ5tDYDkhI2mHa1L6Vh+zcekCt8D08N7/CrFI5sUVteTwMWw2ytQlWnyT3HVgHb4IS1EPjpjyuqseRcNW0HYsqBk3E36PCBQIqjLZ0nDAeHQtm6T6pXiKC5qUppghwrvDxVYFpF3lFzAzfYMrF7iugk0xRPTHZWm8df7dqIB/6FfbxSD95yQVAlJefxoFWbo3Yn+exEZQvWv6lQYXnjV5DSwMf8tPGDkc2DRjrnR52ZrXPRZFCqc9JGkA/l8QsYtjmqJdnOgq5raOb56aRulJYdP2j//B4lRJJlglMuj8dSZE/j04zub+P2QhfdqeEHmeaTUqbwcnZZw== ariel@trouble
         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCu28GiEBr28g/13mYO+IbqmXNcq3wqwpLC9E5d02ueQg5WiEe4TKfs15Gtnsl3k2HYQ3wtu8fDiKdKI7oUVz1O/6h0MkroPVOgVVs9s9FthoDj7uQaAHNU01w7FT3BANOzRNFNc6o9CZZhqx8ojloozYOsIVSh9Llyz3lVBEmBufm3Nk4q0Yf97oNts6bg6Bq51upwqpaCO9VjrFjoqpuapJuJx4j0DZFIvKS62uq3wrBhrrdBKI42wk8ECBytyPWOJ3MZRgoV00E3KJf/G+DuWGWz5KvgLYoXZzRqVXi4rAMkBbth9SGGhwgS4hE1RX9pses0d7rD5OcOQJCrc/HB ariel@neo
     uid: 543
   otto:
