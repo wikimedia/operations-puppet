@@ -4,6 +4,8 @@
 class openstack::nova::network($openstack_version=$::openstack::version, $novaconfig) {
     include openstack::repo
 
+    $tftp_host = hiera('carbon.eqiad.wmnet')
+
     package {  [ 'nova-network', 'dnsmasq' ]:
         ensure  => present,
         require => Class['openstack::repo'];

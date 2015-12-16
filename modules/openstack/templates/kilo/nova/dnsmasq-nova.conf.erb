@@ -15,3 +15,5 @@ dhcp-host=<%= v['MAC'] %>,<%= k %>,<%= v['IPv4'] %>,10m
 
 #Clients should use the designate-backed dns server rather than dnsmasq
 dhcp-option=option:dns-server,<%= @recursor_ip %>
+
+dhcp-boot=pxelinux.0,<%= @tftp_host -%>,<%= scope.function_ipresolve([@tftp_host, 4]) %>
