@@ -21,4 +21,8 @@ respawn
 kill timeout 60
 
 chdir /srv/deployment/<%= @repo %>
+<% if @firejail -%>
 exec /usr/bin/firejail --blacklist=root --blacklist=/home/* --tmpfs=/tmp --caps --seccomp /usr/bin/nodejs <%= @starter_script %> -c /etc/<%= @title %>/config.yaml
+<% else -%>
+exec /usr/bin/nodejs <%= @starter_script %> -c /etc/<%= @title %>/config.yaml
+<%- end -%>
