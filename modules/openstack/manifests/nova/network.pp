@@ -44,6 +44,7 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
                                 private_ip => '10.68.16.65'},
     }
 
+    $labs_metal = hiera('labs_metal',{}
     $recursor_ip = ipresolve(hiera('labs_recursor'),4)
     file { '/etc/dnsmasq-nova.conf':
         content => template("openstack/${$openstack_version}/nova/dnsmasq-nova.conf.erb"),
