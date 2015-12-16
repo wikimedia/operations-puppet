@@ -348,7 +348,7 @@ kafka_clusters:
 
   main-codfw:
     brokers:
-      kafka2001.eqiad.wmnet:
+      kafka2001.codfw.wmnet:
         id: 2001
-      kafka2002.eqiad.wmnet:
+      kafka2002.codfs.wmnet:
         id: 2002
