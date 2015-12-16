@@ -215,6 +215,9 @@ with Lockdir(local, lockdir) as lock:
         # stuck in the bootup screen. This does require us to manually activate
         # the snapshots later on - FIXME: add that to `start-nfs`
         '--setactivationskip', 'y',
+        # This is needed since otherwise lvcreate just bails. It can't create
+        # a snapshot valume and not enabled
+        '--ignoreactivationskip',
         '--size', '1T',
         '--snapshot',
         '--name', snapshot,
