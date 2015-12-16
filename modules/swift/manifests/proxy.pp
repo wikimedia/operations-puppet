@@ -16,7 +16,7 @@ class swift::proxy (
 ) {
     package {[
         'swift-proxy',
-        'python-swauth',
+        'python-webob',
     ]:
         ensure => present,
     }
