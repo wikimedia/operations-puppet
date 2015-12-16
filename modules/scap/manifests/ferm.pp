@@ -1,8 +1,7 @@
-# = class: role::scap::master
+# == Class scap::ferm
+# Allows ssh access from $DEPLOYMENT_HOSTS
 #
-# Sets up a scap target, i.e. any host to which scap will deploy
-
-class role::scap::target {
+class scap::ferm {
     # allow ssh from deployment hosts
     ferm::rule { 'deployment-ssh':
         ensure => present,
