@@ -5997,16 +5997,6 @@ host ocg1003{
 	fixed-address ocg1003.eqiad.wmnet;
 }
 
-host ores1001 {
-        hardware ethernet 14:18:77:33:4C:E9;
-        fixed-address ores1001.eqiad.wmnet;
-}
-
-host ores1002 {
-        hardware ethernet 14:18:77:33:4A:D2;
-        fixed-address ores1002.eqiad.wmnet;
-}
-
 host osm-cp1001{
 	hardware ethernet d4:be:d9:f0:74:68;
 	fixed-address osm-cp1001.eqiad.wmnet;
