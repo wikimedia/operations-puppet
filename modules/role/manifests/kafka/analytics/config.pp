@@ -36,7 +36,7 @@ class role::kafka::analytics::config {
     $all_clusters   = hiera('kafka_clusters', $default_clusters)
 
     # Config hash suitable for passing to kafka::server's broker param
-    $brokers_config  = $clusters[$cluster_name]['brokers']
+    $brokers_config  = $all_clusters[$cluster_name]['brokers']
     # Array of broker hostnames in thie Kafka cluster
     $brokers_array   = keys($brokers_config)
     # Comma separated string of broker hostname:ports,
