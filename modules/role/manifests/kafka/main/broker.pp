@@ -25,18 +25,6 @@ class role::kafka::main::broker {
         content => template('role/kafka/kafka-profile.sh.erb'),
     }
 
-    $log_dirs = $::realm ? {
-        'labs'       => ['/var/spool/kafka'],
-        # Production main Kafka brokers have more disks.
-        'production' => [
-            # TODO: fill this in with real partitions when we have hardware.
-            '/var/spool/kafka/a/data',
-            '/var/spool/kafka/b/data',
-            '/var/spool/kafka/c/data',
-            '/var/spool/kafka/d/data',
-        ],
-    }
-
     $nofiles_ulimit = $::realm ? {
         # Use default ulimit for labs kafka
         'labs'       => 8192,
@@ -44,8 +32,13 @@ class role::kafka::main::broker {
         'production' => 65536,
     }
 
+    file { '/srv/kafka':
+        ensure => 'directory',
+        mode   => '0755',
+    }
+
     class { '::kafka::server':
-        log_dirs                        => $log_dirs,
+        log_dirs                        => ['/srv/kafka/data'],
         brokers                         => $::role::kafka::main::config::brokers_config,
         zookeeper_hosts                 => $::role::kafka::main::config::zookeeper_hosts,
         zookeeper_chroot                => $::role::kafka::main::config::zookeeper_chroot,
