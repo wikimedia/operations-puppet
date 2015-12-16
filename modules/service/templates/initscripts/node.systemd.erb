@@ -11,8 +11,10 @@ User=<%= @title %>
 Group=<%= @title %>
 Environment="NODE_PATH=/srv/deployment/<%= @repo %>/node_modules"
 Environment="<%= @title.gsub(/[^a-zA-Z0-9_]/, '_').upcase %>_PORT=<%= @port %>"
+<% if @init_restart -%>
 Restart=always
 RestartSec=2s
+<% end -%>
 # wait 60 seconds for a graceful restart before killing the master
 TimeoutStopSec=60
 WorkingDirectory=/srv/deployment/<%= @repo %>

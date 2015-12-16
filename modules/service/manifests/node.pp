@@ -53,8 +53,12 @@
 #   Whether to store log entries on the target node as well. Default: true
 #
 # [*auto_refresh*]
-#   Whether the service should automatically restarted after config changes.
+#   Whether the service should be automatically restarted after config changes.
 #   Default: true
+#
+# [*init_restart*]
+#  Whether the service should be respawned by the init system in case of
+#  crashes. Default: true
 #
 # === Examples
 #
@@ -89,6 +93,7 @@ define service::node(
     $starter_script  = 'src/server.js',
     $local_logging   = true,
     $auto_refresh    = true,
+    $init_restart    = true,
 ) {
     # Import all common configuration
     include service::configuration
