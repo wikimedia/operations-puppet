@@ -205,3 +205,7 @@ phd.user: 'phd'
 
 diffusion.ssh-user: 'vcs'
 pygments.enabled: true
+
+# 30 days T114014
+phd.garbage-collection:
+  'user.logs': 2592000
