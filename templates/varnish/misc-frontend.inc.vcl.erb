@@ -28,6 +28,10 @@ sub vcl_recv {
         }
     }
 
+    if (req.http.Host == "phabricator.wikimedia.org" && req.url ~ "^/diffusion/[^/]+/browse/") {
+        error 508 "Temporarily blocked due to ongoing phabricator issues";
+    }
+
     call misc_recv_pass;
 
     return (lookup);
