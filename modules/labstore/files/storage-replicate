@@ -208,7 +208,13 @@ with Lockdir(local, lockdir) as lock:
         f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d% %H:%M:%S\n"))
 
     local.run(
-        '/sbin/lvcreate', '--size', '1T', '--snapshot', '--name', snapshot, '%s/%s' % (srcvg, srclv))
+        '/sbin/lvcreate',
+        '--setactivationskip', 'y', # do not activate snapshots by default
+        '--size', '1T',
+        '--snapshot',
+        '--name', snapshot,
+        '%s/%s' % (srcvg, srclv)
+    )
 
     local.run(
         '/bin/mount', '-oro,noload',
