@@ -1220,8 +1220,10 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 }
 
 # Main Kafka Brokers in eqiad and codfw.
-# kafka1001,kafka1002 kafka2001,kafka2002
-node /kafka[12]00[12]\.(eqiad|codfw)\.wmnet/ {
+# kafka1001,kafka1002.
+# kafka2001,kafka2002 in codfw are not yet configured while
+# we figure out where to put a zookeeper cluster in codfw.
+node /kafka100[12]\.eqiad\.wmnet/ {
     role kafka::main::broker
 
     include standard
