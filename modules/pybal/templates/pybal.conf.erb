@@ -9,7 +9,7 @@ bgp-peer-address = <%= @global_options['bgp-peer-address'] %>
 bgp-nexthop-ipv4 = <%= @global_options['bgp-nexthop-ipv4'] %>
 bgp-nexthop-ipv6 = <%= @global_options['bgp-nexthop-ipv6'] %>
 instrumentation = <%= @global_options.fetch('instrumentation', 'yes') %>
-
+<% if @global_options.fetch('dry-run', nil) %>dry-run = <%= @global_options.fetch('dry-run', 'no') %><% end %>
 #
 # LVS service definitions
 #
