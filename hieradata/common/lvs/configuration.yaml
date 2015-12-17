@@ -733,7 +733,7 @@ lvs_services:
     monitors:
       ProxyFetch:
         url:
-        - http://cxserver.svc.eqiad.wmnet
+        - http://cxserver.svc.eqiad.wmnet/_info
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
