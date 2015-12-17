@@ -12,9 +12,9 @@ class eventlogging::deployment::source {
     $key_fingerprint = $::realm ? {
         'labs'       => $::labsproject ? {
             'deployment-prep' => '02:9b:99:e2:f0:16:70:a3:d2:5a:e6:02:a3:73:0e:b0',
-            default           => undef, # ?
+            default           => undef,
         },
-        'production' => undef, # TODO
+        'production' => 'b6:4e:1a:1b:4b:70:ef:91:31:cd:a3:18:9a:ca:41:44',
         default      => undef,
     }
 
