@@ -54,16 +54,16 @@ class Hiera
             plugin = @config[:default_plugin]
           end
           if not @plugins.include? plugin
-            Hiera.
-              warn "Hierarchy specifies to use plugin '#{plugin}' but can't find it"
+            Hiera
+              .warn "Hierarchy specifies to use plugin '#{plugin}' but can't find it"
             next
           end
           # We look up onto a foreign backend by limiting us to a
           # single element of hierarchy.
           Config[:hierarchy] = [source]
-          new_answer = @plugins[plugin].
-                       lookup(key, scope, order_override,
-                              resolution_type)
+          new_answer = @plugins[plugin]
+                       .lookup(key, scope, order_override,
+                               resolution_type)
           Config[:hierarchy] = hierarchy
 
           next if new_answer.nil?
