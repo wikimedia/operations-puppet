@@ -28,7 +28,7 @@ rescue LoadError
 end
 
 # Get the scope from the command line arguments
-def get_scope()
+def get_scope
   # Transform the CL arguments in a dictionary in the form "::option" => argument
   scope = Hash[ARGV.map { |kv| "::#{kv.sub('--', '')}".split('=') }]
   abort(usage "Error: --fqdn=FQDN is required.") unless scope['::fqdn']

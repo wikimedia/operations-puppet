@@ -96,12 +96,6 @@ Style/CommandLiteral:
     - 'modules/ganeti/lib/facter/ganeti.rb'
     - 'modules/gridengine/lib/puppet/provider/gridengine_resource/parsed.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/DefWithParentheses:
-  Exclude:
-    - 'utils/hiera_lookup'
-
 # Offense count: 16
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
