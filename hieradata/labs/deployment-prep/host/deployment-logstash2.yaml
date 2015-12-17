@@ -19,12 +19,7 @@ logstash::filter_workers: 1
 logstash::heap_memory_mb: 128
 
 logstash::cluster_hosts:
-  - logstash1001.eqiad.wmnet
-  - logstash1002.eqiad.wmnet
-  - logstash1003.eqiad.wmnet
-  - logstash1004.eqiad.wmnet
-  - logstash1005.eqiad.wmnet
-  - logstash1006.eqiad.wmnet
+  - deployment-logstash2.deployment-prep.eqiad.wmflabs
 
 # Kibana
 role::kibana::vhost: logstash-beta.wmflabs.org
