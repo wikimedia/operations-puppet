@@ -9,16 +9,16 @@ class puppetmaster::labs {
     include puppetmaster::certcleaner
 
     cron { 'update_public_puppet_repos':
-        ensure      => present,
-        command     => '(cd /var/lib/git/operations/puppet && /usr/bin/git pull && /usr/bin/git submodule update --init) > /dev/null 2>&1',
-        user        => 'gitpuppet',
-        minute      => '*/1',
+        ensure  => present,
+        command => '(cd /var/lib/git/operations/puppet && /usr/bin/git pull && /usr/bin/git submodule update --init) > /dev/null 2>&1',
+        user    => 'gitpuppet',
+        minute  => '*/1',
     }
 
     cron { 'update_private_puppet_repos':
-        ensure      => present,
-        command     => '(cd /var/lib/git/operations/labs/private && /usr/bin/git pull) > /dev/null 2>&1',
-        user        => 'gitpuppet',
-        minute      => '*/1',
+        ensure  => present,
+        command => '(cd /var/lib/git/operations/labs/private && /usr/bin/git pull) > /dev/null 2>&1',
+        user    => 'gitpuppet',
+        minute  => '*/1',
     }
 }
