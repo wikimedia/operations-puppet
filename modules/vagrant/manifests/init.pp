@@ -17,9 +17,9 @@ class vagrant(
     }
 
     user { 'mwvagrant':
-        ensure     => present,
-        gid        => 'wikidev',
-        home       => $vagrant_home,
+        ensure => present,
+        gid    => 'wikidev',
+        home   => $vagrant_home,
     }
 
     file { $vagrant_home:
@@ -42,7 +42,7 @@ class vagrant(
         privileges => [
             'ALL=(mwvagrant) NOPASSWD: ALL',
         ],
-        group => 'wikidev',
+        group      => 'wikidev',
     }
 
     # Wrapper script to make it easier to invoke vagrant in a shared
