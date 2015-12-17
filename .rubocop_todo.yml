@@ -195,12 +195,6 @@ Style/MethodCallParentheses:
     - 'modules/wmflib/spec/hiera/role_backend_spec.rb'
     - 'utils/hiera_lookup'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/MultilineIfThen:
-  Exclude:
-    - 'modules/ganeti/lib/facter/ganeti.rb'
-
 # Offense count: 20
 # Cop supports --auto-correct.
 Style/NegatedIf:
