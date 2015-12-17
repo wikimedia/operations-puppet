@@ -31,8 +31,15 @@
   </Files>
 <%- end %>
 
-# enable HTTP Strict Transport Security
+  # enable HTTP Strict Transport Security
   Header always set Strict-Transport-Security "max-age=31536000"
+
+  <Location "/">
+    <RequireAll>
+      Include phabbanlist.conf
+      Require all granted
+    </RequireAll>
+  </Location>
 
   <Directory "<%= @docroot %>">
     Options Indexes FollowSymLinks MultiViews

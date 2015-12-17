@@ -1,0 +1,21 @@
+# Using mod_remoteip we have access to the client IP
+# for as long as X-Client-IP is accurate
+
+# Docs:
+# https://httpd.apache.org/docs/2.4/howto/access.html
+# https://httpd.apache.org/docs/2.4/expr.html
+
+# Examples:
+# Require expr %{HTTP_USER_AGENT} != 'testbotagent'
+# Require not ip 23.255.244.254
+# Require not host phishers.example.com
+
+# - top user agents -
+# time ngrep -n 200 port 80 -W byline | grep -i user-agent | sort | uniq -c | sort -n
+# - (ignorant of the headers but...) you can get an idea of accessed uri's live -
+# httpry -f timestamp,source-ip,request-uri | egrep -i diffusion
+# - top in use URL from log -
+# apachetop -lf /var/log/apache2/phabricator_access.log
+
+# Aggressive bot not honoring the robots /diffusion exclude 2015/12/16
+Require not ip 45.32.160.62
