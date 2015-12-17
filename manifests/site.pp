@@ -240,12 +240,6 @@ node 'caesium.eqiad.wmnet' {
     include standard
 }
 
-# T83044 cameras
-node 'calcium.wikimedia.org' {
-    $cluster = 'misc'
-    role spare
-}
-
 # Californium hosts openstack-dashboard AKA horizon
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {

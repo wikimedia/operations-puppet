@@ -294,11 +294,6 @@ host caesium {
 	fixed-address caesium.eqiad.wmnet;
 }
 
-host calcium {
-	hardware ethernet 78:2b:cb:08:b9:e9;
-	fixed-address calcium.wikimedia.org;
-}
-
 host californium {
 	hardware ethernet 84:2b:2b:fd:b9:f6;
 	fixed-address californium.wikimedia.org;
