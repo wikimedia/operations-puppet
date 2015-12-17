@@ -242,7 +242,50 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
     # $out_dir as a medium of last resort. These files are rotated
     # and rsynced to stat1003 & stat1002 for backup.
 
-    $out_dir = $::eventlogging::out_dir
+    $out_dir = '/srv/log/eventlogging'
+
+    # We ensure the /srv/log (parent of $out_dir) manually here, as
+    # there is no proper class to rely on for this, and starting a
+    # separate would be an overkill for now.
+    if !defined(File['/srv/log']) {
+        file { '/srv/log':
+            ensure => 'directory',
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
+
+    # Logs are collected in <$log_dir> and rotated daily.
+    file { [$out_dir, "${out_dir}/archive"]:
+        ensure => 'directory',
+        owner  => 'eventlogging',
+        group  => 'eventlogging',
+        mode   => '0664',
+    }
+
+    # TODO put this in a file when role::eventlogging
+    # moves to role modules.
+    $logrotate_content = "${out_dir}/*.log {
+       daily
+       olddir ${out_dir}/archive
+       notifempty
+       maxage 30
+       rotate 1000
+       dateext
+       compress
+       missingok
+}"
+
+    file { '/etc/logrotate.d/eventlogging-files':
+        content => $logrotate_content,
+        mode    => '0444',
+        require => [
+            File[$out_dir],
+            File["${out_dir}/archive"]
+        ],
+    }
+
 
     $kafka_consumer_args  = 'auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1'
     $kafka_consumer_group = hiera(

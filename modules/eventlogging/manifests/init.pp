@@ -55,24 +55,6 @@ class eventlogging {
         'python-zmq',
     ])
 
-    # eventlogging runtime logs go here
-    $log_dir = '/var/log/eventlogging'
-
-    # eventlogging content output can go here
-    $out_dir = '/srv/log/eventlogging'
-
-    # We ensure the /srv/log (parent of $log_dir) manually here, as
-    # there is no proper class to rely on for this, and starting a
-    # separate would be an overkill for now.
-    if !defined(File['/srv/log']) {
-        file { '/srv/log':
-            ensure => 'directory',
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root',
-        }
-    }
-
     group { 'eventlogging':
         ensure => present,
     }
@@ -109,25 +91,21 @@ class eventlogging {
         ensure => directory,
     }
 
+    # eventlogging runtime logs go here
+    $log_dir = '/var/log/eventlogging'
+
     # Logs are collected in <$log_dir> and rotated daily.
-    file { [
-            $log_dir,
-            $out_dir,
-            "${out_dir}/archive"
-        ]:
+    file { $log_dir:
         ensure => 'directory',
         owner  => 'eventlogging',
         group  => 'eventlogging',
-        mode   => '0664',
+        mode   => '0644',
     }
 
     file { '/etc/logrotate.d/eventlogging':
         content => template('eventlogging/logrotate.erb'),
         mode    => '0444',
-        require => [
-            File[$log_dir],
-            File["${out_dir}/archive"]
-        ],
+        require => File[$log_dir],
     }
 
 

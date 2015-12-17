@@ -1,21 +1,11 @@
 # This file is managed by Puppet.
 # puppet:///modules/eventlogging/logrotate
-
+# Rotate eventlogging daemon runtime logs
+#
 <%= @log_dir %>/*.log {
        notifempty
        maxage 30
        rotate 2
-       dateext
-       compress
-       missingok
-}
-
-<%= @out_dir %>/*.log {
-       daily
-       olddir <%= @out_dir %>/archive
-       notifempty
-       maxage 30
-       rotate 1000
        dateext
        compress
        missingok
