@@ -51,16 +51,16 @@ class rsyslog::receiver (
     }
 
     file { $log_directory:
-        ensure  => directory,
-        owner   => 'syslog',
-        group   => 'root',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'syslog',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { $archive_directory:
-        ensure  => directory,
-        owner   => 'syslog',
-        group   => 'root',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'syslog',
+        group  => 'root',
+        mode   => '0755',
     }
 }
