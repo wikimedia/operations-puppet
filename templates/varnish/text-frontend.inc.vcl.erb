@@ -149,7 +149,7 @@ sub vcl_fetch {
 		set beresp.ttl = 60 s;
 	}
 
-	if (beresp.ttl <= 0s || req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
+	if ((beresp.status < 500 && beresp.ttl <= 0s) || req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
 		set beresp.ttl = 120s;
 		return (hit_for_pass);
 	}
