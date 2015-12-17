@@ -175,7 +175,7 @@ registry:
     - nl
     - nn
     - nov
-    - no
+    - 'no'
     - nrm
     - nso
     - nv
@@ -455,7 +455,7 @@ registry:
     - nl
     - nn
     - nov
-    - no
+    - 'no'
     - nrm
     - nso
     - nv
@@ -640,8 +640,8 @@ registry:
       nn:
         - da
         - nb
-        - no
-      no:
+        - 'no'
+      'no':
         - nn
       oc:
         - ca
