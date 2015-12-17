@@ -15,6 +15,11 @@ elasticsearch::unicast_hosts:
 logstash::filter_workers: 2
 logstash::heap_memory_mb: 256
 
+logstash::cluster_hosts:
+  - stashbot-logstash.stashbot.eqiad.wmflabs
+  - stashbot-elastic01.stashbot.eqiad.wmflabs
+  - stashbot-elastic02.stashbot.eqiad.wmflabs
+
 # Kibana
 role::kibana::vhost: stashbot.wmflabs.org
 role::kibana::serveradmin: bd808@wikimedia.org
