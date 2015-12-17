@@ -1,0 +1,7 @@
+-- This file is managed by puppet.
+--
+-- The Powerdns recursor only supports a single .lua file.  This is that file; it includes
+--  other files via 'dofile'.
+<% @lua_hooks.sort.map do |hook| -%>
+dofile("<%= hook %>")
+<% end -%>
