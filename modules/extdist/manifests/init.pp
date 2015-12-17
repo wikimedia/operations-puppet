@@ -5,7 +5,7 @@
 #
 class extdist(
     $base_dir = '/srv',
-    $log_path = '/var/log/extdist'
+    $log_dir = '/var/log/'
 ){
     $dist_dir     = "${base_dir}/dist"
     $clone_dir    = "${base_dir}/extdist"
@@ -17,7 +17,7 @@ class extdist(
         'API_URL'   => 'https://www.mediawiki.org/w/api.php',
         'GIT_URL'   => 'https://gerrit.wikimedia.org/r/mediawiki/extensions/%s',
         'DIST_PATH' => "${dist_dir}/extensions",
-        'LOG_FILE'  => $log_path,
+        'LOG_FILE'  => "${log_dir}/extdist",
         'SRC_PATH'  => $src_path,
         'PID_FILE'  => "${pid_folder}/pid.lock",
         'COMPOSER'  => "${composer_dir}/vendor/bin/composer"
@@ -27,7 +27,7 @@ class extdist(
         'API_URL'   => 'https://www.mediawiki.org/w/api.php',
         'DIST_PATH' => "${dist_dir}/skins",
         'GIT_URL'   => 'https://gerrit.wikimedia.org/r/mediawiki/skins/%s',
-        'LOG_FILE'  => $log_path,
+        'LOG_FILE'  => "${log_dir}/skindist",
         'SRC_PATH'  => $src_path,
         'PID_FILE'  => "${pid_folder}/skinpid.lock",
         'COMPOSER'  => "${composer_dir}/vendor/bin/composer"
