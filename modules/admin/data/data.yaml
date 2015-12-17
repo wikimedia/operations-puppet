@@ -1556,7 +1556,9 @@ users:
     gid: 500
     name: jynus
     realname: Jaime Crespo
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYXTjhdJPeTbKhlLn4c4iem8qOZ6EhHWiT3mKBhAJf9/hUnrIV9u5QTDo3Fdkz/d7ydiTYDx1Aem24sqg1mZtu16L3o9L7ixciuXAfxgHHBSQRKThO1Ts+qGHpPmDo0xBNLGPaKXxOhOogqw0+DN/NePfvW+iHk0kMBhQP+TZcLdV0zoylthwllavd/X3MQersYG+LyaBrLXxnjd3p1JcitDi/NKE6xtJG20zQ26115i95co8j9iuuGjHNF8bSSjICgUO3PU5/vWmTXNF4iL1SLAWCVwMchMynEn76XxKfG6l39tH3OaqyydTWICSWtzGgGOQREx5HC0dbdkPHWtix jynus@seul]
+    ssh_keys: 
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYXTjhdJPeTbKhlLn4c4iem8qOZ6EhHWiT3mKBhAJf9/hUnrIV9u5QTDo3Fdkz/d7ydiTYDx1Aem24sqg1mZtu16L3o9L7ixciuXAfxgHHBSQRKThO1Ts+qGHpPmDo0xBNLGPaKXxOhOogqw0+DN/NePfvW+iHk0kMBhQP+TZcLdV0zoylthwllavd/X3MQersYG+LyaBrLXxnjd3p1JcitDi/NKE6xtJG20zQ26115i95co8j9iuuGjHNF8bSSjICgUO3PU5/vWmTXNF4iL1SLAWCVwMchMynEn76XxKfG6l39tH3OaqyydTWICSWtzGgGOQREx5HC0dbdkPHWtix jynus@seul
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCWNAMYh92QyZNjHcTyoapyWSKkQBSFJVgKWNW+5of3fiJ0frczz9R+MW2RiRPjdh2VoOzEdMboRogr7O5I1D2x07cVYpTNYEx4cPmzg7xLKUqPY0zxJGZz7g2zlXr1RtiM21MTNiG+tF1ndnB3KYa1LB9fA8pSgQkGz+UjFWGg2/LD6tLzNA8yB+MjV0X+nEtC+i58L5nchMN/m3RsyfCGOnJxPAsOCbQpolITCKSVceRPI/FvBAbaaUidL7MvfkgFTUjf+NX2b25ZdIVYD4BVGHrkw3fFQpPYdidEyLMN/wnu5leZskoOnuMzn2AgHQEBdsrKeV/umdFq3SjGJkkR jynus@yuvi
     uid: 12161
   moushira:
     ensure: present
