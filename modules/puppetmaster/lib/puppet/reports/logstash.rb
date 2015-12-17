@@ -56,7 +56,7 @@ Puppet::Reports.register_report(:logstash) do
         end
 
         begin
-            Timeout::timeout(CONFIG[:timeout]) do
+            Timeout.timeout(CONFIG[:timeout]) do
                 sock = TCPSocket.new "#{CONFIG[:host]}" , CONFIG[:port]
                 sock.puts event.to_json
                 sock.flush

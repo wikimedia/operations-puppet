@@ -80,13 +80,6 @@ Style/ClassVars:
   Exclude:
     - 'modules/labstore/lib/puppet/parser/functions/mount_nfs_volume.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/ColonMethodCall:
-  Exclude:
-    - 'modules/base/lib/facter/physicalcorecount.rb'
-    - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, AllowInnerBackticks.
