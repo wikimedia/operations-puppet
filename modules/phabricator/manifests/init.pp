@@ -71,6 +71,7 @@
 class phabricator (
     $phabdir          = '/srv/phab',
     $timezone         = 'UTC',
+    $trusted_proxies  = [],
     $lock_file        = '',
     $git_tag          = 'HEAD',
     $sprint_tag       = '',
@@ -84,6 +85,7 @@ class phabricator (
     $serveradmin      = '',
     $serveralias      = '',
 ) {
+
 
     #A combination of static and dynamic conf parameters must be merged
     $module_path = get_module_path($module_name)

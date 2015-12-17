@@ -11,6 +11,11 @@
 <%- end %>
   DocumentRoot <%= @docroot %>
 
+  <IfModule mod_remoteip.c>
+    RemoteIPHeader X-Client-IP
+    RemoteIPInternalProxy <%= @trusted_proxies.join(' ') %>
+  </IfModule>
+
   # redirect/enforce http->https
   RewriteEngine on
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
