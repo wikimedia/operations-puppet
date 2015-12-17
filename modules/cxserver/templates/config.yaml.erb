@@ -9,10 +9,6 @@ jwt:
   algorithms: [ 'HS256' ]
 <% end -%>
 
-no_proxy:
-  - <%= @restbase_host %>
-  - <%= @apertium %>
-
 mt:
   apertium:
     api: '<%= @apertium %>'
