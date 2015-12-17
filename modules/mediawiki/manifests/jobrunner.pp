@@ -27,10 +27,10 @@ class mediawiki::jobrunner (
 
     file { '/etc/default/jobrunner':
         content => template('mediawiki/jobrunner/jobrunner.default.erb'),
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        notify => Service['jobrunner'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Service['jobrunner'],
     }
 
     file { '/etc/init/jobrunner.conf':
@@ -77,17 +77,17 @@ class mediawiki::jobrunner (
     }
 
     ferm::service { 'mediawiki-jobrunner':
-        proto  => 'tcp',
-        port   => $port,
+        proto   => 'tcp',
+        port    => $port,
         notrack => true,
-        srange => '$INTERNAL',
+        srange  => '$INTERNAL',
     }
 
     file { '/etc/logrotate.d/mediawiki_jobrunner':
-        source  => 'puppet:///modules/mediawiki/logrotate.d_mediawiki_jobrunner',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        source => 'puppet:///modules/mediawiki/logrotate.d_mediawiki_jobrunner',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     if os_version('ubuntu >= trusty') {
@@ -104,7 +104,7 @@ class mediawiki::jobrunner (
 
         apache::site{ 'hhvm_jobrunner':
             priority => 1,
-            content   => template('mediawiki/jobrunner/site.conf.erb')
+            content  => template('mediawiki/jobrunner/site.conf.erb')
         }
     }
 
