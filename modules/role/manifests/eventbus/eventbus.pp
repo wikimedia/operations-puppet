@@ -10,6 +10,7 @@
 #
 class role::eventbus::eventbus {
     require ::eventlogging
+    require ::role::kafka::main::config
 
     $eventlogging_path = '/srv/deployment/eventlogging/eventbus'
 
@@ -23,10 +24,6 @@ class role::eventbus::eventbus {
         service_name      => 'eventlogging-service-eventbus',
     }
 
-    # Infer Kafka cluster configuration from this class.
-    # TODO: Use production kafka cluster configuration
-    # when it exists.
-    require ::role::analytics::kafka::config
 
     file { '/etc/eventbus':
         ensure => 'directory',
@@ -36,7 +33,7 @@ class role::eventbus::eventbus {
         source => 'puppet:///modules/role/eventbus/topics.yaml',
     }
 
-    $kafka_brokers_array = $role::analytics::kafka::config::brokers_array
+    $kafka_brokers_array = $role::kafka::main::config::brokers_array
     $kafka_base_uri      = inline_template('kafka:///<%= @kafka_brokers_array.join(":9092,") + ":9092" %>')
 
     $outputs = [
