@@ -10,7 +10,7 @@ class dnsrecursor(
     $allow_from               = [],
     $additional_forward_zones = '',
     $auth_zones               = undef,
-    $lua_script               = undef,
+    $lua_hooks                = undef,
 ) {
     package { 'pdns-recursor':
         ensure => 'present',
@@ -43,6 +43,18 @@ class dnsrecursor(
         subscribe => File['/etc/powerdns/recursor.conf'],
         pattern   => 'pdns_recursor',
         hasstatus => false,
+    }
+
+    if $lua_hooks {
+        file { '/etc/powerdns/recursorhooks.lua':
+            ensure  => 'present',
+            require => Package['pdns-recursor'],
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            notify  => Service['pdns-recursor'],
+            content => template('dnsrecursor/recursorhooks.lua.erb'),
+        }
     }
 
     include metrics
