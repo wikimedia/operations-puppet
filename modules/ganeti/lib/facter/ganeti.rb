@@ -3,7 +3,7 @@ Facter.add("ganeti_cluster") do
 
     setcode do
         if File.exists?("/var/lib/ganeti/ssconf_cluster_name") then
-            cmdline = %x{cat /var/lib/ganeti/ssconf_cluster_name}.chomp
+            cmdline = `cat /var/lib/ganeti/ssconf_cluster_name`.chomp
         end
     end
 end

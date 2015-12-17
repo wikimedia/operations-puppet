@@ -28,7 +28,7 @@ Puppet::Type.type(:gridengine_resource).provide(:parsed, :parent => Puppet::Prov
     #       default.
 
     def read
-      %x{qconf -sc}
+      `qconf -sc`
     end
 
     def write(text)

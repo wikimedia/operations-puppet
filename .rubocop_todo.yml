@@ -87,15 +87,6 @@ Style/ColonMethodCall:
     - 'modules/base/lib/facter/physicalcorecount.rb'
     - 'modules/puppetmaster/lib/puppet/reports/logstash.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, AllowInnerBackticks.
-Style/CommandLiteral:
-  Exclude:
-    - 'modules/apt/lib/facter/apt.rb'
-    - 'modules/ganeti/lib/facter/ganeti.rb'
-    - 'modules/gridengine/lib/puppet/provider/gridengine_resource/parsed.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/DefWithParentheses:
