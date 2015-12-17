@@ -62,13 +62,9 @@ if warn == 0 || crit == 0
     exit 3
 end
 
-if File.exists?(adminlockfile)
-       enabled = false
-end
+enabled = false if File.exists?(adminlockfile)
 
-if File.exists?(runlockfile)
-       running = true
-end
+running = true if File.exists?(runlockfile)
 
 lastrun = File.stat(statefile).mtime.to_i if File.exists?(statefile)
 
@@ -96,9 +92,7 @@ end
 
 def time_ago(s)
   units = {86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second'}
-  if s == 0
-    return "0 seconds"
-  end
+  return "0 seconds" if s == 0
   units.sort.reverse.each do |len, unit|
     return "#{s / len} #{unit}#{'s' if s / len > 1}" if s >= len
   end

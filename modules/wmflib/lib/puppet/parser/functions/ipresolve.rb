@@ -51,16 +51,12 @@ class BasicTTLCache
   end
 
   def read(key)
-    if is_valid?key
-      return @cache[key].value
-    end
+    return @cache[key].value if is_valid?key
     return nil
   end
 
   def read_stale(key)
-    if @cache.key?(key)
-      return @cache[key].value
-    end
+    return @cache[key].value if @cache.key?(key)
     return nil
   end
 end
@@ -94,9 +90,7 @@ class DNSCached
       rescue
       # If resolution fails and we do have a cached stale value, use it
         res = @cache.read_stale(cache_key)
-        if res.nil?
-            fail("DNS lookup failed for #{name} #{type}")
-        end
+        fail("DNS lookup failed for #{name} #{type}") if res.nil?
         res.to_s
       end
     else

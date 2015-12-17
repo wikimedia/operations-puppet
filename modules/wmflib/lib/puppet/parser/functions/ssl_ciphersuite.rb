@@ -224,9 +224,7 @@ END
       end
       output.push("ssl_ciphers #{cipherlist};")
       output.push('ssl_prefer_server_ciphers on;')
-      if set_dhparam
-        output.push('ssl_dhparam /etc/ssl/dhparam.pem;')
-      end
+      output.push('ssl_dhparam /etc/ssl/dhparam.pem;') if set_dhparam
       unless hsts_days.nil?
         hsts_seconds = hsts_days * 86400
         output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\";")
