@@ -45,14 +45,14 @@ define security::access::config(
     include security::access
 
     file { "/etc/security/access.conf.d/${priority}-${name}":
-        ensure   => present,
-        source   => $source,
-        content  => $content,
-        owner    => 'root',
-        group    => 'root',
-        mode     => '0444',
-        require  => File['/etc/security/access.conf.d'],
-        notify   => Exec['merge-access-conf'],
+        ensure  => present,
+        source  => $source,
+        content => $content,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/etc/security/access.conf.d'],
+        notify  => Exec['merge-access-conf'],
     }
 }
 
