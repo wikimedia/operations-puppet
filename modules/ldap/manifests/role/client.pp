@@ -4,9 +4,9 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
     if ( $::realm == 'labs' ) {
         $includes = ['openldap', 'pam', 'nss', 'sudo', 'utils']
 
-        # always allow cron for all users in the system
-        security::access::config { 'labs-cron':
-            content  => "+:ALL:cron\n",
+        # bypass pam_access restrictions for local commands
+        security::access::config { 'labs-local':
+            content  => "+:ALL:LOCAL\n",
             priority => '00',
         }
 
