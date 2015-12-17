@@ -13,7 +13,8 @@ module Puppet::Parser::Functions
   newfunction(:to_milliseconds, :type => :rvalue, :arity => 1) do |args|
     time_spec = args.first
     /^([0-9.+e]+)\s*(.*).?$/ =~ time_spec.downcase
-    count, unit = $1, $2
+    count = $1
+    unit = $2
     factor = case unit
              when /^n/         then 1.0e-6      # nanoseconds
              when /^u/         then 1.0e-3      # microseconds

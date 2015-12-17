@@ -229,12 +229,6 @@ Style/NumericLiterals:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Style/ParallelAssignment:
-  Exclude:
-    - 'modules/wmflib/lib/puppet/parser/functions/to_milliseconds.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
 # Configuration parameters: AllowSafeAssignment.
 Style/ParenthesesAroundCondition:
   Exclude:
