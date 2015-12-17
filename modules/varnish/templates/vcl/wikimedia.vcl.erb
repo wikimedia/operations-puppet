@@ -529,8 +529,6 @@ sub vcl_recv {
 	// IP processing is req->req mangling that shouldn't be re-done on
 	// restart, and XFF-appending is non-idempotent for restart purposes..
 	if (req.restarts == 0) {
-		unset req.http.X-True-Hit; // so it can't be faked
-
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 		call recv_fe_ip_processing;
 <% end %>
@@ -656,11 +654,6 @@ sub vcl_fetch {
 }
 
 sub vcl_hit {
-	// vcl_hit is not called when we hit a hit-for-pass
-	// object, so this can be used to differentiate for
-	// X-Cache later...
-	set req.http.X-True-Hit = "1";
-
 	if (req.request == "PURGE") {
 		purge;
 		error 204 "Purged";
@@ -724,21 +717,13 @@ sub vcl_deliver {
 
 	if (resp.http.X-Cache) {
 		if (obj.hits > 0) {
-			if (req.http.X-True-Hit) {
-				set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> hit (" + obj.hits + ")";
-			} else {
-				set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> hfp (" + obj.hits + ")";
-			}
+			set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> hit (" + obj.hits + ")";
 		} else {
 			set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> miss (0)";
 		}
 	} else {
 		if (obj.hits > 0) {
-			if (req.http.X-True-Hit) {
-				set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> hit (" + obj.hits + ")";
-			} else {
-				set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> hfp (" + obj.hits + ")";
-			}
+			set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> hit (" + obj.hits + ")";
 		} else {
 			set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> miss (0)";
 		}
