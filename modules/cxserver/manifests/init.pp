@@ -24,7 +24,11 @@ class cxserver(
     $yandex_api_key = undef,
     $registry = undef,
     $jwt_secret = undef,
+    $no_proxy_list = undef,
 ) {
+    if $no_proxy_list {
+        validate_array($no_proxy_list)
+    }
     if $registry {
         $ordered_registry = ordered_json($registry)
     }
