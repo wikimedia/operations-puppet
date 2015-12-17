@@ -526,6 +526,7 @@ sub vcl_fini {
 }
 
 sub vcl_recv {
+	unset req.http.X-CDIS; // clear internal cache-disposition header
 	// IP processing is req->req mangling that shouldn't be re-done on
 	// restart, and XFF-appending is non-idempotent for restart purposes..
 	if (req.restarts == 0) {
@@ -654,6 +655,7 @@ sub vcl_fetch {
 }
 
 sub vcl_hit {
+	set req.http.X-CDIS = "hit";
 	if (req.request == "PURGE") {
 		purge;
 		error 204 "Purged";
@@ -663,6 +665,7 @@ sub vcl_hit {
 }
 
 sub vcl_miss {
+	set req.http.X-CDIS = "miss";
 	if (req.request == "PURGE") {
 		purge;
 		error 204 "Cache miss";
@@ -676,6 +679,12 @@ sub vcl_miss {
 }
 
 sub vcl_pass {
+	if (req.http.X-CDIS) {
+		// _pass can theoretically be called after moving through _hit or _miss
+		set req.http.X-CDIS = req.http.X-CDIS + "+pass";
+	} else {
+		set req.http.X-CDIS = "pass";
+	}
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call misspass_limiter;
 <% end %>
@@ -716,17 +725,9 @@ sub vcl_deliver {
 <% end -%>
 
 	if (resp.http.X-Cache) {
-		if (obj.hits > 0) {
-			set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> hit (" + obj.hits + ")";
-		} else {
-			set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> miss (0)";
-		}
+		set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> " + req.http.X-CDIS + "(" + obj.hits + ")";
 	} else {
-		if (obj.hits > 0) {
-			set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> hit (" + obj.hits + ")";
-		} else {
-			set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> miss (0)";
-		}
+		set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> " + req.http.X-CDIS + "(" + obj.hits + ")";
 	}
 
 <% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
