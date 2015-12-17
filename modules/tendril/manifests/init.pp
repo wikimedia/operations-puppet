@@ -36,10 +36,10 @@ class tendril (
     }
 
     file { '/srv/tendril/lib/config.php':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
         content => template('tendril/config.php.erb'),
     }
 }

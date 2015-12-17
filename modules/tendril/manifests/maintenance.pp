@@ -54,15 +54,15 @@ class tendril::maintenance (
     }
 
     file { '/var/log/tendril-cron-5m.log':
-        owner  => 'tendril',
-        group  => 'tendril',
-        mode   => '0640',
+        owner => 'tendril',
+        group => 'tendril',
+        mode  => '0640',
     }
 
     file { '/var/log/tendril-cron-5m.err':
-        owner  => 'tendril',
-        group  => 'tendril',
-        mode   => '0640',
+        owner => 'tendril',
+        group => 'tendril',
+        mode  => '0640',
     }
 
     file { '/usr/local/bin/tendril-queries.pl':
@@ -73,15 +73,15 @@ class tendril::maintenance (
     }
 
     file { '/var/log/tendril-queries.log':
-        owner  => 'tendril',
-        group  => 'tendril',
-        mode   => '0640',
+        owner => 'tendril',
+        group => 'tendril',
+        mode  => '0640',
     }
 
     file { '/var/log/tendril-queries.err':
-        owner  => 'tendril',
-        group  => 'tendril',
-        mode   => '0640',
+        owner => 'tendril',
+        group => 'tendril',
+        mode  => '0640',
     }
 
     file { '/etc/mysql/tendril.cnf':
