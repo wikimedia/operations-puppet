@@ -1,0 +1,27 @@
+-- This script comes from puppet: modules/dnsrecursor/templates/metal-dns.lua.erb.
+--
+-- It inserts a few select entries for labs metal DNS resolution.
+--
+-- This is handled here rather than in designate because it's easier to puppetize
+--  this file than to insert things into designate from puppet, and currently
+--  puppet/hiera contains the canonical representation of bare metal hosts and names.
+
+metal = {}
+
+<% @labs_metal.sort.map do |k,v| -%>
+metal["<%= k %>.<%= @site %>.wmflabs"] = "<%= v['IPv4'] %>"
+<% end -%>
+
+function nxdomain (remoteip, domain, qtype)
+    if qtype ~= pdns.A then
+        return -1, {}
+    end  --  only A records
+
+    if (metal[domain]) then
+        ret={}
+        ret[1]= {qtype=pdns.A, content=(metal[domain]), ttl=300}
+        return 0, ret
+    else
+        return -1, {}
+    end
+end
