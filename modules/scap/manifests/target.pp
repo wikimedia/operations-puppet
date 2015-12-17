@@ -104,7 +104,8 @@ define scap::target(
     }
 
     file { $deploy_path:
-        ensure  => 'directory',
+        # scap3 will symlink during deployments.
+        ensure  => 'present',
         owner   => $deploy_user,
         mode    => '0775',
         # Set permissions recursively.
