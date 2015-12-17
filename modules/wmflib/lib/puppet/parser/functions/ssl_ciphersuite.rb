@@ -211,7 +211,7 @@ END
         output.push('SSLOpenSSLConfCmd DHParameters "/etc/ssl/dhparam.pem"')
       end
       unless hsts_days.nil?
-        hsts_seconds = hsts_days * 86400
+        hsts_seconds = hsts_days * 86_400
         output.push("Header always set Strict-Transport-Security \"max-age=#{hsts_seconds}\"")
       end
     else
@@ -228,7 +228,7 @@ END
         output.push('ssl_dhparam /etc/ssl/dhparam.pem;')
       end
       unless hsts_days.nil?
-        hsts_seconds = hsts_days * 86400
+        hsts_seconds = hsts_days * 86_400
         output.push("add_header Strict-Transport-Security \"max-age=#{hsts_seconds}\";")
       end
     end

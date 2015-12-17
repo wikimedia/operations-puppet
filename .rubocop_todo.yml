@@ -222,11 +222,6 @@ Style/Not:
     - 'modules/wmflib/lib/puppet/parser/functions/role.rb'
     - 'utils/hiera_lookup'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/NumericLiterals:
-  MinDigits: 6
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/ParallelAssignment:

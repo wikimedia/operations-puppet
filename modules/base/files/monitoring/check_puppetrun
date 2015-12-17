@@ -95,7 +95,7 @@ else
 end
 
 def time_ago(s)
-  units = {86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second'}
+  units = {86_400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second'}
   if s == 0
     return "0 seconds"
   end
