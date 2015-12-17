@@ -13,6 +13,12 @@ define swift::mount_filesystem (
         mode   => '0750',
     }
 
+    if os_version('ubuntu <= trusty') {
+        $mount_options = 'nobootwait,noatime,nodiratime,nobarrier,logbufs=8'
+    } else {
+        $mount_options = 'nofail,noatime,nodiratime,nobarrier,logbufs=8'
+    }
+
     mount { $mount_point:
         # XXX this won't mount the disks the first time they are added to
         # fstab.
@@ -23,7 +29,7 @@ define swift::mount_filesystem (
         device   => "LABEL=swift-${dev_suffix}",
         name     => $mount_point,
         fstype   => 'xfs',
-        options  => 'nobootwait,noatime,nodiratime,nobarrier,logbufs=8',
+        options  => $mount_options,
         atboot   => true,
         remounts => true,
     }
