@@ -689,15 +689,27 @@ node /^db20(29|40|47|54|61|68)\.codfw\.wmnet/ {
 
 
 ## x1 shard
-node /^db10(29|31)\.eqiad\.wmnet/ {
+node /^db10(29)\.eqiad\.wmnet/ {
     include role::coredb::x1
+}
+
+node /^db10(31)\.codfw\.wmnet/ {
+
+    $cluster = 'mysql'
+    class { 'role::mariadb::core':
+        shard => 'x1',
+        p_s   => 'on',
+    }
+    include base::firewall
 }
 
 node /^db20(09)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
-        shard => 'x1',
+        shard         => 'x1',
+        p_s           => 'on',
+        binlog_format => 'ROW',
     }
     include base::firewall
 }
