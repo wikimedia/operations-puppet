@@ -264,6 +264,12 @@ class phabricator (
         require => Package['libapache2-mod-php5'],
     }
 
+    file { '/etc/apache2/phabbanlist.conf':
+        content => template('phabricator/phabbanlist.conf.erb'),
+        require => Package['libapache2-mod-php5'],
+        notify  => Service['apache2'],
+    }
+
     file { "${phabdir}/phabricator/conf/local/local.json":
         content => template('phabricator/local.json.erb'),
         require => Git::Install['phabricator/phabricator'],
