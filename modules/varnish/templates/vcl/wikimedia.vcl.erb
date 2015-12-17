@@ -560,7 +560,7 @@ sub vcl_recv {
 	// disable grace in backends, so we do not serve stale content to
 	// frontends, which would trigger hit-for-pass there (a value of zero
 	// is buggy in varnish 3.x and uses the default 10s value)
-	set req.grace = 0.000001s;
+	set req.grace = 0.000001s
 <% end -%>
 
 	<% if @vcl_config.fetch("has_def_backend", "yes") == "yes" -%>
@@ -641,7 +641,7 @@ sub vcl_fetch {
 	// disable grace in backends, so we do not serve stale content to
 	// frontends, which would trigger hit-for-pass there (a value of zero
 	// is buggy in varnish 3.x and uses the default 10s value)
-	set beresp.grace = 0.000001s;
+	set beresp.grace = 0.000001s
 <% end -%>
 
 <% if @vcl_config.fetch("do_gzip", false) -%>
