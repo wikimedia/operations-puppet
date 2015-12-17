@@ -29,7 +29,22 @@ graphoid::domains:
   - wikivoyage.org
   - wiktionary.org
 graphoid::protocol: http
-lvs::configuration::lvs_services: dummy
+lvs::configuration::lvs_services:
+  apaches:
+    description: "Main MediaWiki application server cluster"
+    class: low-traffic
+    sites:
+    - eqiad
+    ip:
+      eqiad: 1.2.3.4
+    depool-threshold: '.2'
+    monitors:
+      ProxyFetch:
+        url:
+        - http://en.wikipedia.beta.wmflabs.org/wiki/Special:BlankPage
+      IdleConnection:
+        timeout-clean-reconnect: 3
+        max-delay: 300
 lvs::configuration::lvs_service_ips:
   apaches:
     eqiad: dummy
