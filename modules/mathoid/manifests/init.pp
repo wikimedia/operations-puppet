@@ -35,6 +35,7 @@ class mathoid(
 
     service::node { 'mathoid':
         port            => 10042,
+        no_workers      => 50,
         config          => {
             svg       => $svg_generation,
             img       => $img_generation,
