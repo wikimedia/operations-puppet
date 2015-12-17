@@ -53,7 +53,7 @@ class Hiera
           else
             plugin = @config[:default_plugin]
           end
-          if not @plugins.include? plugin
+          unless @plugins.include? plugin
             Hiera.
               warn "Hierarchy specifies to use plugin '#{plugin}' but can't find it"
             next

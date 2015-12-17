@@ -21,7 +21,7 @@ task :setup do
       FileUtils.ln_s('../../../../%s' % x, 'spec/fixtures/modules/%s' % x)
   end
   symlinks.each do |x|
-    if !File.exist?(x[0])
+    unless File.exist?(x[0])
       FileUtils.ln_s(x[1], x[0])
     end
   end

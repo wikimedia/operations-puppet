@@ -42,7 +42,7 @@ module Puppet::Parser::Functions
     # - Include class role::#{arg} if present
 
     # Prevent use outside of node definitions
-    if not self.is_nodescope?
+    unless self.is_nodescope?
       raise Puppet::ParseError,
             "role can only be used in node scope, while you are in scope #{self}"
     end

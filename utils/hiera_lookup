@@ -73,7 +73,7 @@ key = ARGV.pop()
 abort(usage "\nError: KEY is required") if key.match('^--')
 
 hiera = Hiera.new(:config => cfg)
-if not verbose || get_scope().include?('::debug')
+unless verbose || get_scope().include?('::debug')
     Hiera.logger = "noop"
 end
 

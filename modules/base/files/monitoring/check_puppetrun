@@ -113,7 +113,7 @@ if enabled_only && enabled == false
     exit 0
 end
 
-if not enabled
+unless enabled
     puts "WARNING: Puppet is currently disabled, last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit 1
 end

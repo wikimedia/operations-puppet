@@ -201,11 +201,6 @@ Style/MultilineIfThen:
   Exclude:
     - 'modules/ganeti/lib/facter/ganeti.rb'
 
-# Offense count: 20
-# Cop supports --auto-correct.
-Style/NegatedIf:
-  Enabled: false
-
 # Offense count: 1
 Style/NestedTernaryOperator:
   Exclude:

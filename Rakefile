@@ -149,7 +149,7 @@ task :spec do
 
         module_name = rakefile.match('modules/(.+)/')[1]
 
-        if !run_module_spec(module_name)
+        unless run_module_spec(module_name)
             failed_modules << module_name  # recording
         end
         puts "\n"
