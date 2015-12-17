@@ -8,7 +8,11 @@ class role::deployment::server(
     # include misc::deployment::scripts
     include role::deployment::mediawiki
     include role::deployment::services
-    include eventlogging::deployment::source
+
+    # Not yet ready for production - otto
+    if $::realm == 'labs' {
+        include eventlogging::deployment::source
+    }
 
     class { 'deployment::deployment_server':
         deployment_group => $deployment_group,
