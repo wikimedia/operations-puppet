@@ -693,7 +693,7 @@ node /^db10(29)\.eqiad\.wmnet/ {
     include role::coredb::x1
 }
 
-node /^db10(31)\.codfw\.wmnet/ {
+node /^db10(31)\.eqiad\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::core':
