@@ -7,7 +7,7 @@ describe 'proxy_backend' do
     # Build a node with two roles applied
     @hiera = Hiera.new({:config => 'spec/fixtures/hiera.proxy.yaml'})
     Hiera::Config.load('spec/fixtures/hiera.proxy.yaml')
-    @backend = Hiera::Backend::Proxy_backend.new()
+    @backend = Hiera::Backend::Proxy_backend.new
     @compiler = Puppet::Parser::Compiler.new(Puppet::Node.new("foo"))
     @scope = Puppet::Parser::Scope.new(@compiler)
     @scope.source = Puppet::Resource::Type.new(:node, :foo)

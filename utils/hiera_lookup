@@ -69,12 +69,12 @@ $DIR = ENV['PUPPETDIR'] || File.expand_path('../..', __FILE__)
 $LOAD_PATH << File.join($DIR, 'modules/wmflib/lib')
 cfg = File.join($DIR, 'modules/puppetmaster/files/production.hiera.yaml')
 
-key = ARGV.pop()
+key = ARGV.pop
 abort(usage "\nError: KEY is required") if key.match('^--')
 
 hiera = Hiera.new(:config => cfg)
-if not verbose || get_scope().include?('::debug')
+if not verbose || get_scope.include?('::debug')
     Hiera.logger = "noop"
 end
 
-puts hiera.lookup(key, nil, get_scope(), nil, :priority)
+puts hiera.lookup(key, nil, get_scope, nil, :priority)

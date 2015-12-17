@@ -11,19 +11,19 @@ module Puppet::Parser::Functions
     in_path = args.first
 
     if mod = Puppet::Module.find(mod_name)
-       mod_path = mod.path()
+       mod_path = mod.path
     else
       fail("secret(): Module #{mod_name} not found")
     end
 
     sec_path = mod_path + secs_subdir + in_path
-    final_path = Pathname.new(sec_path).cleanpath()
+    final_path = Pathname.new(sec_path).cleanpath
 
     # Bail early if it's not a regular, readable file
     if !final_path.file? || !final_path.readable?
       fail(ArgumentError, "secret(): invalid secret #{in_path}")
     end
 
-    return final_path.read()
+    return final_path.read
   end
 end

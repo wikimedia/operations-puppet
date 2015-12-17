@@ -7,7 +7,7 @@ describe 'role_backend' do
 
     @hiera = Hiera.new({:config => 'spec/fixtures/hiera.yaml'})
     Hiera::Config.load('spec/fixtures/hiera.yaml')
-    @backend = Hiera::Backend::Role_backend.new()
+    @backend = Hiera::Backend::Role_backend.new
     @compiler = Puppet::Parser::Compiler.new(Puppet::Node.new("foo"))
     @scope = Puppet::Parser::Scope.new(@compiler)
     @scope.source = Puppet::Resource::Type.new(:node, :foo)

@@ -180,21 +180,6 @@ Style/LeadingCommentSpace:
     - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
     - 'modules/wmflib/lib/hiera/mwcache.rb'
 
-# Offense count: 15
-# Cop supports --auto-correct.
-Style/MethodCallParentheses:
-  Exclude:
-    - 'modules/base/lib/facter/physicalcorecount.rb'
-    - 'modules/base/spec/defines/service_unit_spec.rb'
-    - 'modules/install_server/spec/classes/install_server_preseed_server_spec.rb'
-    - 'modules/squid3/spec/classes/squid3_spec.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/ipresolve.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/secret.rb'
-    - 'modules/wmflib/spec/functions/role_spec.rb'
-    - 'modules/wmflib/spec/hiera/proxy_backend_spec.rb'
-    - 'modules/wmflib/spec/hiera/role_backend_spec.rb'
-    - 'utils/hiera_lookup'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/MultilineIfThen:

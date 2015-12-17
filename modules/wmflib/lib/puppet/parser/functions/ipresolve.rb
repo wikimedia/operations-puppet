@@ -74,7 +74,7 @@ class DNSCached
 
   def get_resource(name, type, nameserver)
     if nameserver.nil?
-        dns = Resolv::DNS.open()
+        dns = Resolv::DNS.open
     else
         dns = Resolv::DNS.open(:nameserver => [nameserver])
     end

@@ -10,6 +10,6 @@ describe 'install_server::preseed-server', :type => :class do
             'group'  => 'root',
             'recurse' => 'true',
             'links' => 'manage',
-        }).without_path()
+        }).without_path
     end
 end

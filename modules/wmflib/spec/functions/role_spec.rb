@@ -29,7 +29,7 @@ describe 'role' do
   end
 
   it "includes the role class" do
-    expect { @scope.function_role(['test']) }.to_not raise_error()
+    expect { @scope.function_role(['test']) }.to_not raise_error
   end
 
   it "raises an error when called more than once in a scope" do
