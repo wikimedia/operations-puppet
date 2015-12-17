@@ -18,8 +18,3 @@ mt:
     key: '<%= @yandex_api_key %>'
     certificate: '/etc/ssl/certs/Certum_Trusted_Network_CA.pem'
   <% end -%>
-
-# registry to use from config.prod.yaml
-<% if @ordered_registry -%>
-registry: <%= @ordered_registry %>
-<% end -%>
