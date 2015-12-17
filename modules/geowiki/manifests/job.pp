@@ -18,8 +18,8 @@ class geowiki::job {
     require_package('python-mysqldb')
 
     file { $::geowiki::params::log_path:
-        ensure  => 'directory',
-        owner   => $::geowiki::params::user,
-        group   => $::geowiki::params::user,
+        ensure => 'directory',
+        owner  => $::geowiki::params::user,
+        group  => $::geowiki::params::user,
     }
 }
