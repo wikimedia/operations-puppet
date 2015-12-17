@@ -58,7 +58,7 @@ class scap::l10nupdate(
     }
 
     sudo::user { 'l10nupdate':
-        user => 'l10nupdate',
+        user       => 'l10nupdate',
         privileges => [
             # Allow l10nupdate user to call sync-l10n as the mwdeploy user.
             # This command is equivalent to a restricted sync-dir call that
