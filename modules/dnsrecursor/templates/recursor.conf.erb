@@ -207,6 +207,6 @@ setuid=pdns
 #
 # version-string=PowerDNS Recursor 3.1 $Id: pdns_recursor.cc 838 2006-05-19 14:35:27Z ahu $
 
-<% if @lua_script -%>
-lua-dns-script=<%= @lua_script %>
+<% if @lua_hooks -%>
+lua-dns-script=/etc/powerdns/recursorhooks.lua
 <% end -%>
