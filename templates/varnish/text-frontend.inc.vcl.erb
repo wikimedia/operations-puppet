@@ -145,15 +145,7 @@ sub vcl_miss {
 }
 
 sub vcl_fetch {
-	if (req.http.X-Subdomain && (req.url ~ "mobileaction=" || req.url ~ "useformat=")) {
-		set beresp.ttl = 60 s;
-	}
-
-	if ((beresp.status < 500 && beresp.ttl <= 0s) || req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
-		set req.http.X-CDIS = req.http.X-CDIS + "+chfp"; // +created-hit-for-pass
-		set beresp.ttl = 120s;
-		return (hit_for_pass);
-	}
+	call common_fetch;
 
 	return (deliver);
 }
