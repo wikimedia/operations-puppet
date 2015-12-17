@@ -12,7 +12,7 @@ jwt:
 <% if @no_proxy_list -%>
 no_proxy_list:
 <% @no_proxy_list.each do |no_proxy_entry| -%>
-  - <%= @no_proxy_entry -%>
+  - <%= no_proxy_entry %>
 <% end -%>
 <% end -%>
 
