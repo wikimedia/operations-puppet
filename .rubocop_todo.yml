@@ -170,16 +170,6 @@ Style/IfUnlessModifier:
 Style/IndentationWidth:
   Enabled: false
 
-# Offense count: 6
-# Cop supports --auto-correct.
-Style/LeadingCommentSpace:
-  Exclude:
-    - 'modules/base/lib/facter/lldp.rb'
-    - 'modules/base/spec/defines/service_unit_spec.rb'
-    - 'modules/wmflib/lib/hiera/backend/nuyaml_backend.rb'
-    - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
-    - 'modules/wmflib/lib/hiera/mwcache.rb'
-
 # Offense count: 15
 # Cop supports --auto-correct.
 Style/MethodCallParentheses:

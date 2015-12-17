@@ -108,7 +108,7 @@ class Hiera
       if pages.keys.include? "-1"
         raise Hiera::MediawikiPageNotFoundError, "Hiera:#{path}"
       end
-      #yes, it's that convoluted.
+      # yes, it's that convoluted.
       key = pages.keys[0]
       return pages[key]["revisions"][0]
     end

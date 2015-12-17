@@ -30,7 +30,7 @@ class Hiera
 
       def load_plugins
         @plugins ||={}
-        #Load plugins only once
+        # Load plugins only once
         @config[:plugins].each do |plugin|
           Hiera.debug "Loading plugin #{plugin}"
           begin

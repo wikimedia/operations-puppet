@@ -49,7 +49,7 @@
 #
 # === Example
 # Say you have a lookup for "cluster", and you have
-#"regex/%{hostname}" in your hierarchy; also, let's say that your
+# "regex/%{hostname}" in your hierarchy; also, let's say that your
 # scope contains hostname = "web1001.local". So if your regex.yaml
 # file contains:
 #
