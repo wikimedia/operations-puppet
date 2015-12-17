@@ -125,6 +125,10 @@ class WMFElasticCollector(diamond.collector.Collector):
 
             'http.current_open',
             'http.total_opened',
+
+            'thread_pool.get.rejected',
+            'thread_pool.search.rejected',
+            'thread_pool.suggest.rejected',
         ]
 
     def get_default_config_help(self):
