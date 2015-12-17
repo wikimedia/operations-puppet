@@ -1,5 +1,3 @@
-logstash_host: logstash1001.eqiad.wmnet
-proxy: http://url-downloader.wikimedia.org:8080
 yandex_url: https://translate.yandex.net
 registry:
   source:
@@ -643,7 +641,7 @@ registry:
         - da
         - nb
         - no
-       no:
+      no:
         - nn
       oc:
         - ca
@@ -687,7 +685,7 @@ registry:
       Dictd:
         en:
           - hi
-       JsonDict:
+      JsonDict:
         ca:
           - es
         en:
