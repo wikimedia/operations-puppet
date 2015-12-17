@@ -23,12 +23,12 @@ class vagrant::mediawiki(
 
     # Add custom apparmor profile that allows NFS mounts
     file { '/etc/apparmor.d/abstractions/lxc/container-base':
-        ensure  => 'present',
-        source  => 'puppet:///modules/vagrant/lxc/container-base',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        notify  => Service['apparmor'],
+        ensure => 'present',
+        source => 'puppet:///modules/vagrant/lxc/container-base',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        notify => Service['apparmor'],
     }
 
     git::clone { 'mediawiki/vagrant':

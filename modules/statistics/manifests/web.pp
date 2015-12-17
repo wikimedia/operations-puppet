@@ -12,10 +12,10 @@ class statistics::web {
     # Individual log files can be created and made readable by
     # classes that manage individual sites.
     file { '/var/log/apache2':
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'wikidev',
-        mode    => '0750',
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'wikidev',
+        mode   => '0750',
     }
 
     include ::apache::mod::rewrite
