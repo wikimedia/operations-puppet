@@ -1232,8 +1232,11 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 # kafka1001,kafka1002.
 # kafka2001,kafka2002 in codfw are not yet configured while
 # we figure out where to put a zookeeper cluster in codfw.
+#
+# For now, eventlogging-service-eventbus is also colocated
+# on these brokers.
 node /kafka100[12]\.eqiad\.wmnet/ {
-    role kafka::main::broker
+    role kafka::main::broker, eventbus::eventbus
 
     include standard
     include base::firewall
