@@ -1,13 +1,5 @@
 // Common functions for the Text/Mobile Varnish clusters
 
-sub stash_cookie {
-	// This header is saved, and restored before sending it to MediaWiki
-	if (req.restarts == 0) {
-		set req.http.X-Orig-Cookie = req.http.Cookie;
-		unset req.http.Cookie;
-	}
-}
-
 sub restore_cookie {
 	// Restore the original Cookie header for upstream
 	// Assumes client header X-Orig-Cookie has been filtered!
@@ -18,16 +10,24 @@ sub restore_cookie {
 }
 
 sub evaluate_cookie {
-	// A session or token cookie will prevent caching if varied on,
-	// move the Cookie header out of the way otherwise.
-	// Note static and load.php exceptions to the user/token
-	// exceptions, as these should be cacheable even when logged in.
-	if (req.http.Cookie ~ "([sS]ession|Token)="
-	    && req.url !~ "^/static/"
-	    && req.url !~ "^/w/load\.php") {
-		return (pass);
-	} else {
-		call stash_cookie;
+	// For hash->lookup purposes, if there's a valid-seeming session|token
+	// cookie, replace it with the shared Cookie value "vuc=1", otherwise
+	// remove the Cookie completely.  In either case, in vcl_(pass|miss)
+	// on the way to any backend fetch, it will be restored to the
+	// original value.
+	// Later in common_fetch, we'll create hit-for-pass objects for any
+	// response with Vary:Cookie and Cookie:vuc=1.  This will allow
+	// logged-in users to share the anonymous users' cache for
+	// non-Vary:Cookie responses, and then share a single hit-for-pass
+	// object in a single Vary slot per object for those responses that
+	// should Vary:Cookie.
+	if (req.restarts == 0) {
+		set req.http.X-Orig-Cookie = req.http.Cookie;
+		if (req.http.Cookie ~ "([sS]ession|Token)=") {
+			set req.http.Cookie = "vuc=1";
+		} else {
+			unset req.http.Cookie;
+		}
 	}
 }
 
@@ -105,19 +105,30 @@ sub common_fetch {
 		set beresp.ttl = 60 s;
 	}
 
-	// This block creates a 601s hit-for-pass object on certain
-	// uncacheable responses.  The conditions are that it's not a 5xx, the
-	// calculated TTL is <= 0, and very importantly that a deeper cache
-	// did not log it as a true cache hit.  This is because varnish may
-	// send recently-expired cache hit objects to another requesting
-	// varnish under grace-mode rules, and we don't want those creating
-	// hit-for-pass objects in the requesting varnish.
+	// There are a couple different conditions here under which we set a
+	// 601s hit-for-pass object based on response conditions in vcl_fetch:
+	// 1) Calculated TTL <= 0 + Status < 500 + No underlying cache hit:
+	//    These are generally uncacheable responses.  The 5xx exception
+	//    avoids us accidentally replacing a good stale/grace object with
+	//    an hfp (and then repeatedly passing on potentially-cacheable
+	//    content) due to an isolated 5xx response, and the exception for
+	//    underlying cache hits (detected from X-Cache) is to avoid
+	//    creating a persist HFP object when a lower-level varnish
+	//    returned an expired object under grace-mode rules.
+	// 2) vuc=1 + Vary:Cookie
+	//    All requests with real login session|token cookies share the
+	//    Cookie:vuc=1 value for Vary purposes.  This allows them to share
+	//    a single hit-for-pass object here if the response shouldn't be
+	//    shared between users (Vary:Cookie).
 	if (
-		(
-			beresp.ttl <= 0s
-			&& beresp.status < 500
-			&& (!beresp.http.X-Cache || beresp.http.X-Cache !~ " hit\(")
-		)
+	    (
+		beresp.ttl <= 0s
+		&& beresp.status < 500
+		&& (!beresp.http.X-Cache || beresp.http.X-Cache !~ " hit\(")
+	    ) || (
+		req.http.Cookie == "vuc=1"
+		&& beresp.Vary ~ "(^|,)\s*Cookie\s*(,|$)"
+	    )
 	) {
 		set req.http.X-CDIS = req.http.X-CDIS + "+chfp"; // +created-hit-for-pass
 		set beresp.ttl = 601s;
