@@ -60,9 +60,9 @@ adapter = pm_conf[:dbadapter]
 args = {:adapter => adapter, :log_level => pm_conf[:rails_loglevel]}
 
 case adapter
-  when "sqlite3"
+when "sqlite3"
     args[:dbfile] = pm_conf[:dblocation]
-  when "mysql", "postgresql"
+when "mysql", "postgresql"
     args[:host]     = pm_conf[:dbserver] unless pm_conf[:dbserver].to_s.empty?
     args[:username] = pm_conf[:dbuser] unless pm_conf[:dbuser].to_s.empty?
     args[:password] = pm_conf[:dbpassword] unless pm_conf[:dbpassword].to_s.empty?
@@ -70,7 +70,7 @@ case adapter
     args[:port]     = pm_conf[:dbport] unless pm_conf[:dbport].to_s.empty?
     socket          = pm_conf[:dbsocket]
     args[:socket]   = socket unless socket.to_s.empty?
-  else
+else
     raise ArgumentError, "Invalid db adapter #{adapter}"
 end
 
