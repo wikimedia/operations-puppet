@@ -4,6 +4,7 @@ admin::groups:
   - parsoid-admin
   - ocg-render-admins
   - wdqs-admins
+  - eventlogging-admins
 debdeploy::grains:
   debdeploy-deployment:
     value: standard

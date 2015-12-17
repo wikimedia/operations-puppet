@@ -5,7 +5,3 @@ base::resolving::domain_search:
   - codfw.wmnet
 cluster: misc
 scap::l10nupdate::run_l10nupdate: true
-admin::groups:
-  # Any group that uses scap and keyholder to deploy
-  # will need to be included here.
-  - eventlogging-admins
