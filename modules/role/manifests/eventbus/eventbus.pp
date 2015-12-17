@@ -24,7 +24,6 @@ class role::eventbus::eventbus {
         service_name      => 'eventlogging-service-eventbus',
     }
 
-
     file { '/etc/eventbus':
         ensure => 'directory',
     }
