@@ -1,0 +1,8 @@
+Code-Review+1: Andrew Bogott <abogott@wikimedia.org>
+Code-Review+2: Faidon Liambotis <faidon@wikimedia.org>
+Verified+2: Faidon Liambotis <faidon@wikimedia.org>
+Submitted-by: Faidon Liambotis <faidon@wikimedia.org>
+Submitted-at: Thu, 17 Dec 2015 15:07:28 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/259705
+Project: operations/puppet
+Branch: refs/heads/production
