@@ -554,15 +554,6 @@ sub vcl_recv {
 		error 403 "HTTP method not allowed.";
 	}
 
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-	set req.grace = 5m;
-<% else -%>
-	// disable grace in backends, so we do not serve stale content to
-	// frontends, which would trigger hit-for-pass there (a value of zero
-	// is buggy in varnish 3.x and uses the default 10s value)
-	set req.grace = 0.000001s
-<% end -%>
-
 	<% if @vcl_config.fetch("has_def_backend", "yes") == "yes" -%>
 	/* Select the default backend/director, which is always the one named 'backend'.
 	 * If an instance has no default 'backend', it must declare has_def_backend==no,
@@ -570,11 +561,11 @@ sub vcl_recv {
 	 */
 	set req.backend = backend;
 
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-	if (!req.backend.healthy) {
+	if (req.backend.healthy) {
+		set req.grace = 5m;
+	} else {
 		set req.grace = 60m;
 	}
-<% end -%>
 	<% end -%>
 	
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
@@ -634,15 +625,7 @@ sub vcl_fetch {
 		}
 	}
 <% end -%>
-
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	set beresp.grace = 60m;
-<% else -%>
-	// disable grace in backends, so we do not serve stale content to
-	// frontends, which would trigger hit-for-pass there (a value of zero
-	// is buggy in varnish 3.x and uses the default 10s value)
-	set beresp.grace = 0.000001s
-<% end -%>
 
 <% if @vcl_config.fetch("do_gzip", false) -%>
 	// Compress compressible things if the backend didn't already
