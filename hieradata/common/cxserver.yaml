@@ -681,14 +681,14 @@ registry:
         - ru
       uk:
         - ru
-    dictionary:
-      Dictd:
-        en:
-          - hi
-      JsonDict:
-        ca:
-          - es
-        en:
-          - es
-        es:
-          - ca
+  dictionary:
+    Dictd:
+      en:
+        - hi
+    JsonDict:
+       ca:
+        - es
+       en:
+        - es
+       es:
+        - ca
