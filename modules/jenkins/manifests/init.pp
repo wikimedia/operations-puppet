@@ -35,17 +35,17 @@ class jenkins {
     }
 
     file { '/var/lib/jenkins/init.groovy.d':
-        ensure  => 'directory',
-        owner   => 'jenkins',
-        group   => 'jenkins',
-        mode    => '0755',
+        ensure => 'directory',
+        owner  => 'jenkins',
+        group  => 'jenkins',
+        mode   => '0755',
     }
 
     file { '/var/lib/jenkins/init.groovy.d/cli-shutdown.groovy':
-        source  => 'puppet:///modules/jenkins/cli-shutdown.groovy',
-        owner   => 'jenkins',
-        group   => 'jenkins',
-        mode    => '0755',
+        source => 'puppet:///modules/jenkins/cli-shutdown.groovy',
+        owner  => 'jenkins',
+        group  => 'jenkins',
+        mode   => '0755',
     }
 
     service { 'jenkins':
