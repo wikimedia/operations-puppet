@@ -100,7 +100,7 @@ sub common_fetch {
 		set beresp.ttl = 60 s;
 	}
 
-	// This block creates a 120s hit-for-pass object on certain
+	// This block creates a 601s hit-for-pass object on certain
 	// uncacheable responses.  The conditions are that it's not a 5xx, the
 	// calculated TTL is <= 0, and very importantly that a deeper cache
 	// did not log it as a true cache hit.  This is because varnish may
@@ -117,7 +117,7 @@ sub common_fetch {
 		|| req.http.X-Wikimedia-Security-Audit == "1"
 	) {
 		set req.http.X-CDIS = req.http.X-CDIS + "+chfp"; // +created-hit-for-pass
-		set beresp.ttl = 120s;
+		set beresp.ttl = 601s;
 		return (hit_for_pass);
 	}
 }
