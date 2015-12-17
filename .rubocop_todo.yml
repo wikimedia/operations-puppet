@@ -211,17 +211,6 @@ Style/NestedTernaryOperator:
   Exclude:
     - 'modules/graphite/lib/puppet/parser/functions/configparser_format.rb'
 
-# Offense count: 6
-# Cop supports --auto-correct.
-Style/Not:
-  Exclude:
-    - 'modules/base/files/monitoring/check_puppetrun'
-    - 'modules/ganglia/lib/puppet/parser/functions/ganglia_aggregator_config.rb'
-    - 'modules/puppetmaster/files/puppetstoredconfigclean.rb'
-    - 'modules/wmflib/lib/hiera/backend/proxy_backend.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/role.rb'
-    - 'utils/hiera_lookup'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 Style/NumericLiterals:

@@ -16,7 +16,7 @@ module Puppet::Parser::Functions
     clusters.each do |_cluster, data|
       data['sites'].each do |site, aggregators|
         name = sprintf("%s %s", data['name'], site)
-        if not aggregators.empty?
+        if !aggregators.empty?
           aggregator = aggregators.join(' ')
         else
           unless site_wide_aggregators.include? site

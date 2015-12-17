@@ -74,7 +74,7 @@ case adapter
     raise ArgumentError, "Invalid db adapter #{adapter}"
 end
 
-args[:database] = "puppet" unless not args[:database].to_s.empty?
+args[:database] = "puppet" unless !args[:database].to_s.empty?
 
 ActiveRecord::Base.establish_connection(args)
 
