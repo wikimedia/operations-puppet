@@ -108,13 +108,6 @@ Style/DefWithParentheses:
 Style/DotPosition:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/EmptyLiteral:
-  Exclude:
-    - 'modules/admin/lib/puppet/parser/functions/unique_users.rb'
-    - 'modules/wmflib/lib/puppet/parser/functions/array_concat.rb'
-
 # Offense count: 1
 # Configuration parameters: Exclude.
 Style/FileName:
