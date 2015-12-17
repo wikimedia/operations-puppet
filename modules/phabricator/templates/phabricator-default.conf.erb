@@ -39,9 +39,10 @@
     Require all granted
   </Directory>
 
-  ErrorLog /var/log/apache2/<%= @name %>_error.log
   LogLevel warn
-  CustomLog /var/log/apache2/<%= @name %>_access.log combined
+  ErrorLog /var/log/apache2/phabricator_error.log
+  LogFormat "%a %{c}a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined-clientip
+  CustomLog /var/log/apache2/phabricator_access.log combined-clientip
   ServerSignature Off
 
   RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
