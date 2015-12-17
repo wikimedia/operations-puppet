@@ -36,7 +36,10 @@ class role::phabricator::main {
     include phabricator::mpm
     include lvs::realserver
     include base::firewall
+    include ::apache::mod::remoteip
 
+    # this site's misc-lb caching proxies hostnames
+    $cache_misc_nodes = hiera('cache::misc::nodes', [])
     $current_tag = 'release/2015-07-08/1'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
@@ -45,6 +48,7 @@ class role::phabricator::main {
 
     class { '::phabricator':
         serveralias      => $altdom,
+        trusted_proxies  => $cache_misc_nodes[$::site],
         git_tag          => $current_tag,
         lock_file        => '/var/run/phab_repo_lock',
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
