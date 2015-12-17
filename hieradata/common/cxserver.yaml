@@ -177,7 +177,7 @@ registry:
     - nl
     - nn
     - nov
-    - no
+    - 'no'
     - nrm
     - nso
     - nv
@@ -457,7 +457,7 @@ registry:
     - nl
     - nn
     - nov
-    - no
+    - 'no'
     - nrm
     - nso
     - nv
@@ -643,7 +643,7 @@ registry:
         - da
         - nb
         - no
-       no:
+      'no':
         - nn
       oc:
         - ca
@@ -683,14 +683,14 @@ registry:
         - ru
       uk:
         - ru
-    dictionary:
-      Dictd:
-        en:
-          - hi
-       JsonDict:
-        ca:
-          - es
-        en:
-          - es
-        es:
-          - ca
+  dictionary:
+    Dictd:
+      en:
+        - hi
+    JsonDict:
+      ca:
+        - es
+      en:
+        - es
+      es:
+        - ca
