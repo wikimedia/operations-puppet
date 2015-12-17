@@ -248,7 +248,7 @@ class WMFElasticCollector(diamond.collector.Collector):
             cluster_stats = self.cluster_stats()
             for metric, value in cluster_stats.iteritems():
                 self.publish(metric, value)
-            health_stats = self.health_stats()
+            health_stats = self.cluster_health()
             for metric, value in health_stats.iteritems():
                 self.publish(metric, value)
 
