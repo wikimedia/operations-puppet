@@ -5,6 +5,7 @@ class contint::hhvm {
         # hhvm fall back to the env variable HHVM_REPO_CENTRAL_PATH. It is
         # defined in the global Jenkins configuration and vary per build thanks
         # to $WORKSPACE.
+        # lint:ignore:arrow_alignment
         cli_settings => {
             hhvm => {
                 repo  => {
@@ -25,6 +26,7 @@ class contint::hhvm {
                 debug => { core_dump_report => false },
             },
         },
+        # lint:endignore
     }
 
     alternatives::select { 'php':
