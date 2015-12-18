@@ -6,10 +6,6 @@ include "text-common.inc.vcl";
 sub vcl_recv {
 	call vcl_recv_purge;
 
-	if (req.http.host ~ "^test\.") {
-		set req.http.X-Wikimedia-Debug = "1";
-	}
-
 <% if @site_tier == "one" -%>
 
 	if (req.url ~ "^/w/api\.php") {
