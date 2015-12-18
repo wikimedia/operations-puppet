@@ -55,11 +55,11 @@ class role::analytics::refinery {
 #
 class role::analytics::refinery::camus {
     require role::analytics::refinery
-    include role::analytics::kafka::config
+    include role::kafka::analytics::config
 
     # Make all uses of camus::job set kafka_brokers to this
     Camus::Job {
-        kafka_brokers => suffix($role::analytics::kafka::config::brokers_array, ':9092')
+        kafka_brokers => suffix($role::kafka::analytics::config::brokers_array, ':9092')
     }
 
     # Import webrequest_* topics into /wmf/data/raw/webrequest
