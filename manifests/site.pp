@@ -793,6 +793,12 @@ node 'db1009.eqiad.wmnet' {
 node 'db1047.eqiad.wmnet' {
     # this slave has an m4 custom replication protocol
     role mariadb::analytics, mariadb::analytics::custom_repl_slave
+    class { 'role::mariadb::misc::eventlogging':
+        shard  => 'm4',
+        master => false,
+    }
+    include base::firewall
+
 }
 
 node 'db1069.eqiad.wmnet' {
