@@ -45,12 +45,6 @@ class contint::slave_scripts {
         origin             => 'https://gerrit.wikimedia.org/r/p/integration/phpcs.git',
         recurse_submodules => true,
     }
-    git::clone { 'jenkins CI phpcs MediaWiki standard':
-        ensure    => 'latest',
-        directory => '/srv/deployment/integration/mediawiki-tools-codesniffer',
-        origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/tools/codesniffer.git',
-        branch    => 'wmf-deploy',
-    }
     git::clone { 'jenkins CI phpunit':
         ensure             => 'latest',
         directory          => '/srv/deployment/integration/phpunit',
