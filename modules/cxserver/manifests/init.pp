@@ -34,7 +34,9 @@ class cxserver(
     }
 
     service::node { 'cxserver':
-        port   => 8080,
-        config => template('cxserver/config.yaml.erb'),
+        port            => 8080,
+        config          => template('cxserver/config.yaml.erb'),
+        healthcheck_url => '',
+        has_spec        => true,
     }
 }
