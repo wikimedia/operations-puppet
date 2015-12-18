@@ -109,10 +109,7 @@ class role::kafka::analytics::broker {
     # firewall Kafka Broker
     ferm::service { 'kafka-broker':
         proto  => 'tcp',
-        # TODO: A custom port can be configured in
-        # $brokers_config.  Extract the proper
-        # port to open from that config hash.
-        port   => 9999,
+        port   => $::kafka::server::broker_port,
         srange => '$ALL_NETWORKS',
     }
 
