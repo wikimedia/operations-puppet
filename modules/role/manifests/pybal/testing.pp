@@ -20,6 +20,9 @@ class role::pybal::testing {
         global_options  => $opts,
         lvs_services    => hiera('lvs::configuration::lvs_services'),
         lvs_class_hosts => $lvs_class_hosts_stub,
-        site            => 'eqiad'
+        site            => hiera('pybal::configuration::site', 'eqiad'),
+        config          => hiera('pybal::configuration::config', 'http'),
+        config_host     => hiera(
+            'pybal::configuration::config_host', 'config-master.eqiad.wmnet'),
     }
 }
