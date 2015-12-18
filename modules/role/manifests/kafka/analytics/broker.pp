@@ -10,9 +10,9 @@ class role::kafka::analytics::broker {
     require_package('openjdk-7-jdk')
 
     # Make these local for convenience
-    $cluster_name   = $::role::kafka::main::config::cluster_name
-    $zookeeper_url  = $::role::kafka::main::config::zookeeper_url
-    $brokers_string = $::role::kafka::main::config::brokers_string
+    $cluster_name   = $::role::kafka::analytics::config::cluster_name
+    $zookeeper_url  = $::role::kafka::analytics::config::zookeeper_url
+    $brokers_string = $::role::kafka::analytics::config::brokers_string
 
     system::role { 'role::kafka::analytics::broker':
         description => "Kafka Broker Server in the ${cluster_name} cluster",
