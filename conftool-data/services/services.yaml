@@ -124,3 +124,11 @@ aqs:
       weight: 10
     datacenters:
     - eqiad
+eventbus:
+  eventbus:
+    port: 8085
+    datacenters:
+    - eqiad
+    default_values:
+      pooled: 'yes'
+      weight: 10
