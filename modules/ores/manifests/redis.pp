@@ -3,7 +3,6 @@ class ores::redis(
     $cache_maxmemory,
 ) {
     file { [
-        '/srv/redis',
         '/srv/redis/queue',
         '/srv/redis/cache'
         ]:
