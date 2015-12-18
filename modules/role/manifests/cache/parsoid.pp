@@ -25,7 +25,6 @@ class role::cache::parsoid {
 
     $be_vcl_config = merge($common_vcl_config, {
         'layer'            => 'backend',
-        'retry503'         => 4,
     })
 
     $fe_vcl_config = merge($common_vcl_config, {

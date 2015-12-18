@@ -613,11 +613,13 @@ sub vcl_error {
 		return(deliver);
 	}
 
-<% if @vcl_config.fetch("retry503", "0") != "0" -%>
-	if (obj.status == 503 && req.restarts < <%= @vcl_config["retry503"].to_i %>) {
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	// retry 503 once in frontend instances, to paper over transient issues
+	if (obj.status == 503 && req.restarts == 0 %>) {
 		return(restart);
 	}
 <% end -%>
+
 	if (obj.status == 204 && req.request == "PURGE") {
 		set obj.http.Connection = "keep-alive";
 	}
