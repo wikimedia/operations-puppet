@@ -83,15 +83,6 @@ sub vcl_hash {
 			hash_data("optin=beta");
 		}
 	}
-<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
-	else {
-		// this temporarily protects the mobile cluster (which is
-		// going away at the end of their functional merger) from
-		// having its cache polluted by someone sending text-domain
-		// requests to the mobile IP address via local DNS hacks
-		hash_data("Desktop");
-	}
-<% end -%>
 }
 
 // fe+be common recv code

@@ -166,6 +166,15 @@ sub vcl_recv {
 		} else if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?m\.") {
 			set req.http.X-Subdomain = "M";
 		}
+<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
+		// mobile-cluster-only: prevent desktop/text hostnames from
+		// being used here, or they'll pollute the cache for mobile
+		// users.  This will never happen via our own DNS, but a user
+		// could set the request hostname manually of course...
+		if (!req.http.X-Subdomain) {
+			error 418 "I'm a teapot";
+		}
+<% end -%>
 
 		// mobile-subdomains-only for tag-carrier and Host-rewrite
 		if (req.http.X-Subdomain) {
