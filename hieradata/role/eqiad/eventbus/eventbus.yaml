@@ -1,0 +1,6 @@
+# TODO: move this back to hieradata/role/eqiad/eventbus.yaml
+# when we are able to move modules/role/manifests/eventbus/eventbus.pp
+# back to modules/role/manifests/eventbus.pp.   There is currently
+# a bug that breaks puppet in labs if a role module manifests is top level.
+lvs::realserver::realserver_ips:
+    - '10.2.2.23' # eventbus.svc.eqiad.wmnet

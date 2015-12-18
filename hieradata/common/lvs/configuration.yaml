@@ -114,6 +114,9 @@ lvs_service_ips:
     eqiad: 208.80.154.250
   aqs: &ip_block025
     eqiad: 10.2.2.12
+  eventbus: &ip_block026
+    eqiad: 10.2.2.23
+    codfw: 10.2.1.23
 lvs_services:
   text:
     description: "Main wiki platform LVS service, text.%{::site}.wikimedia.org (Varnish)"
@@ -895,3 +898,27 @@ lvs_services:
       sites:
         eqiad:
           hostname: aqs.svc.eqiad.wmnet
+  eventbus:
+    bgp: 'yes'
+    class: low-traffic
+    conftool:
+      cluster: eventbus
+      service: eventbus
+    depool-threshold: '.5'
+    description: HTTP Event Produce Service
+    icinga:
+      check_command: "check_http_lvs_on_port!eventbus.svc.eqiad.wmnet!8085!/"
+      sites:
+        eqiad:
+          hostname: eventbus.svc.eqiad.wmnet
+        # codfw:
+        #   hostname: eventbus.svc.codfw.wmnet
+    ip: *ip_block026
+    monitors:
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
+    port: '8085'
+    sites:
+    - eqiad
+    # - codfw

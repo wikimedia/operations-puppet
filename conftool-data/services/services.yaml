@@ -124,3 +124,11 @@ aqs:
       weight: 10
     datacenters:
     - eqiad
+eventbus:
+  datacenters:
+  - eqiad
+  # - codfw
+  default_values:
+    pooled: 'yes'
+    weight: 10
+  port: '8085'
