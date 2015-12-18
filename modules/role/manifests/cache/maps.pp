@@ -48,7 +48,6 @@ class role::cache::maps {
 
     $fe_vcl_config = merge($common_vcl_config, {
         'layer'            => 'frontend',
-        'retry503'         => 1,
         'https_redirects'  => true,
     })
 

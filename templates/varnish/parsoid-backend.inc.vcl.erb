@@ -30,3 +30,10 @@ sub vcl_fetch {
 		}
 	}
 }
+
+sub vcl_error {
+	// legacy "retry503 => 4" setting for parsoid backend instance...
+	if (obj.status == 503 && req.restarts < 4) {
+		return(restart);
+	}
+}
