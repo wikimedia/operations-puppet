@@ -37,7 +37,7 @@ lvs::configuration::lvs_services:
     - eqiad
     ip:
       eqiad: 1.2.3.4
-    depool-threshold: '.2'
+    depool-threshold: '.4'
     monitors:
       ProxyFetch:
         url:
@@ -45,6 +45,9 @@ lvs::configuration::lvs_services:
       IdleConnection:
         timeout-clean-reconnect: 3
         max-delay: 300
+    conftool:
+      cluster: appserver
+      service: apache2
 lvs::configuration::lvs_service_ips:
   apaches:
     eqiad: dummy
