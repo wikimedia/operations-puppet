@@ -18,17 +18,28 @@ class role::tor {
         exit_policy     => 'reject *:*', # no exits allowed
     }
 
+    ::tor::instance { 'wikimediaeqiad2':
+        controlport     => '9052',
+        controlpassword => $controlpassword,
+        orport          => '9002',
+        dirport         => '9032',
+        address         => 'tor-eqiad-1.wikimedia.org',
+        nickname        => 'wikimediaeqiad2',
+        contact         => 'noc@wikimedia.org',
+        exit_policy     => 'reject *:*', # no exits allowed
+    }
+
     # actual Tor port where clients connect, public
     ferm::service { 'tor_orport':
         desc  => 'port for the actual Tor client connections',
         proto => 'tcp',
-        port  => '443',
+        port  => '(443 9002)',
     }
 
     # for serving directory updates, public
     ferm::service { 'tor_dirport':
         desc  => 'port advertising the directory service',
         proto => 'tcp',
-        port  => '80',
+        port  => '(80 9032)',
     }
 }
