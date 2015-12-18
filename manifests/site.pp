@@ -1236,7 +1236,7 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 # For now, eventlogging-service-eventbus is also colocated
 # on these brokers.
 node /kafka100[12]\.eqiad\.wmnet/ {
-    role kafka::main::broker, eventbus::eventbus
+    role kafka::main::broker, eventbus
 
     include standard
     include base::firewall

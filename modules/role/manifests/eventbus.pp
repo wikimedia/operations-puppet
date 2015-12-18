@@ -5,10 +5,7 @@
 # and an HTTP Produce service using eventlogging-service to produce
 # to Kafka.
 #
-# TODO: Move this class back to role::eventbus once
-# https://phabricator.wikimedia.org/T119042 works.
-#
-class role::eventbus::eventbus {
+class role::eventbus {
     require ::eventlogging
     require ::role::kafka::main::config
 
