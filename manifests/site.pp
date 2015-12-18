@@ -2247,7 +2247,7 @@ node 'pybal-test2003.codfw.wmnet' {
 
 # Tor relay
 node 'radium.wikimedia.org' {
-    role tor
+    role tor::relay
 
     include base::firewall
     include standard
