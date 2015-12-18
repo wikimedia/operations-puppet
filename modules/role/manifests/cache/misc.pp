@@ -214,6 +214,32 @@ class role::cache::misc {
         }
     ])
 
+    $fe_t1_be_opts = array_concat(
+       $::role::cache::2layer::backend_scaled_weights,
+        [{
+            'port'                  => 3128,
+            'connect_timeout'       => '5s',
+            'first_byte_timeout'    => '35s',
+            'between_bytes_timeout' => '2s',
+            'max_connections'       => 100000,
+            'probe'                 => 'varnish',
+        }]
+    )
+
+    $fe_t2_be_opts = array_concat(
+        [{
+            'backend_match'         => '^cp[0-9]+\.eqiad.wmnet$',
+            'between_bytes_timeout' => '4s',
+            'max_connections'       => 100,
+        }],
+        $fe_t1_be_opts
+    )
+
+    $fe_be_opts = $::site_tier ? {
+        'one'   => $fe_t1_be_opts,
+        default => $fe_t2_be_opts,
+    }
+
     $common_vcl_config = {
         'cache4xx'         => '1m',
         'do_gzip'          => true,
@@ -273,16 +299,7 @@ class role::cache::misc {
                 'service'  => 'varnish-be-rand',
             },
         },
-        backend_options    => array_concat($::role::cache::2layer::backend_scaled_weights, [
-            {
-                'port'                  => 3128,
-                'connect_timeout'       => '5s',
-                'first_byte_timeout'    => '185s',
-                'between_bytes_timeout' => '2s',
-                'max_connections'       => 100000,
-                'probe'                 => 'varnish',
-            },
-        ]),
+        backend_options    => $fe_be_opts,
     }
 
     # ToDo: Remove production conditional once this works
