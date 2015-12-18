@@ -1,27 +1,24 @@
 # sets up a Tor relay
-class tor (
+class tor(
     $address,
     $nickname,
     $contact,
+    $controlport,
     $controlpassword,
-    $controlport = '9051',
-    $orport = '443', # use 9001 if in use
-    $dirport = '80', # use 9030 if in use
-    $exit_policy = 'reject *:*',
-    ) {
+    $orport,
+    $dirport,
+    $exit_policy,
+) {
 
-    # tor itself
     package { 'tor':
         ensure => 'present',
     }
 
-    # status monitor for tor
-    # https://www.atagar.com/arm/
+    # status monitor for tor - https://www.atagar.com/arm/
     package { 'tor-arm':
         ensure => 'present',
     }
 
-    # main config file
     file { '/etc/tor/torrc':
         ensure  => 'present',
         mode    => '0444',
