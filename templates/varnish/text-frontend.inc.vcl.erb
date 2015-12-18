@@ -131,6 +131,10 @@ sub vcl_recv {
 		return (pass);
 	}
 
+	if (req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
+		return (pass);
+	}
+
 	call evaluate_cookie;
 	call pass_authorization;
 	return (lookup);

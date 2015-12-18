@@ -113,8 +113,6 @@ sub common_fetch {
 			&& beresp.status < 500
 			&& (!beresp.http.X-Cache || beresp.http.X-Cache !~ " hit\(")
 		)
-		|| req.http.X-Wikimedia-Debug == "1"
-		|| req.http.X-Wikimedia-Security-Audit == "1"
 	) {
 		set req.http.X-CDIS = req.http.X-CDIS + "+chfp"; // +created-hit-for-pass
 		set beresp.ttl = 601s;

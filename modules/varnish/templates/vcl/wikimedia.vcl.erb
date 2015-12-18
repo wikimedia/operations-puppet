@@ -745,16 +745,5 @@ sub vcl_error {
 	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
 }
 
-sub vcl_hash {
-	if (req.http.X-Wikimedia-Debug) {
-		hash_data(req.http.X-Wikimedia-Debug);
-	}
-	if (req.http.X-Wikimedia-Security-Audit) {
-		hash_data(req.http.X-Wikimedia-Security-Audit);
-	}
-	/* Function vcl_hash in <%= @vcl %>.inc.vcl will be appended here */
-}
-
-
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
