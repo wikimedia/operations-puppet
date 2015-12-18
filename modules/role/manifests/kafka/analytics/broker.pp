@@ -113,6 +113,18 @@ class role::kafka::analytics::broker {
         srange => '$ALL_NETWORKS',
     }
 
+    #firewall allow ipsec esp
+    ferm::rule { 'kafka-ipsec-esp':
+        rule   => 'proto esp { saddr $ALL_NETWORKS ACCEPT; }'
+    }
+
+    #firewall allow ipsec ike udp 500
+    ferm::service { 'kafka-ipsec-ike':
+        proto  => 'udp',
+        port   => '500',
+        srange => '$ALL_NETWORKS',
+    }
+
     # Include Kafka Server Jmxtrans class
     # to send Kafka Broker metrics to Ganglia and statsd.
     class { '::kafka::server::jmxtrans':
