@@ -5,7 +5,6 @@ start on started network-services
 setuid redis
 setgid redis
 
-expect fork
 exec /usr/bin/redis-server /etc/redis/<%= @instance_name %>.conf
 
 respawn
