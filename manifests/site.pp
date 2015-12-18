@@ -792,7 +792,13 @@ node 'db1009.eqiad.wmnet' {
 ## researchdb s1
 node 'db1047.eqiad.wmnet' {
     # this slave has an m4 custom replication protocol
-    role mariadb::analytics, mariadb::analytics::custom_repl_slave
+    role mariadb::analytics::custom_repl_slave
+    class { 'role::mariadb::core':
+        shard         => 'm4',
+        p_s           => 'on',
+        binlog_format => 'ROW',
+    }
+    include base::firewall
 }
 
 node 'db1069.eqiad.wmnet' {
