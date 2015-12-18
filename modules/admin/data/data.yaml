@@ -567,8 +567,9 @@ users:
     gid: 500
     name: cmjohnson
     realname: Chris Johnson
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7y4rw4Np/Xy1MgQYx6dciv+vszegmZjZbh5p7PHdddLI+8wDM2Q7tz+ghm6PkKuUlcwK99fD2ixlb8FoBrznUABTEmaSMBdSIhXS2J81mJ5ycrCeb/+bG9YQ8e1sABjfFSWu07wqUgPZqx6roeduc1fkp9DvH8FasbFZcuPsgkvANwaWm+TTSY8Ik1h7l1bJHIp7iRuLRQ9fZjsZCHD4svfuU3YEyIHKPYmPQFgJn1wyYDKgIbfewcK/rFX43E9Kqd/SpKqapIex1fYWA0/MtbAzVLb3YdX/vWQP6lx4Kwzc6OPzib++RY6bR0zd14IdkGZ2wgwcqR/MRaafotARV
-        cmjohnson@wmf-production]
+    ssh_keys: 
+         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7y4rw4Np/Xy1MgQYx6dciv+vszegmZjZbh5p7PHdddLI+8wDM2Q7tz+ghm6PkKuUlcwK99fD2ixlb8FoBrznUABTEmaSMBdSIhXS2J81mJ5ycrCeb/+bG9YQ8e1sABjfFSWu07wqUgPZqx6roeduc1fkp9DvH8FasbFZcuPsgkvANwaWm+TTSY8Ik1h7l1bJHIp7iRuLRQ9fZjsZCHD4svfuU3YEyIHKPYmPQFgJn1wyYDKgIbfewcK/rFX43E9Kqd/SpKqapIex1fYWA0/MtbAzVLb3YdX/vWQP6lx4Kwzc6OPzib++RY6bR0zd14IdkGZ2wgwcqR/MRaafotARV cmjohnson@wmf-production
+         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCLJ4mudiOgAavBVrNMDS2udkG5/LjbYsjHKax1Pi9RkGJymyryiz/NKJKZRP7O0uvHXPqTK9TH77hDODZ5UFzYOtznDjHNma71PLP/+nVF+Vgkm+u91HZkLPbxj21AhRNYU55hLUEO8ZU/nx4O4vNuyCcq/vGVpfYt7tOfTR52bMmx7PGWh4ptIj6CvtjHpgHHPkFN+MDDz3PVTo1ZuSVeGPYFOY2ysBJC29t1wk22r6XdyeSP3SBKkd/2/YUW8GAHphs8AaRuzsfX1aYpc1ph4M+2qnvBqbme6OSWLydcIrDWmxjqbJtQWU83I1zE1N0KebD34ZH73ych4TR4jYJN cmjohnson@yubikey
     uid: 2399
   andrew:
     ensure: present
