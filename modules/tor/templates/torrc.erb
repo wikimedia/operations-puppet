@@ -9,31 +9,31 @@
 SocksPort 0
 
 ## port for local connections from Tor controller
-ControlPort <%= @tor_controlport %>
+ControlPort <%= @controlport %>
 
 ## password for connections on the control port, generate hash with 'tor --hash-password'
-HashedControlPassword <%= @tor_controlpassword %>
+HashedControlPassword <%= @controlpassword %>
 
 ## port for incoming Tor connections
-ORPort <%= @tor_orport %>
+ORPort <%= @orport %>
 
 ## if we have multiple NICs..
 #OutboundBindAddress 10.0.0.5
 
 ## IP or DNS for incoming connections
-Address <%= @tor_address %>
+Address <%= @address %>
 
 # mirror directory information ('please do if enough bandwidth')
-DirPort <%= @tor_dirport %>
+DirPort <%= @dirport %>
 
 # this is what makes it a relay or an exit node
-ExitPolicy <%= @tor_exit_policy %>
+ExitPolicy <%= @exit_policy %>
 
 # handle for the relay, so people don't have to refer to it by key.
-Nickname <%= @tor_nickname %>
+Nickname <%= @nickname %>
 
 # admin mail contact
-ContactInfo <%= @tor_contact %>
+ContactInfo <%= @contact %>
 
 # if we run more than one relay we should set this
 # get it from /var/lib/tor/fingerprint
