@@ -2,7 +2,9 @@ class pybal::configuration(
     $global_options={},
     $lvs_services,
     $lvs_class_hosts,
-    $site
+    $site,
+    $config='http',
+    $config_host="config-master.${site}.wmnet",
 ) {
 
     # Generate PyBal config file
