@@ -1,6 +1,7 @@
-class role::tor {
+# sets up a tor relay
+class role::tor::relay {
 
-    system::role { 'tor':
+    system::role { 'tor::relay':
         description => 'Tor relay'
     }
 
