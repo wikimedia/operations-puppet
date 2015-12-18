@@ -895,3 +895,27 @@ lvs_services:
       sites:
         eqiad:
           hostname: aqs.svc.eqiad.wmnet
+  eventbus:
+    description: HTTP Event Producer Service
+    class: low-traffic
+    sites:
+    - eqiad
+    ip: *ip_block026
+    port: 8085
+    bgp: 'yes'
+    depool-threshold: '.5'
+    conftool:
+      cluster: eventbus
+      service: eventbus
+    icinga:
+      check_command: "check_http_lvs_on_port!eventbus.svc.eqiad.wmnet!8085!/"
+      sites:
+        eqiad:
+          hostname: eventbus.svc.eqiad.wmnet
+    monitors:
+      ProxyFetch:
+        url:
+        - "http://eventbus.svc.%{::site}.wmnet"
+      IdleConnection:
+        max-delay: 300
+        timeout-clean-reconnect: 3
