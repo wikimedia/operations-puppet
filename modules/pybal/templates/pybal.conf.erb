@@ -36,11 +36,11 @@ ip = <%= subserviceip %>
 port = <%= service.fetch('port', 80) %>
 scheduler = <%= service.fetch('scheduler', "wrr") %>
 
-<% if scope.lookupvar('::pybal_use_etcd') -%>
+<% if @config == 'etcd' -%>
 <%- conftool = service['conftool'] -%>
-config = etcd://conf1003.eqiad.wmnet/conftool/v1/pools/<%= @site %>/<%= conftool['cluster'] %>/<%= conftool['service'] %>/
+config = etcd://<%= @config_host %>/conftool/v1/pools/<%= @site %>/<%= conftool['cluster'] %>/<%= conftool['service'] %>/
 <%- else -%>
-config = http://config-master.<%= @site %>.wmnet/pybal/<%= @site %>/<%= servicename %>
+config = http://<%= @config_host %>/pybal/<%= @site %>/<%= servicename %>
 <% end -%>
 
 bgp = <%= service.fetch('bgp', "no") %>
