@@ -14,3 +14,19 @@ sub vcl_pass {
 		error 412 "Entity not in cache";
 	}
 }
+
+sub vcl_fetch {
+	// This is our legacy retry5xx code, only parsoid backend still uses it
+	if (beresp.status >= 500 && beresp.status < 505) {
+		# Retry the backend request 3 times, then give up and display
+		# the backend's error page, instead of our own.
+		#
+		# Note that max_restarts is 4 by default, so Varnish would
+		# otherwise detect this as a loop and present its own 503.
+		if (req.restarts < 3) {
+			return(restart);
+		} else {
+			return(deliver);
+		}
+	}
+}

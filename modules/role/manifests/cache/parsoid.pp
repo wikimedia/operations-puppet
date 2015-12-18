@@ -26,12 +26,10 @@ class role::cache::parsoid {
     $be_vcl_config = merge($common_vcl_config, {
         'layer'            => 'backend',
         'retry503'         => 4,
-        'retry5xx'         => 1,
     })
 
     $fe_vcl_config = merge($common_vcl_config, {
         'layer'            => 'frontend',
-        'retry5xx'         => 0,
     })
 
     varnish::instance { 'parsoid-backend':
