@@ -780,6 +780,15 @@ node 'db1046.eqiad.wmnet' {
     }
     include base::firewall
 }
+node 'db1047.eqiad.wmnet' {
+    # this slave has an m4 custom replication protocol
+    role mariadb::analytics::custom_repl_slave
+    class { 'role::mariadb::misc::eventlogging':
+        shard  => 'm4',
+        master => false,
+    }
+    include base::firewall
+}
 
 # m5 shard
 node 'db1009.eqiad.wmnet' {
@@ -789,23 +798,13 @@ node 'db1009.eqiad.wmnet' {
     }
 }
 
-## researchdb s1
-node 'db1047.eqiad.wmnet' {
-    # this slave has an m4 custom replication protocol
-    role mariadb::analytics::custom_repl_slave
-    class { 'role::mariadb::core':
-        shard         => 'm4',
-        p_s           => 'on',
-        binlog_format => 'ROW',
-    }
-    include base::firewall
-}
-
+# sanitarium
 node 'db1069.eqiad.wmnet' {
     role mariadb::sanitarium
     include base::firewall
 }
 
+# tendril db
 node 'db1011.eqiad.wmnet' {
     role mariadb::tendril
 }
