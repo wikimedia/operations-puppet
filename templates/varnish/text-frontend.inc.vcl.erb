@@ -171,7 +171,7 @@ sub vcl_recv {
 		// being used here, or they'll pollute the cache for mobile
 		// users.  This will never happen via our own DNS, but a user
 		// could set the request hostname manually of course...
-		if (!req.http.X-Subdomain) {
+		if (!req.http.X-Subdomain && req.request != "PURGE") {
 			error 418 "I'm a teapot";
 		}
 <% end -%>
