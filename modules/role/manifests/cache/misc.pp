@@ -223,7 +223,6 @@ class role::cache::misc {
 
     $fe_vcl_config = merge($common_vcl_config, {
         'layer'            => 'frontend',
-        'retry503'         => 1,
     })
 
     $be_one_vcl_config = merge($common_vcl_config, {

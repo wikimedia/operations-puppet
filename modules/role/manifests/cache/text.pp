@@ -91,7 +91,6 @@ class role::cache::text {
 
     $fe_vcl_config = merge($common_vcl_config, {
         'layer'              => 'frontend',
-        'retry503'           => 1,
         'enable_geoiplookup' => true,
         'https_redirects'    => true,
         'secure_post'        => false,
