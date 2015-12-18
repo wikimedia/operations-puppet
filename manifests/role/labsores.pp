@@ -19,7 +19,8 @@ class role::labs::ores::worker {
 
 class role::labs::ores::redis {
     class { '::ores::redis':
-        maxmemory => '3G',
+        queue_maxmemory => '512M',
+        cache_maxmemory => '3G',
     }
 }
 
@@ -52,7 +53,8 @@ class role::labs::ores::staging {
     }
 
     class { '::ores::redis':
-        maxmemory => '256M',
+        cache_maxmemory => '512M',
+        queue_maxmemory => '256M',
     }
 
     class { '::ores::redisproxy':
