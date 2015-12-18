@@ -57,7 +57,7 @@ class role::labs::ores::staging {
         queue_maxmemory => '256M',
     }
 
-    ores::config::staging { 'staging':
+    ores::config { 'staging':
         settings => {
             'score_caches'     => {
                 'ores_redis' => {
