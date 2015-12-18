@@ -53,8 +53,18 @@ sub mobile_redirect {
 }
 
 sub vcl_recv {
-	call filter_headers;
-	call filter_noise;
+	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
+	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
+		error 403 "Noise";
+	}
+
+	if (req.http.referer && req.http.referer ~ "^http://(www\.(keeprefreshing|refreshthis|refresh-page|urlreload)\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.lazywebtools\.co\.uk)/") {
+		error 403 "Noise";
+	}
+
+	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
+		error 403 "Noise";
+	}
 
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
 	// Disable Range requests for now.
@@ -65,7 +75,8 @@ sub vcl_recv {
 	}
 
 	if (req.restarts == 0) {
-		// Always set or clear X-Subdomain
+		// Always set or clear X-Subdomain and X-Orig-Cookie
+		unset req.http.X-Orig-Cookie;
 		unset req.http.X-Subdomain;
 		if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?zero\." && req.http.host != "zero.wikimedia.org") {
 			set req.http.X-Subdomain = "ZERO";

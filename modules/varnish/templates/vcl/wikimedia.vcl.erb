@@ -180,30 +180,6 @@ sub misspass_limiter {
 	}
 }
 
-// filter_headers + filter_noise are used (consistently) by the text+mobile frontends
-
-sub filter_headers {
-	if (req.restarts == 0) {
-		unset req.http.X-Orig-Cookie;
-	}
-}
-
-sub filter_noise {
-	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
-	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
-		error 403 "Noise";
-	}
-
-	if (req.http.referer && req.http.referer ~ "^http://(www\.(keeprefreshing|refreshthis|refresh-page|urlreload)\.com|tuneshub\.blogspot\.com|itunes24x7\.blogspot\.com|autoreload\.net|www\.lazywebtools\.co\.uk)/") {
-		error 403 "Noise";
-	}
-
-	if (req.request == "POST" && req.url ~ "index\.php\?option=com_jce&task=plugin&plugin=imgmanager&file=imgmanager&method=form&cid=") {
-		error 403 "Noise";
-	}
-}
-
-// end frontend block
 <% end -%>
 
 // start frontend-only block for HTTPS
