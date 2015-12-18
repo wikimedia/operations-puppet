@@ -1225,8 +1225,7 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
     # addresses.
     interface::add_ip6_mapped { 'main': }
 
-    # TODO: use role::kafka::analytics::broker instead.
-    role analytics::kafka::server, ipsec
+    role kafka::analytics::broker, ipsec
 
     include role::analytics
     include standard
