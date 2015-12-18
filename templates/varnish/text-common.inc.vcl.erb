@@ -94,6 +94,20 @@ sub vcl_hash {
 <% end -%>
 }
 
+// fe+be common recv code
+sub common_recv {
+	if (req.request != "GET" && req.request != "HEAD") {
+		return (pass);
+	}
+
+	if (req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
+		return (pass);
+	}
+
+	call evaluate_cookie;
+	call pass_authorization;
+}
+
 // fe+be common fetch code
 sub common_fetch {
 	if (req.http.X-Subdomain && (req.url ~ "mobileaction=" || req.url ~ "useformat=")) {

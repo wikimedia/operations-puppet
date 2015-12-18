@@ -138,16 +138,8 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
-	if (req.request != "GET" && req.request != "HEAD") {
-		return (pass);
-	}
+	call common_recv;
 
-	if (req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
-		return (pass);
-	}
-
-	call evaluate_cookie;
-	call pass_authorization;
 	return (lookup);
 }
 
