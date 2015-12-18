@@ -29,6 +29,11 @@ class tor(
         require => Package['tor'],
     }
 
+    exec { 'tor-systemd-reload':
+        refreshonly => true,
+        command     => '/bin/systemctl daemon-reload',
+    }
+
     service { 'tor':
         ensure  => 'running',
         require => Package['tor'],
