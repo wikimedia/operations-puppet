@@ -7,7 +7,7 @@ class role::tor {
     include passwords::tor
     $controlpassword = $passwords::tor::hashed_control_password
 
-    class { '::tor':
+    ::tor::instance { 'wikimediaeqiad1':
         controlport     => '9051',
         controlpassword => $controlpassword,
         orport          => '443',
