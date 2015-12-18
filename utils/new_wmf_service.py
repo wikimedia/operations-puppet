@@ -412,7 +412,7 @@ def main():
     # Keep cwd
     cwd = os.getcwd()
     os.chdir('..')
-    Git.create_branch(s.service_name, 'production')
+    Git.create_branch(s.service_name, 'origin/production')
     Git.change_branch(s.service_name)
 
     if not s.create_puppet_module():
