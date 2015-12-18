@@ -12,7 +12,7 @@ SocksPort 0
 ControlPort <%= @tor_controlport %>
 
 ## password for connections on the control port, generate hash with 'tor --hash-password'
-HashedControlPassword <%= scope.lookupvar('passwords::tor::hashed_control_password') %>
+HashedControlPassword <%= @tor_controlpassword %>
 
 ## port for incoming Tor connections
 ORPort <%= @tor_orport %>

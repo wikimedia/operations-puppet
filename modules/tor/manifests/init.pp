@@ -3,6 +3,7 @@ class tor (
     $tor_address,
     $tor_nickname,
     $tor_contact,
+    $tor_controlpassword,
     $tor_controlport = '9051',
     $tor_orport = '443', # use 9001 if in use
     $tor_dirport = '80', # use 9030 if in use
