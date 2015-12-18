@@ -50,4 +50,8 @@ class role::eventbus::eventbus {
         statsd            => hiera('statsd'),
         statsd_prefix     => 'eventbus',
     }
+
+    if $::realm == 'production' {
+        include lvs::realserver
+    }
 }
