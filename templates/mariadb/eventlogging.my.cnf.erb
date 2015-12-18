@@ -101,7 +101,13 @@ performance_schema_max_table_instances                 = 1000
 performance_schema                                     = 0
 userstat                                               = 1
 <% end %>
-
+<% if @ssl == 'on' %>
+# ssl
+ssl-ca=/etc/mysql/ssl/cacert.pem
+ssl-cert=/etc/mysql/ssl/server-cert.pem
+ssl-key=/etc/mysql/ssl/server-key.pem
+ssl-cipher=TLSv1.2
+<% end %>
 # dump and load innodb buffer at start and stop
 innodb_buffer_pool_load_at_startup  = 1
 innodb_buffer_pool_dump_at_shutdown = 1
