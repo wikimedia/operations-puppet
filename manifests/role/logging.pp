@@ -112,14 +112,14 @@ class role::logging::mediawiki::errors {
     class { 'mediawiki::monitoring::errors': }
 }
 
-# == Class role::logging::relay::webrequest-multicast
+# == Class role::logging::relay::webrequest_multicast
 # Sets up a multicast relay using socat for
 # webrequest log streams (squid, varnish, nginx etc.).
 # Anything sent to this node on port 8419 will be
 # relayed to the 233.58.59.1:8420 multicast group.
 #
-class role::logging::relay::webrequest-multicast {
-    system::role { 'role::logging::relay::webrequest-multicast':
+class role::logging::relay::webrequest_multicast {
+    system::role { 'role::logging::relay::webrequest_multicast':
         description => 'Webrequest log stream unicast to multicast relay',
     }
 
