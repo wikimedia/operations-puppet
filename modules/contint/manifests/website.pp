@@ -5,8 +5,6 @@ class contint::website(
   $zuul_git_dir = '/var/lib/zuul/git'
 ){
 
-  require contint::publish-console
-
   # Need to send Vary: X-Forwarded-Proto since most sites are forced to HTTPS
   # and behind a varnish cache. See also T62822
   include ::apache::mod::headers
