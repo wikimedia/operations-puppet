@@ -174,8 +174,7 @@ class role::cache::text {
             'backend_random' => {
                 'dynamic'  => 'yes',
                 'type'     => 'random',
-                'backends' => $cluster_nodes['eqiad'],
-                'dc'       => 'eqiad',
+                'backends' => $site_cluster_nodes,
                 'service'  => 'varnish-be-rand',
             },
         },
