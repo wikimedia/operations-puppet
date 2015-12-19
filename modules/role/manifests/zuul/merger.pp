@@ -22,7 +22,7 @@ class role::zuul::merger {
     }
 
     # Serves Zuul git repositories
-    class { 'contint::zuul::git-daemon':
+    class { 'contint::zuul::git_daemon':
         zuul_git_dir => $role::zuul::configuration::merger[$::realm]['git_dir'],
     }
 
