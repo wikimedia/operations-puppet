@@ -17,9 +17,5 @@
 # We dont have much documentation yet:
 --no-documentation-check
 
-# We use dash in class and variables.
---no-names_containing_dash-check
---no-variable_contains_dash-check
-
 # Test is only relevant for Puppet <= 2.6.2.
 --no-class_inherits_from_params_class-check
