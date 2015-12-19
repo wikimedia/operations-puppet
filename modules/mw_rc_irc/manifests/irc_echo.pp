@@ -1,6 +1,6 @@
 # A basic relay client that accept changes via udp and echo's them to an irc server
 
-class mw_rc_irc::irc-echo(
+class mw_rc_irc::irc_echo(
     $ircpassword,
 ) {
 
