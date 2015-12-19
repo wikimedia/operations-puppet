@@ -115,7 +115,7 @@ class role::labs::openstack::nova::controller {
     include role::labs::openstack::keystone::server
     include ::openstack::nova::conductor
     include ::openstack::nova::scheduler
-    include ::openstack::queue-server
+    include ::openstack::queue_server
 
     include role::labs::openstack::nova::common
     $novaconfig = $role::labs::openstack::nova::common::novaconfig
