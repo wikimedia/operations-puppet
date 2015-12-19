@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'install_server::preseed-server', :type => :class do
+describe 'install_server::preseed_server', :type => :class do
 
     it do
         should contain_file('/srv/autoinstall').with({
