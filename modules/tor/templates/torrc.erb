@@ -35,12 +35,10 @@ Nickname <%= @nickname %>
 # admin mail contact
 ContactInfo <%= @contact %>
 
-# if we run more than one relay we should set this
-# get it from /var/lib/tor/fingerprint
 # "You should set MyFamily if you have administrative control
 # of the computers or of their network, even if they're not
 # all in the same geographic location."
-# MyFamily $fingerprint1,$fingerprint2,$fingerprint3
+MyFamily DB19E709C9EDB903F75F2E6CA95C84D637B62A02,265E5ABBF2E5846443901E878146060148EFEA44
 
 # "try to write to disk less frequently than we would otherwise"
 # we enable this because we are on a box with SSD
