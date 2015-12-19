@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'install_server::apt-repository', :type => :class do
+describe 'install_server::apt_repository', :type => :class do
 
     it { should contain_package('dpkg-dev').with_ensure('present') }
     it { should contain_package('gnupg').with_ensure('present') }

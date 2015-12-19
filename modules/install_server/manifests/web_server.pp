@@ -1,4 +1,4 @@
-# Class: install_server::web-server
+# Class: install_server::web_server
 #
 # This class installs and configures nginx to act as a repository for new
 # installation enviroments
@@ -11,9 +11,9 @@
 # Requires:
 #
 # Sample Usage:
-#   include install_server::web-server
+#   include install_server::web_server
 
-class install_server::web-server {
+class install_server::web_server {
     include ::nginx
 
     nginx::site { 'install_server':
