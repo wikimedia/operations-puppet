@@ -1506,7 +1506,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
         netmask        => '255.255.252.0',
     }
 
-    lvs::interface-tweaks {
+    lvs::interface_tweaks {
         'eth0': rss_pattern => 'eth0-%d';
         'eth1': rss_pattern => 'eth1-%d';
         'eth2': rss_pattern => 'eth2-%d';
@@ -1607,7 +1607,7 @@ node /^lvs10(0[789]|1[012])\.eqiad\.wmnet$/ {
         netmask        => '255.255.252.0',
     }
 
-    lvs::interface-tweaks {
+    lvs::interface_tweaks {
         'eth0': bnx2x => true, txqlen => 10000, rss_pattern => 'eth0-fp-%d';
         'eth1': bnx2x => true, txqlen => 10000, rss_pattern => 'eth1-fp-%d';
         'eth2': bnx2x => true, txqlen => 10000, rss_pattern => 'eth2-fp-%d';
@@ -1712,7 +1712,7 @@ node /lvs200[1-6]\.codfw\.wmnet/ {
         netmask        => '255.255.252.0',
     }
 
-    lvs::interface-tweaks {
+    lvs::interface_tweaks {
         'eth0': bnx2x => true, txqlen => 10000, rss_pattern => 'eth0-fp-%d';
         'eth1': bnx2x => true, txqlen => 10000, rss_pattern => 'eth1-fp-%d';
         'eth2': bnx2x => true, txqlen => 10000, rss_pattern => 'eth2-fp-%d';
@@ -1758,7 +1758,7 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
     #  be able to do that (both to get good schedulers
     #  and driver updates for XPS).
 
-    lvs::interface-tweaks {
+    lvs::interface_tweaks {
         'eth0': bnx2x => true, txqlen => 20000, rss_pattern => 'eth0-fp-%d';
     }
 }
@@ -1774,7 +1774,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
         interface => 'eth0',
     }
 
-    lvs::interface-tweaks {
+    lvs::interface_tweaks {
         'eth0': bnx2x => true, txqlen => 10000, rss_pattern => 'eth0-fp-%d';
     }
 }
