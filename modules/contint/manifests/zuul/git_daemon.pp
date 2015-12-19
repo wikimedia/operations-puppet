@@ -1,5 +1,5 @@
 # Class publishing the Zuul repositories with git-daemon
-class contint::zuul::git-daemon(
+class contint::zuul::git_daemon(
     $zuul_git_dir = '/var/lib/zuul/git'
 ) {
 
