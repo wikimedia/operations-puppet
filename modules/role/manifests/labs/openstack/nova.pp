@@ -78,7 +78,7 @@ class role::labs::openstack::nova::manager {
         rule   => 'proto tcp dport ssh saddr $DEPLOYMENT_HOSTS ACCEPT;',
     }
 
-    class { '::openstack::openstack-manager':
+    class { '::openstack::openstack_manager':
         novaconfig  => $novaconfig,
         certificate => $certificate,
     }

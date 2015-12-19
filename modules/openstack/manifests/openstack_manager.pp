@@ -1,5 +1,5 @@
 # https://www.mediawiki.org/wiki/Extension:OpenStackManager
-class openstack::openstack-manager(
+class openstack::openstack_manager(
     $novaconfig,
     $certificate,
     $openstack_version          = $::openstack::version,
