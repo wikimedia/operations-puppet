@@ -1,0 +1,16 @@
+[Unit]
+Description=wikimetrics scheduler
+
+[Service]
+# Launching the wikimetrics script with the scheduler mode launches the
+# celery beat based scheduler for running recurrent reports
+ExecStart=<%= @venv_path %>/bin/wikimetrics \
+    --mode=scheduler \
+    --db-config=<%= @config_path %>/db_config.yaml \
+    --queue-config=<%= @config_path %>/queue_config.yaml \
+    --web-config=<%= @config_path %>/web_config.yaml
+User = wikimetrics
+Group = wikimetrics
+
+[Install]
+WantedBy=multi-user.target
