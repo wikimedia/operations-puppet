@@ -10,13 +10,11 @@
 #
 # Requires:
 #
-#   Class['install_server::ubuntu-mirror']
-#   Class['install_server::apt-repository']
-#   Class['install_server::preseed-server']
-#   Class['install_server::tftp-server']
-#   Class['install_server::caching-proxy']
-#   Class['install_server::web-server']
-#   Class['install_server::dhcp-server']
+#   Class['install_server::apt_repository']
+#   Class['install_server::preseed_server']
+#   Class['install_server::tftp_server']
+#   Class['install_server::web_server']
+#   Class['install_server::dhcp_server']
 #   Define['backup::set']
 #   Class['base::firewall']
 #   Define['ferm::rule']
@@ -32,8 +30,8 @@ class role::installserver {
 
     include base::firewall
     include role::backup::host
-    include install_server::apt-repository
-    include install_server::preseed-server
+    include install_server::apt_repository
+    include install_server::preseed_server
 
     # mirrors stuff. these should be moved to their own role class eventually
     include mirrors::serve
@@ -49,7 +47,7 @@ class role::installserver {
         nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/debian',
     }
 
-    include install_server::tftp-server
+    include install_server::tftp_server
     ferm::rule { 'tftp':
         rule => 'proto udp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
     }
@@ -70,13 +68,13 @@ class role::installserver {
         rule => 'proto tcp dport 8080 { saddr $ALL_NETWORKS ACCEPT; }'
     }
 
-    include install_server::web-server
+    include install_server::web_server
     ferm::service { 'http':
         proto => 'tcp',
         port  => 'http'
     }
 
-    include install_server::dhcp-server
+    include install_server::dhcp_server
     ferm::rule { 'dhcp':
         rule => 'proto udp dport bootps { saddr $ALL_NETWORKS ACCEPT; }'
     }
@@ -99,7 +97,7 @@ class role::installserver {
     }
 }
 
-# Class: role::install_server::tftp-server
+# Class: role::install_server::tftp_server
 #
 # A WMF role class used to install all the install_server TFTP stuff
 #
@@ -111,20 +109,20 @@ class role::installserver {
 #
 # Requires:
 #
-#   Class['install-_server::tftp-server']
+#   Class['install-_server::tftp_server']
 #   Class['base::firewall']
 #   Define['ferm::rule']
 #
 # Sample Usage:
-#       include role::installserver::tftp-server
+#       include role::installserver::tftp_server
 
-class role::installserver::tftp-server {
-    system::role { 'role::install_server::tftp-server':
+class role::installserver::tftp_server {
+    system::role { 'role::install_server::tftp_server':
         description => 'WMF TFTP server',
     }
 
     include base::firewall
-    include install_server::tftp-server
+    include install_server::tftp_server
 
     ferm::rule { 'tftp':
         rule => 'proto udp dport tftp { saddr $ALL_NETWORKS ACCEPT; }'
