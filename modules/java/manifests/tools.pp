@@ -5,7 +5,7 @@
 
 class java::tools {
 
-    # Can clash with base::standard-packages class
+    # Can clash with base::standard_packages class
     if ! defined ( Package['gdb'] ) {
         package { 'gdb':
             ensure => present
