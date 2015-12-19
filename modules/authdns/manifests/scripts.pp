@@ -9,7 +9,7 @@ class authdns::scripts {
         }
     }
 
-    # Can clash with base::standard-packages class
+    # Can clash with base::standard_packages class
     if ! defined(Package['git']){
         package { 'git':
             ensure => present,

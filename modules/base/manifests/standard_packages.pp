@@ -1,4 +1,4 @@
-class base::standard-packages {
+class base::standard_packages {
 
     if os_version('ubuntu >= trusty') {
         package { [ "linux-tools-${::kernelrelease}", 'linux-tools-generic' ]:

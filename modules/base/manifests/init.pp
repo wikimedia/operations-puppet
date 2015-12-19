@@ -21,7 +21,7 @@ class base {
     include base::remote_syslog
     include base::sysctl
     include ::motd
-    include base::standard-packages
+    include base::standard_packages
     include base::environment
     include base::phaste
     include base::screenconfig
