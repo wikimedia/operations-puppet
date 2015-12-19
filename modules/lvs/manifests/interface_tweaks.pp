@@ -4,7 +4,7 @@
 #  is the primary interface and is treated differently wrt
 #  forcing GRO off...
 
-define lvs::interface-tweaks($bnx2x=false, $txqlen=false, $rss_pattern=false) {
+define lvs::interface_tweaks($bnx2x=false, $txqlen=false, $rss_pattern=false) {
     if ! os_version('debian >= jessie') {
         # Disable GRO (generically incompatible with LVS due to kernel issues, I believe this
         #   is now fixed upstream for both ipv4 and ipv6 as of kernel 3.7 or higher, but
