@@ -1,0 +1,14 @@
+[Unit]
+Description=wikimetrics queue
+
+[Service]
+ExecStart=<%= @venv_path %>/bin/wikimetrics \
+    --mode=queue \
+    --db-config=<%= @config_path %>/db_config.yaml \
+    --queue-config=<%= @config_path %>/queue_config.yaml \
+    --web-config=<%= @config_path %>/web_config.yaml
+User = wikimetrics
+Group = wikimetrics
+
+[Install]
+WantedBy=multi-user.target
