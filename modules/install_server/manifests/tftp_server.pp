@@ -1,4 +1,4 @@
-# Class: install_server::tftp-server
+# Class: install_server::tftp_server
 #
 # This class installs and configures atftpd
 #
@@ -10,9 +10,9 @@
 # Requires:
 #
 # Sample Usage:
-#   include install_server::tftp-server
+#   include install_server::tftp_server
 
-class install_server::tftp-server {
+class install_server::tftp_server {
     file { '/srv/tftpboot':
         # config files in the puppet repository,
         # larger files like binary images in volatile

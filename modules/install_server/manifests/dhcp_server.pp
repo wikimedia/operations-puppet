@@ -1,4 +1,4 @@
-# Class: install_server::dhcp-server
+# Class: install_server::dhcp_server
 #
 # This class installs isc-dhcp-server and configures it
 #
@@ -10,9 +10,9 @@
 # Requires:
 #
 # Sample Usage:
-#   include install_server::dhcp-server
+#   include install_server::dhcp_server
 
-class install_server::dhcp-server {
+class install_server::dhcp_server {
     file { '/etc/dhcp':
         ensure  => directory,
         require => Package['isc-dhcp-server'],

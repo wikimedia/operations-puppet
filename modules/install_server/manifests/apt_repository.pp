@@ -1,4 +1,4 @@
-# Class: install_server::apt-repository
+# Class: install_server::apt_repository
 #
 # This class installs apt repository managements tools
 #
@@ -10,9 +10,9 @@
 # Requires:
 #
 # Sample Usage:
-#   include install_server::apt-repository
+#   include install_server::apt_repository
 
-class install_server::apt-repository {
+class install_server::apt_repository {
     package { [
         'dpkg-dev',
         'dctrl-tools',

@@ -1,4 +1,4 @@
-# Class: install_server::preseed-server
+# Class: install_server::preseed_server
 #
 # This class populated preseeding server's configuration
 #
@@ -10,9 +10,9 @@
 # Requires:
 #
 # Sample Usage:
-#   include install_server::preseed-server
+#   include install_server::preseed_server
 
-class install_server::preseed-server {
+class install_server::preseed_server {
     file { '/srv/autoinstall':
         ensure  => directory,
         mode    => '0444',
