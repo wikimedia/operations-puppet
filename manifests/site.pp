@@ -217,7 +217,7 @@ node 'bast4001.wikimedia.org' {
         interface => 'eth0',
     }
 
-    role bastionhost::general, ipmi, installserver::tftp-server
+    role bastionhost::general, ipmi, installserver::tftp_server
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'ulsfo',
@@ -1162,7 +1162,7 @@ node 'hooft.esams.wikimedia.org' {
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
-    role bastionhost::general, installserver::tftp-server
+    role bastionhost::general, installserver::tftp_server
 
     class { 'ganglia::monitor::aggregator':
         sites =>  'esams',
@@ -1187,7 +1187,7 @@ node 'graphite2001.codfw.wmnet' {
 }
 
 node 'install2001.wikimedia.org' {
-    role installserver::tftp-server
+    role installserver::tftp_server
     $cluster = 'misc'
     $ganglia_aggregator = true
 
