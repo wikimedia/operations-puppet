@@ -13,14 +13,13 @@ class snapshot::wikidatadumps::common {
         group  => 'www-data',
     }
 
-    file { '/usr/local/share/dcat':
-        ensure  => 'directory',
-        mode    => '0444',
-        owner   => 'datasets',
-        group   => 'www-data',
-        recurse => true,
-        purge   => true,
-        source  => 'puppet:///modules/snapshot/dcat',
+    git { 'DCAT-AP':
+        directory => '/usr/local/share/dcat'
+        origin    => 'https://gerrit.wikimedia.org/r/operations/dumps/dcat',
+        branch    => 'master',
+        ensure    => 'present', # Don't automatically update.
+        owner     => 'datasets',
+        group     => 'www-data',
     }
 }
 
