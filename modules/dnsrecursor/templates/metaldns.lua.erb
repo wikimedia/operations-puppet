@@ -9,7 +9,8 @@
 metal = {}
 
 <% @labs_metal.sort.map do |k,v| -%>
-metal["<%= k %>.<%= @site %>.wmflabs"] = "<%= v['IPv4'] %>"
+metal["<%= k %>.<%= @site %>.wmflabs."] = "<%= v['IPv4'] %>"
+metal["<%= k %>.<%= v['project'] %>.<%= @site %>.wmflabs."] = "<%= v['IPv4'] %>"
 <% end -%>
 
 function nxdomain (remoteip, domain, qtype)
