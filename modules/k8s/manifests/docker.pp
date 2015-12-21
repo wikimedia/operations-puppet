@@ -2,6 +2,8 @@
 #
 # Sets up docker as used by kubernetes
 class k8s::docker {
+    require ::k8s::flannel
+
     apt::repository { 'docker':
         uri        => 'https://apt.dockerproject.org/repo',
         dist       => 'debian-jessie',
@@ -23,5 +25,6 @@ class k8s::docker {
     base::service_unit { 'docker':
         systemd   => true,
         subscribe => Package['docker-engine'],
+        require   => Base::Service_unit['flannel'],
     }
 }
