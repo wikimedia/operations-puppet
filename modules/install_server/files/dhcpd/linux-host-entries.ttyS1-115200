@@ -6043,7 +6043,7 @@ host praseodymium {
 
 host promethium {
         hardware ethernet 90:B1:1C:2D:6F:0C;
-        fixed-address promethium.eqiad.wmnet;
+        fixed-address promethium.eqiad.wmflabs;
 }
 
 host protactinium {
