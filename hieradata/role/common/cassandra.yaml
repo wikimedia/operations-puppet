@@ -14,9 +14,21 @@ cassandra::seeds:
     - restbase1002-b.eqiad.wmnet
     - restbase1002-c.eqiad.wmnet
     - restbase1003.eqiad.wmnet
+    - restbase1003-a.eqiad.wmnet
+    - restbase1003-b.eqiad.wmnet
+    - restbase1003-c.eqiad.wmnet
     - restbase1004.eqiad.wmnet
+    - restbase1004-a.eqiad.wmnet
+    - restbase1004-b.eqiad.wmnet
+    - restbase1004-c.eqiad.wmnet
     - restbase1005.eqiad.wmnet
+    - restbase1005-a.eqiad.wmnet
+    - restbase1005-b.eqiad.wmnet
+    - restbase1005-c.eqiad.wmnet
     - restbase1006.eqiad.wmnet
+    - restbase1006-a.eqiad.wmnet
+    - restbase1006-b.eqiad.wmnet
+    - restbase1006-c.eqiad.wmnet
     - restbase1007.eqiad.wmnet
     - restbase1007-a.eqiad.wmnet
     - restbase1008.eqiad.wmnet
