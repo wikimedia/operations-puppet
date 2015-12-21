@@ -4,7 +4,7 @@ groups:
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
-              johnflewis]
+              johnflewis, marc]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -12,7 +12,7 @@ groups:
   ops:
     gid: 700
     description: include everywhere ops folks
-    members: [filippo, jgreen, bblack, andrew, faidon, rush, marc, oblivian, laner, yuvipanda,
+    members: [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, laner, yuvipanda,
               dzahn, akosiaris, springle, mark, ariel, cmjohnson, otto, robh, tstarling,
               ori, midom, jmm, jynus, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
@@ -490,12 +490,11 @@ users:
         rob@laptop]
     uid: 2007
   marc:
-    ensure: present
+    ensure: absent
     gid: 500
     name: marc
     realname: Marc-Andre Pelletier
-    ssh_keys: [ssh-dss AAAAB3NzaC1kc3MAAACBAIhfgD+1iRANjpwfBQbWD383oiDHcrzj2urFBKC62o1h7cgK2NplOfxCU5eHtGh5ftzp6JU4deNWw2s3/IRJFVfQnNiHV89/Rl1uqMjLhhvLb07GDonbs+KExCsYsZFHKUH+t2dkVg0NlR1Tpz+h6huYEkaCKWxg/ozvUswHroRtAAAAFQCPGGHMiPuztPl4yFm3cHp+QSZODwAAAIAc9/psvWDUBTSnsIzTwe801NHz/1mqBZHGTmk6IhFb2KTwdu6Sf70JkWQH47h5MmTsld2rzvBopbBMubRfBu6KCWXJM03pfxRdgUuhwovAKgU1hddYdonhkiq24qn+U7tnYHjHfu5jB7dnjEEqoOggUXmVUwS7QaGJqKUnA4B0+gAAAIEAhoDEpBOFA5NsgurAjntLMZiTpkQFyE+c39lBqgd6B5bX7GEB5JkMPVSTjmzogd88+SwImCWgvb1I0PgY/rx8nd9wMkE3W5gBGUiDTNJa2v78nTK9wS+imFDRMbuwdYuN1wmKGrnvskvQ5oi1juLA8jn0At3L2/SYiC7i5z/z//8=
-        marc@mordor_prod]
+    ssh_keys: []
     uid: 2138
   mark:
     ensure: present
