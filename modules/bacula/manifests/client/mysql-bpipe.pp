@@ -1,4 +1,4 @@
-# Definition: bacula::client::mysql_bpipe
+# Definition: bacula::client::mysql-bpipe
 #
 # This definition creates a bpipe plugin at the host specifying it
 #
@@ -41,14 +41,14 @@
 #       bacula::client
 #
 # Sample Usage:
-#       bacula::client::mysql_bpipe { 'mybpipe':
+#       bacula::client::mysql-bpipe { 'mybpipe':
 #           per_database            => false,
 #           xtrabackup              => true,
 #           xbstream_dir            => '/var/tmp/xbstream',
 #           mysqldump_innodb_only   => false,
 #       }
 #
-define bacula::client::mysql_bpipe(
+define bacula::client::mysql-bpipe(
                 $per_database,
                 $xtrabackup,
                 $xbstream_dir='/var/tmp/xbstream',

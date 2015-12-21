@@ -17,31 +17,31 @@ bacula::client::job { 'varfs-ourdefaults':
     jobdefaults => 'ourdefaults',
 }
 
-bacula::client::mysql_bpipe { 'mysqldump':
+bacula::client::mysql-bpipe { 'mysqldump':
     per_database          => false,
     xtrabackup            => false,
     mysqldump_innodb_only => false,
 }
 
-bacula::client::mysql_bpipe { 'mysqldump_transaction':
+bacula::client::mysql-bpipe { 'mysqldump_transaction':
     per_database          => false,
     xtrabackup            => false,
     mysqldump_innodb_only => true,
 }
 
-bacula::client::mysql_bpipe { 'mysqldump_perdb':
+bacula::client::mysql-bpipe { 'mysqldump_perdb':
     per_database          => true,
     xtrabackup            => false,
     mysqldump_innodb_only => true,
 }
 
-bacula::client::mysql_bpipe { 'xtrabackup':
+bacula::client::mysql-bpipe { 'xtrabackup':
     per_database => false,
     xbstream_dir => '/a/xbstream',
     xtrabackup   => true,
 }
 
-bacula::client::mysql_bpipe { 'xtrabackup_slave_perdb':
+bacula::client::mysql-bpipe { 'xtrabackup_slave_perdb':
     per_database => true,
     xbstream_dir => '/b/xbstream',
     xtrabackup   => true,

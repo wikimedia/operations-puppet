@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'bacula::client::mysql_bpipe', :type => :define do
+describe 'bacula::client::mysql-bpipe', :type => :define do
     let(:title) { 'something' }
 
     context 'with per database' do
