@@ -11,7 +11,7 @@ class statistics::compute {
     include geoip
     include statistics::dataset_mount
 
-    include misc::udp2log::udp_filter
+    require_package('udp-filter')
 
     ensure_packages([
         'emacs23',
