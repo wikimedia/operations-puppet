@@ -28,7 +28,7 @@ class role::eventlogging {
     }
 
     # Infer Kafka cluster configuration from this class
-    class { 'role::analytics::kafka::config': }
+    class { 'role::kafka::analytics::config': }
 
     # Event data flows through several processes.
     # By default, all processing is performed
@@ -40,8 +40,8 @@ class role::eventlogging {
     # for beta cluster, set in https://wikitech.wikimedia.org/wiki/Hiera:Deployment-prep
     $statsd_host         = hiera('eventlogging_statsd_host',      'statsd.eqiad.wmnet')
 
-    $kafka_brokers_array = $role::analytics::kafka::config::brokers_array
-    $kafka_zookeeper_url = $role::analytics::kafka::config::zookeeper_url
+    $kafka_brokers_array = $role::kafka::analytics::config::brokers_array
+    $kafka_zookeeper_url = $role::kafka::analytics::config::zookeeper_url
 
     # By default, the EL Kafka writer writes events to
     # schema based topic names like eventlogging_SCHEMA,
