@@ -577,8 +577,9 @@ users:
     gid: 500
     name: andrew
     realname: Andrew Bogott
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAo94dwMdsdm0Q39cGgGu+9Vq1ROf43/dym/0kWyzX5tT9SaPM3RjuHukiXRFgVtSW6SNyPTFxjU2dUoWeGrolNLZudHlCPLFTU1d5BIzLnDJmjcqgm76D2na4KrhnH8JZ24PM2iur08SnDr33AU/xETCVoG/7DcTXzeWxBnnMBUa9Lo55NALEN9v/rJbFa4/1ah4PzFUSxO+IWHl7bxFFWRBd2vErbVgYBbdmt9p8WePxZWHczkZ3oSM4s+/C1ydoXcpdV35f8/XcINsC28WLIqnyeZUCzgBli13/R6dB3Kk3xVqnFFQqATNYrs3MIj/vt2JBV7kZcKkmVm2d36KnHw==
-        andrew@AndrewMacbook-6.local]
+    ssh_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAo94dwMdsdm0Q39cGgGu+9Vq1ROf43/dym/0kWyzX5tT9SaPM3RjuHukiXRFgVtSW6SNyPTFxjU2dUoWeGrolNLZudHlCPLFTU1d5BIzLnDJmjcqgm76D2na4KrhnH8JZ24PM2iur08SnDr33AU/xETCVoG/7DcTXzeWxBnnMBUa9Lo55NALEN9v/rJbFa4/1ah4PzFUSxO+IWHl7bxFFWRBd2vErbVgYBbdmt9p8WePxZWHczkZ3oSM4s+/C1ydoXcpdV35f8/XcINsC28WLIqnyeZUCzgBli13/R6dB3Kk3xVqnFFQqATNYrs3MIj/vt2JBV7kZcKkmVm2d36KnHw== andrew@AndrewMacbook-6.local
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbWwOolgMepvvtX9wloNTgIkAwgOEFuc4gSq3PxiT7R5tDIw8gYb+m34GGyLzp/rIbRm6UsvDwmjDj+z5PdQHQxY2muZ+fkilmwA5XvujE1iHvLvfti5des7ABTBztzlOkvGDfMESVdSvXGzWnx3yeK2cjo8ckCHhLgdfHFNVkJggaIVSXUFoKAV4YvzXm/bSoT6PMGs6W3k556I5OcndPKPOqL/W/BGvi9LOQm2QqOdw0XGFZCwnOmxiHBkRHk2SC1r5zq8dbZAqRE7RE3i66TCLtLlXgDVVsFcRK9LNcKkubkAKD77pYFzsXu3hpWKGSAs6/GWUHwOZ72YXOyP2V andrew@yubi
     uid: 2093
   gwicke:
     ensure: present
