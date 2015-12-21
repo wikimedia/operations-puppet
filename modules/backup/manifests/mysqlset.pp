@@ -38,7 +38,7 @@ define backup::mysqlset(
         }
 
     } elsif $method == 'bpipe' {
-        bacula::client::mysql_bpipe { "mysql-bpipe-x${xtrabackup}-p${per_db}-i${innodb_only}":
+        bacula::client::mysql-bpipe { "mysql-bpipe-x${xtrabackup}-p${per_db}-i${innodb_only}":
             per_database          => $per_db,
             xtrabackup            => $xtrabackup,
             mysqldump_innodb_only => $innodb_only,
