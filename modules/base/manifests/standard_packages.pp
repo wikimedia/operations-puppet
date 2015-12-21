@@ -13,6 +13,7 @@ class base::standard_packages {
     $packages = [
         'acct',
         'ack-grep',
+        'apt-transport-https',
         'atop',
         'coreutils',
         'debian-goodies',

@@ -18,7 +18,6 @@ class install_server::apt-repository {
         'dctrl-tools',
         'gnupg',
         'reprepro',
-        'apt-transport-https',
         ]:
         ensure => present,
     }
