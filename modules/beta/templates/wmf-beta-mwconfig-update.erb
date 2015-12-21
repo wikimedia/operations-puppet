@@ -15,4 +15,6 @@ pwd
 git remote update
 git reset --hard "$ZUUL_COMMIT"
 git tag "jenkins_build_$BUILD_NUMBER" "$ZUUL_COMMIT"
+git submodule update --init
+git submodule status
 touch wmf-config/InitialiseSettings.php
