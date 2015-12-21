@@ -485,8 +485,11 @@ class role::mariadb::core(
         binlog_format => $binlog_format
     }
 
+    $replication_is_critical = ($::mw_primary in $::domain)
+
     mariadb::monitor_replication { [ $shard ]:
         multisource => false,
+        is_critical => $replication_is_critical,
     }
 }
 
