@@ -76,26 +76,10 @@ class toollabs::proxy(
         desc   => 'Proxylistener port, open to just labs'
     }
 
-    # Deploy root web.
-    git::clone { 'labs/toollabs':
-        ensure    => latest,
-        directory => '/data/project/admin/toollabs',
-        owner     => "${::labsproject}.admin",
-        group     => "${::labsproject}.admin",
-        mode      => '2755',
-    }
-
-    file { '/data/project/admin/public_html':
-        ensure  => link,
-        force   => true,
-        target  => 'toollabs/www',
-        require => Git::Clone['labs/toollabs'],
-    }
-
     file { '/var/www/error/favicon.ico':
         ensure  => file,
-        source  => '/data/project/admin/toollabs/www/favicon.ico',
-        require => [File['/var/www/error'], Git::Clone['labs/toollabs']]
+        source  => 'puppet:///modules/toollabs/favico.ico',
+        require => File['/var/www/error'],
     }
 
     file { '/var/www/error/tool-labs-logo.png':
