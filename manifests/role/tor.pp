@@ -23,7 +23,7 @@ class role::tor {
         controlpassword => $controlpassword,
         orport          => '9002',
         dirport         => '9032',
-        address         => 'tor-eqiad-2.wikimedia.org',
+        address         => 'tor-eqiad-1.wikimedia.org',
         nickname        => 'wikimediaeqiad2',
         contact         => 'noc@wikimedia.org',
         exit_policy     => 'reject *:*', # no exits allowed
