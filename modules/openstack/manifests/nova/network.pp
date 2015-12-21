@@ -4,7 +4,7 @@
 class openstack::nova::network($openstack_version=$::openstack::version, $novaconfig) {
     include openstack::repo
 
-    $tftp_host = hiera('carbon.wikimedia.org')
+    $tftp_host = 'carbon.wikimedia.org'
 
     package {  [ 'nova-network', 'dnsmasq' ]:
         ensure  => present,
