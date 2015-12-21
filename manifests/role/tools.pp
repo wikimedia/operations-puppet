@@ -57,7 +57,6 @@ class role::toollabs::k8s::worker {
     # ferm and kube-proxy will conflict
 
     include toollabs::infrastructure
-    require k8s::docker
 
     $master_host = hiera('k8s_master')
     $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
@@ -71,13 +70,20 @@ class role::toollabs::k8s::worker {
         etcd_endpoints => $etcd_url,
     }
 
-    class { 'k8s::proxy':
-        master_host => $master_host,
+    class { '::k8s::docker':
+        require => Class['::k8s::flannel'],
     }
 
     class { 'k8s::kubelet':
         master_host => $master_host,
+        require     => Class['::k8s::docker'],
     }
+
+    class { 'k8s::proxy':
+        master_host => $master_host,
+        require     => Class['::k8s::kubelet']
+    }
+
 }
 
 class role::toollabs::k8s::webproxy {
