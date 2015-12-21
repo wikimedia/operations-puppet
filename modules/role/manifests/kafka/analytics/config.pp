@@ -11,12 +11,9 @@ class role::kafka::analytics::config {
     # in labs or production.
     $cluster_name = hiera('kafka_cluster_name', $::realm ? {
         'labs'       => "analytics-${::labsproject}",
-        'production' => $::site ? {
-            # Production analytics Kafka cluster is called 'eqiad'
-            # for historical reasons.
-            'eqiad' => 'eqiad',
-            default => "analytics-${::site}",
-        }
+        # Analytics Kafka cluster in production is called 'eqiad'
+        # for historical reasons.
+        'production' => 'eqiad',
     })
 
     # Use this default cluster config if none is found in hiera.
