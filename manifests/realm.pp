@@ -12,7 +12,13 @@ if $::realm == undef {
 }
 
 if $::realm == 'labs' {
-    $labsproject = hiera('labsproject', $::labsprojectfrommetadata)
+
+    $labs_metal = hiera('labs_baremetal_servers', [])
+    if has_key($labs_metal, $::hostname) {
+         $labsproject = $labs_metal[$::hostname]['project-name']
+    } else {
+        $labsproject = $::labsprojectfrommetadata
+    }
 
     if $::labsproject == undef {
         fail('Failed to determined $::labsproject')
