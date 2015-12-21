@@ -170,7 +170,9 @@ class CheckService(object):
             for endpoint, data in self.get_endpoints():
                 ep_status, msg = self._check_endpoint(endpoint, data)
                 if ep_status != 'OK':
-                    res.append("{} is {}: {}".format(endpoint, ep_status, msg))
+                    res.append("{} ({}) is {}: {}".format(
+                        endpoint, data.get('title', 'no title'),
+                        ep_status, msg))
                     ep_idx = self.nagios_codes.index(ep_status)
                     if ep_idx >= idx:
                         status = ep_status
