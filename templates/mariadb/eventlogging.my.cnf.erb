@@ -64,11 +64,11 @@ default-storage-engine         = TokuDB
 tokudb_cache_size              = <%= (Float(@memorysize.split[0]) * 0.5).round %>G
 
 innodb_file_per_table          = 1
-innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.25).round %>G
+innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.1).round %>G
 innodb_buffer_pool_instances   = 1
 innodb_log_file_size           = 1G
 innodb_flush_log_at_trx_commit = <%= $read_only == '1' ? '0': '1' %>
-innodb_flush_method            = O_DIRECT
+#innodb_flush_method            = O_DIRECT
 innodb_thread_concurrency      = 0
 innodb_io_capacity             = 1000
 innodb_stats_sample_pages      = 16

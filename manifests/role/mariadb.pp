@@ -226,9 +226,9 @@ class role::mariadb::misc::eventlogging(
         datadir       => '/srv/sqldata',
         tmpdir        => '/srv/tmp',
         read_only     => $read_only,
-        ssl           => 'on',
+        ssl           => 'off',
         p_s           => 'on',
-        binlog_format => 'ROW',
+        binlog_format => 'MIXED',
     }
 
     class { 'role::mariadb::grants':
