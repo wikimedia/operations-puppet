@@ -3,14 +3,6 @@
 # Ganglia views that should be
 # avaliable on ganglia.wikimedia.org
 class misc::monitoring::views {
-    include role::analytics::kafka::config
-
-    $kafka_log_disks_regex = join($::role::analytics::kafka::config::log_disks, '|')
-    $kafka_broker_host_regex = join($::role::analytics::kafka::config::brokers_array, '|')
-    misc::monitoring::view::kafka { 'kafka':
-        kafka_broker_host_regex => $kafka_broker_host_regex,
-        kafka_log_disks_regex   => $kafka_log_disks_regex,
-    }
     misc::monitoring::view::varnishkafka { 'webrequest':
         topic_regex => 'webrequest_.+',
     }
@@ -119,120 +111,6 @@ class misc::monitoring::views::dns {
         ]
     }
 }
-
-# == Define misc:monitoring::view::kafka
-# Installs a ganglia::web::view for a group of nodes
-# running kafka broker servers.  This is just a wrapper for
-# kafka specific metrics to include in kafka
-#
-# == Parameters:
-# $kafka_broker_host_regex   - regex matching kafka broker hosts
-# $log_disk_regex            - regex matching disks that have Kafka log directories
-#
-define misc::monitoring::view::kafka($kafka_broker_host_regex, $kafka_log_disks_regex = '.+', $ensure = 'present') {
-    ganglia::web::view { $name:
-        ensure => $ensure,
-        graphs => [
-            # Messages In
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-MessagesInPerSec.OneMinuteRate',
-                'type'         => 'stack',
-            },
-
-            # Bytes In
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-BytesInPerSec.OneMinuteRate',
-                'type'         => 'stack',
-            },
-
-            # BytesOut
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-BytesOutPerSec.OneMinuteRate',
-                'type'         => 'stack',
-            },
-
-            # Produce Requests
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.network.RequestMetrics.Produce-RequestsPerSec.OneMinuteRate',
-                'type'         => 'stack',
-            },
-
-            # Failed Produce Requests
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.BrokerTopicMetrics.+-FailedProduceRequestsPerSec.OneMinuteRate',
-                'type'         => 'stack',
-            },
-
-            # Replica Max Lag
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.ReplicaFetcherManager.Replica-MaxLag.Value',
-                'type'         => 'line',
-            },
-            # Under Replicated Partitions
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.ReplicaManager.UnderReplicatedPartitions.Value',
-                'type'         => 'line',
-            },
-
-            # ISR Shrinks
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.ReplicaManager.ISRShrinks.FiveMinuteRate',
-                'type'         => 'line',
-            },
-            # ISR Expands
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'kafka.server.ReplicaManager.ISRExpands.FiveMinuteRate',
-                'type'         => 'line',
-            },
-            # /proc/diskstat bytes written per second
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_write_bytes_per_sec",
-                'type'         => 'stack',
-            },
-            # /proc/diskstat bytes read per second
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_read_bytes_per_sec",
-                'type'         => 'stack',
-            },
-            # /proc/diskstat disk utilization %
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_percent_io_time",
-                'type'         => 'line',
-            },
-            # /proc/diskstat IO time
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => "diskstat_(${kafka_log_disks_regex})_io_time",
-                'type'         => 'line',
-            },
-            # 15 minute load average
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'load_fifteen',
-                'type'         => 'line',
-            },
-            # IO wait
-            {
-                'host_regex'   => $kafka_broker_host_regex,
-                'metric_regex' => 'cpu_wio',
-                'type'         => 'line',
-            },
-        ],
-    }
-}
-
 
 # == Define misc::monitoring::view::varnishkafka
 #

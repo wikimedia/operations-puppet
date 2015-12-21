@@ -33,7 +33,7 @@ class role::zookeeper::client {
         version    => $version,
         # Default tick_time is 2000ms, this should allow a max
         # of 16 seconds of latency for Zookeeper client sessions.
-        # See comments in role::analytics::kafka::server for more info.
+        # See comments in role::kafka::analytics::server for more info.
         sync_limit => 8,
     }
 }
