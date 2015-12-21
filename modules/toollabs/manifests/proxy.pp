@@ -78,7 +78,7 @@ class toollabs::proxy(
 
     file { '/var/www/error/favicon.ico':
         ensure  => file,
-        source  => 'puppet:///modules/toollabs/favico.ico',
+        source  => 'puppet:///modules/toollabs/favicon.ico',
         require => File['/var/www/error'],
     }
 
