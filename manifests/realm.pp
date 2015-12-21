@@ -15,7 +15,7 @@ if $::realm == 'labs' {
 
     $labs_metal = hiera('labs_metal', {})
     if has_key($labs_metal, $::hostname) {
-        $labsproject = $labs_metal[$::hostname]['project-name']
+        $labsproject = $labs_metal[$::hostname]['project']
     } else {
         $labsproject = $::labsprojectfrommetadata
     }
