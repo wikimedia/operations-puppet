@@ -21,6 +21,7 @@ class ldap::client::nss(
 
     service { 'nslcd':
         ensure  => running,
+        subscribe => File['/etc/ldap/ldap.conf'],
         require => Package['nslcd'],
     }
 
@@ -43,6 +44,7 @@ class ldap::client::nss(
 
     file { '/etc/nsswitch.conf':
         notify => Service['nscd'],
+        notify => Service['nslcd'],
         source => $nsswitch_conf_source,
     }
 
