@@ -94,6 +94,7 @@ define osm::planet_sync(
     }
 
     cron { "planet_sync-${name}":
+        ensure      => $ensure,
         command     => '/usr/local/bin/replicate-osm > /tmp/osm2pgsql.log 2>&1',
         user        => 'osmupdater',
         hour        => $hour,
