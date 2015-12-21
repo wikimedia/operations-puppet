@@ -16,6 +16,7 @@ class ores::redis(
     # For the queue
     redis::instance { '6379':
         settings => {
+            bind           => '0.0.0.0',
             dir            => '/srv/redis/queue',
             maxmemory      => $queue_maxmemory,
             tcp_keepalive  => 60,
@@ -26,6 +27,7 @@ class ores::redis(
     # For the cache
     redis::instance { '6380':
         settings => {
+            bind           => '0.0.0.0',
             dir            => '/srv/redis/cache',
             maxmemory      => $cache_maxmemory,
             tcp_keepalive  => 60,
