@@ -6247,6 +6247,13 @@ host restbase2006 {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host tegmen {
+	hardware ethernet 14:18:77:33:42:F8;
+	fixed-address tegmen.wikimedia.org;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host restbase-test2001 {
 	hardware ethernet 90:B1:1C:2A:2F:0A;
 	fixed-address restbase-test2001.codfw.wmnet;
