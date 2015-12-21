@@ -254,14 +254,14 @@ class role::graphite::production {
 #
 class role::graphite::alerts {
     # Infer Kafka cluster configuration from this class
-    include ::role::analytics::kafka::config
+    include ::role::kafka::analytics::config
 
     include ::mediawiki::monitoring::graphite
     include ::graphite::monitoring::graphite
 
     # Alerts for EventLogging metrics in Kafka.
     class { '::eventlogging::monitoring::graphite':
-        kafka_brokers_graphite_wildcard =>  $::role::analytics::kafka::config::brokers_graphite_wildcard
+        kafka_brokers_graphite_wildcard =>  $::role::kafka::analytics::config::brokers_graphite_wildcard
     }
 
     swift::monitoring::graphite_alerts { 'eqiad-prod': }
