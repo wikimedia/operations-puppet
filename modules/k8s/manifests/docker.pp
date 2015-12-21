@@ -22,6 +22,9 @@ class k8s::docker {
 
     base::service_unit { 'docker':
         systemd   => true,
-        subscribe => Package['docker-engine'],
+        subscribe => [
+            Package['docker-engine'],
+            Base::Service_unit['flannel'],
+        }
     }
 }
