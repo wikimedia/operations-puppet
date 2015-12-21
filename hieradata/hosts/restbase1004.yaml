@@ -1,1 +1,7 @@
 cassandra::rack: 'b'
+cassandra::instances:
+  a:
+    jmx_port: 7189
+    listen_address: 10.64.32.192
+    rpc_address: 10.64.32.192
+    rpc_interface: eth0
