@@ -1,4 +1,4 @@
-class role::mattermost {
+class role::mattermost::server {
     class { '::mattermost::server':
         sitename          => 'Wikimedia Mattermost (Testing)',
         mysql_host        => '127.0.0.1',
