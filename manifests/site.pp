@@ -2115,14 +2115,6 @@ node 'mx2001.wikimedia.org' {
     }
 }
 
-# Codfw, eqiad ldap servers, aka ldap-$::site
-node /^(nembus|neptunium)\.wikimedia\.org$/ {
-    include standard
-    include base::firewall
-    include ldap::role::server::labs
-    include ldap::role::client::labs
-}
-
 # secondary salt master
 node 'neodymium.eqiad.wmnet' {
 #    role salt::masters::production, deployment::salt_masters, debdeploy::master

@@ -5931,11 +5931,6 @@ host mw2214 {
 	fixed-address mw2214.codfw.wmnet;
 }
 
-host nembus {
-	hardware ethernet 90:B1:1C:00:AB:0D;
-	fixed-address nembus.wikimedia.org;
-}
-
 host neodymium {
 	hardware ethernet 90:B1:1C:2D:79:8C;
 	fixed-address neodymium.eqiad.wmnet;
@@ -5946,11 +5941,6 @@ host neodymium {
 host neon {
 	hardware ethernet 78:2b:cb:08:a4:2f;
 	fixed-address neon.wikimedia.org;
-}
-
-host neptunium {
-	hardware ethernet 84:2b:2b:fd:bd:7a;
-	fixed-address neptunium.wikimedia.org;
 }
 
 host netmon1001 {

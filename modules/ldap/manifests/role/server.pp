@@ -18,14 +18,14 @@ class ldap::role::server::labs {
         }
         'production': {
             case $::hostname {
-                'nembus': {
+                'serpens': {
                     $certificate = 'ldap-codfw.wikimedia.org'
                 }
-                'neptunium': {
+                'seaborgium': {
                     $certificate = 'ldap-eqiad.wikimedia.org'
                 }
                 default: {
-                    fail('Production realm ldap certificates for nembus/neptunium only!')
+                    fail('Production realm ldap certificates for production only!')
                 }
             }
         }
