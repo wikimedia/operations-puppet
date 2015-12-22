@@ -36,7 +36,7 @@ class WMFElasticCollector(diamond.collector.Collector):
         self.o_hostname = ''
 
         self.endpoints = {
-            'node': '_nodes/_local/stats',
+            'node': '_nodes/_local/stats?groups=_all',
             'cluster_stats': '_cluster/stats',
             'cluster_health': '_cluster/health',
         }
