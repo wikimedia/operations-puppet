@@ -194,6 +194,13 @@ class dynamicproxy (
         minute          => '*/1',
         parser          => 'LineCountLogster', # Nothing more specific yet
         logfile         => '/var/log/nginx/access.log',
-        logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}",
+        logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}.all",
+    }
+
+    logster::job { 'proxy-errors':
+        minute          => '*/1',
+        parser          => 'LineCountLogster', # Nothing more specific yet
+        logfile         => '/var/log/nginx/error.log',
+        logster_options => "-o statsd --statsd-host=labmon1001.eqiad.wmnet:8125 --metric-prefix=${graphite_metric_prefix}.errors",
     }
 }
