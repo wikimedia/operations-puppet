@@ -29,6 +29,7 @@ class cxserver(
     if $no_proxy_list {
         validate_array($no_proxy_list)
     }
+
     if $registry {
         $ordered_registry = ordered_json($registry)
     }
