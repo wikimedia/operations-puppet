@@ -262,7 +262,7 @@ statistics_servers:
 # Currently this blacklists the following schemas:
 #   * Analytics so we can use it for testing throughput
 #   * CentralNoticeBannerHistory because it can't be inserted into mysql with its array property
-eventlogging_valid_mixed_schema_blacklist: ^Analytics|MobileWikiAppShareAFact|CentralNoticeBannerHistory$
+eventlogging_valid_mixed_schema_blacklist: ^Analytics|CentralNoticeBannerHistory$
 
 
 # LABS
