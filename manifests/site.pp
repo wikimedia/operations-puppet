@@ -230,7 +230,7 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
 
 # virtual machine for static misc. services
 node 'bromine.eqiad.wmnet' {
-    role bugzilla_static, annualreport, transparency
+    role bugzilla::static, annualreport, transparency
     include standard
 }
 
