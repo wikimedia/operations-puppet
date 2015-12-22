@@ -29,6 +29,12 @@ class cxserver(
     if $no_proxy_list {
         validate_array($no_proxy_list)
     }
+
+    file { '/srv/deployment/cxserver/deploy/src/config.yaml':
+        ensure => 'link',
+        target => '/srv/deployment/cxserver/deploy/src/config.prod.yaml'
+    }
+
     if $registry {
         $ordered_registry = ordered_json($registry)
     }
