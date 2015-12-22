@@ -21,5 +21,12 @@ class snapshot::wikidatadumps::common {
         owner     => 'datasets',
         group     => 'www-data',
     }
+
+    file { '/usr/local/etc/dcatconfig.json':
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/snapshot/dcatconfig.json',
+    }
 }
 

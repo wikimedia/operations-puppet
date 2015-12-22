@@ -46,5 +46,5 @@ function pruneOldLogs {
 }
 
 function runDcat {
-	php5 /usr/local/share/dcat/DCAT.php --config=/usr/local/share/dcat/config.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
+	php5 /usr/local/share/dcat/DCAT.php --config=/usr/local/etc/dcatconfig.json --dumpDir=$targetDirBase --outputDir=$targetDirBase
 }
