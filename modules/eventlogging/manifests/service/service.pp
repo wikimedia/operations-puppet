@@ -127,7 +127,7 @@ define eventlogging::service::service(
     # Generate icinga alert if eventlogging-service-$basename is not running.
     nrpe::monitor_service { $service_name:
         description  => "Check that ${service_name} is running",
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C '${eventlogging_path}/bin/eventlogging-service' @${config_file}",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C python -a '${eventlogging_path}/bin/eventlogging-service @${config_file}'",
         require      => Base::Service_unit[$service_name],
     }
 }
