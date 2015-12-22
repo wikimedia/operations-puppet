@@ -12,4 +12,13 @@ class icinga::monitor::ores {
         contact_group  => 'team-ores',
     }
 
-}
+    # T121656
+    $timestamp = generate('/bin/date', '+%s')
+    monitoring::service { 'ores_worker':
+        description    => 'ORES worker',
+        check_command  => "check_http_url!ores.wmflabs.org!/scores/testwiki/reverted/${timestamp}",
+        host           => 'ores.wmflabs.org',
+        contact_group  => 'team-ores',
+    }
+
+
