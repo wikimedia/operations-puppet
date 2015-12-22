@@ -1,6 +1,7 @@
 [client]
 port   = 3306
 socket = /var/run/mysqld/mysqld.sock
+character-set-client = utf8mb4
 
 [mysqld]
 
@@ -19,6 +20,9 @@ log_slave_updates
 skip-external-locking
 skip-name-resolve
 temp-pool
+
+character-set-server           = utf8mb4
+collation-server               = utf8mb4_unicode_ci
 
 max_connections                = 1024
 max_connect_errors             = 1000000000
