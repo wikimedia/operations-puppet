@@ -95,5 +95,5 @@ class toollabs::proxy(
         require => [File['/var/www/error']]
     }
 
-
+    require_package('goaccess')  # webserver statistics, T121233
 }
