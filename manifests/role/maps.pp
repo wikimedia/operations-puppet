@@ -73,11 +73,14 @@ class role::maps::master {
     }
 
     osm::planet_sync { 'gis':
-        ensure        => absent, # remove this line after reimporting the DB
+        ensure        => present,
         flat_nodes    => true,
         expire_levels => '16',
         num_threads   => 4,
         pg_password   => $osmupdater_pass,
+        period        => 'day', # Remove thse as soon as we get down to minute
+        hour          => '1',
+        minute        => '27',
     }
 
     # Grants
