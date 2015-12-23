@@ -53,6 +53,7 @@ define eventlogging::service::service(
 )
 {
     include ::rsyslog
+    include service::monitoring
     require ::eventlogging
 
     # Additional packages needed for eventlogging-service.
@@ -129,5 +130,13 @@ define eventlogging::service::service(
         description  => "Check that ${service_name} is running",
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C python -a '${eventlogging_path}/bin/eventlogging-service @${config_file}'",
         require      => Base::Service_unit[$service_name],
+    }
+
+    # Spec-based monitoring
+    $monitor_url = "http://${::ipaddress}:${port}"
+    nrpe::monitor_service{ "endpoints_${title}":
+        description  => "${title} endpoints health",
+        nrpe_command => "/usr/local/lib/nagios/plugins/service_checker -t 5 ${::ipaddress} ${monitor_url}",
+        subscribe    => File['/usr/local/lib/nagios/plugins/service_checker'],
     }
 }

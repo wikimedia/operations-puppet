@@ -19,3 +19,6 @@ mediawiki.page_restore:
 
 mediawiki.revision_visibility_set:
   schema_name: revision_visibility_set
+
+test.event:
+  schema_name: event
