@@ -23,13 +23,15 @@ class dynamicproxy (
     $error_enabled        = false,
     $error_config         = {
         title    => 'Wikimedia Labs Error',
-        logo     => '/labs-logo.png',
-        logo_2x  => '/labs-logo-2x.png',
+        logo     => '/.error/labs-logo.png',
+        logo_2x  => '/.error/labs-logo-2x.png',
         logo_alt => 'Wikimedia Labs',
         favicon  => '//wikitech.wikimedia.org/static/favicon/wikitech.ico',
     },
     $error_description    = 'Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.',
     $error_details        = undef,
+    $banned_ips           = [],
+    $banned_description   = 'You have been banned from accessing this service.',
     $web_domain           = undef,
     $blocked_user_agent_regex = 'TweetmemeBot', # T73120 - misbehaving crawler
 ) {
@@ -102,6 +104,18 @@ class dynamicproxy (
     file { '/var/www/error/errorpage.html':
         ensure  => file,
         content => template('dynamicproxy/errorpage.erb'),
+        owner   => 'www-data',
+        group   => 'www-data',
+        mode    => '0444',
+        require => [File['/var/www/error'],
+                    File['/var/www/error/labs-logo.png'],
+                    File['/var/www/error/labs-logo-2x.png']
+        ],
+    }
+
+    file { '/var/www/error/banned.html':
+        ensure  => file,
+        content => template('dynamicproxy/banned.erb'),
         owner   => 'www-data',
         group   => 'www-data',
         mode    => '0444',
