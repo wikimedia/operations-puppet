@@ -45,6 +45,17 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
     role dnsrecursor
     include standard
 
+    if $::hostname == 'acamar' {
+        $url_downloader_ip = hiera('url_downloader_ip')
+        interface::ip { 'url-downloader':
+            interface => 'eth0',
+            address   => $url_downloader_ip,
+        }
+        class { 'role::url_downloader':
+            url_downloader_ip => $url_downloader_ip
+        }
+    }
+
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
     }
