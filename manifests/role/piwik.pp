@@ -16,6 +16,7 @@ class role::piwik {
     include ::base::firewall
 
     require_package('piwik')
+    require_package('mysql-server')
 
     ferm::service { 'piwik_http':
         proto => 'tcp',
@@ -38,7 +39,6 @@ class role::piwik {
 
     apache::site { 'piwik.wikimedia.org':
         content => template('apache/sites/piwik.wikimedia.org.erb'),
-        require => Class['::piwik'],
     }
 
     monitoring::service { 'piwik':
