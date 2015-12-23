@@ -7,7 +7,7 @@ class icinga::monitor::ores {
 
     monitoring::service { 'ores_main_page':
         description    => 'ORES home page',
-        check_command  => 'check_http_url_for_string!ores.wmflabs.org!/!ORES',
+        check_command  => 'check_http',
         host           => 'ores.wmflabs.org',
         contact_group  => 'team-ores',
     }
