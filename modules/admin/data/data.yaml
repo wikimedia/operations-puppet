@@ -524,8 +524,9 @@ users:
     gid: 500
     name: filippo
     realname: Filippo Giunchedi
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDt7HkyaZeIe7L8CuWE1+N47+wDT/4cUmEcrPA1xgdA4By/jesf+1oOTvusbIyXFuCssvspgGmwwNMD+PzNF3xAEo+Yn2aqH4OBhRiF0U8jeaJL1EhzKnT8KKG4fOzzerbKFlE5K9LnYhMXp2i6MoAN9xB3Z350dBwqhspf0OKqZ8AGbsc9RdcEr2pBT7RPRlcKXRTrd47keV+PUazpDVSr2MCdmErknROpcBh5IS27DrKHpma3UcNUGIeMsvsV6nyt8Tz2+EMGkd+P+whij0YzlKDkqB2ppoD+gCPAki277wobiocea79fvPm1/Na+tpXJT7gU+YErld4VRvUclyR/
-        fgiunchedi@wikimedia.org]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDt7HkyaZeIe7L8CuWE1+N47+wDT/4cUmEcrPA1xgdA4By/jesf+1oOTvusbIyXFuCssvspgGmwwNMD+PzNF3xAEo+Yn2aqH4OBhRiF0U8jeaJL1EhzKnT8KKG4fOzzerbKFlE5K9LnYhMXp2i6MoAN9xB3Z350dBwqhspf0OKqZ8AGbsc9RdcEr2pBT7RPRlcKXRTrd47keV+PUazpDVSr2MCdmErknROpcBh5IS27DrKHpma3UcNUGIeMsvsV6nyt8Tz2+EMGkd+P+whij0YzlKDkqB2ppoD+gCPAki277wobiocea79fvPm1/Na+tpXJT7gU+YErld4VRvUclyR/ fgiunchedi@wikimedia.org
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVav0QFad9LUk3phhorWVaEhcqmdz2ZD4UkqaVoXC69JXZALTkfWtevfIUH6zJ5T4kth4fVEDQnOkE0bvZrNOAXH4NgD9R/cB038tuOlPz/3qAmuvLu6ffNnZFU3RlCCxyyHg3L9TcqLbbm87D6YT36159nUkszjP9c4D9IamdKWSCpYpy3B7gczhH2JSR5DN36cWE1ljjUO8sgrakHVLIU4zaElZhpUWy0j/oecUUKvCblWWtmzehsOfpO4Gm1ht/2R71lCB4rwscgWSiFvxy1DGAkjjc+faa+89Vm1mQBkKicKt+7eHrRsbnJZir8Z51n1q2a06hFYSwsPHpuTSB fgiunchedi-neo1
     uid: 4849
   bblack:
     ensure: present
