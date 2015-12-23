@@ -228,6 +228,10 @@ node /^(berkelium|curium)\.eqiad\.wmnet$/ {
     role ipsec
 }
 
+node 'bohrium.eqiad.wmnet' {
+    include standard
+}
+
 # virtual machine for static misc. services
 node 'bromine.eqiad.wmnet' {
     role bugzilla_static, annualreport, transparency

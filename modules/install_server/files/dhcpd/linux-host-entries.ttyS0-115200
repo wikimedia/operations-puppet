@@ -3,6 +3,13 @@
 #### puppet:///modules/install_server/dhcpd/linux-host-entries.ttyS0-115200
 ######################################################################
 
+host bohrium {
+	hardware ethernet aa:00:00:1e:70:87;
+	fixed-address bohrium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host bromine {
 	hardware ethernet aa:00:00:f1:36:3a;
 	fixed-address bromine.eqiad.wmnet;
