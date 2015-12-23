@@ -75,8 +75,9 @@ class role::kafka::main::broker {
 
     # Include Kafka Server Jmxtrans class
     # to send Kafka Broker metrics to Ganglia and statsd.
+    $group_prefix = "kafka.${cluster_name}."
     class { '::kafka::server::jmxtrans':
-        group_prefix => "kafka.${cluster_name}.",
+        group_prefix => $group_prefix,
         ganglia  => hiera('ganglia_aggregators', undef),
         statsd   => hiera('statsd', undef),
         jmx_port =>$::role::kafka::analytics::config::jmx_port,
@@ -86,7 +87,8 @@ class role::kafka::main::broker {
     # Monitor kafka in production
     if $::realm == 'production' {
         class { '::kafka::server::monitoring':
-            jmx_port => $::role::kafka::analytics::config::jmx_port,
+            jmx_port     => $::role::kafka::analytics::config::jmx_port,
+            group_prefix => $group_prefix,
         }
     }
 }
