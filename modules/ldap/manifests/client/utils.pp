@@ -94,6 +94,7 @@ class ldap::client::utils($ldapconfig) {
         user { 'ssh-key-ldap-lookup':
             ensure => present,
             system => true,
+            home   => '/nonexistent', # Since things seem to check for $HOME/.whatever unconditionally...
         }
     }
 
