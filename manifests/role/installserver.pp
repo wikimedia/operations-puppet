@@ -67,7 +67,7 @@ class role::installserver {
     }
 
     ferm::rule { 'proxy':
-        rule => 'proto tcp dport 8080 { saddr $ALL_NETWORKS ACCEPT; }'
+        rule => 'proto tcp dport 8080 { saddr $INTERNAL ACCEPT; }'
     }
 
     include install_server::web-server
