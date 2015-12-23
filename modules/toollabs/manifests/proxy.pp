@@ -34,11 +34,12 @@ class toollabs::proxy(
         redis_replication    => $redis_replication,
         error_config         => {
             title    => 'Wikimedia Tool Labs Error',
-            logo     => '/tool-labs-logo.png',
-            logo_2x  => '/tool-labs-logo-2x.png',
+            logo     => '/.error/tool-labs-logo.png',
+            logo_2x  => '/.error/tool-labs-logo-2x.png',
             logo_alt => 'Wikimedia Tool Labs',
-            favicon  => '/favicon.ico',
+            favicon  => '/.error/favicon.ico',
         },
+        banned_description   => 'You have been banned from accessing Tool Labs. Please see <a href="//wikitech.wikimedia.org/wiki/Help:Tool_Labs/Banned">Help:Tool Labs/Banned</a> for more information on why and on how to resolve this.',
         web_domain           => $web_domain,
     }
 
