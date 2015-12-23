@@ -7,7 +7,7 @@ class icinga::monitor::ores {
 
     monitoring::service { 'ores_main_page':
         description    => 'ORES home page',
-        check_command  => 'check_http',
+        check_command  => 'check_http_url_for_string!ores.wmflabs.org!/!/!\'ORES. :D\'',
         host           => 'ores.wmflabs.org',
         contact_group  => 'team-ores',
     }
@@ -16,7 +16,7 @@ class icinga::monitor::ores {
     $timestamp = generate('/bin/date', '+%s')
     monitoring::service { 'ores_worker':
         description    => 'ORES worker',
-        check_command  => "check_http_url!ores.wmflabs.org!/scores/testwiki/reverted/${timestamp}",
+        check_command  => "check_http_url!ores.wmflabs.org!/scores/testwiki/reverted/${timestamp}/",
         host           => 'ores.wmflabs.org',
         contact_group  => 'team-ores',
     }
