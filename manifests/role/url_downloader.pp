@@ -79,7 +79,7 @@ class role::url_downloader($url_downloader_ip) {
     ferm::service { 'url_downloader':
         proto  => 'tcp',
         port   => '8080',
-        srange => '$ALL_NETWORKS',
+        srange => '$INTERNAL',
     }
 
     # Monitoring
