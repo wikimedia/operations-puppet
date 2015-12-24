@@ -33,6 +33,15 @@ class puppetmaster::scripts(
         source => 'puppet:///modules/puppetmaster/puppet-merge'
     }
 
+    # export and sanitize facts for puppet compiler
+    file {'/usr/local/bin/puppet-facts-export':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/puppet-facts-export'
+    }
+
     # Clear out older reports
     cron { 'removeoldreports':
         ensure  => present,
