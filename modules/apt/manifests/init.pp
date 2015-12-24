@@ -42,23 +42,16 @@ class apt(
         priority => 1001,
     }
 
+    # This will munge /etc/apt/apt.conf that get's created during installation
+    # process (either labs vmbuilder or d-i). Given the ones below exist, it is
+    # no longer needed after the installation is over
+    file { '/etc/apt/apt.conf':
+        ensure => absent,
+        notify => Exec['apt-get update'],
+    }
+
     if $use_proxy {
         $http_proxy = "http://webproxy.${::site}.wmnet:8080"
-
-        # This will munge /etc/apt/apt.conf that get's created during installation
-        # process (either labs vmbuilder or d-i). Given the ones below exist, it is
-        # no longer needed after the installation is over
-        file { '/etc/apt/apt.conf':
-            ensure => absent,
-            notify => Exec['apt-get update'],
-        }
-
-        apt::conf { 'wikimedia-proxy':
-            ensure   => absent,
-            priority => '80',
-            key      => 'Acquire::http::Proxy',
-            value    => $http_proxy,
-        }
 
         if $::operatingsystem == 'Debian' {
             apt::conf { 'security-debian-proxy':
