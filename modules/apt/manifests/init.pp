@@ -42,7 +42,7 @@ class apt(
         priority => 1001,
     }
 
-        if $use_proxy {
+    if $use_proxy {
         $http_proxy = "http://webproxy.${::site}.wmnet:8080"
 
         # This will munge /etc/apt/apt.conf that get's created during installation
@@ -61,8 +61,6 @@ class apt(
         }
 
         if $::operatingsystem == 'Debian' {
-            $components = 'main backports thirdparty'
-
             apt::conf { 'security-debian-proxy':
                 ensure   => present,
                 priority => '80',
@@ -70,8 +68,6 @@ class apt(
                 value    => $http_proxy,
             }
         } elsif $::operatingsystem == 'Ubuntu' {
-            $components = 'main universe thirdparty'
-
             apt::conf { 'security-ubuntu-proxy':
                 ensure   => present,
                 priority => '80',
@@ -95,6 +91,12 @@ class apt(
         } else {
             fail("Unknown operating system '${::operatingsystem}'.")
         }
+    }
+
+    if $::operatingsystem == 'ubuntu' {
+        $components = 'main universe thirdparty'
+    } else {
+        $components = 'main backports thirdparty'
     }
 
     apt::repository { 'wikimedia':
