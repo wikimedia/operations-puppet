@@ -57,3 +57,6 @@ ssh::server::disable_agent_forwarding: false
 puppetmaster: "labs-puppetmaster-eqiad.wikimedia.org"
 saltmaster: "labs-puppetmaster-eqiad.wikimedia.org"
 mysql::server::use_apparmor: false  # The images we have for debian don't support it
+
+# All labs instances have internet connectivity, so do not bother with proxies
+apt::use_proxy: false

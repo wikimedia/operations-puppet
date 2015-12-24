@@ -1,4 +1,6 @@
-class apt {
+class apt(
+    $use_proxy = true
+) {
     exec { 'apt-get update':
         path        => '/usr/bin',
         timeout     => 240,
@@ -40,57 +42,59 @@ class apt {
         priority => 1001,
     }
 
-    $http_proxy = "http://webproxy.${::site}.wmnet:8080"
+        if $use_proxy {
+        $http_proxy = "http://webproxy.${::site}.wmnet:8080"
 
-    # This will munge /etc/apt/apt.conf that get's created during installation
-    # process (either labs vmbuilder or d-i). Given the ones below exist, it is
-    # no longer needed after the installation is over
-    file { '/etc/apt/apt.conf':
-        ensure => absent,
-        notify => Exec['apt-get update'],
-    }
-
-    apt::conf { 'wikimedia-proxy':
-        ensure   => absent,
-        priority => '80',
-        key      => 'Acquire::http::Proxy',
-        value    => $http_proxy,
-    }
-
-    if $::operatingsystem == 'Debian' {
-        $components = 'main backports thirdparty'
-
-        apt::conf { 'security-debian-proxy':
-            ensure   => present,
-            priority => '80',
-            key      => 'Acquire::http::Proxy::security.debian.org',
-            value    => $http_proxy,
+        # This will munge /etc/apt/apt.conf that get's created during installation
+        # process (either labs vmbuilder or d-i). Given the ones below exist, it is
+        # no longer needed after the installation is over
+        file { '/etc/apt/apt.conf':
+            ensure => absent,
+            notify => Exec['apt-get update'],
         }
-    } elsif $::operatingsystem == 'Ubuntu' {
-        $components = 'main universe thirdparty'
 
-        apt::conf { 'security-ubuntu-proxy':
-            ensure   => present,
+        apt::conf { 'wikimedia-proxy':
+            ensure   => absent,
             priority => '80',
-            key      => 'Acquire::http::Proxy::security.ubuntu.com',
+            key      => 'Acquire::http::Proxy',
             value    => $http_proxy,
         }
 
-        apt::conf { 'ubuntu-cloud-archive-proxy':
-            ensure   => present,
-            priority => '80',
-            key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
-            value    => $http_proxy,
-        }
+        if $::operatingsystem == 'Debian' {
+            $components = 'main backports thirdparty'
 
-        apt::conf { 'old-releases-proxy':
-            ensure   => present,
-            priority => '80',
-            key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
-            value    => $http_proxy,
+            apt::conf { 'security-debian-proxy':
+                ensure   => present,
+                priority => '80',
+                key      => 'Acquire::http::Proxy::security.debian.org',
+                value    => $http_proxy,
+            }
+        } elsif $::operatingsystem == 'Ubuntu' {
+            $components = 'main universe thirdparty'
+
+            apt::conf { 'security-ubuntu-proxy':
+                ensure   => present,
+                priority => '80',
+                key      => 'Acquire::http::Proxy::security.ubuntu.com',
+                value    => $http_proxy,
+            }
+
+            apt::conf { 'ubuntu-cloud-archive-proxy':
+                ensure   => present,
+                priority => '80',
+                key      => 'Acquire::http::Proxy::ubuntu-cloud.archive.canonical.com',
+                value    => $http_proxy,
+            }
+
+            apt::conf { 'old-releases-proxy':
+                ensure   => present,
+                priority => '80',
+                key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
+                value    => $http_proxy,
+            }
+        } else {
+            fail("Unknown operating system '${::operatingsystem}'.")
         }
-    } else {
-        fail("Unknown operating system '${::operatingsystem}'.")
     }
 
     apt::repository { 'wikimedia':
