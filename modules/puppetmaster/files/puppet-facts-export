@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# import into puppet compiler with:
+# sudo tar Jxvf puppet-facts-export.tar.xz --directory /var/lib/catalog-differ/puppet
+# sudo chown -R jenkins-deploy:wikidev /var/lib/catalog-differ/puppet/yaml
+
+set -e
+set -u
+
+tmpdir=$(mktemp -d)
+outfile=/tmp/puppet-facts-export.tar.xz
+
+function cleanup() {
+  rm -rf $tmpdir
+}
+
+trap cleanup EXIT
+
+sudo rsync -a /var/lib/puppet/yaml $tmpdir
+sudo chown -R ${USER} $tmpdir/yaml
+find $tmpdir/yaml -type f -name "*.yaml" | \
+  xargs sed -i \
+    -e 's@uniqueid:.*@uniqueid: "42"@' \
+    -e 's@boardserialnumber:.*@boardserialnumber: "4242"@' \
+    -e 's@boardproductname:.*@boardproductname: "424242"@' \
+    -e 's@serialnumber:.*@serialnumber: "42424242"@'
+
+tar cJvf $outfile --directory $tmpdir yaml
+
+echo "puppet facts sanitized and exported at $outfile"
