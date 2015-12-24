@@ -238,25 +238,55 @@ class network::constants {
         'frack' => {
             'eqiad' => {
                 'public' => {
-                    'public-frack-eqiad' => {
+                    'frack-external1-c-eqiad' => {
                         'ipv4' => '208.80.155.0/27',
                     },
                 },
                 'private' => {
-                    'private-frack-eqiad' => {
-                        'ipv4' => '10.64.40.0/24',
+                    'frack-payments1-c-eqiad' => {
+                        'ipv4' => '10.64.40.0/27',
+                    },
+                    'frack-bastion1-c-eqiad' => {
+                        'ipv4' => '10.64.40.32/27',
+                    },
+                    'frack-administration1-c-eqiad' => {
+                        'ipv4' => '10.64.40.64/27',
+                    },
+                    'frack-fundraising1-c-eqiad' => {
+                        'ipv4' => '10.64.40.96/27',
+                    },
+                    'frack-DMZ1-c-eqiad' => {
+                        'ipv4' => '10.64.40.128/27',
+                    },
+                    'frack-listenerdmz1-c-eqiad' => {
+                        'ipv4' => '10.64.40.160/27',
                     },
                 },
             },
             'codfw' => {
                 'public' => {
-                    'public-frack-codfw' => {
+                    'frack-external-codfw' => {
                         'ipv4' => '208.80.152.224/28',
                     },
                 },
                 'private' => {
-                    'private-frack-codfw' => {
-                        'ipv4' => '10.195.0.0/25',
+                    'frack-payments-codfw' => {
+                        'ipv4' => '10.195.0.0/27',
+                    },
+                    'frack-bastion-codfw' => {
+                        'ipv4' => '10.195.0.64/29',
+                    },
+                    'frack-administration-codfw' => {
+                        'ipv4' => '10.195.0.72/29',
+                    },
+                    'frack-fundraising-codfw' => {
+                        'ipv4' => '10.195.0.32/27',
+                    },
+                    'frack-listenerdmz-codfw' => {
+                        'ipv4' => '10.195.0.80/29',
+                    },
+                    'frack-management-codfw' => {
+                        'ipv4' => '10.195.0.96/27',
                     },
                 },
             },
