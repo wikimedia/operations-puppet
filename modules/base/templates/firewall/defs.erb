@@ -3,12 +3,23 @@ external_networks = scope.lookupvar('network::constants::external_networks')
 all_networks = scope.lookupvar('network::constants::all_networks')
 all_network_subnets = scope.lookupvar('network::constants::all_network_subnets')
 special_hosts = scope.lookupvar('network::constants::special_hosts')
+production_networks = scope.lookupvar('network::constants::production_networks')
+production_networks_ipv4 = scope.lookupvar('network::constants::production_networks_ipv4')
+production_networks_ipv6 = scope.lookupvar('network::constants::production_networks_ipv6')
 analytics_networks = scope.lookupvar('network::constants::analytics_networks')
 mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networks')
 -%>
 
+@def $INTERNAL_V4 = (10.0.0.0/8);
+@def $INTERNAL_V6 = (2620:0:100::/56);
+@def $INTERNAL = ($INTERNAL_V4 $INTERNAL_V6);
 @def $EXTERNAL_NETWORKS = (<%- external_networks.each do |external_net| -%><%= external_net %> <% end -%>);
 @def $ALL_NETWORKS = (<%- all_networks.each do |net| -%><%= net %> <% end -%>);
+
+@def $PRODUCTION_NETWORKS = (<%- production_networks.each do |net| -%><%= net %> <% end -%>);
+@def $PRODUCTION_NETWORKS_IPV4 = (<%- production_networks_ipv4.each do |net| -%><%= net %> <% end -%>);
+@def $PRODUCTION_NETWORKS_IPV6 = (<%- production_networks_ipv6.each do |net| -%><%= net %> <% end -%>);
+
 @def $ANALYTICS_NETWORKS = (<%- analytics_networks.each do |net| -%><%= net %> <% end -%>);
 @def $MW_APPSERVER_NETWORKS = (<%- mw_appserver_networks.each do |net| -%><%= net %> <% end -%>);
 
@@ -37,7 +48,3 @@ mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networ
 		<%- end -%>
 	<%- end -%>
 <%- end -%>
-
-@def $INTERNAL_V4 = (10.0.0.0/8);
-@def $INTERNAL_V6 = (2620:0:100::/56);
-@def $INTERNAL = ($INTERNAL_V4 $INTERNAL_V6);
