@@ -89,9 +89,6 @@ class network::constants {
                         'ipv4' => '208.80.154.224/27',
                         'ipv6' => '2620:0:861:ed1a::/64',
                     },
-                    'public-frack-eqiad' => {
-                        'ipv4' => '208.80.155.0/27',
-                    },
                 },
                 'private' => {
                     'private1-a-eqiad' => {
@@ -157,9 +154,6 @@ class network::constants {
                         'ipv4' => '10.64.53.0/24',
                         'ipv6' => '2620:0:861:108::/64'
                     },
-                    'private-frack-eqiad' => {
-                        'ipv4' => '10.64.40.0/24',
-                    },
                 },
             },
             'codfw' => {
@@ -184,9 +178,6 @@ class network::constants {
                         'ipv4' => '208.80.153.224/27',
                         'ipv6' => '2620:0:860:ed1a::/64',
                     },
-                    'public-frack-codfw' => {
-                        'ipv4' => '208.80.152.224/28',
-                    },
                 },
                 'private' => {
                     'private1-a-codfw' => {
@@ -204,9 +195,6 @@ class network::constants {
                     'private1-d-codfw' => {
                         'ipv4' => '10.192.48.0/22',
                         'ipv6' => '2620:0:860:104::/64'
-                    },
-                    'private-frack-codfw' => {
-                        'ipv4' => '10.195.0.0/25',
                     },
                 },
             },
@@ -243,6 +231,32 @@ class network::constants {
                     'private1-ulsfo' => {
                         'ipv4' => '10.128.0.0/24',
                         'ipv6' => '2620:0:863:101::/64'
+                    },
+                },
+            },
+        },
+        'frack' => {
+            'eqiad' => {
+                'public' => {
+                    'public-frack-eqiad' => {
+                        'ipv4' => '208.80.155.0/27',
+                    },
+                },
+                'private' => {
+                    'private-frack-eqiad' => {
+                        'ipv4' => '10.64.40.0/24',
+                    },
+                },
+            },
+            'codfw' => {
+                'public' => {
+                    'public-frack-codfw' => {
+                        'ipv4' => '208.80.152.224/28',
+                    },
+                },
+                'private' => {
+                    'private-frack-codfw' => {
+                        'ipv4' => '10.195.0.0/25',
                     },
                 },
             },
