@@ -1,35 +1,3 @@
-# OSM role classes
-
-class role::osm::common {
-    include standard
-
-    $datadir = '/srv/postgres/9.1/main'
-
-    file { '/etc/postgresql/9.1/main/tuning.conf':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///files/osm/tuning.conf',
-    }
-
-    sysctl::parameters { 'postgres_shmem':
-        values => {
-            # That is derived after tuning postgresql, deriving automatically is
-            # not the safest idea yet.
-            'kernel.shmmax' => 8388608000,
-        },
-    }
-
-    ferm::service { 'postgresql':
-        proto  => 'tcp',
-        port   => 5432,
-        srange => '$INTERNAL',
-    }
-
-    ganglia::plugin::python { 'diskstat': }
-}
-
 class role::osm::master {
     include role::osm::common
     include postgresql::postgis
@@ -172,29 +140,3 @@ class role::osm::master {
     }
 }
 
-class role::osm::slave {
-    include role::osm::common
-    include postgresql::postgis
-    include passwords::osm
-    include base::firewall
-    # Note: This is here to illustrate the fact that the slave is expected to
-    # have the same dbs as the master.
-    #postgresql::spatialdb { 'gis': }
-
-    system::role { 'role::osm::slave':
-        ensure      => 'present',
-        description => 'openstreetmaps db slave',
-    }
-
-    class {'postgresql::slave':
-        master_server    => $osm_master,
-        replication_pass => $passwords::osm::replication_pass,
-        includes         => 'tuning.conf',
-        datadir          => $role::osm::common::datadir,
-    }
-
-    class { 'postgresql::ganglia':
-        pgstats_user => $passwords::osm::ganglia_user,
-        pgstats_pass => $passwords::osm::ganglia_pass,
-    }
-}
