@@ -8,7 +8,6 @@ class elasticsearch::nagios::plugin {
       owner   => 'root',
       group   => 'root',
       mode    => '0755',
-      require => Package['icinga'],
       tag     => 'nagiosplugin'
     }
 
@@ -18,7 +17,6 @@ class elasticsearch::nagios::plugin {
       owner   => 'root',
       group   => 'root',
       mode    => '0755',
-      require => Package['icinga'],
       tag     => 'nagiosplugin'
     }
 
