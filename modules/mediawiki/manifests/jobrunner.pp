@@ -106,6 +106,13 @@ class mediawiki::jobrunner (
             priority => 1,
             content  => template('mediawiki/jobrunner/site.conf.erb')
         }
+
+        # Hack for T122069: Once a day, check the uptime of HHVM. If HHVM has
+        # been running for more than a day, restart it.
+        cron { 'periodic_hhvm_restart':
+            command => '/bin/ps -C hhvm -o etime= | /bin/grep -q - && /sbin/initctl restart hhvm',
+            hour    => fqdn_rand(23, 'periodic_hhvm_restart'),
+        }
     }
 
 }
