@@ -47,6 +47,7 @@ class toollabs::redis (
             stop_writes_on_bgsave_error => false,
             appendfilename              => "${::hostname}-6379.aof",
             slaveof                     => $slaveof,
+            bind                        => '0.0.0.0',
             rename_command              => {
                 'CLIENT'    => '""',
                 'CONFIG'    => '""',
