@@ -632,13 +632,13 @@ node /^db20(23|38|45|52|59|66)\.codfw\.wmnet/ {
 }
 
 # s6 core production slave dbs on eqiad
-node /^db10(30|37|50|61)\.eqiad\.wmnet/ {
+node /^db10(30|37|61)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
     }
 }
 
-node /^db10(22)\.eqiad\.wmnet/ {
+node /^db10(22|50)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's6',
         p_s   => 'on',
