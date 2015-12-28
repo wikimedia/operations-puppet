@@ -81,7 +81,7 @@ def get_instance_ips(project):
            "?action=query&list=novainstances&niproject=%s" +
            "&niregion=eqiad&format=json") % project
     try:
-        data = json.loads(urlopen(url, timeout=5).read().decode('utf-8'))
+        data = json.loads(urlopen(url, timeout=15).read().decode('utf-8'))
     except:
         logging.exception('Error fetching instance ip list for project %s', project)
         sys.exit(1)
