@@ -470,8 +470,10 @@ users:
     gid: 500
     name: faidon
     realname: Faidon Liambotis
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/m5mZhy2bpvmBNzaLLhlqhjLuuGd5vNGgAtRKmvfa+nbHi7upm8d/e1RoSGVueXSVdjcVYfqqfNnJQ9GIC9flhgVhTwz1zezCEWREqMQ3XuauqAr+Tb/031BtgLCHfTmUjdsDKTigwTMPOnRG+DNo+ZHyxfpTCP5Oy6TChcK6+Om247eiXEhHZNL8Sk0idSy2mSJxavzs25F/lsGjsl4YyVV3jNqgVqoz3Evl1VO0E3xlbOOeWeJnROq+g2JJqZfoCtdAYidtg8oJ6yBKJHoxynqI6EhBJtnwulIXGTZmdY2cMJwT2YpkqljQFBwtWIy/T+WNkZnLuJXT4DRlBb1F
-        faidon@wmf]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/m5mZhy2bpvmBNzaLLhlqhjLuuGd5vNGgAtRKmvfa+nbHi7upm8d/e1RoSGVueXSVdjcVYfqqfNnJQ9GIC9flhgVhTwz1zezCEWREqMQ3XuauqAr+Tb/031BtgLCHfTmUjdsDKTigwTMPOnRG+DNo+ZHyxfpTCP5Oy6TChcK6+Om247eiXEhHZNL8Sk0idSy2mSJxavzs25F/lsGjsl4YyVV3jNqgVqoz3Evl1VO0E3xlbOOeWeJnROq+g2JJqZfoCtdAYidtg8oJ6yBKJHoxynqI6EhBJtnwulIXGTZmdY2cMJwT2YpkqljQFBwtWIy/T+WNkZnLuJXT4DRlBb1F faidon@wmf
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILQTaNd90xP89/vr7K+Jn5PwRI8WDaXny5QF1RzWZNGm faidon@wmf
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCez+fPcVq6AWpfJpUjmb1mElkALHk8HsxpPIfGK4+fGdgjd21YUqXYQlgF3ulNqUSilRxEPsI59I/XVRbS1Tcg3r9zQ7EWw+DY5/l7vZ68O/W4VsTQ08dnpbVGiG0RG6PN2zi9Mxysi6/VLoHoddS0/VMl1B1iQVuTBQcc/27pmPvriJ/YeYRr5hrJFNC6Y0XVjIivuQ+uz0AFhN2a6ecm8ftbnh6BvTvA6PofiNr2AbByKHfzHiH52Byc5GEJEzppddnpLxhWSpdTd0VyiytdO1dEK6qqVSKOs7pZoL+TdqfT/PJfj+iesn3dKIrHDO0Ql7xshoI1v/7KJW9jGE21 faidon-yubi@wmf
     uid: 2186
   springle:
     ensure: present
