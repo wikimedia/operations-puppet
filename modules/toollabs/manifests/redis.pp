@@ -59,8 +59,8 @@ class toollabs::redis (
                 'SHUTDOWN'  => '""',
                 'SLAVEOF'   => '""',
             },
-            require                     => Labs_lvm::Volume['redis-disk'],
         },
+        require  => Labs_lvm::Volume['redis-disk'],
     }
 
     package { 'python-virtualenv':
