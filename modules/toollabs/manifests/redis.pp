@@ -15,7 +15,7 @@
 #
 class toollabs::redis (
     $maxmemory = '12GB',
-) inherits toollabs {
+) {
     include toollabs::infrastructure
     include ::redis::client::python
 
