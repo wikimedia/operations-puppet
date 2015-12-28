@@ -19,10 +19,10 @@ class toollabs::redis (
     include toollabs::infrastructure
     include ::redis::client::python
 
-    # $active_redis inherited from toollabs
-    if $active_redis != $::hostname {
+    $active_redis = hiera('active_redis')
+    if $active_redis != $::fqdn {
         $redis_replication = {
-            "${::hostname}" => $active_redis,
+            "${::fqdn}" => $fqdn,
         }
     } else {
         $redis_replication = undef

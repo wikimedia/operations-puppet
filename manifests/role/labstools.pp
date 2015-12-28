@@ -80,8 +80,11 @@ class role::labs::tools {
         include toollabs::mailrelay
     }
 
-    class redis inherits role::labs::tools::common {
-        system::role { 'role::labs::tools::redis': description => 'Server that hosts shared Redis instance' }
+    class redis {
+        system::role {
+            'role::labs::tools::redis':
+            description => 'Server that hosts shared Redis instance'
+        }
 
         include toollabs::redis
     }
