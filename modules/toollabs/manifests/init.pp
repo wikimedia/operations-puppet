@@ -14,8 +14,7 @@
 class toollabs (
     $external_hostname = undef,
     $external_ip = undef,
-    $active_redis = 'tools-redis-01',
-    $active_redis_ip = '10.68.18.70',
+
     $is_mail_relay = false,
     $active_mail_relay = 'tools-mail.eqiad.wmflabs',
     $mail_domain = 'tools.wmflabs.org',
@@ -181,6 +180,8 @@ class toollabs (
         content => $active_proxy,
     }
 
+    $active_redis = hiera('active_redis')
+    $active_redis_ip = ipresolve($server, 4, $::nameservers[0])
     # puppetized until we can setup proper DNS for .labsdb entries
     file { '/etc/hosts':
         content => template('toollabs/hosts.erb'),
