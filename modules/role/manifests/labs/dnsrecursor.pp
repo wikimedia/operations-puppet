@@ -281,15 +281,15 @@ class role::labs::dnsrecursor {
         'wikimania2007wiki', 'wikimania2008wiki', 'wikimania2009wiki',
         'wikimania2010wiki', 'wikimania2011wiki', 'wikimania2012wiki',
         'wikimania2013wiki', 'wikimania2014wiki', 'wikimania2015wiki',
-        'wikimania2016wiki', 'wowiki', 'wowikiquote', 'wowiktionary',
-        'wuuwiki', 'xalwiki', 'xhwiki', 'xhwikibooks', 'xhwiktionary',
-        'xmfwiki', 'yiwiki', 'yiwikisource', 'yiwiktionary', 'yowiki',
-        'yowikibooks', 'yowiktionary', 'zawiki', 'zawikibooks', 'zawikiquote',
-        'zawiktionary', 'zeawiki', 'zh_classicalwiki', 'zh_min_nanwiki',
-        'zh_min_nanwikibooks', 'zh_min_nanwikiquote', 'zh_min_nanwikisource',
-        'zh_min_nanwiktionary', 'zh_yuewiki', 'zhwikibooks', 'zhwikinews',
-        'zhwikiquote', 'zhwikisource', 'zhwikivoyage', 'zhwiktionary',
-        'zuwiki', 'zuwikibooks', 'zuwiktionary']
+        'wikimania2016wiki', 'wikimania2017wiki', 'wowiki', 'wowikiquote',
+        'wowiktionary', 'wuuwiki', 'xalwiki', 'xhwiki', 'xhwikibooks',
+        'xhwiktionary', 'xmfwiki', 'yiwiki', 'yiwikisource', 'yiwiktionary',
+        'yowiki', 'yowikibooks', 'yowiktionary', 'zawiki', 'zawikibooks',
+        'zawikiquote', 'zawiktionary', 'zeawiki', 'zh_classicalwiki',
+        'zh_min_nanwiki', 'zh_min_nanwikibooks', 'zh_min_nanwikiquote',
+        'zh_min_nanwikisource', 'zh_min_nanwiktionary', 'zh_yuewiki',
+        'zhwikibooks', 'zhwikinews', 'zhwikiquote', 'zhwikisource',
+        'zhwikivoyage', 'zhwiktionary', 'zuwiki', 'zuwikibooks', 'zuwiktionary']
 
     file { '/var/zones':
         ensure => directory,
