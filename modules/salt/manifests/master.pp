@@ -59,7 +59,9 @@ class salt::master(
 
     sysctl::parameters { 'salt-master':
         values => {
-            'net.core.somaxconn' => 4096,
+            'net.core.somaxconn'          => 4096,
+            'net.core.netdev_max_backlog' => 4096,
+            'net.ipv4.tcp_mem'            => '16777216 16777216 16777216',
         }
     }
 }
