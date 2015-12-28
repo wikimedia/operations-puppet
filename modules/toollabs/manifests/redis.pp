@@ -21,7 +21,7 @@ class toollabs::redis (
 
     $active_redis = hiera('active_redis')
     if $active_redis != $::fqdn {
-        $slaveof = $active_redis
+        $slaveof = "${active_redis} 6379"
     } else {
         $slaveof = undef
     }
