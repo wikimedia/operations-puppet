@@ -7,7 +7,7 @@ class toollabs::monitoring::icinga {
 
     monitoring::service { 'tools_main_page':
         description   => 'tools-home',
-        check_command => 'check_http',
+        check_command => 'check_http_slow!20',
         host          => 'tools.wmflabs.org',
         critical      => true,
     }
