@@ -279,12 +279,9 @@ class role::ci::slave::labs::common {
         mode   => '0775',
     }
 
-    # Maven requires a webproxy on labs slaves
-    class { 'contint::maven_webproxy':
-        homedir => '/mnt/home/jenkins-deploy',
-        owner   => 'jenkins-deploy',
-        group   => 'wikidev',
-        require => File['/mnt/home/jenkins-deploy'],
+    # drop settings file with old proxy settings
+    file { '/mnt/home/jenkins-deploy/.m2/settings.xml':
+        ensure => absent
     }
 
     git::userconfig { '.gitconfig for jenkins-deploy user':
