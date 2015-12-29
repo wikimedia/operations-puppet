@@ -169,13 +169,6 @@ class role::ci::slave {
         require  => User['jenkins-slave'],
     }
 
-    # Maven requires a webproxy on production slaves
-    class { 'contint::maven_webproxy':
-        homedir => '/var/lib/jenkins-slave',
-        owner   => 'jenkins-slave',
-        group   => 'jenkins-slave',
-    }
-
     contint::tmpfs { 'tmpfs for jenkins CI slave':
         mount_point => '/var/lib/jenkins-slave/tmpfs',
         size        => '512M',
