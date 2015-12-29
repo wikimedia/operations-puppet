@@ -61,8 +61,9 @@ class salt::minion(
     # step which automatically starts the minion
     # will start it with the correct settings
     package { 'salt-minion':
-        ensure  => present,
-        require => File['/etc/salt/minion'],
+      ensure  => present,
+      require => File['/etc/salt/minion',
+                      '/etc/systemd/system/salt-minion.service.d/'],
     }
 
     service { 'salt-minion':
@@ -116,4 +117,19 @@ class salt::minion(
         mode   => '0444',
     }
 
+    if $::initsystem == 'systemd' {
+        file { '/etc/systemd/system/salt-minion.service.d/':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+
+        file { '/etc/systemd/system/salt-minion.service.d/killmode.conf':
+            content => '[Service]\nKillMode=process\n',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
+    }
 }
