@@ -169,11 +169,9 @@ class role::ci::slave {
         require  => User['jenkins-slave'],
     }
 
-    # Maven requires a webproxy on production slaves
-    class { 'contint::maven_webproxy':
-        homedir => '/var/lib/jenkins-slave',
-        owner   => 'jenkins-slave',
-        group   => 'jenkins-slave',
+    # drop settings file with old proxy settings
+    file { '/var/lib/jenkins-slave/.m2/settings.xml':
+        ensure => absent,
     }
 
     contint::tmpfs { 'tmpfs for jenkins CI slave':
@@ -279,12 +277,9 @@ class role::ci::slave::labs::common {
         mode   => '0775',
     }
 
-    # Maven requires a webproxy on labs slaves
-    class { 'contint::maven_webproxy':
-        homedir => '/mnt/home/jenkins-deploy',
-        owner   => 'jenkins-deploy',
-        group   => 'wikidev',
-        require => File['/mnt/home/jenkins-deploy'],
+    # drop settings file with old proxy settings
+    file { '/mnt/home/jenkins-deploy/.m2/settings.xml':
+        ensure => absent
     }
 
     git::userconfig { '.gitconfig for jenkins-deploy user':
