@@ -5,3 +5,5 @@ access to *
 	by dn="cn=admin,<%= @suffix %>" write
 	by group/groupOfUniqueNames/uniqueMember="cn=Directory Managers,ou=groups,dc=wikimedia,dc=org" write
 	by * break
+
+limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited size=unlimited
