@@ -27,7 +27,7 @@ class redis {
         values => { 'kernel/mm/transparent_hugepage/enabled' => 'never' }
     }
 
-    if os_version('debian >= jessie || ubuntu >= trusty') {
+    if os_version('debian >= jessie') {
         file_line { 'enable_latency_monitor':
             line    => 'latency-monitor-threshold 100',
             match   => '^latency-monitor-threshold',
