@@ -20,4 +20,8 @@ class redis {
         enable    => false,
         subscribe => Package['redis-server'],
     }
+
+    sysfs::parameters { 'disable_transparent_hugepages':
+        values => { 'kernel/mm/transparent_hugepage/enabled' => 'never' }
+    }
 }
