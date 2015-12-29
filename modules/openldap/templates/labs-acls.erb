@@ -6,4 +6,6 @@ access to *
 	by group/groupOfUniqueNames/uniqueMember="cn=Directory Managers,ou=groups,dc=wikimedia,dc=org" write
 	by * break
 
-limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited size=unlimited
+# novaadmin needs to run queries on all users.  16,000 users is less than
+#  'unlimited' but should keep us happy for a few years at least :/
+limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited size=16384
