@@ -30,7 +30,7 @@ class redis {
     if os_version('debian >= jessie || ubuntu >= trusty') {
         file_line { 'enable_latency_monitor':
             line    => 'latency-monitor-threshold 100',
-            match   => 'latency-monitor-threshold',
+            match   => '^latency-monitor-threshold',
             path    => '/etc/redis/redis.conf',
         }
     }
