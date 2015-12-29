@@ -26,6 +26,7 @@ class role::openldap::labs {
                           'puppet.schema', 'sudo.schema'],
         extra_indices => 'openldap/labs-indices.erb',
         extra_acls    => 'openldap/labs-acls.erb',
+        size_limit    => 16384
     }
 
     # Ldap services are used all over the place, including within
