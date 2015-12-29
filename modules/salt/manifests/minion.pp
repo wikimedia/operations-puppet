@@ -125,7 +125,7 @@ class salt::minion(
         }
 
         file { '/etc/systemd/system/salt-minion.service.d/killmode.conf':
-            content => '[Service]\nKillMode=process\n',
+            content => "[Service]\nKillMode=process\n",
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
