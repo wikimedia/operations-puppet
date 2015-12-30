@@ -20,7 +20,7 @@ class role::labs::ores::worker {
 class role::labs::ores::redis {
     class { '::ores::redis':
         queue_maxmemory => '512M',
-        cache_maxmemory => '3G',
+        cache_maxmemory => '2G',
     }
 }
 
