@@ -12,6 +12,11 @@ class gridengine::master
         require => Package['gridengine-master'],
     }
 
+    # berkleydb utils for doing db recovery and other operations
+    package {'db-util':
+        ensure => latest,
+    }
+
     $etcdir = '/var/lib/gridengine/etc'
 
     file { "${etcdir}/tracker":
@@ -117,4 +122,3 @@ class gridengine::master
     }
 
 }
-
