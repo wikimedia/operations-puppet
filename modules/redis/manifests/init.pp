@@ -27,6 +27,14 @@ class redis {
         values => { 'kernel/mm/transparent_hugepage/enabled' => 'never' }
     }
 
+    # Background save may fail under low memory condition unless
+    # vm.overcommit_memory is 1.
+    sysctl::parameters { 'vm.overcommit_memory':
+        values => {
+            'vm.overcommit_memory' => 1,
+        },
+    }
+
     if os_version('debian >= jessie') {
         file_line { 'enable_latency_monitor':
             line    => 'latency-monitor-threshold 100',
