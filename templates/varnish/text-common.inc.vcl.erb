@@ -20,11 +20,13 @@ sub restore_cookie {
 sub evaluate_cookie {
 	// A session or token cookie will prevent caching if varied on,
 	// move the Cookie header out of the way otherwise.
-	// Note static and load.php exceptions to the user/token
-	// exceptions, as these should be cacheable even when logged in.
+	// Note static, load.php and REST API exceptions, as these should be
+	// cacheable even when logged in.
+	// FIXME: This ignores Vary completely.
 	if (req.http.Cookie ~ "([sS]ession|Token)="
 	    && req.url !~ "^/static/"
-	    && req.url !~ "^/w/load\.php") {
+		&& req.url !~ "^/w/load\.php"
+		&& req.url !~ "^/api/rest_v1/") {
 		return (pass);
 	} else {
 		call stash_cookie;
