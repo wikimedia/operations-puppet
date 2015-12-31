@@ -3,9 +3,24 @@ server {
 
     listen 8081;
 
-    # Provide a list of active proxy entries.
+    # Configuration.
+    set $proxymanager_labsproject_prefix '<%= @labsproject %>.';
+    set $proxymanager_proxy_forward_redis_prefix 'prefix:';
+
+    # Provide a list of active proxy entries (legacy endpoint used by
+    # labs/toollabs's www/content/list.php).
     location = /list {
         content_by_lua_file /etc/nginx/lua/list-proxy-entries.lua;
+    }
+
+    # Provide a list of active proxy entries.
+    location = /v1/proxy-forwards {
+        content_by_lua_file /etc/nginx/lua/proxymanager-v1-proxy-forwards.lua;
+    }
+
+    # Manage an active proxy entry.
+    location /v1/proxy-forwards/ {
+        content_by_lua_file /etc/nginx/lua/proxymanager-v1-proxy-forwards-entry.lua;
     }
 
     # Suppress default nginx page

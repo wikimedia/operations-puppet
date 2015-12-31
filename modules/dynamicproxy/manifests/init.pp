@@ -156,6 +156,20 @@ class dynamicproxy (
             notify  => Service['nginx'],
         }
 
+        file { '/etc/nginx/lua/proxymanager-v1-proxy-forwards.lua':
+            ensure  => 'file',
+            source  => 'puppet:///modules/dynamicproxy/proxymanager/v1/proxy-forwards.lua',
+            require => [File['/etc/nginx/lua'], Package['lua-json']],
+            notify  => Service['nginx'],
+        }
+
+        file { '/etc/nginx/lua/proxymanager-v1-proxy-forwards-entry.lua':
+            ensure  => 'file',
+            source  => 'puppet:///modules/dynamicproxy/proxymanager/v1/proxy-forwards-entry.lua',
+            require => [File['/etc/nginx/lua'], Package['lua-json']],
+            notify  => Service['nginx'],
+        }
+
         package { 'lua-json':
             ensure => installed,
         }
@@ -163,7 +177,9 @@ class dynamicproxy (
         nginx::site { 'proxymanager':
             content => template('dynamicproxy/proxymanager.conf.erb'),
             require => [Ferm::Service['proxymanager'],
-                        File['/etc/nginx/lua/list-proxy-entries.lua']],
+                        File['/etc/nginx/lua/list-proxy-entries.lua'],
+                        File['/etc/nginx/lua/proxymanager-v1-proxy-forwards.lua'],
+                        File['/etc/nginx/lua/proxymanager-v1-proxy-forwards-entry.lua']],
         }
 
         ferm::service { 'proxymanager':
