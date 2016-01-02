@@ -47,6 +47,10 @@ find $legacyDirectory -name '*.json.gz' -mtime +`expr $daysToKeep + 1` -delete
 gzip -dc $targetFileGzip | pbzip2 -p3 -c > $tempDir/wikidataJson.bz2
 mv $tempDir/wikidataJson.bz2 $targetFileBzip2
 
+# (Re-)create the link to the latest
+ln -fs "$today/$filename.json.gz" "$targetDirBase/latest-all.json.gz"
+ln -fs "$today/$filename.json.bz2" "$targetDirBase/latest-all.json.bz2"
+
 pruneOldDirectories
 pruneOldLogs
 runDcat
