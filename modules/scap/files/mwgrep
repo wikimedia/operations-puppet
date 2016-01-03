@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
   usage: mwgrep [-h] [--max-results N] [--timeout N] [--user | --module]
-                [--title TITLE] term
+                [--title TITLE] [--no-private] term
 
   Grep for Lua or CSS and JS code fragments on (per default) MediaWiki wiki pages
 
@@ -16,6 +16,7 @@
     --user           search NS_USER rather than NS_MEDIAWIKI
     --module         search NS_MODULE rather than NS_MEDIAWIKI
     --title TITLE    restrict search to pages with this title
+    --no-private     show only results from public wikis
 
   mwgrep will grep the MediaWiki namespace across Wikimedia wikis. specify
   --user to search the user namespace instead.
@@ -70,6 +71,12 @@ ap.add_argument(
 ap.add_argument(
     '--title',
     help='Restrict search to pages with this title (sans namespace)'
+)
+
+ap.add_argument(
+    '--no-private',
+    action='store_true',
+    help='Restricts search to public wikis'
 )
 
 ns_group = ap.add_mutually_exclusive_group()
@@ -140,7 +147,7 @@ if matches['public']:
     for db_name, page_name in matches['public']:
         print('{:<20}{}'.format(db_name, page_name))
 
-if matches['private']:
+if matches['private'] and args.no_private is False:
     if matches['public']:
         print('')
     print('## Private wiki results')
