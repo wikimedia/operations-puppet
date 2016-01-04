@@ -3,6 +3,7 @@ realm: labs
 datacenters: [eqiad]
 standard::has_ganglia: false
 has_nrpe: false
+has_nagios: false
 
 # Additional base overrides
 standard::has_admin: false

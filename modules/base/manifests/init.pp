@@ -34,13 +34,15 @@ class base {
     include base::kernel
     include base::debdeploy
 
-    # include base::monitor::host.
-    # if contactgroups is set, then use it
-    # as the monitor host's contact group.
+    if hiera('has_nagios', true) {
+        # include base::monitor::host.
+        # if contactgroups is set, then use it
+        # as the monitor host's contact group.
 
-    $group_contact = hiera('contactgroups', 'admins')
+        $group_contact = hiera('contactgroups', 'admins')
 
-    class { 'base::monitoring::host':
-        contact_group => $group_contact,
+        class { 'base::monitoring::host':
+            contact_group => $group_contact,
+        }
     }
 }
