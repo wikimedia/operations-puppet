@@ -132,6 +132,7 @@ class toollabs::exec_environ {
         # Other python package requirements are added
         # using the genpp tool
         'python-flask-oauth',
+        'python-hunspell',             # Requested by reza1615 over IRC for their tool
         'python-mwparserfromhell',     # T65539
         'python-oursql',               # For danilo et al.
         'python-socketio-client',      # T86015
