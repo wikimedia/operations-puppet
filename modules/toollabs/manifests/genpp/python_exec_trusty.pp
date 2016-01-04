@@ -47,6 +47,8 @@ class toollabs::genpp::python_exec_trusty {
         'python3-greenlet',     # 0.4.2
         'python-httplib2',      # 0.8
         'python3-httplib2',     # 0.8
+        'python-hunspell',      # 0.1
+        'python3-hunspell',     # 0.1
         'python-imaging',       # 2.3.0
         'python3-imaging',      # 2.3.0
         'python-ipaddr',        # 2.1.10
