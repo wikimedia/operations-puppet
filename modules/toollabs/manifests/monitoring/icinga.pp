@@ -9,13 +9,13 @@ class toollabs::monitoring::icinga {
         description   => 'tools-home',
         check_command => 'check_http_slow!20',
         host          => 'tools.wmflabs.org',
-        critical      => false,
+        critical      => true,
     }
 
     monitoring::service { 'nfs-on-labs-instances':
         description   => 'NFS read/writeable on labs instances',
         check_command => 'check_http_url_at_address_for_string!tools-checker.wmflabs.org!/nfs/home!OK',
-        critical      => false,
+        critical      => true,
         host          => 'tools.wmflabs.org',
     }
 }
