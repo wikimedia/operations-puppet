@@ -31,6 +31,7 @@ environ_packages = {
         'gi',
         'greenlet',
         'httplib2',
+        'hunspell',             # T123192
         'imaging',
         'ipaddr',               # T86015.
         'irclib',

@@ -47,6 +47,8 @@ class toollabs::genpp::python_exec_jessie {
         'python3-greenlet',     # 0.4.2
         'python-httplib2',      # 0.9
         'python3-httplib2',     # 0.9
+        'python-hunspell',      # 0.1
+        'python3-hunspell',     # 0.1
         'python-imaging',       # 2.6.1
         # python3-imaging is not available
         'python-ipaddr',        # 2.1.11
