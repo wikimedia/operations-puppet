@@ -45,6 +45,10 @@
             "json": "application/json",
             "ttl": "text/turtle"
         },
+        "compression": {
+            "gzip": "gz",
+            "bzip2": "bz2"
+        },
         "license": "http://creativecommons.org/publicdomain/zero/1.0/"
     }
 }
