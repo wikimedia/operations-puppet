@@ -1,0 +1,8 @@
+Code-Review+1: Hashar <hashar@free.fr>
+Verified+2: jenkins-bot
+Code-Review+2: Faidon Liambotis <faidon@wikimedia.org>
+Submitted-by: Faidon Liambotis <faidon@wikimedia.org>
+Submitted-at: Mon, 04 Jan 2016 17:01:37 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/261476
+Project: operations/puppet
+Branch: refs/heads/production
