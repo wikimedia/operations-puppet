@@ -65,6 +65,7 @@ providers:
     username: '<%= @openstack_username -%>'
     password: '<%= @openstack_password -%>'
     auth-url: '<%= @openstack_auth_url -%>'
+    api-timeout: 60  # seconds
     boot-timeout: 300  # seconds
     max-servers: 20
     rate: 10.0  # seconds
