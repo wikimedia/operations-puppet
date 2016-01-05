@@ -1,4 +1,0 @@
-[pep8]
-
-# These files are all from upstream.  So, just ignore them.
-exclude=*
