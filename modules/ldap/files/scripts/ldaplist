@@ -11,6 +11,7 @@ import re
 from signal import signal, SIGPIPE, SIG_DFL
 import sys
 import traceback
+from distutils.version import StrictVersion
 
 try:
     import ldap
@@ -148,9 +149,19 @@ def main():
                     attributes = options.showattributes
                 print "+++ database=" + database
                 print "+++ filter=(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + ")) " + attributes
-            PosixData = ds.search_s(base, ldap.SCOPE_SUBTREE,
-                                    "(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + "))",
-                                    attrlist)
+
+            # SimplePagedResultsControl is only available in python-ldap 2.4 and later (can be dropped once support for precise has ended)
+            if StrictVersion(ldap.__version__) >= StrictVersion('2.4'):
+                lc = ldap.controls.libldap.SimplePagedResultsControl(criticality=True,size=1000,cookie='')
+                print lc
+                PosixData = ds.search_ext_s(base, ldap.SCOPE_SUBTREE,
+                                            "(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + "))",
+                                            attrlist, serverctrls=[lc])
+            else:
+                PosixData = ds.search_s(base, ldap.SCOPE_SUBTREE,
+                                        "(&(objectclass=" + objectclass + ")(" + attribute + searchoperator + searchkey + "))",
+                                        attrlist)
+
         else:
             if options.verbose:
                 print "(objectclass=" + objectclass + ")"
