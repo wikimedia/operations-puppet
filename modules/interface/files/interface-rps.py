@@ -147,7 +147,7 @@ def set_cpus(device, cpus, rxq, rx_irq, txqs):
     """Assign a device's matching set of [rt]x queues and IRQ to a CPU set"""
     bitmask = 0
     for cpu in cpus:
-        bitmask += 2**cpu
+        bitmask += 2 ** cpu
     txt_bitmask = format(bitmask, 'x')
 
     if rx_irq:
@@ -171,13 +171,13 @@ def dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_qmap):
 
         for i, cpu in enumerate(cpu_list):
             for j in range(quot):
-                rxq = rx_queues[i*quot + j]
+                rxq = rx_queues[i * quot + j]
                 set_cpus(device, [cpu], rxq, rx_irqs[rxq], tx_qmap[rxq])
 
         # if there are remainder queues, split CPU list into rem subgroups
         # (with trailing remainder of CPUs left out), one per queue
         if rem > 0:
-            cquot = len(cpu_list)/rem
+            cquot = len(cpu_list) / rem
             for i, rxq in enumerate(rx_queues[-rem:]):
                 cpu_sublist = cpu_list[i * cquot:(i + 1) * cquot]
                 set_cpus(device, cpu_sublist, rxq, rx_irqs[rxq], tx_qmap[rxq])
@@ -190,7 +190,7 @@ def dist_queues_to_cpus(device, cpu_list, rx_queues, rx_irqs, tx_qmap):
         for i, rxq in enumerate(rx_queues):
             cpus = []
             for j in range(quot):
-                cpus.append(cpu_list[i*quot + j])
+                cpus.append(cpu_list[i * quot + j])
             set_cpus(device, cpus, rxq, rx_irqs[rxq], tx_qmap[rxq])
 
 
