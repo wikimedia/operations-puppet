@@ -43,7 +43,7 @@ class Threshold(object):
         '>': operator.gt,
         '<': operator.lt,
         '==': operator.eq,
-        }
+    }
 
     def __init__(self, threshold):
         self.threshold_string = threshold
