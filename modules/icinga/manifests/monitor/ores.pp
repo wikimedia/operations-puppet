@@ -13,12 +13,19 @@ class icinga::monitor::ores {
     }
 
     # T121656
-    $timestamp = generate('/bin/date', '+%s')
     monitoring::service { 'ores_worker':
         description    => 'ORES worker',
-        check_command  => "check_http_url!ores.wmflabs.org!/scores/testwiki/reverted/${timestamp}/",
+        check_command  => 'check_http_ores',
         host           => 'ores.wmflabs.org',
         contact_group  => 'team-ores',
+    }
+
+    # T122830
+    file { '/usr/local/lib/nagios/plugins/check_ores_workers':
+        source => 'puppet:///modules/nagios_common/check_commands/check_ores_workers',
+        owner  => 'icinga',
+        group  => 'icinga',
+        mode   => '0550',
     }
 
 }
