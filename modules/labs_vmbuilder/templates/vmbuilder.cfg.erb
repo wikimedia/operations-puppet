@@ -13,7 +13,6 @@ destdir = /mnt/vmbuilder/images
 [ubuntu]
 suite = <%= lsbdistcodename %>
 flavour = virtual
-proxy = http://webproxy.eqiad.wmnet:8080
 mirror = http://ubuntu.wikimedia.org/ubuntu/
 components = main,restricted,multiverse,universe
 <% if scope.function_os_version(['ubuntu >= trusty']) %>
