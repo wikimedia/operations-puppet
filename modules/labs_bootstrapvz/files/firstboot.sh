@@ -131,5 +131,9 @@ echo "${fqdn}" > /etc/salt/minion_id
 systemctl restart salt-minion.service
 
 puppet agent --enable
-# Force initial puppet run
+# Run puppet, twice.  The second time is just to pick up packages
+#  that may have been unavailable in apt before the first puppet run
+#  updated sources.list
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --waitforcert=10 --certname=${fqdn} --server=${master}
+apt-get update
+puppet agent -t
