@@ -138,11 +138,11 @@ def parse_cli_vsl_args(args):
         arg = args[i].translate(None, '-')
         # If this is the end, or if the next arg has a '-',
         # assume this is a switch that does not take a parameter.
-        if i == len(args) - 1 or '-' in args[i+1]:
+        if i == len(args) - 1 or '-' in args[i + 1]:
             arg_tuple = (arg, '')
         # Else this arg takes a parameter.
         else:
-            arg_tuple = (arg, args[i+1])
+            arg_tuple = (arg, args[i + 1])
             i += 1
         i += 1
         # The key in the VSL arg tuple must be a single character.
@@ -166,8 +166,7 @@ def print_tags_callback(transaction_id, tag, value, remote_party):
         tag.ljust(12),
         remote_party,
         value
-        )
-    )
+    ))
 
 
 if __name__ == '__main__':
