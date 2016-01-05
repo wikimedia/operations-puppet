@@ -21,7 +21,7 @@ env = Environment(
     keep_trailing_newline=True
 )
 
-env.filters['pline'] = lambda x: repr(x) + "," + (" " * (20-len(x)))
+env.filters['pline'] = lambda x: repr(x) + "," + (" " * (20 - len(x)))
 env.filters['pydictsort'] = lambda x: \
     sorted(x.items(), key=lambda y: (y[0].split('-', 1)[1].lower(), y))
 
