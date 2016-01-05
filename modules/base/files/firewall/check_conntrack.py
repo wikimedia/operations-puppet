@@ -33,7 +33,7 @@ def main():
         sys.exit(1)
 
     count_value = get_sysctl('net/netfilter/nf_conntrack_count')
-    full = int(count_value/max_value*100)
+    full = int(count_value / max_value * 100)
 
     # check what is the value of full and act upon it
     if full >= c:
