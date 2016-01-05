@@ -46,6 +46,7 @@ class nagios_common::commands(
         'check_to_check_nagios_paging',
         'check_ifstatus_nomon',
         'check_bgp',
+        'check_ores_workers',
     ] :
         require    => File["${config_dir}/commands"],
         config_dir => $config_dir,
