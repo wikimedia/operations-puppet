@@ -21,5 +21,16 @@ class base::labs inherits base {
             mode   => '0444',
             source => 'puppet:///modules/base/labs/nfs-common.default',
         }
+
+        # enable memory cgroups
+        augeas { 'grub2':
+            incl    => '/etc/default/grub',
+            lens    => 'Shellvars_list.lns',
+            changes => [
+                'set GRUB_CMDLINE_LINUX/value[. = "cgroup_enable=memory"] cgroup_enable=memory',
+                'set GRUB_CMDLINE_LINUX/value[. = "swapaccount=1"] swapaccount=1',
+            ],
+            notify  => Exec['update-grub'],
+        }
     }
 }
