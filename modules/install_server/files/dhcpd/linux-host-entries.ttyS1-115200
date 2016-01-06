@@ -6281,14 +6281,6 @@ host rhodium {
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
-
-host rubidium {
-	hardware ethernet 18:03:73:f1:4f:70;
-	fixed-address rubidium.wikimedia.org;
-	option pxelinux.pathprefix "jessie-installer/";
-	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
-}
-
 host ruthenium {
 	hardware ethernet 18:03:73:f1:58:82;
 	fixed-address ruthenium.eqiad.wmnet;
