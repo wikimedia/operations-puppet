@@ -488,8 +488,9 @@ users:
     gid: 500
     name: robh
     realname: Rob Halsell
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAoDAuzkYEIeGVC10zh3i6WnyJjhWK/JpQbSFlWfb5t02kGPvmi8m+fdCPhvqiOpOCcQqTL1Knia6AeRNMx+dj3qxctsas/RnJtIUbACK5gH6aKg0OMmcG9LNiVLN5knx1UMHhQ7Ma6KSiDLeqsID009j7+Fj8qgGup7lKOQs7WYRpaXlAyR0hdKeyxcXWh+GPQEZAhl0DHrjFgdDcc5n2K8GBRESfdfCKm0SomHYGWPsTIpWrY13se0kUJzWXIafzr0U/czEdVDuSuil6P65d9cU7vypcUC3i5d2L4QiO4MBVNcXluFuFNZ8UY/QAlixz/5x/ARbgjcMvXwJQWjhh+w==
-        rob@laptop]
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAoDAuzkYEIeGVC10zh3i6WnyJjhWK/JpQbSFlWfb5t02kGPvmi8m+fdCPhvqiOpOCcQqTL1Knia6AeRNMx+dj3qxctsas/RnJtIUbACK5gH6aKg0OMmcG9LNiVLN5knx1UMHhQ7Ma6KSiDLeqsID009j7+Fj8qgGup7lKOQs7WYRpaXlAyR0hdKeyxcXWh+GPQEZAhl0DHrjFgdDcc5n2K8GBRESfdfCKm0SomHYGWPsTIpWrY13se0kUJzWXIafzr0U/czEdVDuSuil6P65d9cU7vypcUC3i5d2L4QiO4MBVNcXluFuFNZ8UY/QAlixz/5x/ARbgjcMvXwJQWjhh+w== rob@laptop
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCToz4UdLA8A2/faeEyeeiW3rU1VT54aj3r856dfI+Rd0u8DsaZ6B8cVBQwNo36mbdMsc+c+uql68wjRxl7lnpmvbS3bL1fCrBRBvK7mYC4dzso3y4UjaS+irz9NIwB9Byk23eVhVQ7wll/zuBHQHnWITWjZSLFbrV4JKLBekxR1i7s9EJFZj0V2oP17E91JUVUFu4FcFbMH1KCV9xhSGXbOp9y3H4zaH/DL42dboDtQ2wA3zsf1KG2TTXlSN34Cz9OMDsP4NB4Wd6C3LlYpwShI24wfZnsojZP+a845ZRD5DHbOtp/owtUn6urw1iOJn1fxdwTB6Uk21TUymGDH2W5 rob@yubikey
     uid: 2007
   marc:
     ensure: absent
