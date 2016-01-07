@@ -1126,6 +1126,18 @@ node 'labtestneutron2001.codfw.wmnet' {
     include standard
 }
 
+node 'labtestvirt2001.codfw.wmnet' {
+    include standard
+}
+
+node 'labtestnet2001.codfw.wmnet' {
+    include standard
+}
+
+node 'labtestmetal2001.codfw.wmnet' {
+    include standard
+}
+
 node 'labtestcontrol2001.wikimedia.org' {
     $is_puppet_master      = true
     $is_labs_puppet_master = true
