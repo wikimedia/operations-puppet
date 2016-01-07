@@ -1,0 +1,3 @@
+sentry::server_name: "sentry-beta.wmflabs.org"
+sentry::admin_email: 'gtisza@wikimedia.org'
+
