@@ -1,0 +1,67 @@
+/*
+ * This is a sample configuration file.
+ * Copy this file to server.settings.js and edit that file to fit your
+ * MySQL connection and other settings.
+ *
+ * You can also override these settings with command line options, run
+ * $ node server.js --help
+ * to view them.
+ */
+
+module.exports = {
+	// Hostname of the database server.
+	host: "<%= @db_host =>",
+
+	// Port number to use for connection.
+	port: <%= @db_port =>,
+
+	// Database to use.
+	database: "<%= @db_name %>",
+
+	// User for MySQL login.
+	user: "<%= @db_user %>",
+
+	// Password.
+	password: "<%= @db_pass %>",
+
+	// Output MySQL debug data.
+	debug: false,
+
+	// Number of times to try fetching a page.
+	fetches: 6,
+
+	// Number of times an article will be sent for testing before it's
+	// considered an error.
+	tries: 6,
+
+	// Time in seconds to wait for a test result. If a test takes longer than
+	// this, it will be considered a crash error. Be careful not to set this to
+	// less than what any page takes to parse.
+	cutofftime: 600,
+
+	// Number of titles to fetch from database in one batch.
+	batch: 50,
+
+	// Ports for the webapp (for test results, regressions, etc)
+	// and the co-ordinator app (for clients requesting titles, posting results)
+	// Use non-conflicting ports here.
+	webappPort: <%= @webapp_port %>,
+	coordPort: <%= @coord_port %>,
+
+	// (Optional) Remote server, if any, that will generate full results
+	resultServer: "http://parsoid-tests.wikimedia.org/parsoid/",
+
+	// (Optional) Localhost server, if any, for generating the same results
+	localhostServer: "http://localhost:8000/",
+
+	// (Optional)
+	generateTitleUrl: function(server, prefix, title) {
+		return server.replace(/\/$/, '') + "/_rt/" + prefix + "/" + title;
+	},
+
+	// (Optional)
+	perfConfig: require('/usr/lib/testreduce/server/server.perf_stats.js').perfConfig,
+
+	// (Optional)
+	parsoidRTConfig: require('/usr/lib/testreduce/server/server.parsoid_rt.js').parsoidRTConfig,
+};
