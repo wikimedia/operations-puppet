@@ -180,15 +180,6 @@ plugins:
         src: /etc/apt/preferences.d/wikimedia.pref
         dst: /etc/apt/preferences.d/wikimedia.pref
       -
-        src: /etc/apt/apt.conf.d/80old-releases-proxy
-        dst: /etc/apt/apt.conf.d/80old-releases-proxy
-      -
-        src: /etc/apt/apt.conf.d/80workaround-squid-issues
-        dst: /etc/apt/apt.conf.d/80workaround-squid-issues
-      -
-        src: /etc/apt/apt.conf.d/80security-ubuntu-proxy
-        dst: /etc/apt/apt.conf.d/80security-ubuntu-proxy
-      -
         src: /etc/ssl/certs/ca-certificates.crt
         dst: /etc/ssl/certs/ca-certificates.crt
   image_commands:
