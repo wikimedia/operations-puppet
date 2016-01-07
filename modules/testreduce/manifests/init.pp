@@ -47,6 +47,13 @@ class testreduce(
         system     => true,
     }
 
+    file { '/var/log/testreduce':
+        ensure => directory,
+        owner  => 'testreduce',
+        group  => 'testreduce',
+        mode   => '0755',
+    }
+
     file { '/etc/testreduce':
         ensure => directory,
         owner  => 'root',
