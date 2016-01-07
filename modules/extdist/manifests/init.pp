@@ -44,14 +44,7 @@ class extdist(
         require => User['extdist']
     }
 
-    file { $log_path:
-        ensure  => present,
-        owner   => 'extdist',
-        group   => 'www-data',
-        require => User['extdist']
-    }
-
-    file { [$dist_dir, $clone_dir, $src_path, $pid_folder, $composer_dir]:
+    file { [$dist_dir, $clone_dir, $src_path, $pid_folder, $composer_dir, $log_dir]:
         ensure => directory,
         owner  => 'extdist',
         group  => 'www-data',
