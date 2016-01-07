@@ -40,10 +40,6 @@ class toollabs::submit inherits toollabs {
         content => "${::ipaddress}\n",
     }
 
-    package { 'misctools':
-        ensure => latest,
-    }
-
     file { '/usr/local/sbin/bigbrother':
         ensure => file,
         owner  => 'root',

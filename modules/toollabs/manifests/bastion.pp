@@ -55,10 +55,6 @@ class toollabs::bastion(
         ensure  => absent,
     }
 
-    package { 'misctools':
-        ensure => latest,
-    }
-
     include ldap::role::config::labs
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 

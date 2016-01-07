@@ -381,5 +381,9 @@ class toollabs::exec_environ {
         source => 'puppet:///modules/toollabs/sql',
     }
 
+    package { 'misctools':
+        ensure => latest,
+    }
+
   # TODO: quotas
 }

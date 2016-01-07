@@ -10,8 +10,7 @@ class toollabs::checker inherits toollabs {
     include gridengine::submit_host
     include toollabs::infrastructure
 
-    require_package('misctools',
-                    'python-flask',
+    require_package('python-flask',
                     'python-psycopg2',
                     'python-pymysql',
                     'python-redis',
