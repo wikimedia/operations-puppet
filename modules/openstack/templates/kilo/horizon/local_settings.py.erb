@@ -95,20 +95,14 @@ from horizon.utils import secret_key
 SECRET_KEY = secret_key.generate_or_read_from_file('/var/lib/openstack-dashboard/secret_key')
 
 # We recommend you use memcached for development; otherwise after every reload
-# of the django development server, you will have to login again. To use
-# memcached set CACHES to something like
+# of the django development server, you will have to login again.
+SESSION_ENGINE='django.contrib.sessions.backends.cache'
 CACHES = {
    'default': {
        'BACKEND' : 'django.core.cache.backends.memcached.MemcachedCache',
-       'LOCATION' : '127.0.0.1:11211',
+       'LOCATION' : '127.0.0.1:11000',
    }
 }
-
-#CACHES = {
-#    'default': {
-#        'BACKEND' : 'django.core.cache.backends.locmem.LocMemCache'
-#   }
-#}
 
 # Enable the Ubuntu theme if it is present.
 try:
