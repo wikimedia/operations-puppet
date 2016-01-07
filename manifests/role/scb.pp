@@ -2,6 +2,7 @@
 # This class is an intermediate step to better design
 class role::scb {
     include role::mobileapps
+    include role::mathoid
 
     include standard
     include base::firewall
