@@ -75,7 +75,7 @@ groups:
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
-              vbaranetsky, atgomez, jgirault, jdrewniak, matmarex]
+              vbaranetsky, atgomez, jgirault, jdrewniak, matmarex, elukey]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -113,7 +113,7 @@ groups:
               mforns, jdlrobson, dr0ptp4kt, tgr, marktraceur, jhernandez, joal,
               daisy, tomasz, mholloway-shell, madhuvishy, ebernhardson, niedzielski,
               neilpquinn-wmf, tbayer, moushira, dbrant, maxsem, srijan, krenair,
-              jminor, asherman, etonkovidova, sbisson, addshore, matmarex]
+              jminor, asherman, etonkovidova, sbisson, addshore, matmarex, elukey]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -230,7 +230,7 @@ groups:
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
     members: [dartar, milimetric, yurik, dfoy, aude,
-              halfak, dr0ptp4kt, tnegrin, ironholds, bearloga, cwdent,
+              halfak, dr0ptp4kt, tnegrin, ironholds, bearloga, cwdent, elukey,
               kleduc, nuria, haithams, otto, deskana, zhousquared,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
               ezachte, mforns, reedy, west1, phuedx, awight, spage, junikowski,
@@ -243,14 +243,14 @@ groups:
     description: Admin access to analytics cluster.
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
-    members: [joal, madhuvishy]
+    members: [joal, madhuvishy, elukey]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (oozie) NOPASSWD: ALL',
                  'ALL = (hive)  NOPASSWD: ALL']
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging deployment and investigation
-    members: [nuria, milimetric, mforns, joal, legoktm, otto, madhuvishy]
+    members: [nuria, milimetric, mforns, joal, legoktm, otto, madhuvishy, elukey]
   citoid-roots:
     gid: 735
     description: rights for debugging citoid
@@ -1755,3 +1755,10 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfoCT4+pXcLRk3jsZsxFsAtVP38Rs4pfdxSS05+hkMcN1yxi2R1ZeNFkQkCPo6s25Gq863ru5E/vxSjy9mDS4HeaxNSJlPPWD0iEmGdyCg+wEGAZ01n1muFDyb+oiSNy5JcgOk0ZqAPNPYlISKVp+vLro5txdEK8cySy4BIbiM5ygKIjmq1xP+dM9zVdd/UbVQPPBFS2UDBzLX3AeYen4biMx2GkHBpZ/nJLqtb9JE4LLzQAtrqi4+J9jKQGepeTemVQ/n3lbheiGmTDZbRsUx7GTXmdIOPqN4k6FEXEgMIe5plxV8YeAoWqMsGpln4J4bz9HCtM1dL5mdLsa7tkq/ ema@orion
     uid: 4565
+  elukey:
+    ensure: present
+    gid: 500
+    name: elukey
+    realname: Luca Toscano
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9rdkfGRw7mI6lt3UfwWcsWBn+qOV+xx7VhI5vB4rcjSgbiO8sI5aEpdOTHTsQm1DEIth3JzaJ66H5UAkUJrFHyDxbfqhoghOLe1+DTy3At/WldmP8QEuBGJZ2GDdhJvU0LyMd7eFVl8poQBWeVPz7Ds+9IFDc41YmCUNGJb0Z/Vwu8IkIutVFe58e3Q2hwAOgtta+QwT1x6TSzoQC+ElOkBxl+8XPjK1/lJ8+VK1HHpL8rl3XzGB4XEhLecVtnzLAkkm6qRvGV0iCTbDyF1VBDytcPIvMW+2NX4jcYXOj9C4zHMLdLLHjQr/4BuDEXa7WJQw4h+8I7/UjTC7FtSUt5OB2/pr9SPssLhHZaw3kQ3vwNTz7u6Fq0jX4c+cN0VDnnjF78cI77RmxbUZ4RPyTa9nrS+738utJ4fh06qNpx+B3tCq1Fu//PU5MepQq5zPczU4KUEBceQuzjXexpoXT5XOoMnZfWs3xhYzAyv9lmYC+RSq7+ZXHR5GH+DdRv1OOuJjVvWRSErav5kZ0g0SE/8tJ+QQUV4e4TldP+ru3sB34VGnAdrhnyoUQYKhFCv3iW6NA9KzceY+Fm6PWUQKXLjHYaL+Q2v9SrAztfQvzOUdxNre8GSXIanQLg/LSCYMd3SuLqBjlxCDm3Xed+T7zmNjAdLWD9gfnVxQwxZ0KNw== ltoscano@ltoscanowmf1553.local]
+    uid: 13926
