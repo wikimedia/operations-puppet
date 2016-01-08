@@ -46,6 +46,7 @@ class sentry (
     }
 
     group { 'sentry':
+        ensure => present,
         system => true,
     }
 
