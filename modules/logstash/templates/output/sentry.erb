@@ -1,0 +1,18 @@
+output {
+    sentry {
+        host           => "<%= @host %>"
+        key            => "<%= @key %>"
+        secret         => "<%= @secret %>"
+        project_id     => "<%= @project_id %>"
+        use_ssl        =>  <%= @use_ssl %>
+    <% if @msg %>
+        msg            => "<%= @msg %>"
+    <% end %>
+    <% if @level_tag %>
+        level_tag      => "<%= @level_tag %>"
+    <% end %>
+    <% if @fields_to_tags %>
+        fields_to_tags =>  <%= @fields_to_tags %>
+    <% end %>
+    }
+}
