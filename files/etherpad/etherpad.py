@@ -27,7 +27,7 @@ class EtherpadStatusCollector(Collector):
                 'disconnects/count',
                 'httpRequests/meter/count',
                 'edits/meter/count',
-                'failedChangesets/meter/count',
+                'failedChangesets/count',
             ],
         })
         return config
