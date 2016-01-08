@@ -68,4 +68,8 @@ class role::etherpad{
         proto => 'tcp',
         port  => '9001',
     }
+
+    diamond::collector { 'EtherpadStatus':
+        source   => 'puppet:///files/etherpad/etherpad.py',
+    }
 }
