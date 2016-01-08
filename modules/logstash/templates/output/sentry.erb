@@ -1,0 +1,14 @@
+output {
+    sentry {
+        dsn            => "<%= @dsn %>"
+    <% if @msg %>
+        msg            => "<%= @msg %>"
+    <% end %>
+    <% if @level_tag %>
+        level_tag      => "<%= @level_tag %>"
+    <% end %>
+    <% if @fields_to_tags %>
+        fields_to_tags =>  <%= @fields_to_tags %>
+    <% end %>
+    }
+}
