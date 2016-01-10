@@ -152,11 +152,11 @@ class dynamicproxy (
         file { '/etc/nginx/lua/list-proxy-entries.lua':
             ensure  => 'file',
             source  => 'puppet:///modules/dynamicproxy/list-proxy-entries.lua',
-            require => [File['/etc/nginx/lua'], Package['liblua5.1-json']],
+            require => [File['/etc/nginx/lua'], Package['lua-json']],
             notify  => Service['nginx'],
         }
 
-        package { 'liblua5.1-json':
+        package { 'lua-json':
             ensure => installed,
         }
 
