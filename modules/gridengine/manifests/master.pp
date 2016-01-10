@@ -8,8 +8,11 @@ class gridengine::master
     }
 
     service { 'gridengine-master':
-        ensure  => running,
-        require => Package['gridengine-master'],
+        ensure    => running,
+        enable    => true,
+        hasstatus => false,
+        pattern   => 'sge_qmaster',
+        require   => Package['gridengine-master'],
     }
 
     # berkleydb utils for doing db recovery and other operations
