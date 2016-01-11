@@ -15,6 +15,7 @@ if [ -z "$db" ] || [ "$db" = "--help" ]; then
     exit 0
 elif [ "$db" = "--write" ]; then
     hostcode="echo wfGetLB()->getServerName(0);"
+    write=true
 
     # Database will be the next parameter
     db=$1
@@ -26,12 +27,25 @@ fi
 # Look up MySQL host to connect to.  For centralauth the host cannot
 # be determined this way, so we need to use fawiki instead as it is
 # located on the same server in both production and labs.
+# wikishared is hosted on x1 (i.e. without any local wikis), just use
+# meta to lookup the password.
 if [ "$db" = "centralauth" ]; then
     lookupdb="fawiki"
+elif [ "$db" = "wikishared" ]; then
+    lookupdb="metawiki"
 else
     lookupdb="$db"
 fi
-host=`echo $hostcode | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
+
+if [ "$db" = "wikishared" ]; then
+    if [ "$write" = true ]; then
+        host=db1029 # x1 master
+    else
+        host=db1031 # x1 eqiad slave
+    fi
+else
+    host=`echo $hostcode | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
+fi
 pass=`echo 'echo \$wgDBadminpassword;' | /usr/local/bin/mwscript eval.php --wiki="$lookupdb"`
 
 # Execute mysql.
