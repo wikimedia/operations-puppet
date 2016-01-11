@@ -109,4 +109,8 @@ class labstore::fileserver(
 
     include ::labstore::fileserver::exports
     include ::labstore::account_services
+
+    diamond::collector { 'NfsdCollector':
+        source   => 'puppet:///modules/labstore/monitor/nfsd.py',
+    }
 }
