@@ -1,0 +1,8 @@
+Code-Review+2: Andrew Bogott <abogott@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Merlijn van Deen <valhallasw@arctus.nl>
+Submitted-by: Andrew Bogott <abogott@wikimedia.org>
+Submitted-at: Mon, 11 Jan 2016 20:39:48 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/262596
+Project: operations/puppet
+Branch: refs/heads/production
