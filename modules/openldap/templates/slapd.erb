@@ -39,6 +39,7 @@ moduleload  syncprov
 moduleload  auditlog
 moduleload  ppolicy
 moduleload  deref
+moduleload  unique
 
 # Maximum number of entries that is returned for a search operation
 <% if @size_limit then %>
@@ -105,6 +106,10 @@ overlay syncprov
 syncprov-checkpoint 100 5
 syncprov-sessionlog 100
 syncprov-reloadhint TRUE
+
+# Ensure that user IDs are unique
+overlay unique
+unique_uri ldap:///?uidNumber?sub
 
 ## Replication ACL
 
