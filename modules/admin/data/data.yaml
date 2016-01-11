@@ -440,6 +440,15 @@ groups:
     description: Group of users running penetration tests
     gid: 768
     members: []
+  restbase-admins:
+    gid: 769
+    description: group of restbase admins
+    members: [gwicke]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
+                 'ALL = (cassandra) NOPASSWD: ALL',
+                 'ALL = NOPASSWD: /usr/sbin/service restbase *',
+                 'ALL = (restbase) NOPASSWD: ALL',
+                 'ALL = NOPASSWD: /bin/journalctl *']
 users:
   rush:
     ensure: present

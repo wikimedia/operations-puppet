@@ -51,6 +51,7 @@ admin::groups:
   - releasers-mobile
   - researchers
   - restbase-roots
+  - restbase-admins
   - restricted
   - snapshot-admins
   - statistics-admins

@@ -21,3 +21,4 @@ restbase::monitoring::monitor_domain: en.wikipedia.org
 
 admin::groups:
   - restbase-roots
+  - restbase-admins
