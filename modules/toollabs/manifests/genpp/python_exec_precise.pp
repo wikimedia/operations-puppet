@@ -47,8 +47,6 @@ class toollabs::genpp::python_exec_precise {
         # python3-greenlet is not available
         'python-httplib2',      # 0.7.2
         'python3-httplib2',     # 0.7.2
-        # python-hunspell is not available
-        # python3-hunspell is not available
         'python-imaging',       # 1.1.7
         # python3-imaging is not available
         'python-ipaddr',        # 2.1.10
