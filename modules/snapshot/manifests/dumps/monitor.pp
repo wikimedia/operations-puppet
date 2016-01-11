@@ -1,4 +1,4 @@
-class monitor( $ensure = present ) {
+class snapshot::dumps::monitor( $ensure = present ) {
   base::service_unit { 'dumps-monitor':
     ensure    => $ensure,
     systemd   => true,
