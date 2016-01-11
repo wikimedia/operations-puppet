@@ -33,6 +33,7 @@ class snapshot::dumps::configs(
                     pagesPerChunkHistory  => '33640,1446760,2569200,3000000',
                     pagesPerChunkAbstract => '2000000',
                     chunksForAbstract     => '4',
+                    checkpointTime        => '720',
                 },
                 ptwiki => {
                     pagesPerChunkHistory  => '137500,668700,1208900,2000000',
@@ -53,6 +54,7 @@ class snapshot::dumps::configs(
                     pagesPerChunkHistory  => '348700,965200,2331100,3000000',
                     pagesPerChunkAbstract => '1900000',
                     chunksForAbstract     => '4',
+                    checkpointTime        => '720',
                 },
                 itwiki => {
                     pagesPerChunkHistory  => '335400,941600,1180900,2000000',
