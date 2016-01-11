@@ -9,12 +9,12 @@ define apt::repository(
     $trusted=false,
 ) {
     if $trusted {
-        $trustedline = '[trusted=yes]'
+        $trustedline = '[trusted=yes] '
     } else {
         $trustedline = ''
     }
 
-    $binline = "deb ${trustedline} ${uri} ${dist} ${components}\n"
+    $binline = "deb ${trustedline}${uri} ${dist} ${components}\n"
     $srcline = $source ? {
         true    => "deb-src ${uri} ${dist} ${components}\n",
         default => '',
