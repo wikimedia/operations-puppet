@@ -255,8 +255,6 @@ class toollabs::exec_environ {
         'graphviz',
         'grep',
         'hugin-tools',                 # T108210
-        'hunspell',                    # T123192
-        'hunspell-dictionary',         # T123192
         'imagemagick',                 # T65000
         'iotop',                       # useful for labs admins to monitor tools
         'ksh',
