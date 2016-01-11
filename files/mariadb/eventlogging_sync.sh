@@ -36,7 +36,7 @@ set -e
 
 for table in $($master $db -e "$querytables $ls"); do
 
-    echo -n "$shost $table"
+    echo -n "`date` $shost $table"
 
     if [ $($slave $db -e "$querytables = '$table'" | wc -l) -eq 0 ]; then
         echo -n ", create"
