@@ -2335,8 +2335,10 @@ node 'rutherfordium.eqiad.wmnet' {
 
 # ruthenium is a parsoid regression test server
 # https://www.mediawiki.org/wiki/Parsoid/Round-trip_testing
+# Right now, both rt-server and rt-clients run on the same node
+# But, we are likely going to split them into different boxes soon.
 node 'ruthenium.eqiad.wmnet' {
-    role testsystem, testreduce
+    role testsystem, parsoid-rt-server, parsoid-rt-client
 }
 
 # T95046 install/deploy scandium as zuul merger (ci) server
