@@ -19,7 +19,7 @@ groups:
   parsoid-roots:
     gid: 701
     description: RT 5934
-    members: [gwicke, catrope]
+    members: [catrope]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-admin:
     gid: 702
@@ -79,7 +79,7 @@ groups:
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [eevans, gwicke, mobrovac, ssastry]
+    members: [eevans, mobrovac, ssastry]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
@@ -292,7 +292,7 @@ groups:
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
-    members: [eevans, gwicke, mobrovac]
+    members: [eevans, mobrovac]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   citoid-users:
     gid: 745
