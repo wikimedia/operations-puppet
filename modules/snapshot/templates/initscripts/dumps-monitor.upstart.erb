@@ -14,4 +14,4 @@ respawn
 
 chdir <%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>
 
-exec /bin/bash <%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/monitor
+exec /bin/bash <%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/monitor --configfile confs/wikidump.conf.monitor

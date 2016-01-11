@@ -9,7 +9,7 @@ After=network.target
 [Service]
 User=datasets
 WorkingDirectory=<%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>
-ExecStart=/bin/bash <%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/monitor
+ExecStart=/bin/bash <%= scope.lookupvar('snapshot::dirs::dumpsdir') -%>/monitor --configfile confs/wikidump.conf.monitor
 
 [Install]
 WantedBy=multi-user.target
