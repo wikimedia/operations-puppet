@@ -30,7 +30,7 @@ class cxserver(
         validate_array($no_proxy_list)
     }
     if $registry {
-        $ordered_registry = ordered_json($registry)
+        $ordered_registry = ordered_yaml($registry)
     }
 
     service::node { 'cxserver':
