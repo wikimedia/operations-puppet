@@ -24,7 +24,6 @@ class toollabs (
 
     $sysdir = '/data/project/.system'
     $store  = "${sysdir}/store"
-    $repo   = "${sysdir}/deb-${::lsbdistcodename}"
 
     #
     # The $store is an incredibly horrid workaround the fact that we cannot
