@@ -69,8 +69,6 @@ lvs_service_ips:
       misc_weblb: 208.80.153.248
       misc_weblb6: 2620:0:860:ed1a::3:d
     eqiad:
-      misc_weblb_old: 208.80.154.241
-      misc_weblb6_old: 2620:0:861:ed1a::11
       misc_weblb: 208.80.154.251
       misc_weblb6: 2620:0:861:ed1a::3:d
     esams:
