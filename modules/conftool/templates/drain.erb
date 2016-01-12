@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 echo "Draining <%= scope.lookupvar('fqdn') %>..."
-conftool --find set/weight=0 '<%= scope.lookupvar('fqdn') %>'
+conftctl --find --action set/weight=0 '<%= scope.lookupvar('fqdn') %>'
