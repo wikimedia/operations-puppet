@@ -9,7 +9,7 @@ class role::etcd {
 
     include etcd
     include etcd::monitoring
-
+    include etcd::auth::common
 
     ferm::service{'etcd_clients':
         proto  => 'tcp',

@@ -307,6 +307,10 @@ node /^conf100[123]\.eqiad\.wmnet$/ {
     role etcd, zookeeper::server
     include base::firewall
     include standard
+    if ($::fqdn == 'conf1001.eqiad.wmnet') {
+        include etcd::auth
+        include etcd::auth::users
+    }
 }
 
 # Debian package building host in production
