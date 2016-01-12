@@ -9,4 +9,6 @@
     missingok
     notifempty
     rotate 7
+    compress
+    delaycompress
 }
