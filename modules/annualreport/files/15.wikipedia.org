@@ -1,0 +1,24 @@
+# vim: filetype=apache
+# https://15.wikipedia.org (T599)
+
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+    ServerName 15.wikipedia.org
+
+    DocumentRoot /srv/org/wikimedia/annualreport/2015
+
+    ErrorLog /var/log/apache2/error.log
+    LogLevel warn
+    CustomLog /var/log/apache2/access.log combined
+
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto
+    Header always set Strict-Transport-Security "max-age=31536000"
+
+    <Directory /srv/org/wikimedia/annualreport/2015>
+        Require all granted
+    </Directory>
+
+</VirtualHost>
