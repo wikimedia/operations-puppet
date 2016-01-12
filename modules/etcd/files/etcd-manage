@@ -263,7 +263,8 @@ def main():
         protocol=c.get('protocol', 'http'),
         ca_cert=c.get('ca_cert', None),
         username=c.get('username', None),
-        password=c.get('password', None)
+        password=c.get('password', None),
+        allow_reconnect=True,
     )
     entity = EtcdAuthObject.get_obj(args.obj_name)
     obj = entity(client, args_dict.get('name', None))
