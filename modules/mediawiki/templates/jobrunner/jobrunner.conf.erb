@@ -26,7 +26,7 @@
             ]
         },
         "gwt": {
-            "runners": <%= @runners_gwt %>,
+            "runners": <%= @hostname.split('.').first.slice(-1).to_i % 2 == 1 ? @runners_gwt  : 0 %>,
             "include": [
                 "gwtoolsetUploadMetadataJob",
                 "gwtoolsetUploadMediafileJob",
