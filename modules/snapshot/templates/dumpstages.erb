@@ -1,7 +1,11 @@
 # run these commands in order on the regular snapshot hosts
 
 # slots_used numcommands on_failure error_notify command
-<% if @stagestype == 'normal' or @stagestype == 'partial' %>
+<% if @stagestype == 'create_huge' %>
+1 1 continue none <%= @stages['hugewikis']['firststage'] -%> --job createdirs --sleep 5
+<% end -%>
+
+<% if @stagestype == 'normal' or @stagestype == 'partial' or @stagestype == 'create' %>
 # mark the start of the run for all small, big wikis
 8 1 continue none <%= @stages['smallwikis']['firststage'] -%> --job createdirs --sleep 5; <%= @stages['bigwikis']['firststage'] %> --job createdirs --sleep 5
 
@@ -44,7 +48,7 @@
 
 <% if @stagestype == 'normal_huge' or @stagestype == 'partial_huge' %>
 # stubs first
-27 1 continue none <%= @stages['hugewikis']['firststage'] -%> --job xmlstubsdump
+27 1 continue none <%= @stages['hugewikis']['rest'] -%> --job xmlstubsdump
 # tables next so inconsistencies between stubs and tables aren't too huge
 1 1 continue none <%= @stages['hugewikis']['rest'] -%> --job tables
 # recombine stubs for huge wikis
