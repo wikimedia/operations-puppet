@@ -206,16 +206,6 @@ class gerrit::jetty ($ldap_hosts,
         ],
     }
 
-    git::clone { 'operations/gerrit/plugins':
-        ensure    => latest,
-        directory => '/var/lib/gerrit2/review_site/plugins',
-        branch    => 'master',
-        origin    => 'https://gerrit.wikimedia.org/r/p/operations/gerrit/plugins.git',
-        owner     => 'gerrit2',
-        group     => 'gerrit2',
-        require   => File['/var/lib/gerrit2/review_site'],
-    }
-
     # This file is tuned for gerrit-2.8.1-4-ga1048ce. If you update gerrit,
     # you also need to update this jar to match the BouncyCastle version
     # required by the fresh gerrit.
