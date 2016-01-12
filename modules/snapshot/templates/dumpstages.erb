@@ -1,7 +1,9 @@
 # run these commands in order on the regular snapshot hosts
 
 # slots_used numcommands on_failure error_notify command
-<% if @stagestype == 'create_huge' %>
+
+<% if @stagestype == 'normal_huge' or @stagestype == 'partial_huge' or @stagestype == 'create_huge' %>
+# mark the start of the run for all huge wikis
 1 1 continue none <%= @stages['hugewikis']['firststage'] -%> --job createdirs --sleep 5
 <% end -%>
 
@@ -78,4 +80,3 @@
 <% end -%>
 
 <% end -%>
-

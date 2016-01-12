@@ -73,5 +73,13 @@ class snapshot::dumps::stagesconfig(
             stagestype => 'partial_huge',
             stages     => $stages,
         }
+        snapshot::dumps::stagesconf { 'stages_create':
+            stagestype => 'create',
+            stages     => $stages,
+        }
+        snapshot::dumps::stagesconf { 'stages_create_huge':
+            stagestype => 'create_huge',
+            stages     => $stages,
+        }
     }
 }
