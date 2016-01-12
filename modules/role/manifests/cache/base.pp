@@ -13,6 +13,7 @@ class role::cache::base(
     include role::cache::configuration
     include role::cache::statsd
     include network::constants
+    include conftool::scripts
 
     # Only production needs these system perf tweaks
     if $::realm == 'production' {
