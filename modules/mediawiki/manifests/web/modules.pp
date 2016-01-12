@@ -38,6 +38,7 @@ class mediawiki::web::modules {
         group  => 'root',
         mode   => '0444',
         before => Class['::apache::mod::expires'],
+        notify => Service['apache2'],
     }
 
     file { '/etc/apache2/mods-available/autoindex.conf':
@@ -47,6 +48,7 @@ class mediawiki::web::modules {
         group  => 'root',
         mode   => '0444',
         before => Class['::apache::mod::autoindex'],
+        notify => Service['apache2'],
     }
 
 
@@ -75,5 +77,6 @@ class mediawiki::web::modules {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
+        notify => Service['apache2'],
     }
 }
