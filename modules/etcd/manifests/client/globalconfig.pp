@@ -35,11 +35,12 @@ class etcd::client::globalconfig(
     etcd::client::config { '/etc/etcd/etcdrc':
         world_readable => true,
         settings       => {
-            host       => $host,
-            port       => $port,
-            srv_domain => $srv_domain,
-            ca_cert    => $ca_cert,
-            protocol   => $protocol,
+            host            => $host,
+            port            => $port,
+            srv_domain      => $srv_domain,
+            ca_cert         => $ca_cert,
+            protocol        => $protocol,
+            allow_reconnect => true,
         },
     }
 }
