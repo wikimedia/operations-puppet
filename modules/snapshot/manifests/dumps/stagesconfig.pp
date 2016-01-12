@@ -73,11 +73,19 @@ class snapshot::dumps::stagesconfig(
             stagestype => 'partial_huge',
             stages     => $stages,
         }
+        snapshot::dumps::stagesconf { 'stages_normal_nocreate_hugewikis':
+            stagestype => 'normal_nocreate_huge',
+            stages     => $stages,
+        }
+        snapshot::dumps::stagesconf { 'stages_partial_nocreate_hugewikis':
+            stagestype => 'partial_nocreate_huge',
+            stages     => $stages,
+        }
         snapshot::dumps::stagesconf { 'stages_create':
             stagestype => 'create',
             stages     => $stages,
         }
-        snapshot::dumps::stagesconf { 'stages_create_huge':
+        snapshot::dumps::stagesconf { 'stages_create_hugewikis':
             stagestype => 'create_huge',
             stages     => $stages,
         }
