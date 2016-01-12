@@ -3559,11 +3559,15 @@ host ms-fe2004 {
 host ms-fe3001 {
 	hardware ethernet 24:B6:FD:F5:B2:84;
 	fixed-address ms-fe3001.esams.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host ms-fe3002 {
 	hardware ethernet 24:B6:FD:F5:B3:E4;
 	fixed-address ms-fe3002.esams.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host multatuli {
