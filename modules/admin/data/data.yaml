@@ -49,7 +49,7 @@ groups:
               nikerabbit, reedy, robla, spage, ssastry, tomasz, yurik,
               tgr, phuedx, bsimmers, ejegg, twentyafterfour, legoktm, catrope, krenair,
               mobrovac, nuria, thcipriani, joal, eevans, mforns, dpatrick, dcausse,
-              bsitzmann, mholloway-shell, jzerebecki]
+              bsitzmann, mholloway-shell, jzerebecki, dduvall]
     privileges: ['ALL = (www-data,apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /sbin/restart hhvm',
                  'ALL = NOPASSWD: /sbin/start hhvm',
