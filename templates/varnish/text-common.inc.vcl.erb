@@ -127,7 +127,7 @@ sub common_fetch {
 		&& (!beresp.http.X-Cache || beresp.http.X-Cache !~ " hit\(")
 	    ) || (
 		req.http.Cookie == "Token=1"
-		&& beresp.http.Vary ~ "(^|,)\s*Cookie\s*(,|$)"
+		&& beresp.http.Vary ~ "(?i)(^|,)\s*Cookie\s*(,|$)"
 	    )
 	) {
 		set req.http.X-CDIS = req.http.X-CDIS + "+chfp"; // +created-hit-for-pass
