@@ -13,6 +13,7 @@
 #    include conftool::scripts
 #}
 class conftool::scripts {
+    require conftool
 
     file { '/usr/local/bin/pool':
         ensure  => present,
