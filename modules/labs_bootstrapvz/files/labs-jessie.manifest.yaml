@@ -99,6 +99,19 @@ packages:
     - tree
     - nagios-plugins-basic
     - jq
+    - debdeploy-minion
+    - arcconf
+    - megacli
+    - apt-transport-https
+    - tcpdump
+    - molly-guard
+    - tshark
+    - tmux
+    - strace
+    - mpt-status
+    - python-statsd
+    - git-fat
+    - nagios-nrpe-server
 plugins:
   root_password:
     password: test
