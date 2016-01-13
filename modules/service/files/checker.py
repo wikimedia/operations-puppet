@@ -49,6 +49,22 @@ def fetch_url(client, url, **kw):
                 **kw
             )
         elif method == 'POST':
+            try:
+                headers = kw.get('headers', {})
+                content_type = headers.get('Content-Type')
+            except:
+                content_type = None
+
+            # Handle json-encoded requests
+            if content_type.lower() == 'application/json':
+                kw['body'] = json.dumps(kw['fields'])
+                del kw['fields']
+                return client.urlopen(
+                    method,
+                    url,
+                    **kw
+                )
+
             return client.request_encode_body(
                 method,
                 url,
