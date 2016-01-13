@@ -39,6 +39,11 @@ ganglia_clusters:
     id: 6
     sites:
       eqiad: []
+  eventbus:
+    name: "Eventbus"
+    id: 7
+    sites:
+      eqiad: []
   misc:
     name: "Miscellaneous"
     id: 8

@@ -65,6 +65,10 @@ groups:
   etcd_eqiad:
     description: eqiad Etcd
 
+  # Eventbus
+  eventbus_eqiad:
+    description: eventbus eqiad servers
+
 # Ganeti
   ganeti_eqiad:
     description: Ganeti virt cluster eqiad
