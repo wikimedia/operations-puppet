@@ -53,7 +53,6 @@ NameVirtualHost *:443
     <%= @ssl_settings.join("\n") %>
 
     RedirectMatch ^/$ https://<%= @host %>/r/
-    RedirectMatch ^/gitweb/(.*)$ https://<%= @host %>/r/gitweb?p=$1
 
     # Misbehaving bots
     SetEnvIf User-Agent 80legs bad_browser
@@ -91,46 +90,6 @@ NameVirtualHost *:443
 
     AllowEncodedSlashes On
     RewriteEngine On
-
-    # Rewrite old gerrit gitweb URLs to redirect to new gitblit server.
-    # Here are some sample URLs that should continue to work
-    #  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/Agora.git;hb=HEAD;
-    #  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/core.git;a=blob_plain;f=languages/messages/MessagesEn.php;hb=HEAD
-    #  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/examples.git;hb=HEAD;f=BoilerPlate/README;
-    #  https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/ArticleFeedback.git;hb=HEAD;f=modules/jquery.articleFeedback/images/star-new-down.png;a=raw;
-    #
-    # Notes
-    # 1. gitblit requires URL-encoding (%2F) of the slashes in the matched
-    # paths to project and file.  The [B] option does this for the
-    # backreferences; it also converts '.' in .git and .php to "%2e", gitblit
-    # accepts this. Due to the additional 'AllowEncodedSlashes On' (which
-    # is a requirement from gerrit's suggested reverse proxy configuration),
-    # the '%' in these '%2f', '%2e', ... get encoded themselves, and we end up
-    # seeing double encoded characters '%252f', '%252e', ... . To prohibit
-    # this final (unneeded, since backreferences get encoded, and the other URL
-    # parts should be safe, as they are plain literals) encoding, we add [NE]
-    # to the options.
-    # 2. Append an empty query string (which mod_rewrite is smart enough to
-    # drop), otherwise the original query string is appended -- mod_rewrite
-    # lacks a DiscardQueryString option.
-    # 3. You can't have separate RewriteCond for p= and f= because the
-    # RewriteRule can only reference matches from the last RewriteCond.
-    # (You could use [N] to re-run the rewriting process after rewriting
-    # for each parameter ... agggh.)
-    # 4. To avoid complicated "p= at start or preceded with ;", stick ';' on front.
-    # 5. The semicolon-separated parameters p and f can be in any order, so look
-    # for p anywhere and add it back at the front.
-    # 6. gitweb parameters not handled: a=<some other action>, hb=<some
-    # commit>, and #l123 line number fragment.
-    #
-    # Rewrite a gitweb project link (no file).
-    RewriteCond ;%{QUERY_STRING} !;f=
-    RewriteCond ;%{QUERY_STRING} ;p=([^;]*)
-    RewriteRule ^/r/gitweb$ https://phabricator.wikimedia.org/r/project/%1 [R=301,L,B,NE]
-    # Rewrite a gitweb file link (project and file, in any order).
-    RewriteCond ;%{QUERY_STRING} ;p=([^;]*)
-    RewriteCond ;p=%1;%{QUERY_STRING} ^;p=([^;]*).*;f=([^;]*)
-    RewriteRule ^/r/gitweb$ https://git.wikimedia.org/raw/%1/HEAD/%2? [R=301,L,B,NE]
 
     # git-review for some reason sometimes uses <https://gerrit.wikimedia.org/tools/hooks/commit-msg>
     # instead of <https://gerrit.wikimedia.org/r/tools/hooks/commit-msg>, except when somebody is
