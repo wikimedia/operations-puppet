@@ -1,0 +1,71 @@
+#!/usr/bin/python
+# coding: utf-8
+"""
+Logs a command invocation (jsub/jstart/webservice/etc) to EventLogging
+
+Sends the following information:
+    - User running the command
+    - FQDN of the host in which the command was executed
+    - Name of the command being executed
+    - The full command-line used to invoke the command
+    - (Server-side generated) Timestamp at which the command was run
+
+This will be used to understand usage patterns of different command
+invocations better.
+
+Schema at https://meta.wikimedia.org/wiki/Schema:CommandInvocation
+"""
+
+import os
+import pwd
+import json
+import socket
+import urllib
+import urllib2
+import argparse
+
+# We sent events to the client-side EventLogging endpoint.
+URL = 'https://meta.wikimedia.org/beacon/event'
+
+
+def log_event(schema, rev_id, wiki, event):
+    payload = {
+        'schema': schema,
+        'revision': rev_id,
+        'wiki': wiki,
+        'event': event
+    }
+    url = "%s?%s" % (URL, urllib.quote_plus(json.dumps(payload)))
+    urllib2.urlopen(url).read()
+
+
+def log_command_invocation(commandname, commandline):
+    username = pwd.getpwuid(os.getuid()).pw_name
+    hostname = socket.getfqdn()
+
+    event = {
+        'username': username,
+        'command': commandname,
+        'commandline': commandline,
+        'hostname': hostname
+    }
+    # We set it to be metawiki, it does not really matter anyway
+    log_event('CommandInvocation', 15237653, 'metawiki', event)
+
+
+def main():
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument(
+        'commandname',
+        help='Name of command being invoked'
+    )
+    argparser.add_argument(
+        'commandline',
+        help='Full command-line used to invoke the command'
+    )
+
+    args = argparser.parse_args()
+    log_command_invocation(args.commandname, args.commandline)
+
+if __name__ == '__main__':
+    main()
