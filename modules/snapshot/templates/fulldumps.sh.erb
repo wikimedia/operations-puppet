@@ -1,0 +1,92 @@
+#!/bin/bash
+#############################################################
+# This file is maintained by puppet!
+# puppet:///modules/snapshot/fulldumps.sh.erb
+#############################################################
+
+# This script is intended to be run out of cron, set to start
+# daily, with a given date range supplied, but it will
+# actually start that dump run only once during that date range.
+# If there is another copy of this script already running
+# or if there has been a run that completed during the date range
+# then this script will simply exit.
+#
+# This permits the window for completion of dump runs to slip
+# some if there are errors or parts that need to be rerun,
+# without requiring manual intervention for the next cron run.
+
+if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
+    echo "Usage: $0 startdate enddate huge|regular"
+    echo "where huge or regular is the type of wiki dump to be"
+    echo "run (huge wikis or small/big wikis)"
+    echo "example:"
+    echo "$0 01 10 regular"
+    echo "for a run over the small and big wikis, that should have started"
+    echo "on the first of the month and can be started up to the 10th without"
+    echo "encroaching on the next dump run"
+    exit 1
+fi
+
+startdate="$1"
+enddate="$2"
+wikitypes="$3"
+
+dumpsdir="<%= scope.lookupvar('snapshot::dirs::dumpsdir') %>"
+cd $dumpsdir
+
+today=`date +%d`
+if [[ "$today" < "$startdate" || "$today" > "$enddate" ]]; then
+    # skip, we're not in the run range for this dump
+    exit 0
+fi
+
+# create directories for the dump run for each group of wikis
+# (small, big, huge) as needed
+case $wikitype in
+    'hugewikis')
+        configfile="${dumpsdir}/confs/wikidump.conf.hugewikis"
+        stagesfile="stages_create_hugewikis"
+        lastrun=`python dumpadmin.py -s lastrun -configfile $configfile`
+        if [[ -z "$lastrun" || "$lastrun" < "$startdate" ]]; then
+            python ./dumpscheduler.py --slots 8 --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
+        fi
+        ;;
+    'regular')
+        configfile="${dumpsdir}/confs/wikidump.conf.bigwikis"
+        stagesfile="stages_create_bigwikis"
+        lastrun=`python dumpadmin.py -s lastrun -configfile $configfile`
+        if [[ -z "$lastrun" || "$lastrun" < "$startdate" ]]; then
+            python ./dumpscheduler.py --slots 8 --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
+        fi
+
+        configfile="${dumpsdir}/confs/wikidump.conf"
+        stagesfile="stages_create_smallwikis"
+        lastrun=`python dumpadmin.py -s lastrun -configfile $configfile`
+        if [[ -z "$lastrun" || "$lastrun" < "$startdate" ]]; then
+            python ./dumpscheduler.py --slots 8 --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
+        fi
+
+        stagesfile="stages_create_bigwikis"
+        configfile="${dumpsdir}/confs/wikidump.conf.bigwikis"
+        ;;
+esac
+
+case $wikitype in
+    'huge')
+        configfile="${dumpsdir}/confs/wikidump.conf.hugewikis"
+        alldone=`python dumpadmin.py -s alldone --configfile $configfile`
+        if [ -z "$alldone" ]; then
+            python ./dumpscheduler.py --slots 27 --commands ${dumpsdir}/stages/stages_normal_nocreate_hugewikis --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
+        fi
+        ;;
+    'regular')
+        configfile="${dumpsdir}/confs/wikidump.conf.bigwikis"
+        alldonebig=`python dumpadmin.py -s alldone --configfile $configfile`
+        configfile="${dumpsdir}/confs/wikidump.conf"
+        alldonesmall=`python dumpadmin.py -s alldone --configfile $configfile`
+        if [ -z "$alldonebig" -o -z "$alldonesmall" ]; then
+            python ./dumpscheduler.py --slots 8 --commands ${dumpsdir}/stages/stages_normal_nocreate --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
+        fi
+        ;;
+esac
+exit 0
