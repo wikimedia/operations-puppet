@@ -51,7 +51,7 @@ def fetch_url(client, url, **kw):
         elif method == 'POST':
             try:
                 headers = kw.get('headers', {})
-                content_type = headers.get('Content-Type')
+                content_type = headers.get('Content-Type', '')
             except:
                 content_type = ''
 
