@@ -9,7 +9,6 @@
 # * an existing original image
 
 import unittest
-import urllib
 
 import requests
 

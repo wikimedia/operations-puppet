@@ -56,11 +56,6 @@ Creative Commons Attribution-ShareAlike License.</a>; \
 additional terms may apply.'
 
 
-def logger(msg, enabled):
-    if enabled:
-        print msg
-
-
 def site_html(url):
     html_content = urllib2.urlopen(url).readlines()
     return '\n'.join(html_content)
@@ -94,24 +89,27 @@ def main():
     ap.set_defaults(verbose=False)
     args = ap.parse_args()
 
-    log = lambda m: logger(m, args.verbose)
     site = args.site
     ensures = ensure.get(args.ensure, [])
     if not ensures:
-        print "no html ensure list"
+        print("no html ensure list")
         sys.exit(3)
 
-    log(site)
+    if args.verbose:
+        print(site)
+
     html = site_html(site)
     for match in ensures:
-        log(match)
+        if args.verbose:
+            print(match)
         count = len(re.findall(match, html, re.IGNORECASE))
-        log(count)
         if not count:
-            print "%s html not found" % (match,)
+            print("%s html not found" % match)
             sys.exit(2)
+        if args.verbose:
+            print(count)
 
-    print "all html is present."
+    print("all html is present.")
 
 if __name__ == '__main__':
     main()

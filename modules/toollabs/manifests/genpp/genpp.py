@@ -3,10 +3,8 @@ import subprocess
 import functools
 import os
 import gzip
-import re
 import sys
 import logging
-import pprint
 
 from jinja2 import Environment, FileSystemLoader
 

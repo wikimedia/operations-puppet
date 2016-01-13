@@ -8,8 +8,9 @@ host other than tools-submit.
 """
 
 import subprocess
-import os
+
 import diamond.collector
+
 from diamond.collector import str_to_bool
 
 
