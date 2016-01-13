@@ -10,7 +10,16 @@
 <% if @stagestype == 'normal' or @stagestype == 'partial' or @stagestype == 'create' %>
 # mark the start of the run for all small, big wikis
 1 8 continue none <%= @stages['smallwikis']['firststage'] -%> --job createdirs --sleep 5; <%= @stages['bigwikis']['firststage'] %> --job createdirs --sleep 5
+<% end -%>
 
+<% if @stagestype == 'create_small' %>
+# mark the start of the run for all small wikis
+1 8 continue none <%= @stages['smallwikis']['firststage'] -%> --job createdirs --sleep 5
+<% end -%>
+
+<% if @stagestype == 'create_big' %>
+# mark the start of the run for all big wikis
+1 8 continue none <%= @stages['bigwikis']['firststage'] %> --job createdirs --sleep 5
 <% end -%>
 
 <% if @stagestype == 'normal' or @stagestype == 'partial' or @stagestype == 'normal_nocreate' or @stagestype == 'partial_nocreate' %>
