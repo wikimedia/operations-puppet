@@ -260,7 +260,7 @@ sca:
   sca1001.eqiad.wmnet: [citoid, cxserver, graphoid, mathoid, zotero]
   sca1002.eqiad.wmnet: [citoid, cxserver, graphoid, mathoid, zotero]
 scb:
-  scb1001.eqiad.wmnet: [moblieapps, mathoid]
+  scb1001.eqiad.wmnet: [mobileapps, mathoid]
   scb1002.eqiad.wmnet: [mobileapps, mathoid]
 dns:
   chromium.wikimedia.org: [pdns_recursor]
