@@ -67,6 +67,7 @@ class role::parsoid::production {
         mode   => '0444',
         source => 'puppet:///files/misc/parsoid.upstart',
     }
+
     file { '/var/log/parsoid':
         ensure => directory,
         owner  => parsoid,
@@ -247,6 +248,83 @@ class role::parsoid::beta {
     include role::ci::slave::labs::common
     # Also need the slave scripts for multi-git.sh
     include contint::slave_scripts
+}
 
+# This role is used by testing services
+# Ex: Parsoid roundtrip testing, Parsoid & PHP parser visual diff testing
+class role::parsoid::testing {
+    system::role { 'role::parsoid::testing':
+        description => 'Parsoid server (rt-testing, visual-diffing, etc.)'
+    }
 
+    include role::parsoid::common
+
+    group { 'parsoid':
+        ensure => present,
+        name   => 'parsoid',
+        system => true,
+    }
+
+    user { 'parsoid':
+        gid        => 'parsoid',
+        home       => '/var/lib/parsoid',
+        managehome => true,
+        system     => true,
+    }
+
+    # We clone the git repo and let testing services
+    # update / modify the repo as appropriate
+    # (via scripts, manually, however).
+    git::clone { 'mediawiki/services/parsoid/deploy':
+        before    => Service['parsoid'],
+        owner     => 'root',
+        group     => 'wikidev',
+        # FIXME: Should we move this to /srv/parsoid ?
+        # I am picking /usr/lib to minimize changes to
+        # ruthenium setup.
+        directory => '/usr/lib/parsoid',
+    }
+
+    file { '/etc/init/parsoid.conf':
+        before => Service['parsoid'],
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0444',
+        source => 'puppet:///files/misc/parsoid.upstart',
+    }
+
+    file { '/var/log/parsoid':
+        before => Service['parsoid'],
+        ensure => directory,
+        owner  => parsoid,
+        group  => parsoid,
+        mode   => '0775',
+    }
+
+    $parsoid_log_file = '/var/log/parsoid/parsoid.log'
+    $parsoid_node_path = '/usr/lib/parsoid/deploy/node_modules'
+    # default local settings -- test setups provide their own settings
+    $parsoid_settings_file = '/usr/lib/parsoid/src/localsettings.js'
+    $parsoid_base_path = '/usr/lib/parsoid/deploy/src'
+
+    #TODO: Duplication of code, deduplicate somehow
+    file { '/etc/default/parsoid':
+        before  => Service['parsoid'],
+        ensure  => present,
+        owner   => root,
+        group   => root,
+        mode    => '0444',
+        content => template('misc/parsoid.default.erb'),
+    }
+
+    service { 'parsoid':
+        hasstatus  => true,
+        hasrestart => true,
+        provider   => 'upstart',
+        subscribe  => [
+            File['/etc/default/parsoid'],
+            File['/etc/init/parsoid.conf'],
+        ],
+    }
 }
