@@ -53,7 +53,6 @@ NameVirtualHost *:443
     <%= @ssl_settings.join("\n") %>
 
     RedirectMatch ^/$ https://<%= @host %>/r/
-    RedirectMatch ^/gitweb/(.*)$ https://<%= @host %>/r/gitweb?p=$1
 
     # Misbehaving bots
     SetEnvIf User-Agent 80legs bad_browser
