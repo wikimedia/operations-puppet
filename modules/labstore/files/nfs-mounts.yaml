@@ -235,13 +235,6 @@ private:
     gid: 50338
     mounts:
        project: true
-  wikiviajesve:
-    gid: 52059
-    mounts:
-      dumps: true
-      home: true
-      project: true
-      scratch: true
   wmt:
     gid: 52488
     mounts:
