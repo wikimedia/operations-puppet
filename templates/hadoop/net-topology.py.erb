@@ -60,7 +60,7 @@ else:
 
 # If the node doesn't have a key in nodes, perhaps it is a
 # short hostname or IP address.  Look it up!
-if not nodes.has_key(node):
+if node not in nodes:
     node = socket.getfqdn(node)
 
 print(nodes.get(node, '/eqiad/default/rack'))
