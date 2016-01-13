@@ -12,7 +12,7 @@ cache_text:
   cp3008.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp3009.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp3010.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
-  cp3011.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+#  cp3011.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx] #disabled, see T92306
   cp3012.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp3013.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp3014.esams.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
