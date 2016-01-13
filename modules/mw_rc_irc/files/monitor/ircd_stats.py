@@ -32,7 +32,7 @@ class IRCDStatsCollector(diamond.collector.Collector):
         irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             irc.connect((self.config['server'], int(self.config['port'])))
-            #making ircd happy with # of args
+            # making ircd happy with # of args
             irc.send("USER %s %s %s :%s\n" % (self.config['user'],
                                               self.config['user'],
                                               self.config['user'],
