@@ -6,7 +6,6 @@
 
 import genpp
 import logging
-import pprint
 
 environ_packages = {
     'dev': ['coverage', 'dev', 'stdeb'],

@@ -5,8 +5,8 @@
 
 # Written on 2010/08/14 by Mark Bergsma <mark@wikimedia.org>
 
+import os
 import os.path
-import stat
 import sys
 import tempfile
 

@@ -11,7 +11,6 @@ classes in the test use case (Tool Labs' exec nodes).
 FIXME: Find a mathematically valid definition of 'spread out enough'
        and implement it
 """
-import os
 import sys
 import argparse
 import yaml

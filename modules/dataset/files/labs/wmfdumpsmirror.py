@@ -2,9 +2,9 @@ import getopt
 import os
 import re
 import sys
-import subprocess
 import shutil
 import multiprocessing
+
 from subprocess import Popen, PIPE
 from Queue import Empty
 

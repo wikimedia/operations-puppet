@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 '''
 This script parses the packet-loss.log file and for each server entry
@@ -15,6 +15,7 @@ When this script is called directly it runs in testmode,
 PacketLossLogTailer.py is the regular point of entry.
 '''
 
+import httplib
 import re
 import urllib2
 import json

@@ -213,7 +213,7 @@ class WMFElasticCollector(diamond.collector.Collector):
         for metric in self.health_metrics:
             try:
                 gmetrics[metric] = chealth[metric]
-            except KeyError, e:
+            except KeyError:
                 self.errors += 1
                 pass
         return gmetrics
@@ -226,7 +226,7 @@ class WMFElasticCollector(diamond.collector.Collector):
             try:
                 value = self.dict_digger(depth, cstats)
                 gmetrics[m] = value
-            except KeyError, e:
+            except KeyError:
                 self.errors += 1
                 pass
         return gmetrics
@@ -241,7 +241,7 @@ class WMFElasticCollector(diamond.collector.Collector):
             try:
                 value = self.dict_digger(depth, nodestats)
                 gmetrics[m] = value
-            except KeyError, e:
+            except KeyError:
                 self.errors += 1
                 pass
         return gmetrics

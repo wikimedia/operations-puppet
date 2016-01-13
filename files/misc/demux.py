@@ -6,7 +6,6 @@
 # Simple python script for demultiplexing MediaWiki log files
 
 import argparse
-import os
 import re
 import string
 import sys
