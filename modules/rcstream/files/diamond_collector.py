@@ -40,7 +40,7 @@ class RCStreamCollector(diamond.collector.Collector):
         for backend in backends:
             try:
                 stat = self.get_backend_stats(backend)
-            except IOError, ValueError:
+            except (IOError, ValueError):
                 self.log.exception('Failed to check backend %s', backend)
             else:
                 stats.append(stat)
