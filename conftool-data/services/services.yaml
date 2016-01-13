@@ -84,6 +84,21 @@ sca:
       weight: 10
     datacenters:
     - eqiad
+scb:
+  mobileapps:
+    port: 8888
+    default_values:
+      pooled: 'yes'
+      weight: 10
+    datacenters:
+    - eqiad
+  mathoid:
+    port: 10042
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
 restbase:
   restbase:
     port: 7231
@@ -108,14 +123,6 @@ maps:
       weight: 10
     datacenters:
     - codfw
-scb:
-  mobileapps:
-    port: 8888
-    default_values:
-      pooled: 'yes'
-      weight: 10
-    datacenters:
-    - eqiad
 aqs:
   aqs:
     port: 7232
