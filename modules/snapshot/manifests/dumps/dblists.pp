@@ -4,8 +4,8 @@ class snapshot::dumps::dblists($enable=true, $hugewikis_enable=false) {
         $hugewikis_dblist = join($hugewikis, "\n")
 
         $bigwikis = ['dewiki', 'eswiki', 'frwiki', 'itwiki', 'jawiki',
-                    'nlwiki', 'plwiki', 'ptwiki', 'ruwiki', 'commonswiki',
-                    'wikidatawiki']
+                    'metawiki', 'nlwiki', 'plwiki', 'ptwiki', 'ruwiki', 'commonswiki',
+                    'wikidatawiki', 'zhwiki']
         $bigwikis_dblist = join($bigwikis, "\n")
 
         # labswiki Broken, DB permissions issues?
