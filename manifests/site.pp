@@ -50,7 +50,10 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
     }
 }
 
-
+# url-downloader codfw
+node 'alsafi.wikimedia.org' {
+    include standard
+}
 
 # analytics1001 is the Hadoop master node:
 # - primary active NameNode
