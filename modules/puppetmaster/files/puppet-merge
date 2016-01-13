@@ -19,6 +19,8 @@ of submodule changes.
 If the changes are acceptable, HEAD will be fast-forwarded
 to FETCH_HEAD.
 
+It also runs the conftool merge if necessary.
+
 <basedir> defaults to /var/lib/git/operations/puppet
 
 "
@@ -111,6 +113,8 @@ if [ "x${answer}" = "xyes" ] || [ "x${answer}" = "xy" ]; then
 
     echo "HEAD is now $(git rev-parse HEAD)."
     cd -
+    echo "Now running conftool-merge to sync any changes to conftool data"
+    /usr/local/bin/conftool-merge
     exit 0
 else
     echo "Aborting merge."
