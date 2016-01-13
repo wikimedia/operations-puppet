@@ -85,6 +85,14 @@ class snapshot::dumps::stagesconfig(
             stagestype => 'create',
             stages     => $stages,
         }
+        snapshot::dumps::stagesconf { 'stages_create_smallwikis':
+            stagestype => 'create_small',
+            stages     => $stages,
+        }
+        snapshot::dumps::stagesconf { 'stages_create_bigwikis':
+            stagestype => 'create_big',
+            stages     => $stages,
+        }
         snapshot::dumps::stagesconf { 'stages_create_hugewikis':
             stagestype => 'create_huge',
             stages     => $stages,
