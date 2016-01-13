@@ -16,7 +16,8 @@ ripeurl = 'https://atlas.ripe.net/api/v1/status-checks/'
 UDM_id = sys.argv[1]
 loss_allowed = sys.argv[2]
 allowed_failures = sys.argv[3]
-msg = "%s - failed %d probes of %d (alerts on %s)"
+msg = "%s - failed %d probes of %d (alerts on %s) - " \
+      "https://atlas.ripe.net/measurements/%s/#!map"
 
 
 def main():
@@ -50,11 +51,13 @@ def main():
         print msg % ('CRITICAL',
                      len(failed_probes),
                      total_probes,
-                     allowed_failures)
+                     allowed_failures,
+                     UDM_id)
         sys.exit(2)
     else:
         print msg % ('OK',
                      len(failed_probes),
                      total_probes,
-                     allowed_failures)
+                     allowed_failures,
+                     UDM_id)
 main()
