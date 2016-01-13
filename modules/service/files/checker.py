@@ -53,7 +53,7 @@ def fetch_url(client, url, **kw):
                 headers = kw.get('headers', {})
                 content_type = headers.get('Content-Type')
             except:
-                content_type = None
+                content_type = ''
 
             # Handle json-encoded requests
             if content_type.lower() == 'application/json':
