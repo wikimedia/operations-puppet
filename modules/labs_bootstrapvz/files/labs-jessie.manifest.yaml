@@ -108,10 +108,12 @@ packages:
     - tshark
     - tmux
     - strace
-    - mpt-status
     - python-statsd
     - git-fat
     - nagios-nrpe-server
+    # Puppet installs mpt-status right away, but I'm told that installing
+    #  it in a raw image causes it to send spam mails.
+    # - mpt-status
 plugins:
   root_password:
     password: test
