@@ -76,6 +76,16 @@ class snapshot::dumps::configs(
                     pagesPerChunkAbstract => '5800000',
                     chunksForAbstract     => '4',
                 },
+                zhwiki => {
+                    pagesPerChunkHistory  => '280000,740000,2100000,3000000',
+                    pagesPerChunkAbstract => '1300000',
+                    chunksForAbstract     => '4',
+                },
+                metawiki => {
+                    pagesPerChunkHistory  => '810000,2700000,3200000,3400000',
+                    pagesPerChunkAbstract => '2500000',
+                    chunksForAbstract     => '4',
+                },
             },
         },
         hugewikis => {
