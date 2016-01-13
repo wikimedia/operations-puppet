@@ -19,7 +19,7 @@
 
 			opts: {
 				// By default, use the same configuration as the testing Parsoid server.
-				parsoidConfig: '/srv/testreduce/parsoid-rt-client.rttest.localsettings.js',
+				parsoidConfig: '/usr/lib/parsoid/src/tests/testreduce/parsoid-rt-client.rttest.localsettings.js',
 
 				// The parsoid API to use. If null, create our own server
 				parsoidURL: null,
