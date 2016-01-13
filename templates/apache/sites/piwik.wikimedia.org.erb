@@ -22,6 +22,10 @@
     <% @auth_ldap['groups'].each do |group| -%>
     Require ldap-group <%= group %>
     <% end -%>
+    # Public endpoints -- must be open to all for piwik to work properly.
+    # See <http://piwik.org/docs/how-to-secure-piwik/>.
+    Require expr %{REQUEST_URI} in { '/piwik.php', '/piwik.js' }
+    Require expr %{REQUEST_URI} == '/index.php' && %{QUERY_STRING} =~ /^module=CoreAdminHome&action=optOut/
   </Directory>
 
   <Files "console">
