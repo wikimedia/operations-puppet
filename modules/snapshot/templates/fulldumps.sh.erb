@@ -1,0 +1,85 @@
+#!/bin/bash
+#############################################################
+# This file is maintained by puppet!
+# puppet:///modules/snapshot/fulldumps.sh.erb
+#############################################################
+set -x
+# if it hasn't run already for the given date, run it
+
+if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
+    echo "Usage: $0 startdate enddate wikitypes"
+    echo "known wikitypes: smallwikis bigwikis hugewikis"
+    echo "example: $0 01 10 'bigwikis smallwikis' for a run"
+    echo "over the small and big wikis only, that should have started"
+    echo "on the first of the month and can be started up to the 10th without"
+    echo "encroaching on the next dump run"
+    exit 1
+fi
+
+
+startdate="$1"
+enddate="$2"
+wikitypes=$3
+
+dumpsdir="<%= scope.lookupvar('snapshot::dirs::dumpsdir') %>"
+cd $dumpsdir
+
+#running=`pgrep -f fulldumps.sh`
+#if [ ! -z "$running" ]; then
+#    # skip, already running
+#    exit 0
+#fi
+
+#today=`date +%Y%m%d`
+today=`date +%d`
+if [[ "$today" < "$startdate" || "$today" > "$enddate" ]]; then
+    # skip, we're not in the run range for this dump
+    exit 0
+fi
+
+declare -a TODO=()
+for wikitype in $wikitypes; do
+
+    case $wikitype in
+	'hugewikis')
+            stagesfile="stages_create_hugewikis"
+	    configfile="${dumpsdir}/confs/wikidump.conf.hugewikis"
+	    ;;
+	'bigwikis')
+            stagesfile="stages_create_bigwikis"
+            configfile="${dumpsdir}/confs/wikidump.conf.bigwikis"
+   	    ;;
+	*)
+            stagesfile="stages_create"
+            configfile="${dumpsdir}/confs/wikidump.conf"
+   	    ;;
+    esac
+    
+    # create dirs for dump runs if needed
+    lastrun=`python dumpadmin.py -s lastrun --configfile $configfile`
+    if [[ -z "$lastrun" || "$lastrun" < "$startdate" ]]; then
+        python ./dumpscheduler.py --slots 8 --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
+    fi
+
+    alldone=`python dumpadmin.py -s alldone --configfile $configfile`
+    # at least some wikis have been updated after the start date
+    # if all wikis have a complete run without failures, we
+    # do nothing, but otherwise we will do a full run
+    if [ -z "$alldone" ]; then
+        TODO=(${TODO[@]} "$wikitype")
+    fi
+done
+
+# there are only two types of dump stages, one for huge wikis and one for all the rest
+REMAINDER=""
+for item in "${TODO[@]}"; do
+    if [[ "hugewikis" == "$item" ]]; then
+	python ./dumpscheduler.py --slots 27 --commands ${dumpsdir}/stages/stages_normal_nocreate_hugewikis --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
+    else
+	REMAINDER="other"
+    fi
+done
+
+if [ ! -z "$REMAINDER" ]; then
+    python ./dumpscheduler.py --slots 8 --commands ${dumpsdir}/stages/stages_normal_nocreate --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
+fi
