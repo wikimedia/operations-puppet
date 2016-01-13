@@ -207,4 +207,12 @@ class toollabs (
     }
 
     diamond::collector::localcrontab { 'localcrontabcollector': }
+
+    file { '/usr/local/bin/log-command-invocation':
+        ensure => present,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/toollabs/log-command-invocation',
+    }
 }
