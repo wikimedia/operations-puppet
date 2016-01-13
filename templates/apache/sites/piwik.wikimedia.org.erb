@@ -28,6 +28,11 @@
     Require all denied
   </Files>
 
+  <FilesMatch "^piwik.(js|php)$">
+    Allow from all
+    Satisfy any
+ </FilesMatch>
+
   <Directory "/usr/share/piwik/misc">
     Require all denied
   </Directory>
