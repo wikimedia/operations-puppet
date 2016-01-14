@@ -15,11 +15,12 @@ class role::openldap::labtest {
     }
 
     class { '::openldap':
-        suffix      => 'dc=wikimedia,dc=org',
-        datadir     => '/var/lib/ldap/labs',
-        ca          => '/etc/ssl/certs/ca-certificates.crt',
-        certificate => "/etc/ssl/localcerts/ldap-labs.${::site}.wikimedia.org.crt",
-        key         => "/etc/ssl/private/ldap-labs.${::site}.wikimedia.org.key",
+        server_id     => 1,
+        suffix        => 'dc=wikimedia,dc=org',
+        datadir       => '/var/lib/ldap/labs',
+        ca            => '/etc/ssl/certs/ca-certificates.crt',
+        certificate   => "/etc/ssl/localcerts/ldap-labs.${::site}.wikimedia.org.crt",
+        key           => "/etc/ssl/private/ldap-labs.${::site}.wikimedia.org.key",
         extra_schemas => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                           'puppet.schema', 'sudo.schema'],
         extra_indices => 'openldap/labs-indices.erb',
