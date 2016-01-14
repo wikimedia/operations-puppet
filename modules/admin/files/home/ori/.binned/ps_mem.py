@@ -32,12 +32,12 @@
 #                           RSS with ps, and shared memory with this program.
 #                           Also we can show non truncated command names.
 # V1.8      28 Sep 2007     More accurate matching for stats in
-#                           /proc/$pid/smaps as otherwise could match libraries
-#                           causing a crash.
+#                           /proc/$pid/smaps as otherwise could match
+#                           libraries causing a crash.
 #                           Patch from patrice.bouchand.fedora@gmail.com
 # V1.9      20 Feb 2008     Fix invalid values reported when PSS is available.
 #                           Reported by Andrey Borzenkov <arvidjaar@mail.ru>
-# V3.3      24 Jun 2014
+# V3.6      16 Oct 2015
 #   http://github.com/pixelb/scripts/commits/master/scripts/ps_mem.py
 
 # Notes:
@@ -45,7 +45,7 @@
 # All interpreted programs where the interpreter is started
 # by the shell or with env, will be merged to the interpreter
 # (as that's what's given to exec). For e.g. all python programs
-# starting with "# !/usr/bin/env python" will be grouped under python.
+# starting with "#!/usr/bin/env python" will be grouped under python.
 # You can change this by using the full command line but that will
 # have the undesirable affect of splitting up programs started with
 # differing parameters (for e.g. mingetty tty[1-6]).
@@ -80,18 +80,10 @@ import errno
 import os
 import sys
 
-try:
-    # md5 module is deprecated on python 2.6
-    # so try the newer hashlib first
-    import hashlib
-    md5_new = hashlib.md5
-except ImportError:
-    import md5
-    md5_new = md5.new
-
-
 # The following exits cleanly on Ctrl-C or EPIPE
 # while treating other exceptions as before.
+
+
 def std_exceptions(etype, value, tb):
     sys.excepthook = sys.__excepthook__
     if issubclass(etype, KeyboardInterrupt):
@@ -110,16 +102,6 @@ PAGESIZE = os.sysconf("SC_PAGE_SIZE") / 1024  # KiB
 our_pid = os.getpid()
 
 have_pss = 0
-help_msg = """Usage: ps_mem [OPTION]...
-Show program core memory usage
-
-  -h, -help                   Show this help
-  -p <pid>[,pid2,...pidN]     Only show memory usage PIDs in the specified list
-  -s, --split-args            Show and separate by, all command line arguments
-  -t, --total                 Show only the total value
-  -w <N>                      Measure and show process memory every N seconds
-
-"""
 
 
 class Proc:
@@ -136,7 +118,10 @@ class Proc:
 
     def open(self, *args):
         try:
-            return open(self.path(*args))
+            if sys.version_info < (3,):
+                return open(self.path(*args))
+            else:
+                return open(self.path(*args), errors='ignore')
         except (IOError, OSError):
             val = sys.exc_info()[1]
             if (val.errno == errno.ENOENT or  # kernel thread or process gone
@@ -194,10 +179,19 @@ def parse_options():
 
 
 def help():
-    global help_msg
-    return help_msg
+    help_msg = 'Usage: ps_mem [OPTION]...\n' \
+        'Show program core memory usage\n' \
+        '\n' \
+        '  -h, -help                   Show this help\n' \
+        '  -p <pid>[,pid2,...pidN]     ' \
+        'Only show memory usage PIDs in the specified list\n' \
+        '  -s, --split-args            ' \
+        'Show and separate by, all command line arguments\n' \
+        '  -t, --total                 Show only the total value\n' \
+        '  -w <N>                      ' \
+        'Measure and show process memory every N seconds\n'
 
-# (major,minor,release)
+    return help_msg
 
 
 def kernel_ver():
@@ -228,11 +222,11 @@ def getMemStats(pid):
     Rss = (int(proc.open(pid, 'statm').readline().split()[1]) *
            PAGESIZE)
     if os.path.exists(proc.path(pid, 'smaps')):  # stat
-        digester = md5_new()
-        for line in proc.open(pid, 'smaps').readlines():  # open
-            # Note we checksum smaps as maps is usually but
-            # not always different for separate processes.
-            digester.update(line.encode('latin1'))
+        lines = proc.open(pid, 'smaps').readlines()  # open
+        # Note we checksum smaps as maps is usually but
+        # not always different for separate processes.
+        mem_id = hash(''.join(lines))
+        for line in lines:
             if line.startswith("Shared"):
                 Shared_lines.append(line)
             elif line.startswith("Private"):
@@ -240,15 +234,14 @@ def getMemStats(pid):
             elif line.startswith("Pss"):
                 have_pss = 1
                 Pss_lines.append(line)
-        mem_id = digester.hexdigest()
         Shared = sum([int(line.split()[1]) for line in Shared_lines])
         Private = sum([int(line.split()[1]) for line in Private_lines])
         # Note Shared + Private = Rss above
         # The Rss in smaps includes video card mem etc.
         if have_pss:
             pss_adjust = 0.5  # add 0.5KiB as this avg error due to trunctation
-            Pss = sum(
-                [float(line.split()[1]) + pss_adjust for line in Pss_lines])
+            Pss = sum([float(line.split()[1]) +
+                       pss_adjust for line in Pss_lines])
             Shared = Pss - Private
     elif (2, 6, 1) <= kernel_ver() <= (2, 6, 9):
         Shared = 0  # lots of overestimation, but what can we do?
@@ -273,7 +266,8 @@ def getCmdName(pid, split_args):
         path = path.split('\0')[0]
     except OSError:
         val = sys.exc_info()[1]
-        if (val.errno == errno.ENOENT or val.errno == errno.EPERM):
+        if (val.errno == errno.ENOENT or  # kernel thread or process gone
+                val.errno == errno.EPERM):
             raise LookupError
         raise
 
@@ -285,7 +279,8 @@ def getCmdName(pid, split_args):
             path += " [updated]"
         else:
             # The path could be have prelink stuff so try cmdline
-            # which might have the full path present.
+            # which might have the full path present. This helped for:
+            # /usr/libexec/notification-area-applet.#prelink#.fX7LCT (deleted)
             if os.path.exists(cmdline[0]):
                 path = cmdline[0] + " [updated]"
             else:
@@ -298,7 +293,10 @@ def getCmdName(pid, split_args):
         # one can have separated programs as follows:
         # 584.0 KiB +   1.0 MiB =   1.6 MiB    mozilla-thunder (exe -> bash)
         # 56.0 MiB +  22.2 MiB =  78.2 MiB    mozilla-thunderbird-bin
-    return cmd
+    if sys.version_info < (3,):
+        return cmd
+    else:
+        return cmd.encode(errors='replace').decode()
 
 
 # The following matches "du -h" output
@@ -330,12 +328,12 @@ def cmd_with_count(cmd, count):
 def shared_val_accuracy():
     """http://wiki.apache.org/spamassassin/TopSharedMemoryBug"""
     kv = kernel_ver()
+    pid = os.getpid()
     if kv[:2] == (2, 4):
         if proc.open('meminfo').read().find("Inact_") == -1:
             return 1
         return 0
     elif kv[:2] == (2, 6):
-        pid = os.getpid()
         if os.path.exists(proc.path(pid, 'smaps')):
             if proc.open(pid, 'smaps').read().find("Pss:") != -1:
                 return 2
@@ -344,7 +342,7 @@ def shared_val_accuracy():
         if (2, 6, 1) <= kv <= (2, 6, 9):
             return -1
         return 0
-    elif kv[0] > 2:
+    elif kv[0] > 2 and os.path.exists(proc.path(pid, 'smaps')):
         return 2
     else:
         return 1
@@ -461,12 +459,11 @@ def print_memory_usage(sorted_cmds, shareds, count, total):
 def verify_environment():
     if os.geteuid() != 0:
         sys.stderr.write("Sorry, root permission required.\n")
-        if __name__ == '__main__':
-            sys.stderr.close()
-            sys.exit(1)
+        sys.stderr.close()
+        sys.exit(1)
 
     try:
-        kv = kernel_ver()
+        kernel_ver()
     except (IOError, OSError):
         val = sys.exc_info()[1]
         if val.errno == errno.ENOENT:
@@ -477,7 +474,8 @@ def verify_environment():
         else:
             raise
 
-if __name__ == '__main__':
+
+def main():
     split_args, pids_to_show, watch, only_total = parse_options()
     verify_environment()
 
@@ -515,3 +513,6 @@ if __name__ == '__main__':
 
     vm_accuracy = shared_val_accuracy()
     show_shared_val_accuracy(vm_accuracy, only_total)
+
+if __name__ == '__main__':
+    main()
