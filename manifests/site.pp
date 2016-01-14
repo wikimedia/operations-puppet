@@ -1162,7 +1162,7 @@ node 'labtestcontrol2001.wikimedia.org' {
 }
 
 node 'labtestservices2001.wikimedia.org' {
-    role labs::openstack::designate::server
+    role labs::openstack::designate::server, openldap::labtest
     include standard
 }
 
