@@ -35,6 +35,9 @@ define testreduce::server(
     $webapp_port = 8003,
 ) {
     file { "/etc/testreduce/${instance_name}.settings.js":
+        # FIXME: Ideally this would be testreduce/settings.js.rb
+        # but, I need to parameterize it a bit more.
+        # So, this is a bit lame right now.
         content => template("testreduce/${instance_name}.settings.js.erb"),
         owner   => 'root',
         group   => 'root',
