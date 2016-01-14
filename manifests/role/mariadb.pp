@@ -373,11 +373,12 @@ class role::mariadb::analytics::custom_repl_slave {
         group   => 'root',
         mode    => '0755',
         source  => 'puppet:///files/mariadb/eventlogging_sync.init',
+        require => File['/usr/local/bin/eventlogging_sync.sh'],
         notify  => Service['eventlogging_sync'],
     }
     service { 'eventlogging_sync':
-        ensure  => running,
-        enable  => true,
+        ensure    => running,
+        enable    => true,
     }
     nrpe::monitor_service { 'eventlogging_sync':
         description  => 'eventlogging_sync processes',
