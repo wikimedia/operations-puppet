@@ -286,19 +286,15 @@ node /^restbase-test200[1-3]\.codfw\.wmnet$/ {
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
-    role dnsrecursor
-    include standard
-
     if $::hostname == 'chromium' {
         $url_downloader_ip = hiera('url_downloader_ip')
         interface::ip { 'url-downloader':
             interface => 'eth0',
             address   => $url_downloader_ip,
         }
-        class { 'role::url_downloader':
-            url_downloader_ip => $url_downloader_ip
-        }
     }
+    role dnsrecursor, url_downloader
+    include standard
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
