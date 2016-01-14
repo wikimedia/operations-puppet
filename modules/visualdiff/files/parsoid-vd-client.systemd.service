@@ -1,0 +1,12 @@
+[Unit]
+Description=Testreduce test client for visual diffing
+After=network.target
+
+[Service]
+User=testreduce
+Group=testreduce
+WorkingDirectory=/usr/lib/testreduce/client
+ExecStart=node rtclient-cluster.js -c 4 /srv/visualdiff/testreduce/parsoid-vd-client.config.js
+StandardOutput=journal
+StandardError=journal
+RestartSec=2
