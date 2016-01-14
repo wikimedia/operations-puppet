@@ -338,7 +338,7 @@ def service_start_test():
     success = False
     with open(os.devnull, 'w') as devnull:
         subprocess.check_call(
-            ['/usr/local/bin/webservice2', 'uwsgi-python', 'start'],
+            ['/usr/local/bin/webservice', 'uwsgi-python', 'start'],
             stderr=devnull, stdout=devnull)
 
     for i in range(0, 10):
@@ -350,7 +350,7 @@ def service_start_test():
 
     with open(os.devnull, 'w') as devnull:
         subprocess.check_call(
-            ['/usr/local/bin/webservice2', 'uwsgi-python', 'stop'],
+            ['/usr/local/bin/webservice', 'uwsgi-python', 'stop'],
             stderr=devnull, stdout=devnull)
 
     # Make sure it really stopped
