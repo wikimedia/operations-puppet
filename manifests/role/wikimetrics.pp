@@ -3,6 +3,10 @@
 class role::wikimetrics {
     include ::wikimetrics::base
 
+    # Production wikimetrics instance (in labs) needs a mysql client
+    # to access labsdb
+    require_package('mysql-client')
+
     class { '::wikimetrics::web':
         workers => 4,
     }
