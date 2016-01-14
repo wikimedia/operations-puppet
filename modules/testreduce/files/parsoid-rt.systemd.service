@@ -1,0 +1,16 @@
+[Unit]
+Description=parsoid-rt: Testreduce HTTP service for Parsoid roundtrip testing
+After=network.target
+
+[Service]
+User=testreduce
+Group=testreduce
+LimitNOFILE=10K
+
+Environment=NODE_PATH=/srv/testreduce/node_modules PORT=8001
+WorkingDirectory=/srv/testreduce/server
+ExecStart=node server.js --config /etc/testreduce/parsoid-rt.settings.js
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+RestartSec=2
