@@ -10,6 +10,9 @@
 [submodule "modules/varnishkafka"]
 	path = modules/varnishkafka
 	url = https://gerrit.wikimedia.org/r/operations/puppet/varnishkafka
+[submodule "modules/wikimetrics"]
+	path = modules/wikimetrics
+	url = https://gerrit.wikimedia.org/r/operations/puppet/wikimetrics
 [submodule "modules/kafkatee"]
 	path = modules/kafkatee
 	url = https://gerrit.wikimedia.org/r/operations/puppet/kafkatee
