@@ -1,6 +1,6 @@
 class ssh::client {
     package { 'openssh-client':
-        ensure => latest,
+        ensure => present,
     }
 
     # no exported resources on Labs == no sshknowngen
