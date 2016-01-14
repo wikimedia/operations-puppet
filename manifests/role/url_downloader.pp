@@ -1,7 +1,8 @@
 # Class: role::url_downloader
 #
 # A role class for assigning the url_downloader role to a host. The host needs
-# to have the $url_downloader_ip variable set at node level (or via hiera)
+# to have the $url_downloader_ip variable set at hiera otherwise it defaults to
+# $::ipaddress
 #
 # Parameters:
 #
@@ -18,14 +19,15 @@
 #
 # Sample Usage:
 #       node /test.wikimedia.org/ {
-#           $url_downlader_ip = '10.10.10.10' # A public IP really
-#           include role::url_downloader
+#           role url_downloader
 #       }
-class role::url_downloader($url_downloader_ip) {
+class role::url_downloader {
     system::role { 'url_downloader':
         description => 'Upload-by-URL proxy'
     }
     include network::constants
+
+    $url_downloader_ip = hiera('url_downloader_ip', $::ipaddress)
 
     if $::realm == 'production' {
         $wikimedia = [
@@ -64,7 +66,8 @@ class role::url_downloader($url_downloader_ip) {
     }
     $towikimedia = $wikimedia
 
-    if os_version('ubuntu >= trusty') {
+    # TODO: Evaluate if jessie's squid is fine with those rules
+    if os_version('ubuntu >= trusty') or os_version('debian >= jessie') {
         $config_content = template('url_downloader/squid.conf.erb')
     } else {
         $config_content = template('url_downloader/precise_acls_conf.erb', 'url_downloader/squid.conf.erb')
