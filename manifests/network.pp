@@ -49,6 +49,37 @@ class network::constants {
                     '2620:0:860:102:10:192:16:132',     # mira.codfw.wmnet
                 ],
             },
+        'labtest' => {
+            'bastion_hosts' => [
+                    '208.80.154.149',                   # bast1001.wikimedia.org
+                    '2620:0:861:2:208:80:154:149',      # bast1001.wikimedia.org
+                    '2620:0:861:2:7a2b:cbff:fe09:11ba', # bast1001.wikimedia.org SLAAC
+                    '208.80.153.5',                     # bast2001.wikimedia.org
+                    '2620:0:860:1:208:80:153:5',        # bast2001.wikimedia.org
+                    '91.198.174.113',                   # hooft.esams.wikimedia.org
+                    '2620:0:862:1:91:198:174:113',      # hooft.esams.wikimedia.org
+                    '2620:0:862:1:a6ba:dbff:fe30:d770', # hooft.esams.wikimedia.org SLAAC
+                    '198.35.26.5',                      # bast4001.wikimedia.org
+                    '2620:0:863:1:198:35:26:5',         # bast4001.wikimedia.org
+                    '2620:0:863:1:92b1:1cff:fe4d:4249', # bast4001.wikimedia.org SLAAC
+                    '208.80.154.151',                   # iron.wikimedia.org
+                    '2620:0:861:2:208:80:154:151',      # iron.wikimedia.org
+                    '2620:0:861:2:7a2b:cbff:fe09:d5c',  # iron.wikimedia.org SLAAC
+                ],
+            'monitoring_hosts' => [
+                    '208.80.154.14',                    # neon.wikimedia.org
+                    '2620:0:861:1:208:80:154:14',       # neon.wikimedia.org
+                    '2620:0:861:1:7a2b:cbff:fe08:a42f', # neon.wikimedia.org SLAAC
+                    '208.80.154.53',                    # uranium.wikimedia.org (ganglia, gmetad needs it)
+                    '2620:0:861:1:208:80:154:53',       # uranium.wikimedia.org
+                ],
+            'deployment_hosts' => [
+                    '10.64.0.196',                      # tin.eqiad.wmnet
+                    '2620:0:861:101:10:64:0:196',       # tin.eqiad.wmnet
+                    '10.192.16.132',                    # mira.codfw.wmnet
+                    '2620:0:860:102:10:192:16:132',     # mira.codfw.wmnet
+                ],
+            },
         'labs' => {
             'bastion_hosts' => [
                     '10.68.17.232', # bastion-01.eqiad.wmflabs
