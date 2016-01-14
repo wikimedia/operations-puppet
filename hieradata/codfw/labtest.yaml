@@ -80,7 +80,7 @@ keystoneconfig:
   auth_protocol: 'http'
   auth_port: '35357'
   db_host: 'labtestcontrol2001.wikimedia.org'
-  ldap_host: 'ldap-codfw.wikimedia.org'
+  ldap_host: 'labtestservices2001.wikimedia.org'
   token_driver: 'normal'
   auth_port: '35357'
   auth_protocol: 'http'
