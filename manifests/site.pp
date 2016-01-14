@@ -1130,6 +1130,7 @@ node 'labtestneutron2001.codfw.wmnet' {
 }
 
 node 'labtestvirt2001.codfw.wmnet' {
+    role labs::openstack::nova::compute
     include standard
 }
 
