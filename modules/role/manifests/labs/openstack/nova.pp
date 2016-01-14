@@ -17,6 +17,7 @@ class role::labs::openstack::nova::common {
     $novaconfig['keystone_auth_port']     = $keystoneconfig['auth_port']
     $novaconfig['keystone_admin_token']   = $keystoneconfig['admin_token']
     $novaconfig['keystone_auth_protocol'] = $keystoneconfig['auth_protocol']
+    $novaconfig['ldap_user_pass']         = $keystoneconfig['ldap_user_pass']
 
     $novaconfig['auth_uri']               = "http://${nova_controller}:5000"
     $novaconfig['api_ip']                 = ipresolve($nova_api_host,4)
