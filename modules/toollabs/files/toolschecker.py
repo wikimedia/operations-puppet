@@ -62,6 +62,17 @@ def dns_private_check():
     return False
 
 
+@check('/nfs/showmount')
+def showmount_check():
+    try:
+        with open(os.devnull, 'w') as devnull:
+            subprocess.check_call(
+                ['/sbin/showmount', '-e', 'labstore.svc.eqiad.wmnet'], stderr=devnull)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+
 @check('/ldap')
 def ldap_query_check():
     # Run a simple known query and verify that ldap returns something

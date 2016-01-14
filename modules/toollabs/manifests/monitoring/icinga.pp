@@ -1,4 +1,4 @@
-# Monitoing checks that live in icinga and page people
+# Monitoring checks that live in icinga and page people
 class toollabs::monitoring::icinga {
     # Paging checks!
     @monitoring::host { 'tools.wmflabs.org':
@@ -16,6 +16,13 @@ class toollabs::monitoring::icinga {
         description   => 'NFS read/writeable on labs instances',
         check_command => 'check_http_url_at_address_for_string!tools-checker.wmflabs.org!/nfs/home!OK',
         critical      => true,
+        host          => 'tools.wmflabs.org',
+    }
+
+    monitoring::service { 'nfs-showmount-on-labs-instances':
+        description   => 'showmount succeeds on a labs instance',
+        check_command => 'check_http_url_at_address_for_string!tools-checker.wmflabs.org!/nfs/showmount!OK',
+        critical      => false,
         host          => 'tools.wmflabs.org',
     }
 }
