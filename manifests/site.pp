@@ -2317,7 +2317,9 @@ node 'rutherfordium.eqiad.wmnet' {
 # Right now, both rt-server and rt-clients run on the same node
 # But, we are likely going to split them into different boxes soon.
 node 'ruthenium.eqiad.wmnet' {
-    role testsystem, parsoid::testing, parsoid-rt-server, parsoid-rt-client, rsync_ruthenium
+    role testsystem, rsync_ruthenium,
+        parsoid::testing, parsoid-rt-server, parsoid-rt-client,
+        parsoid-vd-server, parsoid-vd-client
 }
 
 # T95046 install/deploy scandium as zuul merger (ci) server

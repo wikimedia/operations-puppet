@@ -1,0 +1,16 @@
+[Unit]
+Description=parsoid-vd: Testreduce HTTP service for visual-diff results
+After=network.target
+
+[Service]
+User=testreduce
+Group=testreduce
+LimitNOFILE=10K
+
+Environment=NODE_PATH=/srv/testreduce/node_modules PORT=8001
+WorkingDirectory=/srv/testreduce/server
+ExecStart=node server.js --config /etc/testreduce/parsoid-vd.settings.js
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+RestartSec=2
