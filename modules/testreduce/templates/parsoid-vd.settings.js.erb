@@ -39,19 +39,15 @@ module.exports = {
 	coordPort: <%= @coord_port %>,
 
 	// (Optional) Remote server, if any, that will generate full results
-	resultServer: "http://parsoid-tests.wikimedia.org/parsoid/",
+	resultServer: "http://parsoid-tests.wikimedia.org/visualdiff-item/",
 
 	// (Optional) Localhost server, if any, for generating the same results
-	localhostServer: "http://localhost:8000/",
+	localhostServer: "http://localhost:8002/",
 
 	// (Optional)
 	generateTitleUrl: function(server, prefix, title) {
-		return server.replace(/\/$/, '') + "/_rt/" + prefix + "/" + title;
+		return server.replace(/\/$/, '') + "/diff/" + prefix + "/" + title;
 	},
 
-	// (Optional)
-	perfConfig: require('/usr/lib/testreduce/server/server.perf_stats.js').perfConfig,
-
-	// (Optional)
-	parsoidRTConfig: require('/usr/lib/testreduce/server/server.parsoid_rt.js').parsoidRTConfig,
+	parsoidRTConfig: require('/srv/visualdiff/testreduce/server.visualdiff.js').parsoidRTConfig,
 };
