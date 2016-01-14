@@ -22,8 +22,10 @@ shost="localhost"
 slave="mysql -h $shost --compress --skip-column-names"
 master="mysql -h $mhost --compress --skip-column-names"
 dump="mysqldump -h $mhost --skip-opt --single-transaction --quick --skip-triggers"
-dumpdata="$dump --no-create-info --order-by-primary --insert-ignore --extended-insert --compress --hex-blob"
+dumpdata="$dump --no-create-info --insert-ignore --extended-insert --compress --hex-blob"
 querytables="select table_name from information_schema.tables where table_schema = '$db' and table_name"
+# select this many rows per table at a time
+batch_size=1000
 
 script=$(basename ${BASH_SOURCE})
 # Multi-execution is controlled by init.d
@@ -56,7 +58,11 @@ for table in $($master $db -e "$querytables $ls"); do
     # mysqldump has overhead with information_schema queries, so do a quick check for a noop
     if [ ! $($master $db -e "select ifnull(max(timestamp),0) from \`$table\`") = $ts ]; then
         echo -n " (rows!)"
-        $dumpdata --insert-ignore --where="timestamp >= '$ts'" $db "$table" | $slave $db
+        # ORDER BY 1 orders by the first field, which should be the PK.
+        # Have to do this because we can't use --order-by-primary with a custom
+        # LIMIT, and not all tables have the same field name as the id.
+        # (I've seen uuid and id.)
+        $dumpdata --insert-ignore --where="timestamp >= '$ts' ORDER BY 1 LIMIT $batch_size" $db "$table" | $slave $db
         #$dumpdata --insert-ignore --where="timestamp >= '$ts'" $db "$table" >tmp/$table.sql
     else
         echo -n " (nothing)"
