@@ -1164,6 +1164,7 @@ node 'labtestcontrol2001.wikimedia.org' {
 node 'labtestservices2001.wikimedia.org' {
     role labs::openstack::designate::server, openldap::labtest
     include standard
+    include base::firewall
 }
 
 # bastion in the Netherlands
