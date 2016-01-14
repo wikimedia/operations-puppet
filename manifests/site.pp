@@ -1138,6 +1138,7 @@ node 'labtestvirt2001.codfw.wmnet' {
 }
 
 node 'labtestnet2001.codfw.wmnet' {
+    role labs::openstack::nova::api, labs::openstack::nova::network
     include standard
 }
 
