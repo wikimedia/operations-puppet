@@ -33,6 +33,10 @@ class role::piwik {
     require_package('piwik')
     require_package('mysql-server')
 
+    system::role { 'role::piwik':
+        description => 'Analytics piwik server',
+    }
+
     ferm::service { 'piwik_http':
         proto => 'tcp',
         port  => '80',
