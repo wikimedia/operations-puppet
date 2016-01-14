@@ -52,7 +52,12 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
 
 # url-downloader codfw
 node 'alsafi.wikimedia.org' {
+    role url_downloader
     include standard
+
+    interface::add_ip6_mapped { 'main':
+        interface => 'eth0',
+    }
 }
 
 # analytics1001 is the Hadoop master node:
