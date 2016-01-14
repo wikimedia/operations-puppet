@@ -35,8 +35,6 @@ sub vcl_recv {
         set req.backend = bromine;
     } elsif (req.http.Host == "servermon.wikimedia.org" || req.http.Host == "smokeping.wikimedia.org" || req.http.Host == "torrus.wikimedia.org") {
         set req.backend = netmon1001;
-    } elsif (req.http.Host == "otrs-test.wikimedia.org") {
-        set req.backend = mendelevium;
     } elsif (req.http.Host == "people.wikimedia.org") {
         set req.backend = rutherfordium;
     } elsif (req.http.Host == "rt.wikimedia.org") {
