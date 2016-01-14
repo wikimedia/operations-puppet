@@ -16,16 +16,15 @@ define testreduce::client(
         notify => Service[$instance_name],
     }
 
-    file { "/etc/init/${instance_name}.conf":
-        source => "puppet:///modules/testreduce/${instance_name}.upstart.conf",
+    file { "/lib/systemd/system/${instance_name}.service":
+        source => "puppet:///modules/testreduce/${instance_name}.systemd.service",
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        notify => Service[$instance_name],
+        before => Service[$instance_name],
     }
 
     service { $instance_name:
-        ensure   => running,
-        provider => upstart,
+        ensure => running,
     }
 }
