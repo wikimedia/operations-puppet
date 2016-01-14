@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-piwik:
+    value: standard
