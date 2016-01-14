@@ -349,6 +349,9 @@ class network::constants {
     } elsif $::realm == 'labs' {
         # rely on security groups in labs to restrict this
         $mw_appserver_networks = ['10.0.0.0/8', '127.0.0.1']
+    } elsif $::realm == 'labtest' {
+        # This just a placeholder... .erb doesn't like this to be empty.
+        $mw_appserver_networks = ['208.80.152.0/22']
     }
 
     # Analytics subnets
