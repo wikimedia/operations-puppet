@@ -1,0 +1,5 @@
+mediawiki::jobrunner::runners_basic: 0
+mediawiki::jobrunner::runners_gwt: 10
+mediawiki::jobrunner::runners_restbase: 0
+mediawiki::jobrunner::runners_translate: 0
+mediawiki::jobrunner::runners_upload: 0
