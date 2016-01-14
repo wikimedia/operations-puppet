@@ -3,15 +3,19 @@ lvs_service_ips:
     codfw:
       textlb: 208.80.153.224
       textlb6: 2620:0:860:ed1a::1
+      geoiplookuplb: 208.80.153.225
     eqiad:
       textlb: 208.80.154.224
       textlb6: 2620:0:861:ed1a::1
+      geoiplookuplb: 208.80.154.225
     esams:
       textlb: 91.198.174.192
       textlb6: 2620:0:862:ed1a::1
+      geoiplookuplb: 91.198.174.193
     ulsfo:
       textlb: 198.35.26.96
       textlb6: 2620:0:863:ed1a::1
+      geoiplookuplb: 198.35.26.97
   upload: &ip_block002
     codfw:
       uploadlb: 208.80.153.240
