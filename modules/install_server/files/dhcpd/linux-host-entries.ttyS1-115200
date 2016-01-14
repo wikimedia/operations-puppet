@@ -6025,6 +6025,27 @@ host palladium {
 	fixed-address palladium.eqiad.wmnet;
 }
 
+host pc1004 {
+        hardware ethernet 14:18:77:42:DF:00;
+        fixed-address pc1004.eqiad.wmnet;
+        option pxelinux.pathprefix "jessie-installer/";
+        filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host pc1005 {
+        hardware ethernet 14:18:77:42:C8:7B;
+        fixed-address pc1005.eqiad.wmnet;
+        option pxelinux.pathprefix "jessie-installer/";
+        filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host pc1006 {
+        hardware ethernet 14:18:77:42:F3:A7;
+        fixed-address pc1006.eqiad.wmnet;
+        option pxelinux.pathprefix "jessie-installer/";
+        filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host pc2004 {
         hardware ethernet 14:18:77:42:BD:22;
         fixed-address pc2004.codfw.wmnet;
