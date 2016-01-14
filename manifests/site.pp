@@ -1130,6 +1130,7 @@ node 'labtestneutron2001.codfw.wmnet' {
 }
 
 node 'labtestvirt2001.codfw.wmnet' {
+    openstack::nova::partition{ '/dev/md2': }
     role labs::openstack::nova::compute
     include standard
 }
