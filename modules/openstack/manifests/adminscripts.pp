@@ -5,8 +5,7 @@ class openstack::adminscripts(
     $nova_region = $::site,
     ) {
 
-    include passwords::openstack::nova
-    $wikitech_nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+    $wikitech_nova_ldap_user_pass = $novaconfig['ldap_user_pass']
     $nova_controller_hostname = $novaconfig['controller_hostname']
 
     # Installing this package ensures that we have all the UIDs that
