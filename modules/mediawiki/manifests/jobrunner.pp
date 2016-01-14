@@ -115,6 +115,10 @@ class mediawiki::jobrunner (
                 minute  => fqdn_rand(59, 'periodic_hhvm_restart'),
             }
 
+        } else {
+            cron { 'periodic_hhvm_restart':
+                ensure => absent
+            }
         }
     }
 
