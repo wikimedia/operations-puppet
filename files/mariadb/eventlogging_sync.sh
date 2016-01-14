@@ -58,11 +58,7 @@ for table in $($master $db -e "$querytables $ls"); do
     # mysqldump has overhead with information_schema queries, so do a quick check for a noop
     if [ ! $($master $db -e "select ifnull(max(timestamp),0) from \`$table\`") = $ts ]; then
         echo -n " (rows!)"
-        # ORDER BY 1 orders by the first field, which should be the PK.
-        # Have to do this because we can't use --order-by-primary with a custom
-        # LIMIT, and not all tables have the same field name as the id.
-        # (I've seen uuid and id.)
-        $dumpdata --insert-ignore --where="timestamp >= '$ts' ORDER BY 1 LIMIT $batch_size" $db "$table" | $slave $db
+        $dumpdata --insert-ignore --where="timestamp >= '$ts' ORDER BY timestamp LIMIT $batch_size" $db "$table" | $slave $db
         #$dumpdata --insert-ignore --where="timestamp >= '$ts'" $db "$table" >tmp/$table.sql
     else
         echo -n " (nothing)"
