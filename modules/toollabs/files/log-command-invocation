@@ -23,6 +23,7 @@ import socket
 import urllib
 import urllib2
 import argparse
+import subprocess
 
 # We sent events to the client-side EventLogging endpoint.
 URL = 'https://meta.wikimedia.org/beacon/event'
@@ -39,6 +40,23 @@ def log_event(schema, rev_id, wiki, event):
     urllib2.urlopen(url).read()
 
 
+def get_gp_cmdline():
+    """
+    Get the full commandline of the grandparent of current process
+
+    So if jsub calls this, this will return the commandline of the
+    process that called jsub originally
+    """
+    gpid = subprocess.check_output([
+        '/bin/ps',
+        '-p',
+        str(os.getppid()),
+        '-oppid='
+    ]).strip()
+    with open('/proc/{gpid}/cmdline'.format(gpid=gpid)) as f:
+        return f.read().replace('\0', ' ')
+
+
 def log_command_invocation(commandname, commandline):
     username = pwd.getpwuid(os.getuid()).pw_name
     hostname = socket.getfqdn()
@@ -47,10 +65,11 @@ def log_command_invocation(commandname, commandline):
         'username': username,
         'command': commandname,
         'commandline': commandline,
-        'hostname': hostname
+        'hostname': hostname,
+        'parentcommandline': get_gp_cmdline()
     }
     # We set it to be metawiki, it does not really matter anyway
-    log_event('CommandInvocation', 15237653, 'metawiki', event)
+    log_event('CommandInvocation', 15243810, 'metawiki', event)
 
 
 def main():
