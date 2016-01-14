@@ -215,6 +215,16 @@ def update_service_manifest(webservice_type):
 
 
 def main():
+    try:
+        # Log to eventlogging that this command was invoked
+        subprocess.check_call([
+            '/usr/local/bin/log-command-invocation',
+            'webservice',
+            ' '.join(sys.argv)
+        ])
+    except:
+        # Ignore exceptions!
+        pass
     parser = argparse.ArgumentParser()
     parser.add_argument('server', help='Type of server to start',
                         choices=['lighttpd', 'tomcat', 'uwsgi-python', 'nodejs', 'uwsgi-plain'],
