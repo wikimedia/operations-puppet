@@ -24,7 +24,7 @@ class apache {
     include apache::monitoring          # send metrics to Diamond and Ganglia
     include apache::mpm                 # prefork by default
 
-    $conf_types     = ['conf', 'env', 'sites']
+    $conf_types     = ['conf', 'env', 'sites', 'mods']
     $available_dirs = apply_format('/etc/apache2/%s-available', $conf_types)
     $enabled_dirs   = apply_format('/etc/apache2/%s-enabled', $conf_types)
 
