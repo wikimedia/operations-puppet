@@ -449,6 +449,11 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/service restbase *',
                  'ALL = (restbase) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *']
+  piwik-roots:
+    gid: 770
+    description: users who have root on analytics servers
+    members: [mforns, milimetric, nuria, otto, madhuvishy, joal]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 users:
   rush:
     ensure: present
