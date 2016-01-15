@@ -13,8 +13,20 @@ import glob
 
 
 def main():
+
+    try:
+        # following the model of self determination for OS and utility
+        # allow for a declarative override to ensure a specific utility
+        with open('/etc/nagios/raid_utility') as f:
+            hc_utility = f.read().strip()
+    except:
+        hc_utility = None
+        pass
+
     osName = os.uname()[0]
-    if osName == 'SunOS':
+    if hc_utility:
+        utility = hc_utility
+    elif osName == 'SunOS':
         utility = 'zpool'
     elif osName == 'Linux':
         utility = getLinuxUtility()
