@@ -17,6 +17,13 @@
     Header always merge Vary X-Forwarded-Proto
     Header always set Strict-Transport-Security "max-age=31536000"
 
+    # The size of one of the site's JavaScript files exceeds some threshold,
+    # causing Apache not to compute content-length and to use chunked encoding
+    # instead. This causes the response to be uncacheable in Varnish.
+    # XXX: This should probably be fixed at a higher level, because this problem
+    # is liable to occur on any Apache static site behind Varnish.
+    SetEnvIfNoCase Request_URI "\.js$" no-gzip dont-vary
+
     <Directory /srv/org/wikimedia/annualreport/2015>
         Require all granted
     </Directory>
