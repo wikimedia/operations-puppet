@@ -21,9 +21,8 @@ class wikimetrics::web(
                 # Add Allow CORS header for /static/public
                 route        => '^/static/public addheader:Access-Control-Allow-Origin: *',
                 # Look at the X_FORWARDED_PROTO, and if it's http, redirect to https
-                # Commenting this out temporarily because uwsgi puppet doesn't support multiple params of same name
                 # lint:ignore:single_quote_string_with_variables
-                # route-if     => 'equal:${HTTP_X_FORWARDED_PROTO};http redirect-permanent:https://${HTTP_HOST}${REQUEST_URI}',
+                route-if     => 'equal:${HTTP_X_FORWARDED_PROTO};http redirect-permanent:https://${HTTP_HOST}${REQUEST_URI}',
                 # lint:endignore
             }
         }
