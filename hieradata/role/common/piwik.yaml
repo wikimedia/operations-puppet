@@ -1,3 +1,5 @@
+dmin::groups:
+  - piwik-roots
 debdeploy::grains:
   debdeploy-piwik:
     value: standard
