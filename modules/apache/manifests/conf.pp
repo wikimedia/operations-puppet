@@ -14,7 +14,7 @@
 #
 # [*conf_type*]
 #   Either 'sites' for a vhost config, 'conf' for instance-wide configs,
-#   or 'env' for envvars. The default is 'conf'.
+#   'env' for envvars or 'mods' for modules. The default is 'conf'.
 #
 # [*priority*]
 #   If you need this config to load before or after other configs, you can
