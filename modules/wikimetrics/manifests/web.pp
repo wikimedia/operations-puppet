@@ -19,10 +19,10 @@ class wikimetrics::web(
                 # Serve static files on /static
                 static-map   => "/static=${wikimetrics::base::source_path}/wikimetrics/static",
                 # Add Allow CORS header for /static/public
-                route-if     => "equal:${PATH_INFO};/static/public addheader:Access-Control-Allow-Origin: *",
+                route-if     => 'equal:${PATH_INFO};/static/public addheader:Access-Control-Allow-Origin: *',
                 # Look at the X_FORWARDED_PROTO, and if it's http, redirect to https
                 # Commenting this out temporarily because uwsgi puppet doesn't support multiple params of same name
-                # route-if     => "equal:${HTTP_X_FORWARDED_PROTO};http redirect-permanent:https://${HTTP_HOST}${REQUEST_URI}",
+                # route-if     => 'equal:${HTTP_X_FORWARDED_PROTO};http redirect-permanent:https://${HTTP_HOST}${REQUEST_URI}',
             }
         }
     }
