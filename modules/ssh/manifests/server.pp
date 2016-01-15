@@ -9,14 +9,8 @@ class ssh::server (
     $enable_hba = false,
     $disable_agent_forwarding = true,
 ) {
-    if $::realm == 'labs' {
-        package { 'openssh-server':
-            ensure => 'latest',
-        }
-    } else {
-        package { 'openssh-server':
-            ensure => present,
-        }
+    package { 'openssh-server':
+        ensure => present,
     }
 
     service { 'ssh':
