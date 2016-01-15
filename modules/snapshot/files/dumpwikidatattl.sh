@@ -29,7 +29,7 @@ done
 
 mv $tempDir/wikidataTtl.gz $targetFileGzip
 
-gzip -dc $targetFileGzip | pbzip2 -p3 -c > $tempDir/wikidataTtl.bz2
+gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidataTtl.bz2
 mv $tempDir/wikidataTtl.bz2 $targetFileBzip2
 
 pruneOldDirectories

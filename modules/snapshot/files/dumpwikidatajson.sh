@@ -44,7 +44,7 @@ legacyDirectory=$publicDir/other/wikidata
 ln -s "../wikibase/wikidatawiki/$today/$filename.json.gz" "$legacyDirectory/$today.json.gz"
 find $legacyDirectory -name '*.json.gz' -mtime +`expr $daysToKeep + 1` -delete
 
-gzip -dc $targetFileGzip | pbzip2 -p3 -c > $tempDir/wikidataJson.bz2
+gzip -dc $targetFileGzip | bzip2 -c > $tempDir/wikidataJson.bz2
 mv $tempDir/wikidataJson.bz2 $targetFileBzip2
 
 pruneOldDirectories
