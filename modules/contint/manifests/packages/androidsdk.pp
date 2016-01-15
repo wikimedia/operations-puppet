@@ -10,6 +10,12 @@ class contint::packages::androidsdk {
         'lib32stdc++6',
         # Android emulation
         'qemu',
+        # Xdummy
+        'xpra',
+        'xorg',
+        # Image diffing
+        'imagemagick',
+        'python-pillow'
         ]: ensure => present,
     }
 }
