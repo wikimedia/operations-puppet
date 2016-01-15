@@ -1,0 +1,13 @@
+[Unit]
+Description=Virtual X11 display
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/Xorg -config /etc/xpra/xorg.conf :<%= @display %>
+Restart=always
+User=xdummy
+Group=xdummy
+
+[Install]
+WantedBy=multi-user.target
