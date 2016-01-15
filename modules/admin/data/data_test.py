@@ -38,14 +38,14 @@ class DataTest(unittest.TestCase):
         self.assertEqual(
             [],
             non_existent_users,
-            'Users assigned that do not exist'
+            'Users assigned that do not exist: %r' % non_existent_users
         )
 
         # ensure no two groups uses the same gid
         gids = filter(None, [
             v.get('gid', None) for k, v in admins['groups'].iteritems()])
         dupes = [k for k, v in Counter(gids).items() if v > 1]
-        self.assertEqual([], dupes, 'Duplicate group GIDs')
+        self.assertEqual([], dupes, 'Duplicate group GIDs: %r' % dupes)
 
 if __name__ == '__main__':
     unittest.main()
