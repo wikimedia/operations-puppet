@@ -13,6 +13,7 @@
 :hierarchy:
   - "labs/%{::labsproject}/host/%{::hostname}"
   - "labs/%{::labsproject}/common"
+  - "labtestlabs"
   - "labs"
   - "secret/%{::labsproject}"
   - "private/%{::labsproject}"
