@@ -102,6 +102,17 @@ novaconfig:
   dhcp_domain: 'eqiad.wmflabs'
   live_migration_uri: 'qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova'
   zone: eqiad
+  scheduler_pool:
+    - labvirt1001
+    - labvirt1002
+    - labvirt1003
+    - labvirt1004
+    - labvirt1005
+    - labvirt1006
+    - labvirt1007
+    - labvirt1008
+    - labvirt1009
+    - labvirt1010
 
 keystoneconfig:
   auth_port: '35357'

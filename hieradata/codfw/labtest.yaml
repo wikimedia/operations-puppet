@@ -66,6 +66,9 @@ novaconfig:
   dhcp_domain: 'codfw.wmflabs'
   live_migration_uri: 'qemu://%s.codfw.wmnet/system?pkipath=/var/lib/nova'
   zone: codfw
+  scheduler_pool:
+    - labtestvirt2001
+
 
 keystoneconfig:
   db_name: 'keystone'

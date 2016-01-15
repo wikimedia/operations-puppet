@@ -9,7 +9,7 @@ root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
 instance_name_template=i-%08x
 daemonize=1
 scheduler_driver=nova.scheduler.filter_scheduler.FilterScheduler
-wmf_scheduler_hosts_pool=labvirt1001,labvirt1002,labvirt1003,labvirt1004,labvirt1005,labvirt1006,labvirt1007,labvirt1008,labvirt1009,labvirt1010
+wmf_scheduler_hosts_pool=<%= @novaconfig["scheduler_pool"].join(",") %>
 scheduler_default_filters=RetryFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,SchedulerPoolFilter,DiskFilter
 
 # Don't allow duplicate instance names
