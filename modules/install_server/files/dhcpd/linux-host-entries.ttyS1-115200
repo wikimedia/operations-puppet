@@ -2328,11 +2328,6 @@ host es2010 {
 	fixed-address es2010.codfw.wmnet;
 }
 
-host erbium {
-	hardware ethernet 90:B1:1C:2D:7E:CD;
-	fixed-address erbium.eqiad.wmnet;
-}
-
 host eventlog1001 {
 	hardware ethernet 90:B1:1C:2D:80:E4;
 	fixed-address eventlog1001.eqiad.wmnet;
@@ -2351,11 +2346,6 @@ host fluorine {
 host francium {
 	hardware ethernet C8:1F:66:BF:88:52;
 	fixed-address francium.eqiad.wmnet;
-}
-
-host gadolinium {
-	hardware ethernet 90:B1:1C:17:1B:8A;
-	fixed-address gadolinium.wikimedia.org;
 }
 
 host gallium {
