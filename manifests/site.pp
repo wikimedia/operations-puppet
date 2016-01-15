@@ -2243,13 +2243,6 @@ node 'potassium.eqiad.wmnet' {
     include standard
 }
 
-# protactinium was being used as an emergency gadolinium replacement.
-# Since gadolinium is back up, varnishncsa instances now send logs
-# to gadolinium again.  protactinium is not being used.
-node 'protactinium.wikimedia.org' {
-    role spare
-}
-
 # pybal-test200X VMs are used for pybal testing/development
 node /^pybal-test200[12]\.codfw\.wmnet$/ {
     role testsystem
