@@ -916,14 +916,6 @@ node /^elastic20[0-3][0-9]\.codfw\.wmnet/ {
     }
 }
 
-# erbium was previously  a webrequest udp2log host.
-# It is currently spare.
-node 'erbium.eqiad.wmnet' {
-    role spare
-
-    include standard
-}
-
 # External Storage, Shard 1 (es1) databases
 
 ## eqiad servers
@@ -1034,13 +1026,6 @@ node 'francium.eqiad.wmnet' {
     role dumps::zim
     include standard
     include admin
-}
-
-# gadolinium  was previously the eventlogging and webrequest
-# multicast relay, it is now a spare.
-node 'gadolinium.wikimedia.org' {
-    role spare
-    include standard
 }
 
 # Continuous Integration
