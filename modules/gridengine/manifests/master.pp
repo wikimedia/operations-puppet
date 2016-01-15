@@ -7,11 +7,6 @@ class gridengine::master
         require => Package['gridengine-common'],
     }
 
-    service { 'gridengine-master':
-        ensure  => running,
-        require => Package['gridengine-master'],
-    }
-
     # berkleydb utils for doing db recovery and other operations
     package {'db-util':
         ensure => latest,
