@@ -1,0 +1,5 @@
+labs_recursor: "labtest-recursor0.wikimedia.org"
+labs_recursor_secondary: "labtest-recursor0.wikimedia.org"
+puppetmaster: "labtestcontrol2001.wikimedia.org"
+saltmaster: "labtestcontrol2001.wikimedia.org"
+ldap_host: "labtestservices2001.wikimedia.org"
