@@ -6086,11 +6086,6 @@ host promethium {
         fixed-address promethium.eqiad.wmflabs;
 }
 
-host protactinium {
-	hardware ethernet 84:2b:2b:fd:be:b5;
-	fixed-address protactinium.wikimedia.org;
-}
-
 host radium {
 	hardware ethernet 84:2b:2b:fd:bd:0e;
 	fixed-address radium.wikimedia.org;
