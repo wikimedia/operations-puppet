@@ -75,8 +75,6 @@ labs_nova_controller: &labsnovacontroller "labcontrol1001.wikimedia.org"
 #  same state as the main controller
 labs_nova_controller_spare: &labsnovacontrollerspare "labcontrol1002.wikimedia.org"
 
-# _other is the controller in the other datacenter
-labs_nova_controller_other: &labsnovacontrollerother "labcontrol2001.wikimedia.org"
 labs_glance_controller: &labsglancecontroller "labcontrol1001.wikimedia.org"
 labs_puppet_master: &labspuppetmaster "labs-puppetmaster-eqiad.wikimedia.org"
 labs_keystone_host: &labskeystonehost "labcontrol1001.wikimedia.org"

@@ -23,7 +23,6 @@ ganglia_aggregators: install2001.wikimedia.org:10649
 # LABS
 #
 labs_nova_controller: "labcontrol2001.wikimedia.org"
-labs_nova_controller_other: "labcontrol1001.wikimedia.org"
 labs_glance_controller: "labcontrol2001.wikimedia.org"
 labs_puppet_master: "labs-puppetmaster-codfw.wikimedia.org"
 labs_keystone_host: "labcontrol2001.wikimedia.org"

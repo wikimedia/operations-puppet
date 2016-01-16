@@ -134,7 +134,6 @@ class role::labs::openstack::nova::controller {
     $wikitech = '208.80.154.136'
     $horizon = '208.80.154.147'
     $api_host = ipresolve(hiera('labs_nova_api_host'),4)
-    $other_master = ipresolve(hiera('labs_nova_controller_other'),4)
     $spare_master = ipresolve(hiera('labs_nova_controller_spare'),4)
     $designate = ipresolve(hiera('labs_designate_hostname'),4)
     $designate_secondary = ipresolve(hiera('labs_designate_hostname_secondary'))
@@ -163,7 +162,7 @@ class role::labs::openstack::nova::controller {
             rule  => 'saddr (0.0.0.0/0) proto (udp tcp) dport 53 ACCEPT;',
         },
         keystone_redis_replication => {
-            rule  => "saddr (${other_master} ${spare_master}) proto tcp dport (6379) ACCEPT;",
+            rule  => "saddr (${spare_master}) proto tcp dport (6379) ACCEPT;",
         },
         wikitech_openstack_services => {
             rule  => "saddr (${wikitech} ${spare_master}) proto tcp dport (5000 35357 9292) ACCEPT;",
@@ -172,7 +171,7 @@ class role::labs::openstack::nova::controller {
             rule  => "saddr ${horizon} proto tcp dport (5000 35357 9292) ACCEPT;",
         },
         keystone => {
-            rule  => "saddr (${other_master} ${labs_nodes} ${spare_master} ${api_host} ${designate} ${designate_secondary}) proto tcp dport (5000 35357) ACCEPT;",
+            rule  => "saddr (${labs_nodes} ${spare_master} ${api_host} ${designate} ${designate_secondary}) proto tcp dport (5000 35357) ACCEPT;",
         },
         horizon_openstack_services => {
             rule  => "saddr ${horizon} proto tcp dport (5000 35357 9292) ACCEPT;",
