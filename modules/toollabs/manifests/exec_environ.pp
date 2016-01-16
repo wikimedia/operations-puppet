@@ -62,6 +62,7 @@ class toollabs::exec_environ {
         'libberkeleydb-perl',          # T60785
         'libbot-basicbot-perl',
         'libbsd-resource-perl',        # T56690.
+        'libbytes-random-secure-perl', # T123824
         'libcache-memcached-fast-perl',
         'libcgi-fast-perl',            # T70269.
         'libclass-data-inheritable-perl',
