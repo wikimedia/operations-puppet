@@ -1,0 +1,122 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///templates/apache/sites/labtestwikitech.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+    ServerName <%= @webserver_hostname %>
+    ServerAlias <%= @webserver_hostname_aliases %>
+
+    DocumentRoot /srv/mediawiki/docroot/wikimedia.org
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /srv/mediawiki/docroot/wikimedia.org>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        <IfVersion >= 2.4>
+                Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+                Order allow,deny
+                allow from all
+        </IfVersion>
+    </Directory>
+
+    RewriteEngine on
+    RewriteCond %{SERVER_PORT} !^443$
+    RewriteRule ^/(.*)$ https://<%= @webserver_hostname %>/$1 [L,R]
+
+    ErrorLog /var/log/apache2/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature Off
+
+</VirtualHost>
+<VirtualHost *:443>
+    ServerAdmin noc@wikimedia.org
+    ServerName <%= @webserver_hostname %>
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/localcerts/<%= @certificate %>.crt
+    SSLCertificateChainFile /etc/ssl/localcerts/<%= @certificate %>.chain.crt
+    SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
+    <%= @ssl_settings.join("\n") %>
+
+    RedirectMatch ^/$ https://<%= @webserver_hostname %>/wiki/
+
+    RewriteEngine on
+    RewriteRule ^/view/(.*)$ https://<%= @webserver_hostname %>/wiki/$1 [L,R]
+    RewriteCond %{HTTP_HOST}   !^<%= @webserver_hostname.gsub(%r[\.],'\\.') %> [NC]
+    RewriteRule ^/(.*)         https://<%= @webserver_hostname %>/$1 [L,R]
+
+    DocumentRoot /srv/mediawiki/docroot/wikimedia.org
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /srv/mediawiki/docroot/wikimedia.org>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        <IfVersion >= 2.4>
+                Require all granted
+        </IfVersion>
+        <IfVersion < 2.4>
+                Order allow,deny
+                allow from all
+        </IfVersion>
+    </Directory>
+    <Directory /srv/org/wikimedia/controller/wikis/images>
+        php_flag engine off
+        <IfVersion >= 2.4>
+                Require all granted
+        </IfVersion>
+    </Directory>
+    <Location /server-status>
+        SetHandler server-status
+        <IfVersion >= 2.4>
+                Require host labtestwikitech.wikimedia.org
+        </IfVersion>
+        <IfVersion < 2.4>
+                Order deny,allow
+                Deny from all
+                Allow from 208.80.154.136
+                Allow from 208.80.152.32
+        </IfVersion>
+    </Location>
+
+    Alias /w/images /srv/org/wikimedia/controller/wikis/images
+    Alias /w /srv/mediawiki/docroot/wikimedia.org/w
+    Alias /wiki /srv/mediawiki/docroot/wikimedia.org/w/index.php
+    Alias /dumps /a/backup/public
+    <% if @realm == "labs" %>
+    # Add additional wikis for development
+    Alias /w2 /srv/org/wikimedia/controller/wikis/w2
+    Alias /wiki2 /srv/org/wikimedia/controller/wikis/w2/index.php
+    Alias /w3 /srv/org/wikimedia/controller/wikis/w3
+    Alias /wiki3 /srv/org/wikimedia/controller/wikis/w3/index.php
+    <% end %>
+
+    ErrorDocument 404 /w/404.php
+
+    ErrorLog /var/log/apache2/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature Off
+
+    # Beacon requests that are normally handled by Varnish. We don't need these
+    # requests to do anything, but they shouldn't show up in the JavaScript
+    # error console as errors.
+    RedirectMatch 204 beacon/(.*)$
+</VirtualHost>
