@@ -56,7 +56,7 @@ class role::labs::openstack::nova::manager {
             notify {"unknown realm ${::realm}; https cert will not be installed.":}
         }
     }
-    $sitename = $certificate
+    $certificate = $sitename
 
     sslcert::certificate { $certificate: }
     monitoring::service { 'https':
