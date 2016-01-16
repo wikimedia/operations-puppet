@@ -41,7 +41,6 @@ define uwsgi::app(
             file { $inipath:
                 ensure => link,
                 target => "/etc/uwsgi/apps-available/${basename}.ini",
-                notify => Base::Service_unit["uwsgi-${title}"],
             }
 
             base::service_unit { "uwsgi-${title}":
@@ -49,6 +48,7 @@ define uwsgi::app(
                 template_name => 'uwsgi',
                 systemd       => true,
                 upstart       => true,
+                subscribe     => File["/etc/uwsgi/apps-available/${basename}.ini"],
             }
 
             nrpe::monitor_service { "uwsgi-${title}":
