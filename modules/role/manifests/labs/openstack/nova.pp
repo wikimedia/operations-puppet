@@ -49,6 +49,9 @@ class role::labs::openstack::nova::manager {
         'production': {
             $certificate = 'wikitech.wikimedia.org'
         }
+        'labtest': {
+            $certificate = 'labtestwikitech.wikimedia.org'
+        }
         default: {
             notify {"unknown realm ${::realm}; https cert will not be installed.":}
         }
