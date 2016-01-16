@@ -50,7 +50,7 @@ class role::labs::openstack::nova::manager {
             $certificate = 'wikitech.wikimedia.org'
         }
         default: {
-            fail('unknown realm')
+            notify {"unknown realm $::realm; https cert will not be installed.":}
         }
     }
 
