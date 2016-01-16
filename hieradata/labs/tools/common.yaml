@@ -23,4 +23,4 @@ elasticsearch::unicast_hosts:
   - tools-elastic-02.tools.eqiad.wmflabs
   - tools-elastic-03.tools.eqiad.wmflabs
 
-send_puppet_failure_emails: true
+send_puppet_failure_emails: false
