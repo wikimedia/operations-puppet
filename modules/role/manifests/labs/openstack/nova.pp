@@ -47,15 +47,16 @@ class role::labs::openstack::nova::manager {
 
     case $::realm {
         'production': {
-            $certificate = 'wikitech.wikimedia.org'
+            $sitename = 'wikitech.wikimedia.org'
         }
         'labtest': {
-            $certificate = 'labtestwikitech.wikimedia.org'
+            $sitename = 'labtestwikitech.wikimedia.org'
         }
         default: {
             notify {"unknown realm ${::realm}; https cert will not be installed.":}
         }
     }
+    $sitename = $certificate
 
     sslcert::certificate { $certificate: }
     monitoring::service { 'https':
@@ -82,8 +83,9 @@ class role::labs::openstack::nova::manager {
     }
 
     class { '::openstack::openstack_manager':
-        novaconfig  => $novaconfig,
-        certificate => $certificate,
+        novaconfig         => $novaconfig,
+        webserver_hostname => $sitename,
+        certificate        => $certificate,
     }
 
     # T89323
