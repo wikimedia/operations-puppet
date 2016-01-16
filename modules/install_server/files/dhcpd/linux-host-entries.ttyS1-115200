@@ -2577,9 +2577,9 @@ host labcontrol1002 {
 	fixed-address labcontrol1002.wikimedia.org;
 }
 
-host labcontrol2001 {
+host labtestweb2001 {
 	hardware ethernet 90:B1:1C:2D:7F:19;
-	fixed-address labcontrol2001.wikimedia.org;
+	fixed-address labtestweb2001.wikimedia.org;
 }
 
 host labmon1001 {

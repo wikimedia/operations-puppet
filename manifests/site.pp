@@ -1301,23 +1301,8 @@ node 'labcontrol1002.wikimedia.org' {
     include ldap::role::client::labs
 }
 
-node 'labcontrol2001.wikimedia.org' {
-    #$ganglia_aggregator    = true
-    #$is_puppet_master      = true
-    #$is_labs_puppet_master = true
-
-
-    include base::firewall
+node 'labtestweb2001.wikimedia.org' {
     include standard
-    include ldap::role::client::labs
-
-    # This box isn't doing anything these days... this change is pending
-    #  decomission and rename
-    #role dns::ldap, salt::masters::labs
-    #include role::labs::openstack::nova::controller
-    #include role::labs::openstack::nova::manager
-    #include role::salt::masters::labs
-    #include role::deployment::salt_masters
 }
 
 # Labs Graphite and StatsD host
