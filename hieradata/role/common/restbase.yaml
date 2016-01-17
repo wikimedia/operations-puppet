@@ -15,7 +15,7 @@ restbase::graphoid_uri: http://graphoid.svc.eqiad.wmnet:19000
 restbase::mobileapps_uri: http://mobileapps.svc.eqiad.wmnet:8888
 restbase::mathoid_uri: http://mathoid.svc.eqiad.wmnet:10042
 restbase::aqs_uri: http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1
-restbase::cassandra_user: restbase
+restbase::cassandra_user: restb
 restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 restbase::monitoring::monitor_domain: en.wikipedia.org
 
