@@ -114,9 +114,9 @@ cassandra_test_eqiad:
   cassandra::cluster_name: services-test
   cassandra::tls_cluster_name: services-test
   cassandra::internode_encryption: dc
-  cassandra::application_username: restbase
+  cassandra::application_username: restb
   cassandra::application_password: "%{passwords::cassandra::restbase}"
-  restbase::cassandra_user: restbase
+  restbase::cassandra_user: restb
   restbase::cassandra_password: "%{passwords::cassandra::restbase}"
   cassandra::metrics::blacklist:
       - .*\.15MinuteRate$
@@ -177,9 +177,9 @@ cassandra_test_codfw:
   cassandra::cluster_name: services-test
   cassandra::tls_cluster_name: services-test
   cassandra::internode_encryption: dc
-  cassandra::application_username: restbase
+  cassandra::application_username: restb
   cassandra::application_password: "%{passwords::cassandra::restbase}"
-  restbase::cassandra_user: restbase
+  restbase::cassandra_user: restb
   restbase::cassandra_password: "%{passwords::cassandra::restbase}"
   cassandra::metrics::blacklist:
       - .*\.15MinuteRate$
