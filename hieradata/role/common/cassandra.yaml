@@ -72,5 +72,5 @@ cassandra::dc: "%{::site}"
 # see also https://phabricator.wikimedia.org/T112257#1663467 for full context
 cassandra::cluster_name: "eqiad"
 
-cassandra::application_username: restbase
+cassandra::application_username: restb
 cassandra::application_password: "%{passwords::cassandra::restbase}"
