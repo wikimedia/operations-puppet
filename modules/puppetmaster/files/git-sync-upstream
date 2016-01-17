@@ -37,9 +37,7 @@ function rebase_repo() {
     git fetch --verbose origin
 
     # Rebase locally commited changes on top of tracked origin branch
-    git rebase "${REBASE_OPTS[@]}" origin/${TRACK_BRANCH}
-
-    if [[ ${?} -ne 0 ]]; then
+    if ! git rebase "${REBASE_OPTS[@]}" origin/${TRACK_BRANCH}; then
         echo "Rebase failed! See error messages above." 1>&2
         echo "Reverting rebase attempt" 1>&2
         git rebase --abort
