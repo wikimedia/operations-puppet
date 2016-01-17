@@ -1302,7 +1302,7 @@ node 'labcontrol1002.wikimedia.org' {
 }
 
 node 'labtestweb2001.wikimedia.org' {
-    role labs::openstack::nova::manager, mariadb::wikitech
+    role labs::openstack::nova::manager, mariadb::wikitech, mariadb
     include base::firewall
     include standard
 }
@@ -2345,7 +2345,7 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
 
 # Silver is the new home of the wikitech web server.
 node 'silver.wikimedia.org' {
-    role labs::openstack::nova::manager, mariadb::wikitech
+    role labs::openstack::nova::manager, mariadb::wikitech, mariadb
     include base::firewall
     include standard
 
