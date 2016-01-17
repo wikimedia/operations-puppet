@@ -47,6 +47,7 @@ class base::labs inherits base {
             ensure  => present,
             command => '/usr/local/sbin/puppetalert.py',
             hour    => 8,
+            minute  => '15',
             user    => 'root',
         }
     }
