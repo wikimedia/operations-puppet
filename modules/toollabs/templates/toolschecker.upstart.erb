@@ -10,7 +10,9 @@ setgid www-data
 # Needs the '=', otherwise doesn't work for chmod-socket. WTF?
 exec /usr/bin/uwsgi --plugin=python \
                     --master \
-                    --workers=4 \
+                    --workers=16 \
+                    --harakiri=60 \
+                    --harakiri-verbose \
                     --wsgi-file=/usr/local/lib/python2.7/dist-packages/toolschecker.py \
                     --callable=app \
                     --socket=/run/toolschecker/toolschecker.sock \
