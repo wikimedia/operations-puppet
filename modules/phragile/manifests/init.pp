@@ -117,6 +117,7 @@ class phragile(
         group   => 'www-data',
         mode    => '0775',
         recurse => true,
+        require => Git::Clone['phragile'],
     }
 
     exec { '/usr/bin/php artisan migrate':
