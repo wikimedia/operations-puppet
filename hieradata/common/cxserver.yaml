@@ -676,13 +676,133 @@ registry:
       ur:
         - hi
     Yandex:
+      af:
+        - ru
+      ar:
+        - ru
+      az:
+        - ru
+      ba:
+        - ru
       'be-tarask':
         - ru
       be:
         - ru
+      bg:
+        - ru
+      bs:
+        - ru
+      ca:
+        - ru
+      cs:
+        - ru
+      cy:
+        - ru
+      da:
+        - ru
+      de:
+        - ru
+      el:
+        - ru
       en:
         - ru
+      es:
+        - ru
+      et:
+        - ru
+      eu:
+        - ru
+      fa:
+        - ru
+      fi:
+        - ru
+      fr:
+        - ru
+      ga:
+        - ru
+      gl:
+        - ru
+      he:
+        - ru
+      hr:
+        - ru
+      ht:
+        - ru
+      hu:
+        - ru
+      hy:
+        - ru
+      id:
+        - ru
+      is:
+        - ru
+      it:
+        - ru
+      ja:
+        - ru
+      ka:
+        - ru
+      kk:
+        - ru
+      ko:
+        - ru
+      ky:
+        - ru
+      la:
+        - ru
+      lt:
+        - ru
+      lv:
+        - ru
+      mg:
+        - ru
+      mk:
+        - ru
+      mn:
+        - ru
+      ms:
+        - ru
+      mt:
+        - ru
+      nl:
+        - ru
+      no:
+        - ru
+      pl:
+        - ru
+      pt:
+        - ru
+      ro:
+        - ru
+      sk:
+        - ru
+      sl:
+        - ru
+      sq:
+        - ru
+      sr:
+        - ru
+      sv:
+        - ru
+      sw:
+        - ru
+      tg:
+        - ru
+      th:
+        - ru
+      tl:
+        - ru
+      tr:
+        - ru
+      tt:
+        - ru
       uk:
+        - ru
+      uz:
+        - ru
+      vi:
+        - ru
+      zh:
         - ru
   dictionary:
     Dictd:
