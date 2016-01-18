@@ -45,14 +45,13 @@ class role::analytics::oozie::client inherits role::analytics::oozie::config {
 # Installs Oozie server backed by a MySQL database.
 #
 class role::analytics::oozie::server inherits role::analytics::oozie::client {
-    if (!defined(Package['mysql-server'])) {
-        package { 'mysql-server':
-            ensure => 'installed',
-        }
+    if $::realm == 'labs' {
+        require_package('mysql-server')
     }
-    # Make sure mysql-server is installed before
-    # MySQL Oozie database class is applied.
-    Package['mysql-server'] -> Class['cdh::oozie::database::mysql']
+    # Prod requires that this node also runs the analytics meta mysql instance.
+    else {
+        Class['role::analytics::mysql::meta'] -> Class['role::analytics::hive::server']
+    }
 
     class { 'cdh::oozie::server':
         jdbc_password   => $jdbc_password,

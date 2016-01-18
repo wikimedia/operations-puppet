@@ -88,15 +88,13 @@ class role::analytics::hive::client inherits role::analytics::hive::config {
 # Sets up Hive Server2 and MySQL backed Hive Metastore.
 #
 class role::analytics::hive::server inherits role::analytics::hive::client {
-    if (!defined(Package['mysql-server'])) {
-        package { 'mysql-server':
-            ensure => 'installed',
-        }
+    if $::realm == 'labs' {
+        require_package('mysql-server')
     }
-
-    # Make sure mysql-server is installed before
-    # MySQL Hive Metastore database class is applied.
-    Package['mysql-server'] -> Class['cdh::hive::metastore::mysql']
+    # Prod requires that this node also runs the analytics meta mysql instance.
+    else {
+        Class['role::analytics::mysql::meta'] -> Class['role::analytics::hive::server']
+    }
 
     # TODO: Set these better once hive is on its own server.
     # See: https://phabricator.wikimedia.org/T110090
