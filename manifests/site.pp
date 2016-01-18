@@ -74,9 +74,12 @@ node 'analytics1002.eqiad.wmnet' {
     include base::firewall
 }
 
-# This node is being repurposed - otto 2015-09
+# analytics1015 is the Hive and Oozie server.
+# It runs the analytics meta mysql (mariadb) instance
+# for hive_metastore and oozie databases.
 node 'analytics1015.eqiad.wmnet' {
-    role analytics::mysql::meta
+    role analytics::mysql::meta, analytics::hive::server, analytics::oozie::server,
+
     include standard
     include base::firewall
 }
@@ -114,11 +117,10 @@ node 'analytics1026.eqiad.wmnet' {
     include role::analytics::impala::master
 }
 
-# analytics1027 hosts some frontend web interfaces to Hadoop
-# (Hue, Oozie, Hive, etc.).  It also submits regularly scheduled
-# batch Hadoop jobs.
+# analytics1027 hosts Hue.
+# It also submits regularly scheduled batch Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
-    role analytics::hive::server, analytics::oozie::server, analytics::hue
+    analytics::hue
 
     include standard
     include base::firewall
