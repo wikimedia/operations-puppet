@@ -129,3 +129,10 @@ designateconfig:
 
 labs_baremetal_servers:
   - '10.64.20.12'
+
+# Used in role::analytics::hive::config
+hive_server_host: analytics1027.eqiad.wmnet
+hive_metastore_host: analytics1027.eqiad.wmnet
+
+# Used in role::analytics::oozie::config
+oozie_host: analytics1027.eqiad.wmnet

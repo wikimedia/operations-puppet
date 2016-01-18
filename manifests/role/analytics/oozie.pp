@@ -13,13 +13,20 @@ class role::analytics::oozie::config {
     include role::analytics::hadoop::config
 
     if $::realm == 'production' {
-        $oozie_host      = 'analytics1027.eqiad.wmnet'
-        $jdbc_password   = $passwords::analytics::oozie_jdbc_password
+        include passwords::analytics
+
+        $jdbc_password      = $passwords::analytics::oozie_jdbc_password
+        # Must set oozie_host in hiera in production.
+        $default_oozie_host = undef
+
     }
     elsif $::realm == 'labs' {
-        $oozie_host      = $role::analytics::hadoop::config::namenode_hosts[0]
-        $jdbc_password   = 'oozie'
+        $jdbc_password      = 'oozie'
+        # Default to running oozie server on primary namenode in labs.
+        $default_oozie_host = $role::analytics::hadoop::config::namenode_hosts[0]
     }
+
+    $oozie_host = hiera('oozie_host', $default_oozie_host)
 }
 
 

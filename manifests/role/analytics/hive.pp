@@ -20,7 +20,7 @@ class role::analytics::hive::config {
     include role::analytics::hadoop::config
 
     # Set this pretty high, to avoid limiting the number
-    # of substitutionvariables a Hive script can use.
+    # of substitution variables a Hive script can use.
     $variable_substitute_depth = 10000
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
@@ -48,15 +48,20 @@ class role::analytics::hive::config {
     if $::realm == 'production' {
         include passwords::analytics
 
-        $server_host     = 'analytics1027.eqiad.wmnet'
-        $metastore_host  = 'analytics1027.eqiad.wmnet'
         $jdbc_password   = $passwords::analytics::hive_jdbc_password
+        # Must set hive_server_host and hive_metastore_host in hiera
+        # in production.
+        $default_hive_host = undef
     }
     elsif $::realm == 'labs' {
-        $server_host     = $role::analytics::hadoop::config::namenode_hosts[0]
-        $metastore_host  = $role::analytics::hadoop::config::namenode_hosts[0]
         $jdbc_password   = 'hive'
+        # Default to hosting hive-server and hive-metastore on
+        # primary namenode in labs.
+        $default_hive_host = $role::analytics::hadoop::config::namenode_hosts[0]
     }
+
+    $server_host     = hiera('hive_server_host', $default_hive_host)
+    $metastore_host  = hiera('hive_metastore_host', $default_hive_host)
 }
 
 
