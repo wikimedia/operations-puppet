@@ -8,9 +8,12 @@
   ProxyPass / http://localhost:3000/
   ProxyPassReverse / http://localhost:3000/
 
+  # Assumes that X-Forwarded-Proto is being set by a layer in front of apache
+  # This is fine in this specific case because we require the labs realm
   RewriteEngine On
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+  # Make sure we vary caches by protocol (Probably not useful in the labs world)
   Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
   Header always set Strict-Transport-Security "max-age=31536000"
 
