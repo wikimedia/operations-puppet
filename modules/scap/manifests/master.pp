@@ -1,10 +1,10 @@
 # = class: scap::master
 #
-# Sets up a scap master (currently tin)
+# Sets up a scap master (currently tin and mira)
 class scap::master(
     $common_path        = '/srv/mediawiki',
     $common_source_path = '/srv/mediawiki-staging',
-    $rsync_host         = 'tin.eqiad.wmnet',
+    $rsync_host         = "deployment.${::site}.wmnet",
     $statsd_host        = 'statsd.eqiad.wmnet',
     $statsd_port        = 8125,
     $deployment_group   = 'wikidev',
