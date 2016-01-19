@@ -32,11 +32,6 @@ class mediawiki::web::prod_sites {
         before => Service['apache2'],
     }
 
-    apache::site { 'wwwportals':
-        source   => 'puppet:///modules/mediawiki/apache/sites/wwwportals.conf',
-        priority => 1,
-    }
-
     apache::site { 'redirects':
         source   => 'puppet:///modules/mediawiki/apache/sites/redirects.conf',
         priority => 2,

@@ -165,3 +165,4 @@ nfs_mounts:
   home: false
   scratch: false
   dumps: false
+mediawiki::web::sites::domain_suffix: "beta.wmflabs.org"
