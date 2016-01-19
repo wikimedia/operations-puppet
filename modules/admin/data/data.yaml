@@ -1769,3 +1769,10 @@ users:
     realname: Luca Toscano
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9rdkfGRw7mI6lt3UfwWcsWBn+qOV+xx7VhI5vB4rcjSgbiO8sI5aEpdOTHTsQm1DEIth3JzaJ66H5UAkUJrFHyDxbfqhoghOLe1+DTy3At/WldmP8QEuBGJZ2GDdhJvU0LyMd7eFVl8poQBWeVPz7Ds+9IFDc41YmCUNGJb0Z/Vwu8IkIutVFe58e3Q2hwAOgtta+QwT1x6TSzoQC+ElOkBxl+8XPjK1/lJ8+VK1HHpL8rl3XzGB4XEhLecVtnzLAkkm6qRvGV0iCTbDyF1VBDytcPIvMW+2NX4jcYXOj9C4zHMLdLLHjQr/4BuDEXa7WJQw4h+8I7/UjTC7FtSUt5OB2/pr9SPssLhHZaw3kQ3vwNTz7u6Fq0jX4c+cN0VDnnjF78cI77RmxbUZ4RPyTa9nrS+738utJ4fh06qNpx+B3tCq1Fu//PU5MepQq5zPczU4KUEBceQuzjXexpoXT5XOoMnZfWs3xhYzAyv9lmYC+RSq7+ZXHR5GH+DdRv1OOuJjVvWRSErav5kZ0g0SE/8tJ+QQUV4e4TldP+ru3sB34VGnAdrhnyoUQYKhFCv3iW6NA9KzceY+Fm6PWUQKXLjHYaL+Q2v9SrAztfQvzOUdxNre8GSXIanQLg/LSCYMd3SuLqBjlxCDm3Xed+T7zmNjAdLWD9gfnVxQwxZ0KNw== ltoscano@ltoscanowmf1553.local]
     uid: 13926
+  jdcc:
+    ensure: present
+    gid: 500
+    name:  jdcc-berkman
+    realname: Justin Clark
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvfaLmde8biy5hfFR1fOnkfu8eitpGkyWuTXziVHEAFmeiuF87LdnkUDaM/Egom3/fNJKjrzLZPcaJxqa/BeJfWzoz6Ua0dsA/uG1D/l4eIXCEj2QhcvdQT8mbLmXqws3deISARUAIp9DnXG9BQ5LVq6ihwyDgQ9sQiAZsbryKRA5opgSJUE5ynNGBh0M8gIY0+1xBVG9CtrnnyWi7ufklOonzcOo9rssGtE8bHPKnHexKb8FIiVWHy1IrkKLwPBhmLesXTeGnQvAg3VOmeJT7mPG4hH7m5FLB3PvfcCSD27/o/VmVIXUj3ypu0+SBzmJd4uwANMUOuBuNKCXSYB+P jdcc-berkman@work]
+    uid: 13978
