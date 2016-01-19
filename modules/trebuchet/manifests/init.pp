@@ -9,7 +9,7 @@ class trebuchet(
 ) {
     $trebuchet_master = $::realm ? {
         labs       => pick($deployment_server, "${::labsproject}-deploy.eqiad.wmflabs"),
-        default    => 'tin.eqiad.wmnet',
+        default    => hiera('deployment_server','tin.eqiad.wmnet'),
     }
 
     include ::trebuchet::packages
