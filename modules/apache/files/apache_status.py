@@ -18,7 +18,7 @@ METRICS = {
 LAST_METRICS = copy.deepcopy(METRICS)
 METRICS_CACHE_MAX = 5
 
-#Metric prefix
+# Metric prefix
 NAME_PREFIX = "ap_"
 SSL_NAME_PREFIX = "apssl_"
 
@@ -144,7 +144,7 @@ def get_metrics():
                     if regMatch:
                         linebits = regMatch.groupdict()
                         for key in linebits:
-                            #print SSL_NAME_PREFIX + key + "=" + linebits[key]
+                            # print SSL_NAME_PREFIX + key + "=" + linebits[key]
                             metrics[SSL_NAME_PREFIX + key] = linebits[key]
 
             except urllib2.URLError:
