@@ -6,7 +6,7 @@ class role::mariadb {
     }
 
     include standard
-    include mariadb
+    include ::mariadb
 }
 
 # root, repl, nagios, tendril
