@@ -15,7 +15,7 @@
       stats in /proc/net/udp.
 
     Original: https://github.com/atdt/python-udp-gmond
-    
+
     :copyright: (c) 2012 Wikimedia Foundation
     :author: Ori Livneh <ori@wikimedia.org>
     :license: GPLv2+
@@ -32,19 +32,20 @@ UPDATE_INTERVAL = 5  # seconds
 
 
 defaults = {
-    "slope"      : "both",
-    "time_max"   : 60,
-    "format"     : "%d",
-    "value_type" : "uint",
-    "groups"     : "udp2log",
-    "units"      : "bytes"
+    "slope": "both",
+    "time_max": 60,
+    "format": "%d",
+    "value_type": "uint",
+    "groups": "udp2log",
+    "units": "bytes"
 }
 
 udp2log_fields = {
-    "rx_queue" : "udp2log Receive Queue",
-    "tx_queue" : "udp2log Transmit Queue",
-    "drops"    : "udp2log Dropped Packets"
+    "rx_queue": "udp2log Receive Queue",
+    "tx_queue": "udp2log Transmit Queue",
+    "drops": "udp2log Dropped Packets"
 }
+
 
 def get_udp2log_ports():
     """Returns the listen ports of running udp2log processes"""
@@ -60,6 +61,7 @@ def get_udp2log_ports():
                 continue
             ports.append(int(cmd[p_index + 1]))
     return ports
+
 
 def get_cmd(pid):
     """Get the command-line instantiation for a given process id"""
@@ -86,9 +88,9 @@ def check_udp_sockets():
             # key by integer port value.
             # e.g. Convert 20E4 hex to int 8420.
             sockets[int(values[2], 16)] = {
-                'tx_queue' : int(values[6], 16),
-                'rx_queue' : int(values[7], 16),
-                'drops'    : int(values[16])
+                'tx_queue': int(values[6], 16),
+                'rx_queue': int(values[7], 16),
+                'drops': int(values[16])
             }
     return sockets
 
@@ -113,11 +115,13 @@ def check_udp2log():
 #
 stats = {}
 
+
 def update_stats():
     """Update udp2log stats and schedule the next run"""
     stats.update(check_udp2log())
     logging.info("Updated: %s", stats)
     Timer(UPDATE_INTERVAL, update_stats).start()
+
 
 def metric_handler(name):
     """Get value of particular metric; part of Gmond interface"""
@@ -150,4 +154,4 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     for metric in metric_init({}):
         value = metric['call_back'](metric['name'])
-        print(( "%s => " + metric['format'] ) % ( metric['name'], value ))
+        print(("%s => " + metric['format']) % (metric['name'], value))
