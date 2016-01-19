@@ -1,5 +1,5 @@
 <VirtualHost *:80>
-    ServerName wikipedia.org
+    ServerName wikipedia.<%= @domain_suffix %>
 
     # Redirecting from subdirectories of wikipedia.org to subdomains
     RewriteEngine On
@@ -7,13 +7,13 @@
     RewriteCond %{ENV:RW_PROTO} !=https
     RewriteRule . - [E=RW_PROTO:http]
 
-    RewriteRule ^/([a-z]{2}|meta)/(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.org/wiki/$2 [R=301,L,NE]
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://www.wikipedia.org$1 [R=301,L]
+    RewriteRule ^/([a-z]{2}|meta)/(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R=301,L,NE]
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://www.wikipedia.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
 <VirtualHost *:80>
     DocumentRoot /srv/mediawiki/docroot/wwwportal
-    ServerName www.wikipedia.org
+    ServerName www.wikipedia.<%= @domain_suffix %>
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
@@ -31,23 +31,23 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Language-specific links
-    RewriteRule ^/wiki/(aa|ab|af|am|as|ay|az|ba|be|bh|bi|bn|bo|ca|co|dz|et|eu|fa|fi|fj|fo|fy|ga|gl|gn|gu|ha|hy|ia|id|ik|is|it|iu|jv|ka|kk|kl|km|kn|ks|ku|ky|la|lo|lv|mg|mi|mk|mn|mo|mr|my|na|ne|no|oc|om|or|pa|ps|pt|qu|rm|rn|rw|sa|sd|sg|si|sk|sm|sn|so|sq|ss|st|su|sw|ta|te|tg|th|ti|tk|tl|tn|to|ts|tt|tw|ug|uk|ur|uz|vi|vo|wo|xh|yi|yo|za|zu):(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.org/wiki/$2 [R,L]
-    RewriteRule ^/wiki/(ar|bs|cs|cy|da|de|dk|el|en|eo|es|fr|gd|gv|he|hi|hr|hu|ja|ko|ml|ms|nl|pl|ro|ru|sh|sl|sr|sv|tr|zh|zh-cn|zh-tw|nds):(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.org/wiki/$2 [R,L]
+    RewriteRule ^/wiki/(aa|ab|af|am|as|ay|az|ba|be|bh|bi|bn|bo|ca|co|dz|et|eu|fa|fi|fj|fo|fy|ga|gl|gn|gu|ha|hy|ia|id|ik|is|it|iu|jv|ka|kk|kl|km|kn|ks|ku|ky|la|lo|lv|mg|mi|mk|mn|mo|mr|my|na|ne|no|oc|om|or|pa|ps|pt|qu|rm|rn|rw|sa|sd|sg|si|sk|sm|sn|so|sq|ss|st|su|sw|ta|te|tg|th|ti|tk|tl|tn|to|ts|tt|tw|ug|uk|ur|uz|vi|vo|wo|xh|yi|yo|za|zu):(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R,L]
+    RewriteRule ^/wiki/(ar|bs|cs|cy|da|de|dk|el|en|eo|es|fr|gd|gv|he|hi|hr|hu|ja|ko|ml|ms|nl|pl|ro|ru|sh|sl|sr|sv|tr|zh|zh-cn|zh-tw|nds):(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R,L]
 
     # English Wikipedia pages
-    RewriteRule ^/(upload|wiki|stats|w)/(.*)$ %{ENV:RW_PROTO}://en.wikipedia.org/$1/$2 [R=301,L]
-    RewriteRule ^/wiki$ %{ENV:RW_PROTO}://en.wikipedia.org/ [R=301,L]
+    RewriteRule ^/(upload|wiki|stats|w)/(.*)$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/$1/$2 [R=301,L]
+    RewriteRule ^/wiki$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/ [R=301,L]
 
     # Mailing lists...
     RewriteRule ^/(mailman|pipermail)(.*)$ https://lists.wikimedia.org/$1$2 [R=301,L]
 
     # Old-style english wikipedia
     RewriteCond %{QUERY_STRING} ([^&;]+)
-    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://en.wikipedia.org/wiki/%1 [R=302,L]
-    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://en.wikipedia.org/ [R=302,L]
+    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/wiki/%1 [R=302,L]
+    RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/ [R=302,L]
 
     # Everything else
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikipedia.org$1 [R=301,L]
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>$1 [R=301,L]
 
     <IfModule mod_php5.c>
         php_admin_flag engine on
@@ -56,8 +56,8 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName m.wikipedia.org
-    ServerAlias zero.wikipedia.org
+    ServerName m.wikipedia.<%= @domain_suffix %>
+    ServerAlias zero.wikipedia.<%= @domain_suffix %>
     UseCanonicalName off
 
     DocumentRoot /srv/mediawiki/docroot/m.wikipedia.org
@@ -72,8 +72,8 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName www.wiktionary.org
-    ServerAlias m.wiktionary.org
+    ServerName www.wiktionary.<%= @domain_suffix %>
+    ServerAlias m.wiktionary.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
     <IfModule mod_php5.c>
@@ -96,12 +96,12 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Everything else
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wiktionary.org$1 [R=301,L]
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wiktionary.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName www.wikinews.org
-    ServerAlias m.wikinews.org
+    ServerName www.wikinews.<%= @domain_suffix %>
+    ServerAlias m.wikinews.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
     <IfModule mod_php5.c>
@@ -124,12 +124,12 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Everything else
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikinews.org$1 [R=301,L]
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikinews.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName www.wikiquote.org
-    ServerAlias m.wikiquote.org
+    ServerName www.wikiquote.<%= @domain_suffix %>
+    ServerAlias m.wikiquote.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
     <IfModule mod_php5.c>
@@ -152,12 +152,12 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Everything else
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikiquote.org$1 [R=301,L]
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikiquote.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName www.wikiversity.org
-    ServerAlias m.wikiversity.org
+    ServerName www.wikiversity.<%= @domain_suffix %>
+    ServerAlias m.wikiversity.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
     <IfModule mod_php5.c>
@@ -180,12 +180,12 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Everything else
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikiversity.org$1 [R=301,L]
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikiversity.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName www.wikibooks.org
-    ServerAlias m.wikibooks.org
+    ServerName www.wikibooks.<%= @domain_suffix %>
+    ServerAlias m.wikibooks.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
     <IfModule mod_php5.c>
@@ -208,12 +208,12 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Everything else
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikibooks.org$1 [R=301,L]
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikibooks.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName www.wikivoyage.org
-    ServerAlias m.wikivoyage.org
+    ServerName www.wikivoyage.<%= @domain_suffix %>
+    ServerAlias m.wikivoyage.<%= @domain_suffix %>
 
     DocumentRoot /srv/mediawiki/docroot/wwwportal
     <IfModule mod_php5.c>
@@ -236,12 +236,12 @@
     RewriteRule ^/search-redirect.php /w/search-redirect.php [L]
 
     # Old /de
-    RewriteRule ^/de/(.*)$ %{ENV:RW_PROTO}://de.wikivoyage.org/wiki/$1 [R=301,L]
+    RewriteRule ^/de/(.*)$ %{ENV:RW_PROTO}://de.wikivoyage.<%= @domain_suffix %>/wiki/$1 [R=301,L]
     # Old /it
-    RewriteRule ^/it/(.*)$ %{ENV:RW_PROTO}://it.wikivoyage.org/wiki/$1 [R=301,L]
+    RewriteRule ^/it/(.*)$ %{ENV:RW_PROTO}://it.wikivoyage.<%= @domain_suffix %>/wiki/$1 [R=301,L]
 
     # Everything else
-    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikivoyage.org$1 [R=301,L]
+    RewriteRule ^(.*)$ %{ENV:RW_PROTO}://en.wikivoyage.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
 
 # vim: sts=4 sw=4 syn=apache autoindent
