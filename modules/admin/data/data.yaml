@@ -75,7 +75,7 @@ groups:
               pcoombe, mholloway-shell, madhuvishy, niedzielski, neilpquinn-wmf,
               gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
-              vbaranetsky, atgomez, jgirault, jdrewniak, matmarex, elukey]
+              vbaranetsky, atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -237,7 +237,7 @@ groups:
               joal, jamesur, akosiaris, jhobs, lpintscher, jkatz, madhuvishy, gpaumier,
               andyrussg, niedzielski, maxsem, hoo, daniel, tbayer, krinkle, tgr,
               csteipp, smalyshev, ebernhardson, addshore, jminor, chedasaurus, neilpquinn-wmf,
-              vbaranetsky, dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg]
+              vbaranetsky, dcausse, bd808, tjones, mobrovac, jgirault, jdrewniak, ejegg, jdcc]
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
