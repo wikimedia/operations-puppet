@@ -10,6 +10,9 @@ class role::simplestatic (
     # This role is expected to be used only in labs
     requires_realm('labs')
 
+    include ::apache::mod::rewrite
+    include ::apache::mod::headers
+
     apache::site { 'simplestatic':
         ensure  => present,
         content => template('apache/sites/simplestatic.erb'),
