@@ -1,3 +1,5 @@
 debdeploy::grains:
   debdeploy-installserver:
     value: standard
+admin::groups:
+  - datacenter-ops
