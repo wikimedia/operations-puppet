@@ -14,10 +14,14 @@
 # [*scap_masters*]
 #   List of FQDNs for servers to be used as scap masters. Default []
 #
+# [*mediawiki_installation*]
+#   List of FQDNs for servers to be used for mediawiki installs. Default []
+#
 class scap::dsh (
     $group_source = 'puppet:///modules/scap/dsh/group',
     $scap_proxies = [],
     $scap_masters = [],
+    $mediawiki_installation = [],
 ){
     file { '/etc/dsh':
         ensure => directory,
@@ -45,6 +49,13 @@ class scap::dsh (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+    }
+
+    file { '/etc/dsh/group/mediawiki-installation':
+        content => join($mediawiki_installation, "\n"),
+        owner => 'root',
+        group => 'root',
+        mode  => '0444',
     }
 
     file { '/etc/dsh/dsh.conf':
