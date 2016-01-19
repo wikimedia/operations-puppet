@@ -7,7 +7,6 @@
     :copyright: (c) 2012 Wikimedia Foundation
     :author: Ori Livneh <ori@wikimedia.org>
     :license: GPL
-    
 """
 from __future__ import print_function
 
@@ -19,24 +18,25 @@ from threading import Timer
 UPDATE_INTERVAL = 5  # seconds
 
 defaults = {
-    "slope"      : "positive",
-    "time_max"   : 60,
-    "format"     : "%u",
-    "value_type" : "uint",
-    "groups"     : "network",
-    "units"      : "packets"
+    "slope": "positive",
+    "time_max": 60,
+    "format": "%u",
+    "value_type": "uint",
+    "groups": "network",
+    "units": "packets"
 }
 
 # Prefix names sent to ganglia with this.
 ganglia_name_prefix = "UDP_"
 
 udp_fields = {
-    "%sInDatagrams"  % (ganglia_name_prefix) : "UDP Packets Received",
-    "%sNoPorts"      % (ganglia_name_prefix) : "UDP Packets to Unknown Port Received",
-    "%sInErrors"     % (ganglia_name_prefix) : "UDP Packet Receive Errors",
-    "%sOutDatagrams" % (ganglia_name_prefix) : "UDP Packets Sent",
-    "%sRcvbufErrors" % (ganglia_name_prefix) : "UDP Receive Buffer Errors",
-    "%sSndbufErrors" % (ganglia_name_prefix) : "UDP Send Buffer Errors"
+    "%sInDatagrams" % (ganglia_name_prefix): "UDP Packets Received",
+    "%sNoPorts" % (ganglia_name_prefix):
+        "UDP Packets to Unknown Port Received",
+    "%sInErrors" % (ganglia_name_prefix): "UDP Packet Receive Errors",
+    "%sOutDatagrams" % (ganglia_name_prefix): "UDP Packets Sent",
+    "%sRcvbufErrors" % (ganglia_name_prefix): "UDP Receive Buffer Errors",
+    "%sSndbufErrors" % (ganglia_name_prefix): "UDP Send Buffer Errors"
 }
 
 netstats = {}
@@ -93,4 +93,4 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     for metric in metric_init({}):
         value = metric['call_back'](metric['name'])
-        print(( "%s => " + metric['format'] ) % ( metric['name'], value ))
+        print(("%s => " + metric['format']) % (metric['name'], value))
