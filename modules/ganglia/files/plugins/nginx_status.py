@@ -1,7 +1,7 @@
-###  This script reports nginx status stub metrics to ganglia.
+#  This script reports nginx status stub metrics to ganglia.
 
-###  License to use, modify, and distribute under the GPL
-###  http://www.gnu.org/licenses/gpl.txt
+#  License to use, modify, and distribute under the GPL
+#  http://www.gnu.org/licenses/gpl.txt
 import logging
 import os
 import re
@@ -16,8 +16,8 @@ logging.basicConfig(level=logging.ERROR)
 
 _Worker_Thread = None
 
-class UpdateNginxThread(threading.Thread):
 
+class UpdateNginxThread(threading.Thread):
     def __init__(self, params):
         threading.Thread.__init__(self)
         self.running = False
@@ -56,7 +56,7 @@ class UpdateNginxThread(threading.Thread):
         matchActive = re.search(r'Active connections:\s+(\d+)', data)
         matchHistory = re.search(r'\s*(\d+)\s+(\d+)\s+(\d+)', data)
         matchCurrent = re.search(r'Reading:\s*(\d+)\s*Writing:\s*(\d+)\s*'
-            'Waiting:\s*(\d+)', data)
+                                 'Waiting:\s*(\d+)', data)
 
         if not matchActive or not matchHistory or not matchCurrent:
             raise Exception('Unable to parse {0}' . format(url))
@@ -80,7 +80,8 @@ class UpdateNginxThread(threading.Thread):
         try:
             logging.debug(' opening URL: ' + str(self.status_url))
 
-            data = UpdateNginxThread._get_nginx_status_stub_response(self.status_url)
+            data = UpdateNginxThread._get_nginx_status_stub_response(
+                self.status_url)
         except:
             logging.warning('error refreshing metrics')
             logging.warning(traceback.print_exc(file=sys.stdout))
@@ -111,7 +112,10 @@ class UpdateNginxThread(threading.Thread):
         logging.debug(' refreshing server settings')
 
         try:
-            p = subprocess.Popen(executable=self.nginx_bin, args=[self.nginx_bin, '-v'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = subprocess.Popen(executable=self.nginx_bin,
+                                 args=[self.nginx_bin, '-v'], shell=True,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE)
             out, err = p.communicate()
         except:
             logging.warning('error refreshing settings')
@@ -150,7 +154,8 @@ class UpdateNginxThread(threading.Thread):
             if name in self.metrics:
                 try:
                     self._metrics_lock.acquire()
-                    logging.debug('metric: %s = %s' % (name, self.metrics[name]))
+                    logging.debug(
+                        'metric: %s = %s' % (name, self.metrics[name]))
                     return self.metrics[name]
                 finally:
                     self._metrics_lock.release()
@@ -165,13 +170,15 @@ class UpdateNginxThread(threading.Thread):
             if name in self.settings:
                 try:
                     self._settings_lock.acquire()
-                    logging.debug('setting: %s = %s' % (name, self.settings[name]))
+                    logging.debug(
+                        'setting: %s = %s' % (name, self.settings[name]))
                     return self.settings[name]
                 finally:
                     self._settings_lock.release()
         except:
             logging.warning('failed to fetch ' + name)
             return 0
+
 
 def metric_init(params):
     logging.debug('init: ' + str(params))
@@ -235,18 +242,22 @@ def metric_init(params):
     for name, desc in descriptions.iteritems():
         d = desc.copy()
         d['name'] = str(name)
-        [ d.setdefault(key, METRIC_DEFAULTS[key]) for key in METRIC_DEFAULTS.iterkeys() ]
+        [d.setdefault(key, METRIC_DEFAULTS[key]) for key in
+         METRIC_DEFAULTS.iterkeys()]
         descriptors.append(d)
 
     return descriptors
+
 
 def metric_of(name):
     global _Worker_Thread
     return _Worker_Thread.metric_of(name)
 
+
 def setting_of(name):
     global _Worker_Thread
     return _Worker_Thread.setting_of(name)
+
 
 def metric_cleanup():
     global _Worker_Thread
@@ -262,11 +273,17 @@ if __name__ == '__main__':
 
         logging.debug('running from cmd line')
         parser = OptionParser()
-        parser.add_option('-u', '--URL', dest='status_url', default='http://localhost/nginx_status', help='URL for Nginx status stub page')
-        parser.add_option('--nginx-bin', dest='nginx_bin', default='/usr/sbin/nginx', help='path to nginx')
-        parser.add_option('-q', '--quiet', dest='quiet', action='store_true', default=False)
-        parser.add_option('-r', '--refresh-rate', dest='refresh_rate', default=15)
-        parser.add_option('-d', '--debug', dest='debug', action='store_true', default=False)
+        parser.add_option('-u', '--URL', dest='status_url',
+                          default='http://localhost/nginx_status',
+                          help='URL for Nginx status stub page')
+        parser.add_option('--nginx-bin', dest='nginx_bin',
+                          default='/usr/sbin/nginx', help='path to nginx')
+        parser.add_option('-q', '--quiet', dest='quiet', action='store_true',
+                          default=False)
+        parser.add_option('-r', '--refresh-rate', dest='refresh_rate',
+                          default=15)
+        parser.add_option('-d', '--debug', dest='debug', action='store_true',
+                          default=False)
 
         (options, args) = parser.parse_args()
 
@@ -284,7 +301,8 @@ if __name__ == '__main__':
             v = d['call_back'](d['name'])
 
             if not options.quiet:
-                print ' {0}: {1} {2} [{3}]' . format(d['name'], v, d['units'], d['description'])
+                print ' {0}: {1} {2} [{3}]' . format(
+                    d['name'], v, d['units'], d['description'])
 
         os._exit(1)
 
