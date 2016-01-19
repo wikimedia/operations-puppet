@@ -215,8 +215,7 @@ class gerrit::jetty ($ldap_hosts,
         group   => 'gerrit2',
         mode    => '0444',
         target  => '/var/lib/gerrit2/review_site/plugins/bouncycastle/bcprov-1.44-from-Debian-wheezy.jar',
-        require => [Git::Clone['operations/gerrit/plugins'],
-                    File['/var/lib/gerrit2/review_site/lib']
+        require => [File['/var/lib/gerrit2/review_site/lib']
         ],
     }
 
