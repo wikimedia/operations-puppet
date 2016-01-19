@@ -80,6 +80,8 @@ class role::deployment::server(
 
     include ::deployment::redis
 
+    include ::deployment::rsync
+
     # Used by the trebuchet salt returner
     ferm::service { 'deployment-redis':
         proto  => 'tcp',
