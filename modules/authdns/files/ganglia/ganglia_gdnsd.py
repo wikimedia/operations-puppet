@@ -149,8 +149,8 @@ def metric_init(params):
         CONF[key] = value
 
     skel = {
-        #'name': '',
-        #'description': '',
+        # 'name': '',
+        # 'description': '',
         'call_back': metric_handler,
         'time_max': 60,
         'value_type': 'uint',
