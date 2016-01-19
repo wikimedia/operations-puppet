@@ -2170,7 +2170,7 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
 
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
-    role ve
+    role ve, rsync_ruthenium
     include ::standard
 }
 
