@@ -51,10 +51,12 @@ class role::labs::tools {
         }
     }
 
-    class submit inherits role::labs::tools::common {
-        include toollabs::submit
+    class submit {
+        include ::toollabs::submit
 
-        system::role { 'role::labs::tools::submit': description => 'Tool Labs job submit (cron) host' }
+        system::role { 'role::labs::tools::submit':
+            description => 'Tool Labs job submit (cron) host',
+        }
     }
 
     class proxy {
