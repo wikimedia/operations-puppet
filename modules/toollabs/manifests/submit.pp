@@ -39,27 +39,6 @@ class toollabs::submit inherits toollabs {
         content => "${::ipaddress}\n",
     }
 
-    file { '/usr/local/sbin/bigbrother':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/bigbrother',
-    }
-
-    file { '/etc/init/bigbrother.conf':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/toollabs/bigbrother.conf',
-    }
-
-    service { 'bigbrother':
-        ensure    => running,
-        subscribe => File['/usr/local/sbin/bigbrother', '/etc/init/bigbrother.conf'],
-    }
-
     file { '/usr/local/bin/webservice2':
         ensure => present,
         source => 'puppet:///modules/toollabs/webservice2',
