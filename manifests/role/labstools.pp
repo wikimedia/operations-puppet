@@ -41,6 +41,10 @@ class role::labs::tools {
         class { 'toollabs::services':
             active => ($::fqdn == $active_host),
         }
+
+        class { 'toollabs::bigbrother':
+            active => ($::fqdn == $active_host),
+        }
     }
 
     class checker inherits role::labs::tools::common {
