@@ -391,7 +391,7 @@ groups:
   mobileapps-admin:
     description: Group of mobileapps admins
     gid: 759
-    members: [bsitzmann, mholloway-shell]
+    members: [bsitzmann, mholloway-shell, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service mobileapps *',
                  'ALL = (mobileapps) NOPASSWD: ALL']
   mw-log-readers:
