@@ -20,7 +20,7 @@ sudo rsync -a /var/lib/puppet/yaml $tmpdir
 sudo chown -R ${USER} $tmpdir/yaml
 find $tmpdir/yaml -type f -name "*.yaml" | \
   xargs sed -i \
-    -e 's@uniqueid:.*@uniqueid: "42"@' \
+    -e 's@uniqueid:.*@uniqueid: "43434343"@' \
     -e 's@boardserialnumber:.*@boardserialnumber: "4242"@' \
     -e 's@boardproductname:.*@boardproductname: "424242"@' \
     -e 's@serialnumber:.*@serialnumber: "42424242"@'
