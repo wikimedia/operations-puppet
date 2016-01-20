@@ -1,6 +1,7 @@
 class toollabs::cronrunner {
     include gridengine::submit_host,
-            toollabs::hba
+            toollabs::hba,
+            toollabs
 
     file { '/etc/ssh/ssh_config':
         ensure => file,
