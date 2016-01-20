@@ -6,17 +6,18 @@ Richard Crowley <richard@devstructure.com>
 import socket
 import time
 
+
 def metric_handler(name):
 
     # Update from Redis.  Don't thrash.
     if 15 < time.time() - metric_handler.timestamp:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((metric_handler.host, metric_handler.port))
-        s.settimeout(5) # set socket timeout as to not block gmond
+        s.settimeout(5)  # set socket timeout as to not block gmond
         # if the password is set from parameters
-        if metric_handler.password != None:
-        	s.send("AUTH {0}\r\n".format(metric_handler.password))
-        	s.recv(4096) # TODO check if auth is valid
+        if metric_handler.password is not None:
+            s.send("AUTH {0}\r\n".format(metric_handler.password))
+            s.recv(4096)  # TODO check if auth is valid
         s.send("INFO\r\n")
         info = s.recv(4096)
         if "$" != info[0]:
@@ -32,11 +33,12 @@ def metric_handler(name):
                 continue
             n, v = line.split(":")
             if n in metric_handler.descriptors:
-                metric_handler.info[n] = int(v) # TODO Use value_type.
+                metric_handler.info[n] = int(v)  # TODO Use value_type.
         s.close()
         metric_handler.timestamp = time.time()
 
     return metric_handler.info.get(name, 0)
+
 
 def metric_init(params={}):
     metric_handler.host = params.get("host", "127.0.0.1")
@@ -107,6 +109,7 @@ def metric_init(params={}):
         descriptor.update(updates)
         metric_handler.descriptors[name] = descriptor
     return metric_handler.descriptors.values()
+
 
 def metric_cleanup():
     pass
