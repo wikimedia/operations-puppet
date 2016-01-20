@@ -82,7 +82,7 @@ class role::labs::tools {
         system::role { 'role::labs::tools::proxy': description => 'Tool labs generic web proxy' }
     }
 
-    class static inherits role::labs::tools::common {
+    class static {
         include toollabs::static
 
         system::role { 'role::labs::tools::static':
