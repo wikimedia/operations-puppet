@@ -67,7 +67,8 @@ def showmount_check():
     try:
         with open(os.devnull, 'w') as devnull:
             subprocess.check_call(
-                ['/sbin/showmount', '-e', 'labstore.svc.eqiad.wmnet'], stderr=devnull)
+                ['/sbin/showmount', '-e', 'labstore.svc.eqiad.wmnet'],
+                stderr=devnull)
         return True
     except subprocess.CalledProcessError:
         return False
