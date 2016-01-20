@@ -15,4 +15,13 @@ class toollabs::cronrunner {
         ensure => present,
         source => "puppet:///modules/toollabs/40-${::labsproject}-submithost-banner",
     }
+
+    # ;_; :'()
+    file { '/usr/local/bin/jlocal':
+        ensure => present,
+        source => 'puppet:///modules/toollabs/jlocal',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
