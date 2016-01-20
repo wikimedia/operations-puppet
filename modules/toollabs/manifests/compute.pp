@@ -17,7 +17,8 @@
 class toollabs::compute inherits toollabs {
 
     include toollabs::exec_environ,
-            toollabs::hba
+            toollabs::hba,
+            gridengine
 
     motd::script { 'exechost-banner':
         ensure => present,
