@@ -17,9 +17,6 @@ etl.execution.history.path=hdfs://analytics-hadoop/wmf/camus/mediawiki/history
 # Concrete implementation of the Decoder class to use.
 camus.message.decoder.class=org.wikimedia.analytics.refinery.camus.coders.AvroBinaryMessageDecoder
 
-# Default schema for messages produced without a schema rev id.
-camus.message.schema.default=101446746400
-
 # Always force to write records with the latest schema otherwise the writer
 # will fail when the schema change.
 # AvroRecordWriterProvider does not support writing a record with multiple
@@ -29,10 +26,10 @@ org.wikimedia.analytics.schemas.CirrusSearchRequestSet.latestRev=111448028943
 # Used by avro-based Decoders to use as their schema registry.
 kafka.message.coder.schema.registry.class=org.wikimedia.analytics.refinery.camus.schemaregistry.KafkaTopicSchemaRegistry
 
-# Our timestamps look like 2013-09-20T15:40:17
+# Our timestamp format is a number in unix_seconds
 camus.message.timestamp.format=unix_seconds
 
-# use the dt field
+# use the ts field
 camus.message.timestamp.field=ts
 
 etl.default.timezone=UTC
