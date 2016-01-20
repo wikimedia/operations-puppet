@@ -78,7 +78,9 @@ class role::deployment::server(
         require => File['/srv/deployment'],
     }
 
-    redis::instance { 6379: }
+    redis::instance { 6379:
+        daemonize => false,
+    }
 
     # Used by the trebuchet salt returner
     ferm::service { 'deployment-redis':
