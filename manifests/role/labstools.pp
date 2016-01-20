@@ -17,7 +17,7 @@ class role::labs::tools {
         system::role { 'role::labs::tools::compute': description => 'Tool Labs compute node' }
     }
 
-    class master inherits role::labs::tools::common {
+    class master {
         include toollabs::master
 
         system::role { 'role::labs::tools::master': description => 'Tool Labs gridengine master' }
