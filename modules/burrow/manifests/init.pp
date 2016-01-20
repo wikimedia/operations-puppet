@@ -35,6 +35,7 @@ class burrow (
     file { '/etc/burrow/burrow.cfg':
         ensure  => $ensure,
         content => template('burrow/burrow.cfg.erb'),
+        subscribe => File['/etc/burrow/burrow.cfg'],
     }
 
     service { 'burrow':
