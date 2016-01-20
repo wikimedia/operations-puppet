@@ -5,7 +5,7 @@ start on started network-services
 setuid redis
 setgid redis
 
-expect fork
+<% unless @settings['daemonize'] == false %>expect fork<% end %>
 exec /usr/bin/redis-server /etc/redis/<%= @instance_name %>.conf
 
 respawn
