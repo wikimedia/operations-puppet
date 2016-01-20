@@ -16,7 +16,8 @@ import re
 
 # local dependencies
 from ganglia_logtailer_helper import GangliaMetricObject
-from ganglia_logtailer_helper import LogtailerParsingException, LogtailerStateException
+from ganglia_logtailer_helper import LogtailerParsingException
+from ganglia_logtailer_helper import LogtailerStateException
 import rolematcher
 
 
@@ -32,16 +33,19 @@ class PacketLossLogtailer(object):
         self.reset_state()
         self.lock = threading.RLock()
 
-        # a list of rolematchers which are simple object to determine the role of a particular server
-        # this list is obtained from crawling config-master.wikimedia.org/pybal and parse the available configurations
+        # a list of rolematchers which are simple object to determine the role
+        # of a particular server this list is obtained from crawling
+        # config-master.wikimedia.org/pybal and parse the available
+        # configurations
         self.matchers = rolematcher.init()
         # this is what will match the packet loss lines
         # packet loss format :
-        # %[%Y-%m-%dT%H:%M:%S]t %server lost: (%percentloss +/- %margin)
-        # [2011-10-26T21:20:25] sq86.wikimedia.org lost: (3.61446 +/- 19.67462)%
+        # %[%Y-%m-%dT%H:%M:%S]t %server lost: (%percentloss ± %margin)
+        # [2011-10-26T21:20:25] sq86.wikimedia.org lost: (3.61446 ± 19.67462)%
         # match keys: date, server, percentloss, margin
-
-        self.reg = re.compile('^\[(?P<date>[^]]+)\] (?P<server>[^ ]+) lost: \((?P<percentloss>[^ ]+) \+\/- (?P<margin>[^)]+)\)%')
+        regex = '^\[(?P<date>[^]]+)\] (?P<server>[^ ]+) '
+        regex += 'lost: \((?P<percentloss>[^ ]+) \+\/- (?P<margin>[^)]+)\)%'
+        self.reg = re.compile(regex)
         # assume we're in daemon mode unless set_check_duration gets called
         self.dur_override = False
 
@@ -67,11 +71,11 @@ class PacketLossLogtailer(object):
                 if((margin <= 20) and (percentloss <= 98)):
                     self.percentloss_dict.setdefault(role, [])
                     self.percentloss_dict[role].append(percentloss)
-                    #  keep behavior of PacketLossLogtailer consistent with
-                    #  previous version and have one overall metric that
-                    #  can be used for sending notifications, for now keep
-                    #  filtering out HTTPS/IP6 traffic as the packetloss numbers
-                    #  are inaccurate.
+                    # keep behavior of PacketLossLogtailer consistent with
+                    # previous version and have one overall metric that
+                    # can be used for sending notifications, for now keep
+                    # filtering out HTTPS/IP6 traffic as the packetloss numbers
+                    # are inaccurate.
                     if role != 'https':
                         self.percentloss_dict.setdefault('all_roles', [])
                         self.percentloss_dict['all_roles'].append(percentloss)
@@ -80,7 +84,8 @@ class PacketLossLogtailer(object):
 
         except Exception, e:
             self.lock.release()
-            raise LogtailerParsingException("regmatch or contents failed with %s" % e)
+            raise LogtailerParsingException(
+                "regmatch or contents failed with %s" % e)
         self.lock.release()
 
     def update_rolematchers(self):
@@ -95,7 +100,8 @@ class PacketLossLogtailer(object):
     def determine_role(self, hostname):
         if hostname == 'total':
             return 'total'
-        role = 'misc'  # default group for when we were not able to determine the role
+        # default group for when we were not able to determine the role
+        role = 'misc'
         for matcher in self.matchers:
             if matcher == hostname:
                 role = matcher.get_role()
@@ -135,8 +141,8 @@ class PacketLossLogtailer(object):
     # returns float number of seconds for this run
     def set_check_duration(self, dur):
         '''This function only used if logtailer is in cron mode.  If it is
-        invoked, get_check_duration should use this value instead of calculating
-        it.'''
+        invoked, get_check_duration should use this value instead of
+        calculating it.'''
         self.duration = dur
         self.dur_override = True
 
@@ -152,9 +158,12 @@ class PacketLossLogtailer(object):
             # the duration should be within 10% of period
             acceptable_duration_min = self.period - (self.period / 10.0)
             acceptable_duration_max = self.period + (self.period / 10.0)
-            if (duration < acceptable_duration_min or duration > acceptable_duration_max):
-                raise LogtailerStateException("time calculation problem - duration (%s) > 10%% away from period (%s)" % (
-                    duration, self.period))
+            if (duration < acceptable_duration_min or
+                    duration > acceptable_duration_max):
+                msg = "time calculation problem - "
+                msg += "duration (%s) > 10%% away from period (%s)" % (
+                    duration, self.period)
+                raise LogtailerStateException(msg)
         return duration
 
     # example function for get_state
@@ -175,7 +184,8 @@ class PacketLossLogtailer(object):
             self.reset_state()
             self.lock.release()
         except LogtailerStateException, e:
-            # if something went wrong with deep_copy or the duration, reset and continue
+            # if something went wrong with deep_copy or the duration, reset and
+            # continue
             self.reset_state()
             self.lock.release()
             raise e
@@ -195,13 +205,20 @@ class PacketLossLogtailer(object):
                 packetloss_90th = 99
                 packetloss_ave = 99
             # package up the data you want to submit
-            # setting tmax to 960 seconds as data may take as long as 15 minutes to be processed
+            # setting tmax to 960 seconds as data may take as long as 15
+            # minutes to be processed
             if (role == 'all_roles'):
-                packetloss_ave_metric = GangliaMetricObject('packet_loss_average', packetloss_ave, units='%', tmax=960)
-                packetloss_90th_metric = GangliaMetricObject('packet_loss_90th', packetloss_90th, units='%', tmax=960)
+                packetloss_ave_metric = GangliaMetricObject(
+                    'packet_loss_average', packetloss_ave, units='%', tmax=960)
+                packetloss_90th_metric = GangliaMetricObject(
+                    'packet_loss_90th', packetloss_90th, units='%', tmax=960)
             else:
-                packetloss_ave_metric = GangliaMetricObject('packet_loss_average:%s' % (role), packetloss_ave, units='%', tmax=960)
-                packetloss_90th_metric = GangliaMetricObject('packet_loss_90th:%s' % (role), packetloss_90th, units='%', tmax=960)
+                packetloss_ave_metric = GangliaMetricObject(
+                    'packet_loss_average:%s' % (role), packetloss_ave,
+                    units='%', tmax=960)
+                packetloss_90th_metric = GangliaMetricObject(
+                    'packet_loss_90th:%s' % (role), packetloss_90th,
+                    units='%', tmax=960)
             metrics.append(packetloss_ave_metric)
             metrics.append(packetloss_90th_metric)
 
