@@ -59,13 +59,6 @@ sub pass_authorization {
 sub vcl_hash {
 	// The cookies below represent mobile preferences that can be set for anonymous users.
 	if (req.http.X-Subdomain) {
-<% if scope.function_hiera(["cluster"]) == "cache_text" -%>
-		// this splits the cache between mobile and desktop variants in general
-		// the text-cluster conditional is temporary, to avoid effectively wiping the primary cache
-		// on the legacy mobile cluster on deploy
-		hash_data("Mobile-Subdomain");
-<% end -%>
-
 		// Split the cache for the images-disabled variant of the mobile site.
 		if (req.http.X-Orig-Cookie ~ "(^|;\s*)disableImages=1" || req.http.Cookie ~ "(^|;\s*)disableImages=1") {
 			hash_data("disableImages=1");
