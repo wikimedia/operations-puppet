@@ -90,7 +90,7 @@ class role::labs::tools {
         }
     }
 
-    class mailrelay inherits role::labs::tools::common {
+    class mailrelay {
         system::role { 'role::labs::tools::mailrelay': description => 'Tool Labs mail relay' }
 
         include toollabs::mailrelay
