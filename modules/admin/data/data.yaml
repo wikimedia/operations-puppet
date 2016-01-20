@@ -14,7 +14,7 @@ groups:
     description: include everywhere ops folks
     members: [filippo, jgreen, bblack, andrew, faidon, rush, oblivian, laner, yuvipanda,
               dzahn, akosiaris, springle, mark, ariel, cmjohnson, otto, robh, tstarling,
-              ori, midom, jmm, jynus, aaron, ema]
+              ori, midom, jmm, jynus, aaron, ema, elukey]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-roots:
     gid: 701
