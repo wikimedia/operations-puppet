@@ -79,7 +79,9 @@ class role::deployment::server(
     }
 
     redis::instance { 6379:
-        daemonize => false,
+        settings => {
+            daemonize => false,
+        }
     }
 
     # Used by the trebuchet salt returner
