@@ -10,9 +10,7 @@
 #
 # Sample Usage:
 #
-class toollabs::bastion(
-    $cron_host = 'tools-submit',
-) inherits toollabs {
+class toollabs::bastion inherits toollabs {
 
     include gridengine::submit_host,
             gridengine::admin_host,
@@ -58,6 +56,7 @@ class toollabs::bastion(
     include ldap::role::config::labs
     $ldapconfig = $ldap::role::config::labs::ldapconfig
 
+    $cron_host = hiera('active_cronrunner')
     file { '/usr/local/bin/crontab':
         ensure  => file,
         mode    => '0755',
