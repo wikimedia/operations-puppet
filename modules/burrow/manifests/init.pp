@@ -40,5 +40,6 @@ class burrow (
     service { 'burrow':
         ensure => ensure_service($ensure),
         enable => true,
+        subscribe => File['/etc/burrow/burrow.cfg'],
     }
 }
