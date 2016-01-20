@@ -15,10 +15,10 @@ class deployment::rsync {
     }
 
     if ($deployment_server == $::fqdn) {
-        $ensure = 'present'
+        $ensure = 'absent'
     }
     else {
-        $ensure = 'absent'
+        $ensure = 'present'
     }
 
     cron { 'sync_deployment_dir':
