@@ -31,7 +31,7 @@ packages:
     - /etc/apt/trusted.gpg
   install_standard: true
   install:
-    - linux-image-3.19.0-1-amd64
+    - linux-image-3.19.0-2-amd64
     - coreutils
     - snmp
     - wipe
