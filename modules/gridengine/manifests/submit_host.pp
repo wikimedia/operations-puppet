@@ -1,7 +1,9 @@
 # gridengine/submit_host.pp
 
-class gridengine::submit_host
-{
+class gridengine::submit_host {
+
+    include ::gridengine
+
     package { [ 'jobutils' ]:
         ensure => latest,
     }
@@ -23,4 +25,3 @@ class gridengine::submit_host
     }
 
 }
-
