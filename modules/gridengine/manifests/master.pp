@@ -1,7 +1,9 @@
 # gridengine/master.pp
 
-class gridengine::master
-{
+class gridengine::master {
+
+    include ::gridengine
+
     package { 'gridengine-master':
         ensure  => latest,
         require => Package['gridengine-common'],
