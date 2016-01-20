@@ -51,7 +51,7 @@ class role::labs::tools {
         }
     }
 
-    class checker inherits role::labs::tools::common {
+    class checker {
         include toollabs::checker
 
         system::role { 'role::labs::tools::checker':
