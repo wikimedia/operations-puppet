@@ -49,6 +49,10 @@ class role::labs::tools {
         class { 'toollabs::updatetools':
             active => ($::fqdn == $active_host),
         }
+
+        class { 'toollabs::toolwatcher':
+            active => ($::fqdn == $active_host)
+        }
     }
 
     class checker {
@@ -104,14 +108,6 @@ class role::labs::tools {
 
         include toollabs::redis
     }
-
-    class toolwatcher inherits role::labs::tools::common {
-        system::role { 'role::labs::tools::toolwatcher':
-            description => 'Tool Labs directory structure creator for new tools',
-        }
-        include toollabs::toolwatcher
-    }
-
     ##
     ## NOTE: Those roles are transitional, and should be removed
     ## from Wikitech entirely in favor of role::labs::tools::compute

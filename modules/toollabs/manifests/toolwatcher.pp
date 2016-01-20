@@ -3,7 +3,9 @@
 # yet.  For each such tool account, the toolwatcher creates the home
 # directory with the subdirectory public_html owned by the tool
 # account and its group and sets the permissions to g+srwx,o+rx.
-class toollabs::toolwatcher inherits toollabs {
+class toollabs::toolwatcher(
+    $active,
+) inherits toollabs {
     file { '/usr/local/sbin/toolwatcher':
         source => 'puppet:///modules/toollabs/toolwatcher',
         owner  => 'root',
@@ -21,7 +23,7 @@ class toollabs::toolwatcher inherits toollabs {
     }
 
     service { 'toolwatcher':
-        ensure    => running,
+        ensure    => ensure_service($active),
         provider  => 'upstart',
         subscribe => File['/etc/init/toolwatcher.conf'],
     }
