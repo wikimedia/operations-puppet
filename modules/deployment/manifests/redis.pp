@@ -15,7 +15,8 @@ class deployment::redis {
             }
         }
     } else {
-        redis::instance{ 6379:
+    redis::instance{ 6379:
+        settings => {
             daemonize       => false,
         }
     }
