@@ -454,14 +454,6 @@ groups:
     description: users who have root on analytics servers
     members: [mforns, milimetric, nuria, otto, madhuvishy, joal]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-  mobileapps-admins:
-    gid: 771
-    description: group of admins for the MobileApps service
-    members: []
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service mobileapps *',
-                 'ALL = (mobileapps) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl *']
-
 users:
   rush:
     ensure: present
