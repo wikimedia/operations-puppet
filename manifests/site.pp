@@ -2358,6 +2358,16 @@ node /^(strontium|rhodium).eqiad.wmnet/ {
 }
 
 node 'stat1001.eqiad.wmnet' {
+    # stat1001 is mainly used to host Analytics websites like:
+    # - http://stats.wikimedia.org (Wikistats)
+    # - http://datasets.wikimedia.org
+    # - http://metrics.wikimedia.org
+    #       or https://metrics.wmflabs.org/ (Wikimetrics)
+    #
+    # For a complete and up to date list please check the
+    # related role/module.
+    #
+    # This node is not intended for data processing.
     role statistics::web
     include standard
     include base::firewall
