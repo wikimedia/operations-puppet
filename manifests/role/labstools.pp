@@ -23,7 +23,7 @@ class role::labs::tools {
         system::role { 'role::labs::tools::master': description => 'Tool Labs gridengine master' }
     }
 
-    class shadow inherits role::labs::tools::common {
+    class shadow {
         system::role { 'role::labs::tools::shadow': description => 'Tool Labs gridengine shadow (backup) master' }
 
         class { 'toollabs::shadow':

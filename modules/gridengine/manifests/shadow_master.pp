@@ -5,6 +5,7 @@ class gridengine::shadow_master(
     $sgeroot = '/var/lib/gridengine',
   ) {
 
+    include ::gridengine
     package { 'gridengine-master':
         ensure  => latest,
         require => Package['gridengine-common'],
@@ -58,4 +59,3 @@ class gridengine::shadow_master(
         require => File['/etc/init/gridengine-shadow.conf', "${sgeroot}/default/common/shadow_masters"],
     }
 }
-
