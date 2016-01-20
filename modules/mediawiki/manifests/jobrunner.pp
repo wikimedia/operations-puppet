@@ -111,7 +111,7 @@ class mediawiki::jobrunner (
         # once it occupies more than 60% of the available memory
         if ($runners_gwt > 0) {
             cron { 'periodic_hhvm_restart':
-                command => '/bin/ps -C hhvm -o pmem= | awk \'{sum+=$1} END { if (sum <= 60.0) exit 1  }\'  && /usr/sbin/service hhvm restart >/dev/null 2>/dev/null',
+                command => '/bin/ps -C hhvm -o pmem= | awk \'{sum+=$1} END { if (sum <= 50.0) exit 1  }\'  && /usr/sbin/service hhvm restart >/dev/null 2>/dev/null',
                 minute  => fqdn_rand(59, 'periodic_hhvm_restart'),
             }
 
