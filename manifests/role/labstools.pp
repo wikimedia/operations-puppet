@@ -11,7 +11,7 @@ class role::labs::tools {
         system::role { 'role::labs::tools::bastion': description => 'Tool Labs bastion' }
     }
 
-    class compute inherits role::labs::tools::common {
+    class compute {
         include toollabs::compute
 
         system::role { 'role::labs::tools::compute': description => 'Tool Labs compute node' }
