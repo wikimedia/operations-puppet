@@ -183,6 +183,12 @@ sub vcl_recv {
 				call tag_carrier;
 			}
 
+<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
+			// in the text cluster this is now done on tier-one
+			// bereq to the applayer only, but it's preserved for
+			// the mobile cluster here so that we don't
+			// effectively invalidate the whole mobile cache on
+			// cache_mobile machines in the process...
 			// Rewrite m.mediawiki.org to mediawiki.org etc
 			if (req.http.host == "m.mediawiki.org") {
 				set req.http.host = "www.mediawiki.org";
@@ -196,6 +202,7 @@ sub vcl_recv {
 				// Replace <language>.(m|zero).<project>.org by <language>.<project>.org
 				set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
 			}
+<% end -%>
 		}
 	}
 
