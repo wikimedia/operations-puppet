@@ -2,9 +2,7 @@
 class role::labs::tools {
 
     class common {
-        $gridmaster = "${::labsproject}-master.${::site}.wmflabs"
-
-        class { 'gridengine': gridmaster => $gridmaster }
+        include ::gridengine
     }
 
     class bastion inherits role::labs::tools::common {
