@@ -23,7 +23,7 @@ class deployment::rsync {
 
     cron { 'sync_deployment_dir':
         ensure  => $ensure,
-        command => "/usr/bin/rsync -avz --delete rsync://${deployment_server}/srv/deployment /srv/deployment > /dev/null 2>&1",
+        command => "/usr/bin/rsync -avz --delete ${deployment_server}::trebuchet_server /srv/deployment > /dev/null 2>&1",
         minute  => 0,
     }
 
