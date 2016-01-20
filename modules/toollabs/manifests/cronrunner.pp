@@ -24,4 +24,20 @@ class toollabs::cronrunner {
         group  => 'root',
         mode   => '0555',
     }
+
+    # Backup crontabs! See https://phabricator.wikimedia.org/T95798
+    file { '/data/project/.system/crontabs':
+        ensure => directory,
+        owner  => 'root',
+        group  => "${::labsproject}.admin",
+        mode   => '0770',
+    }
+    file { "/data/project/.system/crontabs/${::fqdn}":
+        ensure  => directory,
+        source  => '/var/spool/cron/crontabs',
+        owner   => 'root',
+        group   => "${::labsproject}.admin",
+        mode    => '0440',
+        recurse => true,
+    }
 }
