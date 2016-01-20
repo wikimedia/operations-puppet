@@ -5,7 +5,7 @@ class role::labs::tools {
         include ::gridengine
     }
 
-    class bastion inherits role::labs::tools::common {
+    class bastion {
         include toollabs::bastion
 
         system::role { 'role::labs::tools::bastion': description => 'Tool Labs bastion' }
