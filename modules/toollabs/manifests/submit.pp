@@ -47,30 +47,6 @@ class toollabs::submit inherits toollabs {
         mode   => '0555',
     }
 
-    # Service to update the tools and users tables.
-    file { '/usr/local/bin/updatetools':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/toollabs/updatetools',
-    }
-
-    file { '/etc/init/updatetools.conf':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('toollabs/updatetools.conf.erb'),
-    }
-
-    service { 'updatetools':
-        ensure    => running,
-        enable    => true,
-        subscribe => [File['/etc/init/updatetools.conf'],
-                      File['/usr/local/bin/updatetools']],
-    }
-
     # Backup crontabs! See https://phabricator.wikimedia.org/T95798
     file { '/data/project/.system/crontabs':
         ensure => directory,
