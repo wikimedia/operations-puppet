@@ -51,6 +51,14 @@ class role::labs::tools {
         }
     }
 
+    class cronrunner {
+        include ::toollabs::cronrunner
+
+        system::role { 'role::labs::tools::cronrunner':
+            description => 'Tool Labs cron starter host',
+        }
+    }
+
     class submit {
         include ::toollabs::submit
 
