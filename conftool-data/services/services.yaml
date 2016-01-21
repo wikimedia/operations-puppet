@@ -56,13 +56,6 @@ sca:
       weight: 10
     datacenters:
     - eqiad
-  citoid:
-    port: 1970
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
   cxserver:
     port: 8080
     default_values:
@@ -101,6 +94,13 @@ scb:
     - eqiad
   graphoid:
     port: 19000
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
+  citoid:
+    port: 1970
     default_values:
       pooled: 'no'
       weight: 10
