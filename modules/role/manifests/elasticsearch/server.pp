@@ -22,7 +22,7 @@ class role::elasticsearch::server{
         proto   => 'tcp',
         port    => '9200',
         notrack => true,
-        srange  => '(($INTERNAL @resolve(silver.wikimedia.org)))',
+        srange  => '(($INTERNAL @resolve(silver.wikimedia.org) @resolve(labtestweb2001.wikimedia.org)))',
     }
 
     $elastic_nodes = hiera('elasticsearch::cluster_hosts')
