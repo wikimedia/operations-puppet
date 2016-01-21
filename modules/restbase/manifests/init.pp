@@ -99,7 +99,6 @@ class restbase(
         no_file         => 200000,
         healthcheck_url => "/${monitor_domain}/v1",
         has_spec        => true,
-        firejail        => false,
         starter_script  => 'restbase/server.js',
         local_logging   => false,
         auto_refresh    => false,
