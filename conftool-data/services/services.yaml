@@ -49,22 +49,8 @@ pdf:
     datacenters:
     - eqiad
 sca:
-  mathoid:
-    port: 10042
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
   cxserver:
     port: 8080
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
-  graphoid:
-    port: 19000
     default_values:
       pooled: 'no'
       weight: 10
