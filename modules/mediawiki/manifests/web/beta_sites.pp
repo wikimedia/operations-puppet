@@ -57,18 +57,13 @@ class mediawiki::web::beta_sites {
         priority => 11,
     }
 
-    apache::site { 'loginwiki':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/loginwiki.conf',
-        priority => 12,
-    }
-
     apache::site { 'upload':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/upload.conf',
         priority => 13,
     }
 
-    apache::site { 'wmflabs':
-        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wmflabs.conf',
+    apache::site { 'wikivoyage':
+        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikivoyage.conf',
         priority => 15,
     }
 
