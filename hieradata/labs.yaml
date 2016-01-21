@@ -60,3 +60,6 @@ mysql::server::use_apparmor: false  # The images we have for debian don't suppor
 
 # All labs instances have internet connectivity, so do not bother with proxies
 apt::use_proxy: false
+
+# By default, nag project admins about puppet breakage
+send_puppet_failure_emails: true
