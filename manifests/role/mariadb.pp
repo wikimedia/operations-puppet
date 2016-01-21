@@ -743,6 +743,7 @@ class role::mariadb::parsercache {
 
     include role::mariadb::grants::core
     include role::mariadb::monitor
+    include role::mariadb::ferm
     include passwords::misc::scripts
 
     system::role { 'role::mariadb::parsercache':
@@ -756,6 +757,7 @@ class role::mariadb::parsercache {
     class { 'role::mariadb::grants':
         shard => 'parsercache',
     }
+
     $basedir = $hostname ? {
         /pc100[123]/ => '/a',
         default      => '/srv',
@@ -767,6 +769,8 @@ class role::mariadb::parsercache {
         password => $passwords::misc::scripts::mysql_root_pass,
         datadir  => "${basedir}/sqldata-cache",
         tmpdir   => "${basedir}/tmp",
+        ssl      => 'on',
+        p_s      => 'off',
     }
 
     # mysql monitoring access from tendril (db1011)

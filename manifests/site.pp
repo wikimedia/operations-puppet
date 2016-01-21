@@ -2204,10 +2204,12 @@ node /pc100[1-3]\.eqiad\.wmnet/ {
 # eqiad
 node /pc100[4-6]\.eqiad\.wmnet/ {
     role mariadb::parsercache
+    include base::firewall
 }
 # codfw
 node /pc200[4-6]\.codfw\.wmnet/ {
     role mariadb::parsercache
+    include base::firewall
 }
 
 # virtual machine hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
