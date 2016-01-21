@@ -115,7 +115,9 @@ lvs_service_ips:
   mobileapps: &ip_block023
     eqiad: 10.2.2.14
   git-ssh: &ip_block024
-    eqiad: 208.80.154.250
+    eqiad:
+      git-ssh4: 208.80.154.250
+      git-ssh6: 2620:0:861:ed1a::3:16
   aqs: &ip_block025
     eqiad: 10.2.2.12
   eventbus: &ip_block026
