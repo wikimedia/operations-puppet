@@ -69,13 +69,12 @@ class role::statistics::cruncher inherits role::statistics {
     # Use the statistics::limn::data::generate define
     # to set up cron jobs to generate and generate limn files
     # from research db and push them
-    statistics::limn::data::generate { 'mobile':     }
-    statistics::limn::data::generate { 'flow':       }
-    statistics::limn::data::generate { 'edit':       }
-    statistics::limn::data::generate { 'language':   }
-    statistics::limn::data::generate { 'extdist':    }
-    statistics::limn::data::generate { 'ee':         }
-    statistics::limn::data::generate { 'multimedia': }
+    statistics::limn::data::generate { 'mobile':    }
+    statistics::limn::data::generate { 'flow':      }
+    statistics::limn::data::generate { 'edit':      }
+    statistics::limn::data::generate { 'language':  }
+    statistics::limn::data::generate { 'extdist':   }
+    statistics::limn::data::generate { 'ee':        }
 
 }
 
@@ -115,7 +114,6 @@ class role::statistics::private inherits role::statistics {
     # daily per site csvs.
     # Although it is in the "private" role, the dataset actually isn't
     # private. We just keep it here to spare adding a separate role.
-    include statistics::aggregator::projectcounts
     include statistics::aggregator::projectview
 
     include passwords::mysql::research
