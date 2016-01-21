@@ -113,4 +113,8 @@ class labstore::fileserver(
     diamond::collector { 'NfsdCollector':
         source   => 'puppet:///modules/labstore/monitor/nfsd.py',
     }
+
+    diamond::collector { 'NscdCollector':
+        source => 'puppet:///modules/ldap/monitor/nscd.py',
+    }
 }
