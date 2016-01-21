@@ -24,8 +24,8 @@
 
     # Math compatibility mode
     RewriteCond %{ENV:RW_PROTO} !=""
-    RewriteRule ^/math/(.*) %{ENV:RW_PROTO}://upload.wikimedia.org/math/$1 [R=301]
-    RewriteRule ^/math/(.*) https://upload.wikimedia.org/math/$1 [R=301]
+    RewriteRule ^/math/(.*) %{ENV:RW_PROTO}://upload.wikimedia.<%= @domain_suffix %>/math/$1 [R=301]
+    RewriteRule ^/math/(.*) https://upload.wikimedia.<%= @domain_suffix %>/math/$1 [R=301]
 
     <Directory "/srv/mediawiki/docroot/wikimedia.org/w">
         <IfModule mod_php5.c>
