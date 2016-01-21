@@ -84,6 +84,26 @@ class apt(
         } else {
             fail("Unknown operating system '${::operatingsystem}'.")
         }
+    } else {
+        if $::operatingsystem == 'Debian' {
+            apt::conf { 'security-debian-proxy':
+                ensure   => absent,
+            }
+        } elsif $::operatingsystem == 'Ubuntu' {
+            apt::conf { 'security-ubuntu-proxy':
+                ensure   => absent,
+            }
+
+            apt::conf { 'ubuntu-cloud-archive-proxy':
+                ensure   => absent,
+            }
+
+            apt::conf { 'old-releases-proxy':
+                ensure   => absent,
+            }
+        } else {
+            fail("Unknown operating system '${::operatingsystem}'.")
+        }
     }
 
     if $::operatingsystem == 'ubuntu' {
