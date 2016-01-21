@@ -99,6 +99,13 @@ scb:
       weight: 10
     datacenters:
     - eqiad
+  graphoid:
+    port: 19000
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
 restbase:
   restbase:
     port: 7231
