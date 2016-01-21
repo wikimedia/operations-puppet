@@ -88,6 +88,13 @@ class role::phabricator::main {
         address   => '10.64.32.186',
         prefixlen => '21',
     }
+    interface::ip { 'role::phabricator::main::ipv6':
+        interface => 'eth0',
+        address   => '2620:0:861:103:10:64:32:186',
+        prefixlen => '128',
+        # mark as deprecated = never pick this address unless explicitly asked
+        options   => 'preferred_lft 0',
+    }
 
     class { '::phabricator::tools':
         dbhost          => $mysql_host,
@@ -166,7 +173,7 @@ class role::phabricator::main {
     }
 
     ferm::rule { 'ssh_public':
-        rule => 'saddr (0.0.0.0/0) daddr (10.64.32.186/32 208.80.154.250/32) proto tcp dport (22) ACCEPT;',
+        rule => 'saddr (0.0.0.0/0) daddr (10.64.32.186/32 208.80.154.250/32 2620:0:861:103:10:64:32:186/128 2620:0:861:ed1a::3:16/128) proto tcp dport (22) ACCEPT;',
     }
 
     # redirect bugzilla URL patterns to phabricator
