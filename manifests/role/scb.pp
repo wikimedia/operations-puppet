@@ -3,6 +3,7 @@
 class role::scb {
     include role::mobileapps
     include role::mathoid
+    include role::graphoid
 
     include standard
     include base::firewall
