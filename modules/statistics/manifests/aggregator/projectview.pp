@@ -2,8 +2,8 @@
 # Handles aggregation of projectview_hourly files
 #
 # WARNING - Files aggregated by this instance are using the
-# new pageview definition. The legacy ones are managed by
-# projectcounts.pp in the same folder.
+# new pageview definition. The legacy ones are no longer 
+# being calculated
 #
 class statistics::aggregator::projectview {
     require statistics::aggregator
