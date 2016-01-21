@@ -2197,7 +2197,16 @@ node 'palladium.eqiad.wmnet' {
 }
 
 # parser cache databases
+# old eqiad to be replaced
 node /pc100[1-3]\.eqiad\.wmnet/ {
+    role mariadb::parsercache
+}
+# eqiad
+node /pc100[4-6]\.eqiad\.wmnet/ {
+    role mariadb::parsercache
+}
+# codfw
+node /pc200[4-6]\.codfw\.wmnet/ {
     role mariadb::parsercache
 }
 
