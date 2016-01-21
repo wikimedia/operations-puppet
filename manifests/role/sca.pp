@@ -2,11 +2,8 @@
 # This class is an intermediate step to better design
 class role::sca {
     include role::apertium
-    include role::citoid
     include role::cxserver
-    include role::mathoid
     include role::zotero
-    include role::graphoid
 
     include standard
     include base::firewall
