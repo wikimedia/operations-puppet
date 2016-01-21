@@ -1,21 +1,12 @@
 cluster: sca
 admin::groups:
-  - citoid-admin
-  - citoid-roots
-  - citoid-users
   - cxserver-admin
-  - graphoid-admin
-  - mathoid-admin
-  - mathoid-roots
   - zotero-admin
   - apertium-admins
 
 lvs::realserver::realserver_ips:
-  - '10.2.2.15' # graphoid.svc.eqiad.wmnet
   - '10.2.2.16' # zotero.svc.eqiad.wmnet
   - '10.2.2.18' # cxserver.svc.eqiad.wmnet
-  - '10.2.2.19' # citoid.svc.eqiad.wmnet
-  - '10.2.2.20' # mathoid.svc.eqiad.wmnet
 
 service::configuration::http_proxy: http://url-downloader.wikimedia.org:8080
 service::configuration::statsd_host: statsd.eqiad.wmnet
