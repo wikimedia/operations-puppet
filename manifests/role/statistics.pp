@@ -114,7 +114,6 @@ class role::statistics::private inherits role::statistics {
     # daily per site csvs.
     # Although it is in the "private" role, the dataset actually isn't
     # private. We just keep it here to spare adding a separate role.
-    include statistics::aggregator::projectcounts
     include statistics::aggregator::projectview
 
     include passwords::mysql::research

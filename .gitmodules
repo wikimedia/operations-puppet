@@ -22,6 +22,3 @@
 [submodule "modules/mariadb"]
        path = modules/mariadb
        url = https://gerrit.wikimedia.org/r/operations/puppet/mariadb
-[submodule "modules/cdh"]
-	path = modules/cdh
-	url = https://gerrit.wikimedia.org/r/operations/puppet/cdh
