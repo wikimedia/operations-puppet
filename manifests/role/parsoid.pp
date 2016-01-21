@@ -285,46 +285,27 @@ class role::parsoid::testing {
         before    => Service['parsoid'],
     }
 
-    file { '/etc/init/parsoid.conf':
-        ensure => present,
-        owner  => root,
-        group  => root,
+    file { '/lib/systemd/system/parsoid.service':
+        source => 'puppet:///files/misc/parsoid.systemd.service',
+        owner  => 'root',
+        group  => 'root',
         mode   => '0444',
-        source => 'puppet:///files/misc/parsoid.upstart',
         before => Service['parsoid'],
     }
 
     file { '/var/log/parsoid':
         ensure => directory,
-        owner  => parsoid,
-        group  => parsoid,
+        owner  => 'parsoid',
+        group  => 'parsoid'
         mode   => '0775',
         before => Service['parsoid'],
-    }
-
-    $parsoid_log_file = '/var/log/parsoid/parsoid.log'
-    $parsoid_node_path = '/usr/lib/parsoid/deploy/node_modules'
-    # default local settings -- test setups provide their own settings
-    $parsoid_settings_file = '/usr/lib/parsoid/src/localsettings.js'
-    $parsoid_base_path = '/usr/lib/parsoid/deploy/src'
-
-    #TODO: Duplication of code, deduplicate somehow
-    file { '/etc/default/parsoid':
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0444',
-        content => template('misc/parsoid.default.erb'),
-        before  => Service['parsoid'],
     }
 
     service { 'parsoid':
         hasstatus  => true,
         hasrestart => true,
-        provider   => 'upstart',
         subscribe  => [
-            File['/etc/default/parsoid'],
-            File['/etc/init/parsoid.conf'],
+            File['/lib/systemd/system/parsoid.service'],
         ],
     }
 }
