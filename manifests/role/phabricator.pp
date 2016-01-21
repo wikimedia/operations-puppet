@@ -173,7 +173,7 @@ class role::phabricator::main {
     }
 
     ferm::rule { 'ssh_public':
-        rule => 'saddr (0.0.0.0/0) daddr (10.64.32.186/32 208.80.154.250/32 2620:0:861:103:10:64:32:186/128 2620:0:861:ed1a::3:16/128) proto tcp dport (22) ACCEPT;',
+        rule => 'saddr (0.0.0.0/0 ::/0) daddr (10.64.32.186/32 208.80.154.250/32 2620:0:861:103:10:64:32:186/128 2620:0:861:ed1a::3:16/128) proto tcp dport (22) ACCEPT;',
     }
 
     # redirect bugzilla URL patterns to phabricator
