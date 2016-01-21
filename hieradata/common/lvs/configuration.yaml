@@ -719,7 +719,7 @@ lvs_services:
         timeout-clean-reconnect: 3
         max-delay: 300
     conftool:
-      cluster: sca
+      cluster: scb
       service: citoid
     icinga:
       check_command: check_http_lvs_on_port!citoid.svc.eqiad.wmnet!1970!/
