@@ -1,5 +1,7 @@
 burrow::httpserver_port: 8000
 burrow::consumer_groups:
   - eventlogging-00
-  - mysql-m4-master
+  # Temporarily stop monitoring this consumer group
+  # https://phabricator.wikimedia.org/T120187
+  # - mysql-m4-master
   - eventlogging-files-00
