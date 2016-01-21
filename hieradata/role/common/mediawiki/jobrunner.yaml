@@ -7,6 +7,7 @@ mediawiki::jobrunner::runners_gwt: 0
 mediawiki::jobrunner::runners_restbase: 3
 mediawiki::jobrunner::runners_translate: 1
 mediawiki::jobrunner::runners_upload: 7
+mediawiki::jobrunner::runners_html: 1
 nutcracker::verbosity: "4"
 hhvm::extra::fcgi:
   max_execution_time: 1200
