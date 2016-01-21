@@ -7,6 +7,7 @@ class mediawiki::jobrunner (
     $queue_servers,
     $aggr_servers      = $queue_servers,
     $runners_basic     = 0,
+    $runners_html      = 0,
     $runners_upload    = 0,
     $runners_gwt       = 0,
     $runners_restbase  = 0,
