@@ -5,13 +5,6 @@ class annualreport {
     include ::apache
     include ::apache::mod::headers
 
-    file { '/srv/org/wikimedia/annualreport':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
     apache::site { 'annual.wikimedia.org':
         source => 'puppet:///modules/annualreport/annual.wikimedia.org',
     }
@@ -24,8 +17,5 @@ class annualreport {
         ensure    => 'latest',
         directory => '/srv/org/wikimedia/annualreport',
         branch    => 'master',
-        owner     => 'www-data',
-        group     => 'www-data',
-        require   => File['/srv/org/wikimedia/annualreport'],
     }
 }
