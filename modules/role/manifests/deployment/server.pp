@@ -78,9 +78,27 @@ class role::deployment::server(
         require => File['/srv/deployment'],
     }
 
-    include ::deployment::redis
+    $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet')
+    class { '::deployment::redis':
+        deployment_server => $deployment_server
+    }
 
-    include ::deployment::rsync
+    $deploy_ensure = $deployment_server ? {
+        $::fqdn => 'absent',
+        default => 'present'
+    }
+
+    class { '::deployment::rsync':
+        deployment_server => $deployment_server,
+        cron_ensure       => $deploy_ensure,
+    }
+
+    motd::script { 'inactive_warning':
+        ensure   => $deploy_ensure,
+        priority => 01,
+        source   => 'puppet:///modules/role/deployment/inactive.motd',
+    }
+
 
     # Used by the trebuchet salt returner
     ferm::service { 'deployment-redis':
