@@ -2197,7 +2197,10 @@ node 'palladium.eqiad.wmnet' {
 }
 
 # parser cache databases
-node /pc100[1-3]\.eqiad\.wmnet/ {
+node /pc100[1-6]\.eqiad\.wmnet/ {
+    role mariadb::parsercache
+}
+node /pc100[4-6]\.eqiad\.wmnet/ {
     role mariadb::parsercache
 }
 
