@@ -10,12 +10,10 @@ admin::groups:
 - zotero-admin
 - mobileapps-admin
 lvs::realserver::realserver_ips:
-- 10.2.2.15
-- 10.2.2.16
-- 10.2.2.18
-- 10.2.2.19
-- 10.2.2.20
-- 10.2.2.14
+- 10.2.2.14 # mobileapps.svc.eqiad.wmnet
+- 10.2.2.15 # graphoid.svc.eqiad.wmnet
+- 10.2.2.19 # citoid.svc.eqiad.wmnet
+- 10.2.2.20 # mathoid.svc.eqiad.wmnet
 service::configuration::http_proxy: http://url-downloader.wikimedia.org:8080
 service::configuration::statsd_host: statsd.eqiad.wmnet
 service::configuration::logstash_host: logstash1001.eqiad.wmnet
