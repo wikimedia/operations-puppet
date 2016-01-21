@@ -75,5 +75,15 @@ class ldap::client::nss(
         mode    => '0440',
         content => template('ldap/nslcd.conf.erb'),
     }
-}
 
+    # nscd -g (stats output) is only allowed as root
+    sudo::user { 'diamond_sudo_for_nscd':
+        user       => 'diamond',
+        privileges => ['diamond ALL = NOPASSWD: /usr/sbin/nscd -g']
+    }
+
+    diamond::collector { 'Nscd':
+        source  => 'puppet:///modules/ldap/monitor/nscd.py',
+        require => Package['nscd'],
+    }
+}

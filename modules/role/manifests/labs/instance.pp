@@ -210,5 +210,9 @@ class role::labs::instance {
         source => 'puppet:///modules/diamond/collector/sshsessions.py',
     }
 
+    diamond::collector { 'NscdCollector':
+        source => 'puppet:///modules/ldap/monitor/nscd.py',
+    }
+
     hiera_include('classes', [])
 }
