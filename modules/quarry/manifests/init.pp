@@ -63,10 +63,9 @@ class quarry::database {
 class quarry::redis {
     redis::instance { '6379':
         settings => {
+            bind           => '0.0.0.0',
             dir            => '/srv/redis',
             maxmemory      => '2GB',
-            appendonly     => 'yes',
-            appendfilename => "${hostname}-6379.aof",
         }
     }
 }
