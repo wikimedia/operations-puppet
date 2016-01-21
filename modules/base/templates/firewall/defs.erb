@@ -39,5 +39,5 @@ mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networ
 <%- end -%>
 
 @def $INTERNAL_V4 = (10.0.0.0/8);
-@def $INTERNAL_V6 = (2620:0:100::/56);
+@def $INTERNAL_V6 = (2620:0:860:100::/56 2620:0:861:100::/56 2620:0:862:100::/56 2620:0:863:100::/56);
 @def $INTERNAL = ($INTERNAL_V4 $INTERNAL_V6);
