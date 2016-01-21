@@ -1,8 +1,7 @@
 # == Class deployment::redis
 # Simple wrapper to enable replication between trebuchet masters
 
-class deployment::redis {
-    $deployment_server = hiera('deployment_server', 'tin.eqiad.wmnet')
+class deployment::redis($deployment_server) {
 
     if ($::fqdn != $deployment_server) {
         $deployment_ipv4 = ipresolve($deployment_server, 4)
