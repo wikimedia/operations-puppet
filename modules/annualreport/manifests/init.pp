@@ -21,7 +21,7 @@ class annualreport {
     }
 
     git::clone { 'wikimedia/annualreport':
-        ensure    => 'present',
+        ensure    => 'latest',
         directory => '/srv/org/wikimedia/annualreport',
         branch    => 'master',
         owner     => 'www-data',
