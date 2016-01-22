@@ -1,1 +1,1 @@
-DAEMON_OPTS="-m <%= @mc_addrs.join(' -m ') -%> -c <%= @varnishes.join(' -c ') -%>"
+DAEMON_OPTS="-m <%= @mc_addrs.join(' -m ') -%> -c <%= @varnishes.join(' -c ') -%> -l 1024"
