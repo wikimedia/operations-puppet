@@ -211,13 +211,13 @@ retry_interval = 10
 #-----------------------
 [handler:nova_fixed_multi]
 # Domain ID of domain to create records in. For a pre-existing domain, in this case eqiad.wmflabs
-domain_id = <%= @designateconfig["domain_id_internal_forward"] %>
+domain_id = '114f1333-c2c1-44d3-beb4-ebed1a91742b'
 notification_topics = monitor
 notification_topics = notifications
 control_exchange = nova
 format = '%(hostname)s.%(project_name)s.%(domain)s'
 format = '%(hostname)s.%(domain)s'
-domain_id = <%= @designateconfig["domain_id_internal_reverse"] %>
+reverse_domain_id = '8d114f3c-815b-466c-bdd4-9b91f704ea60'
 reverse_format = '%(hostname)s.%(project_name)s.%(domain)s'
 keystone_auth_name = "novaadmin"
 keystone_auth_pass = "<%= @keystoneconfig['ldap_user_pass'] %>"
@@ -229,7 +229,7 @@ keystone_auth_url = "http://<%= @designateconfig['controller_hostname'] %>:35357
 #-----------------------
 [handler:nova_ldap]
 # Domain ID of domain to create records in. For a pre-existing domain, in this case eqiad.wmflabs
-domain_id = <%= @designateconfig["domain_id_internal_forward"] %>
+domain_id = '114f1333-c2c1-44d3-beb4-ebed1a91742b'
 notification_topics = monitor
 notification_topics = notifications
 control_exchange = nova

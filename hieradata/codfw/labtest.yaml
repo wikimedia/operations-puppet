@@ -97,8 +97,6 @@ designateconfig:
   pdns_db_name: 'pdns'
   rabbit_host:  *labsnovacontroller
   controller_hostname: *labsnovacontroller
-  domain_id_internal_forward: '61194e5b-b78b-4979-bcdb-581dc4f296bf'
-  domain_id_internal_reverse: '7766d667-4a29-4a0a-9c36-77e9c4e38a32'
 
 glanceconfig:
   db_host: 'labtestcontrol2001.wikimedia.org'
