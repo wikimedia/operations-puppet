@@ -1,7 +1,7 @@
 # Testreduce server for aggregating and displaying visualdiff results
 
 # This instantiates testreduce::server
-class role::parsoid-vd-server {
+class role::parsoid_vd_server {
     include ::testreduce
 
     testreduce::server { 'parsoid-vd':

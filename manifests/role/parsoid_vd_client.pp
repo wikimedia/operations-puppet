@@ -1,5 +1,5 @@
 # This instantiates testreduce::client for visual diff testing
-class role::parsoid-vd-client {
+class role::parsoid_vd_client {
     include ::testreduce
     include ::visualdiff
 
