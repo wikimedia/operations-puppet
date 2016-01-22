@@ -77,6 +77,13 @@ sca:
       weight: 10
     datacenters:
     - eqiad
+  citoid:
+    port: 1970
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
 scb:
   mobileapps:
     port: 8888
