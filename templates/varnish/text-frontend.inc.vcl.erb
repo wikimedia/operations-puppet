@@ -161,11 +161,14 @@ sub vcl_recv {
 		// Always set or clear X-Subdomain and X-Orig-Cookie
 		unset req.http.X-Orig-Cookie;
 		unset req.http.X-Subdomain;
+		unset req.http.x-dt-host; // desktop host, if mobile hostname on request
+
 		if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?zero\." && req.http.host != "zero.wikimedia.org") {
 			set req.http.X-Subdomain = "ZERO";
 		} else if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?m\.") {
 			set req.http.X-Subdomain = "M";
 		}
+
 <% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
 		// mobile-cluster-only: prevent desktop/text hostnames from
 		// being used here, or they'll pollute the cache for mobile
@@ -183,26 +186,30 @@ sub vcl_recv {
 				call tag_carrier;
 			}
 
-<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
-			// in the text cluster this is now done on tier-one
-			// bereq to the applayer only, but it's preserved for
-			// the mobile cluster here so that we don't
-			// effectively invalidate the whole mobile cache on
-			// cache_mobile machines in the process...
-			// Rewrite m.mediawiki.org to mediawiki.org etc
+			// Rewrite mobile hostnames to desktop hostnames as x-dt-host
 			if (req.http.host == "m.mediawiki.org") {
-				set req.http.host = "www.mediawiki.org";
+				set req.http.x-dt-host = "www.mediawiki.org";
 			} else if (req.http.host == "m.wikimediafoundation.org") {
-				set req.http.host = "wikimediafoundation.org";
+				set req.http.x-dt-host = "wikimediafoundation.org";
 			} else if (req.http.host == "m.wikisource.org") {
-				set req.http.host = "wikisource.org";
+				set req.http.x-dt-host = "wikisource.org";
 			} else if (req.http.host == "m.wikidata.org") {
-				set req.http.host = "www.wikidata.org";
+				set req.http.x-dt-host = "www.wikidata.org";
 			} else {
 				// Replace <language>.(m|zero).<project>.org by <language>.<project>.org
-				set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
+				set req.http.x-dt-host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
 			}
+<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
+			// legacy cache_mobile actually resets the real Host: header value here, cache_text does not...
+			set req.http.host = req.http.x-dt-host;
 <% end -%>
+			if (req.url ~ "^/api/rest_v1/") {
+				// for Restbase, there is no difference in desktop-vs-mobile hostnames,
+				// so rewrite mobile hostnames to desktop hostnames for singular caching
+				// (this affects the Host: header, and also the url rewrite for restbase
+				// elsewhere that uses req.http.host)
+				set req.http.host = req.http.x-dt-host;
+			}
 		}
 	}
 
