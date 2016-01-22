@@ -26,7 +26,7 @@
             ]
         },
         "html": {
-            "runners": <%=  @runners_html  %>,
+            "runners": <%= @hostname.split('.').first.slice(-1).to_i % 2 == 1 ? @runners_html  : 0 %>,
             "include": [
                 "htmlCacheUpdate"
             ]
