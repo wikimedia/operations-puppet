@@ -6313,6 +6313,8 @@ host rhodium {
 host ruthenium {
 	hardware ethernet 18:03:73:f1:58:82;
 	fixed-address ruthenium.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host scandium {
