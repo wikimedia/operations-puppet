@@ -10,7 +10,7 @@ base::resolving::domain_search:
 mediawiki::maintenance::pagetriage::ensure: present
 mediawiki::maintenance::translationnotifications::ensure: present
 mediawiki::maintenance::updatetranslationstats::ensure: present
-mediawiki::maintenance::wikidata::ensure: present
+mediawiki::maintenance::wikidata::ensure: absent
 mediawiki::maintenance::echo_mail_batch::ensure: present
 mediawiki::maintenance::parsercachepurging::ensure: present
 mediawiki::maintenance::cleanup_upload_stash::ensure: present
