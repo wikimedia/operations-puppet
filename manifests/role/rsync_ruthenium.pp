@@ -1,11 +1,11 @@
 class role::rsync_ruthenium {
 
-    $sourceip='10.64.16.151'
+    $sourceip='10.64.32.146'
 
     include rsync::server
 
     rsync::server::module { 'ruthenium':
-        path        => '/srv/ruthenium',
+        path        => '/mnt/data',
         read_only   => 'no',
         hosts_allow => $sourceip,
     }
