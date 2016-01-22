@@ -1,7 +1,7 @@
 # Parsoid RT testing services
 
 # This instantiates testreduce::server
-class role::parsoid-rt-server {
+class role::parsoid_rt_server {
     include ::testreduce
 
     testreduce::server { 'parsoid-rt':
