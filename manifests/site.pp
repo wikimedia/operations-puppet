@@ -2434,6 +2434,10 @@ node 'stat1002.eqiad.wmnet' {
     # EventLogging consumers.  Install this on
     # stat1002, but don't run any daemons.
     include ::eventlogging::package
+
+    # The search analytics supports the CirrusSearch
+    # extension.
+    include role::analytics::search
 }
 
 # stat1003 is a general purpose number cruncher for

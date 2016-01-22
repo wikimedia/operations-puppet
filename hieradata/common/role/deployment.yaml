@@ -112,3 +112,5 @@ repo_config:
   mobileapps/deploy:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/mobileapps/deploy
     checkout_submodules: true
+  wikimedia/discovery/analytics:
+    upstream: https://gerrit.wikimedia.org/r/wikimedia/discovery/analytics
