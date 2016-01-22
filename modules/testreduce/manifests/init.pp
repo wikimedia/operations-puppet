@@ -34,6 +34,7 @@ class testreduce {
 
     git::clone { 'mediawiki/services/parsoid/testreduce':
         ensure    => latest,
+        branch    => 'ruthenium',
         owner     => 'root',
         group     => 'wikidev',
         directory => '/srv/testreduce',
