@@ -2319,8 +2319,8 @@ node 'rutherfordium.eqiad.wmnet' {
 # But, we are likely going to split them into different boxes soon.
 node 'ruthenium.eqiad.wmnet' {
     role testsystem, rsync_ruthenium,
-        parsoid::testing, parsoid-rt-server, parsoid-rt-client,
-        parsoid-vd-server, parsoid-vd-client
+        parsoid::testing, parsoid_rt_server, parsoid_rt_client,
+        parsoid_vd_server, parsoid_vd_client
 
     nginx::site { 'ruthenium':
         source => 'puppet:///files/misc/ruthenium.nginx.conf',
