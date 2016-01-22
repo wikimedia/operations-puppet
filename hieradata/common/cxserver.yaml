@@ -677,137 +677,463 @@ registry:
         - hi
     Yandex:
       af:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ar:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       az:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ba:
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       'be-tarask':
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       be:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       bg:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       bs:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ca:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       cs:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       cy:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       da:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       de:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       el:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       en:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       es:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       et:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       eu:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       fa:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       fi:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       fr:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ga:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       gl:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       he:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       hi:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       hr:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ht:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       hu:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       hy:
+        - ba
+        - pl
+        - sq
         - ru
+        - uz
       id:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       is:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       it:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ja:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ka:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       kk:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ko:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ky:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       la:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       lt:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       lv:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       mg:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       mk:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       mn:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ms:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       mt:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       nl:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       'no':
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       pl:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       pt:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ro:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       sk:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       sl:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       sq:
+        - ba
+        - hy
+        - pl
         - ru
+        - uz
       sr:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       sv:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       sw:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       tg:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       th:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       tl:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       tr:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       tt:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       uk:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       ur:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       uz:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
       vi:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
       zh:
+        - ba
+        - hy
+        - pl
+        - sq
         - ru
+        - uz
   dictionary:
     Dictd:
       en:
