@@ -50,19 +50,7 @@ sub bitscompat_1be_mangle {
 <% if @site_tier == "one" && scope.function_hiera(["cluster"]) == "cache_text" -%>
 sub mobile_hostname_1be_mangle {
 	if (req.http.X-Subdomain) {
-		// Rewrite m.mediawiki.org to mediawiki.org etc
-		if (req.http.host == "m.mediawiki.org") {
-			set bereq.http.host = "www.mediawiki.org";
-		} else if (req.http.host == "m.wikimediafoundation.org") {
-			set bereq.http.host = "wikimediafoundation.org";
-		} else if (req.http.host == "m.wikisource.org") {
-			set bereq.http.host = "wikisource.org";
-		} else if (req.http.host == "m.wikidata.org") {
-			set bereq.http.host = "www.wikidata.org";
-		} else {
-			// Replace <language>.(m|zero).<project>.org by <language>.<project>.org
-			set bereq.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
-		}
+		set bereq.http.host = req.http.x-dt-host;
 	}
 }
 <% end -%>
