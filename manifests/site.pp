@@ -2175,7 +2175,7 @@ node /^ocg100[123]\.eqiad\.wmnet$/ {
 
 # VisualEditor performance testing rig
 node 'osmium.eqiad.wmnet' {
-    role ve, rsync_ruthenium
+    role ve
     include ::standard
 }
 
@@ -2318,7 +2318,7 @@ node 'rutherfordium.eqiad.wmnet' {
 # Right now, both rt-server and rt-clients run on the same node
 # But, we are likely going to split them into different boxes soon.
 node 'ruthenium.eqiad.wmnet' {
-    role testsystem, parsoid::testing, parsoid-rt-server, parsoid-rt-client
+    role testsystem, parsoid::testing, parsoid-rt-server, parsoid-rt-client, rsync_ruthenium
 }
 
 # T95046 install/deploy scandium as zuul merger (ci) server
