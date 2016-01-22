@@ -2321,6 +2321,11 @@ node 'ruthenium.eqiad.wmnet' {
     role testsystem, rsync_ruthenium,
         parsoid::testing, parsoid-rt-server, parsoid-rt-client,
         parsoid-vd-server, parsoid-vd-client
+
+    nginx::site { 'ruthenium':
+        source => 'puppet:///files/misc/ruthenium.nginx.conf',
+        notify => Service['nginx'],
+    }
 }
 
 # T95046 install/deploy scandium as zuul merger (ci) server
