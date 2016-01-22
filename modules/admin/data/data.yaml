@@ -455,6 +455,11 @@ groups:
     description: users who have root on analytics servers
     members: [mforns, milimetric, nuria, otto, madhuvishy, joal]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  analytics-search-users:
+    gid: 771
+    description: Group of users for managing search related analytics jobs
+    members: [ebernhardson, smalyshev, dcausse]
+    privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
 users:
   rush:
     ensure: present
