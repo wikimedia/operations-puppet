@@ -75,6 +75,11 @@ http://www.wikitech.org""".format(instance=hostname, project=PROJECT_NAME)
     admins = adminrec[0][1]['roleOccupant']
 
     for admin in admins:
+        if admin.lower().startswith('uid=novaadmin'):
+            # Don't bother to notify the novaadmin user; that just
+            #  sends spam to ops@
+            continue
+
         userrec = conn.search_s(admin, ldap.SCOPE_BASE)
         email = userrec[0][1]['mail'][0]
 
