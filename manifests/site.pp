@@ -1170,7 +1170,7 @@ node 'hooft.esams.wikimedia.org' {
 
 # Primary graphite machines
 node 'graphite1001.eqiad.wmnet' {
-    role graphite::production, statsdlb, performance, graphite::alerts, restbase::alerts, graphite::alerts::reqstats
+    role graphite::production, statsdlb, performance, graphite::alerts, restbase::alerts, graphite::alerts::reqstats, elasticsearch::alerts
     include standard
 }
 
