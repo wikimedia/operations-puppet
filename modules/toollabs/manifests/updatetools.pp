@@ -1,4 +1,6 @@
-class toollabs::updatetools {
+class toollabs::updatetools(
+    $active
+) {
     # Service to update the tools and users tables.
     file { '/usr/local/bin/updatetools':
         ensure => file,
