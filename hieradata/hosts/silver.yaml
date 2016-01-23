@@ -2,4 +2,5 @@ cluster: virt
 admin::groups:
   - deployment
 
-apache::logrotate::rotate: 12
+apache::logrotate::period: 'daily'
+apache::logrotate::rotate: 30
