@@ -184,10 +184,8 @@ class NfsdCollector(diamond.collector.Collector):
                 results['v4.ops.write'] = line[40]
                 results['v4.ops.rellockowner'] = line[41]
 
-            for metric, value in results.iteritems():
-                dvalue = self.derivative(metric, float(value))
-                self.publish(metric, dvalue)
+        for metric, value in results.iteritems():
+            dvalue = self.derivative(metric, float(value))
+            self.publish(metric, dvalue)
 
-            return True
-
-        return False
+        return True
