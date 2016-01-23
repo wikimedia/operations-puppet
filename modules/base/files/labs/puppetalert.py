@@ -28,6 +28,10 @@ import subprocess
 # Nag if it's been 24 hours since the last puppet run
 NAG_INTERVAL = 60 * 60 * 24
 
+# Don't bother to notify the novaadmin user; that just
+#  sends spam to ops@
+USER_IGNORE_LIST = ['uid=novaadmin,ou=people,dc=wikimedia,dc=org']
+
 with open('/etc/wmflabs-project') as f:
     PROJECT_NAME = f.read().strip()
 
@@ -75,6 +79,9 @@ http://www.wikitech.org""".format(instance=hostname, project=PROJECT_NAME)
     admins = adminrec[0][1]['roleOccupant']
 
     for admin in admins:
+        if admin.lower() in USER_IGNORE_LIST:
+            continue
+
         userrec = conn.search_s(admin, ldap.SCOPE_BASE)
         email = userrec[0][1]['mail'][0]
 
