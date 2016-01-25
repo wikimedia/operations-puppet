@@ -229,7 +229,7 @@ groups:
                  This will grant shell access on Hadoop client nodes (stat1002) and on
                  Hadoop NameNodes.  Some files in HDFS have sensitive data in them.
                  Those files are group readable by the analytics-privatedata-users group.
-    members: [dartar, milimetric, yurik, dfoy, aude,
+    members: [dartar, milimetric, yurik, dfoy, aude, jforrester,
               halfak, dr0ptp4kt, tnegrin, ironholds, bearloga, cwdent, elukey,
               kleduc, nuria, haithams, otto, deskana, zhousquared,
               bsitzmann, dbrant, declerambaul, ellery, nettrom, leila,
