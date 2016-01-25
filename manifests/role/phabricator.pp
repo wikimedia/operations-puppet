@@ -191,7 +191,7 @@ class role::phabricator::main {
     # community metrics mail (T81784, T1003)
     phabricator::logmail {'communitymetrics':
         script_name  => 'community_metrics.sh',
-        rcpt_address => 'communitymetrics@wikimedia.org',
+        rcpt_address => 'wikitech-l@lists.wikimedia.org',
         sndr_address => 'communitymetrics@wikimedia.org',
         monthday     => '1',
     }
