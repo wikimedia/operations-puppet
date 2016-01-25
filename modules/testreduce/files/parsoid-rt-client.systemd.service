@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=testreduce
 Group=testreduce
-WorkingDirectory=/usr/lib/testreduce/client
+WorkingDirectory=/srv/testreduce/client
 ExecStart=/usr/bin/nodejs rtclient-cluster.js -c 8 /etc/testreduce/parsoid-rt-client.config.js
 StandardOutput=journal
 StandardError=journal
