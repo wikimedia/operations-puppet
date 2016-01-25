@@ -3,6 +3,14 @@ class toollabs::cronrunner {
             toollabs::hba,
             toollabs
 
+    # We need to include exec environment here since the current
+    # version of jsub checks the local environment to find the full
+    # path to things before submitting them to the grid. This assumes
+    # that jsub is always run in an environment identical to the exec
+    # nodes. This is kind of terrible, so we need to fix that eventually.
+    # Until then...
+    include toollabs::exec_environ
+
     file { '/etc/ssh/ssh_config':
         ensure => file,
         mode   => '0444',
