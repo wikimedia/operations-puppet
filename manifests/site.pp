@@ -2149,15 +2149,6 @@ node 'netmon1001.wikimedia.org' {
     }
 }
 
-node 'nitrogen.wikimedia.org' {
-    role ipv6relay
-    include standard
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 # Test server for labs ElasticSearch replication
 node 'nobelium.eqiad.wmnet' {
     role elasticsearch::server
