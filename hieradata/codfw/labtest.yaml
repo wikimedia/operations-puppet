@@ -30,6 +30,8 @@ labs_ldap_dns_host_secondary: &labsldapdnshostsecondary "labtestservices2001.wik
 labs_dns_host: &labsdnshost "labtest-ns0.wikimedia.org"
 labs_recursor: &labsrecursor "labtest-recursor0.wikimedia.org"
 
+ldap_labs_hostname: labtestservices2001.wikimedia.org
+
 novaconfig:
   network_host: *labsnovanetworkip
   api_host: *labsnovaapihost
@@ -59,7 +61,7 @@ novaconfig:
   cc_host: *labsnovacontroller
   site_address: '208.80.155.255'
   controller_hostname: *labsnovacontroller
-  ldap_host: *labsnovacontroller
+  ldap_host: 'labtestservices2001.wikimedia.org'
   puppet_host: *labsnovacontroller
   puppet_db_host: *labsnovacontroller
   dhcp_domain: 'codfw.wmflabs'
