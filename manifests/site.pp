@@ -2118,7 +2118,7 @@ node 'mx2001.wikimedia.org' {
 # secondary salt master
 node 'neodymium.eqiad.wmnet' {
 #    role salt::masters::production, deployment::salt_masters, debdeploy::master
-    role salt::masters::production, debdeploy::master
+    role salt::masters::production, debdeploy::master, deployment::salt_masters
     include standard
 }
 
