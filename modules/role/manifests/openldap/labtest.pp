@@ -5,12 +5,14 @@ class role::openldap::labtest {
     include passwords::openldap::labtest
     include base::firewall
 
+    $ldap_labs_hostname = hiera('ldap_labs_hostname')
+
     system::role { 'role::openldap::labtest':
         description => 'LDAP servers for labs test cluster (based on OpenLDAP)'
     }
 
     # Certificate needs to be readable by slapd
-    sslcert::certificate { "ldap-labs.${::site}.wikimedia.org":
+    sslcert::certificate { $ldap_labs_hostname:
         group => 'openldap',
     }
 
@@ -19,8 +21,8 @@ class role::openldap::labtest {
         suffix        => 'dc=wikimedia,dc=org',
         datadir       => '/var/lib/ldap/labs',
         ca            => '/etc/ssl/certs/ca-certificates.crt',
-        certificate   => "/etc/ssl/localcerts/ldap-labs.${::site}.wikimedia.org.crt",
-        key           => "/etc/ssl/private/ldap-labs.${::site}.wikimedia.org.key",
+        certificate   => "/etc/ssl/localcerts/${ldap_labs_hostname}.crt",
+        key           => "/etc/ssl/private/${ldap_labs_hostname}.key",
         extra_schemas => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                           'puppet.schema', 'sudo.schema'],
         extra_indices => 'openldap/labs-indices.erb',

@@ -138,3 +138,5 @@ hive_metastore_host: analytics1027.eqiad.wmnet
 
 # Used in role::analytics::oozie::config
 oozie_host: analytics1027.eqiad.wmnet
+
+ldap_labs_hostname: ldap-labs.eqiad.wikimedia.org
