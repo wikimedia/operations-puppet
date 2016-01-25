@@ -1,3 +1,5 @@
 debdeploy::grains:
   debdeploy-lvs-esams:
     value: standard
+pybal::configuration::config: etcd
+pybal::configuration::config_host: conf1002.eqiad.wmnet
