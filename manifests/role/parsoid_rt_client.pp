@@ -2,7 +2,7 @@
 class role::parsoid_rt_client {
     include ::testreduce
 
-    file { '/usr/lib/parsoid/src/tests/testreduce/parsoid-rt-client.rttest.localsettings.js':
+    file { '/usr/lib/parsoid/deploy/src/tests/testreduce/parsoid-rt-client.rttest.localsettings.js':
         source => 'puppet:///modules/testreduce/parsoid-rt-client.rttest.localsettings.js',
         owner  => 'root',
         group  => 'root',
