@@ -33,6 +33,15 @@ class toollabs::cronrunner {
         mode   => '0555',
     }
 
+    # Gotta be in /usr/bin because Cron doesn't look in /usr/local/bin by default
+    file { '/usr/local/bin/jlocal':
+        ensure  => link,
+        target  => '/usr/local/bin/jlocal',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        require => File['/usr/local/bin/jlocal'],
+    }
     # Backup crontabs! See https://phabricator.wikimedia.org/T95798
     file { '/data/project/.system/crontabs':
         ensure => directory,
