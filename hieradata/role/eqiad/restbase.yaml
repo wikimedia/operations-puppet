@@ -2,12 +2,12 @@ restbase::seeds:
     - restbase1001.eqiad.wmnet
     - restbase1002.eqiad.wmnet
     - restbase1003.eqiad.wmnet
-    - restbase1004.eqiad.wmnet
+    - restbase1004-a.eqiad.wmnet
     - restbase1005.eqiad.wmnet
     - restbase1006.eqiad.wmnet
-    - restbase1007.eqiad.wmnet
-    - restbase1008.eqiad.wmnet
-    - restbase1009.eqiad.wmnet
+    - restbase1007-a.eqiad.wmnet
+    - restbase1008-a.eqiad.wmnet
+    - restbase1009-a.eqiad.wmnet
 
 lvs::realserver::realserver_ips:
   - '10.2.2.17' # restbase.svc.eqiad.wmnet
