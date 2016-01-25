@@ -12,10 +12,6 @@ class role::deployment::mediawiki(
     include scap::master
     include scap::ferm
 
-    if $::realm != 'labs' {
-        include deployment::wikitech
-    }
-
     # Keyholder
     require ::keyholder
     require ::keyholder::monitoring
