@@ -49,10 +49,10 @@ class role::cache::text {
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['security_audit'][$::mw_primary],
             },
-            'test_wikipedia'   => {
+            'appservers_debug'   => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
-                'backends' => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+                'backends' => $role::cache::configuration::backends[$::realm]['appservers_debug'][$::mw_primary],
             },
             'restbase_backend' => {
                 'dynamic'  => 'no',
@@ -142,7 +142,7 @@ class role::cache::text {
                 'probe'         => 'varnish',
             },
             {
-                'backend_match'   => '^mw1017\.eqiad\.wmnet$',
+                'backend_match'   => '^appservers-debug\.svc\.eqiad\.wmnet$',
                 'max_connections' => 20,
             },
             {
