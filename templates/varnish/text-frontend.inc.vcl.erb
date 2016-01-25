@@ -231,10 +231,6 @@ sub vcl_recv {
 
 	call mobile_redirect;
 
-	if (req.http.host ~ "^test\.") {
-		set req.http.X-Wikimedia-Debug = "1";
-	}
-
 	# normalize all /static to the same hostname for caching
 	if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
 

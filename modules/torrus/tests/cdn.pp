@@ -73,8 +73,8 @@ class role::cache::configuration {
                 'appservers'        => ['1.1.1.1', '2.2.2.2',],
                 'api'               => ['1.1.1.1', '2.2.2.2',],
                 'rendering'         => ['1.1.1.1', '2.2.2.2',],
-                'test_appservers' => {
-                    'eqiad' => [ 'mw1017.eqiad.wmnet' ],
+                'appservers_debug'  => {
+                    'eqiad' => [ 'appservers-debug.svc.eqiad.wmnet' ],
                 },
                 'parsoid' => ['1.1.1.1'],
             },
@@ -97,7 +97,7 @@ class role::cache::configuration {
                         '10.68.17.208', # deployment-mediawiki02
                     ],
                 },
-                'test_appservers' => {
+                'appservers_debug' => {
                     'eqiad' => [ '10.68.17.96' ],  # deployment-mediawiki01
                 },
                 'parsoid' => {

@@ -17,8 +17,8 @@ class role::cache::configuration {
                 'eqiad' => ['rendering.svc.eqiad.wmnet'],
                 'codfw' => ['rendering.svc.codfw.wmnet'],
             },
-            'test_appservers' => {
-                'eqiad' => ['mw1017.eqiad.wmnet'],
+            'appservers_debug' => {
+                'eqiad' => ['appservers-debug.svc.eqiad.wmnet'],
             },
             'parsoid' => {
                 'eqiad' => ['parsoid.svc.eqiad.wmnet'],
@@ -66,7 +66,7 @@ class role::cache::configuration {
             'security_audit' => {
                 'eqiad' => [ '10.68.17.55' ],  # deployment-mediawiki03
             },
-            'test_appservers' => {
+            'appservers_debug' => {
                 'eqiad' => [ '10.68.17.170' ],  # deployment-mediawiki01
             },
             'parsoid' => {
