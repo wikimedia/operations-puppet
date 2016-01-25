@@ -1,6 +1,6 @@
 # Number of servers to start up
 # To disable nfsv4 on the server, specify '--no-nfs-version 4' here
-RPCNFSDCOUNT=64
+RPCNFSDCOUNT=288
 
 # Runtime priority of server (see nice(1))
 RPCNFSDPRIORITY=0
