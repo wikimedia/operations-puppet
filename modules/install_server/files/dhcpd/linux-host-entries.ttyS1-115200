@@ -5955,11 +5955,6 @@ host nescio {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
-host nitrogen {
-	hardware ethernet 78:2b:cb:09:0e:37;
-	fixed-address nitrogen.wikimedia.org;
-}
-
 host nobelium {
 	hardware ethernet F0:1F:AF:E8:B1:FB;
 	fixed-address nobelium.eqiad.wmnet;
