@@ -20,6 +20,8 @@ class openstack::openstack_manager(
     include role::backup::host
     include nrpe
 
+    include openstack::wikitechprivatesettings
+
     package { [
         'php5-ldap',
         'imagemagick',
