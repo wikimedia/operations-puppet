@@ -772,7 +772,7 @@ def restart(repo):
         return {}
 
 
-def fixurl(git_server):
+def fixurl():
     """
     Allows to recursively fix all the remotes in git repositories on a target.
     """
@@ -788,7 +788,7 @@ def fixurl(git_server):
 
         cmd = '/usr/bin/git remote set-url origin {0}/.git'.format(
             conf['url'])
-        retval = __salt__['cmd.retcode'](cmd, cwd=repo_config['location'])
+        retval = __salt__['cmd.retcode'](cmd, cwd=conf['location'])
         if retval != 0:
             return retval
     return 0
