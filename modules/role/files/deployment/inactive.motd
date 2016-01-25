@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo <<MOTD
+cat <<'MOTD'
      _         _   _  ___ _____                    _   _     _
   __| | ___   | \ | |/ _ \_   _|  _   _ ___  ___  | |_| |__ (_)___
 /  _` |/ _ \  |  \| | | | || |   | | | / __|/ _ \ | __| '_ \| / __|
@@ -12,7 +12,7 @@ echo <<MOTD
 / __|/ _ \ '__\ \ / / _ \ '__| |
 \__ \  __/ |   \ V /  __/ |  |_|
 |___/\___|_|    \_/ \___|_|  (_)
-                               
+
 
 While it is perfectly working, this is not the active deployment server.
 
