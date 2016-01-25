@@ -1,8 +1,8 @@
 cache_mobile:
-  cp4011.ulsfo.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
-  cp4012.ulsfo.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
-  cp4019.ulsfo.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
-  cp4020.ulsfo.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp4011.ulsfo.wmnet: [varnish-be, varnish-be-rand]
+  cp4012.ulsfo.wmnet: [varnish-be, varnish-be-rand]
+  cp4019.ulsfo.wmnet: [varnish-be, varnish-be-rand]
+  cp4020.ulsfo.wmnet: [varnish-be, varnish-be-rand]
   cp4008.ulsfo.wmnet: [varnish-fe, nginx]
   cp4009.ulsfo.wmnet: [varnish-fe, nginx]
   cp4010.ulsfo.wmnet: [varnish-fe, nginx]
