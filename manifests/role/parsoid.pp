@@ -278,6 +278,7 @@ class role::parsoid::testing {
     git::clone { 'mediawiki/services/parsoid/deploy':
         owner     => 'root',
         group     => 'wikidev',
+        recurse_submodules => true,
         # FIXME: Should we move this to /srv/parsoid ?
         # I am picking /usr/lib to minimize changes to
         # ruthenium setup.
