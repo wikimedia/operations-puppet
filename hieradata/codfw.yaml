@@ -34,6 +34,8 @@ labs_certmanager_hostname: "labservices1001.wikimedia.org"
 labs_dns_host: &labsdnshost "labs-ns2.wikimedia.org"
 labs_recursor: &labsrecursor "labs-recursor0.wikimedia.org"
 
+ldap_labs_hostname: ldap-labs.codfw.wikimedia.org
+
 etcd_hosts:
     - conf1001.eqiad.wmnet
     - conf1002.eqiad.wmnet
