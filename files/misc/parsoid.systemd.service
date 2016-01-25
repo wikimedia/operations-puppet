@@ -5,11 +5,11 @@ After=network.target
 [Service]
 User=parsoid
 Group=parsoid
-LimitNOFILE=10K
+LimitNOFILE=10000
 
 Environment=NODE_PATH=/usr/lib/parsoid/node_modules VCAP_APP_PORT=8000
 WorkingDirectory=/usr/lib/parsoid/src
-ExecStart=node bin/server.js -c /usr/lib/parsoid/src/localsettings.js
+ExecStart=/usr/bin/nodejs bin/server.js -c /usr/lib/parsoid/src/localsettings.js
 StandardInput=null
 StandardOutput=journal
 StandardError=journal
