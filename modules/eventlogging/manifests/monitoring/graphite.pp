@@ -18,7 +18,7 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     # was seen that the current setup can handle 500 events/s.
     # Better thresholds are pending (see T86244).
     monitoring::graphite_threshold { 'eventlogging_throughput':
-        description   => 'Throughput of event logging events',
+        description   => 'Throughput of EvenLogging events',
         metric        => $raw_events_rate_metric,
         warning       => 500,
         critical      => 600,
@@ -31,7 +31,7 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     # in a 15 min period
     # https://meta.wikimedia.org/wiki/Schema:NavigationTiming
     monitoring::graphite_threshold { 'eventlogging_NavigationTiming_throughput':
-        description   => 'Throughput of event logging NavigationTiming events',
+        description   => 'Throughput of EventLogging NavigationTiming events',
         metric        => "kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_NavigationTiming.OneMinuteRate",
         warning       => 1,
         critical      => 0,
@@ -63,8 +63,8 @@ class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
     # this metric is a good proxy to make sure events are flowing through the
     # kafka pipeline
     monitoring::graphite_threshold { 'eventlogging_overall_inserted_rate':
-        description   => 'Overall insertion rate from MySQL consumer',
-        metric        => 'eventlogging.overall.inserted.rate',
+        description   => 'EventLogging overall insertion rate from MySQL consumer',
+        metric        => 'movingAverage(eventlogging.overall.inserted.rate, "10min")',
         warning       => 100,
         critical      => 10,
         percentage    => 20, # At least 3 of the (25 - 10) = 15 readings
