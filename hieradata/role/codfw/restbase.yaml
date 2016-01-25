@@ -1,6 +1,10 @@
 restbase::seeds:
     - restbase2001-a.codfw.wmnet
-    - restbase2002.codfw.wmnet
+    - restbase2001-b.codfw.wmnet
+    - restbase2001-c.codfw.wmnet
+    - restbase2002-a.codfw.wmnet
+    - restbase2002-b.codfw.wmnet
+    - restbase2002-c.codfw.wmnet
     - restbase2003.codfw.wmnet
     - restbase2004.codfw.wmnet
     - restbase2005.codfw.wmnet
