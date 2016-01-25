@@ -770,3 +770,25 @@ def restart(repo):
         return {'status': status, 'repo': repo, 'dependencies': depstats}
     else:
         return {}
+
+
+def fixurl(git_server):
+    """
+    Allows to recursively fix all the remotes in git repositories on a target.
+    """
+    repo_config = __pillar__.get('repo_config')
+    deployment_target = __grains__.get('deployment_target')
+    for repo in repo_config:
+        if repo not in deployment_target:
+            continue
+        conf = get_config(repo)
+        # If it has not been checked out, there is no reason to fix the url
+        if not __salt__['file.directory_exists'](conf['location']):
+            continue
+
+        cmd = '/usr/bin/git remote set-url origin {0}/.git'.format(
+            conf['url'])
+        retval = __salt__['cmd.retcode'](cmd, cwd=repo_config['location'])
+        if retval != 0:
+            return retval
+    return 0
