@@ -304,9 +304,9 @@ class role::parsoid::testing {
 
     # Use the default settings file for the parsoid service.
     # Can tweak this later if necessary.
-    file { '/usr/lib/parsoid/deploy/src/localsettings.js':
+    file { '/usr/lib/parsoid/src/localsettings.js':
         ensure => link,
-        target => '/usr/lib/parsoid/deploy/src/localsettings.js.example',
+        target => '/usr/lib/parsoid/src/localsettings.js.example',
         before => Service['parsoid'],
     }
 
