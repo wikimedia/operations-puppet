@@ -275,14 +275,15 @@ class role::parsoid::testing {
     # We clone the git repo and let testing services
     # update / modify the repo as appropriate
     # (via scripts, manually, however).
+    # FIXME: Should we move this to /srv/parsoid ?
+    # I am picking /usr/lib to minimize changes to
+    # ruthenium setup.
     git::clone { 'mediawiki/services/parsoid/deploy':
-        owner     => 'root',
-        group     => 'wikidev',
-        # FIXME: Should we move this to /srv/parsoid ?
-        # I am picking /usr/lib to minimize changes to
-        # ruthenium setup.
-        directory => '/usr/lib/parsoid',
-        before    => Service['parsoid'],
+        owner              => 'root',
+        group              => 'wikidev',
+        recurse_submodules => true,
+        directory          => '/usr/lib/parsoid',
+        before             => Service['parsoid'],
     }
 
     file { '/lib/systemd/system/parsoid.service':
