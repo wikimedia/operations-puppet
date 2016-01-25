@@ -223,9 +223,6 @@ class role::eventlogging::consumer::mysql inherits role::eventlogging {
 
     # Kafka consumer group for this consumer is mysql-m4-master
     eventlogging::service::consumer { $mysql_consumers:
-        # Temporarily ensuring absent while Jaime does TokuDB conversion:
-        # https://phabricator.wikimedia.org/T120187
-        ensure => 'absent',
         input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&${kafka_consumer_args}",
         output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8&statsd_host=${statsd_host}&replace=True",
         sid    => $kafka_consumer_group,
