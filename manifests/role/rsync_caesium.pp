@@ -1,5 +1,7 @@
+# T124261 - temporary
 class role::rsync_caesium {
 
+    # caesium.eqiad.wmnet
     $sourceip='10.64.32.145'
 
     include rsync::server
@@ -10,4 +12,8 @@ class role::rsync_caesium {
         hosts_allow => $sourceip,
     }
 
+    ferm::service { 'caesium_rsyncd':
+        proto => 'tcp',
+        port  => '873',
+    }
 }
