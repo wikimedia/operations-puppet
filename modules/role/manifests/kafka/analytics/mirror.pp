@@ -14,7 +14,7 @@ class role::kafka::analytics::mirror {
         zookeeper_url => $role::kafka::main::config::zookeeper_url,
     }
     kafka::mirror { $mirror_name:
-        destination_brokers    => $role::kafka::analytics::config::brokers_array,
+        destination_brokers    => $role::kafka::analytics::config::brokers_string,
         # Only mirror mediawiki.* topics for now.
         whitelist              => 'mediawiki\..+',
         queue_buffering_max_ms => 1000,
