@@ -135,10 +135,11 @@ class role::kafka::analytics::broker {
         $group_prefix = "kafka.cluster.${cluster_name}."
     }
     class { '::kafka::server::jmxtrans':
-        ganglia  => hiera('ganglia_aggregators', undef),
-        statsd   => hiera('statsd', undef),
-        jmx_port => $::role::kafka::analytics::config::jmx_port,
-        require  => Class['::kafka::server'],
+        group_prefix => $group_prefix,
+        ganglia      => hiera('ganglia_aggregators', undef),
+        statsd       => hiera('statsd', undef),
+        jmx_port     => $::role::kafka::analytics::config::jmx_port,
+        require      => Class['::kafka::server'],
     }
 
     # Monitor kafka in production
