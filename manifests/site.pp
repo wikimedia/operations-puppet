@@ -105,10 +105,9 @@ node 'analytics1017.eqiad.wmnet' {
     role spare
 }
 
-# Test out running Kafka MirrorMaker here.
-# This will need to be moved to a more permanent place.
+# This node is currently an analytics spare.
 node 'analytics1021.eqiad.wmnet' {
-    role kafka::analytics::mirror
+    role spare
 }
 
 # analytics1026 is the Impala master
@@ -1254,6 +1253,12 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 # on these brokers.
 node /kafka100[12]\.eqiad\.wmnet/ {
     role kafka::main::broker, eventbus::eventbus
+
+    # Temporarly test running kafka mirror maker here.
+    # This currently mirrors from main-eqiad to analytics-eqiad.
+    if $::hostname == 'kafka1001' {
+        role kafka::analytics::mirror
+    }
 
     include standard
     include base::firewall
