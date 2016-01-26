@@ -554,6 +554,9 @@ sub vcl_deliver {
 
 <% end -%>
 
+	if (!req.http.X-CDIS) {
+		set req.http.X-CDIS = "int"; // internally-generated response (not a cache object hit, and not a miss|pass to a deeper layer either)
+	}
 	if (resp.http.X-Cache) {
 		set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> " + req.http.X-CDIS + "(" + obj.hits + ")";
 	} else {
