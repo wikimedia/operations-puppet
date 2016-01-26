@@ -3,7 +3,7 @@
 
 # Best as max concurrently connected clients.  We currently hover around
 # 250-280 connected clients as of 1/25/2016
-RPCNFSDCOUNT=288
+RPCNFSDCOUNT=192
 
 # Runtime priority of server (see nice(1))
 RPCNFSDPRIORITY=0
