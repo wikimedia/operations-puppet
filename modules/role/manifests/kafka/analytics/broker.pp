@@ -134,7 +134,6 @@ class role::kafka::analytics::broker {
     else {
         $group_prefix = "kafka.cluster.${cluster_name}."
     }
-    $group_prefix = "kafka.cluster.${cluster_name}."
     class { '::kafka::server::jmxtrans':
         ganglia  => hiera('ganglia_aggregators', undef),
         statsd   => hiera('statsd', undef),
