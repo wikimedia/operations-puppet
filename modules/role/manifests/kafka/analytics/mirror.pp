@@ -27,9 +27,10 @@ class role::kafka::analytics::mirror {
     # kafka.mirror.analytics-eqiad.kafka-mirror. ...
     $group_prefix = "kafka.mirror.${mirror_name}."
     kafka::mirror::jmxtrans { 'analytics-eqiad':
+        group_prefix        => $group_prefix,
         statsd   => hiera('statsd'),
         jmx_port => 9998,
-        require  => Kafka::Mirror[$mirror_name]
+        require  => Kafka::Mirror[$mirror_name],
     }
 
     # Monitor kafka in production
