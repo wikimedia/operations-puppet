@@ -1,11 +1,11 @@
 # === Class apache::logrotate
 #
 # Allows defining rotation periodicity and the number of logs to keep
-# for any host with apache directly via hiera. Defaults are what debian sets.
-# We might want to make this a bit less long though
+# for any host with apache directly via hiera. Defaults are short so
+# that we don't worry about disks filling or about data retention.
 class apache::logrotate(
-    $period = 'weekly',
-    $rotate = 52,
+    $period = 'daily',
+    $rotate = 30,
     ) {
 
     augeas { 'Apache2 logs':
