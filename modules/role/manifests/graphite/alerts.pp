@@ -30,7 +30,7 @@ class role::graphite::alerts {
         warning      => 30,
         critical     => 45,
         under        => true,
-        group        => 'analytics_eqiad',
+        group        => 'analytics',
     }
 
     # Monitor memcached error rate from MediaWiki. This is commonly a sign of
