@@ -10,7 +10,7 @@ class role::kafka::analytics::mirror {
 
     $mirror_name = 'analytics-eqiad'
     kafka::mirror::consumer { 'main-eqiad':
-        mirror_name   => 'analytics-eqiad',
+        mirror_name   => $mirror_name,
         zookeeper_url => $role::kafka::main::config::zookeeper_url,
     }
     kafka::mirror { $mirror_name:
@@ -26,11 +26,11 @@ class role::kafka::analytics::mirror {
     # metrics will look like:
     # kafka.mirror.analytics-eqiad.kafka-mirror. ...
     $group_prefix = "kafka.mirror.${mirror_name}."
-    kafka::mirror::jmxtrans { 'analytics-eqiad':
-        group_prefix        => $group_prefix,
-        statsd   => hiera('statsd'),
-        jmx_port => 9998,
-        require  => Kafka::Mirror[$mirror_name],
+    kafka::mirror::jmxtrans { $mirror_name:
+        group_prefix => $group_prefix,
+        statsd       => hiera('statsd'),
+        jmx_port     => 9998,
+        require      => Kafka::Mirror[$mirror_name],
     }
 
     # Monitor kafka in production
