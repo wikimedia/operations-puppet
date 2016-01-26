@@ -2,12 +2,9 @@
 # T85140
 class bugzilla_static {
 
-    file { [ '/srv/org', '/srv/org/wikimedia', '/srv/org/wikimedia/static-bugzilla' ]:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
+    ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
+    ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
+    ensure_resource('file', '/srv/org/wikimedia/static-bugzilla', {'ensure' => 'directory' })
 
     file { '/srv/org/wikimedia/static-bugzilla/index.html':
         ensure => present,
