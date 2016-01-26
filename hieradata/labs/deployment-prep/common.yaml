@@ -2,7 +2,7 @@
 base::remote_syslog::enable: true
 base::remote_syslog::central_host: "deployment-logstash2.deployment-prep.eqiad.wmflabs:10514"
 "ocg::temp_dir": /mnt/tmpfs
-"ocg::redis_host": deployment-redis01.eqiad.wmflabs
+"ocg::redis_host": deployment-redis01.deployment-prep.eqiad.wmflabs
 "ocg::statsd_host": labmon1001.eqiad.wmnet
 "ocg::graylog_host": deployment-logstash2.deployment-prep.eqiad.wmflabs
 "ocg::redis_password": '%{::passwords::redis::main_password}'
@@ -121,9 +121,9 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
     hhvm:
         pcre_cache_type: lru
 "mediawiki::jobrunner::queue_servers":
-    - deployment-redis01.eqiad.wmflabs
+    - deployment-redis01.deployment-prep.eqiad.wmflabs
 "mediawiki::jobrunner::aggr_servers":
-    - deployment-redis01.eqiad.wmflabs
+    - deployment-redis01.deployment-prep.eqiad.wmflabs
 "mediawiki::jobrunner::statsd_server": labmon1001.eqiad.wmnet
 "mediawiki::jobrunner::runners_basic": 5
 "mediawiki::jobrunner::runners_gwt": 1
