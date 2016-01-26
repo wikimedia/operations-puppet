@@ -242,7 +242,7 @@ node 'bohrium.eqiad.wmnet' {
 
 # virtual machine for static misc. services
 node 'bromine.eqiad.wmnet' {
-    role bugzilla::static, annualreport, transparency
+    role bugzilla::static, annualreport, transparency, releases
     include standard
 }
 
