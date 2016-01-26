@@ -75,7 +75,7 @@ class role::kafka::main::broker {
 
     # Include Kafka Server Jmxtrans class
     # to send Kafka Broker metrics to Ganglia and statsd.
-    $group_prefix = "kafka.${cluster_name}."
+    $group_prefix = "kafka.cluster.${cluster_name}."
     class { '::kafka::server::jmxtrans':
         group_prefix => $group_prefix,
         ganglia  => hiera('ganglia_aggregators', undef),
