@@ -129,7 +129,7 @@ class role::kafka::analytics::broker {
     # This cluster was named 'eqiad'.  For the metrics, let's display
     # a 'logical' cluster name of analytics-eqiad.
     if ($::realm == 'production' and $::site == 'eqiad') {
-        $group_prefix = 'kafka.cluster.analytics-eqiad'
+        $group_prefix = 'kafka.cluster.analytics-eqiad.'
     }
     else {
         $group_prefix = "kafka.cluster.${cluster_name}."
