@@ -105,10 +105,10 @@ node 'analytics1017.eqiad.wmnet' {
     role spare
 }
 
-# This node was previously a kafka broker, but is now waiting
-# to be repurposed (likely as a stat* type box).
+# Test out running Kafka MirrorMaker here.
+# This will need to be moved to a more permanent place.
 node 'analytics1021.eqiad.wmnet' {
-    role spare
+    role kafka::analytics::mirror
 }
 
 # analytics1026 is the Impala master
