@@ -22,18 +22,23 @@ class role::cache::configuration {
             },
             'parsoid' => {
                 'eqiad' => ['parsoid.svc.eqiad.wmnet'],
+                'codfw' => ['parsoid.svc.codfw.wmnet'],
             },
             'cxserver' => {
                 'eqiad' => ['cxserver.svc.eqiad.wmnet'],
+                'codfw' => ['cxserver.svc.codfw.wmnet'],
             },
             'citoid' => {
                 'eqiad' => ['citoid.svc.eqiad.wmnet'],
+                'codfw' => ['citoid.svc.codfw.wmnet'],
             },
             'graphoid' => {
                 'eqiad' => ['graphoid.svc.eqiad.wmnet'],
+                'codfw' => ['graphoid.svc.codfw.wmnet'],
             },
             'restbase' => {
                 'eqiad' => ['restbase.svc.eqiad.wmnet'],
+                'codfw' => ['restbase.svc.codfw.wmnet'],
             },
             'swift' => {
                 'eqiad' => ['ms-fe.svc.eqiad.wmnet'],

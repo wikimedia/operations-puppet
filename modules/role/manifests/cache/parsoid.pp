@@ -42,7 +42,7 @@ class role::cache::parsoid {
             'backend' => {
                 'dynamic'  => 'no',
                 'type'     => 'hash', # probably wrong, but current value before this commit! XXX
-                'backends' => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
+                'backends' => $::role::cache::configuration::backends[$::realm]['parsoid'][$::site],
             }
         },
         vcl_config       => $be_vcl_config,
@@ -92,22 +92,22 @@ class role::cache::parsoid {
             'cxserver_backend' => {
                 'dynamic'  => 'no',
                 'type'     => 'chash', # probably wrong, but current value before this commit! XXX
-                'backends' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::mw_primary],
+                'backends' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::site],
             },
             'citoid_backend'   => {
                 'dynamic'  => 'no',
                 'type'     => 'chash', # probably wrong, but current value before this commit! XXX
-                'backends' => $::role::cache::configuration::backends[$::realm]['citoid'][$::mw_primary],
+                'backends' => $::role::cache::configuration::backends[$::realm]['citoid'][$::site],
             },
             'graphoid_backend' => {
                 'dynamic'  => 'no',
                 'type'     => 'chash', # probably wrong, but current value before this commit! XXX
-                'backends' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::mw_primary],
+                'backends' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::site],
             },
             'restbase_backend' => {
                 'dynamic'  => 'no',
                 'type'     => 'chash', # probably wrong, but current value before this commit! XXX
-                'backends' => $::role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
+                'backends' => $::role::cache::configuration::backends[$::realm]['restbase'][$::site],
             },
         },
         vcl_config      => $fe_vcl_config,
