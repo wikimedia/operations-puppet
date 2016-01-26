@@ -25,16 +25,10 @@ class releases (
         $sitename = undef,
         $server_admin = 'noc@wikimedia.org',
 ) {
-    file { [
-        '/srv/org',
-        '/srv/org/wikimedia/',
-        '/srv/org/wikimedia/releases',
-    ]:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
+
+    ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
+    ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
+    ensure_resource('file', '/srv/org/wikimedia/releases', {'ensure' => 'directory' })
 
     include ::apache::mod::rewrite
     include ::apache::mod::headers
