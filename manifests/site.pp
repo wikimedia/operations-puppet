@@ -1252,13 +1252,11 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 # For now, eventlogging-service-eventbus is also colocated
 # on these brokers.
 node /kafka100[12]\.eqiad\.wmnet/ {
-    role kafka::main::broker, eventbus::eventbus
-
-    # Temporarly test running kafka mirror maker here.
-    # This currently mirrors from main-eqiad to analytics-eqiad.
-    if $::hostname == 'kafka1001' {
-        role kafka::analytics::mirror
-    }
+    role kafka::main::broker,
+        eventbus::eventbus,
+        # Temporarly test running kafka mirror maker here.
+        # This currently mirrors from main-eqiad to analytics-eqiad.
+        kafka::analytics::mirror
 
     include standard
     include base::firewall
