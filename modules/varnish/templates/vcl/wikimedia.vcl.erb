@@ -10,6 +10,7 @@ import header;
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 # only used in recv_fe_ip_processing on frontends
 import netmapper;
+import ipcast;
 <% end %>
 
 <%
@@ -319,7 +320,11 @@ sub recv_fe_ip_processing {
 		}
 		if (req.http.X-Trusted-Proxy && req.http.X-Forwarded-For) {
 			// get last from trusted-proxy-supplied XFF
-			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, "^([^,]+, )+", "");
+			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, "^([^,]+, )+", "");
+			if(ipcast.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+				set req.http.X-Client-IP = req.http.maybe-xcip;
+			}
+			unset req.http.maybe-xcip;
 		}
 	} else {
 		// XCIP from nginx, XFF set/appended by nginx and contains at
@@ -336,8 +341,12 @@ sub recv_fe_ip_processing {
 			// regsub's below if there was only one (which would
 			// alias XCIP by definition), there would be no commas
 			// to match and XCIP gets reset to its original value.
-			set req.http.X-Client-IP = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
-			set req.http.X-Client-IP = regsub(req.http.X-Client-IP, "^([^,]+, )+", "");
+			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
+			set req.http.maybe-xcip = regsub(req.http.maybe-xcip, "^([^,]+, )+", "");
+			if(ipcast.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+				set req.http.X-Client-IP = req.http.maybe-xcip;
+			}
+			unset req.http.maybe-xcip;
 		}
 	}
 
