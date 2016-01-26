@@ -20,9 +20,9 @@ class role::graphite::alerts {
     swift::monitoring::graphite_alerts { 'codfw-prod': }
 
     # Use graphite's anomaly detection support.
-    monitoring::graphite_anomaly { 'kafka-broker-MessagesIn-anomaly':
-        description  => 'Kafka Broker Messages In Per Second',
-        metric       => 'sumSeries(kafka.*.kafka.server.BrokerTopicMetrics-AllTopics.MessagesInPerSec.OneMinuteRate)',
+    monitoring::graphite_anomaly { 'kafka-analytics-eqiad-broker-MessagesIn-anomaly':
+        description  => 'Kafka Cluster analytics-eqiad Broker Messages In Per Second',
+        metric       => 'sumSeries(kafka.cluster.analytics-eqiad.kafka.*.kafka.server.BrokerTopicMetrics-AllTopics.MessagesInPerSec.OneMinuteRate)',
         # check over the 60 data points (an hour?) and:
         # - alert warn if more than 30 are under the confidence band
         # - alert critical if more than 45 are under the confidecne band

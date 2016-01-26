@@ -125,16 +125,17 @@ class role::kafka::analytics::broker {
         srange => '$ALL_NETWORKS',
     }
 
-    # Include Kafka Server Jmxtrans class
-    # to send Kafka Broker metrics to Ganglia and statsd.
+    # Historically there was only one kafka cluster in eqiad.
+    # This cluster was named 'eqiad'.  For the metrics, let's display
+    # a 'logical' cluster name of analytics-eqiad.
+    if ($::realm == 'production' and $::site == 'eqiad') {
+        $group_prefix = 'kafka.cluster.analytics-eqiad'
+    }
+    else {
+        $group_prefix = "kafka.cluster.${cluster_name}."
+    }
+    $group_prefix = "kafka.cluster.${cluster_name}."
     class { '::kafka::server::jmxtrans':
-        # TODO: move metrics under this prefix.
-        # Historically there was only one kafka cluster, so
-        # all kafka metrics were under that.  We should change this.
-        # Q: Should we make metrics for analytics-eqiad show as
-        # kafka.analytics-eqiad, even if the real cluster name is
-        # 'eqiad' for historical reasons?
-        # group_prefix => "kafka.${cluster_name}.",
         ganglia  => hiera('ganglia_aggregators', undef),
         statsd   => hiera('statsd', undef),
         jmx_port => $::role::kafka::analytics::config::jmx_port,
@@ -146,6 +147,7 @@ class role::kafka::analytics::broker {
         class { '::kafka::server::monitoring':
             jmx_port            => $::role::kafka::analytics::config::jmx_port,
             nagios_servicegroup => "analytics_${::site}",
+            group_prefix        => $group_prefix,
         }
     }
 }
