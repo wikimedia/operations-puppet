@@ -1,0 +1,9 @@
+Code-Review+1: Ottomata <otto@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+2: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Code-Review+1: Mforns <mforns@wikimedia.org>
+Submitted-by: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Submitted-at: Tue, 26 Jan 2016 08:42:13 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/266264
+Project: operations/puppet
+Branch: refs/heads/production
