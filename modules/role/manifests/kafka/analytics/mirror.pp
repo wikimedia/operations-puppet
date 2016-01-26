@@ -37,7 +37,6 @@ class role::kafka::analytics::mirror {
     if $::realm == 'production' {
         kafka::mirror::monitoring { $mirror_name:
             group_prefix        => $group_prefix,
-            nagios_servicegroup => "analytics_${::site}",
         }
     }
 }
