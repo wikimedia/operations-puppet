@@ -9,8 +9,8 @@
 #                                    kafka::server::jmxtrans
 #
 class eventlogging::monitoring::graphite($kafka_brokers_graphite_wildcard) {
-    $raw_events_rate_metric   = "sumSeries(kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.{eventlogging-client-side,eventlogging-server-side}.OneMinuteRate)"
-    $valid_events_rate_metric = "sumSeries(kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_*.OneMinuteRate)"
+    $raw_events_rate_metric   = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.{eventlogging-client-side,eventlogging-server-side}.OneMinuteRate)"
+    $valid_events_rate_metric = "sumSeries(kafka.cluster.analytics-eqiad.kafka.${kafka_brokers_graphite_wildcard}.kafka.server.BrokerTopicMetrics.MessagesInPerSec.eventlogging_*.OneMinuteRate)"
 
     # Warn if 15% of overall event throughput goes beyond 500 events/s
     # in a 15 min period
