@@ -44,10 +44,10 @@ class role::graphite::base(
             },
             # Retain aggregated data at a one-minute resolution for one week; at
             # five-minute resolution for two weeks; at 15-minute resolution for
-            # one month; and at one-hour resolution for one year.
+            # one month; one-hour resolution for one year, and 1d for five years
             'default' => {
                 pattern    => '.*',
-                retentions => '1m:7d,5m:14d,15m:30d,1h:1y',
+                retentions => '1m:7d,5m:14d,15m:30d,1h:1y,1d:5y',
             },
         },
 
