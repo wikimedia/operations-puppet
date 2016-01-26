@@ -35,7 +35,6 @@ class role::kafka::analytics::mirror {
     # Monitor kafka in production
     if $::realm == 'production' {
         kafka::mirror::monitoring { $mirror_name:
-            jmx_port            => 9998,
             group_prefix        => $group_prefix,
             nagios_servicegroup => "analytics_${::site}",
         }
