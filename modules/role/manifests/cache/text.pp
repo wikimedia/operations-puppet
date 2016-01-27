@@ -59,6 +59,16 @@ class role::cache::text {
                 'type'     => 'random',
                 'backends' => $role::cache::configuration::backends[$::realm]['restbase'][$::mw_primary],
             },
+            'cxserver_backend' => { # LEGACY: should be removed eventually
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::mw_primary],
+            },
+            'citoid_backend'   => { # LEGACY: should be removed eventually
+                'dynamic'  => 'no',
+                'type'     => 'random',
+                'backends' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::mw_primary],
+            },
         },
         'two' => {
             'backend'        => {
@@ -149,6 +159,16 @@ class role::cache::text {
                 'backend_match'   => '^restbase\.svc\.|^deployment-restbase',
                 'port'            => 7231,
                 'max_connections' => 5000,
+            },
+            { # LEGACY: should be removed eventually
+                'backend_match'         => '^cxserver',
+                'port'                  => 8080,
+                'probe'                 => false,
+            },
+            { # LEGACY: should be removed eventually
+                'backend_match'         => '^citoid',
+                'port'                  => 1970,
+                'probe'                 => false,
             },
             {
                 'port'                  => 80,
