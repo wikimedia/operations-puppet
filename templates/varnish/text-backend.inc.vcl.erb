@@ -17,6 +17,10 @@ sub vcl_recv {
 	if (req.url ~ "^/api/rest_v1/") {
 		set req.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
 		set req.backend = restbase_backend;
+	} else if (req.http.Host ~ "cxserver" ) { # LEGACY: to be removed eventually
+		set req.backend = cxserver_backend;
+	} else if (req.http.Host ~ "citoid" ) { # LEGACY: to be removed eventually
+		set req.backend = citoid_backend;
 	} else if (req.http.X-Wikimedia-Debug == "1") {
 		// Note: Make sure only MW core traffic is sent to this backend.
 		set req.backend = appservers_debug;
