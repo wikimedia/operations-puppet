@@ -115,6 +115,1148 @@ ssh::server::explicit_macs: false
 "cxserver::proxy": deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
 "cxserver::yandex_url": https://translate.yandex.net
 "cxserver::restbase_url": http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231/@lang.wikipedia.beta.wmflabs.org/api/rest_v1/page/html/@title
+"cxserver::registry":
+  source:
+    - ab
+    - ace
+    - af
+      - ak
+      - am
+    - ang
+    - an
+    - arc
+    - ar
+    - arz
+    - ast
+    - as
+    - av
+    - ay
+    - az
+    - bar
+    - ba
+    - bcl
+    - be-tarask
+    - be
+    - bg
+    - bho
+    - bi
+    - bjn
+    - bm
+    - bn
+    - bo
+    - bpy
+    - br
+    - bs
+    - bug
+    - bxr
+    - ca
+    - cbk-zam
+    - cdo
+    - ceb
+    - ce
+    - chr
+    - ch
+    - chy
+    - ckb
+    - co
+    - crh-latn
+    - cr
+    - csb
+    - cs
+    - cu
+    - cv
+    - cy
+    - da
+    - de
+    - diq
+    - dsb
+    - dv
+    - dz
+    - ee
+    - el
+    - eml
+    - en
+    - eo
+    - es
+    - et
+    - eu
+    - ext
+    - fa
+    - ff
+    - fi
+    - fj
+    - fo
+    - frp
+    - frr
+    - fr
+    - fur
+    - fy
+    - gag
+    - gan
+    - ga
+    - gd
+    - glk
+    - gl
+    - gn
+    - gom
+    - got
+    - gsw
+    - gu
+    - gv
+    - hak
+    - ha
+    - haw
+    - he
+    - hif
+    - hi
+    - hr
+    - hsb
+    - ht
+    - hu
+    - hy
+    - ia
+    - id
+    - ie
+    - ig
+    - ik
+    - ilo
+    - io
+    - is
+    - it
+    - iu
+    - ja
+    - jbo
+    - jv
+    - kaa
+    - kab
+    - ka
+    - kbd
+    - kg
+    - ki
+    - kk
+    - kl
+    - km
+    - kn
+    - koi
+    - ko
+    - krc
+    - ksh
+    - ks
+    - ku
+    - kv
+    - kw
+    - ky
+    - lad
+    - la
+    - lbe
+    - lb
+    - lez
+    - lg
+    - lij
+    - li
+    - lmo
+    - ln
+    - lo
+    - lrc
+    - ltg
+    - lt
+    - lv
+    - lzh
+    - mai
+    - map-bms
+    - mdf
+    - mg
+    - mhr
+    - min
+    - mi
+    - mk
+    - ml
+    - mn
+    - mrj
+    - mr
+    - ms
+    - mt
+    - mwl
+    - myv
+    - my
+    - mzn
+    - nah
+    - nan
+    - nap
+    - na
+    - nds-nl
+    - nds
+    - ne
+    - new
+    - nl
+    - nn
+    - nov
+    - 'no'
+    - nrm
+    - nso
+    - nv
+    - ny
+    - oc
+    - om
+    - or
+    - os
+    - pag
+    - pam
+    - pap
+    - pa
+    - pcd
+    - pdc
+    - pfl
+    - pih
+    - pi
+    - pl
+    - pms
+    - pnb
+    - pnt
+    - ps
+    - pt
+    - qu
+    - rm
+    - rmy
+    - rn
+    - roa-tara
+    - rup
+    - ro
+    - rue
+    - ru
+    - rw
+    - sah
+    - sa
+    - scn
+    - sco
+    - sc
+    - sd
+    - se
+    - sg
+    - sgs
+    - sh
+    - simple
+    - si
+    - sk
+    - sl
+    - sm
+    - sn
+    - so
+    - sq
+    - srn
+    - sr
+    - ss
+    - stq
+    - st
+    - su
+    - sv
+    - sw
+    - szl
+    - ta
+    - tet
+    - te
+    - tg
+    - th
+    - ti
+    - tk
+    - tl
+    - tn
+    - to
+    - tpi
+    - tr
+    - ts
+    - tt
+    - tum
+    - tw
+    - tyv
+    - ty
+    - udm
+    - ug
+    - uk
+    - ur
+    - uz
+    - vec
+    - vep
+    - ve
+    - vi
+    - vls
+    - vo
+    - vro
+    - war
+    - wa
+    - wo
+    - wuu
+    - xal
+    - xh
+    - xmf
+    - yi
+    - yo
+    - yue
+    - za
+    - zea
+    - zh
+    - zu
+  target:
+    - ab
+    - ace
+    - af
+    - ak
+    - am
+    - ang
+    - an
+    - arc
+    - ar
+    - arz
+    - ast
+    - as
+    - av
+    - ay
+    - az
+    - bar
+    - ba
+    - bcl
+    - be-tarask
+    - be
+    - bg
+    - bho
+    - bi
+    - bjn
+    - bm
+    - bn
+    - bo
+    - bpy
+    - br
+    - bs
+    - bug
+    - bxr
+    - ca
+    - cbk-zam
+    - cdo
+    - ceb
+    - ce
+    - chr
+    - ch
+    - chy
+    - ckb
+    - co
+    - crh-latn
+    - cr
+    - csb
+    - cs
+    - cu
+    - cv
+    - cy
+    - da
+    - de
+    - diq
+    - dsb
+    - dv
+    - dz
+    - ee
+    - el
+    - eml
+    - en
+    - eo
+    - es
+    - et
+    - eu
+    - ext
+    - fa
+    - ff
+    - fi
+    - fj
+    - fo
+    - frp
+    - frr
+    - fr
+    - fur
+    - fy
+    - gag
+    - gan
+    - ga
+    - gd
+    - glk
+    - gl
+    - gn
+    - gom
+    - got
+    - gsw
+    - gu
+    - gv
+    - hak
+    - ha
+    - haw
+    - he
+    - hif
+    - hi
+    - hr
+    - hsb
+    - ht
+    - hu
+    - hy
+    - ia
+    - id
+    - ie
+    - ig
+    - ik
+    - ilo
+    - io
+    - is
+    - it
+    - iu
+    - ja
+    - jbo
+    - jv
+    - kaa
+    - kab
+    - ka
+    - kbd
+    - kg
+    - ki
+    - kk
+    - kl
+    - km
+    - kn
+    - koi
+    - ko
+    - krc
+    - ksh
+    - ks
+    - ku
+    - kv
+    - kw
+    - ky
+    - lad
+    - la
+    - lbe
+    - lb
+    - lez
+    - lg
+    - lij
+    - li
+    - lmo
+    - ln
+    - lo
+    - lrc
+    - ltg
+    - lt
+    - lv
+    - lzh
+    - mai
+    - map-bms
+    - mdf
+    - mg
+    - mhr
+    - min
+    - mi
+    - mk
+    - ml
+    - mn
+    - mrj
+    - mr
+    - ms
+    - mt
+    - mwl
+    - myv
+    - my
+    - mzn
+    - nah
+    - nan
+    - nap
+    - na
+    - nds-nl
+    - nds
+    - ne
+    - new
+    - nl
+    - nn
+    - nov
+    - 'no'
+    - nrm
+    - nso
+    - nv
+    - ny
+    - oc
+    - om
+    - or
+    - os
+    - pag
+    - pam
+    - pap
+    - pa
+    - pcd
+    - pdc
+    - pfl
+    - pih
+    - pi
+    - pl
+    - pms
+    - pnb
+    - pnt
+    - ps
+    - pt
+    - qu
+    - rm
+    - rmy
+    - rn
+    - roa-tara
+    - rup
+    - ro
+    - rue
+    - ru
+    - rw
+    - sah
+    - sa
+    - scn
+    - sco
+    - sc
+    - sd
+    - se
+    - sg
+    - sgs
+    - sh
+    - simple
+    - si
+    - sk
+    - sl
+    - sm
+    - sn
+    - so
+    - sq
+    - srn
+    - sr
+    - ss
+    - stq
+    - st
+    - su
+    - sv
+    - sw
+    - szl
+    - ta
+    - tet
+    - te
+    - tg
+    - th
+    - ti
+    - tk
+    - tl
+    - tn
+    - to
+    - tpi
+    - tr
+    - ts
+    - tt
+    - tum
+    - tw
+    - tyv
+    - ty
+    - udm
+    - ug
+    - uk
+    - ur
+    - uz
+    - vec
+    - vep
+    - ve
+    - vi
+    - vls
+    - vo
+    - vro
+    - war
+    - wa
+    - wo
+    - wuu
+    - xal
+    - xh
+    - xmf
+    - yi
+    - yo
+    - yue
+    - za
+    - zea
+    - zh
+    - zu
+  mt:
+    Apertium:
+      af:
+        - nl
+      an:
+        - es
+      ar:
+        - mt
+      ast:
+        - es
+      bg:
+        - mk
+      ca:
+        - en
+        - es
+        - eo
+        - fr
+        - oc
+        - pt
+        - simple
+      cy:
+        - en
+        - simple
+      en:
+        - ca
+        - eo
+        - es
+        - gl
+        - sh
+      eo:
+        - en
+        - simple
+      es:
+        - an
+        - ast
+        - ca
+        - en
+        - eo
+        - fr
+        - gl
+        - it
+        - oc
+        - pt
+        - simple
+      eu:
+        - en
+        - es
+        - simple
+      fr:
+        - ca
+        - eo
+        - es
+      gl:
+        - en
+        - es
+        - simple
+      hi:
+        - ur
+      id:
+        - ms
+      is:
+        - en
+        - sv
+      it:
+        - ca
+        - es
+      kk:
+        - tt
+      mk:
+        - bg
+        - sr
+      ms:
+        - id
+      mt:
+        - ar
+      nl:
+        - af
+      nn:
+        - da
+        - nb
+        - 'no'
+      'no':
+        - nn
+      oc:
+        - ca
+        - es
+      pt:
+        - ca
+        - es
+        - gl
+      ro:
+        - es
+      sh:
+        - en
+        - simple
+        - sl
+      simple:
+        - ca
+        - eo
+        - es
+        - gl
+        - sh
+      sl:
+        - sh
+        - sr
+      sv:
+        - da
+        - is
+      tt:
+        - kk
+      ur:
+        - hi
+    Yandex:
+      af:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ar:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      az:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ba:
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      'be-tarask':
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      be:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      bg:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      bs:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ca:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      cs:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      cy:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      da:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      de:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      el:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      en:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      es:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      et:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      eu:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      fa:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      fi:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      fr:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ga:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      gl:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      he:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      hi:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      hr:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ht:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      hu:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      hy:
+        - ba
+        - pl
+        - sq
+        - ru
+        - uz
+      id:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      is:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      it:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ja:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ka:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      kk:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ko:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ky:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      la:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      lt:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      lv:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      mg:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      mk:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      mn:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ms:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      mt:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      nl:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      'no':
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      pl:
+        - ba
+        - hy
+        - sq
+        - ru
+        - uz
+      pt:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ro:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      sk:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      sl:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      sq:
+        - ba
+        - hy
+        - pl
+        - ru
+        - uz
+      sr:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      sv:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      sw:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      tg:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      th:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      tl:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      tr:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      tt:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      uk:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      ur:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      uz:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+      vi:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+      zh:
+        - ba
+        - hy
+        - pl
+        - sq
+        - ru
+        - uz
+dictionary:
+  Dictd:
+    en:
+      - hi
+  JsonDict:
+    ca:
+      - es
+    en:
+      - es
+    es:
+      - ca
 role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a7:df:4c:0a:e3
 "role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
 "hhvm::extra::fcgi":
