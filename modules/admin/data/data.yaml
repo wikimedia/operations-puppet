@@ -427,7 +427,8 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/local/sbin/install-console *',
                  'ALL = NOPASSWD: /usr/bin/salt-key *',
                  'ALL = NOPASSWD: /usr/bin/puppet cert *',
-                 'ALL = NOPASSWD: /usr/bin/puppet agent -t -v']
+                 'ALL = NOPASSWD: /usr/bin/puppet agent -t -v',
+                 'ALL = NOPASSWD: /bin/journalctl *']
   perf-roots:
     gid: 766
     description: users who have root on memcached, varnish and application servers
