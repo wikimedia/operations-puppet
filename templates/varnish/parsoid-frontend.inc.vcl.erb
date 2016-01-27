@@ -1,13 +1,5 @@
 // Varnish VCL include file for Parsoid frontends
 
-sub vcl_recv {
-	if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\." ) {
-		set req.backend = restbase_backend;
-		return (pass);
-	}
-	// common parsoid-related VCL gets included here...
-}
-
 sub vcl_miss {
 	// Forward the Cache-Control header to the backend
 	if (req.http.Cache-Control) {
