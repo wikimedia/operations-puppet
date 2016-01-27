@@ -48,16 +48,6 @@ class role::cache::parsoid {
         vcl_config       => $be_vcl_config,
         backend_options  => [
             {
-                'backend_match'         => '^cxserver',
-                'port'                  => 8080,
-                'probe'                 => false,
-            },
-            {
-                'backend_match'         => '^citoid',
-                'port'                  => 1970,
-                'probe'                 => false,
-            },
-            {
                 'backend_match'         => '^restbase',
                 'port'                  => 7231,
                 'probe'                 => false, # TODO: Need probe here
@@ -84,16 +74,6 @@ class role::cache::parsoid {
                 'type'     => 'chash',
                 'backends' => $site_cluster_nodes,
             },
-            'cxserver_backend' => {
-                'dynamic'  => 'no',
-                'type'     => 'chash', # probably wrong, but current value before this commit! XXX
-                'backends' => $::role::cache::configuration::backends[$::realm]['cxserver'][$::mw_primary],
-            },
-            'citoid_backend'   => {
-                'dynamic'  => 'no',
-                'type'     => 'chash', # probably wrong, but current value before this commit! XXX
-                'backends' => $::role::cache::configuration::backends[$::realm]['citoid'][$::mw_primary],
-            },
             'restbase_backend' => {
                 'dynamic'  => 'no',
                 'type'     => 'chash', # probably wrong, but current value before this commit! XXX
@@ -102,16 +82,6 @@ class role::cache::parsoid {
         },
         vcl_config      => $fe_vcl_config,
         backend_options => array_concat($::role::cache::2layer::backend_scaled_weights, [
-            {
-                'backend_match'         => '^cxserver',
-                'port'                  => 8080,
-                'probe'                 => false,
-            },
-            {
-                'backend_match'         => '^citoid',
-                'port'                  => 1970,
-                'probe'                 => false,
-            },
             {
                 'backend_match'         => '^restbase',
                 'port'                  => 7231,
