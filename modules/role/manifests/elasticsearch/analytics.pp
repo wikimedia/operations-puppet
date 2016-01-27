@@ -4,16 +4,4 @@ class role::elasticsearch::analytics {
     package { 'wikimedia/discovery/analytics':
         provider => 'trebuchet',
     }
-
-    # analytics-search user will be use to deploy wikimedia/discovery/analytics
-    # into HDFS
-    group { 'analytics-search':
-        ensure => present,
-    }
-
-    user { 'analytics-search':
-        ensure => present,
-        gid    => 'analytics-search',
-        system => true
-    }
 }

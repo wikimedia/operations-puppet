@@ -65,10 +65,7 @@ node 'alsafi.wikimedia.org' {
 # - YARN ResourceManager
 node 'analytics1001.eqiad.wmnet' {
     role analytics::hadoop::master,
-    # elasticsearch::analytics creates the analytics-search user and group
-    # that analytics-search-users are allowed to sudo to.  This is used
-    # for deploying files to HDFS.
-        elasticsearch::analytics
+        analytics::users
 
     include standard
     include base::firewall
@@ -78,10 +75,7 @@ node 'analytics1001.eqiad.wmnet' {
 # analytics1002 is the Hadoop standby NameNode.
 node 'analytics1002.eqiad.wmnet' {
     role analytics::hadoop::standby,
-    # elasticsearch::analytics creates the analytics-search user and group
-    # that analytics-search-users are allowed to sudo to.  This is used
-    # for deploying files to HDFS.
-        elasticsearch::analytics
+        analytics::users
 
     include standard
     include base::firewall
@@ -2406,10 +2400,13 @@ node 'stat1002.eqiad.wmnet' {
     # Include classes needed for storing and crunching
     # private data on stat1002.
     role statistics::private,
-    # elasticsearch::analytics creates the analytics-search user and group
-    # that analytics-search-users are allowed to sudo to.  This is used
-    # for deploying files to HDFS.
-        elasticsearch::analytics
+    # stat1002 is also a Hadoop client, and should
+    # have any special analytics system users on it
+    # for interacting with HDFS.
+        analytics::users,
+        # Deploy wikimedia/discovery/analytics repository
+        # to this node.
+        elasticsearch::analytics,
 
     include standard
 
