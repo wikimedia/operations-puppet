@@ -58,11 +58,6 @@ class role::cache::parsoid {
                 'probe'                 => false,
             },
             {
-                'backend_match'         => '^graphoid',
-                'port'                  => 19000,
-                'probe'                 => false,
-            },
-            {
                 'backend_match'         => '^restbase',
                 'port'                  => 7231,
                 'probe'                 => false, # TODO: Need probe here
@@ -99,11 +94,6 @@ class role::cache::parsoid {
                 'type'     => 'chash', # probably wrong, but current value before this commit! XXX
                 'backends' => $::role::cache::configuration::backends[$::realm]['citoid'][$::mw_primary],
             },
-            'graphoid_backend' => {
-                'dynamic'  => 'no',
-                'type'     => 'chash', # probably wrong, but current value before this commit! XXX
-                'backends' => $::role::cache::configuration::backends[$::realm]['graphoid'][$::mw_primary],
-            },
             'restbase_backend' => {
                 'dynamic'  => 'no',
                 'type'     => 'chash', # probably wrong, but current value before this commit! XXX
@@ -120,11 +110,6 @@ class role::cache::parsoid {
             {
                 'backend_match'         => '^citoid',
                 'port'                  => 1970,
-                'probe'                 => false,
-            },
-            {
-                'backend_match'         => '^graphoid',
-                'port'                  => 19000,
                 'probe'                 => false,
             },
             {
