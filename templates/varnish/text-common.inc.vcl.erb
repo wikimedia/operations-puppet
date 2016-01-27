@@ -88,6 +88,11 @@ sub common_recv {
 		return (pass);
 	}
 
+	# LEGACY: to be removed eventually
+	if (req.http.Host ~ "cxserver|citoid" ) {
+		return (pass);
+	}
+
 	call evaluate_cookie;
 	call pass_authorization;
 }
