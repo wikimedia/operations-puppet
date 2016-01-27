@@ -16,3 +16,8 @@ exec /usr/bin/rsync \
     --exclude="**/cache/l10n/*.cdb" \
     --exclude="*.swp" \
     "${MASTER}::common" /srv/mediawiki-staging
+
+exec /usr/bin/rsync \
+        --archive --delete-delay --delay-updates --compress --delete \
+        --exclude="*.swp" \
+        "${MASTER}::common" /srv/patches
