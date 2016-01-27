@@ -141,4 +141,7 @@ class role::ntp {
             retries       => 20, # wait for resync, don't flap after restart
         }
     }
+
+    # Required for race-free ntpd startup, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=436029 :
+    require_package('lockfile-progs')
 }
