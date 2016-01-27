@@ -287,7 +287,7 @@ class role::parsoid::testing {
     }
 
     file { '/lib/systemd/system/parsoid.service':
-        source => 'puppet:///files/misc/parsoid.systemd.service',
+        source => 'puppet:///files/misc/parsoid_testing.systemd.service',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',

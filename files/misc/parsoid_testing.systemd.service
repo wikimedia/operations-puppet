@@ -1,5 +1,5 @@
 [Unit]
-Description=parsoid-vd: Testreduce HTTP service for visual-diff results
+Description=Parsoid service used by the parsoid::testing role
 After=network.target
 
 [Service]
@@ -7,9 +7,10 @@ User=parsoid
 Group=parsoid
 LimitNOFILE=10000
 
+# 1 worker is sufficient -- we aren't going to hit this service much.
 Environment=NODE_PATH=/usr/lib/parsoid/node_modules VCAP_APP_PORT=8000
 WorkingDirectory=/usr/lib/parsoid/src
-ExecStart=/usr/bin/nodejs bin/server.js -c /usr/lib/parsoid/src/localsettings.js
+ExecStart=/usr/bin/nodejs bin/server.js -n 1 -c /usr/lib/parsoid/src/localsettings.js
 StandardInput=null
 StandardOutput=journal
 StandardError=journal
