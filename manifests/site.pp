@@ -2314,6 +2314,7 @@ node 'rutherfordium.eqiad.wmnet' {
 # But, we are likely going to split them into different boxes soon.
 node 'ruthenium.eqiad.wmnet' {
     role testsystem,
+        mariadb,
         parsoid::testing, parsoid_rt_server, parsoid_rt_client,
         parsoid_vd_server, parsoid_vd_client
 
