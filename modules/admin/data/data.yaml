@@ -455,6 +455,17 @@ groups:
     description: users who have root on analytics servers
     members: [mforns, milimetric, nuria, otto, madhuvishy, joal]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  parsoid-rt-admin:
+    gid: 771
+    description: parsing team members for parsoid regression testing adminstration
+    members: []
+    privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
+               'ALL = NOPASSWD: /usr/sbin/service parsoid-rt *',
+               'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client *',
+               'ALL = NOPASSWD: /usr/sbin/service parsoid-vd *',
+               'ALL = NOPASSWD: /usr/sbin/service parsoid-vd-client *',
+               'ALL = NOPASSWD: /usr/sbin/service diffservice *',
+               'ALL = (parsoid-rt) NOPASSWD: /home/parsoid-rt/update-code.sh']
 users:
   rush:
     ensure: present
