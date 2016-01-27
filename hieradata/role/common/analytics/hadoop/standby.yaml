@@ -8,5 +8,3 @@ admin::groups:
 debdeploy::grains:
   debdeploy-hadoop-standby:
     value: standard
-
-  
