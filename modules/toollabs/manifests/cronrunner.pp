@@ -24,8 +24,7 @@ class toollabs::cronrunner {
         source => "puppet:///modules/toollabs/40-${::labsproject}-submithost-banner",
     }
 
-    # ;_; :'()
-    file { '/usr/local/bin/jlocal':
+    file { '/usr/bin/jlocal':
         ensure => present,
         source => 'puppet:///modules/toollabs/jlocal',
         owner  => 'root',
@@ -33,15 +32,14 @@ class toollabs::cronrunner {
         mode   => '0555',
     }
 
-    # Gotta be in /usr/bin because Cron doesn't look in /usr/local/bin by default
     file { '/usr/local/bin/jlocal':
         ensure  => link,
-        target  => '/usr/local/bin/jlocal',
+        target  => '/usr/bin/jlocal',
         owner   => 'root',
         group   => 'root',
-        mode    => '0555',
-        require => File['/usr/local/bin/jlocal'],
+        require => File['/usr/bin/jlocal'],
     }
+
     # Backup crontabs! See https://phabricator.wikimedia.org/T95798
     file { '/data/project/.system/crontabs':
         ensure => directory,
