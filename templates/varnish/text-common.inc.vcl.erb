@@ -89,7 +89,7 @@ sub common_recv {
 	}
 
 	# LEGACY: to be removed eventually
-	if (req.http.Host ~ "cxserver|citoid" ) {
+	if (req.http.Host ~ "cxserver|citoid|restbase|^rest\." ) {
 		return (pass);
 	}
 

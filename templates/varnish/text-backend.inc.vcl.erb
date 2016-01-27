@@ -21,6 +21,8 @@ sub vcl_recv {
 		set req.backend = cxserver_backend;
 	} else if (req.http.Host ~ "citoid" ) { # LEGACY: to be removed eventually
 		set req.backend = citoid_backend;
+	} else if (req.http.Host ~ "restbase|^rest\." ) { # LEGACY: to be removed eventually
+		set req.backend = restbase_backend;
 	} else if (req.http.X-Wikimedia-Debug == "1") {
 		// Note: Make sure only MW core traffic is sent to this backend.
 		set req.backend = test_wikipedia;
