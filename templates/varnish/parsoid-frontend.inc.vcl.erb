@@ -9,10 +9,6 @@ sub vcl_recv {
 		set req.backend = citoid_backend;
 		return (pass);
 	}
-	if (req.http.Host ~ "graphoid" ) {
-		set req.backend = graphoid_backend;
-		return (lookup);
-	}
 	if (req.http.Host ~ "restbase" || req.http.Host ~ "rest\." ) {
 		set req.backend = restbase_backend;
 		return (pass);
