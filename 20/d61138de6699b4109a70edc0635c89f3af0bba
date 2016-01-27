@@ -1,0 +1,9 @@
+Code-Review+1: GWicke <gwicke@wikimedia.org>
+Code-Review+2: BBlack <bblack@wikimedia.org>
+Verified+2: BBlack <bblack@wikimedia.org>
+Code-Review+1: Mobrovac <mobrovac@wikimedia.org>
+Submitted-by: BBlack <bblack@wikimedia.org>
+Submitted-at: Wed, 27 Jan 2016 19:11:39 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/266740
+Project: operations/puppet
+Branch: refs/heads/production
