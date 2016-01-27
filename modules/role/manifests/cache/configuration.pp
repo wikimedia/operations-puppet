@@ -29,9 +29,6 @@ class role::cache::configuration {
             'citoid' => {
                 'eqiad' => ['citoid.svc.eqiad.wmnet'],
             },
-            'graphoid' => {
-                'eqiad' => ['graphoid.svc.eqiad.wmnet'],
-            },
             'restbase' => {
                 'eqiad' => ['restbase.svc.eqiad.wmnet'],
             },
@@ -80,9 +77,6 @@ class role::cache::configuration {
             },
             'restbase' => {
                 'eqiad' => ['deployment-restbase01.eqiad.wmflabs'],
-            },
-            'graphoid' => {
-                'eqiad' => ['10.68.16.145'], # deployment-sca01
             },
             'swift' => {
                 # ms emulator set in July 2013. Beta does not have Swift yet.
