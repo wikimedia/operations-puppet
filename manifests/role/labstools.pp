@@ -53,6 +53,10 @@ class role::labs::tools {
         class { 'toollabs::toolwatcher':
             active => ($::fqdn == $active_host)
         }
+
+        class { 'toollabs::admin_web_updater':
+            active => ($::fqdn == $active_host)
+        }
     }
 
     class checker {
