@@ -1024,6 +1024,12 @@ registry:
         - sq
         - ru
         - uz
+      ru:
+        - ba
+        - hy
+        - pl
+        - sq
+        - uz
       sk:
         - ba
         - hy
