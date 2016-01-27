@@ -5,6 +5,10 @@ admin::groups:
   - analytics-privatedata-users
   - analytics-roots
   - analytics-admins
+  # elasticsearch::analytics creates the analytics-search user and group
+  # that analytics-search-users are allowed to sudo to.  This is used
+  # for deploying files to HDFS.
+  - analytics-search-users
 debdeploy::grains:
   debdeploy-hadoop-master:
     value: standard

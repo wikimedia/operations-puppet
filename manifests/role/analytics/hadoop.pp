@@ -243,7 +243,7 @@ class role::analytics::hadoop::config {
         $gelf_logging_port                        = 12201
         # In production, make sure that HDFS user directories are
         # created for everyone in these groups.
-        $hadoop_users_posix_groups                = 'analytics-users analytics-privatedata-users analytics-admins'
+        $hadoop_users_posix_groups                = 'analytics-users analytics-privatedata-users analytics-admins analytics-search-users'
     }
 
     # Configs specific to Labs.
