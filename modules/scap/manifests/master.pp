@@ -4,6 +4,7 @@
 class scap::master(
     $common_path        = '/srv/mediawiki',
     $common_source_path = '/srv/mediawiki-staging',
+    $patches_path       = '/srv/patches',
     $rsync_host         = "deployment.${::site}.wmnet",
     $statsd_host        = 'statsd.eqiad.wmnet',
     $statsd_port        = 8125,
@@ -44,6 +45,12 @@ class scap::master(
         path        => $common_source_path,
         read_only   => 'yes',
         hosts_allow => $::network::constants::mw_appserver_networks;
+    }
+
+    rsync::server::module { 'patches':
+        path        => $patches_path,
+        read_only   => 'yes',
+        hosts_allow => $::network::constants::special_hosts[$::realm]['deployment_hosts'];
     }
 
     class { 'scap::l10nupdate':

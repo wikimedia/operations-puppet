@@ -11,8 +11,13 @@ if [[ $EUID -ne 0 ]]; then
     exit 2
 fi
 
-exec /usr/bin/rsync \
+/usr/bin/rsync \
     --archive --delete-delay --delay-updates --compress --delete \
     --exclude="**/cache/l10n/*.cdb" \
     --exclude="*.swp" \
     "${MASTER}::common" /srv/mediawiki-staging
+
+/usr/bin/rsync \
+    --archive --delete-delay --delay-updates --compress --delete \
+    --exclude="*.swp" \
+    "${MASTER}::patches" /srv/patches
