@@ -20,6 +20,16 @@ class sysfs {
     }
 
     service { 'sysfsutils':
-        ensure => running,
+        ensure     => running,
+        # Does not have any permanent process, so prevent puppet from
+        # attempting to restart a service which is not meant to be running.
+        # sysfs::conffile() notify the service to trigger the restart whenever
+        # configuration files change.
+        hasstatus  => false,
+        status     => '/bin/true',
+        # Have it running on boot
+        enable     => true,
+        # Quicker restart
+        hasrestart => true,
     }
 }
