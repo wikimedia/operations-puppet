@@ -131,9 +131,12 @@ if __name__ == '__main__':
             co.properties['use'] = 'generic-host'
             co.properties['host_name'] = instance['name']
             co.properties['address'] = instance['ip']
-            # Each role applied to this instance explicitly, via wikitech,
-            # is added as a hostgroup, so we can target particular roles wich checks.
-            co.properties['hostgroups'] = ','.join([project] + instance['puppetClasses'])
+            # Each role applied to this instance explicitly, via
+            # wikitech, is added as a hostgroup, so we can target
+            # particular roles with checks.  role::labs::instance is
+            # implicitly applied to all instances via
+            # manifests/site.pp, so we need to add it here explicitly.
+            co.properties['hostgroups'] = ','.join([project, 'role::labs::instance'] + instance['puppetClasses'])
             # For each project added to monitoring we expect a contactgroup with the same
             # name added.
             # FIXME: Implement access mechanism more fine grained than per-project
