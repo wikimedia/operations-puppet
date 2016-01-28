@@ -47,7 +47,7 @@ class dynamicproxy (
     }
 
     redis::instance { '6379':
-        settings       => {
+        settings => {
             appendonly => 'yes',
             maxmemory  => $redis_maxmemory,
             slaveof    => $slaveof,
@@ -202,7 +202,7 @@ class dynamicproxy (
         desc  => 'HTTPS webserver for the entire world',
     }
 
-    $graphite_metric_prefix = "${labsproject}.${hostname}.reqstats"
+    $graphite_metric_prefix = "${::labsproject}.${::hostname}.reqstats"
 
     logster::job { 'proxy-requests':
         minute          => '*/1',
