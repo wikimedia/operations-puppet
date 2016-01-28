@@ -94,9 +94,9 @@ define monitoring::ganglia(
     # standard format
     $ganglia_group = $group ? {
         /.+/    => $group,
-        default => $::cluster ? {
+        default => $cluster ? {
             'misc'  => undef,
-            default => "${::cluster}_${::site}"
+            default => "${cluster}_${::site}"
         }
     }
 
