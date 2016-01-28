@@ -81,7 +81,7 @@ cassandra::seeds:
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
 cassandra::logging::logstash_host: deployment-logstash2.deployment-prep.eqiad.wmflabs
 restbase::seeds:
-  - 10.68.17.227
+  - 10.68.16.128
   - 10.68.17.189
 restbase::config_template: restbase/config.labs.yaml.erb
 restbase::parsoid_uri: http://deployment-parsoid05.deployment-prep.eqiad.wmflabs:8000
