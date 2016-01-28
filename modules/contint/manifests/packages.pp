@@ -34,6 +34,7 @@ class contint::packages {
     # PHP related packages
     package { [
         'php5-dev',  # phpize
+        'php5-ldap',  # OpenStackManager/LdapAuthentication T125158
         'php5-gd',
         'php5-pgsql',
         'php5-sqlite',
