@@ -5,15 +5,15 @@ class role::aptly {
     include ::aptly
 
     # Auto setup published repositories for all 3 available distros
-    aptly::repo { "precise-${labsproject}":
+    aptly::repo { "precise-${::labsproject}":
         publish      => true,
     }
 
-    aptly::repo { "trusty-${labsproject}":
+    aptly::repo { "trusty-${::labsproject}":
         publish      => true,
     }
 
-    aptly::repo { "jessie-${labsproject}":
+    aptly::repo { "jessie-${::labsproject}":
         publish      => true,
     }
 }
@@ -22,7 +22,7 @@ class role::aptly {
 #
 # Sets up a simple deb package that points to the project's aptly server
 class role::aptly::client(
-    $servername = "${labsproject}-packages.${labsproject}.${site}.wmflabs",
+    $servername = "${::labsproject}-packages.${::labsproject}.${::site}.wmflabs",
 ) {
     class { '::aptly::client':
         servername => $servername,
