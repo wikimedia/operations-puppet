@@ -11,6 +11,11 @@
     Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
     Header always set Strict-Transport-Security "max-age=604800"
 
+    IndexOptions FancyIndexing VersionSort SuppressHTMLPreamble
+    IndexOrderDefault Descending Name
+    IndexIgnore "releases-header.html"
+    HeaderName ./releases-header.html
+
     <Directory /srv/org/wikimedia/releases/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride All
