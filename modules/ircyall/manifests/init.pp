@@ -13,7 +13,7 @@ class ircyall(
     redis::instance { 6379:
         settings => {
             appendonly     => true,
-            appendfilename => "${hostname}-6379.aof",
+            appendfilename => "${::hostname}-6379.aof",
         },
     }
 
