@@ -56,7 +56,7 @@ Creative Commons Attribution-ShareAlike License.</a>; \
 additional terms may apply.'
 
 
-def logger(msg, enabled):
+def log(msg, enabled):
     if enabled:
         print msg
 
@@ -94,19 +94,19 @@ def main():
     ap.set_defaults(verbose=False)
     args = ap.parse_args()
 
-    log = lambda m: logger(m, args.verbose)
     site = args.site
+    verbose = args.verbose
     ensures = ensure.get(args.ensure, [])
     if not ensures:
         print "no html ensure list"
         sys.exit(3)
 
-    log(site)
+    log(site, verbose)
     html = site_html(site)
     for match in ensures:
-        log(match)
+        log(match, verbose)
         count = len(re.findall(match, html, re.IGNORECASE))
-        log(count)
+        log(count, verbose)
         if not count:
             print "%s html not found" % (match,)
             sys.exit(2)
