@@ -38,11 +38,6 @@ class role::torrus {
         'msw1-codfw.mgmt.codfw.wmnet',
     ]
 
-    $storagehosts = [
-        'nas1001-a.eqiad.wmnet',
-        'nas1001-b.eqiad.wmnet',
-    ]
-
     ::torrus::discovery::ddxfile { 'corerouters':
         subtree        => '/Core_routers',
         snmp_community => $snmp_ro_community,
@@ -53,12 +48,6 @@ class role::torrus {
         subtree        => '/Access_switches',
         snmp_community => $snmp_ro_community,
         hosts          => $accessswitches,
-    }
-
-    ::torrus::discovery::ddxfile { 'storage':
-        subtree        => '/Storage',
-        snmp_community => $snmp_ro_community,
-        hosts          => $storagehosts,
     }
 
     monitoring::service { 'torrus-ui':

@@ -540,18 +540,6 @@ class network::checks {
         group     => 'routers'
     }
 
-    # NAS
-    @monitoring::host { 'nas1001-a.eqiad.wmnet':
-        ip_address => '10.64.16.4',
-        group      => 'storage',
-        critical   => true,
-    }
-    @monitoring::host { 'nas1001-b.eqiad.wmnet':
-        ip_address => '10.64.16.5',
-        group      => 'storage',
-        critical   => true,
-    }
-
     ### eqord ###
 
     # cr1-eqord
@@ -699,5 +687,4 @@ class network::checks {
         description   => 'BGP status',
         check_command => "check_bgp!${snmp_ro_community}",
     }
-
 }
