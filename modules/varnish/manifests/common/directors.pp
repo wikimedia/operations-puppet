@@ -34,7 +34,7 @@ define varnish::common::directors(
     }
 
     # usual old trick
-    $group = hiera('cluster', $cluster)
+    $group = hiera('cluster', $::cluster)
     $def_service = 'varnish-be'
 
     $keyspaces_str = inline_template("<%= @directors.values.map{ |v| \"#{@conftool_namespace}/#{v['dc'] || @def_dc}/#{@group}/#{v['service'] || @def_service}\" }.join('|') %>")
