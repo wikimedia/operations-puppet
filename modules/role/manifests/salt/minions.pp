@@ -27,7 +27,7 @@ class role::salt::minions(
         grains        => {
             realm   => $::realm,
             site    => $::site,
-            cluster => hiera('cluster', $cluster),
+            cluster => hiera('cluster', $::cluster),
         },
     }
 }
