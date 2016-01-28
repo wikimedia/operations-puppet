@@ -25,7 +25,7 @@ class ldap::role::client::labs($ldapincludes=['openldap', 'utils']) {
         #
         if ( $::restricted_from ) {
             security::access::config { 'labs-restrict-from':
-                content  => "-:${restricted_from}:ALL\n",
+                content  => "-:${::restricted_from}:ALL\n",
                 priority => '98',
             }
         }

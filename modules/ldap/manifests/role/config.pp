@@ -2,13 +2,13 @@ class ldap::role::config::labs {
     include passwords::ldap::labs
 
     $basedn = 'dc=wikimedia,dc=org'
-    $servernames = $site ? {
+    $servernames = $::site ? {
         'eqiad' => [ 'ldap-labs.eqiad.wikimedia.org', 'ldap-labs.codfw.wikimedia.org' ],
         'codfw' => [ 'ldap-labs.codfw.wikimedia.org', 'ldap-labs.eqiad.wikimedia.org' ],
     }
     $sudobasedn = $::realm ? {
-        'labtest'       => "ou=sudoers,cn=${labsproject},ou=projects,${basedn}",
-        'labs'       => "ou=sudoers,cn=${labsproject},ou=projects,${basedn}",
+        'labtest'       => "ou=sudoers,cn=${::labsproject},ou=projects,${basedn}",
+        'labs'       => "ou=sudoers,cn=${::labsproject},ou=projects,${basedn}",
         'production' => "ou=sudoers,${basedn}"
     }
 
