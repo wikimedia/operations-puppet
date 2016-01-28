@@ -37,7 +37,7 @@ class releases (
         content => template('releases/apache.conf.erb'),
     }
 
-    file { '/srv/org/wikimedia/releases-header.html':
+    file { '/srv/org/wikimedia/releases/releases-header.html':
         ensure => 'present',
         mode   => '0444',
         owner  => 'www-data',
