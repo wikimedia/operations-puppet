@@ -52,7 +52,7 @@ class labs_bootstrapvz() {
         require => File["${bootstrap_filepath}/firstscripts"],
     }
 
-    $projectregex = "s/${labsproject}/_PROJECT_/g"
+    $projectregex = "s/${::labsproject}/_PROJECT_/g"
     $fqdnregex = "s/${::fqdn}/_FQDN_/g"
 
     # We can't just use $::servername here because the master
