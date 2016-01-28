@@ -14,7 +14,7 @@ class role::salt::minions(
             value => $::labsproject,
         }
     } else {
-        $master = ['neodymium.eqiad.wmnet', 'palladium.eqiad.wmnet']
+        $master = 'neodymium.eqiad.wmnet'
         $master_finger = 'f6:1d:a7:1f:7e:12:10:40:75:d5:73:af:0c:be:7d:7c'
     }
     $client_id     = $::fqdn
