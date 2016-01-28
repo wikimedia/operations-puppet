@@ -14,8 +14,13 @@
     <Directory /srv/org/wikimedia/releases/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride All
+    <IfVersion >= 2.4>
+        Require all granted
+    </IfVersion>
+    <IfVersion < 2.4>
         Order allow,deny
         allow from all
+    </IfVersion>
     </Directory>
 
 
