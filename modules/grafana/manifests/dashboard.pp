@@ -39,7 +39,7 @@ define grafana::dashboard(
     }
 
     file { "/var/lib/grafana/dashboards/${basename}.json":
-        ensure  => $ensure,
+        ensure  => $::ensure,
         content => $content,
         source  => $source,
         owner   => 'root',
