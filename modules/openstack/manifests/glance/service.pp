@@ -97,7 +97,7 @@ class openstack::glance::service(
             require => Package['glance'],
         }
 
-        if $spandby_server != $active_server {
+        if $standby_server != $active_server {
             cron { 'rsync_glance_images':
                 command => "/usr/bin/rsync -aS ${glance_images_dir}/* ${standby_server}:${glance_images_dir}/",
                 minute  => 15,
