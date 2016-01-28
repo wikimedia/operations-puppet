@@ -115,8 +115,8 @@ class role::lists {
     }
 
     nrpe::monitor_service { 'mailman_queue':
-        description   => 'mailman_queue_size',
-        nrpe_command  => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
+        description  => 'mailman_queue_size',
+        nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
     }
 
     # on list servers we monitor I/O with iostat
@@ -134,7 +134,7 @@ class role::lists {
     }
 
     # lint:ignore:quoted_booleans
-    $iostat_device = $is_virtual ? {
+    $iostat_device = $::is_virtual ? {
         'true'    => 'vda',
         'false'   => 'sda',
         default   => 'sda',
@@ -142,9 +142,9 @@ class role::lists {
     # lint:endignore
 
     nrpe::monitor_service { 'mailman_iostat':
-        description   => 'mailman I/O stats',
-        nrpe_command  => "/usr/local/lib/nagios/plugins/check_iostat -i -w 250,350,300,14000,7500 -c 500,400,600,28000,11000 -d ${iostat_device}",
-        timeout       => '30',
+        description  => 'mailman I/O stats',
+        nrpe_command => "/usr/local/lib/nagios/plugins/check_iostat -i -w 250,350,300,14000,7500 -c 500,400,600,28000,11000 -d ${iostat_device}",
+        timeout      => '30',
     }
 
     ferm::service { 'mailman-smtp':
