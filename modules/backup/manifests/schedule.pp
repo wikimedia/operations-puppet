@@ -12,7 +12,7 @@ define backup::schedule($pool) {
             { 'level' => 'Incremental',
               'at'    => 'at 04:05',
             },
-                ],
+        ],
         # lint:endignore
     }
 
@@ -20,5 +20,4 @@ define backup::schedule($pool) {
         when => "Monthly-1st-${name}",
         pool => $pool,
     }
-
 }
