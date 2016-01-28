@@ -20,6 +20,6 @@ class ganglia::monitor {
     # export ganglia::cluster resource to expose cluster -> hosts mapping
     @@ganglia::cluster { $::fqdn:
         cluster => $cluster,
-        site    => $site,
+        site    => $::site,
     }
 }
