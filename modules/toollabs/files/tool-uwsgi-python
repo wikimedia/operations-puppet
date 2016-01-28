@@ -39,7 +39,7 @@ if os.path.exists(os.path.expanduser('~/www/python/venv')):
 if os.path.exists(os.path.expanduser('~/www/python/uwsgi.ini')):
     args += ['--ini', os.path.expanduser('~/www/python/uwsgi.ini')]
 
-# Connect to the proxylistener instances on the web proxies and notify
+# Connect to the proxymanager instances on the web proxies and notify
 # them where requests for the tool need to be routed to.
 portgrabber.register(port)
 

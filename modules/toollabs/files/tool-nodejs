@@ -9,7 +9,7 @@ import portgrabber
 # Attempt to get an open port
 port = portgrabber.get_open_port()
 
-# Connect to the proxylistener instances on the web proxies and notify
+# Connect to the proxymanager instances on the web proxies and notify
 # them where requests for the tool need to be routed to.
 portgrabber.register(port)
 
