@@ -18,7 +18,7 @@ sub vcl_recv {
     } elsif (req.http.Host == "query.wikidata.org"){
         set req.backend = wdqs;
     } elsif (req.http.Host == "releases.wikimedia.org") {
-        set req.backend = caesium;
+        set req.backend = bromine;
     } elsif (req.http.Host == "gdash.wikimedia.org") {
         set req.backend = krypton;
     } elsif (req.http.Host == "piwik.wikimedia.org") {
