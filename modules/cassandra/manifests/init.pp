@@ -274,9 +274,9 @@ class cassandra(
     $application_password             = undef,
     $auto_bootstrap                   = true,
 
-    $yaml_template                    = "${module}/cassandra.yaml.erb",
-    $env_template                     = "${module}/cassandra-env.sh.erb",
-    $rackdc_template                  = "${module}/cassandra-rackdc.properties.erb",
+    $yaml_template                    = "${::module}/cassandra.yaml.erb",
+    $env_template                     = "${::module}/cassandra-env.sh.erb",
+    $rackdc_template                  = "${::module}/cassandra-rackdc.properties.erb",
 
     $logstash_host                    = 'logstash1003.eqiad.wmnet',
     $logstash_port                    = 11514,
@@ -286,7 +286,7 @@ class cassandra(
     validate_absolute_path($commitlog_directory)
     validate_absolute_path($saved_caches_directory)
 
-    validate_string($initial_token)
+    validate_string($::initial_token)
     validate_string($endpoint_snitch)
 
     validate_re($rpc_server_type, '^(hsha|sync|async)$')

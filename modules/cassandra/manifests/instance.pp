@@ -59,9 +59,9 @@ define cassandra::instance(
         $data_directory_base = '/var/lib/cassandra'
         $config_directory    = '/etc/cassandra'
         $service_name        = 'cassandra'
-        $tls_hostname        = $hostname
+        $tls_hostname        = $::hostname
         $pid_file            = '/var/run/cassandra/cassandra.pid'
-        $instance_id         = $hostname
+        $instance_id         = $::hostname
         $data_file_directories  = $this_instance['data_file_directories']
         $commitlog_directory    = $this_instance['commitlog_directory']
         $heapdump_directory     = $this_instance['heapdump_directory']
@@ -70,9 +70,9 @@ define cassandra::instance(
         $data_directory_base = "/srv/cassandra-${instance_name}"
         $config_directory    = "/etc/cassandra-${instance_name}"
         $service_name        = "cassandra-${instance_name}"
-        $tls_hostname        = "${hostname}-${instance_name}"
+        $tls_hostname        = "${::hostname}-${::instance_name}"
         $pid_file            = "/var/run/cassandra/cassandra-${instance_name}.pid"
-        $instance_id         = "${hostname}-${instance_name}"
+        $instance_id         = "${::hostname}-${::instance_name}"
         $data_file_directories  = ["${data_directory_base}/data"]
         $commitlog_directory    = "${data_directory_base}/commitlog"
         $heapdump_directory     = $data_directory_base
