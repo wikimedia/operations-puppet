@@ -1,5 +1,9 @@
-import sys
+import json
+import os
+import pwd
+import requests
 import socket
+import sys
 
 
 def get_active_proxy():
@@ -21,33 +25,29 @@ def get_open_port():
     return port
 
 
+def get_tool_name():
+    """Return the tool part of the current user name."""
+    with open('/etc/wmflabs-project', 'r') as f:
+        tools_prefix = f.read().rstrip('\n') + '.'
+    user_name = pwd.getpwuid(os.getuid()).pw_name
+    if user_name[0:len(tools_prefix)] != tools_prefix:
+        raise ValueError(user_name, ' does not start with ', tools_prefix)
+    return user_name[len(tools_prefix):]
+
+
+def get_proxy_forward_entry_manage_url():
+    """Return the URL to manage proxy forward entry."""
+    return 'http://%s:8081/v1/proxy-forwards/%s' % (get_active_proxy(), get_tool_name())
+
+
 def register(port):
     """Register with the master proxy."""
-    proxy = get_active_proxy()
-    # Use IP rather than host, to avoid DNS related issues
-    current_ip = socket.gethostbyname(socket.getfqdn())
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        sock.connect((proxy, 8282))
-        sock.sendall("register\n.*\nhttp://%s:%u\n" % (current_ip, port))
-        res = sock.recv(1024)
-        if res != 'ok':
-            sys.stderr.write('port registration failed!')
-            sys.exit(-1)
-    finally:
-        sock.close()
+    r = requests.put(get_proxy_forward_entry_manage_url(),
+                     data=json.dumps({'.*': 'http://%s:%u' % (socket.getfqdn(), port)}))
+    r.raise_for_status()
 
 
 def unregister():
     """Unregister with the master proxy."""
-    proxy = get_active_proxy()
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        sock.connect((proxy, 8282))
-        sock.sendall("unregister\n.*\n")
-        res = sock.recv(1024)
-        if res != 'ok':
-            sys.stderr.write('port unregistration failed!')
-            sys.exit(-1)
-    finally:
-        sock.close()
+    r = requests.delete(get_proxy_forward_entry_manage_url())
+    r.raise_for_status()
