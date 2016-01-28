@@ -29,6 +29,7 @@
 define grafana::dashboard(
     $content = undef,
     $source  = undef,
+    $ensure  = undef,
 ) {
     include ::grafana
 
