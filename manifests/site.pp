@@ -248,12 +248,6 @@ node 'bromine.eqiad.wmnet' {
     include standard
 }
 
-# http://releases.wikimedia.org
-node 'caesium.eqiad.wmnet' {
-    role releases
-    include standard
-}
-
 # Californium hosts openstack-dashboard AKA horizon
 #  It's proxied by the misc-web varnishes
 node 'californium.wikimedia.org' {
