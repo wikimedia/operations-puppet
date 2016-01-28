@@ -28,18 +28,18 @@
 #           schedule    => '1st-Sat',
 #           pool        => 'mypool',
 #       }
-#
 define bacula::director::jobdefaults(
-                                    $when,
-                                    $pool,
-                                    $type='Backup',
-                                    $accurate='no',
-                                    $spool_data='no',
-                                    $priority='10') {
+    $when,
+    $pool,
+    $type='Backup',
+    $accurate='no',
+    $spool_data='no',
+    $priority='10',
+) {
     file { "/etc/bacula/conf.d/jobdefaults-${name}.conf":
         ensure  => present,
-        owner   => root,
-        group   => bacula,
+        owner   => 'root',
+        group   => 'bacula',
         mode    => '0440',
         content => template('bacula/bacula-dir-jobdefaults.erb'),
         notify  => Service['bacula-director'],
