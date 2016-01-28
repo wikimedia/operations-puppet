@@ -22,7 +22,7 @@ define osm::planet_import(
 
     # Check if our db tables exist
     $tables_exist = "/usr/bin/psql -d ${name} --tuples-only -c \'SELECT table_name FROM information_schema.tables;\' | /bin/grep \'planet_osm\'"
-    $shapelines_exist = "/usr/bin/psql -d ${name} --tuples-only -c \'SELECT table_name FROM information_schema.tables;\' | /bin/grep \'${shape_table}\'"
+    $shapelines_exist = "/usr/bin/psql -d ${name} --tuples-only -c \'SELECT table_name FROM information_schema.tables;\' | /bin/grep \'${::shape_table}\'"
 
     # Note. This is not needed anymore with osm2pgsql 0.81
     exec { "load_900913-${name}":
