@@ -7,37 +7,39 @@ import time
 
 descriptors = list()
 _Worker_Thread = None
-_Lock = threading.Lock() # synchronization lock
+_Lock = threading.Lock()  # synchronization lock
 metric_results = {}
+
 
 def metric_of(name):
     global metric_results
-    return metric_results.get(name,0)
+    return metric_results.get(name, 0)
 
 # These are the defaults set for the metric attributes
 Desc_Skel = {
-    "name"        : "N/A",
-    "call_back"   : metric_of,
-    "time_max"    : 60,
-    "value_type"  : "uint",
-    "units"       : "N/A",
-    "slope"       : "both", # zero|positive|negative|both
-    "format"      : "%d",
-    "description" : "N/A",
-    "groups"      : "OpenStreetMap",
-    }
+    "name": "N/A",
+    "call_back": metric_of,
+    "time_max": 60,
+    "value_type": "uint",
+    "units": "N/A",
+    "slope": "both",  # zero|positive|negative|both
+    "format": "%d",
+    "description": "N/A",
+    "groups": "OpenStreetMap",
+}
+
 
 # Create your queries here. Keys whose names match those defined in the default
 # set are overridden. Any additional key-value pairs (i.e. query) will not be
 # added to the Ganglia metric definition but can be useful for data purposes.
-
 def get_planet_osm_lag(obj):
     import datetime
     try:
         with open(obj.state_path, "r") as f:
             for line in f.readlines():
                 if line.startswith("timestamp="):
-                    t = datetime.datetime.strptime(line.strip().split('=')[1], "%Y-%m-%dT%H\:%M\:%SZ")
+                    t = datetime.datetime.strptime(
+                        line.strip().split('=')[1], "%Y-%m-%dT%H\:%M\:%SZ")
                     r = datetime.datetime.now() - t
                     return r.seconds
     except IOError as e:
@@ -52,18 +54,19 @@ metric_defs = {
     },
 }
 
+
 def print_exception(custom_msg, exception):
     error_msg = custom_msg or "An error has occurred"
     print "%s %s" % (error_msg, exception),
 
-class UpdateMetricThread(threading.Thread):
 
+class UpdateMetricThread(threading.Thread):
     def __init__(self, params):
         threading.Thread.__init__(self)
-        self.running      = False
+        self.running = False
         self.shuttingdown = False
         self.refresh_rate = 30
-        self.state_path   = "/srv/osmosis/state.txt"
+        self.state_path = "/srv/osmosis/state.txt"
 
         param_list = ["state_path", "refresh_rate"]
         for attr in param_list:
@@ -82,9 +85,9 @@ class UpdateMetricThread(threading.Thread):
         while not self.shuttingdown:
             _Lock.acquire()
             try:
-              self.update_metric()
+                self.update_metric()
             except Exception as e:
-              print_exception("Unable to update metrics", e)
+                print_exception("Unable to update metrics", e)
             _Lock.release()
             time.sleep(int(self.refresh_rate))
 
@@ -100,8 +103,10 @@ class UpdateMetricThread(threading.Thread):
 
         for metric_name, metric_attrs in metric_defs.iteritems():
             data = metric_attrs["query"](self)
-            convert_fn = converter.get(metric_defs[metric_name].get("value_type"), int)
+            convert_fn = converter.get(
+                metric_defs[metric_name].get("value_type"), int)
             metric_results[metric_name] = convert_fn(data)
+
 
 def metric_init(params):
     global descriptors, Desc_Skel, _Worker_Thread
@@ -110,12 +115,19 @@ def metric_init(params):
     _Worker_Thread.start()
 
     for metric_desc in metric_defs:
-        descriptors.append(create_desc(metric_desc, Desc_Skel, metric_defs[metric_desc]))
+        descriptors.append(
+            create_desc(metric_desc, Desc_Skel, metric_defs[metric_desc]))
 
     return descriptors
 
+
 def create_desc(metric_name, skel, prop):
-    return dict(skel.items() + [('name', metric_name)] + [(k, v) for k, v in prop.items() if k in skel])
+    return dict(
+        skel.items() +
+        [('name', metric_name)] +
+        [(k, v) for k, v in prop.items() if k in skel]
+    )
+
 
 def metric_cleanup():
     _Worker_Thread.shutdown()
@@ -123,12 +135,15 @@ def metric_cleanup():
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description='Debug the Ganglia OSM module.')
-    parser.add_argument('--state_path', type=str, default='/srv/osmosis/state.txt',
-                         help='The path where state.txt resides. (default: %(default)s).')
-    parser.add_argument('--refresh_rate', type=int, default=10,
-                         help='The interval, in seconds, between query executions ' + \
-                             'metric collection. (default: %(default)s).')
+    parser = argparse.ArgumentParser(
+        description='Debug the Ganglia OSM module.')
+    parser.add_argument(
+        '--state_path', type=str, default='/srv/osmosis/state.txt',
+        help='The path where state.txt resides. (default: %(default)s).')
+    parser.add_argument(
+        '--refresh_rate', type=int, default=10,
+        help='The interval, in seconds, between query executions ' +
+             'metric collection. (default: %(default)s).')
     args = parser.parse_args()
     params = vars(args)
     try:
