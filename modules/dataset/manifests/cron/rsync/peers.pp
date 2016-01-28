@@ -9,7 +9,7 @@ class dataset::cron::rsync::peers($enable=true) {
     }
 
     file { '/usr/local/bin/rsync-dumps.sh':
-        ensure => $absent,
+        ensure => $ensure,
     }
 
     file { '/usr/local/bin/rsync-dumps.py':
