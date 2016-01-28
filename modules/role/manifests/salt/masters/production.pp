@@ -1,10 +1,5 @@
 class role::salt::masters::production {
 
-    motd::script { 'salt-master-motd':
-        ensure  => present,
-        content => "#!/bin/sh\necho '\n! due to a salt bug you have to accept/delete salt keys on 2 servers !\nplease remember to make changes on both palladium and neodymium\n'",
-    }
-
     $salt_state_roots    = { 'base'=>['/srv/salt']}
     $salt_file_roots     = { 'base'=>['/srv/salt']}
     $salt_pillar_roots   = { 'base'=>['/srv/pillars']}

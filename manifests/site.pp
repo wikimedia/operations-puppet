@@ -2186,7 +2186,7 @@ node 'oxygen.eqiad.wmnet'
 
 # primary puppet master
 node 'palladium.eqiad.wmnet' {
-    role ipmi, salt::masters::production, access_new_install, puppetmaster::frontend, pybal_config
+    role ipmi, access_new_install, puppetmaster::frontend, pybal_config
     include standard
     include role::conftool::master
 }
