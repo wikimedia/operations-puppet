@@ -24,7 +24,7 @@ class mediawiki::jobrunner (
         notify   => Service['jobrunner'],
     }
 
-    $dispatcher = template("mediawiki/jobrunner/dispatchers/${lsbdistcodename}.erb")
+    $dispatcher = template("mediawiki/jobrunner/dispatchers/${::lsbdistcodename}.erb")
 
     file { '/etc/default/jobrunner':
         content => template('mediawiki/jobrunner/jobrunner.default.erb'),
