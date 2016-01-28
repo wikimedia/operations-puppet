@@ -9,10 +9,10 @@ class openstack::nova::compute(
 
     if ( $::realm == 'production' ) {
         if ($::hostname =~ /^labvirt/) {
-            $certname = "labvirt-star.${site}.wmnet"
+            $certname = "labvirt-star.${::site}.wmnet"
             $ca_target = '/etc/ssl/certs/wmf_ca_2014_2017.pem'
         } else {
-            $certname = "virt-star.${site}.wmnet"
+            $certname = "virt-star.${::site}.wmnet"
             $ca_target = '/etc/ssl/certs/wmf_ca_2014_2017.pem'
         }
         sslcert::certificate { $certname: }
