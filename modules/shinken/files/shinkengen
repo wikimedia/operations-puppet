@@ -21,6 +21,7 @@ Emits a host definition for each instance in the whitelisted projects
 
 Sets as hostgroup for each instance:
     - Name of project instance is a part of
+    - role::labs::instance
     - Each puppet role explicitly applied to it (via Wikitech)
 
 Sets as contact for each instance a contactgroup with the same name as the
@@ -77,8 +78,7 @@ class LDAPSource(object):
             - ip: Internal IP of this instance
             - region: Which OpenStack Region this Instance is in
             - puppetClasses: List of puppet classes applied to this instance via
-                             configure page in wikitech. Also contains default
-                             roles `role::labs::instance` and `base`
+                             configure page in wikitech.
             - project: Name of project the instance is contained in
             - name: Name of the instance
             - puppetVars: Dictionary containing any custom puppet variables that
@@ -106,8 +106,7 @@ class LDAPSource(object):
                 'ec2id': hostinfo['dc'][0],
                 'ip': ip,
                 'region': hostinfo['l'][0],
-                # Default to having at least this role if no roles exist
-                'puppetClasses': hostinfo.get('puppetClass', ['role::labs::instance']),
+                'puppetClasses': hostinfo.get('puppetClass', []),
                 'project': project,
                 'name': puppetvars['instancename'],
                 'puppetVars': puppetvars
@@ -131,9 +130,12 @@ if __name__ == '__main__':
             co.properties['use'] = 'generic-host'
             co.properties['host_name'] = instance['name']
             co.properties['address'] = instance['ip']
-            # Each role applied to this instance explicitly, via wikitech,
-            # is added as a hostgroup, so we can target particular roles wich checks.
-            co.properties['hostgroups'] = ','.join([project] + instance['puppetClasses'])
+            # Each role applied to this instance explicitly, via
+            # wikitech, is added as a hostgroup, so we can target
+            # particular roles with checks.  role::labs::instance is
+            # implicitly applied to all instances via
+            # manifests/site.pp, so we need to add it here explicitly.
+            co.properties['hostgroups'] = ','.join([project, 'role::labs::instance'] + instance['puppetClasses'])
             # For each project added to monitoring we expect a contactgroup with the same
             # name added.
             # FIXME: Implement access mechanism more fine grained than per-project
