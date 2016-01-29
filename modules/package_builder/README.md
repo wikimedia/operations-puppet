@@ -106,10 +106,21 @@ cowbuilder is the default pbuilder builder.
 Networking
 ==========
 
-cowbuilder/pbuilder block networking using namespaces and unshare in the above
-environments. If your package requires internet access to build successfully, it
-will not work. First, try to fix the package. If that is impossible/undesirable,
-USENETWORK=yes in /etc/pbuilderrc or .pbuilderrc can be used to override that
-behaviour. Make sure that the building host has internet access though, or else
-your change will not be useful
-I
+cowbuilder/pbuilder block networking using namespaces. Technically speaking an
+unshare is done in those environments, but the effect is that you can expect
+networking to not work.
+
+If your package requires internet access to build successfully, it will not
+work.
+
+First, try to fix the package. Packages in general should not require internet
+access to be built for a variety of reasons which will not be explained here.
+
+
+If that is impossible/undesirable, then set
+
+    USENETWORK=yes
+
+in /etc/pbuilderrc or ~/.pbuilderrc can be used to override that behaviour.
+Make sure that the building host has internet access though, or else your change
+will not be useful
