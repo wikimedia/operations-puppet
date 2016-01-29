@@ -293,11 +293,6 @@ host boron {
 	fixed-address boron.wikimedia.org;
 }
 
-host caesium {
-	hardware ethernet d4:ae:52:b5:4e:60;
-	fixed-address caesium.eqiad.wmnet;
-}
-
 host californium {
 	hardware ethernet 84:2b:2b:fd:b9:f6;
 	fixed-address californium.wikimedia.org;
