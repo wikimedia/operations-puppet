@@ -16,7 +16,7 @@ class role::iegreview {
         mysql_host           => 'm2-master.eqiad.wmnet',
         mysql_db             => 'iegreview',
         smtp_host            => $::mail_smarthost[0],
-        parsoid_url          => 'http://parsoid-lb.eqiad.wikimedia.org/enwiki/',
+        parsoid_url          => 'http://parsoid.svc.eqiad.wmnet:8000/enwiki/',
         require_upstream_ssl => true,
     }
 
