@@ -1,5 +1,6 @@
 /**
  * Configuration for parsoid-rt-testing testreduce client.js script
+ * Use uprightdiff for image diffs
  */
 'use strict';
 
@@ -38,13 +39,13 @@ if (typeof module === 'object') {
 				stylesYamlFile: '/srv/visualdiff/lib/parsoid.custom_styles.yaml',
 				injectJQuery: true,
 			},
-			// resemblejs options
-			outputSettings: {
-				errorType: "flat",
-				// Skip pixels on all images bigger than this dimension on any side
-				// Clients don't generate diff images, so better to do it more
-				// efficiently.
-				largeImageThreshold: 1000,
+
+			// Engine for image diffs, may be resemble or uprightdiff
+			diffEngine: 'uprightdiff',
+
+			// UprightDiff options
+			uprightDiffSettings: {
+				binary: '/usr/local/bin/uprightdiff'
 			},
 		},
 	};
