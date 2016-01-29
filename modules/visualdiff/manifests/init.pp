@@ -2,8 +2,20 @@
 #
 # This module provides a standalone visual diffing service.
 class visualdiff {
-    require_package('nodejs')
-    require_package('npm')
+    require_package([
+        'nodejs',
+        'npm',
+        # These are required by canvas
+        'libcairo2-dev',
+        'libjpeg8-dev',
+        'libpango1.0-dev',
+        'libgif-dev',
+        # These are required to build canvas and uprightdiff.
+        # They can be skipped once we get packaged versions
+        # from elsewhere.
+        'build-essential',
+        'g++',
+    ])
 
     group { 'visualdiff':
         ensure => present,
