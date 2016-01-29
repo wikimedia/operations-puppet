@@ -18,6 +18,8 @@
 
     <Directory /srv/org/wikimedia/releases/>
         Options Indexes FollowSymLinks MultiViews
+        IndexIgnore "releases-header.html"
+        HeaderName ./releases-header.html
         AllowOverride All
     <IfVersion >= 2.4>
         Require all granted
@@ -28,6 +30,14 @@
     </IfVersion>
     </Directory>
 
+    <Directory /srv/org/wikimedia/releases/mediawiki/>
+        Options Indexes FollowSymLinks MultiViews
+        IndexIgnore "releases-header-mw.html"
+        HeaderName ./releases-header-mw.html
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
 
     ErrorLog /var/log/apache2/<%= @sitename %>.error.log
 
