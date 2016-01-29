@@ -2,8 +2,17 @@
 #
 # This module provides a standalone visual diffing service.
 class visualdiff {
-    require_package('nodejs')
-    require_package('npm')
+    ensure_packages([
+        'nodejs',
+        'npm',
+        'build-essential',
+        'libcairo2-dev',
+        'libjpeg8-dev',
+        'libpango1.0-dev',
+        'libgif-dev',
+        'build-essential',
+        'g++',
+    ])
 
     group { 'visualdiff':
         ensure => present,
