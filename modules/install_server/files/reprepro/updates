@@ -27,6 +27,36 @@ Architectures: amd64 source
 VerifyRelease: 6005210E23B3D3B4
 ListShellHook: grep-dctrl -e -S '^megacli|arcconf|lsiutil$' || [ $? -eq 1 ]
 
+Name: hp-mcp-precise
+Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Components: non-free>thirdparty
+UDebComponents:
+GetInRelease: no
+Suite: precise/current
+Architectures: amd64
+VerifyRelease: FADD8D64B1275EA3
+ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
+
+Name: hp-mcp-trusty
+Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Components: non-free>thirdparty
+UDebComponents:
+GetInRelease: no
+Suite: trusty/current
+Architectures: amd64
+VerifyRelease: FADD8D64B1275EA3
+ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
+
+Name: hp-mcp-jessie
+Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Components: non-free>thirdparty
+UDebComponents:
+GetInRelease: no
+Suite: jessie/current
+Architectures: amd64
+VerifyRelease: FADD8D64B1275EA3
+ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli$' || [ $? -eq 1 ]
+
 Name: cassandra
 Method: http://www.apache.org/dist/cassandra/debian
 Components: main>thirdparty
