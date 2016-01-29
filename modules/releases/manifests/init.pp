@@ -45,6 +45,14 @@ class releases (
         source => 'puppet:///modules/releases/releases-header.html',
     }
 
+    file { '/srv/org/wikimedia/releases/mediawiki/releases-header-mw.html':
+        ensure => 'present',
+        mode   => '0444',
+        owner  => 'www-data',
+        group  => 'www-data',
+        source => 'puppet:///modules/releases/releases-header-mw.html',
+    }
+
     # T94486
     package { 'phpunit':
         ensure => present,
