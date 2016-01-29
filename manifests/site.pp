@@ -1959,6 +1959,7 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
 # mw1161-1169 are job runners
 node /^mw116[1-9]\.eqiad\.wmnet$/ {
     role mediawiki::jobrunner
+    include base::firewall
 }
 
 # mw1170-1188 are apaches
