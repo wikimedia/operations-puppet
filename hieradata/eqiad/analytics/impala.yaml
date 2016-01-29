@@ -1,3 +1,0 @@
-# This variable is used by role::analytics::impala.
-# I'm not sure if this is the best place to put this.
-master_host: analytics1026.eqiad.wmnet

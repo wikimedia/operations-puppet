@@ -96,7 +96,7 @@ node 'analytics1015.eqiad.wmnet' {
 # used for Hadoop network topology awareness.
 node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
 
-    role analytics::hadoop::worker, analytics::impala::worker
+    role analytics::hadoop::worker
     include base::firewall
     include standard
 }
@@ -112,12 +112,10 @@ node 'analytics1021.eqiad.wmnet' {
     role spare
 }
 
-# analytics1026 is the Impala master
-# (llama, impala-state-store, impala-catalog)
+# analytics1026 is spare, for now is just an analytics client.
 node 'analytics1026.eqiad.wmnet' {
     include standard
     include role::analytics::clients
-    include role::analytics::impala::master
 }
 
 # analytics1027 hosts some frontend web interfaces to Hadoop

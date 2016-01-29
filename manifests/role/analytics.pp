@@ -29,8 +29,7 @@ class role::analytics::clients {
         role::analytics::pig,
         role::analytics::sqoop,
         role::analytics::mahout,
-        role::analytics::spark,
-        role::analytics::impala
+        role::analytics::spark
 
     # Mount HDFS via Fuse on Analytics client nodes.
     # This will mount HDFS at /mnt/hdfs read only.
