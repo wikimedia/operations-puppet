@@ -16,6 +16,7 @@ log_slave_updates
 skip-external-locking
 skip-name-resolve
 temp-pool
+log_basename=analytics-meta
 
 user      = mysql
 socket    = /tmp/mysql.sock
@@ -23,7 +24,7 @@ port      = 3306
 datadir   = <%= @datadir %>
 tmpdir    = <%= @tmpdir %>
 server_id = <%= @server_id %>
-read_only = 1
+read_only = <%= (@read_only == 'off' or not @read_only) ? 0 : 1 %>
 
 max_allowed_packet = 64M
 sync_binlog        = 0
