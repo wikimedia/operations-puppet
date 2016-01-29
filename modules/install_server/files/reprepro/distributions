@@ -6,7 +6,7 @@ Version: 12.04
 Architectures: source amd64 i386
 Components: main universe non-free thirdparty mariadb
 UDebComponents: main
-Update: jenkins cloudera hwraid elasticsearch logstash
+Update: jenkins cloudera hwraid elasticsearch logstash hp-mcp-precise
 Description: Wikimedia specific packages for Ubuntu Precise
 SignWith: default
 DebOverride: deb-override
@@ -21,7 +21,7 @@ Version: 14.04
 Architectures: source amd64 i386
 Components: main universe non-free thirdparty
 UDebComponents: main
-Update: hwraid cloudera elasticsearch logstash
+Update: hwraid cloudera elasticsearch logstash hp-mcp-trusty
 Description: Wikimedia specific packages for Ubuntu Trusty Tahr
 SignWith: default
 DebOverride: deb-override
@@ -37,7 +37,7 @@ Version: 8
 Architectures: source amd64 i386
 Components: main backports thirdparty experimental
 UDebComponents: main backports thirdparty experimental
-Update: hwraid cassandra grafana tor
+Update: hwraid cassandra grafana tor hp-mcp-jessie
 Description: Wikimedia packages for Debian Jessie
 SignWith: default
 DebOverride: deb-override
