@@ -1,7 +1,5 @@
 /**
- * Example configuration for the visual diffing service.
- *
- * Copy this file to config.js and change the values as needed.
+ * Configuration for the visual diffing service.
  */
 'use strict';
 
@@ -34,6 +32,14 @@ if (typeof module === 'object') {
                 postprocessorScript: '/srv/visualdiff/lib/parsoid.postprocess.js',
                 stylesYamlFile: '/srv/visualdiff/lib/parsoid.custom_styles.yaml',
                 injectJQuery: true,
+            },
+
+            // Engine for image diffs, may be resemble or uprightdiff
+            diffEngine: 'uprightdiff',
+
+            // UprightDiff options
+            uprightDiffSettings: {
+                binary: '/usr/local/bin/uprightdiff'
             },
         }
     };
