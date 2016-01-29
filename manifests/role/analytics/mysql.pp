@@ -34,4 +34,11 @@ class role::analytics::mysql::meta {
         hasstatus  => true,
         require    => [File['/etc/init.d/mysql'], Class['mariadb::config']],
     }
+
+    # Allow access to this analytics mysql instance from analytics networks
+    ferm::service{ 'analytics-mysql-meta':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => '$ANALYTICS_NETWORKS',
+    }
 }
