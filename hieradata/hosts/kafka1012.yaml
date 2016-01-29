@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-kafka:
     value: canary
+kafka::server::enabled: false
