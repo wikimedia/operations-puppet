@@ -55,6 +55,7 @@ if [ "${build_exit_value}" -eq "0" ] ; then
 	cd /data/wdbuilder/wikidata
 	# remove .git directories so as not to use submodules instead of a deep copy
 	find -mindepth 2 -iname '.git' -exec 'rm' '-rf' '{}' '+'
+	git checkout .gitreview
 	git add .
 	git add --force composer.lock
 	git commit -m "New Wikidata Build - $now"
