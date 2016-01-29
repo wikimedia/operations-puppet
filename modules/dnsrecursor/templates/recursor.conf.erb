@@ -40,9 +40,7 @@ allow-from=127.0.0.0/8, ::1/128, <%= (@allow_from + flatten_ips(@listen_addresse
 #################################
 # auth-zones	Zones for which we have authoritative data, comma separated domain=file pairs 
 #
-<% if @auth_zones -%>
-auth-zones=<%= @auth_zones -%>
-<% end -%>
+auth-zones=localhost=/etc/powerdns/localhost.zone,0.0.127.in-addr.arpa=/etc/powerdns/localhost.zone,0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa=/etc/powerdns/localhost.zone<% if @auth_zones %>,<%= @auth_zones %><% end %>
 
 #################################
 # chroot	switch to chroot jail

@@ -35,10 +35,20 @@ class dnsrecursor(
         content => template('dnsrecursor/recursor.conf.erb'),
     }
 
+    file { '/etc/powerdns/localhost.zone':
+        ensure  => 'present',
+        require => Package['dns-recursor'],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => 'puppet:///modules/dnsrecursor/localhost.zone',
+    }
+
     service { 'pdns-recursor':
         ensure    => 'running',
         require   => [Package['pdns-recursor'],
-                      File['/etc/powerdns/recursor.conf']
+                      File['/etc/powerdns/recursor.conf'],
+                      File['/etc/powerdns/localhost.zone']
         ],
         subscribe => File['/etc/powerdns/recursor.conf'],
         pattern   => 'pdns_recursor',
