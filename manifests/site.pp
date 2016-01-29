@@ -54,6 +54,7 @@ node /^(acamar|achernar)\.wikimedia\.org$/ {
 node 'alsafi.wikimedia.org' {
     role url_downloader
     include standard
+    include base::firewall
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
