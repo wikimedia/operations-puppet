@@ -2,8 +2,14 @@
 #
 # This module provides a standalone visual diffing service.
 class visualdiff {
-    require_package('nodejs')
-    require_package('npm')
+    require_package([
+        'nodejs',
+        'npm',
+        # These are required to build uprightdiff.
+        # They can be skipped once we get a packaged version # from elsewhere.
+        'build-essential',
+        'g++',
+    ])
 
     group { 'visualdiff':
         ensure => present,
