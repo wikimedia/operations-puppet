@@ -229,7 +229,7 @@ cache_mobile:
   cp1046.eqiad.wmnet: [varnish-be, varnish-be-rand]
   cp1047.eqiad.wmnet: [varnish-be, varnish-be-rand]
   cp1059.eqiad.wmnet: [varnish-be, varnish-be-rand]
-  cp1060.eqiad.wmnet: [varnish-be, varnish-be-rand, nginx]
+  cp1060.eqiad.wmnet: [varnish-be, varnish-be-rand]
   cp1052.eqiad.wmnet: [varnish-fe, nginx]
   cp1053.eqiad.wmnet: [varnish-fe, nginx]
   cp1054.eqiad.wmnet: [varnish-fe, nginx]
