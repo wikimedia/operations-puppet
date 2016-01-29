@@ -1,9 +1,11 @@
 /**
- * Configuration for parsoid-rt-testing testreduce client.js script
+ * Configuration for testreduce client.js script
+ * for comparing Parsoid HTML rendering with PHP parser HTML rendering.
  * Use uprightdiff for image diffs
  */
 'use strict';
 
+var clientScripts = require('/srv/visualdiff/testreduce/client.scripts.js');
 if (typeof module === 'object') {
 	module.exports = {
 		server: {
@@ -48,5 +50,9 @@ if (typeof module === 'object') {
 				binary: '/usr/local/bin/uprightdiff'
 			},
 		},
+
+		gitCommitFetch: clientScripts.gitCommitFetch,
+
+		runTest: clientScripts.generateVisualDiff,
 	};
 }
