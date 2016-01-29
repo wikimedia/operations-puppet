@@ -85,7 +85,7 @@ class wikidatabuilder {
     git::clone { 'wikidatabuildresources':
         ensure    => latest,
         directory => '/data/wdbuilder/buildresources',
-        origin    => 'https://github.com/wmde/WikidataBuildResources.git',
+        origin    => 'https://gerrit.wikimedia.org/r/wikidata/build-resources',
         owner     => 'wdbuilder',
         group     => 'wdbuilder',
         require   => [
