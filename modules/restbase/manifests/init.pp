@@ -32,7 +32,7 @@
 #   File to use as the configuration file template. Default: restbase/config.yaml.erb
 #
 # [*parsoid_uri*]
-#   URI to reach Parsoid. Default: http://parsoid-lb.eqiad.wikimedia.org
+#   URI to reach Parsoid. Default: http://parsoid.svc.eqiad.wmnet:8000
 #
 # [*logstash_host*]
 #   GELF logging host. Default: localhost
@@ -78,7 +78,7 @@ class restbase(
     $salt_key       = 'secretkey',
     $page_size      = 250,
     $config_template = 'restbase/config.yaml.erb',
-    $parsoid_uri    = 'http://parsoid-lb.eqiad.wikimedia.org',
+    $parsoid_uri    = 'http://parsoid.svc.eqiad.wmnet:8000',
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
     $logging_level  = 'warn',
