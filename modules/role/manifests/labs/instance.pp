@@ -34,6 +34,7 @@ class role::labs::instance {
 
     # No NFS on labs metal for now.
     if $::virtual == 'kvm' {
+
         # This script will block until the NFS volume is available
         file { '/usr/local/sbin/block-for-export':
             ensure => present,
@@ -48,6 +49,12 @@ class role::labs::instance {
 
         # Allows per-host overriding of NFS mounts
         $mount_nfs = hiera('mount_nfs', true)
+
+        # ideally this is only on NFS enabled hosts in the future
+        diamond::collector { 'Nfsiostat':
+            source  => 'puppet:///modules/diamond/collector/nfsiostat.py',
+            require => Package['diamond'],
+        }
 
         if mount_nfs_volume($::labsproject, 'home') and $mount_nfs {
             # Note that this is the same export as for /data/project
