@@ -43,11 +43,6 @@ class role::cache::misc {
                 'type' => 'random',
                 'backends' => ['bohrium.eqiad.wmnet'],
             },
-            'caesium' => {
-                'dynamic' => 'no',
-                'type' => 'random',
-                'backends' => ['caesium.eqiad.wmnet'],
-            },
             'californium' => {
                 'dynamic' => 'no',
                 'type' => 'random',
