@@ -159,6 +159,15 @@ node 'analytics1027.eqiad.wmnet' {
 
     # Include a weekly cron job to run hdfs balancer.
     include role::analytics::hadoop::balancer
+
+    # Allow access to this analytics mysql instance from analytics networks
+    # NOTE: an27's mysql instance will soon be managed by the
+    # role::analytics::mysql::meta class.
+    ferm::service{ 'analytics-mysql-meta':
+        proto  => 'tcp',
+        port   => '3306',
+        srange => '$ANALYTICS_NETWORKS',
+    }
 }
 
 # Analytics Query Service (RESTBase & Cassandra)
