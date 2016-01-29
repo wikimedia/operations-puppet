@@ -18,12 +18,15 @@ class role::mariadb::grants(
     include passwords::tendril
     include passwords::nodepool
     include passwords::testreduce::mysql
+    include passwords::racktables
 
-    $root_pass    = $passwords::misc::scripts::mysql_root_pass
-    $repl_pass    = $passwords::misc::scripts::mysql_repl_pass
-    $nagios_pass  = $passwords::misc::scripts::nagios_sql_pass
-    $tendril_user = $passwords::tendril::db_user
-    $tendril_pass = $passwords::tendril::db_pass
+    $root_pass       = $passwords::misc::scripts::mysql_root_pass
+    $repl_pass       = $passwords::misc::scripts::mysql_repl_pass
+    $nagios_pass     = $passwords::misc::scripts::nagios_sql_pass
+    $tendril_user    = $passwords::tendril::db_user
+    $tendril_pass    = $passwords::tendril::db_pass
+    $racktables_user = $passwords::racktables::racktables_db_user
+    $racktables_pass = $passwords::racktables::racktables_db_pass
 
     file { '/etc/mysql/production-grants.sql':
         ensure  => present,
