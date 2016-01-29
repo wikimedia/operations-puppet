@@ -57,6 +57,7 @@ if [ "${build_exit_value}" -eq "0" ] ; then
 	find -mindepth 2 -iname '.git' -exec 'rm' '-rf' '{}' '+'
 	git add .
 	git add --force composer.lock
+	git checkout HEAD -- .gitreview
 	git commit -m "New Wikidata Build - $now"
 	git push origin HEAD:refs/publish/master
 	git reset --hard origin/master
