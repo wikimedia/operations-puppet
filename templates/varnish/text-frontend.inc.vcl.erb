@@ -225,7 +225,7 @@ sub vcl_recv {
 	}
 
 	// Don't decode percent-encoded slashes in paths for REST APIs
-	if (req.url !~ "^/api/rest_v1/") {
+	if (req.url !~ "^/api/rest_v1/" && req.http.host !~ "rest.wikimedia.org") {
 		call normalize_path;
 	}
 
