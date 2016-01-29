@@ -1,21 +1,20 @@
-# == Class role::analytics::mysql::meta
+# == Class role::analytics::database::meta
 # Installs a MySQL/MariaDB server for use with Hive and Oozie
 #
-class role::analytics::mysql::meta {
+class role::analytics_new::database::meta {
+    # Some CDH database init scripts need Java to run.
+    require_package('openjdk-7-jdk')
+
     class { 'mariadb::packages_wmf':
         mariadb10 => true
     }
-    # This will be included once analytics1015 has been productionized
+    # TODO: This will be included once analytics1015 has been productionized
     # - otto 2015-09-15
     # include role::mariadb::monitor
 
     class { 'mariadb::config':
         config  => 'mariadb/analytics-meta.my.cnf.erb',
         datadir => '/var/lib/mysql',
-        # analytics1015 in prod is currently a slave, so read_only = true.
-        # The new analytics mysql instance will be puppetized using
-        # the new role::analytics::database::meta class in the role module.
-        read_only => true,
         require => Class['mariadb::packages_wmf'],
     }
 
@@ -25,10 +24,24 @@ class role::analytics::mysql::meta {
         require => Class['mariadb::packages_wmf'],
     }
 
-    file { '/usr/local/bin/mysql':
+    # Make /usr/local/bin/mysql and /usr/bin/mysql a pointer to
+    # mariadb10 mysql client.  /usr/bin/mysql allows
+    # cdh::hive::metastore::mysql execs to run.
+    file { ['/usr/local/bin/mysql', '/usr/bin/mysql']:
         ensure  => link,
         target  => '/opt/wmf-mariadb10/bin/mysql',
         require => Class['mariadb::packages_wmf'],
+    }
+
+    # if labs, automate mysql_install_db.
+    if $::realm == 'labs' {
+        exec { 'analytics_meta_mysql_install_db':
+            command => '/opt/wmf-mariadb10/scripts/mysql_install_db',
+            cwd     => '/opt/wmf-mariadb10',
+            creates => '/var/lib/mysql/ibdata1',
+            require => Class['mariadb::config'],
+            before  => Service['mysql'],
+        }
     }
 
     service { 'mysql':
