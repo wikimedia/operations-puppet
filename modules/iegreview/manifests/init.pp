@@ -30,7 +30,7 @@
 #
 # [+parsoid_url+]
 #   Parsoid API url for wikitext to html conversion.
-#   Default http://parsoid-lb.eqiad.wikimedia.org/enwiki/
+#   Default http://parsoid.svc.eqiad.wmnet:8000/enwiki/
 #
 # [+require_upstream_ssl+]
 #   Should upstream ssl termination be required? Default false.
@@ -49,7 +49,7 @@ class iegreview(
     $mysql_host           = 'localhost',
     $mysql_db             = 'iegreview',
     $smtp_host            = 'localhost',
-    $parsoid_url          = 'http://parsoid-lb.eqiad.wikimedia.org/enwiki/',
+    $parsoid_url          = 'http://parsoid.svc.eqiad.wmnet:8000/enwiki/',
     $require_upstream_ssl = false,
 ) {
     include ::apache
