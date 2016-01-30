@@ -256,6 +256,7 @@ class toollabs::exec_environ {
         'graphviz',
         'grep',
         'hugin-tools',                 # T108210
+        'hunspell',                    # T125193
         'imagemagick',                 # T65000
         'iotop',                       # useful for labs admins to monitor tools
         'ksh',
@@ -267,6 +268,7 @@ class toollabs::exec_environ {
         'libfreetype6',
         'libgdbm-dev',                 # T67974.
         'libgeoip1',                   # T64649
+        'libhunspell-dev',             # T125193
         'libjpeg-turbo-progs',         # T61654.
         'libmpfr4',
         'libncurses5-dev',             # T67974.
