@@ -32,7 +32,6 @@ can be used when constructing graphite metric paths.
 """
 import yaml
 import ldap3
-import jinja2
 from collections import OrderedDict
 
 
@@ -43,18 +42,16 @@ class ConfigObject():
     Has a type (Host, Hostgroup, Service, etc) and a bunch of key
     value pairs that it can output in a format that shinken understands.
     """
-    TEMPLATE = jinja2.Template('''define {{ o.type }} {
-{% for key, value in o.properties.items() -%}
-    {{ key }}        {{ value }}
-{% endfor -%}
-}''')
 
     def __init__(self, type):
         self.type = type  # Host, HostGroup, Service, whatever
         self.properties = OrderedDict()
 
     def __str__(self):
-        return ConfigObject.TEMPLATE.render(o=self)
+        max_key_len = max(len(key) for key in self.properties.keys())
+        config_str = ''.join('    %-*s   %s\n' % (max_key_len, key, value)
+                             for key, value in self.properties.items())
+        return 'define %s {\n%s}\n' % (self.type, config_str)
 
 
 class LDAPSource(object):
@@ -146,4 +143,4 @@ if __name__ == '__main__':
             config['output_path'], project
         )
         with open(hosts_config_path, 'w') as hostsfile:
-            hostsfile.write('\n'.join([str(hc) for hc in host_configs]))
+            hostsfile.write(''.join([str(hc) for hc in host_configs]))

@@ -25,7 +25,6 @@ class shinken::shinkengen(
     package { [
         'python3-ldap3', # Custom package of https://pypi.python.org/pypi/python3-ldap
         'python3-yaml',
-        'python3-jinja2',
     ]:
         ensure => present,
     }
@@ -41,7 +40,7 @@ class shinken::shinkengen(
         owner   => 'shinken',
         group   => 'shinken',
         mode    => '0555',
-        require => Package['python3-ldap3', 'python3-yaml', 'python3-jinja2'],
+        require => Package['python3-ldap3', 'python3-yaml'],
     }
 
     exec { '/usr/local/bin/shinkengen':
