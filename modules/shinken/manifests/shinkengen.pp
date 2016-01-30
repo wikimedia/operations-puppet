@@ -3,9 +3,6 @@
 # Sets up shinkengen python package to generate hosts & services
 # config for Shinken by hittig the wikitech API
 #
-# FIXME: Also restarts shinkin on each run, even if no config
-# files have changed
-#
 # = Parameters
 #
 # [*ldap_server*]
@@ -47,6 +44,7 @@ class shinken::shinkengen(
     exec { '/usr/local/bin/shinkengen':
         user    => 'shinken',
         group   => 'shinken',
+        unless  => '/usr/local/bin/shinkengen --test-if-up-to-date',
         require => [
             File['/usr/local/bin/shinkengen'],
             File['/etc/shinkengen.yaml']

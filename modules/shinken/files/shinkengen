@@ -30,6 +30,8 @@ new project is whitelisted.
 Sets the project name in the notes section of each instance, so that
 can be used when constructing graphite metric paths.
 """
+import argparse
+import sys
 import yaml
 import ldap3
 import jinja2
@@ -116,6 +118,11 @@ class LDAPSource(object):
         return hosts
 
 if __name__ == '__main__':
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument("--test-if-up-to-date", action="store_true",
+                           help="Succeed only if no changes would be done")
+    args = argparser.parse_args()
+
     with open('/etc/shinkengen.yaml') as f:
         config = yaml.load(f)
 
@@ -145,5 +152,13 @@ if __name__ == '__main__':
         hosts_config_path = '%s/%s.cfg' % (
             config['output_path'], project
         )
-        with open(hosts_config_path, 'w') as hostsfile:
-            hostsfile.write('\n'.join([str(hc) for hc in host_configs]))
+        file_content = '\n'.join([str(hc) for hc in host_configs])
+        if args.test_if_up_to_date:
+            # By not catching exceptions here, not existing or
+            # inaccessible files cause the script to fail as well.
+            with open(hosts_config_path, 'r') as hostsfile:
+                if hostsfile.read() != file_content:
+                    sys.exit(1)
+        else:
+            with open(hosts_config_path, 'w') as hostsfile:
+                hostsfile.write(file_content)
