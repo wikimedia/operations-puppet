@@ -114,7 +114,7 @@ ssh::server::explicit_macs: false
 "cxserver::apertium": http://apertium-beta.wmflabs.org
 "cxserver::proxy": deployment-urldownloader.deployment-prep.eqiad.wmflabs:8080
 "cxserver::yandex_url": https://translate.yandex.net
-"cxserver::restbase_url": http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231/@lang.wikipedia.beta.wmflabs.org/api/rest_v1/page/html/@title
+"cxserver::restbase_url": http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231/@lang.wikipedia.beta.wmflabs.org/v1/page/html/@title
 role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a7:df:4c:0a:e3
 "role::deployment::salt_masters::deployment_server": deployment-bastion.eqiad.wmflabs
 "hhvm::extra::fcgi":
