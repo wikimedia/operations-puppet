@@ -33,13 +33,7 @@ if routes_arr then
     local routes = red:array_to_hash(routes_arr)
     for pattern, backend in pairs(routes) do
         if ngx.re.match(rest, pattern) ~= nil then
-            if string.match(backend, '://') then
-                route = backend
-            else
-                -- Temp hack since portgrabber did not
-                -- specify the http:// protocol by default
-                route = 'http://' .. backend
-            end
+            route = backend
             break
         end
     end
