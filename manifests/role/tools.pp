@@ -12,6 +12,8 @@ class role::toollabs::docker::registry {
 class role::toollabs::etcd::flannel {
     include ::etcd
 
+    include base::firewall
+
     $worker_nodes = join(hiera('k8s::worker_hosts'), ' ')
     ferm::service { 'flannel-clients':
         proto  => 'tcp',
