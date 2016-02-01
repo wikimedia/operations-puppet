@@ -42,6 +42,14 @@ class salt::master(
         group  => 'root',
     }
 
+    file { "${salt_runner_dirs}/keys.py":
+        ensure => present,
+        source => 'puppet:///modules/salt/keys.py',
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { $salt_reactor_root:
         ensure => directory,
         mode   => '0755',
