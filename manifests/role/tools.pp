@@ -11,6 +11,20 @@ class role::toollabs::docker::registry {
 
 class role::toollabs::etcd::flannel {
     include ::etcd
+
+    $worker_nodes = join(hiera('k8s::worker_hosts'), ' ')
+    ferm::service { 'flannel-clients':
+        proto  => 'tcp',
+        port   => '2379',
+        srange => "@resolve((${worker_nodes}))"
+    }
+
+    $peer_nodes = join(hiera('flannel::etcd_hosts'), ' ')
+    ferm::service { 'flannel-peers':
+        proto  => 'tcp',
+        port   => '2380',
+        srange => "@resolve((${peer_nodes}))"
+    }
 }
 
 class role::toollabs::puppet::master {
