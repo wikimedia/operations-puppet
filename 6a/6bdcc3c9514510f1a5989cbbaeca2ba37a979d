@@ -1,0 +1,8 @@
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Merlijn van Deen <valhallasw@arctus.nl>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Mon, 01 Feb 2016 20:43:22 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/266934
+Project: operations/puppet
+Branch: refs/heads/production
