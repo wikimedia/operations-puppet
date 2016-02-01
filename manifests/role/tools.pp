@@ -9,6 +9,10 @@ class role::toollabs::docker::registry {
     }
 }
 
+class role::toollabs::etcd::flannel {
+    include ::etcd
+}
+
 class role::toollabs::puppet::master {
     include ::toollabs::infrastructure
     include ::toollabs::puppetmaster
