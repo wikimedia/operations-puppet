@@ -312,7 +312,7 @@ class toollabs::exec_environ {
         'zbar-tools',                  # T58996
         'zsh',                         # T58995
         ]:
-        ensure => latest,
+        ensure => present,
     }
 
     file { '/etc/mysql/conf.d/override.my.cnf':
