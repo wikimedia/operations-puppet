@@ -45,11 +45,6 @@ class role::toollabs::k8s::master {
 
     include ::etcd
 
-    ferm::service{'etcd-clients':
-        proto  => 'tcp',
-        port   => hiera('etcd::client_port', '2379'),
-    }
-
     $master_host = hiera('k8s_master', $::fqdn)
     $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$::fqdn]), ':2379'), 'https://'), ',')
 
