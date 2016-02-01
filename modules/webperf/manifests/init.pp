@@ -20,4 +20,9 @@ class webperf {
     file { '/srv/webperf':
         ensure => directory,
     }
+
+    nrpe::monitor_service { 'statsv':
+        description  => 'statsv process',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C python -a statsv',
+    }
 }
