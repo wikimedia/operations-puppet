@@ -111,3 +111,17 @@ class role::snapshot::cron::secondary {
         user   => 'datasets',
     }
 }
+
+class role::snapshot::dumps:hugewikis {
+    include role::snapshot::common
+    class { 'snapshot::dumps::cron::huge':
+        user   => 'datasets',
+    }
+}
+
+class role::snapshot::dumps:regularwikis {
+    include role::snapshot::common
+    class { 'snapshot::dumps::cron::rest':
+        user   => 'datasets',
+    }
+}

@@ -2473,8 +2473,7 @@ node /^snapshot1001\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to modules/dataset/files/exports. One must also manually
     # run `exportfs -r` on dataset1001. (T111586)
-    role snapshot
-    include snapshot::dumps::cron::huge
+    role snapshot, snapshot::dumps:hugewikis
     include standard
 }
 
@@ -2482,14 +2481,12 @@ node /^snapshot1002\.eqiad\.wmnet/ {
     # NOTE: New snapshot hosts must also be manually added
     # to modules/dataset/files/exports. One must also manually
     # run `exportfs -r` on dataset1001. (T111586)
-    role snapshot
-    include snapshot::dumps::cron::rest
+    role snapshot, snapshot::dumps:regularwikis
     include standard
 }
 
 node /^snapshot1004\.eqiad\.wmnet/ {
-    role snapshot, snapshot::dumps::monitor
-    include snapshot::dumps::cron::rest
+    role snapshot, snapshot::dumps::monitor, snapshot::dumps:regularwikis
     include standard
 }
 

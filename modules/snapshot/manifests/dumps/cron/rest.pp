@@ -8,8 +8,7 @@ class snapshot::dumps::cron::rest(
     # fixme there is an implicit dependency on
     # $dumpsdir/confs/wikidump.conf.* plus some stage files, make explicit
     cron { 'fulldumps_rest':
-        # not ready yet
-        ensure      => 'absent',
+        ensure      => 'present',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         command     => "${snapshot::dirs::dumpsdir}/fulldumps.sh 01 14 regular > /dev/null",
