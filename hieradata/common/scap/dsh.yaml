@@ -16,5 +16,5 @@ scap_proxies:
   - "mw2187.codfw.wmnet" # C4 codfw
 
 scap_masters:
-  - "tin.eqiad.wmnet"
+#  - "tin.eqiad.wmnet" # Temporary for reimaging
   - "mira.codfw.wmnet"
