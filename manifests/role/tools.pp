@@ -77,11 +77,10 @@ class role::toollabs::k8s::master {
 class role::toollabs::k8s::worker {
     # NOTE: No base::firewall!
     # ferm and kube-proxy will conflict
-
     include toollabs::infrastructure
 
     $master_host = hiera('k8s_master')
-    $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
+    $etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
 
     ferm::service { 'flannel-vxlan':
         proto => udp,
