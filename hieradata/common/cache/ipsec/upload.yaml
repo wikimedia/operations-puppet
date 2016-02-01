@@ -31,7 +31,7 @@ nodes:
     - 'cp3037.esams.wmnet'
     - 'cp3038.esams.wmnet'
     - 'cp3039.esams.wmnet'
-    - 'cp3042.esams.wmnet'
+#    - 'cp3042.esams.wmnet'
     - 'cp3043.esams.wmnet'
     - 'cp3044.esams.wmnet'
     - 'cp3045.esams.wmnet'
