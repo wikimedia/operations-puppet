@@ -1604,6 +1604,8 @@ host db2029 {
 host db2030 {
 	hardware ethernet d4:ae:52:93:41:6d;
 	fixed-address db2030.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2031 {
