@@ -69,6 +69,9 @@ multistream=1
 pagesPerChunkHistory=<%= @config[@configtype]['wikis'][w]['pagesPerChunkHistory'] %>
 pagesPerChunkAbstract=<%= @config[@configtype]['wikis'][w]['pagesPerChunkAbstract'] %>
 chunksForAbstract=<%= @config[@configtype]['wikis'][w]['chunksForAbstract'] %>
+<% if @config[@configtype]['wikis'][w].has_key?('checkpointTime') -%>
+checkpointTime=<%= @config[@configtype]['wikis'][w]['checkpointTime'] %>
+<% end -%>
 
 <% end -%>
 <% end -%>
