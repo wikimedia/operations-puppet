@@ -9,7 +9,7 @@
 
     ErrorLog /var/log/apache2/error.log
     LogLevel warn
-    CustomLog /var/log/apache2/access.log combined
+    CustomLog /var/log/apache2/access.log wmf
 
     RewriteEngine On
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
