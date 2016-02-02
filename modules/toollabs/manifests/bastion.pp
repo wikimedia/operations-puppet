@@ -11,19 +11,11 @@
 # Sample Usage:
 #
 class toollabs::bastion inherits toollabs {
-
-    include gridengine::submit_host,
-            gridengine::admin_host,
-            toollabs::exec_environ,
-            toollabs::dev_environ
-
-    file { '/etc/ssh/ssh_config':
-        ensure => file,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/toollabs/submithost-ssh_config',
-    }
+    include gridengine::admin_host
+    include gridengine::submit_host
+    include toollabs::dev_environ
+    include toollabs::exec_environ
+    include toollabs::hba::client
 
     # webservice-new command
     package { 'toollabs-webservice':
