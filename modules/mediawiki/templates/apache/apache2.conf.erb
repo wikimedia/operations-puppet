@@ -65,6 +65,8 @@ LogFormat "%h %l %u %t \"%r\" %>s %b" common
 LogFormat "%{Referer}i -> %U" referer
 LogFormat "%{User-agent}i" agent
 
+LogFormat "%{%Y-%m-%dT%H:%M:%S}t.%{msec_frac}t	%D	%a	%R/%>s	%B	%m	http://%{Host}i%U%q	-	%{Content-Type}o	%{Referer}i	%{X-Forwarded-For}i	%{User-Agent}i	%{Accept-Language}i	%{X-Analytics}i	%u" wmf
+
 ExtendedStatus On
 <Location /server-status>
     SetHandler server-status
