@@ -17,6 +17,7 @@ sub vcl_recv {
 
     if (
            req.http.Host == "query.wikidata.org"
+        || req.http.Host == "ticket.wikimedia.org"
         || req.http.Host == "hue.wikimedia.org"
         || req.http.Host == "yarn.wikimedia.org"
         || req.http.Host == "etherpad.wikimedia.org"
