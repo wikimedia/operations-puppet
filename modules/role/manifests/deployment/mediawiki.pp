@@ -7,7 +7,7 @@ class role::deployment::mediawiki(
     ) {
 
     # All needed classes for deploying mediawiki
-    include mediawiki
+    include ::mediawiki
     include ::mediawiki::nutcracker
     include scap::master
     include scap::ferm
