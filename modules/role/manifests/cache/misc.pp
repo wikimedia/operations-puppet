@@ -129,8 +129,8 @@ class role::cache::misc {
                 'backends' => ['terbium.eqiad.wmnet'],
             },
             'mendelevium' => { # OTRS
-                'dynamic' => 'no',
-                'type' => 'random',
+                'dynamic'  => 'no',
+                'type'     => 'random',
                 'backends' => ['mendelevium.eqiad.wmnet'],
             },
             'ytterbium' => { # Gerrit
@@ -204,6 +204,11 @@ class role::cache::misc {
             # etherpad nodejs listens on 9001
             'backend_match' => '^etherpad1001',
             'port'          => 9001,
+        },
+        {
+            # OTRS search is really slow, increase timeout
+            'backend_match'         => '^mendelevium',
+            'between_bytes_timeout' => '60s',
         },
         {
             'port'                  => 80,
