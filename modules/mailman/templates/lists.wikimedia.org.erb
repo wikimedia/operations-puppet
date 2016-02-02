@@ -104,5 +104,5 @@
     Redirect permanent /mailman/listinfo/wikimedia-search-private     https://<%= @lists_servername %>/mailman/listinfo/discovery-private
 
     ErrorLog /var/log/apache2/<%= @lists_servername %>-error.log
-    CustomLog /var/log/apache2/<%= @lists_servername %>-access.log combined
+    CustomLog /var/log/apache2/<%= @lists_servername %>-access.log wmf
 </VirtualHost>
