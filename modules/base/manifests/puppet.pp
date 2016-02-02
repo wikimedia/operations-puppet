@@ -1,4 +1,8 @@
-class base::puppet($server='puppet', $certname=undef) {
+class base::puppet(
+    $server='puppet',
+    $certname=undef,
+    $dns_alt_names=undef,
+) {
 
     include passwords::puppet::database
     include base::puppet::params
@@ -92,4 +96,3 @@ class base::puppet($server='puppet', $certname=undef) {
         source   => 'puppet:///modules/base/puppet/97-last-puppet-run',
     }
 }
-
