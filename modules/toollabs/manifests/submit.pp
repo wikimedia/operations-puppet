@@ -13,17 +13,9 @@
 # Sample Usage:
 #
 class toollabs::submit inherits toollabs {
-
-    include gridengine::submit_host,
-            toollabs::hba
-
-    file { '/etc/ssh/ssh_config':
-        ensure => file,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/toollabs/submithost-ssh_config',
-    }
+    include gridengine::submit_host
+    include toollabs::hba
+    include toollabs::hba::client
 
     motd::script { 'submithost-banner':
         ensure => present,
