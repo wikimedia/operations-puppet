@@ -12,6 +12,7 @@ class toollabs::bastion(
     include ::gridengine::submit_host
     include ::toollabs::dev_environ
     include ::toollabs::exec_environ
+    include ::toollabs::hba::client
 
     if os_version('ubuntu trusty') {
 
@@ -177,14 +178,6 @@ class toollabs::bastion(
         group   => 'root',
         mode    => '0444',
         content => template('toollabs/limits.conf.erb'),
-    }
-
-    file { '/etc/ssh/ssh_config':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/toollabs/submithost-ssh_config',
     }
 
     file { "${toollabs::store}/submithost-${::fqdn}":

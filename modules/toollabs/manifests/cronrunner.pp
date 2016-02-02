@@ -8,6 +8,7 @@ class toollabs::cronrunner {
     include ::gridengine::submit_host
     include ::toollabs
     include ::toollabs::hba
+    include ::toollabs::hba::client
 
     # We need to include exec environment here since the current
     # version of jsub checks the local environment to find the full
@@ -16,14 +17,6 @@ class toollabs::cronrunner {
     # nodes. This is kind of terrible, so we need to fix that eventually.
     # Until then...
     include ::toollabs::exec_environ
-
-    file { '/etc/ssh/ssh_config':
-        ensure => file,
-        mode   => '0444',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/toollabs/submithost-ssh_config',
-    }
 
     file { '/usr/bin/jlocal':
         ensure => present,
