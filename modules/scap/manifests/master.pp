@@ -20,12 +20,13 @@ class scap::master(
     }
 
     git::clone { 'operations/mediawiki-config':
-        ensure    => present,
-        directory => $common_source_path,
-        owner     => 'mwdeploy',
-        group     => $deployment_group,
-        shared    => true,
-        before    => Exec['fetch_mediawiki'],
+        ensure             => present,
+        directory          => $common_source_path,
+        owner              => 'mwdeploy',
+        group              => $deployment_group,
+        shared             => true,
+        before             => Exec['fetch_mediawiki'],
+        recurse_submodules => true,
     }
 
     rsync::server::module { 'common':
