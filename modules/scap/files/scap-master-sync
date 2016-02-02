@@ -1,14 +1,31 @@
 #!/bin/bash
 # Rsync the common module from the given deployment master to the local
-# staging directory (/srv/mediawiki-staging)
+# staging directory (/srv/mediawiki-staging).
+#
+# As an extra safely precaution against syncs of partially set up masters,
+# there must be a file touched on both the local and remote master called
+# '.scap-master-ready'.
 
 set -eu
 
 MASTER=${1:?No master provided}
+READYFLAG=/srv/mediawiki-staging/.scap-master-ready
 
 if [[ $EUID -ne 0 ]]; then
     echo "$0 must be run as root" 1>&2
     exit 2
+fi
+
+if ! test -f "$READYFLAG"; then
+    echo "${READYFLAG} file not found"
+    echo "Please 'touch ${READYFLAG}' once this server is fully set up."
+    exit 1
+fi
+
+if ! ssh "$MASTER" "test -f '${READYFLAG}'"; then
+    echo "${READYFLAG} file not found on ${MASTER}"
+    echo "Skipping master sync for ${MASTER}."
+    exit 0
 fi
 
 exec /usr/bin/rsync \
