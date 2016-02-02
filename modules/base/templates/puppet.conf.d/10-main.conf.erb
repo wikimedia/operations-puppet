@@ -13,6 +13,7 @@ factpath = $vardir/lib/facter
 [agent]
 server = <%= @server %>
 <% if @certname %>certname = <%= @certname %><% end %>
+<% if @dns_alt_names %>dns_alt_names = <%= @dns_alt_names %><% end -%>
 configtimeout = 960
 usecacheonfailure = false
 splay = true
