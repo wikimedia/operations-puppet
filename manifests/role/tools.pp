@@ -57,15 +57,12 @@ class role::toollabs::puppet::master {
 }
 
 class role::toollabs::k8s::master {
-    # This requires that etcd is on the same host
-    # And is not HA. Will re-evaluate when it is HA
-
     include base::firewall
     include toollabs::infrastructure
 
     include ::etcd
 
-    $master_host = hiera('k8s_master', $::fqdn)
+    $master_host = hiera('k8s::master_host', $::fqdn)
     $etcd_url = join(prefix(suffix(hiera('k8s::etcd_hosts'), ':2379'), 'https://'), ',')
 
     class { 'k8s::apiserver':
@@ -94,7 +91,7 @@ class role::toollabs::k8s::worker {
     # ferm and kube-proxy will conflict
     include toollabs::infrastructure
 
-    $master_host = hiera('k8s_master')
+    $master_host = hiera('k8s::master_hosts')
     $etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
 
     ferm::service { 'flannel-vxlan':
