@@ -63,6 +63,5 @@
     LogLevel warn
     # Rely on X-Real-IP to log the actual IP of the request
 
-    LogFormat "%a %{c}a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined-realip
-    CustomLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-access.log combined-realip
+    CustomLog ${APACHE_LOG_DIR}/<%= @etherpad_host %>-access.log wmf
 </VirtualHost>
