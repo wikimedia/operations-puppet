@@ -28,6 +28,17 @@ class scap::master(
         before    => Exec['fetch_mediawiki'],
     }
 
+    # Install the commit-msg hook from gerrit
+
+    file { "${common_source_path}/.git/hooks/commit-msg":
+        ensure  => present,
+        owner   => 'mwdeploy',
+        group   => $deployment_group,
+        mode    => '0775',
+        source  => 'puppet:///modules/scap/commit-msg-hook',
+        require => Git::Clone['operations/mediawiki-config'],
+    }
+
     rsync::server::module { 'common':
         path        => $common_source_path,
         read_only   => 'yes',
