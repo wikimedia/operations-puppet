@@ -8,8 +8,7 @@
     </IfModule>
 
     # Make an access log, so we know when people abuse OTRS's insecure interface
-    LogFormat "%a %{c}a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined-realip
-    CustomLog /var/log/apache2/otrs-access.log combined-realip
+    CustomLog /var/log/apache2/otrs-access.log wmf
 
     ScriptAlias /otrs/ "/opt/otrs/bin/cgi-bin/"
     Alias /otrs-web/ "/opt/otrs/var/httpd/htdocs/"

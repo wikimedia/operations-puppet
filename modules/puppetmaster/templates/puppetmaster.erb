@@ -96,8 +96,7 @@ PassengerUseGlobalQueue on
     </Directory>
     <%- end -%>
 
-    LogFormat "%h %l %u %{%Y-%m-%d %H:%M:%S}t \"%r\" %>s %O %D \"%{Referer}i\" \"%{User-Agent}i\"" puppetmaster
-    CustomLog /var/log/apache2/puppetmaster.log puppetmaster
+    CustomLog /var/log/apache2/puppetmaster.log wmf
 </VirtualHost>
 <%- end -%>
 
@@ -130,7 +129,6 @@ PassengerUseGlobalQueue on
         allow from all
     </Directory>
 
-    LogFormat "%h %l %u %{%Y-%m-%d %H:%M:%S}t \"%r\" %>s %O %D \"%{Referer}i\" \"%{User-Agent}i\"" puppetmaster
-    CustomLog /var/log/apache2/puppetmaster-backend.log puppetmaster
+    CustomLog /var/log/apache2/puppetmaster-backend.log wmf
 </VirtualHost>
 <%- end -%>

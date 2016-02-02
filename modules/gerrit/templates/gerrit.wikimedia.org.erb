@@ -4,8 +4,6 @@
 #####################################################################
 # vim: filetype=apache
 
-LogFormat "%h %l %u %t \"%r\" %>s %O T=%Ts \"%{Referer}i\" \"%{User-Agent}i\"" combined_time
-
 # Due to Jetty's connection limiting flooding logs with "Dispatched
 # Failed" Error messages, we limit connections already here.
 MaxClients 50
@@ -33,7 +31,7 @@ NameVirtualHost *:80
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/access.log combined_time
+    CustomLog /var/log/apache2/access.log wmf
     ServerSignature Off
 
     RewriteEngine on
@@ -104,7 +102,7 @@ NameVirtualHost *:443
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/access.log combined_time
+    CustomLog /var/log/apache2/access.log wmf
     ServerSignature Off
 
 </VirtualHost>

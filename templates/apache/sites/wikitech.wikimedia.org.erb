@@ -36,7 +36,7 @@
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/access.log combined
+    CustomLog /var/log/apache2/access.log wmf
     ServerSignature Off
 
 </VirtualHost>
@@ -118,7 +118,7 @@
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/access.log combined
+    CustomLog /var/log/apache2/access.log wmf
     ServerSignature Off
 
     # Beacon requests that are normally handled by Varnish. We don't need these
