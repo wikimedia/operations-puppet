@@ -91,7 +91,7 @@ class role::toollabs::k8s::worker {
     # ferm and kube-proxy will conflict
     include toollabs::infrastructure
 
-    $master_host = hiera('k8s::master_hosts')
+    $master_host = hiera('k8s::master_host')
     $etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
 
     ferm::service { 'flannel-vxlan':
