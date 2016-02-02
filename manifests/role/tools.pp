@@ -66,7 +66,7 @@ class role::toollabs::k8s::master {
     include ::etcd
 
     $master_host = hiera('k8s_master', $::fqdn)
-    $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$::fqdn]), ':2379'), 'https://'), ',')
+    $etcd_url = join(prefix(suffix(hiera('k8s::etcd_hosts'), ':2379'), 'https://'), ',')
 
     class { 'k8s::apiserver':
         master_host => $master_host,
