@@ -99,6 +99,8 @@ class role::deployment::server(
         source   => 'puppet:///modules/role/deployment/inactive.motd',
     }
 
+    # Bacula backups (T125527)
+    backup::set { 'srv-ganglia': }
 
     # Used by the trebuchet salt returner
     ferm::service { 'deployment-redis':
