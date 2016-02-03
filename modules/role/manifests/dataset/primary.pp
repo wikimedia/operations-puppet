@@ -44,6 +44,12 @@ class role::dataset::primary {
         source => 'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-all-sites',
     }
 
+    # TODO: Make this class use dataset::cron::job define instead.
+    class { '::dataset::cron::rsync::nginxlogs':
+        enable => true,
+        dest   => 'stat1002.eqiad.wmnet::srv/log/webrequest/archive/dumps.wikimedia.org/nginx',
+    }
+
     # This will make these files available at
     # http://dumps.wikimedia.org/other/pageviews/
     #
