@@ -13,7 +13,7 @@
 #   instances).
 #
 # === Multicast assignments:
-#   239.128.0.112 - text/mobile (legacy: all HTCP used this address)
+#   239.128.0.112 - text (legacy: all HTCP used this address)
 #   239.128.0.113 - upload
 #   239.128.0.114 - maps
 #

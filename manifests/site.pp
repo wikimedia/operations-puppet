@@ -350,7 +350,7 @@ node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
-    role cache::mobile, ipsec
+    include standard # ex-mobile
 }
 
 node /^cp10(4[89]|5[01]|6[1-4]|7[1-4]|99)\.eqiad\.wmnet$/ {
@@ -380,7 +380,7 @@ node /^cp20(0[258]|1[147]|2[04])\.codfw\.wmnet$/ {
 
 node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::mobile, ipsec
+    include standard # ex-mobile
 }
 
 node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
@@ -400,7 +400,7 @@ node /^cp30(0[3-9]|1[0-4])\.esams\.wmnet$/ {
 
 node /^cp301[5678]\.esams\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
-    role cache::mobile, ipsec
+    include standard # ex-mobile
 }
 
 node /^cp30(19|2[0-2])\.esams\.wmnet$/ {
@@ -428,21 +428,18 @@ node /^cp400[1-4]\.ulsfo\.wmnet$/ {
 }
 
 node /^cp40(0[5-7]|1[3-5])\.ulsfo\.wmnet$/ {
-
     interface::add_ip6_mapped { 'main': }
     role cache::upload, ipsec
 }
 
 node /^cp40(0[89]|1[0678])\.ulsfo\.wmnet$/ {
-
     interface::add_ip6_mapped { 'main': }
     role cache::text, ipsec
 }
 
 node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
-
     interface::add_ip6_mapped { 'main': }
-    role cache::mobile, ipsec
+    include standard # ex-mobile
 }
 
 # T118763 (temporary in use)
