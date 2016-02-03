@@ -3048,11 +3048,15 @@ host mc1003 {
 host mc1004 {
 	hardware ethernet 00:1b:21:7a:88:9b;
 	fixed-address mc1004.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc1005 {
 	hardware ethernet 00:1b:21:7a:88:61;
 	fixed-address mc1005.eqiad.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host mc1006 {
