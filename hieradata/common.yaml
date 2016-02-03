@@ -222,6 +222,9 @@ ganglia_clusters:
     id: 51
     sites:
       eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
   ganeti:
     name: "Ganeti Virt cluster"
     id: 52
