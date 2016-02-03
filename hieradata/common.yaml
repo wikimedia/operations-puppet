@@ -253,6 +253,7 @@ statistics_servers:
   - stat1002.eqiad.wmnet
   - stat1003.eqiad.wmnet
   - analytics1027.eqiad.wmnet
+  - dataset1001.wikimedia.org
 
 # Schemas names that match this regex
 # will not be produced to the eventlogging-valid-mixed
