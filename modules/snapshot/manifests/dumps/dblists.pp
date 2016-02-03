@@ -8,8 +8,8 @@ class snapshot::dumps::dblists($enable=true, $hugewikis_enable=false) {
                     'wikidatawiki', 'zhwiki']
         $bigwikis_dblist = join($bigwikis, "\n")
 
-        # labswiki Broken, DB permissions issues?
-        $excludewikis = ['labswiki']
+        # labswiki(s) can't be dumped from snapshot hosts
+        $excludewikis = ['labswiki', 'labtestwiki']
         $excludewikis_dblist = join($excludewikis, "\n")
 
         $skip_dblist = "${hugewikis_dblist}\n${bigwikis_dblist}\n${excludewikis_dblist}"
