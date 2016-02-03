@@ -244,8 +244,6 @@ cache_upload:
   cp1074.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1099.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
 cache_maps:
-  cp1043.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
-  cp1044.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1046.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1047.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1059.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
