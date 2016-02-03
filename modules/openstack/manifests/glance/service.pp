@@ -99,7 +99,7 @@ class openstack::glance::service(
 
         if $standby_server != $active_server {
             cron { 'rsync_glance_images':
-                command => "/usr/bin/rsync -aS ${glance_images_dir}/* ${standby_server}:${glance_images_dir}/",
+                command => "/usr/bin/rsync -aS --delete ${glance_images_dir}/* ${standby_server}:${glance_images_dir}/",
                 minute  => 15,
                 user    => 'glancesync',
                 require => User['glancesync'],
@@ -107,7 +107,11 @@ class openstack::glance::service(
         } else {
             # If the active and the standby are the same, it's not useful to sync
             cron { 'rsync_glance_images':
-                ensure => absent,
+                ensure  => absent,
+                command => "/usr/bin/rsync -aS --delete ${glance_images_dir}/* ${standby_server}:${glance_images_dir}/",
+                minute  => 15,
+                user    => 'glancesync',
+                require => User['glancesync'],
             }
         }
     } else {
