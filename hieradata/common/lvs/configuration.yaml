@@ -235,7 +235,10 @@ lvs_services:
     description: "Maps service maps-lb.%{::site}.wikimedia.org"
     class: high-traffic2
     sites:
+    - codfw
     - eqiad
+    - esams
+    - ulsfo
     ip: *ip_block003
     bgp: 'yes'
     depool-threshold: '.5'
@@ -250,7 +253,10 @@ lvs_services:
     description: "Maps service maps-lb.%{::site}.wikimedia.org"
     class: high-traffic2
     sites:
+    - codfw
     - eqiad
+    - esams
+    - ulsfo
     ip: *ip_block003
     port: 443
     scheduler: sh
