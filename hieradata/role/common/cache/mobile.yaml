@@ -1,3 +1,0 @@
-cluster: cache_mobile
-admin::groups:
-  - perf-roots
