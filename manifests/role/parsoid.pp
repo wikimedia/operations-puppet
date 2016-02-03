@@ -302,11 +302,12 @@ class role::parsoid::testing {
         before => Service['parsoid'],
     }
 
-    # Use the default settings file for the parsoid service.
-    # Can tweak this later if necessary.
+    # Use this parsoid instance for parsoid rt-testing
     file { '/usr/lib/parsoid/src/localsettings.js':
-        ensure => link,
-        target => '/usr/lib/parsoid/src/localsettings.js.example',
+        source => 'puppet:///modules/testreduce/parsoid-rt-client.rttest.localsettings.js',
+        owner  => 'root',
+        group  => 'wikidev',
+        mode   => '0444',
         before => Service['parsoid'],
     }
 
