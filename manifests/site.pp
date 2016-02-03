@@ -551,12 +551,8 @@ node /^db20(16|34|42|48|55|62|69|70)\.codfw\.wmnet/ {
     include base::firewall
 }
 
-node /^db10(60)\.eqiad\.wmnet/ {
-    class { 'role::mariadb::core':
-        shard => 's2',
-    }
-}
-node /^db10(18|21|36|63|67|54)\.eqiad\.wmnet/ {
+# s2 (large wikis) core production slave dbs on eqiad
+node /^db10(18|21|36|54|60|63|67)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's2',
         p_s   => 'on',
