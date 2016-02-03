@@ -1,4 +1,5 @@
 proxy_service_host: 'ms-fe.svc.eqiad.wmnet'
+rewrite_thumb_server: 'rendering.svc.eqiad.wmnet'
 memcached_servers: [
   'ms-fe1001.eqiad.wmnet:11211',
   'ms-fe1002.eqiad.wmnet:11211',
