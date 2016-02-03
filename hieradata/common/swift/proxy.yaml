@@ -1,6 +1,6 @@
 statsd_host: 'localhost'
 backend_url_format: 'sitelang'
-rewrite_thumb_server: 'rendering.svc.eqiad.wmnet'
+rewrite_thumb_server: 'rendering.svc.codfw.wmnet'
 dispersion_account: 'dispersion'
 rewrite_account: 'mw_media'
 shard_container_list: [
