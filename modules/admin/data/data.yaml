@@ -460,6 +460,11 @@ groups:
     description: Group of users for managing search related analytics jobs
     members: [ebernhardson, smalyshev, dcausse]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
+  parsoid-test-roots:
+    gid: 772
+    description: T125166
+    members: [ssastry]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
 users:
   rush:
     ensure: present
