@@ -87,28 +87,40 @@ cache_maps:
       "pooled": "no"
       "weight": 1
     datacenters:
+      - codfw
       - eqiad
+      - esams
+      - ulsfo
   varnish-be:
     port: 3128
     default_values:
       "pooled": "no"
       "weight": 100
     datacenters:
+      - codfw
       - eqiad
+      - esams
+      - ulsfo
   varnish-be-rand:
     port: 3128
     default_values:
       "pooled": "no"
       "weight": 10
     datacenters:
+      - codfw
       - eqiad
+      - esams
+      - ulsfo
   nginx:
     port: 443
     default_values:
       "pooled": "no"
       "weight": 1
     datacenters:
+      - codfw
       - eqiad
+      - esams
+      - ulsfo
 cache_misc:
   varnish-fe:
     port: 80
