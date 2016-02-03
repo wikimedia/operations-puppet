@@ -44,10 +44,12 @@ class role::ipsec ($hosts = undef) {
             $text    = hiera('cache::text::nodes')
             $misc    = hiera('cache::misc::nodes')
             $upload  = hiera('cache::upload::nodes')
+            $maps    = hiera('cache::maps::nodes')
             $targets = array_concat(
                 $text['esams'], $text['ulsfo'], $text['codfw'],
                 $misc['esams'], $misc['ulsfo'], $misc['codfw'],
-                $upload['esams'], $upload['ulsfo'], $upload['codfw']
+                $upload['esams'], $upload['ulsfo'], $upload['codfw'],
+                $maps['esams'], $maps['ulsfo'], $maps['codfw']
             )
         }
     }
