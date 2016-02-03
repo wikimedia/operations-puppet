@@ -38,9 +38,18 @@ lvs_service_ips:
       uploadlb: 198.35.26.112
       uploadlb6: 2620:0:863:ed1a::2:b
   maps: &ip_block003
+    codfw:
+      mapslb: 208.80.153.244
+      mapslb6: 2620:0:860:ed1a::2:d
     eqiad:
       mapslb: 208.80.154.244
       mapslb6: 2620:0:861:ed1a::2:d
+    esams:
+      mapslb: 91.198.174.209
+      mapslb6: 2620:0:862:ed1a::2:d
+    ulsfo:
+      mapslb: 198.35.26.113
+      mapslb6: 2620:0:863:ed1a::2:d
   apaches: &ip_block007
     eqiad: 10.2.2.1
     codfw: 10.2.1.1
