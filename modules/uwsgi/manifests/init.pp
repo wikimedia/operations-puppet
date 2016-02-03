@@ -30,4 +30,28 @@ class uwsgi {
         force   => true,
         require => Package['uwsgi', $plugins],
     }
+
+    file { '/run/uwsgi':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0755',
+    }
+
+    # additionally, ensure that /run/uwsgi is created at boot
+    if os_version('debian >= jessie') {
+        file { '/etc/tmpfiles.d/uwsgi-startup.conf':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => 'd /run/uwsgi 0755 www-data www-data',
+        }
+    } else {
+        base::service_unit { 'uwsgi-startup':
+            ensure        => present,
+            template_name => 'uwsgi-startup',
+            upstart       => true,
+        }
+    }
 }
