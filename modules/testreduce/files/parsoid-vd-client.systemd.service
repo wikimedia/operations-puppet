@@ -5,6 +5,8 @@ After=network.target
 [Service]
 User=testreduce
 Group=testreduce
+
+Environment=PATH=/srv/visualdiff/node_modules/phantomjs/bin:/sbin:/usr/sbin:/bin:/usr/bin
 WorkingDirectory=/srv/testreduce/client
 ExecStart=/usr/bin/nodejs rtclient-cluster.js -c 4 /etc/testreduce/parsoid-vd-client.config.js
 StandardOutput=journal
