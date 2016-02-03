@@ -109,13 +109,6 @@ maps:
       weight: 10
     datacenters:
     - codfw
-  tilerator:
-    port: 6534
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - codfw
 aqs:
   aqs:
     port: 7232

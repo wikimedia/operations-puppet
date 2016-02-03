@@ -242,10 +242,10 @@ dns:
   acamar.wikimedia.org: [pdns_recursor]
   achernar.wikimedia.org: [pdns_recursor]
 maps:
-  maps-test2001.codfw.wmnet: [kartotherian, tilerator]
-  maps-test2002.codfw.wmnet: [kartotherian, tilerator]
-  maps-test2003.codfw.wmnet: [kartotherian, tilerator]
-  maps-test2004.codfw.wmnet: [kartotherian, tilerator]
+  maps-test2001.codfw.wmnet: [kartotherian]
+  maps-test2002.codfw.wmnet: [kartotherian]
+  maps-test2003.codfw.wmnet: [kartotherian]
+  maps-test2004.codfw.wmnet: [kartotherian]
 elasticsearch:
   elastic2001.codfw.wmnet: [elasticsearch]
   elastic2002.codfw.wmnet: [elasticsearch]
