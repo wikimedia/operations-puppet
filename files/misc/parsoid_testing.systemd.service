@@ -7,10 +7,11 @@ User=parsoid
 Group=parsoid
 LimitNOFILE=10000
 
-# 1 worker is sufficient -- we aren't going to hit this service much.
-Environment=NODE_PATH=/usr/lib/parsoid/node_modules VCAP_APP_PORT=8000
+# Start up 4 workers bound to port 8142
+# This parsoid instance is going to be used by testreduce clients
+Environment=PORT=8142 NODE_PATH=/usr/lib/parsoid/node_modules
 WorkingDirectory=/usr/lib/parsoid/src
-ExecStart=/usr/bin/nodejs bin/server.js -n 1 -c /usr/lib/parsoid/src/localsettings.js
+ExecStart=/usr/bin/nodejs bin/server.js -n 4 -c /usr/lib/parsoid/src/localsettings.js
 StandardInput=null
 StandardOutput=journal
 StandardError=journal
