@@ -78,7 +78,7 @@ case $wikitype in
 esac
 
 case $wikitype in
-    'huge')
+    'hugewikis')
         configfile="${dumpsdir}/confs/wikidump.conf.hugewikis"
         alldone=`python dumpadmin.py -s alldone --configfile $configfile`
         if [ -z "$alldone" ]; then
