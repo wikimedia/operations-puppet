@@ -25,11 +25,25 @@ class role::cache::maps {
             'backend'   => {
                 'dynamic'  => 'no',
                 'type'     => 'random',
-                # XXX note explicit abnormal hack: cache only exists in eqiad, service only exists in codfw...
+                # XXX note explicit abnormal hack: service only exists in codfw, but eqiad is Tier-1 in general
+                # XXX this means traffic is moving x-dc without crypto!
+                # XXX this also means users mapped to codfw frontends bounce traffic [codfw->eqiad->codfw] on their way in!
                 'backends' => $role::cache::configuration::backends[$::realm]['kartotherian']['codfw'],
             },
         },
-        # XXX maps has no tier-2, yet
+        'two' => {
+            'backend' => {
+                'dynamic'  => 'yes',
+                'type'     => 'chash',
+                'backends' => $cluster_nodes['eqiad'],
+            },
+            'backend_random' => {
+                'dynamic'  => 'yes',
+                'type'     => 'random',
+                'backends' => $cluster_nodes['eqiad'],
+                'service'  => 'varnish-be-rand',
+            },
+        }
     }
 
     if $::role::cache::configuration::has_ganglia {
