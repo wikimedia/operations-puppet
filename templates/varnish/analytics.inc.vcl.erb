@@ -14,8 +14,7 @@
 /*****************************************************************************
  * This must be called *before* any vcl_recv cookie munging.  It more-properly
  * belongs in _deliver, but putting it here avoids all of the issues
- * surrounding consistent access to Cookie vs X-Orig-Cookie at vcl_deliver
- * time in the text/mobile cases.
+ * surrounding consistent access to Cookie vs X-Orig-Cookie in vcl_deliver
  * It does so at the cost of sending a pointless and unintended
  * "X-WMF-LastStamp: 01-Jan-2000" header to the application layer as well on
  * cache miss/bypass.
@@ -176,11 +175,6 @@ sub analytics_deliver {
     // Add proxy=IORG X-Analytics tag if appropriate.
     // Although Via: Internet.org usually comes via proxying, it isn't guaranteed to come that way.
     // Nonetheless, as it is tagged with Via and the equipment is under Internet.org, we proxy tag.
-    // Note, Internet.org is believed to apply to all Wikimedia sites, so this code should run not
-    // just for (m|zero).wikipedia.org and subdomains. Hence the inclusion of this file by both
-    // mobile-frontend.inc.vcl.erb and text-frontend.inc.vcl.erb, as opposed to a one-off in
-    // zero.inc.vcl.erb alone. See the notes at the top of mobile-frontend.inc.vcl.erb and
-    // text-frontend.inc.vcl.erb for more context.
     if (req.http.Via ~ "(?i)Internet\.org") {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";proxy=IORG";
     }
