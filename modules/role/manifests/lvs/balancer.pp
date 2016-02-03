@@ -14,7 +14,6 @@ class role::lvs::balancer {
         # eqiad
         /^(lvs10(0[14]|07|10))$/ => [
             $sip['text'][$::site],
-            $sip['mobile'][$::site],
             ],
         /^(lvs10(0[25]|08|11))$/ => [
             $sip['upload'][$::site],
@@ -47,7 +46,6 @@ class role::lvs::balancer {
         # codfw (should mirror eqiad above, eventually, and become merged with it via regex
         /^(lvs200[14])$/ => [
             $sip['text'][$::site],
-            $sip['mobile'][$::site],
             ],
         /^(lvs200[25])$/ => [
             $sip['upload'][$::site],
@@ -67,7 +65,6 @@ class role::lvs::balancer {
         # esams + ulsfo
         /^(lvs[34]00[13])$/ => [
             $sip['text'][$::site],
-            $sip['mobile'][$::site],
             ],
         /^(lvs300[24])$/ => [
             $sip['upload'][$::site],

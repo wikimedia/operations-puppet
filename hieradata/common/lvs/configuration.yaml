@@ -4,18 +4,26 @@ lvs_service_ips:
       textlb: 208.80.153.224
       textlb6: 2620:0:860:ed1a::1
       geoiplookuplb: 208.80.153.225
+      mobilelb: 208.80.153.236
+      mobilelb6: 2620:0:860:ed1a::1:c
     eqiad:
       textlb: 208.80.154.224
       textlb6: 2620:0:861:ed1a::1
       geoiplookuplb: 208.80.154.225
+      mobilelb: 208.80.154.236
+      mobilelb6: 2620:0:861:ed1a::1:c
     esams:
       textlb: 91.198.174.192
       textlb6: 2620:0:862:ed1a::1
       geoiplookuplb: 91.198.174.193
+      mobilelb: 91.198.174.204
+      mobilelb6: 2620:0:862:ed1a::1:c
     ulsfo:
       textlb: 198.35.26.96
       textlb6: 2620:0:863:ed1a::1
       geoiplookuplb: 198.35.26.97
+      mobilelb: 198.35.26.108
+      mobilelb6: 2620:0:863:ed1a::1:c
   upload: &ip_block002
     codfw:
       uploadlb: 208.80.153.240
@@ -42,19 +50,6 @@ lvs_service_ips:
   api: &ip_block009
     eqiad: 10.2.2.22
     codfw: 10.2.1.22
-  mobile: &ip_block004
-    codfw:
-      mobilelb: 208.80.153.236
-      mobilelb6: 2620:0:860:ed1a::1:c
-    eqiad:
-      mobilelb: 208.80.154.236
-      mobilelb6: 2620:0:861:ed1a::1:c
-    esams:
-      mobilelb: 91.198.174.204
-      mobilelb6: 2620:0:862:ed1a::1:c
-    ulsfo:
-      mobilelb: 198.35.26.108
-      mobilelb6: 2620:0:863:ed1a::1:c
   swift: &ip_block010
     eqiad: 10.2.2.27
     codfw: 10.2.1.27
@@ -261,58 +256,6 @@ lvs_services:
         max-delay: 300
     conftool:
       cluster: cache_maps
-      service: nginx
-  mobile:
-    description: MediaWiki based mobile site
-    class: high-traffic1
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *ip_block004
-    bgp: 'yes'
-    depool-threshold: '.6'
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_mobile
-      service: varnish-fe
-    icinga:
-      uri: en.m.wikipedia.org!/wiki/Special:BlankPage
-      sites:
-        eqiad:
-          hostname: mobile-lb.eqiad.wikimedia.org
-        codfw:
-          hostname: mobile-lb.codfw.wikimedia.org
-        esams:
-          hostname: mobile-lb.esams.wikimedia.org
-        ulsfo:
-          hostname: mobile-lb.ulsfo.wikimedia.org
-  mobile-https:
-    description: MediaWiki based mobile site
-    class: high-traffic1
-    sites:
-    - codfw
-    - eqiad
-    - esams
-    - ulsfo
-    ip: *ip_block004
-    port: 443
-    scheduler: sh
-    bgp: 'no'
-    depool-threshold: '.6'
-    monitors:
-      ProxyFetch:
-        url:
-        - https://en.m.wikipedia.org/wiki/Special:BlankPage
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_mobile
       service: nginx
   dns_rec_udp:
     description: Recursive DNS - UDP
