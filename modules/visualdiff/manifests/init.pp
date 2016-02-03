@@ -9,6 +9,8 @@ class visualdiff {
         'nodejs',
         'npm',
         'build-essential',
+        'libopencv-highgui-dev',
+        'libboost-program-options-dev',
     ]
 
     require_package($visualdiff_packages)

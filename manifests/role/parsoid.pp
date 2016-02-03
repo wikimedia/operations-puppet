@@ -257,6 +257,9 @@ class role::parsoid::testing {
         description => 'Parsoid server (rt-testing, visual-diffing, etc.)'
     }
 
+    # Some visual diff node modules reference 'node' which this package provides
+    require_package('nodejs-legacy')
+
     include role::parsoid::common
 
     group { 'parsoid':
