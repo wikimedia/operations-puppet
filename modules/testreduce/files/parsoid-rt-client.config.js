@@ -18,11 +18,9 @@
 			clientName: 'Parsoid RT testing client',
 
 			opts: {
-				// By default, use the same configuration as the testing Parsoid server.
-				parsoidConfig: '/usr/lib/parsoid/src/tests/testreduce/parsoid-rt-client.rttest.localsettings.js',
-
-				// The parsoid API to use. If null, create our own server
-				parsoidURL: null,
+				// Talk to the existing Parsoid service.
+				// No need to spin up our own private Parsoid service.
+				parsoidURL: 'http://localhost:8142',
 			},
 
 			runTest: require('/usr/lib/parsoid/src/tests/testreduce/rtTestWrapper.js').runRoundTripTest,
