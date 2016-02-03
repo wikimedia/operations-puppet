@@ -122,7 +122,7 @@ class role::toollabs::k8s::worker {
 class role::toollabs::k8s::webproxy {
 
     $master_host = hiera('k8s_master')
-    $etcd_url = join(prefix(suffix(hiera('etcd_hosts', [$master_host]), ':2379'), 'https://'), ',')
+    $etcd_url = join(prefix(suffix(hiera('flannel::etcd_hosts'), ':2379'), 'https://'), ',')
 
     ferm::service { 'flannel-vxlan':
         proto => udp,
