@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-cp-codfw-maps:
+    value: standard
