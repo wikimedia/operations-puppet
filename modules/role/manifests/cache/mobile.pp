@@ -10,7 +10,8 @@ class role::cache::mobile {
     include role::cache::2layer
 
     class { 'lvs::realserver':
-        realserver_ips => $lvs::configuration::service_ips['mobile'][$::site],
+        # Decommissioning cluster config: T109286
+        realserver_ips => []
     }
 
     $cluster_nodes = hiera('cache::mobile::nodes')
