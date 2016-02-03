@@ -36,7 +36,7 @@ class scap::master(
         owner   => 'mwdeploy',
         group   => $deployment_group,
         mode    => '0775',
-        source  => 'puppet:///modules/scap/commit-msg-hook',
+        source  => 'puppet:///modules/scap/commit-msg',
         require => Git::Clone['operations/mediawiki-config'],
     }
 
