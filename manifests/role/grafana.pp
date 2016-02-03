@@ -177,4 +177,8 @@ class role::grafana {
     backup::set { 'var-lib-grafana':
         require => Class['::grafana'],
     }
+
+    grafana::dashboard { 'varnish-http-errors':
+        source => 'puppet:///files/grafana/dashboards/varnish-http-errors',
+    }
 }
