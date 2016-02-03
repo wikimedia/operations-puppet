@@ -5,6 +5,10 @@ After=network.target
 [Service]
 User=testreduce
 Group=testreduce
+
+# FIXME: Don't remember if the proxy var is needed,
+# but I had this in the upstart script. So adding it back for now.
+Environment=PATH=/srv/visualdiff/node_modules/phantomjs/bin:/sbin:/usr/sbin:/bin:/usr/bin HTTP_PROXY_IP_AND_PORT=http://208.80.154.10:8080
 WorkingDirectory=/srv/testreduce/client
 ExecStart=/usr/bin/nodejs rtclient-cluster.js -c 4 /etc/testreduce/parsoid-vd-client.config.js
 StandardOutput=journal
