@@ -212,6 +212,11 @@ cache_upload:
   cp2017.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp2020.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp2024.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+cache_maps:
+  cp2003.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp2009.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp2015.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp2021.codfw.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
 cache_parsoid:
   cp2022.codfw.wmnet: [varnish-fe, varnish-be, nginx]
   cp2026.codfw.wmnet: [varnish-fe, varnish-be, nginx]
