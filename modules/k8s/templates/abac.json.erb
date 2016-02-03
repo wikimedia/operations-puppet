@@ -1,5 +1,6 @@
 {"readonly": true, "resource": "swaggerapi"}
 {"readonly": true, "nonResourcePath": "/api"}
+{"user": "system:serviceaccount:kube-system:default", "readonly": true}
 <%- @users.each do |user| -%>
 <%- if user['type'] == 'namespaced' -%>
 <%- @namespace_allowed_resources.each do |resource| -%>
