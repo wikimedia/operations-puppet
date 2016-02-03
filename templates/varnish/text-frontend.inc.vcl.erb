@@ -16,11 +16,6 @@ include "geoip.inc.vcl";
 // Internet.org endpoint with an unpredictable Internet-facing IP
 // address) in X-Forwarded-For, even if it's the only value, as in
 // the example of traffic sourced directly by satellite or something.
-// IMPORTANT NOTE: other proxy tagging isn't in place for the domains
-// scoped by this text-frontend.inc.vcl.erb file, as that's currently
-// only inside of zero.inc.vcl.erb, which is invoked by
-// mobile-frontend.inc.vcl.erb for (m|zero).wikipedia.org and its
-// subdomains.
 
 sub mobile_redirect {
 	if (!req.http.X-Subdomain && (req.request == "GET" || req.request == "HEAD")
@@ -169,16 +164,6 @@ sub vcl_recv {
 			set req.http.X-Subdomain = "M";
 		}
 
-<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
-		// mobile-cluster-only: prevent desktop/text hostnames from
-		// being used here, or they'll pollute the cache for mobile
-		// users.  This will never happen via our own DNS, but a user
-		// could set the request hostname manually of course...
-		if (!req.http.X-Subdomain && req.request != "PURGE") {
-			error 418 "I'm a teapot";
-		}
-<% end -%>
-
 		// mobile-subdomains-only for tag-carrier and Host-rewrite
 		if (req.http.X-Subdomain) {
 			// Only do tag_carrier logic on first start, and only for (m|zero).wp
@@ -199,10 +184,7 @@ sub vcl_recv {
 				// Replace <language>.(m|zero).<project>.org by <language>.<project>.org
 				set req.http.x-dt-host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
 			}
-<% if scope.function_hiera(["cluster"]) == "cache_mobile" -%>
-			// legacy cache_mobile actually resets the real Host: header value here, cache_text does not...
-			set req.http.host = req.http.x-dt-host;
-<% end -%>
+
 			if (req.url ~ "^/api/rest_v1/") {
 				// for Restbase, there is no difference in desktop-vs-mobile hostnames,
 				// so rewrite mobile hostnames to desktop hostnames for singular caching

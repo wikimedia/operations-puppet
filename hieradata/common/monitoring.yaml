@@ -28,14 +28,6 @@ groups:
     description: esams upload Varnish
   cache_upload_ulsfo:
     description: ulsfo upload Varnish
-  cache_mobile_codfw:
-    description: codfw mobile Varnish
-  cache_mobile_eqiad:
-    description: eqiad mobile Varnish
-  cache_mobile_esams:
-    description: esams mobile Varnish
-  cache_mobile_ulsfo:
-    description: ulsfo mobile Varnish
   cache_parsoid_codfw:
     description: Parsoid caches codfw
   cache_parsoid_eqiad:
