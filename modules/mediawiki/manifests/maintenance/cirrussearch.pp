@@ -31,11 +31,8 @@ class mediawiki::maintenance::cirrussearch( $ensure = present ) {
         mode   => '0775'
     }
 
-    file { '/etc/logrotate.d/cirrus-suggest':
+	logrotate::conf { 'cirrus-suggest':
         ensure => $ensure,
         source => 'puppet:///modules/mediawiki/maintenance/logrotate.d_cirrus-suggest',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
     }
 }
