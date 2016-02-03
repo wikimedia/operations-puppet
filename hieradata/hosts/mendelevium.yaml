@@ -1,0 +1,2 @@
+otrs::otrs_database_host: m2-master.eqiad.wmnet
+otrs::otrs_database_name: otrs
