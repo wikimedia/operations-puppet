@@ -71,6 +71,16 @@ class role::analytics::oozie::server inherits role::analytics::oozie::client {
         authorization_service_authorization_enabled => false,
     }
 
+    # Oozie is creating event logs in /var/log/oozie.
+    # It rotates them but does not delete old ones.  Set up cronjob to
+    # delete old files in this directory.
+    cron { 'oozie-clean-logs':
+        command => 'test -d /var/log/oozie && /usr/bin/find /var/log/oozie -type f -mtime +62 -exec rm {} >/dev/null \;',
+        minute  => 5,
+        hour    => 0,
+        require => Class['cdh::oozie::server'],
+    }
+
     ferm::service{ 'oozie_server':
         proto  => 'tcp',
         port   => '11000',
