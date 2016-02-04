@@ -317,4 +317,24 @@ class role::parsoid::testing {
             File['/lib/systemd/system/parsoid.service'],
         ],
     }
+
+    # mysql client and configuration to provide command line access to
+    # parsoid testing database
+    include ::passwords::testreduce::mysql
+    $parsoid_cli_password = $passwords::testreduce::mysql::mysql_client_pass
+    $parsoid_test_db_host = 'm5-master.eqiad.wmnet'
+
+    package { [
+        'mysql-client',
+        ]: ensure => present,
+    }
+
+    file { '/etc/my.cnf':
+        source => 'puppet:///templates/mariadb/parsoid_testing.my.cnf',
+        owner  => 'root',
+        group  => 'parsoid-test-roots',
+        mode   => '0440',
+    }
+
+
 }
