@@ -1,0 +1,31 @@
+# traffic-pool.service
+#
+# On startup, *after* nginx/varnish have been started successfully, iff the
+# file /etc/traffic-pool-once exists, this will delete that file, sleep 45
+# seconds, and then pool the node for all services.  The file is expected to
+# only be created by human action when immediate repool after a successful
+# reboot is desired.  The default should always be to stay depooled when
+# booting up under unknown conditions (e.g. post-crash, or after being offline
+# for a long period for hardware repairs).
+#
+# On shutdown, *before* nginx/varnish are stopped, this will depool the node
+# for all services and then sleep 45 seconds
+#
+# Due to BindsTo= (which is a stronger version of Requires=), the shutdown
+# depool will also occur if any of the nginx/varnish service units fail
+# randomly.
+#
+
+[Unit]
+Description=Traffic Services Pool Control
+BindsTo=varnish varnish-frontend nginx
+After=varnish varnish-frontend nginx
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/sh -c 'if test -f /etc/traffic-pool-once; then rm -f /etc/traffic-pool-once; sleep 45; /usr/local/bin/pool; fi'
+ExecStop=/usr/local/bin/depool ; /bin/sleep 45
+
+[Install]
+WantedBy=multi-user.target
