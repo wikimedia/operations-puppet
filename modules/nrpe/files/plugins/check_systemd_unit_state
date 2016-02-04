@@ -86,7 +86,7 @@ def main():
 
         if state['ActiveState'] != 'active':
             crit("Expecting active but unit %s is %s" % (unit, state['ActiveState']))
-        if state['SubState'] != 'running':
+        if state['Type'] != 'oneshot' and state['SubState'] != 'running':
             crit("Unit %s is active but reported %s'" % (unit, state['SubState']))
         ok("%s is active" % unit)
 
