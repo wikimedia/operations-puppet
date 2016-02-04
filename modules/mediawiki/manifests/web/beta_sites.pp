@@ -77,6 +77,11 @@ class mediawiki::web::beta_sites {
         priority => 16,
     }
 
+    apache::site { 'wikivoyage':
+        source   => 'puppet:///modules/mediawiki/apache/beta/sites/wikivoyage.conf',
+        priority => 17,
+    }
+
     apache::site { 'remnant':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/remnant.conf',
         priority => 20,
