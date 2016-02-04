@@ -43,7 +43,6 @@ class toollabs::proxy(
         web_domain           => $web_domain,
     }
 
-
     $proxy_nodes = join($proxies, ' ')
 
     # Open up redis to all proxies!
@@ -53,24 +52,21 @@ class toollabs::proxy(
         srange => "@resolve((${proxy_nodes}))",
     }
 
+    # TODO: Remove after deployment.
     file { '/usr/local/sbin/proxylistener':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/toollabs/proxylistener.py',
-        # Is provided by the dynamicproxy class.
-        require => Class['::redis::client::python'],
+        ensure => absent,
     }
 
+    # TODO: Remove after deployment.
     base::service_unit { 'proxylistener':
-        ensure  => present,
+        ensure  => absent,
         upstart => true,
         systemd => true,
-        require => File['/usr/local/sbin/proxylistener'],
     }
 
+    # TODO: Remove after deployment.
     ferm::service { 'proxylistener-port':
+        ensure => absent,
         proto  => 'tcp',
         port   => '8282',
         srange => '$LABS_NETWORKS',
