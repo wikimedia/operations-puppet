@@ -29,7 +29,7 @@ offsets-topic=__consumer_offsets
 broker-offsets=60
 
 [lagcheck]
-intervals=10
+intervals= <%= @lag_window %>
 expire-group=604800
 
 [httpserver]
