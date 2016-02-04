@@ -1,0 +1,38 @@
+#!/bin/bash
+# Shell wrapper for interactive hhvm for use with multiversion mediawiki
+# This script belongs in /usr/local/bin/ and should be in PATH.
+. /etc/profile.d/mediawiki.sh
+
+# Use the source version of the script if the source directory is present.
+# This only matters if the source dir is shared or when run on the deployment server.
+if [ -d "$MEDIAWIKI_STAGING_DIR" ]; then
+	MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE=$MEDIAWIKI_STAGING_DIR
+else
+	MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE=$MEDIAWIKI_DEPLOYMENT_DIR
+fi
+
+usage() {
+    echo Error: $*
+	echo Usage:
+	echo -e "\t$0 <wiki>"
+	echo
+    exit 1
+}
+
+if [[ $# -gt 1 ]]; then
+	usage "Too many arguments"
+elif [[ $# -eq 0 ]]; then
+	WIKI=testwiki
+else
+	WIKI=$1
+fi
+
+if [ "$(whoami)" != "$MEDIAWIKI_WEB_USER" ] ; then
+	HPHPD_INI="${HPHPD_INI_DIR:=/var/lib/hphpd}/$(whoami).hphpd.ini"
+	if [ ! -f "$HPHPD_INI" ]; then
+		sudo -u "$MEDIAWIKI_WEB_USER" cp "$HPHPD_INI_DIR/hphpd.ini" "$HPHPD_INI"
+	fi
+	sudo -u "$MEDIAWIKI_WEB_USER" hhvm -a --debug-config "$HPHPD_INI" "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" commandLine.inc "--wiki=$WIKI"
+else
+	hhvm -a "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" commandLine.inc "--wiki=$WIKI"
+fi
