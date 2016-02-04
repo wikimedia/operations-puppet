@@ -27,14 +27,15 @@ class snapshot::addschanges::config(
             owner  => 'root',
             group  => 'root',
         }
-        $skipdbs = 'labswiki'
+        $skipdbs = ['labswiki','labtestwiki']
+        $skipdbs_dblist = join($skipdbs, "\n")
         file { "${snapshot::dirs::addschangesdir}/dblists/skip.dblist":
             ensure  => 'present',
             path    => "${snapshot::dirs::addschangesdir}/dblists/skip.dblist",
             mode    => '0755',
             owner   => 'root',
             group   => 'root',
-            content => "${skipdbs}\n",
+            content => "${skipdbs_dblist}\n",
         }
     }
 }
