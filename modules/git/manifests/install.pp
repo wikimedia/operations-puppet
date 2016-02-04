@@ -81,7 +81,7 @@ define git::install(
             command => '/usr/bin/git remote update && git fetch --tags',
             cwd     => $directory,
             user    => $owner,
-            unless  => "git clean -df & git checkout . && git diff HEAD..${git_tag} --exit-code",
+            unless  => "git clean -df && git checkout . && git diff HEAD..${git_tag} --exit-code",
             path    => '/usr/bin/',
             require => Git::Clone[$title],
             notify  => Exec["git_checkout_${title}"],
