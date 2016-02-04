@@ -25,4 +25,10 @@ class role::cache::base(
         site         => $zero_site,
         auth_content => secret('misc/zerofetcher.auth'),
     }
+
+    # auto-depool on shutdown + conditional one-shot auto-pool on start
+    base::service_unit { 'traffic-pool':
+        systemd         => true,
+        declare_service => false,
+    }
 }
