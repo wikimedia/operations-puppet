@@ -40,7 +40,7 @@ class role::phabricator::main {
 
     # this site's misc-lb caching proxies hostnames
     $cache_misc_nodes = hiera('cache::misc::nodes', [])
-    $current_tag = 'release/2015-07-08/1'
+    $current_tag = 'release/2016-02-04/1'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
@@ -53,11 +53,11 @@ class role::phabricator::main {
         lock_file        => '/var/run/phab_repo_lock',
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
-        sprint_tag       => 'release/2015-07-01',
+        sprint_tag       => 'release/2016-02-04/1',
         security_tag     => $current_tag,
         libraries        => ['/srv/phab/libext/Sprint/src',
                             '/srv/phab/libext/security/src'],
-        extension_tag    => 'release/2015-06-10/1',
+        extension_tag    => 'release/2015-12-10',
         extensions       => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php',
                               'PhabricatorMediaWikiAuthProvider.php',
