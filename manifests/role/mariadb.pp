@@ -39,6 +39,7 @@ class role::mariadb::grants(
     if $shard {
         $nodepool_pass = $passwords::nodepool::nodepooldb_pass
         $testreduce_pass = $passwords::testreduce::mysql::db_pass
+        $testreduce_cli_pass = $passwords::testreduce::mysql::mysql_client_pass
 
         file { '/etc/mysql/production-grants-shard.sql':
             ensure  => present,

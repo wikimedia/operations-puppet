@@ -462,7 +462,7 @@ groups:
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
   parsoid-test-roots:
     gid: 772
-    description: T125166
+    description: T125166 T125435
     members: [ssastry]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   parsoid-test-admins:
