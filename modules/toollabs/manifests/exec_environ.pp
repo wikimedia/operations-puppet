@@ -146,7 +146,7 @@ class toollabs::exec_environ {
         'php5-imagick',                # T71078.
         'php5-intl',                   # T57652
         'php5-mcrypt',
-        'php5-mysql',
+        'php5-mysqlnd',
         'php5-pgsql',                  # For access to OSM db
         'php5-redis',
         'php5-sqlite',
