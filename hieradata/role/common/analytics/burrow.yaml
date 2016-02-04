@@ -1,3 +1,4 @@
+burrow::lag_window:100
 burrow::httpserver_port: 8000
 burrow::consumer_groups:
   - eventlogging-00
