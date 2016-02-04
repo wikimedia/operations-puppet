@@ -25,4 +25,27 @@ class role::cache::base(
         site         => $zero_site,
         auth_content => secret('misc/zerofetcher.auth'),
     }
+
+    ###########################################################################
+    # auto-depool on shutdown + conditional one-shot auto-pool on start
+    # note: we can't use 'service' because we don't want to 'ensure =>
+    # stopped|running', and 'service_unit' with 'declare_service => false'
+    # wouldn't enable the service in systemd terms, either.
+    ###########################################################################
+
+    $tp_unit_path = '/lib/systemd/system/traffic-pool.service'
+
+    file { $tp_unit_path:
+        ensure  => present,
+        source  => 'puppet:///modules/role/cache/traffic-pool.service',
+        mode    => '0444',
+        owner   => root,
+        group   => root,
+    }
+
+    exec { 'systemd reload+enable for traffic-pool':
+        refreshonly => true,
+        command     => '/bin/systemctl daemon-reload && /bin/systemctl enable traffic-pool',
+        subscribe   => File[$tp_unit_path],
+    }
 }
