@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
-echo "Deooling <%= scope.lookupvar('fqdn') %>..."
+echo "Depooling <%= scope.lookupvar('fqdn') %>..."
 confctl --find --action set/pooled=no '<%= scope.lookupvar('fqdn') %>'
