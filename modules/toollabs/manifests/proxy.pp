@@ -52,27 +52,6 @@ class toollabs::proxy(
         srange => "@resolve((${proxy_nodes}))",
     }
 
-    # TODO: Remove after deployment.
-    file { '/usr/local/sbin/proxylistener':
-        ensure => absent,
-    }
-
-    # TODO: Remove after deployment.
-    base::service_unit { 'proxylistener':
-        ensure  => absent,
-        upstart => true,
-        systemd => true,
-    }
-
-    # TODO: Remove after deployment.
-    ferm::service { 'proxylistener-port':
-        ensure => absent,
-        proto  => 'tcp',
-        port   => '8282',
-        srange => '$LABS_NETWORKS',
-        desc   => 'Proxylistener port, open to just labs',
-    }
-
     file { '/var/www/error/favicon.ico':
         ensure  => file,
         source  => 'puppet:///modules/toollabs/favicon.ico',
