@@ -50,7 +50,7 @@ class role::phabricator::main {
         serveralias      => $altdom,
         trusted_proxies  => $cache_misc_nodes[$::site],
         git_tag          => $current_tag,
-        lock_file        => '/var/run/phab_repo_lock',
+        lock_file        => '/srv/phab/phab_repo_lock',
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
         sprint_tag       => 'release/2015-07-01',
