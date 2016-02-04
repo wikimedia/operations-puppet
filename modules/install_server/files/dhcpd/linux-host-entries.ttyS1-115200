@@ -6321,6 +6321,12 @@ host ruthenium {
 	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
+host sarin {
+    hardware ethernet 90:B1:1C:2D:85:40;
+    fixed-address sarin.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+
 host scandium {
 	hardware ethernet 84:2b:2b:fd:be:52;
 	fixed-address scandium.eqiad.wmnet;
