@@ -6,7 +6,12 @@
 class redis {
     require_package('redis-server')
 
-    file { [ '/srv/redis', '/var/lib/redis', '/var/log/redis' ]:
+    file { [
+        '/srv/redis',
+        '/var/lib/redis',
+        '/var/log/redis',
+        '/var/run/redis',
+    ]:
         ensure => directory,
         owner  => 'redis',
         group  => 'redis',
