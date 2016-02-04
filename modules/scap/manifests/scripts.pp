@@ -124,6 +124,12 @@ class scap::scripts {
         mode    => '0444',
         content => template('scap/mw-deployment-vars.erb'),
     }
+    file { '/usr/local/bin/mwrepl':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/mwrepl',
+    }
 
     # Clean up old cruft
     file { '/usr/local/bin/clear-profile':

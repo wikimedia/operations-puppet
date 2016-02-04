@@ -1,0 +1,52 @@
+#!/bin/bash
+# REPL for mediawiki
+# This script belongs in /usr/local/bin/ and should be in PATH.
+. /etc/profile.d/mediawiki.sh
+
+# Use the source version of MWScript if the source directory is present.
+# This only matters if the source dir is shared or when run on the deployment server.
+if [ -d "$MEDIAWIKI_STAGING_DIR" ]; then
+	MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE=$MEDIAWIKI_STAGING_DIR
+else
+	MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE=$MEDIAWIKI_DEPLOYMENT_DIR
+fi
+
+# PHP spits errors on unknown terminals before falling back to "dumb"
+if [ -z "$TERM" ] || [ "$TERM" = unknown ] || [ "$TERM" = dumb ]; then
+	export TERM=dumb
+fi
+
+usage() {
+    if [ ! -z "$*" ]; then
+        echo Error: $*
+    fi
+    echo -e "Usage:\n\t$0 --wiki <wiki>\n"
+    exit 1
+}
+
+while [[ $# > 0 ]]; do
+	case $1 in
+		--wiki)
+			WIKI="$2"
+			shift
+			;;
+		--wiki=*)
+			WIKI="${1#*=}"
+			shift
+			;;
+		*)
+			usage "Unknown argument: $1"
+			;;
+	esac
+	shift
+done
+
+if [ -z "$WIKI" ]; then
+	usage "Wiki not provided"
+fi
+
+if [ "`whoami`" != "$MEDIAWIKI_WEB_USER" ] ; then
+	sudo -u "$MEDIAWIKI_WEB_USER" hhvm -a "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" commandLine.inc --wiki=$WIKI
+else
+	hhvm -a "$MEDIAWIKI_DEPLOYMENT_DIR_DIR_USE/multiversion/MWScript.php" commandLine.inc --wiki=$WIKI
+fi
