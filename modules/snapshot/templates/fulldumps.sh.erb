@@ -15,13 +15,7 @@
 # some if there are errors or parts that need to be rerun,
 # without requiring manual intervention for the next cron run.
 
-# don't run if there's already an instance running
-pgrep $0 && exit 0
-# if dumpscheduler already running, don't start up a new one, let that run complete
-pgrep dumpscheduler.py && exit 0
-
-
-if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
+usage(){
     echo "Usage: $0 startdate enddate huge|regular"
     echo "where huge or regular is the type of wiki dump to be"
     echo "run (huge wikis or small/big wikis)"
@@ -30,19 +24,93 @@ if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
     echo "for a run over the small and big wikis, that should have started"
     echo "on the first of the month and can be started up to the 10th without"
     echo "encroaching on the next dump run"
+}
+
+show (){
+    if [ $dryrun -ne 0 ]; then
+        echo "$1"
+    fi
+}
+
+getcommandargs(){
+    slots="$1"
+    stagesfile="$2"
+    commandargs="./dumpscheduler.py --slots ${slots} --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir"
+}
+
+maybe_do_createdirs(){
+    conffile="$1"
+    stagesfile="$2"
+    showtype="$3"
+
+    configfile="${dumpsdir}/confs/${conffile}"
+    lastrun=`$python dumpadmin.py -s lastrun --configfile $configfile`
+    show "lastrun is $lastrun for ${showtype}"
+    if [[ -z "$lastrun" || "$lastrun" < "$startdate_yyyymmdd" ]]; then
+        getcommandargs "8" "stages_create_hugewikis"
+        if [ $dryrun -ne 0 ]; then
+            show "would execute ${python} ${commandargs}"
+        else
+            $python $commandargs
+        fi
+    fi
+}
+
+maybe_do_dumps (){
+    conffile="$1"
+    stagesfile="$2"
+    showtype="$3"
+    slots="$4"
+
+    configfile="${dumpsdir}/confs/${conffile}"
+    alldone=`$python dumpadmin.py -s alldone --configfile $configfile`
+    show "alldone is ${alldone} for ${showtype}"
+    if [ -z "$alldone" ]; then
+        getcommandargs "$slots" "$stagesfile"
+        if [ $dryrun -ne 0 ]; then
+            show "would execute ${python} ${commandargs}"
+        else
+            $python $commandargs
+        fi
+	return 0
+    else
+	return 1
+    fi
+}
+
+set -x
+
+# don't run if there's already an instance running
+pgrep fulldumps.sh && exit 0
+# if dumpscheduler already running, don't start up a new one, let that run complete
+pgrep dumpscheduler.py && exit 0
+
+if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
+    usage
     exit 1
 fi
 
 startdate="$1"
+yearmonth=`/bin/date +%Y%m`
+startdate_yyyymmdd="${yearmonth}${startdate}"
 enddate="$2"
 wikitype="$3"
+
+if [ "$4" == "dryrun" ]; then
+    dryrun=1
+else
+    dryrun=0
+fi
+
+python="/usr/bin/python"
 
 dumpsdir="<%= scope.lookupvar('snapshot::dirs::dumpsdir') %>"
 cd $dumpsdir
 
-today=`date +%d`
+today=`/bin/date +%d`
 if [[ "$today" < "$startdate" || "$today" > "$enddate" ]]; then
     # skip, we're not in the run range for this dump
+    show "skipping run because date out of range"
     exit 0
 fi
 
@@ -50,49 +118,35 @@ fi
 # (small, big, huge) as needed
 case $wikitype in
     'hugewikis')
-        configfile="${dumpsdir}/confs/wikidump.conf.hugewikis"
-        stagesfile="stages_create_hugewikis"
-        lastrun=`python dumpadmin.py -s lastrun -configfile $configfile`
-        if [[ -z "$lastrun" || "$lastrun" < "$startdate" ]]; then
-            python ./dumpscheduler.py --slots 8 --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
-        fi
+        maybe_do_createdirs "wikidump.conf.hugewikis" "stages_create_hugewikis" "hugewikis"
         ;;
     'regular')
-        configfile="${dumpsdir}/confs/wikidump.conf.bigwikis"
-        stagesfile="stages_create_bigwikis"
-        lastrun=`python dumpadmin.py -s lastrun -configfile $configfile`
-        if [[ -z "$lastrun" || "$lastrun" < "$startdate" ]]; then
-            python ./dumpscheduler.py --slots 8 --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
-        fi
-
-        configfile="${dumpsdir}/confs/wikidump.conf"
-        stagesfile="stages_create_smallwikis"
-        lastrun=`python dumpadmin.py -s lastrun -configfile $configfile`
-        if [[ -z "$lastrun" || "$lastrun" < "$startdate" ]]; then
-            python ./dumpscheduler.py --slots 8 --commands ${dumpsdir}/stages/${stagesfile} --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
-        fi
-
-        stagesfile="stages_create_bigwikis"
-        configfile="${dumpsdir}/confs/wikidump.conf.bigwikis"
+        maybe_do_createdirs "wikidump.conf.bigwikis" "stages_create_bigwikis" "bigwikis"
+        maybe_do_createdirs "wikidump.conf" "stages_create_smallwikis" "smallwikis"
+        ;;
+    '*')
+        echo "unknown wikitype $wikitype"
+        exit 1
         ;;
 esac
 
 case $wikitype in
     'hugewikis')
-        configfile="${dumpsdir}/confs/wikidump.conf.hugewikis"
-        alldone=`python dumpadmin.py -s alldone --configfile $configfile`
-        if [ -z "$alldone" ]; then
-            python ./dumpscheduler.py --slots 27 --commands ${dumpsdir}/stages/stages_normal_nocreate_hugewikis --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
-        fi
+        maybe_do_dumps "wikidump.conf.hugewikis" "stages_normal_nocreate_hugewikis" "hugewikis" "27"
         ;;
     'regular')
-        configfile="${dumpsdir}/confs/wikidump.conf.bigwikis"
-        alldonebig=`python dumpadmin.py -s alldone --configfile $configfile`
-        configfile="${dumpsdir}/confs/wikidump.conf"
-        alldonesmall=`python dumpadmin.py -s alldone --configfile $configfile`
-        if [ -z "$alldonebig" -o -z "$alldonesmall" ]; then
-            python ./dumpscheduler.py --slots 8 --commands ${dumpsdir}/stages/stages_normal_nocreate --cache ${dumpsdir}/cache/running_cache.txt --directory $dumpsdir
+        # If not all the big wikis are done we will start a dump run covering small and big wikis
+        # Only wikis without complete dumps will be updated.
+        maybe_do_dumps "wikidump.conf.bigwikis" "stages_normal_nocreate" "bigwikis" "8"
+	if [ $? -ne 0 ]; then
+            # If we did not start a dump run above for small and big wikis, and the small wikis
+            # are not done, start such a run now.  Only wikis without complete dumps will be updated.
+            maybe_do_dumps "wikidump.conf" "stages_normal_nocreate" "smallwikis" "8"
         fi
+        ;;
+    '*')
+        echo "unknown wikitype $wikitype"
+        exit 1
         ;;
 esac
 exit 0
