@@ -155,7 +155,13 @@ def handle_navigation_timing(meta):
         if minuend in event and subtrahend in event:
             metrics[difference] = event[minuend] - event[subtrahend]
 
-    site = 'mobile' if 'mobileMode' in event else 'desktop'
+    if 'mobileMode' in event:
+        if event.get('mobileMode') == 'stable':
+            site = 'mobile'
+        else:
+            site = 'mobile-beta'
+    else:
+        site = 'desktop'
     auth = 'anonymous' if event.get('isAnon') else 'authenticated'
 
     # Currently unused:
