@@ -7,6 +7,8 @@
 # == Parameters
 # $client_id          - The client ID string to provide to Kafka when consuming
 # $httpserver_port    - Port at which to make the burrow http endpoint available
+# $lag_window         - Length of window in which offsets are monitored in seconds
+#                       See: https://github.com/linkedin/Burrow/wiki/Configuration#lagcheck
 # $zookeeper_hosts    - Array of zookeeper host urls
 # $zookeeper_path     - The full path to the znode that is the root for the Kafka cluster
 # $kafka_cluster_name - Name of the Kafka cluster
@@ -20,6 +22,7 @@ class burrow (
     $ensure = 'present',
     $client_id = 'burrow-client',
     $httpserver_port = 8000,
+    $lag_window = 100,
     $zookeeper_hosts,
     $zookeeper_path,
     $kafka_cluster_name,
