@@ -50,7 +50,7 @@ define redis::instance(
     }
 
     $defaults = {
-        pidfile    => "/var/run/redis/${instance_name}.pid",
+        pidfile    => "/var/lib/redis/${instance_name}.pid",
         logfile    => "/var/log/redis/${instance_name}.log",
         port       => $port,
         unixsocket => $unixsocket,
