@@ -150,9 +150,25 @@ class WMFElasticCollector(diamond.collector.Collector):
             'http.current_open',
             'http.total_opened',
 
+            'thread_pool.bulk.active',
+            'thread_pool.bulk.queue',
+            'thread_pool.bulk.rejected',
+            'thread_pool.generic.active',
+            'thread_pool.generic.queue',
+            'thread_pool.generic.rejected',
+            'thread_pool.get.active',
+            'thread_pool.get.queue',
             'thread_pool.get.rejected',
+            'thread_pool.index.active',
+            'thread_pool.index.queue',
+            'thread_pool.index.rejected',
+            'thread_pool.search.active',
+            'thread_pool.search.queue',
             'thread_pool.search.rejected',
+            'thread_pool.suggest.active',
+            'thread_pool.suggest.queue',
             'thread_pool.suggest.rejected',
+
         ]
 
     def get_default_config_help(self):
