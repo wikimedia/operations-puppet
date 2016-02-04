@@ -124,6 +124,24 @@ class scap::scripts {
         mode    => '0444',
         content => template('scap/mw-deployment-vars.erb'),
     }
+    file { '/var/lib/hphpd':
+        ensure => directory,
+        owner  => $::mediawiki::users::web,
+        group  => $::mediawiki::users::web,
+        mode   => '0775',
+    }
+    file { '/var/lib/hphpd/hphpd.ini':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/scap/hphpd.ini',
+    }
+    file { '/usr/local/bin/mwrepl':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/scap/mwrepl',
+    }
 
     # Clean up old cruft
     file { '/usr/local/bin/clear-profile':
