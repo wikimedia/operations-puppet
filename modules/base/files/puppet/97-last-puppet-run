@@ -3,7 +3,7 @@
 
 set -e
 
-PATH=/bin:/usr/bin
+PATH=/bin:/usr/bin:/usr/local/bin
 LANG=C
 
 TSLASTPUPPETRUN=$(stat -c %Z /var/lib/puppet/state/classes.txt)
@@ -14,8 +14,10 @@ NORM="\033[0m"
 
 echo -n "The last Puppet run was at $(date -d @$TSLASTPUPPETRUN) "
 
+DISABLEDMSG="$(puppet-enabled || true)"
+
 if [ $DELTAMIN -gt 60 ]; then
-	echo "${BOLD}($DELTAMIN minutes ago)${NORM}."
+	echo "${BOLD}($DELTAMIN minutes ago)${NORM}. $DISABLEDMSG"
 else
-	echo "($DELTAMIN minutes ago)."
+	echo "($DELTAMIN minutes ago). $DISABLEDMSG"
 fi
