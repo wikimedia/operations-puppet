@@ -40,7 +40,7 @@ port=<%= @httpserver_port %>
 server=<%= @smtp_server %>
 port=25
 from=<%= @from_email %>
-template=/etc/burrow/default-email.tmpl
+template=/etc/burrow/@email_template
 
 <% @to_emails.each do |to_email| -%>
 [email "<%= to_email %>"]
