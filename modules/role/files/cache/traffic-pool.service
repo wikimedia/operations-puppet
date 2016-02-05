@@ -32,7 +32,7 @@ After=varnish.service varnish-frontend.service nginx.service
 
 [Service]
 Type=oneshot
-RemainAfterExit=true
+RemainAfterExit=yes
 ExecStart=/bin/sh -c 'if test -f /var/lib/traffic-pool/pool-once; then rm -f /var/lib/traffic-pool/pool-once; sleep 45; /usr/local/bin/pool; fi'
 ExecStop=/usr/local/bin/depool ; /bin/sleep 45
 
