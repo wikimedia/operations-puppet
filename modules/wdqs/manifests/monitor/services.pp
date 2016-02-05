@@ -35,4 +35,13 @@ class wdqs::monitor::services(
         description  => 'Updater process',
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -u ${username} --ereg-argument-array '^java .* org.wikidata.query.rdf.tool.Update'",
     }
+
+    monitoring::graphite_threshold { 'WDQS_Lag':
+        description => 'High lag',
+        metric      => "wikidata.query.lag.${::hostname}",
+        from        => '10min',
+        warning     => '600', # 10 minutes
+        critical    => '1800', # 30 minutes
+        percentage  => '50', # Don't freak out on spikes
+    }
 }
