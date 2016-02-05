@@ -286,7 +286,7 @@ class cassandra(
     validate_absolute_path($commitlog_directory)
     validate_absolute_path($saved_caches_directory)
 
-    validate_string($initial_token)
+    validate_string($cassandra::initial_token)
     validate_string($endpoint_snitch)
 
     validate_re($rpc_server_type, '^(hsha|sync|async)$')
