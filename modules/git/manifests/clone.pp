@@ -39,7 +39,7 @@
 #   }
 #
 # Will clone +http://blabla.org/core.git+ branch +the_best_branch+ at
-#  +/path/to/clone/container/core+
+#  +/path/to/clone/container/+
 #
 #   # Example: check out from gerrit:
 #   git::clone { 'analytics/wikimetrics':
