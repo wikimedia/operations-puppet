@@ -8,3 +8,7 @@ variables:
     cassandra-pswd: '<%= @cassandra_kartotherian_pass %>'
 
 sources: sources.prod.yaml
+
+# At the moment this is a noop because CSP is not set for kartotherian
+# We plan to add it to Kartotherian, and gently roll it into production
+csp: "default-src 'self'; object-src 'none'; media-src *; img-src *; style-src *; frame-ancestors 'self'"
