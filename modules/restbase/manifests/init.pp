@@ -67,6 +67,15 @@
 #   The domain to monitor during the service's operation.
 #   Default: en.wikipedia.org
 #
+# [*deployment*]
+#   If this value is set to 'scap3' then deploy via scap3, otherwise, use trebuchet
+#   Default: undef
+#
+# [*deployment_user*]
+#   User that will own the deployment files in the case of:
+#   $deployment => 'scap3'
+#   Default: deploy-service
+#
 class restbase(
     $cassandra_user = 'cassandra',
     $cassandra_password = 'cassandra',
@@ -89,8 +98,20 @@ class restbase(
     $mathoid_uri    = 'http://mathoid.svc.eqiad.wmnet:10042',
     $aqs_uri        =
     'http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1',
-    $monitor_domain = 'en.wikipedia.org',
+    $monitor_domain  = 'en.wikipedia.org',
+    $deployment      = undef,
+    $deployment_user = 'deploy-service',
 ) {
+
+    if $deployment == 'scap3' {
+        user { $deployment_user:
+            ensure     => present,
+            shell      => '/bin/bash',
+            home       => '/var/lib/scap',
+            system     => true,
+            managehome => true,
+        }
+    }
 
     service::node { 'restbase':
         port            => $port,
@@ -103,6 +124,7 @@ class restbase(
         local_logging   => false,
         auto_refresh    => false,
         init_restart    => false,
+        deployment      => $deployment,
     }
 
 }

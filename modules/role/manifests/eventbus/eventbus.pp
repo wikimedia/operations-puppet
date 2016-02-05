@@ -12,15 +12,15 @@ class role::eventbus::eventbus {
     require ::eventlogging
     require ::role::kafka::main::config
 
-    $eventlogging_path = '/srv/deployment/eventlogging/eventbus'
+    $package = 'eventlogging/eventbus'
+    $package_owner = 'eventlogging'
 
     # eventlogging code for eventbus is configured to deploy
     # from the eventlogging/eventbus deploy target
     # via scap/scap.cfg on the deployment host.
-    scap::target { 'eventlogging/eventbus':
-        deploy_user       => 'eventlogging',
+    scap::target { $package:
+        deploy_user       => $package_owner,
         public_key_source => "puppet:///modules/eventlogging/deployment/eventlogging_rsa.pub.${::realm}",
-        deploy_path       => $eventlogging_path,
         service_name      => 'eventlogging-service-eventbus',
     }
 
