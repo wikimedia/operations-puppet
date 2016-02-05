@@ -23,6 +23,12 @@ class role::labs::nfs::extras($dump_servers_ips) {
         hosts_allow => $dump_servers_ips,
     }
 
+    rsync::server::module { 'dumps':
+        path        => '/srv/dumps',
+        read_only   => 'no',
+        hosts_allow => $dump_servers_ips,
+    }
+
     # Allow users to push files from statistics servers here.
     file { '/srv/statistics':
         ensure => 'directory',
