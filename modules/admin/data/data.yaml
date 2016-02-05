@@ -76,6 +76,8 @@ groups:
               gpaumier, moushira, aklapper, qchris, tjones, srijan, addshore,
               jminor, pt1979, asherman, etonkovidova, sbisson, zhousquared,
               atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc]
+              vbaranetsky, atgomez, jgirault, jdrewniak, matmarex, elukey, jdcc,
+              akumar, mnoushad]
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
@@ -441,7 +443,7 @@ groups:
   pentesters:
     description: Group of users running penetration tests
     gid: 768
-    members: []
+    members: [akumar, mnoushad]
   restbase-admins:
     gid: 769
     description: group of restbase admins
