@@ -214,7 +214,7 @@ groups:
   mathoid-admin:
     gid: 730
     description: group of mathoid admins
-    members: [gwicke, catrope]
+    members: [gwicke, catrope, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service mathoid *',
                  'ALL = (mathoid) NOPASSWD: ALL']
   analytics-users:
@@ -275,7 +275,7 @@ groups:
   cxserver-admin:
     gid: 741
     description: group of cxserver admins
-    members: [kartik, nikerabbit]
+    members: [kartik, nikerabbit, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cxserver *',
                  'ALL = (cxserver) NOPASSWD: ALL']
   chromium-admin:
