@@ -1,30 +1,28 @@
 #!/bin/bash
-running=`pgrep -u root -f   'python /root/wmfdumpsmirror.py --remotedir /data/xmldatadumps/public'`
+desthost="labstore1003.eqiad.wmnet"
+otherdir="/data/xmldatadumps/public/other"
+bwlimit=50000
 
-if [ -d /mnt/dumps/lost+found ]; then
+do_rsync (){
+    srcdir=$1
+    destdir=$2
 
+    running=`pgrep -u root -f -x "/usr/bin/rsync -rlpt $bwlimit ${otherdir}/${srcdir} ${desthost}::dumps/${destdir}"`
     if [ -z "$running" ]; then
-        python /usr/local/bin/wmfdumpsmirror.py --remotedir /data/xmldatadumps/public --localdir /mnt/dumps/public --filesperjob 50 --sizeperjob 5G --workercount 1 --rsynclist rsync-filelist-last-3-good.txt.rsync --rsyncargs -rlptq
+        /usr/bin/rsync -rlpt "$bwlimit" "${otherdir}/${srcdir}" "${desthost}::dumps/${destdir}"
     fi
-    running=`pgrep -u root -f -x  '/usr/bin/rsync -rlpt /data/xmldatadumps/public/other/incr /mnt/dumps/'`
-    if [ -z "$running" ]; then
-        /usr/bin/rsync -rlpt /data/xmldatadumps/public/other/incr /mnt/dumps/
-    fi
-    mkdir -p /mnt/dumps/public/wikidatawiki/entities/
-    running=`pgrep -u root -f -x '/usr/bin/rsync -rlpt /data/xmldatadumps/public/other/wikibase/wikidatawiki/ /mnt/dumps/public/wikidatawiki/entities/'`
-    if [ -z "$running" ]; then
-        /usr/bin/rsync -rlpt /data/xmldatadumps/public/other/wikibase/wikidatawiki/ /mnt/dumps/public/wikidatawiki/entities/
-    fi
-    running=`pgrep -u root -f -x '/usr/bin/rsync -rlpt /data/xmldatadumps/public/other/pagecounts-raw /mnt/dumps/'`
-    if [ -z "$running" ]; then
-        /usr/bin/rsync -rlpt /data/xmldatadumps/public/other/pagecounts-raw /mnt/dumps/
-    fi
-    running=`pgrep -u root -f -x '/usr/bin/rsync -rlpt /data/xmldatadumps/public/other/pagecounts-all-sites /mnt/dumps/'`
-    if [ -z "$running" ]; then
-        /usr/bin/rsync -rlpt /data/xmldatadumps/public/other/pagecounts-all-sites /mnt/dumps/
-    fi
+}
 
-else
-    echo "$0: mount doesn't appear there.  Bailing out!" >&2
-    exit 1
+# fixme these are wrong for sure, so I need to figure out the 'right' thing here
+running=`pgrep -u root -f   "python /usr/local/bin/wmfdumpsmirror.py --dest_hostname labstore1003.eqiad.wmnet"`
+if [ -z "$running" ]; then
+    python /usr/local/bin/wmfdumpsmirror.py --dest_hostname labstore1003.eqiad.wmnet --sourcedir /data/xmldatadumps/public --destdir dumps/public --filesperjob 50 --sizeperjob 5G --workercount 1 --rsynclist rsync-filelist-last-3-good.txt.rsync --rsyncargs -rlptq,--bwlimit=50000
 fi
+
+# fixme need to ensure ${desthost}::dumps/public/wikidatawiki/entities/ exists
+
+#copy from our dumps "other" directory to the labs host copy of dumps
+do_rsync "incr" ""
+do_rsync "wikibase/wikidatawiki/" "public/wikidatawiki/entities/"
+do_rsync "pagecounts-raw" ""
+do_rsync "pagecounts-all-sites" ""

@@ -2,56 +2,83 @@ import getopt
 import os
 import re
 import sys
-import subprocess
-import shutil
+import tempfile
 import multiprocessing
 from subprocess import Popen, PIPE
 from Queue import Empty
 
 
-class Job(object):
+# note that this was written back in the day when this was used
+# to rsync to glusterfs, painfully slow, so we ran multiple jobs
+# to get it to finish before the end of the universe. job handling
+# isn't needed any more but what the heck might as well leave it in
 
-    def __init__(self, jobId, jobContents):
-        self.jobId = jobId  # this must be unique across all jobs
-        self.contents = jobContents
+# things that get here should look like:
+# aawikibooks/20120317/aawikibooks-20120317-all-titles-in-ns0.gz
+def get_path_elts_from_filename(path):
+    if os.sep not in path:
+        raise MirrorError("bad line encountered in rsync"
+                          "directory list: '%s'" % path)
+
+    components = path.split(os.sep)
+    if len(components) < 3 or not RsyncJob.date_pattern.search(components[-2]):
+        raise MirrorError("what garbage is this:"
+                          "%s in the filenames for rsync? " % path)
+    return components
+
+
+def get_file_size(line):
+    return int(line.split()[1])
+
+
+def get_path(line):
+    return line.split()[4]
+
+
+def check_line_wanted(line):
+    """is this a line we want, it has information about a
+    file for our jobs? if so return true, if not return
+    false.  we assume lines starting with '#' are comments,
+    blank lines are to be skipped, and we don't want
+    directory entries, only files and/or symlinks"""
+    if not line or line[0] == 'd' or line[0] == '#':
+        return False
+    else:
+        return True
+
+
+def maketempdir():
+    return tempfile.mkdtemp()
+
+
+class Job(object):
+    def __init__(self, job_id, job_contents):
+        self.job_id = job_id  # this must be unique across all jobs
+        self.contents = job_contents
         self.done = False
         self.failed = False
 
-    def markDone(self):
+    def mark_done(self):
         self.done = True
 
-    def markFailed(self):
+    def mark_failed(self):
         self.failed = True
 
-    def checkIfDone(self):
+    def check_if_done(self):
         return self.done
 
-    def checkIfFailed(self):
+    def check_if_failed(self):
         return self.failed
 
 
 class RsyncJob(Job):
-
-    datePattern = re.compile('^20[0-9]{6}$')
+    date_pattern = re.compile('^20[0-9]{6}$')
 
     def __init__(self, contents):
         super(RsyncJob, self).__init__(contents[0], contents)
-        self.rsyncedByJob = self.getDirsPerProjectRsyncedByJob()
+        self.rsynced_by_job = self.get_dirs_per_proj_rsynced_by_job()
 
-    # things that get here should look like:
-    # aawikibooks/20120317/aawikibooks-20120317-all-titles-in-ns0.gz
-    def _getPathComponentsFromFileName(self, path):
-        if os.sep not in path:
-            raise MirrorError(
-                "bad line encuntered in rsync directory list: '%s'" % path)
-
-        components = path.split(os.sep)
-        if len(components) < 3 or not RsyncJob.datePattern.search(components[-2]):
-            raise MirrorError(
-                "what garbage is this: %s in the filenames for rsync? " % path)
-        return components
-
-    def getDirsPerProjectRsyncedByJob(self):
+    def get_dirs_per_proj_rsynced_by_job(self):
         """return has of projects which are partially or completely
         rsynced by this job, each has key having as value the dirs that
         are rsynced"""
@@ -64,293 +91,201 @@ class RsyncJob(Job):
                 # html files that might be at the top of the tree;
                 # don't dig through their names looking for project dump info
                 continue
-            components = self._getPathComponentsFromFileName(line)
+            components = get_path_elts_from_filename(line)
             if len(components):
                 project = os.sep + components[-3]
-                projectSubdir = components[-2]
-                projectFile = components[-1]
+                project_subdir = components[-2]
+                project_file = components[-1]
                 if project not in projects.keys():
                     projects[project] = {}
-                if projectSubdir not in projects[project]:
-                    projects[project][projectSubdir] = []
-                projects[project][projectSubdir].append(projectFile)
+                if project_subdir not in projects[project]:
+                    projects[project][project_subdir] = []
+                projects[project][project_subdir].append(project_file)
 
         return projects
 
 
 class RsyncFilesProcessor(object):
-
     # for now we have the file list be a flat file, sometime in the
     # not to distant future it will be maybe a stream cause we'll be
     # feeding a list from the api, that will be sketchy
-    def __init__(self, fileListFd, maxFilesPerJob, maxDuPerJob, workerCount,
-                 rsyncRemotePath, localPath, rsyncArgs, verbose, dryrun):
-        self.fileListFd = fileListFd
-        self.maxFilesPerJob = maxFilesPerJob
-        self.maxDuPerJob = maxDuPerJob
+    def __init__(self, file_list_fd, max_files_per_job, max_du_per_job,
+                 worker_count, rsync_source_root, rsync_dest_root,
+                 rsync_args, verbose, dryrun):
+        self.file_list_fd = file_list_fd
+        self.max_files_per_job = max_files_per_job
+        self.max_du_per_job = max_du_per_job
         self.verbose = verbose
         self.dryrun = dryrun
-        self.rsyncArgs = rsyncArgs
-        self.localPath = localPath
-        self.rsyncer = Rsyncer(rsyncRemotePath, localPath, self.rsyncArgs,
-                               self.verbose, self.dryrun)
-        self.jQ = JobQueue(workerCount, self.rsyncer,
-                           self.verbose, self.dryrun)
-        self.datePattern = re.compile('^20[0-9]{6}$')
-        self.jobsPerProject = {}
+        self.rsync_args = rsync_args
+        self.rsyncer = Rsyncer(rsync_source_root, rsync_dest_root,
+                               self.rsync_args, self.verbose, self.dryrun)
+        self.jqueue = JobQueue(worker_count, self.rsyncer, self.verbose, self.dryrun)
+        self.date_pattern = re.compile('^20[0-9]{6}$')
+        self.jobs_per_project = {}
         self.jobs = {}
-        self.deleter = DirDeleter(self.jobsPerProject, self.localPath,
+        self.deleter = DirDeleter(self.jobs_per_project, rsync_dest_root,
                                   self.verbose, self.dryrun)
 
-    def _getFileSize(self, line):
-        return int(line.split()[1])
-
-    def _getPath(self, line):
-        return line.split()[4]
-
-    def _checkLineWanted(self, line):
-        """is this a line we want, it has information about a
-        file for our jobs? if so return true, if not return
-        false.  we assume lines starting with '#' are comments,
-        blank lines are to be skipped, and we don't want
-        directory entries, only files and/or symlinks"""
-        if not line or line[0] == 'd' or line[0] == '#':
-            return False
-        else:
-            return True
-
-    def _getFileName(self, line):
-
-        # the input consists of a list of filenames plus other info and we
-        # can expect the dumps of one project to be listed in consecutive
-        # lines rather than scattered about in the file (which is of no
-        # concern for us but is good for rsync)
-        # it's produced by rsync --list-only...
-
-        # example:
-
-        # drwxrwxr-x        4096 2012/03/17 13:23:04 aawikibooks
-        # drwxr-xr-x        4096 2012/03/17 13:24:10 aawikibooks/20120317
-        # -rw-r--r--          39 2012/03/17 13:23:54 aawikibooks/20120317/aawikibooks-20120317-all-titles-in-ns0.gz
-        # -rw-r--r--         760 2012/03/17 13:23:39 aawikibooks/20120317/aawikibooks-20120317-category.sql.gz
-        # -rw-r--r--         826 2012/03/17 13:23:23 aawikibooks/20120317/aawikibooks-20120317-categorylinks.sql.gz
-        # -rw-r--r--        1513 2012/03/17 13:23:30 aawikibooks/20120317/aawikibooks-20120317-externallinks.sql.gz
-
-        # we may also have a few files in the top level directory that
-        # we want the mirrors to pick up (text or html files of particular interest)
-
-        # note that the directories are also listed, we want to skip those
-        # we'll allow comments in there in case some other script produces the
-        # files or humans edit them; skip those and empty lines, the rest
-        # should be good data
-        path = self._getPath(line)
-        if os.sep not in path:
-            return line
-        else:
-            return line.split(os.sep)[-1]
-
-    def stuffJobsOnQueue(self):
-        fileCount = 0
-        fileDu = 0
+    def stuff_jobs_on_queue(self):
+        file_count = 0
+        file_du = 0
         files = []
-        line = self.fileListFd.readline().rstrip()
+        line = self.file_list_fd.readline().rstrip()
         while line:
-            if not self._checkLineWanted(line):
-                line = self.fileListFd.readline().rstrip()
+            if not check_line_wanted(line):
+                line = self.file_list_fd.readline().rstrip()
                 continue
-            path = self._getPath(line)
+            path = get_path(line)
             if path:
-                fileCount = fileCount + 1
-                fileDu = fileDu + self._getFileSize(line)
+                file_count = file_count + 1
+                file_du = file_du + get_file_size(line)
                 files.append(path)
-                if fileDu >= self.maxDuPerJob or fileCount >= self.maxFilesPerJob:
-                    job = self.makeJob(files)
+                if file_du >= self.max_du_per_job or file_count >= self.max_files_per_job:
+                    job = self.make_job(files)
                     if self.dryrun or self.verbose:
-                        MirrorMsg.display("adding job %s (size %d and filecount %d) to queue\n" % (job.jobId, fileDu, fileCount))
-                    self.jQ.addToJobQueue(job)
-                    fileDu = 0
-                    fileCount = 0
+                        MirrorMsg.display(
+                            "adding job %s (size %d and filecount %d) to queue\n"
+                            % (job.job_id, file_du, file_count))
+                    self.jqueue.add_to_job_queue(job)
+                    file_du = 0
+                    file_count = 0
                     files = []
-            line = self.fileListFd.readline().rstrip()
+            line = self.file_list_fd.readline().rstrip()
 
-        if fileCount:
+        if file_count:
             if self.dryrun or self.verbose:
-                MirrorMsg.display("adding job %s (size %d and filecount %d) to queue\n" % (job.jobId, fileDu, fileCount))
-            self.jQ.addToJobQueue(self.makeJob(files))
+                MirrorMsg.display(
+                    "adding job %s (size %d and filecount %d) to queue\n"
+                    % (job.job_id, file_du, file_count))
+            self.jqueue.add_to_job_queue(self.make_job(files))
 
-        self.jQ.setEndOfJobs()
-        self.deleter.setJobList(self.jobs)
+        self.jqueue.set_end_of_jobs()
+        self.deleter.set_job_list(self.jobs)
 
-    def makeJob(self, files):
+    def make_job(self, files):
         job = RsyncJob(files)
-        for project in job.rsyncedByJob.keys():
-            if project not in self.jobsPerProject.keys():
-                self.jobsPerProject[project] = []
-            self.jobsPerProject[project].append(job.jobId)
-        self.jobs[job.jobId] = job
+        for project in job.rsynced_by_job.keys():
+            if project not in self.jobs_per_project.keys():
+                self.jobs_per_project[project] = []
+            self.jobs_per_project[project].append(job.job_id)
+        self.jobs[job.job_id] = job
         return job
 
-    def doPostJobProcessing(self, skipDeletes):
+    def do_postjob_processing(self, skip_deletes):
         while True:
             # any completed jobs?
-            job = self.jQ.getJobFromNotifyQueue()
+            job = self.jqueue.get_job_from_notify_queue()
             # no more jobs and mo more workers.
-            if not job:
-                if not self.jQ.getActiveWorkerCount():
+            if job is None:
+                if not self.jqueue.get_active_worker_count():
                     if self.dryrun or self.verbose:
                         MirrorMsg.display("no jobs left and no active workers\n")
                     break
                 else:
                     continue
             if self.dryrun:
-                MirrorMsg.display("jobId %s would have been completed\n" %
-                                  job.jobId)
+                MirrorMsg.display("job_id %s would have been completed\n" % job.job_id)
             elif self.verbose:
-                MirrorMsg.display("jobId %s completed\n" % job.jobId)
+                MirrorMsg.display("job_id %s completed\n" % job.job_id)
 
             # update status of job in our todo queue
-            j = self.jobs[job.jobId]
-            if job.checkIfDone():
-                j.markDone()
-            if job.checkIfFailed():
-                j.markFailed()
+            j = self.jobs[job.job_id]
+            if job.check_if_done():
+                j.mark_done()
+            if job.check_if_failed():
+                j.mark_failed()
 
-            if not skipDeletes:
+            if not skip_deletes:
                 if self.verbose or self.dryrun:
                     MirrorMsg.display("checking post-job deletions\n")
-                self.deleter.checkAndDoDeletes(j)
+                self.deleter.check_and_do_deletes(j)
 
 
 class DirDeleter(object):
     """remove all dirs for the project that are not in the
     list of dirs to rsync, we don't want them any more"""
-
-    def __init__(self, jobsPerProject, localPath, verbose, dryrun):
-        self.jobsPerProject = jobsPerProject
-        self.localPath = localPath
+    def __init__(self, jobs_per_project, dest_path, verbose, dryrun):
+        self.jobs_per_project = jobs_per_project
+        self.dest_path = dest_path
         self.verbose = verbose
         self.dryrun = dryrun
+        self.job_list = None
+        self.emptydirpath = None
+        self.cmd = Command(verbose, dryrun)
 
-    def getFullLocalPath(self, relPath):
-        if relPath.startswith(os.sep):
-            relPath = relPath[len(os.sep):]
-        return(os.path.join(self.localPath, relPath))
+    def cleanup(self):
+        if self.emptydirpath is not None:
+            try:
+                os.rmdir(self.emptydirpath)
+            except:
+                pass
 
-    def setJobList(self, jobList):
-        self.jobList = jobList
+    def set_job_list(self, job_list):
+        self.job_list = job_list
 
-    def checkAndDoDeletes(self, job):
+    def check_and_do_deletes(self, job):
         """given a file list, we need to see if we are done with
         one project and on to the next, which things we rsynced and
         which not, and delete the ones not (i.e. left over from previous
         run and we don't want them now); failed rsyncs may not have
         completed normally so we won't do deletions for a project
         with failed jobs"""
-        for project in job.rsyncedByJob.keys():
-            ids = [self.jobList[jobId] for jobId in self.jobsPerProject[project] if not self.jobList[jobId].checkIfDone() or self.jobList[jobId].checkIfFailed()]
+        for project in job.rsynced_by_job.keys():
+            ids = [self.job_list[job_id] for job_id in self.jobs_per_project[project]
+                   if not self.job_list[job_id].check_if_done() or
+                   self.job_list[job_id].check_if_failed()]
             if not len(ids):
                 if self.dryrun:
-                    MirrorMsg.display("Would do deletes for project %s\n" %
-                                      project)
+                    MirrorMsg.display("Would do deletes for project %s\n" % project)
                 elif self.verbose:
-                    MirrorMsg.display("Doing deletes for project %s\n" %
-                                      project)
-                self.doDeletes(project)
+                    MirrorMsg.display("Doing deletes for project %s\n" % project)
+                self.do_deletes(project)
             else:
                 if self.verbose:
                     MirrorMsg.display("No deletes for project %s\n" % project)
 
-    def getListOfDirsRsyncedForProject(self, project):
+    def list_dirs_rsynced_for_proj(self, project):
         """get directories we synced for this project,
         across all jobs"""
-        dirsForProject = []
-        for jobId in self.jobsPerProject[project]:
-            dirsForProject.extend([k for k in self.jobList[jobId].rsyncedByJob[project].keys() if k not in dirsForProject])
-        return dirsForProject
+        dirs_for_project = []
+        for job_id in self.jobs_per_project[project]:
+            dirs_for_project.extend(
+                [k for k in self.job_list[job_id].rsynced_by_job[project].keys()
+                 if k not in dirs_for_project])
+        return dirs_for_project
 
-    def getListOfFilesRsyncedForDirOfProject(self, project, dirName):
+    def list_files_rsynced_for_proj_dir(self, project, dir_name):
         """get files we synced for a specific dir for
         this project, across all jobs"""
-        filesForDirInProject = []
-        for jobId in self.jobsPerProject[project]:
-            if dirName in self.jobList[jobId].rsyncedByJob[project].keys():
-                filesForDirInProject.extend(self.jobList[jobId].rsyncedByJob[project][dirName])
-        return filesForDirInProject
+        files_for_dir_in_project = []
+        for job_id in self.jobs_per_project[project]:
+            if dir_name in self.job_list[job_id].rsynced_by_job[project].keys():
+                files_for_dir_in_project.extend(
+                    self.job_list[job_id].rsynced_by_job[project][dir_name])
+        return files_for_dir_in_project
 
-    def doDeletes(self, project):
-        # fixme a sanity check here would be nice before we just remove stuff
-
+    def do_deletes(self, project):
         # find which dirs were rsynced for this project,
-        # remove the ones we didn't as we no longer want them
-        projectDirsRsynced = self.getListOfDirsRsyncedForProject(project)
+        # on the remote, remove the ones we didn't rsync, as we no longer want them
+        project_dirs_rsynced = self.list_dirs_rsynced_for_proj(project)
+        # rsync -a --delete --exclude=/20151026/ --exclude=/20151027/ empty/ public/tenwiki/
 
-        if not os.path.exists(self.getFullLocalPath(project)):
-            return
-        dirs = os.listdir(self.getFullLocalPath(project))
+        if self.emptydirpath is None:
+            self.emptydirpath = maketempdir()
 
+        excludes = ["--exclude=/{0}/".format(dirname) for dirname in project_dirs_rsynced]
+        command = ["/usr/bin/rsync", "-a", "--delete"]
+        command.extend(excludes)
+        project = project.strip(os.path.sep)
+        command.extend([self.emptydirpath + "/", os.path.join(self.dest_path, project) + "/"])
         if self.dryrun or self.verbose:
-            MirrorMsg.display("for project %s:" % project)
+            command_string = " ".join(command)
         if self.dryrun:
-            MirrorMsg.display("would delete (dirs): ", True)
+            MirrorMsg.display("would run %s\n" % command_string)
         elif self.verbose:
-            MirrorMsg.display("deleting (dirs): ", True)
-
-        if not len(dirs):
-            if self.dryrun or self.verbose:
-                MirrorMsg.display("None", True)
-
-        for d in dirs:
-            if d not in projectDirsRsynced:
-                dirName = os.path.join(project, d)
-                if self.dryrun or self.verbose:
-                    MirrorMsg.display("'%s'" % dirName, True)
-                if not self.dryrun:
-                    try:
-                        shutil.rmtree(self.getFullLocalPath(dirName))
-                    except:
-                        MirrorMsg.warn("failed to remove directory or contents of %s\n" % self.getFullLocalPath(dirName))
-                        pass
-        if self.dryrun or self.verbose:
-            MirrorMsg.display('\n', True)
-
-        # now for the dirs we did rsync, check the files existing now
-        # against the files that we rsynced, and remove the extraneous ones
-        if self.dryrun or self.verbose:
-            MirrorMsg.display("for project %s:" % project)
-        if self.dryrun:
-            MirrorMsg.display("would delete (files): ", True)
-        elif self.verbose:
-            MirrorMsg.display("deleting (files): ", True)
-
-        for d in dirs:
-            if d in projectDirsRsynced:
-                filesExisting = os.listdir(self.getFullLocalPath(os.path.join(project, d)))
-                filesRsynced = self.getListOfFilesRsyncedForDirOfProject(project, d)
-                filesToToss = [f for f in filesExisting if f not in filesRsynced]
-
-                if self.dryrun or self.verbose:
-                    MirrorMsg.display("for directory " + d, True)
-                    if not len(filesToToss):
-                        MirrorMsg.display("None", True)
-                for f in filesToToss:
-                    fileName = self.getFullLocalPath(os.path.join(project, d,
-                                                                  f))
-                    if os.path.isdir(fileName):
-                            continue
-                    if self.dryrun or self.verbose:
-                        # we should never be pushing directories across as part
-                        # of the rsync. so if we have a local directory, leave
-                        # it alone
-                        MirrorMsg.display("'%s'" % f, True)
-                    if not self.dryrun:
-                        try:
-                            os.unlink(fileName)
-                        except:
-                            MirrorMsg.warn("failed to unlink file %s\n" %
-                                           fileName)
-                            pass
-        if self.dryrun or self.verbose:
-            MirrorMsg.display('\n', True)
+            MirrorMsg.display("running %s\n" % command_string)
+        return self.cmd.run_command(command, shell=False)
 
 
 class JobHandler(object):
@@ -359,7 +294,7 @@ class JobHandler(object):
         that you need to actually process a job"""
         pass
 
-    def doJob(self, contents):
+    def do_job(self, contents):
         """override this with a function that processes
         contents as desired"""
         print contents
@@ -367,186 +302,182 @@ class JobHandler(object):
 
 
 class Rsyncer(JobHandler):
-    """all the info about rsync you ever wanted to know but were afraid
-    to ask..."""
-
-    def __init__(self, rsyncRemotePath, localPath, rsyncArgs, verbose, dryrun):
-        self.rsyncRemotePath = rsyncRemotePath
-        self.localPath = localPath
-        self.rsyncArgs = rsyncArgs
+    """all the info about rsync you ever wanted to
+       know but were afraid to ask..."""
+    def __init__(self, rsync_source_root, rsync_dest_root,
+                 rsync_args, verbose, dryrun):
+        self.rsync_source_root = rsync_source_root
+        self.rsync_dest_root = rsync_dest_root
+        self.rsync_args = rsync_args
         self.verbose = verbose
         self.dryrun = dryrun
         self.cmd = Command(verbose, dryrun)
 
-    def doJob(self, contents):
-        return self.doRsync(contents)
+    def do_job(self, contents):
+        return self.do_rsync(contents)
 
-    def doRsync(self, files):
+    def do_rsync(self, files):
         command = ["/usr/bin/rsync"]
         command.extend(["--files-from", "-"])
-        command.extend(self.rsyncArgs)
-        command.extend([self.rsyncRemotePath, self.localPath])
+        command.extend(self.rsync_args)
+        command.extend([self.rsync_source_root, self.rsync_dest_root])
 
         if self.dryrun or self.verbose:
-            commandString = " ".join(command)
+            command_string = " ".join(command)
         if self.dryrun:
-            MirrorMsg.display("would run %s" % commandString)
+            MirrorMsg.display("would run %s" % command_string)
         elif self.verbose:
-            MirrorMsg.display("running %s" % commandString)
+            MirrorMsg.display("running %s" % command_string)
         if self.dryrun or self.verbose:
             MirrorMsg.display("with input:\n" + '\n'.join(files) + '\n', True)
-        return self.cmd.runCommand(command, shell=False,
-                                   inputText='\n'.join(files) + '\n')
+        return self.cmd.run_command(command, shell=False,
+                                    input_text='\n'.join(files) + '\n')
 
 
 class JobQueueHandler(multiprocessing.Process):
-
-    def __init__(self, jQ, handler, verbose, dryrun):
+    def __init__(self, jqueue, handler, verbose, dryrun):
         multiprocessing.Process.__init__(self)
-        self.jQ = jQ
+        self.jqueue = jqueue
         self.handler = handler
         self.verbose = verbose
         self.dryrun = dryrun
 
     def run(self):
         while True:
-            job = self.jQ.getJobOnQueue()
+            job = self.jqueue.get_job_on_queue()
             if not job:  # no jobs left, we're done
                 break
-            self.doJob(job)
+            self.do_job(job)
 
-    def doJob(self, job):
-        result = self.handler.doJob(job.contents)
+    def do_job(self, job):
+        result = self.handler.do_job(job.contents)
         if result:
-            job.markFailed()
+            job.mark_failed()
         else:
-            job.markDone()
-        self.jQ.notifyJobDone(job)
+            job.mark_done()
+        self.jqueue.notify_job_done(job)
 
 
 class JobQueue(object):
-
-    def __init__(self, initialWorkerCount, handler, verbose, dryrun):
+    def __init__(self, initial_worker_count, handler, verbose, dryrun):
         """create queue for jobs, plus specified
         number of workers to read from the queue"""
         self.handler = handler
         self.verbose = verbose
         self.dryrun = dryrun
         # queue of jobs to be done (all the info needed, plus job id)
-        self.todoQueue = multiprocessing.Queue()
+        self.todo_queue = multiprocessing.Queue()
 
         # queue to which workers write job ids of completed jobs
-        self.notifyQueue = multiprocessing.Queue()
+        self.notify_queue = multiprocessing.Queue()
 
         # this 'job' on the queue means there are no more
         # jobs. we put on of these on queue for each worker
-        self.endOfJobs = None
+        self.end_of_jobs = None
 
-        self._initialWorkerCount = workerCount
-        self._activeWorkers = []
-        if not self._initialWorkerCount:
-            self._initialWorkerCount = 1
+        self._initial_worker_count = initial_worker_count
+        self._active_workers = []
+        if not self._initial_worker_count:
+            self._initial_worker_count = 1
         if self.verbose or self.dryrun:
-            MirrorMsg.display("about to start up %d workers:" %
-                              self._initialWorkerCount)
-        for i in xrange(0, self._initialWorkerCount):
-            w = JobQueueHandler(self, self.handler, self.verbose, self.dryrun)
-            w.start()
-            self._activeWorkers.append(w)
+            MirrorMsg.display("about to start up %d workers:"
+                              % self._initial_worker_count)
+        for i in xrange(0, self._initial_worker_count):
+            worker = JobQueueHandler(self, self.handler, self.verbose, self.dryrun)
+            worker.start()
+            self._active_workers.append(worker)
             if self.verbose or self.dryrun:
                 MirrorMsg.display('.', True)
         if self.verbose or self.dryrun:
             MirrorMsg.display("done\n", True)
 
-    def getJobOnQueue(self):
+    def get_job_on_queue(self):
         # after 5 minutes of waiting around we decide that
         # no one is ever going to put stuff on the queue
         # again.  either the main process is done filling
         # the queue or it died or hung
 
         try:
-            job = self.todoQueue.get(timeout=60)
+            job = self.todo_queue.get(timeout=60)
         except Empty:
             if self.verbose or self.dryrun:
                 MirrorMsg.display("job todo queue was empty\n")
             return False
 
-        if (job == self.endOfJobs):
+        if job == self.end_of_jobs:
             if self.verbose or self.dryrun:
                 MirrorMsg.display("found jobs done marker on jobs queue\n")
             return False
         else:
             if self.verbose or self.dryrun:
-                MirrorMsg.display("retrieved from the job queue: %s\n" %
-                                  job.jobId)
+                MirrorMsg.display("retrieved from the job queue: %s\n" % job.job_id)
             return job
 
-    def notifyJobDone(self, job):
-        self.notifyQueue.put_nowait(job)
+    def notify_job_done(self, job):
+        self.notify_queue.put_nowait(job)
 
-    def addToJobQueue(self, job=None):
-        if (job):
-            self.todoQueue.put_nowait(job)
+    def add_to_job_queue(self, job=None):
+        if job:
+            self.todo_queue.put_nowait(job)
 
-    def setEndOfJobs(self):
+    def set_end_of_jobs(self):
         """stuff 'None' on the queue, so that when
         a worker reads this, it will clean up and exit"""
-        for i in xrange(0, self._initialWorkerCount):
-            self.todoQueue.put_nowait(self.endOfJobs)
+        for i in xrange(0, self._initial_worker_count):
+            self.todo_queue.put_nowait(self.end_of_jobs)
 
-    def getJobFromNotifyQueue(self):
+    def get_job_from_notify_queue(self):
         """see if any job has been put on
         the notify queue (meaning that it has
         been completed)"""
-        jobDone = False
+        job_done = None
         # wait up to one minute.  after that we're pretty sure
         # that if there are no active workers there are no more
         # jobs that are going to get done either.
         try:
-            jobDone = self.notifyQueue.get(timeout=60)
+            job_done = self.notify_queue.get(timeout=60)
         except Empty:
-            if not self.getActiveWorkerCount():
-                return False
-        return jobDone
+            if not self.get_active_worker_count():
+                return None
+        return job_done
 
-    def getActiveWorkerCount(self):
-        self._activeWorkers = [w for w in self._activeWorkers if w.is_alive()]
-        return len(self._activeWorkers)
+    def get_active_worker_count(self):
+        self._active_workers = [w for w in self._active_workers if w.is_alive()]
+        return len(self._active_workers)
 
 
 class Command(object):
-
     def __init__(self, verbose, dryrun):
         self.dryrun = dryrun
         self.verbose = verbose
 
-    def runCommand(self, command, shell=False, inputText=False):
+    def run_command(self, command, shell=False, input_text=False):
         """Run a command, expecting no output. Raises MirrorError on
         non-zero return code."""
 
         if type(command).__name__ == "list":
-            commandString = " ".join(command)
+            command_string = " ".join(command)
         else:
-            commandString = command
-        if (self.dryrun or self.verbose):
+            command_string = command
+        if self.dryrun or self.verbose:
             if self.dryrun:
-                MirrorMsg.display("would run %s\n" % commandString)
+                MirrorMsg.display("would run %s\n" % command_string)
                 return
             if self.verbose:
-                MirrorMsg.display("about to run %s\n" % commandString)
+                MirrorMsg.display("about to run %s\n" % command_string)
 
-        if inputText:
+        if input_text:
             proc = Popen(command, shell=shell, stderr=PIPE, stdin=PIPE)
         else:
             proc = Popen(command, shell=shell, stderr=PIPE)
 
-        output, error = proc.communicate(inputText)
+        output, error = proc.communicate(input_text)
         if output:
             print output
 
         if proc.returncode:
             MirrorMsg.warn("command '%s failed with return code %s and error %s\n"
-                           % (commandString, proc.returncode, error))
+                           % (command_string, proc.returncode, error))
 
         # let the caller decide whether to bail or not
         return proc.returncode
@@ -576,134 +507,157 @@ class MirrorMsg(object):
 
 class Mirror(object):
     """reading directories for rsync from a specified file,
-    rsync each one; remove directories locally that aren't in the file"""
+    rsync each one; remove directories destly that aren't in the file"""
 
-    def __init__(self, hostName, remoteDirName, localDirName, rsyncList,
-                 rsyncArgs, maxFilesPerJob, maxDuPerJob, workerCount,
-                 skipDeletes, verbose, dryrun):
-        self.hostName = hostName
-        self.remoteDirName = remoteDirName
-        self.localDirName = localDirName
-        if self.hostName:
-            self.rsyncRemoteRoot = self.hostName + "::" + self.remoteDirName
+    def __init__(self, source_host_name, dest_host_name, source_dir_name, dest_dir_name,
+                 rsync_list, rsync_args, max_files_per_job,
+                 max_du_per_job, worker_count, skip_deletes, verbose, dryrun):
+        if source_host_name is not None:
+            self.host_name = source_host_name
+            self.remote = 'source'
+        elif dest_host_name is not None:
+            self.remote = 'dest'
+            self.host_name = dest_host_name
         else:
-            # the 'remote' dir is actually on the local host and we are
-            # rsyncing from one locally mounted filesystem to another
-            self.rsyncRemoteRoot = self.remoteDirName
-        self.rsyncFileList = rsyncList
-        self.rsyncArgs = rsyncArgs
+            self.remote = None
+            self.host_name = None
+
+        if self.host_name is not None and self.remote == "dest":
+            self.rsync_dest_root = self.host_name + "::" + dest_dir_name
+        else:
+            self.rsync_dest_root = dest_dir_name
+
+        if self.host_name is not None and self.remote == "source":
+            self.rsync_source_root = self.host_name + "::" + source_dir_name
+        else:
+            self.rsync_source_root = source_dir_name
+
+        self.rsync_file_list = rsync_list
+        self.rsync_args = rsync_args
         self.verbose = verbose
         self.dryrun = dryrun
-        self.maxFilesPerJob = maxFilesPerJob
-        self.maxDuPerJob = maxDuPerJob
-        self.workerCount = workerCount
-        self.skipDeletes = skipDeletes
+        self.max_files_per_job = max_files_per_job
+        self.max_du_per_job = max_du_per_job
+        self.worker_count = worker_count
+        self.skip_deletes = skip_deletes
+        self.files_processor = None
+        self.tempdirname = None
 
-    def getFullLocalPath(self, relPath):
-        if relPath.startswith(os.sep):
-            relPath = relPath[len(os.sep):]
-        return(os.path.join(self.localDirName, relPath))
+    def cleanup(self):
+        if self.tempdirname is not None:
+            try:
+                os.remove(os.path.join(self.tempdirname, self.rsync_file_list))
+                os.rmdir(self.tempdirname)
+            except:
+                pass
+        if self.files_processor is not None:
+            self.files_processor.deleter.cleanup()
 
-    def getRsyncFileListing(self):
-        """via rsync, get full list of files for rsync from remote host"""
-        command = ["/usr/bin/rsync", "-tp", self.rsyncRemoteRoot + '/' + self.rsyncFileList, self.localDirName]
+    def get_rsync_file_listing(self):
+        """via rsync, get full list of files for rsync from source host"""
+        if self.tempdirname is None:
+            self.tempdirname = maketempdir()
+        command = ["/usr/bin/rsync", "-tp",
+                   self.rsync_source_root + '/' + self.rsync_file_list,
+                   self.tempdirname]
         # here we don't do a dry run, we will actually retrieve
         # the list (because otherwise the rest of the run
         # won't produce any information about what the run
         # would do).  we will turn on verbosity though if
         # dryrun was set
         cmd = Command(self.verbose or self.dryrun, False)
-        result = cmd.runCommand(command, shell=False)
+        result = cmd.run_command(command, shell=False)
         if result:
-            raise MirrorError("Failed to get list of files for rsync\n")
+            raise MirrorError("_failed to get list of files for rsync\n")
+        fdesc = open(os.path.join(self.tempdirname, self.rsync_file_list))
+        if not fdesc:
+            raise MirrorError("failed to open retrieved list of files for rsync")
+        return fdesc
 
-    def processRsyncFileList(self):
-        f = open(self.getFullLocalPath(self.rsyncFileList))
-        if not f:
-            raise MirrorError("failed to open list of files for rsync",
-                              os.path.join(self.localDirName,
-                                           self.rsyncFileList))
-        self.filesProcessor = RsyncFilesProcessor(f, self.maxFilesPerJob,
-                                                  self.maxDuPerJob,
-                                                  self.workerCount,
-                                                  self.rsyncRemoteRoot,
-                                                  self.localDirName,
-                                                  self.rsyncArgs,
-                                                  self.verbose, self.dryrun)
+    def process_rsync_file_list(self, fdesc):
+        self.files_processor = RsyncFilesProcessor(
+            fdesc, self.max_files_per_job, self.max_du_per_job,
+            self.worker_count, self.rsync_source_root, self.rsync_dest_root,
+            self.rsync_args, self.verbose, self.dryrun)
         # create all jobs and put on todo queue
-        self.filesProcessor.stuffJobsOnQueue()
-        f.close()
+        self.files_processor.stuff_jobs_on_queue()
+        fdesc.close()
 
         # watch jobs get done and do post job cleanup after each one
         if self.verbose or self.dryrun:
             MirrorMsg.display("waiting for workers to process jobs\n")
-        self.filesProcessor.doPostJobProcessing(self.skipDeletes)
+        self.files_processor.do_postjob_processing(self.skip_deletes)
 
-    def setupDir(self, dirName):
+    def setup_dir(self, dir_name):
         if self.dryrun:
             return
 
-        if os.path.exists(dirName):
-            if not os.path.isdir(dirName):
+        if os.path.exists(dir_name):
+            if not os.path.isdir(dir_name):
                 raise MirrorError(
-                    "target directory name %s is not a directory, giving up" %
-                    dirName)
+                    "target directory name %s is not a directory, giving up"
+                    % dir_name)
         else:
-            os.makedirs(dirName)
+            os.makedirs(dir_name)
 
 
 def usage(message=None):
     if message:
-        print message
-        print "Usage: python wmfdumpsmirror.py [--hostname dumpserver] -remotedir dirpath"
-        print "              --localdir dirpath [--rsyncargs args] [--rsynclist filename]"
-        print "              [--filesperjob] [--sizeperjob] [--workercount] [--dryrun]"
-        print "              [--skipdeletes] [--verbose]"
-        print ""
-        print "This script does a continuous rsync from specified XML dumps rsync server,"
-        print "rsyncing the last N good dumps of each project and cleaning up old files."
-        print "The rsync is done on a list of files, not directories; bear this in mind"
-        print "when using the --rsyncargs option below.  The list of files should have"
-        print "been produced by rsync --list-only or be in the same format."
-        print ""
-        print "--hostname:     the name of the dump rsync server to contact"
-        print "                if this is left blank, the copy will be done from one path"
-        print "                to another on the local host"
-        print "--remotedir:   the remote path to the top of the dump directory tree"
-        print "                containing the mirror"
-        print "--localdir:     the full path to the top of the local directory tree"
-        print "                containing the mirror"
-        print "--rsyncargs:    arguments to be passed through to rsync, comma-separated,"
-        print "                with 'arg=value' for arguments that require a value"
-        print "                example:  --rsyncargs -tp,--bandwidth=10000"
-        print "                default: '-aq'"
-        print "--rsynclist:    the name of the list of dumps for rsync"
-        print "                default: rsync-list.txt.rsync"
-        print " --filesperjob: the maximum number of files to pass to a worker to process"
-        print "                at once"
-        print "                default: 1000"
-        print " --sizeperjob:  the maximum size of a batch of files to pass to a worker"
-        print "                to process at once (may be specified in K/M/G i.e. "
-        print "                kilobytes/megabytes/gigabytes; default is K) to a worker"
-        print "                to process at once"
-        print "                default: 500M"
-        print " --workercount: the number of worker processes to do simultaneous rsyncs"
-        print "                default: 1"
-        print " --dryrun:      don't do the rsync of files, just get the rsync file list"
-        print "                and print out what would be done"
-        print " --skipdeletes: copy or update files but don't delete anything"
-        print " --verbose:     print lots of diagnostic output"
-        print ""
-        print "Example: python wmfdumpsmirror.py --hostname dumps.wikimedia.org \\"
-        print "                --localdir /opt/data/dumps --rsyncfile rsync-list.txt.rsync"
-        sys.exit(1)
+        sys.stderr.write("%s\n" % message)
+    usage_message = """
+Usage: python wmfdumpsmirror.py [--source_hostname dumpserver]
+              [--dest_hostname]  -sourcedir dirpath
+              --destdir dirpath [--rsyncargs args] [--rsynclist filename]
+              [--filesperjob] [--sizeperjob] [--workercount] [--dryrun]
+              [--skipdeletes] [--verbose]
+
+This script does a continuous rsync from specified XML dumps rsync server,
+rsyncing the last N good dumps of each project and cleaning up old files.
+The rsync is done on a list of files, not directories; bear this in mind
+when using the --rsyncargs option below.  The list of files should have
+been produced by rsync --list-only or be in the same format.
+
+--source_hostname: the name of the source dump rsync server if it is not the
+                   local host
+--dest_hostname:   the name of the destination dump rsync server if it is not
+                   the local host
+--sourcedir:       the source path to the top of the dump directory tree
+                   containing the mirror
+--destdir:         the full path to the top of the dest directory tree
+                   containing the mirror
+--rsyncargs:       arguments to be passed through to rsync, comma-separated,
+                   with 'arg=value' for arguments that require a value
+                   example:  --rsyncargs -tp,--bandwidth=10000
+                   default: '-aq'
+--rsynclist:       the name of the list of dumps for rsync
+                   default: rsync-list.txt.rsync
+ --filesperjob:    the maximum number of files to pass to a worker to process
+                   at once
+                   default: 1000
+ --sizeperjob:     the maximum size of a batch of files to pass to a worker
+                   to process at once (may be specified in K/M/G i.e.
+                   kilobytes/megabytes/gigabytes; default is K) to a worker
+                   to process at once
+                   default: 500M
+ --workercount:    the number of worker processes to do simultaneous rsyncs
+                   default: 1
+ --dryrun:         don't do the rsync of files, just get the rsync file list
+                   and print out what would be done
+ --skipdeletes: copy or update files but don't delete anything
+ --verbose:     print lots of diagnostic output
+
+Example: python wmfdumpsmirror.py --hostname dumps.wikimedia.org
+                --destdir /opt/data/dumps --rsyncfile rsync-list.txt.rsync
+"""
+    sys.stderr.write(usage_message)
+    sys.exit(1)
 
 
-def getSizeInBytes(value):
+def get_size_in_bytes(value):
     # expect digits optionally followed by one of
     # K M G; if not, then we assume K
-    sizePattern = re.compile('^([0-9]+)([K|M|G])?$')
-    result = sizePattern.search(value)
+    size_pattern = re.compile('^([0-9]+)([K|M|G])?$')
+    result = size_pattern.search(value)
     if not result:
         usage("sizeperjob must be a positive integer optionally followed by one of 'K', 'M', 'G'")
     size = int(result.group(1))
@@ -717,7 +671,7 @@ def getSizeInBytes(value):
     return size
 
 
-def getRsyncArgs(value):
+def get_rsync_args(value):
     # someday we should really check to make sure that
     # args here make sense.  for now we shuck that job
     # off to the user :-P
@@ -728,27 +682,28 @@ def getRsyncArgs(value):
     else:
         return value.split(',')
 
-if __name__ == "__main__":
-    hostName = None
-    localDir = None
-    remoteDir = None
-    rsyncList = None
-    rsyncArgs = None
-    maxFilesPerJob = None
-    maxDuPerJob = None
-    workerCount = None
+
+def main():
+    source_host_name = None
+    dest_host_name = None
+    dest_dir = None
+    source_dir = None
+    rsync_list = None
+    rsync_args = None
+    max_files_per_job = None
+    max_du_per_job = None
+    worker_count = None
     dryrun = False
-    skipDeletes = False
+    skip_deletes = False
     verbose = False
 
     try:
-        (options, remainder) = getopt.gnu_getopt(sys.argv[1:], "",
-                                                 ["hostname=", "localdir=",
-                                                  "remotedir=", "rsynclist=",
-                                                  "rsyncargs=", "filesperjob=",
-                                                  "sizeperjob=",
-                                                  "workercount=", "dryrun",
-                                                  "skipdeletes", "verbose"])
+        (options, remainder) = getopt.gnu_getopt(
+            sys.argv[1:], "", ["source_hostname=", "dest_hostname=",
+                               "destdir=", "sourcedir=",
+                               "rsynclist=", "rsyncargs=", "filesperjob=",
+                               "sizeperjob=", "workercount=", "dryrun",
+                               "skipdeletes", "verbose"])
     except:
         usage("Unknown option specified")
 
@@ -758,62 +713,83 @@ if __name__ == "__main__":
         elif opt == "--filesperjob":
             if not val.isdigit():
                 usage("filesperjob must be a positive integer")
-            maxFilesPerJob = int(val)
-        elif opt == "--hostname":
-            hostName = val
-        elif opt == "--localdir":
-            localDir = val
-        elif opt == "--remotedir":
-            remoteDir = val
+            max_files_per_job = int(val)
+        elif opt == "--source_hostname":
+            source_host_name = val
+        elif opt == "--dest_hostname":
+            dest_host_name = val
+        elif opt == "--destdir":
+            dest_dir = val
+        elif opt == "--sourcedir":
+            source_dir = val
         elif opt == "--rsynclist":
-            rsyncList = val
+            rsync_list = val
         elif opt == "--rsyncargs":
-            rsyncArgs = getRsyncArgs(val)
+            rsync_args = get_rsync_args(val)
         elif opt == "--sizeperjob":
-            maxDuPerJob = getSizeInBytes(val)
+            max_du_per_job = get_size_in_bytes(val)
         elif opt == "--skipdeletes":
-            skipDeletes = True
+            skip_deletes = True
         elif opt == "--verbose":
             verbose = True
         elif opt == "--workercount":
             if not val.isdigit():
                 usage("workercount must be a positive integer")
-            workerCount = int(val)
+            worker_count = int(val)
 
     if len(remainder) > 0:
         usage("Unknown option specified")
 
-    if not remoteDir or not localDir:
+    if not source_dir or not dest_dir:
         usage("Missing required option")
 
-    if not os.path.isdir(localDir):
-        usage("local rsync directory", localDir,
-              "does not exist or is not a directory")
+    if source_host_name is not None and dest_host_name is not None:
+        usage("At most one of source_hostname or dest_hostname may be specified")
 
-    if not rsyncList:
-        rsyncList = "rsync-list.txt.rsync"
+    if dest_host_name is None and not os.path.isdir(dest_dir):
+        usage("dest rsync directory %s"
+              " does not exist or is not a directory" % dest_dir)
 
-    if not maxFilesPerJob:
-        maxFilesPerJob = 1000
+    if source_host_name is None and not os.path.isdir(source_dir):
+        usage("source rsync directory %s"
+              " does not exist or is not a directory" % source_dir)
 
-    if not maxDuPerJob:
-        maxDuPerJob = 500000000
+    if not rsync_list:
+        rsync_list = "rsync-list.txt.rsync"
 
-    if not workerCount:
-        workerCount = 1
+    if not max_files_per_job:
+        max_files_per_job = 1000
 
-    if not rsyncArgs:
-        rsyncArgs = ["-aq"]
+    if not max_du_per_job:
+        max_du_per_job = 500000000
 
-    if remoteDir[-1] == '/':
-        remoteDir = remoteDir[:-1]
+    if not worker_count:
+        worker_count = 1
 
-    if localDir[-1] == '/':
-        localDir = localDir[:-1]
+    if not rsync_args:
+        rsync_args = ["-aq"]
 
-    mirror = Mirror(hostName, remoteDir, localDir, rsyncList, rsyncArgs,
-                    maxFilesPerJob, maxDuPerJob, workerCount, skipDeletes,
-                    verbose, dryrun)
+    if source_dir[-1] == '/':
+        source_dir = source_dir[:-1]
 
-    mirror.getRsyncFileListing()
-    mirror.processRsyncFileList()
+    if dest_dir[-1] == '/':
+        dest_dir = dest_dir[:-1]
+
+    mirror = Mirror(source_host_name, dest_host_name,
+                    source_dir, dest_dir,
+                    rsync_list, rsync_args, max_files_per_job,
+                    max_du_per_job, worker_count,
+                    skip_deletes, verbose, dryrun)
+
+    fdesc = mirror.get_rsync_file_listing()
+    try:
+        mirror.process_rsync_file_list(fdesc)
+    except:
+        mirror.cleanup()
+        raise
+    else:
+        mirror.cleanup()
+
+
+if __name__ == "__main__":
+    main()
