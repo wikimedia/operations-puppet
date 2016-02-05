@@ -60,6 +60,10 @@
 #  Whether the service should be respawned by the init system in case of
 #  crashes. Default: true
 #
+# [*deployment*]
+#   If this value is set to 'scap3' then deploy via scap3, otherwise, use trebuchet
+#   Default: undef
+#
 # === Examples
 #
 # To set up a service named myservice on port 8520 and with a templated
@@ -94,7 +98,13 @@ define service::node(
     $local_logging   = true,
     $auto_refresh    = true,
     $init_restart    = true,
+    $deployment      = undef,
 ) {
+    case $deployment {
+        'scap3': { service::deploy::scap{ $title: } }
+        default: { service::deploy::trebuchet{ $title: } }
+    }
+
     # Import all common configuration
     include service::configuration
 
@@ -133,11 +143,6 @@ define service::node(
 
     # Software and the deployed code, firejail for containment
     require_package('nodejs', 'nodejs-legacy', 'firejail')
-    if ! defined(Package[$repo]) {
-        package { $repo:
-            provider => 'trebuchet',
-        }
-    }
 
     # User/group
     group { $title:
