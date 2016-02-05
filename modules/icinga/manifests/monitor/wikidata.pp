@@ -15,4 +15,13 @@ class icinga::monitor::wikidata {
         retry_check_interval  => 1,
         contact_group         => 'admins,wikidata',
     }
+
+    monitoring::graphite_threshold { 'wikidata.org high edit count':
+        description => 'wikidata.org high edit count',
+        metric      => "wikidata.rc.edits.total",
+        from        => '10min',
+        warning     => '600',
+        critical    => '800',
+        percentage  => '25', # Don't freak out on spikes
+    }
 }
