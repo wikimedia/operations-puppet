@@ -447,7 +447,8 @@ node /^cp40(1[129]|20)\.ulsfo\.wmnet$/ {
 
 # T118763 (temporary in use)
 node 'cygnus.codfw.wmnet' {
-    role spare
+    role pentest::tools
+    include standard
 }
 
 node 'dataset1001.wikimedia.org' {
@@ -2505,7 +2506,8 @@ node /(subra|suhail)\.codfw\.wmnet/ {
 
 # T118763 (temporary in use)
 node 'technetium.eqiad.wmnet' {
-    role spare
+    role pentest::tools
+    include standard
 }
 
 # https://wikitech.wikimedia.org/wiki/Terbium
