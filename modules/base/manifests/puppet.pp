@@ -95,4 +95,10 @@ class base::puppet(
         priority => 97,
         source   => 'puppet:///modules/base/puppet/97-last-puppet-run',
     }
+
+    motd::script { 'puppet-agent-disabled':
+        ensure   => present,
+        priority => 98,
+        source   => 'puppet:///modules/base/puppet/98-puppet-agent-disabled',
+    }
 }
