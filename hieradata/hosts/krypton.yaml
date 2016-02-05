@@ -1,0 +1,2 @@
+role::analytics::burrow::lagcheck_intervals=100
+role::analytics::burrow::email_template='burrow/email.tmpl.erb'
