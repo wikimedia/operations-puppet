@@ -40,6 +40,7 @@ define keyholder::agent(
         owner   => 'root',
         group   => 'keyholder',
         mode    => '0440',
+        notify  => Service['keyholder-agent'],
     }
 
     # lint:ignore:puppet_url_without_modules
