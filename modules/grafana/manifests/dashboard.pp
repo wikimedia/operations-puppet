@@ -11,6 +11,9 @@
 # representation.
 #
 # === Parameters
+# [*ensure*]
+#   Set to 'present' to add a dashboard, set to 'absent' to remove
+#   a dashboard. 'present' by default.
 #
 # [*content*]
 #   If defined, will be used as the content of the dashboard JSON
@@ -27,9 +30,9 @@
 #  }
 #
 define grafana::dashboard(
+    $ensure  = 'present',
     $content = undef,
     $source  = undef,
-    $ensure  = undef,
 ) {
     include ::grafana
 
