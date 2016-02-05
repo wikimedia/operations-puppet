@@ -78,11 +78,6 @@ maybe_do_dumps (){
     fi
 }
 
-# don't run if there's already an instance running
-pgrep fulldumps.sh && exit 0
-# if dumpscheduler already running, don't start up a new one, let that run complete
-pgrep dumpscheduler.py && exit 0
-
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
     usage
     exit 1
@@ -99,6 +94,22 @@ if [ "$4" == "dryrun" ]; then
 else
     dryrun=0
 fi
+
+# don't run if there's already an instance running
+# (besides me)
+mypgroup=`ps --no-headers -o pgrp -p $$`
+fullpids=`pgrep -f fulldumps.sh`
+for pid in $fullpids; do
+    pgroup=`ps --no-headers -o pgrp -p $pid`
+    if [ "$pgroup" -ne "$mypgroup" ]; then
+        show "exiting because already running"
+        exit 0
+    fi
+done
+
+# if dumpscheduler already running, don't start up a new one, let that run complete
+pgrep dumpscheduler.py > /dev/null && exit 0
+show "no dumpscheduler running so proceeding"
 
 python="/usr/bin/python"
 
