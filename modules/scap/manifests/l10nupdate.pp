@@ -106,4 +106,19 @@ class scap::l10nupdate(
         source => 'puppet:///modules/scap/l10nupdate.logrotate',
         mode   => '0444',
     }
+
+    # Git clones for the l10update git job
+    file { '/var/lib/l10nupdate/mediawiki':
+        ensure => directory,
+        owner  => 'l10nupdate',
+        group  => $deployment_group,
+        mode   => '0755',
+    }
+    git::clone { ['mediawiki/core', 'mediawiki/skins', 'mediawiki/extensions']:
+        directory          => '/var/lib/l10nupdate/mediawiki/',
+        owner              => 'l10nupdate',
+        group              => $deployment_group,
+        recurse_submodules => true,
+    }
+
 }
