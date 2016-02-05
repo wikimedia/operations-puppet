@@ -61,6 +61,7 @@ api_appserver:
   mw1225.eqiad.wmnet: [apache2]
   mw1226.eqiad.wmnet: [apache2]
   mw1227.eqiad.wmnet: [apache2]
+  mw1228.eqiad.wmnet: [apache2]
   mw1229.eqiad.wmnet: [apache2]
   mw1230.eqiad.wmnet: [apache2]
   mw1231.eqiad.wmnet: [apache2]
