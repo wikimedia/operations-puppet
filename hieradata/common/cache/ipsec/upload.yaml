@@ -23,7 +23,7 @@ nodes:
     - 'cp1074.eqiad.wmnet'
     - 'cp1099.eqiad.wmnet'
   esams:
-    - 'cp3032.esams.wmnet'
+    # - 'cp3032.esams.wmnet' # currently-dead: T126062
     - 'cp3033.esams.wmnet'
     - 'cp3034.esams.wmnet'
     - 'cp3035.esams.wmnet'
