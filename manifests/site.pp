@@ -2579,7 +2579,7 @@ node /^labvirt101[0-1].eqiad.wmnet/ {
 node /^wdqs100[1-2]\.eqiad\.wmnet$/ {
     role wdqs
 
-    $nagios_contact_group = 'admins,wdqs-admins'
+    $nagios_contact_group = 'admins,wdqs'
 }
 
 # https://www.mediawiki.org/wiki/Parsoid
