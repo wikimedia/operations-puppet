@@ -52,13 +52,16 @@ def unknown(msg):
     print("UNKNOWN - %s" % msg)
     sys.exit(3)
 
+
 def crit(msg):
     print("CRITICAL - %s" % msg)
     sys.exit(2)
 
+
 def ok(msg):
     print("OK - %s" % msg)
     sys.exit(0)
+
 
 def main():
 
@@ -71,11 +74,14 @@ def main():
         if expect == 'periodic' and len(sys.argv) > 3:
             lastrun = datetime.timedelta(seconds=int(sys.argv[3]))
     except (IndexError, ValueError):
-        unknown("Bad arguments to %s (%s)" % (sys.argv[0], ", ".join(sys.argv[1:])))
+        unknown("Bad arguments to %s (%s)"
+                % (sys.argv[0], ", ".join(sys.argv[1:])))
 
     state = {}
     try:
-        raw = subprocess.check_output(['/bin/systemctl', 'show', unit], stderr=subprocess.STDOUT).decode()
+        raw = subprocess.check_output(
+            ['/bin/systemctl', 'show', unit], stderr=subprocess.STDOUT
+        ).decode()
         for entry in raw.splitlines():
             kv = entry.split('=', 1)
             state[kv[0]] = kv[1]
@@ -85,17 +91,21 @@ def main():
     if expect == 'active':
 
         if state['ActiveState'] != 'active':
-            crit("Expecting active but unit %s is %s" % (unit, state['ActiveState']))
+            crit("Expecting active but unit %s is %s"
+                 % (unit, state['ActiveState']))
         if state['SubState'] != 'running':
-            crit("Unit %s is active but reported %s'" % (unit, state['SubState']))
+            crit("Unit %s is active but reported %s'"
+                 % (unit, state['SubState']))
         ok("%s is active" % unit)
 
     elif expect == 'inactive':
 
         if state['ActiveState'] != 'inactive':
-            crit("Expecting inactive but unit %s is %s" % (unit, state['ActiveState']))
+            crit("Expecting inactive but unit %s is %s"
+                 % (unit, state['ActiveState']))
         if state['SubState'] != 'dead':
-            crit("Unit %s is inactive but reported %s'" % (unit, state['SubState']))
+            crit("Unit %s is inactive but reported %s'"
+                 % (unit, state['SubState']))
         ok("%s is inactive" % unit)
 
     # else periodic
@@ -105,18 +115,21 @@ def main():
 
     if lastrun:
         try:
-            # Timestamps in systemctl show are in format 'Thu 2015-07-30 16:56:59 UTC'
-            started = datetime.datetime.strptime(state['ExecMainStartTimestamp'], '%a %Y-%m-%d %H:%M:%S %Z')
+            # Timestamps in systemctl show are 'Thu 2015-07-30 16:56:59 UTC'
+            started = datetime.datetime.strptime(
+                state['ExecMainStartTimestamp'],
+                '%a %Y-%m-%d %H:%M:%S %Z'
+            )
             age = datetime.datetime.fromtimestamp(int(time.time())) - started
 
             if age > lastrun:
                 crit("Last run for unit %s was over %s ago" % (unit, lastrun))
 
         except (KeyError, ValueError):
-            unknown("Unit %s has no usable last run information (not a timer?)" % unit)
+            unknown("Unit %s has no usable last run information (not a timer?)"
+                    % unit)
 
     ok("Last run for unit %s was successful" % unit)
 
 if __name__ == "__main__":
     main()
-
