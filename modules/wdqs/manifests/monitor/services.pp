@@ -39,9 +39,9 @@ class wdqs::monitor::services(
     monitoring::graphite_threshold { 'WDQS_Lag':
         description => 'High lag',
         metric      => "wikidata.query.lag.${::hostname}",
-        from        => '10min',
+        from        => '30min',
         warning     => '600', # 10 minutes
         critical    => '1800', # 30 minutes
-        percentage  => '50', # Don't freak out on spikes
+        percentage  => '30', # Don't freak out on spikes
     }
 }
