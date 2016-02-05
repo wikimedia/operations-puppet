@@ -91,6 +91,14 @@ class User:
                 ldap3.SEARCH_SCOPE_WHOLE_SUBTREE,
                 attributes=['uidNumber', 'cn']
             )
+            if len(conn.response) == 0:
+                logging.error(
+                    'No entry found for user {user} in project {project}'.format(
+                        user=member,
+                        project=projectname
+                    )
+                )
+                continue
             attrs = conn.response[0]['attributes']
             users.append(cls(
                 projectname,
