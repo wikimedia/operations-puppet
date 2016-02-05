@@ -3,7 +3,7 @@ wdqs::updater::options: '-n wdq'
 admin::groups:
   - wdqs-admins
 cluster: wdqs
-contactgroups: admins,wdqs-admins
+contactgroups: admins,wdqs
 debdeploy::grains:
   debdeploy-wdqs:
     value: standard

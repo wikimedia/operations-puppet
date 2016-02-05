@@ -6,7 +6,7 @@ class role::wdqs  {
     include standard
     include base::firewall
 
-    $nagios_contact_group = 'admins,wdqs-admins'
+    $nagios_contact_group = 'admins,wdqs'
 
     if $::realm == 'labs' {
         include role::labs::lvm::srv
