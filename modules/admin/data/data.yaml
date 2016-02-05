@@ -468,7 +468,7 @@ groups:
   parsoid-test-admins:
     gid: 773
     description: parsing team members for parsoid regression testing adminstration
-    members: []
+    members: [arlolra, cscott, gwicke]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-rt *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client *',
