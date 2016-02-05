@@ -6328,6 +6328,7 @@ host sarin {
     fixed-address sarin.codfw.wmnet;
     option pxelinux.pathprefix "jessie-installer/";
     filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
 
 host scandium {
 	hardware ethernet 84:2b:2b:fd:be:52;
