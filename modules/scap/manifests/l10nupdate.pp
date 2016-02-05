@@ -114,11 +114,28 @@ class scap::l10nupdate(
         group  => $deployment_group,
         mode   => '0755',
     }
-    git::clone { ['mediawiki/core', 'mediawiki/skins', 'mediawiki/extensions']:
-        directory          => '/var/lib/l10nupdate/mediawiki/',
+
+    git::clone { 'mediawiki/core':
+        directory          => '/var/lib/l10nupdate/mediawiki/core',
         owner              => 'l10nupdate',
         group              => $deployment_group,
         recurse_submodules => true,
+        require            => File['/var/lib/l10nupdate/mediawiki'],
+    }
+
+    git::clone { 'mediawiki/extensions':
+        directory          => '/var/lib/l10nupdate/mediawiki/extensions',
+        owner              => 'l10nupdate',
+        group              => $deployment_group,
+        require            => File['/var/lib/l10nupdate/mediawiki'],
+    }
+
+    git::clone { 'mediawiki/skins':
+        directory          => '/var/lib/l10nupdate/mediawiki/skins',
+        owner              => 'l10nupdate',
+        group              => $deployment_group,
+        recurse_submodules => true,
+        require            => File['/var/lib/l10nupdate/mediawiki'],
     }
 
 }
