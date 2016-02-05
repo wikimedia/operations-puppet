@@ -179,12 +179,11 @@ sub vcl_recv {
 		}
 <% end -%>
 
-		// mobile-subdomains-only for tag-carrier and Host-rewrite
+		// Do carrier-tagging for all requests
+		call tag_carrier;
+
+		// mobile-subdomains-only for Host-rewrite
 		if (req.http.X-Subdomain) {
-			// Only do tag_carrier logic on first start, and only for (m|zero).wp
-			if (req.http.host ~ "^([a-zA-Z0-9-]+\.)?(m|zero)\.wikipedia\.") {
-				call tag_carrier;
-			}
 
 			// Rewrite mobile hostnames to desktop hostnames as x-dt-host
 			if (req.http.host == "m.mediawiki.org") {
