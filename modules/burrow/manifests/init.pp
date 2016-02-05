@@ -17,6 +17,7 @@
 # $smtp_server        - SMTP server to send emails from
 # $from_email         - From email address for notification
 # $to_email           - Comma separated email addresses to send email notification to
+# $email_template     - The name of the email template to use for Burrow's alerts
 
 class burrow (
     $ensure = 'present',
@@ -31,6 +32,8 @@ class burrow (
     $smtp_server,
     $from_email,
     $to_emails,
+    $email_template = 'burrow/email.tmpl.erb'
+
 )
 {
     require_package('burrow')
@@ -38,6 +41,11 @@ class burrow (
     file { '/etc/burrow/burrow.cfg':
         ensure  => $ensure,
         content => template('burrow/burrow.cfg.erb'),
+    }
+
+    file { '/etc/burrow/email.tmpl':
+        ensure  => $ensure,
+        content => template($email_template),
     }
 
     service { 'burrow':

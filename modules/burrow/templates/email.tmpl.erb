@@ -1,0 +1,35 @@
+From: {{.From}}
+To: {{.To}}
+Subject: [Burrow] Kafka Consumer Lag Alert
+
+The Kafka consumer groups you are monitoring are currently showing problems.
+
+The following groups are in a problematic state (groups not listed are OK). In order to read this email correctly,
+please review each block contained in the trailing spaces as single unit. The Group and Cluster are the first information
+to check because the represent the group of lagging consumers.
+
+The WARNING status is usually not directly actionable but represents a note of some minor lagging registered by Burrow.
+
+The Lag evaluation rules are available at: https://github.com/linkedin/Burrow/wiki/Consumer-Lag-Evaluation-Rules
+
+Lag check parameters:
+- intervals: <%= @lagcheck_intervals %>
+- offset commit interval: set on the consumer side
+
+{{range .Results}}{{if or (ne 0 .Status) (ne 5 .Status)}}
+
+----------------------------------------------------------------------
+
+Cluster:  {{.Cluster}}
+Group:    {{.Group}}
+Status:   {{.Status.String}}
+Complete: {{.Complete}}
+Errors:   {{len .Partitions}} partitions have problems
+Format:   Topic:Partition (timestamp, start-offset, start-lag) -> (timestamp, end-offset, end-lag)
+
+{{range .Partitions}}          {{if eq 1 .Status}} WARN{{else if eq 2 .Status}}  ERR{{else if eq 3 .Status}} STOP{{else if eq 4 .Status}}STALL{{end}} {{.Topic}}:{{.Partition}} ({{.Start.Timestamp}}, {{.Start.Offset}}, {{.Start.Lag}}) -> ({{.End.Timestamp}}, {{.End.Offset}}, {{.End.Lag}})
+{{end}}{{end}}
+
+----------------------------------------------------------------------
+
+{{end}}
