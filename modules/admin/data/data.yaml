@@ -1787,3 +1787,19 @@ users:
     realname: Justin Clark
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvfaLmde8biy5hfFR1fOnkfu8eitpGkyWuTXziVHEAFmeiuF87LdnkUDaM/Egom3/fNJKjrzLZPcaJxqa/BeJfWzoz6Ua0dsA/uG1D/l4eIXCEj2QhcvdQT8mbLmXqws3deISARUAIp9DnXG9BQ5LVq6ihwyDgQ9sQiAZsbryKRA5opgSJUE5ynNGBh0M8gIY0+1xBVG9CtrnnyWi7ufklOonzcOo9rssGtE8bHPKnHexKb8FIiVWHy1IrkKLwPBhmLesXTeGnQvAg3VOmeJT7mPG4hH7m5FLB3PvfcCSD27/o/VmVIXUj3ypu0+SBzmJd4uwANMUOuBuNKCXSYB+P jdcc-berkman@work]
     uid: 13978
+akumar:
+  ensure: present
+  gid: 500
+  name: akumar
+  realname: Anupam Kumar
+  ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAsPYgcsmSWzUX0W1DQTz+XiMTkxI3lPHBmTz+C5q9yfhSBD7N5EZnuf9ULAJM3aH1Hat2BNqhvI3IWcNAhI1TNcGLOR7ZrgPEN5b1SnZsctfaNW3nf2ZpxZU+6Am7rDQQu467UjXx2wi/UwqAY/+O/cE3pPr6Yh+3DOiuDcEcLuAP9QMDjbS2nnf1yqJlNl8Go9nmxK5FXXN465y5GxxrFi0bOgTwkelca928VDIsqQdhBUKJqbyYv7MYZgm6AfxsPDHpgvySNp/sPBtEzZHaBcs8ig0jqoKKo451aA5atYihkctZ37b6njkVstcupL6Bv/P+504HMQxLSD6M5YjHew== anupam.kumar]
+  uid: 14121
+mnoushad:
+  ensure: present
+  gid: 500
+  name: mnoushad
+  realname: Muhammed Noushad
+  ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA1DvHq/H0WOvfcpwXTcc9cGipyJXymQRoguOgxlfSsQDlk7X9IUMii34M4CNVqNzU3e68itJzb2GKlnMKRYeRgsJWluWxi6ZDgD1unoa4cs3dg5mvrWmrp3bpRvGGfois+dOuH4di9/bM/+hwhRS/MGt9pRNQLPEXf/0nsTPD/JSfMIEuETbCvpY0r8+Cek1I7rVxg9qzWTFdidK5QQbqI5I5aqcrJpqgzJ5iBbivO6bVDFx6qA/okRPHDYpoUA9/YE2GdlY7P5hwmrERNX7xMbv/3DETInS6uOFMksdUSlUhhMVR8H0xsDgrLIIDYNk8bjAcQ4T7TWCxVxHiN/u/6Q== muhammed.noushad]
+  uid: 14122
+
+
