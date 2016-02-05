@@ -96,7 +96,7 @@ def main():
         sstate_want = 'running'
         if state['Type'] == 'oneshot' and state['RemainAfterExit'] == 'yes':
             sstate_want = 'exited'
-        if state['SubState'] != sstate_want
+        if state['SubState'] != sstate_want:
             crit("Unit %s is active but reported SubState %s, wanted %s'"
                  % (unit, state['SubState'], sstate_want))
         ok("%s is active" % unit)
