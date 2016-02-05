@@ -8,3 +8,8 @@
     RewriteRule ^/favicon\.ico$ /w/favicon.php [L]
     # Configurable apple-touch-icon.png
     RewriteRule ^/apple-touch-icon\.png$ /w/touch.php [L]
+
+    # Multiversion static files (T99096)
+    RewriteRule ^/w/skins/.*$ /w/static.php [L]
+    RewriteRule ^/w/resources/.*$ /w/static.php [L]
+    RewriteRule ^/w/extensions/.*$ /w/static.php [L]
