@@ -27,6 +27,10 @@
 #   correct configuration directives in the site's nginx config file as well
 #   as creates the OCSP data file itself and ensures a cron is running to
 #   keep it up to date.
+#
+# [*do_spdy*]
+#   Boolean, default true.  Enables SPDY/3.1 protocol support
+#
 
 define tlsproxy::localssl(
     $certs,
@@ -35,6 +39,7 @@ define tlsproxy::localssl(
     $default_server = false,
     $upstream_port  = '80',
     $do_ocsp        = false,
+    $do_spdy        = true,
     $skip_private   = false,
 ) {
     require tlsproxy::instance
