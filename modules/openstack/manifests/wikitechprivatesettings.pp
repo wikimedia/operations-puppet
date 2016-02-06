@@ -6,6 +6,9 @@ class openstack::wikitechprivatesettings {
     $wikitech_nova_ldap_proxyagent_pass = $keystoneconfig['ldap_proxyagent_pass']
     $wikitech_nova_ldap_user_pass       = $keystoneconfig['ldap_user_pass']
 
+    $wikitech_nova_admin_project_id   = $keystoneconfig['admin_project_id']
+    $wikitech_nova_admin_project_name = $keystoneconfig['admin_project_name']
+
     file { '/etc/mediawiki':
         ensure => directory,
         owner  => 'root',
