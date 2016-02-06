@@ -9,8 +9,6 @@
 # Number of APY instance processes to run
 # [*max_idle_seconds*]
 # Seconds to wait before shutdown idle process
-# [*log_dir*]
-# Place where Apertium-APY can put log files.
 # [*uid*]
 # The username apertium-apy will run with
 # [*gid*]
@@ -18,10 +16,14 @@
 class apertium(
     $num_of_processes = 1,
     $max_idle_seconds = 300,
-    $log_dir = '/var/log/apertium',
     $uid = 'apertium',
     $gid = 'apertium',
 ) {
+
+    include ::service::configuration
+
+    $log_dir = "${::service::configuration::log_dir}/apertium"
+
     package { [
         'apertium',
         'apertium-af-nl',
