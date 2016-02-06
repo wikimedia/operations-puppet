@@ -4,6 +4,8 @@ import sys
 import yaml
 import argparse
 import itertools
+import json
+import requests
 
 from novaclient import client as novaclient
 
@@ -25,8 +27,29 @@ LUA_LINE_TEMPLATE = 'aliasmapping["{public}"] = "{private}" -- {name}\n'
 args = argparser.parse_args()
 config = yaml.safe_load(args.config_file)
 
+projects = []
+
+tokenResp = requests.post(
+    config['nova_api_url'] + '/tokens',
+    data=json.dumps({
+        'auth': {
+            'passwordCredentials': {
+                'username': config['username'],
+                'password': config['password']
+            },
+            'tenantId': config['admin_project_id']
+        }
+    }),
+    headers={'accept': 'application/json', 'content-type': 'application/json'}
+)
+token = tokenResp.json()['access']['token']['id']
+
+tenantResp = requests.get(config['nova_api_url'] + '/tenants', headers={'x-auth-token': token})
+for tenant in tenantResp.json()['tenants']:
+    projects.append(tenant['name'])
+
 aliases = {}
-for project in config['projects']:
+for project in projects:
     client = novaclient.Client(
         "1.1",
         config['username'],

@@ -61,14 +61,9 @@ class role::labs::dnsrecursor {
     class { '::dnsrecursor::labsaliaser':
         username   => 'novaadmin',
         password   => $wikitech_nova_ldap_user_pass,
-        projects   => [
-            'tools',
-            'deployment-prep',
-            'toolserver-legacy',
-            'project-proxy',
-        ],
         nova_api_url => "http://${nova_controller_hostname}:35357/v2.0",
         alias_file   => $alias_file,
+        admin_project_id => 'a47092cf44a045a4af87e1502c2cb74e' # TODO: this is for labtest, will it be the same in labs?
     }
     require dnsrecursor::metalresolver
 
