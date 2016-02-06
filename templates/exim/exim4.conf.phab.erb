@@ -181,3 +181,12 @@ phab_pipe:
 begin retry
 
 *	*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
+
+#################
+# Rewrite rules #
+#################
+
+begin rewrite
+
+# T118176 - rewrite 'to/envelope-to' for mail to maint-announce
+maint-announce@wikimedia.org	maint-announce@phabricator.wikimedia.org	tT
