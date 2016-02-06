@@ -39,6 +39,8 @@ define tlsproxy::localssl(
 ) {
     require tlsproxy::instance
 
+    $do_spdy = hiera('tlsproxy::localssl::do_spdy', true);
+
     # Ensure that exactly one definition exists with default_server = true
     # if multiple defines have default_server set to true, this
     # resource will conflict.
