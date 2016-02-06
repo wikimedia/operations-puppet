@@ -5,6 +5,10 @@ import yaml
 import argparse
 import itertools
 
+from keystoneclient.session import Session as KeystoneSession
+from keystoneclient.auth.identity.v2 import Password as KeystonePassword
+from keystoneclient.client import Client as KeystoneClient
+
 from novaclient import client as novaclient
 
 argparser = argparse.ArgumentParser()
@@ -25,8 +29,20 @@ LUA_LINE_TEMPLATE = 'aliasmapping["{public}"] = "{private}" -- {name}\n'
 args = argparser.parse_args()
 config = yaml.safe_load(args.config_file)
 
+auth = KeystonePassword(
+    auth_url=config['nova_api_url'],
+    username=config['username'],
+    password=config['password'],
+    tenant_name=config['admin_project_name']
+)
+keystoneClient = KeystoneClient(session=KeystoneSession(auth=auth), endpoint=config['nova_api_url'])
+
+projects = []
+for tenant in keystoneClient.tenants.list():
+    projects.append(tenant.name)
+
 aliases = {}
-for project in config['projects']:
+for project in projects:
     client = novaclient.Client(
         "1.1",
         config['username'],
