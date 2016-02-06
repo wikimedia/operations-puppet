@@ -13,5 +13,6 @@ $wgLDAPWriterPassword = array( 'labs' => "<%= @wikitech_nova_ldap_user_pass %>" 
 $wgOpenStackManagerLDAPUser         = 'uid=novaadmin,ou=people,dc=wikimedia,dc=org';
 $wgOpenStackManagerLDAPUsername     = 'novaadmin';
 $wgOpenStackManagerLDAPUserPassword = "<%= @wikitech_nova_ldap_user_pass %>";
-$wgOpenStackManagerLDAPUserPassword = "<%= @wikitech_nova_ldap_user_pass %>";
-$wgOpenStackManagerProject          = 'testlabs';
+$wgOpenStackManagerProject          = "<%= @wikitech_nova_admin_project_name %>";
+# This is the ID for the project named above:
+$wgOpenStackManagerProjectId        = "<%= @wikitech_nova_admin_project_id %>";
