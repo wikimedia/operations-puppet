@@ -24,4 +24,4 @@ exec /usr/bin/firejail --blacklist=/root/ --blacklist=/home/* --tmpfs=/tmp --cap
   -mn                                                                                       \
   -v 180                                                                                    \
   /srv/deployment/zotero/translation-server/translation-server/init.js                      \
-  >> /var/log/zotero/zotero.log 2>&1
+  >> <%= @log_dir %>/zotero.log 2>&1
