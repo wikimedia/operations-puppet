@@ -9,11 +9,11 @@ class dnsrecursor::labsaliaser(
     require_package('python-novaclient')
 
     $config = {
-        'username'     => $username,
-        'password'     => $password,
-        'projects'     => $projects,
-        'output_path'  => $alias_file,
-        'nova_api_url' => $nova_api_url,
+        'username'           => $username,
+        'password'           => $password,
+        'output_path'        => $alias_file,
+        'nova_api_url'       => $nova_api_url,
+        'admin_project_name' => $admin_project_name,
     }
 
     file { '/etc/labs-dns-alias.yaml':
