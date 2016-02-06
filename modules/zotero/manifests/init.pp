@@ -11,6 +11,8 @@
 #
 class zotero( $http_proxy = undef ) {
 
+    include ::service::configuration
+
     if $http_proxy =~ /:/ {
         $http_proxy_port = regsubst($http_proxy, '.*:', '')
         $http_proxy_host = regsubst($http_proxy, ':.*', '')
@@ -18,6 +20,8 @@ class zotero( $http_proxy = undef ) {
         $http_proxy_port = undef
         $http_proxy_host = undef
     }
+
+    $log_dir = $::service::configuration::log_dir
 
     package { 'xulrunner-dev':
         ensure => present,
@@ -57,7 +61,7 @@ class zotero( $http_proxy = undef ) {
         system => true,
     }
 
-    file { '/var/log/zotero':
+    file { "${log_dir}/zotero":
         ensure => directory,
         owner  => 'zotero',
         group  => 'zotero',

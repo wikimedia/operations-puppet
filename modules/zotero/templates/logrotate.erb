@@ -1,6 +1,6 @@
 # logrotate(8) config for zotero
 
-/var/log/zotero/* {
+<%= @log_dir -%>/zotero/* {
     daily
     copytruncate
     missingok
