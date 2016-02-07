@@ -48,6 +48,16 @@ class visualdiff {
         directory => '/srv/visualdiff',
     }
 
+    # visual-diff testreduce clients save the
+    # parsoid and php parser screenshots and
+    # the screenshot diff to this directory.
+    file { '/srv/visualdiff/pngs':
+        ensure => directory,
+        owner  => 'testreduce',
+        group  => 'testreduce',
+        mode   => '0775',
+    }
+
     git::clone { 'integration/uprightdiff':
         owner     => 'root',
         group     => 'wikidev',

@@ -51,6 +51,8 @@ if (typeof module === 'object') {
 			},
 		},
 
+		postJSON: true,
+
 		gitCommitFetch: clientScripts.gitCommitFetch,
 
 		runTest: clientScripts.generateVisualDiff,
