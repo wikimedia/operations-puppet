@@ -48,6 +48,15 @@ class visualdiff {
         directory => '/srv/visualdiff',
     }
 
+    # visual diff code writes the parsoid, php parser screenshots
+    # and the uprightdiff diff images to this directory.
+    file { '/srv/visualdiff/pngs',
+        ensure => directory,
+        owner => 'testreduce',
+        group => 'testreduce',
+        mode  => '0775',
+    }
+
     git::clone { 'integration/uprightdiff':
         owner     => 'root',
         group     => 'wikidev',
