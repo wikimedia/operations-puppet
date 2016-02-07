@@ -365,12 +365,22 @@ class toollabs::exec_environ {
         }
     } elsif $::lsbdistcodename == 'jessie' {
         include toollabs::genpp::python_exec_jessie
+        # No obvious package available for libgdal
         package { [
+            'hhvm',                        # T78783
+            'libboost-python1.55.0',
+            'libmpc3',
+            'libprotobuf9',
             'libbytes-random-secure-perl', # T123824
+            'libvips38',
+            'nodejs-legacy',               # T1102
+            'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
+            'python-flake8',
+            'python3-flake8',
+            'tcl-thread',
             ]:
             ensure => latest,
         }
-
     }
 
 
