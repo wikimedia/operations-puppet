@@ -55,11 +55,12 @@ class toollabs::submit inherits toollabs {
         mode   => '0770',
     }
     file { "/data/project/.system/crontabs/${::fqdn}":
-        ensure  => directory,
-        source  => '/var/spool/cron/crontabs',
-        owner   => 'root',
-        group   => "${::labsproject}.admin",
-        mode    => '0440',
-        recurse => true,
+        ensure    => directory,
+        source    => '/var/spool/cron/crontabs',
+        owner     => 'root',
+        group     => "${::labsproject}.admin",
+        mode      => '0440',
+        recurse   => true,
+        show_diff => false,
     }
 }
