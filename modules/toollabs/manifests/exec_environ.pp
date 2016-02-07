@@ -62,7 +62,6 @@ class toollabs::exec_environ {
         'libberkeleydb-perl',          # T60785
         'libbot-basicbot-perl',
         'libbsd-resource-perl',        # T56690.
-        'libbytes-random-secure-perl', # T123824
         'libcache-memcached-fast-perl',
         'libcgi-fast-perl',            # T70269.
         'libclass-data-inheritable-perl',
@@ -354,6 +353,7 @@ class toollabs::exec_environ {
             'libboost-python1.54.0',
             'libmpc3',
             'libprotobuf8',
+            'libbytes-random-secure-perl', # T123824
             'libvips37',
             'nodejs-legacy',               # T1102
             'mariadb-client',              # For /usr/bin/mysql, is broken on precise atm
@@ -365,6 +365,12 @@ class toollabs::exec_environ {
         }
     } elsif $::lsbdistcodename == 'jessie' {
         include toollabs::genpp::python_exec_jessie
+        package { [
+            'libbytes-random-secure-perl', # T123824
+            ]:
+            ensure => latest,
+        }
+
     }
 
 
