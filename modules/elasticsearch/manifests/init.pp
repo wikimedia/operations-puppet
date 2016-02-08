@@ -61,6 +61,10 @@
 # - $load_fixed_bitset_filters_eagerly: set to false to disable loading
 #        bitsets in memory when opening indices will slowdown queries but can
 #        significantly reduce heap usage.
+# - $gelf_hosts: array of hosts to which logs will be sent. Can be either a hostname
+#        or an array of hostnames. In the later case, one is choosen at random.
+#        If `undef` no logs will be shipped.
+# - $gelf_port: port on which the logs will be sent
 #
 # == Sample usage:
 #
@@ -89,14 +93,26 @@ class elasticsearch($cluster_name,
                     $bulk_thread_pool_capacity = undef,
                     $statsd_host = undef,
                     $merge_threads = 3,
-                    $load_fixed_bitset_filters_eagerly = true) {
-
-    include ::elasticsearch::packages
+                    $load_fixed_bitset_filters_eagerly = true,
+                    $graylog_hosts = undef,
+                    $graylog_port = 12201) {
 
     # Check arguments
     if $cluster_name == 'elasticsearch' {
         fail('$cluster_name must not be set to "elasticsearch"')
     }
+
+    $send_logs_to_logstash = is_array($graylog_hosts)
+    notice($send_logs_to_logstash)
+    if $send_logs_to_logstash {
+        validate_array($graylog_hosts)
+        $rotated_graylog_host = fqdn_rotate($graylog_hosts, $::hostname)
+        $graylog_host = $rotated_graylog_host[0]
+        validate_string($graylog_host)
+        # validate_integer($graylog_port)  // should be uncommented when we upgrade to stdlib 4.x
+    }
+
+    include ::elasticsearch::packages
 
     file { '/etc/elasticsearch/elasticsearch.yml':
         ensure  => file,
