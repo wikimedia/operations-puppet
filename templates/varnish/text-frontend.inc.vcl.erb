@@ -213,8 +213,14 @@ sub vcl_recv {
 
 	call mobile_redirect;
 
-	# normalize all /static to the same hostname for caching
+	# normalize all /static to the same generic hostname for caching
 	if (req.url ~ "^/static/") { set req.http.host = "<%= @vcl_config.fetch("static_host") %>"; }
+
+	# normalize all /w/static.php to the same wiki host for caching
+	# ignore urls without hash query as those are subject to multiversion
+	if (req.url ~ "^/w/(skins|resources|extensions)/.+\?[a-fA-F0-9]+$" ) {
+		set req.http.host = "<%= @vcl_config.fetch("static_wikihost") %>";
+	}
 
 	// Users that just logged out, should not get a 304 for their
 	// (locally cached) logged in pages.
