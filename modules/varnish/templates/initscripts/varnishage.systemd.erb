@@ -1,0 +1,9 @@
+[Unit]
+Description=Varnish Response Age StatsD Reporter
+After=varnish-frontend.service
+
+[Service]
+ExecStart=/usr/local/bin/varnishage --statsd-server=<%= @statsd_server %>
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,119 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+  varnishage
+  ~~~~~~~~~~
+
+  Wikimedia Foundation Apaches are configured to emit a "Backend-Timing"
+  header, which contains the time the request was received and the time it
+  took to process it. From this, the age of the object in the cache can be
+  determined. This script reports object ages to a StatsD host.
+
+  Usage: varnishage [--statsd-server HOST:PORT]
+                    [--metric-key KEY]
+                    [--varnish-name INSTANCE]
+                    [--sampling-ratio RATIO]
+
+    --statsd-server HOST:PORT  StatsD server address, in HOST:PORT format
+                               (default: none; only print metrics).
+
+    --metric-key KEY           Metric name (default: "varnish.response_age").
+
+    --varnish-name INSTANCE    Varnish instance name (default: "frontend").
+
+    --sampling-ratio RATIO     Sampling ratio (default: 0.001). A value of
+                               0.001 means send/print one in every 1000
+                               observations.
+
+  This script assumes that the system clock is set to UTC on both
+  the backend server and localhost.
+
+  Copyright 2015 Ori Livneh <ori@wikimedia.org>
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+"""
+from __future__ import division
+
+import argparse
+import random
+import re
+import socket
+import time
+
+import varnishlog
+
+
+SOCK = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+
+def parse_statsd_server_string(server_string):
+    parsed = urlparse.urlparse('//' + server_string)
+    return parsed.hostname, parsed.port or 8125
+
+
+def parse_metric_key(metric_key):
+    metric_key = metric_key.strip('.')
+    if not metric_key:
+        raise ValueError('metric key must not be empty')
+    return metric_key
+
+
+def parse_ratio(ratio):
+    ratio = float(ratio)
+    if ratio <= 0 or ratio > 1:
+        raise ValueError('ratio must be greater than zero and less than'
+                         ' or equal to one (got: %f)', ratio)
+    return ratio
+
+
+ap = argparse.ArgumentParser(
+    description='Backend-Timing metric reporter',
+    epilog='If no statsd server is specified, prints stats to stdout instead.'
+)
+ap.add_argument('--metric-key', type=parse_metric_key,
+                default='varnish.response_age',
+                help='metric key (default: "varnish.response_age")')
+ap.add_argument('--statsd-server', type=parse_statsd_server_string,
+                default=None, help='statsd server (default: none)')
+ap.add_argument('--varnish-name', default='frontend',
+                help='varnish instance name (default: "frontend")')
+ap.add_argument('--sampling-ratio', type=parse_ratio, default=0.001,
+                help='sampling ratio (default: 0.001)')
+args = ap.parse_args()
+
+
+def vsl_callback(transaction_id, tag, record, remote_party):
+    if random.random() > args.sampling_ratio:
+        return
+
+    # Backend-Timing header values have the format 'D=NNN, t=NNN', where 't'
+    # is a timestamp for when the request was received and 'D' is how long
+    # it took to begin serving the request, both measured in microseconds.
+    resp_time, req_start = map(int, re.findall(r'\d+', record))
+    resp_start = req_start + resp_time
+
+    resp_age_ms = (time.time() * 1e3) - (resp_start / 1e3)
+
+    metric = '%s:%.2f|ms' % (args.metric_key, resp_age_ms)
+    if args.statsd_server is not None:
+        SOCK.sendto(metric.encode('utf-8'), args.statsd_server)
+    print(metric)
+
+
+varnishlog.varnishlog((
+    ('i', 'TxHeader'),
+    ('I', 'Backend-Timing'),
+    ('n', args.varnish_name),
+    ('c', None),
+), vsl_callback)

@@ -23,4 +23,10 @@ class role::cache::statsd::frontend {
     ::varnish::logging::rls { 'rls':
         statsd_server => 'statsd.eqiad.wmnet',
     }
+
+    # Derive (and report to StatsD) the response age from
+    # the 'Backend-Timing' header set by Apache.
+    ::varnish::logging::age { 'age':
+        statsd_server => 'statsd.eqiad.wmnet',
+    }
 }
