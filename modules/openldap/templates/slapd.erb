@@ -107,9 +107,9 @@ syncprov-checkpoint 100 5
 syncprov-sessionlog 100
 syncprov-reloadhint TRUE
 
-# Ensure that user IDs are unique
 overlay unique
-unique_uri ldap:///?uidNumber?sub
+unique_uri ldap:///?uidNumber?sub?(objectClass=posixaccount)
+unique_uri ldap:///?gidNumber?sub?(objectClass=posixgroup)
 
 ## Replication ACL
 
