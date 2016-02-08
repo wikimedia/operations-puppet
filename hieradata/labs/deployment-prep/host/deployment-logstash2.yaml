@@ -9,6 +9,7 @@ elasticsearch::minimum_master_nodes: 1
 elasticsearch::multicast_group: 224.2.2.6
 elasticsearch::recover_after_nodes: 1
 elasticsearch::recover_after_time: '1m'
+elasticsearch::graylog_hosts: undef
 # Needed to keep from trying to join cirrussearch cluster
 elasticsearch::unicast_hosts:
   - deployment-logstash2.deployment-prep.eqiad.wmflabs
