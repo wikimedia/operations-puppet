@@ -96,12 +96,6 @@ class scap::scripts {
         mode   => '0555',
         source => 'puppet:///modules/scap/set-group-write2',
     }
-    file { '/usr/local/bin/updateinterwikicache':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/scap/updateinterwikicache',
-    }
         # Manpages
         # Need to be generated manually using make in modules/scap/files/manpages
     file { '/usr/local/share/man/man1':
