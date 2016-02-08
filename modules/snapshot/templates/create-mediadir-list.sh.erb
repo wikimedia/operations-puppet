@@ -14,6 +14,7 @@ python <%= scope.lookupvar('snapshot::dirs::wikiqueriesdir') -%>/listwikiuploadd
     --allwikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/all.dblist \
     --closedwikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/closed.dblist \
     --privatewikis <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/dblists/private.dblist \
+    --skipwikis <%= scope.lookupvar('snapshot::dirs::wikiqueriesdir') -%>/dblists/skip.dblist \
     --wmfhack --multiversion \
     --scriptpath <%= scope.lookupvar('snapshot::dirs::apachedir') -%>/multiversion \
   > "${outputdir}${outputfile}.${DATE}"

@@ -19,6 +19,7 @@ class snapshot::mediaperprojectlists(
         group   => root,
         content => template('snapshot/create-media-per-project-lists.sh.erb'),
     }
+
     file { "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf.media":
         ensure  => 'present',
         path    => "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf.media",
@@ -26,6 +27,25 @@ class snapshot::mediaperprojectlists(
         owner   => $user,
         group   => root,
         content => template('snapshot/wq.conf.media.erb'),
+    }
+
+    file { "${snapshot::dirs::wikiqueriesdir}/dblists":
+        ensure => 'directory',
+        path   => "${snapshot::dirs::wikiqueriesdir}/dblists",
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    $skipdbs = ['labswiki','labtestwiki']
+    $skipdbs_dblist = join($skipdbs, "\n")
+    file { "${snapshot::dirs::wikiqueriesdir}/dblists/skip.dblist":
+        ensure  => 'present',
+        path    => "${snapshot::dirs::wikiqueriesdir}/dblists/skip.dblist",
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => "${skipdbs_dblist}\n",
     }
 
     cron { 'list-media-per-project':
