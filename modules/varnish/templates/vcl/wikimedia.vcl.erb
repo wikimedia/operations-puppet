@@ -586,9 +586,9 @@ sub vcl_deliver {
 	// note mobile apps look at X-C + X-C-M below
 	if (req.http.X-Carrier) {
 		set resp.http.X-Carrier = req.http.X-Carrier;
-	}
-	if (req.http.X-Carrier-Meta) {
-		set resp.http.X-Carrier-Meta = req.http.X-Carrier-Meta;
+		if (req.http.X-Carrier-Meta) {
+			set resp.http.X-Carrier-Meta = req.http.X-Carrier-Meta;
+		}
 	}
 <% end -%>
 
