@@ -42,6 +42,9 @@ if (typeof module === 'object') {
 				injectJQuery: true,
 			},
 
+			// Wait 5 seconds before asking phantomjs to screenshot the page
+			screenShotDelay: 5 * 1000,
+
 			// Engine for image diffs, may be resemble or uprightdiff
 			diffEngine: 'uprightdiff',
 
