@@ -110,6 +110,7 @@ syncprov-reloadhint TRUE
 # Ensure that user IDs are unique
 overlay unique
 unique_uri ldap:///?uidNumber?sub
+unique_uri ldap:///?gidNumber?sub?(objectClass=posixgroup)
 
 ## Replication ACL
 
