@@ -334,10 +334,10 @@ class role::parsoid::testing {
     }
 
     file { '/etc/my.cnf':
-        source => 'puppet:///templates/mariadb/parsoid_testing.my.cnf',
-        owner  => 'root',
-        group  => 'parsoid-test-roots',
-        mode   => '0440',
+        content => template('mariadb/parsoid_testing.my.cnf'),
+        owner   => 'root',
+        group   => 'parsoid-test-roots',
+        mode    => '0440',
     }
 
 
