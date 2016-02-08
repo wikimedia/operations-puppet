@@ -1,9 +1,0 @@
-#!/bin/bash
-. /etc/profile.d/mediawiki.sh
-echo "Updating interwiki cache..."
-file=/tmp/interwiki-$(date +%s).cdb
-mwscript extensions/WikimediaMaintenance/dumpInterwiki.php -o $file --protocolrelative
-cp $file "$MEDIAWIKI_STAGING_DIR/wmf-config/interwiki.cdb"
-sync-file wmf-config/interwiki.cdb Updating interwiki cache
-
-echo "Done"
