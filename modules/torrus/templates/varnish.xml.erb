@@ -96,16 +96,6 @@ end
 <% end -%>
 				</subtree>
 
-				<subtree name="mobile">
-					<param name="system-id" value="%hostname%"/>
-					<param name="varnishcluster" value="Mobile caches eqiad"/>
-					<param name="site" value="eqiad"/>
-
-<% varnish_nodes('mobile', 'eqiad', 'dual-layer-varnish-server').each do |line| -%>
-					<%= line %>
-<% end -%>
-				</subtree>
-
 				<subtree name="parsoid">
 					<param name="system-id" value="%hostname%"/>
 					<param name="varnishcluster" value="Parsoid caches eqiad"/>
@@ -148,15 +138,6 @@ end
 <% end -%>
 				</subtree>
 
-				<subtree name="mobile">
-					<param name="system-id" value="%hostname%"/>
-					<param name="varnishcluster" value="Mobile caches esams"/>
-					<param name="site" value="esams"/>
-
-<% varnish_nodes('mobile', 'esams', 'dual-layer-varnish-server').each do |line| -%>
-					<%= line %>
-<% end -%>
-				</subtree>
 			</subtree>
 		</subtree>
 	</datasources>

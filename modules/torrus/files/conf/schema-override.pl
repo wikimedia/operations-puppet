@@ -8,7 +8,6 @@ $Torrus::Renderer::graphStyles{'upload-esams'}{'color'} = '#1d941d'; # '#1b8a1b'
 
 $Torrus::Renderer::graphStyles{'text-eqiad'}{'color'} = '#b3003c';
 $Torrus::Renderer::graphStyles{'upload-eqiad'}{'color'} = '#990033';
-$Torrus::Renderer::graphStyles{'mobile-eqiad'}{'color'} = '#e6004d';
 $Torrus::Renderer::graphStyles{'api-eqiad'}{'color'} = '##yellow';
 
 
