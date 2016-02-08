@@ -1,4 +1,4 @@
-rootLogger: INFO, console, file
+rootLogger: INFO, console, file<% if @send_logs_to_logstash %>, ship_to_logstash<% end %>
 logger:
   # log action execution errors for easier debugging
   action: DEBUG
@@ -65,3 +65,13 @@ appender:
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+<% if @send_logs_to_logstash %>
+  ship_to_logstash:
+    type: org.graylog2.log.GelfAppender
+    graylogHost: <%= @gelf_host %>
+    graylogPort: <%= @gelf_port %>
+    originHost: <%= @hostname %>
+    extractStacktrace: true
+    addExtendedInformation: true
+<% end %>

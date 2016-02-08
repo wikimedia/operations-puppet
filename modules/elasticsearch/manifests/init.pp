@@ -89,13 +89,25 @@ class elasticsearch($cluster_name,
                     $bulk_thread_pool_capacity = undef,
                     $statsd_host = undef,
                     $merge_threads = 3,
-                    $load_fixed_bitset_filters_eagerly = true) {
+                    $load_fixed_bitset_filters_eagerly = true,
+                    $send_logs_to_logstash = false,
+                    $gelf_host = undef,
+                    $gelf_port = 12201) {
 
     include ::elasticsearch::packages
 
     # Check arguments
     if $cluster_name == 'elasticsearch' {
         fail('$cluster_name must not be set to "elasticsearch"')
+    }
+
+    validate_bool($send_logs_to_logstash)
+    if $send_logs_to_logstash {
+      if $gelf_host == undef {
+        fail('elasticsearch::gelf_host must be defined if sending logs to logstash is active.')
+      }
+      validate_string($gelf_host)
+      validate_integer($gelf_port)
     }
 
     file { '/etc/elasticsearch/elasticsearch.yml':
