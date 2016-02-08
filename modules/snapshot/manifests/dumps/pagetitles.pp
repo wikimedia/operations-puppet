@@ -3,6 +3,7 @@ class snapshot::dumps::pagetitles(
     $user=undef,
 ) {
     include snapshot::dirs
+    include snapshot::wikiqueryskip
 
     if ($enable) {
         $ensure = 'present'
@@ -18,6 +19,7 @@ class snapshot::dumps::pagetitles(
         owner  => $user,
         group  => root,
     }
+
     file { "${snapshot::dirs::datadir}/public/other/mediatitles":
         ensure => 'directory',
         path   => "${snapshot::dirs::datadir}/public/other/mediatitles",
@@ -25,6 +27,7 @@ class snapshot::dumps::pagetitles(
         owner  => $user,
         group  => root,
     }
+
     file { "${snapshot::dirs::wikiqueriesdir}/confs":
         ensure => 'directory',
         path   => "${snapshot::dirs::wikiqueriesdir}/confs",
@@ -32,6 +35,7 @@ class snapshot::dumps::pagetitles(
         owner  => $user,
         group  => root,
     }
+
     file { "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf":
         ensure  => 'present',
         path    => "${snapshot::dirs::wikiqueriesdir}/confs/wq.conf",
@@ -40,16 +44,7 @@ class snapshot::dumps::pagetitles(
         group   => root,
         content => template('snapshot/wq.conf.erb'),
     }
-    $skipdbs = ['labswiki','labtestwiki']
-    $skipdbs_dblist = join($skipdbs, "\n")
-    file { "${snapshot::dirs::wikiqueriesdir}/dblists/skip.dblist":
-        ensure  => 'present',
-        path    => "${snapshot::dirs::wikiqueriesdir}/dblists/skip.dblist",
-        mode    => '0644',
-        owner   => root,
-        group   => root,
-        content => "${skipdbs_dblist}\n",
-    }
+
     cron { 'pagetitles-ns0':
         ensure      => $ensure,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
