@@ -27,5 +27,8 @@ fi
 
 APTCACHE="<%= @basepath %>/aptcache/${DIST}-${ARCH}"
 
-# Hooks explicitly don't have an architecture
-HOOKDIR=<%= @basepath %>/hooks/$DIST
+# We do not always provide hooks directory (eg: unstable)
+if [ -d "<%= @basepath %>/hooks/$DIST" ]; then
+    # Hooks explicitly don't have an architecture
+    HOOKDIR=<%= @basepath %>/hooks/$DIST
+fi
