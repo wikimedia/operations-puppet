@@ -580,6 +580,16 @@ sub vcl_deliver {
 	call analytics_deliver;
 <% end -%>
 
+	// echo metadata about the client back to the client (analytics looks at this as well)
+	set resp.http.X-Client-IP = req.http.X-Client-IP;
+	// note mobile apps look at X-C + X-C-M below
+	if (req.http.X-Carrier) {
+		set resp.http.X-Carrier = req.http.X-Carrier;
+	}
+	if (req.http.X-Carrier-Meta) {
+		set resp.http.X-Carrier-Meta = req.http.X-Carrier-Meta;
+	}
+
 	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
 }
 
