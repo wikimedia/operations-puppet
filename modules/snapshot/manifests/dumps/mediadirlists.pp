@@ -3,7 +3,7 @@ class snapshot::dumps::mediadirlists(
     $user   = undef,
 ) {
     include snapshot::dirs
-    include snapshot::wikqueryskip
+    include snapshot::wikiqueryskip
 
     if ($enable) {
         $ensure = 'present'
