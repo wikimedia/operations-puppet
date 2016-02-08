@@ -1,4 +1,4 @@
-rootLogger: INFO, console, file
+rootLogger: INFO, console, file<% if @send_logs_to_logstash %>, ship_to_logstash<% end %>
 logger:
   # log action execution errors for easier debugging
   action: DEBUG
@@ -65,3 +65,12 @@ appender:
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+  # ship_to_logstash needs to also be added to rootLogger to actually ship logs
+  ship_to_logstash:
+    type: biz.paluch.logging.gelf.log4j.GelfLogAppender
+    host: udp:<%= @graylog_host %>
+    port: <%= @graylog_port %>
+    originHost: <%= @hostname %>
+    extractStackTrace: true
+    includeFullMdc: true
