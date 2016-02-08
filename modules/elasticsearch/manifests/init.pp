@@ -61,6 +61,9 @@
 # - $load_fixed_bitset_filters_eagerly: set to false to disable loading
 #        bitsets in memory when opening indices will slowdown queries but can
 #        significantly reduce heap usage.
+# - $gelf_hosts: hosts to which logs will be sent. Can be either a hostname
+#        or an array of hostnames. In the later case, one is choosen at random.
+# - $gelf_port: port on which the logs will be sent
 #
 # == Sample usage:
 #
@@ -89,13 +92,22 @@ class elasticsearch($cluster_name,
                     $bulk_thread_pool_capacity = undef,
                     $statsd_host = undef,
                     $merge_threads = 3,
-                    $load_fixed_bitset_filters_eagerly = true) {
+                    $load_fixed_bitset_filters_eagerly = true,
+                    $graylog_hosts = undef,
+                    $graylog_port = 12201) {
 
     include ::elasticsearch::packages
 
     # Check arguments
     if $cluster_name == 'elasticsearch' {
         fail('$cluster_name must not be set to "elasticsearch"')
+    }
+
+    $send_logs_to_logstash = $graylog_hosts != undef
+    if $send_logs_to_logstash {
+        $graylog_host = fqdn_rotate(any2array($graylog_hosts), $::hostname)
+        validate_string($graylog_host)
+        validate_integer($graylog_port)
     }
 
     file { '/etc/elasticsearch/elasticsearch.yml':
