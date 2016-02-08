@@ -31,23 +31,35 @@ try:
 except IndexError:
     pipeline = 'test'
 
-# Allow "ext:MassMessage" as shorthand
 if repo.startswith('ext:'):
-    repo = 'mediawiki/extensions/' + repo.split(':', 1)[1]
+    # Allow "ext:MassMessage" as shorthand
+    repos = ['mediawiki/extensions/' + repo.split(':', 1)[1]]
+elif repo.startswith('file:'):
+    # Or entire files with "file:/home/foobar/list"
+    with open(repo.split(':', 1)[1]) as f:
+        repos = f.read().splitlines()
+else:
+    repos = [repo]
 
-# Fetch the latest change for the repo from the Gerrit API
-r = requests.get('https://gerrit.wikimedia.org/r/changes/?'
-                 'q=status:merged+project:%s&n=1&o=CURRENT_REVISION' % repo)
-data = json.loads(r.text[4:])
-if not data:
-    print('Error, could not find any changes in %s.' % repo)
-    sys.exit(1)
-change = data[0]
-change_number = change['_number']
-patchset = change['revisions'][change['current_revision']]['_number']
-print('Going to test %s@%s,%s' % (repo, change_number, patchset))
-subprocess.call(['zuul', 'enqueue',
-                 '--trigger', 'gerrit',
-                 '--pipeline', pipeline,
-                 '--project', repo,
-                 '--change', '%s,%s' % (change_number, patchset)])
+
+def test_repo(repo):
+    # Fetch the latest change for the repo from the Gerrit API
+    r = requests.get('https://gerrit.wikimedia.org/r/changes/?'
+                     'q=status:merged+project:%s&n=1&o=CURRENT_REVISION' % repo)
+    data = json.loads(r.text[4:])
+    if not data:
+        print('Error, could not find any changes in %s.' % repo)
+        sys.exit(1)
+    change = data[0]
+    change_number = change['_number']
+    patchset = change['revisions'][change['current_revision']]['_number']
+    print('Going to test %s@%s,%s' % (repo, change_number, patchset))
+    subprocess.call(['zuul', 'enqueue',
+                     '--trigger', 'gerrit',
+                     '--pipeline', pipeline,
+                     '--project', repo,
+                     '--change', '%s,%s' % (change_number, patchset)])
+
+if __name__ == '__main__':
+    for repo in repos:
+        test_repo(repo)
