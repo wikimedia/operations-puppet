@@ -2124,7 +2124,7 @@ node 'mx2001.wikimedia.org' {
     }
 }
 
-# secondary salt master
+# salt master
 node 'neodymium.eqiad.wmnet' {
     role salt::masters::production, deployment::salt_masters, debdeploy::master
     include standard
@@ -2325,6 +2325,12 @@ node 'ruthenium.eqiad.wmnet' {
         source => 'puppet:///files/misc/ruthenium.nginx.conf',
         notify => Service['nginx'],
     }
+}
+
+# salt master fallback
+node 'sarin.codfw.wmnet' {
+    role salt::masters::production
+    include standard
 }
 
 # T95046 install/deploy scandium as zuul merger (ci) server
