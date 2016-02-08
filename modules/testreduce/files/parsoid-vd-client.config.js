@@ -42,6 +42,10 @@ if (typeof module === 'object') {
 				injectJQuery: true,
 			},
 
+			// Explicitly initialize this (since we cannot use yargv to set defaults)
+			// Wait 2 seconds before asking phantomjs to screenshot the page
+			screenShotDelay: 2,
+
 			// Engine for image diffs, may be resemble or uprightdiff
 			diffEngine: 'uprightdiff',
 
