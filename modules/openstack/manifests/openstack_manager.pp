@@ -4,7 +4,7 @@ class openstack::openstack_manager(
     $certificate,
     $openstack_version          = $::openstack::version,
     $webserver_hostname         = 'wikitech.wikimedia.org',
-    $webserver_hostname_aliases = 'wmflabs.org www.wmflabs.org',
+    $webserver_hostname_aliases = 'wikitech.m.wikimedia.org wmflabs.org www.wmflabs.org',
 ) {
 
     require mediawiki::users
