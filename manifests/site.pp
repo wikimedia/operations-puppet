@@ -782,7 +782,10 @@ node /^db20(12)\.codfw\.wmnet/ {
 
     $cluster = 'mysql'
     class { 'role::mariadb::misc::phabricator':
-        shard => 'm3',
+        shard     => 'm3',
+        mariadb10 => true,
+        ssl       => 'on',
+        p_s       => 'on',
     }
     include base::firewall
 }

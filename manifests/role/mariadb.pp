@@ -136,9 +136,12 @@ class role::mariadb::misc(
 # strict sql_mode -- nice! but other services moan
 # admin tool that needs non-trivial permissions
 class role::mariadb::misc::phabricator(
-    $shard    = 'm3',
-    $master   = false,
-    $snapshot = false,
+    $shard     = 'm3',
+    $master    = false,
+    $snapshot  = false,
+    $ssl       = 'off',
+    $p_s       = 'off',
+    $mariadb10 = false,
     ) {
 
     system::role { 'role::mariadb::misc':
@@ -147,7 +150,7 @@ class role::mariadb::misc::phabricator(
 
     include standard
     class { 'mariadb::packages_wmf':
-        mariadb10 => false,
+        mariadb10 => $mariadb10,
     }
     include role::mariadb::monitor
     include passwords::misc::scripts
@@ -166,6 +169,8 @@ class role::mariadb::misc::phabricator(
         tmpdir    => '/a/tmp',
         sql_mode  => 'STRICT_ALL_TABLES',
         read_only => $read_only,
+        ssl       => $ssl,
+        p_s       => $p_s,
     }
 
     file { '/etc/mysql/phabricator-init.sql':
