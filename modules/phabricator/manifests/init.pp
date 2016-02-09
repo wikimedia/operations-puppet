@@ -12,22 +12,6 @@
 #     A php.ini compatible timezone
 #     http://www.php.net//manual/en/datetime.configuration.php
 #
-# [*lock_file*]
-#     The path on disk to place a file for holding a tag
-#     in the repos until the phab_update_tag command is run by root.
-#
-# [*git_tag*]
-#     The tag in the Phabricator repos to maintain.
-#
-#    NOTE:
-#
-#    If the lockfile is set this tag will not be honored by an existing
-#    install until the phab_update_tag command is run.    This needs to be an
-#    interactive and monitored process to allow for the necessary DB and
-#    schema changes.
-#
-#    For more info on tag forwarding see git::install
-#
 # [*settings*]
 #     A hash of configuration options for the local settings json file.
 #     https://secure.phabricator.com/book/phabricator/article/advanced_configuration/#configuration-sources
@@ -40,26 +24,24 @@
 #     Specify to use a different password for schema upgrades and database maintenance
 #     Requires: mysql_admin_user
 #
-# [*sprint_tag*]
-#     Track sprint app by tag
-#
-# [*security_tag*]
-#     Track security extension by tag
-#
-# [*extension_tag*]
-#     Track generic / small extensions by tag
-#
 # [*extensions*]
 #     Array of extensions to load
 #
 # [*serveralias*]
 #     Alternative domain on which to respond too
 #
+# [*deploy_user*]
+#     The username that is used for scap deployments
+#
+# [*deploy_target*]
+#     The name of the scap3 deployment repo, e.g. phabricator/deployment
+#
+# [*deploy_key*]
+#     The url of the public key for the deploy_user to deploy with scap
+
 # === Examples
 #
 #    class { 'phabricator':
-#        git_tag     => 'demo',
-#        lock_file => '/var/run/phab_repo_lock',
 #        settings    => {
 #            'phabricator.base-uri' => 'http://myurl.domain',
 #        },
@@ -72,20 +54,23 @@ class phabricator (
     $phabdir          = '/srv/phab',
     $timezone         = 'UTC',
     $trusted_proxies  = [],
-    $lock_file        = '',
-    $git_tag          = 'HEAD',
-    $sprint_tag       = '',
-    $security_tag     = '',
     $libraries        = [],
-    $extension_tag    = '',
     $extensions       = [],
     $settings         = {},
     $mysql_admin_user = '',
     $mysql_admin_pass = '',
     $serveradmin      = '',
     $serveralias      = '',
+    $deploy_user      = 'phab-deploy',
+    $deploy_target    = 'phabricator/deployment',
+    $deploy_key       = "puppet:///modules/phabricator/phab-deploy-key.${::realm}",
 ) {
 
+    $deploy_root = "/srv/deployment/${deploy_target}"
+
+    # base dependencies to ensure the phabricator deployment root exists
+    # save as a var since this will be required by many resources in this class
+    $base_requirements = [Package[$deploy_target], File[$phabdir]]
 
     #A combination of static and dynamic conf parameters must be merged
     $module_path = get_module_path($module_name)
@@ -130,12 +115,10 @@ class phabricator (
 
     $docroot = "${phabdir}/phabricator/webroot"
     $phab_servername = $phab_settings['phabricator.base-uri']
+
     apache::site { 'phabricator':
         content => template('phabricator/phabricator-default.conf.erb'),
-    }
-
-    file { $phabdir:
-        ensure => directory,
+        require => $base_requirements,
     }
 
     # Robots.txt disallowing to crawl the alias domain
@@ -149,113 +132,53 @@ class phabricator (
         }
     }
 
-    git::install { 'phabricator/libphutil':
-        directory => "${phabdir}/libphutil",
-        git_tag   => $git_tag,
-        lock_file => $lock_file,
-        before    => Git::Install['phabricator/arcanist'],
+    scap::target { $deploy_target:
+        deploy_user       => $deploy_user,
+        public_key_source => $deploy_key,
+        service_name      => 'phd',
     }
 
-    git::install { 'phabricator/arcanist':
-        directory => "${phabdir}/arcanist",
-        git_tag   => $git_tag,
-        lock_file => $lock_file,
-        before    => Git::Install['phabricator/phabricator'],
-    }
-
-    git::install { 'phabricator/phabricator':
-        directory => "${phabdir}/phabricator",
-        git_tag   => $git_tag,
-        lock_file => $lock_file,
-        notify    => Exec["ensure_lock_${lock_file}"],
-        before    => File["${phabdir}/phabricator/.git/config"],
-    }
-
-    file { "${phabdir}/phabricator/.git/config":
-        source => 'puppet:///modules/phabricator/phabricator.gitconfig',
-        before => File["${phabdir}/phabricator/scripts/"],
+    file { $phabdir:
+        ensure      => 'link',
+        target      => $deploy_root,
+        require     => Package[$deploy_target],
     }
 
     file { "${phabdir}/phabricator/scripts/":
         mode    => '0754',
         recurse => true,
         before  => File["${phabdir}/phabricator/scripts/mail/"],
+        require => $base_requirements,
     }
 
     file { "${phabdir}/phabricator/scripts/mail/":
         mode    => '0755',
         recurse => true,
+        require => $base_requirements,
     }
 
     if ($libraries) {
-        file { "${phabdir}/libext":
-            ensure => 'directory',
+        phabricator::libext { $libraries:
+            rootdir => $phabdir,
+            require => $base_requirements,
         }
-
         $phab_settings['load-libraries'] = $libraries
-        $libext_lock_path = "${lock_file}_libext"
     }
 
-    # Would love to do these as an array but the sprint vs Sprint
-    # case issue makes this complicated at the moment.
-    if ($sprint_tag) {
-        phabricator::libext { 'Sprint':
-            rootdir          => $phabdir,
-            libext_tag       => $sprint_tag,
-            libext_lock_path => $libext_lock_path,
-        }
-
-    }
-
-    if ($security_tag) {
-        phabricator::libext { 'security':
-            rootdir          => $phabdir,
-            libext_tag       => $security_tag,
-            libext_lock_path => $libext_lock_path,
-        }
-    }
-
-    if ($extension_tag) {
-        $ext_lock_name = regsubst($extension_tag, '\W', '-', 'G')
-        $ext_lock_path = "${phabdir}/extension_lock_${ext_lock_name}"
-        git::install { 'phabricator/extensions':
-            directory => "${phabdir}/extensions",
-            git_tag   => $extension_tag,
-            lock_file => $ext_lock_path,
-            notify    => Exec[$ext_lock_path],
-            before    => Git::Install['phabricator/phabricator'],
-        }
-
+    if ($extensions) {
         file { "${phabdir}/phabricator/src/extensions":
             ensure  => 'directory',
             path    => "${phabdir}/phabricator/src/extensions",
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
-            require => [
-                        Git::Install['phabricator/extensions'],
-                        Git::Install['phabricator/phabricator'],
-                    ],
-        }
-
-        exec {$ext_lock_path:
-            command => "touch ${ext_lock_path}",
-            unless  => "test -z ${ext_lock_path} || test -e ${ext_lock_path}",
-            path    => '/usr/bin:/bin',
+            require => $base_requirements,
         }
 
         phabricator::extension { $extensions:
             rootdir => $phabdir,
-            require => File["${phabdir}/phabricator/src/extensions"],
+            require => $base_requirements,
         }
-
-    }
-
-    #we ensure lock exists if string is not null
-    exec {"ensure_lock_${lock_file}":
-        command => "touch ${lock_file}",
-        unless  => "test -z ${lock_file} || test -e ${lock_file}",
-        path    => '/usr/bin:/bin',
     }
 
     file { '/etc/php5/apache2/php.ini':
@@ -272,29 +195,23 @@ class phabricator (
 
     file { "${phabdir}/phabricator/conf/local/local.json":
         content => template('phabricator/local.json.erb'),
-        require => Git::Install['phabricator/phabricator'],
+        require => $base_requirements,
     }
-
-    # ^Disable PHD autorestart until:
-    # https://secure.phabricator.com/T7475
-    # notify  => Service[phd],
 
     #default location for phabricator tracked repositories
     if ($phab_settings['repository.default-local-path']) {
-        file { $phab_settings['repository.default-local-path']:
-            ensure  => directory,
-            mode    => '0755',
-            owner   => 'phd',
-            group   => 'www-data',
-            require => Git::Install['phabricator/phabricator'],
+        $repo_root = $phab_settings['repository.default-local-path']
+        file { $repo_root:
+            ensure => directory,
+            mode   => '0755',
+            owner  => 'phd',
+            group  => 'www-data',
         }
-    }
-
-    file { '/usr/local/sbin/phab_update_tag':
-        content => template('phabricator/phab_update_tag.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0500',
+        file { "${deploy_root}/repos":
+            ensure  => 'link',
+            target  => $repo_root,
+            require => $base_requirements,
+        }
     }
 
     file { '/usr/local/bin/arc':
@@ -303,18 +220,20 @@ class phabricator (
         group   => 'root',
         mode    => '0755',
         target  => '/srv/phab/arcanist/bin/arc',
-        require => Git::Install['phabricator/arcanist'],
+        require => $base_requirements,
     }
 
     class { 'phabricator::vcs':
         basedir  => $phabdir,
         settings => $phab_settings,
+        require  => $base_requirements,
     }
 
     class { 'phabricator::phd':
         basedir  => $phabdir,
         settings => $phab_settings,
         before   => Service['phd'],
+        require  => $base_requirements,
     }
 
     # This needs to become Upstart managed
@@ -326,6 +245,6 @@ class phabricator (
         start      => '/usr/sbin/service phd start --force',
         status     => '/usr/bin/pgrep -f phd-daemon',
         hasrestart => true,
-        require    => Git::Install['phabricator/phabricator'],
+        require    => $base_requirements,
     }
 }
