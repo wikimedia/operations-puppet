@@ -1,0 +1,35 @@
+// Varnish VCL include file for upload frontends
+
+include "errorpage_v4.inc.vcl";
+
+sub vcl_recv {
+	call recv_purge;
+	if (req.http.referer
+		&& req.url != "/"
+		&& req.http.referer !~ "(?i)^https?://([-a-zA-Z0-9.]+\.)?(mediawiki|wikivoyage|wikivoyage-ev|wmflabs)\.org/"
+		&& req.http.referer !~ "(?i)^https?://(maps|phabricator|wikitech|incubator)\.wikimedia\.org/"
+		&& req.http.referer !~ "(?i)^https?://(localhost|127\.0\.0\.1)(:\d+)?/"
+	) {
+		return (synth(403, "Access Denied"));
+	}
+
+	return (hash);
+}
+
+sub vcl_backend_response {
+	// Cap TTL to 1 day for now (purging still hasn't been sorted out...)
+	if (beresp.ttl > 1d) {
+		set beresp.ttl = 1d;
+	}
+	return (deliver);
+}
+
+sub vcl_backend_error {
+	call errorpage;
+	return (deliver);
+}
+
+sub vcl_synth {
+	call errorpage;
+	return (deliver);
+}

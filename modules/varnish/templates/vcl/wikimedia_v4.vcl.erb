@@ -1,0 +1,680 @@
+# This file is managed by Puppet!
+
+vcl 4.0;
+import std;
+import directors;
+
+# this is needed by geoip.inc.vcl and zero.inc.vcl, and in general is the only
+#   way to sanely do Set-Cookie in the face of multiple independent cookies
+#   being set from different code.
+import header;
+
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+# only used in recv_fe_ip_processing on frontends
+import netmapper;
+// TODO: possible replacement for chash in varnish 4
+import vslp;
+<% end %>
+
+<%
+def backend_option(backend, option, default)
+	if @varnish_backend_options.kind_of?(Array)
+		# List of hashes of options, 'backend_match' key is a regexp against the FQDN
+		@varnish_backend_options.each do |be_options|
+			if Regexp.new(be_options.fetch("backend_match", "^.*$")).match(backend)
+				if be_options.has_key?(option)
+					return be_options[option]
+				end
+			end
+		end
+		return default
+	else
+		return @varnish_backend_options.fetch(option, default)
+	end
+end
+
+# Calculates number of director-level retries necessary for chash to hit all
+# "n" backends with probability percentage "p", given they're randomly-mixed
+# into an array considerably larger in size than "n".  This is an
+# overestimation in that it assumes an infinite array, but the values still
+# come out reasonably small compared to doing anything based on our actual
+# weight*num_backends.
+# Blame _joe_ for the math! :)
+def chash_def_retries(p, n)
+	x = n - 1
+	if (x <= 0)
+		return n
+	end
+	return ((Math.log10(100 - p) - 2) / (Math.log10(x) - Math.log10(n))).ceil
+end
+-%>
+
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+// defines analytics_(recv|deliver) subs
+include "analytics_v4.inc.vcl";
+<% end -%>
+
+# ACLs
+
+acl local_host {
+	"127.0.0.1";
+	"<%= @ipaddress %>"; // note this matches nginx proxy_pass for TLS
+}
+
+acl wikimedia_nets {
+<% scope.lookupvar('::network::constants::all_networks_lo').each do |entry|
+	subnet, mask = entry.split("/", 2)
+-%>
+	"<%= subnet %>"/<%= mask %>;
+<% end -%>
+}
+
+# Backend probes
+
+# frontends in front of other varnish instances should send
+# probes that don't depend on the app backend
+
+# TODO: unused probe according to varnish 4. Commeting it out for now.
+#probe varnish {
+#	.request =
+#		"GET /check HTTP/1.1"
+#		"Host: varnishcheck"
+#		"User-agent: Varnish backend check"
+#		"Connection: close";
+#	.timeout = 500ms;
+#	.interval = 100ms;
+#	.window = 3;
+#	.threshold = 2;
+#}
+
+# TODO: unused probe according to varnish 4. Commeting it out for now.
+#probe logstash {
+#	.url = "/status";
+#	.interval = 5s;
+#	.timeout = 1s;
+#	.window = 5;
+#	.threshold = 3;
+#}
+
+probe maps {
+	.url = "/_info";
+	.interval = 5s;
+	.timeout = 1s;
+	.window = 5;
+	.threshold = 3;
+}
+
+# TODO: unused probe according to varnish 4. Commeting it out for now.
+#probe wdqs {
+#	.url = "/";
+#	.interval = 5s;
+#	.timeout = 1s;
+#	.window = 5;
+#	.threshold = 3;
+#}
+
+# Backends
+
+# List of Puppet generated backends
+<%
+@varnish_backends.each do |backend|
+	name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
+	probe = backend_option(backend, "probe", nil)
+-%>
+backend <%= name %> {
+	.host = "<%= backend %>";
+	.port = "<%= backend_option(backend, "port", "80") %>";
+	.connect_timeout = <%= backend_option(backend, "connect_timeout", "2s") %>;
+	.first_byte_timeout = <%= backend_option(backend, "first_byte_timeout", "35s") %>;
+	.between_bytes_timeout = <%= backend_option(backend, "between_bytes_timeout", "2s") %>;
+	.max_connections = <%= backend_option(backend, "max_connections", "100") %>;
+<% if probe -%>
+	.probe = <%= probe %>;
+<% end -%>
+}
+
+<% end -%>
+
+<%
+# Expected directors data format: (all keys required!)
+# @varnish_directors = {
+#     'director name' => {
+#         'dynamic' => 'yes', # or 'no'
+#         'type' => 'chash',
+#         'backends' => [ "backend1", "backend2" ],
+#     }
+# }
+if @use_dynamic_directors and @dynamic_directors -%>
+include "directors.<%= @inst %>.vcl";
+
+<% end -%>
+
+sub vcl_init {
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	// again, netmapper only used in frontends, for recv_fe_ip_processing
+	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
+	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
+	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
+<% end %>
+
+<% @varnish_directors.keys.sort.each do |director_name|
+director = @varnish_directors[director_name] 
+if (!@dynamic_directors or director['dynamic'] != 'yes')
+	backends = director['backends']
+	if (!backends.empty?)
+-%>
+	# See https://www.varnish-cache.org/docs/trunk/whats-new/upgrade-4.0.html#directors-have-been-moved-to-the-vmod-directors
+	new <%= director_name %> = directors.<%= director['type'] %>();
+
+	// director <%= director_name %> <%= director['type'] %> {
+<% if director['type'] == 'chash' -%>
+	// .retries = <%= chash_def_retries(99, backends.size) %>;
+	<% 
+	# TODO: vslp might replace chash. Add init_hashcircle().
+	director['type'] = 'vslp'
+	-%>
+<% end -%>
+<%
+	backends.each do |backend|
+		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
+-%>
+	<%= director_name %>.add_backend(<%= name %>, <%= backend_option(backend, "weight", 10) %>);
+
+	//{
+	//	.backend = <%= name %>;
+	//	.weight = <%= backend_option(backend, "weight", 10) %>;
+	//}
+<% 	end -%>
+//}
+<% end #if !empty -%>
+<% end #if !dynamic -%> 
+<% end #director loop -%>
+} # end vcl_init
+
+# Functions
+
+// start frontend-only block for HTTPS
+<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
+
+// *** HTTPS recv code - domain-based 301/302->HTTPS decisions happen here
+// if GET/HEAD filter is modified/removed later, keep in mind we need to not affect
+//   the PURGE traffic here, as purge is called after this.
+sub https_recv_redirect {
+	if (req.http.X-Forwarded-Proto != "https") {
+		if (req.method == "GET" || req.method == "HEAD") {
+			// This is all of our unified cert wildcard domains which are TLS-clean (cert matches all extant hostnames within)
+			// The lone exception now is wikimedia.org, in the next block
+			if (req.http.Host ~ "(?i)((^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org|^w\.wiki)$") {
+				set req.http.Location = "https://" + req.http.Host + req.url;
+				return (synth(751, "TLS Redirect"));
+			}
+			// wikimedia.org has multi-level subdomains used for HTTP for which we have no certs, so they must be avoided here:
+			// Ref: T102826 + T102827
+			else if(req.http.Host ~ "(?i)^([^.]+\.)?(m\.)?wikimedia\.org$") {
+				set req.http.Location = "https://" + req.http.Host + req.url;
+				return (synth(751, "TLS Redirect"));
+			}
+		}
+<% if @vcl_config.fetch("secure_post", true) -%>
+		if (req.method == "POST" && !(req.http.Host ~ "(?i)\.beta\.wmflabs\.org$")) {
+			return (synth(403, "Insecure POST Forbidden - use HTTPS"));
+		}
+<% end %>
+	}
+}
+
+// *** HTTPS error code - implements 301 response for recv code
+sub https_error_redirect {
+	if (obj.status == 751) {
+		set obj.http.Location = req.http.Location;
+		set obj.status = 301;
+		set obj.http.Content-Length = "0"; // T64245
+		return(deliver);
+	}
+}
+
+// *** HTTPS deliver code - domain-based HSTS headers
+sub https_deliver_hsts {
+	// The reason we don't need the stricter domain restrictions here,
+	// like we do on the recv side for redirects, is that in order for
+	// HSTS to reach a client, the client implicitly has to have already
+	// successfully reached us over HTTPS for the given domainname.
+	if (req.http.X-Forwarded-Proto == "https") {
+		// This is the same regex as the first one in https_recv_redirect (all unified except wikimedia.org)
+		if (req.http.Host ~ "(?i)((^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org|^w\.wiki)$") {
+			set resp.http.Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload";
+		}
+		else {
+			set resp.http.Strict-Transport-Security = "max-age=31536000";
+		}
+	}
+}
+
+<% end -%>
+// ^ end frontend + https_redirects block
+
+// We shouldn't even legally be receiving proxy-style requests, as we're not a
+// proxy from any client's point of view.  Just in case, we support it anyways
+// according to RFC7230 rules: we ignore any Host header sent along with it
+// and set a new Host header based on the host part we strip from the abs URI.
+// ref: http://tools.ietf.org/html/rfc7230#section-5.4
+
+// TODO: varnish4 says this is unused. Commenting out for now.
+
+//sub rewrite_proxy_urls {
+//	if(req.url ~ "(?i)^https?://[^/]") {
+//		set req.http.Host = regsub(req.url, "(?i)^https?://([^/]+).*$", "\1");
+//		set req.url = regsub(req.url, "(?i)^https?://[^/]+", "");
+//	}
+//}
+
+sub recv_purge {
+	/* Support HTTP PURGE */
+	if (req.method == "PURGE") {
+		if (client.ip !~ local_host) {
+			return (synth(405, "Denied."));
+		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
+			set req.hash_ignore_busy = true;
+			return (hash);
+		} else {
+			return (synth(204, "Domain not cached here."));
+		}
+	}
+}
+
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+// Must be done at the top of vcl_recv, in our varnish-frontend layer only,
+// and should be guarded against running on request restarts.
+sub recv_fe_ip_processing {
+	// this subroutine "owns" these 3 headers - nothing else in our VCL or
+	// anywhere in our network should be setting them.
+	unset req.http.X-Trusted-Proxy;
+	unset req.http.X-Carrier;
+	unset req.http.X-Carrier-Meta;
+
+	// unset this one just because it's well-known and some default
+	// software configs may look at it, and an external client may spoof
+	// it. We don't set or use this header internally (we use X-Client-IP)
+	unset req.http.X-Real-IP;
+
+	if (client.ip !~ wikimedia_nets) {
+		// Ensure we only accept XFP from our own networks.  Ideally
+		// it should only be set by our nginx TLS terminator
+		// specifically, but there are known cases where internal apps
+		// set XFP to fake HTTPS when making a request to our public
+		// endpoints from the inside.
+		unset req.http.X-Forwarded-Proto;
+	}
+
+	if (client.ip !~ local_host) {
+		// only the local nginx TLS terminator should set this one at
+		// all - there are no other internal exceptions to that rule
+		unset req.http.X-Client-IP;
+	}
+
+	if (req.http.X-Forwarded-For) {
+		// To make further parsing/sanitizing simpler, convert all whitespace
+		// in XFF to single spaces, and make sure all commas have a space
+		// suffix but no space prefix.
+		set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, "[ \t]+", " ");
+		set req.http.X-Forwarded-For = regsuball(req.http.X-Forwarded-For, " ?, ?", ", ");
+
+		// Now fully-sanitize it to only the strict form "X(, X)*", where X is
+		// a string of legal characters in IPv[46] addresses.  Note
+		// that injections can still leave well-formed junk on the
+		// left, but it's up to the trusted proxy code to ignore that,
+		// e.g.:
+		// "junk2, 123.123.123.123" -> "2, 123.123.123.123"
+		set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For,
+			"^.*?([0-9A-Fa-f:.]+(, [0-9A-Fa-f:.]+)*)? ?$", "\1");
+
+		// Clear header if empty after all the above, to avoid messing
+		// up our normal XFF-append code later
+		if (req.http.X-Forwarded-For == "") {
+			unset req.http.X-Forwarded-For;
+		}
+	}
+
+	// There are two possible cases here: either nginx acted as our TLS
+	// proxy and already set X-Client-IP (as well as appended the same value
+	// to XFF), or the traffic was direct to varnish-fe, in which case
+	// XCIP is not yet set and XFF is directly from external.
+	if (!req.http.X-Client-IP) {
+		// direct-to-port-80 case, set XCIP ourselves
+		set req.http.X-Client-IP = client.ip;
+		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
+		// normalize to boolean post-netmapper (varnish-3.0.4...)
+		if (req.http.X-Trusted-Proxy == "") {
+			unset req.http.X-Trusted-Proxy;
+		}
+		if (req.http.X-Trusted-Proxy && req.http.X-Forwarded-For) {
+			// get last from trusted-proxy-supplied XFF
+			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, "^([^,]+, )+", "");
+			if(std.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+				set req.http.X-Client-IP = req.http.maybe-xcip;
+			}
+			unset req.http.maybe-xcip;
+		}
+	} else {
+		// XCIP from nginx, XFF set/appended by nginx and contains at
+		// least XCIP at the end, possibly prepended by other addrs
+		// set externally by some proxy.
+		set req.http.X-Trusted-Proxy = netmapper.map("proxies", req.http.X-Client-IP);
+		// normalize to boolean post-netmapper (varnish-3.0.4...)
+		if (req.http.X-Trusted-Proxy == "") {
+			unset req.http.X-Trusted-Proxy;
+		}
+		if (req.http.X-Trusted-Proxy) {
+			// We want the second-to-last XFF entry here, assuming
+			// there's two or more IPs.  Note that with the
+			// regsub's below if there was only one (which would
+			// alias XCIP by definition), there would be no commas
+			// to match and XCIP gets reset to its original value.
+			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
+			set req.http.maybe-xcip = regsub(req.http.maybe-xcip, "^([^,]+, )+", "");
+			if(std.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+				set req.http.X-Client-IP = req.http.maybe-xcip;
+			}
+			unset req.http.maybe-xcip;
+		}
+	}
+
+	// Now check carrier database for setting X-Carrier based on XCIP
+	set req.http.X-Carrier = netmapper.map("carriers", req.http.X-Client-IP);
+	// normalize to boolean post-netmapper (varnish-3.0.4...)
+	if (req.http.X-Carrier == "") {
+		unset req.http.X-Carrier;
+	}
+	else {
+		// Split X-Carrier data from raw form with optional trailing metadata,
+		// such as "123-45|wap|mobile", so that X-Carrier contains only
+		// MCC-MNC and X-Carrier-Meta contains the trailing attributes
+		set req.http.X-Carrier-Meta = regsub(req.http.X-Carrier, "^[^|]*\|?", "");
+		if (req.http.X-Carrier-Meta != "") {
+			set req.http.X-Carrier = regsub(req.http.X-Carrier, "\|.*$", "");
+		}
+		else {
+			unset req.http.X-Carrier-Meta;
+		}
+	}
+
+	// From this (very early) point forward, regardless of cache tier/layer:
+	// req.http.X-Client-IP ->
+	//     This is our standard notion of the Client/UA's real IP, after
+	//     decoding XFF for our internal infrastructure addresses as well
+	//     as any trusted proxies.
+	// req.http.X-Trusted-Proxy ->
+	//     If the traffic pass through a trusted proxy in our "proxies"
+	//     database (such as OperaMini), this will be the official name of
+	//     the trusted proxy.  Otherwise it will be unset (boolean false).
+	// req.http.X-Carrier ->
+	//     If X-Client-IP matches a network in our "carriers" database,
+	//     this will contain the MCC-MNC code for that carrier.  Otherwise
+	//     it will be undefined.
+	// req.http.X-Carrier-Meta ->
+	//     If X-Carrier is defined: for some carriers, the database
+	//     contains extra metadata in the form of one or more labels like
+	//     "wap" or "residential".  They'll be separated by "|" if more
+	//     than one, and this header is undefined if there was no such
+	//     metadata.
+}
+
+<% end %>
+
+sub vcl_recv {
+	unset req.http.X-CDIS; // clear internal cache-disposition header
+	// IP processing is req->req mangling that shouldn't be re-done on
+	// restart, and XFF-appending is non-idempotent for restart purposes..
+	if (req.restarts == 0) {
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+		call recv_fe_ip_processing;
+<% end %>
+		// All layers need to update XFF with client.ip hop-by-hop so that it
+		// looks right to layers beneath, including the app layer
+		if (req.http.X-Forwarded-For) {
+			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+		} else {
+			set req.http.X-Forwarded-For = client.ip;
+		}
+	}
+
+<% if @vcl_config.fetch("layer", "") != "frontend" -%>
+	if (client.ip !~ wikimedia_nets) {
+		// Do not allow direct access to non-frontend layers
+		return (synth(403, "Access denied"));
+	}
+<% end -%>
+
+	if (req.method !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
+		&& !(req.method == "OPTIONS" && req.http.Origin)) {
+		return (synth(403, "HTTP method not allowed."));
+	}
+
+	<% if @vcl_config.fetch("has_def_backend", "yes") == "yes" -%>
+	/* Select the default backend/director, which is always the one named 'backend'.
+	 * If an instance has no default 'backend', it must declare has_def_backend==no,
+	 * and its own VCL must handle all possible req.backend_hint cases.
+	 */
+	set req.backend_hint = backend.backend();
+
+	if (std.healthy(req.backend_hint)) {
+		#
+		# This is now handled in vcl_hit.
+		#
+		# set req.grace = 5m;
+	} else {
+		#
+		# This is now handled in vcl_hit.
+		#
+		# set req.grace = 60m;
+	}
+	<% end -%>
+	
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	call rewrite_proxy_urls;
+<% end -%>
+
+<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
+	call https_recv_redirect;
+<% end -%>
+
+	if ( req.http.host ~ "^varnishcheck" ) {
+		return (synth(200, "OK")); 
+	}
+
+	if (req.url ~ "^/beacon\/[^/?]+") {
+		// Logging beacon endpoints
+		//
+		// They are handled by log tailers (varnishkafka and varnishncsa) that filter the
+		// Varnish shm log for reqs to these endpoints and forward them to log processors
+		// for storage and analysis.
+		return (synth(204));
+	}
+
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	if(req.restarts == 0) {
+		call analytics_recv;
+	}
+<% end -%>
+	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_backend_response {
+	// default hard cap of max 30d life on all cache objects everywhere
+	if (beresp.ttl > 30d) {
+		set beresp.ttl = 30d;
+	}
+
+	/* Don't cache private, no-cache, no-store objects */
+	if (beresp.http.Cache-Control ~ "(private|no-cache|no-store)") {
+		set beresp.ttl = 0s;
+		/* This should be translated into hit_for_pass later */
+	}
+	elsif (beresp.status >= 400 && beresp.status <= 499 && beresp.ttl > <%= @vcl_config.fetch("cache4xx", "5m") %>) {
+		set beresp.ttl = <%= @vcl_config.fetch("cache4xx", "5m") %>;
+	}
+
+	set beresp.grace = 60m;
+
+<% if @vcl_config.fetch("do_gzip", false) -%>
+	// Compress compressible things if the backend didn't already
+	if (beresp.http.content-type ~ "json|text|html|script|xml|icon|ms-fontobject|ms-opentype|x-font") {
+		set beresp.do_gzip = true;
+	}
+<% end -%>
+
+	/* Function vcl_backend_response in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_hit {
+	set req.http.X-CDIS = "hit";
+	if (req.method == "PURGE") {
+		# TODO
+		return (synth(204, "Purged"));
+	}
+	
+	/* Function vcl_hit in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_miss {
+	set req.http.X-CDIS = "miss";
+	if (req.method == "PURGE") {
+		# TODO
+		return (synth(204, "Cache miss"));
+	}
+
+	/* Function vcl_miss in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_pass {
+	if (req.http.X-CDIS) {
+		// _pass can theoretically be called after moving through _hit or _miss
+		set req.http.X-CDIS = req.http.X-CDIS + "+pass";
+	} else {
+		set req.http.X-CDIS = "pass";
+	}
+
+// All cache clusters are dual-tier/layer, and all tier-two backends and all
+// frontends have exactly two backends: "backend" and "backend_random".  The
+// regular backend is a chash on the URL to help with cacheable objects,
+// whereas the randomized one avoids focusing pass/hit-for-pass traffic onto a
+// single node in the varnish-backend layers.  All pass and hit-for-pass
+// traffic comes through vcl_pass, so we set backend_random here for all such
+// requests.
+// Note parsoid is specially excluded, because it's legacy / non-standard.
+<% if scope.function_hiera(["cluster"]) != "cache_parsoid" %>
+<% if @vcl_config.fetch("layer", "") == "frontend" || @site_tier == "two" -%>
+	set req.backend_hint = backend_random;
+<% end -%>
+<% end -%>
+}
+
+sub vcl_deliver {
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	std.collect(resp.http.Via);
+	std.collect(resp.http.X-Varnish);
+
+	// Set CP ('Connection Properties') cookie
+	if (req.http.X-Connection-Properties ~ "SPDY=3") {
+		if (req.http.X-Orig-Cookie !~ "(^|;\s*)CP=H2" && req.http.Cookie !~ "(^|;\s*)CP=H2") {
+			header.append(resp.http.Set-Cookie, "CP=H2; Path=/");
+		}
+	} else {
+		// Explicitly unset the cookie if it exists. Support for SPDY in a browser session can
+		// flip if a device moves networks and thus behind a proxy.
+		if (req.http.X-Orig-Cookie ~ "(^|;\s*)CP=H2" || req.http.Cookie ~ "(^|;\s*)CP=H2") {
+			header.append(resp.http.Set-Cookie, "CP=H1; Expires=Thu, 01-Jan-1970 00:00:01 GMT; Path=/");
+		}
+	}
+
+<% end -%>
+
+	if (!req.http.X-CDIS) {
+		set req.http.X-CDIS = "int"; // internally-generated response (not a cache object hit, and not a miss|pass to a deeper layer either)
+	}
+	if (resp.http.X-Cache) {
+		set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> " + req.http.X-CDIS + "(" + obj.hits + ")";
+	} else {
+		set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> " + req.http.X-CDIS + "(" + obj.hits + ")";
+	}
+
+<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
+	call https_deliver_hsts;
+<% end -%>
+
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	call analytics_deliver;
+<% end -%>
+
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	// echo metadata about the client back to the client (analytics looks at this as well)
+	set resp.http.X-Client-IP = req.http.X-Client-IP;
+	// note mobile apps look at X-C + X-C-M below
+	if (req.http.X-Carrier) {
+		set resp.http.X-Carrier = req.http.X-Carrier;
+		if (req.http.X-Carrier-Meta) {
+			set resp.http.X-Carrier-Meta = req.http.X-Carrier-Meta;
+		}
+	}
+<% end -%>
+
+	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_backend_error {
+<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
+	call https_error_redirect;
+<% end -%>
+
+	if (beresp.status == 400 || beresp.status == 413) {
+		return(deliver);
+	}
+
+<% if scope.function_hiera(["cluster"]) != "cache_parsoid" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	// retry 503 once in frontend instances, to paper over transient issues
+	if (beresp.status == 503 && bereq.retries == 0) {
+		return (retry);
+	}
+<% end -%>
+<% end -%>
+
+	if (beresp.status == 204 && bereq.method == "PURGE") {
+		set beresp.http.Connection = "keep-alive";
+	}
+
+	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+/* Include the VCL file for this role */
+include "<%= @vcl %>.inc.vcl";
+
+#Generated by varnish3to4
+#TODO: do we really need to duplicate this here?
+#sub vcl_synth {
+#<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
+#	call https_error_redirect;
+#<% end -%>
+#
+#	if (resp.status == 400 || resp.status == 413) {
+#		return(deliver);
+#	}
+#
+#<% if scope.function_hiera(["cluster"]) != "cache_parsoid" -%>
+#<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+#	// retry 503 once in frontend instances, to paper over transient issues
+#	if (resp.status == 503 && req.restarts == 0) {
+#		return(restart);
+#	}
+#<% end -%>
+#<% end -%>
+#
+#	if (resp.status == 204 && req.method == "PURGE") {
+#		set resp.http.Connection = "keep-alive";
+#	}
+#
+#	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
+#}
+#
+#/* Include the VCL file for this role */
+#include "<%= @vcl %>.inc.vcl";
