@@ -110,10 +110,17 @@ class role::analytics::hive::server inherits role::analytics::hive::client {
         'production' => 256,
         default      => undef,
     }
-    # Setup Hive server and Metastore
-    class { 'cdh::hive::master':
-        server_heapsize    => $server_heapsize,
-        metastore_heapsize => $metastore_heapsize,
+    # # Setup Hive server and Metastore
+    # class { 'cdh::hive::master':
+    #     server_heapsize    => $server_heapsize,
+    #     metastore_heapsize => $metastore_heapsize,
+    # }
+
+    class { 'cdh::hive::server':
+        heapsize => $server_heapsize,
+    }
+    class { 'cdh::hive::metastore':
+        heapsize => $metastore_heapsize,
     }
 
     ferm::service{ 'hive_server':
