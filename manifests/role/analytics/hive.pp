@@ -96,7 +96,7 @@ class role::analytics::hive::server inherits role::analytics::hive::client {
 
     # Make sure mysql-server is installed before
     # MySQL Hive Metastore database class is applied.
-    Package['mysql-server'] -> Class['cdh::hive::metastore::mysql']
+    # Package['mysql-server'] -> Class['cdh::hive::metastore::mysql']
 
     # TODO: Set these better once hive is on its own server.
     # See: https://phabricator.wikimedia.org/T110090
