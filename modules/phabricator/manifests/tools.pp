@@ -25,7 +25,7 @@ class phabricator::tools (
 
     file { '/etc/phabtools.conf':
         content => template('phabricator/phabtools.conf.erb'),
-        require => Git::Install['phabricator/tools'],
+        require => Package['phabricator/deployment'],
     }
 
     git::install { 'phabricator/tools':
@@ -39,7 +39,7 @@ class phabricator::tools (
 
         file { $dump_script:
             mode  => '0555',
-            require => Git::Install['phabricator/tools'],
+            require => Package['phabricator/deployment'],
         }
 
         cron { $dump_script:
@@ -47,7 +47,7 @@ class phabricator::tools (
             command => $dump_script,
             user    => root,
             hour    => '2',
-            require => Git::Install['phabricator/tools'],
+            require => Package['phabricator/deployment'],
         }
     }
 
@@ -57,7 +57,7 @@ class phabricator::tools (
         command => "/usr/bin/flock -n ${bz_header} -c '/srv/phab/tools/bugzilla_update_user_header.py -a' >/dev/null 2>&1",
         user    => root,
         hour    => '0',
-        require => Git::Install['phabricator/tools'],
+        require => Package['phabricator/deployment'],
     }
 
     $bz_comments = '/var/run/bz_comments.flock'
@@ -66,6 +66,6 @@ class phabricator::tools (
         command => "/usr/bin/flock -n ${bz_comments} -c '/srv/phab/tools/bugzilla_update_user_comments.py -a' >/dev/null 2>&1",
         user    => root,
         hour    => '1',
-        require => Git::Install['phabricator/tools'],
+        require => Package['phabricator/deployment'],
     }
 }

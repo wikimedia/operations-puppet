@@ -40,7 +40,6 @@ class role::phabricator::main {
 
     # this site's misc-lb caching proxies hostnames
     $cache_misc_nodes = hiera('cache::misc::nodes', [])
-    $current_tag = 'release/2015-07-08/1'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
@@ -49,15 +48,10 @@ class role::phabricator::main {
     class { '::phabricator':
         serveralias      => $altdom,
         trusted_proxies  => $cache_misc_nodes[$::site],
-        git_tag          => $current_tag,
-        lock_file        => '/var/run/phab_repo_lock',
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
-        sprint_tag       => 'release/2015-07-01',
-        security_tag     => $current_tag,
         libraries        => ['/srv/phab/libext/Sprint/src',
                             '/srv/phab/libext/security/src'],
-        extension_tag    => 'release/2015-06-10/1',
         extensions       => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php',
                               'PhabricatorMediaWikiAuthProvider.php',
@@ -74,7 +68,7 @@ class role::phabricator::main {
             'metamta.domain'                         => $domain,
             'metamta.maniphest.public-create-email'  => "task@${domain}",
             'metamta.reply-handler-domain'           => $domain,
-            'repository.default-local-path'          => '/srv/phab/repos',
+            'repository.default-local-path'          => '/srv/repos',
             'phd.taskmasters'                        => 10,
             'events.listeners'                       => ['SecurityPolicyEventListener'],
             'diffusion.allow-http-auth'              => true,
@@ -212,13 +206,9 @@ class role::phabricator::labs {
     $mysqlpass = 'labspass'
     $current_tag = 'release/2015-07-08/1'
     class { '::phabricator':
-        git_tag       => $current_tag,
-        lock_file     => '/var/run/phab_repo_lock',
-        sprint_tag    => 'release/2015-07-01',
-        security_tag  => $current_tag,
+
         libraries     => ['/srv/phab/libext/Sprint/src',
                           '/srv/phab/libext/security/src'],
-        extension_tag => 'release/2015-06-10/1',
         extensions    => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php',
                               'PhabricatorMediaWikiAuthProvider.php',
@@ -229,7 +219,7 @@ class role::phabricator::labs {
             'mysql.pass'                      => $mysqlpass,
             'auth.require-email-verification' => false,
             'metamta.mail-adapter'            => 'PhabricatorMailImplementationTestAdapter',
-            'repository.default-local-path'   => '/srv/phab/repos',
+            'repository.default-local-path'   => '/srv/repos',
             'config.ignore-issues'            => '{
                                                       "security.security.alternate-file-domain": true
                                                   }',
