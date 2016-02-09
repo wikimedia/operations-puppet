@@ -145,6 +145,9 @@ class role::statistics::private inherits role::statistics {
     # rsync mediawiki logs from logging hosts
     include statistics::rsync::mediawiki
 
+    # WMDE statistics scripts and cron jobs
+    include statistics::wmde
+
     # eventlogging logs are not private, but they
     # are here for convenience
     include statistics::rsync::eventlogging
