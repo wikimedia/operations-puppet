@@ -16,7 +16,8 @@ og71XJb2b1KenxsBOPWIJKixjEgCtTLnn4H+bMZtCcezGeyOU+QqzW3rKu+d0Z2V
 jyc5hxBS94pc0EQK3q0HeWShC4ilrhuYa5irzNnXGI8e4azfiJt0mUVClXOhnIZD
 /J/CnwYj0NOCWK4k6CzHPz//WsTMn6i2pf/Ys9vDLoKjk8EHY2/zqn3CutsNN60k
  MKYDznRvmD47IY3/8fvhWE8CAwEAAQ==
------END PUBLIC KEY-----",
+-----END PUBLIC KEY-----
+",
       'labs' => "-----BEGIN PUBLIC KEY-----
 MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA030L1ZeU2/aUnDnm8rdg
 wXhs7PRdmXalCx1YXTsIVY/NqFI+LsqENrOp7kM4+R2VN9ch3buQN1X5iqpuK4AG
@@ -30,7 +31,8 @@ LngQ6z6gcUPlXENBmpPO4XTOIQrJXd33oLIBvQSqPsVPrxZoymDNhvfvxGPLGTB+
 ofxMu9dsmhvqMb5mPEPFBPiqsjpip9wvtEJrqv39iqWFHLRgX3s/UDIDVTxZS9zx
 4D99u6/HmjTwFGFZxdVhagZ8dxvX3YSOFdA3JaqNb4nyoB/G1oC/xtstXJGbjxGj
 Z9Tp7NpKVjKDut1WC23F55ECAwEAAQ==
-      -----END PUBLIC KEY-----",
+      -----END PUBLIC KEY-----
+",
     }
 
     file { '/etc/salt/pki/master/master.pub':
