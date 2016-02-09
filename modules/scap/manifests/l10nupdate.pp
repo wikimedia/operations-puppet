@@ -64,7 +64,7 @@ class scap::l10nupdate(
             # This command is equivalent to a restricted sync-dir call that
             # only syncs l10n cache files followed by a scap-rebuild-cdbs
             # call.
-            'ALL = (mwdeploy) NOPASSWD: /srv/deployment/scap/scap/bin/sync-l10n',
+            'ALL = (mwdeploy) NOPASSWD: /usr/bin/sync-l10n',
             # Allow l10nupdate user to run anything as the unprivledged web
             # user. Needed for mwscript actions and related operations.
             "ALL = (${::mediawiki::users::web}) NOPASSWD: ALL",
