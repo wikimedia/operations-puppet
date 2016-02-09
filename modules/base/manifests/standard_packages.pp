@@ -60,7 +60,15 @@ class base::standard_packages {
     }
 
     # uninstall these packages
-    package { [ 'mlocate', 'os-prober', 'wpasupplicant', 'apport', 'python3-apport', 'ecryptfs-utils' ]:
+    package { [
+            'apport',
+            'apt-listchanges',
+            'ecryptfs-utils',
+            'mlocate',
+            'os-prober',
+            'python3-apport',
+            'wpasupplicant',
+        ]:
         ensure => absent,
     }
 
