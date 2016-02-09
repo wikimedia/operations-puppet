@@ -1806,3 +1806,12 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLvnP1K5xgv41jpUwPkrRR3mkd4+/3zYtP09/MVueOBKAXj8bzHhLtfy36PoRxdKSl897VohQjJGJB1YLI140B7Uusx2NgCuFQnWgMoYOgR0Qszf1Ncn9MUnYfQCRtTFzZcPEstQzXI7Yov7y4mM8lvjdWWQUxsmlxQWrQ433/BTKIDb9rlThyg6NHeTKIsj0d18+WspoQFqnmxKYozd0W0knoL5OkRX1hMgs0sANUgriZjF1n52QxVptjAodzs29DX7cfNELmTyeKQyMeb6K3voiefjAfAvjOiu4aHoGqjSqU9ACIyxulbx0gGcX9SPY5nNyt2LERhqZyEwoDb873 glederrey@wikimedia.org
     uid: 13593
+  ppchelko:
+    ensure: present
+    gid: 500
+    name: ppchelko
+    realname: Petr Pchelko
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSxkE+b4Jc+3FoCgYqZvQJZ8a0Hk2UhC2Qb1zi1CiThsE8oBPf6n1Mki58o/mHBrtfgAPutCFFylkLwuPDE5tDojENvNx3roMxEmpQhDTs3iKTfXF98IVdsrI8gmrpCQoy+fny3K/O89rmAza2WTK2ogB2rDBLRAC0hYz6pzuA38+4ybmYbqVn/SQSDyMsX0366xBsn3r6pEwyttZsLhO/5HDG1O5cUkrxwXr5XACIGGHZyG2ev2uLtZj/6py5skxvp2xLs1/m7qP1Sykvz8QungW7KfyzNCVKb07RxKlsUQEnAqnQY2fnB3VjKSe4FNUafQHkmFJ1MLr0zH31uMOF pchelko@Petrs-MBP.corp.wikimedia.org
+    uid: 12460
+
