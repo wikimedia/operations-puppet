@@ -37,8 +37,9 @@ class beta::autoupdater {
         source => 'puppet:///modules/beta/wmf-beta-update-databases.py',
     }
 
-    git::clone { 'mediawiki/core':
+    git::clone { 'beta-mediawiki-core':
         directory => "${stage_dir}/php-master",
+        origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
         branch    => 'master',
         owner     => 'jenkins-deploy',
         group     => 'wikidev',
@@ -51,7 +52,7 @@ class beta::autoupdater {
         group   => 'wikidev',
         mode    => '0444',
         source  => 'puppet:///modules/beta/LocalSettings.php',
-        require => Git::Clone['mediawiki/core'],
+        require => Git::Clone['beta-mediawiki-core'],
     }
 
     file { "${stage_dir}/php-master/cache/l10n":
@@ -59,25 +60,26 @@ class beta::autoupdater {
         owner   => 'l10nupdate',
         group   => 'wikidev',
         mode    => '0755',
-        require => Git::Clone['mediawiki/core'],
+        require => Git::Clone['beta-mediawiki-core'],
     }
 
     # Remove the placeholder extension directory of the mediawiki/core
     # checkout so that we can checkout the complete extension repository.
     exec { "/bin/rm -r ${stage_dir}/php-master/extensions":
         refreshonly => true,
-        subscribe   => Git::Clone['mediawiki/core'],
-        before      => Git::Clone['mediawiki/extensions'],
+        subscribe   => Git::Clone['beta-mediawiki-core'],
+        before      => Git::Clone['beta-mediawiki-extensions'],
     }
 
-    git::clone { 'mediawiki/extensions':
+    git::clone { 'beta-mediawiki-extensions':
         directory          => "${stage_dir}/php-master/extensions",
+        origin             => 'https://gerrit.wikimedia.org/r/p/mediawiki/extensions.git',
         branch             => 'master',
         owner              => 'jenkins-deploy',
         group              => 'wikidev',
         recurse_submodules => true,
         timeout            => 1800,
-        require            => Git::Clone['mediawiki/core'],
+        require            => Git::Clone['beta-mediawiki-core'],
     }
 
     # MediaWiki core has a /skins/ directory causing git clone to refuse
@@ -94,7 +96,7 @@ class beta::autoupdater {
         user    => 'jenkins-deploy',
         group   => 'wikidev',
         creates => "${mw_skins_dest}/.git",
-        require => Git::Clone['mediawiki/core'],
+        require => Git::Clone['beta-mediawiki-core'],
         notify  => Exec['beta_mediawiki_skins_git_remote_add'],
     }
     exec { 'beta_mediawiki_skins_git_remote_add':
@@ -105,8 +107,9 @@ class beta::autoupdater {
         refreshonly => true,
     }
 
-    git::clone { 'mediawiki/skins':
+    git::clone { 'beta-mediawiki-skins':
         directory          => $mw_skins_dest,
+        origin             => 'https://gerrit.wikimedia.org/r/p/mediawiki/skins.git',
         branch             => 'master',
         owner              => 'jenkins-deploy',
         group              => 'wikidev',
@@ -120,6 +123,6 @@ class beta::autoupdater {
         branch    => 'master',
         owner     => 'jenkins-deploy',
         group     => 'wikidev',
-        require   => Git::Clone['mediawiki/core'],
+        require   => Git::Clone['beta-mediawiki-core'],
     }
 }
