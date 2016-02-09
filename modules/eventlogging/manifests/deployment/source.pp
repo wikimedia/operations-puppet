@@ -1,6 +1,6 @@
 # == Class eventlogging::deployment::source
 # Include this class on a scap3 deployment server,
-# e.g. tin, deployment-bastion, etc.
+# e.g. tin, deployment-tin, etc.
 # It sets up private keys and adds them to keyholder,
 # allowing certain groups to deploy via ssh using
 # the configured ssh key for the deploy user.
