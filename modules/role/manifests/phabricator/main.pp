@@ -19,45 +19,43 @@ class role::phabricator::main {
 
     # this site's misc-lb caching proxies hostnames
     $cache_misc_nodes = hiera('cache::misc::nodes', [])
-    $current_tag = 'release/2016-02-18/1'
     $domain = 'phabricator.wikimedia.org'
     $altdom = 'phab.wmfusercontent.org'
     $mysql_host = 'm3-master.eqiad.wmnet'
     $mysql_slave = 'm3-slave.eqiad.wmnet'
+    $phab_root_dir = '/srv/phab'
+    $deploy_target = 'phabricator/deployment'
 
     class { '::phabricator':
+        deploy_target    => $deploy_target,
+        phabdir          => $phab_root_dir,
         serveralias      => $altdom,
         trusted_proxies  => $cache_misc_nodes[$::site],
-        git_tag          => $current_tag,
-        lock_file        => '/var/run/phab_repo_lock',
         mysql_admin_user => $role::phabricator::config::mysql_adminuser,
         mysql_admin_pass => $role::phabricator::config::mysql_adminpass,
-        sprint_tag       => 'release/2016-02-18/1',
-        security_tag     => 'release/2016-02-18/2',
-        libraries        => ['/srv/phab/libext/Sprint/src',
-                            '/srv/phab/libext/security/src'],
-        extension_tag    => 'release/2016-02-18/1',
+        libraries        => [ "${phab_root_dir}/libext/Sprint/src",
+                              "${phab_root_dir}/libext/security/src" ],
         extensions       => [ 'MediaWikiUserpageCustomField.php',
                               'LDAPUserpageCustomField.php',
                               'PhabricatorMediaWikiAuthProvider.php',
                               'PhutilMediaWikiAuthAdapter.php'],
         settings         => {
-            'darkconsole.enabled'                   => false,
-            'phabricator.base-uri'                  => "https://${domain}",
-            'security.alternate-file-domain'        => "https://${altdom}",
-            'mysql.user'                            => $role::phabricator::config::mysql_appuser,
-            'mysql.pass'                            => $role::phabricator::config::mysql_apppass,
-            'mysql.host'                            => $mysql_host,
-            'phpmailer.smtp-host'                   => inline_template('<%= @mail_smarthost.join(";") %>'),
-            'metamta.default-address'               => "no-reply@${domain}",
-            'metamta.domain'                        => $domain,
-            'metamta.maniphest.public-create-email' => "task@${domain}",
-            'metamta.reply-handler-domain'          => $domain,
-            'repository.default-local-path'         => '/srv/repos',
-            'phd.taskmasters'                       => 10,
-            'events.listeners'                      => [],
-            'diffusion.allow-http-auth'             => true,
-            'diffusion.ssh-host'                    => 'git-ssh.wikimedia.org',
+            'darkconsole.enabled'                    => false,
+            'phabricator.base-uri'                   => "https://${domain}",
+            'security.alternate-file-domain'         => "https://${altdom}",
+            'mysql.user'                             => $role::phabricator::config::mysql_appuser,
+            'mysql.pass'                             => $role::phabricator::config::mysql_apppass,
+            'mysql.host'                             => $mysql_host,
+            'phpmailer.smtp-host'                    => inline_template('<%= @mail_smarthost.join(";") %>'),
+            'metamta.default-address'                => "no-reply@${domain}",
+            'metamta.domain'                         => $domain,
+            'metamta.maniphest.public-create-email'  => "task@${domain}",
+            'metamta.reply-handler-domain'           => $domain,
+            'repository.default-local-path'          => '/srv/repos',
+            'phd.taskmasters'                        => 10,
+            'events.listeners'                       => [],
+            'diffusion.allow-http-auth'              => true,
+            'diffusion.ssh-host'                     => 'git-ssh.wikimedia.org',
         },
     }
 
@@ -76,6 +74,7 @@ class role::phabricator::main {
     }
 
     class { '::phabricator::tools':
+        directory       => "${phab_root_dir}/tools",
         dbhost          => $mysql_host,
         dbslave         => $mysql_slave,
         manifest_user   => $role::phabricator::config::mysql_maniphestuser,
@@ -90,6 +89,7 @@ class role::phabricator::main {
         phabtools_user  => $role::phabricator::config::phabtools_user,
         gerritbot_token => $role::phabricator::config::gerritbot_token,
         dump            => true,
+        require         => Package[$deploy_target]
     }
 
     cron { 'phab_dump':
@@ -171,6 +171,7 @@ class role::phabricator::main {
         field_index => '4rRUkCdImLQU',
         phab_host   => $domain,
         alt_host    => $altdom,
+        require     => Package[$deploy_target],
     }
 
     # community metrics mail (T81784, T1003)
@@ -179,6 +180,7 @@ class role::phabricator::main {
         rcpt_address => 'wikitech-l@lists.wikimedia.org',
         sndr_address => 'communitymetrics@wikimedia.org',
         monthday     => '1',
+        require      => Package[$deploy_target],
     }
 
     # project changes mail (T85183)
@@ -187,6 +189,7 @@ class role::phabricator::main {
         rcpt_address => [ 'aklapper@wikimedia.org', 'krenair@gmail.com' ],
         sndr_address => 'aklapper@wikimedia.org',
         monthday     => [1, 8, 15, 22, 29],
+        require      => Package[$deploy_target],
     }
 }
 
