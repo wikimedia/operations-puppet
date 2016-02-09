@@ -3,8 +3,8 @@
 # Shared configuration for beta classes
 #
 class beta::config {
-    # IP address of deployment-bastion host
-    $bastion_ip = '10.68.16.58'
+    # IP address of deployment-tin host
+    $bastion_ip = '10.68.17.240'
 
     # Networks to allow for rsync
     $rsync_networks = [
