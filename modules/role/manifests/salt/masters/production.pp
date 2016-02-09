@@ -9,8 +9,9 @@ class role::salt::masters::production {
     class { 'salt::master':
         salt_runner_dirs    => ['/srv/runners'],
         salt_peer_run       => {
-            'tin.eqiad.wmnet'  => ['deploy.*'],
-            'mira.codfw.wmnet' => ['deploy.*'],
+            'tin.eqiad.wmnet'       => ['deploy.*'],
+            'mira.codfw.wmnet'      => ['deploy.*'],
+            'palladium.eqiad.wmnet' => ['keys.*'],
         },
         salt_file_roots     => $salt_file_roots,
         salt_pillar_roots   => $salt_pillar_roots,
