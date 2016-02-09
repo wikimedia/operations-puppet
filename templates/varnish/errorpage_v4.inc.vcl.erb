@@ -1,0 +1,47 @@
+<%
+	# Source: https://www.wikimedia.org/static/images/wmf.png
+	wmf_png = "data:image/png;base64,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"
+-%>
+
+sub errorpage {
+	if (resp.status >= 400) {
+		call synth_errorpage;
+		return (deliver);
+	}
+}
+
+sub synth_errorpage {
+	set resp.http.Content-Type = "text/html; charset=utf-8";
+	synthetic ({"<!DOCTYPE html>
+<html lang=en>
+<meta charset=utf-8>
+<title>Wikimedia Error</title>
+<style>
+* { margin: 0; padding: 0; }
+body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
+.content { margin: 7% auto 0; padding: 2em 1em 1em; max-width: 560px; }
+.footer { clear: both; margin-top: 14%; border-top: 1px solid #e5e5e5; background: #f9f9f9; padding: 2em 0; font-size: 0.8em; text-align: center; }
+img { float: left; margin: 0 2em 2em 0; }
+a img { border: 0; }
+h1 { margin-top: 1em; font-size: 1.2em; }
+p { margin: 0.7em 0 1em 0; }
+a { color: #0645AD; text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: sans-serif; }
+.text-muted { color: #777; }
+</style>
+<div class="content" role="main">
+<a href="//www.wikimedia.org"><img src="<%= wmf_png %>" srcset="//www.wikimedia.org/static/images/wmf-2x.png 2x" alt=Wikimedia width=135 height=135></a>
+<h1>Error</h1>
+<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed&nbsp;soon.<br>Please <a href="" title="Reload this page" onclick="window.location.reload(false); return false">try again</a> in a few&nbsp;minutes.</p>
+</div>
+<div class="footer">
+<p>If you report this error to the Wikimedia System Administrators, please include the details below.</p>
+<p class="text-muted"><code>
+Request from "} + client.ip + " via " + server.hostname + " " + server.identity + " ([" + server.ip + "]:" + std.port(server.ip) + "), Varnish XID " + req.xid + "<br>" +
+regsub(req.http.X-Forwarded-For, ".+", "Forwarded for: \0<br>") + regsub(resp.http.X-Cache, ".+", "Upstream caches: \0<br>") +
+"Error: " + resp.status + ", " + resp.reason + " at " + now +
+{"
+</code></p></div></html>
+"});
+}
