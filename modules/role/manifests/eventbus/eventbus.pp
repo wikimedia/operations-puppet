@@ -22,6 +22,7 @@ class role::eventbus::eventbus {
         public_key_source => "puppet:///modules/eventlogging/deployment/eventlogging_rsa.pub.${::realm}",
         deploy_path       => $eventlogging_path,
         service_name      => 'eventlogging-service-eventbus',
+        manage_user       => false,
     }
 
     file { '/etc/eventbus':
