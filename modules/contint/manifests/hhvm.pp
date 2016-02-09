@@ -28,10 +28,4 @@ class contint::hhvm {
         },
         # lint:endignore
     }
-
-    alternatives::select { 'php':
-        path    => '/usr/bin/hhvm',
-        require => Package['hhvm'],
-    }
-
 }
