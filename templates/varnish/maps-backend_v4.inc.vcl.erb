@@ -1,0 +1,29 @@
+// Varnish VCL include file for maps backends
+
+include "errorpage_v4.inc.vcl";
+
+sub vcl_recv {
+	call recv_purge;
+	return (hash);
+}
+
+sub vcl_backend_response {
+	// Cap TTL to 1 day for now (purging still hasn't been sorted out...)
+	if (beresp.ttl > 1d) {
+		set beresp.ttl = 1d;
+	}
+	return (deliver);
+}
+
+// TODO: we cannot call errorpage from vcl_backend_error as resp. is not
+// available. Commenting it out for now
+
+//sub vcl_backend_error {
+//	call errorpage;
+//	return (deliver);
+//}
+
+sub vcl_synth {
+	call errorpage;
+	return (deliver);
+}

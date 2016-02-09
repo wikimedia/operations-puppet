@@ -24,6 +24,13 @@ define varnish::instance(
         $extraopts = "-n ${name}"
     }
 
+    if hiera('varnish_version4', false) {
+        $vcl_version_suffix = '_v4'
+    }
+    else {
+        $vcl_version_suffix = ''
+    }
+
     # Initialize variables for templates
     $backends_str = inline_template("<%= @directors.map{|k,v|  v['backends'] }.flatten.join('|') %>")
     $varnish_backends = sort(unique(split($backends_str, '\|')))
@@ -74,14 +81,14 @@ define varnish::instance(
         group   => 'root',
         mode    => '0444',
         require => File["/etc/varnish/${vcl}.inc.vcl"],
-        content => template("${module_name}/vcl/wikimedia.vcl.erb"),
+        content => template("${module_name}/vcl/wikimedia${vcl_version_suffix}.vcl.erb"),
     }
 
     file { "/etc/varnish/${vcl}.inc.vcl":
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template("varnish/${vcl}.inc.vcl.erb"),
+        content => template("varnish/${vcl}${vcl_version_suffix}.inc.vcl.erb"),
         notify  => Exec["load-new-vcl-file${instancesuffix}"],
     }
 
