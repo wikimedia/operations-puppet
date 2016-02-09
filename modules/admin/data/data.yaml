@@ -444,7 +444,7 @@ groups:
   restbase-admins:
     gid: 769
     description: group of restbase admins
-    members: [gwicke]
+    members: [gwicke, ppchelko]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = (cassandra) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service restbase *',
