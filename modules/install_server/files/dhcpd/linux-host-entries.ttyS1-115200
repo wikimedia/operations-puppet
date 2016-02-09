@@ -3745,11 +3745,6 @@ host mw1036 {
 	fixed-address mw1036.eqiad.wmnet;
 }
 
-host mw1037 {
-	hardware ethernet 78:2b:cb:08:70:71;
-	fixed-address mw1037.eqiad.wmnet;
-}
-
 host mw1038 {
 	hardware ethernet 78:2b:cb:08:78:2e;
 	fixed-address mw1038.eqiad.wmnet;
