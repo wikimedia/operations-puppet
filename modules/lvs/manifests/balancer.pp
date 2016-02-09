@@ -65,6 +65,8 @@ class lvs::balancer(
             'net.ipv4.vs.amemthresh'          => 131072, # 512MB
             # Automatically start dropping likely synflood entries when memory is low:
             'net.ipv4.vs.drop_entry'          => 1,
+            # Also schedule ICMPs, like e.g. fragmentation needed (needs Linux 4.4.0)
+            'net.ipv4.vs.schedule_icmp'       => 1,
         },
     }
 }
