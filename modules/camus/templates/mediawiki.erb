@@ -4,8 +4,8 @@
 # Camus properties file for consuming Mediawiki avro binary data into HDFS.
 #
 
-# submit this job in the WMF Analytics Cluster's 'default' queue.
-mapreduce.job.queuename=default
+# submit this job in the WMF Analytics Cluster's 'essential' queue.
+mapreduce.job.queuename=essential
 
 # final top-level data output directory, sub-directory will be dynamically created for each topic pulled
 etl.destination.path=hdfs://analytics-hadoop/wmf/data/raw/mediawiki
