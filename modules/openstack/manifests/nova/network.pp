@@ -39,7 +39,7 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
         'tools-webproxy'            => {public_ip  => '208.80.155.131',
                                         private_ip => '10.68.17.139' },
         'udplog'                    => {public_ip  => '208.80.155.191',
-                                        private_ip => '10.68.16.58' },
+                                        private_ip => '10.68.17.240' },
 
         # A wide variety of hosts are reachable via a public web proxy.
         'labs_shared_proxy' => {public_ip  => '208.80.155.156',

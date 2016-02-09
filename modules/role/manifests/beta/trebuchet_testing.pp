@@ -9,7 +9,7 @@ class role::beta::trebuchet_testing {
     }
 
 
-    # Allow ssh inbound from deployment-bastion.eqiad.wmflabs for testing
+    # Allow ssh inbound from deployment-tin.eqiad.wmflabs for testing
     ferm::rule { 'deployment-bastion-trebuchet-testing-ssh':
         ensure => present,
         rule   => "proto tcp dport ssh saddr ${::beta::config::bastion_ip} ACCEPT;",
