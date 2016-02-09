@@ -41,7 +41,7 @@ def checkout(repo, reset=False):
     print "Checkout completed"
 
 
-def restart(repo, batch='10%'):
+def restart(repo, batch='10%', timeout=60):
     '''
     Restart the service associated with this repo. If no service is associated
     this call will do nothing.
@@ -56,7 +56,7 @@ def restart(repo, batch='10%'):
     arg = (repo,)
     ret = []
     for data in client.cmd_batch(targets, cmd, expr_form='compound',
-                                 arg=arg, timeout=60,
+                                 arg=arg, timeout=timeout,
                                  ret='deploy_redis', batch=batch):
         ret.append(data)
     print "Restart completed"
