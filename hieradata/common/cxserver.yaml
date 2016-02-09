@@ -679,6 +679,7 @@ registry:
       af:
         - ba
         - hy
+        - fa
         - pl
         - sq
         - ru
@@ -686,6 +687,7 @@ registry:
       ar:
         - ba
         - hy
+        - fa
         - pl
         - sq
         - ru
@@ -693,18 +695,21 @@ registry:
       az:
         - ba
         - hy
+        - fa
         - pl
         - sq
         - ru
         - uz
       ba:
         - hy
+        - fa
         - pl
         - sq
         - ru
         - uz
       'be-tarask':
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -712,6 +717,7 @@ registry:
         - uz
       be:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -719,6 +725,7 @@ registry:
         - uz
       bg:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -726,6 +733,7 @@ registry:
         - uz
       bs:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -733,6 +741,7 @@ registry:
         - uz
       ca:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -740,6 +749,7 @@ registry:
         - uz
       cs:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -747,6 +757,7 @@ registry:
         - uz
       cy:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -754,6 +765,7 @@ registry:
         - uz
       da:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -761,6 +773,7 @@ registry:
         - uz
       de:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -768,6 +781,7 @@ registry:
         - uz
       el:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -775,6 +789,7 @@ registry:
         - uz
       en:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -782,6 +797,7 @@ registry:
         - uz
       es:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -789,6 +805,7 @@ registry:
         - uz
       et:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -796,6 +813,7 @@ registry:
         - uz
       eu:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -810,6 +828,7 @@ registry:
         - uz
       fi:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -817,6 +836,7 @@ registry:
         - uz
       fr:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -824,6 +844,7 @@ registry:
         - uz
       ga:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -831,6 +852,7 @@ registry:
         - uz
       gl:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -838,6 +860,7 @@ registry:
         - uz
       he:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -845,6 +868,7 @@ registry:
         - uz
       hi:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -852,6 +876,7 @@ registry:
         - uz
       hr:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -859,6 +884,7 @@ registry:
         - uz
       ht:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -866,6 +892,7 @@ registry:
         - uz
       hu:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -873,12 +900,14 @@ registry:
         - uz
       hy:
         - ba
+        - fa
         - pl
         - sq
         - ru
         - uz
       id:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -886,6 +915,7 @@ registry:
         - uz
       is:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -893,6 +923,7 @@ registry:
         - uz
       it:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -900,6 +931,7 @@ registry:
         - uz
       ja:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -907,6 +939,7 @@ registry:
         - uz
       ka:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -914,6 +947,7 @@ registry:
         - uz
       kk:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -921,6 +955,7 @@ registry:
         - uz
       ko:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -928,6 +963,7 @@ registry:
         - uz
       ky:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -935,6 +971,7 @@ registry:
         - uz
       la:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -942,6 +979,7 @@ registry:
         - uz
       lt:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -949,6 +987,7 @@ registry:
         - uz
       lv:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -956,6 +995,7 @@ registry:
         - uz
       mg:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -963,6 +1003,7 @@ registry:
         - uz
       mk:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -970,6 +1011,7 @@ registry:
         - uz
       mn:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -977,6 +1019,7 @@ registry:
         - uz
       ms:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -984,6 +1027,7 @@ registry:
         - uz
       mt:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -991,6 +1035,7 @@ registry:
         - uz
       nl:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -998,6 +1043,7 @@ registry:
         - uz
       'no':
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1005,6 +1051,7 @@ registry:
         - uz
       pl:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1012,6 +1059,7 @@ registry:
         - uz
       pt:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1019,6 +1067,7 @@ registry:
         - uz
       ro:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1026,12 +1075,14 @@ registry:
         - uz
       ru:
         - ba
+        - fa
         - hy
         - pl
         - sq
         - uz
       sk:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1039,6 +1090,7 @@ registry:
         - uz
       sl:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1046,12 +1098,14 @@ registry:
         - uz
       sq:
         - ba
+        - fa
         - hy
         - pl
         - ru
         - uz
       sr:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1059,6 +1113,7 @@ registry:
         - uz
       sv:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1066,6 +1121,7 @@ registry:
         - uz
       sw:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1073,6 +1129,7 @@ registry:
         - uz
       tg:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1080,6 +1137,7 @@ registry:
         - uz
       th:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1087,6 +1145,7 @@ registry:
         - uz
       tl:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1094,6 +1153,7 @@ registry:
         - uz
       tr:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1101,6 +1161,7 @@ registry:
         - uz
       tt:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1108,6 +1169,7 @@ registry:
         - uz
       uk:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1115,6 +1177,7 @@ registry:
         - uz
       ur:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1122,12 +1185,14 @@ registry:
         - uz
       uz:
         - ba
+        - fa
         - hy
         - pl
         - sq
         - ru
       vi:
         - ba
+        - fa
         - hy
         - pl
         - sq
@@ -1135,6 +1200,7 @@ registry:
         - uz
       zh:
         - ba
+        - fa
         - hy
         - pl
         - sq
