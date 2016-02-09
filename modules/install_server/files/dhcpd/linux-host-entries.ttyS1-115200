@@ -1551,6 +1551,8 @@ host db2011 {
 host db2012 {
 	hardware ethernet d4:ae:52:68:9d:69;
 	fixed-address db2012.codfw.wmnet;
+	option pxelinux.pathprefix "jessie-installer/";
+	filename "jessie-installer/debian-installer/amd64/pxelinux.0";
 }
 
 host db2014 {
