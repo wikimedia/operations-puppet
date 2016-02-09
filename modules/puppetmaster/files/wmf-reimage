@@ -1,7 +1,7 @@
 #!/bin/bash
 # Helper script for reimaging a server.
 # Author: Giuseppe Lavagetto
-# Copyright (c) 2014 the Wikimedia Foundation
+# Copyright (c) 2014-2016 the Wikimedia Foundation
 set -e
 set -u
 SLEEPTIME=60
@@ -27,24 +27,27 @@ function clean_puppet {
     /usr/local/sbin/puppetstoredconfigclean.rb ${nodename}
 }
 
+function __salt_key {
+    # Executes a salt key action via salt-call
+    local action=${1}
+    local nodename=${2}
+    salt-call --output=json publish.runner "keys.${action}" ${nodename} 2>/dev/null | jq --monochrome-output ".local.status"
+}
+
 function clean_salt {
     nodename=${1}
     force_yes=${2}
     log "cleaning salt key cache for ${nodename}"
     # delete the key only if it has been accepted already, we are going to
     # ask confirmation later about unaccepted keys
-    if salt-key --list accepted | fgrep -q ${nodename}; then
-        if [ ${force_yes} -eq 1 ]; then
-            salt-key -y --rotate-aes-key= --delete ${nodename}
-        else
-            salt-key --rotate-aes-key= --delete ${nodename}
+    local retval=$( __salt_key status "${nodename}" )
+    if  [ "${retval}" == '"accepted"' ]; then
+        retval=$( __salt_key delete ${nodename} )
+        if [ "${retval}" != '"done"' ]; then
+            log "unable to clean salt key, please check manually"
+            log "Maybe you need to use the -n switch?"
+            exit 1
         fi
-    fi
-    # salt-key --delete above exits 0 regardless, double check
-    if salt-key --list accepted | fgrep -q ${nodename}; then
-        log "unable to clean salt key, please check manually"
-        log "Maybe you need to use the -n switch?"
-        exit 1
     fi
 }
 
@@ -84,18 +87,17 @@ function sign_salt {
     log "Seeking the SALT node key to add"
     log "This is the time to start a puppet run on the host."
     while true; do
-        if ! salt-key --list unaccepted | fgrep -q ${nodename}; then
+        local retval=$( __salt_key status ${nodename} )
+        if [ "${retval}" != '"accepted"' ]; then
             echo -n "."
             sleep $SLEEPTIME
             continue
-        fi;
-        echo "+"
-        if [ ${force_yes} -eq 1 ]; then
-            salt-key -y -a ${nodename}
-        else
-            salt-key -a ${nodename}
         fi
-        break
+        retval=$( __salt_key accept ${nodename} )
+        if [ "${retval}" == '"done"' ]; then
+            echo "+"
+            break
+        fi
     done
 }
 
