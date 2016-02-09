@@ -387,6 +387,8 @@ class role::ci::slave::labs {
         include contint::hhvm
     }
 
+    include contint::php
+
     include role::ci::slave::labs::common
     include role::zuul::install
 
