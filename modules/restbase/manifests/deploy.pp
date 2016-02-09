@@ -29,14 +29,6 @@ class restbase::deploy(
         source => $public_key_file,
     }
 
-    # Using trebuchet provider while scap service deployment is under
-    # development—chicken and egg things
-    #
-    # This should be removed once scap3 is in a final state
-    package { 'scap/scap':
-        provider => 'trebuchet',
-    }
-
     # Rather than futz with adding new functionality to allow a deployment
     # user set per repository in trebuchet, I'm running an exec here
     $dir = '/srv/deployment/restbase/deploy'

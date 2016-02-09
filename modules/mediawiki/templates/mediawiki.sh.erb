@@ -9,6 +9,7 @@ MEDIAWIKI_WEB_USER="<%= @mediawiki_web_user %>"
 # into scap.
 
 if groups | grep -Pqw '(wikidev|l10nupdate)'; then
-  PATH="${PATH}:/srv/deployment/scap/scap/bin"
+  # scap is now in /usr/bin thanks to debian package 'scap'
+  # PATH="${PATH}:/srv/deployment/scap/scap/bin"
   umask 0002
 fi
