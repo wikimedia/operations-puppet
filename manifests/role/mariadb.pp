@@ -160,13 +160,17 @@ class role::mariadb::misc::phabricator(
         true  => 'off',
         false => 'on',
     }
-
+    $data_partition = $::hostname ? {
+        'db1043' => '/a',
+        'db1048' => '/a',
+        default  => '/srv',
+    }
     class { 'mariadb::config':
         prompt    => "MISC ${shard}",
         config    => 'mariadb/phabricator.my.cnf.erb',
         password  => $passwords::misc::scripts::mysql_root_pass,
-        datadir   => '/a/sqldata',
-        tmpdir    => '/a/tmp',
+        datadir   => "${data_partition}/sqldata",
+        tmpdir    => "${data_partition}/tmp",
         sql_mode  => 'STRICT_ALL_TABLES',
         read_only => $read_only,
         ssl       => $ssl,
