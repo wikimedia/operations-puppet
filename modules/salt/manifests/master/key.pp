@@ -15,7 +15,7 @@ EE8UMQreWtLUBo0MFbmEPaJu/kXdBRdtzcu77dofst39HqbplxuPYBHQKntCh2T1
 og71XJb2b1KenxsBOPWIJKixjEgCtTLnn4H+bMZtCcezGeyOU+QqzW3rKu+d0Z2V
 jyc5hxBS94pc0EQK3q0HeWShC4ilrhuYa5irzNnXGI8e4azfiJt0mUVClXOhnIZD
 /J/CnwYj0NOCWK4k6CzHPz//WsTMn6i2pf/Ys9vDLoKjk8EHY2/zqn3CutsNN60k
- MKYDznRvmD47IY3/8fvhWE8CAwEAAQ==
+MKYDznRvmD47IY3/8fvhWE8CAwEAAQ==
 -----END PUBLIC KEY-----
 ",
       'labs' => "-----BEGIN PUBLIC KEY-----
