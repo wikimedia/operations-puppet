@@ -1,5 +1,5 @@
 cassandra::rack: 'a'
-cassandra::num_tokens: 128
+cassandra::num_tokens: 256
 cassandra::instances:
   a:
     jmx_port: 7189
