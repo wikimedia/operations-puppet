@@ -4,7 +4,7 @@ groups:
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
               handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser, mvolz,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
-              johnflewis, marc]
+              johnflewis, marc, jkrauska]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -67,7 +67,7 @@ groups:
   bastiononly:
     gid: 707
     description: these folks are allowed bastion _only_ access
-    members: [jforrester, jmorgan, msyed, jkrauska, dfoy, junikowski, cwdent,
+    members: [jforrester, jmorgan, msyed, dfoy, junikowski, cwdent,
               haithams, mhurd, dbrant, kleduc, bsitzmann, deskana, chedasaurus,
               jzerebecki, declerambaul, ellery, dduvall, nettrom, mforns, jkatz,
               bmansurov, west1, jhernandez, smalyshev, tbayer, zfilipin,
@@ -204,7 +204,7 @@ groups:
   oit:
     gid: 727
     description: office it folk
-    members: [jkrauska]
+    members: []
     privileges: ['ALL = (syslog) NOPASSWD: ALL']
   mathoid-roots:
     gid: 729
@@ -1291,7 +1291,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCaDwtmxgjrgNp4cp9ArJmQagmkAr5GXEwwpDgtH2wVqDCCB7DiMcdd8cxjQnf548ZuVpR2OL1R4n7duH+J1HK9rNoqlKE/Zjx+FT+yKVqVdPH6ZmXOcuVPEmSyuHhpI0Faw9JWlTzx67wIXM3DLWbacA1PEcRxNaFtJ9qc/47poVvNqL73jHoQI+MQvAyu+0wqwiE2RdqWb4Sr+iAd3ioGQQtwQqrHuCUInaxPHu1i9t1R2ENb2Ek/TD2BgGke8ljyKkeLy9bf/xHI1CgLmt5RwJ6vRFj6G0gof4GXEC0wqJAxMtQMqU4Xl2jQhP0Evs82Qoxz/hPzPCMSEmb5GDd9 nano
     uid: 2220
   jkrauska:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jkrauska
     realname: Joel Krauska
