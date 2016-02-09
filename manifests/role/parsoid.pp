@@ -305,6 +305,13 @@ class role::parsoid::testing {
         before => Service['parsoid'],
     }
 
+    file { '/usr/local/bin/update_parsoid.sh':
+        source => 'puppet:///files/misc/parsoid_testing.update_parsoid.sh',
+        owner  => 'parsoid',
+        group  => 'parsoid',
+        mode   => '0555',
+    }
+
     # Use this parsoid instance for parsoid rt-testing
     file { '/usr/lib/parsoid/src/localsettings.js':
         source => 'puppet:///modules/testreduce/parsoid-rt-client.rttest.localsettings.js',
