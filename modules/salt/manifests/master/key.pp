@@ -31,7 +31,7 @@ LngQ6z6gcUPlXENBmpPO4XTOIQrJXd33oLIBvQSqPsVPrxZoymDNhvfvxGPLGTB+
 ofxMu9dsmhvqMb5mPEPFBPiqsjpip9wvtEJrqv39iqWFHLRgX3s/UDIDVTxZS9zx
 4D99u6/HmjTwFGFZxdVhagZ8dxvX3YSOFdA3JaqNb4nyoB/G1oC/xtstXJGbjxGj
 Z9Tp7NpKVjKDut1WC23F55ECAwEAAQ==
-      -----END PUBLIC KEY-----
+-----END PUBLIC KEY-----
 ",
     }
 
