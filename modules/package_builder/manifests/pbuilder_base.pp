@@ -69,9 +69,10 @@ define package_builder::pbuilder_base(
                     >/dev/null 2>&1"
 
     cron { "cowbuilder_update_${distribution}-${architecture}":
-        command => $update_command,
-        hour    => 7,
-        minute  => 34,
+        command     => $update_command,
+        environment => ['PATH=/usr/bin:/bin:/usr/sbin'],
+        hour        => 7,
+        minute      => 34,
     }
 
     if $distribution_alias {
