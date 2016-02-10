@@ -23,21 +23,6 @@ class role::analytics_cluster::hue {
     # LDAP Labs config is the same as LDAP in production.
     include ldap::role::config::labs
 
-    # if ($::realm == 'production') {
-    #     include passwords::analytics
-    #
-    #     $secret_key       = $passwords::analytics::hue_secret_key
-    #     $hive_server_host = 'analytics1027.eqiad.wmnet'
-    #     # Disable automatic Hue user creation in production.
-    #     $ldap_create_users_on_login = false
-    # }
-    # elsif ($::realm == 'labs') {
-    #     $secret_key       = 'oVEAAG5dp02MAuIScIetX3NZlmBkhOpagK92wY0GhBbq6ooc0B3rosmcxDg2fJBM'
-    #     # Assume that in Labs, Hue should run on the main master Hadoop NameNode.
-    #     $hive_server_host = $role::analytics::hadoop::config::namenode_hosts[0]
-    #     $ldap_create_users_on_login = true
-    # }
-
     class { 'cdh::hue':
         # We always host hive-server on the same node as hive-metastore.
         hive_server_host           => hiera('cdh::hive::metastore_host'),
