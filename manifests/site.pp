@@ -192,7 +192,11 @@ node 'argon.wikimedia.org' {
     interface::add_ip6_mapped { 'main': }
 }
 
-node 'auth1001.eqiad.wmnet', 'auth2001.codfw.wmnet' {
+node 'auth1001.eqiad.wmnet' {
+    role yubiauth
+}
+
+node 'auth2001.codfw.wmnet' {
     include base::firewall
     include standard
 }
