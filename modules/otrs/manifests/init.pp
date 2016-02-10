@@ -119,11 +119,6 @@ class otrs(
         source => 'puppet:///modules/otrs/wmf.ico',
     }
 
-    file { '/opt/otrs/Kernel/Output/HTML/OTRS':
-        ensure => link,
-        target => '/opt/otrs/Kernel/Output/HTML/Standard',
-    }
-
     # TODO: Remove the safeguard once we are jessie only
     # NOTE: We couple the move to 4.0.x OTRS with the move to jessie, since that
     # should not bite back as after the move the 3.2.x install we have will be
