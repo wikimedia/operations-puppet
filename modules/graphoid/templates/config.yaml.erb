@@ -22,5 +22,14 @@ domainMap:
 # Which protocol should service use for protocol-relative URLs like //example.com/path
 defaultProtocol: <%= @protocol %>
 
+
+# Allowed domains in the "protocol: [list of domains]" format
+<% if @allowed_domains.empty? -%>
+allowedDomains: {}
+<% else -%>
+allowedDomains:
+<%= ZAML.dump(@allowed_domains).split("\n").map { |d| '  ' + d }.join("\n") %>
+<% end -%>
+
 # Error if it takes longer than this to handle the request
 timeout: <%= @timeout %>
