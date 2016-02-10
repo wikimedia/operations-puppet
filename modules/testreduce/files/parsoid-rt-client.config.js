@@ -25,13 +25,13 @@
 				// FIXME: Weird! rt-testing code, for some reason, uses the Parsoid config too.
 				// It is posting requests to Parsoid to run tests, so not sure why it needs the
 				// config. Refactor that code to eliminate this dependency, if possible.
-				parsoidConfig: '/usr/lib/parsoid/src/tests/testreduce/parsoid-rt-client.rttest.localsettings.js',
+				parsoidConfig: '/srv/parsoid/src/tests/testreduce/parsoid-rt-client.rttest.localsettings.js',
 			},
 
-			runTest: require('/usr/lib/parsoid/src/tests/testreduce/rtTestWrapper.js').runRoundTripTest,
+			runTest: require('/srv/parsoid/src/tests/testreduce/rtTestWrapper.js').runRoundTripTest,
 
 			// Path of the git repo
-			gitRepoPath: '/usr/lib/parsoid/src',
+			gitRepoPath: '/srv/parsoid/src',
 		};
 	}
 }());
