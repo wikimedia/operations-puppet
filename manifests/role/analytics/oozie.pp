@@ -52,7 +52,7 @@ class role::analytics::oozie::server inherits role::analytics::oozie::client {
     }
     # Make sure mysql-server is installed before
     # MySQL Oozie database class is applied.
-    Package['mysql-server'] -> Class['cdh::oozie::database::mysql']
+    # Package['mysql-server'] -> Class['cdh::oozie::database::mysql']
 
     class { 'cdh::oozie::server':
         jdbc_password   => $jdbc_password,
