@@ -116,7 +116,7 @@ node 'analytics1021.eqiad.wmnet' {
 # analytics1026 is spare, for now is just an analytics client.
 node 'analytics1026.eqiad.wmnet' {
     include standard
-    include role::analytics::clients
+    role analytics_cluster::client
 }
 
 # analytics1027 hosts some frontend web interfaces to Hadoop
