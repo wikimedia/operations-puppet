@@ -73,6 +73,7 @@ class role::memcached {
 
     redis::instance { 6379:
         settings => {
+            bind                        => '0.0.0.0',
             auto_aof_rewrite_min_size   => '512mb',
             client_output_buffer_limit  => 'slave 512mb 200mb 60',
             dir                         => '/srv/redis',
