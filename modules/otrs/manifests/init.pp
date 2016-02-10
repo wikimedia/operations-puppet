@@ -134,35 +134,15 @@ class otrs(
         source => 'puppet:///modules/otrs/loginlogo_default_wmf.png',
     }
 
-    # TODO: Remove the safeguard once we are jessie only
-    # NOTE: We couple the move to 4.0.x OTRS with the move to jessie, since that
-    # should not bite back as after the move the 3.2.x install we have will be
-    # decomissioned
-    if os_version('debian >= jessie') {
-        # TODO: Remove this after the migration to 5.0.x is complete
-        file { '/etc/cron.d/otrs':
-            ensure => absent,
-        }
-
-        base::service_unit { 'otrs-daemon':
-            ensure  => present,
-            upstart => false,
-            systemd => true,
-            refresh => true,
-            service_params => {
-                enable     => true,
-                hasstatus  => true,
-                hasrestart => false,
-            }
-        }
-    }
-    else {
-        file { '/etc/cron.d/otrs':
-            ensure => 'file',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/otrs/crontab.otrs',
+    base::service_unit { 'otrs-daemon':
+        ensure  => present,
+        upstart => false,
+        systemd => true,
+        refresh => true,
+        service_params => {
+            enable     => true,
+            hasstatus  => true,
+            hasrestart => false,
         }
     }
 }
