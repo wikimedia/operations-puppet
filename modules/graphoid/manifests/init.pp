@@ -35,7 +35,12 @@ class graphoid(
 
     service::node { 'graphoid':
         port            => 19000,
-        config          => template('graphoid/config.yaml.erb'),
+        config          => {
+            domains         => $domains,
+            domainMap       => $domain_map,
+            defaultProtocol => $protocol,
+            timeout         => $timeout,
+        },
         has_spec        => true,
         healthcheck_url => '',
         require         => Package[$packages],
