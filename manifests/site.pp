@@ -1213,15 +1213,6 @@ node 'install2001.wikimedia.org' {
     }
 }
 
-# ticket.wikimedia.org
-node 'iodine.wikimedia.org' {
-    role otrs
-
-    interface::add_ip6_mapped { 'main':
-        interface => 'eth0',
-    }
-}
-
 # Phabricator
 node 'iridium.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main':
@@ -1833,7 +1824,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
     role memcached
 }
 
-# OTRS evaluation upgrade
+# OTRS - ticket.wikimedia.org
 node 'mendelevium.eqiad.wmnet' {
     role otrs
 }
