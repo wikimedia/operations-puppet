@@ -149,3 +149,55 @@ hive_metastore_host: analytics1027.eqiad.wmnet
 oozie_host: analytics1027.eqiad.wmnet
 
 ldap_labs_hostname: ldap-labs.eqiad.wikimedia.org
+
+#
+# Analytics Cluster Configuration:
+#
+cdh::hadoop::cluster_name: analytics-hadoop
+
+cdh::hadoop::namenode_hosts:
+    - analytics1001.eqiad.wmnet
+    - analytics1002.eqiad.wmnet
+
+cdh::hadoop::journalnode_hosts:
+    - analytics1052.eqiad.wmnet  # Row A3
+    - analytics1028.eqiad.wmnet  # Row C2
+    - analytics1035.eqiad.wmnet  # Row D2
+
+# analytics* Dell R720s have mounts on disks sdb - sdm.
+# (sda is hardware raid on the 2 2.5 drives in the flex bays.)
+cdh::hadoop::datanode_mounts:
+    - /var/lib/hadoop/data/b
+    - /var/lib/hadoop/data/c
+    - /var/lib/hadoop/data/d
+    - /var/lib/hadoop/data/e
+    - /var/lib/hadoop/data/f
+    - /var/lib/hadoop/data/g
+    - /var/lib/hadoop/data/h
+    - /var/lib/hadoop/data/i
+    - /var/lib/hadoop/data/j
+    - /var/lib/hadoop/data/k
+    - /var/lib/hadoop/data/l
+    - /var/lib/hadoop/data/m
+
+cdh::hadoop::net_topology_script_template: 'role/analytics_cluster/hadoop/net-topology.py.erb'
+
+# Increase NameNode heapsize independent from other daemons
+cdh::hadoop::namenode_opts: "-Xmx4096m"
+
+# Ensure that users in these groups have home directories in HDFS.
+cdh::hadoop::hadoop_users_posix_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
+
+cdh::hadoop::mapreduce_reduce_shuffle_parallelcopies: 10
+cdh::hadoop::mapreduce_task_io_sort_mb: 200
+cdh::hadoop::mapreduce_task_io_sort_factor: 10
+
+# NOTE: Hadoop Memory Settings are configured in the
+# role::analytics_cluster::hadoop::client class.
+# Many of these settings are configured programatically.
+
+cdh::hive::metastore_host: analytics1027.eqiad.wmnet
+cdh::oozie::oozie_host: analytics1027.eqiad.wmnet
+
+# Don't auto create Hue users from LDAP in production.
+cdh::hue::ldap_create_users_on_login: false
