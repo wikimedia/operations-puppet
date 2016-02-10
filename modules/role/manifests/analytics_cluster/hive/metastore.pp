@@ -2,7 +2,7 @@
 # Sets up Hive Metastore service
 #
 class role::analytics_cluster::hive::metastore {
-    system::role { 'role::analytics_cluster::hive::metastore':
+    system::role { 'analytics_cluster::hive::metastore':
         description => 'hive-metastore service',
     }
     require role::analytics_cluster::hive::client

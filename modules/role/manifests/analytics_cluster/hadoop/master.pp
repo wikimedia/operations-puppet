@@ -2,7 +2,7 @@
 # Includes cdh::hadoop::master classes
 #
 class role::analytics_cluster::hadoop::master {
-    system::role { 'role::analytics_cluster::hadoop::master':
+    system::role { 'analytics_cluster::hadoop::master':
         description => 'Hadoop Master (NameNode & ResourceManager)',
     }
 

@@ -2,7 +2,7 @@
 # Include standby NameNode classes
 #
 class role::analytics_cluster::hadoop::standby {
-    system::role { 'role::analytics_cluster::hadoop::standby':
+    system::role { 'analytics_cluster::hadoop::standby':
         description => 'Hadoop Standby NameNode',
     }
     require role::analytics_cluster::hadoop::client

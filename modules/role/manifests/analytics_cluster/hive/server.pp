@@ -2,7 +2,7 @@
 # Sets up Hive Server2
 #
 class role::analytics_cluster::hive::server {
-    system::role { 'role::analytics_cluster::hive::server':
+    system::role { 'analytics_cluster::hive::server':
         description => 'hive-server2 service',
     }
     require role::analytics_cluster::hive::client

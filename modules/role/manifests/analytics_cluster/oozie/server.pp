@@ -3,7 +3,7 @@
 # Make sure you set hiera variables for cdh::oozie::server appropriately,
 # especially if you are hosting
 class role::analytics_cluster::oozie::server {
-    system::role { 'role::analytics_cluster::oozie::server':
+    system::role { 'analytics_cluster::oozie::server':
         description => 'Oozie Server',
     }
     require role::analytics_cluster::oozie::client

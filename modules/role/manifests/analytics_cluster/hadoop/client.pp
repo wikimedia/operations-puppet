@@ -2,8 +2,8 @@
 # Installs Hadoop client pacakges and configuration.
 #
 class role::analytics_cluster::hadoop::client {
-    # need java before hadoop is installed
-    require_package('openjdk-7-jdk')
+    # Need Java before Hadoop is installed.
+    require role::analytics_cluster::java
 
     $hadoop_var_directory                     = '/var/lib/hadoop'
     $hadoop_name_directory                    = "${hadoop_var_directory}/name"
