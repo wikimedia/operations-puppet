@@ -111,12 +111,20 @@ class otrs(
         source => 'puppet:///modules/otrs/idle_agent_report',
     }
 
+    # WMF skin customizations
     file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/icons/product.ico':
         ensure => 'file',
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0664',
         source => 'puppet:///modules/otrs/wmf.ico',
+    }
+    file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/logo_bg_wmf.png':
+        ensure => 'file',
+        owner  => 'otrs',
+        group  => 'www-data',
+        mode   => '0664',
+        source => 'puppet:///modules/otrs/logo_bg_wmf.png',
     }
 
     # TODO: Remove the safeguard once we are jessie only
