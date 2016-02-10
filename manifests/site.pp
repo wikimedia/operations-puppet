@@ -2307,8 +2307,9 @@ node 'rutherfordium.eqiad.wmnet' {
 # But, we are likely going to split them into different boxes soon.
 node 'ruthenium.eqiad.wmnet' {
     role testsystem,
-        parsoid::testing, parsoid_rt_server, parsoid_rt_client,
-        parsoid_vd_server, parsoid_vd_client
+        parsoid::testing, parsoid::rt_server, parsoid::rt_client,
+        parsoid::vd_server, parsoid::vd_client
+
 }
 
 # salt master fallback
