@@ -1,12 +1,12 @@
 # == Class role::analytics::hadoop::worker
 # Includes cdh::hadoop::worker classes
-class role::analytics_new::hadoop::worker {
+class role::analytics_cluster::hadoop::worker {
     system::role { 'role::analytics::hadoop::worker':
         description => 'Hadoop Worker (DataNode & NodeManager)',
     }
 
-    require role::analytics_new::hadoop::client
-    include role::analytics_new::monitoring::disks
+    require role::analytics_cluster::hadoop::client
+    include role::analytics_cluster::monitoring::disks
 
     class { 'cdh::hadoop::worker': }
 
@@ -40,7 +40,7 @@ class role::analytics_new::hadoop::worker {
         # Make sure that this worker node has NodeManager running in a RUNNING state.
         # Install a custom check command for NodeManager Node-State:
         file { '/usr/local/lib/nagios/plugins/check_hadoop_yarn_node_state':
-            source => 'puppet:///modules/role/analytics_new/hadoop/check_hadoop_yarn_node_state',
+            source => 'puppet:///modules/role/analytics_cluster/hadoop/check_hadoop_yarn_node_state',
             owner  => 'root',
             group  => 'root',
             mode   => '0755',
@@ -55,7 +55,7 @@ class role::analytics_new::hadoop::worker {
     # hive-hcatalog package.  hive-catalog depends
     # on hive package, so we might as well
     # configure hive too.
-    include role::analytics_new::hive::client
+    include role::analytics_cluster::hive::client
 
     # Install MaxMind databases for geocoding UDFs
     include geoip

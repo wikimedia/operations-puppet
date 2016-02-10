@@ -1,11 +1,11 @@
-# == Class role::analytics::hive::metastore
+# == Class role::analytics_cluster::hive::metastore
 # Sets up Hive Metastore service
 #
-class role::analytics_new::hive::metastore {
-    system::role { 'role::analytics::hive::metastore':
+class role::analytics_cluster::hive::metastore {
+    system::role { 'role::analytics_cluster::hive::metastore':
         description => 'hive-metastore service',
     }
-    require role::analytics_new::hive::client
+    require role::analytics_cluster::hive::client
 
     # Setup hive-metastore
     class { 'cdh::hive::metastore': }

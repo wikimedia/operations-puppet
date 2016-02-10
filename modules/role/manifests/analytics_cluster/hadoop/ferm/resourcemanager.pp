@@ -1,6 +1,6 @@
-# == Class role::analytics::hadoop::ferm::resourcemanager
+# == Class role::analytics_cluster::hadoop::ferm::resourcemanager
 #
-class role::analytics_new::hadoop::ferm::resourcemanager {
+class role::analytics_cluster::hadoop::ferm::resourcemanager {
 
     ferm::service{ 'hadoop-yarn-resourcemanager-scheduler':
         proto  => 'tcp',

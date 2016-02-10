@@ -1,18 +1,18 @@
-# == Class role::analytics::oozie::server::database
-# Includes the role::analytics::database::meta class
+# == Class role::analytics_cluster::oozie::server::database
+# Includes the role::analytics_cluster::database::meta class
 # to install a database for analytics cluster meta data,
 # includes the cdh::oozie::database::mysql
 # to ensure that the hive_metastore database is created,
 # and then finally ensures grants and permissions are
 # set so that configured hosts can properly connect to this database.
 #
-class role::analytics_new::oozie::server::database {
+class role::analytics_cluster::oozie::server::database {
     # Install a database server (MariaDB)
-    require role::analytics_new::database::meta
+    require role::analytics_cluster::database::meta
 
     # Ensure that the oozie db is created.
     class { 'cdh::oozie::database::mysql':
-        require => Class['role::analytics_new::database::meta'],
+        require => Class['role::analytics_cluster::database::meta'],
     }
 
     # cdh::oozie::database::mysql only ensures that

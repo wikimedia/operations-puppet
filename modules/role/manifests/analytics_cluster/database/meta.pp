@@ -1,7 +1,7 @@
-# == Class role::analytics::database::meta
+# == Class role::analytics_cluster::database::meta
 # Installs a MySQL/MariaDB server for use with Hive and Oozie
 #
-class role::analytics_new::database::meta {
+class role::analytics_cluster::database::meta {
     # Some CDH database init scripts need Java to run.
     require_package('openjdk-7-jdk')
 

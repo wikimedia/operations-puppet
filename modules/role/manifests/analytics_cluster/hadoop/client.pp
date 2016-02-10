@@ -1,7 +1,7 @@
 # == Class role::analytics::hadoop::client
 # Installs Hadoop client pacakges and configuration.
 #
-class role::analytics_new::hadoop::client {
+class role::analytics_cluster::hadoop::client {
     # need java before hadoop is installed
     require_package('openjdk-7-jdk')
 
@@ -41,7 +41,7 @@ class role::analytics_new::hadoop::client {
         dfs_datanode_hdfs_blocks_metadata_enabled   => true,
 
         # Use fair-scheduler.xml.erb to define FairScheduler queues.
-        fair_scheduler_template                     => 'role/analytics_new/hadoop/fair-scheduler.xml.erb',
+        fair_scheduler_template                     => 'role/analytics_cluster/hadoop/fair-scheduler.xml.erb',
 
         # Yarn App Master possible port ranges
         yarn_app_mapreduce_am_job_client_port_range => '55000-55199',

@@ -1,13 +1,13 @@
-# == Class role::analytics::hadoop::master
+# == Class role::analytics_cluster::hadoop::master
 # Includes cdh::hadoop::master classes
 #
-class role::analytics_new::hadoop::master {
-    system::role { 'role::analytics::hadoop::master':
+class role::analytics_cluster::hadoop::master {
+    system::role { 'role::analytics_cluster::hadoop::master':
         description => 'Hadoop Master (NameNode & ResourceManager)',
     }
 
-    require role::analytics_new::hadoop::client
-    include role::analytics_new::monitoring::disks
+    require role::analytics_cluster::hadoop::client
+    include role::analytics_cluster::monitoring::disks
 
     class { 'cdh::hadoop::master': }
 
@@ -87,6 +87,6 @@ class role::analytics_new::hadoop::master {
     }
 
     # Firewall
-    include role::analytics_new::hadoop::ferm::namenode
-    include role::analytics_new::hadoop::ferm::resourcemanager
+    include role::analytics_cluster::hadoop::ferm::namenode
+    include role::analytics_cluster::hadoop::ferm::resourcemanager
 }

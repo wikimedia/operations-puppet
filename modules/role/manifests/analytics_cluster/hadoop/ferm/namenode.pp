@@ -1,6 +1,6 @@
-# == Class role::analytics::hadoop::ferm::namenode
+# == Class role::analytics_cluster::hadoop::ferm::namenode
 #
-class role::analytics_new::hadoop::ferm::namenode {
+class role::analytics_cluster::hadoop::ferm::namenode {
     ferm::service{ 'hadoop-hdfs-namenode':
         proto  => 'tcp',
         port   => '8020',

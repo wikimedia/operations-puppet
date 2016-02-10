@@ -1,17 +1,17 @@
-# == Class role::analytics::hive::metastore::database
-# Includes the role::analytics::database::meta class
+# == Class role::analytics_cluster::hive::metastore::database
+# Includes the role::analytics_cluster::database::meta class
 # to install a database for analytics cluster meta data,
 # includes the cdh::hive::metastore::mysql
 # to ensure that the hive_metastore database is created,
 # and then finally ensures grants and permissions are
 # set so that configured hosts can properly connect to this database.
 #
-class role::analytics_new::hive::metastore::database {
+class role::analytics_cluster::hive::metastore::database {
     # Install a database server (MariaDB)
-    require role::analytics_new::database::meta
+    require role::analytics_cluster::database::meta
     # Need to have hive package installed to
     # get /usr/lib/hive/bin/schematool.
-    # require role::analytics_new::hive::client
+    # require role::analytics_cluster::hive::client
 
     # Ensure that the hive_metastore db is created.
     # TODO: In CDH 5.4,
@@ -23,7 +23,7 @@ class role::analytics_new::hive::metastore::database {
 
 
     class { 'cdh::hive::metastore::mysql':
-        require => Class['role::analytics_new::database::meta'],
+        require => Class['role::analytics_cluster::database::meta'],
     }
 
     # cdh::hive::metastore::mysql only ensures that

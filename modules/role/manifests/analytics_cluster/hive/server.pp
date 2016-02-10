@@ -1,11 +1,11 @@
-# == Class role::analytics::hive::server
+# == Class role::analytics_cluster::hive::server
 # Sets up Hive Server2
 #
-class role::analytics_new::hive::server {
-    system::role { 'role::analytics::hive::server':
+class role::analytics_cluster::hive::server {
+    system::role { 'role::analytics_cluster::hive::server':
         description => 'hive-server2 service',
     }
-    require role::analytics_new::hive::client
+    require role::analytics_cluster::hive::client
 
     # Setup hive-server
     class { 'cdh::hive::server': }

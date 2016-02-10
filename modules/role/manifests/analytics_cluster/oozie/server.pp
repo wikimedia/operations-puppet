@@ -1,12 +1,12 @@
-# == Class role::analytics::oozie::server
+# == Class role::analytics_cluster::oozie::server
 # Installs Oozie server
 # Make sure you set hiera variables for cdh::oozie::server appropriately,
 # especially if you are hosting
-class role::analytics_new::oozie::server {
-    system::role { 'role::analytics::oozie::server':
+class role::analytics_cluster::oozie::server {
+    system::role { 'role::analytics_cluster::oozie::server':
         description => 'Oozie Server',
     }
-    require role::analytics_new::oozie::client
+    require role::analytics_cluster::oozie::client
 
     # cdh::oozie::server will ensure that its MySQL DB is
     # properly initialized.  For puppet to do this,

@@ -1,8 +1,8 @@
-# == Class role::analytics::hive::client
+# == Class role::analytics_cluster::hive::client
 # Installs base configs and packages for hive client nodes.
 #
-class role::analytics_new::hive::client {
-    require role::analytics_new::hadoop::client
+class role::analytics_cluster::hive::client {
+    require role::analytics_cluster::hadoop::client
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
     # Automatically include this in Hive client classpaths.
@@ -11,8 +11,8 @@ class role::analytics_new::hive::client {
     # TODO Remove this: https://phabricator.wikimedia.org/T114769
     # If refinery is included on this node, then add
     # refinery-hive.jar to the auxpath as well
-    if defined(Class['role::analytics::refinery']) {
-        $auxpath = "${hcatalog_jar},file://${::role::analytics::refinery::path}/artifacts/refinery-hive.jar"
+    if defined(Class['role::analytics_cluster::refinery']) {
+        $auxpath = "${hcatalog_jar},file://${::role::analytics_cluster::refinery::path}/artifacts/refinery-hive.jar"
     }
     else {
         $auxpath = $hcatalog_jar

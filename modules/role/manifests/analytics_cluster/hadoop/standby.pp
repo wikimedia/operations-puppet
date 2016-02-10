@@ -1,12 +1,12 @@
-# == Class role::analytics::hadoop::standby
+# == Class role::analytics_cluster::hadoop::standby
 # Include standby NameNode classes
 #
-class role::analytics_new::hadoop::standby {
-    system::role { 'role::analytics::hadoop::standby':
+class role::analytics_cluster::hadoop::standby {
+    system::role { 'role::analytics_cluster::hadoop::standby':
         description => 'Hadoop Standby NameNode',
     }
-    require role::analytics_new::hadoop::client
-    include role::analytics_new::monitoring::disks
+    require role::analytics_cluster::hadoop::client
+    include role::analytics_cluster::monitoring::disks
 
     class { 'cdh::hadoop::namenode::standby': }
 
@@ -27,7 +27,7 @@ class role::analytics_new::hadoop::standby {
     }
 
     # Firewall
-    include role::analytics_new::hadoop::ferm::namenode
+    include role::analytics_cluster::hadoop::ferm::namenode
 
     # If this is a resourcemanager host, then go ahead
     # and include a resourcemanager on all standby nodes as well
@@ -35,7 +35,7 @@ class role::analytics_new::hadoop::standby {
     if $::fqdn in $::cdh::hadoop::resourcemanager_hosts {
         include cdh::hadoop::resourcemanager
         # Firewall
-        include role::analytics_new::hadoop::ferm::resourcemanager
+        include role::analytics_cluster::hadoop::ferm::resourcemanager
     }
 
 }
