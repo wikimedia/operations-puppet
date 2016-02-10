@@ -4,7 +4,7 @@ set -e
 set -u
 
 echo 'Updating deploy repo checkout ...'
-cd /usr/lib/parsoid
+cd /srv/parsoid
 git pull
 echo 'Updating parsoid repo checkout ...'
 cd src
