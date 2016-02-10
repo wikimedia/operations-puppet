@@ -39,6 +39,8 @@ class role::labs::openstack::nova::manager {
     system::role { $name: }
     include ::nutcracker::monitoring
     include ::mediawiki::packages::php5
+    include ::mediawiki::packages::math
+    include ::mediawiki::packages::tex
     include ::mediawiki::cgroup
     include ::scap::scripts
 
