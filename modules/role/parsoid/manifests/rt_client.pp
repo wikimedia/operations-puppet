@@ -1,5 +1,5 @@
 # This instantiates testreduce::client
-class role::parsoid_rt_client {
+class role::parsoid::rt_client {
     include ::testreduce
 
     file { '/srv/parsoid/src/tests/testreduce/parsoid-rt-client.rttest.localsettings.js':
