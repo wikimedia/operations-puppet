@@ -3,7 +3,7 @@
 class pybal::confd {
 
     file { '/etc/pybal/pools':
-        ensure => directory,
+        ensure  => directory,
         require => Package[pybal],
     }
 
