@@ -1,3 +1,4 @@
 debdeploy::grains:
   debdeploy-cp:
     value: canary
+tlsproxy::localssl::keepalives_per_worker: 1
