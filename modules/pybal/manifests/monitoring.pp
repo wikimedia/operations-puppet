@@ -10,11 +10,11 @@ class pybal::monitoring {
     }
 
     file { '/usr/local/lib/nagios/plugins/check_pybal':
-        ensure  => present,
-        source  => 'puppet:///modules/pybal/check_pybal',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+        ensure => present,
+        source => 'puppet:///modules/pybal/check_pybal',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     nrpe::monitor_service { 'pybal_backends':
