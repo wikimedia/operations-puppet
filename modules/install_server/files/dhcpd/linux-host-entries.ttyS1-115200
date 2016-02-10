@@ -2483,11 +2483,6 @@ host install2001 {
 	fixed-address install2001.wikimedia.org;
 }
 
-host iodine {
-	hardware ethernet 90:B1:1C:00:A9:D5;
-	fixed-address iodine.wikimedia.org;
-}
-
 host iridium {
 	hardware ethernet f0:1f:af:e8:c5:27;
 	fixed-address iridium.eqiad.wmnet;
