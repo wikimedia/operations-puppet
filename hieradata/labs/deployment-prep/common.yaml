@@ -29,6 +29,28 @@ graphoid::domains:
   - wikivoyage.org
   - wiktionary.org
 graphoid::protocol: http
+graphoid::allowed_domains:
+  http:
+    - wmflabs.org
+  https:
+    - mediawiki.org
+    - wikibooks.org
+    - wikidata.org
+    - wikimedia.org
+    - wikimediafoundation.org
+    - wikinews.org
+    - wikipedia.org
+    - wikiquote.org
+    - wikisource.org
+    - wikiversity.org
+    - wikivoyage.org
+    - wiktionary.org
+  wikirawupload:
+    - upload.wikimedia.org
+    - upload.beta.wmflabs.org
+  wikidatasparql:
+    - query.wikidata.org
+    - wdqs-test.wmflabs.org
 lvs::configuration::lvs_services:
   apaches:
     description: "Main MediaWiki application server cluster"

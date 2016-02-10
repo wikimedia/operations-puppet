@@ -31,6 +31,24 @@ graphoid::domains:
 - wikiversity.org
 - wikivoyage.org
 - wiktionary.org
+graphoid::allowed_domains:
+  https:
+    - mediawiki.org
+    - wikibooks.org
+    - wikidata.org
+    - wikimedia.org
+    - wikimediafoundation.org
+    - wikinews.org
+    - wikipedia.org
+    - wikiquote.org
+    - wikisource.org
+    - wikiversity.org
+    - wikivoyage.org
+    - wiktionary.org
+  wikirawupload:
+    - upload.wikimedia.org
+  wikidatasparql:
+    - query.wikidata.org
 debdeploy::grains:
   debdeploy-scb:
     value: standard
