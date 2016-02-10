@@ -16,12 +16,20 @@ ExecStart=/usr/sbin/varnishd \
 -a <%= @ports.map { |p| ":"+p }.join(",") -%> \
 -T 127.0.0.1:<%= @admin_port -%> \
 -f /etc/varnish/wikimedia_<%= @vcl -%>.vcl \
+<% if @varnish_version4 -%>
+-p thread_pool_min=250 -p thread_pool_max=<%= @processorcount.to_i * 250 -%> -p thread_pool_timeout=120 \
+-p vsl_reclen=2048 \
+<% else -%>
 -w 250,<%= @processorcount.to_i * 250 -%>,120 \
+-p shm_reclen=2048 \
+-p user=varnish \
+-p shm_workspace=16384 \
+<% end -%>
 -S /etc/varnish/secret \
 <%= @storage -%> \
--p user=varnish -p thread_pool_add_delay=1 -p thread_pool_stack=131072 \
+-p thread_pool_add_delay=1 -p thread_pool_stack=131072 \
 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off \
--p nuke_limit=300 -p shm_workspace=16384 -p shm_reclen=2048 \
+-p nuke_limit=300 \
 -p http_req_size=24576 \
 <%= @runtime_params -%> \
 <%= @extraopts -%> \
