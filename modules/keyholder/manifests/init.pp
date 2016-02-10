@@ -101,10 +101,10 @@ class keyholder {
 
     file { '/etc/init/keyholder-proxy.conf':
         source => 'puppet:///modules/keyholder/keyholder-proxy.conf',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Service['keyholder-proxy'],
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        notify => Service['keyholder-proxy'],
     }
 
     service { 'keyholder-proxy':
