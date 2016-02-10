@@ -3,7 +3,7 @@
 #
 class role::analytics_cluster::database::meta {
     # Some CDH database init scripts need Java to run.
-    require role::analytics_cluster::java
+    require_package('openjdk-7-jdk')
 
     class { 'mariadb::packages_wmf':
         mariadb10 => true

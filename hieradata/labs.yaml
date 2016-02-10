@@ -60,9 +60,3 @@ apt::use_proxy: false
 
 # By default, nag project admins about puppet breakage
 send_puppet_failure_emails: true
-
-
-# For any Analytics Cluster in labs:
-"cdh::hadoop::datanode_mounts":
-    - /var/lib/hadoop/data/a
-    - /var/lib/hadoop/data/b
