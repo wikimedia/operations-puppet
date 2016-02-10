@@ -126,7 +126,7 @@ class otrs(
         mode   => '0664',
         source => 'puppet:///modules/otrs/logo_bg_wmf.png',
     }
-    file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/loginlogo_default.png':
+    file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/loginlogo_wmf.png':
         ensure => 'file',
         owner  => 'otrs',
         group  => 'www-data',
