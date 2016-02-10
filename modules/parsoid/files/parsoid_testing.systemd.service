@@ -9,9 +9,9 @@ LimitNOFILE=10000
 
 # Start up 8 workers bound to port 8142
 # This parsoid instance is going to be used by testreduce clients
-Environment=PORT=8142 NODE_PATH=/usr/lib/parsoid/node_modules
-WorkingDirectory=/usr/lib/parsoid/src
-ExecStart=/usr/bin/nodejs bin/server.js -n 8 -c /usr/lib/parsoid/src/localsettings.js
+Environment=PORT=8142 NODE_PATH=/srv/parsoid/node_modules
+WorkingDirectory=/srv/parsoid/src
+ExecStart=/usr/bin/nodejs bin/server.js -n 8 -c /srv/parsoid/src/localsettings.js
 StandardInput=null
 StandardOutput=journal
 StandardError=journal
