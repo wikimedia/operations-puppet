@@ -18,6 +18,19 @@
 # [*user*]
 #   The camus cron will be run by this user.
 #
+# [*camus_jar*]
+#   Path to camus.jar.  Default undef,
+#   (/srv/deployment/analytics/refinery/artifacts/camus-wmf.jar)
+#
+# [*check*]
+#   If true, CamusPartitionChecker will be run after the Camus run finishes.
+#   Default: undef, (false)
+#
+# [*check_jar*]
+#   Path to jar with CamusPartitionChecker.  This is ignored if
+#   $check is false.  Default: undef,
+#   (/srv/deployment/analytics/refinery/artifacts/refinery-job.jar)
+#
 # [*libjars*]
 #    Any additional jar files to pass to Hadoop when starting the MapReduce job.
 #
@@ -39,8 +52,10 @@ define camus::job (
     $kafka_brokers,
     $script             = '/srv/deployment/analytics/refinery/bin/camus',
     $user               = 'hdfs',
-    $libjars            = undef,
+    $camus_jar          = undef,
     $check              = undef,
+    $check_jar          = undef,
+    $libjars            = undef,
     $template           = "camus/${title}.erb",
     $template_variables = {},
     $hour               = undef,
@@ -59,6 +74,11 @@ define camus::job (
         content => template($template),
     }
 
+    $camus_jar_opt = $camus_jar ? {
+        undef   => '',
+        default => "--jar ${camus_jar}",
+    }
+
     $libjars_opt = $libjars ? {
         undef   => '',
         default => "--libjars ${libjars}",
@@ -66,10 +86,13 @@ define camus::job (
 
     $check_opt = $check ? {
         undef   => '',
-        default => '--check',
+        default => $check_jar ? {
+            undef   => '--check',
+            default => "--check --check-jar ${check_jar}",
+        }
     }
 
-    $command = "${script} --run --job-name camus-${title} ${libjars_opt} ${check_opt} ${properties_file} >> ${log_file} 2>&1"
+    $command = "${script} --run --job-name camus-${title} ${camus_jar_opt} ${libjars_opt} ${check_opt} ${properties_file} >> ${log_file} 2>&1"
 
     cron { "camus-${title}":
         command  => $command,
