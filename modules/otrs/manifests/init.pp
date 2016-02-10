@@ -126,6 +126,13 @@ class otrs(
         mode   => '0664',
         source => 'puppet:///modules/otrs/logo_bg_wmf.png',
     }
+    file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/loginlogo_default.png':
+        ensure => 'file',
+        owner  => 'otrs',
+        group  => 'www-data',
+        mode   => '0664',
+        source => 'puppet:///modules/otrs/loginlogo_default_wmf.png',
+    }
 
     # TODO: Remove the safeguard once we are jessie only
     # NOTE: We couple the move to 4.0.x OTRS with the move to jessie, since that
