@@ -1918,10 +1918,7 @@ node /^ms-be20(1[6-9]|2[0-1])\.codfw\.wmnet$/ {
 # mw1001-1016 are jobrunners
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
     role mediawiki::jobrunner
-
-    if $::hostname == 'mw1010' {
-        include base::firewall
-    }
+    include base::firewall
 }
 
 # mw1017-mw1025 are canary appservers
