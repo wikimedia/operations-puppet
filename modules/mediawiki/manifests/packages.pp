@@ -1,5 +1,7 @@
 class mediawiki::packages {
     include ::mediawiki::packages::php5
+    include ::mediawiki::packages::math
+    include ::mediawiki::packages::tex
     require ::apt
 
     package { [
@@ -16,34 +18,6 @@ class mediawiki::packages {
         'php-pear',
         'php-mail',
         'php-mail-mime',
-    ]:
-        ensure => present,
-    }
-
-    # TeX packages
-    package { [
-        'texlive',
-        'texlive-bibtex-extra',
-        'texlive-font-utils',
-        'texlive-fonts-extra',
-        'texlive-lang-all',
-        'texlive-latex-extra',
-        'texlive-math-extra',
-        'texlive-pictures',
-        'texlive-pstricks',
-        'texlive-publishers',
-    ]:
-        ensure => present,
-    }
-
-    # Math
-    package { [
-        'dvipng',
-        'gsfonts',
-        'make',
-        'ocaml',
-        'ploticus',
-        'mediawiki-math-texvc',
     ]:
         ensure => present,
     }
