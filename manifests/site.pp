@@ -1952,6 +1952,7 @@ node 'mw1152.eqiad.wmnet' {
     role mediawiki::maintenance, mariadb::maintenance, mediawiki::generic_monitoring
     include role::noc
     include standard
+    include base::firewall
     include ldap::role::client::labs
 }
 
