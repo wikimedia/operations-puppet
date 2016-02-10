@@ -2,38 +2,41 @@
 <!-- This file is maintained by puppet!! -->
 <!-- modules/dataset/files/html/pagecounts-ez_index.html -->
     <head>
-        <title>Wikistats files</title>
+        <title>Wikistats pageview files</title>
     </head>
     <body bgcolor="#ffffff">
-        <h1>Wikistats files</h1>
-        <b>Maintained by Erik Zachte</b>
+        <h1>Wikistats pageview files</h1>
+        <b>Maintained by WMF Analytics</b>
         <p>
-                  <a href="merged/">
-                    Hourly page views per article</a>
-                  for around 30 million article titles
-                  (Sept 2013) in around 800+ Wikimedia wikis. Repackaged (with extreme
-                  shrinkage, without losing granularity), corrected, reformatted. Daily
-                  files and two monthly files (see notes below).
-                </p>
+            <a href="merged/">Hourly page views per article</a>
+            for around 30 million article titles (Sept 2013) in around 800+ Wikimedia wikis.
+            Repackaged (with extreme shrinkage, without losing granularity), corrected, reformatted.
+            Daily files and two monthly files (see notes below).
+        </p>
         <p>
-                  <a href="projectcounts/">
-                    Hourly page views per wiki</a>
-                  , corrected for site outages and underreporting. Also repackaged,
-                  as one tar file per year.
-                </p>
+            <a href="projectcounts/">Hourly page views per wiki</a>,
+            corrected for site outages and underreporting. Also repackaged, as one tar file per year.
+        </p>
         <p>
-                  <a href="wikistats/">
-                    Raw data</a>
-                 for reports at <a href='https://stats.wikimedia.org/'>stats.wikimedia.org</a>.
-                </p>
+            <a href="wikistats/">Raw data</a> for reports at
+            <a href='https://stats.wikimedia.org/'>stats.wikimedia.org</a>.
+        </p>
         <hr />
         <p><b>Notes for hourly page views</b></p>
         <p>
-                  Both sets of hourly files have been derived from Domas'
-                  <a href="/other/pagecounts-raw/">
-                    pagecount/projectcount files</a>
-                  but the format is different.
-                </p>
+            Both sets of hourly files are derived from the best data available
+            at the time:
+            <ul>
+                <li>From 2007 to May 2015: derived from Domas'
+                    <a href="/other/pagecounts-raw/">pagecount/projectcount files</a>
+                </li>
+                <li>From May 2015 onward: derived from files generated with the
+                    <a href="//meta.wikimedia.org/wiki/Research:Page_view">new Pageview Definition</a>.
+                    Available separately as
+                    <a href="/other/pageviews">pageview/projectview files</a>
+                </li>
+            </ul>
+        </p>
         <p>
                   The huge hourly files for page views per article per wiki
                   have been massively compressed by merging 720 files per month,
