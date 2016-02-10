@@ -19,7 +19,7 @@ class role::parsoid::common {
         owner  => root,
         group  => root,
         mode   => '0555',
-        source => 'puppet:///files/misc/parsoid',
+        source => 'puppet:///modules/parsoid/parsoid',
     }
 
     ferm::service { 'parsoid':
@@ -65,7 +65,7 @@ class role::parsoid::production {
         owner  => root,
         group  => root,
         mode   => '0444',
-        source => 'puppet:///files/misc/parsoid.upstart',
+        source => 'puppet:///modules/parsoid/parsoid.upstart',
     }
 
     file { '/var/log/parsoid':
@@ -88,7 +88,7 @@ class role::parsoid::production {
         owner   => root,
         group   => root,
         mode    => '0444',
-        content => template('misc/parsoid.default.erb'),
+        content => template('parsoid/parsoid.default.erb'),
         require => File['/var/log/parsoid'],
     }
 
@@ -97,7 +97,7 @@ class role::parsoid::production {
         owner   => root,
         group   => root,
         mode    => '0444',
-        content => template('misc/parsoid.logrotate.erb'),
+        content => template('parsoid/parsoid.logrotate.erb'),
     }
 
     cron { 'parsoid-hourly-logrot':
@@ -191,7 +191,7 @@ class role::parsoid::beta {
         owner  => root,
         group  => root,
         mode   => '0444',
-        source => 'puppet:///files/misc/parsoid.upstart',
+        source => 'puppet:///modules/parsoid/parsoid.upstart',
     }
 
     $parsoid_log_file = '/data/project/parsoid/parsoid.log'
@@ -220,7 +220,7 @@ class role::parsoid::beta {
         owner   => root,
         group   => root,
         mode    => '0444',
-        content => template('misc/parsoid.default.erb'),
+        content => template('parsoid/parsoid.default.erb'),
         require => File['/data/project/parsoid'],
     }
 
@@ -229,7 +229,7 @@ class role::parsoid::beta {
         owner   => root,
         group   => root,
         mode    => '0444',
-        content => template('misc/parsoid.logrotate.erb'),
+        content => template('parsoid/parsoid.logrotate.erb'),
     }
 
     service { 'parsoid':
@@ -290,7 +290,7 @@ class role::parsoid::testing {
     }
 
     file { '/lib/systemd/system/parsoid.service':
-        source => 'puppet:///files/misc/parsoid_testing.systemd.service',
+        source => 'puppet:///modules/parsoid/parsoid_testing.systemd.service',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -306,7 +306,7 @@ class role::parsoid::testing {
     }
 
     file { '/usr/local/bin/update_parsoid.sh':
-        source => 'puppet:///files/misc/parsoid_testing.update_parsoid.sh',
+        source => 'puppet:///modules/parsoid/parsoid_testing.update_parsoid.sh',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
