@@ -1,9 +1,10 @@
 class dataset::html(
-    $public       = true,
-    $other        = true,
-    $archive      = true,
-    $poty         = true,
-    $pagecounts_ez = true
+    $public         = true,
+    $other          = true,
+    $archive        = true,
+    $poty           = true,
+    $pagecounts_ez  = true,
+    $analytics      = true,
     ) {
 
     include dataset::dirs
@@ -26,6 +27,16 @@ class dataset::html(
             owner  => 'root',
             group  => 'root',
             source => 'puppet:///modules/dataset/html/pagecounts-ez_index.html',
+        }
+    }
+    if ($analytics) {
+        file { "${dataset::dirs::publicdir}/analytics/index.html":
+            ensure => 'present',
+            path   => "${dataset::dirs::publicdir}/analytics/index.html",
+            mode   => '0644',
+            owner  => 'root',
+            group  => 'root',
+            source => 'puppet:///modules/dataset/html/analytics_index.html',
         }
     }
     if ($poty) {
