@@ -57,9 +57,15 @@ class role::analytics::refinery::camus {
     require role::analytics::refinery
     include role::kafka::analytics::config
 
-    # Make all uses of camus::job set kafka_brokers to this
+    # Make all uses of camus::job set default kafka_brokers and camus_jar.
+    # If you build a new camus or refinery, and you want to use it, you'll
+    # need to change these.  You can also override these defaults
+    # for a particular camus::job instance by setting the parameter on
+    # the camus::job declaration.
     Camus::Job {
-        kafka_brokers => suffix($role::kafka::analytics::config::brokers_array, ':9092')
+        kafka_brokers => suffix($role::kafka::analytics::config::brokers_array, ':9092'),
+        camus_jar     => "${role::analytics::refinery::path}/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf6.jar",
+        check_jar     => "${role::analytics::refinery::path}/org/wikimedia/analytics/refinery/refinery-job-0.0.26.jar",
     }
 
     # Import webrequest_* topics into /wmf/data/raw/webrequest
