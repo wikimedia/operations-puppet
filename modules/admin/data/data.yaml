@@ -610,7 +610,7 @@ users:
     gid: 500
     name: cmjohnson
     realname: Chris Johnson
-    ssh_keys: 
+    ssh_keys:
          - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7y4rw4Np/Xy1MgQYx6dciv+vszegmZjZbh5p7PHdddLI+8wDM2Q7tz+ghm6PkKuUlcwK99fD2ixlb8FoBrznUABTEmaSMBdSIhXS2J81mJ5ycrCeb/+bG9YQ8e1sABjfFSWu07wqUgPZqx6roeduc1fkp9DvH8FasbFZcuPsgkvANwaWm+TTSY8Ik1h7l1bJHIp7iRuLRQ9fZjsZCHD4svfuU3YEyIHKPYmPQFgJn1wyYDKgIbfewcK/rFX43E9Kqd/SpKqapIex1fYWA0/MtbAzVLb3YdX/vWQP6lx4Kwzc6OPzib++RY6bR0zd14IdkGZ2wgwcqR/MRaafotARV cmjohnson@wmf-production
          - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCLJ4mudiOgAavBVrNMDS2udkG5/LjbYsjHKax1Pi9RkGJymyryiz/NKJKZRP7O0uvHXPqTK9TH77hDODZ5UFzYOtznDjHNma71PLP/+nVF+Vgkm+u91HZkLPbxj21AhRNYU55hLUEO8ZU/nx4O4vNuyCcq/vGVpfYt7tOfTR52bMmx7PGWh4ptIj6CvtjHpgHHPkFN+MDDz3PVTo1ZuSVeGPYFOY2ysBJC29t1wk22r6XdyeSP3SBKkd/2/YUW8GAHphs8AaRuzsfX1aYpc1ph4M+2qnvBqbme6OSWLydcIrDWmxjqbJtQWU83I1zE1N0KebD34ZH73ych4TR4jYJN cmjohnson@yubikey
     uid: 2399
@@ -1806,3 +1806,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDLvnP1K5xgv41jpUwPkrRR3mkd4+/3zYtP09/MVueOBKAXj8bzHhLtfy36PoRxdKSl897VohQjJGJB1YLI140B7Uusx2NgCuFQnWgMoYOgR0Qszf1Ncn9MUnYfQCRtTFzZcPEstQzXI7Yov7y4mM8lvjdWWQUxsmlxQWrQ433/BTKIDb9rlThyg6NHeTKIsj0d18+WspoQFqnmxKYozd0W0knoL5OkRX1hMgs0sANUgriZjF1n52QxVptjAodzs29DX7cfNELmTyeKQyMeb6K3voiefjAfAvjOiu4aHoGqjSqU9ACIyxulbx0gGcX9SPY5nNyt2LERhqZyEwoDb873 glederrey@wikimedia.org
     uid: 13593
+  volans:
+    ensure: present
+    gid: 500
+    name: volans
+    realname: Riccardo Coccioli
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC1iu4OcsLv8Nb+sWHDs9RZ4X9mtBpyf+fhJGrbKjFjaXDRVB5h/CXrqsMz8GJH44HJPBj5Gf/4bwvqRy7MLJGwpHjDJv1xeEOc0Oq5Aa/6/k6h8h0tCDWIGw/ghTOX+u9TZBAr4UHnBHjippEi+9G/jougFjQ2Hu9P62yYU69/mqdmXfLV0JnAXZl13vrzrjLyNWvH64tpwly9HLQXFCpxCI5DKUsmeGeJ7N5+o7XKRTDF4+vtCC3Ro3+FnoIzZP8iV+MzDwt4Z51wtmDY3IDl0PBNjI1OjWBrsCaGB6t3nm/5/mq3ggffgcQIXgjYTB6lxjkbYS0tO2oroFopnaVgx65mENIsWaX/YVpI7VOWN5ylVGljkDVZ+iYX7soDOwiBafZyDdQZ9VSNZDvOnt/sbbWCyYWhcreUfXehiNPLKjxugf7LUaXOqePeyg4swKuwQXzyHssdROjNcNScQn8ze0rety9UQwmkEu8TuSSwXBRxUR8uQhtuk9cxUlRw3qs5yljMVcL33JKF7aQ9b84pV2ARqSouD/zAOQSSrjIAdctlAHR5lYmXn1f3Gz5BMgK0vwcgknGsMHAndW/yejYQi8lQGGgq3MCTMcpvf5qJLgCA/myn/C2XQ20snyJg0Ci7lZpQR0r8EZd4kPD3IiYcWlLcLy3aROcnGGZtPl/jkw== rcoccioli@wikimedia.org
+    uid: 14150
