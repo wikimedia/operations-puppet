@@ -4,20 +4,6 @@
 class role::analytics_cluster::hive::client {
     require role::analytics_cluster::hadoop::client
 
-    # The WMF webrequest table uses HCatalog's JSON Serde.
-    # Automatically include this in Hive client classpaths.
-    $hcatalog_jar = 'file:///usr/lib/hive-hcatalog/share/hcatalog/hive-hcatalog-core.jar'
-
-    # TODO Remove this: https://phabricator.wikimedia.org/T114769
-    # If refinery is included on this node, then add
-    # refinery-hive.jar to the auxpath as well
-    if defined(Class['role::analytics_cluster::refinery']) {
-        $auxpath = "${hcatalog_jar},file://${::role::analytics_cluster::refinery::path}/artifacts/refinery-hive.jar"
-    }
-    else {
-        $auxpath = $hcatalog_jar
-    }
-
     # You must set at least:
     #   metastore_host
     class { '::cdh::hive':
@@ -31,7 +17,6 @@ class role::analytics_cluster::hive::client {
         # Set this pretty high, to avoid limiting the number
         # of substitution variables a Hive script can use.
         variable_substitute_depth => 10000,
-        auxpath                   => $auxpath,
         # default to using Snappy for parquet formatted tables
         parquet_compression       => 'SNAPPY',
     }

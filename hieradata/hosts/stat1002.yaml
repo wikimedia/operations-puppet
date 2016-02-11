@@ -1,9 +1,3 @@
-nagios_group: analytics_eqiad
-cluster: analytics
-admin::groups:
-  - analytics-roots
-  - analytics-admins
-
 # The WMF webrequest table uses HCatalog's JSON Serde.
 # Automatically include this in Hive client classpaths.
 # TODO Remove this: https://phabricator.wikimedia.org/T114769
