@@ -1,0 +1,36 @@
+# == Class role::analytics_cluster::refinery::camus
+# Uses camus::job to set up cron jobs to
+# import data from Kafka into Hadoop.
+#
+class role::analytics_cluster::refinery::camus {
+    require role::role::analytics_cluster::refinery
+    include role::kafka::role::analytics::config
+
+    # Make all uses of camus::job set kafka_brokers to this
+    Camus::Job {
+        kafka_brokers => suffix($role::kafka::role::analytics::config::brokers_array, ':9092')
+    }
+
+    # Import webrequest_* topics into /wmf/data/raw/webrequest
+    # every 10 minutes, check runs and flag fully imported hours.
+    camus::job { 'webrequest':
+        check  => true,
+        minute => '*/10',
+    }
+
+    # Import eventlogging_* topics into /wmf/data/raw/eventlogging
+    # once every hour.
+    camus::job { 'eventlogging':
+        minute => '5',
+    }
+
+    # Import mediawiki_* topics into /wmf/data/raw/mediawiki
+    # once every hour.  This data is expected to be Avro binary.
+    camus::job { 'mediawiki':
+        check  => true,
+        minute  => '15',
+        # refinery-camus contains some custom decoder classes which
+        # are needed to import Avro binary data.
+        libjars => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.23.jar",
+    }
+}
