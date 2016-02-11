@@ -10,136 +10,6 @@ class role::analytics_cluster::hadoop::client {
     $hadoop_data_directory                    = "${hadoop_var_directory}/data"
     $hadoop_journal_directory                 = "${hadoop_var_directory}/journal"
 
-    # NOTE: Hadoop Memory Settings are configured here instead of
-    # hiera. Many of these settings are configured programatically and
-    # based on dynamic facter variables.
-    if $::realm == 'production' {
-        # Configure memory based on these recommendations and then adjusted:
-        # http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.0.6.0/bk_installing_manually_book/content/rpm-chap1-11.html
-
-        ### These Map/Reduce and YARN ApplicationMaster master settings are
-        # settable per job, and the defaults when clients submit them are often
-        # picked up from the local versions of the /etc/hadoop/conf/{mapred,yarn}-site.xml files.
-        # That means they should not be set relative to the local node facter variables, and as such
-        # use a hardcoded value of memory_per_container to work from.  Otherwise a job
-        # submitted from a relatively small client node will use bad job defaults.
-        #
-        # We currently run two different types of worker nodes in production.
-        # The older Dells have 48G of RAM, and the newer ones have 64G.
-        #
-        # Using + 0 here ensures that these variables are
-        # integers (Fixnums) and won't throw errors
-        # when used with min()/max() functions.
-
-        # Worker nodes are heterogenous, so I don't want to use a variable
-        # memory per container size across the cluster.  Larger nodes will just
-        # allocate a few more containers.  Setting this to 2G.
-        $memory_per_container_mb                  = 2048 + 0
-
-        # Map container size and JVM max heap size (-XmX)
-        $mapreduce_map_memory_mb                  = floor($memory_per_container_mb)
-        $mapreduce_reduce_memory_mb               = floor(2 * $memory_per_container_mb)
-        $map_jvm_heap_size                        = floor(0.8 * $memory_per_container_mb)
-        # Reduce container size and JVM max heap size (-Xmx)
-        $mapreduce_map_java_opts                  = "-Xmx${map_jvm_heap_size}m"
-        $reduce_jvm_heap_size                     = floor(0.8 * 2 * $memory_per_container_mb)
-        $mapreduce_reduce_java_opts               = "-Xmx${reduce_jvm_heap_size}m"
-
-        # Yarn ApplicationMaster container size and  max heap size (-Xmx)
-        $yarn_app_mapreduce_am_resource_mb        = floor(2 * $memory_per_container_mb)
-        $mapreduce_am_heap_size                   = floor(0.8 * 2 * $memory_per_container_mb)
-        $yarn_app_mapreduce_am_command_opts       = "-Xmx${mapreduce_am_heap_size}m"
-
-        # The amount of RAM for NodeManagers will only be be used by
-        # NodeManager processes running on the worker nodes themselves.
-        # Client nodes that submit jobs will ignore these settings.
-        # These are safe to set relative to the node currently evaluating
-        # puppet's facter variables.
-
-        # Select a 'reserve' memory size for the
-        # OS and other Hadoop processes.
-        if $::memorysize_mb <= 1024 {
-            $reserve_memory_mb = 256
-        }
-        elsif $::memorysize_mb <= 2048 {
-            $reserve_memory_mb = 512
-        }
-        elsif $::memorysize_mb <= 4096 {
-            $reserve_memory_mb = 1024
-        }
-        elsif $::memorysize_mb <= 16384 {
-            $reserve_memory_mb = 2048
-        }
-        elsif $::memorysize_mb <= 24576 {
-            $reserve_memory_mb = 4096
-        }
-        elsif $::memorysize_mb <= 49152 {
-            $reserve_memory_mb = 6144
-        }
-        elsif $::memorysize_mb <= 73728 {
-            $reserve_memory_mb = 8192
-        }
-        elsif $::memorysize_mb <= 98304 {
-            $reserve_memory_mb = 12288
-        }
-        elsif $::memorysize_mb <= 131072 {
-            $reserve_memory_mb = 24576
-        }
-        elsif $::memorysize_mb <= 262144 {
-            $reserve_memory_mb = 32768
-        }
-        else {
-            $reserve_memory_mb = 65536
-        }
-
-        # Memory available for use by Hadoop jobs.
-        $available_memory_mb = $::memorysize_mb - $reserve_memory_mb
-
-        # Since I have chosen a static $memory_per_container of 2048 across all
-        # node sizes, we should just choose to give NodeManagers
-        # $available_memory_mb to work with.
-        # This will give nodes with 48G of memory about 21 containers, and
-        # nodes with 64G memory about 28 containers.
-        #
-        # This is the total amount of memory that NodeManagers
-        # will use for allocation to containers.
-        $yarn_nodemanager_resource_memory_mb      = floor($available_memory_mb)
-
-        # Setting _minimum_allocation_mb to 0 to allow Impala to submit small reservation requests.
-        $yarn_scheduler_minimum_allocation_mb     = 0
-        $yarn_scheduler_maximum_allocation_mb     = $yarn_nodemanager_resource_memory_mb
-        # Setting minimum_allocation_vcores to 0 to allow Impala to submit small reservation requests.
-        $yarn_scheduler_minimum_allocation_vcores = 0
-
-        Class['cdh::hadoop'] {
-            mapreduce_map_memory_mb                     => $mapreduce_map_memory_mb,
-            mapreduce_reduce_memory_mb                  => $mapreduce_reduce_memory_mb,
-            mapreduce_map_java_opts                     => $mapreduce_map_java_opts,
-            mapreduce_reduce_java_opts                  => $mapreduce_reduce_java_opts,
-            yarn_app_mapreduce_am_resource_mb           => $yarn_app_mapreduce_am_resource_mb,
-            yarn_app_mapreduce_am_command_opts          => $yarn_app_mapreduce_am_command_opts,
-
-            yarn_nodemanager_resource_memory_mb         => $yarn_nodemanager_resource_memory_mb,
-            yarn_scheduler_minimum_allocation_mb        => $yarn_scheduler_minimum_allocation_mb,
-            yarn_scheduler_maximum_allocation_mb        => $yarn_scheduler_maximum_allocation_mb,
-            yarn_scheduler_minimum_allocation_vcores    => $yarn_scheduler_minimum_allocation_vcores,
-        }
-    }
-
-    if $::realm == 'labs' {
-        # Hadoop directories in labs should be created by puppet.
-        # This conditional could be added to each worker,master,standby
-        # classes, but since it doesn't hurt to have these directories
-        # in labs, and since I don't want to add the $::realm conditionals
-        # in each class, I do it here.
-        file { [
-            $hadoop_var_directory,
-            $hadoop_data_directory,
-        ]:
-            ensure => 'directory',
-        }
-    }
-
     # Use hiera to configure Hadoop in labs.
     # You MUST set at least the following:
     #  cdh::hadoop::cluster_name
@@ -244,5 +114,18 @@ class role::analytics_cluster::hadoop::client {
         }
     }
 
-
+    if $::realm == 'labs' {
+        # Hadoop directories in labs should be created by puppet.
+        # This conditional could be added to each worker,master,standby
+        # classes, but since it doesn't hurt to have these directories
+        # in labs, and since I don't want to add the $::realm conditionals
+        # in each class, I do it here.
+        file { [
+            $hadoop_var_directory,
+            $hadoop_data_directory,
+        ]:
+            ensure => 'directory',
+            before => Class['cdh::hadoop'],
+        }
+    }
 }

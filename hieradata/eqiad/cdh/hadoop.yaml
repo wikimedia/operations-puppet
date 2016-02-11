@@ -41,6 +41,45 @@ mapreduce_reduce_shuffle_parallelcopies: 10
 mapreduce_task_io_sort_mb: 200
 mapreduce_task_io_sort_factor: 10
 
-# NOTE: Hadoop Memory Settings are configured in the
-# role::analytics_cluster::hadoop::client class.
-# Many of these settings are configured programatically.
+# Configure memory based on these recommendations and then adjusted:
+# http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.0.6.0/bk_installing_manually_book/content/rpm-chap1-11.html
+
+# These Map/Reduce and YARN ApplicationMaster master settings are
+# settable per job.
+# All worker nodes are currently Dell R720s with 64G of RAM.
+
+# Choosing 2G for default application container size.
+# This is used as the base for the memory settings below.
+# It may be possible to increase since all nodes now have
+# 64G instead of 48G.
+# See: https://phabricator.wikimedia.org/T118501
+#
+
+# Map container size and JVM max heap size (-XmX)
+mapreduce_map_memory_mb:                    2048
+mapreduce_map_java_opts:                    -Xmx1638m  # 0.8 * 2G
+
+# Reduce container size and JVM max heap size (-Xmx)
+mapreduce_reduce_memory_mb:                 4096       # 2 * 2G
+mapreduce_reduce_java_opts:                 -Xmx3276m  # 0.8 * 2 * 2G
+
+# Yarn ApplicationMaster container size and  max heap size (-Xmx)
+yarn_app_mapreduce_am_resource_mb:           4096      # 2 * 2G
+yarn_app_mapreduce_am_command_opts:         -Xmx3276m  # 0.8 * 2 * 2G
+
+# Save 8G for OS and other processes.
+# Memory available for use by Hadoop jobs:  64G - 8G == 56G.
+# 56G at 2G per container gives nodes with 64G RAM space for
+# 28 containers.
+
+# This is the total amount of memory that NodeManagers
+# will use for allocation to containers.
+yarn_nodemanager_resource_memory_mb:        57344      # 64G - 8G
+
+# Setting _minimum_allocation_mb to 0 to allow Impala to submit small
+# reservation requests.
+yarn_scheduler_minimum_allocation_mb:       0
+yarn_scheduler_maximum_allocation_mb:       57344
+# Setting minimum_allocation_vcores to 0 to allow Impala to submit small
+# reservation requests.
+yarn_scheduler_minimum_allocation_vcores:   0
