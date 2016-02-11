@@ -37,6 +37,14 @@
 # [*group*]
 #   Run the FastCGI server as this group (default: 'www-data').
 #
+# [*service_ensure*]
+# (string) Puppet 'ensure' meta parameter passed to the 'hhvm' service
+# (default: 'running').
+#
+# [*service_enable*]
+# (boolean) Puppet 'enable' meta parameter passed to the 'hhvm' service
+# (default: true).
+#
 # [*cli_settings*]
 #   A hash of php.ini settings for CLI mode. These will override
 #   the defaults (declared below).
@@ -55,11 +63,13 @@
 #  }
 #
 class hhvm(
-    $user          = 'www-data',
-    $group         = 'www-data',
-    $fcgi_settings = {},
-    $cli_settings  = {},
-    $base_jit_size = to_bytes('400 Mb'),
+    $user           = 'www-data',
+    $group          = 'www-data',
+    $service_ensure = 'running',
+    $service_enable = true,
+    $fcgi_settings  = {},
+    $cli_settings   = {},
+    $base_jit_size  = to_bytes('400 Mb'),
 ) {
     requires_os('ubuntu >= trusty')
 
@@ -231,7 +241,8 @@ class hhvm(
     }
 
     service { 'hhvm':
-        ensure    => 'running',
+        ensure    => $service_ensure,
+        enable    => $service_enable,
         provider  => 'upstart',
         subscribe => Package['hhvm', 'hhvm-luasandbox', 'hhvm-wikidiff2'],
     }
