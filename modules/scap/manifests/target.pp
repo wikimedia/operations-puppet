@@ -97,9 +97,9 @@ define scap::target(
     $parent_dir = inline_template('<%= File.dirname(@deploy_path) %>')
     if !defined(File[$parent_dir]) {
         file { $parent_dir:
-            ensure  => 'directory',
-            owner   => $deploy_user,
-            mode    => '0775',
+            ensure => 'directory',
+            owner  => $deploy_user,
+            mode   => '0775',
         }
     }
 

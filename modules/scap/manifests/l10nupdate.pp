@@ -125,10 +125,10 @@ class scap::l10nupdate(
     }
 
     git::clone { 'mediawiki/extensions':
-        directory          => '/var/lib/l10nupdate/mediawiki/extensions',
-        owner              => 'l10nupdate',
-        group              => $deployment_group,
-        require            => File['/var/lib/l10nupdate/mediawiki'],
+        directory => '/var/lib/l10nupdate/mediawiki/extensions',
+        owner     => 'l10nupdate',
+        group     => $deployment_group,
+        require   => File['/var/lib/l10nupdate/mediawiki'],
     }
 
     git::clone { 'mediawiki/skins':
