@@ -16,8 +16,10 @@ parsoidUrl = "https://meta.wikimedia.org/api/rest_v1" + \
              "/page/html/System_administrators"
 bs = BeautifulSoup(urllib.urlopen(parsoidUrl).read())
 oldUserData = {}
-for table in bs.find_all('table')[:-2]:
-    for part in json.loads(table.get('data-mw'))['parts']:
+for tr in bs.find_all('tr')[2:]:
+    if not tr.get('data-mw'):
+        continue
+    for part in json.loads(tr.get('data-mw'))['parts']:
         if 'template' not in part:
             continue
         params = part['template']['params']
