@@ -65,7 +65,7 @@ node 'alsafi.wikimedia.org' {
 # - primary active NameNode
 # - YARN ResourceManager
 node 'analytics1001.eqiad.wmnet' {
-    role analytics::hadoop::master,
+    role analytics_cluster::hadoop::master,
         analytics::users
 
     include standard
@@ -73,7 +73,7 @@ node 'analytics1001.eqiad.wmnet' {
 }
 
 
-# analytics1002 is the Hadoop standby NameNode.
+# analytics1002 is the Hadoop standby NameNode and ResourceManager.
 node 'analytics1002.eqiad.wmnet' {
     role analytics_cluster::hadoop::standby,
         analytics::users
