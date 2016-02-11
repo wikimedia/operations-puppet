@@ -108,7 +108,7 @@ info:
 # The main service setup. Each worker can offer one or more services.
 services:
   - name: restbase
-    module: ./lib/server
+    module: hyperswitch
     conf:
       port: <%= @port %>
       spec: *root_spec
