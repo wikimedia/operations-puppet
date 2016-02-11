@@ -465,13 +465,6 @@ node 'dataset1001.wikimedia.org' {
 
 # eqiad dbs
 
-node /^db10(24)\.eqiad\.wmnet/ {
-    class { 'role::coredb::s2':
-        innodb_file_per_table => true,
-        mariadb               => true,
-    }
-}
-
 node /^db10(52)\.eqiad\.wmnet/ {
     class { 'role::coredb::s1':
         innodb_file_per_table => true,
@@ -554,7 +547,7 @@ node /^db20(16|34|42|48|55|62|69|70)\.codfw\.wmnet/ {
 }
 
 # s2 (large wikis) core production slave dbs on eqiad
-node /^db10(18|21|36|54|60|63|67)\.eqiad\.wmnet/ {
+node /^db10(18|21|24|36|54|60|63|67)\.eqiad\.wmnet/ {
     class { 'role::mariadb::core':
         shard => 's2',
         p_s   => 'on',
