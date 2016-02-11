@@ -75,7 +75,7 @@ node 'analytics1001.eqiad.wmnet' {
 
 # analytics1002 is the Hadoop standby NameNode.
 node 'analytics1002.eqiad.wmnet' {
-    role analytics::hadoop::standby,
+    role analytics_cluster::hadoop::standby,
         analytics::users
 
     include standard
