@@ -62,10 +62,10 @@ class role::kibana (
     }
 
     ferm::service { 'kibana_frontend':
-        proto  => 'tcp',
-        port   => 80,
+        proto   => 'tcp',
+        port    => 80,
         notrack => true,
-        srange => '$INTERNAL',
+        srange  => '$INTERNAL',
     }
 
     apache::site { $vhost:
