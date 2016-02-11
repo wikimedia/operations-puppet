@@ -37,8 +37,8 @@ class role::wdqs  {
     }
 
     ferm::service { 'wdqs_internal_http':
-        proto => 'tcp',
-        port  => '8888',
+        proto  => 'tcp',
+        port   => '8888',
         srange => '$INTERNAL',
     }
 

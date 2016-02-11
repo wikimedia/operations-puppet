@@ -34,7 +34,7 @@ class role::wikimetrics::staging {
     # testing purposes but using the labsdb for the production role.
     # Labsdb gives us automatic backups and keeps our instance nfs free.
     class { '::mysql::server':
-        config_hash        => {
+        config_hash => {
             'datadir'      => '/srv/mysql',
             'bind_address' => '127.0.0.1',
         },
