@@ -129,6 +129,12 @@ class role::eventlogging::forwarder inherits role::eventlogging {
         count   => true,
     }
 
+    ferm::service { 'eventlogging-receive':
+        proto  => 'udp',
+        notrack => true,
+        port   => '8421',
+    }
+
     # This forwards the kafka eventlogging-valid-mixed topic to
     # ZMQ port 8600 for backwards compatibility.
     eventlogging::service::forwarder { 'legacy-zmq':
