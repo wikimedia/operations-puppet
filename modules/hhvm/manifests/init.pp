@@ -37,6 +37,10 @@
 # [*group*]
 #   Run the FastCGI server as this group (default: 'www-data').
 #
+# [*service_params*]
+#  A hash of parameters passed to base::service_unit and hence to the Puppet
+#  service resource.
+#
 # [*cli_settings*]
 #   A hash of php.ini settings for CLI mode. These will override
 #   the defaults (declared below).
@@ -55,14 +59,15 @@
 #  }
 #
 class hhvm(
-    $user          = 'www-data',
-    $group         = 'www-data',
-    $fcgi_settings = {},
-    $cli_settings  = {},
-    $base_jit_size = to_bytes('400 Mb'),
-    $log_dir       = '/var/log/hhvm',
-    $tmp_dir       = '/var/tmp/hhvm',
-    $cache_dir     = '/var/cache/hhvm'
+    $user           = 'www-data',
+    $group          = 'www-data',
+    $service_params = {},
+    $fcgi_settings  = {},
+    $cli_settings   = {},
+    $base_jit_size  = to_bytes('400 Mb'),
+    $log_dir        = '/var/log/hhvm',
+    $tmp_dir        = '/var/tmp/hhvm',
+    $cache_dir      = '/var/cache/hhvm'
     ) {
     requires_os('ubuntu >= trusty || Debian >= jessie')
 
@@ -231,11 +236,12 @@ class hhvm(
     }
 
     base::service_unit { 'hhvm':
-        ensure    => present,
-        systemd   => true,
-        upstart   => true,
-        refresh   => false,
-        subscribe => Package[$ext_pkgs],
+        ensure         => present,
+        systemd        => true,
+        upstart        => true,
+        refresh        => false,
+        service_params => $service_params,
+        subscribe      => Package[$ext_pkgs],
     }
 
     if $::initsystem == 'systemd' {
