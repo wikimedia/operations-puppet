@@ -21,6 +21,14 @@ class role::analytics_cluster::hadoop::master {
         statsd  => hiera('statsd'),
     }
 
+    # This will create HDFS user home directories
+    # for all users in the provided groups.
+    # This only needs to be run on the NameNode
+    # where all users that want to use Hadoop
+    # must have shell accounts anyway.
+    class { 'cdh::hadoop::users':
+        require => Class['cdh::hadoop::master'],
+    }
 
     # FairScheduler is creating event logs in hadoop.log.dir/fairscheduler/
     # It rotates them but does not delete old ones.  Set up cronjob to
@@ -66,23 +74,6 @@ class role::analytics_cluster::hadoop::master {
                 Class['cdh::hadoop::master'],
                 Sudo::User['nagios-check_hdfs_active_namenode'],
             ],
-        }
-    }
-
-    # This will create HDFS user home directories
-    # for all users in the provided groups.
-    # This only needs to be run on the NameNode
-    # where all users that want to use Hadoop
-    # must have shell accounts anyway.
-    $default_hadoop_user_groups = $::realm ? {
-        'labs'  => "project-${::labsproject}",
-        default => false,
-    }
-    $hadoop_users_posix_groups = hiera('hadoop_users_posix_groups', $default_hadoop_user_groups)
-    if $hadoop_users_posix_groups {
-        class { 'cdh::hadoop::users':
-            groups  => $hadoop_users_posix_groups,
-            require => Class['cdh::hadoop::master'],
         }
     }
 

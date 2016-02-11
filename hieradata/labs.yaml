@@ -66,3 +66,7 @@ send_puppet_failure_emails: true
 cdh::hadoop::datanode_mounts:
     - /var/lib/hadoop/data/a
     - /var/lib/hadoop/data/b
+
+# Default to creating home directories for all
+# users in the current Labs Project.
+cdh::hadoop::users::groups: project-%{::labsproject}

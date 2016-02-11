@@ -34,9 +34,6 @@ net_topology_script_template: 'role/analytics_cluster/hadoop/net-topology.py.erb
 # Increase NameNode heapsize independent from other daemons
 hadoop_namenode_opts: "-Xmx4096m"
 
-# Ensure that users in these groups have home directories in HDFS.
-hadoop_users_posix_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
-
 mapreduce_reduce_shuffle_parallelcopies: 10
 mapreduce_task_io_sort_mb: 200
 mapreduce_task_io_sort_factor: 10
