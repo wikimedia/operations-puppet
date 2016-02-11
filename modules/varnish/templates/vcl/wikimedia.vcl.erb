@@ -474,9 +474,17 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-	// default hard cap of max 30d life on all cache objects everywhere
-	if (beresp.ttl > 30d) {
-		set beresp.ttl = 30d;
+<% if @vcl_config.fetch("ttl_fixed", false) -%>
+	// Fixed TTL (rare/questionable, only used on upload backend right now)
+	// Note the ttl_cap comes after this and takes precedence!
+	if (beresp.status <= 400) {
+		set beresp.ttl = <%= @vcl_config.fetch("ttl_fixed", "invalid") %>;
+	}
+<% end -%>
+
+	// Hard TTL cap on all fetched objects (default 30d)
+	if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "30d") %>) {
+		set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "30d") %>;
 	}
 
 	/* Don't cache private, no-cache, no-store objects */
