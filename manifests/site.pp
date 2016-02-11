@@ -97,7 +97,12 @@ node 'analytics1015.eqiad.wmnet' {
 # used for Hadoop network topology awareness.
 node /analytics10(2[89]|3[0-9]|4[0-9]|5[0-7]).eqiad.wmnet/ {
 
-    role analytics::hadoop::worker
+    if $::hostname == 'analytics1057' {
+        role analytics_cluster::hadoop::worker
+    }
+    else {
+        role analytics::hadoop::worker
+    }
     include base::firewall
     include standard
 }
