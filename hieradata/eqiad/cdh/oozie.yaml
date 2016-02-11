@@ -1,0 +1,5 @@
+#
+# Analytics Cluster Oozie Configuration
+#
+
+oozie_host: analytics1027.eqiad.wmnet

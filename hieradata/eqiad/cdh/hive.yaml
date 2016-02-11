@@ -1,0 +1,5 @@
+#
+# Analytics Cluster Hive Configuration
+#
+
+metastore_host: analytics1027.eqiad.wmnet
