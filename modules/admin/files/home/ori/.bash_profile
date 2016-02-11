@@ -99,18 +99,14 @@ man() {
 
 
 #
-# z - https://github.com/rupa/z
+# fasd - https://github.com/clvv/fasd
 #
-
-_Z_OWNER="ori"
-. "${HOME}/.z.sh"
+. .fasd_init
 
 
 #
 # Host-specific profile
 #
-
 if [ -r "${HOME}/.hosts/${HOSTNAME}" ]; then
   . "${HOME}/.hosts/${HOSTNAME}"
 fi
-
