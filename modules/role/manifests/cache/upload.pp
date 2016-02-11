@@ -83,11 +83,13 @@ class role::cache::upload {
 
     $be_vcl_config = merge($common_vcl_config, {
         'layer'            => 'backend',
+        'ttl_fixed'        => '30d',
     })
 
     $fe_vcl_config = merge($common_vcl_config, {
         'layer'            => 'frontend',
         'https_redirects'  => true,
+        'ttl_cap'          => '1h',
     })
 
     $storage_size_bigobj = floor($::role::cache::2layer::storage_size / 6)

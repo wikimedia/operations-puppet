@@ -7,14 +7,6 @@ sub vcl_recv {
 	return (lookup);
 }
 
-sub vcl_fetch {
-	// Cap TTL to 1 day for now (purging still hasn't been sorted out...)
-	if (beresp.ttl > 1d) {
-		set beresp.ttl = 1d;
-	}
-	return (deliver);
-}
-
 sub vcl_error {
 	call errorpage;
 	return (deliver);

@@ -54,11 +54,6 @@ sub vcl_miss {
 }
 
 sub vcl_fetch {
-	// Cap media object cache TTLs to 1 hour
-	if (beresp.ttl > 1h) {
-		set beresp.ttl = 1h;
-	}
-
 	if (beresp.http.Content-Range) {
 		// Varnish itself doesn't ask for ranges, so this must have been
 		// a passed range request

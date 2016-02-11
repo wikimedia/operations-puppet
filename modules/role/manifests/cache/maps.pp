@@ -80,6 +80,7 @@ class role::cache::maps {
         'cache4xx'         => '1m',
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
         'do_gzip'          => true,
+        'ttl_cap'          => '1d',
     }
 
     $be_vcl_config = merge($common_vcl_config, {
