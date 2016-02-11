@@ -1,0 +1,6 @@
+#
+# Analytics Cluster Hue Configuration
+#
+
+# Don't auto create Hue users from LDAP in production.
+ldap_create_users_on_login: false

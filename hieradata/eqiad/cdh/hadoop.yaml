@@ -1,0 +1,46 @@
+#
+# Analytics Cluster Hadoop Configuration
+#
+
+cluster_name: analytics-hadoop
+
+namenode_hosts:
+    - analytics1001.eqiad.wmnet
+    - analytics1002.eqiad.wmnet
+
+journalnode_hosts:
+    - analytics1052.eqiad.wmnet  # Row A3
+    - analytics1028.eqiad.wmnet  # Row C2
+    - analytics1035.eqiad.wmnet  # Row D2
+
+# analytics* Dell R720s have mounts on disks sdb - sdm.
+# (sda is hardware raid on the 2 2.5 drives in the flex bays.)
+datanode_mounts:
+    - /var/lib/hadoop/data/b
+    - /var/lib/hadoop/data/c
+    - /var/lib/hadoop/data/d
+    - /var/lib/hadoop/data/e
+    - /var/lib/hadoop/data/f
+    - /var/lib/hadoop/data/g
+    - /var/lib/hadoop/data/h
+    - /var/lib/hadoop/data/i
+    - /var/lib/hadoop/data/j
+    - /var/lib/hadoop/data/k
+    - /var/lib/hadoop/data/l
+    - /var/lib/hadoop/data/m
+
+net_topology_script_template: 'role/analytics_cluster/hadoop/net-topology.py.erb'
+
+# Increase NameNode heapsize independent from other daemons
+namenode_opts: "-Xmx4096m"
+
+# Ensure that users in these groups have home directories in HDFS.
+hadoop_users_posix_groups: "analytics-users analytics-privatedata-users analytics-admins analytics-search-users"
+
+mapreduce_reduce_shuffle_parallelcopies: 10
+mapreduce_task_io_sort_mb: 200
+mapreduce_task_io_sort_factor: 10
+
+# NOTE: Hadoop Memory Settings are configured in the
+# role::analytics_cluster::hadoop::client class.
+# Many of these settings are configured programatically.
