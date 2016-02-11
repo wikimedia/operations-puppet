@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+
+# NOTE: This file is managed by Puppet.
+
+# Returns a rack/row name for the given node name.
+
+# Usage:
+#   net-topology.py <ipaddr|fqdn>
+
+import socket
+from sys import argv
+
+# Maps fqdn to a unique /datacenter/rack/row id.
+nodes = {
+    'analytics1001.eqiad.wmnet':  '/eqiad/C/4',
+    'analytics1002.eqiad.wmnet':  '/eqiad/D/2',
+
+    'analytics1028.eqiad.wmnet':  '/eqiad/C/2',
+    'analytics1029.eqiad.wmnet':  '/eqiad/C/2',
+    'analytics1030.eqiad.wmnet':  '/eqiad/C/2',
+    'analytics1031.eqiad.wmnet':  '/eqiad/C/2',
+
+    'analytics1032.eqiad.wmnet':  '/eqiad/C/3',
+    'analytics1033.eqiad.wmnet':  '/eqiad/C/3',
+    'analytics1034.eqiad.wmnet':  '/eqiad/C/3',
+
+    'analytics1035.eqiad.wmnet':  '/eqiad/D/2',
+    'analytics1036.eqiad.wmnet':  '/eqiad/D/2',
+    'analytics1037.eqiad.wmnet':  '/eqiad/D/2',
+
+    'analytics1038.eqiad.wmnet':  '/eqiad/D/4',
+    'analytics1039.eqiad.wmnet':  '/eqiad/D/4',
+    'analytics1040.eqiad.wmnet':  '/eqiad/D/4',
+    'analytics1041.eqiad.wmnet':  '/eqiad/D/4',
+
+    'analytics1042.eqiad.wmnet':  '/eqiad/D/2',
+    'analytics1043.eqiad.wmnet':  '/eqiad/D/2',
+    'analytics1044.eqiad.wmnet':  '/eqiad/D/2',
+    'analytics1045.eqiad.wmnet':  '/eqiad/D/2',
+
+    'analytics1046.eqiad.wmnet':  '/eqiad/B/3',
+    'analytics1047.eqiad.wmnet':  '/eqiad/B/3',
+    'analytics1048.eqiad.wmnet':  '/eqiad/B/3',
+    'analytics1049.eqiad.wmnet':  '/eqiad/B/3',
+    'analytics1050.eqiad.wmnet':  '/eqiad/B/3',
+    'analytics1051.eqiad.wmnet':  '/eqiad/B/3',
+
+    'analytics1052.eqiad.wmnet':  '/eqiad/A/3',
+    'analytics1053.eqiad.wmnet':  '/eqiad/A/3',
+    'analytics1054.eqiad.wmnet':  '/eqiad/A/3',
+    'analytics1055.eqiad.wmnet':  '/eqiad/A/3',
+    'analytics1056.eqiad.wmnet':  '/eqiad/A/3',
+    'analytics1057.eqiad.wmnet':  '/eqiad/A/3'
+}
+
+if len(argv) < 2:
+    node = 'default'
+else:
+    node = argv[1]
+
+# If the node doesn't have a key in nodes, perhaps it is a
+# short hostname or IP address.  Look it up!
+if node not in nodes:
+    node = socket.getfqdn(node)
+
+print(nodes.get(node, '/eqiad/default/rack'))
