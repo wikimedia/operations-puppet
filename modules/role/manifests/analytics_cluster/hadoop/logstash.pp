@@ -9,7 +9,7 @@ class role::analytics_cluster::hadoop::logstash {
         mode    => '0744',
     }
 
-    $patched_jar_exists_command = '/bin/ls /usr/lib/hadoop-yarn | /usr/bin/grep -E  "hadoop-yarn-server-nodemanager.+gelf"'
+    $patched_jar_exists_command = '/bin/ls /usr/lib/hadoop-yarn | /bin/grep -E  "hadoop-yarn-server-nodemanager.+gelf"'
 
     if $cdh::hadoop::gelf_logging_enabled {
         ensure_packages([
