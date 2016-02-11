@@ -112,17 +112,4 @@ class role::labs::tools {
 
         include toollabs::redis
     }
-    ##
-    ## NOTE: Those roles are transitional, and should be removed
-    ## from Wikitech entirely in favor of role::labs::tools::compute
-    ## followed by explicit toollabs::node::*
-    ##
-
-    class execnode inherits role::labs::tools::compute {
-        include toollabs::node::compute::general
-    }
-
-    class webnode inherits role::labs::tools::compute {
-        include toollabs::node::web::lighttpd
-    }
 } # class role::labs::tools
