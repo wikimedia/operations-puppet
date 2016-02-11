@@ -73,7 +73,7 @@ module Puppet::Parser::Functions
     end
 
     args.each do |arg|
-      rolename = 'role::' + arg
+      rolename = '::role::' + arg
       role_class = compiler.topscope.find_hostclass(rolename)
       if role_class
         send Puppet::Parser::Functions.function(:include), [rolename]
