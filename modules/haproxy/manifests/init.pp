@@ -12,10 +12,10 @@ class haproxy(
     }
 
     file { '/etc/haproxy/conf.d':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/etc/default/haproxy':
@@ -35,19 +35,19 @@ class haproxy(
     }
 
     file { '/usr/lib/nagios/plugins/check_haproxy':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/haproxy/check_haproxy',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/haproxy/check_haproxy',
     }
 
     nrpe::monitor_service { 'haproxy':
-        description   => 'haproxy process',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy',
+        description  => 'haproxy process',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy',
     }
 
     nrpe::monitor_service { 'haproxy_alive':
-        description   => 'haproxy alive',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_haproxy --check=alive',
+        description  => 'haproxy alive',
+        nrpe_command => '/usr/lib/nagios/plugins/check_haproxy --check=alive',
     }
 }
