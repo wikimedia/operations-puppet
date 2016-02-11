@@ -16,7 +16,7 @@ class standard(
 ) {
     include base
     include role::ntp
-    include role::diamond
+    include ::role::diamond
     if $has_ganglia {
         include ::ganglia
     }
