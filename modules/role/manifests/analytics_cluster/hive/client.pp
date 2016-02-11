@@ -10,9 +10,9 @@ class role::analytics_cluster::hive::client {
 
     # TODO Remove this: https://phabricator.wikimedia.org/T114769
     # If refinery is included on this node, then add
-    # refinery-hive.jar to the auxpath as well
-    if defined(Class['role::analytics_cluster::refinery']) {
-        $auxpath = "${hcatalog_jar},file://${::role::analytics_cluster::refinery::path}/artifacts/refinery-hive.jar"
+    # refinery-hive.jar to the auxpath as well.
+    if $::hostname == 'stat1002' or $::hostname == 'analytics1027' {
+        $auxpath = "${hcatalog_jar},file:///srv/deployment/analytics/refinery/artifacts/refinery-hive.jar"
     }
     else {
         $auxpath = $hcatalog_jar
