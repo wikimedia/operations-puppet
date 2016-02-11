@@ -12,7 +12,7 @@ class mediawiki::scap {
 
     $mediawiki_deployment_dir = '/srv/mediawiki'
     $mediawiki_staging_dir    = '/srv/mediawiki-staging'
-    $scap_bin_dir             = '/usr/bin'
+    $scap_bin_dir             = '/srv/deployment/scap/scap/bin'
     $mediawiki_web_user       = $::mediawiki::users::web
 
     # /srv/mediawiki is the root path of the MediaWiki deployment tree.
