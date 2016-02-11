@@ -324,6 +324,13 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
     if ( $backup_destinations ) {
         class { 'rsync::server': }
 
+        $rsync_clients_ferm = join($backup_destinations, ' ')
+        ferm::service { 'eventlogging_rsyncd':
+            proto  => 'tcp',
+            port   => '873',
+            srange => "@resolve((${rsync_clients_ferm}))",
+        }
+
         rsync::server::module { 'eventlogging':
             path        => $out_dir,
             read_only   => 'yes',
