@@ -7,6 +7,13 @@ class mediawiki::web::beta_sites {
 
     # w-beta.wmflabs.org depends on proxy_http
     include ::apache::mod::proxy_http
+
+    file { '/etc/apache2/sites-enabled/public-wiki-rewrites.incl':
+        ensure => present,
+        source => 'puppet:///modules/mediawiki/apache/beta/sites/public-wiki-rewrites.incl',
+        before => Service['apache2'],
+    }
+
     apache::site { 'main':
         source   => 'puppet:///modules/mediawiki/apache/beta/sites/main.conf',
         priority => 1,
