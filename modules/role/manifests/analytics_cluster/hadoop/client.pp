@@ -64,6 +64,9 @@ class role::analytics_cluster::hadoop::client {
             'yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage' => '99.0',
         },
     }
+    # This will only enable logstash logging if
+    # $cdh::hadoop::gelf_logging_enabled is true.
+    include role::analytics_cluster::hadoop::logstash
 
     # If in production AND the current node is a journalnode, then
     # go ahead and include an icinga alert for the JournalNode process.
@@ -73,44 +76,6 @@ class role::analytics_cluster::hadoop::client {
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
             require      => Class['cdh::hadoop'],
             critical     => true,
-        }
-    }
-
-    file { '/usr/local/bin/hadoop-yarn-logging-helper.sh':
-        content => template('hadoop/hadoop-yarn-logging-helper.erb'),
-        mode    => '0744',
-    }
-    if $::cdh::hadoop::gelf_logging_enabled {
-        ensure_packages([
-            # library dependency
-            'libjson-simple-java',
-            # the libary itself: logstash-gelf.jar
-            'liblogstash-gelf-java',
-        ])
-        # symlink into hadoop classpath
-        file { '/usr/lib/hadoop/lib/json_simple.jar':
-            ensure  => 'link',
-            target  => '/usr/share/java/json_simple.jar',
-            require => Package['libjson-simple-java'],
-        }
-
-        # symlink into hadoop classpath
-        file { '/usr/lib/hadoop/lib/logstash-gelf.jar':
-            ensure  => 'link',
-            target  => '/usr/share/java/logstash-gelf.jar',
-            require => Package['liblogstash-gelf-java'],
-        }
-        # Patch container-log4j.properties inside nodemanager jar
-        # See script source for details
-        exec { 'hadoop-yarn-logging-helper-set':
-            command   => '/usr/local/bin/hadoop-yarn-logging-helper.sh set',
-            subscribe => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
-        }
-    } else {
-        # Revert to original unmodified jar
-        exec { 'hadoop-yarn-logging-helper-reset':
-            command   => '/usr/local/bin/hadoop-yarn-logging-helper.sh reset',
-            subscribe => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
         }
     }
 
