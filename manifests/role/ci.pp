@@ -176,7 +176,7 @@ class role::ci::slave {
 
     contint::tmpfs { 'tmpfs for jenkins CI slave':
         mount_point => '/var/lib/jenkins-slave/tmpfs',
-        size        => '512M',
+        size        => '256M',
     }
     nrpe::monitor_service { 'ci_tmpfs':
         description  => 'CI tmpfs disk space',
@@ -373,7 +373,7 @@ class role::ci::slave::labs {
     contint::tmpfs { 'tmpfs for jenkins CI labs slave':
         # Jobs expect the tmpfs to be in $HOME/tmpfs
         mount_point => '/mnt/home/jenkins-deploy/tmpfs',
-        size        => '512M',
+        size        => '256M',
         require     => File['/mnt/home/jenkins-deploy'],
     }
 
