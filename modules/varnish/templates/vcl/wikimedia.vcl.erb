@@ -482,9 +482,9 @@ sub vcl_fetch {
 	}
 <% end -%>
 
-	// Hard TTL cap on all fetched objects (default 30d)
-	if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "30d") %>) {
-		set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "30d") %>;
+	// Hard TTL cap on all fetched objects (default 21d)
+	if (beresp.ttl > <%= @vcl_config.fetch("ttl_cap", "21d") %>) {
+		set beresp.ttl = <%= @vcl_config.fetch("ttl_cap", "21d") %>;
 	}
 
 	/* Don't cache private, no-cache, no-store objects */

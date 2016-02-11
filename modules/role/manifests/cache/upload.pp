@@ -84,6 +84,7 @@ class role::cache::upload {
     $be_vcl_config = merge($common_vcl_config, {
         'layer'            => 'backend',
         'ttl_fixed'        => '30d',
+        'ttl_cap'          => '30d',
     })
 
     $fe_vcl_config = merge($common_vcl_config, {
