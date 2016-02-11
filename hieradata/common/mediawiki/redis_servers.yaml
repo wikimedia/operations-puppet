@@ -10,15 +10,15 @@ eqiad:
   - '10.64.32.163:6379:1 "shard09"'
   - '10.64.32.164:6379:1 "shard10"'
   - '10.64.32.165:6379:1 "shard11"'
-  - '10.64.32.166:6379:1 "shard12"'
-  - '10.64.48.101:6379:1 "shard13"'
   - '10.64.48.102:6379:1 "shard14"'
   - '10.64.48.103:6379:1 "shard15"'
   - '10.64.48.104:6379:1 "shard16"'
   - '10.64.48.95:6379:1 "shard17"'
   - '10.64.48.96:6379:1 "shard18"'
 
-# Hosts temporary removed from the pool for maintenance
+# Hosts temporarily removed from the pool for maintenance
+# - '10.64.32.166:6379:1 "shard12"'
+# - '10.64.48.101:6379:1 "shard13"'
 
 codfw:
   - '10.192.0.34:6379:1 "shard01"'
