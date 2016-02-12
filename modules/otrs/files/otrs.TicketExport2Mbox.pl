@@ -169,15 +169,18 @@ sub printArticle {
 }
 
 sub usage {
-	print "\notrs.TicketExport2Mbox.pl - export messages to mbox format.\n\n" .
+	print "\notrs.TicketExport2Mbox.pl - export non autoqueued as junk messages to mbox format.\n\n" .
 		"Usage:\n\n" .
-		"$0 [TicketNumber] [TicketID]\n\n" .
-		"  ~OR~\n\n" . 
-		"$0 [options]\n" .
+		"$0 [options] [TicketNumber] [TicketID]\n\n" .
+		"  ~OR~\n\n" .
+		"$0 [options] --TicketId no1 no2 no3\n\n" .
+		"  ~OR~\n\n" .
+		"$0 [options] --TicketNumber no1 no2 no3\n\n" .
+		"Valid Options are:\n" .
 		"  --help                          display this option help\n" .
 		"  --mbox /path/to/mbox            mbox output file (default $Mbox)\n" .
 		"  --close                         change ticket status to 'closed successful'\n" .
-		"  --rebuild                       run all messages for Bayes rebuild (don't skip already-closed messages)\n" .
+		"  --rebuild                       run all messages for Bayes rebuild (don't skip already closed messages)\n" .
 		"  --TicketID no1 no2 no3          export messages by TicketID\n" .
 		"  --TicketNumber no1 no2 no3      export messages by TicketNumber\n\n";
     exit;
