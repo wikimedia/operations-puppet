@@ -8,6 +8,7 @@ class mediawiki::packages::tex {
         'texlive-bibtex-extra',
         'texlive-font-utils',
         'texlive-fonts-extra',
+        'texlive-generic-extra',
         'texlive-lang-all',
         'texlive-latex-extra',
         'texlive-math-extra',
