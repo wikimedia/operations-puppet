@@ -40,19 +40,24 @@ use Kernel::System::Log;
 use Kernel::System::Main;
 use Kernel::System::Ticket;
 use Kernel::System::Time;
+use Kernel::System::ObjectManager;
 
 # create common objects
 my (%CommonObject,$Close,$Help,@TicketIDs,@TicketNumbers,@ArticleIDs,$Rebuild);
-$CommonObject{ConfigObject} = Kernel::Config->new();
-$CommonObject{EncodeObject} = Kernel::System::Encode->new(%CommonObject);
-$CommonObject{LogObject}    = Kernel::System::Log->new(
-    LogPrefix => 'OTRS-otrs.TicketExport2Mbox.pl',
-	%CommonObject,
+
+local $Kernel::OM = Kernel::System::ObjectManager->new(
+	'Kernel::System::Log' => {
+		LogPrefix => 'OTRS-otrs.TicketExport2Mbox.pl',
+	},
 );
-$CommonObject{TimeObject}   = Kernel::System::Time->new(%CommonObject);
-$CommonObject{MainObject}   = Kernel::System::Main->new(%CommonObject);
-$CommonObject{DBObject}     = Kernel::System::DB->new(%CommonObject);
-$CommonObject{TicketObject} = Kernel::System::Ticket->new(%CommonObject);
+
+$CommonObject{ConfigObject} = $Kernel::OM->Get('Kernel::Config');
+$CommonObject{EncodeObject} = $Kernel::OM->Get('Kernel::System::Encode');
+$CommonObject{LogObject}    = $Kernel::OM->Get('Kernel::System::Log');
+$CommonObject{TimeObject}   = $Kernel::OM->Get('Kernel::System::Time');
+$CommonObject{MainObject}   = $Kernel::OM->Get('Kernel::System::Main');
+$CommonObject{DBObject}     = $Kernel::OM->Get('Kernel::System::DB');
+$CommonObject{TicketObject} = $Kernel::OM->Get('Kernel::System::Ticket');
 
 GetOptions(
 	'close'               => \$Close,
