@@ -39,6 +39,31 @@ class role::maps {
     file { '/var/log/postgresql/postgresql-9.4-main.log':
         group => 'maps-admins',
     }
+
+    $cassandra_hosts = hiera('cassandra::seeds')
+    $cassandra_hosts_ferm = join($cassandra_hosts, ' ')
+
+    # Cassandra intra-node messaging
+    ferm::service { 'maps-cassandra-intra-node':
+        proto  => 'tcp',
+        port   => '7000',
+        srange => "(${cassandra_hosts_ferm})",
+    }
+
+    # Cassandra JMX/RMI
+    ferm::service { 'maps-cassandra-jmx-rmi':
+        proto  => 'tcp',
+        # hardcoded limit of 4 instances per host
+        port   => '7199',
+        srange => "(${cassandra_hosts_ferm})",
+    }
+
+    # Cassandra CQL query interface
+    ferm::service { 'cassandra-cql':
+        proto  => 'tcp',
+        port   => '9042',
+        srange => "(${cassandra_hosts_ferm})",
+    }
 }
 
 # Sets up a maps server master
