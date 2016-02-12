@@ -4,7 +4,7 @@ include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 
 sub vcl_recv {
-	call vcl_recv_purge;
+	call recv_purge;
 
 <% if @site_tier == "one" -%>
 

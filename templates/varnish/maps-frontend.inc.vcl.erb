@@ -3,7 +3,7 @@
 include "errorpage.inc.vcl";
 
 sub vcl_recv {
-	call vcl_recv_purge;
+	call recv_purge;
 	if (req.http.referer
 		&& req.url != "/"
 		&& req.http.referer !~ "(?i)^https?://([-a-zA-Z0-9.]+\.)?(mediawiki|wikivoyage|wikivoyage-ev|wmflabs)\.org/"
