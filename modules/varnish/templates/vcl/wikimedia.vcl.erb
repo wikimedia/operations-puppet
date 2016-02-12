@@ -239,7 +239,7 @@ sub rewrite_proxy_urls {
 	}
 }
 
-sub vcl_recv_purge {
+sub recv_purge {
 	/* Support HTTP PURGE */
 	if (req.request == "PURGE") {
 		if (client.ip !~ local_host) {

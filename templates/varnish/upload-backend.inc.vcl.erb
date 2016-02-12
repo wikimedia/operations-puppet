@@ -19,7 +19,7 @@ sub pick_large_object_stevedore {
 }
 
 sub vcl_recv {
-	call vcl_recv_purge;
+	call recv_purge;
 
 	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
 		error 403 "Requested target domain not allowed.";

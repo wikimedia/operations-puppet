@@ -3,7 +3,7 @@
 include "errorpage.inc.vcl";
 
 sub vcl_recv {
-	call vcl_recv_purge;
+	call recv_purge;
 
 	// CORS preflight requests
 	if (req.request == "OPTIONS" && req.http.Origin) {
