@@ -92,5 +92,8 @@ class role::parsoid::testing {
         mode    => '0440',
     }
 
-
+    nginx::site { 'nginx-parsoid-testing':
+        source => 'puppet:///modules/parsoid/parsoid-testing.nginx.conf',
+        notify => Service['nginx'],
+    }
 }

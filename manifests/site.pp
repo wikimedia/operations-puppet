@@ -2309,11 +2309,6 @@ node 'ruthenium.eqiad.wmnet' {
     role testsystem,
         parsoid::testing, parsoid_rt_server, parsoid_rt_client,
         parsoid_vd_server, parsoid_vd_client
-
-    nginx::site { 'ruthenium':
-        source => 'puppet:///files/misc/ruthenium.nginx.conf',
-        notify => Service['nginx'],
-    }
 }
 
 # salt master fallback
