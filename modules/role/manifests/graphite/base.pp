@@ -225,5 +225,9 @@ class role::graphite::base(
         description   => 'graphite.wikimedia.org',
         check_command => 'check_http_url!graphite.wikimedia.org!/render',
     }
-}
 
+    ferm::service { 'graphite-http':
+        proto   => 'tcp',
+        port    => 'http',
+    }
+}
