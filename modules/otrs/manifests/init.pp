@@ -131,7 +131,7 @@ class otrs(
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0664',
-        source => 'puppet:///modules/otrs/loginlogo_default_wmf.png',
+        source => 'puppet:///modules/otrs/loginlogo_wmf.png',
     }
 
     # TODO: Remove the safeguard once we are jessie only
