@@ -36,7 +36,7 @@ class dynamicproxy (
     $blocked_user_agent_regex = 'TweetmemeBot', # T73120 - misbehaving crawler
 ) {
     if $ssl_certificate_name != false and $ssl_settings == undef {
-        fail('ssl_certificate_nme set but ssl_settings not set')
+        fail('ssl_certificate_name set but ssl_settings not set')
     }
 
     $resolver = join($::nameservers, ' ')
