@@ -76,13 +76,14 @@ class role::labs::dnsrecursor {
     # "shards" (s1, etc.) and databases (enwiki, etc.) to these is
     # arbitrary and can be adjusted to depool a server or redistribute
     # load.
-    $c1_dbs = ['c1', 's1', 'enwiki']
-    $c2_dbs = ['c2', 's2', 's4', 's5', 'bgwiki', 'bgwiktionary',
-        'commonswiki', 'cswiki', 'dewiki', 'enwikiquote',
+    $c1_dbs = ['c1', 's1', 'enwiki', 's2', 'bgwiki', 'bgwiktionary',
+        'cswiki', 'enwikiquote',
         'enwiktionary', 'eowiki', 'fiwiki', 'idwiki', 'itwiki',
         'nlwiki', 'nowiki', 'plwiki', 'ptwiki', 'svwiki', 'thwiki',
-        'trwiki', 'wikidatawiki', 'zhwiki']
-    $c3_dbs = ['c3', 's3', 's6', 's7', 'aawiki', 'aawikibooks',
+        'trwiki', 'zhwiki']
+    $c2_dbs = ['c2']
+    $c3_dbs = ['c3', 's3', 's4', 's5', 's6', 's7', 'dewiki',
+        'commonswiki', 'wikidatawiki', 'aawiki', 'aawikibooks',
         'aawiktionary', 'abwiki', 'abwiktionary', 'acewiki',
         'advisorywiki', 'adywiki', 'afwiki', 'afwikibooks',
         'afwikiquote', 'afwiktionary', 'akwiki', 'akwikibooks',
