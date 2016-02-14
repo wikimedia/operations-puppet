@@ -268,6 +268,7 @@ class toollabs::exec_environ {
         'grep',
         'hugin-tools',                 # T108210
         'hunspell',                    # T125193
+        'inkscape',                    # T126933
         'iotop',                       # useful for labs admins to monitor tools
         'ksh',
         'libaio1',                     # T70615
