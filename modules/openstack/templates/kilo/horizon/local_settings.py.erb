@@ -40,6 +40,10 @@ ALLOWED_HOSTS = ['horizon.wikimedia.org', ]
 #     "volume": 2
 # }
 
+OPENSTACK_API_VERSIONS = {
+     "identity": 3,
+}
+
 # Set this to True if running on multi-domain model. When this is enabled, it
 # will require user to enter the Domain name in addition to username for login.
 # OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = False
@@ -144,7 +148,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # ]
 
 OPENSTACK_HOST = "<%= @novaconfig['controller_hostname'] %>"
-OPENSTACK_KEYSTONE_URL = "http://%s:5000/v2.0" % OPENSTACK_HOST
+OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
 
 # Disable SSL certificate checks (useful for self-signed certificates):
