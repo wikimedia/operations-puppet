@@ -24,8 +24,9 @@ my $sock = "";
 my $sql_lag_warn = 30;
 my $sql_lag_crit = 60;
 
-# Warn when IO or SQL stopped cleanly (no errno)
+# Warn/Critical when IO or SQL stopped cleanly (no errno)
 my $warn_stopped = 0;
+my $crit_stopped = 0;
 
 my @vars = ();
 
@@ -67,6 +68,10 @@ foreach my $arg (@ARGV)
 	{
 		$warn_stopped = 1;
 	}
+	elsif ($arg =~ /^--crit-stopped$/)
+	{
+		$crit_stopped = 1;
+	}
 	elsif ($arg =~ /^--no-warn-stopped$/)
 	{
 		$warn_stopped = 0;
@@ -104,8 +109,13 @@ if ($check eq "slave_io_state")
 		exit($EOK);
 	}
 
-	# IO thread stopped without error, eq explicit STOP SLAVE IO_THREAD? WARN
+	# IO thread stopped without error, eq explicit STOP SLAVE IO_THREAD? WARN/ CRIT
 	if ($status->{Slave_IO_Running} ne "Yes" && $status->{Last_IO_Errno} == 0) {
+		if ($crit_stopped == 1) {
+			printf("%s %s Slave_IO_Running: %s\n",
+				$CRIT, $check, $status->{Slave_IO_Running});
+			exit($ECRIT);
+		}
 		if ($warn_stopped == 1) {
 			printf("%s %s Slave_IO_Running: %s\n",
 				$WARN, $check, $status->{Slave_IO_Running});
@@ -143,8 +153,13 @@ if ($check eq "slave_sql_state")
 		exit($EOK);
 	}
 
-	# SQL thread stopped without error, eq explicit STOP SLAVE SQL_THREAD? WARN
+	# SQL thread stopped without error, eq explicit STOP SLAVE SQL_THREAD? WARN/ CRIT
 	if ($status->{Slave_SQL_Running} ne "Yes" && $status->{Last_SQL_Errno} == 0) {
+		if ($crit_stopped == 1) {
+			printf("%s %s Slave_SQL_Running: %s\n",
+				$CRIT, $check, $status->{Slave_SQL_Running});
+			exit($ECRIT);
+		}
 		if ($warn_stopped == 1) {
 			printf("%s %s Slave_SQL_Running: %s\n",
 				$WARN, $check, $status->{Slave_SQL_Running});
@@ -171,8 +186,13 @@ if ($check eq "slave_sql_lag")
 		exit($EOK);
 	}
 
-	# Either IO or SQL threads stopped? WARN
+	# Either IO or SQL threads stopped? WARN/CRIT
 	if ($status->{Slave_IO_Running} ne "Yes" || $status->{Slave_SQL_Running} ne "Yes") {
+		if ($crit_stopped == 1) {
+			printf("%s %s Slave_IO_Running: %s, Slave_SQL_Running: %s\n",
+				$CRIT, $check, $status->{Slave_IO_Running}, $status->{Slave_SQL_Running});
+			exit($ECRIT);
+		}
 		if ($warn_stopped == 1) {
 			printf("%s %s Slave_IO_Running: %s, Slave_SQL_Running: %s\n",
 				$WARN, $check, $status->{Slave_IO_Running}, $status->{Slave_SQL_Running});
