@@ -1,13 +1,17 @@
 sub errorpage {
-	if (obj.status >= 400) {
+	if (<%= @beresp_obj %>.status >= 400) {
 		call synth_errorpage;
 		return (deliver);
 	}
 }
 
 sub synth_errorpage {
-	set obj.http.Content-Type = "text/html; charset=utf-8";
+	set <%= @beresp_obj %>.http.Content-Type = "text/html; charset=utf-8";
+	<% if @varnish_version4 -%>
+	synthetic ({"<!DOCTYPE html>
+	<% else -%>
 	synthetic {"<!DOCTYPE html>
+	<% end -%>
 <html lang=en>
 <meta charset=utf-8>
 <title>Wikimedia Error</title>
@@ -33,10 +37,14 @@ code { font-family: sans-serif; }
 <div class="footer">
 <p>If you report this error to the Wikimedia System Administrators, please include the details below.</p>
 <p class="text-muted"><code>
-Request from "} + client.ip + " via " + server.hostname + " " + server.identity + " ([" + server.ip + "]:" + server.port + "), Varnish XID " + req.xid + "<br>" +
-regsub(req.http.X-Forwarded-For, ".+", "Forwarded for: \0<br>") + regsub(obj.http.X-Cache, ".+", "Upstream caches: \0<br>") +
-"Error: " + obj.status + ", " + obj.response + " at " + now +
-{"
+<% if not @varnish_version4 # TODO. client/server not available in
+                            # vcl_backend_error
+-%>
+Request from "} + client.ip + " via " + server.hostname + " " + server.identity + " ([" + server.ip + "]:" + server.port + "), <% end -%> Varnish XID " + req.xid + "<br>" + regsub(req.http.X-Forwarded-For, ".+", "Forwarded for: \0<br>") + regsub(<%= @beresp_obj %>.http.X-Cache, ".+", "Upstream caches: \0<br>") + "Error: " + <%= @beresp_obj %>.status + ", " + <% if @varnish_version4 -%> <%= @beresp_obj %>.reason <% else -%> <%= @beresp_obj %>.response <% end -%> + " at " + now + {"
 </code></p></div></html>
+<% if @varnish_version4 -%>
+"});
+<% else -%>
 "};
+<% end -%>
 }
