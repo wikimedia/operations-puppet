@@ -134,6 +134,10 @@ def is_sane(value):
     return isinstance(value, int) and value > 0 and value < 60000
 
 
+def is_sane_experimental(value):
+    return isinstance(value, int) and value > 0 and value < 180000
+
+
 @handles('SaveTiming')
 def handle_save_timing(meta):
     event = meta['event']
@@ -197,6 +201,7 @@ def handle_navigation_timing(meta):
 
     for metric, value in metrics.items():
         prefix = 'frontend.navtiming'
+        prefix_experimental = 'frontend.navtiming-experimental'
 
         if is_sane(value):
             dispatch_stat(prefix, metric, site, auth, value)
@@ -206,6 +211,9 @@ def handle_navigation_timing(meta):
             ua = parse_ua(meta['userAgent']) or ('Other', '_')
             dispatch_stat(prefix, metric, 'by_browser', ua[0], ua[1], value)
             dispatch_stat(prefix, metric, 'by_browser', ua[0], 'all', value)
+
+        if is_sane_experimental(value):
+            dispatch_stat(prefix_experimental, metric, 'overall', value)
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(description='NavigationTiming subscriber')
