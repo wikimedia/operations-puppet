@@ -1220,7 +1220,6 @@ node /kafka10(12|13|14|18|20|22)\.eqiad\.wmnet/ {
 
     role kafka::analytics::broker, ipsec
 
-    include role::analytics
     include standard
     include base::firewall
 }
