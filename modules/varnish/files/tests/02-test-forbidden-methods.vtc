@@ -1,0 +1,30 @@
+varnishtest "Maps backend forbidden methods"
+
+server s1 {
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend be_kartotherian {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_maps-backend.vcl";
+} -start
+
+client c1 {
+    # We allow only (GET|HEAD|POST|PURGE)
+    txreq -req PUT -url "/?foo=bar"
+    rxresp
+    expect resp.status == 403
+
+    # And OPTIONS with Origin
+    txreq -req OPTIONS -url "/?foo=bar" -hdr "Origin: x"
+    rxresp
+    expect resp.status == 200
+
+    txreq -req OPTIONS -url "/?foo=bar"
+    rxresp
+    expect resp.status == 403
+} -run

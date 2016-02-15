@@ -20,6 +20,13 @@ class role::cache::maps {
 
     include role::cache::ssl::unified
 
+    if hiera('varnish_version4', false) {
+        $maps_director_type = 'vslp'
+    }
+    else {
+        $maps_director_type = 'chash'
+    }
+
     $varnish_be_directors = {
         'one' => {
             'backend'   => {
@@ -34,7 +41,7 @@ class role::cache::maps {
         'two' => {
             'backend' => {
                 'dynamic'  => 'yes',
-                'type'     => 'chash',
+                'type'     => $maps_director_type,
                 'backends' => $cluster_nodes['eqiad'],
             },
             'backend_random' => {
@@ -128,7 +135,7 @@ class role::cache::maps {
         directors          => {
             'backend' => {
                 'dynamic'  => 'yes',
-                'type'     => 'chash',
+                'type'     => $maps_director_type,
                 'backends' => $site_cluster_nodes,
             },
             'backend_random' => {

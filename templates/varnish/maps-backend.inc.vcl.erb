@@ -4,10 +4,18 @@ include "errorpage.inc.vcl";
 
 sub vcl_recv {
 	call recv_purge;
+<% if @varnish_version4 -%>
+	return (hash);
+<% else -%>
 	return (lookup);
+<% end -%>
 }
 
+<% if @varnish_version4 -%>
+sub vcl_backend_error {
+<% else -%>
 sub vcl_error {
+<% end -%>
 	call errorpage;
 	return (deliver);
 }
