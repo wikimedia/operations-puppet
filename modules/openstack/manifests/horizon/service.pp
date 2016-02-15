@@ -1,7 +1,8 @@
 # The OpenStack Dashboard Project
 # http://docs.openstack.org/developer/horizon/
 class openstack::horizon::service(
-    $openstack_version=$::openstack::version,
+    $openstack_version  = $::openstack::version,
+    $webserver_hostname = 'horizon.wikimedia.org',
     $novaconfig)
 {
     # basic horizon packages and config
@@ -84,8 +85,9 @@ class openstack::horizon::service(
         mode    => '0444',
     }
 
-    apache::conf { 'horizon':
-        content => template("openstack/${$openstack_version}/horizon/openstack-dashboard.conf.erb"),
+    $certificate = $webserver_hostname
+    apache::site { $webserver_hostname:
+        content => template("openstack/${$openstack_version}/horizon/${webserver_hostname}.erb"),
         require => File['/etc/openstack-dashboard/local_settings.py'],
     }
 }

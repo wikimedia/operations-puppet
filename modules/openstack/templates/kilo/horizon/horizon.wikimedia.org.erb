@@ -1,0 +1,38 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///openstack/horizon.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+    RewriteEngine on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{REQUEST_URI} !^/status$
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName <%= @webserver_hostname %>
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/localcerts/<%= @certificate %>.crt
+    SSLCertificateChainFile /etc/ssl/localcerts/<%= @certificate %>.chain.crt
+    SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
+    <%= @ssl_settings.join("\n") %>
+
+    WSGIScriptAlias / /usr/share/openstack-dashboard/openstack_dashboard/wsgi/django.wsgi
+    WSGIDaemonProcess horizon user=horizon group=horizon processes=3 threads=10
+    WSGIProcessGroup horizon
+    Alias /static /usr/share/openstack-dashboard/openstack_dashboard/static/
+    <Directory /usr/share/openstack-dashboard/openstack_dashboard/wsgi>
+      <IfVersion >= 2.4>
+        Require all granted
+      </IfVersion>
+      <IfVersion < 2.4>
+        Order allow,deny
+        Allow from all
+      </IfVersion>
+    </Directory>
+
+</VirtualHost>
