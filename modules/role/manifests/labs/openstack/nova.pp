@@ -98,6 +98,7 @@ class role::labs::openstack::nova::manager {
 
     class { '::nutcracker':
         mbuf_size => '64k',
+        verbosity => 2,
         pools     => {
             'memcached' => {
                 distribution       => 'ketama',
