@@ -2412,8 +2412,13 @@ node 'stat1002.eqiad.wmnet' {
     # /etc/mysql/conf.d/analytics-research-client.cnf
     # and only readable by users in the
     # analytics-privatedata-users group.
-    # TODO: Move this to analytics_cluster role.
-    include role::analytics::password::research
+    include passwords::mysql::research
+    mysql::config::client { 'analytics-research':
+        user  => $::passwords::mysql::research::user,
+        pass  => $::passwords::mysql::research::pass,
+        group => 'analytics-privatedata-users',
+        mode  => '0440',
+    }
 
     # The eventlogging code is useful for scripting
     # EventLogging consumers.  Install this on
