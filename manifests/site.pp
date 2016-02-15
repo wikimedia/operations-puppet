@@ -123,46 +123,30 @@ node 'analytics1026.eqiad.wmnet' {
 # (Hue, Oozie, Hive, etc.).  It also submits regularly scheduled
 # batch Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
-    role analytics::hive::server, analytics::oozie::server, analytics::hue
+    role analytics_cluster::client,
+        analytics_cluster::hive::server,
+        analytics_cluster::oozie::server,
+        analytics_cluster::hue,
+
+        # Include a weekly cron job to run hdfs balancer.
+        analytics_cluster::hadoop::balancer,
+
+        # Deploy analytics/refinery here.
+        analytics_cluster::refinery,
+
+        # Add cron jobs to run Camus to import data into
+        # HDFS from Kafka.
+        analytics_cluster::refinery::camus,
+
+        # Add cron job to delete old data in HDFS
+        analytics_cluster::refinery::data::drop
 
     include standard
     include base::firewall
 
-    # Make sure refinery happens before analytics::clients,
-    # so that the hive role can properly configure Hive's
-    # auxpath to include refinery-hive.jar.
-    Class['role::analytics::refinery'] -> Class['role::analytics::clients']
-
-    # Include analytics/refinery deployment target.
-    include role::analytics::refinery
-    # Include analytics clients (Hadoop, Hive etc.)
-    include role::analytics::clients
-
-
-    # Add cron jobs to run Camus to import data into
-    # HDFS from Kafka.
-    include role::analytics::refinery::camus
-
-    # Add cron job to delete old data in HDFS
-    include role::analytics::refinery::data::drop
-
-    # Oozie runs a monitor_done_flag job to make
-    # sure the _SUCCESS done-flag is written
-    # for each hourly webrequest import.  This
-    # file is written only if the hourly import
-    # reports a 0.0 percent_different in expected
-    # vs actual number of sequence numbers per host.
-    # These are passive checks, so if
-    # icinga is not notified of a successful import
-    # hourly, icinga should generate an alert.
-    include role::analytics::refinery::data::check::icinga
-
-    # Include a weekly cron job to run hdfs balancer.
-    include role::analytics::hadoop::balancer
-
     # Allow access to this analytics mysql instance from analytics networks
     # NOTE: an27's mysql instance will soon be managed by the
-    # role::analytics::mysql::meta class.
+    # role::analytics_cluster::database::meta class.
     ferm::service{ 'analytics-mysql-meta':
         proto  => 'tcp',
         port   => '3306',
