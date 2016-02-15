@@ -114,6 +114,10 @@ def is_sane(value):
     return isinstance(value, int) and value > 0 and value < 60000
 
 
+def is_sane_experimental(value):
+    return isinstance(value, int) and value > 0 and value < 180000
+
+
 @handles('SaveTiming')
 def handle_save_timing(meta):
     event = meta['event']
@@ -177,6 +181,7 @@ def handle_navigation_timing(meta):
 
     for metric, value in metrics.items():
         prefix = 'frontend.navtiming'
+        prefix_experimental = 'frontend.navtiming-experimental'
 
         if is_sane(value):
             dispatch_stat(prefix, metric, site, auth, value)
@@ -187,6 +192,9 @@ def handle_navigation_timing(meta):
             ua = parse_ua(meta['userAgent'])
             if ua:
                 dispatch_stat(prefix, ua, metric, site, value)
+
+        if is_sane_experimental(value):
+            dispatch_stat(prefix_experimental, metric, 'overall', value)
 
 
 for meta in iter(zsock.recv_json, ''):
