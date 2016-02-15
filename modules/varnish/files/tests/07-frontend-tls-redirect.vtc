@@ -1,0 +1,32 @@
+varnishtest "Maps frontend TLS redirect"
+
+server s1 {
+	rxreq
+	txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+	backend ipv4_127_0_0_1 {
+		.host = "${s1_addr}"; .port = "${s1_port}";
+	}
+
+	include "/usr/share/varnish/tests/wikimedia_maps-frontend.vcl";
+} -start
+
+client c1 {
+	# Using https according to X-Forwarded-Proto
+	txreq -url "/?foo=bar" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+	rxresp
+	expect resp.status == 200
+
+	# No X-Forwarded-Proto
+	txreq -url "/?foo=bar" -hdr "Host: en.wikipedia.org"
+	rxresp
+	expect resp.status == 751
+
+	# Insecure POST
+	txreq -req POST -url "/?foo=bar" -hdr "Host: en.wikipedia.org"
+	rxresp
+	expect resp.status == 403
+	expect resp.body ~ "403 Insecure POST Forbidden - use HTTPS"
+} -run

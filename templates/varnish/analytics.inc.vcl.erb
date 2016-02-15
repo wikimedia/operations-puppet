@@ -48,6 +48,18 @@ sub analytics_last_access_recv_ {
  * for us above.  On top of all that, the C code now floors the expiry to the
  * next-lower 12 hour mark, which would've been a bit trickier in VCL...
  ****************************************************************************/
+<% if @varnish_version4 -%>
+// TODO: check if we can use this VCL snippet instead of the inline C version
+// with Varnish 4. Otherwise we need a vmod.
+sub set_last_access_cookie__ {
+	header.append(resp.http.Set-Cookie,
+		"WMF-Last-Access="
+		+ req.http.X-NowDay
+		+ ";Path=/;HttpOnly;Expires="
+		+ (now + 32d)
+	);
+}
+<% else -%>
 C{#include <time.h>}C
 sub set_last_access_cookie__ { C{
     Vmod_Func_header.append(sp, HDR_RESP, "\013Set-Cookie:",
@@ -60,6 +72,7 @@ sub set_last_access_cookie__ { C{
         vrt_magic_string_end
     );
 }C }
+<% end -%>
 
 // Call from vcl_deliver near other X-Analytics code
 sub analytics_last_access_deliver_ {
