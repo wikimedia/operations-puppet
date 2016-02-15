@@ -1,0 +1,16 @@
+varnishtest "Custom error page on unreachable backend"
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+	backend ipv4_127_0_0_1 {
+		.host = "${bad_ip}"; .port = "31337";
+	}
+
+	include "/usr/share/varnish/tests/wikimedia_maps-frontend.vcl";
+} -start
+
+client c1 {
+	txreq
+	rxresp
+	expect resp.status == 503
+	expect resp.body ~ "<title>Wikimedia Error</title>"
+} -run

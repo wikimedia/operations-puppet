@@ -15,7 +15,7 @@ sub evaluate_cookie {
 	// otherwise remove the Cookie completely.  In either case, in
 	// vcl_(pass|miss) on the way to any backend fetch, it will be
 	// restored to the original value.
-	// Later in text_common_fetch, we'll create hit-for-pass objects for any
+	// Later in text_common_backend_response, we'll create hit-for-pass objects for any
 	// response with Vary:Cookie and Cookie:Token=1.  This will allow
 	// logged-in users to share the anonymous users' cache for
 	// non-Vary:Cookie responses, and then share a single hit-for-pass
@@ -98,13 +98,13 @@ sub text_common_hash {
 }
 
 // fe+be common fetch code
-sub text_common_fetch {
+sub text_common_backend_response {
 	if (req.http.X-Subdomain && (req.url ~ "mobileaction=" || req.url ~ "useformat=")) {
 		set beresp.ttl = 60 s;
 	}
 
 	// There are a couple different conditions here under which we set a
-	// 601s hit-for-pass object based on response conditions in vcl_fetch:
+	// 601s hit-for-pass object based on response conditions in vcl_backend_response:
 	// 1) Calculated TTL <= 0 + Status < 500 + No underlying cache hit:
 	//    These are generally uncacheable responses.  The 5xx exception
 	//    avoids us accidentally replacing a good stale/grace object with
