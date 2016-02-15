@@ -1,0 +1,38 @@
+varnishtest "WMF Backend"
+
+server s1 {
+    rxreq
+    txresp
+
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+    backend be_kartotherian {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "/usr/share/varnish/tests/wikimedia_maps-backend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/?foo=bar"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.via ~ "varnish"
+    expect resp.http.x-cache ~ "miss"
+
+    txreq -url "/?foo=bar"
+    rxresp
+    expect resp.http.x-cache ~ "hit"
+
+    # Purging
+    txreq -req PURGE -url "/?foo=bar"
+    rxresp
+    expect resp.status == 204
+
+    txreq -url "/?foo=bar"
+    rxresp
+    expect resp.http.x-cache ~ "miss"
+} -run

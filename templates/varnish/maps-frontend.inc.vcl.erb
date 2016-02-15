@@ -10,12 +10,16 @@ sub vcl_recv {
 		&& req.http.referer !~ "(?i)^https?://(maps|phabricator|wikitech|incubator)\.wikimedia\.org/"
 		&& req.http.referer !~ "(?i)^https?://(localhost|127\.0\.0\.1)(:\d+)?/"
 	) {
-		error 403 "Access Denied";
+		<%= error_synth(403, "Access Denied") %>
 	}
 
-	return (lookup);
+	return (<%= @hash_lookup %>);
 }
 
+<% if @varnish_version4 -%>
+sub vcl_backend_error {
+<% else -%>
 sub vcl_error {
+<% end -%>
 	call errorpage;
 }
