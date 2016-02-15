@@ -1,0 +1,2 @@
+all:
+	varnishtest *.vtc

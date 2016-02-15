@@ -1,0 +1,21 @@
+varnishtest "Frontend keep-alive on PURGE"
+
+server s1 {
+	rxreq
+	txresp
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+	backend ipv4_127_0_0_1 {
+		.host = "${s1_addr}"; .port = "${s1_port}";
+	}
+
+	include "/usr/share/varnish/tests/wikimedia_maps-frontend.vcl";
+} -start
+
+client c1 {
+	txreq -req PURGE -url "/?foo=bar"
+	rxresp
+	expect resp.status == 204
+	expect resp.http.Connection == "keep-alive"
+} -run

@@ -1,6 +1,8 @@
 class varnish::common::vcl {
     require varnish::common
 
+    $varnish_version4 = hiera('varnish_version4', false)
+
     file { '/etc/varnish/geoip.inc.vcl':
         owner   => 'root',
         group   => 'root',
@@ -35,5 +37,10 @@ class varnish::common::vcl {
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/varnish/varnish-test-geoip',
+    }
+
+    file { '/usr/share/varnish/tests/':
+        source  => 'puppet:///modules/varnish/tests',
+        recurse => true,
     }
 }
