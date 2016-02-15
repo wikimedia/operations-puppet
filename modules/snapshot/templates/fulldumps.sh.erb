@@ -14,6 +14,9 @@
 # This permits the window for completion of dump runs to slip
 # some if there are errors or parts that need to be rerun,
 # without requiring manual intervention for the next cron run.
+#
+# The script runs on a dedicated snapshot host for huge wikis
+# and on the rest of the snapshot hosts for regular wikis.
 
 usage(){
     echo "Usage: $0 startdate enddate huge|regular"
@@ -142,6 +145,15 @@ esac
 case $wikitype in
     'hugewikis')
         maybe_do_dumps "wikidump.conf.hugewikis" "stages_normal_nocreate_hugewikis" "hugewikis" "27"
+        # After huge wikis are done, check and do some of the rest if needed
+        # If not all the big wikis are done we will start a dump run covering small and big wikis
+        # Only wikis without complete dumps will be updated.
+        maybe_do_dumps "wikidump.conf.bigwikis" "stages_normal_nocreate" "bigwikis" "16"
+	if [ $? -ne 0 ]; then
+            # If we did not start a dump run above for small and big wikis, and the small wikis
+            # are not done, start such a run now.  Only wikis without complete dumps will be updated.
+            maybe_do_dumps "wikidump.conf" "stages_normal_nocreate" "smallwikis" "16"
+        fi
         ;;
     'regular')
         # If not all the big wikis are done we will start a dump run covering small and big wikis
