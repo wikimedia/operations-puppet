@@ -84,7 +84,7 @@ node 'analytics1002.eqiad.wmnet' {
 
 # This node is being repurposed - otto 2015-09
 node 'analytics1015.eqiad.wmnet' {
-    role analytics::mysql::meta
+    role analytics_cluster::database::meta
     include standard
     include base::firewall
 }
