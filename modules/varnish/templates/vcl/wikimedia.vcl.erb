@@ -1,5 +1,14 @@
 # This file is managed by Puppet!
 
+<% if @varnish_version4 -%>
+vcl 4.0;
+import directors;
+
+# This is actually only needed if a vslp backend is defined. We could make
+# this import conditional on existing vslp backend definitions.
+import vslp;
+<% end %>
+
 import std;
 
 # this is needed by geoip.inc.vcl and zero.inc.vcl, and in general is the only
@@ -10,10 +19,22 @@ import header;
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 # only used in recv_fe_ip_processing on frontends
 import netmapper;
+
+<% if not @varnish_version4 -%>
 import ipcast;
 <% end %>
 
+<% end %>
+
 <%
+def error_synth(status_code, message)
+	if @varnish_version4
+		return "return (synth(#{status_code}, \"#{message}\"));\n"
+	else
+		return "error #{status_code} \"#{message}\";\n"
+	end
+end
+
 def backend_option(backend, option, default)
 	if @varnish_backend_options.kind_of?(Array)
 		# List of hashes of options, 'backend_match' key is a regexp against the FQDN
@@ -108,6 +129,10 @@ probe wdqs {
 
 # Backends
 
+<% if @varnish_testing
+@varnish_backends = []
+end -%>
+
 # List of Puppet generated backends
 <%
 @varnish_backends.each do |backend|
@@ -141,29 +166,77 @@ if @use_dynamic_directors and @dynamic_directors -%>
 include "directors.<%= @inst %>.vcl";
 
 <% end -%>
+
+sub vcl_init {
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	// again, netmapper only used in frontends, for recv_fe_ip_processing
+	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
+	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
+	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
+<% end %>
+<% if not @varnish_version4 -%>
+} # end of init
+<% end -%>
+
 <% @varnish_directors.keys.sort.each do |director_name|
 director = @varnish_directors[director_name] 
 if (!@dynamic_directors or director['dynamic'] != 'yes')
 	backends = director['backends']
 	if (!backends.empty?)
 -%>
+
+<% if @varnish_version4 -%>
+<% if director['type'] == 'vslp' -%>
+// Yes, the vslp director gets instantiated with vslp.vslp() instead of
+// directors.vslp(). Nobody said this would have been pretty.
+new <%= director_name %> = vslp.<%= director['type'] %>();
+<% else -%>
+new <%= director_name %> = directors.<%= director['type'] %>();
+<% end %>
+<% else -%>
 director <%= director_name %> <%= director['type'] %> {
+<% end %>
+
 <% if director['type'] == 'chash' -%>
 	.retries = <%= chash_def_retries(99, backends.size) %>;
 <% end -%>
+
 <%
 	backends.each do |backend|
 		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : "be_" + backend.split(".")[0].gsub("-", "_")
 -%>
+	<% if @varnish_version4 -%>
+	<% if director['type'] == 'vslp' -%>
+	# VSLP has no per-backend weighting. We might want to add it as a
+	# functionality to the vmod.
+	# See https://phabricator.wikimedia.org/T126206
+	<%= director_name %>.add_backend(<%= name %>);
+	<% else -%>
+	<%= director_name %>.add_backend(<%= name %>, <%= backend_option(backend, "weight", 10) %>);
+	<% end -%>
+	<% else -%>
 	{
 		.backend = <%= name %>;
 		.weight = <%= backend_option(backend, "weight", 10) %>;
 	}
+	<% end -%>
 <% 	end -%>
-}
+
+	<% if director['type'] == 'vslp' -%>
+	# We should think about this value, probably setting it in a
+	# backend-count-sensitive manner.
+	<%= director_name %>.init_hashcircle(150);
+	<% end -%>
+
+<% if not @varnish_version4 -%>
+} # end of director block
+<% end -%>
 <% end #if !empty -%>
 <% end #if !dynamic -%> 
 <% end #director loop -%>
+<% if @varnish_version4 -%>
+} # end vcl_init
+<% end -%>
 
 # Functions
 
@@ -175,23 +248,23 @@ director <%= director_name %> <%= director['type'] %> {
 //   the PURGE traffic here, as purge is called after this.
 sub https_recv_redirect {
 	if (req.http.X-Forwarded-Proto != "https") {
-		if (req.request == "GET" || req.request == "HEAD") {
+		if (<%= @req_method %> == "GET" || <%= @req_method %> == "HEAD") {
 			// This is all of our unified cert wildcard domains which are TLS-clean (cert matches all extant hostnames within)
 			// The lone exception now is wikimedia.org, in the next block
 			if (req.http.Host ~ "(?i)((^|\.)(wikipedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki)\.org|^w\.wiki)$") {
 				set req.http.Location = "https://" + req.http.Host + req.url;
-				error 751 "TLS Redirect";
+				<%= error_synth(751, "TLS Redirect") %>
 			}
 			// wikimedia.org has multi-level subdomains used for HTTP for which we have no certs, so they must be avoided here:
 			// Ref: T102826 + T102827
 			else if(req.http.Host ~ "(?i)^([^.]+\.)?(m\.)?wikimedia\.org$") {
 				set req.http.Location = "https://" + req.http.Host + req.url;
-				error 751 "TLS Redirect";
+				<%= error_synth(751, "TLS Redirect") %>
 			}
 		}
 <% if @vcl_config.fetch("secure_post", true) -%>
-		if (req.request == "POST" && !(req.http.Host ~ "(?i)\.beta\.wmflabs\.org$")) {
-			error 403 "Insecure POST Forbidden - use HTTPS";
+		if (<%= @req_method %> == "POST" && !(req.http.Host ~ "(?i)\.beta\.wmflabs\.org$")) {
+			<%= error_synth(403, "Insecure POST Forbidden - use HTTPS") %>
 		}
 <% end %>
 	}
@@ -199,10 +272,10 @@ sub https_recv_redirect {
 
 // *** HTTPS error code - implements 301 response for recv code
 sub https_error_redirect {
-	if (obj.status == 751) {
-		set obj.http.Location = req.http.Location;
-		set obj.status = 301;
-		set obj.http.Content-Length = "0"; // T64245
+	if (<%= @resp_obj %>.status == 751) {
+		set <%= @resp_obj %>.http.Location = req.http.Location;
+		set <%= @resp_obj %>.status = 301;
+		set <%= @resp_obj %>.http.Content-Length = "0"; // T64245
 		return(deliver);
 	}
 }
@@ -241,17 +314,24 @@ sub rewrite_proxy_urls {
 
 sub recv_purge {
 	/* Support HTTP PURGE */
-	if (req.request == "PURGE") {
+	if (<%= @req_method %> == "PURGE") {
 		if (client.ip !~ local_host) {
-			error 405 "Denied.";
+			<%= error_synth(405, "Denied.") -%>
 		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
 			set req.hash_ignore_busy = true;
-			return (lookup);
+			return (<%= @hash_lookup %>);
 		} else {
-			error 204 "Domain not cached here.";
+			<%= error_synth(204, "Domain not cached here.") -%>
 		}
 	}
 }
+
+<% if @varnish_version4 -%>
+// https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#invalidation-with-purge
+sub vcl_purge {
+	return (synth(204, "Purged"));
+}
+<% end -%>
 
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
@@ -321,7 +401,7 @@ sub recv_fe_ip_processing {
 		if (req.http.X-Trusted-Proxy && req.http.X-Forwarded-For) {
 			// get last from trusted-proxy-supplied XFF
 			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, "^([^,]+, )+", "");
-			if(ipcast.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+			if(<%= @std_ipcast %>.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
 				set req.http.X-Client-IP = req.http.maybe-xcip;
 			}
 			unset req.http.maybe-xcip;
@@ -343,7 +423,7 @@ sub recv_fe_ip_processing {
 			// to match and XCIP gets reset to its original value.
 			set req.http.maybe-xcip = regsub(req.http.X-Forwarded-For, ", [^,]+$", "");
 			set req.http.maybe-xcip = regsub(req.http.maybe-xcip, "^([^,]+, )+", "");
-			if(ipcast.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
+			if(<%= @std_ipcast %>.ip(req.http.maybe-xcip, "127.0.0.1") !~ wikimedia_nets) {
 				set req.http.X-Client-IP = req.http.maybe-xcip;
 			}
 			unset req.http.maybe-xcip;
@@ -392,15 +472,6 @@ sub recv_fe_ip_processing {
 
 <% end %>
 
-sub vcl_init {
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-	// again, netmapper only used in frontends, for recv_fe_ip_processing
-	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
-	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
-	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
-<% end %>
-}
-
 sub vcl_recv {
 	unset req.http.X-CDIS; // clear internal cache-disposition header
 	// IP processing is req->req mangling that shouldn't be re-done on
@@ -421,20 +492,39 @@ sub vcl_recv {
 <% if @vcl_config.fetch("layer", "") != "frontend" -%>
 	if (client.ip !~ wikimedia_nets) {
 		// Do not allow direct access to non-frontend layers
-		error 403 "Access denied";
+		<%= error_synth(403, "Access denied") %>
 	}
 <% end -%>
 
-	if (req.request !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
-		&& !(req.request == "OPTIONS" && req.http.Origin)) {
-		error 403 "HTTP method not allowed.";
+	if (<%= @req_method %> !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
+		&& !(<%= @req_method %> == "OPTIONS" && req.http.Origin)) {
+		<%= error_synth(403, "HTTP method not allowed.") %>
 	}
+
+	<% if @varnish_version4 -%>
+	// In Varnish 4, cache invalidation with purge is done via
+	// return(purge) from vcl_recv.
+	// https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#invalidation-with-purge
+	if (<%= @req_method %> == "PURGE") {
+		return(purge);
+	}
+	<% end -%>
 
 	<% if @vcl_config.fetch("has_def_backend", "yes") == "yes" -%>
 	/* Select the default backend/director, which is always the one named 'backend'.
 	 * If an instance has no default 'backend', it must declare has_def_backend==no,
 	 * and its own VCL must handle all possible req.backend cases.
 	 */
+	<% if @varnish_version4 -%>
+	set req.backend_hint = backend.backend();
+	if (std.healthy(req.backend_hint)) {
+		# TODO: This is now handled in vcl_hit.
+		# set req.grace = 5m;
+	} else {
+		# TODO: This is now handled in vcl_hit.
+		# set req.grace = 60m;
+	}
+	<% else -%>
 	set req.backend = backend;
 
 	if (req.backend.healthy) {
@@ -442,6 +532,7 @@ sub vcl_recv {
 	} else {
 		set req.grace = 60m;
 	}
+	<% end -%>
 	<% end -%>
 	
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
@@ -453,7 +544,7 @@ sub vcl_recv {
 <% end -%>
 
 	if ( req.http.host ~ "^varnishcheck" ) {
-		error 200 "OK"; 
+		<%= error_synth(200, "OK") %>
 	}
 
 	if (req.url ~ "^/beacon\/[^/?]+") {
@@ -462,7 +553,7 @@ sub vcl_recv {
 		// They are handled by log tailers (varnishkafka and varnishncsa) that filter the
 		// Varnish shm log for reqs to these endpoints and forward them to log processors
 		// for storage and analysis.
-		error 204;
+		<%= error_synth(204, "") %>
 	}
 
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
@@ -473,7 +564,11 @@ sub vcl_recv {
 	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
 }
 
+<% if @varnish_version4 -%>
+sub vcl_backend_response {
+<% else -%>
 sub vcl_fetch {
+<% end -%>
 <% if @vcl_config.fetch("ttl_fixed", false) -%>
 	// Fixed TTL (rare/questionable, only used on upload backend right now)
 	// Note the ttl_cap comes after this and takes precedence!
@@ -510,19 +605,25 @@ sub vcl_fetch {
 
 sub vcl_hit {
 	set req.http.X-CDIS = "hit";
-	if (req.request == "PURGE") {
+	if (<%= @req_method %> == "PURGE") {
+		// In Varnish 4 we cannot return purge from vcl_hit
+		<% if not @varnish_version4 -%>
 		purge;
-		error 204 "Purged";
+		<%= error_synth(204, "Purged") %>
+		<% end -%>
 	}
-	
+
 	/* Function vcl_hit in <%= @vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_miss {
 	set req.http.X-CDIS = "miss";
-	if (req.request == "PURGE") {
+	if (<%= @req_method %> == "PURGE") {
+		// In Varnish 4 we cannot return purge from vcl_miss
+		<% if not @varnish_version4 -%>
 		purge;
-		error 204 "Cache miss";
+		<% end -%>
+		<%= error_synth(204, "Cache miss") %>
 	}
 
 	/* Function vcl_miss in <%= @vcl %>.inc.vcl will be appended here */
@@ -546,7 +647,11 @@ sub vcl_pass {
 // Note parsoid is specially excluded, because it's legacy / non-standard.
 <% if scope.function_hiera(["cluster"]) != "cache_parsoid" %>
 <% if @vcl_config.fetch("layer", "") == "frontend" || @site_tier == "two" -%>
+	<% if @varnish_version4 -%>
+	set req.backend_hint = backend_random.backend();
+	<% else -%>
 	set req.backend = backend_random;
+	<% end -%>
 <% end -%>
 <% end -%>
 }
@@ -603,30 +708,57 @@ sub vcl_deliver {
 	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
 }
 
-sub vcl_error {
+sub handle_vcl_backend_error {
+<% if scope.function_hiera(["cluster"]) != "cache_parsoid" -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	// retry 503 once in frontend instances, to paper over transient issues
+	if (<%= @beresp_obj %>.status == 503 && <%= @bereq_retries %> == 0) {
+		<% if @varnish_version4 -%>
+		return(retry);
+		<% else -%>
+		return(restart);
+		<% end -%>
+	}
+<% end -%>
+<% end -%>
+}
+
+sub handle_vcl_synth {
 <% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
 	call https_error_redirect;
 <% end -%>
 
-	if (obj.status == 400 || obj.status == 413) {
-		return(deliver);
+	<% if not @varnish_version4 -%>
+	// This is not needed with Varnish 4, the Connection header is set to
+	// keep-alive by default
+	if (<%= @resp_obj %>.status == 204 && <%= @req_method %> == "PURGE") {
+		set <%= @resp_obj %>.http.Connection = "keep-alive";
 	}
-
-<% if scope.function_hiera(["cluster"]) != "cache_parsoid" -%>
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-	// retry 503 once in frontend instances, to paper over transient issues
-	if (obj.status == 503 && req.restarts == 0) {
-		return(restart);
-	}
-<% end -%>
-<% end -%>
-
-	if (obj.status == 204 && req.request == "PURGE") {
-		set obj.http.Connection = "keep-alive";
-	}
-
-	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
+	<% end -%>
 }
+
+<% if @varnish_version4 -%>
+sub vcl_backend_error {
+<% else -%>
+sub vcl_error {
+	// vcl_error calls handle_vcl_synth
+	call handle_vcl_synth;
+<% end -%>
+	// both are calling handle_vcl_backend_error
+	call handle_vcl_backend_error;
+<% if @varnish_version4 -%>
+	/* Function vcl_backend_error in <%= @vcl %>.inc.vcl will be appended here */
+<% else -%>
+	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
+<% end -%>
+}
+
+<% if @varnish_version4 -%>
+sub vcl_synth {
+	call handle_vcl_synth;
+	/* Function vcl_synth in <%= @vcl %>.inc.vcl will be appended here */
+}
+<% end -%>
 
 /* Include the VCL file for this role */
 include "<%= @vcl %>.inc.vcl";
