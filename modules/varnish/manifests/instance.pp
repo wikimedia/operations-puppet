@@ -24,6 +24,37 @@ define varnish::instance(
         $extraopts = "-n ${name}"
     }
 
+    # $varnish_version4 is used to distinguish between v4 and v3 versions of
+    # VCL code, as well as to pass the right parameters to varnishd. See
+    # varnish.systemd.erb
+    $varnish_version4 = hiera('varnish_version4', false)
+
+    if $varnish_version4 {
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#req-request-is-now-req-method
+        $req_method = 'req.method'
+
+        $bereq_method = 'bereq.method'
+
+        $bereq_req = 'bereq'
+
+        # http://www.gossamer-threads.com/lists/varnish/misc/32514
+        $bereq_retries = 'bereq.retries'
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-in-vcl-error-replaced-by-beresp-in-vcl-backend-error
+        $beresp_obj = 'beresp'
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-is-now-read-only
+        $resp_obj = 'resp'
+    }
+    else {
+        $req_method = 'req.request'
+        $bereq_method = 'req.request'
+        $bereq_req = 'req'
+        $bereq_retries = 'req.restarts'
+        $beresp_obj = 'obj'
+        $resp_obj = 'obj'
+    }
+
     # Initialize variables for templates
     $backends_str = inline_template("<%= @directors.map{|k,v|  v['backends'] }.flatten.join('|') %>")
     $varnish_backends = sort(unique(split($backends_str, '\|')))
@@ -74,6 +105,21 @@ define varnish::instance(
         group   => 'root',
         mode    => '0444',
         require => File["/etc/varnish/${vcl}.inc.vcl"],
+        content => template("${module_name}/vcl/wikimedia.vcl.erb"),
+    }
+
+    # This version of wikimedia_${vcl}.vcl is exactly the same as the one
+    # under /etc/varnish but without any backends defined. The goal is to make
+    # it possible to run the VTC test files under /usr/share/varnish/tests
+    # without having to modify any VCL file by hand.
+
+    $varnish_testing = true
+
+    file { "/usr/share/varnish/tests/wikimedia_${vcl}.vcl":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => File['/usr/share/varnish/tests'],
         content => template("${module_name}/vcl/wikimedia.vcl.erb"),
     }
 
