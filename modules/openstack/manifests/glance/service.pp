@@ -68,6 +68,13 @@ class openstack::glance::service(
             notify  => Service['glance-registry'],
             require => Package['glance'],
             mode    => '0440';
+        '/etc/glance/policy.json':
+            source  => "puppet:///modules/openstack/${openstack_version}/glance/policy.json",
+            mode    => '0644',
+            owner   => 'root',
+            group   => 'root',
+            notify  => Service['glance-api'],
+            require => Package['glance'];
     }
 
     file { '/home/glancesync/.ssh':
