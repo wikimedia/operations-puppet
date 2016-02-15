@@ -1,7 +1,8 @@
-# == role/analytics/burrow.pp
+# == Class role::kafka::analytics::burrow
 # Role classes for burrow, a consumer offset lag monitoring tool
-# for Kafka
-class role::analytics::burrow {
+# for Kafka.
+#
+class role::kafka::analytics::burrow {
 
     # Include the kafka config role to get all configuration data
     include role::kafka::analytics::config
