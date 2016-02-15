@@ -11,8 +11,8 @@
 #
 # [*script*]
 #   Path to camus wrapper script.  This is currently deployed with the refinery
-#   source. You must include role::analytics::refinery if you don't override
-#   this to a custom path.
+#   source. You must include role::analytics_cluster::refinery if you don't
+#   override this to a custom path.
 #   See: https://github.com/wikimedia/analytics-refinery/blob/master/bin/camus
 #
 # [*user*]
