@@ -1,7 +1,7 @@
 {
     "context_is_admin":  [["role:admin"]],
     "admin_or_member":  [["is_admin:True"], ["project_id:%(project_id)s"]],
-    "admin_or_projectadmin":  [["is_admin:True"], ["role:projectadmin"]],
+    "admin_or_projectadmin":  ["is_admin:True"],
     "default": [["rule:admin_or_projectadmin"]],
 
     "compute:create": "rule:admin_or_projectadmin",
