@@ -10,7 +10,8 @@ class deployment::redis($deployment_server) {
             settings => {
                 daemonize       => false,
                 slave_read_only => true,
-                slaveof         => "${deployment_ipv4} 6379"
+                slaveof         => "${deployment_ipv4} 6379",
+                bind            => '0.0.0.0',
             }
         }
     } else {
