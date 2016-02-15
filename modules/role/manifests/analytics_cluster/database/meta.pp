@@ -12,10 +12,19 @@ class role::analytics_cluster::database::meta {
     # - otto 2015-09-15
     # include role::mariadb::monitor
 
+
+    # analytics1015 in prod is currently a slave, so read_only = true.
+    # The new analytics mysql instance will be puppetized using
+    # the new role::analytics::database::meta class in the role module.
+    $read_only = $::hostname ? {
+        'analytics1015' => true,
+        default         => false,
+    }
     class { 'mariadb::config':
-        config  => 'mariadb/analytics-meta.my.cnf.erb',
-        datadir => '/var/lib/mysql',
-        require => Class['mariadb::packages_wmf'],
+        config   => 'mariadb/analytics-meta.my.cnf.erb',
+        datadir  => '/var/lib/mysql',
+        read_only => $read_only,
+        require  => Class['mariadb::packages_wmf'],
     }
 
     file { '/etc/init.d/mysql':
