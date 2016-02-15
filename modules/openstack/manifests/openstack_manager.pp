@@ -54,7 +54,7 @@ class openstack::openstack_manager(
     }
 
     apache::site { $webserver_hostname:
-        content => template("openstack/${$openstack_version}/nova/${webserver_hostname}.erb"),
+        content => template("openstack/${$openstack_version}/${webserver_hostname}.erb"),
     }
 
     file {
