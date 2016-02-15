@@ -1,0 +1,23 @@
+# Should the YubiHSM server daemon be started?
+#
+# Valid values: "true" or "false"
+YHSM_DAEMON_ENABLE="true"
+
+# The device name of the YubiHSM. For a production setting, a name that is
+# invariant of system state when the YubiHSM is inserted is recommended
+# (e.g. "/dev/serial/by-id/usb-Yubico_Yubico_YubiHSM_xxxx-if00").
+YHSM_DAEMON_DEVICE="/dev/ttyACM0"
+
+# If you have protected the key store of your YubiHSM with an 'HSM password'
+# (recommended), the key store must be unlocked before any validations can
+# be performed. Either log in to your server after every reboot and unlock
+# the key store manually (recommended), or enter the 'HSM password' in this
+# variable to have the startup script unlock the key store for you (less
+# secure). To unlock manually, use /usr/sbin/yhsm-keystore-unlock.
+YHSM_DAEMON_UNLOCK_PASSPHRASE=""
+
+# The network address to listen on. As a restrictive default, "127.0.0.1" is used.
+# By default port 5348 is used.
+#DAEMON_ARGS="$DAEMON_ARGS --interface 127.0.0.1 --port 5348"
+
+[ "x$YHSM_DAEMON_DEVICE" != "x" ] && DAEMON_ARGS="$DAEMON_ARGS -D $YHSM_DAEMON_DEVICE"
