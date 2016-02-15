@@ -1,3 +1,12 @@
+define varnish::wikimedia_vcl($varnish_testing) {
+    file { $title:
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("${module_name}/vcl/wikimedia.vcl.erb"),
+    }
+}
+
 define varnish::instance(
     $vcl_config,
     $backend_options,
@@ -22,6 +31,51 @@ define varnish::instance(
     else {
         $instancesuffix = "-${name}"
         $extraopts = "-n ${name}"
+    }
+
+    # $varnish_version4 is used to distinguish between v4 and v3 versions of
+    # VCL code, as well as to pass the right parameters to varnishd. See
+    # varnish.systemd.erb
+    $varnish_version4 = hiera('varnish_version4', false)
+
+    if $varnish_version4 {
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#req-request-is-now-req-method
+        $req_method = 'req.method'
+
+        $bereq_method = 'bereq.method'
+
+        # http://www.gossamer-threads.com/lists/varnish/misc/32514
+        $bereq_retries = 'bereq.retries'
+
+        # Use the following X_Y variables anywhere the upgrade from v3 to v4
+        # requires replacing the string X with Y.
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#req-not-available-in-vcl-backend-response
+        $bereq_req = 'bereq'
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-in-vcl-error-replaced-by-beresp-in-vcl-backend-error
+        $beresp_obj = 'beresp'
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#obj-is-now-read-only
+        $resp_obj = 'resp'
+
+        # https://www.varnish-cache.org/docs/4.0/whats-new/upgrading.html#some-return-values-have-been-replaced
+        $hash_lookup = 'hash'
+
+        # The 'ip' function has been added to the Varnish Standard Module in
+        # v4. No need to use ipcast.
+        $std_ipcast = 'std'
+    }
+    else {
+        $req_method = 'req.request'
+        $bereq_method = 'req.request'
+        $bereq_retries = 'req.restarts'
+
+        $bereq_req = 'req'
+        $beresp_obj = 'obj'
+        $resp_obj = 'obj'
+        $hash_lookup = 'lookup'
+        $std_ipcast = 'ipcast'
     }
 
     # Initialize variables for templates
@@ -68,13 +122,18 @@ define varnish::instance(
         }
     }
 
+    varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl}.vcl":
+        require         => File["/etc/varnish/${vcl}.inc.vcl"],
+        varnish_testing => false,
+    }
 
-    file { "/etc/varnish/wikimedia_${vcl}.vcl":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File["/etc/varnish/${vcl}.inc.vcl"],
-        content => template("${module_name}/vcl/wikimedia.vcl.erb"),
+    # This version of wikimedia_${vcl}.vcl is exactly the same as the one
+    # under /etc/varnish but without any backends defined. The goal is to make
+    # it possible to run the VTC test files under /usr/share/varnish/tests
+    # without having to modify any VCL file by hand.
+    varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia_${vcl}.vcl":
+        require         => File['/usr/share/varnish/tests'],
+        varnish_testing => true,
     }
 
     file { "/etc/varnish/${vcl}.inc.vcl":
