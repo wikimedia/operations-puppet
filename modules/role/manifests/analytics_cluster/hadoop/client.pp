@@ -1,4 +1,4 @@
-# == Class role::role::analytics_cluster::hadoop::client
+# == Class role::analytics_cluster::hadoop::client
 # Installs Hadoop client pacakges and configuration.
 #
 class role::analytics_cluster::hadoop::client {
