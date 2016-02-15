@@ -1829,7 +1829,7 @@ users:
     name: mnoushad
     realname: Muhammed Noushad
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA1DvHq/H0WOvfcpwXTcc9cGipyJXymQRoguOgxlfSsQDlk7X9IUMii34M4CNVqNzU3e68itJzb2GKlnMKRYeRgsJWluWxi6ZDgD1unoa4cs3dg5mvrWmrp3bpRvGGfois+dOuH4di9/bM/+hwhRS/MGt9pRNQLPEXf/0nsTPD/JSfMIEuETbCvpY0r8+Cek1I7rVxg9qzWTFdidK5QQbqI5I5aqcrJpqgzJ5iBbivO6bVDFx6qA/okRPHDYpoUA9/YE2GdlY7P5hwmrERNX7xMbv/3DETInS6uOFMksdUSlUhhMVR8H0xsDgrLIIDYNk8bjAcQ4T7TWCxVxHiN/u/6Q== muhammed.noushad]
-  uid: 14122
+    uid: 14122
   volans:
     ensure: present
     gid: 500
