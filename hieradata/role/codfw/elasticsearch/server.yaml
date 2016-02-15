@@ -40,3 +40,8 @@ elasticsearch::recover_after_nodes: 11
 debdeploy::grains:
   debdeploy-elastic-codfw:
     value: standard
+
+elasticsearch::graylog_hosts:
+  - logstash1001.eqiad.wmnet
+  - logstash1002.eqiad.wmnet
+  - logstash1003.eqiad.wmnet

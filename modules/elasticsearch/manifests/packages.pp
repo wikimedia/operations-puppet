@@ -19,4 +19,24 @@ class elasticsearch::packages {
         require_package('python-elasticsearch')
         require_package('python-ipaddr')
     }
+
+    ### install and link additional log4j appender to send logs over GELF
+
+    # we only require the packages, we do not remove them as there might be
+    # other dependencies
+    if $::elasticsearch::send_logs_to_logstash {
+        require_package('liblogstash-gelf-java')
+        require_package('libjson-simple-java')
+    }
+
+    # symlinks are removed if log shipping is disabled
+    file { '/usr/share/elasticsearch/lib/logstash-gelf.jar':
+        ensure => ensure_link($::elasticsearch::send_logs_to_logstash),
+        target => '/usr/share/java/logstash-gelf.jar',
+    }
+    file { '/usr/share/elasticsearch/lib/json-simple.jar':
+        ensure => ensure_link($::elasticsearch::send_logs_to_logstash),
+        target => '/usr/share/java/json-simple.jar',
+    }
+
 }
