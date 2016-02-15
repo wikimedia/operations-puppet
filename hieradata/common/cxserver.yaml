@@ -6,6 +6,7 @@ registry:
   source:
     - ab
     - ace
+    - ady
     - af
     - ak
     - am
@@ -19,6 +20,7 @@ registry:
     - av
     - ay
     - az
+    - azb
     - bar
     - ba
     - bcl
