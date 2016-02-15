@@ -3,7 +3,7 @@
 # import data from Kafka into Hadoop.
 #
 class role::analytics_cluster::refinery::camus {
-    require role::role::analytics_cluster::refinery
+    require role::analytics_cluster::refinery
     include role::kafka::role::analytics::config
 
     # Make all uses of camus::job set default kafka_brokers and camus_jar.
