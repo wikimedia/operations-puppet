@@ -1,0 +1,30 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///openstack/horizon.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+# This config is behind misc-web which handles ssl for us.
+<VirtualHost *:80>
+    ServerName <%= @webserver_hostname %>
+
+    RewriteEngine on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{REQUEST_URI} !^/status$
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+
+    WSGIScriptAlias / /usr/share/openstack-dashboard/openstack_dashboard/wsgi/django.wsgi
+    WSGIDaemonProcess horizon user=horizon group=horizon processes=3 threads=10
+    WSGIProcessGroup horizon
+    Alias /static /usr/share/openstack-dashboard/openstack_dashboard/static/
+    <Directory /usr/share/openstack-dashboard/openstack_dashboard/wsgi>
+      <IfVersion >= 2.4>
+        Require all granted
+      </IfVersion>
+      <IfVersion < 2.4>
+        Order allow,deny
+        Allow from all
+      </IfVersion>
+    </Directory>
+</VirtualHost>
