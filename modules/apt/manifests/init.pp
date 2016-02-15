@@ -1,5 +1,34 @@
+# == Class apt
+#
+# APT configuration for the Wikimedia cluster.
+#
+#
+# [*use_proxy*]
+#
+# Whether to use Wikimedia internal proxy to reach the apt repositories.
+# Boolean. Default: True.
+#
+#
+# [*components*]
+#
+# List of components to use on the archive.
+#
+# Default value is undefined and depends on the $::operatingsystem fact.
+#
+# Ubuntu: 'main universe thirdparty'
+# others: 'main backports thirdparty'
+#
+#
+# [*debian_backports_components*]
+#
+# List of components for the Debian <release>-backports distribution. Ignored
+# on other distribution such as Ubuntu.
+# String. Default: 'main contrib non-free'.
+#
 class apt(
-    $use_proxy = true
+    $use_proxy = true,
+    $components = undef,
+    $debian_backports_components = 'main contrib non-free',
 ) {
     exec { 'apt-get update':
         path        => '/usr/bin',
@@ -86,10 +115,12 @@ class apt(
         }
     }
 
-    if $::operatingsystem == 'ubuntu' {
-        $components = 'main universe thirdparty'
-    } else {
-        $components = 'main backports thirdparty'
+    if $components == undef {
+        if $::operatingsystem == 'ubuntu' {
+            $components = 'main universe thirdparty'
+        } else {
+            $components = 'main backports thirdparty'
+        }
     }
 
     apt::repository { 'wikimedia':
@@ -104,7 +135,7 @@ class apt(
         apt::repository { 'debian-backports':
             uri         => 'http://mirrors.wikimedia.org/debian/',
             dist        => "${::lsbdistcodename}-backports",
-            components  => 'main contrib non-free',
+            components  => $debian_backports_components,
             comment_old => true,
         }
     }
