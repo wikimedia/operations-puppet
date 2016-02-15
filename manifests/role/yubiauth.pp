@@ -6,6 +6,8 @@ class role::yubiauth {
     include standard
     include base::firewall
 
+    include ::yubiauth::yhsm-daemon
+
     system::role { 'role::yubiauth':
         ensure      => 'present',
         description => 'Yubi 2FA authentication server',
