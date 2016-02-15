@@ -3,8 +3,8 @@
 # import data from Kafka into Hadoop.
 #
 class role::analytics_cluster::refinery::camus {
-    require role::role::analytics_cluster::refinery
-    include role::kafka::role::analytics::config
+    require role::analytics_cluster::refinery
+    include role::kafka::analytics::config
 
     # Make all uses of camus::job set default kafka_brokers and camus_jar.
     # If you build a new camus or refinery, and you want to use it, you'll
@@ -13,8 +13,8 @@ class role::analytics_cluster::refinery::camus {
     # the camus::job declaration.
     Camus::Job {
         kafka_brokers => suffix($role::kafka::analytics::config::brokers_array, ':9092'),
-        camus_jar     => "${role::analytics::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf6.jar",
-        check_jar     => "${role::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-0.0.26.jar",
+        camus_jar     => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/camus-wmf/camus-wmf-0.1.0-wmf6.jar",
+        check_jar     => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-0.0.26.jar",
     }
 
     # Import webrequest_* topics into /wmf/data/raw/webrequest
@@ -37,6 +37,6 @@ class role::analytics_cluster::refinery::camus {
         minute  => '15',
         # refinery-camus contains some custom decoder classes which
         # are needed to import Avro binary data.
-        libjars => "${role::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.23.jar",
+        libjars => "${role::analytics_cluster::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-camus-0.0.23.jar",
     }
 }

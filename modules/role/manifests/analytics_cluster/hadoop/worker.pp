@@ -1,7 +1,7 @@
 # == Class role::role::analytics_cluster::hadoop::worker
 # Includes cdh::hadoop::worker classes
 class role::analytics_cluster::hadoop::worker {
-    system::role { 'role::role::analytics_cluster::hadoop::worker':
+    system::role { 'role::analytics_cluster::hadoop::worker':
         description => 'Hadoop Worker (DataNode & NodeManager)',
     }
 
