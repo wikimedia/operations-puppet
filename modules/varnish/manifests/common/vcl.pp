@@ -1,6 +1,8 @@
 class varnish::common::vcl {
     require varnish::common
 
+    $varnish_version4 = hiera('varnish_version4', false)
+
     file { '/etc/varnish/geoip.inc.vcl':
         owner   => 'root',
         group   => 'root',

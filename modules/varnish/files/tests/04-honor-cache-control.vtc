@@ -1,0 +1,34 @@
+varnishtest "WMF Backend"
+
+server s1 {
+	rxreq
+	txresp -hdr "Cache-Control: private"
+
+	rxreq
+	txresp -hdr "Cache-Control: private"
+} -start
+
+varnish v1 -arg "-p vcc_err_unref=false" -vcl+backend {
+	// NOTE: the definition of be_kartotherian needs to be commented out
+	// in /etc/varnish/wikimedia_maps-backend.vcl in order for this to
+	// work
+	backend be_kartotherian {
+		.host = "${s1_addr}"; .port = "${s1_port}";
+	}
+
+	include "/etc/varnish/wikimedia_maps-backend.vcl";
+} -start
+
+client c1 {
+	# Don't cache private objects
+	txreq -url "/?foo=private"
+	rxresp
+	expect resp.status == 200
+  	expect resp.http.x-cache ~ "miss"
+
+	# foo=private should not be cached
+	txreq -url "/?foo=private"
+	rxresp
+	expect resp.status == 200
+  	expect resp.http.x-cache ~ "pass"
+} -run
