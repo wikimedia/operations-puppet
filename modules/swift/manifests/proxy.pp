@@ -39,10 +39,9 @@ class swift::proxy (
         }
     }
 
-    file { '/etc/logrotate.d/swift-proxy':
+    logrotate::conf { 'swift-proxy':
         ensure => present,
         source => 'puppet:///modules/swift/swift-proxy.logrotate.conf',
-        mode   => '0444',
     }
 
     rsyslog::conf { 'swift-proxy':
