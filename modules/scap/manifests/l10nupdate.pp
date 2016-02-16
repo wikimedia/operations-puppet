@@ -102,9 +102,10 @@ class scap::l10nupdate(
         group  => $::mediawiki::users::web,
         mode   => '0755',
     }
-    file { '/etc/logrotate.d/l10nupdate':
+
+    logrotate::conf { 'l10nupdate':
+        ensure => present,
         source => 'puppet:///modules/scap/l10nupdate.logrotate',
-        mode   => '0444',
     }
 
     # Git clones for the l10update git job
