@@ -38,12 +38,16 @@ class role::analytics_cluster::refinery {
 
     # Create directory in /var/log for general purpose Refinery job logging.
     $log_dir = '/var/log/refinery'
+    $log_dir_group = $::realm ? {
+        'production' => 'analytics-admins',
+        'labs'       => "project-${::labsproject}",
+    }
     file { $log_dir:
         ensure => 'directory',
         owner  => 'hdfs',
-        group  => 'analytics-admins',
+        group  => $log_dir_group,
         # setgid bit here to make refinery log files writeable
-        # by users in the analytics-admins group.
+        # by users in the $$log_dir_group group.
         mode   => '2775',
     }
 }
