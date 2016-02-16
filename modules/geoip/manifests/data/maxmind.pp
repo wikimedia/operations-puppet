@@ -89,7 +89,8 @@ class geoip::data::maxmind(
   }
 
   # logrotate for geoipupdate.log
-  file { '/etc/logrotate.d/geoipupdate':
+  logrotate::conf { 'geoipupdate':
+    ensure => present,
     content => template('geoip/geoipupdate.logrotate.erb'),
     require => Cron['geoipupdate'],
   }
