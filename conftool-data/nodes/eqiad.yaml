@@ -254,8 +254,8 @@ sca:
   sca1001.eqiad.wmnet: [cxserver, zotero]
   sca1002.eqiad.wmnet: [cxserver, zotero]
 scb:
-  scb1001.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid]
-  scb1002.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid]
+  scb1001.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver]
+  scb1002.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver]
 dns:
   chromium.wikimedia.org: [pdns_recursor]
   hydrogen.wikimedia.org: [pdns_recursor]

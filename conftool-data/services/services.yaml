@@ -92,6 +92,13 @@ scb:
       weight: 10
     datacenters:
     - eqiad
+  cxserver:
+    port: 8080
+    default_values:
+      pooled: 'no'
+      weight: 10
+    datacenters:
+    - eqiad
 restbase:
   restbase:
     port: 7231
