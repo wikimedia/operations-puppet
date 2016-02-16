@@ -172,6 +172,12 @@ class role::phabricator::main {
         srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
     }
 
+    ferm::service { 'phabmain-smtp_ipv6':
+        port   => '25',
+        proto  => 'tcp',
+        srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x}, AAAA)" }.join(" ") %>)'),
+    }
+
     ferm::rule { 'ssh_public':
         rule => 'saddr (0.0.0.0/0 ::/0) daddr (10.64.32.186/32 208.80.154.250/32 2620:0:861:103:10:64:32:186/128 2620:0:861:ed1a::3:16/128) proto tcp dport (22) ACCEPT;',
     }
