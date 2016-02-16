@@ -291,15 +291,14 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
        missingok
 }"
 
-    file { '/etc/logrotate.d/eventlogging-files':
+    logrotate::conf { 'eventlogging-files':
+        ensure => present,
         content => $logrotate_content,
-        mode    => '0444',
         require => [
             File[$out_dir],
             File["${out_dir}/archive"]
         ],
     }
-
 
     $kafka_consumer_args  = 'auto_commit_enable=True&auto_commit_interval_ms=10000&auto_offset_reset=-1'
     $kafka_consumer_group = hiera(
