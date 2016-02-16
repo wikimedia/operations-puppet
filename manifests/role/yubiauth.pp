@@ -6,7 +6,7 @@ class role::yubiauth {
     include standard
     include base::firewall
 
-    include ::yubiauth::yhsm_daemon
+    include yubiauth::yhsm_daemon
 
     system::role { 'role::yubiauth':
         ensure      => 'present',
