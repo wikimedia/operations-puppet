@@ -26,8 +26,7 @@ groups:
     description: RT 5934
     members: [ssastry, cscott, arlolra]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
-                 'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
-                 'ALL = (parsoid) NOPASSWD: /usr/local/bin/update_parsoid.sh']
+                 'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart' ]
   gerrit-root:
     gid: 703
     description: manage gerrit server
@@ -477,7 +476,6 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service parsoid-vd *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-vd-client *',
                'ALL = NOPASSWD: /usr/sbin/service diffservice *',
-               'ALL = (parsoid) NOPASSWD: /usr/local/bin/update_parsoid.sh',
                'ALL = NOPASSWD: /bin/journalctl *']
 users:
   rush:
