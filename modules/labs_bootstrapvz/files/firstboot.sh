@@ -75,12 +75,10 @@ saltfinger="c5:b1:35:45:3e:0a:19:70:aa:5f:3a:cf:bf:a0:61:dd"
 if [ "${domain}" == "eqiad.wmflabs" ]
 then
 	master="labs-puppetmaster-eqiad.wikimedia.org"
-	master_secondary="labs-puppetmaster-codfw.wikimedia.org"
 fi
 if [ "${domain}" == "codfw.wmflabs" ]
 then
 	master="labs-puppetmaster-codfw.wikimedia.org"
-	master_secondary="labs-puppetmaster-eqiad.wikimedia.org"
 fi
 
 # Finish LDAP configuration
@@ -124,7 +122,7 @@ nscd -i hosts
 echo $fqdn > /etc/mailname
 
 # Initial salt config
-echo -e "master:\n  - ${master}\n  - ${master_secondary}" > /etc/salt/minion
+echo -e "master: ${master}" > /etc/salt/minion
 echo "id: ${fqdn}" >> /etc/salt/minion
 echo "master_finger: ${saltfinger}" >> /etc/salt/minion
 echo "${fqdn}" > /etc/salt/minion_id
