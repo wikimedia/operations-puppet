@@ -474,16 +474,12 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-<% if @site_tier == "one" && @vcl_config.fetch("layer", "") == "backend" -%>
-<% if @vcl_config.fetch("ttl_fixed_1be", false) -%>
+<% if @vcl_config.fetch("ttl_fixed", false) -%>
 	// Fixed TTL (rare/questionable, only used on upload backend right now)
-	// Only valid in tier-1 backend; it would be incorrect to re-raise the
-	// TTL on cache->cache fetches...
 	// Note the ttl_cap comes after this and takes precedence!
 	if (beresp.status <= 400) {
-		set beresp.ttl = <%= @vcl_config.fetch("ttl_fixed_1be", "invalid") %>;
+		set beresp.ttl = <%= @vcl_config.fetch("ttl_fixed", "invalid") %>;
 	}
-<% end -%>
 <% end -%>
 
 	// Hard TTL cap on all fetched objects (default 21d)
