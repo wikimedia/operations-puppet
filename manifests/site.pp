@@ -177,7 +177,7 @@ node 'argon.wikimedia.org' {
 }
 
 node 'auth1001.eqiad.wmnet' {
-    role yubiauth
+    role yubiauth::server
 }
 
 node 'auth2001.codfw.wmnet' {
