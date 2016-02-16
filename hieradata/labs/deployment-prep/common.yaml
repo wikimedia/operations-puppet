@@ -188,3 +188,19 @@ nfs_mounts:
   scratch: false
   dumps: false
 mediawiki::web::sites::domain_suffix: "beta.wmflabs.org"
+
+#
+# Analytics Cluster in Beta
+#
+cdh::hadoop::cluster_name: analytics-hadoop
+cdh::hadoop::namenode_hosts:
+    - deployment-analytics01.deployment-prep.eqiad.wmflabs
+    - deployment-analytics02.deployment-prep.eqiad.wmflabs
+
+cdh::hadoop::journalnode_hosts:
+    - deployment-analytics01.deployment-prep.eqiad.wmflabs
+    - deployment-analytics02.deployment-prep.eqiad.wmflabs
+    - deployment-analytics03.deployment-prep.eqiad.wmflabs
+
+cdh::hive::metastore_host: deployment-analytics02.eqiad.wmflabs
+cdh::oozie::oozie_host: deployment-analytics02.eqiad.wmflabs
