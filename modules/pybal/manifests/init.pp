@@ -23,10 +23,9 @@ class pybal {
         before   => Service['pybal'],
     }
 
-    file { '/etc/logrotate.d/pybal':
+    logrotate::conf { 'pybal':
         ensure => present,
         source => 'puppet:///modules/pybal/pybal.logrotate.conf',
-        mode   => '0444',
     }
 
     nrpe::monitor_service { 'pybal':
