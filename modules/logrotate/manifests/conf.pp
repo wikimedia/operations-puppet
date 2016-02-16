@@ -8,7 +8,7 @@ define logrotate::conf (
     $ensure = present,
     $source = undef,
     $content = undef,
-    ) {
+) {
 
     file { "/etc/logrotate.d/${title}":
         ensure  => $ensure,

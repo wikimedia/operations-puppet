@@ -13,7 +13,8 @@ class tlsproxy::instance {
         tag     => 'nginx',
     }
 
-    file { '/etc/logrotate.d/nginx':
+    logrotate::conf { 'nginx':
+        ensure => present,
         source => 'puppet:///modules/tlsproxy/logrotate',
         tag    => 'nginx',
     }
