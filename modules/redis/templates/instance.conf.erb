@@ -15,7 +15,7 @@ include /etc/redis/redis.conf
         }.unshift(key.tr '_', '-').join(' ')
     end
 
-    @defaults.merge(@settings).select { |k,v|
+    @defaults.merge(@settings).merge(@map[@title] || {}).select { |k,v|
         !['', 'undef'].include?(v.to_s)
     }.reduce([]) { |lines,kv|
         k, v = *kv

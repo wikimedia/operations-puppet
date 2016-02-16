@@ -71,51 +71,22 @@ class role::memcached {
         minute  => fqdn_rand(59, 'memkeys'),
     }
 
-    redis::instance { 6379:
-        settings => {
-            bind                        => '0.0.0.0',
-            auto_aof_rewrite_min_size   => '512mb',
-            client_output_buffer_limit  => 'slave 512mb 200mb 60',
-            dir                         => '/srv/redis',
-            dbfilename                  => "${::hostname}-6379.rdb",
-            masterauth                  => $passwords::redis::main_password,
-            maxmemory                   => '500Mb',
-            maxmemory_policy            => 'volatile-lru',
-            maxmemory_samples           => 5,
-            no_appendfsync_on_rewrite   => true,
-            requirepass                 => $passwords::redis::main_password,
-            save                        => '300 100',
-            slave_read_only             => false,
-            stop_writes_on_bgsave_error => false,
-        },
-    }
 
-    # Add a second redis instance on selected hosts
-    if ($::hostname == 'mc2001' or $::hostname == 'mc2016') {
-        redis::instance { 6380:
-            settings => {
-                bind                        => '0.0.0.0',
-                auto_aof_rewrite_min_size   => '512mb',
-                client_output_buffer_limit  => 'slave 512mb 200mb 60',
-                dir                         => '/srv/redis',
-                dbfilename                  => "${::hostname}-6380.rdb",
-                masterauth                  => $passwords::redis::main_password,
-                maxmemory                   => '500Mb',
-                maxmemory_policy            => 'volatile-lru',
-                maxmemory_samples           => 5,
-                no_appendfsync_on_rewrite   => true,
-                requirepass                 => $passwords::redis::main_password,
-                save                        => '300 100',
-                slave_read_only             => false,
-                stop_writes_on_bgsave_error => false,
-            }
-        }
-
-        ferm::service { 'redis_memcached_role_6380':
-            proto => 'tcp',
-            port  => '6380',
-        }
-
+    $base_settings = {
+        bind                        => '0.0.0.0',
+        auto_aof_rewrite_min_size   => '512mb',
+        client_output_buffer_limit  => 'slave 512mb 200mb 60',
+        dir                         => '/srv/redis',
+        dbfilename                  => "${::hostname}-6379.rdb",
+        masterauth                  => $passwords::redis::main_password,
+        maxmemory                   => '500Mb',
+        maxmemory_policy            => 'volatile-lru',
+        maxmemory_samples           => 5,
+        no_appendfsync_on_rewrite   => true,
+        requirepass                 => $passwords::redis::main_password,
+        save                        => '300 100',
+        slave_read_only             => false,
+        stop_writes_on_bgsave_error => false,
     }
 
     $shards = {
@@ -129,9 +100,21 @@ class role::memcached {
         }
     }
 
+    class { 'redis::multidc::instances':
+        shards   => $shards,
+        settings => $base_settings,
+        map      => {
+            '6380' => {
+                dbfilename => "${::hostname}-6380.rdb",
+            }
+        }
+    }
+
+    $redis_ports = join($::redis::multidc::instances::instances, ' ')
+
     ferm::service { 'redis_memcached_role':
         proto => 'tcp',
-        port  => '6379',
+        port  => inline_template('(<%= @redis_ports %>)'),
     }
 
     ferm::service { 'memcached_memcached_role':
