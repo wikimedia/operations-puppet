@@ -109,7 +109,8 @@ class swift::storage (
         ensure  => present,
         command => '/usr/bin/swift-drive-audit /etc/swift/swift-drive-audit.conf',
         user    => 'root',
-        minute  => '1',
+        minute  => fqdn_rand(59),
+        hour    => fqdn_rand(23),
         require => [File['/usr/bin/swift-drive-audit'],
                     File['/etc/swift/swift-drive-audit.conf']],
     }
