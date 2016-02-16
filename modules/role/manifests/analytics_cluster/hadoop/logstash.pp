@@ -5,7 +5,7 @@ class role::analytics_cluster::hadoop::logstash {
     Class['cdh::hadoop'] -> Class['role::analytics_cluster::hadoop::logstash']
 
     file { '/usr/local/bin/hadoop-yarn-logging-helper.sh':
-        content => template('hadoop/hadoop-yarn-logging-helper.erb'),
+        content => template('role/analytics_cluster/hadoop/hadoop-yarn-logging-helper.erb'),
         mode    => '0744',
     }
 
