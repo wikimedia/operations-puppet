@@ -5,6 +5,7 @@
 # be produced to topics.
 #
 
+# TODO: page_edit will be deprecated in favor of revision_create.
 mediawiki.page_edit:
   schema_name: page_edit
 
@@ -19,3 +20,6 @@ mediawiki.page_restore:
 
 mediawiki.revision_visibility_set:
   schema_name: revision_visibility_set
+
+mediawiki.revision_create:
+  schema_name: revision_create
