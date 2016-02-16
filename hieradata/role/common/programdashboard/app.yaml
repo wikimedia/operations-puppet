@@ -1,0 +1,24 @@
+programdashboard::server_name: program-dashboard.wmflabs.org
+programdashboard::server_admin: education@wikimedia.org
+
+programdashboard::app::directory: /srv/programdashboard
+programdashboard::app::environment: production
+programdashboard::app::owner: programdashboard
+programdashboard::app::group: programdashboard
+programdashboard::app::dependencies:
+  - git-core
+  - ruby2.1
+  - ruby2.1-dev
+  - rubygems-integration
+  - bundler
+  - nodejs
+  - nodejs-legacy
+  - npm
+  - libmysqlclient-dev
+  - libpq-dev
+  - libqtwebkit-dev
+  - libsqlite3-dev
+  - pandoc
+  - apache2
+  - libapache2-mod-passenger
+  - ruby-passenger
