@@ -102,12 +102,11 @@ class eventlogging {
         mode   => '0644',
     }
 
-    file { '/etc/logrotate.d/eventlogging':
+    logrotate::conf { 'eventlogging':
+        ensure  => present,
         content => template('eventlogging/logrotate.erb'),
-        mode    => '0444',
         require => File[$log_dir],
     }
-
 
     # Temporary conditional while we migrate eventlogging service over to
     # using systemd on Debian Jessie.  This will allow us to individually
