@@ -27,12 +27,10 @@ def do_wait(procs):
     """
     wait for command in procs array to execute, dump their output
     """
-    for p, f, cmd in procs:
-        if p.wait() > 0:
-            raise Exception("command: ", cmd, "output: ", f.read())
-        f.seek(0)
-        print f.read().strip()
-        f.close()
+    for p, cmd in procs:
+        (out, stderr_unused) = p.communicate()
+        if p.returncode:
+            raise Exception("command: ", cmd, "output:", out)
 
 
 def run_updates(staging, cores):
@@ -43,10 +41,10 @@ def run_updates(staging, cores):
     with open(staging, "r") as dblist:
         for db in dblist:
             db = db.strip()
-            f = os.tmpfile()
             cmd = "/usr/local/bin/mwscript update.php --wiki=%s --quick" % db
-            p = subprocess.Popen(cmd, stdout=f, stderr=f, shell=True)
-            procs.append((p, f, cmd))
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT, shell=True)
+            procs.append((p, cmd))
             if (len(procs) >= cores):
                 do_wait(procs)
                 procs = []
