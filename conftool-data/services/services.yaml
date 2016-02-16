@@ -49,13 +49,6 @@ pdf:
     datacenters:
     - eqiad
 sca:
-  cxserver:
-    port: 8080
-    default_values:
-      pooled: 'no'
-      weight: 10
-    datacenters:
-    - eqiad
   zotero:
     port: 1969
     default_values:
