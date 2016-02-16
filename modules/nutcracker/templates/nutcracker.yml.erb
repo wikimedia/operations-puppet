@@ -1,8 +1,14 @@
 <% @pools.keys.sort_by(&:to_s).each do |key| -%>
 <%= key %>:
-<% pool = @pools[key] -%>
+<% pool = @pools[key] -%>                                                    
 <% pool.keys.sort_by(&:to_s).each do |k| -%>
-<% if pool[k].is_a?Array -%>
+<% if k == "server_list" -%>
+  servers:
+<% pool[k].keys.sort_by(&:to_s).each do |shard| -%>
+<% server = pool[k][shard] -%>
+    - <%= server["host"] %>:<%= server["port"] %>:1 "<%= shard %>"
+<% end -%>
+<% elsif pool[k].is_a?Array -%>
   <%= k %>:
 <% pool[k].sort_by(&:to_s).each do |v| -%>
     - <%= v %>
