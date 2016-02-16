@@ -23,14 +23,16 @@ class role::parsoid::testing {
         system     => true,
     }
 
-    # We clone the git repo and let testing services
-    # update / modify the repo as appropriate
-    # (via scripts, manually, however).
+    # Clone the git repo. Omit ensure => latest since
+    # we want to update the repository when necessary.
+    # Use mode 0775 so that members of wikidev group
+    # can update the code via git pull.
     git::clone { 'mediawiki/services/parsoid/deploy':
         owner              => 'root',
         group              => 'wikidev',
         recurse_submodules => true,
         directory          => '/srv/parsoid',
+        mode               => '0775',
         before             => Service['parsoid'],
     }
 
