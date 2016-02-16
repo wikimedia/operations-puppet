@@ -2,7 +2,7 @@
 #
 # This class configures a Yubi 2FA authentication server
 #
-class role::yubiauth {
+class role::yubiauth::server {
     include standard
     include base::firewall
 
