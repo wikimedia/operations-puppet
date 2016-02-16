@@ -141,6 +141,13 @@ class role::eventlogging::forwarder inherits role::eventlogging {
         input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&auto_commit_enable=False&auto_offset_reset=-1",
         outputs => ["tcp://${eventlogging_host}:8600"],
     }
+
+    ferm::service { 'eventlogging-zmq-legacy-stream':
+        proto  => 'tcp',
+        notrack => true,
+        port   => '8600',
+        srange => '@resolve(hafnium.eqiad.wmnet)',
+    }
 }
 
 
