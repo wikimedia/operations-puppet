@@ -12,7 +12,7 @@ git pull
 git log -n 1
 cd ..
 echo 'Restarting parsoid ...'
-service parsoid restart
+sudo service parsoid restart
 echo 'Restarting parsoid-rt testreduce clients ...'
-service parsoid-rt-client restart
+sudo service parsoid-rt-client restart
 echo 'All done!'
