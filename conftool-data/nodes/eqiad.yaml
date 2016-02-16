@@ -251,8 +251,8 @@ pdf:
   ocg1002.eqiad.wmnet: [ocg]
   ocg1003.eqiad.wmnet: [ocg]
 sca:
-  sca1001.eqiad.wmnet: [cxserver, zotero]
-  sca1002.eqiad.wmnet: [cxserver, zotero]
+  sca1001.eqiad.wmnet: [zotero]
+  sca1002.eqiad.wmnet: [zotero]
 scb:
   scb1001.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver]
   scb1002.eqiad.wmnet: [mobileapps, mathoid, graphoid, citoid, cxserver]
