@@ -2325,6 +2325,62 @@ host es2010 {
 	fixed-address es2010.codfw.wmnet;
 }
 
+host es2011 {
+    hardware ethernet 14:18:77:54:48:37;
+    fixed-address es2011.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host es2012 {
+    hardware ethernet 14:18:77:53:9F:84;
+    fixed-address es2012.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host es2013 {
+    hardware ethernet 14:18:77:51:13:9A;
+    fixed-address es2013.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host es2014 {
+    hardware ethernet 14:18:77:53:AE:C8;
+    fixed-address es2014.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host es2015 {
+    hardware ethernet 14:18:77:53:BC:87;
+    fixed-address es2015.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host es2016 {
+    hardware ethernet 14:18:77:50:A6:F1;
+    fixed-address es2016.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host es2017 {
+    hardware ethernet 14:18:77:52:49:32;
+    fixed-address es2017.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
+host es2018 {
+    hardware ethernet 14:18:77:54:3F:10;
+    fixed-address es2018.codfw.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host eventlog1001 {
 	hardware ethernet 90:B1:1C:2D:80:E4;
 	fixed-address eventlog1001.eqiad.wmnet;
