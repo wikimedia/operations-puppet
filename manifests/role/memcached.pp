@@ -90,6 +90,26 @@ class role::memcached {
         },
     }
 
+    # Add a second redis instance on selected hosts
+    if ($::hostname == 'mc2001' or $::hostname == 'mc2016') {
+        redis::instance { 6380:
+            bind                        => '0.0.0.0',
+            auto_aof_rewrite_min_size   => '512mb',
+            client_output_buffer_limit  => 'slave 512mb 200mb 60',
+            dir                         => '/srv/redis',
+            dbfilename                  => "${::hostname}-6380.rdb",
+            masterauth                  => $passwords::redis::main_password,
+            maxmemory                   => '500Mb',
+            maxmemory_policy            => 'volatile-lru',
+            maxmemory_samples           => 5,
+            no_appendfsync_on_rewrite   => true,
+            requirepass                 => $passwords::redis::main_password,
+            save                        => '300 100',
+            slave_read_only             => false,
+            stop_writes_on_bgsave_error => false,
+        }
+    }
+
     ferm::service { 'redis_memcached_role':
         proto    => 'tcp',
         port     => '6379',
