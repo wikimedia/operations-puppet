@@ -26,7 +26,6 @@ class labstore::account_services {
         'mysql' => {
             'hosts' => [
                 'labsdb1001.eqiad.wmnet',
-                'labsdb1002.eqiad.wmnet',
                 'labsdb1003.eqiad.wmnet',
                 'labsdb1005.eqiad.wmnet',
             ],
