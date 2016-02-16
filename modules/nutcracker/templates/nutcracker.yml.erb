@@ -1,6 +1,20 @@
+<%
+def map_servers(map)
+  serverlist = []
+  map.keys.sort_by(&:to_s).each do |shard|
+    server = map[shard]
+    serverlist << "#{server['host']}:#{server['port']}:1 \"#{shard}\""
+  end
+  serverlist
+end
+-%>
 <% @pools.keys.sort_by(&:to_s).each do |key| -%>
 <%= key %>:
-<% pool = @pools[key] -%>
+<% pool = @pools[key]
+if pool.include? "server_map" then
+  pool[servers] = map_servers(pool["server_map"])
+  pool.delete("server_map")
+end -%>
 <% pool.keys.sort_by(&:to_s).each do |k| -%>
 <% if pool[k].is_a?Array -%>
   <%= k %>:
