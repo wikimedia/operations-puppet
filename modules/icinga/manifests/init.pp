@@ -93,10 +93,9 @@ class icinga {
     }
 
     # FIXME: This should be in the package?
-    file { '/etc/logrotate.d/icinga':
+    logrotate::conf { 'icinga':
         ensure => present,
         source => 'puppet:///modules/icinga/logrotate.conf',
-        mode   => '0444',
     }
 
     # Setup all plugins!
