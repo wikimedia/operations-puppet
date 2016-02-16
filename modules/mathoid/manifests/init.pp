@@ -17,6 +17,8 @@
 #   Enable speakText generation.
 # [*textvcinfo_generation*]
 #   Enable texvcinfo generation. Default: true
+# [*render_no_check*]
+#   Whether not to perform input checks on renders. Default: true
 #
 class mathoid(
     $svg_generation=true,
@@ -24,6 +26,7 @@ class mathoid(
     $png_generation=false,
     $speakText_generation=false,
     $texvcinfo_generation=true,
+    $render_no_check=true,
 ) {
 
     # Pending fix for <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742347>
@@ -39,8 +42,9 @@ class mathoid(
             svg       => $svg_generation,
             img       => $img_generation,
             png       => $png_generation,
-            speakText => $speakText_generation,
+            speech_on => $speakText_generation,
             texvcinfo => $texvcinfo_generation,
+            no_check  => $render_no_check,
         },
         healthcheck_url => '',
         has_spec        => true,
