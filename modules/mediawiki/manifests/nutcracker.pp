@@ -43,7 +43,7 @@ class mediawiki::nutcracker {
             server_failure_limit => 3,
             server_retry_timeout => to_milliseconds('30s'),
             timeout              => 1000,
-            servers              => hiera('mediawiki::redis_servers::eqiad'),
+            server_map           => hiera('mediawiki::redis_servers::eqiad'),
         },
 
         'redis_codfw'           =>  {
@@ -57,7 +57,7 @@ class mediawiki::nutcracker {
             server_failure_limit => 3,
             server_retry_timeout => to_milliseconds('30s'),
             timeout              => 1000,
-            servers              => hiera('mediawiki::redis_servers::codfw'),
+            server_map           => hiera('mediawiki::redis_servers::codfw'),
         },
     }
 
