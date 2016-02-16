@@ -28,8 +28,9 @@
 #
 define redis::instance(
     $ensure   = present,
-    $settings = {}
-) {
+    $settings = {},
+    $replica = undef
+    ) {
     validate_ensure($ensure)
     validate_hash($settings)
 
@@ -49,13 +50,22 @@ define redis::instance(
         fail('redis::instance title must be a TCP port or absolute path to UNIX socket.')
     }
 
+    # If a replication map is presented, get the master from it
+    if $replica_map != undef {
+        $slaveof = $replica_map[$port]
+    } else {
+        $slaveof = undef
+    }
+
     $defaults = {
         pidfile    => "/var/lib/redis/${instance_name}.pid",
         logfile    => "/var/log/redis/${instance_name}.log",
         port       => $port,
         unixsocket => $unixsocket,
         daemonize  => true,
+        slaveof    => $slaveof,
     }
+
 
     file { "/etc/redis/${instance_name}.conf":
         ensure  => $ensure,
