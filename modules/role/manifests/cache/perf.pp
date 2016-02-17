@@ -45,4 +45,26 @@ class role::cache::perf {
     sysctl::parameters { 'disable_ssr':
         values => { 'net.ipv4.tcp_slow_start_after_idle' => 0 },
     }
+
+    # tcp_tw_(reuse|recycle): both are off by default
+    #    _recycle is dangerous: it violates RFCs, and probably breaks clients
+    # when many clients are behind a single NAT gateway, and affects the
+    # recycling of TIME_WAIT slots for both incoming and outgoing connections.
+    #    _reuse is not-so-dangerous: it only affects outgoing connections, and
+    # looks at timestamp and other state information to gaurantee that the
+    # reuse doesn't cause issues within reasonable constraints.
+    #    This helps prevent TIME_WAIT issues for our $localip<->$localip
+    # connections from nginx to varnish-fe:80 - some of our caches reach
+    # connection volume/rate spikes where this is a real issue.  Without this
+    # setting, turning on keepalives for nginx->varnish tends to cause 502 Bad
+    # Gateway spikes (whereas without keepalives, clients were being delayed
+    # or queued slightly waiting indirectly on the TIME_WAIT slots).
+    #    There may be better solutions for this problem in the big picture -
+    # like balancing nginx->varnish local traffic across several local
+    # listening ports for varnish-fe, or using unix domain sockets for these
+    # connections and avoiding IP entirely (if varnishd supported them).  Or
+    # of course implementing decent HTTPS support directly in varnish :P
+    sysctl::parameters { 'tw_reuse':
+        values => { 'net.ipv4.tcp_tw_reuse' => 1 },
+    }
 }
