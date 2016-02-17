@@ -4,8 +4,12 @@ def individual_node(node)
     if @fqdn != node
       left_ipv4 = scope.function_ipresolve([@fqdn, 4])
       right_ipv4 = scope.function_ipresolve([node, 4])
-      left_ipv6 = scope.function_ipresolve([@fqdn, 6])
-      right_ipv6 = scope.function_ipresolve([node, 6])
+      begin
+        left_ipv6 = scope.function_ipresolve([@fqdn, 6])
+        right_ipv6 = scope.function_ipresolve([node, 6])
+      rescue
+        left_ipv6 = right_ipv6 = ""
+      end
       ns = node.gsub(/\..*$/, '')
       if left_ipv4 != "" and right_ipv4 != ""
           result << "conn #{ns}_v4"
