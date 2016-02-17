@@ -1,0 +1,11 @@
+description "Start MediaWiki-Vagrant on system startup"
+author "Bryan Davis <bd808@wikimedia.org>"
+task
+start on filesystem and net-device-up IFACE!=lo
+env LANG=en_US.UTF-8
+script
+    cd <%= @install_directory %> &&
+    /usr/local/bin/mwvagrant status |
+    grep -q 'stopped (lxc)' &&
+    /usr/local/bin/mwvagrant up
+end script
