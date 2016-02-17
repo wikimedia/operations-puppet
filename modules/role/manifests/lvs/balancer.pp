@@ -78,6 +78,7 @@ class role::lvs::balancer {
     }
 
     include standard
+    include base::no_nfs_client
 
     # temporary experimental component used here as it includes a newer Linux kernel
     if $::operatingsystem == 'Debian' {
