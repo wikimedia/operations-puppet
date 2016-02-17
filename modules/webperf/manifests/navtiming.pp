@@ -23,6 +23,8 @@ class webperf::navtiming(
 ) {
     include ::webperf
 
+    require_package('python-yaml')
+
     file { '/srv/webperf/navtiming.py':
         source => 'puppet:///modules/webperf/navtiming.py',
         owner  => 'www-data',
