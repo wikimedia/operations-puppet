@@ -48,8 +48,6 @@ graphoid::allowed_domains:
     - wiktionary.org
   wikirawupload:
     - upload.wikimedia.org
-  wikidatasparql:
-    - query.wikidata.org
 debdeploy::grains:
   debdeploy-scb:
     value: standard
