@@ -4,6 +4,6 @@ export OS_USER_DOMAIN_ID="default"
 export OS_PASSWORD="<%= @wikitech_nova_ldap_user_pass %>"
 export OS_AUTH_URL="http://<%= @nova_controller_hostname %>:35357/v3"
 export OS_REGION_NAME="<%= @nova_region %>"
-export OS_TENANT_NAME="testlabs"
+export OS_TENANT_NAME=<%= @wikitech_nova_admin_project_name %>
 export OS_NO_CACHE=1
 export OS_IDENTITY_API_VERSION=3
