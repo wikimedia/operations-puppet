@@ -23,12 +23,15 @@ class webperf::navtiming(
 ) {
     include ::webperf
 
+    require_package('python-yaml')
+
     file { '/srv/webperf/navtiming.py':
-        source => 'puppet:///modules/webperf/navtiming.py',
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0755',
-        notify => Service['navtiming'],
+        source  => 'puppet:///modules/webperf/navtiming.py',
+        owner   => 'www-data',
+        group   => 'www-data',
+        mode    => '0755',
+        require => Package['python-yaml'],
+        notify  => Service['navtiming'],
     }
 
     file { '/lib/systemd/system/navtiming.service':
