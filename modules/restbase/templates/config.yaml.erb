@@ -4,74 +4,75 @@
 # between domains in the root_spec further down.
 default_project: &default_project
   x-modules:
-    /:
-      - path: projects/wmf_default.yaml
-        options: &default_options
-          table:
-            hosts: [<%= Array(@seeds).join(',') %>]
-            keyspace: system
-            localDc: <%= @cassandra_localDc %>
-            datacenters: [<%= Array(@cassandra_datacenters).join(',') %>]
-            username: <%= @cassandra_user %>
-            password: <%= @cassandra_password %>
-            defaultConsistency: <%= @cassandra_defaultConsistency %>
-            storage_groups:
-              - name: phase0.group.local
-                domains:
-                  - /^(?:test.*\.wiki.*\.org|www.mediawiki.org)$/
-              - name: wikipedia.group.local
-                domains: /\.wikipedia\.org$/
-              - name: wikimedia.group.local
-                domains: /\.wikimedia\.org$/
-              - name: wiktionary.group.local
-                domains: /\.wiktionary\.org$/
-              - name: wikibooks.group.local
-                domains: /\.wikibooks\.org$/
-              - name: wikisource.group.local
-                domains: /\.wikisource\.org$/
-              - name: wikiquote.group.local
-                domains: /\.wikiquote\.org$/
-              - name: wikinews.group.local
-                domains: /\.wikinews\.org$/
-              - name: wikiversity.group.local
-                domains: /\.wikiversity\.org$/
-              - name: wikivoyage.group.local
-                domains: /\.wikivoyage\.org$/
-              - name: globaldomain.group.local
-                domains: /^wikimedia\.org$/
-              # Catch-all group
-              - name: default.group.local
-                domains: /./
+    - path: projects/wmf_default.yaml
+      options: &default_options
+        table:
+          hosts: [<%= Array(@seeds).join(',') %>]
+          keyspace: system
+          localDc: <%= @cassandra_localDc %>
+          datacenters: [<%= Array(@cassandra_datacenters).join(',') %>]
+          username: <%= @cassandra_user %>
+          password: <%= @cassandra_password %>
+          defaultConsistency: <%= @cassandra_defaultConsistency %>
+          storage_groups:
+            - name: phase0.group.local
+              domains:
+                - /^(?:test.*\.wiki.*\.org|www.mediawiki.org)$/
+            - name: wikipedia.group.local
+              domains: /\.wikipedia\.org$/
+            - name: wikimedia.group.local
+              domains: /\.wikimedia\.org$/
+            - name: wiktionary.group.local
+              domains: /\.wiktionary\.org$/
+            - name: wikibooks.group.local
+              domains: /\.wikibooks\.org$/
+            - name: wikisource.group.local
+              domains: /\.wikisource\.org$/
+            - name: wikiquote.group.local
+              domains: /\.wikiquote\.org$/
+            - name: wikinews.group.local
+              domains: /\.wikinews\.org$/
+            - name: wikiversity.group.local
+              domains: /\.wikiversity\.org$/
+            - name: wikivoyage.group.local
+              domains: /\.wikivoyage\.org$/
+            - name: globaldomain.group.local
+              domains: /^wikimedia\.org$/
+            # Catch-all group
+            - name: default.group.local
+              domains: /./
 
-          parsoid:
-            host: <%= @parsoid_uri %>
-          action:
-            apiUriTemplate: http://api.svc.eqiad.wmnet/w/api.php
-          graphoid:
-            host: <%= @graphoid_uri %>
-          mathoid:
-            host: <%= @mathoid_uri %>
-            # 10 days Varnish caching, one day client-side
-            cache-control: s-maxage=864000, max-age=86400
-          mobileapps:
-            host: <%= @mobileapps_uri %>
+        parsoid:
+          host: <%= @parsoid_uri %>
+        action:
+          apiUriTemplate: http://api.svc.eqiad.wmnet/w/api.php
+        graphoid:
+          host: <%= @graphoid_uri %>
+        mathoid:
+          host: <%= @mathoid_uri %>
+          # 10 days Varnish caching, one day client-side
+          cache-control: s-maxage=864000, max-age=86400
+        mobileapps:
+          host: <%= @mobileapps_uri %>
+        events:
+          purge:
+            host: <%= @purge_host %>
+            port: <%= @purge_port %>
 
 # A different project template, sharing configuration options.
 wikimedia.org: &wikimedia.org
   x-modules:
-    /:
-      - path: projects/wikimedia.org.yaml
-        options:
-            <<: *default_options
-            pageviews:
-              host: <%= @aqs_uri %>
+    - path: projects/wikimedia.org.yaml
+      options:
+          <<: *default_options
+          pageviews:
+            host: <%= @aqs_uri %>
 
 # wiktionaries config
 wiktionary: &wiktionary_project
   x-modules:
-    /:
-      - path: projects/wmf_wiktionary.yaml
-        options: *default_options
+    - path: projects/wmf_wiktionary.yaml
+      options: *default_options
 
 # Swagger spec root.
 root_spec: &root_spec
