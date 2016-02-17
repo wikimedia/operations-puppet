@@ -81,7 +81,7 @@ class role::parsoid::beta {
         group   => root,
         mode    => '0444',
         content => template('parsoid/parsoid.default.erb'),
-        require => File['/data/project/parsoid'],
+        require => File['/var/log/parsoid'],
     }
 
     file { '/etc/logrotate.d/parsoid':
