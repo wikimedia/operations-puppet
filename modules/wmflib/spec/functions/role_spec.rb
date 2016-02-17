@@ -21,7 +21,7 @@ describe 'role' do
     should run.and_raise_error(ArgumentError)
   end
   it "throws error if called outside of the node scope" do
-    should run.with_params(['cache::text']).and_raise_error(Puppet::ParseError)
+    should run.with_params('cache::text').and_raise_error(Puppet::ParseError)
   end
 
   it "throws error if called on a non-existing role" do
