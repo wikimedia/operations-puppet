@@ -65,6 +65,9 @@ define tlsproxy::localssl(
         }
     }
 
+    # used in localssl.erb to template upstream definition name
+    $basename = regsubst($title, '[\W_]', '-', 'G')
+
     nginx::site { $name:
         require => Notify['tlsproxy localssl default_server'],    # Ensure a default_server has been defined
         content => template('tlsproxy/localssl.erb')
