@@ -81,4 +81,14 @@ class vagrant::mediawiki(
         mode   => '0444',
         source => 'puppet:///modules/vagrant/umask-wikidev-profile-d.sh',
     }
+
+    # T127129: Attempt to start an existing MediaWiki-Vagrant LXC container on
+    # instance boot.
+    file { '/etc/init/mediawiki-vagrant.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('vagrant/mediawiki-vagrant.conf.erb'),
+    }
 }
