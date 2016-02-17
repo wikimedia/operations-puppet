@@ -54,9 +54,9 @@ class role::parsoid::beta {
         source => 'puppet:///modules/parsoid/parsoid.upstart',
     }
 
-    $parsoid_log_file = '/data/project/parsoid/parsoid.log'
+    $parsoid_log_file = '/var/log/parsoid/parsoid.log'
     # Make sure the directory exists on beta
-    file { '/data/project/parsoid':
+    file { '/var/log/parsoid':
         ensure => directory,
         owner  => parsoid,
         group  => parsoid,
@@ -109,4 +109,3 @@ class role::parsoid::beta {
     # Also need the slave scripts for multi-git.sh
     include contint::slave_scripts
 }
-
