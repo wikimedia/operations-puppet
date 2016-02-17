@@ -123,6 +123,10 @@ def handle_save_timing(meta):
     if duration and is_sane(duration):
         dispatch_stat('mw.performance.save', duration)
 
+        # Ori, for T126700 -- 17-Feb-2016
+        if meta.get('wiki', '') == 'mediawikiwiki':
+            dispatch_stat('tmp.performance.save', duration)
+
 
 @handles('NavigationTiming')
 def handle_navigation_timing(meta):
