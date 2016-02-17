@@ -118,6 +118,17 @@ class role::memcached {
 
     }
 
+    $shards = {
+        'eqiad' => hiera('mediawiki::redis_servers::eqiad'),
+        'codfw' => hiera('mediawiki::redis_servers::codfw')
+    }
+
+    if os_version('Debian >= jessie') {
+        class { 'redis::multidc::ipsec':
+            shards => $shards
+        }
+    }
+
     ferm::service { 'redis_memcached_role':
         proto => 'tcp',
         port  => '6379',
