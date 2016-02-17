@@ -9,8 +9,9 @@ class base::no_nfs_client {
             enable => false,
         }
         service { 'rpcbind':
-            ensure => stopped,
-            enable => false,
+            ensure  => stopped,
+            enable  => false,
+            require => Service['nfs-common'],
         }
     }
     else {
