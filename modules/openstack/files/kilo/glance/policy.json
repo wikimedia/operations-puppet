@@ -1,10 +1,12 @@
 {
     "context_is_admin":  "role:admin",
     "admin_or_owner":  "is_admin:True or project_id:%(project_id)s",
+    "admin_or_glanceadmin": "is_admin:True or role:glanceadmin",
+
     "default": "role:admin",
 
-    "add_image": "role:admin",
-    "delete_image": "role:admin",
+    "add_image": "rule:admin_or_glanceadmin",
+    "delete_image": "rule:admin_or_glanceadmin",
     "get_image": "",
     "get_images": "",
     "modify_image": "role:admin",
@@ -12,7 +14,7 @@
     "copy_from": "role:admin",
 
     "download_image": "",
-    "upload_image": "role:admin",
+    "upload_image": "rule:admin_or_glanceadmin",
 
     "delete_image_location": "role:admin",
     "get_image_location": "",
