@@ -123,8 +123,8 @@ keystoneconfig:
   auth_port: '35357'
   auth_protocol: 'http'
   auth_host: 208.80.154.92
-  admin_project_id: 'testlabs'
-  admin_project_name: 'testlabs'
+  admin_project_id: 'admin'
+  admin_project_name: 'admin'
 
 designateconfig:
   db_host:  'm5-master.eqiad.wmnet'

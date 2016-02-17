@@ -131,7 +131,7 @@ if __name__ == "__main__":
     argparser.add_argument(
         '--nova-project',
         help='project for nova auth',
-        default='testlabs'
+        default='admin'
     )
     argparser.add_argument(
         'instanceid',
