@@ -4,44 +4,46 @@
 # between domains in the root_spec further down.
 default_project: &default_project
   x-modules:
-    /:
-      - path: projects/wmf_default.yaml
-        options: &default_options
-          table:
-            hosts: [<%= Array(@seeds).join(',') %>]
-            keyspace: system
-            localDc: <%= @cassandra_localDc %>
-            datacenters: [<%= Array(@cassandra_datacenters).join(',') %>]
-            username: <%= @cassandra_user %>
-            password: <%= @cassandra_password %>
-            defaultConsistency: <%= @cassandra_defaultConsistency %>
-            storage_groups:
-              # Catch-all group
-              - name: default.group.local
-                domains: /./
+    - path: projects/wmf_default.yaml
+      options: &default_options
+        table:
+          hosts: [<%= Array(@seeds).join(',') %>]
+          keyspace: system
+          localDc: <%= @cassandra_localDc %>
+          datacenters: [<%= Array(@cassandra_datacenters).join(',') %>]
+          username: <%= @cassandra_user %>
+          password: <%= @cassandra_password %>
+          defaultConsistency: <%= @cassandra_defaultConsistency %>
+          storage_groups:
+            # Catch-all group
+            - name: default.group.local
+              domains: /./
 
-          parsoid:
-            host: <%= @parsoid_uri %>
-          action:
-            apiUriTemplate: "{{'http://{domain}/w/api.php'}}"
-          graphoid:
-            host: <%= @graphoid_uri %>
-          mathoid:
-            host: <%= @mathoid_uri %>
-            # 10 days Varnish caching, one day client-side
-            cache-control: s-maxage=864000, max-age=86400
-          mobileapps:
-            host: <%= @mobileapps_uri %>
+        parsoid:
+          host: <%= @parsoid_uri %>
+        action:
+          apiUriTemplate: "{{'http://{domain}/w/api.php'}}"
+        graphoid:
+          host: <%= @graphoid_uri %>
+        mathoid:
+          host: <%= @mathoid_uri %>
+          # 10 days Varnish caching, one day client-side
+          cache-control: s-maxage=864000, max-age=86400
+        mobileapps:
+          host: <%= @mobileapps_uri %>
+        events:
+          purge:
+            host: <%= @purge_host %>
+            port: <%= @purge_port %>
 
 # A different project template, sharing configuration options.
 wikimedia.org: &wikimedia.org
   x-modules:
-    /:
-      - path: projects/wikimedia.org.yaml
-        options:
-            <<: *default_options
-            pageviews:
-              host: <%= @aqs_uri %>
+    - path: projects/wikimedia.org.yaml
+      options:
+          <<: *default_options
+          pageviews:
+            host: <%= @aqs_uri %>
 
 
 # Swagger spec root.
