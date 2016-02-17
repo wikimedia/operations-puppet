@@ -1,1 +1,2 @@
 cluster: cache_misc
+tlsproxy::localssl::keepalives_per_worker: 1

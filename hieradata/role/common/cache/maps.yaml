@@ -1,1 +1,2 @@
 cluster: cache_maps
+tlsproxy::localssl::keepalives_per_worker: 1
