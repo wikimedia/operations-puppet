@@ -1,3 +1,4 @@
 cluster: cache_upload
 admin::groups:
   - perf-roots
+tlsproxy::localssl::keepalives_per_worker: 1
