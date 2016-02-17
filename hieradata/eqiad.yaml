@@ -123,7 +123,7 @@ keystoneconfig:
   auth_port: '35357'
   auth_protocol: 'http'
   auth_host: 208.80.154.92
-  admin_project_id: '669709120c054d078d04d8b90d1a8a1e'
+  admin_project_id: 'testlabs'
   admin_project_name: 'testlabs'
 
 designateconfig:
