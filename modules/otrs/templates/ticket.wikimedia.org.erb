@@ -111,7 +111,7 @@
     </IfModule>
 
     # Limit the number of requests per child to avoid excessive memory usage
-    #MaxRequestsPerChild 4000
+    MaxConnectionsPerChild 4000
 
     RewriteEngine On
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
