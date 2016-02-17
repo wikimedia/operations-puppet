@@ -25,7 +25,7 @@ _fasd_prompt_func() {
 # add bash hook
 case $PROMPT_COMMAND in
   *_fasd_prompt_func*) ;;
-  *) PROMPT_COMMAND="_fasd_prompt_func;$PROMPT_COMMAND";;
+  *) PROMPT_COMMAND="_fasd_prompt_func 2>/dev/null;$PROMPT_COMMAND";;
 esac
 
 alias v='f -t -e vim -b viminfo'
