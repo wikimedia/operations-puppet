@@ -32,14 +32,14 @@ worker_processes  <%= @processorcount %>;
     end
 -%>
 worker_cpu_affinity <%= affinity_mask.join(" ") %>;
-worker_rlimit_nofile 30000;
+worker_rlimit_nofile <%= @nginx_worker_connections.to_i * 2 %>;
 
 
 error_log  /var/log/nginx/error.log;
 pid        /run/nginx.pid;
 
 events {
-    worker_connections  <%= @nginx_worker_connections %>;
+    worker_connections <%= @nginx_worker_connections %>;
     multi_accept off; # accept 1 conn per epoll hit, basically
     accept_mutex off; # better latencies at high connection rates
 }
