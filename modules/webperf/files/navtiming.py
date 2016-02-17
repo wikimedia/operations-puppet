@@ -9,90 +9,105 @@ import argparse
 import logging
 import re
 import socket
-
 import zmq
-
-
-ap = argparse.ArgumentParser(description='NavigationTiming Graphite module')
-ap.add_argument('endpoint', help='URI of EventLogging endpoint')
-ap.add_argument('--statsd-host', default='localhost',
-                type=socket.gethostbyname)
-ap.add_argument('--statsd-port', default=8125, type=int)
-
-args = ap.parse_args()
-
-logging.basicConfig(format='%(asctime)-15s %(message)s', level=logging.INFO,
-                    stream=sys.stdout)
-
-ctx = zmq.Context()
-zsock = ctx.socket(zmq.SUB)
-zsock.hwm = 3000
-zsock.linger = 0
-zsock.connect(args.endpoint)
-zsock.subscribe = b''
-
-addr = args.statsd_host, args.statsd_port
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+import yaml
+import unittest
 
 handlers = {}
 
 
+# Inspired by https://github.com/ua-parser/uap-core
+# Beware:
+# - Must return a string in form "<browser_family>.<browser_major>".
+# - Use the same family name as ua-parser.
+# - Ensure number match doesn't contain dots (or else, strip them).
+# - Add unit test with sample user agent string.
 def parse_ua(ua):
+
+    # Chrome for iOS
     m = re.search('CriOS/(\d+)', ua)
     if m is not None:
-        return 'CriOS_%s' % m.group(1)
+        return 'Chrome_Mobile_iOS.%s' % m.group(1)
 
-    m = re.search('OS ([\d_]+) like Mac OS X.*Version', ua)
+    # Mobile Safari on iOS
+    m = re.search('OS [\d_]+ like Mac OS X.*Version/([\d.]+).+Safari', ua)
     if m is not None:
-        return 'iOS_%s_WebView' % '_'.join(m.group(1).split('_')[:2])
+        return 'Mobile_Safari.%s' % '_'.join(m.group(1).split('.')[:2])
 
+    # iOS WebView
+    m = re.search('OS ([\d_]+) like Mac OS X.*Mobile', ua)
+    if m is not None:
+        return 'iOS_WebView.%s' % '_'.join(m.group(1).split('_')[:2])
+
+    # Opera 14 for Android (WebKit-based)
     m = re.search('Mobile.*OPR/(\d+)', ua)
     if m is not None:
-        return 'Mobile_Opera_%s' % m.group(1)
+        return 'Opera_Mobile.%s' % m.group(1)
 
+    # Android browser (pre Android 4.4)
     m = re.search('Android (\d).*Version/[\d.]+', ua)
     if m is not None:
-        return 'Android_%s_WebView' % m.group(1)
+        return 'Android.%s' % m.group(1)
 
+    # Chrome for Android
     m = re.search('Android.*Chrome/(\d+)', ua)
     if m is not None:
-        return 'Mobile_Chrome_%s' % m.group(1)
+        return 'Chrome_Mobile.%s' % m.group(1)
 
-    m = re.search('OPR/(\d+)', ua)
+    # Opera >= 15 (Desktop)
+    m = re.search('Chrome.*OPR/(\d+)', ua)
     if m is not None:
-        return 'Opera_%s' % m.group(1)
+        return 'Opera.%s' % m.group(1)
 
-    m = re.search('rv:11.0', ua)
+    # Internet Explorer 11
+    m = re.search('Trident.*rv:11\.', ua)
     if m is not None:
-        return 'MSIE_11'
+        return 'MSIE.11'
 
-    m = re.search('MSIE_\d+', ua)
+    # Internet Explorer <= 10
+    m = re.search('MSIE (\d+)', ua)
     if m is not None:
-        return m.group(0)
+        return 'MSIE.%s' % m.group(1)
 
-    m = re.search('Firefox/\d+', ua)
+    # Firefox for Android
+    m = re.search('(?:Mobile|Tablet);.*Firefox/(\d+)', ua)
     if m is not None:
-        return m.group(0).replace('/', '_')
+        return 'Firefox_Mobile.%s' % m.group(1)
 
-    m = re.search('Chrome/(\d+)[\d.]* Safari', ua)
+    # Firefox (Desktop)
+    m = re.search('Firefox/(\d+)', ua)
     if m is not None:
-        return 'Chrome_%s' % m.group(1)
+        return 'Firefox.%s' % m.group(1)
 
-    m = re.search('Safari/(\d)[\d.]*$', ua)
+    # Microsoft Edge
+    m = re.search('Edge/(\d+)\.', ua)
     if m is not None:
-        return 'Safari_%s' % m.group(1)
+        return 'Edge.%s' % m.group(1)
 
-    m = re.search('Edge/(\d+)[\d.]*$', ua)
+    # Chrome/Chromium
+    m = re.search('(Chromium|Chrome)/(\d+)\.', ua)
     if m is not None:
-        return 'Edge_%s' % m.group(1)
+        return '%s.%s' % (m.group(1), m.group(2))
 
+    # Safari (Desktop)
+    m = re.search('Version/(\d+).+Safari/', ua)
+    if m is not None:
+        return 'Safari.%s' % m.group(1)
+
+    # Misc iOS
     m = re.search('OS ([\d_]+) like Mac OS X', ua)
     if m is not None:
-        return 'iOS_%s_other' % '.'.join(m.group(1).split('_')[:2])
+        return 'iOS_other.%s' % '_'.join(m.group(1).split('_')[:2])
 
+    # Opera <= 12 (Desktop)
+    m = re.match('Opera/9.+Version/(\d+)', ua)
+    if m is not None:
+        return 'Opera.%s' % m.group(1)
+
+    # Opera < 10 (Desktop)
     m = re.match('Opera/(\d+)', ua)
     if m is not None:
-        return 'Opera_%s' % m.group(1)
+        return 'Opera.%s' % m.group(1)
 
 
 def dispatch_stat(*args):
@@ -179,13 +194,48 @@ def handle_navigation_timing(meta):
             dispatch_stat(prefix, metric, site, 'overall', value)
             dispatch_stat(prefix, metric, 'overall', value)
 
-            prefix = prefix + '.by_platform'
-            ua = parse_ua(meta['userAgent'])
-            if ua:
-                dispatch_stat(prefix, ua, metric, site, value)
+            ua = parse_ua(meta['userAgent']) or 'Other._'
+            dispatch_stat(prefix, metric, site, 'by_browser', ua, value)
+
+if __name__ == '__main__':
+    ap = argparse.ArgumentParser(description='NavigationTiming subscriber')
+    ap.add_argument('endpoint', help='URI of EventLogging endpoint')
+    ap.add_argument('--statsd-host', default='localhost',
+                    type=socket.gethostbyname)
+    ap.add_argument('--statsd-port', default=8125, type=int)
+
+    args = ap.parse_args()
+
+    logging.basicConfig(format='%(asctime)-15s %(message)s',
+                        level=logging.INFO, stream=sys.stdout)
+
+    ctx = zmq.Context()
+    zsock = ctx.socket(zmq.SUB)
+    zsock.hwm = 3000
+    zsock.linger = 0
+    zsock.connect(args.endpoint)
+    zsock.subscribe = b''
+
+    addr = args.statsd_host, args.statsd_port
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    for meta in iter(zsock.recv_json, ''):
+        f = handlers.get(meta['schema'])
+        if f is not None:
+            f(meta)
 
 
-for meta in iter(zsock.recv_json, ''):
-    f = handlers.get(meta['schema'])
-    if f is not None:
-        f(meta)
+# ##### Tests ######
+# To run:
+#   python -m unittest navtiming
+#
+class TestParseUa(unittest.TestCase):
+
+    def test_parse_ua(self):
+        with open('navtiming_ua_data.yaml') as f:
+            data = yaml.safe_load(f)
+            for case in data:
+                self.assertEqual(
+                    parse_ua(case['ua']),
+                    case['result']
+                )
