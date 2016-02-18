@@ -191,6 +191,12 @@ nfs_mounts:
 mediawiki::web::sites::domain_suffix: "beta.wmflabs.org"
 
 #
+# Zookeeper Cluster in Beta
+#
+zookeeper_hosts:
+    deployment-zookeeper01.eqiad.wmflabs: "1"
+
+#
 # Kafka clusters in Beta
 #
 kafka_clusters:
