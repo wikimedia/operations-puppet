@@ -486,6 +486,12 @@ class role::mariadb::core(
     include passwords::misc::scripts
     include role::mariadb::ferm
 
+    package { [
+        'pigz',
+    ]:
+        ensure => present,
+    }
+
     class { 'mariadb::packages_wmf':
         mariadb10 => true,
     }
