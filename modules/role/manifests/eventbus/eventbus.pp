@@ -37,9 +37,10 @@ class role::eventbus::eventbus {
         "${kafka_base_uri}?async=False"
     ]
 
+    $eventlogging_path = '/srv/deployment/eventlogging/eventbus'
     # TODO: Allow configuration of more than one service daemon process?
     eventlogging::service::service { 'eventbus':
-        eventlogging_path => '/srv/deployment/eventlogging/eventbus',
+        eventlogging_path => $eventlogging_path,
         # TODO: Deploy mediawiki/event-schemas separately
         # from the submodule in EventLogging repo?
         schemas_path      => "${eventlogging_path}/config/schemas/jsonschema",
