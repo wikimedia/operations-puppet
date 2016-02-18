@@ -2,7 +2,7 @@
 # Analytics Query Service
 #
 # AQS is made up of a RESTBase instance backed by Cassandra.
-# Each AQS node is has both colocated.
+# Each AQS node has both colocated.
 #
 class role::aqs {
     system::role { 'role::aqs':
@@ -62,17 +62,17 @@ class role::aqs {
 
 
     #
-    # Set up RESTBase for AQS
+    # Set up AQS
     #
 
-    include ::restbase
-    include ::restbase::monitoring
+    include ::aqs
+    include ::aqs::monitoring
 
     include lvs::realserver
 
-    ferm::service {'restbase_web':
+    ferm::service {'aqs_web':
         proto => 'tcp',
-        port  => $::restbase::port,
+        port  => $::aqs::port,
     }
 
     #TODO: add monitoring once we figure out what metrics we want
