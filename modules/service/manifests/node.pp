@@ -101,8 +101,16 @@ define service::node(
     $deployment      = undef,
 ) {
     case $deployment {
-        'scap3': { service::deploy::scap{ $title: } }
-        default: { service::deploy::trebuchet{ $title: } }
+        'scap3': {
+            service::deploy::scap{ $repo:
+                before => Base::Service_unit[$title]
+            }
+        }
+        default: {
+            service::deploy::trebuchet{ $repo:
+                before => Base::Service_unit[$title]
+            }
+        }
     }
 
     # Import all common configuration
@@ -203,7 +211,7 @@ define service::node(
         }
     }
 
-    # service init script and activation
+
     base::service_unit { $title:
         ensure         => present,
         systemd        => true,
@@ -215,7 +223,6 @@ define service::node(
             hasstatus  => true,
             hasrestart => true,
         },
-        require        => Package[$repo],
     }
 
     # Basic firewall
