@@ -12,15 +12,12 @@ class role::eventbus::eventbus {
     require ::eventlogging
     require ::role::kafka::main::config
 
-    $eventlogging_path = '/srv/deployment/eventlogging/eventbus'
-
     # eventlogging code for eventbus is configured to deploy
     # from the eventlogging/eventbus deploy target
     # via scap/scap.cfg on the deployment host.
     scap::target { 'eventlogging/eventbus':
         deploy_user       => 'eventlogging',
         public_key_source => "puppet:///modules/eventlogging/deployment/eventlogging_rsa.pub.${::realm}",
-        deploy_path       => $eventlogging_path,
         service_name      => 'eventlogging-service-eventbus',
         manage_user       => false,
     }
@@ -42,7 +39,7 @@ class role::eventbus::eventbus {
 
     # TODO: Allow configuration of more than one service daemon process?
     eventlogging::service::service { 'eventbus':
-        eventlogging_path => $eventlogging_path,
+        eventlogging_path => '/srv/deployment/eventlogging/eventbus',
         # TODO: Deploy mediawiki/event-schemas separately
         # from the submodule in EventLogging repo?
         schemas_path      => "${eventlogging_path}/config/schemas/jsonschema",
