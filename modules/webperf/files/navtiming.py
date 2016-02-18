@@ -19,7 +19,7 @@ handlers = {}
 
 
 def parse_ua(ua):
-    """Return the metric pair of "<browser_family>.<browser_major>" or None.
+    """Return a tuple of browser_family and browser_major, or None.
 
     Inspired by https://github.com/ua-parser/uap-core
 
@@ -32,87 +32,87 @@ def parse_ua(ua):
     # Chrome for iOS
     m = re.search('CriOS/(\d+)', ua)
     if m is not None:
-        return 'Chrome_Mobile_iOS.%s' % m.group(1)
+        return ('Chrome_Mobile_iOS', m.group(1))
 
     # Mobile Safari on iOS
     m = re.search('OS [\d_]+ like Mac OS X.*Version/([\d.]+).+Safari', ua)
     if m is not None:
-        return 'Mobile_Safari.%s' % '_'.join(m.group(1).split('.')[:2])
+        return ('Mobile_Safari', '_'.join(m.group(1).split('.')[:2]))
 
     # iOS WebView
     m = re.search('OS ([\d_]+) like Mac OS X.*Mobile', ua)
     if m is not None:
-        return 'iOS_WebView.%s' % '_'.join(m.group(1).split('_')[:2])
+        return ('iOS_WebView', '_'.join(m.group(1).split('_')[:2]))
 
     # Opera 14 for Android (WebKit-based)
     m = re.search('Mobile.*OPR/(\d+)', ua)
     if m is not None:
-        return 'Opera_Mobile.%s' % m.group(1)
+        return ('Opera_Mobile', m.group(1))
 
     # Android browser (pre Android 4.4)
     m = re.search('Android (\d).*Version/[\d.]+', ua)
     if m is not None:
-        return 'Android.%s' % m.group(1)
+        return ('Android', m.group(1))
 
     # Chrome for Android
     m = re.search('Android.*Chrome/(\d+)', ua)
     if m is not None:
-        return 'Chrome_Mobile.%s' % m.group(1)
+        return ('Chrome_Mobile', m.group(1))
 
     # Opera >= 15 (Desktop)
     m = re.search('Chrome.*OPR/(\d+)', ua)
     if m is not None:
-        return 'Opera.%s' % m.group(1)
+        return ('Opera', m.group(1))
 
     # Internet Explorer 11
     m = re.search('Trident.*rv:11\.', ua)
     if m is not None:
-        return 'MSIE.11'
+        return ('MSIE', '11')
 
     # Internet Explorer <= 10
     m = re.search('MSIE (\d+)', ua)
     if m is not None:
-        return 'MSIE.%s' % m.group(1)
+        return ('MSIE', m.group(1))
 
     # Firefox for Android
     m = re.search('(?:Mobile|Tablet);.*Firefox/(\d+)', ua)
     if m is not None:
-        return 'Firefox_Mobile.%s' % m.group(1)
+        return ('Firefox_Mobile', m.group(1))
 
     # Firefox (Desktop)
     m = re.search('Firefox/(\d+)', ua)
     if m is not None:
-        return 'Firefox.%s' % m.group(1)
+        return ('Firefox', m.group(1))
 
     # Microsoft Edge
     m = re.search('Edge/(\d+)\.', ua)
     if m is not None:
-        return 'Edge.%s' % m.group(1)
+        return ('Edge', m.group(1))
 
     # Chrome/Chromium
     m = re.search('(Chromium|Chrome)/(\d+)\.', ua)
     if m is not None:
-        return '%s.%s' % (m.group(1), m.group(2))
+        return (m.group(1), m.group(2))
 
     # Safari (Desktop)
     m = re.search('Version/(\d+).+Safari/', ua)
     if m is not None:
-        return 'Safari.%s' % m.group(1)
+        return ('Safari', m.group(1))
 
     # Misc iOS
     m = re.search('OS ([\d_]+) like Mac OS X', ua)
     if m is not None:
-        return 'iOS_other.%s' % '_'.join(m.group(1).split('_')[:2])
+        return ('iOS_other', '_'.join(m.group(1).split('_')[:2]))
 
     # Opera <= 12 (Desktop)
     m = re.match('Opera/9.+Version/(\d+)', ua)
     if m is not None:
-        return 'Opera.%s' % m.group(1)
+        return ('Opera', m.group(1))
 
     # Opera < 10 (Desktop)
     m = re.match('Opera/(\d+)', ua)
     if m is not None:
-        return 'Opera.%s' % m.group(1)
+        return ('Opera', m.group(1))
 
 
 def dispatch_stat(*args):
@@ -203,8 +203,9 @@ def handle_navigation_timing(meta):
             dispatch_stat(prefix, metric, site, 'overall', value)
             dispatch_stat(prefix, metric, 'overall', value)
 
-            ua = parse_ua(meta['userAgent']) or 'Other._'
-            dispatch_stat(prefix, metric, site, 'by_browser', ua, value)
+            ua = parse_ua(meta['userAgent']) or ('Other', '_')
+            dispatch_stat(prefix, metric, 'by_browser', ua[0], ua[1], value)
+            dispatch_stat(prefix, metric, 'by_browser', ua[0], 'all', value)
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(description='NavigationTiming subscriber')
@@ -244,7 +245,11 @@ class TestParseUa(unittest.TestCase):
         with open('navtiming_ua_data.yaml') as f:
             data = yaml.safe_load(f)
             for case in data:
+                if case['result']:
+                    expect = tuple(case['result'].split('.'))
+                else
+                    expect = None
                 self.assertEqual(
                     parse_ua(case['ua']),
-                    case['result']
+                    expect
                 )
