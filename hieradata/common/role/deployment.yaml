@@ -115,3 +115,7 @@ repo_config:
     checkout_submodules: true
   wikimedia/discovery/analytics:
     upstream: https://gerrit.wikimedia.org/r/wikimedia/discovery/analytics
+  analytics/aqs/deploy:
+    upstream: https://gerrit.wikimedia.org/r/analytics/aqs/deploy
+    service_name: aqs
+    checkout_submodules: true
