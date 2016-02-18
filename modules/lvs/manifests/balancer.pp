@@ -54,11 +54,6 @@ class lvs::balancer(
             # LVS servers sit on all subnets
             'net.ipv4.ip_forward'             => 0,
 
-            # Disable the route cache
-            # It is prone to DDoS attacks, and was even
-            # removed in >= 3.6 kernels.
-            'net.ipv4.rt_cache_rebuild_count' => -1,
-
             # Defenses (see http://www.linuxvirtualserver.org/docs/defense.html)
             # amemthresh is available mem threshold for triggering defenses,
             # specified in pages.  Default is 1024 (4MB).
