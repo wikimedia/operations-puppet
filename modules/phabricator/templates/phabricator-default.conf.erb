@@ -53,6 +53,7 @@
 
   RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
   RewriteRule ^/favicon.ico   -                       [L,QSA]
+  RewriteRule ^/project/sprint/board/ /project/board/ [L,QSA,R=301]
   RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
 
 </VirtualHost>
