@@ -191,6 +191,19 @@ nfs_mounts:
 mediawiki::web::sites::domain_suffix: "beta.wmflabs.org"
 
 #
+# Kafka clusters in Beta
+#
+kafka_clusters:
+    main-deployment-prep:
+        brokers:
+            deployment-kafka04.deployment-prep.eqiad.wmflabs:
+                id: 4
+    analytics-deployment-prep:
+        brokers:
+            deployment-kafka02.deployment-prep.eqiad.wmflabs:
+                id: 1
+
+#
 # Analytics Cluster in Beta
 #
 cdh::hadoop::cluster_name: analytics-hadoop
