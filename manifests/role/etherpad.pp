@@ -22,7 +22,7 @@ class role::etherpad{
 
     monitoring::service { 'etherpad-lite-http':
         description   => 'etherpad.wikimedia.org HTTP',
-        check_command => 'check_http_url!etherpad.wikimedia.org!/',
+        check_command => 'check_http_port_url!9001!/',
     }
 
     ferm::service { 'etherpad_service':
