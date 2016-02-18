@@ -219,12 +219,10 @@ class role::cache::text {
         varnish_name => 'frontend',
     }
 
-    # ToDo: Remove production conditional once this works
-    # is verified to work in labs.
-    if $::realm == 'production' {
-        # Install a varnishkafka producer to send
-        # varnish webrequest logs to Kafka.
-        class { 'role::cache::kafka::webrequest': topic => 'webrequest_text' }
+    # Install a varnishkafka producer to send
+    # varnish webrequest logs to Kafka.
+    class { 'role::cache::kafka::webrequest':
+        topic => 'webrequest_text',
     }
 
     # Parse varnishlogs for request statistics and send to statsd.
