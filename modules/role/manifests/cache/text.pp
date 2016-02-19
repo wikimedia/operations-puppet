@@ -158,14 +158,14 @@ class role::cache::text {
                 'max_connections' => 5000,
             },
             { # LEGACY: should be removed eventually
-                'backend_match'         => '^cxserver',
-                'port'                  => 8080,
-                'probe'                 => false,
+                'backend_match' => '^cxserver',
+                'port'          => 8080,
+                'probe'         => false,
             },
             { # LEGACY: should be removed eventually
-                'backend_match'         => '^citoid',
-                'port'                  => 1970,
-                'probe'                 => false,
+                'backend_match' => '^citoid',
+                'port'          => 1970,
+                'probe'         => false,
             },
             {
                 'port'                  => 80,
@@ -186,7 +186,7 @@ class role::cache::text {
         runtime_parameters => ['default_ttl=2592000'],
         storage            => "-s malloc,${memory_storage_size}G",
         directors          => {
-            'backend' => {
+            'backend'        => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $site_cluster_nodes,

@@ -59,9 +59,9 @@ class role::labs::dnsrecursor {
 
     $alias_file = '/etc/powerdns/labs-ip-alias.lua'
     class { '::dnsrecursor::labsaliaser':
-        username   => 'novaadmin',
-        password   => $wikitech_nova_ldap_user_pass,
-        projects   => [
+        username     => 'novaadmin',
+        password     => $wikitech_nova_ldap_user_pass,
+        projects     => [
             'tools',
             'deployment-prep',
             'toolserver-legacy',

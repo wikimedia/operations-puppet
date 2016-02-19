@@ -32,21 +32,21 @@ class role::cache::parsoid {
     })
 
     varnish::instance { 'parsoid-backend':
-        name             => '',
-        vcl              => 'parsoid-backend',
-        extra_vcl        => ['parsoid-common'],
-        ports            => [ 3128 ],
-        admin_port       => 6083,
-        storage          => $::role::cache::2layer::persistent_storage_args,
-        directors        => {
+        name            => '',
+        vcl             => 'parsoid-backend',
+        extra_vcl       => ['parsoid-common'],
+        ports           => [ 3128 ],
+        admin_port      => 6083,
+        storage         => $::role::cache::2layer::persistent_storage_args,
+        directors       => {
             'backend' => {
                 'dynamic'  => 'no',
                 'type'     => 'hash', # probably wrong, but current value before this commit! XXX
                 'backends' => $::role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
             }
         },
-        vcl_config       => $be_vcl_config,
-        backend_options  => [
+        vcl_config      => $be_vcl_config,
+        backend_options => [
             {
                 'port'                  => 8000,
                 'connect_timeout'       => '5s',
@@ -64,7 +64,7 @@ class role::cache::parsoid {
         ports           => [ 80 ],
         admin_port      => 6082,
         directors       => {
-            'backend'          => {
+            'backend' => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $site_cluster_nodes,

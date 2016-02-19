@@ -49,15 +49,15 @@ class role::analytics_cluster::hadoop::client {
         yarn_site_extra_properties                  => {
             # Enable FairScheduler preemption. This will allow the essential queue
             # to preempt non-essential jobs.
-            'yarn.scheduler.fair.preemption'              => true,
+            'yarn.scheduler.fair.preemption'                                                => true,
             # Let YARN wait for at least 1/3 of nodes to present scheduling
             # opportunties before scheduling a job for certain data
             # on a node on which that data is not present.
-            'yarn.scheduler.fair.locality.threshold.node' => '0.33',
+            'yarn.scheduler.fair.locality.threshold.node'                                   => '0.33',
             # After upgrading to CDH 5.4.0, we are encountering this bug:
             # https://issues.apache.org/jira/browse/MAPREDUCE-5799
             # This should work around the problem.
-            'yarn.app.mapreduce.am.env'                   => 'LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native',
+            'yarn.app.mapreduce.am.env'                                                     => 'LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native',
             # The default of 90.0 for this was marking older dells as unhealthy when they still
             # had 2TB of space left.  99% will mark them at unhealthy with they still have
             # > 200G free.

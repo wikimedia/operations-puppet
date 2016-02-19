@@ -12,9 +12,9 @@ class mha::node {
     }
 
     file { '/home/mysql/.ssh/mysql.key':
-        owner  => 'mysql',
-        group  => 'mysql',
-        mode   => '0400',
+        owner   => 'mysql',
+        group   => 'mysql',
+        mode    => '0400',
         content => secret('ssh/mysql/mysql.key'),
     }
 

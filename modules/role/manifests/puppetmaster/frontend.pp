@@ -15,11 +15,11 @@ class role::puppetmaster::frontend {
         server_type => 'frontend',
         workers     =>  [
                         {
-                            'worker' => 'palladium.eqiad.wmnet',
+                            'worker'     => 'palladium.eqiad.wmnet',
                             'loadfactor' => 10,
                         },
                         {
-                            'worker' => 'strontium.eqiad.wmnet',
+                            'worker'     => 'strontium.eqiad.wmnet',
                             'loadfactor' => 20,
                         },
         ],

@@ -18,7 +18,7 @@ class role::simplelamp(
 
     # Simple mysql
     class { '::mysql::server':
-        config_hash        => {
+        config_hash => {
             'datadir'      => $mysql_datadir,
             'bind_address' => $bind_address,
         }

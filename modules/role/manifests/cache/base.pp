@@ -39,11 +39,11 @@ class role::cache::base(
     $varlib_path = '/var/lib/traffic-pool'
 
     file { $tp_unit_path:
-        ensure  => present,
-        source  => 'puppet:///modules/role/cache/traffic-pool.service',
-        mode    => '0444',
-        owner   => root,
-        group   => root,
+        ensure => present,
+        source => 'puppet:///modules/role/cache/traffic-pool.service',
+        mode   => '0444',
+        owner  => root,
+        group  => root,
     }
 
     file { $varlib_path:

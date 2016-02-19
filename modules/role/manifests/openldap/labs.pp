@@ -17,13 +17,13 @@ class role::openldap::labs {
 
     $sync_pass = $passwords::openldap::labs::sync_pass
     class { '::openldap':
-        sync_pass   => $sync_pass,
-        mirrormode  => true,
-        suffix      => 'dc=wikimedia,dc=org',
-        datadir     => '/var/lib/ldap/labs',
-        ca          => '/etc/ssl/certs/ca-certificates.crt',
-        certificate => "/etc/ssl/localcerts/${ldap_labs_hostname}.crt",
-        key         => "/etc/ssl/private/${ldap_labs_hostname}.key",
+        sync_pass     => $sync_pass,
+        mirrormode    => true,
+        suffix        => 'dc=wikimedia,dc=org',
+        datadir       => '/var/lib/ldap/labs',
+        ca            => '/etc/ssl/certs/ca-certificates.crt',
+        certificate   => "/etc/ssl/localcerts/${ldap_labs_hostname}.crt",
+        key           => "/etc/ssl/private/${ldap_labs_hostname}.key",
         extra_schemas => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                           'puppet.schema', 'sudo.schema'],
         extra_indices => 'openldap/labs-indices.erb',

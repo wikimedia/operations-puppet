@@ -130,23 +130,23 @@ class role::eventlogging::forwarder inherits role::eventlogging {
     }
 
     ferm::service { 'eventlogging-receive':
-        proto  => 'udp',
+        proto   => 'udp',
         notrack => true,
-        port   => '8421',
+        port    => '8421',
     }
 
     # This forwards the kafka eventlogging-valid-mixed topic to
     # ZMQ port 8600 for backwards compatibility.
     eventlogging::service::forwarder { 'legacy-zmq':
-        input  => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&auto_commit_enable=False&auto_offset_reset=-1",
+        input   => "${kafka_mixed_uri}&zookeeper_connect=${kafka_zookeeper_url}&auto_commit_enable=False&auto_offset_reset=-1",
         outputs => ["tcp://${eventlogging_host}:8600"],
     }
 
     ferm::service { 'eventlogging-zmq-legacy-stream':
-        proto  => 'tcp',
+        proto   => 'tcp',
         notrack => true,
-        port   => '8600',
-        srange => '@resolve(hafnium.eqiad.wmnet)',
+        port    => '8600',
+        srange  => '@resolve(hafnium.eqiad.wmnet)',
     }
 }
 
@@ -299,7 +299,7 @@ class role::eventlogging::consumer::files inherits role::eventlogging {
 }"
 
     logrotate::conf { 'eventlogging-files':
-        ensure => present,
+        ensure  => present,
         content => $logrotate_content,
         require => [
             File[$out_dir],

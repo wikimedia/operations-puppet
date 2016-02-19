@@ -16,15 +16,17 @@ class role::cache::kafka::statsv(
     $format  = "%{fake_tag0@hostname?${::fqdn}}x %{%FT%T@dt}t %{X-Client-IP@ip}o %{@uri_path}U %{@uri_query}q %{User-Agent@user_agent}i"
 
     varnishkafka::instance { 'statsv':
-        brokers           => $kafka_brokers,
-        format            => $format,
-        format_type       => 'json',
-        topic             => 'statsv',
-        varnish_name      => $varnish_name,
-        varnish_svc_name  => $varnish_svc_name,
-        varnish_opts      => { 'm' => 'RxURL:^/beacon/statsv\?', },
+        brokers                     => $kafka_brokers,
+        format                      => $format,
+        format_type                 => 'json',
+        topic                       => 'statsv',
+        varnish_name                => $varnish_name,
+        varnish_svc_name            => $varnish_svc_name,
+        varnish_opts                => {
+            'm' => 'RxURL:^/beacon/statsv\?',
+        },
         # -1 means all brokers in the ISR must ACK this request.
-        topic_request_required_acks  => '-1',
+        topic_request_required_acks => '-1',
     }
 
     if $::standard::has_ganglia {

@@ -377,11 +377,11 @@ class role::mariadb::analytics {
 class role::mariadb::analytics::custom_repl_slave {
 
     file { '/usr/local/bin/eventlogging_sync.sh':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0700',
-        source  => 'puppet:///files/mariadb/eventlogging_sync.sh',
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0700',
+        source => 'puppet:///files/mariadb/eventlogging_sync.sh',
     }
     file { '/etc/init.d/eventlogging_sync':
         owner   => 'root',
@@ -392,12 +392,12 @@ class role::mariadb::analytics::custom_repl_slave {
         notify  => Service['eventlogging_sync'],
     }
     service { 'eventlogging_sync':
-        ensure    => running,
-        enable    => true,
+        ensure => running,
+        enable => true,
     }
     nrpe::monitor_service { 'eventlogging_sync':
-        description  => 'eventlogging_sync processes',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u root -a "/bin/bash /usr/local/bin/eventlogging_sync.sh"',
+        description   => 'eventlogging_sync processes',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u root -a "/bin/bash /usr/local/bin/eventlogging_sync.sh"',
         critical      => false,
         contact_group => 'dba',
     }
@@ -805,8 +805,8 @@ class role::mariadb::maintenance {
     include passwords::tendril
 
     class { 'tendril::maintenance':
-        tendril_host => 'db1011.eqiad.wmnet',
-        tendril_user => 'watchdog',
+        tendril_host     => 'db1011.eqiad.wmnet',
+        tendril_user     => 'watchdog',
         tendril_password => $passwords::tendril::db_pass,
     }
 }

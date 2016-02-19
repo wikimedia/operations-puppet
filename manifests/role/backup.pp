@@ -43,8 +43,8 @@ class role::backup::host {
 
     # If the machine includes base::firewall then let director connect to us
     ferm::service { 'bacula-file-demon':
-        proto => 'tcp',
-        port  => '9102',
+        proto  => 'tcp',
+        port   => '9102',
         srange => "(${role::backup::config::director_ip} ${role::backup::config::director_ip6})",
     }
 }

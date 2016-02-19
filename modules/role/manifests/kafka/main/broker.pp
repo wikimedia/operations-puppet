@@ -40,30 +40,30 @@ class role::kafka::main::broker {
     }
 
     class { '::kafka::server':
-        log_dirs                        => ['/srv/kafka/data'],
-        brokers                         => $::role::kafka::main::config::brokers_config,
-        zookeeper_hosts                 => $::role::kafka::main::config::zookeeper_hosts,
-        zookeeper_chroot                => $::role::kafka::main::config::zookeeper_chroot,
-        nofiles_ulimit                  => $nofiles_ulimit,
-        jmx_port                        => $::role::kafka::analytics::config::jmx_port,
+        log_dirs                     => ['/srv/kafka/data'],
+        brokers                      => $::role::kafka::main::config::brokers_config,
+        zookeeper_hosts              => $::role::kafka::main::config::zookeeper_hosts,
+        zookeeper_chroot             => $::role::kafka::main::config::zookeeper_chroot,
+        nofiles_ulimit               => $nofiles_ulimit,
+        jmx_port                     => $::role::kafka::analytics::config::jmx_port,
 
         # Enable auto creation of topics.
-        auto_create_topics_enable       => true,
+        auto_create_topics_enable    => true,
 
         # (Temporarily?) disable auto leader rebalance.
         # I am having issues with analytics1012, and I can't
         # get Camus to consume properly for its preferred partitions
         # if it is online and the leader.  - otto
-        auto_leader_rebalance_enable    => false,
+        auto_leader_rebalance_enable => false,
 
-        default_replication_factor      => min(3, size($::role::kafka::main::config::brokers_array)),
+        default_replication_factor   => min(3, size($::role::kafka::main::config::brokers_array)),
         # Start with a low number of (auto created) partitions per
         # topic.  This can be increased manually for high volume
         # topics if necessary.
-        num_partitions                  => 1,
+        num_partitions               => 1,
 
         # Use LinkedIn recommended settings with G1 garbage collector,
-        jvm_performance_opts            => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
+        jvm_performance_opts         => '-server -XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35',
     }
 
     # firewall Kafka Broker
@@ -78,10 +78,10 @@ class role::kafka::main::broker {
     $group_prefix = "kafka.cluster.${cluster_name}."
     class { '::kafka::server::jmxtrans':
         group_prefix => $group_prefix,
-        ganglia  => hiera('ganglia_aggregators', undef),
-        statsd   => hiera('statsd', undef),
-        jmx_port =>$::role::kafka::analytics::config::jmx_port,
-        require  => Class['::kafka::server'],
+        ganglia      => hiera('ganglia_aggregators', undef),
+        statsd       => hiera('statsd', undef),
+        jmx_port     => $::role::kafka::analytics::config::jmx_port,
+        require      => Class['::kafka::server'],
     }
 
     # Monitor kafka in production

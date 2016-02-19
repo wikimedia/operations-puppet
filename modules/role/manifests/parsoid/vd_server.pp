@@ -7,12 +7,12 @@ class role::parsoid::vd_server {
 
     testreduce::server { 'parsoid-vd':
         instance_name => 'parsoid-vd',
-        db_host => 'm5-master.eqiad.wmnet',
-        db_name => 'testreduce_vd',
-        db_user => 'testreduce',
-        db_pass => $passwords::testreduce::mysql::db_pass,
-        webapp_port => 8010,
-        coord_port => 8011,
+        db_host       => 'm5-master.eqiad.wmnet',
+        db_name       => 'testreduce_vd',
+        db_user       => 'testreduce',
+        db_pass       => $passwords::testreduce::mysql::db_pass,
+        webapp_port   => 8010,
+        coord_port    => 8011,
     }
 
 }

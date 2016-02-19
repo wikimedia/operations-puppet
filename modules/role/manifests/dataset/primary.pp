@@ -29,8 +29,8 @@ class role::dataset::primary {
     # NOTE: these requires that an rsync server module named 'hdfs-archive' is
     # configured on stat1002.
     class { '::dataset::cron::pagecountsraw':
-        enable  => true,
-        source  => 'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-raw/*/*/',
+        enable => true,
+        source => 'stat1002.eqiad.wmnet::hdfs-archive/pagecounts-raw/*/*/',
     }
 
     class { '::dataset::cron::mediacounts':

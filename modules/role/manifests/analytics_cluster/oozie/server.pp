@@ -14,8 +14,8 @@ class role::analytics_cluster::oozie::server {
     require_package('mysql-client')
 
     class { 'cdh::oozie::server':
-        smtp_host       => $::mail_smarthost[0],
-        smtp_from_email => "oozie@${::fqdn}",
+        smtp_host                                   => $::mail_smarthost[0],
+        smtp_from_email                             => "oozie@${::fqdn}",
         # This is not currently working.  Disabling
         # this allows any user to manage any Oozie
         # job.  Since access to our cluster is limited,
