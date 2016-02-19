@@ -8,6 +8,8 @@ class openstack::designate::service (
     $keystone_host,
     $keystoneconfig,
     $designateconfig,
+    $primary_pdns_ip,
+    $secondary_pdns_ip,
 )
     {
 
