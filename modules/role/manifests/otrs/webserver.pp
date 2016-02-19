@@ -1,7 +1,7 @@
 # vim: set ts=4 et sw=4:
-# role/otrs.pp
-
-class role::otrs {
+# sets up an instance of the 'Open-source Ticket Request System'
+# https://en.wikipedia.org/wiki/OTRS
+class role::otrs::webserver {
 
     system::role { 'role::otrs::webserver':
         description => 'OTRS Web Application Server',
