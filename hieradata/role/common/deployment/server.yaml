@@ -8,10 +8,16 @@ admin::groups:
 debdeploy::grains:
   debdeploy-deployment:
     value: standard
+# LightProcesses print an alarming error message when HHVM shuts down,
+# which is often on the deployment servers, which run a bunch of scripts
+# with a short runtime as part of the deployment process.
+hhvm::extra::fcgi:
+  hhvm:
+    server:
+      light_process_count: 0
+      light_process_file_prefix:
 hhvm::extra::cli:
   hhvm:
     server:
-      # LightProcesses print an alarming error message when HHVM shuts down,
-      # which is often on the deployment servers, which run a bunch of scripts
-      # with a short runtime as part of the deployment process.
       light_process_count: 0
+      light_process_file_prefix:
