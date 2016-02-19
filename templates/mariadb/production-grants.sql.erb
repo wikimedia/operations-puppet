@@ -25,6 +25,8 @@ GRANT PROXY
 GRANT PROCESS, REPLICATION CLIENT
     ON *.* TO 'nagios'@'localhost'
     IDENTIFIED BY '<%= @nagios_pass %>';
+GRANT SELECT
+    ON heartbeat.heartbeat TO 'nagios'@'localhost';
 
 -- Grants for 'tendril'@'10.%' (tendril)
 
