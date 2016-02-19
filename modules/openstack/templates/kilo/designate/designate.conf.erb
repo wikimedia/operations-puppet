@@ -153,12 +153,23 @@ enabled_notification_handlers = nova_fixed_multi, nova_ldap
 
 [pool:794ccc2c-d751-44fe-b57f-8894c9f5c842]
 nameservers = 0f66b842-96c2-4189-93fc-1dc95a08b012
-targets = f26e0b32-736f-4f0a-831b-039a415c481e
+targets = f26e0b32-736f-4f0a-831b-039a415c481e, 17474d59-a989-48fb-9f8b-19fbdaeff243
 
+# A 'pool_nameserver' is a pdns instance that receives axfr updates.
+# This is the primary dns server, currently 'labservices1001'
 [pool_nameserver:0f66b842-96c2-4189-93fc-1dc95a08b012]
 port = 53
-host = <%= scope.function_ipresolve([@fqdn, 4]) %>
+host = <%= @primary_pdns_ip %>
 
+
+# A 'pool_nameserver' is a pdns instance that receives axfr updates.
+# This is the secondary dns server, currently 'holmium,' soon to be 'labservices1002'
+[pool_nameserver:17474d59-a989-48fb-9f8b-19fbdaeff243]
+port = 53
+host = <%= @secondary_pdns_ip %>
+
+
+# the 'pool_target' is the pdns database, which we write to for zone creation and deletion
 [pool_target:f26e0b32-736f-4f0a-831b-039a415c481e]
 options = connection: mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @designateconfig["pdns_db_pass"] %>@<%= @designateconfig["db_host"] %>/<%= @designateconfig["pdns_db_name"] %>
 # This is an alternate db account with more rights -- this setting should
@@ -169,7 +180,6 @@ options = connection: mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @desig
 #  UPDATE pdns.domains SET master="<comman-separated list of masters>"
 masters = <%= scope.function_ipresolve([@fqdn, 4]) %>:5354
 type = powerdns
-
 
 ##############
 ## Network API
