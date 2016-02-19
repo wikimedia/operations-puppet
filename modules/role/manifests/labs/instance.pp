@@ -44,11 +44,11 @@ class role::labs::instance {
         }
 
         if hiera('mount_nfs_hard_mode', true) {
-            $mode = 'hard'
+            $nfs_mode = 'hard'
         } else {
-            $mode = 'soft,timeo=10'
+            $nfs_mode = 'soft,timeo=10'
         }
-        $nfs_opts = "vers=4,bg,${mode},intr,sec=sys,proto=tcp,port=0,noatime,lookupcache=none,nofsc"
+        $nfs_opts = 'vers=4,bg,intr,sec=sys,proto=tcp,port=0,noatime,lookupcache=none,nofsc'
         $nfs_server = 'labstore.svc.eqiad.wmnet'
         $dumps_server = 'labstore1003.eqiad.wmnet'
 
@@ -73,7 +73,7 @@ class role::labs::instance {
                 ensure  => mounted,
                 atboot  => true,
                 fstype  => 'nfs',
-                options => "rw,${nfs_opts}",
+                options => "rw,${nfs_mode},${nfs_opts}",
                 device  => "${nfs_server}:/project/${::labsproject}/home",
                 require => [File['/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-home-export']],
             }
@@ -105,7 +105,7 @@ class role::labs::instance {
                 ensure  => mounted,
                 atboot  => true,
                 fstype  => 'nfs',
-                options => "rw,${nfs_opts}",
+                options => "rw,${nfs_mode},${nfs_opts}",
                 device  => "${nfs_server}:/project/${::labsproject}/project",
                 require => [File['/data/project', '/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-project-export']],
             }
@@ -122,7 +122,7 @@ class role::labs::instance {
                 ensure  => mounted,
                 atboot  => true,
                 fstype  => 'nfs',
-                options => "rw,${nfs_opts}",
+                options => "rw,${nfs_mode},${nfs_opts}",
                 device  => "${nfs_server}:/scratch",
                 require => File['/data/scratch', '/etc/modprobe.d/nfs-no-idmap'],
             }
@@ -148,7 +148,7 @@ class role::labs::instance {
                 ensure  => mounted,
                 atboot  => true,
                 fstype  => 'nfs',
-                options => "ro,${nfs_opts}",
+                options => "ro,${nfs_mode},${nfs_opts}",
                 device  => "${dumps_server}:/statistics",
                 require => File['/public/statistics', '/etc/modprobe.d/nfs-no-idmap'],
             }
@@ -164,7 +164,7 @@ class role::labs::instance {
                 ensure  => mounted,
                 atboot  => true,
                 fstype  => 'nfs',
-                options => "ro,${nfs_opts}",
+                options => "ro,${nfs_mode},${nfs_opts}",
                 device  => "${dumps_server}:/dumps",
                 require => File['/public/dumps', '/etc/modprobe.d/nfs-no-idmap'],
             }
