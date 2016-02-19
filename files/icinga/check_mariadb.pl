@@ -195,7 +195,7 @@ if ($check eq "slave_sql_lag")
 
 	my $lag = $heartbeat->{lag}?$heartbeat->{lag}/1000000:$status->{Seconds_Behind_Master};
 
-	if ($lag eq "NULL") {
+	if ($lag eq "NULL" or $lag eq "") {
 		# Either IO or SQL threads stopped? WARN
 		if ($status->{Slave_IO_Running} ne "Yes" || $status->{Slave_SQL_Running} ne "Yes") {
 			if ($warn_stopped == 1) {
@@ -214,19 +214,19 @@ if ($check eq "slave_sql_lag")
 	}
 	# Small lag? OK
 	if ($lag < $sql_lag_warn) {
-		printf("%s %s Replication lag: %s seconds\n",
+		printf("%s %s Replication lag: %.2f seconds\n",
 			$OK, $check, $lag);
 		exit($EOK);
 	}
 
 	# Medium lag? WARN
 	if ($lag < $sql_lag_crit) {
-		printf("%s %s Replication lag: %s seconds\n",
+		printf("%s %s Replication lag: %.2f seconds\n",
 			$WARN, $check, $lag);
 		exit($EWARN);
 	}
 
-	printf("%s %s Replication lag: %s seconds\n",
+	printf("%s %s Replication lag: %.2f seconds\n",
 		$CRIT, $check, $lag);
 	exit($ECRIT);
 }
