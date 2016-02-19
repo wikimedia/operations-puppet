@@ -15,24 +15,26 @@ class role::labs::openstack::designate::server {
     $horizon_ip      = ipresolve('horizon.wikimedia.org',4)
     $wikitech_ip     = ipresolve('wikitech.wikimedia.org',4)
 
+    $dnsconfig             = hiera_hash('labsdnsconfig', {})
+    $dns_host              = $dnsconfig['host']
+    $dns_host_secondary    = $dnsconfig['host_secondary']
+    $dns_host_ip           = ipresolve ($dns_host)
+    $dns_host_secondary_ip = ipresolve ($dns_host_secondary)
+
     class { 'openstack::designate::service':
-        active_server   => $designate_host,
-        nova_controller => $nova_controller,
-        keystone_host   => $keystone_host,
-        keystoneconfig  => $keystoneconfig,
-        designateconfig => $designateconfig,
+        active_server      => $designate_host,
+        nova_controller    => $nova_controller,
+        keystone_host      => $keystone_host,
+        keystoneconfig     => $keystoneconfig,
+        designateconfig    => $designateconfig,
+        primary_pdns_ip    => $dns_host_ip,
+        secondary_pdns_ip  => $dns_host_secondary_ip,
     }
 
     # Poke a firewall hole for the designate api
     ferm::rule { 'designate-api':
         rule => "saddr (${wikitech_ip} ${horizon_ip} ${controller_ip}) proto tcp dport (9001) ACCEPT;",
     }
-
-    $dnsconfig             = hiera_hash('labsdnsconfig', {})
-    $dns_host              = $dnsconfig['host']
-    $dns_host_secondary    = $dnsconfig['host_secondary']
-    $dns_host_ip           = ipresolve ($dns_host)
-    $dns_host_secondary_ip = ipresolve ($dns_host_secondary)
 
     # allow axfr traffic between mdns and pdns on the pdns hosts
     ferm::rule { 'mdns-axfr':
