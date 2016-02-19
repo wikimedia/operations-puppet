@@ -1022,7 +1022,7 @@ node 'eventlog1001.eqiad.wmnet', 'eventlog2001.codfw.wmnet' {
 
 # virtual machine for mailman list server
 node 'fermium.wikimedia.org' {
-    role lists
+    role lists::server
     include standard
     include admin
 
