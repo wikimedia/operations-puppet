@@ -115,3 +115,6 @@ source $HOME/.liquidprompt/liquidprompt
 test -d /srv/deployment/analytics/refinery/bin && export PATH=$PATH:/srv/deployment/analytics/refinery/bin
 # add ~/bin
 test -d ~/bin && export PATH=~/bin:$PATH
+
+# Use iTerm2 shell integration
+test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_integration.bash
