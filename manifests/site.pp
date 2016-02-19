@@ -41,7 +41,7 @@ if $cluster == undef {
 # Node definitions (alphabetic order)
 
 node /^(acamar|achernar)\.wikimedia\.org$/ {
-    role dnsrecursor
+    role dns::recursor
     include standard
 
     interface::add_ip6_mapped { 'main':
@@ -294,7 +294,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
             address   => $url_downloader_ip,
         }
     }
-    role dnsrecursor, url_downloader
+    role dns::recursor, url_downloader
     include standard
 
     interface::add_ip6_mapped { 'main':
@@ -1119,7 +1119,7 @@ node 'heze.codfw.wmnet' {
 
 # Holmium will soon be renamed labservices1002
 node 'holmium.wikimedia.org' {
-    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
+    role labs::dns, labs::openstack::designate::server, labs::dns::recursor
     include standard
     include base::firewall
     include ldap::role::client::labs
@@ -1127,7 +1127,7 @@ node 'holmium.wikimedia.org' {
 
 # labservices1001 hosts openstack-designate, the labs DNS service.
 node 'labservices1001.wikimedia.org' {
-    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor
+    role labs::dns, labs::openstack::designate::server, labs::dns::recursor
     include standard
     include base::firewall
     include ldap::role::client::labs
@@ -1168,7 +1168,7 @@ node 'labtestcontrol2001.wikimedia.org' {
 }
 
 node 'labtestservices2001.wikimedia.org' {
-    role labs::dns, labs::openstack::designate::server, labs::dnsrecursor, openldap::labtest
+    role labs::dns, labs::openstack::designate::server, labs::dns::recursor, openldap::labtest
     include standard
     include base::firewall
 }
@@ -1792,7 +1792,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 }
 
 node 'maerlant.wikimedia.org' {
-    role dnsrecursor
+    role dns::recursor
     include standard
 
     interface::add_ip6_mapped { 'main':
@@ -2138,7 +2138,7 @@ node 'neon.wikimedia.org' {
 }
 
 node 'nescio.wikimedia.org' {
-    role dnsrecursor
+    role dns::recursor
     include standard
 
     interface::add_ip6_mapped { 'main':
