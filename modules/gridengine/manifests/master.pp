@@ -118,4 +118,11 @@ class gridengine::master {
         require => File[ "${etcdir}/bin", "${etcdir}/config/99-default" ],
     }
 
+    service { 'gridengine-master':
+        ensure    => running,
+        enable    => true,
+        hasstatus => false,
+        pattern   => 'sge_qmaster',
+        require   => Package['gridengine-master'],
+    }
 }
