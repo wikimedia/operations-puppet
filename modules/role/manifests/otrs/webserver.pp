@@ -1,7 +1,7 @@
 # vim: set ts=4 et sw=4:
 # role/otrs.pp
 
-class role::otrs {
+class role::otrs::webserver {
 
     system::role { 'role::otrs::webserver':
         description => 'OTRS Web Application Server',

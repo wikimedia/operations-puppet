@@ -1832,7 +1832,7 @@ node /^mc20[01][0-9]\.codfw\.wmnet/ {
 
 # OTRS - ticket.wikimedia.org
 node 'mendelevium.eqiad.wmnet' {
-    role otrs
+    role otrs::webserver
 }
 
 node 'multatuli.wikimedia.org' {
