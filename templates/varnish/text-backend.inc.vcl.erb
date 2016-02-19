@@ -15,7 +15,6 @@ sub vcl_recv {
 	}
 
 	if (req.url ~ "^/api/rest_v1/") {
-		set req.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
 		set req.backend = restbase_backend;
 	} else if (req.http.Host ~ "cxserver" ) { # LEGACY: to be removed eventually
 		set req.backend = cxserver_backend;
@@ -58,6 +57,13 @@ sub mobile_hostname_1be_mangle {
 		set bereq.http.host = req.http.x-dt-host;
 	}
 }
+
+// RB request mangling
+sub restbase_1be_mangle {
+	if (req.url ~ "^/api/rest_v1/") {
+		set bereq.url = "/" + req.http.host + regsub(req.url, "^/api/rest_v1/", "/v1/");
+	}
+}
 <% end -%>
 
 sub vcl_pass {
@@ -68,6 +74,7 @@ sub vcl_pass {
 		return (pass);
 	}
 	call mobile_hostname_1be_mangle;
+	call restbase_1be_mangle;
 <% end -%>
 	call restore_cookie;
 }
@@ -80,6 +87,7 @@ sub vcl_miss {
 		return (fetch);
 	}
 	call mobile_hostname_1be_mangle;
+	call restbase_1be_mangle;
 <% end -%>
 	call restore_cookie;
 }
