@@ -27,8 +27,8 @@ class role::puppetmaster::backend {
     }
 
     ferm::service { 'puppetmaster-backend':
-        proto  => 'tcp',
-        port   => 8141,
+        proto => 'tcp',
+        port  => 8141,
     }
 
     $puppetmaster_hostname = hiera('puppetmaster')

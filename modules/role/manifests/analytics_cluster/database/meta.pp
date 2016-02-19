@@ -21,10 +21,10 @@ class role::analytics_cluster::database::meta {
         default         => false,
     }
     class { 'mariadb::config':
-        config   => 'mariadb/analytics-meta.my.cnf.erb',
-        datadir  => '/var/lib/mysql',
+        config    => 'mariadb/analytics-meta.my.cnf.erb',
+        datadir   => '/var/lib/mysql',
         read_only => $read_only,
-        require  => Class['mariadb::packages_wmf'],
+        require   => Class['mariadb::packages_wmf'],
     }
 
     file { '/etc/init.d/mysql':

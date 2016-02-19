@@ -38,7 +38,7 @@ class role::graphite::base(
         # First match wins with storage schemas
         storage_schemas     => {
             # Retain daily metrics for 25 years
-            'daily' => {
+            'daily'   => {
                 pattern    => '^daily\..*',
                 retentions => '1d:25y',
             },
@@ -53,12 +53,12 @@ class role::graphite::base(
 
         # Aggregation methods for whisper files.
         storage_aggregation => {
-            'min'   => {
+            'min'     => {
                 pattern           => '\.min$',
                 xFilesFactor      => 0.01,
                 aggregationMethod => 'min',
             },
-            'max'   => {
+            'max'     => {
                 pattern           => '\.max$',
                 xFilesFactor      => 0.01,
                 aggregationMethod => 'max',
@@ -68,25 +68,25 @@ class role::graphite::base(
                 xFilesFactor      => 0.01,
                 aggregationMethod => 'sum',
             },
-            'sum'   => {
+            'sum'     => {
                 pattern           => '\.sum$',
                 xFilesFactor      => 0.01,
                 aggregationMethod => 'sum',
             },
             # statsite extended counters
-            'lower' => {
+            'lower'   => {
                 pattern           => '\.lower$',
                 xFilesFactor      => 0.01,
                 aggregationMethod => 'min',
             },
-            'upper' => {
+            'upper'   => {
                 pattern           => '\.upper$',
                 xFilesFactor      => 0.01,
                 aggregationMethod => 'max',
             },
             'default' => {
-                pattern           => '.*',
-                xFilesFactor      => 0.01,
+                pattern      => '.*',
+                xFilesFactor => 0.01,
             },
         },
 
@@ -227,7 +227,7 @@ class role::graphite::base(
     }
 
     ferm::service { 'graphite-http':
-        proto   => 'tcp',
-        port    => 'http',
+        proto => 'tcp',
+        port  => 'http',
     }
 }

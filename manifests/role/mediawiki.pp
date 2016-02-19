@@ -39,9 +39,9 @@ class role::mediawiki::common {
         include scap::proxy
 
         ferm::service { 'rsyncd_scap_proxy':
-            proto   => 'tcp',
-            port    => '873',
-            srange  => '$MW_APPSERVER_NETWORKS',
+            proto  => 'tcp',
+            port   => '873',
+            srange => '$MW_APPSERVER_NETWORKS',
         }
     }
 }

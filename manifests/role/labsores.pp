@@ -58,7 +58,7 @@ class role::labs::ores::staging {
     }
 
     ores::config { 'staging':
-        config  => {
+        config   => {
             'score_caches'     => {
                 'ores_redis' => {
                     'host' => '127.0.0.1',

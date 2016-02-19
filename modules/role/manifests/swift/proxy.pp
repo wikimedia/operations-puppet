@@ -22,9 +22,9 @@ class role::swift::proxy {
     include role::statsite
 
     ferm::service { 'swift-proxy':
-        proto  => 'tcp',
+        proto   => 'tcp',
         notrack => true,
-        port   => '80',
+        port    => '80',
     }
 
     $swift_frontends = hiera('swift::proxyhosts')

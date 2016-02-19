@@ -16,7 +16,7 @@ class role::gdash {
 
     file { '/var/www/gdash.wikimedia.org':
         ensure  => directory,
-        source => 'puppet:///files/gdash/docroot',
+        source  => 'puppet:///files/gdash/docroot',
         recurse => true,
         owner   => 'root',
         group   => 'root',

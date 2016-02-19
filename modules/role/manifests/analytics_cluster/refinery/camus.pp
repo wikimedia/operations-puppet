@@ -33,7 +33,7 @@ class role::analytics_cluster::refinery::camus {
     # Import mediawiki_* topics into /wmf/data/raw/mediawiki
     # once every hour.  This data is expected to be Avro binary.
     camus::job { 'mediawiki':
-        check  => true,
+        check   => true,
         minute  => '15',
         # refinery-camus contains some custom decoder classes which
         # are needed to import Avro binary data.

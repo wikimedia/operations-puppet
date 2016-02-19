@@ -56,7 +56,7 @@ class role::gerrit {
             replication  => {
                 # If adding a new entry, remember to add the fingerprint to gerrit2's known_hosts
 
-                'gitblit'        => {
+                'gitblit' => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
                     #
@@ -68,7 +68,7 @@ class role::gerrit {
                     'push'      => '+refs/*:refs/*',
                     'mirror'    => true,
                 },
-                'github'         => {
+                'github'  => {
                     # Note: This is in single quotes on purpose. ${name} is not
                     # expected to be expanded by puppet but rather by gerrit
                     #

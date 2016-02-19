@@ -126,7 +126,7 @@ class role::cache::maps {
         runtime_parameters => ['default_ttl=86400'],
         storage            => "-s malloc,${memory_storage_size}G",
         directors          => {
-            'backend' => {
+            'backend'        => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $site_cluster_nodes,

@@ -56,11 +56,11 @@ class role::memcached {
     }
 
     file { '/usr/local/sbin/memkeys-snapshot':
-        source  => 'puppet:///files/memcached/memkeys-snapshot',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        before  => Cron['memkeys'],
+        source => 'puppet:///files/memcached/memkeys-snapshot',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        before => Cron['memkeys'],
     }
 
     cron { 'memkeys':
@@ -112,15 +112,15 @@ class role::memcached {
         }
 
         ferm::service { 'redis_memcached_role_6380':
-            proto    => 'tcp',
-            port     => '6380',
+            proto => 'tcp',
+            port  => '6380',
         }
 
     }
 
     ferm::service { 'redis_memcached_role':
-        proto    => 'tcp',
-        port     => '6379',
+        proto => 'tcp',
+        port  => '6379',
     }
 
     ferm::service { 'memcached_memcached_role':

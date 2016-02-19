@@ -57,8 +57,8 @@ class role::puppet::self(
 
         # Allow access to the Puppetmaster when base::firewall is applied
         ferm::service { 'puppetmaster-self':
-            proto  => 'tcp',
-            port   => 8140,
+            proto => 'tcp',
+            port  => 8140,
         }
     }
     # Else this is a puppet client.

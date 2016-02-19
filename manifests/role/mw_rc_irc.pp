@@ -16,8 +16,8 @@ class role::mw_rc_irc {
 
     # IRCd - public access
     ferm::service { 'ircd_public':
-        proto  => 'tcp',
-        port   => '(6664 6665 6666 6667 6668 6669 8001)',
+        proto => 'tcp',
+        port  => '(6664 6665 6666 6667 6668 6669 8001)',
     }
 
     # IRC RecentChanges bot - gets updates from appservers
@@ -29,8 +29,8 @@ class role::mw_rc_irc {
 
     # Apache - redirecting people who try http to wiki page on meta
     ferm::service { 'irc_apache':
-        proto  => 'tcp',
-        port   => '80',
+        proto => 'tcp',
+        port  => '80',
     }
 
 }

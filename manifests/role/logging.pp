@@ -128,9 +128,9 @@ class role::logging::kafkatee::webrequest {
     # the Analytics Kafka cluster.  The webrequest logs are
     # in json, so we output them in the format they are received.
     class { '::kafkatee':
-        kafka_brokers           => $role::kafka::analytics::config::brokers_array,
-        output_encoding         => 'json',
-        output_format           => undef,
+        kafka_brokers   => $role::kafka::analytics::config::brokers_array,
+        output_encoding => 'json',
+        output_format   => undef,
     }
     include kafkatee::monitoring
 
@@ -142,34 +142,44 @@ class role::logging::kafkatee::webrequest {
     # buffered kafka data if kafkatee goes down.
     # These are just logs for ops debugging.
     kafkatee::input { 'kafka-webrequest_bits':
-        topic       => 'webrequest_bits',
-        partitions  => '0-11',
-        options     => { 'encoding' => 'json' },
-        offset      => 'end',
+        topic      => 'webrequest_bits',
+        partitions => '0-11',
+        options    => {
+            'encoding' => 'json',
+        },
+        offset     => 'end',
     }
     kafkatee::input { 'kafka-webrequest_misc':
-        topic       => 'webrequest_misc',
-        partitions  => '0-11',
-        options     => { 'encoding' => 'json' },
-        offset      => 'end',
+        topic      => 'webrequest_misc',
+        partitions => '0-11',
+        options    => {
+            'encoding' => 'json',
+        },
+        offset     => 'end',
     }
     kafkatee::input { 'kafka-webrequest_mobile':
-        topic       => 'webrequest_mobile',
-        partitions  => '0-11',
-        options     => { 'encoding' => 'json' },
-        offset      => 'end',
+        topic      => 'webrequest_mobile',
+        partitions => '0-11',
+        options    => {
+            'encoding' => 'json',
+        },
+        offset     => 'end',
     }
     kafkatee::input { 'kafka-webrequest_text':
-        topic       => 'webrequest_text',
-        partitions  => '0-11',
-        options     => { 'encoding' => 'json' },
-        offset      => 'end',
+        topic      => 'webrequest_text',
+        partitions => '0-11',
+        options    => {
+            'encoding' => 'json',
+        },
+        offset     => 'end',
     }
     kafkatee::input { 'kafka-webrequest_upload':
-        topic       => 'webrequest_upload',
-        partitions  => '0-11',
-        options     => { 'encoding' => 'json' },
-        offset      => 'end',
+        topic      => 'webrequest_upload',
+        partitions => '0-11',
+        options    => {
+            'encoding' => 'json',
+        },
+        offset     => 'end',
     }
 
     # Declare packaged rsyslog config to ensure it isn't purged.
@@ -181,10 +191,10 @@ class role::logging::kafkatee::webrequest {
     $log_directory              = '/srv/log'
     $webrequest_log_directory   = "${log_directory}/webrequest"
     file { [$log_directory, $webrequest_log_directory]:
-        ensure      => 'directory',
-        owner       => 'kafkatee',
-        group       => 'kafkatee',
-        require     => Class['::kafkatee'],
+        ensure  => 'directory',
+        owner   => 'kafkatee',
+        group   => 'kafkatee',
+        require => Class['::kafkatee'],
     }
 
     # if the logs in $log_directory should be rotated

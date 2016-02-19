@@ -3,15 +3,15 @@
 # This key is dangerous, do not deploy widely!
 class role::access_new_install {
     file { '/root/.ssh/new_install':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0400',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
         content => secret('ssh/new_install/new_install'),
     }
     file { '/root/.ssh/new_install.pub':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
         content => secret('ssh/new_install/new_install.pub'),
     }
 }

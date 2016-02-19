@@ -291,7 +291,7 @@ class role::cache::misc {
         storage         => "-s malloc,${memory_storage_size}G",
         vcl_config      => $fe_vcl_config,
         directors       => {
-            'backend' => {
+            'backend'        => {
                 'dynamic'  => 'yes',
                 'type'     => 'chash',
                 'backends' => $site_cluster_nodes,
@@ -304,7 +304,7 @@ class role::cache::misc {
                 'service'  => 'varnish-be-rand',
             },
         },
-        backend_options    => $fe_be_opts,
+        backend_options => $fe_be_opts,
     }
 
     # ToDo: Remove production conditional once this works

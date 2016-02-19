@@ -7,10 +7,10 @@ class role::parsoid::rt_server {
 
     testreduce::server { 'parsoid-rt':
         instance_name => 'parsoid-rt',
-        db_host => 'm5-master.eqiad.wmnet',
-        db_name => 'testreduce_0715',
-        db_user => 'testreduce',
-        db_pass => $passwords::testreduce::mysql::db_pass,
+        db_host       => 'm5-master.eqiad.wmnet',
+        db_name       => 'testreduce_0715',
+        db_user       => 'testreduce',
+        db_pass       => $passwords::testreduce::mysql::db_pass,
     }
 
 }
