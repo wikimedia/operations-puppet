@@ -40,21 +40,21 @@ class openstack::designate::service (
             require => Package['designate-common'],
             mode    => '0440';
         '/etc/designate/api-paste.ini':
-            content => template("openstack/${$openstack_version}/designate/api-paste.ini.erb"),
+            content => template("openstack/${openstack_version}/designate/api-paste.ini.erb"),
             owner   => 'designate',
             group   => 'designate',
             notify  => Service['designate-api','designate-sink','designate-central'],
             require => Package['designate-api'],
             mode    => '0440';
         '/etc/designate/policy.json':
-            source  => "puppet:///modules/openstack/${$openstack_version}/designate/policy.json",
+            source  => "puppet:///modules/openstack/${openstack_version}/designate/policy.json",
             owner   => 'designate',
             group   => 'designate',
             notify  => Service['designate-api','designate-sink','designate-central'],
             require => Package['designate-common'],
             mode    => '0440';
         '/etc/designate/rootwrap.conf':
-            source => "puppet:///modules/openstack/${$openstack_version}/designate/rootwrap.conf",
+            source  => "puppet:///modules/openstack/${openstack_version}/designate/rootwrap.conf",
             owner   => 'root',
             group   => 'root',
             notify  => Service['designate-api','designate-sink','designate-central'],

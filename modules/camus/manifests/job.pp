@@ -35,7 +35,7 @@
 #    Any additional jar files to pass to Hadoop when starting the MapReduce job.
 #
 # [*template*]
-#   Puppet path to camus.properties ERb template.  Default: camus/{$title}.erb
+#   Puppet path to camus.properties ERb template.  Default: camus/${title}.erb
 #
 # [*template_variables*]
 #   Hash of anything you might need accesible in your custom camus.properties

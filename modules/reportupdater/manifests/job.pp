@@ -46,7 +46,7 @@ define reportupdater::job(
     $query_path      = "${path}/${title}"
 
     # Path at which the job will store logs.
-    $log_file        = "${$::reportupdater::log_path}/${repository}-${title}.log"
+    $log_file        = "${::reportupdater::log_path}/${repository}-${title}.log"
 
     # Path at which the job will store its report output.
     $output_path     = "${::reportupdater::output_path}/${output_dir}"

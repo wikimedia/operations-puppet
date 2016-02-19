@@ -50,7 +50,7 @@ class openstack::nova::network($openstack_version=$::openstack::version, $novaco
     $labs_metal = hiera('labs_metal',{})
     $recursor_ip = ipresolve($dnsconfig['recursor'],4)
     file { '/etc/dnsmasq-nova.conf':
-        content => template("openstack/${$openstack_version}/nova/dnsmasq-nova.conf.erb"),
+        content => template("openstack/${openstack_version}/nova/dnsmasq-nova.conf.erb"),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

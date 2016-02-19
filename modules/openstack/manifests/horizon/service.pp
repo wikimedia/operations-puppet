@@ -41,7 +41,7 @@ class openstack::horizon::service(
     }
 
     file { '/etc/openstack-dashboard/local_settings.py':
-        content => template("openstack/${$openstack_version}/horizon/local_settings.py.erb"),
+        content => template("openstack/${openstack_version}/horizon/local_settings.py.erb"),
         owner   => 'horizon',
         group   => 'horizon',
         notify  => Service['apache2'],
@@ -192,7 +192,7 @@ class openstack::horizon::service(
     }
 
     apache::site { $webserver_hostname:
-        content => template("openstack/${$openstack_version}/horizon/${webserver_hostname}.erb"),
+        content => template("openstack/${openstack_version}/horizon/${webserver_hostname}.erb"),
         require => File['/etc/openstack-dashboard/local_settings.py'],
     }
 }
