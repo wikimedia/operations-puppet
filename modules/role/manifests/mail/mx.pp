@@ -1,10 +1,3 @@
-class role::mail::sender {
-    class { 'exim4':
-        queuerunner => 'queueonly',
-        config      => template("mail/exim4.minimal.${::realm}.erb"),
-    }
-}
-
 class role::mail::mx(
     $verp_domains = [
         'wikimedia.org'
