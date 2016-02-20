@@ -2,6 +2,8 @@ include "errorpage.inc.vcl";
 include "misc-common.inc.vcl";
 
 sub vcl_recv {
+    call recv_purge;
+
     if (req.http.Host == "git.wikimedia.org") {
         // gitblit requires the following request headers:
         set req.http.X-Forwarded-Proto = "https";
