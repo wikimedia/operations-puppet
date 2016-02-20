@@ -3,10 +3,6 @@
 // Include common Parsoid config shared between front- and backend
 include "parsoid-common.inc.vcl";
 
-sub vcl_recv {
-	call common_recv;
-}
-
 sub vcl_miss {
 	// Forward the Cache-Control header to the backend
 	if (req.http.Cache-Control) {

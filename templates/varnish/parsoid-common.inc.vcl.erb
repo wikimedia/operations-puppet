@@ -1,11 +1,11 @@
 // Varnish VCL include file shared between Parsoid front- and backends
 
-sub common_recv {
+sub cluster_recv_pre_purge {
 	// Clamp the host header to 'parsoid'
 	set req.http.host = "parsoid";
+}
 
-	call recv_purge;
-
+sub cluster_recv_post_purge {
 	// Enable force-refresh
 	// See https://www.varnish-cache.org/trac/wiki/VCLExampleEnableForceRefresh
 	if (req.http.Cache-Control ~ "no-cache") {

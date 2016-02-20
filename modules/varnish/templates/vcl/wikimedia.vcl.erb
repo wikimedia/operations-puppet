@@ -239,20 +239,6 @@ sub rewrite_proxy_urls {
 	}
 }
 
-sub recv_purge {
-	/* Support HTTP PURGE */
-	if (req.request == "PURGE") {
-		if (client.ip !~ local_host) {
-			error 405 "Denied.";
-		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
-			set req.hash_ignore_busy = true;
-			return (lookup);
-		} else {
-			error 204 "Domain not cached here.";
-		}
-	}
-}
-
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
 // and should be guarded against running on request restarts.
@@ -470,7 +456,24 @@ sub vcl_recv {
 		call analytics_recv;
 	}
 <% end -%>
-	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
+
+	call cluster_recv_pre_purge;
+
+	/* Support HTTP PURGE */
+	if (req.request == "PURGE") {
+		if (client.ip !~ local_host) {
+			error 405 "Denied.";
+		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
+			set req.hash_ignore_busy = true;
+			return (lookup);
+		} else {
+			error 204 "Domain not cached here.";
+		}
+	}
+
+	call cluster_recv_post_purge;
+
+	return (lookup); // no default VCL
 }
 
 sub vcl_fetch {
