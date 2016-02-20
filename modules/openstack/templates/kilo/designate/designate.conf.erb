@@ -54,8 +54,6 @@ max_record_name_len = 255
 # Minimum TTL
 #min_ttl = None
 
-backend_driver = powerdns
-
 ## Managed resources settings
 
 # Email to use for managed resources like domains created by the FloatingIP API
@@ -141,7 +139,6 @@ enabled_notification_handlers = nova_fixed_multi, nova_ldap
 # Pool Manager Service
 #-----------------------
 [service:pool_manager]
-backends = powerdns
 #workers = None
 #pool_id = 794ccc2c-d751-44fe-b57f-8894c9f5c842
 #threshold_percentage = 100
