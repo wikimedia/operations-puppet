@@ -27,4 +27,14 @@ class role::labs::openstack::designate::server {
     ferm::rule { 'designate-api':
         rule => "saddr (${wikitech_ip} ${horizon_ip} ${controller_ip}) proto tcp dport (9001) ACCEPT;",
     }
+
+    $dns_host              = hiera('labs_dns_host');
+    $dns_host_secondary    = hiera('labs_dns_host_secondary');
+    $dns_host_ip           = ipresolve ($dns_host)
+    $dns_host_secondary_ip = ipresolve ($dns_host_secondary)
+
+    # allow axfr traffic between mdns and pdns on the pdns hosts
+    ferm::rule { 'mdns-axfr':
+        rule => "saddr (${dns_host_ip} ${dns_host_secondary_ip} ) proto tcp dport (5354) ACCEPT;",
+    }
 }
