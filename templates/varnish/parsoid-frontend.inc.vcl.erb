@@ -1,5 +1,12 @@
 // Varnish VCL include file for Parsoid frontends
 
+// Include common Parsoid config shared between front- and backend
+include "parsoid-common.inc.vcl";
+
+sub vcl_recv {
+	call common_recv;
+}
+
 sub vcl_miss {
 	// Forward the Cache-Control header to the backend
 	if (req.http.Cache-Control) {
@@ -22,6 +29,3 @@ sub vcl_fetch {
 		set beresp.ttl = 0s;
 	}
 }
-
-// Include common Parsoid config shared between front- and backend
-include "parsoid-common.inc.vcl";

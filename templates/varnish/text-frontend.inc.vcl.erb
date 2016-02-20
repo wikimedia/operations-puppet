@@ -233,6 +233,10 @@ sub vcl_recv {
 	return (lookup);
 }
 
+sub vcl_hash {
+	call common_hash;
+}
+
 sub vcl_pass {
 	call restore_cookie;
 }
@@ -278,6 +282,8 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
+	call zero_deliver;
+
 	// Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
 	// by MediaWiki $wgUseSquid, sends purges internally). But pages musn't be cached elsewhere.
 	// NOTE: Language variants URLs are not currently covered by these regexps.

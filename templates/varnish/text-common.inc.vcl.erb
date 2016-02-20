@@ -56,7 +56,7 @@ sub pass_authorization {
 	}
 }
 
-sub vcl_hash {
+sub common_hash {
 	// The cookies below represent mobile preferences that can be set for anonymous users.
 	if (req.http.X-Subdomain) {
 		// Split the cache for the images-disabled variant of the mobile site.
