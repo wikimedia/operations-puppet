@@ -6,8 +6,17 @@
 
     <Directory /srv/xhgui/webroot>
         AllowOverride None
-        Require all granted
         php_admin_flag engine on
+
+        AuthName "<%= @auth_ldap['name'] %>"
+        AuthType Basic
+        AuthBasicProvider ldap
+        AuthLDAPBindDN <%= @auth_ldap['bind_dn'] %>
+        AuthLDAPBindPassword <%= @auth_ldap['bind_password'] %>
+        AuthLDAPURL "<%= @auth_ldap['url'] %>"
+        <% @auth_ldap['groups'].each do |group| -%>
+        Require ldap-group <%= group %>
+        <% end -%>
 
         RewriteEngine On
         RewriteBase /xhgui
