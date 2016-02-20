@@ -4,18 +4,13 @@
     DocumentRoot /srv/xhgui/webroot
     Alias /xhgui /srv/xhgui/webroot
 
-    <Directory />
-        AllowOverride None
-    </Directory>
-
     <Directory /srv/xhgui/webroot>
-        Options Indexes FollowSymLinks
         AllowOverride None
         Require all granted
-
         php_admin_flag engine on
 
         RewriteEngine On
+        RewriteBase /xhgui
         RewriteCond %{REQUEST_FILENAME} !-f
         RewriteRule ^ index.php [QSA,L]
     </Directory>
