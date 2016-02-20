@@ -14,6 +14,8 @@ class role::xhgui {
 
     system::role { 'role::xhgui': }
 
+    require_package('php5-mongo')
+
     ferm::service { 'xhgui_mongodb':
         port   => 27017,
         proto  => 'tcp',
@@ -30,10 +32,16 @@ class role::xhgui {
         ensure    => 'latest',
         directory => '/srv/xhgui',
         branch    => 'wmf_deploy',
-    }
+    } ->
+
+    file { '/srv/xhgui/cache':
+        ensure  => directory,
+        owner   => 'www-data',
+        group   => 'www-data',
+        mode    => '0755',
+    } ->
 
     apache::site { 'xhgui_apache_site':
         content => template('apache/sites/xhgui.erb'),
-        require => Git::Clone['operations/software/xhgui'],
     }
 }
