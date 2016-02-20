@@ -1,9 +1,7 @@
 include "errorpage.inc.vcl";
 include "misc-common.inc.vcl";
 
-sub vcl_recv {
-    call recv_purge;
-
+sub cluster_be_recv {
 <% if @site_tier == "one" -%>
     if (req.http.Host == "git.wikimedia.org") {
         set req.backend = antimony;
@@ -69,8 +67,6 @@ sub vcl_recv {
 <% end -%> // end tier-1 backend selection
 
     call misc_recv_pass;
-
-    return (lookup);
 }
 
 sub vcl_fetch {
