@@ -157,7 +157,7 @@ director <%= director_name %> <%= director['type'] %> {
 
 # Functions
 
-sub recv_purge {
+sub wm_common_recv_purge {
 	/* Support HTTP PURGE */
 	if (req.request == "PURGE") {
 		if (client.ip !~ local_host) {

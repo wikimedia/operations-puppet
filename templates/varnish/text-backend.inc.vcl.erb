@@ -3,9 +3,7 @@
 include "errorpage.inc.vcl";
 include "text-common.inc.vcl";
 
-sub vcl_recv {
-	call recv_purge;
-
+sub cluster_be_recv {
 <% if @site_tier == "one" -%>
 
 	if (req.url ~ "^/w/api\.php") {
@@ -36,8 +34,6 @@ sub vcl_recv {
 <% end %> // end site_tier == one
 
 	call common_recv;
-
-	return (lookup);
 }
 
 sub vcl_hash {

@@ -8,8 +8,10 @@ sub vcl_recv {
 	}
 
 	call wm_common_recv;
+	call wm_common_recv_purge;
+	call cluster_be_recv;
 
-	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
+	return (lookup); // no default VCL
 }
 
 sub vcl_hit {

@@ -18,9 +18,7 @@ sub pick_large_object_stevedore {
 	}
 }
 
-sub vcl_recv {
-	call recv_purge;
-
+sub cluster_be_recv {
 	call common_recv;
 
 	// Make sure high range requests don't block on large objects being retrieved
@@ -29,8 +27,6 @@ sub vcl_recv {
 			|| req.http.Range ~ "^bytes=([0-9]{9,})-")) {
 		set req.hash_ignore_busy = true;
 	}
-
-	return (lookup);
 }
 
 sub vcl_miss {
