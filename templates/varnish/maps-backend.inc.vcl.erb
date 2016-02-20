@@ -2,10 +2,8 @@
 
 include "errorpage.inc.vcl";
 
-sub vcl_recv {
-	call recv_purge;
-	return (lookup);
-}
+sub cluster_recv_pre_purge { }
+sub cluster_recv_post_purge { }
 
 sub vcl_error {
 	call errorpage;

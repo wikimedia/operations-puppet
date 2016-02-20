@@ -2,8 +2,9 @@
 
 include "errorpage.inc.vcl";
 
-sub vcl_recv {
-	call recv_purge;
+sub cluster_recv_pre_purge { }
+
+sub cluster_recv_post_purge {
 	if (req.http.referer
 		&& req.url != "/"
 		&& req.http.referer !~ "(?i)^https?://([-a-zA-Z0-9.]+\.)?(mediawiki|wikivoyage|wikivoyage-ev|wmflabs)\.org/"
@@ -12,8 +13,6 @@ sub vcl_recv {
 	) {
 		error 403 "Access Denied";
 	}
-
-	return (lookup);
 }
 
 sub vcl_error {

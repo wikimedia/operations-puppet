@@ -2,9 +2,9 @@
 
 include "errorpage.inc.vcl";
 
-sub vcl_recv {
-	call recv_purge;
+sub cluster_recv_pre_purge { }
 
+sub cluster_recv_post_purge {
 	// CORS preflight requests
 	if (req.request == "OPTIONS" && req.http.Origin) {
 		error 667 "CORS";
@@ -30,8 +30,6 @@ sub vcl_recv {
 	} else {
 		error 403 "Requested target domain not allowed.";
 	}
-
-	return (lookup);
 }
 
 sub vcl_hit {
