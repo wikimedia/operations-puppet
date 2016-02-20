@@ -22,4 +22,42 @@ sub common_recv {
 		return (lookup);  // skip default vcl_recv which can generate
 		                  // pass in some cases...
 	}
+
+	// --------------------------------------------------------------------
+	// This is the varnish default vcl_recv code, copied here so that
+	// cache_parsoid matches all the other clusters' behavior in that it
+	// doesn't rely on implicit invocation of the default vcl_recv after
+	// returning from its custom recv code...
+
+	if (req.restarts == 0) {
+		if (req.http.x-forwarded-for) {
+			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+		}
+		else {
+			set req.http.X-Forwarded-For = client.ip;
+		}
+	}
+
+	if (req.request != "GET" &&
+	    req.request != "HEAD" &&
+	    req.request != "PUT" &&
+	    req.request != "POST" &&
+	    req.request != "TRACE" &&
+	    req.request != "OPTIONS" &&
+	    req.request != "DELETE") {
+		/* Non-RFC2616 or CONNECT which is weird. */
+		return (pipe);
+	}
+
+	if (req.request != "GET" && req.request != "HEAD") {
+		/* We only deal with GET and HEAD by default */
+		return (pass);
+	}
+
+	if (req.http.Authorization || req.http.Cookie) {
+		/* Not cacheable by default */
+		return (pass);
+	}
+
+	return (lookup);
 }
