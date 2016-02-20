@@ -1,0 +1,22 @@
+# Apache configuration for XHGUI, a web app for exploration
+# and analysis of PHP profiling data.
+<VirtualHost *:80>
+    DocumentRoot /srv/xhgui/webroot
+    Alias /xhgui /srv/xhgui/webroot
+
+    <Directory />
+        AllowOverride None
+    </Directory>
+
+    <Directory /srv/xhgui/webroot>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+
+        php_admin_flag engine on
+
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^ index.php [QSA,L]
+    </Directory>
+</VirtualHost>
