@@ -68,7 +68,9 @@ sub restbase_1be_mangle {
 }
 <% end -%>
 
-sub vcl_pass {
+sub cluster_hit { }
+
+sub cluster_pass {
 <% if @site_tier == "one" -%>
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
@@ -81,7 +83,7 @@ sub vcl_pass {
 	call restore_cookie;
 }
 
-sub vcl_miss {
+sub cluster_miss {
 <% if @site_tier == "one" -%>
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
@@ -120,6 +122,8 @@ sub vcl_fetch {
 
 	return (deliver);
 }
+
+sub cluster_deliver { }
 
 sub vcl_error {
 	call errorpage;

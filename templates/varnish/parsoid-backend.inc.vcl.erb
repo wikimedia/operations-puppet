@@ -3,13 +3,15 @@
 // Include common Parsoid config shared between front- and backend
 include "parsoid-common.inc.vcl";
 
-sub vcl_miss {
+sub cluster_hit { }
+
+sub cluster_miss {
 	if (req.http.Cache-Control ~ "only-if-cached") {
 		error 412 "Entity not in cache";
 	}
 }
 
-sub vcl_pass {
+sub cluster_pass {
 	if (req.http.Cache-Control ~ "only-if-cached") {
 		error 412 "Entity not in cache";
 	}
@@ -37,3 +39,5 @@ sub vcl_error {
 		return(restart);
 	}
 }
+
+sub cluster_deliver { }

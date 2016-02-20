@@ -517,8 +517,9 @@ sub vcl_hit {
 		purge;
 		error 204 "Purged";
 	}
-	
-	/* Function vcl_hit in <%= @vcl %>.inc.vcl will be appended here */
+
+	call cluster_hit;
+	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
 
 sub vcl_miss {
@@ -528,7 +529,8 @@ sub vcl_miss {
 		error 204 "Cache miss";
 	}
 
-	/* Function vcl_miss in <%= @vcl %>.inc.vcl will be appended here */
+	call cluster_miss;
+	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
 sub vcl_pass {
@@ -552,6 +554,9 @@ sub vcl_pass {
 	set req.backend = backend_random;
 <% end -%>
 <% end -%>
+
+	call cluster_pass;
+	return (pass); // no default VCL (which is just "return (pass)" anyways)
 }
 
 sub vcl_deliver {
@@ -603,7 +608,8 @@ sub vcl_deliver {
 	}
 <% end -%>
 
-	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
+	call cluster_deliver;
+	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
 
 sub vcl_error {

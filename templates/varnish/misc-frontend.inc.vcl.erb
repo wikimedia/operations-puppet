@@ -48,3 +48,8 @@ sub vcl_error {
 sub vcl_fetch {
     call misc_fetch_large_objects;
 }
+
+sub cluster_deliver { }
+sub cluster_hit { }
+sub cluster_miss { }
+sub cluster_pass { }
