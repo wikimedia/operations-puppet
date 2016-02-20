@@ -4,10 +4,7 @@
     DocumentRoot /srv/xhgui/webroot
     Alias /xhgui /srv/xhgui/webroot
 
-    <Directory /srv/xhgui/webroot>
-        AllowOverride None
-        php_admin_flag engine on
-
+    <Location />
         AuthName "<%= @auth_ldap['name'] %>"
         AuthType Basic
         AuthBasicProvider ldap
@@ -17,6 +14,11 @@
         <% @auth_ldap['groups'].each do |group| -%>
         Require ldap-group <%= group %>
         <% end -%>
+    </Location>
+
+    <Directory /srv/xhgui/webroot>
+        AllowOverride None
+        php_admin_flag engine on
 
         RewriteEngine On
         RewriteBase /xhgui
