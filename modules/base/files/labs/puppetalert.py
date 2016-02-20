@@ -67,7 +67,8 @@ for the project that contains this instance.  Please take steps to repair
 this instance or contact a Labs admin for assistance.
 
 For further support, visit #wikimedia-labs on freenode or visit
-http://www.wikitech.org""".format(instance=hostname, project=PROJECT_NAME)
+https://wikitech.wikimedia.org
+""".format(instance=hostname, project=PROJECT_NAME)
 
     subject = "Alert:  puppet failed on %s.%s.eqiad.wmflabs" % (hostname,
                                                                 PROJECT_NAME)
