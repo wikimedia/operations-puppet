@@ -3,23 +3,23 @@
     "admin_or_owner":  "is_admin:True or project_id:%(project_id)s",
     "admin_or_glanceadmin": "is_admin:True or role:glanceadmin",
 
-    "default": "role:admin",
+    "default": "rule:admin_or_glanceadmin",
 
     "add_image": "rule:admin_or_glanceadmin",
     "delete_image": "rule:admin_or_glanceadmin",
     "get_image": "",
     "get_images": "",
-    "modify_image": "role:admin",
-    "publicize_image": "role:admin",
-    "copy_from": "role:admin",
-    "manage_image_cache": "role:admin_or_glance_admin",
+    "modify_image": "rule:admin_or_glanceadmin",
+    "publicize_image": "rule:admin_or_glanceadmin",
+    "copy_from": "rule:admin_or_glanceadmin",
+    "manage_image_cache": "rule:admin_or_glance_admin",
 
     "download_image": "",
     "upload_image": "rule:admin_or_glanceadmin",
 
-    "delete_image_location": "role:admin",
+    "delete_image_location": "rule:admin_or_glanceadmin",
     "get_image_location": "",
-    "set_image_location": "role:admin",
+    "set_image_location": "rule:admin_or_glanceadmin",
 
     "add_member": "role:admin",
     "delete_member": "role:admin",
