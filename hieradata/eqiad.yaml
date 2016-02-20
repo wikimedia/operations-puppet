@@ -92,6 +92,7 @@ labs_ldap_dns_host_secondary: &labsldapdnshostsecondary "labs-ns1.wikimedia.org"
 
 # These are the up-and-coming, better dns servers:
 labs_dns_host: &labsdnshost "labs-ns2.wikimedia.org"
+labs_dns_host_secondary: &labsdnshostsecondary "labs-ns3.wikimedia.org"
 labs_dns_db_server: 'm5-master.eqiad.wmnet'
 labs_recursor: &labsrecursor "labs-recursor1.wikimedia.org"
 
