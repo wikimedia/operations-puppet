@@ -36,7 +36,7 @@ sub cluster_be_recv {
 	call common_recv;
 }
 
-sub vcl_hash {
+sub cluster_be_hash {
 	call common_hash;
 }
 
@@ -66,7 +66,9 @@ sub restbase_1be_mangle {
 }
 <% end -%>
 
-sub vcl_miss {
+sub cluster_be_hit { }
+
+sub cluster_be_miss {
 <% if @site_tier == "one" -%>
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
@@ -79,7 +81,7 @@ sub vcl_miss {
 	call restore_cookie;
 }
 
-sub vcl_pass {
+sub cluster_be_pass {
 <% if @site_tier == "one" -%>
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
@@ -92,7 +94,7 @@ sub vcl_pass {
 	call restore_cookie;
 }
 
-sub vcl_fetch {
+sub cluster_be_fetch {
 	// Make sure Set-Cookie responses are not cacheable, and log violations
 	// FIXME: exceptions are ugly; maybe get rid of the whole thing?
 	if (beresp.ttl > 0s && beresp.http.Set-Cookie &&
@@ -118,6 +120,8 @@ sub vcl_fetch {
 
 	return (deliver);
 }
+
+sub cluster_be_deliver { }
 
 sub vcl_error {
 	call errorpage;

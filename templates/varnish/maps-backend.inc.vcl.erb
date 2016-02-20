@@ -3,6 +3,12 @@
 include "errorpage.inc.vcl";
 
 sub cluster_be_recv { }
+sub cluster_be_hash { }
+sub cluster_be_hit { }
+sub cluster_be_miss { }
+sub cluster_be_pass { }
+sub cluster_be_fetch { }
+sub cluster_be_deliver { }
 
 sub vcl_error {
 	call errorpage;

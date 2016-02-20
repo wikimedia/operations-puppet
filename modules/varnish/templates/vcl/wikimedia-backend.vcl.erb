@@ -14,14 +14,21 @@ sub vcl_recv {
 	return (lookup); // no default VCL
 }
 
+sub vcl_hash {
+	call cluster_be_hash;
+	// default vcl_hash invokes here!
+}
+
 sub vcl_hit {
 	call wm_common_hit;
-	/* Function vcl_hit in <%= @vcl %>.inc.vcl will be appended here */
+	call cluster_be_hit;
+	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
 
 sub vcl_miss {
 	call wm_common_miss;
-	/* Function vcl_miss in <%= @vcl %>.inc.vcl will be appended here */
+	call cluster_be_miss;
+	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
 
 sub vcl_pass {
@@ -33,17 +40,20 @@ sub vcl_pass {
 	set req.backend = backend_random;
 <% end -%>
 
-	/* Function vcl_pass in <%= @vcl %>.inc.vcl will be appended here */
+	call cluster_be_pass;
+	return (pass); // no default VCL (which is just "return (pass)" anyways)
 }
 
 sub vcl_fetch {
 	call wm_common_fetch;
-	/* Function vcl_fetch in <%= @vcl %>.inc.vcl will be appended here */
+	call cluster_be_fetch;
+	// default vcl_fetch invokes here, unless cluster VCL unconditionally returns!
 }
 
 sub vcl_deliver {
 	call wm_common_deliver;
-	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
+	call cluster_be_deliver;
+	return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
 
 sub vcl_error {

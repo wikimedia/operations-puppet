@@ -15,6 +15,13 @@ sub cluster_fe_recv {
 	}
 }
 
+sub cluster_fe_hash { }
+sub cluster_fe_hit { }
+sub cluster_fe_miss { }
+sub cluster_fe_pass { }
+sub cluster_fe_fetch { }
+sub cluster_fe_deliver { }
+
 sub vcl_error {
 	call errorpage;
 }
