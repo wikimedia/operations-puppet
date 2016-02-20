@@ -40,6 +40,10 @@ sub vcl_recv {
 	return (lookup);
 }
 
+sub vcl_hash {
+	call common_hash;
+}
+
 <% if @site_tier == "one" -%>
 // BITS: legacy bits.wm.o domain support
 sub bitscompat_1be_mangle {
