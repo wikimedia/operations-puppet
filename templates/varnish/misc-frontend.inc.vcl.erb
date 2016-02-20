@@ -33,9 +33,16 @@ sub cluster_fe_recv {
     call misc_recv_pass;
 }
 
-sub vcl_fetch {
+sub cluster_fe_hash { }
+sub cluster_fe_hit { }
+sub cluster_fe_miss { }
+sub cluster_fe_pass { }
+
+sub cluster_fe_fetch {
     call misc_fetch_large_objects;
 }
+
+sub cluster_fe_deliver { }
 
 sub vcl_error {
     // If status is 755, then we are forcing a redirect to https.
