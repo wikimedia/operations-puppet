@@ -4,6 +4,10 @@ include "errorpage.inc.vcl";
 
 sub cluster_recv_pre_purge { }
 sub cluster_recv_post_purge { }
+sub cluster_deliver { }
+sub cluster_hit { }
+sub cluster_miss { }
+sub cluster_pass { }
 
 sub vcl_error {
 	call errorpage;

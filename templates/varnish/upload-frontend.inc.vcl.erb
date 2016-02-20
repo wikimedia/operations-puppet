@@ -32,13 +32,13 @@ sub cluster_recv_post_purge {
 	}
 }
 
-sub vcl_hit {
+sub cluster_hit {
 	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
 		error 412 "Etag mismatch";
 	}
 }
 
-sub vcl_miss {
+sub cluster_miss {
 	// Convert range requests into pass
 	if (req.http.Range) {
 		set bereq.http.Range = req.http.Range;
@@ -50,6 +50,8 @@ sub vcl_miss {
 		return (pass);
 	}
 }
+
+sub cluster_pass { }
 
 sub vcl_fetch {
 	if (beresp.http.Content-Range) {
@@ -97,7 +99,7 @@ sub vcl_error {
 	call errorpage;
 }
 
-sub vcl_deliver {
+sub cluster_deliver {
 	unset resp.http.X-MediaWiki-Original;
 
 	if (resp.http.X-Content-Range) {

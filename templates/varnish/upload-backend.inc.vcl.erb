@@ -60,13 +60,13 @@ sub vcl_fetch {
 	return (deliver);
 }
 
-sub vcl_hit {
+sub cluster_hit {
 	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
 		error 412 "Etag mismatch";
 	}
 }
 
-sub vcl_miss {
+sub cluster_miss {
 	// Convert range requests into pass when over a certain threshold
 	if (req.http.Range
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432
@@ -81,11 +81,13 @@ sub vcl_miss {
 	}
 }
 
+sub cluster_pass { }
+
 sub vcl_error {
 	call errorpage;
 }
 
-sub vcl_deliver {
+sub cluster_deliver {
 	if (resp.http.X-Content-Range) {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
 		remove resp.http.X-Content-Range;
