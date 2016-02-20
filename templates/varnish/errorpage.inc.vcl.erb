@@ -1,8 +1,8 @@
 sub errorpage {
-	if (obj.status >= 400) {
+	if (obj.status > 400 && obj.status != 413) {
 		call synth_errorpage;
-		return (deliver);
 	}
+	return (deliver);
 }
 
 sub synth_errorpage {

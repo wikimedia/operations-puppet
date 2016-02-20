@@ -608,10 +608,6 @@ sub vcl_error {
 	call https_error_redirect;
 <% end -%>
 
-	if (obj.status == 400 || obj.status == 413) {
-		return(deliver);
-	}
-
 <% if scope.function_hiera(["cluster"]) != "cache_parsoid" -%>
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	// retry 503 once in frontend instances, to paper over transient issues
