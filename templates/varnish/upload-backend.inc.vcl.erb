@@ -29,7 +29,13 @@ sub cluster_be_recv {
 	}
 }
 
-sub vcl_miss {
+sub cluster_be_hash { }
+
+sub cluster_be_hit {
+	call common_hit;
+}
+
+sub cluster_be_miss {
 	// Convert range requests into pass when over a certain threshold
 	if (req.http.Range
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432
@@ -44,7 +50,9 @@ sub vcl_miss {
 	}
 }
 
-sub vcl_fetch {
+sub cluster_be_pass { }
+
+sub cluster_be_fetch {
 	// Stream large objects, >= 1 MB
 	if (std.integer(beresp.http.Content-Length, 0) >= 1048576 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
@@ -71,7 +79,7 @@ sub vcl_fetch {
 	return (deliver);
 }
 
-sub vcl_deliver {
+sub cluster_be_deliver {
 	call common_deliver;
 }
 

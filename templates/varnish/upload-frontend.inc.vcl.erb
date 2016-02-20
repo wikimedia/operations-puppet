@@ -30,7 +30,13 @@ sub cluster_fe_recv {
 	return (lookup);
 }
 
-sub vcl_miss {
+sub cluster_fe_hash { }
+
+sub cluster_fe_hit {
+	call common_hit;
+}
+
+sub cluster_fe_miss {
 	// Convert range requests into pass
 	if (req.http.Range) {
 		set bereq.http.Range = req.http.Range;
@@ -43,7 +49,9 @@ sub vcl_miss {
 	}
 }
 
-sub vcl_fetch {
+sub cluster_fe_pass { }
+
+sub cluster_fe_fetch {
 	if (beresp.http.Content-Range) {
 		// Varnish itself doesn't ask for ranges, so this must have been
 		// a passed range request
@@ -69,7 +77,7 @@ sub vcl_fetch {
 	return (deliver);
 }
 
-sub vcl_deliver {
+sub cluster_fe_deliver {
 	call common_deliver;
 
 	unset resp.http.X-MediaWiki-Original;

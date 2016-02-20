@@ -6,7 +6,7 @@ sub common_recv {
 	}
 }
 
-sub vcl_hit {
+sub common_hit {
 	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
 		error 412 "Etag mismatch";
 	}

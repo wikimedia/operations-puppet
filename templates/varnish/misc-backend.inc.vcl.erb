@@ -69,9 +69,16 @@ sub cluster_be_recv {
     call misc_recv_pass;
 }
 
-sub vcl_fetch {
+sub cluster_be_hash { }
+sub cluster_be_hit { }
+sub cluster_be_miss { }
+sub cluster_be_pass { }
+
+sub cluster_be_fetch {
     call misc_fetch_large_objects;
 }
+
+sub cluster_be_deliver { }
 
 sub vcl_error {
     call errorpage;
