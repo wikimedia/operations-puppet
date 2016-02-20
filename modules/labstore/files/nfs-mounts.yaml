@@ -11,10 +11,6 @@ private:
     mounts:
       project: true
       statistics: true
-  k8s-eval:
-    gid: 52647
-    mounts:
-      scratch: true
   bots:
     gid: 50064
     mounts:
