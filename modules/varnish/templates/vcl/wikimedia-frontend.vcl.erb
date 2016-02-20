@@ -250,7 +250,11 @@ sub vcl_recv {
 		call analytics_recv;
 	}
 
-	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
+	call cluster_fe_recv_pre_purge;
+	call wm_common_recv_purge;
+	call cluster_fe_recv;
+
+	return (lookup); // no default VCL
 }
 
 sub vcl_hit {

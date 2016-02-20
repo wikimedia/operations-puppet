@@ -130,7 +130,7 @@ sub normalize_path {
 	}C
 }
 
-sub vcl_recv {
+sub cluster_fe_recv_pre_purge {
 	// Forged UAs on zerodot. This largely handles lazywebtools below, incidentally.
 	if (req.http.host ~ "zero\.wikipedia\.org" && req.http.User-Agent && req.http.User-Agent ~ "Facebookbot|Googlebot") {
 		error 403 "Noise";
@@ -194,10 +194,9 @@ sub vcl_recv {
 			}
 		}
 	}
+}
 
-	// Allow purging
-	call recv_purge;
-
+sub cluster_fe_recv {
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
 		if (req.url ~ "^/event\.gif") {
@@ -229,8 +228,6 @@ sub vcl_recv {
 	}
 
 	call common_recv;
-
-	return (lookup);
 }
 
 sub vcl_hash {

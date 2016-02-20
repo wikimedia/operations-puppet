@@ -2,9 +2,9 @@
 include "upload-common.inc.vcl";
 include "errorpage.inc.vcl";
 
-sub vcl_recv {
-	call recv_purge;
+sub cluster_fe_recv_pre_purge { }
 
+sub cluster_fe_recv {
 	// CORS preflight requests
 	if (req.request == "OPTIONS" && req.http.Origin) {
 		error 667 "CORS";
@@ -27,7 +27,6 @@ sub vcl_recv {
 
 	// Replace double slashes
 	set req.url = regsuball(req.url, "/{2,}", "/");
-	return (lookup);
 }
 
 sub vcl_miss {
