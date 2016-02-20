@@ -34,6 +34,6 @@ class role::xhgui {
 
     apache::site { 'xhgui_apache_site':
         content => template('apache/sites/xhgui.erb'),
-        require => Git::Clone['vendor/xhgui'],
+        require => Git::Clone['operations/software/xhgui'],
     }
 }
