@@ -2,6 +2,8 @@ include "errorpage.inc.vcl";
 include "misc-common.inc.vcl";
 
 sub vcl_recv {
+    call recv_purge;
+
 <% if @site_tier == "one" -%>
     if (req.http.Host == "git.wikimedia.org") {
         set req.backend = antimony;
