@@ -4,11 +4,8 @@ sub common_recv {
 	// Clamp the host header to 'parsoid'
 	set req.http.host = "parsoid";
 
-	// Support HTTP PURGE
-	if (req.request == "PURGE") {
-		set req.hash_ignore_busy = true;
-		return (lookup);
-	}
+	call recv_purge;
+
 	// Enable force-refresh
 	// See https://www.varnish-cache.org/trac/wiki/VCLExampleEnableForceRefresh
 	if (req.http.Cache-Control ~ "no-cache") {
