@@ -44,6 +44,7 @@ allow-from=127.0.0.0/8, ::1/128, <%= (@allow_from + flatten_ips(@listen_addresse
 auth-zones=<%= @auth_zones -%>
 <% end -%>
 
+
 #################################
 # max-mthreads	Maximum number of simultaneous MTasker threads
 #
@@ -51,7 +52,7 @@ auth-zones=<%= @auth_zones -%>
 #
 #  http://blog.powerdns.com/2014/02/06/related-to-recent-dos-attacks-recursor-configuration-file-guidance/
 #
-max-mthreads 512
+max-mthreads=512
 
 #################################
 # chroot	switch to chroot jail
