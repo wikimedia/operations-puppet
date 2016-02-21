@@ -26,13 +26,14 @@ labs_keystone_host: &labskeystonehost "labtestcontrol2001.wikimedia.org"
 
 labs_ldap_dns_host: &labsldapdnshost "labtestservices2001.wikimedia.org"
 labs_ldap_dns_host_secondary: &labsldapdnshostsecondary "labtestservices2001.wikimedia.org"
-
-labs_dns_host: &labsdnshost "labtest-ns0.wikimedia.org"
-labs_dns_host_secondary: &labsdnshostsecondary "labtest-ns0.wikimedia.org"
-labs_dns_db_server: 'labtestcontrol2001.wikimedia.org'
-labs_recursor: &labsrecursor "labtest-recursor0.wikimedia.org"
-
 ldap_labs_hostname: labtestservices2001.wikimedia.org
+
+labsdnsconfig:
+  host: 'labtest-ns0.wikimedia.org'
+  host_secondary: 'labs-ns0.wikimedia.org'
+  dbserver: 'labtestcontrol2001.wikimedia.org'
+  recursor: 'labtest-recursor0.wikimedia.org'
+  recursor_secondary: 'labtest-recursor0.wikimedia.org'
 
 novaconfig:
   network_host: *labsnovanetworkip

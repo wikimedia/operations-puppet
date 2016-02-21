@@ -2,14 +2,14 @@ class role::labs::dns {
     system::role { 'role::labs::dns':
         description => 'DNS server for Labs instances',
     }
-    include passwords::pdns
+    $dnsconfig = hiera_hash('labsdnsconfig', {})
 
     class { '::labs_dns':
         dns_auth_ipaddress     => $::ipaddress_eth0,
         dns_auth_query_address => $::ipaddress_eth0,
-        dns_auth_soa_name      => hiera('labs_dns_host'),
-        pdns_db_host           => hiera('labs_dns_db_server'),
-        pdns_db_password       => $passwords::pdns::db_pass,
+        dns_auth_soa_name      => dnsconfig['host'],
+        pdns_db_host           => dnsconfig['db_server'],
+        pdns_db_password       => dnsconfig['db_pass'],
     }
 
     ferm::service { 'udp_dns_rec':
