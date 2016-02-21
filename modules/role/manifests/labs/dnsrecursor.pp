@@ -26,10 +26,11 @@ class role::labs::dnsrecursor {
     }
 
     $keystoneconfig = hiera_hash('keystoneconfig', {})
+    $dnsconfig = hiera_hash('labsdnsconfig', {})
     include ::network::constants
     $all_networks = $::network::constants::all_networks
 
-    $recursor_ip = ipresolve(hiera('labs_recursor'),4)
+    $recursor_ip = ipresolve($dnsconfig['recursor'],4)
 
     interface::ip { 'role::lab::dnsrecursor':
         interface => 'eth0',
@@ -45,7 +46,7 @@ class role::labs::dnsrecursor {
         default => [$recursor_ip]
     }
 
-    $labs_auth_dns = ipresolve(hiera('labs_dns_host'),4)
+    $labs_auth_dns = ipresolve($dnsconfig['host'],4)
 
     $lua_hooks = ['/etc/powerdns/labs-ip-alias.lua', '/etc/powerdns/metaldns.lua']
 

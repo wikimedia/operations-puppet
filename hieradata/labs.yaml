@@ -4,6 +4,11 @@ datacenters: [eqiad]
 standard::has_ganglia: false
 has_nrpe: false
 
+# dns
+labsdnsconfig:
+  recursor: 'labs-recursor1.wikimedia.org'
+  recursor_secondary: 'labs-recursor0.wikimedia.org'
+
 # Additional base overrides
 standard::has_admin: false
 base::remote_syslog::enable: false
@@ -45,8 +50,6 @@ zookeeper_hosts:
   "${::fqdn}": 1
 nrpe::allowed_hosts: '10.68.16.195'
 
-labs_recursor: "labs-recursor1.wikimedia.org"
-labs_recursor_secondary: "labs-recursor0.wikimedia.org"
 ssh::server::disable_agent_forwarding: false
 puppetmaster: "labs-puppetmaster-eqiad.wikimedia.org"
 saltmaster: "labs-puppetmaster-eqiad.wikimedia.org"
