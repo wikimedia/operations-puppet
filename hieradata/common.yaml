@@ -149,11 +149,6 @@ ganglia_clusters:
     id: 37
     sites:
       eqiad: []
-  cache_parsoid:
-    name: "Parsoid Varnish"
-    id: 38
-    sites:
-      eqiad: []
   redis:
     name: "Redis"
     id: 39

@@ -333,7 +333,7 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
     interface::add_ip6_mapped { 'main': }
-    role cache::parsoid
+    role cache::misc, ipsec
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
