@@ -69,7 +69,6 @@ class toollabs::dev_environ {
         'fakeroot', # for dpkg
         'flex',                        # T114003.
         'gcj-jdk',                     # T58995
-        'openjdk-7-jdk',
         'ipython',                     # T58995
         'joe',                         # T64236.
         'libdjvulibre-dev',            # T58972
@@ -78,11 +77,14 @@ class toollabs::dev_environ {
         'libfreetype6-dev',
         'libgdal1-dev',                # T58995
         'libgeoip-dev',                # T64649
+        'libldap2-dev',                # T114388
         'libpng12-dev',
         'libproj-dev',                 # T58995
         'libprotobuf-dev',             # T58995
         'librsvg2-dev',                # T60516
+        'libsasl2-dev',                # T114388
         'libsparsehash-dev',           # T58995
+        'libssl-dev',                  # T114388
         'libtiff4-dev', # T54717
         'libtool',
         'libvips-dev',
@@ -95,6 +97,7 @@ class toollabs::dev_environ {
         'maven',
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
+        'openjdk-7-jdk',
         'pastebinit',
         'pep8',                        # T59863
         'qt4-qmake',
@@ -106,7 +109,8 @@ class toollabs::dev_environ {
         'subversion',
         'tcl8.5-dev',
         'tig',
-        'valgrind' ]:                  # T87117.
+        'valgrind',                   # T87117.
+    ]:
         ensure => latest,
     }
 
