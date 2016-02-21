@@ -28,8 +28,9 @@ class role::labs::openstack::designate::server {
         rule => "saddr (${wikitech_ip} ${horizon_ip} ${controller_ip}) proto tcp dport (9001) ACCEPT;",
     }
 
-    $dns_host              = hiera('labs_dns_host')
-    $dns_host_secondary    = hiera('labs_dns_host_secondary')
+    $dnsconfig             = hiera_hash('labsdnsconfig', {})
+    $dns_host              = $dnsconfig['host']
+    $dns_host_secondary    = $dnsconfig['host_secondary']
     $dns_host_ip           = ipresolve ($dns_host)
     $dns_host_secondary_ip = ipresolve ($dns_host_secondary)
 
