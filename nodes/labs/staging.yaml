@@ -14,8 +14,6 @@
   - role::cache::text
 .*-cache-upload\d\d:
   - role::cache::upload
-.*-cache-parsoid\d\d:
-  - role::cache::parsoid
 .*-cache-.*:
   - role::beta::availability_collector
 .*-ms-be\d\d:

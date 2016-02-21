@@ -259,10 +259,9 @@ scb:
 dns:
   chromium.wikimedia.org: [pdns_recursor]
   hydrogen.wikimedia.org: [pdns_recursor]
-cache_parsoid:
-  cp1045.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
-  cp1058.eqiad.wmnet: [varnish-fe, varnish-be, nginx]
 cache_misc:
+  cp1045.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp1058.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1056.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1057.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1069.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]

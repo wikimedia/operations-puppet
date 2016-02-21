@@ -543,11 +543,8 @@ sub vcl_pass {
 // single node in the varnish-backend layers.  All pass and hit-for-pass
 // traffic comes through vcl_pass, so we set backend_random here for all such
 // requests.
-// Note parsoid is specially excluded, because it's legacy / non-standard.
-<% if scope.function_hiera(["cluster"]) != "cache_parsoid" %>
 <% if @vcl_config.fetch("layer", "") == "frontend" || @site_tier == "two" -%>
 	set req.backend = backend_random;
-<% end -%>
 <% end -%>
 }
 
@@ -608,13 +605,11 @@ sub vcl_error {
 	call https_error_redirect;
 <% end -%>
 
-<% if scope.function_hiera(["cluster"]) != "cache_parsoid" -%>
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	// retry 503 once in frontend instances, to paper over transient issues
 	if (obj.status == 503 && req.restarts == 0) {
 		return(restart);
 	}
-<% end -%>
 <% end -%>
 
 	if (obj.status == 204 && req.request == "PURGE") {
