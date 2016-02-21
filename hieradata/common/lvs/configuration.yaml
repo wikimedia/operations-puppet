@@ -85,11 +85,6 @@ lvs_service_ips:
     ulsfo:
       misc_weblb: 198.35.26.120
       misc_weblb6: 2620:0:863:ed1a::3:d
-  parsoidcache: &ip_block012
-    eqiad:
-      parsoidcachelb: 208.80.154.248
-      parsoidcachelb6: 2620:0:861:ed1a::3:14
-      parsoidcachesvc: 10.2.2.29
   search: &ip_block013
     eqiad: 10.2.2.30
     codfw: 10.2.1.30
@@ -499,48 +494,6 @@ lvs_services:
       sites:
         eqiad:
           hostname: parsoid.svc.eqiad.wmnet
-  parsoidcache:
-    description: Varnish caches in front of Parsoid
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *ip_block012
-    port: 80
-    bgp: 'yes'
-    depool-threshold: '.5'
-    monitors:
-      ProxyFetch:
-        url:
-        - http://localhost
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_parsoid
-      service: varnish-fe
-    icinga:
-      check_command: check_http_on_port!80
-      contact_group: admins,parsoid
-      sites:
-        eqiad:
-          hostname: parsoid-lb.eqiad.wikimedia.org
-  parsoidcache-https:
-    description: nginx HTTPS terminators for Parsoid
-    class: high-traffic2
-    sites:
-    - eqiad
-    ip: *ip_block012
-    port: 443
-    scheduler: sh
-    bgp: 'no'
-    depool-threshold: '.5'
-    monitors:
-      IdleConnection:
-        timeout-clean-reconnect: 3
-        max-delay: 300
-    conftool:
-      cluster: cache_parsoid
-      service: nginx
   search:
     description: Elasticsearch search for MediaWiki
     class: low-traffic

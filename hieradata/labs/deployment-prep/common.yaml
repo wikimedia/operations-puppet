@@ -87,7 +87,6 @@ lvs::configuration::lvs_service_ips:
   ocg: {}
   osm: {}
   parsoid: {}
-  parsoidcache: {}
   rendering: {}
   restbase: {}
   search: {}

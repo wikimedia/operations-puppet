@@ -20,7 +20,6 @@ class role::lvs::balancer {
             $sip['maps'][$::site],
             $sip['dns_rec'][$::site],
             $sip['misc_web'][$::site],
-            $sip['parsoidcache'][$::site],
             $sip['stream'][$::site],
             $sip['ocg'][$::site],
             ],
