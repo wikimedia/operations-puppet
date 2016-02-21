@@ -1,4 +1,7 @@
 cluster: virt
-labs_dns_host: "labs-ns3.wikimedia.org"
-labs_dns_host_secondary: &labsdnshostsecondary "labs-ns2.wikimedia.org"
-labs_recursor: "labs-recursor0.wikimedia.org"
+
+labsdnsconfig:
+  host: 'labs-ns3.wikimedia.org'
+  host_secondary: 'labs-ns2.wikimedia.org'
+  recursor: 'labs-recursor0.wikimedia.org'
+  recursor_secondary: 'labs-recursor1.wikimedia.org'
