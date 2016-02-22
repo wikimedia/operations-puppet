@@ -1195,7 +1195,7 @@ node 'graphite1002.eqiad.wmnet' {
 
 # Primary graphite machines
 node 'graphite2001.codfw.wmnet' {
-    role graphite::production, statsdlb, gdash
+    role graphite::production, statsdlb
     include standard
 }
 
@@ -1271,7 +1271,7 @@ node 'krypton.eqiad.wmnet' {
     # kafka::analytics::burrow is a Kafka consumer lag monitor.
     # Running this here because krypton is a 'misc' Jessie
     # <s>monitoring host</s> (not really, it's just misc apps)
-    role wikimania_scholarships, iegreview, grafana, gdash, kafka::analytics::burrow, racktables
+    role wikimania_scholarships, iegreview, grafana, kafka::analytics::burrow, racktables
     include standard
 }
 
