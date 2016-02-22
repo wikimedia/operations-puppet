@@ -56,7 +56,7 @@ class toollabs::kube2proxy(
     }
 
     base::service_unit{ 'kube2proxy':
-        ensure         => $ensure,
+        ensure         => present,
         refresh        => true,
         systemd        => true,
         service_params => $service_params,
