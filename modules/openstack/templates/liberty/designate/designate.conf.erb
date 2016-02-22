@@ -154,6 +154,7 @@ enabled_notification_handlers = nova_fixed_multi, nova_ldap
 [pool:794ccc2c-d751-44fe-b57f-8894c9f5c842]
 nameservers = 0f66b842-96c2-4189-93fc-1dc95a08b012, 17474d59-a989-48fb-9f8b-19fbdaeff243
 targets = f26e0b32-736f-4f0a-831b-039a415c481e
+also_notifies = <%= @secondary_pdns_ip %>:53
 
 # A 'pool_nameserver' is a pdns instance that receives axfr updates.
 # This is the primary dns server, currently 'labservices1001'
@@ -180,6 +181,11 @@ options = connection: mysql://<%= @designateconfig["pdns_db_user"] %>:<%= @desig
 #  UPDATE pdns.domains SET master="<comman-separated list of masters>"
 masters = <%= scope.function_ipresolve([@fqdn, 4]) %>:5354
 type = powerdns
+# as I understand it, this is to send notifications to the primary pdns server.
+#  the other server should get notices via the 'also_notifies' setting above.
+host = <%= @primary_pdns_ip %>
+port = 53
+
 
 ##############
 ## Network API
