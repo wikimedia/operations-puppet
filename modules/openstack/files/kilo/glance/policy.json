@@ -12,6 +12,7 @@
     "modify_image": "role:admin",
     "publicize_image": "role:admin",
     "copy_from": "role:admin",
+    "manage_image_cache": "role:admin_or_glance_admin",
 
     "download_image": "",
     "upload_image": "rule:admin_or_glanceadmin",
@@ -25,8 +26,6 @@
     "get_member": "",
     "get_members": "",
     "modify_member": "role:admin",
-
-    "manage_image_cache": "role:admin",
 
     "get_task": "",
     "get_tasks": "",
