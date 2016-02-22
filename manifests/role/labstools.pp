@@ -75,14 +75,6 @@ class role::labs::tools {
         }
     }
 
-    class submit {
-        include ::toollabs::submit
-
-        system::role { 'role::labs::tools::submit':
-            description => 'Tool Labs job submit (cron) host',
-        }
-    }
-
     class proxy {
         include toollabs::proxy
         include role::toollabs::k8s::webproxy
