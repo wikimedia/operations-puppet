@@ -14,5 +14,13 @@ class openstack::repo(
             keyfile    => 'puppet:///files/misc/ubuntu-cloud.key';
             # lint:endignore
         }
+
+        # Pick newer versions of packages from the cloud archive even if there are
+        #  custom older versions in the wikimedia repo
+        apt::pin { 'wikimedia':
+            package  => '*',
+            pin      => "release n=trusty-updates/${openstack_version}",
+            priority => 1001,
+        }
     }
 }
