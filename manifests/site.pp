@@ -2539,7 +2539,6 @@ node 'tin.eqiad.wmnet', 'mira.codfw.wmnet' {
 # titanium hosts archiva.wikimedia.org
 node 'titanium.wikimedia.org' {
     $cluster = 'misc'
-    # include firewall here, until it is on all hosts
     role archiva
     include standard
 }
