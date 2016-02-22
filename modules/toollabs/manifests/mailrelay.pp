@@ -14,16 +14,16 @@
 #
 class toollabs::mailrelay inherits toollabs
 {
-    include gridengine::submit_host,
-            toollabs::infrastructure
+    include gridengine::submit_host
+    include toollabs::infrastructure
 
     # Hiera sanity checks
 
-    if !$is_mail_relay {
+    if !$toollabs::is_mail_relay {
         fail('Mail relay hosts must have toollabs::is_mail_relay set in Hiera')
     }
 
-    if $external_hostname == undef {
+    if $toollabs::external_hostname == undef {
         fail('Mail relay hosts must have an toollabs::external_hostname defined in Hiera')
     }
 

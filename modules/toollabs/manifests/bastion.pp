@@ -11,11 +11,10 @@
 # Sample Usage:
 #
 class toollabs::bastion inherits toollabs {
-
-    include gridengine::submit_host,
-            gridengine::admin_host,
-            toollabs::exec_environ,
-            toollabs::dev_environ
+    include gridengine::admin_host
+    include gridengine::submit_host
+    include toollabs::dev_environ
+    include toollabs::exec_environ
 
     file { '/etc/ssh/ssh_config':
         ensure => file,

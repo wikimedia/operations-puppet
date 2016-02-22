@@ -1,9 +1,9 @@
+# Set up a service to update the tools and users tables.
 class toollabs::updatetools(
     $active
 ) {
-
     require_package('python-mysqldb')
-    # Service to update the tools and users tables.
+
     file { '/usr/local/bin/updatetools':
         ensure => file,
         owner  => 'root',

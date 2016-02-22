@@ -1,7 +1,8 @@
+# Set up a cronrunner.
 class toollabs::cronrunner {
-    include gridengine::submit_host,
-            toollabs::hba,
-            toollabs
+    include gridengine::submit_host
+    include toollabs
+    include toollabs::hba
 
     # We need to include exec environment here since the current
     # version of jsub checks the local environment to find the full

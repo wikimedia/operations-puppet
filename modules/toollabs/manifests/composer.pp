@@ -1,6 +1,7 @@
+# Install composer (https://getcomposer.org/) to
+# /usr/local/bin/composer and keep it updated.  This class is based on
+# contint::slave_scripts.
 class toollabs::composer {
-    # based on contint::slave_scripts
-
     file { '/srv/composer':
         ensure => 'directory',
         mode   => '0755',
@@ -16,7 +17,7 @@ class toollabs::composer {
         require            => File['/srv/composer'],
     }
 
-    # Create a symlink for the composer executable
+    # Create a symbolic link for the composer executable.
     file { '/usr/local/bin/composer':
         ensure  => 'link',
         target  => '/srv/composer/vendor/bin/composer',
