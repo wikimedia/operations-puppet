@@ -11,6 +11,11 @@
         AuthLDAPBindDN <%= @auth_ldap['bind_dn'] %>
         AuthLDAPBindPassword <%= @auth_ldap['bind_password'] %>
         AuthLDAPURL "<%= @auth_ldap['url'] %>"
+
+        # Accept GET requests from anyone
+        Require method GET
+
+        # ..But restrict other HTTP methods to authenticated users
         <% @auth_ldap['groups'].each do |group| -%>
         Require ldap-group <%= group %>
         <% end -%>
