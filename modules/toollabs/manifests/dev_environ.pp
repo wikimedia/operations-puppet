@@ -97,6 +97,7 @@ class toollabs::dev_environ {
         'maven',
         'mc', # Popular{{cn}} on Toolserver
         'mercurial',
+        'mytop',                       # T58999
         'openjdk-7-jdk',
         'pastebinit',
         'pep8',                        # T59863
