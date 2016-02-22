@@ -134,6 +134,7 @@ class role::cache::text {
 
     varnish::instance { 'text-backend':
         name               => '',
+        cluster            => 'cache_text',
         vcl                => 'text-backend',
         extra_vcl          => ['text-common'],
         ports              => [ 3128 ],
@@ -179,6 +180,7 @@ class role::cache::text {
 
     varnish::instance { 'text-frontend':
         name               => 'frontend',
+        cluster            => 'cache_text',
         vcl                => 'text-frontend',
         extra_vcl          => ['text-common', 'zero'],
         ports              => [ 80 ],

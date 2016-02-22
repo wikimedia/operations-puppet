@@ -3,13 +3,14 @@ define varnish::instance(
     $backend_options,
     $ports,
     $admin_port,
+    $cluster='',
     $name='',
     $vcl = '',
     $storage='-s malloc,1G',
     $runtime_parameters=[],
     $directors={},
     $extra_vcl = [],
-    $xff_sources=[]
+    $xff_sources=[],
 ) {
 
     include varnish::common

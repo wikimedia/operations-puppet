@@ -142,7 +142,7 @@ include "directors.<%= @inst %>.vcl";
 
 <% end -%>
 <% @varnish_directors.keys.sort.each do |director_name|
-director = @varnish_directors[director_name] 
+director = @varnish_directors[director_name]
 if (!@dynamic_directors or director['dynamic'] != 'yes')
 	backends = director['backends']
 	if (!backends.empty?)
@@ -162,7 +162,7 @@ director <%= director_name %> <%= director['type'] %> {
 <% 	end -%>
 }
 <% end #if !empty -%>
-<% end #if !dynamic -%> 
+<% end #if !dynamic -%>
 <% end #director loop -%>
 
 # Functions
@@ -443,7 +443,7 @@ sub vcl_recv {
 		set req.grace = 60m;
 	}
 	<% end -%>
-	
+
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call rewrite_proxy_urls;
 <% end -%>
@@ -453,7 +453,7 @@ sub vcl_recv {
 <% end -%>
 
 	if ( req.http.host ~ "^varnishcheck" ) {
-		error 200 "OK"; 
+		error 200 "OK";
 	}
 
 	if (req.url ~ "^/beacon\/[^/?]+") {
@@ -514,7 +514,7 @@ sub vcl_hit {
 		purge;
 		error 204 "Purged";
 	}
-	
+
 	/* Function vcl_hit in <%= @vcl %>.inc.vcl will be appended here */
 }
 
@@ -544,7 +544,7 @@ sub vcl_pass {
 // traffic comes through vcl_pass, so we set backend_random here for all such
 // requests.
 // Note parsoid is specially excluded, because it's legacy / non-standard.
-<% if scope.function_hiera(["cluster"]) != "cache_parsoid" %>
+<% if @cluster != "cache_parsoid" %>
 <% if @vcl_config.fetch("layer", "") == "frontend" || @site_tier == "two" -%>
 	set req.backend = backend_random;
 <% end -%>
@@ -608,7 +608,7 @@ sub vcl_error {
 	call https_error_redirect;
 <% end -%>
 
-<% if scope.function_hiera(["cluster"]) != "cache_parsoid" -%>
+<% if @cluster != "cache_parsoid" -%>
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	// retry 503 once in frontend instances, to paper over transient issues
 	if (obj.status == 503 && req.restarts == 0) {
