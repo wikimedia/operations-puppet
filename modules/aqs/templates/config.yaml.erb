@@ -27,7 +27,7 @@ spec: &spec
 # The main service setup. Each worker can offer one or more services.
 services:
   - name: aqs
-    module: /srv/deployment/analytics/aqs/deploy/src/server
+    module: hyperswitch
     conf:
       port: <%= @port %>
       spec: *spec
