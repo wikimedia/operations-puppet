@@ -1,3 +1,4 @@
+# Set up a bigbrother service.
 class toollabs::bigbrother($active) {
 
     # bigbrother needs this perl package

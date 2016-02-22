@@ -14,8 +14,8 @@
 #
 class toollabs::mailrelay inherits toollabs
 {
-    include gridengine::submit_host,
-            toollabs::infrastructure
+    include gridengine::submit_host
+    include toollabs::infrastructure
 
     # Hiera sanity checks
 

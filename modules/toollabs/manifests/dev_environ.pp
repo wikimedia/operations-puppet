@@ -133,7 +133,8 @@ class toollabs::dev_environ {
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        require => Package['python-yaml'], # Present on all hosts, defined for puppet diamond collector
+        # Present on all hosts, defined for Puppet diamond collector.
+        require => Package['python-yaml'],
     }
 
     file { '/usr/local/bin/webservice':
