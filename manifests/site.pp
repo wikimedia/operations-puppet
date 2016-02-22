@@ -361,7 +361,7 @@ node /^cp20(0[147]|1[0369]|23)\.codfw\.wmnet$/ {
     role cache::text, ipsec
 }
 
-node /^cp20(0[258]|1[147]|2[04])\.codfw\.wmnet$/ {
+node /^cp20(0[258]|1[147]|2[0246])\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::upload, ipsec
 }
@@ -374,11 +374,6 @@ node /^cp20(0[39]|15|21)\.codfw\.wmnet$/ {
 node /^cp20(06|1[28]|25)\.codfw\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::misc, ipsec
-}
-
-node /^cp202[26]\.codfw\.wmnet$/ {
-    interface::add_ip6_mapped { 'main': }
-    role cache::parsoid
 }
 
 node /^cp30(0[3-9]|1[0-4])\.esams\.wmnet$/ {
