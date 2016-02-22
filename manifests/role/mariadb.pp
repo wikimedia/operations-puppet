@@ -330,10 +330,11 @@ class role::mariadb::dbstore(
 
     mariadb::monitor_replication {
         ['s1','s2','s3','s4','s5','s6','s7','m2','m3','x1']:
-        is_critical  => false,
-        lag_warn     => $lag_warn,
-        lag_crit     => $lag_crit,
-        warn_stopped => $warn_stopped,
+        is_critical   => false,
+        contact_group => 'admin', # only show on nagios/irc
+        lag_warn      => $lag_warn,
+        lag_crit      => $lag_crit,
+        warn_stopped  => $warn_stopped,
     }
 
     file { '/usr/local/bin/dumps-misc.sh':
@@ -371,7 +372,8 @@ class role::mariadb::analytics {
     }
 
     mariadb::monitor_replication { ['s1','s2','m2']:
-        is_critical => false,
+        is_critical   => false,
+        contact_group => 'admin', # only show on nagios/irc
     }
 }
 class role::mariadb::analytics::custom_repl_slave {
@@ -399,7 +401,7 @@ class role::mariadb::analytics::custom_repl_slave {
         description   => 'eventlogging_sync processes',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u root -a "/bin/bash /usr/local/bin/eventlogging_sync.sh"',
         critical      => false,
-        contact_group => 'dba',
+        contact_group => 'admin', # show on icinga/irc only
     }
 }
 
@@ -498,14 +500,16 @@ class role::mariadb::core(
         tmpdir        => '/srv/tmp',
         p_s           => $p_s,
         ssl           => $ssl,
-        binlog_format => $binlog_format
+        binlog_format => $binlog_format,
     }
 
     $replication_is_critical = ($::mw_primary in $::domain)
+    $contact_group = $replication_is_critical ? 'dba' : 'admin'
 
     mariadb::monitor_replication { [ $shard ]:
-        multisource => false,
-        is_critical => $replication_is_critical,
+        multisource   => false,
+        is_critical   => $replication_is_critical,
+        contact_group => $contact_group,
     }
 }
 
