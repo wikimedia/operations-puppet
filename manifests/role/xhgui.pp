@@ -31,9 +31,16 @@ class role::xhgui {
 
     file_line { 'set_php_memory_limit':
         path   => '/etc/php5/apache2/php.ini',
-        match  => '^memory_limit',
+        match  => '^;?memory_limit\s*=',
         line   => 'memory_limit = 512M',
-        notify => Class['::apache']
+        notify => Class['::apache'],
+    }
+
+    file_line { 'enable_php_opcache':
+        line   => 'opcache.enable=1',
+        match  => '^;?opcache.enable\s*\=',
+        path   => '/etc/php5/apache2/php.ini',
+        notify => Class['::apache'],
     }
 
     ferm::service { 'xhgui_mongodb':
