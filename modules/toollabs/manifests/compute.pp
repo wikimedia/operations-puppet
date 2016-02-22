@@ -15,10 +15,9 @@
 # Sample Usage:
 #
 class toollabs::compute inherits toollabs {
-
-    include toollabs::exec_environ,
-            toollabs::hba,
-            gridengine
+    include gridengine
+    include toollabs::exec_environ
+    include toollabs::hba
 
     motd::script { 'exechost-banner':
         ensure => present,
@@ -33,5 +32,4 @@ class toollabs::compute inherits toollabs {
         require => File[$toollabs::store],
         content => "${::ipaddress}\n",
     }
-
 }

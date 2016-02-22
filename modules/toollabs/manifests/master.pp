@@ -11,10 +11,10 @@
 # Sample Usage:
 #
 class toollabs::master inherits toollabs {
-    include gridengine::master,
-            toollabs::infrastructure,
-            toollabs::queue::task,
-            toollabs::queue::continuous
+    include gridengine::master
+    include toollabs::infrastructure
+    include toollabs::queue::continuous
+    include toollabs::queue::task
 
     gridengine_resource { 'h_vmem':
         ensure      => present,
@@ -120,5 +120,4 @@ class toollabs::master inherits toollabs {
         mode   => '0555',
         source => 'puppet:///modules/toollabs/gridscripts/runninggridjobsmail.py',
     }
-
 }

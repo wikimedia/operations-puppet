@@ -1,3 +1,4 @@
+# Deploy and update root web.
 class toollabs::admin_web_updater(
     $active
 ) {

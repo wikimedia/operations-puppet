@@ -13,9 +13,8 @@
 # Sample Usage:
 #
 class toollabs::submit inherits toollabs {
-
-    include gridengine::submit_host,
-            toollabs::hba
+    include gridengine::submit_host
+    include toollabs::hba
 
     file { '/etc/ssh/ssh_config':
         ensure => file,

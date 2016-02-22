@@ -1,3 +1,4 @@
+# Set up a kube2proxy service.
 class toollabs::kube2proxy(
     $master_host,
     $kube_token='test',
