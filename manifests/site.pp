@@ -81,9 +81,18 @@ node 'analytics1002.eqiad.wmnet' {
     include base::firewall
 }
 
-# This node is being repurposed - otto 2015-09
+# NOTE: This node will be replaced as part of
+# https://phabricator.wikimedia.org/T110090.
+# This node hosts Oozie and Hive servers,
+# as well as a MySQL instance that stores
+# meta data associated with those services.
 node 'analytics1015.eqiad.wmnet' {
-    role analytics_cluster::database::meta
+    role analytics_cluster::client,
+        analytics_cluster::database::meta,
+        analytics_cluster::hive::metastore,
+        analytics_cluster::hive::server,
+        analytics_cluster::oozie::server,
+
     include standard
     include base::firewall
 }
@@ -118,14 +127,10 @@ node 'analytics1026.eqiad.wmnet' {
     role analytics_cluster::client
 }
 
-# analytics1027 hosts some frontend web interfaces to Hadoop
-# (Hue, Oozie, Hive, etc.).  It also submits regularly scheduled
-# batch Hadoop jobs.
+# analytics1027 hosts hue.wikimedia.org, and is used for launching
+# cron based Hadoop jobs.
 node 'analytics1027.eqiad.wmnet' {
     role analytics_cluster::client,
-        analytics_cluster::hive::metastore,
-        analytics_cluster::hive::server,
-        analytics_cluster::oozie::server,
         analytics_cluster::hue,
 
         # Include a weekly cron job to run hdfs balancer.
@@ -143,15 +148,6 @@ node 'analytics1027.eqiad.wmnet' {
 
     include standard
     include base::firewall
-
-    # Allow access to this analytics mysql instance from analytics networks
-    # NOTE: an27's mysql instance will soon be managed by the
-    # role::analytics_cluster::database::meta class.
-    ferm::service{ 'analytics-mysql-meta':
-        proto  => 'tcp',
-        port   => '3306',
-        srange => '$ANALYTICS_NETWORKS',
-    }
 }
 
 # Analytics Query Service (RESTBase & Cassandra)
