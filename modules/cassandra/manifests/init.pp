@@ -379,6 +379,15 @@ class cassandra(
         service { 'cassandra':
             ensure => stopped,
         }
+
+        file { '/etc/init.d/cassandra':
+            ensure  => present,
+            source  => "puppet:///modules/${module_name}/cassandra-init.d",
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            require => Package['cassandra'],
+        }
     } else {
         $default_instances = {
             'default' => {
