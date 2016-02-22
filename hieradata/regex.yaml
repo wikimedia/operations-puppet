@@ -119,6 +119,7 @@ cassandra_test_eqiad:
       - .*\.meanRate$
       - .*\.min$
       - .*\.stddev$
+  restbase::statsd_name: restbase-staging
 
 cassandra_test_codfw:
   __regex: !ruby/regexp /^restbase-test200[1-3]\.codfw\.wmnet$/
@@ -182,6 +183,7 @@ cassandra_test_codfw:
       - .*\.meanRate$
       - .*\.min$
       - .*\.stddev$
+  restbase::statsd_name: restbase-staging
 
 swift_be_codfw_dell:
   __regex: !ruby/regexp /^ms-be20(0[0-9]|1[0-5])\.codfw\.wmnet$/

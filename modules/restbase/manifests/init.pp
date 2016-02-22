@@ -44,6 +44,9 @@
 #   The logging level. One of ['trace','debug','info','warn','error','fatal']
 #   Default: 'warn'
 #
+# [*statsd_name*]
+#   The label prefixed to statsd metric names. Default: restbasae
+#
 # [*statsd_host*]
 #   statsd host name. Default: localhost
 #
@@ -88,6 +91,7 @@ class restbase(
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
     $logging_level  = 'warn',
+    $statsd_name    = 'restbase',
     $statsd_host    = 'localhost',
     $statsd_port    = '8125',
     $graphoid_uri   = 'http://graphoid.svc.eqiad.wmnet:19000',
