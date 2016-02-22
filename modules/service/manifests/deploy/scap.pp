@@ -14,14 +14,19 @@
 #
 # [*user*]
 #   the user to create for deployment
-
+#
+# [*service_name*]
+#   service name that should be allowed to be restarted via sudo by
+#   user.  Default: undef.
+#
 define service::deploy::scap(
     $public_key_file = 'puppet:///modules/service/servicedeploy_rsa.pub',
-    $user = 'deploy-service',
+    $user            = 'deploy-service',
+    $service_name    = undef,
 ) {
     scap::target { $title:
         public_key_source => $public_key_file,
         deploy_user       => $user,
-        service_name      => $title,
+        service_name      => $service_name,
     }
 }

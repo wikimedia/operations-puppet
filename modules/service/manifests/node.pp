@@ -103,7 +103,8 @@ define service::node(
     case $deployment {
         'scap3': {
             service::deploy::scap{ $repo:
-                before => Base::Service_unit[$title]
+                service_name => $title,
+                before => Base::Service_unit[$title],
             }
         }
         default: {
