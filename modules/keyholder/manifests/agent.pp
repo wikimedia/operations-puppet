@@ -14,7 +14,7 @@
 # [*trusted_group*]
 #   The name or GID of the trusted user group with which the agent
 #   should be shared. It is the caller's responsibility to ensure
-#   the group exists. An array of group idnetifiers can also be provided
+#   the group exists. An array of group identifiers can also be provided
 #   to allow access by multiple groups.
 #
 # [*key_fingerprint*]

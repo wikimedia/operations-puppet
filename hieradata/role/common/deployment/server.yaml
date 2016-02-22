@@ -5,6 +5,7 @@ admin::groups:
   - ocg-render-admins
   - wdqs-admins
   - eventlogging-admins
+  - aqs-admins
 debdeploy::grains:
   debdeploy-deployment:
     value: standard
@@ -21,3 +22,10 @@ hhvm::extra::cli:
     server:
       light_process_count: 0
       light_process_file_prefix:
+
+# Override keyholder_group for role::deployment::services
+# so that aqs-admins can deploy AQS via scap using the
+# deploy-service key.
+role::deployment::services::keyholder_group:
+    - deploy-service
+    - aqs-admins
