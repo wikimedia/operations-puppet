@@ -416,6 +416,15 @@ class cassandra(
         require => Package['cassandra'],
     }
 
+    file { '/etc/init.d/cassandra':
+        ensure  => present,
+        source  => "puppet:///modules/${module_name}/cassandra",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Package['cassandra'],
+    }
+
     file { '/etc/tmpfiles.d/cassandra.conf':
         ensure  => present,
         source  => "puppet:///modules/${module_name}/cassandra-tmpfiles.conf",
