@@ -29,6 +29,13 @@ class role::xhgui {
 
     require_package('php5-mongo')
 
+    file_line { 'set_php_memory_limit':
+        path   => '/etc/php5/apache2/php.ini',
+        match  => '^memory_limit',
+        line   => 'memory_limit = 512M',
+        notify => Class['::apache']
+    }
+
     ferm::service { 'xhgui_mongodb':
         port   => 27017,
         proto  => 'tcp',
