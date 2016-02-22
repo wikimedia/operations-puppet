@@ -10,8 +10,6 @@ repo_config:
   integration/slave-scripts:
     upstream: https://gerrit.wikimedia.org/r/integration/jenkins
     checkout_submodules: true
-  gdash/gdash:
-    upstream: https://gerrit.wikimedia.org/r/operations/software/gdash
   jobrunner/jobrunner:
     upstream: https://gerrit.wikimedia.org/r/mediawiki/services/jobrunner
     service_name: jobrunner
