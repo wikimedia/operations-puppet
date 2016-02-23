@@ -54,8 +54,8 @@ define testreduce::server(
     }
 
     service { $instance_name:
-        ensure   => running,
-        require  => [
+        ensure  => running,
+        require => [
             File["/etc/testreduce/${instance_name}.settings.js"],
             File["/lib/systemd/system/${instance_name}.service"],
         ],

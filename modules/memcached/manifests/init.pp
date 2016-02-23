@@ -73,8 +73,8 @@ class memcached(
 
     if $ip == '127.0.0.1' {
         nrpe::monitor_service { 'memcached':
-            description   => 'Memcached',
-            nrpe_command  => "/usr/lib/nagios/plugins/check_tcp -H ${ip} -p ${port}",
+            description  => 'Memcached',
+            nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H ${ip} -p ${port}",
         }
     } else {
         monitoring::service { 'memcached':

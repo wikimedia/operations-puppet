@@ -83,7 +83,7 @@ class phabricator::vcs (
         privileges => [
             "ALL=(${phd_user}) SETENV: NOPASSWD: /usr/bin/git-upload-pack, /usr/bin/git-receive-pack, /usr/bin/svnserve",
         ],
-        require => User[$vcs_user],
+        require    => User[$vcs_user],
     }
 
     sudo::user { 'www-data':

@@ -6,18 +6,18 @@ class icinga::monitor::ores {
     }
 
     monitoring::service { 'ores_main_page':
-        description    => 'ORES home page',
-        check_command  => 'check_http',
-        host           => 'ores.wmflabs.org',
-        contact_group  => 'team-ores',
+        description   => 'ORES home page',
+        check_command => 'check_http',
+        host          => 'ores.wmflabs.org',
+        contact_group => 'team-ores',
     }
 
     # T121656
     monitoring::service { 'ores_worker':
-        description    => 'ORES worker',
-        check_command  => 'check_ores_workers',
-        host           => 'ores.wmflabs.org',
-        contact_group  => 'team-ores',
+        description   => 'ORES worker',
+        check_command => 'check_ores_workers',
+        host          => 'ores.wmflabs.org',
+        contact_group => 'team-ores',
     }
 
     # T122830

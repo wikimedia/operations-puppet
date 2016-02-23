@@ -36,7 +36,7 @@ class labs_vagrant(
         privileges => [
             'ALL=(vagrant) NOPASSWD: ALL',
         ],
-        group => 'wikidev',
+        group      => 'wikidev',
     }
 
     # precise-compat branch should be checked out if this is a precise installation

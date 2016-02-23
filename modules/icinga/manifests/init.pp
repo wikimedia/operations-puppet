@@ -72,7 +72,7 @@ class icinga {
     }
 
     class { 'nagios_common::contactgroups':
-        source => 'puppet:///modules/nagios_common/contactgroups.cfg',
+        source  => 'puppet:///modules/nagios_common/contactgroups.cfg',
         require => Package['icinga'],
         notify  => Service['icinga'],
     }

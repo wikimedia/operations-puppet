@@ -36,9 +36,9 @@ class nagios_common::contactgroups(
     $group = 'icinga',
 ) {
     file { "${config_dir}/contactgroups.cfg":
-        source  => $source,
-        owner   => $owner,
-        group   => $group,
-        mode    => '0644',
+        source => $source,
+        owner  => $owner,
+        group  => $group,
+        mode   => '0644',
     }
 }
