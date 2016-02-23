@@ -4,7 +4,7 @@
 # configuration for running the Rails application.
 #
 class role::programdashboard::app {
-    include programdashboard::app
+    include ::programdashboard::app
 
     system::role { 'role::programdashboard::app':
         description => 'Program Dashboard application server',
