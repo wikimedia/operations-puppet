@@ -90,7 +90,7 @@ class geoip::data::maxmind(
 
   # logrotate for geoipupdate.log
   logrotate::conf { 'geoipupdate':
-    ensure => present,
+    ensure  => present,
     content => template('geoip/geoipupdate.logrotate.erb'),
     require => Cron['geoipupdate'],
   }

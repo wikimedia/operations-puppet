@@ -38,7 +38,7 @@ class phabricator::tools (
         $dump_script = "${directory}/public_task_dump.py"
 
         file { $dump_script:
-            mode  => '0555',
+            mode    => '0555',
             require => Git::Install['phabricator/tools'],
         }
 

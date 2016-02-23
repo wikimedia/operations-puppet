@@ -28,11 +28,11 @@ class etcd::ssl(
     }
 
     file { '/var/lib/etcd/ssl/certs/cert.pem':
-        ensure  => present,
-        owner   => 'etcd',
-        group   => 'etcd',
-        mode    => '0400',
-        source  => "${ssldir}/certs/${puppet_cert_name}.pem",
+        ensure => present,
+        owner  => 'etcd',
+        group  => 'etcd',
+        mode   => '0400',
+        source => "${ssldir}/certs/${puppet_cert_name}.pem",
     }
 
     file { '/var/lib/etcd/ssl/private_keys':

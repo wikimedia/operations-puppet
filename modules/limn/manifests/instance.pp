@@ -63,12 +63,12 @@ define limn::instance (
 
     # Install an upstart init file for this limn server instance.
     file { "/etc/init/limn-${name}.conf":
-        ensure    => $ensure,
-        content   => template('limn/init-limn.conf.erb'),
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0444',
-        require   => [File[$var_directory], File[$log_file]],
+        ensure  => $ensure,
+        content => template('limn/init-limn.conf.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => [File[$var_directory], File[$log_file]],
     }
 
     # Symlink an /etc/init.d script to upstart-job
@@ -85,8 +85,8 @@ define limn::instance (
 
     # Start the service.
     service { "limn-${name}":
-        ensure     => ensure_service($ensure),
-        provider   => 'upstart',
-        subscribe  => File["/etc/init/limn-${name}.conf"],
+        ensure    => ensure_service($ensure),
+        provider  => 'upstart',
+        subscribe => File["/etc/init/limn-${name}.conf"],
     }
 }

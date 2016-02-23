@@ -32,8 +32,8 @@ class tcpircbot(
     require_package(['python-irclib', 'python-netaddr'])
 
     group { 'tcpircbot':
-        ensure  => present,
-        name    => 'tcpircbot',
+        ensure => present,
+        name   => 'tcpircbot',
     }
 
     user { 'tcpircbot':

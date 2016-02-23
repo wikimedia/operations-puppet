@@ -32,8 +32,8 @@ define visualdiff::server(
     }
 
     service { $instance_name:
-        ensure   => running,
-        require  => [
+        ensure  => running,
+        require => [
             File["/etc/visualdiff/${instance_name}.config.js"],
             File["/lib/systemd/system/${instance_name}.service"],
         ],

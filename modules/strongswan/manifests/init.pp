@@ -91,7 +91,7 @@ class strongswan (
     }
 
     base::service_unit { 'strongswan':
-        systemd        => true,
-        require        => Package['strongswan']
+        systemd => true,
+        require => Package['strongswan']
     }
 }

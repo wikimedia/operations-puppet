@@ -41,8 +41,8 @@ class mailman::webui {
 
     # Add a new default theme to make mailman prettier
     file { '/var/lib/mailman/templates':
-        ensure  => link,
-        target  => '/etc/mailman',
+        ensure => link,
+        target => '/etc/mailman',
     }
 
     # Add default theme to make mailman prettier.

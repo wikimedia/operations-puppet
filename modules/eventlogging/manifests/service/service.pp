@@ -85,7 +85,7 @@ define eventlogging::service::service(
 
     # Rsyslog configuration that routes logs to a file.
     file { "/etc/rsyslog.d/80-${service_name}.conf":
-        ensure => $ensure,
+        ensure  => $ensure,
         content => template('eventlogging/rsyslog.conf.erb'),
         mode    => '0444',
         notify  => Service['rsyslog'],
@@ -94,7 +94,7 @@ define eventlogging::service::service(
     # output with $programname prefix so that rsyslog
     # can properly route logs.
     file { $log_config_file:
-        ensure => $ensure,
+        ensure  => $ensure,
         content => template('eventlogging/log.cfg.erb'),
         mode    => '0444',
     }

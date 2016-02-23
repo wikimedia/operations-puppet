@@ -20,9 +20,9 @@ class ldap::client::nss(
     }
 
     service { 'nslcd':
-        ensure  => running,
+        ensure    => running,
         subscribe => File['/etc/ldap/ldap.conf'],
-        require => Package['nslcd'],
+        require   => Package['nslcd'],
     }
 
     File {

@@ -8,9 +8,9 @@ class mysql_multi_instance {
     }
 
     package { 'mysql-server':
-        ensure   => present,
-        name     => 'mariadb-server-5.5',
-        require  => Apt::Repository['wikimedia-mariadb'],
+        ensure  => present,
+        name    => 'mariadb-server-5.5',
+        require => Apt::Repository['wikimedia-mariadb'],
     }
 
     package { ['percona-xtrabackup',
@@ -36,13 +36,13 @@ class mysql_multi_instance {
     }
 
     file { '/etc/mysql':
-      ensure  => directory,
-      mode    => '0755',
+      ensure => directory,
+      mode   => '0755',
     }
 
     file { '/etc/mysql/conf.d':
-      ensure  => directory,
-      mode    => '0755',
+      ensure => directory,
+      mode   => '0755',
     }
 
     file { '/root/.my.cnf':

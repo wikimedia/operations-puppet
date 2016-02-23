@@ -11,17 +11,17 @@ class statistics::sites::stats {
 
     # add htpasswd file for stats.wikimedia.org
     file { '/etc/apache2/htpasswd.stats':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
         content => secret('apache/htpasswd.stats'),
     }
 
     # add htpasswd file for private geowiki data
     file { $geowiki_private_htpasswd_file:
-        owner  => 'root',
-        group  => 'www-data',
-        mode   => '0640',
+        owner   => 'root',
+        group   => 'www-data',
+        mode    => '0640',
         content => secret('apache/htpasswd.stats-geowiki'),
     }
 

@@ -104,7 +104,7 @@ define service::node(
         'scap3': {
             service::deploy::scap{ $repo:
                 service_name => $title,
-                before => Base::Service_unit[$title],
+                before       => Base::Service_unit[$title],
             }
         }
         default: {

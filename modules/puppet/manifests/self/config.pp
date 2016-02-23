@@ -81,7 +81,7 @@ class puppet::self::config(
     }
 
     base::puppet::config { 'self':
-        prio  => 10,
+        prio    => 10,
         content => template('puppet/self.conf.erb'),
     }
 

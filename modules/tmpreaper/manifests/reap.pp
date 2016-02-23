@@ -49,7 +49,7 @@ define tmpreaper::reap(
     $args = template('tmpreaper/args.erb')
 
     exec { "/usr/sbin/tmpreaper ${args}":
-        onlyif   => "/usr/sbin/tmpreaper --test ${args} 2>&1 | /bin/grep -q remove",
-        require  => Package['tmpreaper'],
+        onlyif  => "/usr/sbin/tmpreaper --test ${args} 2>&1 | /bin/grep -q remove",
+        require => Package['tmpreaper'],
     }
 }

@@ -76,10 +76,10 @@ class role::xhgui {
     } ->
 
     file { '/srv/xhgui/cache':
-        ensure  => directory,
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => '0755',
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0755',
     } ->
 
     apache::site { 'xhgui_apache_site':
