@@ -3,6 +3,20 @@
 # XHGUI is a MongoDB-backed PHP webapp for viewing and analyzing
 # PHP profiling data.
 #
+# Note that indexes on the MongoDB database on the target system
+# need to be declared manually. The indexes (and commands to create
+# them) are:
+#
+#  use xhprof;
+#  # Retain profiles for 30 days:
+#  db.results.ensureIndex( { 'meta.SERVER.REQUEST_TIME' : -1 },
+#                          { expireAfterSeconds: 2592000 } );
+#  db.results.ensureIndex( { 'meta.SERVER.REQUEST_TIME' : -1 } );
+#  db.results.ensureIndex( { 'profile.main().wt' : -1 } );
+#  db.results.ensureIndex( { 'profile.main().mu' : -1 } );
+#  db.results.ensureIndex( { 'profile.main().cpu' : -1 } );
+#  db.results.ensureIndex( { 'meta.url' : 1 } );
+#
 class role::xhgui {
     include ::apache::mod::authnz_ldap
     include ::apache::mod::php5
