@@ -49,9 +49,10 @@ class uwsgi {
         }
     } else {
         base::service_unit { 'uwsgi-startup':
-            ensure        => present,
-            template_name => 'uwsgi-startup',
-            upstart       => true,
+            ensure          => present,
+            template_name   => 'uwsgi-startup',
+            upstart         => true,
+            declare_service => false,
         }
     }
 }
