@@ -41,11 +41,6 @@ class role::cache::configuration {
                                 'cp4020.ulsfo.wmnet',
                     ]
                 },
-                'parsoid' => {
-                    'eqiad' => ['cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet'],
-                    'esams' => [],
-                    'ulsfo' => []
-                },
                 'misc' => {
                     'eqiad' => ['cp1043.eqiad.wmnet', 'cp1044.eqiad.wmnet'],
                     'esams' => [],
@@ -62,9 +57,6 @@ class role::cache::configuration {
                 'upload' => {
                     'eqiad' => '127.0.0.1',
                 },
-                'parsoid' => {
-                    'eqiad' => '127.0.0.1',
-                },
             },
         }
 
@@ -76,7 +68,6 @@ class role::cache::configuration {
                 'appservers_debug'  => {
                     'eqiad' => [ 'appservers-debug.svc.eqiad.wmnet' ],
                 },
-                'parsoid' => ['1.1.1.1'],
             },
             'labs' => {
                 'appservers' => {
@@ -100,9 +91,6 @@ class role::cache::configuration {
                 'appservers_debug' => {
                     'eqiad' => [ '10.68.17.96' ],  # deployment-mediawiki01
                 },
-                'parsoid' => {
-                    'eqiad' => [ '10.68.16.17' ],  # deployment-parsoid04
-                }
             }
         }
 }
