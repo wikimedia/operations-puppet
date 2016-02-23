@@ -12,10 +12,18 @@ class role::analytics_cluster::database::meta {
     # - otto 2015-09-15
     #include role::mariadb::monitor
 
+    $config_template = $::realm ? {
+        # Production instance has large innodb_buffer_pool_size.
+        # Unfortunetly this is not configurable via parameters or
+        # hiera with the mariadb::config class.
+        'production' => 'mariadb/analytics-meta.my.cnf.production.erb',
+        default      => 'mariadb/analytics-meta.my.cnf.erb',
+    }
+
     class { 'mariadb::config':
-        config  => 'mariadb/analytics-meta.my.cnf.erb',
-        datadir => '/var/lib/mysql',
-        require => Class['mariadb::packages_wmf'],
+        config    => $config_template,
+        datadir   => '/var/lib/mysql',
+        require   => Class['mariadb::packages_wmf'],
     }
 
     file { '/etc/init.d/mysql':
