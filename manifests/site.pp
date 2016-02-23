@@ -2333,11 +2333,9 @@ node 'sarin.codfw.wmnet' {
 
 # T95046 install/deploy scandium as zuul merger (ci) server
 node 'scandium.eqiad.wmnet' {
-    # no role yet. Will use zuul::merger
-
+    role zuul::merger
     include standard
     include base::firewall
-    role zuul::merger
 
     file { '/srv/ssd':
         ensure => 'directory',
