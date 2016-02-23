@@ -15,7 +15,7 @@ class ganglia::deprecated::collector {
         # unlike other servers, netmon1001 uses the default rrd_rootdir
         /^netmon1001$/: {
             $data_sources = {
-                'Upload caches eqiad' => 'cp1048.eqiad.wmnet cp1061.eqiad.wmnet'
+                'Upload caches eqiad' => 'cp1048.eqiad.wmnet cp1062.eqiad.wmnet'
             }
             $rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
         }
