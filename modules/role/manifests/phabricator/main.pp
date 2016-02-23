@@ -1,24 +1,3 @@
-class role::phabricator::config {
-    #Both app and admin user are limited to the appropriate
-    #database based on the connecting host.
-    include passwords::mysql::phabricator
-    $mysql_adminuser       = $passwords::mysql::phabricator::admin_user
-    $mysql_adminpass       = $passwords::mysql::phabricator::admin_pass
-    $mysql_appuser         = $passwords::mysql::phabricator::app_user
-    $mysql_apppass         = $passwords::mysql::phabricator::app_pass
-    $mysql_maniphestuser   = $passwords::mysql::phabricator::manifest_user
-    $mysql_maniphestpass   = $passwords::mysql::phabricator::manifest_pass
-    $bz_user               = $passwords::mysql::phabricator::bz_user
-    $bz_pass               = $passwords::mysql::phabricator::bz_pass
-    $rt_user               = $passwords::mysql::phabricator::rt_user
-    $rt_pass               = $passwords::mysql::phabricator::rt_pass
-
-    include passwords::phabricator
-    $phabtools_cert        = $passwords::phabricator::phabtools_cert
-    $phabtools_user        = $passwords::phabricator::phabtools_user
-    $gerritbot_token       = $passwords::phabricator::gerritbot_token
-}
-
 # production phabricator instance
 class role::phabricator::main {
 
@@ -211,50 +190,3 @@ class role::phabricator::main {
     }
 }
 
-# phabricator instance on wmflabs at phab-0[1-9].wmflabs.org
-class role::phabricator::labs {
-
-    # pass not sensitive but has to match phab and db
-    $mysqlpass = 'labspass'
-    $current_tag = 'release/2016-02-18/1'
-    class { '::phabricator':
-        git_tag       => $current_tag,
-        lock_file     => '/var/run/phab_repo_lock',
-        sprint_tag    => 'release/2016-02-18/1',
-        security_tag  => 'release/2016-02-18/2',
-        libraries     => ['/srv/phab/libext/Sprint/src',
-                          '/srv/phab/libext/security/src'],
-        extension_tag => 'release/2016-02-18/1',
-        extensions    => [ 'MediaWikiUserpageCustomField.php',
-                              'LDAPUserpageCustomField.php',
-                              'PhabricatorMediaWikiAuthProvider.php',
-                              'PhutilMediaWikiAuthAdapter.php'],
-        settings      => {
-            'darkconsole.enabled'             => true,
-            'phabricator.base-uri'            => "https://${::hostname}.wmflabs.org",
-            'mysql.pass'                      => $mysqlpass,
-            'auth.require-email-verification' => false,
-            'metamta.mail-adapter'            => 'PhabricatorMailImplementationTestAdapter',
-            'repository.default-local-path'   => '/srv/phab/repos',
-            'config.ignore-issues'            => '{
-                                                      "security.security.alternate-file-domain": true
-                                                  }',
-        },
-    }
-
-    package { 'mysql-server': ensure => present }
-
-    class { 'mysql::config':
-        root_password => $mysqlpass,
-        sql_mode      => 'STRICT_ALL_TABLES',
-        restart       => true,
-        require       => Package['mysql-server'],
-    }
-
-    service { 'mysql':
-        ensure     => running,
-        hasrestart => true,
-        hasstatus  => true,
-        require    => Package['mysql-server'],
-    }
-}
