@@ -103,7 +103,9 @@ groups:
     members: [tnegrin, milimetric, demon, andyrussg]
   researchers:
     gid: 714
-    description: users with access to research db
+    description: Access statistics number crunching hosts (like
+                 statistics-users) and also provides access to research mysql
+                 credentials on stat1003 (currently the only such host)
     members: [awight, bmansurov, catrope, dartar, declerambaul, deskana,
               dduvall, ellery, ezachte, gilles, haithams, halfak,
               ironholds, jforrester, jkatz, jmorgan, jzerebecki, kaldari,
@@ -187,7 +189,7 @@ groups:
               dpatrick, atgomez]
   statistics-users:
     gid: 726
-    description: Access hosts with a mysql client for research. NO PRIVS.
+    description: Access statistics number crunching hosts. NO PRIVS.
     members: [dartar, halfak, ironholds, jdlrobson, jmorgan, bearloga,
               mattflaschen, mhurd, yurik, awight, jforrester,
               tnegrin, marktraceur, msyed, nuria, leila, gilles, haithams,
