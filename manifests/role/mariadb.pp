@@ -331,7 +331,7 @@ class role::mariadb::dbstore(
     mariadb::monitor_replication {
         ['s1','s2','s3','s4','s5','s6','s7','m2','m3','x1']:
         is_critical   => false,
-        contact_group => 'admin', # only show on nagios/irc
+        contact_group => 'admins', # only show on nagios/irc
         lag_warn      => $lag_warn,
         lag_crit      => $lag_crit,
         warn_stopped  => $warn_stopped,
@@ -373,7 +373,7 @@ class role::mariadb::analytics {
 
     mariadb::monitor_replication { ['s1','s2','m2']:
         is_critical   => false,
-        contact_group => 'admin', # only show on nagios/irc
+        contact_group => 'admins', # only show on nagios/irc
     }
 }
 class role::mariadb::analytics::custom_repl_slave {
@@ -401,7 +401,7 @@ class role::mariadb::analytics::custom_repl_slave {
         description   => 'eventlogging_sync processes',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u root -a "/bin/bash /usr/local/bin/eventlogging_sync.sh"',
         critical      => false,
-        contact_group => 'admin', # show on icinga/irc only
+        contact_group => 'admins', # show on icinga/irc only
     }
 }
 
@@ -506,7 +506,7 @@ class role::mariadb::core(
     $replication_is_critical = ($::mw_primary in $::domain)
     $contact_group = $replication_is_critical ? {
         true  => 'dba',
-        false => 'admin',
+        false => 'admins',
     }
 
     mariadb::monitor_replication { [ $shard ]:
