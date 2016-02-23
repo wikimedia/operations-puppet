@@ -1,0 +1,4 @@
+# Not assigned via the role since chromium/hydrogen use the same role along with the dnsrecursor role
+debdeploy::grains:
+  debdeploy-urldownloader:
+    value: standard
