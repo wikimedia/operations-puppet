@@ -17,7 +17,6 @@ class role::cache::2layer(
 
     $storage_size = $::hostname ? {
         /^cp10(08|4[34])$/      => 117, # Intel X-25M 160G
-        /^cp10(5[67]|69|70)$/   => 220, # Seagate ST9250610NS - 250G
         /^cp30(19|2[012])$/     => 220, # Seagate ST9250610NS - 250G
         /^cp400[1234]$/         => 220, # Seagate ST9250610NS - 250G
         /^cp30(0[3-9]|1[0-4])$/ => 460, # Intel M320 600G via H710
