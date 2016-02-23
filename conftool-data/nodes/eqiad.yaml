@@ -262,9 +262,7 @@ dns:
 cache_misc:
   cp1045.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1058.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
-  cp1056.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1057.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
-  cp1069.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1070.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
 parsoid:
   wtp1001.eqiad.wmnet: [parsoid]
