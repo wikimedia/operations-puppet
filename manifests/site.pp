@@ -89,6 +89,8 @@ node 'analytics1002.eqiad.wmnet' {
 node 'analytics1015.eqiad.wmnet' {
     role analytics_cluster::client,
         analytics_cluster::database::meta,
+        analytics_cluster::hive::metastore::database,
+        analytics_cluster::oozie::server::database,
         analytics_cluster::hive::metastore,
         analytics_cluster::hive::server,
         analytics_cluster::oozie::server
