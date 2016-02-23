@@ -4,7 +4,6 @@
 #
 class logstash::output::elasticsearch::scripts {
     file { '/usr/local/bin/logstash_delete_index.sh':
-        ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -12,7 +11,6 @@ class logstash::output::elasticsearch::scripts {
     }
 
     file { '/usr/local/bin/logstash_optimize_index.sh':
-        ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
@@ -20,7 +18,6 @@ class logstash::output::elasticsearch::scripts {
     }
 
     file { '/usr/local/bin/logstash_clear_cache.sh':
-        ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
