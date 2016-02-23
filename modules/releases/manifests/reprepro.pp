@@ -12,7 +12,11 @@
 #
 #   The result will be signed by the default key present in the secret
 #   keyring.
-
+#
+# == WARNING:
+#   This module seems to be unused at the moment, you should probably look into
+#   install_server::apt_repository instead.
+#
 class releases::reprepro {
     $basedir = '/srv/org/wikimedia/reprepro'
     $outdir = '/srv/org/wikimedia/releases/debian'
