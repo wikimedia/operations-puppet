@@ -1,5 +1,8 @@
 <%
 def map_servers(map)
+  # Node names are not used on beta
+  return map if map.is_a? Array
+
   serverlist = []
   map.keys.sort_by(&:to_s).each do |shard|
     server = map[shard]
