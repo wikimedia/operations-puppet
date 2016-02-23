@@ -6776,6 +6776,13 @@ host wtp2020 {
     fixed-address wtp2020.codfw.wmnet;
 }
 
+host wmf4727-test {
+    hardware ethernet 14:18:77:33:4A:D8;
+    fixed-address wmf4727-test.eqiad.wmnet;
+    option pxelinux.pathprefix "jessie-installer/";
+    filename "jessie-installer/debian-installer/amd64/pxelinux.0";
+}
+
 host xenon {
     hardware ethernet 90:B1:1C:00:A3:08;
     fixed-address xenon.eqiad.wmnet;
