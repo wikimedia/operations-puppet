@@ -15,6 +15,12 @@ class role::analytics_cluster::oozie::server::database {
         require => Class['role::analytics_cluster::database::meta'],
     }
 
+    # NOTE: on 2016-02-23, Otto and Joal
+    # added an INDEX on the oozie.WF_JOBS created_time field:
+    #  ALTER TABLE oozie.WF_JOBS ADD INDEX (created_time);
+    # The WF_JOBS table was 38G, and oozie was getting stuck
+    # on long running queries sorting by created_time.
+
     # cdh::oozie::database::mysql only ensures that
     # the Oozie MySQL user has permissions to connect
     # via localhost.  If you plan on running
