@@ -14,6 +14,10 @@ ssl-key=/etc/mysql/ssl/server-key.pem
 # ssl-verify-server-cert
 <% end %>
 
+[mysqld_safe]
+skip_log_error
+syslog
+
 [mysqld]
 
 user       = mysql
