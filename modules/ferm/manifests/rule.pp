@@ -1,3 +1,4 @@
+# defines a custom ferm rule
 define ferm::rule(
     $rule,
     $ensure = present,

@@ -1,3 +1,5 @@
+# ferm is a frontend for iptables
+# https://wiki.debian.org/ferm
 class ferm {
     # @resolve requires libnet-dns-perl
 
