@@ -329,7 +329,7 @@ node /^cp104[34]\.eqiad\.wmnet$/ {
     role cache::maps
 }
 
-node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
+node /^cp10(45|5[18]|61)\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::misc, ipsec
 }
@@ -339,7 +339,7 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
     include standard # ex-mobile
 }
 
-node /^cp10(4[89]|5[01]|6[1-4]|7[1-4]|99)\.eqiad\.wmnet$/ {
+node /^cp10(4[89]|50|6[234]|7[1-4]|99)\.eqiad\.wmnet$/ {
     interface::add_ip6_mapped { 'main': }
     role cache::upload, ipsec
 }

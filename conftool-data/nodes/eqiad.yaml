@@ -233,8 +233,6 @@ cache_upload:
   cp1048.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1049.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1050.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
-  cp1051.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
-  cp1061.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1062.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1063.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1064.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
@@ -261,7 +259,9 @@ dns:
   hydrogen.wikimedia.org: [pdns_recursor]
 cache_misc:
   cp1045.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp1051.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1058.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
+  cp1061.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1057.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
   cp1070.eqiad.wmnet: [varnish-fe, varnish-be, varnish-be-rand, nginx]
 parsoid:
