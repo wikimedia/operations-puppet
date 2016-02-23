@@ -54,7 +54,7 @@ server {
         proxy_set_header X-BIGDATA-MAX-QUERY-MILLIS $xmaxqueryheader;
 
         add_header X-Served-By <%= @hostname %> always;
-        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Origin * always;
 
         client_max_body_size 10M;
         client_body_buffer_size 1m;
