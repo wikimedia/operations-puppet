@@ -1,1 +1,4 @@
-heapsize: 1024
+#
+# Following Cloudera recommandations for ~20 users
+#
+heapsize: 6144
