@@ -62,6 +62,7 @@ class role::labs::instance {
         }
 
         if mount_nfs_volume($::labsproject, 'home') and $mount_nfs {
+            include labstore::traffic_shaping
             # Note that this is the same export as for /data/project
             exec { 'block-for-home-export':
                 command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::labsproject} 180",
@@ -80,6 +81,7 @@ class role::labs::instance {
         }
 
         if mount_nfs_volume($::labsproject, 'project') or mount_nfs_volume($::labsproject, 'scratch') {
+            include labstore::traffic_shaping
             # Directory for data mounts
             file { '/data':
                 ensure => directory,
@@ -90,6 +92,7 @@ class role::labs::instance {
         }
 
         if mount_nfs_volume($::labsproject, 'project') and $mount_nfs {
+            include labstore::traffic_shaping
             exec { 'block-for-project-export':
                 command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::labsproject} 180",
                 require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
@@ -112,6 +115,7 @@ class role::labs::instance {
         }
 
         if mount_nfs_volume($::labsproject, 'scratch') and $mount_nfs {
+            include labstore::traffic_shaping
             # We don't need to block for this one because it's always exported for everyone.
             file { '/data/scratch':
                 ensure  => directory,
@@ -129,6 +133,7 @@ class role::labs::instance {
         }
 
         if mount_nfs_volume($::labsproject, 'dumps') or mount_nfs_volume($::labsproject, 'statistics') {
+            include labstore::traffic_shaping
             # Directory for public (readonly) mounts
             file { '/public':
                 ensure => directory,
@@ -139,6 +144,7 @@ class role::labs::instance {
         }
 
         if mount_nfs_volume($::labsproject, 'statistics') and $mount_nfs {
+            include labstore::traffic_shaping
             file { '/public/statistics':
                 ensure  => directory,
                 require => File['/public'],
@@ -155,6 +161,7 @@ class role::labs::instance {
         }
 
         if mount_nfs_volume($::labsproject, 'dumps') and $mount_nfs {
+            include labstore::traffic_shaping
             file { '/public/dumps':
                 ensure  => directory,
                 require => File['/public'],
