@@ -1,3 +1,4 @@
+# defines a ferm config snippet
 define ferm::conf(
     $source  = undef,
     $content = undef,
