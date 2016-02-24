@@ -167,8 +167,10 @@ director <%= director_name %> <%= director['type'] %> {
 
 # Functions
 
-// start frontend-only block for HTTPS
-<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
+// start frontend-only block
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+// start HTTPS block
+<% if @vcl_config.fetch("https_redirects", false) -%>
 
 // *** HTTPS recv code - domain-based 301/302->HTTPS decisions happen here
 // if GET/HEAD filter is modified/removed later, keep in mind we need to not affect
@@ -225,7 +227,7 @@ sub https_deliver_hsts {
 }
 
 <% end -%>
-// ^ end frontend + https_redirects block
+// ^ end HTTPS block
 
 // We shouldn't even legally be receiving proxy-style requests, as we're not a
 // proxy from any client's point of view.  Just in case, we support it anyways
@@ -238,6 +240,9 @@ sub rewrite_proxy_urls {
 		set req.url = regsub(req.url, "(?i)^https?://[^/]+", "");
 	}
 }
+
+<% end -%>
+// ^ end frontend block
 
 sub recv_purge {
 	/* Support HTTP PURGE */
