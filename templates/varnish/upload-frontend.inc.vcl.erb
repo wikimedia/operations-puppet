@@ -1,5 +1,5 @@
 // Varnish VCL include file for upload frontends
-
+include "upload-common.inc.vcl";
 include "errorpage.inc.vcl";
 
 sub vcl_recv {
@@ -15,6 +15,8 @@ sub vcl_recv {
 		error 403 "HTTP method not allowed";
 	}
 
+	call common_recv;
+
 	// Look for a "download" request parameter
 	if (req.url ~ "(?i)(\?|&)download(=|&|$)") {
 		// Pretend that the parameter wasn't there for caching purposes
@@ -23,21 +25,9 @@ sub vcl_recv {
 		set req.http.X-Content-Disposition = "attachment";
 	}
 
-	if (req.http.host == "<%= @vcl_config.fetch('upload_domain') %>") {
-		// Replace double slashes
-		set req.url = regsuball(req.url, "/{2,}", "/");
-		return (lookup);
-	} else {
-		error 403 "Requested target domain not allowed.";
-	}
-
+	// Replace double slashes
+	set req.url = regsuball(req.url, "/{2,}", "/");
 	return (lookup);
-}
-
-sub vcl_hit {
-	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
-		error 412 "Etag mismatch";
-	}
 }
 
 sub vcl_miss {
@@ -100,12 +90,9 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
-	unset resp.http.X-MediaWiki-Original;
+	call common_deliver;
 
-	if (resp.http.X-Content-Range) {
-		set resp.http.Content-Range = resp.http.X-Content-Range;
-		remove resp.http.X-Content-Range;
-	}
+	unset resp.http.X-MediaWiki-Original;
 
 	if (req.http.X-Content-Disposition == "attachment") {
 		set resp.http.Content-Disposition = "attachment";
