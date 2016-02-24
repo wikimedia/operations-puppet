@@ -247,7 +247,7 @@ class role::cache::misc {
 
     $common_vcl_config = {
         'cache4xx'         => '1m',
-        'do_gzip'          => false, # T127294
+        'do_gzip'          => true,
         'allowed_methods'  => '^(GET|DELETE|HEAD|POST|PURGE|PUT)$',
         'purge_host_regex' => $::role::cache::base::purge_host_not_upload_re,
     }
