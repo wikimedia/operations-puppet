@@ -11,7 +11,7 @@ class labstore::traffic_shaping {
 
     # if native qdisc of pfifo_fast is applied then run tc setup
     exec { 'apply_tc_config':
-        command => '/sbin/modprobe ifb numifbs=1 && /sbin/modprobe act_mirred && /usr/sbin/tc-setup',
+        command => '/sbin/modprobe ifb numifbs=1 && /sbin/modprobe act_mirred && /usr/local/sbin/tc-setup',
         onlyif  => '/sbin/tc -s qdisc show | /bin/grep "qdisc pfifo"',
     }
 
