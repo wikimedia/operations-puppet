@@ -436,6 +436,10 @@ sub vcl_recv {
 	}
 <% end -%>
 
+	if ( req.http.host ~ "^varnishcheck" ) {
+		error 200 "OK"; 
+	}
+
 	<% if @vcl_config.fetch("has_def_backend", "yes") == "yes" -%>
 	/* Select the default backend/director, which is always the one named 'backend'.
 	 * If an instance has no default 'backend', it must declare has_def_backend==no,
@@ -456,10 +460,6 @@ sub vcl_recv {
 	call https_recv_redirect;
 <% end -%>
 <% end -%>
-
-	if ( req.http.host ~ "^varnishcheck" ) {
-		error 200 "OK"; 
-	}
 
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	if (req.url ~ "^/beacon\/[^/?]+") {
