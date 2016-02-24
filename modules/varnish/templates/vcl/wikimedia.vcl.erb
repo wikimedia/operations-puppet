@@ -402,13 +402,17 @@ sub recv_purge {
 }
 
 sub vcl_recv {
-	unset req.http.X-CDIS; // clear internal cache-disposition header
-	// IP processing is req->req mangling that shouldn't be re-done on
-	// restart, and XFF-appending is non-idempotent for restart purposes..
-	if (req.restarts == 0) {
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
+	if (req.restarts == 0) {
+		// IP processing is req->req mangling that shouldn't be re-done on restart
 		call recv_fe_ip_processing;
+	}
 <% end %>
+
+	unset req.http.X-CDIS; // clear internal cache-disposition header
+
+	// XFF-appending is non-idempotent for restart purposes..
+	if (req.restarts == 0) {
 		// All layers need to update XFF with client.ip hop-by-hop so that it
 		// looks right to layers beneath, including the app layer
 		if (req.http.X-Forwarded-For) {
