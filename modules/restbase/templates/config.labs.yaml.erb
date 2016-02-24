@@ -123,7 +123,7 @@ services:
 worker_heap_limit_mb: 300
 
 logging:
-  name: restbase
+  name: <%= @logging_name %>
   level: <%= @logging_level %>
   streams:
   # XXX: Use gelf-stream -> logstash
