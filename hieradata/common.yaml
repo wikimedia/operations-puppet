@@ -201,6 +201,7 @@ ganglia_clusters:
     id: 48
     sites:
       eqiad: []
+      codfw: []
   wdqs:
     name: "Wikidata Query Service"
     id: 49
@@ -235,6 +236,12 @@ ganglia_clusters:
     id: 54
     sites:
       eqiad: []
+  restbase_test:
+    name: "Restbase test/staging"
+    id: 55
+    sites:
+      eqiad: []
+      codfw: []
 zookeeper_hosts:
   conf1001.eqiad.wmnet: '1101'
   conf1002.eqiad.wmnet: '1102'

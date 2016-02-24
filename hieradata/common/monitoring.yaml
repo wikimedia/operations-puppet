@@ -159,6 +159,10 @@ groups:
     description: Restbase eqiad
   restbase_codfw:
     description: Restbase codfw
+  restbase_test_eqiad:
+    description: Restbase test/staging eqiad
+  restbase_test_codfw:
+    description: Restbase test/staging codfw
 
 # Service Clusters
   sca_eqiad:
