@@ -1,5 +1,5 @@
 // Varnish VCL include file for upload backends
-
+include "upload-common.inc.vcl";
 include "errorpage.inc.vcl";
 
 sub pick_main_stevedore {
@@ -21,9 +21,7 @@ sub pick_large_object_stevedore {
 sub vcl_recv {
 	call recv_purge;
 
-	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
-		error 403 "Requested target domain not allowed.";
-	}
+	call common_recv;
 
 	// Make sure high range requests don't block on large objects being retrieved
 	if (req.http.Range
@@ -62,12 +60,6 @@ sub vcl_fetch {
 	return (deliver);
 }
 
-sub vcl_hit {
-	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
-		error 412 "Etag mismatch";
-	}
-}
-
 sub vcl_miss {
 	// Convert range requests into pass when over a certain threshold
 	if (req.http.Range
@@ -88,8 +80,5 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
-	if (resp.http.X-Content-Range) {
-		set resp.http.Content-Range = resp.http.X-Content-Range;
-		remove resp.http.X-Content-Range;
-	}
+	call common_deliver;
 }

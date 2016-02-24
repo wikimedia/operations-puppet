@@ -1,0 +1,20 @@
+// common to upload front+backend VCL
+
+sub common_recv {
+	if (req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
+		error 403 "Requested target domain not allowed.";
+	}
+}
+
+sub vcl_hit {
+	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
+		error 412 "Etag mismatch";
+	}
+}
+
+sub common_deliver {
+	if (resp.http.X-Content-Range) {
+		set resp.http.Content-Range = resp.http.X-Content-Range;
+		remove resp.http.X-Content-Range;
+	}
+}
