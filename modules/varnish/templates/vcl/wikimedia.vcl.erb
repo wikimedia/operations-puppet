@@ -408,6 +408,12 @@ sub vcl_recv {
 		call recv_fe_ip_processing;
 	}
 <% end %>
+<% if @vcl_config.fetch("layer", "") != "frontend" -%>
+	if (client.ip !~ wikimedia_nets) {
+		// Do not allow direct access to non-frontend layers
+		error 403 "Access denied";
+	}
+<% end -%>
 
 	unset req.http.X-CDIS; // clear internal cache-disposition header
 
@@ -421,13 +427,6 @@ sub vcl_recv {
 			set req.http.X-Forwarded-For = client.ip;
 		}
 	}
-
-<% if @vcl_config.fetch("layer", "") != "frontend" -%>
-	if (client.ip !~ wikimedia_nets) {
-		// Do not allow direct access to non-frontend layers
-		error 403 "Access denied";
-	}
-<% end -%>
 
 	if (req.request !~ "<%= @vcl_config.fetch("allowed_methods", "^(GET|HEAD|POST|PURGE)$") %>"
 		&& !(req.request == "OPTIONS" && req.http.Origin)) {
