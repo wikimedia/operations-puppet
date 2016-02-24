@@ -14,10 +14,10 @@ class wikimetrics::redis(
 
     redis::instance { '6379':
         settings => {
-            bind           => '0.0.0.0',
-            dir            => '/srv/redis/queue',
-            maxmemory      => $queue_maxmemory,
-            tcp_keepalive  => 60,
+            bind          => '0.0.0.0',
+            dir           => '/srv/redis/queue',
+            maxmemory     => $queue_maxmemory,
+            tcp_keepalive => 60,
         },
         require  => File['/srv/redis/queue']
     }
