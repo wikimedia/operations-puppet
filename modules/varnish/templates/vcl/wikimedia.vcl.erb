@@ -243,20 +243,6 @@ sub rewrite_proxy_urls {
 <% end -%>
 // ^ end frontend-only block
 
-sub recv_purge {
-	/* Support HTTP PURGE */
-	if (req.request == "PURGE") {
-		if (client.ip !~ local_host) {
-			error 405 "Denied.";
-		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
-			set req.hash_ignore_busy = true;
-			return (lookup);
-		} else {
-			error 204 "Domain not cached here.";
-		}
-	}
-}
-
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
 // and should be guarded against running on request restarts.
@@ -403,6 +389,20 @@ sub vcl_init {
 	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
 	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
 <% end %>
+}
+
+sub recv_purge {
+	/* Support HTTP PURGE */
+	if (req.request == "PURGE") {
+		if (client.ip !~ local_host) {
+			error 405 "Denied.";
+		} elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
+			set req.hash_ignore_busy = true;
+			return (lookup);
+		} else {
+			error 204 "Domain not cached here.";
+		}
+	}
 }
 
 sub vcl_recv {
