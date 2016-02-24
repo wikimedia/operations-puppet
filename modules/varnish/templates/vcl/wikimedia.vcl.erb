@@ -459,9 +459,7 @@ sub vcl_recv {
 <% if @vcl_config.fetch("https_redirects", false) -%>
 	call https_recv_redirect;
 <% end -%>
-<% end -%>
 
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	if (req.url ~ "^/beacon\/[^/?]+") {
 		// Logging beacon endpoints
 		//
@@ -580,16 +578,11 @@ sub vcl_deliver {
 		}
 	}
 
-<% end -%>
-
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 <% if @vcl_config.fetch("https_redirects", false) -%>
 	call https_deliver_hsts;
 <% end -%>
 	call analytics_deliver;
-<% end -%>
 
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	// echo metadata about the client back to the client (analytics looks at this as well)
 	set resp.http.X-Client-IP = req.http.X-Client-IP;
 	// note mobile apps look at X-C + X-C-M below
