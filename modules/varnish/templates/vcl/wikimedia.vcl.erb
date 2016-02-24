@@ -450,10 +450,9 @@ sub vcl_recv {
 
 <% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call rewrite_proxy_urls;
-<% end -%>
-
-<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
+<% if @vcl_config.fetch("https_redirects", false) -%>
 	call https_recv_redirect;
+<% end -%>
 <% end -%>
 
 	if ( req.http.host ~ "^varnishcheck" ) {
@@ -581,11 +580,10 @@ sub vcl_deliver {
 		set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> " + req.http.X-CDIS + "(" + obj.hits + ")";
 	}
 
-<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+<% if @vcl_config.fetch("https_redirects", false) -%>
 	call https_deliver_hsts;
 <% end -%>
-
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	call analytics_deliver;
 <% end -%>
 
@@ -605,11 +603,10 @@ sub vcl_deliver {
 }
 
 sub vcl_error {
-<% if @vcl_config.fetch("layer", "") == "frontend" && @vcl_config.fetch("https_redirects", false) -%>
+<% if @vcl_config.fetch("layer", "") == "frontend" -%>
+<% if @vcl_config.fetch("https_redirects", false) -%>
 	call https_error_redirect;
 <% end -%>
-
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	// retry 503 once in frontend instances, to paper over transient issues
 	if (obj.status == 503 && req.restarts == 0) {
 		return(restart);
