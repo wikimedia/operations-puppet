@@ -40,6 +40,9 @@
 # [*logstash_port*]
 #   GELF logging port. Default: 12201
 #
+# [*logging_name*]
+#   The logging name. Default: restbase
+#
 # [*logging_level*]
 #   The logging level. One of ['trace','debug','info','warn','error','fatal']
 #   Default: 'warn'
@@ -90,6 +93,7 @@ class restbase(
     $parsoid_uri    = 'http://parsoid.svc.eqiad.wmnet:8000',
     $logstash_host  = 'localhost',
     $logstash_port  = 12201,
+    $logging_name   = 'restbase',
     $logging_level  = 'warn',
     $statsd_prefix  = 'restbase',
     $statsd_host    = 'localhost',
