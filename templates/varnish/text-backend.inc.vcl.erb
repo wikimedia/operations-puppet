@@ -70,12 +70,12 @@ sub restbase_1be_mangle {
 }
 <% end -%>
 
-sub vcl_pass {
+sub vcl_miss {
 <% if @site_tier == "one" -%>
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
 		call bitscompat_1be_mangle;
-		return (pass);
+		return (fetch);
 	}
 	call mobile_hostname_1be_mangle;
 	call restbase_1be_mangle;
@@ -83,12 +83,12 @@ sub vcl_pass {
 	call restore_cookie;
 }
 
-sub vcl_miss {
+sub vcl_pass {
 <% if @site_tier == "one" -%>
 	// BITS: legacy bits.wm.o domain support
 	if (req.http.host == "<%= @vcl_config.fetch('bits_domain') %>") {
 		call bitscompat_1be_mangle;
-		return (fetch);
+		return (pass);
 	}
 	call mobile_hostname_1be_mangle;
 	call restbase_1be_mangle;

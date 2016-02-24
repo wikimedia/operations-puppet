@@ -56,6 +56,25 @@ sub pass_authorization {
 	}
 }
 
+// fe+be common recv code
+sub common_recv {
+	if (req.request != "GET" && req.request != "HEAD") {
+		return (pass);
+	}
+
+	if (req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
+		return (pass);
+	}
+
+	# LEGACY: to be removed eventually
+	if (req.http.Host ~ "cxserver|citoid|restbase|^rest\." ) {
+		return (pass);
+	}
+
+	call evaluate_cookie;
+	call pass_authorization;
+}
+
 sub common_hash {
 	// The cookies below represent mobile preferences that can be set for anonymous users.
 	if (req.http.X-Subdomain) {
@@ -76,25 +95,6 @@ sub common_hash {
 			hash_data("optin=beta");
 		}
 	}
-}
-
-// fe+be common recv code
-sub common_recv {
-	if (req.request != "GET" && req.request != "HEAD") {
-		return (pass);
-	}
-
-	if (req.http.X-Wikimedia-Debug == "1" || req.http.X-Wikimedia-Security-Audit == "1") {
-		return (pass);
-	}
-
-	# LEGACY: to be removed eventually
-	if (req.http.Host ~ "cxserver|citoid|restbase|^rest\." ) {
-		return (pass);
-	}
-
-	call evaluate_cookie;
-	call pass_authorization;
 }
 
 // fe+be common fetch code

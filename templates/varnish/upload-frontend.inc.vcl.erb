@@ -69,6 +69,20 @@ sub vcl_fetch {
 	return (deliver);
 }
 
+sub vcl_deliver {
+	call common_deliver;
+
+	unset resp.http.X-MediaWiki-Original;
+
+	if (req.http.X-Content-Disposition == "attachment") {
+		set resp.http.Content-Disposition = "attachment";
+	}
+
+	set resp.http.Access-Control-Allow-Origin = "*";
+	set resp.http.Access-Control-Expose-Headers = "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache, X-Varnish";
+	set resp.http.Timing-Allow-Origin = "*";
+}
+
 sub vcl_error {
 	// Handle CORS preflight requests
         if (obj.status == 667) {
@@ -87,18 +101,4 @@ sub vcl_error {
 	}
 
 	call errorpage;
-}
-
-sub vcl_deliver {
-	call common_deliver;
-
-	unset resp.http.X-MediaWiki-Original;
-
-	if (req.http.X-Content-Disposition == "attachment") {
-		set resp.http.Content-Disposition = "attachment";
-	}
-
-	set resp.http.Access-Control-Allow-Origin = "*";
-	set resp.http.Access-Control-Expose-Headers = "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache, X-Varnish";
-	set resp.http.Timing-Allow-Origin = "*";
 }

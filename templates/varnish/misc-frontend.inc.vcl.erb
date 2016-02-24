@@ -35,6 +35,10 @@ sub vcl_recv {
     return (lookup);
 }
 
+sub vcl_fetch {
+    call misc_fetch_large_objects;
+}
+
 sub vcl_error {
     // If status is 755, then we are forcing a redirect to https.
     if (obj.status == 755) {
@@ -44,8 +48,4 @@ sub vcl_error {
     }
 
     call errorpage;
-}
-
-sub vcl_fetch {
-    call misc_fetch_large_objects;
 }

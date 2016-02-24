@@ -33,6 +33,21 @@ sub vcl_recv {
 	return (lookup);
 }
 
+sub vcl_miss {
+	// Convert range requests into pass when over a certain threshold
+	if (req.http.Range
+		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432
+			|| req.http.Range ~ "^bytes=([0-9]{9,})-")) {
+		set bereq.http.Range = req.http.Range;
+		std.log("Passing high range request: " + req.http.Range);
+		return (pass);
+	}
+
+	if (req.http.If-Cached) {
+		error 412 "Entity not in cache";
+	}
+}
+
 sub vcl_fetch {
 	// Stream large objects, >= 1 MB
 	if (std.integer(beresp.http.Content-Length, 0) >= 1048576 || beresp.http.Content-Length ~ "^[0-9]{9}") {
@@ -60,25 +75,10 @@ sub vcl_fetch {
 	return (deliver);
 }
 
-sub vcl_miss {
-	// Convert range requests into pass when over a certain threshold
-	if (req.http.Range
-		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432
-			|| req.http.Range ~ "^bytes=([0-9]{9,})-")) {
-		set bereq.http.Range = req.http.Range;
-		std.log("Passing high range request: " + req.http.Range);
-		return (pass);
-	}
-
-	if (req.http.If-Cached) {
-		error 412 "Entity not in cache";
-	}
+sub vcl_deliver {
+	call common_deliver;
 }
 
 sub vcl_error {
 	call errorpage;
-}
-
-sub vcl_deliver {
-	call common_deliver;
 }
