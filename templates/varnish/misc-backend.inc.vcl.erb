@@ -73,10 +73,10 @@ sub vcl_recv {
     return (lookup);
 }
 
-sub vcl_error {
-    call errorpage;
-}
-
 sub vcl_fetch {
     call misc_fetch_large_objects;
+}
+
+sub vcl_error {
+    call errorpage;
 }
