@@ -8,8 +8,8 @@ class strongswan::monitoring::host {
     }
 
     sudo::user { 'nagios_strongswan':
-        user         => 'nagios',
-        privileges   => [
+        user       => 'nagios',
+        privileges => [
                         'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_strongswan',
                         ],
     }

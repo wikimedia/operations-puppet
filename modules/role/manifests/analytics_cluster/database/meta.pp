@@ -13,9 +13,9 @@ class role::analytics_cluster::database::meta {
     #include role::mariadb::monitor
 
     class { 'mariadb::config':
-        config    => 'mariadb/analytics-meta.my.cnf.erb',
-        datadir   => '/var/lib/mysql',
-        require   => Class['mariadb::packages_wmf'],
+        config  => 'mariadb/analytics-meta.my.cnf.erb',
+        datadir => '/var/lib/mysql',
+        require => Class['mariadb::packages_wmf'],
     }
 
     file { '/etc/init.d/mysql':

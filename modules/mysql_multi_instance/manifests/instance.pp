@@ -66,8 +66,8 @@ define mysql_multi_instance::instance(
     }
 
     service { "mysql-${port}":
-        enable   => true,
-        require  => File["/etc/init.d/mysql-${port}"],
+        enable  => true,
+        require => File["/etc/init.d/mysql-${port}"],
     }
 
     ## some per-instance monitoring here

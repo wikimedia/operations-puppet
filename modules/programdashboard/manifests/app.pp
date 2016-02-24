@@ -44,10 +44,10 @@ class programdashboard::app(
     }
 
     file { $directory:
-        ensure  => directory,
-        owner   => $owner,
-        group   => $group,
-        mode    => '0750',
+        ensure => directory,
+        owner  => $owner,
+        group  => $group,
+        mode   => '0750',
     }
 
     $server_name = $::programdashboard::server_name
