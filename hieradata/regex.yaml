@@ -101,6 +101,7 @@ cassandra_test_eqiad:
   restbase::cassandra_datacenters:
       - eqiad
       - codfw
+  restbase::statsd_prefix: restbase-test
   cassandra::max_heap_size: 4g
   cassandra::heap_newsize: 1g
   cassandra::cluster_name: services-test
@@ -166,6 +167,7 @@ cassandra_test_codfw:
   restbase::cassandra_datacenters:
       - eqiad
       - codfw
+  restbase::statsd_prefix: restbase-test
   cassandra::max_heap_size: 4g
   cassandra::heap_newsize: 1g
   cassandra::cluster_name: services-test
