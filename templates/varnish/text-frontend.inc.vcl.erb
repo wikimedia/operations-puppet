@@ -237,11 +237,11 @@ sub vcl_hash {
 	call common_hash;
 }
 
-sub vcl_pass {
+sub vcl_miss {
 	call restore_cookie;
 }
 
-sub vcl_miss {
+sub vcl_pass {
 	call restore_cookie;
 }
 
@@ -249,6 +249,30 @@ sub vcl_fetch {
 	call common_fetch;
 
 	return (deliver);
+}
+
+sub vcl_deliver {
+	call zero_deliver;
+
+	// Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
+	// by MediaWiki $wgUseSquid, sends purges internally). But pages musn't be cached elsewhere.
+	// NOTE: Language variants URLs are not currently covered by these regexps.
+	// Instead of writing regexps for every edge-case, we should impose some order and coherence
+	// on our URL routing schemes.
+	// NOTE: Only apply to pages. Don't steal cachability of api.php, load.php, etc. (T102898, T113007)
+
+	if (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/\?title=") {
+		// ...but exempt CentralNotice banner special pages
+		if (req.url !~ "^/(wiki/|(w/index\.php)?\?title=)Special:Banner") {
+			set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+		}
+	}
+
+	// Perform GeoIP look-up and send the result as a session cookie
+	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
+		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
+		call geoip_cookie;
+	}
 }
 
 sub vcl_error {
@@ -278,28 +302,4 @@ sub vcl_error {
 	}
 
 	call errorpage;
-}
-
-sub vcl_deliver {
-	call zero_deliver;
-
-	// Strip s-maxage Cache-Control of wiki pages. The s-maxage still applies to Varnish (sent
-	// by MediaWiki $wgUseSquid, sends purges internally). But pages musn't be cached elsewhere.
-	// NOTE: Language variants URLs are not currently covered by these regexps.
-	// Instead of writing regexps for every edge-case, we should impose some order and coherence
-	// on our URL routing schemes.
-	// NOTE: Only apply to pages. Don't steal cachability of api.php, load.php, etc. (T102898, T113007)
-
-	if (req.url ~ "^/wiki/" || req.url ~ "^/w/index\.php" || req.url ~ "^/\?title=") {
-		// ...but exempt CentralNotice banner special pages
-		if (req.url !~ "^/(wiki/|(w/index\.php)?\?title=)Special:Banner") {
-			set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
-		}
-	}
-
-	// Perform GeoIP look-up and send the result as a session cookie
-	if (req.http.X-Orig-Cookie !~ "(^|;\s*)GeoIP=[^;]"
-		&& req.http.Cookie !~ "(^|;\s*)GeoIP=[^;]") {
-		call geoip_cookie;
-	}
 }
