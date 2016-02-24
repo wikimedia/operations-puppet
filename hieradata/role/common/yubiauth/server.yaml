@@ -1,0 +1,3 @@
+debdeploy::grains:
+  debdeploy-yubiauth:
+    value: standard
