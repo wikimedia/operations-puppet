@@ -1,3 +1,8 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### modules/scap/templates/scap.cfg.erb
+#####################################################################
+
 # Configuration for scap and related scripts
 #
 # Values are selected based on the fully qualified domain name of the local
@@ -13,6 +18,10 @@
 # other configuration.
 
 [global]
+
+# deployment git server hostname
+git_server: <%= @deployment_server %>
+
 statsd_port: 8125
 
 # Deployment realm
@@ -74,7 +83,7 @@ udp2log_host: fluorine.eqiad.wmnet
 
 [wmflabs]
 # Wikimedia Foundation beta cluster configuration
-master_rsync: deployment-bastion.eqiad.wmflabs
+master_rsync: deployment-tin.deployment-prep.eqiad.wmflabs
 statsd_host: labmon1001.eqiad.wmnet
 udp2log_host: 10.68.16.198
 wmf_realm: labs
