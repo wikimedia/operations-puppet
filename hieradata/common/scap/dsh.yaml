@@ -18,3 +18,4 @@ scap_proxies:
 scap_masters:
   - "tin.eqiad.wmnet"
   - "mira.codfw.wmnet"
+
