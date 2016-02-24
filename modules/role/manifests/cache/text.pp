@@ -118,7 +118,7 @@ class role::cache::text {
         'static_host'        => $::role::cache::base::static_host,
         'bits_domain'        => $::role::cache::base::bits_domain,
         'top_domain'         => $::role::cache::base::top_domain,
-        'do_gzip'            => true,
+        'do_gzip'            => false, # experiment re: T127931
     }
 
     $be_vcl_config = merge($common_vcl_config, {
