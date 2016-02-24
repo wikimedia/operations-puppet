@@ -241,10 +241,6 @@ sub rewrite_proxy_urls {
 	}
 }
 
-<% end -%>
-// ^ end frontend block
-
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
 // and should be guarded against running on request restarts.
 sub recv_fe_ip_processing {
@@ -381,16 +377,15 @@ sub recv_fe_ip_processing {
 	//     metadata.
 }
 
-<% end %>
-
 sub vcl_init {
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
 	// again, netmapper only used in frontends, for recv_fe_ip_processing
 	// args here are map-name (for .map()), data file, and seconds between mtime checks for reload
 	netmapper.init("proxies", "/var/netmapper/proxies.json", 89);
 	netmapper.init("carriers", "/var/netmapper/carriers.json", 89);
-<% end %>
 }
+
+<% end -%>
+// ^ end frontend block
 
 sub recv_purge {
 	/* Support HTTP PURGE */
