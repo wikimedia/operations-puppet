@@ -29,8 +29,16 @@ class wikistats (
         system     => true,
     }
 
-    package { 'wikistats':
-        ensure => present,
+    file { '/srv/wikistats':
+        ensure => 'directory',
+    }
+
+    # FIXME rename repo, it was a deb in the past
+    # but not anymore and also not operations
+    git::clone { 'operations/debs/wikistats':
+        ensure    => 'latest',
+        directory => '/srv/wikistats',
+        branch    => 'master',
     }
 
     # webserver setup for wikistats
