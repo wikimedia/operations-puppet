@@ -66,7 +66,7 @@ class role::labs::instance {
             # Note that this is the same export as for /data/project
             exec { 'block-for-home-export':
                 command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::labsproject} 180",
-                require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
+                require => [File['/etc/modprobe.d/nfs-no-idmap.conf'], File['/usr/local/sbin/block-for-export']],
                 unless  => '/bin/mountpoint -q /home',
             }
 
@@ -76,7 +76,7 @@ class role::labs::instance {
                 fstype  => 'nfs',
                 options => "rw,${nfs_opts}",
                 device  => "${nfs_server}:/project/${::labsproject}/home",
-                require => [File['/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-home-export']],
+                require => [File['/etc/modprobe.d/nfs-no-idmap.conf'], Exec['block-for-home-export']],
             }
         }
 
@@ -95,7 +95,7 @@ class role::labs::instance {
             include labstore::traffic_shaping
             exec { 'block-for-project-export':
                 command => "/usr/local/sbin/block-for-export ${nfs_server} project/${::labsproject} 180",
-                require => [File['/etc/modprobe.d/nfs-no-idmap'], File['/usr/local/sbin/block-for-export']],
+                require => [File['/etc/modprobe.d/nfs-no-idmap.conf'], File['/usr/local/sbin/block-for-export']],
                 unless  => '/bin/mountpoint -q /data/project',
             }
 
@@ -110,7 +110,7 @@ class role::labs::instance {
                 fstype  => 'nfs',
                 options => "rw,${nfs_opts}",
                 device  => "${nfs_server}:/project/${::labsproject}/project",
-                require => [File['/data/project', '/etc/modprobe.d/nfs-no-idmap'], Exec['block-for-project-export']],
+                require => [File['/data/project', '/etc/modprobe.d/nfs-no-idmap.conf'], Exec['block-for-project-export']],
             }
         }
 
@@ -128,7 +128,7 @@ class role::labs::instance {
                 fstype  => 'nfs',
                 options => "rw,${nfs_opts}",
                 device  => "${nfs_server}:/scratch",
-                require => File['/data/scratch', '/etc/modprobe.d/nfs-no-idmap'],
+                require => File['/data/scratch', '/etc/modprobe.d/nfs-no-idmap.conf'],
             }
         }
 
@@ -156,7 +156,7 @@ class role::labs::instance {
                 fstype  => 'nfs',
                 options => "ro,${nfs_opts}",
                 device  => "${dumps_server}:/statistics",
-                require => File['/public/statistics', '/etc/modprobe.d/nfs-no-idmap'],
+                require => File['/public/statistics', '/etc/modprobe.d/nfs-no-idmap.conf'],
             }
         }
 
@@ -173,7 +173,7 @@ class role::labs::instance {
                 fstype  => 'nfs',
                 options => "ro,${nfs_opts}",
                 device  => "${dumps_server}:/dumps",
-                require => File['/public/dumps', '/etc/modprobe.d/nfs-no-idmap'],
+                require => File['/public/dumps', '/etc/modprobe.d/nfs-no-idmap.conf'],
             }
         }
     }
@@ -195,7 +195,7 @@ class role::labs::instance {
     # While the default on kernels >= 3.3 is to have idmap disabled,
     # doing so explicitly does no harm and ensures it is everywhere.
 
-    file { '/etc/modprobe.d/nfs-no-idmap':
+    file { '/etc/modprobe.d/nfs-no-idmap.conf':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
