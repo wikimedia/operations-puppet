@@ -6,8 +6,8 @@ class standard(
     $has_admin = true,
     $has_ganglia = true,
 ) {
-    include base
-    include role::ntp
+    include ::base
+    include ::standard::ntp
     include role::diamond
 
     if $has_ganglia {
