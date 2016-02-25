@@ -16,7 +16,7 @@ DATE=$(date "+%Y%m%d%H%M")
 <% end -%>
 
 # Let's be polite and not use all available processors
-PIGZ="/usr/bin/pigz -p <%= Integer(@processorcount)/2 > 1 ? Integer(@processorcount/2) : 1 %> "
+PIGZ="/usr/bin/pigz -p <%= Integer(@processorcount)/2 > 1 ? Integer(@processorcount)/2 : 1 %> "
 PIGZD="/usr/bin/pigz -d"
 <% if @pigz_level -%>
 PIGZ="$PIGZ --<%= @pigz_level -%>"
