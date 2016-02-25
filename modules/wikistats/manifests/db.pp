@@ -10,7 +10,7 @@ class wikistats::db {
     # db backup
     cron { 'mysql-dump-wikistats':
         ensure  => 'present',
-        command => "/usr/bin/mysqldump -u root -p$ wikistats > ${wikistats::db::backupdir}/wikistats_db_${date}.sql && gzip ${backupdir}/wikistats_db_${date}.sql",
+        command => "today=$(date +%Y%m%d) && /usr/bin/mysqldump -u root -p wikistats > ${wikistats::db::backupdir}/wikistats_db_${today}.sql && gzip ${backupdir}/wikistats_db_${today}.sql",
         user    => 'root',
         hour    => '0',
         minute  => '15',
