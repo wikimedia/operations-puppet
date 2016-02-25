@@ -47,5 +47,15 @@ class role::analytics_cluster::hadoop::logstash {
             subscribe => File['/usr/local/bin/hadoop-yarn-logging-helper.sh'],
             onlyif    => $patched_jar_exists_command,
         }
+
+        # symlink into hadoop classpath
+        file { '/usr/lib/hadoop/lib/json_simple.jar':
+            ensure  => 'absent',
+        }
+
+        # symlink into hadoop classpath
+        file { '/usr/lib/hadoop/lib/logstash-gelf.jar':
+            ensure  => 'absent',
+        }
     }
 }
