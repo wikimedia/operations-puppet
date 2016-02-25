@@ -1,5 +1,5 @@
-# role class for diamond
-class role::diamond {
+# standard class for diamond
+class standard::diamond {
 
     case $::realm {
         'labs': {
