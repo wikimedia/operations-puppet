@@ -1,6 +1,6 @@
 // Common functions for the Text/Mobile Varnish clusters
 
-sub restore_cookie {
+sub text_common_misspass_restore_cookie {
 	// Restore the original Cookie header for upstream
 	// Assumes client header X-Orig-Cookie has been filtered!
 	if (bereq.http.X-Orig-Cookie) {
@@ -15,7 +15,7 @@ sub evaluate_cookie {
 	// otherwise remove the Cookie completely.  In either case, in
 	// vcl_(pass|miss) on the way to any backend fetch, it will be
 	// restored to the original value.
-	// Later in common_fetch, we'll create hit-for-pass objects for any
+	// Later in text_common_fetch, we'll create hit-for-pass objects for any
 	// response with Vary:Cookie and Cookie:Token=1.  This will allow
 	// logged-in users to share the anonymous users' cache for
 	// non-Vary:Cookie responses, and then share a single hit-for-pass
@@ -57,7 +57,7 @@ sub pass_authorization {
 }
 
 // fe+be common recv code
-sub common_recv {
+sub text_common_recv {
 	if (req.request != "GET" && req.request != "HEAD") {
 		return (pass);
 	}
@@ -75,7 +75,7 @@ sub common_recv {
 	call pass_authorization;
 }
 
-sub common_hash {
+sub text_common_hash {
 	// The cookies below represent mobile preferences that can be set for anonymous users.
 	if (req.http.X-Subdomain) {
 		// Split the cache for the images-disabled variant of the mobile site.
@@ -98,7 +98,7 @@ sub common_hash {
 }
 
 // fe+be common fetch code
-sub common_fetch {
+sub text_common_fetch {
 	if (req.http.X-Subdomain && (req.url ~ "mobileaction=" || req.url ~ "useformat=")) {
 		set beresp.ttl = 60 s;
 	}
