@@ -14,6 +14,8 @@ define varnish::instance(
 
     include varnish::common
 
+    $layer = $vcl_config['layer']
+
     $runtime_params = join(prefix($runtime_parameters, '-p '), ' ')
     if $name == '' {
         $instancesuffix = ''
@@ -74,7 +76,7 @@ define varnish::instance(
         group   => 'root',
         mode    => '0444',
         require => File["/etc/varnish/${vcl}.inc.vcl"],
-        content => template("${module_name}/vcl/wikimedia.vcl.erb"),
+        content => template("${module_name}/vcl/wikimedia-${layer}.vcl.erb"),
     }
 
     file { "/etc/varnish/${vcl}.inc.vcl":
