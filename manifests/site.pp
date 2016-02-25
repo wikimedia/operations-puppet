@@ -16,7 +16,7 @@ if $cluster == undef {
 # Node definitions (alphabetic order)
 
 node /^(acamar|achernar)\.wikimedia\.org$/ {
-    role dnsrecursor
+    role dnsrecursor, ntp
     include standard
 
     interface::add_ip6_mapped { 'main':
@@ -267,7 +267,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
             address   => $url_downloader_ip,
         }
     }
-    role dnsrecursor, url_downloader
+    role dnsrecursor, url_downloader, ntp
     include standard
 
     interface::add_ip6_mapped { 'main':
@@ -1770,7 +1770,7 @@ node /^lvs400[1-4]\.ulsfo\.wmnet$/ {
 }
 
 node 'maerlant.wikimedia.org' {
-    role dnsrecursor
+    role dnsrecursor, ntp
     include standard
 
     interface::add_ip6_mapped { 'main':
@@ -2116,7 +2116,7 @@ node 'neon.wikimedia.org' {
 }
 
 node 'nescio.wikimedia.org' {
-    role dnsrecursor
+    role dnsrecursor, ntp
     include standard
 
     interface::add_ip6_mapped { 'main':
