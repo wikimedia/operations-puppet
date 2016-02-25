@@ -13,3 +13,30 @@ sub vcl_recv {
 
 	/* Function vcl_recv in <%= @vcl %>.inc.vcl will be appended here */
 }
+
+sub vcl_hit {
+	call wm_common_hit;
+	/* Function vcl_hit in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_miss {
+	call wm_common_miss;
+	/* Function vcl_miss in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_pass {
+	call wm_common_pass;
+
+<% if @site_tier == "two" -%>
+	// pass-traffic should not use consistent hashing, to avoid unecessary
+	// traffic focus on one node and keep things performant
+	set req.backend = backend_random;
+<% end -%>
+
+	/* Function vcl_pass in <%= @vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_fetch {
+	call wm_common_fetch;
+	/* Function vcl_fetch in <%= @vcl %>.inc.vcl will be appended here */
+}
