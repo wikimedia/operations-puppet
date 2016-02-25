@@ -22,13 +22,6 @@ class varnish::common::vcl {
         content => template('varnish/analytics.inc.vcl.erb'),
     }
 
-    file { '/etc/varnish/wikimedia-common.inc.vcl':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template("${module_name}/vcl/wikimedia-common.inc.vcl.erb"),
-    }
-
     # VCL unit tests
     file { '/usr/local/sbin/varnish-test-geoip':
         owner  => 'root',

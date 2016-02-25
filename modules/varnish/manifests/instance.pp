@@ -70,6 +70,12 @@ define varnish::instance(
         }
     }
 
+    file { "/etc/varnish/wikimedia-common_${vcl}.inc.vcl":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template("${module_name}/vcl/wikimedia-common.inc.vcl.erb"),
+    }
 
     file { "/etc/varnish/wikimedia_${vcl}.vcl":
         owner   => 'root',
@@ -110,6 +116,7 @@ define varnish::instance(
                 File["/etc/default/varnish${instancesuffix}"],
                 File["/etc/varnish/${vcl}.inc.vcl"],
                 File["/etc/varnish/wikimedia_${vcl}.vcl"],
+                File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
                 Mount['/var/lib/varnish'],
             ],
         }
@@ -128,7 +135,8 @@ define varnish::instance(
         subscribe   => [
                 Class['varnish::common::vcl'],
                 File[suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl')],
-                File["/etc/varnish/wikimedia_${vcl}.vcl"]
+                File["/etc/varnish/wikimedia_${vcl}.vcl"],
+                File["/etc/varnish/wikimedia-common_${vcl}.inc.vcl"],
             ],
         command     => "/usr/share/varnish/reload-vcl ${extraopts} || (touch ${vcl_failed_file}; false)",
         unless      => "test -f ${vcl_failed_file}",

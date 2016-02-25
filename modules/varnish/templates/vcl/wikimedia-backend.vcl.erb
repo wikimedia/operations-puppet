@@ -1,5 +1,5 @@
 // common backend code for all clusters
-include "wikimedia-common.inc.vcl";
+include "wikimedia-common_<%= @vcl %>.inc.vcl";
 
 sub vcl_recv {
 	if (client.ip !~ wikimedia_nets) {
