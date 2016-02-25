@@ -267,66 +267,20 @@ sub wm_common_fetch {
 <% end -%>
 }
 
-sub vcl_deliver {
+sub wm_common_deliver {
 	if (!req.http.X-CDIS) {
 		set req.http.X-CDIS = "int"; // internally-generated response (not a cache object hit, and not a miss|pass to a deeper layer either)
 	}
+
 	if (resp.http.X-Cache) {
 		set resp.http.X-Cache = resp.http.X-Cache + ", <%= @hostname + (@name.empty? ? "" : " " + @name) %> " + req.http.X-CDIS + "(" + obj.hits + ")";
 	} else {
 		set resp.http.X-Cache = "<%= @hostname + (@name.empty? ? "" : " " + @name) %> " + req.http.X-CDIS + "(" + obj.hits + ")";
 	}
-
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-	std.collect(resp.http.Via);
-	std.collect(resp.http.X-Varnish);
-
-	// Set CP ('Connection Properties') cookie
-	if (req.http.X-Connection-Properties ~ "SPDY=3") {
-		if (req.http.X-Orig-Cookie !~ "(^|;\s*)CP=H2" && req.http.Cookie !~ "(^|;\s*)CP=H2") {
-			header.append(resp.http.Set-Cookie, "CP=H2; Path=/");
-		}
-	} else {
-		// Explicitly unset the cookie if it exists. Support for SPDY in a browser session can
-		// flip if a device moves networks and thus behind a proxy.
-		if (req.http.X-Orig-Cookie ~ "(^|;\s*)CP=H2" || req.http.Cookie ~ "(^|;\s*)CP=H2") {
-			header.append(resp.http.Set-Cookie, "CP=H1; Expires=Thu, 01-Jan-1970 00:00:01 GMT; Path=/");
-		}
-	}
-
-<% if @vcl_config.fetch("https_redirects", false) -%>
-	call https_deliver_hsts;
-<% end -%>
-	call analytics_deliver;
-
-	// echo metadata about the client back to the client (analytics looks at this as well)
-	set resp.http.X-Client-IP = req.http.X-Client-IP;
-	// note mobile apps look at X-C + X-C-M below
-	if (req.http.X-Carrier) {
-		set resp.http.X-Carrier = req.http.X-Carrier;
-		if (req.http.X-Carrier-Meta) {
-			set resp.http.X-Carrier-Meta = req.http.X-Carrier-Meta;
-		}
-	}
-<% end -%>
-
-	/* Function vcl_deliver in <%= @vcl %>.inc.vcl will be appended here */
 }
 
-sub vcl_error {
-<% if @vcl_config.fetch("layer", "") == "frontend" -%>
-<% if @vcl_config.fetch("https_redirects", false) -%>
-	call https_error_redirect;
-<% end -%>
-	// retry 503 once in frontend instances, to paper over transient issues
-	if (obj.status == 503 && req.restarts == 0) {
-		return(restart);
-	}
-<% end -%>
-
+sub wm_common_error {
 	if (obj.status == 204 && req.request == "PURGE") {
 		set obj.http.Connection = "keep-alive";
 	}
-
-	/* Function vcl_error in <%= @vcl %>.inc.vcl will be appended here */
 }
