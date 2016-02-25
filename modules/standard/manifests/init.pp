@@ -5,9 +5,13 @@ class standard(
     $has_default_mail_relay = true,
     $has_admin = true,
     $has_ganglia = true,
-) {
+    ) {
     include ::base
     include ::standard::ntp
+
+    unless $::fqdn in $::standard::ntp::wmf_all_peers {
+        include standard::ntp::client
+    }
     include role::diamond
 
     if $has_ganglia {
